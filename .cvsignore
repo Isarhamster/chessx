@@ -1,0 +1,4 @@
+bin
+*.tag
+*.pcs
+*.kdevses
