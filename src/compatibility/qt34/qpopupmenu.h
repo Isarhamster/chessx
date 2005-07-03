@@ -1,8 +1,9 @@
 /***************************************************************************
-                          $FILE$  -  description
+                          qpopupmenu.h  -  qt3/4 compatibility header
                              -------------------
-    begin                : sob maj 7 2005
-    copyright            : (C) 2005 $AUTHOR <$EMAIL@>
+    begin                : 3 July 2005
+    copyright            : (C) 2005 William Hoggarth
+                           <whoggarth@user.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -14,26 +15,15 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef __Q34_QPOPUPMENU_H__
+#define __Q34_QPOPUPMENU_H__
 
-#ifndef __MAINWINDOW_H__
-#define __MAINWINDOW_H__
+#if QT_VERSION < 0x040000
+#include <qpopupmenu.h>
+#else
+#include <q3popupmenu.h>
+typedef Q3PopupMenu QPopupMenu;
+using namespace Qt;
+#endif // QT_VERSION < 0x040000
 
-#include <qt34/qmainwindow.h>
-
-class MainWindow: public QMainWindow
-{
-  Q_OBJECT
-public:
-  MainWindow();
-  ~MainWindow();
-
-protected:
-
-private slots:
-  void slotAbout();
-
-private:
-};
-
-
-#endif
+#endif // __Q34_QPOPUPMENU_H__

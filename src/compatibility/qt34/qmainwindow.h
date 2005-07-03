@@ -1,8 +1,9 @@
 /***************************************************************************
-                          $FILE$  -  description
+                          qmainwindow.h  -  qt3/4 compatibility header
                              -------------------
-    begin                : sob maj 7 2005
-    copyright            : (C) 2005 $AUTHOR <$EMAIL@>
+    begin                : 3 July 2005
+    copyright            : (C) 2005 William Hoggarth
+                           <whoggarth@user.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -14,26 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef __QT34_QMAINWINDOW_H__
+#define __QT34_QMAINWINDOW_H__
 
-#ifndef __MAINWINDOW_H__
-#define __MAINWINDOW_H__
+#include <qglobal.h>
+#if QT_VERSION < 0x040000
+#include <qmainwindow.h>
+#else
+#include <q3mainwindow.h>
+typedef Q3MainWindow QMainWindow;
+using namespace Qt;
+#endif // QT_VERSION < 0x040000
 
-#include <qt34/qmainwindow.h>
-
-class MainWindow: public QMainWindow
-{
-  Q_OBJECT
-public:
-  MainWindow();
-  ~MainWindow();
-
-protected:
-
-private slots:
-  void slotAbout();
-
-private:
-};
-
-
-#endif
+#endif // __QT32_QMAINWINDOW_H__
