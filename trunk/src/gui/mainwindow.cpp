@@ -16,7 +16,7 @@
 
 #include "mainwindow.h"
 
-#include <qpopupmenu.h>
+#include <qt34/qpopupmenu.h>
 #include <qmenubar.h>
 #include <qstatusbar.h>
 #include <qmessagebox.h>
