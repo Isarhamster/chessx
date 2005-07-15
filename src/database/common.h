@@ -31,5 +31,9 @@ enum MoveType {StandardMove,
   PromotionBlackBishop = BlackBishop, PromotionBlackKnight = BlackKnight,
   Castling = 128, EnPassant};
 
+#define min(a,b) (a<b) ? a : b
+#define max(a,b) (a>b) ? a : b
+#define abs(a) (a>=0) ? a : -a
+
 #endif
 
