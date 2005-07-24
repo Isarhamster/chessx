@@ -1,30 +1,71 @@
-/***************************************************************************
-                          main.cpp  -  main application
-                             -------------------
-    begin                : sob maj 7 2005
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
- ***************************************************************************/
+// main() to convert a scid ratings.ssp to our player db format,
+// and test the content of the resulting player database.
+//
+// To use it, change the parameters to
+// DatabaseConversion::PlayerDatabaseFromScidRatings()
+// from "~ejner/" to point at your actual directory and files.
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
 
-#include <qapplication.h>
-#include "mainwindow.h"
-#include "move.h"
+#include <iostream>
+#include "databaseconversion.h"
 
-int main( int argc, char ** argv ) 
-{
-  Move m(5, 20);
-  QApplication a(argc, argv);
-  MainWindow* mw = new MainWindow;
-  mw->setCaption("Chess Database");
-  mw->show();
-  a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
-  return a.exec();
+
+void testPlayerDatabaseConversion(){
+  QString db_name = "/home/ejner/chessX/players";
+
+  int x = DatabaseConversion::PlayerDatabaseFromScidRatings("/home/ejner/chessX/ratings.ssp",db_name,"/home/ejner/chessX/polgar.jpg"); // the jpg is attached as photo to the first player in ratings.ssp
+  if (x!=0){
+    std::cout << "conversion failed\n";
+    return;
+  }
+
+// query the converted database
+
+  PlayerDatabase pdb;
+  if (pdb.open(db_name)) {
+    std::cout << "opened " << db_name << "\n";
+  }
+  else{
+    std::cout << "failure opening " << db_name << "\n";
+    return;
+  }
+
+  std::cout << "number of players = " << pdb.numberOfPlayers() <<"\n"; 
+  QStringList sl = pdb.playerNames();
+
+//  for (int i=0; i<sl.size()&&i<5; i++ ) {
+//    std::cout << sl[i] << "\n";
+//  }
+//  int i=0;
+//  for ( QStringList::Iterator it = sl.begin(); it != sl.end(); ++it ) {
+//    std::cout << *it << "\n";
+    //i++;
+//  }
+
+  QString d1 = pdb.dateOfBirth("Aaberg, Anton");
+  std::cout << "Aaberg, Anton birthdate= " << d1 << "\n";
+  QString s = pdb.country("Aaberg, Anton");
+  std::cout << "Aaberg, Anton country= " << s << "\n";
+  s = pdb.title("Aaberg, Anton");
+  std::cout << "Aaberg, Anton title= " << s << "\n";
+
+  d1 = pdb.dateOfBirth("Zysk, Robert");
+  std::cout << "Zysk, Robert birthdate= " << d1 << "\n";
+  d1 = pdb.country("Zysk, Robert");
+  std::cout << "Zysk, Robert country= " << d1 << "\n";
+
+
+  pdb.close();
+  std::cout << "closed " << db_name << "\n";
+
+  std::cout << "end of testPlayerDatabaseConversion\n";
 }
+
+
+int main( ) 
+{
+testPlayerDatabaseConversion();
+  return 0;
+}
+
+
