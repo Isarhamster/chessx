@@ -58,7 +58,7 @@ or estimated rating.
   void setPhoto(const QImage img);
   QString biography() const;
   void setBiography(const QString s);
-  void addToBiography(const QString s);
+  void appendToBiography(const QString s);
 /**
 returns the official elo data as a QValueList<Q_INT32>, for serialization via
 QDataStream

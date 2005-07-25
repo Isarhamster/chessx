@@ -151,7 +151,7 @@ QString PlayerData::biography() const{
 void PlayerData::setBiography(const QString s){
   m_biography = s;
 }
-void PlayerData::addToBiography(const QString s){
+void PlayerData::appendToBiography(const QString s){
   m_biography += s;
 }
 

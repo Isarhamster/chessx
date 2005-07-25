@@ -15,19 +15,28 @@
  *                                                                         *
  ***************************************************************************/
 /**
+Documentation for managing QDataset version, see
+http://doc.trolltech.com/4.0/qdatastream.html
 */
 #include "playerdatabase.h"
 
-static QString m_magic = "ChessX name db"; // 'magic' string
-static QString m_version = "1.0"; // file format version
+
+static Q_UINT32 m_magic = (Q_UINT32)0xB0D0A0D0; // 'magic' number
+static Q_UINT32 m_version = (Q_UINT32)100; // file format version
 static QString m_mapfile_suffix = ".cpm";
 static QString m_datafile_suffix = ".cpd";
 
-bool PlayerDatabase::create(const QString & fname) {
+bool PlayerDatabase::create(const QString& fname) {
   mapfile.setName(fname+m_mapfile_suffix);
   datafile.setName(fname+m_datafile_suffix );
   if (mapfile.exists()||datafile.exists())
      return false;
+
+// set QDataset format version to use
+  if (m_version==(Q_UINT32)100){
+    mapds.setVersion(6);
+    datads.setVersion(6);
+  }
 
   mapfile.open( IO_ReadWrite );
   mapds.setDevice(&mapfile);
@@ -50,16 +59,23 @@ bool PlayerDatabase::create(const QString & fname) {
   return true;
 }
 
-bool PlayerDatabase::open(const QString & fname) {
+bool PlayerDatabase::open(const QString& fname) {
   mapfile.setName(fname+m_mapfile_suffix);
   mapfile.open( IO_ReadWrite );
   mapds.setDevice(&mapfile);
-  QString magic;
+  Q_UINT32 magic;
+  Q_UINT32 version;
   mapds >> magic;
-  QString version;
   mapds >> version;
 
   if (version==m_version && magic==m_magic){
+
+// set QDataset format version to use
+     if (m_version==(Q_UINT32)100){
+       mapds.setVersion(6);
+       datads.setVersion(6);
+     }
+
      nplayers_offset = mapfile.at();
      mapds >> nplayers;
      if (nplayers>0){
@@ -86,7 +102,7 @@ bool PlayerDatabase::open(const QString & fname) {
   }
 }
 
-bool PlayerDatabase::remove(const QString & fname) {
+bool PlayerDatabase::removeDatabase(const QString& fname) {
   mapfile.setName(fname+m_mapfile_suffix);
   datafile.setName(fname+m_datafile_suffix);
   return mapfile.remove() && datafile.remove();
@@ -131,13 +147,14 @@ void PlayerDatabase::commit() {
 }
 
 void PlayerDatabase::compact() {
+// not implemented yet
 }
 
-uint PlayerDatabase::numberOfPlayers() const {
+uint PlayerDatabase::count() const {
   return nplayers;
 }
 
-bool PlayerDatabase::add(const QString & pname) {
+bool PlayerDatabase::add(const QString& pname) {
   if (mapping.contains(pname)||pendingUpdates.contains(pname)){
      return false;
   }
@@ -147,7 +164,11 @@ bool PlayerDatabase::add(const QString & pname) {
   return true;
 }
 
-PlayerData PlayerDatabase::readPlayerData(const QString & pname){
+//bool PlayerDatabase::remove(const QString& pname) {
+//not implemented yet
+//}
+
+PlayerData PlayerDatabase::readPlayerData(const QString& pname){
     PlayerData pd;
     QMap<QString, Q_INT32>::Iterator it;
     it = mapping.find(pname);
@@ -162,7 +183,6 @@ PlayerData PlayerDatabase::readPlayerData(const QString & pname){
         return pd;
       }
     }
-
 
     Q_INT32 pos = it.data();
     datafile.at(pos);//pointing to the player data
@@ -212,7 +232,7 @@ PlayerData PlayerDatabase::readPlayerData(const QString & pname){
     return pd;
 }
 
-QMap<QString, PlayerData>::Iterator PlayerDatabase::refreshCache(const QString & pname){
+QMap<QString, PlayerData>::Iterator PlayerDatabase::refreshCache(const QString& pname){
   QMap<QString, PlayerData>::Iterator iter = cache.find(pname);
   if (iter!=cache.end()){
     return iter;
@@ -225,7 +245,7 @@ QMap<QString, PlayerData>::Iterator PlayerDatabase::refreshCache(const QString &
   }
 }
 
-QMap<QString, PlayerData>::Iterator PlayerDatabase::prepareUpdate(const QString & pname){
+QMap<QString, PlayerData>::Iterator PlayerDatabase::prepareUpdate(const QString& pname){
   QMap<QString, PlayerData>::Iterator iter = pendingUpdates.find(pname);
   if (iter!=pendingUpdates.end()){
     return iter;
@@ -235,7 +255,7 @@ QMap<QString, PlayerData>::Iterator PlayerDatabase::prepareUpdate(const QString 
   }
 }
 
-bool PlayerDatabase::exists(const QString & pname){
+bool PlayerDatabase::exists(const QString& pname){
     QMap<QString, Q_INT32>::Iterator it;
     it = mapping.find(pname);
     if (it==mapping.end()){
@@ -249,64 +269,64 @@ bool PlayerDatabase::exists(const QString & pname){
     return true;
 }
 
-QString PlayerDatabase::dateOfBirth(const QString & pname){
+QString PlayerDatabase::dateOfBirth(const QString& pname){
   return refreshCache(pname).data().dateOfBirth();
 }
-void PlayerDatabase::setDateOfBirth(const QString & pname, const QString & d){
+void PlayerDatabase::setDateOfBirth(const QString& d, const QString& pname){
   prepareUpdate(pname).data().setDateOfBirth(d);
 }
 
-QString PlayerDatabase::dateOfDeath(const QString & pname){
+QString PlayerDatabase::dateOfDeath(const QString& pname){
   return refreshCache(pname).data().dateOfDeath();
 }
-void PlayerDatabase::setDateOfDeath(const QString & pname, const QString & d){
+void PlayerDatabase::setDateOfDeath(const QString& d, const QString& pname){
   prepareUpdate(pname).data().setDateOfDeath(d);
 }
 
-QString PlayerDatabase::country(const QString & pname){
+QString PlayerDatabase::country(const QString& pname){
   return refreshCache(pname).data().country();
 }
-void PlayerDatabase::setCountry(const QString & pname, const QString & s){
+void PlayerDatabase::setCountry(const QString& s, const QString& pname){
   prepareUpdate(pname).data().setCountry(s);
 }
 
-QString PlayerDatabase::title(const QString & pname){
+QString PlayerDatabase::title(const QString& pname){
   return refreshCache(pname).data().title();
 }
-void PlayerDatabase::setTitle(const QString & pname, const QString & s){
+void PlayerDatabase::setTitle(const QString& s, const QString& pname){
   prepareUpdate(pname).data().setTitle(s);
 }
 
-int PlayerDatabase::elo(const QString & pname, const QDate & date){
+int PlayerDatabase::elo(const QString& pname, const QDate& date){
   return refreshCache(pname).data().elo(date);
 }
-void PlayerDatabase::setOfficialElo(const QString & pname, const Q_INT32 year,  const QMemArray<int> ar){
+void PlayerDatabase::setOfficialElo(const Q_INT32 year,  const QMemArray<int> ar, const QString& pname){
   prepareUpdate(pname).data().setOfficialElo(year,ar);
 }
 
-void PlayerDatabase::setPeakElo(const QString & pname, const int i){
+void PlayerDatabase::setPeakElo(const int i, const QString& pname){
   prepareUpdate(pname).data().setPeakElo(i);
 }
 
-void PlayerDatabase::setEstimatedElo(const QString & pname, const int i){
+void PlayerDatabase::setEstimatedElo(const int i, const QString& pname){
   prepareUpdate(pname).data().setEstimatedElo(i);
 }
 
-QImage PlayerDatabase::photo(const QString & pname){
+QImage PlayerDatabase::photo(const QString& pname){
   return refreshCache(pname).data().photo();
 }
-void PlayerDatabase::setPhoto(const QString & pname, const QImage & img){
+void PlayerDatabase::setPhoto(const QImage& img, const QString& pname){
   prepareUpdate(pname).data().setPhoto(img);
 }
 
-QString PlayerDatabase::biography(const QString & pname){
+QString PlayerDatabase::biography(const QString& pname){
   return refreshCache(pname).data().biography();
 }
-void PlayerDatabase::setBiography(const QString & pname, const QString & s){
+void PlayerDatabase::setBiography(const QString& s, const QString& pname){
   prepareUpdate(pname).data().setBiography(s);
 }
-void PlayerDatabase::addToBiography(const QString & pname, const QString & s){
-  prepareUpdate(pname).data().addToBiography(s);
+void PlayerDatabase::appendToBiography(const QString& s, const QString& pname){
+  prepareUpdate(pname).data().appendToBiography(s);
 }
 
 QStringList PlayerDatabase::playerNames(){
@@ -314,6 +334,21 @@ QStringList PlayerDatabase::playerNames(){
   QMap<QString,Q_INT32>::Iterator it;
   for ( it = mapping.begin(); it != mapping.end(); ++it ) {
      result.push_back(it.key());
+  }
+  return result;
+}
+
+QStringList PlayerDatabase::findPlayers(const QString& prefix, int maxCount){
+  QStringList result;
+  QMap<QString,Q_INT32>::Iterator it;
+  int i=0;
+  for ( it = mapping.begin(); it != mapping.end(); ++it ) {
+     if (it.key().startsWith(prefix)){
+        if (i >= maxCount)
+          break;
+        result.push_back(it.key());
+        i++;
+     }
   }
   return result;
 }
