@@ -34,15 +34,15 @@ public:
 /**
 create a new player database
 */
-bool create(const QString & fname);
+bool create(const QString& fname);
 /**
 open an existing player database
 */
-bool open(const QString & fname);
+bool open(const QString& fname);
 /**
 remove a player database
 */
-bool remove(const QString & fname);
+bool removeDatabase(const QString& fname);
 /**
 commit pending updates
 */
@@ -58,95 +58,119 @@ void compact();
 /**
 number of players in the database
 */
-uint numberOfPlayers() const;
+uint count() const;
 /**
 add a new player
 */
-bool add(const QString & pname);
+bool add(const QString& pname);
 /**
 remove player from database
 */
-void erase(const QString & pname);
+bool remove(const QString& pname);
 /**
 returns true iff the player has en entry
 in the database
 */
-bool exists(const QString & pname);
+bool exists(const QString& pname);
 /**
 returns date of birth for a player
 format: yyyy.mm.dd
 - mm and/or dd may be = ??
+TODO: change return type to PartialDate (class to be written)
 */
-QString dateOfBirth(const QString & pname);
+QString dateOfBirth(const QString& pname);
 /**
 updates date of birth for a player
 */
-void setDateOfBirth(const QString & pname, const QString & d);
+void setDateOfBirth(const QString& d, const QString& pname);
 /**
 returns date of death for a player
 format: yyyy.mm.dd
 - mm and/or dd may be = ??
 */
-QString dateOfDeath(const QString & pname);
+QString dateOfDeath(const QString& pname);
 /**
 updates date of death for a player
 */
-void setDateOfDeath(const QString & pname, const QString & d);
+void setDateOfDeath(const QString& d, const QString& pname);
 /**
 returns country for a player
 */
-QString country(const QString & pname);
+QString country(const QString& pname);
 /**
 updates country for a player
+Standard is 3 character country code 
+(RUS, DEN, SWE, etc.)
+Multiple countries can be provided by separating them by '/',
+fe. RUS/GER (earliest country first)
 */
-void setCountry(const QString & pname, const QString & s);
+void setCountry(const QString& s, const QString& pname);
 /**
 returns title for a player
 */
-QString title(const QString & pname);
+QString title(const QString& pname);
 /**
 updates title for a player
+ gm: Grandmaster
+ im: International Master
+ fm: FIDE Master
+ wgm: Woman Grandmaster
+ wim: Woman International Master
+ wfm: Woman FIDE Master
+ cgm: Correspondence GM
+ cim: Correspondence IM
+ hgm: Honorary Grandmaster
+ comp: Computer
+ -: None/unknown
+Multiple titles can be provided by separating them by '+',
+fe. gm+cgm
 */
-void setTitle(const QString & pname, const QString & s);
+void setTitle(const QString& s, const QString& pname);
 /**
 players elo at the given date. Official elo
 at the date if available, otherwise peak rating
 or estimated rating.
 */
-int elo(const QString & pname, const QDate & date);
+int elo(const QString& pname, const QDate& date);
 /**
 updates official elo rating for a player, for a given year
 */
-void setOfficialElo(const QString & pname, const Q_INT32 year, const QMemArray<int> ar);
+void setOfficialElo(const Q_INT32 year, const QMemArray<int> ar, const QString& pname);
 /**
 updates peak elo rating for a player
 */
-void setPeakElo(const QString & pname, const int i);
+void setPeakElo(const int i, const QString& pname);
 /**
 updates estimated elo rating for a player
 */
-void setEstimatedElo(const QString & pname, const int i);
+void setEstimatedElo(const int i, const QString& pname);
 /**
 returns photo for a player
 */
-QImage photo(const QString & pname);
+QImage photo(const QString& pname);
 /**
 updates photo for a player
 */
-void setPhoto(const QString & pname, const QImage & img);
+void setPhoto(const QImage& img, const QString& pname);
 /**
 returns biography for a player
 */
-QString biography(const QString & pname);
+QString biography(const QString& pname);
 /**
 updates biography for a player
 */
-void setBiography(const QString & pname, const QString & s);
-void addToBiography(const QString & pname, const QString & s);
+void setBiography(const QString& s, const QString& pname);
+void appendToBiography(const QString& s, const QString& pname);
 /**
 returns a list of all player names in database
 */
 QStringList playerNames();
+
+/**
+returns a list of all player names in database,
+matching the prefix
+*/
+QStringList findPlayers(const QString& prefix, int maxCount = 10000000);
 
 private:
 QMap<QString,Q_INT32> mapping; // pointers into data

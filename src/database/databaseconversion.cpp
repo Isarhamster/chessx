@@ -18,13 +18,13 @@
 #include <iostream>
 #include "databaseconversion.h"
 
-int DatabaseConversion::PlayerDatabaseFromScidRatings(const QString & inFileName, const QString & outFileName, const QString & photoFile){
+bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& photoFile){
 // was tested and works with ratings.ssp from january 2004
 // and the latest from http://members.aon.at/schachverein.steyr/ratings.ssp.zip
 // photoFile can be fe. a jpg file, will be added as photo for the first player in db, just for testing.
   PlayerDatabase pdb;
 
-  if (pdb.remove(outFileName)){
+  if (pdb.removeDatabase(outFileName)){
     std::cout << "removed " << outFileName << "\n";
   }
   else{
@@ -35,14 +35,14 @@ int DatabaseConversion::PlayerDatabaseFromScidRatings(const QString & inFileName
   }
   else{
     std::cout << "failure creating " << outFileName << "\n";
-    return 4;
+    return false;
   }
 
 // now read from ratings.ssp
   QFile inFile(inFileName);
   if ( !(inFile.open( IO_ReadOnly ) )) {
     std::cout << "failure opening output file \n";
-    return 4;
+    return false;
   }
 
   QTextStream stream( &inFile );
@@ -66,10 +66,10 @@ int DatabaseConversion::PlayerDatabaseFromScidRatings(const QString & inFileName
       else if(linesStripped.startsWith("=") ) {//name correction line
       }
       else if(linesStripped.startsWith("%Bio")) {//Biography note
-        pdb.addToBiography(name, linesStripped.mid(5,9999)+"<br>");
+        pdb.appendToBiography(linesStripped.mid(5,9999)+"<br>",name);
       }
       else if(linesStripped.startsWith("%Title")) {//title award note - add to biography
-        pdb.addToBiography(name, linesStripped.mid(7,9999)+"<br>");
+        pdb.appendToBiography(linesStripped.mid(7,9999)+"<br>",name);
       }
       else if(linesStripped.startsWith("%Render")) {//name with special characters fe. Huebner
       }
@@ -89,37 +89,42 @@ int DatabaseConversion::PlayerDatabaseFromScidRatings(const QString & inFileName
             else
               ar[i]=sl3[i].toInt();
           }
-          pdb.setOfficialElo(name,year.toInt(),ar);
+          pdb.setOfficialElo(year.toInt(),ar,name);
         }
       }
       else if(linesStripped.startsWith("%")) {//unknown code
         //std::cout << "unknown code in ratings.ssp \n";
         //std::cout << line << "\n";
-//ignore!        return 4;
+//ignore!        return false;
       }
       else {//name line
 
         if (numberOfPlayers%1000==0 && numberOfPlayers>0)
             std::cout << "processed: " << numberOfPlayers << "\n";
 
-        name = line.left(24).stripWhiteSpace();
-        QString title = line.mid(25,4).stripWhiteSpace();
-        QString rest = line.mid(29,99999).stripWhiteSpace();
+
+        QStringList sl0 = QStringList::split("#",line);
+        name = sl0[0].stripWhiteSpace();
+        int index = sl0[1].find(QChar(' '));
+        QString title = sl0[1].left(index);
+        QString rest = sl0[1].mid(index,9999);
+
 //        std::cout << "name= " << name << "\n";
 //        std::cout << "title= " << title << "\n";
 //        std::cout << "rest= " << rest << "\n";
-        pdb.add(name);
+
+        if (!pdb.add(name))
+           std::cout << "failed adding player: " << name << "\n";
 
 
 // only for testing: set photo for the first player
         if (numberOfPlayers==0){
           QImage* img = new QImage(photoFile);
-          pdb.setPhoto(name,*img);
+          pdb.setPhoto(*img,name);
         }
 
-
         numberOfPlayers++;
-        pdb.setTitle(name,title);
+        pdb.setTitle(title,name);
 
         QStringList sl = QStringList::split(" ",rest);
         for ( QStringList::Iterator it = sl.begin(); it != sl.end(); ++it ) {
@@ -129,18 +134,18 @@ int DatabaseConversion::PlayerDatabaseFromScidRatings(const QString & inFileName
             s = s.mid(1,s.length()-2);
             //std::cout << "rating= " << s;
             if (s.endsWith("*"))
-              pdb.setEstimatedElo(name,s.left(s.length()-1).toInt());
+              pdb.setEstimatedElo(s.left(s.length()-1).toInt(),name);
             else
-              pdb.setPeakElo(name,s.toInt());
+              pdb.setPeakElo(s.toInt(),name);
           }
           else if(s.contains(".")){//birth date
-            pdb.setDateOfBirth(name,s.left(10));
+            pdb.setDateOfBirth(s.left(10),name);
             if (s.length()>=22){
-              pdb.setDateOfDeath(name,s.mid(12,10));
+              pdb.setDateOfDeath(s.mid(12,10),name);
             }
           }
           else {//country code(s)
-            pdb.setCountry(name,s);
+            pdb.setCountry(s,name);
           }
         }
 //        std::cout << "\n";
@@ -154,6 +159,6 @@ int DatabaseConversion::PlayerDatabaseFromScidRatings(const QString & inFileName
   pdb.commit();
   pdb.close();
 
-  return 0;
+  return true;
 
 }

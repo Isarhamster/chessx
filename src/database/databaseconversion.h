@@ -31,11 +31,8 @@ public:
 convert Scid ratings.ssp to player database
 outFileName is filename without extension
 inFileName is full path for ratings.ssp
-return values:
-0: succesful conversion
-others: problem occurred
 */
-static int PlayerDatabaseFromScidRatings(const QString & inFileName, const QString & outFileName, const QString & photoFile);
+static bool playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& photoFile);
 
 };
 
