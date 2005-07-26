@@ -7,6 +7,7 @@ HEADERS += board.h \
            move.h \
            common.h \
            game.h \
+	   partialdate.h \
            pgnparser.h \
            playerdatabase.h \
            playerdata.h \
@@ -14,6 +15,7 @@ HEADERS += board.h \
 SOURCES += board.cpp \
            move.cpp \
            databaseconversion.cpp \
+	   partialdate.cpp \
            pgnparser.cpp \
            playerdatabase.cpp \
            playerdata.cpp 
