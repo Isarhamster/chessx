@@ -228,3 +228,4 @@ void PgnParser::addError(const QString & msg) {
    s.append(msg);
    m_parserMessages->append(s);
 }
+
