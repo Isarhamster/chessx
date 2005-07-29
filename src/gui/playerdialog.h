@@ -1,5 +1,5 @@
 /***************************************************************************
-                          mainwindow.h  -  main window
+                          PlayerDialog - browser of player's database
                              -------------------
     begin                : sob maj 7 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
@@ -14,32 +14,30 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef __PLAYERDIALOG_H__
+#define __PLAYERDIALOG_H__
 
-#ifndef __MAINWINDOW_H__
-#define __MAINWINDOW_H__
+#include "playerdialogbase.h"
 
-#include <qt34/qmainwindow.h>
 
 class PlayerDatabase;
-class PlayerDialog;
 
-class MainWindow: public QMainWindow
+class PlayerDialog : public PlayerDialogBase
 {
   Q_OBJECT
 public:
-  MainWindow();
-  ~MainWindow();
+  PlayerDialog(PlayerDatabase* db, QWidget* parent = 0);
+  ~PlayerDialog();
 
-protected:
-
-private slots:
-  void slotAbout();
-  void slotPlayerDialog();
-
+public slots:
+  void findPlayers(const QString& s);
+  void showPlayer(const QString& s);
+  void showPlayer(QListViewItem* i);
+  
 private:
-  PlayerDatabase* m_playerDatabase;
-  PlayerDialog* m_playerDialog;
+  PlayerDatabase* m_database;
 };
 
 
 #endif
+
