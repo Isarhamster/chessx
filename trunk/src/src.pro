@@ -3,7 +3,6 @@
 # Podkatalog wzgl?dem g?ównego katalogu projektu: ./src
 # Cel to program:  ../bin/chessdatabase
 
-HEADERS += database/common.h 
 SOURCES += main.cpp 
 INCLUDEPATH += ./database ./gui
 TEMPLATE = app
