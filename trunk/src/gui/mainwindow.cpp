@@ -1,8 +1,8 @@
 /***************************************************************************
-                          MainWindow.cpp  -  description
+                          mainwindow.cpp  -  main window
                              -------------------
     begin                : sob maj 7 2005
-    copyright            : (C) 2005 $AUTHOR <$EMAIL@>
+    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -15,6 +15,9 @@
  ***************************************************************************/
 
 #include "mainwindow.h"
+#include "playerdialog.h"
+#include "playerdatabase.h"
+
 
 #include <qt34/qpopupmenu.h>
 #include <qmenubar.h>
@@ -24,9 +27,18 @@
 
 MainWindow::MainWindow():QMainWindow(0, "MainWindow", WDestructiveClose)
 {
+  /* Database initialization */
+  m_playerDatabase = new PlayerDatabase;
+  m_playerDatabase->open("../tests/playerdatabase/data/players");
+  m_playerDialog = new PlayerDialog(m_playerDatabase);
+
   QPopupMenu *file = new QPopupMenu(this);
   menuBar()->insertItem(tr("&File"), file);
   file->insertItem(tr("&Quit"), qApp, SLOT(closeAllWindows()), CTRL + Key_Q);
+
+  QPopupMenu *windows = new QPopupMenu(this);
+  menuBar()->insertItem(tr("&Windows"), windows);
+  windows->insertItem(tr("&Player Database..."), this, SLOT(slotPlayerDialog()), CTRL + SHIFT + Key_P);
 
   menuBar()->insertSeparator();
   QPopupMenu *help = new QPopupMenu(this);
@@ -34,10 +46,13 @@ MainWindow::MainWindow():QMainWindow(0, "MainWindow", WDestructiveClose)
   help->insertItem(tr("&About..."), this, SLOT(slotAbout()), Key_F1);
   statusBar()->message(tr("Ready"), 2000);
   resize(450, 600);
+
 }
 
 MainWindow::~MainWindow()
 {
+  delete m_playerDialog;
+  delete m_playerDatabase;
 }
 
 
@@ -45,5 +60,10 @@ void MainWindow::slotAbout()
 {
   QMessageBox::about(this, tr("Chess Database"),
       tr("Chess Database\n(C) 2005 Ejner Borgbjerg, Kamil Przybyla and Michal Rudolf"));
+}
+
+void MainWindow::slotPlayerDialog()
+{
+  m_playerDialog->show();
 }
 
