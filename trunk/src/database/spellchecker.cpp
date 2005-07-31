@@ -17,6 +17,7 @@
 
 #include <qdatastream.h>
 #include <qdir.h>
+#include <qfile.h>
 #include <qglobal.h>
 #include <qregexp.h>
 
@@ -26,10 +27,13 @@ Spellchecker::Spellchecker()
 {
 }
 
-bool Spellchecker::load(QFile& file)
+bool Spellchecker::load(const QString& filename)
 {
 	//initialise data stream
-	file.at(0);
+	QFile file(filename);
+	if(!file.open(IO_ReadOnly)) {
+		return false;
+	}
 	QDataStream stream(&file); 
 	Q_UINT32 magicNumber;
 	
@@ -46,142 +50,151 @@ bool Spellchecker::load(QFile& file)
 	stream.setVersion(5); //QDataStream::Qt_3_1
 
 	//remove any existing rules
-	removeAllRules();
+	clear();
 	
 	//read in data
-	for(int ruleType = 0; ruleType < noRuleTypes; ruleType++) {
-		for(int spellingType = 0; spellingType < noSpellingTypes; spellingType++) {
+	for(int ruleType = 0; ruleType < RuleTypeCount; ruleType++) {
+		for(int spellingType = 0; spellingType < SpellingTypeCount; spellingType++) {
 			stream >> m_maps[ruleType][spellingType];
 		}
 	}
 	
 	//check for errors
+	file.close();
 	if(file.status() == (unsigned)IO_Ok) {
 		return true;
 	} else {
-		removeAllRules();
+		clear();
 		return false;
 	}
 }
 
-bool Spellchecker::save(QFile& file)
+bool Spellchecker::save(const QString& filename)
 {
 	//rename the file as a back up
-	if(file.isOpen()) {
-			file.close();
+	QFile file(filename);
+	bool newFile = !file.exists();
+	if(!newFile) {
+		QDir dir;
+		dir.rename(filename, filename + "~");
 	}
-	QString name = file.name();
-	QString backupName = name + "~";
-	QDir dir;
-	dir.rename(name, backupName);
 	
 	//open new file and initialise stream
-	QFile newFile(name);
-	newFile.open(IO_WriteOnly);
-	QDataStream stream(&newFile);
+	file.open(IO_WriteOnly);
+	QDataStream stream(&file);
 	stream.setVersion(5); //QDataStream::Qt_3_1
 
 	//write out data
 	stream << (Q_UINT32)0xCD5CBD01U;
 	
-	for(int ruleType = 0; ruleType < noRuleTypes; ruleType++) {
-		for(int spellingType = 0; spellingType < noSpellingTypes; spellingType++) {
+	for(int ruleType = 0; ruleType < RuleTypeCount; ruleType++) {
+		for(int spellingType = 0; spellingType < SpellingTypeCount; spellingType++) {
 			stream << m_maps[ruleType][spellingType];
 		}
 	}
 	
 	//if successful remove backup, otherwise restore it
-	newFile.close();
-	if(newFile.status() == (unsigned)IO_Ok) {
-		dir.remove(backupName);
-		file.open(IO_ReadWrite);
+	file.close();
+	if(file.status() == (unsigned)IO_Ok) {
+		if(!newFile) {
+			QDir dir;
+			dir.remove(filename + "~");
+		}
 		return true;
 	} else {
-		dir.remove(name);
-		dir.rename(backupName, name);
-		file.open(IO_ReadWrite);
+		QDir dir;
+		dir.remove(filename);
+		if(!newFile) {
+			dir.rename(filename + "~", filename);
+		}
 		return false;
 	}
 }
 
 
-bool Spellchecker::import(QFile& file)
+bool Spellchecker::import(const QString& filename)
 {
 	//initialise stream
-	file.at(0);
+	QFile file(filename);
+	if(!file.open(IO_ReadOnly)) {
+		return false;
+	}
 	QTextStream stream(&file);
 
 	//import rules
 	bool imported = true;
-	imported &= importSection(stream, "PLAYER", PLAYER);
-	imported &= importSection(stream, "SITE", SITE);
-	imported &= importSection(stream, "EVENT", EVENT);
-	imported &= importSection(stream, "ROUND", ROUND);
+	imported &= importSection(stream, "PLAYER", Player);
+	imported &= importSection(stream, "SITE", Site);
+	imported &= importSection(stream, "EVENT", Event);
+	imported &= importSection(stream, "ROUND", Round);
 
+	file.close();
 	return imported;
 }     
 
-void Spellchecker::correct(QString& string, SpellingType spellingType) const
+QString Spellchecker::correct(const QString& string,
+																SpellingType spellingType) const
 {
+	QString corrected = string;
+	
 	//apply substitution rules first
 	QMap<QString,QString>::const_iterator iterator;
 	
 	//prefixes
-	for(iterator = m_maps[PREFIX][spellingType].constBegin();
-				iterator != m_maps[PREFIX][spellingType].constEnd(); iterator++) {
-		if(string.startsWith(iterator.key())) {
-			string.replace(0, iterator.key().length(), iterator.data());
+	for(iterator = m_maps[Prefix][spellingType].constBegin();
+				iterator != m_maps[Prefix][spellingType].constEnd(); iterator++) {
+		if(corrected.startsWith(iterator.key())) {
+			corrected.replace(0, iterator.key().length(), iterator.data());
 			break;
 		}
 	}
 
 	//infixes
-	for(iterator = m_maps[INFIX][spellingType].constBegin();
-				iterator != m_maps[INFIX][spellingType].constEnd(); iterator++) {
-		string.replace(iterator.key(), iterator.data());
+	for(iterator = m_maps[Infix][spellingType].constBegin();
+				iterator != m_maps[Infix][spellingType].constEnd(); iterator++) {
+		corrected.replace(iterator.key(), iterator.data());
 	}
 
 	//suffixes
-	for(iterator = m_maps[SUFFIX][spellingType].constBegin();
-				iterator != m_maps[SUFFIX][spellingType].constEnd(); iterator++) {
-		if(string.endsWith(iterator.key())) {
-			string.replace(string.findRev(iterator.key()),
+	for(iterator = m_maps[Suffix][spellingType].constBegin();
+				iterator != m_maps[Suffix][spellingType].constEnd(); iterator++) {
+		if(corrected.endsWith(iterator.key())) {
+			corrected.replace(corrected.findRev(iterator.key()),
 											iterator.key().length(), iterator.data());
 			break;
 		}
 	}
 	
 	//look for literal match
-	QString standardised = string;
-	standardise(standardised, spellingType);
-	QString corrected = m_maps[LITERAL][spellingType][standardised];
+	QString standardised = standardise(corrected, spellingType);
+	QString literalMatch = m_maps[Literal][spellingType][standardised];
 
-	if(corrected != "") {
+	if(literalMatch != "") {
 		//found, return
-		string = corrected;
-		return;
+		return literalMatch;
 	} else {
 		//if player name, try rearranging the name
-		if(spellingType == PLAYER) {
-			standardised = string.section(' ', -1) +
-											string.section(' ', 0, -2);
-			standardise(standardised, spellingType);
-			
-			corrected = m_maps[LITERAL][spellingType][standardised];
-			if(corrected != "") {
+		if(spellingType == Player) {
+			standardised = standardise(corrected.section(' ', -1) +
+																		corrected.section(' ', 0, -2),
+																		spellingType);	
+			literalMatch = m_maps[Literal][spellingType][standardised];
+			if(literalMatch != "") {
 				//found, return
-				string = corrected;
-				return;
+				return literalMatch;
 			}
 		}
 	}
+	
+	return corrected;
 }
 
-void Spellchecker::findSpellings(QStringList& spellingList,
-																		const QString& correct, RuleType ruleType,
-																		SpellingType spellingType) const
+QStringList Spellchecker::findSpellings(const QString& correct,
+																					RuleType ruleType,
+																					SpellingType spellingType) const
 {
 	//iterate through map looking for matches
+	QStringList spellingList;
 	QMap<QString,QString>::const_iterator iterator;
 	
 	for(iterator = m_maps[ruleType][spellingType].constBegin();
@@ -190,14 +203,16 @@ void Spellchecker::findSpellings(QStringList& spellingList,
 			spellingList << iterator.key();
 		}
 	}
+	
+	return spellingList;
 }
 
 void Spellchecker::addRule(const QString incorrect, const QString& correct,
 															RuleType ruleType, SpellingType spellingType)
 {
 	QString standardised = incorrect;
-	if(ruleType == LITERAL) {
-		standardise(standardised, spellingType);
+	if(ruleType == Literal) {
+		standardised = standardise(standardised, spellingType);
 	}
 	m_maps[ruleType][spellingType].insert(standardised, correct);
 }
@@ -205,21 +220,19 @@ void Spellchecker::addRule(const QString incorrect, const QString& correct,
 bool Spellchecker::removeRule(const QString& incorrect, RuleType ruleType,
 																SpellingType spellingType)
 {
-	QString standardised = incorrect;
-	standardise(standardised, spellingType);
+	QString standardised = standardise(incorrect, spellingType);
 	
-	bool removed = m_maps[ruleType][spellingType].contains(incorrect);
-	m_maps[ruleType][spellingType].remove(incorrect);
+	bool removed = m_maps[ruleType][spellingType].contains(standardised);
+	m_maps[ruleType][spellingType].remove(standardised);
 	return removed;
 }
 
-
-int Spellchecker::countAllRules() const
+int Spellchecker::count() const
 {
 	int count = 0;
 	
-	for(int ruleType = 0; ruleType < noRuleTypes; ruleType++) {
-		for(int spellingType = 0; spellingType < noSpellingTypes; spellingType++) {
+	for(int ruleType = 0; ruleType < RuleTypeCount; ruleType++) {
+		for(int spellingType = 0; spellingType < SpellingTypeCount; spellingType++) {
 			count += m_maps[ruleType][spellingType].count();
 		}
 	}
@@ -227,10 +240,10 @@ int Spellchecker::countAllRules() const
 	return count;
 }
 				
-void Spellchecker::removeAllRules()       
+void Spellchecker::clear()
 {
-	for(int ruleType = 0; ruleType < noRuleTypes; ruleType++) {
-		for(int spellingType = 0; spellingType < noSpellingTypes; spellingType++) {
+	for(int ruleType = 0; ruleType < RuleTypeCount; ruleType++) {
+		for(int spellingType = 0; spellingType < SpellingTypeCount; spellingType++) {
 			m_maps[ruleType][spellingType].clear();
 		}
 	}
@@ -290,7 +303,7 @@ bool Spellchecker::importSection(QTextStream& stream, const QString& section,
 				//prefix rule
 				incorrect = line.section("\"", 1, 1);
 				correct = line.section("\"", 3, 3);
-				addRule(incorrect, correct, PREFIX, spellingType);
+				addRule(incorrect, correct, Prefix, spellingType);
 				incorrect = "";
 				continue;
 			}
@@ -299,7 +312,7 @@ bool Spellchecker::importSection(QTextStream& stream, const QString& section,
 				//infix rule
 				incorrect = line.section("\"", 1, 1);
 				correct = line.section("\"", 3, 3);
-				addRule(incorrect, correct, INFIX, spellingType);
+				addRule(incorrect, correct, Infix, spellingType);
 				incorrect = "";
 				continue;
 			}
@@ -308,7 +321,7 @@ bool Spellchecker::importSection(QTextStream& stream, const QString& section,
 				//suffix rule
 				incorrect = line.section("\"", 1, 1);
 				correct = line.section("\"", 3, 3);
-				addRule(incorrect, correct, SUFFIX, spellingType);
+				addRule(incorrect, correct, Suffix, spellingType);
 				incorrect = "";
 				continue;
 			}
@@ -326,7 +339,7 @@ bool Spellchecker::importSection(QTextStream& stream, const QString& section,
 			
 			line.remove(0, 1); // remove =
 			line = line.stripWhiteSpace();
-			addRule(line, correct, LITERAL, spellingType);
+			addRule(line, correct, Literal, spellingType);
 			continue;
 		}
 		
@@ -336,22 +349,26 @@ bool Spellchecker::importSection(QTextStream& stream, const QString& section,
 			line.truncate(hashIndex - 1);
 		}
 		correct = line.stripWhiteSpace();
-		addRule(correct, correct, LITERAL, spellingType);
+		addRule(correct, correct, Literal, spellingType);
 	}
 
 	return true;
 }
 
-void Spellchecker::standardise(QString& string, SpellingType spellingType) const
+QString Spellchecker::standardise(const QString& string,
+																		SpellingType spellingType) const
 {
 	//remove exterraneous characters
-	string.remove(QRegExp("[.,\\s-_()]"));
+	QString standardised = string;
+	standardised.remove(QRegExp("[.,\\s-_()]"));
 	
-	if(spellingType == PLAYER) {
+	if(spellingType == Player) {
 		//capitalise first letter
-		string.replace(0, 1, string.at(0).upper());
+		standardised.replace(0, 1, string.at(0).upper());
 	
 		//standardise captilisation of names beginning with "Van de"
-		string.replace("van de", "Van de", false);
+		standardised.replace("van de", "Van de", false);
 	}
+	
+	return standardised;
 }
