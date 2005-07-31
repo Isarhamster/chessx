@@ -15,47 +15,77 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qfile.h>
 #include <qmap.h>
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qtextstream.h>
 
 /**
-	 The Spellchecker class provides spellchecker functionality. Spellings
-	 can be imported from specially formatted text files, or loaded from a
-	 native binary format. There is support for literal matching and
-	 substitution rules.
+	 The Spellchecker class provides spellchecker functionality.
+	 
+	 The Spellchecker can import spellings from specially formatted text files, or
+	 load them from a native binary format. The class caters for a number of
+	 spelling types and rules for correcting spelling.
  */
 
 class Spellchecker
 {
  public:
  	
- 	/** Different types of rules for spelling correction */
-	enum RuleType { LITERAL, PREFIX, INFIX, SUFFIX };
+  /**
+	 	 The rule type indicates what kind of substitution a spelling rule performs
+	 
+	   Spellings are corrected with a number of different substitution rules. Each
+		 rule type indicates where in the string it will look for a substring. When
+		 a match is found, it is replaced with the corrected substring. 
+		 
+		 The literal rule is preferred as it is often the most suitable and is the
+		 most efficient. It works as a straight match and replace on the whole
+		 string. If many similar spelling mistakes are made at the beginning or end
+		 of a string, the prefix and suffix rules may be more appropriate. This
+		 results in more corrections with less rules. Finally, if a common spelling
+		 error maybe found in any part of the string, the infix rule should be used.
+		 
+		 During correction relevant rules will be applied the following order:
+		 prefix, infix, suffix, then literal. You will need to	 be aware of this when
+		 more than one rule may be relevant to a particular spelling.
+	 */
+	enum RuleType {	Literal, /**< Matches the whole string */
+									Prefix, /**< Matches at the beginning of the string */
+									Infix, /**< Matches anywhere in the string */
+									Suffix, /**< Matches at the end of the string */
+									RuleTypeCount };
 	
-	/** Different types of spellings */
- 	enum SpellingType { PLAYER, SITE, EVENT, ROUND };
+	/**	The spelling type indicates what kind of spelling is to be corrected */
+ 	enum SpellingType {	Player, /**< Player name */
+											Site, /**< Site name */
+											Event, /**< Event name */
+											Round, /**< Round */
+											SpellingTypeCount };
  
 	/** Default constructor, creates a Spellchecker with no spellings */
 	Spellchecker();
 	
 	/** Loads spellings from a native format */
-	bool load(QFile& file);
+	bool load(const QString& filename);
 	
 	/** Saves spellings to a native format */
-	bool save(QFile& file);
+	bool save(const QString& filename);
 	
 	/** Imports spellings from a specically formatted text file */
-	bool import(QFile& file);
+	bool import(const QString& filename);
  
-	/** Corrects a spelling */
-	void correct(QString& string, SpellingType spellingType) const;
+	/**
+		 Corrects a spelling 
+	
+		 The string parameter has the various spelling rules applied to it, and the
+		 resultant corrected spelling is returned.
+	*/
+	QString correct(const QString& string, SpellingType spellingType) const;
 	
 	/** Finds the incorrect spellings associated with a given correct spelling */
-	void findSpellings(QStringList& spellingList, const QString& correct,
-											RuleType ruleType, SpellingType spellingType) const;
+	QStringList findSpellings(const QString& correct, RuleType ruleType,
+															SpellingType spellingType) const;
 	
 	/** Adds a spelling rule to the Spellchecker */
 	void addRule(const QString incorrect, const QString& correct,
@@ -65,11 +95,11 @@ class Spellchecker
 	bool removeRule(const QString& incorrect, RuleType ruleType,
 										SpellingType spellingType);
 
-	/** Returns the number of spelling rules in Spellchecker */
-	int countAllRules() const;
+	/** Returns the number of spelling rules, of all types, in the Spellchecker */
+	int count() const;
 												
 	/** Removes all spelling rules from the Spellchecker */
-	void removeAllRules();
+	void clear();
 
  private:
  	/** Imports a section from a specially formatted text file */
@@ -77,10 +107,7 @@ class Spellchecker
 											SpellingType spellingType);
 											
 	/** Standardises the format of a string for matching purposes */
-	void standardise(QString& string, SpellingType spellingType) const;
-	
-	static const int noRuleTypes = SUFFIX + 1;
- 	static const int noSpellingTypes = ROUND + 1;
+	QString standardise(const QString& string, SpellingType spellingType) const;
  	
-	QMap<QString,QString> m_maps[noRuleTypes][noSpellingTypes];
+	QMap<QString,QString> m_maps[RuleTypeCount][SpellingTypeCount];
 };
