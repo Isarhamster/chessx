@@ -204,7 +204,7 @@ PlayerData PlayerDatabase::readPlayerData(const QString& pname){
     QValueList<Q_INT32> eloList;
     datads >> eloList;
 
-    for(uint i=0; i<eloList.size();){
+    for(uint i=0; i< (uint)eloList.size();){
       Q_INT32 year = eloList[i++];
       Q_INT32 n_ratings = eloList[i++];
       QMemArray<int> ar(n_ratings);

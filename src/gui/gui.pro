@@ -4,8 +4,6 @@
 # Cel to biblioteka gui
 
 HEADERS += mainwindow.h \
-           $$QT34/qmainwindow.h \
-           $$QT34/qpopupmenu.h \
            playerdialog.h 
 FORMS   += playerdialogbase.ui	   
 SOURCES += mainwindow.cpp \
@@ -16,4 +14,3 @@ TEMPLATE = lib
 QT += qt3support
 INCLUDEPATH += ../compatibility \
 	    ../database
-QT34 = ../compatibility/qt34

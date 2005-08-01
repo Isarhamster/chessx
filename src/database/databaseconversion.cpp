@@ -16,6 +16,8 @@
  ***************************************************************************/
 
 #include <iostream>
+#include <qstringlist.h>
+#include <qtextstream.h>
 #include "databaseconversion.h"
 
 bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& photoFile){
@@ -25,16 +27,16 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
   PlayerDatabase pdb;
 
   if (pdb.removeDatabase(outFileName)){
-    std::cout << "removed " << outFileName << "\n";
+    std::cout << "removed " << outFileName.latin1() << "\n";
   }
   else{
-    std::cout << "failure removing " << outFileName << "\n";
+    std::cout << "failure removing " << outFileName.latin1() << "\n";
   }
   if (pdb.create(outFileName)){
-    std::cout << "created " << outFileName << "\n";
+    std::cout << "created " << outFileName.latin1() << "\n";
   }
   else{
-    std::cout << "failure creating " << outFileName << "\n";
+    std::cout << "failure creating " << outFileName.latin1() << "\n";
     return false;
   }
 
@@ -83,7 +85,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
           QString ratings = sl2[1];//ratings for one year, separated by commas
           QStringList sl3 = QStringList::split(",",ratings);
           QMemArray<int> ar(sl3.size());
-          for (uint i=0;i<sl3.size();i++ ) {
+          for (uint i=0;i < (uint)sl3.size();i++ ) {
             if(sl3[i] == "?")
               ar[i]=-9999;//unknown rating - nothing intelligent is done with this (yet)
             else
@@ -114,7 +116,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
 //        std::cout << "rest= " << rest << "\n";
 
         if (!pdb.add(name))
-           std::cout << "failed adding player: " << name << "\n";
+           std::cout << "failed adding player: " << name.latin1() << "\n";
 
 
 // only for testing: set photo for the first player
