@@ -22,8 +22,8 @@
 #include <qimage.h>
 #include <qdatetime.h>
 #include <qmap.h>
-#include <qvaluelist.h>
-#include <qmemarray.h>
+#include <qt34/qvaluelist.h>
+#include <qt34/qmemarray.h>
 
 class PlayerData
 {

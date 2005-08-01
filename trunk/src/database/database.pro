@@ -7,15 +7,15 @@ HEADERS += board.h \
            move.h \
            common.h \
            game.h \
-	   partialdate.h \
+					 partialdate.h \
            pgnparser.h \
            playerdatabase.h \
            playerdata.h \
-           databaseconversion.h 
+           databaseconversion.h
 SOURCES += board.cpp \
            move.cpp \
            databaseconversion.cpp \
-	   partialdate.cpp \
+					 partialdate.cpp \
            pgnparser.cpp \
            playerdatabase.cpp \
            playerdata.cpp 
@@ -24,4 +24,3 @@ CONFIG += release warn_on qt staticlib
 TEMPLATE = lib
 QT += qt3support
 INCLUDEPATH += ../compatibility
-QT34 = ../compatibility/qt34

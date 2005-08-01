@@ -50,9 +50,9 @@ int PlayerData::elo(const QDate dt) const{
   if (m_elo.isEmpty()){
     return m_estimatedElo;
   }
-  QMapConstIterator<Q_INT32, QMemArray<int> > iter = m_elo.find((Q_INT32)dt.year());
+  QMap<Q_INT32, QMemArray<int> >::const_iterator iter = m_elo.find((Q_INT32)dt.year());
   if (iter == m_elo.end()){
-    iter--;
+    --iter;
     if (dt.year() > iter.key()){//date is after latest elo entry
       return iter.data()[iter.data().size() -1];
     }

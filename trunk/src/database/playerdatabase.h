@@ -26,6 +26,7 @@ PlayerDatabase is used to acces player data.
 #include <qdatetime.h>
 #include <qdatastream.h>
 #include <qfile.h>
+#include <qstringlist.h>
 #include <playerdata.h>
 
 class PlayerDatabase{
