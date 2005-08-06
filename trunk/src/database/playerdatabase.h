@@ -207,6 +207,11 @@ matching the prefix
 */
 QStringList findPlayers(const QString& prefix, const int maxCount = 10000000);
 
+/**
+returns the date for a given elo list index
+*/
+QDate eloListToDate(const int index);
+
 private:
 QMap<QString,Q_INT32> m_mapping; // pointers into data
 QDataStream m_mapds; // contains mapping

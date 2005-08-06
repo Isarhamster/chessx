@@ -431,4 +431,32 @@ int PlayerDatabase::eloList(const int year, const int index) const{
   return 60+ ((year-2001)*4) + index;//4 lists in the year
 }
 
+QDate PlayerDatabase::eloListToDate(const int index){
+  if (index<1)
+    return QDate(0,0,0);
+  int year;
+  int rem;
+  int month;
+  if (index<61){
+    year = 1970+((index+1)/2);
+    rem = index%2;
+    if (rem == 0)
+      month = 7;
+    else
+      month = 1;
+  }
+  else{
+    year = 2000+((index-57)/4);
+    rem = index%4;
+    if (rem==0)
+      month = 10;
+    else if (rem==1)
+      month = 1;
+    else if (rem==2)
+      month = 4;
+    else 
+      month = 7;
+  }
+  return QDate(year,month,1);
+}
 
