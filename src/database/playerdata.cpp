@@ -17,18 +17,20 @@
 #include <playerdata.h>
 
 PlayerData::PlayerData(){
+ m_estimatedElo=0;
+ m_peakElo=0;
 }
 
-QString PlayerData::dateOfBirth() const{
+PartialDate PlayerData::dateOfBirth() const{
   return m_dateOfBirth;
 }
-void PlayerData::setDateOfBirth(const QString d){
+void PlayerData::setDateOfBirth(const PartialDate d){
   m_dateOfBirth = d;
 }
-QString PlayerData::dateOfDeath() const{
+PartialDate PlayerData::dateOfDeath() const{
   return m_dateOfDeath;
 }
-void PlayerData::setDateOfDeath(const QString d){
+void PlayerData::setDateOfDeath(const PartialDate d){
   m_dateOfDeath = d;
 }
 
@@ -46,96 +48,86 @@ void PlayerData::setTitle(const QString s){
   m_title = s;
 }
 
-int PlayerData::elo(const QDate dt) const{
-  if (m_elo.isEmpty()){
-    return m_estimatedElo;
-  }
-  QMap<Q_INT32, QMemArray<int> >::const_iterator iter = m_elo.find((Q_INT32)dt.year());
-  if (iter == m_elo.end()){
-    --iter;
-    if (dt.year() > iter.key()){//date is after latest elo entry
-      return iter.data()[iter.data().size() -1];
-    }
-    else{//date is before earliest elo entry
-      return m_peakElo;//anything better? this is what Scid seems to do (Larsen,B fe.)
-    }
-  }
-  else{
-//TODO test this with a player that died in 1999 or later, with just one rating entry in his
-//last year.
-    if(iter.data().isEmpty()){
-      return m_peakElo;//anything better ?
-    }
-    else{
-      if (iter.key() >= 2001){// years with 4 elo periods
-        if (dt.month()<=3){
-          return iter.data()[0];
-        }
-        else if (dt.month()<=6){
-          if (iter.data().size()>1){
-            return iter.data()[1];
-          }
-          else{
-            return iter.data()[0];
-          }
-        }
-        else if (dt.month()<=9){
-          if (iter.data().size()>2){
-            return iter.data()[2];
-          }
-          else if (iter.data().size()>1){
-            return iter.data()[1];
-          }
-          else{
-            return iter.data()[0];
-          }
-        }
-        else{
-          if (iter.data().size()>3){
-            return iter.data()[3];
-          }
-          else if (iter.data().size()>2){
-            return iter.data()[2];
-          }
-          else if (iter.data().size()>1){
-            return iter.data()[1];
-          }
-          else{
-            return iter.data()[0];
-          }
-        }
-      }
-      else if (iter.data().size()==2){//before 2001
-        if (dt.month()<=6){
-          return iter.data()[0];
-        }
-        else{
-          return iter.data()[1];
-        }
-      }
-      else{//before 2001
-        return iter.data()[0];
-      }
-    }
-  }
+int PlayerData::elo(const int eloListIndex) const{
+   if (m_elo.contains(eloListIndex)){
+     QMapConstIterator<int,int> it = m_elo.find(eloListIndex);
+     return it.data();
+   }
+   else{
+     return 0;
+   }
 }
 
-void PlayerData::setOfficialElo(const Q_INT32 year, const QMemArray<int> ar){
-   m_elo.insert(year, ar);
+void PlayerData::setElo(const int eloListIndex, const int elo){
+   m_elo.insert(eloListIndex,elo);
+   m_estimatedEloCache.clear();
 }
 
-Q_INT32 PlayerData::peakElo() const{
-  return (Q_INT32)m_peakElo;
+int PlayerData::peakElo() const{
+  return m_peakElo;
 }
-void PlayerData::setPeakElo(const int i){
-  m_peakElo = i;
+void PlayerData::setPeakElo(const int elo){
+  m_peakElo = elo;
 }
 
-Q_INT32 PlayerData::estimatedElo() const{
-  return (Q_INT32)m_estimatedElo;
+int PlayerData::estimatedElo() const{
+  return m_estimatedElo;
 }
-void PlayerData::setEstimatedElo(const int i){
-  m_estimatedElo = i;
+void PlayerData::setEstimatedElo(const int elo){
+  m_estimatedElo = elo;
+  m_estimatedEloCache.clear();
+}
+
+
+int PlayerData::estimatedElo(const int eloListIndex){
+   QMapConstIterator<int,int> it;
+   if (m_elo.contains(eloListIndex)){
+     it = m_elo.find(eloListIndex);
+     return it.data();
+   }
+   else{
+     if (m_estimatedEloCache.contains(eloListIndex)){//use cached result
+       it = m_estimatedEloCache.find(eloListIndex);
+       return it.data();
+     }
+     else{//search in previous elo lists
+       int result=m_estimatedElo;//default to overall estimate
+       for ( int i=eloListIndex-1; i>0; --i ) {
+         if (m_elo.contains(i)){
+           it = m_elo.find(i);
+           result = it.data();
+           break;
+         }
+       }
+       m_estimatedEloCache.insert(eloListIndex,result);//cache result
+       return result;
+     }
+   }
+}
+
+int PlayerData::estimatedEloNoCache(const int eloListIndex) const{
+   QMapConstIterator<int,int> it;
+   if (m_elo.contains(eloListIndex)){
+     it = m_elo.find(eloListIndex);
+     return it.data();
+   }
+   else{
+     if (m_estimatedEloCache.contains(eloListIndex)){//use cached result
+       it = m_estimatedEloCache.find(eloListIndex);
+       return it.data();
+     }
+     else{//search in previous elo lists
+       int result=m_estimatedElo;//default to overall estimate
+       for ( int i=eloListIndex-1; i>0; --i ) {
+         if (m_elo.contains(i)){
+           it = m_elo.find(i);
+           result = it.data();
+           break;
+         }
+       }
+       return result;
+     }
+   }
 }
 
 QImage PlayerData::photo() const{
@@ -148,27 +140,43 @@ void PlayerData::setPhoto(const QImage img){
 QString PlayerData::biography() const{
   return m_biography;
 }
-void PlayerData::setBiography(const QString s){
-  m_biography = s;
+void PlayerData::setBiography(const QString str){
+  m_biography = str;
 }
-void PlayerData::appendToBiography(const QString s){
-  m_biography += s;
+void PlayerData::appendToBiography(const QString str){
+  m_biography += str;
 }
 
-QValueList<Q_INT32> PlayerData::eloList() {
+QValueList<Q_INT32> PlayerData::eloListData() const{
    QValueList<Q_INT32> list;
-   QMap<Q_INT32, QMemArray<int> >::Iterator it;
-   Q_INT32 i;
-   Q_INT32 sz;
-   QMemArray<int> ar;
+   QMapConstIterator<int,int> it;
+   int nextListIx = 1;
+
    for ( it = m_elo.begin(); it != m_elo.end(); ++it ) {
-     list.push_back(it.key()); // year
-     ar = it.data();
-     sz = ar.size();
-     list.push_back((Q_INT32)(sz));
-     for (i=0; i<sz; i++){
-       list.push_back((Q_INT32)(ar[i])); // rating
+     int listIx = it.key();
+     if (listIx>nextListIx){
+       list.push_back((Q_INT32)-9999);
+       list.push_back((Q_INT32)(listIx-nextListIx));//number of lists without the player
      }
+     list.push_back((Q_INT32)it.data());//elo
+     nextListIx = listIx+1;
    }
+
    return list;
+}
+
+void PlayerData::eloFromListData(QValueList<Q_INT32> eloListData){
+    int listIx=1;
+    Q_INT32 elem;
+    for(uint i=0; i< (uint)eloListData.size();){
+      elem = eloListData[i++];
+      if (elem==-9999){
+        elem = eloListData[i++];
+        listIx += elem;
+      }
+      else{
+        m_elo.insert(listIx,elem);
+        listIx++;
+      }
+    }
 }

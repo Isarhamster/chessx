@@ -21,162 +21,182 @@ http://doc.trolltech.com/4.0/qdatastream.html
 #include "playerdatabase.h"
 
 
-static Q_UINT32 m_magic = (Q_UINT32)0xB0D0A0D0; // 'magic' number
-static Q_UINT32 m_version = (Q_UINT32)100; // file format version
-static QString m_mapfile_suffix = ".cpm";
-static QString m_datafile_suffix = ".cpd";
+static Q_UINT32 Magic = (Q_UINT32)0xB0D0A0D0; // 'magic' number
+static Q_UINT32 Version = (Q_UINT32)100; // file format version
+static QString Mapfile_suffix = ".cpm";
+static QString Datafile_suffix = ".cpd";
 
 bool PlayerDatabase::create(const QString& fname) {
-  mapfile.setName(fname+m_mapfile_suffix);
-  datafile.setName(fname+m_datafile_suffix );
-  if (mapfile.exists()||datafile.exists())
+  m_dirty = false;
+  m_mapfile.setName(fname+Mapfile_suffix);
+  m_datafile.setName(fname+Datafile_suffix );
+  if (m_mapfile.exists()||m_datafile.exists())
      return false;
 
 // set QDataset format version to use
-  if (m_version==(Q_UINT32)100){
-    mapds.setVersion(6);
-    datads.setVersion(6);
+  if (Version==(Q_UINT32)100){
+    m_mapds.setVersion(6);
+    m_datads.setVersion(6);
+  }
+  else{//default
+    m_mapds.setVersion(6);
+    m_datads.setVersion(6);
   }
 
-  mapfile.open( IO_ReadWrite );
-  mapds.setDevice(&mapfile);
-  mapds << m_magic;
-  mapds << m_version;
-  nplayers = 0;
-  nplayers_offset = mapfile.at();
-  mapds << nplayers;
+  m_mapfile.open( IO_ReadWrite );
+  m_mapds.setDevice(&m_mapfile);
+  m_mapds << Magic;
+  m_mapds << Version;
+  m_nplayers = 0;
+  m_nplayers_offset = m_mapfile.at();
+  m_mapds << m_nplayers;
 
-  datafile.open( IO_ReadWrite );
-  datads.setDevice(&datafile);
-  datads << m_magic;
-  datads << m_version;
+  m_datafile.open( IO_ReadWrite );
+  m_datads.setDevice(&m_datafile);
+  m_datads << Magic;
+  m_datads << Version;//use current version for new db's
 
-  mapfile.flush();
-  datafile.flush();
+  m_mapfile.flush();
+  m_datafile.flush();
 
-  dataFileCurrentPosition = datafile.at();
+  m_dataFileCurrentPosition = m_datafile.at();
 
   return true;
 }
 
 bool PlayerDatabase::open(const QString& fname) {
-  mapfile.setName(fname+m_mapfile_suffix);
-  mapfile.open( IO_ReadWrite );
-  mapds.setDevice(&mapfile);
-  Q_UINT32 magic;
-  Q_UINT32 version;
-  mapds >> magic;
-  mapds >> version;
+  m_dirty = false;
+  m_mapfile.setName(fname+Mapfile_suffix);
+  m_mapfile.open( IO_ReadWrite );
+  m_mapds.setDevice(&m_mapfile);
+  Q_UINT32 map_magic;
+  Q_UINT32 map_version;
+  m_mapds >> map_magic;
+  m_mapds >> map_version;
 
-  if (version==m_version && magic==m_magic){
-
+  if (map_magic!=Magic){
+    m_mapds.unsetDevice();
+    m_mapfile.close();
+    return false;
+  }
 // set QDataset format version to use
-     if (m_version==(Q_UINT32)100){
-       mapds.setVersion(6);
-       datads.setVersion(6);
-     }
-
-     nplayers_offset = mapfile.at();
-     mapds >> nplayers;
-     if (nplayers>0){
-        mapds >> mapping;
-     }
-     datafile.setName(fname+m_datafile_suffix);
-     datafile.open( IO_ReadWrite );
-     datads.setDevice(&datafile);
-     datads >> magic;
-     datads >> version;
-     if (version==m_version && magic==m_magic){
-       dataFileCurrentPosition = datafile.at();
-       return true;
-     }
-     else{
-       close();
-       return false;
-     }
+  if (map_version==(Q_UINT32)100){
+    m_mapds.setVersion(6);
+  }
+  else{//unknown version
+    m_mapds.unsetDevice();
+    m_mapfile.close();
+    return false;
   }
 
-  else{
-     close();
-     return false;
+  Q_UINT32 data_magic;
+  Q_UINT32 data_version;
+  m_datafile.setName(fname+Datafile_suffix);
+  m_datafile.open( IO_ReadWrite );
+  m_datads.setDevice(&m_datafile);
+  m_datads >> data_magic;
+  m_datads >> data_version;
+
+  if (data_magic!=Magic){
+    m_mapds.unsetDevice();
+    m_mapfile.close();
+    m_datads.unsetDevice();
+    m_datafile.close();
+    return false;
   }
+// set QDataset format version to use
+  if (data_version==(Q_UINT32)100){
+    m_datads.setVersion(6);
+  }
+  else{//unknown version
+    m_mapds.unsetDevice();
+    m_mapfile.close();
+    m_datads.unsetDevice();
+    m_datafile.close();
+    return false;
+  }
+
+  if (map_version!=data_version){
+    m_mapds.unsetDevice();
+    m_mapfile.close();
+    m_datads.unsetDevice();
+    m_datafile.close();
+    return false;
+  }
+
+  m_dataFileCurrentPosition = m_datafile.at();
+  m_nplayers_offset = m_mapfile.at();
+  m_mapds >> m_nplayers;
+  if (m_nplayers>0){
+     m_mapds >> m_mapping;
+  }
+  return true;
+
 }
 
 bool PlayerDatabase::removeDatabase(const QString& fname) {
-  mapfile.setName(fname+m_mapfile_suffix);
-  datafile.setName(fname+m_datafile_suffix);
-  return mapfile.remove() && datafile.remove();
+  m_mapfile.setName(fname+Mapfile_suffix);
+  m_datafile.setName(fname+Datafile_suffix);
+  return m_mapfile.remove() && m_datafile.remove();
 }
 
 void PlayerDatabase::close() {
   commit();
-  mapds.unsetDevice();
-  mapfile.flush();
-  mapfile.close();
-  datads.unsetDevice();
-  datafile.flush();
-  datafile.close();
+  m_mapds.unsetDevice();
+  m_mapfile.flush();
+  m_mapfile.close();
+  m_datads.unsetDevice();
+  m_datafile.flush();
+  m_datafile.close();
+}
+
+void PlayerDatabase::rollback() {
+  m_pendingUpdates.clear();
+  m_dirty = false;
 }
 
 void PlayerDatabase::commit() {
 
-  mapfile.at(nplayers_offset);
-  mapds << nplayers;
+  if (m_dirty)//current player was changed
+     m_pendingUpdates.insert(m_currentPlayerName,m_currentPlayer);
 
-  // write files from pendingUpdates
-  dataFileCurrentPosition = datafile.size();
-  datafile.at(dataFileCurrentPosition);
+  m_mapfile.at(m_nplayers_offset);
+  m_mapds << m_nplayers;
+
+  // write non-committed changes
+  m_dataFileCurrentPosition = m_datafile.size();
+  m_datafile.at(m_dataFileCurrentPosition);
 
   QMap<QString, PlayerData>::Iterator it;  
-  for ( it = pendingUpdates.begin(); it != pendingUpdates.end(); ++it ) {
-     mapping.insert(it.key(),datafile.at());
-     datads << it.data().dateOfBirth();
-     datads << it.data().dateOfDeath();
-     datads << it.data().country();
-     datads << it.data().title();
-     datads << it.data().eloList();
-     datads << it.data().estimatedElo();
-     datads << it.data().peakElo();
-     datads << it.data().photo();
-     datads << it.data().biography();
+  for ( it = m_pendingUpdates.begin(); it != m_pendingUpdates.end(); ++it ) {
+     m_mapping.insert(it.key(),m_datafile.at());
+     m_datads << it.data().dateOfBirth().asString();
+     m_datads << it.data().dateOfDeath().asString();
+     m_datads << it.data().country();
+     m_datads << it.data().title();
+     m_datads << it.data().eloListData();
+     m_datads << (Q_INT32)(it.data().estimatedElo());
+     m_datads << (Q_INT32)(it.data().peakElo());
+     m_datads << it.data().photo();
+     m_datads << it.data().biography();
   }
-  mapds << mapping;
-  mapfile.flush();
-  datafile.flush();
-  pendingUpdates.clear();
+  m_mapds << m_mapping;
+  m_mapfile.flush();
+  m_datafile.flush();
+  m_pendingUpdates.clear();
+  m_dirty = false;
 }
 
-void PlayerDatabase::compact() {
-// not implemented yet
-}
 
-uint PlayerDatabase::count() const {
-  return nplayers;
-}
-
-bool PlayerDatabase::add(const QString& pname) {
-  if (mapping.contains(pname)||pendingUpdates.contains(pname)){
-     return false;
-  }
-  PlayerData p;
-  pendingUpdates.insert(pname,p);
-  nplayers++;
-  return true;
-}
-
-//bool PlayerDatabase::remove(const QString& pname) {
-//not implemented yet
-//}
-
-PlayerData PlayerDatabase::readPlayerData(const QString& pname){
+PlayerData PlayerDatabase::readPlayerData(const QString& playername){
     PlayerData pd;
     QMap<QString, Q_INT32>::Iterator it;
-    it = mapping.find(pname);
-    if (it==mapping.end()){
-//look in pending updates
+    it = m_mapping.find(playername);
+    if (it==m_mapping.end()){
+//not in committed data, look in non-committed updates
       QMap<QString,PlayerData>::Iterator it2; 
-      it2 = pendingUpdates.find(pname);
-      if (it2!=pendingUpdates.end()){
+      it2 = m_pendingUpdates.find(playername);
+      if (it2!=m_pendingUpdates.end()){
         return it2.data();
       }
       else{//give up
@@ -185,164 +205,205 @@ PlayerData PlayerDatabase::readPlayerData(const QString& pname){
     }
 
     Q_INT32 pos = it.data();
-    datafile.at(pos);//pointing to the player data
+    m_datafile.at(pos);//pointing to the player data
 
     QString birthDate;
     QString deathDate;
     QString country;
     QString title;
 
-    datads >> birthDate;
-    datads >> deathDate;
-    datads >> country;
-    datads >> title;
+    m_datads >> birthDate;
+    m_datads >> deathDate;
+    m_datads >> country;
+    m_datads >> title;
 
-    pd.setDateOfBirth(birthDate);
-    pd.setDateOfDeath(deathDate);
+    if (birthDate.contains('.'))
+       pd.setDateOfBirth(PartialDate(birthDate));
+    if (deathDate.contains('.'))
+       pd.setDateOfDeath(deathDate);
+
     pd.setCountry(country);
     pd.setTitle(title);
-    QValueList<Q_INT32> eloList;
-    datads >> eloList;
 
-    for(uint i=0; i< (uint)eloList.size();){
-      Q_INT32 year = eloList[i++];
-      Q_INT32 n_ratings = eloList[i++];
-      QMemArray<int> ar(n_ratings);
-      for(int j=0; j<n_ratings; j++){
-        ar[j] = eloList[i++];
-      }
-      pd.setOfficialElo(year,ar);
-    }
+    QValueList<Q_INT32> eloList;
+    m_datads >> eloList;
+    pd.eloFromListData(eloList);
 
     Q_INT32 estimatedElo;
     Q_INT32 peakElo;
     QImage photo;
     QString biography;
 
-    datads >> estimatedElo;
-    datads >> peakElo;
-    datads >> photo;
-    datads >> biography;
+    m_datads >> estimatedElo;
+    m_datads >> peakElo;
+    m_datads >> photo;
+    m_datads >> biography;
 
-    pd.setEstimatedElo(estimatedElo);
-    pd.setPeakElo(peakElo);
+    pd.setEstimatedElo((int)estimatedElo);
+    pd.setPeakElo((int)peakElo);
     pd.setPhoto(photo);
     pd.setBiography(biography);
 
     return pd;
 }
 
-QMap<QString, PlayerData>::Iterator PlayerDatabase::refreshCache(const QString& pname){
-  QMap<QString, PlayerData>::Iterator iter = cache.find(pname);
-  if (iter!=cache.end()){
-    return iter;
+void PlayerDatabase::compact() {
+// not implemented yet
+}
+
+uint PlayerDatabase::count() const {
+  return m_nplayers;
+}
+
+bool PlayerDatabase::add(const QString& playername) {
+  if (m_mapping.contains(playername)||m_pendingUpdates.contains(playername)){
+     return false;
   }
-  else{
-    if (!cache.empty()){//very simple 1-element cache...
-      cache.clear();
-    }
-    return cache.insert(pname,readPlayerData(pname));
-  }
+  if (m_dirty)//previous current player was changed
+     m_pendingUpdates.insert(m_currentPlayerName,m_currentPlayer);
+  PlayerData pd;
+  m_currentPlayerName = playername;
+  m_currentPlayer = pd;
+  m_dirty = true;
+  m_nplayers++;
+  return true;
 }
 
-QMap<QString, PlayerData>::Iterator PlayerDatabase::prepareUpdate(const QString& pname){
-  QMap<QString, PlayerData>::Iterator iter = pendingUpdates.find(pname);
-  if (iter!=pendingUpdates.end()){
-    return iter;
-  }
-  else{
-    return pendingUpdates.insert(pname,readPlayerData(pname));
-  }
+QString PlayerDatabase::current() const{
+   return m_currentPlayerName;
+}
+bool PlayerDatabase::setCurrent(const QString& playername){
+   if (m_currentPlayerName.compare(playername) == 0)
+      return false;
+   if (m_dirty)//previous current player was changed
+      m_pendingUpdates.insert(m_currentPlayerName,m_currentPlayer);
+   m_currentPlayerName = playername;
+   m_currentPlayer = readPlayerData(playername);
+   m_dirty = false;
+   return true;
 }
 
-bool PlayerDatabase::exists(const QString& pname){
-    QMap<QString, Q_INT32>::Iterator it;
-    it = mapping.find(pname);
-    if (it==mapping.end()){
-//not in committed db - look in pending updates
-      QMap<QString,PlayerData>::Iterator it2; 
-      it2 = pendingUpdates.find(pname);
-      if (it2==pendingUpdates.end()){
-        return false;
-      }
-    }
-    return true;
+bool PlayerDatabase::exists(const QString& playername) const{
+   if (m_mapping.contains(playername))
+      return true;
+   if (m_pendingUpdates.contains(playername))
+      return true;
+   return false;
 }
 
-QString PlayerDatabase::dateOfBirth(const QString& pname){
-  return refreshCache(pname).data().dateOfBirth();
+PartialDate PlayerDatabase::dateOfBirth() const{
+  return m_currentPlayer.dateOfBirth();
 }
-void PlayerDatabase::setDateOfBirth(const QString& d, const QString& pname){
-  prepareUpdate(pname).data().setDateOfBirth(d);
-}
-
-QString PlayerDatabase::dateOfDeath(const QString& pname){
-  return refreshCache(pname).data().dateOfDeath();
-}
-void PlayerDatabase::setDateOfDeath(const QString& d, const QString& pname){
-  prepareUpdate(pname).data().setDateOfDeath(d);
+void PlayerDatabase::setDateOfBirth(const PartialDate& date){
+  m_currentPlayer.setDateOfBirth(date);
+  if (!m_dirty)
+    m_dirty=true;
 }
 
-QString PlayerDatabase::country(const QString& pname){
-  return refreshCache(pname).data().country();
+PartialDate PlayerDatabase::dateOfDeath() const{
+  return m_currentPlayer.dateOfDeath();
 }
-void PlayerDatabase::setCountry(const QString& s, const QString& pname){
-  prepareUpdate(pname).data().setCountry(s);
-}
-
-QString PlayerDatabase::title(const QString& pname){
-  return refreshCache(pname).data().title();
-}
-void PlayerDatabase::setTitle(const QString& s, const QString& pname){
-  prepareUpdate(pname).data().setTitle(s);
+void PlayerDatabase::setDateOfDeath(const PartialDate & date){
+  m_currentPlayer.setDateOfDeath(date);
+  if (!m_dirty)
+    m_dirty=true;
 }
 
-int PlayerDatabase::elo(const QString& pname, const QDate& date){
-  return refreshCache(pname).data().elo(date);
+QString PlayerDatabase::country() const{
+  return m_currentPlayer.country();
 }
-void PlayerDatabase::setOfficialElo(const Q_INT32 year,  const QMemArray<int> ar, const QString& pname){
-  prepareUpdate(pname).data().setOfficialElo(year,ar);
-}
-
-void PlayerDatabase::setPeakElo(const int i, const QString& pname){
-  prepareUpdate(pname).data().setPeakElo(i);
+void PlayerDatabase::setCountry(const QString& country){
+  m_currentPlayer.setCountry(country);
+  if (!m_dirty)
+    m_dirty=true;
 }
 
-void PlayerDatabase::setEstimatedElo(const int i, const QString& pname){
-  prepareUpdate(pname).data().setEstimatedElo(i);
+QString PlayerDatabase::title() const{
+  return m_currentPlayer.title();
+}
+void PlayerDatabase::setTitle(const QString& title){
+  m_currentPlayer.setTitle(title);
+  if (!m_dirty)
+    m_dirty=true;
 }
 
-QImage PlayerDatabase::photo(const QString& pname){
-  return refreshCache(pname).data().photo();
+int PlayerDatabase::elo(const QDate& date) const{
+  return m_currentPlayer.elo(eloList(date));
 }
-void PlayerDatabase::setPhoto(const QImage& img, const QString& pname){
-  prepareUpdate(pname).data().setPhoto(img);
+int PlayerDatabase::elo(const int eloList) const{
+  return m_currentPlayer.elo(eloList);
 }
 
-QString PlayerDatabase::biography(const QString& pname){
-  return refreshCache(pname).data().biography();
+int PlayerDatabase::estimatedElo(const QDate& date){
+  return m_currentPlayer.estimatedElo(eloList(date));
 }
-void PlayerDatabase::setBiography(const QString& s, const QString& pname){
-  prepareUpdate(pname).data().setBiography(s);
+int PlayerDatabase::estimatedEloNoCache(const QDate& date) const{
+  return m_currentPlayer.estimatedEloNoCache(eloList(date));
 }
-void PlayerDatabase::appendToBiography(const QString& s, const QString& pname){
-  prepareUpdate(pname).data().appendToBiography(s);
+int PlayerDatabase::estimatedElo() const{
+  return m_currentPlayer.estimatedElo();
+}
+
+
+void PlayerDatabase::setElo(const int year, const int listIndex, const int elo){
+  m_currentPlayer.setElo(eloList(year,listIndex),elo);
+  if (!m_dirty)
+    m_dirty=true;
+}
+
+
+void PlayerDatabase::setPeakElo(const int elo){
+  m_currentPlayer.setPeakElo(elo);
+  if (!m_dirty)
+    m_dirty=true;
+}
+
+void PlayerDatabase::setEstimatedElo(const int elo){
+  m_currentPlayer.setEstimatedElo(elo);
+  if (!m_dirty)
+    m_dirty=true;
+}
+
+bool PlayerDatabase::hasPhoto() const{
+  return m_currentPlayer.photo().isNull();
+}
+QImage PlayerDatabase::photo() const{
+  return m_currentPlayer.photo();
+}
+void PlayerDatabase::setPhoto(const QImage& img){
+  m_currentPlayer.setPhoto(img);
+  if (!m_dirty)
+    m_dirty=true;
+}
+
+QString PlayerDatabase::biography() const{
+  return m_currentPlayer.biography();
+}
+void PlayerDatabase::setBiography(const QString& s){
+  m_currentPlayer.setBiography(s);
+  if (!m_dirty)
+    m_dirty=true;
+}
+void PlayerDatabase::appendToBiography(const QString& s){
+  m_currentPlayer.appendToBiography(s);
+  if (!m_dirty)
+    m_dirty=true;
 }
 
 QStringList PlayerDatabase::playerNames(){
   QStringList result;
   QMap<QString,Q_INT32>::Iterator it;
-  for ( it = mapping.begin(); it != mapping.end(); ++it ) {
+  for ( it = m_mapping.begin(); it != m_mapping.end(); ++it ) {
      result.push_back(it.key());
   }
   return result;
 }
 
-QStringList PlayerDatabase::findPlayers(const QString& prefix, int maxCount){
+QStringList PlayerDatabase::findPlayers(const QString& prefix, const int maxCount){
   QStringList result;
   QMap<QString,Q_INT32>::Iterator it;
   int i=0;
-  for ( it = mapping.begin(); it != mapping.end(); ++it ) {
+  for ( it = m_mapping.begin(); it != m_mapping.end(); ++it ) {
      if (it.key().startsWith(prefix)){
         if (i >= maxCount)
           break;
@@ -352,3 +413,22 @@ QStringList PlayerDatabase::findPlayers(const QString& prefix, int maxCount){
   }
   return result;
 }
+
+int PlayerDatabase::eloList(const QDate date) const{
+  const int year = date.year();
+  if (year < 1971)
+    return 0;
+  if (year<2001)//2 lists in the year
+    return ((year-1971)*2) + 1 + (date.month()/7);
+  return 60+ ((year-2001)*4) + 1 + (date.month()/4);//4 lists in the year
+}
+
+int PlayerDatabase::eloList(const int year, const int index) const{
+  if (year < 1971)
+    return 0;
+  if (year<2001)//2 lists in the year
+    return ((year-1971)*2) + index;
+  return 60+ ((year-2001)*4) + index;//4 lists in the year
+}
+
+

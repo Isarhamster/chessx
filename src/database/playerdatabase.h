@@ -49,6 +49,10 @@ commit pending updates
 */
 void commit();
 /**
+rollback - cancel pending updates
+*/
+void rollback();
+/**
 close the player database
 */
 void close();
@@ -63,41 +67,41 @@ uint count() const;
 /**
 add a new player
 */
-bool add(const QString& pname);
+bool add(const QString& playername);
 /**
-remove player from database
+name of the current player object
 */
-bool remove(const QString& pname);
+QString current() const;
+/**
+makes the player the current object for later query/update
+function calls.
+*/
+bool setCurrent(const QString& playername);
 /**
 returns true iff the player has en entry
 in the database
 */
-bool exists(const QString& pname);
+bool exists(const QString& playername) const;
 /**
 returns date of birth for a player
-format: yyyy.mm.dd
-- mm and/or dd may be = ??
-TODO: change return type to PartialDate (class to be written)
 */
-QString dateOfBirth(const QString& pname);
+PartialDate dateOfBirth() const;
 /**
 updates date of birth for a player
 */
-void setDateOfBirth(const QString& d, const QString& pname);
+void setDateOfBirth(const PartialDate& date);
 /**
 returns date of death for a player
-format: yyyy.mm.dd
-- mm and/or dd may be = ??
 */
-QString dateOfDeath(const QString& pname);
+PartialDate dateOfDeath() const;
 /**
 updates date of death for a player
 */
-void setDateOfDeath(const QString& d, const QString& pname);
+void setDateOfDeath(const PartialDate& date);
 /**
 returns country for a player
 */
-QString country(const QString& pname);
+QString country() const;
 /**
 updates country for a player
 Standard is 3 character country code 
@@ -105,11 +109,11 @@ Standard is 3 character country code
 Multiple countries can be provided by separating them by '/',
 fe. RUS/GER (earliest country first)
 */
-void setCountry(const QString& s, const QString& pname);
+void setCountry(const QString& country);
 /**
 returns title for a player
 */
-QString title(const QString& pname);
+QString title() const;
 /**
 updates title for a player
  gm: Grandmaster
@@ -126,71 +130,99 @@ updates title for a player
 Multiple titles can be provided by separating them by '+',
 fe. gm+cgm
 */
-void setTitle(const QString& s, const QString& pname);
+void setTitle(const QString& title);
 /**
-players elo at the given date. Official elo
-at the date if available, otherwise peak rating
-or estimated rating.
+players elo rating from the elo list with the given index.
+In period from 1971 to 2000, there is 2 lists pr. year;
+The first list from 1971 has index = 1, and the last list of
+2000 has index = 60.
+Since 2001, there is 4 lists pr. year.
+If player is not in the list, 0 is returned.
 */
-int elo(const QString& pname, const QDate& date);
+int elo(const int eloListIndex) const;
 /**
-updates official elo rating for a player, for a given year
+players elo rating at the given date.
+If player is not in the elolist on that date, 0 is returned.
 */
-void setOfficialElo(const Q_INT32 year, const QMemArray<int> ar, const QString& pname);
+int elo(const QDate& date) const;
 /**
-updates peak elo rating for a player
+Like elo(const QDate&), except when player is not in the actual elo list:
+Return rating from nearest previous list if available, overall estimation 
+if no previous data available, 0 if nothing is available.
+Non-const due to caching. The cache can be useful, if calling repeatedly with 
+a date inside the same elo list period (cf. the elo(int) function).
 */
-void setPeakElo(const int i, const QString& pname);
+int estimatedElo(const QDate& date);
 /**
-updates estimated elo rating for a player
+Like estimatedElo(const QDate&), but no caching is done.
 */
-void setEstimatedElo(const int i, const QString& pname);
+int estimatedEloNoCache(const QDate& date) const;
 /**
-returns photo for a player
+overall elo estimation
 */
-QImage photo(const QString& pname);
+int estimatedElo() const;
+/**
+updates the current players elo for a given list in a given year
+*/
+void setElo(const int year, const int listIndex, const int elo);
+/**
+updates peak elo for a player
+*/
+void setPeakElo(const int elo);
+/**
+updates (overall) estimated elo for a player
+*/
+void setEstimatedElo(const int elo);
+/**
+returns true iff a photo of the current player 
+is available; the photo can be accessed by photo()
+*/
+bool hasPhoto() const;
+/**
+returns photo for the current player
+if no photo is available, photo().isNull()
+*/
+QImage photo() const;
 /**
 updates photo for a player
 */
-void setPhoto(const QImage& img, const QString& pname);
+void setPhoto(const QImage& img);
 /**
 returns biography for a player
 */
-QString biography(const QString& pname);
+QString biography() const;
 /**
 updates biography for a player
 */
-void setBiography(const QString& s, const QString& pname);
-void appendToBiography(const QString& s, const QString& pname);
+void setBiography(const QString& s);
+void appendToBiography(const QString& s);
 /**
 returns a list of all player names in database
 */
 QStringList playerNames();
 
 /**
-returns a list of all player names in database,
+returns a list of player names in database,
 matching the prefix
 */
-QStringList findPlayers(const QString& prefix, int maxCount = 10000000);
+QStringList findPlayers(const QString& prefix, const int maxCount = 10000000);
 
 private:
-QMap<QString,Q_INT32> mapping; // pointers into data
-QDataStream mapds; // contains mapping
-QFile mapfile; 
-Q_INT32 nplayers; // number of players in db
-QIODevice::Offset nplayers_offset; // position in mapfile
-QDataStream datads; // contains data
-QFile datafile; 
-QIODevice::Offset dataFileCurrentPosition; // current position
-
-QMap<QString,PlayerData> pendingUpdates; // not committed yet
-QMap<QString, PlayerData>::Iterator prepareUpdate(const QString & pname);
-
-QMap<QString,PlayerData> cache; // for reading
-QMap<QString, PlayerData>::Iterator refreshCache(const QString & pname);
-
-PlayerData readPlayerData(const QString & pname);
-
+QMap<QString,Q_INT32> m_mapping; // pointers into data
+QDataStream m_mapds; // contains mapping
+QFile m_mapfile; 
+Q_INT32 m_nplayers; // number of players in db
+QIODevice::Offset m_nplayers_offset; // position of count field in mapfile
+QDataStream m_datads; // contains data
+QFile m_datafile; 
+QIODevice::Offset m_dataFileCurrentPosition; // current position in datafile
+QMap<QString,PlayerData> m_pendingUpdates; // changes, not committed yet
+QString m_currentPlayerName;
+PlayerData m_currentPlayer;
+bool m_dirty;
+PlayerData readPlayerData(const QString & playername);
+int eloList(const QDate date) const;
+int eloList(const int year, const int index) const;
 };
 
 #endif
