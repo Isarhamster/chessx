@@ -68,10 +68,10 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
       else if(linesStripped.startsWith("=") ) {//name correction line
       }
       else if(linesStripped.startsWith("%Bio")) {//Biography note
-        pdb.appendToBiography(linesStripped.mid(5,9999)+"<br>",name);
+        pdb.appendToBiography(linesStripped.mid(5,9999)+"<br>");
       }
       else if(linesStripped.startsWith("%Title")) {//title award note - add to biography
-        pdb.appendToBiography(linesStripped.mid(7,9999)+"<br>",name);
+        pdb.appendToBiography(linesStripped.mid(7,9999)+"<br>");
       }
       else if(linesStripped.startsWith("%Render")) {//name with special characters fe. Huebner
       }
@@ -84,14 +84,12 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
           QString year = sl2[0];
           QString ratings = sl2[1];//ratings for one year, separated by commas
           QStringList sl3 = QStringList::split(",",ratings);
-          QMemArray<int> ar(sl3.size());
           for (uint i=0;i < (uint)sl3.size();i++ ) {
-            if(sl3[i] == "?")
-              ar[i]=-9999;//unknown rating - nothing intelligent is done with this (yet)
-            else
-              ar[i]=sl3[i].toInt();
+            if(sl3[i] != "?"){
+//              std::cout << "rating for " << name << ": " << year << ": " << i+1 << ": " << sl3[i] << "\n";
+              pdb.setElo(year.toInt(),i+1,sl3[i].toInt());
+            }
           }
-          pdb.setOfficialElo(year.toInt(),ar,name);
         }
       }
       else if(linesStripped.startsWith("%")) {//unknown code
@@ -101,9 +99,10 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
       }
       else {//name line
 
-        if (numberOfPlayers%1000==0 && numberOfPlayers>0)
+        if (numberOfPlayers%1000==0 && numberOfPlayers>0){
             std::cout << "processed: " << numberOfPlayers << "\n";
-
+            pdb.commit();//seems binary content changed when doing this ?!
+        }
 
         QStringList sl0 = QStringList::split("#",line);
         name = sl0[0].stripWhiteSpace();
@@ -122,11 +121,11 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
 // only for testing: set photo for the first player
         if (numberOfPlayers==0){
           QImage* img = new QImage(photoFile);
-          pdb.setPhoto(*img,name);
+          pdb.setPhoto(*img);
         }
 
         numberOfPlayers++;
-        pdb.setTitle(title,name);
+        pdb.setTitle(title);
 
         QStringList sl = QStringList::split(" ",rest);
         for ( QStringList::Iterator it = sl.begin(); it != sl.end(); ++it ) {
@@ -136,18 +135,23 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
             s = s.mid(1,s.length()-2);
             //std::cout << "rating= " << s;
             if (s.endsWith("*"))
-              pdb.setEstimatedElo(s.left(s.length()-1).toInt(),name);
+              pdb.setEstimatedElo(s.left(s.length()-1).toInt());
             else
-              pdb.setPeakElo(s.toInt(),name);
+              pdb.setPeakElo(s.toInt());
           }
-          else if(s.contains(".")){//birth date
-            pdb.setDateOfBirth(s.left(10),name);
-            if (s.length()>=22){
-              pdb.setDateOfDeath(s.mid(12,10),name);
+          else if(s.contains(".")){//birth date and/or death date
+            if (s.startsWith("--")){//only death date(!) Baay is an example
+              pdb.setDateOfDeath(s.mid(2,10));
+            }
+            else{
+              pdb.setDateOfBirth(s.left(10));
+              if (s.length()>=22){
+                pdb.setDateOfDeath(s.mid(12,10));
+              }
             }
           }
           else {//country code(s)
-            pdb.setCountry(s,name);
+            pdb.setCountry(s);
           }
         }
 //        std::cout << "\n";

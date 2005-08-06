@@ -24,6 +24,7 @@
 #include <qmap.h>
 #include <qt34/qvaluelist.h>
 #include <qt34/qmemarray.h>
+#include <partialdate.h>
 
 class PlayerData
 {
@@ -31,49 +32,64 @@ public:
   PlayerData();
 /**
 Players date of birth, if it is known.
-The format is yyyy.mm.dd
-For some players only year or year+month is known;
-that's why QString is used instead of QDate.
 */
-  QString dateOfBirth() const;
-  void setDateOfBirth(const QString s);
-  QString dateOfDeath() const;
-  void setDateOfDeath(const QString s);
+  PartialDate dateOfBirth() const;
+  void setDateOfBirth(const PartialDate d);
+  PartialDate dateOfDeath() const;
+  void setDateOfDeath(const PartialDate d);
   QString country() const;
   void setCountry(const QString s);
   QString title() const;
   void setTitle(const QString s);
 /**
-players elo at the given date. Official elo
-at the date if available, otherwise peak rating
-or estimated rating.
+players elo from the given elo list.
 */
-  int elo(const QDate dt) const;
-  void setOfficialElo(const Q_INT32 year, const QMemArray<int> ar);
-  Q_INT32 peakElo() const;
-  void setPeakElo(const int i);
-  Q_INT32 estimatedElo() const;
-  void setEstimatedElo(const int i);
+  int elo(const int eloList) const;
+  void setElo(const int eloList, const int elo);
+/**
+the estimated elo for the player at the elo list
+with the given index: if the player is not in the list,
+the closest previous elo list is used if available;
+else the overall estimate is used.
+Non-const due to caching.
+*/
+  int estimatedElo(const int eloListIndex);
+/**
+Like estimatedElo(int), but no caching is used.
+*/
+  int estimatedEloNoCache(const int eloListIndex) const;
+  int peakElo() const;
+  void setPeakElo(const int elo);
+/**
+the overall estimated elo for the player
+*/
+  int estimatedElo() const;
+  void setEstimatedElo(const int elo);
   QImage photo() const;
   void setPhoto(const QImage img);
   QString biography() const;
-  void setBiography(const QString s);
-  void appendToBiography(const QString s);
+  void setBiography(const QString str);
+  void appendToBiography(const QString str);
 /**
-returns the official elo data as a QValueList<Q_INT32>, for serialization via
-QDataStream
+returns the elo list data as a QValueList<Q_INT32>.
+Useful for writing the data out to a QDataStream.
 */
-  QValueList<Q_INT32> eloList();
+  QValueList<Q_INT32> eloListData() const;
+/**
+sets the elo list data from a QValueList<Q_INT32>.
+Useful for reading in the data from a QDataStream.
+*/
+  void eloFromListData(const QValueList<Q_INT32> eloListData);
 
 private:
-  QString m_dateOfBirth;
-  QString m_dateOfDeath;
+  PartialDate m_dateOfBirth;
+  PartialDate m_dateOfDeath;
   QString m_country;
   QString m_title;
-  QMap<Q_INT32,QMemArray<int> > m_elo; // key is year, ratings are held in the
-                                           // array
+  QMap<int,int> m_elo; // key is elo list index, value is rating for player from the list
+  QMap<int,int> m_estimatedEloCache; // key is elo list index, value is latest previous rating for player
   int m_estimatedElo; // for historic players
-  int m_peakElo; // highest elo entry
+  int m_peakElo; // highest elo
   QImage m_photo;
   QString m_biography; // html string
 
