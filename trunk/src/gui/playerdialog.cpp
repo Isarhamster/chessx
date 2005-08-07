@@ -73,17 +73,16 @@ void PlayerDialog::showPlayer(const QString& s)
   QString death = m_database->dateOfDeath().asShortString();
   QString live = death.isEmpty() ? tr("Born %1.").arg(birth) :
     tr("Born: %1, died %2.").arg(birth).arg(death);
-  QString bio = m_database->biography();
   QString country = m_database->country();
   QString image;
-  QImage photo = m_database->photo();
-  if (!photo.isNull())
+  if (m_database->hasPhoto())
   {
-    playerView->mimeSourceFactory()->setImage("image.png", photo);
+    playerView->mimeSourceFactory()->setImage("image.png", m_database->photo());
     image = "<img hspace=\"10\" align=\"right\" src=\"image.png\">";
   }
-  if (!bio.isEmpty())
-    bio = tr("<h2>Biography</h2>%1\n").arg(bio);
+  QString bio;
+  if (!m_database->hasBiography())
+    bio = tr("<h2>Biography</h2>%1\n").arg(m_database->biography());
   QString title = m_database->title();
 
   // Rating
