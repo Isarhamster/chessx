@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>783</width>
-            <height>405</height>
+            <width>814</width>
+            <height>407</height>
         </rect>
     </property>
     <property name="caption">
@@ -93,7 +93,18 @@
                         </column>
                         <column>
                             <property name="text">
-                                <string>Rating</string>
+                                <string>Title</string>
+                            </property>
+                            <property name="clickable">
+                                <bool>true</bool>
+                            </property>
+                            <property name="resizable">
+                                <bool>true</bool>
+                            </property>
+                        </column>
+                        <column>
+                            <property name="text">
+                                <string>Country</string>
                             </property>
                             <property name="clickable">
                                 <bool>true</bool>
@@ -104,12 +115,6 @@
                         </column>
                         <property name="name">
                             <cstring>playerList</cstring>
-                        </property>
-                        <property name="showSortIndicator">
-                            <bool>true</bool>
-                        </property>
-                        <property name="resizeMode">
-                            <enum>AllColumns</enum>
                         </property>
                     </widget>
                 </vbox>
@@ -143,5 +148,5 @@
         </widget>
     </grid>
 </widget>
-<layoutdefaults spacing="6" margin="11"/>
+<layoutdefaults spacing="6" margin="6"/>
 </UI>

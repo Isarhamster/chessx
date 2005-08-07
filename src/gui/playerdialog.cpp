@@ -27,7 +27,9 @@ PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : PlayerDialogBa
   m_database = db;
   connect(playerEdit, SIGNAL(textChanged (const QString&)), SLOT(findPlayers(const QString&)));
   connect(playerList, SIGNAL(currentChanged(QListViewItem*)), SLOT(showPlayer(QListViewItem*)));
-  playerList->setColumnWidth(0, playerList->width() * 8 / 10);
+
+  for (int i=1; i<4; i++)
+    playerList->adjustColumn(i);
   findPlayers("");
 }
 
@@ -45,7 +47,7 @@ void PlayerDialog::findPlayers(const QString& s)
     int birth = m_database->dateOfBirth().year();
     int death = m_database->dateOfDeath().year();
     new QListViewItem(playerList, *it, birth ? QString::number(birth) : "",
-       death ? QString::number(death) : "", QString::number(m_database->estimatedElo()));
+       death ? QString::number(death) : "", m_database->title(),  m_database->country());
   }
 }
 
@@ -79,7 +81,25 @@ void PlayerDialog::showPlayer(const QString& s)
   if (!bio.isEmpty())
     bio = QString("<h2>Biography</h2>%1\n").arg(bio);
   QString title = m_database->title();
-  playerView->setText(QString("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6")
-    .arg(s).arg(image).arg(live).arg(country).arg(title).arg(bio));
 
+  // Rating
+  int start = m_database->firstEloListIndex();
+  int end = m_database->lastEloListIndex();
+  QString rating;
+  for (int i = start; i<=end; i++)
+  {
+    int elo = m_database->elo(i);
+    if (!elo)
+      continue;
+    if (!rating.isEmpty())
+      rating.append(", ");
+    rating.append(QString("%1:&nbsp;%2").arg(m_database->eloListToDate(i).asShortString()).arg(elo));
+  }
+  if (!rating.isEmpty())
+    rating = QString("<h2>Rating</h2>") + rating;
+
+  // Final text
+  playerView->setText(QString("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6%7")
+    .arg(s).arg(image).arg(live).arg(country).arg(title).arg(bio).arg(rating));
+  
 }
