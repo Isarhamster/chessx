@@ -66,13 +66,13 @@ void PlayerDialog::showPlayer(const QString& s)
   if (!m_database->setCurrent(s))
   {
     playerView->setText(QString("<h1>%1</h1>\n").arg(s) + 
-      "<i>No information about player found.</i>");
+      tr("<i>No information about player found.</i>"));
     return;
   }
   QString birth = m_database->dateOfBirth().asShortString();
   QString death = m_database->dateOfDeath().asShortString();
-  QString live = death.isEmpty() ? QString("Born %1.").arg(birth) :
-    QString("Born: %1, died %2.").arg(birth).arg(death);
+  QString live = death.isEmpty() ? tr("Born %1.").arg(birth) :
+    tr("Born: %1, died %2.").arg(birth).arg(death);
   QString bio = m_database->biography();
   QString country = m_database->country();
   QString image;
@@ -83,7 +83,7 @@ void PlayerDialog::showPlayer(const QString& s)
     image = "<img hspace=\"10\" align=\"right\" src=\"image.png\">";
   }
   if (!bio.isEmpty())
-    bio = QString("<h2>Biography</h2>%1\n").arg(bio);
+    bio = tr("<h2>Biography</h2>%1\n").arg(bio);
   QString title = m_database->title();
 
   // Rating
@@ -100,10 +100,10 @@ void PlayerDialog::showPlayer(const QString& s)
     rating.append(QString("%1:&nbsp;%2").arg(m_database->eloListToDate(i).asShortString()).arg(elo));
   }
   if (!rating.isEmpty())
-    rating = QString("<h2>Rating</h2>") + rating;
+    rating = tr("<h2>Rating</h2>") + rating;
 
   // Final text
-  playerView->setText(QString("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6%7")
+  playerView->setText(tr("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6%7")
     .arg(s).arg(image).arg(live).arg(country).arg(title).arg(bio).arg(rating));
   
 }
