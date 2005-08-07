@@ -52,7 +52,7 @@ void PlayerData::setTitle(const QString s){
 
 int PlayerData::elo(const int eloListIndex) const{
    if (m_elo.contains(eloListIndex)){
-     QMapConstIterator<int,int> it = m_elo.find(eloListIndex);
+     QMap<int,int>::const_iterator it = m_elo.find(eloListIndex);
      return it.data();
    }
    else{
@@ -100,7 +100,7 @@ void PlayerData::setEstimatedElo(const int elo){
 
 
 int PlayerData::estimatedElo(const int eloListIndex){
-   QMapConstIterator<int,int> it;
+   QMap<int,int>::const_iterator it;
    if (m_elo.contains(eloListIndex)){
      it = m_elo.find(eloListIndex);
      return it.data();
@@ -126,7 +126,7 @@ int PlayerData::estimatedElo(const int eloListIndex){
 }
 
 int PlayerData::estimatedEloNoCache(const int eloListIndex) const{
-   QMapConstIterator<int,int> it;
+   QMap<int,int>::const_iterator it;
    if (m_elo.contains(eloListIndex)){
      it = m_elo.find(eloListIndex);
      return it.data();
@@ -169,7 +169,7 @@ void PlayerData::appendToBiography(const QString str){
 
 QValueList<Q_INT32> PlayerData::eloListData() const{
    QValueList<Q_INT32> list;
-   QMapConstIterator<int,int> it;
+   QMap<int,int>::const_iterator it;
    int nextListIx = 1;
 
    for ( it = m_elo.begin(); it != m_elo.end(); ++it ) {
