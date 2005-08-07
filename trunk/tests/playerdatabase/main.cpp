@@ -11,8 +11,8 @@
 #include <iostream>
 #include "databaseconversion.h"
 
-static QString db_name = "/home/ejner/chessX/bigdb/players";
-static QString source = "/home/ejner/chessX/bigdb/ratings.ssp";
+static QString db_name = "/home/ejner/chessX/smalldb/players";
+static QString source = "/home/ejner/chessX/smalldb/ratings.ssp";
 static QString picture = "/home/ejner/chessX/polgar.jpg";
 
 void queryNewest(){
@@ -154,7 +154,7 @@ void querySmall(){
   std::cout << pdb.current() << " country= " << pdb.country() << "\n";
   std::cout << pdb.current() << " title= " << pdb.title() << "\n";
   for (int i=1; i<80; i++){
-  std::cout << pdb.current() << " elo on list " << i << "= " << pdb.elo(i) << "\n";
+  std::cout << pdb.current() << " elo on list " << i << "pr. " << pdb.eloListToDate(i).toString() << "= " << pdb.elo(i) << "\n";
   }
   std::cout << pdb.current() << " elo on 1991/1/1= " << pdb.elo(QDate(1991,1,1)) << "\n";
   std::cout << pdb.current() << " elo on 2000/5/5= " << pdb.elo(QDate(2000,5,5)) << "\n";
@@ -196,9 +196,9 @@ void testPlayerDatabaseConversion(){
   }
 
 // query the converted database
-  queryNewest();
+  //queryNewest();
 // use this to test the small one
-// querySmall();
+querySmall();
 
   std::cout << "end of testPlayerDatabaseConversion\n";
 }
