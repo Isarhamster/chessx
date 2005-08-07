@@ -33,7 +33,7 @@ public slots:
   void findPlayers(const QString& s);
   void showPlayer(const QString& s);
   void showPlayer(QListViewItem* i);
-  
+
 private:
   PlayerDatabase* m_database;
 };

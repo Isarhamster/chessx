@@ -3,9 +3,9 @@
 # Podkatalog wzgl?dem g?ównego katalogu projektu: ./src/gui
 # Cel to biblioteka gui
 
+FORMS   += playerdialogbase.ui	   
 HEADERS += mainwindow.h \
            playerdialog.h 
-FORMS   += playerdialogbase.ui	   
 SOURCES += mainwindow.cpp \
            playerdialog.cpp 
 TARGET = gui

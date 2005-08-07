@@ -38,7 +38,7 @@ MainWindow::MainWindow():QMainWindow(0, "MainWindow", WDestructiveClose)
 
   QPopupMenu *windows = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Windows"), windows);
-  windows->insertItem(tr("&Player Database..."), this, SLOT(slotPlayerDialog()), CTRL + SHIFT + Key_P);
+  windows ->insertItem(tr("&Player Database..."), this, SLOT(slotPlayerDialog()), CTRL + SHIFT + Key_P);
 
   menuBar()->insertSeparator();
   QPopupMenu *help = new QPopupMenu(this);
