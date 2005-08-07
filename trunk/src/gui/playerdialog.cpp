@@ -39,7 +39,11 @@ PlayerDialog::~PlayerDialog()
 
 void PlayerDialog::findPlayers(const QString& s)
 {
-  QStringList players = m_database->findPlayers(s, 100);
+  // Capitalize first letter
+  QString name = s;
+  if (!name.isEmpty())
+     name[0] = name[0].upper();
+  QStringList players = m_database->findPlayers(name, 100);
   playerList->clear();
   for (QStringList::ConstIterator it = players.begin(); it != players.end(); ++it)
   {
