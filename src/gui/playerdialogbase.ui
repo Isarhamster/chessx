@@ -116,6 +116,9 @@
                         <property name="name">
                             <cstring>playerList</cstring>
                         </property>
+                        <property name="allColumnsShowFocus">
+                            <bool>true</bool>
+                        </property>
                     </widget>
                 </vbox>
             </widget>
