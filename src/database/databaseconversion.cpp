@@ -119,10 +119,10 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
 
 
 // only for testing: set photo for the first player
-        if (numberOfPlayers==0){
+ /*       if (numberOfPlayers==0){
           QImage* img = new QImage(photoFile);
           pdb.setPhoto(*img);
-        }
+        }*/
 
         numberOfPlayers++;
         pdb.setTitle(title);

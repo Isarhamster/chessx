@@ -23,7 +23,6 @@ PlayerDatabase is used to acces player data.
 
 #include <qstring.h>
 #include <qmap.h>
-#include <qdatetime.h>
 #include <qdatastream.h>
 #include <qfile.h>
 #include <qstringlist.h>
@@ -132,6 +131,14 @@ fe. gm+cgm
 */
 void setTitle(const QString& title);
 /**
+Index of the first elo list where player is represented
+*/
+int firstEloListIndex();
+/**
+Index of the last elo list where player is represented
+*/
+int lastEloListIndex();
+/**
 players elo rating from the elo list with the given index.
 In period from 1971 to 2000, there is 2 lists pr. year;
 The first list from 1971 has index = 1, and the last list of
@@ -144,7 +151,7 @@ int elo(const int eloListIndex) const;
 players elo rating at the given date.
 If player is not in the elolist on that date, 0 is returned.
 */
-int elo(const QDate& date) const;
+int elo(const PartialDate& date) const;
 /**
 Like elo(const QDate&), except when player is not in the actual elo list:
 Return rating from nearest previous list if available, overall estimation 
@@ -152,11 +159,15 @@ if no previous data available, 0 if nothing is available.
 Non-const due to caching. The cache can be useful, if calling repeatedly with 
 a date inside the same elo list period (cf. the elo(int) function).
 */
-int estimatedElo(const QDate& date);
+int estimatedElo(const PartialDate& date);
 /**
 Like estimatedElo(const QDate&), but no caching is done.
 */
-int estimatedEloNoCache(const QDate& date) const;
+int estimatedEloNoCache(const PartialDate& date) const;
+/**
+highest overall elo achieved by current player
+*/
+int highestElo() const;
 /**
 overall elo estimation
 */
@@ -188,7 +199,13 @@ updates photo for a player
 */
 void setPhoto(const QImage& img);
 /**
+returns true iff a biography for the current player 
+is available; the biography can be accessed by biography()
+*/
+bool hasBiography() const;
+/**
 returns biography for a player
+if no biography is available, biography().isNull()
 */
 QString biography() const;
 /**
@@ -210,7 +227,7 @@ QStringList findPlayers(const QString& prefix, const int maxCount = 10000000);
 /**
 returns the date for a given elo list index
 */
-QDate eloListToDate(const int index);
+PartialDate eloListToDate(const int index);
 
 private:
 QMap<QString,Q_INT32> m_mapping; // pointers into data
@@ -226,8 +243,9 @@ QString m_currentPlayerName;
 PlayerData m_currentPlayer;
 bool m_dirty;
 PlayerData readPlayerData(const QString & playername);
-int eloList(const QDate date) const;
+int eloList(const PartialDate date) const;
 int eloList(const int year, const int index) const;
+
 };
 
 #endif

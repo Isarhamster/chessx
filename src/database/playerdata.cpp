@@ -19,6 +19,8 @@
 PlayerData::PlayerData(){
  m_estimatedElo=0;
  m_peakElo=0;
+ m_firstEloListIndex=0;
+ m_lastEloListIndex=0;
 }
 
 PartialDate PlayerData::dateOfBirth() const{
@@ -58,8 +60,26 @@ int PlayerData::elo(const int eloListIndex) const{
    }
 }
 
+
+int PlayerData::firstEloListIndex(){
+  return m_firstEloListIndex;
+}
+void PlayerData::setFirstEloListIndex(const int ix){
+  m_firstEloListIndex=ix;
+}
+int PlayerData::lastEloListIndex(){
+  return m_lastEloListIndex;
+}
+void PlayerData::setLastEloListIndex(const int ix){
+  m_lastEloListIndex=ix;
+}
+
 void PlayerData::setElo(const int eloListIndex, const int elo){
    m_elo.insert(eloListIndex,elo);
+   if (eloListIndex<m_firstEloListIndex || m_firstEloListIndex==0)
+     m_firstEloListIndex=eloListIndex;
+   if (eloListIndex>m_lastEloListIndex || m_lastEloListIndex==0)
+     m_lastEloListIndex=eloListIndex;
    m_estimatedEloCache.clear();
 }
 

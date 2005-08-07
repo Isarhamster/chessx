@@ -51,10 +51,10 @@ void queryNewest(){
   std::cout << pdb.current() << " title= " << pdb.title() << "\n";
 
   pdb.setCurrent("Aaberg, Anton");
-  std::cout << pdb.current() << " elo on 2000/5/5= " << pdb.elo(QDate(2000,5,5)) << "\n";
+  std::cout << pdb.current() << " elo on 2000/5/5= " << pdb.elo(PartialDate(2000,5,5)) << "\n";
 
   pdb.setCurrent("Aaron, Manuel");
-  std::cout << pdb.current() << " elo on 2000/5/5= " << pdb.elo(QDate(2000,5,5)) << "\n";
+  std::cout << pdb.current() << " elo on 2000/5/5= " << pdb.elo(PartialDate(2000,5,5)) << "\n";
 
   pdb.setCurrent("Aaberg, Anton");
   QString bio = pdb.biography();
@@ -79,22 +79,22 @@ void queryNewest(){
   std::cout << pdb.current() << " birthdate= " << pdb.dateOfBirth().asString() << "\n";
   std::cout << pdb.current() << " country= " << pdb.country() << "\n";
   std::cout << pdb.current() << " estimated overall elo= " << pdb.estimatedElo() << "\n";
-  std::cout << pdb.current() << " elo on 2000/10/5= " << pdb.elo(QDate(2000,10,5)) << "\n";
-  std::cout << pdb.current() << " estimated elo on 2000/10/5= " << pdb.estimatedElo(QDate(2000,10,5)) << "\n";
-  std::cout << pdb.current() << " estimated elo on 2000/10/5= " << pdb.estimatedEloNoCache(QDate(2000,10,5)) << "\n";
+  std::cout << pdb.current() << " elo on 2000/10/5= " << pdb.elo(PartialDate(2000,10,5)) << "\n";
+  std::cout << pdb.current() << " estimated elo on 2000/10/5= " << pdb.estimatedElo(PartialDate(2000,10,5)) << "\n";
+  std::cout << pdb.current() << " estimated elo on 2000/10/5= " << pdb.estimatedEloNoCache(PartialDate(2000,10,5)) << "\n";
 
   pdb.setCurrent("Rudolf, Michal");
   std::cout << pdb.current() << " birthdate= " << pdb.dateOfBirth().asString() << "\n";
   std::cout << pdb.current() << " estimated overall elo= " << pdb.estimatedElo() << "\n";
-  std::cout << pdb.current() << " elo on 2000/10/5= " << pdb.elo(QDate(2000,10,5)) << "\n";
-  std::cout << pdb.current() << " elo on 2001/5/5= " << pdb.elo(QDate(2001,5,5)) << "\n";
-  std::cout << pdb.current() << " elo on 2001/10/5= " << pdb.elo(QDate(2001,10,5)) << "\n";
-  std::cout << pdb.current() << " elo on 2005/10/5= " << pdb.elo(QDate(2005,10,5)) << "\n";
-  std::cout << pdb.current() << " elo on 1995/10/5= " << pdb.elo(QDate(1995,10,5)) << "\n";
-  std::cout << pdb.current() << " elo on 1990/10/5= " << pdb.elo(QDate(1990,10,5)) << "\n";
-  std::cout << pdb.current() << " estimated elo on 1990/10/5= " << pdb.estimatedElo(QDate(1990,10,5)) << "\n";
-  std::cout << pdb.current() << " elo on 1997/1/1= " << pdb.elo(QDate(1997,1,1)) << "\n";
-  std::cout << pdb.current() << " estimated elo on 1997/1/1= " << pdb.estimatedElo(QDate(1997,1,1)) << "\n";
+  std::cout << pdb.current() << " elo on 2000/10/5= " << pdb.elo(PartialDate(2000,10,5)) << "\n";
+  std::cout << pdb.current() << " elo on 2001/5/5= " << pdb.elo(PartialDate(2001,5,5)) << "\n";
+  std::cout << pdb.current() << " elo on 2001/10/5= " << pdb.elo(PartialDate(2001,10,5)) << "\n";
+  std::cout << pdb.current() << " elo on 2005/10/5= " << pdb.elo(PartialDate(2005,10,5)) << "\n";
+  std::cout << pdb.current() << " elo on 1995/10/5= " << pdb.elo(PartialDate(1995,10,5)) << "\n";
+  std::cout << pdb.current() << " elo on 1990/10/5= " << pdb.elo(PartialDate(1990,10,5)) << "\n";
+  std::cout << pdb.current() << " estimated elo on 1990/10/5= " << pdb.estimatedElo(PartialDate(1990,10,5)) << "\n";
+  std::cout << pdb.current() << " elo on 1997/1/1= " << pdb.elo(PartialDate(1997,1,1)) << "\n";
+  std::cout << pdb.current() << " estimated elo on 1997/1/1= " << pdb.estimatedElo(PartialDate(1997,1,1)) << "\n";
 
   pdb.setCurrent("'t Jong, Ewoud");
   QImage img = pdb.photo();
@@ -153,14 +153,19 @@ void querySmall(){
   std::cout << pdb.current() << " birthdate= " << pdb.dateOfBirth().asString() << "\n";
   std::cout << pdb.current() << " country= " << pdb.country() << "\n";
   std::cout << pdb.current() << " title= " << pdb.title() << "\n";
-  for (int i=1; i<80; i++){
-  std::cout << pdb.current() << " elo on list " << i << "pr. " << pdb.eloListToDate(i).toString() << "= " << pdb.elo(i) << "\n";
+  int start = pdb.firstEloListIndex();
+  int end = pdb.lastEloListIndex();
+  for (int i=start; i<=end; i++){
+  std::cout << pdb.current() << " elo on list " << i << "pr. " << pdb.eloListToDate(i).asString() << "= " << pdb.elo(i) << "\n";
   }
-  std::cout << pdb.current() << " elo on 1991/1/1= " << pdb.elo(QDate(1991,1,1)) << "\n";
-  std::cout << pdb.current() << " elo on 2000/5/5= " << pdb.elo(QDate(2000,5,5)) << "\n";
-  std::cout << pdb.current() << " estimated elo on 2000/5/5= " << pdb.estimatedElo(QDate(2000,5,5)) << "\n";
-  std::cout << pdb.current() << " estimated elo on 1975/5/5= " << pdb.estimatedElo(QDate(1975,5,5)) << "\n";
-  std::cout << pdb.current() << " estimated elo on 1993/5/5= " << pdb.estimatedElo(QDate(1993,5,5)) << "\n";
+  for (int i=start; i<=end; i++){
+  std::cout << pdb.current() << " elo on list - or estimate " << i << "pr. " << pdb.eloListToDate(i).asString() << "= " << pdb.estimatedElo(pdb.eloListToDate(i)) << "\n";
+  }
+  std::cout << pdb.current() << " elo on 1991/1/1= " << pdb.elo(PartialDate(1991,1,1)) << "\n";
+  std::cout << pdb.current() << " elo on 2000/5/5= " << pdb.elo(PartialDate(2000,5,5)) << "\n";
+  std::cout << pdb.current() << " estimated elo on 2000/5/5= " << pdb.estimatedElo(PartialDate(2000,5,5)) << "\n";
+  std::cout << pdb.current() << " estimated elo on 1975/5/5= " << pdb.estimatedElo(PartialDate(1975,5,5)) << "\n";
+  std::cout << pdb.current() << " estimated elo on 1993/5/5= " << pdb.estimatedElo(PartialDate(1993,5,5)) << "\n";
   std::cout << pdb.current() << " overall estimated elo= " << pdb.estimatedElo() << "\n";
 
   QString bio = pdb.biography();
@@ -173,15 +178,39 @@ void querySmall(){
   std::cout << pdb.current() << " birthdate= " << pdb.dateOfBirth().asString() << "\n";
   std::cout << pdb.current() << " country= " << pdb.country() << "\n";
   std::cout << pdb.current() << " estimated overall elo= " << pdb.estimatedElo() << "\n";
-  std::cout << pdb.current() << " elo on 2000/10/5= " << pdb.elo(QDate(2000,10,5)) << "\n";
-  std::cout << pdb.current() << " estimated elo on 2000/10/5= " << pdb.estimatedElo(QDate(2000,10,5)) << "\n";
+  std::cout << pdb.current() << " elo on 2000/10/5= " << pdb.elo(PartialDate(2000,10,5)) << "\n";
+  std::cout << pdb.current() << " estimated elo on 2000/10/5= " << pdb.estimatedElo(PartialDate(2000,10,5)) << "\n";
+  if (pdb.hasPhoto())
+    std::cout << pdb.current() << " has photo \n";
+  else
+    std::cout << pdb.current() << " has no photo \n";
+  if (pdb.hasBiography())
+    std::cout << pdb.current() << " has biography \n";
+  else
+    std::cout << pdb.current() << " has no biography \n";
+
 
   pdb.setCurrent("Aaberg, Anton");
+  if (pdb.hasPhoto())
+    std::cout << pdb.current() << " has photo \n";
+  else
+    std::cout << pdb.current() << " has no photo \n";
   QImage img = pdb.photo();
   if (img.isNull())
-    std::cout << pdb.current() << " photo == null \n";
+    std::cout << pdb.current() << " has no photo \n";
   else
-    std::cout << pdb.current() << " photo != null \n";
+    std::cout << pdb.current() << " has photo \n";
+
+  if (pdb.hasBiography())
+    std::cout << pdb.current() << " has bio \n";
+  else
+    std::cout << pdb.current() << " has no bio\n";
+  bio = pdb.biography();
+  if (bio.isNull())
+    std::cout << pdb.current() << " has no bio \n";
+  else
+    std::cout << pdb.current() << " has bio \n";
+
 
   pdb.close();
   std::cout << "closed " << db_name << "\n";
