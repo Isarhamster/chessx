@@ -74,6 +74,7 @@ private:
  short int m_year;
  unsigned char m_month;
  unsigned char m_day;
+ QString numberToString(int d, QChar fill = '0') const;
 };
 
 
