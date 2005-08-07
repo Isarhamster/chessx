@@ -20,10 +20,8 @@
 
 #include <qstring.h>
 #include <qimage.h>
-#include <qdatetime.h>
 #include <qmap.h>
 #include <qt34/qvaluelist.h>
-#include <qt34/qmemarray.h>
 #include <partialdate.h>
 
 class PlayerData
@@ -41,6 +39,10 @@ Players date of birth, if it is known.
   void setCountry(const QString s);
   QString title() const;
   void setTitle(const QString s);
+  int firstEloListIndex();
+  void setFirstEloListIndex(const int ix);
+  int lastEloListIndex();
+  void setLastEloListIndex(const int ix);
 /**
 players elo from the given elo list.
 */
@@ -90,6 +92,8 @@ private:
   QMap<int,int> m_estimatedEloCache; // key is elo list index, value is latest previous rating for player
   int m_estimatedElo; // for historic players
   int m_peakElo; // highest elo
+  int m_firstEloListIndex; // index of first elo list where player is represented
+  int m_lastEloListIndex; // index of first elo list where player is represented
   QImage m_photo;
   QString m_biography; // html string
 

@@ -175,6 +175,8 @@ void PlayerDatabase::commit() {
      m_datads << it.data().country();
      m_datads << it.data().title();
      m_datads << it.data().eloListData();
+     m_datads << (Q_INT32)(it.data().firstEloListIndex());
+     m_datads << (Q_INT32)(it.data().lastEloListIndex());
      m_datads << (Q_INT32)(it.data().estimatedElo());
      m_datads << (Q_INT32)(it.data().peakElo());
      m_datads << it.data().photo();
@@ -229,16 +231,22 @@ PlayerData PlayerDatabase::readPlayerData(const QString& playername){
     m_datads >> eloList;
     pd.eloFromListData(eloList);
 
+    Q_INT32 firstEloListIndex;
+    Q_INT32 lastEloListIndex;
     Q_INT32 estimatedElo;
     Q_INT32 peakElo;
     QImage photo;
     QString biography;
 
+    m_datads >> firstEloListIndex;
+    m_datads >> lastEloListIndex;
     m_datads >> estimatedElo;
     m_datads >> peakElo;
     m_datads >> photo;
     m_datads >> biography;
 
+    pd.setFirstEloListIndex((int)firstEloListIndex);
+    pd.setLastEloListIndex((int)lastEloListIndex);
     pd.setEstimatedElo((int)estimatedElo);
     pd.setPeakElo((int)peakElo);
     pd.setPhoto(photo);
@@ -327,23 +335,34 @@ void PlayerDatabase::setTitle(const QString& title){
     m_dirty=true;
 }
 
-int PlayerDatabase::elo(const QDate& date) const{
+int PlayerDatabase::firstEloListIndex(){
+  return m_currentPlayer.firstEloListIndex();
+}
+int PlayerDatabase::lastEloListIndex(){
+  return m_currentPlayer.lastEloListIndex();
+}
+
+
+int PlayerDatabase::elo(const PartialDate& date) const{
   return m_currentPlayer.elo(eloList(date));
 }
 int PlayerDatabase::elo(const int eloList) const{
   return m_currentPlayer.elo(eloList);
 }
 
-int PlayerDatabase::estimatedElo(const QDate& date){
+int PlayerDatabase::estimatedElo(const PartialDate& date){
   return m_currentPlayer.estimatedElo(eloList(date));
 }
-int PlayerDatabase::estimatedEloNoCache(const QDate& date) const{
+int PlayerDatabase::estimatedEloNoCache(const PartialDate& date) const{
   return m_currentPlayer.estimatedEloNoCache(eloList(date));
 }
+
 int PlayerDatabase::estimatedElo() const{
   return m_currentPlayer.estimatedElo();
 }
-
+int PlayerDatabase::highestElo() const{
+  return m_currentPlayer.peakElo();
+}
 
 void PlayerDatabase::setElo(const int year, const int listIndex, const int elo){
   m_currentPlayer.setElo(eloList(year,listIndex),elo);
@@ -365,7 +384,7 @@ void PlayerDatabase::setEstimatedElo(const int elo){
 }
 
 bool PlayerDatabase::hasPhoto() const{
-  return m_currentPlayer.photo().isNull();
+  return !m_currentPlayer.photo().isNull();
 }
 QImage PlayerDatabase::photo() const{
   return m_currentPlayer.photo();
@@ -376,6 +395,9 @@ void PlayerDatabase::setPhoto(const QImage& img){
     m_dirty=true;
 }
 
+bool PlayerDatabase::hasBiography() const{
+  return !m_currentPlayer.biography().isNull();
+}
 QString PlayerDatabase::biography() const{
   return m_currentPlayer.biography();
 }
@@ -389,6 +411,7 @@ void PlayerDatabase::appendToBiography(const QString& s){
   if (!m_dirty)
     m_dirty=true;
 }
+
 
 QStringList PlayerDatabase::playerNames(){
   QStringList result;
@@ -414,7 +437,8 @@ QStringList PlayerDatabase::findPlayers(const QString& prefix, const int maxCoun
   return result;
 }
 
-int PlayerDatabase::eloList(const QDate date) const{
+
+int PlayerDatabase::eloList(const PartialDate date) const{
   const int year = date.year();
   if (year < 1971)
     return 0;
@@ -431,9 +455,9 @@ int PlayerDatabase::eloList(const int year, const int index) const{
   return 60+ ((year-2001)*4) + index;//4 lists in the year
 }
 
-QDate PlayerDatabase::eloListToDate(const int index){
+PartialDate PlayerDatabase::eloListToDate(const int index){
   if (index<1)
-    return QDate(0,0,0);
+    return PartialDate(0,0,0);
   int year;
   int rem;
   int month;
@@ -457,6 +481,6 @@ QDate PlayerDatabase::eloListToDate(const int index){
     else 
       month = 7;
   }
-  return QDate(year,month,1);
+  return PartialDate(year,month,1);
 }
 
