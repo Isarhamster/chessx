@@ -41,10 +41,11 @@ void PlayerDialog::findPlayers(const QString& s)
   playerList->clear();
   for (QStringList::ConstIterator it = players.begin(); it != players.end(); ++it)
   {
-    QString birth = m_database->dateOfBirth(*it).left(4);
-    QString death = m_database->dateOfDeath(*it).left(4);
-    QString elo = QString::number(2000 + 25* (*it).length());
-    new QListViewItem(playerList, *it, QString("%1-%2").arg(birth).arg(death), elo);
+    m_database->setCurrent(*it);
+    int birth = m_database->dateOfBirth().year();
+    int death = m_database->dateOfDeath().year();
+    new QListViewItem(playerList, *it, birth ? QString::number(birth) : "",
+       death ? QString::number(death) : "", QString::number(m_database->estimatedElo()));
   }
 }
 
@@ -56,28 +57,29 @@ void PlayerDialog::showPlayer(QListViewItem* i)
 
 void PlayerDialog::showPlayer(const QString& s)
 {
-  if (!m_database->exists(s))
+  if (!m_database->setCurrent(s))
+  {
     playerView->setText(QString("<h1>%1</h1>\n").arg(s) + 
       "<i>No information about player found.</i>");
-  else
-  {
-    QString birth = m_database->dateOfBirth(s);
-    QString death = m_database->dateOfDeath(s);
-    QString live = death.isEmpty() ? QString("Born %1").arg(birth) :
-      QString("Born: %1, died %2.").arg(birth).arg(death);
-    QString bio = m_database->biography(s);
-    QString country = m_database->country(s);
-    QString image;
-    QImage photo = m_database->photo(s);
-    if (!photo.isNull())
-    {
-      playerView->mimeSourceFactory()->setImage("image.png", photo);
-      image = "<img hspace=\"10\" align=\"right\" src=\"image.png\">";
-    }
-    if (!bio.isEmpty())
-      bio = QString("<h2>Biography</h2>%1\n").arg(bio);
-    QString title = m_database->title(s);
-    playerView->setText(QString("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6")
-      .arg(s).arg(image).arg(live).arg(country).arg(title).arg(bio));
+    return;
   }
+  QString birth = m_database->dateOfBirth().asShortString();
+  QString death = m_database->dateOfDeath().asShortString();
+  QString live = death.isEmpty() ? QString("Born %1.").arg(birth) :
+    QString("Born: %1, died %2.").arg(birth).arg(death);
+  QString bio = m_database->biography();
+  QString country = m_database->country();
+  QString image;
+  QImage photo = m_database->photo();
+  if (!photo.isNull())
+  {
+    playerView->mimeSourceFactory()->setImage("image.png", photo);
+    image = "<img hspace=\"10\" align=\"right\" src=\"image.png\">";
+  }
+  if (!bio.isEmpty())
+    bio = QString("<h2>Biography</h2>%1\n").arg(bio);
+  QString title = m_database->title();
+  playerView->setText(QString("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6")
+    .arg(s).arg(image).arg(live).arg(country).arg(title).arg(bio));
+
 }
