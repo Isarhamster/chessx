@@ -96,9 +96,8 @@ QString PartialDate::asString() const
 {
   if (!m_year)
     return "????.??.??";
-  QString s = QString("%1").arg(m_year, 4);
-  m_month ? s.append(QString(".%1").arg(m_month, 2)) : s.append(".??");
-  m_day ? s.append(QString(".%1").arg(m_day, 2)) : s.append(".??");
+  QString s = QString("%1.%2.%3").arg(m_year, 4).arg(numberToString(m_month))
+     .arg(numberToString(m_day));
   return s;
 }
 
@@ -109,11 +108,18 @@ QString PartialDate::asShortString() const
   QString s = QString("%1").arg(m_year, 4);
   if (!m_month)
     return s;
-  s.append(QString(".%1").arg(m_month, 2));
+  s.append("." + numberToString(m_month));
   if (!m_day)
     return s;
-  s.append(QString(".%1").arg(m_day, 2));
+  s.append("." + numberToString(m_day));
   return s;
+}
+
+QString PartialDate::numberToString(int d, QChar fill) const
+{
+  if (!d)
+    return QString(fill) + fill;
+  return d < 10 ? fill + QString::number(d) : QString::number(d);
 }
 
 bool operator==(const PartialDate& d1, const PartialDate& d2)
@@ -145,8 +151,7 @@ bool operator>=(const PartialDate& d1, const PartialDate& d2)
   return d2 > d1;
 }
 
- bool operator!=(const PartialDate& d1, const PartialDate& d2)
+bool operator!=(const PartialDate& d1, const PartialDate& d2)
 {
   return d1.year() != d2.year() || d1.month() != d2.month() || d1.day() != d2.day();
 }
-
