@@ -18,7 +18,7 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
-#include <qt34/qmainwindow.h>
+#include <qmainwindow.h>
 
 class PlayerDatabase;
 class PlayerDialog;

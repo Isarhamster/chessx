@@ -19,7 +19,7 @@
 #include "playerdatabase.h"
 
 
-#include <qt34/qpopupmenu.h>
+#include <qpopupmenu.h>
 #include <qmenubar.h>
 #include <qstatusbar.h>
 #include <qmessagebox.h>
