@@ -7,11 +7,11 @@ SOURCES += main.cpp
 INCLUDEPATH += ./database ./gui
 TEMPLATE = app
 CONFIG += release warn_on thread qt
-TARGET = ../bin/chessdatabase
 QT += qt3support
 INCLUDEPATH += compatibility
 QT34 = compatibility/qt34
 win32{
+  TARGET = ../../bin/chessdatabase
   release{
     LIBS += gui/release/libgui.a database/release/libdatabase.a
   }
@@ -20,5 +20,6 @@ win32{
   }
 }
 else{
+  TARGET = ../bin/chessdatabase
   LIBS += gui/libgui.a database/libdatabase.a
 }
