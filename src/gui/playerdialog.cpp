@@ -31,6 +31,7 @@ PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : PlayerDialogBa
   for (int i=1; i<4; i++)
     playerList->adjustColumn(i);
   findPlayers("");
+  playerView->setMinimumWidth(width() / 2);
 }
 
 PlayerDialog::~PlayerDialog()
@@ -81,7 +82,7 @@ void PlayerDialog::showPlayer(const QString& s)
     image = "<img hspace=\"10\" align=\"right\" src=\"image.png\">";
   }
   QString bio;
-  if (!m_database->hasBiography())
+  if (m_database->hasBiography())
     bio = tr("<h2>Biography</h2>%1\n").arg(m_database->biography());
   QString title = m_database->title();
 
