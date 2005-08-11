@@ -77,7 +77,9 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
       }
       else if(linesStripped.startsWith("%Elo")) {//elo data
         QStringList sl = QStringList::split(" ",linesStripped);
-        for ( QStringList::Iterator it = sl.begin(); it != sl.end(); ++it ) {
+	QStringList::Iterator it = sl.begin();
+	it++;
+        for (; it != sl.end(); it++ ) {
           QString s = *it;
           //std::cout << s << ":";
           QStringList sl2 = QStringList::split(":",s);
