@@ -80,6 +80,8 @@ void PlayerData::setElo(const int eloListIndex, const int elo){
      m_firstEloListIndex=eloListIndex;
    if (eloListIndex>m_lastEloListIndex || m_lastEloListIndex==0)
      m_lastEloListIndex=eloListIndex;
+   if (elo>m_peakElo)
+     m_peakElo=elo;
    m_estimatedEloCache.clear();
 }
 
