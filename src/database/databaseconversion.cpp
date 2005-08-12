@@ -20,11 +20,12 @@
 #include <qtextstream.h>
 #include "databaseconversion.h"
 
-bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& photoFile){
+bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& pictureDir){
 // was tested and works with ratings.ssp from january 2004
 // and the latest from http://members.aon.at/schachverein.steyr/ratings.ssp.zip
-// photoFile can be fe. a jpg file, will be added as photo for the first player in db, just for testing.
   PlayerDatabase pdb;
+  QDir dir = QDir(pictureDir);
+  QStringList pictures = dir.entryList();
 
   if (pdb.removeDatabase(outFileName)){
     std::cout << "removed " << outFileName.latin1() << "\n";
@@ -56,6 +57,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
 
   QString name;
   int numberOfPlayers = 0;
+  int numberOfPictures = 0;
 
   while ( !line.startsWith("### END OF PLAYER SECTION") && !stream.atEnd() ) {
       line = stream.readLine();
@@ -119,12 +121,18 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
         if (!pdb.add(name))
            std::cout << "failed adding player: " << name.latin1() << "\n";
 
-
-// only for testing: set photo for the first player
- /*       if (numberOfPlayers==0){
-          QImage* img = new QImage(photoFile);
-          pdb.setPhoto(*img);
-        }*/
+//look for players picture
+        for ( QStringList::Iterator it = pictures.begin(); it != pictures.end(); ++it ) {
+          QStringList sl4 = QStringList::split(".",*it);
+          if (sl4[0].compare(name)==0){
+//          if ((*it).startsWith(name)){
+            QImage* img = new QImage(dir.path()+"/"+(*it));
+            pdb.setPhoto(*img);
+            numberOfPictures++;
+            pictures.remove(it);
+            break;
+          }
+        }
 
         numberOfPlayers++;
         pdb.setTitle(title);
@@ -163,6 +171,10 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
   inFile.close();
 
   std::cout << numberOfPlayers << " players read in from ratings.ssp\n"; 
+  std::cout << numberOfPictures << " players had a picture\n"; 
+  for ( QStringList::Iterator it = pictures.begin(); it != pictures.end(); ++it ) {
+     std::cout << "player picture that was not converted: " << *it << "\n";
+  }
 
   pdb.commit();
   pdb.close();

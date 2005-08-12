@@ -23,6 +23,7 @@ into ChessX format.
 #define __DATABASECONVERSION_H__
 
 #include "playerdatabase.h"
+#include <qdir.h>
 
 class DatabaseConversion{
 
@@ -31,8 +32,11 @@ public:
 convert Scid ratings.ssp to player database
 outFileName is filename without extension
 inFileName is full path for ratings.ssp
+pictureDir is directory where player pictures are - 
+format can be jpg, gif, or any format that QImage(file) will
+understand
 */
-static bool playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& photoFile);
+static bool playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& pictureDir);
 
 };
 

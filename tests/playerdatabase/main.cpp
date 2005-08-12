@@ -13,9 +13,9 @@
 
 static QTextStream out(stdout, IO_WriteOnly);
 
-static QString db_name = "data/players";
-static QString source = "data/ratings.ssp";
-static QString picture = "data/polgar.jpg";
+static QString db_name = "/home/ejner/chessX/bigdb/players";
+static QString source = "/home/ejner/chessX/bigdb/ratings.ssp";
+static QString picture_dir = "/home/ejner/chessX/playerphotos";
 
 void queryNewest(){
 //query newest full base as of 25/7/2005 (70207 players)
@@ -213,6 +213,17 @@ void querySmall(){
   else
     out << pdb.current() << " has bio \n";
 
+  pdb.setCurrent("Adams, Michael");
+  if (pdb.hasPhoto())
+    out<< pdb.current() << " has a photo\n";
+  pdb.setCurrent("Polgar, Judit");
+  if (pdb.hasPhoto())
+    out<< pdb.current() << " has a photo\n";
+  pdb.setCurrent("Anderssen, Adolf");
+  if (pdb.hasPhoto())
+    out<< pdb.current() << " has a photo\n";
+  out << pdb.current() << " estimated elo= " << pdb.estimatedElo() << "\n";
+
 
   pdb.close();
   out << "closed " << db_name << "\n";
@@ -220,16 +231,16 @@ void querySmall(){
 
 
 void testPlayerDatabaseConversion(){
-  bool b = DatabaseConversion::playerDatabaseFromScidRatings(source,db_name,picture); // the jpg is attached as photo to the first player in ratings.ssp
+  bool b = DatabaseConversion::playerDatabaseFromScidRatings(source,db_name,picture_dir); // the jpg is attached as photo to the first player in ratings.ssp
   if (!b){
     out << "conversion failed\n";
     return;
   }
 
 // query the converted database
-  //queryNewest();
+  queryNewest();
 // use this to test the small one
-querySmall();
+// querySmall();
 
   out << "end of testPlayerDatabaseConversion\n";
 }
@@ -237,7 +248,7 @@ querySmall();
 
 int main(int argv, char* argc[]) 
 {
-	QApplication app(argv, argc);
+  QApplication app(argv, argc);
   testPlayerDatabaseConversion();
   return 0;
 }
