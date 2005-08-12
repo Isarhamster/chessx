@@ -371,12 +371,6 @@ void PlayerDatabase::setElo(const int year, const int listIndex, const int elo){
 }
 
 
-void PlayerDatabase::setPeakElo(const int elo){
-  m_currentPlayer.setPeakElo(elo);
-  if (!m_dirty)
-    m_dirty=true;
-}
-
 void PlayerDatabase::setEstimatedElo(const int elo){
   m_currentPlayer.setEstimatedElo(elo);
   if (!m_dirty)

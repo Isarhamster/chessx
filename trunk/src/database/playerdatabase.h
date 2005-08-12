@@ -177,10 +177,6 @@ updates the current players elo for a given list in a given year
 */
 void setElo(const int year, const int listIndex, const int elo);
 /**
-updates peak elo for a player
-*/
-void setPeakElo(const int elo);
-/**
 updates (overall) estimated elo for a player
 */
 void setEstimatedElo(const int elo);

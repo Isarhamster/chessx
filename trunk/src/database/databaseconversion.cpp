@@ -146,8 +146,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
             //std::cout << "rating= " << s;
             if (s.endsWith("*"))
               pdb.setEstimatedElo(s.left(s.length()-1).toInt());
-            else
-              pdb.setPeakElo(s.toInt());
+            // peak elo is dealt with by setElo()
           }
           else if(s.contains(".")){//birth date and/or death date
             if (s.startsWith("--")){//only death date(!) Baay is an example
