@@ -50,7 +50,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
 
   QTextStream stream( &inFile );
   QString line;
-  QString linesStripped;
+  QString lineStripped;
   while ( !line.startsWith("@PLAYER") && !stream.atEnd() ) {
       line = stream.readLine();
   }
@@ -61,24 +61,24 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
 
   while ( !line.startsWith("### END OF PLAYER SECTION") && !stream.atEnd() ) {
       line = stream.readLine();
-      linesStripped = line.stripWhiteSpace();
+      lineStripped = line.stripWhiteSpace();
         //std::cout << line << "\n";
-      if (linesStripped.startsWith("#")){//comment line
+      if (lineStripped.startsWith("#")){//comment line
       }
-      else if(linesStripped.length() == 0) {//empty line
+      else if(lineStripped.length() == 0) {//empty line
       }
-      else if(linesStripped.startsWith("=") ) {//name correction line
+//      else if(lineStripped.startsWith("=") ) {//name correction line
+  //    }
+      else if(lineStripped.startsWith("%Bio")) {//Biography note
+        pdb.appendToBiography(lineStripped.mid(5,9999)+"<br>");
       }
-      else if(linesStripped.startsWith("%Bio")) {//Biography note
-        pdb.appendToBiography(linesStripped.mid(5,9999)+"<br>");
+      else if(lineStripped.startsWith("%Title")) {//title award note - add to biography
+        pdb.appendToBiography(lineStripped.mid(7,9999)+"<br>");
       }
-      else if(linesStripped.startsWith("%Title")) {//title award note - add to biography
-        pdb.appendToBiography(linesStripped.mid(7,9999)+"<br>");
+      else if(lineStripped.startsWith("%Render")) {//name with special characters fe. Huebner
       }
-      else if(linesStripped.startsWith("%Render")) {//name with special characters fe. Huebner
-      }
-      else if(linesStripped.startsWith("%Elo")) {//elo data
-        QStringList sl = QStringList::split(" ",linesStripped);
+      else if(lineStripped.startsWith("%Elo")) {//elo data
+        QStringList sl = QStringList::split(" ",lineStripped);
 	QStringList::Iterator it = sl.begin();
 	it++;
         for (; it != sl.end(); it++ ) {
@@ -96,10 +96,29 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
           }
         }
       }
-      else if(linesStripped.startsWith("%")) {//unknown code
+      else if(lineStripped.startsWith("%")) {//unknown code
         //std::cout << "unknown code in ratings.ssp \n";
         //std::cout << line << "\n";
-//ignore!        return false;
+//ignore, as all kinds of tournament names are there now.
+//return false;
+      }
+      else if(lineStripped.startsWith("= ")) {//name alias
+        //std::cout << "name alias line: " << lineStripped << "\n";
+        QString nameAlias = lineStripped.mid(2);
+        if (!pdb.hasPhoto()){
+//look for players picture
+          //std::cout << "nameAlias= " << nameAlias << "\n";
+          for ( QStringList::Iterator it = pictures.begin(); it != pictures.end(); ++it ) {
+            QStringList sl4 = QStringList::split(".",*it);
+            if (sl4[0].compare(nameAlias)==0){
+              QImage* img = new QImage(dir.path()+"/"+(*it));
+              pdb.setPhoto(*img);
+              numberOfPictures++;
+              pictures.remove(it);
+              break;
+            }
+          }
+        }
       }
       else {//name line
 
@@ -125,7 +144,6 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
         for ( QStringList::Iterator it = pictures.begin(); it != pictures.end(); ++it ) {
           QStringList sl4 = QStringList::split(".",*it);
           if (sl4[0].compare(name)==0){
-//          if ((*it).startsWith(name)){
             QImage* img = new QImage(dir.path()+"/"+(*it));
             pdb.setPhoto(*img);
             numberOfPictures++;
@@ -164,7 +182,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
           }
         }
 //        std::cout << "\n";
-      }
+      }//name line
   }
   
   inFile.close();
