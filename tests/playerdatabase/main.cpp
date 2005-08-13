@@ -1,8 +1,9 @@
 // main() to convert a scid ratings.ssp to our player db format,
 // and test the content of the resulting player database.
 //
-// To use it, change the db_name, source and picture to fit 
-// your filenames.
+// To use it, change the db_name, source and picture directory to fit 
+// your filenames. The picture filenames should be = player name + extension
+// fe. "Larsen, Bent.gif"  (any format that QImage(file) can handle will work).
 //
 // Code to query the small test database - see querySmall().
 // Code to query the newest full database - see queryNewest().
@@ -30,10 +31,6 @@ void queryNewest(){
   }
 
   out << "number of players = " << pdb.count() <<"\n"; 
-//  QStringList sl = pdb.playerNames();
-//  for ( QStringList::Iterator it = sl.begin(); it != sl.end(); ++it ) {
-//    out << *it << "\n";
-//  }
 
   QStringList sl = pdb.findPlayers("Hu",3);
   for ( QStringList::Iterator it = sl.begin(); it != sl.end(); ++it ) {
@@ -135,10 +132,6 @@ void querySmall(){
   }
 
   out << "number of players = " << pdb.count() <<"\n"; 
-//  QStringList sl = pdb.playerNames();
-//  for ( QStringList::Iterator it = sl.begin(); it != sl.end(); ++it ) {
-//    out << *it << "\n";
-//  }
 
   out << "max. 3 players starting with G: \n";
   QStringList sl = pdb.findPlayers("G",3);
@@ -222,7 +215,11 @@ void querySmall(){
   pdb.setCurrent("Anderssen, Adolf");
   if (pdb.hasPhoto())
     out<< pdb.current() << " has a photo\n";
+// checking overall estimated elo for a historic player
   out << pdb.current() << " estimated elo= " << pdb.estimatedElo() << "\n";
+  pdb.setCurrent("Botvinnik, Mikhail URS");
+  if (pdb.hasPhoto())
+    out<< pdb.current() << " has a photo\n";
 
 
   pdb.close();
