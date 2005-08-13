@@ -30,8 +30,8 @@ PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : PlayerDialogBa
 
   for (int i=1; i<4; i++)
     playerList->adjustColumn(i);
-  findPlayers("");
   playerView->setMinimumWidth(width() / 2);
+  findPlayers("");
 }
 
 PlayerDialog::~PlayerDialog()
@@ -54,16 +54,20 @@ void PlayerDialog::findPlayers(const QString& s)
     new QListViewItem(playerList, *it, birth ? QString::number(birth) : "",
        death ? QString::number(death) : "", m_database->title(),  m_database->country());
   }
+  playerList->setCurrentItem(playerList->firstChild());
+  showPlayer(playerList->firstChild());
 }
 
 void PlayerDialog::showPlayer(QListViewItem* i)
 {
-  showPlayer(i->text(0));
+  if (i)
+    showPlayer(i->text(0));
 }
 
 
 void PlayerDialog::showPlayer(const QString& s)
 {
+  qDebug("Showing: [%s]", s.latin1());
   if (!m_database->setCurrent(s))
   {
     playerView->setText(QString("<h1>%1</h1>\n").arg(s) + 
@@ -79,7 +83,7 @@ void PlayerDialog::showPlayer(const QString& s)
   if (m_database->hasPhoto())
   {
     playerView->mimeSourceFactory()->setImage("image.png", m_database->photo());
-    image = "<img hspace=\"10\" align=\"right\" src=\"image.png\">";
+    image = "<img align=\"right\" src=\"image.png\">";
   }
   QString bio;
   if (m_database->hasBiography())
