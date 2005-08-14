@@ -21,8 +21,12 @@ typedef unsigned char Square;
 typedef unsigned char Coord;
 
 enum Color {White, Black};
-enum Piece {Empty, WhiteKing, WhiteQueen, WhiteRook, WhiteBishop, WhiteKnight, WhitePawn, 
-  BlackKing, BlackQueen, BlackRook, BlackBishop, BlackKnight, BlackPawn};
+enum Piece {Empty, WhiteKing, WhiteQueen, WhiteRook, WhiteBishop, WhiteKnight, WhitePawn,
+  BlackKing, BlackQueen, BlackRook, BlackBishop, BlackKnight, BlackPawn,
+  King = WhiteKing, Queen = WhiteQueen, Rook = WhiteRook, Bishop =WhiteBishop, Knight = WhiteKnight, Pawn = WhitePawn, InvalidPiece = 255};
+
+const int ConstPieceTypes = BlackPawn + 1;
+const Square InvalidSquare = 255;
 
 enum MoveType {StandardMove,
   PromotionWhiteQueen = WhiteQueen, PromotionWhiteRook = WhiteRook,
@@ -33,7 +37,7 @@ enum MoveType {StandardMove,
 
 #define min(a,b) (a<b) ? a : b
 #define max(a,b) (a>b) ? a : b
-#define abs(a) (a>=0) ? a : -a
+
 
 #endif
 

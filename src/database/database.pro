@@ -1,22 +1,24 @@
-# Fil oprettet af Kdevelops qmake-håndtering. 
+# Plik utworzony przez menad?era projektï¿½ kdevelopa
 # ------------------------------------------- 
-# Delkatalog relativt til projektets hovedkatalog: ./src/database
-# Målet er et bibliotek:  database
+# Podkatalog wzgl?dem g?ï¿½nego katalogu projektu: ./src/database
+# Cel to biblioteka database
 
 HEADERS += board.h \
            move.h \
            common.h \
+           capture.h \
            game.h \
-					 partialdate.h \
-           pgnparser.h \
+           partialdate.h \
+#           pgnparser.h \
            playerdatabase.h \
            playerdata.h \
            databaseconversion.h
 SOURCES += board.cpp \
+           capture.cpp \
            move.cpp \
            databaseconversion.cpp \
-					 partialdate.cpp \
-           pgnparser.cpp \
+           partialdate.cpp \
+#           pgnparser.cpp \
            playerdatabase.cpp \
            playerdata.cpp 
 TARGET = database

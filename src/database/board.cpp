@@ -17,33 +17,55 @@
 #include "board.h"
 #include "string.h"
 
-Board::Board() : m_toMove(White)
+
+Board::Board()
 {
-  memset(m_board, Empty, 64);
-  memset(m_kings, 0, 2);
+  clear();
+}
+
+void Board::clear()
+{
+  m_toMove = White;
+  memset(m_board, InvalidPiece, 64);
+  memset(m_pieceType, Empty, 32);
+  memset(m_piecePosition, InvalidSquare, 32);
+  memset(m_pieceCount, 0, ConstPieceTypes);
+}
+
+void Board::fromFEN(const QString&)
+{
+  clear();
+#warning fromFEN not implemented
 }
 
 Piece Board::at(Square s) const
 {
-  return m_board[s];
+  return (m_board[s] != InvalidPiece) ? m_pieceType[m_board[s]] : Empty;
 }
 
 Piece Board::at(Coord x, Coord y) const
 {
-  return m_board[8 * y + x];
+  return at(8 * y + x);
 }
 
-Square Board::kingPosition(Color c) const
+Piece Board::atIndex(int i) const
 {
-  return m_kings[c];
+  return m_pieceType[i];
+}
+
+Square Board::piecePosition(int index) const
+{
+  return m_piecePosition[index];
 }
 
 int Board::pieceCount(Piece p) const
 {
-  int pc = 0;
-  for(int i = 0; i < 64; i++)
-    pc += m_board[i] == p;
-  return pc;
+  return m_pieceCount[p];
+}
+
+Square Board::kingPosition(Color c) const
+{
+  return (c == White) ? m_piecePosition[0] : m_piecePosition[16];
 }
 
 Color Board::toMove() const
@@ -51,7 +73,19 @@ Color Board::toMove() const
   return m_toMove;
 }
 
-void Board::doStandardMove(const Move& m)
+void Board::setToMove(Color c)
+{
+  m_toMove = c;
+}
+
+void Board::swapToMove()
+{
+  m_toMove = m_toMove == White ? Black : White;
+}
+
+
+
+void Board::doMove(const Move& m)
 {
   movePiece(m.from(), m.to());
   if (m.isSpecial())
@@ -61,38 +95,73 @@ void Board::doStandardMove(const Move& m)
     else if (m.isEnPassant())
       m_board[m.enPassantSquare()] = Empty;
     else  /* promotion */
-      m_board[m.to()] = m.promotionPiece();
+      promotePiece(m.from(), m.to(), m.promotionPiece());
   }
-  if (m_board[m.to()] == WhiteKing)
-    m_kings[White] = m.to();
-  else if (m_board[m.to()] == BlackKing)
-    m_kings[Black] = m.to();
-  m_toMove = m_toMove == White ? Black : White;
+  swapToMove();
 }
 
-void Board::undoStandardMove(const Move& m, Piece captured)
+void Board::undoMove(const Move& m)
 {
-  m_board[m.from()] = m_board[m.to()];
-  m_board[m.to()] = captured;
-  if (m.isSpecial())
-  {
-    if (m.isCastling())
-      movePiece(m.castlingRookTo(), m.castlingRookFrom());
-    else if (m.isEnPassant())
-      m_board[m.enPassantSquare()] = (m_toMove == White) ? BlackPawn : WhitePawn;
-    else  /* promotion */
-      m_board[m.from()] = (m_toMove == White) ? WhitePawn : BlackPawn;
-  }
-  if (m_board[m.from()] == WhiteKing)
-    m_kings[White] = m.from();
-  else if (m_board[m.from()] == BlackKing)
-    m_kings[Black] = m.from();
-  m_toMove = m_toMove == White ? Black : White;
+  movePiece(m.to(), m.from());
+  if (m.isCastling())
+    movePiece(m.castlingRookTo(), m.castlingRookFrom());
+  swapToMove();
 }
+
+void Board::undoCapture(const Move& m, int captIndex, Piece captured)
+{
+  movePiece(m.to(), m.from());
+  if (m.isEnPassant())
+    restorePiece(m.enPassantSquare(), captured, captIndex);
+  else
+    restorePiece(m.to(), captured, captIndex);
+  swapToMove();
+}
+
+void Board::undoPromotion(const Move& m, int promIndex)
+{
+  movePiece(m.to(), m.from());
+# warning undoing promotion not implemented
+  // m_board[m.from()] = (m_toMove == White) ? WhitePawn : BlackPawn;
+  swapToMove();
+}
+
+void Board::undoPromotionCapture(const Move& m, int promIndex, int captIndex, Piece captured)
+{
+  movePiece(m.to(), m.from());
+  restorePiece(m.to(), captured, captIndex);
+  // restorePiece(m.to(), m.captured, captIndex);
+  swapToMove();
+}
+
+
+
+
+
 
 
 void Board::movePiece(Square from, Square to)
 {
+  if (m_board[to] != InvalidPiece) // capture
+  {
+    m_pieceCount[m_pieceType[m_board[from]]]--;
+    m_pieceType[m_board[from]] = Empty;
+  }
   m_board[to] = m_board[from];
-  m_board[from] = Empty;
+  m_board[from] = InvalidPiece;
+  m_piecePosition[m_board[from]] = to;
 }
+
+void Board::restorePiece(Square from, Piece piece, int index)
+{
+  m_pieceCount[piece]++;
+  m_pieceType[index] = piece;
+  m_piecePosition[index] = from;
+  m_board[from] = index;
+}
+
+void Board::promotePiece(Square from, Square to, Piece promoted)
+{
+#warning promotionPiece not implemented
+}
+
