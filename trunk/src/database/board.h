@@ -18,6 +18,9 @@
 #define __BOARD_H__
 
 #include "move.h"
+#include "capture.h"
+
+#include <qstring.h>
 
 /**
    The Board class represents a chess position.
@@ -29,36 +32,62 @@
 class Board
 {
 public:
-  /** Empty constructor. Clears all the board */
+  /** Empty constructor. Creates empty board with no pieces. */
   Board();
-  /** Reset board, remove all pieces */
+  /** Resets board, remove all pieces */
   void clear();
+  /** Resets board, restoring startup position */
+  void setStandardPosition();
+  /** Sets position from FEN */
+  void fromFEN(const QString& fen);
 
+  /* information about pieces position and types */
   /** @return piece on given square */
   Piece at(Square s) const;
   /** @return piece on given square (defined by x,y from 1-8 range) */
   Piece at(Coord x, Coord y) const;
-
-  /** @return position of piece given by index */
+  /** @return piece at given @p index (0..31) */
+  Piece atIndex(int i) const;
+  /** @return position of piece given by @p index (0..31) */
   Square piecePosition(int index) const;
-  /** @return king position of given side */
-  Square kingPosition(Color c) const;
-  /** @return number of all pieces of given type */
+
+  /** @return number of all pieces of given type. */
   int pieceCount(Piece p) const;
+
+  /** @return position of king */
+  Square kingPosition(Color c) const;
+
   /** @return side to move */
   Color toMove() const;
-  /** @return set side to move - mostly useful when setting position */
-  /** Make standard move (not castling, not e.p. */
-  void doStandardMove(const Move& m);
-  /** Undo standard move, possibly restoring captured piece */
-  void undoStandardMove(const Move& m, Piece captured = Empty);
+   /** Sets side to move - mostly useful when setting position */
+  void setToMove(Color c); 
+  /** Swaps side to move */
+  void swapToMove();
+
+  /** Make standard move. */
+  void doMove(const Move& m);
+  /** Undo standard move (no captures). */
+  void undoMove(const Move& m);
+  /** Undo standard move (with capture). */
+  void undoCapture(const Move& m, int captIndex, Piece captured);
+  /** Undo standard move (with promotion). */
+  void undoPromotion(const Move& m, int promIndex);
+  /** Undo standard move (with promotion and capture). */
+  void undoPromotionCapture(const Move& m, int promIndex, int captIndex, Piece captured);
 
 private:
   /** Move piece from @p from to @p to, leaving source square empty */
   void movePiece(Square from, Square to);
-  Piece m_board[64];
+  /** Restore captured piece */
+  void restorePiece(Square from, Piece piece, int index);
+  /** Move a pawn from @p from to @p to, promoting it to @p promoted */
+  void promotePiece(Square from, Square to, Piece promoted);
+
+  unsigned char m_board[64];
+  Piece m_pieceType[32];
+  Square m_piecePosition[32];
+  int m_pieceCount[ConstPieceTypes];
   Color m_toMove;
-  Square m_kings[2];
 };
 
 
