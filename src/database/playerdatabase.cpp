@@ -67,7 +67,8 @@ bool PlayerDatabase::create(const QString& fname) {
 bool PlayerDatabase::open(const QString& fname) {
   m_dirty = false;
   m_mapfile.setName(fname+Mapfile_suffix);
-  m_mapfile.open( IO_ReadWrite );
+  if (!m_mapfile.open( IO_ReadWrite ))
+    return false;
   m_mapds.setDevice(&m_mapfile);
   Q_UINT32 map_magic;
   Q_UINT32 map_version;
@@ -92,7 +93,11 @@ bool PlayerDatabase::open(const QString& fname) {
   Q_UINT32 data_magic;
   Q_UINT32 data_version;
   m_datafile.setName(fname+Datafile_suffix);
-  m_datafile.open( IO_ReadWrite );
+  if (!m_datafile.open( IO_ReadWrite )){
+    m_mapds.unsetDevice();
+    m_mapfile.close();
+    return false;
+  }
   m_datads.setDevice(&m_datafile);
   m_datads >> data_magic;
   m_datads >> data_version;
@@ -282,7 +287,7 @@ QString PlayerDatabase::current() const{
 }
 bool PlayerDatabase::setCurrent(const QString& playername){
    if (m_currentPlayerName.compare(playername) == 0)
-      return false;
+      return true;
    if (m_dirty)//previous current player was changed
       m_pendingUpdates.insert(m_currentPlayerName,m_currentPlayer);
    m_currentPlayerName = playername;
@@ -416,12 +421,12 @@ QStringList PlayerDatabase::playerNames(){
   return result;
 }
 
-QStringList PlayerDatabase::findPlayers(const QString& prefix, const int maxCount){
+QStringList PlayerDatabase::findPlayers(const QString& prefix, const int maxCount, const bool cs){
   QStringList result;
   QMap<QString,Q_INT32>::Iterator it;
   int i=0;
   for ( it = m_mapping.begin(); it != m_mapping.end(); ++it ) {
-     if (it.key().startsWith(prefix)){
+     if (it.key().startsWith(prefix,cs)){
         if (i >= maxCount)
           break;
         result.push_back(it.key());
