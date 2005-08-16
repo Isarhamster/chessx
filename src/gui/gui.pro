@@ -5,9 +5,11 @@
 
 FORMS   += playerdialogbase.ui	   
 HEADERS += mainwindow.h \
-           playerdialog.h 
+           playerdialog.h \
+	   settings.h
 SOURCES += mainwindow.cpp \
-           playerdialog.cpp 
+           playerdialog.cpp \
+	   settings.cpp 
 TARGET = gui
 CONFIG += release warn_on qt staticlib
 TEMPLATE = lib

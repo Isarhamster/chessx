@@ -29,12 +29,13 @@ class MainWindow: public QMainWindow
 public:
   MainWindow();
   ~MainWindow();
-
+  
 protected:
 
-private slots:
+public slots:
   void slotAbout();
   void slotPlayerDialog();
+  void writeConfig();
 
 private:
   PlayerDatabase* m_playerDatabase;

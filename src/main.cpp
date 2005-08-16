@@ -16,15 +16,18 @@
 
 #include <qapplication.h>
 #include "mainwindow.h"
-#include "move.h"
+#include "settings.h"
+
 
 int main( int argc, char ** argv ) 
 {
-  Move m(5, 20);
+  AppSettings = new Settings;
   QApplication a(argc, argv);
   MainWindow* mw = new MainWindow;
   mw->setCaption("Chess Database");
   mw->show();
   a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
-  return a.exec();
+  int result = a.exec();
+  delete AppSettings;
+  return result;
 }

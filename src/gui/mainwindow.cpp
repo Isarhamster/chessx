@@ -17,7 +17,7 @@
 #include "mainwindow.h"
 #include "playerdialog.h"
 #include "playerdatabase.h"
-
+#include "settings.h"
 
 #include <qpopupmenu.h>
 #include <qmenubar.h>
@@ -47,23 +47,36 @@ MainWindow::MainWindow():QMainWindow(0, "MainWindow", WDestructiveClose)
   statusBar()->message(tr("Ready"), 2000);
   resize(450, 600);
 
+  /* Restoring layouts */
+  connect(qApp, SIGNAL(aboutToQuit()), SLOT(writeConfig()));
+  AppSettings->readLayout(m_playerDialog);
+  AppSettings->readLayout(this);
 }
 
 MainWindow::~MainWindow()
 {
+  /* saving layouts */
   delete m_playerDialog;
   delete m_playerDatabase;
 }
+
+void MainWindow::writeConfig()
+{
+  AppSettings->writeLayout(m_playerDialog);
+  AppSettings->writeLayout(this);
+}
+
 
 
 void MainWindow::slotAbout()
 {
   QMessageBox::about(this, tr("Chess Database"),
-      tr("Chess Database\n(C) 2005 Ejner Borgbjerg, Kamil Przybyla and Michal Rudolf"));
+      tr("Chess Database\n(C) 2005 Ejner Borgbjerg, Kamil Przybyla and Michal Rudolf") + QString("\nPosition: %1x%2").arg(x()).arg(y()));
 }
 
 void MainWindow::slotPlayerDialog()
 {
   m_playerDialog->show();
 }
+
 
