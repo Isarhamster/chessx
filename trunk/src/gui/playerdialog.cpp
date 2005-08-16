@@ -67,7 +67,6 @@ void PlayerDialog::showPlayer(QListViewItem* i)
 
 void PlayerDialog::showPlayer(const QString& s)
 {
-  qDebug("Showing: [%s]", s.latin1());
   if (!m_database->setCurrent(s))
   {
     playerView->setText(QString("<h1>%1</h1>\n").arg(s) + 
@@ -109,5 +108,4 @@ void PlayerDialog::showPlayer(const QString& s)
   // Final text
   playerView->setText(tr("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6%7")
     .arg(s).arg(image).arg(live).arg(country).arg(title).arg(bio).arg(rating));
-  
 }
