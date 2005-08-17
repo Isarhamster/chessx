@@ -1,9 +1,9 @@
 /***************************************************************************
-                          qpopupmenu.h  -  qt3/4 compatibility header
+                          qvaluestack.h  -  qt3/4 compatibility header
                              -------------------
-    begin                : 3 July 2005
+    begin                : 17 August 2005
     copyright            : (C) 2005 William Hoggarth
-                           <whoggarth@user.sourceforge.net>
+                           <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -15,15 +15,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __Q34_QPOPUPMENU_H__
-#define __Q34_QPOPUPMENU_H__
+#ifndef __Q34_QVALUESTACK_H__
+#define __Q34_QVALUESTACK_H__
 
 #if QT_VERSION < 0x040000
-#include <qpopupmenu.h>
+#include <qvaluestack.h>
 #else
-#include <q3popupmenu.h>
-typedef Q3PopupMenu QPopupMenu;
+#include <q3valuestack.h>
+#define QValueStack Q3ValueStack
 using namespace Qt;
 #endif // QT_VERSION < 0x040000
 
-#endif // __Q34_QPOPUPMENU_H__
+#endif // __Q34_QVALUESTACK_H__
