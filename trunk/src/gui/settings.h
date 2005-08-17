@@ -1,7 +1,7 @@
 /***************************************************************************
-                          mainwindow.h  -  main window
+                          Settings - maintaining configuration
                              -------------------
-    begin                : sob maj 7 2005
+    begin                : Mon 15 Aug 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
@@ -14,36 +14,21 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <qsettings.h>
 
-#ifndef __MAINWINDOW_H__
-#define __MAINWINDOW_H__
+class QWidget;
 
-#include <qmainwindow.h>
-#include <qmessagebox.h>
-
-class PlayerDatabase;
-class PlayerDialog;
-
-class MainWindow: public QMainWindow
+class Settings : public QSettings
 {
-  Q_OBJECT
 public:
-  MainWindow();
-  ~MainWindow();
-
-protected:
-  bool yesNo(const QString& quetion, QMessageBox::Icon icon = QMessageBox::Information) const;
-  void closeEvent(QCloseEvent* e);
-
-public slots:
-  void slotAbout();
-  void slotPlayerDialog();
-
-private:
-
-  PlayerDatabase* m_playerDatabase;
-  PlayerDialog* m_playerDialog;
+  enum {Show = 1} LayoutFlags;
+  Settings();
+  ~Settings();
+  /* Restore widget's layout based on its name. Optionally show window if it is visible */
+  void readLayout(QWidget* w, unsigned flags = 0);
+  /* Write widget's layout with its name. */
+  void writeLayout(const QWidget* w);
 };
 
+extern Settings* AppSettings;
 
-#endif

@@ -24,8 +24,9 @@
 #include <qstatusbar.h>
 #include <qmessagebox.h>
 #include <qapplication.h>
+#include <qlabel.h>
 
-MainWindow::MainWindow():QMainWindow(0, "MainWindow", WDestructiveClose)
+MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 {
   /* Database initialization */
   m_playerDatabase = new PlayerDatabase;
@@ -39,7 +40,6 @@ MainWindow::MainWindow():QMainWindow(0, "MainWindow", WDestructiveClose)
   QPopupMenu *windows = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Windows"), windows);
   windows ->insertItem(tr("&Player Database..."), this, SLOT(slotPlayerDialog()), CTRL + SHIFT + Key_P);
-
   menuBar()->insertSeparator();
   QPopupMenu *help = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Help"), help);
@@ -48,8 +48,7 @@ MainWindow::MainWindow():QMainWindow(0, "MainWindow", WDestructiveClose)
   resize(450, 600);
 
   /* Restoring layouts */
-  connect(qApp, SIGNAL(aboutToQuit()), SLOT(writeConfig()));
-  AppSettings->readLayout(m_playerDialog);
+  AppSettings->readLayout(m_playerDialog, Settings::Show);
   AppSettings->readLayout(this);
 }
 
@@ -60,10 +59,23 @@ MainWindow::~MainWindow()
   delete m_playerDatabase;
 }
 
-void MainWindow::writeConfig()
+void MainWindow::closeEvent(QCloseEvent* e)
 {
-  AppSettings->writeLayout(m_playerDialog);
-  AppSettings->writeLayout(this);
+  if (yesNo(tr("Do you want to quit?"))) {
+    AppSettings->writeLayout(m_playerDialog);
+    AppSettings->writeLayout(this);
+    e->accept();
+    qApp->quit();
+    }
+  else
+    e->ignore();
+}
+
+bool MainWindow::yesNo(const QString& question, QMessageBox::Icon icon) const
+{
+  QMessageBox mb("ChessX", question, icon, QMessageBox::Yes, QMessageBox::No,
+     QMessageBox::NoButton);
+  return mb.exec() == QMessageBox::Yes;
 }
 
 
@@ -71,7 +83,7 @@ void MainWindow::writeConfig()
 void MainWindow::slotAbout()
 {
   QMessageBox::about(this, tr("Chess Database"),
-      tr("Chess Database\n(C) 2005 Ejner Borgbjerg, Kamil Przybyla and Michal Rudolf") + QString("\nPosition: %1x%2").arg(x()).arg(y()));
+      tr("Chess Database\n(C) 2005 Ejner Borgbjerg, William Hoggarth, Kamil Przybyla and Michal Rudolf"));
 }
 
 void MainWindow::slotPlayerDialog()
