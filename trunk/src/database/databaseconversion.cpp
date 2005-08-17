@@ -190,7 +190,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
   std::cout << numberOfPlayers << " players read in from ratings.ssp\n"; 
   std::cout << numberOfPictures << " players had a picture\n"; 
   for ( QStringList::Iterator it = pictures.begin(); it != pictures.end(); ++it ) {
-     std::cout << "player picture that was not converted: " << *it << "\n";
+     std::cout << "player picture that was not converted: " << (*it).latin1() << "\n";
   }
 
   pdb.commit();

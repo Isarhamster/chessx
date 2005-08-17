@@ -18,7 +18,8 @@
 #define __CAPTURE_H__
 
 #include "common.h"
-#include <qvaluestack.h>
+#include <qglobal.h>
+#include <qt34/qvaluestack.h>
 
 class Capture {
 public:

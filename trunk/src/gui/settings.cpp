@@ -15,13 +15,24 @@
  ***************************************************************************/
 
 #include "settings.h"
+#include <qglobal.h>
 #include <qwidget.h>
 
+#if QT_VERSION < 0x040000
 Settings::Settings() : QSettings(QSettings::Ini)
 {
-  setPath(QString::null, "ChessX");
+  setPath("ChessX", "ChessX", QSettings::User);
   beginGroup("/ChessX");
 }
+
+#else
+
+Settings::Settings() : QSettings("ChessX", QSettings::IniFormat)
+{
+  setPath("ChessX", "ChessX", QSettings::UserScope);
+  beginGroup("/ChessX");
+}    
+#endif
 
 Settings::~Settings()
 {
