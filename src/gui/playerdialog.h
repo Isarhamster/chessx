@@ -33,9 +33,12 @@ public slots:
   void findPlayers(const QString& s);
   void showPlayer(const QString& s);
   void showPlayer(QListViewItem* i);
-
+  /* re-read configuration */
+  void configure();
 private:
   PlayerDatabase* m_database;
+  bool m_showRating;
+  int m_showLimit;
 };
 
 

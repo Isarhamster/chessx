@@ -20,13 +20,15 @@
 
 #include "playerdialog.h"
 #include "playerdatabase.h"
-
+#include "settings.h"
 
 PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : PlayerDialogBase(parent)
 {
   m_database = db;
   connect(playerEdit, SIGNAL(textChanged (const QString&)), SLOT(findPlayers(const QString&)));
   connect(playerList, SIGNAL(currentChanged(QListViewItem*)), SLOT(showPlayer(QListViewItem*)));
+  connect(parent, SIGNAL(reconfigure()), SLOT(configure()));
+  configure();
 
   for (int i=1; i<4; i++)
     playerList->adjustColumn(i);
@@ -38,13 +40,21 @@ PlayerDialog::~PlayerDialog()
 {
 }
 
+void PlayerDialog::configure()
+{
+  AppSettings->beginGroup("/Players/");
+  m_showRating = AppSettings->readBoolEntry("rating", true);
+  m_showLimit = AppSettings->readNumEntry("count", 100);
+  AppSettings->endGroup();
+}
+
 void PlayerDialog::findPlayers(const QString& s)
 {
   // Capitalize first letter
   QString name = s;
   if (!name.isEmpty())
      name[0] = name[0].upper();
-  QStringList players = m_database->findPlayers(name, 100);
+  QStringList players = m_database->findPlayers(name, m_showLimit);
   playerList->clear();
   for (QStringList::ConstIterator it = players.begin(); it != players.end(); ++it)
   {
@@ -90,20 +100,23 @@ void PlayerDialog::showPlayer(const QString& s)
   QString title = m_database->title();
 
   // Rating
-  int start = m_database->firstEloListIndex();
-  int end = m_database->lastEloListIndex();
   QString rating;
-  for (int i = start; i<=end; i++)
+  if (m_showRating)
   {
-    int elo = m_database->elo(i);
-    if (!elo)
-      continue;
+    int start = m_database->firstEloListIndex();
+    int end = m_database->lastEloListIndex();
+    for (int i = start; i<=end; i++)
+    {
+      int elo = m_database->elo(i);
+      if (!elo)
+        continue;
+      if (!rating.isEmpty())
+        rating.append(", ");
+      rating.append(QString("%1:&nbsp;%2").arg(m_database->eloListToDate(i).asShortString()).arg(elo));
+    }
     if (!rating.isEmpty())
-      rating.append(", ");
-    rating.append(QString("%1:&nbsp;%2").arg(m_database->eloListToDate(i).asShortString()).arg(elo));
+      rating = tr("<h2>Rating</h2>") + rating;
   }
-  if (!rating.isEmpty())
-    rating = tr("<h2>Rating</h2>") + rating;
 
   // Final text
   playerView->setText(tr("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6%7")

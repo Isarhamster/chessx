@@ -1,7 +1,7 @@
 /***************************************************************************
-                          mainwindow.h  -  main window
+                          preferences  -  Preferences dialog
                              -------------------
-    begin                : sob maj 7 2005
+    begin                : Thu 18 Aug 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
@@ -14,40 +14,25 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef __PREFERENCESDIALOG_H__
+#define __PREFERENCESDIALOG_H__
 
-#ifndef __MAINWINDOW_H__
-#define __MAINWINDOW_H__
+#include "preferencesbase.h"
 
-#include <qmainwindow.h>
-#include <qmessagebox.h>
 
-class PlayerDatabase;
-class PlayerDialog;
-
-class MainWindow: public QMainWindow
+class PreferencesDialog : public PreferencesDialogBase
 {
   Q_OBJECT
 public:
-  MainWindow();
-  ~MainWindow();
-
-protected:
-  bool yesNo(const QString& quetion, QMessageBox::Icon icon = QMessageBox::Information) const;
-  void closeEvent(QCloseEvent* e);
+  PreferencesDialog(QWidget* parent = 0);
+  ~PreferencesDialog();
 
 public slots:
-  void slotAbout();
-  void slotPlayerDialog();
-  void slotConfigure();
-
-signals:
-  /* Re-read configuration */
-  void reconfigure();
-
-private:
-  PlayerDatabase* m_playerDatabase;
-  PlayerDialog* m_playerDialog;
+  int exec();
 };
 
 
+
+
 #endif
+
