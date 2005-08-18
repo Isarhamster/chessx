@@ -18,6 +18,7 @@
 #include "playerdialog.h"
 #include "playerdatabase.h"
 #include "settings.h"
+#include "preferences.h"
 
 #include <qpopupmenu.h>
 #include <qmenubar.h>
@@ -31,7 +32,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   /* Database initialization */
   m_playerDatabase = new PlayerDatabase;
   m_playerDatabase->open("../tests/playerdatabase/data/players");
-  m_playerDialog = new PlayerDialog(m_playerDatabase);
+  m_playerDialog = new PlayerDialog(m_playerDatabase, this);
 
   QPopupMenu *file = new QPopupMenu(this);
   menuBar()->insertItem(tr("&File"), file);
@@ -40,6 +41,11 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   QPopupMenu *windows = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Windows"), windows);
   windows ->insertItem(tr("&Player Database..."), this, SLOT(slotPlayerDialog()), CTRL + SHIFT + Key_P);
+
+  QPopupMenu *settings = new QPopupMenu(this);
+  menuBar()->insertItem(tr("&Settings"), settings);
+  settings ->insertItem(tr("&Configure ChessX..."), this, SLOT(slotConfigure()));
+
   menuBar()->insertSeparator();
   QPopupMenu *help = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Help"), help);
@@ -78,8 +84,6 @@ bool MainWindow::yesNo(const QString& question, QMessageBox::Icon icon) const
   return mb.exec() == QMessageBox::Yes;
 }
 
-
-
 void MainWindow::slotAbout()
 {
   QMessageBox::about(this, tr("Chess Database"),
@@ -91,4 +95,9 @@ void MainWindow::slotPlayerDialog()
   m_playerDialog->show();
 }
 
-
+void MainWindow::slotConfigure()
+{
+  PreferencesDialog P;
+  if (P.exec() == QDialog::Accepted)
+    emit reconfigure();
+}
