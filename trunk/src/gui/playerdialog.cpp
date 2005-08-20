@@ -101,8 +101,17 @@ void PlayerDialog::showPlayer(const QString& s)
 
   // Rating
   QString rating;
+  int elo = m_database->highestElo();
+  if (elo) 
+      rating = tr("Highest rating: %1<br>").arg(elo);
+  int eloindex = m_database->lastEloListIndex();
+  elo = m_database->elo(eloindex);
+  if (elo)
+    rating.append(tr("Last rating: %1 (%2)").arg(elo)
+         .arg(m_database->eloListToDate(eloindex).asShortString()));
   if (m_showRating)
   {
+    rating.append(tr("<br>Rating history:<br><blockquote>"));
     int start = m_database->firstEloListIndex();
     int end = m_database->lastEloListIndex();
     for (int i = start; i<=end; i++)
@@ -110,13 +119,14 @@ void PlayerDialog::showPlayer(const QString& s)
       int elo = m_database->elo(i);
       if (!elo)
         continue;
-      if (!rating.isEmpty())
+      if (i != start)
         rating.append(", ");
       rating.append(QString("%1:&nbsp;%2").arg(m_database->eloListToDate(i).asShortString()).arg(elo));
     }
-    if (!rating.isEmpty())
-      rating = tr("<h2>Rating</h2>") + rating;
+    rating.append("</blockquote>\n");
   }
+  if (!rating.isEmpty())
+    rating.prepend(tr("<h2>Rating</h2>"));
 
   // Final text
   playerView->setText(tr("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6%7")
