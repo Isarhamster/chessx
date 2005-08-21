@@ -26,7 +26,7 @@ http://doc.trolltech.com/4.0/qdatastream.html
 #include <qregexp.h>
 #include <qdatastream.h>
 #include <qfile.h>
-#include <qvaluevector.h>
+#include <qt34/qvaluevector.h>
 #include <qmap.h>
 
 class Tags{
