@@ -3,6 +3,7 @@
                              -------------------
     begin                : sob maj 7 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+                           (C) 2005 William Hoggarth <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -13,6 +14,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#ifndef __MOVE_H__
+#define __MOVE_H__
 
 #include "common.h"
 
@@ -59,6 +63,8 @@ public:
   Square castlingRookFrom() const;
   /** @return Square when rook is placed after castling */
   Square castlingRookTo() const;
+	/** Check whether the move is a pawn double advance */
+	bool isDoubleAdvance() const;
   /** Check whether move is an en passant */
   bool isEnPassant() const;
   /** @return Square when en-passant is captured. Undefined if there is no en-passant. */
@@ -74,3 +80,5 @@ private:
   Square m_from, m_to;
   MoveType m_type;
 };
+
+#endif // __MOVE_H__

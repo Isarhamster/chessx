@@ -3,6 +3,7 @@
                              -------------------
     begin                : sob maj 7 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+                           (C) 2005 William Hoggarth <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,6 +19,7 @@
 
 Move::Move() : m_from(0), m_to(0)
 {
+	m_type = StandardMove;
 }
 
 Move::Move(Square f, Square t) : m_from(f), m_to(t)
@@ -71,6 +73,11 @@ bool Move::isPromotion() const
   return m_type >= PromotionWhiteQueen && m_type <= PromotionBlackKnight;
 }
 
+void Move::setPromotionPiece(Piece p)
+{
+	m_type = (MoveType)p;
+}
+
 Piece Move::promotionPiece() const
 {
   return (Piece)m_type;
@@ -89,6 +96,11 @@ Square Move::castlingRookFrom() const
 Square Move::castlingRookTo() const
 {
   return (m_from + m_to) / 2;
+}
+
+bool Move::isDoubleAdvance() const
+{
+	return m_type == DoubleAdvance;
 }
 
 bool Move::isEnPassant() const

@@ -1,8 +1,9 @@
 /***************************************************************************
-                          common  -  description
+                          common.h  -  common chess code
                              -------------------
     begin                : sob maj 7 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+		                       (C) 2005 William Hoggarth <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -17,6 +18,8 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
+#include <qchar.h>
+
 typedef unsigned char Square;
 typedef unsigned char Coord;
 
@@ -27,17 +30,25 @@ enum Piece {Empty, WhiteKing, WhiteQueen, WhiteRook, WhiteBishop, WhiteKnight, W
 
 const int ConstPieceTypes = BlackPawn + 1;
 const Square InvalidSquare = 255;
+const Square NoEPSquare = 255;
 
 enum MoveType {StandardMove,
   PromotionWhiteQueen = WhiteQueen, PromotionWhiteRook = WhiteRook,
   PromotionWhiteBishop = WhiteBishop, PromotionWhiteKnight = WhiteKnight,
   PromotionBlackQueen = BlackQueen, PromotionBlackRook = BlackRook,
   PromotionBlackBishop = BlackBishop, PromotionBlackKnight = BlackKnight,
-  Castling = 128, EnPassant};
+  Castling = 128, EnPassant, DoubleAdvance};
+	
+typedef int CastlingRights;
+enum { NoRights = 0, WhiteKingside = 1, WhiteQueenside = 2, WhiteBothSides = 3, BlackKingside = 4, BlackQueenside = 8, BlackBothSides = 12, AllRights = 15 } ;
 
-#define min(a,b) (a<b) ? a : b
-#define max(a,b) (a>b) ? a : b
+#define MIN(a,b) (a<b) ? a : b
+#define MAX(a,b) (a>b) ? a : b
 
+/** Converts a QChar to a Piece */
+Piece charToPiece(const QChar& letter);
+/** Converts a Piece to a QChar */
+QChar pieceToChar(Piece piece);
 
 #endif
 
