@@ -1,8 +1,10 @@
 /***************************************************************************
-                          capture.h - infor,mation about capture/promotion
+                          history.h - information about capture/promotion
                              -------------------
     begin                : sob maj 7 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+                           (C) 2005 William Hoggarth
+													  <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -14,47 +16,54 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __CAPTURE_H__
-#define __CAPTURE_H__
+#ifndef __HISTORY_ITEM_H__
+#define __HISTORY_ITEM_H__
 
 #include "common.h"
 #include <qglobal.h>
 #include <qt34/qvaluestack.h>
 
-class Capture {
+class HistoryItem {
 public:
-  /* Standard capture - index and type of captured piece. */
-  Capture(int move, unsigned char index, Piece p);
-  /* Promotion - index of pawn used for promotion. */
-  Capture(int move, unsigned char index);
-  /* @return move number */
-  int move() const;
-  /* Sets move number. */
-  void setMove(int move);
+
+	/** Default Constructor */
+	HistoryItem();
+
+	/** Constructs a history item which contains the extra information required
+			for undoing a move */
+	HistoryItem(int capturedIndex, Piece capturedPiece,
+							CastlingRights castlingRights, Square epSquare, int halfMoveClock);
+	
   /* @return captured piece. */
   Piece piece() const;
   /* Sets captured piece. */
   void setPiece(Piece p);
   /* @return index of captured piece. */
-  unsigned char index() const;
+  int index() const;
   /* Sets captured piece. */
-  void setIndex(unsigned char index);
-  /* Checks whether move is a promotion */
-  bool isPromotion() const;
-  /* Checks whether move is a capture */
-  bool isCapture() const;
+  void setIndex(int index);
+  /* @return castling rights */
+	CastlingRights castlingRights() const;
+	/* Sets castling rights */
+	void setCastlingRights(CastlingRights castlingRights);
+	/* @return en passant square */
+	Square epSquare() const;
+	/* Sets en passant square */
+	void setEPSquare(Square epSquare);
+	/* @return half move clock */
+	int halfMoveClock() const;
+	/* Sets half move clock */
+	void setHalfMoveClock(int halfMoveClock);
+
 private:
-  int m_move;
-  unsigned char m_index;
-  Piece m_piece;
+	
+	int m_index;
+	Piece m_piece;
+	CastlingRights m_castlingRights;
+	Square m_epSquare;
+	int m_halfMoveClock;
 };
 
-
-
-class CaptureList : QValueStack<Capture> {
-public:
-  /** Checks whether the list contains entry for given move */
-  bool hasMove(int move) const;
-};
+typedef QValueStack<HistoryItem> History;
 
 #endif

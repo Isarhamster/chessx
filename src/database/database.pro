@@ -4,9 +4,10 @@
 # Målet er et bibliotek:  database
 
 HEADERS += board.h \
+           history.h \
            move.h \
            common.h \
-           capture.h \
+           history.h \
            game.h \
            partialdate.h \
            playerdatabase.h \
@@ -14,8 +15,10 @@ HEADERS += board.h \
            databaseconversion.h \
            tags.h 
 SOURCES += board.cpp \
-           capture.cpp \
+           history.cpp \
            move.cpp \
+           common.cpp \
+           history.cpp \
            databaseconversion.cpp \
            partialdate.cpp \
            playerdatabase.cpp \

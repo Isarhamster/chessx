@@ -3,6 +3,8 @@
                              -------------------
     begin                : sob maj 7 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+                           (C) 2005 Kamil Przybyla <kamilprz@poczta.onet.pl>
+                           (C) 2005 William Hoggarth <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,7 +20,9 @@
 #define __BOARD_H__
 
 #include "move.h"
-#include "capture.h"
+#include "history.h"
+#include "movelist.h"
+#include "common.h"
 
 #include <qstring.h>
 
@@ -40,11 +44,15 @@ public:
   void setStandardPosition();
   /** Sets position from FEN */
   void fromFEN(const QString& fen);
-
+	/** @return FEN string for position */
+	QString toFEN() const;
+	/** @return ASCII representation for debugging */
+	QString toASCII() const;
+	
   /* information about pieces position and types */
   /** @return piece on given square */
   Piece at(Square s) const;
-  /** @return piece on given square (defined by x,y from 1-8 range) */
+  /** @return piece on given square (defined by x,y from 0-7 range) */
   Piece at(Coord x, Coord y) const;
   /** @return piece at given @p index (0..31) */
   Piece atIndex(int i) const;
@@ -64,34 +72,40 @@ public:
   /** Swaps side to move */
   void swapToMove();
 
+	/* move information methods */
+	/** @return move object represented by the given short algerbraic notation */
+	Move singleMove(QString& SAN);
+	/** @return move object represented by the given long algerbraic notation */
+	Move singleLANMove(QString& LAN);
+	/** @return whether is particular sqaure is attacked */
+  bool isAttacked(Square sq,Color c) const;
+	/** @return whether a given move is legal in the current position */
+  bool isLegal(Move& m);
+	
+	/* move / undo move methods */
   /** Make standard move. */
-  void doMove(const Move& m);
+  HistoryItem doMove(const Move& m);
   /** Undo standard move (no captures). */
-  void undoMove(const Move& m);
-  /** Undo standard move (with capture). */
-  void undoCapture(const Move& m, int captIndex, Piece captured);
-  /** Undo standard move (with promotion). */
-  void undoPromotion(const Move& m, int promIndex);
-  /** Undo standard move (with promotion and capture). */
-  void undoPromotionCapture(const Move& m, int promIndex, int captIndex, Piece captured);
+  void undoMove(const Move& m, const HistoryItem& historyItem);
 
 private:
   /** Move piece from @p from to @p to, leaving source square empty */
   void movePiece(Square from, Square to);
   /** Restore captured piece */
   void restorePiece(Square from, Piece piece, int index);
-  /** Move a pawn from @p from to @p to, promoting it to @p promoted */
-  void promotePiece(Square from, Square to, Piece promoted);
+  /** Promotes a piece / changes its type*/
+  void promotePiece(Square square, Piece promoted);
 
   unsigned char m_board[64];
   Piece m_pieceType[32];
   Square m_piecePosition[32];
   int m_pieceCount[ConstPieceTypes];
+	
   Color m_toMove;
+	Square m_epSquare;
+	CastlingRights m_castlingRights;
+	int m_halfMoveClock;
 };
-
-
-
 
 #endif
 
