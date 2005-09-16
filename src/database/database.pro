@@ -13,7 +13,10 @@ HEADERS += board.h \
            playerdatabase.h \
            playerdata.h \
            databaseconversion.h \
-           tags.h 
+           tags.h \
+           engine.h \
+           wbengine.h \
+           uciengine.h
 SOURCES += board.cpp \
            history.cpp \
            move.cpp \
@@ -23,7 +26,10 @@ SOURCES += board.cpp \
            partialdate.cpp \
            playerdatabase.cpp \
            playerdata.cpp \
-           tags.cpp 
+           tags.cpp \
+           engine.cpp \
+           wbengine.cpp \
+           uciengine.cpp
 TARGET = database
 CONFIG += release warn_on qt staticlib
 TEMPLATE = lib
