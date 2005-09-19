@@ -15,7 +15,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QRegExp>
+#include <qregexp.h>
 #include "board.h"
 
 static const int castlingMask[64] = {
@@ -322,7 +322,7 @@ QString Board::toASCII() const
 			if(at(col, row) == Empty) {
 				ascii += ". ";
 			} else {
-				ascii += pieceToChar(at(col, row)) + " ";
+				ascii += QString(pieceToChar(at(col, row))) + " ";
 			}
 		}
 		ascii += '\n';
