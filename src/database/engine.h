@@ -22,9 +22,8 @@
 #include <qstring.h>
 #include <qtextstream.h>
 #include <qt34/qvaluelist.h>
+#include <qt34/qprocess.h>
 
-#include <q3process.h>
-typedef Q3Process QProcess;
 
 #include "board.h"
 #include "move.h"

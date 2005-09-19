@@ -105,7 +105,7 @@ void WBEngine::feature(const QString& command)
 	QString feature;
 	QString value;
 	
-	while(index < command.length()) {
+	while(index < (int)command.length()) {
 		
 		//feature name terminates with an =
 		equalsIndex = command.find('=', index);
@@ -209,10 +209,10 @@ void WBEngine::parseAnalysis(const QString& message)
 	QString sanMove;
 	int section = 4;
 	while((sanMove = trimmed.section(' ', section, section)) != "") {
-		if(sanMove.startsWith('(')) {
+		if(sanMove.startsWith("(")) {
 			break;
 		}
-		if(!sanMove.endsWith('.')) {
+		if(!sanMove.endsWith(".")) {
 			qWarning("! move: |%s|", sanMove.latin1());
 			Move move = board.singleMove(sanMove);
 			if(!move.isValid()) {
