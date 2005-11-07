@@ -46,6 +46,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   QPopupMenu *settings = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Settings"), settings);
   settings ->insertItem(tr("&Configure ChessX..."), this, SLOT(slotConfigure()));
+  settings ->insertItem(tr("&Flip board"), this, SLOT(slotConfigureFlip()), CTRL + Key_B);
 
   menuBar()->insertSeparator();
   QPopupMenu *help = new QPopupMenu(this);
@@ -95,8 +96,8 @@ bool MainWindow::yesNo(const QString& question, QMessageBox::Icon icon) const
 
 void MainWindow::slotAbout()
 {
-  QMessageBox::about(this, tr("Chess Database"),
-      tr("Chess Database\n(C) 2005 Ejner Borgbjerg, William Hoggarth, Kamil Przybyla and Michal Rudolf"));
+  QMessageBox::about(this, tr("ChessX"),
+      tr("Chess Database\n(C) 2005 William Hoggarth, Michal Rudolf and Ejner Borgbjerg"));
 }
 
 void MainWindow::slotPlayerDialog()
@@ -110,3 +111,9 @@ void MainWindow::slotConfigure()
   if (P.exec() == QDialog::Accepted)
     emit reconfigure();
 }
+
+void MainWindow::slotConfigureFlip()
+{
+  m_boardView->flip();
+}
+

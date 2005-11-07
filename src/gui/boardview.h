@@ -33,6 +33,8 @@ public:
   void setBoard(const Board& value, RepaintMode = RepaintChanged);
   Board board() const;
   bool setTheme(const QString& themeFile);
+  void flip();
+  bool isFlipped() const;
 protected:
   void repaintSquare(Square square);
   void repaintBoard();
@@ -45,6 +47,7 @@ signals:
 private:
   Board m_board;
   BoardTheme* m_theme;
+  bool m_flipped;
 };
 
 #endif
