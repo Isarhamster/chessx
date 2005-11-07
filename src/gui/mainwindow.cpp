@@ -19,6 +19,7 @@
 #include "playerdatabase.h"
 #include "settings.h"
 #include "preferences.h"
+#include "boardview.h"
 
 #include <qpopupmenu.h>
 #include <qmenubar.h>
@@ -52,6 +53,14 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   help->insertItem(tr("&About..."), this, SLOT(slotAbout()), Key_F1);
   statusBar()->message(tr("Ready"), 2000);
   resize(450, 600);
+
+  /* Board */
+  m_boardView = new BoardView(this);
+  Board board;
+  board.fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+  m_boardView->setBoard(board);
+  qDebug("%d", m_boardView->setTheme("/home/ja/programming/chessdatabase/WCN.png"));
+  setCentralWidget(m_boardView);
 
   /* Restoring layouts */
   AppSettings->readLayout(m_playerDialog, Settings::Show);
