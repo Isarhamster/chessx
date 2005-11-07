@@ -40,6 +40,7 @@ public slots:
   void slotAbout();
   void slotPlayerDialog();
   void slotConfigure();
+  void slotConfigureFlip();
 
 signals:
   /* Re-read configuration */
