@@ -59,7 +59,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   Board board;
   board.fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
   m_boardView->setBoard(board);
-  qDebug("%d", m_boardView->setTheme("/home/ja/programming/chessdatabase/WCN.png"));
+  qDebug("%d", m_boardView->setTheme("../data/themes/WCN.png"));
   setCentralWidget(m_boardView);
 
   /* Restoring layouts */
