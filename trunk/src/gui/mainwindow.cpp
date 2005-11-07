@@ -57,9 +57,9 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   /* Board */
   m_boardView = new BoardView(this);
   Board board;
-  board.fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+  board.setStandardPosition();
   m_boardView->setBoard(board);
-  qDebug("%d", m_boardView->setTheme("../data/themes/WCN.png"));
+  m_boardView->setTheme("../data/themes/WCN.png");
   setCentralWidget(m_boardView);
 
   /* Restoring layouts */
