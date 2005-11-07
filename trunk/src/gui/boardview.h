@@ -1,7 +1,7 @@
 /***************************************************************************
-                          mainwindow.h  -  main window
+                          BoardView - view of the current board
                              -------------------
-    begin                : sob maj 7 2005
+    begin                : Sun 21 Aug 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
@@ -14,42 +14,38 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef __BOARDVIEW_H__
+#define __BOARDVIEW_H__
 
-#ifndef __MAINWINDOW_H__
-#define __MAINWINDOW_H__
+#include <qwidget.h>
 
-#include <qmainwindow.h>
-#include <qmessagebox.h>
+#include "common.h"
+#include "board.h"
 
-class PlayerDatabase;
-class PlayerDialog;
-class BoardView;
+class BoardTheme;
 
-class MainWindow: public QMainWindow
+class BoardView : public QWidget
 {
-  Q_OBJECT
 public:
-  MainWindow();
-  ~MainWindow();
-
+  enum RepaintMode {NoRepaint, RepaintChanged, ForceRepaint};
+  BoardView(QWidget* parent = 0);
+  ~BoardView();
+  void setBoard(const Board& value, RepaintMode = RepaintChanged);
+  Board board() const;
+  bool setTheme(const QString& themeFile);
 protected:
-  bool yesNo(const QString& quetion, QMessageBox::Icon icon = QMessageBox::Information) const;
-  void closeEvent(QCloseEvent* e);
-
-public slots:
-  void slotAbout();
-  void slotPlayerDialog();
-  void slotConfigure();
-
+  void repaintSquare(Square square);
+  void repaintBoard();
+  virtual void paintEvent(QPaintEvent*);
+  virtual void resizeEvent(QResizeEvent*);
 signals:
-  /* Re-read configuration */
-  void reconfigure();
+  void slotSourceSelected(Square src);
+  void slotDestinationSelected(Square src, Square dest);
 
 private:
-  PlayerDatabase* m_playerDatabase;
-  PlayerDialog* m_playerDialog;
-  BoardView* m_boardView;
+  Board m_board;
+  BoardTheme* m_theme;
 };
 
-
 #endif
+
