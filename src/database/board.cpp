@@ -313,6 +313,12 @@ QString Board::toFEN() const
 	return fen;
 }
 
+void Board::setStandardPosition()
+{
+  // lazy way to implement it
+  fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+}
+  
 QString Board::toASCII() const
 {
 	QString ascii;
