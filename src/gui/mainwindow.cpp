@@ -61,6 +61,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   board.setStandardPosition();
   m_boardView->setBoard(board);
   m_boardView->setTheme("../data/themes/WCN.png");
+  m_boardView->setShowFrame(true);
   setCentralWidget(m_boardView);
 
   /* Restoring layouts */
