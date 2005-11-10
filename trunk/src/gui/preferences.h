@@ -24,10 +24,13 @@ class PreferencesDialog : public PreferencesDialogBase
 {
   Q_OBJECT
 public:
+  /** Create ChessX Preferences dialog */
   PreferencesDialog(QWidget* parent = 0);
+  /** Destroy the dialog */
   ~PreferencesDialog();
 
 public slots:
+  /** Execute dialog, save options on exit */
   int exec();
 };
 

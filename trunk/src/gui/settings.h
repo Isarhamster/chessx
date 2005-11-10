@@ -18,15 +18,16 @@
 
 class QWidget;
 
+
 class Settings : public QSettings
 {
 public:
   enum {Show = 1} LayoutFlags;
   Settings();
   ~Settings();
-  /* Restore widget's layout based on its name. Optionally show window if it is visible */
+  /** Restore widget's layout based on its name. Optionally show window if it is visible */
   void readLayout(QWidget* w, unsigned flags = 0);
-  /* Write widget's layout with its name. */
+  /** Write widget's layout with its name. */
   void writeLayout(const QWidget* w);
 };
 

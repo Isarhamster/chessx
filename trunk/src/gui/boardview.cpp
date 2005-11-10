@@ -16,13 +16,15 @@
 
 #include "boardview.h"
 #include "boardtheme.h"
+#include "settings.h"
 
 #include <qpainter.h>
+#include <qmessagebox.h>
 
-
-BoardView::BoardView(QWidget* parent) : QWidget(parent), m_flipped(false), m_showFrame(false)
+BoardView::BoardView(QWidget* parent) : QWidget(parent, "board"), m_flipped(false), m_showFrame(false)
 {
   m_theme = new BoardTheme;
+  connect(parent, SIGNAL(reconfigure()), SLOT(configure()));
 }
 
 BoardView::~BoardView()
@@ -85,9 +87,26 @@ void BoardView::resizeEvent(QResizeEvent*)
   resizeBoard();
 }
 
-bool BoardView::setTheme(const QString & themeFile)
+bool BoardView::setTheme(const QString& themeFile)
 {
-  return m_theme->load(themeFile);
+  bool result = m_theme->load(themeFile);
+  if (!result)
+  {
+    QMessageBox::warning(0, tr("Error"), tr("<qt>Cannot open theme <b>%1</b></qt>")
+        .arg(themeFile));
+    // If there is no theme, try to load default
+    if (m_theme->filename().isNull())
+    {
+      result = m_theme->load("default");
+      if (result)
+      {
+        resizeBoard();
+      }
+    }
+  }
+  if (result)
+    update();
+  return result;
 }
 
 void BoardView::flip()
@@ -113,3 +132,15 @@ void BoardView::setShowFrame(bool value)
    m_showFrame = value;
    resizeBoard();
 }
+
+void BoardView::configure()
+{
+  AppSettings->beginGroup("/Board/");
+  m_showFrame = AppSettings->readBoolEntry("showFrame", true);
+  QString theme = AppSettings->readEntry("theme", "default");
+  AppSettings->endGroup();
+  if (!theme.isNull())
+    setTheme(theme);
+  update();
+}
+

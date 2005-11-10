@@ -30,6 +30,7 @@ class BoardTheme;
 
 class BoardView : public QWidget
 {
+  Q_OBJECT
 public:
   /** Create board widget. */
   BoardView(QWidget* parent = 0);
@@ -50,6 +51,10 @@ public:
   /** @return true if there is a frame around each square. */
   bool showFrame() const;
 
+public slots:
+  /** Reconfigure current theme. */
+  void configure();
+ 
 protected:
   /** Redraws single square (and piece on it). */
   void repaintSquare(Square square);
