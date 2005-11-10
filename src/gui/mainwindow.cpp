@@ -60,13 +60,14 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   Board board;
   board.setStandardPosition();
   m_boardView->setBoard(board);
-  m_boardView->setTheme("../data/themes/WCN.png");
   m_boardView->setShowFrame(true);
   setCentralWidget(m_boardView);
 
   /* Restoring layouts */
   AppSettings->readLayout(m_playerDialog, Settings::Show);
   AppSettings->readLayout(this);
+
+  emit reconfigure();
 }
 
 MainWindow::~MainWindow()

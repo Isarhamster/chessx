@@ -35,11 +35,11 @@ class BoardTheme
 public:
   BoardTheme();
   ~BoardTheme();
-  /** Loads theme description from Eboard-compatible PNG file */
+  /** Loads theme description from Eboard-compatible PNG file. */
   bool load(const QString& themeFile);
-  /** Turns on/off using single-colored squares */
+  /** Turns on/off using single-colored squares. */
   void setPlainSquares(bool value);
-  /** @return whether squares are plain or pixmaps */
+  /** @return whether squares are plain or pixmaps. */
 	bool plainSquares() const;
   /** Sets the color of light squares. */
   void setLightColor(const QColor& value);
@@ -49,27 +49,26 @@ public:
   void setDarkColor(const QColor& value);
   /** @return color of dark squares. */
   QColor darkColor() const;
-  /** @return pixmap for given piece scaled to current size() */
+  /** @return pixmap for given piece scaled to current size(). */
   QPixmap pixmap(Piece p) const;
-  /** @return unscaled pixmap for given piece */
+  /** @return unscaled pixmap for given piece. */
   QPixmap originalPixmap(Piece p) const;
-  /** @return pixmap for square */
+  /** @return pixmap for square. */
   QPixmap square(bool dark) const;
-  /** @return unscaled pixmap for square */
+  /** @return unscaled pixmap for square. */
   QPixmap originalSquare(bool dark) const;
-  /** Checkes whether themes is valid (all pixmaps loaded) */
+  /** Checkes whether themes is valid (all pixmaps loaded). */
   bool isValid() const;
-  /** Returns filename for pixmap */
+  /** Returns filename for pixmap. */
   QString filename() const;
-  /** Sets current size for pixmaps. Resizes all pixmaps */
+  /** Returns name of theme. It is just file without a path and extension. */
+  QString themeName() const;
+  /** Sets current size for pixmaps. Resizes all pixmaps. */
   void setSize(int value);
-  /** Returns current size of pixmaps */
+  /** Returns current size of pixmaps. */
   int size() const;
 
 private:
-  /** Make image transparent */
-  void createMask(const QImage& src, QColor transparent);
-
   static const int LightSquare = ConstPieceTypes;
   static const int DarkSquare = ConstPieceTypes+1;
   QPixmap m_originalPixmaps[ConstPieceTypes+2];

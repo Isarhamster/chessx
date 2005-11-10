@@ -72,6 +72,12 @@ QString BoardTheme::filename() const
   return m_filename;
 }
 
+QString BoardTheme::themeName() const
+{
+  int start = m_filename.findRev('/') + 1;
+  return m_filename.mid(start + 1, m_filename.length() - start - 4);
+}
+
 bool BoardTheme::isValid() const
 {
   return !filename().isNull();
@@ -79,13 +85,14 @@ bool BoardTheme::isValid() const
 
 bool BoardTheme::load(const QString& themeFile)
 {
+  QString themePath = QString("../data/themes/%1.png").arg(themeFile);
   QPixmap big;
-  big.load(themeFile);
+  if (!big.load(themePath) || big.width() < 160)
+    return false;
   int realsize = big.height() / 2;
   if (realsize != big.width() / 7)
     return false;
 
-  /* Make theme bitmap transparent */
   QImage src = big.convertToImage();
   int w = src.width();
   int h = src.height();
@@ -121,8 +128,9 @@ bool BoardTheme::load(const QString& themeFile)
   copyBlt(&m_originalPixmaps[ConstPieceTypes+1], 0, 0, &big, 6 * realsize, realsize, realsize, realsize);
   m_lightColor = QColor("#F0F0F0");
   m_darkColor = QColor("#D0D0D0");
-  m_filename = themeFile;
-  setSize(realsize);
+  m_filename = themePath;
+  // Restore previous size
+  setSize(size() ? size() : realsize);
   return true;
 }
 
@@ -134,7 +142,7 @@ int BoardTheme::size() const
 
 void BoardTheme::setSize(int value)
 {
-  if (m_size == value)
+  if (m_filename.isNull())
     return;
   m_size = value;
   for (int i = 1; i<ConstPieceTypes+2; i++)
