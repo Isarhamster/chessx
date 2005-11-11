@@ -60,7 +60,6 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   Board board;
   board.setStandardPosition();
   m_boardView->setBoard(board);
-  m_boardView->setShowFrame(true);
   setCentralWidget(m_boardView);
 
   /* Restoring layouts */

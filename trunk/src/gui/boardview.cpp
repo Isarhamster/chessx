@@ -50,11 +50,7 @@ void BoardView::repaintSquare(Square square)
   int y = m_flipped ? square / 8 : 7 - square / 8;
   int posx = x * m_theme->size();
   int posy = y * m_theme->size();
-  if (m_theme->plainSquares())
-    p.fillRect(posx, posy, m_theme->size(), m_theme->size(),
-      QBrush((x + y) % 2 ? m_theme->darkColor() : m_theme->lightColor()));
-  else
-    p.drawPixmap(posx, posy, m_theme->square((x + y) % 2));
+  p.drawPixmap(posx, posy, m_theme->square((x + y) % 2));
   p.drawPixmap(posx, posy, m_theme->pixmap(m_board.at(square)));
   if (m_showFrame)
   {
@@ -137,10 +133,13 @@ void BoardView::configure()
 {
   AppSettings->beginGroup("/Board/");
   m_showFrame = AppSettings->readBoolEntry("showFrame", true);
+  m_theme->setSquareType(BoardTheme::BoardSquare(AppSettings->readNumEntry("squareType", 0)));
+  m_theme->setLightColor(QColor(AppSettings->readEntry("lightColor", "#d0d0d0")));
+  m_theme->setDarkColor(QColor(AppSettings->readEntry("darkColor", "#a0a0a0")));
   QString theme = AppSettings->readEntry("theme", "default");
-  AppSettings->endGroup();
   if (!theme.isNull())
     setTheme(theme);
+  AppSettings->endGroup();
   update();
 }
 

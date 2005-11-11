@@ -30,17 +30,15 @@
    Pixmaps are automatically scaled to given size.
 */
 
+
 class BoardTheme 
 {
 public:
+  enum BoardSquare {Unscaled, Scaled, Plain};
   BoardTheme();
   ~BoardTheme();
   /** Loads theme description from Eboard-compatible PNG file. */
   bool load(const QString& themeFile);
-  /** Turns on/off using single-colored squares. */
-  void setPlainSquares(bool value);
-  /** @return whether squares are plain or pixmaps. */
-	bool plainSquares() const;
   /** Sets the color of light squares. */
   void setLightColor(const QColor& value);
   /** @return color of light squares. */
@@ -57,8 +55,8 @@ public:
   QPixmap square(bool dark) const;
   /** @return unscaled pixmap for square. */
   QPixmap originalSquare(bool dark) const;
-  /** Checkes whether themes is valid (all pixmaps loaded). */
-  bool isValid() const;
+  /** Checkes whether themes is valid (pixmaps loaded). */
+  bool isNull() const;
   /** Returns filename for pixmap. */
   QString filename() const;
   /** Returns name of theme. It is just file without a path and extension. */
@@ -67,14 +65,19 @@ public:
   void setSize(int value);
   /** Returns current size of pixmaps. */
   int size() const;
+  /** Sets background type. */
+  void setSquareType(BoardSquare type);
+  /** @return whether board pixmaps are scaled or clipped. */
+  BoardSquare squareType() const;
 
 private:
-  static const int LightSquare = ConstPieceTypes;
-  static const int DarkSquare = ConstPieceTypes+1;
-  QPixmap m_originalPixmaps[ConstPieceTypes+2];
-  QPixmap m_pixmaps[ConstPieceTypes+2];
+  QPixmap m_originalPixmaps[ConstPieceTypes];
+  QPixmap m_pixmaps[ConstPieceTypes];
+  QPixmap m_originalSquare[2];
+  QPixmap m_square[2];
   int m_size;
   bool m_plainSquares;
+  BoardSquare m_squareType;
   QColor m_lightColor;
   QColor m_darkColor;
   QString m_filename;
