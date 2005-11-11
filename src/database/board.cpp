@@ -317,8 +317,8 @@ void Board::setStandardPosition()
 {
   // lazy way to implement it
   fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-}
-  
+}  
+
 QString Board::toASCII() const
 {
 	QString ascii;
@@ -328,7 +328,7 @@ QString Board::toASCII() const
 			if(at(col, row) == Empty) {
 				ascii += ". ";
 			} else {
-				ascii += QString(pieceToChar(at(col, row))) + " ";
+				ascii += pieceToChar(at(col, row)) + QString(" ");
 			}
 		}
 		ascii += '\n';
@@ -402,7 +402,7 @@ void Board::swapToMove()
   m_toMove = m_toMove == White ? Black : White;
 }
 
-Move Board::singleMove(QString& SAN)
+Move Board::singleMove(const QString& SAN)
 {
   int a,b,i,j;
   Move m;
@@ -590,6 +590,215 @@ Move Board::singleMove(QString& SAN)
   else return Move();
 }
 
+QString Board::moveToSAN(const Move& move)
+{
+	QString moveString = "";
+	int from = move.from();
+	int to = move.to();
+	Piece piece = at(from);
+	bool isPawn = ((piece == WhitePawn) || (piece == BlackPawn));
+	
+	//check for castling
+	if(move.isCastling()) {
+		if(from < to) {
+			moveString = "O-O";
+		} else {
+			moveString = "O-O-O";
+		}
+	} else {
+		//piece letter & disambiguation
+		if(!isPawn) {
+			moveString += pieceToChar(piece).upper();
+			
+			bool column = false;
+			bool row = false;
+			int vector, range, square;
+			
+			switch(piece) {
+				
+				case WhiteKnight:
+					for(vector = 0; vector < 8; vector++) {
+						if(knightData[to][vector]) {
+							square = to + knightVectors[vector];
+							if(at(square) == WhiteKnight && square != from && isLegal(Move(square, to))) {
+								if((from & 7) != (square & 7)) {
+									column = true;
+								} else {
+									row = true;
+								}
+							}
+						}
+					}
+					break;
+					
+				case WhiteBishop:
+					for(vector = 0 ; vector < 4; vector++) {
+						square = to;
+						for(range = 1; range <= bishopData[to][vector]; range++) {
+							square = + bishopVectors[vector];
+							if(at(square) == WhiteBishop && square != from && isLegal(Move(square, to))) {
+								if((from & 7) != (square & 7)) {
+									column = true;
+								} else {
+									row = true;
+								}
+							}
+						}
+					}
+					break;
+					
+				case WhiteRook:
+					for(vector = 0 ; vector < 4; vector++) {
+						square = to;
+						for(range = 1; range <= rookData[to][vector]; range++) {
+							square = + rookVectors[vector];
+							if(at(square) == WhiteRook && square != from && isLegal(Move(square, to))) {
+								if((from & 7) != (square & 7)) {
+									column = true;
+								} else {
+									row = true;
+								}
+							}
+						}
+					}
+					break;
+					
+				case WhiteQueen:
+					for(vector = 0 ; vector < 4; vector++) {
+						square = to;
+						for(range = 1; range <= bishopData[to][vector]; range++) {
+							square = + bishopVectors[vector];
+							if(at(square) == WhiteQueen && square != from && isLegal(Move(square, to))) {
+								if((from & 7) != (square & 7)) {
+									column = true;
+								} else {
+									row = true;
+								}
+							}
+						}
+						square = to;
+						for(range = 1; range <= rookData[to][vector]; range++) {
+							square = + rookVectors[vector];
+							if(at(square) == WhiteQueen && square != from && isLegal(Move(square, to))) {
+								if((from & 7) != (square & 7)) {
+									column = true;
+								} else {
+									row = true;
+								}
+							}
+						}
+					}
+					break;
+					
+				case BlackKnight:
+					for(vector = 0; vector < 8; vector++) {
+						if(knightData[to][vector]) {
+							square = to + knightVectors[vector];
+							if(at(square) == BlackKnight && square != from && isLegal(Move(square, to))) {
+								if((from & 7) != (square & 7)) {
+									column = true;
+								} else {
+									row = true;
+								}
+							}
+						}
+					}
+					break;
+					
+				case BlackBishop:
+					for(vector = 0 ; vector < 4; vector++) {
+						square = to;
+						for(range = 1; range <= bishopData[to][vector]; range++) {
+							square = + bishopVectors[vector];
+							if(at(square) == BlackBishop && square != from && isLegal(Move(square, to))) {
+								if((from & 7) != (square & 7)) {
+									column = true;
+								} else {
+									row = true;
+								}
+							}
+						}
+					}
+					break;
+					
+				case BlackRook:
+					for(vector = 0 ; vector < 4; vector++) {
+						square = to;
+						for(range = 1; range <= rookData[to][vector]; range++) {
+							square = + rookVectors[vector];
+							if(at(square) == BlackRook && square != from && isLegal(Move(square, to))) {
+								if((from & 7) != (square & 7)) {
+									column = true;
+								} else {
+									row = true;
+								}
+							}
+						}
+					}
+					break;
+					
+				case BlackQueen:
+					for(vector = 0 ; vector < 4; vector++) {
+						square = to;
+						for(range = 1; range <= bishopData[to][vector]; range++) {
+							square = + bishopVectors[vector];
+							if(at(square) == BlackQueen && square != from && isLegal(Move(square, to))) {
+								if((from & 7) != (square & 7)) {
+									column = true;
+								} else {
+									row = true;
+								}
+							}
+						}
+						square = to;
+						for(range = 1; range <= rookData[to][vector]; range++) {
+							square = + rookVectors[vector];
+							if(at(square) == BlackQueen && square != from && isLegal(Move(square, to))) {
+								if((from & 7) != (square & 7)) {
+									column = true;
+								} else {
+									row = true;
+								}
+							}
+						}
+					}
+					break;
+		
+				default:
+					break;
+			}
+			
+			if(column) {
+				moveString += 'a' + (from & 7);
+			}
+			
+			if(row) {
+				moveString += '1' + (from >> 3);
+			}
+		}
+		
+		//capture x
+		if(at(to) != Empty) {
+			if(isPawn) {
+				moveString += 'a' + (from & 7);
+			}
+			moveString += 'x';
+		}
+		
+		//destination square
+		moveString += 'a' + (to & 7);
+		moveString += '1' + (to >> 3);
+	}
+	
+	HistoryItem historyItem = doMove(move);
+	if(isCheck()) {
+		moveString += '+';
+	}
+	undoMove(move, historyItem);
+	
+	return moveString;
+}
+
 Move Board::singleLANMove(QString& LAN)
 {
 	Move move;
@@ -731,7 +940,7 @@ bool Board::isAttacked(Square sq,Color c) const
   }
 }
 
-bool Board::isLegal(Move& m)
+bool Board::isLegal(const Move& m)
 {
   int b;
   Square from,to,tempsq;
@@ -1030,7 +1239,7 @@ void Board::undoMove(const Move& m, const HistoryItem& historyItem)
 		promotePiece(m.from(), m_toMove == White ? BlackPawn : WhitePawn);
 	}
 	
-	if(historyItem.piece() != InvalidPiece) {
+	if(historyItem.piece() != Empty) {
 		//restore captured piece
 		if (m.isEnPassant())
 			restorePiece(m.enPassantSquare(), historyItem.piece(),
@@ -1047,6 +1256,17 @@ void Board::undoMove(const Move& m, const HistoryItem& historyItem)
 	m_epSquare = historyItem.epSquare();
 	m_castlingRights = historyItem.castlingRights();
 	m_halfMoveClock = historyItem.halfMoveClock();
+}
+
+
+bool Board::isCheck()
+{
+	 return isAttacked(kingPosition(m_toMove), (m_toMove == White) ? Black : White);
+}
+
+bool Board::isCheckmate()
+{
+	return false;
 }
 
 void Board::movePiece(Square from, Square to)

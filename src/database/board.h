@@ -74,19 +74,27 @@ public:
 
 	/* move information methods */
 	/** @return move object represented by the given short algerbraic notation */
-	Move singleMove(QString& SAN);
+	Move singleMove(const QString& SAN);
+	/** @return string representing the given move in short algebraic notations */
+	QString moveToSAN(const Move& move);
 	/** @return move object represented by the given long algerbraic notation */
 	Move singleLANMove(QString& LAN);
 	/** @return whether is particular sqaure is attacked */
   bool isAttacked(Square sq,Color c) const;
 	/** @return whether a given move is legal in the current position */
-  bool isLegal(Move& m);
+  bool isLegal(const Move& m);
 	
 	/* move / undo move methods */
   /** Make standard move. */
   HistoryItem doMove(const Move& m);
   /** Undo standard move (no captures). */
   void undoMove(const Move& m, const HistoryItem& historyItem);
+	
+	/* board state methods */
+	/** @return whether the side to move is in check */
+	bool isCheck();
+	/** @return whether the position is a checkmate */
+	bool isCheckmate();
 
 private:
   /** Move piece from @p from to @p to, leaving source square empty */

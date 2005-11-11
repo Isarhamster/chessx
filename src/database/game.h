@@ -1,9 +1,10 @@
 /***************************************************************************
-                          board.h - board position
+                          game.h - chess game
                              -------------------
     begin                : sob maj 7 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
                            (C) 2005 Kamil Przybyla <kamilprz@poczta.onet.pl>
+                           (C) 2005 William Hoggarth <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,72 +19,167 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
+#include <qstring.h>
+
 #include "board.h"
-#include <qvaluevector.h>
+#include "movelist.h"
+#include "partialdate.h"
+
+/**
+   The Game class represents a chess game. Moves and variations can be added
+	 and removed. Moves can have associated comments and nag values. For methods
+	 that accept a variation number 0 is the main line, with 1 and above being the
+	 alternative lines.
+*/
 
 class Game
 {
-public:
-  /** Creates a new 0-length game starting from position @p b (or startup position) */
-  Game(const Board& b);
-  /** Creates a game loaded from PGN. */
-  Game(const QString& pgn);
-  /** Creates a game loaded from DB format. */
-  Game(const char* buffer);
+	friend class PgnExporter;
+	public:
+		//constructors
+		/** Creates a game with no moves and a standard start position. */
+		Game();
+		~Game();
 
- /* Game import/export */
- /** Loads the game from PGN. */
- bool fromPGN(const QString& pgn);
- /** Loads encoded game from a buffer. */
- bool fromBuffer(const char* db);
- /** Saves the game into PGN. */
- QString asPGN() const;
- /** Saves the game into database buffer. */
- void asBuffer(const char* buffer) const;
- 
- /* Board */
- /** Sets the position to be used as a start position for the game. Removes all moves if present. */
- void setStartBoard(Board& b);
- /** returns the starting position for the game */
- Board startBoard() const;
- /** Returns current position */
- Board currentBoard() const;
- 
- /* Game modification */
- /** adds a move at the end of the game */
- void addMove(const Move& m);
- /** truncates the game to @p p plies) */
- void truncate(int p);
+		//node information methods
+		/** @return current position */
+		Board board() const;
+		/** @return first move in given variation */
+		Move move(int variation = 0) const;
+		/** @return comment associated with the first move in the given variation */
+		QString annotation(int variation = 0) const;
+		/** @return nag associated with the first move in the given variation */
+		int nag(int variation = 0) const;
+		
+		//node modification methods
+		/** Sets the comment associated with the first move in the given variation */
+		bool setAnnotation(QString annotation, int variation = 0);
+		/** Sets the nag associated with the first move in the given variation */
+		bool setNag(int nag, int variation = 0);
 
- /* Move/ply information and browsing the game */
- /** @return number of plies */
- int plyCount() const;
- /** @return current ply */
- int currentPly() const;
- /** Sets current ply */
- void setCurrentPly(int p) const;
- /** @return move at ply @p p, or current move if no argument is specified. */
- Move move(int p = -1) const;
- /** @return number of moves in the game */
- int moveCount() const;
- /** Moves @p p plies forward in the game or to the end of game/variation
-    @return true if all @p plies were done. */
- bool moveForward(int p = 1);
- /** Moves @p p plies backward in the game or to the beginning of the game/variation.  
-   @return true if all @p plies were done. */
- bool moveBackward(int p = 1) const;
+		//tree information methods
+		/** @return whether the game is currently at the start position */
+		bool atStart() const;
+		/** @return whether the game is at the end of the current variation */
+		bool atEnd() const;
+		/** @return number of half moves made since the beginning of the game */
+		int ply() const;
+		/** @return number of ply in current variation */
+		int plyCount() const;
+		/** @return number of current variation relative to previous move*/
+		int variation() const;
+		/** @return number of variations at the current position */
+		int variationCount() const;
+		
+		//tree traversal methods
+		/** Moves to the begining of the game */
+		void toStart();
+		/** Moves to the end of the current variation */
+		void toEnd();
+		/** Move forward the given number of moves, returns actual number of moves made */
+		int forward(int count = 1);
+		/** Move back the given number of moves, returns actual number of moves undone */
+		int backward(int count = 1);
+		/** Enters the given variation, returns if successful */
+		bool enterVariation(int variation);
+		/** Exits the current variation */
+		void exitVariation();
+		
+		//tree modification methods
+		/** Adds a move at the current position, returns variation number of newly added move */
+		int addMove(const Move& move, const QString& annotation = QString::null, int nag = 0);
+		/** Adds a move at the current position, returns variation number of newly added move */
+		int addMove(const QString& sanMove, const QString& annotation = QString::null, int nag = 0);
+		/** Promotes the given variation to the main line, returns true if sucessful */
+		bool promoteVariation(int variation);
+		/** Removes the next move from the given variation, returns true if sucessful */
+		bool removeMove(int variation = 0);
+		
+		//game information methods
+		/** @return tag id of white player */
+		int white() const;
+		/** @return tag id of black player */
+		int black() const;
+		/** @return date of game */
+		PartialDate date() const;
+		/** @return game event */
+		int event() const;
+		/** @return game site */
+		int site() const;
+		/** @return game round */
+		int round() const;
+		
+		/** @return start position of game */
+		Board startBoard() const;
+		/** @return annotation at start of game */
+		QString startAnnotation() const;
+		/** @return game result */
+		Result result() const;
 
-private:
- /** Writes encoded move into database buffer. @return number of bytes written.  */
- int encodeMove(const Move& m, const char* buffer) const;
- /** Decodes next move from database format. @return number of bytes read (0 if there is no move to read).  */
- int decodeMove(Move& m, const char* buffer) const;
+		//game modification methods
+		/** Sets white player */
+		void setWhite(int tag);
+		/** Sets black player */
+		void setBlack(int tag);
+		/** Sets game date */
+		void setDate(const PartialDate& date);
+		/** Sets game event */
+		void setEvent(int tag);
+		/** Sets game site */
+		void setSite(int tag);
+		/** Sets game round */
+		void setRound(int tag);
+		
+		/** Sets the games start position */
+		void setStartBoard(const Board& startBoard);
+		/** Sets annotaions at the start of the game */
+		void setStartAnnotation(const QString& annotation);
+		/** Sets the game result */
+		void setResult(const Result result);
+		
+	private:
+		//definitions
+		static const int defaultSize = 1000;
+		
+		struct MoveNode {
+			Move move;
+			QString annotation;
+			int nag;
+			int previousNode;
+			int nextNode;
+			int parentNode;
+			int nextVariation;
+		};
 
- Board m_startBoard;
- Board m_currentBoard;
- int m_ply;
- int m_length;
- QValueVector <Move> m_moves;
+		//memory  management methods
+		/** Compacts nodes and allocates more space if reqiured */
+		void compact();
+		/** Copys a variation, used by compact for copying nodes to new storage */
+		void copyVariation(int parentNode, int startNode, MoveNode* destinationNodes);
+		/** Counts number of descendat nodes, for recording number of deleted nodes */
+		int countNodes(int node);
+	
+		//game data
+		int m_white;
+		int m_black;
+		PartialDate m_date;
+		int m_event;
+		int m_site;
+		int m_round;
+		Board m_startBoard;
+		QString m_startAnnotation;
+		Result m_result;
+		
+		//tree data
+		int m_currentNode;
+		int m_ply;
+		Board m_currentBoard;
+		History m_history;
+		
+		int m_nextFreeNode;
+		int m_deletedNodeCount;
+		int m_totalNodeCount;
+		MoveNode* m_moveNodes;
 };
 
-#endif
+#endif	// __GAME_H__
