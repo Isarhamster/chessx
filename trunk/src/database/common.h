@@ -42,6 +42,8 @@ enum MoveType {StandardMove,
 typedef int CastlingRights;
 enum { NoRights = 0, WhiteKingside = 1, WhiteQueenside = 2, WhiteBothSides = 3, BlackKingside = 4, BlackQueenside = 8, BlackBothSides = 12, AllRights = 15 } ;
 
+enum Result { Unknown, WhiteWin, Draw, BlackWin };
+
 #define MIN(a,b) (a<b) ? a : b
 #define MAX(a,b) (a>b) ? a : b
 

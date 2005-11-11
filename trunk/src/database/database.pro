@@ -4,7 +4,6 @@
 # Målet er et bibliotek:  database
 
 HEADERS += board.h \
-           history.h \
            move.h \
            common.h \
            history.h \
@@ -18,10 +17,10 @@ HEADERS += board.h \
            wbengine.h \
            uciengine.h
 SOURCES += board.cpp \
-           history.cpp \
            move.cpp \
            common.cpp \
            history.cpp \
+           game.cpp \
            databaseconversion.cpp \
            partialdate.cpp \
            playerdatabase.cpp \
