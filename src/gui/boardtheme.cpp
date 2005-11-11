@@ -19,7 +19,7 @@
 
 #include "boardtheme.h"
 
-BoardTheme::BoardTheme() : m_size(0), m_plainSquares(false)
+BoardTheme::BoardTheme() : m_size(0), m_squareType(Scaled)
 {
 }
 
@@ -35,6 +35,8 @@ QColor BoardTheme::lightColor() const
 void BoardTheme::setLightColor(const QColor& value)
 {
   m_lightColor = value;
+  if (m_squareType == Plain)
+    setSquareType(m_squareType);
 }
 
 QColor BoardTheme::darkColor() const
@@ -45,6 +47,8 @@ QColor BoardTheme::darkColor() const
 void BoardTheme::setDarkColor(const QColor& value)
 {
   m_darkColor = value;
+  if (m_squareType == Plain)
+    setSquareType(m_squareType);
 }
 
 QPixmap BoardTheme::pixmap(Piece p) const
@@ -54,7 +58,7 @@ QPixmap BoardTheme::pixmap(Piece p) const
 
 QPixmap BoardTheme::square(bool dark) const
 {
-  return m_pixmaps[ConstPieceTypes + dark];
+  return m_square[dark];
 }
 
 QPixmap BoardTheme::originalPixmap(Piece p) const
@@ -64,7 +68,7 @@ QPixmap BoardTheme::originalPixmap(Piece p) const
 
 QPixmap BoardTheme::originalSquare(bool dark) const
 {
-  return m_originalPixmaps[ConstPieceTypes + dark];
+  return m_originalSquare[dark];
 }
 
 QString BoardTheme::filename() const
@@ -78,9 +82,9 @@ QString BoardTheme::themeName() const
   return m_filename.mid(start + 1, m_filename.length() - start - 4);
 }
 
-bool BoardTheme::isValid() const
+bool BoardTheme::isNull() const
 {
-  return !filename().isNull();
+  return filename().isNull();
 }
 
 bool BoardTheme::load(const QString& themeFile)
@@ -110,7 +114,7 @@ bool BoardTheme::load(const QString& themeFile)
   big.setMask(mask);
 
   /* Cut big theme bitmap into separate pieces */
-  for (int i = 0; i<ConstPieceTypes + 2; i++)
+  for (int i = 0; i<ConstPieceTypes; i++)
      m_originalPixmaps[i].resize(realsize, realsize);
   copyBlt(&m_originalPixmaps[WhiteRook], 0, 0, &big, 0, 0, realsize, realsize);
   copyBlt(&m_originalPixmaps[WhiteKnight], 0, 0, &big, 1 * realsize, 0, realsize, realsize);
@@ -118,19 +122,21 @@ bool BoardTheme::load(const QString& themeFile)
   copyBlt(&m_originalPixmaps[WhiteQueen], 0, 0, &big, 3 * realsize, 0, realsize, realsize);
   copyBlt(&m_originalPixmaps[WhiteKing], 0, 0, &big, 4 * realsize, 0, realsize, realsize);
   copyBlt(&m_originalPixmaps[WhitePawn], 0, 0, &big, 5 * realsize, 0, realsize, realsize);
-  copyBlt(&m_originalPixmaps[ConstPieceTypes], 0, 0, &big, 6 * realsize, 0, realsize, realsize);
   copyBlt(&m_originalPixmaps[BlackRook], 0, 0, &big, 0, realsize, realsize, realsize);
   copyBlt(&m_originalPixmaps[BlackKnight], 0, 0, &big, 1 * realsize, realsize, realsize, realsize);
   copyBlt(&m_originalPixmaps[BlackBishop], 0, 0, &big, 2 * realsize, realsize, realsize, realsize);
   copyBlt(&m_originalPixmaps[BlackQueen], 0, 0, &big, 3 * realsize, realsize, realsize, realsize);
   copyBlt(&m_originalPixmaps[BlackKing], 0, 0, &big, 4 * realsize, realsize, realsize, realsize);
   copyBlt(&m_originalPixmaps[BlackPawn], 0, 0, &big, 5 * realsize, realsize, realsize, realsize);
-  copyBlt(&m_originalPixmaps[ConstPieceTypes+1], 0, 0, &big, 6 * realsize, realsize, realsize, realsize);
-  m_lightColor = QColor("#F0F0F0");
-  m_darkColor = QColor("#D0D0D0");
+  /* Background */
+  m_originalSquare[0].resize(realsize, realsize);
+  m_originalSquare[1].resize(realsize, realsize);
+  copyBlt(&m_originalSquare[0], 0, 0, &big, 6 * realsize, 0, realsize, realsize);
+  copyBlt(&m_originalSquare[1], 0, 0, &big, 6 * realsize, realsize, realsize, realsize);
   m_filename = themePath;
   // Restore previous size
   setSize(size() ? size() : realsize);
+  setSquareType(m_squareType);
   return true;
 }
 
@@ -142,20 +148,43 @@ int BoardTheme::size() const
 
 void BoardTheme::setSize(int value)
 {
-  if (m_filename.isNull())
+  if (isNull())
     return;
   m_size = value;
-  for (int i = 1; i<ConstPieceTypes+2; i++)
+  for (int i = 1; i<ConstPieceTypes; i++)
     m_pixmaps[i].convertFromImage(m_originalPixmaps[i].convertToImage().smoothScale(value, value));
+  m_square[0].resize(value, value);
+  m_square[1].resize(value, value);
+  setSquareType(m_squareType);
 }
 
-bool BoardTheme::plainSquares() const
+BoardTheme::BoardSquare BoardTheme::squareType() const
 {
-   return m_plainSquares;
+  return m_squareType;
 }
 
-void BoardTheme::setPlainSquares(bool value)
+void BoardTheme::setSquareType(BoardSquare type)
 {
-   m_plainSquares = value;
+  m_squareType = type;
+  if (isNull())
+    return;
+  switch(type)
+  {
+    case Plain:
+      m_square[0].fill(lightColor());
+      m_square[1].fill(darkColor());
+      break;
+    case Scaled:
+      m_square[0].convertFromImage(m_originalSquare[0].convertToImage().smoothScale(size(),
+        size()));
+      m_square[1].convertFromImage(m_originalSquare[1].convertToImage().smoothScale(size(),
+        size()));
+      break;
+    case Unscaled:
+      copyBlt(&m_square[0], 0, 0, &m_originalSquare[0], 0, 0, size(), size());
+      copyBlt(&m_square[1], 0, 0, &m_originalSquare[1], 0, 0, size(), size());
+      break;
+  }
 }
+
 

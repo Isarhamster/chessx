@@ -32,6 +32,9 @@ public:
 public slots:
   /** Execute dialog, save options on exit */
   int exec();
+  void slotBoardLightColor();
+  void slotBoardDarkColor();
+  void slotBoardMode(int mode);
 };
 
 
