@@ -24,6 +24,7 @@ Move::Move() : m_from(0), m_to(0)
 
 Move::Move(Square f, Square t) : m_from(f), m_to(t)
 {
+	m_type = StandardMove;
 }
 
 Square Move::from() const
