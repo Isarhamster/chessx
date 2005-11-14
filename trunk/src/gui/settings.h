@@ -29,6 +29,10 @@ public:
   void readLayout(QWidget* w, unsigned flags = 0);
   /** Write widget's layout with its name. */
   void writeLayout(const QWidget* w);
+  /** @return directory where data are stored. */
+	QString dataPath();
+private:
+  QString m_dataPath;
 };
 
 extern Settings* AppSettings;

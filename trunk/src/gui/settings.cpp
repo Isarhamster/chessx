@@ -15,6 +15,8 @@
  ***************************************************************************/
 
 #include "settings.h"
+
+#include <qapplication.h>
 #include <qglobal.h>
 #include <qwidget.h>
 
@@ -26,12 +28,11 @@ Settings::Settings() : QSettings(QSettings::Ini)
 }
 
 #else
-
 Settings::Settings() : QSettings("ChessX", QSettings::IniFormat)
 {
   setPath("ChessX", "ChessX", QSettings::UserScope);
   beginGroup("/ChessX");
-}    
+}
 #endif
 
 Settings::~Settings()
@@ -66,5 +67,17 @@ void Settings::writeLayout(const QWidget* w)
   endGroup();
 }
 
+QString Settings::dataPath()
+{
+  if (m_dataPath.isNull())
+  {
+    m_dataPath = qApp->applicationDirPath();
+    if (m_dataPath.endsWith("/bin"))
+      m_dataPath.truncate(m_dataPath.length() - 4);
+    m_dataPath.append("/data");
+  }
+  return m_dataPath;
+}
 
 Settings* AppSettings;
+
