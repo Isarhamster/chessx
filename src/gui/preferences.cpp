@@ -42,7 +42,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : PreferencesDialogBase(pa
   boardDarkButton->setPaletteBackgroundColor(AppSettings->readEntry("darkColor", "#a0a0a0"));
   AppSettings->endGroup();
 
-  QStringList themes = QDir("../data/themes").entryList("*.png");
+  QStringList themes = QDir(AppSettings->dataPath() + "/themes").entryList("*.png");
   for (QStringList::Iterator it = themes.begin(); it != themes.end(); ++it)
   {
     (*it).truncate((*it).length() - 4);
