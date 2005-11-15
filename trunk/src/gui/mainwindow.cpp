@@ -19,6 +19,7 @@
 #include "playerdatabase.h"
 #include "settings.h"
 #include "preferences.h"
+#include "helpwindow.h"
 #include "boardview.h"
 
 #include <qpopupmenu.h>
@@ -34,6 +35,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   m_playerDatabase = new PlayerDatabase;
   m_playerDatabase->open("../tests/playerdatabase/data/players");
   m_playerDialog = new PlayerDialog(m_playerDatabase, this);
+  m_helpWindow = new HelpWindow();
 
   QPopupMenu *file = new QPopupMenu(this);
   menuBar()->insertItem(tr("&File"), file);
@@ -51,6 +53,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   menuBar()->insertSeparator();
   QPopupMenu *help = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Help"), help);
+  help->insertItem( tr( "ChessX &help..." ), this, SLOT( slotHelp()), Key_F4 );
   help->insertItem(tr("&About..."), this, SLOT(slotAbout()), Key_F1);
   statusBar()->message(tr("Ready"), 2000);
   resize(450, 600);
@@ -64,6 +67,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 
   /* Restoring layouts */
   AppSettings->readLayout(m_playerDialog, Settings::Show);
+  AppSettings->readLayout(m_helpWindow, Settings::Show);
   AppSettings->readLayout(this);
 
   emit reconfigure();
@@ -74,12 +78,14 @@ MainWindow::~MainWindow()
   /* saving layouts */
   delete m_playerDialog;
   delete m_playerDatabase;
+  delete m_helpWindow;
 }
 
 void MainWindow::closeEvent(QCloseEvent* e)
 {
   if (yesNo(tr("Do you want to quit?"))) {
     AppSettings->writeLayout(m_playerDialog);
+    AppSettings->writeLayout( m_helpWindow );
     AppSettings->writeLayout(this);
     e->accept();
     qApp->quit();
@@ -117,4 +123,14 @@ void MainWindow::slotConfigureFlip()
 {
   m_boardView->flip();
 }
+
+
+void MainWindow::slotHelp()
+{
+  if(!m_helpWindow->winId())
+    m_helpWindow = new HelpWindow();
+  m_helpWindow->show();
+}
+
+
 
