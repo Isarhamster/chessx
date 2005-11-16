@@ -82,3 +82,11 @@ QChar pieceToChar(Piece piece)
 			return '?';
 	}	
 }
+
+bool isPieceColor(Piece piece, Color color)
+{
+  if (color == White)
+    return piece >= WhiteKing && piece <= WhitePawn;
+  else 
+    return piece >= BlackKing && piece <= BlackPawn;
+}

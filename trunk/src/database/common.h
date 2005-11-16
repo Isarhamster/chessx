@@ -51,6 +51,10 @@ enum Result { Unknown, WhiteWin, Draw, BlackWin };
 Piece charToPiece(const QChar& letter);
 /** Converts a Piece to a QChar */
 QChar pieceToChar(Piece piece);
+/** Checkes wheter piece has given color. Note that there is no pieceColor
+   function due to Empty piece value. */
+bool isPieceColor(Piece piece, Color color);
+
 
 #endif
 
