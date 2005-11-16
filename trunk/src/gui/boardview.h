@@ -33,7 +33,7 @@ class BoardView : public QWidget
   Q_OBJECT
 public:
   /** Create board widget. */
-  BoardView(QWidget* parent = 0);
+  BoardView(QWidget* parent = 0, const char* name = 0);
   /** Destroys widget. Usually it is called automatically by Qt. */
   ~BoardView();
   /** Updates and shows current position. */
@@ -50,11 +50,19 @@ public:
   void setShowFrame(bool theValue);
   /** @return true if there is a frame around each square. */
   bool showFrame() const;
+  /** @return square at given position */
+  Square squareAt(QPoint p) const;
 
 public slots:
   /** Reconfigure current theme. */
   void configure();
  
+signals:
+  /** Mouse button pressed over the board */
+  void mousePressed(const QPoint& p, ButtonState b);
+  /** Mouse button released over the board */
+  void mouseReleased(const QPoint& p, ButtonState b);
+
 protected:
   /** Redraws single square (and piece on it). */
   void repaintSquare(Square square);
@@ -66,9 +74,10 @@ protected:
   virtual void paintEvent(QPaintEvent*);
   /** Automatically resizes pieces and redisplays board. */
   virtual void resizeEvent(QResizeEvent*);
-signals:
-  void slotSourceSelected(Square src);
-  void slotDestinationSelected(Square src, Square dest);
+  /** Handle mouse events */
+  virtual void mousePressEvent(QMouseEvent* e);
+  /** Handle mouse events */
+  virtual void mouseReleaseEvent(QMouseEvent* e);
 
 private:
   Board m_board;

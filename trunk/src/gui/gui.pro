@@ -4,21 +4,24 @@
 # Cel to biblioteka gui
 
 FORMS += playerdialogbase.ui \
-         preferencesbase.ui
+         preferencesbase.ui \
+	 boardsetupbase.ui
 HEADERS += mainwindow.h \
            playerdialog.h \
            settings.h \
            preferences.h \
            helpwindow.h \
            boardview.h \
-           boardtheme.h
+           boardtheme.h \
+           boardsetup.h 
 SOURCES += mainwindow.cpp \
            playerdialog.cpp \
            settings.cpp \
            preferences.cpp \
-           helpwindow.cpp \
            boardview.cpp \ 
-           boardtheme.cpp 
+           boardtheme.cpp \
+           boardsetup.cpp \
+           helpwindow.cpp 
 TARGET = gui
 CONFIG += release warn_on qt staticlib
 TEMPLATE = lib

@@ -43,6 +43,7 @@ public slots:
   void slotConfigure();
   void slotHelp();
   void slotConfigureFlip();
+  void slotSetupBoard();
 
 signals:
   /* Re-read configuration */

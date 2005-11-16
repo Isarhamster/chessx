@@ -14,20 +14,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "mainwindow.h"
-#include "playerdialog.h"
-#include "playerdatabase.h"
-#include "settings.h"
-#include "preferences.h"
-#include "helpwindow.h"
+#include "boardsetup.h"
 #include "boardview.h"
+#include "helpwindow.h"
+#include "mainwindow.h"
+#include "playerdatabase.h"
+#include "playerdialog.h"
+#include "preferences.h"
+#include "settings.h"
 
-#include <qpopupmenu.h>
-#include <qmenubar.h>
-#include <qstatusbar.h>
-#include <qmessagebox.h>
 #include <qapplication.h>
 #include <qlabel.h>
+#include <qmenubar.h>
+#include <qmessagebox.h>
+#include <qpopupmenu.h>
+#include <qstatusbar.h>
 
 MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 {
@@ -49,6 +50,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   menuBar()->insertItem(tr("&Settings"), settings);
   settings ->insertItem(tr("&Configure ChessX..."), this, SLOT(slotConfigure()));
   settings ->insertItem(tr("&Flip board"), this, SLOT(slotConfigureFlip()), CTRL + Key_B);
+  settings ->insertItem(tr("&Setup board..."), this, SLOT(slotSetupBoard()));
 
   menuBar()->insertSeparator();
   QPopupMenu *help = new QPopupMenu(this);
@@ -64,6 +66,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   board.setStandardPosition();
   m_boardView->setBoard(board);
   setCentralWidget(m_boardView);
+  connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
 
   /* Restoring layouts */
   AppSettings->readLayout(m_playerDialog, Settings::Show);
@@ -85,7 +88,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
 {
   if (yesNo(tr("Do you want to quit?"))) {
     AppSettings->writeLayout(m_playerDialog);
-    AppSettings->writeLayout( m_helpWindow );
+    AppSettings->writeLayout(m_helpWindow);
     AppSettings->writeLayout(this);
     e->accept();
     qApp->quit();
@@ -122,6 +125,14 @@ void MainWindow::slotConfigure()
 void MainWindow::slotConfigureFlip()
 {
   m_boardView->flip();
+}
+
+void MainWindow::slotSetupBoard()
+{
+  BoardSetupDialog B;
+  B.setBoard(m_boardView->board());
+  if (B.exec() == QDialog::Accepted)
+    m_boardView->setBoard(B.board());
 }
 
 
