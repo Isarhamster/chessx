@@ -20,11 +20,12 @@
 
 #include <qpainter.h>
 #include <qmessagebox.h>
+#include <qpopupmenu.h>
 
-BoardView::BoardView(QWidget* parent) : QWidget(parent, "board"), m_flipped(false), m_showFrame(false)
+BoardView::BoardView(QWidget* parent, const char* name) : QWidget(parent, name),
+   m_flipped(false), m_showFrame(false)
 {
   m_theme = new BoardTheme;
-  connect(parent, SIGNAL(reconfigure()), SLOT(configure()));
 }
 
 BoardView::~BoardView()
@@ -81,6 +82,31 @@ void BoardView::resizeBoard()
 void BoardView::resizeEvent(QResizeEvent*)
 {
   resizeBoard();
+}
+
+Square BoardView::squareAt( QPoint p ) const
+{
+  int x = p.x() / m_theme->size();
+  int y = isFlipped() ? p.y() / m_theme->size() : 7 - p.y() / m_theme->size();
+  if (x >= 0 && x < 8 && y >= 0 && y <= 8)
+    return 8 * y + x;
+  else return InvalidSquare;
+}
+
+void BoardView::mousePressEvent(QMouseEvent* e)
+{
+  if (squareAt(e->pos()) != InvalidSquare)
+    emit mousePressed(e->pos(), e->button());
+  else
+    e->ignore();
+}
+
+void BoardView::mouseReleaseEvent(QMouseEvent* e)
+{
+  if (squareAt(e->pos()) != InvalidSquare)
+    emit mouseReleased(e->pos(), e->button());
+  else
+    e->ignore();
 }
 
 bool BoardView::setTheme(const QString& themeFile)
