@@ -5,6 +5,7 @@
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
                            (C) 2005 Kamil Przybyla <kamilprz@poczta.onet.pl>
                            (C) 2005 William Hoggarth <whoggarth@users.sourceforge.net>
+                           (C) 2005 Marius Roets <roets.marius@gmail.com>
  ***************************************************************************/
 
 /***************************************************************************
@@ -184,6 +185,11 @@ void Board::fromFEN(const QString& fen)
 					restorePiece(row * 8 + col, BlackKing, 0);
 					break;
 				default:
+               /** Note: 
+                * Is this correct?
+                * Black pieces won't be the first 16 in all positions (luckily for black)
+                * Marius
+                */
 					restorePiece(row * 8 + col, charToPiece(fen[index]), pieceIndex++);
 					if(pieceIndex == 16) {
 						pieceIndex++;
@@ -313,11 +319,201 @@ QString Board::toFEN() const
 	return fen;
 }
 
+bool Board::setAt(Square s, Piece p)
+{
+   unsigned char emptyIndex = 127;
+   unsigned char whitePieceCount = 0;
+   unsigned char blackPieceCount = 0;
+
+   // *** If there is a piece on our target square, remove it ***
+   if (m_board[s] != InvalidPiece) {
+      removeFrom(s);
+   }
+   switch (p) {
+      case WhiteKing :
+         emptyIndex = 16;
+         // There can be only one
+         if (m_pieceCount[p] > 0) removeFrom(m_piecePosition[emptyIndex]); 
+         break;
+      case BlackKing :
+         emptyIndex = 0;
+         // There can be only one
+         if (m_pieceCount[p] > 0) removeFrom(m_piecePosition[emptyIndex]); 
+         break;
+      case WhitePawn : 
+      case BlackPawn :
+         if (m_pieceCount[p] == 8) {
+            // Too many pawns
+            return false;
+         }
+         // No break because default should be executed if there is no error. 
+      default :
+         /*** Note:
+          * Looking at the fromFEN function, I saw that the first empty index was used
+          * for a piece in m_pieceType, regardless of the colour. I'm not sure if this was 
+          * the intention. However, I have implemented it the same way here.
+          * If this is the case, the white king and black king could just as easily have been
+          * indexed at 0 and 1 instead of 0 and 16.
+          * Marius
+          ***/
+         for (unsigned char i = 0; i < 32; i++) {
+            if ((m_pieceType[i] == Empty) && (emptyIndex == 127)) {
+               emptyIndex = i;
+            }
+            // Count the black and white pieces
+            switch (m_pieceType[i]) {
+               case WhiteKing:
+               case WhiteQueen:
+               case WhiteKnight:
+               case WhiteBishop:
+               case WhiteRook:
+               case WhitePawn:
+                  whitePieceCount++;
+                  break;
+               case BlackKing:
+               case BlackQueen:
+               case BlackKnight:
+               case BlackBishop:
+               case BlackRook:
+               case BlackPawn:
+                  blackPieceCount++;
+                  break;
+               default :
+                  // The default is just to remove compilation warnings.
+                  break;
+            }
+         }
+   }
+   if ((whitePieceCount == 16) || (blackPieceCount == 16)) {
+      // *** Only 16 pieces per side allowed ***
+      return false;
+   }
+   if (emptyIndex == 127) {
+      // There are too many pieces on the board already
+      return false;
+   }
+
+   m_pieceCount[p]++;
+   m_pieceType[emptyIndex] = p;
+   m_piecePosition[emptyIndex] = s;
+   m_board[s] = emptyIndex;
+   return true;
+
+}
+void Board::removeFrom(Square s)
+{
+   m_pieceCount[m_pieceType[m_board[s]]]--;
+   m_pieceType[m_board[s]] = Empty;
+   m_piecePosition[m_board[s]] = InvalidSquare;
+   m_board[s] = InvalidPiece;
+}
+bool Board::isValid(BoardState* state)
+{
+   unsigned char whitePieceCount = 0;
+   unsigned char blackPieceCount = 0;
+   unsigned char whitePawnCount = 0;
+   unsigned char blackPawnCount = 0;
+   unsigned char whiteKingCount = 0;
+   unsigned char blackKingCount = 0;
+
+   for (unsigned char i = 0; i < 32; i++) {
+      // Count the black and white pieces
+      switch (m_pieceType[i]) {
+         case WhiteKing:
+            whiteKingCount++;
+            whitePieceCount++;
+            break;
+         case WhitePawn:
+            whitePawnCount++;
+            whitePieceCount++;
+            break;
+         case WhiteQueen:
+         case WhiteKnight:
+         case WhiteBishop:
+         case WhiteRook:
+            whitePieceCount++;
+            break;
+         case BlackKing:
+            blackKingCount++;
+            blackPieceCount++;
+            break;
+         case BlackPawn:
+            blackPawnCount++;
+            blackPieceCount++;
+            break;
+         case BlackQueen:
+         case BlackKnight:
+         case BlackBishop:
+         case BlackRook:
+            blackPieceCount++;
+            break;
+         default :
+            // The default is just to remove compilation warnings.
+            break;
+      }
+   }
+
+   if (blackPawnCount > 8) {
+      if (state) {
+         *state = TooManyBlackPawns;
+      }
+      return false;
+   }
+   if (whitePawnCount > 8) {
+      if (state) {
+         *state = TooManyWhitePawns;
+      }
+      return false;
+   }
+   if (whitePieceCount > 16) {
+      if (state) {
+         *state = TooManyWhitePieces;
+      }
+      return false;
+   }
+   if (blackPieceCount > 16) {
+      if (state) {
+         *state = TooManyBlackPieces;
+      }
+      return false;
+   }
+   if (whiteKingCount == 0) {
+      if (state) {
+         *state = NoWhiteKing;
+      }
+      return false;
+   }
+   if (blackKingCount == 0) {
+      if (state) {
+         *state = NoBlackKing;
+      }
+      return false;
+   }
+
+   // Check for incorrect check
+   /* Removed until strange behaviour can be explained
+    * Will put it back when testing is done.
+    * Will use isCheck method instead
+   Color c;
+   (toMove() == Black) ? c = White : c = Black;
+	if (isAttacked(kingPosition(c),toMove())) {
+      if (state) {
+         *state = IncorrectCheck ;
+      }
+      return false;
+   }*/
+
+   if (state) {
+      *state = Valid;
+   }
+   return true;
+}
+
 void Board::setStandardPosition()
 {
-  // lazy way to implement it
-  fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-}  
+   // lazy way to implement it
+   fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+}
 
 QString Board::toASCII() const
 {
@@ -1296,3 +1492,4 @@ void Board::promotePiece(Square square, Piece promoted)
 	m_pieceCount[promoted]++;
 	m_pieceType[m_board[square]] = promoted;
 }
+

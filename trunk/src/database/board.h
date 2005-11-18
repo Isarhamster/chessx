@@ -5,6 +5,7 @@
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
                            (C) 2005 Kamil Przybyla <kamilprz@poczta.onet.pl>
                            (C) 2005 William Hoggarth <whoggarth@users.sourceforge.net>
+                           (C) 2005 Marius Roets <roets.marius@gmail.com>
  ***************************************************************************/
 
 /***************************************************************************
@@ -32,6 +33,8 @@
    You can easily and quickly make and undo moves, although undoing moves requires keeping track
    of captured pieces.
 */
+enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
+    TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, IncorrectCheck};
 
 class Board
 {
@@ -71,6 +74,13 @@ public:
   void setToMove(Color c); 
   /** Swaps side to move */
   void swapToMove();
+  /** Sets a piece on the given square **/
+  bool setAt(Square s, Piece p);
+  /** Remove a piece from a given square **/
+  void removeFrom(Square s);
+  /** @return whether current position is valid. If not, error code is set to @p
+      state variable, if it was provided */
+  bool isValid(BoardState* state=0);
 
 	/* move information methods */
 	/** @return move object represented by the given short algerbraic notation */
