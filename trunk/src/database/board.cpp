@@ -147,6 +147,9 @@ Board::Board()
 	if(!initialized) {
 		initialize();
 	}
+   legalMoveList.setAutoDelete(true);
+   legalMoveList.clear();
+
 }
 
 void Board::clear()
@@ -491,22 +494,307 @@ bool Board::isValid(BoardState* state)
    }
 
    // Check for incorrect check
-   /* Removed until strange behaviour can be explained
-    * Will put it back when testing is done.
-    * Will use isCheck method instead
-   Color c;
-   (toMove() == Black) ? c = White : c = Black;
-	if (isAttacked(kingPosition(c),toMove())) {
+   swapToMove();
+	if (isCheck()) {
       if (state) {
          *state = IncorrectCheck ;
       }
+      swapToMove();
       return false;
-   }*/
+   }
+   swapToMove();
 
    if (state) {
       *state = Valid;
    }
    return true;
+}
+bool Board::findLegalMoves()
+{
+   Square from, tempSq;
+   legalMoveList.clear();
+
+   for (unsigned char i=0;i < 32;i++) {
+      if (m_pieceType[i] == Empty) continue;
+      from = m_piecePosition[i];
+
+      if (m_toMove == White) {
+         switch (m_pieceType[i]) {
+            case WhiteKing:
+               for (unsigned char vector=0;vector<8; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < kingData[from][vector]; range++) {
+                     tempSq += kingVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               break;
+            case WhiteKnight:
+               for (unsigned char vector=0;vector<8; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < knightData[from][vector]; range++) {
+                     tempSq += knightVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               break;
+            case WhiteBishop:
+               for (unsigned char vector=0;vector<4; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < bishopData[from][vector]; range++) {
+                     tempSq += bishopVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               break;
+            case WhiteRook:
+               for (unsigned char vector=0;vector<4; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < rookData[from][vector]; range++) {
+                     tempSq += rookVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               break;
+            case WhiteQueen:
+               for (unsigned char vector=0;vector<4; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < bishopData[from][vector]; range++) {
+                     tempSq += bishopVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               for (unsigned char vector=0;vector<4; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < rookData[from][vector]; range++) {
+                     tempSq += rookVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               break;
+            case WhitePawn:
+               if ((m_board[from+8] == InvalidPiece) && isLegal(Move(from,from+8))) {
+                  legalMoveList.append( new Move(from, from+8));
+               }
+               if ((from >= 8) && (from <= 15) && (m_board[from+8] == InvalidPiece) &&
+                   (m_board[from+16] == InvalidPiece) && isLegal(Move(from,from+16))) {
+                  legalMoveList.append( new Move(from, from+16));
+               }
+               if ((m_pieceType[m_board[from+7]] >= BlackKing) &&
+                   (m_pieceType[m_board[from+7]] <= BlackPawn) && isLegal(Move(from,from+7))) {
+                  legalMoveList.append( new Move(from, from+7));
+               }
+               if ((m_pieceType[m_board[from+9]] >= BlackKing) &&
+                   (m_pieceType[m_board[from+9]] <= BlackPawn) && isLegal(Move(from,from+9))) {
+                  legalMoveList.append( new Move(from, from+9));
+               }
+               break;
+            default :
+               break;
+         }
+      } else {
+         switch (m_pieceType[i]) {
+            case BlackKing:
+               for (unsigned char vector=0;vector<8; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < kingData[from][vector]; range++) {
+                     tempSq += kingVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               break;
+            case BlackKnight:
+               for (unsigned char vector=0;vector<8; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < knightData[from][vector]; range++) {
+                     tempSq += knightVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               break;
+            case BlackBishop:
+               for (unsigned char vector=0;vector<4; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < bishopData[from][vector]; range++) {
+                     tempSq += bishopVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               break;
+            case BlackRook:
+               for (unsigned char vector=0;vector<4; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < rookData[from][vector]; range++) {
+                     tempSq += rookVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               break;
+            case BlackQueen:
+               for (unsigned char vector=0;vector<4; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < bishopData[from][vector]; range++) {
+                     tempSq += bishopVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               for (unsigned char vector=0;vector<4; vector++) {
+                  tempSq = from;
+                  for (unsigned char range=0; range < rookData[from][vector]; range++) {
+                     tempSq += rookVectors[vector];
+                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
+                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+                        break;
+                     } else if (isLegal(Move(from,tempSq))) {
+                        legalMoveList.append( new Move(from, tempSq));
+                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
+                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+                           break;
+                        }
+                     }
+                  }
+               }
+               break;
+            case BlackPawn:
+               if ((m_board[from-8] == InvalidPiece) && isLegal(Move(from,from-8))) {
+                  legalMoveList.append( new Move(from, from-8));
+               }
+               if ((from >= 48) && (from <= 55) && (m_board[from-8] == InvalidPiece) &&
+                   (m_board[from-16] == InvalidPiece) && isLegal(Move(from,from-16))) {
+                  legalMoveList.append( new Move(from, from-16));
+               }
+               if ((m_pieceType[m_board[from-7]] >= WhiteKing) &&
+                   (m_pieceType[m_board[from-7]] <= WhitePawn) && isLegal(Move(from,from-7))) {
+                  legalMoveList.append( new Move(from, from-7));
+               }
+               if ((m_pieceType[m_board[from-9]] >= WhiteKing) &&
+                   (m_pieceType[m_board[from-9]] <= WhitePawn) && isLegal(Move(from,from-9))) {
+                  legalMoveList.append( new Move(from, from-9));
+               }
+               break;
+            default :
+               break;
+         }
+      }
+
+   }
+   if (legalMoveList.isEmpty())
+      return false;
+   else 
+      return true;
+}
+QString Board::getLegalMoves()
+{
+   Move *move;
+   QString moveList;
+   if (legalMoveList.isEmpty()) {
+      return moveList;
+   }
+   for (move = legalMoveList.first();move;move = legalMoveList.next()) {
+      moveList += moveToSAN(*move) + ",";
+   }
+
+   return moveList;
+
 }
 
 void Board::setStandardPosition()
@@ -515,7 +803,7 @@ void Board::setStandardPosition()
    fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 
-QString Board::toASCII() const
+QString Board::toASCII()
 {
 	QString ascii;
 	
@@ -549,6 +837,46 @@ QString Board::toASCII() const
 	
 	ascii += ", Half Move Clock: ";
 	ascii += QString::number(m_halfMoveClock);
+
+   BoardState *state;
+   *state=Valid;
+   ascii += "\nValid: ";
+   ascii += isValid(state) ? "Yes" : "NO";
+   if (*state != Valid) {
+      switch (*state) {
+         case TooManyWhitePieces :
+            ascii += "(Too Many White Pieces)";
+            break;
+         case TooManyBlackPieces :
+            ascii += "(Too Many Black Pieces)";
+            break;
+         case TooManyWhitePawns :
+            ascii += "(Too Many White Pawns)";
+            break;
+         case TooManyBlackPawns :
+            ascii += "(Too Many White Pawns)";
+            break;
+         case NoWhiteKing :
+            ascii += "(No White King)";
+            break;
+         case NoBlackKing :
+            ascii += "(No Black King)";
+            break;
+         case IncorrectCheck :
+            ascii += "(Incorrect Check)";
+            break;
+         default :
+            ascii += "(Unknown State)";
+      }
+   }
+   ascii += "\nCheck: ";
+   ascii += isCheck() ? "Yes" : "No";
+   ascii += "  Checkmate: ";
+   ascii += isCheckmate() ? "Yes" : "No";
+   ascii += "  Stalemate: ";
+   ascii += isStalemate() ? "Yes" : "No";
+   findLegalMoves();
+   ascii += "\nLegal Moves :" + getLegalMoves();
 	
 	return ascii;
 }
@@ -698,18 +1026,18 @@ Move Board::singleMove(const QString& SAN)
         {
           tempsq=to;
           for(b=0;b<bishopData[to][a];b++) {
-						tempsq+=bishopVectors[a];
+            tempsq+=bishopVectors[a];
             if(at(tempsq)==p)
-              if((fromX==8)||(fromX==(tempsq&7)))
-								if((fromY==8)||(fromY==(tempsq/8)))
-                {
-                  m.setFrom(tempsq);
-                  i++;
-                }
-						if(at(tempsq)!=Empty) {
-							break;
-						}
-					}
+               if((fromX==8)||(fromX==(tempsq&7)))
+                  if((fromY==8)||(fromY==(tempsq/8)))
+                  {
+                     m.setFrom(tempsq);
+                     i++;
+                  }
+                  if(at(tempsq)!=Empty) {
+                     break;
+                  }
+          }
         }
         break;
       case WhiteRook:case BlackRook:
@@ -1462,7 +1790,23 @@ bool Board::isCheck()
 
 bool Board::isCheckmate()
 {
-	return false;
+   if (findLegalMoves())
+      return false; // There are legal moves
+   else if (isCheck()) {
+      return true; // It's Checkmate
+   } else {
+      return false; // It's Stalemate
+   }
+}
+bool Board::isStalemate()
+{
+   if (findLegalMoves())
+      return false; //There are legal moves
+   else if (!isCheck()) {
+      return true; //It's Stalemate
+   } else {
+      return false; //It's Checkmate
+   }
 }
 
 void Board::movePiece(Square from, Square to)

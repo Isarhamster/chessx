@@ -26,6 +26,7 @@
 #include "common.h"
 
 #include <qstring.h>
+#include <qptrlist.h>
 
 /**
    The Board class represents a chess position.
@@ -50,7 +51,7 @@ public:
 	/** @return FEN string for position */
 	QString toFEN() const;
 	/** @return ASCII representation for debugging */
-	QString toASCII() const;
+	QString toASCII();
 	
   /* information about pieces position and types */
   /** @return piece on given square */
@@ -81,6 +82,9 @@ public:
   /** @return whether current position is valid. If not, error code is set to @p
       state variable, if it was provided */
   bool isValid(BoardState* state=0);
+  bool findLegalMoves();
+  QString getLegalMoves();
+
 
 	/* move information methods */
 	/** @return move object represented by the given short algerbraic notation */
@@ -105,6 +109,8 @@ public:
 	bool isCheck();
 	/** @return whether the position is a checkmate */
 	bool isCheckmate();
+	/** @return whether the position is a stalemate */
+   bool isStalemate();
 
 private:
   /** Move piece from @p from to @p to, leaving source square empty */
@@ -123,6 +129,7 @@ private:
 	Square m_epSquare;
 	CastlingRights m_castlingRights;
 	int m_halfMoveClock;
+   QPtrList<Move> legalMoveList;
 };
 
 #endif
