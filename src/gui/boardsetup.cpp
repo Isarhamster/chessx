@@ -84,7 +84,7 @@ void BoardSetupDialog::slotChoosePiece(int piece)
   m_piece = Piece(piece);
 }
 
-void BoardSetupDialog::slotSelected(const QPoint& p, ButtonState b)
+void BoardSetupDialog::slotSelected(const QPoint&, ButtonState b)
 {
   if (b == LeftButton)
   {

@@ -26,7 +26,7 @@
 #include "common.h"
 
 #include <qstring.h>
-#include <qptrlist.h>
+#include <qt34/qptrlist.h>
 
 /**
    The Board class represents a chess position.
