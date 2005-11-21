@@ -101,10 +101,10 @@ bool BoardTheme::load(const QString& themeFile)
   int w = src.width();
   int h = src.height();
   QImage maskImage(w, h, src.depth());
-  QRgb opaque = Qt::color1.rgb();
+  QRgb opaque = QColor(Qt::color1).rgb();
   QRgb maskColor = src.pixel(0, 0);
 
-  maskImage.fill(Qt::color0.rgb());
+  maskImage.fill(QColor(Qt::color0).rgb());
   for (int i = 0; i < w; i++)
     for (int j = 0; j < h; j++)
       if(src.pixel(i, j) != maskColor)

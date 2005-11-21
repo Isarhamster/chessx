@@ -273,7 +273,7 @@
 <customwidgets>
     <customwidget>
         <class>BoardView</class>
-        <header location="global">/home/ja/programming/chessdatabase/src/gui/boardview.h</header>
+        <header>boardview.h</header>
         <sizehint>
             <width>-1</width>
             <height>-1</height>

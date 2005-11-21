@@ -838,12 +838,12 @@ QString Board::toASCII()
 	ascii += ", Half Move Clock: ";
 	ascii += QString::number(m_halfMoveClock);
 
-   BoardState *state;
-   *state=Valid;
+   BoardState state;
+   state=Valid;
    ascii += "\nValid: ";
-   ascii += isValid(state) ? "Yes" : "NO";
-   if (*state != Valid) {
-      switch (*state) {
+   ascii += isValid(&state) ? "Yes" : "NO";
+   if (state != Valid) {
+      switch (state) {
          case TooManyWhitePieces :
             ascii += "(Too Many White Pieces)";
             break;
