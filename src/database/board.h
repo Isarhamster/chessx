@@ -28,14 +28,16 @@
 #include <qstring.h>
 #include <qt34/qptrlist.h>
 
+enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
+    TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, IncorrectCheck};
+
 /**
    The Board class represents a chess position.
    Pieces are kept directly on the board which is internally represented as simple array[0..63].
    You can easily and quickly make and undo moves, although undoing moves requires keeping track
    of captured pieces.
 */
-enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
-    TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, IncorrectCheck};
+
 
 class Board
 {
