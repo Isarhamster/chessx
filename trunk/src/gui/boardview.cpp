@@ -96,7 +96,10 @@ Square BoardView::squareAt( QPoint p ) const
 void BoardView::mousePressEvent(QMouseEvent* e)
 {
   if (squareAt(e->pos()) != InvalidSquare)
-    emit mousePressed(e->pos(), e->button());
+  {
+    int mods =  e->state() & ~(LeftButton | RightButton | MidButton);
+    emit mousePressed(e->pos(), e->button() | mods);
+  }
   else
     e->ignore();
 }
@@ -104,7 +107,10 @@ void BoardView::mousePressEvent(QMouseEvent* e)
 void BoardView::mouseReleaseEvent(QMouseEvent* e)
 {
   if (squareAt(e->pos()) != InvalidSquare)
-    emit mouseReleased(e->pos(), e->button());
+  {
+    int mods =  e->state() & ~(LeftButton | RightButton | MidButton);
+    emit mouseReleased(e->pos(), e->button() | mods);
+  }
   else
     e->ignore();
 }

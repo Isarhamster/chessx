@@ -49,7 +49,7 @@ class BoardSetupDialog : public BoardSetupBaseDialog
     /** Choose piece */
     void slotChoosePiece(int piece);
     /** Select square and insert piece */
-    void slotSelected(const QPoint& pos, ButtonState b);
+    void slotSelected(const QPoint& pos, int b);
   private:
     QPopupMenu* m_popup;
     Piece m_piece;
