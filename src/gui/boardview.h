@@ -59,9 +59,9 @@ public slots:
  
 signals:
   /** Mouse button pressed over the board */
-  void mousePressed(const QPoint& p, ButtonState b);
+  void mousePressed(const QPoint& p, int flags);
   /** Mouse button released over the board */
-  void mouseReleased(const QPoint& p, ButtonState b);
+  void mouseReleased(const QPoint& p, int flags);
 
 protected:
   /** Redraws single square (and piece on it). */
