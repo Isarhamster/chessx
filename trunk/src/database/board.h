@@ -29,7 +29,8 @@
 #include <qt34/qptrlist.h>
 
 enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
-    TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, IncorrectCheck};
+    TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, 
+    TooManyWhiteKings, TooManyBlackKings, IncorrectCheck};
 
 /**
    The Board class represents a chess position.
