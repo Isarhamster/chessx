@@ -37,18 +37,18 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : BoardSetupBaseDialog(paren
   m_popup->insertItem("Black bishop", BlackBishop);
   m_popup->insertItem("Black knight", BlackKnight);
   m_popup->insertItem("Black pawn", BlackPawn);
-  m_popup->setAccel(CTRL + Key_K, WhiteKing);
-  m_popup->setAccel(CTRL + Key_Q, WhiteQueen);
-  m_popup->setAccel(CTRL + Key_R, WhiteRook);
-  m_popup->setAccel(CTRL + Key_B, WhiteBishop);
-  m_popup->setAccel(CTRL + Key_N, WhiteKnight);
-  m_popup->setAccel(CTRL + Key_P, WhitePawn);
-  m_popup->setAccel(CTRL + SHIFT + Key_K, BlackKing);
-  m_popup->setAccel(CTRL + SHIFT + Key_Q, BlackQueen);
-  m_popup->setAccel(CTRL + SHIFT + Key_R, BlackRook);
-  m_popup->setAccel(CTRL + SHIFT + Key_B, BlackBishop);
-  m_popup->setAccel(CTRL + SHIFT + Key_N, BlackKnight);
-  m_popup->setAccel(CTRL + SHIFT + Key_P, BlackPawn);
+  m_popup->setAccel(Key_K, WhiteKing);
+  m_popup->setAccel(Key_Q, WhiteQueen);
+  m_popup->setAccel(Key_R, WhiteRook);
+  m_popup->setAccel(Key_B, WhiteBishop);
+  m_popup->setAccel(Key_N, WhiteKnight);
+  m_popup->setAccel(Key_P, WhitePawn);
+  m_popup->setAccel(SHIFT + Key_K, BlackKing);
+  m_popup->setAccel(SHIFT + Key_Q, BlackQueen);
+  m_popup->setAccel(SHIFT + Key_R, BlackRook);
+  m_popup->setAccel(SHIFT + Key_B, BlackBishop);
+  m_popup->setAccel(SHIFT + Key_N, BlackKnight);
+  m_popup->setAccel(SHIFT + Key_P, BlackPawn);
   connect(m_popup, SIGNAL(activated(int)), SLOT(slotChoosePiece(int)));
 
   connect(okButton, SIGNAL(clicked()), SLOT(accept()));
@@ -116,7 +116,10 @@ void BoardSetupDialog::slotSelected(const QPoint& p, int b)
         piece = (Piece)(piece + (BlackKing - WhiteKing));
     }
     Board board = boardView->board();
-    board.setAt(boardView->squareAt(p), piece);
+    Square square = boardView->squareAt(p);
+    if (board.at(square) == piece)
+      piece = Empty;
+    board.setAt(square, piece);
     boardView->setBoard(board);
   }
 }
