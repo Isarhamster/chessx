@@ -40,10 +40,12 @@ protected:
 public slots:
   void slotAbout();
   void slotPlayerDialog();
+  void slotEditBoard();
+  void slotEditCopyFEN();
+  void slotEditPasteFEN();
   void slotConfigure();
   void slotHelp();
   void slotConfigureFlip();
-  void slotSetupBoard();
 
 signals:
   /* Re-read configuration */
