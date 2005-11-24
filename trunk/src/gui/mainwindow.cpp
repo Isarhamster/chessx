@@ -24,6 +24,7 @@
 #include "settings.h"
 
 #include <qapplication.h>
+#include <qclipboard.h>
 #include <qlabel.h>
 #include <qmenubar.h>
 #include <qmessagebox.h>
@@ -38,20 +39,30 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   m_playerDialog = new PlayerDialog(m_playerDatabase, this);
   m_helpWindow = new HelpWindow();
 
+  /* File menu */
   QPopupMenu *file = new QPopupMenu(this);
   menuBar()->insertItem(tr("&File"), file);
   file->insertItem(tr("&Quit"), qApp, SLOT(closeAllWindows()), CTRL + Key_Q);
 
+  /* Edit menu */
+  QPopupMenu *edit = new QPopupMenu(this);
+  menuBar()->insertItem(tr("&Edit"), edit);
+  edit->insertItem(tr("&Copy FEN"), this, SLOT(slotEditCopyFEN()), CTRL + SHIFT + Key_C);
+  edit->insertItem(tr("&Paste FEN"), this, SLOT(slotEditPasteFEN()), CTRL + SHIFT + Key_V);
+  edit->insertItem(tr("&Edit board..."), this, SLOT(slotEditBoard()));
+
+  /* Windows menu */
   QPopupMenu *windows = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Windows"), windows);
   windows ->insertItem(tr("&Player Database..."), this, SLOT(slotPlayerDialog()), CTRL + SHIFT + Key_P);
 
+  /* Settings menu */
   QPopupMenu *settings = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Settings"), settings);
   settings ->insertItem(tr("&Configure ChessX..."), this, SLOT(slotConfigure()));
   settings ->insertItem(tr("&Flip board"), this, SLOT(slotConfigureFlip()), CTRL + Key_B);
-  settings ->insertItem(tr("&Setup board..."), this, SLOT(slotSetupBoard()));
 
+  /* Help menu */
   menuBar()->insertSeparator();
   QPopupMenu *help = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Help"), help);
@@ -127,7 +138,21 @@ void MainWindow::slotConfigureFlip()
   m_boardView->flip();
 }
 
-void MainWindow::slotSetupBoard()
+void MainWindow::slotEditCopyFEN()
+{
+  Board b = m_boardView->board();
+  QApplication::clipboard()->setText(b.toFEN());
+}
+
+void MainWindow::slotEditPasteFEN()
+{
+  Board b = m_boardView->board();
+  QString fen = QApplication::clipboard()->text();
+  b.fromFEN(fen);
+  m_boardView->setBoard(b);
+}
+
+void MainWindow::slotEditBoard()
 {
   BoardSetupDialog B;
   B.setBoard(m_boardView->board());
@@ -142,6 +167,4 @@ void MainWindow::slotHelp()
     m_helpWindow = new HelpWindow();
   m_helpWindow->show();
 }
-
-
 
