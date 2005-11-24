@@ -328,10 +328,11 @@ bool Board::setAt(Square s, Piece p)
    unsigned char whitePieceCount = 0;
    unsigned char blackPieceCount = 0;
 
-   // *** If there is a piece on our target square, remove it ***
-   if (m_board[s] != InvalidPiece) {
+   if ((p == Empty) || (p == InvalidSquare)) {
       removeFrom(s);
+      return true;
    }
+   
    switch (p) {
       case WhiteKing :
          emptyIndex = 16;
@@ -349,6 +350,10 @@ bool Board::setAt(Square s, Piece p)
             // Too many pawns
             return false;
          }
+         if ((s <= 7) || (s >= 56)) {
+            // No pawns allowed on the 1st and 8th rank
+            return false;
+         }
          // No break because default should be executed if there is no error. 
       default :
          /*** Note:
@@ -360,7 +365,7 @@ bool Board::setAt(Square s, Piece p)
           * Marius
           ***/
          for (unsigned char i = 0; i < 32; i++) {
-            if ((m_pieceType[i] == Empty) && (emptyIndex == 127)) {
+            if ((m_pieceType[i] == Empty) && (emptyIndex == 127) && (i != 0) && (i != 16)) {
                emptyIndex = i;
             }
             // Count the black and white pieces
@@ -371,6 +376,14 @@ bool Board::setAt(Square s, Piece p)
                case WhiteBishop:
                case WhiteRook:
                case WhitePawn:
+                  if ((m_pieceType[i] >= WhiteKing) && 
+                      (m_pieceType[i] <= WhitePawn) &&
+                      (m_piecePosition[i] == s)) {
+                     // If there is already a white piece on the square, 
+                     // don't count it because it will be removed
+                     if (emptyIndex == 127) emptyIndex = i;
+                     break;
+                  }
                   whitePieceCount++;
                   break;
                case BlackKing:
@@ -379,6 +392,14 @@ bool Board::setAt(Square s, Piece p)
                case BlackBishop:
                case BlackRook:
                case BlackPawn:
+                  if ((m_pieceType[i] >= BlackKing) && 
+                      (m_pieceType[i] <= BlackPawn) &&
+                      (m_piecePosition[i] == s)) {
+                     // If there is already a black piece on the square, 
+                     // don't count it because it will be removed
+                     if (emptyIndex == 127) emptyIndex = i;
+                     break;
+                  }
                   blackPieceCount++;
                   break;
                default :
@@ -387,7 +408,11 @@ bool Board::setAt(Square s, Piece p)
             }
          }
    }
-   if ((whitePieceCount == 16) || (blackPieceCount == 16)) {
+   if ((whitePieceCount == 16) && (p >= WhiteKing) && (p <= WhitePawn)) {
+      // *** Only 16 pieces per side allowed ***
+      return false;
+   }
+   if ((blackPieceCount == 16) && (p >= BlackKing) && (p <= BlackPawn)) {
       // *** Only 16 pieces per side allowed ***
       return false;
    }
@@ -396,10 +421,16 @@ bool Board::setAt(Square s, Piece p)
       return false;
    }
 
-   m_pieceCount[p]++;
-   m_pieceType[emptyIndex] = p;
-   m_piecePosition[emptyIndex] = s;
-   m_board[s] = emptyIndex;
+   if ((p >= WhiteKing) && (p <= BlackPawn)) {
+      // *** If there is a piece on our target square, remove it ***
+      if (m_board[s] != InvalidPiece) {
+         removeFrom(s);
+      }
+      m_pieceCount[p]++;
+      m_pieceType[emptyIndex] = p;
+      m_piecePosition[emptyIndex] = s;
+      m_board[s] = emptyIndex;
+   }
    return true;
 
 }
@@ -485,10 +516,20 @@ bool Board::isValid(BoardState* state)
          *state = NoWhiteKing;
       }
       return false;
+   } else if (whiteKingCount > 1) {
+      if (state) {
+         *state = TooManyWhiteKings;
+      }
+      return false;
    }
    if (blackKingCount == 0) {
       if (state) {
          *state = NoBlackKing;
+      }
+      return false;
+   } else if (blackKingCount > 1) {
+      if (state) {
+         *state = TooManyBlackKings;
       }
       return false;
    }
