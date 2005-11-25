@@ -18,7 +18,7 @@
 #define __BOARDTHEME_H__
 
 #include <qstring.h>
-#include <qpixmap.h>
+#include <qt34/qpixmap.h>
 
 #include "common.h"
 
