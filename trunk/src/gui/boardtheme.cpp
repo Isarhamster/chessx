@@ -165,6 +165,10 @@ BoardTheme::BoardSquare BoardTheme::squareType() const
 
 void BoardTheme::setSquareType(BoardSquare type)
 {
+  if(type == Unscaled && size() > m_originalPixmaps[WhiteRook].width()) {
+    type = Scaled;
+  }
+           
   m_squareType = type;
   if (isNull())
     return;

@@ -72,6 +72,8 @@ QString Settings::dataPath()
   if (m_dataPath.isNull())
   {
     m_dataPath = qApp->applicationDirPath();
+    if(m_dataPath.endsWith("/chessdatabase.app/Contents/MacOS"))
+      m_dataPath.truncate(m_dataPath.length() - 33);  
     if (m_dataPath.endsWith("/bin"))
       m_dataPath.truncate(m_dataPath.length() - 4);
     m_dataPath.append("/data");
