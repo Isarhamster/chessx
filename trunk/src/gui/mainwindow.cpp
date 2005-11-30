@@ -35,7 +35,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 {
   /* Database initialization */
   m_playerDatabase = new PlayerDatabase;
-  m_playerDatabase->open("../tests/playerdatabase/data/players");
+  m_playerDatabase->open("../tests/cppunit/data/small/players");
   m_playerDialog = new PlayerDialog(m_playerDatabase, this);
   m_helpWindow = new HelpWindow();
 

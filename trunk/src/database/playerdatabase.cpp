@@ -285,15 +285,14 @@ bool PlayerDatabase::add(const QString& playername) {
 QString PlayerDatabase::current() const{
    return m_currentPlayerName;
 }
-bool PlayerDatabase::setCurrent(const QString& playername){
+void PlayerDatabase::setCurrent(const QString& playername){
    if (m_currentPlayerName.compare(playername) == 0)
-      return true;
+      return;
    if (m_dirty)//previous current player was changed
       m_pendingUpdates.insert(m_currentPlayerName,m_currentPlayer);
    m_currentPlayerName = playername;
    m_currentPlayer = readPlayerData(playername);
    m_dirty = false;
-   return true;
 }
 
 bool PlayerDatabase::exists(const QString& playername) const{
