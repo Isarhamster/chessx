@@ -18,6 +18,12 @@
 PlayerDatabase is used to acces player data.
 */
 
+//TODO:
+/*
+* optimize storage - QString is said to serialize as UTF-16
+* maybe consider changing to a portable pure C++ format instead ?
+*/
+
 #ifndef __PLAYERDATABASE_H__
 #define __PLAYERDATABASE_H__
 
@@ -231,7 +237,8 @@ private:
 QMap<QString,Q_INT32> m_mapping; // pointers into data
 QDataStream m_mapds; // contains mapping
 QFile m_mapfile; 
-Q_INT32 m_nplayers; // number of players in db
+Q_INT32 m_nplayers; // number of players in db - not counting pending add's
+Q_INT32 m_npending_adds; // number of pending add's to db
 QIODevice::Offset m_nplayers_offset; // position of count field in mapfile
 QDataStream m_datads; // contains data
 QFile m_datafile; 
