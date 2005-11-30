@@ -139,6 +139,59 @@ void initKings()
     }
 }
 
+int countFiles (const QString& rank) 
+{
+   int count = 0;
+   QChar c;
+   for (uint i = 0;i < rank.length();i++) {
+      c = rank.at(i);
+      switch (c) {
+         case 'k':
+         case 'K':
+         case 'q':
+         case 'Q':
+         case 'r':
+         case 'R':
+         case 'B':
+         case 'b':
+         case 'n':
+         case 'N':
+         case 'p':
+         case 'P':
+            count++;
+            break;
+         case '1':
+            count++;
+            break;
+         case '2':
+            count += 2;
+            break;
+         case '3':
+            count += 3;
+            break;
+         case '4':
+            count += 4;
+            break;
+         case '5':
+            count += 5;
+            break;
+         case '6':
+            count += 6;;
+            break;
+         case '7':
+            count += 7;
+            break;
+         case '8':
+            count += 8;
+            break;
+         default :
+            return 0;
+      }
+      
+   }
+   return count;
+}
+
 Board::Board()
 {
   clear();
@@ -320,6 +373,72 @@ QString Board::toFEN() const
 	fen += " -";
 	
 	return fen;
+}
+
+
+bool Board::isValidFEN(const QString& fen) const
+{
+   QString piecePlacement = fen.section(QRegExp("\\s+"), 0, 0);
+   QString activeColor = fen.section (QRegExp("\\s+"), 1, 1);
+   QString castlingAvail = fen.section (QRegExp("\\s+"), 2, 2);
+   QString enPassantTarget = fen.section (QRegExp("\\s+"), 3, 3);
+   QString halfmoveClock = fen.section (QRegExp("\\s+"), 4, 4);
+   QString fullMoveNo = fen.section (QRegExp("\\s+"), 5, 5);
+
+   if (piecePlacement.find(QRegExp("^[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+$")) == -1) {
+      // Invalid piece placement string
+      return false;
+   }
+   QStringList rankList = QStringList::split ("/", piecePlacement);
+   for ( QStringList::Iterator it = rankList.begin(); it != rankList.end(); ++it ) {
+      if (countFiles(*it) != 8) {
+         // Invalid number of files in rank
+         return false;
+      }
+   }
+   if (!((activeColor == "w") || (activeColor == "b"))) {
+      // Invalid color to move
+      return false;
+   }
+   if (!((castlingAvail.find(QRegExp("^[kKQq]{1,4}$")) != -1) || (castlingAvail == "-"))) { 
+      // Invalid castling characters
+      return false;
+   }
+   QChar c = enPassantTarget.at(1);
+   if ((enPassantTarget.find(QRegExp("^([a-h][36])|-$")) == -1)) {
+      // Invalid en passant square
+      return false;
+   } else if ((c == '3') && (activeColor == "w")) {
+      // Wrong color to move for en passant square
+      return false;
+   } else if ((c == '6') && (activeColor == "b")) {
+      // Wrong color to move for en passant square
+      return false;
+   }
+
+   bool ok;
+   int half = halfmoveClock.toInt(&ok);
+   if (!ok || (half < 0)) {
+      // Invalid half move clock number
+      return false;
+   }
+   int full = fullMoveNo.toInt(&ok);
+   if (!ok || (full < 1)) {
+      // Invalid full move count
+      return false;
+   }
+
+   // Now that the FEN is valid, test that the actual position is valid
+   Board *tempBoard = new Board;
+   tempBoard->fromFEN(fen);
+   if (!tempBoard->isValid()) {
+      // The given fen position is invalid
+      delete (tempBoard);
+      return false;
+   }
+   delete (tempBoard);
+   
+   return true;
 }
 
 bool Board::setAt(Square s, Piece p)
