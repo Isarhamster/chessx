@@ -20,6 +20,15 @@
 #include "common.h"
 #include <qt34/qbytearray.h>
 
+//TODO
+/*
+* change constructor to comply with coding standard
+* optimizations
+  * cache one value (but what do we know about calling sequence ?? )
+  * use QValueVector as representation in case of "sparse" filter
+* saving/loading to disk (dataset).
+*/
+
 /**
    The Filter class represents a set of games, typically found when searching a database.
 */
