@@ -60,6 +60,7 @@ bool PlayerDatabase::create(const QString& fname) {
   m_datafile.flush();
 
   m_dataFileCurrentPosition = m_datafile.at();
+  m_npending_adds = 0;
 
   return true;
 }
@@ -135,6 +136,7 @@ bool PlayerDatabase::open(const QString& fname) {
   if (m_nplayers>0){
      m_mapds >> m_mapping;
   }
+  m_npending_adds = 0;
   return true;
 
 }
@@ -158,6 +160,7 @@ void PlayerDatabase::close() {
 void PlayerDatabase::rollback() {
   m_pendingUpdates.clear();
   m_dirty = false;
+  m_npending_adds = 0;
 }
 
 void PlayerDatabase::commit() {
@@ -192,6 +195,8 @@ void PlayerDatabase::commit() {
   m_datafile.flush();
   m_pendingUpdates.clear();
   m_dirty = false;
+  m_nplayers += m_npending_adds;
+  m_npending_adds = 0;
 }
 
 
@@ -265,7 +270,7 @@ void PlayerDatabase::compact() {
 }
 
 uint PlayerDatabase::count() const {
-  return m_nplayers;
+  return m_nplayers + m_npending_adds;
 }
 
 bool PlayerDatabase::add(const QString& playername) {
@@ -278,7 +283,7 @@ bool PlayerDatabase::add(const QString& playername) {
   m_currentPlayerName = playername;
   m_currentPlayer = pd;
   m_dirty = true;
-  m_nplayers++;
+  m_npending_adds++;
   return true;
 }
 
