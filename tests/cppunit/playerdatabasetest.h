@@ -32,7 +32,7 @@ class PlayerDatabaseTest : public CppUnit::TestFixture
   CPPUNIT_TEST( testRemoveDatabase );
   CPPUNIT_TEST( testPlayerCount );
   CPPUNIT_TEST( testPlayerExists );
-  CPPUNIT_TEST( testCurrentPlayerNotFound );
+  CPPUNIT_TEST( testNonExistingPlayer );
   CPPUNIT_TEST( testCurrentPlayer );
   CPPUNIT_TEST( testDatabaseClose );
   CPPUNIT_TEST_SUITE_END();
@@ -46,7 +46,7 @@ class PlayerDatabaseTest : public CppUnit::TestFixture
   void testRemoveDatabase();
   void testPlayerCount();
   void testPlayerExists();
-  void testCurrentPlayerNotFound();
+  void testNonExistingPlayer();
   void testCurrentPlayer();
   void testDatabaseClose();
 

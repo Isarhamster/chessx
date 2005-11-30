@@ -66,10 +66,9 @@ void PlayerDatabaseTest::testPlayerExists()
   CPPUNIT_ASSERT ( pdb.exists( "Thal, Olaf" ) );
 }
 
-void PlayerDatabaseTest::testCurrentPlayerNotFound()
+void PlayerDatabaseTest::testNonExistingPlayer()
 {
-  //pdb.setCurrent should return false
-  CPPUNIT_ASSERT ( !pdb.setCurrent( "TRUSDFEADFA, WSDFASDF" ) );
+  CPPUNIT_ASSERT ( !pdb.exists( "TRUSDFEADFA, WSDFASDF" ) );
 }
 
 void PlayerDatabaseTest::testCurrentPlayer()
