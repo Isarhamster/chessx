@@ -111,7 +111,13 @@ bool BoardTheme::load(const QString& themeFile)
         maskImage.setPixel(i, j, opaque);
   QBitmap mask;
   mask.convertFromImage(maskImage);
-  big.setMask(mask);
+
+
+  /* 30/11/2005: setMask() commented out /Ejner
+   * by Qt4 it worked unpredictably and with different results on different
+   * platforms. Instead the eboard themes were edited, clearing the background
+   * behind the pieces (Gimp: Select by color + Edit -> clear).*/
+  //big.setMask(mask);
 
   /* Cut big theme bitmap into separate pieces */
   for (int i = 0; i<ConstPieceTypes; i++)
