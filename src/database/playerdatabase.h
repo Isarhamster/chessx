@@ -75,7 +75,7 @@ QString current() const;
 makes the player the current object for later query/update
 function calls.
 */
-bool setCurrent(const QString& playername);
+void setCurrent(const QString& playername);
 /**
 returns true iff the player has en entry
 in the database

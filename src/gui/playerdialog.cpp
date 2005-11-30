@@ -77,12 +77,7 @@ void PlayerDialog::showPlayer(QListViewItem* i)
 
 void PlayerDialog::showPlayer(const QString& s)
 {
-  if (!m_database->setCurrent(s))
-  {
-    playerView->setText(QString("<h1>%1</h1>\n").arg(s) + 
-      tr("<i>No information about player found.</i>"));
-    return;
-  }
+  m_database->setCurrent(s);
   QString birth = m_database->dateOfBirth().asShortString();
   QString death = m_database->dateOfDeath().asShortString();
   QString live = death.isEmpty() ? tr("Born %1.").arg(birth) :
