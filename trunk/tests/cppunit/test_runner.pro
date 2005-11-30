@@ -16,8 +16,13 @@ HEADERS += playerdatabasetest.h \
            ../../src/database/playerdatabase.h \
            ../../src/database/playerdata.h \
            ../../src/database/spellchecker.h \
+           ../../src/database/board.h \
+           ../../src/database/move.h \
+           ../../src/database/common.h \
+           ../../src/database/history.h \
            databaseconversiontest.h \
-           playerdatabasechangestest.h
+           playerdatabasechangestest.h \
+           boardtest.h
 
 
 SOURCES += playerdatabasetest.cpp \
@@ -28,8 +33,11 @@ SOURCES += playerdatabasetest.cpp \
            ../../src/database/playerdatabase.cpp \
            ../../src/database/playerdata.cpp \
            ../../src/database/spellchecker.cpp \
+          ../../src/database/board.cpp \
+           ../../src/database/move.cpp \
+           ../../src/database/common.cpp \
+           ../../src/database/history.cpp \
           databaseconversiontest.cpp \
-          playerdatabasechangestest.cpp
-
-
+          playerdatabasechangestest.cpp \
+          boardtest.cpp
 
