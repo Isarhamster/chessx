@@ -73,7 +73,7 @@ void PlayerDatabaseTest::testNonExistingPlayer()
 
 void PlayerDatabaseTest::testCurrentPlayer()
 {
-  CPPUNIT_ASSERT ( pdb.setCurrent( "Thal, Olaf" ) );
+  pdb.setCurrent( "Thal, Olaf" );
   CPPUNIT_ASSERT_EQUAL( QString( "Thal, Olaf" ) , pdb.current() );
 }
 
