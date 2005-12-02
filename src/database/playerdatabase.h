@@ -226,7 +226,8 @@ matching the prefix
 By default, max 10000000 names are returned
 By default, search is case sensitive
 */
-QStringList findPlayers(const QString& prefix, const int maxCount = 10000000, const bool cs = true);
+enum CaseSensitive{Yes,No};
+QStringList findPlayers(const QString& prefix, const int maxCount = 10000000, const CaseSensitive cs = Yes);
 
 /**
 returns the date for a given elo list index

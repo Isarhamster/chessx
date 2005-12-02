@@ -425,12 +425,13 @@ QStringList PlayerDatabase::playerNames(){
   return result;
 }
 
-QStringList PlayerDatabase::findPlayers(const QString& prefix, const int maxCount, const bool cs){
+QStringList PlayerDatabase::findPlayers(const QString& prefix, const int maxCount, const PlayerDatabase::CaseSensitive cs){
+  bool l_cs = (cs==Yes);
   QStringList result;
   QMap<QString,Q_INT32>::Iterator it;
   int i=0;
   for ( it = m_mapping.begin(); it != m_mapping.end(); ++it ) {
-     if (it.key().startsWith(prefix,cs)){
+     if (it.key().startsWith(prefix,l_cs)){
         if (i >= maxCount)
           break;
         result.push_back(it.key());
