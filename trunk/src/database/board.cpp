@@ -17,6 +17,7 @@
  *                                                                         *
  ***************************************************************************/
 #include <qregexp.h>
+#include <qstringlist.h>
 #include "board.h"
 
 static const int castlingMask[64] = {
@@ -145,7 +146,7 @@ int countFiles (const QString& rank)
    QChar c;
    for (uint i = 0;i < rank.length();i++) {
       c = rank.at(i);
-      switch (c) {
+      switch (c.latin1()) {
          case 'k':
          case 'K':
          case 'q':
