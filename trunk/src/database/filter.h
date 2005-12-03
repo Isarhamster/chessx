@@ -22,8 +22,8 @@
 
 //TODO
 /*
-* change constructor to comply with coding standard
-* optimizations
+* unit tests (when design is more stable - can copy from /tests/filter)
+* possible optimizations
   * cache one value (but what do we know about calling sequence ?? )
   * use QValueVector as representation in case of "sparse" filter
 * saving/loading to disk (dataset).
@@ -37,9 +37,13 @@
 class Filter
 {
 public:
+/**
+    flag for which games to include in filter
+*/
+        enum WhichGames{AllGames,NoGames};
 /** construct filter of given size
 */
-	Filter(const int size, const bool allGames);
+	Filter(const int size, const WhichGames whichGames = AllGames);
 /** construct filter from another filter
 */
 	Filter(const Filter& filter);

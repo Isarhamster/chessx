@@ -17,9 +17,9 @@
 
 #include <filter.h>
 
-Filter::Filter(const int size, const bool allGames){
+Filter::Filter(const int size, const Filter::WhichGames whichGames){
    m_currentIndex = 0;
-   if (allGames){
+   if (whichGames==AllGames){
 //Qt3 does not have QByteArray(size,ch)
      m_byteArray = new QByteArray(size);
      for (int i=0; i<size; i++){
