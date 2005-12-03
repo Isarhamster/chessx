@@ -49,6 +49,16 @@ void PlayerDatabaseChangesTest::testAddPlayer()
   change.commit();
 }
 
+void PlayerDatabaseChangesTest::testFindPlayers()
+{
+  QStringList qsl = change.findPlayers("Hop");
+  CPPUNIT_ASSERT_EQUAL_MESSAGE( "findPlayers(Hop)", (size_t)1 , qsl.count() );
+  qsl = change.findPlayers("HOP", 10, PlayerDatabase::IgnoreCase);
+  CPPUNIT_ASSERT_EQUAL_MESSAGE( "findPlayers(HOP,10,IgnoreCase)", (size_t)1 , qsl.count() );
+  qsl = change.findPlayers("HOP", 10, PlayerDatabase::RespectCase);
+  CPPUNIT_ASSERT_EQUAL_MESSAGE( "findPlayers(HOP,10,RespectCase)", (size_t)0 , qsl.count() );
+}
+
 void PlayerDatabaseChangesTest::testRollback()
 {
   uint count = 1;

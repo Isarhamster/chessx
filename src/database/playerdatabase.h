@@ -219,15 +219,17 @@ void appendToBiography(const QString& s);
 returns a list of all player names in database
 */
 QStringList playerNames();
-
+/**
+parameter flag for case sensitivity
+*/
+enum CaseFlag{RespectCase,IgnoreCase};
 /**
 returns a list of player names in database,
 matching the prefix
 By default, max 10000000 names are returned
 By default, search is case sensitive
 */
-enum CaseSensitive{Yes,No};
-QStringList findPlayers(const QString& prefix, const int maxCount = 10000000, const CaseSensitive cs = Yes);
+QStringList findPlayers(const QString& prefix, const int maxCount = 10000000, const CaseFlag cs = RespectCase);
 
 /**
 returns the date for a given elo list index
