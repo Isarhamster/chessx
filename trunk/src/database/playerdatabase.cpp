@@ -425,8 +425,8 @@ QStringList PlayerDatabase::playerNames(){
   return result;
 }
 
-QStringList PlayerDatabase::findPlayers(const QString& prefix, const int maxCount, const PlayerDatabase::CaseSensitive cs){
-  bool l_cs = (cs==Yes);
+QStringList PlayerDatabase::findPlayers(const QString& prefix, const int maxCount, const PlayerDatabase::CaseFlag cs){
+  bool l_cs = (cs==RespectCase);
   QStringList result;
   QMap<QString,Q_INT32>::Iterator it;
   int i=0;

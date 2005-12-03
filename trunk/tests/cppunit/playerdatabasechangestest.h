@@ -29,6 +29,7 @@ class PlayerDatabaseChangesTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE( PlayerDatabaseChangesTest );
   CPPUNIT_TEST( testAddPlayer );
+  CPPUNIT_TEST( testFindPlayers );
   CPPUNIT_TEST( testRollback );
   CPPUNIT_TEST( testCompact );
   CPPUNIT_TEST( testDateOfBirth );
@@ -44,6 +45,7 @@ class PlayerDatabaseChangesTest : public CppUnit::TestFixture
   void tearDown();
 
   void testAddPlayer();
+  void testFindPlayers();
   void testRollback();
   void testCompact();
   void testDateOfBirth();
