@@ -68,50 +68,50 @@ bool Tags::open(const QString& fname) {
     return false;
   }
 
-  Q_UINT8 tagType;
+  m_name_vector.clear();
+  m_name_map.clear();
+  m_event_vector.clear();
+  m_event_map.clear();
+  m_site_vector.clear();
+  m_site_map.clear();
+
+QValueVector<QString> m_round_vector;
+QMap<QString,int> m_round_map;
+
+  Q_INT8 tagType;
   Q_UINT32 index;
   QString name;
+  char* c_name;
   TagType t;
   while (!m_tags_ds.atEnd()){
     m_tags_ds >> tagType;
     t = (TagType)tagType;
     m_tags_ds >> index;
-    m_tags_ds >> name;
+    m_tags_ds >> c_name;
+    name = c_name;//work with QString internally
     
     switch(t)
     {
       case Name:
-        if (name.startsWith("0")){//was removed
-          m_name_map.remove(name.mid(1,MaxNameLength));
-        }
-        else{
+        if (!name.startsWith("0")){//name was removed
           m_name_map.insert(name,(int)index);
           m_name_vector.push_back(name);
         }
         break;
       case Event:
-        if (name.startsWith("0")){//was removed
-          m_event_map.remove(name.mid(1,MaxNameLength));
-        }
-        else{
+        if (!name.startsWith("0")){//event was removed
           m_event_map.insert(name,(int)index);
           m_event_vector.push_back(name);
         }
         break;
       case Site:
-        if (name.startsWith("0")){//was removed
-          m_site_map.remove(name.mid(1,MaxNameLength));
-        }
-        else{
+        if (!name.startsWith("0")){//site was removed
           m_site_map.insert(name,(int)index);
           m_site_vector.push_back(name);
         }
         break;
       case Round:
-        if (name.startsWith("!")){//was removed
-          m_round_map.remove(name.mid(1,MaxNameLength));
-        }
-        else{
+        if (!name.startsWith("!")){//round was removed
           m_round_map.insert(name,(int)index);
           m_round_vector.push_back(name);
         }
@@ -251,9 +251,10 @@ int Tags::addIndex(TagType& tp, QValueVector<QString>& vector, QMap<QString,int>
     int idx = vector.count();
     vector.push_back(name);
     map.insert(name,idx);
-    m_tags_ds << (Q_UINT8)tp;
+    m_tags_ds << (Q_INT8)tp;
     m_tags_ds << (Q_UINT32)idx;
-    m_tags_ds << name;
+    const char* c_name = name;
+    m_tags_ds << c_name;
     return idx;
   }
 }
@@ -287,13 +288,13 @@ int Tags::count(TagType t){
       return m_name_vector.count();
       break;
     case Event:
-      return m_name_vector.count();
+      return m_event_vector.count();
       break;
     case Site:
-      return m_name_vector.count();
+      return m_site_vector.count();
       break;
     case Round:
-      return m_name_vector.count();
+      return m_round_vector.count();
       break;
     default: 
       return -1;
@@ -347,3 +348,7 @@ void Tags::flushTagsFile(){
   m_tags_file.flush();
 }
 
+
+int Tags::tagFileSize(){
+  return m_tags_file.at();
+}

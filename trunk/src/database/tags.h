@@ -29,6 +29,39 @@ http://doc.trolltech.com/4.0/qdatastream.html
 #include <qt34/qvaluevector.h>
 #include <qmap.h>
 
+
+/*TODO
+investigate which predefined tags are possible
+
+should optional and non-optional tags be treated differently
+- maybe a class function to say if a tagtype is optional ?
+
+optimize file format, idea is to have two parts
+1) the ordered part
+2) the unordered part: values that are added since last call to compact()
+1)
+1a) 
+predefined tags:
+name
+event
+site
+round
+annotator
+source
+... 
+-> for each predefined tag, first store count of values, then the values
+1b) 
+custom tags
+-> for each custom tag store its name, then count of values, then the values
+2)
+each value stored with
+* tag type information: TagType (and for custom tags the tag name) How to tell custom from predefined ?
+* index in the given tags collection
+* value
+
+*/
+
+
 class Tags{
 
 public:
@@ -51,7 +84,7 @@ bool removeTagsFile(const QString& fname);
 /**
 the different kinds of tags
 */
-enum TagType {Name, Event, Site, Round};
+enum TagType {Name, Event, Site, Round, Source, Annotator};
 /**
 return the name for the given index and tag type
 */
@@ -74,8 +107,6 @@ return new index if it is not there;
 return existing index if tag value is already there
 */
 int add(TagType t, const QString& name); 
-         /* add new name if it is not there, return existing index if it is
-            there - should be quite fast */
 /**
 remove the name from the tag value collection for the given tag type.
 */
@@ -93,6 +124,11 @@ void flushTagsFile();
 physically erase unused tag values
 */
 void compact();
+/**
+@return the size of the tag file
+*/
+int tagFileSize();
+
 
 
 private:
