@@ -18,11 +18,14 @@
 One instance holds all the tag values used in a game database.
 Documentation for managing QDataset format version, see
 http://doc.trolltech.com/4.0/qdatastream.html
+Some ideas for the file format are borrowed from Scid (see namebase.cpp
+and tkscid.cpp).
 */
 #ifndef __TAGS_H__
 #define __TAGS_H__
 
 #include <qstring.h>
+#include <qstringlist.h>
 #include <qregexp.h>
 #include <qdatastream.h>
 #include <qfile.h>
@@ -31,36 +34,43 @@ http://doc.trolltech.com/4.0/qdatastream.html
 #include <qpair.h>
 
 /*TODO
--custom tags
--file format optimizing. see Scid's namebase.cpp
- (raw binary format, string frontcoding...)
--compact(): needs access to index file for the games
- cf. Scid's sc_compact_names in tkscid.cpp
+-compact(): 
+ Needs access to index file for the games, but for now just create index mapping.
+ May also clean up unused custom tag id's.
+-maybe some functions can be optimized with const_iterators or just loops
+-file may be even smaller by having id/frequency use smaller types when possible.
+-QByteArray (in Qt4) can perhaps be used for read/write with compression ?
 */
 
 class Tags{
 
 public:
 /**
-create a new tags file
+Construct with given filename.
 */
-bool create(const QString& fname);
+Tags(const QString& fname);
 /**
-open an existing tags file
+Write the tags file.
 */
-bool open(const QString& fname);
+void writeFile();
 /**
-close the active tags file
+Read in tags file.
+@return true iff succesful.
 */
-void close();
+bool readFile();
 /**
-remove a tags file
+Remove the tags file.
+@return true iff succesful.
 */
-bool removeTagsFile(const QString& fname);
+bool removeFile();
 /**
-the different kinds of tags cf.
-http://www.tim-mann.org/Standard
-or
+Remove unused values, saving space.
+Not implemented yet, it involves also writing to index file.
+*/
+void compact();
+/**
+The different kinds of tags cf.
+http://www.tim-mann.org/Standard or
 http://www.very-best.de/pgn-spec.htm#8.1
 */
 enum KnownTagTypes {
@@ -86,114 +96,115 @@ Annotator, Mode, PlyCount,
 Source
 };
 /**
-return the value for the given index and tag type
+Return the value for the given valueId and tagId.
+Returns value even if frequency is 0.
 */
-QString value(uint tagId, int index);
+QString value(const uint tagId, const int valueId) const;
 /**
-return the index for the given name and tag type
+Return the valueId for the given value and tagId.
 */
-int index(uint tagId, const QString& name);
+int valueId(const uint tagId, const QString& value) const;
 /**
-return a bitvector with information indicating which indices 
-for the given tag type has the given string as a prefix.
+Return the frequency for the given valueId and tagId.
 */
-QValueVector<bool> find(uint tagId, const QString& pattern);
+uint valueFrequency(const uint tagId, const int valueId) const;
 /**
-return a bitvector with information indicating which indices 
-for the given tag type matches the given regex.
+Return a bitvector indicating which valueId's
+for the given tagId has the given string as a prefix.
 */
-QValueVector<bool> find(uint tagId, const QRegExp& pattern);
+QValueVector<bool> find(const uint tagId, const QString& pattern);
 /**
-add the name to the tag value collection for the given tag type.
-return new index if it is not there;
-return existing index if tag value is already there
+Return a bitvector indicating which valueId's
+for the given tagId matches the given regex.
 */
-int add(uint tagId, const QString& name); 
+QValueVector<bool> find(const uint tagId, const QRegExp& pattern);
 /**
-remove the name from the tag value collection for the given tag type.
+Add the value to the value collection for the given tagId.
+@return new index if it is not there.
+@return existing index if tag value is already there.
+In both cases, the frequency for the value is incremented.
 */
-void remove(uint tagId, int index);
+int add(const uint tagId, const QString& value);
 /**
-@return number of tag values of the given tag type.
-unused values are counted as well.
+Decrement the frequency of the given value in the value collection for the given tagId.
+Actual removal of a value can only happen in compact(), and then only if the values frequency is 0.
 */
-int count(uint tagId);
+void remove(const uint tagId, const int valueId);
 /**
-explicitly flush the tag file.
+@return Number of different values of the given tagId.
+Values with 0 frequency are counted as well.
 */
-void flushTagsFile();
+int count(const uint tagId) const;
 /**
-physically erase unused tag values
+@return true iff tag is known.
 */
-void compact();
+bool isKnown(const uint tagId) const;
 /**
-@return the size of the tag file
+@return true iff tag is known and mandatory.
 */
-int tagFileSize();
+bool isKnownMandatory(const uint tagId) const;
 /**
-@return true iff tag is known
+@return true iff tag is known and optional.
 */
-bool isKnown(uint tagId);
+bool isKnownOptional(const uint tagId) const;
 /**
-@return true iff tag is known and mandatory
+@return true iff tag is custom (user defined).
 */
-bool isMandatory(uint tagId);
+bool isCustom(const uint tagId) const;
 /**
-@return true iff tag is known and optional
+Add a custom tag name, and @return its index in tag name
+collection. If the tag name exists, -1 is returned.
 */
-bool isOptional(uint tagId);
+int defineTag(const QString& tagName);
 /**
-@return true iff tag is custom (user defined)
-*/
-bool isCustom(uint tagId);
-/**
-add a custom tag name, and @return its index in tag name
-collection. If the tag name exists, its index is returned.
-tagName may not be one of the known tag names. If it is, -1 will
-be returned instead.
-*/
-int addTagName(QString& tagName);
-/**
-remove a custom tag name by its index in the tag names collection
+Remove a custom tag name.
 All values for the tag are also deleted. 
-Should only be called if the tag name is not used.
-It's not allowed to remove known tag names.
+Known tag names can't be removed.
 @return true iff removal succeeded.
 */
-bool removeTagName(uint tagId);
+bool unDefineTag(const QString& tagName);
 /**
 The different kinds of tag names.
 */
-enum TagNameType{All, Known, KnownMandatory, KnownOptional, Custom};
+enum TagNameType{All, Known, KnownOptional, KnownMandatory, Custom};
 /**
-@return tag names of the given type.
-Default is to return all types of tag names.
+@return list of tag names.
+Default is to return all (both known and custom) tag names.
 */
-QStringList tagNames(TagNameType type = All);
+QStringList tagNames(const TagNameType type = All);
 /**
-@return index tag name collection
-@return -1 if it is not there
+@return tagId for the given tag name.
+@return -1 if tagId is undefined.
+Works both with known and custom tags.
 */
-int tagIndex(QString& tagName);
+int tagId(const QString& tagName) const;
 /**
-@return name of tag with the given index
+@return tag name for the given tagId.
+Works both with known and custom tags.
 */
-QString tagName(uint tagId);
+QString tagName(const uint tagId) const;
 
 
 private:
-QDataStream m_tags_ds; 
-QFile m_tags_file; 
+QString m_fname;//filename
+QDataStream m_tags_ds;//datastream
+QFile m_tags_file; //file
 
-//TODO 
-//tag names collections
-//QValueVector<QString> m_tagname_vector;
-//QMap<QString,int> m_tagname_map;
+//tag value collections (known as well as custom)
+QMap <uint, QPair <QValueVector<QString>, QMap <QString,QPair<Q_UINT32,Q_UINT32> > > > m_allTags;
 
-QMap <uint, QPair <QValueVector<QString>, QMap <QString,int> > > m_allTags;
+//for maintaining custom tag name definitions
+QValueVector<QString> m_customTags_v;
+QMap<QString,QPair<uint,bool> > m_customTags_m;//<uint,bool> is tagId and used flag
 
-QValueVector<bool> find(const QString& pattern, QValueVector<QString>& vector, QMap<QString,int>& map);
-QValueVector<bool> find(const QRegExp& pattern, QValueVector<QString>& vector, QMap<QString,int>& map);
+void clear();
+void closeFile();
+
+QValueVector<bool> find(const QString& pattern, QValueVector<QString>& vector, QMap<QString,QPair<Q_UINT32,Q_UINT32> >& map);
+QValueVector<bool> find(const QRegExp& pattern, QValueVector<QString>& vector, QMap<QString,QPair<Q_UINT32,Q_UINT32> >& map);
+static int knownTagIndex(const QString& tagName);
+static uint maxKnownTagIndex();
+static uint minKnownTagIndex();
 
 };
 
