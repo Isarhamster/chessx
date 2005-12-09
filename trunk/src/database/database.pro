@@ -15,7 +15,9 @@ HEADERS += board.h \
            tags.h \
            engine.h \
            wbengine.h \
-           uciengine.h
+           uciengine.h \
+           search.h \
+           query.h
 SOURCES += board.cpp \
            move.cpp \
            common.cpp \
@@ -28,9 +30,11 @@ SOURCES += board.cpp \
            tags.cpp \
            engine.cpp \
            wbengine.cpp \
-           uciengine.cpp
+           uciengine.cpp \
+           search.cpp \
+           query.cpp
 TARGET = database
-CONFIG += release warn_on qt staticlib
+CONFIG += release warn_on qt staticlib debug
 TEMPLATE = lib
 QT += qt3support
 INCLUDEPATH += ../compatibility
