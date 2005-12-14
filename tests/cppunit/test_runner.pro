@@ -20,9 +20,12 @@ HEADERS += playerdatabasetest.h \
            ../../src/database/move.h \
            ../../src/database/common.h \
            ../../src/database/history.h \
+           ../../src/database/search.h \
+           ../../src/database/query.h \
            databaseconversiontest.h \
            playerdatabasechangestest.h \
-           boardtest.h
+           boardtest.h \
+           querytest.h
 
 
 SOURCES += playerdatabasetest.cpp \
@@ -37,7 +40,10 @@ SOURCES += playerdatabasetest.cpp \
            ../../src/database/move.cpp \
            ../../src/database/common.cpp \
            ../../src/database/history.cpp \
+           ../../src/database/search.cpp \
+           ../../src/database/query.cpp \
           databaseconversiontest.cpp \
           playerdatabasechangestest.cpp \
-          boardtest.cpp
+          boardtest.cpp \
+          querytest.cpp
 
