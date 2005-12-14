@@ -54,7 +54,7 @@ public:
 	/** @return FEN string for position */
 	QString toFEN() const;
    /** @return true is the FEN string is valid */
-   bool Board::isValidFEN(const QString& fen) const;
+   bool isValidFEN(const QString& fen) const;
 	/** @return ASCII representation for debugging */
 	QString toASCII();
 	
