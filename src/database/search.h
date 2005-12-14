@@ -20,7 +20,10 @@
 
 #include "board.h"
 
-struct Search //represents a basic search on one criterion
+/** The Search class is an abstract base class that represents a 
+ * search on one criteria.
+ */
+struct Search 
 {
    enum Type { NullSearch, PositionSearch, EloSearch }; //1 per subclass to allow static downcast
    enum Operator { NullOperator, Not, And, Or, Add, Remove }; //Add is effectively the same as Or
@@ -30,6 +33,7 @@ struct Search //represents a basic search on one criterion
    virtual Type type()=0;
 };
 
+/** Undefined search */
 class NullSearch : public Search
 {
    public :
@@ -37,18 +41,19 @@ class NullSearch : public Search
       virtual ~NullSearch();
       virtual Type type();
 };
-
+/** Defines a search for a given position */
 class PositionSearch : public Search
 {
    public :
-      PositionSearch();
+      PositionSearch(Board& position);
       virtual ~PositionSearch();
       virtual Search::Type type();
       Board position();
+      void setPosition(Board& position);
    private :
       Board m_position;
 };
-
+/** Defines a search based on the elo ratings of both players */
 class EloSearch : public Search
 {
    public :
@@ -59,6 +64,8 @@ class EloSearch : public Search
       int maxWhiteElo();
       int minBlackElo();
       int maxBlackElo();
+      void setEloSearch(int minWhiteElo=0, int maxWhiteElo=4000, int minBlackElo=0, int maxBlacElo=4000);
+
    private :
       int m_minWhiteElo;
       int m_maxWhiteElo;

@@ -41,8 +41,9 @@ Search::Type NullSearch::type()
 
 /** The Position Search Class
  * ******************************/
-PositionSearch::PositionSearch()
+PositionSearch::PositionSearch(Board& position)
 {
+   setPosition(position);
 }
 PositionSearch::~PositionSearch()
 {
@@ -53,20 +54,28 @@ Search::Type PositionSearch::type()
 }
 Board PositionSearch::position()
 {
-   return Board();
+   return m_position;
+}
+void PositionSearch::setPosition(Board& position)
+{
+   m_position.fromFEN(position.toFEN());
 }
 
 /** The EloSearch class
  * **********************/
 EloSearch::EloSearch(int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlacElo)
 {
+   setEloSearch(minWhiteElo, maxWhiteElo, minBlackElo, maxBlacElo);
+}
+EloSearch::~EloSearch()
+{
+}
+void EloSearch::setEloSearch(int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlacElo)
+{
    m_minWhiteElo = minWhiteElo;
    m_maxWhiteElo = maxWhiteElo;
    m_minBlackElo = minBlackElo;
    m_maxBlackElo = maxBlacElo;
-}
-EloSearch::~EloSearch()
-{
 }
 Search::Type EloSearch::type()
 {

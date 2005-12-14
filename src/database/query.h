@@ -22,46 +22,78 @@
 #include <qt34/qptrlist.h>
 #include <qt34/qvaluelist.h>
 
+/** The Query class is used to store and combine simple and complicated queries.
+ * This is done by using reverse polish (postfix) notation. The Query class is a conceptual
+ * list of operands (different kinds of searches) and operators (logical AND, OR, NOT), 
+ * and methods to manipulate this list.
+ * Example (A && B) || (C && D) 
+ * where A,B,C,D are different searches and &&=And, ||=Or
+ * would be stored as a list:
+ * A B && C D && ||
+ */
 
-class Query //represents a combination of basic searches using postfix notation
+class Query 
 {
    public :
+      Query();
+      ~Query();
+      /** @return the operator at index, or NullOperator otherwise */
+      Search::Operator searchOperator(int index);
+      /** @return the search at index, or NULL pointer otherwise */
+      Search* search(int index);
+      /** @return the number of elements in the list */
+      int count();
+      /** @return the number of operators in the list */
+      int countOperators();
+      /** @return the number of operands (search definitions) in the list */
+      int countOperands();
+      /** @returns true if the element at index is a operand (search definition), false otherwise */
+      bool isElementSearch(int index);
+      /** @returns true if the element at index is a operator , false otherwise */
+      bool isElementOperator(int index);
+      /** @return true if the current list is a valid expression, false otherwise
+       * Question: What to do if there are too many operands */
+      bool isValid();
+      /** If set to true, search elements will automatically be deleted when removed from list
+       * default is false. Be careful, it cannot check for other pointers to the same object, 
+       * which would become invalid*/
+      void setAutoDelete(bool flag);
+
+      /** query modification methods */
+      /** Add a new operator to the list */
+      void append(Search::Operator op);
+      /** Add a new operand (search definition) to the list */
+      void append(const Search* search);
+      /** Change element at index to operator op, return true if successful, false otherwise */
+      bool set(int index, Search::Operator op);
+      /** Change element at index to operand search, return true if successful, false otherwise */
+      bool set(int index, const Search* search);
+      /** Remove element at index from list, return true if successful, false otherwise */
+      bool remove(int index);
+      /** Clear the list of all elements */
+      void clear();
+   private :
       enum ElementType {SearchElement, OperatorElement};
       typedef QValueList<Search::Operator> OperatorList;
       typedef QPtrList<Search> SearchList;
       typedef QValueList<int> IntList;
       typedef QValueList<ElementType> ElementTypeList;
-      Query();
-      ~Query();
-      //query interrogation methods
-      Search::Operator searchOperator(int index);
-      Search* search(int index);
-      int count();
-      bool isValid();
 
-      //query modification methods
-      void append(Search::Operator op);
-      void append(const Search* search);
-      /*bool set(int index, Search::Operator* op);
-      bool set(int index, const Search* search);*/
-      bool remove(int index);
-      void clear();
-      /**
-       * My own stuff for debugging
-       */
-      void printArrays();
-      QString operatorText(OperatorList::iterator op);
-      QString operatorText(Search::Operator op);
-      QString searchText(Search* search);
-   private :
+      /** List of the operators */
       OperatorList m_operator;
+      /** List of the operands (search items) */
       SearchList m_search;
+      /** Holds the conceptual list index for each operator in m_operator */
       IntList m_operatorMap;
+      /** Holds the conceptual list index for each operand in m_search */
       IntList m_searchMap;
+      /** Defines whether each item in the conceptual list is a operator (OperatorElement) 
+       * or operand (SearchElement) */
       ElementTypeList m_elementType;
-      int m_operatorCount;
-      int m_searchCount;
-      int m_totalCount;
+
+      /** Test if index is valid */
+      bool isValidIndex(uint index);
+      bool internalCheck();
 
 };
 
