@@ -19,6 +19,7 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
+#include <qmap.h>
 #include <qstring.h>
 
 #include "board.h"
@@ -117,18 +118,12 @@ class Game
 		Result result() const;
 
 		//game modification methods
-		/** Sets white player */
-		void setWhite(int tag);
-		/** Sets black player */
-		void setBlack(int tag);
-		/** Sets game date */
-		void setDate(const PartialDate& date);
-		/** Sets game event */
-		void setEvent(int tag);
-		/** Sets game site */
-		void setSite(int tag);
-		/** Sets game round */
-		void setRound(int tag);
+		/** @return value of the given tag */
+		QString tag(const QString& tag) const;
+		/** Sets the value of the given tag */
+		void setTag(const QString& tag, const QString& value);
+		/** Removes a tag */
+		void removeTag(const QString& tag);
 		
 		/** Sets the games start position */
 		void setStartBoard(const Board& startBoard);
@@ -160,12 +155,8 @@ class Game
 		int countNodes(int node);
 	
 		//game data
-		int m_white;
-		int m_black;
-		PartialDate m_date;
-		int m_event;
-		int m_site;
-		int m_round;
+		QMap<QString,QString> m_tags;
+		
 		Board m_startBoard;
 		QString m_startAnnotation;
 		Result m_result;
