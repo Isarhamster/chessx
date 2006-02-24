@@ -30,7 +30,7 @@ struct Search
 
    Search();
    virtual ~Search()=0;
-   virtual Type type()=0;
+   virtual Type type() const = 0;
 };
 
 /** Undefined search */
@@ -39,7 +39,7 @@ class NullSearch : public Search
    public :
       NullSearch();
       virtual ~NullSearch();
-      virtual Type type();
+      virtual Type type() const;
 };
 /** Defines a search for a given position */
 class PositionSearch : public Search
@@ -47,8 +47,8 @@ class PositionSearch : public Search
    public :
       PositionSearch(Board& position);
       virtual ~PositionSearch();
-      virtual Search::Type type();
-      Board position();
+      virtual Search::Type type() const;
+      Board position() const;
       void setPosition(Board& position);
    private :
       Board m_position;
@@ -59,11 +59,11 @@ class EloSearch : public Search
    public :
       EloSearch(int minWhiteElo=0, int maxWhiteElo=4000, int minBlackElo=0, int maxBlacElo=4000);
       virtual ~EloSearch();
-      virtual Type type();
-      int minWhiteElo();
-      int maxWhiteElo();
-      int minBlackElo();
-      int maxBlackElo();
+      virtual Type type() const;
+      int minWhiteElo() const;
+      int maxWhiteElo() const;
+      int minBlackElo() const;
+      int maxBlackElo() const;
       void setEloSearch(int minWhiteElo=0, int maxWhiteElo=4000, int minBlackElo=0, int maxBlacElo=4000);
 
    private :
