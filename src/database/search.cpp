@@ -34,7 +34,7 @@ NullSearch::NullSearch()
 NullSearch::~NullSearch()
 {
 }
-Search::Type NullSearch::type()
+Search::Type NullSearch::type() const
 {
    return Search::NullSearch;
 }
@@ -48,11 +48,11 @@ PositionSearch::PositionSearch(Board& position)
 PositionSearch::~PositionSearch()
 {
 }
-Search::Type PositionSearch::type()
+Search::Type PositionSearch::type() const
 {
    return Search::PositionSearch;
 }
-Board PositionSearch::position()
+Board PositionSearch::position() const
 {
    return m_position;
 }
@@ -77,23 +77,23 @@ void EloSearch::setEloSearch(int minWhiteElo, int maxWhiteElo, int minBlackElo, 
    m_minBlackElo = minBlackElo;
    m_maxBlackElo = maxBlacElo;
 }
-Search::Type EloSearch::type()
+Search::Type EloSearch::type() const
 {
    return Search::EloSearch;
 }
-int EloSearch::maxWhiteElo()
+int EloSearch::maxWhiteElo() const
 {
    return m_maxWhiteElo;
 }
-int EloSearch::minWhiteElo()
+int EloSearch::minWhiteElo() const
 {
    return m_minWhiteElo;
 }
-int EloSearch::maxBlackElo()
+int EloSearch::maxBlackElo() const
 {
    return m_maxBlackElo;
 }
-int EloSearch::minBlackElo()
+int EloSearch::minBlackElo() const
 {
    return m_minBlackElo;
 }
