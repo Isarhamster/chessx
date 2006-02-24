@@ -90,3 +90,17 @@ bool isPieceColor(Piece piece, Color color)
   else 
     return piece >= BlackKing && piece <= BlackPawn;
 }
+
+QString resultString(Result result)
+{
+	switch(result) {
+		case Unknown:
+			return "*";
+		case WhiteWin:
+			return "1-0";
+		case Draw:
+			return "1/2-1/2";
+		case BlackWin:
+			return "0-1";
+	}
+}

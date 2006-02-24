@@ -54,7 +54,8 @@ QChar pieceToChar(Piece piece);
 /** Checkes wheter piece has given color. Note that there is no pieceColor
    function due to Empty piece value. */
 bool isPieceColor(Piece piece, Color color);
-
+/** Returns a string representation of a result */
+QString resultString(Result result);
 
 #endif
 
