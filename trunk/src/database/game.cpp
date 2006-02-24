@@ -21,12 +21,6 @@
 
 Game::Game()
 {
-	m_white = -1;
-	m_black = -1;
-	PartialDate m_date;
-	m_event = -1;
-	m_site = -1;
-	m_round = -1;
 	m_startBoard.fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	m_currentBoard = m_startBoard;
 	m_startAnnotation = QString::null;
@@ -381,36 +375,6 @@ bool Game::removeMove(int variation)
 	return false;
 }
 
-int Game::white() const
-{
-	return m_white;
-}
-
-int Game::black() const
-{
-	return m_black;
-}
-
-PartialDate Game::date() const
-{
-	return m_date;
-}
-
-int Game::event() const
-{
-	return m_event;
-}
-
-int Game::site() const
-{
-	return m_site;
-}
-
-int Game::round() const
-{
-	return m_round;
-}
-
 Board Game::startBoard() const
 {
 	return m_startBoard;
@@ -426,34 +390,19 @@ Result Game::result() const
 	return m_result;
 }
 
-void Game::setWhite(int tag)
+		QString Game::tag(const QString& tag) const
 {
-	m_white = tag;
+	return m_tags[tag];
 }
 
-void Game::setBlack(int tag)
+void Game::setTag(const QString& tag, const QString& value)
 {
-	m_black = tag;
+	m_tags.insert(tag, value);
 }
 
-void Game::setDate(const PartialDate& date)
+void Game::removeTag(const QString& tag)
 {
-	m_date = date;
-}
-
-void Game::setEvent(int tag)
-{
-	m_event = tag;
-}
-
-void Game::setSite(int tag)
-{
-	m_site = tag;
-}
-
-void Game::setRound(int tag)
-{
-	m_round = tag;
+	m_tags.remove(tag);
 }
 
 void Game::setStartBoard(const Board& board)
