@@ -4,6 +4,8 @@
     begin                : 06/12/2005
     copyright            : (C) 2005 Marius Roets
                            <saidinwielder@users.sourceforge.net>
+													 (C) 2006 William Hoggarth
+													 <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,13 +21,14 @@
 #define __SEARCH_H__
 
 #include "board.h"
+#include "partialdate.h"
 
 /** The Search class is an abstract base class that represents a 
  * search on one criteria.
  */
 struct Search 
 {
-   enum Type { NullSearch, PositionSearch, EloSearch }; //1 per subclass to allow static downcast
+   enum Type { NullSearch, PositionSearch, EloSearch, DateSearch }; //1 per subclass to allow static downcast
    enum Operator { NullOperator, Not, And, Or, Add, Remove }; //Add is effectively the same as Or
 
    Search();
@@ -71,6 +74,27 @@ class EloSearch : public Search
       int m_maxWhiteElo;
       int m_minBlackElo;
       int m_maxBlackElo;
+};
+
+/** Defines a search based on a date range */
+class DateSearch : public Search
+{
+	public:
+		DateSearch();
+		DateSearch(PartialDate minDate, PartialDate maxDate);
+		~DateSearch();
+		Type type() const;
+		
+		PartialDate minDate();
+		PartialDate maxDate();
+		bool withinDateRange(PartialDate date);
+		void setDateRange(PartialDate minDate, PartialDate maxDate);
+		void setMinDate(PartialDate minDate);
+		void setMaxDate(PartialDate maxDate);
+	
+	private:
+		PartialDate m_minDate;
+		PartialDate m_maxDate;
 };
 
 #endif // __SEARCH_H__
