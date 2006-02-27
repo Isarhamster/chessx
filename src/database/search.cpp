@@ -4,6 +4,8 @@
     begin                : 06/12/2005
     copyright            : (C) 2005 Marius Roets
                            <saidinwielder@users.sourceforge.net>
+													 (C) 2006 William Hoggarth
+													 <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -96,4 +98,63 @@ int EloSearch::maxBlackElo() const
 int EloSearch::minBlackElo() const
 {
    return m_minBlackElo;
+}
+
+/** The DateSearch class
+ * **********************/
+DateSearch::DateSearch()
+{
+	m_minDate = m_maxDate = PartialDate();
+}
+
+DateSearch::DateSearch(PartialDate minDate, PartialDate maxDate)
+{
+	Q_ASSERT(minDate < maxDate);
+	
+	m_minDate = minDate;
+	m_maxDate = maxDate;
+}
+
+DateSearch::~DateSearch()
+{
+}
+
+Search::Type DateSearch::type() const
+{
+	return Search::DateSearch;
+}
+
+PartialDate DateSearch::minDate()
+{
+	return m_minDate;
+}
+
+PartialDate DateSearch::maxDate()
+{
+	return m_maxDate;
+}
+
+bool DateSearch::withinDateRange(PartialDate date)
+{
+	return (date >= m_minDate && date <= m_maxDate);
+}
+
+void DateSearch::setDateRange(PartialDate minDate, PartialDate maxDate)
+{
+	Q_ASSERT(minDate < maxDate);
+	
+	m_minDate = minDate;
+	m_maxDate = maxDate;
+}
+
+void DateSearch::setMinDate(PartialDate minDate)
+{
+	Q_ASSERT(minDate < m_maxDate);
+	m_minDate = minDate;
+}
+
+void DateSearch::setMaxDate(PartialDate maxDate)
+{
+	Q_ASSERT(maxDate > m_minDate);
+	m_maxDate = maxDate;
 }
