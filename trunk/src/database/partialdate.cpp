@@ -143,12 +143,12 @@ bool operator>(const PartialDate& d1, const PartialDate& d2)
 
 bool operator>=(const PartialDate& d1, const PartialDate& d2)
 {
-  return d2 < d1;
+  return d2 < d1 || d2 == d1;
 }
 
  bool operator<=(const PartialDate& d1, const PartialDate& d2)
 {
-  return d2 > d1;
+  return d2 > d1 || d2 == d1;
 }
 
 bool operator!=(const PartialDate& d1, const PartialDate& d2)
