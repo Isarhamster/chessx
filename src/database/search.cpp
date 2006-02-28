@@ -124,12 +124,12 @@ Search::Type DateSearch::type() const
 	return Search::DateSearch;
 }
 
-PartialDate DateSearch::minDate()
+PartialDate DateSearch::minDate() const
 {
 	return m_minDate;
 }
 
-PartialDate DateSearch::maxDate()
+PartialDate DateSearch::maxDate() const
 {
 	return m_maxDate;
 }
@@ -157,4 +157,41 @@ void DateSearch::setMaxDate(PartialDate maxDate)
 {
 	Q_ASSERT(maxDate > m_minDate);
 	m_maxDate = maxDate;
+}
+
+/** The TagSearch class
+ * **********************/
+TagSearch::TagSearch(const QString& tag, const QString& value)
+{
+	m_tag = tag;
+	m_value = value;
+}
+
+TagSearch::~TagSearch()
+{
+}
+
+Search::Type TagSearch::type() const
+{
+	return Search::TagSearch;
+}
+		
+QString TagSearch::tag() const
+{
+	return m_tag;
+}
+
+QString TagSearch::value() const
+{
+	return m_value;
+}
+
+void TagSearch::setTag(const QString& tag)
+{
+	m_tag = tag;
+}
+
+void TagSearch::setValue(const QString& value)
+{
+	m_value = value;
 }

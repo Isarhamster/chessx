@@ -28,7 +28,7 @@
  */
 struct Search 
 {
-   enum Type { NullSearch, PositionSearch, EloSearch, DateSearch }; //1 per subclass to allow static downcast
+   enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch }; //1 per subclass to allow static downcast
    enum Operator { NullOperator, Not, And, Or, Add, Remove }; //Add is effectively the same as Or
 
    Search();
@@ -85,8 +85,8 @@ class DateSearch : public Search
 		~DateSearch();
 		Type type() const;
 		
-		PartialDate minDate();
-		PartialDate maxDate();
+		PartialDate minDate() const;
+		PartialDate maxDate() const;
 		bool withinDateRange(PartialDate date);
 		void setDateRange(PartialDate minDate, PartialDate maxDate);
 		void setMinDate(PartialDate minDate);
@@ -95,6 +95,24 @@ class DateSearch : public Search
 	private:
 		PartialDate m_minDate;
 		PartialDate m_maxDate;
+};
+
+/** Defines a tag based search */
+class TagSearch : public Search
+{
+	public:
+		TagSearch(const QString& tag, const QString& value);
+		~TagSearch();
+		Type type() const;
+		
+		QString tag() const;
+		QString value() const;
+		void setTag(const QString& tag);
+		void setValue(const QString& value);
+		
+	private:
+		QString m_tag;
+		QString m_value;
 };
 
 #endif // __SEARCH_H__
