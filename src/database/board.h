@@ -39,6 +39,10 @@ enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
    of captured pieces.
 */
 
+#define MAX_PIECES 12
+#define MAX_SQUARES 64
+#define MAX_EN_PASSANT_SQUARES 16
+
 
 class Board
 {
@@ -116,6 +120,15 @@ public:
 	bool isCheckmate();
 	/** @return whether the position is a stalemate */
    bool isStalemate();
+   bool canWhiteKingSideCastle();
+   bool canWhiteQueenSideCastle();
+   bool canBlackKingSideCastle();
+   bool canBlackQueenSideCastle(); 
+   Square enPassantSquare(); 
+   Q_UINT64 getHashValue();
+   // *** This function is purely for debug purposes
+   // *** When comparing 2 boards, it's usefull to have a name for each
+   void setDebugName(QString debugName);
 
 private:
   /** Move piece from @p from to @p to, leaving source square empty */
@@ -125,17 +138,38 @@ private:
   /** Promotes a piece / changes its type*/
   void promotePiece(Square square, Piece promoted);
 
+  QString m_debugName;
   unsigned char m_board[64];
   Piece m_pieceType[32];
   Square m_piecePosition[32];
   int m_pieceCount[ConstPieceTypes];
 	
-  Color m_toMove;
+   Color m_toMove;
 	Square m_epSquare;
 	CastlingRights m_castlingRights;
 	int m_halfMoveClock;
    QPtrList<Move> legalMoveList;
-};
 
+   Q_UINT64 m_hashValue;
+   Q_UINT64 m_randomValues[MAX_PIECES][MAX_SQUARES];
+   Q_UINT64 m_whiteCastlingKS;
+   Q_UINT64 m_whiteCastlingQS;
+   Q_UINT64 m_blackCastlingKS;
+   Q_UINT64 m_blackCastlingQS;
+   Q_UINT64 m_enPassant[MAX_EN_PASSANT_SQUARES];
+   Q_UINT64 m_randToMove;
+   void readRandomValues();
+//public: //temporary public to help with debugging
+   void createHash();
+   void hashPiece(Square s, Piece p);
+   void hashToMove();
+   void hashWhiteKingSideCastle();
+   void hashWhiteQueenSideCastle();
+   void hashBlackKingSideCastle();
+   void hashBlackQueenSideCastle();
+   void hashEpSquare();
+   void hashCastlingRights(CastlingRights oldCastlingRights);
+
+};
 #endif
 
