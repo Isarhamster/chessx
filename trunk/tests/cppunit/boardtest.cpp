@@ -2,8 +2,8 @@
                           common  -  description
                              -------------------
     begin                : 01/11/2005
-    copyright            : (C) 2005 Heinz R. Hopfgartner 
-                           <heinz.hopfgartner@gmx.at>
+    copyright            : (C) 2005 Marius Roets
+                           <saidinwielder@sourceforge.net>
 ***************************************************************************/
 
 /***************************************************************************
@@ -20,6 +20,7 @@ Unit tests for the Board class.
 
 #include "boardtest.h"
 #include "board.h"
+#include "qstring.h"
 
 // Registers the fixture into the 'registry'
 CPPUNIT_TEST_SUITE_REGISTRATION( BoardTest );
@@ -116,3 +117,77 @@ void BoardTest::testIsValidFEN()
    CPPUNIT_ASSERT( board.isValidFEN("k7/8/8/r7/8/8/8/K7 w KQkq - 0 1") );
 }
 
+void BoardTest::testCreateHash()
+{
+   Board board2;
+   board.setDebugName("Board1");
+   board2.setDebugName("Board2");
+   board.clear();
+   board.setStandardPosition();
+   board2.clear();
+   board2.setStandardPosition();
+   //printf ("%s - %s\n",QString::number(board.getHashValue(),16).latin1(),QString::number(board2.getHashValue(),16).latin1());
+   CPPUNIT_ASSERT( board.getHashValue() == board2.getHashValue() );
+   /*board2.setAt(0,WhiteRook); board2.setAt(1,WhiteKnight); board2.setAt(2,WhiteBishop);
+   board2.setAt(3,WhiteQueen); board2.setAt(4,WhiteKing); board2.setAt(5,WhiteBishop);
+   board2.setAt(6,WhiteKnight); board2.setAt(7,WhiteRook); board2.setAt(8,WhitePawn);
+   board2.setAt(9,WhitePawn); board2.setAt(10,WhitePawn); board2.setAt(11,WhitePawn);
+   board2.setAt(12,WhitePawn); board2.setAt(13,WhitePawn); board2.setAt(14,WhitePawn);
+   board2.setAt(15,WhitePawn); board2.setAt(48,BlackPawn); board2.setAt(49,BlackPawn);
+   board2.setAt(50,BlackPawn); board2.setAt(51,BlackPawn); board2.setAt(52,BlackPawn);
+   board2.setAt(53,BlackPawn); board2.setAt(54,BlackPawn); board2.setAt(55,BlackPawn);
+   board2.setAt(56,BlackRook); board2.setAt(57,BlackKnight); board2.setAt(58,BlackBishop);
+   board2.setAt(59,BlackQueen); board2.setAt(60,BlackKing); board2.setAt(61,BlackBishop);
+   board2.setAt(62,BlackKnight); board2.setAt(63,BlackRook);*/
+   //printf("Board1: Move 1\n");
+   board.doMove(board.singleMove("e4"));
+   //printf("Board2: Move 1\n");
+   board2.doMove(board2.singleMove("e4"));
+   CPPUNIT_ASSERT( board.getHashValue() == board2.getHashValue() );
+   //printf("Board1: Move 2\n");
+   board.doMove(board.singleMove("b5"));
+   //printf("Board2: Move 2\n");
+   board2.doMove(board2.singleMove("f5"));
+   CPPUNIT_ASSERT( board.getHashValue() != board2.getHashValue() );
+   //printf("Board1: Move 3\n");
+   board.doMove(board.singleMove("e5"));
+   //printf("Board2: Move 3\n");
+   board2.doMove(board2.singleMove("e5"));
+   CPPUNIT_ASSERT( board.getHashValue() != board2.getHashValue() );
+   //printf("Board1: Move 4\n");
+   board.doMove(board.singleMove("f5"));
+   //printf("Board2: Move 4\n");
+   board2.doMove(board2.singleMove("b5"));
+   CPPUNIT_ASSERT( board.getHashValue() != board2.getHashValue() );
+
+   //printf ("%s - %s\n",QString::number(h1,16).latin1(),QString::number(h2,16).latin1());
+   board.clear();
+   board.fromFEN("rnbqkbnr/p1ppp1pp/8/1p2Pp2/8/8/PPPP1PPP/RNBQKBNR b KQkq b6 0 1");
+   //printf("%s\n",board.toASCII().latin1());
+   //printf("%s\n",board2.toASCII().latin1());
+   //board2.createHash();
+   //printf("%s\n",board.toASCII().latin1());
+   //printf("%s\n",board2.toASCII().latin1());
+   CPPUNIT_ASSERT( board.getHashValue() != board2.getHashValue() );
+   board.fromFEN(board2.toFEN());
+   CPPUNIT_ASSERT( board.getHashValue() == board2.getHashValue() );
+   board.setToMove(Black);
+   CPPUNIT_ASSERT( board.getHashValue() != board2.getHashValue() );
+   board.setToMove(Black);
+   CPPUNIT_ASSERT( board.getHashValue() != board2.getHashValue() );
+   board.swapToMove();
+   CPPUNIT_ASSERT( board.getHashValue() == board2.getHashValue() );
+   board.swapToMove();
+   CPPUNIT_ASSERT( board.getHashValue() != board2.getHashValue() );
+   board.swapToMove();
+   board.doMove(board.singleMove("Bc4"));
+   board.doMove(board.singleMove("Bb7"));
+   board.doMove(board.singleMove("Nf3"));
+   board.doMove(board.singleMove("Nf6"));
+   //printf("*** Castling\n");
+   board.doMove(board.singleMove("O-O"));
+   //printf("%s\n",board.toASCII().latin1());
+   //printf("%s\n",board.toFEN().latin1());
+   board2.fromFEN(board.toFEN());
+   CPPUNIT_ASSERT( board.getHashValue() == board2.getHashValue() );
+}

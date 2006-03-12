@@ -2,8 +2,8 @@
                           common  -  description
                              -------------------
     begin                : 01/11/2005
-    copyright            : (C) 2005 Heinz R. Hopfgartner 
-                           <heinz.hopfgartner@gmx.at>
+    copyright            : (C) 2005 Marius Roets
+                           <saidinwielder@sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -29,14 +29,7 @@ class BoardTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE( BoardTest );
   CPPUNIT_TEST( testIsValidFEN );
-  //CPPUNIT_TEST( testRollback );
-  //CPPUNIT_TEST( testCompact );
-  //CPPUNIT_TEST( testDateOfBirth );
-  //CPPUNIT_TEST( testDateOfDeath );
-  //CPPUNIT_TEST( testCountry );
-  //CPPUNIT_TEST( testTitle );
-  //CPPUNIT_TEST( testPhoto );
-  //CPPUNIT_TEST( testBiography );
+  CPPUNIT_TEST( testCreateHash );
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -46,6 +39,7 @@ class BoardTest : public CppUnit::TestFixture
   */
 
   void testIsValidFEN();
+  void testCreateHash();
 
  //private:
 

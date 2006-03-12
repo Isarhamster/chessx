@@ -18,6 +18,7 @@
  ***************************************************************************/
 #include <qregexp.h>
 #include <qstringlist.h>
+#include <qfile.h>
 #include "board.h"
 
 static const int castlingMask[64] = {
@@ -203,7 +204,13 @@ Board::Board()
 	}
    legalMoveList.setAutoDelete(true);
    legalMoveList.clear();
+   readRandomValues();
 
+}
+
+void Board::setDebugName(QString debugName)
+{
+   m_debugName = debugName;
 }
 
 void Board::clear()
@@ -216,6 +223,7 @@ void Board::clear()
 	m_epSquare = NoEPSquare;
 	m_castlingRights = AllRights;
 	m_halfMoveClock = 0;
+   m_hashValue = 0;
 }
 
 void Board::fromFEN(const QString& fen)
@@ -313,6 +321,8 @@ void Board::fromFEN(const QString& fen)
 	m_halfMoveClock = fen.section(" ", 4, 4).toInt();
 	
 	//full move number is not used
+
+   createHash();
 }
 
 QString Board::toFEN() const
@@ -376,7 +386,6 @@ QString Board::toFEN() const
 	return fen;
 }
 
-
 bool Board::isValidFEN(const QString& fen) const
 {
    QString piecePlacement = fen.section(QRegExp("\\s+"), 0, 0);
@@ -430,7 +439,7 @@ bool Board::isValidFEN(const QString& fen) const
    }
 
    // Now that the FEN is valid, test that the actual position is valid
-   Board *tempBoard = new Board;
+   Board *tempBoard = new Board();
    tempBoard->fromFEN(fen);
    if (!tempBoard->isValid()) {
       // The given fen position is invalid
@@ -551,6 +560,7 @@ bool Board::setAt(Square s, Piece p)
       m_piecePosition[emptyIndex] = s;
       m_board[s] = emptyIndex;
    }
+   hashPiece(s,p);
    return true;
 
 }
@@ -560,6 +570,7 @@ void Board::removeFrom(Square s)
    m_pieceType[m_board[s]] = Empty;
    m_piecePosition[m_board[s]] = InvalidSquare;
    m_board[s] = InvalidPiece;
+   hashPiece(s,m_pieceType[m_board[s]]);
 }
 bool Board::isValid(BoardState* state)
 {
@@ -958,6 +969,42 @@ QString Board::getLegalMoves()
 
 }
 
+bool Board::canWhiteKingSideCastle()
+{
+   if (m_castlingRights & WhiteKingside) {
+      return true;
+   } else {
+      return false;
+   }
+}
+bool Board::canWhiteQueenSideCastle()
+{
+   if (m_castlingRights & WhiteQueenside) {
+      return true;
+   } else {
+      return false;
+   }
+}
+bool Board::canBlackKingSideCastle()
+{
+   if (m_castlingRights & BlackKingside) {
+      return true;
+   } else {
+      return false;
+   }
+}
+bool Board::canBlackQueenSideCastle()
+{
+   if (m_castlingRights & BlackQueenside) {
+      return true;
+   } else {
+      return false;
+   }
+}
+Square Board::enPassantSquare()
+{
+   return m_epSquare;
+}
 void Board::setStandardPosition()
 {
    // lazy way to implement it
@@ -982,7 +1029,7 @@ QString Board::toASCII()
 	ascii += "\nTo Move: ";
 	ascii += m_toMove == White ? "White" : "Black"; 
 	
-	ascii += ", EP Square: ";
+	ascii += ", EP Square: ("+QString::number(m_epSquare)+") ";
 	if(m_epSquare != NoEPSquare) {
 		ascii += 'a' + (m_epSquare & 7);
 		ascii += '1' + ((m_epSquare & 56) >> 3);
@@ -1038,6 +1085,7 @@ QString Board::toASCII()
    ascii += isStalemate() ? "Yes" : "No";
    findLegalMoves();
    ascii += "\nLegal Moves :" + getLegalMoves();
+   ascii += "\nPosition Hash : " + QString::number(m_hashValue,16);
 	
 	return ascii;
 }
@@ -1079,12 +1127,15 @@ Color Board::toMove() const
 
 void Board::setToMove(Color c)
 {
-  m_toMove = c;
+   if (m_toMove != c)
+     hashToMove();
+   m_toMove = c;
 }
 
 void Board::swapToMove()
 {
   m_toMove = m_toMove == White ? Black : White;
+  hashToMove();
 }
 
 Move Board::singleMove(const QString& SAN)
@@ -1884,8 +1935,13 @@ HistoryItem Board::doMove(const Move& m)
 {
 	HistoryItem historyItem(m_board[m.to()], at(m.to()), m_castlingRights,
 														m_epSquare, m_halfMoveClock++);
+   hashEpSquare();
 	m_epSquare = NoEPSquare;
+
+   CastlingRights oldCastlingRights = m_castlingRights;
 	m_castlingRights &= castlingMask[m.from()] & castlingMask[m.to()];
+   hashCastlingRights(oldCastlingRights);
+
 	if(at(m.from()) == WhitePawn || at(m.from()) == BlackPawn){
 		m_halfMoveClock = 0;
 	}
@@ -1896,15 +1952,15 @@ HistoryItem Board::doMove(const Move& m)
   {
 		if(m.isDoubleAdvance()) {
 			m_epSquare = (m.from() + m.to()) >> 1;
+         hashEpSquare();
 		} else {
-			if (m.isCastling())
+			if (m.isCastling()) {
 				movePiece(m.castlingRookFrom(), m.castlingRookTo());
-			else if (m.isEnPassant()) {
+         } else if (m.isEnPassant()) {
 				historyItem.setIndex(m_board[m.enPassantSquare()]);
 				historyItem.setPiece(at(m.enPassantSquare()));
 				m_board[m.enPassantSquare()] = InvalidPiece;
-			}
-			else  /* promotion */
+			} else  /* promotion */
 				promotePiece(m.to(), m.promotionPiece());
 		}
   }
@@ -1917,8 +1973,8 @@ void Board::undoMove(const Move& m, const HistoryItem& historyItem)
 {
 	movePiece(m.to(), m.from());
   
-	if (m.isCastling()) {
-    movePiece(m.castlingRookTo(), m.castlingRookFrom());
+   if (m.isCastling()) {
+      movePiece(m.castlingRookTo(), m.castlingRookFrom());
 	}
 	else if(m.isPromotion()) {
 		promotePiece(m.from(), m_toMove == White ? BlackPawn : WhitePawn);
@@ -1938,11 +1994,16 @@ void Board::undoMove(const Move& m, const HistoryItem& historyItem)
 	}
 	
   swapToMove();
+   hashEpSquare();
 	m_epSquare = historyItem.epSquare();
+   hashEpSquare();
+
+   CastlingRights oldCastlingRights = m_castlingRights;
 	m_castlingRights = historyItem.castlingRights();
+   hashCastlingRights(oldCastlingRights);
+
 	m_halfMoveClock = historyItem.halfMoveClock();
 }
-
 
 bool Board::isCheck()
 {
@@ -1972,6 +2033,7 @@ bool Board::isStalemate()
 
 void Board::movePiece(Square from, Square to)
 {
+  hashPiece(from, m_pieceType[m_board[from]]);
   if (m_board[to] != InvalidPiece) // capture
   {
     m_pieceCount[m_pieceType[m_board[to]]]--;
@@ -1981,6 +2043,7 @@ void Board::movePiece(Square from, Square to)
   m_board[to] = m_board[from];
 	m_piecePosition[m_board[from]] = to;
   m_board[from] = InvalidPiece;
+  hashPiece(to, m_pieceType[m_board[to]]);
 }
 
 void Board::restorePiece(Square from, Piece piece, int index)
@@ -1989,12 +2052,144 @@ void Board::restorePiece(Square from, Piece piece, int index)
   m_pieceType[index] = piece;
   m_piecePosition[index] = from;
   m_board[from] = index;
+  hashPiece(from ,piece);
 }
 
 void Board::promotePiece(Square square, Piece promoted)
 {
 	m_pieceCount[m_pieceType[m_board[square]]]--;
+   hashPiece(square, m_pieceType[m_board[square]]);
 	m_pieceCount[promoted]++;
 	m_pieceType[m_board[square]] = promoted;
+   hashPiece(square, promoted);
 }
 
+void Board::readRandomValues()
+{
+   QFile file( "rand64.dat" );
+   Q_UINT64 num64bit;
+   num64bit = 0;
+   int maxArray = MAX_PIECES*MAX_SQUARES+4+MAX_EN_PASSANT_SQUARES+1;
+   Q_UINT64 randomValues[maxArray];
+   int i = 0;
+   int l,j;
+   bool ok;
+   if ( file.open( IO_ReadOnly ) ) {
+      QTextStream stream( &file );
+      QString line;
+      while ( !stream.atEnd() ) {
+         line = stream.readLine(); // line of text excluding '\n'
+         num64bit = (Q_UINT64) line.toULongLong(&ok,0);
+         randomValues[i++] = num64bit;
+         if (i >= maxArray) {
+            break;
+         }
+      }
+      file.close();
+   } else {
+      //How to handle this error ?
+      qDebug ("Could not find Random number file");
+   }
+
+   i = 0;
+   for (l = 0; l < MAX_PIECES; ++l) {
+      for (j = 0; j < MAX_SQUARES; ++j) {
+         m_randomValues[l][j] = randomValues[i++];
+      }
+   }
+   m_whiteCastlingKS = randomValues[i++];
+   m_whiteCastlingQS = randomValues[i++];
+   m_blackCastlingKS = randomValues[i++];
+   m_blackCastlingQS = randomValues[i++];
+   for (l = 0; l < MAX_EN_PASSANT_SQUARES; ++l) {
+      m_enPassant[l] = randomValues[i++];
+   }
+   
+   m_randToMove = randomValues[i];
+
+}
+void Board::hashPiece(Square s, Piece p)
+{
+   if ((p > Empty) && (p < InvalidPiece)) { 
+      m_hashValue = m_hashValue ^ m_randomValues[p-1][s];
+   }
+}
+void Board::hashToMove()
+{
+      m_hashValue = m_hashValue ^ m_randToMove;
+}
+void Board::hashCastlingRights(CastlingRights oldCastlingRights)
+{
+   if (oldCastlingRights != m_castlingRights) {
+      if ((m_castlingRights & WhiteKingside) != (oldCastlingRights & WhiteKingside)) 
+         hashWhiteKingSideCastle();
+      if ((m_castlingRights & WhiteQueenside) != (oldCastlingRights & WhiteQueenside)) 
+         hashWhiteQueenSideCastle();
+      if ((m_castlingRights & BlackKingside) != (oldCastlingRights & BlackKingside)) 
+         hashBlackKingSideCastle();
+      if ((m_castlingRights & BlackQueenside) != (oldCastlingRights & BlackQueenside)) 
+         hashBlackQueenSideCastle();
+
+   }
+}
+void Board::hashWhiteKingSideCastle()
+{
+   m_hashValue = m_hashValue ^ m_whiteCastlingKS;
+}
+void Board::hashWhiteQueenSideCastle()
+{
+   m_hashValue = m_hashValue ^ m_whiteCastlingQS;
+}
+void Board::hashBlackKingSideCastle()
+{
+   m_hashValue = m_hashValue ^ m_blackCastlingKS;
+}
+void Board::hashBlackQueenSideCastle()
+{
+   m_hashValue = m_hashValue ^ m_blackCastlingQS;
+}
+void Board::hashEpSquare()
+{
+   int epSquareIndex;
+
+   // I must now just calculate the epSquareIndex from the given ep square.
+   // Maybe a hardcoded map is in order here?
+   if ((m_epSquare >= 16) && (m_epSquare <= 23)) {
+      epSquareIndex = m_epSquare - 16;
+   } else if ((m_epSquare >= 40) && (m_epSquare <= 47)) {
+      epSquareIndex = m_epSquare - 32;
+   } else {
+      return;
+   }
+   m_hashValue = m_hashValue ^ m_enPassant[epSquareIndex];
+}
+void Board::createHash()
+{
+   m_hashValue = 0;
+   int i;
+   for (i = 0; i < MAX_SQUARES; ++i) {
+      hashPiece(i,at(i));
+   }
+   if (toMove() == Black) {
+      hashToMove();
+   }
+   if (canWhiteKingSideCastle()) {
+      hashWhiteKingSideCastle();
+   }
+   if (canWhiteQueenSideCastle()) {
+      hashWhiteQueenSideCastle();
+   }
+   if (canBlackKingSideCastle()) {
+      hashBlackKingSideCastle();
+   }
+   if (canBlackQueenSideCastle()) {
+      hashBlackQueenSideCastle();
+   }
+   if (m_epSquare != NoEPSquare) {
+      hashEpSquare();
+   }
+}
+Q_UINT64 Board::getHashValue()
+{
+   return m_hashValue;
+}
