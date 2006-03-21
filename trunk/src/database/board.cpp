@@ -18,6 +18,7 @@
  ***************************************************************************/
 #include <qregexp.h>
 #include <qstringlist.h>
+#include <qtextstream.h>
 #include <qfile.h>
 #include "board.h"
 
