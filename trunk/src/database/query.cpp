@@ -24,7 +24,7 @@ Query::~Query()
 {
    clear();
 }
-Search::Operator Query::searchOperator(int index)
+Search::Operator Query::searchOperator(int index) const
 {
    if (!isValidIndex(index)) 
       return Search::NullOperator;
@@ -46,19 +46,19 @@ Search* Query::search(int index)
       return NULL;
    }
 }
-int Query::count()
+int Query::count() const
 {
    return m_elementType.count();
 }
-int Query::countOperators()
+int Query::countOperators() const
 {
    return m_operatorMap.count();
 }
-int Query::countOperands()
+int Query::countOperands() const
 {
    return m_searchMap.count();
 }
-bool Query::isElementSearch(int index)
+bool Query::isElementSearch(int index) const
 {
    if (!isValidIndex(index)) 
       return false;
@@ -67,7 +67,7 @@ bool Query::isElementSearch(int index)
    else
       return false;
 }
-bool Query::isElementOperator(int index)
+bool Query::isElementOperator(int index) const
 {
    if (!isValidIndex(index)) 
       return false;
@@ -256,7 +256,7 @@ void Query::clear()
    m_elementType.clear();
 }
 
-bool Query::isValidIndex(uint index)
+bool Query::isValidIndex(uint index) const
 {
    if (index > (m_elementType.count()-1)) 
       return false;

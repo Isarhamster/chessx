@@ -38,19 +38,19 @@ class Query
       Query();
       ~Query();
       /** @return the operator at index, or NullOperator otherwise */
-      Search::Operator searchOperator(int index);
+      Search::Operator searchOperator(int index) const;
       /** @return the search at index, or NULL pointer otherwise */
       Search* search(int index);
       /** @return the number of elements in the list */
-      int count();
+      int count() const;
       /** @return the number of operators in the list */
-      int countOperators();
+      int countOperators() const;
       /** @return the number of operands (search definitions) in the list */
-      int countOperands();
+      int countOperands() const;
       /** @returns true if the element at index is a operand (search definition), false otherwise */
-      bool isElementSearch(int index);
+      bool isElementSearch(int index) const;
       /** @returns true if the element at index is a operator , false otherwise */
-      bool isElementOperator(int index);
+      bool isElementOperator(int index) const;
       /** @return true if the current list is a valid expression, false otherwise
        * Question: What to do if there are too many operands */
       bool isValid();
@@ -92,7 +92,7 @@ class Query
       ElementTypeList m_elementType;
 
       /** Test if index is valid */
-      bool isValidIndex(uint index);
+      bool isValidIndex(uint index) const;
       bool internalCheck();
 
 };
