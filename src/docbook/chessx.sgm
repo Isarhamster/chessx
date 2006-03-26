@@ -1,0 +1,33 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.2//EN" [
+<!ENTITY cx "ChessX">
+<!ENTITY cxurl "http://newscid.sourceforge.net/">
+<!ENTITY scurl "http://scid.sourceforge.net/">
+<!ENTITY qturl "http://www.trolltech.com/">
+<!ENTITY heinz "heinz.hopfgartner@gmx.at">
+<!ENTITY tbw "To be written">
+<!ENTITY helpbrowser SYSTEM "helpbrowser.sgm">
+<!ENTITY quickstart SYSTEM "quickstart.sgm">
+<!ENTITY reference SYSTEM "reference.sgm">
+<!ENTITY faq SYSTEM "faq.sgm">
+<!ENTITY fdl SYSTEM "fdl.sgm">
+]>
+
+<book label="chessxmanual" status="DRAFT" revision="0.5">
+  <bookinfo>
+    <title>&cx - Manual</title>
+    <copyright><year>2006</year><holder>The &cx - developement
+team</holder></copyright>
+    <legalnotice>
+      <para>Permission is granted to copy, distribute and/or modify this document
+      under the terms of the GNU Free Documentation License, Version 1.2
+      or any later version published by the Free Software Foundation;
+      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+	 Texts.  A copy of the license is included in the section entitled "GNU
+      Free Documentation License".</para>
+    </legalnotice>
+  </bookinfo>
+  &quickstart;
+  &reference;
+  &faq;
+  &fdl;
+</book>
