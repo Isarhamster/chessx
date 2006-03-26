@@ -1,0 +1,25 @@
+<chapter>
+    <title>FAQ</title>
+    <qandaset defaultlabel='qanda'>
+      <qandaentry>
+	<question>
+	  <para>Where do I get the latest version of &cx?</para>
+	</question>
+	<answer>
+	  <para>You may download it form the project page at sourceforge:
+<ulink url="&cxurl">&cxurl</ulink></para>
+	</answer>
+      </qandaentry>
+      <qandaentry>
+	<question>
+	  <para>What is SCID and how ist ChessX related to it?</para>
+	</question>
+	<answer>
+	  <para>&cx is based on SCID which has been developed by Shane
+Hudson (<ulink url="&scurl">&scurl</ulink>). Due to personal reasons from Shane Hudson development of SCID
+halted. To fill this gap &cx has been started.</para>
+	</answer>
+      </qandaentry>
+    </qandaset>
+</chapter>
+
