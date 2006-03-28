@@ -126,6 +126,12 @@ public:
    bool canBlackQueenSideCastle(); 
    Square enPassantSquare(); 
    Q_UINT64 getHashValue();
+   bool operator == (Board b) {
+      return m_hashValue == b.getHashValue(); 
+   }
+   bool operator != (Board b) {
+      return m_hashValue != b.getHashValue(); 
+   }
    // *** This function is purely for debug purposes
    // *** When comparing 2 boards, it's usefull to have a name for each
    void setDebugName(QString debugName);
