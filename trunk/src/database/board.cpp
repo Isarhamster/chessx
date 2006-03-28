@@ -1912,7 +1912,7 @@ bool Board::isLegal(const Move& m)
 						if(to == 58 && m_board[59] == InvalidPiece && m_board[58] == InvalidPiece && m_board[57] == InvalidPiece && 
 								(m_castlingRights & BlackQueenside) && !isAttacked(59, White) && !isAttacked(58, White)) break;
 						if(to == 62 && m_board[61] == InvalidPiece && m_board[62] == InvalidPiece &&
-								(m_castlingRights & WhiteKingside) && !isAttacked(61, White) && !isAttacked(62, White)) break;
+								(m_castlingRights & BlackKingside) && !isAttacked(61, White) && !isAttacked(62, White)) break;
 					}
 					return false;
 				} else {
