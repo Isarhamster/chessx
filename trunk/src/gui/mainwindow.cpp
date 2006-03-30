@@ -78,13 +78,14 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   m_boardView->setBoard(board);
   setCentralWidget(m_boardView);
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
+  connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
 
   /* Restoring layouts */
   AppSettings->readLayout(m_playerDialog, Settings::Show);
   AppSettings->readLayout(m_helpWindow, Settings::Show);
   AppSettings->readLayout(this);
-
   emit reconfigure();
+
 }
 
 MainWindow::~MainWindow()
@@ -166,5 +167,16 @@ void MainWindow::slotHelp()
   if(!m_helpWindow->winId())
     m_helpWindow = new HelpWindow();
   m_helpWindow->show();
+}
+
+void MainWindow::slotMove(Square from, Square to)
+{
+  Move m(from, to);
+  Board board = m_boardView->board();
+  if (board.isLegal(m))
+  {
+    board.doMove(m);
+    m_boardView->setBoard(board);
+  }
 }
 
