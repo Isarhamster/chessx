@@ -23,7 +23,7 @@
 #include <qpopupmenu.h>
 
 BoardView::BoardView(QWidget* parent, const char* name) : QWidget(parent, name),
-   m_flipped(false), m_showFrame(false)
+   m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare)
 {
   m_theme = new BoardTheme;
 }
@@ -53,10 +53,19 @@ void BoardView::repaintSquare(Square square)
   int posy = y * m_theme->size();
   p.drawPixmap(posx, posy, m_theme->square((x + y) % 2));
   p.drawPixmap(posx, posy, m_theme->pixmap(m_board.at(square)));
+  if (square == m_selectedSquare)
+  {
+    QPen pen;
+    pen.setColor(QColor(Qt::yellow));
+    pen.setWidth(3);
+    p.setPen(pen);
+    p.drawRect(posx + 1 + m_showFrame, posy + 1 + m_showFrame, m_theme->size() - 2 - m_showFrame,
+               m_theme->size() - 2 - m_showFrame);
+  }
   if (m_showFrame)
   {
     p.setPen(QColor(Qt::black));
-    p.drawRect(posx, posy, m_theme->size() + m_showFrame, m_theme->size() + m_showFrame);
+    p.drawRect(posx, posy, m_theme->size() + 1, m_theme->size() + 1);
   }
 }
 
@@ -93,26 +102,22 @@ Square BoardView::squareAt( QPoint p ) const
   else return InvalidSquare;
 }
 
-void BoardView::mousePressEvent(QMouseEvent* e)
-{
-  if (squareAt(e->pos()) != InvalidSquare)
-  {
-    int mods =  e->state() & ~(LeftButton | RightButton | MidButton);
-    emit mousePressed(e->pos(), e->button() | mods);
-  }
-  else
-    e->ignore();
-}
-
 void BoardView::mouseReleaseEvent(QMouseEvent* e)
 {
-  if (squareAt(e->pos()) != InvalidSquare)
+  Square s = squareAt(e->pos());
+  if (s == InvalidSquare)
   {
-    int mods =  e->state() & ~(LeftButton | RightButton | MidButton);
-    emit mouseReleased(e->pos(), e->button() | mods);
-  }
-  else
     e->ignore();
+    return;
+  }
+  if (selectedSquare() == InvalidSquare)
+    selectSquare(s);
+  else 
+  {
+    Square from = selectedSquare();
+    unselectSquare();
+    emit moveMade(from, s);
+  }
 }
 
 bool BoardView::setTheme(const QString& themeFile)
@@ -173,5 +178,27 @@ void BoardView::configure()
     setTheme(theme);
   AppSettings->endGroup();
   update();
+}
+
+Square BoardView::selectedSquare() const
+{
+  return m_selectedSquare;
+}
+
+void BoardView::selectSquare(Square s)
+{
+  Square prev = m_selectedSquare;
+  m_selectedSquare = s;
+  if (prev != InvalidSquare)
+    repaintSquare(prev);
+  repaintSquare(m_selectedSquare);
+}
+
+void BoardView::unselectSquare()
+{
+  Square prev = m_selectedSquare;
+  m_selectedSquare = InvalidSquare;
+  if (prev != InvalidSquare)
+    repaintSquare(prev);
 }
 
