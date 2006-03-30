@@ -28,6 +28,11 @@
 #include <qstring.h>
 #include <qt34/qptrlist.h>
 
+#define MAX_PIECES 12
+#define MAX_SQUARES 64
+#define MAX_EN_PASSANT_SQUARES 16
+
+
 enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
     TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, 
     TooManyWhiteKings, TooManyBlackKings, IncorrectCheck};
@@ -38,10 +43,6 @@ enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
    You can easily and quickly make and undo moves, although undoing moves requires keeping track
    of captured pieces.
 */
-
-#define MAX_PIECES 12
-#define MAX_SQUARES 64
-#define MAX_EN_PASSANT_SQUARES 16
 
 
 class Board
