@@ -20,6 +20,7 @@
 
 #include <qmainwindow.h>
 #include <qmessagebox.h>
+#include "common.h"
 
 class PlayerDatabase;
 class PlayerDialog;
@@ -46,6 +47,7 @@ public slots:
   void slotConfigure();
   void slotHelp();
   void slotConfigureFlip();
+  void slotMove(Square from, Square to);
 
 signals:
   /* Re-read configuration */
