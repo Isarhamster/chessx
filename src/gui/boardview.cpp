@@ -47,8 +47,8 @@ Board BoardView::board() const
 void BoardView::repaintSquare(Square square)
 {
   QPainter p(this);
-  int x = square % 8;
-  int y = m_flipped ? square / 8 : 7 - square / 8;
+  int x = isFlipped() ? 7 - square % 8 : square % 8;
+  int y = isFlipped() ? square / 8 : 7 - square / 8;
   int posx = x * m_theme->size();
   int posy = y * m_theme->size();
   p.drawPixmap(posx, posy, m_theme->square((x + y) % 2));
@@ -86,7 +86,7 @@ void BoardView::resizeEvent(QResizeEvent*)
 
 Square BoardView::squareAt( QPoint p ) const
 {
-  int x = p.x() / m_theme->size();
+  int x = isFlipped() ? 7 - p.x() / m_theme->size() : p.x() / m_theme->size();
   int y = isFlipped() ? p.y() / m_theme->size() : 7 - p.y() / m_theme->size();
   if (x >= 0 && x < 8 && y >= 0 && y <= 8)
     return 8 * y + x;
