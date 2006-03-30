@@ -52,16 +52,22 @@ public:
   bool showFrame() const;
   /** @return square at given position */
   Square squareAt(QPoint p) const;
+  /** Selects given square. Previously selected square is unselected automatically. */
+  void selectSquare(Square s);
+  /** Unselects given square. */
+  void unselectSquare();
+  /** @return selected square */
+  Square selectedSquare() const;
 
 public slots:
   /** Reconfigure current theme. */
   void configure();
  
 signals:
-  /** Mouse button pressed over the board */
-  void mousePressed(const QPoint& p, int flags);
-  /** Mouse button released over the board */
-  void mouseReleased(const QPoint& p, int flags);
+  /** User clicked source and destination squares */
+  void moveMade(Square from, Square to);
+  /** User clicked destination square */
+  void moveMade(Square to);
 
 protected:
   /** Redraws single square (and piece on it). */
@@ -75,8 +81,6 @@ protected:
   /** Automatically resizes pieces and redisplays board. */
   virtual void resizeEvent(QResizeEvent*);
   /** Handle mouse events */
-  virtual void mousePressEvent(QMouseEvent* e);
-  /** Handle mouse events */
   virtual void mouseReleaseEvent(QMouseEvent* e);
 
 private:
@@ -84,6 +88,7 @@ private:
   BoardTheme* m_theme;
   bool m_flipped;
   bool m_showFrame;
+  int m_selectedSquare;
 };
 
 #endif
