@@ -1372,7 +1372,7 @@ QString Board::moveToSAN(const Move& move)
 					for(vector = 0 ; vector < 4; vector++) {
 						square = to;
 						for(range = 1; range <= bishopData[to][vector]; range++) {
-							square = + bishopVectors[vector];
+							square += bishopVectors[vector];
 							if(at(square) == WhiteBishop && square != from && isLegal(Move(square, to))) {
 								if((from & 7) != (square & 7)) {
 									column = true;
@@ -1388,7 +1388,7 @@ QString Board::moveToSAN(const Move& move)
 					for(vector = 0 ; vector < 4; vector++) {
 						square = to;
 						for(range = 1; range <= rookData[to][vector]; range++) {
-							square = + rookVectors[vector];
+							square += rookVectors[vector];
 							if(at(square) == WhiteRook && square != from && isLegal(Move(square, to))) {
 								if((from & 7) != (square & 7)) {
 									column = true;
@@ -1404,7 +1404,7 @@ QString Board::moveToSAN(const Move& move)
 					for(vector = 0 ; vector < 4; vector++) {
 						square = to;
 						for(range = 1; range <= bishopData[to][vector]; range++) {
-							square = + bishopVectors[vector];
+							square += bishopVectors[vector];
 							if(at(square) == WhiteQueen && square != from && isLegal(Move(square, to))) {
 								if((from & 7) != (square & 7)) {
 									column = true;
@@ -1415,7 +1415,7 @@ QString Board::moveToSAN(const Move& move)
 						}
 						square = to;
 						for(range = 1; range <= rookData[to][vector]; range++) {
-							square = + rookVectors[vector];
+							square += rookVectors[vector];
 							if(at(square) == WhiteQueen && square != from && isLegal(Move(square, to))) {
 								if((from & 7) != (square & 7)) {
 									column = true;
@@ -1446,7 +1446,7 @@ QString Board::moveToSAN(const Move& move)
 					for(vector = 0 ; vector < 4; vector++) {
 						square = to;
 						for(range = 1; range <= bishopData[to][vector]; range++) {
-							square = + bishopVectors[vector];
+							square += bishopVectors[vector];
 							if(at(square) == BlackBishop && square != from && isLegal(Move(square, to))) {
 								if((from & 7) != (square & 7)) {
 									column = true;
@@ -1462,7 +1462,7 @@ QString Board::moveToSAN(const Move& move)
 					for(vector = 0 ; vector < 4; vector++) {
 						square = to;
 						for(range = 1; range <= rookData[to][vector]; range++) {
-							square = + rookVectors[vector];
+							square += rookVectors[vector];
 							if(at(square) == BlackRook && square != from && isLegal(Move(square, to))) {
 								if((from & 7) != (square & 7)) {
 									column = true;
@@ -1478,7 +1478,7 @@ QString Board::moveToSAN(const Move& move)
 					for(vector = 0 ; vector < 4; vector++) {
 						square = to;
 						for(range = 1; range <= bishopData[to][vector]; range++) {
-							square = + bishopVectors[vector];
+							square += bishopVectors[vector];
 							if(at(square) == BlackQueen && square != from && isLegal(Move(square, to))) {
 								if((from & 7) != (square & 7)) {
 									column = true;
@@ -1489,7 +1489,7 @@ QString Board::moveToSAN(const Move& move)
 						}
 						square = to;
 						for(range = 1; range <= rookData[to][vector]; range++) {
-							square = + rookVectors[vector];
+							square += rookVectors[vector];
 							if(at(square) == BlackQueen && square != from && isLegal(Move(square, to))) {
 								if((from & 7) != (square & 7)) {
 									column = true;
