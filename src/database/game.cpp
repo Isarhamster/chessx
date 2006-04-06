@@ -1,4 +1,4 @@
-/***************************************************************************
+/*************************************nodeCount**************************************
                           game.cpp - chess game
                              -------------------
     begin                : 27 August 2005
@@ -35,6 +35,64 @@ Game::Game()
 	m_moveNodes[0].nextNode = 0;
 }
 
+Game::Game(const Game& game)
+{
+	//assign non pointer variables
+	m_tags = game.m_tags;
+	
+	m_startBoard = game.m_startBoard;
+	m_startAnnotation = game.m_startAnnotation;
+	m_result = game.m_result;
+	
+	m_currentNode = game.m_currentNode;
+	m_ply = game.m_ply;
+	m_currentBoard = game.m_currentBoard;
+	m_history = game.m_history;
+	
+	m_nextFreeNode = game.m_nextFreeNode;
+	m_deletedNodeCount = game.m_deletedNodeCount;
+	m_totalNodeCount = game.m_totalNodeCount;
+	
+	//copy node array
+	m_moveNodes = new MoveNode[m_totalNodeCount];
+	memcpy(m_moveNodes, game.m_moveNodes, sizeof(MoveNode) * m_totalNodeCount);
+}
+
+Game& Game::operator=(const Game& game)
+{
+	//assign non pointer variables
+	m_tags = game.m_tags;
+	
+	m_startBoard = game.m_startBoard;
+	m_startAnnotation = game.m_startAnnotation;
+	m_result = game.m_result;
+	
+	m_currentNode = game.m_currentNode;
+	m_ply = game.m_ply;
+	m_currentBoard = game.m_currentBoard;
+	m_history = game.m_history;
+	
+	m_nextFreeNode = game.m_nextFreeNode;
+	m_deletedNodeCount = game.m_deletedNodeCount;	
+	
+	//copy node array
+	if(m_totalNodeCount < game.m_nextFreeNode) {
+		m_totalNodeCount = game.m_totalNodeCount;
+		MoveNode* moveNodes = new MoveNode[m_totalNodeCount];
+		for(int node = 0; node < game.m_nextFreeNode; node++) {
+			moveNodes[node] = game.m_moveNodes[node];
+		}
+		delete[] m_moveNodes;
+		m_moveNodes = moveNodes;
+	} else {
+		for(int node = 0; node < game.m_nextFreeNode; node++) {
+			m_moveNodes[node] = game.m_moveNodes[node];
+		}
+	}
+	
+	return *this;
+}
+
 Game::~Game()
 {
 	delete[] m_moveNodes;
@@ -43,6 +101,11 @@ Game::~Game()
 Board Game::board() const
 {
 	return m_currentBoard;
+}
+
+bool Game::isMoveLegal(const Move& move)
+{
+	return m_currentBoard.isLegal(move);
 }
 
 Move Game::move(int variation) const
@@ -137,6 +200,12 @@ bool Game::atEnd() const
 	return !m_moveNodes[m_currentNode].nextNode;
 }
 
+void Game::moveCount(int* moves, int* comments, int* nags)
+{
+	*moves = *comments = *nags = 0;
+	moveCount(m_moveNodes[m_currentNode].nextNode, moves, comments, nags);
+}
+
 int Game::ply() const
 {
 	return m_ply;
@@ -181,7 +250,7 @@ int Game::variationCount() const
 	return count;
 }
 
-void Game::toStart()
+void Game::moveToStart()
 {
 	m_currentNode = 0;
 	m_ply = 0;
@@ -189,7 +258,7 @@ void Game::toStart()
 	m_history.clear();
 }
 
-void Game::toEnd()
+void Game::moveToEnd()
 {
 	while(m_moveNodes[m_currentNode].nextNode) {
 		m_currentNode = m_moveNodes[m_currentNode].nextNode;
@@ -307,6 +376,39 @@ int Game::addMove(const QString& sanMove, const QString& annotation, int nag)
 	return addMove(m_currentBoard.singleMove(sanMove), annotation, nag);
 }
 
+bool Game::replaceMove(const Move& move, const QString& annotation, int nag, int variation)
+{
+	int count = 0;
+	int node;
+	node = m_moveNodes[m_currentNode].nextNode;
+	
+	while(node) {
+		if(count == variation) {
+			//replace node data with new move
+			m_moveNodes[node].move = move;
+			m_moveNodes[node].annotation = annotation;
+			m_moveNodes[node].nag = nag;
+			
+			//remove any following nodes by disconnecting them from the tree
+			if(m_moveNodes[node].nextNode) {
+				m_deletedNodeCount += nodeCount(m_moveNodes[node].nextNode);
+				m_moveNodes[node].nextNode = 0;
+			}
+
+			return true;
+		}
+		node = m_moveNodes[node].nextVariation;
+		count++;
+	}
+	
+	return false;
+}
+
+bool Game::replaceMove(const QString& sanMove, const QString& annotation, int nag, int variation)
+{
+	return replaceMove(m_currentBoard.singleMove(sanMove), annotation, nag, variation);
+}
+
 bool Game::promoteVariation(int variation)
 {
 	if(variation == 0) {
@@ -347,7 +449,7 @@ bool Game::promoteVariation(int variation)
 	return false;
 }
 
-bool Game::removeMove(int variation)
+bool Game::removeVariation(int variation)
 {
 	int count = 0;
 	int previousNode = 0;
@@ -364,10 +466,39 @@ bool Game::removeMove(int variation)
 			}
 			
 			//count nodes to update deleted total
-			m_deletedNodeCount += countNodes(node);
+			m_deletedNodeCount += nodeCount(node);
 			return true;
 		};
 		previousNode = node;
+		node = m_moveNodes[node].nextVariation;
+		count++;
+	}
+	
+	return false;
+}
+
+void Game::truncateGameEnd()
+{
+	//effectively remove nodes by disconnecting from tree
+	m_deletedNodeCount += nodeCount(m_currentNode) - 1;
+	m_moveNodes[m_currentNode].nextNode = 0;
+}
+
+bool Game::truncateGameStart(int variation)
+{
+	int count = 0;
+	int node = m_moveNodes[m_currentNode].nextNode;
+	
+	while(node) {
+		if(count == variation) {
+			//effectively remove nodes by disconnecting from tree
+			m_deletedNodeCount += nodeCount(0) - nodeCount(node);
+			m_startBoard = m_currentBoard;
+			m_moveNodes[0].nextNode = node;
+			m_moveNodes[node].previousNode = m_moveNodes[node].parentNode = m_moveNodes[node].nextVariation = 0;
+			moveToStart();
+			return true;
+		}
 		node = m_moveNodes[node].nextVariation;
 		count++;
 	}
@@ -390,7 +521,7 @@ Result Game::result() const
 	return m_result;
 }
 
-		QString Game::tag(const QString& tag) const
+QString Game::tag(const QString& tag) const
 {
 	return m_tags[tag];
 }
@@ -408,6 +539,17 @@ void Game::removeTag(const QString& tag)
 void Game::setStartBoard(const Board& board)
 {
 	m_startBoard = board;
+	m_currentBoard = board;
+	
+	// reset game, otherwise it may be invalid
+	m_startAnnotation = QString::null;
+	m_result = Unknown;
+
+	m_currentNode = 0;
+	m_ply = 0;
+	m_nextFreeNode = 1;
+	m_deletedNodeCount = 0;
+	m_moveNodes[0].nextNode = 0;
 }
 
 void Game::setStartAnnotation(const QString& annotation)
@@ -498,20 +640,44 @@ void Game::copyVariation(int parentNode, int startNode,	MoveNode* destinationNod
 	}
 }
 
-int Game::countNodes(int node)
+void Game::moveCount(int node, int* moves, int* comments, int* nags)
+{
+	//add this node
+	*moves += 1;
+	if(m_moveNodes[node].nag) {
+		*nags += 1;
+	}
+	if(m_moveNodes[node].annotation != QString::null) {
+		*comments += 1;
+	}
+	
+	//recursively call for next move
+	int nextNode = m_moveNodes[node].nextNode;
+	if(nextNode) {
+		moveCount(nextNode, moves, comments, nags);
+	}
+	
+	//recursively call for any nextVariation
+	int nextVariation = m_moveNodes[node].nextVariation;
+	if(nextVariation) {
+		moveCount(nextVariation, moves, comments, nags);
+	}
+}
+
+int Game::nodeCount(int node)
 {
 	int total = 1; //1 for this node
 	
 	//recursively call for next move
 	int nextNode = m_moveNodes[node].nextNode;
 	if(nextNode) {
-		total += countNodes(nextNode);
+		total += nodeCount(nextNode);
 	}
 	
 	//recursively call for any nextVariation
 	int nextVariation = m_moveNodes[node].nextVariation;
 	if(nextVariation) {
-		total += countNodes(nextVariation);
+		total += nodeCount(nextVariation);
 	}
 	
 	return total;
