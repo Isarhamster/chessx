@@ -40,11 +40,15 @@ class Game
 		//constructors
 		/** Creates a game with no moves and a standard start position. */
 		Game();
+		Game(const Game& game);
+		Game& operator=(const Game& game);
 		~Game();
 
 		//node information methods
 		/** @return current position */
 		Board board() const;
+		/** @return whether the given move is legal in the current position */
+		bool isMoveLegal(const Move& move);
 		/** @return first move in given variation */
 		Move move(int variation = 0) const;
 		/** @return comment associated with the first move in the given variation */
@@ -63,6 +67,8 @@ class Game
 		bool atStart() const;
 		/** @return whether the game is at the end of the current variation */
 		bool atEnd() const;
+		/** Counts the number of moves, comments and nags, in all variations, to the end of the game */
+		void moveCount(int* moves, int* comments, int* nags);
 		/** @return number of half moves made since the beginning of the game */
 		int ply() const;
 		/** @return number of ply in current variation */
@@ -74,9 +80,9 @@ class Game
 		
 		//tree traversal methods
 		/** Moves to the begining of the game */
-		void toStart();
+		void moveToStart();
 		/** Moves to the end of the current variation */
-		void toEnd();
+		void moveToEnd();
 		/** Move forward the given number of moves, returns actual number of moves made */
 		int forward(int count = 1);
 		/** Move back the given number of moves, returns actual number of moves undone */
@@ -91,10 +97,18 @@ class Game
 		int addMove(const Move& move, const QString& annotation = QString::null, int nag = 0);
 		/** Adds a move at the current position, returns variation number of newly added move */
 		int addMove(const QString& sanMove, const QString& annotation = QString::null, int nag = 0);
+		/** Replaces the next move in the given variation, returns true if sucessful */
+		bool replaceMove(const Move& move, const QString& annotation = QString::null, int nag = 0, int variation = 0);
+		/** Replaces the next move in the given variation, returns true if sucessful */
+		bool replaceMove(const QString& sanMove, const QString& annotation = QString::null, int nag = 0, int variation = 0);
 		/** Promotes the given variation to the main line, returns true if sucessful */
 		bool promoteVariation(int variation);
-		/** Removes the next move from the given variation, returns true if sucessful */
-		bool removeMove(int variation = 0);
+		/** Removes the given variation, returns true if sucessful */
+		bool removeVariation(int variation = 0);
+		/** Removes all variations and mainline moves after the current position */
+		void truncateGameEnd();
+		/** Truncates the game to the given variation, returns true is sucessful */
+		bool truncateGameStart(int variation = 0);
 		
 		//game information methods
 		/** @return tag id of white player */
@@ -151,8 +165,10 @@ class Game
 		void compact();
 		/** Copys a variation, used by compact for copying nodes to new storage */
 		void copyVariation(int parentNode, int startNode, MoveNode* destinationNodes);
-		/** Counts number of descendat nodes, for recording number of deleted nodes */
-		int countNodes(int node);
+		/** Counts the number of moves, comments and nags, in all variations, to the end of the game */
+		void moveCount(int node, int* moves, int* comments, int* nags);
+		/** Counts number of descendant nodes, for recording number of deleted nodes */
+		int nodeCount(int node);
 	
 		//game data
 		QMap<QString,QString> m_tags;
