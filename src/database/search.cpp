@@ -43,6 +43,9 @@ Search::Type NullSearch::type() const
 
 /** The Position Search Class
  * ******************************/
+PositionSearch::PositionSearch()
+{
+}
 PositionSearch::PositionSearch(Board& position)
 {
    setPosition(position);
@@ -99,6 +102,10 @@ int EloSearch::minBlackElo() const
 {
    return m_minBlackElo;
 }
+bool EloSearch::withinEloRange(int whiteElo, int blackElo) const
+{
+	return whiteElo >= m_minWhiteElo && whiteElo <= m_maxWhiteElo && blackElo >= m_minBlackElo && blackElo <= m_maxBlackElo;
+}
 
 /** The DateSearch class
  * **********************/
@@ -134,7 +141,7 @@ PartialDate DateSearch::maxDate() const
 	return m_maxDate;
 }
 
-bool DateSearch::withinDateRange(PartialDate date)
+bool DateSearch::withinDateRange(PartialDate date) const
 {
 	return (date >= m_minDate && date <= m_maxDate);
 }
@@ -194,4 +201,38 @@ void TagSearch::setTag(const QString& tag)
 void TagSearch::setValue(const QString& value)
 {
 	m_value = value;
+}
+
+/** The FilterSearch class
+ * **********************/
+FilterSearch::FilterSearch() : m_filter(0)
+{
+}
+
+FilterSearch::FilterSearch(const Filter& filter) : m_filter(filter)
+{
+}
+
+FilterSearch::~FilterSearch()
+{
+}
+
+Search::Type FilterSearch::type() const
+{
+	return Search::FilterSearch;
+}
+		
+bool FilterSearch::contains(int game) const
+{
+	return m_filter.contains(game);
+}
+		
+Filter FilterSearch::filter() const
+{
+	return m_filter;
+}
+
+void FilterSearch::setFilter(const Filter& filter)
+{
+	m_filter = filter;
 }

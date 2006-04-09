@@ -21,6 +21,7 @@
 #define __SEARCH_H__
 
 #include "board.h"
+#include "filter.h"
 #include "partialdate.h"
 
 /** The Search class is an abstract base class that represents a 
@@ -28,7 +29,7 @@
  */
 struct Search 
 {
-   enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch }; //1 per subclass to allow static downcast
+   enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch }; //1 per subclass to allow static downcast
    enum Operator { NullOperator, Not, And, Or, Add, Remove }; //Add is effectively the same as Or
 
    Search();
@@ -48,6 +49,7 @@ class NullSearch : public Search
 class PositionSearch : public Search
 {
    public :
+			PositionSearch();
       PositionSearch(Board& position);
       virtual ~PositionSearch();
       virtual Search::Type type() const;
@@ -67,6 +69,7 @@ class EloSearch : public Search
       int maxWhiteElo() const;
       int minBlackElo() const;
       int maxBlackElo() const;
+			bool withinEloRange(int whiteElo, int blackElo) const;
       void setEloSearch(int minWhiteElo=0, int maxWhiteElo=4000, int minBlackElo=0, int maxBlacElo=4000);
 
    private :
@@ -87,7 +90,7 @@ class DateSearch : public Search
 		
 		PartialDate minDate() const;
 		PartialDate maxDate() const;
-		bool withinDateRange(PartialDate date);
+		bool withinDateRange(PartialDate date) const;
 		void setDateRange(PartialDate minDate, PartialDate maxDate);
 		void setMinDate(PartialDate minDate);
 		void setMaxDate(PartialDate maxDate);
@@ -101,7 +104,7 @@ class DateSearch : public Search
 class TagSearch : public Search
 {
 	public:
-		TagSearch(const QString& tag, const QString& value);
+		TagSearch(const QString& tag = "tag", const QString& value = "value");
 		~TagSearch();
 		Type type() const;
 		
@@ -113,6 +116,22 @@ class TagSearch : public Search
 	private:
 		QString m_tag;
 		QString m_value;
+};
+
+/** Defined filter based search */
+class FilterSearch : public Search
+{
+	public:
+		FilterSearch();
+		FilterSearch(const Filter& filter);
+		~FilterSearch();
+		Type type() const;
+		
+		bool contains(int game) const;
+		Filter filter() const;
+		void setFilter(const Filter& filter);
+	private:
+		Filter m_filter;
 };
 
 #endif // __SEARCH_H__
