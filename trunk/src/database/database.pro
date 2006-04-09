@@ -17,7 +17,11 @@ HEADERS += board.h \
            wbengine.h \
            uciengine.h \
            search.h \
-           query.h
+           query.h \
+           database.h \
+           pgndatabase.h \
+           filter.h \
+           tristatetree.h
 SOURCES += board.cpp \
            move.cpp \
            common.cpp \
@@ -32,7 +36,11 @@ SOURCES += board.cpp \
            wbengine.cpp \
            uciengine.cpp \
            search.cpp \
-           query.cpp
+           query.cpp \
+           database.cpp \
+           pgndatabase.cpp \
+           filter.cpp \
+           tristatetree.cpp
 TARGET = database
 CONFIG += release warn_on qt staticlib debug
 TEMPLATE = lib
