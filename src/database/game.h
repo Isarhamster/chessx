@@ -132,6 +132,8 @@ class Game
 		Result result() const;
 
 		//game modification methods
+		/** Removes all tags and moves */
+		void clear();
 		/** @return value of the given tag */
 		QString tag(const QString& tag) const;
 		/** Sets the value of the given tag */

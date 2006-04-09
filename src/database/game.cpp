@@ -521,6 +521,23 @@ Result Game::result() const
 	return m_result;
 }
 
+void Game::clear()
+{
+	m_startBoard.fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	m_currentBoard = m_startBoard;
+	m_startAnnotation = QString::null;
+	m_result = Unknown;
+
+	m_currentNode = 0;
+	m_ply = 0;
+	m_nextFreeNode = 1;
+	m_deletedNodeCount = 0;
+	m_moveNodes[0].nextNode = 0;
+	
+	m_tags.clear();
+	m_history.clear();
+}
+
 QString Game::tag(const QString& tag) const
 {
 	return m_tags[tag];
