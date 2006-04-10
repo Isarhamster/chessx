@@ -18,6 +18,7 @@
  ***************************************************************************/
  
 #include <qdir.h>
+#include <qstringlist.h>
  
 #include "pgndatabase.h"
  
@@ -560,7 +561,7 @@ void PgnDatabase::parseLine(Game* game)
 				return;
 			}
 		}
-		m_pos += it->length() + 1;
+		m_pos += (*it).length() + 1;
   }
 	
 	if (!m_inComment){
