@@ -192,6 +192,7 @@ void BoardView::selectSquare(Square s)
   if (prev != InvalidSquare)
     repaintSquare(prev);
   repaintSquare(m_selectedSquare);
+	update();
 }
 
 void BoardView::unselectSquare()
@@ -200,5 +201,6 @@ void BoardView::unselectSquare()
   m_selectedSquare = InvalidSquare;
   if (prev != InvalidSquare)
     repaintSquare(prev);
+	update();
 }
 
