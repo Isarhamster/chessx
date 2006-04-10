@@ -121,11 +121,11 @@ public:
 	bool isCheckmate();
 	/** @return whether the position is a stalemate */
    bool isStalemate();
-   bool canWhiteKingSideCastle();
-   bool canWhiteQueenSideCastle();
-   bool canBlackKingSideCastle();
-   bool canBlackQueenSideCastle(); 
-   Square enPassantSquare(); 
+   bool canWhiteKingSideCastle() const;
+   bool canWhiteQueenSideCastle() const;
+   bool canBlackKingSideCastle() const;
+   bool canBlackQueenSideCastle() const; 
+   Square enPassantSquare() const; 
    Q_UINT64 getHashValue();
    bool operator == (Board b) {
       return m_hashValue == b.getHashValue(); 

@@ -970,7 +970,7 @@ QString Board::getLegalMoves()
 
 }
 
-bool Board::canWhiteKingSideCastle()
+bool Board::canWhiteKingSideCastle() const
 {
    if (m_castlingRights & WhiteKingside) {
       return true;
@@ -978,7 +978,7 @@ bool Board::canWhiteKingSideCastle()
       return false;
    }
 }
-bool Board::canWhiteQueenSideCastle()
+bool Board::canWhiteQueenSideCastle() const
 {
    if (m_castlingRights & WhiteQueenside) {
       return true;
@@ -986,7 +986,7 @@ bool Board::canWhiteQueenSideCastle()
       return false;
    }
 }
-bool Board::canBlackKingSideCastle()
+bool Board::canBlackKingSideCastle() const
 {
    if (m_castlingRights & BlackKingside) {
       return true;
@@ -994,7 +994,7 @@ bool Board::canBlackKingSideCastle()
       return false;
    }
 }
-bool Board::canBlackQueenSideCastle()
+bool Board::canBlackQueenSideCastle() const
 {
    if (m_castlingRights & BlackQueenside) {
       return true;
@@ -1002,7 +1002,7 @@ bool Board::canBlackQueenSideCastle()
       return false;
    }
 }
-Square Board::enPassantSquare()
+Square Board::enPassantSquare() const
 {
    return m_epSquare;
 }
