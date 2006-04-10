@@ -20,6 +20,8 @@
 
 #include "common.h"
 
+class Board;
+
 /**
    The Move class represents abstract moves.
    Moves are independent of current position (no piece/check/capture flags are set). Both source and destination squares
@@ -35,7 +37,9 @@ public:
   Move(Square f, Square t);
   /** Constructor with promotion piece */
   Move(Square f, Square t, Piece p);
-  /** Get source square. */
+	/** Constucts move with correct move type */
+	Move(const Board& board, Square from, Square to);
+	/** Get source square. */
   Square from() const;
   /** Set source square. */
   void setFrom(Square f);

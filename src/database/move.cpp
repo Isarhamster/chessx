@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "board.h"
 #include "move.h"
 
 Move::Move() : m_from(0), m_to(0)
@@ -25,6 +26,28 @@ Move::Move() : m_from(0), m_to(0)
 Move::Move(Square f, Square t) : m_from(f), m_to(t)
 {
 	m_type = StandardMove;
+}
+
+Move::Move(Square f, Square t, Piece p) : m_from(f), m_to(t)
+{
+	m_type = (MoveType)p;
+}
+
+Move::Move(const Board& board, Square from, Square to) : m_from(from), m_to(to)
+{	
+	if(board.at(from) == WhitePawn || board.at(from) == BlackPawn) {
+		if(abs(from - to) == 16) {
+			m_type = DoubleAdvance;
+		} else if(to == board.enPassantSquare()) {
+			m_type = EnPassant;
+		} else {
+			m_type = StandardMove;
+		}
+	} else if((board.at(from) == WhiteKing || board.at(from) == BlackKing) && abs(from - to) == 2) {
+		m_type = Castling;
+	} else {
+		m_type = StandardMove;
+	}
 }
 
 Square Move::from() const
