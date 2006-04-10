@@ -21,7 +21,7 @@
 #include <qmap.h>
 #include <qpair.h>
 #include <qtextstream.h>
-#include <qvector.h>
+#include <qt34/qvaluevector.h>
 
 #include "database.h"
 #include "search.h"
@@ -159,9 +159,9 @@ class PgnDatabase : public Database
 		bool m_searchTags;
 		bool m_searchGame;
 		
-		QVector<QPair<DateSearch, int> > m_dateSearches;
-		QVector<QPair<EloSearch, int> > m_eloSearches;
-		QVector<QPair<FilterSearch, int> > m_filterSearches;
-		QVector<QPair<PositionSearch, int> > m_positionSearches;
-		QVector<QPair<TagSearch, int> > m_tagSearches;
+		QValueVector<QPair<DateSearch, int> > m_dateSearches;
+		QValueVector<QPair<EloSearch, int> > m_eloSearches;
+		QValueVector<QPair<FilterSearch, int> > m_filterSearches;
+		QValueVector<QPair<PositionSearch, int> > m_positionSearches;
+		QValueVector<QPair<TagSearch, int> > m_tagSearches;
 };
