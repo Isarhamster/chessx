@@ -184,11 +184,11 @@ void MainWindow::slotHelp()
 
 void MainWindow::slotMove(Square from, Square to)
 {
-	Board board = m_game->board();
+  Board board = m_game->board();
   Move m(board, from, to);
   if (board.isLegal(m))
   {
-    m_game->addMove(m);
+    m_game->replaceMove(m);
     m_game->forward(1);
     m_boardView->setBoard(m_game->board());
   }
