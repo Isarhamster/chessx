@@ -1720,7 +1720,9 @@ bool Board::isLegal(const Move& m)
 						if(captured<BlackKing)return false;
           	if(captured>BlackPawn)return false;
 					}
-        }
+        } else {
+					return false;
+				}
         if(from/8==6)
         {
           if(!m.isPromotion())return false;
@@ -1838,7 +1840,9 @@ bool Board::isLegal(const Move& m)
 						if(captured<WhiteKing)return false;
           	if(captured>WhitePawn)return false;
 					}
-        }
+        } else {
+					return false;
+				}
         if(from/8==1)
         {
           if(!m.isPromotion())return false;
