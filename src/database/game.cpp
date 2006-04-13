@@ -382,6 +382,11 @@ bool Game::replaceMove(const Move& move, const QString& annotation, int nag, int
 	int node;
 	node = m_moveNodes[m_currentNode].nextNode;
 	
+	if(!node) {
+		addMove(move, annotation, nag);
+		return true;
+	}
+	
 	while(node) {
 		if(count == variation) {
 			//replace node data with new move
