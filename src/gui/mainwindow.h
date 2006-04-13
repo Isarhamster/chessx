@@ -26,6 +26,7 @@ class PlayerDatabase;
 class PlayerDialog;
 class HelpWindow;
 class BoardView;
+class Game;
 
 class MainWindow: public QMainWindow
 {
@@ -48,7 +49,10 @@ public slots:
   void slotHelp();
   void slotConfigureFlip();
   void slotMove(Square from, Square to);
-
+  void slotMoveToStart();
+  void slotMoveForward();
+  void slotMoveBackward();
+  void slotMoveToEnd();
 signals:
   /* Re-read configuration */
   void reconfigure();
@@ -58,6 +62,7 @@ private:
   PlayerDialog* m_playerDialog;
   HelpWindow* m_helpWindow;
   BoardView* m_boardView;
+  Game* m_game;
 };
 
 

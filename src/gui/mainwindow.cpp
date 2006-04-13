@@ -16,6 +16,7 @@
 
 #include "boardsetup.h"
 #include "boardview.h"
+#include "game.h"
 #include "helpwindow.h"
 #include "mainwindow.h"
 #include "playerdatabase.h"
@@ -51,6 +52,16 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   edit->insertItem(tr("&Paste FEN"), this, SLOT(slotEditPasteFEN()), CTRL + SHIFT + Key_V);
   edit->insertItem(tr("&Edit board..."), this, SLOT(slotEditBoard()));
 
+  /* Game menu */
+  QPopupMenu *gameMenu = new QPopupMenu(this);
+  menuBar()->insertItem(tr("&Game"), gameMenu);
+  QPopupMenu* goMenu = new QPopupMenu(this);
+  goMenu->insertItem(tr("&Start"), this, SLOT(slotMoveToStart()), Key_Home);
+  goMenu->insertItem(tr("&End"), this, SLOT(slotMoveToEnd()), Key_End);
+  goMenu->insertItem(tr("&Next move"), this, SLOT(slotMoveForward()), Key_Right);
+  goMenu->insertItem(tr("&Previous move"), this, SLOT(slotMoveBackward()), Key_Left);
+  gameMenu->insertItem(tr("&Go..."), goMenu);
+  
   /* Windows menu */
   QPopupMenu *windows = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Windows"), windows);
@@ -71,11 +82,12 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   statusBar()->message(tr("Ready"), 2000);
   resize(450, 600);
 
+  /* Game */
+  m_game = new Game;
+
   /* Board */
   m_boardView = new BoardView(this);
-  Board board;
-  board.setStandardPosition();
-  m_boardView->setBoard(board);
+  m_boardView->setBoard(m_game->board());
   setCentralWidget(m_boardView);
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
@@ -94,6 +106,7 @@ MainWindow::~MainWindow()
   delete m_playerDialog;
   delete m_playerDatabase;
   delete m_helpWindow;
+  delete m_game;
 }
 
 void MainWindow::closeEvent(QCloseEvent* e)
@@ -171,12 +184,36 @@ void MainWindow::slotHelp()
 
 void MainWindow::slotMove(Square from, Square to)
 {
-  Board board = m_boardView->board();
-  Move m(board, from, to);
+  Move m(from, to);
+  Board board = m_game->board();
   if (board.isLegal(m))
   {
-    board.doMove(m);
-    m_boardView->setBoard(board);
+    m_game->addMove(m);
+    m_game->forward(1);
+    m_boardView->setBoard(m_game->board());
   }
 }
 
+void MainWindow::slotMoveForward()
+{
+  if (m_game->forward())
+    m_boardView->setBoard(m_game->board());
+}
+
+void MainWindow::slotMoveBackward()
+{
+  if (m_game->backward())
+    m_boardView->setBoard(m_game->board());
+}
+
+void MainWindow::slotMoveToStart()
+{
+  if (m_game->backward(9999))
+    m_boardView->setBoard(m_game->board());
+}
+
+void MainWindow::slotMoveToEnd()
+{
+  if (m_game->forward(9999))
+    m_boardView->setBoard(m_game->board());
+}
