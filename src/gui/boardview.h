@@ -68,6 +68,8 @@ signals:
   void moveMade(Square from, Square to);
   /** User clicked destination square */
   void moveMade(Square to);
+  /** Board was modified by setBoard() */
+  void changed();
 
 protected:
   /** Redraws single square (and piece on it). */
