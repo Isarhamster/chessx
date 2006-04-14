@@ -28,6 +28,9 @@ class HelpWindow;
 class BoardView;
 class Game;
 
+class QTextBrowser;
+
+
 class MainWindow: public QMainWindow
 {
   Q_OBJECT
@@ -53,6 +56,7 @@ public slots:
   void slotMoveForward();
   void slotMoveBackward();
   void slotMoveToEnd();
+  void slotUpdateMoveView();
 signals:
   /* Re-read configuration */
   void reconfigure();
@@ -62,6 +66,7 @@ private:
   PlayerDialog* m_playerDialog;
   HelpWindow* m_helpWindow;
   BoardView* m_boardView;
+  QTextBrowser* m_moveView;
   Game* m_game;
 };
 

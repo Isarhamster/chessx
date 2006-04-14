@@ -37,6 +37,7 @@ void BoardView::setBoard(const Board& value)
 {
    m_board = value;
    update();
+   emit changed();
 }
 
 Board BoardView::board() const
@@ -192,7 +193,7 @@ void BoardView::selectSquare(Square s)
   if (prev != InvalidSquare)
     repaintSquare(prev);
   repaintSquare(m_selectedSquare);
-	update();
+  update();
 }
 
 void BoardView::unselectSquare()
@@ -201,6 +202,6 @@ void BoardView::unselectSquare()
   m_selectedSquare = InvalidSquare;
   if (prev != InvalidSquare)
     repaintSquare(prev);
-	update();
+  update();
 }
 

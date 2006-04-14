@@ -31,6 +31,8 @@
 #include <qmessagebox.h>
 #include <qpopupmenu.h>
 #include <qstatusbar.h>
+#include <qtextbrowser.h>
+#include <qlayout.h>
 
 MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 {
@@ -61,7 +63,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   goMenu->insertItem(tr("&Next move"), this, SLOT(slotMoveForward()), Key_Right);
   goMenu->insertItem(tr("&Previous move"), this, SLOT(slotMoveBackward()), Key_Left);
   gameMenu->insertItem(tr("&Go..."), goMenu);
-  
+
   /* Windows menu */
   QPopupMenu *windows = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Windows"), windows);
@@ -85,12 +87,22 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   /* Game */
   m_game = new Game;
 
+  /* Layout */
+  QFrame* frame = new QFrame(this);
+  setCentralWidget(frame);
+  QGridLayout* layout = new QGridLayout(frame, 2, 1);
+
   /* Board */
-  m_boardView = new BoardView(this);
-  m_boardView->setBoard(m_game->board());
-  setCentralWidget(m_boardView);
+  layout->addWidget(m_boardView = new BoardView(frame), 0, 0);
+  layout->setRowStretch(0, 5);
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
+  connect(m_boardView, SIGNAL(changed()), SLOT(slotUpdateMoveView()));
+
+  /* Move view */
+ layout->addWidget(m_moveView = new QTextBrowser(frame), 1, 0);
+ layout->setRowStretch(1, 1);
+ m_boardView->setBoard(m_game->board());
 
   /* Restoring layouts */
   AppSettings->readLayout(m_playerDialog, Settings::Show);
@@ -217,3 +229,31 @@ void MainWindow::slotMoveToEnd()
   if (m_game->forward(9999))
     m_boardView->setBoard(m_game->board());
 }
+
+void MainWindow::slotUpdateMoveView()
+{
+  QString players = tr("Game %1: %2 %3, %4 %5").arg(1).arg(m_game->tag("White"))
+      .arg(m_game->tag("Result")).arg(m_game->tag("Black")).arg(m_game->tag("BlackElo"));
+  QString result = tr("%1(%2) %3").arg(m_game->tag("Result")).arg(m_game->plyCount() / 2)
+      .arg(m_game->tag("ECO"));
+  QString lastmove, nextmove;
+  if (!m_game->atStart())
+  {
+    m_game->backward();
+    lastmove = QString("%1%2 %3").arg(m_game->ply() / 2 + 1).arg(m_game->ply() % 2 ? "..." : ".")
+        .arg(m_game->board().moveToSAN(m_game->move(0)));
+    m_game->forward();
+  }
+  else
+    lastmove = tr("(Start of game)");
+  if (!m_game->atEnd())
+  {
+    nextmove = QString("%1%2 %3").arg(m_game->ply() / 2 + 1).arg(m_game->ply() % 2 ? "..." : ".")
+        .arg(m_game->board().moveToSAN(m_game->move(0)));
+  }
+  else
+    nextmove = tr("(End of game)");
+  QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
+  m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br><qt>").arg(players).arg(result).arg(move));
+}
+
