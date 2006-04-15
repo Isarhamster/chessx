@@ -56,7 +56,8 @@ public slots:
   void slotMoveForward();
   void slotMoveBackward();
   void slotMoveToEnd();
-  void slotUpdateMoveView();
+  void slotMoveViewUpdate();
+  void slotMoveViewLink(const QString& link);
 signals:
   /* Re-read configuration */
   void reconfigure();
