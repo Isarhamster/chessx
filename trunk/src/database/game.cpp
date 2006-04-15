@@ -140,21 +140,53 @@ QString Game::annotation(int variation) const
 	return QString::null;
 }
 
-int Game::nag(int variation) const
+NagSet Game::nags(int variation) const
 {
 	int count = 0;
 	int node = m_moveNodes[m_currentNode].nextNode;
 	
 	while(node) {
 		if(count == variation) {
-			return m_moveNodes[node].nag;
+			return m_moveNodes[node].nags;
 		}
 		node = m_moveNodes[node].nextVariation;
 		count++;
 	}
 	
-	return -1;
+	return NagSet();
 }
+
+QString Game::moveToSan(Game::MoveStringFlags flags, int variation)
+{
+	QString san = "";
+	
+	//move number
+	if(m_ply % 2) {
+		if(flags & BlackNumbers) {
+			san += QString::number(m_ply / 2 + 1) + "...";
+		}
+	} else {
+		if(flags & WhiteNumbers) {
+		 	san += QString::number(m_ply / 2 + 1) + ".";
+		}
+	}
+	
+	//move
+	san += m_currentBoard.moveToSAN(move(variation));
+	
+	//nags
+	if(flags & Nags) {
+		QString nagString = nags(variation).toString();
+		if(nagString.startsWith("!") || nagString.startsWith("?")) {
+			san += nagString;
+		} else {
+			san += " " + nagString;
+		} 
+	}
+	
+	return san;
+}
+
 
 bool Game::setAnnotation(QString annotation, int variation)
 {
@@ -173,14 +205,31 @@ bool Game::setAnnotation(QString annotation, int variation)
 	return false;
 }
 
-bool Game::setNag(int nag, int variation)
+bool Game::addNag(Nag nag, int variation)
 {
 	int count = 0;
 	int node = m_moveNodes[m_currentNode].nextNode;
 	
 	while(node) {
 		if(count == variation) {
-			m_moveNodes[node].nag = nag;
+			m_moveNodes[node].nags.addNag(nag);
+			return true;
+		}
+		node = m_moveNodes[node].nextVariation;
+		count++;
+	}
+	
+	return false;
+}
+
+bool Game::setNags(NagSet nags, int variation)
+{
+	int count = 0;
+	int node = m_moveNodes[m_currentNode].nextNode;
+	
+	while(node) {
+		if(count == variation) {
+			m_moveNodes[node].nags = nags;
 			return true;
 		}
 		node = m_moveNodes[node].nextVariation;
@@ -258,6 +307,19 @@ void Game::moveToStart()
 	m_history.clear();
 }
 
+int Game::toPly(int ply)
+{
+	int diff = ply - m_ply;
+	
+	if(diff > 0) {
+		forward(diff);
+	} else {
+		backward(-diff);
+	}
+	
+	return m_ply;
+}
+
 void Game::moveToEnd()
 {
 	while(m_moveNodes[m_currentNode].nextNode) {
@@ -327,7 +389,7 @@ void Game::exitVariation()
 	} 
 }
 
-int Game::addMove(const Move& move, const QString& annotation, int nag)
+int Game::addMove(const Move& move, const QString& annotation, NagSet nags)
 {
 	//make sure we have space
 	if(m_nextFreeNode == m_totalNodeCount) {
@@ -337,7 +399,7 @@ int Game::addMove(const Move& move, const QString& annotation, int nag)
 	//set up node
 	m_moveNodes[m_nextFreeNode].move = move;
 	m_moveNodes[m_nextFreeNode].annotation = annotation;
-	m_moveNodes[m_nextFreeNode].nag = nag;
+	m_moveNodes[m_nextFreeNode].nags = nags;
 	m_moveNodes[m_nextFreeNode].nextNode = 0;
 	m_moveNodes[m_nextFreeNode].nextVariation = 0;
 	
@@ -371,19 +433,19 @@ int Game::addMove(const Move& move, const QString& annotation, int nag)
 	return variation;
 }
 
-int Game::addMove(const QString& sanMove, const QString& annotation, int nag)
+int Game::addMove(const QString& sanMove, const QString& annotation, NagSet nags)
 {
-	return addMove(m_currentBoard.singleMove(sanMove), annotation, nag);
+	return addMove(m_currentBoard.singleMove(sanMove), annotation, nags);
 }
 
-bool Game::replaceMove(const Move& move, const QString& annotation, int nag, int variation)
+bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags, int variation)
 {
 	int count = 0;
 	int node;
 	node = m_moveNodes[m_currentNode].nextNode;
 	
 	if(!node) {
-		addMove(move, annotation, nag);
+		addMove(move, annotation, nags);
 		return true;
 	}
 	
@@ -392,7 +454,7 @@ bool Game::replaceMove(const Move& move, const QString& annotation, int nag, int
 			//replace node data with new move
 			m_moveNodes[node].move = move;
 			m_moveNodes[node].annotation = annotation;
-			m_moveNodes[node].nag = nag;
+			m_moveNodes[node].nags = nags;
 			
 			//remove any following nodes by disconnecting them from the tree
 			if(m_moveNodes[node].nextNode) {
@@ -409,9 +471,9 @@ bool Game::replaceMove(const Move& move, const QString& annotation, int nag, int
 	return false;
 }
 
-bool Game::replaceMove(const QString& sanMove, const QString& annotation, int nag, int variation)
+bool Game::replaceMove(const QString& sanMove, const QString& annotation, NagSet nags, int variation)
 {
-	return replaceMove(m_currentBoard.singleMove(sanMove), annotation, nag, variation);
+	return replaceMove(m_currentBoard.singleMove(sanMove), annotation, nags, variation);
 }
 
 bool Game::promoteVariation(int variation)
@@ -634,7 +696,7 @@ void Game::copyVariation(int parentNode, int startNode,	MoveNode* destinationNod
 		//copy data to new node
 		destinationNodes[destinationNode].move = m_moveNodes[sourceNode].move;
 		destinationNodes[destinationNode].annotation = m_moveNodes[sourceNode].annotation;
-		destinationNodes[destinationNode].nag = m_moveNodes[sourceNode].nag;
+		destinationNodes[destinationNode].nags = m_moveNodes[sourceNode].nags;
 		destinationNodes[destinationNode].previousNode = previousNode;
 		destinationNodes[destinationNode].nextNode = 0;
 		destinationNodes[destinationNode].parentNode = parentNode;
@@ -666,9 +728,7 @@ void Game::moveCount(int node, int* moves, int* comments, int* nags)
 {
 	//add this node
 	*moves += 1;
-	if(m_moveNodes[node].nag) {
-		*nags += 1;
-	}
+	*nags += m_moveNodes[node].nags.count();
 	if(m_moveNodes[node].annotation != QString::null) {
 		*comments += 1;
 	}
