@@ -25,6 +25,7 @@
 #include "board.h"
 #include "movelist.h"
 #include "partialdate.h"
+#include "nag.h"
 
 /**
    The Game class represents a chess game. Moves and variations can be added
@@ -35,8 +36,9 @@
 
 class Game
 {
-	friend class PgnExporter;
 	public:
+		enum MoveStringFlags {MoveOnly = 0, WhiteNumbers = 1, BlackNumbers = 2, Nags = 4, FullDetail = 7};
+	
 		//constructors
 		/** Creates a game with no moves and a standard start position. */
 		Game();
@@ -53,14 +55,18 @@ class Game
 		Move move(int variation = 0) const;
 		/** @return comment associated with the first move in the given variation */
 		QString annotation(int variation = 0) const;
-		/** @return nag associated with the first move in the given variation */
-		int nag(int variation = 0) const;
+		/** @return nags associated with the first move in the given variation */
+		NagSet nags(int variation = 0) const;
+		/** @return move in short algebraic notation */
+		QString moveToSan(MoveStringFlags flags = MoveOnly, int variation = 0);
 		
 		//node modification methods
 		/** Sets the comment associated with the first move in the given variation */
 		bool setAnnotation(QString annotation, int variation = 0);
-		/** Sets the nag associated with the first move in the given variation */
-		bool setNag(int nag, int variation = 0);
+		/** Adds a nag to the first move in the given variation */
+		bool addNag(Nag nag, int variation = 0);
+		/** Sets the nags associated with the first move in the given variation */
+		bool setNags(NagSet nags, int variation = 0);
 
 		//tree information methods
 		/** @return whether the game is currently at the start position */
@@ -81,6 +87,8 @@ class Game
 		//tree traversal methods
 		/** Moves to the begining of the game */
 		void moveToStart();
+		/** Moves to the given ply, returns actual ply reached */
+		int toPly(int ply);
 		/** Moves to the end of the current variation */
 		void moveToEnd();
 		/** Move forward the given number of moves, returns actual number of moves made */
@@ -94,13 +102,13 @@ class Game
 		
 		//tree modification methods
 		/** Adds a move at the current position, returns variation number of newly added move */
-		int addMove(const Move& move, const QString& annotation = QString::null, int nag = 0);
+		int addMove(const Move& move, const QString& annotation = QString::null, NagSet nags = NagSet());
 		/** Adds a move at the current position, returns variation number of newly added move */
-		int addMove(const QString& sanMove, const QString& annotation = QString::null, int nag = 0);
+		int addMove(const QString& sanMove, const QString& annotation = QString::null, NagSet nags = NagSet());
 		/** Replaces the next move in the given variation, returns true if sucessful */
-		bool replaceMove(const Move& move, const QString& annotation = QString::null, int nag = 0, int variation = 0);
+		bool replaceMove(const Move& move, const QString& annotation = QString::null, NagSet nags = NagSet(), int variation = 0);
 		/** Replaces the next move in the given variation, returns true if sucessful */
-		bool replaceMove(const QString& sanMove, const QString& annotation = QString::null, int nag = 0, int variation = 0);
+		bool replaceMove(const QString& sanMove, const QString& annotation = QString::null, NagSet nags = NagSet(), int variation = 0);
 		/** Promotes the given variation to the main line, returns true if sucessful */
 		bool promoteVariation(int variation);
 		/** Removes the given variation, returns true if sucessful */
@@ -155,7 +163,7 @@ class Game
 		struct MoveNode {
 			Move move;
 			QString annotation;
-			int nag;
+			NagSet nags;
 			int previousNode;
 			int nextNode;
 			int parentNode;

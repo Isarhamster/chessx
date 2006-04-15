@@ -20,6 +20,8 @@
 #include <qdir.h>
 #include <qstringlist.h>
  
+#include "nag.h"
+
 #include "pgndatabase.h"
  
 PgnDatabase::PgnDatabase(const QString& filename) : m_searchFilter(0)
@@ -600,43 +602,43 @@ void PgnDatabase::parseToken(Game* game, QString token)
 			m_currentLine = m_currentLine.right((m_currentLine.length() - m_pos) - 1);
 			break;
 		case '$':
-			game->setNag(token.mid(1).toInt(), m_variation);
+			game->addNag((Nag)token.mid(1).toInt(), m_variation);
 			break;
 		case '!':
 			if(token == "!") {
-				game->setNag(1, m_variation);
+				game->addNag(GoodMove, m_variation);
 			} else if(token == "!!") {
-				game->setNag(3, m_variation);
+				game->addNag(VeryGoodMove, m_variation);
 			} else if(token == "!?") {
-				game->setNag(5, m_variation);
+				game->addNag(SpeculativeMove, m_variation);
 			}
 			break;
 		case '?':
 			if(token == "?") {
-				game->setNag(2, m_variation);
+				game->addNag(PoorMove, m_variation);
 			} else if(token == "??") {
-				game->setNag(4, m_variation);
+				game->addNag(VeryPoorMove, m_variation);
 			} else if(token == "?!") {
-				game->setNag(6, m_variation);
+				game->addNag(QuestionableMove, m_variation);
 			}
 			break;
 		case '+':
 			if(token == "+=") {
-				game->setNag(14, m_variation);
+				game->addNag(WhiteHasASlightAdvantage, m_variation);
 			} else if(token == "+/-") {
-				game->setNag(16, m_variation);
+				game->addNag(WhiteHasAModerateAdvantage, m_variation);
 			}
 			break;
 		case '-':
 			if(token == "-/+") {
-				game->setNag(17, m_variation);
+				game->addNag(BlackHasAModerateAdvantage, m_variation);
 			}
 			break;
 		case '=':
 			if(token == "=") {
-				game->setNag(11, m_variation);
+				game->addNag(DrawishPosition, m_variation);
 			} else if(token == "=+") {
-				game->setNag(15, m_variation);
+				game->addNag(BlackHasASlightAdvantage, m_variation);
 			}
 			break;
 		case '*':
@@ -712,14 +714,34 @@ void PgnDatabase::parseToken(Game* game, QString token)
 			} else if (token.contains('.')) {
 				token = token.section('.',	1, 1);
 			} 
+			
+			//look for nags
+			Nag nag = NullNag;
+			if(token.endsWith("!")) {
+				if(token.endsWith("!!")) {
+					nag = VeryGoodMove;
+				} else if(token.endsWith("!?")) {
+					nag = SpeculativeMove;
+				} else {
+					nag = GoodMove;
+				}
+			} else if(token.endsWith("?")) {
+				if(token.endsWith("??")) {
+					nag = VeryPoorMove;
+				} else if(token.endsWith("?!")) {
+					nag = QuestionableMove;
+				} else {
+					nag = PoorMove;
+				}
+			}
 	
 			if(token != "") {							
 				if(m_newVariation) {
-					m_variation = game->addMove(token);
+					m_variation = game->addMove(token, QString::null, nag);
 					m_newVariation = false;
 				} else {				
 					game->enterVariation(m_variation);
-					m_variation = game->addMove(token);
+					m_variation = game->addMove(token, QString::null, nag);
 							
 					/* position search, on new position */
 					if(m_searchGame) {
@@ -854,8 +876,8 @@ void PgnDatabase::writeVariation(Game& game)
 		m_gameText += game.board().moveToSAN(game.move()) + " ";
 			
 		//add nags and annotation
-		if(game.nag() > 0) {
-			m_gameText += "$" + QString::number(game.nag()) + " ";
+		if(game.nags().count() > 0) {
+			m_gameText += "$" + game.nags().toPGNString() + " ";
 		}
 		
 		if(game.annotation() != QString::null) {
@@ -885,8 +907,8 @@ void PgnDatabase::writeVariation(Game& game)
 				m_gameText += game.board().moveToSAN(game.move(variation)) + " ";
 				
 				//add nags and annotation
-				if(game.nag(variation) > 0) {
-					m_gameText += "$" + QString::number(game.nag(variation)) + " ";
+				if(game.nags(variation).count()) {
+					m_gameText += "$" + game.nags(variation).toPGNString() + " ";
 				}
 				
 				if(game.annotation(variation) != QString::null) {
