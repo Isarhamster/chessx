@@ -188,6 +188,8 @@ Square BoardView::selectedSquare() const
 
 void BoardView::selectSquare(Square s)
 {
+  if (m_selectedSquare == InvalidSquare && !isPieceColor(m_board.at(s), m_board.toMove()))
+    return;
   Square prev = m_selectedSquare;
   m_selectedSquare = s;
   if (prev != InvalidSquare)
