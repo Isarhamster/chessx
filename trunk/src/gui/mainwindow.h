@@ -49,6 +49,7 @@ public slots:
   void slotEditCopyFEN();
   void slotEditPasteFEN();
   void slotConfigure();
+	void slotConfigureChessEngines();
   void slotHelp();
   void slotConfigureFlip();
   void slotMove(Square from, Square to);

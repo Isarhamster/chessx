@@ -5,7 +5,8 @@
 
 FORMS += playerdialogbase.ui \
          preferencesbase.ui \
-	 boardsetupbase.ui
+				 boardsetupbase.ui \
+				 enginesetupbase.ui
 HEADERS += mainwindow.h \
            playerdialog.h \
            settings.h \
@@ -13,7 +14,8 @@ HEADERS += mainwindow.h \
            helpwindow.h \
            boardview.h \
            boardtheme.h \
-           boardsetup.h 
+           boardsetup.h \
+					 enginesetup.h
 SOURCES += mainwindow.cpp \
            playerdialog.cpp \
            settings.cpp \
@@ -21,9 +23,10 @@ SOURCES += mainwindow.cpp \
            boardview.cpp \ 
            boardtheme.cpp \
            boardsetup.cpp \
-           helpwindow.cpp 
+           helpwindow.cpp \
+					 enginesetup.cpp 
 TARGET = gui
-CONFIG += release warn_on qt staticlib
+CONFIG += debug warn_on qt staticlib
 TEMPLATE = lib
 QT += qt3support
 INCLUDEPATH += ../compatibility \
