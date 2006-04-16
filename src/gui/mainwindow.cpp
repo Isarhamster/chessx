@@ -16,6 +16,7 @@
 
 #include "boardsetup.h"
 #include "boardview.h"
+#include "enginesetup.h"
 #include "game.h"
 #include "helpwindow.h"
 #include "mainwindow.h"
@@ -73,6 +74,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   QPopupMenu *settings = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Settings"), settings);
   settings ->insertItem(tr("&Configure ChessX..."), this, SLOT(slotConfigure()));
+	settings ->insertItem(tr("Configure Chess &Engines..."), this, SLOT(slotConfigureChessEngines()));
   settings ->insertItem(tr("&Flip board"), this, SLOT(slotConfigureFlip()), CTRL + Key_B);
 
   /* Help menu */
@@ -161,6 +163,13 @@ void MainWindow::slotConfigure()
   PreferencesDialog P;
   if (P.exec() == QDialog::Accepted)
     emit reconfigure();
+}
+
+void MainWindow::slotConfigureChessEngines()
+{
+	EngineSetupDialog* dialog = new EngineSetupDialog();
+	dialog->exec();
+	delete dialog;
 }
 
 void MainWindow::slotConfigureFlip()
