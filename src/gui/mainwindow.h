@@ -24,6 +24,7 @@
 
 class PlayerDatabase;
 class PlayerDialog;
+class SaveDialog;
 class HelpWindow;
 class BoardView;
 class Game;
@@ -52,6 +53,7 @@ public slots:
 	void slotConfigureChessEngines();
   void slotHelp();
   void slotConfigureFlip();
+  void slotGameSave();
   void slotMove(Square from, Square to);
   void slotMoveToStart();
   void slotMoveForward();
@@ -66,6 +68,7 @@ signals:
 private:
   PlayerDatabase* m_playerDatabase;
   PlayerDialog* m_playerDialog;
+  SaveDialog* m_saveDialog;
   HelpWindow* m_helpWindow;
   BoardView* m_boardView;
   QTextBrowser* m_moveView;
