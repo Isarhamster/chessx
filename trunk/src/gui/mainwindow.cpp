@@ -23,17 +23,18 @@
 #include "playerdatabase.h"
 #include "playerdialog.h"
 #include "preferences.h"
+#include "savedialog.h"
 #include "settings.h"
 
 #include <qapplication.h>
 #include <qclipboard.h>
 #include <qlabel.h>
+#include <qlayout.h>
 #include <qmenubar.h>
 #include <qmessagebox.h>
 #include <qpopupmenu.h>
 #include <qstatusbar.h>
 #include <qtextbrowser.h>
-#include <qlayout.h>
 
 MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 {
@@ -43,6 +44,9 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   m_playerDialog = new PlayerDialog(m_playerDatabase, this);
   m_helpWindow = new HelpWindow();
 
+  /* Save dialog */
+  m_saveDialog = new SaveDialog;
+  
   /* File menu */
   QPopupMenu *file = new QPopupMenu(this);
   menuBar()->insertItem(tr("&File"), file);
@@ -64,6 +68,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   goMenu->insertItem(tr("&Next move"), this, SLOT(slotMoveForward()), Key_Right);
   goMenu->insertItem(tr("&Previous move"), this, SLOT(slotMoveBackward()), Key_Left);
   gameMenu->insertItem(tr("&Go..."), goMenu);
+  gameMenu->insertItem(tr("&Save...."), this, SLOT(slotGameSave()), CTRL + Key_S);
 
   /* Windows menu */
   QPopupMenu *windows = new QPopupMenu(this);
@@ -121,6 +126,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 MainWindow::~MainWindow()
 {
   /* saving layouts */
+  delete m_saveDialog;
   delete m_playerDialog;
   delete m_playerDatabase;
   delete m_helpWindow;
@@ -248,9 +254,11 @@ void MainWindow::slotMoveViewUpdate()
   QString white = m_game->tag("White");
   QString black = m_game->tag("Black");
   QString players = tr("Game %1: <a href=\"player_%2\">%3</a> %4 - <a href=\"player_%5\">%6</a> %7").arg(1).arg(white).arg(white)
-      .arg(m_game->tag("Result")).arg(black).arg(black).arg(m_game->tag("BlackElo"));
+      .arg(m_game->tag("WhiteElo")).arg(black).arg(black).arg(m_game->tag("BlackElo"));
   QString result = tr("%1(%2) %3").arg(m_game->tag("Result")).arg(m_game->plyCount() / 2)
       .arg(m_game->tag("ECO"));
+  QString header = tr("%1, %2, %3, round %4").arg(m_game->tag("Event")).arg(m_game->tag("Site"))
+      .arg(m_game->tag("Date")).arg(m_game->tag("Round"));
   QString lastmove, nextmove;
   if (!m_game->atStart())
   {
@@ -272,7 +280,8 @@ void MainWindow::slotMoveViewUpdate()
   else
     nextmove = tr("(End of game)");
   QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
-  m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br><qt>").arg(players).arg(result).arg(move));
+  m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4<qt>").arg(players).arg(result)
+      .arg(header).arg(move));
 }
 
 void MainWindow::slotMoveViewLink(const QString& link)
@@ -288,3 +297,8 @@ void MainWindow::slotMoveViewLink(const QString& link)
   }
 }
 
+void MainWindow::slotGameSave()
+{
+  if (m_saveDialog->exec(m_game) == QMessageBox::Ok)
+    slotMoveViewUpdate();
+}
