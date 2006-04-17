@@ -341,3 +341,4 @@ class NagSet
 };
 
 #endif	// __NAG_H__
+
