@@ -16,7 +16,7 @@
 
 #include "boardview.h"
 #include "boardtheme.h"
-#include "settings.h"
+#include "../database/settings.h"
 
 #include <qpainter.h>
 #include <qmessagebox.h>

@@ -10,7 +10,6 @@ FORMS += playerdialogbase.ui \
 	 savedialogbase.ui
 HEADERS += mainwindow.h \
            playerdialog.h \
-           settings.h \
            preferences.h \
            helpwindow.h \
            boardview.h \
@@ -20,7 +19,6 @@ HEADERS += mainwindow.h \
 	   enginesetup.h
 SOURCES += mainwindow.cpp \
            playerdialog.cpp \
-           settings.cpp \
            preferences.cpp \
            boardview.cpp \ 
            boardtheme.cpp \
