@@ -22,7 +22,8 @@ HEADERS += board.h \
            pgndatabase.h \
            filter.h \
            tristatetree.h \
-           nag.h
+           nag.h \
+           settings.h
 SOURCES += board.cpp \
            move.cpp \
            common.cpp \
@@ -42,7 +43,8 @@ SOURCES += board.cpp \
            pgndatabase.cpp \
            filter.cpp \
            tristatetree.cpp \
-           nag.cpp
+           nag.cpp \
+           settings.cpp
 TARGET = database
 CONFIG += release warn_on qt staticlib debug
 TEMPLATE = lib

@@ -15,7 +15,7 @@
  ***************************************************************************/
 
 #include "preferences.h"
-#include "settings.h"
+#include "../database/settings.h"
 
 #include <qcheckbox.h>
 #include <qcolordialog.h>
