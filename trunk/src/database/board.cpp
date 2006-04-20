@@ -21,6 +21,7 @@
 #include <qtextstream.h>
 #include <qfile.h>
 #include "board.h"
+#include "settings.h"
 
 static const int castlingMask[64] = {
 	~WhiteQueenside,	AllRights, AllRights, AllRights, ~WhiteBothSides,	AllRights, AllRights, ~WhiteKingside,
@@ -225,6 +226,7 @@ void Board::clear()
 	m_castlingRights = AllRights;
 	m_halfMoveClock = 0;
    m_hashValue = 0;
+   m_hashValue2 = 0;
 }
 
 void Board::fromFEN(const QString& fen)
@@ -2071,10 +2073,10 @@ void Board::promotePiece(Square square, Piece promoted)
 
 void Board::readRandomValues()
 {
-   QFile file( "rand64.dat" );
+   QFile file( AppSettings->dataPath() + "/rand64.dat" );
    Q_UINT64 num64bit;
    num64bit = 0;
-   int maxArray = MAX_PIECES*MAX_SQUARES+4+MAX_EN_PASSANT_SQUARES+1;
+   int maxArray = (MAX_PIECES*MAX_SQUARES+4+MAX_EN_PASSANT_SQUARES+1)*2;
    Q_UINT64 randomValues[maxArray];
    int i = 0;
    int l,j;
@@ -2109,19 +2111,35 @@ void Board::readRandomValues()
    for (l = 0; l < MAX_EN_PASSANT_SQUARES; ++l) {
       m_enPassant[l] = randomValues[i++];
    }
-   
-   m_randToMove = randomValues[i];
+   m_randToMove = randomValues[i++];
+   // Populate second set of random number variables
+   // to be able to create second hash (lock)
+   for (l = 0; l < MAX_PIECES; ++l) {
+      for (j = 0; j < MAX_SQUARES; ++j) {
+         m_randomValues2[l][j] = randomValues[i++];
+      }
+   }
+   m_whiteCastlingKS2 = randomValues[i++];
+   m_whiteCastlingQS2 = randomValues[i++];
+   m_blackCastlingKS2 = randomValues[i++];
+   m_blackCastlingQS2 = randomValues[i++];
+   for (l = 0; l < MAX_EN_PASSANT_SQUARES; ++l) {
+      m_enPassant2[l] = randomValues[i++];
+   }
+   m_randToMove2 = randomValues[i];
 
 }
 void Board::hashPiece(Square s, Piece p)
 {
    if ((p > Empty) && (p < InvalidPiece)) { 
       m_hashValue = m_hashValue ^ m_randomValues[p-1][s];
+      m_hashValue2 = m_hashValue2 ^ m_randomValues2[p-1][s];
    }
 }
 void Board::hashToMove()
 {
       m_hashValue = m_hashValue ^ m_randToMove;
+      m_hashValue2 = m_hashValue2 ^ m_randToMove2;
 }
 void Board::hashCastlingRights(CastlingRights oldCastlingRights)
 {
@@ -2140,18 +2158,22 @@ void Board::hashCastlingRights(CastlingRights oldCastlingRights)
 void Board::hashWhiteKingSideCastle()
 {
    m_hashValue = m_hashValue ^ m_whiteCastlingKS;
+   m_hashValue2 = m_hashValue2 ^ m_whiteCastlingKS2;
 }
 void Board::hashWhiteQueenSideCastle()
 {
    m_hashValue = m_hashValue ^ m_whiteCastlingQS;
+   m_hashValue2 = m_hashValue2 ^ m_whiteCastlingQS2;
 }
 void Board::hashBlackKingSideCastle()
 {
    m_hashValue = m_hashValue ^ m_blackCastlingKS;
+   m_hashValue2 = m_hashValue2 ^ m_blackCastlingKS2;
 }
 void Board::hashBlackQueenSideCastle()
 {
    m_hashValue = m_hashValue ^ m_blackCastlingQS;
+   m_hashValue2 = m_hashValue2 ^ m_blackCastlingQS2;
 }
 void Board::hashEpSquare()
 {
@@ -2167,10 +2189,12 @@ void Board::hashEpSquare()
       return;
    }
    m_hashValue = m_hashValue ^ m_enPassant[epSquareIndex];
+   m_hashValue2 = m_hashValue2 ^ m_enPassant2[epSquareIndex];
 }
 void Board::createHash()
 {
    m_hashValue = 0;
+   m_hashValue2 = 0;
    int i;
    for (i = 0; i < MAX_SQUARES; ++i) {
       hashPiece(i,at(i));
@@ -2197,4 +2221,8 @@ void Board::createHash()
 Q_UINT64 Board::getHashValue()
 {
    return m_hashValue;
+}
+Q_UINT64 Board::getHashValue2()
+{
+   return m_hashValue2;
 }

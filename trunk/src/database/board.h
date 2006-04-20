@@ -127,11 +127,14 @@ public:
    bool canBlackQueenSideCastle() const; 
    Square enPassantSquare() const; 
    Q_UINT64 getHashValue();
+   Q_UINT64 getHashValue2();
    bool operator == (Board b) {
-      return m_hashValue == b.getHashValue(); 
+      return ((m_hashValue == b.getHashValue()) && 
+             (m_hashValue2 == b.getHashValue2())); 
    }
    bool operator != (Board b) {
-      return m_hashValue != b.getHashValue(); 
+      return ((m_hashValue != b.getHashValue()) ||
+              (m_hashValue2 != b.getHashValue2())); 
    }
    // *** This function is purely for debug purposes
    // *** When comparing 2 boards, it's usefull to have a name for each
@@ -165,6 +168,14 @@ private:
    Q_UINT64 m_blackCastlingQS;
    Q_UINT64 m_enPassant[MAX_EN_PASSANT_SQUARES];
    Q_UINT64 m_randToMove;
+   Q_UINT64 m_hashValue2;
+   Q_UINT64 m_randomValues2[MAX_PIECES][MAX_SQUARES];
+   Q_UINT64 m_whiteCastlingKS2;
+   Q_UINT64 m_whiteCastlingQS2;
+   Q_UINT64 m_blackCastlingKS2;
+   Q_UINT64 m_blackCastlingQS2;
+   Q_UINT64 m_enPassant2[MAX_EN_PASSANT_SQUARES];
+   Q_UINT64 m_randToMove2;
    void readRandomValues();
 //public: //temporary public to help with debugging
    void createHash();
