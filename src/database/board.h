@@ -24,14 +24,10 @@
 #include "history.h"
 #include "movelist.h"
 #include "common.h"
+#include "rand64.h"
 
 #include <qstring.h>
 #include <qt34/qptrlist.h>
-
-#define MAX_PIECES 12
-#define MAX_SQUARES 64
-#define MAX_EN_PASSANT_SQUARES 16
-
 
 enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
     TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, 
@@ -161,22 +157,7 @@ private:
    QPtrList<Move> legalMoveList;
 
    Q_UINT64 m_hashValue;
-   Q_UINT64 m_randomValues[MAX_PIECES][MAX_SQUARES];
-   Q_UINT64 m_whiteCastlingKS;
-   Q_UINT64 m_whiteCastlingQS;
-   Q_UINT64 m_blackCastlingKS;
-   Q_UINT64 m_blackCastlingQS;
-   Q_UINT64 m_enPassant[MAX_EN_PASSANT_SQUARES];
-   Q_UINT64 m_randToMove;
    Q_UINT64 m_hashValue2;
-   Q_UINT64 m_randomValues2[MAX_PIECES][MAX_SQUARES];
-   Q_UINT64 m_whiteCastlingKS2;
-   Q_UINT64 m_whiteCastlingQS2;
-   Q_UINT64 m_blackCastlingKS2;
-   Q_UINT64 m_blackCastlingQS2;
-   Q_UINT64 m_enPassant2[MAX_EN_PASSANT_SQUARES];
-   Q_UINT64 m_randToMove2;
-   void readRandomValues();
 //public: //temporary public to help with debugging
    void createHash();
    void hashPiece(Square s, Piece p);
