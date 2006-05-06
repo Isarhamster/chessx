@@ -1,8 +1,8 @@
 /***************************************************************************
                           mainwindow.cpp  -  main window
                              -------------------
-    begin                : sob maj 7 2005
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+    begin                : 10 Oct 2005
+    copyright            : (C) 2005-2006 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -20,6 +20,7 @@
 #include "game.h"
 #include "helpwindow.h"
 #include "mainwindow.h"
+#include "pgndatabase.h"
 #include "playerdatabase.h"
 #include "playerdialog.h"
 #include "preferences.h"
@@ -28,13 +29,16 @@
 
 #include <qapplication.h>
 #include <qclipboard.h>
+#include <qfiledialog.h>
 #include <qlabel.h>
 #include <qlayout.h>
+#include <qlistview.h>
 #include <qmenubar.h>
 #include <qmessagebox.h>
 #include <qpopupmenu.h>
 #include <qstatusbar.h>
 #include <qtextbrowser.h>
+
 
 MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 {
@@ -44,12 +48,18 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   m_playerDialog = new PlayerDialog(m_playerDatabase, this);
   m_helpWindow = new HelpWindow();
 
+  /* Active database */
+  m_database = 0;
+  m_gameIndex = -1;
+
   /* Save dialog */
   m_saveDialog = new SaveDialog;
-  
+
   /* File menu */
   QPopupMenu *file = new QPopupMenu(this);
   menuBar()->insertItem(tr("&File"), file);
+  file->insertItem(tr("&Open"), this, SLOT(slotFileOpen()), CTRL + Key_O);
+  file->insertItem(tr("&Close"), this, SLOT(slotFileClose()), CTRL + Key_W);
   file->insertItem(tr("&Quit"), qApp, SLOT(closeAllWindows()), CTRL + Key_Q);
 
   /* Edit menu */
@@ -62,18 +72,28 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   /* Game menu */
   QPopupMenu *gameMenu = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Game"), gameMenu);
+  QPopupMenu* loadMenu = new QPopupMenu(this);
+  loadMenu->insertItem(tr("&First"), this, SLOT(slotGameLoad(int)), CTRL + SHIFT + Key_Up, IdFirst);
+  loadMenu->insertItem(tr("&Last"), this, SLOT(slotGameLoad(int)), CTRL + SHIFT + Key_Down, IdLast);
+  loadMenu->insertItem(tr("&Next"), this, SLOT(slotGameLoad(int)), CTRL + Key_Down, IdNext);
+  loadMenu->insertItem(tr("&Previous"), this, SLOT(slotGameLoad(int)), CTRL + Key_Up, IdPrevious);
+  loadMenu->insertItem(tr("&Random"), this, SLOT(slotGameLoad(int)), CTRL + Key_Question, IdRandom);
+  gameMenu->insertItem(tr("&Load..."), loadMenu);
   QPopupMenu* goMenu = new QPopupMenu(this);
-  goMenu->insertItem(tr("&Start"), this, SLOT(slotMoveToStart()), Key_Home);
-  goMenu->insertItem(tr("&End"), this, SLOT(slotMoveToEnd()), Key_End);
-  goMenu->insertItem(tr("&Next move"), this, SLOT(slotMoveForward()), Key_Right);
-  goMenu->insertItem(tr("&Previous move"), this, SLOT(slotMoveBackward()), Key_Left);
+  goMenu->insertItem(tr("&Start"), this, SLOT(slotGameBrowse(int)), Key_Home, IdFirst);
+  goMenu->insertItem(tr("&End"), this, SLOT(slotGameBrowse(int)), Key_End, IdLast);
+  goMenu->insertItem(tr("&Next move"), this, SLOT(slotGameBrowse(int)), Key_Right, IdNext);
+  goMenu->insertItem(tr("&Previous move"), this, SLOT(slotGameBrowse(int)), Key_Left, IdPrevious);
+  goMenu->insertItem(tr("5 moves &forward"), this, SLOT(slotGameBrowse(int)), Key_Down, IdNext5);
+  goMenu->insertItem(tr("5 moves &backward"), this, SLOT(slotGameBrowse(int)), Key_Up, IdPrevious5);
   gameMenu->insertItem(tr("&Go..."), goMenu);
   gameMenu->insertItem(tr("&Save...."), this, SLOT(slotGameSave()), CTRL + Key_S);
 
   /* Windows menu */
-  QPopupMenu *windows = new QPopupMenu(this);
-  menuBar()->insertItem(tr("&Windows"), windows);
-  windows ->insertItem(tr("&Player Database..."), this, SLOT(slotPlayerDialog()), CTRL + SHIFT + Key_P);
+  QPopupMenu *view = new QPopupMenu(this);
+  menuBar()->insertItem(tr("&View"), view);
+  view->insertItem(tr("&Game list"), this, SLOT(slotFilterSwitch()), CTRL + Key_L);
+  view->insertItem(tr("&Player Database..."), this, SLOT(slotPlayerDialog()), CTRL + SHIFT + Key_P);
 
   /* Settings menu */
   QPopupMenu *settings = new QPopupMenu(this);
@@ -88,38 +108,55 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   menuBar()->insertItem(tr("&Help"), help);
   help->insertItem( tr( "ChessX &help..." ), this, SLOT( slotHelp()), Key_F4 );
   help->insertItem(tr("&About..."), this, SLOT(slotAbout()), Key_F1);
-  statusBar()->message(tr("Ready"), 2000);
   resize(450, 600);
 
   /* Game */
   m_game = new Game;
-  m_game->setTag("White", "Botvinnik");
-  m_game->setTag("Black", "Polugaevsky");
 
   /* Layout */
   QFrame* frame = new QFrame(this);
   setCentralWidget(frame);
-  QGridLayout* layout = new QGridLayout(frame, 2, 1);
+  m_layout = new QGridLayout(frame, 2, 1);
 
   /* Board */
-  layout->addWidget(m_boardView = new BoardView(frame), 0, 0);
-  layout->setRowStretch(0, 5);
+  m_layout->addWidget(m_boardView = new BoardView(frame), 0, 0);
+  m_layout->setRowStretch(0, 5);
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
   connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
 
   /* Move view */
- layout->addWidget(m_moveView = new QTextBrowser(frame), 1, 0);
+ m_layout->addWidget(m_moveView = new QTextBrowser(frame), 1, 0);
+ m_moveView->setMaximumHeight(100);
  connect(m_moveView, SIGNAL(linkClicked(const QString&)), SLOT(slotMoveViewLink(const QString&)));
- layout->setRowStretch(1, 1);
  //m_moveView->styleSheet()->item("a")->setFontWeight(QFont::Bold);
  m_boardView->setBoard(m_game->board());
+
+  /* Game view */
+ m_filterView = new QListView(frame);
+ m_layout->addWidget(m_filterView, 2, 0);
+ m_filterView->hide();
+ m_filterView->addColumn(tr("White"));
+ m_filterView->addColumn(tr("Black"));
+ m_filterView->addColumn(tr("Site"));
+ m_filterView->addColumn(tr("Event"));
+ m_filterView->addColumn(tr("Result"));
+
+ m_layout->activate();
+
+  /* Randomize */
+  srandom(time(0));
 
   /* Restoring layouts */
   AppSettings->readLayout(m_playerDialog, Settings::Show);
   AppSettings->readLayout(m_helpWindow, Settings::Show);
   AppSettings->readLayout(this);
   emit reconfigure();
+
+  /* Status */
+  statusBar()->addWidget(m_statusFilter = new QLabel(statusBar()), 0, true);
+  slotStatusFilter();
+  slotStatusMessage(tr("Ready."));
 
 }
 
@@ -151,6 +188,18 @@ bool MainWindow::yesNo(const QString& question, QMessageBox::Icon icon) const
   QMessageBox mb("ChessX", question, icon, QMessageBox::Yes, QMessageBox::No,
      QMessageBox::NoButton);
   return mb.exec() == QMessageBox::Yes;
+}
+
+void MainWindow::loadGame(int index)
+{
+  if (database() && activeGameIndex() != index)
+  {
+    *m_game = database()->load(index);
+    m_gameIndex = index;
+    m_game->moveToStart();
+    m_boardView->setBoard(m_game->board());
+    slotMoveViewUpdate();
+  }
 }
 
 void MainWindow::slotAbout()
@@ -225,35 +274,11 @@ void MainWindow::slotMove(Square from, Square to)
   }
 }
 
-void MainWindow::slotMoveForward()
-{
-  if (m_game->forward())
-    m_boardView->setBoard(m_game->board());
-}
-
-void MainWindow::slotMoveBackward()
-{
-  if (m_game->backward())
-    m_boardView->setBoard(m_game->board());
-}
-
-void MainWindow::slotMoveToStart()
-{
-  if (m_game->backward(9999))
-    m_boardView->setBoard(m_game->board());
-}
-
-void MainWindow::slotMoveToEnd()
-{
-  if (m_game->forward(9999))
-    m_boardView->setBoard(m_game->board());
-}
-
 void MainWindow::slotMoveViewUpdate()
 {
   QString white = m_game->tag("White");
   QString black = m_game->tag("Black");
-  QString players = tr("Game %1: <a href=\"player_%2\">%3</a> %4 - <a href=\"player_%5\">%6</a> %7").arg(1).arg(white).arg(white)
+  QString players = tr("Game %1: <a href=\"player_%2\">%3</a> %4 - <a href=\"player_%5\">%6</a> %7").arg(activeGameIndex() + 1).arg(white).arg(white)
       .arg(m_game->tag("WhiteElo")).arg(black).arg(black).arg(m_game->tag("BlackElo"));
   QString result = tr("%1(%2) %3").arg(m_game->tag("Result")).arg(m_game->plyCount() / 2)
       .arg(m_game->tag("ECO"));
@@ -287,9 +312,9 @@ void MainWindow::slotMoveViewUpdate()
 void MainWindow::slotMoveViewLink(const QString& link)
 {
   if (link == "backward")
-    slotMoveBackward();
+    slotGameBrowse(IdPrevious);
   else if (link == "forward")
-    slotMoveForward();
+    slotGameBrowse(IdNext);
   else if (link.startsWith("player_"))
   {
     m_playerDialog->findPlayers(link.section('_', 1));
@@ -301,4 +326,70 @@ void MainWindow::slotGameSave()
 {
   if (m_saveDialog->exec(m_game) == QMessageBox::Ok)
     slotMoveViewUpdate();
+}
+
+void MainWindow::slotFileOpen()
+{
+  slotFileClose();
+  QString file = QFileDialog::getOpenFileName(QString::null,
+     tr("PGN Database (*.pgn)"), this, "open database", tr("Open database"));
+  if (!file.isEmpty())
+  {
+    m_database = new PgnDatabase(file);
+    slotGameLoad(0);
+    slotStatusFilter();
+    slotStatusMessage(tr("File %1 opened successfully.").arg(file.section('/', -1)));
+  }
+}
+
+void MainWindow::slotFileClose()
+{
+  delete m_database;
+  m_database = 0;
+}
+
+const int IdChange[7] = {-99999999, 99999999, 1, -1, 10, -10, 0};
+
+void MainWindow::slotGameLoad(int id)
+{
+  if (!database())
+    return;
+  int index = activeGameIndex() + IdChange[id];
+  if (id == IdRandom)
+    index = random() % database()->count();
+  if (index < 0) index = 0;
+  if (index >= database()->count() - 1) index = database()->count() - 1;
+  loadGame(index);
+}
+
+void MainWindow::slotGameBrowse(int id)
+{
+  int change = IdChange[id];
+  bool changed = change < 0 ? m_game->backward(-change) : m_game->forward(change);
+  if (changed)
+    m_boardView->setBoard(m_game->board());
+}
+
+void MainWindow::slotFilterSwitch()
+{
+  if (m_filterView->isVisible()) {
+    m_filterView->hide();
+  }
+  else {
+    m_filterView->show();
+  }
+  m_layout->activate();
+}
+
+void MainWindow::slotStatusMessage(const QString& msg)
+{
+  statusBar()->message(msg, 5000);
+}
+
+void MainWindow::slotStatusFilter()
+{
+  int count = database() ? database()->count() : 0;
+  int filter = count; 
+  QString text = filter ? (filter == count ? tr("All") : QString::number(filter)) : tr("None");
+  m_statusFilter->setText(tr("Filter: %1/%2 games").arg(text).arg(count));
 }
