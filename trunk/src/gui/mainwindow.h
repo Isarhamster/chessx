@@ -28,9 +28,12 @@ class SaveDialog;
 class HelpWindow;
 class BoardView;
 class Game;
+class Database;
 
 class QTextBrowser;
-
+class QListView;
+class QGridLayout;
+class QLabel;
 
 class MainWindow: public QMainWindow
 {
@@ -42,6 +45,12 @@ public:
 protected:
   bool yesNo(const QString& quetion, QMessageBox::Icon icon = QMessageBox::Information) const;
   void closeEvent(QCloseEvent* e);
+  /** @return active database */
+  Database* database()  {return m_database;}
+  /** @return index of active game */
+  int activeGameIndex() const {return m_gameIndex;}
+  /** Load given game */
+  void loadGame(int index);
 
 public slots:
   void slotAbout();
@@ -50,29 +59,38 @@ public slots:
   void slotEditCopyFEN();
   void slotEditPasteFEN();
   void slotConfigure();
-	void slotConfigureChessEngines();
+  void slotConfigureChessEngines();
   void slotHelp();
   void slotConfigureFlip();
+  void slotGameLoad(int id);
   void slotGameSave();
+  void slotGameBrowse(int id);
+  void slotFilterSwitch();
+  void slotFileOpen();
+  void slotFileClose();
   void slotMove(Square from, Square to);
-  void slotMoveToStart();
-  void slotMoveForward();
-  void slotMoveBackward();
-  void slotMoveToEnd();
   void slotMoveViewUpdate();
   void slotMoveViewLink(const QString& link);
+  void slotStatusMessage(const QString& msg);
+  void slotStatusFilter();
 signals:
   /* Re-read configuration */
   void reconfigure();
 
 private:
+  enum {IdFirst, IdLast, IdNext, IdPrevious, IdNext5, IdPrevious5, IdRandom};
   PlayerDatabase* m_playerDatabase;
   PlayerDialog* m_playerDialog;
   SaveDialog* m_saveDialog;
   HelpWindow* m_helpWindow;
   BoardView* m_boardView;
   QTextBrowser* m_moveView;
+  QListView* m_filterView;
+  QGridLayout* m_layout;
+  QLabel* m_statusFilter;
   Game* m_game;
+  Database* m_database;
+  int m_gameIndex;
 };
 
 
