@@ -1601,9 +1601,9 @@ bool Board::isAttacked(Square sq,Color c) const
   int a,b,tempsq,piece;
   if(c==White)
   {
-    if(sq&7)
+    if(sq&7 && sq > 8)
       if(at(sq-9)==WhitePawn)return true;
-    if((sq+1)&7)
+    if((sq+1)&7 && sq > 6)
       if(at(sq-7)==WhitePawn)return true;
     for(a=0;a<4;a++)
     {
@@ -1639,9 +1639,9 @@ bool Board::isAttacked(Square sq,Color c) const
   }
   else
   {
-    if(sq&7)
+    if(sq&7 && sq < 57)
       if(at(sq+7)==BlackPawn)return true;
-    if((sq+1)&7)
+    if((sq+1)&7 && sq < 55)
       if(at(sq+9)==BlackPawn)return true;
     for(a=0;a<4;a++)
     {
