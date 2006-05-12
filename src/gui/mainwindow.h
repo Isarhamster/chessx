@@ -31,7 +31,7 @@ class Game;
 class Database;
 
 class QTextBrowser;
-class QListView;
+class QListBox;
 class QGridLayout;
 class QLabel;
 
@@ -66,6 +66,8 @@ public slots:
   void slotGameSave();
   void slotGameBrowse(int id);
   void slotFilterSwitch();
+  void slotFilterUpdate();
+  void slotFilterLoad(int index);
   void slotFileOpen();
   void slotFileClose();
   void slotMove(Square from, Square to);
@@ -85,7 +87,7 @@ private:
   HelpWindow* m_helpWindow;
   BoardView* m_boardView;
   QTextBrowser* m_moveView;
-  QListView* m_filterView;
+  QListBox* m_filterView;
   QGridLayout* m_layout;
   QLabel* m_statusFilter;
   Game* m_game;
