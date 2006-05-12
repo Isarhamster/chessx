@@ -776,22 +776,16 @@ void PgnDatabase::parseComment(Game* game)
 
 void PgnDatabase::readJunk()
 {	
-	do {
-		if(m_currentLine.startsWith(QString("["))) {
-			break;
-		}
+	while(!m_currentLine.startsWith(QString("[")) && !m_file->atEnd()) {
 		readLine();
-	} while(!m_file->atEnd() || m_currentLine != "");
+	}
 }
 
 void PgnDatabase::readTags()
 {
-	do {
-		if(!m_currentLine.startsWith(QString("["))) {
-			break;
-		}
+	while(m_currentLine.startsWith(QString("[")) && !m_file->atEnd()) {
 		readLine();
-	} while(!m_file->atEnd() || m_currentLine != "");
+	}
 	
 	//swallow trailing whitespace
 	while(m_currentLine == "" && !m_file->atEnd()) {
@@ -801,12 +795,9 @@ void PgnDatabase::readTags()
 
 void PgnDatabase::readMoves()
 {
-	do {
-		if(m_currentLine == "") {
-			break;
-		}
+	while(m_currentLine != "" && !m_file->atEnd()) {
 		readLine();
-	} while(!m_file->atEnd() || m_currentLine != "");
+	}
 	
 	//swallow trailing whitespace
 	while(m_currentLine == "" && !m_file->atEnd()) {
