@@ -32,7 +32,7 @@
 #include <qfiledialog.h>
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qlistview.h>
+#include <qlistbox.h>
 #include <qmenubar.h>
 #include <qmessagebox.h>
 #include <qpopupmenu.h>
@@ -99,7 +99,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   QPopupMenu *settings = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Settings"), settings);
   settings ->insertItem(tr("&Configure ChessX..."), this, SLOT(slotConfigure()));
-	settings ->insertItem(tr("Configure Chess &Engines..."), this, SLOT(slotConfigureChessEngines()));
+  settings ->insertItem(tr("Configure Chess &Engines..."), this, SLOT(slotConfigureChessEngines()));
   settings ->insertItem(tr("&Flip board"), this, SLOT(slotConfigureFlip()), CTRL + Key_B);
 
   /* Help menu */
@@ -132,17 +132,12 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
  //m_moveView->styleSheet()->item("a")->setFontWeight(QFont::Bold);
  m_boardView->setBoard(m_game->board());
 
-  /* Game view */
- m_filterView = new QListView(frame);
+  /* Game list view */
+ m_filterView = new QListBox(frame);
  m_layout->addWidget(m_filterView, 2, 0);
  m_filterView->hide();
- m_filterView->addColumn(tr("White"));
- m_filterView->addColumn(tr("Black"));
- m_filterView->addColumn(tr("Site"));
- m_filterView->addColumn(tr("Event"));
- m_filterView->addColumn(tr("Result"));
-
- m_layout->activate();
+ m_filterView->setMinimumHeight(140);
+ connect(m_filterView, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
 
   /* Randomize */
   srandom(time(0));
@@ -155,7 +150,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 
   /* Status */
   statusBar()->addWidget(m_statusFilter = new QLabel(statusBar()), 0, true);
-  slotStatusFilter();
+  slotFilterUpdate();
   slotStatusMessage(tr("Ready."));
 
 }
@@ -337,7 +332,7 @@ void MainWindow::slotFileOpen()
   {
     m_database = new PgnDatabase(file);
     slotGameLoad(0);
-    slotStatusFilter();
+    slotFilterUpdate();
     slotStatusMessage(tr("File %1 opened successfully.").arg(file.section('/', -1)));
   }
 }
@@ -377,8 +372,31 @@ void MainWindow::slotFilterSwitch()
   }
   else {
     m_filterView->show();
+    slotFilterUpdate();
   }
   m_layout->activate();
+}
+
+void MainWindow::slotFilterUpdate()
+{
+  if (!database() || !m_filterView->isVisible())
+    return;
+  m_filterView->clear();
+  m_filterView->viewport()->setUpdatesEnabled(false);
+  for (int i = 0; i < database()->count(); i++)
+  {
+    const Game g = database()->load(i);
+    m_filterView->insertItem(tr("Game %1: %2 - %3, %4, %5, %6   %7").arg(i+1)
+       .arg(g.tag("White")).arg(g.tag("Black"))
+       .arg(g.tag("Site")).arg(g.tag("Event")).arg(g.tag("Date")).arg(g.tag("Result")));
+  }
+  m_filterView->viewport()->setUpdatesEnabled(true);
+  slotStatusFilter();
+}
+
+void MainWindow::slotFilterLoad(int index)
+{
+  loadGame(index);
 }
 
 void MainWindow::slotStatusMessage(const QString& msg)
