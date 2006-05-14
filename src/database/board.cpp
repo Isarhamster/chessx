@@ -1226,7 +1226,7 @@ Move Board::singleMove(const QString& SAN)
       case WhiteKnight:case BlackKnight:
         for(a=0;a<8;a++)
           if(knightData[to][a])
-            if(at(to+knightVectors[a])==p)
+            if(at(to+knightVectors[a])==p && isLegal(Move(to+knightVectors[a], to)))
               if((fromX==8)||(fromX==((to+knightVectors[a])&7)))
                 if((fromY==8)||(fromY==((to+knightVectors[a])/8)))
                 {
@@ -1240,7 +1240,7 @@ Move Board::singleMove(const QString& SAN)
           tempsq=to;
           for(b=0;b<bishopData[to][a];b++) {
             tempsq+=bishopVectors[a];
-            if(at(tempsq)==p)
+            if(at(tempsq)==p && isLegal(Move(tempsq, to)))
                if((fromX==8)||(fromX==(tempsq&7)))
                   if((fromY==8)||(fromY==(tempsq/8)))
                   {
@@ -1259,7 +1259,7 @@ Move Board::singleMove(const QString& SAN)
           tempsq=to;
           for(b=0;b<rookData[to][a];b++) {
 						tempsq+=rookVectors[a];
-						if(at(tempsq)==p)
+						if(at(tempsq)==p && isLegal(Move(tempsq, to)))
 							if((fromX==8)||(fromX==(tempsq&7)))
 								if((fromY==8)||(fromY==(tempsq/8)))
 								{
@@ -1278,7 +1278,7 @@ Move Board::singleMove(const QString& SAN)
           tempsq=to;
           for(b=0;b<bishopData[to][a];b++) {
 						tempsq+=bishopVectors[a];
-            if(at(tempsq)==p)
+            if(at(tempsq)==p && isLegal(Move(tempsq, to)))
               if((fromX==8)||(fromX==(tempsq&7)))
 								if((fromY==8)||(fromY==(tempsq/8)))
                 {
