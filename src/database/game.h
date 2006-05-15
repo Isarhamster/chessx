@@ -119,6 +119,9 @@ class Game
 		bool truncateGameStart(int variation = 0);
 		
 		//game information methods
+		/** @ECO code for the game */
+		QString ecoClassify();
+		
 		/** @return tag id of white player */
 		int white() const;
 		/** @return tag id of black player */
@@ -155,6 +158,9 @@ class Game
 		void setStartAnnotation(const QString& annotation);
 		/** Sets the game result */
 		void setResult(const Result result);
+		
+		/** Class method that loads a file containing ECO classications for use by the ecoClassify method. Returns true if successful */
+		static bool loadEcoFile(const QString& ecoFile);
 		
 	private:
 		//definitions
@@ -197,6 +203,9 @@ class Game
 		int m_deletedNodeCount;
 		int m_totalNodeCount;
 		MoveNode* m_moveNodes;
+		
+		//eco data
+		static QMap<Q_UINT64,QString> m_ecoPositions;
 };
 
 #endif	// __GAME_H__

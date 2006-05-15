@@ -15,9 +15,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <string.h> 
+#include <qfile.h>
+#include <qregexp.h>
+#include <qstringlist.h>
+#include <qtextstream.h>
  
 #include "game.h"
+
+QMap<Q_UINT64,QString> Game::m_ecoPositions;
 
 Game::Game()
 {
@@ -573,6 +578,24 @@ bool Game::truncateGameStart(int variation)
 	return false;
 }
 
+QString Game::ecoClassify()
+{
+	//move to end of main line
+	moveToStart();
+	moveToEnd();
+	
+	//search backwards for the first eco position
+	while(!atStart()) {
+		Q_UINT64 key = m_currentBoard.getHashValue();
+		if(m_ecoPositions.contains(key)) {
+			return m_ecoPositions[key];
+		}
+		backward();
+	}
+
+	return "? Unknown opening";
+}
+
 Board Game::startBoard() const
 {
 	return m_startBoard;
@@ -644,6 +667,65 @@ void Game::setStartAnnotation(const QString& annotation)
 void Game::setResult(const Result result)
 {
 	m_result = result;
+}
+
+bool Game::loadEcoFile(const QString& ecoFile)
+{
+	m_ecoPositions.clear();
+	
+	QFile file(ecoFile);
+	file.open(IO_ReadOnly);
+	QTextStream ecoStream(&file);
+	
+	QString line;
+	Board board;
+	QString ecoCode;
+	QRegExp ecoRegExp("[A-Z]\\d{2}[a-z]?");
+	QStringList tokenList;
+	QString token;
+	Move move;
+	
+	while(!ecoStream.atEnd()) {
+		line = ecoStream.readLine();
+		
+		//ignore comments and blank lines
+		if(line.startsWith("#") || line == "") {
+			continue;
+		}
+		
+		//if line starts with eco code, store and begin new line
+		if(line.find(ecoRegExp) == 0) {
+			ecoCode = line.section(' ', 0, 0);
+			ecoCode += " " + line.section('"', 1, 1);
+			board.setStandardPosition();
+			line = line.section('"', 2);
+		}
+		
+		//parse any moves on line
+		tokenList = QStringList::split(" ", line);
+		for (QStringList::Iterator iterator = tokenList.begin(); iterator != tokenList.end(); iterator++) {
+				token = *iterator;
+				if(token == "*") {
+					m_ecoPositions.insert(board.getHashValue(), ecoCode);
+					continue;
+				}
+				if(token.contains('.')) {
+					token = token.section('.', 1, 1);
+				}
+				if(token != "") {
+					move = board.singleMove(token);
+					if(board.isLegal(move)) {
+						board.doMove(move);
+					} else {
+						m_ecoPositions.clear();
+						return false;
+					}
+				}
+	  }
+		
+	}
+	
+	return m_ecoPositions.count();
 }
 
 void Game::compact()
