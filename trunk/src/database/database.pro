@@ -23,7 +23,8 @@ HEADERS += board.h \
            filter.h \
            tristatetree.h \
            nag.h \
-           settings.h
+           settings.h \
+           spellchecker.h
 SOURCES += board.cpp \
            move.cpp \
            common.cpp \
@@ -44,7 +45,8 @@ SOURCES += board.cpp \
            filter.cpp \
            tristatetree.cpp \
            nag.cpp \
-           settings.cpp
+           settings.cpp \
+           spellchecker.cpp
 TARGET = database
 CONFIG += release warn_on qt staticlib debug
 TEMPLATE = lib
