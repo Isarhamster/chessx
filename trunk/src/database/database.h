@@ -32,10 +32,10 @@ class Database
 		/** Virtual destructor */
 		virtual ~Database();
 		//game retrieval & storage
-		/** Loads and returns the game at the given position */
-		virtual Game load(int game) = 0;
-		/** Saves a game at the given position */
-		virtual void save(int game, Game& game) = 0;
+		/** Loads a game from the given position, returns true if successful */
+		virtual bool load(int game, Game& game) = 0;
+		/** Saves a game at the given position, returns true if successful */
+		virtual bool save(int game, Game& game) = 0;
 		/** Adds a game to the database */
 		virtual void add(Game& game) = 0;
 		/** Removes a game from the database */

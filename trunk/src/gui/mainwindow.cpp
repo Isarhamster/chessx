@@ -189,7 +189,7 @@ void MainWindow::loadGame(int index)
 {
   if (database() && activeGameIndex() != index)
   {
-    *m_game = database()->load(index);
+    database()->load(index, *m_game);
     m_gameIndex = index;
     m_game->moveToStart();
     m_boardView->setBoard(m_game->board());
@@ -383,9 +383,10 @@ void MainWindow::slotFilterUpdate()
     return;
   m_filterView->clear();
   m_filterView->viewport()->setUpdatesEnabled(false);
-  for (int i = 0; i < database()->count(); i++)
-  {
-    const Game g = database()->load(i);
+  Game g;
+	for (int i = 0; i < database()->count(); i++)
+	{
+	  database()->load(i, g);
     m_filterView->insertItem(tr("Game %1: %2 - %3, %4, %5, %6   %7").arg(i+1)
        .arg(g.tag("White")).arg(g.tag("Black"))
        .arg(g.tag("Site")).arg(g.tag("Event")).arg(g.tag("Date")).arg(g.tag("Result")));
