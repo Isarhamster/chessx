@@ -61,7 +61,7 @@ public:
   /** Sets day. Only partial checking is done (d = 0..31), so entering incorrect date is possible. */
   void setDay(int d);
   /** Sets date from string in PGN date format (e.g. "1990.01.??"). */
-  void PartialDate::fromString(const QString& s);
+  void fromString(const QString& s);
 
   friend bool operator==(const PartialDate& d1, const PartialDate& d2);
   friend bool operator>=(const PartialDate& d1, const PartialDate& d2);
