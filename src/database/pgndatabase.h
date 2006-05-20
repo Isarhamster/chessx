@@ -42,10 +42,10 @@ class PgnDatabase : public Database
 		~PgnDatabase();
 		
 		//game retrieval & storage
-		/** Loads and returns the game at the given position */
-		Game load(int index);
-		/** Saves a game at the given position */
-		void save(int index, Game& game);
+		/** Loads a game from the given position, returns true if successful */
+		bool load(int index, Game& game);
+		/** Saves a game at the given position, returns true if successful */
+		bool save(int index, Game& game);
 		/** Adds a game to the database */
 		void add(Game& game);
 		/** Removes a game from the database */
@@ -94,7 +94,7 @@ class PgnDatabase : public Database
 		/** Copies games from the old file to the new */
 		void copyRange(int startIndex, int endIndex, int newIndex, Q_LONG offset);
 		/** Removes the backup if file operations were sucessful */
-		void finishCopy();
+		bool finishCopy();
 		/** Reads the next line of text from the PGN file */
 		void readLine();
 		/** Moves the file position to the start of the given game */

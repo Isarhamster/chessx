@@ -56,15 +56,14 @@ PgnDatabase::~PgnDatabase()
 	delete[] m_gameOffsets;
 }
 
-Game PgnDatabase::load(int index)
+bool PgnDatabase::load(int index, Game& game)
 {
-	Game game;
-	
 	if(index >= m_count) {
-		return game;
+		return false;
 	}
 	
 	//parse the game
+	game.clear();
 	seekGame(index);
 	parseTags(&game);
 	if(game.tag("FEN") != QString::null) {
@@ -74,13 +73,13 @@ Game PgnDatabase::load(int index)
 	}
 	parseMoves(&game);
 	
-	return game;
+	return m_variation != -1;
 }
 
-void PgnDatabase::save(int index, Game& game)
+bool PgnDatabase::save(int index, Game& game)
 {
 	if(index >= m_count) {
-		return;
+		return false;
 	}
 	
 	startCopy();
@@ -95,7 +94,7 @@ void PgnDatabase::save(int index, Game& game)
 	if(index < m_count - 1) {
 		copyRange(index + 1, m_count - 1, index + 1, m_newFile->at());
 	}
-	finishCopy();
+	return finishCopy();
 }
 
 void PgnDatabase::add(Game& game)
@@ -263,9 +262,7 @@ Filter PgnDatabase::executeQuery(Query& query)
 			}
 		}
 		
-		Q_ASSERT(m_triStateTree.state() != TriStateTree::Unknown);
-		
-		if(m_triStateTree.state() == TriStateTree::False) {
+		if(m_triStateTree.state() != TriStateTree::True) {
 			m_searchFilter.remove(searchIndex);
 		}
 	}
@@ -380,7 +377,7 @@ void PgnDatabase::copyRange(int startIndex, int endIndex, int newIndex, Q_LONG n
 	}
 }
 
-void PgnDatabase::finishCopy()
+bool PgnDatabase::finishCopy()
 {
 	Q_ASSERT(m_newFile && m_newStream);
 	
@@ -389,9 +386,10 @@ void PgnDatabase::finishCopy()
 	delete m_newStream;
 	
 	//if successful remove backup, otherwise restore it
+	bool successful = m_newFile->status() == (unsigned)IO_Ok;
 	QDir dir;
 	
-	if(m_newFile->status() == (unsigned)IO_Ok) {
+	if(successful) {
 		m_file->close();
 		delete m_file;
 		m_file = m_newFile;
@@ -405,6 +403,8 @@ void PgnDatabase::finishCopy()
 	
 	m_newFile = 0;
 	m_newStream = 0;
+	
+	return successful;
 }
 
 void PgnDatabase::readLine()
@@ -533,7 +533,7 @@ void PgnDatabase::parseMoves(Game* game)
     }
     else {
 			parseLine(game);
-			if(m_triStateTree.state()) {
+			if(m_variation == -1) {
 				return;
 			}
     }
@@ -559,7 +559,7 @@ void PgnDatabase::parseLine(Game* game)
 	for (QStringList::Iterator it = list.begin(); it != list.end() && !m_inComment; it++) {
 		if(*it != "") {
 			parseToken(game, *it);
-			if(m_triStateTree.state()) {
+			if(m_variation == -1) {
 				return;
 			}
 		}
@@ -748,6 +748,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 						for(int search = 0; search < m_positionSearches.size(); search++) {
 							if(game->board() == m_positionSearches.at(search).first.position()) {
 								if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
+									m_variation = -1;
 									return;
 								}
 							}
