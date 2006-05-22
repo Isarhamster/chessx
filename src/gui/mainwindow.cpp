@@ -99,7 +99,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   QPopupMenu *settings = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Settings"), settings);
   settings ->insertItem(tr("&Configure ChessX..."), this, SLOT(slotConfigure()));
-  settings ->insertItem(tr("Configure Chess &Engines..."), this, SLOT(slotConfigureChessEngines()));
+  settings ->insertItem(tr("Chess &Engines..."), this, SLOT(slotConfigureChessEngines()));
   settings ->insertItem(tr("&Flip board"), this, SLOT(slotConfigureFlip()), CTRL + Key_B);
 
   /* Help menu */
