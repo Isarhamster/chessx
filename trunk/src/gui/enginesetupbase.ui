@@ -105,6 +105,9 @@
                                     <property name="name">
                                         <cstring>browsePushButton</cstring>
                                     </property>
+                                    <property name="enabled">
+                                        <bool>false</bool>
+                                    </property>
                                     <property name="text">
                                         <string>Browse...</string>
                                     </property>
@@ -189,6 +192,9 @@
                 <widget class="QPushButton">
                     <property name="name">
                         <cstring>deletePushButton</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
                     </property>
                     <property name="text">
                         <string>&amp;Delete</string>
