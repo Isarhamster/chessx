@@ -28,6 +28,7 @@
 
 #include <qstring.h>
 #include <qt34/qptrlist.h>
+#include <qvaluestack.h>
 
 enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
     TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, 
@@ -154,10 +155,13 @@ private:
 	Square m_epSquare;
 	CastlingRights m_castlingRights;
 	int m_halfMoveClock;
-   QPtrList<Move> legalMoveList;
+   QPtrList<Move> m_legalMoveList;
 
    Q_UINT64 m_hashValue;
    Q_UINT64 m_hashValue2;
+   bool m_calcHashValue;
+   QValueStack<bool> m_hashStatusStack;
+
 //public: //temporary public to help with debugging
    void createHash();
    void hashPiece(Square s, Piece p);
@@ -168,6 +172,8 @@ private:
    void hashBlackQueenSideCastle();
    void hashEpSquare();
    void hashCastlingRights(CastlingRights oldCastlingRights);
+   void disableHashing();
+   void enableHashing();
 
 };
 #endif
