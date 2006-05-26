@@ -28,7 +28,7 @@
 
 #include <qstring.h>
 #include <qt34/qptrlist.h>
-#include <qvaluestack.h>
+#include <qt34/qvaluestack.h>
 
 enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
     TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, 
