@@ -282,11 +282,15 @@ void MainWindow::slotMoveViewUpdate()
   QString lastmove, nextmove;
   if (!m_game->atStart())
   {
+    int varId = m_game->variation();
     m_game->backward();
     lastmove = QString("<a href=\"backward\">%1%2 %3</a>").arg(m_game->ply() / 2 + 1)
         .arg(m_game->ply() % 2 ? "..." : ".")
-        .arg(m_game->board().moveToSAN(m_game->move(0)));
-    m_game->forward();
+        .arg(m_game->board().moveToSAN(m_game->move(varId)));
+    if (!varId)
+      m_game->forward();
+    else
+      m_game->enterVariation(varId);
   }
   else
     lastmove = tr("(Start of game)");
@@ -300,8 +304,21 @@ void MainWindow::slotMoveViewUpdate()
   else
     nextmove = tr("(End of game)");
   QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
-  m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4<qt>").arg(players).arg(result)
-      .arg(header).arg(move));
+  if (!m_game->atStart() && m_game->variation())
+    move.append(QString(" &nbsp; &nbsp; <a href=\"varexit\">%1</a>").arg(tr("(&lt;-Var)")));
+  QString var;
+  if (m_game->variationCount() > 1)
+  {
+    var = tr("<br>Variations: &nbsp; ");
+    for (int i = 1; i < m_game->variationCount(); i++)
+    {
+      var.append(QString("v%1: <a href=\"var_%2\">%3</a>").arg(i).arg(i).arg(m_game->board().moveToSAN(m_game->move(i))));
+      if (i != m_game->variationCount() - 1)
+        var.append(" &nbsp; ");
+     }
+  }
+  m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4%5<qt>").arg(players).arg(result)
+      .arg(header).arg(move).arg(var));
 }
 
 void MainWindow::slotMoveViewLink(const QString& link)
@@ -310,6 +327,16 @@ void MainWindow::slotMoveViewLink(const QString& link)
     slotGameBrowse(IdPrevious);
   else if (link == "forward")
     slotGameBrowse(IdNext);
+  else if (link == "varexit")
+  {
+    m_game->exitVariation();
+    m_boardView->setBoard(m_game->board());
+  }
+  else if (link.startsWith("var_"))
+  {
+    m_game->enterVariation(link.section('_', 1).toInt());
+    m_boardView->setBoard(m_game->board());
+  }
   else if (link.startsWith("player_"))
   {
     m_playerDialog->findPlayers(link.section('_', 1));
