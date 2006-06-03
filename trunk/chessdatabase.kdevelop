@@ -27,6 +27,7 @@
     <tree>
       <hidenonprojectfiles>false</hidenonprojectfiles>
       <hidepatterns>*.o,*.lo,CVS</hidepatterns>
+      <showvcsfields>false</showvcsfields>
     </tree>
   </kdevfileview>
   <kdevdoctreeview>
@@ -98,7 +99,7 @@
       <envvars/>
     </run>
     <general>
-      <activedir></activedir>
+      <activedir>tests/cppunit</activedir>
     </general>
     <make>
       <abortonerror>true</abortonerror>
