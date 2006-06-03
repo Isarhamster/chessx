@@ -29,6 +29,7 @@ class PgnDatabaseTest : public CppUnit::TestFixture
   CPPUNIT_TEST( testCreateDatabase );
   CPPUNIT_TEST( testCopyGameIntoNewDB );
   CPPUNIT_TEST( testRemoveGame );
+  CPPUNIT_TEST( testExecuteSearch );
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -38,6 +39,7 @@ class PgnDatabaseTest : public CppUnit::TestFixture
   void testCreateDatabase();
   void testCopyGameIntoNewDB();
   void testRemoveGame();
+  void testExecuteSearch();
 
  private:
 
