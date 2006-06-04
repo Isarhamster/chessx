@@ -214,6 +214,8 @@ TriStateTree::State TriStateTree::update(Node* node)
 	leftState = node->m_leftChild->m_state;
 	if(node->m_rightChild) {
 		rightState = node->m_rightChild->m_state;
+	} else {
+		rightState = Unknown;
 	}
 	
 	switch(node->m_operator) {

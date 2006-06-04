@@ -49,10 +49,10 @@ public:
 	Filter(const Filter& filter);
 /** include game in filter, at the given move
 */
-        bool set(const int game, const int moveIndex);
+        bool set(const unsigned int game, const unsigned int moveIndex);
 /** remove game from filter
 */
-        bool remove(const int game);
+        bool remove(const unsigned int game);
 /** return number of games in the filter
 */
         int count() const;
@@ -72,7 +72,7 @@ public:
 	int currentIndex() const;
 /** set index of current game in filter
 */
-	bool setCurrentIndex(const int index);
+	bool setCurrentIndex(const unsigned int index);
 /** return index of first game in filter
 */
 	int lastIndex() const;
@@ -90,7 +90,7 @@ public:
 	int nextGame(const int startIndex, const int offset) const;
 /** return index of the offset'th previous game in filter relative to endIndex
 */
-        int previousGame(const int endIndex, const int offset) const;
+	int previousGame(const unsigned int endIndex, const unsigned int offset) const;
 /** reverse the filter (complement set)
 */
 	void reverse();

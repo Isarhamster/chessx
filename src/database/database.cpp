@@ -1,5 +1,5 @@
 /***************************************************************************
-                          database.h  -  abstract database class
+                          database.cpp  -  abstract database class
                              -------------------
     begin                : 9 April 2006
     copyright            : (C) 2006 William Hoggarth 
