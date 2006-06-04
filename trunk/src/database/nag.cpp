@@ -205,6 +205,6 @@ void NagSet::initialize()
 }
 
 //static data members
-const int NagSet::MaxNags;
+const unsigned int NagSet::MaxNags;
 bool NagSet::initialized = false;
 QMap<QString,Nag> NagSet::stringMap;

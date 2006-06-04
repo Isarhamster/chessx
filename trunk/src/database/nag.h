@@ -332,8 +332,8 @@ class NagSet
 	private:
 		static void initialize();
 	
-		static const int MaxNags = 8;
-		Q_INT8 m_noNags;
+		static const unsigned int MaxNags = 8;
+		Q_UINT8 m_noNags;
 		Q_INT8 m_nags[MaxNags];
 		
 		static bool initialized;

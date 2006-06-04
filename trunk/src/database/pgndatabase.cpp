@@ -244,7 +244,7 @@ Filter PgnDatabase::executeQuery(Query& query)
 		m_triStateTree.clear();
 		
 		//do filter searches before examining game
-		for(int search = 0; search < m_filterSearches.size(); search++) {
+		for(unsigned int search = 0; search < m_filterSearches.size(); search++) {
 			if(m_triStateTree.setState(m_filterSearches.at(search).second,m_filterSearches.at(search).first.contains(searchIndex))) {
 				break;
 			}
@@ -441,7 +441,7 @@ void PgnDatabase::parseTags(Game* game)
 			if(tag == "WhiteElo") {
 				whiteElo = value.toInt();
 				if(blackElo != - 1) {
-					for(int search = 0; search < m_eloSearches.size(); search++) {
+					for(unsigned int search = 0; search < m_eloSearches.size(); search++) {
 						if(m_triStateTree.setState(m_eloSearches.at(search).second, m_eloSearches.at(search).first.withinEloRange(whiteElo, blackElo))) {
 							return;
 						}
@@ -450,7 +450,7 @@ void PgnDatabase::parseTags(Game* game)
 			} else if(tag == "BlackElo") {
 				blackElo = value.toInt();
 				if(whiteElo != -1) {
-					for(int search = 0; search < m_eloSearches.size(); search++) {
+					for(unsigned int search = 0; search < m_eloSearches.size(); search++) {
 						if(m_triStateTree.setState(m_eloSearches.at(search).second, m_eloSearches.at(search).first.withinEloRange(whiteElo, blackElo))) {
 							return;
 						}
@@ -458,14 +458,14 @@ void PgnDatabase::parseTags(Game* game)
 				}
 			} else if(tag == "Date") {
 				date = PartialDate(value);
-				for(int search = 0; search < m_dateSearches.size(); search++) {
+				for(unsigned int search = 0; search < m_dateSearches.size(); search++) {
 					if(m_triStateTree.setState(m_dateSearches.at(search).second, m_dateSearches.at(search).first.withinDateRange(date))) {
 						return;
 					}
 				}
 			} else {
 				//tag searches
-				for(int search = 0; search < m_tagSearches.size(); search++) {
+				for(unsigned int search = 0; search < m_tagSearches.size(); search++) {
 		    	if(tag == m_tagSearches.at(search).first.tag() && value == m_tagSearches.at(search).first.value()) {
 						if(m_triStateTree.setState(m_tagSearches.at(search).second, true)) {
 							return;
@@ -479,21 +479,21 @@ void PgnDatabase::parseTags(Game* game)
 	
 	//mark any unmatched tag searches as false
 	if(!game) {
-		for(int search = 0; search < m_eloSearches.size(); search++) {
+		for(unsigned int search = 0; search < m_eloSearches.size(); search++) {
     	if(m_triStateTree.state(m_eloSearches.at(search).second) == TriStateTree::Unknown) {
 				if(m_triStateTree.setState(m_eloSearches.at(search).second, false)) {
 					return;
 				}
 			}   
     }
-		for(int search = 0; search < m_dateSearches.size(); search++) {
+		for(unsigned int search = 0; search < m_dateSearches.size(); search++) {
     	if(m_triStateTree.state(m_dateSearches.at(search).second) == TriStateTree::Unknown) {
 				if(m_triStateTree.setState(m_dateSearches.at(search).second, false)) {
 					return;
 				}
 			}   
     }
-		for(int search = 0; search < m_tagSearches.size(); search++) {
+		for(unsigned int search = 0; search < m_tagSearches.size(); search++) {
     	if(m_triStateTree.state(m_tagSearches.at(search).second) == TriStateTree::Unknown) {
 				if(m_triStateTree.setState(m_tagSearches.at(search).second, false)) {
 					return;
@@ -518,7 +518,7 @@ void PgnDatabase::parseMoves(Game* game)
 	
 	//check starting position as well as position after each move
 	if(m_searchGame) {
-		for(int search = 0; search < m_positionSearches.size(); search++) {
+		for(unsigned int search = 0; search < m_positionSearches.size(); search++) {
 			if(game->board() == m_positionSearches.at(search).first.position()) {
 				if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
 					return;
@@ -541,7 +541,7 @@ void PgnDatabase::parseMoves(Game* game)
 	
 	//mark any unmatched position searches as false
 	if(m_searchGame) {
-		for(int search = 0; search < m_positionSearches.size(); search++) {
+		for(unsigned int search = 0; search < m_positionSearches.size(); search++) {
     	if(m_triStateTree.state(m_positionSearches.at(search).second) == TriStateTree::Unknown) {
 				if(m_triStateTree.setState(m_positionSearches.at(search).second, false)) {
 					return;
@@ -582,7 +582,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 				// position search on last position		
 				if(m_searchGame) {
 					game->forward();
-					for(int search = 0; search < m_positionSearches.size(); search++) {
+					for(unsigned int search = 0; search < m_positionSearches.size(); search++) {
 						if(game->board() == m_positionSearches.at(search).first.position()) {
 							if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
 								return;
@@ -648,7 +648,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 			// position search on last position
 			if(m_searchGame) {
 				game->forward();
-				for(int search = 0; search < m_positionSearches.size(); search++) {
+				for(unsigned int search = 0; search < m_positionSearches.size(); search++) {
 					if(game->board() == m_positionSearches.at(search).first.position()) {
 						if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
 							return;
@@ -664,7 +664,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 				// position search on last position
 				if(m_searchGame) {
 					game->forward();
-					for(int search = 0; search < m_positionSearches.size(); search++) {
+					for(unsigned int search = 0; search < m_positionSearches.size(); search++) {
 						if(game->board() == m_positionSearches.at(search).first.position()) {
 							if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
 								return;
@@ -679,7 +679,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 				// position search on last position
 				if(m_searchGame) {
 					game->forward();
-					for(int search = 0; search < m_positionSearches.size(); search++) {
+					for(unsigned int search = 0; search < m_positionSearches.size(); search++) {
 						if(game->board() == m_positionSearches.at(search).first.position()) {
 							if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
 								return;
@@ -697,7 +697,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 				// position search on last position
 				if(m_searchGame) {
 					game->forward();
-					for(int search = 0; search < m_positionSearches.size(); search++) {
+					for(unsigned int search = 0; search < m_positionSearches.size(); search++) {
 						if(game->board() == m_positionSearches.at(search).first.position()) {
 							if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
 								return;
@@ -745,7 +745,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 							
 					/* position search, on new position */
 					if(m_searchGame) {
-						for(int search = 0; search < m_positionSearches.size(); search++) {
+						for(unsigned int search = 0; search < m_positionSearches.size(); search++) {
 							if(game->board() == m_positionSearches.at(search).first.position()) {
 								if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
 									m_variation = -1;

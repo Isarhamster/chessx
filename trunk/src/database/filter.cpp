@@ -51,8 +51,8 @@ Filter::Filter(const Filter& filter){
    }
 }
 
-bool Filter::set(const int game, const int moveIndex){
-   if (game<0 || game>m_byteArray->count() || moveIndex<1){
+bool Filter::set(const unsigned int game, const unsigned int moveIndex){
+   if (game>m_byteArray->count() || moveIndex<1){
      return false;
    }
    else{
@@ -63,8 +63,8 @@ bool Filter::set(const int game, const int moveIndex){
          m_lastIndex = game;
        }
        else{
-         m_firstIndex = MIN(m_firstIndex,game);
-         m_lastIndex = MAX(m_lastIndex,game);
+         m_firstIndex = MIN(m_firstIndex,(signed)game);
+         m_lastIndex = MAX(m_lastIndex,(signed)game);
        }
        m_currentIndex = game;
      }
@@ -73,23 +73,23 @@ bool Filter::set(const int game, const int moveIndex){
    }
 }
 
-bool Filter::remove(const int game){
-   if (game<0 || game>m_byteArray->count()){
+bool Filter::remove(const unsigned int game){
+   if (game>m_byteArray->count()){
      return false;
    }
    else{
      if (m_byteArray->at(game) > 0){
        m_count--;
        (*m_byteArray)[game]=0;
-       if (game==m_firstIndex){
-         for(int i=game;i<m_byteArray->count();i++){
+       if ((signed)game==m_firstIndex){
+         for(unsigned int i=game;i<m_byteArray->count();i++){
            if (m_byteArray->at(i) > 0){
              m_firstIndex = i;
              break;
            }
          }
        }
-       if (game==m_lastIndex){
+       if ((signed)game==m_lastIndex){
          for(int i=game;i>=0;i--){
            if (m_byteArray->at(i) > 0){
              m_lastIndex = i;
@@ -119,8 +119,8 @@ int Filter::moveIndex(const int game) const{
 int Filter::currentIndex() const{
    return m_currentIndex;
 }
-bool Filter::setCurrentIndex(const int index) {
-   if (index<0||index>=m_byteArray->count()||m_byteArray->at(index)==0){
+bool Filter::setCurrentIndex(const unsigned int index) {
+   if (index>=m_byteArray->count()||m_byteArray->at(index)==0){
      return false;
    }
    else{
@@ -143,15 +143,15 @@ void Filter::toLast(){
    m_currentIndex = m_lastIndex;
 }
 
-int Filter::previousGame(const int index, const int offset) const{
-   if (index<=m_firstIndex||m_count==0||index>m_byteArray->count()||offset<0){//there is no previous game
+int Filter::previousGame(const unsigned int index, const unsigned int offset) const{
+   if ((signed)index<=m_firstIndex||m_count==0||index>m_byteArray->count()){//there is no previous game
      return -1;
    }
    if (offset==0){
      return index;
    }
    int result=-1;
-   int count=0;
+   unsigned int count=0;
    for (int i=index-1; i>=0; i--){
      if (m_byteArray->at(i) > 0){
        count++;
@@ -172,7 +172,7 @@ int Filter::nextGame(const int index, const int offset) const{
    }
    int result=-1;
    int count=0;
-   for (int i=index+1; i<m_byteArray->count(); i++){
+   for (unsigned int i=index+1; i<m_byteArray->count(); i++){
      if (m_byteArray->at(i) > 0){
        count++;
        if (count==offset){
@@ -188,7 +188,7 @@ void Filter::reverse(){
    m_firstIndex = -1;
    m_lastIndex = -1;
    m_currentIndex = -1;
-   for (int i=0; i<m_byteArray->count(); i++){
+   for (unsigned int i=0; i<m_byteArray->count(); i++){
      if (m_byteArray->at(i) == 0){
        (*m_byteArray)[i]=1;
        if (m_firstIndex==-1){
@@ -209,7 +209,7 @@ void Filter::intersect(const Filter& filter){
    m_firstIndex = -1;
    m_lastIndex = -1;
    m_currentIndex = -1;
-   for (int i=0; i<m_byteArray->count(); i++){
+   for (unsigned int i=0; i<m_byteArray->count(); i++){
      if (m_byteArray->at(i) > 0){
        if (filter.contains(i)){
          if (m_firstIndex==-1){
@@ -231,7 +231,7 @@ void Filter::intersect(const Filter& filter){
 void Filter::add(const Filter& filter){
    m_firstIndex = MIN(m_firstIndex,filter.firstIndex());
    m_lastIndex = MAX(m_lastIndex,filter.lastIndex());
-   for (int i=0; i<m_byteArray->count(); i++){
+   for (unsigned int i=0; i<m_byteArray->count(); i++){
      if (m_byteArray->at(i) == 0){
        if (filter.contains(i)){
          m_count++;
@@ -244,7 +244,7 @@ void Filter::remove(const Filter& filter){
    m_firstIndex = -1;
    m_lastIndex = -1;
    m_currentIndex = -1;
-   for (int i=0; i<m_byteArray->count(); i++){
+   for (unsigned int i=0; i<m_byteArray->count(); i++){
      if (m_byteArray->at(i) > 0){
        if (filter.contains(i)){
          m_count--;
