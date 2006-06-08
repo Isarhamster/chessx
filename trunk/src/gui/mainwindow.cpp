@@ -282,7 +282,7 @@ void MainWindow::slotMoveViewUpdate()
   QString lastmove, nextmove;
   if (!m_game->atStart())
   {
-    int varId = m_game->variation();
+    int varId = m_game->currentVariation();
     m_game->backward();
     lastmove = QString("<a href=\"backward\">%1%2 %3</a>").arg(m_game->ply() / 2 + 1)
         .arg(m_game->ply() % 2 ? "..." : ".")
@@ -304,7 +304,7 @@ void MainWindow::slotMoveViewUpdate()
   else
     nextmove = tr("(End of game)");
   QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
-  if (!m_game->atStart() && m_game->variation())
+  if (!m_game->atStart() && m_game->currentVariation())
     move.append(QString(" &nbsp; &nbsp; <a href=\"varexit\">%1</a>").arg(tr("(&lt;-Var)")));
   QString var;
   if (m_game->variationCount() > 1)
