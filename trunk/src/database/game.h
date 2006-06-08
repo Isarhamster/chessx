@@ -4,7 +4,7 @@
     begin                : sob maj 7 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
                            (C) 2005 Kamil Przybyla <kamilprz@poczta.onet.pl>
-                           (C) 2005 William Hoggarth <whoggarth@users.sourceforge.net>
+                           (C) 2005, 2006 William Hoggarth <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -37,9 +37,28 @@
 class Game
 {
 	public:
-		enum MoveStringFlags {MoveOnly = 0, WhiteNumbers = 1, BlackNumbers = 2, Nags = 4, FullDetail = 7};
-	
-		//constructors
+		/** 
+				Flags indicating how a move string should be constructed
+
+				These flags may be or-ed together to specify what should be included in
+				a move string.
+		*/
+		enum MoveStringFlags {
+			MoveOnly = 0,     /**< Only the algebraic notation should be included */
+			WhiteNumbers = 1, /**< White moves should be preceded by a move number */
+			BlackNumbers = 2, /**< Black moves should be preceded by a move number */
+			Nags = 4,         /**< Nags/symbolic annotation should be included */
+			FullDetail = 7    /**< Specifies all move numbers and nags should be included */
+		};
+
+		enum {
+			Start = -1000,
+			PreviousMove = -1,
+			NextMove = 1,
+			End = 1000
+		};
+		
+//constructors
 		/** Creates a game with no moves and a standard start position. */
 		Game();
 		Game(const Game& game);
@@ -57,9 +76,11 @@ class Game
 		QString annotation(int variation = 0) const;
 		/** @return nags associated with the first move in the given variation */
 		NagSet nags(int variation = 0) const;
+		/** @return previous move in short algebraic notation, returns empty string if no such move */
+		QString previousMoveToSan(MoveStringFlags flags = MoveOnly);
 		/** @return move in short algebraic notation */
 		QString moveToSan(MoveStringFlags flags = MoveOnly, int variation = 0);
-		
+
 		//node modification methods
 		/** Sets the comment associated with the first move in the given variation */
 		bool setAnnotation(QString annotation, int variation = 0);
@@ -80,15 +101,17 @@ class Game
 		/** @return number of ply in current variation */
 		int plyCount() const;
 		/** @return number of current variation relative to previous move*/
-		int variation() const;
-		/** @return number of variations at the current position */
+		int currentVariation() const;
+		/** @return number of variations at the current position (includes main line) */
 		int variationCount() const;
 		
 		//tree traversal methods
 		/** Moves to the begining of the game */
 		void moveToStart();
+		/** Moves a given number of moves relative to the current position, returns actual relative moves made */
+		int moveTo(int ply);
 		/** Moves to the given ply, returns actual ply reached */
-		int toPly(int ply);
+		int moveToPly(int ply);
 		/** Moves to the end of the current variation */
 		void moveToEnd();
 		/** Move forward the given number of moves, returns actual number of moves made */
