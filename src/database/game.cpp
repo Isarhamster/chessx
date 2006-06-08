@@ -2,7 +2,7 @@
                           game.cpp - chess game
                              -------------------
     begin                : 27 August 2005
-    copyright            : (C) 2005 William Hoggarth
+    copyright            : (C) 2005, 2006 William Hoggarth
 														<whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
@@ -161,6 +161,19 @@ NagSet Game::nags(int variation) const
 	return NagSet();
 }
 
+QString Game::previousMoveToSan(Game::MoveStringFlags flags)
+{
+	int originalVariation = currentVariation();
+
+	if(backward()) {
+		QString san = moveToSan(flags, originalVariation);
+		enterVariation(originalVariation);
+		return san;
+	} else {
+		return "";
+	}
+}
+
 QString Game::moveToSan(Game::MoveStringFlags flags, int variation)
 {
 	QString san = "";
@@ -278,8 +291,12 @@ int Game::plyCount() const
 	return count;
 }
 
-int Game::variation() const
+int Game::currentVariation() const
 {
+	if(m_currentNode == 0) {
+		return 0;
+	}
+
 	int count = 0;
 	int node = m_moveNodes[m_moveNodes[m_currentNode].previousNode].nextNode;
 	
@@ -312,7 +329,16 @@ void Game::moveToStart()
 	m_history.clear();
 }
 
-int Game::toPly(int ply)
+int Game::moveTo(int ply)
+{
+	if(ply > 0) {
+		return forward(ply);
+	} else {
+		return -backward(-ply);
+	}
+}
+
+int Game::moveToPly(int ply)
 {
 	int diff = ply - m_ply;
 	
