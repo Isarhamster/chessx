@@ -34,7 +34,7 @@ NagSet::NagSet(Nag nag)
 
 NagSet::NagSet(const QValueVector<Nag>& nags)
 {
-	m_noNags = QMIN(MaxNags, nags.count());
+	m_noNags = MaxNags < (int)nags.count() ? MaxNags : nags.count();
   for(int nag = 0; nag <= m_noNags; nag++) {
 		m_nags[nag] = nags[nag];
 	}
@@ -205,6 +205,6 @@ void NagSet::initialize()
 }
 
 //static data members
-const unsigned int NagSet::MaxNags;
+const int NagSet::MaxNags;
 bool NagSet::initialized = false;
 QMap<QString,Nag> NagSet::stringMap;

@@ -147,7 +147,7 @@ int countFiles (const QString& rank)
 {
    int count = 0;
    QChar c;
-   for (uint i = 0;i < rank.length();i++) {
+   for (int i = 0;i < (int)rank.length();i++) {
       c = rank.at(i);
       switch (c.latin1()) {
          case 'k':
