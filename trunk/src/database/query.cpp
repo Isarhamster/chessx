@@ -258,7 +258,7 @@ void Query::clear()
 
 bool Query::isValidIndex(uint index) const
 {
-   if (index > (m_elementType.count()-1)) 
+   if ((int)index > (int)(m_elementType.count()-1)) 
       return false;
    return true;
 }

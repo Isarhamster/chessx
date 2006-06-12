@@ -49,7 +49,7 @@ void Tags::writeFile(){
   m_tags_ds << Version;
   //store basic information for each tag type
   m_tags_ds << (Q_UINT32)(m_allTags.count());
-  for(uint i=0; i<m_allTags.count(); i++){
+  for(int i=0; i<(int)m_allTags.count(); i++){
     m_tags_ds << (Q_UINT32)count(i);
     if (isCustom(i)){
       m_tags_ds << tagName(i).utf8();//write custom tag name
@@ -70,7 +70,7 @@ void Tags::writeFile(){
   Q_UINT32 id;
   Q_UINT32 freq;
   Q_UINT8 prefixCount;
-  for(uint i=0; i<m_allTags.count(); i++){
+  for(int i=0; i<(int)m_allTags.count(); i++){
     first=true;
     QMap <QString,QPair<Q_UINT32,Q_UINT32> > map = m_allTags[i].second;
     QMap <QString,QPair<Q_UINT32,Q_UINT32> >::iterator map_itr;
@@ -353,8 +353,8 @@ QString Tags::tagName(const uint tagId) const{
     return knownTagNames[tagId];
   }
   else{
-    uint ix = tagId-maxKnownTagIndex()-1;
-    if (m_customTags_v.count()>ix){
+    int ix = tagId-maxKnownTagIndex()-1;
+    if ((int)m_customTags_v.count()>ix){
       QString tagName = m_customTags_v[ix];
       if (m_customTags_m.contains(tagName)){
         return tagName;
