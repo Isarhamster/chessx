@@ -199,6 +199,13 @@ Filter PgnDatabase::executeSearch(const Search& search, Search::Operator searchO
 
 Filter PgnDatabase::executeQuery(Query& query)
 {
+	//clear any previous searches
+	m_dateSearches.clear();
+	m_eloSearches.clear();
+	m_filterSearches.clear();
+	m_positionSearches.clear();
+	m_tagSearches.clear();
+	
 	//parse query into tree and searches for smart execution
 	m_triStateTree = TriStateTree(query);
 	m_searchTags = false;
