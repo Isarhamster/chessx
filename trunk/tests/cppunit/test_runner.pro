@@ -12,9 +12,9 @@ INCLUDEPATH += ../../src/database \
                spelling \
                ../../src/compatibility 
 TARGET = test_runner 
-CONFIG += release \
-          warn_on \
-          qt 
+CONFIG = release \
+         warn_on \
+         qt 
 TEMPLATE = app 
 HEADERS += playerdatabasetest.h \
            spelling/spellcheckertests.h \
