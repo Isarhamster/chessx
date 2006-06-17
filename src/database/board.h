@@ -123,8 +123,8 @@ public:
    bool canBlackKingSideCastle() const;
    bool canBlackQueenSideCastle() const; 
    Square enPassantSquare() const; 
-   Q_UINT64 getHashValue();
-   Q_UINT64 getHashValue2();
+   Q_UINT64 getHashValue() const;
+   Q_UINT64 getHashValue2() const;
    bool operator == (Board b) {
       return ((m_hashValue == b.getHashValue()) && 
              (m_hashValue2 == b.getHashValue2())); 

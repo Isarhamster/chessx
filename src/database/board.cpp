@@ -2189,11 +2189,11 @@ void Board::createHash()
       }
    }
 }
-Q_UINT64 Board::getHashValue()
+Q_UINT64 Board::getHashValue() const
 {
    return m_hashValue;
 }
-Q_UINT64 Board::getHashValue2()
+Q_UINT64 Board::getHashValue2() const
 {
    return m_hashValue2;
 }
