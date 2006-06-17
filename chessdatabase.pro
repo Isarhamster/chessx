@@ -5,7 +5,6 @@
 
 SUBDIRS += src/database \
            src/gui \
-           src \
-           tests/cppunit 
+           src 
 TEMPLATE = subdirs
 CONFIG += release warn_on qt thread

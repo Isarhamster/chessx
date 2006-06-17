@@ -1,19 +1,19 @@
 <?xml version = '1.0'?>
 <kdevelop>
   <general>
-    <author>Michal Rudolf</author>
-    <email>mrudolf@kdewebdev.org</email>
-    <version>0.1</version>
+    <author>Heinz R. Hopfgartner</author>
+    <email>heinz.hopfgartner@gmx.at</email>
+    <version>$VERSION$</version>
     <projectmanagement>KDevTrollProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
       <keyword>Qt</keyword>
     </keywords>
-    <versioncontrol>kdevcvsservice</versioncontrol>
-    <ignoreparts/>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description>Chess Database.</description>
+    <description></description>
+    <ignoreparts/>
+    <versioncontrol></versioncontrol>
   </general>
   <kdevfileview>
     <groups>
@@ -25,9 +25,8 @@
       <hidenonlocation>false</hidenonlocation>
     </groups>
     <tree>
-      <hidenonprojectfiles>false</hidenonprojectfiles>
       <hidepatterns>*.o,*.lo,CVS</hidepatterns>
-      <showvcsfields>false</showvcsfields>
+      <hidenonprojectfiles>false</hidenonprojectfiles>
     </tree>
   </kdevfileview>
   <kdevdoctreeview>
@@ -35,6 +34,7 @@
       <toc>bash</toc>
       <toc>bash_bugs</toc>
       <toc>clanlib</toc>
+      <toc>w3c-dom-level2-html</toc>
       <toc>fortran_bugs_gcc</toc>
       <toc>gnome1</toc>
       <toc>gnustep</toc>
@@ -58,9 +58,8 @@
       <toc>ruby_bugs</toc>
       <toc>sdl</toc>
       <toc>stl</toc>
-      <toc>sw</toc>
-      <toc>w3c-dom-level2-html</toc>
       <toc>w3c-svg</toc>
+      <toc>sw</toc>
       <toc>w3c-uaag10</toc>
       <toc>wxwidgets_bugs</toc>
     </ignoretocs>
@@ -70,80 +69,59 @@
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
-      <dbgshell/>
-      <breakpoints/>
-      <programargs/>
-      <gdbpath>/usr/bin/</gdbpath>
+      <dbgshell></dbgshell>
+      <programargs></programargs>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
     </general>
     <display>
       <staticmembers>false</staticmembers>
       <demanglenames>true</demanglenames>
       <outputradix>10</outputradix>
     </display>
-    <breakpoints/>
   </kdevdebugger>
-  <kdevtrollproject>
-    <run>
-      <mainprogram>bin/chessdatabase</mainprogram>
-      <programargs/>
-      <directoryradio>executable</directoryradio>
-      <customdirectory>/</customdirectory>
-      <terminal>false</terminal>
-      <autocompile>true</autocompile>
-      <envvars/>
-    </run>
-    <general>
-      <activedir>src</activedir>
-    </general>
-    <make>
-      <abortonerror>true</abortonerror>
-      <numberofjobs>1</numberofjobs>
-      <dontact>false</dontact>
-      <makebin/>
-      <prio>0</prio>
-      <envvars/>
-    </make>
-  </kdevtrollproject>
-  <workspace>
-    <openfiles/>
-  </workspace>
   <kdevfilecreate>
     <filetypes/>
     <useglobaltypes>
       <type ext="ui" />
       <type ext="cpp" />
       <type ext="h" />
-      <type ext="ts" />
     </useglobaltypes>
   </kdevfilecreate>
-  <kdevdocumentation>
-    <projectdoc>
-      <docsystem>Kolekcja dokumentacji programu Doxygen</docsystem>
-      <docurl>chessdatabase.tag</docurl>
-      <usermanualurl/>
-    </projectdoc>
-  </kdevdocumentation>
-  <substmap>
-    <APPNAME>chessdatabase</APPNAME>
-    <APPNAMELC>chessdatabase</APPNAMELC>
-    <APPNAMESC>Chessdatabase</APPNAMESC>
-    <APPNAMEUC>CHESSDATABASE</APPNAMEUC>
-    <AUTHOR>Michal Rudolf</AUTHOR>
-    <EMAIL>mrudolf@kdewebdev.org</EMAIL>
-    <LICENSE>GPL</LICENSE>
-    <LICENSEFILE>COPYING</LICENSEFILE>
-    <VERSION>0.1</VERSION>
-    <YEAR>2005</YEAR>
-    <dest>/home/ja/programming/chessdatabase</dest>
-  </substmap>
+  <kdevtrollproject>
+    <general>
+      <activedir></activedir>
+    </general>
+    <run>
+      <directoryradio>executable</directoryradio>
+      <customdirectory>/</customdirectory>
+      <mainprogram>test_runner</mainprogram>
+      <programargs></programargs>
+      <terminal>false</terminal>
+      <autocompile>true</autocompile>
+      <envvars/>
+    </run>
+    <make>
+      <abortonerror>true</abortonerror>
+      <numberofjobs>1</numberofjobs>
+      <dontact>false</dontact>
+      <makebin></makebin>
+      <prio>0</prio>
+      <envvars/>
+    </make>
+  </kdevtrollproject>
+  <cppsupportpart>
+    <filetemplates>
+      <interfacesuffix>.h</interfacesuffix>
+      <implementationsuffix>.cpp</implementationsuffix>
+    </filetemplates>
+  </cppsupportpart>
   <kdevcppsupport>
-    <references/>
     <codecompletion>
       <includeGlobalFunctions>true</includeGlobalFunctions>
       <includeTypes>true</includeTypes>
@@ -157,22 +135,20 @@
       <headerCompletionDelay>250</headerCompletionDelay>
     </codecompletion>
     <creategettersetter>
-      <prefixGet/>
+      <prefixGet></prefixGet>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>theValue</parameterName>
       <inlineGet>true</inlineGet>
       <inlineSet>true</inlineSet>
     </creategettersetter>
+    <references/>
   </kdevcppsupport>
-  <cppsupportpart>
-    <filetemplates>
-      <interfacesuffix>.h</interfacesuffix>
-      <implementationsuffix>.cpp</implementationsuffix>
-    </filetemplates>
-  </cppsupportpart>
-  <ctagspart>
-    <customArguments/>
-    <customTagfilePath/>
-  </ctagspart>
+  <kdevdocumentation>
+    <projectdoc>
+      <docsystem></docsystem>
+      <docurl></docurl>
+      <usermanualurl></usermanualurl>
+    </projectdoc>
+  </kdevdocumentation>
 </kdevelop>
