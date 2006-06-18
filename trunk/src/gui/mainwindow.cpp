@@ -106,8 +106,8 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   menuBar()->insertSeparator();
   QPopupMenu *help = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Help"), help);
-  help->insertItem( tr( "ChessX &help..." ), this, SLOT( slotHelp()), Key_F4 );
-  help->insertItem(tr("&About..."), this, SLOT(slotAbout()), Key_F1);
+  help->insertItem( tr( "ChessX &help..." ), this, SLOT( slotHelp()), Key_F1);
+  help->insertItem(tr("&About..."), this, SLOT(slotAbout()));
   resize(450, 600);
 
   /* Game */
