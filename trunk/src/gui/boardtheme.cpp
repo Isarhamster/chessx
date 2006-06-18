@@ -18,6 +18,7 @@
 #include <qimage.h>
 
 #include "boardtheme.h"
+#include "settings.h"
 
 BoardTheme::BoardTheme() : m_size(0), m_squareType(Scaled)
 {
@@ -89,7 +90,7 @@ bool BoardTheme::isNull() const
 
 bool BoardTheme::load(const QString& themeFile)
 {
-  QString themePath = QString("../data/themes/%1.png").arg(themeFile);
+  QString themePath = QString("%1/themes/%2.png").arg(AppSettings->dataPath()).arg(themeFile);
   QPixmap big;
   if (!big.load(themePath) || big.width() < 160)
     return false;
@@ -174,7 +175,7 @@ void BoardTheme::setSquareType(BoardSquare type)
   if(type == Unscaled && size() > m_originalPixmaps[WhiteRook].width()) {
     type = Scaled;
   }
-           
+
   m_squareType = type;
   if (isNull())
     return;
