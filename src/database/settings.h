@@ -31,6 +31,8 @@ public:
   void writeLayout(const QWidget* w);
   /** @return directory where data are stored. */
 	QString dataPath();
+  /** @return directory where given icon is stored. Path and extension will be added automatically. */
+  QString iconPath(const QString& name);
 private:
   QString m_dataPath;
 };
