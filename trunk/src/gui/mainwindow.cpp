@@ -264,7 +264,7 @@ void MainWindow::slotMove(Square from, Square to)
   if (board.isLegal(m))
   {
     m_game->replaceMove(m);
-    m_game->forward(1);
+    m_game->moveTo(1);
     m_boardView->setBoard(m_game->board());
   }
 }
@@ -273,7 +273,8 @@ void MainWindow::slotMoveViewUpdate()
 {
   QString white = m_game->tag("White");
   QString black = m_game->tag("Black");
-  QString players = tr("Game %1: <a href=\"player_%2\">%3</a> %4 - <a href=\"player_%5\">%6</a> %7").arg(activeGameIndex() + 1).arg(white).arg(white)
+  QString players = tr("Game %1: <a href=\"player_%2\">%3</a> %4 - <a href=\"player_%5\">%6</a> %7")
+      .arg(activeGameIndex() + 1).arg(white).arg(white)
       .arg(m_game->tag("WhiteElo")).arg(black).arg(black).arg(m_game->tag("BlackElo"));
   QString result = tr("%1(%2) %3").arg(m_game->tag("Result")).arg(m_game->plyCount() / 2)
       .arg(m_game->tag("ECO"));
@@ -281,26 +282,11 @@ void MainWindow::slotMoveViewUpdate()
       .arg(m_game->tag("Date")).arg(m_game->tag("Round"));
   QString lastmove, nextmove;
   if (!m_game->atStart())
-  {
-    int varId = m_game->currentVariation();
-    m_game->backward();
-    lastmove = QString("<a href=\"backward\">%1%2 %3</a>").arg(m_game->ply() / 2 + 1)
-        .arg(m_game->ply() % 2 ? "..." : ".")
-        .arg(m_game->board().moveToSAN(m_game->move(varId)));
-    if (!varId)
-      m_game->forward();
-    else
-      m_game->enterVariation(varId);
-  }
+    lastmove = m_game->previousMoveToSan(Game::FullDetail);
   else
     lastmove = tr("(Start of game)");
   if (!m_game->atEnd())
-  {
-    nextmove = QString("<a href=\"forward\">%1%2 %3</a>")
-        .arg(m_game->ply() / 2 + 1)
-        .arg(m_game->ply() % 2 ? "..." : ".")
-        .arg(m_game->board().moveToSAN(m_game->move(0)));
-  }
+    nextmove = QString("<a href=\"forward\">%1</a>").arg(m_game->moveToSan(Game::FullDetail));
   else
     nextmove = tr("(End of game)");
   QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
@@ -312,7 +298,7 @@ void MainWindow::slotMoveViewUpdate()
     var = tr("<br>Variations: &nbsp; ");
     for (int i = 1; i < m_game->variationCount(); i++)
     {
-      var.append(QString("v%1: <a href=\"var_%2\">%3</a>").arg(i).arg(i).arg(m_game->board().moveToSAN(m_game->move(i))));
+      var.append(QString("v%1: <a href=\"var_%2\">%3</a>").arg(i).arg(i).arg(m_game->moveToSan(Game::FullDetail, i)));
       if (i != m_game->variationCount() - 1)
         var.append(" &nbsp; ");
      }
@@ -387,8 +373,7 @@ void MainWindow::slotGameLoad(int id)
 void MainWindow::slotGameBrowse(int id)
 {
   int change = IdChange[id];
-  bool changed = change < 0 ? m_game->backward(-change) : m_game->forward(change);
-  if (changed)
+  if (m_game->moveTo(change))
     m_boardView->setBoard(m_game->board());
 }
 
