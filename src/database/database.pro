@@ -1,7 +1,7 @@
-# Fil oprettet af Kdevelops qmake-håndtering. 
+# Plik utworzony przez mened?era projektów kdevelopa
 # ------------------------------------------- 
-# Delkatalog relativt til projektets hovedkatalog: ./src/database
-# Målet er et bibliotek:  database
+# Podkatalog wzgl?dem g?ównego katalogu projektu: ./src/database
+# Cel to biblioteka database
 
 HEADERS += board.h \
            move.h \
@@ -24,7 +24,8 @@ HEADERS += board.h \
            tristatetree.h \
            nag.h \
            settings.h \
-           spellchecker.h
+           spellchecker.h \
+           historylist.h 
 SOURCES += board.cpp \
            move.cpp \
            common.cpp \
@@ -46,9 +47,10 @@ SOURCES += board.cpp \
            tristatetree.cpp \
            nag.cpp \
            settings.cpp \
-           spellchecker.cpp
+           spellchecker.cpp \
+           historylist.cpp 
 TARGET = database
-CONFIG += release warn_on qt staticlib debug
+CONFIG += release warn_on qt staticlib
 TEMPLATE = lib
 QT += qt3support
 INCLUDEPATH += ../compatibility
