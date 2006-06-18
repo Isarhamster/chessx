@@ -20,7 +20,9 @@
 
 #include <qmainwindow.h>
 #include <qmessagebox.h>
+
 #include "common.h"
+#include "historylist.h"
 
 class PlayerDatabase;
 class PlayerDialog;
@@ -34,6 +36,7 @@ class QTextBrowser;
 class QListBox;
 class QGridLayout;
 class QLabel;
+class QPopupMenu;
 
 class MainWindow: public QMainWindow
 {
@@ -51,6 +54,8 @@ protected:
   int activeGameIndex() const {return m_gameIndex;}
   /** Load given game */
   void loadGame(int index);
+  /** Update recent files menu */
+  void updateMenuRecent();
 
 public slots:
   void slotAbout();
@@ -69,6 +74,7 @@ public slots:
   void slotFilterUpdate();
   void slotFilterLoad(int index);
   void slotFileOpen();
+  void slotFileOpenRecent(int);
   void slotFileClose();
   void slotMove(Square from, Square to);
   void slotMoveViewUpdate();
@@ -93,6 +99,8 @@ private:
   Game* m_game;
   Database* m_database;
   int m_gameIndex;
+  HistoryList m_recentFiles;
+  QPopupMenu* m_menuRecent;
 };
 
 

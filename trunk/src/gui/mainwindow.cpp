@@ -58,7 +58,9 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   /* File menu */
   QPopupMenu *file = new QPopupMenu(this);
   menuBar()->insertItem(tr("&File"), file);
-  file->insertItem(tr("&Open"), this, SLOT(slotFileOpen()), CTRL + Key_O);
+  file->insertItem(tr("&Open..."), this, SLOT(slotFileOpen()), CTRL + Key_O);
+  m_menuRecent = new QPopupMenu(file);
+  file->insertItem(tr("Open &recent..."), m_menuRecent);
   file->insertItem(tr("&Close"), this, SLOT(slotFileClose()), CTRL + Key_W);
   file->insertItem(tr("&Quit"), qApp, SLOT(closeAllWindows()), CTRL + Key_Q);
 
@@ -125,6 +127,10 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
   connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
 
+  /* Recent files */
+  m_recentFiles.restore("History", "Recent files");
+  updateMenuRecent();
+
   /* Move view */
  m_layout->addWidget(m_moveView = new QTextBrowser(frame), 1, 0);
  m_moveView->setMaximumHeight(100);
@@ -168,6 +174,7 @@ MainWindow::~MainWindow()
 void MainWindow::closeEvent(QCloseEvent* e)
 {
   if (yesNo(tr("Do you want to quit?"))) {
+    m_recentFiles.save("History", "Recent files");
     AppSettings->writeLayout(m_playerDialog);
     AppSettings->writeLayout(m_helpWindow);
     AppSettings->writeLayout(this);
@@ -197,10 +204,17 @@ void MainWindow::loadGame(int index)
   }
 }
 
+void MainWindow::updateMenuRecent()
+{
+  m_menuRecent->clear();
+  for (int i = 0; i < 5 && i < m_recentFiles.count(); i++)
+    m_menuRecent->insertItem(m_recentFiles[i], this, SLOT(slotFileOpenRecent(int)), 0, i);
+}
+
 void MainWindow::slotAbout()
 {
   QMessageBox::about(this, tr("ChessX"),
-      tr("Chess Database\n(C) 2005 William Hoggarth, Michal Rudolf and Ejner Borgbjerg"));
+      tr("Chess Database\n(C) 2005-2006 William Hoggarth, Michal Rudolf and Ejner Borgbjerg"));
 }
 
 void MainWindow::slotPlayerDialog()
@@ -344,11 +358,28 @@ void MainWindow::slotFileOpen()
   if (!file.isEmpty())
   {
     m_database = new PgnDatabase(file);
+    m_recentFiles.append(file);
+    slotGameLoad(0);
+    slotFilterUpdate();
+    updateMenuRecent();
+    slotStatusMessage(tr("File %1 opened successfully.").arg(file.section('/', -1)));
+  }
+}
+
+void MainWindow::slotFileOpenRecent(int id)
+{
+  QString file = m_recentFiles[id];
+  if (!file.isEmpty())
+  {
+    m_database = new PgnDatabase(file);
+    m_recentFiles.append(file);
+    updateMenuRecent();
     slotGameLoad(0);
     slotFilterUpdate();
     slotStatusMessage(tr("File %1 opened successfully.").arg(file.section('/', -1)));
   }
 }
+
 
 void MainWindow::slotFileClose()
 {
@@ -424,3 +455,4 @@ void MainWindow::slotStatusFilter()
   QString text = filter ? (filter == count ? tr("All") : QString::number(filter)) : tr("None");
   m_statusFilter->setText(tr("Filter: %1/%2 games").arg(text).arg(count));
 }
+
