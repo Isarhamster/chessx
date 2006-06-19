@@ -195,7 +195,7 @@ QString Game::moveToSan(Game::MoveStringFlags flags, int variation)
 	//nags
 	if(flags & Nags) {
 		QString nagString = nags(variation).toString();
-		if(nagString.startsWith("!") || nagString.startsWith("?")) {
+		if(!nagString.count() || nagString.startsWith("!") || nagString.startsWith("?")) {
 			san += nagString;
 		} else {
 			san += " " + nagString;
