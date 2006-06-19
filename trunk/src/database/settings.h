@@ -14,10 +14,16 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef __SETTINGS_H__
+#define __SETTINGS_H__
+
 #include <qsettings.h>
 
 class QWidget;
 
+/** The Settings class provides a wrapper to Qt QConfig class. It allows to
+    easily save/restore application settings and get paths for various resources.
+ */
 
 class Settings : public QSettings
 {
@@ -30,7 +36,7 @@ public:
   /** Write widget's layout with its name. */
   void writeLayout(const QWidget* w);
   /** @return directory where data are stored. */
-	QString dataPath();
+  QString dataPath();
   /** @return directory where given icon is stored. Path and extension will be added automatically. */
   QString iconPath(const QString& name);
 private:
@@ -38,4 +44,6 @@ private:
 };
 
 extern Settings* AppSettings;
+
+#endif
 
