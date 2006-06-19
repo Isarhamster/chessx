@@ -68,6 +68,8 @@ class Game
 		//node information methods
 		/** @return current position */
 		Board board() const;
+		/** @return whether the current position is in the mainline */
+		bool isMainline();
 		/** @return whether the given move is legal in the current position */
 		bool isMoveLegal(const Move& move);
 		/** @return first move in given variation */
