@@ -297,15 +297,15 @@ void MainWindow::slotMoveViewUpdate()
       .arg(m_game->tag("Date")).arg(m_game->tag("Round"));
   QString lastmove, nextmove;
   if (!m_game->atStart())
-    lastmove = m_game->previousMoveToSan(Game::FullDetail);
+    lastmove = QString("<a href=\"backward\">%1</a>").arg(m_game->previousMoveToSan(Game::FullDetail));
   else
     lastmove = tr("(Start of game)");
   if (!m_game->atEnd())
     nextmove = QString("<a href=\"forward\">%1</a>").arg(m_game->moveToSan(Game::FullDetail));
   else
-    nextmove = tr("(End of game)");
+    nextmove = m_game->isMainline() ? tr("(End of game)") : tr("(End of line)");
   QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
-  if (!m_game->atStart() && m_game->currentVariation())
+  if (!m_game->isMainline())
     move.append(QString(" &nbsp; &nbsp; <a href=\"varexit\">%1</a>").arg(tr("(&lt;-Var)")));
   QString var;
   if (m_game->variationCount() > 1)
