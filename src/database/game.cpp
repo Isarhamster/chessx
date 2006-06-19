@@ -108,6 +108,11 @@ Board Game::board() const
 	return m_currentBoard;
 }
 
+bool Game::isMainline()
+{
+	return !m_moveNodes[m_currentNode].parentNode;
+}
+
 bool Game::isMoveLegal(const Move& move)
 {
 	return m_currentBoard.isLegal(move);
