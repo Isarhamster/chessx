@@ -352,11 +352,11 @@ void MainWindow::slotGameSave()
 
 void MainWindow::slotFileOpen()
 {
-  slotFileClose();
   QString file = QFileDialog::getOpenFileName(QString::null,
      tr("PGN Database (*.pgn)"), this, "open database", tr("Open database"));
   if (!file.isEmpty())
   {
+    slotFileClose();
     m_database = new PgnDatabase(file);
     m_recentFiles.append(file);
     slotGameLoad(0);
@@ -371,6 +371,7 @@ void MainWindow::slotFileOpenRecent(int id)
   QString file = m_recentFiles[id];
   if (!file.isEmpty())
   {
+    slotFileClose();
     m_database = new PgnDatabase(file);
     m_recentFiles.append(file);
     updateMenuRecent();
