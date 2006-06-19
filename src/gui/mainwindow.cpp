@@ -208,7 +208,8 @@ void MainWindow::updateMenuRecent()
 {
   m_menuRecent->clear();
   for (int i = 0; i < 5 && i < m_recentFiles.count(); i++)
-    m_menuRecent->insertItem(m_recentFiles[i], this, SLOT(slotFileOpenRecent(int)), 0, i);
+    m_menuRecent->insertItem(QString("&%1: %2").arg(i+1).arg(m_recentFiles[i]), 
+                             this, SLOT(slotFileOpenRecent(int)), 0, i);
 }
 
 void MainWindow::slotAbout()
