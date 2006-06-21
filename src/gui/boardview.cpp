@@ -35,9 +35,12 @@ BoardView::~BoardView()
 
 void BoardView::setBoard(const Board& value)
 {
-   m_board = value;
-   update();
-   emit changed();
+  Board oldboard = m_board; 
+  m_board = value;
+  for (Square i = 0; i < 64; i++)
+    if (m_board.at(i) != oldboard.at(i))
+      repaintSquare(i);
+  emit changed();
 }
 
 Board BoardView::board() const
