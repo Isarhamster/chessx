@@ -24,6 +24,7 @@
 #include <qgroupbox.h>
 #include <qpushbutton.h>
 #include <qspinbox.h>
+#include <qwidgetstack.h>
 
 PreferencesDialog::PreferencesDialog(QWidget* parent) : PreferencesDialogBase(parent)
 {
@@ -31,35 +32,8 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : PreferencesDialogBase(pa
   connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
   connect(boardLightButton, SIGNAL(clicked()), SLOT(slotBoardLightColor()));
   connect(boardDarkButton, SIGNAL(clicked()), SLOT(slotBoardDarkColor()));
-  connect(boardSquareCombo, SIGNAL(activated(int)), SLOT(slotBoardMode(int)));
-
-  // Read Board settings
-  AppSettings->beginGroup("/Board/");
-  boardSquareCombo->setCurrentItem(AppSettings->readNumEntry("squareType", 0));
-  boardFrameCheck->setChecked(AppSettings->readBoolEntry("showFrame", true));
-  QString name = AppSettings->readEntry("theme", "default");
-  boardLightButton->setPaletteBackgroundColor(AppSettings->readEntry("lightColor", "#d0d0d0"));
-  boardDarkButton->setPaletteBackgroundColor(AppSettings->readEntry("darkColor", "#a0a0a0"));
-  AppSettings->endGroup();
-
-  QStringList themes = QDir(AppSettings->dataPath() + "/themes").entryList("*.png");
-  for (QStringList::Iterator it = themes.begin(); it != themes.end(); ++it)
-  {
-    (*it).truncate((*it).length() - 4);
-    boardThemeCombo->insertItem(*it);
-  }
-  for (int i = 0; i<boardThemeCombo->count(); i++)
-    if (name == boardThemeCombo->text(i))
-    {
-      boardThemeCombo->setCurrentItem(i);
-      break;
-    }
-
-  // Read Players settings
-  AppSettings->beginGroup("/Players/");
-  playersRatingsCheck->setChecked(AppSettings->readBoolEntry("rating", true));
-  playersSpinbox->setValue(AppSettings->readNumEntry("count", 100));
-  AppSettings->endGroup();
+  connect(boardTypeCombo, SIGNAL(activated(int)), SLOT(slotBoardMode(int)));
+  restoreSettings();
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -70,19 +44,7 @@ int PreferencesDialog::exec()
 {
   int result = PreferencesDialogBase::exec();
   if (result == QDialog::Accepted)
-  {
-    AppSettings->beginGroup("/Board/");
-    AppSettings->writeEntry("squareType", boardSquareCombo->currentItem());
-    AppSettings->writeEntry("showFrame", boardFrameCheck->isChecked());
-    AppSettings->writeEntry("theme", boardThemeCombo->currentText());
-    AppSettings->writeEntry("lightColor", boardLightButton->paletteBackgroundColor().name());
-    AppSettings->writeEntry("darkColor", boardDarkButton->paletteBackgroundColor().name());
-    AppSettings->endGroup();
-    AppSettings->beginGroup("/Players/");
-    AppSettings->writeEntry("rating", playersRatingsCheck->isChecked());
-    AppSettings->writeEntry("count", playersSpinbox->value());
-    AppSettings->endGroup();
-  }
+    saveSettings();
   return result;
 }
 
@@ -102,6 +64,64 @@ void PreferencesDialog::slotBoardDarkColor()
 
 void PreferencesDialog::slotBoardMode(int mode)
 {
-  boardColorsBox->setEnabled(mode == 2);
+  if (mode == 2)
+    widgetStack->raiseWidget(plainBoardWidget);
+  else
+    widgetStack->raiseWidget(themeBoardWidget);
 }
 
+void PreferencesDialog::restoreSettings()
+{
+  // Read Board settings
+  AppSettings->beginGroup("/Board/");
+  boardTypeCombo->setCurrentItem(AppSettings->readNumEntry("squareType", 0));
+  boardFrameCheck->setChecked(AppSettings->readBoolEntry("showFrame", true));
+  QString pieceTheme = AppSettings->readEntry("pieceTheme", "default");
+  QString boardTheme = AppSettings->readEntry("boardTheme", "default");
+  boardLightButton->setPaletteBackgroundColor(AppSettings->readEntry("lightColor", "#d0d0d0"));
+  boardDarkButton->setPaletteBackgroundColor(AppSettings->readEntry("darkColor", "#a0a0a0"));
+  AppSettings->endGroup();
+
+  QStringList themes = QDir(AppSettings->dataPath() + "/themes").entryList("*.png");
+  for (QStringList::Iterator it = themes.begin(); it != themes.end(); ++it)
+  {
+    (*it).truncate((*it).length() - 4);
+    pieceThemeCombo->insertItem(*it);
+    boardThemeCombo->insertItem(*it);
+  }
+  selectInCombo(pieceThemeCombo, pieceTheme);
+  selectInCombo(boardThemeCombo, boardTheme);
+
+  // Read Players settings
+  AppSettings->beginGroup("/Players/");
+  playersRatingsCheck->setChecked(AppSettings->readBoolEntry("rating", true));
+  playersSpinbox->setValue(AppSettings->readNumEntry("count", 100));
+  AppSettings->endGroup();
+}
+
+void PreferencesDialog::saveSettings()
+{
+  AppSettings->beginGroup("/Board/");
+  AppSettings->writeEntry("squareType", boardTypeCombo->currentItem());
+  AppSettings->writeEntry("showFrame", boardFrameCheck->isChecked());
+  AppSettings->writeEntry("pieceTheme", pieceThemeCombo->currentText());
+  AppSettings->writeEntry("boardTheme", boardThemeCombo->currentText());
+  AppSettings->writeEntry("lightColor", boardLightButton->paletteBackgroundColor().name());
+  AppSettings->writeEntry("darkColor", boardDarkButton->paletteBackgroundColor().name());
+  AppSettings->endGroup();
+  AppSettings->beginGroup("/Players/");
+  AppSettings->writeEntry("rating", playersRatingsCheck->isChecked());
+  AppSettings->writeEntry("count", playersSpinbox->value());
+  AppSettings->endGroup();
+}
+
+bool PreferencesDialog::selectInCombo(QComboBox* combo, const QString& text)
+{
+  for (int i = 0; i<combo->count(); i++)
+    if (combo->text(i) == text)
+    {
+      combo->setCurrentItem(i);
+      return true;
+    }
+  return false;
+}

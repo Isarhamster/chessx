@@ -19,6 +19,7 @@
 
 #include "preferencesbase.h"
 
+class QComboBox;
 
 class PreferencesDialog : public PreferencesDialogBase
 {
@@ -35,6 +36,14 @@ public slots:
   void slotBoardLightColor();
   void slotBoardDarkColor();
   void slotBoardMode(int mode);
+
+private:
+  void restoreSettings();
+  void saveSettings();
+  bool selectInCombo(QComboBox* combo, const QString& text);
+
+signals:
+  void reconfigure();
 };
 
 

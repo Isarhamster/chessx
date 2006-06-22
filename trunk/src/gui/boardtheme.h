@@ -35,10 +35,13 @@ class BoardTheme
 {
 public:
   enum BoardSquare {Unscaled, Scaled, Plain};
+  enum LoadTheme {LoadBoard = 1, LoadPieces = 2, LoadAll = LoadBoard | LoadPieces};
   BoardTheme();
   ~BoardTheme();
   /** Loads theme description from Eboard-compatible PNG file. */
-  bool load(const QString& themeFile);
+  bool load(const QString& themeFile, LoadTheme = LoadAll);
+  /** Loads theme description from Eboard-compatible PNG file. */
+  bool load(const QString& pieceFile, const QString& boardFile);
   /** Sets the color of light squares. */
   void setLightColor(const QColor& value);
   /** @return color of light squares. */
@@ -56,11 +59,11 @@ public:
   /** @return unscaled pixmap for square. */
   QPixmap originalSquare(bool dark) const;
   /** Checkes whether themes is valid (pixmaps loaded). */
-  bool isNull() const;
-  /** Returns filename for pixmap. */
-  QString filename() const;
-  /** Returns name of theme. It is just file without a path and extension. */
-  QString themeName() const;
+  bool isValid() const;
+  /** Returns name of board theme. It is just file without a path and extension. */
+  QString boardThemeName() const;
+  /** Returns name of piece theme. It is just file without a path and extension. */
+  QString pieceThemeName() const;
   /** Sets current size for pixmaps. Resizes all pixmaps. */
   void setSize(int value);
   /** Returns current size of pixmaps. */
@@ -80,7 +83,8 @@ private:
   BoardSquare m_squareType;
   QColor m_lightColor;
   QColor m_darkColor;
-  QString m_filename;
+  QString m_pieceFilename;
+  QString m_boardFilename;
 };
 
 #endif

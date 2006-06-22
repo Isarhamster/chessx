@@ -124,15 +124,15 @@ void BoardView::mouseReleaseEvent(QMouseEvent* e)
   }
 }
 
-bool BoardView::setTheme(const QString& themeFile)
+bool BoardView::setTheme(const QString& pieceFile, const QString& boardFile)
 {
-  bool result = m_theme->load(themeFile);
+  bool result = m_theme->load(pieceFile, boardFile);
   if (!result)
   {
     QMessageBox::warning(0, tr("Error"), tr("<qt>Cannot open theme <b>%1</b></qt>")
-        .arg(themeFile));
+        .arg(pieceFile));
     // If there is no theme, try to load default
-    if (m_theme->filename().isNull())
+    if (!m_theme->isValid())
     {
       result = m_theme->load("default");
       if (result)
@@ -177,9 +177,9 @@ void BoardView::configure()
   m_theme->setSquareType(BoardTheme::BoardSquare(AppSettings->readNumEntry("squareType", 0)));
   m_theme->setLightColor(QColor(AppSettings->readEntry("lightColor", "#d0d0d0")));
   m_theme->setDarkColor(QColor(AppSettings->readEntry("darkColor", "#a0a0a0")));
-  QString theme = AppSettings->readEntry("theme", "default");
-  if (!theme.isNull())
-    setTheme(theme);
+  QString pieceTheme = AppSettings->readEntry("pieceTheme", "default");
+  QString boardTheme = AppSettings->readEntry("boardTheme", "default");
+  setTheme(pieceTheme, boardTheme);
   AppSettings->endGroup();
   update();
 }

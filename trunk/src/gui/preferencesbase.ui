@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>376</width>
-            <height>261</height>
+            <width>407</width>
+            <height>265</height>
         </rect>
     </property>
     <property name="caption">
@@ -37,12 +37,29 @@
                     <property name="name">
                         <cstring>unnamed</cstring>
                     </property>
-                    <widget class="QLabel" row="0" column="0">
+                    <spacer row="4" column="1">
                         <property name="name">
-                            <cstring>textLabel1_2</cstring>
+                            <cstring>spacer3</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>20</width>
+                                <height>50</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <widget class="QCheckBox" row="3" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>boardFrameCheck</cstring>
                         </property>
                         <property name="text">
-                            <string>Theme:</string>
+                            <string>Draw frame between squares</string>
                         </property>
                     </widget>
                     <widget class="QLabel" row="1" column="0">
@@ -50,20 +67,15 @@
                             <cstring>textLabel1_3</cstring>
                         </property>
                         <property name="text">
-                            <string>Squares:</string>
+                            <string>Board:</string>
                         </property>
                     </widget>
-                    <widget class="QComboBox" row="0" column="1">
+                    <widget class="QLabel" row="0" column="0">
                         <property name="name">
-                            <cstring>boardThemeCombo</cstring>
+                            <cstring>textLabel1_2</cstring>
                         </property>
-                        <property name="sizePolicy">
-                            <sizepolicy>
-                                <hsizetype>7</hsizetype>
-                                <vsizetype>0</vsizetype>
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                            </sizepolicy>
+                        <property name="text">
+                            <string>Pieces theme:</string>
                         </property>
                     </widget>
                     <widget class="QComboBox" row="1" column="1">
@@ -83,7 +95,7 @@
                             </property>
                         </item>
                         <property name="name">
-                            <cstring>boardSquareCombo</cstring>
+                            <cstring>boardTypeCombo</cstring>
                         </property>
                         <property name="sizePolicy">
                             <sizepolicy>
@@ -94,97 +106,127 @@
                             </sizepolicy>
                         </property>
                     </widget>
-                    <widget class="QCheckBox" row="3" column="0" rowspan="1" colspan="2">
+                    <widget class="QComboBox" row="0" column="1">
                         <property name="name">
-                            <cstring>boardFrameCheck</cstring>
+                            <cstring>pieceThemeCombo</cstring>
                         </property>
-                        <property name="text">
-                            <string>Draw frame between squares</string>
+                        <property name="sizePolicy">
+                            <sizepolicy>
+                                <hsizetype>7</hsizetype>
+                                <vsizetype>0</vsizetype>
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
                         </property>
                     </widget>
-                    <spacer row="4" column="1">
+                    <widget class="QWidgetStack" row="2" column="0" rowspan="1" colspan="2">
                         <property name="name">
-                            <cstring>spacer3</cstring>
+                            <cstring>widgetStack</cstring>
                         </property>
-                        <property name="orientation">
-                            <enum>Vertical</enum>
-                        </property>
-                        <property name="sizeType">
-                            <enum>Expanding</enum>
-                        </property>
-                        <property name="sizeHint">
-                            <size>
-                                <width>20</width>
-                                <height>16</height>
-                            </size>
-                        </property>
-                    </spacer>
-                    <widget class="QGroupBox" row="2" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>boardColorsBox</cstring>
-                        </property>
-                        <property name="title">
-                            <string>Plain colors</string>
-                        </property>
-                        <grid>
+                        <widget class="QWidget">
                             <property name="name">
-                                <cstring>unnamed</cstring>
+                                <cstring>themeBoardWidget</cstring>
                             </property>
-                            <widget class="QLabel" row="0" column="0">
+                            <attribute name="id">
+                                <number>0</number>
+                            </attribute>
+                            <hbox>
                                 <property name="name">
-                                    <cstring>textLabel2</cstring>
+                                    <cstring>unnamed</cstring>
                                 </property>
-                                <property name="text">
-                                    <string>Light:</string>
+                                <property name="margin">
+                                    <number>0</number>
                                 </property>
-                            </widget>
-                            <widget class="QPushButton" row="0" column="1">
+                                <widget class="QLabel">
+                                    <property name="name">
+                                        <cstring>textLabel1_2_2</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Board theme:</string>
+                                    </property>
+                                </widget>
+                                <widget class="QComboBox">
+                                    <property name="name">
+                                        <cstring>boardThemeCombo</cstring>
+                                    </property>
+                                    <property name="sizePolicy">
+                                        <sizepolicy>
+                                            <hsizetype>7</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                            <horstretch>0</horstretch>
+                                            <verstretch>0</verstretch>
+                                        </sizepolicy>
+                                    </property>
+                                </widget>
+                            </hbox>
+                        </widget>
+                        <widget class="QWidget">
+                            <property name="name">
+                                <cstring>plainBoardWidget</cstring>
+                            </property>
+                            <attribute name="id">
+                                <number>1</number>
+                            </attribute>
+                            <hbox>
                                 <property name="name">
-                                    <cstring>boardLightButton</cstring>
+                                    <cstring>unnamed</cstring>
                                 </property>
-                                <property name="sizePolicy">
-                                    <sizepolicy>
-                                        <hsizetype>7</hsizetype>
-                                        <vsizetype>0</vsizetype>
-                                        <horstretch>1</horstretch>
-                                        <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="flat">
-                                    <bool>true</bool>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="0" column="2">
-                                <property name="name">
-                                    <cstring>textLabel2_2</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>Dark:</string>
-                                </property>
-                            </widget>
-                            <widget class="QPushButton" row="0" column="3">
-                                <property name="name">
-                                    <cstring>boardDarkButton</cstring>
-                                </property>
-                                <property name="sizePolicy">
-                                    <sizepolicy>
-                                        <hsizetype>7</hsizetype>
-                                        <vsizetype>0</vsizetype>
-                                        <horstretch>1</horstretch>
-                                        <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="flat">
-                                    <bool>true</bool>
-                                </property>
-                            </widget>
-                        </grid>
+                                <widget class="QLabel">
+                                    <property name="name">
+                                        <cstring>textLabel2</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Light:</string>
+                                    </property>
+                                </widget>
+                                <widget class="QPushButton">
+                                    <property name="name">
+                                        <cstring>boardLightButton</cstring>
+                                    </property>
+                                    <property name="sizePolicy">
+                                        <sizepolicy>
+                                            <hsizetype>7</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                            <horstretch>1</horstretch>
+                                            <verstretch>0</verstretch>
+                                        </sizepolicy>
+                                    </property>
+                                    <property name="text">
+                                        <string></string>
+                                    </property>
+                                    <property name="flat">
+                                        <bool>true</bool>
+                                    </property>
+                                </widget>
+                                <widget class="QLabel">
+                                    <property name="name">
+                                        <cstring>textLabel2_2</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Dark:</string>
+                                    </property>
+                                </widget>
+                                <widget class="QPushButton">
+                                    <property name="name">
+                                        <cstring>boardDarkButton</cstring>
+                                    </property>
+                                    <property name="sizePolicy">
+                                        <sizepolicy>
+                                            <hsizetype>7</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                            <horstretch>1</horstretch>
+                                            <verstretch>0</verstretch>
+                                        </sizepolicy>
+                                    </property>
+                                    <property name="text">
+                                        <string></string>
+                                    </property>
+                                    <property name="flat">
+                                        <bool>true</bool>
+                                    </property>
+                                </widget>
+                            </hbox>
+                        </widget>
                     </widget>
                 </grid>
             </widget>
