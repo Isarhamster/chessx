@@ -17,7 +17,7 @@
 #ifndef __HISTORYLIST_H__
 #define __HISTORYLIST_H__
 
-#include <qvaluevector.h>
+#include <qt34/qvaluevector.h>
 #include <qstringlist.h>
 
 /** The HistoryList class provides a list of @p N recent string items that
