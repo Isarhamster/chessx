@@ -40,8 +40,8 @@ public:
   void setBoard(const Board& value);
   /** @return displayed position. */
   Board board() const;
-  /** Reads new theme from file. */
-  bool setTheme(const QString& themeFile);
+  /** Reads new theme from file. If two files are given, pieces are read from the first one, board from the second. */
+  bool setTheme(const QString& themeFile, const QString& boardFile = QString::null);
   /** Flips/unflips board. */
   void flip();
   /** @return @p true if board is displayed upside down. */

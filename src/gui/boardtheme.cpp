@@ -72,23 +72,24 @@ QPixmap BoardTheme::originalSquare(bool dark) const
   return m_originalSquare[dark];
 }
 
-QString BoardTheme::filename() const
+QString BoardTheme::pieceThemeName() const
 {
-  return m_filename;
+  int start = m_pieceFilename.findRev('/') + 1;
+  return m_pieceFilename.mid(start + 1, m_pieceFilename.length() - start - 4);
 }
 
-QString BoardTheme::themeName() const
+QString BoardTheme::boardThemeName() const
 {
-  int start = m_filename.findRev('/') + 1;
-  return m_filename.mid(start + 1, m_filename.length() - start - 4);
+  int start = m_boardFilename.findRev('/') + 1;
+  return m_boardFilename.mid(start + 1, m_pieceFilename.length() - start - 4);
 }
 
-bool BoardTheme::isNull() const
+bool BoardTheme::isValid() const
 {
-  return filename().isNull();
+  return !m_pieceFilename.isNull() && !m_boardFilename.isNull();
 }
 
-bool BoardTheme::load(const QString& themeFile)
+bool BoardTheme::load(const QString& themeFile, LoadTheme load)
 {
   QString themePath = QString("%1/themes/%2.png").arg(AppSettings->dataPath()).arg(themeFile);
   QPixmap big;
@@ -98,53 +99,47 @@ bool BoardTheme::load(const QString& themeFile)
   if (realsize != big.width() / 7)
     return false;
 
-  QImage src = big.convertToImage();
-  int w = src.width();
-  int h = src.height();
-  QImage maskImage(w, h, src.depth());
-  QRgb opaque = QColor(Qt::color1).rgb();
-  QRgb maskColor = src.pixel(0, 0);
-
-  maskImage.fill(QColor(Qt::color0).rgb());
-  for (int i = 0; i < w; i++)
-    for (int j = 0; j < h; j++)
-      if(src.pixel(i, j) != maskColor)
-        maskImage.setPixel(i, j, opaque);
-  QBitmap mask;
-  mask.convertFromImage(maskImage);
-
-
-  /* 30/11/2005: setMask() commented out /Ejner
-   * by Qt4 it worked unpredictably and with different results on different
-   * platforms. Instead the eboard themes were edited, clearing the background
-   * behind the pieces (Gimp: Select by color + Edit -> clear).*/
-  //big.setMask(mask);
-
   /* Cut big theme bitmap into separate pieces */
-  for (int i = 0; i<ConstPieceTypes; i++)
-     m_originalPixmaps[i].resize(realsize, realsize);
-  copyBlt(&m_originalPixmaps[WhiteRook], 0, 0, &big, 0, 0, realsize, realsize);
-  copyBlt(&m_originalPixmaps[WhiteKnight], 0, 0, &big, 1 * realsize, 0, realsize, realsize);
-  copyBlt(&m_originalPixmaps[WhiteBishop], 0, 0, &big, 2 * realsize, 0, realsize, realsize);
-  copyBlt(&m_originalPixmaps[WhiteQueen], 0, 0, &big, 3 * realsize, 0, realsize, realsize);
-  copyBlt(&m_originalPixmaps[WhiteKing], 0, 0, &big, 4 * realsize, 0, realsize, realsize);
-  copyBlt(&m_originalPixmaps[WhitePawn], 0, 0, &big, 5 * realsize, 0, realsize, realsize);
-  copyBlt(&m_originalPixmaps[BlackRook], 0, 0, &big, 0, realsize, realsize, realsize);
-  copyBlt(&m_originalPixmaps[BlackKnight], 0, 0, &big, 1 * realsize, realsize, realsize, realsize);
-  copyBlt(&m_originalPixmaps[BlackBishop], 0, 0, &big, 2 * realsize, realsize, realsize, realsize);
-  copyBlt(&m_originalPixmaps[BlackQueen], 0, 0, &big, 3 * realsize, realsize, realsize, realsize);
-  copyBlt(&m_originalPixmaps[BlackKing], 0, 0, &big, 4 * realsize, realsize, realsize, realsize);
-  copyBlt(&m_originalPixmaps[BlackPawn], 0, 0, &big, 5 * realsize, realsize, realsize, realsize);
+  if (load & LoadPieces)
+  {
+    for (int i = 0; i<ConstPieceTypes; i++)
+      m_originalPixmaps[i].resize(realsize, realsize);
+    copyBlt(&m_originalPixmaps[WhiteRook], 0, 0, &big, 0, 0, realsize, realsize);
+    copyBlt(&m_originalPixmaps[WhiteKnight], 0, 0, &big, 1 * realsize, 0, realsize, realsize);
+    copyBlt(&m_originalPixmaps[WhiteBishop], 0, 0, &big, 2 * realsize, 0, realsize, realsize);
+    copyBlt(&m_originalPixmaps[WhiteQueen], 0, 0, &big, 3 * realsize, 0, realsize, realsize);
+    copyBlt(&m_originalPixmaps[WhiteKing], 0, 0, &big, 4 * realsize, 0, realsize, realsize);
+    copyBlt(&m_originalPixmaps[WhitePawn], 0, 0, &big, 5 * realsize, 0, realsize, realsize);
+    copyBlt(&m_originalPixmaps[BlackRook], 0, 0, &big, 0, realsize, realsize, realsize);
+    copyBlt(&m_originalPixmaps[BlackKnight], 0, 0, &big, 1 * realsize, realsize, realsize, realsize);
+    copyBlt(&m_originalPixmaps[BlackBishop], 0, 0, &big, 2 * realsize, realsize, realsize, realsize);
+    copyBlt(&m_originalPixmaps[BlackQueen], 0, 0, &big, 3 * realsize, realsize, realsize, realsize);
+    copyBlt(&m_originalPixmaps[BlackKing], 0, 0, &big, 4 * realsize, realsize, realsize, realsize);
+    copyBlt(&m_originalPixmaps[BlackPawn], 0, 0, &big, 5 * realsize, realsize, realsize, realsize);
+    m_pieceFilename = themePath;
+  }
+
   /* Background */
-  m_originalSquare[0].resize(realsize, realsize);
-  m_originalSquare[1].resize(realsize, realsize);
-  copyBlt(&m_originalSquare[0], 0, 0, &big, 6 * realsize, 0, realsize, realsize);
-  copyBlt(&m_originalSquare[1], 0, 0, &big, 6 * realsize, realsize, realsize, realsize);
-  m_filename = themePath;
+  if (load & LoadBoard)
+  {
+    m_originalSquare[0].resize(realsize, realsize);
+    m_originalSquare[1].resize(realsize, realsize);
+    copyBlt(&m_originalSquare[0], 0, 0, &big, 6 * realsize, 0, realsize, realsize);
+    copyBlt(&m_originalSquare[1], 0, 0, &big, 6 * realsize, realsize, realsize, realsize);
+    m_boardFilename = themePath;
+  }
   // Restore previous size
   setSize(size() ? size() : realsize);
   setSquareType(m_squareType);
   return true;
+}
+
+bool BoardTheme::load(const QString& pieceFile, const QString& boardFile)
+{
+  if (pieceFile == boardFile)
+    return load(pieceFile, LoadAll);
+  else
+    return load(pieceFile, LoadPieces) && load(boardFile, LoadBoard);
 }
 
 int BoardTheme::size() const
@@ -155,7 +150,7 @@ int BoardTheme::size() const
 
 void BoardTheme::setSize(int value)
 {
-  if (isNull())
+  if (!isValid())
     return;
   m_size = value;
   for (int i = 1; i<ConstPieceTypes; i++)
@@ -177,7 +172,7 @@ void BoardTheme::setSquareType(BoardSquare type)
   }
 
   m_squareType = type;
-  if (isNull())
+  if (!isValid())
     return;
   switch(type)
   {
@@ -197,5 +192,4 @@ void BoardTheme::setSquareType(BoardSquare type)
       break;
   }
 }
-
 
