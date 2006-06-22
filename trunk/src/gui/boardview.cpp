@@ -40,6 +40,9 @@ void BoardView::setBoard(const Board& value)
   for (Square i = 0; i < 64; i++)
     if (m_board.at(i) != oldboard.at(i))
       repaintSquare(i);
+#if QT_VERSION >= 0x040000
+  update();
+#endif
   emit changed();
 }
 
@@ -198,7 +201,9 @@ void BoardView::selectSquare(Square s)
   if (prev != InvalidSquare)
     repaintSquare(prev);
   repaintSquare(m_selectedSquare);
+#if QT_VERSION >= 0x040000
   update();
+#endif
 }
 
 void BoardView::unselectSquare()
@@ -207,6 +212,8 @@ void BoardView::unselectSquare()
   m_selectedSquare = InvalidSquare;
   if (prev != InvalidSquare)
     repaintSquare(prev);
+#if QT_VERSION >= 0x040000
   update();
+#endif
 }
 
