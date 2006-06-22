@@ -18,11 +18,14 @@
 #ifndef __Q34_QVALUEVECTOR_H__
 #define __Q34_QVALUEVECTOR_H__
 
+#include <qglobal.h>
+
 #if QT_VERSION < 0x040000
 #include <qvaluevector.h>
 #else
 #include <q3valuevector.h>
 #define QValueVector Q3ValueVector
+#include <qnamespace.h>
 using namespace Qt;
 #endif // QT_VERSION < 0x040000
 
