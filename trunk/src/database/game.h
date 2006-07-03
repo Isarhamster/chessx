@@ -74,6 +74,8 @@ class Game
 		bool isMoveLegal(const Move& move);
 		/** @return first move in given variation */
 		Move move(int variation = 0) const;
+		/** @returns integer id for move (nb invalid after the game is modified) */
+		int moveId(int variation = 0) const;
 		/** @return comment associated with the first move in the given variation */
 		QString annotation(int variation = 0) const;
 		/** @return nags associated with the first move in the given variation */
@@ -114,6 +116,8 @@ class Game
 		int moveTo(int ply);
 		/** Moves to the given ply, returns actual ply reached */
 		int moveToPly(int ply);
+		/** Moves to the position corresponding to the given move id */
+		void moveToId(int moveId);
 		/** Moves to the end of the current variation */
 		void moveToEnd();
 		/** Move forward the given number of moves, returns actual number of moves made */

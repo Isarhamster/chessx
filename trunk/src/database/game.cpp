@@ -19,6 +19,7 @@
 #include <qregexp.h>
 #include <qstringlist.h>
 #include <qtextstream.h>
+#include <qt34/qvaluestack.h>
  
 #include "game.h"
 
@@ -132,6 +133,22 @@ Move Game::move(int variation) const
 	}
 	
 	return Move();
+}
+
+int Game::moveId(int variation) const
+{
+	int count = 0;
+	int node = m_moveNodes[m_currentNode].nextNode;
+	
+	while(node) {
+		if(count == variation) {
+			return node;
+		}
+		node = m_moveNodes[node].nextVariation;
+		count++;
+	}
+	
+	return -1;
 }
 
 QString Game::annotation(int variation) const
@@ -354,6 +371,33 @@ int Game::moveToPly(int ply)
 	}
 	
 	return m_ply;
+}
+
+void Game::moveToId(int moveId)
+{
+	if(moveId == -1) {
+		return;
+	}
+	
+	//jump to node, travelling back to start adding the moves to the stack
+	int node = moveId;
+	QValueStack<Move> moveStack;
+	
+	do {
+		moveStack.push(m_moveNodes[node].move);
+		node = m_moveNodes[node].previousNode;
+	} while(node);
+	
+	//reset the board, then make the moves on the stack to create the correct position
+	m_currentNode = moveId;
+	m_ply = 0;
+	m_currentBoard = m_startBoard;
+	m_history.clear();
+	
+	while(!moveStack.isEmpty()) {
+		m_ply++;
+		m_history.push(m_currentBoard.doMove(moveStack.pop()));
+	}
 }
 
 void Game::moveToEnd()
