@@ -39,6 +39,7 @@ Game::Game()
 	m_totalNodeCount = defaultSize;
 	m_moveNodes = new MoveNode[defaultSize];
 	m_moveNodes[0].nextNode = 0;
+	m_moveNodes[0].parentNode = 0;
 }
 
 Game::Game(const Game& game)
