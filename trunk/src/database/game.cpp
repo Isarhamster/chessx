@@ -658,19 +658,26 @@ bool Game::truncateGameStart(int variation)
 	return false;
 }
 
-QString Game::ecoClassify()
+QString Game::ecoClassify() const
 {
 	//move to end of main line
-	moveToStart();
-	moveToEnd();
+	int node = 0;
+	Board board = m_startBoard;	
+	History history;
+	
+	while(m_moveNodes[node].nextNode) {
+		node = m_moveNodes[node].nextNode;
+		history.push(board.doMove(m_moveNodes[node].move));
+	}
 	
 	//search backwards for the first eco position
-	while(!atStart()) {
-		Q_UINT64 key = m_currentBoard.getHashValue();
+	while(node) {
+		Q_UINT64 key = board.getHashValue();
 		if(m_ecoPositions.contains(key)) {
 			return m_ecoPositions[key];
 		}
-		backward();
+		board.undoMove(m_moveNodes[node].move, history.pop());
+		node = m_moveNodes[node].previousNode;
 	}
 
 	return "? Unknown opening";
