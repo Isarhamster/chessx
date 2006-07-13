@@ -149,7 +149,7 @@ class Game
 		
 		//game information methods
 		/** @ECO code for the game */
-		QString ecoClassify();
+		QString ecoClassify() const;
 		
 		/** @return tag id of white player */
 		int white() const;
