@@ -46,7 +46,7 @@ Search::Type NullSearch::type() const
 PositionSearch::PositionSearch()
 {
 }
-PositionSearch::PositionSearch(Board& position)
+PositionSearch::PositionSearch(const Board& position)
 {
    setPosition(position);
 }
@@ -61,7 +61,7 @@ Board PositionSearch::position() const
 {
    return m_position;
 }
-void PositionSearch::setPosition(Board& position)
+void PositionSearch::setPosition(const Board& position)
 {
    m_position.fromFEN(position.toFEN());
 }
