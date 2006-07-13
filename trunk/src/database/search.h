@@ -50,11 +50,11 @@ class PositionSearch : public Search
 {
    public :
 			PositionSearch();
-      PositionSearch(Board& position);
+      PositionSearch(const Board& position);
       virtual ~PositionSearch();
       virtual Search::Type type() const;
       Board position() const;
-      void setPosition(Board& position);
+      void setPosition(const Board& position);
    private :
       Board m_position;
 };
