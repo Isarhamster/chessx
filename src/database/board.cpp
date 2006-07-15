@@ -204,8 +204,6 @@ Board::Board()
 	if(!initialized) {
 		initialize();
 	}
-   m_legalMoveList.setAutoDelete(true);
-   m_legalMoveList.clear();
    m_calcHashValue = true;
    m_hashStatusStack.clear();
 }
@@ -690,11 +688,11 @@ return_false:
    enableHashing();
    return false;
 }
-bool Board::findLegalMoves()
+MoveList Board::legalMoves()
 {
    disableHashing();
    Square from, tempSq;
-   m_legalMoveList.clear();
+   MoveList moveList;
 
    for (unsigned char i=0;i < 32;i++) {
       if (m_pieceType[i] == Empty) continue;
@@ -711,7 +709,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
                             (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                            break;
@@ -729,7 +727,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
                             (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                            break;
@@ -747,7 +745,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
                             (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                            break;
@@ -765,7 +763,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
                             (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                            break;
@@ -783,7 +781,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
                             (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                            break;
@@ -799,7 +797,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
                             (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                            break;
@@ -810,19 +808,19 @@ bool Board::findLegalMoves()
                break;
             case WhitePawn:
                if ((m_board[from+8] == InvalidPiece) && isLegal(Move(from,from+8))) {
-                  m_legalMoveList.append( new Move(from, from+8));
+                  moveList.append(Move(from, from+8));
                }
                if ((from >= 8) && (from <= 15) && (m_board[from+8] == InvalidPiece) &&
                    (m_board[from+16] == InvalidPiece) && isLegal(Move(from,from+16))) {
-                  m_legalMoveList.append( new Move(from, from+16));
+                  moveList.append(Move(from, from+16, DoubleAdvance));
                }
                if ((m_pieceType[m_board[from+7]] >= BlackKing) &&
                    (m_pieceType[m_board[from+7]] <= BlackPawn) && isLegal(Move(from,from+7))) {
-                  m_legalMoveList.append( new Move(from, from+7));
+                  moveList.append(Move(from, from+7));
                }
                if ((m_pieceType[m_board[from+9]] >= BlackKing) &&
                    (m_pieceType[m_board[from+9]] <= BlackPawn) && isLegal(Move(from,from+9))) {
-                  m_legalMoveList.append( new Move(from, from+9));
+                  moveList.append(Move(from, from+9));
                }
                break;
             default :
@@ -839,7 +837,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
                             (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                            break;
@@ -857,7 +855,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
                             (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                            break;
@@ -875,7 +873,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
                             (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                            break;
@@ -893,7 +891,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
                             (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                            break;
@@ -911,7 +909,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
                             (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                            break;
@@ -927,7 +925,7 @@ bool Board::findLegalMoves()
                          (m_pieceType[m_board[tempSq]] <= BlackPawn)){
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
-                        m_legalMoveList.append( new Move(from, tempSq));
+                        moveList.append(Move(from, tempSq));
                         if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
                             (m_pieceType[m_board[tempSq]] <= WhitePawn)){
                            break;
@@ -938,19 +936,19 @@ bool Board::findLegalMoves()
                break;
             case BlackPawn:
                if ((m_board[from-8] == InvalidPiece) && isLegal(Move(from,from-8))) {
-                  m_legalMoveList.append( new Move(from, from-8));
+                  moveList.append(Move(from, from-8));
                }
                if ((from >= 48) && (from <= 55) && (m_board[from-8] == InvalidPiece) &&
                    (m_board[from-16] == InvalidPiece) && isLegal(Move(from,from-16))) {
-                  m_legalMoveList.append( new Move(from, from-16));
+                  moveList.append(Move(from, from-16, DoubleAdvance));
                }
                if ((m_pieceType[m_board[from-7]] >= WhiteKing) &&
                    (m_pieceType[m_board[from-7]] <= WhitePawn) && isLegal(Move(from,from-7))) {
-                  m_legalMoveList.append( new Move(from, from-7));
+                  moveList.append(Move(from, from-7));
                }
                if ((m_pieceType[m_board[from-9]] >= WhiteKing) &&
                    (m_pieceType[m_board[from-9]] <= WhitePawn) && isLegal(Move(from,from-9))) {
-                  m_legalMoveList.append( new Move(from, from-9));
+                  moveList.append(Move(from, from-9));
                }
                break;
             default :
@@ -959,25 +957,9 @@ bool Board::findLegalMoves()
       }
 
    }
-   enableHashing();
-   if (m_legalMoveList.isEmpty())
-      return false;
-   else 
-      return true;
-}
-QString Board::getLegalMoves()
-{
-   Move *move;
-   QString moveList;
-   if (m_legalMoveList.isEmpty()) {
-      return moveList;
-   }
-   for (move = m_legalMoveList.first();move;move = m_legalMoveList.next()) {
-      moveList += moveToSAN(*move) + ",";
-   }
 
-   return moveList;
-
+	enableHashing();
+	return moveList;
 }
 
 bool Board::canWhiteKingSideCastle() const
@@ -1094,8 +1076,6 @@ QString Board::toASCII()
    ascii += isCheckmate() ? "Yes" : "No";
    ascii += "  Stalemate: ";
    ascii += isStalemate() ? "Yes" : "No";
-   findLegalMoves();
-   ascii += "\nLegal Moves :" + getLegalMoves();
    ascii += "\nPosition Hash : " + QString::number(m_hashValue,16);
 	
 	return ascii;
@@ -2031,7 +2011,7 @@ bool Board::isCheck()
 
 bool Board::isCheckmate()
 {
-   if (findLegalMoves())
+   if(!legalMoves().empty())
       return false; // There are legal moves
    else if (isCheck()) {
       return true; // It's Checkmate
@@ -2041,7 +2021,7 @@ bool Board::isCheckmate()
 }
 bool Board::isStalemate()
 {
-   if (findLegalMoves())
+   if(!legalMoves().empty())
       return false; //There are legal moves
    else if (!isCheck()) {
       return true; //It's Stalemate
