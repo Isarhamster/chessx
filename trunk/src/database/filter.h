@@ -2,8 +2,10 @@
                           filter.h  -  holds search results in memory
                              -------------------
     begin                : 27/11/2005
-    copyright            : (C) 2005 Ejner Borgbjerg 
+    copyright            : (C) 2005 Ejner Borgbjerg
                            <ejner@users.sourceforge.net>
+                           (C) 2006 William Hoggarth
+                           <whoggarth@users.sourceforge.net>														
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,6 +20,7 @@
 #ifndef __FILTER_H__
 #define __FILTER_H__
 #include "common.h"
+#include <qbitarray.h>
 #include <qt34/qbytearray.h>
 
 //TODO
@@ -47,6 +50,15 @@ public:
 /** construct filter from another filter
 */
 	Filter(const Filter& filter);
+/** construct filter from a bit array
+*/
+	Filter(const QBitArray& bitArray);
+/** assignment operator
+*/
+	Filter operator=(const Filter& game);
+/** destructor
+*/
+	~Filter();
 /** include game in filter, at the given move
 */
         bool set(const unsigned int game, const unsigned int moveIndex);
