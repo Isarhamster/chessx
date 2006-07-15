@@ -35,6 +35,8 @@ public:
   Move();
   /** Typical constructor. */
   Move(Square f, Square t);
+	/** Constructs move with given move type */
+	Move(Square from, Square to, MoveType moveType);
   /** Constructor with promotion piece */
   Move(Square f, Square t, Piece p);
 	/** Constucts move with correct move type */

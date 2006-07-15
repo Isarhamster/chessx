@@ -28,6 +28,10 @@ Move::Move(Square f, Square t) : m_from(f), m_to(t)
 	m_type = StandardMove;
 }
 
+Move::Move(Square from, Square to, MoveType moveType) : m_from(from), m_to(to), m_type(moveType)
+{
+}
+
 Move::Move(Square f, Square t, Piece p) : m_from(f), m_to(t)
 {
 	m_type = (MoveType)p;
