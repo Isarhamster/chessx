@@ -89,9 +89,8 @@ public:
   /** @return whether current position is valid. If not, error code is set to @p
       state variable, if it was provided */
   bool isValid(BoardState* state=0);
-  bool findLegalMoves();
-  QString getLegalMoves();
-
+	/** @return list of legal moves */
+	MoveList legalMoves();
 
 	/* move information methods */
 	/** @return move object represented by the given short algerbraic notation */
@@ -155,7 +154,6 @@ private:
 	Square m_epSquare;
 	CastlingRights m_castlingRights;
 	int m_halfMoveClock;
-   QPtrList<Move> m_legalMoveList;
 
    Q_UINT64 m_hashValue;
    Q_UINT64 m_hashValue2;
