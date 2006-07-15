@@ -2,8 +2,10 @@
                           filter.cpp  -  holds search results in memory
                              -------------------
     begin                : 27/11/2005
-    copyright            : (C) 2005 Ejner Borgbjerg 
+    copyright            : (C) 2005 Ejner Borgbjerg
                            <ejner@users.sourceforge.net>
+                           (C) 2006 William Hoggarth
+                           <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -49,6 +51,45 @@ Filter::Filter(const Filter& filter){
    for (int i=0; i<filter.size(); i++){
      (*m_byteArray)[i]=filter.moveIndex(i);
    }
+}
+
+Filter Filter::operator=(const Filter& filter)
+{
+  m_count = filter.count();
+  m_firstIndex = filter.firstIndex();
+  m_lastIndex = filter.lastIndex();
+  m_currentIndex = filter.currentIndex();
+
+	QByteArray* byteArray = new QByteArray(filter.size());
+  for (int i=0; i<filter.size(); i++){
+    (*byteArray)[i]=filter.moveIndex(i);
+  }
+	delete m_byteArray;
+	m_byteArray = byteArray;
+	
+	return *this;
+}
+
+Filter::Filter(const QBitArray& bitArray)
+{
+	m_count = bitArray.size();
+	m_currentIndex = 0;
+	
+	m_byteArray = new QByteArray(bitArray.size());
+	for(int i = 0; i < bitArray.size(); i++) {
+		if(bitArray[i]) {
+			if(m_firstIndex == -1) {
+				m_firstIndex = i;
+			}
+			m_lastIndex = i;
+		}
+		(*m_byteArray)[i] = bitArray[i];
+	}
+}
+
+Filter::~Filter()
+{
+	delete m_byteArray;
 }
 
 bool Filter::set(const unsigned int game, const unsigned int moveIndex){
