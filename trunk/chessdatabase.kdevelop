@@ -99,7 +99,7 @@
       <envvars/>
     </run>
     <general>
-      <activedir>src</activedir>
+      <activedir>src/gui</activedir>
     </general>
     <make>
       <abortonerror>true</abortonerror>

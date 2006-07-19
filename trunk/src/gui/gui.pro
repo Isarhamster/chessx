@@ -1,13 +1,14 @@
-# Plik utworzony przez menad?era projektów kdevelopa
+# Plik utworzony przez mened?era projektów kdevelopa
 # ------------------------------------------- 
 # Podkatalog wzgl?dem g?ównego katalogu projektu: ./src/gui
 # Cel to biblioteka gui
 
 FORMS += playerdialogbase.ui \
          preferencesbase.ui \
-	 boardsetupbase.ui \
-	 enginesetupbase.ui \
-	 savedialogbase.ui
+         boardsetupbase.ui \
+         enginesetupbase.ui \
+         savedialogbase.ui \
+         gamelistbase.ui 
 HEADERS += mainwindow.h \
            playerdialog.h \
            preferences.h \
@@ -15,19 +16,23 @@ HEADERS += mainwindow.h \
            boardview.h \
            boardtheme.h \
            boardsetup.h \
-	   savedialog.h \
-	   enginesetup.h
+           savedialog.h \
+           enginesetup.h \
+           gamelist.h \
+           gamelistitem.h 
 SOURCES += mainwindow.cpp \
            playerdialog.cpp \
            preferences.cpp \
-           boardview.cpp \ 
+           boardview.cpp \
            boardtheme.cpp \
            boardsetup.cpp \
            helpwindow.cpp \
-	   savedialog.cpp \
-	   enginesetup.cpp 
+           savedialog.cpp \
+           enginesetup.cpp \
+           gamelist.cpp \
+           gamelistitem.cpp 
 TARGET = gui
-CONFIG +=  warn_on qt staticlib
+CONFIG += warn_on qt staticlib
 TEMPLATE = lib
 QT += qt3support
 INCLUDEPATH += ../compatibility \
