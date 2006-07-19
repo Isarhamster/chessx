@@ -26,6 +26,7 @@
 
 class PlayerDatabase;
 class PlayerDialog;
+class GameListDialog;
 class SaveDialog;
 class HelpWindow;
 class BoardView;
@@ -80,7 +81,6 @@ public slots:
   void slotMoveViewUpdate();
   void slotMoveViewLink(const QString& link);
   void slotStatusMessage(const QString& msg);
-  void slotStatusFilter();
 signals:
   /* Re-read configuration */
   void reconfigure();
@@ -89,11 +89,11 @@ private:
   enum {IdFirst, IdLast, IdNext, IdPrevious, IdNext5, IdPrevious5, IdRandom};
   PlayerDatabase* m_playerDatabase;
   PlayerDialog* m_playerDialog;
+  GameListDialog* m_gameListDialog;
   SaveDialog* m_saveDialog;
   HelpWindow* m_helpWindow;
   BoardView* m_boardView;
   QTextBrowser* m_moveView;
-  QListBox* m_filterView;
   QGridLayout* m_layout;
   QLabel* m_statusFilter;
   Game* m_game;

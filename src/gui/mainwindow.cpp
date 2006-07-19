@@ -18,6 +18,7 @@
 #include "boardview.h"
 #include "enginesetup.h"
 #include "game.h"
+#include "gamelist.h"
 #include "helpwindow.h"
 #include "mainwindow.h"
 #include "pgndatabase.h"
@@ -54,6 +55,10 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 
   /* Save dialog */
   m_saveDialog = new SaveDialog;
+
+  /* Game List Dialog */
+  m_gameListDialog = new GameListDialog;
+  connect(m_gameListDialog, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
 
   /* File menu */
   QPopupMenu *file = new QPopupMenu(this);
@@ -138,13 +143,6 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
  //m_moveView->styleSheet()->item("a")->setFontWeight(QFont::Bold);
  m_boardView->setBoard(m_game->board());
 
-  /* Game list view */
- m_filterView = new QListBox(frame);
- m_layout->addWidget(m_filterView, 2, 0);
- m_filterView->hide();
- m_filterView->setMinimumHeight(140);
- connect(m_filterView, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
-
   /* Randomize */
   srandom(time(0));
 
@@ -155,8 +153,6 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   emit reconfigure();
 
   /* Status */
-  statusBar()->addWidget(m_statusFilter = new QLabel(statusBar()), 0, true);
-  slotFilterUpdate();
   slotStatusMessage(tr("Ready."));
 
 }
@@ -412,32 +408,18 @@ void MainWindow::slotGameBrowse(int id)
 
 void MainWindow::slotFilterSwitch()
 {
-  if (m_filterView->isVisible()) {
-    m_filterView->hide();
+  if (m_gameListDialog->isVisible()) {
+    m_gameListDialog->hide();
   }
   else {
-    m_filterView->show();
-    slotFilterUpdate();
+    m_gameListDialog->show();
   }
-  m_layout->activate();
 }
 
 void MainWindow::slotFilterUpdate()
 {
-  if (!database() || !m_filterView->isVisible())
-    return;
-  m_filterView->clear();
-  m_filterView->viewport()->setUpdatesEnabled(false);
-  Game g;
-	for (int i = 0; i < database()->count(); i++)
-	{
-	  database()->load(i, g);
-    m_filterView->insertItem(tr("Game %1: %2 - %3, %4, %5, %6   %7").arg(i+1)
-       .arg(g.tag("White")).arg(g.tag("Black"))
-       .arg(g.tag("Site")).arg(g.tag("Event")).arg(g.tag("Date")).arg(g.tag("Result")));
-  }
-  m_filterView->viewport()->setUpdatesEnabled(true);
-  slotStatusFilter();
+  if (database())
+    m_gameListDialog->setDatabase(database());
 }
 
 void MainWindow::slotFilterLoad(int index)
@@ -448,13 +430,5 @@ void MainWindow::slotFilterLoad(int index)
 void MainWindow::slotStatusMessage(const QString& msg)
 {
   statusBar()->message(msg, 5000);
-}
-
-void MainWindow::slotStatusFilter()
-{
-  int count = database() ? database()->count() : 0;
-  int filter = count; 
-  QString text = filter ? (filter == count ? tr("All") : QString::number(filter)) : tr("None");
-  m_statusFilter->setText(tr("Filter: %1/%2 games").arg(text).arg(count));
 }
 
