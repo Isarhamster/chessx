@@ -26,7 +26,7 @@
 
 class PlayerDatabase;
 class PlayerDialog;
-class GameListDialog;
+class GameList;
 class SaveDialog;
 class HelpWindow;
 class BoardView;
@@ -89,7 +89,7 @@ private:
   enum {IdFirst, IdLast, IdNext, IdPrevious, IdNext5, IdPrevious5, IdRandom};
   PlayerDatabase* m_playerDatabase;
   PlayerDialog* m_playerDialog;
-  GameListDialog* m_gameListDialog;
+  GameList* m_gameList;
   SaveDialog* m_saveDialog;
   HelpWindow* m_helpWindow;
   BoardView* m_boardView;

@@ -7,8 +7,7 @@ FORMS += playerdialogbase.ui \
          preferencesbase.ui \
          boardsetupbase.ui \
          enginesetupbase.ui \
-         savedialogbase.ui \
-         gamelistbase.ui 
+         savedialogbase.ui
 HEADERS += mainwindow.h \
            playerdialog.h \
            preferences.h \
@@ -18,8 +17,7 @@ HEADERS += mainwindow.h \
            boardsetup.h \
            savedialog.h \
            enginesetup.h \
-           gamelist.h \
-           gamelistitem.h 
+           gamelist.h 
 SOURCES += mainwindow.cpp \
            playerdialog.cpp \
            preferences.cpp \
@@ -29,8 +27,7 @@ SOURCES += mainwindow.cpp \
            helpwindow.cpp \
            savedialog.cpp \
            enginesetup.cpp \
-           gamelist.cpp \
-           gamelistitem.cpp 
+           gamelist.cpp 
 TARGET = gui
 CONFIG += warn_on qt staticlib
 TEMPLATE = lib
