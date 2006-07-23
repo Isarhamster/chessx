@@ -57,8 +57,8 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   m_saveDialog = new SaveDialog;
 
   /* Game List Dialog */
-  m_gameListDialog = new GameListDialog;
-  connect(m_gameListDialog, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
+  m_gameList = new GameList;
+  connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
 
   /* File menu */
   QPopupMenu *file = new QPopupMenu(this);
@@ -408,23 +408,24 @@ void MainWindow::slotGameBrowse(int id)
 
 void MainWindow::slotFilterSwitch()
 {
-  if (m_gameListDialog->isVisible()) {
-    m_gameListDialog->hide();
+  if (m_gameList->isVisible()) {
+    m_gameList->hide();
   }
   else {
-    m_gameListDialog->show();
+    m_gameList->show();
   }
 }
 
 void MainWindow::slotFilterUpdate()
 {
   if (database())
-    m_gameListDialog->setDatabase(database());
+    m_gameList->setDatabase(database());
 }
 
 void MainWindow::slotFilterLoad(int index)
 {
   loadGame(index);
+  setActiveWindow();
 }
 
 void MainWindow::slotStatusMessage(const QString& msg)
