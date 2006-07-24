@@ -301,7 +301,7 @@ QBitArray Filter::asBitArray() const
 	
 	//bit arrays are no longer explictly shared in Qt4
 	#if QT_VERSION < 0x040000
-	copy->detach();
+	copy.detach();
 	#endif
 	
 	return copy;
