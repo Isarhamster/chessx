@@ -17,10 +17,12 @@
  *                                                                         *
  ***************************************************************************/
  
+#include <qbitarray.h>
 #include <qfile.h>
 #include <qmap.h>
 #include <qpair.h>
 #include <qtextstream.h>
+#include <qt34/qcache.h>
 #include <qt34/qvaluevector.h>
 
 #include "database.h"
@@ -72,6 +74,10 @@ class PgnDatabase : public Database
 		Filter executeQuery(Query& query);
 		/** Executes a query combined with a filter */
 		Filter executeQuery(const Query& query, Search::Operator searchOperator, Filter filter); 
+		
+		//move statistics (cf. tree window in Scid)
+		/** Returns move statistics for the given line */
+		MoveStatList moveStats(const MoveList& line);
 		
 	private:
 		//offset methods
@@ -164,4 +170,13 @@ class PgnDatabase : public Database
 		QValueVector<QPair<FilterSearch, int> > m_filterSearches;
 		QValueVector<QPair<PositionSearch, int> > m_positionSearches;
 		QValueVector<QPair<TagSearch, int> > m_tagSearches;
+		
+		//move stat types and variables
+		typedef struct {
+			MoveStatList moveStatList;
+			QBitArray bitFilter;
+		} MoveStatCacheEntry;
+		
+		static const long MaxMoveStatCacheSize = 8388608; 
+		QCache<MoveStatCacheEntry> m_moveStatCache;
 };

@@ -15,6 +15,9 @@
  *                                                                         *
  ***************************************************************************/
  
+#include <qstring.h>
+#include <qt34/qvaluevector.h>
+
 #include "filter.h" 
 #include "game.h"
 #include "search.h"
@@ -61,5 +64,17 @@ class Database
 		/** Executes a query, and returns the results in a filter */
 		virtual Filter executeQuery(Query& query) = 0;
 		/** Executes a query combined with a filter */
-		virtual Filter executeQuery(const Query& query, Search::Operator searchOperator, Filter filter) = 0; 
+		virtual Filter executeQuery(const Query& query, Search::Operator searchOperator, Filter filter) = 0;
+		
+		//move statistics (cf. tree window in Scid)
+		typedef struct {
+			Move move;
+			QString eco;
+			float frequency;
+		} MoveStat;
+		
+		typedef QValueVector<MoveStat> MoveStatList;
+		
+		/** Returns move statistics for the given position */
+		virtual MoveStatList moveStats(const MoveList& moveList) = 0;
 };

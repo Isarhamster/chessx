@@ -20,11 +20,12 @@
 #include <qdir.h>
 #include <qstringlist.h>
  
+#include "history.h"
 #include "nag.h"
 
 #include "pgndatabase.h"
  
-PgnDatabase::PgnDatabase(const QString& filename) : m_searchFilter(0)
+PgnDatabase::PgnDatabase(const QString& filename) : m_searchFilter(0), m_moveStatCache(MaxMoveStatCacheSize, 101)
 {
 	m_filename = filename;
 	m_newFile = 0;
@@ -46,6 +47,9 @@ PgnDatabase::PgnDatabase(const QString& filename) : m_searchFilter(0)
 		readTags();
 		readMoves();
 	}
+	
+	//move stat cache owns the items
+	m_moveStatCache.setAutoDelete(true);
 }
 
 PgnDatabase::~PgnDatabase()
@@ -129,13 +133,14 @@ void PgnDatabase::remove(const Filter& filter)
 	
 	startCopy();
 	
+	int index;
 	int startIndex = 0;
 	int newIndex = 0;
 	int rangeSize;
 	int newOffset = 0;
-	int index = filter.firstIndex();
 		
-	while(index != -1) {
+	for(int game = 0; game < filter.count(); game++) {
+		index = filter.gameIndex(game);
 		if(startIndex < index) {
 			rangeSize = offset(index) - offset(startIndex);
 			copyRange(startIndex, index - 1, newIndex, newOffset);
@@ -143,7 +148,6 @@ void PgnDatabase::remove(const Filter& filter)
 			newOffset = + rangeSize;
 		}
 		startIndex = index + 1;
-		index = filter.nextGame(index,1);
 	}
 	
 	if(startIndex < m_count) {
@@ -285,6 +289,78 @@ Filter PgnDatabase::executeQuery(const Query& query, Search::Operator searchOper
 	filterQuery.append(&filterSearch);
 	filterQuery.append(searchOperator);
 	return executeQuery(filterQuery);
+}
+
+PgnDatabase::MoveStatList PgnDatabase::moveStats(const MoveList& line)
+{
+	//locate any cached results that can be used
+	int ply = 0;
+	int closestPly = 0;
+	QString key = "";
+	QString closestKey = "";
+	MoveStatCacheEntry* entry = 0;
+	MoveStatCacheEntry* closestEntry = 0;
+		
+	for(MoveList::ConstIterator it = line.constBegin(); it != line.constEnd(); ++it) {
+		ply++;
+		key += QString::number((*it).from()) + " " + QString::number((*it).to()) + " ";
+		
+		if((entry = m_moveStatCache.find(key))) {
+			closestPly = ply;
+			closestKey = key;
+			closestEntry = entry;
+		}
+	}
+	
+	//if already located in cache return stored result
+	if(closestKey == key && closestEntry) {
+		return closestEntry->moveStatList;
+	}
+
+	//get position and filter for final position in line (using any cached filter found previously)
+	Filter filter(count());
+	if(closestEntry) {
+		filter = Filter(closestEntry->bitFilter);
+	}
+	Game game;
+	
+	for(MoveList::ConstIterator it = line.constBegin(); it != line.constEnd(); ++it) {
+		game.addMove(*it);
+		game.forward();
+		
+		//only search if past point of cached filter results
+		if(game.ply() > closestPly) {
+			filter = executeSearch(PositionSearch(game.board()), Search::And, filter);
+		}
+	}
+	
+	//calculate stats by doing a search on each legal move
+	MoveStatList moveStatList;
+	MoveStat moveStat;
+	MoveList legalMoves = game.board().legalMoves();
+	
+	for(MoveList::iterator it = legalMoves.begin(); it != legalMoves.end(); it++) {
+		moveStat.move = *it;
+		game.replaceMove(*it);
+		game.forward();
+		
+		moveStat.eco = game.ecoClassify();
+		Filter childFilter = executeSearch(PositionSearch(game.board()), Search::And, filter);
+		if(childFilter.count()) {
+			moveStat.frequency = (float)childFilter.count() / filter.count();
+			moveStatList.append(moveStat);
+		}
+		
+		game.backward();
+	}
+	
+	//store result in cache
+	MoveStatCacheEntry cacheEntry;
+	cacheEntry.moveStatList = moveStatList;
+	cacheEntry.bitFilter = filter.asBitArray();
+	m_moveStatCache.insert(key, new MoveStatCacheEntry(cacheEntry), filter.size());
+
+	return moveStatList;
 }
 
 Q_LONG PgnDatabase::offset(int index)
