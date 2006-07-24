@@ -20,3 +20,8 @@
 Database::~Database()
 {
 }
+
+bool Database::loadHeaders(int index, Game& game)
+{
+	return load(index, game);
+}
