@@ -32,16 +32,18 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
   QHBoxLayout* hbox = new QHBoxLayout(this);
 
   m_list = new QListView(this);
-  m_list->addColumn("Index");
-  m_list->addColumn("White");
-  m_list->addColumn("Black");
-  m_list->addColumn("Event");
-  m_list->addColumn("Site");
-  m_list->addColumn("Year");
-  m_list->addColumn("Result");
-  m_list->addColumn("ECO");
-  m_list->addColumn("Length");
+  m_list->addColumn(tr("Index"));
+  m_list->addColumn(tr("White"));
+  m_list->addColumn(tr("Black"));
+  m_list->addColumn(tr("Event"));
+  m_list->addColumn(tr("Site"));
+  m_list->addColumn(tr("Round"));
+  m_list->addColumn(tr("Date"));
+  m_list->addColumn(tr("Result"));
+  m_list->addColumn(tr("ECO"));
+  m_list->addColumn(tr("Length"));
   m_list->setColumnAlignment(Index, Qt::AlignRight);
+  m_list->setColumnAlignment(Round, Qt::AlignRight);
   m_list->setColumnAlignment(Length, Qt::AlignRight);
   m_list->setAllColumnsShowFocus(true);
   m_list->setHScrollBarMode(QScrollView::AlwaysOff);
@@ -79,10 +81,11 @@ void GameList::addItem(int index)
   item->setText(Black, g.tag("Black"));
   item->setText(Event, g.tag("Event"));
   item->setText(Site, g.tag("Site"));
+  item->setText(Round, g.tag("Round"));
   item->setText(Date, g.tag("Date"));
   item->setText(Result, g.tag("Result").left(3));
-  item->setText(ECO, g.tag("ECO"));
   item->setText(Length, QString::number((g.ply() + 1) / 2));
+  item->setText(ECO, g.tag("ECO"));
 }
 
 void GameList::resizeEvent(QResizeEvent* event)
