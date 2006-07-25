@@ -28,7 +28,7 @@ class GameList : public QWidget
 {
   Q_OBJECT
 public:
-  enum Column {Index, White, Black, Event, Site, Date, Result, ECO, Length};
+  enum Column {Index, White, Black, Event, Site, Round, Date, Result, ECO, Length};
   GameList(QWidget* parent = 0, const char *name = 0);
   /** Set current database */
   void setDatabase(Database* database);
