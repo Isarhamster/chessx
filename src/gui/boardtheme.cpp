@@ -52,22 +52,22 @@ void BoardTheme::setDarkColor(const QColor& value)
     setSquareType(m_squareType);
 }
 
-QPixmap BoardTheme::pixmap(Piece p) const
+const QPixmap& BoardTheme::pixmap(Piece p) const
 {
   return m_pixmaps[p];
 }
 
-QPixmap BoardTheme::square(bool dark) const
+const QPixmap& BoardTheme::square(bool dark) const
 {
   return m_square[dark];
 }
 
-QPixmap BoardTheme::originalPixmap(Piece p) const
+const QPixmap& BoardTheme::originalPixmap(Piece p) const
 {
   return m_originalPixmaps[p];
 }
 
-QPixmap BoardTheme::originalSquare(bool dark) const
+const QPixmap& BoardTheme::originalSquare(bool dark) const
 {
   return m_originalSquare[dark];
 }
