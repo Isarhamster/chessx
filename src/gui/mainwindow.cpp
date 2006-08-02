@@ -210,22 +210,14 @@ void MainWindow::updateMenuRecent()
 
 void MainWindow::slotAbout()
 {
-  QMessageBox dialog(tr(""),
-		tr("<center>"
-			"<h1>ChessX</h1>"
-			"<p>Copyright 2005-2006 ChessX contributors</p>"
-			"<p>"
-			"Ejner Borgbjerg<br>"
-			"William Hoggarth<br>"
-			"Heinz Hopfgartner<br>"
-			"Kamil Przybyla<br>"
-			"Marius Roets<br>"
-			"Michal Rudolf"
-			"</p>"
-			"</center>"),
-		QMessageBox::NoIcon, QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton, this); 
-
-	dialog.exec();
+  QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
+    "<p>Copyright 2005-2006 ChessX developers</p>"
+     "<p>"
+        "William Hoggarth, Ejner Borgbjerg, Marius Roets (database)<br>"
+        "Michal Rudolf, Heinz Hopfgartner (GUI)<br>"
+    "</p>"),
+    QMessageBox::NoIcon, QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton, this); 
+  dialog.exec();
 }
 
 void MainWindow::slotPlayerDialog()
