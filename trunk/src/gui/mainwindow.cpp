@@ -173,6 +173,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
     m_recentFiles.save("History", "Recent files");
     AppSettings->writeLayout(m_playerDialog);
     AppSettings->writeLayout(m_helpWindow);
+    m_gameList->saveConfig();
     AppSettings->writeLayout(this);
     e->accept();
     qApp->quit();
