@@ -58,11 +58,13 @@ public:
   void unselectSquare();
   /** @return selected square */
   Square selectedSquare() const;
+  /** Export pictures for website editing */
+  void exportPixmaps(const QString& dir);
 
 public slots:
   /** Reconfigure current theme. */
   void configure();
- 
+
 signals:
   /** User clicked source and destination squares */
   void moveMade(Square from, Square to);

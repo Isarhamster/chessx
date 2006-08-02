@@ -51,13 +51,13 @@ public:
   /** @return color of dark squares. */
   QColor darkColor() const;
   /** @return pixmap for given piece scaled to current size(). */
-  QPixmap pixmap(Piece p) const;
+  const QPixmap& pixmap(Piece p) const;
   /** @return unscaled pixmap for given piece. */
-  QPixmap originalPixmap(Piece p) const;
+  const QPixmap& originalPixmap(Piece p) const;
   /** @return pixmap for square. */
-  QPixmap square(bool dark) const;
+  const QPixmap& square(bool dark) const;
   /** @return unscaled pixmap for square. */
-  QPixmap originalSquare(bool dark) const;
+  const QPixmap& originalSquare(bool dark) const;
   /** Checkes whether themes is valid (pixmaps loaded). */
   bool isValid() const;
   /** Returns name of board theme. It is just file without a path and extension. */

@@ -217,3 +217,23 @@ void BoardView::unselectSquare()
 #endif
 }
 
+void BoardView::exportPixmaps(const QString& dir)
+{
+  int size = m_theme->size();
+  QPixmap pixmap(size, size);
+  const QString piecenames = " kqrbnpkqrbnp";
+  const QString color = "wb";
+  for (int i = WhiteKing; i<= BlackPawn; i++)
+    for (int sq = 0; sq <= 1; sq++)
+    {
+      copyBlt(&pixmap, 0, 0, &(m_theme->square(sq)), 0, 0, size, size);
+      bitBlt(&pixmap, 0, 0, &(m_theme->pixmap(Piece(i))), 0, 0, size, size, Qt::CopyROP, false);
+      pixmap.save(dir + QString("/%1%2%3.png").arg(color[sq])
+              .arg(color[i < BlackKing]).arg(piecenames[i]), "PNG");
+    }
+  copyBlt(&pixmap, 0, 0, &(m_theme->square(0)), 0, 0, size, size);
+  pixmap.save(dir + "/wsq.png", "PNG");
+  copyBlt(&pixmap, 0, 0, &(m_theme->square(1)), 0, 0, size, size);
+  pixmap.save(dir + "/bsq.png", "PNG");
+}
+
