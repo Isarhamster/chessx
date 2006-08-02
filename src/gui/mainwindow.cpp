@@ -27,19 +27,21 @@
 #include "preferences.h"
 #include "savedialog.h"
 #include "settings.h"
+#include "output.h"
 
 #include <qapplication.h>
 #include <qclipboard.h>
 #include <qfiledialog.h>
 #include <qlabel.h>
 #include <qlayout.h>
+#include <qhbox.h>
 #include <qlistbox.h>
 #include <qmenubar.h>
 #include <qmessagebox.h>
 #include <qpopupmenu.h>
 #include <qstatusbar.h>
 #include <qtextbrowser.h>
-
+#include <qsplitter.h>
 
 MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 {
@@ -117,31 +119,41 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   help->insertItem(tr("&About..."), this, SLOT(slotAbout()));
   resize(450, 600);
 
-  /* Game */
-  m_game = new Game;
-
-  /* Layout */
-  QFrame* frame = new QFrame(this);
-  setCentralWidget(frame);
-  m_layout = new QGridLayout(frame, 2, 1);
-
-  /* Board */
-  m_layout->addWidget(m_boardView = new BoardView(frame), 0, 0);
-  m_layout->setRowStretch(0, 5);
-  connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
-  connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
-  connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
-
   /* Recent files */
   m_recentFiles.restore("History", "Recent files");
   updateMenuRecent();
 
+  /* Game */
+  m_game = new Game;
+
+  /* Output */
+  m_output = new Output(OutputPgn);
+
+  /* Layout */
+  QFrame* frame = new QFrame(this);
+  setCentralWidget(frame);
+  m_layout = new QVBoxLayout(frame);
+
+  /* Board */
+  QHBox* hbox = new QHBox(frame, "BGView");
+  m_layout->addWidget(hbox, 5);
+  m_boardView = new BoardView(hbox, "BoardView");
+  hbox->setStretchFactor(m_boardView, 2);
+  connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
+  connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
+  connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
+
+  /* Game view */
+  m_gameView = new QTextBrowser(hbox, "GameView");
+  hbox->setStretchFactor(m_gameView, 2);
+
   /* Move view */
- m_layout->addWidget(m_moveView = new QTextBrowser(frame), 1, 0);
- m_moveView->setMaximumHeight(100);
- connect(m_moveView, SIGNAL(linkClicked(const QString&)), SLOT(slotMoveViewLink(const QString&)));
- //m_moveView->styleSheet()->item("a")->setFontWeight(QFont::Bold);
- m_boardView->setBoard(m_game->board());
+  m_layout->addWidget(m_moveView = new QTextBrowser(frame, "MoveView"));
+  m_moveView->setMaximumHeight(100);
+  connect(m_moveView, SIGNAL(linkClicked(const QString&)), SLOT(slotMoveViewLink(const QString&)));
+  //m_moveView->styleSheet()->item("a")->setFontWeight(QFont::Bold);
+  m_boardView->setBoard(m_game->board());
+
 
   /* Randomize */
   srandom(time(0));
@@ -159,12 +171,13 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 
 MainWindow::~MainWindow()
 {
-  /* saving layouts */
   delete m_saveDialog;
   delete m_playerDialog;
   delete m_playerDatabase;
   delete m_helpWindow;
   delete m_game;
+  delete m_output;
+
 }
 
 void MainWindow::closeEvent(QCloseEvent* e)
@@ -198,6 +211,7 @@ void MainWindow::loadGame(int index)
     m_game->moveToStart();
     m_boardView->setBoard(m_game->board());
     slotMoveViewUpdate();
+    slotGameView();
   }
 }
 
@@ -354,6 +368,13 @@ void MainWindow::slotGameSave()
     slotMoveViewUpdate();
 }
 
+void MainWindow::slotGameView()
+{
+  int ply = m_game->ply();
+  m_gameView->setText(m_output->output(m_game));
+  m_game->moveToPly(ply);
+}
+
 void MainWindow::slotFileOpen()
 {
   QString file = QFileDialog::getOpenFileName(QString::null,
@@ -410,7 +431,9 @@ void MainWindow::slotGameBrowse(int id)
 {
   int change = IdChange[id];
   if (m_game->moveTo(change))
+  {
     m_boardView->setBoard(m_game->board());
+  }
 }
 
 void MainWindow::slotFilterSwitch()
@@ -439,4 +462,3 @@ void MainWindow::slotStatusMessage(const QString& msg)
 {
   statusBar()->message(msg, 5000);
 }
-
