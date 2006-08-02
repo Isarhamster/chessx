@@ -36,6 +36,10 @@ public slots:
   void scrollList(int page);
   void setItemCount(int count);
   void itemSelected(QListViewItem* item);
+  /** Read current configuration */
+  void configure();
+  /** Store current configuration */
+  void saveConfig();
 signals:
   void selected(int);
 private:

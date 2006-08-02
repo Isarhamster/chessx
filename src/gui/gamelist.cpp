@@ -23,6 +23,7 @@
 
 #include "database.h"
 #include "gamelist.h"
+#include "settings.h"
 
 GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m_count(0)
 {
@@ -56,18 +57,19 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
   m_list->setSorting(-1);
 
   m_scroll = new QScrollBar(Qt::Vertical, this);
+  m_scroll->setTracking(true);
   hbox->addWidget(m_scroll);
 
   /* Keyboard filter */
   m_list->installEventFilter(this);
 
-  connect(m_scroll, SIGNAL(sliderMoved(int)), SLOT(scrollList(int)));
   connect(m_scroll, SIGNAL(valueChanged(int)), SLOT(scrollList(int)));
 
-  connect(m_list, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)), SLOT(itemSelected(QListViewItem*)));
+  connect(m_list, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)), 
+          SLOT(itemSelected(QListViewItem*)));
   connect(m_list, SIGNAL(returnPressed(QListViewItem*)), SLOT(itemSelected(QListViewItem*)));
 
-  resize(sizeHint());
+  configure();
 }
 
 void GameList::addItem(int index)
@@ -141,3 +143,24 @@ void GameList::setDatabase(Database* database)
   setItemCount(m_database->count());
 }
 
+void GameList::configure()
+{
+  AppSettings->readLayout(this);
+  AppSettings->beginGroup("/GameList");
+  QStringList sections  = AppSettings->readListEntry("sections");
+  if ((uint)m_list->header()->count() == sections.count())
+    for (int i = 0; i < m_list->header()->count(); i++)
+      m_list->header()->resizeSection(i, sections[i].toInt());
+  AppSettings->endGroup();
+}
+
+void GameList::saveConfig()
+{
+  AppSettings->writeLayout(this);
+  AppSettings->beginGroup("/GameList");
+  QStringList sections;
+  for (int i = 0; i < m_list->header()->count(); i++)
+    sections.append(QString::number(m_list->header()->sectionSize(i)));
+  AppSettings->writeEntry("sections", sections);
+  AppSettings->endGroup();
+}
