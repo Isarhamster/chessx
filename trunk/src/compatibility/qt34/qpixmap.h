@@ -2,7 +2,7 @@
                           qpixmap.h  -  qt3/4 compatibility header
                              -------------------
     begin                : 24 November 2005
-    copyright            : (C) 2005 William Hoggarth
+    copyright            : (C) 2005, 2006 William Hoggarth
                            <whoggarth@user.sourceforge.net>
  ***************************************************************************/
 
@@ -22,6 +22,7 @@
 
 #if QT_VERSION >= 0x040000
 
+#define bitBlt(dest,destx,desty,src,srcx,srcy,width,height,rop,ignoreMask)	bitBlt(dest,destx,desty,src,srcx,srcy,width,height)
 #define copyBlt(dest,destx,desty,src,srcx,srcy,width,height)	(*(dest))=((src)->copy((srcx),(srcy),(width),(height)))
 
 #endif // QT_VERSION >= 0x040000
