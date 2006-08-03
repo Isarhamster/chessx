@@ -156,7 +156,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 
 
   /* Randomize */
-  srandom(time(0));
+  srand(time(0));
 
   /* Restoring layouts */
   AppSettings->readLayout(m_playerDialog, Settings::Show);
@@ -421,7 +421,7 @@ void MainWindow::slotGameLoad(int id)
     return;
   int index = activeGameIndex() + IdChange[id];
   if (id == IdRandom)
-    index = random() % database()->count();
+    index = rand() % database()->count();
   if (index < 0) index = 0;
   if (index >= database()->count() - 1) index = database()->count() - 1;
   loadGame(index);
