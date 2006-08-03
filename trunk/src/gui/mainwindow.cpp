@@ -128,7 +128,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   m_game = new Game;
 
   /* Output */
-  m_output = new Output(OutputPgn);
+  m_output = new Output(OutputNotationWidget);
 
   /* Layout */
   QFrame* frame = new QFrame(this);
@@ -363,19 +363,6 @@ void MainWindow::slotMoveViewLink(const QString& link)
   }
 }
 
-void MainWindow::slotGameSave()
-{
-  if (m_saveDialog->exec(m_game) == QMessageBox::Ok)
-    slotMoveViewUpdate();
-}
-
-void MainWindow::slotGameView()
-{
-  int ply = m_game->ply();
-  m_gameView->setText(m_output->output(m_game));
-  m_game->moveToPly(ply);
-}
-
 void MainWindow::slotFileOpen()
 {
   QString file = QFileDialog::getOpenFileName(QString::null,
@@ -435,6 +422,19 @@ void MainWindow::slotGameBrowse(int id)
   {
     m_boardView->setBoard(m_game->board());
   }
+}
+
+void MainWindow::slotGameSave()
+{
+  if (m_saveDialog->exec(m_game) == QMessageBox::Ok)
+    slotMoveViewUpdate();
+}
+
+void MainWindow::slotGameView()
+{
+  int ply = m_game->ply();
+  m_gameView->setText(m_output->output(m_game));
+  m_game->moveToPly(ply);
 }
 
 void MainWindow::slotFilterSwitch()
