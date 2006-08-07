@@ -400,6 +400,7 @@ void MainWindow::slotFileClose()
 {
   delete m_database;
   m_database = 0;
+  slotFilterUpdate();
 }
 
 const int IdChange[7] = {-99999999, 99999999, 1, -1, 10, -10, 0};
@@ -440,18 +441,15 @@ void MainWindow::slotGameView()
 
 void MainWindow::slotFilterSwitch()
 {
-  if (m_gameList->isVisible()) {
+  if (m_gameList->isVisible()) 
     m_gameList->hide();
-  }
-  else {
+  else 
     m_gameList->show();
-  }
 }
 
 void MainWindow::slotFilterUpdate()
 {
-  if (database())
-    m_gameList->setDatabase(database());
+  m_gameList->setDatabase(database());
 }
 
 void MainWindow::slotFilterLoad(int index)
