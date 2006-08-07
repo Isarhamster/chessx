@@ -128,7 +128,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   m_game = new Game;
 
   /* Output */
-  m_output = new Output(OutputNotationWidget);
+  m_output = new Output(Output::NotationWidget);
 
   /* Layout */
   QFrame* frame = new QFrame(this);
@@ -146,6 +146,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 
   /* Game view */
   m_gameView = new QTextBrowser(hbox, "GameView");
+  m_gameView->setLinkUnderline(false);
   hbox->setStretchFactor(m_gameView, 2);
 
   /* Move view */
@@ -373,7 +374,7 @@ void MainWindow::slotFileOpen()
     m_database = new PgnDatabase(file);
     m_recentFiles.append(file);
     slotGameLoad(0);
-    slotFilterUpdate();
+    //slotFilterUpdate();
     updateMenuRecent();
     slotStatusMessage(tr("File %1 opened successfully.").arg(file.section('/', -1)));
   }
