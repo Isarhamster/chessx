@@ -374,7 +374,7 @@ void MainWindow::slotFileOpen()
     m_database = new PgnDatabase(file);
     m_recentFiles.append(file);
     slotGameLoad(0);
-    //slotFilterUpdate();
+    slotFilterUpdate();
     updateMenuRecent();
     slotStatusMessage(tr("File %1 opened successfully.").arg(file.section('/', -1)));
   }
