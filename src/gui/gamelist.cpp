@@ -28,7 +28,7 @@
 GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m_count(0)
 {
   setCaption(tr("Game list"));
-  setMinimumSize(700, 400);
+  setMinimumSize(600, 400);
 
   QHBoxLayout* hbox = new QHBoxLayout(this);
 
@@ -56,8 +56,9 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
   m_list->clear();
   m_list->setSorting(-1);
 
-  m_scroll = new QScrollBar(Qt::Vertical, this);
+  m_scroll = new QScrollBar(0, 0, 1, 10, 0, Qt::Vertical, this);
   m_scroll->setTracking(true);
+
   hbox->addWidget(m_scroll);
 
   /* Keyboard filter */
@@ -72,10 +73,10 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
   configure();
 }
 
-void GameList::addItem(int index)
+void GameList::createItem(int index)
 {
   Game g;
-  if (!m_database || !m_database->load(index, g))
+  if (!m_database || !m_database->loadHeaders(index, g))
     return;
   QListViewItem* item = new QListViewItem(m_list, m_list->lastItem());
   item->setText(Index, QString::number(index+1));
@@ -92,32 +93,35 @@ void GameList::addItem(int index)
 
 void GameList::resizeEvent(QResizeEvent* event)
 {
-  setItemCount(m_count);
   QWidget::resizeEvent(event);
-}
-
-void GameList::setItemCount(int count)
-{
-  m_count = count;
-  if (!count)
-    return;
   m_pageSize = (m_list->size().height() - m_list->header()->height() - 4) / m_itemHeight;
-  m_scroll->setMaxValue(m_count - 1);
   m_scroll->setPageStep(m_pageSize - 1);
   scrollList(m_scroll->value());
 }
 
+void GameList::updateList()
+{
+  m_count = m_database ? m_database->count() : 0;
+  m_scroll->setMaxValue(m_count ? m_count - 1 : 0);
+  if (!m_count)
+    m_list->clear();
+  else
+    scrollList(0);
+}
+
 void GameList::scrollList(int page)
 {
+  if (!m_database)
+    return;
   int start = page;
   if (start > m_count - m_pageSize)
     start = m_count - m_pageSize;
   m_list->clear();
   for (int i = 0; i < m_pageSize; i++)
-    addItem(start + i);
+    createItem(start + i);
   QListViewItem* current = m_list->firstChild();
-  if (page > start)
-    for (int i = 0; i < page - start; i++)
+  if (current && page > start)
+    for (int i = 0; i < page - start && current->itemBelow(); i++)
       current = current->itemBelow();
   m_list->setSelected(current, true);
 }
@@ -140,7 +144,7 @@ void GameList::itemSelected(QListViewItem* item)
 void GameList::setDatabase(Database* database)
 {
   m_database = database;
-  setItemCount(m_database->count());
+  updateList();
 }
 
 void GameList::configure()

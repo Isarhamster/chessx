@@ -31,22 +31,26 @@ public:
   enum Column {Index, White, Black, Event, Site, Round, Date, Result, ECO, Length};
   GameList(QWidget* parent = 0, const char *name = 0);
   /** Set current database */
-  void setDatabase(Database* database);
 public slots:
-  void scrollList(int page);
-  void setItemCount(int count);
-  void itemSelected(QListViewItem* item);
+  /** Set new database (or null for no database) */
+  void setDatabase(Database* database);
+  /** Scroll to show item @p index */
+  void scrollList(int index);
   /** Read current configuration */
   void configure();
   /** Store current configuration */
   void saveConfig();
+private slots:
+  void itemSelected(QListViewItem* item);
 signals:
   void selected(int);
 private:
+  /** Recalculate list after database/filter is changed */ 
+  void updateList();
+  /** Recalculate visible items after resize */ 
   virtual void resizeEvent(QResizeEvent* event);
-//  virtual void selectItem(int index);
-  /** Add visible list item */
-  void addItem(int index);
+  /** Create visible list item from game @p index */
+  void createItem(int index);
   virtual bool eventFilter(QObject* o, QEvent* e);
   QListView* m_list;
   QScrollBar* m_scroll;
