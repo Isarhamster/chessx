@@ -7,49 +7,48 @@
 #include "game.h"
 
 
-enum MarkupType {
-   MarkupHeaderBlock,
-   MarkupNotationBlock,
-   MarkupResult,
-   MarkupNoFormat,
-   MarkupColumnStyleMainline,
-   MarkupColumnStyleMove,
-   MarkupColumnStyleRow,
-   MarkupMainLineMove,
-   MarkupMainLine,
-   MarkupVariationMove,
-   MarkupVariationInline,
-   MarkupVariationIndent,
-   MarkupNag,
-   MarkupAnnotationInline,
-   MarkupAnnotationIndent,
-   MarkupHeaderLine,
-   MarkupHeaderTagName,
-   MarkupHeaderTagValue,
-   MarkupWhiteTag,
-   MarkupBlackTag,
-   MarkupEventTag,
-   MarkupDateTag,
-   MarkupSiteTag,
-   MarkupResultTag,
-   MarkupRoundTag
-
-};
-enum OutputType {
-   OutputHtml,
-   OutputPgn,
-   OutputLatex,
-   OutputNotationWidget
-};
-enum CommentIndentOption {
-   Always,
-   OnlyMainline,
-   Never
-};
 
 class Output
 {
    public:
+      enum MarkupType {
+         MarkupHeaderBlock,
+         MarkupNotationBlock,
+         MarkupResult,
+         MarkupNoFormat,
+         MarkupColumnStyleMainline,
+         MarkupColumnStyleMove,
+         MarkupColumnStyleRow,
+         MarkupMainLineMove,
+         MarkupMainLine,
+         MarkupVariationMove,
+         MarkupVariationInline,
+         MarkupVariationIndent,
+         MarkupNag,
+         MarkupAnnotationInline,
+         MarkupAnnotationIndent,
+         MarkupHeaderLine,
+         MarkupHeaderTagName,
+         MarkupHeaderTagValue,
+         MarkupWhiteTag,
+         MarkupBlackTag,
+         MarkupEventTag,
+         MarkupDateTag,
+         MarkupSiteTag,
+         MarkupResultTag,
+         MarkupRoundTag
+      };
+      enum OutputType {
+         Html,
+         Pgn,
+         Latex,
+         NotationWidget
+      };
+      enum CommentIndentOption {
+         Always,
+         OnlyMainline,
+         Never
+      };
       Output (OutputType output);
 
       /** Sets the default settings for the specific output format */
@@ -60,10 +59,7 @@ class Output
       void markupTag (MarkupType type , QString& startTag, QString& endTag);
 
       /** Static list of objects. */
-      static QMap<OutputType, Output*> m_formats;
       static QMap<OutputType,QString>& getFormats();
-      /** Create one static object of each type. Available through m_formats */
-      void static createObjects();
 
       /* Read and write tag settings to user settings */
       void readConfig();
