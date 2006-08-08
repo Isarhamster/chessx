@@ -43,6 +43,7 @@
 #include <qstatusbar.h>
 #include <qtextbrowser.h>
 #include <qsplitter.h>
+#include <qaction.h>
 
 MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 {
@@ -148,6 +149,8 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   m_gameView = new QTextBrowser(hbox, "GameView");
   m_gameView->setLinkUnderline(false);
   hbox->setStretchFactor(m_gameView, 2);
+  QAction* gameViewToggle = new QAction(tr("Toggle game"), Key_F12, this, "gametoggle");
+  connect(gameViewToggle, SIGNAL(activated()), this, SLOT(slotGameViewToggle()));
 
   /* Move view */
   m_layout->addWidget(m_moveView = new QTextBrowser(frame, "MoveView"));
@@ -439,6 +442,16 @@ void MainWindow::slotGameView()
   m_game->moveToPly(ply);
 }
 
+void MainWindow::slotGameViewToggle()
+{
+  if (m_gameView->textFormat() != Qt::PlainText)
+    m_gameView->setTextFormat(Qt::PlainText);
+  else
+    m_gameView->setTextFormat(Qt::RichText);
+  m_gameView->clear();
+  m_gameView->setText(m_output->output(m_game));
+}
+
 void MainWindow::slotFilterSwitch()
 {
   if (m_gameList->isVisible()) 
@@ -462,3 +475,4 @@ void MainWindow::slotStatusMessage(const QString& msg)
 {
   statusBar()->message(msg, 5000);
 }
+
