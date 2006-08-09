@@ -1,4 +1,5 @@
 #include "output.h"
+#include "qregexp.h"
 
 QMap <Output::OutputType,QString> Output::m_outputMap;
 
@@ -151,12 +152,12 @@ void Output::initialize()
       setMarkupTag(MarkupMainLine,"<div style=\"font-weight:600;color:black\">","</div>\n");
       setMarkupTag(MarkupVariationInline,"<span style=\"font-weight:300;color:blue\">","</span>\n");
       setMarkupTag(MarkupVariationIndent,"<blockquote style=\"margin-left:30px;font-weight:300;color:blue\">","</blockquote>\n");
-      setMarkupTag(MarkupNag,"<span style=\"font-weight:normal;text-decoration:none;color:red;font-style:normal\">","</span>\n");
+      setMarkupTag(MarkupNag,"<span style=\"font-weight:300;text-decoration:none;color:red;font-style:normal\">","</span>\n");
       setMarkupTag(MarkupColumnStyleMove,"<td width=50%>","\n");
       setMarkupTag(MarkupColumnStyleRow,"<tr class=\"mainline\">","\n");
       setMarkupTag(MarkupColumnStyleMainline,"<table border=0 width=50%>","</table>\n");
-      setMarkupTag(MarkupAnnotationInline,"<a style=\"font-weight:normal;text-decoration:none;color:green;font-style:normal\" href=\"cmt%2\">","</a>\n");
-      setMarkupTag(MarkupAnnotationIndent,"<blockquote style=\"margin-left:30px\"><a style=\"font-weight:normal;text-decoration:none;color:green;font-style:normal\" href=\"cmt%2\">","</a></blockquote>\n");
+      setMarkupTag(MarkupAnnotationInline,"<a style=\"font-weight:300;text-decoration:none;color:green;font-style:normal\" href=\"cmt%2\">","</a>\n");
+      setMarkupTag(MarkupAnnotationIndent,"<blockquote style=\"margin-left:30px\"><a style=\"font-weight:300;text-decoration:none;color:green;font-style:normal\" href=\"cmt%2\">","</a></blockquote>\n");
       setMarkupTag(MarkupHeaderLine,"<span style=\"color:blue\">[","]</span><br>\n");
       setMarkupTag(MarkupHeaderTagName,"","");
       setMarkupTag(MarkupHeaderTagValue,"\"","\"");
@@ -188,7 +189,6 @@ QMap<Output::OutputType,QString>& Output::getFormats()
 void Output::writeMove(int variation)
 {
 
-   m_output += " ";
    if (m_columnStyle && (m_currentVariationLevel == 0)) {
       // *** If the column style option is set and it's a mainline move
       // *** some special markup is required
@@ -247,7 +247,7 @@ void Output::writeMove(int variation)
    }
    // *** Write the nags if there are any
    if(m_game->nags(variation).count() > 0) {
-      m_output += m_startTagMap[MarkupNag] + m_game->nags(variation).toPGNString() + " " + m_endTagMap[MarkupNag];
+      m_output += m_startTagMap[MarkupNag] + m_game->nags(variation).toString() + m_endTagMap[MarkupNag];
    }
    // *** Write the annotations if any
    if (m_game->annotation(variation) != QString::null) {
@@ -257,11 +257,11 @@ void Output::writeMove(int variation)
       if ((m_commentIndentOption == Always) || ((m_commentIndentOption == OnlyMainline) 
                && (m_currentVariationLevel == 0))) {
          m_output += m_startTagMap[MarkupAnnotationIndent] + 
-                     m_game->annotation(variation) + " " +
+                     m_game->annotation(variation) +
                      m_endTagMap[MarkupAnnotationIndent];
       } else {
-         m_output += m_startTagMap[MarkupAnnotationInline] + 
-                     m_game->annotation(variation) + " " +
+         m_output += " " + m_startTagMap[MarkupAnnotationInline] + 
+                     m_game->annotation(variation) +
                      m_endTagMap[MarkupAnnotationInline];
       }
       if (m_columnStyle && (m_currentVariationLevel == 0)) {
@@ -279,6 +279,7 @@ void Output::writeMove(int variation)
       mvno = mvno.sprintf("%03d",m_game->ply());
       m_output = m_output.arg(mvno);
    }
+   m_output += " ";
 }
 void Output::writeNewlineIndent()
 {
@@ -324,6 +325,7 @@ void Output::writeVariation()
 				m_game->exitVariation();
 				
             // *** End the variation
+            m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
             m_output += ")";
             if (m_currentVariationLevel <= m_variationIndentLevel) {
                m_output += m_endTagMap[MarkupVariationIndent];
