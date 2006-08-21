@@ -29,7 +29,6 @@
 #include "settings.h"
 #include "output.h"
 
-#include <platform/stdlib.h>
 #include <qapplication.h>
 #include <qclipboard.h>
 #include <qfiledialog.h>
