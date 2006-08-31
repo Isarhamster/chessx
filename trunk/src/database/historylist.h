@@ -17,7 +17,6 @@
 #ifndef __HISTORYLIST_H__
 #define __HISTORYLIST_H__
 
-#include <qt34/qvaluevector.h>
 #include <qstringlist.h>
 
 /** The HistoryList class provides a list of @p N recent string items that
@@ -26,8 +25,8 @@ can be stored/restored. */
 class HistoryList
 {
   private:
-    QValueVector<QString> m_data;
-    int m_count;
+    QStringList m_data;
+    int m_size;
     bool m_unique;
   public:
     HistoryList(int historySize = 10);
@@ -44,16 +43,14 @@ class HistoryList
     void setSize(int newSize);
     /** Adds new item. If there are too many items, last one will be dropped. */
     void append(const QString& item);
-    /** Removes item at @p index. */
-    void remove(int index);
+    /** Removes the first occurence of given item. */
+    void remove(const QString& item);
     /** Removes all items. */
     void clear();
-    /** @return item at @p index . 0 is the newest one. */
+    /** @return item at @p index - 0 is the newest one. */
     QString item(int index) const;
-    /** @return item at @p index . */
+    /** @return item at @p index */
     QString operator[](int index) const;
-    /** @return index of given item or -1. */
-    int find(const QString& s) const;
     /** @return @p true if history contains given item. */
     bool contains(const QString& s) const;
     /** @return all items. */
@@ -65,6 +62,7 @@ class HistoryList
     /** Sets whether older repeated value is automatically removed. Does not
         affect current list content. */
     void setUnique(bool value);
+  private:
 };
 
 #endif

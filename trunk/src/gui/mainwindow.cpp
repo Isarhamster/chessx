@@ -33,6 +33,7 @@
 #include <qapplication.h>
 #include <qclipboard.h>
 #include <qfiledialog.h>
+#include <qfileinfo.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qhbox.h>
@@ -122,6 +123,14 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
 
   /* Recent files */
   m_recentFiles.restore("History", "Recent files");
+  int i = 0;
+  while (i < m_recentFiles.count())
+  {
+    QFileInfo file(m_recentFiles[i]);
+    if (file.exists())
+      i++;
+    else m_recentFiles.remove(m_recentFiles[i]);
+  }
   updateMenuRecent();
 
   /* Game */
@@ -222,7 +231,7 @@ void MainWindow::updateMenuRecent()
 {
   m_menuRecent->clear();
   for (int i = 0; i < 5 && i < m_recentFiles.count(); i++)
-    m_menuRecent->insertItem(QString("&%1: %2").arg(i+1).arg(m_recentFiles[i]), 
+    m_menuRecent->insertItem(QString("&%1: %2").arg(i+1).arg(m_recentFiles[i]),
                              this, SLOT(slotFileOpenRecent(int)), 0, i);
 }
 

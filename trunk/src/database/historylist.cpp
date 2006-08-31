@@ -17,9 +17,7 @@
 #include "historylist.h"
 #include "settings.h"
 
-#include <qstringlist.h>
-
-HistoryList::HistoryList(int historySize) : m_count(0), m_unique(true)
+HistoryList::HistoryList(int historySize) : m_unique(true)
 {
   setSize(historySize);
 }
@@ -46,54 +44,40 @@ void HistoryList::save(const QString& group, const QString& key) const
 void HistoryList::append(const QString& item)
 {
   if (m_unique)
-  {
-    int duplicate = find(item);
-    if (duplicate != -1)
-      remove(duplicate);
-  }
+    remove(item);
   if (count() == size())
-  {
-    for (int i = 0; i < count() - 1; i++)
-      m_data[i] = m_data[i+1];
-    m_data[count() - 1] = item;
-  }
-  else
-  {
-    m_data[m_count] = item;
-    m_count++;
-  }
+    m_data.pop_back();
+  m_data.prepend(item);
 }
 
-void HistoryList::remove(int index)
+void HistoryList::remove(const QString& item)
 {
-  for (int i = index; i < count() - 1; i++)
-    m_data[i] = m_data[i+1];
-  m_count--;
+  m_data.remove(item);
 }
 
 void HistoryList::setSize(int newSize)
 {
-  m_data.resize(newSize);
+  m_size = newSize;
 }
 
 int HistoryList::size() const
 {
-  return m_data.size();
+  return m_size;
 }
 
 int HistoryList::count() const
 {
-  return m_count;
+  return m_data.count();
 }
 
 void HistoryList::clear()
 {
-  m_count = 0;
+  m_data.clear();
 }
 
 QString HistoryList::item(int index) const
 {
-  return (index >= 0 && index < count()) ? m_data[m_count - index - 1] : QString::null;
+  return (index >= 0 && index < count()) ? m_data[index] : QString();
 }
 
 QString HistoryList::operator[](int index) const
@@ -101,33 +85,25 @@ QString HistoryList::operator[](int index) const
   return item(index);
 }
 
-int HistoryList::find(const QString& s) const
-{
-  for (int i = 0; i < count(); i++)
-    if (m_data[i] == s)
-      return i;
-  return -1;
-}
-
 bool HistoryList::contains(const QString& s) const
 {
-  return find(s) != -1;
+  return m_data.contains(s);
 }
 
 QStringList HistoryList::items() const
 {
-  QStringList list;
-  for (int i = 0; i < count(); i++)
-    list.append(m_data[i]);
-  return list;
+  return m_data;
 }
 
 void HistoryList::setItems(const QStringList& list)
 {
   clear();
   for (QStringList::ConstIterator iter = list.begin();
-       iter != list.end(); iter++)
-         append(*iter);
+       iter != list.end(); ++iter)
+    if (count() == size())
+      break;
+    else
+      append(*iter);
 }
 
 bool HistoryList::isUnique() const
