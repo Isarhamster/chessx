@@ -17,7 +17,8 @@ HEADERS += mainwindow.h \
            boardsetup.h \
            savedialog.h \
            enginesetup.h \
-           gamelist.h 
+           gamelist.h \
+	   chessbrowser.h
 SOURCES += mainwindow.cpp \
            playerdialog.cpp \
            preferences.cpp \
@@ -27,7 +28,8 @@ SOURCES += mainwindow.cpp \
            helpwindow.cpp \
            savedialog.cpp \
            enginesetup.cpp \
-           gamelist.cpp 
+           gamelist.cpp \
+	   chessbrowser.cpp
 TARGET = gui
 CONFIG += warn_on qt staticlib
 TEMPLATE = lib

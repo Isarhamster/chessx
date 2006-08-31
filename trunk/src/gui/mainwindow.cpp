@@ -16,18 +16,19 @@
 
 #include "boardsetup.h"
 #include "boardview.h"
+#include "chessbrowser.h"
 #include "enginesetup.h"
 #include "game.h"
 #include "gamelist.h"
 #include "helpwindow.h"
 #include "mainwindow.h"
+#include "output.h"
 #include "pgndatabase.h"
 #include "playerdatabase.h"
 #include "playerdialog.h"
 #include "preferences.h"
 #include "savedialog.h"
 #include "settings.h"
-#include "output.h"
 
 #include <qapplication.h>
 #include <qclipboard.h>
@@ -40,7 +41,6 @@
 #include <qmessagebox.h>
 #include <qpopupmenu.h>
 #include <qstatusbar.h>
-#include <qtextbrowser.h>
 #include <qsplitter.h>
 #include <qaction.h>
 
@@ -145,17 +145,16 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
 
   /* Game view */
-  m_gameView = new QTextBrowser(hbox, "GameView");
+  m_gameView = new ChessBrowser(hbox, "GameView");
   m_gameView->setLinkUnderline(false);
   hbox->setStretchFactor(m_gameView, 2);
   QAction* gameViewToggle = new QAction(tr("Toggle game"), Key_F12, this, "gametoggle");
   connect(gameViewToggle, SIGNAL(activated()), this, SLOT(slotGameViewToggle()));
 
   /* Move view */
-  m_layout->addWidget(m_moveView = new QTextBrowser(frame, "MoveView"));
+  m_layout->addWidget(m_moveView = new ChessBrowser(frame, "MoveView"));
   m_moveView->setMaximumHeight(100);
-  connect(m_moveView, SIGNAL(linkClicked(const QString&)), SLOT(slotMoveViewLink(const QString&)));
-  //m_moveView->styleSheet()->item("a")->setFontWeight(QFont::Bold);
+  connect(m_moveView, SIGNAL(linkPressed(const QString&)), SLOT(slotMoveViewLink(const QString&)));
   m_boardView->setBoard(m_game->board());
 
 
