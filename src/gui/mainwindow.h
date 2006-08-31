@@ -34,7 +34,7 @@ class Game;
 class Database;
 class Output;
 
-class QTextBrowser;
+class ChessBrowser;
 class QListBox;
 class QVBoxLayout;
 class QLabel;
@@ -96,8 +96,8 @@ private:
   SaveDialog* m_saveDialog;
   HelpWindow* m_helpWindow;
   BoardView* m_boardView;
-  QTextBrowser* m_moveView;
-  QTextBrowser* m_gameView;
+  ChessBrowser* m_moveView;
+  ChessBrowser* m_gameView;
   QVBoxLayout* m_layout;
   QLabel* m_statusFilter;
   Game* m_game;
