@@ -51,7 +51,7 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
   m_list->setVScrollBarMode(QScrollView::AlwaysOff);
   hbox->addWidget(m_list);
 
-  new QListViewItem(m_list, "");
+  new QListViewItem(m_list, QString());
   m_itemHeight = m_list->firstChild()->height();
   m_list->clear();
   m_list->setSorting(-1);
