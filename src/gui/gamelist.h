@@ -47,6 +47,8 @@ signals:
 private:
   /** Recalculate list after database/filter is changed */ 
   void updateList();
+  /** Recalculate scrollbar after resize */ 
+  void updateScrollbar();
   /** Recalculate visible items after resize */ 
   virtual void resizeEvent(QResizeEvent* event);
   /** Create visible list item from game @p index */

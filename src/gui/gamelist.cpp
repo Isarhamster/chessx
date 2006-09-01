@@ -25,7 +25,7 @@
 #include "gamelist.h"
 #include "settings.h"
 
-GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m_count(0)
+GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m_count(0), m_pageSize(1)
 {
   setCaption(tr("Game list"));
   setMinimumSize(600, 400);
@@ -58,7 +58,6 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
 
   m_scroll = new QScrollBar(0, 0, 1, 10, 0, Qt::Vertical, this);
   m_scroll->setTracking(true);
-
   hbox->addWidget(m_scroll);
 
   /* Keyboard filter */
@@ -71,6 +70,7 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
   connect(m_list, SIGNAL(returnPressed(QListViewItem*)), SLOT(itemSelected(QListViewItem*)));
 
   configure();
+  updateScrollbar();
 }
 
 void GameList::createItem(int index)
@@ -94,6 +94,11 @@ void GameList::createItem(int index)
 void GameList::resizeEvent(QResizeEvent* event)
 {
   QWidget::resizeEvent(event);
+  updateScrollbar();
+}
+
+void GameList::updateScrollbar()
+{
   m_pageSize = (m_list->size().height() - m_list->header()->height() - 4) / m_itemHeight;
   m_scroll->setPageStep(m_pageSize - 1);
   scrollList(m_scroll->value());
@@ -116,6 +121,8 @@ void GameList::scrollList(int page)
   int start = page;
   if (start > m_count - m_pageSize)
     start = m_count - m_pageSize;
+  if (start < 0)
+    start = 0;
   m_list->clear();
   for (int i = 0; i < m_pageSize; i++)
     createItem(start + i);
@@ -168,3 +175,4 @@ void GameList::saveConfig()
   AppSettings->writeEntry("sections", sections);
   AppSettings->endGroup();
 }
+
