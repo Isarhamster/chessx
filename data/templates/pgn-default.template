@@ -1,0 +1,26 @@
+[OPTIONS]
+[OUTPUTHEADER]
+[OUTPUTFOOTER]
+[MARKUPTAGS]
+MarkupHeaderBlock=,
+MarkupNotationBlock=, 
+MarkupResult=,
+MarkupMainLineMove=,
+MarkupVariationMove=,
+MarkupMainLine=,
+MarkupVariationInline=,
+MarkupVariationIndent=\n   ,\n
+MarkupNag=,
+MarkupAnnotationInline={,}
+MarkupAnnotationIndent=\n   {,}\n
+MarkupHeaderLine=[,]\n
+MarkupHeaderTagName=,
+MarkupHeaderTagValue=","
+MarkupWhiteTag=,
+MarkupBlackTag=,
+MarkupEventTag=,
+MarkupDateTag=,
+MarkupSiteTag=,
+MarkupResultTag=,
+MarkupRoundTag=,
+
