@@ -26,7 +26,8 @@ HEADERS += board.h \
            settings.h \
            spellchecker.h \
            historylist.h \
-           output.h
+           output.h \
+           outputoptions.h
 SOURCES += board.cpp \
            move.cpp \
            common.cpp \
@@ -50,7 +51,8 @@ SOURCES += board.cpp \
            settings.cpp \
            spellchecker.cpp \
            historylist.cpp \
-           output.cpp
+           output.cpp \
+           outputoptions.cpp
 TARGET = database
 CONFIG += release warn_on qt staticlib
 TEMPLATE = lib

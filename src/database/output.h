@@ -5,7 +5,13 @@
 #include <qstring.h>
 #include <qmap.h>
 #include "game.h"
+#include "outputoptions.h"
 
+#define TEMPLATE_DIR "templates"
+#define DEFAULT_HTML_TEMPLATE "html-default.template"
+#define DEFAULT_NOTATION_TEMPLATE "notation-default.template"
+#define DEFAULT_LATEX_TEMPLATE "latex-default.template"
+#define DEFAULT_PGN_TEMPLATE "pgn-default.template"
 
 
 class Output
@@ -44,12 +50,12 @@ class Output
          Latex,
          NotationWidget
       };
-      enum CommentIndentOption {
-         Always,
-         OnlyMainline,
-         Never
-      };
-      Output (OutputType output);
+      /* enum CommentIndentOption {
+       *    Always,
+       *    OnlyMainline,
+       *    Never
+       * }; */
+      Output (OutputType output, const QString& pathToTemplateFile = "");
 
       /** Sets the default settings for the specific output format */
       void initialize();
@@ -72,39 +78,34 @@ class Output
       QString output(Game* game);
 
       /* User definable settings */
-      void setTextWidth(int textWidth);
-      int textWidth();
-      void setColumnStyle (bool columnStyle);
-      bool columnStyle();
-      void setVariationIndentSize(int variationIndentSize);
-      int variationIndentSize();
-      void setVariationIndentLevel(int variationIndentLevel);
-      int variationIndentLevel();
-      void setCommentIndentOption(CommentIndentOption option);
-      CommentIndentOption commentIndentOption();
+      void setTemplateFile(const QString& filename="");
+
+      /* Read the template file */
+      void ReadTemplateFile(QString path);
+
+      /* Setting and retrieving of option. Methods to inteface
+       * with OutputOptions class.
+       */
+      /* Setting values */
+
+      bool setOption(const QString& optionName, bool optionValue);
+      bool setOption(const QString& optionName, int optionValue);
+      bool setOption(const QString& optionName, const QString& optionValue);
+
+      /* Retrieving values */
+      int getOptionAsInt (const QString& optionName);
+      QString getOptionAsString (const QString& optionName);
+      bool getOptionAsBool (const QString& optionName);
+      QString getOptionDescription (const QString& optionName);
+      QStringList getOptionList ();
+      QMap<QString,QString> getOptionListAndDescription ();
 
 
    private:
       /* User definable settings */
-      /** If true, output will only have one move per line in 2 columns */
-      bool m_columnStyle;
-      /** Maximum number of characters in one line. Markup chars not counted */
-      int m_textWidth;
-      /** Number of spaces used for each indent level */
-      int m_variationIndentSize;
-      /** Level up to which to indent
-       *  -1 - No indentation
-       *  0 - variation start on new line, but not indented
-       *  1,2,n  Each level of variation is one level more indented, up to a maximum of n.
-       */
-      int m_variationIndentLevel;
-      /** Currently there are 3 options. Here indented means on a new line at the same level
-       * of indentation as the previous line
-       * Never: All comments are inline
-       * OnlyMainline : Only comments in the mainline are indented
-       * Always : All comments are indented
-       */
-      CommentIndentOption m_commentIndentOption;
+      OutputOptions m_options;
+      /** The name of the current template file */
+      QString m_templateFilename;
 
       /* Internally used */
       bool m_justBreaked;
