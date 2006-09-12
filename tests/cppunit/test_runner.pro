@@ -22,7 +22,8 @@ HEADERS += playerdatabasetest.h \
            playerdatabasechangestest.h \
            boardtest.h \
            querytest.h \
-           pgndatabasetest.h 
+           pgndatabasetest.h \
+           outputtest.h
 SOURCES += playerdatabasetest.cpp \
            test_runner.cpp \
            spelling/spellcheckertests.cpp \
@@ -30,4 +31,5 @@ SOURCES += playerdatabasetest.cpp \
            playerdatabasechangestest.cpp \
            boardtest.cpp \
            querytest.cpp \
-           pgndatabasetest.cpp 
+           pgndatabasetest.cpp \
+           outputtest.cpp
