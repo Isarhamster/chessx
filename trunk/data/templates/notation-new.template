@@ -1,0 +1,50 @@
+[OPTIONSDEFINITIONS]
+#Name - Name of the option. Use @Name@ in header, footer and markup
+#       tags to substitute the value.
+#Type - Can be one of String, Boolean, Integer, Color
+#Allow Values - The values that are allowed for this option. Ignored
+#               for type Boolean(1|0|true|false) and Color. Values are
+#               are a | seperated list of values. For Integer types a
+#               range is allowed, specified as in 1:200 
+#Default - The default to be used. Must be in allowed values (duh)
+#Description - Short description, will be used in the GUI to change the
+#              option.
+#Name , Type  ,  Allow Values , Default  , Description
+MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
+[OPTIONS]
+ColumnStyle=false
+MainLineMoveColor=#000000
+VariationColor=#0000ff
+CommentColor=#00ff00
+NagColor=#ff0000
+HeaderColor=#0000ff
+[OUTPUTHEADER]
+<qt link="black">
+<qt>
+[OUTPUTFOOTER]
+</qt>
+[MARKUPTAGS]
+MarkupHeaderBlock=,<br>\n
+MarkupNotationBlock=, 
+MarkupResult=,
+MarkupMainLineMove=<a href="move%1"><mainlinemove>,</mainlinemove></a>
+MarkupVariationMove=<a href="move%1"><variationmove,</variationmove</a>
+MarkupMainLine=<div style="font-weight:600;color:black">,</div>\n
+MarkupVariationInline=<span style="font-weight:300;color:blue">,</span>\n
+MarkupVariationIndent=<blockquote style="margin-left:30px;font-weight:300;color:blue">,</blockquote>\n
+MarkupNag=<span style="font-weight:300;text-decoration:none;color:red;font-style:normal">,</span>\n
+MarkupColumnStyleMove=<td width=50%>,\n
+MarkupColumnStyleRow=<tr class="mainline">,\n
+MarkupColumnStyleMainline=<table border=0 width=50%>,</table>\n
+MarkupAnnotationInline=<a href="cmt%2"><annotationinline>,</annotationinline></a>\n
+MarkupAnnotationIndent=<a href="cmt%2"><annotationindent>,</annotationindent></a>\n
+MarkupHeaderLine=<pgnheader>[,]</pgnheader><br>\n
+MarkupHeaderTagName=,
+MarkupHeaderTagValue=","
+MarkupWhiteTag=,
+MarkupBlackTag=,
+MarkupEventTag=,
+MarkupDateTag=,
+MarkupSiteTag=,
+MarkupResultTag=,
+MarkupRoundTag=,
