@@ -317,7 +317,7 @@ void MainWindow::slotMoveViewUpdate()
 {
   QString white = m_game->tag("White");
   QString black = m_game->tag("Black");
-  QString players = tr("Game %1: <a href=\"player_%2\">%3</a> %4 - <a href=\"player_%5\">%6</a> %7")
+  QString players = tr("Game %1: <a href=\"player:%2\">%3</a> %4 - <a href=\"player:%5\">%6</a> %7")
       .arg(activeGameIndex() + 1).arg(white).arg(white)
       .arg(m_game->tag("WhiteElo")).arg(black).arg(black).arg(m_game->tag("BlackElo"));
   QString result = tr("%1(%2) %3").arg(m_game->tag("Result")).arg(m_game->plyCount() / 2)
@@ -335,14 +335,14 @@ void MainWindow::slotMoveViewUpdate()
     nextmove = m_game->isMainline() ? tr("(End of game)") : tr("(End of line)");
   QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
   if (!m_game->isMainline())
-    move.append(QString(" &nbsp; &nbsp; <a href=\"varexit\">%1</a>").arg(tr("(&lt;-Var)")));
+    move.append(QString(" &nbsp; &nbsp; <a href=\"var:exit\">%1</a>").arg(tr("(&lt;-Var)")));
   QString var;
   if (m_game->variationCount() > 1)
   {
     var = tr("<br>Variations: &nbsp; ");
     for (int i = 1; i < m_game->variationCount(); i++)
     {
-      var.append(QString("v%1: <a href=\"var_%2\">%3</a>").arg(i).arg(i).arg(m_game->moveToSan(Game::FullDetail, i)));
+      var.append(QString("v%1: <a href=\"var:%2\">%3</a>").arg(i).arg(i).arg(m_game->moveToSan(Game::FullDetail, i)));
       if (i != m_game->variationCount() - 1)
         var.append(" &nbsp; ");
      }
@@ -353,23 +353,23 @@ void MainWindow::slotMoveViewUpdate()
 
 void MainWindow::slotMoveViewLink(const QString& link)
 {
-  if (link == "backward")
+  QString command = link.section(':', 0, 0);
+  QString arg =  link.section(':', 1);
+  if (command == "backward")
     slotGameBrowse(IdPrevious);
-  else if (link == "forward")
+  else if (command == "forward")
     slotGameBrowse(IdNext);
-  else if (link == "varexit")
+  else if (command == "var")
   {
-    m_game->exitVariation();
+    if (arg == "exit")
+      m_game->exitVariation();
+    else
+      m_game->enterVariation(arg.toInt());
     m_boardView->setBoard(m_game->board());
   }
-  else if (link.startsWith("var_"))
+  else if (link.startsWith("player:"))
   {
-    m_game->enterVariation(link.section('_', 1).toInt());
-    m_boardView->setBoard(m_game->board());
-  }
-  else if (link.startsWith("player_"))
-  {
-    m_playerDialog->findPlayers(link.section('_', 1));
+    m_playerDialog->findPlayers(arg);
     m_playerDialog->show();
   }
 }
