@@ -1,5 +1,3 @@
 * Mate isn't detected properly
-
 * Too much Boardview flickering, specially in Qt 3.x
-
 * Save game dialog does nothing ATM
