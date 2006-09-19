@@ -54,6 +54,7 @@ void PlayerDialog::findPlayers(const QString& s)
   QString name = s;
   if (!name.isEmpty())
      name[0] = name[0].upper();
+  playerEdit->setText(s);
   QStringList players = m_database->findPlayers(name, m_showLimit);
   playerList->clear();
   for (QStringList::ConstIterator it = players.begin(); it != players.end(); ++it)
