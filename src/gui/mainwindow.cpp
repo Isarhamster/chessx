@@ -103,6 +103,8 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   /* Windows menu */
   QPopupMenu *view = new QPopupMenu(this);
   menuBar()->insertItem(tr("&View"), view);
+  m_menuDatabases = new QPopupMenu(view);
+  view->insertItem(tr("&Database"), m_menuDatabases);
   view->insertItem(tr("&Game list"), this, SLOT(slotFilterSwitch()), CTRL + Key_L);
   view->insertItem(tr("&Player Database..."), this, SLOT(slotPlayerDialog()), CTRL + SHIFT + Key_P);
 
@@ -186,6 +188,15 @@ MainWindow::~MainWindow()
   delete m_output;
 }
 
+QString databaseName(const QString& fname)
+{
+  QString name = fname.section('/', -1);
+  uint ext = name.findRev('.');
+  if (ext > name.length() - 5)
+    name = name.left(ext);
+  return name;
+}
+
 void MainWindow::closeEvent(QCloseEvent* e)
 {
   if (yesNo(tr("Do you want to quit?"))) {
@@ -239,15 +250,32 @@ void MainWindow::updateMenuRecent()
                              this, SLOT(slotFileOpenRecent(int)), 0, i);
 }
 
+void MainWindow::updateMenuDatabases()
+{
+  int i = 0;
+  QPtrListIterator<DatabaseInfo> it(m_databases);
+  DatabaseInfo* db;
+  m_menuDatabases->clear();
+  while ((db = it.current()))
+  {
+    int key = i < 10 ? CTRL + Key_1 + (i-1) : 0;
+    if (i)
+      m_menuDatabases->insertItem(QString("&%1: %2").arg(i).arg(databaseName(db->database()->name())),
+         this, SLOT(slotDatabaseChange(int)), key, i);
+    i++;
+    ++it;
+  }
+}
+
 bool MainWindow::openDatabase(const QString& fname)
 {
   m_databases.append(new DatabaseInfo(fname));
-  m_databases.last();
   m_recentFiles.append(fname);
   updateMenuRecent();
+  updateMenuDatabases();
   slotGameLoad(0);
   slotStatusMessage(tr("Database %1 opened successfully.").arg(fname.section('/', -1)));
-  slotDatabaseChange(m_databases.current());
+  slotDatabaseChanged();
   return true;
 }
 
@@ -271,7 +299,8 @@ void MainWindow::slotFileClose()
   if (m_databases.current() != m_databases.getFirst()) // Clipboard
   {
     m_databases.remove();
-    slotDatabaseChange(m_databases.current());
+    updateMenuDatabases();
+    slotDatabaseChanged();
   }
 }
 
@@ -486,15 +515,16 @@ void MainWindow::slotStatusMessage(const QString& msg)
   statusBar()->message(msg, 5000);
 }
 
-void MainWindow::slotDatabaseChange(DatabaseInfo* current)
+void MainWindow::slotDatabaseChanged()
 {
-  QString name = current->database()->name();
-  name = name.section('/', -1);
-  uint ext = name.findRev('.');
-  if (ext > name.length() - 5)
-    name = name.left(ext);
-  setCaption(tr("ChessX - %1").arg(name));
+  setCaption(tr("ChessX - %1").arg(databaseName(m_databases.current()->database()->name())));
   slotFilterUpdate();
   loadGame(gameIndex());
+}
+
+void MainWindow::slotDatabaseChange(int current)
+{
+  m_databases.find(m_databases.at(current));
+  slotDatabaseChanged();
 }
 
