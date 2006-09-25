@@ -90,6 +90,7 @@ public slots:
   void slotMoveViewUpdate();
   void slotMoveViewLink(const QString& link);
   void slotStatusMessage(const QString& msg);
+  void slotDatabaseChange(DatabaseInfo* current);
 signals:
   /* Re-read configuration */
   void reconfigure();
