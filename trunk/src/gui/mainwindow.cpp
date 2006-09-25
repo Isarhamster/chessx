@@ -247,7 +247,7 @@ bool MainWindow::openDatabase(const QString& fname)
   updateMenuRecent();
   slotGameLoad(0);
   slotStatusMessage(tr("Database %1 opened successfully.").arg(fname.section('/', -1)));
-  slotFilterUpdate();
+  slotDatabaseChange(m_databases.current());
   return true;
 }
 
@@ -271,7 +271,7 @@ void MainWindow::slotFileClose()
   if (m_databases.current() != m_databases.getFirst()) // Clipboard
   {
     m_databases.remove();
-    slotFilterUpdate();
+    slotDatabaseChange(m_databases.current());
   }
 }
 
@@ -484,5 +484,17 @@ void MainWindow::slotFilterLoad(int index)
 void MainWindow::slotStatusMessage(const QString& msg)
 {
   statusBar()->message(msg, 5000);
+}
+
+void MainWindow::slotDatabaseChange(DatabaseInfo* current)
+{
+  QString name = current->database()->name();
+  name = name.section('/', -1);
+  uint ext = name.findRev('.');
+  if (ext > name.length() - 5)
+    name = name.left(ext);
+  setCaption(tr("ChessX - %1").arg(name));
+  slotFilterUpdate();
+  loadGame(gameIndex());
 }
 
