@@ -16,6 +16,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#ifndef __PGNDATABASE_H__
+#define __PGNDATABASE_H__
  
 #include <qbitarray.h>
 #include <qfile.h>
@@ -180,3 +183,5 @@ class PgnDatabase : public Database
 		static const long MaxMoveStatCacheSize = 8388608; 
 		QCache<MoveStatCacheEntry> m_moveStatCache;
 };
+
+#endif

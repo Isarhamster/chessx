@@ -34,12 +34,21 @@ PgnDatabase::PgnDatabase(const QString& filename) : m_searchFilter(0), m_moveSta
 	m_gameOffsets = 0;
 	m_allocated = 0;
 	
+	
+	//move stat cache owns the items
+	m_moveStatCache.setAutoDelete(true);
+
 	//open file
-	m_file = new QFile(filename);
-	m_file->open(IO_ReadWrite);
 	m_filePos = 0;
 	m_currentLineSize = 0;
-	
+	if (filename.isNull())
+	   m_file = new QFile;
+	else 
+	   m_file = new QFile(filename);
+	if (!m_file->exists())
+	   return;
+	m_file->open(IO_ReadWrite);
+
 	//indexing game positions in the file, game contents are ignored
 	while(!m_file->atEnd()) {		
 		readJunk();
@@ -48,8 +57,6 @@ PgnDatabase::PgnDatabase(const QString& filename) : m_searchFilter(0), m_moveSta
 		readMoves();
 	}
 	
-	//move stat cache owns the items
-	m_moveStatCache.setAutoDelete(true);
 }
 
 PgnDatabase::~PgnDatabase()
