@@ -64,7 +64,8 @@ protected:
   void loadGame(int index);
   /** Update recent files menu */
   void updateMenuRecent();
-
+  /** Update recent files menu */
+  void updateMenuDatabases();
 public slots:
   void slotAbout();
   void slotPlayerDialog();
@@ -90,7 +91,8 @@ public slots:
   void slotMoveViewUpdate();
   void slotMoveViewLink(const QString& link);
   void slotStatusMessage(const QString& msg);
-  void slotDatabaseChange(DatabaseInfo* current);
+  void slotDatabaseChange(int current);
+  void slotDatabaseChanged();
 signals:
   /* Re-read configuration */
   void reconfigure();
@@ -110,6 +112,7 @@ private:
   QLabel* m_statusFilter;
   HistoryList m_recentFiles;
   QPopupMenu* m_menuRecent;
+  QPopupMenu* m_menuDatabases;
   /* Local variables */
   Output* m_output;
   QPtrList<DatabaseInfo> m_databases;
