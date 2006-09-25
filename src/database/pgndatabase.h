@@ -45,7 +45,8 @@ class PgnDatabase : public Database
 		PgnDatabase(const QString& filename);
 		/** Destructor */
 		~PgnDatabase();
-		
+		/** File-based database name */
+		QString name() const;
 		//game retrieval & storage
 		/** Loads a game from the given position, returns true if successful */
 		bool load(int index, Game& game);
