@@ -15,6 +15,9 @@
  *                                                                         *
  ***************************************************************************/
  
+#ifndef __DATABASE_H__
+#define __DATABASE_H__
+
 #include <qstring.h>
 #include <qt34/qvaluevector.h>
 
@@ -80,3 +83,6 @@ class Database
 		/** Returns move statistics for the given position */
 		virtual MoveStatList moveStats(const MoveList& moveList) = 0;
 };
+
+#endif
+

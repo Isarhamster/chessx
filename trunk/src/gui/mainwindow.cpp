@@ -18,6 +18,7 @@
 #include "boardview.h"
 #include "chessbrowser.h"
 #include "enginesetup.h"
+#include "databaseinfo.h"
 #include "game.h"
 #include "gamelist.h"
 #include "helpwindow.h"
@@ -54,8 +55,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   m_helpWindow = new HelpWindow();
 
   /* Active database */
-  m_database = 0;
-  m_gameIndex = -1;
+  m_databases.append(new DatabaseInfo);
 
   /* Save dialog */
   m_saveDialog = new SaveDialog;
@@ -133,9 +133,6 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   }
   updateMenuRecent();
 
-  /* Game */
-  m_game = new Game;
-
   /* Output */
   m_output = new Output(Output::NotationWidget);
 
@@ -164,8 +161,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   m_layout->addWidget(m_moveView = new ChessBrowser(frame, "MoveView"));
   m_moveView->setMaximumHeight(100);
   connect(m_moveView, SIGNAL(linkPressed(const QString&)), SLOT(slotMoveViewLink(const QString&)));
-  m_boardView->setBoard(m_game->board());
-
+  m_boardView->setBoard(game()->board());
 
   /* Randomize */
   srand(time(0));
@@ -187,9 +183,7 @@ MainWindow::~MainWindow()
   delete m_playerDialog;
   delete m_playerDatabase;
   delete m_helpWindow;
-  delete m_game;
   delete m_output;
-
 }
 
 void MainWindow::closeEvent(QCloseEvent* e)
@@ -214,17 +208,27 @@ bool MainWindow::yesNo(const QString& question, QMessageBox::Icon icon) const
   return mb.exec() == QMessageBox::Yes;
 }
 
+Database* MainWindow::database()
+{
+  return m_databases.current()->database();
+}
+
+Game* MainWindow::game()
+{
+  return m_databases.current()->currentGame();
+}
+
+int MainWindow::gameIndex() const
+{
+  return m_databases.current()->currentIndex();
+}
+
 void MainWindow::loadGame(int index)
 {
-  if (database() && activeGameIndex() != index)
-  {
-    database()->load(index, *m_game);
-    m_gameIndex = index;
-    m_game->moveToStart();
-    m_boardView->setBoard(m_game->board());
-    slotMoveViewUpdate();
-    slotGameView();
-  }
+  m_databases.current()->loadGame(index);
+  m_boardView->setBoard(game()->board());
+  slotMoveViewUpdate();
+  slotGameView();
 }
 
 void MainWindow::updateMenuRecent()
@@ -233,6 +237,42 @@ void MainWindow::updateMenuRecent()
   for (int i = 0; i < 5 && i < m_recentFiles.count(); i++)
     m_menuRecent->insertItem(QString("&%1: %2").arg(i+1).arg(m_recentFiles[i]),
                              this, SLOT(slotFileOpenRecent(int)), 0, i);
+}
+
+bool MainWindow::openDatabase(const QString& fname)
+{
+  m_databases.append(new DatabaseInfo(fname));
+  m_databases.last();
+  m_recentFiles.append(fname);
+  updateMenuRecent();
+  slotGameLoad(0);
+  slotStatusMessage(tr("Database %1 opened successfully.").arg(fname.section('/', -1)));
+  slotFilterUpdate();
+  return true;
+}
+
+void MainWindow::slotFileOpen()
+{
+  QString file = QFileDialog::getOpenFileName(QString::null,
+     tr("PGN Database (*.pgn)"), this, "open database", tr("Open database"));
+  if (!file.isEmpty())
+    openDatabase(file);
+}
+
+void MainWindow::slotFileOpenRecent(int id)
+{
+  QString file = m_recentFiles[id];
+  if (!file.isEmpty())
+    openDatabase(file);
+}
+
+void MainWindow::slotFileClose()
+{
+  if (m_databases.current() != m_databases.getFirst()) // Clipboard
+  {
+    m_databases.remove();
+    slotFilterUpdate();
+  }
 }
 
 void MainWindow::slotAbout()
@@ -303,47 +343,49 @@ void MainWindow::slotHelp()
 
 void MainWindow::slotMove(Square from, Square to)
 {
-  Board board = m_game->board();
+  Board board = game()->board();
   Move m(board, from, to);
   if (board.isLegal(m))
   {
-    m_game->replaceMove(m);
-    m_game->moveTo(1);
-    m_boardView->setBoard(m_game->board());
+    game()->replaceMove(m);
+    game()->moveTo(1);
+    m_boardView->setBoard(game()->board());
   }
 }
 
 void MainWindow::slotMoveViewUpdate()
 {
-  QString white = m_game->tag("White");
-  QString black = m_game->tag("Black");
+  Game* g = game();
+  QString white = g->tag("White");
+  QString black = g->tag("Black");
   QString players = tr("Game %1: <a href=\"player:%2\">%3</a> %4 - <a href=\"player:%5\">%6</a> %7")
-      .arg(activeGameIndex() + 1).arg(white).arg(white)
-      .arg(m_game->tag("WhiteElo")).arg(black).arg(black).arg(m_game->tag("BlackElo"));
-  QString result = tr("%1(%2) %3").arg(m_game->tag("Result")).arg(m_game->plyCount() / 2)
-      .arg(m_game->tag("ECO"));
-  QString header = tr("%1, %2, %3, round %4").arg(m_game->tag("Event")).arg(m_game->tag("Site"))
-      .arg(m_game->tag("Date")).arg(m_game->tag("Round"));
+      .arg(gameIndex() + 1).arg(white).arg(white)
+      .arg(g->tag("WhiteElo")).arg(black).arg(black).arg(g->tag("BlackElo"));
+  QString result = tr("%1(%2) %3").arg(g->tag("Result")).arg(g->plyCount() / 2)
+      .arg(g->tag("ECO"));
+  QString header = tr("%1, %2, %3, round %4").arg(g->tag("Event")).arg(g->tag("Site"))
+      .arg(g->tag("Date")).arg(g->tag("Round"));
   QString lastmove, nextmove;
-  if (!m_game->atStart())
-    lastmove = QString("<a href=\"backward\">%1</a>").arg(m_game->previousMoveToSan(Game::FullDetail));
+  if (!g->atStart())
+    lastmove = QString("<a href=\"backward\">%1</a>").arg(g->previousMoveToSan(Game::FullDetail));
   else
     lastmove = tr("(Start of game)");
-  if (!m_game->atEnd())
-    nextmove = QString("<a href=\"forward\">%1</a>").arg(m_game->moveToSan(Game::FullDetail));
+  if (!g->atEnd())
+    nextmove = QString("<a href=\"forward\">%1</a>").arg(g->moveToSan(Game::FullDetail));
   else
-    nextmove = m_game->isMainline() ? tr("(End of game)") : tr("(End of line)");
+    nextmove = g->isMainline() ? tr("(End of game)") : tr("(End of line)");
   QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
-  if (!m_game->isMainline())
+  if (!g->isMainline())
     move.append(QString(" &nbsp; &nbsp; <a href=\"var:exit\">%1</a>").arg(tr("(&lt;-Var)")));
   QString var;
-  if (m_game->variationCount() > 1)
+  if (g->variationCount() > 1)
   {
     var = tr("<br>Variations: &nbsp; ");
-    for (int i = 1; i < m_game->variationCount(); i++)
+    for (int i = 1; i < g->variationCount(); i++)
     {
-      var.append(QString("v%1: <a href=\"var:%2\">%3</a>").arg(i).arg(i).arg(m_game->moveToSan(Game::FullDetail, i)));
-      if (i != m_game->variationCount() - 1)
+      var.append(QString("v%1: <a href=\"var:%2\">%3</a>").arg(i).arg(i)
+         .arg(g->moveToSan(Game::FullDetail, i)));
+      if (i != g->variationCount() - 1)
         var.append(" &nbsp; ");
      }
   }
@@ -362,10 +404,10 @@ void MainWindow::slotMoveViewLink(const QString& link)
   else if (command == "var")
   {
     if (arg == "exit")
-      m_game->exitVariation();
+      game()->exitVariation();
     else
-      m_game->enterVariation(arg.toInt());
-    m_boardView->setBoard(m_game->board());
+      game()->enterVariation(arg.toInt());
+    m_boardView->setBoard(game()->board());
   }
   else if (link.startsWith("player:"))
   {
@@ -374,52 +416,13 @@ void MainWindow::slotMoveViewLink(const QString& link)
   }
 }
 
-void MainWindow::slotFileOpen()
-{
-  QString file = QFileDialog::getOpenFileName(QString::null,
-     tr("PGN Database (*.pgn)"), this, "open database", tr("Open database"));
-  if (!file.isEmpty())
-  {
-    slotFileClose();
-    m_database = new PgnDatabase(file);
-    m_recentFiles.append(file);
-    slotGameLoad(0);
-    slotFilterUpdate();
-    updateMenuRecent();
-    slotStatusMessage(tr("File %1 opened successfully.").arg(file.section('/', -1)));
-  }
-}
-
-void MainWindow::slotFileOpenRecent(int id)
-{
-  QString file = m_recentFiles[id];
-  if (!file.isEmpty())
-  {
-    slotFileClose();
-    m_database = new PgnDatabase(file);
-    m_recentFiles.append(file);
-    updateMenuRecent();
-    slotGameLoad(0);
-    slotFilterUpdate();
-    slotStatusMessage(tr("File %1 opened successfully.").arg(file.section('/', -1)));
-  }
-}
-
-
-void MainWindow::slotFileClose()
-{
-  delete m_database;
-  m_database = 0;
-  slotFilterUpdate();
-}
-
 const int IdChange[7] = {-99999999, 99999999, 1, -1, 10, -10, 0};
 
 void MainWindow::slotGameLoad(int id)
 {
   if (!database())
     return;
-  int index = activeGameIndex() + IdChange[id];
+  int index = gameIndex() + IdChange[id];
   if (id == IdRandom)
     index = rand() % database()->count();
   if (index < 0) index = 0;
@@ -430,23 +433,23 @@ void MainWindow::slotGameLoad(int id)
 void MainWindow::slotGameBrowse(int id)
 {
   int change = IdChange[id];
-  if (m_game->moveTo(change))
+  if (game()->moveTo(change))
   {
-    m_boardView->setBoard(m_game->board());
+    m_boardView->setBoard(game()->board());
   }
 }
 
 void MainWindow::slotGameSave()
 {
-  if (m_saveDialog->exec(m_game) == QMessageBox::Ok)
+  if (m_saveDialog->exec(game()) == QMessageBox::Ok)
     slotMoveViewUpdate();
 }
 
 void MainWindow::slotGameView()
 {
-  int ply = m_game->ply();
-  m_gameView->setText(m_output->output(m_game));
-  m_game->moveToPly(ply);
+  int ply = game()->ply();
+  m_gameView->setText(m_output->output(game()));
+  game()->moveToPly(ply);
 }
 
 void MainWindow::slotGameViewToggle()
@@ -456,12 +459,12 @@ void MainWindow::slotGameViewToggle()
   else
     m_gameView->setTextFormat(Qt::RichText);
   m_gameView->clear();
-  m_gameView->setText(m_output->output(m_game));
+  m_gameView->setText(m_output->output(game()));
 }
 
 void MainWindow::slotFilterSwitch()
 {
-  if (m_gameList->isVisible()) 
+  if (m_gameList->isVisible())
     m_gameList->hide();
   else 
     m_gameList->show();
@@ -469,7 +472,7 @@ void MainWindow::slotFilterSwitch()
 
 void MainWindow::slotFilterUpdate()
 {
-  m_gameList->setDatabase(database());
+  m_gameList->setDatabase(m_databases.current());
 }
 
 void MainWindow::slotFilterLoad(int index)
