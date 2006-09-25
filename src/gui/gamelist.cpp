@@ -21,11 +21,13 @@
 #include <qlistview.h>
 #include <qscrollbar.h>
 
+#include "databaseinfo.h"
 #include "database.h"
 #include "gamelist.h"
 #include "settings.h"
 
-GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m_count(0), m_pageSize(1)
+GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m_count(0),
+  m_pageSize(1), m_database(0)
 {
   setCaption(tr("Game list"));
   setMinimumSize(600, 400);
@@ -76,7 +78,7 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
 void GameList::createItem(int index)
 {
   Game g;
-  if (!m_database || !m_database->loadHeaders(index, g))
+  if (!m_database || !m_database->database()->loadHeaders(index, g))
     return;
   QListViewItem* item = new QListViewItem(m_list, m_list->lastItem());
   item->setText(Index, QString::number(index+1));
@@ -106,7 +108,7 @@ void GameList::updateScrollbar()
 
 void GameList::updateList()
 {
-  m_count = m_database ? m_database->count() : 0;
+  m_count = m_database ? m_database->database()->count() : 0;
   m_scroll->setMaxValue(m_count ? m_count - 1 : 0);
   if (!m_count)
     m_list->clear();
@@ -148,7 +150,7 @@ void GameList::itemSelected(QListViewItem* item)
   emit selected(item->text(Index).toInt() - 1);
 }
 
-void GameList::setDatabase(Database* database)
+void GameList::setDatabase(DatabaseInfo* database)
 {
   m_database = database;
   updateList();

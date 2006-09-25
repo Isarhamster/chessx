@@ -22,7 +22,7 @@
 class QListView;
 class QListViewItem;
 class QScrollBar;
-class Database;
+class DatabaseInfo;
 
 class GameList : public QWidget
 {
@@ -33,7 +33,7 @@ public:
   /** Set current database */
 public slots:
   /** Set new database (or null for no database) */
-  void setDatabase(Database* database);
+  void setDatabase(DatabaseInfo* database);
   /** Scroll to show item @p index */
   void scrollList(int index);
   /** Read current configuration */
@@ -59,7 +59,7 @@ private:
   int m_count;
   int m_pageSize;
   int m_itemHeight;
-  Database* m_database;
+  DatabaseInfo* m_database;
 };
 
 #endif

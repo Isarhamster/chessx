@@ -20,6 +20,7 @@
 
 #include <qmainwindow.h>
 #include <qmessagebox.h>
+#include <qvaluelist.h>
 
 #include "common.h"
 #include "historylist.h"
@@ -31,6 +32,7 @@ class SaveDialog;
 class HelpWindow;
 class BoardView;
 class Game;
+class DatabaseInfo;
 class Database;
 class Output;
 
@@ -50,10 +52,14 @@ public:
 protected:
   bool yesNo(const QString& quetion, QMessageBox::Icon icon = QMessageBox::Information) const;
   void closeEvent(QCloseEvent* e);
-  /** @return active database */
-  Database* database()  {return m_database;}
+/** @return active database */
+  Database* database();
+  /** @return active game */
+  Game* game();
   /** @return index of active game */
-  int activeGameIndex() const {return m_gameIndex;}
+  int gameIndex() const;
+  /** Open database */
+  bool openDatabase(const QString& fname);
   /** Load given game */
   void loadGame(int index);
   /** Update recent files menu */
@@ -90,6 +96,7 @@ signals:
 
 private:
   enum {IdFirst, IdLast, IdNext, IdPrevious, IdNext5, IdPrevious5, IdRandom};
+  /* Widget variables */
   PlayerDatabase* m_playerDatabase;
   PlayerDialog* m_playerDialog;
   GameList* m_gameList;
@@ -100,12 +107,11 @@ private:
   ChessBrowser* m_gameView;
   QVBoxLayout* m_layout;
   QLabel* m_statusFilter;
-  Game* m_game;
-  Database* m_database;
-  int m_gameIndex;
   HistoryList m_recentFiles;
   QPopupMenu* m_menuRecent;
+  /* Local variables */
   Output* m_output;
+  QPtrList<DatabaseInfo> m_databases;
 };
 
 

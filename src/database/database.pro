@@ -1,4 +1,4 @@
-# Plik utworzony przez mened?era projektów kdevelopa
+# Plik utworzony przez menad?era projektów kdevelopa
 # ------------------------------------------- 
 # Podkatalog wzgl?dem g?ównego katalogu projektu: ./src/database
 # Cel to biblioteka database
@@ -27,7 +27,8 @@ HEADERS += board.h \
            spellchecker.h \
            historylist.h \
            output.h \
-           outputoptions.h
+           outputoptions.h \
+           databaseinfo.h 
 SOURCES += board.cpp \
            move.cpp \
            common.cpp \
@@ -52,7 +53,8 @@ SOURCES += board.cpp \
            spellchecker.cpp \
            historylist.cpp \
            output.cpp \
-           outputoptions.cpp
+           outputoptions.cpp \
+           databaseinfo.cpp 
 TARGET = database
 CONFIG += release warn_on qt staticlib
 TEMPLATE = lib
