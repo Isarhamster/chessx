@@ -1014,3 +1014,8 @@ void PgnDatabase::writeVariation(Game& game)
 		game.forward();
 	}
 }
+
+QString PgnDatabase::name() const
+{
+  return m_filename;
+}

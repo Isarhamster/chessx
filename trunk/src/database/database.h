@@ -37,6 +37,8 @@ class Database
 	public:	
 		/** Virtual destructor */
 		virtual ~Database();
+		/** File-based database name */
+		virtual QString name() const = 0;
 		//game retrieval & storage
 		/** Loads a game from the given position, returns true if successful */
 		virtual bool load(int index, Game& game) = 0;
