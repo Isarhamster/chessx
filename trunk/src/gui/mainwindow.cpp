@@ -46,14 +46,9 @@
 #include <qsplitter.h>
 #include <qaction.h>
 
-MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
+MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose),
+  m_playerDialog(0), m_helpWindow(0)
 {
-  /* Database initialization */
-  m_playerDatabase = new PlayerDatabase;
-  m_playerDatabase->open("../tests/cppunit/data/small/players");
-  m_playerDialog = new PlayerDialog(m_playerDatabase, this);
-  m_helpWindow = new HelpWindow();
-
   /* Active database */
   m_databases.append(new DatabaseInfo);
 
@@ -112,7 +107,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   QPopupMenu *settings = new QPopupMenu(this);
   menuBar()->insertItem(tr("&Settings"), settings);
   settings ->insertItem(tr("&Configure ChessX..."), this, SLOT(slotConfigure()));
-  settings ->insertItem(tr("Chess &Engines..."), this, SLOT(slotConfigureChessEngines()));
+//  settings ->insertItem(tr("Chess &Engines..."), this, SLOT(slotConfigureChessEngines()));
   settings ->insertItem(tr("&Flip board"), this, SLOT(slotConfigureFlip()), CTRL + Key_B);
 
   /* Help menu */
@@ -169,8 +164,6 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose)
   srand(time(0));
 
   /* Restoring layouts */
-  AppSettings->readLayout(m_playerDialog, Settings::Show);
-  AppSettings->readLayout(m_helpWindow, Settings::Show);
   AppSettings->readLayout(this);
   emit reconfigure();
 
@@ -183,7 +176,6 @@ MainWindow::~MainWindow()
 {
   delete m_saveDialog;
   delete m_playerDialog;
-  delete m_playerDatabase;
   delete m_helpWindow;
   delete m_output;
 }
@@ -279,6 +271,29 @@ bool MainWindow::openDatabase(const QString& fname)
   return true;
 }
 
+PlayerDialog* MainWindow::playerDialog()
+{
+  if (!m_playerDialog)
+  {
+    PlayerDatabase* db = new PlayerDatabase;
+    db->open("../tests/cppunit/data/small/players");
+    m_playerDialog = new PlayerDialog(db, this);
+    AppSettings->readLayout(m_playerDialog, Settings::Show);
+  }
+  return m_playerDialog;
+}
+
+HelpWindow* MainWindow::helpWindow()
+{
+  if (!m_helpWindow)
+  {
+    m_helpWindow = new HelpWindow();
+    AppSettings->readLayout(m_helpWindow, Settings::Show);
+  }
+  return m_helpWindow;
+}
+
+
 void MainWindow::slotFileOpen()
 {
   QString file = QFileDialog::getOpenFileName(QString::null,
@@ -318,7 +333,7 @@ void MainWindow::slotAbout()
 
 void MainWindow::slotPlayerDialog()
 {
-  m_playerDialog->show();
+  playerDialog()->show();
 }
 
 void MainWindow::slotConfigure()
@@ -330,9 +345,8 @@ void MainWindow::slotConfigure()
 
 void MainWindow::slotConfigureChessEngines()
 {
-	EngineSetupDialog* dialog = new EngineSetupDialog();
-	dialog->exec();
-	delete dialog;
+  EngineSetupDialog dlg;
+  dlg.exec();
 }
 
 void MainWindow::slotConfigureFlip()
@@ -365,9 +379,7 @@ void MainWindow::slotEditBoard()
 
 void MainWindow::slotHelp()
 {
-  if(!m_helpWindow->winId())
-    m_helpWindow = new HelpWindow();
-  m_helpWindow->show();
+  helpWindow()->show();
 }
 
 void MainWindow::slotMove(Square from, Square to)
@@ -440,8 +452,8 @@ void MainWindow::slotMoveViewLink(const QString& link)
   }
   else if (link.startsWith("player:"))
   {
-    m_playerDialog->findPlayers(arg);
-    m_playerDialog->show();
+    playerDialog()->findPlayers(arg);
+    playerDialog()->show();
   }
 }
 
@@ -527,4 +539,5 @@ void MainWindow::slotDatabaseChange(int current)
   m_databases.find(m_databases.at(current));
   slotDatabaseChanged();
 }
+
 

@@ -42,6 +42,8 @@ Settings::~Settings()
 
 void Settings::readLayout(QWidget* w, unsigned flags)
 {
+  if (!w)
+    return;
   QString prefix = QString("/Geometry/%1/").arg(w->name());
   beginGroup(prefix);
   int x = readNumEntry("x", w->x());
@@ -57,6 +59,8 @@ void Settings::readLayout(QWidget* w, unsigned flags)
 
 void Settings::writeLayout(const QWidget* w)
 {
+  if (!w)
+    return;
   QString prefix = QString("/Geometry/%1/").arg(w->name());
   beginGroup(prefix);
   writeEntry("x", w->x());
