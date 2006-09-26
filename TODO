@@ -1,14 +1,16 @@
 1) Before First Alpha Release:
-   * Game editing and saving
    * Port to Qt4?
    * Filter and search class fix-up
    * Toolbar
-   * Graphics for tool buttons
+      - graphics
+      - configuration
    * GameView
       - add custom tags to GameView
       - make GameView tags configurable (color, font)
-      - bugfix: GameView/MoveView click
-      - bugfix: cleanup on database close
+      - make moves and tags clickable
+      - cleanup on database close
+   * GameList
+      - add basic search capabilities
    * Engine
       - GUI
       - starting analysis
@@ -21,25 +23,31 @@
       - modifying comments
       - editing variations
       - detecting & handling modified game
+      - ECO classifier
    * MainWindow
       - menus->actions (possible toolbars)
       - actions handling/creating->mainactions.cpp
       - configurable key shortcuts
    * Databases
       - OpenDatabase class
-      - multiple databases; switching  : DONE ?
-      - triggering & handling databaseChanged() event  : DONE ?
+      - multiple databases; switching  : DONE
+      - triggering & handling databaseChanged() event  : DONE
    * File browser
       - display file info
       - recursively find database files
 
 2) After First Alpha Release:
    * Native database format
+   * Game sorting
+   * Spellchecking
+   * Playing/training against engine
+   * Tournament tables
+   * ELO rating calculation
 
 3) Ideas/Suggestions. Non critical
    * Ideas for database switching. 
       - Database window like Scid
       - Dockable toolbar with a tool button for each database (My favourite idea)
       - Tab bar with a tab for each database
-
-
+   * Format for electronic books
+   * Format for exercises, tactics/endgmae training etc.
