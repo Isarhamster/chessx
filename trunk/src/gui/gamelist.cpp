@@ -20,6 +20,8 @@
 #include <qheader.h>
 #include <qlistview.h>
 #include <qscrollbar.h>
+#include <qstatusbar.h>
+#include <qvbox.h>
 
 #include "databaseinfo.h"
 #include "database.h"
@@ -32,9 +34,10 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
   setCaption(tr("Game list"));
   setMinimumSize(600, 400);
 
-  QHBoxLayout* hbox = new QHBoxLayout(this);
+  QVBoxLayout* vbox = new QVBoxLayout(this);
 
-  m_list = new QListView(this);
+  QHBox* hbox = new QHBox(this);
+  m_list = new QListView(hbox);
   m_list->addColumn(tr("Index"));
   m_list->addColumn(tr("White"));
   m_list->addColumn(tr("Black"));
@@ -51,16 +54,18 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
   m_list->setAllColumnsShowFocus(true);
   m_list->setHScrollBarMode(QScrollView::AlwaysOff);
   m_list->setVScrollBarMode(QScrollView::AlwaysOff);
-  hbox->addWidget(m_list);
-
   new QListViewItem(m_list, QString());
   m_itemHeight = m_list->firstChild()->height();
   m_list->clear();
   m_list->setSorting(-1);
 
-  m_scroll = new QScrollBar(0, 0, 1, 10, 0, Qt::Vertical, this);
+  m_scroll = new QScrollBar(0, 0, 1, 10, 0, Qt::Vertical, hbox);
   m_scroll->setTracking(true);
-  hbox->addWidget(m_scroll);
+
+  vbox->addWidget(hbox);
+
+  m_status = new QStatusBar(this);
+  vbox->addWidget(m_status);
 
   /* Keyboard filter */
   m_list->installEventFilter(this);
@@ -114,6 +119,7 @@ void GameList::updateList()
     m_list->clear();
   else
     scrollList(0);
+  m_status->message(QString("%1 games").arg(m_count));
 }
 
 void GameList::scrollList(int page)

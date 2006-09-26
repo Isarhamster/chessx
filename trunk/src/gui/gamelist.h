@@ -22,6 +22,7 @@
 class QListView;
 class QListViewItem;
 class QScrollBar;
+class QStatusBar;
 class DatabaseInfo;
 
 class GameList : public QWidget
@@ -56,6 +57,7 @@ private:
   virtual bool eventFilter(QObject* o, QEvent* e);
   QListView* m_list;
   QScrollBar* m_scroll;
+  QStatusBar* m_status;
   int m_count;
   int m_pageSize;
   int m_itemHeight;
