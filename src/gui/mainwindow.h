@@ -25,7 +25,6 @@
 #include "common.h"
 #include "historylist.h"
 
-class PlayerDatabase;
 class PlayerDialog;
 class GameList;
 class SaveDialog;
@@ -66,6 +65,10 @@ protected:
   void updateMenuRecent();
   /** Update recent files menu */
   void updateMenuDatabases();
+  /** Player dialog (created when used first) */
+  PlayerDialog* playerDialog();
+  /** Help window (created when used first) */
+  HelpWindow* helpWindow();
 public slots:
   void slotAbout();
   void slotPlayerDialog();
@@ -100,7 +103,6 @@ signals:
 private:
   enum {IdFirst, IdLast, IdNext, IdPrevious, IdNext5, IdPrevious5, IdRandom};
   /* Widget variables */
-  PlayerDatabase* m_playerDatabase;
   PlayerDialog* m_playerDialog;
   GameList* m_gameList;
   SaveDialog* m_saveDialog;
