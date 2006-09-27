@@ -41,6 +41,7 @@
    * Game sorting
    * Spellchecking
    * Playing/training against engine
+      - Blunder check
    * Tournament tables
    * ELO rating calculation
 
