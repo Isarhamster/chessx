@@ -35,6 +35,7 @@ void PgnDatabaseTest::setUp() {}
 void PgnDatabaseTest::tearDown() {
     QDir toRemove;
     toRemove.remove( "./data/new.pgn" );
+//    toRemove.remove( "./data/new1.pgn" );
 }
 
 void PgnDatabaseTest::testCreateDatabase() {
@@ -43,19 +44,36 @@ void PgnDatabaseTest::testCreateDatabase() {
     delete db;
 }
 
+void PgnDatabaseTest::testName() {
+    PgnDatabase* db = new PgnDatabase( "./data/game1.pgn" );
+    const QString name = QString("./data/game1.pgn");
+    CPPUNIT_ASSERT_EQUAL( name , db->name() );
+    delete db;
+
+}
+
+void PgnDatabaseTest::testLoad() {
+    PgnDatabase* db = new PgnDatabase( "./data/game1.pgn" );
+    Game game;
+    CPPUNIT_ASSERT_EQUAL( 2 , db->count() );
+    CPPUNIT_ASSERT_EQUAL( true , db->load( 1, game ) );
+    CPPUNIT_ASSERT_EQUAL( true , db->load( 0, game ) );
+    CPPUNIT_ASSERT_EQUAL( false , db->load( 2, game ) );
+    delete db;
+
+}
+
 void PgnDatabaseTest::testCopyGameIntoNewDB() {
     PgnDatabase* db = new PgnDatabase( "./data/game1.pgn" );
     Game game;
     bool success = db->load( 1, game );
     PgnDatabase* dbNew = new PgnDatabase( "./data/new.pgn" );
-    dbNew->add
-    ( game );
+    dbNew->add( game );
     success = db->load( 0, game );
-    dbNew->add
-    ( game );
+    dbNew->add( game );
     CPPUNIT_ASSERT_EQUAL( 2 , dbNew->count() );
-    CPPUNIT_FAIL( "Game index 1 - is the second game in the db! Is this OK?" );
-    delete dbNew, db;
+    delete dbNew;
+    delete db;
 }
 
 void PgnDatabaseTest::testRemoveGame() {
@@ -84,4 +102,20 @@ void PgnDatabaseTest::testExecuteSearch() {
     CPPUNIT_ASSERT_EQUAL_MESSAGE( "Result search: ", 1, filter1.count() );
     delete db;
 }
+
+void PgnDatabaseTest::testSave() {
+    PgnDatabase* db = new PgnDatabase( "./data/game1.pgn" );
+    Game game;
+    CPPUNIT_ASSERT_EQUAL( true, db->load( 1, game ) );
+    
+    PgnDatabase* dbNew = new PgnDatabase( "./data/new1.pgn" );
+    
+    CPPUNIT_ASSERT_EQUAL( true, dbNew->save( 0, game ) );
+    CPPUNIT_ASSERT_EQUAL( true, db->load( 0, game ) );
+    CPPUNIT_ASSERT_EQUAL( true, dbNew->save( 1, game ) );
+    CPPUNIT_ASSERT_EQUAL( 2 , dbNew->count() );
+    delete dbNew;
+    delete db;
+}
+
 
