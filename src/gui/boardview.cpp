@@ -127,6 +127,18 @@ void BoardView::mouseReleaseEvent(QMouseEvent* e)
   }
 }
 
+void BoardView::wheelEvent(QWheelEvent* e)
+{
+  int change = e->delta() > 0;
+  if (e->state() & ControlButton)
+    change += BrowseNextMoves;
+  else if (e->state() & AltButton)
+    change += BrowseFirstMove;
+  else
+    change += BrowseNextMove;
+  emit wheelScrolled(change);
+}
+
 bool BoardView::setTheme(const QString& pieceFile, const QString& boardFile)
 {
   bool result = m_theme->load(pieceFile, boardFile);
@@ -235,5 +247,13 @@ void BoardView::exportPixmaps(const QString& dir)
   pixmap.save(dir + "/wsq.png", "PNG");
   copyBlt(&pixmap, 0, 0, &(m_theme->square(1)), 0, 0, size, size);
   pixmap.save(dir + "/bsq.png", "PNG");
+}
+
+int BoardView::movesBrowsed(int dir)
+{
+  const int Browse[7] = {-999, 999, 1, -1, 5, -5, 0};
+  if (dir < 7)
+    return Browse[dir];
+  return 0;
 }
 

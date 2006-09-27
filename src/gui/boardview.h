@@ -28,6 +28,9 @@ class BoardTheme;
    The BoardView class represents a widget for displaying current position on the screen.
 */
 
+enum BrowseDir {BrowseFirstMove, BrowseLastMove, BrowseNextMove,
+     BrowsePreviousMove, BrowseNextMoves, BrowsePreviousMoves};
+
 class BoardView : public QWidget
 {
   Q_OBJECT
@@ -60,6 +63,8 @@ public:
   Square selectedSquare() const;
   /** Export pictures for website editing */
   void exportPixmaps(const QString& dir);
+  /** Translate browse direction to real move change */
+  static int movesBrowsed(int dir);
 
 public slots:
   /** Reconfigure current theme. */
@@ -70,6 +75,8 @@ signals:
   void moveMade(Square from, Square to);
   /** User clicked destination square */
   void moveMade(Square to);
+  /** User moved mouse wheel */
+  void wheelScrolled(int dir);
   /** Board was modified by setBoard() */
   void changed();
 
@@ -86,6 +93,8 @@ protected:
   virtual void resizeEvent(QResizeEvent*);
   /** Handle mouse events */
   virtual void mouseReleaseEvent(QMouseEvent* e);
+  /** Handle mouse wheel events */
+  virtual void wheelEvent(QWheelEvent* e);
 
 private:
   Board m_board;
