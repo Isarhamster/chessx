@@ -86,12 +86,12 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose),
   loadMenu->insertItem(tr("&Random"), this, SLOT(slotGameLoad(int)), CTRL + Key_Question, IdRandom);
   gameMenu->insertItem(tr("&Load..."), loadMenu);
   QPopupMenu* goMenu = new QPopupMenu(this);
-  goMenu->insertItem(tr("&Start"), this, SLOT(slotGameBrowse(int)), Key_Home, IdFirst);
-  goMenu->insertItem(tr("&End"), this, SLOT(slotGameBrowse(int)), Key_End, IdLast);
-  goMenu->insertItem(tr("&Next move"), this, SLOT(slotGameBrowse(int)), Key_Right, IdNext);
-  goMenu->insertItem(tr("&Previous move"), this, SLOT(slotGameBrowse(int)), Key_Left, IdPrevious);
-  goMenu->insertItem(tr("5 moves &forward"), this, SLOT(slotGameBrowse(int)), Key_Down, IdNext5);
-  goMenu->insertItem(tr("5 moves &backward"), this, SLOT(slotGameBrowse(int)), Key_Up, IdPrevious5);
+  goMenu->insertItem(tr("&Start"), this, SLOT(slotGameBrowse(int)), Key_Home, BrowseFirstMove);
+  goMenu->insertItem(tr("&End"), this, SLOT(slotGameBrowse(int)), Key_End, BrowseLastMove);
+  goMenu->insertItem(tr("&Next move"), this, SLOT(slotGameBrowse(int)), Key_Right, BrowseNextMove);
+  goMenu->insertItem(tr("&Previous move"), this, SLOT(slotGameBrowse(int)), Key_Left, BrowsePreviousMove);
+  goMenu->insertItem(tr("5 moves &forward"), this, SLOT(slotGameBrowse(int)), Key_Down, BrowseNextMoves);
+  goMenu->insertItem(tr("5 moves &backward"), this, SLOT(slotGameBrowse(int)), Key_Up, BrowsePreviousMoves);
   gameMenu->insertItem(tr("&Go..."), goMenu);
   gameMenu->insertItem(tr("&Save...."), this, SLOT(slotGameSave()), CTRL + Key_S);
 
@@ -146,6 +146,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose),
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
   connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
+  connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotGameBrowse(int)));
 
   /* Game view */
   m_gameView = new ChessBrowser(hbox, "GameView");
@@ -458,7 +459,6 @@ void MainWindow::slotMoveViewLink(const QString& link)
 }
 
 const int IdChange[7] = {-99999999, 99999999, 1, -1, 10, -10, 0};
-
 void MainWindow::slotGameLoad(int id)
 {
   if (!database())
@@ -473,7 +473,7 @@ void MainWindow::slotGameLoad(int id)
 
 void MainWindow::slotGameBrowse(int id)
 {
-  int change = IdChange[id];
+  int change = BoardView::movesBrowsed(id);
   if (game()->moveTo(change))
   {
     m_boardView->setBoard(game()->board());
