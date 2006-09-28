@@ -129,13 +129,13 @@ void BoardView::mouseReleaseEvent(QMouseEvent* e)
 
 void BoardView::wheelEvent(QWheelEvent* e)
 {
-  int change = e->delta() > 0;
+  int change = e->delta() < 0;
   if (e->state() & ControlButton)
-    change += BrowseNextMoves;
+    change += BrowsePreviousMoves;
   else if (e->state() & AltButton)
     change += BrowseFirstMove;
   else
-    change += BrowseNextMove;
+    change += BrowsePreviousMove;
   emit wheelScrolled(change);
 }
 
@@ -251,7 +251,7 @@ void BoardView::exportPixmaps(const QString& dir)
 
 int BoardView::movesBrowsed(int dir)
 {
-  const int Browse[7] = {-999, 999, 1, -1, 5, -5, 0};
+  const int Browse[7] = {-999, 999, -1, 1, -5, 5, 0};
   if (dir < 7)
     return Browse[dir];
   return 0;
