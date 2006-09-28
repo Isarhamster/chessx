@@ -28,8 +28,8 @@ class BoardTheme;
    The BoardView class represents a widget for displaying current position on the screen.
 */
 
-enum BrowseDir {BrowseFirstMove, BrowseLastMove, BrowseNextMove,
-     BrowsePreviousMove, BrowseNextMoves, BrowsePreviousMoves};
+enum BrowseDir {BrowseFirstMove, BrowseLastMove,
+     BrowsePreviousMove, BrowseNextMove, BrowsePreviousMoves, BrowseNextMoves};
 
 class BoardView : public QWidget
 {
