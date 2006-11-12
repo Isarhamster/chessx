@@ -19,9 +19,9 @@
 
 #ifndef __SEARCH_H__
 #define __SEARCH_H__
+class Query;
 
 #include "board.h"
-#include "filter.h"
 #include "partialdate.h"
 
 /** The Search class is an abstract base class that represents a 
@@ -49,7 +49,7 @@ class NullSearch : public Search
 class PositionSearch : public Search
 {
    public :
-			PositionSearch();
+      PositionSearch();
       PositionSearch(const Board& position);
       virtual ~PositionSearch();
       virtual Search::Type type() const;
@@ -69,7 +69,7 @@ class EloSearch : public Search
       int maxWhiteElo() const;
       int minBlackElo() const;
       int maxBlackElo() const;
-			bool withinEloRange(int whiteElo, int blackElo) const;
+      bool withinEloRange(int whiteElo, int blackElo) const;
       void setEloSearch(int minWhiteElo=0, int maxWhiteElo=4000, int minBlackElo=0, int maxBlacElo=4000);
 
    private :
@@ -116,22 +116,6 @@ class TagSearch : public Search
 	private:
 		QString m_tag;
 		QString m_value;
-};
-
-/** Defined filter based search */
-class FilterSearch : public Search
-{
-	public:
-		FilterSearch();
-		FilterSearch(const Filter& filter);
-		~FilterSearch();
-		Type type() const;
-		
-		bool contains(int game) const;
-		Filter filter() const;
-		void setFilter(const Filter& filter);
-	private:
-		Filter m_filter;
 };
 
 #endif // __SEARCH_H__
