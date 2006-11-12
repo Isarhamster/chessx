@@ -25,7 +25,7 @@
 
 #include "pgndatabase.h"
  
-PgnDatabase::PgnDatabase(const QString& filename) : m_searchFilter(0), m_moveStatCache(MaxMoveStatCacheSize, 101)
+PgnDatabase::PgnDatabase(const QString& filename) : m_moveStatCache(MaxMoveStatCacheSize, 101)
 {
 	m_filename = filename;
 	m_newFile = 0;
@@ -33,6 +33,7 @@ PgnDatabase::PgnDatabase(const QString& filename) : m_searchFilter(0), m_moveSta
 	m_count = 0;
 	m_gameOffsets = 0;
 	m_allocated = 0;
+   m_searching = false;
 	
 	
 	//move stat cache owns the items
@@ -53,7 +54,8 @@ PgnDatabase::PgnDatabase(const QString& filename) : m_searchFilter(0), m_moveSta
 	while(!m_file->atEnd()) {		
 		readJunk();
 		addOffset();
-		readTags();
+		// readTags();
+		parseTagsIntoIndex(); // This will parse the tags into memory
 		readMoves();
 	}
 	
@@ -189,186 +191,80 @@ bool PgnDatabase::supportedSearchType(Search::Type searchType)
 	}
 }
 
-Filter PgnDatabase::executeSearch(const Search& search)
-{	
-	//Turn search into a query and execute it
-	Query query;
-	query.append(&search);
-	return executeQuery(query);
-}
-
-Filter PgnDatabase::executeSearch(const Search& search, Search::Operator searchOperator, Filter filter)
-{
-	//Turn search into a query and execute it
-	Query query;
-	FilterSearch filterSearch(filter);
-	query.append(&search);
-	query.append(&filterSearch);
-	query.append(searchOperator);
-	return executeQuery(query);
-}
-
-Filter PgnDatabase::executeQuery(Query& query)
-{
-	//clear any previous searches
-	m_dateSearches.clear();
-	m_eloSearches.clear();
-	m_filterSearches.clear();
-	m_positionSearches.clear();
-	m_tagSearches.clear();
-	
-	//parse query into tree and searches for smart execution
-	m_triStateTree = TriStateTree(query);
-	m_searchTags = false;
-	m_searchGame = false;
-	int leafNode = 0;
-	
-	for(int element = 0; element < query.count(); element++) {
-		if(query.isElementSearch(element)) {
-			Search* search = query.search(element);		
-			switch(search->type()) {
-				case Search::DateSearch:
-					m_searchTags = true;
-					m_dateSearches.append(QPair<DateSearch, int>(*static_cast<const DateSearch*>(search), leafNode));
-					break;
-				case Search::EloSearch:
-					m_searchTags = true;
-					m_eloSearches.append(QPair<EloSearch, int>(*static_cast<const EloSearch*>(search), leafNode));
-					break;
-				case Search::FilterSearch:
-					m_filterSearches.append(QPair<FilterSearch, int>(*static_cast<const FilterSearch*>(search), leafNode));
-					break;
-				case Search::PositionSearch:
-					m_searchGame = true;
-					m_positionSearches.append(QPair<PositionSearch, int>(*static_cast<const PositionSearch*>(search), leafNode));
-					break;
-				case Search::TagSearch:
-					m_searchTags = true;
-					m_tagSearches.append(QPair<TagSearch, int>(*static_cast<const TagSearch*>(search), leafNode));
-					break;
-				default:
-					break;
-			}
-			leafNode++;
-		}
-	}
-	
-	//execute query
-	m_searchFilter = Filter(m_count);
-	Game game;
-	
-	for(int searchIndex = 0; searchIndex < m_count; searchIndex++) {
-		seekGame(searchIndex);
-		m_triStateTree.clear();
-		
-		//do filter searches before examining game
-		for(int search = 0; search < (int)m_filterSearches.size(); search++) {
-			if(m_triStateTree.setState(m_filterSearches.at(search).second,m_filterSearches.at(search).first.contains(searchIndex))) {
-				break;
-			}
-		}
-		
-		if(m_triStateTree.state() == TriStateTree::Unknown) {
-			game.clear();
-			if(m_searchTags) {
-				parseTags(NULL);
-			} else {
-				readTags();
-			}
-			if(m_triStateTree.state() == TriStateTree::Unknown) {
-				parseMoves(&game);
-			}
-		}
-		
-		if(m_triStateTree.state() != TriStateTree::True) {
-			m_searchFilter.remove(searchIndex);
-		}
-	}
-	
-	return m_searchFilter;
-}
-
-Filter PgnDatabase::executeQuery(const Query& query, Search::Operator searchOperator, Filter filter)
-{
-	//Add operation to filter and execute it
-	Query filterQuery(query);
-	FilterSearch filterSearch(filter);
-	filterQuery.append(&filterSearch);
-	filterQuery.append(searchOperator);
-	return executeQuery(filterQuery);
-}
-
 PgnDatabase::MoveStatList PgnDatabase::moveStats(const MoveList& line)
 {
-	//locate any cached results that can be used
-	int ply = 0;
-	int closestPly = 0;
-	QString key = "";
-	QString closestKey = "";
-	MoveStatCacheEntry* entry = 0;
-	MoveStatCacheEntry* closestEntry = 0;
-		
-	for(MoveList::ConstIterator it = line.constBegin(); it != line.constEnd(); ++it) {
-		ply++;
-		key += QString::number((*it).from()) + " " + QString::number((*it).to()) + " ";
-		
-		if((entry = m_moveStatCache.find(key))) {
-			closestPly = ply;
-			closestKey = key;
-			closestEntry = entry;
-		}
-	}
-	
-	//if already located in cache return stored result
-	if(closestKey == key && closestEntry) {
-		return closestEntry->moveStatList;
-	}
+   //locate any cached results that can be used
+   int ply = 0;
+   int closestPly = 0;
+   QString key = "";
+   QString closestKey = "";
+   MoveStatCacheEntry* entry = 0;
+   MoveStatCacheEntry* closestEntry = 0;
+      
+   for(MoveList::ConstIterator it = line.constBegin(); it != line.constEnd(); ++it) {
+      ply++;
+      key += QString::number((*it).from()) + " " + QString::number((*it).to()) + " ";
+      
+      if((entry = m_moveStatCache.find(key))) {
+         closestPly = ply;
+         closestKey = key;
+         closestEntry = entry;
+      }
+   }
+   
+   //if already located in cache return stored result
+   if(closestKey == key && closestEntry) {
+      return closestEntry->moveStatList;
+   }
 
-	//get position and filter for final position in line (using any cached filter found previously)
-	Filter filter(count());
-	if(closestEntry) {
-		filter = Filter(closestEntry->bitFilter);
-	}
-	Game game;
-	
-	for(MoveList::ConstIterator it = line.constBegin(); it != line.constEnd(); ++it) {
-		game.addMove(*it);
-		game.forward();
-		
-		//only search if past point of cached filter results
-		if(game.ply() > closestPly) {
-			filter = executeSearch(PositionSearch(game.board()), Search::And, filter);
-		}
-	}
-	
-	//calculate stats by doing a search on each legal move
-	MoveStatList moveStatList;
-	MoveStat moveStat;
-	MoveList legalMoves = game.board().legalMoves();
-	
-	for(MoveList::iterator it = legalMoves.begin(); it != legalMoves.end(); it++) {
-		moveStat.move = *it;
-		game.replaceMove(*it);
-		game.forward();
-		
-		moveStat.eco = game.ecoClassify();
-		Filter childFilter = executeSearch(PositionSearch(game.board()), Search::And, filter);
-		if(childFilter.count()) {
-			moveStat.frequency = (float)childFilter.count() / filter.count();
-			moveStatList.append(moveStat);
-		}
-		
-		game.backward();
-	}
-	
-	//store result in cache
-	MoveStatCacheEntry cacheEntry;
-	cacheEntry.moveStatList = moveStatList;
-	cacheEntry.bitFilter = filter.asBitArray();
-	m_moveStatCache.insert(key, new MoveStatCacheEntry(cacheEntry), filter.size());
+   //get position and filter for final position in line (using any cached filter found previously)
+   Filter filter(count());
+   if(closestEntry) {
+      filter = Filter(closestEntry->bitFilter);
+   }
+   filter.setDatabase(this);
+   Game game;
+   
+   for(MoveList::ConstIterator it = line.constBegin(); it != line.constEnd(); ++it) {
+      game.addMove(*it);
+      game.forward();
+      
+      //only search if past point of cached filter results
+      if(game.ply() > closestPly) {
+         filter.executeSearch(PositionSearch(game.board()), Search::And);
+      }
+   }
+   
+   //calculate stats by doing a search on each legal move
+   MoveStatList moveStatList;
+   MoveStat moveStat;
+   MoveList legalMoves = game.board().legalMoves();
+   
+   for(MoveList::iterator it = legalMoves.begin(); it != legalMoves.end(); it++) {
+      moveStat.move = *it;
+      game.replaceMove(*it);
+      game.forward();
+      
+      moveStat.eco = game.ecoClassify();
+      Filter childFilter(filter);
+      childFilter.setDatabase(this);
+      childFilter.executeSearch(PositionSearch(game.board()), Search::And);
+      if(childFilter.count()) {
+         moveStat.frequency = (float)childFilter.count() / filter.count();
+         moveStatList.append(moveStat);
+      }
+      
+      game.backward();
+   }
+   
+   //store result in cache
+   MoveStatCacheEntry cacheEntry;
+   cacheEntry.moveStatList = moveStatList;
+   cacheEntry.bitFilter = filter.asBitArray();
+   m_moveStatCache.insert(key, new MoveStatCacheEntry(cacheEntry), filter.size());
 
-	return moveStatList;
-}
+   return moveStatList;
+} 
 
 Q_LONG PgnDatabase::offset(int index)
 {
@@ -513,9 +409,6 @@ void PgnDatabase::seekGame(int index)
 
 void PgnDatabase::parseTags(Game* game)
 {
-	int whiteElo = -1;
-	int blackElo = -1;
-	PartialDate date;
 	
 	do {
 		if(!m_currentLine.startsWith(QString("["))) {
@@ -528,69 +421,91 @@ void PgnDatabase::parseTags(Game* game)
 		if(game) {
 			game->setTag(tag, value);
 		} else {
-			if(tag == "WhiteElo") {
-				whiteElo = value.toInt();
-				if(blackElo != - 1) {
-					for(int search = 0; search < (int)m_eloSearches.size(); search++) {
-						if(m_triStateTree.setState(m_eloSearches.at(search).second, m_eloSearches.at(search).first.withinEloRange(whiteElo, blackElo))) {
-							return;
-						}
-					}
-				}
-			} else if(tag == "BlackElo") {
-				blackElo = value.toInt();
-				if(whiteElo != -1) {
-					for(int search = 0; search < (int)m_eloSearches.size(); search++) {
-						if(m_triStateTree.setState(m_eloSearches.at(search).second, m_eloSearches.at(search).first.withinEloRange(whiteElo, blackElo))) {
-							return;
-						}
-					}
-				}
-			} else if(tag == "Date") {
-				date = PartialDate(value);
-				for(int search = 0; search < (int)m_dateSearches.size(); search++) {
-					if(m_triStateTree.setState(m_dateSearches.at(search).second, m_dateSearches.at(search).first.withinDateRange(date))) {
-						return;
-					}
-				}
-			} else {
+         if (!IndexItem::isTagNameSupported(tag)) {
 				//tag searches
 				for(int search = 0; search < (int)m_tagSearches.size(); search++) {
-		    	if(tag == m_tagSearches.at(search).first.tag() && value == m_tagSearches.at(search).first.value()) {
-						if(m_triStateTree.setState(m_tagSearches.at(search).second, true)) {
+               if(tag == m_tagSearches.at(search).first.tag() && value == m_tagSearches.at(search).first.value()) {
+						if(m_externalFilter->setState(m_tagSearches.at(search).second, true)) {
 							return;
 						}
-					}   
-		    }
+               }   
+            }
 			}
 		}
 		readLine();
 	} while(!m_file->atEnd() || m_currentLine != "");
 	
 	//mark any unmatched tag searches as false
-	if(!game) {
-		for(int search = 0; search < (int)m_eloSearches.size(); search++) {
-    	if(m_triStateTree.state(m_eloSearches.at(search).second) == TriStateTree::Unknown) {
-				if(m_triStateTree.setState(m_eloSearches.at(search).second, false)) {
-					return;
-				}
-			}   
-    }
-		for(int search = 0; search < (int)m_dateSearches.size(); search++) {
-    	if(m_triStateTree.state(m_dateSearches.at(search).second) == TriStateTree::Unknown) {
-				if(m_triStateTree.setState(m_dateSearches.at(search).second, false)) {
-					return;
-				}
-			}   
-    }
-		for(int search = 0; search < (int)m_tagSearches.size(); search++) {
-    	if(m_triStateTree.state(m_tagSearches.at(search).second) == TriStateTree::Unknown) {
-				if(m_triStateTree.setState(m_tagSearches.at(search).second, false)) {
-					return;
-				}
-			}   
-    }
-  }
+   if(!game) {
+      for(int search = 0; search < (int)m_tagSearches.size(); search++) {
+         if(m_externalFilter->state(m_tagSearches.at(search).second) == TriStateTree::Unknown) {
+            if(m_externalFilter->setState(m_tagSearches.at(search).second, false)) {
+               return;
+            }
+         }   
+      }
+   }
+	
+	//swallow trailing whitespace
+	while(m_currentLine == "" && !m_file->atEnd()) {
+		readLine();
+	}
+}
+void PgnDatabase::parseTagsIntoIndex()
+{
+	PartialDate date;
+   Q_UINT32 gameId = m_index.add();
+	
+	do {
+		if(!m_currentLine.startsWith(QString("["))) {
+			break;
+		}
+		
+		//parse tag
+		QString tag = m_currentLine.mid(1, m_currentLine.find(' ') - 1);
+		QString value = m_currentLine.section('"', 1, 1);	
+
+      // Color specific tags must be renamed to a color independant tag.
+      if (tag == "White") {
+         m_index.gameIndex(gameId).setWhiteId(m_tags.add(Tags::PlayerName,value));
+      } else if (tag == "Black") {
+         m_index.gameIndex(gameId).setBlackId(m_tags.add(Tags::PlayerName,value));
+      } else if (tag == "Event") {
+         m_index.gameIndex(gameId).setEventId(m_tags.add(Tags::Event,value));
+      } else if (tag == "Site") {
+         m_index.gameIndex(gameId).setSiteId(m_tags.add(Tags::Site,value));
+      } else if (tag == "ECO") {
+         m_index.gameIndex(gameId).setEcoId(m_tags.add(Tags::ECO,value));
+      } else if (tag == "Round") {
+         m_tags.add(Tags::Round,value);
+         m_index.gameIndex(gameId).setRound(value.toUInt());
+      } else if (tag == "Result") {
+         m_tags.add(Tags::Result,value);
+         if (value == "1-0") {
+            m_index.gameIndex(gameId).setResult(WhiteWin);
+         } else if (value == "0-1") {
+            m_index.gameIndex(gameId).setResult(BlackWin);
+         } else if (value == "1/2-1/2") {
+            m_index.gameIndex(gameId).setResult(Draw);
+         } else if (value == "*") {
+            m_index.gameIndex(gameId).setResult(Unknown);
+         }
+      } else if (tag == "WhiteElo") {
+         m_tags.add(Tags::PlayerElo,value);
+         m_index.gameIndex(gameId).setWhiteElo(value.toUInt());
+      } else if (tag == "BlackElo") {
+         m_tags.add(Tags::PlayerElo,value);
+         m_index.gameIndex(gameId).setBlackElo(value.toUInt());
+      } else if (tag == "Date") {
+         m_tags.add(Tags::Date,value);
+         date.fromString(value);
+         m_index.gameIndex(gameId).setDate(date);
+      } else {
+         m_tags.add(m_tags.tagId(tag),value);
+      }
+
+		readLine();
+	} while(!m_file->atEnd() || m_currentLine != "");
 	
 	//swallow trailing whitespace
 	while(m_currentLine == "" && !m_file->atEnd()) {
@@ -610,7 +525,7 @@ void PgnDatabase::parseMoves(Game* game)
 	if(m_searchGame) {
 		for(int search = 0; search < (int)m_positionSearches.size(); search++) {
 			if(game->board() == m_positionSearches.at(search).first.position()) {
-				if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
+				if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
 					return;
 				}
 			}
@@ -632,8 +547,8 @@ void PgnDatabase::parseMoves(Game* game)
 	//mark any unmatched position searches as false
 	if(m_searchGame) {
 		for(int search = 0; search < (int)m_positionSearches.size(); search++) {
-    	if(m_triStateTree.state(m_positionSearches.at(search).second) == TriStateTree::Unknown) {
-				if(m_triStateTree.setState(m_positionSearches.at(search).second, false)) {
+    	if(m_externalFilter->state(m_positionSearches.at(search).second) == TriStateTree::Unknown) {
+				if(m_externalFilter->setState(m_positionSearches.at(search).second, false)) {
 					return;
 				}
 			}   
@@ -674,7 +589,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 					game->forward();
 					for(int search = 0; search < (int)m_positionSearches.size(); search++) {
 						if(game->board() == m_positionSearches.at(search).first.position()) {
-							if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
+							if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
 								return;
 							}
 						}
@@ -740,7 +655,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 				game->forward();
 				for(int search = 0; search < (int)m_positionSearches.size(); search++) {
 					if(game->board() == m_positionSearches.at(search).first.position()) {
-						if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
+						if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
 							return;
 						}
 					}
@@ -756,7 +671,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 					game->forward();
 					for(int search = 0; search < (int)m_positionSearches.size(); search++) {
 						if(game->board() == m_positionSearches.at(search).first.position()) {
-							if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
+							if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
 								return;
 							}
 						}
@@ -771,7 +686,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 					game->forward();
 					for(int search = 0; search < (int)m_positionSearches.size(); search++) {
 						if(game->board() == m_positionSearches.at(search).first.position()) {
-							if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
+							if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
 								return;
 							}
 						}
@@ -789,7 +704,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 					game->forward();
 					for(int search = 0; search < (int)m_positionSearches.size(); search++) {
 						if(game->board() == m_positionSearches.at(search).first.position()) {
-							if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
+							if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
 								return;
 							}
 						}
@@ -837,7 +752,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 					if(m_searchGame) {
 						for(int search = 0; search < (int)m_positionSearches.size(); search++) {
 							if(game->board() == m_positionSearches.at(search).first.position()) {
-								if(m_triStateTree.setState(m_positionSearches.at(search).second, true)) {
+								if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
 									m_variation = -1;
 									return;
 								}
@@ -1019,3 +934,164 @@ QString PgnDatabase::name() const
 {
   return m_filename;
 }
+
+void PgnDatabase::initSearch(Query& query, Filter* filter)
+{
+   m_externalFilter = filter;
+   m_searching = true;
+	//clear any previous searches
+	m_dateSearches.clear();
+	m_eloSearches.clear();
+	m_filterSearches.clear();
+	m_positionSearches.clear();
+	m_tagSearches.clear();
+	m_indexSearches.clear();
+	
+	m_searchGame = false;
+   m_searchIndex = false;
+	int leafNode = 0;
+	
+	for(int element = 0; element < query.count(); element++) {
+		if(query.isElementSearch(element)) {
+			Search* search = query.search(element);		
+			switch(search->type()) {
+				case Search::DateSearch:
+					m_searchIndex = true;
+					m_dateSearches.append(QPair<DateSearch, int>(*static_cast<const DateSearch*>(search), leafNode));
+					break;
+				case Search::EloSearch:
+					m_searchIndex = true;
+					m_eloSearches.append(QPair<EloSearch, int>(*static_cast<const EloSearch*>(search), leafNode));
+					break;
+				case Search::FilterSearch:
+					m_filterSearches.append(QPair<FilterSearch, int>(*static_cast<const FilterSearch*>(search), leafNode));
+					break;
+				case Search::PositionSearch:
+					m_searchGame = true;
+					m_positionSearches.append(QPair<PositionSearch, int>(*static_cast<const PositionSearch*>(search), leafNode));
+					break;
+				case Search::TagSearch:
+               // If the search is a tag search, it could either be in the index, or we would
+               // have to read it from the pgn file. We find out by calling IndexItem::isTagNameSupported
+               TagSearch *ts;
+               ts = static_cast<const TagSearch*>(search);
+               if (IndexItem::isTagNameSupported(ts->tag())) {
+                  m_searchIndex = true;
+                  m_indexSearches.append(QPair<TagSearch,int>(*ts,leafNode));
+               } else {
+                  m_searchTags = true;
+                  m_tagSearches.append(QPair<TagSearch, int>(*ts, leafNode));
+               }
+					break;
+				default:
+					break;
+			}
+			leafNode++;
+		}
+	}
+   // return m_filterSearches;
+}
+
+void PgnDatabase::finalizeSearch()
+{
+   m_searching = true;
+}
+
+void PgnDatabase::searchGame(int index)
+{
+
+   Game game;
+   
+   if((m_externalFilter->state() == TriStateTree::Unknown) && m_searchIndex) {
+      loadHeaders(index,game);
+   }
+   if (m_externalFilter->state() == TriStateTree::Unknown) {
+      if (m_searchTags) {
+         seekGame(index);
+         parseTags(NULL);
+      } else {
+         load(index,game);
+      }
+   }
+   
+}
+
+bool PgnDatabase::loadHeaders(int index, Game& game)
+{
+   //qDebug ("Loading headers for game %d",index);
+   if (!m_searching) {
+      game.setTag("White",m_index.white(index, m_tags));
+      game.setTag("Black",m_index.black(index, m_tags));
+      game.setTag("Event",m_index.event(index, m_tags));
+      game.setTag("Site",m_index.site(index, m_tags));
+      game.setTag("Date",m_index.dateString(index));
+      game.setTag("ECO",m_index.eco(index, m_tags));
+      game.setTag("Round",QString::number(m_index.round(index)));
+      game.setTag("Result",resultString(m_index.result(index)));
+      game.setTag("BlackElo",QString::number(m_index.blackElo(index)));
+      game.setTag("WhiteElo",QString::number(m_index.whiteElo(index)));
+      
+   } else {
+      for(int search = 0; search < (int)m_eloSearches.size(); search++) {
+         if(m_externalFilter->setState(m_eloSearches.at(search).second, 
+                  m_eloSearches.at(search).first.withinEloRange(
+                     m_index.whiteElo(index),
+                     m_index.blackElo(index)))) {
+            return true;
+         }
+      }
+      for(int search = 0; search < (int)m_dateSearches.size(); search++) {
+         if(m_externalFilter->setState(m_dateSearches.at(search).second, 
+                  m_dateSearches.at(search).first.withinDateRange(m_index.date(index)))) {
+            return true;
+         }
+      }
+      for(int search = 0; search < (int)m_indexSearches.size(); search++) {
+         QString tag = m_indexSearches.at(search).first.tag();
+         if (tag == "White") {
+            if(m_externalFilter->setState(m_indexSearches.at(search).second,
+                     (m_index.white(index, m_tags) ==  m_indexSearches.at(search).first.value()) )) {
+               return true;
+            }
+         } else if (tag == "Black") {
+            if(m_externalFilter->setState(m_indexSearches.at(search).second, 
+                     (m_index.black(index, m_tags) ==  m_indexSearches.at(search).first.value()))) {
+               return true;
+            }
+         } else if (tag == "Event") {
+            if(m_externalFilter->setState(m_indexSearches.at(search).second, 
+                     (m_index.event(index, m_tags) ==  m_indexSearches.at(search).first.value()))) {
+               return true;
+            }
+         } else if (tag == "Site") {
+            if(m_externalFilter->setState(m_indexSearches.at(search).second, 
+                     (m_index.site(index, m_tags) ==  m_indexSearches.at(search).first.value()))) {
+               return true;
+            }
+         } else if (tag == "ECO") {
+            if(m_externalFilter->setState(m_indexSearches.at(search).second, 
+                     (m_index.eco(index, m_tags) ==  m_indexSearches.at(search).first.value()))) {
+               return true;
+            }
+         } else if (tag == "Round") {
+            if(m_externalFilter->setState(m_indexSearches.at(search).second, 
+                     (QString::number(m_index.round(index)) ==  m_indexSearches.at(search).first.value()))) {
+               return true;
+            }
+         } else if (tag == "Result") {
+            if(m_externalFilter->setState(m_indexSearches.at(search).second, 
+                     (resultString(m_index.result(index)) ==  m_indexSearches.at(search).first.value()))) {
+               return true;
+            }
+         }
+
+      } 
+
+   }
+
+
+   return true;
+}
+
+
+

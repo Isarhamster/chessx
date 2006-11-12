@@ -32,6 +32,11 @@
 #include "search.h"
 #include "tristatetree.h"
 
+#include "filter.h"
+#include "filtersearch.h"
+#include "tags.h"
+#include "index.h"
+
 /**
    PgnDatabase provides database access to PGN files.
    The class is derived from the Database class, providing methods for the 
@@ -67,21 +72,18 @@ class PgnDatabase : public Database
 		/** Checks if the database supports the given type of search */
 		bool supportedSearchType(Search::Type searchType);
 		
-		//basic search execution
-		/** Executes a basic search, and returns the results in a filter */
-		Filter executeSearch(const Search& search);
-		/** Executes a basic search combined with a filter */
-		Filter executeSearch(const Search& search, Search::Operator searchOperator, Filter filter);
-		
-		//complex query execution
-		/** Executes a query, and returns the results in a filter */
-		Filter executeQuery(Query& query);
-		/** Executes a query combined with a filter */
-		Filter executeQuery(const Query& query, Search::Operator searchOperator, Filter filter); 
+      /** Initializes a search. */
+      void initSearch(Query& query, Filter* filter);
+      /** Searches the game at index for active searches */
+      void searchGame(int index);
+      /** Called after a search to do necessary cleanup */
+      void finalizeSearch();
 		
 		//move statistics (cf. tree window in Scid)
 		/** Returns move statistics for the given line */
 		MoveStatList moveStats(const MoveList& line);
+
+		bool loadHeaders(int index, Game& game);
 		
 	private:
 		//offset methods
@@ -127,7 +129,9 @@ class PgnDatabase : public Database
 		void readTags();
 		/** Skips past any move data */
 		void readMoves();
-		
+      /** Parses the tags, and adds the supported types to the index 'm_index' */
+      void parseTagsIntoIndex();
+
 		//output methods
 		/** Writes out the tags from the given game to the file */
 		void writeTags(const Game& game);
@@ -164,16 +168,22 @@ class PgnDatabase : public Database
 		Q_LONG* m_gameOffsets;
 		
 		//query variables
-		Filter m_searchFilter;
-		TriStateTree m_triStateTree;
+      Filter* m_externalFilter;
+		bool m_searchIndex;
 		bool m_searchTags;
 		bool m_searchGame;
+      bool m_searching;
 		
 		QValueVector<QPair<DateSearch, int> > m_dateSearches;
 		QValueVector<QPair<EloSearch, int> > m_eloSearches;
 		QValueVector<QPair<FilterSearch, int> > m_filterSearches;
 		QValueVector<QPair<PositionSearch, int> > m_positionSearches;
 		QValueVector<QPair<TagSearch, int> > m_tagSearches;
+		QValueVector<QPair<TagSearch, int> > m_indexSearches;
+
+      // Structures for in memory headers
+      Tags m_tags;
+      Index m_index;
 		
 		//move stat types and variables
 		typedef struct {

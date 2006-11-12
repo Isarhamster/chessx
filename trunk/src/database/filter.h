@@ -21,7 +21,13 @@
 #define __FILTER_H__
 #include "common.h"
 #include <qbitarray.h>
+#include "database.h"
 
+#include "search.h"
+#include "query.h"
+#include "tristatetree.h"
+
+class Database;
 
 /**
    The Filter class represents a set of games, typically found when searching a database.
@@ -36,6 +42,9 @@ public:
 	/** construct filter of given size */
 	Filter(int size, WhichGames whichGames = AllGames);
 	
+	/** construct filter of given size */
+	Filter(Database* database, WhichGames whichGames = AllGames);
+
 	/** construct filter from another filter */
 	Filter(const Filter& filter);
 
@@ -53,6 +62,9 @@ public:
 	
 	/** remove a game from the filter */
 	void remove(int game);
+
+   /** Sets pointer to the database for which the filter is */
+	void setDatabase(Database* database);
 	
 	/** sets the value for a game */
 	void set(int game, bool value);
@@ -89,6 +101,25 @@ public:
 	
 	/** returns the filter as a bit array (returns copy in Qt3 due, implicitly shared in Qt4)*/
 	QBitArray asBitArray() const;
+
+   /* Executes search 'search' on database m_database, 
+    * and sets this filter to contain the results */
+   void executeSearch(const Search& search);
+   /* Executes search 'search' on database m_database, 
+    * and modifies this filter with the results */
+   void executeSearch(const Search& search, Search::Operator searchOperator);
+   /* Executes query 'query' on database m_database, 
+    * and sets this filter to contain the results */
+   void executeQuery(Query& query);
+
+   /** Sets the state for leaf 'leaf' in m_triStateTree and return the state of the tree */
+   TriStateTree::State setState(int leaf, TriStateTree::State state);
+   /** Sets the state for leaf 'leaf' in m_triStateTree and return the state of the tree */
+   TriStateTree::State setState(int leaf, bool state);
+   /** Returns the state of the m_triStateTree */
+   TriStateTree::State state() const;
+   /** Returns the state of leaf 'leaf' in m_triStateTree */
+   TriStateTree::State state(int leaf) const;
 	
 protected:
 	/** returns the filter as a bit array (explicitly shared in Qt3, implicitly shared in Qt4)*/
@@ -100,6 +131,11 @@ protected:
 	// for the speeding up of sequential access
 	mutable int m_lastNth;
 	mutable int m_lastIndex;
+
+   Database* m_database;
+
+   TriStateTree m_triStateTree; 
+
 };
 
 #endif
