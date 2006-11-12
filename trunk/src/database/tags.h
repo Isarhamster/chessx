@@ -49,6 +49,7 @@ public:
 Construct with given filename.
 */
 Tags(const QString& fname);
+Tags();
 /**
 Write the tags file.
 */
