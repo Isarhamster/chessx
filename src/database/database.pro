@@ -28,7 +28,10 @@ HEADERS += board.h \
            historylist.h \
            output.h \
            outputoptions.h \
-           databaseinfo.h 
+           databaseinfo.h \
+           filtersearch.h \
+           indexitem.h \
+           index.h
 SOURCES += board.cpp \
            move.cpp \
            common.cpp \
@@ -54,7 +57,10 @@ SOURCES += board.cpp \
            historylist.cpp \
            output.cpp \
            outputoptions.cpp \
-           databaseinfo.cpp 
+           databaseinfo.cpp \
+           filtersearch.cpp \
+           indexitem.cpp \
+           index.cpp
 TARGET = database
 CONFIG += release warn_on qt staticlib
 TEMPLATE = lib
