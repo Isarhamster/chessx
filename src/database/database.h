@@ -26,6 +26,9 @@
 #include "search.h"
 #include "query.h"
 
+class Filter;
+
+
 /**
    The Database class is abstract, providing a common interface for all
    database types. There are methods for the loading and saving of games,
@@ -61,17 +64,10 @@ class Database
 		/** Checks if the database supports the given type of search */
 		virtual bool supportedSearchType(Search::Type searchType) = 0;
 		
-		//basic search execution
-		/** Executes a basic search, and returns the results in a filter */
-		virtual Filter executeSearch(const Search& search) = 0;
-		/** Executes a basic search combined with a filter */
-		virtual Filter executeSearch(const Search& search, Search::Operator searchOperator, Filter filter) = 0;
-		
-		//complex query execution
-		/** Executes a query, and returns the results in a filter */
-		virtual Filter executeQuery(Query& query) = 0;
-		/** Executes a query combined with a filter */
-		virtual Filter executeQuery(const Query& query, Search::Operator searchOperator, Filter filter) = 0;
+      virtual void initSearch(Query& query, Filter* filter) = 0;
+      //virtual QValueVector<QPair<FilterSearch, int> > initSearch(Query& query, Filter* filter) = 0;
+      virtual void searchGame(int index) = 0;
+      virtual void finalizeSearch() = 0;
 		
 		//move statistics (cf. tree window in Scid)
 		typedef struct {
@@ -84,6 +80,7 @@ class Database
 		
 		/** Returns move statistics for the given position */
 		virtual MoveStatList moveStats(const MoveList& moveList) = 0;
+
 };
 
 #endif
