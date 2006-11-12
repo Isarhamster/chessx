@@ -35,6 +35,10 @@ Tags::Tags(const QString& fname){
   clear();
 }
 
+Tags::Tags(){
+  clear();
+}
+
 void Tags::writeFile(){
 // set which QDataset version format to use
   if (Version==(Q_UINT32)100){
@@ -43,7 +47,9 @@ void Tags::writeFile(){
   else{
     m_tags_ds.setVersion(6);//default
   }
-  m_tags_file.open( IO_WriteOnly );
+  if (!m_tags_file.open( IO_WriteOnly )) {
+     qDebug ("Error could not open file");
+  }
   m_tags_ds.setDevice(&m_tags_file);
   m_tags_ds << Magic;
   m_tags_ds << Version;
@@ -185,7 +191,15 @@ bool Tags::removeFile() {
 }
 
 QString Tags::value(const uint tagId, const int valueId) const{
-  return m_allTags[tagId].first[valueId];
+   if ((valueId >= 0) && ((uint)valueId <  m_allTags[tagId].first.count())) {
+      return m_allTags[tagId].first[valueId];
+   } else {
+      qDebug ("An invalid valueId has been received : %d. Valid values could be:", valueId);
+      for (int j=0; j<count(tagId); j++){
+         qDebug ("  * Tag Name: %s : value for index %d : %s",tagName(tagId).latin1(),j,value(tagId, j).latin1());
+      }
+      return "?";
+   }
 }
 
 int Tags::valueId(uint const tagId, const QString& value) const{
@@ -403,3 +417,4 @@ void Tags::closeFile() {
   m_tags_file.flush();
   m_tags_file.close();
 }
+
