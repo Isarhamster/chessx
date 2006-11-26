@@ -21,6 +21,8 @@
 #include <qpushbutton.h>
 #include <qpopupmenu.h>
 
+using namespace Qt;
+
 BoardSetupDialog::BoardSetupDialog(QWidget* parent) : BoardSetupBaseDialog(parent), m_piece(WhiteKing)
 {
   m_popup = new QPopupMenu(boardView);

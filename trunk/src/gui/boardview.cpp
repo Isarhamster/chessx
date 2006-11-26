@@ -22,6 +22,8 @@
 #include <qmessagebox.h>
 #include <qpopupmenu.h>
 
+using namespace Qt;
+
 BoardView::BoardView(QWidget* parent, const char* name) : QWidget(parent, name),
    m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare)
 {
