@@ -3,7 +3,7 @@
                              -------------------
     begin                : sob maj 7 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
-                           (C) 2005 William Hoggarth
+                           (C) 2005, 2006 William Hoggarth
 													  <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
@@ -21,7 +21,7 @@
 
 #include "common.h"
 #include <qglobal.h>
-#include <qt34/qvaluestack.h>
+#include <qstack.h>
 
 class HistoryItem {
 public:
@@ -64,6 +64,6 @@ private:
 	int m_halfMoveClock;
 };
 
-typedef QValueStack<HistoryItem> History;
+typedef QStack<HistoryItem> History;
 
 #endif

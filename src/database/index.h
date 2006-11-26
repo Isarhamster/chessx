@@ -17,7 +17,7 @@
 #ifndef __INDEX_H__
 #define __INDEX_H__
 
-#include <qt34/qvaluevector.h>
+#include <qvector.h>
 #include "indexitem.h"
 #include "search.h"
 #include "tags.h"
@@ -102,7 +102,7 @@ class Index {
       bool find (Q_UINT32 gameId, Search* search, Tags& tags);
 
    private:
-      QValueVector<IndexItem> m_gameIndex;
+      QVector<IndexItem> m_gameIndex;
 
 };
 

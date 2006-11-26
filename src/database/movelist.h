@@ -15,8 +15,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qt34/qvaluevector.h>
+#include <qvector.h>
  
 #include "move.h" 
  
-typedef QValueVector<Move> MoveList;
+typedef QVector<Move> MoveList;

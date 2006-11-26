@@ -19,7 +19,7 @@
 #include <qregexp.h>
 #include <qstringlist.h>
 #include <qtextstream.h>
-#include <qt34/qvaluestack.h>
+#include <qstack.h>
  
 #include "game.h"
 
@@ -382,7 +382,7 @@ void Game::moveToId(int moveId)
 	
 	//jump to node, travelling back to start adding the moves to the stack
 	int node = moveId;
-	QValueStack<Move> moveStack;
+	QStack<Move> moveStack;
 	
 	do {
 		moveStack.push(m_moveNodes[node].move);

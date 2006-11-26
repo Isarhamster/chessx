@@ -32,7 +32,7 @@ NagSet::NagSet(Nag nag)
 	}
 }
 
-NagSet::NagSet(const QValueVector<Nag>& nags)
+NagSet::NagSet(const QVector<Nag>& nags)
 {
 	m_noNags = MaxNags < (int)nags.count() ? MaxNags : nags.count();
   for(int nag = 0; nag <= m_noNags; nag++) {
@@ -81,9 +81,9 @@ int NagSet::count()
 	return m_noNags;
 }
 
-QValueVector<Nag> NagSet::nags() const
+QVector<Nag> NagSet::nags() const
 {
-	QValueVector<Nag> nags;
+	QVector<Nag> nags;
 	
   for(int nag = 0; nag < m_noNags; nag++) {
 		nags[nag] = (Nag)m_nags[nag];

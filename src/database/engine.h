@@ -2,7 +2,7 @@
                           engine.h  -  Chess engine class
                              -------------------
     begin                : 25 July 2005
-    copyright            : (C) 2005 William Hoggarth
+    copyright            : (C) 2005, 2006 William Hoggarth
                            <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
@@ -21,8 +21,7 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <qtextstream.h>
-#include <qt34/qvaluelist.h>
-#include <qt34/qprocess.h>
+#include <qprocess.h>
 
 
 #include "board.h"
@@ -127,6 +126,7 @@ class Engine : public QObject
 		QString	m_command;
 		QTextStream* m_logStream;
 		QProcess* m_process;
+		QTextStream* m_processStream;
 		bool m_active;
 		bool m_analyzing;
 };

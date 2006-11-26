@@ -373,7 +373,7 @@ void Filter::executeSearch(const Search& search, Search::Operator searchOperator
 }
 void Filter::executeQuery(Query& query)
 {
-   QValueVector<QPair<FilterSearch, int> > filterSearches;
+   QVector<QPair<FilterSearch, int> > filterSearches;
    int filterSearchCount = 0;
    int gamesSearched = 0; //For debugging
 

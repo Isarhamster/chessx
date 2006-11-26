@@ -19,7 +19,6 @@
 #define __DATABASE_H__
 
 #include <qstring.h>
-#include <qt34/qvaluevector.h>
 
 #include "filter.h" 
 #include "game.h"
@@ -76,7 +75,7 @@ class Database
 			float frequency;
 		} MoveStat;
 		
-		typedef QValueVector<MoveStat> MoveStatList;
+		typedef QVector<MoveStat> MoveStatList;
 		
 		/** Returns move statistics for the given position */
 		virtual MoveStatList moveStats(const MoveList& moveList) = 0;

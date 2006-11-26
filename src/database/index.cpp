@@ -88,7 +88,7 @@ void Index::remove()
 bool Index::find (Q_UINT32 gameId, Search* search, Tags& tags)
 {
    QString tagName;
-   QValueVector<bool> vb;
+   QVector<bool> vb;
    int tagId;
    TagSearch* ts;
    EloSearch* es;

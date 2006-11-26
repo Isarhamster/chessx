@@ -2,7 +2,7 @@
                           engine.cpp  -  Chess engine class
                              -------------------
     begin                : 25 July 2005
-    copyright            : (C) 2005 William Hoggarth
+    copyright            : (C) 2005, 2006 William Hoggarth
                            <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
@@ -26,6 +26,7 @@ Engine::Engine(const QString& name, const QString& command,
  m_command = command;
  m_logStream = logStream;
  m_process = 0;
+ m_processStream = 0;
  m_active = false;
  m_analyzing = false;
 }
@@ -46,11 +47,12 @@ void Engine::activate()
 	 return;
  }
 
- m_process = new QProcess(m_command, this, m_name);
- connect(m_process, SIGNAL(readyReadStdout()), this, SLOT(pollProcess()));
- connect(m_process, SIGNAL(processExited()), this, SLOT(processExited()));
+ m_process = new QProcess(this);
+ m_processStream = new QTextStream(m_process);
+ connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(pollProcess()));
+ connect(m_process, SIGNAL(processFinished(int, ExitStatus)), this, SLOT(processExited()));
 
- m_process->start();
+ m_process->start(m_command);
  protocolStart();
 }
 
@@ -76,11 +78,11 @@ bool Engine::isAnalyzing()
 void Engine::send(const QString& message)
 {
 	if(m_logStream) {
-		*m_logStream << "<-- " << message << "\n";
+		*m_logStream << "<-- " << message << endl;
 		emit logUpdated();
 	}
 	
-	m_process->writeToStdin(message + "\n");
+	*m_processStream << message << endl;
 }
 
 void Engine::setActive(bool active)
@@ -118,10 +120,10 @@ void Engine::sendAnalysis(const Analysis& analysis)
 void Engine::pollProcess()
 {
 	QString message;
-	while(m_process->canReadLineStdout()) {
-		message = m_process->readLineStdout();
+	while(m_process->canReadLine()) {
+		*m_processStream >> message;
 		if(m_logStream) {
-			*m_logStream << "--> " << message << "\n";
+			*m_logStream << "--> " << message << endl;
 			emit logUpdated();
 		}
 		processMessage(message);
@@ -131,6 +133,7 @@ void Engine::pollProcess()
 void Engine::processExited()
 {
 	setActive(false);
+	delete m_processStream;
 	delete m_process;
 	m_process = 0;
 }
