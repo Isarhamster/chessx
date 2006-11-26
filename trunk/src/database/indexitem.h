@@ -19,7 +19,7 @@
 
 #include <qglobal.h>
 #include "partialdate.h"
-#include "qt34/qvaluelist.h"
+#include "qlist.h"
 #include "common.h"
 
 /** The IndexItem class holds one item that is listed in a index
@@ -94,7 +94,7 @@ class IndexItem {
       PartialDate m_date; // 4 bytes? (could use a date Id?)
 
       // Total 28 bytes / 
-      static QValueList<QString> m_supportedTagNames;
+      static QList<QString> m_supportedTagNames;
 
 };
 

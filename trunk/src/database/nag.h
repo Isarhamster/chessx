@@ -21,7 +21,7 @@
 #include <qstring.h>
 #include <qglobal.h>
 #include <qmap.h>
-#include <qt34/qvaluevector.h>
+#include <qvector.h>
 
 typedef enum {
 	NullNag,
@@ -346,14 +346,14 @@ class NagSet
 	public:
 		NagSet();
 		NagSet(Nag nag);
-		NagSet(const QValueVector<Nag>& nags);
+		NagSet(const QVector<Nag>& nags);
 		
 		void addNag(Nag nag);
 		void removeNag(Nag nag);
 		void clear();
 		int count();
 		
-		QValueVector<Nag> nags() const;
+		QVector<Nag> nags() const;
 		QString toString() const;
 		QString toPGNString() const;
 		

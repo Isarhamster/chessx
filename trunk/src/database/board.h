@@ -4,7 +4,7 @@
     begin                : sob maj 7 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
                            (C) 2005 Kamil Przybyla <kamilprz@poczta.onet.pl>
-                           (C) 2005 William Hoggarth <whoggarth@users.sourceforge.net>
+                           (C) 2005, 2006 William Hoggarth <whoggarth@users.sourceforge.net>
                            (C) 2005 Marius Roets <roets.marius@gmail.com>
  ***************************************************************************/
 
@@ -27,8 +27,7 @@
 #include "rand64.h"
 
 #include <qstring.h>
-#include <qt34/qptrlist.h>
-#include <qt34/qvaluestack.h>
+#include <qstack.h>
 
 enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
     TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, 
@@ -158,7 +157,7 @@ private:
    Q_UINT64 m_hashValue;
    Q_UINT64 m_hashValue2;
    bool m_calcHashValue;
-   QValueStack<bool> m_hashStatusStack;
+   QStack<bool> m_hashStatusStack;
 
 //public: //temporary public to help with debugging
    void createHash();

@@ -16,7 +16,7 @@
 
 #include "indexitem.h"
 
-QValueList<QString> IndexItem::m_supportedTagNames;
+QList<QString> IndexItem::m_supportedTagNames;
 
 void IndexItem::setSupportedTagName()
 {
