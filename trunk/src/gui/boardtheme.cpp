@@ -14,8 +14,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qbitmap.h>
-#include <qimage.h>
+#include <QBitmap>
+#include <QImage>
 
 #include "boardtheme.h"
 #include "settings.h"
@@ -52,22 +52,22 @@ void BoardTheme::setDarkColor(const QColor& value)
     setSquareType(m_squareType);
 }
 
-const QPixmap& BoardTheme::pixmap(Piece p) const
+const QImage& BoardTheme::piece(Piece p) const
 {
-  return m_pixmaps[p];
+  return m_piece[p];
 }
 
-const QPixmap& BoardTheme::square(bool dark) const
+const QImage& BoardTheme::square(bool dark) const
 {
   return m_square[dark];
 }
 
-const QPixmap& BoardTheme::originalPixmap(Piece p) const
+const QImage& BoardTheme::originalPiece(Piece p) const
 {
-  return m_originalPixmaps[p];
+  return m_originalPiece[p];
 }
 
-const QPixmap& BoardTheme::originalSquare(bool dark) const
+const QImage& BoardTheme::originalSquare(bool dark) const
 {
   return m_originalSquare[dark];
 }
@@ -92,7 +92,7 @@ bool BoardTheme::isValid() const
 bool BoardTheme::load(const QString& themeFile, LoadTheme load)
 {
   QString themePath = QString("%1/themes/%2.png").arg(AppSettings->dataPath()).arg(themeFile);
-  QPixmap big;
+  QImage big;
   if (!big.load(themePath) || big.width() < 160)
     return false;
   int realsize = big.height() / 2;
@@ -102,30 +102,26 @@ bool BoardTheme::load(const QString& themeFile, LoadTheme load)
   /* Cut big theme bitmap into separate pieces */
   if (load & LoadPieces)
   {
-    for (int i = 0; i<ConstPieceTypes; i++)
-      m_originalPixmaps[i].resize(realsize, realsize);
-    copyBlt(&m_originalPixmaps[WhiteRook], 0, 0, &big, 0, 0, realsize, realsize);
-    copyBlt(&m_originalPixmaps[WhiteKnight], 0, 0, &big, 1 * realsize, 0, realsize, realsize);
-    copyBlt(&m_originalPixmaps[WhiteBishop], 0, 0, &big, 2 * realsize, 0, realsize, realsize);
-    copyBlt(&m_originalPixmaps[WhiteQueen], 0, 0, &big, 3 * realsize, 0, realsize, realsize);
-    copyBlt(&m_originalPixmaps[WhiteKing], 0, 0, &big, 4 * realsize, 0, realsize, realsize);
-    copyBlt(&m_originalPixmaps[WhitePawn], 0, 0, &big, 5 * realsize, 0, realsize, realsize);
-    copyBlt(&m_originalPixmaps[BlackRook], 0, 0, &big, 0, realsize, realsize, realsize);
-    copyBlt(&m_originalPixmaps[BlackKnight], 0, 0, &big, 1 * realsize, realsize, realsize, realsize);
-    copyBlt(&m_originalPixmaps[BlackBishop], 0, 0, &big, 2 * realsize, realsize, realsize, realsize);
-    copyBlt(&m_originalPixmaps[BlackQueen], 0, 0, &big, 3 * realsize, realsize, realsize, realsize);
-    copyBlt(&m_originalPixmaps[BlackKing], 0, 0, &big, 4 * realsize, realsize, realsize, realsize);
-    copyBlt(&m_originalPixmaps[BlackPawn], 0, 0, &big, 5 * realsize, realsize, realsize, realsize);
+    m_originalPiece[WhiteRook] = big.copy(0 * realsize, 0, realsize, realsize);
+    m_originalPiece[WhiteKnight] = big.copy(1 * realsize, 0, realsize, realsize);
+    m_originalPiece[WhiteBishop] = big.copy(2 * realsize, 0, realsize, realsize);
+    m_originalPiece[WhiteQueen] = big.copy(3 * realsize, 0, realsize, realsize);
+    m_originalPiece[WhiteKing] = big.copy(4 * realsize, 0, realsize, realsize);
+    m_originalPiece[WhitePawn] = big.copy(5 * realsize, 0, realsize, realsize);
+    m_originalPiece[BlackRook] = big.copy(0 * realsize, realsize, realsize, realsize);
+    m_originalPiece[BlackKnight] = big.copy(1 * realsize, realsize, realsize, realsize);
+    m_originalPiece[BlackBishop] = big.copy(2 * realsize, realsize, realsize, realsize);
+    m_originalPiece[BlackQueen] = big.copy(3 * realsize, realsize, realsize, realsize);
+    m_originalPiece[BlackKing] = big.copy(4 * realsize, realsize, realsize, realsize);
+    m_originalPiece[BlackPawn] = big.copy(5 * realsize, realsize, realsize, realsize);
     m_pieceFilename = themePath;
   }
 
   /* Background */
   if (load & LoadBoard)
   {
-    m_originalSquare[0].resize(realsize, realsize);
-    m_originalSquare[1].resize(realsize, realsize);
-    copyBlt(&m_originalSquare[0], 0, 0, &big, 6 * realsize, 0, realsize, realsize);
-    copyBlt(&m_originalSquare[1], 0, 0, &big, 6 * realsize, realsize, realsize, realsize);
+    m_originalSquare[0] = big.copy(6 * realsize, 0, realsize, realsize);
+    m_originalSquare[1] = big.copy(6 * realsize, realsize, realsize, realsize);
     m_boardFilename = themePath;
   }
   // Restore previous size
@@ -147,6 +143,10 @@ int BoardTheme::size() const
   return m_size;
 }
 
+QRect BoardTheme::rect() const
+{
+  return QRect(0, 0, size(), size());
+}
 
 void BoardTheme::setSize(int value)
 {
@@ -154,9 +154,7 @@ void BoardTheme::setSize(int value)
     return;
   m_size = value;
   for (int i = 1; i<ConstPieceTypes; i++)
-    m_pixmaps[i].convertFromImage(m_originalPixmaps[i].convertToImage().smoothScale(value, value));
-  m_square[0].resize(value, value);
-  m_square[1].resize(value, value);
+    m_piece[i] = m_originalPiece[i].scaled(value, value);
   setSquareType(m_squareType);
 }
 
@@ -167,7 +165,7 @@ BoardTheme::BoardSquare BoardTheme::squareType() const
 
 void BoardTheme::setSquareType(BoardSquare type)
 {
-  if(type == Unscaled && size() > m_originalPixmaps[WhiteRook].width()) {
+  if(type == Unscaled && size() > m_originalPiece[WhiteRook].width()) {
     type = Scaled;
   }
 
@@ -177,19 +175,20 @@ void BoardTheme::setSquareType(BoardSquare type)
   switch(type)
   {
     case Plain:
-      m_square[0].fill(lightColor());
-      m_square[1].fill(darkColor());
+      m_square[0] = QImage(size(), size(), QImage::Format_RGB32);
+      m_square[0].fill(lightColor().rgb());
+      m_square[1] = QImage(size(), size(), QImage::Format_RGB32);
+      m_square[1].fill(darkColor().rgb());
       break;
     case Scaled:
-      m_square[0].convertFromImage(m_originalSquare[0].convertToImage().smoothScale(size(),
-        size()));
-      m_square[1].convertFromImage(m_originalSquare[1].convertToImage().smoothScale(size(),
-        size()));
+      m_square[0] =  m_originalSquare[0].scaled(size(), size());
+      m_square[1] =  m_originalSquare[1].scaled(size(), size());
       break;
     case Unscaled:
-      copyBlt(&m_square[0], 0, 0, &m_originalSquare[0], 0, 0, size(), size());
-      copyBlt(&m_square[1], 0, 0, &m_originalSquare[1], 0, 0, size(), size());
+      m_square[0] =  m_originalSquare[0].copy(rect());
+      m_square[1] =  m_originalSquare[1].copy(rect());
       break;
   }
 }
+
 

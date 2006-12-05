@@ -18,9 +18,10 @@
 #ifndef __CHESSBROWSER_H__
 #define __CHESSBROWSER_H__
 
-#include <qtextbrowser.h>
+#include <q3textbrowser.h>
+#include <QMouseEvent>
 
-class ChessBrowser : public QTextBrowser
+class ChessBrowser : public Q3TextBrowser
 {
   Q_OBJECT
   public:

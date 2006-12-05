@@ -21,8 +21,9 @@
 #include <qcombobox.h>
 
 
-SaveDialog::SaveDialog(QWidget* parent) : SaveDialogBase(parent)
+SaveDialog::SaveDialog(QWidget* parent) : QDialog(parent)
 {
+  ui.setupUi(this);
 }
 
 SaveDialog::~SaveDialog()
@@ -31,25 +32,25 @@ SaveDialog::~SaveDialog()
 
 int SaveDialog::exec(Game* game)
 {
-  whiteCombo->setCurrentText(game->tag("White"));
-  blackEloEdit->setText(game->tag("WhiteElo"));
-  blackCombo->setCurrentText(game->tag("Black"));
-  blackEloEdit->setText(game->tag("BlackElo"));
-  eventCombo->setCurrentText(game->tag("Event"));
-  siteCombo->setCurrentText(game->tag("Site"));
-  roundEdit->setText(game->tag("Round"));
-  dateEdit->setText(game->tag("Date"));
+  ui.whiteCombo->setCurrentText(game->tag("White"));
+  ui.blackEloEdit->setText(game->tag("WhiteElo"));
+  ui.blackCombo->setCurrentText(game->tag("Black"));
+  ui.blackEloEdit->setText(game->tag("BlackElo"));
+  ui.eventCombo->setCurrentText(game->tag("Event"));
+  ui.siteCombo->setCurrentText(game->tag("Site"));
+  ui.roundEdit->setText(game->tag("Round"));
+  ui.dateEdit->setText(game->tag("Date"));
   int result = QDialog::exec();
   if (result)
   {
-    game->setTag("White", whiteCombo->currentText());
-    game->setTag("WhiteElo", whiteEloEdit->text());
-    game->setTag("Black", blackCombo->currentText());
-    game->setTag("BlackElo", blackEloEdit->text());
-    game->setTag("Event", eventCombo->currentText());
-    game->setTag("Site", siteCombo->currentText());
-    game->setTag("Round", roundEdit->text());
-    game->setTag("Date", dateEdit->text());
+    game->setTag("White", ui.whiteCombo->currentText());
+    game->setTag("WhiteElo", ui.whiteEloEdit->text());
+    game->setTag("Black", ui.blackCombo->currentText());
+    game->setTag("BlackElo", ui.blackEloEdit->text());
+    game->setTag("Event", ui.eventCombo->currentText());
+    game->setTag("Site", ui.siteCombo->currentText());
+    game->setTag("Round", ui.roundEdit->text());
+    game->setTag("Date", ui.dateEdit->text());
   }
   return result;
 }

@@ -17,25 +17,26 @@
 #ifndef __PLAYERDIALOG_H__
 #define __PLAYERDIALOG_H__
 
-#include "playerdialogbase.h"
+#include "ui_playerdialog.h"
 
 
 class PlayerDatabase;
 
-class PlayerDialog : public PlayerDialogBase
+class PlayerDialog : public QDialog
 {
   Q_OBJECT
 public:
   PlayerDialog(PlayerDatabase* db, QWidget* parent = 0);
-  ~PlayerDialog();
+  virtual ~PlayerDialog();
 
 public slots:
   void findPlayers(const QString& s);
   void showPlayer(const QString& s);
-  void showPlayer(QListViewItem* i);
+  void showPlayer(Q3ListViewItem* i);
   /* re-read configuration */
   void configure();
 private:
+  Ui::PlayerDialog ui;
   PlayerDatabase* m_database;
   bool m_showRating;
   int m_showLimit;

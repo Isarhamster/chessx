@@ -15,25 +15,28 @@
  ***************************************************************************/
 
 #include <qlineedit.h>
-#include <qlistview.h>
-#include <qtextbrowser.h>
+#include <q3listview.h>
+#include <q3textbrowser.h>
 
 #include "playerdialog.h"
 #include "playerdatabase.h"
 #include "settings.h"
 
-PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : PlayerDialogBase(parent)
+PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : QDialog(parent)
 {
+  ui.setupUi(this);
+
   m_database = db;
-  connect(playerEdit, SIGNAL(textChanged (const QString&)), SLOT(findPlayers(const QString&)));
-  connect(playerList, SIGNAL(currentChanged(QListViewItem*)), SLOT(showPlayer(QListViewItem*)));
-  connect(parent, SIGNAL(reconfigure()), SLOT(configure()));
+  connect(ui.playerEdit, SIGNAL(textChanged (const QString&)), SLOT(findPlayers(const QString&)));
+  connect(ui.playerList, SIGNAL(currentChanged(Q3ListViewItem*)), SLOT(showPlayer(Q3ListViewItem*)));
+  if (parent)
+    connect(parent, SIGNAL(reconfigure()), SLOT(configure()));
   configure();
 
-  for (int i=1; i<4; i++)
-    playerList->adjustColumn(i);
-  playerView->setMinimumWidth(width() / 2);
-  findPlayers("");
+  for (int i = 1; i < 4; i++)
+    ui.playerList->adjustColumn(i);
+  ui.playerView->setMinimumWidth(width() / 2);
+  findPlayers(QString());
 }
 
 PlayerDialog::~PlayerDialog()
@@ -54,22 +57,22 @@ void PlayerDialog::findPlayers(const QString& s)
   QString name = s;
   if (!name.isEmpty())
      name[0] = name[0].upper();
-  playerEdit->setText(s);
+  ui.playerEdit->setText(s);
   QStringList players = m_database->findPlayers(name, m_showLimit);
-  playerList->clear();
+  ui.playerList->clear();
   for (QStringList::ConstIterator it = players.begin(); it != players.end(); ++it)
   {
     m_database->setCurrent(*it);
     int birth = m_database->dateOfBirth().year();
     int death = m_database->dateOfDeath().year();
-    new QListViewItem(playerList, *it, birth ? QString::number(birth) : "",
+    new Q3ListViewItem(ui.playerList, *it, birth ? QString::number(birth) : "",
        death ? QString::number(death) : "", m_database->title(),  m_database->country());
   }
-  playerList->setCurrentItem(playerList->firstChild());
-  showPlayer(playerList->firstChild());
+  ui.playerList->setCurrentItem(ui.playerList->firstChild());
+  showPlayer(ui.playerList->firstChild());
 }
 
-void PlayerDialog::showPlayer(QListViewItem* i)
+void PlayerDialog::showPlayer(Q3ListViewItem* i)
 {
   if (i)
     showPlayer(i->text(0));
@@ -87,7 +90,7 @@ void PlayerDialog::showPlayer(const QString& s)
   QString image;
   if (m_database->hasPhoto())
   {
-    playerView->mimeSourceFactory()->setImage("image.png", m_database->photo());
+    ui.playerView->mimeSourceFactory()->setImage("image.png", m_database->photo());
     image = "<img align=\"right\" src=\"image.png\">";
   }
   QString bio;
@@ -125,6 +128,6 @@ void PlayerDialog::showPlayer(const QString& s)
     rating.prepend(tr("<h2>Rating</h2>"));
 
   // Final text
-  playerView->setText(tr("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6%7")
+  ui.playerView->setText(tr("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6%7")
     .arg(s).arg(image).arg(live).arg(country).arg(title).arg(bio).arg(rating));
 }

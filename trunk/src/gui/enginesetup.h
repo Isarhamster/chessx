@@ -2,8 +2,7 @@
                           enginesetup.h  -  engine setup dialog
                              -------------------
     begin                : 16 April 2006
-    copyright            : (C) 2006 William Hoggarth
-                           <whoggarth@users.sourceforge.net>
+    copyright            : (C) 2006 William Hoggarth  <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -15,35 +14,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "enginesetupbase.h"
+#include "ui_enginesetup.h"
 
-class EngineSetupDialog : public EngineSetupDialogBase
+class EngineSetupDialog : public QDialog
 {
-	Q_OBJECT
-	
-	public:
-		EngineSetupDialog(QWidget* parent = 0);
-		~EngineSetupDialog();
+  Q_OBJECT
 
-	public slots:
-		void slotListChanged(QListBoxItem*);
-		void slotNameChanged(const QString& name);
-		void slotCommandChanged(const QString& command);
-		void slotProtocolChanged(int);
-		void slotBrowse();
-		void slotDelete();
-		void slotNew();
+public:
+  EngineSetupDialog(QWidget* parent = 0);
+  virtual ~EngineSetupDialog();
 
-	private:
-		typedef enum { Winboard, UCI } Protocol;	
+public slots:
+  void slotListChanged(Q3ListBoxItem*);
+  void slotNameChanged(const QString& name);
+  void slotCommandChanged(const QString& command);
+  void slotProtocolChanged(int);
+  void slotBrowse();
+  void slotDelete();
+  void slotNew();
 
-		void removeEntry();
-		void writeEntry();
-		void setControlsEnabled(bool enabled);
-		void updateControls();
+private:
+  Ui::EngineSetupDialog ui;
 
-		int m_engine;
-		QString m_name;
-		QString m_command;
-		Protocol m_protocol;
+  typedef enum { Winboard, UCI } Protocol;
+
+  void removeEntry();
+  void writeEntry();
+  void setControlsEnabled(bool enabled);
+  void updateControls();
+
+  int m_engine;
+  QString m_name;
+  QString m_command;
+  Protocol m_protocol;
 };

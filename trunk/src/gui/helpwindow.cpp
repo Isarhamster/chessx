@@ -24,41 +24,44 @@
 #include <qdatastream.h>
 #include <qdir.h>
 #include <qevent.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qfile.h>
 #include <qfile.h>
 #include <qfileinfo.h>
-#include <qiconset.h>
+#include <qicon.h>
 #include <qlineedit.h>
 #include <qmenubar.h>
 #include <qmessagebox.h>
-#include <qobjectlist.h>
-#include <qpaintdevicemetrics.h>
+#include <qobject.h>
+#include <q3paintdevicemetrics.h>
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qprinter.h>
-#include <qsimplerichtext.h>
+#include <q3simplerichtext.h>
 #include <qstatusbar.h>
-#include <qstylesheet.h>
-#include <qtextbrowser.h>
+#include <q3stylesheet.h>
+#include <q3textbrowser.h>
 #include <qtextstream.h>
-#include <qtoolbar.h>
+#include <q3toolbar.h>
 #include <qtoolbutton.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <Q3Frame>
 
 #include <ctype.h>
 
 HelpWindow::HelpWindow()
-  : QMainWindow(0, "", WDestructiveClose),
+  : Q3MainWindow(0, "", Qt::WDestructiveClose),
     m_pathCombo(0)
 {
 
   configure();
 
-  m_browser = new QTextBrowser(this);
+  m_browser = new Q3TextBrowser(this);
 
   m_browser->mimeSourceFactory()->setFilePath(".");
-  m_browser->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+  m_browser->setFrameStyle(Q3Frame::Panel | Q3Frame::Sunken);
   connect(m_browser, SIGNAL(sourceChanged(const QString&)),
 	   this, SLOT(sourceChanged(const QString&)));
 
@@ -70,20 +73,20 @@ HelpWindow::HelpWindow()
   connect(m_browser, SIGNAL(highlighted(const QString&)), statusBar(), SLOT(message(const QString&)));
   resize(640,700);
 
-  QIconSet icon_fileopen(QPixmap(AppSettings->iconPath("fileopen")));
-  QIconSet icon_print(QPixmap(AppSettings->iconPath("print")));
+  QIcon icon_fileopen(QPixmap(AppSettings->iconPath("fileopen")));
+  QIcon icon_print(QPixmap(AppSettings->iconPath("print")));
 
-  QPopupMenu* file = new QPopupMenu(this);
+  Q3PopupMenu* file = new Q3PopupMenu(this);
   file->insertItem(icon_fileopen, tr("&Open File"), this, SLOT(openFile()), Qt::CTRL + Qt::Key_O);
   file->insertItem(icon_print,  tr("&Print"), this, SLOT(print()), Qt::CTRL + Qt::Key_P);
   file->insertSeparator();
   file->insertItem(tr("&Close"), this, SLOT(hide()), Qt::CTRL + Qt::Key_C);
 
-  QIconSet icon_back(QPixmap(AppSettings->iconPath("back")));
-  QIconSet icon_forward(QPixmap(AppSettings->iconPath("forward")));
-  QIconSet icon_home(QPixmap(AppSettings->iconPath("home")));
+  QIcon icon_back(QPixmap(AppSettings->iconPath("back")));
+  QIcon icon_forward(QPixmap(AppSettings->iconPath("forward")));
+  QIcon icon_home(QPixmap(AppSettings->iconPath("home")));
 
-  QPopupMenu* go = new QPopupMenu(this);
+  Q3PopupMenu* go = new Q3PopupMenu(this);
   m_backwardId = go->insertItem(icon_back, tr("&Backward"), m_browser, SLOT(backward()),
 			       Qt::CTRL + Qt::Key_Left);
   m_forwardId = go->insertItem(icon_forward, 
@@ -91,7 +94,7 @@ HelpWindow::HelpWindow()
 			      Qt::CTRL + Qt::Key_Right);
   go->insertItem(icon_home, tr("&Home"), m_browser, SLOT(home()));
 
-  QPopupMenu* help = new QPopupMenu(this);
+  Q3PopupMenu* help = new Q3PopupMenu(this);
   help->insertItem(tr("&About"), this, SLOT(about()));
   help->insertItem(tr("About &Qt"), this, SLOT(aboutQt()));
 
@@ -108,7 +111,7 @@ HelpWindow::HelpWindow()
 	   this, SLOT(setForwardAvailable(bool)));
 
 
-  QToolBar* toolbar = new QToolBar(this);
+  Q3ToolBar* toolbar = new Q3ToolBar(this);
   addToolBar(toolbar, "Toolbar");
   QToolButton* button;
 
@@ -195,7 +198,7 @@ void HelpWindow::aboutQt()
 void HelpWindow::openFile()
 {
 #ifndef QT_NO_FILEDIALOG
-  QString fn = QFileDialog::getOpenFileName(QString::null, QString::null, this);
+  QString fn = Q3FileDialog::getOpenFileName(QString::null, QString::null, this);
   if (!fn.isEmpty())
     m_browser->setSource(fn);
 #endif
@@ -211,11 +214,11 @@ void HelpWindow::print()
     QPainter p(&printer);
     if(!p.isActive()) // starting printing failed
       return;
-    QPaintDeviceMetrics metrics(p.device());
+    Q3PaintDeviceMetrics metrics(p.device());
     int dpiy = metrics.logicalDpiY();
     int margin = (int) ((2/2.54)*dpiy); // 2 cm margins
     QRect view(margin, margin, metrics.width() - 2*margin, metrics.height() - 2*margin);
-    QSimpleRichText richText(m_browser->text(),
+    Q3SimpleRichText richText(m_browser->text(),
 			      QFont(),
 			      m_browser->context(),
 			      m_browser->styleSheet(),

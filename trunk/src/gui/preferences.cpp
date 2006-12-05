@@ -21,18 +21,20 @@
 #include <qcolordialog.h>
 #include <qcombobox.h>
 #include <qdir.h>
-#include <qgroupbox.h>
+#include <q3groupbox.h>
 #include <qpushbutton.h>
 #include <qspinbox.h>
-#include <qwidgetstack.h>
+#include <q3widgetstack.h>
 
-PreferencesDialog::PreferencesDialog(QWidget* parent) : PreferencesDialogBase(parent)
+PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 {
-  connect(okButton, SIGNAL(clicked()), SLOT(accept()));
-  connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
-  connect(boardLightButton, SIGNAL(clicked()), SLOT(slotBoardLightColor()));
-  connect(boardDarkButton, SIGNAL(clicked()), SLOT(slotBoardDarkColor()));
-  connect(boardTypeCombo, SIGNAL(activated(int)), SLOT(slotBoardMode(int)));
+  ui.setupUi(this);
+
+  connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
+  connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
+  connect(ui.boardLightButton, SIGNAL(clicked()), SLOT(slotBoardLightColor()));
+  connect(ui.boardDarkButton, SIGNAL(clicked()), SLOT(slotBoardDarkColor()));
+  connect(ui.boardTypeCombo, SIGNAL(activated(int)), SLOT(slotBoardMode(int)));
   restoreSettings();
 }
 
@@ -42,7 +44,7 @@ PreferencesDialog::~PreferencesDialog()
 
 int PreferencesDialog::exec()
 {
-  int result = PreferencesDialogBase::exec();
+  int result = QDialog::exec();
   if (result == QDialog::Accepted)
     saveSettings();
   return result;
@@ -50,68 +52,68 @@ int PreferencesDialog::exec()
 
 void PreferencesDialog::slotBoardLightColor()
 {
-  QColor light = QColorDialog::getColor(boardLightButton->paletteBackgroundColor());
+  QColor light = QColorDialog::getColor(ui.boardLightButton->paletteBackgroundColor());
   if (light.isValid())
-    boardLightButton->setPaletteBackgroundColor(light);
+    ui.boardLightButton->setPaletteBackgroundColor(light);
 }
 
 void PreferencesDialog::slotBoardDarkColor()
 {
-  QColor dark = QColorDialog::getColor(boardDarkButton->paletteBackgroundColor());
+  QColor dark = QColorDialog::getColor(ui.boardDarkButton->paletteBackgroundColor());
   if (dark.isValid())
-    boardDarkButton->setPaletteBackgroundColor(dark);
+    ui.boardDarkButton->setPaletteBackgroundColor(dark);
 }
 
 void PreferencesDialog::slotBoardMode(int mode)
 {
   if (mode == 2)
-    widgetStack->raiseWidget(plainBoardWidget);
+    ui.widgetStack->raiseWidget(ui.plainBoardWidget);
   else
-    widgetStack->raiseWidget(themeBoardWidget);
+    ui.widgetStack->raiseWidget(ui.themeBoardWidget);
 }
 
 void PreferencesDialog::restoreSettings()
 {
   // Read Board settings
   AppSettings->beginGroup("/Board/");
-  boardTypeCombo->setCurrentItem(AppSettings->readNumEntry("squareType", 0));
-  boardFrameCheck->setChecked(AppSettings->readBoolEntry("showFrame", true));
+  ui.boardTypeCombo->setCurrentItem(AppSettings->readNumEntry("squareType", 0));
+  ui.boardFrameCheck->setChecked(AppSettings->readBoolEntry("showFrame", true));
   QString pieceTheme = AppSettings->readEntry("pieceTheme", "default");
   QString boardTheme = AppSettings->readEntry("boardTheme", "default");
-  boardLightButton->setPaletteBackgroundColor(AppSettings->readEntry("lightColor", "#d0d0d0"));
-  boardDarkButton->setPaletteBackgroundColor(AppSettings->readEntry("darkColor", "#a0a0a0"));
+  ui.boardLightButton->setPaletteBackgroundColor(AppSettings->readEntry("lightColor", "#d0d0d0"));
+  ui.boardDarkButton->setPaletteBackgroundColor(AppSettings->readEntry("darkColor", "#a0a0a0"));
   AppSettings->endGroup();
 
   QStringList themes = QDir(AppSettings->dataPath() + "/themes").entryList("*.png");
   for (QStringList::Iterator it = themes.begin(); it != themes.end(); ++it)
   {
     (*it).truncate((*it).length() - 4);
-    pieceThemeCombo->insertItem(*it);
-    boardThemeCombo->insertItem(*it);
+    ui.pieceThemeCombo->insertItem(*it);
+    ui.boardThemeCombo->insertItem(*it);
   }
-  selectInCombo(pieceThemeCombo, pieceTheme);
-  selectInCombo(boardThemeCombo, boardTheme);
+  selectInCombo(ui.pieceThemeCombo, pieceTheme);
+  selectInCombo(ui.boardThemeCombo, boardTheme);
 
   // Read Players settings
   AppSettings->beginGroup("/Players/");
-  playersRatingsCheck->setChecked(AppSettings->readBoolEntry("rating", true));
-  playersSpinbox->setValue(AppSettings->readNumEntry("count", 100));
+  ui.playersRatingsCheck->setChecked(AppSettings->readBoolEntry("rating", true));
+  ui.playersSpinbox->setValue(AppSettings->readNumEntry("count", 100));
   AppSettings->endGroup();
 }
 
 void PreferencesDialog::saveSettings()
 {
   AppSettings->beginGroup("/Board/");
-  AppSettings->writeEntry("squareType", boardTypeCombo->currentItem());
-  AppSettings->writeEntry("showFrame", boardFrameCheck->isChecked());
-  AppSettings->writeEntry("pieceTheme", pieceThemeCombo->currentText());
-  AppSettings->writeEntry("boardTheme", boardThemeCombo->currentText());
-  AppSettings->writeEntry("lightColor", boardLightButton->paletteBackgroundColor().name());
-  AppSettings->writeEntry("darkColor", boardDarkButton->paletteBackgroundColor().name());
+  AppSettings->writeEntry("squareType", ui.boardTypeCombo->currentItem());
+  AppSettings->writeEntry("showFrame", ui.boardFrameCheck->isChecked());
+  AppSettings->writeEntry("pieceTheme", ui.pieceThemeCombo->currentText());
+  AppSettings->writeEntry("boardTheme", ui.boardThemeCombo->currentText());
+  AppSettings->writeEntry("lightColor", ui.boardLightButton->paletteBackgroundColor().name());
+  AppSettings->writeEntry("darkColor", ui.boardDarkButton->paletteBackgroundColor().name());
   AppSettings->endGroup();
   AppSettings->beginGroup("/Players/");
-  AppSettings->writeEntry("rating", playersRatingsCheck->isChecked());
-  AppSettings->writeEntry("count", playersSpinbox->value());
+  AppSettings->writeEntry("rating", ui.playersRatingsCheck->isChecked());
+  AppSettings->writeEntry("count", ui.playersSpinbox->value());
   AppSettings->endGroup();
 }
 

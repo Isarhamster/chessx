@@ -8,8 +8,10 @@
  ***************************************************************************/
 
 #include "chessbrowser.h"
+//Added by qt3to4:
+#include <QMouseEvent>
 
-ChessBrowser::ChessBrowser(QWidget *p, const char* name) : QTextBrowser(p, name)
+ChessBrowser::ChessBrowser(QWidget *p, const char* name) : Q3TextBrowser(p, name)
 {
   setLinkUnderline(false);
 }

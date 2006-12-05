@@ -15,13 +15,16 @@
  ***************************************************************************/
 
 #include <qapplication.h>
-#include <qhbox.h>
+#include <q3hbox.h>
 #include <qlayout.h>
-#include <qheader.h>
-#include <qlistview.h>
-#include <qscrollbar.h>
-#include <qstatusbar.h>
-#include <qvbox.h>
+#include <q3header.h>
+#include <q3listview.h>
+#include <QScrollBar>
+#include <QStatusBar>
+#include <q3vbox.h>
+#include <QResizeEvent>
+#include <QEvent>
+#include <Q3VBoxLayout>
 
 #include "databaseinfo.h"
 #include "database.h"
@@ -34,10 +37,10 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
   setCaption(tr("Game list"));
   setMinimumSize(600, 400);
 
-  QVBoxLayout* vbox = new QVBoxLayout(this);
+  Q3VBoxLayout* vbox = new Q3VBoxLayout(this);
 
-  QHBox* hbox = new QHBox(this);
-  m_list = new QListView(hbox);
+  Q3HBox* hbox = new Q3HBox(this);
+  m_list = new Q3ListView(hbox);
   m_list->addColumn(tr("Index"));
   m_list->addColumn(tr("White"));
   m_list->addColumn(tr("Black"));
@@ -52,9 +55,9 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
   m_list->setColumnAlignment(Round, Qt::AlignRight);
   m_list->setColumnAlignment(Length, Qt::AlignRight);
   m_list->setAllColumnsShowFocus(true);
-  m_list->setHScrollBarMode(QScrollView::AlwaysOff);
-  m_list->setVScrollBarMode(QScrollView::AlwaysOff);
-  new QListViewItem(m_list, QString());
+  m_list->setHScrollBarMode(Q3ScrollView::AlwaysOff);
+  m_list->setVScrollBarMode(Q3ScrollView::AlwaysOff);
+  new Q3ListViewItem(m_list, QString());
   m_itemHeight = m_list->firstChild()->height();
   m_list->clear();
   m_list->setSorting(-1);
@@ -72,9 +75,9 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
 
   connect(m_scroll, SIGNAL(valueChanged(int)), SLOT(scrollList(int)));
 
-  connect(m_list, SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)), 
-          SLOT(itemSelected(QListViewItem*)));
-  connect(m_list, SIGNAL(returnPressed(QListViewItem*)), SLOT(itemSelected(QListViewItem*)));
+  connect(m_list, SIGNAL(doubleClicked(Q3ListViewItem*, const QPoint&, int)), 
+          SLOT(itemSelected(Q3ListViewItem*)));
+  connect(m_list, SIGNAL(returnPressed(Q3ListViewItem*)), SLOT(itemSelected(Q3ListViewItem*)));
 
   configure();
   updateScrollbar();
@@ -85,7 +88,7 @@ void GameList::createItem(int index)
   Game g;
   if (!m_database || !m_database->database()->loadHeaders(index, g))
     return;
-  QListViewItem* item = new QListViewItem(m_list, m_list->lastItem());
+  Q3ListViewItem* item = new Q3ListViewItem(m_list, m_list->lastItem());
   item->setText(Index, QString::number(index+1));
   item->setText(White, g.tag("White"));
   item->setText(Black, g.tag("Black"));
@@ -134,7 +137,7 @@ void GameList::scrollList(int page)
   m_list->clear();
   for (int i = 0; i < m_pageSize; i++)
     createItem(start + i);
-  QListViewItem* current = m_list->firstChild();
+  Q3ListViewItem* current = m_list->firstChild();
   if (current && page > start)
     for (int i = 0; i < page - start && current->itemBelow(); i++)
       current = current->itemBelow();
@@ -151,7 +154,7 @@ bool GameList::eventFilter(QObject* o, QEvent* e)
   return false;
 }
 
-void GameList::itemSelected(QListViewItem* item)
+void GameList::itemSelected(Q3ListViewItem* item)
 {
   emit selected(item->text(Index).toInt() - 1);
 }
@@ -167,7 +170,7 @@ void GameList::configure()
   AppSettings->readLayout(this);
   AppSettings->beginGroup("/GameList");
   QStringList sections  = AppSettings->readListEntry("sections");
-  if ((uint)m_list->header()->count() == sections.count())
+  if (m_list->header()->count() == sections.count())
     for (int i = 0; i < m_list->header()->count(); i++)
       m_list->header()->resizeSection(i, sections[i].toInt());
   AppSettings->endGroup();

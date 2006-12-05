@@ -19,13 +19,15 @@
 
 #include <qcursor.h>
 #include <qpushbutton.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 
 using namespace Qt;
 
-BoardSetupDialog::BoardSetupDialog(QWidget* parent) : BoardSetupBaseDialog(parent), m_piece(WhiteKing)
+BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_piece(WhiteKing)
 {
-  m_popup = new QPopupMenu(boardView);
+  ui.setupUi(this);
+
+  m_popup = new Q3PopupMenu(ui.boardView);
   m_popup->insertItem("White king", WhiteKing);
   m_popup->insertItem("White queen", WhiteQueen);
   m_popup->insertItem("White rook", WhiteRook);
@@ -53,11 +55,11 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : BoardSetupBaseDialog(paren
   m_popup->setAccel(SHIFT + Key_P, BlackPawn);
   connect(m_popup, SIGNAL(activated(int)), SLOT(slotChoosePiece(int)));
 
-  connect(okButton, SIGNAL(clicked()), SLOT(accept()));
-  connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
-  connect(clearButton, SIGNAL(clicked()), SLOT(slotClear()));
-  connect(resetButton, SIGNAL(clicked()), SLOT(slotReset()));
-  connect(boardView, SIGNAL(mousePressed(const QPoint&, int)), 
+  connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
+  connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
+  connect(ui.clearButton, SIGNAL(clicked()), SLOT(slotClear()));
+  connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
+  connect(ui.boardView, SIGNAL(mousePressed(const QPoint&, int)),
           SLOT(slotSelected(const QPoint&, int)));
 }
 
@@ -67,31 +69,31 @@ BoardSetupDialog::~BoardSetupDialog()
 
 Board BoardSetupDialog::board() const
 {
-  return boardView->board();
+  return ui.boardView->board();
 }
 
 void BoardSetupDialog::setBoard(const Board& b)
 {
-  boardView->setBoard(b);
+  ui.boardView->setBoard(b);
 }
 
 int BoardSetupDialog::exec()
 {
-  boardView->configure();
-  return BoardSetupBaseDialog::exec();
+  ui.boardView->configure();
+  return QDialog::exec();
 }
 
 void BoardSetupDialog::slotReset()
 {
   Board b;
   b.setStandardPosition();
-  boardView->setBoard(b);
+  ui.boardView->setBoard(b);
 }
 
 void BoardSetupDialog::slotClear()
 {
   Board b;
-  boardView->setBoard(b);
+  ui.boardView->setBoard(b);
 }
 
 void BoardSetupDialog::slotChoosePiece(int piece)
@@ -103,26 +105,24 @@ void BoardSetupDialog::slotChoosePiece(int piece)
 
 void BoardSetupDialog::slotSelected(const QPoint& p, int b)
 {
-  if (b & RightButton)
-  {
+  if (b & Qt::RightButton)
     m_popup->exec(QCursor::pos());
-  }
-  else 
+  else
   {
-    Piece piece = (b & MidButton) ? Empty : m_piece;
-    if (b & ShiftButton)
+    Piece piece = (b & Qt::MidButton) ? Empty : m_piece;
+    if (b & Qt::ShiftModifier)
     {
       if (piece >= BlackKing)
         piece = (Piece)(piece - (BlackKing - WhiteKing));
       else
         piece = (Piece)(piece + (BlackKing - WhiteKing));
     }
-    Board board = boardView->board();
-    Square square = boardView->squareAt(p);
+    Board board = ui.boardView->board();
+    Square square = ui.boardView->squareAt(p);
     if (board.at(square) == piece)
       piece = Empty;
     board.setAt(square, piece);
-    boardView->setBoard(board);
+    ui.boardView->setBoard(board);
   }
 }
 

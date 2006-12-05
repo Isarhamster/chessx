@@ -18,9 +18,12 @@
 #define __GAMELIST_H__
 
 #include <qwidget.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QEvent>
 
-class QListView;
-class QListViewItem;
+class Q3ListView;
+class Q3ListViewItem;
 class QScrollBar;
 class QStatusBar;
 class DatabaseInfo;
@@ -42,7 +45,7 @@ public slots:
   /** Store current configuration */
   void saveConfig();
 private slots:
-  void itemSelected(QListViewItem* item);
+  void itemSelected(Q3ListViewItem* item);
 signals:
   void selected(int);
 private:
@@ -55,7 +58,7 @@ private:
   /** Create visible list item from game @p index */
   void createItem(int index);
   virtual bool eventFilter(QObject* o, QEvent* e);
-  QListView* m_list;
+  Q3ListView* m_list;
   QScrollBar* m_scroll;
   QStatusBar* m_status;
   int m_count;
