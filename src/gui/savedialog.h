@@ -18,17 +18,19 @@
 #ifndef __SAVEDIALOG_H__
 #define __SAVEDIALOG_H__
 
-#include "savedialogbase.h"
+#include "ui_savedialog.h"
 
 class Game;
 
-class SaveDialog : public SaveDialogBase
+class SaveDialog : public QDialog
 {
   Q_OBJECT
-  public:
-    SaveDialog(QWidget* parent = 0);
-    ~SaveDialog();
-    virtual int exec(Game* game);
+public:
+  SaveDialog(QWidget* parent = 0);
+  virtual ~SaveDialog();
+  virtual int exec(Game* game);
+private:
+  Ui::SaveDialog ui;
 };
 
 

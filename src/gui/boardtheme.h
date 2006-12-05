@@ -17,8 +17,8 @@
 #ifndef __BOARDTHEME_H__
 #define __BOARDTHEME_H__
 
-#include <qstring.h>
-#include <qt34/qpixmap.h>
+#include <QString>
+#include <QPixmap>
 
 #include "common.h"
 
@@ -51,13 +51,13 @@ public:
   /** @return color of dark squares. */
   QColor darkColor() const;
   /** @return pixmap for given piece scaled to current size(). */
-  const QPixmap& pixmap(Piece p) const;
+  const QImage& piece(Piece p) const;
   /** @return unscaled pixmap for given piece. */
-  const QPixmap& originalPixmap(Piece p) const;
+  const QImage& originalPiece(Piece p) const;
   /** @return pixmap for square. */
-  const QPixmap& square(bool dark) const;
+  const QImage& square(bool dark) const;
   /** @return unscaled pixmap for square. */
-  const QPixmap& originalSquare(bool dark) const;
+  const QImage& originalSquare(bool dark) const;
   /** Checkes whether themes is valid (pixmaps loaded). */
   bool isValid() const;
   /** Returns name of board theme. It is just file without a path and extension. */
@@ -68,16 +68,18 @@ public:
   void setSize(int value);
   /** Returns current size of pixmaps. */
   int size() const;
+  /** Returns current rectangle of pixmaps. */
+  QRect rect() const;
   /** Sets background type. */
   void setSquareType(BoardSquare type);
   /** @return whether board pixmaps are scaled or clipped. */
   BoardSquare squareType() const;
 
 private:
-  QPixmap m_originalPixmaps[ConstPieceTypes];
-  QPixmap m_pixmaps[ConstPieceTypes];
-  QPixmap m_originalSquare[2];
-  QPixmap m_square[2];
+  QImage m_originalPiece[ConstPieceTypes];
+  QImage m_piece[ConstPieceTypes];
+  QImage m_originalSquare[2];
+  QImage m_square[2];
   int m_size;
   bool m_plainSquares;
   BoardSquare m_squareType;

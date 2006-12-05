@@ -17,23 +17,25 @@
 #ifndef __BOARDSETUPDIALOG_H__
 #define __BOARDSETUPDIALOG_H__
 
-#include "boardsetupbase.h"
+#include "ui_boardsetup.h"
 #include "board.h"
 
-class QPopupMenu;
+#include <Q3PopupMenu>
+
+class Q3PopupMenu;
 
 /**
    The BoardSetupDialog class represents a dialog for setting up a position
  */
 
-class BoardSetupDialog : public BoardSetupBaseDialog
+class BoardSetupDialog : public QDialog
 {
   Q_OBJECT
   public:
     /** Create ChessX Preferences dialog */
     BoardSetupDialog(QWidget* parent = 0);
     /** Destroy the dialog */
-    ~BoardSetupDialog();
+    virtual ~BoardSetupDialog();
     /** Set current board */
     void setBoard(const Board& b);
     /** Return current board */
@@ -51,7 +53,8 @@ class BoardSetupDialog : public BoardSetupBaseDialog
     /** Select square and insert piece */
     void slotSelected(const QPoint& pos, int b);
   private:
-    QPopupMenu* m_popup;
+    Ui::BoardSetupDialog ui;
+    Q3PopupMenu* m_popup;
     Piece m_piece;
 };
 

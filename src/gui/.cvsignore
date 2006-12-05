@@ -2,3 +2,4 @@ moc*
 *base.h
 *base.cpp
 Makefile
+ui_*.h

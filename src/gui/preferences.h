@@ -17,18 +17,18 @@
 #ifndef __PREFERENCESDIALOG_H__
 #define __PREFERENCESDIALOG_H__
 
-#include "preferencesbase.h"
+#include "ui_preferences.h"
 
 class QComboBox;
 
-class PreferencesDialog : public PreferencesDialogBase
+class PreferencesDialog : public QDialog
 {
   Q_OBJECT
 public:
   /** Create ChessX Preferences dialog */
   PreferencesDialog(QWidget* parent = 0);
   /** Destroy the dialog */
-  ~PreferencesDialog();
+  virtual ~PreferencesDialog();
 
 public slots:
   /** Execute dialog, save options on exit */
@@ -38,6 +38,8 @@ public slots:
   void slotBoardMode(int mode);
 
 private:
+  Ui::PreferencesDialog ui;
+
   void restoreSettings();
   void saveSettings();
   bool selectInCombo(QComboBox* combo, const QString& text);

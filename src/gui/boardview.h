@@ -17,7 +17,11 @@
 #ifndef __BOARDVIEW_H__
 #define __BOARDVIEW_H__
 
-#include <qwidget.h>
+#include <QWidget>
+#include <QResizeEvent>
+#include <QWheelEvent>
+#include <QMouseEvent>
+#include <QPaintEvent>
 
 #include "common.h"
 #include "board.h"
@@ -83,8 +87,6 @@ signals:
 protected:
   /** Redraws single square (and piece on it). */
   void repaintSquare(Square square);
-  /** Redraws whole board. */
-  void repaintBoard();
   /** Resizes pieces for new board size. */
   void resizeBoard();
   /** Redraws whole board if necessary. */

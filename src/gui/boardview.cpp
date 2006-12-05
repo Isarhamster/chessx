@@ -16,11 +16,17 @@
 
 #include "boardview.h"
 #include "boardtheme.h"
-#include "../database/settings.h"
+#include <settings.h>
 
 #include <qpainter.h>
 #include <qmessagebox.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
+
+#include <QWheelEvent>
+#include <QPaintEvent>
+#include <QResizeEvent>
+#include <QPixmap>
+#include <QMouseEvent>
 
 using namespace Qt;
 
@@ -39,12 +45,7 @@ void BoardView::setBoard(const Board& value)
 {
   Board oldboard = m_board; 
   m_board = value;
-  for (Square i = 0; i < 64; i++)
-    if (m_board.at(i) != oldboard.at(i))
-      repaintSquare(i);
-#if QT_VERSION >= 0x040000
   update();
-#endif
   emit changed();
 }
 
@@ -60,8 +61,8 @@ void BoardView::repaintSquare(Square square)
   int y = isFlipped() ? square / 8 : 7 - square / 8;
   int posx = x * m_theme->size();
   int posy = y * m_theme->size();
-  p.drawPixmap(posx, posy, m_theme->square((x + y) % 2));
-  p.drawPixmap(posx, posy, m_theme->pixmap(m_board.at(square)));
+  p.drawImage(posx, posy, m_theme->square((x + y) % 2));
+  p.drawImage(posx, posy, m_theme->piece(m_board.at(square)));
   if (square == m_selectedSquare)
   {
     QPen pen;
@@ -78,15 +79,10 @@ void BoardView::repaintSquare(Square square)
   }
 }
 
-void BoardView::repaintBoard()
+void BoardView::paintEvent(QPaintEvent*)
 {
   for (Square i = 0; i < 64; i++)
     repaintSquare(i);
-}
-
-void BoardView::paintEvent(QPaintEvent*)
-{
-  repaintBoard();
 }
 
 void BoardView::resizeBoard()
@@ -102,7 +98,7 @@ void BoardView::resizeEvent(QResizeEvent*)
   resizeBoard();
 }
 
-Square BoardView::squareAt( QPoint p ) const
+Square BoardView::squareAt(QPoint p) const
 {
   int x = isFlipped() ? 7 - p.x() / m_theme->size() : p.x() / m_theme->size();
   int y = isFlipped() ? p.y() / m_theme->size() : 7 - p.y() / m_theme->size();
@@ -153,9 +149,7 @@ bool BoardView::setTheme(const QString& pieceFile, const QString& boardFile)
     {
       result = m_theme->load("default");
       if (result)
-      {
         resizeBoard();
-      }
     }
   }
   if (result)
@@ -212,27 +206,24 @@ void BoardView::selectSquare(Square s)
     return;
   Square prev = m_selectedSquare;
   m_selectedSquare = s;
-  if (prev != InvalidSquare)
+ /* if (prev != InvalidSquare)
     repaintSquare(prev);
   repaintSquare(m_selectedSquare);
-#if QT_VERSION >= 0x040000
-  update();
-#endif
+  update();*/
 }
 
 void BoardView::unselectSquare()
 {
   Square prev = m_selectedSquare;
   m_selectedSquare = InvalidSquare;
-  if (prev != InvalidSquare)
+  /*if (prev != InvalidSquare)
     repaintSquare(prev);
-#if QT_VERSION >= 0x040000
-  update();
-#endif
+  update();*/
 }
 
-void BoardView::exportPixmaps(const QString& dir)
+void BoardView::exportPixmaps(const QString&)
 {
+  /*
   int size = m_theme->size();
   QPixmap pixmap(size, size);
   const QString piecenames = " kqrbnpkqrbnp";
@@ -249,6 +240,7 @@ void BoardView::exportPixmaps(const QString& dir)
   pixmap.save(dir + "/wsq.png", "PNG");
   copyBlt(&pixmap, 0, 0, &(m_theme->square(1)), 0, 0, size, size);
   pixmap.save(dir + "/bsq.png", "PNG");
+  */
 }
 
 int BoardView::movesBrowsed(int dir)

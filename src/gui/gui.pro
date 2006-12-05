@@ -1,13 +1,14 @@
-# Plik utworzony przez mened?era projektów kdevelopa
+# Plik utworzony przez mened?era projektï¿½ kdevelopa
 # ------------------------------------------- 
-# Podkatalog wzgl?dem g?ównego katalogu projektu: ./src/gui
+# Podkatalog wzgl?dem g?ï¿½nego katalogu projektu: ./src/gui
 # Cel to biblioteka gui
 
-FORMS += playerdialogbase.ui \
-         preferencesbase.ui \
-         boardsetupbase.ui \
-         enginesetupbase.ui \
-         savedialogbase.ui
+#The following line was changed from FORMS to FORMS3 by qt3to4
+FORMS += playerdialog.ui \
+         preferences.ui \
+         boardsetup.ui \
+         enginesetup.ui \
+         savedialog.ui
 HEADERS += mainwindow.h \
            playerdialog.h \
            preferences.h \
@@ -31,8 +32,9 @@ SOURCES += mainwindow.cpp \
            gamelist.cpp \
 	   chessbrowser.cpp
 TARGET = gui
-CONFIG += warn_on qt staticlib
+CONFIG += warn_on qt staticlib uic
 TEMPLATE = lib
 QT += qt3support
 INCLUDEPATH += ../compatibility \
 ../database
+

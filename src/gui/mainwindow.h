@@ -18,9 +18,15 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
 #include <qmessagebox.h>
-#include <qvaluelist.h>
+#include <q3valuelist.h>
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <QLabel>
+#include <Q3PopupMenu>
+#include <QCloseEvent>
+#include <Q3PtrList>
 
 #include "common.h"
 #include "historylist.h"
@@ -36,12 +42,12 @@ class Database;
 class Output;
 
 class ChessBrowser;
-class QListBox;
-class QVBoxLayout;
+class Q3ListBox;
+class Q3VBoxLayout;
 class QLabel;
-class QPopupMenu;
+class Q3PopupMenu;
 
-class MainWindow: public QMainWindow
+class MainWindow: public Q3MainWindow
 {
   Q_OBJECT
 public:
@@ -110,14 +116,14 @@ private:
   BoardView* m_boardView;
   ChessBrowser* m_moveView;
   ChessBrowser* m_gameView;
-  QVBoxLayout* m_layout;
+  Q3VBoxLayout* m_layout;
   QLabel* m_statusFilter;
   HistoryList m_recentFiles;
-  QPopupMenu* m_menuRecent;
-  QPopupMenu* m_menuDatabases;
+  Q3PopupMenu* m_menuRecent;
+  Q3PopupMenu* m_menuDatabases;
   /* Local variables */
   Output* m_output;
-  QPtrList<DatabaseInfo> m_databases;
+  Q3PtrList<DatabaseInfo> m_databases;
 };
 
 

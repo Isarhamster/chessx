@@ -33,20 +33,24 @@
 
 #include <qapplication.h>
 #include <qclipboard.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qfileinfo.h>
 #include <qlabel.h>
 #include <qlayout.h>
-#include <qhbox.h>
-#include <qlistbox.h>
+#include <q3hbox.h>
+#include <q3listbox.h>
 #include <qmenubar.h>
 #include <qmessagebox.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
 #include <qstatusbar.h>
 #include <qsplitter.h>
 #include <qaction.h>
+//Added by qt3to4:
+#include <Q3Frame>
+#include <Q3VBoxLayout>
+#include <QCloseEvent>
 
-MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose),
+MainWindow::MainWindow() : Q3MainWindow(0, "MainWindow", Qt::WDestructiveClose),
   m_playerDialog(0), m_helpWindow(0)
 {
   /* Active database */
@@ -60,51 +64,51 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose),
   connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
 
   /* File menu */
-  QPopupMenu *file = new QPopupMenu(this);
+  Q3PopupMenu *file = new Q3PopupMenu(this);
   menuBar()->insertItem(tr("&File"), file);
   file->insertItem(tr("&Open..."), this, SLOT(slotFileOpen()), CTRL + Key_O);
-  m_menuRecent = new QPopupMenu(file);
+  m_menuRecent = new Q3PopupMenu(file);
   file->insertItem(tr("Open &recent..."), m_menuRecent);
   file->insertItem(tr("&Close"), this, SLOT(slotFileClose()), CTRL + Key_W);
   file->insertItem(tr("&Quit"), qApp, SLOT(closeAllWindows()), CTRL + Key_Q);
 
   /* Edit menu */
-  QPopupMenu *edit = new QPopupMenu(this);
+  Q3PopupMenu *edit = new Q3PopupMenu(this);
   menuBar()->insertItem(tr("&Edit"), edit);
   edit->insertItem(tr("&Copy FEN"), this, SLOT(slotEditCopyFEN()), CTRL + SHIFT + Key_C);
   edit->insertItem(tr("&Paste FEN"), this, SLOT(slotEditPasteFEN()), CTRL + SHIFT + Key_V);
   edit->insertItem(tr("&Edit board..."), this, SLOT(slotEditBoard()));
 
   /* Game menu */
-  QPopupMenu *gameMenu = new QPopupMenu(this);
+  Q3PopupMenu *gameMenu = new Q3PopupMenu(this);
   menuBar()->insertItem(tr("&Game"), gameMenu);
-  QPopupMenu* loadMenu = new QPopupMenu(this);
-  loadMenu->insertItem(tr("&First"), this, SLOT(slotGameLoad(int)), CTRL + SHIFT + Key_Up, IdFirst);
-  loadMenu->insertItem(tr("&Last"), this, SLOT(slotGameLoad(int)), CTRL + SHIFT + Key_Down, IdLast);
-  loadMenu->insertItem(tr("&Next"), this, SLOT(slotGameLoad(int)), CTRL + Key_Down, IdNext);
-  loadMenu->insertItem(tr("&Previous"), this, SLOT(slotGameLoad(int)), CTRL + Key_Up, IdPrevious);
-  loadMenu->insertItem(tr("&Random"), this, SLOT(slotGameLoad(int)), CTRL + Key_Question, IdRandom);
+  Q3PopupMenu* loadMenu = new Q3PopupMenu(this);
+  loadMenu->insertItem(tr("&First"), this, SLOT(slotGameLoad(int)), Qt::CTRL + Qt::SHIFT + Qt::Key_Up, IdFirst);
+  loadMenu->insertItem(tr("&Last"), this, SLOT(slotGameLoad(int)), Qt::CTRL + Qt::SHIFT + Qt::Key_Down, IdLast);
+  loadMenu->insertItem(tr("&Next"), this, SLOT(slotGameLoad(int)), Qt::CTRL + Qt::Key_Down, IdNext);
+  loadMenu->insertItem(tr("&Previous"), this, SLOT(slotGameLoad(int)), Qt::CTRL + Qt::Key_Up, IdPrevious);
+  loadMenu->insertItem(tr("&Random"), this, SLOT(slotGameLoad(int)), Qt::CTRL + Qt::Key_Question, IdRandom);
   gameMenu->insertItem(tr("&Load..."), loadMenu);
-  QPopupMenu* goMenu = new QPopupMenu(this);
-  goMenu->insertItem(tr("&Start"), this, SLOT(slotGameBrowse(int)), Key_Home, BrowseFirstMove);
-  goMenu->insertItem(tr("&End"), this, SLOT(slotGameBrowse(int)), Key_End, BrowseLastMove);
-  goMenu->insertItem(tr("&Next move"), this, SLOT(slotGameBrowse(int)), Key_Right, BrowseNextMove);
-  goMenu->insertItem(tr("&Previous move"), this, SLOT(slotGameBrowse(int)), Key_Left, BrowsePreviousMove);
-  goMenu->insertItem(tr("5 moves &forward"), this, SLOT(slotGameBrowse(int)), Key_Down, BrowseNextMoves);
-  goMenu->insertItem(tr("5 moves &backward"), this, SLOT(slotGameBrowse(int)), Key_Up, BrowsePreviousMoves);
+  Q3PopupMenu* goMenu = new Q3PopupMenu(this);
+  goMenu->insertItem(tr("&Start"), this, SLOT(slotGameBrowse(int)), Qt::Key_Home, BrowseFirstMove);
+  goMenu->insertItem(tr("&End"), this, SLOT(slotGameBrowse(int)), Qt::Key_End, BrowseLastMove);
+  goMenu->insertItem(tr("&Next move"), this, SLOT(slotGameBrowse(int)), Qt::Key_Right, BrowseNextMove);
+  goMenu->insertItem(tr("&Previous move"), this, SLOT(slotGameBrowse(int)), Qt::Key_Left, BrowsePreviousMove);
+  goMenu->insertItem(tr("5 moves &forward"), this, SLOT(slotGameBrowse(int)), Qt::Key_Down, BrowseNextMoves);
+  goMenu->insertItem(tr("5 moves &backward"), this, SLOT(slotGameBrowse(int)), Qt::Key_Up, BrowsePreviousMoves);
   gameMenu->insertItem(tr("&Go..."), goMenu);
   gameMenu->insertItem(tr("&Save...."), this, SLOT(slotGameSave()), CTRL + Key_S);
 
   /* Windows menu */
-  QPopupMenu *view = new QPopupMenu(this);
+  Q3PopupMenu *view = new Q3PopupMenu(this);
   menuBar()->insertItem(tr("&View"), view);
-  m_menuDatabases = new QPopupMenu(view);
+  m_menuDatabases = new Q3PopupMenu(view);
   view->insertItem(tr("&Database"), m_menuDatabases);
   view->insertItem(tr("&Game list"), this, SLOT(slotFilterSwitch()), CTRL + Key_L);
   view->insertItem(tr("&Player Database..."), this, SLOT(slotPlayerDialog()), CTRL + SHIFT + Key_P);
 
   /* Settings menu */
-  QPopupMenu *settings = new QPopupMenu(this);
+  Q3PopupMenu *settings = new Q3PopupMenu(this);
   menuBar()->insertItem(tr("&Settings"), settings);
   settings ->insertItem(tr("&Configure ChessX..."), this, SLOT(slotConfigure()));
 //  settings ->insertItem(tr("Chess &Engines..."), this, SLOT(slotConfigureChessEngines()));
@@ -112,7 +116,7 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose),
 
   /* Help menu */
   menuBar()->insertSeparator();
-  QPopupMenu *help = new QPopupMenu(this);
+  Q3PopupMenu *help = new Q3PopupMenu(this);
   menuBar()->insertItem(tr("&Help"), help);
   help->insertItem( tr( "ChessX &help..." ), this, SLOT( slotHelp()), Key_F1);
   help->insertItem(tr("&About..."), this, SLOT(slotAbout()));
@@ -134,12 +138,12 @@ MainWindow::MainWindow() : QMainWindow(0, "MainWindow", WDestructiveClose),
   m_output = new Output(Output::NotationWidget);
 
   /* Layout */
-  QFrame* frame = new QFrame(this);
+  Q3Frame* frame = new Q3Frame(this);
   setCentralWidget(frame);
-  m_layout = new QVBoxLayout(frame);
+  m_layout = new Q3VBoxLayout(frame);
 
   /* Board */
-  QHBox* hbox = new QHBox(frame, "BGView");
+  Q3HBox* hbox = new Q3HBox(frame, "BGView");
   m_layout->addWidget(hbox, 5);
   m_boardView = new BoardView(hbox, "BoardView");
   hbox->setStretchFactor(m_boardView, 2);
@@ -184,7 +188,7 @@ MainWindow::~MainWindow()
 QString databaseName(const QString& fname)
 {
   QString name = fname.section('/', -1);
-  uint ext = name.findRev('.');
+  int ext = name.findRev('.');
   if (ext > name.length() - 5)
     name = name.left(ext);
   return name;
@@ -208,7 +212,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
 bool MainWindow::yesNo(const QString& question, QMessageBox::Icon icon) const
 {
   QMessageBox mb("ChessX", question, icon, QMessageBox::Yes, QMessageBox::No,
-     QMessageBox::NoButton);
+     Qt::NoButton);
   return mb.exec() == QMessageBox::Yes;
 }
 
@@ -246,7 +250,7 @@ void MainWindow::updateMenuRecent()
 void MainWindow::updateMenuDatabases()
 {
   int i = 0;
-  QPtrListIterator<DatabaseInfo> it(m_databases);
+  Q3PtrListIterator<DatabaseInfo> it(m_databases);
   DatabaseInfo* db;
   m_menuDatabases->clear();
   while ((db = it.current()))
@@ -297,7 +301,7 @@ HelpWindow* MainWindow::helpWindow()
 
 void MainWindow::slotFileOpen()
 {
-  QString file = QFileDialog::getOpenFileName(QString::null,
+  QString file = Q3FileDialog::getOpenFileName(QString::null,
      tr("PGN Database (*.pgn)"), this, "open database", tr("Open database"));
   if (!file.isEmpty())
     openDatabase(file);
@@ -328,7 +332,7 @@ void MainWindow::slotAbout()
         "William Hoggarth, Ejner Borgbjerg, Marius Roets (database)<br>"
         "Michal Rudolf, Heinz Hopfgartner (GUI)<br>"
     "</p>"),
-    QMessageBox::NoIcon, QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton, this); 
+    QMessageBox::NoIcon, QMessageBox::Ok, Qt::NoButton, Qt::NoButton, this); 
   dialog.exec();
 }
 

@@ -15,30 +15,24 @@
  *                                                                         *
  *   The code is based on Trolltech Qt 3 - Help browser example            *
  ***************************************************************************/
-/****************************************************************************
- ** $Id$
- **
- ** Copyright (C) 1992-2000 Trolltech AS.  All rights reserved.
- **
- ** This file is part of an example program for Qt.  This example
- ** program may be used, distributed and modified without limitation.
- **
- *****************************************************************************/
+
 
 #ifndef HELPWINDOW_H
 #define HELPWINDOW_H
 
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
+#include <QCloseEvent>
+#include <Q3PopupMenu>
 
 class QComboBox;
-class QPopupMenu;
-class QTextBrowser;
+class Q3PopupMenu;
+class Q3TextBrowser;
 class QString;
 
 /** The help system for ChessX. 
     Displays help pages in html format */
 
-class HelpWindow : public QMainWindow
+class HelpWindow : public Q3MainWindow
 {
   Q_OBJECT
     public:
@@ -64,7 +58,7 @@ class HelpWindow : public QMainWindow
 
   void configure();
 
-  QTextBrowser* m_browser;
+  Q3TextBrowser* m_browser;
   QComboBox *m_pathCombo;
   int m_backwardId, m_forwardId;
   QString m_home;
