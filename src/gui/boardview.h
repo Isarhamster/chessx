@@ -65,8 +65,6 @@ public:
   void unselectSquare();
   /** @return selected square */
   Square selectedSquare() const;
-  /** Export pictures for website editing */
-  void exportPixmaps(const QString& dir);
   /** Translate browse direction to real move change */
   static int movesBrowsed(int dir);
 
