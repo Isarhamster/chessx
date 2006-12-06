@@ -145,7 +145,7 @@ int BoardTheme::size() const
 
 QRect BoardTheme::rect() const
 {
-  return QRect(0, 0, size(), size());
+  return QRect(QPoint(0, 0), QSize(m_size, m_size));
 }
 
 void BoardTheme::setSize(int value)
