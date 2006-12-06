@@ -154,7 +154,7 @@ void BoardTheme::setSize(int value)
     return;
   m_size = value;
   for (int i = 1; i<ConstPieceTypes; i++)
-    m_piece[i] = m_originalPiece[i].scaled(value, value);
+    m_piece[i] = m_originalPiece[i].scaled(value, value, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
   setSquareType(m_squareType);
 }
 
@@ -181,8 +181,8 @@ void BoardTheme::setSquareType(BoardSquare type)
       m_square[1].fill(darkColor().rgb());
       break;
     case Scaled:
-      m_square[0] =  m_originalSquare[0].scaled(size(), size());
-      m_square[1] =  m_originalSquare[1].scaled(size(), size());
+      m_square[0] =  m_originalSquare[0].scaled(size(), size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+      m_square[1] =  m_originalSquare[1].scaled(size(), size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
       break;
     case Unscaled:
       m_square[0] =  m_originalSquare[0].copy(rect());
