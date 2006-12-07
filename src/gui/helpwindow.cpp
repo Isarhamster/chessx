@@ -56,6 +56,7 @@ HelpWindow::HelpWindow()
     m_pathCombo(0)
 {
 
+  setName("HelpWindow");
   configure();
 
   m_browser = new Q3TextBrowser(this);

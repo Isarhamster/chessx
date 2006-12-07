@@ -34,6 +34,7 @@
 GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m_count(0),
   m_pageSize(1), m_database(0)
 {
+  setName("GameList");
   setCaption(tr("Game list"));
   setMinimumSize(600, 400);
 

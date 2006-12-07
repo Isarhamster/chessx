@@ -123,7 +123,7 @@ MainWindow::MainWindow() : Q3MainWindow(0, "MainWindow", Qt::WDestructiveClose),
   resize(450, 600);
 
   /* Recent files */
-  m_recentFiles.restore("History", "Recent files");
+  m_recentFiles.restore("History", "RecentFiles");
   int i = 0;
   while (i < m_recentFiles.count())
   {
@@ -197,7 +197,7 @@ QString databaseName(const QString& fname)
 void MainWindow::closeEvent(QCloseEvent* e)
 {
   if (yesNo(tr("Do you want to quit?"))) {
-    m_recentFiles.save("History", "Recent files");
+    m_recentFiles.save("History", "RecentFiles");
     AppSettings->writeLayout(m_playerDialog);
     AppSettings->writeLayout(m_helpWindow);
     m_gameList->saveConfig();
