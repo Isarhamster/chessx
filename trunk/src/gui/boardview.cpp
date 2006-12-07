@@ -1,4 +1,4 @@
--/***************************************************************************
+/***************************************************************************
                       BoardView - view of the current board
                              -------------------
     begin                : Sun 21 Aug 2005
@@ -61,13 +61,13 @@ void BoardView::repaintSquare(Square square)
   int y = isFlipped() ? square / 8 : 7 - square / 8;
   int posx = x * m_theme->size();
   int posy = y * m_theme->size();
-  p.drawImage(posx, posy, m_theme->square((x + y) % 2));
-  p.drawImage(posx, posy, m_theme->piece(m_board.at(square)));
+  p.drawImage(QPoint(posx, posy), m_theme->square((x + y) % 2));
+  p.drawImage(QPoint(posx, posy), m_theme->piece(m_board.at(square)));
   if (square == m_selectedSquare)
   {
     QPen pen;
     pen.setColor(QColor(Qt::yellow));
-    pen.setWidth(3);
+    pen.setWidth(2);
     p.setPen(pen);
     p.drawRect(posx + 1 + m_showFrame, posy + 1 + m_showFrame, m_theme->size() - 2 - m_showFrame,
                m_theme->size() - 2 - m_showFrame);
@@ -75,7 +75,7 @@ void BoardView::repaintSquare(Square square)
   if (m_showFrame)
   {
     p.setPen(QColor(Qt::black));
-    p.drawRect(posx, posy, m_theme->size() + 1, m_theme->size() + 1);
+    p.drawRect(posx, posy, m_theme->size(), m_theme->size());
   }
 }
 
