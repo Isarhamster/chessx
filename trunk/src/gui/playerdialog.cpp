@@ -26,6 +26,7 @@ PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : QDialog(parent
 {
   ui.setupUi(this);
 
+  setName("PlayerDialog");
   m_database = db;
   connect(ui.playerEdit, SIGNAL(textChanged (const QString&)), SLOT(findPlayers(const QString&)));
   connect(ui.playerList, SIGNAL(currentChanged(Q3ListViewItem*)), SLOT(showPlayer(Q3ListViewItem*)));
