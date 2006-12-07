@@ -17,8 +17,8 @@
 #include "savedialog.h"
 #include "game.h"
 
-#include <qlineedit.h>
-#include <qcombobox.h>
+#include <QComboBox>
+#include <QLineEdit>
 
 
 SaveDialog::SaveDialog(QWidget* parent) : QDialog(parent)

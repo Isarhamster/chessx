@@ -18,8 +18,6 @@
 #include "boardtheme.h"
 #include <settings.h>
 
-#include <q3popupmenu.h>
-
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QPainter>
@@ -27,8 +25,6 @@
 #include <QPixmap>
 #include <QResizeEvent>
 #include <QWheelEvent>
-
-using namespace Qt;
 
 BoardView::BoardView(QWidget* parent, const char* name) : QWidget(parent, name),
    m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare)
@@ -128,9 +124,9 @@ void BoardView::mouseReleaseEvent(QMouseEvent* e)
 void BoardView::wheelEvent(QWheelEvent* e)
 {
   int change = e->delta() < 0;
-  if (e->state() & ControlButton)
+  if (e->state() & Qt::ControlButton)
     change += BrowsePreviousMoves;
-  else if (e->state() & AltButton)
+  else if (e->state() & Qt::AltButton)
     change += BrowseFirstMove;
   else
     change += BrowsePreviousMove;
