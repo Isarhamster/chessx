@@ -39,6 +39,11 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_piece(W
   addAction(pieceAction(tr("White bishop"), WhiteBishop, Key_B));
   addAction(pieceAction(tr("White knight"), WhiteKnight, Key_N));
   addAction(pieceAction(tr("White pawn"), WhitePawn, Key_P));
+
+  QAction* separator =  new QAction(m_actions);
+  separator->setSeparator(true);
+  ui.boardView->addAction(separator);
+
   addAction(pieceAction(tr("Black king"), BlackKing, SHIFT + Key_K));
   addAction(pieceAction(tr("Black queen"), WhiteQueen, SHIFT + Key_Q));
   addAction(pieceAction(tr("Black rook"), WhiteRook, SHIFT + Key_R));
@@ -110,9 +115,8 @@ void BoardSetupDialog::slotSelected(Square square, int button)
 
 QAction* BoardSetupDialog::pieceAction(const QString& name, int piece, QKeySequence shortcut)
 {
-  QAction* action = new QAction(name, this);
+  QAction* action = new QAction(name, m_actions);
   ui.boardView->addAction(action);
-  m_actions->addAction(action);
   action->setData(piece);
   action->setShortcut(shortcut);
   action->setCheckable(true);
