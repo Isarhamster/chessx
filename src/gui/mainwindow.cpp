@@ -31,24 +31,23 @@
 #include "savedialog.h"
 #include "settings.h"
 
-#include <qapplication.h>
-#include <qclipboard.h>
-#include <q3filedialog.h>
-#include <qfileinfo.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <q3hbox.h>
-#include <q3listbox.h>
-#include <qmenubar.h>
-#include <qmessagebox.h>
-#include <q3popupmenu.h>
-#include <qstatusbar.h>
-#include <qsplitter.h>
-#include <qaction.h>
-//Added by qt3to4:
+#include <QApplication>
+#include <QClipboard>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QLabel>
+#include <QLabel>
+#include <QMenuBar>
+#include <QMessageBox>
+#include <QStatusBar>
+#include <QSplitter>
+#include <QAction>
+#include <QCloseEvent>
+
+#include <Q3PopupMenu>
+#include <Q3HBox>
 #include <Q3Frame>
 #include <Q3VBoxLayout>
-#include <QCloseEvent>
 
 MainWindow::MainWindow() : Q3MainWindow(0, "MainWindow", Qt::WDestructiveClose),
   m_playerDialog(0), m_helpWindow(0)
@@ -301,8 +300,8 @@ HelpWindow* MainWindow::helpWindow()
 
 void MainWindow::slotFileOpen()
 {
-  QString file = Q3FileDialog::getOpenFileName(QString::null,
-     tr("PGN Database (*.pgn)"), this, "open database", tr("Open database"));
+  QString file = QFileDialog::getOpenFileName(this, tr("Open database"), QString::null,
+     tr("PGN Database (*.pgn)"));
   if (!file.isEmpty())
     openDatabase(file);
 }
