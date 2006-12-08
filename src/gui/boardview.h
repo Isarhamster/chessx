@@ -75,8 +75,8 @@ public slots:
 signals:
   /** User clicked source and destination squares */
   void moveMade(Square from, Square to);
-  /** User clicked destination square */
-  void moveMade(Square to);
+  /** User clicked square */
+  void clicked(Square square, int button);
   /** User moved mouse wheel */
   void wheelScrolled(int dir);
   /** Board was modified by setBoard() */
