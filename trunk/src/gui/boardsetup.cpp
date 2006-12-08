@@ -17,9 +17,10 @@
 #include "boardsetup.h"
 #include "boardview.h"
 
-#include <qcursor.h>
-#include <qpushbutton.h>
-#include <q3popupmenu.h>
+#include <QActionGroup>
+#include <QCursor>
+#include <QPushButton>
+#include <QMenu>
 
 using namespace Qt;
 
@@ -27,40 +28,30 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_piece(W
 {
   ui.setupUi(this);
 
-  m_popup = new Q3PopupMenu(ui.boardView);
-  m_popup->insertItem("White king", WhiteKing);
-  m_popup->insertItem("White queen", WhiteQueen);
-  m_popup->insertItem("White rook", WhiteRook);
-  m_popup->insertItem("White bishop", WhiteBishop);
-  m_popup->insertItem("White knight", WhiteKnight);
-  m_popup->insertItem("White pawn", WhitePawn);
-  m_popup->insertSeparator();
-  m_popup->insertItem("Black king", BlackKing);
-  m_popup->insertItem("Black queen", BlackQueen);
-  m_popup->insertItem("Black rook", BlackRook);
-  m_popup->insertItem("Black bishop", BlackBishop);
-  m_popup->insertItem("Black knight", BlackKnight);
-  m_popup->insertItem("Black pawn", BlackPawn);
-  m_popup->setAccel(Key_K, WhiteKing);
-  m_popup->setAccel(Key_Q, WhiteQueen);
-  m_popup->setAccel(Key_R, WhiteRook);
-  m_popup->setAccel(Key_B, WhiteBishop);
-  m_popup->setAccel(Key_N, WhiteKnight);
-  m_popup->setAccel(Key_P, WhitePawn);
-  m_popup->setAccel(SHIFT + Key_K, BlackKing);
-  m_popup->setAccel(SHIFT + Key_Q, BlackQueen);
-  m_popup->setAccel(SHIFT + Key_R, BlackRook);
-  m_popup->setAccel(SHIFT + Key_B, BlackBishop);
-  m_popup->setAccel(SHIFT + Key_N, BlackKnight);
-  m_popup->setAccel(SHIFT + Key_P, BlackPawn);
-  connect(m_popup, SIGNAL(activated(int)), SLOT(slotChoosePiece(int)));
+  m_actions = new QActionGroup(this);
+  m_actions->setExclusive(true);
 
+  ui.boardView->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+  addAction(pieceAction(tr("White king"), WhiteKing, Key_K));
+  addAction(pieceAction(tr("White queen"), WhiteQueen, Key_Q));
+  addAction(pieceAction(tr("White rook"), WhiteRook, Key_R));
+  addAction(pieceAction(tr("White bishop"), WhiteBishop, Key_B));
+  addAction(pieceAction(tr("White knight"), WhiteKnight, Key_N));
+  addAction(pieceAction(tr("White pawn"), WhitePawn, Key_P));
+  addAction(pieceAction(tr("Black king"), BlackKing, SHIFT + Key_K));
+  addAction(pieceAction(tr("Black queen"), WhiteQueen, SHIFT + Key_Q));
+  addAction(pieceAction(tr("Black rook"), WhiteRook, SHIFT + Key_R));
+  addAction(pieceAction(tr("Black bishop"), BlackBishop, SHIFT + Key_B));
+  addAction(pieceAction(tr("Black knight"), BlackKnight, SHIFT + Key_N));
+  addAction(pieceAction(tr("Black pawn"), BlackPawn, SHIFT + Key_P));
+
+  connect(m_actions, SIGNAL(triggered(QAction*)), SLOT(slotChoosePiece(QAction*)));
   connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
   connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
   connect(ui.clearButton, SIGNAL(clicked()), SLOT(slotClear()));
   connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
-  connect(ui.boardView, SIGNAL(mousePressed(const QPoint&, int)),
-          SLOT(slotSelected(const QPoint&, int)));
+  connect(ui.boardView, SIGNAL(clicked(Square, int)), SLOT(slotSelected(Square, int)));
 }
 
 BoardSetupDialog::~BoardSetupDialog()
@@ -92,37 +83,41 @@ void BoardSetupDialog::slotReset()
 
 void BoardSetupDialog::slotClear()
 {
-  Board b;
-  ui.boardView->setBoard(b);
+  ui.boardView->setBoard(Board());
 }
 
-void BoardSetupDialog::slotChoosePiece(int piece)
+void BoardSetupDialog::slotChoosePiece(QAction* action)
 {
-  m_popup->setItemChecked(m_piece, false);
-  m_piece = Piece(piece);
-  m_popup->setItemChecked(m_piece, true);
+  action->setChecked(true);
 }
 
-void BoardSetupDialog::slotSelected(const QPoint& p, int b)
+void BoardSetupDialog::slotSelected(Square square, int button)
 {
-  if (b & Qt::RightButton)
-    m_popup->exec(QCursor::pos());
-  else
+  Piece piece = (button & Qt::MidButton) ? Empty : Piece(m_actions->checkedAction()->data().toInt());
+  if (button & Qt::ShiftModifier)
   {
-    Piece piece = (b & Qt::MidButton) ? Empty : m_piece;
-    if (b & Qt::ShiftModifier)
-    {
-      if (piece >= BlackKing)
-        piece = (Piece)(piece - (BlackKing - WhiteKing));
-      else
-        piece = (Piece)(piece + (BlackKing - WhiteKing));
-    }
-    Board board = ui.boardView->board();
-    Square square = ui.boardView->squareAt(p);
-    if (board.at(square) == piece)
-      piece = Empty;
-    board.setAt(square, piece);
-    ui.boardView->setBoard(board);
+    if (piece >= BlackKing)
+      piece = (Piece)(piece - (BlackKing - WhiteKing));
+    else
+      piece = (Piece)(piece + (BlackKing - WhiteKing));
   }
+  Board board = ui.boardView->board();
+  if (board.at(square) == piece)
+    piece = Empty;
+  board.setAt(square, piece);
+  ui.boardView->setBoard(board);
+}
+
+QAction* BoardSetupDialog::pieceAction(const QString& name, int piece, QKeySequence shortcut)
+{
+  QAction* action = new QAction(name, this);
+  ui.boardView->addAction(action);
+  m_actions->addAction(action);
+  action->setData(piece);
+  action->setShortcut(shortcut);
+  action->setCheckable(true);
+  if (piece == WhiteKing)
+    action->setChecked(true);
+  return action;
 }
 

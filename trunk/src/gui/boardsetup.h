@@ -20,9 +20,9 @@
 #include "ui_boardsetup.h"
 #include "board.h"
 
-#include <Q3PopupMenu>
-
-class Q3PopupMenu;
+class QMenu;
+class QAction;
+class QActionGroup;
 
 /**
    The BoardSetupDialog class represents a dialog for setting up a position
@@ -49,13 +49,16 @@ class BoardSetupDialog : public QDialog
     /** Restore standard position */
     void slotReset();
     /** Choose piece */
-    void slotChoosePiece(int piece);
+    void slotChoosePiece(QAction*);
     /** Select square and insert piece */
-    void slotSelected(const QPoint& pos, int b);
+    void slotSelected(Square s, int button);
   private:
     Ui::BoardSetupDialog ui;
-    Q3PopupMenu* m_popup;
+    QMenu* m_popup;
+    QActionGroup* m_actions;
     Piece m_piece;
+    /** Create single action */
+    QAction* pieceAction(const QString& name, int piece, QKeySequence shortcut);
 };
 
 

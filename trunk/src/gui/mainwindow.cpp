@@ -77,7 +77,7 @@ MainWindow::MainWindow() : Q3MainWindow(0, "MainWindow", Qt::WDestructiveClose),
   menuBar()->insertItem(tr("&Edit"), edit);
   edit->insertItem(tr("&Copy FEN"), this, SLOT(slotEditCopyFEN()), CTRL + SHIFT + Key_C);
   edit->insertItem(tr("&Paste FEN"), this, SLOT(slotEditPasteFEN()), CTRL + SHIFT + Key_V);
-  edit->insertItem(tr("&Edit board..."), this, SLOT(slotEditBoard()));
+  edit->insertItem(tr("&Edit board..."), this, SLOT(slotEditBoard()), CTRL + SHIFT + Key_S);
 
   /* Game menu */
   Q3PopupMenu *gameMenu = new Q3PopupMenu(this);

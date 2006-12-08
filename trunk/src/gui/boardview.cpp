@@ -26,6 +26,8 @@
 #include <QResizeEvent>
 #include <QWheelEvent>
 
+using namespace Qt;
+
 BoardView::BoardView(QWidget* parent, const char* name) : QWidget(parent, name),
    m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare)
 {
@@ -106,11 +108,15 @@ Square BoardView::squareAt(QPoint p) const
 void BoardView::mouseReleaseEvent(QMouseEvent* e)
 {
   Square s = squareAt(e->pos());
-  if (s == InvalidSquare)
+  if (s == InvalidSquare || e->button() & Qt::RightButton)
   {
     e->ignore();
     return;
   }
+  emit clicked(s, e->button() + e->modifiers());
+  e->accept();
+  if (e->button() != Qt::LeftButton)
+    return;
   if (selectedSquare() == InvalidSquare)
     selectSquare(s);
   else 
@@ -124,9 +130,9 @@ void BoardView::mouseReleaseEvent(QMouseEvent* e)
 void BoardView::wheelEvent(QWheelEvent* e)
 {
   int change = e->delta() < 0;
-  if (e->state() & Qt::ControlButton)
+  if (e->state() & ControlButton)
     change += BrowsePreviousMoves;
-  else if (e->state() & Qt::AltButton)
+  else if (e->state() & AltButton)
     change += BrowseFirstMove;
   else
     change += BrowsePreviousMove;
