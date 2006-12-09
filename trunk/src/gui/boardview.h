@@ -32,13 +32,11 @@ class BoardTheme;
    The BoardView class represents a widget for displaying current position on the screen.
 */
 
-enum BrowseDir {BrowseFirstMove, BrowseLastMove,
-     BrowsePreviousMove, BrowseNextMove, BrowsePreviousMoves, BrowseNextMoves};
-
 class BoardView : public QWidget
 {
   Q_OBJECT
 public:
+  enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
   /** Create board widget. */
   BoardView(QWidget* parent = 0, const char* name = 0);
   /** Destroys widget. Usually it is called automatically by Qt. */
@@ -77,7 +75,7 @@ signals:
   void moveMade(Square from, Square to);
   /** User clicked square */
   void clicked(Square square, int button);
-  /** User moved mouse wheel */
+  /** User moved mouse wheel. */
   void wheelScrolled(int dir);
   /** Board was modified by setBoard() */
   void changed();

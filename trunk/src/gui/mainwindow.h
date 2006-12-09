@@ -24,7 +24,6 @@
 //Added by qt3to4:
 #include <Q3VBoxLayout>
 #include <QLabel>
-#include <Q3PopupMenu>
 #include <QCloseEvent>
 #include <Q3PtrList>
 
@@ -45,7 +44,8 @@ class ChessBrowser;
 class Q3ListBox;
 class Q3VBoxLayout;
 class QLabel;
-class Q3PopupMenu;
+class QMenu;
+class QActionGroup;
 
 class MainWindow: public Q3MainWindow
 {
@@ -85,9 +85,11 @@ public slots:
   void slotConfigureChessEngines();
   void slotHelp();
   void slotConfigureFlip();
-  void slotGameLoad(int id);
   void slotGameSave();
-  void slotGameBrowse(int id);
+  /** Browse games or moves */
+  void slotGameBrowse(QAction* action);
+  /** Browse current game */
+  void slotGameBrowse(int wheel);
   void slotGameView();
   void slotGameViewToggle();
   void slotFilterSwitch();
@@ -96,6 +98,7 @@ public slots:
   void slotFileOpen();
   void slotFileOpenRecent(int);
   void slotFileClose();
+  void slotFileQuit();
   void slotMove(Square from, Square to);
   void slotMoveViewUpdate();
   void slotMoveViewLink(const QString& link);
@@ -107,7 +110,14 @@ signals:
   void reconfigure();
 
 private:
-  enum {IdFirst, IdLast, IdNext, IdPrevious, IdNext5, IdPrevious5, IdRandom};
+  /* Setup actions */
+  QAction* createAction(const QString& name, const char* slot, const QKeySequence& key = QKeySequence(),
+                        const QString& tip = QString());
+  /* Setup menus and actions */
+  void setupActions();
+
+  enum {GameFirst, GameLast, GameNext, GamePrevious, GameRandom, MoveFirst, MoveLast, MoveNext, MovePrevious,
+     MoveNextN, MovePreviousN};
   /* Widget variables */
   PlayerDialog* m_playerDialog;
   GameList* m_gameList;
@@ -119,11 +129,12 @@ private:
   Q3VBoxLayout* m_layout;
   QLabel* m_statusFilter;
   HistoryList m_recentFiles;
-  Q3PopupMenu* m_menuRecent;
-  Q3PopupMenu* m_menuDatabases;
+  QMenu* m_menuRecent;
+  QMenu* m_menuDatabases;
   /* Local variables */
   Output* m_output;
   Q3PtrList<DatabaseInfo> m_databases;
+  QActionGroup* m_actions;
 };
 
 
