@@ -129,14 +129,8 @@ void BoardView::mouseReleaseEvent(QMouseEvent* e)
 
 void BoardView::wheelEvent(QWheelEvent* e)
 {
-  int change = e->delta() < 0;
-  if (e->state() & ControlButton)
-    change += BrowsePreviousMoves;
-  else if (e->state() & AltButton)
-    change += BrowseFirstMove;
-  else
-    change += BrowsePreviousMove;
-  emit wheelScrolled(change);
+  int change = e->delta() < 0 ? WheelDown : WheelUp;
+  emit wheelScrolled(change + e->modifiers());
 }
 
 bool BoardView::setTheme(const QString& pieceFile, const QString& boardFile)
@@ -218,13 +212,5 @@ void BoardView::unselectSquare()
   m_selectedSquare = InvalidSquare;
   if (prev != m_selectedSquare)
     update();
-}
-
-int BoardView::movesBrowsed(int dir)
-{
-  const int Browse[7] = {-999, 999, -1, 1, -5, 5, 0};
-  if (dir < 7)
-    return Browse[dir];
-  return 0;
 }
 

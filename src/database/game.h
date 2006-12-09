@@ -112,8 +112,8 @@ class Game
 		//tree traversal methods
 		/** Moves to the begining of the game */
 		void moveToStart();
-		/** Moves a given number of moves relative to the current position, returns actual relative moves made */
-		int moveTo(int ply);
+		/** Moves by given ply, returns actual ply reached */
+		int moveByPly(int diff);
 		/** Moves to the given ply, returns actual ply reached */
 		int moveToPly(int ply);
 		/** Moves to the position corresponding to the given move id */

@@ -352,15 +352,6 @@ void Game::moveToStart()
 	m_history.clear();
 }
 
-int Game::moveTo(int ply)
-{
-	if(ply > 0) {
-		return forward(ply);
-	} else {
-		return -backward(-ply);
-	}
-}
-
 int Game::moveToPly(int ply)
 {
 	int diff = ply - m_ply;
@@ -372,6 +363,15 @@ int Game::moveToPly(int ply)
 	}
 	
 	return m_ply;
+}
+
+int Game::moveByPly(int diff)
+{
+	if(diff > 0) {
+		return forward(diff);
+	} else {
+		return backward(-diff);
+	}
 }
 
 void Game::moveToId(int moveId)
