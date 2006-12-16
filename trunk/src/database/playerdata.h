@@ -21,7 +21,7 @@
 #include <qstring.h>
 #include <qimage.h>
 #include <qmap.h>
-#include <qt34/qvaluelist.h>
+#include <qlist.h>
 #include <partialdate.h>
 
 class PlayerData
@@ -73,15 +73,15 @@ the overall estimated elo for the player
   void setBiography(const QString str);
   void appendToBiography(const QString str);
 /**
-returns the elo list data as a QValueList<Q_INT32>.
+returns the elo list data as a QList<qint32>.
 Useful for writing the data out to a QDataStream.
 */
-  QValueList<Q_INT32> eloListData() const;
+  QList<qint32> eloListData() const;
 /**
-sets the elo list data from a QValueList<Q_INT32>.
+sets the elo list data from a QList<qint32>.
 Useful for reading in the data from a QDataStream.
 */
-  void eloFromListData(const QValueList<Q_INT32> eloListData);
+  void eloFromListData(const QList<qint32> eloListData);
 
 private:
   PartialDate m_dateOfBirth;

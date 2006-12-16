@@ -21,62 +21,62 @@ Index::Index()
    m_gameIndex.clear();
 }
 
-Q_UINT32 Index::add (IndexItem item)
+quint32 Index::add (IndexItem item)
 {
    m_gameIndex.append(item);
    return m_gameIndex.count()-1;
 }
 
-Q_UINT32 Index::add ()
+quint32 Index::add ()
 {
    IndexItem item;
    m_gameIndex.append(item);
    return m_gameIndex.count()-1;
 }
 
-void Index::setBlackId(Q_UINT32 index, Q_UINT32 id)
+void Index::setBlackId(quint32 index, quint32 id)
 {
    m_gameIndex[index].setBlackId(id);
 }
-void Index::setWhiteId(Q_UINT32 index, Q_UINT32 id)
+void Index::setWhiteId(quint32 index, quint32 id)
 {
    m_gameIndex[index].setWhiteId(id);
 }
-void Index::setEventId(Q_UINT32 index, Q_UINT32 id)
+void Index::setEventId(quint32 index, quint32 id)
 {
    m_gameIndex[index].setEventId(id);
 }
-void Index::setSiteId(Q_UINT32 index, Q_UINT32 id)
+void Index::setSiteId(quint32 index, quint32 id)
 {
    m_gameIndex[index].setSiteId(id);
 }
-void Index::setWhiteElo(Q_UINT32 index, Q_UINT16 elo)
+void Index::setWhiteElo(quint32 index, quint16 elo)
 {
    m_gameIndex[index].setWhiteElo(elo);
 }
-void Index::setBlackElo(Q_UINT32 index, Q_UINT16 elo)
+void Index::setBlackElo(quint32 index, quint16 elo)
 {
    m_gameIndex[index].setBlackElo(elo);
 }
-void Index::setEcoId(Q_UINT32 index, Q_UINT16 id)
+void Index::setEcoId(quint32 index, quint16 id)
 {
    m_gameIndex[index].setEcoId(id);
 }
-void Index::setResult(Q_UINT32 index, Result result)
+void Index::setResult(quint32 index, Result result)
 {
    m_gameIndex[index].setResult(result);
 }
-void Index::setRound(Q_UINT32 index, Q_UINT8 round)
+void Index::setRound(quint32 index, quint8 round)
 {
    m_gameIndex[index].setRound(round);
 }
-void Index::setDate(Q_UINT32 index, const PartialDate& date)
+void Index::setDate(quint32 index, const PartialDate& date)
 {
    m_gameIndex[index].setDate(date);
 }
 
 
-IndexItem& Index::gameIndex(Q_UINT32 index)
+IndexItem& Index::gameIndex(quint32 index)
 {
    return m_gameIndex[index];
 }
@@ -85,7 +85,7 @@ void Index::remove()
 {
 }
 
-bool Index::find (Q_UINT32 gameId, Search* search, Tags& tags)
+bool Index::find (quint32 gameId, Search* search, Tags& tags)
 {
    QString tagName;
    QVector<bool> vb;
@@ -146,68 +146,68 @@ bool Index::find (Q_UINT32 gameId, Search* search, Tags& tags)
 
 }
 
-Q_UINT32 Index::whiteId(Q_UINT32 index)
+quint32 Index::whiteId(quint32 index)
 {
    return m_gameIndex[index].whiteId();
 }
-QString Index::white(Q_UINT32 index,Tags& tags)
+QString Index::white(quint32 index,Tags& tags)
 {
    return tags.value(Tags::PlayerName,m_gameIndex[index].whiteId());
 }
-Q_UINT32 Index::blackId(Q_UINT32 index)
+quint32 Index::blackId(quint32 index)
 {
    return m_gameIndex[index].blackId();
 }
-QString Index::black(Q_UINT32 index, Tags& tags)
+QString Index::black(quint32 index, Tags& tags)
 {
    return tags.value(Tags::PlayerName,m_gameIndex[index].blackId());
 }
-Q_UINT32 Index::eventId(Q_UINT32 index)
+quint32 Index::eventId(quint32 index)
 {
    return m_gameIndex[index].eventId();
 }
-QString Index::event(Q_UINT32 index, Tags& tags)
+QString Index::event(quint32 index, Tags& tags)
 {
    return tags.value(Tags::Event,m_gameIndex[index].eventId());
 }
-Q_UINT32 Index::siteId(Q_UINT32 index)
+quint32 Index::siteId(quint32 index)
 {
    return m_gameIndex[index].siteId();
 }
-QString Index::site(Q_UINT32 index, Tags& tags)
+QString Index::site(quint32 index, Tags& tags)
 {
    return tags.value(Tags::Site,m_gameIndex[index].siteId());
 }
-Q_UINT16 Index::whiteElo(Q_UINT32 index)
+quint16 Index::whiteElo(quint32 index)
 {
    return m_gameIndex[index].whiteElo();
 }
-Q_UINT16 Index::blackElo(Q_UINT32 index)
+quint16 Index::blackElo(quint32 index)
 {
    return m_gameIndex[index].blackElo();
 }
-Q_UINT16 Index::ecoId(Q_UINT32 index)
+quint16 Index::ecoId(quint32 index)
 {
    return m_gameIndex[index].ecoId();
 }
-QString Index::eco(Q_UINT32 index, Tags& tags)
+QString Index::eco(quint32 index, Tags& tags)
 {
    return tags.value(Tags::ECO, m_gameIndex[index].ecoId());
 }
-PartialDate Index::date(Q_UINT32 index)
+PartialDate Index::date(quint32 index)
 {
    return m_gameIndex[index].date();
 }
-QString Index::dateString(Q_UINT32 index)
+QString Index::dateString(quint32 index)
 {
    return m_gameIndex[index].date().asString();
 }
 
-Result Index::result(Q_UINT32 index)
+Result Index::result(quint32 index)
 {
    return m_gameIndex[index].result();
 }
-Q_UINT8 Index::round(Q_UINT32 index)
+quint8 Index::round(quint32 index)
 {
    return m_gameIndex[index].round();
 }

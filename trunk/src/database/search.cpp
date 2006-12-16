@@ -4,8 +4,8 @@
     begin                : 06/12/2005
     copyright            : (C) 2005 Marius Roets
                            <saidinwielder@users.sourceforge.net>
-													 (C) 2006 William Hoggarth
-													 <whoggarth@users.sourceforge.net>
+									(C) 2006 William Hoggarth
+									<whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -36,6 +36,10 @@ NullSearch::NullSearch()
 NullSearch::~NullSearch()
 {
 }
+NullSearch* NullSearch::clone() const
+{
+	return new NullSearch;
+}
 Search::Type NullSearch::type() const
 {
    return Search::NullSearch;
@@ -49,6 +53,10 @@ PositionSearch::PositionSearch()
 PositionSearch::PositionSearch(const Board& position)
 {
    setPosition(position);
+}
+PositionSearch* PositionSearch::clone() const
+{
+	return new PositionSearch(*this);
 }
 PositionSearch::~PositionSearch()
 {
@@ -71,6 +79,10 @@ void PositionSearch::setPosition(const Board& position)
 EloSearch::EloSearch(int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlacElo)
 {
    setEloSearch(minWhiteElo, maxWhiteElo, minBlackElo, maxBlacElo);
+}
+EloSearch* EloSearch::clone() const
+{
+	return new EloSearch(*this);
 }
 EloSearch::~EloSearch()
 {
@@ -120,6 +132,11 @@ DateSearch::DateSearch(PartialDate minDate, PartialDate maxDate)
 	
 	m_minDate = minDate;
 	m_maxDate = maxDate;
+}
+
+DateSearch* DateSearch::clone() const
+{
+	return new DateSearch(*this);
 }
 
 DateSearch::~DateSearch()
@@ -172,6 +189,11 @@ TagSearch::TagSearch(const QString& tag, const QString& value)
 {
 	m_tag = tag;
 	m_value = value;
+}
+
+TagSearch* TagSearch::clone() const
+{
+	return new TagSearch(*this);
 }
 
 TagSearch::~TagSearch()

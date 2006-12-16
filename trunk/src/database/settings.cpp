@@ -22,7 +22,7 @@
 
 Settings::Settings() : QSettings("ChessX", QSettings::IniFormat)
 {
-  setPath("ChessX", "ChessX", QSettings::UserScope);
+  setPath(IniFormat, UserScope, "ChessX");
 }
 
 Settings::~Settings()
@@ -33,15 +33,15 @@ void Settings::readLayout(QWidget* w, unsigned flags)
 {
   if (!w)
     return;
-  QString prefix = QString("/Geometry/%1/").arg(w->name());
+  QString prefix = QString("/Geometry/%1/").arg(w->objectName());
   beginGroup(prefix);
-  int x = readNumEntry("x", w->x());
-  int y = readNumEntry("y", w->y());
-  int width = readNumEntry("w", w->width());
-  int height = readNumEntry("h", w->height());
+  int x = value("x", w->x()).toInt();
+  int y = value("y", w->y()).toInt();
+  int width = value("w", w->width()).toInt();
+  int height = value("h", w->height()).toInt();
   w->resize(QSize(width, height));
   w->move(QPoint(x, y));
-  if ((flags && Show) && readBoolEntry("visible"))
+  if ((flags && Show) && value("visible").toBool())
     w->show();
   endGroup();
 }
@@ -50,13 +50,13 @@ void Settings::writeLayout(const QWidget* w)
 {
   if (!w)
     return;
-  QString prefix = QString("/Geometry/%1/").arg(w->name());
+  QString prefix = QString("/Geometry/%1/").arg(w->objectName());
   beginGroup(prefix);
-  writeEntry("x", w->x());
-  writeEntry("y", w->y());
-  writeEntry("w", w->width());
-  writeEntry("h", w->height());
-  writeEntry("visible",w->isVisible());
+  setValue("x", w->x());
+  setValue("y", w->y());
+  setValue("w", w->width());
+  setValue("h", w->height());
+  setValue("visible",w->isVisible());
   endGroup();
 }
 

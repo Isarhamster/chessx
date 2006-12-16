@@ -53,32 +53,32 @@ IndexItem::IndexItem()
       m_round = -1;
 }
 
-void IndexItem::setBlackId(Q_UINT32 id)
+void IndexItem::setBlackId(quint32 id)
 {
    m_blackId = id;
 }
 
-void IndexItem::setWhiteId(Q_UINT32 id)
+void IndexItem::setWhiteId(quint32 id)
 {
    m_whiteId = id;
 }
-void IndexItem::setEventId(Q_UINT32 id)
+void IndexItem::setEventId(quint32 id)
 {
    m_eventId = id;
 }
-void IndexItem::setSiteId(Q_UINT32 id)
+void IndexItem::setSiteId(quint32 id)
 {
    m_siteId = id;
 }
-void IndexItem::setWhiteElo(Q_UINT16 elo)
+void IndexItem::setWhiteElo(quint16 elo)
 {
    m_whiteElo = elo;
 }
-void IndexItem::setBlackElo(Q_UINT16 elo)
+void IndexItem::setBlackElo(quint16 elo)
 {
    m_blackElo = elo;
 }
-void IndexItem::setEcoId(Q_UINT16 id)
+void IndexItem::setEcoId(quint16 id)
 {
    m_ecoId = id;
 }
@@ -90,37 +90,37 @@ void IndexItem::setResult(Result result)
 {
    m_result = result;
 }
-void IndexItem::setRound(Q_UINT8 round)
+void IndexItem::setRound(quint8 round)
 {
    m_round = round;
 }
 
-Q_UINT32 IndexItem::blackId()
+quint32 IndexItem::blackId()
 {
    return m_blackId;
 }
 
-Q_UINT32 IndexItem::whiteId()
+quint32 IndexItem::whiteId()
 {
    return m_whiteId;
 }
-Q_UINT32 IndexItem::eventId()
+quint32 IndexItem::eventId()
 {
    return m_eventId;
 }
-Q_UINT32 IndexItem::siteId()
+quint32 IndexItem::siteId()
 {
    return m_siteId;
 }
-Q_UINT16 IndexItem::whiteElo()
+quint16 IndexItem::whiteElo()
 {
    return m_whiteElo;
 }
-Q_UINT16 IndexItem::blackElo()
+quint16 IndexItem::blackElo()
 {
    return m_blackElo;
 }
-Q_UINT16 IndexItem::ecoId()
+quint16 IndexItem::ecoId()
 {
    return m_ecoId;
 }
@@ -128,7 +128,7 @@ PartialDate IndexItem::date()
 {
    return m_date;
 }
-Q_UINT8 IndexItem::round()
+quint8 IndexItem::round()
 {
    return m_round;
 }

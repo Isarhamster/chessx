@@ -45,7 +45,7 @@ void Output::ReadTemplateFile(QString path)
    m_header = "";
    m_footer = "";
    //qDebug ("Reading template file %s", path.latin1());
-   if ( file.open( IO_ReadOnly ) ) {
+   if ( file.open( QIODevice::ReadOnly ) ) {
       QTextStream stream( &file );
       QString line;
       int i = 0;
@@ -53,7 +53,7 @@ void Output::ReadTemplateFile(QString path)
          line = stream.readLine(); // line of text excluding '\n'
          i++;
          //qDebug ("Line %d",i);
-         if ((line.find(QRegExp("^\\s*$")) != -1) || (line.find(QRegExp("^\\s*#")) != -1)) {
+         if ((line.indexOf(QRegExp("^\\s*$")) != -1) || (line.indexOf(QRegExp("^\\s*#")) != -1)) {
             // Skip blank lines and comments (#)
             continue;
          }
@@ -77,16 +77,16 @@ void Output::ReadTemplateFile(QString path)
 
          switch (status) {
             case ReadingOptionDefs:
-               optionDefFields = QStringList::split(",", line);
+               optionDefFields = line.split(",");
                if (!m_options.createOption(optionDefFields[0],optionDefFields[1],
                         optionDefFields[2],optionDefFields[3],optionDefFields[4])) {
-                  qWarning ("Could not create option. Ignoring line %d in file %s :\n%s",i,path.latin1(),line.latin1());
+                  qWarning ("Could not create option. Ignoring line %d in file %s :\n%s",i,path.toLatin1().constData(),line.toLatin1().constData());
                }
 
                break;
             case ReadingOptions:
                if (!m_options.setOption(line)) {
-                  qWarning ("Invalid option or value in file %s line %d. Ignoring : %s",path.latin1(),i,line.latin1());
+                  qWarning ("Invalid option or value in file %s line %d. Ignoring : %s",path.toLatin1().constData(),i,line.toLatin1().constData());
                }
                break;
             case ReadingOutputHeader:
@@ -97,8 +97,8 @@ void Output::ReadTemplateFile(QString path)
                break;
             case ReadingMarkupTags:
                {
-               QString name = line.mid(0,line.find('='));
-               QStringList tags = QStringList::split (',',line.mid(line.find('=')+1),true);
+               QString name = line.mid(0,line.indexOf('='));
+               QStringList tags = (line.mid(line.indexOf('=')+1)).split (',');
                if (name == "MarkupHeaderBlock") {
                   setMarkupTag(MarkupHeaderBlock,tags[0],tags[1]);
                } else if (name == "MarkupNotationBlock") {
@@ -148,12 +148,12 @@ void Output::ReadTemplateFile(QString path)
                } else if (name == "MarkupColumnStyleMainline") {
                   setMarkupTag(MarkupColumnStyleMainline,tags[0],tags[1]);
                } else {
-                  qWarning ("Unkown Markup Tag found in file %s line %d. Ignoring : %s", path.latin1(), i,  line.latin1());
+                  qWarning ("Unkown Markup Tag found in file %s line %d. Ignoring : %s", path.toLatin1().constData(), i,  line.toLatin1().constData());
                }
                }
                break;
             default :
-               qWarning ("Unknown Section in Template File %s line %d : %s", path.latin1(), i, line.latin1());
+               qWarning ("Unknown Section in Template File %s line %d : %s", path.toLatin1().constData(), i, line.toLatin1().constData());
          }
          //setWriteStatus(line);
          ////setWritingColor();
@@ -258,11 +258,11 @@ void Output::writeMove(int variation)
       m_dirtyBlack = true;
    }
    // *** Substitute %1 and %2 if present with the move node number
-   if ((m_output.find("%1")>=0) && (m_output.find("%2")>=0)) {
+   if ((m_output.indexOf("%1")>=0) && (m_output.indexOf("%2")>=0)) {
       QString mvno;
       mvno = mvno.sprintf("%03d",m_game->ply());
       m_output = m_output.arg(mvno).arg(mvno);
-   } else if (m_output.find("%1")>=0) {
+   } else if (m_output.indexOf("%1")>=0) {
       QString mvno;
       mvno = mvno.sprintf("%03d",m_game->ply());
       m_output = m_output.arg(mvno);
@@ -401,7 +401,7 @@ QString Output::output(Game* game)
    m_output += m_footer;
 
    QRegExp var("@(\\w+)@"); 
-   while (var.search(m_output) != -1) {
+   while (var.indexIn(m_output) != -1) {
       QStringList cap = var.capturedTexts();
       m_output.replace("@"+cap[1]+"@",m_options.getOptionAsString(cap[1]));
    }

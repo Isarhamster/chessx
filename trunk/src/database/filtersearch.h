@@ -4,8 +4,8 @@
     begin                : 06/12/2005
     copyright            : (C) 2005 Marius Roets
                            <saidinwielder@users.sourceforge.net>
-													 (C) 2006 William Hoggarth
-													 <whoggarth@users.sourceforge.net>
+									(C) 2006 William Hoggarth
+									<whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -28,7 +28,8 @@ class FilterSearch : public Search
    public:
       FilterSearch();
       FilterSearch(const Filter& filter);
-      ~FilterSearch();
+		virtual FilterSearch* clone() const;
+      virtual ~FilterSearch();
       Type type() const;
       
       bool contains(int game) const;

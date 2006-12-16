@@ -220,16 +220,12 @@ returns a list of all player names in database
 */
 QStringList playerNames();
 /**
-parameter flag for case sensitivity
-*/
-enum CaseFlag{RespectCase,IgnoreCase};
-/**
 returns a list of player names in database,
 matching the prefix
 By default, max 10000000 names are returned
 By default, search is case sensitive
 */
-QStringList findPlayers(const QString& prefix, const int maxCount = 10000000, const CaseFlag cs = RespectCase);
+QStringList findPlayers(const QString& prefix, const int maxCount = 10000000, const Qt::CaseSensitivity cs = Qt::CaseSensitive);
 
 /**
 returns the date for a given elo list index
@@ -237,15 +233,15 @@ returns the date for a given elo list index
 PartialDate eloListToDate(const int index);
 
 private:
-QMap<QString,Q_INT32> m_mapping; // pointers into data
+QMap<QString,qint32> m_mapping; // pointers into data
 QDataStream m_mapds; // contains mapping
 QFile m_mapfile; 
-Q_INT32 m_nplayers; // number of players in db - not counting pending add's
-Q_INT32 m_npending_adds; // number of pending add's to db
-QIODevice::Offset m_nplayers_offset; // position of count field in mapfile
+qint32 m_nplayers; // number of players in db - not counting pending add's
+qint32 m_npending_adds; // number of pending add's to db
+qint64 m_nplayers_offset; // position of count field in mapfile
 QDataStream m_datads; // contains data
 QFile m_datafile; 
-QIODevice::Offset m_dataFileCurrentPosition; // current position in datafile
+qint64 m_dataFileCurrentPosition; // current position in datafile
 QMap<QString,PlayerData> m_pendingUpdates; // changes, not committed yet
 QString m_currentPlayerName;
 PlayerData m_currentPlayer;

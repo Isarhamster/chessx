@@ -28,22 +28,22 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
   QStringList pictures = dir.entryList();
 
   if (pdb.removeDatabase(outFileName)){
-    std::cout << "removed " << outFileName.latin1() << "\n";
+    std::cout << "removed " << (char*)outFileName.toLatin1().constData() << "\n";
   }
   else{
-    std::cout << "failure removing " << outFileName.latin1() << "\n";
+    std::cout << "failure removing " << outFileName.toLatin1().constData() << "\n";
   }
   if (pdb.create(outFileName)){
-    std::cout << "created " << outFileName.latin1() << "\n";
+    std::cout << "created " << outFileName.toLatin1().constData() << "\n";
   }
   else{
-    std::cout << "failure creating " << outFileName.latin1() << "\n";
+    std::cout << "failure creating " << outFileName.toLatin1().constData() << "\n";
     return false;
   }
 
 // now read from ratings.ssp
   QFile inFile(inFileName);
-  if ( !(inFile.open( IO_ReadOnly ) )) {
+  if ( !(inFile.open( QIODevice::ReadOnly ) )) {
     std::cout << "failure opening output file \n";
     return false;
   }
@@ -61,7 +61,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
 
   while ( !line.startsWith("### END OF PLAYER SECTION") && !stream.atEnd() ) {
       line = stream.readLine();
-      lineStripped = line.stripWhiteSpace();
+      lineStripped = line.trimmed();
         //std::cout << line << "\n";
       if (lineStripped.startsWith("#")){//comment line
       }
@@ -78,16 +78,16 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
       else if(lineStripped.startsWith("%Render")) {//name with special characters fe. Huebner
       }
       else if(lineStripped.startsWith("%Elo")) {//elo data
-        QStringList sl = QStringList::split(" ",lineStripped);
+        QStringList sl = lineStripped.split(" ");
 	QStringList::Iterator it = sl.begin();
 	it++;
         for (; it != sl.end(); it++ ) {
           QString s = *it;
           //std::cout << s << ":";
-          QStringList sl2 = QStringList::split(":",s);
+          QStringList sl2 = s.split(":");
           QString year = sl2[0];
           QString ratings = sl2[1];//ratings for one year, separated by commas
-          QStringList sl3 = QStringList::split(",",ratings);
+          QStringList sl3 = ratings.split(",");
           for (uint i=0;i < (uint)sl3.size();i++ ) {
             if(sl3[i] != "?"){
 //              std::cout << "rating for " << name << ": " << year << ": " << i+1 << ": " << sl3[i] << "\n";
@@ -108,13 +108,13 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
         if (!pdb.hasPhoto()){
 //look for players picture
           //std::cout << "nameAlias= " << nameAlias << "\n";
-          for ( QStringList::Iterator it = pictures.begin(); it != pictures.end(); ++it ) {
-            QStringList sl4 = QStringList::split(".",*it);
+          for ( int i = 0; i < pictures.size(); i++ ) {
+            QStringList sl4 = pictures.at(i).split(".");
             if (sl4[0].compare(nameAlias)==0){
-              QImage* img = new QImage(dir.path()+"/"+(*it));
+              QImage* img = new QImage(dir.path()+"/"+(pictures.at(i)));
               pdb.setPhoto(*img);
               numberOfPictures++;
-              pictures.remove(it);
+              pictures.removeAt(i);
               break;
             }
           }
@@ -127,9 +127,9 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
             pdb.commit();//seems binary content changed when doing this ?!
         }
 
-        QStringList sl0 = QStringList::split("#",line);
-        name = sl0[0].stripWhiteSpace();
-        int index = sl0[1].find(QChar(' '));
+        QStringList sl0 = line.split("#");
+        name = sl0[0].trimmed();
+        int index = sl0[1].indexOf(QChar(' '));
         QString title = sl0[1].left(index);
         QString rest = sl0[1].mid(index,9999);
 
@@ -138,16 +138,16 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
 //        std::cout << "rest= " << rest << "\n";
 
         if (!pdb.add(name))
-           std::cout << "failed adding player: " << name.latin1() << "\n";
+           std::cout << "failed adding player: " << name.toLatin1().constData() << "\n";
 
 //look for players picture
-        for ( QStringList::Iterator it = pictures.begin(); it != pictures.end(); ++it ) {
-          QStringList sl4 = QStringList::split(".",*it);
+        for ( int i = 0; i < pictures.size(); i++ ) {
+          QStringList sl4 = pictures.at(i).split(".");
           if (sl4[0].compare(name)==0){
-            QImage* img = new QImage(dir.path()+"/"+(*it));
+            QImage* img = new QImage(dir.path()+"/"+pictures.at(i));
             pdb.setPhoto(*img);
             numberOfPictures++;
-            pictures.remove(it);
+            pictures.removeAt(i);
             break;
           }
         }
@@ -155,7 +155,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
         numberOfPlayers++;
         pdb.setTitle(title);
 
-        QStringList sl = QStringList::split(" ",rest);
+        QStringList sl = rest.split(" ");
         for ( QStringList::Iterator it = sl.begin(); it != sl.end(); ++it ) {
           QString s = *it;
           //std::cout << s << ":";
@@ -190,7 +190,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
   std::cout << numberOfPlayers << " players read in from ratings.ssp\n"; 
   std::cout << numberOfPictures << " players had a picture\n"; 
   for ( QStringList::Iterator it = pictures.begin(); it != pictures.end(); ++it ) {
-     std::cout << "player picture that was not converted: " << (*it).latin1() << "\n";
+     std::cout << "player picture that was not converted: " << (*it).toLatin1().constData() << "\n";
   }
 
   pdb.commit();

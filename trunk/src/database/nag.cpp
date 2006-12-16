@@ -131,7 +131,7 @@ QString NagSet::toString() const
 		}
 	}
 	
-	otherNags = otherNags.simplifyWhiteSpace();
+	otherNags = otherNags.simplified();
 	
 	return moveNag + evaluationNag + otherNags;
 }
@@ -175,7 +175,7 @@ QString NagSet::toPGNString() const
 		}
 	}
 	
-	otherNags = otherNags.simplifyWhiteSpace();
+	otherNags = otherNags.simplified();
 	
 	return moveNag + evaluationNag + otherNags;
 }

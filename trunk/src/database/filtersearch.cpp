@@ -29,6 +29,11 @@ FilterSearch::FilterSearch(const Filter& filter) : m_filter(filter)
 {
 }
 
+FilterSearch* FilterSearch::clone() const
+{
+	return new FilterSearch(*this);
+}
+
 FilterSearch::~FilterSearch()
 {
 }

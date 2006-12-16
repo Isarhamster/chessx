@@ -64,5 +64,3 @@ SOURCES += board.cpp \
 TARGET = database
 CONFIG += release warn_on qt staticlib
 TEMPLATE = lib
-QT += qt3support
-INCLUDEPATH += ../compatibility

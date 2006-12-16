@@ -19,8 +19,8 @@
 //#include <iostream>
 //    std::cout <<  i  << "\n";
 
-static Q_UINT32 Magic = (Q_UINT32)0x00DDB0DE; // 'magic' number
-static Q_UINT32 Version = (Q_UINT32)100; // file format version
+static quint32 Magic = (quint32)0x00DDB0DE; // 'magic' number
+static quint32 Version = (quint32)100; // file format version
 static QString Tagfile_suffix = ".ctf";
 static char* knownTagNames[]={"Event","Site", "Date", "Round", "Name","Result",
 "Title", "Elo", "USCF", "NA", "Type", "EventDate", "EventSponsor", "Section", "Stage", "Board",
@@ -31,7 +31,7 @@ static char* knownTagNames[]={"Event","Site", "Date", "Round", "Name","Result",
 
 Tags::Tags(const QString& fname){
   m_fname = fname;
-  m_tags_file.setName(m_fname+Tagfile_suffix);
+  m_tags_file.setFileName(m_fname+Tagfile_suffix);
   clear();
 }
 
@@ -41,30 +41,30 @@ Tags::Tags(){
 
 void Tags::writeFile(){
 // set which QDataset version format to use
-  if (Version==(Q_UINT32)100){
+  if (Version==(quint32)100){
     m_tags_ds.setVersion(6);
   }
   else{
     m_tags_ds.setVersion(6);//default
   }
-  if (!m_tags_file.open( IO_WriteOnly )) {
+  if (!m_tags_file.open( QIODevice::WriteOnly )) {
      qDebug ("Error could not open file");
   }
   m_tags_ds.setDevice(&m_tags_file);
   m_tags_ds << Magic;
   m_tags_ds << Version;
   //store basic information for each tag type
-  m_tags_ds << (Q_UINT32)(m_allTags.count());
+  m_tags_ds << (quint32)(m_allTags.count());
   for(int i=0; i<(int)m_allTags.count(); i++){
-    m_tags_ds << (Q_UINT32)count(i);
+    m_tags_ds << (quint32)count(i);
     if (isCustom(i)){
-      m_tags_ds << tagName(i).utf8();//write custom tag name
+      m_tags_ds << tagName(i).toUtf8();//write custom tag name
 //used flag
-      if (m_customTags_m.find(tagName(i)).data().second==true){
-        m_tags_ds << (Q_UINT8)1;
+      if (m_customTags_m.find(tagName(i)).value().second==true){
+        m_tags_ds << (quint8)1;
       }
       else{
-        m_tags_ds << (Q_UINT8)0;
+        m_tags_ds << (quint8)0;
       }
     }
   }
@@ -73,21 +73,21 @@ void Tags::writeFile(){
   QString lastValue;
   QByteArray ba;
   bool first;
-  Q_UINT32 id;
-  Q_UINT32 freq;
-  Q_UINT8 prefixCount;
+  quint32 id;
+  quint32 freq;
+  quint8 prefixCount;
   for(int i=0; i<(int)m_allTags.count(); i++){
     first=true;
-    QMap <QString,QPair<Q_UINT32,Q_UINT32> > map = m_allTags[i].second;
-    QMap <QString,QPair<Q_UINT32,Q_UINT32> >::iterator map_itr;
+    QMap <QString,QPair<quint32,quint32> > map = m_allTags[i].second;
+    QMap <QString,QPair<quint32,quint32> >::iterator map_itr;
     for(map_itr = map.begin(); map_itr != map.end(); ++map_itr){
-      id = map_itr.data().first;
-      freq = map_itr.data().second;
+      id = map_itr.value().first;
+      freq = map_itr.value().second;
       m_tags_ds << id;
       m_tags_ds << freq;
       currentValue = map_itr.key();
       if (first){
-        ba = currentValue.utf8();
+        ba = currentValue.toUtf8();
         m_tags_ds << ba;
         first=false;
       }
@@ -96,7 +96,7 @@ void Tags::writeFile(){
         while(lastValue.at(prefixCount)==currentValue.at(prefixCount)){
           prefixCount++;
         }
-        ba = currentValue.mid(prefixCount).utf8();
+        ba = currentValue.mid(prefixCount).toUtf8();
         m_tags_ds << ba;
         m_tags_ds << prefixCount;
       }
@@ -107,12 +107,12 @@ void Tags::writeFile(){
 }
 
 bool Tags::readFile() {
-  m_tags_file.setName(m_fname+Tagfile_suffix);
-  if (!m_tags_file.open( IO_ReadOnly ))
+  m_tags_file.setFileName(m_fname+Tagfile_suffix);
+  if (!m_tags_file.open( QIODevice::ReadOnly ))
     return false;
   m_tags_ds.setDevice(&m_tags_file);
-  Q_UINT32 tag_magic;
-  Q_UINT32 tag_version;
+  quint32 tag_magic;
+  quint32 tag_version;
   m_tags_ds >> tag_magic;
   m_tags_ds >> tag_version;
   if (tag_magic!=Magic){
@@ -121,7 +121,7 @@ bool Tags::readFile() {
     return false;
   }
 // set which QDataset version format to use
-  if (tag_version==(Q_UINT32)100){
+  if (tag_version==(quint32)100){
     m_tags_ds.setVersion(6);
   }
   else{//unknown version
@@ -131,18 +131,18 @@ bool Tags::readFile() {
   }
   clear();
 //read the file
-  Q_UINT32 tagCount;
+  quint32 tagCount;
   m_tags_ds >> tagCount;
-  Q_UINT32 valueCount;
-  Q_UINT8 prefixCount;
+  quint32 valueCount;
+  quint8 prefixCount;
   QString currentValue;
   QString lastValue;
   QByteArray ba;
   bool first;
-  Q_UINT32 id;
-  Q_UINT32 freq;
-  Q_UINT8 used;
-  QValueVector<Q_UINT32> valueCounts;
+  quint32 id;
+  quint32 freq;
+  quint8 used;
+  QVector<quint32> valueCounts;
   for(uint i=0; i<tagCount; i++){
     m_tags_ds >> valueCount;
     valueCounts.push_back(valueCount);
@@ -155,9 +155,9 @@ bool Tags::readFile() {
       m_customTags_m.insert(currentValue,p);
       m_customTags_v.push_back(currentValue);
 //reserve an entry in values collections m_allTags
-      QValueVector<QString> first;
-      QMap<QString,QPair<Q_UINT32,Q_UINT32> > second;
-      QPair <QValueVector<QString>, QMap <QString,QPair<Q_UINT32,Q_UINT32> > > elm = qMakePair(first,second); 
+      QVector<QString> first;
+      QMap<QString,QPair<quint32,quint32> > second;
+      QPair <QVector<QString>, QMap <QString,QPair<quint32,quint32> > > elm = qMakePair(first,second); 
       m_allTags.insert(i,elm);
     }
   }
@@ -178,7 +178,7 @@ bool Tags::readFile() {
       }
       lastValue = currentValue;
       m_allTags[i].first[id]=currentValue;
-      QPair<Q_UINT32,Q_UINT32> p(id,freq);
+      QPair<quint32,quint32> p(id,freq);
       m_allTags[i].second.insert(currentValue,p);
     }
   }
@@ -191,12 +191,12 @@ bool Tags::removeFile() {
 }
 
 QString Tags::value(const uint tagId, const int valueId) const{
-   if ((valueId >= 0) && ((uint)valueId <  m_allTags[tagId].first.count())) {
+   if ((valueId >= 0) && (valueId <  m_allTags[tagId].first.count())) {
       return m_allTags[tagId].first[valueId];
    } else {
       qDebug ("An invalid valueId has been received : %d. Valid values could be:", valueId);
       for (int j=0; j<count(tagId); j++){
-         qDebug ("  * Tag Name: %s : value for index %d : %s",tagName(tagId).latin1(),j,value(tagId, j).latin1());
+         qDebug ("  * Tag Name: %s : value for index %d : %s",tagName(tagId).toLatin1().constData(),j,value(tagId, j).toLatin1().constData());
       }
       return "?";
    }
@@ -204,7 +204,7 @@ QString Tags::value(const uint tagId, const int valueId) const{
 
 int Tags::valueId(uint const tagId, const QString& value) const{
    if (m_allTags[tagId].second.contains(value)){
-     return m_allTags[tagId].second.find(value).data().first;
+     return m_allTags[tagId].second.find(value).value().first;
    }
    else{
      return -1;
@@ -212,12 +212,12 @@ int Tags::valueId(uint const tagId, const QString& value) const{
 }
 
 uint Tags::valueFrequency(const uint tagId, const int valueId) const{
-   return m_allTags[tagId].second.find(value(tagId,valueId)).data().second;
+   return m_allTags[tagId].second.find(value(tagId,valueId)).value().second;
 }
 
-QValueVector<bool> Tags::find(const QString& pattern, QValueVector<QString>& vector, QMap<QString,QPair<Q_UINT32,Q_UINT32> >& map){
-  QValueVector<bool> result;
-  QValueVector<QString>::iterator it;
+QVector<bool> Tags::find(const QString& pattern, QVector<QString>& vector, QMap<QString,QPair<quint32,quint32> >& map){
+  QVector<bool> result;
+  QVector<QString>::iterator it;
   for(it = vector.begin(); it != vector.end(); ++it){
     if (map.contains(*it) && (*it).startsWith(pattern)){
       result.push_back(true);
@@ -229,11 +229,11 @@ QValueVector<bool> Tags::find(const QString& pattern, QValueVector<QString>& vec
   return result;
 }
 
-QValueVector<bool> Tags::find(const QRegExp& pattern, QValueVector<QString>& vector, QMap<QString,QPair<Q_UINT32,Q_UINT32> >& map){
-  QValueVector<bool> result;
-  QValueVector<QString>::iterator it;
+QVector<bool> Tags::find(const QRegExp& pattern, QVector<QString>& vector, QMap<QString,QPair<quint32,quint32> >& map){
+  QVector<bool> result;
+  QVector<QString>::iterator it;
   for(it = vector.begin(); it != vector.end(); ++it){
-    if (map.contains(*it) && pattern.search(*it)>=0){
+    if (map.contains(*it) && pattern.indexIn(*it)>=0){
       result.push_back(true);
     }
     else{
@@ -243,23 +243,23 @@ QValueVector<bool> Tags::find(const QRegExp& pattern, QValueVector<QString>& vec
   return result;
 }
 
-QValueVector<bool> Tags::find(const uint tagId, const QString& pattern){
+QVector<bool> Tags::find(const uint tagId, const QString& pattern){
   return find(pattern, m_allTags[tagId].first, m_allTags[tagId].second);
 }
 
-QValueVector<bool> Tags::find(const uint tagId, const QRegExp& pattern){
+QVector<bool> Tags::find(const uint tagId, const QRegExp& pattern){
   return find(pattern, m_allTags[tagId].first, m_allTags[tagId].second);
 }
 
 int Tags::add(const uint tagId, const QString& value){
   if (m_allTags[tagId].second.contains(value)) {
-    (m_allTags[tagId].second.find(value).data().second)++;
-    return m_allTags[tagId].second.find(value).data().first;
+    (m_allTags[tagId].second.find(value).value().second)++;
+    return m_allTags[tagId].second.find(value).value().first;
   }
   else{
-    Q_UINT32 idx = m_allTags[tagId].first.count();
+    quint32 idx = m_allTags[tagId].first.count();
     m_allTags[tagId].first.push_back(value);
-    QPair<Q_UINT32,Q_UINT32> p(idx,1);
+    QPair<quint32,quint32> p(idx,1);
     m_allTags[tagId].second.insert(value,p);
     return idx;
   }
@@ -271,8 +271,8 @@ int Tags::count(const uint tagId) const{
 
 void Tags::remove(const uint tagId, const int valueId){
    QString value = m_allTags[tagId].first[valueId];
-   if (m_allTags[tagId].second.find(value).data().second > 0){
-     (m_allTags[tagId].second.find(value).data().second)--;
+   if (m_allTags[tagId].second.find(value).value().second > 0){
+     (m_allTags[tagId].second.find(value).value().second)--;
    }
 }
 
@@ -299,14 +299,14 @@ int Tags::defineTag(const QString& tagName){
     return -1;
   }
   else{
-    Q_UINT16 newTagId = m_customTags_v.count()+maxKnownTagIndex()+1;
+    quint16 newTagId = m_customTags_v.count()+maxKnownTagIndex()+1;
     QPair<uint,bool> p(newTagId,true);
     m_customTags_m.insert(tagName,p);
     m_customTags_v.push_back(tagName);
 //reserve an entry in values collections m_allTags
-    QValueVector<QString> first;
-    QMap<QString,QPair<Q_UINT32,Q_UINT32> > second;
-    QPair <QValueVector<QString>, QMap <QString,QPair<Q_UINT32,Q_UINT32> > > elm = qMakePair(first,second); 
+    QVector<QString> first;
+    QMap<QString,QPair<quint32,quint32> > second;
+    QPair <QVector<QString>, QMap <QString,QPair<quint32,quint32> > > elm = qMakePair(first,second); 
     m_allTags.insert(newTagId,elm);
     return newTagId;
   }
@@ -314,7 +314,7 @@ int Tags::defineTag(const QString& tagName){
 
 bool Tags::unDefineTag(const QString& tagName){
   if (m_customTags_m.contains(tagName)){
-    m_customTags_m.find(tagName).data().second = false;
+    m_customTags_m.find(tagName).value().second = false;
     return true;
   }
   else{
@@ -334,7 +334,7 @@ QStringList Tags::tagNames(const TagNameType type) {
   if (type==All || type==Custom){
     QMap<QString,QPair<uint,bool> >::iterator it;
     for( it = m_customTags_m.begin(); it != m_customTags_m.end(); ++it ){
-      if(it.data().second){//is used
+      if(it.value().second){//is used
         qsl.append(it.key());
       }
     }
@@ -344,8 +344,8 @@ QStringList Tags::tagNames(const TagNameType type) {
 
 int Tags::tagId(const QString& tagName) const{
   if (m_customTags_m.contains(tagName)){
-    if(m_customTags_m.find(tagName).data().second){//is used
-      return m_customTags_m.find(tagName).data().first;
+    if(m_customTags_m.find(tagName).value().second){//is used
+      return m_customTags_m.find(tagName).value().first;
     }
     else{
       return -1;
@@ -403,9 +403,9 @@ int Tags::knownTagIndex(const QString& tagName){
 void Tags::clear(){
   m_allTags.clear();
   for (uint i=0; i<=maxKnownTagIndex(); i++){
-    QValueVector<QString> first;
-    QMap<QString,QPair<Q_UINT32,Q_UINT32> > second;
-    QPair <QValueVector<QString>, QMap <QString,QPair<Q_UINT32,Q_UINT32> > > elm = qMakePair(first,second); 
+    QVector<QString> first;
+    QMap<QString,QPair<quint32,quint32> > second;
+    QPair <QVector<QString>, QMap <QString,QPair<quint32,quint32> > > elm = qMakePair(first,second); 
     m_allTags.insert(i,elm);
   }
   m_customTags_m.clear();

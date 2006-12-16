@@ -99,7 +99,7 @@ void WBEngine::processMessage(const QString& message)
 void WBEngine::feature(const QString& command)
 {
 	//break up command into individual features
-	int index = command.find(' ') + 1;
+	int index = command.indexOf(' ') + 1;
 	int equalsIndex;
 	int endIndex;
 	QString feature;
@@ -108,16 +108,16 @@ void WBEngine::feature(const QString& command)
 	while(index < (int)command.length()) {
 		
 		//feature name terminates with an =
-		equalsIndex = command.find('=', index);
+		equalsIndex = command.indexOf('=', index);
 		feature = command.mid(index, equalsIndex - index);
 		
 		//string values are delimited by ", others end with whitespace
 		if(command[equalsIndex + 1] == '"') {
-			endIndex = command.find('"', equalsIndex + 2);
+			endIndex = command.indexOf('"', equalsIndex + 2);
 			value = command.mid(equalsIndex + 2,  (endIndex - equalsIndex) - 2);
 			index = endIndex + 2;
 		} else {
-			endIndex = command.find(' ', equalsIndex + 1);
+			endIndex = command.indexOf(' ', equalsIndex + 1);
 			value = command.mid(equalsIndex + 1,  (endIndex - equalsIndex) - 1);
 			index = endIndex + 1;
 		}
@@ -166,7 +166,7 @@ void WBEngine::featureDone(bool done)
 
 void WBEngine::parseAnalysis(const QString& message)
 {
-	QString trimmed = message.simplifyWhiteSpace();
+	QString trimmed = message.simplified();
 	Analysis analysis;
 	bool ok;
 	bool timeInSeconds = false;
@@ -213,7 +213,7 @@ void WBEngine::parseAnalysis(const QString& message)
 			break;
 		}
 		if(!sanMove.endsWith(".")) {
-			qWarning("! move: |%s|", sanMove.latin1());
+			qWarning("! move: |%s|", sanMove.toLatin1().constData());
 			Move move = board.singleMove(sanMove);
 			if(!move.isValid()) {
 				qWarning("Variation parsing failed\n");
