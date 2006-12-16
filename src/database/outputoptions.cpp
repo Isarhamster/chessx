@@ -62,7 +62,7 @@ bool OutputOptions::createOption (const QString& optionName, OutputOptionType op
       m_allow.remove(optionName);
       m_default.remove(optionName);
       m_description.remove(optionName);
-      qWarning ("Option '%s' could not be created",optionName.latin1());
+      qWarning ("Option '%s' could not be created",optionName.toLatin1().constData());
 
       return false;
    }
@@ -72,13 +72,13 @@ bool OutputOptions::createOption (const QString& optionName, OutputOptionType op
 }
 bool OutputOptions::setOption(const QString& optionString)
 {
-   QStringList temp = QStringList::split('=', optionString);
+   QStringList temp = optionString.split('=');
    return setOption(temp[0],temp[1]);
 }
 bool OutputOptions::setOption(const QString& optionName, const QString& optionValue)
 {
    if (!validateValue(optionName,optionValue)) {
-      qWarning ("Option '%s' could not be set",optionName.latin1());
+      qWarning ("Option '%s' could not be set",optionName.toLatin1().constData());
       return false;
    }
    m_list[optionName] = optionValue;
@@ -123,7 +123,7 @@ bool OutputOptions::validateValue(const QString& optionName, const QString& valu
       return false;
    }
    
-   allowValues = QStringList::split('|', m_allow[optionName]);
+   allowValues = m_allow[optionName].split('|');
    switch (m_type[optionName]) {
       case Integer:
          /* If the allow string is empty, then any number is allowed */
@@ -132,8 +132,8 @@ bool OutputOptions::validateValue(const QString& optionName, const QString& valu
          }
          /* See if value is in on of the ranges */
          for ( QStringList::iterator it = allowValues.begin(); it != allowValues.end(); ++it ) {
-            if ((*it).find(':') >= 0) {
-               QStringList limits = QStringList::split(':',*it);
+            if ((*it).indexOf(':') >= 0) {
+               QStringList limits = it->split(':');
                int val = value.toInt();
                int ulimit = limits[1].toInt();
                int llimit = limits[0].toInt();

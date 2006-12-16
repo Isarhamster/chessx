@@ -4,7 +4,7 @@
     begin                : sob maj 7 2005
     copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
                            (C) 2005 Kamil Przybyla <kamilprz@poczta.onet.pl>
-                           (C) 2005 William Hoggarth <whoggarth@users.sourceforge.net>
+                           (C) 2005, 2006 William Hoggarth <whoggarth@users.sourceforge.net>
                            (C) 2005 Marius Roets <roets.marius@gmail.com>
  ***************************************************************************/
 
@@ -149,7 +149,7 @@ int countFiles (const QString& rank)
    QChar c;
    for (int i = 0;i < (int)rank.length();i++) {
       c = rank.at(i);
-      switch (c.latin1()) {
+      switch (c.toLatin1()) {
          case 'k':
          case 'K':
          case 'q':
@@ -243,7 +243,7 @@ void Board::fromFEN(const QString& fen)
 		if(fen[index].isLetter()) {
 			
 			//add piece (indexes 0 & 16 reserved for black and wite kings)
-			switch(fen[index].latin1()) {
+			switch(fen[index].toLatin1()) {
 				case 'K':
 					restorePiece(row * 8 + col, WhiteKing, 16);
 					break;
@@ -287,13 +287,13 @@ void Board::fromFEN(const QString& fen)
 	index++;
 	
 	//side to move
-	setToMove(fen[index].latin1() == 'w' ? White : Black);
+	setToMove(fen[index].toLatin1() == 'w' ? White : Black);
 	index += 2;
 	
 	//castling rights
 	m_castlingRights = NoRights;
 	while(fen[index] != ' ') {
-		switch(fen[index].latin1()) {
+		switch(fen[index].toLatin1()) {
 			case 'K':
 				m_castlingRights |= WhiteKingside;
 				break;
@@ -313,7 +313,7 @@ void Board::fromFEN(const QString& fen)
 	
 	//en passant square
 	if(fen[index] != '-') {
-		m_epSquare = (fen[index].latin1() - 'a') + 8 * (fen[index + 1].latin1() - '1');
+		m_epSquare = (fen[index].toLatin1() - 'a') + 8 * (fen[index + 1].toLatin1() - '1');
 	} else {
 		m_epSquare = NoEPSquare;
 	}
@@ -396,11 +396,11 @@ bool Board::isValidFEN(const QString& fen) const
    QString halfmoveClock = fen.section (QRegExp("\\s+"), 4, 4);
    QString fullMoveNo = fen.section (QRegExp("\\s+"), 5, 5);
 
-   if (piecePlacement.find(QRegExp("^[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+$")) == -1) {
+   if (piecePlacement.indexOf(QRegExp("^[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+/[KkQqRrBbNnPp1-8]+$")) == -1) {
       // Invalid piece placement string
       return false;
    }
-   QStringList rankList = QStringList::split ("/", piecePlacement);
+   QStringList rankList = piecePlacement.split ("/");
    for ( QStringList::Iterator it = rankList.begin(); it != rankList.end(); ++it ) {
       if (countFiles(*it) != 8) {
          // Invalid number of files in rank
@@ -411,12 +411,12 @@ bool Board::isValidFEN(const QString& fen) const
       // Invalid color to move
       return false;
    }
-   if (!((castlingAvail.find(QRegExp("^[kKQq]{1,4}$")) != -1) || (castlingAvail == "-"))) { 
+   if (!((castlingAvail.indexOf(QRegExp("^[kKQq]{1,4}$")) != -1) || (castlingAvail == "-"))) { 
       // Invalid castling characters
       return false;
    }
    QChar c = enPassantTarget.at(1);
-   if ((enPassantTarget.find(QRegExp("^([a-h][36])|-$")) == -1)) {
+   if ((enPassantTarget.indexOf(QRegExp("^([a-h][36])|-$")) == -1)) {
       // Invalid en passant square
       return false;
    } else if ((c == '3') && (activeColor == "w")) {
@@ -1153,7 +1153,7 @@ Move Board::singleMove(const QString& SAN)
     else if(SAN.at(0)=='Q')p=(toMove()==White)?WhiteQueen:BlackQueen;
     else if(SAN.at(0)=='K')p=(toMove()==White)?WhiteKing:BlackKing;
     else p=(toMove()==White)?WhitePawn:BlackPawn;
-    i=SAN.findRev(QRegExp("[=][NBRQ]"),-1);
+    i=SAN.lastIndexOf(QRegExp("[=][NBRQ]"),-1);
     if(i>-1)
     {
       if(SAN.at(i+1)=='Q')m.setType((toMove()==White)?PromotionWhiteQueen:PromotionBlackQueen);
@@ -1161,13 +1161,13 @@ Move Board::singleMove(const QString& SAN)
       else if(SAN.at(i+1)=='B')m.setType((toMove()==White)?PromotionWhiteBishop:PromotionBlackBishop);
       else m.setType((toMove()==White)?PromotionWhiteKnight:PromotionBlackKnight);
     }
-    i=SAN.findRev(QRegExp("[a-h][1-8]"),-1);
+    i=SAN.lastIndexOf(QRegExp("[a-h][1-8]"),-1);
     if(i==-1)return Move();
-    to=((SAN.at(i)).latin1()-'a')+8*((SAN.at(i+1)).latin1()-'1');
-    j=SAN.findRev(QRegExp("[a-h]"),i-1);
-    if(j>-1)fromX=(SAN.at(j)).latin1()-'a';
-    j=SAN.findRev(QRegExp("[1-8]"),i-1);
-    if(j>-1)fromY=(SAN.at(j)).latin1()-'1';
+    to=((SAN.at(i)).toLatin1()-'a')+8*((SAN.at(i+1)).toLatin1()-'1');
+    j=SAN.lastIndexOf(QRegExp("[a-h]"),i-1);
+    if(j>-1)fromX=(SAN.at(j)).toLatin1()-'a';
+    j=SAN.lastIndexOf(QRegExp("[1-8]"),i-1);
+    if(j>-1)fromY=(SAN.at(j)).toLatin1()-'1';
     i=0;
     switch(p)
     {
@@ -1336,7 +1336,7 @@ QString Board::moveToSAN(const Move& move)
 	} else {
 		//piece letter & disambiguation
 		if(!isPawn) {
-			moveString += pieceToChar(piece).upper();
+			moveString += pieceToChar(piece).toUpper();
 			
 			bool column = false;
 			bool row = false;
@@ -1531,15 +1531,15 @@ QString Board::moveToSAN(const Move& move)
 Move Board::singleLANMove(QString& LAN)
 {
 	Move move;
-	int from = (LAN[1].latin1() - '1') * 8 + (LAN[0].latin1() - 'a');
-	int to = (LAN[3].latin1() - '1') * 8 + (LAN[2].latin1() - 'a');
+	int from = (LAN[1].toLatin1() - '1') * 8 + (LAN[0].toLatin1() - 'a');
+	int to = (LAN[3].toLatin1() - '1') * 8 + (LAN[2].toLatin1() - 'a');
 	move.setFrom(from);
 	move.setTo(to);
 	
 	//check for promotion piece
 	if(LAN.length() == 5) {
 		Piece piece;
-		switch(LAN[4].latin1()) {
+		switch(LAN[4].toLatin1()) {
 			case 'q':
 				piece = m_toMove == White ? WhiteQueen : BlackQueen;
 				break;
@@ -2169,11 +2169,11 @@ void Board::createHash()
       }
    }
 }
-Q_UINT64 Board::getHashValue() const
+quint64 Board::getHashValue() const
 {
    return m_hashValue;
 }
-Q_UINT64 Board::getHashValue2() const
+quint64 Board::getHashValue2() const
 {
    return m_hashValue2;
 }

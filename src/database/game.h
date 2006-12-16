@@ -234,7 +234,7 @@ class Game
 		MoveNode* m_moveNodes;
 		
 		//eco data
-		static QMap<Q_UINT64,QString> m_ecoPositions;
+		static QMap<quint64,QString> m_ecoPositions;
 };
 
 #endif	// __GAME_H__

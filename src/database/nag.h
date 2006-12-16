@@ -364,8 +364,8 @@ class NagSet
 		static void initialize();
 	
 		static const int MaxNags = 8;
-		Q_UINT8 m_noNags;
-		Q_UINT8 m_nags[MaxNags];
+		quint8 m_noNags;
+		quint8 m_nags[MaxNags];
 		
 		static bool initialized;
 		static QMap<QString,Nag> stringMap;

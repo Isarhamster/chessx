@@ -29,7 +29,7 @@ HistoryList::~HistoryList()
 void HistoryList::restore(const QString& group, const QString& key)
 {
   AppSettings->beginGroup(group);
-  QStringList list = AppSettings->readListEntry(key);
+  QStringList list = AppSettings->value(key).toStringList();
   AppSettings->endGroup();
   setItems(list);
 }
@@ -37,7 +37,7 @@ void HistoryList::restore(const QString& group, const QString& key)
 void HistoryList::save(const QString& group, const QString& key) const
 {
   AppSettings->beginGroup(group);
-  AppSettings->writeEntry(key, items());
+  AppSettings->setValue(key, items());
   AppSettings->endGroup();
 }
 
@@ -52,7 +52,7 @@ void HistoryList::append(const QString& item)
 
 void HistoryList::remove(const QString& item)
 {
-  m_data.remove(item);
+  m_data.removeAll(item);
 }
 
 void HistoryList::setSize(int newSize)

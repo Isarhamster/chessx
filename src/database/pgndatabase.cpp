@@ -20,12 +20,13 @@
 #include <qdir.h>
 #include <qstringlist.h>
  
+#include "board.h"
 #include "history.h"
 #include "nag.h"
 
 #include "pgndatabase.h"
  
-PgnDatabase::PgnDatabase(const QString& filename) : m_moveStatCache(MaxMoveStatCacheSize, 101)
+PgnDatabase::PgnDatabase(const QString& filename) : m_moveStatCache(MaxMoveStatCacheSize)
 {
 	m_filename = filename;
 	m_newFile = 0;
@@ -33,11 +34,7 @@ PgnDatabase::PgnDatabase(const QString& filename) : m_moveStatCache(MaxMoveStatC
 	m_count = 0;
 	m_gameOffsets = 0;
 	m_allocated = 0;
-   m_searching = false;
-	
-	
-	//move stat cache owns the items
-	m_moveStatCache.setAutoDelete(true);
+ 	m_searching = false;
 
 	//open file
 	m_filePos = 0;
@@ -48,7 +45,7 @@ PgnDatabase::PgnDatabase(const QString& filename) : m_moveStatCache(MaxMoveStatC
 	   m_file = new QFile(filename);
 	if (!m_file->exists())
 	   return;
-	m_file->open(IO_ReadWrite);
+	m_file->open(QIODevice::ReadWrite);
 
 	//indexing game positions in the file, game contents are ignored
 	while(!m_file->atEnd()) {		
@@ -105,7 +102,7 @@ bool PgnDatabase::save(int index, Game& game)
 	*m_newStream << flush;
 	
 	if(index < m_count - 1) {
-		copyRange(index + 1, m_count - 1, index + 1, m_newFile->at());
+		copyRange(index + 1, m_count - 1, index + 1, m_newFile->pos());
 	}
 	return finishCopy();
 }
@@ -113,7 +110,7 @@ bool PgnDatabase::save(int index, Game& game)
 void PgnDatabase::add(Game& game)
 {
 	//set the offset and then save a normal
-	addOffset((Q_LONG)m_file->size());
+	addOffset(m_file->size());
 	save(m_count - 1, game);
 }
 
@@ -194,33 +191,39 @@ bool PgnDatabase::supportedSearchType(Search::Type searchType)
 PgnDatabase::MoveStatList PgnDatabase::moveStats(const MoveList& line)
 {
    //locate any cached results that can be used
+	Board board;
    int ply = 0;
+	quint64 key = 0;
    int closestPly = 0;
-   QString key = "";
-   QString closestKey = "";
-   MoveStatCacheEntry* entry = 0;
-   MoveStatCacheEntry* closestEntry = 0;
+   quint64 closestKey = 0;
       
+	board.setStandardPosition();
+	key = board.getHashValue();
+   if(m_moveStatCache.contains(key)) {
+      closestPly = ply;
+      closestKey = key;
+   }
+
    for(MoveList::ConstIterator it = line.constBegin(); it != line.constEnd(); ++it) {
-      ply++;
-      key += QString::number((*it).from()) + " " + QString::number((*it).to()) + " ";
+      board.doMove(*it);
+		ply++;
+      key = board.getHashValue();
       
-      if((entry = m_moveStatCache.find(key))) {
+      if(m_moveStatCache.contains(key)) {
          closestPly = ply;
          closestKey = key;
-         closestEntry = entry;
       }
    }
    
    //if already located in cache return stored result
-   if(closestKey == key && closestEntry) {
-      return closestEntry->moveStatList;
+   if(closestKey == key && m_moveStatCache.contains(closestKey)) {
+      return m_moveStatCache.object(closestKey)->moveStatList;
    }
 
    //get position and filter for final position in line (using any cached filter found previously)
    Filter filter(count());
-   if(closestEntry) {
-      filter = Filter(closestEntry->bitFilter);
+   if(closestKey) {
+      filter = Filter(m_moveStatCache.object(closestKey)->bitFilter);
    }
    filter.setDatabase(this);
    Game game;
@@ -258,15 +261,15 @@ PgnDatabase::MoveStatList PgnDatabase::moveStats(const MoveList& line)
    }
    
    //store result in cache
-   MoveStatCacheEntry cacheEntry;
-   cacheEntry.moveStatList = moveStatList;
-   cacheEntry.bitFilter = filter.asBitArray();
-   m_moveStatCache.insert(key, new MoveStatCacheEntry(cacheEntry), filter.size());
+   MoveStatCacheEntry* cacheEntry = new MoveStatCacheEntry;
+   cacheEntry->moveStatList = moveStatList;
+   cacheEntry->bitFilter = filter.asBitArray();
+   m_moveStatCache.insert(key, cacheEntry, filter.size());
 
    return moveStatList;
 } 
 
-Q_LONG PgnDatabase::offset(int index)
+qint64 PgnDatabase::offset(int index)
 {
 	return m_gameOffsets[index];
 }
@@ -276,12 +279,12 @@ void PgnDatabase::addOffset()
 	addOffset(m_filePos);
 }
 
-void PgnDatabase::addOffset(Q_LONG offset)
+void PgnDatabase::addOffset(qint64 offset)
 {
 	if(m_count == m_allocated) {
 		//out of space reallocate memory
-		Q_LONG* newAllocation = new Q_LONG[m_allocated += AllocationSize];
-		memcpy(newAllocation, m_gameOffsets, sizeof(Q_LONG) * m_count);
+		qint64* newAllocation = new qint64[m_allocated += AllocationSize];
+		memcpy(newAllocation, m_gameOffsets, sizeof(qint64) * m_count);
 		delete m_gameOffsets;
 		m_gameOffsets = newAllocation;
 	}
@@ -294,7 +297,7 @@ void PgnDatabase::setOffset(int index)
 	setOffset(index, m_filePos);
 }
 
-void PgnDatabase::setOffset(int index, Q_LONG offset)
+void PgnDatabase::setOffset(int index, qint64 offset)
 {
 	m_gameOffsets[index] = offset;
 }
@@ -309,8 +312,8 @@ void PgnDatabase::removeOffset(int index)
 		
 	if(m_count < m_allocated - (AllocationSize * 2)) {
 		//using too much space release memory
-		Q_LONG* newAllocation = new Q_LONG[m_allocated -= AllocationSize * 2];
-		memcpy(newAllocation, m_gameOffsets, sizeof(Q_LONG) * m_count);
+		qint64* newAllocation = new qint64[m_allocated -= AllocationSize * 2];
+		memcpy(newAllocation, m_gameOffsets, sizeof(qint64) * m_count);
 		delete m_gameOffsets;
 		m_gameOffsets = newAllocation;
 	}
@@ -326,16 +329,16 @@ void PgnDatabase::startCopy()
 	
 	//open new file and initialise stream
 	m_newFile = new QFile(m_filename);
-	m_newFile->open(IO_ReadWrite);
+	m_newFile->open(QIODevice::ReadWrite);
 	m_newStream = new QTextStream(m_newFile);
 }
 
-void PgnDatabase::copyRange(int startIndex, int endIndex, int newIndex, Q_LONG newOffset)
+void PgnDatabase::copyRange(int startIndex, int endIndex, int newIndex, qint64 newOffset)
 {
 	Q_ASSERT(m_newFile && m_newStream);
 
 	// copy specified games to new file
-	Q_LONG endOffset;
+	qint64 endOffset;
 	if(endIndex < m_count - 1) {
 		endOffset = offset(endIndex + 1) - 1;
 	} else {
@@ -350,7 +353,7 @@ void PgnDatabase::copyRange(int startIndex, int endIndex, int newIndex, Q_LONG n
 	*m_newStream << m_charLine;
 	
 	// update offsets to match positions in the new file
-	Q_LONG diff = offset(startIndex) - newOffset;
+	qint64 diff = offset(startIndex) - newOffset;
 	
 	if(newIndex < startIndex) {
 		for(int index = 0; index <= (endIndex - startIndex); index++) {
@@ -372,7 +375,7 @@ bool PgnDatabase::finishCopy()
 	delete m_newStream;
 	
 	//if successful remove backup, otherwise restore it
-	bool successful = m_newFile->status() == (unsigned)IO_Ok;
+	bool successful = m_newFile->error() == QFile::NoError;
 	QDir dir;
 	
 	if(successful) {
@@ -397,14 +400,14 @@ void PgnDatabase::readLine()
 {
 	m_filePos += m_currentLineSize;
 	m_currentLineSize = m_file->readLine(m_charLine, MaxLineLength);
-	m_currentLine = QString(m_charLine).stripWhiteSpace();
+	m_currentLine = QString(m_charLine).trimmed();
 }
 
 void PgnDatabase::seekGame(int index)
 {
-	m_file->at(m_filePos = offset(index));
+	m_file->seek(m_filePos = offset(index));
 	m_currentLineSize = m_file->readLine(m_charLine, MaxLineLength);
-	m_currentLine = QString(m_charLine).stripWhiteSpace();
+	m_currentLine = QString(m_charLine).trimmed();
 }
 
 void PgnDatabase::parseTags(Game* game)
@@ -416,7 +419,7 @@ void PgnDatabase::parseTags(Game* game)
 		}
 		
 		//parse tag
-		QString tag = m_currentLine.mid(1, m_currentLine.find(' ') - 1);
+		QString tag = m_currentLine.mid(1, m_currentLine.indexOf(' ') - 1);
 		QString value = m_currentLine.section('"', 1, 1);	
 		if(game) {
 			game->setTag(tag, value);
@@ -454,7 +457,7 @@ void PgnDatabase::parseTags(Game* game)
 void PgnDatabase::parseTagsIntoIndex()
 {
 	PartialDate date;
-   Q_UINT32 gameId = m_index.add();
+   quint32 gameId = m_index.add();
 	
 	do {
 		if(!m_currentLine.startsWith(QString("["))) {
@@ -462,7 +465,7 @@ void PgnDatabase::parseTagsIntoIndex()
 		}
 		
 		//parse tag
-		QString tag = m_currentLine.mid(1, m_currentLine.find(' ') - 1);
+		QString tag = m_currentLine.mid(1, m_currentLine.indexOf(' ') - 1);
 		QString value = m_currentLine.section('"', 1, 1);	
 
       // Color specific tags must be renamed to a color independant tag.
@@ -558,7 +561,7 @@ void PgnDatabase::parseMoves(Game* game)
 
 void PgnDatabase::parseLine(Game* game)
 {
-	QStringList list = QStringList::split(" ", m_currentLine, true);
+	QStringList list = m_currentLine.split(" ");
 	m_pos = 0;
   
 	for (QStringList::Iterator it = list.begin(); it != list.end() && !m_inComment; it++) {
@@ -578,7 +581,7 @@ void PgnDatabase::parseLine(Game* game)
 
 void PgnDatabase::parseToken(Game* game, QString token)
 {
-	switch(token.at(0).latin1()) {
+	switch(token.at(0).toLatin1()) {
 		case '(':
 			m_newVariation = true;
 			break;
@@ -766,7 +769,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 
 void PgnDatabase::parseComment(Game* game)
 {
-	int end = m_currentLine.find('}'); 
+	int end = m_currentLine.indexOf('}'); 
   
 	if (end >= 0) {
 		m_comment.append(m_currentLine.left(end));
@@ -845,7 +848,7 @@ void PgnDatabase::writeMoves(Game& game)
 	int end;
 	
 	while(start < length) {
-		end = m_gameText.findRev (' ', start + 80);
+		end = m_gameText.lastIndexOf(' ', start + 80);
 		if(end == -1) {
 			end = m_gameText.length();
 		}

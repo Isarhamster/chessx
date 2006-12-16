@@ -4,8 +4,8 @@
     begin                : 06/12/2005
     copyright            : (C) 2005 Marius Roets
                            <saidinwielder@users.sourceforge.net>
-													 (C) 2006 William Hoggarth
-													 <whoggarth@users.sourceforge.net>
+									(C) 2006 William Hoggarth
+									<whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -33,6 +33,7 @@ struct Search
    enum Operator { NullOperator, Not, And, Or, Add, Remove }; //Add is effectively the same as Or
 
    Search();
+	virtual Search* clone() const = 0;
    virtual ~Search()=0;
    virtual Type type() const = 0;
 };
@@ -42,6 +43,7 @@ class NullSearch : public Search
 {
    public :
       NullSearch();
+		virtual NullSearch* clone() const;
       virtual ~NullSearch();
       virtual Type type() const;
 };
@@ -51,6 +53,7 @@ class PositionSearch : public Search
    public :
       PositionSearch();
       PositionSearch(const Board& position);
+		virtual PositionSearch* clone() const;
       virtual ~PositionSearch();
       virtual Search::Type type() const;
       Board position() const;
@@ -63,6 +66,7 @@ class EloSearch : public Search
 {
    public :
       EloSearch(int minWhiteElo=0, int maxWhiteElo=4000, int minBlackElo=0, int maxBlacElo=4000);
+		virtual EloSearch* clone() const;
       virtual ~EloSearch();
       virtual Type type() const;
       int minWhiteElo() const;
@@ -85,6 +89,7 @@ class DateSearch : public Search
 	public:
 		DateSearch();
 		DateSearch(PartialDate minDate, PartialDate maxDate);
+		virtual DateSearch* clone() const;
 		~DateSearch();
 		Type type() const;
 		
@@ -105,6 +110,7 @@ class TagSearch : public Search
 {
 	public:
 		TagSearch(const QString& tag = "tag", const QString& value = "value");
+		virtual TagSearch* clone() const;
 		~TagSearch();
 		Type type() const;
 		

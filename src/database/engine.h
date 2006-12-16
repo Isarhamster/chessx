@@ -39,7 +39,7 @@ class Engine : public QObject
 	public:
 		struct Analysis {
 			float time;
-			Q_UINT64 nodes;
+			quint64 nodes;
 			int depth;
 			float score;
 			MoveList variation;

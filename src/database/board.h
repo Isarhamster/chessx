@@ -121,8 +121,8 @@ public:
    bool canBlackKingSideCastle() const;
    bool canBlackQueenSideCastle() const; 
    Square enPassantSquare() const; 
-   Q_UINT64 getHashValue() const;
-   Q_UINT64 getHashValue2() const;
+   quint64 getHashValue() const;
+   quint64 getHashValue2() const;
    bool operator == (Board b) {
       return ((m_hashValue == b.getHashValue()) && 
              (m_hashValue2 == b.getHashValue2())); 
@@ -154,8 +154,8 @@ private:
 	CastlingRights m_castlingRights;
 	int m_halfMoveClock;
 
-   Q_UINT64 m_hashValue;
-   Q_UINT64 m_hashValue2;
+   quint64 m_hashValue;
+   quint64 m_hashValue2;
    bool m_calcHashValue;
    QStack<bool> m_hashStatusStack;
 

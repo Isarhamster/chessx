@@ -29,7 +29,7 @@ and tkscid.cpp).
 #include <qregexp.h>
 #include <qdatastream.h>
 #include <qfile.h>
-#include <qt34/qvaluevector.h>
+#include <qvector.h>
 #include <qmap.h>
 #include <qpair.h>
 
@@ -113,12 +113,12 @@ uint valueFrequency(const uint tagId, const int valueId) const;
 Return a bitvector indicating which valueId's
 for the given tagId has the given string as a prefix.
 */
-QValueVector<bool> find(const uint tagId, const QString& pattern);
+QVector<bool> find(const uint tagId, const QString& pattern);
 /**
 Return a bitvector indicating which valueId's
 for the given tagId matches the given regex.
 */
-QValueVector<bool> find(const uint tagId, const QRegExp& pattern);
+QVector<bool> find(const uint tagId, const QRegExp& pattern);
 /**
 Add the value to the value collection for the given tagId.
 @return new index if it is not there.
@@ -192,17 +192,17 @@ QDataStream m_tags_ds;//datastream
 QFile m_tags_file; //file
 
 //tag value collections (known as well as custom)
-QMap <uint, QPair <QValueVector<QString>, QMap <QString,QPair<Q_UINT32,Q_UINT32> > > > m_allTags;
+QMap <uint, QPair <QVector<QString>, QMap <QString,QPair<quint32,quint32> > > > m_allTags;
 
 //for maintaining custom tag name definitions
-QValueVector<QString> m_customTags_v;
+QVector<QString> m_customTags_v;
 QMap<QString,QPair<uint,bool> > m_customTags_m;//<uint,bool> is tagId and used flag
 
 void clear();
 void closeFile();
 
-QValueVector<bool> find(const QString& pattern, QValueVector<QString>& vector, QMap<QString,QPair<Q_UINT32,Q_UINT32> >& map);
-QValueVector<bool> find(const QRegExp& pattern, QValueVector<QString>& vector, QMap<QString,QPair<Q_UINT32,Q_UINT32> >& map);
+QVector<bool> find(const QString& pattern, QVector<QString>& vector, QMap<QString,QPair<quint32,quint32> >& map);
+QVector<bool> find(const QRegExp& pattern, QVector<QString>& vector, QMap<QString,QPair<quint32,quint32> >& map);
 static int knownTagIndex(const QString& tagName);
 static uint maxKnownTagIndex();
 static uint minKnownTagIndex();

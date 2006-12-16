@@ -357,7 +357,7 @@ void Filter::executeSearch(const Search& search)
 {
 	//Turn search into a query and execute it
 	Query query;
-	query.append(&search);
+	query.append(search);
 	executeQuery(query);
 }
 void Filter::executeSearch(const Search& search, Search::Operator searchOperator)
@@ -365,8 +365,8 @@ void Filter::executeSearch(const Search& search, Search::Operator searchOperator
 	//Turn search into a query and execute it
 	Query query;
    FilterSearch filterSearch(*this);
-	query.append(&search);
-   query.append(&filterSearch);
+	query.append(search);
+   query.append(filterSearch);
    query.append(searchOperator);
 
 	executeQuery(query);

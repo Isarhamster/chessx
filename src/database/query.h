@@ -4,6 +4,8 @@
     begin                : 06/12/2005
     copyright            : (C) 2005 Marius Roets
                            <saidinwielder@users.sourceforge.net>
+									(C) 2006 William Hoggarth
+								   <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -20,8 +22,7 @@
 class Search;
 
 #include "search.h"
-#include <qt34/qptrlist.h>
-#include <qt34/qvaluelist.h>
+#include <qlist.h>
 
 /** The Query class is used to store and combine simple and complicated queries.
  * This is done by using reverse polish (postfix) notation. The Query class is a conceptual
@@ -40,7 +41,7 @@ class Query
       ~Query();
       /** @return the operator at index, or NullOperator otherwise */
       Search::Operator searchOperator(int index) const;
-      /** @return the search at index, or NULL pointer otherwise */
+      /** @return the search at index, or NULL pointer otherwise. Do not delete the result. */
       Search* search(int index);
       /** @return the number of elements in the list */
       int count() const;
@@ -55,30 +56,26 @@ class Query
       /** @return true if the current list is a valid expression, false otherwise
        * Question: What to do if there are too many operands */
       bool isValid();
-      /** If set to true, search elements will automatically be deleted when removed from list
-       * default is false. Be careful, it cannot check for other pointers to the same object, 
-       * which would become invalid*/
-      void setAutoDelete(bool flag);
 
       /** query modification methods */
       /** Add a new operator to the list */
       void append(Search::Operator op);
       /** Add a new operand (search definition) to the list */
-      void append(const Search* search);
+      void append(const Search& search);
       /** Change element at index to operator op, return true if successful, false otherwise */
       bool set(int index, Search::Operator op);
       /** Change element at index to operand search, return true if successful, false otherwise */
-      bool set(int index, const Search* search);
+      bool set(int index, const Search& search);
       /** Remove element at index from list, return true if successful, false otherwise */
       bool remove(int index);
       /** Clear the list of all elements */
       void clear();
    private :
       enum ElementType {SearchElement, OperatorElement};
-      typedef QValueList<Search::Operator> OperatorList;
-      typedef QPtrList<Search> SearchList;
-      typedef QValueList<int> IntList;
-      typedef QValueList<ElementType> ElementTypeList;
+      typedef QList<Search::Operator> OperatorList;
+      typedef QList<Search*> SearchList;
+      typedef QList<int> IntList;
+      typedef QList<ElementType> ElementTypeList;
 
       /** List of the operators */
       OperatorList m_operator;

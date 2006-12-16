@@ -4,6 +4,8 @@
     begin                : 06/12/2005
     copyright            : (C) 2005 Marius Roets
                            <saidinwielder@users.sourceforge.net>
+									(C) 2006 William Hoggarth
+								   <whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -22,15 +24,18 @@ Query::Query()
 }
 Query::~Query()
 {
+	while(!m_search.isEmpty()) {
+		delete m_search.takeFirst();
+	}
    clear();
 }
 Search::Operator Query::searchOperator(int index) const
 {
    if (!isValidIndex(index)) 
       return Search::NullOperator;
-   int i = m_operatorMap.findIndex(index);
+   int i = m_operatorMap.indexOf(index);
    if (i >= 0) {
-      return *(m_operator.at(i));
+      return m_operator.at(i);
    } else {
       return Search::NullOperator;
    }
@@ -39,7 +44,7 @@ Search* Query::search(int index)
 {
    if (!isValidIndex(index)) 
       return NULL;
-   int i = m_searchMap.findIndex(index);
+   int i = m_searchMap.indexOf(index);
    if (i >= 0) {
       return m_search.at(i);
    } else {
@@ -128,10 +133,6 @@ bool Query::isValid()
 
    return true;
 }
-void Query::setAutoDelete(bool flag)
-{
-   m_search.setAutoDelete(flag);
-}
 
 void Query::append(Search::Operator op)
 {
@@ -139,9 +140,9 @@ void Query::append(Search::Operator op)
    m_operatorMap.append(m_elementType.count());
    m_elementType.append(OperatorElement);
 }
-void Query::append(const Search* search)
+void Query::append(const Search& search)
 {
-   m_search.append(search);
+   m_search.append(search.clone());
    m_searchMap.append(m_elementType.count());
    m_elementType.append(SearchElement);
 }
@@ -149,19 +150,20 @@ bool Query::set(int index, Search::Operator op)
 {
    if (!isValidIndex(index)) 
       return false;
-   int subindex = m_operatorMap.findIndex(index);
+   int subindex = m_operatorMap.indexOf(index);
    if (subindex >= 0) {
       // In this case the given index is already an operator, so we just replace it
-      (*m_operator.at(subindex)) = op;
+      m_operator[subindex] = op;
       return true;
    } else {
-      subindex = m_searchMap.findIndex(index);
+      subindex = m_searchMap.indexOf(index);
       if (subindex >= 0) {
          // Here the given index is a search, so we have to remove the search,
          // and add a operator at that position. If autodelete is set, the memory
          // for the search will be deallocated.
-         m_searchMap.remove(m_searchMap.at(subindex));
-         m_search.remove(subindex);
+         m_searchMap.removeAt(m_searchMap.at(subindex));
+			delete m_search.at(subindex);
+         m_search.removeAt(subindex);
          m_operator.append(op);
          m_operatorMap.append(index);
          m_elementType[index] = OperatorElement;
@@ -173,24 +175,23 @@ bool Query::set(int index, Search::Operator op)
    }
 
 }
-bool Query::set(int index, const Search* search)
+bool Query::set(int index, const Search& search)
 {
    if (!isValidIndex(index)) 
       return false;
-   int subindex = m_searchMap.findIndex(index);
+   int subindex = m_searchMap.indexOf(index);
    if (subindex >= 0) {
-      // In this case the given index is already an search, so we just replace it
-      // Not sure if AutoDelete affects this. Qt Docs doesn't say. Have to test it.
-      m_search.replace(subindex,search);
+      delete m_search.at(subindex);
+      m_search.replace(subindex,search.clone());
       return true;
    } else {
-      subindex = m_operatorMap.findIndex(index);
+      subindex = m_operatorMap.indexOf(index);
       if (subindex >= 0) {
          // Here the given index is a operator, so we have to remove the operator,
          // and add a search at that position
-         m_operatorMap.remove(m_operatorMap.at(subindex));
-         m_operator.remove(m_operator.at(subindex));
-         m_search.append(search);
+         m_operatorMap.removeAt(m_operatorMap.at(subindex));
+         m_operator.removeAt(m_operator.at(subindex));
+         m_search.append(search.clone());
          m_searchMap.append(index);
          m_elementType[index] = SearchElement;
          return true;
@@ -211,20 +212,21 @@ bool Query::remove(int index)
 
    switch (m_elementType[index]) {
       case OperatorElement:
-         indexToRemove = m_operatorMap.findIndex(index);
+         indexToRemove = m_operatorMap.indexOf(index);
          if (indexToRemove >= 0) {
-            m_operatorMap.remove(m_operatorMap.at(indexToRemove));
-            m_operator.remove(m_operator.at(indexToRemove));
+            m_operatorMap.removeAt(m_operatorMap.at(indexToRemove));
+            m_operator.removeAt(m_operator.at(indexToRemove));
          } else {
             // Element type does not match actual element
             return false;
          }
          break;
       case SearchElement:
-         indexToRemove = m_searchMap.findIndex(index);
+         indexToRemove = m_searchMap.indexOf(index);
          if (indexToRemove >= 0) {
-            m_searchMap.remove(m_searchMap.at(indexToRemove));
-            m_search.remove(indexToRemove);
+            m_searchMap.removeAt(m_searchMap.at(indexToRemove));
+				delete m_search.at(indexToRemove);
+            m_search.removeAt(indexToRemove);
          } else {
             // Element type does not match actual element
             return false;
@@ -234,7 +236,7 @@ bool Query::remove(int index)
          // Undefined element
          return false;
    }
-   m_elementType.remove(m_elementType.at(index));
+   m_elementType.removeAt(m_elementType.at(index));
    // Reduces index for elements after the element being remove, moving them
    // up in the virtual list.
    for( intIt = m_operatorMap.begin(); intIt != m_operatorMap.end(); ++intIt ) {
@@ -249,6 +251,9 @@ bool Query::remove(int index)
 }
 void Query::clear()
 {
+	while(!m_search.isEmpty()) {
+		delete m_search.takeFirst();
+	}
    m_search.clear();
    m_operator.clear();
    m_searchMap.clear();

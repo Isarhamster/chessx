@@ -23,7 +23,7 @@
  
 #include "game.h"
 
-QMap<Q_UINT64,QString> Game::m_ecoPositions;
+QMap<quint64,QString> Game::m_ecoPositions;
 
 Game::Game()
 {
@@ -672,7 +672,7 @@ QString Game::ecoClassify() const
 	
 	//search backwards for the first eco position
 	while(node) {
-		Q_UINT64 key = board.getHashValue();
+		quint64 key = board.getHashValue();
 		if(m_ecoPositions.contains(key)) {
 			return m_ecoPositions[key];
 		}
@@ -761,7 +761,7 @@ bool Game::loadEcoFile(const QString& ecoFile)
 	m_ecoPositions.clear();
 	
 	QFile file(ecoFile);
-	file.open(IO_ReadOnly);
+	file.open(QIODevice::ReadOnly);
 	QTextStream ecoStream(&file);
 	
 	QString line;
@@ -781,7 +781,7 @@ bool Game::loadEcoFile(const QString& ecoFile)
 		}
 		
 		//if line starts with eco code, store and begin new line
-		if(line.find(ecoRegExp) == 0) {
+		if(line.indexOf(ecoRegExp) == 0) {
 			ecoCode = line.section(' ', 0, 0);
 			ecoCode += " " + line.section('"', 1, 1);
 			board.setStandardPosition();
@@ -789,7 +789,7 @@ bool Game::loadEcoFile(const QString& ecoFile)
 		}
 		
 		//parse any moves on line
-		tokenList = QStringList::split(" ", line);
+		tokenList = line.split(" ");
 		for (QStringList::Iterator iterator = tokenList.begin(); iterator != tokenList.end(); iterator++) {
 				token = *iterator;
 				if(token == "*") {

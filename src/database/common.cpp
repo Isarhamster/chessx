@@ -19,7 +19,7 @@
 
 Piece charToPiece(const QChar& letter)
 {
-	char pieceChar = letter.latin1();
+	char pieceChar = letter.toLatin1();
 	
 	switch(pieceChar) {
 		case 'K':

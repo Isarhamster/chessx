@@ -53,7 +53,7 @@ void PlayerData::setTitle(const QString s){
 int PlayerData::elo(const int eloListIndex) const{
    if (m_elo.contains(eloListIndex)){
      QMap<int,int>::const_iterator it = m_elo.find(eloListIndex);
-     return it.data();
+     return it.value();
    }
    else{
      return 0;
@@ -105,19 +105,19 @@ int PlayerData::estimatedElo(const int eloListIndex){
    QMap<int,int>::const_iterator it;
    if (m_elo.contains(eloListIndex)){
      it = m_elo.find(eloListIndex);
-     return it.data();
+     return it.value();
    }
    else{
      if (m_estimatedEloCache.contains(eloListIndex)){//use cached result
        it = m_estimatedEloCache.find(eloListIndex);
-       return it.data();
+       return it.value();
      }
      else{//search in previous elo lists
        int result=m_estimatedElo;//default to overall estimate
        for ( int i=eloListIndex-1; i>0; --i ) {
          if (m_elo.contains(i)){
            it = m_elo.find(i);
-           result = it.data();
+           result = it.value();
            break;
          }
        }
@@ -131,19 +131,19 @@ int PlayerData::estimatedEloNoCache(const int eloListIndex) const{
    QMap<int,int>::const_iterator it;
    if (m_elo.contains(eloListIndex)){
      it = m_elo.find(eloListIndex);
-     return it.data();
+     return it.value();
    }
    else{
      if (m_estimatedEloCache.contains(eloListIndex)){//use cached result
        it = m_estimatedEloCache.find(eloListIndex);
-       return it.data();
+       return it.value();
      }
      else{//search in previous elo lists
        int result=m_estimatedElo;//default to overall estimate
        for ( int i=eloListIndex-1; i>0; --i ) {
          if (m_elo.contains(i)){
            it = m_elo.find(i);
-           result = it.data();
+           result = it.value();
            break;
          }
        }
@@ -169,27 +169,27 @@ void PlayerData::appendToBiography(const QString str){
   m_biography += str;
 }
 
-QValueList<Q_INT32> PlayerData::eloListData() const{
-   QValueList<Q_INT32> list;
+QList<qint32> PlayerData::eloListData() const{
+   QList<qint32> list;
    QMap<int,int>::const_iterator it;
    int nextListIx = 1;
 
    for ( it = m_elo.begin(); it != m_elo.end(); ++it ) {
      int listIx = it.key();
      if (listIx>nextListIx){
-       list.push_back((Q_INT32)-9999);
-       list.push_back((Q_INT32)(listIx-nextListIx));//number of lists without the player
+       list.push_back((qint32)-9999);
+       list.push_back((qint32)(listIx-nextListIx));//number of lists without the player
      }
-     list.push_back((Q_INT32)it.data());//elo
+     list.push_back((qint32)it.value());//elo
      nextListIx = listIx+1;
    }
 
    return list;
 }
 
-void PlayerData::eloFromListData(QValueList<Q_INT32> eloListData){
+void PlayerData::eloFromListData(QList<qint32> eloListData){
     int listIx=1;
-    Q_INT32 elem;
+    qint32 elem;
     for(uint i=0; i< (uint)eloListData.size();){
       elem = eloListData[i++];
       if (elem==-9999){

@@ -25,8 +25,8 @@
 #include <qmap.h>
 #include <qpair.h>
 #include <qtextstream.h>
-#include <qt34/qcache.h>
-#include <qt34/qvaluevector.h>
+#include <qcache.h>
+#include <qvector.h>
 
 #include "database.h"
 #include "search.h"
@@ -88,15 +88,15 @@ class PgnDatabase : public Database
 	private:
 		//offset methods
 		/** Returns the file offset for the given game */
-		Q_LONG offset(int index);
+		qint64 offset(int index);
 		/** Adds the current file position as a new offset */
 		void addOffset();
 		/** Adds a new file offset */
-		void addOffset(Q_LONG offset);
+		void addOffset(qint64 offset);
 		/** Changes the file offset for the given game to the current file position*/ 
 		void setOffset(int index);
 		/** Changes the file offset for the given game to the supplied position */
-		void setOffset(int index, Q_LONG offset);
+		void setOffset(int index, qint64 offset);
 		/** Removes a file offset */
 		void removeOffset(int index);
 		
@@ -104,7 +104,7 @@ class PgnDatabase : public Database
 		/** Backs up the old pgn file and creates a new one */		
 		void startCopy();
 		/** Copies games from the old file to the new */
-		void copyRange(int startIndex, int endIndex, int newIndex, Q_LONG offset);
+		void copyRange(int startIndex, int endIndex, int newIndex, qint64 offset);
 		/** Removes the backup if file operations were sucessful */
 		bool finishCopy();
 		/** Reads the next line of text from the PGN file */
@@ -160,12 +160,12 @@ class PgnDatabase : public Database
 		
 		//game index
 		int m_count;
-		Q_LONG m_filePos;
-		Q_LONG m_currentLineSize;
+		qint64 m_filePos;
+		qint64 m_currentLineSize;
 
 		static const int AllocationSize = 512;
 		int m_allocated;
-		Q_LONG* m_gameOffsets;
+		qint64* m_gameOffsets;
 		
 		//query variables
       Filter* m_externalFilter;
@@ -174,12 +174,12 @@ class PgnDatabase : public Database
 		bool m_searchGame;
       bool m_searching;
 		
-		QValueVector<QPair<DateSearch, int> > m_dateSearches;
-		QValueVector<QPair<EloSearch, int> > m_eloSearches;
-		QValueVector<QPair<FilterSearch, int> > m_filterSearches;
-		QValueVector<QPair<PositionSearch, int> > m_positionSearches;
-		QValueVector<QPair<TagSearch, int> > m_tagSearches;
-		QValueVector<QPair<TagSearch, int> > m_indexSearches;
+		QVector<QPair<DateSearch, int> > m_dateSearches;
+		QVector<QPair<EloSearch, int> > m_eloSearches;
+		QVector<QPair<FilterSearch, int> > m_filterSearches;
+		QVector<QPair<PositionSearch, int> > m_positionSearches;
+		QVector<QPair<TagSearch, int> > m_tagSearches;
+		QVector<QPair<TagSearch, int> > m_indexSearches;
 
       // Structures for in memory headers
       Tags m_tags;
@@ -192,7 +192,7 @@ class PgnDatabase : public Database
 		} MoveStatCacheEntry;
 		
 		static const long MaxMoveStatCacheSize = 8388608; 
-		QCache<MoveStatCacheEntry> m_moveStatCache;
+		QCache<quint64,MoveStatCacheEntry> m_moveStatCache;
 };
 
 #endif
