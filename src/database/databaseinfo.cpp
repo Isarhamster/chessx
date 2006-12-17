@@ -21,10 +21,13 @@
 
 DatabaseInfo::DatabaseInfo(const QString& fname)
 {
-  if (fname.isNull())
-    m_database = new PgnDatabase(QString()); //Workaround for missing Clipboard database
-  else
-    m_database = new PgnDatabase(fname);
+  if (fname.isNull()) {
+    m_database = new PgnDatabase(); //Workaround for missing Clipboard database
+		m_database->open(QString());
+	} else {
+		m_database = new PgnDatabase();
+		m_database->open(fname);
+	}
   m_game = new Game;
   m_filter = new Filter(m_database->count());
   m_index = -1;
