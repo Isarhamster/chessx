@@ -39,8 +39,17 @@ class Database
 	public:	
 		/** Virtual destructor */
 		virtual ~Database();
+		
+		//database operations
+		/** Creates a database with the given filename */
+		virtual bool create(const QString& filename) = 0;
+		/** Opens the given database */
+		virtual bool open(const QString& filename) = 0;
 		/** File-based database name */
-		virtual QString name() const = 0;
+		virtual QString filename() const = 0;
+		/** Closes the database */
+		virtual void close() = 0;
+		
 		//game retrieval & storage
 		/** Loads a game from the given position, returns true if successful */
 		virtual bool load(int index, Game& game) = 0;
@@ -49,11 +58,11 @@ class Database
 		/** Saves a game at the given position, returns true if successful */
 		virtual bool save(int index, Game& game) = 0;
 		/** Adds a game to the database */
-		virtual void add(Game& game) = 0;
+		virtual bool add(Game& game) = 0;
 		/** Removes a game from the database */
-		virtual void remove(int index) = 0;
+		virtual bool remove(int index) = 0;
 		/** Removes multiple games from the database as specified by the filter */
-		virtual void remove(const Filter& filter) = 0;
+		virtual bool remove(const Filter& filter) = 0;
 		/** Compacts the database */
 		virtual void compact() = 0;
 		/** Returns the number of games in the database */

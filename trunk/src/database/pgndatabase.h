@@ -46,23 +46,32 @@
 class PgnDatabase : public Database
 {
 	public:
-		/** Creates the database object from the given pgn file */
-		PgnDatabase(const QString& filename);
+		/** Default constructor */
+		PgnDatabase();
 		/** Destructor */
 		~PgnDatabase();
+		
+		//database operations
+		/** Creates a database with the given filename */
+		virtual bool create(const QString& filename);
+		/** Opens the given database */
+		virtual bool open(const QString& filename);
 		/** File-based database name */
-		QString name() const;
+		virtual QString filename() const;
+		/** Closes the database */
+		virtual void close();		
+		
 		//game retrieval & storage
 		/** Loads a game from the given position, returns true if successful */
 		bool load(int index, Game& game);
 		/** Saves a game at the given position, returns true if successful */
 		bool save(int index, Game& game);
 		/** Adds a game to the database */
-		void add(Game& game);
+		bool add(Game& game);
 		/** Removes a game from the database */
-		void remove(int index);
+		bool remove(int index);
 		/** Removes multiple games from the database as specified by the filter */
-		void remove(const Filter& filter);
+		bool remove(const Filter& filter);
 		/** Compacts the database */
 		void compact();
 		/** Returns the number of games in the database */
@@ -86,6 +95,9 @@ class PgnDatabase : public Database
 		bool loadHeaders(int index, Game& game);
 		
 	private:
+		/** Resets/initialises important member variables. Called by constructor and close methods */
+		void initialise(); 
+		
 		//offset methods
 		/** Returns the file offset for the given game */
 		qint64 offset(int index);
@@ -141,6 +153,7 @@ class PgnDatabase : public Database
 		void writeVariation(Game& game);
 		
 		//file variables
+		bool m_isOpen;
 		QString m_filename;
 		QFile* m_file;
 		QFile* m_newFile;

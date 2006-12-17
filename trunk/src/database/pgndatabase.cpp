@@ -26,25 +26,51 @@
 
 #include "pgndatabase.h"
  
-PgnDatabase::PgnDatabase(const QString& filename) : m_moveStatCache(MaxMoveStatCacheSize)
+PgnDatabase::PgnDatabase() : m_moveStatCache(MaxMoveStatCacheSize)
 {
+	initialise();
+}
+
+PgnDatabase::~PgnDatabase()
+{
+	if(m_isOpen) {
+		close();
+	}
+}
+
+bool PgnDatabase::create(const QString& filename)
+{
+	if(m_isOpen) {
+		return false;
+	}
+	
 	m_filename = filename;
-	m_newFile = 0;
-	m_newStream = 0;
-	m_count = 0;
-	m_gameOffsets = 0;
-	m_allocated = 0;
- 	m_searching = false;
+	m_file = new QFile(filename);
+	if(m_file->exists()) {
+		delete m_file;
+	   return false;
+	}
+	m_file->open(QIODevice::ReadWrite);
+	m_isOpen = true;
+	return true;
+}
+
+bool PgnDatabase::open(const QString& filename)
+{
+	if(m_isOpen) {
+		return false;
+	}
+	
+	m_filename = filename;
 
 	//open file
 	m_filePos = 0;
 	m_currentLineSize = 0;
-	if (filename.isNull())
-	   m_file = new QFile;
-	else 
-	   m_file = new QFile(filename);
-	if (!m_file->exists())
-	   return;
+	m_file = new QFile(filename);
+	if(!m_file->exists()) {
+		delete m_file;
+	   return false;
+	}
 	m_file->open(QIODevice::ReadWrite);
 
 	//indexing game positions in the file, game contents are ignored
@@ -56,19 +82,33 @@ PgnDatabase::PgnDatabase(const QString& filename) : m_moveStatCache(MaxMoveStatC
 		readMoves();
 	}
 	
+	m_isOpen = true;
+	return true;
 }
 
-PgnDatabase::~PgnDatabase()
+QString PgnDatabase::filename() const
 {
+	return m_filename;
+}
+
+void PgnDatabase::close()
+{
+	if(!m_isOpen) {
+		return;
+	}
+	
 	//close the file, and delete objects
 	m_file->close();
 	delete m_file;
 	delete[] m_gameOffsets;
+	
+	//reset member variables
+	initialise();
 }
 
 bool PgnDatabase::load(int index, Game& game)
 {
-	if(index >= m_count) {
+	if(!m_isOpen || index >= m_count) {
 		return false;
 	}
 	
@@ -88,7 +128,7 @@ bool PgnDatabase::load(int index, Game& game)
 
 bool PgnDatabase::save(int index, Game& game)
 {
-	if(index >= m_count) {
+	if(!m_isOpen || index >= m_count) {
 		return false;
 	}
 	
@@ -107,17 +147,27 @@ bool PgnDatabase::save(int index, Game& game)
 	return finishCopy();
 }
 
-void PgnDatabase::add(Game& game)
+bool PgnDatabase::add(Game& game)
 {
-	//set the offset and then save a normal
+	if(!m_isOpen) {
+		return false;
+	}
+	
+	//set the offset and then save as normal
 	addOffset(m_file->size());
-	save(m_count - 1, game);
+	
+	if(save(m_count - 1, game)) {
+		return true;
+	} else {
+		removeOffset(m_count--);
+		return false;
+	}
 }
 
-void PgnDatabase::remove(int index)
+bool PgnDatabase::remove(int index)
 {
-	if(index >= m_count) {
-		return;
+	if(!m_isOpen || index >= m_count) {
+		return false;
 	}
 	
 	startCopy();
@@ -129,12 +179,14 @@ void PgnDatabase::remove(int index)
 	}
 	finishCopy();
 	m_count--;
+	
+	return true;
 }
 
-void PgnDatabase::remove(const Filter& filter)
+bool PgnDatabase::remove(const Filter& filter)
 {
-	if(filter.size() != m_count) {
-		return;
+	if(!m_isOpen || filter.size() != m_count) {
+		return false;
 	}
 	
 	startCopy();
@@ -162,6 +214,8 @@ void PgnDatabase::remove(const Filter& filter)
 	
 	finishCopy();
 	m_count -= filter.count();
+	
+	return true;
 }
 
 void PgnDatabase::compact()
@@ -190,6 +244,12 @@ bool PgnDatabase::supportedSearchType(Search::Type searchType)
 
 PgnDatabase::MoveStatList PgnDatabase::moveStats(const MoveList& line)
 {
+	MoveStatList moveStatList;
+	
+	if(!m_isOpen) {
+		return moveStatList;
+	}
+	
    //locate any cached results that can be used
 	Board board;
    int ply = 0;
@@ -239,7 +299,6 @@ PgnDatabase::MoveStatList PgnDatabase::moveStats(const MoveList& line)
    }
    
    //calculate stats by doing a search on each legal move
-   MoveStatList moveStatList;
    MoveStat moveStat;
    MoveList legalMoves = game.board().legalMoves();
    
@@ -268,6 +327,18 @@ PgnDatabase::MoveStatList PgnDatabase::moveStats(const MoveList& line)
 
    return moveStatList;
 } 
+
+void PgnDatabase::initialise()
+{
+	m_isOpen = false;
+	m_filename = "";
+   m_newFile = 0;
+   m_newStream = 0;
+   m_count = 0;
+   m_gameOffsets = 0;
+   m_allocated = 0;
+   m_searching = false;
+}
 
 qint64 PgnDatabase::offset(int index)
 {
@@ -931,11 +1002,6 @@ void PgnDatabase::writeVariation(Game& game)
 		//export next move
 		game.forward();
 	}
-}
-
-QString PgnDatabase::name() const
-{
-  return m_filename;
 }
 
 void PgnDatabase::initSearch(Query& query, Filter* filter)

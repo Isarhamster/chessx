@@ -209,7 +209,7 @@ void MainWindow::updateMenuDatabases()
   {
     int key = i < 10 ? Qt::CTRL + Qt::Key_1 + (i-1) : 0;
     if (i)
-      m_menuDatabases->insertItem(QString("&%1: %2").arg(i).arg(databaseName(db->database()->name())),
+      m_menuDatabases->insertItem(QString("&%1: %2").arg(i).arg(databaseName(db->database()->filename())),
          this, SLOT(slotDatabaseChange(int)), key, i);
     i++;
     ++it;
@@ -506,7 +506,7 @@ void MainWindow::slotStatusMessage(const QString& msg)
 
 void MainWindow::slotDatabaseChanged()
 {
-  setCaption(tr("ChessX - %1").arg(databaseName(m_databases.current()->database()->name())));
+  setCaption(tr("ChessX - %1").arg(databaseName(m_databases.current()->database()->filename())));
   slotFilterUpdate();
   loadGame(gameIndex());
 }
