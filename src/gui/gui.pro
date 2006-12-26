@@ -38,3 +38,4 @@ QT += qt3support
 INCLUDEPATH += ../compatibility \
 ../database
 
+RESOURCES     = helpwindow.qrc
