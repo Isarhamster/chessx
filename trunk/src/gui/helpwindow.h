@@ -20,22 +20,22 @@
 #ifndef HELPWINDOW_H
 #define HELPWINDOW_H
 
-#include <q3mainwindow.h>
-#include <QCloseEvent>
-#include <Q3PopupMenu>
+#include <QMainWindow>
 
+class QAction;
+class QMenu;
+class QTextBrowser;
 class QComboBox;
-class Q3PopupMenu;
-class Q3TextBrowser;
-class QString;
+class QUrl;
+class QStringList;
 
 /** The help system for ChessX. 
     Displays help pages in html format */
 
-class HelpWindow : public Q3MainWindow
+class HelpWindow : public QMainWindow
 {
-  Q_OBJECT
-    public:
+ Q_OBJECT
+   public:
   HelpWindow();
   ~HelpWindow();
 
@@ -43,26 +43,44 @@ class HelpWindow : public Q3MainWindow
   /** Close event is reimplemented to hide the window when the frame is closed */
   void closeEvent( QCloseEvent* );
 
-  private slots:
-  void setBackwardAvailable( bool );
-  void setForwardAvailable( bool );
-
-  void sourceChanged( const QString& );
+ private slots:
+ 
   void about();
   void aboutQt();
   void openFile();
   void print();
-  void pathSelected( const QString & );
+  void sourceChanged(const QUrl&);
+
+  /** When using the History ComboBox for navigation this method is called. 
+      Sets a new source in the QTextBrowser */
+  void historyComboChanged();
 
  private:
 
   void configure();
-
-  Q3TextBrowser* m_browser;
-  QComboBox *m_pathCombo;
-  int m_backwardId, m_forwardId;
+  void createActions();
+  void createMenus();
+  void createToolBar();
+  void createStatusBar();
+ 
+  QTextBrowser *m_browser;
+  QComboBox *m_historyCombo;
+  QString *m_bookmarkFile;
   QString m_home;
 
+  QMenu *m_fileMenu;
+  QMenu *m_navigateMenu;
+  QMenu *m_helpMenu;
+  QToolBar *m_toolBar;
+
+  QAction *m_openAct;
+  QAction *m_printAct;
+  QAction *m_exitAct;
+  QAction *m_forwardAct;
+  QAction *m_backwardAct;
+  QAction *m_homeAct;
+  QAction *m_aboutAct;
+  QAction *m_aboutQtAct;  
 };
 
 #endif

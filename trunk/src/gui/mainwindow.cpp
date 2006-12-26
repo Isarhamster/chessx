@@ -595,7 +595,7 @@ void MainWindow::setupActions()
   /* Help menu */
   menuBar()->insertSeparator();
   QMenu *help = menuBar()->addMenu(tr("&Help"));
-  help->addAction(createAction(tr("ChessX &help..."), SLOT(slotHelp()), Qt::Key_F1));
+  help->addAction(createAction(tr("ChessX &help..."), SLOT(slotHelp()), Qt::CTRL + Qt::Key_F10));
   help->addAction(createAction(tr("&About..."), SLOT(slotAbout()) ));
 }
 
