@@ -30,6 +30,7 @@
 #include "preferences.h"
 #include "savedialog.h"
 #include "settings.h"
+#include "tipoftheday.h"
 
 #include <QApplication>
 
@@ -122,6 +123,15 @@ MainWindow::MainWindow() : Q3MainWindow(0, "MainWindow", Qt::WDestructiveClose),
   /* Status */
   slotStatusMessage(tr("Ready."));
 
+  /* Tip of the day */
+  AppSettings->beginGroup("/General/");
+  bool showTip = AppSettings->readBoolEntry("showTipOfDay", true);
+  AppSettings->endGroup();
+  m_tipDialog = new TipOfDayDialog(this);
+  if(showTip)
+    {
+       m_tipDialog->exec();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -130,6 +140,7 @@ MainWindow::~MainWindow()
   delete m_playerDialog;
   delete m_helpWindow;
   delete m_output;
+  delete m_tipDialog;
 }
 
 QString databaseName(const QString& fname)

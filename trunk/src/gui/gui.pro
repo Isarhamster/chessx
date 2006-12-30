@@ -8,7 +8,8 @@ FORMS += playerdialog.ui \
          preferences.ui \
          boardsetup.ui \
          enginesetup.ui \
-         savedialog.ui
+         savedialog.ui \
+         tipoftheday.ui
 HEADERS += mainwindow.h \
            playerdialog.h \
            preferences.h \
@@ -19,7 +20,8 @@ HEADERS += mainwindow.h \
            savedialog.h \
            enginesetup.h \
            gamelist.h \
-	   chessbrowser.h
+	   chessbrowser.h \
+           tipoftheday.h
 SOURCES += mainwindow.cpp \
            playerdialog.cpp \
            preferences.cpp \
@@ -30,7 +32,8 @@ SOURCES += mainwindow.cpp \
            savedialog.cpp \
            enginesetup.cpp \
            gamelist.cpp \
-	   chessbrowser.cpp
+	   chessbrowser.cpp \
+           tipoftheday.cpp
 TARGET = gui
 CONFIG += warn_on qt staticlib uic
 TEMPLATE = lib
@@ -38,4 +41,5 @@ QT += qt3support
 INCLUDEPATH += ../compatibility \
 ../database
 
-RESOURCES     = helpwindow.qrc
+RESOURCES     += helpwindow.qrc \
+                 tipoftheday.qrc
