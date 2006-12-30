@@ -39,6 +39,7 @@ class Game;
 class DatabaseInfo;
 class Database;
 class Output;
+class TipOfDayDialog;
 
 class ChessBrowser;
 class Q3ListBox;
@@ -123,6 +124,7 @@ private:
   GameList* m_gameList;
   SaveDialog* m_saveDialog;
   HelpWindow* m_helpWindow;
+  TipOfDayDialog* m_tipDialog;
   BoardView* m_boardView;
   ChessBrowser* m_moveView;
   ChessBrowser* m_gameView;

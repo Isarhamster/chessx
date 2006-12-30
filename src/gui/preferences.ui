@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>PreferencesDialog</class>
  <widget class="QDialog" name="PreferencesDialog" >
   <property name="geometry" >
@@ -31,7 +28,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex" >
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="TabPage" >
       <attribute name="title" >
@@ -123,6 +120,14 @@
        <item row="2" column="0" colspan="2" >
         <widget class="Q3WidgetStack" name="widgetStack" >
          <widget class="QWidget" name="themeBoardWidget" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>369</width>
+            <height>32</height>
+           </rect>
+          </property>
           <layout class="QHBoxLayout" >
            <property name="margin" >
             <number>0</number>
@@ -152,6 +157,14 @@
           </layout>
          </widget>
          <widget class="QWidget" name="plainBoardWidget" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>100</width>
+            <height>30</height>
+           </rect>
+          </property>
           <layout class="QHBoxLayout" >
            <property name="margin" >
             <number>0</number>
@@ -281,6 +294,30 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab" >
+      <attribute name="title" >
+       <string>&amp;General settings</string>
+      </attribute>
+      <attribute name="toolTip" >
+       <string>General settings for ChessX</string>
+      </attribute>
+      <widget class="QCheckBox" name="tipOfTheDay" >
+       <property name="geometry" >
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>361</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text" >
+        <string>Show tip of the day</string>
+       </property>
+       <property name="checked" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </item>
    <item row="1" column="0" >
@@ -342,7 +379,6 @@
    <extends>Q3WidgetStack</extends>
    <header>q3widgetstack.h</header>
    <container>1</container>
-   <pixmap></pixmap>
   </customwidget>
  </customwidgets>
  <resources/>

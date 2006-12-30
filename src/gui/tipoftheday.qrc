@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <file alias="tips.txt">../../data/doc/tips.txt</file>
+    </qresource>
+    <qresource lang="de">
+        <file alias="tips.txt">../../data/doc/tips_de.txt</file>
+    </qresource>
+</RCC>
