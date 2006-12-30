@@ -1,6 +1,6 @@
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.2//EN" [
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
 <!ENTITY cx "ChessX">
-<!ENTITY cxurl "http://newscid.sourceforge.net/">
+<!ENTITY cxurl "http://chessx.sourceforge.net/">
 <!ENTITY scurl "http://scid.sourceforge.net/">
 <!ENTITY qturl "http://www.trolltech.com/">
 <!ENTITY heinz "heinz.hopfgartner@gmx.at">
@@ -15,7 +15,7 @@
 <book label="chessxmanual" status="DRAFT" revision="0.5">
   <bookinfo>
     <title>&cx - Manual</title>
-    <copyright><year>2006</year><holder>The &cx - developement
+    <copyright><year>2006, 2007</year><holder>The &cx - developement
 team</holder></copyright>
     <legalnotice>
       <para>Permission is granted to copy, distribute and/or modify this document
