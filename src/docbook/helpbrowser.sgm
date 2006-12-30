@@ -39,12 +39,6 @@ Trolltech&trade;</ulink></para>
     <para><emphasis>TODO:</emphasis></para> 
     <itemizedlist>
       <listitem>
-	<para>Define and use standard for the "About ChessX" dialog for &cx</para>
-      </listitem>
-      <listitem>
-	<para>Define and use standard for icons used in &cx</para>
-      </listitem>
-      <listitem>
 	<para>Write help pages</para>
       </listitem>
     </itemizedlist>
