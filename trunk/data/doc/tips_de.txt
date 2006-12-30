@@ -1,0 +1,5 @@
+#ChessX tips of the day file. The format is NNN.Text of the tip
+001.ChessX liest und schreibt PGN Datenbanken
+002.Um die neueste Version von ChessX zu bekommen, besuchen Sie: http://chessx.sourceforge.net
+003.Die Spielerdatenbank beinhaltet fuer beruehmte Spieler Fotos
+004.Ueber das Menue Einstellungen koennen verschieden vordefinierte Themen eingestellt werden
