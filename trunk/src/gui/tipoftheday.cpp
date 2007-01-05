@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "tipoftheday.h"
-#include "../database/settings.h"
+#include "settings.h"
 #include <QTextStream>
 #include <QFile>
 
@@ -34,8 +34,8 @@ TipOfDayDialog::~TipOfDayDialog()
 
 void TipOfDayDialog::accept()
 {
-  AppSettings->beginGroup("/General/");
-  AppSettings->writeEntry("showTipOfDay", tipDialog.showTipOfDayCheckBox->isChecked());
+  AppSettings->beginGroup("/Tips/");
+  AppSettings->writeEntry("showTips", tipDialog.showTipOfDayCheckBox->isChecked());
   AppSettings->endGroup();
   QDialog::accept();
 }
@@ -48,23 +48,15 @@ void TipOfDayDialog::slotNextTip()
 QString TipOfDayDialog::readNextTip()
 {
   if(tipsMap.isEmpty())
-    return QString(tr("No tip found"));
+    return tr("No tip found");
+  AppSettings->beginGroup("/Tips/");
+  int nextTip = AppSettings->readNumEntry("next", 1);
+  if(nextTip == tipsMap.size())
+    AppSettings->writeEntry("next", 1);
   else
-    {
-      AppSettings->beginGroup("/General/");
-      int nextTip = AppSettings->readNumEntry("nextTip", 1);
-      if(nextTip == tipsMap.size())
-	{
-	  AppSettings->writeEntry("nextTip", 1);
-	}
-      else
-	{     
-	  AppSettings->writeEntry("nextTip", nextTip + 1);
-	}
-      AppSettings->endGroup();
-
-      return tipsMap.value(nextTip);     
-    }
+  AppSettings->writeEntry("next", nextTip + 1);
+  AppSettings->endGroup();
+  return tipsMap.value(nextTip);
 }
 
 int TipOfDayDialog::loadTips()
