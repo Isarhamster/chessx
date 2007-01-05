@@ -51,10 +51,10 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
   m_list->addColumn(tr("Date"));
   m_list->addColumn(tr("Result"));
   m_list->addColumn(tr("ECO"));
-  m_list->addColumn(tr("Length"));
+  //m_list->addColumn(tr("Length"));
   m_list->setColumnAlignment(Index, Qt::AlignRight);
   m_list->setColumnAlignment(Round, Qt::AlignRight);
-  m_list->setColumnAlignment(Length, Qt::AlignRight);
+  //m_list->setColumnAlignment(Length, Qt::AlignRight);
   m_list->setAllColumnsShowFocus(true);
   m_list->setHScrollBarMode(Q3ScrollView::AlwaysOff);
   m_list->setVScrollBarMode(Q3ScrollView::AlwaysOff);
@@ -98,7 +98,7 @@ void GameList::createItem(int index)
   item->setText(Round, g.tag("Round"));
   item->setText(Date, g.tag("Date"));
   item->setText(Result, g.tag("Result").left(3));
-  item->setText(Length, QString::number((g.ply() + 1) / 2));
+ // item->setText(Length, QString::number((g.ply() + 1) / 2));
   item->setText(ECO, g.tag("ECO"));
 }
 
