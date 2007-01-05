@@ -124,8 +124,8 @@ MainWindow::MainWindow() : Q3MainWindow(0, "MainWindow", Qt::WDestructiveClose),
   slotStatusMessage(tr("Ready."));
 
   /* Tip of the day */
-  AppSettings->beginGroup("/General/");
-  bool showTip = AppSettings->readBoolEntry("showTipOfDay", true);
+  AppSettings->beginGroup("/Tips/");
+  bool showTip = AppSettings->readBoolEntry("showTips", true);
   AppSettings->endGroup();
   m_tipDialog = new TipOfDayDialog(this);
   if(showTip)

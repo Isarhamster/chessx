@@ -20,9 +20,8 @@
 #include <qglobal.h>
 #include <qwidget.h>
 
-Settings::Settings() : QSettings("ChessX", QSettings::IniFormat)
+Settings::Settings() : QSettings(IniFormat, UserScope, "chessx", "chessx")
 {
-  setPath(IniFormat, UserScope, "ChessX");
 }
 
 Settings::~Settings()
