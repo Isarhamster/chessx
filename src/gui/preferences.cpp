@@ -101,8 +101,8 @@ void PreferencesDialog::restoreSettings()
   AppSettings->endGroup();
 
   //Read general settings
-  AppSettings->beginGroup("/General/");
-  ui.tipOfTheDay->setChecked(AppSettings->readBoolEntry("showTipOfDay", true));
+  AppSettings->beginGroup("/Tips/");
+  ui.tipOfTheDay->setChecked(AppSettings->readBoolEntry("showTips", true));
   AppSettings->endGroup();
 }
 
@@ -120,8 +120,8 @@ void PreferencesDialog::saveSettings()
   AppSettings->writeEntry("rating", ui.playersRatingsCheck->isChecked());
   AppSettings->writeEntry("count", ui.playersSpinbox->value());
   AppSettings->endGroup();
-  AppSettings->beginGroup("/General/");
-  AppSettings->writeEntry("showTipOfDay",ui.tipOfTheDay->isChecked());
+  AppSettings->beginGroup("/Tips/");
+  AppSettings->writeEntry("showTips",ui.tipOfTheDay->isChecked());
   AppSettings->endGroup();
 }
 
