@@ -32,31 +32,38 @@
 #include "settings.h"
 #include "tipoftheday.h"
 
+#include <QAction>
+#include <QActionGroup>
 #include <QApplication>
-
 #include <QClipboard>
+#include <QCloseEvent>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QLabel>
-#include <QMenuBar>
 #include <QMenu>
+#include <QMenuBar>
 #include <QMessageBox>
-#include <QStatusBar>
 #include <QSplitter>
-#include <QAction>
-#include <QActionGroup>
-#include <QCloseEvent>
-
+#include <QStatusBar>
 
 #include <Q3HBox>
 #include <Q3Frame>
 #include <Q3VBoxLayout>
 
-MainWindow::MainWindow() : Q3MainWindow(0, "MainWindow", Qt::WDestructiveClose),
+bool yesNo(const QString& question, QMessageBox::Icon icon = QMessageBox::Question)
+{
+  QMessageBox mb("ChessX", question, icon, QMessageBox::Yes, QMessageBox::No,
+     Qt::NoButton);
+  return mb.exec() == QMessageBox::Yes;
+}
+
+
+MainWindow::MainWindow() : QMainWindow(),
   m_playerDialog(0), m_helpWindow(0)
 {
   /* Active database */
   m_databases.append(new DatabaseInfo);
+  m_currentDatabase = 0;
 
   /* Save dialog */
   m_saveDialog = new SaveDialog;
@@ -69,6 +76,8 @@ MainWindow::MainWindow() : Q3MainWindow(0, "MainWindow", Qt::WDestructiveClose),
   m_actions = new QActionGroup(this);
   setupActions();
 
+  /* Delete on close */
+  setAttribute(Qt::WA_DeleteOnClose);
 
   /* Recent files */
   m_recentFiles.restore("History", "RecentFiles");
@@ -167,26 +176,19 @@ void MainWindow::closeEvent(QCloseEvent* e)
     e->ignore();
 }
 
-bool MainWindow::yesNo(const QString& question, QMessageBox::Icon icon) const
-{
-  QMessageBox mb("ChessX", question, icon, QMessageBox::Yes, QMessageBox::No,
-     Qt::NoButton);
-  return mb.exec() == QMessageBox::Yes;
-}
-
 Database* MainWindow::database()
 {
-  return m_databases.current()->database();
+  return m_databases[m_currentDatabase]->database();
 }
 
 Game* MainWindow::game()
 {
-  return m_databases.current()->currentGame();
+  return m_databases[m_currentDatabase]->currentGame();
 }
 
 int MainWindow::gameIndex() const
 {
-  return m_databases.current()->currentIndex();
+  return m_databases[m_currentDatabase]->currentIndex();
 }
 
 void MainWindow::loadGame(int index)
@@ -196,7 +198,7 @@ void MainWindow::loadGame(int index)
   if (index < 0) index = 0;
   if (index >= database()->count())
     index = database()->count() - 1;
-  m_databases.current()->loadGame(index);
+  m_databases[m_currentDatabase]->loadGame(index);
   m_boardView->setBoard(game()->board());
   slotMoveViewUpdate();
   slotGameView();
@@ -213,23 +215,21 @@ void MainWindow::updateMenuRecent()
 void MainWindow::updateMenuDatabases()
 {
   int i = 0;
-  Q3PtrListIterator<DatabaseInfo> it(m_databases);
-  DatabaseInfo* db;
   m_menuDatabases->clear();
-  while ((db = it.current()))
+  QListIterator<DatabaseInfo*> it(m_databases);
+  while (it.hasNext() && i < 10)
   {
-    int key = i < 10 ? Qt::CTRL + Qt::Key_1 + (i-1) : 0;
-    if (i)
-      m_menuDatabases->insertItem(QString("&%1: %2").arg(i).arg(databaseName(db->database()->filename())),
-         this, SLOT(slotDatabaseChange(int)), key, i);
+    int key = Qt::CTRL + Qt::Key_1 + (i-1);
+    m_menuDatabases->insertItem(QString("&%1: %2").arg(i).arg(databaseName(it.next()->database()->filename())),
+        this, SLOT(slotDatabaseChange(int)), key, i);
     i++;
-    ++it;
   }
 }
 
 bool MainWindow::openDatabase(const QString& fname)
 {
   m_databases.append(new DatabaseInfo(fname));
+  m_currentDatabase = m_databases.count() - 1;
   m_recentFiles.append(fname);
   updateMenuRecent();
   updateMenuDatabases();
@@ -279,9 +279,10 @@ void MainWindow::slotFileOpenRecent(int id)
 
 void MainWindow::slotFileClose()
 {
-  if (m_databases.current() != m_databases.getFirst()) // Clipboard
+  if (m_currentDatabase) // Clipboard
   {
-    m_databases.remove();
+    m_databases.removeAt(m_currentDatabase);
+    m_currentDatabase--;
     updateMenuDatabases();
     slotDatabaseChanged();
   }
@@ -501,7 +502,7 @@ void MainWindow::slotFilterSwitch()
 
 void MainWindow::slotFilterUpdate()
 {
-  m_gameList->setDatabase(m_databases.current());
+  m_gameList->setDatabase(m_databases[m_currentDatabase]);
 }
 
 void MainWindow::slotFilterLoad(int index)
@@ -517,14 +518,14 @@ void MainWindow::slotStatusMessage(const QString& msg)
 
 void MainWindow::slotDatabaseChanged()
 {
-  setCaption(tr("ChessX - %1").arg(databaseName(m_databases.current()->database()->filename())));
+  setCaption(tr("ChessX - %1").arg(databaseName(database()->filename())));
   slotFilterUpdate();
   loadGame(gameIndex());
 }
 
 void MainWindow::slotDatabaseChange(int current)
 {
-  m_databases.find(m_databases.at(current));
+  m_currentDatabase = current;
   slotDatabaseChanged();
 }
 
