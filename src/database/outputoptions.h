@@ -17,9 +17,9 @@
 #ifndef __OUTPUTOPTIONS_H__
 #define __OUTPUTOPTIONS_H__
 
-#include <qstring.h>
-#include <qmap.h>
-#include <qstringlist.h>
+#include <QString>
+#include <QMap>
+#include <QStringList>
 
 class OutputOptions
 {

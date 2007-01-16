@@ -17,10 +17,9 @@
 #ifndef __INDEXITEM_H__
 #define __INDEXITEM_H__
 
-#include <qglobal.h>
 #include "partialdate.h"
-#include "qlist.h"
 #include "common.h"
+#include <QList>
 
 /** The IndexItem class holds one item that is listed in a index
  * It contains essential game header information that is kept in

@@ -16,8 +16,8 @@
  ***************************************************************************/
 
 #include <iostream>
-#include <qstringlist.h>
-#include <qtextstream.h>
+#include <QStringList>
+#include <QTextStream>
 #include "databaseconversion.h"
 
 bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& pictureDir){

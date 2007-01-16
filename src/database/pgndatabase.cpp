@@ -17,8 +17,8 @@
  *                                                                         *
  ***************************************************************************/
  
-#include <qdir.h>
-#include <qstringlist.h>
+#include <QDir>
+#include <QStringList>
  
 #include "board.h"
 #include "history.h"

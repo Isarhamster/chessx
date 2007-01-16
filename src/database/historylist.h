@@ -17,7 +17,7 @@
 #ifndef __HISTORYLIST_H__
 #define __HISTORYLIST_H__
 
-#include <qstringlist.h>
+#include <QStringList>
 
 /** The HistoryList class provides a list of @p N recent string items that
 can be stored/restored. */

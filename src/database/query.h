@@ -22,7 +22,7 @@
 class Search;
 
 #include "search.h"
-#include <qlist.h>
+#include <QList>
 
 /** The Query class is used to store and combine simple and complicated queries.
  * This is done by using reverse polish (postfix) notation. The Query class is a conceptual

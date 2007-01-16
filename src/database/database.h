@@ -18,7 +18,7 @@
 #ifndef __DATABASE_H__
 #define __DATABASE_H__
 
-#include <qstring.h>
+#include <QString>
 
 #include "filter.h" 
 #include "game.h"

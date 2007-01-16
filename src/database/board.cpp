@@ -16,10 +16,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <qregexp.h>
-#include <qstringlist.h>
-#include <qtextstream.h>
-#include <qfile.h>
+#include <QRegExp>
+#include <QStringList>
+#include <QTextStream>
+#include <QFile>
 #include "board.h"
 #include "settings.h"
 

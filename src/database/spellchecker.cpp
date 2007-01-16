@@ -15,11 +15,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qdatastream.h>
-#include <qdir.h>
-#include <qfile.h>
-#include <qglobal.h>
-#include <qregexp.h>
+#include <QDataStream>
+#include <QDir>
+#include <QFile>
+#include <QRegExp>
 
 #include "spellchecker.h"
 

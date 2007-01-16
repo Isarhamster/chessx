@@ -15,10 +15,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qmap.h>
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qtextstream.h>
+#include <QMap>
+#include <QString>
+#include <QStringList>
+#include <QTextStream>
 
 /**
 	 The Spellchecker class provides spellchecker functionality.

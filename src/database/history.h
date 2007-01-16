@@ -20,8 +20,7 @@
 #define __HISTORY_ITEM_H__
 
 #include "common.h"
-#include <qglobal.h>
-#include <qstack.h>
+#include <QStack>
 
 class HistoryItem {
 public:

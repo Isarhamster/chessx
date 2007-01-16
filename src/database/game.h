@@ -19,8 +19,8 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
-#include <qmap.h>
-#include <qstring.h>
+#include <QMap>
+#include <QString>
 
 #include "board.h"
 #include "movelist.h"

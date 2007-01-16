@@ -17,7 +17,7 @@
 #ifndef __INDEX_H__
 #define __INDEX_H__
 
-#include <qvector.h>
+#include <QVector>
 #include "indexitem.h"
 #include "search.h"
 #include "tags.h"

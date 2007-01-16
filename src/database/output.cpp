@@ -1,7 +1,7 @@
 #include "output.h"
 #include "qregexp.h"
-#include <qfile.h>
-#include <qtextstream.h>
+#include <QFile>
+#include <QTextStream>
 #include "settings.h"
 
 QMap <Output::OutputType,QString> Output::m_outputMap;

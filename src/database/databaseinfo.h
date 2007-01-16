@@ -17,7 +17,7 @@
 #ifndef __DATABASEINFO_H__
 #define __DATABASEINFO_H__
 
-#include <qstring.h>
+#include <QString>
 
 class Database;
 class Filter;

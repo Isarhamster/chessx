@@ -18,10 +18,10 @@
 #ifndef __PLAYERDATA_H__
 #define __PLAYERDATA_H__
 
-#include <qstring.h>
-#include <qimage.h>
-#include <qmap.h>
-#include <qlist.h>
+#include <QString>
+#include <QImage>
+#include <QMap>
+#include <QList>
 #include <partialdate.h>
 
 class PlayerData

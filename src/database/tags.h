@@ -24,14 +24,14 @@ and tkscid.cpp).
 #ifndef __TAGS_H__
 #define __TAGS_H__
 
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qregexp.h>
-#include <qdatastream.h>
-#include <qfile.h>
-#include <qvector.h>
-#include <qmap.h>
-#include <qpair.h>
+#include <QString>
+#include <QStringList>
+#include <QRegExp>
+#include <QDataStream>
+#include <QFile>
+#include <QVector>
+#include <QMap>
+#include <QPair>
 
 /*TODO
 -compact(): 

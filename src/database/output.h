@@ -2,8 +2,8 @@
 #ifndef __OUTPUT_H__
 #define __OUTPUT_H__
 
-#include <qstring.h>
-#include <qmap.h>
+#include <QString>
+#include <QMap>
 #include "game.h"
 #include "outputoptions.h"
 
