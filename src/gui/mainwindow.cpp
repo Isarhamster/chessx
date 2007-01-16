@@ -57,6 +57,8 @@ bool yesNo(const QString& question, QMessageBox::Icon icon = QMessageBox::Questi
 MainWindow::MainWindow() : QMainWindow(),
   m_playerDialog(0), m_helpWindow(0)
 {
+  setObjectName("MainWindow");
+
   /* Active database */
   m_databases.append(new DatabaseInfo);
   m_currentDatabase = 0;
@@ -100,6 +102,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
   /* Game view */
   QDockWidget* dock = new QDockWidget(tr("Game text"), this);
+  dock->setObjectName("GameText");
   // dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
   m_gameView = new ChessBrowser(dock);
   m_gameView->setLinkUnderline(false);
@@ -112,9 +115,9 @@ MainWindow::MainWindow() : QMainWindow(),
 
   /* Move view */
   dock = new QDockWidget(tr("Game info"), this);
+  dock->setObjectName("GameInfo");
   //dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
   m_moveView = new ChessBrowser(dock);
-  m_moveView->setMaximumHeight(100);
   connect(m_moveView, SIGNAL(linkPressed(const QString&)), SLOT(slotMoveViewLink(const QString&)));
   dock->setWidget(m_moveView);
   addDockWidget(Qt::BottomDockWidgetArea, dock);
@@ -124,6 +127,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
   /* Restoring layouts */
   AppSettings->readLayout(this);
+  //AppSettings->
   emit reconfigure();
 
   /* Reset board - not earlier, as all widgets have to be created. */

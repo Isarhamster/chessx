@@ -16,9 +16,10 @@
 
 #include "settings.h"
 
-#include <qapplication.h>
-#include <qglobal.h>
-#include <qwidget.h>
+#include <QApplication>
+//#include <QGlobal>
+#include <QWidget>
+#include <QMainWindow>
 
 Settings::Settings() : QSettings(IniFormat, UserScope, "chessx", "chessx")
 {
@@ -42,6 +43,13 @@ void Settings::readLayout(QWidget* w, unsigned flags)
   w->move(QPoint(x, y));
   if ((flags && Show) && value("visible").toBool())
     w->show();
+  QMainWindow* main = qobject_cast<QMainWindow*>(w);
+  if (main)
+  {
+    QByteArray docks = value("docks", QByteArray()).toByteArray();
+    if (docks.count())
+      main->restoreState(docks, 0);
+  }
   endGroup();
 }
 
@@ -56,6 +64,9 @@ void Settings::writeLayout(const QWidget* w)
   setValue("w", w->width());
   setValue("h", w->height());
   setValue("visible",w->isVisible());
+  const QMainWindow* main = qobject_cast<const QMainWindow*>(w);
+  if (main)
+    setValue("docks", main->saveState(0));
   endGroup();
 }
 
