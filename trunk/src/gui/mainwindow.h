@@ -18,14 +18,10 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
-#include <q3mainwindow.h>
-#include <qmessagebox.h>
-#include <q3valuelist.h>
 //Added by qt3to4:
 #include <Q3VBoxLayout>
-#include <QLabel>
-#include <QCloseEvent>
-#include <Q3PtrList>
+#include <QList>
+#include <QMainWindow>
 
 #include "common.h"
 #include "historylist.h"
@@ -41,6 +37,7 @@ class Database;
 class Output;
 class TipOfDayDialog;
 
+class QCloseEvent;
 class ChessBrowser;
 class Q3ListBox;
 class Q3VBoxLayout;
@@ -48,7 +45,7 @@ class QLabel;
 class QMenu;
 class QActionGroup;
 
-class MainWindow: public Q3MainWindow
+class MainWindow: public QMainWindow
 {
   Q_OBJECT
 public:
@@ -56,7 +53,6 @@ public:
   ~MainWindow();
 
 protected:
-  bool yesNo(const QString& quetion, QMessageBox::Icon icon = QMessageBox::Information) const;
   void closeEvent(QCloseEvent* e);
 /** @return active database */
   Database* database();
@@ -135,7 +131,8 @@ private:
   QMenu* m_menuDatabases;
   /* Local variables */
   Output* m_output;
-  Q3PtrList<DatabaseInfo> m_databases;
+  QList<DatabaseInfo*> m_databases;
+  int m_currentDatabase;
   QActionGroup* m_actions;
 };
 
