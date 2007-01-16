@@ -27,11 +27,11 @@ PlayerDatabase is used to acces player data.
 #ifndef __PLAYERDATABASE_H__
 #define __PLAYERDATABASE_H__
 
-#include <qstring.h>
-#include <qmap.h>
-#include <qdatastream.h>
-#include <qfile.h>
-#include <qstringlist.h>
+#include <QString>
+#include <QMap>
+#include <QDataStream>
+#include <QFile>
+#include <QStringList>
 #include <playerdata.h>
 
 class PlayerDatabase{

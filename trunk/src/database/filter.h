@@ -20,7 +20,7 @@
 #ifndef __FILTER_H__
 #define __FILTER_H__
 #include "common.h"
-#include <qbitarray.h>
+#include <QBitArray>
 #include "database.h"
 
 #include "search.h"

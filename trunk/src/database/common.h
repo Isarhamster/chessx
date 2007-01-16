@@ -18,7 +18,7 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
-#include <qstring.h>
+#include <QString>
 
 typedef unsigned char Square;
 typedef unsigned char Coord;

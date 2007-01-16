@@ -15,7 +15,7 @@
  ***************************************************************************/
 
 #include "outputoptions.h"
-#include <qregexp.h>
+#include <QRegExp>
 
 OutputOptions::OutputOptions()
 {

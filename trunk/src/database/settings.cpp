@@ -17,7 +17,6 @@
 #include "settings.h"
 
 #include <QApplication>
-//#include <QGlobal>
 #include <QWidget>
 #include <QMainWindow>
 

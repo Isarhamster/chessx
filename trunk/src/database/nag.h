@@ -18,10 +18,9 @@
 #ifndef __NAG_H__
 #define __NAG_H__
 
-#include <qstring.h>
-#include <qglobal.h>
-#include <qmap.h>
-#include <qvector.h>
+#include <QString>
+#include <QMap>
+#include <QVector>
 
 typedef enum {
 	NullNag,

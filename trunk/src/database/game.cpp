@@ -15,11 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qfile.h>
-#include <qregexp.h>
-#include <qstringlist.h>
-#include <qtextstream.h>
-#include <qstack.h>
+#include <QFile>
+#include <QRegExp>
+#include <QStringList>
+#include <QTextStream>
+#include <QStack>
  
 #include "game.h"
 

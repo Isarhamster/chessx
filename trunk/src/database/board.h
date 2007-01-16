@@ -26,8 +26,8 @@
 #include "common.h"
 #include "rand64.h"
 
-#include <qstring.h>
-#include <qstack.h>
+#include <QString>
+#include <QStack>
 
 enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
     TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, 

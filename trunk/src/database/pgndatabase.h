@@ -20,13 +20,13 @@
 #ifndef __PGNDATABASE_H__
 #define __PGNDATABASE_H__
  
-#include <qbitarray.h>
-#include <qfile.h>
-#include <qmap.h>
-#include <qpair.h>
-#include <qtextstream.h>
-#include <qcache.h>
-#include <qvector.h>
+#include <QBitArray>
+#include <QFile>
+#include <QMap>
+#include <QPair>
+#include <QTextStream>
+#include <QCache>
+#include <QVector>
 
 #include "database.h"
 #include "search.h"

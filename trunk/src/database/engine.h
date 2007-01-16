@@ -18,10 +18,10 @@
 #ifndef __ENGINE_H__
 #define __ENGINE_H__ 
  
-#include <qobject.h>
-#include <qstring.h>
-#include <qtextstream.h>
-#include <qprocess.h>
+#include <QObject>
+#include <QString>
+#include <QTextStream>
+#include <QProcess>
 
 
 #include "board.h"

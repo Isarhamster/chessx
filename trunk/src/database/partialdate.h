@@ -17,8 +17,8 @@
 #ifndef __PARTIALDATE_H__
 #define __PARTIALDATE_H__
 
-#include <qstring.h>
-#include <qdatetime.h>
+#include <QString>
+#include <QDateTime>
 
 /**
    The PartialDate class represents a date, perhaps with missing month and day.

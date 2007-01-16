@@ -18,8 +18,8 @@
 #ifndef __UCIENGINE_H__
 #define __UCIENGINE_H__ 
  
-#include <qstring.h>
-#include <qtextstream.h>
+#include <QString>
+#include <QTextStream>
 
 #include "engine.h"
  
