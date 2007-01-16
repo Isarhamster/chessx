@@ -37,18 +37,14 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QCloseEvent>
+#include <QDockWidget>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
-#include <QSplitter>
 #include <QStatusBar>
-
-#include <Q3HBox>
-#include <Q3Frame>
-#include <Q3VBoxLayout>
 
 bool yesNo(const QString& question, QMessageBox::Icon icon = QMessageBox::Question)
 {
@@ -94,33 +90,34 @@ MainWindow::MainWindow() : QMainWindow(),
   /* Output */
   m_output = new Output(Output::NotationWidget);
 
-  /* Layout */
-  Q3Frame* frame = new Q3Frame(this);
-  setCentralWidget(frame);
-  m_layout = new Q3VBoxLayout(frame);
-
   /* Board */
-  Q3HBox* hbox = new Q3HBox(frame, "BGView");
-  m_layout->addWidget(hbox, 5);
-  m_boardView = new BoardView(hbox, "BoardView");
-  hbox->setStretchFactor(m_boardView, 2);
+  m_boardView = new BoardView(this);
+  setCentralWidget(m_boardView);
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
   connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
   connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotGameBrowse(int)));
 
   /* Game view */
-  m_gameView = new ChessBrowser(hbox, "GameView");
+  QDockWidget* dock = new QDockWidget(tr("Game text"), this);
+  // dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+  m_gameView = new ChessBrowser(dock);
   m_gameView->setLinkUnderline(false);
-  hbox->setStretchFactor(m_gameView, 2);
+  dock->setWidget(m_gameView);
+  addDockWidget(Qt::RightDockWidgetArea, dock);
+  // viewMenu->addAction(dock->toggleViewAction());
+
   QAction* gameViewToggle = new QAction(tr("Toggle game"), Qt::Key_F12, this, "gametoggle");
   connect(gameViewToggle, SIGNAL(activated()), this, SLOT(slotGameViewToggle()));
 
   /* Move view */
-  m_layout->addWidget(m_moveView = new ChessBrowser(frame, "MoveView"));
+  dock = new QDockWidget(tr("Game info"), this);
+  //dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+  m_moveView = new ChessBrowser(dock);
   m_moveView->setMaximumHeight(100);
   connect(m_moveView, SIGNAL(linkPressed(const QString&)), SLOT(slotMoveViewLink(const QString&)));
-  m_boardView->setBoard(game()->board());
+  dock->setWidget(m_moveView);
+  addDockWidget(Qt::BottomDockWidgetArea, dock);
 
   /* Randomize */
   srand(time(0));
@@ -128,6 +125,9 @@ MainWindow::MainWindow() : QMainWindow(),
   /* Restoring layouts */
   AppSettings->readLayout(this);
   emit reconfigure();
+
+  /* Reset board - not earlier, as all widgets have to be created. */
+  m_boardView->setBoard(game()->board());
 
   /* Status */
   slotStatusMessage(tr("Ready."));
