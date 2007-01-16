@@ -108,7 +108,7 @@ MainWindow::MainWindow() : QMainWindow(),
   m_gameView->setLinkUnderline(false);
   dock->setWidget(m_gameView);
   addDockWidget(Qt::RightDockWidgetArea, dock);
-  // viewMenu->addAction(dock->toggleViewAction());
+  m_menuView->addAction(dock->toggleViewAction());
 
   QAction* gameViewToggle = new QAction(tr("Toggle game"), Qt::Key_F12, this, "gametoggle");
   connect(gameViewToggle, SIGNAL(activated()), this, SLOT(slotGameViewToggle()));
@@ -121,6 +121,7 @@ MainWindow::MainWindow() : QMainWindow(),
   connect(m_moveView, SIGNAL(linkPressed(const QString&)), SLOT(slotMoveViewLink(const QString&)));
   dock->setWidget(m_moveView);
   addDockWidget(Qt::BottomDockWidgetArea, dock);
+  m_menuView->addAction(dock->toggleViewAction());
 
   /* Randomize */
   srand(time(0));
@@ -596,11 +597,11 @@ void MainWindow::setupActions()
 
   gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), Qt::CTRL + Qt::Key_S));
 
-  /* Windows menu */
-  QMenu *view = menuBar()->addMenu(tr("&View"));
-  m_menuDatabases = view->addMenu(tr("&Database"));;
-  view->addAction(createAction(tr("&Game list"), SLOT(slotFilterSwitch()), Qt::CTRL + Qt::Key_L));
-  view->addAction(createAction(tr("&Player Database..."), SLOT(slotPlayerDialog()), Qt::CTRL + Qt::SHIFT + Qt::Key_P));
+  /* View menu */
+  m_menuView = menuBar()->addMenu(tr("&View"));
+  m_menuDatabases = m_menuView->addMenu(tr("&Database"));;
+  m_menuView->addAction(createAction(tr("&Game list"), SLOT(slotFilterSwitch()), Qt::CTRL + Qt::Key_L));
+  m_menuView->addAction(createAction(tr("&Player Database..."), SLOT(slotPlayerDialog()), Qt::CTRL + Qt::SHIFT + Qt::Key_P));
 
   /* Settings menu */
   QMenu *settings = menuBar()->addMenu(tr("&Settings"));

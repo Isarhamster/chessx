@@ -129,6 +129,7 @@ private:
   HistoryList m_recentFiles;
   QMenu* m_menuRecent;
   QMenu* m_menuDatabases;
+  QMenu* m_menuView;
   /* Local variables */
   Output* m_output;
   QList<DatabaseInfo*> m_databases;
