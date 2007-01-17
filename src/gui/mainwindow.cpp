@@ -93,15 +93,21 @@ MainWindow::MainWindow() : QMainWindow(),
   m_output = new Output(Output::NotationWidget);
 
   /* Board */
-  m_boardView = new BoardView(this);
-  setCentralWidget(m_boardView);
+  setDockNestingEnabled(true);
+  QDockWidget* dock = new QDockWidget(tr("Board"), this);
+  dock->setFeatures(QDockWidget::DockWidgetMovable);
+  dock->setObjectName("Board");
+  m_boardView = new BoardView(dock);
+ // setCentralWidget(dock);
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
   connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
   connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotGameBrowse(int)));
+  dock->setWidget(m_boardView);
+  addDockWidget(Qt::LeftDockWidgetArea, dock);
 
   /* Game view */
-  QDockWidget* dock = new QDockWidget(tr("Game text"), this);
+  dock = new QDockWidget(tr("Game text"), this);
   dock->setObjectName("GameText");
   // dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
   m_gameView = new ChessBrowser(dock);
