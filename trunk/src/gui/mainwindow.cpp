@@ -86,8 +86,8 @@ MainWindow::MainWindow() : QMainWindow(),
   updateMenuRecent();
 
   /* Output */
-  m_output = new Output(Output::NotationWidget); 
-    //, AppSettings->dataPath() + "/templates/notation-test.template");
+  m_output = new Output(Output::NotationWidget,
+    AppSettings->dataPath() + "/templates/notation-test.template");
 
   /* Board */
   setDockNestingEnabled(true);
@@ -509,24 +509,12 @@ void MainWindow::slotGameView()
 
 void MainWindow::slotGameViewToggle()
 {
-  qDebug("Test!");
   if (m_gameView->textFormat() != Qt::PlainText)
     m_gameView->setTextFormat(Qt::PlainText);
   else
     m_gameView->setTextFormat(Qt::RichText);
-  m_gameView->clear();
-  m_gameView->setText(m_output->output(game()));
+  slotGameView();
 }
-
-/*
-void MainWindow::slotFilterSwitch()
-{
-  if (m_gameList->isVisible())
-    m_gameList->hide();
-  else 
-    m_gameList->show();
-}
-*/
 
 void MainWindow::slotFilterUpdate()
 {
