@@ -89,7 +89,7 @@ public slots:
   void slotGameBrowse(int wheel);
   void slotGameView();
   void slotGameViewToggle();
-  void slotFilterSwitch();
+  //void slotFilterSwitch();
   void slotFilterUpdate();
   void slotFilterLoad(int index);
   void slotFileOpen();
