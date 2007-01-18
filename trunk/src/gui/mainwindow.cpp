@@ -100,7 +100,7 @@ MainWindow::MainWindow() : QMainWindow(),
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
   connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
-  connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotGameBrowse(int)));
+  connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotGameMoveWheel(int)));
   dock->setWidget(m_boardView);
   addDockWidget(Qt::LeftDockWidgetArea, dock);
 
@@ -215,10 +215,8 @@ int MainWindow::gameIndex() const
   return m_databases[m_currentDatabase]->currentIndex();
 }
 
-void MainWindow::loadGame(int index)
+void MainWindow::gameLoad(int index)
 {
-  if (!database())
-    return;
   if (index < 0) index = 0;
   if (index >= database()->count())
     index = database()->count() - 1;
@@ -228,6 +226,14 @@ void MainWindow::loadGame(int index)
   slotMoveViewUpdate();
   slotGameView();
 }
+
+void MainWindow::gameMoveBy(int change)
+{
+  if (game()->moveByPly(change))
+    m_boardView->setBoard(game()->board());
+}
+
+
 
 void MainWindow::updateMenuRecent()
 {
@@ -258,7 +264,6 @@ bool MainWindow::openDatabase(const QString& fname)
   m_recentFiles.append(fname);
   updateMenuRecent();
   updateMenuDatabases();
-  loadGame(0);
   slotStatusMessage(tr("Database %1 opened successfully.").arg(fname.section('/', -1)));
   slotDatabaseChanged();
   return true;
@@ -456,43 +461,20 @@ void MainWindow::slotMoveViewLink(const QString& link)
   }
 }
 
-
-void MainWindow::slotGameBrowse(int wheel)
+void MainWindow::slotGameMoveWheel(int wheel)
 {
-  int change;
   if (wheel & Qt::AltButton)
-    change = wheel & BoardView::WheelDown ? 999 : -999;
+    if (wheel & BoardView::WheelDown) slotGameMoveLast(); else slotGameMoveFirst();
   else if (wheel & Qt::ControlButton)
-    change = wheel & BoardView::WheelDown ? 10 : -10;
-  else change = wheel & BoardView::WheelDown ? 1 : -1;
-  if (game()->moveByPly(change))
-    m_boardView->setBoard(game()->board());;
+    if (wheel & BoardView::WheelDown) slotGameMoveNextN(); else slotGameMovePreviousN();
+  else 
+    if (wheel & BoardView::WheelDown) slotGameMoveNext(); else slotGameMovePrevious();
 }
 
-
-
-static const int MoveChange[7] = {-999, 999, 1, -1, 5, -5, 0};
-static const int GameChange[7] = {-99999999, 99999999, 1, -1, 10, -10, 0};
-void MainWindow::slotGameBrowse(QAction* action)
+void MainWindow::slotGameLoadRandom()
 {
-  if (!database())
-    return;
-  int mode = action->data().toInt();
-  if (mode < MoveFirst) // Browse games
-  {
-    int index = gameIndex() + GameChange[mode];
-    if (mode == GameRandom)
-      index = rand() % database()->count();
-    loadGame(index);
-  }
-  else  // Browse moves
-  {
-    int change = MoveChange[mode - MoveFirst];
-    if (game()->moveByPly(change))
-      m_boardView->setBoard(game()->board());
-  }
+   gameLoad(rand() % database()->count());
 }
-
 
 void MainWindow::slotGameSave()
 {
@@ -523,7 +505,7 @@ void MainWindow::slotFilterUpdate()
 
 void MainWindow::slotFilterLoad(int index)
 {
-  loadGame(index);
+  gameLoad(index);
   setActiveWindow();
 }
 
@@ -536,7 +518,7 @@ void MainWindow::slotDatabaseChanged()
 {
   setCaption(tr("ChessX - %1").arg(databaseName(database()->filename())));
   slotFilterUpdate();
-  loadGame(gameIndex());
+  gameLoad(gameIndex());
 }
 
 void MainWindow::slotDatabaseChange(int current)
@@ -578,33 +560,20 @@ void MainWindow::setupActions()
   QMenu* loadMenu = gameMenu->addMenu(tr("&Load..."));
 
   /* Game->Load submenu */
-  QAction* action;
-  loadMenu->addAction(action = createAction(tr("&First"), 0, Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
-  action->setData(GameFirst);
-  loadMenu->addAction(action = createAction(tr("&Last"), 0, Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
-  action->setData(GameLast);
-  loadMenu->addAction(action = createAction(tr("&Next"), 0, Qt::CTRL + Qt::Key_Down));
-  action->setData(GameNext);
-  loadMenu->addAction(action = createAction(tr("&Previous"), 0, Qt::CTRL + Qt::Key_Up));
-  action->setData(GamePrevious);
-  loadMenu->addAction(action = createAction(tr("&Random"), 0, Qt::CTRL + Qt::Key_Question));
-  action->setData(GameRandom);
+  loadMenu->addAction(createAction(tr("&First"), SLOT(slotGameLoadFirst()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
+  loadMenu->addAction(createAction(tr("&Last"), SLOT(slotGameLoadLast()), Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
+  loadMenu->addAction(createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::CTRL + Qt::Key_Down));
+  loadMenu->addAction(createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::CTRL + Qt::Key_Up));
+  loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
 
   /* Game->Go to submenu */
   QMenu* goMenu = gameMenu->addMenu(tr("&Go..."));
-  goMenu->addAction(action = createAction(tr("&Start"), 0, Qt::Key_Home));
-  action->setData(MoveFirst);
-  goMenu->addAction(action = createAction(tr("&End"), 0, Qt::Key_End));
-  action->setData(MoveLast);
-  goMenu->addAction(action = createAction(tr("&Next move"), 0, Qt::Key_Right));
-  action->setData(MoveNext);
-  goMenu->addAction(action = createAction(tr("&Previous move"), 0, Qt::Key_Left));
-  action->setData(MovePrevious);
-  goMenu->addAction(action = createAction(tr("5 moves &forward"), 0, Qt::Key_Down));
-  action->setData(MoveNextN);
-  goMenu->addAction(action = createAction(tr("5 moves &backward"), 0, Qt::Key_Up));
-  action->setData(MovePreviousN);
-  connect(m_actions, SIGNAL(triggered(QAction*)), SLOT(slotGameBrowse(QAction*)));
+  goMenu->addAction(createAction(tr("&Start"), SLOT(slotGameMoveFirst()), Qt::Key_Home));
+  goMenu->addAction(createAction(tr("&End"), SLOT(slotGameMoveLast()), Qt::Key_End));
+  goMenu->addAction(createAction(tr("&Next move"), SLOT(slotGameMoveNext()), Qt::Key_Right));
+  goMenu->addAction(createAction(tr("&Previous move"), SLOT(slotGameMovePrevious()), Qt::Key_Left));
+  goMenu->addAction(createAction(tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down));
+  goMenu->addAction(createAction(tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up));
 
   gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), Qt::CTRL + Qt::Key_S));
 
