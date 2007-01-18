@@ -122,6 +122,7 @@ MainWindow::MainWindow() : QMainWindow(),
   dock->setObjectName("GameInfo");
   dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
   m_moveView = new ChessBrowser(dock);
+  m_moveView->zoomOut();
   m_moveView->setMinimumSize(150, 100);
   connect(m_moveView, SIGNAL(linkPressed(const QString&)), SLOT(slotMoveViewLink(const QString&)));
   dock->setWidget(m_moveView);
