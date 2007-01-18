@@ -36,7 +36,6 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
 {
   setName("GameList");
   setCaption(tr("Game list"));
-  setMinimumSize(600, 400);
 
   Q3VBoxLayout* vbox = new Q3VBoxLayout(this);
 
@@ -68,8 +67,8 @@ GameList::GameList(QWidget* parent, const char* name) : QWidget(parent, name), m
 
   vbox->addWidget(hbox);
 
-  m_status = new QStatusBar(this);
-  vbox->addWidget(m_status);
+  //m_status = new QStatusBar(this);
+  //vbox->addWidget(m_status);
 
   /* Keyboard filter */
   m_list->installEventFilter(this);
@@ -123,7 +122,7 @@ void GameList::updateList()
     m_list->clear();
   else
     scrollList(0);
-  m_status->message(QString("%1 games").arg(m_count));
+  //m_status->message(QString("%1 games").arg(m_count));
 }
 
 void GameList::scrollList(int page)

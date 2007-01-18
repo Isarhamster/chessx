@@ -66,10 +66,6 @@ MainWindow::MainWindow() : QMainWindow(),
   /* Save dialog */
   m_saveDialog = new SaveDialog;
 
-  /* Game List Dialog */
-  m_gameList = new GameList;
-  connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
-
   /* Actions */
   m_actions = new QActionGroup(this);
   setupActions();
@@ -98,6 +94,7 @@ MainWindow::MainWindow() : QMainWindow(),
   dock->setFeatures(QDockWidget::DockWidgetMovable);
   dock->setObjectName("Board");
   m_boardView = new BoardView(dock);
+  m_boardView->setMinimumSize(200, 200);
  // setCentralWidget(dock);
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
@@ -107,10 +104,11 @@ MainWindow::MainWindow() : QMainWindow(),
   addDockWidget(Qt::LeftDockWidgetArea, dock);
 
   /* Game view */
-  dock = new QDockWidget(tr("Game text"), this);
+  dock = new QDockWidget(tr("Game Text"), this);
   dock->setObjectName("GameText");
-  // dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+  dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
   m_gameView = new ChessBrowser(dock);
+  m_gameView->setMinimumSize(150, 100);
   m_gameView->setLinkUnderline(false);
   dock->setWidget(m_gameView);
   addDockWidget(Qt::RightDockWidgetArea, dock);
@@ -120,12 +118,25 @@ MainWindow::MainWindow() : QMainWindow(),
   connect(gameViewToggle, SIGNAL(activated()), this, SLOT(slotGameViewToggle()));
 
   /* Move view */
-  dock = new QDockWidget(tr("Game info"), this);
+  dock = new QDockWidget(tr("Game Info"), this);
   dock->setObjectName("GameInfo");
-  //dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+  dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
   m_moveView = new ChessBrowser(dock);
+  m_moveView->setMinimumSize(150, 100);
   connect(m_moveView, SIGNAL(linkPressed(const QString&)), SLOT(slotMoveViewLink(const QString&)));
   dock->setWidget(m_moveView);
+  addDockWidget(Qt::LeftDockWidgetArea, dock);
+  m_menuView->addAction(dock->toggleViewAction());
+
+  /* Game List */
+  dock = new QDockWidget(tr("Game List"), this);
+  dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+  dock->setObjectName("GameList");
+  dock->setFloating(true);
+  m_gameList = new GameList(dock);
+  m_gameList->setMinimumSize(150, 100);
+  connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
+  dock->setWidget(m_gameList);
   addDockWidget(Qt::BottomDockWidgetArea, dock);
   m_menuView->addAction(dock->toggleViewAction());
 
@@ -503,6 +514,7 @@ void MainWindow::slotGameViewToggle()
   m_gameView->setText(m_output->output(game()));
 }
 
+/*
 void MainWindow::slotFilterSwitch()
 {
   if (m_gameList->isVisible())
@@ -510,6 +522,7 @@ void MainWindow::slotFilterSwitch()
   else 
     m_gameList->show();
 }
+*/
 
 void MainWindow::slotFilterUpdate()
 {
@@ -606,7 +619,7 @@ void MainWindow::setupActions()
   /* View menu */
   m_menuView = menuBar()->addMenu(tr("&View"));
   m_menuDatabases = m_menuView->addMenu(tr("&Database"));;
-  m_menuView->addAction(createAction(tr("&Game list"), SLOT(slotFilterSwitch()), Qt::CTRL + Qt::Key_L));
+  //m_menuView->addAction(createAction(tr("&Game list"), SLOT(slotFilterSwitch()), Qt::CTRL + Qt::Key_L));
   m_menuView->addAction(createAction(tr("&Player Database..."), SLOT(slotPlayerDialog()), Qt::CTRL + Qt::SHIFT + Qt::Key_P));
 
   /* Settings menu */
