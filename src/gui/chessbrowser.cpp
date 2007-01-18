@@ -10,9 +10,9 @@
 #include "chessbrowser.h"
 #include <QMouseEvent>
 
-ChessBrowser::ChessBrowser(QWidget *p, const char* name) : Q3TextBrowser(p, name)
+ChessBrowser::ChessBrowser(QWidget *p, const char* name) : QTextBrowser(p)
 {
-  setLinkUnderline(false);
+ // setLinkUnderline(false);
 }
 
 void ChessBrowser::contentsMousePressEvent(QMouseEvent* e)

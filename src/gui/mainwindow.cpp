@@ -86,7 +86,8 @@ MainWindow::MainWindow() : QMainWindow(),
   updateMenuRecent();
 
   /* Output */
-  m_output = new Output(Output::NotationWidget);
+  m_output = new Output(Output::NotationWidget); 
+    //, AppSettings->dataPath() + "/templates/notation-test.template");
 
   /* Board */
   setDockNestingEnabled(true);
@@ -109,13 +110,10 @@ MainWindow::MainWindow() : QMainWindow(),
   dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
   m_gameView = new ChessBrowser(dock);
   m_gameView->setMinimumSize(150, 100);
-  m_gameView->setLinkUnderline(false);
   dock->setWidget(m_gameView);
   addDockWidget(Qt::RightDockWidgetArea, dock);
   m_menuView->addAction(dock->toggleViewAction());
 
-  QAction* gameViewToggle = new QAction(tr("Toggle game"), Qt::Key_F12, this, "gametoggle");
-  connect(gameViewToggle, SIGNAL(activated()), this, SLOT(slotGameViewToggle()));
 
   /* Move view */
   dock = new QDockWidget(tr("Game Info"), this);
@@ -226,6 +224,7 @@ void MainWindow::loadGame(int index)
     index = database()->count() - 1;
   m_databases[m_currentDatabase]->loadGame(index);
   m_boardView->setBoard(game()->board());
+  qobject_cast<QWidget*>(m_boardView->parent())->setWindowTitle(tr("Game: %1").arg(index+1));
   slotMoveViewUpdate();
   slotGameView();
 }
@@ -510,6 +509,7 @@ void MainWindow::slotGameView()
 
 void MainWindow::slotGameViewToggle()
 {
+  qDebug("Test!");
   if (m_gameView->textFormat() != Qt::PlainText)
     m_gameView->setTextFormat(Qt::PlainText);
   else
@@ -637,5 +637,10 @@ void MainWindow::setupActions()
   QMenu *help = menuBar()->addMenu(tr("&Help"));
   help->addAction(createAction(tr("ChessX &help..."), SLOT(slotHelp()), Qt::CTRL + Qt::Key_F10));
   help->addAction(createAction(tr("&About..."), SLOT(slotAbout()) ));
+  help->insertSeparator();
+  QMenu* debug = help->addMenu(tr("&Debug"));
+  debug->addAction(createAction("Toggle game view format", SLOT(slotGameViewToggle()),
+                                        Qt::Key_F12));
+
 }
 
