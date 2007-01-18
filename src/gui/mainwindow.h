@@ -63,7 +63,9 @@ protected:
   /** Open database */
   bool openDatabase(const QString& fname);
   /** Load given game */
-  void loadGame(int index);
+  void gameLoad(int index);
+  /** Make given number of moves in current game */
+  void gameMoveBy(int change);
   /** Update recent files menu */
   void updateMenuRecent();
   /** Update recent files menu */
@@ -83,10 +85,30 @@ public slots:
   void slotHelp();
   void slotConfigureFlip();
   void slotGameSave();
-  /** Browse games or moves */
-  void slotGameBrowse(QAction* action);
-  /** Browse current game */
-  void slotGameBrowse(int wheel);
+  /** Go to first move of the game */
+  void slotGameMoveFirst()  {gameMoveBy(-999);}
+  /** Go to next move of the game */
+  void slotGameMoveNext()   {gameMoveBy(1);}
+  /** Go to previous move of the game */
+  void slotGameMovePrevious() {gameMoveBy(-1);}
+  /** Go to first move of the game */
+  void slotGameMoveLast()  {gameMoveBy(999);}
+  /** Go N moves forward in the game. For now fixed at @p 10 */
+  void slotGameMoveNextN()  {gameMoveBy(10);}
+  /** Go N moves backward in the game. For now fixed at @p 10 */
+  void slotGameMovePreviousN()  {gameMoveBy(-10);}
+  /** Browse current game by mouse wheel */
+  void slotGameMoveWheel(int wheel);
+  /** Load first game */
+  void slotGameLoadFirst()  {gameLoad(0);}
+  /** Load next game */
+  void slotGameLoadNext()  {gameLoad(gameIndex()+1);}
+  /** Load previous game */
+  void slotGameLoadPrevious() {gameLoad(gameIndex()-1);}
+  /** Load last game */
+  void slotGameLoadLast()   {gameLoad(9999999);}
+  /** Load random game */
+  void slotGameLoadRandom();
   void slotGameView();
   void slotGameViewToggle();
   //void slotFilterSwitch();
