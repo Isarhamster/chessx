@@ -136,6 +136,9 @@ MainWindow::MainWindow() : QMainWindow(),
   dock->setFloating(true);
   m_gameList = new GameList(dock);
   m_gameList->setMinimumSize(150, 100);
+  QFont font = m_gameList->font();
+  font.setPointSize(font.pointSize() - 1);
+  m_gameList->setFont(font);
   connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
   dock->setWidget(m_gameList);
   addDockWidget(Qt::BottomDockWidgetArea, dock);
