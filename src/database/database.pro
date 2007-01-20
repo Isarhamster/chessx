@@ -31,7 +31,8 @@ HEADERS += board.h \
            databaseinfo.h \
            filtersearch.h \
            indexitem.h \
-           index.h
+           index.h \
+           filtermodel.h
 SOURCES += board.cpp \
            move.cpp \
            common.cpp \
@@ -60,7 +61,8 @@ SOURCES += board.cpp \
            databaseinfo.cpp \
            filtersearch.cpp \
            indexitem.cpp \
-           index.cpp
+           index.cpp \
+           filtermodel.cpp
 TARGET = database
 CONFIG += release warn_on qt staticlib
 TEMPLATE = lib
