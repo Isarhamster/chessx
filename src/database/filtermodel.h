@@ -29,21 +29,33 @@ class FilterModel : public QAbstractTableModel
    Q_OBJECT
 
    public:
+      /** Constructs a FilterModel object using a pointer to a Filter */
       FilterModel(Filter *filter, QObject *parent = 0);
       ~FilterModel();
 
+      /** Returns the number of rows in the model */
       int rowCount(const QModelIndex &parent = QModelIndex()) const;
+      /** Returns the number of columns in the model */
       int columnCount(const QModelIndex& parent = QModelIndex()) const;
+      /** Returns an item of data given the item 'index' */
       QVariant data(const QModelIndex &index, int role) const;
+      /** Returns the header information for header 'section' */
       QVariant headerData(int section, Qt::Orientation orientation,
             int role = Qt::DisplayRole) const;
+      /** Returns the appropriate display flags for item 'index' */
       Qt::ItemFlags flags ( const QModelIndex & index ) const;
 
+      /** Returns the filter on which the model opperates */
+      /* Was used for debugging, but might be useful */
       Filter* filter();
 
    private:
+      /** A pointer to filter on which the model opperates */
       Filter *m_filter;
+      /** The column names of the model */
       QStringList m_columnNames;
+      /** A pointer to a game object, to hold the retrieved information 
+       * about the game */
       Game *m_game;
 
 };
