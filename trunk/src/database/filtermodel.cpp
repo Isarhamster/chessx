@@ -16,7 +16,6 @@
  ***************************************************************************/
 
 #include "filtermodel.h"
-#include <QtDebug>
 
 FilterModel::FilterModel(Filter *filter, QObject *parent)
          : QAbstractTableModel(parent), m_filter(filter)
@@ -65,26 +64,19 @@ Qt::ItemFlags FilterModel::flags ( const QModelIndex & index ) const
 
 QVariant FilterModel::data(const QModelIndex &index, int role) const
 {
-   qDebug() << "Just show me anything" << index.row() << index.column();
    if (!index.isValid()) {
-      qDebug() << "Invalid index";
       return QVariant();
    }
 
    if (index.row() >= m_filter->count()) {
-      qDebug() << "Index out of bounds";
       return QVariant();
    }
-   qDebug() << "Good Index";
-   qDebug() << index.row() << index.column();
 
    int gameId = m_filter->gameIndex(index.row());
-   qDebug() <<  m_game->tag(m_columnNames.at(index.column()));
 
    if (role == Qt::DisplayRole) {
       m_filter->database()->loadHeaders(gameId,*m_game); 
 
-      qDebug() <<  m_game->tag(m_columnNames.at(index.column()));
       return m_game->tag(m_columnNames.at(index.column()));
       
    } else {
