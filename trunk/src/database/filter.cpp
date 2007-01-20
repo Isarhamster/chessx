@@ -144,6 +144,11 @@ void Filter::setDatabase(Database* database)
    m_database = database;
 }
 
+Database* Filter::database()
+{
+   return m_database;
+}
+
 void Filter::set(int game, bool value)
 {
 	if(game >= (int)m_bitArray->size()) {

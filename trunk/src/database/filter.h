@@ -65,6 +65,9 @@ public:
 
    /** Sets pointer to the database for which the filter is */
 	void setDatabase(Database* database);
+
+   /** Returns a pointer to the database on which the filter is */
+   Database* database();
 	
 	/** sets the value for a game */
 	void set(int game, bool value);
