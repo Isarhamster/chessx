@@ -24,11 +24,10 @@ class ChessBrowser : public QTextBrowser
 {
   Q_OBJECT
   public:
-    ChessBrowser(QWidget* p, const char* name = 0);
+    ChessBrowser(QWidget* p);
   protected:
-    virtual void contentsMousePressEvent(QMouseEvent* e);
+    virtual void setSource(const QUrl& url);
   signals:
-    void linkPressed(const QString& name);
 };
 
 #endif

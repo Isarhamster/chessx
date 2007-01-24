@@ -37,6 +37,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QCloseEvent>
+#include <QDebug>
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -110,6 +111,7 @@ MainWindow::MainWindow() : QMainWindow(),
   dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
   m_gameView = new ChessBrowser(dock);
   m_gameView->setMinimumSize(150, 100);
+  connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
   dock->setWidget(m_gameView);
   addDockWidget(Qt::RightDockWidgetArea, dock);
   m_menuView->addAction(dock->toggleViewAction());
@@ -122,7 +124,7 @@ MainWindow::MainWindow() : QMainWindow(),
   m_moveView = new ChessBrowser(dock);
   m_moveView->zoomOut();
   m_moveView->setMinimumSize(150, 100);
-  connect(m_moveView, SIGNAL(linkPressed(const QString&)), SLOT(slotMoveViewLink(const QString&)));
+  connect(m_moveView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
   dock->setWidget(m_moveView);
   addDockWidget(Qt::LeftDockWidgetArea, dock);
   m_menuView->addAction(dock->toggleViewAction());
@@ -232,8 +234,6 @@ void MainWindow::gameMoveBy(int change)
   if (game()->moveByPly(change))
     m_boardView->setBoard(game()->board());
 }
-
-
 
 void MainWindow::updateMenuRecent()
 {
@@ -412,11 +412,11 @@ void MainWindow::slotMoveViewUpdate()
       .arg(g->tag("Date")).arg(g->tag("Round"));
   QString lastmove, nextmove;
   if (!g->atStart())
-    lastmove = QString("<a href=\"backward\">%1</a>").arg(g->previousMoveToSan(Game::FullDetail));
+    lastmove = QString("<a href=\"move:prev\">%1</a>").arg(g->previousMoveToSan(Game::FullDetail));
   else
     lastmove = tr("(Start of game)");
   if (!g->atEnd())
-    nextmove = QString("<a href=\"forward\">%1</a>").arg(g->moveToSan(Game::FullDetail));
+    nextmove = QString("<a href=\"move:next\">%1</a>").arg(g->moveToSan(Game::FullDetail));
   else
     nextmove = g->isMainline() ? tr("(End of game)") : tr("(End of line)");
   QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
@@ -436,29 +436,6 @@ void MainWindow::slotMoveViewUpdate()
   }
   m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4%5<qt>").arg(players).arg(result)
       .arg(header).arg(move).arg(var));
-}
-
-void MainWindow::slotMoveViewLink(const QString& link)
-{
-  QString command = link.section(':', 0, 0);
-  QString arg =  link.section(':', 1);
-  if (command == "backward" && game()->backward())
-    m_boardView->setBoard(game()->board());
-  else if (command == "forward" && game()->forward())
-    m_boardView->setBoard(game()->board());
-  else if (command == "var")
-  {
-    if (arg == "exit")
-      game()->exitVariation();
-    else
-      game()->enterVariation(arg.toInt());
-    m_boardView->setBoard(game()->board());
-  }
-  else if (link.startsWith("player:"))
-  {
-    playerDialog()->findPlayers(arg);
-    playerDialog()->show();
-  }
 }
 
 void MainWindow::slotGameMoveWheel(int wheel)
@@ -487,6 +464,33 @@ void MainWindow::slotGameView()
   int ply = game()->ply();
   m_gameView->setText(m_output->output(game()));
   game()->moveToPly(ply);
+}
+
+void MainWindow::slotGameViewLink(const QUrl& url)
+{
+  if (url.protocol() == "move")
+  {
+    if (url.path() == "prev") game()->backward();
+    else if (url.path() == "next") game()->forward();
+    else if (url.path() == "exit") game()->exitVariation();
+    else game()->moveToId(url.path().toInt());
+    m_boardView->setBoard(game()->board());
+  }
+  /*QString command = link.section(':', 0, 0);
+  QString arg =  link.section(':', 1);
+  else if (command == "var")
+  {
+    if (arg == "exit")
+      game()->exitVariation();
+    else
+      game()->enterVariation(arg.toInt());
+    m_boardView->setBoard(game()->board());
+  }
+  else if (link.startsWith("player:"))
+  {
+    playerDialog()->findPlayers(arg);
+    playerDialog()->show();
+  }*/
 }
 
 void MainWindow::slotGameViewToggle()
@@ -600,4 +604,5 @@ void MainWindow::setupActions()
                                         Qt::Key_F12));
 
 }
+
 

@@ -10,16 +10,11 @@
 #include "chessbrowser.h"
 #include <QMouseEvent>
 
-ChessBrowser::ChessBrowser(QWidget *p, const char* name) : QTextBrowser(p)
+ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p)
 {
- // setLinkUnderline(false);
 }
 
-void ChessBrowser::contentsMousePressEvent(QMouseEvent* e)
+void ChessBrowser::setSource(const QUrl& url)
 {
-  QString anchor = anchorAt(e->pos());
-  if (!anchor.isEmpty() && e->button() == Qt::LeftButton)
-    emit linkPressed(anchorAt(e->pos()));
-  e->accept();
 }
 
