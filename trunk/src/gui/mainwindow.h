@@ -18,10 +18,9 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
-//Added by qt3to4:
-#include <Q3VBoxLayout>
 #include <QList>
 #include <QMainWindow>
+#include <QUrl>
 
 #include "common.h"
 #include "historylist.h"
@@ -39,11 +38,10 @@ class TipOfDayDialog;
 
 class QCloseEvent;
 class ChessBrowser;
-class Q3ListBox;
-class Q3VBoxLayout;
 class QLabel;
 class QMenu;
 class QActionGroup;
+class QTextBrowser;
 
 class MainWindow: public QMainWindow
 {
@@ -110,6 +108,8 @@ public slots:
   /** Load random game */
   void slotGameLoadRandom();
   void slotGameView();
+  /** Handle link click in Game View panel */
+  void slotGameViewLink(const QUrl& link);
   void slotGameViewToggle();
   //void slotFilterSwitch();
   void slotFilterUpdate();
@@ -120,7 +120,6 @@ public slots:
   void slotFileQuit();
   void slotMove(Square from, Square to);
   void slotMoveViewUpdate();
-  void slotMoveViewLink(const QString& link);
   void slotStatusMessage(const QString& msg);
   void slotDatabaseChange(int current);
   void slotDatabaseChanged();
@@ -146,7 +145,6 @@ private:
   BoardView* m_boardView;
   ChessBrowser* m_moveView;
   ChessBrowser* m_gameView;
-  Q3VBoxLayout* m_layout;
   QLabel* m_statusFilter;
   HistoryList m_recentFiles;
   QMenu* m_menuRecent;
