@@ -274,7 +274,13 @@ PlayerDialog* MainWindow::playerDialog()
   if (!m_playerDialog)
   {
     PlayerDatabase* db = new PlayerDatabase;
-    db->open("../tests/cppunit/data/small/players");
+    QString path = AppSettings->dataPath().remove("/data") + "/tests/playerdatabase/data/players";
+    //if (!db->open(path)); Bug in PlayerDatabase - always returns false
+    if (!QFile::exists(path + ".cpm"))
+      QMessageBox::information (0, "No player database",
+                                QString("Player database was not found at\n%1").arg(path));
+    else
+      db->open(path);
     m_playerDialog = new PlayerDialog(db, this);
     AppSettings->readLayout(m_playerDialog, Settings::Show);
   }
@@ -403,9 +409,8 @@ void MainWindow::slotMoveViewUpdate()
   Game* g = game();
   QString white = g->tag("White");
   QString black = g->tag("Black");
-  QString players = tr("Game %1: <a href=\"player:%2\">%3</a> %4 - <a href=\"player:%5\">%6</a> %7")
-      .arg(gameIndex() + 1).arg(white).arg(white)
-      .arg(g->tag("WhiteElo")).arg(black).arg(black).arg(g->tag("BlackElo"));
+  QString players = tr("Game %1: <a href=\"tag:white\">%2</a> %3 - <a href=\"tag:black\">%4</a> %5")
+      .arg(gameIndex() + 1).arg(white).arg(g->tag("WhiteElo")).arg(black).arg(g->tag("BlackElo"));
   QString result = tr("%1(%2) %3").arg(g->tag("Result")).arg(g->plyCount() / 2)
       .arg(g->tag("ECO"));
   QString header = tr("%1, %2, %3, round %4").arg(g->tag("Event")).arg(g->tag("Site"))
@@ -475,6 +480,13 @@ void MainWindow::slotGameViewLink(const QUrl& url)
     else if (url.path() == "exit") game()->exitVariation();
     else game()->moveToId(url.path().toInt());
     m_boardView->setBoard(game()->board());
+  }
+  else if (url.protocol() == "tag")
+  {
+    if (url.path() == "white")
+      playerDialog()->findPlayers(game()->tag("White"));
+    else if (url.path() == "black")
+      playerDialog()->findPlayers(game()->tag("Black"));
   }
   /*QString command = link.section(':', 0, 0);
   QString arg =  link.section(':', 1);

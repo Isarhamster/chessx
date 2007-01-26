@@ -71,6 +71,7 @@ void PlayerDialog::findPlayers(const QString& s)
   }
   ui.playerList->setCurrentItem(ui.playerList->firstChild());
   showPlayer(ui.playerList->firstChild());
+  show();
 }
 
 void PlayerDialog::showPlayer(Q3ListViewItem* i)
@@ -132,3 +133,4 @@ void PlayerDialog::showPlayer(const QString& s)
   ui.playerView->setText(tr("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6%7")
     .arg(s).arg(image).arg(live).arg(country).arg(title).arg(bio).arg(rating));
 }
+
