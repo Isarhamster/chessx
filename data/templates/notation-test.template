@@ -23,6 +23,7 @@ HeaderColor=#0000ff
 <head>
    <style>
       p      {margin-top: 0; margin-bottom: 0}
+      p.var  {margin-left: 30}
       a      {text-decoration: none;}
       a.main {color: @MainLineMoveColor@; font-weight: 600;}
       a.var  {color: @VariationColor@;}
@@ -34,11 +35,11 @@ HeaderColor=#0000ff
 </body>
 </html>
 [MARKUPTAGS]
-MarkupHeaderBlock=,\n
+MarkupHeaderBlock=,<br>\n
 MarkupNotationBlock=, 
 MarkupResult=,
-MarkupMainLineMove=<a class="main" href="move%1">,</a>
-MarkupVariationMove=<a class="var" href="move%1">,</a>
+MarkupMainLineMove=<a class="main" href="move:%1">,</a>
+MarkupVariationMove=<a class="var" href="move:%1">,</a>
 MarkupMainLine=,\n
 MarkupVariationInline=<span>,</span>\n
 MarkupVariationIndent=<p style="margin-left: 30" class="var">,</p>\n
@@ -46,13 +47,13 @@ MarkupNag=<span>,</span>\n
 MarkupColumnStyleMove=<td width=50%>,\n
 MarkupColumnStyleRow=<tr class="mainline">,\n
 MarkupColumnStyleMainline=<table border=0 width=50%>,</table>\n
-MarkupAnnotationInline=<a class="comment" href="cmt%2">,</a>\n
-MarkupAnnotationIndent=<p style="margin-left: 30" class="comment"><a class="comment" href="cmt%2">,</a></p>\n
-MarkupHeaderLine=<span style="color:blue">[,]</span><br>\n
+MarkupAnnotationInline=<a class="comment" href="cmt:%2">,</a>\n
+MarkupAnnotationIndent=<p class="comment"><a class="comment" href="cmt:%2">,</a></p>\n
+MarkupHeaderLine=<b>,</b><br>\n
 MarkupHeaderTagName=,
-MarkupHeaderTagValue=,
-MarkupWhiteTag=,
-MarkupBlackTag=,
+MarkupHeaderTagValue=","
+MarkupWhiteTag=<a class="tag" href="tag:white">,</a>
+MarkupBlackTag=<a class="tag" href="tag:black">,</a>
 MarkupEventTag=,
 MarkupDateTag=,
 MarkupSiteTag=,
