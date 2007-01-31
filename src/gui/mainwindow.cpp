@@ -98,6 +98,7 @@ MainWindow::MainWindow() : QMainWindow(),
   setCentralWidget(boardBox);
   m_boardView = new BoardView(boardBox);
   m_boardView->setMinimumSize(200, 200);
+  m_boardView->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
   connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
@@ -106,18 +107,19 @@ MainWindow::MainWindow() : QMainWindow(),
   /* Move view */
   m_moveView = new ChessBrowser(boardBox);
   m_moveView->zoomOut();
-  m_moveView->setMinimumSize(150, 100);
+  m_moveView->setFixedHeight(120);
   connect(m_moveView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 
   /* Board layout */
   QVBoxLayout* boardLayout = new QVBoxLayout;
   boardLayout->setMargin(0);
-  boardLayout->addWidget(m_boardView, 1);
+  boardLayout->addWidget(m_boardView);
   boardLayout->addWidget(m_moveView);
   boardBox->setLayout(boardLayout);
 
  /* Game view */
   QDockWidget* dock = new QDockWidget(tr("Game Text"), this);
+  dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
   dock->setObjectName("GameText");
   m_gameView = new ChessBrowser(dock);
   m_gameView->setMinimumSize(150, 100);
