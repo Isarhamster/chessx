@@ -256,6 +256,14 @@ void MainWindow::updateMenuDatabases()
 
 bool MainWindow::openDatabase(const QString& fname)
 {
+  /* Check if the database isn't already open */
+  for (int i = 0; i < m_databases.count(); i++)
+    if (m_databases[i]->filename() == fname)
+    {
+      slotDatabaseChange(i);
+      return false;
+    }
+
   m_databases.append(new DatabaseInfo(fname));
   m_currentDatabase = m_databases.count() - 1;
   m_recentFiles.append(fname);
