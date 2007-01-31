@@ -46,6 +46,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QStatusBar>
+#include <QVBoxLayout>
 
 bool yesNo(const QString& question, QMessageBox::Icon icon = QMessageBox::Question)
 {
@@ -90,43 +91,39 @@ MainWindow::MainWindow() : QMainWindow(),
   m_output = new Output(Output::NotationWidget,
     AppSettings->dataPath() + "/templates/notation-test.template");
 
-  /* Board */
   setDockNestingEnabled(true);
-  QDockWidget* dock = new QDockWidget(tr("Board"), this);
-  dock->setFeatures(QDockWidget::DockWidgetMovable);
-  dock->setObjectName("Board");
-  m_boardView = new BoardView(dock);
+
+  /* Board */
+  QWidget *boardBox = new QWidget;
+  setCentralWidget(boardBox);
+  m_boardView = new BoardView(boardBox);
   m_boardView->setMinimumSize(200, 200);
- // setCentralWidget(dock);
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
   connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
   connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotGameMoveWheel(int)));
-  dock->setWidget(m_boardView);
-  addDockWidget(Qt::LeftDockWidgetArea, dock);
 
-  /* Game view */
-  dock = new QDockWidget(tr("Game Text"), this);
+  /* Move view */
+  m_moveView = new ChessBrowser(boardBox);
+  m_moveView->zoomOut();
+  m_moveView->setMinimumSize(150, 100);
+  connect(m_moveView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
+
+  /* Board layout */
+  QVBoxLayout* boardLayout = new QVBoxLayout;
+  boardLayout->setMargin(0);
+  boardLayout->addWidget(m_boardView, 1);
+  boardLayout->addWidget(m_moveView);
+  boardBox->setLayout(boardLayout);
+
+ /* Game view */
+  QDockWidget* dock = new QDockWidget(tr("Game Text"), this);
   dock->setObjectName("GameText");
-  dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
   m_gameView = new ChessBrowser(dock);
   m_gameView->setMinimumSize(150, 100);
   connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
   dock->setWidget(m_gameView);
   addDockWidget(Qt::RightDockWidgetArea, dock);
-  m_menuView->addAction(dock->toggleViewAction());
-
-
-  /* Move view */
-  dock = new QDockWidget(tr("Game Info"), this);
-  dock->setObjectName("GameInfo");
-  dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-  m_moveView = new ChessBrowser(dock);
-  m_moveView->zoomOut();
-  m_moveView->setMinimumSize(150, 100);
-  connect(m_moveView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
-  dock->setWidget(m_moveView);
-  addDockWidget(Qt::LeftDockWidgetArea, dock);
   m_menuView->addAction(dock->toggleViewAction());
 
   /* Game List */
