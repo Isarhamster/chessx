@@ -48,17 +48,6 @@ int FilterModelBase::columnCount(const QModelIndex&) const
    return m_columnNames.count();
 }
 
-/*
-Qt::ItemFlags FilterModelBase::flags(const QModelIndex& index) const
-{
-   if (!index.isValid()) 
-      return 0;
-   if (index.row() >= m_filter->count()) 
-      return 0;
-   return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-}
-*/
-
 QVariant FilterModelBase::data(const QModelIndex &index, int role) const
 {
    if (!index.isValid())
@@ -69,7 +58,6 @@ QVariant FilterModelBase::data(const QModelIndex &index, int role) const
 
    if (role == Qt::DisplayRole) 
    {
-     //return QString("%1:%2").arg(index.row()).arg(m_columnNames.at(index.column()));
      m_filter->database()->loadHeaders(index.row(), *m_game);
       return m_game->tag(m_columnNames.at(index.column()));
    } 
@@ -116,7 +104,7 @@ void FilterModel::setFilter(Filter* filter)
   qobject_cast<FilterModelBase*>(sourceModel())->setFilter(filter);
 }
 
-bool FilterModel::filterAcceptsRow(int source_row, const QModelIndex & source_parent) const
+bool FilterModel::filterAcceptsRow(int source_row, const QModelIndex&) const
 {
   return m_filter->contains(source_row);
 }
