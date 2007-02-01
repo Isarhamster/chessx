@@ -434,14 +434,14 @@ void MainWindow::slotMoveViewUpdate()
     nextmove = g->isMainline() ? tr("(End of game)") : tr("(End of line)");
   QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
   if (!g->isMainline())
-    move.append(QString(" &nbsp; &nbsp; <a href=\"var:exit\">%1</a>").arg(tr("(&lt;-Var)")));
+    move.append(QString(" &nbsp; &nbsp; <a href=\"move:exit\">%1</a>").arg(tr("(&lt;-Var)")));
   QString var;
   if (g->variationCount() > 1)
   {
     var = tr("<br>Variations: &nbsp; ");
     for (int i = 1; i < g->variationCount(); i++)
     {
-      var.append(QString("v%1: <a href=\"var:%2\">%3</a>").arg(i).arg(i)
+      var.append(QString("v%1: <a href=\"move:%2\">%3</a>").arg(i).arg(g->moveId(i))
          .arg(g->moveToSan(Game::FullDetail, i)));
       if (i != g->variationCount() - 1)
         var.append(" &nbsp; ");
