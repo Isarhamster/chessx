@@ -17,54 +17,31 @@
 #ifndef __GAMELIST_H__
 #define __GAMELIST_H__
 
-#include <qwidget.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QEvent>
+#include <QTreeView>
 
-class Q3ListView;
-class Q3ListViewItem;
-class QScrollBar;
-class QStatusBar;
-class DatabaseInfo;
+class Filter;
+class FilterModel;
 
-class GameList : public QWidget
+class GameList : public QTreeView
 {
   Q_OBJECT
 public:
-  enum Column {Index, White, Black, Event, Site, Round, Date, Result, ECO /*, Length*/};
-  GameList(QWidget* parent = 0, const char *name = 0);
+  GameList(Filter* filter, QWidget* parent = 0);
+  ~GameList();
   /** Set current database */
 public slots:
-  /** Set new database (or null for no database) */
-  void setDatabase(DatabaseInfo* database);
-  /** Scroll to show item @p index */
-  void scrollList(int index);
   /** Read current configuration */
   void configure();
   /** Store current configuration */
   void saveConfig();
+  /** Change current database */
+  void setFilter(Filter* filter);
 private slots:
-  void itemSelected(Q3ListViewItem* item);
+  void itemSelected(const QModelIndex& index);
 signals:
   void selected(int);
 private:
-  /** Recalculate list after database/filter is changed */ 
-  void updateList();
-  /** Recalculate scrollbar after resize */ 
-  void updateScrollbar();
-  /** Recalculate visible items after resize */ 
-  virtual void resizeEvent(QResizeEvent* event);
-  /** Create visible list item from game @p index */
-  void createItem(int index);
-  virtual bool eventFilter(QObject* o, QEvent* e);
-  Q3ListView* m_list;
-  QScrollBar* m_scroll;
-  QStatusBar* m_status;
-  int m_count;
-  int m_pageSize;
-  int m_itemHeight;
-  DatabaseInfo* m_database;
+  FilterModel* m_model;
 };
 
 #endif
