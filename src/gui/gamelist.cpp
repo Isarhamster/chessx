@@ -15,9 +15,11 @@
  ***************************************************************************/
 
 #include <QHeaderView>
+#include <QInputDialog>
 
 #include "gamelist.h"
 #include "filtermodel.h"
+#include "search.h"
 #include "settings.h"
 
 GameList::GameList(Filter* filter, QWidget* parent) : QTreeView(parent)
@@ -25,13 +27,20 @@ GameList::GameList(Filter* filter, QWidget* parent) : QTreeView(parent)
   setName("GameList");
   setCaption(tr("Game list"));
 
+  QFont f = font();
+  f.setPointSize(f.pointSize() - 1);
+  setFont(f);
+
   setRootIsDecorated(false);
   setAllColumnsShowFocus(true);
 
-  m_model = new FilterModel(filter);
+  m_model = new FilterModel(filter, this);
   setModel(m_model);
   connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
   configure();
+
+  header()->setClickable(true);
+  connect(header(), SIGNAL(sectionClicked(int)), SLOT(simpleSearch(int)));
 }
 
 void GameList::itemSelected(const QModelIndex& index)
@@ -69,5 +78,22 @@ void GameList::setFilter(Filter* filter)
 GameList::~GameList()
 {
   delete m_model;
+}
+
+void GameList::simpleSearch(int tagid)
+{
+#warning Unify with <filtermodel.cpp>
+  const QString tagNames[] = {"White", "Black", "Event", "Site", "Round", "Date",
+     "Result", "ECO", "Length", ""};
+
+  QString tag = tagNames[tagid];
+  if (tag.isEmpty())
+    return;
+  QString value = QInputDialog::getText(0, tr("Find %1").arg(tag), tr("Value:"));
+  if (value.isEmpty())
+    return;
+  TagSearch ts(tag, value);
+  m_model->filter()->executeSearch(ts);
+  m_model->updateFilter();
 }
 

@@ -59,8 +59,11 @@ QVariant FilterModelBase::data(const QModelIndex &index, int role) const
    if (role == Qt::DisplayRole) 
    {
      m_filter->database()->loadHeaders(index.row(), *m_game);
-      return m_game->tag(m_columnNames.at(index.column()));
-   } 
+     if (index.column() == 0)
+       qDebug("Loading game %d: %s-%s", index.row(),
+             qPrintable(m_game->tag(m_columnNames.at(0))), qPrintable(m_game->tag(m_columnNames.at(1))));
+     return m_game->tag(m_columnNames.at(index.column()));
+   }
    else return QVariant();
 }
 
@@ -90,10 +93,10 @@ void FilterModelBase::setFilter(Filter* filter)
 
 
 
-FilterModel::FilterModel(Filter* filter)
+FilterModel::FilterModel(Filter* filter, QObject* parent) : QSortFilterProxyModel(parent)
 {
   m_filter = filter;
-  FilterModelBase* source = new FilterModelBase(filter);
+  FilterModelBase* source = new FilterModelBase(filter, parent);
   setSourceModel(source);
 }
 
@@ -104,8 +107,9 @@ void FilterModel::setFilter(Filter* filter)
   qobject_cast<FilterModelBase*>(sourceModel())->setFilter(filter);
 }
 
-bool FilterModel::filterAcceptsRow(int source_row, const QModelIndex&) const
+bool FilterModel::filterAcceptsRow(int source_row, const QModelIndex& index) const
 {
+  qDebug("%d in filter? %s", source_row, m_filter->contains(source_row) ? "Yes" : "No");
   return m_filter->contains(source_row);
 }
 

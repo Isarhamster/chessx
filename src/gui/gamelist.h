@@ -36,6 +36,8 @@ public slots:
   void saveConfig();
   /** Change current database */
   void setFilter(Filter* filter);
+  /** Perform simple search */
+  void simpleSearch(int tag);
 private slots:
   void itemSelected(const QModelIndex& index);
 signals:

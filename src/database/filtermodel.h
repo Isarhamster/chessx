@@ -70,10 +70,14 @@ class FilterModel : public QSortFilterProxyModel
 {
   Q_OBJECT
   public:
-    FilterModel(Filter*);
+    FilterModel(Filter*, QObject* parent = 0);
     ~FilterModel();
     virtual void setFilter(Filter* filter);
     virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
+    /** @return filter used for getting data */
+    Filter* filter()  {return m_filter;}
+    /** Update filter after a change */
+    void updateFilter() {filterChanged();}
   private:
     Filter* m_filter;
 };
