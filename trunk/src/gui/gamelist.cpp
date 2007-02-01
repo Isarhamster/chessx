@@ -14,6 +14,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QHeaderView>
+
 #include "gamelist.h"
 #include "filtermodel.h"
 #include "settings.h"
@@ -39,28 +41,24 @@ void GameList::itemSelected(const QModelIndex& index)
 
 void GameList::configure()
 {
- /*
-   AppSettings->readLayout(this);
+  AppSettings->readLayout(this);
   AppSettings->beginGroup("/GameList");
   QStringList sections  = AppSettings->readListEntry("sections");
-  if (m_list->header()->count() == sections.count())
-    for (int i = 0; i < m_list->header()->count(); i++)
-      m_list->header()->resizeSection(i, sections[i].toInt());
+  if (header()->count() == sections.count())
+    for (int i = 0; i < header()->count(); i++)
+      header()->resizeSection(i, sections[i].toInt());
   AppSettings->endGroup();
-  */
 }
 
 void GameList::saveConfig()
 {
-  /*
   AppSettings->writeLayout(this);
   AppSettings->beginGroup("/GameList");
   QStringList sections;
-  for (int i = 0; i < m_list->header()->count(); i++)
-    sections.append(QString::number(m_list->header()->sectionSize(i)));
+  for (int i = 0; i < header()->count(); i++)
+    sections.append(QString::number(header()->sectionSize(i)));
   AppSettings->writeEntry("sections", sections);
   AppSettings->endGroup();
-  */
 }
 
 void GameList::setFilter(Filter* filter)
