@@ -34,13 +34,13 @@ public:
   /** Close database and free memory */
   ~DatabaseInfo();
   /** @return @p true if database is valid */
-  bool isValid() const;
+  bool isValid() const  {return m_database;}
   /** @return Database object */
-  Database* database();
+  Database* database()  {return m_database;}
   /** @return current filter */
-  Filter* filter();
+  Filter* filter()  {return m_filter;}
   /** @return current game  */
-  Game* currentGame();
+  Game* currentGame() {return m_game;}
   /** @return index of current game  */
   int currentIndex() const   {return m_index;}
   /** @return base filename (with path) */

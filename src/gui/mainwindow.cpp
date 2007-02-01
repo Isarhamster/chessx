@@ -16,6 +16,7 @@
 
 #include "boardsetup.h"
 #include "boardview.h"
+#include "filtermodel.h"
 #include "chessbrowser.h"
 #include "enginesetup.h"
 #include "databaseinfo.h"
@@ -133,7 +134,7 @@ MainWindow::MainWindow() : QMainWindow(),
   dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
   dock->setObjectName("GameList");
   dock->setFloating(true);
-  m_gameList = new GameList(dock);
+  m_gameList = new GameList(m_databases[m_currentDatabase]->filter(), dock);
   m_gameList->setMinimumSize(150, 100);
   QFont font = m_gameList->font();
   font.setPointSize(font.pointSize() - 1);
@@ -523,7 +524,7 @@ void MainWindow::slotGameViewToggle()
 
 void MainWindow::slotFilterUpdate()
 {
-  m_gameList->setDatabase(m_databases[m_currentDatabase]);
+  m_gameList->setFilter(m_databases[m_currentDatabase]->filter());
 }
 
 void MainWindow::slotFilterLoad(int index)

@@ -33,7 +33,7 @@ DatabaseInfo::DatabaseInfo(const QString& fname)
   }
   m_filename = fname;
   m_game = new Game;
-  m_filter = new Filter(m_database->count());
+  m_filter = new Filter(m_database);
   m_index = -1;
   loadGame(0);
 }
@@ -41,8 +41,8 @@ DatabaseInfo::DatabaseInfo(const QString& fname)
 DatabaseInfo::~DatabaseInfo()
 {
   delete m_filter;
-  delete m_game;
   delete m_database;
+  delete m_game;
 }
 
 bool DatabaseInfo::loadGame(int index)
@@ -58,23 +58,4 @@ bool DatabaseInfo::loadGame(int index)
   return true;
 }
 
-Database* DatabaseInfo::database()
-{
-  return m_database;
-}
-
-Filter* DatabaseInfo::filter()
-{
-  return m_filter;
-}
-
-bool DatabaseInfo::isValid() const
-{
-  return m_database;
-}
-
-Game* DatabaseInfo::currentGame()
-{
-  return m_game;
-}
 

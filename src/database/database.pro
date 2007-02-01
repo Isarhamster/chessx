@@ -64,5 +64,5 @@ SOURCES += board.cpp \
            index.cpp \
            filtermodel.cpp
 TARGET = database
-CONFIG += release warn_on qt staticlib
+CONFIG += debug warn_on qt staticlib
 TEMPLATE = lib

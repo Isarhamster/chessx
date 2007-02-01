@@ -18,48 +18,68 @@
 #ifndef __FILTERMODEL_H__
 #define __FILTERMODEL_H__
 
-#include <QAbstractTableModel>
+#include <QAbstractItemModel>
+#include <QSortFilterProxyModel>
 #include <QStringList>
 
 #include "filter.h"
 #include "game.h"
 
-class FilterModel : public QAbstractTableModel
+class FilterModelBase : public QAbstractItemModel
 {
    Q_OBJECT
 
    public:
-      /** Constructs a FilterModel object using a pointer to a Filter */
-      FilterModel(Filter *filter, QObject *parent = 0);
-      ~FilterModel();
+      /** Constructs a FilterModelBase object using a pointer to a Filter */
+      FilterModelBase(Filter *filter, QObject *parent = 0);
+      ~FilterModelBase();
 
       /** Returns the number of rows in the model */
-      int rowCount(const QModelIndex &parent = QModelIndex()) const;
+      virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
       /** Returns the number of columns in the model */
-      int columnCount(const QModelIndex& parent = QModelIndex()) const;
+      virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
       /** Returns an item of data given the item 'index' */
-      QVariant data(const QModelIndex &index, int role) const;
+      virtual QVariant data(const QModelIndex &index, int role) const;
       /** Returns the header information for header 'section' */
-      QVariant headerData(int section, Qt::Orientation orientation,
+      virtual QVariant headerData(int section, Qt::Orientation orientation,
             int role = Qt::DisplayRole) const;
       /** Returns the appropriate display flags for item 'index' */
-      Qt::ItemFlags flags ( const QModelIndex & index ) const;
-
+    //  virtual Qt::ItemFlags flags (const QModelIndex& index) const;
+      /** No tree - always return invalid parent */
+      virtual QModelIndex parent(const QModelIndex&) const  {return QModelIndex();}
+      /** No tree - always return self */
+      virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
+      /** No children */
+      virtual bool hasChildren(const QModelIndex& parent = QModelIndex()) const {return !parent.isValid();}
       /** Returns the filter on which the model opperates */
       /* Was used for debugging, but might be useful */
-      Filter* filter();
+      /** Changes current filter. Resets any views. */
+      virtual void setFilter(Filter* filter);
 
    private:
       /** A pointer to filter on which the model opperates */
-      Filter *m_filter;
+      Filter* m_filter;
       /** The column names of the model */
       QStringList m_columnNames;
       /** A pointer to a game object, to hold the retrieved information 
        * about the game */
-      Game *m_game;
+      Game* m_game;
+};
 
+class FilterModel : public QSortFilterProxyModel
+{
+  Q_OBJECT
+  public:
+    FilterModel(Filter*);
+    ~FilterModel();
+    virtual void setFilter(Filter* filter);
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
+  private:
+    Filter* m_filter;
 };
 
 
-#endif	// __FILTERMODEL_H__
+
+
+#endif	// __FilterModelBase_H__
 
