@@ -7,7 +7,6 @@
 FORMS += playerdialog.ui \
          preferences.ui \
          boardsetup.ui \
-         enginesetup.ui \
          savedialog.ui \
          tipoftheday.ui
 HEADERS += mainwindow.h \
@@ -18,7 +17,6 @@ HEADERS += mainwindow.h \
            boardtheme.h \
            boardsetup.h \
            savedialog.h \
-           enginesetup.h \
            gamelist.h \
 	   chessbrowser.h \
            tipoftheday.h
