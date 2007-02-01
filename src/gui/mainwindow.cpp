@@ -18,7 +18,7 @@
 #include "boardview.h"
 #include "filtermodel.h"
 #include "chessbrowser.h"
-#include "enginesetup.h"
+//#include "enginesetup.h"
 #include "databaseinfo.h"
 #include "game.h"
 #include "gamelist.h"
@@ -363,8 +363,8 @@ void MainWindow::slotConfigure()
 
 void MainWindow::slotConfigureChessEngines()
 {
-  EngineSetupDialog dlg;
-  dlg.exec();
+  //EngineSetupDialog dlg;
+  //dlg.exec();
 }
 
 void MainWindow::slotConfigureFlip()
