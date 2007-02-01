@@ -28,7 +28,6 @@ SOURCES += mainwindow.cpp \
            boardsetup.cpp \
            helpwindow.cpp \
            savedialog.cpp \
-           enginesetup.cpp \
            gamelist.cpp \
 	   chessbrowser.cpp \
            tipoftheday.cpp
