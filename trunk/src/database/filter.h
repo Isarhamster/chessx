@@ -36,108 +36,83 @@ class Database;
 class Filter
 {
 public:
-	/** flag for which games to include in filter */
-	enum WhichGames { AllGames, NoGames };
-	
-	/** construct filter of given size */
-	Filter(int size, WhichGames whichGames = AllGames);
-	
-	/** construct filter of given size */
-	Filter(Database* database, WhichGames whichGames = AllGames);
+  /** Flag for which games to include in filter */
+  enum WhichGames { AllGames, NoGames };
+  /** Construct filter of given size */
+  Filter(int size, WhichGames whichGames = AllGames);
+  /** Construct filter of given size */
+  Filter(Database* database, WhichGames whichGames = AllGames);
+  /** Construct filter from another filter */
+  Filter(const Filter& filter);
+  /** Construct filter from a bit array */
+  Filter(const QBitArray& bitArray);
+  /** Assignment operator. */
+  Filter operator=(const Filter& filter);
+  /** Destructor */
+  ~Filter();
+  /** Include a game in the filter. */
+  void add(int game);
+  /** Remove a game from the filter. */
+  void remove(int game);
+  /** Set pointer to the database for which the filter is */
+  void setDatabase(Database* database);
+  /** @return a pointer to the database on which the filter is */
+  Database* database();
+  /** Set the value for a game */
+  void set(int game, bool value);
+  /** Set all games in the filter to the same value */
+  void setAll(bool value);
+  /** @return true if the game is in the filter */
+  bool contains(int game) const;
+  /** @return the index of nth game in the filter (zero based)*/ 
+  int gameIndex(int nth) const;
+  /** @return number of games in the filter */
+  int count() const;
+  /** @return the size of the filter */
+  int size() const;
+  /** Resize the filter to the specified size */
+  void resize(int size, Filter::WhichGames whichGames = AllGames);
+  /** Reverse the filter (complement set) */
+  void reverse();
+  /** Intersect filter with another filter */
+  void intersect(const Filter& filter);
+  /** Add the games of another filter to the filter */
+  void add(const Filter& filter);
+  /** Remove the games of another filter from the filter */
+  void remove(const Filter& filter);
+  /** @return the filter as a bit array (returns copy in Qt3 due, implicitly shared in Qt4)*/
+  QBitArray asBitArray() const;
 
-	/** construct filter from another filter */
-	Filter(const Filter& filter);
-
-	/** construct filter from a bit array */
-	Filter(const QBitArray& bitArray);
-	
-	/** assignment operator */
-	Filter operator=(const Filter& filter);
-
-	/** destructor */
-	~Filter();
-	
-	/** include a game in the filter */
-	void add(int game);
-	
-	/** remove a game from the filter */
-	void remove(int game);
-
-   /** Sets pointer to the database for which the filter is */
-	void setDatabase(Database* database);
-
-   /** Returns a pointer to the database on which the filter is */
-   Database* database();
-	
-	/** sets the value for a game */
-	void set(int game, bool value);
-	
-	/** sets all games in the filter to the same value */
-	void setAll(bool value);
-
-	/** return true if the game is in the filter */
-	bool contains(int game) const;
-	
-	/** returns the index of nth game in the filter (zero based)*/ 
-	int gameIndex(int nth) const;
-
-	/** return number of games in the filter */
-	int count() const;
-	
-	/** return the size of the filter */
-	int size() const;
-	
-	/** resizes the filter to the specified size */
-	void resize(int size, Filter::WhichGames whichGames = AllGames);
-	
-	/** reverse the filter (complement set) */
-	void reverse();
-	
-	/** intersect filter with another filter */
-	void intersect(const Filter& filter);
-	
-	/** add the games of another filter to the filter */
-	void add(const Filter& filter);
-	
-	/** remove the games of another filter from the filter */
-	void remove(const Filter& filter);
-	
-	/** returns the filter as a bit array (returns copy in Qt3 due, implicitly shared in Qt4)*/
-	QBitArray asBitArray() const;
-
-   /* Executes search 'search' on database m_database, 
-    * and sets this filter to contain the results */
+  /** Executes search 'search' on database m_database, 
+     and sets this filter to contain the results */
    void executeSearch(const Search& search);
-   /* Executes search 'search' on database m_database, 
-    * and modifies this filter with the results */
+   /** Executes search 'search' on database m_database,
+      and modifies this filter with the results */
    void executeSearch(const Search& search, Search::Operator searchOperator);
-   /* Executes query 'query' on database m_database, 
-    * and sets this filter to contain the results */
+   /** Executes query 'query' on database m_database,
+       and sets this filter to contain the results */
    void executeQuery(Query& query);
-
-   /** Sets the state for leaf 'leaf' in m_triStateTree and return the state of the tree */
+   /** Set the state for leaf 'leaf' in m_triStateTree and return the state of the tree. */
    TriStateTree::State setState(int leaf, TriStateTree::State state);
-   /** Sets the state for leaf 'leaf' in m_triStateTree and return the state of the tree */
+   /** Set the state for leaf 'leaf' in m_triStateTree and return the state of the tree. */
    TriStateTree::State setState(int leaf, bool state);
-   /** Returns the state of the m_triStateTree */
+   /** @return the state of the @p m_triStateTree . */
    TriStateTree::State state() const;
-   /** Returns the state of leaf 'leaf' in m_triStateTree */
+   /** @return the state of leaf 'leaf' in @p m_triStateTree . */
    TriStateTree::State state(int leaf) const;
-	
+
 protected:
-	/** returns the filter as a bit array (explicitly shared in Qt3, implicitly shared in Qt4)*/
-	QBitArray bitArray() const;
+  /** returns the filter as a implicitely shared QBitArray */
+  QBitArray bitArray() const;
 
-	int m_count;
-	QBitArray* m_bitArray;
-	
-	// for the speeding up of sequential access
-	mutable int m_lastNth;
-	mutable int m_lastIndex;
+  int m_count;
+  QBitArray* m_bitArray;
 
-   Database* m_database;
-
-   TriStateTree m_triStateTree; 
+  // for the speeding up of sequential access
+  mutable int m_lastNth;
+  mutable int m_lastIndex;
+  Database* m_database;
+  TriStateTree m_triStateTree; 
 
 };
 
