@@ -123,6 +123,8 @@ public slots:
   void slotStatusMessage(const QString& msg);
   void slotDatabaseChange(int current);
   void slotDatabaseChanged();
+  /*Overriden to show the tip of the day dialog */
+  void show();
 signals:
   /* Re-read configuration */
   void reconfigure();
@@ -155,6 +157,7 @@ private:
   QList<DatabaseInfo*> m_databases;
   int m_currentDatabase;
   QActionGroup* m_actions;
+  bool m_showTip;
 };
 
 

@@ -157,13 +157,21 @@ MainWindow::MainWindow() : QMainWindow(),
 
   /* Tip of the day */
   AppSettings->beginGroup("/Tips/");
-  bool showTip = AppSettings->readBoolEntry("showTips", true);
+  m_showTip = AppSettings->readBoolEntry("showTips", true);
   AppSettings->endGroup();
   m_tipDialog = new TipOfDayDialog(this);
-  if(showTip)
-    {
-       m_tipDialog->exec();
-    }
+}
+
+/*** The QMainWindow::show() slot is overriden to show the tip of the day dialog
+aftert the main window has been constructed. 
+ */
+void MainWindow::show()
+{
+  this->QMainWindow::show();
+   if(m_showTip)
+   {
+      m_tipDialog->show();
+   }
 }
 
 MainWindow::~MainWindow()
