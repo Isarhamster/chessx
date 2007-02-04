@@ -260,11 +260,11 @@ void Output::writeMove(int variation)
    // *** Substitute %1 and %2 if present with the move node number
    if ((m_output.indexOf("%1")>=0) && (m_output.indexOf("%2")>=0)) {
       QString mvno;
-      mvno = mvno.sprintf("%03d",m_game->ply());
+      mvno = mvno.sprintf("%03d",m_game->moveId(variation));
       m_output = m_output.arg(mvno).arg(mvno);
    } else if (m_output.indexOf("%1")>=0) {
       QString mvno;
-      mvno = mvno.sprintf("%03d",m_game->ply());
+      mvno = mvno.sprintf("%03d",m_game->moveId(variation));
       m_output = m_output.arg(mvno);
    }
    m_output += " ";
