@@ -35,4 +35,6 @@ into the testlog.log
 
 7. Check the log and fix FAILED tests.
 
+8. Add the information which classes are tested to the file: classes_tested.txt
+
 (C) 2007 Heinz R. Hopfgartner <heinz.hopfgartner@gmx.at>
