@@ -1,0 +1,38 @@
+Adding, building and running unit-tests for ChexxS using qtestlib
+
+
+To add new tests do the following steps:
+
+1. Create a class which contains the unit-test.
+
+You may use the pgndatabasetest.h and pgndatabasetest.cpp as templates.
+The important thing is to add the include: #include <QtTest/QtTest>
+
+There are some special private slots:
+
+initTestCase():        this slot is called once when the test is constructed
+init():		       this slot is called before each test
+cleanup():	       this slot is called after each test
+cleanupTestCase():     this slot is called after all tests have been run
+
+2. Add the sourcefiles of your test class to the testrunner.pro
+
+3. Add a test object for your test class to the testrunner
+The procedure is straight forward - you may copy the already set up tests
+in the testrunner.cpp
+
+4. qmake - to create the Makefile
+
+The GNUmakefile is intended to add default test targets.
+
+5. make - the application testrunner is created
+
+6. make tests - runs the tests, writes the testlog.log and displays the
+testresults using more
+
+make testsv - does the same as make tests but puts more verbose output
+into the testlog.log
+
+7. Check the log and fix FAILED tests.
+
+(C) 2007 Heinz R. Hopfgartner <heinz.hopfgartner@gmx.at>
