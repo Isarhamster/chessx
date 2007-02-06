@@ -21,7 +21,7 @@ cleanupTestCase():     this slot is called after all tests have been run
 The procedure is straight forward - you may copy the already set up tests
 in the testrunner.cpp
 
-4. qmake - to create the Makefile
+4. qmake testrunner.pro - to create the Makefile
 
 The GNUmakefile is intended to add default test targets.
 

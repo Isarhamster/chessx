@@ -14,7 +14,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
-# 1.  Create the Makefile with qmake
+# 1.  Create the Makefile with qmake testrunner.pro
 # 2.  Run the target make tests
 
 include Makefile
@@ -24,10 +24,10 @@ include Makefile
 
 tests:
 	-rm ./testlog.log
-	-./$(TARGET) -o ./testlog.log
+	-./$(TARGET) >> ./testlog.log
 	-more ./testlog.log
 
 testsv:
 	-rm ./testlog.log
-	-./$(TARGET) -v2 -o ./testlog.log
+	-./$(TARGET) -v2 >> ./testlog.log
 	-more ./testlog.log
