@@ -47,6 +47,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QStatusBar>
+#include <QTime>
 #include <QVBoxLayout>
 
 bool yesNo(const QString& question, QMessageBox::Icon icon = QMessageBox::Question)
@@ -269,15 +270,19 @@ bool MainWindow::openDatabase(const QString& fname)
     if (m_databases[i]->filename() == fname)
     {
       slotDatabaseChange(i);
+      slotStatusMessage(tr("Database %1 already opened.").arg(fname.section('/', -1)));
       return false;
     }
 
+  QTime time;
+  time.start();
   m_databases.append(new DatabaseInfo(fname));
   m_currentDatabase = m_databases.count() - 1;
   m_recentFiles.append(fname);
   updateMenuRecent();
   updateMenuDatabases();
-  slotStatusMessage(tr("Database %1 opened successfully.").arg(fname.section('/', -1)));
+  slotStatusMessage(tr("Database %1 opened successfully (%2 seconds).")
+      .arg(fname.section('/', -1)).arg((time.elapsed() + 500)/ 1000));
   slotDatabaseChanged();
   return true;
 }
@@ -540,7 +545,7 @@ void MainWindow::slotFilterLoad(int index)
 
 void MainWindow::slotStatusMessage(const QString& msg)
 {
-  statusBar()->message(msg, 5000);
+  statusBar()->message(msg);
 }
 
 void MainWindow::slotDatabaseChanged()
