@@ -3,8 +3,6 @@
 # Unterverzeichnis relativ zum Projektverzeichnis: .
 # Das Target ist Projekt im Unterverzeichnis 
 
-SUBDIRS += src/database \
-           src/gui \
-           src 
+SUBDIRS = src 
 TEMPLATE = subdirs
-CONFIG += debug release warn_on qt thread
+
