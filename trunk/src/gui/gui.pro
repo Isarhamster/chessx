@@ -1,9 +1,5 @@
-# Plik utworzony przez mened?era projekt� kdevelopa
-# ------------------------------------------- 
-# Podkatalog wzgl?dem g?�nego katalogu projektu: ./src/gui
-# Cel to biblioteka gui
+# Main application
 
-#The following line was changed from FORMS to FORMS3 by qt3to4
 FORMS += playerdialog.ui \
          preferences.ui \
          boardsetup.ui \
@@ -30,13 +26,20 @@ SOURCES += mainwindow.cpp \
            savedialog.cpp \
            gamelist.cpp \
 	   chessbrowser.cpp \
-           tipoftheday.cpp
+           tipoftheday.cpp \
+	   main.cpp
 TARGET = gui
-CONFIG += warn_on qt staticlib uic
-TEMPLATE = lib
-QT += qt3support
-INCLUDEPATH += ../compatibility \
-../database
-
+TEMPLATE = app
+INCLUDEPATH += ../database \
+    ../compatibility
 RESOURCES     += helpwindow.qrc \
                  tipoftheday.qrc
+TARGET = ../../bin/chessdatabase
+LIBS += ../database/libdatabase.a
+PRE_TARGETDEPS = ../database/libdatabase.a
+
+include(../common.pro)
+CONFIG += uic
+QT += qt3support
+
+

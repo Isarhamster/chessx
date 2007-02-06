@@ -1,7 +1,4 @@
-# Plik utworzony przez menad?era projektów kdevelopa
-# ------------------------------------------- 
-# Podkatalog wzgl?dem g?ównego katalogu projektu: ./src/database
-# Cel to biblioteka database
+# Database core library
 
 HEADERS += board.h \
            move.h \
@@ -63,6 +60,8 @@ SOURCES += board.cpp \
            indexitem.cpp \
            index.cpp \
            filtermodel.cpp
+
+include(../common.pro)
 TARGET = database
-CONFIG += debug warn_on qt staticlib
+CONFIG += staticlib
 TEMPLATE = lib
