@@ -1,4 +1,5 @@
 moc*
 Makefile
 ui_*.h
-qrc_*
+*.log
+testrunner
