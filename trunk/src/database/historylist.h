@@ -41,10 +41,12 @@ class HistoryList
     int size() const;
     /** Sets current size. */
     void setSize(int newSize);
-    /** Adds new item. If there are too many items, last one will be dropped. */
+    /** Adds new item. If there are too many items, last ones will be dropped. */
     void append(const QString& item);
     /** Removes the first occurence of given item. */
     void remove(const QString& item);
+    /** Removes all the first entries that are not existing files */
+    void removeMissingFiles();
     /** Removes all items. */
     void clear();
     /** @return item at @p index - 0 is the newest one. */
