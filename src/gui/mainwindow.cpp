@@ -167,6 +167,7 @@ void MainWindow::show()
 
 MainWindow::~MainWindow()
 {
+  qDeleteAll(m_databases.begin(), m_databases.end());
   delete m_saveDialog;
   delete m_playerDialog;
   delete m_helpWindow;
