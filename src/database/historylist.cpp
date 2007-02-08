@@ -14,6 +14,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QFileInfo>
+
 #include "historylist.h"
 #include "settings.h"
 
@@ -53,6 +55,18 @@ void HistoryList::append(const QString& item)
 void HistoryList::remove(const QString& item)
 {
   m_data.removeAll(item);
+}
+
+void HistoryList::removeMissingFiles()
+{
+  int i = 0;
+  while (i < count())
+  {
+    QFileInfo file(item(i));
+    if (file.exists())
+      i++;
+    else m_data.removeAt(i);
+  }
 }
 
 void HistoryList::setSize(int newSize)
@@ -98,12 +112,8 @@ QStringList HistoryList::items() const
 void HistoryList::setItems(const QStringList& list)
 {
   clear();
-  for (QStringList::ConstIterator iter = list.begin();
-       iter != list.end(); ++iter)
-    if (count() == size())
-      break;
-    else
-      append(*iter);
+  for (int i = 0; i < size() && i < list.count(); i++)
+    m_data.append(list[i]);
 }
 
 bool HistoryList::isUnique() const

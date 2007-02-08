@@ -41,7 +41,6 @@
 #include <QDebug>
 #include <QDockWidget>
 #include <QFileDialog>
-#include <QFileInfo>
 #include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
@@ -79,14 +78,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
   /* Recent files */
   m_recentFiles.restore("History", "RecentFiles");
-  int i = 0;
-  while (i < m_recentFiles.count())
-  {
-    QFileInfo file(m_recentFiles[i]);
-    if (file.exists())
-      i++;
-    else m_recentFiles.remove(m_recentFiles[i]);
-  }
+  m_recentFiles.removeMissingFiles();
   updateMenuRecent();
 
   /* Output */
