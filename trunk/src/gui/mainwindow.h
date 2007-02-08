@@ -31,8 +31,8 @@ class SaveDialog;
 class HelpWindow;
 class BoardView;
 class Game;
-class DatabaseInfo;
 class Database;
+class DatabaseInfo;
 class Output;
 class TipOfDayDialog;
 
@@ -52,8 +52,12 @@ public:
 
 protected:
   void closeEvent(QCloseEvent* e);
-/** @return active database */
+  /** @return active database */
   Database* database();
+  /** @return active database structure */
+  DatabaseInfo* databaseInfo();
+  /** @return active database structure */
+  const DatabaseInfo* databaseInfo() const;
   /** @return active game */
   Game* game();
   /** @return index of active game */
@@ -111,8 +115,7 @@ public slots:
   /** Handle link click in Game View panel */
   void slotGameViewLink(const QUrl& link);
   void slotGameViewToggle();
-  //void slotFilterSwitch();
-  void slotFilterUpdate();
+  void slotFilterChanged();
   void slotFilterLoad(int index);
   void slotFileOpen();
   void slotFileOpenRecent(int);
@@ -138,21 +141,25 @@ private:
 
   enum {GameFirst, GameLast, GameNext, GamePrevious, GameRandom, MoveFirst, MoveLast, MoveNext, MovePrevious,
      MoveNextN, MovePreviousN};
-  /* Widget variables */
+  /* Dialogs  */
   PlayerDialog* m_playerDialog;
   GameList* m_gameList;
   SaveDialog* m_saveDialog;
   HelpWindow* m_helpWindow;
   TipOfDayDialog* m_tipDialog;
+  /* Main gui parts */
   BoardView* m_boardView;
   ChessBrowser* m_moveView;
   ChessBrowser* m_gameView;
+  /* Status */
   QLabel* m_statusFilter;
-  HistoryList m_recentFiles;
+  /* Menus */
   QMenu* m_menuRecent;
   QMenu* m_menuDatabases;
   QMenu* m_menuView;
+
   /* Local variables */
+  HistoryList m_recentFiles;
   Output* m_output;
   QList<DatabaseInfo*> m_databases;
   int m_currentDatabase;
