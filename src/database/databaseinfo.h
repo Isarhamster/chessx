@@ -43,14 +43,13 @@ public:
   Game* currentGame() {return m_game;}
   /** @return index of current game  */
   int currentIndex() const   {return m_index;}
-  /** @return base filename (with path) */
-  QString filename() const   {return m_filename;}
   /** Load game @p index */
   bool loadGame(int index);
+  /** Database name */
+  QString name() const;
 private:
   Database* m_database;
   Filter* m_filter;
-  QString m_filename;
   Game* m_game;
   int m_index;
 };

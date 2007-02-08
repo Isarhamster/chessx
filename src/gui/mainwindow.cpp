@@ -135,9 +135,10 @@ MainWindow::MainWindow() : QMainWindow(),
   dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
   dock->setObjectName("GameList");
   dock->setFloating(true);
-  m_gameList = new GameList(m_databases[m_currentDatabase]->filter(), dock);
+  m_gameList = new GameList(databaseInfo()->filter(), dock);
   m_gameList->setMinimumSize(150, 100);
   connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
+  connect(m_gameList, SIGNAL(searchDone()), SLOT(slotFilterChanged()));
   dock->setWidget(m_gameList);
   addDockWidget(Qt::BottomDockWidgetArea, dock);
   m_menuView->addAction(dock->toggleViewAction());
@@ -154,6 +155,8 @@ MainWindow::MainWindow() : QMainWindow(),
   m_boardView->setBoard(game()->board());
 
   /* Status */
+  m_statusFilter = new QLabel(statusBar());
+  statusBar()->addPermanentWidget(m_statusFilter);
   slotStatusMessage(tr("Ready."));
 
   /* Tip of the day */
@@ -163,16 +166,11 @@ MainWindow::MainWindow() : QMainWindow(),
   m_tipDialog = new TipOfDayDialog(this);
 }
 
-/*** The QMainWindow::show() slot is overriden to show the tip of the day dialog
-aftert the main window has been constructed. 
- */
 void MainWindow::show()
 {
   this->QMainWindow::show();
-   if(m_showTip)
-   {
+  if(m_showTip)
       m_tipDialog->show();
-   }
 }
 
 MainWindow::~MainWindow()
@@ -182,15 +180,6 @@ MainWindow::~MainWindow()
   delete m_helpWindow;
   delete m_output;
   delete m_tipDialog;
-}
-
-QString databaseName(const QString& fname)
-{
-  QString name = fname.section('/', -1);
-  int ext = name.findRev('.');
-  if (ext > name.length() - 5)
-    name = name.left(ext);
-  return name;
 }
 
 void MainWindow::closeEvent(QCloseEvent* e)
@@ -208,19 +197,29 @@ void MainWindow::closeEvent(QCloseEvent* e)
     e->ignore();
 }
 
+DatabaseInfo* MainWindow::databaseInfo()
+{
+  return m_databases[m_currentDatabase];
+}
+
+const DatabaseInfo* MainWindow::databaseInfo() const
+{
+  return m_databases[m_currentDatabase];
+}
+
 Database* MainWindow::database()
 {
-  return m_databases[m_currentDatabase]->database();
+  return databaseInfo()->database();
 }
 
 Game* MainWindow::game()
 {
-  return m_databases[m_currentDatabase]->currentGame();
+  return databaseInfo()->currentGame();
 }
 
 int MainWindow::gameIndex() const
 {
-  return m_databases[m_currentDatabase]->currentIndex();
+  return databaseInfo()->currentIndex();
 }
 
 void MainWindow::gameLoad(int index)
@@ -228,7 +227,7 @@ void MainWindow::gameLoad(int index)
   if (index < 0) index = 0;
   if (index >= database()->count())
     index = database()->count() - 1;
-  m_databases[m_currentDatabase]->loadGame(index);
+  databaseInfo()->loadGame(index);
   m_boardView->setBoard(game()->board());
   qobject_cast<QWidget*>(m_gameView->parent())->setWindowTitle(tr("Game: %1").arg(index+1));
   slotMoveViewUpdate();
@@ -257,7 +256,7 @@ void MainWindow::updateMenuDatabases()
   while (it.hasNext() && i < 10)
   {
     int key = Qt::CTRL + Qt::Key_1 + (i-1);
-    m_menuDatabases->insertItem(QString("&%1: %2").arg(i).arg(databaseName(it.next()->database()->filename())),
+    m_menuDatabases->insertItem(QString("&%1: %2").arg(i).arg(it.next()->name()),
         this, SLOT(slotDatabaseChange(int)), key, i);
     i++;
   }
@@ -267,7 +266,7 @@ bool MainWindow::openDatabase(const QString& fname)
 {
   /* Check if the database isn't already open */
   for (int i = 0; i < m_databases.count(); i++)
-    if (m_databases[i]->filename() == fname)
+    if (m_databases[i]->database()->filename() == fname)
     {
       slotDatabaseChange(i);
       slotStatusMessage(tr("Database %1 already opened.").arg(fname.section('/', -1)));
@@ -532,9 +531,10 @@ void MainWindow::slotGameViewToggle()
   slotGameView();
 }
 
-void MainWindow::slotFilterUpdate()
+void MainWindow::slotFilterChanged()
 {
-  m_gameList->setFilter(m_databases[m_currentDatabase]->filter());
+  m_statusFilter->setText(tr(" %1: %2/%3 ").arg(databaseInfo()->name())
+      .arg(databaseInfo()->filter()->count()).arg(database()->count()));
 }
 
 void MainWindow::slotFilterLoad(int index)
@@ -550,8 +550,9 @@ void MainWindow::slotStatusMessage(const QString& msg)
 
 void MainWindow::slotDatabaseChanged()
 {
-  setCaption(tr("ChessX - %1").arg(databaseName(database()->filename())));
-  slotFilterUpdate();
+  setCaption(tr("ChessX - %1").arg(databaseInfo()->name()));
+  m_gameList->setFilter(databaseInfo()->filter());
+  slotFilterChanged();
   gameLoad(gameIndex());
 }
 

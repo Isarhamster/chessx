@@ -42,6 +42,7 @@ private slots:
   void itemSelected(const QModelIndex& index);
 signals:
   void selected(int);
+  void searchDone();
 private:
   FilterModel* m_model;
 };

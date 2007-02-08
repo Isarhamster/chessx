@@ -31,7 +31,6 @@ DatabaseInfo::DatabaseInfo(const QString& fname)
     m_database = new PgnDatabase();
     m_database->open(fname);
   }
-  m_filename = fname;
   m_game = new Game;
   m_filter = new Filter(m_database);
   m_index = -1;
@@ -58,4 +57,12 @@ bool DatabaseInfo::loadGame(int index)
   return true;
 }
 
+QString DatabaseInfo::name() const
+{
+  QString name = m_database->filename().section('/', -1);
+  int ext = name.lastIndexOf('.');
+  if (ext > name.length() - 5)
+    name = name.left(ext);
+  return name;
+}
 
