@@ -27,7 +27,7 @@ PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : QDialog(parent
 
   setName("PlayerDialog");
   m_database = db;
-  connect(ui.findButton, SIGNAL(clicked()), SLOT(showPlayer()));
+  connect(ui.findButton, SIGNAL(clicked()), SLOT(findPlayers()));
   connect(ui.playerCombo, SIGNAL(activated(const QString&)), SLOT(showPlayer(const QString&)));
   if (parent)
     connect(parent, SIGNAL(reconfigure()), SLOT(configure()));
@@ -46,9 +46,8 @@ void PlayerDialog::configure()
   AppSettings->endGroup();
 }
 
-void PlayerDialog::showPlayer(const QString& s)
+void PlayerDialog::findPlayers(const QString& s)
 {
-  ui.playerCombo->setCurrentText(s);
   // Capitalize first letter
   QString name = s;
   if (!name.isEmpty())
@@ -60,11 +59,32 @@ void PlayerDialog::showPlayer(const QString& s)
     QString player;
     foreach(player, players)
       ui.playerCombo->insertItem(player);
-    ui.playerView->setText(formatPlayer(ui.playerCombo->text(0)));
+    showPlayer(ui.playerCombo->text(0));
   }
-  else
-    ui.playerView->setText(tr("<html><i>No player found</i></html>"));
+  ui.playerCombo->setCurrentText(s);
   show();
+}
+
+void PlayerDialog::findPlayers()
+{
+  findPlayers(ui.playerCombo->currentText());
+}
+
+void PlayerDialog::showPlayer(const QString& player)
+{
+  QString found;
+  if (m_database->exists(player))
+    found = player;
+  else
+  {
+    QStringList players = m_database->findPlayers(player, 1);
+    if (players.count())
+      found = players[0];
+  }
+  if (found.isEmpty())
+    ui.playerView->setText(tr("<html><i>No player found</i></html>"));
+  else
+    ui.playerView->setText(formatPlayer(found));
 }
 
 void PlayerDialog::showPlayer()
