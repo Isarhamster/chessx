@@ -327,7 +327,8 @@ void MainWindow::slotFileClose()
   if (m_currentDatabase) // Clipboard
   {
     m_databases.removeAt(m_currentDatabase);
-    m_currentDatabase--;
+    if (m_currentDatabase == m_databases.count())
+      m_currentDatabase--;
     updateMenuDatabases();
     slotDatabaseChanged();
   }
