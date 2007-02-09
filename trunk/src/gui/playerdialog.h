@@ -30,8 +30,13 @@ public:
   virtual ~PlayerDialog();
 
 public slots:
-  /** Find players and show the dialog */
+  /** Find players matching @p player . Put the list in the Players combo and show the first match. */
+  void findPlayers(const QString& player);
+  /** Find players matching current combo text. */
+  void findPlayers();
+  /** Show currently selected player */
   void showPlayer();
+  /** Show given player. Do not change Player combo */
   void showPlayer(const QString& player);
   /** Re-read configuration */
   void configure();
