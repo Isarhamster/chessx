@@ -14,9 +14,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qlineedit.h>
-#include <q3listview.h>
-#include <q3textbrowser.h>
+#include <QComboBox>
+#include <QTextBrowser>
 
 #include "playerdialog.h"
 #include "playerdatabase.h"
@@ -28,16 +27,11 @@ PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : QDialog(parent
 
   setName("PlayerDialog");
   m_database = db;
-  connect(ui.playerEdit, SIGNAL(textChanged (const QString&)), SLOT(findPlayers(const QString&)));
-  connect(ui.playerList, SIGNAL(currentChanged(Q3ListViewItem*)), SLOT(showPlayer(Q3ListViewItem*)));
+  connect(ui.findButton, SIGNAL(clicked()), SLOT(showPlayer()));
+  connect(ui.playerCombo, SIGNAL(activated(const QString&)), SLOT(showPlayer(const QString&)));
   if (parent)
     connect(parent, SIGNAL(reconfigure()), SLOT(configure()));
   configure();
-
-  for (int i = 1; i < 4; i++)
-    ui.playerList->adjustColumn(i);
-  ui.playerView->setMinimumWidth(width() / 2);
-  findPlayers(QString());
 }
 
 PlayerDialog::~PlayerDialog()
@@ -52,38 +46,35 @@ void PlayerDialog::configure()
   AppSettings->endGroup();
 }
 
-void PlayerDialog::findPlayers(const QString& s)
+void PlayerDialog::showPlayer(const QString& s)
 {
+  ui.playerCombo->setCurrentText(s);
   // Capitalize first letter
   QString name = s;
   if (!name.isEmpty())
      name[0] = name[0].upper();
-  ui.playerEdit->setText(s);
   QStringList players = m_database->findPlayers(name, m_showLimit);
-  ui.playerList->clear();
-  for (QStringList::ConstIterator it = players.begin(); it != players.end(); ++it)
+  ui.playerCombo->clear();
+  if (players.count())
   {
-    m_database->setCurrent(*it);
-    int birth = m_database->dateOfBirth().year();
-    int death = m_database->dateOfDeath().year();
-    new Q3ListViewItem(ui.playerList, *it, birth ? QString::number(birth) : "",
-       death ? QString::number(death) : "", m_database->title(),  m_database->country());
+    QString player;
+    foreach(player, players)
+      ui.playerCombo->insertItem(player);
+    ui.playerView->setText(formatPlayer(ui.playerCombo->text(0)));
   }
-  ui.playerList->setCurrentItem(ui.playerList->firstChild());
-  showPlayer(ui.playerList->firstChild());
+  else
+    ui.playerView->setText(tr("<html><i>No player found</i></html>"));
   show();
 }
 
-void PlayerDialog::showPlayer(Q3ListViewItem* i)
+void PlayerDialog::showPlayer()
 {
-  if (i)
-    showPlayer(i->text(0));
+  showPlayer(ui.playerCombo->currentText());
 }
 
-
-void PlayerDialog::showPlayer(const QString& s)
+QString PlayerDialog::formatPlayer(const QString& player)
 {
-  m_database->setCurrent(s);
+  m_database->setCurrent(player);
   QString birth = m_database->dateOfBirth().asShortString();
   QString death = m_database->dateOfDeath().asShortString();
   QString live = death.isEmpty() ? tr("Born %1.").arg(birth) :
@@ -92,12 +83,13 @@ void PlayerDialog::showPlayer(const QString& s)
   QString image;
   if (m_database->hasPhoto())
   {
-    ui.playerView->mimeSourceFactory()->setImage("image.png", m_database->photo());
-    image = "<img align=\"right\" src=\"image.png\">";
+    ui.playerView->document()->addResource(QTextDocument::ImageResource, QUrl("image.png"),
+                            m_database->photo());
+    image = "<br><img src=\"image.png\"><br>";
   }
   QString bio;
   if (m_database->hasBiography())
-    bio = tr("<h2>Biography</h2>%1\n").arg(m_database->biography());
+    bio = tr("<h3>Biography</h3>%1\n").arg(m_database->biography());
   QString title = m_database->title();
 
   // Rating
@@ -129,8 +121,7 @@ void PlayerDialog::showPlayer(const QString& s)
   if (!rating.isEmpty())
     rating.prepend(tr("<h2>Rating</h2>"));
 
-  // Final text
-  ui.playerView->setText(tr("<h1>%1</h1>%2%3<br>Country: %4<br>Title: %5\n%6%7")
-    .arg(s).arg(image).arg(live).arg(country).arg(title).arg(bio).arg(rating));
+  return tr("<h2>%1</h2>%2%3<br>Country: %4<br>Title: %5\n%6%7")
+    .arg(player).arg(image).arg(live).arg(country).arg(title).arg(bio).arg(rating);
 }
 

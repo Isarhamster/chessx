@@ -494,9 +494,9 @@ void MainWindow::slotGameViewLink(const QUrl& url)
   else if (url.protocol() == "tag")
   {
     if (url.path() == "white")
-      playerDialog()->findPlayers(game()->tag("White"));
+      playerDialog()->showPlayer(game()->tag("White"));
     else if (url.path() == "black")
-      playerDialog()->findPlayers(game()->tag("Black"));
+      playerDialog()->showPlayer(game()->tag("Black"));
   }
   /*QString command = link.section(':', 0, 0);
   QString arg =  link.section(':', 1);
