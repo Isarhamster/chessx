@@ -51,6 +51,7 @@ public:
   ~MainWindow();
 
 protected:
+  /** Overridden to ask for confirmation */
   void closeEvent(QCloseEvent* e);
   /** @return active database */
   Database* database();
@@ -111,36 +112,49 @@ public slots:
   void slotGameLoadLast()   {gameLoad(9999999);}
   /** Load random game */
   void slotGameLoadRandom();
-  void slotGameView();
+  /** Update GameView after move/game change */
+  void slotGameViewUpdate();
   /** Handle link click in Game View panel */
   void slotGameViewLink(const QUrl& link);
+  /** Show/hide GameView source - useful for debugging. */
   void slotGameViewToggle();
+  /** Filter was changed - update status bar information */
   void slotFilterChanged();
+  /** Load given game (triggered from Game List) */
   void slotFilterLoad(int index);
+  /** Open File dialog, choose a database and open it */
   void slotFileOpen();
+  /** Open given database from Recent files list. */
   void slotFileOpenRecent(int);
+  /** Close current database. Switches to next active (or clipboard if there is none). */
   void slotFileClose();
+  /** Quit ChessX. Ask for confirmation before */
   void slotFileQuit();
-  /* Reset current filter */
+  /** Reset current filter */
   void slotSearchReset();
-  /* Reverse current filter */
+  /** Reverse current filter */
   void slotSearchReverse();
+  /** Made given move on the board */
   void slotMove(Square from, Square to);
+  /** Update GameInfo after move was made. */
   void slotMoveViewUpdate();
+  /** Show temporary message. */
   void slotStatusMessage(const QString& msg);
+  /** Change database */
   void slotDatabaseChange(int current);
+  /** Database was changed - change informations */
   void slotDatabaseChanged();
-  /*Overriden to show the tip of the day dialog */
-  void show();
+  /** Show window, then show tip dialog if enabled. */
+  virtual void show();
 signals:
-  /* Re-read configuration */
+  /** Re-read configuration */
   void reconfigure();
 
 private:
-  /* Setup actions */
+  /** Create single menu action. */
   QAction* createAction(const QString& name, const char* slot, const QKeySequence& key = QKeySequence(),
                         const QString& tip = QString());
-  /* Setup menus and actions */
+  /** Create all the menus and actions */
   void setupActions();
 
   enum {GameFirst, GameLast, GameNext, GamePrevious, GameRandom, MoveFirst, MoveLast, MoveNext, MovePrevious,

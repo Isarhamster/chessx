@@ -223,7 +223,7 @@ void MainWindow::gameLoad(int index)
   m_boardView->setBoard(game()->board());
   qobject_cast<QWidget*>(m_gameView->parent())->setWindowTitle(tr("Game: %1").arg(index+1));
   slotMoveViewUpdate();
-  slotGameView();
+  slotGameViewUpdate();
 }
 
 void MainWindow::gameMoveBy(int change)
@@ -473,7 +473,7 @@ void MainWindow::slotGameSave()
     slotMoveViewUpdate();
 }
 
-void MainWindow::slotGameView()
+void MainWindow::slotGameViewUpdate()
 {
   int ply = game()->ply();
   m_gameView->setText(m_output->output(game()));
@@ -520,7 +520,7 @@ void MainWindow::slotGameViewToggle()
     m_gameView->setTextFormat(Qt::PlainText);
   else
     m_gameView->setTextFormat(Qt::RichText);
-  slotGameView();
+  slotGameViewUpdate();
 }
 
 void MainWindow::slotFilterChanged()
