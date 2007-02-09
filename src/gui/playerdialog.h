@@ -31,12 +31,13 @@ public:
 
 public slots:
   /** Find players and show the dialog */
-  void findPlayers(const QString& s);
-  void showPlayer(const QString& s);
-  void showPlayer(Q3ListViewItem* i);
-  /* re-read configuration */
+  void showPlayer();
+  void showPlayer(const QString& player);
+  /** Re-read configuration */
   void configure();
 private:
+  /** Information about a player */
+  QString formatPlayer(const QString& player);
   Ui::PlayerDialog ui;
   PlayerDatabase* m_database;
   bool m_showRating;
