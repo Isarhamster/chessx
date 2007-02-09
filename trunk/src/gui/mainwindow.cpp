@@ -166,8 +166,7 @@ void MainWindow::show()
 }
 
 MainWindow::~MainWindow()
-{
-  qDeleteAll(m_databases.begin(), m_databases.end());
+{  qDeleteAll(m_databases.begin(), m_databases.end());
   delete m_saveDialog;
   delete m_playerDialog;
   delete m_helpWindow;
@@ -605,6 +604,12 @@ void MainWindow::setupActions()
 
   gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), Qt::CTRL + Qt::Key_S));
 
+  /* Search menu */
+  QMenu* search = menuBar()->addMenu(tr("&Search"));
+  search->addAction(createAction(tr("&Reset filter"), SLOT(slotSearchReset()), Qt::CTRL + Qt::Key_F));
+  search->addAction(createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()),
+                    Qt::CTRL + Qt::SHIFT + Qt::Key_F));
+
   /* View menu */
   m_menuView = menuBar()->addMenu(tr("&View"));
   m_menuDatabases = m_menuView->addMenu(tr("&Database"));;
@@ -627,6 +632,18 @@ void MainWindow::setupActions()
   debug->addAction(createAction("Toggle game view format", SLOT(slotGameViewToggle()),
                                         Qt::Key_F12));
 
+}
+
+void MainWindow::slotSearchReverse()
+{
+  databaseInfo()->filter()->reverse();
+  slotFilterChanged();
+}
+
+void MainWindow::slotSearchReset()
+{
+  databaseInfo()->filter()->setAll(true);
+  slotFilterChanged();
 }
 
 
