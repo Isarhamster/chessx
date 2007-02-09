@@ -121,6 +121,10 @@ public slots:
   void slotFileOpenRecent(int);
   void slotFileClose();
   void slotFileQuit();
+  /* Reset current filter */
+  void slotSearchReset();
+  /* Reverse current filter */
+  void slotSearchReverse();
   void slotMove(Square from, Square to);
   void slotMoveViewUpdate();
   void slotStatusMessage(const QString& msg);
