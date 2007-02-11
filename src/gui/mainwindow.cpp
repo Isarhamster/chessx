@@ -560,9 +560,11 @@ void MainWindow::slotStatusMessage(const QString& msg)
 void MainWindow::slotDatabaseChange()
 {
   QAction *action = qobject_cast<QAction *>(sender());
-  if (action)
+  if (action && m_currentDatabase != action->data().toInt())
+  {
     m_currentDatabase = action->data().toInt();
-  slotDatabaseChanged();
+    slotDatabaseChanged();
+  }
 }
 
 void MainWindow::slotDatabaseChanged()
