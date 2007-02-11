@@ -17,6 +17,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtDebug>
+
 #include "filter.h"
 #include "filtersearch.h"
 #include "qpair.h"
@@ -209,15 +211,15 @@ int Filter::gameIndex(int nth) const
 	int i;
 	int count;
 	
-	if(nth >= m_lastNth) {
+	if(nth > m_lastNth) {
 		i = m_lastIndex + 1;
 		count = m_lastNth;
 	} else {
 		i = 0;
-		count = 0;
-	}
+		count = -1;
+   }
 	
-	while(count < nth) {
+	while (count < nth) {
 		count += m_bitArray->at(i);
 		i++;
 	}
