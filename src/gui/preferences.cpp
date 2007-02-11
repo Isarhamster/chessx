@@ -67,9 +67,9 @@ void PreferencesDialog::slotBoardDarkColor()
 void PreferencesDialog::slotBoardMode(int mode)
 {
   if (mode == 2)
-    ui.widgetStack->raiseWidget(ui.plainBoardWidget);
+    ui.widgetStack->setCurrentWidget(ui.plainBoardWidget);
   else
-    ui.widgetStack->raiseWidget(ui.themeBoardWidget);
+    ui.widgetStack->setCurrentWidget(ui.themeBoardWidget);
 }
 
 void PreferencesDialog::restoreSettings()
