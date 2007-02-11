@@ -19,6 +19,7 @@
  
 #include <QDir>
 #include <QStringList>
+#include <QtDebug>
  
 #include "board.h"
 #include "history.h"
@@ -1063,7 +1064,7 @@ void PgnDatabase::initSearch(Query& query, Filter* filter)
 
 void PgnDatabase::finalizeSearch()
 {
-   m_searching = true;
+   m_searching = false;
 }
 
 void PgnDatabase::searchGame(int index)
