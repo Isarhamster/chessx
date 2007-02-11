@@ -38,7 +38,7 @@ class BoardView : public QWidget
 public:
   enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
   /** Create board widget. */
-  BoardView(QWidget* parent = 0, const char* name = 0);
+  BoardView(QWidget* parent = 0);
   /** Destroys widget. Usually it is called automatically by Qt. */
   ~BoardView();
   /** Updates and shows current position. */

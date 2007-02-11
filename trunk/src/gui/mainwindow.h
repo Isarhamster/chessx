@@ -117,7 +117,7 @@ public slots:
   /** Handle link click in Game View panel */
   void slotGameViewLink(const QUrl& link);
   /** Show/hide GameView source - useful for debugging. */
-  void slotGameViewToggle();
+  void slotGameViewToggle(bool source);
   /** Filter was changed - update status bar information */
   void slotFilterChanged();
   /** Load given game (triggered from Game List) */
@@ -125,7 +125,7 @@ public slots:
   /** Open File dialog, choose a database and open it */
   void slotFileOpen();
   /** Open given database from Recent files list. */
-  void slotFileOpenRecent(int);
+  void slotFileOpenRecent();
   /** Close current database. Switches to next active (or clipboard if there is none). */
   void slotFileClose();
   /** Quit ChessX. Ask for confirmation before */
@@ -141,7 +141,7 @@ public slots:
   /** Show temporary message. */
   void slotStatusMessage(const QString& msg);
   /** Change database */
-  void slotDatabaseChange(int current);
+  void slotDatabaseChange();
   /** Database was changed - change informations */
   void slotDatabaseChanged();
   /** Show window, then show tip dialog if enabled. */
@@ -172,7 +172,6 @@ private:
   /* Status */
   QLabel* m_statusFilter;
   /* Menus */
-  QMenu* m_menuRecent;
   QMenu* m_menuDatabases;
   QMenu* m_menuView;
 
@@ -180,9 +179,12 @@ private:
   HistoryList m_recentFiles;
   Output* m_output;
   QList<DatabaseInfo*> m_databases;
+  QList<QAction*> m_recentFileActions;
+  QList<QAction*> m_databaseActions;
   int m_currentDatabase;
   QActionGroup* m_actions;
   bool m_showTip;
+  bool m_showPgnSource; // for debugging
 };
 
 

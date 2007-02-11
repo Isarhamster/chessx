@@ -74,13 +74,13 @@ const QImage& BoardTheme::originalSquare(bool dark) const
 
 QString BoardTheme::pieceThemeName() const
 {
-  int start = m_pieceFilename.findRev('/') + 1;
+  int start = m_pieceFilename.lastIndexOf('/') + 1;
   return m_pieceFilename.mid(start + 1, m_pieceFilename.length() - start - 4);
 }
 
 QString BoardTheme::boardThemeName() const
 {
-  int start = m_boardFilename.findRev('/') + 1;
+  int start = m_boardFilename.lastIndexOf('/') + 1;
   return m_boardFilename.mid(start + 1, m_pieceFilename.length() - start - 4);
 }
 

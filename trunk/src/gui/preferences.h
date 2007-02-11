@@ -39,10 +39,11 @@ public slots:
 
 private:
   Ui::PreferencesDialog ui;
-
   void restoreSettings();
   void saveSettings();
   bool selectInCombo(QComboBox* combo, const QString& text);
+  void setButtonColor(QPushButton* button, const QColor& color);
+  QColor buttonColor(const QPushButton* button) const;
 
 signals:
   void reconfigure();

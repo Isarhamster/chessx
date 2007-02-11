@@ -25,7 +25,7 @@ PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : QDialog(parent
 {
   ui.setupUi(this);
 
-  setName("PlayerDialog");
+  setObjectName("PlayerDialog");
   m_database = db;
   connect(ui.findButton, SIGNAL(clicked()), SLOT(findPlayers()));
   connect(ui.playerCombo, SIGNAL(activated(const QString&)), SLOT(showPlayer(const QString&)));
@@ -41,8 +41,8 @@ PlayerDialog::~PlayerDialog()
 void PlayerDialog::configure()
 {
   AppSettings->beginGroup("/Players/");
-  m_showRating = AppSettings->readBoolEntry("rating", true);
-  m_showLimit = AppSettings->readNumEntry("count", 100);
+  m_showRating = AppSettings->value("rating", true).toBool();
+  m_showLimit = AppSettings->value("count", 100).toInt();
   AppSettings->endGroup();
 }
 
@@ -51,17 +51,17 @@ void PlayerDialog::findPlayers(const QString& s)
   // Capitalize first letter
   QString name = s;
   if (!name.isEmpty())
-     name[0] = name[0].upper();
+     name[0] = name[0].toUpper();
   QStringList players = m_database->findPlayers(name, m_showLimit);
   ui.playerCombo->clear();
   if (players.count())
   {
     QString player;
     foreach(player, players)
-      ui.playerCombo->insertItem(player);
-    showPlayer(ui.playerCombo->text(0));
+      ui.playerCombo->addItem(player);
+    showPlayer(ui.playerCombo->itemText(0));
   }
-  ui.playerCombo->setCurrentText(s);
+  ui.playerCombo->setEditText(s);
   show();
 }
 

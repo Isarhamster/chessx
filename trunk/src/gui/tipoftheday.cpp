@@ -35,7 +35,7 @@ TipOfDayDialog::~TipOfDayDialog()
 void TipOfDayDialog::accept()
 {
   AppSettings->beginGroup("/Tips/");
-  AppSettings->writeEntry("showTips", tipDialog.showTipOfDayCheckBox->isChecked());
+  AppSettings->setValue("showTips", tipDialog.showTipOfDayCheckBox->isChecked());
   AppSettings->endGroup();
   QDialog::accept();
 }
@@ -50,11 +50,11 @@ QString TipOfDayDialog::readNextTip()
   if(tipsMap.isEmpty())
     return tr("No tip found");
   AppSettings->beginGroup("/Tips/");
-  int nextTip = AppSettings->readNumEntry("next", 1);
+  int nextTip = AppSettings->value("next", 1).toInt();
   if(nextTip == tipsMap.size())
-    AppSettings->writeEntry("next", 1);
+    AppSettings->setValue("next", 1);
   else
-  AppSettings->writeEntry("next", nextTip + 1);
+  AppSettings->setValue("next", nextTip + 1);
   AppSettings->endGroup();
   return tipsMap.value(nextTip);
 }

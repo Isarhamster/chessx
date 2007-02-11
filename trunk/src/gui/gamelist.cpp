@@ -24,8 +24,8 @@
 
 GameList::GameList(Filter* filter, QWidget* parent) : QTreeView(parent)
 {
-  setName("GameList");
-  setCaption(tr("Game list"));
+  setObjectName("GameList");
+  setWindowTitle(tr("Game list"));
 
   QFont f = font();
   f.setPointSize(f.pointSize() - 1);
@@ -52,7 +52,7 @@ void GameList::configure()
 {
   AppSettings->readLayout(this);
   AppSettings->beginGroup("/GameList");
-  QStringList sections  = AppSettings->readListEntry("sections");
+  QStringList sections  = AppSettings->value("sections").toStringList();
   if (header()->count() == sections.count())
     for (int i = 0; i < header()->count(); i++)
       header()->resizeSection(i, sections[i].toInt());
@@ -66,7 +66,7 @@ void GameList::saveConfig()
   QStringList sections;
   for (int i = 0; i < header()->count(); i++)
     sections.append(QString::number(header()->sectionSize(i)));
-  AppSettings->writeEntry("sections", sections);
+  AppSettings->setValue("sections", sections);
   AppSettings->endGroup();
 }
 

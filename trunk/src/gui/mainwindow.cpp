@@ -58,7 +58,7 @@ bool yesNo(const QString& question, QMessageBox::Icon icon = QMessageBox::Questi
 
 
 MainWindow::MainWindow() : QMainWindow(),
-  m_playerDialog(0), m_helpWindow(0)
+  m_playerDialog(0), m_helpWindow(0), m_showPgnSource(false)
 {
   setObjectName("MainWindow");
 
@@ -153,7 +153,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
   /* Tip of the day */
   AppSettings->beginGroup("/Tips/");
-  m_showTip = AppSettings->readBoolEntry("showTips", true);
+  m_showTip = AppSettings->value("showTips", true).toBool();
   AppSettings->endGroup();
   m_tipDialog = new TipOfDayDialog(this);
 }
@@ -234,23 +234,38 @@ void MainWindow::gameMoveBy(int change)
 
 void MainWindow::updateMenuRecent()
 {
-  m_menuRecent->clear();
-  for (int i = 0; i < 5 && i < m_recentFiles.count(); i++)
-    m_menuRecent->insertItem(QString("&%1: %2").arg(i+1).arg(m_recentFiles[i]),
-                             this, SLOT(slotFileOpenRecent(int)), 0, i);
+  for (int i = 0; i < m_recentFiles.count(); i++)
+  {
+    m_recentFileActions[i]->setVisible(true);
+    m_recentFileActions[i]->setText(QString("&%1: %2").arg(i+1).arg(m_recentFiles[i]));
+    m_recentFileActions[i]->setData(m_recentFiles[i]);
+  }
+  for (int i = m_recentFiles.count(); i < m_recentFileActions.count(); i++)
+    m_recentFileActions[i]->setVisible(false);
 }
 
 void MainWindow::updateMenuDatabases()
 {
-  int i = 0;
-  m_menuDatabases->clear();
-  QListIterator<DatabaseInfo*> it(m_databases);
-  while (it.hasNext() && i < 10)
+  while (m_databases.count() > m_databaseActions.count())
   {
+    QAction* action = new QAction(this);
+    connect(action, SIGNAL(triggered()), SLOT(slotDatabaseChange()));
+    m_databaseActions.append(action);
+    m_menuDatabases->addAction(action);
+  }
+  for (int i = 0; i < m_databases.count(); i++)
+  {
+    m_databaseActions[i]->setVisible(true);
+    m_databaseActions[i]->setData(i);
+    m_databaseActions[i]->setText(QString("&%1: %2").arg(i).arg(m_databases[i]->name()));
     int key = Qt::CTRL + Qt::Key_1 + (i-1);
-    m_menuDatabases->insertItem(QString("&%1: %2").arg(i).arg(it.next()->name()),
-        this, SLOT(slotDatabaseChange(int)), key, i);
-    i++;
+    if (i < 10)
+      m_databaseActions[i]->setShortcut(key);
+  }
+  for (int i = m_databases.count(); i < m_databaseActions.count(); i++)
+  {
+    m_databaseActions[i]->setVisible(false);
+    m_databaseActions[i]->setShortcut(0);
   }
 }
 
@@ -260,7 +275,8 @@ bool MainWindow::openDatabase(const QString& fname)
   for (int i = 0; i < m_databases.count(); i++)
     if (m_databases[i]->database()->filename() == fname)
     {
-      slotDatabaseChange(i);
+      m_currentDatabase = i;
+      slotDatabaseChanged();
       slotStatusMessage(tr("Database %1 already opened.").arg(fname.section('/', -1)));
       return false;
     }
@@ -315,11 +331,11 @@ void MainWindow::slotFileOpen()
     openDatabase(file);
 }
 
-void MainWindow::slotFileOpenRecent(int id)
+void MainWindow::slotFileOpenRecent()
 {
-  QString file = m_recentFiles[id];
-  if (!file.isEmpty())
-    openDatabase(file);
+  QAction *action = qobject_cast<QAction *>(sender());
+  if (action)
+    openDatabase(action->data().toString());
 }
 
 void MainWindow::slotFileClose()
@@ -455,9 +471,9 @@ void MainWindow::slotMoveViewUpdate()
 
 void MainWindow::slotGameMoveWheel(int wheel)
 {
-  if (wheel & Qt::AltButton)
+  if (wheel & Qt::AltModifier)
     if (wheel & BoardView::WheelDown) slotGameMoveLast(); else slotGameMoveFirst();
-  else if (wheel & Qt::ControlButton)
+  else if (wheel & Qt::ControlModifier)
     if (wheel & BoardView::WheelDown) slotGameMoveNextN(); else slotGameMovePreviousN();
   else 
     if (wheel & BoardView::WheelDown) slotGameMoveNext(); else slotGameMovePrevious();
@@ -477,13 +493,16 @@ void MainWindow::slotGameSave()
 void MainWindow::slotGameViewUpdate()
 {
   int ply = game()->ply();
-  m_gameView->setText(m_output->output(game()));
+  if (m_showPgnSource)
+    m_gameView->setPlainText(m_output->output(game()));
+  else
+    m_gameView->setText(m_output->output(game()));
   game()->moveToPly(ply);
 }
 
 void MainWindow::slotGameViewLink(const QUrl& url)
 {
-  if (url.protocol() == "move")
+  if (url.scheme() == "move")
   {
     if (url.path() == "prev") game()->backward();
     else if (url.path() == "next") game()->forward();
@@ -491,7 +510,7 @@ void MainWindow::slotGameViewLink(const QUrl& url)
     else game()->moveToId(url.path().toInt());
     m_boardView->setBoard(game()->board());
   }
-  else if (url.protocol() == "tag")
+  else if (url.scheme() == "tag")
   {
     if (url.path() == "white")
       playerDialog()->findPlayers(game()->tag("White"));
@@ -515,12 +534,9 @@ void MainWindow::slotGameViewLink(const QUrl& url)
   }*/
 }
 
-void MainWindow::slotGameViewToggle()
+void MainWindow::slotGameViewToggle(bool toggled)
 {
-  if (m_gameView->textFormat() != Qt::PlainText)
-    m_gameView->setTextFormat(Qt::PlainText);
-  else
-    m_gameView->setTextFormat(Qt::RichText);
+  m_showPgnSource = toggled;
   slotGameViewUpdate();
 }
 
@@ -533,26 +549,28 @@ void MainWindow::slotFilterChanged()
 void MainWindow::slotFilterLoad(int index)
 {
   gameLoad(index);
-  setActiveWindow();
+  activateWindow();
 }
 
 void MainWindow::slotStatusMessage(const QString& msg)
 {
-  statusBar()->message(msg);
+  statusBar()->showMessage(msg);
+}
+
+void MainWindow::slotDatabaseChange()
+{
+  QAction *action = qobject_cast<QAction *>(sender());
+  if (action)
+    m_currentDatabase = action->data().toInt();
+  slotDatabaseChanged();
 }
 
 void MainWindow::slotDatabaseChanged()
 {
-  setCaption(tr("ChessX - %1").arg(databaseInfo()->name()));
+  setWindowTitle(tr("ChessX - %1").arg(databaseInfo()->name()));
   m_gameList->setFilter(databaseInfo()->filter());
   slotFilterChanged();
   gameLoad(gameIndex());
-}
-
-void MainWindow::slotDatabaseChange(int current)
-{
-  m_currentDatabase = current;
-  slotDatabaseChanged();
 }
 
 QAction* MainWindow::createAction(const QString& name, const char* slot, const QKeySequence& key,
@@ -573,7 +591,16 @@ void MainWindow::setupActions()
   /* File menu */
   QMenu* file = menuBar()->addMenu(tr("&File"));
   file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), Qt::CTRL + Qt::Key_O));
-  m_menuRecent = file->addMenu(tr("&Recent files..."));
+  QMenu* menuRecent = file->addMenu(tr("&Recent files..."));
+  const int MaxRecentFiles = 10;
+  for (int i = 0; i < MaxRecentFiles; ++i)
+  {
+    QAction* action = new QAction(this);
+    action->setVisible(false);
+    connect(action, SIGNAL(triggered()), SLOT(slotFileOpenRecent()));
+    m_recentFileActions.append(action);
+    menuRecent->addAction(action);
+  }
   file->addAction(createAction(tr("&Close"), SLOT(slotFileClose()), Qt::CTRL + Qt::Key_W));
   file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), Qt::CTRL + Qt::Key_Q));
 
@@ -624,15 +651,16 @@ void MainWindow::setupActions()
   settings ->addAction(createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B));
 
   /* Help menu */
-  menuBar()->insertSeparator();
+  menuBar()->addSeparator();
   QMenu *help = menuBar()->addMenu(tr("&Help"));
   help->addAction(createAction(tr("ChessX &help..."), SLOT(slotHelp()), Qt::CTRL + Qt::Key_F10));
   help->addAction(createAction(tr("&About..."), SLOT(slotAbout()) ));
-  help->insertSeparator();
+  help->addSeparator();
   QMenu* debug = help->addMenu(tr("&Debug"));
-  debug->addAction(createAction("Toggle game view format", SLOT(slotGameViewToggle()),
-                                        Qt::Key_F12));
-
+  QAction* source;
+  debug->addAction(source = createAction("Toggle game view format", 0, Qt::Key_F12));
+  source->setCheckable(true);
+  connect(source, SIGNAL(toggled(bool)), SLOT(slotGameViewToggle(bool)));
 }
 
 void MainWindow::slotSearchReverse()

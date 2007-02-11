@@ -23,7 +23,6 @@ int main( int argc, char ** argv )
   AppSettings = new Settings;
   QApplication a(argc, argv);
   MainWindow* mw = new MainWindow;
-  mw->setCaption("ChessX");
   mw->show();
   a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
   int result = a.exec();
