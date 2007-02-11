@@ -109,7 +109,7 @@ QString NagSet::toString() const
 			case ForcedMove:
 			case SingularMove:
 			case WorstMove:
-				moveNag = nagToString((Nag)m_nags[nag]) + " ";
+				moveNag = nagToString((Nag)m_nags[nag]);// + " "; Removed to avoid double spaces after nags.
 				break;
 			case DrawishPosition:
 			case EqualChancesQuietPosition:
@@ -123,10 +123,10 @@ QString NagSet::toString() const
 			case BlackHasADecisiveAdvantage:
 			case WhiteHasACrushingAdvantage: 
 			case BlackHasACrushingAdvantage:
-				evaluationNag = nagToString((Nag)m_nags[nag]) + " ";
+				evaluationNag = nagToString((Nag)m_nags[nag]);// + " "; Removed to avoid double spaces after nags.
 				break;
 			default:
-				otherNags = nagToString((Nag)m_nags[nag]) + " ";
+				otherNags = nagToString((Nag)m_nags[nag]);// + " "; Removed to avoid double spaces after nags.
 				break;
 		}
 	}
@@ -153,7 +153,7 @@ QString NagSet::toPGNString() const
 			case ForcedMove:
 			case SingularMove:
 			case WorstMove:
-				moveNag = "$" + QString::number((Nag)m_nags[nag]) + " ";
+				moveNag = "$" + QString::number((Nag)m_nags[nag]);// + " "; Removed to avoid double spaces after nags.
 				break;
 			case DrawishPosition:
 			case EqualChancesQuietPosition:
@@ -167,10 +167,10 @@ QString NagSet::toPGNString() const
 			case BlackHasADecisiveAdvantage:
 			case WhiteHasACrushingAdvantage: 
 			case BlackHasACrushingAdvantage:
-				evaluationNag = "$" + QString::number((Nag)m_nags[nag]) + " ";
+				evaluationNag = "$" + QString::number((Nag)m_nags[nag]);// + " "; Removed to avoid double spaces after nags.
 				break;
 			default:
-				otherNags += "$" + QString::number((Nag)m_nags[nag]) + " ";
+				otherNags += "$" + QString::number((Nag)m_nags[nag]);// + " "; Removed to avoid double spaces after nags.
 				break;
 		}
 	}
