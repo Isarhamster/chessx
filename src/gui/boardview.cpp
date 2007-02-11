@@ -28,7 +28,7 @@
 
 using namespace Qt;
 
-BoardView::BoardView(QWidget* parent, const char* name) : QWidget(parent, name),
+BoardView::BoardView(QWidget* parent) : QWidget(parent),
    m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare)
 {
   m_theme = new BoardTheme;
@@ -180,12 +180,12 @@ void BoardView::setShowFrame(bool value)
 void BoardView::configure()
 {
   AppSettings->beginGroup("/Board/");
-  m_showFrame = AppSettings->readBoolEntry("showFrame", true);
-  m_theme->setSquareType(BoardTheme::BoardSquare(AppSettings->readNumEntry("squareType", 0)));
-  m_theme->setLightColor(QColor(AppSettings->readEntry("lightColor", "#d0d0d0")));
-  m_theme->setDarkColor(QColor(AppSettings->readEntry("darkColor", "#a0a0a0")));
-  QString pieceTheme = AppSettings->readEntry("pieceTheme", "default");
-  QString boardTheme = AppSettings->readEntry("boardTheme", "default");
+  m_showFrame = AppSettings->value("showFrame", true).toBool();
+  m_theme->setSquareType(BoardTheme::BoardSquare(AppSettings->value("squareType", 0).toInt()));
+  m_theme->setLightColor(AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
+  m_theme->setDarkColor(AppSettings->value("darkColor", "#a0a0a0").value<QColor>());
+  QString pieceTheme = AppSettings->value("pieceTheme", "default").toString();
+  QString boardTheme = AppSettings->value("boardTheme", "default").toString();
   setTheme(pieceTheme, boardTheme);
   AppSettings->endGroup();
   update();

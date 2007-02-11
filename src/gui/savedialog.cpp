@@ -32,12 +32,12 @@ SaveDialog::~SaveDialog()
 
 int SaveDialog::exec(Game* game)
 {
-  ui.whiteCombo->setCurrentText(game->tag("White"));
+  ui.whiteCombo->setEditText(game->tag("White"));
   ui.blackEloEdit->setText(game->tag("WhiteElo"));
-  ui.blackCombo->setCurrentText(game->tag("Black"));
+  ui.blackCombo->setEditText(game->tag("Black"));
   ui.blackEloEdit->setText(game->tag("BlackElo"));
-  ui.eventCombo->setCurrentText(game->tag("Event"));
-  ui.siteCombo->setCurrentText(game->tag("Site"));
+  ui.eventCombo->setEditText(game->tag("Event"));
+  ui.siteCombo->setEditText(game->tag("Site"));
   ui.roundEdit->setText(game->tag("Round"));
   ui.dateEdit->setText(game->tag("Date"));
   int result = QDialog::exec();

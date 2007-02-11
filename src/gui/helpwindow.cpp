@@ -23,7 +23,7 @@
 HelpWindow::HelpWindow()
 {
   Q_INIT_RESOURCE(helpwindow);
-  setName("HelpWindow");
+  setObjectName("HelpWindow");
   configure();
 
   m_browser = new QTextBrowser( this );
@@ -201,7 +201,8 @@ void HelpWindow::configure()
 {
   /** store default - read initial help page to/from the ChessX settings file */
   AppSettings->beginGroup("/helpbrowser/");
-  m_home = QDir(AppSettings->readEntry("home", AppSettings->dataPath() + "/doc/index.html")).absPath();
+  m_home = QDir(AppSettings->value("home", AppSettings->dataPath() 
+      + "/doc/index.html").toString()).absolutePath();
   AppSettings->endGroup();
 }
 

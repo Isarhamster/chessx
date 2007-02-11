@@ -30,8 +30,7 @@ SOURCES += mainwindow.cpp \
 	   main.cpp
 TARGET = gui
 TEMPLATE = app
-INCLUDEPATH += ../database \
-    ../compatibility
+INCLUDEPATH += ../database 
 RESOURCES     += helpwindow.qrc \
                  tipoftheday.qrc
 TARGET = ../../bin/chessdatabase
@@ -40,6 +39,5 @@ PRE_TARGETDEPS = ../database/libdatabase.a
 
 include(../common.pro)
 CONFIG += uic
-QT += qt3support
 
 

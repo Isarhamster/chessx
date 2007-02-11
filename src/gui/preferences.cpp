@@ -15,16 +15,14 @@
  ***************************************************************************/
 
 #include "preferences.h"
-#include "../database/settings.h"
+#include "settings.h"
 
-#include <qcheckbox.h>
-#include <qcolordialog.h>
-#include <qcombobox.h>
-#include <qdir.h>
-#include <q3groupbox.h>
-#include <qpushbutton.h>
-#include <qspinbox.h>
-#include <q3widgetstack.h>
+#include <QCheckBox>
+#include <QColorDialog>
+#include <QComboBox>
+#include <QDir>
+#include <QPushButton>
+#include <QSpinBox>
 
 PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 {
@@ -52,16 +50,14 @@ int PreferencesDialog::exec()
 
 void PreferencesDialog::slotBoardLightColor()
 {
-  QColor light = QColorDialog::getColor(ui.boardLightButton->paletteBackgroundColor());
-  if (light.isValid())
-    ui.boardLightButton->setPaletteBackgroundColor(light);
+  QColor color = QColorDialog::getColor(buttonColor(ui.boardLightButton));
+  setButtonColor(ui.boardLightButton, color);
 }
 
 void PreferencesDialog::slotBoardDarkColor()
 {
-  QColor dark = QColorDialog::getColor(ui.boardDarkButton->paletteBackgroundColor());
-  if (dark.isValid())
-    ui.boardDarkButton->setPaletteBackgroundColor(dark);
+  QColor color = QColorDialog::getColor(buttonColor(ui.boardDarkButton));
+  setButtonColor(ui.boardDarkButton, color);
 }
 
 void PreferencesDialog::slotBoardMode(int mode)
@@ -76,62 +72,79 @@ void PreferencesDialog::restoreSettings()
 {
   // Read Board settings
   AppSettings->beginGroup("/Board/");
-  ui.boardTypeCombo->setCurrentItem(AppSettings->readNumEntry("squareType", 0));
-  ui.boardFrameCheck->setChecked(AppSettings->readBoolEntry("showFrame", true));
-  QString pieceTheme = AppSettings->readEntry("pieceTheme", "default");
-  QString boardTheme = AppSettings->readEntry("boardTheme", "default");
-  ui.boardLightButton->setPaletteBackgroundColor(AppSettings->readEntry("lightColor", "#d0d0d0"));
-  ui.boardDarkButton->setPaletteBackgroundColor(AppSettings->readEntry("darkColor", "#a0a0a0"));
+  ui.boardTypeCombo->setCurrentIndex(AppSettings->value("squareType", 0).toInt());
+  ui.boardFrameCheck->setChecked(AppSettings->value("showFrame", true).toBool());
+  QString pieceTheme = AppSettings->value("pieceTheme", "default").toString();
+  QString boardTheme = AppSettings->value("boardTheme", "default").toString();
+  QVariant color = AppSettings->value("lightColor", "#d0d0d0");
+  setButtonColor(ui.boardLightButton, color.value<QColor>());
+  color = AppSettings->value("darkColor", "#a0a0a0");
+  setButtonColor(ui.boardDarkButton, color.value<QColor>());
   AppSettings->endGroup();
 
-  QStringList themes = QDir(AppSettings->dataPath() + "/themes").entryList("*.png");
+  QStringList themes = QDir(AppSettings->dataPath() + "/themes").entryList(QStringList("*.png"));
   for (QStringList::Iterator it = themes.begin(); it != themes.end(); ++it)
   {
     (*it).truncate((*it).length() - 4);
-    ui.pieceThemeCombo->insertItem(*it);
-    ui.boardThemeCombo->insertItem(*it);
+    ui.pieceThemeCombo->addItem(*it);
+    ui.boardThemeCombo->addItem(*it);
   }
   selectInCombo(ui.pieceThemeCombo, pieceTheme);
   selectInCombo(ui.boardThemeCombo, boardTheme);
 
   // Read Players settings
   AppSettings->beginGroup("/Players/");
-  ui.playersRatingsCheck->setChecked(AppSettings->readBoolEntry("rating", true));
-  ui.playersSpinbox->setValue(AppSettings->readNumEntry("count", 100));
+  ui.playersRatingsCheck->setChecked(AppSettings->value("rating", true).toBool());
+  ui.playersSpinbox->setValue(AppSettings->value("count", 100).toInt());
   AppSettings->endGroup();
 
   //Read general settings
   AppSettings->beginGroup("/Tips/");
-  ui.tipOfTheDay->setChecked(AppSettings->readBoolEntry("showTips", true));
+  ui.tipOfTheDay->setChecked(AppSettings->value("showTips", true).toBool());
   AppSettings->endGroup();
 }
 
 void PreferencesDialog::saveSettings()
 {
   AppSettings->beginGroup("/Board/");
-  AppSettings->writeEntry("squareType", ui.boardTypeCombo->currentItem());
-  AppSettings->writeEntry("showFrame", ui.boardFrameCheck->isChecked());
-  AppSettings->writeEntry("pieceTheme", ui.pieceThemeCombo->currentText());
-  AppSettings->writeEntry("boardTheme", ui.boardThemeCombo->currentText());
-  AppSettings->writeEntry("lightColor", ui.boardLightButton->paletteBackgroundColor().name());
-  AppSettings->writeEntry("darkColor", ui.boardDarkButton->paletteBackgroundColor().name());
+  AppSettings->setValue("squareType", ui.boardTypeCombo->currentIndex());
+  AppSettings->setValue("showFrame", ui.boardFrameCheck->isChecked());
+  AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());
+  AppSettings->setValue("boardTheme", ui.boardThemeCombo->currentText());
+  AppSettings->setValue("lightColor", buttonColor(ui.boardLightButton));
+  AppSettings->setValue("darkColor", buttonColor(ui.boardDarkButton));
   AppSettings->endGroup();
   AppSettings->beginGroup("/Players/");
-  AppSettings->writeEntry("rating", ui.playersRatingsCheck->isChecked());
-  AppSettings->writeEntry("count", ui.playersSpinbox->value());
+  AppSettings->setValue("rating", ui.playersRatingsCheck->isChecked());
+  AppSettings->setValue("count", ui.playersSpinbox->value());
   AppSettings->endGroup();
   AppSettings->beginGroup("/Tips/");
-  AppSettings->writeEntry("showTips",ui.tipOfTheDay->isChecked());
+  AppSettings->setValue("showTips",ui.tipOfTheDay->isChecked());
   AppSettings->endGroup();
 }
 
 bool PreferencesDialog::selectInCombo(QComboBox* combo, const QString& text)
 {
   for (int i = 0; i<combo->count(); i++)
-    if (combo->text(i) == text)
+    if (combo->itemText(i) == text)
     {
-      combo->setCurrentItem(i);
+      combo->setCurrentIndex(i);
       return true;
     }
   return false;
+}
+
+void PreferencesDialog::setButtonColor(QPushButton* button, const QColor& color)
+{
+  if (color.isValid())
+  {
+     QPalette palette;
+     palette.setColor(button->backgroundRole(), color);
+     button->setPalette(palette);
+  }
+}
+
+QColor PreferencesDialog::buttonColor(const QPushButton* button) const
+{
+  return button->palette().color(button->backgroundRole());
 }
