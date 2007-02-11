@@ -140,7 +140,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
   /* Restoring layouts */
   AppSettings->readLayout(this);
-  //AppSettings->
   emit reconfigure();
 
   /* Reset board - not earlier, as all widgets have to be created. */
@@ -150,6 +149,10 @@ MainWindow::MainWindow() : QMainWindow(),
   m_statusFilter = new QLabel(statusBar());
   statusBar()->addPermanentWidget(m_statusFilter);
   slotStatusMessage(tr("Ready."));
+
+  /* Activate clipboard */
+  updateMenuDatabases();
+  slotDatabaseChanged();
 
   /* Tip of the day */
   AppSettings->beginGroup("/Tips/");
@@ -166,7 +169,8 @@ void MainWindow::show()
 }
 
 MainWindow::~MainWindow()
-{  qDeleteAll(m_databases.begin(), m_databases.end());
+{
+  qDeleteAll(m_databases.begin(), m_databases.end());
   delete m_saveDialog;
   delete m_playerDialog;
   delete m_helpWindow;
@@ -202,6 +206,15 @@ const DatabaseInfo* MainWindow::databaseInfo() const
 Database* MainWindow::database()
 {
   return databaseInfo()->database();
+}
+
+QString MainWindow::databaseName(int index) const
+{
+  if (index < 0) index = m_currentDatabase;
+  QString name = m_databases[index]->name();
+  if (name.isEmpty())
+    return tr("[Clipboard]");
+  return name;
 }
 
 Game* MainWindow::game()
@@ -257,7 +270,7 @@ void MainWindow::updateMenuDatabases()
   {
     m_databaseActions[i]->setVisible(true);
     m_databaseActions[i]->setData(i);
-    m_databaseActions[i]->setText(QString("&%1: %2").arg(i).arg(m_databases[i]->name()));
+    m_databaseActions[i]->setText(QString("&%1: %2").arg(i).arg(databaseName(i)));
     int key = Qt::CTRL + Qt::Key_1 + (i-1);
     if (i < 10)
       m_databaseActions[i]->setShortcut(key);
@@ -542,7 +555,7 @@ void MainWindow::slotGameViewToggle(bool toggled)
 
 void MainWindow::slotFilterChanged()
 {
-  m_statusFilter->setText(tr(" %1: %2/%3 ").arg(databaseInfo()->name())
+  m_statusFilter->setText(tr(" %1: %2/%3 ").arg(databaseName())
       .arg(databaseInfo()->filter()->count()).arg(database()->count()));
 }
 
@@ -569,7 +582,7 @@ void MainWindow::slotDatabaseChange()
 
 void MainWindow::slotDatabaseChanged()
 {
-  setWindowTitle(tr("ChessX - %1").arg(databaseInfo()->name()));
+  setWindowTitle(tr("ChessX - %1").arg(databaseName()));
   m_gameList->setFilter(databaseInfo()->filter());
   slotFilterChanged();
   gameLoad(gameIndex());
@@ -676,5 +689,4 @@ void MainWindow::slotSearchReset()
   databaseInfo()->filter()->setAll(true);
   slotFilterChanged();
 }
-
 
