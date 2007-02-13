@@ -36,6 +36,8 @@ public slots:
   void saveConfig();
   /** Change current database */
   void setFilter(Filter* filter);
+  /** Update filter (called after changing filter outside) */
+  void updateFilter();
   /** Perform simple search */
   void simpleSearch(int tag);
 private slots:

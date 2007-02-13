@@ -681,12 +681,14 @@ void MainWindow::setupActions()
 void MainWindow::slotSearchReverse()
 {
   databaseInfo()->filter()->reverse();
+  m_gameList->updateFilter();
   slotFilterChanged();
 }
 
 void MainWindow::slotSearchReset()
 {
   databaseInfo()->filter()->setAll(true);
+  m_gameList->updateFilter();
   slotFilterChanged();
 }
 

@@ -94,7 +94,12 @@ void GameList::simpleSearch(int tagid)
     return;
   TagSearch ts(tag, value);
   m_model->filter()->executeSearch(ts);
-  m_model->updateFilter();
+  updateFilter();
   emit searchDone();
+}
+
+void GameList::updateFilter()
+{
+  m_model->updateFilter();
 }
 
