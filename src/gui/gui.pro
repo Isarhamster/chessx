@@ -48,7 +48,7 @@ win32 {
   }
 }
 else { 
-  TARGET = ../../../bin/chessdatabase
+  TARGET = ../../bin/chessdatabase
   LIBS += ../database/libdatabase.a
   PRE_TARGETDEPS += ../database/libdatabase.a
 }
