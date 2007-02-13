@@ -1,5 +1,8 @@
 # Main application
 
+include(../common.pro)
+CONFIG += uic
+
 FORMS += playerdialog.ui \
          preferences.ui \
          boardsetup.ui \
@@ -28,16 +31,25 @@ SOURCES += mainwindow.cpp \
 	   chessbrowser.cpp \
            tipoftheday.cpp \
 	   main.cpp
-TARGET = gui
 TEMPLATE = app
 INCLUDEPATH += ../database 
-RESOURCES     += helpwindow.qrc \
+RESOURCES += helpwindow.qrc \
                  tipoftheday.qrc
-TARGET = ../../bin/chessdatabase
-LIBS += ../database/libdatabase.a
-PRE_TARGETDEPS = ../database/libdatabase.a
 
-include(../common.pro)
-CONFIG += uic
-
+win32 {
+  TARGET = ../../../bin/chessdatabase
+  release {
+     LIBS += ../database/release/libdatabase.a
+     PRE_TARGETDEPS += ../database/release/libdatabase.a
+  }
+  else {
+     LIBS += ../database/debug/libdatabase.a
+     PRE_TARGETDEPS += ../database/debug/libdatabase.a
+  }
+}
+else { 
+  TARGET = ../../../bin/chessdatabase
+  LIBS += ../database/libdatabase.a
+  PRE_TARGETDEPS += ../database/libdatabase.a
+}
 
