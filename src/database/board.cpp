@@ -1517,11 +1517,19 @@ QString Board::moveToSAN(const Move& move)
 		moveString += 'a' + (to & 7);
 		moveString += '1' + (to >> 3);
 	}
+
+   if (move.isPromotion()) {
+      moveString += '=' + pieceToChar(move.promotionPiece()).toUpper();
+   }
 	
 	HistoryItem historyItem = doMove(move);
-	if(isCheck()) {
+
+	if(isCheckmate()) {
+		moveString += '#';
+	} else if (isCheck()) {
 		moveString += '+';
-	}
+   }
+      
 	undoMove(move, historyItem);
 	
    enableHashing();
