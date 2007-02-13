@@ -23,16 +23,17 @@
 #include <QStringList>
 
 #include "filter.h"
+#include "database.h"
 #include "game.h"
 
-class FilterModelBase : public QAbstractItemModel
+class DatabaseModel: public QAbstractItemModel
 {
    Q_OBJECT
 
    public:
-      /** Constructs a FilterModelBase object using a pointer to a Filter */
-      FilterModelBase(Filter *filter, QObject *parent = 0);
-      ~FilterModelBase();
+      /** Constructs a DatabaseModel object using a pointer to a Filter */
+      DatabaseModel(Database* database, QObject *parent = 0);
+      ~DatabaseModel();
 
       /** Returns the number of rows in the model */
       virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -51,14 +52,12 @@ class FilterModelBase : public QAbstractItemModel
       virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
       /** No children */
       virtual bool hasChildren(const QModelIndex& parent = QModelIndex()) const {return !parent.isValid();}
-      /** Returns the filter on which the model opperates */
-      /* Was used for debugging, but might be useful */
-      /** Changes current filter. Resets any views. */
-      virtual void setFilter(Filter* filter);
+      /** Changes current database. Resets any views. */
+      virtual void setDatabase(Database* database);
 
    private:
       /** A pointer to filter on which the model opperates */
-      Filter* m_filter;
+      Database* m_database;
       /** The column names of the model */
       QStringList m_columnNames;
       /** A pointer to a game object, to hold the retrieved information 
@@ -77,7 +76,7 @@ class FilterModel : public QSortFilterProxyModel
     /** @return filter used for getting data */
     Filter* filter()  {return m_filter;}
     /** Update filter after a change */
-    void updateFilter() {filterChanged();}
+    void updateFilter();
   private:
     Filter* m_filter;
 };
