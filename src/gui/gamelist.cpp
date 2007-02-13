@@ -45,7 +45,7 @@ GameList::GameList(Filter* filter, QWidget* parent) : QTreeView(parent)
 
 void GameList::itemSelected(const QModelIndex& index)
 {
-  emit selected(index.row());
+  emit selected(m_model->mapToSource(index).row());
 }
 
 void GameList::configure()
