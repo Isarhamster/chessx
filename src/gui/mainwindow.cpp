@@ -234,6 +234,7 @@ void MainWindow::gameLoad(int index)
     index = database()->count() - 1;
   databaseInfo()->loadGame(index);
   m_boardView->setBoard(game()->board());
+  m_gameList->selectGame(index);
   qobject_cast<QWidget*>(m_gameView->parent())->setWindowTitle(tr("Game: %1").arg(index+1));
   slotMoveViewUpdate();
   slotGameViewUpdate();

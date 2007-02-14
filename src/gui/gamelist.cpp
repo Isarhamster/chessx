@@ -98,6 +98,14 @@ void GameList::simpleSearch(int tagid)
   emit searchDone();
 }
 
+void GameList::selectGame(int index)
+{
+  QModelIndex m = m_model->sourceModel()->index(index, 0);
+  m = m_model->mapFromSource(m);
+  if (m.isValid())
+    setCurrentIndex(m);
+}
+
 void GameList::updateFilter()
 {
   m_model->updateFilter();
