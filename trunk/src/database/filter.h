@@ -23,7 +23,6 @@
 #include <QBitArray>
 
 #include "common.h"
-#include "database.h"
 #include "search.h"
 #include "query.h"
 #include "tristatetree.h"
@@ -31,61 +30,60 @@
 class Database;
 
 /**
-   The Filter class represents a set of games, typically found when searching a database.
+   The Filter class represents a set of games. It is always associated with
+   some Database object. On creation it has the same size as database,
+   but it is not automatically resized when database size changes.
 */
 
 class Filter
 {
 public:
-  /** Construct filter of given size. Add all games to the filter */
+  /** Possible operations on filter. */
+  enum Operator {And, Or, Xor, Minus};
+  /** Construct filter of given size. Add all games to the filter. */
   Filter(Database* database);
-  /** Construct filter from another filter */
+  /** Construct filter from another filter. */
   Filter(const Filter& filter);
-  /** Construct filter from a bit array */
-  Filter(const QBitArray& bitArray);
   /** Assignment operator. */
   Filter operator=(const Filter& filter);
-  /** Destructor */
+  /** Destructor. */
   ~Filter();
-  /** Include a game in the filter. */
-  void add(int game);
-  /** Remove a game from the filter. */
-  void remove(int game);
-  /** @return a pointer to the database on which the filter is */
+  /** @return a pointer to the database on which the filter is. */
   Database* database();
-  /** Set the value for a game */
+  /** Add or remove game @p game . Does nothing if the game is not in filter. */
   void set(int game, bool value);
-  /** Set all games in the filter to the same value */
+  /** Set all games in the filter to the same value. */
   void setAll(bool value);
-  /** @return true if the game is in the filter */
+  /** @return true if the game is in the filter. */
   bool contains(int game) const;
-  /** @return the index of nth game in the filter (zero based)*/ 
-  int gameIndex(int nth) const;
-  /** @return number of games in the filter */
+  /** @return number of games in the filter. */
   int count() const;
-  /** @return the size of the filter */
+  /** @return the size of the filter. */
   int size() const;
-  /** Resize the filter to the specified size */
-  void resize(int size);
-  /** Reverse the filter (complement set) */
+  /** @return first game in the filter or @p -1 if filter is empty. */
+  int firstGame() const;
+  /** @return last game in the filter or @p -1 if filter is empty. */
+  int lastGame() const;
+  /** @return next game in the filter or @p -1 if there is none. */
+  int nextGame(int current) const;
+  /** @return previous game in the filter or @p -1 if there is none. */
+  int previousGame(int current) const;
+  /** Resize the filter to the specified size. Keeps the current filter content.
+  If the filter is increased, added game will be initialized to @p false (not in filter). */
+  void resize(int newsize);
+  /** Reverse the filter (complement set). */
   void reverse();
-  /** Intersect filter with another filter */
-  void intersect(const Filter& filter);
-  /** Add the games of another filter to the filter */
-  void add(const Filter& filter);
-  /** Remove the games of another filter from the filter */
-  void remove(const Filter& filter);
-  /** @return the filter as a bit array (returns copy in Qt3 due, implicitly shared in Qt4)*/
-  QBitArray asBitArray() const;
-
-  /** Executes search 'search' on database m_database, 
-     and sets this filter to contain the results */
-   void executeSearch(const Search& search);
+  /** Join filter with another filter, using one of possible operators @p op .
+  Does nothing if filters have different sizes. */
+  void join(const Filter& filter, Operator op);
+  /** Executes search 'search' on database m_database,
+     and sets this filter to contain the results. */
+  void executeSearch(const Search& search);
    /** Executes search 'search' on database m_database,
-      and modifies this filter with the results */
+      and modifies this filter with the results. */
    void executeSearch(const Search& search, Search::Operator searchOperator);
    /** Executes query 'query' on database m_database,
-       and sets this filter to contain the results */
+       and sets this filter to contain the results. */
    void executeQuery(Query& query);
    /** Set the state for leaf 'leaf' in m_triStateTree and return the state of the tree. */
    TriStateTree::State setState(int leaf, TriStateTree::State state);
@@ -97,7 +95,7 @@ public:
    TriStateTree::State state(int leaf) const;
 
 protected:
-  /** returns the filter as a implicitely shared QBitArray */
+  /** returns the filter as a implicitely shared QBitArray. */
   QBitArray bitArray() const;
 
   int m_count;

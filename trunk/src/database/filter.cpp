@@ -2,10 +2,9 @@
                           filter.cpp  -  holds search results in memory
                              -------------------
     begin                : 27/11/2005
-    copyright            : (C) 2005 Ejner Borgbjerg
-                           <ejner@users.sourceforge.net>
-                           (C) 2006 William Hoggarth
-                           <whoggarth@users.sourceforge.net>
+    copyright            : (C) 2005 Ejner Borgbjerg <ejner@users.sourceforge.net>
+                           (C) 2006 William Hoggarth <whoggarth@users.sourceforge.net>
+                           (C) 2006 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -17,8 +16,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtDebug>
-
+#include "database.h"
 #include "filter.h"
 #include "filtersearch.h"
 #include "qpair.h"
@@ -37,44 +35,17 @@ Filter::Filter(const Filter& filter)
   m_count = filter.m_count;
 }
 
-Filter::Filter(const QBitArray& bitArray)
-{
-  m_count = 0;
-  m_bitArray = new QBitArray(bitArray);
-  for(int i = 0; i < (int)m_bitArray->size(); i++) 
-    m_count += m_bitArray->at(i);
-}
-
 Filter Filter::operator=(const Filter& filter)
 {
-  QBitArray* bitArray = new QBitArray(filter.bitArray());
   delete m_bitArray;
-  m_bitArray = bitArray;
-  m_count = filter.m_count;
+  m_bitArray = new QBitArray(filter.bitArray());
+  m_count = filter.count();
   return *this;
 }
 
 Filter::~Filter()
 {
   delete m_bitArray;
-}
-
-void Filter::add(int game)
-{
-  if (game < size() && !m_bitArray->at(game))
-  {
-    m_bitArray->setBit(game, true);
-    m_count++;
-  }
-}
-
-void Filter::remove(int game)
-{
-  if (game < size() && m_bitArray->at(game))
-  {
-    m_bitArray->setBit(game, false);
-    m_count++;
-  }
 }
 
 Database* Filter::database()
@@ -84,7 +55,7 @@ Database* Filter::database()
 
 void Filter::set(int game, bool value)
 {
-  if (game < size() && m_bitArray->at(game) != value)
+  if (game < size() && contains(game) != value)
   {
     m_bitArray->setBit(game, value);
     if (value)
@@ -114,12 +85,43 @@ int Filter::size() const
   return (int)m_bitArray->size();
 }
 
-void Filter::resize(int size)
+int Filter::firstGame() const
 {
-  delete m_bitArray;
-  m_bitArray = new QBitArray(size);
-  m_bitArray->fill(true);
-  m_count = size;
+  if (!m_count) return -1;
+  for (int i = 0; i < size(); i++)
+    if (contains(i)) return i;
+  return -1;
+}
+
+int Filter::lastGame() const
+{
+  if (!m_count) return -1;
+  for (int i = size() - 1; i >= 0; i--)
+    if (contains(i)) return i;
+  return -1;
+}
+
+int Filter::previousGame(int current) const
+{
+  if (!m_count) return -1;
+  for (int i = current - 1; i >= 0; i--)
+    if (contains(i)) return i;
+  return -1;
+}
+
+int Filter::nextGame(int current) const
+{
+  if (!m_count) return -1;
+  for (int i = current + 1; i < size(); i++)
+    if (contains(i)) return i;
+  return -1;
+}
+
+void Filter::resize(int newsize)
+{
+  for (int i = newsize; i < size(); i++)  // Decrease count by number of removed games
+    if (contains(i)) m_count--;
+  m_bitArray->resize(newsize);
 }
 
 void Filter::reverse()
@@ -129,45 +131,20 @@ void Filter::reverse()
     m_bitArray->toggleBit(i);
 }
 
-void Filter::intersect(const Filter& filter)
+ const bool ops[4][2][2] = {{{0, 0}, {0, 1}} /* And */, {{0, 1}, {1, 1}} /* Or */,
+           {{0, 1}, {1, 0}} /* Xor */, {{0, 0}, {1, 0}} /* Minus */};
+
+
+void Filter::join(const Filter& filter, Operator op)
 {
   if (filter.size() != size())
     return;
   m_count = 0;
   for(int i = 0; i < size(); i++)
   {
-    m_bitArray->setBit(i, m_bitArray->at(i) && filter.m_bitArray->at(i));
-    m_count += m_bitArray->at(i);
+    m_bitArray->setBit(i, ops[op][contains(i)][filter.contains(i)]);
+    m_count += contains(i);
   }
-}
-
-void Filter::add(const Filter& filter)
-{
-  if (filter.size() != size())
-    return;
-  m_count = 0;
-  for(int i = 0; i < size(); i++)
-  {
-    m_bitArray->setBit(i, m_bitArray->at(i) && filter.m_bitArray->at(i));
-    m_count += m_bitArray->at(i);
-  }
-}
-
-void Filter::remove(const Filter& filter)
-{
-  if (filter.size() != size())
-    return;
-  m_count = 0;
-  for (int i = 0; i < size(); i++) 
-  {
-    m_bitArray->setBit(i, m_bitArray->at(i) && ~filter.m_bitArray->at(i));
-    m_count += m_bitArray->at(i);
-  }
-}
-
-QBitArray Filter::asBitArray() const
-{
-  return QBitArray(*m_bitArray);
 }
 
 QBitArray Filter::bitArray() const
@@ -263,23 +240,15 @@ void Filter::executeQuery(Query& query)
     } else
     {
       /* If the query is not combined with this or any other filter
-       * there is no way the tree could have been solved, so just check
-       * the game */
+       * there is no way the tree could have been solved, so just check the game */
       m_database->searchGame(searchIndex);
       gamesSearched++;
     }
 
     /* Update the filter with the result of the tree */
-    if (m_triStateTree.state() == TriStateTree::True)
-    {
-      set(searchIndex, true);
-    } else
-    {
-      set(searchIndex, false);
-    }
+    set(searchIndex, m_triStateTree.state() == TriStateTree::True);
   }
 
   m_database->finalizeSearch();
   //qDebug ("%d Games searched\n%d Games skipped\n%d Total",gamesSearched,size()-gamesSearched,size());
 }
-
