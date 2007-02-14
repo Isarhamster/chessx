@@ -22,6 +22,8 @@
 class Filter;
 class FilterModel;
 
+/** The GameList class displays list of the games in current filter. */
+
 class GameList : public QTreeView
 {
   Q_OBJECT
@@ -34,12 +36,14 @@ public slots:
   void configure();
   /** Store current configuration */
   void saveConfig();
-  /** Change current database */
+  /** Change current filter/database */
   void setFilter(Filter* filter);
   /** Update filter (called after changing filter outside) */
   void updateFilter();
   /** Perform simple search */
   void simpleSearch(int tag);
+  /** Select and show current game in the list */
+  void selectGame(int index);
 private slots:
   void itemSelected(const QModelIndex& index);
 signals:
