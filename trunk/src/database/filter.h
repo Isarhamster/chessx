@@ -19,10 +19,11 @@
 
 #ifndef __FILTER_H__
 #define __FILTER_H__
-#include "common.h"
-#include <QBitArray>
-#include "database.h"
 
+#include <QBitArray>
+
+#include "common.h"
+#include "database.h"
 #include "search.h"
 #include "query.h"
 #include "tristatetree.h"
@@ -36,12 +37,8 @@ class Database;
 class Filter
 {
 public:
-  /** Flag for which games to include in filter */
-  enum WhichGames { AllGames, NoGames };
-  /** Construct filter of given size */
-  Filter(int size, WhichGames whichGames = AllGames);
-  /** Construct filter of given size */
-  Filter(Database* database, WhichGames whichGames = AllGames);
+  /** Construct filter of given size. Add all games to the filter */
+  Filter(Database* database);
   /** Construct filter from another filter */
   Filter(const Filter& filter);
   /** Construct filter from a bit array */
@@ -54,8 +51,6 @@ public:
   void add(int game);
   /** Remove a game from the filter. */
   void remove(int game);
-  /** Set pointer to the database for which the filter is */
-  void setDatabase(Database* database);
   /** @return a pointer to the database on which the filter is */
   Database* database();
   /** Set the value for a game */
@@ -71,7 +66,7 @@ public:
   /** @return the size of the filter */
   int size() const;
   /** Resize the filter to the specified size */
-  void resize(int size, Filter::WhichGames whichGames = AllGames);
+  void resize(int size);
   /** Reverse the filter (complement set) */
   void reverse();
   /** Intersect filter with another filter */
@@ -108,9 +103,6 @@ protected:
   int m_count;
   QBitArray* m_bitArray;
 
-  // for the speeding up of sequential access
-  mutable int m_lastNth;
-  mutable int m_lastIndex;
   Database* m_database;
   TriStateTree m_triStateTree; 
 
