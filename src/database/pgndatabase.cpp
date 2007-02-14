@@ -186,37 +186,36 @@ bool PgnDatabase::remove(int index)
 
 bool PgnDatabase::remove(const Filter& filter)
 {
-	if(!m_isOpen || filter.size() != m_count) {
-		return false;
-	}
-	
-	startCopy();
-	
-	int index;
-	int startIndex = 0;
-	int newIndex = 0;
-	int rangeSize;
-	int newOffset = 0;
-		
-	for(int game = 0; game < filter.count(); game++) {
-		index = filter.gameIndex(game);
-		if(startIndex < index) {
-			rangeSize = offset(index) - offset(startIndex);
-			copyRange(startIndex, index - 1, newIndex, newOffset);
-			newIndex += index - startIndex;
-			newOffset = + rangeSize;
-		}
-		startIndex = index + 1;
-	}
-	
-	if(startIndex < m_count) {
-		copyRange(startIndex, m_count - 1, newIndex, newOffset);
-	}
-	
-	finishCopy();
-	m_count -= filter.count();
-	
-	return true;
+  if(!m_isOpen || filter.size() != m_count) {
+    return false;
+  }
+
+  startCopy();
+
+  int startIndex = 0;
+  int newIndex = 0;
+  int rangeSize;
+  int newOffset = 0;
+  for(int index = 0; index < filter.count(); index++)
+    if (filter.contains(index))
+    {
+      if(startIndex < index) {
+        rangeSize = offset(index) - offset(startIndex);
+        copyRange(startIndex, index - 1, newIndex, newOffset);
+        newIndex += index - startIndex;
+        newOffset = + rangeSize;
+      }
+      startIndex = index + 1;
+    }
+
+  if(startIndex < m_count) {
+    copyRange(startIndex, m_count - 1, newIndex, newOffset);
+  }
+
+  finishCopy();
+  m_count -= filter.count();
+
+  return true;
 }
 
 void PgnDatabase::compact()
@@ -282,6 +281,9 @@ PgnDatabase::MoveStatList PgnDatabase::moveStats(const MoveList& line)
    }
 
    //get position and filter for final position in line (using any cached filter found previously)
+#warning Needs porting to new Filter API
+  // I don't know what is going on here : mrudolf
+   /*
    Filter filter(count());
    if(closestKey) {
       filter = Filter(m_moveStatCache.object(closestKey)->bitFilter);
@@ -325,6 +327,7 @@ PgnDatabase::MoveStatList PgnDatabase::moveStats(const MoveList& line)
    cacheEntry->moveStatList = moveStatList;
    cacheEntry->bitFilter = filter.asBitArray();
    m_moveStatCache.insert(key, cacheEntry, filter.size());
+  */
 
    return moveStatList;
 } 

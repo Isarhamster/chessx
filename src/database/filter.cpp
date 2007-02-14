@@ -23,127 +23,58 @@
 #include "filtersearch.h"
 #include "qpair.h"
 
-Filter::Filter(const int size, const Filter::WhichGames whichGames)
+Filter::Filter(Database* database)
 {
-	if(whichGames == AllGames) {
-		m_bitArray = new QBitArray(size);
-		m_bitArray->fill(true);
-		m_count = size;
-	} else {
-		m_bitArray = new QBitArray(size);
-		m_bitArray->fill(false);
-		m_count = 0;
-	}
-	
-	m_lastNth = 0;
-	m_lastIndex = 0;
-}
-
-Filter::Filter(Database* database, WhichGames whichGames)
-{
-   m_database = database;
-   int size = m_database->count();
-	if(whichGames == AllGames) {
-		m_bitArray = new QBitArray(size);
-		m_bitArray->fill(true);
-		m_count = size;
-	} else {
-		m_bitArray = new QBitArray(size);
-		m_bitArray->fill(false);
-		m_count = 0;
-	}
-	
-	m_lastNth = 0;
-	m_lastIndex = 0;
+ m_database = database;
+ m_count = m_database->count();
+ m_bitArray = new QBitArray(m_count);
+ m_bitArray->fill(true);
 }
 
 Filter::Filter(const Filter& filter)
 {
-	m_bitArray = new QBitArray(filter.bitArray());
-	m_count = filter.m_count;
-	m_lastNth = filter.m_lastNth;
-	m_lastIndex = filter.m_lastIndex;
+  m_bitArray = new QBitArray(filter.bitArray());
+  m_count = filter.m_count;
 }
 
 Filter::Filter(const QBitArray& bitArray)
 {
-	m_count = 0;
-	m_bitArray = new QBitArray(bitArray);
-
-	for(int i = 0; i < (int)m_bitArray->size(); i++) {
-		m_count += m_bitArray->at(i);
-	}
-	
-	m_lastNth = 0;
-	m_lastIndex = 0;
+  m_count = 0;
+  m_bitArray = new QBitArray(bitArray);
+  for(int i = 0; i < (int)m_bitArray->size(); i++) 
+    m_count += m_bitArray->at(i);
 }
 
 Filter Filter::operator=(const Filter& filter)
 {
-	QBitArray* bitArray = new QBitArray(filter.bitArray());
-	delete m_bitArray;
-	m_bitArray = bitArray;
-	
-	m_count = filter.m_count;
-	m_lastNth = filter.m_lastNth;
-	m_lastIndex = filter.m_lastIndex;
-	
-	return *this;
+  QBitArray* bitArray = new QBitArray(filter.bitArray());
+  delete m_bitArray;
+  m_bitArray = bitArray;
+  m_count = filter.m_count;
+  return *this;
 }
 
 Filter::~Filter()
 {
-	delete m_bitArray;
+  delete m_bitArray;
 }
 
 void Filter::add(int game)
 {
-	if(game >= (int)m_bitArray->size()) {
-		return;
-	}
-
-	if(!m_bitArray->at(game)) {
-		//bit arrays are no longer explictly shared in Qt4
-		#if QT_VERSION < 0x040000
-		m_bitArray->detach();
-		#endif
-		
-		m_bitArray->setBit(game, true);
-		m_count++;
-		
-		if(game < m_lastNth) {
-			m_lastNth++;
-		}
-	}
+  if (game < size() && !m_bitArray->at(game))
+  {
+    m_bitArray->setBit(game, true);
+    m_count++;
+  }
 }
 
 void Filter::remove(int game)
 {
-	if(game >= (int)m_bitArray->size()) {
-		return;
-	}
-	
-  if(m_bitArray->at(game)) {
-		//bit arrays are no longer explictly shared in Qt4
-		#if QT_VERSION < 0x040000
-		m_bitArray->detach();
-		#endif
-		
-		m_bitArray->setBit(game, false);
-		m_count--;
-		
-		if(game < m_lastNth) {
-			m_lastNth--;
-		}	else if(game == m_lastNth) {
-			m_lastNth = 0;
-			m_lastIndex = 0;
-		}
-	}
-}
-
-void Filter::setDatabase(Database* database)
-{
-   m_database = database;
+  if (game < size() && m_bitArray->at(game))
+  {
+    m_bitArray->setBit(game, false);
+    m_count++;
+  }
 }
 
 Database* Filter::database()
@@ -153,196 +84,97 @@ Database* Filter::database()
 
 void Filter::set(int game, bool value)
 {
-	if(game >= (int)m_bitArray->size()) {
-		return;
-	}
-
-	if(m_bitArray->at(game) != value) {
-		//bit arrays are no longer explictly shared in Qt4
-		#if QT_VERSION < 0x040000
-		m_bitArray->detach();
-		#endif
-		
-		m_bitArray->setBit(game, value);
-		if(value) {
-			m_count++;
-			
-			if(game < m_lastNth) {
-				m_lastNth++;
-			}
-		} else {
-			m_count--;
-			
-			if(game < m_lastNth) {
-				m_lastNth--;
-			}	else if(game == m_lastNth) {
-				m_lastNth = 0;
-				m_lastIndex = 0;
-			}
-		}
-	}
+  if (game < size() && m_bitArray->at(game) != value)
+  {
+    m_bitArray->setBit(game, value);
+    if (value)
+      m_count++;
+    else m_count--;
+  }
 }
 
 void Filter::setAll(bool value)
 {
-	//bit arrays are no longer explictly shared in Qt4
-	#if QT_VERSION < 0x040000
-	m_bitArray->detach();
-	#endif
-	
-	m_bitArray->fill(value);
-	m_count = value * (int)m_bitArray->size();
-	
-	m_lastNth = 0;
-	m_lastIndex = 0;
+  m_bitArray->fill(value);
+  m_count = value ? size() : 0;
 }
 
 bool Filter::contains(const int game) const
 {
-	return m_bitArray->at(game);
-}
-
-int Filter::gameIndex(int nth) const
-{
-	if(nth >= m_count) {
-		return -1;
-	}
-	
-	int i;
-	int count;
-	
-	if(nth > m_lastNth) {
-		i = m_lastIndex + 1;
-		count = m_lastNth;
-	} else {
-		i = 0;
-		count = -1;
-   }
-	
-	while (count < nth) {
-		count += m_bitArray->at(i);
-		i++;
-	}
-
-	m_lastNth = nth;
-	m_lastIndex = i - 1;
-	
-	return i - 1;
+  return m_bitArray->at(game);
 }
 
 int Filter::count() const
 {
-	return m_count;
+  return m_count;
 }
 
-int Filter::size() const{
-	return (int)m_bitArray->size();
-}
-
-void Filter::resize(int size, Filter::WhichGames whichGames)
+int Filter::size() const
 {
-	delete m_bitArray;
-	
-	if(whichGames == AllGames) {
-		m_bitArray = new QBitArray(size);
-		m_bitArray->fill(true);
-		m_count = size;
-	} else {
-		m_bitArray = new QBitArray(size);
-		m_bitArray->fill(false);
-		m_count = 0;
-	}
-	
-	m_lastNth = 0;
-	m_lastIndex = 0;
+  return (int)m_bitArray->size();
+}
+
+void Filter::resize(int size)
+{
+  delete m_bitArray;
+  m_bitArray = new QBitArray(size);
+  m_bitArray->fill(true);
+  m_count = size;
 }
 
 void Filter::reverse()
 {
-	//bit arrays are no longer explictly shared in Qt4
-	#if QT_VERSION < 0x040000
-	m_bitArray->detach();
-	#endif
-
-	m_count = m_bitArray->size() - m_count;
-
-	for(int i = 0; i < (int)m_bitArray->size(); i++) {
-		m_bitArray->toggleBit(i);
-	}
-	
-	m_lastNth = 0;
-	m_lastIndex = 0;
+  m_count = size() - m_count;
+  for (int i = 0; i < size(); i++)
+    m_bitArray->toggleBit(i);
 }
 
 void Filter::intersect(const Filter& filter)
 {
-	//bit arrays are no longer explictly shared in Qt4
-	#if QT_VERSION < 0x040000
-	m_bitArray->detach();
-	#endif
-
-	m_count = 0;
-
-	for(int i = 0; i < (int)m_bitArray->size(); i++) {
-		m_bitArray->setBit(i, m_bitArray->at(i) && filter.m_bitArray->at(i));
-		m_count += m_bitArray->at(i);
-	}
-	
-	m_lastNth = 0;
-	m_lastIndex = 0;
+  if (filter.size() != size())
+    return;
+  m_count = 0;
+  for(int i = 0; i < size(); i++)
+  {
+    m_bitArray->setBit(i, m_bitArray->at(i) && filter.m_bitArray->at(i));
+    m_count += m_bitArray->at(i);
+  }
 }
 
-void Filter::add(const Filter& filter){
-	//bit arrays are no longer explictly shared in Qt4
-	#if QT_VERSION < 0x040000
-	m_bitArray->detach();
-	#endif
-	
-	m_count = 0;
-
-	for(int i = 0; i < (int)m_bitArray->size(); i++) {
-		m_bitArray->setBit(i, m_bitArray->at(i) || filter.m_bitArray->at(i));
-		m_count += m_bitArray->at(i);
-	}
-	
-	m_lastNth = 0;
-	m_lastIndex = 0;
+void Filter::add(const Filter& filter)
+{
+  if (filter.size() != size())
+    return;
+  m_count = 0;
+  for(int i = 0; i < size(); i++)
+  {
+    m_bitArray->setBit(i, m_bitArray->at(i) && filter.m_bitArray->at(i));
+    m_count += m_bitArray->at(i);
+  }
 }
 
 void Filter::remove(const Filter& filter)
 {
-	//bit arrays are no longer explictly shared in Qt4
-	#if QT_VERSION < 0x040000
-	m_bitArray->detach();
-	#endif
-	
-	m_count = 0;
-
-	for(int i = 0; i < (int)m_bitArray->size(); i++) {
-		m_bitArray->setBit(i, m_bitArray->at(i) && ~filter.m_bitArray->at(i));
-		m_count += m_bitArray->at(i);
-	}
-	
-	m_lastNth = 0;
-	m_lastIndex = 0;
+  if (filter.size() != size())
+    return;
+  m_count = 0;
+  for (int i = 0; i < size(); i++) 
+  {
+    m_bitArray->setBit(i, m_bitArray->at(i) && ~filter.m_bitArray->at(i));
+    m_count += m_bitArray->at(i);
+  }
 }
 
 QBitArray Filter::asBitArray() const
 {
-	QBitArray copy = *m_bitArray;
-	
-	//bit arrays are no longer explictly shared in Qt4
-	#if QT_VERSION < 0x040000
-	copy.detach();
-	#endif
-	
-	return copy;
+  return QBitArray(*m_bitArray);
 }
 
 QBitArray Filter::bitArray() const
 {
-	return *m_bitArray;
+  return *m_bitArray;
 }
+
 TriStateTree::State Filter::setState(int leaf, TriStateTree::State state)
 {
    return m_triStateTree.setState(leaf,state);
@@ -362,80 +194,92 @@ TriStateTree::State Filter::setState(int leaf, bool state)
 
 void Filter::executeSearch(const Search& search)
 {
-	//Turn search into a query and execute it
-	Query query;
-	query.append(search);
-	executeQuery(query);
+  //Turn search into a query and execute it
+  Query query;
+  query.append(search);
+  executeQuery(query);
 }
 void Filter::executeSearch(const Search& search, Search::Operator searchOperator)
 {
-	//Turn search into a query and execute it
-	Query query;
-   FilterSearch filterSearch(*this);
-	query.append(search);
-   query.append(filterSearch);
-   query.append(searchOperator);
-
-	executeQuery(query);
+  //Turn search into a query and execute it
+  Query query;
+  FilterSearch filterSearch(*this);
+  query.append(search);
+  query.append(filterSearch);
+  query.append(searchOperator);
+  executeQuery(query);
 }
 void Filter::executeQuery(Query& query)
 {
-   QVector<QPair<FilterSearch, int> > filterSearches;
-   int filterSearchCount = 0;
-   int gamesSearched = 0; //For debugging
+  QVector <QPair <FilterSearch,int> > filterSearches;
+  int filterSearchCount = 0;
+  int gamesSearched = 0;        //For debugging
 
-   m_database->initSearch(query, this);
-	m_triStateTree = TriStateTree(query);
+  m_database->initSearch(query, this);
+  m_triStateTree = TriStateTree(query);
 
-   /* Make a list of all filter searches */
-   int leafNode = 0;
-	for(int element = 0; element < query.count(); element++) {
-		if(query.isElementSearch(element)) {
-			if (query.search(element)->type() == Search::FilterSearch) {
-            filterSearches.append(QPair<FilterSearch, int>(*static_cast<const FilterSearch*>(query.search(element)), leafNode));
-         }		
-         leafNode++;
+  /* Make a list of all filter searches */
+  int leafNode = 0;
+  for (int element = 0; element < query.count(); element++)
+  {
+    if (query.isElementSearch(element))
+    {
+      if (query.search(element)->type() == Search::FilterSearch)
+      {
+        filterSearches.append(QPair < FilterSearch,
+            int >(*static_cast < const FilterSearch * >(query.search(element)), leafNode));
       }
-   }
-   filterSearchCount = (int)filterSearches.size();
-	
-   /* Iterates through all games in the database.
-    * Don't worry, a search won't be performed unless necessary */
-   for(int searchIndex = 0; searchIndex < size(); searchIndex++) {
-		m_triStateTree.clear();
+      leafNode++;
+    }
+  }
+  filterSearchCount = (int) filterSearches.size();
 
-      /* Add filter searches to tree. This could solve the tree in certain cases
-       * making it unecessary to call searchGame() */
-      if (filterSearchCount) {
-         for(int search = 0; search < filterSearchCount; search++) {
-            if(m_triStateTree.setState(filterSearches.at(search).second,filterSearches.at(search).first.contains(searchIndex))) {
-               /* This means the tree evaluated to true */
-               break;
-            }
-         } 
-         /* So if the filter(s) wasn't enough to solve the tree,
-          * lets see what we can find in the game */
-         if (m_triStateTree.state() == TriStateTree::Unknown) {
-            m_database->searchGame(searchIndex);
-            gamesSearched++;
-         }
-      } else {
-         /* If the query is not combined with this or any other filter
-          * there is no way the tree could have been solved, so just check
-          * the game */
-         m_database->searchGame(searchIndex);
-         gamesSearched++;
+  /* Iterates through all games in the database.
+   * Don't worry, a search won't be performed unless necessary */
+  for (int searchIndex = 0; searchIndex < size(); searchIndex++)
+  {
+    m_triStateTree.clear();
+
+    /* Add filter searches to tree. This could solve the tree in certain cases
+     * making it unecessary to call searchGame() */
+    if (filterSearchCount)
+    {
+      for (int search = 0; search < filterSearchCount; search++)
+      {
+        if (m_triStateTree.setState(filterSearches.at(search).second,
+                filterSearches.at(search).first.contains(searchIndex)))
+        {
+          /* This means the tree evaluated to true */
+          break;
+        }
       }
-		
-      /* Update the filter with the result of the tree */
-		if(m_triStateTree.state() == TriStateTree::True) {
-			set(searchIndex, true);
-		} else {
-         set(searchIndex, false);
+      /* So if the filter(s) wasn't enough to solve the tree,
+       * lets see what we can find in the game */
+      if (m_triStateTree.state() == TriStateTree::Unknown)
+      {
+        m_database->searchGame(searchIndex);
+        gamesSearched++;
       }
-	}
-   
-   m_database->finalizeSearch();
-   //qDebug ("%d Games searched\n%d Games skipped\n%d Total",gamesSearched,size()-gamesSearched,size());
-	
+    } else
+    {
+      /* If the query is not combined with this or any other filter
+       * there is no way the tree could have been solved, so just check
+       * the game */
+      m_database->searchGame(searchIndex);
+      gamesSearched++;
+    }
+
+    /* Update the filter with the result of the tree */
+    if (m_triStateTree.state() == TriStateTree::True)
+    {
+      set(searchIndex, true);
+    } else
+    {
+      set(searchIndex, false);
+    }
+  }
+
+  m_database->finalizeSearch();
+  //qDebug ("%d Games searched\n%d Games skipped\n%d Total",gamesSearched,size()-gamesSearched,size());
 }
+
