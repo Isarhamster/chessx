@@ -24,9 +24,9 @@
 
 #include "engine.h"
 
-/**
-	 The WBEngine class provides a simple interface to a Winboard chess engine
- */
+/** @ingroup Database    
+  The WBEngine class provides an interface to a Winboard chess engine.
+*/
 
 class WBEngine : public Engine
 {

@@ -29,7 +29,7 @@
 
 class Database;
 
-/**
+/** @ingroup Database     
    The Filter class represents a set of games. It is always associated with
    some Database object. On creation it has the same size as database,
    but it is not automatically resized when database size changes.

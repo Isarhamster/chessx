@@ -33,7 +33,7 @@ enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
     TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, 
     TooManyWhiteKings, TooManyBlackKings, IncorrectCheck};
 
-/**
+/** @ingroup Database  
    The Board class represents a chess position.
    Pieces are kept directly on the board which is internally represented as simple array[0..63].
    You can easily and quickly make and undo moves, although undoing moves requires keeping track

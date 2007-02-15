@@ -27,7 +27,7 @@
 #include "partialdate.h"
 #include "nag.h"
 
-/**
+/** @ingroup Database  
    The Game class represents a chess game. Moves and variations can be added
 	 and removed. Moves can have associated comments and nag values. For methods
 	 that accept a variation number 0 is the main line, with 1 and above being the

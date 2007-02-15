@@ -708,6 +708,16 @@ void MainWindow::setupActions()
   connect(source, SIGNAL(toggled(bool)), SLOT(slotGameViewToggle(bool)));
 }
 
+/*
+void MainWindow::slotSearchBoard()
+{
+  BoardSearch bs(game()->board());
+
+  databaseInfo()->filter()->executeSearch(bs);
+  m_gameList->updateFilter();
+  slotFilterChanged();
+}*/
+
 void MainWindow::slotSearchReverse()
 {
   databaseInfo()->filter()->reverse();

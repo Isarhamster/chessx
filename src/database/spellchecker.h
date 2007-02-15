@@ -20,7 +20,7 @@
 #include <QStringList>
 #include <QTextStream>
 
-/**
+/** @ingroup Database
 	 The Spellchecker class provides spellchecker functionality.
 	 
 	 The Spellchecker can import spellings from specially formatted text files, or

@@ -28,7 +28,9 @@
 class Filter;
 
 
-/**
+/** @defgroup Database */
+
+/** @ingroup Database
    The Database class is abstract, providing a common interface for all
    database types. There are methods for the loading and saving of games,
    and for performing searches and queries.

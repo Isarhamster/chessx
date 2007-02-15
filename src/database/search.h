@@ -47,6 +47,7 @@ class NullSearch : public Search
       virtual ~NullSearch();
       virtual Type type() const;
 };
+
 /** Defines a search for a given position */
 class PositionSearch : public Search
 {
@@ -105,23 +106,29 @@ class DateSearch : public Search
 		PartialDate m_maxDate;
 };
 
-/** Defines a tag based search */
+
+/** The TagSearch class is used for tag search. Only simple substring searches
+are supported for now. */
 class TagSearch : public Search
 {
-	public:
-		TagSearch(const QString& tag = "tag", const QString& value = "value");
-		virtual TagSearch* clone() const;
-		~TagSearch();
-		Type type() const;
-		
-		QString tag() const;
-		QString value() const;
-		void setTag(const QString& tag);
-		void setValue(const QString& value);
-		
-	private:
-		QString m_tag;
-		QString m_value;
+public:
+  /** Simple constructor */
+  TagSearch(const QString& tag = "tag", const QString& value = "value");
+  /** Makes a deep copy of TagSearch object. Probably obsolete */
+  virtual TagSearch* clone() const;
+  ~TagSearch();
+  Type type() const;
+  /** @return tag to be searched */
+  QString tag() const;
+  /** @return value to be matched. */
+  QString value() const;
+  /** Set tag to be searched */
+  void setTag(const QString& tag);
+  /** Set value to be matched */
+  void setValue(const QString& value);
+private:
+  QString m_tag;
+  QString m_value;
 };
 
 #endif // __SEARCH_H__

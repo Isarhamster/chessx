@@ -187,8 +187,8 @@ void DateSearch::setMaxDate(PartialDate maxDate)
  * **********************/
 TagSearch::TagSearch(const QString& tag, const QString& value)
 {
-	m_tag = tag;
-	m_value = value;
+  m_tag = tag;
+  m_value = value;
 }
 
 TagSearch* TagSearch::clone() const

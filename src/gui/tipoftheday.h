@@ -22,6 +22,8 @@
 #include "ui_tipoftheday.h"
 #include <QMap>
 
+/** @ingroup GUI 
+The TipOfDayDialog class is a dialog to shows tips. */
 class TipOfDayDialog: public QDialog
 {
   Q_OBJECT

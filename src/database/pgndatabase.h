@@ -37,8 +37,8 @@
 #include "tags.h"
 #include "index.h"
 
-/**
-   PgnDatabase provides database access to PGN files.
+/** @ingroup Database
+   The PgnDatabase class provides database access to PGN files.
    The class is derived from the Database class, providing methods for the 
    loading and saving of games, and for performing searches and queries.
 */

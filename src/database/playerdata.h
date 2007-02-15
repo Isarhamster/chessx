@@ -24,6 +24,9 @@
 #include <QList>
 #include <partialdate.h>
 
+/** @ingroup Database  
+The PlayerData class holds information about single player.
+*/
 class PlayerData
 {
 public:

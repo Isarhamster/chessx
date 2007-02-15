@@ -21,13 +21,14 @@
 #include "common.h"
 #include <QList>
 
-/** The IndexItem class holds one item that is listed in a index
- * It contains essential game header information that is kept in
- * memory for fast access. It is used in conjunction with the Tags
- * class. For most items it stores the id that refers to the relevant
- * tag item in the Tags instance. Where convenient, the actual value is
- * stored instead of the id.
- */
+/** @ingroup Database  
+ The IndexItem class holds one item that is listed in a index
+ It contains essential game header information that is kept in
+ memory for fast access. It is used in conjunction with the Tags
+ class. For most items it stores the id that refers to the relevant
+ tag item in the Tags instance. Where convenient, the actual value is
+ stored instead of the id.
+*/
 
 class IndexItem {
    public:

@@ -26,6 +26,10 @@
 #include "database.h"
 #include "game.h"
 
+/** @ingroup Database  
+  The DatabaseModel class is an interface to Database used with Qt
+  Model/View architecture. 
+*/
 class DatabaseModel: public QAbstractItemModel
 {
    Q_OBJECT
@@ -65,6 +69,11 @@ class DatabaseModel: public QAbstractItemModel
       Game* m_game;
 };
 
+/** @ingroup Database  
+  The FilterModel class is an interface to Filter used with Qt
+  Model/View architecture. It uses QSortFilterProxyModel
+  class to filter items from DataModel class.
+*/
 class FilterModel : public QSortFilterProxyModel
 {
   Q_OBJECT

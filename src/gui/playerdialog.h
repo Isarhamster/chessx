@@ -22,6 +22,8 @@
 
 class PlayerDatabase;
 
+/** @ingroup GUI 
+The PlayerDialog class is a dialog to browse player information. */
 class PlayerDialog : public QDialog
 {
   Q_OBJECT

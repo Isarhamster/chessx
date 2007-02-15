@@ -22,7 +22,7 @@
 
 #include "common.h"
 
-/**
+/** @ingroup GUI
    The BoardTheme class contains set of pixmaps and options to
    define current board theme. Themes are read from INI files pointing
    to set of external pixmaps.

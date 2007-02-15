@@ -43,6 +43,14 @@ class QMenu;
 class QActionGroup;
 class QTextBrowser;
 
+/** 
+@defgroup GUI
+*/
+
+/*
+@ingroup GUI
+The MainWindow class represents main ChessX window. */
+
 class MainWindow: public QMainWindow
 {
   Q_OBJECT
@@ -134,6 +142,8 @@ public slots:
   void slotFileClose();
   /** Quit ChessX. Ask for confirmation before */
   void slotFileQuit();
+  /** Find current position */
+ // void slotSearchBoard();
   /** Reset current filter */
   void slotSearchReset();
   /** Reverse current filter */

@@ -20,6 +20,9 @@
 
 #include <QTextBrowser>
 
+/** @ingroup GUI 
+   The ChessBrowser class is a slightly modified QTextBrowser 
+   that handles internal pseudo-links. */
 class ChessBrowser : public QTextBrowser
 {
   Q_OBJECT

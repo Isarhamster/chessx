@@ -22,7 +22,7 @@
 
 class Board;
 
-/**
+/** @ingroup Database     
    The Move class represents abstract moves.
    Moves are independent of current position (no piece/check/capture flags are set). Both source and destination squares
    are represented as numbers 0..63.

@@ -21,6 +21,9 @@
 #include <QMap>
 #include <QStringList>
 
+/** @ingroup Database  
+The OutputOptions class manages options for @ref Output class. 
+*/
 class OutputOptions
 {
    public : 
