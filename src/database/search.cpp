@@ -50,25 +50,31 @@ Search::Type NullSearch::type() const
 PositionSearch::PositionSearch()
 {
 }
+
 PositionSearch::PositionSearch(const Board& position)
 {
    setPosition(position);
 }
+
 PositionSearch* PositionSearch::clone() const
 {
-	return new PositionSearch(*this);
+  return new PositionSearch(*this);
 }
+
 PositionSearch::~PositionSearch()
 {
 }
+
 Search::Type PositionSearch::type() const
 {
    return Search::PositionSearch;
 }
+
 Board PositionSearch::position() const
 {
    return m_position;
 }
+
 void PositionSearch::setPosition(const Board& position)
 {
    m_position.fromFEN(position.toFEN());
@@ -166,20 +172,7 @@ bool DateSearch::withinDateRange(PartialDate date) const
 void DateSearch::setDateRange(PartialDate minDate, PartialDate maxDate)
 {
 	Q_ASSERT(minDate < maxDate);
-	
 	m_minDate = minDate;
-	m_maxDate = maxDate;
-}
-
-void DateSearch::setMinDate(PartialDate minDate)
-{
-	Q_ASSERT(minDate < m_maxDate);
-	m_minDate = minDate;
-}
-
-void DateSearch::setMaxDate(PartialDate maxDate)
-{
-	Q_ASSERT(maxDate > m_minDate);
 	m_maxDate = maxDate;
 }
 

@@ -18,8 +18,10 @@
 
 /** @ingroup Database
 The PlayerDatabase class is used to acces player data.
-@todo optimize storage - QString is said to serialize as UTF-16
-@todo maybe consider changing to a portable pure C++ format instead?
+
+@todo 
+- optimize storage - QString is said to serialize as UTF-16
+- maybe consider changing to a portable pure C++ format instead?
 */
 
 #ifndef __PLAYERDATABASE_H__
