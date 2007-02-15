@@ -41,6 +41,7 @@
 #include <QDebug>
 #include <QDockWidget>
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
@@ -518,6 +519,13 @@ void MainWindow::slotGameLoadRandom()
   gameLoad(databaseInfo()->filter()->findGame(random));
 }
 
+void MainWindow::slotGameLoadChosen()
+{
+  int index = QInputDialog::getInteger(0, tr("Load Game"), tr("Game number:"), gameIndex()+1,
+                                       1, database()->count());
+  gameLoad(index - 1);
+}
+
 void MainWindow::slotGameSave()
 {
   if (m_saveDialog->exec(game()) == QMessageBox::Ok)
@@ -655,6 +663,7 @@ void MainWindow::setupActions()
   loadMenu->addAction(createAction(tr("&Last"), SLOT(slotGameLoadLast()), Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
   loadMenu->addAction(createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::CTRL + Qt::Key_Down));
   loadMenu->addAction(createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::CTRL + Qt::Key_Up));
+  loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
   loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
 
   /* Game->Go to submenu */
