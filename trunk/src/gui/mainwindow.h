@@ -143,7 +143,7 @@ public slots:
   /** Quit ChessX. Ask for confirmation before */
   void slotFileQuit();
   /** Find current position */
- // void slotSearchBoard();
+ void slotSearchBoard();
   /** Reset current filter */
   void slotSearchReset();
   /** Reverse current filter */
