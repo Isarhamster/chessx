@@ -2,10 +2,9 @@
                           search.h  -  Holds different types of searches
                              -------------------
     begin                : 06/12/2005
-    copyright            : (C) 2005 Marius Roets
-                           <saidinwielder@users.sourceforge.net>
-									(C) 2006 William Hoggarth
-									<whoggarth@users.sourceforge.net>
+    copyright            : (C) 2005-2006 Marius Roets <saidinwielder@users.sourceforge.net>
+                           (C) 2006 William Hoggarth <whoggarth@users.sourceforge.net>
+                           (C) 2006 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -24,90 +23,130 @@ class Query;
 #include "board.h"
 #include "partialdate.h"
 
-/** The Search class is an abstract base class that represents a 
- * search on one criteria.
- */
-struct Search 
+/** @ingroup Database
+The Search class is an abstract base class that represents a search on one criteria.
+@todo
+- Operators for joining may be obsolete.
+- Cloning may be obsolete
+- Type may be replaced by dynamic typecasting.
+- Or and And are the same, they probably should be joined.
+*/
+class Search
 {
-   enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch }; //1 per subclass to allow static downcast
-   enum Operator { NullOperator, Not, And, Or, Add, Remove }; //Add is effectively the same as Or
+public:
+  enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch};
+  /** Operator for joining filters */
+  enum Operator {NullOperator, Not, And, Or, Add, Remove }; 
 
+  /** Standard constructor. */
    Search();
-	virtual Search* clone() const = 0;
-   virtual ~Search()=0;
-   virtual Type type() const = 0;
+  /** Cloning search object - probably obsolete */
+  virtual Search* clone() const = 0;
+  /** Standard destructor. */
+  virtual ~Search() = 0;
+  virtual Type type() const = 0;
 };
 
-/** Undefined search */
+/** @ingroup Database
+The NullSearch class is empty search, doing nothing. */
 class NullSearch : public Search
 {
-   public :
-      NullSearch();
-		virtual NullSearch* clone() const;
-      virtual ~NullSearch();
-      virtual Type type() const;
+  public :
+    NullSearch();
+  virtual NullSearch* clone() const;
+    virtual ~NullSearch();
+    virtual Type type() const;
 };
 
-/** Defines a search for a given position */
+/** @ingroup Database
+The PositionSearch class is a search that checks for given position. */
 class PositionSearch : public Search
 {
-   public :
-      PositionSearch();
-      PositionSearch(const Board& position);
-		virtual PositionSearch* clone() const;
-      virtual ~PositionSearch();
-      virtual Search::Type type() const;
-      Board position() const;
-      void setPosition(const Board& position);
-   private :
-      Board m_position;
+public:
+  /** Empty constructor. */
+  PositionSearch();
+  /** Standard constructor. */
+  PositionSearch(const Board& position);
+  /** Object cloning - probably obsolete. */
+  virtual PositionSearch *clone() const;
+  /** Standard destructor. */
+  virtual ~PositionSearch();
+  /** Type - probably obsolete. */
+  virtual Search::Type type() const;
+  /** @return sought position. */
+  Board position() const;
+  /** Sets sought position. */
+  void setPosition(const Board & position);
+private:
+  Board m_position;
 };
-/** Defines a search based on the elo ratings of both players */
+
+/** @ingroup Database
+The EloSearch class is used for searching both white and black player Elo. */
 class EloSearch : public Search
 {
-   public :
-      EloSearch(int minWhiteElo=0, int maxWhiteElo=4000, int minBlackElo=0, int maxBlacElo=4000);
-		virtual EloSearch* clone() const;
-      virtual ~EloSearch();
-      virtual Type type() const;
-      int minWhiteElo() const;
-      int maxWhiteElo() const;
-      int minBlackElo() const;
-      int maxBlackElo() const;
-      bool withinEloRange(int whiteElo, int blackElo) const;
-      void setEloSearch(int minWhiteElo=0, int maxWhiteElo=4000, int minBlackElo=0, int maxBlacElo=4000);
-
-   private :
-      int m_minWhiteElo;
-      int m_maxWhiteElo;
-      int m_minBlackElo;
-      int m_maxBlackElo;
+public:
+  /** Standard constructor. */
+  EloSearch(int minWhiteElo = 0, int maxWhiteElo = 4000, int minBlackElo = 0, int maxBlacElo =
+      4000);
+  /** Cloning - probably obsolete. */
+  virtual EloSearch *clone() const;
+  /** Standard destructor. */
+  virtual ~EloSearch();
+  /** Type - probably obsolete. */
+  virtual Type type() const;
+  /** @return minimum Elo of white player. */
+  int minWhiteElo() const;
+  /** @return maximum Elo of white player. */
+  int maxWhiteElo() const;
+  /** @return minimum Elo of black player. */
+  int minBlackElo() const;
+  /** @return maximum Elo of black player. */
+  int maxBlackElo() const;
+  /** @return @p true if given ratings are within accepted ranges. */
+  bool withinEloRange(int whiteElo, int blackElo) const;
+  /** Set acceptable rating ranges. */
+  void setEloSearch(int minWhiteElo = 0, int maxWhiteElo = 4000, int minBlackElo =
+      0, int maxBlacElo = 4000);
+private:
+  int m_minWhiteElo;
+  int m_maxWhiteElo;
+  int m_minBlackElo;
+  int m_maxBlackElo;
 };
 
-/** Defines a search based on a date range */
+/** @ingroup Database
+The DataSearch class defines a search based on a date range/ */
 class DateSearch : public Search
 {
-	public:
-		DateSearch();
-		DateSearch(PartialDate minDate, PartialDate maxDate);
-		virtual DateSearch* clone() const;
-		~DateSearch();
-		Type type() const;
-		
-		PartialDate minDate() const;
-		PartialDate maxDate() const;
-		bool withinDateRange(PartialDate date) const;
-		void setDateRange(PartialDate minDate, PartialDate maxDate);
-		void setMinDate(PartialDate minDate);
-		void setMaxDate(PartialDate maxDate);
-	
-	private:
-		PartialDate m_minDate;
-		PartialDate m_maxDate;
+public:
+  /** Standard constructor. */
+  DateSearch();
+  /** Constructor for searching games in given time period. */
+  DateSearch(PartialDate minDate, PartialDate maxDate);
+  /** Object cloning - probably obsolete. */
+  virtual DateSearch *clone() const;
+  /** Standard destructor. */
+  ~DateSearch();
+  /** Type - probably obsolete. */
+  Type type() const;
+  /** @return beginning of the acceptable period. */
+  PartialDate minDate() const;
+  /** @return end of the acceptable period. */
+  PartialDate maxDate() const;
+  /** @return @p true if given data is within acceptable period. */
+  bool withinDateRange(PartialDate date) const;
+  /** Sets whole period. */
+  void setDateRange(PartialDate minDate, PartialDate maxDate);
+
+private:
+  PartialDate m_minDate;
+  PartialDate m_maxDate;
 };
 
 
-/** The TagSearch class is used for tag search. Only simple substring searches
+/** @ingroup Database
+The TagSearch class is used for tag search. Only simple substring searches
 are supported for now. */
 class TagSearch : public Search
 {
@@ -116,8 +155,10 @@ public:
   TagSearch(const QString& tag = "tag", const QString& value = "value");
   /** Makes a deep copy of TagSearch object. Probably obsolete */
   virtual TagSearch* clone() const;
+  /** Standard destructor. */
   ~TagSearch();
-  Type type() const;
+  /** Type - probably obsolete. */
+  Search::Type type() const;
   /** @return tag to be searched */
   QString tag() const;
   /** @return value to be matched. */
