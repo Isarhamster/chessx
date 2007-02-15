@@ -67,7 +67,7 @@ protected:
   int gameIndex() const;
   /** Open database */
   bool openDatabase(const QString& fname);
-  /** Load given game */
+  /** Load game @p index. Does nothing if @p index is not correct. */
   void gameLoad(int index);
   /** Make given number of moves in current game */
   void gameMoveBy(int change);
@@ -105,13 +105,13 @@ public slots:
   /** Browse current game by mouse wheel */
   void slotGameMoveWheel(int wheel);
   /** Load first game */
-  void slotGameLoadFirst()  {gameLoad(0);}
+  void slotGameLoadFirst();
   /** Load next game */
-  void slotGameLoadNext()  {gameLoad(gameIndex()+1);}
+  void slotGameLoadNext();
   /** Load previous game */
-  void slotGameLoadPrevious() {gameLoad(gameIndex()-1);}
+  void slotGameLoadPrevious();
   /** Load last game */
-  void slotGameLoadLast()   {gameLoad(9999999);}
+  void slotGameLoadLast();
   /** Load random game */
   void slotGameLoadRandom();
   /** Update GameView after move/game change */

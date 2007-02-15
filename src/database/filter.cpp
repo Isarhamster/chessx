@@ -85,19 +85,21 @@ int Filter::size() const
   return (int)m_bitArray->size();
 }
 
-int Filter::firstGame() const
+int Filter::findGame(int index) const
 {
-  if (!m_count) return -1;
-  for (int i = 0; i < size(); i++)
-    if (contains(i)) return i;
-  return -1;
-}
-
-int Filter::lastGame() const
-{
-  if (!m_count) return -1;
-  for (int i = size() - 1; i >= 0; i--)
-    if (contains(i)) return i;
+  if (index > m_count) return -1;
+  if (index < m_count / 2)
+    for (int i = 0; i < size(); i++)
+    {
+      index -= contains(i);
+      if (index < 0) return i;
+    }
+  else
+    for (int i = size() -1 ; i >= 0; i--)
+    {
+      index += contains(i);
+      if (index >= m_count) return i;
+    }
   return -1;
 }
 

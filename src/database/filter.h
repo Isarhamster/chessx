@@ -60,14 +60,14 @@ public:
   int count() const;
   /** @return the size of the filter. */
   int size() const;
-  /** @return first game in the filter or @p -1 if filter is empty. */
-  int firstGame() const;
-  /** @return last game in the filter or @p -1 if filter is empty. */
-  int lastGame() const;
   /** @return next game in the filter or @p -1 if there is none. */
   int nextGame(int current) const;
   /** @return previous game in the filter or @p -1 if there is none. */
   int previousGame(int current) const;
+  /** @return @p index game from filter (counting only games included in filter). 
+  Optimized for first/last games. Unsuitable for loops (should not be used for 
+  traversing all filter games. */
+  int findGame(int index) const;
   /** Resize the filter to the specified size. Keeps the current filter content.
   If the filter is increased, added game will be initialized to @p false (not in filter). */
   void resize(int newsize);

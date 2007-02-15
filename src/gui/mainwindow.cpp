@@ -229,9 +229,8 @@ int MainWindow::gameIndex() const
 
 void MainWindow::gameLoad(int index)
 {
-  if (index < 0) index = 0;
-  if (index >= database()->count())
-    index = database()->count() - 1;
+  if (index < 0 || index >= database()->count())
+    return;
   databaseInfo()->loadGame(index);
   m_boardView->setBoard(game()->board());
   m_gameList->selectGame(index);
@@ -493,9 +492,30 @@ void MainWindow::slotGameMoveWheel(int wheel)
     if (wheel & BoardView::WheelDown) slotGameMoveNext(); else slotGameMovePrevious();
 }
 
+void MainWindow::slotGameLoadFirst()
+{
+  gameLoad(databaseInfo()->filter()->findGame(0));
+}
+
+void MainWindow::slotGameLoadLast()
+{
+  gameLoad(databaseInfo()->filter()->findGame(databaseInfo()->filter()->count() - 1));
+}
+
+void MainWindow::slotGameLoadPrevious()
+{
+  gameLoad(databaseInfo()->filter()->previousGame(gameIndex()));
+}
+
+void MainWindow::slotGameLoadNext()
+{
+  gameLoad(databaseInfo()->filter()->nextGame(gameIndex()));
+}
+
 void MainWindow::slotGameLoadRandom()
 {
-   gameLoad(rand() % database()->count());
+  int random = rand() % databaseInfo()->filter()->count();
+  gameLoad(databaseInfo()->filter()->findGame(random));
 }
 
 void MainWindow::slotGameSave()
@@ -692,4 +712,3 @@ void MainWindow::slotSearchReset()
   m_gameList->updateFilter();
   slotFilterChanged();
 }
-
