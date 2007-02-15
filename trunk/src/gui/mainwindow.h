@@ -114,6 +114,8 @@ public slots:
   void slotGameLoadLast();
   /** Load random game */
   void slotGameLoadRandom();
+  /** Choose a game and load it */
+  void slotGameLoadChosen();
   /** Update GameView after move/game change */
   void slotGameViewUpdate();
   /** Handle link click in Game View panel */
