@@ -176,8 +176,6 @@ void DateSearch::setDateRange(PartialDate minDate, PartialDate maxDate)
 	m_maxDate = maxDate;
 }
 
-/** The TagSearch class
- * **********************/
 TagSearch::TagSearch(const QString& tag, const QString& value)
 {
   m_tag = tag;

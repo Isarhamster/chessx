@@ -679,6 +679,8 @@ void MainWindow::setupActions()
 
   /* Search menu */
   QMenu* search = menuBar()->addMenu(tr("&Search"));
+  search->addAction(createAction(tr("&Find position"), SLOT(slotSearchBoard()), Qt::CTRL +
+      Qt::SHIFT + Qt::Key_B));
   search->addAction(createAction(tr("&Reset filter"), SLOT(slotSearchReset()), Qt::CTRL + Qt::Key_F));
   search->addAction(createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()),
                     Qt::CTRL + Qt::SHIFT + Qt::Key_F));
@@ -708,15 +710,14 @@ void MainWindow::setupActions()
   connect(source, SIGNAL(toggled(bool)), SLOT(slotGameViewToggle(bool)));
 }
 
-/*
 void MainWindow::slotSearchBoard()
 {
-  BoardSearch bs(game()->board());
+  PositionSearch ps(m_boardView->board());
 
-  databaseInfo()->filter()->executeSearch(bs);
+  databaseInfo()->filter()->executeSearch(ps);
   m_gameList->updateFilter();
   slotFilterChanged();
-}*/
+}
 
 void MainWindow::slotSearchReverse()
 {
