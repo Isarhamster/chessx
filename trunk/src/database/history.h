@@ -22,6 +22,8 @@
 #include "common.h"
 #include <QStack>
 
+/** @ingroup Database  
+The HistoryItem class stores move history for undoing moves. */
 class HistoryItem {
 public:
 

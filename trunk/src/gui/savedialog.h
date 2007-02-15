@@ -22,6 +22,8 @@
 
 class Game;
 
+/** @ingroup GUI 
+The SaveDialog class is a simple dialog to edit and save game header. */
 class SaveDialog : public QDialog
 {
   Q_OBJECT

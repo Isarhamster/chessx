@@ -21,7 +21,8 @@
 
 class QWidget;
 
-/** The Settings class provides a wrapper to Qt QConfig class. It allows to
+/** @ingroup Database  
+    The Settings class provides a wrapper to Qt QSettings class. It allows to
     easily save/restore application settings and get paths for various resources.
  */
 

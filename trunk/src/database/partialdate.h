@@ -20,7 +20,7 @@
 #include <QString>
 #include <QDateTime>
 
-/**
+/** @ingroup Database
    The PartialDate class represents a date, perhaps with missing month and day.
    All comparison operators should work.
 */

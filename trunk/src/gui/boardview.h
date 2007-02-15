@@ -28,9 +28,9 @@
 
 class BoardTheme;
 
-/**
-   The BoardView class represents a widget for displaying current position on the screen.
-*/
+/** @ingroup GUI 
+The BoardView class represents a widget for displaying current 
+position on the screen. */
 
 class BoardView : public QWidget
 {

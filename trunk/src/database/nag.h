@@ -340,6 +340,9 @@ const QString NagStrings[NagCount] = {
 };
 
 
+/** @ingroup Database  
+The NagSet class stores set of PGN NAGs.
+*/
 class NagSet 
 {
 	public:

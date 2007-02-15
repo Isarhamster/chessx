@@ -22,7 +22,9 @@
 class Filter;
 class FilterModel;
 
-/** The GameList class displays list of the games in current filter. */
+/** @ingroup GUI 
+The GameList class displays list of the games in current filter. It allows 
+user to click on list header and perform simple tag searches. */
 
 class GameList : public QTreeView
 {

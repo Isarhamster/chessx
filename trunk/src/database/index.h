@@ -28,7 +28,8 @@
 // bool find (quint32 gameId, Search* search, const Tags& tags)
 //    Does game <gameId> match <search
 
-/** The Index class holds a list of IndexItem instances, typically one
+/** @ingroup Database  
+   The Index class holds a list of IndexItem instances, typically one
  * for each game in the current database. This enables fast access to 
  * certain game header information.
  */

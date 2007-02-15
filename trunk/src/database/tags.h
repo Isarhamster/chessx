@@ -14,13 +14,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-/**
-One instance holds all the tag values used in a game database.
-Documentation for managing QDataset format version, see
-http://doc.trolltech.com/4.0/qdatastream.html
-Some ideas for the file format are borrowed from Scid (see namebase.cpp
-and tkscid.cpp).
-*/
 #ifndef __TAGS_H__
 #define __TAGS_H__
 
@@ -33,15 +26,24 @@ and tkscid.cpp).
 #include <QMap>
 #include <QPair>
 
-/*TODO
--compact(): 
- Needs access to index file for the games, but for now just create index mapping.
- May also clean up unused custom tag id's.
--maybe some functions can be optimized with const_iterators or just loops
--file may be even smaller by having id/frequency use smaller types when possible.
--QByteArray (in Qt4) can perhaps be used for read/write with compression ?
-*/
 
+/** @ingroup Database  
+Tags class maps string tags to integers.
+One instance holds all the tag values used in a game database.
+Documentation for managing QDataset format version, see
+http://doc.trolltech.com/4.0/qdatastream.html
+Some ideas for the file format are borrowed from Scid (see namebase.cpp
+and tkscid.cpp).
+
+@todo compact(): 
+@todo Needs access to index file for the games, but for now just create
+index mapping.
+@todo May also clean up unused custom tag id's.
+@todo maybe some functions can be optimized with const_iterators or just loops
+@todo file may be even smaller by having id/frequency use smaller types
+when possible.
+@todo QByteArray (in Qt4) can perhaps be used for read/write with compression ?
+*/
 class Tags{
 
 public:

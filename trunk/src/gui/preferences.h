@@ -21,6 +21,9 @@
 
 class QComboBox;
 
+/** @ingroup GUI 
+The PreferencesDialog class is a dialog for configuring ChessX.
+After changes are done, reconfigure() signal is emitted. */
 class PreferencesDialog : public QDialog
 {
   Q_OBJECT
@@ -46,6 +49,7 @@ private:
   QColor buttonColor(const QPushButton* button) const;
 
 signals:
+  /** Signal emitted when changes are done. */
   void reconfigure();
 };
 

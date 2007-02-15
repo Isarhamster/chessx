@@ -23,7 +23,8 @@ class Database;
 class Filter;
 class Game;
 
-/** The DatabaseInfo class is a simple class to keep various database-related
+/** @ingroup Database 
+The DatabaseInfo class is a simple class to keep various database-related
 information together. */
 
 class DatabaseInfo

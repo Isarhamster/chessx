@@ -29,8 +29,8 @@ class QComboBox;
 class QUrl;
 class QStringList;
 
-/** The help system for ChessX. 
-    Displays help pages in html format */
+/** @ingroup GUI
+The HelpWindow class displays help pages in html format. */
 
 class HelpWindow : public QMainWindow
 {
