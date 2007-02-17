@@ -193,13 +193,14 @@ bool Tags::removeFile() {
 QString Tags::value(const uint tagId, const int valueId) const{
    if ((valueId >= 0) && (valueId <  m_allTags[tagId].first.count())) {
       return m_allTags[tagId].first[valueId];
-   } else {
-      qDebug ("An invalid valueId has been received : %d. Valid values could be:", valueId);
-      for (int j=0; j<count(tagId); j++){
-         qDebug ("  * Tag Name: %s : value for index %d : %s",tagName(tagId).toLatin1().constData(),j,value(tagId, j).toLatin1().constData());
-      }
+   } 
+   //else {
+//      qDebug ("An invalid valueId has been received : %d. Valid values could be:", valueId);
+//      for (int j=0; j<count(tagId); j++){
+//         qDebug ("  * Tag Name: %s : value for index %d : %s",tagName(tagId).toLatin1().constData(),j,value(tagId, j).toLatin1().constData());
+//      }
       return "?";
-   }
+  // }
 }
 
 int Tags::valueId(uint const tagId, const QString& value) const{
