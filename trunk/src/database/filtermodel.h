@@ -23,21 +23,20 @@
 #include <QStringList>
 
 #include "filter.h"
-#include "database.h"
 #include "game.h"
 
-/** @ingroup Database  
-  The DatabaseModel class is an interface to Database used with Qt
-  Model/View architecture. 
+/** @ingroup Database
+  The FilterModel class is an interface to Database used with Qt
+  Model/View architecture
 */
-class DatabaseModel: public QAbstractItemModel
+class FilterModel: public QAbstractItemModel
 {
    Q_OBJECT
 
    public:
-      /** Constructs a DatabaseModel object using a pointer to a Filter */
-      DatabaseModel(Database* database, QObject *parent = 0);
-      ~DatabaseModel();
+      /** Constructs a FilterModel object using a pointer to a Filter */
+      FilterModel(Filter* filter, QObject *parent = 0);
+      ~FilterModel();
 
       /** Returns the number of rows in the model */
       virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -48,50 +47,26 @@ class DatabaseModel: public QAbstractItemModel
       /** Returns the header information for header 'section' */
       virtual QVariant headerData(int section, Qt::Orientation orientation,
             int role = Qt::DisplayRole) const;
-      /** Returns the appropriate display flags for item 'index' */
-    //  virtual Qt::ItemFlags flags (const QModelIndex& index) const;
       /** No tree - always return invalid parent */
       virtual QModelIndex parent(const QModelIndex&) const  {return QModelIndex();}
       /** No tree - always return self */
       virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
       /** No children */
       virtual bool hasChildren(const QModelIndex& parent = QModelIndex()) const {return !parent.isValid();}
+      /** Associated filter */
+      virtual Filter* filter();
       /** Changes current database. Resets any views. */
-      virtual void setDatabase(Database* database);
+      virtual void setFilter(Filter* filter);
 
    private:
       /** A pointer to filter on which the model opperates */
-      Database* m_database;
+      Filter* m_filter;
       /** The column names of the model */
       QStringList m_columnNames;
       /** A pointer to a game object, to hold the retrieved information 
        * about the game */
       Game* m_game;
 };
-
-/** @ingroup Database  
-  The FilterModel class is an interface to Filter used with Qt
-  Model/View architecture. It uses QSortFilterProxyModel
-  class to filter items from DataModel class.
-*/
-class FilterModel : public QSortFilterProxyModel
-{
-  Q_OBJECT
-  public:
-    FilterModel(Filter*, QObject* parent = 0);
-    ~FilterModel();
-    virtual void setFilter(Filter* filter);
-    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
-    /** @return filter used for getting data */
-    Filter* filter()  {return m_filter;}
-    /** Update filter after a change */
-    void updateFilter();
-  private:
-    Filter* m_filter;
-};
-
-
-
 
 #endif	// __FilterModelBase_H__
 

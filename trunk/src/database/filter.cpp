@@ -27,12 +27,14 @@ Filter::Filter(Database* database)
  m_count = m_database->count();
  m_bitArray = new QBitArray(m_count);
  m_bitArray->fill(true);
+ m_cache.first = m_cache.second = 0;
 }
 
 Filter::Filter(const Filter& filter)
 {
   m_bitArray = new QBitArray(filter.bitArray());
   m_count = filter.m_count;
+  m_cache.first = m_cache.second = 0;
 }
 
 Filter Filter::operator=(const Filter& filter)
@@ -40,6 +42,7 @@ Filter Filter::operator=(const Filter& filter)
   delete m_bitArray;
   m_bitArray = new QBitArray(filter.bitArray());
   m_count = filter.count();
+  m_cache = filter.m_cache;
   return *this;
 }
 
@@ -55,12 +58,14 @@ Database* Filter::database()
 
 void Filter::set(int game, bool value)
 {
-  if (game < size() && contains(game) != value)
-  {
-    m_bitArray->setBit(game, value);
-    if (value)
+  if (game >= size() || contains(game) == value)
+    return;
+  m_bitArray->setBit(game, value);
+  if (value) {
       m_count++;
-    else m_count--;
+  }
+  else {
+      m_count--;
   }
 }
 
@@ -68,6 +73,10 @@ void Filter::setAll(bool value)
 {
   m_bitArray->fill(value);
   m_count = value ? size() : 0;
+  if (value)
+    m_cache.first = m_cache.second = m_count / 2;
+  else
+    m_cache.first = m_cache.second = 0;
 }
 
 bool Filter::contains(const int game) const
@@ -85,7 +94,26 @@ int Filter::size() const
   return (int)m_bitArray->size();
 }
 
-int Filter::findGame(int index) const
+int Filter::gameToIndex(int index)
+{
+  if (index > m_count || !contains(index)) return -1;
+  if (index < m_count / 2)
+  {
+    int count = 0;
+    for (int i = 0; i < index; i++)
+      if (contains(i)) count++;
+    return count;
+  }
+  else
+  {
+    int count = m_count - 1;
+    for (int i = size() - 1 ; i > index; i--)
+      if (contains(i)) count--;
+    return count;
+  }
+}
+
+int Filter::indexToGame(int index)
 {
   if (index > m_count) return -1;
   if (index < m_count / 2)
