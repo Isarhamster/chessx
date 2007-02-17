@@ -72,7 +72,7 @@ bool PgnDatabase::open(const QString& filename)
 		delete m_file;
 	   return false;
 	}
-	m_file->open(QIODevice::ReadWrite);
+	m_file->open(QIODevice::ReadOnly);
 
 	//indexing game positions in the file, game contents are ignored
 	while(!m_file->atEnd()) {		
