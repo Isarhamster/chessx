@@ -21,6 +21,7 @@
 #define __FILTER_H__
 
 #include <QBitArray>
+#include <QPair>
 
 #include "common.h"
 #include "search.h"
@@ -64,10 +65,11 @@ public:
   int nextGame(int current) const;
   /** @return previous game in the filter or @p -1 if there is none. */
   int previousGame(int current) const;
-  /** @return @p index game from filter (counting only games included in filter). 
-  Optimized for first/last games. Unsuitable for loops (should not be used for 
-  traversing all filter games. */
-  int findGame(int index) const;
+  /** @return @p index in filter of game with database index @p number. */
+  int gameToIndex(int number);
+  /** @return database index of @p number game from filter or @p -1 if the game
+  is not in filter. */
+  int indexToGame(int number);
   /** Resize the filter to the specified size. Keeps the current filter content.
   If the filter is increased, added game will be initialized to @p false (not in filter). */
   void resize(int newsize);
@@ -100,7 +102,7 @@ protected:
 
   int m_count;
   QBitArray* m_bitArray;
-
+  QPair<int, int> m_cache;
   Database* m_database;
   TriStateTree m_triStateTree; 
 

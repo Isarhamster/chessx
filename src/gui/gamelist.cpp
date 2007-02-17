@@ -32,6 +32,7 @@ GameList::GameList(Filter* filter, QWidget* parent) : QTreeView(parent)
   setFont(f);
 
   setRootIsDecorated(false);
+  setItemsExpandable(false);
   setAllColumnsShowFocus(true);
 
   m_model = new FilterModel(filter, this);
@@ -45,7 +46,7 @@ GameList::GameList(Filter* filter, QWidget* parent) : QTreeView(parent)
 
 void GameList::itemSelected(const QModelIndex& index)
 {
-  emit selected(m_model->mapToSource(index).row());
+  emit selected(m_model->filter()->indexToGame(index.row()));
 }
 
 void GameList::configure()
@@ -100,14 +101,13 @@ void GameList::simpleSearch(int tagid)
 
 void GameList::selectGame(int index)
 {
-  QModelIndex m = m_model->sourceModel()->index(index, 0);
-  m = m_model->mapFromSource(m);
-  if (m.isValid())
-    setCurrentIndex(m);
+  int i = m_model->filter()->gameToIndex(index);
+  if (i != -1)
+    setCurrentIndex(m_model->index(i, 0));
 }
 
 void GameList::updateFilter()
 {
-  m_model->updateFilter();
+  m_model->setFilter(m_model->filter());
 }
 

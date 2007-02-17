@@ -495,12 +495,12 @@ void MainWindow::slotGameMoveWheel(int wheel)
 
 void MainWindow::slotGameLoadFirst()
 {
-  gameLoad(databaseInfo()->filter()->findGame(0));
+  gameLoad(databaseInfo()->filter()->indexToGame(0));
 }
 
 void MainWindow::slotGameLoadLast()
 {
-  gameLoad(databaseInfo()->filter()->findGame(databaseInfo()->filter()->count() - 1));
+  gameLoad(databaseInfo()->filter()->indexToGame(databaseInfo()->filter()->count() - 1));
 }
 
 void MainWindow::slotGameLoadPrevious()
@@ -516,7 +516,7 @@ void MainWindow::slotGameLoadNext()
 void MainWindow::slotGameLoadRandom()
 {
   int random = rand() % databaseInfo()->filter()->count();
-  gameLoad(databaseInfo()->filter()->findGame(random));
+  gameLoad(databaseInfo()->filter()->indexToGame(random));
 }
 
 void MainWindow::slotGameLoadChosen()
