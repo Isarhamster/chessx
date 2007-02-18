@@ -22,7 +22,7 @@
 #include "search.h"
 #include "settings.h"
 
-GameList::GameList(Filter* filter, QWidget* parent) : QTreeView(parent)
+GameList::GameList(Filter* filter, QWidget* parent) : QTableView(parent)
 {
   setObjectName("GameList");
   setWindowTitle(tr("Game list"));
@@ -31,17 +31,20 @@ GameList::GameList(Filter* filter, QWidget* parent) : QTreeView(parent)
   f.setPointSize(f.pointSize() - 1);
   setFont(f);
 
-  setRootIsDecorated(false);
-  setItemsExpandable(false);
-  setAllColumnsShowFocus(true);
+  setShowGrid(false);
+  setSelectionBehavior(QAbstractItemView::SelectRows);
+  setSelectionMode(QAbstractItemView::SingleSelection);
+  setTextElideMode(Qt::ElideRight);
+  verticalHeader()->setDefaultSectionSize(fontMetrics().lineSpacing());
+  verticalHeader()->hide();
 
   m_model = new FilterModel(filter, this);
   setModel(m_model);
   connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
   configure();
 
-  header()->setClickable(true);
-  connect(header(), SIGNAL(sectionClicked(int)), SLOT(simpleSearch(int)));
+  horizontalHeader()->setClickable(true);
+  connect(horizontalHeader(), SIGNAL(sectionClicked(int)), SLOT(simpleSearch(int)));
 }
 
 void GameList::itemSelected(const QModelIndex& index)
@@ -54,9 +57,9 @@ void GameList::configure()
   AppSettings->readLayout(this);
   AppSettings->beginGroup("/GameList");
   QStringList sections  = AppSettings->value("sections").toStringList();
-  if (header()->count() == sections.count())
-    for (int i = 0; i < header()->count(); i++)
-      header()->resizeSection(i, sections[i].toInt());
+  if (m_model->columnCount() == sections.count())
+    for (int i = 0; i < sections.count(); i++)
+      setColumnWidth(i, sections[i].toInt());
   AppSettings->endGroup();
 }
 
@@ -65,8 +68,8 @@ void GameList::saveConfig()
   AppSettings->writeLayout(this);
   AppSettings->beginGroup("/GameList");
   QStringList sections;
-  for (int i = 0; i < header()->count(); i++)
-    sections.append(QString::number(header()->sectionSize(i)));
+  for (int i = 0; i < m_model->columnCount(); i++)
+    sections.append(QString::number(columnWidth(i)));
   AppSettings->setValue("sections", sections);
   AppSettings->endGroup();
 }
@@ -84,7 +87,7 @@ GameList::~GameList()
 void GameList::simpleSearch(int tagid)
 {
 #warning Unify with <filtermodel.cpp>
-  const QString tagNames[] = {"White", "Black", "Event", "Site", "Round", "Date",
+  const QString tagNames[] = {"Nr", "White", "Black", "Event", "Site", "Round", "Date",
      "Result", "ECO", "Length", ""};
 
   QString tag = tagNames[tagid];

@@ -17,7 +17,7 @@
 #ifndef __GAMELIST_H__
 #define __GAMELIST_H__
 
-#include <QTreeView>
+#include <QTableView>
 
 class Filter;
 class FilterModel;
@@ -26,7 +26,7 @@ class FilterModel;
 The GameList class displays list of the games in current filter. It allows 
 user to click on list header and perform simple tag searches. */
 
-class GameList : public QTreeView
+class GameList : public QTableView
 {
   Q_OBJECT
 public:
