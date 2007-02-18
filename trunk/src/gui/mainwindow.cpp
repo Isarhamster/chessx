@@ -38,7 +38,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QCloseEvent>
-#include <QDebug>
+#include <QDesktopServices>
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QInputDialog>
@@ -69,6 +69,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
   /* Actions */
   m_actions = new QActionGroup(this);
+  m_actions->setExclusive(false);
   setupActions();
 
   /* Delete on close */
@@ -373,18 +374,6 @@ void MainWindow::slotFileQuit()
   qApp->closeAllWindows();
 }
 
-void MainWindow::slotAbout()
-{
-  QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
-    "<p>Copyright 2005-2006 ChessX developers</p>"
-     "<p>"
-        "William Hoggarth, Ejner Borgbjerg, Marius Roets (database)<br>"
-        "Michal Rudolf, Heinz Hopfgartner (GUI)<br>"
-    "</p>"),
-    QMessageBox::NoIcon, QMessageBox::Ok, Qt::NoButton, Qt::NoButton, this); 
-  dialog.exec();
-}
-
 void MainWindow::slotPlayerDialog()
 {
   playerDialog()->show();
@@ -435,6 +424,26 @@ void MainWindow::slotHelp()
 {
   helpWindow()->show();
 }
+
+void MainWindow::slotHelpAbout()
+{
+  QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
+    "<p>Free chess database.<br>Version %1</br>"
+    "<p>Copyright 2005-2006 ChessX developers:<br>"
+     "Database: Marius Roets, William Hoggarth, Ejner Borgbjerg.<br>"
+     "GUI: Michal Rudolf, Heinz Hopfgartner."
+    "<p>Homepage: <a href=\"http://chessx.sf.net\">http://chessx.sf.net</a><br>"
+    "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">"
+                               "chessx-users@lists.sourceforge.net").arg(ChessXVersion),
+    QMessageBox::NoIcon, QMessageBox::Ok, Qt::NoButton, Qt::NoButton, this);
+  dialog.exec();
+}
+
+void MainWindow::slotHelpBug()
+{
+  QDesktopServices::openUrl(QUrl("http://sourceforge.net/tracker/?group_id=163833&atid=829300"));
+}
+
 
 void MainWindow::slotMove(Square from, Square to)
 {
@@ -704,10 +713,13 @@ void MainWindow::setupActions()
   /* Help menu */
   menuBar()->addSeparator();
   QMenu *help = menuBar()->addMenu(tr("&Help"));
-  help->addAction(createAction(tr("ChessX &help..."), SLOT(slotHelp()), Qt::CTRL + Qt::Key_F10));
-  help->addAction(createAction(tr("&About..."), SLOT(slotAbout()) ));
-  help->addSeparator();
+//  help->addAction(createAction(tr("ChessX &help..."), SLOT(slotHelp()), Qt::CTRL + Qt::Key_F10));
+  help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()) ));
+  help->addAction(createAction(tr("&Report a bug"), SLOT(slotHelpBug()) ));
   QMenu* debug = help->addMenu(tr("&Debug"));
+#ifndef QT_DEBUG
+  debug->setVisible(false);
+#endif  
   QAction* source;
   debug->addAction(source = createAction("Toggle game view format", 0, Qt::Key_F12));
   source->setCheckable(true);

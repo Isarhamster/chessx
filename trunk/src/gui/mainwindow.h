@@ -90,14 +90,18 @@ protected:
   /** Help window (created when used first) */
   HelpWindow* helpWindow();
 public slots:
-  void slotAbout();
   void slotPlayerDialog();
   void slotEditBoard();
   void slotEditCopyFEN();
   void slotEditPasteFEN();
   void slotConfigure();
   void slotConfigureChessEngines();
+  /** Display help */
   void slotHelp();
+  /** About ChessX */
+  void slotHelpAbout();
+  /** Display Tracker at ChessX SourceForge */
+  void slotHelpBug();
   void slotConfigureFlip();
   void slotGameSave();
   /** Go to first move of the game */
