@@ -175,7 +175,8 @@ QMap<Output::OutputType,QString>& Output::getFormats()
 
 void Output::writeMove(int variation)
 {
-
+   QString mvno;
+   mvno.sprintf("%03d", m_game->moveId(variation));
    if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
       // *** If the column style option is set and it's a mainline move
       // *** some special markup is required
@@ -183,9 +184,9 @@ void Output::writeMove(int variation)
          // ** If it is white to move, start a new row
          m_output += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
          if (m_currentVariationLevel > 0) {
-            m_output += m_startTagMap[MarkupVariationMove];
+            m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
          } else {
-            m_output += m_startTagMap[MarkupMainLineMove];
+            m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
          }
          m_output += QString::number((m_game->ply()+2)/2) + ".";
       } else if (m_dirtyBlack) {
@@ -195,25 +196,25 @@ void Output::writeMove(int variation)
          m_output += QString::number((m_game->ply()+2)/2) + ". ...";
          m_output += m_startTagMap[MarkupColumnStyleMove];
          if (m_currentVariationLevel > 0) {
-            m_output += m_startTagMap[MarkupVariationMove];
+            m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
          } else {
-            m_output += m_startTagMap[MarkupMainLineMove];
+            m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
          }
       } else {
          // ** If it is black to move and we don't need the ... 
          m_output += m_startTagMap[MarkupColumnStyleMove];
          if (m_currentVariationLevel > 0) {
-            m_output += m_startTagMap[MarkupVariationMove];
+            m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
          } else {
-            m_output += m_startTagMap[MarkupMainLineMove];
+            m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
          }
       }  
    } else {
       // *** Markup for the move
       if (m_currentVariationLevel > 0) {
-         m_output += m_startTagMap[MarkupVariationMove];
+         m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
       } else {
-         m_output += m_startTagMap[MarkupMainLineMove];
+         m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
       }
       // *** Write the move number
       if (m_game->board().toMove() == White) {
@@ -244,11 +245,11 @@ void Output::writeMove(int variation)
       if ((m_options.getOptionAsString("CommentIndent") == "Always") 
             || ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline")
                && (m_currentVariationLevel == 0))) {
-         m_output += m_startTagMap[MarkupAnnotationIndent] + 
+         m_output += m_startTagMap[MarkupAnnotationIndent].arg(mvno) +
                      m_game->annotation(variation) +
                      m_endTagMap[MarkupAnnotationIndent];
       } else {
-         m_output += " " + m_startTagMap[MarkupAnnotationInline] + 
+         m_output += " " + m_startTagMap[MarkupAnnotationInline].arg(mvno) +
                      m_game->annotation(variation) +
                      m_endTagMap[MarkupAnnotationInline];
       }
@@ -256,16 +257,6 @@ void Output::writeMove(int variation)
          m_output += m_startTagMap[MarkupColumnStyleMainline];
       }
       m_dirtyBlack = true;
-   }
-   // *** Substitute %1 and %2 if present with the move node number
-   if ((m_output.indexOf("%1")>=0) && (m_output.indexOf("%2")>=0)) {
-      QString mvno;
-      mvno = mvno.sprintf("%03d",m_game->moveId(variation));
-      m_output = m_output.arg(mvno).arg(mvno);
-   } else if (m_output.indexOf("%1")>=0) {
-      QString mvno;
-      mvno = mvno.sprintf("%03d",m_game->moveId(variation));
-      m_output = m_output.arg(mvno);
    }
    m_output += " ";
 }

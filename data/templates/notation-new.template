@@ -36,8 +36,8 @@ MarkupNag=<span style="font-weight:300;text-decoration:none;color:red;font-style
 MarkupColumnStyleMove=<td width=50%>,\n
 MarkupColumnStyleRow=<tr class="mainline">,\n
 MarkupColumnStyleMainline=<table border=0 width=50%>,</table>\n
-MarkupAnnotationInline=<a href="cmt%2"><annotationinline>,</annotationinline></a>\n
-MarkupAnnotationIndent=<a href="cmt%2"><annotationindent>,</annotationindent></a>\n
+MarkupAnnotationInline=<a href="cmt%1"><annotationinline>,</annotationinline></a>\n
+MarkupAnnotationIndent=<a href="cmt%1"><annotationindent>,</annotationindent></a>\n
 MarkupHeaderLine=<pgnheader>[,]</pgnheader><br>\n
 MarkupHeaderTagName=,
 MarkupHeaderTagValue=","
