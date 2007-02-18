@@ -32,10 +32,14 @@ FilterModel::FilterModel(Filter* filter, QObject* parent)
                  << "ECO"
                  << "Length";
    m_game = new Game;
+   m_gameIndex = new int;
+   *m_gameIndex = -1;
 }
+
 FilterModel::~FilterModel()
 {
    delete m_game;
+   delete m_gameIndex;
 }
 
 int FilterModel::rowCount(const QModelIndex& index) const
@@ -57,7 +61,9 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
      int i = m_filter->indexToGame(index.row());
      if (i != -1)
      {
-        m_filter->database()->loadHeaders(i, *m_game);
+        if (i != *m_gameIndex)
+          m_filter->database()->loadHeaders(i, *m_game);
+        *m_gameIndex = i;
         if (index.column() == 0)
           return i+1;
         else 
@@ -90,6 +96,7 @@ QModelIndex FilterModel::index(int row, int column, const QModelIndex& parent) c
 void FilterModel::setFilter(Filter* filter)
 {
   m_filter = filter;
+  *m_gameIndex = -1;
   reset();
 }
 
