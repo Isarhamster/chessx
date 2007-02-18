@@ -1123,27 +1123,27 @@ bool PgnDatabase::loadHeaders(int index, Game& game)
          QString tag = m_indexSearches.at(search).first.tag();
          if (tag == "White") {
             if(m_externalFilter->setState(m_indexSearches.at(search).second,
-                     (m_index.white(index, m_tags) ==  m_indexSearches.at(search).first.value()) )) {
+                     (m_index.white(index, m_tags).contains(m_indexSearches.at(search).first.value())) )) {
                return true;
             }
          } else if (tag == "Black") {
             if(m_externalFilter->setState(m_indexSearches.at(search).second, 
-                     (m_index.black(index, m_tags) ==  m_indexSearches.at(search).first.value()))) {
+                     (m_index.black(index, m_tags).contains(m_indexSearches.at(search).first.value())))) {
                return true;
             }
          } else if (tag == "Event") {
             if(m_externalFilter->setState(m_indexSearches.at(search).second, 
-                     (m_index.event(index, m_tags) ==  m_indexSearches.at(search).first.value()))) {
+                     (m_index.event(index, m_tags).contains(m_indexSearches.at(search).first.value())))) {
                return true;
             }
          } else if (tag == "Site") {
             if(m_externalFilter->setState(m_indexSearches.at(search).second, 
-                     (m_index.site(index, m_tags) ==  m_indexSearches.at(search).first.value()))) {
+                     (m_index.site(index, m_tags).contains(m_indexSearches.at(search).first.value())))) {
                return true;
             }
          } else if (tag == "ECO") {
             if(m_externalFilter->setState(m_indexSearches.at(search).second, 
-                     (m_index.eco(index, m_tags) ==  m_indexSearches.at(search).first.value()))) {
+                     (m_index.eco(index, m_tags).contains(m_indexSearches.at(search).first.value())))) {
                return true;
             }
          } else if (tag == "Round") {
