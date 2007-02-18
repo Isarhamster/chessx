@@ -91,7 +91,7 @@ bool BoardTheme::isValid() const
 
 bool BoardTheme::load(const QString& themeFile, LoadTheme load)
 {
-  QString themePath = QString("%1/themes/%2.png").arg(AppSettings->dataPath()).arg(themeFile);
+  QString themePath = QString("%1/%2.png").arg(themeDirectory()).arg(themeFile);
   QImage big;
   if (!big.load(themePath) || big.width() < 160)
     return false;
@@ -189,6 +189,11 @@ void BoardTheme::setSquareType(BoardSquare type)
       m_square[1] =  m_originalSquare[1].copy(rect());
       break;
   }
+}
+
+QString BoardTheme::themeDirectory() const
+{
+  return AppSettings->dataPath() + "/themes";
 }
 
 
