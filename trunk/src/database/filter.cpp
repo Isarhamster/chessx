@@ -96,8 +96,8 @@ int Filter::size() const
 
 int Filter::gameToIndex(int index)
 {
-  if (index > m_count || !contains(index)) return -1;
-  if (index < m_count / 2)
+  if (index > size() || !contains(index)) return -1;
+  if (index < size() / 2)
   {
     int count = 0;
     for (int i = 0; i < index; i++)

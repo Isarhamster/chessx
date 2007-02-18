@@ -21,7 +21,8 @@
 FilterModel::FilterModel(Filter* filter, QObject* parent)
          : QAbstractItemModel(parent), m_filter(filter)
 {
-   m_columnNames << "White"
+   m_columnNames << "Nr"
+                 << "White"
                  << "Black"
                  << "Event"
                  << "Site"
@@ -58,9 +59,11 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
      {
         m_filter->database()->loadHeaders(i, *m_game);
         if (index.column() == 0)
-          qDebug("Loading game %d: %s-%s", i,
-             qPrintable(m_game->tag(m_columnNames.at(0))), qPrintable(m_game->tag(m_columnNames.at(1))));
-        return m_game->tag(m_columnNames.at(index.column()));
+          return i+1;
+        else 
+          return m_game->tag(m_columnNames.at(index.column()));
+        //qDebug("Loading game %d: %s-%s", i,
+        //     qPrintable(m_game->tag(m_columnNames.at(0))), qPrintable(m_game->tag(m_columnNames.at(1))));
      }
    }
    return QVariant();
@@ -79,7 +82,6 @@ QVariant FilterModel::headerData(int section, Qt::Orientation orientation, int r
 
 QModelIndex FilterModel::index(int row, int column, const QModelIndex& parent) const
 {
-//  qDebug("Index %d/%d called.", row, column);
   if (parent.isValid())
     return QModelIndex();
   return createIndex(row, column);
