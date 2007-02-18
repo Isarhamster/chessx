@@ -138,8 +138,8 @@ bool BoardView::setTheme(const QString& pieceFile, const QString& boardFile)
   bool result = m_theme->load(pieceFile, boardFile);
   if (!result)
   {
-    QMessageBox::warning(0, tr("Error"), tr("<qt>Cannot open theme <b>%1</b></qt>")
-        .arg(pieceFile));
+    QMessageBox::warning(0, tr("Error"), tr("<qt>Cannot open theme <b>%1</b> from directory:<br>%2</qt>")
+        .arg(pieceFile).arg(m_theme->themeDirectory()));
     // If there is no theme, try to load default
     if (!m_theme->isValid())
     {
