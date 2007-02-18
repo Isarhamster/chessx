@@ -419,6 +419,8 @@ void MainWindow::slotEditBoard()
   {
     m_boardView->setBoard(B.board());
     game()->setStartBoard(B.board());
+    slotGameViewUpdate();
+    slotMoveViewUpdate();
   }
 }
 
@@ -457,6 +459,8 @@ void MainWindow::slotMove(Square from, Square to)
     game()->replaceMove(m);
     game()->forward();
     m_boardView->setBoard(game()->board());
+    slotGameViewUpdate();
+    slotMoveViewUpdate();
   }
 }
 
