@@ -416,7 +416,10 @@ void MainWindow::slotEditBoard()
   BoardSetupDialog B;
   B.setBoard(m_boardView->board());
   if (B.exec() == QDialog::Accepted)
+  {
     m_boardView->setBoard(B.board());
+    game()->setStartBoard(B.board());
+  }
 }
 
 
