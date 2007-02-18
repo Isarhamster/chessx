@@ -59,16 +59,13 @@ bool yesNo(const QString& question, QMessageBox::Icon icon = QMessageBox::Questi
 
 
 MainWindow::MainWindow() : QMainWindow(),
-  m_playerDialog(0), m_helpWindow(0), m_showPgnSource(false)
+  m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_showPgnSource(false)
 {
   setObjectName("MainWindow");
 
   /* Active database */
   m_databases.append(new DatabaseInfo);
   m_currentDatabase = 0;
-
-  /* Save dialog */
-  m_saveDialog = new SaveDialog;
 
   /* Actions */
   m_actions = new QActionGroup(this);
@@ -326,6 +323,13 @@ PlayerDialog* MainWindow::playerDialog()
   return m_playerDialog;
 }
 
+SaveDialog * MainWindow::saveDialog()
+{
+  if (!m_saveDialog)
+    m_saveDialog = new SaveDialog;
+  return m_saveDialog;
+}
+
 HelpWindow* MainWindow::helpWindow()
 {
   if (!m_helpWindow)
@@ -528,7 +532,7 @@ void MainWindow::slotGameLoadChosen()
 
 void MainWindow::slotGameSave()
 {
-  if (m_saveDialog->exec(game()) == QMessageBox::Ok)
+  if (saveDialog()->exec(game()) == QMessageBox::Ok)
     slotMoveViewUpdate();
 }
 
@@ -732,3 +736,4 @@ void MainWindow::slotSearchReset()
   m_gameList->updateFilter();
   slotFilterChanged();
 }
+

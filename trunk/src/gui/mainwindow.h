@@ -85,6 +85,8 @@ protected:
   void updateMenuDatabases();
   /** Player dialog (created when used first) */
   PlayerDialog* playerDialog();
+  /** Save Game dialog (created when used first) */
+  SaveDialog* saveDialog();
   /** Help window (created when used first) */
   HelpWindow* helpWindow();
 public slots:
