@@ -66,6 +66,8 @@ class FilterModel: public QAbstractItemModel
       /** A pointer to a game object, to hold the retrieved information 
        * about the game */
       Game* m_game;
+      /** Current game index - used for caching */
+      int* m_gameIndex;
 };
 
 #endif	// __FilterModelBase_H__
