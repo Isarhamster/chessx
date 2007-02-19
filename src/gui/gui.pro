@@ -37,7 +37,7 @@ RESOURCES += helpwindow.qrc \
                  tipoftheday.qrc
 
 win32 {
-  TARGET = ../../../bin/chessdatabase
+  TARGET = ../../../bin/chessx
   release {
      LIBS += ../database/release/libdatabase.a
      PRE_TARGETDEPS += ../database/release/libdatabase.a
@@ -48,7 +48,7 @@ win32 {
   }
 }
 else { 
-  TARGET = ../../bin/chessdatabase
+  TARGET = ../../bin/chessx
   LIBS += ../database/libdatabase.a
   PRE_TARGETDEPS += ../database/libdatabase.a
 }
