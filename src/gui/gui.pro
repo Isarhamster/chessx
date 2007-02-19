@@ -53,3 +53,6 @@ else {
   PRE_TARGETDEPS += ../database/libdatabase.a
 }
 
+macx {
+     ICON = ../../data/images/chessx.icns
+}
