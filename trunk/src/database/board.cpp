@@ -1137,11 +1137,11 @@ Move Board::singleMove(const QString& SAN)
   Square to,tempsq;
   Coord fromX=8;
   Coord fromY=8;
-  if(SAN.startsWith("O-O-O"))
+  if(SAN.startsWith("O-O-O") || SAN.startsWith("0-0-0"))  // Supporting non standard zeros as well
   {
     m.setMove(kingPosition(toMove()),kingPosition(toMove())-2,Castling);
   }
-  else if(SAN.startsWith("O-O"))
+  else if(SAN.startsWith("O-O") || SAN.startsWith("0-0"))
   {
     m.setMove(kingPosition(toMove()),kingPosition(toMove())+2,Castling);
   }
