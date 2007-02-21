@@ -54,23 +54,23 @@ void GameList::itemSelected(const QModelIndex& index)
 
 void GameList::configure()
 {
-  AppSettings->readLayout(this);
-  AppSettings->beginGroup("/GameList");
-  QStringList sections  = AppSettings->value("sections").toStringList();
-  if (m_model->columnCount() == sections.count())
+  AppSettings->layout(this);
+  AppSettings->beginGroup("GameList");
+  QList<int> sections;
+  if (AppSettings->list("Sections", sections, m_model->columnCount()))
     for (int i = 0; i < sections.count(); i++)
-      setColumnWidth(i, sections[i].toInt());
+      setColumnWidth(i, sections[i]);
   AppSettings->endGroup();
 }
 
 void GameList::saveConfig()
 {
-  AppSettings->writeLayout(this);
-  AppSettings->beginGroup("/GameList");
-  QStringList sections;
-  for (int i = 0; i < m_model->columnCount(); i++)
-    sections.append(QString::number(columnWidth(i)));
-  AppSettings->setValue("sections", sections);
+  AppSettings->setLayout(this);
+  AppSettings->beginGroup("GameList");
+  QList<int> sections;
+  for(int i = 0; i < m_model->columnCount(); i++)
+    sections.append(columnWidth(i));
+  AppSettings->setList("Sections", sections);
   AppSettings->endGroup();
 }
 

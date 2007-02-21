@@ -28,44 +28,38 @@ Settings::~Settings()
 {
 }
 
-void Settings::readLayout(QWidget* w, unsigned flags)
+void Settings::layout(QWidget* w)
 {
-  if (!w)
+  if (!w || w->objectName().isEmpty())
     return;
-  QString prefix = QString("/Geometry/%1/").arg(w->objectName());
-  beginGroup(prefix);
-  int x = value("x", w->x()).toInt();
-  int y = value("y", w->y()).toInt();
-  int width = value("w", w->width()).toInt();
-  int height = value("h", w->height()).toInt();
-  w->resize(QSize(width, height));
-  w->move(QPoint(x, y));
-  if ((flags && Show) && value("visible").toBool())
-    w->show();
-  QMainWindow* main = qobject_cast<QMainWindow*>(w);
-  if (main)
+  beginGroup("Geometry");
+  QList<int> values;
+  if (list(w->objectName(), values, 5))  // Not enough values
   {
-    QByteArray docks = value("docks", QByteArray()).toByteArray();
-    if (docks.count())
-      main->restoreState(docks, 0);
+    w->resize(QSize(values[2], values[3]));
+    w->move(QPoint(values[0], values[1]));
+    if (qobject_cast<QMainWindow*>(w))
+    {
+      QByteArray docks = value("Docks", QByteArray()).toByteArray();
+      if (docks.count())
+          qobject_cast<QMainWindow*>(w)->restoreState(docks, 0);
+    }
+    else if (values[4]) // restore non-main windows
+      w->show();
   }
   endGroup();
 }
 
-void Settings::writeLayout(const QWidget* w)
+void Settings::setLayout(const QWidget* w)
 {
-  if (!w)
+  if (!w || w->objectName().isEmpty())
     return;
-  QString prefix = QString("/Geometry/%1/").arg(w->objectName());
-  beginGroup(prefix);
-  setValue("x", w->x());
-  setValue("y", w->y());
-  setValue("w", w->width());
-  setValue("h", w->height());
-  setValue("visible",w->isVisible());
-  const QMainWindow* main = qobject_cast<const QMainWindow*>(w);
-  if (main)
-    setValue("docks", main->saveState(0));
+  beginGroup("Geometry");
+  QList<int> values;
+  values << w->x() << w->y() << w->width() << w->height() << w->isVisible();
+  setList(w->objectName(), values);
+  if (qobject_cast<const QMainWindow*>(w))
+    setValue("Docks", qobject_cast<const QMainWindow*>(w)->saveState(0));
   endGroup();
 }
 
@@ -95,6 +89,26 @@ QString Settings::dataPath()
 QString Settings::iconPath(const QString& name)
 {
   return QString("%1/images/%2.png").arg(dataPath()).arg(name);
+}
+
+void Settings::setList(const QString& key, QList<int> list)
+{
+  QList<QVariant> varlist;
+  int i;
+  foreach (i, list)
+    varlist.append(QVariant(i));
+  setValue(key, varlist);
+}
+
+bool Settings::list(const QString &key, QList<int>& list, int items)
+{
+  QList<QVariant> varlist = value(key).toList();
+  if (items >= 0 && varlist.count() + list.count() != items)
+    return false;
+  QVariant v;
+  foreach(v, varlist)
+    list.append(v.toInt());
+  return true;
 }
 
 Settings* AppSettings;

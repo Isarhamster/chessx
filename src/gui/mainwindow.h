@@ -36,11 +36,12 @@ class DatabaseInfo;
 class Output;
 class TipOfDayDialog;
 
-class QCloseEvent;
 class ChessBrowser;
+class QActionGroup;
+class QCloseEvent;
 class QLabel;
 class QMenu;
-class QActionGroup;
+class QSplitter;
 class QTextBrowser;
 
 /** 
@@ -187,6 +188,7 @@ private:
   TipOfDayDialog* m_tipDialog;
   /* Main gui parts */
   BoardView* m_boardView;
+  QSplitter* m_boardSplitter;
   ChessBrowser* m_moveView;
   ChessBrowser* m_gameView;
   /* Status */

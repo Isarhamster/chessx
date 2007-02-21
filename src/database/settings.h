@@ -21,25 +21,31 @@
 
 class QWidget;
 
-/** @ingroup Database  
+/** @ingroup Database
     The Settings class provides a wrapper to Qt QSettings class. It allows to
     easily save/restore application settings and get paths for various resources.
  */
 
 class Settings : public QSettings
 {
+  Q_OBJECT
 public:
   enum {Show = 1} LayoutFlags;
   Settings();
   ~Settings();
   /** Restore widget's layout based on its name. Optionally show window if it is visible */
-  void readLayout(QWidget* w, unsigned flags = 0);
+  virtual void layout(QWidget* w);
   /** Write widget's layout with its name. */
-  void writeLayout(const QWidget* w);
+  virtual void setLayout(const QWidget* w);
   /** @return directory where data are stored. */
-  QString dataPath();
+  virtual QString dataPath();
   /** @return directory where given icon is stored. Path and extension will be added automatically. */
-  QString iconPath(const QString& name);
+  virtual QString iconPath(const QString& name);
+  /** Write integer list to configuration file. Does it by converting it to QString */
+  virtual void setList(const QString& key, QList<int> list);
+  /** Appends values to the list. @return @p true if the list contains exact number of items.
+  If @p items is @p -1 , always return @p true. */
+  virtual bool list(const QString& key, QList<int>& list, int items = -1);
 private:
   QString m_dataPath;
 };
