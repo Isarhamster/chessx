@@ -46,9 +46,9 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QSplitter>
 #include <QStatusBar>
 #include <QTime>
-#include <QVBoxLayout>
 
 bool yesNo(const QString& question, QMessageBox::Icon icon = QMessageBox::Question)
 {
@@ -87,9 +87,11 @@ MainWindow::MainWindow() : QMainWindow(),
   setDockNestingEnabled(true);
 
   /* Board */
-  QWidget *boardBox = new QWidget;
-  setCentralWidget(boardBox);
-  m_boardView = new BoardView(boardBox);
+  m_boardSplitter = new QSplitter(Qt::Vertical);
+  m_boardSplitter->setChildrenCollapsible(false);
+  setCentralWidget(m_boardSplitter);
+  m_boardView = new BoardView(m_boardSplitter);
+  m_boardView->setObjectName("BoardView");
   m_boardView->setMinimumSize(200, 200);
   m_boardView->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
@@ -98,17 +100,14 @@ MainWindow::MainWindow() : QMainWindow(),
   connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotGameMoveWheel(int)));
 
   /* Move view */
-  m_moveView = new ChessBrowser(boardBox);
+  m_moveView = new ChessBrowser(m_boardSplitter);
   m_moveView->zoomOut();
-  m_moveView->setFixedHeight(120);
+  m_boardView->setMinimumHeight(80);
   connect(m_moveView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 
   /* Board layout */
-  QVBoxLayout* boardLayout = new QVBoxLayout;
-  boardLayout->setMargin(0);
-  boardLayout->addWidget(m_boardView);
-  boardLayout->addWidget(m_moveView);
-  boardBox->setLayout(boardLayout);
+  m_boardSplitter->addWidget(m_boardView);
+  m_boardSplitter->addWidget(m_moveView);
 
  /* Game view */
   QDockWidget* dock = new QDockWidget(tr("Game Text"), this);
@@ -138,7 +137,12 @@ MainWindow::MainWindow() : QMainWindow(),
   srand(time(0));
 
   /* Restoring layouts */
-  AppSettings->readLayout(this);
+  AppSettings->layout(this);
+  AppSettings->beginGroup("MainWindow");
+  QList<int> list;
+  if (AppSettings->list("BoardSplit", list, m_boardSplitter->count()))
+    m_boardSplitter->setSizes(list);
+  AppSettings->endGroup();
   emit reconfigure();
 
   /* Reset board - not earlier, as all widgets have to be created. */
@@ -181,10 +185,13 @@ void MainWindow::closeEvent(QCloseEvent* e)
 {
   if (yesNo(tr("Do you want to quit?"))) {
     m_recentFiles.save("History", "RecentFiles");
-    AppSettings->writeLayout(m_playerDialog);
-    AppSettings->writeLayout(m_helpWindow);
+    AppSettings->setLayout(m_playerDialog);
+    AppSettings->setLayout(m_helpWindow);
     m_gameList->saveConfig();
-    AppSettings->writeLayout(this);
+    AppSettings->setLayout(this);
+    AppSettings->beginGroup("MainWindow");
+    AppSettings->setList("BoardSplit", m_boardSplitter->sizes());
+    AppSettings->endGroup();
     e->accept();
     qApp->quit();
     }
@@ -319,7 +326,7 @@ PlayerDialog* MainWindow::playerDialog()
     else
       db->open(path);
     m_playerDialog = new PlayerDialog(db, this);
-    AppSettings->readLayout(m_playerDialog, Settings::Show);
+    AppSettings->layout(m_playerDialog);
   }
   return m_playerDialog;
 }
@@ -336,7 +343,7 @@ HelpWindow* MainWindow::helpWindow()
   if (!m_helpWindow)
   {
     m_helpWindow = new HelpWindow();
-    AppSettings->readLayout(m_helpWindow, Settings::Show);
+    AppSettings->layout(m_helpWindow);
   }
   return m_helpWindow;
 }
