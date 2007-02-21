@@ -93,7 +93,7 @@ MainWindow::MainWindow() : QMainWindow(),
   m_boardView = new BoardView(m_boardSplitter);
   m_boardView->setObjectName("BoardView");
   m_boardView->setMinimumSize(200, 200);
-  m_boardView->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
+  m_boardView->resize(500, 500);
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
   connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
@@ -102,7 +102,7 @@ MainWindow::MainWindow() : QMainWindow(),
   /* Move view */
   m_moveView = new ChessBrowser(m_boardSplitter);
   m_moveView->zoomOut();
-  m_boardView->setMinimumHeight(80);
+  m_moveView->setMinimumHeight(80);
   connect(m_moveView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 
   /* Board layout */
@@ -137,11 +137,10 @@ MainWindow::MainWindow() : QMainWindow(),
   srand(time(0));
 
   /* Restoring layouts */
-  AppSettings->layout(this);
+  if (!AppSettings->layout(this))
+    resize(800, 600);
   AppSettings->beginGroup("MainWindow");
-  QList<int> list;
-  if (AppSettings->list("BoardSplit", list, m_boardSplitter->count()))
-    m_boardSplitter->setSizes(list);
+  m_boardSplitter->restoreState(AppSettings->value("BoardSplit").toByteArray());
   AppSettings->endGroup();
   emit reconfigure();
 
@@ -190,7 +189,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
     m_gameList->saveConfig();
     AppSettings->setLayout(this);
     AppSettings->beginGroup("MainWindow");
-    AppSettings->setList("BoardSplit", m_boardSplitter->sizes());
+    AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
     AppSettings->endGroup();
     e->accept();
     qApp->quit();

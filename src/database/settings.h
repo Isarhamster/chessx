@@ -33,8 +33,9 @@ public:
   enum {Show = 1} LayoutFlags;
   Settings();
   ~Settings();
-  /** Restore widget's layout based on its name. Optionally show window if it is visible */
-  virtual void layout(QWidget* w);
+  /** Restore widget's layout based on its name. Optionally show window if it is visible.
+  @return @p true if the state was restored. */
+  virtual bool layout(QWidget* w);
   /** Write widget's layout with its name. */
   virtual void setLayout(const QWidget* w);
   /** @return directory where data are stored. */

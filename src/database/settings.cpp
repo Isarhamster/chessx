@@ -28,13 +28,14 @@ Settings::~Settings()
 {
 }
 
-void Settings::layout(QWidget* w)
+bool Settings::layout(QWidget* w)
 {
   if (!w || w->objectName().isEmpty())
-    return;
+    return false;
   beginGroup("Geometry");
   QList<int> values;
-  if (list(w->objectName(), values, 5))  // Not enough values
+  bool valid = list(w->objectName(), values, 5);
+  if (valid)  // Enough values
   {
     w->resize(QSize(values[2], values[3]));
     w->move(QPoint(values[0], values[1]));
@@ -48,6 +49,7 @@ void Settings::layout(QWidget* w)
       w->show();
   }
   endGroup();
+  return valid;
 }
 
 void Settings::setLayout(const QWidget* w)
