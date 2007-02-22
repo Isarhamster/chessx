@@ -13,8 +13,6 @@ Output::Output(OutputType output, const QString& pathToTemplateFile)
    m_blackColumnSpace = " ";
    setTemplateFile(pathToTemplateFile);
    initialize();
-
-  
 }
 
 void Output::initialize()
@@ -175,8 +173,7 @@ QMap<Output::OutputType,QString>& Output::getFormats()
 
 void Output::writeMove(int variation)
 {
-   QString mvno;
-   mvno.sprintf("%03d", m_game->moveId(variation));
+   QString mvno = QString::number(m_game->moveId(variation));
    if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
       // *** If the column style option is set and it's a mainline move
       // *** some special markup is required

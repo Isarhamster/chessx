@@ -74,8 +74,10 @@ class Game
 		bool isMoveLegal(const Move& move);
 		/** @return first move in given variation */
 		Move move(int variation = 0) const;
-		/** @returns integer id for move (nb invalid after the game is modified) */
+		/** @return integer id for move. Note that @p id is supposed to change after the game is modified. */
 		int moveId(int variation = 0) const;
+		/** @return current move id. */
+		int currentMoveId() const;
 		/** @return comment associated with the first move in the given variation */
 		QString annotation(int variation = 0) const;
 		/** @return nags associated with the first move in the given variation */

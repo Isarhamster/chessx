@@ -93,7 +93,7 @@ MainWindow::MainWindow() : QMainWindow(),
   m_boardView = new BoardView(m_boardSplitter);
   m_boardView->setObjectName("BoardView");
   m_boardView->setMinimumSize(200, 200);
-  m_boardView->resize(500, 500);
+  m_boardView->resize(500, 5400);
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
   connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
@@ -247,7 +247,10 @@ void MainWindow::gameLoad(int index)
 void MainWindow::gameMoveBy(int change)
 {
   if (game()->moveByPly(change))
+  {
     m_boardView->setBoard(game()->board());
+    m_gameView->selectAnchor(QString("move:%1").arg(game()->currentMoveId()));
+  }
 }
 
 void MainWindow::updateMenuRecent()
@@ -565,6 +568,7 @@ void MainWindow::slotGameViewUpdate()
     m_gameView->setPlainText(m_output->output(game()));
   else
     m_gameView->setText(m_output->output(game()));
+  m_gameView->selectAnchor(QString("move:%1").arg(game()->currentMoveId()));
   game()->moveToPly(ply);
 }
 
@@ -575,8 +579,10 @@ void MainWindow::slotGameViewLink(const QUrl& url)
     if (url.path() == "prev") game()->backward();
     else if (url.path() == "next") game()->forward();
     else if (url.path() == "exit") game()->exitVariation();
-    else game()->moveToId(url.path().toInt());
+    else 
+      game()->moveToId(url.path().toInt());
     m_boardView->setBoard(game()->board());
+    m_gameView->selectAnchor(QString("move:%1").arg(game()->currentMoveId()));
   }
   else if (url.scheme() == "tag")
   {
