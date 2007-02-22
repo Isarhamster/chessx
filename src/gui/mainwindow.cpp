@@ -463,6 +463,16 @@ void MainWindow::slotMove(Square from, Square to)
 {
   Board board = game()->board();
   Move m(board, from, to);
+  if ((to < 8 || to > 55) && (board.at(from) == WhitePawn || board.at(from) == BlackPawn))
+  {
+    QStringList moves;
+    moves << tr("Queen") << tr("Rook") << tr("Bishop") << tr("Knight");
+    bool ok;
+    int index = moves.indexOf(QInputDialog::getItem(0, tr("Promotion"), tr("Promote to:"), 
+                              moves, 0, false, &ok));
+    if (!ok) return;
+    m.setPromotionPiece(Piece(index + (board.toMove() == White ? WhiteQueen : BlackQueen)));
+  }
   if (board.isLegal(m))
   {
     game()->replaceMove(m);
