@@ -152,6 +152,14 @@ int Game::moveId(int variation) const
 	return -1;
 }
 
+int Game::currentMoveId() const
+{
+  if (m_currentNode)
+    return m_currentNode;
+  else
+    return 1;
+}
+
 QString Game::annotation(int variation) const
 {
 	int count = 0;
