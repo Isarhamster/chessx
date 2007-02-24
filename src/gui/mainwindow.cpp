@@ -96,7 +96,6 @@ MainWindow::MainWindow() : QMainWindow(),
   m_boardView->resize(500, 5400);
   connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
   connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
-  connect(m_boardView, SIGNAL(changed()), SLOT(slotMoveViewUpdate()));
   connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotGameMoveWheel(int)));
 
   /* Move view */
@@ -145,7 +144,7 @@ MainWindow::MainWindow() : QMainWindow(),
   emit reconfigure();
 
   /* Reset board - not earlier, as all widgets have to be created. */
-  m_boardView->setBoard(game()->board());
+  slotMoveChanged();
 
   /* Status */
   m_statusFilter = new QLabel(statusBar());
@@ -237,20 +236,15 @@ void MainWindow::gameLoad(int index)
   if (index < 0 || index >= database()->count())
     return;
   databaseInfo()->loadGame(index);
-  m_boardView->setBoard(game()->board());
   m_gameList->selectGame(index);
   qobject_cast<QWidget*>(m_gameView->parent())->setWindowTitle(tr("Game: %1").arg(index+1));
-  slotMoveViewUpdate();
-  slotGameViewUpdate();
+  slotGameChanged();
 }
 
 void MainWindow::gameMoveBy(int change)
 {
   if (game()->moveByPly(change))
-  {
-    m_boardView->setBoard(game()->board());
-    m_gameView->selectAnchor(QString("move:%1").arg(game()->currentMoveId()));
-  }
+     slotMoveChanged();
 }
 
 void MainWindow::updateMenuRecent()
@@ -417,7 +411,8 @@ void MainWindow::slotEditPasteFEN()
   Board b = m_boardView->board();
   QString fen = QApplication::clipboard()->text();
   b.fromFEN(fen);
-  m_boardView->setBoard(b);
+  game()->setStartBoard(b);
+  slotGameChanged();
 }
 
 void MainWindow::slotEditBoard()
@@ -426,10 +421,8 @@ void MainWindow::slotEditBoard()
   B.setBoard(m_boardView->board());
   if (B.exec() == QDialog::Accepted)
   {
-    m_boardView->setBoard(B.board());
     game()->setStartBoard(B.board());
-    slotGameViewUpdate();
-    slotMoveViewUpdate();
+    slotGameChanged();
   }
 }
 
@@ -477,15 +470,18 @@ void MainWindow::slotMove(Square from, Square to)
   {
     game()->replaceMove(m);
     game()->forward();
-    m_boardView->setBoard(game()->board());
-    slotGameViewUpdate();
-    slotMoveViewUpdate();
+    slotGameChanged();
   }
 }
 
-void MainWindow::slotMoveViewUpdate()
+void MainWindow::slotMoveChanged()
 {
   Game* g = game();
+  // Set board first
+  m_boardView->setBoard(g->board());
+  // Highlight current move
+  m_gameView->selectAnchor(QString("move:%1").arg(game()->currentMoveId()));
+  // Finally update game information
   QString white = g->tag("White");
   QString black = g->tag("Black");
   QString players = tr("Game %1: <a href=\"tag:white\">%2</a> %3 - <a href=\"tag:black\">%4</a> %5")
@@ -568,18 +564,16 @@ void MainWindow::slotGameLoadChosen()
 void MainWindow::slotGameSave()
 {
   if (saveDialog()->exec(game()) == QMessageBox::Ok)
-    slotMoveViewUpdate();
+    slotGameChanged();
 }
 
-void MainWindow::slotGameViewUpdate()
+void MainWindow::slotGameChanged()
 {
-  int ply = game()->ply();
   if (m_showPgnSource)
     m_gameView->setPlainText(m_output->output(game()));
   else
     m_gameView->setText(m_output->output(game()));
-  m_gameView->selectAnchor(QString("move:%1").arg(game()->currentMoveId()));
-  game()->moveToPly(ply);
+  slotMoveChanged();
 }
 
 void MainWindow::slotGameViewLink(const QUrl& url)
@@ -591,8 +585,7 @@ void MainWindow::slotGameViewLink(const QUrl& url)
     else if (url.path() == "exit") game()->exitVariation();
     else 
       game()->moveToId(url.path().toInt());
-    m_boardView->setBoard(game()->board());
-    m_gameView->selectAnchor(QString("move:%1").arg(game()->currentMoveId()));
+    slotMoveChanged();
   }
   else if (url.scheme() == "tag")
   {
@@ -621,7 +614,7 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 void MainWindow::slotGameViewToggle(bool toggled)
 {
   m_showPgnSource = toggled;
-  slotGameViewUpdate();
+  slotGameChanged();
 }
 
 void MainWindow::slotFilterChanged()
