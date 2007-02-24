@@ -131,8 +131,8 @@ public slots:
   void slotGameLoadRandom();
   /** Choose a game and load it */
   void slotGameLoadChosen();
-  /** Update GameView after move/game change */
-  void slotGameViewUpdate();
+  /** Update GameView content after game was change. Triggers also @ref slotMoveChanged . */
+  void slotGameChanged();
   /** Handle link click in Game View panel */
   void slotGameViewLink(const QUrl& link);
   /** Show/hide GameView source - useful for debugging. */
@@ -157,8 +157,9 @@ public slots:
   void slotSearchReverse();
   /** Made given move on the board */
   void slotMove(Square from, Square to);
-  /** Update GameInfo after move was made. */
-  void slotMoveViewUpdate();
+  /** Update GUI after current move was changed. Update BoardView to current board, 
+  updates GameInfo and highlight current move in GameView. */
+  void slotMoveChanged();
   /** Show temporary message. */
   void slotStatusMessage(const QString& msg);
   /** Change database */
