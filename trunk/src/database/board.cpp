@@ -326,65 +326,76 @@ void Board::fromFEN(const QString& fen)
    createHash();
 }
 
-QString Board::toFEN() const
+QString Board::toFEN(int move) const
 {
-	QString fen = "";
-	Piece piece;
-	int empty = 0;
-	
-	//piece placement
-	for(int row = 7; row >= 0; row--) {
-		for(int col = 0; col < 8; col++) {
-			piece = at(col, row);
-			if(piece == Empty) {
-				empty++;
-			} else {
-				if(empty != 0) {
-					fen += QString::number(empty);
-					empty = 0;
-				}
-				fen += pieceToChar(piece);
-			}
-		}
-		if(empty != 0) {
-			fen += QString::number(empty);
-			empty = 0;
-		}
-		if(row != 0) {
-			fen += '/';
-		}
-	}
-	
-	//side to move
-	fen += toMove() == White ? " w " : " b ";
-	
-	//castling rights
-	if(m_castlingRights == NoRights) {
-		fen += "- ";
-	} else {
-		if(m_castlingRights & WhiteKingside) fen += 'K';
-		if(m_castlingRights & WhiteQueenside) fen += 'Q';
-		if(m_castlingRights & BlackKingside) fen += 'k';
-		if(m_castlingRights & BlackQueenside) fen += 'q';
-		fen += ' ';
-	}
-	
-	//en passant square
-	if(m_epSquare == NoEPSquare) {
-		fen += "- ";
-	} else {
-		fen += 'a' + (m_epSquare & 7);
-		fen += '1' + ((m_epSquare & 56) >> 3);
-		fen += ' ';
-	}
-	
-	//half move clock
-	fen += QString::number(m_halfMoveClock);
-	
-	//full move number not used by board
-	fen += " -";
-	
-	return fen;
+  QString fen = "";
+  Piece piece;
+  int empty = 0;
+
+  //piece placement
+  for (int row = 7; row >= 0; row--)
+  {
+    for (int col = 0; col < 8; col++)
+    {
+      piece = at(col, row);
+      if (piece == Empty)
+        empty++;
+      else
+      {
+        if (empty != 0)
+        {
+          fen += QString::number(empty);
+          empty = 0;
+        }
+        fen += pieceToChar(piece);
+      }
+    }
+    if (empty != 0)
+    {
+      fen += QString::number(empty);
+      empty = 0;
+    }
+    if (row != 0)
+      fen += '/';
+  }
+
+  //side to move
+  fen += toMove() == White ? " w " : " b ";
+
+  //castling rights
+  if (m_castlingRights == NoRights)
+    fen += "- ";
+  else
+  {
+    if (m_castlingRights & WhiteKingside)
+      fen += 'K';
+    if (m_castlingRights & WhiteQueenside)
+      fen += 'Q';
+    if (m_castlingRights & BlackKingside)
+      fen += 'k';
+    if (m_castlingRights & BlackQueenside)
+      fen += 'q';
+    fen += ' ';
+  }
+
+  //en passant square
+  if (m_epSquare == NoEPSquare)
+  {
+    fen += "- ";
+  } else
+  {
+    fen += 'a' + (m_epSquare & 7);
+    fen += '1' + ((m_epSquare & 56) >> 3);
+    fen += ' ';
+  }
+
+  //half move clock
+  fen += QString::number(m_halfMoveClock);
+
+  //full move number not used by board
+  fen += move <= 0 ? " -" : " " + QString::number(move);
+
+  return fen;
 }
 
 bool Board::isValidFEN(const QString& fen) const

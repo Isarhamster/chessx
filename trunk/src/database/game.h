@@ -68,6 +68,8 @@ class Game
 		//node information methods
 		/** @return current position */
 		Board board() const;
+		/** @return current position in FEN */
+		QString toFen() const;
 		/** @return whether the current position is in the mainline */
 		bool isMainline();
 		/** @return whether the given move is legal in the current position */
@@ -104,6 +106,9 @@ class Game
 		void moveCount(int* moves, int* comments, int* nags);
 		/** @return number of half moves made since the beginning of the game */
 		int ply() const;
+		/** @return current move. Equals to @p ply/2 for standard positions, but may be different
+    */
+		int moveNumber() const;
 		/** @return number of ply in current variation */
 		int plyCount() const;
 		/** @return number of current variation relative to previous move*/
@@ -185,6 +190,8 @@ class Game
 		
 		/** Sets the games start position */
 		void setStartBoard(const Board& startBoard);
+		/** Sets the games start position from FEN. Correctly recognizes move number. */
+		void setStartBoard(const QString& fen);
 		/** Sets annotaions at the start of the game */
 		void setStartAnnotation(const QString& annotation);
 		/** Sets the game result */
@@ -227,6 +234,7 @@ class Game
 		//tree data
 		int m_currentNode;
 		int m_ply;
+    int m_startMove; // Non-zero if boards doesn't start from starting position
 		Board m_currentBoard;
 		History m_history;
 		

@@ -52,8 +52,8 @@ public:
   void setStandardPosition();
   /** Sets position from FEN */
   void fromFEN(const QString& fen);
-	/** @return FEN string for position */
-	QString toFEN() const;
+	/** @return FEN string for position, assuming that current move is @p move */
+	QString toFEN(int move = 0) const;
    /** @return true is the FEN string is valid */
    bool isValidFEN(const QString& fen) const;
 	/** @return ASCII representation for debugging */

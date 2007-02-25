@@ -34,6 +34,7 @@ Game::Game()
 
 	m_currentNode = 0;
 	m_ply = 0;
+  m_startMove = 1;
 	m_nextFreeNode = 1;
 	m_deletedNodeCount = 0;
 	m_totalNodeCount = defaultSize;
@@ -49,11 +50,13 @@ Game::Game(const Game& game)
 	
 	m_startBoard = game.m_startBoard;
 	m_startAnnotation = game.m_startAnnotation;
+  
 	m_result = game.m_result;
 	
 	m_currentNode = game.m_currentNode;
 	m_ply = game.m_ply;
-	m_currentBoard = game.m_currentBoard;
+	m_startMove = game.m_startMove;
+  m_currentBoard = game.m_currentBoard;
 	m_history = game.m_history;
 	
 	m_nextFreeNode = game.m_nextFreeNode;
@@ -76,7 +79,8 @@ Game& Game::operator=(const Game& game)
 	
 	m_currentNode = game.m_currentNode;
 	m_ply = game.m_ply;
-	m_currentBoard = game.m_currentBoard;
+	m_startMove = game.m_startMove;
+  m_currentBoard = game.m_currentBoard;
 	m_history = game.m_history;
 	
 	m_nextFreeNode = game.m_nextFreeNode;
@@ -108,6 +112,11 @@ Game::~Game()
 Board Game::board() const
 {
 	return m_currentBoard;
+}
+
+QString Game::toFen() const
+{
+  return m_currentBoard.toFEN(moveNumber());
 }
 
 bool Game::isMainline()
@@ -210,13 +219,13 @@ QString Game::moveToSan(Game::MoveStringFlags flags, int variation)
 	QString san = "";
 	
 	//move number
-	if(m_ply % 2) {
+	if(m_currentBoard.toMove() == Black) {
 		if(flags & BlackNumbers) {
-			san += QString::number(m_ply / 2 + 1) + "...";
+			san += QString::number(moveNumber()) + "...";
 		}
 	} else {
 		if(flags & WhiteNumbers) {
-		 	san += QString::number(m_ply / 2 + 1) + ".";
+		 	san += QString::number(moveNumber()) + ".";
 		}
 	}
 	
@@ -232,7 +241,6 @@ QString Game::moveToSan(Game::MoveStringFlags flags, int variation)
 			san += " " + nagString;
 		} 
 	}
-	
 	return san;
 }
 
@@ -715,10 +723,11 @@ void Game::clear()
 
 	m_currentNode = 0;
 	m_ply = 0;
+	m_startMove = 1;
 	m_nextFreeNode = 1;
 	m_deletedNodeCount = 0;
 	m_moveNodes[0].nextNode = 0;
-	
+  
 	m_tags.clear();
 	m_history.clear();
 }
@@ -744,6 +753,26 @@ void Game::setStartBoard(const Board& board)
 	m_currentBoard = board;
 	
 	// reset game, otherwise it may be invalid
+	m_startAnnotation = QString::null;
+	m_result = Unknown;
+
+	m_currentNode = 0;
+	m_ply = 0;
+	m_nextFreeNode = 1;
+	m_deletedNodeCount = 0;
+	m_moveNodes[0].nextNode = 0;
+}
+
+void Game::setStartBoard(const QString& fen)
+{
+	bool ok;
+  m_startMove = fen.section(' ', -1).toInt(&ok);
+  if (!ok)
+    m_startMove = 1;
+  m_startBoard.fromFEN(fen);
+	m_currentBoard = m_startBoard;
+	
+	// reset game, otherwise it may be invalid 
 	m_startAnnotation = QString::null;
 	m_result = Unknown;
 
@@ -940,5 +969,10 @@ int Game::nodeCount(int node)
 	}
 	
 	return total;
+}
+
+int Game::moveNumber() const
+{
+  return m_startMove + m_ply / 2;
 }
 
