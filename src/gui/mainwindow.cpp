@@ -402,16 +402,13 @@ void MainWindow::slotConfigureFlip()
 
 void MainWindow::slotEditCopyFEN()
 {
-  Board b = m_boardView->board();
-  QApplication::clipboard()->setText(b.toFEN());
+  QApplication::clipboard()->setText(game()->toFen());
 }
 
 void MainWindow::slotEditPasteFEN()
 {
-  Board b = m_boardView->board();
   QString fen = QApplication::clipboard()->text();
-  b.fromFEN(fen);
-  game()->setStartBoard(b);
+  game()->setStartBoard(fen);
   slotGameChanged();
 }
 

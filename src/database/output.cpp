@@ -185,12 +185,12 @@ void Output::writeMove(int variation)
          } else {
             m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
          }
-         m_output += QString::number((m_game->ply()+2)/2) + ".";
+         m_output += QString::number(m_game->moveNumber()) + ".";
       } else if (m_dirtyBlack) {
          // ** If it is black to move and we need the ... then add a extra
          // ** column before adding the column for the move
          m_output += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
-         m_output += QString::number((m_game->ply()+2)/2) + ". ...";
+         m_output += QString::number(m_game->moveNumber()) + ". ...";
          m_output += m_startTagMap[MarkupColumnStyleMove];
          if (m_currentVariationLevel > 0) {
             m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
@@ -215,9 +215,9 @@ void Output::writeMove(int variation)
       }
       // *** Write the move number
       if (m_game->board().toMove() == White) {
-         m_output += QString::number((m_game->ply()+2)/2) + ".";
+         m_output += QString::number(m_game->moveNumber()) + ".";
       } else if (m_dirtyBlack) {
-         m_output += QString::number((m_game->ply()+2)/2) + "...";
+         m_output += QString::number(m_game->moveNumber()) + "...";
       }
    }
    m_dirtyBlack = false;
