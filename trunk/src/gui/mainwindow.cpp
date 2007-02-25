@@ -468,9 +468,33 @@ void MainWindow::slotMove(Square from, Square to)
   }
   if (board.isLegal(m))
   {
-    game()->replaceMove(m);
-    game()->forward();
+    if (game()->atEnd())
+      game()->addMove(m);
+    else
+    {
+      // Find how way we should add a moveMade
+      QMessageBox mbox(QMessageBox::Question, tr("Add move"), 
+                      tr("There is already next move in current game. What do you want to do?"));
+      QPushButton* addVar = mbox.addButton(tr("Add variation"), QMessageBox::YesRole);
+      QPushButton* newMain = mbox.addButton(tr("Add new mainline"), QMessageBox::AcceptRole);
+      QPushButton* replaceMain = mbox.addButton(tr("Replace current move"), QMessageBox::DestructiveRole);
+      mbox.addButton(tr("Cancel"), QMessageBox::RejectRole);
+      mbox.exec();
+      if (mbox.clickedButton() == addVar)
+      {
+        game()->enterVariation(game()->addMove(m));
+        qDebug("Move:%d, Mainline?: %d", game()->currentMoveId(), game()->isMainline());
+      }
+      else if (mbox.clickedButton() == newMain)
+        game()->promoteVariation(game()->addMove(m));
+      else if (mbox.clickedButton() == replaceMain)
+        game()->replaceMove(m);
+      else return;
+    }
+     game()->forward();
+    // Replace with slotMoveChanged() to see it fixed (but no update in GameView
     slotGameChanged();
+    qDebug("Move:%d, Mainline?: %d", game()->currentMoveId(), game()->isMainline());
   }
 }
 
@@ -741,7 +765,7 @@ void MainWindow::setupActions()
   QMenu* debug = help->addMenu(tr("&Debug"));
 #ifndef QT_DEBUG
   debug->setVisible(false);
-#endif  
+#endif
   QAction* source;
   debug->addAction(source = createAction("Toggle game view format", 0, Qt::Key_F12));
   source->setCheckable(true);
