@@ -501,7 +501,10 @@ void MainWindow::slotMoveChanged()
   // Set board first
   m_boardView->setBoard(g->board());
   // Highlight current move
-  m_gameView->selectAnchor(QString("move:%1").arg(game()->currentMoveId()));
+  int id = game()->currentMoveId();
+  if (!id) 
+    id = 1;
+  m_gameView->selectAnchor(QString("move:%1").arg(id));
   // Finally update game information
   QString white = g->tag("White");
   QString black = g->tag("Black");

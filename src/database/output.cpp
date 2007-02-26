@@ -358,7 +358,7 @@ QString Output::output(Game* game)
 {
 
    m_game = game;
-   int ply = m_game->ply();
+   int id = m_game->currentMoveId();
    m_dirtyBlack = false;
    m_currentVariationLevel = 0;
 
@@ -394,7 +394,7 @@ QString Output::output(Game* game)
       m_output.replace("@"+cap[1]+"@",m_options.getOptionAsString(cap[1]));
    }
 
-   m_game->moveToPly(ply);
+   m_game->moveToId(id);
    return m_output;
 }
 void Output::setTemplateFile(const QString& filename)

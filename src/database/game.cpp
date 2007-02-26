@@ -163,10 +163,7 @@ int Game::moveId(int variation) const
 
 int Game::currentMoveId() const
 {
-  if (m_currentNode)
-    return m_currentNode;
-  else
-    return 1;
+  return m_currentNode;
 }
 
 QString Game::annotation(int variation) const
@@ -392,29 +389,30 @@ int Game::moveByPly(int diff)
 
 void Game::moveToId(int moveId)
 {
-	if(moveId == -1) {
-		return;
-	}
-	
-	//jump to node, travelling back to start adding the moves to the stack
-	int node = moveId;
-	QStack<Move> moveStack;
-	
-	do {
-		moveStack.push(m_moveNodes[node].move);
-		node = m_moveNodes[node].previousNode;
-	} while(node);
-	
-	//reset the board, then make the moves on the stack to create the correct position
-	m_currentNode = moveId;
-	m_ply = 0;
-	m_currentBoard = m_startBoard;
-	m_history.clear();
-	
-	while(!moveStack.isEmpty()) {
-		m_ply++;
-		m_history.push(m_currentBoard.doMove(moveStack.pop()));
-	}
+  if (moveId < 0)
+    return;
+
+  //jump to node, travelling back to start adding the moves to the stack
+  int node = moveId;
+  QStack < Move > moveStack;
+
+  while (node)
+  {
+    moveStack.push(m_moveNodes[node].move);
+    node = m_moveNodes[node].previousNode;
+  }
+
+  //reset the board, then make the moves on the stack to create the correct position
+  m_currentNode = moveId;
+  m_ply = 0;
+  m_currentBoard = m_startBoard;
+  m_history.clear();
+
+  while (!moveStack.isEmpty())
+  {
+    m_ply++;
+    m_history.push(m_currentBoard.doMove(moveStack.pop()));
+  }
 }
 
 void Game::moveToEnd()
