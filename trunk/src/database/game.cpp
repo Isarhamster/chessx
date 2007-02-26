@@ -34,7 +34,7 @@ Game::Game()
 
 	m_currentNode = 0;
 	m_ply = 0;
-  m_startMove = 1;
+  m_startMove = 2;
 	m_nextFreeNode = 1;
 	m_deletedNodeCount = 0;
 	m_totalNodeCount = defaultSize;
@@ -721,7 +721,7 @@ void Game::clear()
 
 	m_currentNode = 0;
 	m_ply = 0;
-	m_startMove = 1;
+	m_startMove = 2;
 	m_nextFreeNode = 1;
 	m_deletedNodeCount = 0;
 	m_moveNodes[0].nextNode = 0;
@@ -763,13 +763,13 @@ void Game::setStartBoard(const Board& board)
 
 void Game::setStartBoard(const QString& fen)
 {
-	bool ok;
-  m_startMove = fen.section(' ', -1).toInt(&ok);
-  if (!ok)
-    m_startMove = 1;
-  m_startBoard.fromFEN(fen);
+	m_startBoard.fromFEN(fen);
 	m_currentBoard = m_startBoard;
-	
+	bool ok;
+  m_startMove = fen.section(' ', -1).toInt(&ok) * 2 + (m_startBoard.toMove() == Black);
+  if (!ok)
+    m_startMove = 2 + (m_startBoard.toMove() == Black);
+
 	// reset game, otherwise it may be invalid 
 	m_startAnnotation = QString::null;
 	m_result = Unknown;
@@ -971,6 +971,6 @@ int Game::nodeCount(int node)
 
 int Game::moveNumber() const
 {
-  return m_startMove + m_ply / 2;
+  return (m_startMove + m_ply) / 2;
 }
 

@@ -478,20 +478,15 @@ void MainWindow::slotMove(Square from, Square to)
       mbox.addButton(tr("Cancel"), QMessageBox::RejectRole);
       mbox.exec();
       if (mbox.clickedButton() == addVar)
-      {
         game()->enterVariation(game()->addMove(m));
-        qDebug("Move:%d, Mainline?: %d", game()->currentMoveId(), game()->isMainline());
-      }
       else if (mbox.clickedButton() == newMain)
         game()->promoteVariation(game()->addMove(m));
       else if (mbox.clickedButton() == replaceMain)
         game()->replaceMove(m);
       else return;
     }
-     game()->forward();
-    // Replace with slotMoveChanged() to see it fixed (but no update in GameView
+    game()->forward();
     slotGameChanged();
-    qDebug("Move:%d, Mainline?: %d", game()->currentMoveId(), game()->isMainline());
   }
 }
 

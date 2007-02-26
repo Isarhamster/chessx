@@ -359,7 +359,6 @@ QString Output::output(Game* game)
 
    m_game = game;
    int id = m_game->currentMoveId();
-   m_dirtyBlack = false;
    m_currentVariationLevel = 0;
 
    m_output = m_header;
@@ -374,6 +373,7 @@ QString Output::output(Game* game)
    m_output += m_endTagMap[MarkupHeaderBlock];
    //writeNewlineIndent(); //fine 
    m_game->moveToStart();
+   m_dirtyBlack = m_game->board().toMove() == Black;
    m_output += m_startTagMap[MarkupNotationBlock];
    m_output += m_startTagMap[MarkupMainLine];
    if (m_options.getOptionAsBool("ColumnStyle")) {
