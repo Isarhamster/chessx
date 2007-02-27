@@ -415,10 +415,11 @@ void MainWindow::slotEditPasteFEN()
 void MainWindow::slotEditBoard()
 {
   BoardSetupDialog B;
-  B.setBoard(m_boardView->board());
+  B.setBoard(game()->board());
+  B.setMoveNumber(game()->moveNumber());
   if (B.exec() == QDialog::Accepted)
   {
-    game()->setStartBoard(B.board());
+    game()->setStartBoard(B.board(), B.moveNumber());
     slotGameChanged();
   }
 }

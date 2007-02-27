@@ -27,20 +27,20 @@ QMap<quint64,QString> Game::m_ecoPositions;
 
 Game::Game()
 {
-	m_startBoard.fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-	m_currentBoard = m_startBoard;
-	m_startAnnotation = QString::null;
-	m_result = Unknown;
+  m_startBoard.fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+  m_currentBoard = m_startBoard;
+  m_startAnnotation = QString::null;
+  m_result = Unknown;
 
-	m_currentNode = 0;
-	m_ply = 0;
-  m_startMove = 2;
-	m_nextFreeNode = 1;
-	m_deletedNodeCount = 0;
-	m_totalNodeCount = defaultSize;
-	m_moveNodes = new MoveNode[defaultSize];
-	m_moveNodes[0].nextNode = 0;
-	m_moveNodes[0].parentNode = 0;
+  m_currentNode = 0;
+  m_ply = 0;
+  m_startPly = 0;
+  m_nextFreeNode = 1;
+  m_deletedNodeCount = 0;
+  m_totalNodeCount = defaultSize;
+  m_moveNodes = new MoveNode[defaultSize];
+  m_moveNodes[0].nextNode = 0;
+  m_moveNodes[0].parentNode = 0;
 }
 
 Game::Game(const Game& game)
@@ -55,7 +55,7 @@ Game::Game(const Game& game)
 	
 	m_currentNode = game.m_currentNode;
 	m_ply = game.m_ply;
-	m_startMove = game.m_startMove;
+	m_startPly = game.m_startPly;
   m_currentBoard = game.m_currentBoard;
 	m_history = game.m_history;
 	
@@ -79,7 +79,7 @@ Game& Game::operator=(const Game& game)
 	
 	m_currentNode = game.m_currentNode;
 	m_ply = game.m_ply;
-	m_startMove = game.m_startMove;
+	m_startPly = game.m_startPly;
   m_currentBoard = game.m_currentBoard;
 	m_history = game.m_history;
 	
@@ -699,12 +699,13 @@ QString Game::ecoClassify() const
 
 Board Game::startBoard() const
 {
-	return m_startBoard;
+  return m_startBoard;
 }
+
 
 QString Game::startAnnotation() const
 {
-	return m_startAnnotation;
+  return m_startAnnotation;
 }
 
 Result Game::result() const
@@ -721,7 +722,7 @@ void Game::clear()
 
 	m_currentNode = 0;
 	m_ply = 0;
-	m_startMove = 2;
+	m_startPly = 0;
 	m_nextFreeNode = 1;
 	m_deletedNodeCount = 0;
 	m_moveNodes[0].nextNode = 0;
@@ -745,40 +746,41 @@ void Game::removeTag(const QString& tag)
 	m_tags.remove(tag);
 }
 
-void Game::setStartBoard(const Board& board)
+void Game::setStartBoard(const Board& board, int firstMove)
 {
-	m_startBoard = board;
-	m_currentBoard = board;
-	
-	// reset game, otherwise it may be invalid
-	m_startAnnotation = QString::null;
-	m_result = Unknown;
+  m_startBoard = board;
+  m_currentBoard = board;
 
-	m_currentNode = 0;
-	m_ply = 0;
-	m_nextFreeNode = 1;
-	m_deletedNodeCount = 0;
-	m_moveNodes[0].nextNode = 0;
+  // reset game, otherwise it may be invalid
+  m_startAnnotation = QString::null;
+  m_result = Unknown;
+
+  m_currentNode = 0;
+  m_ply = 0;
+  m_startPly = (firstMove - 1) * 2 + (m_startBoard.toMove() == Black);
+  m_nextFreeNode = 1;
+  m_deletedNodeCount = 0;
+  m_moveNodes[0].nextNode = 0;
 }
 
 void Game::setStartBoard(const QString& fen)
 {
-	m_startBoard.fromFEN(fen);
-	m_currentBoard = m_startBoard;
-	bool ok;
-  m_startMove = fen.section(' ', -1).toInt(&ok) * 2 + (m_startBoard.toMove() == Black);
-  if (!ok)
-    m_startMove = 2 + (m_startBoard.toMove() == Black);
+  m_startBoard.fromFEN(fen);
+  m_currentBoard = m_startBoard;
+  bool ok;
+  int start = fen.section(' ', -1).toInt(&ok);
+  if (ok && start > 0)
+    m_startPly = (start-1) * 2 + (m_startBoard.toMove() == Black);
+  else m_startPly = 0;
+  // reset game, otherwise it may be invalid 
+  m_startAnnotation = QString::null;
+  m_result = Unknown;
 
-	// reset game, otherwise it may be invalid 
-	m_startAnnotation = QString::null;
-	m_result = Unknown;
-
-	m_currentNode = 0;
-	m_ply = 0;
-	m_nextFreeNode = 1;
-	m_deletedNodeCount = 0;
-	m_moveNodes[0].nextNode = 0;
+  m_currentNode = 0;
+  m_ply = 0;
+  m_nextFreeNode = 1;
+  m_deletedNodeCount = 0;
+    m_moveNodes[0].nextNode = 0;
 }
 
 void Game::setStartAnnotation(const QString& annotation)
@@ -971,6 +973,6 @@ int Game::nodeCount(int node)
 
 int Game::moveNumber() const
 {
-  return (m_startMove + m_ply) / 2;
+  return (m_startPly + m_ply) / 2 + 1;
 }
 

@@ -125,3 +125,13 @@ QAction* BoardSetupDialog::pieceAction(const QString& name, int piece, QKeySeque
   return action;
 }
 
+void BoardSetupDialog::setMoveNumber(int i)
+{
+  ui.moveSpin->setValue(i);
+}
+
+int BoardSetupDialog::moveNumber() const
+{
+  return ui.moveSpin->value();
+}
+
