@@ -706,7 +706,7 @@ void MainWindow::setupActions()
   QMenu* edit = menuBar()->addMenu(tr("&Edit"));
   edit->addAction(createAction(tr("&Copy FEN"), SLOT(slotEditCopyFEN()), Qt::CTRL + Qt::SHIFT + Qt::Key_C));
   edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()), Qt::CTRL + Qt::SHIFT + Qt::Key_V));
-  edit->addAction(createAction(tr("&Edit board..."), SLOT(slotEditBoard()), Qt::CTRL + Qt::SHIFT + Qt::Key_S));
+  edit->addAction(createAction(tr("&Setup position..."), SLOT(slotEditBoard()), Qt::CTRL + Qt::SHIFT + Qt::Key_S));
 
   /* Game menu */
   QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
