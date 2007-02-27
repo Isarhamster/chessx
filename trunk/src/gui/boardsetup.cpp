@@ -65,12 +65,15 @@ BoardSetupDialog::~BoardSetupDialog()
 
 Board BoardSetupDialog::board() const
 {
-  return ui.boardView->board();
+  Board b = ui.boardView->board();
+  b.setToMove(ui.toMoveCombo->currentIndex() ? Black : White);
+  return b;
 }
 
 void BoardSetupDialog::setBoard(const Board& b)
 {
   ui.boardView->setBoard(b);
+  ui.toMoveCombo->setCurrentIndex(b.toMove() != White);
 }
 
 int BoardSetupDialog::exec()
@@ -84,6 +87,7 @@ void BoardSetupDialog::slotReset()
   Board b;
   b.setStandardPosition();
   ui.boardView->setBoard(b);
+  ui.toMoveCombo->setCurrentIndex(0);
 }
 
 void BoardSetupDialog::slotClear()
