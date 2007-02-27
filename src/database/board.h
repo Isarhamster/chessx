@@ -38,6 +38,8 @@ enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
    Pieces are kept directly on the board which is internally represented as simple array[0..63].
    You can easily and quickly make and undo moves, although undoing moves requires keeping track
    of captured pieces.
+
+   @todo Store/restore castling rights when setting/getting position using FEN.
 */
 
 
