@@ -47,21 +47,28 @@ class BoardSetupDialog : public QDialog
   public slots:
     /** Execute dialog */
     int exec();
+  private slots:
     /** Clear board */
     void slotClear();
     /** Restore standard position */
     void slotReset();
+    /** Change current piece using wheel */
+    void slotChangePiece(int dir);
     /** Choose piece */
     void slotChoosePiece(QAction*);
     /** Select square and insert piece */
     void slotSelected(Square s, int button);
+    /** Toggle side to move */
+    void slotToggleSide();
   private:
     Ui::BoardSetupDialog ui;
-    QMenu* m_popup;
     QActionGroup* m_actions;
-    Piece m_piece;
-    /** Create single action */
-    QAction* pieceAction(const QString& name, int piece, QKeySequence shortcut);
+    Color m_toMove;
+    /** Display side to move */
+    void showSideToMove();
+  protected:
+    /** Scroll current piece with a wheel */
+    virtual void wheelEvent(QWheelEvent* e);
 };
 
 

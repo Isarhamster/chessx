@@ -25,6 +25,7 @@
 
 #include "common.h"
 #include "board.h"
+#include "boardtheme.h"
 
 class BoardTheme;
 
@@ -45,6 +46,8 @@ public:
   void setBoard(const Board& value);
   /** @return displayed position. */
   Board board() const;
+  /** @return current theme */
+  const BoardTheme& theme() const;
   /** Reads new theme from file. If two files are given, pieces are read from the first one, board from the second. */
   bool setTheme(const QString& themeFile, const QString& boardFile = QString::null);
   /** Flips/unflips board. */
@@ -96,7 +99,7 @@ protected:
 
 private:
   Board m_board;
-  BoardTheme* m_theme;
+  BoardTheme m_theme;
   bool m_flipped;
   bool m_showFrame;
   int m_selectedSquare;

@@ -19,37 +19,40 @@
 
 #include <QActionGroup>
 #include <QCursor>
-#include <QPushButton>
+#include <QGridLayout>
 #include <QMenu>
+#include <QPushButton>
+#include <QToolButton>
 
 using namespace Qt;
 
-BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_piece(WhiteKing)
+BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 {
   ui.setupUi(this);
+  ui.boardView->configure();
 
   m_actions = new QActionGroup(this);
   m_actions->setExclusive(true);
 
   ui.boardView->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-  addAction(pieceAction(tr("White king"), WhiteKing, Key_K));
-  addAction(pieceAction(tr("White queen"), WhiteQueen, Key_Q));
-  addAction(pieceAction(tr("White rook"), WhiteRook, Key_R));
-  addAction(pieceAction(tr("White bishop"), WhiteBishop, Key_B));
-  addAction(pieceAction(tr("White knight"), WhiteKnight, Key_N));
-  addAction(pieceAction(tr("White pawn"), WhitePawn, Key_P));
-
-  QAction* separator =  new QAction(m_actions);
-  separator->setSeparator(true);
-  ui.boardView->addAction(separator);
-
-  addAction(pieceAction(tr("Black king"), BlackKing, SHIFT + Key_K));
-  addAction(pieceAction(tr("Black queen"), WhiteQueen, SHIFT + Key_Q));
-  addAction(pieceAction(tr("Black rook"), WhiteRook, SHIFT + Key_R));
-  addAction(pieceAction(tr("Black bishop"), BlackBishop, SHIFT + Key_B));
-  addAction(pieceAction(tr("Black knight"), BlackKnight, SHIFT + Key_N));
-  addAction(pieceAction(tr("Black pawn"), BlackPawn, SHIFT + Key_P));
+  QGridLayout *layout = new QGridLayout;
+  for (int piece = Empty; piece <= BlackPawn; piece++)
+  {
+    QAction* action = new QAction(QString(), m_actions);
+    action->setData(piece);
+    action->setCheckable(true);
+    if (piece == WhiteKing)
+      action->setChecked(true);
+    action->setIcon(ui.boardView->theme().piece(Piece(piece)));
+    QToolButton* button = new QToolButton(ui.buttonWidget);
+    button->setDefaultAction(action);
+    if (piece == Empty)
+      layout->addWidget(button, 6, 0);
+    else
+      layout->addWidget(button, (piece - 1) % 6, piece >= BlackKing);
+  }
+  ui.buttonWidget->setLayout(layout);
 
   connect(m_actions, SIGNAL(triggered(QAction*)), SLOT(slotChoosePiece(QAction*)));
   connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
@@ -57,6 +60,9 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_piece(W
   connect(ui.clearButton, SIGNAL(clicked()), SLOT(slotClear()));
   connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
   connect(ui.boardView, SIGNAL(clicked(Square, int)), SLOT(slotSelected(Square, int)));
+  connect(ui.boardView, SIGNAL(wheelScrolled(int)), SLOT(slotChangePiece(int)));
+  connect(ui.toMoveButton, SIGNAL(clicked()), SLOT(slotToggleSide()));
+
 }
 
 BoardSetupDialog::~BoardSetupDialog()
@@ -66,14 +72,15 @@ BoardSetupDialog::~BoardSetupDialog()
 Board BoardSetupDialog::board() const
 {
   Board b = ui.boardView->board();
-  b.setToMove(ui.toMoveCombo->currentIndex() ? Black : White);
+  b.setToMove(m_toMove);
   return b;
 }
 
 void BoardSetupDialog::setBoard(const Board& b)
 {
   ui.boardView->setBoard(b);
-  ui.toMoveCombo->setCurrentIndex(b.toMove() != White);
+  m_toMove = b.toMove();
+  showSideToMove();
 }
 
 int BoardSetupDialog::exec()
@@ -87,12 +94,15 @@ void BoardSetupDialog::slotReset()
   Board b;
   b.setStandardPosition();
   ui.boardView->setBoard(b);
-  ui.toMoveCombo->setCurrentIndex(0);
+  m_toMove = White;
+  showSideToMove();
 }
 
 void BoardSetupDialog::slotClear()
 {
   ui.boardView->setBoard(Board());
+  m_toMove = White;
+  showSideToMove();
 }
 
 void BoardSetupDialog::slotChoosePiece(QAction* action)
@@ -103,7 +113,7 @@ void BoardSetupDialog::slotChoosePiece(QAction* action)
 void BoardSetupDialog::slotSelected(Square square, int button)
 {
   Piece piece = (button & Qt::MidButton) ? Empty : Piece(m_actions->checkedAction()->data().toInt());
-  if (button & Qt::ShiftModifier)
+  if (button & Qt::RightButton)
   {
     if (piece >= BlackKing)
       piece = (Piece)(piece - (BlackKing - WhiteKing));
@@ -117,18 +127,6 @@ void BoardSetupDialog::slotSelected(Square square, int button)
   ui.boardView->setBoard(board);
 }
 
-QAction* BoardSetupDialog::pieceAction(const QString& name, int piece, QKeySequence shortcut)
-{
-  QAction* action = new QAction(name, m_actions);
-  ui.boardView->addAction(action);
-  action->setData(piece);
-  action->setShortcut(shortcut);
-  action->setCheckable(true);
-  if (piece == WhiteKing)
-    action->setChecked(true);
-  return action;
-}
-
 void BoardSetupDialog::setMoveNumber(int i)
 {
   ui.moveSpin->setValue(i);
@@ -137,5 +135,37 @@ void BoardSetupDialog::setMoveNumber(int i)
 int BoardSetupDialog::moveNumber() const
 {
   return ui.moveSpin->value();
+}
+
+void BoardSetupDialog::showSideToMove()
+{
+  if (m_toMove == White)
+    ui.toMoveButton->setText(tr("White"));
+  else ui.toMoveButton->setText(tr("Black"));
+  QPalette palette;
+  palette.setColor(ui.toMoveButton->backgroundRole(), m_toMove == White ? Qt::white : Qt::black);
+  ui.toMoveButton->setPalette(palette);
+  palette.setColor(ui.toMoveButton->foregroundRole(), m_toMove == White ? Qt::black : Qt::white);
+  ui.toMoveButton->setPalette(palette);
+}
+
+void BoardSetupDialog::slotToggleSide()
+{
+  m_toMove = oppositeColor(m_toMove);
+  showSideToMove();
+}
+
+void BoardSetupDialog::slotChangePiece(int dir)
+{
+  int i = m_actions->actions().indexOf(m_actions->checkedAction());
+  i += (dir == BoardView::WheelUp) ? -1 : 1;
+  if (i < 0) i = m_actions->actions().count()-1;
+  else if (i == m_actions->actions().count()) i = 0;
+  m_actions->actions().at(i)->setChecked(true);
+}
+
+void BoardSetupDialog::wheelEvent(QWheelEvent* e)
+{
+  slotChangePiece(e->delta() < 0 ? BoardView::WheelDown : BoardView::WheelUp);
 }
 

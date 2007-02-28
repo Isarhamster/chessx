@@ -15,8 +15,7 @@
  ***************************************************************************/
 
 #include "boardview.h"
-#include "boardtheme.h"
-#include <settings.h>
+#include "settings.h"
 
 #include <QMessageBox>
 #include <QMouseEvent>
@@ -31,12 +30,10 @@ using namespace Qt;
 BoardView::BoardView(QWidget* parent) : QWidget(parent),
    m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare)
 {
-  m_theme = new BoardTheme;
 }
 
 BoardView::~BoardView()
 {
-  delete m_theme;
 }
 
 void BoardView::setBoard(const Board& value)
@@ -52,28 +49,33 @@ Board BoardView::board() const
   return m_board;
 }
 
+const BoardTheme& BoardView::theme() const
+{
+  return m_theme;
+}
+
 void BoardView::repaintSquare(Square square)
 {
   QPainter p(this);
   int x = isFlipped() ? 7 - square % 8 : square % 8;
   int y = isFlipped() ? square / 8 : 7 - square / 8;
-  int posx = x * m_theme->size();
-  int posy = y * m_theme->size();
-  p.drawImage(QPoint(posx, posy), m_theme->square((x + y) % 2));
-  p.drawImage(QPoint(posx, posy), m_theme->piece(m_board.at(square)));
+  int posx = x * m_theme.size();
+  int posy = y * m_theme.size();
+  p.drawPixmap(QPoint(posx, posy), m_theme.square((x + y) % 2));
+  p.drawPixmap(QPoint(posx, posy), m_theme.piece(m_board.at(square)));
   if (square == m_selectedSquare)
   {
     QPen pen;
     pen.setColor(QColor(Qt::yellow));
     pen.setWidth(2);
     p.setPen(pen);
-    p.drawRect(posx + 1 + m_showFrame, posy + 1 + m_showFrame, m_theme->size() - 2 - m_showFrame,
-               m_theme->size() - 2 - m_showFrame);
+    p.drawRect(posx + 1 + m_showFrame, posy + 1 + m_showFrame, m_theme.size() - 2 - m_showFrame,
+               m_theme.size() - 2 - m_showFrame);
   }
   if (m_showFrame)
   {
     p.setPen(QColor(Qt::black));
-    p.drawRect(posx, posy, m_theme->size(), m_theme->size());
+    p.drawRect(posx, posy, m_theme.size(), m_theme.size());
   }
 }
 
@@ -88,7 +90,7 @@ void BoardView::resizeBoard()
   int xsize = (width() - 1) / 8;
   int ysize = (height() - 1) / 8;
   int size = xsize < ysize ? xsize : ysize;
-  m_theme->setSize(size);
+  m_theme.setSize(size);
 }
 
 void BoardView::resizeEvent(QResizeEvent*)
@@ -98,8 +100,8 @@ void BoardView::resizeEvent(QResizeEvent*)
 
 Square BoardView::squareAt(QPoint p) const
 {
-  int x = isFlipped() ? 7 - p.x() / m_theme->size() : p.x() / m_theme->size();
-  int y = isFlipped() ? p.y() / m_theme->size() : 7 - p.y() / m_theme->size();
+  int x = isFlipped() ? 7 - p.x() / m_theme.size() : p.x() / m_theme.size();
+  int y = isFlipped() ? p.y() / m_theme.size() : 7 - p.y() / m_theme.size();
   if (x >= 0 && x < 8 && y >= 0 && y <= 8)
     return 8 * y + x;
   else return InvalidSquare;
@@ -108,7 +110,7 @@ Square BoardView::squareAt(QPoint p) const
 void BoardView::mouseReleaseEvent(QMouseEvent* e)
 {
   Square s = squareAt(e->pos());
-  if (s == InvalidSquare || e->button() & Qt::RightButton)
+  if (s == InvalidSquare)
   {
     e->ignore();
     return;
@@ -135,15 +137,15 @@ void BoardView::wheelEvent(QWheelEvent* e)
 
 bool BoardView::setTheme(const QString& pieceFile, const QString& boardFile)
 {
-  bool result = m_theme->load(pieceFile, boardFile);
+  bool result = m_theme.load(pieceFile, boardFile);
   if (!result)
   {
     QMessageBox::warning(0, tr("Error"), tr("<qt>Cannot open theme <b>%1</b> from directory:<br>%2</qt>")
-        .arg(pieceFile).arg(m_theme->themeDirectory()));
+        .arg(pieceFile).arg(m_theme.themeDirectory()));
     // If there is no theme, try to load default
-    if (!m_theme->isValid())
+    if (!m_theme.isValid())
     {
-      result = m_theme->load("default");
+      result = m_theme.load("default");
       if (result)
         resizeBoard();
     }
@@ -169,7 +171,7 @@ bool BoardView::showFrame() const
    return m_showFrame;
 }
 
-void BoardView::setShowFrame(bool value) 
+void BoardView::setShowFrame(bool value)
 {
    if (value == m_showFrame)
      return;
@@ -181,9 +183,9 @@ void BoardView::configure()
 {
   AppSettings->beginGroup("/Board/");
   m_showFrame = AppSettings->value("showFrame", true).toBool();
-  m_theme->setSquareType(BoardTheme::BoardSquare(AppSettings->value("squareType", 0).toInt()));
-  m_theme->setLightColor(AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
-  m_theme->setDarkColor(AppSettings->value("darkColor", "#a0a0a0").value<QColor>());
+  m_theme.setSquareType(BoardTheme::BoardSquare(AppSettings->value("squareType", 0).toInt()));
+  m_theme.setLightColor(AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
+  m_theme.setDarkColor(AppSettings->value("darkColor", "#a0a0a0").value<QColor>());
   QString pieceTheme = AppSettings->value("pieceTheme", "default").toString();
   QString boardTheme = AppSettings->value("boardTheme", "default").toString();
   setTheme(pieceTheme, boardTheme);
