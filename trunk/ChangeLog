@@ -1,12 +1,16 @@
-Mon 31 Feb 2007 00:59:47 CET	Version 0.2.0
+Thu 28 Feb 2007 00:59:47 CET	Version 0.2.0
 
 	* feature: highlight and display current move
 	* feature: add variations
 	* feature: support promotion when entering moves
+	* feature: redesign Setup Position to improve usability
+	* feature: check board validity in Setup position dialog
 	* bugfix: correctly display move numbers for non-standard games
 	* bugfix: keep move number and side to move when setting position
 	* bugfix: copy/paste move number to/from FEN
 	* bugfix: accept non-standard castling (0-0 instead of O-O)
+	* bugfix: correctly draw large boards in unscaled pixmap mode
+	* bugfix: insert all pieces in given color in Setup Position
 	* change: clean configuration file format
 
 Mon 19 Feb 2007 00:59:47 CET	Version 0.1.0

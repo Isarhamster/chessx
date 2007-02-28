@@ -48,7 +48,9 @@ class BoardSetupDialog : public QDialog
     /** Execute dialog */
     int exec();
   private slots:
-    /** Clear board */
+    /** If the position is legal, accept it and close the dialog. */
+    void slotAccept();
+    /** Clear board. */
     void slotClear();
     /** Restore standard position */
     void slotReset();

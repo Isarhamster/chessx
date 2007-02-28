@@ -29,9 +29,7 @@
 #include <QString>
 #include <QStack>
 
-enum BoardState {Valid, NoWhiteKing, NoBlackKing, TooManyWhitePieces,
-    TooManyBlackPieces, TooManyWhitePawns, TooManyBlackPawns, 
-    TooManyWhiteKings, TooManyBlackKings, IncorrectCheck};
+enum {Valid, NoWhiteKing, NoBlackKing, DoubleCheck, OppositeCheck};
 
 /** @ingroup Database  
    The Board class represents a chess position.
@@ -89,7 +87,7 @@ public:
   void removeFrom(Square s);
   /** @return whether current position is valid. If not, error code is set to @p
       state variable, if it was provided */
-  bool isValid(BoardState* state=0);
+  bool isValid(int* state = 0);
 	/** @return list of legal moves */
 	MoveList legalMoves();
 

@@ -408,8 +408,17 @@ void MainWindow::slotEditCopyFEN()
 void MainWindow::slotEditPasteFEN()
 {
   QString fen = QApplication::clipboard()->text();
+  if (!game()->board().isValidFEN(fen))
+  {
+    QString msg = fen.trimmed().length() ?
+        tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
+        tr("There is no text in clipboard.");
+    QMessageBox::warning(0, "Paste FEN", msg);
+    return;
+  }
   game()->setStartBoard(fen);
   slotGameChanged();
+
 }
 
 void MainWindow::slotEditBoard()
