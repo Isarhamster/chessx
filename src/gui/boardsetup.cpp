@@ -18,9 +18,8 @@
 #include "boardview.h"
 
 #include <QActionGroup>
-#include <QCursor>
 #include <QGridLayout>
-#include <QMenu>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QToolButton>
 
@@ -55,7 +54,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
   ui.buttonWidget->setLayout(layout);
 
   connect(m_actions, SIGNAL(triggered(QAction*)), SLOT(slotChoosePiece(QAction*)));
-  connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
+  connect(ui.okButton, SIGNAL(clicked()), SLOT(slotAccept()));
   connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
   connect(ui.clearButton, SIGNAL(clicked()), SLOT(slotClear()));
   connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
@@ -96,6 +95,27 @@ void BoardSetupDialog::slotReset()
   ui.boardView->setBoard(b);
   m_toMove = White;
   showSideToMove();
+}
+
+void BoardSetupDialog::slotAccept()
+{
+  int state;
+  if (ui.boardView->board().isValid(&state))
+    accept();
+  else
+  {
+    QString reason = tr("uknown");
+    switch (state)
+    {
+      case NoWhiteKing:  reason = tr("no white king"); break;
+      case NoBlackKing:  reason = tr("no black king"); break;
+      case DoubleCheck:  reason = tr("both kings in check"); break;
+      case OppositeCheck:  reason = tr("side not to move is in check"); break;
+      default:           reason = tr("unknown");
+    }
+    QMessageBox::critical(0, tr("Invalid position"),
+       tr("Current position is not valid.\nReason: %1.").arg(reason));
+  }
 }
 
 void BoardSetupDialog::slotClear()

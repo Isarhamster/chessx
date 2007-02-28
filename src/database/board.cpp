@@ -191,7 +191,6 @@ int countFiles (const QString& rank)
          default :
             return 0;
       }
-      
    }
    return count;
 }
@@ -473,7 +472,7 @@ bool Board::setAt(Square s, Piece p)
       removeFrom(s);
       return true;
    }
-   
+
    switch (p) {
       case WhiteKing :
          emptyIndex = 16;
@@ -576,6 +575,7 @@ bool Board::setAt(Square s, Piece p)
    return true;
 
 }
+
 void Board::removeFrom(Square s)
 {
    m_pieceCount[m_pieceType[m_board[s]]]--;
@@ -584,121 +584,30 @@ void Board::removeFrom(Square s)
    m_board[s] = InvalidPiece;
    hashPiece(s,m_pieceType[m_board[s]]);
 }
-bool Board::isValid(BoardState* state)
+
+bool Board::isValid(int* state)
 {
+   int error = 0;
+
+   if (kingPosition(White) == InvalidSquare)
+     error = NoWhiteKing;
+   else if (kingPosition(Black) == InvalidSquare)
+     error = NoBlackKing;
    disableHashing();
-   unsigned char whitePieceCount = 0;
-   unsigned char blackPieceCount = 0;
-   unsigned char whitePawnCount = 0;
-   unsigned char blackPawnCount = 0;
-   unsigned char whiteKingCount = 0;
-   unsigned char blackKingCount = 0;
-
-   for (unsigned char i = 0; i < 32; i++) {
-      // Count the black and white pieces
-      switch (m_pieceType[i]) {
-         case WhiteKing:
-            whiteKingCount++;
-            whitePieceCount++;
-            break;
-         case WhitePawn:
-            whitePawnCount++;
-            whitePieceCount++;
-            break;
-         case WhiteQueen:
-         case WhiteKnight:
-         case WhiteBishop:
-         case WhiteRook:
-            whitePieceCount++;
-            break;
-         case BlackKing:
-            blackKingCount++;
-            blackPieceCount++;
-            break;
-         case BlackPawn:
-            blackPawnCount++;
-            blackPieceCount++;
-            break;
-         case BlackQueen:
-         case BlackKnight:
-         case BlackBishop:
-         case BlackRook:
-            blackPieceCount++;
-            break;
-         default :
-            // The default is just to remove compilation warnings.
-            break;
-      }
-   }
-
-   if (blackPawnCount > 8) {
-      if (state) {
-         *state = TooManyBlackPawns;
-      }
-      goto return_false;
-   }
-   if (whitePawnCount > 8) {
-      if (state) {
-         *state = TooManyWhitePawns;
-      }
-      goto return_false;
-   }
-   if (whitePieceCount > 16) {
-      if (state) {
-         *state = TooManyWhitePieces;
-      }
-      goto return_false;
-   }
-   if (blackPieceCount > 16) {
-      if (state) {
-         *state = TooManyBlackPieces;
-      }
-      goto return_false;
-   }
-   if (whiteKingCount == 0) {
-      if (state) {
-         *state = NoWhiteKing;
-      }
-      goto return_false;
-   } else if (whiteKingCount > 1) {
-      if (state) {
-         *state = TooManyWhiteKings;
-      }
-      goto return_false;
-   }
-   if (blackKingCount == 0) {
-      if (state) {
-         *state = NoBlackKing;
-      }
-      goto return_false;
-   } else if (blackKingCount > 1) {
-      if (state) {
-         *state = TooManyBlackKings;
-      }
-      goto return_false;
-   }
-
-   // Check for incorrect check
+   bool check = isCheck();
    swapToMove();
-	if (isCheck()) {
-      if (state) {
-         *state = IncorrectCheck ;
-      }
-      swapToMove();
-      goto return_false;
-   }
+   bool check2 = isCheck();
    swapToMove();
-
-   if (state) {
-      *state = Valid;
-   }
-
    enableHashing();
-   return true;
-return_false:
-   enableHashing();
-   return false;
+   if (check && check2)
+    error = DoubleCheck;
+   else if (check2)
+     error = OppositeCheck;
+   if (state)
+     *state = error;
+   return !error;
 }
+
 MoveList Board::legalMoves()
 {
    disableHashing();
@@ -1050,46 +959,13 @@ QString Board::toASCII()
 	ascii += ", Half Move Clock: ";
 	ascii += QString::number(m_halfMoveClock);
 
-   BoardState state;
+   int state;
    state=Valid;
    ascii += "\nValid: ";
    ascii += isValid(&state) ? "Yes" : "NO";
-   if (state != Valid) {
-      switch (state) {
-         case TooManyWhitePieces :
-            ascii += "(Too Many White Pieces)";
-            break;
-         case TooManyBlackPieces :
-            ascii += "(Too Many Black Pieces)";
-            break;
-         case TooManyWhitePawns :
-            ascii += "(Too Many White Pawns)";
-            break;
-         case TooManyBlackPawns :
-            ascii += "(Too Many White Pawns)";
-            break;
-         case NoWhiteKing :
-            ascii += "(No White King)";
-            break;
-         case NoBlackKing :
-            ascii += "(No Black King)";
-            break;
-         case IncorrectCheck :
-            ascii += "(Incorrect Check)";
-            break;
-         default :
-            ascii += "(Unknown State)";
-      }
-   }
-   ascii += "\nCheck: ";
-   ascii += isCheck() ? "Yes" : "No";
-   ascii += "  Checkmate: ";
-   ascii += isCheckmate() ? "Yes" : "No";
-   ascii += "  Stalemate: ";
-   ascii += isStalemate() ? "Yes" : "No";
-   ascii += "\nPosition Hash : " + QString::number(m_hashValue,16);
-	
-	return ascii;
+   if (state != Valid)
+      ascii += "(invalid)";
+  return ascii;
 }
 
 Piece Board::at(Square s) const
@@ -2025,7 +1901,7 @@ void Board::undoMove(const Move& m, const HistoryItem& historyItem)
 
 bool Board::isCheck()
 {
-	 return isAttacked(kingPosition(m_toMove), (m_toMove == White) ? Black : White);
+  return isAttacked(kingPosition(m_toMove), oppositeColor(m_toMove));
 }
 
 bool Board::isCheckmate()
