@@ -15,7 +15,7 @@
  ***************************************************************************/
 
 #include <QBitmap>
-#include <QImage>
+#include <QPixmap>
 
 #include "boardtheme.h"
 #include "settings.h"
@@ -52,22 +52,22 @@ void BoardTheme::setDarkColor(const QColor& value)
     setSquareType(m_squareType);
 }
 
-const QImage& BoardTheme::piece(Piece p) const
+const QPixmap& BoardTheme::piece(Piece p) const
 {
   return m_piece[p];
 }
 
-const QImage& BoardTheme::square(bool dark) const
+const QPixmap& BoardTheme::square(bool dark) const
 {
   return m_square[dark];
 }
 
-const QImage& BoardTheme::originalPiece(Piece p) const
+const QPixmap& BoardTheme::originalPiece(Piece p) const
 {
   return m_originalPiece[p];
 }
 
-const QImage& BoardTheme::originalSquare(bool dark) const
+const QPixmap& BoardTheme::originalSquare(bool dark) const
 {
   return m_originalSquare[dark];
 }
@@ -92,7 +92,7 @@ bool BoardTheme::isValid() const
 bool BoardTheme::load(const QString& themeFile, LoadTheme load)
 {
   QString themePath = QString("%1/%2.png").arg(themeDirectory()).arg(themeFile);
-  QImage big;
+  QPixmap big;
   if (!big.load(themePath) || big.width() < 160)
     return false;
   int realsize = big.height() / 2;
@@ -172,22 +172,22 @@ void BoardTheme::setSquareType(BoardSquare type)
   m_squareType = type;
   if (!isValid())
     return;
-  switch(type)
+  if (type == Plain)
   {
-    case Plain:
-      m_square[0] = QImage(size(), size(), QImage::Format_RGB32);
-      m_square[0].fill(lightColor().rgb());
-      m_square[1] = QImage(size(), size(), QImage::Format_RGB32);
-      m_square[1].fill(darkColor().rgb());
-      break;
-    case Scaled:
-      m_square[0] =  m_originalSquare[0].scaled(size(), size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-      m_square[1] =  m_originalSquare[1].scaled(size(), size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-      break;
-    case Unscaled:
-      m_square[0] =  m_originalSquare[0].copy(rect());
-      m_square[1] =  m_originalSquare[1].copy(rect());
-      break;
+    m_square[0] = QPixmap(size(), size());
+    m_square[0].fill(lightColor().rgb());
+    m_square[1] = QPixmap(size(), size());
+    m_square[1].fill(darkColor().rgb());
+  }
+  else if (type == Scaled || size() > m_originalPiece[0].width())
+  {
+    m_square[0] =  m_originalSquare[0].scaled(size(), size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    m_square[1] =  m_originalSquare[1].scaled(size(), size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+  }
+  else
+  {
+    m_square[0] =  m_originalSquare[0].copy(rect());
+    m_square[1] =  m_originalSquare[1].copy(rect());
   }
 }
 
@@ -195,5 +195,4 @@ QString BoardTheme::themeDirectory() const
 {
   return AppSettings->dataPath() + "/themes";
 }
-
 

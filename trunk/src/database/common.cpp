@@ -105,3 +105,9 @@ QString resultString(Result result)
 			return "*";
 	}
 }
+
+Color oppositeColor(Color c)
+{
+  return c == White ? Black : White;
+}
+
