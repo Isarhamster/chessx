@@ -399,7 +399,7 @@ QString Board::toFEN(int move) const
 
 bool Board::isValidFEN(const QString& fen) const
 {
-   QString piecePlacement = fen.section(QRegExp("\\s+"), 0, 0);
+  QString piecePlacement = fen.section(QRegExp("\\s+"), 0, 0);
    QString activeColor = fen.section (QRegExp("\\s+"), 1, 1);
    QString castlingAvail = fen.section (QRegExp("\\s+"), 2, 2);
    QString enPassantTarget = fen.section (QRegExp("\\s+"), 3, 3);
@@ -425,16 +425,15 @@ bool Board::isValidFEN(const QString& fen) const
       // Invalid castling characters
       return false;
    }
-   QChar c = enPassantTarget.at(1);
-   if ((enPassantTarget.indexOf(QRegExp("^([a-h][36])|-$")) == -1)) {
-      // Invalid en passant square
-      return false;
-   } else if ((c == '3') && (activeColor == "w")) {
-      // Wrong color to move for en passant square
-      return false;
-   } else if ((c == '6') && (activeColor == "b")) {
-      // Wrong color to move for en passant square
-      return false;
+   if (enPassantTarget.length() > 1)
+   {
+    QChar c = enPassantTarget.at(1);
+    if ((enPassantTarget.indexOf(QRegExp("^([a-h][36])|-$")) == -1)) 
+       return false; // Invalid en passant square
+    else if ((c == '3') && (activeColor == "w"))
+      return false; // Wrong color to move for en passant square
+    else if ((c == '6') && (activeColor == "b")) 
+      return false; // Wrong color to move for en passant square
    }
 
    bool ok;
@@ -448,7 +447,6 @@ bool Board::isValidFEN(const QString& fen) const
       // Invalid full move count
       return false;
    }
-
    // Now that the FEN is valid, test that the actual position is valid
    Board *tempBoard = new Board();
    tempBoard->fromFEN(fen);
