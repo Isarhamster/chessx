@@ -576,10 +576,16 @@ bool Board::setAt(Square s, Piece p)
 
 void Board::removeFrom(Square s)
 {
+   // If the square is already empty, let's just leave it that way.
+   if ((m_pieceType[m_board[s]] == Empty) ||
+      (m_board[s] == InvalidSquare))
+      return;
+   // Now remove the piece
    m_pieceCount[m_pieceType[m_board[s]]]--;
    m_pieceType[m_board[s]] = Empty;
    m_piecePosition[m_board[s]] = InvalidSquare;
    m_board[s] = InvalidPiece;
+   // And update the hash
    hashPiece(s,m_pieceType[m_board[s]]);
 }
 
