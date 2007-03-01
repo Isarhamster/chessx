@@ -11,6 +11,7 @@ Thu 28 Feb 2007 00:59:47 CET	Version 0.2.0
 	* bugfix: accept non-standard castling (0-0 instead of O-O)
 	* bugfix: correctly draw large boards in unscaled pixmap mode
 	* bugfix: insert all pieces in given color in Setup Position
+	* bugfix: removing piece from empty square (board setup) caused segfault.
 	* change: clean configuration file format
 
 Mon 19 Feb 2007 00:59:47 CET	Version 0.1.0
