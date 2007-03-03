@@ -1397,7 +1397,7 @@ QString Board::moveToSAN(const Move& move)
 		}
 		
 		//capture x
-		if(at(to) != Empty) {
+		if ((at(to) != Empty) || (move.isEnPassant())) {
 			if(isPawn) {
 				moveString += 'a' + (from & 7);
 			}
