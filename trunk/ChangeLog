@@ -1,3 +1,5 @@
+	* bugfix: Incorrect notation of en-passant moves displayed
+
 Thu 28 Feb 2007 00:59:47 CET	Version 0.2.0
 
 	* feature: highlight and display current move
