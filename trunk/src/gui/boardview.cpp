@@ -54,40 +54,49 @@ const BoardTheme& BoardView::theme() const
   return m_theme;
 }
 
-void BoardView::repaintSquare(Square square)
-{
-  QPainter p(this);
-  int x = isFlipped() ? 7 - square % 8 : square % 8;
-  int y = isFlipped() ? square / 8 : 7 - square / 8;
-  int posx = x * m_theme.size();
-  int posy = y * m_theme.size();
-  p.drawPixmap(QPoint(posx, posy), m_theme.square((x + y) % 2));
-  p.drawPixmap(QPoint(posx, posy), m_theme.piece(m_board.at(square)));
-  if (square == m_selectedSquare)
-  {
-    QPen pen;
-    pen.setColor(QColor(Qt::yellow));
-    pen.setWidth(2);
-    p.setPen(pen);
-    p.drawRect(posx + 1 + m_showFrame, posy + 1 + m_showFrame, m_theme.size() - 2 - m_showFrame,
-               m_theme.size() - 2 - m_showFrame);
-  }
-  if (m_showFrame)
-  {
-    p.setPen(QColor(Qt::black));
-    p.drawRect(posx, posy, m_theme.size(), m_theme.size());
-  }
-}
 
 void BoardView::paintEvent(QPaintEvent*)
 {
-  for (Square i = 0; i < 64; i++)
-    repaintSquare(i);
+  QPainter p(this);
+  // Draw squares
+  for (Square square = 0; square < 64; square++)
+  {
+    int x = isFlipped() ? 7 - square % 8 : square % 8;
+    int y = isFlipped() ? square / 8 : 7 - square / 8;
+    int posx = x * m_theme.size();
+    int posy = y * m_theme.size();
+    p.drawPixmap(QPoint(posx, posy), m_theme.square((x + y) % 2));
+    p.drawPixmap(QPoint(posx, posy), m_theme.piece(m_board.at(square)));
+    if (square == m_selectedSquare)
+    {
+      QPen pen;
+      pen.setColor(QColor(Qt::yellow));
+      pen.setWidth(2);
+      p.setPen(pen);
+      p.drawRect(posx + 1 + m_showFrame, posy + 1 + m_showFrame,
+         m_theme.size() - 2 - m_showFrame, m_theme.size() - 2 - m_showFrame);
+     }
+     if (m_showFrame)
+     {
+       p.setPen(QColor(Qt::black));
+       p.drawRect(posx, posy, m_theme.size(), m_theme.size());
+     }
+  }
+  // Draw side to move indicator
+  bool white = m_board.toMove() == White;
+  int square = m_theme.size() / 3;
+  QColor color = white ? Qt::white : Qt::black;
+  QColor border = white ? Qt::black : Qt::white;
+  int posy = (white == m_flipped) ? 1 : 8 * m_theme.size() - square;
+  p.setPen(border);
+  p.setBrush(QColor(color));
+  p.drawRect(8 * m_theme.size() + 8, posy, square, square);
 }
 
 void BoardView::resizeBoard()
 {
-  int xsize = (width() - 1) / 8;
+  // subtract move indicator from width
+  int xsize = (width() - (8 + width() / 24) - 1) / 8;
   int ysize = (height() - 1) / 8;
   int size = xsize < ysize ? xsize : ysize;
   m_theme.setSize(size);
