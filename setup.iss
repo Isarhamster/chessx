@@ -5,13 +5,11 @@
 
 [Setup]
 AppName=ChessX
-AppVerName=ChessX Version 0.1.1
+AppVerName=ChessX Version 0.2.0
 AppPublisher=ChessX Team
 DefaultDirName={pf}\ChessX
-DisableDirPage=yes
 DefaultGroupName=ChessX
-DisableProgramGroupPage=yes
-OutputBaseFilename=ChessX-0.1.1
+OutputBaseFilename=ChessX-0.2.0
 Compression=lzma
 SolidCompression=yes
 
@@ -23,17 +21,18 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "bin\chessdatabase.exe"; DestDir: "{app}\bin"; Flags: ignoreversion
+Source: "bin\chessx.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "BUGS"; DestDir: "{app}"; Flags: ignoreversion
 Source: "COPYING"; DestDir: "{app}"; Flags: ignoreversion
 Source: "TODO"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\MinGW\bin\mingwm10.dll"; DestDir: "{sys}";
+Source: "Changelog"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\MinGW\bin\mingwm10.dll"; DestDir: "{sys}";
 Source: "data\*.*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\ChessX"; Filename: "{app}\bin\chessdatabase.exe"
+Name: "{group}\ChessX"; Filename: "{app}\chessx.exe"; WorkingDir: "{app}"
 Name: "{group}\{cm:UninstallProgram,ChessX}"; Filename: "{uninstallexe}"
-Name: "{userdesktop}\ChessX"; Filename: "{app}\bin\chessdatabase.exe"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\ChessX"; Filename: "{app}\bin\chessdatabase.exe"; Tasks: quicklaunchicon
+Name: "{userdesktop}\ChessX"; Filename: "{app}\chessx.exe"; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\ChessX"; Filename: "{app}\chessx.exe"; WorkingDir: "{app}"; Tasks: quicklaunchicon
 
