@@ -18,7 +18,7 @@
 #include "mainwindow.h"
 #include "settings.h"
 
-int main( int argc, char ** argv ) 
+int main(int argc, char** argv)
 {
   AppSettings = new Settings;
   QApplication a(argc, argv);

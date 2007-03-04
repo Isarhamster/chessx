@@ -2,7 +2,7 @@
                           mainwindow.cpp  -  main window
                              -------------------
     begin                : 10 Oct 2005
-    copyright            : (C) 2005-2006 Michal Rudolf <mrudolf@kdewebdev.org>
+    copyright            : (C) 2005-2007 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -62,7 +62,6 @@ MainWindow::MainWindow() : QMainWindow(),
   m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_showPgnSource(false)
 {
   setObjectName("MainWindow");
-
   /* Active database */
   m_databases.append(new DatabaseInfo);
   m_currentDatabase = 0;
@@ -515,7 +514,7 @@ void MainWindow::slotMoveChanged()
   QString black = g->tag("Black");
   QString players = tr("Game %1: <a href=\"tag:white\">%2</a> %3 - <a href=\"tag:black\">%4</a> %5")
       .arg(gameIndex() + 1).arg(white).arg(g->tag("WhiteElo")).arg(black).arg(g->tag("BlackElo"));
-  QString result = tr("%1(%2) %3").arg(g->tag("Result")).arg(g->plyCount() / 2)
+  QString result = tr("%1(%2) %3").arg(g->tag("Result")).arg((g->plyCount() + 1) / 2)
       .arg(g->tag("ECO"));
   QString header = tr("%1, %2, %3, round %4").arg(g->tag("Event")).arg(g->tag("Site"))
       .arg(g->tag("Date")).arg(g->tag("Round"));
