@@ -1,4 +1,6 @@
-	* bugfix: Incorrect notation of en-passant moves displayed
+	* feature: display side to move
+	* bugfix: fix incorrect SAN representation of en-passant moves
+	* bugfix: correctly calculate game length displayed in GameInfo
 
 Thu 28 Feb 2007 00:59:47 CET	Version 0.2.0
 
@@ -13,8 +15,8 @@ Thu 28 Feb 2007 00:59:47 CET	Version 0.2.0
 	* bugfix: accept non-standard castling (0-0 instead of O-O)
 	* bugfix: correctly draw large boards in unscaled pixmap mode
 	* bugfix: insert all pieces in given color in Setup Position
-	* bugfix: removing piece from empty square (board setup) caused segfault.
-	* bugfix: Fix by Kamil Rytarowski to enable finding data path on Debian.
+	* bugfix: fix segfault when removing piece from empty square
+	* bugfix: correctly finding installed data path on Debian.
 	* change: clean configuration file format
 
 Mon 19 Feb 2007 00:59:47 CET	Version 0.1.0
