@@ -33,7 +33,6 @@
 #include "settings.h"
 #include "tipoftheday.h"
 
-#include <QAction>
 #include <QActionGroup>
 #include <QApplication>
 #include <QClipboard>
@@ -43,7 +42,6 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QLabel>
-#include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QSplitter>
@@ -417,8 +415,21 @@ void MainWindow::slotEditPasteFEN()
   }
   game()->setStartBoard(fen);
   slotGameChanged();
-
 }
+
+void MainWindow::slotEditTruncate()
+{
+  if (!game()->isMainline() && game()->atEnd())
+  {
+    int var = game()->currentVariation();
+    game()->exitVariation();
+    game()->removeVariation(var);
+  }
+  else
+    game()->truncateGameEnd();
+  slotGameChanged();
+}
+
 
 void MainWindow::slotEditBoard()
 {
@@ -713,9 +724,15 @@ void MainWindow::setupActions()
 
   /* Edit menu */
   QMenu* edit = menuBar()->addMenu(tr("&Edit"));
-  edit->addAction(createAction(tr("&Copy FEN"), SLOT(slotEditCopyFEN()), Qt::CTRL + Qt::SHIFT + Qt::Key_C));
-  edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()), Qt::CTRL + Qt::SHIFT + Qt::Key_V));
-  edit->addAction(createAction(tr("&Setup position..."), SLOT(slotEditBoard()), Qt::CTRL + Qt::SHIFT + Qt::Key_S));
+  edit->addAction(createAction(tr("Truncate moves"), SLOT(slotEditTruncate()),
+    Qt::SHIFT + Qt::Key_Delete));
+  edit->addSeparator();
+  edit->addAction(createAction(tr("&Copy FEN"), SLOT(slotEditCopyFEN()),
+    Qt::CTRL + Qt::SHIFT + Qt::Key_C));
+  edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
+    Qt::CTRL + Qt::SHIFT + Qt::Key_V));
+  edit->addAction(createAction(tr("&Setup position..."), SLOT(slotEditBoard()),
+    Qt::CTRL + Qt::SHIFT + Qt::Key_S));
 
   /* Game menu */
   QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
