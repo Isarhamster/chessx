@@ -92,9 +92,14 @@ protected:
   HelpWindow* helpWindow();
 public slots:
   void slotPlayerDialog();
+  /** Show Setup Position dialog and set current board. */
   void slotEditBoard();
+  /** Set position's FEN to clipboard. */
   void slotEditCopyFEN();
+  /** Set position using FEN from clipboard. */
   void slotEditPasteFEN();
+  /** Truncate next moves */
+  void slotEditTruncate();
   void slotConfigure();
   void slotConfigureChessEngines();
   /** Display help */
