@@ -731,7 +731,7 @@ void MainWindow::setupActions()
     Qt::CTRL + Qt::SHIFT + Qt::Key_C));
   edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
     Qt::CTRL + Qt::SHIFT + Qt::Key_V));
-  edit->addAction(createAction(tr("&Setup position..."), SLOT(slotEditBoard()),
+  edit->addAction(createAction(tr("Position &Setup..."), SLOT(slotEditBoard()),
     Qt::CTRL + Qt::SHIFT + Qt::Key_S));
 
   /* Game menu */
