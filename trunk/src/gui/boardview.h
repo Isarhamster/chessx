@@ -84,8 +84,6 @@ signals:
   void changed();
 
 protected:
-  /** Redraws single square (and piece on it). */
-  void repaintSquare(Square square);
   /** Resizes pieces for new board size. */
   void resizeBoard();
   /** Redraws whole board if necessary. */
@@ -93,16 +91,23 @@ protected:
   /** Automatically resizes pieces and redisplays board. */
   virtual void resizeEvent(QResizeEvent*);
   /** Handle mouse events */
+  virtual void mousePressEvent(QMouseEvent* e);
+  /** Handle mouse events */
+  virtual void mouseMoveEvent(QMouseEvent* e);
+  /** Handle mouse events */
   virtual void mouseReleaseEvent(QMouseEvent* e);
   /** Handle mouse wheel events */
   virtual void wheelEvent(QWheelEvent* e);
-
+  virtual void dropEvent(QDropEvent *event);
+  virtual void dragEnterEvent(QDragEnterEvent *event);
 private:
   Board m_board;
   BoardTheme m_theme;
   bool m_flipped;
   bool m_showFrame;
   int m_selectedSquare;
+  Piece m_dragged;
+  QPoint m_dragStart;
 };
 
 #endif
