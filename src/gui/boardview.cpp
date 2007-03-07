@@ -17,6 +17,7 @@
 #include "boardview.h"
 #include "settings.h"
 
+#include <QApplication>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QPainter>
@@ -28,8 +29,9 @@
 using namespace Qt;
 
 BoardView::BoardView(QWidget* parent) : QWidget(parent),
-   m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare)
+   m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare), m_dragged(Empty)
 {
+  setAcceptDrops(true);
 }
 
 BoardView::~BoardView()
@@ -53,7 +55,6 @@ const BoardTheme& BoardView::theme() const
 {
   return m_theme;
 }
-
 
 void BoardView::paintEvent(QPaintEvent*)
 {
@@ -116,27 +117,71 @@ Square BoardView::squareAt(QPoint p) const
   else return InvalidSquare;
 }
 
-void BoardView::mouseReleaseEvent(QMouseEvent* e)
+void BoardView::mousePressEvent(QMouseEvent* event)
 {
-  Square s = squareAt(e->pos());
-  if (s == InvalidSquare)
-  {
-    e->ignore();
+  Square s = squareAt(event->pos());
+  if (event->button() == Qt::LeftButton && s != InvalidSquare &&
+      isPieceColor(m_board.at(s), m_board.toMove()))
+    m_dragStart = event->pos();
+}
+
+void BoardView::mouseMoveEvent(QMouseEvent *event)
+{
+  if (!(event->buttons() & Qt::LeftButton))
     return;
-  }
-  emit clicked(s, e->button() + e->modifiers());
-  e->accept();
-  if (e->button() != Qt::LeftButton)
+  if ((event->pos() - m_dragStart).manhattanLength()
+      < QApplication::startDragDistance())  // Click and move - start dragging
+    return;
+  Square s = squareAt(m_dragStart);
+  m_dragged = m_board.at(s);
+  m_board.removeFrom(s);
+  QPixmap icon = m_theme.piece(m_dragged);
+  QDrag *drag = new QDrag(this);
+  QMimeData* mime = new QMimeData;
+  drag->setPixmap(icon);
+  drag->setMimeData(mime);
+  drag->setHotSpot(QPoint(drag->pixmap().width() / 2,
+                    drag->pixmap().height() / 2));
+  update();
+  drag->start(Qt::MoveAction);
+}
+
+void BoardView::mouseReleaseEvent(QMouseEvent* event)
+{
+  Square s = squareAt(event->pos());
+  if (s == InvalidSquare)
+    return;
+  emit clicked(s, event->button() + event->modifiers());
+  if (event->button() != Qt::LeftButton)
     return;
   if (selectedSquare() == InvalidSquare)
     selectSquare(s);
-  else 
+  else
   {
     Square from = selectedSquare();
     unselectSquare();
     emit moveMade(from, s);
   }
 }
+
+void BoardView::dragEnterEvent(QDragEnterEvent *event)
+{
+  event->setDropAction(Qt::MoveAction);
+  event->accept();
+}
+
+void BoardView::dropEvent(QDropEvent *event)
+{
+  event->acceptProposedAction();
+  Square to = squareAt(event->pos());
+  Square from = squareAt(m_dragStart);
+  m_board.setAt(from, m_dragged);
+  m_selectedSquare = InvalidSquare;
+  update();
+  if (to != InvalidSquare && from != to)
+    emit moveMade(from, to);
+}
+
 
 void BoardView::wheelEvent(QWheelEvent* e)
 {
