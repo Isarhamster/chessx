@@ -1,3 +1,4 @@
+	* feature: move pieces by drag&drop
 	* feature: remove moves/variations
 	* feature: display side to move
 	* bugfix: fix incorrect SAN representation of en-passant moves
