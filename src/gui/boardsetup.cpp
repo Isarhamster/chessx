@@ -29,11 +29,10 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 {
   ui.setupUi(this);
   ui.boardView->configure();
+  ui.boardView->setFlags(BoardView::IgnoreSideToMove);
 
   m_actions = new QActionGroup(this);
   m_actions->setExclusive(true);
-
-  ui.boardView->setContextMenuPolicy(Qt::ActionsContextMenu);
 
   QGridLayout *layout = new QGridLayout;
   for (int piece = Empty; piece <= BlackPawn; piece++)
@@ -59,9 +58,9 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
   connect(ui.clearButton, SIGNAL(clicked()), SLOT(slotClear()));
   connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
   connect(ui.boardView, SIGNAL(clicked(Square, int)), SLOT(slotSelected(Square, int)));
+  connect(ui.boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMovePiece(Square, Square)));
   connect(ui.boardView, SIGNAL(wheelScrolled(int)), SLOT(slotChangePiece(int)));
   connect(ui.toMoveButton, SIGNAL(clicked()), SLOT(slotToggleSide()));
-
 }
 
 BoardSetupDialog::~BoardSetupDialog()
@@ -184,8 +183,18 @@ void BoardSetupDialog::slotChangePiece(int dir)
   m_actions->actions().at(i)->setChecked(true);
 }
 
+void BoardSetupDialog::slotMovePiece(Square from, Square to)
+{
+  Board b = ui.boardView->board();
+  Piece p = b.at(from);
+  b.removeFrom(from);
+  b.setAt(to, p);
+  ui.boardView->setBoard(b);
+}
+
 void BoardSetupDialog::wheelEvent(QWheelEvent* e)
 {
   slotChangePiece(e->delta() < 0 ? BoardView::WheelDown : BoardView::WheelUp);
 }
+
 

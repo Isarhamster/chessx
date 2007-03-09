@@ -38,37 +38,28 @@ class BoardView : public QWidget
   Q_OBJECT
 public:
   enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
+  enum {IgnoreSideToMove = 1};
   /** Create board widget. */
-  BoardView(QWidget* parent = 0);
-  /** Destroys widget. Usually it is called automatically by Qt. */
+  BoardView(QWidget* parent = 0, int flags = 0);
+  /** Destroy widget. */
   ~BoardView();
-  /** Updates and shows current position. */
+  /** Set flags for board. Flags include:
+  * @p IgnoreSideToMove - allow dragging all pieces (useful for setting up a position)
+  */
+  void setFlags(int flags);
+  /** Update and shows current position. */
   void setBoard(const Board& value);
   /** @return displayed position. */
   Board board() const;
   /** @return current theme */
   const BoardTheme& theme() const;
-  /** Reads new theme from file. If two files are given, pieces are read from the first one, board from the second. */
+  /** Reads new theme from file. If two files are given, pieces are read from the first one,
+  board from the second. */
   bool setTheme(const QString& themeFile, const QString& boardFile = QString::null);
   /** Flips/unflips board. */
   void flip();
   /** @return @p true if board is displayed upside down. */
   bool isFlipped() const;
-  /** Turns frame around each square on/off. */
-  void setShowFrame(bool theValue);
-  /** @return true if there is a frame around each square. */
-  bool showFrame() const;
-  /** @return square at given position */
-  Square squareAt(QPoint p) const;
-  /** Selects given square. Previously selected square is unselected automatically. */
-  void selectSquare(Square s);
-  /** Unselects given square. */
-  void unselectSquare();
-  /** @return selected square */
-  Square selectedSquare() const;
-  /** Translate browse direction to real move change */
-  static int movesBrowsed(int dir);
-
 public slots:
   /** Reconfigure current theme. */
   void configure();
@@ -80,12 +71,7 @@ signals:
   void clicked(Square square, int button);
   /** User moved mouse wheel. */
   void wheelScrolled(int dir);
-  /** Board was modified by setBoard() */
-  void changed();
-
 protected:
-  /** Resizes pieces for new board size. */
-  void resizeBoard();
   /** Redraws whole board if necessary. */
   virtual void paintEvent(QPaintEvent*);
   /** Automatically resizes pieces and redisplays board. */
@@ -98,14 +84,30 @@ protected:
   virtual void mouseReleaseEvent(QMouseEvent* e);
   /** Handle mouse wheel events */
   virtual void wheelEvent(QWheelEvent* e);
+  /** Handle piece drops */
   virtual void dropEvent(QDropEvent *event);
+  /** Handle dragging piece over */
   virtual void dragEnterEvent(QDragEnterEvent *event);
 private:
+  /** Resizes pieces for new board size. */
+  void resizeBoard();
+  /** Calculate size and position of square */
+  QRect squareRect(Square s);
+  /** @return square at given position */
+  Square squareAt(const QPoint& p) const;
+  /** Selects given square. Previously selected square is unselected automatically. */
+  void selectSquare(Square s);
+  /** Unselects given square. */
+  void unselectSquare();
+  /** Check if piece at square @p square can be dragged */
+  bool canDrag(Square s) const;
+
   Board m_board;
   BoardTheme m_theme;
   bool m_flipped;
   bool m_showFrame;
   int m_selectedSquare;
+  int m_flags;
   Piece m_dragged;
   QPoint m_dragStart;
 };

@@ -60,6 +60,8 @@ class BoardSetupDialog : public QDialog
     void slotChoosePiece(QAction*);
     /** Select square and insert piece */
     void slotSelected(Square s, int button);
+    /** Move piece */
+    void slotMovePiece(Square from, Square to);
     /** Toggle side to move */
     void slotToggleSide();
   private:

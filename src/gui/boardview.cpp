@@ -28,8 +28,9 @@
 
 using namespace Qt;
 
-BoardView::BoardView(QWidget* parent) : QWidget(parent),
-   m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare), m_dragged(Empty)
+BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
+   m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare), m_flags(flags),
+   m_dragged(Empty)
 {
   setAcceptDrops(true);
 }
@@ -38,12 +39,16 @@ BoardView::~BoardView()
 {
 }
 
+void BoardView::setFlags(int flags)
+{
+  m_flags = flags;
+}
+
 void BoardView::setBoard(const Board& value)
 {
-  Board oldboard = m_board; 
+  Board oldboard = m_board;
   m_board = value;
   update();
-  emit changed();
 }
 
 Board BoardView::board() const
@@ -56,12 +61,15 @@ const BoardTheme& BoardView::theme() const
   return m_theme;
 }
 
-void BoardView::paintEvent(QPaintEvent*)
+void BoardView::paintEvent(QPaintEvent* event)
 {
   QPainter p(this);
   // Draw squares
   for (Square square = 0; square < 64; square++)
   {
+    QRect rect = squareRect(square);
+    if (!event->region().intersects(rect))
+      continue;
     int x = isFlipped() ? 7 - square % 8 : square % 8;
     int y = isFlipped() ? square / 8 : 7 - square / 8;
     int posx = x * m_theme.size();
@@ -108,7 +116,7 @@ void BoardView::resizeEvent(QResizeEvent*)
   resizeBoard();
 }
 
-Square BoardView::squareAt(QPoint p) const
+Square BoardView::squareAt(const QPoint& p) const
 {
   int x = isFlipped() ? 7 - p.x() / m_theme.size() : p.x() / m_theme.size();
   int y = isFlipped() ? p.y() / m_theme.size() : 7 - p.y() / m_theme.size();
@@ -120,8 +128,7 @@ Square BoardView::squareAt(QPoint p) const
 void BoardView::mousePressEvent(QMouseEvent* event)
 {
   Square s = squareAt(event->pos());
-  if (event->button() == Qt::LeftButton && s != InvalidSquare &&
-      isPieceColor(m_board.at(s), m_board.toMove()))
+  if (event->button() == Qt::LeftButton && canDrag(s))
     m_dragStart = event->pos();
 }
 
@@ -133,6 +140,8 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
       < QApplication::startDragDistance())  // Click and move - start dragging
     return;
   Square s = squareAt(m_dragStart);
+  if (!canDrag(s))
+    return;
   m_dragged = m_board.at(s);
   m_board.removeFrom(s);
   QPixmap icon = m_theme.piece(m_dragged);
@@ -142,7 +151,7 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
   drag->setMimeData(mime);
   drag->setHotSpot(QPoint(drag->pixmap().width() / 2,
                     drag->pixmap().height() / 2));
-  update();
+  update(squareRect(s));
   drag->start(Qt::MoveAction);
 }
 
@@ -154,14 +163,14 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
   emit clicked(s, event->button() + event->modifiers());
   if (event->button() != Qt::LeftButton)
     return;
-  if (selectedSquare() == InvalidSquare)
-    selectSquare(s);
-  else
+  if (m_selectedSquare != InvalidSquare)
   {
-    Square from = selectedSquare();
+    Square from = m_selectedSquare;
     unselectSquare();
     emit moveMade(from, s);
   }
+  else if (isPieceColor(m_board.at(s), m_board.toMove()))
+    selectSquare(s);
 }
 
 void BoardView::dragEnterEvent(QDragEnterEvent *event)
@@ -176,8 +185,8 @@ void BoardView::dropEvent(QDropEvent *event)
   Square to = squareAt(event->pos());
   Square from = squareAt(m_dragStart);
   m_board.setAt(from, m_dragged);
-  m_selectedSquare = InvalidSquare;
-  update();
+  update(squareRect(from));
+  unselectSquare();
   if (to != InvalidSquare && from != to)
     emit moveMade(from, to);
 }
@@ -220,19 +229,6 @@ bool BoardView::isFlipped() const
   return m_flipped;
 }
 
-bool BoardView::showFrame() const
-{
-   return m_showFrame;
-}
-
-void BoardView::setShowFrame(bool value)
-{
-   if (value == m_showFrame)
-     return;
-   m_showFrame = value;
-   resizeBoard();
-}
-
 void BoardView::configure()
 {
   AppSettings->beginGroup("/Board/");
@@ -247,26 +243,36 @@ void BoardView::configure()
   update();
 }
 
-Square BoardView::selectedSquare() const
-{
-  return m_selectedSquare;
-}
-
 void BoardView::selectSquare(Square s)
 {
-  if (m_selectedSquare == InvalidSquare && !isPieceColor(m_board.at(s), m_board.toMove()))
+  if (m_selectedSquare == s)
     return;
-  Square prev = m_selectedSquare;
+  unselectSquare();
   m_selectedSquare = s;
-  if (prev != m_selectedSquare)
-    update();
+  update(squareRect(s));
 }
 
 void BoardView::unselectSquare()
 {
   Square prev = m_selectedSquare;
   m_selectedSquare = InvalidSquare;
-  if (prev != m_selectedSquare)
-    update();
+  if (prev != InvalidSquare)
+    update(squareRect(prev));
+}
+
+QRect BoardView::squareRect(Square square)
+{
+  int x = isFlipped() ? 7 - square % 8 : square % 8;
+  int y = isFlipped() ? square / 8 : 7 - square / 8;
+  return QRect(x * m_theme.size(), y * m_theme.size(), m_theme.size(), m_theme.size());
+}
+
+bool BoardView::canDrag(Square s) const
+{
+  if (s == InvalidSquare)
+    return false;
+  else if (m_flags & IgnoreSideToMove)
+    return m_board.at(s) != Empty;
+  else return isPieceColor(m_board.at(s), m_board.toMove());
 }
 
