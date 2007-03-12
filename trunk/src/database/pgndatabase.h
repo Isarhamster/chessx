@@ -34,8 +34,6 @@
 
 #include "filter.h"
 #include "filtersearch.h"
-#include "tags.h"
-#include "index.h"
 
 /** @ingroup Database
    The PgnDatabase class provides database access to PGN files.
@@ -52,8 +50,6 @@ class PgnDatabase : public Database
 		~PgnDatabase();
 		
 		//database operations
-		/** Creates a database with the given filename */
-		virtual bool create(const QString& filename);
 		/** Opens the given database */
 		virtual bool open(const QString& filename);
 		/** File-based database name */
@@ -63,7 +59,7 @@ class PgnDatabase : public Database
 		
 		//game retrieval & storage
 		/** Loads a game from the given position, returns true if successful */
-		bool load(int index, Game& game);
+		bool loadGame(int index, Game& game);
 		/** Saves a game at the given position, returns true if successful */
 		bool save(int index, Game& game);
 		/** Adds a game to the database */
@@ -72,10 +68,6 @@ class PgnDatabase : public Database
 		bool remove(int index);
 		/** Removes multiple games from the database as specified by the filter */
 		bool remove(const Filter& filter);
-		/** Compacts the database */
-		void compact();
-		/** Returns the number of games in the database */
-		int count();
 		
 		//capability enquiry (so we can start using a format before every last search type is supported)
 		/** Checks if the database supports the given type of search */
@@ -92,8 +84,6 @@ class PgnDatabase : public Database
 		/** Returns move statistics for the given line */
 		MoveStatList moveStats(const MoveList& line);
 
-		bool loadHeaders(int index, Game& game);
-		
 	private:
 		/** Resets/initialises important member variables. Called by constructor and close methods */
 		void initialise(); 
@@ -125,8 +115,6 @@ class PgnDatabase : public Database
 		void seekGame(int index);
 		
 		//parsing methods
-		/** Reads tags from the file and adds them to the game. Performs tag searches if any are active */
-		void parseTags(Game* game);
 		/** Reads moves from the file and adds them to the game. Performs position searches if any are active */
 		void parseMoves(Game* game);
 		/** Parses a line from the file */
@@ -172,7 +160,6 @@ class PgnDatabase : public Database
 		int m_variation;
 		
 		//game index
-		int m_count;
 		qint64 m_filePos;
 		qint64 m_currentLineSize;
 
@@ -183,7 +170,6 @@ class PgnDatabase : public Database
 		//query variables
       Filter* m_externalFilter;
 		bool m_searchIndex;
-		bool m_searchTags;
 		bool m_searchGame;
       bool m_searching;
 		
@@ -194,10 +180,6 @@ class PgnDatabase : public Database
 		QVector<QPair<TagSearch, int> > m_tagSearches;
 		QVector<QPair<TagSearch, int> > m_indexSearches;
 
-      // Structures for in memory headers
-      Tags m_tags;
-      Index m_index;
-		
 		//move stat types and variables
 		typedef struct {
 			MoveStatList moveStatList;

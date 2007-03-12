@@ -17,93 +17,87 @@
 #ifndef __INDEX_H__
 #define __INDEX_H__
 
-#include <QVector>
+#include <QList>
+#include <QPair>
 #include "indexitem.h"
 #include "search.h"
-#include "tags.h"
-//
-// Needs searching
-// QValueVector<quint32> find (Search* search, const Tags& tags)
-//    Will return all games that match <search>
-// bool find (quint32 gameId, Search* search, const Tags& tags)
-//    Does game <gameId> match <search
+#include "taglist.h"
+#include "game.h"
 
 /** @ingroup Database  
-   The Index class holds a list of IndexItem instances, typically one
+ * The Index class holds a list of IndexItem instances, typically one
  * for each game in the current database. This enables fast access to 
- * certain game header information.
+ * game header information.
+ *
+ * @todo
+ * pack() and unpack() needs to be implemented
  */
 
 class Index {
    public:
       Index();
-      quint32 add (IndexItem item);
-      quint32 add ();
-      void remove();
-
-      /** Sets the tag id for the black player name for game at index */
-      void setBlackId(quint32 index, quint32 id);
-      /** Sets the tag id for the white player name for game at index */
-      void setWhiteId(quint32 index, quint32 id);
-      /** Sets the tag id for the event name for game at index */
-      void setEventId(quint32 index, quint32 id);
-      /** Sets the tag id for the site name for game at index */
-      void setSiteId(quint32 index, quint32 id);
-      /** Sets the Elo rating of the white player for game at index */
-      void setWhiteElo(quint32 index, quint16 elo);
-      /** Sets the Elo rating of the black player for game at index */
-      void setBlackElo(quint32 index, quint16 elo);
-      /** Sets the tag id for the ECO code of the game for game at index */
-      void setEcoId(quint32 index, quint16 id);
-      /** Sets the result of the game for game at index */
-      void setResult(quint32 index, Result result);
-      /** Sets the round of the game for game at index */
-      void setRound(quint32 index, quint8 round);
-      /** Sets the date of the game for game at index */
-      void setDate(quint32 index, const PartialDate& date);
+      ~Index();
+      /** Removes index item for game gameIndex */
+      void remove (int gameIndex);
 
 
-      /** Returns the tag id for the white player name for game at index*/
-      quint32 whiteId(quint32 index);
-      /** Returns the name of the white player for game at index */
-      QString white(quint32 index,Tags& tags);
-      /** Returns the tag id for the black player name for game at index*/
-      quint32 blackId(quint32 index);
-      /** Returns the name of the black player for game at index */
-      QString black(quint32 index, Tags& tags);
-      /** Returns the tag id for the event name for game at index*/
-      quint32 eventId(quint32 index);
-      /** Returns the name of the event for game at index */
-      QString event(quint32 index, Tags& tags);
-      /** Returns the tag id for the site name for game at index*/
-      quint32 siteId(quint32 index);
-      /** Returns the name of the site for game at index */
-      QString site(quint32 index, Tags& tags);
-      /** Returns the Elo rating of the white player for game at index*/
-      quint16 whiteElo(quint32 index);
-      /** Returns the Elo rating of the black player for game at index*/
-      quint16 blackElo(quint32 index);
-      /** Returns tag id for the ECO code of the game for game at index*/
-      quint16 ecoId(quint32 index);
-      /** Returns the name of the ECO code for game at index */
-      QString eco(quint32 index, Tags& tags);
-      /** Returns the date of the game for game at index*/
-      PartialDate date(quint32 index);
-      /** Returns the date in string format for game at index */
-      QString dateString(quint32 index);
-      /** Returns the result of the game for game at index*/
-      Result result(quint32 index);
-      /** Returns the round of the game for game at index*/
-      quint8 round(quint32 index);
+      /** Sets the tag value for game 'gameId, tag 'tag, to value 'value' */
+      void setTag(Tag tag, QString value, int gameId);
+      void setTag(const QString& tagName, QString value, int gameId);
+      /** Get the value of tag 'tag' for game 'gameId' */
+      QString tagValue (Tag tag, int gameId);
 
-      /** Returns a reference to the IndexItem instance for game at index*/
-      IndexItem& gameIndex(quint32 index);
-      /** Returns true if game at 'gameId' matches search 'search'. 
-       * Needs reference to the relevant Tags instance to resolve tag values */
-      bool find (quint32 gameId, Search* search, Tags& tags);
+      /** Recreates Index, removing all unused TagValues */
+      bool compact(); 
+      /** Write the index to disk, using m_filename */
+      void write();
+      /** Read the index from disk, using m_filename */
+      void read();
+      /** Sets the filename for reading and saving index */
+      void setFilename (const QString& filename);
+      /** Adds a index item, and initialize with the headers from game */
+      TagIndex add (const Game& game);
+
+      /** Returns a map of all tag name/tag value pairs for a given game.
+       * Currently all tags in the database are returned, if the game does
+       * not a have a value for a particular tag, a default value is returned.
+       */
+      QList<QPair<QString,QString> > allGameTags(int gameId);
+
+      /** Enables fast loading of many values */
+      void setCacheEnabled (bool enabled);
+
 
    private:
-      QVector<IndexItem> m_gameIndex;
+      TagList m_tagList;
+      QList<IndexItem*> m_indexItems;
+
+      /** Clears the index, and frees all associated memory */
+      void clear();
+
+      // The following items are related to ItemIndex. These are needed
+      // to know where in ItemIndex the values are stored.
+      QMap <int, QPair<quint8 ,quint8 > > m_tagIndexPosition;
+      void setTagIndexPosition(int tag, quint8 offset, quint8 size);
+      quint8 m_tagIndexSize;
+      void reallocateIndexItems (bool clear=true);
+      void calculateIndexSize();
+
+      QString m_filename;
+
+      /** Adds a index item */
+      TagIndex add (const IndexItem& item);
+      /** Adds a empty indexitem */
+      TagIndex add ();
+      /** Create index items */
+      void createIndexItems();
+
+      /** Compress the data for writing to disk. Is this necessary? */
+      void pack();
+      /** Uncompress the data when reading from disk. Is this necessary? */
+      void unpack();
+
+
 
 };
 

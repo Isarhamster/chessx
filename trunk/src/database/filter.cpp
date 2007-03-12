@@ -20,10 +20,12 @@
 #include "filter.h"
 #include "filtersearch.h"
 #include "qpair.h"
+#include <QtDebug>
 
 Filter::Filter(Database* database)
 {
  m_database = database;
+ qDebug() << m_database->count();
  m_count = m_database->count();
  m_bitArray = new QBitArray(m_count);
  m_bitArray->fill(true);
@@ -204,7 +206,7 @@ void Filter::executeSearch(const Search& search)
   //Turn search into a query and execute it
   Query query;
   query.append(search);
-  executeQuery(query);
+  //executeQuery(query);
 }
 void Filter::executeSearch(const Search& search, Search::Operator searchOperator)
 {
@@ -214,7 +216,7 @@ void Filter::executeSearch(const Search& search, Search::Operator searchOperator
   query.append(search);
   query.append(filterSearch);
   query.append(searchOperator);
-  executeQuery(query);
+  //executeQuery(query);
 }
 void Filter::executeQuery(Query& query)
 {

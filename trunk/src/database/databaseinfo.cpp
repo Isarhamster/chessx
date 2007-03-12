@@ -50,7 +50,7 @@ bool DatabaseInfo::loadGame(int index)
     return false;
   if (m_index == index)
     return true;
-  if (!m_database->load(index, *m_game))
+  if (!m_database->loadGame(index, *m_game))
     return false;
   m_index = index;
   m_game->moveToStart();

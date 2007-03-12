@@ -15,13 +15,23 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtDebug>
 #include "database.h"
 
 Database::~Database()
 {
 }
 
-bool Database::loadHeaders(int index, Game& game)
+bool Database::loadGameHeaders(int index, Game& game)
 {
-	return load(index, game);
+   //qDebug ("Loading headers for game %d",index);
+   QList <QPair< QString, QString> > gameTags;
+   gameTags = m_index.allGameTags(index);
+
+   for ( int i = 0; i < gameTags.count(); ++i) {
+      //qDebug() << gameTags[i].first << gameTags[i].second;
+      game.setTag(gameTags[i].first,gameTags[i].second);
+   }
+
+   return true;
 }
