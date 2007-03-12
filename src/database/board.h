@@ -38,6 +38,8 @@ enum {Valid, NoWhiteKing, NoBlackKing, DoubleCheck, OppositeCheck};
    of captured pieces.
 
    @todo Store/restore castling rights when setting/getting position using FEN.
+   fromFen() does not validate the FEN string. Should validate, and return true/false.
+
 */
 
 
