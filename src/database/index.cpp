@@ -14,200 +14,185 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtDebug>
+#include <QFile>
+#include <QDataStream>
+
 #include "index.h"
+
+#define INDEX_ITEM_BUFFER_SIZE 500
+
 
 Index::Index()
 {
-   m_gameIndex.clear();
+   setTagIndexPosition(TagEvent,0,2);
+   setTagIndexPosition(TagSite,2,2);
+   setTagIndexPosition(TagDate,4,2);
+   setTagIndexPosition(TagRound,6,2);
+   setTagIndexPosition(TagWhite,8,4);
+   setTagIndexPosition(TagBlack,12,4);
+   setTagIndexPosition(TagResult,16,1);
+   reallocateIndexItems();
 }
-
-quint32 Index::add (IndexItem item)
+Index::~Index()
 {
-   m_gameIndex.append(item);
-   return m_gameIndex.count()-1;
-}
-
-quint32 Index::add ()
-{
-   IndexItem item;
-   m_gameIndex.append(item);
-   return m_gameIndex.count()-1;
-}
-
-void Index::setBlackId(quint32 index, quint32 id)
-{
-   m_gameIndex[index].setBlackId(id);
-}
-void Index::setWhiteId(quint32 index, quint32 id)
-{
-   m_gameIndex[index].setWhiteId(id);
-}
-void Index::setEventId(quint32 index, quint32 id)
-{
-   m_gameIndex[index].setEventId(id);
-}
-void Index::setSiteId(quint32 index, quint32 id)
-{
-   m_gameIndex[index].setSiteId(id);
-}
-void Index::setWhiteElo(quint32 index, quint16 elo)
-{
-   m_gameIndex[index].setWhiteElo(elo);
-}
-void Index::setBlackElo(quint32 index, quint16 elo)
-{
-   m_gameIndex[index].setBlackElo(elo);
-}
-void Index::setEcoId(quint32 index, quint16 id)
-{
-   m_gameIndex[index].setEcoId(id);
-}
-void Index::setResult(quint32 index, Result result)
-{
-   m_gameIndex[index].setResult(result);
-}
-void Index::setRound(quint32 index, quint8 round)
-{
-   m_gameIndex[index].setRound(round);
-}
-void Index::setDate(quint32 index, const PartialDate& date)
-{
-   m_gameIndex[index].setDate(date);
-}
-
-
-IndexItem& Index::gameIndex(quint32 index)
-{
-   return m_gameIndex[index];
-}
-
-void Index::remove()
-{
-}
-
-bool Index::find (quint32 gameId, Search* search, Tags& tags)
-{
-   QString tagName;
-   QVector<bool> vb;
-   int tagId;
-   TagSearch* ts;
-   EloSearch* es;
-   DateSearch* ds;
-   switch (search->type()) {
-      case Search::TagSearch:
-         ts = static_cast<TagSearch*> (search);
-         tagName = ts->tag();
-         if ((tagName == "White") || (tagName == "Black")) {
-            tagName = "Name";
-         } else if ((tagName == "BlackElo") || (tagName == "WhiteElo")) {
-            tagName = "Elo";
-         }
-         tagId = tags.tagId(tagName);
-         if (tagId == -1) {
-            return false;
-         }
-         vb = tags.find(tagId,ts->value());
-         //m_gameIndex[gameId].
-         tagName = ts->tag();
-         if (tagName == "White") {
-            if (vb[m_gameIndex[gameId].whiteId()]) {
-               return true; 
-            }
-         } else if (tagName == "Black") {
-            if (vb[m_gameIndex[gameId].blackId()]) {
-               return true; 
-            }
-         } else if (tagName == "Site") {
-            if (vb[m_gameIndex[gameId].siteId()]) {
-               return true; 
-            }
-         } else if (tagName == "Event") {
-            if (vb[m_gameIndex[gameId].eventId()]) {
-               return true; 
-            }
-         } else if (tagName == "Eco") {
-            if (vb[m_gameIndex[gameId].ecoId()]) {
-               return true; 
-            }
-         }
-         return false;
-      case Search::EloSearch:
-         es = static_cast<EloSearch*> (search);
-         return es->withinEloRange(m_gameIndex[gameId].whiteElo(), m_gameIndex[gameId].blackElo());
-      case Search::DateSearch:
-         ds = static_cast<DateSearch*> (search);
-         return ds->withinDateRange(m_gameIndex[gameId].date());
-      default :
-         // Unhandled search
-         break;
+   for (int j = 0; j < m_indexItems.count(); ++j) {
+      delete (m_indexItems[j]);
    }
 
-   return false;
+}
+void Index::setFilename (const QString& filename)
+{
+   m_filename = filename;
+}
+void Index::setTag(Tag tag, QString value, int gameId)
+{
+   // Add value to taglist
+   int index = m_tagList.add(tag,value);
+   if (index == -1) {
+      // It is not a predefined tag. It has to be added using a tag name
+      return;
+   }
+   // Create a index item if it does not exist
+   if (!m_indexItems.at(gameId)) {
+      add();
+   }
+   // At index value to itemindex
+   m_indexItems[gameId]->set(m_tagIndexPosition[tag].first,m_tagIndexPosition[tag].second,index);
 
 }
-
-quint32 Index::whiteId(quint32 index)
+void Index::setTag(const QString& tagName, QString value, int gameId)
 {
-   return m_gameIndex[index].whiteId();
-}
-QString Index::white(quint32 index,Tags& tags)
-{
-   return tags.value(Tags::PlayerName,m_gameIndex[index].whiteId());
-}
-quint32 Index::blackId(quint32 index)
-{
-   return m_gameIndex[index].blackId();
-}
-QString Index::black(quint32 index, Tags& tags)
-{
-   return tags.value(Tags::PlayerName,m_gameIndex[index].blackId());
-}
-quint32 Index::eventId(quint32 index)
-{
-   return m_gameIndex[index].eventId();
-}
-QString Index::event(quint32 index, Tags& tags)
-{
-   return tags.value(Tags::Event,m_gameIndex[index].eventId());
-}
-quint32 Index::siteId(quint32 index)
-{
-   return m_gameIndex[index].siteId();
-}
-QString Index::site(quint32 index, Tags& tags)
-{
-   return tags.value(Tags::Site,m_gameIndex[index].siteId());
-}
-quint16 Index::whiteElo(quint32 index)
-{
-   return m_gameIndex[index].whiteElo();
-}
-quint16 Index::blackElo(quint32 index)
-{
-   return m_gameIndex[index].blackElo();
-}
-quint16 Index::ecoId(quint32 index)
-{
-   return m_gameIndex[index].ecoId();
-}
-QString Index::eco(quint32 index, Tags& tags)
-{
-   return tags.value(Tags::ECO, m_gameIndex[index].ecoId());
-}
-PartialDate Index::date(quint32 index)
-{
-   return m_gameIndex[index].date();
-}
-QString Index::dateString(quint32 index)
-{
-   return m_gameIndex[index].date().asString();
+   int index = m_tagList.add(tagName,value);
+   while (m_indexItems.count() <= gameId ) {
+      createIndexItems();
+   }
+   // At index value to itemindex
+   if (!m_tagIndexPosition.contains(m_tagList.tagFromString(tagName))) {
+      m_tagIndexPosition.insert((int)m_tagList.tagFromString(tagName), qMakePair((quint8)m_tagIndexSize,(quint8)2));
+      reallocateIndexItems (false);
+   }
+   m_indexItems[gameId]->set(
+         m_tagIndexPosition[m_tagList.tagFromString(tagName)].first,
+         m_tagIndexPosition[m_tagList.tagFromString(tagName)].second,
+         index);
 }
 
-Result Index::result(quint32 index)
+TagIndex Index::add ()
 {
-   return m_gameIndex[index].result();
+   int gameId = m_indexItems.count(); 
+   m_indexItems.append(new IndexItem);
+   m_indexItems[gameId]->allocate(m_tagIndexSize);
+
+   return gameId;
 }
-quint8 Index::round(quint32 index)
+void Index::createIndexItems()
 {
-   return m_gameIndex[index].round();
+   for (int i = 0; i < INDEX_ITEM_BUFFER_SIZE ; ++i) {
+      add();
+   }
+}
+void Index::setTagIndexPosition(int tag, quint8 offset, quint8 size)
+{
+   if (!m_tagIndexPosition.contains(tag)) {
+      m_tagIndexPosition.insert(tag,qMakePair(offset,size));
+   } else {
+      m_tagIndexPosition[tag].first = offset;
+      m_tagIndexPosition[tag].second = size;
+   }
+}
+void Index::calculateIndexSize()
+{
+   m_tagIndexSize = 0;
+
+   // Calculates the size needed
+   QMap <int, QPair<quint8 ,quint8 > >::const_iterator i = m_tagIndexPosition.constBegin();
+   while (i != m_tagIndexPosition.constEnd()) {
+      m_tagIndexSize += i.value().second;
+      ++i;
+   }
+}
+void Index::reallocateIndexItems (bool clear)
+{
+   calculateIndexSize();
+
+   for (int j = 0; j < m_indexItems.count(); ++j) {
+      m_indexItems[j]->allocate(m_tagIndexSize,clear);
+   }
+}
+QString Index::tagValue (Tag tag, int gameId)
+{
+/*    qDebug() << "Retrieving:\n" << "  taglist index: " << m_indexItems[gameId]->index(
+                             m_tagIndexPosition[tag].first,
+                             m_tagIndexPosition[tag].second) << "\n"
+                            << "  Game id: " << gameId << "\n"
+                            << "  Tag: " << tag << "\n"; */
+   return m_tagList[tag]->value(m_indexItems[gameId]->index(
+                             m_tagIndexPosition[tag].first,
+                             m_tagIndexPosition[tag].second));
+}
+void Index::write()
+{
+   QFile file(m_filename);
+   if (!file.open(QIODevice::ReadOnly))
+      return;
+   QDataStream out(&file);
+   // I need to write stuff like versioning information, and magic number here
+
+   // Write all the tag values
+   m_tagList.write(out);
+
+   // Write the individual index items
+   out << m_indexItems.count();
+   for (int i = 0 ; i < m_indexItems.count() ; ++i) {
+      m_indexItems[i]->write(out);
+   }
+
+}
+void Index::read()
+{
+   QFile file(m_filename);
+   if (!file.open(QIODevice::ReadOnly))
+      return;
+   QDataStream in(&file);
+   
+   // Read all the tag values
+   m_tagList.read(in);
+
+   // Read the individual index items
+   clear();
+   int indexItemCount;
+   in >> indexItemCount;
+   for (int i = 0 ; i < indexItemCount ; ++i) {
+      add();
+      m_indexItems[i]->read(in);
+   }
+
+}
+void Index::clear()
+{
+   for (int i = 0 ; i < m_indexItems.count() ; ++i) {
+      delete m_indexItems[i];
+   }
+   m_indexItems.clear();
+}
+void Index::setCacheEnabled (bool enabled)
+{
+   m_tagList.setCacheEnabled(enabled);
+}
+QList<QPair<QString,QString> > Index::allGameTags(int gameId)
+{
+   QList<QPair<QString,QString> > list;
+   QMap <int, QPair<quint8 ,quint8 > >::const_iterator i = m_tagIndexPosition.constBegin();
+   while (i != m_tagIndexPosition.constEnd()) {
+      QString tagName = m_tagList.stringFromTag((Tag)i.key());
+      int tagIndex = m_indexItems[gameId]->index(i.value().first,i.value().second);
+      if (tagIndex >= 0) {
+         QString tagValue = m_tagList[i.key()]->value(tagIndex);
+         list.append(qMakePair(tagName,tagValue));
+      }
+
+      ++i;
+   }
+   return list;
 }

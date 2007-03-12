@@ -62,14 +62,14 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
      if (i != -1)
      {
         if (i != *m_gameIndex)
-          m_filter->database()->loadHeaders(i, *m_game);
+          m_filter->database()->loadGameHeaders(i, *m_game);
         *m_gameIndex = i;
         if (index.column() == 0)
           return i+1;
         else 
           return m_game->tag(m_columnNames.at(index.column()));
         //qDebug("Loading game %d: %s-%s", i,
-        //     qPrintable(m_game->tag(m_columnNames.at(0))), qPrintable(m_game->tag(m_columnNames.at(1))));
+         //    qPrintable(m_game->tag(m_columnNames.at(0))), qPrintable(m_game->tag(m_columnNames.at(1))));
      }
    }
    return QVariant();

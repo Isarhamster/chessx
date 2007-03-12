@@ -9,7 +9,9 @@ HEADERS += board.h \
            playerdatabase.h \
            playerdata.h \
            databaseconversion.h \
-           tags.h \
+           tagvalues.h \
+           taglist.h \
+           stringtagvalues.h \
            engine.h \
            wbengine.h \
            uciengine.h \
@@ -39,7 +41,9 @@ SOURCES += board.cpp \
            partialdate.cpp \
            playerdatabase.cpp \
            playerdata.cpp \
-           tags.cpp \
+           tagvalues.cpp \
+           stringtagvalues.cpp \
+           taglist.cpp \
            engine.cpp \
            wbengine.cpp \
            uciengine.cpp \
