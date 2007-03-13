@@ -82,7 +82,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = /home/ja/programming/chessdatabase/src/
+INPUT                  = src/
 FILE_PATTERNS          = *.c \
                          *.cc \
                          *.cxx \
@@ -132,9 +132,8 @@ FILE_PATTERNS          = *.c \
 RECURSIVE              = YES
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_PATTERNS       = /home/ja/programming/chessdatabase/src/gui/ui* \
-                         /home/ja/programming/chessdatabase/src/gui/moc* \
-                         /home/ja/programming/chessdatabase/src/database/moc*
+EXCLUDE_PATTERNS       = */ui* \
+                         */moc* 
 EXAMPLE_PATH           = 
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
@@ -245,7 +244,7 @@ SKIP_FUNCTION_MACROS   = YES
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
 TAGFILES               = 
-GENERATE_TAGFILE       = chessdatabase.tag
+GENERATE_TAGFILE       = chessx.tag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES
 PERL_PATH              = /usr/bin/perl
