@@ -18,10 +18,6 @@
 #define __BOARDVIEW_H__
 
 #include <QWidget>
-#include <QResizeEvent>
-#include <QWheelEvent>
-#include <QMouseEvent>
-#include <QPaintEvent>
 
 #include "common.h"
 #include "board.h"
@@ -84,10 +80,6 @@ protected:
   virtual void mouseReleaseEvent(QMouseEvent* e);
   /** Handle mouse wheel events */
   virtual void wheelEvent(QWheelEvent* e);
-  /** Handle piece drops */
-  virtual void dropEvent(QDropEvent *event);
-  /** Handle dragging piece over */
-  virtual void dragEnterEvent(QDragEnterEvent *event);
 private:
   /** Resizes pieces for new board size. */
   void resizeBoard();
