@@ -144,30 +144,35 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
     return;
   m_dragged = m_board.at(s);
   m_board.removeFrom(s);
-  QPixmap icon = m_theme.piece(m_dragged);
-  QDrag *drag = new QDrag(this);
-  QMimeData* mime = new QMimeData;
-  drag->setPixmap(icon);
-  drag->setMimeData(mime);
-  drag->setHotSpot(QPoint(drag->pixmap().width() / 2,
-                    drag->pixmap().height() / 2));
   update(squareRect(s));
-  drag->start(Qt::MoveAction);
+  QPixmap icon = m_theme.piece(m_dragged);
+  QCursor cursor(icon);
+  setCursor(cursor);
 }
 
 void BoardView::mouseReleaseEvent(QMouseEvent* event)
 {
   Square s = squareAt(event->pos());
-  if (s == InvalidSquare)
-    return;
-  emit clicked(s, event->button() + event->modifiers());
+  if (s != InvalidSquare)
+    emit clicked(s, event->button() + event->modifiers());
   if (event->button() != Qt::LeftButton)
     return;
-  if (m_selectedSquare != InvalidSquare)
+  if (m_dragged != Empty)
+  {
+    unsetCursor();
+    Square from = squareAt(m_dragStart);
+    m_board.setAt(from, m_dragged);
+    update(squareRect(from));
+    m_dragged = Empty;
+    if (s != InvalidSquare)
+      emit moveMade(from, s);
+  }
+  else if (m_selectedSquare != InvalidSquare)
   {
     Square from = m_selectedSquare;
     unselectSquare();
-    emit moveMade(from, s);
+    if (s != InvalidSquare)
+      emit moveMade(from, s);
   }
   else if (isPieceColor(m_board.at(s), m_board.toMove()))
     selectSquare(s);
@@ -269,6 +274,8 @@ QRect BoardView::squareRect(Square square)
 
 bool BoardView::canDrag(Square s) const
 {
+  if (m_dragged != Empty) // already dragging
+    return false;
   if (s == InvalidSquare)
     return false;
   else if (m_flags & IgnoreSideToMove)
