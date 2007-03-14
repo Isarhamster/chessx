@@ -210,6 +210,7 @@ private:
   QList<QAction*> m_recentFileActions;
   QList<QAction*> m_databaseActions;
   int m_currentDatabase;
+  QString m_eco;
   QActionGroup* m_actions;
   bool m_showTip;
   bool m_showPgnSource; // for debugging
