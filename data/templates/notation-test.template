@@ -50,8 +50,8 @@ MarkupColumnStyleMainline=<table border=0 width=50%>,</table>\n
 MarkupAnnotationInline=<a class="comment" href="cmt:%1">,</a>\n
 MarkupAnnotationIndent=<p class="comment"><a class="comment" href="cmt:%1">,</a></p>\n
 MarkupHeaderLine=<b>,</b><br>\n
-MarkupHeaderTagName=,
-MarkupHeaderTagValue=","
+MarkupHeaderTagName=[,
+MarkupHeaderTagValue=","]
 MarkupWhiteTag=<a class="tag" href="tag:white">,</a>
 MarkupBlackTag=<a class="tag" href="tag:black">,</a>
 MarkupEventTag=,
