@@ -694,7 +694,7 @@ QString Game::ecoClassify() const
 		node = m_moveNodes[node].previousNode;
 	}
 
-	return "? Unknown opening";
+	return QString();
 }
 
 Board Game::startBoard() const

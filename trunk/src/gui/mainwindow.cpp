@@ -140,8 +140,10 @@ MainWindow::MainWindow() : QMainWindow(),
   AppSettings->endGroup();
   emit reconfigure();
 
+  Game::loadEcoFile(AppSettings->dataPath() + "/chessx.eco");
+
   /* Reset board - not earlier, as all widgets have to be created. */
-  slotMoveChanged();
+  slotGameChanged();
 
   /* Status */
   m_statusFilter = new QLabel(statusBar());
@@ -157,6 +159,7 @@ MainWindow::MainWindow() : QMainWindow(),
   m_showTip = AppSettings->value("showTips", true).toBool();
   AppSettings->endGroup();
   m_tipDialog = new TipOfDayDialog(this);
+
 }
 
 void MainWindow::show()
@@ -523,10 +526,11 @@ void MainWindow::slotMoveChanged()
   // Finally update game information
   QString white = g->tag("White");
   QString black = g->tag("Black");
+  QString eco = m_eco.isNull() ? g->tag("ECO") : m_eco;
   QString players = tr("Game %1: <a href=\"tag:white\">%2</a> %3 - <a href=\"tag:black\">%4</a> %5")
       .arg(gameIndex() + 1).arg(white).arg(g->tag("WhiteElo")).arg(black).arg(g->tag("BlackElo"));
   QString result = tr("%1(%2) %3").arg(g->tag("Result")).arg((g->plyCount() + 1) / 2)
-      .arg(g->tag("ECO"));
+      .arg(eco);
   QString header = tr("%1, %2, %3, round %4").arg(g->tag("Event")).arg(g->tag("Site"))
       .arg(g->tag("Date")).arg(g->tag("Round"));
   QString lastmove, nextmove;
@@ -612,6 +616,7 @@ void MainWindow::slotGameChanged()
     m_gameView->setPlainText(m_output->output(game()));
   else
     m_gameView->setText(m_output->output(game()));
+  m_eco = game()->ecoClassify();
   slotMoveChanged();
 }
 
