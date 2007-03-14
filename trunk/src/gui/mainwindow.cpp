@@ -456,7 +456,7 @@ void MainWindow::slotHelpAbout()
 {
   QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
     "<p>Free chess database.<br>Version %1</br>"
-    "<p>Copyright 2005-2006 ChessX developers:<br>"
+    "<p>Copyright 2005-2007 ChessX developers:<br>"
      "Database: Marius Roets, William Hoggarth, Ejner Borgbjerg.<br>"
      "GUI: Michal Rudolf, Heinz Hopfgartner."
     "<p>Homepage: <a href=\"http://chessx.sf.net\">http://chessx.sf.net</a><br>"
