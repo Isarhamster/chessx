@@ -32,7 +32,6 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
    m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare), m_flags(flags),
    m_dragged(Empty)
 {
-  setAcceptDrops(true);
 }
 
 BoardView::~BoardView()
@@ -177,25 +176,6 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
   else if (isPieceColor(m_board.at(s), m_board.toMove()))
     selectSquare(s);
 }
-
-void BoardView::dragEnterEvent(QDragEnterEvent *event)
-{
-  event->setDropAction(Qt::MoveAction);
-  event->accept();
-}
-
-void BoardView::dropEvent(QDropEvent *event)
-{
-  event->acceptProposedAction();
-  Square to = squareAt(event->pos());
-  Square from = squareAt(m_dragStart);
-  m_board.setAt(from, m_dragged);
-  update(squareRect(from));
-  unselectSquare();
-  if (to != InvalidSquare && from != to)
-    emit moveMade(from, to);
-}
-
 
 void BoardView::wheelEvent(QWheelEvent* e)
 {
