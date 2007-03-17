@@ -27,7 +27,7 @@
 
 #include "pgndatabase.h"
  
-PgnDatabase::PgnDatabase() : m_moveStatCache(MaxMoveStatCacheSize)
+PgnDatabase::PgnDatabase() 
 {
 	initialise();
 }
@@ -204,110 +204,6 @@ bool PgnDatabase::remove(const Filter& filter)
   return true;
 }
 
-bool PgnDatabase::supportedSearchType(Search::Type searchType)
-{
-	switch(searchType) {
-		case Search::DateSearch:
-		case Search::EloSearch:
-		case Search::FilterSearch:
-		case Search::PositionSearch:
-		case Search::TagSearch:
-			return true;
-		default:
-			return false;
-	}
-}
-
-PgnDatabase::MoveStatList PgnDatabase::moveStats(const MoveList& line)
-{
-	MoveStatList moveStatList;
-	
-	if(!m_isOpen) {
-		return moveStatList;
-	}
-	
-   //locate any cached results that can be used
-	Board board;
-   int ply = 0;
-	quint64 key = 0;
-   int closestPly = 0;
-   quint64 closestKey = 0;
-      
-	board.setStandardPosition();
-	key = board.getHashValue();
-   if(m_moveStatCache.contains(key)) {
-      closestPly = ply;
-      closestKey = key;
-   }
-
-   for(MoveList::ConstIterator it = line.constBegin(); it != line.constEnd(); ++it) {
-      board.doMove(*it);
-		ply++;
-      key = board.getHashValue();
-      
-      if(m_moveStatCache.contains(key)) {
-         closestPly = ply;
-         closestKey = key;
-      }
-   }
-   
-   //if already located in cache return stored result
-   if(closestKey == key && m_moveStatCache.contains(closestKey)) {
-      return m_moveStatCache.object(closestKey)->moveStatList;
-   }
-
-   //get position and filter for final position in line (using any cached filter found previously)
-#warning Needs porting to new Filter API
-  // I don't know what is going on here : mrudolf
-   /*
-   Filter filter(count());
-   if(closestKey) {
-      filter = Filter(m_moveStatCache.object(closestKey)->bitFilter);
-   }
-   filter.setDatabase(this);
-   Game game;
-   
-   for(MoveList::ConstIterator it = line.constBegin(); it != line.constEnd(); ++it) {
-      game.addMove(*it);
-      game.forward();
-      
-      //only search if past point of cached filter results
-      if(game.ply() > closestPly) {
-         filter.executeSearch(PositionSearch(game.board()), Search::And);
-      }
-   }
-   
-   //calculate stats by doing a search on each legal move
-   MoveStat moveStat;
-   MoveList legalMoves = game.board().legalMoves();
-   
-   for(MoveList::iterator it = legalMoves.begin(); it != legalMoves.end(); it++) {
-      moveStat.move = *it;
-      game.replaceMove(*it);
-      game.forward();
-      
-      moveStat.eco = game.ecoClassify();
-      Filter childFilter(filter);
-      childFilter.setDatabase(this);
-      childFilter.executeSearch(PositionSearch(game.board()), Search::And);
-      if(childFilter.count()) {
-         moveStat.frequency = (float)childFilter.count() / filter.count();
-         moveStatList.append(moveStat);
-      }
-      
-      game.backward();
-   }
-   
-   //store result in cache
-   MoveStatCacheEntry* cacheEntry = new MoveStatCacheEntry;
-   cacheEntry->moveStatList = moveStatList;
-   cacheEntry->bitFilter = filter.asBitArray();
-   m_moveStatCache.insert(key, cacheEntry, filter.size());
-  */
-
-   return moveStatList;
-} 
-
 void PgnDatabase::initialise()
 {
 	m_isOpen = false;
@@ -317,7 +213,6 @@ void PgnDatabase::initialise()
    m_count = 0;
    m_gameOffsets = 0;
    m_allocated = 0;
-   m_searching = false;
 }
 
 qint64 PgnDatabase::offset(int index)
@@ -492,17 +387,6 @@ void PgnDatabase::parseMoves(Game* game)
 	m_newVariation = false;
 	m_variation = 0;
 	
-	//check starting position as well as position after each move
-	if(m_searchGame) {
-		for(int search = 0; search < (int)m_positionSearches.size(); search++) {
-			if(game->board() == m_positionSearches.at(search).first.position()) {
-				if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
-					return;
-				}
-			}
-		}
-	}
-		
 	do {
 		if (m_inComment) {
 			parseComment(game);
@@ -515,16 +399,6 @@ void PgnDatabase::parseMoves(Game* game)
     }
 	} while(!m_gameOver && (!m_file->atEnd() || m_currentLine != ""));
 	
-	//mark any unmatched position searches as false
-	if(m_searchGame) {
-		for(int search = 0; search < (int)m_positionSearches.size(); search++) {
-    	if(m_externalFilter->state(m_positionSearches.at(search).second) == TriStateTree::Unknown) {
-				if(m_externalFilter->setState(m_positionSearches.at(search).second, false)) {
-					return;
-				}
-			}   
-    }
-  }
 }
 
 void PgnDatabase::parseLine(Game* game)
@@ -555,18 +429,6 @@ void PgnDatabase::parseToken(Game* game, QString token)
 			break;
 		case ')':
 			if(!m_variation) {
-				// position search on last position		
-				if(m_searchGame) {
-					game->forward();
-					for(int search = 0; search < (int)m_positionSearches.size(); search++) {
-						if(game->board() == m_positionSearches.at(search).first.position()) {
-							if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
-								return;
-							}
-						}
-					}
-				}
-				
 				game->exitVariation();
 			}
 			m_newVariation = false;
@@ -621,48 +483,15 @@ void PgnDatabase::parseToken(Game* game, QString token)
 			game->setResult(Unknown);
 			m_gameOver = true;
 			
-			// position search on last position
-			if(m_searchGame) {
-				game->forward();
-				for(int search = 0; search < (int)m_positionSearches.size(); search++) {
-					if(game->board() == m_positionSearches.at(search).first.position()) {
-						if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
-							return;
-						}
-					}
-				}
-			}
 			break;
 		case '1':
 			if(token == "1-0") {
 				game->setResult(WhiteWin);
 				m_gameOver = true;
-				// position search on last position
-				if(m_searchGame) {
-					game->forward();
-					for(int search = 0; search < (int)m_positionSearches.size(); search++) {
-						if(game->board() == m_positionSearches.at(search).first.position()) {
-							if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
-								return;
-							}
-						}
-					}
-				}
 				break;
 			} else if(token == "1/2-1/2") {
 				game->setResult(Draw);
 				m_gameOver = true;
-				// position search on last position
-				if(m_searchGame) {
-					game->forward();
-					for(int search = 0; search < (int)m_positionSearches.size(); search++) {
-						if(game->board() == m_positionSearches.at(search).first.position()) {
-							if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
-								return;
-							}
-						}
-					}
-				}
 				break;
 			}
 			
@@ -670,17 +499,6 @@ void PgnDatabase::parseToken(Game* game, QString token)
 			if(token == "0-1") {
 				game->setResult(BlackWin);
 				m_gameOver = true;
-				// position search on last position
-				if(m_searchGame) {
-					game->forward();
-					for(int search = 0; search < (int)m_positionSearches.size(); search++) {
-						if(game->board() == m_positionSearches.at(search).first.position()) {
-							if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
-								return;
-							}
-						}
-					}
-				}
 				break;
 			}
 		default:
@@ -718,18 +536,6 @@ void PgnDatabase::parseToken(Game* game, QString token)
 				} else {				
 					game->enterVariation(m_variation);
 					m_variation = game->addMove(token, QString::null, nag);
-							
-					/* position search, on new position */
-					if(m_searchGame) {
-						for(int search = 0; search < (int)m_positionSearches.size(); search++) {
-							if(game->board() == m_positionSearches.at(search).first.position()) {
-								if(m_externalFilter->setState(m_positionSearches.at(search).second, true)) {
-									m_variation = -1;
-									return;
-								}
-							}
-						}
-					}
 				}
 			}
 	}
@@ -900,31 +706,4 @@ void PgnDatabase::writeVariation(Game& game)
 		game.forward();
 	}
 }
-
-void PgnDatabase::initSearch(Query& , Filter* )
-{
-   m_searching = true;
-}
-
-void PgnDatabase::finalizeSearch()
-{
-   m_searching = false;
-}
-
-void PgnDatabase::searchGame(int index)
-{
-
-   Game game;
-   
-   if((m_externalFilter->state() == TriStateTree::Unknown) && m_searchIndex) {
-      loadGameHeaders(index,game);
-   }
-   if (m_externalFilter->state() == TriStateTree::Unknown) {
-      loadGame(index,game);
-   }
-   
-}
-
-
-
 

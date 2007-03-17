@@ -29,11 +29,6 @@
 #include <QVector>
 
 #include "database.h"
-#include "search.h"
-#include "tristatetree.h"
-
-#include "filter.h"
-#include "filtersearch.h"
 
 /** @ingroup Database
    The PgnDatabase class provides database access to PGN files.
@@ -69,21 +64,6 @@ class PgnDatabase : public Database
 		/** Removes multiple games from the database as specified by the filter */
 		bool remove(const Filter& filter);
 		
-		//capability enquiry (so we can start using a format before every last search type is supported)
-		/** Checks if the database supports the given type of search */
-		bool supportedSearchType(Search::Type searchType);
-		
-      /** Initializes a search. */
-      void initSearch(Query& query, Filter* filter);
-      /** Searches the game at index for active searches */
-      void searchGame(int index);
-      /** Called after a search to do necessary cleanup */
-      void finalizeSearch();
-		
-		//move statistics (cf. tree window in Scid)
-		/** Returns move statistics for the given line */
-		MoveStatList moveStats(const MoveList& line);
-
 	private:
 		/** Resets/initialises important member variables. Called by constructor and close methods */
 		void initialise(); 
@@ -167,27 +147,7 @@ class PgnDatabase : public Database
 		int m_allocated;
 		qint64* m_gameOffsets;
 		
-		//query variables
-      Filter* m_externalFilter;
-		bool m_searchIndex;
-		bool m_searchGame;
-      bool m_searching;
 		
-		QVector<QPair<DateSearch, int> > m_dateSearches;
-		QVector<QPair<EloSearch, int> > m_eloSearches;
-		QVector<QPair<FilterSearch, int> > m_filterSearches;
-		QVector<QPair<PositionSearch, int> > m_positionSearches;
-		QVector<QPair<TagSearch, int> > m_tagSearches;
-		QVector<QPair<TagSearch, int> > m_indexSearches;
-
-		//move stat types and variables
-		typedef struct {
-			MoveStatList moveStatList;
-			QBitArray bitFilter;
-		} MoveStatCacheEntry;
-		
-		static const long MaxMoveStatCacheSize = 8388608; 
-		QCache<quint64,MoveStatCacheEntry> m_moveStatCache;
 };
 
 #endif
