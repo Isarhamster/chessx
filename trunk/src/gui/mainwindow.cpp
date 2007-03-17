@@ -802,7 +802,7 @@ void MainWindow::setupActions()
 
 void MainWindow::slotSearchBoard()
 {
-  PositionSearch ps(m_boardView->board());
+  PositionSearch ps(databaseInfo()->filter()->database(),m_boardView->board());
 
   databaseInfo()->filter()->executeSearch(ps);
   m_gameList->updateFilter();
