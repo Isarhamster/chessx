@@ -35,6 +35,10 @@ class Filter;
    The Database class is abstract, providing a common interface for all
    database types. There are methods for the loading and saving of games,
    and for performing searches and queries.
+
+   @todo
+   Add name() to get just the database name
+   Add isReadOnly() 
 */
 
 class Database
@@ -61,34 +65,13 @@ class Database
       /** Saves a game at the given position, returns true if successful */
       virtual bool save(int , Game&) { return false; }
       /** Adds a game to the database */
-      virtual bool add(Game& game) = 0;
+      virtual bool add(Game& ) { return false; }
       /** Removes a game from the database */
-      virtual bool remove(int index) = 0;
+      virtual bool remove(int ) { return false; };
       /** Removes multiple games from the database as specified by the filter */
-      virtual bool remove(const Filter& filter) = 0;
+      virtual bool remove(const Filter& ) { return false; }
       /** Compacts the database */
       virtual void compact() {}
-
-      //capability enquiry (so we can start using a format before every last search type is supported)
-      /** Checks if the database supports the given type of search */
-      virtual bool supportedSearchType(Search::Type searchType) = 0;
-
-      virtual void initSearch(Query& query, Filter* filter) = 0;
-      //virtual QValueVector<QPair<FilterSearch, int> > initSearch(Query& query, Filter* filter) = 0;
-      virtual void searchGame(int index) = 0;
-      virtual void finalizeSearch() = 0;
-
-      //move statistics (cf. tree window in Scid)
-      typedef struct {
-         Move move;
-         QString eco;
-         float frequency;
-      } MoveStat;
-
-      typedef QVector<MoveStat> MoveStatList;
-
-      /** Returns move statistics for the given position */
-      virtual MoveStatList moveStats(const MoveList& moveList) = 0;                
 
       /** Returns the number of games in the database */
       virtual int count() { return m_count; }
