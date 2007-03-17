@@ -96,7 +96,7 @@ void GameList::simpleSearch(int tagid)
   QString value = QInputDialog::getText(0, tr("Find %1").arg(tag), tr("Value:"));
   if (value.isEmpty())
     return;
-  TagSearch ts(tag, value);
+  TagSearch ts(m_model->filter()->database(), tag, value);
   m_model->filter()->executeSearch(ts);
   updateFilter();
   emit searchDone();
