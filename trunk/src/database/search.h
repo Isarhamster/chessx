@@ -18,10 +18,13 @@
 
 #ifndef __SEARCH_H__
 #define __SEARCH_H__
-class Query;
+class Database;
+class Filter;
 
 #include "board.h"
+#include "game.h"
 #include "partialdate.h"
+#include <QBitArray>
 
 /** @ingroup Database
 The Search class is an abstract base class that represents a search on one criteria.
@@ -33,18 +36,24 @@ The Search class is an abstract base class that represents a search on one crite
 */
 class Search
 {
-public:
-  enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch};
-  /** Operator for joining filters */
-  enum Operator {NullOperator, Not, And, Or, Add, Remove }; 
+   public:
+      enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch};
+      /** Operator for joining filters */
+      enum Operator {NullOperator, Not, And, Or, Add, Remove }; 
 
-  /** Standard constructor. */
-   Search();
-  /** Cloning search object - probably obsolete */
-  virtual Search* clone() const = 0;
-  /** Standard destructor. */
-  virtual ~Search() = 0;
-  virtual Type type() const = 0;
+      /** Standard constructor. */
+      Search();
+      /** Cloning search object - probably obsolete */
+      virtual Search* clone() const = 0;
+      /** Standard destructor. */
+      virtual ~Search() = 0;
+      virtual Type type() const = 0;
+      virtual bool matches(int index) = 0;
+      virtual void setDatabase(Database* database);
+   protected:
+      Database *m_database;
+      Game m_game;
+
 };
 
 /** @ingroup Database
@@ -56,17 +65,20 @@ class NullSearch : public Search
   virtual NullSearch* clone() const;
     virtual ~NullSearch();
     virtual Type type() const;
+    bool matches(int index);
 };
 
 /** @ingroup Database
-The PositionSearch class is a search that checks for given position. */
+The PositionSearch class is a search that checks for given position. 
+@todo Performance is seriously bad
+*/
 class PositionSearch : public Search
 {
 public:
   /** Empty constructor. */
   PositionSearch();
   /** Standard constructor. */
-  PositionSearch(const Board& position);
+  PositionSearch(Database* db, const Board& position);
   /** Object cloning - probably obsolete. */
   virtual PositionSearch *clone() const;
   /** Standard destructor. */
@@ -77,6 +89,7 @@ public:
   Board position() const;
   /** Sets sought position. */
   void setPosition(const Board & position);
+  bool matches(int index);
 private:
   Board m_position;
 };
@@ -103,11 +116,11 @@ public:
   int minBlackElo() const;
   /** @return maximum Elo of black player. */
   int maxBlackElo() const;
-  /** @return @p true if given ratings are within accepted ranges. */
-  bool withinEloRange(int whiteElo, int blackElo) const;
   /** Set acceptable rating ranges. */
   void setEloSearch(int minWhiteElo = 0, int maxWhiteElo = 4000, int minBlackElo =
       0, int maxBlacElo = 4000);
+  bool matches(int index);
+   
 private:
   int m_minWhiteElo;
   int m_maxWhiteElo;
@@ -116,7 +129,7 @@ private:
 };
 
 /** @ingroup Database
-The DataSearch class defines a search based on a date range/ */
+The DataSearch class defines a search based on a date range */
 class DateSearch : public Search
 {
 public:
@@ -134,10 +147,9 @@ public:
   PartialDate minDate() const;
   /** @return end of the acceptable period. */
   PartialDate maxDate() const;
-  /** @return @p true if given data is within acceptable period. */
-  bool withinDateRange(PartialDate date) const;
   /** Sets whole period. */
   void setDateRange(PartialDate minDate, PartialDate maxDate);
+  bool matches(int index);
 
 private:
   PartialDate m_minDate;
@@ -147,12 +159,15 @@ private:
 
 /** @ingroup Database
 The TagSearch class is used for tag search. Only simple substring searches
-are supported for now. */
+are supported for now. 
+
+@todo
+Improved performance by creating a bit array of matching values */
 class TagSearch : public Search
 {
 public:
   /** Simple constructor */
-  TagSearch(const QString& tag = "tag", const QString& value = "value");
+  TagSearch(Database* database, const QString& tag = "tag", const QString& value = "value");
   /** Makes a deep copy of TagSearch object. Probably obsolete */
   virtual TagSearch* clone() const;
   /** Standard destructor. */
@@ -167,9 +182,36 @@ public:
   void setTag(const QString& tag);
   /** Set value to be matched */
   void setValue(const QString& value);
+  bool matches(int index);
+  void initialize();
 private:
   QString m_tag;
   QString m_value;
+  QBitArray *m_matches;
 };
+
+/** @ingroup Database
+ *  The FilterSearch class is not a real search class. It is used to
+ *  combine other searches with a filter, in order to solve the search
+ *  tree quicker if possible. For instance if a search is combined with a 
+ *  filter using the AND operator, only games in the filter are searched.
+ *  If it is combined with the OR operator, only games not in the filter
+ *  are searched. */
+class FilterSearch : public Search
+{
+   public:
+      FilterSearch();
+      FilterSearch(Filter* filter);
+		virtual FilterSearch* clone() const;
+      virtual ~FilterSearch();
+      Type type() const;
+      
+      bool contains(int game) const;
+      Filter* filter() const;
+      void setFilter(Filter* filter);
+      bool matches(int game);
+   private:
+      Filter *m_filter;
+}; 
 
 #endif // __SEARCH_H__

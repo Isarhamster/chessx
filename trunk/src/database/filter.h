@@ -87,14 +87,11 @@ public:
    /** Executes query 'query' on database m_database,
        and sets this filter to contain the results. */
    void executeQuery(Query& query);
-   /** Set the state for leaf 'leaf' in m_triStateTree and return the state of the tree. */
-   TriStateTree::State setState(int leaf, TriStateTree::State state);
-   /** Set the state for leaf 'leaf' in m_triStateTree and return the state of the tree. */
-   TriStateTree::State setState(int leaf, bool state);
-   /** @return the state of the @p m_triStateTree . */
-   TriStateTree::State state() const;
-   /** @return the state of leaf 'leaf' in @p m_triStateTree . */
-   TriStateTree::State state(int leaf) const;
+   
+   /** Returns the number of games searched during the previous search */
+   const int gamesSearched();
+   /** Returns the time taken for the previous search in milliseconds  */
+   const int searchTime();
 
 protected:
   /** returns the filter as a implicitely shared QBitArray. */
@@ -105,6 +102,10 @@ protected:
   QPair<int, int> m_cache;
   Database* m_database;
   TriStateTree m_triStateTree; 
+
+  /* Search statistics variables */
+  int m_gamesSearched;
+  int m_searchTime;
 
 };
 

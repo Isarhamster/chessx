@@ -18,8 +18,11 @@
  ***************************************************************************/
 
 #include "search.h"
+#include "database.h"
+#include "filter.h"
+#include <QtDebug>
 
-/** The Search Abstract base clase
+/* Search abstract base clase
  * ********************************/
 Search::Search()
 {
@@ -27,8 +30,12 @@ Search::Search()
 Search::~Search()
 {
 }
+void Search::setDatabase(Database* database)
+{
+   m_database = database;
+}
 
-/** The NullSearch Class
+/* NullSearch Class
  * *********************/
 NullSearch::NullSearch()
 {
@@ -44,43 +51,59 @@ Search::Type NullSearch::type() const
 {
    return Search::NullSearch;
 }
+bool NullSearch::matches(int )
+{
+   return false;
+}
 
-/** The Position Search Class
+/* PositionSearch Class
  * ******************************/
 PositionSearch::PositionSearch()
 {
 }
-
-PositionSearch::PositionSearch(const Board& position)
+PositionSearch::PositionSearch(Database* db, const Board& position)
 {
    setPosition(position);
+   m_database = db;
 }
-
 PositionSearch* PositionSearch::clone() const
 {
   return new PositionSearch(*this);
 }
-
 PositionSearch::~PositionSearch()
 {
 }
-
 Search::Type PositionSearch::type() const
 {
    return Search::PositionSearch;
 }
-
 Board PositionSearch::position() const
 {
    return m_position;
 }
-
 void PositionSearch::setPosition(const Board& position)
 {
    m_position.fromFEN(position.toFEN());
 }
+bool PositionSearch::matches(int index)
+{
+   m_database->loadGame(index, m_game);
+   m_game.moveToStart();
+   while (!m_game.atEnd()) {
+      if (m_game.board() == m_position) {
+         return true;
+      }
+      m_game.forward();
+   }
+   // Check the end position
+   if (m_game.board() == m_position) {
+      return true;
+   }
 
-/** The EloSearch class
+   return false;
+}
+
+/* EloSearch class
  * **********************/
 EloSearch::EloSearch(int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlacElo)
 {
@@ -120,18 +143,20 @@ int EloSearch::minBlackElo() const
 {
    return m_minBlackElo;
 }
-bool EloSearch::withinEloRange(int whiteElo, int blackElo) const
+bool EloSearch::matches(int index)
 {
+   m_database->loadGameHeaders(index, m_game);
+   int whiteElo = m_game.tag("WhiteElo").toInt(); 
+   int blackElo = m_game.tag("BlackElo").toInt();
 	return whiteElo >= m_minWhiteElo && whiteElo <= m_maxWhiteElo && blackElo >= m_minBlackElo && blackElo <= m_maxBlackElo;
 }
 
-/** The DateSearch class
+/* DateSearch class
  * **********************/
 DateSearch::DateSearch()
 {
 	m_minDate = m_maxDate = PartialDate();
 }
-
 DateSearch::DateSearch(PartialDate minDate, PartialDate maxDate)
 {
 	Q_ASSERT(minDate < maxDate);
@@ -139,80 +164,118 @@ DateSearch::DateSearch(PartialDate minDate, PartialDate maxDate)
 	m_minDate = minDate;
 	m_maxDate = maxDate;
 }
-
 DateSearch* DateSearch::clone() const
 {
 	return new DateSearch(*this);
 }
-
 DateSearch::~DateSearch()
 {
 }
-
 Search::Type DateSearch::type() const
 {
 	return Search::DateSearch;
 }
-
 PartialDate DateSearch::minDate() const
 {
 	return m_minDate;
 }
-
 PartialDate DateSearch::maxDate() const
 {
 	return m_maxDate;
 }
-
-bool DateSearch::withinDateRange(PartialDate date) const
-{
-	return (date >= m_minDate && date <= m_maxDate);
-}
-
 void DateSearch::setDateRange(PartialDate minDate, PartialDate maxDate)
 {
 	Q_ASSERT(minDate < maxDate);
 	m_minDate = minDate;
 	m_maxDate = maxDate;
 }
-
-TagSearch::TagSearch(const QString& tag, const QString& value)
+bool DateSearch::matches(int index)
 {
-  m_tag = tag;
-  m_value = value;
+   m_database->loadGameHeaders(index, m_game);
+   PartialDate date(m_game.tag("Date"));
+
+	return (date >= m_minDate && date <= m_maxDate);
 }
 
+/* TagSearch class
+ * ***************/
+TagSearch::TagSearch(Database* database, const QString& tag, const QString& value)
+{
+  m_database = database;
+  m_tag = tag;
+  m_value = value;
+  //initialize();
+}
+void TagSearch::initialize()
+{
+   //m_matches = new QBitArray;
+}
 TagSearch* TagSearch::clone() const
 {
 	return new TagSearch(*this);
 }
-
 TagSearch::~TagSearch()
 {
+   //delete m_matches;
 }
-
 Search::Type TagSearch::type() const
 {
 	return Search::TagSearch;
 }
-		
 QString TagSearch::tag() const
 {
 	return m_tag;
 }
-
 QString TagSearch::value() const
 {
 	return m_value;
 }
-
 void TagSearch::setTag(const QString& tag)
 {
 	m_tag = tag;
 }
-
 void TagSearch::setValue(const QString& value)
 {
 	m_value = value;
 }
+bool TagSearch::matches(int index)
+{
+   m_database->loadGameHeaders(index, m_game);
+   return m_game.tag(m_tag).contains(m_value);
+}
 
+/* FilterSearch class
+ * **********************/
+FilterSearch::FilterSearch() : m_filter(0)
+{
+}
+FilterSearch::FilterSearch(Filter* filter) : m_filter(filter)
+{
+}
+FilterSearch* FilterSearch::clone() const
+{
+	return new FilterSearch(*this);
+}
+FilterSearch::~FilterSearch()
+{
+}
+Search::Type FilterSearch::type() const
+{
+   return Search::FilterSearch;
+}
+bool FilterSearch::contains(int game) const
+{
+   return m_filter->contains(game);
+}
+Filter* FilterSearch::filter() const
+{
+   return m_filter;
+}
+void FilterSearch::setFilter(Filter* filter)
+{
+   m_filter = filter;
+} 
+bool FilterSearch::matches(int index)
+{
+   return m_filter->contains(index);
+}
