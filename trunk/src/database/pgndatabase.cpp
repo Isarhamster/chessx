@@ -347,6 +347,10 @@ void PgnDatabase::readLine()
 	m_filePos += m_currentLineSize;
 	m_currentLineSize = m_file->readLine(m_charLine, MaxLineLength);
 	m_currentLine = QString(m_charLine).trimmed();
+   m_currentLine.replace ("("," ( ");
+   m_currentLine.replace (")"," ) ");
+   m_currentLine.replace ("{"," { ");
+   m_currentLine.replace ("}"," } ");
 }
 
 void PgnDatabase::seekGame(int index)
