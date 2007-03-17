@@ -28,7 +28,6 @@ HEADERS += board.h \
            output.h \
            outputoptions.h \
            databaseinfo.h \
-           filtersearch.h \
            indexitem.h \
            index.h \
            filtermodel.h
@@ -60,7 +59,6 @@ SOURCES += board.cpp \
            output.cpp \
            outputoptions.cpp \
            databaseinfo.cpp \
-           filtersearch.cpp \
            indexitem.cpp \
            index.cpp \
            filtermodel.cpp
