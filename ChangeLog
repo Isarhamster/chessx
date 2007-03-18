@@ -1,8 +1,10 @@
+	* feature: display ECO information
 	* feature: move pieces by drag&drop
 	* feature: remove moves/variations
 	* feature: display side to move
 	* bugfix: fix incorrect SAN representation of en-passant moves
 	* bugfix: correctly calculate game length displayed in GameInfo
+	* bugfix: display empty game
 
 Thu 28 Feb 2007 00:59:47 CET	Version 0.2.0
 
