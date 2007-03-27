@@ -137,6 +137,7 @@ class Output
       QMap <MarkupType,QString> m_startTagMap;
       /** Map containing the end markup tag for each markup type */
       QMap <MarkupType,QString> m_endTagMap;
+      QMap <MarkupType,bool> m_expandable;
 
       /* Writing Methods */
       /** Writes a single move including nag and annotation */
