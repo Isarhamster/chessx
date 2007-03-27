@@ -181,9 +181,17 @@ void Output::writeMove(int variation)
          // ** If it is white to move, start a new row
          m_output += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
          if (m_currentVariationLevel > 0) {
-            m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
+            if (m_expandable[MarkupVariationMove]) {
+               m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
+            } else {
+               m_output += m_startTagMap[MarkupVariationMove];
+            }
          } else {
-            m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
+            if (m_expandable[MarkupMainLineMove]) {
+               m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
+            } else {
+               m_output += m_startTagMap[MarkupMainLineMove];
+            }
          }
          m_output += QString::number(m_game->moveNumber()) + ".";
       } else if (m_dirtyBlack) {
@@ -193,25 +201,49 @@ void Output::writeMove(int variation)
          m_output += QString::number(m_game->moveNumber()) + ". ...";
          m_output += m_startTagMap[MarkupColumnStyleMove];
          if (m_currentVariationLevel > 0) {
-            m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
+            if (m_expandable[MarkupVariationMove]) {
+               m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
+            } else {
+               m_output += m_startTagMap[MarkupVariationMove];
+            }
          } else {
-            m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
+            if (m_expandable[MarkupMainLineMove]) {
+               m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
+            } else {
+               m_output += m_startTagMap[MarkupMainLineMove];
+            }
          }
       } else {
          // ** If it is black to move and we don't need the ... 
          m_output += m_startTagMap[MarkupColumnStyleMove];
          if (m_currentVariationLevel > 0) {
-            m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
+            if (m_expandable[MarkupVariationMove]) {
+               m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
+            } else {
+               m_output += m_startTagMap[MarkupVariationMove];
+            }
          } else {
-            m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
+            if (m_expandable[MarkupMainLineMove]) {
+               m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
+            } else {
+               m_output += m_startTagMap[MarkupMainLineMove];
+            }
          }
       }  
    } else {
       // *** Markup for the move
       if (m_currentVariationLevel > 0) {
-         m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
+         if (m_expandable[MarkupVariationMove]) {
+            m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
+         } else {
+            m_output += m_startTagMap[MarkupVariationMove];
+         }
       } else {
-         m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
+         if (m_expandable[MarkupMainLineMove]) {
+            m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
+         } else {
+            m_output += m_startTagMap[MarkupMainLineMove];
+         }
       }
       // *** Write the move number
       if (m_game->board().toMove() == White) {
@@ -242,13 +274,25 @@ void Output::writeMove(int variation)
       if ((m_options.getOptionAsString("CommentIndent") == "Always") 
             || ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline")
                && (m_currentVariationLevel == 0))) {
-         m_output += m_startTagMap[MarkupAnnotationIndent].arg(mvno) +
-                     m_game->annotation(variation) +
-                     m_endTagMap[MarkupAnnotationIndent];
+         if (m_expandable[MarkupAnnotationIndent]) {
+            m_output += m_startTagMap[MarkupAnnotationIndent].arg(mvno) +
+                        m_game->annotation(variation) +
+                        m_endTagMap[MarkupAnnotationIndent];
+         } else {
+            m_output += m_startTagMap[MarkupAnnotationIndent] +
+                        m_game->annotation(variation) +
+                        m_endTagMap[MarkupAnnotationIndent];
+         }
       } else {
-         m_output += " " + m_startTagMap[MarkupAnnotationInline].arg(mvno) +
-                     m_game->annotation(variation) +
-                     m_endTagMap[MarkupAnnotationInline];
+         if (m_expandable[MarkupAnnotationInline]) {
+            m_output += " " + m_startTagMap[MarkupAnnotationInline].arg(mvno) +
+                        m_game->annotation(variation) +
+                        m_endTagMap[MarkupAnnotationInline];
+         } else {
+            m_output += " " + m_startTagMap[MarkupAnnotationInline] +
+                        m_game->annotation(variation) +
+                        m_endTagMap[MarkupAnnotationInline];
+         }
       }
       if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
          m_output += m_startTagMap[MarkupColumnStyleMainline];
@@ -444,6 +488,12 @@ void Output::setMarkupTag (MarkupType type, const QString& startTag, const QStri
 {
    m_startTagMap[type] = startTag;
    m_endTagMap[type] = endTag;
+   if (startTag.contains("%1")) {
+      m_expandable[type] = true;
+   } else {
+      m_expandable[type] = false;
+   }
+
 }
 void Output::markupTag (MarkupType type , QString& startTag, QString& endTag)
 {
