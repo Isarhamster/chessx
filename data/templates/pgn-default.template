@@ -2,17 +2,17 @@
 [OUTPUTHEADER]
 [OUTPUTFOOTER]
 [MARKUPTAGS]
-MarkupHeaderBlock=,
+MarkupHeaderBlock=,\n
 MarkupNotationBlock=, 
 MarkupResult=,
 MarkupMainLineMove=,
 MarkupVariationMove=,
 MarkupMainLine=,
 MarkupVariationInline=,
-MarkupVariationIndent=\n   ,\n
+MarkupVariationIndent=,
 MarkupNag=,
 MarkupAnnotationInline={,}
-MarkupAnnotationIndent=\n   {,}\n
+MarkupAnnotationIndent={,}
 MarkupHeaderLine=[,]\n
 MarkupHeaderTagName=,
 MarkupHeaderTagValue=","
