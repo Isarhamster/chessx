@@ -19,6 +19,7 @@ HEADERS += board.h \
            query.h \
            database.h \
            pgndatabase.h \
+           memorydatabase.h \
            filter.h \
            tristatetree.h \
            nag.h \
@@ -50,6 +51,7 @@ SOURCES += board.cpp \
            query.cpp \
            database.cpp \
            pgndatabase.cpp \
+           memorydatabase.cpp \
            filter.cpp \
            tristatetree.cpp \
            nag.cpp \
