@@ -19,15 +19,14 @@
 #define __DATABASE_H__
 
 #include <QString>
+#include <QTextStream>
 
 #include "filter.h" 
 #include "game.h"
 #include "search.h"
 #include "query.h"
 #include "index.h"
-
-class Filter;
-
+#include "output.h"
 
 /** @defgroup Database */
 
@@ -56,6 +55,8 @@ class Database
       virtual QString filename() const = 0;
       /** Closes the database */
       virtual void close() = 0;
+      /** Returns whether the database is read-only or not */
+      virtual bool isReadOnly() = 0;
 
       //game retrieval & storage
       /** Loads a game from the given position, returns true if successful */
@@ -63,7 +64,7 @@ class Database
       /** Loads only the header information into a game from the given position, returns true if successful */
       virtual bool loadGameHeaders(int index, Game& game);
       /** Saves a game at the given position, returns true if successful */
-      virtual bool save(int , Game&) { return false; }
+      virtual bool replace(int , Game&) { return false; }
       /** Adds a game to the database */
       virtual bool add(Game& ) { return false; }
       /** Removes a game from the database */
@@ -75,6 +76,11 @@ class Database
 
       /** Returns the number of games in the database */
       virtual int count() { return m_count; }
+
+      /** Writes a single game at index to a text stream in PGN format */
+      void saveToPGN(int index, Output& output, QTextStream& out);
+      /** Exports the whole database to file filename in PGN format */
+      void exportToPGN(QString filename);
 
    protected:
       Index m_index;
