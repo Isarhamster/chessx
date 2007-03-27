@@ -14,21 +14,28 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QFile>
 #include "databaseinfo.h"
 #include "filter.h"
 #include "game.h"
 #include "pgndatabase.h"
+#include "memorydatabase.h"
 
 DatabaseInfo::DatabaseInfo(const QString& fname)
 {
   if (fname.isNull())
   {
-    m_database = new PgnDatabase(); //Workaround for missing Clipboard database
+    m_database = new MemoryDatabase();
     m_database->open(QString());
   }
   else
   {
-    m_database = new PgnDatabase();
+    QFile file(fname);
+    if (file.size() < 4000000) {
+       m_database = new MemoryDatabase();
+    } else {
+       m_database = new PgnDatabase();
+    }
     m_database->open(fname);
   }
   m_game = new Game;
