@@ -20,13 +20,8 @@
 #ifndef __PGNDATABASE_H__
 #define __PGNDATABASE_H__
  
-#include <QBitArray>
 #include <QFile>
-#include <QMap>
-#include <QPair>
 #include <QTextStream>
-#include <QCache>
-#include <QVector>
 
 #include "database.h"
 
@@ -51,49 +46,14 @@ class PgnDatabase : public Database
 		virtual QString filename() const;
 		/** Closes the database */
 		virtual void close();		
+      /** Returns whether the database is read-only or not */
+      virtual bool isReadOnly() { return true; }
 		
 		//game retrieval & storage
 		/** Loads a game from the given position, returns true if successful */
 		bool loadGame(int index, Game& game);
-		/** Saves a game at the given position, returns true if successful */
-		bool save(int index, Game& game);
-		/** Adds a game to the database */
-		bool add(Game& game);
-		/** Removes a game from the database */
-		bool remove(int index);
-		/** Removes multiple games from the database as specified by the filter */
-		bool remove(const Filter& filter);
-		
-	private:
-		/** Resets/initialises important member variables. Called by constructor and close methods */
-		void initialise(); 
-		
-		//offset methods
-		/** Returns the file offset for the given game */
-		qint64 offset(int index);
-		/** Adds the current file position as a new offset */
-		void addOffset();
-		/** Adds a new file offset */
-		void addOffset(qint64 offset);
-		/** Changes the file offset for the given game to the current file position*/ 
-		void setOffset(int index);
-		/** Changes the file offset for the given game to the supplied position */
-		void setOffset(int index, qint64 offset);
-		/** Removes a file offset */
-		void removeOffset(int index);
-		
-		//file methods
-		/** Backs up the old pgn file and creates a new one */		
-		void startCopy();
-		/** Copies games from the old file to the new */
-		void copyRange(int startIndex, int endIndex, int newIndex, qint64 offset);
-		/** Removes the backup if file operations were sucessful */
-		bool finishCopy();
-		/** Reads the next line of text from the PGN file */
-		void readLine();
-		/** Moves the file position to the start of the given game */
-		void seekGame(int index);
-		
+
+   protected:
 		//parsing methods
 		/** Reads moves from the file and adds them to the game. Performs position searches if any are active */
 		void parseMoves(Game* game);
@@ -112,18 +72,32 @@ class PgnDatabase : public Database
       /** Parses the tags, and adds the supported types to the index 'm_index' */
       void parseTagsIntoIndex();
 
-		//output methods
-		/** Writes out the tags from the given game to the file */
-		void writeTags(const Game& game);
-		/** Writes out the move data from the given game to the file */
-		void writeMoves(Game& game);
-		/** Writes out current variation from the given game to the file */
-		void writeVariation(Game& game);
+      virtual bool parseFile();
+      bool openFile(const QString& filename);
+		/** Adds the current file position as a new offset */
+		void addOffset();
+		/** Adds a new file offset */
+		void addOffset(qint32 offset);
 		
-		//file variables
-		bool m_isOpen;
-		QString m_filename;
 		QFile* m_file;
+		bool m_isOpen;
+	private:
+		/** Resets/initialises important member variables. Called by constructor and close methods */
+		void initialise(); 
+		
+		//offset methods
+		/** Returns the file offset for the given game */
+		qint32 offset(int index);
+		
+		//file methods
+		/** Reads the next line of text from the PGN file */
+		void readLine();
+		/** Moves the file position to the start of the given game */
+		void seekGame(int index);
+		
+
+		//file variables
+		QString m_filename;
 		QFile* m_newFile;
 		QTextStream* m_newStream;
 		QString m_gameText;
@@ -140,12 +114,12 @@ class PgnDatabase : public Database
 		int m_variation;
 		
 		//game index
-		qint64 m_filePos;
-		qint64 m_currentLineSize;
+		qint32 m_filePos;
+		qint32 m_currentLineSize;
 
 		static const int AllocationSize = 512;
 		int m_allocated;
-		qint64* m_gameOffsets;
+		qint32* m_gameOffsets;
 		
 		
 };

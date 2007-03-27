@@ -44,10 +44,29 @@ bool PgnDatabase::open(const QString& filename)
 	if(m_isOpen) {
 		return false;
 	}
-   m_index.setCacheEnabled(true);
-	
 	m_filename = filename;
+   if (openFile(filename) && parseFile()) {
+      m_isOpen = true;
+      return true;
+   }
+   return false;
+}
 
+bool PgnDatabase::parseFile()
+{
+   m_index.setCacheEnabled(true);
+	//indexing game positions in the file, game contents are ignored
+	while(!m_file->atEnd()) {		
+		readJunk();
+		addOffset();
+		parseTagsIntoIndex(); // This will parse the tags into memory
+		readMoves();
+	}
+   m_index.setCacheEnabled(false);
+   return true;
+}
+bool PgnDatabase::openFile(const QString& filename)
+{
 	//open file
 	m_filePos = 0;
 	m_currentLineSize = 0;
@@ -57,18 +76,7 @@ bool PgnDatabase::open(const QString& filename)
 	   return false;
 	}
 	m_file->open(QIODevice::ReadOnly);
-
-	//indexing game positions in the file, game contents are ignored
-	while(!m_file->atEnd()) {		
-		readJunk();
-		addOffset();
-		parseTagsIntoIndex(); // This will parse the tags into memory
-		readMoves();
-	}
-	
-   m_index.setCacheEnabled(false);
-	m_isOpen = true;
-	return true;
+   return true;
 }
 
 QString PgnDatabase::filename() const
@@ -113,97 +121,6 @@ bool PgnDatabase::loadGame(int index, Game& game)
 	return m_variation != -1;
 }
 
-bool PgnDatabase::save(int index, Game& game)
-{
-	if(!m_isOpen || index >= m_count) {
-		return false;
-	}
-	
-	startCopy();
-	if(index) {
-		copyRange(0, index - 1, 0, 0);
-	}
-	
-	writeTags(game);
-	writeMoves(game);
-	*m_newStream << flush;
-	
-	if(index < m_count - 1) {
-		copyRange(index + 1, m_count - 1, index + 1, m_newFile->pos());
-	}
-	return finishCopy();
-}
-
-bool PgnDatabase::add(Game& game)
-{
-	if(!m_isOpen) {
-		return false;
-	}
-	
-	//set the offset and then save as normal
-	addOffset(m_file->size());
-	
-	if(save(m_count - 1, game)) {
-		return true;
-	} else {
-		removeOffset(m_count--);
-		return false;
-	}
-}
-
-bool PgnDatabase::remove(int index)
-{
-	if(!m_isOpen || index >= m_count) {
-		return false;
-	}
-	
-	startCopy();
-	if(index) {
-		copyRange(0, index - 1, 0, 0);
-	}
-	if(index < m_count - 1) {
-		copyRange(index + 1, m_count - 1, index, offset(index));
-	}
-	finishCopy();
-	m_count--;
-	
-	return true;
-}
-
-bool PgnDatabase::remove(const Filter& filter)
-{
-  if(!m_isOpen || filter.size() != m_count) {
-    return false;
-  }
-
-  startCopy();
-
-  int startIndex = 0;
-  int newIndex = 0;
-  int rangeSize;
-  int newOffset = 0;
-  for(int index = 0; index < filter.count(); index++)
-    if (filter.contains(index))
-    {
-      if(startIndex < index) {
-        rangeSize = offset(index) - offset(startIndex);
-        copyRange(startIndex, index - 1, newIndex, newOffset);
-        newIndex += index - startIndex;
-        newOffset = + rangeSize;
-      }
-      startIndex = index + 1;
-    }
-
-  if(startIndex < m_count) {
-    copyRange(startIndex, m_count - 1, newIndex, newOffset);
-  }
-
-  finishCopy();
-  m_count -= filter.count();
-
-  return true;
-}
-
 void PgnDatabase::initialise()
 {
 	m_isOpen = false;
@@ -215,7 +132,7 @@ void PgnDatabase::initialise()
    m_allocated = 0;
 }
 
-qint64 PgnDatabase::offset(int index)
+qint32 PgnDatabase::offset(int index)
 {
 	return m_gameOffsets[index];
 }
@@ -225,121 +142,17 @@ void PgnDatabase::addOffset()
 	addOffset(m_filePos);
 }
 
-void PgnDatabase::addOffset(qint64 offset)
+void PgnDatabase::addOffset(qint32 offset)
 {
 	if(m_count == m_allocated) {
 		//out of space reallocate memory
-		qint64* newAllocation = new qint64[m_allocated += AllocationSize];
-		memcpy(newAllocation, m_gameOffsets, sizeof(qint64) * m_count);
+		qint32* newAllocation = new qint32[m_allocated += AllocationSize];
+		memcpy(newAllocation, m_gameOffsets, sizeof(qint32) * m_count);
 		delete m_gameOffsets;
 		m_gameOffsets = newAllocation;
 	}
 	
 	m_gameOffsets[m_count++] = offset;
-}
-
-void PgnDatabase::setOffset(int index)
-{
-	setOffset(index, m_filePos);
-}
-
-void PgnDatabase::setOffset(int index, qint64 offset)
-{
-	m_gameOffsets[index] = offset;
-}
-
-void PgnDatabase::removeOffset(int index)
-{
-	if(index < m_count - 1) {
-		memmove(m_gameOffsets + index, m_gameOffsets + index + 1, m_count - (index + 1));
-	}
-	
-	m_count--;
-		
-	if(m_count < m_allocated - (AllocationSize * 2)) {
-		//using too much space release memory
-		qint64* newAllocation = new qint64[m_allocated -= AllocationSize * 2];
-		memcpy(newAllocation, m_gameOffsets, sizeof(qint64) * m_count);
-		delete m_gameOffsets;
-		m_gameOffsets = newAllocation;
-	}
-}
-
-void PgnDatabase::startCopy()
-{
-	Q_ASSERT(!m_newFile && !m_newStream);
-	
-	//rename the file as a back up
-	QDir dir;
-	dir.rename(m_filename, m_filename + "~");
-	
-	//open new file and initialise stream
-	m_newFile = new QFile(m_filename);
-	m_newFile->open(QIODevice::ReadWrite);
-	m_newStream = new QTextStream(m_newFile);
-}
-
-void PgnDatabase::copyRange(int startIndex, int endIndex, int newIndex, qint64 newOffset)
-{
-	Q_ASSERT(m_newFile && m_newStream);
-
-	// copy specified games to new file
-	qint64 endOffset;
-	if(endIndex < m_count - 1) {
-		endOffset = offset(endIndex + 1) - 1;
-	} else {
-		endOffset = m_file->size() - 1;
-	}
-	
-	seekGame(startIndex);
-	do {
-		*m_newStream << m_charLine;
-		readLine();
-	} while(m_filePos < endOffset || m_filePos < 0);
-	*m_newStream << m_charLine;
-	
-	// update offsets to match positions in the new file
-	qint64 diff = offset(startIndex) - newOffset;
-	
-	if(newIndex < startIndex) {
-		for(int index = 0; index <= (endIndex - startIndex); index++) {
-			setOffset(newIndex + index, offset(startIndex + index) - diff);
-		}
-	} else {
-		for(int index = (endIndex - startIndex); index >= 0; index--) {
-			setOffset(newIndex + index, offset(startIndex + index) - diff);
-		}
-	}
-}
-
-bool PgnDatabase::finishCopy()
-{
-	Q_ASSERT(m_newFile && m_newStream);
-	
-	//flush buffer
-	*m_newStream << flush;
-	delete m_newStream;
-	
-	//if successful remove backup, otherwise restore it
-	bool successful = m_newFile->error() == QFile::NoError;
-	QDir dir;
-	
-	if(successful) {
-		m_file->close();
-		delete m_file;
-		m_file = m_newFile;
-		dir.remove(m_filename + "~");
-	} else {
-		m_newFile->close();
-		delete m_newFile;
-		dir.remove(m_filename);
-		dir.rename(m_filename + "~", m_filename);
-	}
-	
-	m_newFile = 0;
-	m_newStream = 0;
-	
-	return successful;
 }
 
 void PgnDatabase::readLine()
@@ -589,125 +402,6 @@ void PgnDatabase::readMoves()
 	//swallow trailing whitespace
 	while(m_currentLine == "" && !m_file->atEnd()) {
 		readLine();
-	}
-}
-
-void PgnDatabase::writeTags(const Game& game)
-{
-	*m_newStream << "[Event \"" + game.tag("Event") + "\"]" << endl;
-	*m_newStream << "[Site \"" + game.tag("Site") + "\"]" << endl;
-	*m_newStream << "[Date \"" + game.tag("Date") + "\"]" << endl;
-	*m_newStream << "[Round \"" + game.tag("Round") + "\"]" << endl;
-	*m_newStream << "[White \"" + game.tag("White") + "\"]" << endl;
-	*m_newStream << "[Black \"" + game.tag("Black") + "\"]" << endl;
-	*m_newStream << "[Result \"" + resultString(game.result()) + "\"]" << endl;
-	
-	//add FEN string if non-standard start position
-	Board standardPosition;
-	standardPosition.setStandardPosition();
-	if(game.startBoard() != standardPosition) {
-		*m_newStream << "[FEN \"" + game.startBoard().toFEN() + "\"]" << endl;
- 	}
-
-	*m_newStream << endl;
-}
-
-void PgnDatabase::writeMoves(Game& game)
-{
-	//write move text to one long string
-	game.moveToStart();
-	m_gameText = "";
-	writeVariation(game);
-	m_gameText += resultString(game.result());
-	
-	//break text into 80 char lines and write
-	int length = m_gameText.length();
-	int start = 0;
-	int end;
-	
-	while(start < length) {
-		end = m_gameText.lastIndexOf(' ', start + 80);
-		if(end == -1) {
-			end = m_gameText.length();
-		}
-		*m_newStream << m_gameText.mid(start, end - start ) << endl;
-		start = end + 1;
-	}
-	
-	*m_newStream << endl;
-}
-
-void PgnDatabase::writeVariation(Game& game)
-{
-	bool commentEnded = true;
-	bool variationEnded = false;
-	while(!game.atEnd()) {		
-		
-		//add move no
-		if(!(game.ply() % 2)) {
-			m_gameText += QString::number(game.ply() / 2 + 1) + ".";
-		} else if(commentEnded || variationEnded) {
-			m_gameText += QString::number(game.ply() / 2 + 1) + "...";
-		}
-		
-		//add move		
-		m_gameText += game.board().moveToSAN(game.move()) + " ";
-			
-		//add nags and annotation
-		if(game.nags().count() > 0) {
-			m_gameText += "$" + game.nags().toPGNString() + " ";
-		}
-		
-		if(game.annotation() != QString::null) {
-			m_gameText += "{" + game.annotation() + "} ";
-			commentEnded = true;
-		} else {
-			commentEnded = false;
-		}
-		
-		variationEnded = false;
-		
-		//add any variations
-		int variationCount = game.variationCount();
-		if(variationCount > 1) {
-			for(int variation = 1; variation < variationCount; variation++) {
-				
-				m_gameText += "( ";
-				
-				//add move no
-				if(!(game.ply() % 2)) {
-					m_gameText += QString::number(game.ply() / 2 + 1) + ".";
-				} else {
-					m_gameText += QString::number(game.ply() / 2 + 1) + "...";
-				}
-				
-				//add move
-				m_gameText += game.board().moveToSAN(game.move(variation)) + " ";
-				
-				//add nags and annotation
-				if(game.nags(variation).count()) {
-					m_gameText += "$" + game.nags(variation).toPGNString() + " ";
-				}
-				
-				if(game.annotation(variation) != QString::null) {
-					m_gameText += "{" + game.annotation(variation) + "} ";
-					commentEnded = true;
-				} else {
-					commentEnded = false;
-				}
-				
-				game.enterVariation(variation);
-				writeVariation(game);
-				game.exitVariation();
-				
-				m_gameText += ") ";
-			}
-			
-			variationEnded = true;
-		}
-		
-		//export next move
-		game.forward();
 	}
 }
 
