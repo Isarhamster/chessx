@@ -180,8 +180,12 @@ public:
   //game modification methods
   /** Removes all tags and moves */
   void clear();
+  /** Removes all tags */
+  void clearTags();
   /** @return value of the given tag */
   QString tag(const QString& tag) const;
+  /** @return a map of all tags in the game */
+  QMap<QString,QString> tags() const;
   /** Sets the value of the given tag */
   void setTag(const QString& tag, const QString& value);
   /** Removes a tag */

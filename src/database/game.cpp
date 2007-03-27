@@ -730,10 +730,19 @@ void Game::clear()
 	m_tags.clear();
 	m_history.clear();
 }
+void Game::clearTags()
+{
+	m_tags.clear();
+	m_history.clear();
+}
 
 QString Game::tag(const QString& tag) const
 {
 	return m_tags[tag];
+}
+QMap<QString,QString> Game::tags() const
+{
+   return m_tags;
 }
 
 void Game::setTag(const QString& tag, const QString& value)
