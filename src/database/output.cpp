@@ -2,6 +2,7 @@
 #include "qregexp.h"
 #include <QFile>
 #include <QTextStream>
+#include <QtDebug>
 #include "settings.h"
 
 QMap <Output::OutputType,QString> Output::m_outputMap;
@@ -9,19 +10,13 @@ QMap <Output::OutputType,QString> Output::m_outputMap;
 Output::Output(OutputType output, const QString& pathToTemplateFile)
 {
    m_outputType = output;
-   m_whiteColumnSpace = " ";
-   m_blackColumnSpace = " ";
    setTemplateFile(pathToTemplateFile);
    initialize();
 }
 
 void Output::initialize()
 {
-   m_variationIndentStr = "";
    if (m_outputType == Pgn) {
-      for (int i = 0;i < m_options.getOptionAsInt("VariationIndentSize");i++) {
-         m_variationIndentStr += " ";
-      }
       m_newlineChar = "\n";
    } else if (m_outputType == Html) {
       m_newlineChar = "<br>\n";
@@ -30,11 +25,10 @@ void Output::initialize()
    } else if (m_outputType == NotationWidget) {
       m_newlineChar = "<br>\n";
    }
-   ReadTemplateFile(m_templateFilename);
-   // qDebug ("tempfilename - %s",m_templateFilename.latin1());
+   readTemplateFile(m_templateFilename);
 }
 
-void Output::ReadTemplateFile(QString path)
+void Output::readTemplateFile(QString path)
 {
    QFile file( path);
    QStringList optionDefFields;
@@ -153,9 +147,6 @@ void Output::ReadTemplateFile(QString path)
             default :
                qWarning ("Unknown Section in Template File %s line %d : %s", path.toLatin1().constData(), i, line.toLatin1().constData());
          }
-         //setWriteStatus(line);
-         ////setWritingColor();
-         //m_pgnText += line ;
       }
       file.close();
    }
@@ -264,7 +255,11 @@ void Output::writeMove(int variation)
    }
    // *** Write the nags if there are any
    if(m_game->nags(variation).count() > 0) {
-      m_output += m_startTagMap[MarkupNag] + m_game->nags(variation).toString() + m_endTagMap[MarkupNag];
+      if (m_options.getOptionAsBool("SymbolicNag")) {
+         m_output += m_startTagMap[MarkupNag] + m_game->nags(variation).toString() + m_endTagMap[MarkupNag];
+      } else {
+         m_output += m_startTagMap[MarkupNag] + m_game->nags(variation).toPGNString() + m_endTagMap[MarkupNag];
+      }
    }
    // *** Write the annotations if any
    if (m_game->annotation(variation) != QString::null) {
@@ -301,23 +296,9 @@ void Output::writeMove(int variation)
    }
    m_output += " ";
 }
-void Output::writeNewlineIndent()
-{
-   int indentLevel;
-   if (m_currentVariationLevel > m_options.getOptionAsInt("VariationIndentLevel")) {
-      indentLevel = m_options.getOptionAsInt("VariationIndentLevel");
-   } else {
-      indentLevel = m_currentVariationLevel;
-   }
-   if (m_options.getOptionAsInt("VariationIndentLevel") >= 0) {
-      m_output += m_newlineChar;
-      for (int i = 0;i < indentLevel;++i) {
-         m_output += m_variationIndentStr;
-      }
-   }
-}
 void Output::writeVariation()
 {
+   QString variation("");
 	while(!m_game->atEnd()) {		
       // *** Writes move in the current variation
       writeMove();
@@ -394,7 +375,6 @@ void Output::writeTag(QString tagName)
                m_endTagMap[MarkupHeaderTagValue] +
                m_endTagMap[specialTag] +
                m_endTagMap[MarkupHeaderLine];
-   //writeNewlineIndent(); //fine
 
 }
 
@@ -415,7 +395,7 @@ QString Output::output(Game* game)
    writeTag("Black");
    writeTag("Result");
    m_output += m_endTagMap[MarkupHeaderBlock];
-   //writeNewlineIndent(); //fine 
+
    m_game->moveToStart();
    m_dirtyBlack = m_game->board().toMove() == Black;
    m_output += m_startTagMap[MarkupNotationBlock];
@@ -439,7 +419,56 @@ QString Output::output(Game* game)
    }
 
    m_game->moveToId(id);
+
+   // Chop it up, if TextWidth option is not equal to 0
+   int textWidth = m_options.getOptionAsInt("TextWidth");
+   if (textWidth) {
+      int start = m_output.indexOf("1.");
+      int length = m_output.length()-start;
+      while (length > textWidth) {
+         start = m_output.lastIndexOf(" ",start + textWidth);
+         m_output.replace(start,1,'\n');
+         length = m_output.length()-start;
+      }
+   } 
+
    return m_output;
+}
+void Output::output(QTextStream& out, Filter& filter)
+{
+   Game game;
+   for (int i = 0; i < filter.count(); ++i) {
+      filter.database()->loadGame(filter.indexToGame(i),game);
+      out << output(&game);
+      out << "\n";
+   }
+}
+void Output::output(QTextStream& out, Database* database)
+{
+   Game game;
+   for (int i = 0; i < database->count(); ++i) {
+      database->loadGame(i,game);
+      out << output(&game);
+      out << "\n";
+   }
+}
+void Output::output(QString& filename, Filter& filter)
+{
+   QFile f(filename);
+   if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
+      return;
+   QTextStream out(&f);
+   output (out, filter);
+   f.close();
+}
+void Output::output(QString& filename, Database* database)
+{
+   QFile f(filename);
+   if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
+      return;
+   QTextStream out(&f);
+   output (out, database);
+   f.close();
 }
 void Output::setTemplateFile(const QString& filename)
 {
