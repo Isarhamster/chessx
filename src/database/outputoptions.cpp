@@ -28,7 +28,8 @@ bool OutputOptions::createDefaultOptions ()
    m_default.clear();
    m_allow.clear();
    createOption("ColumnStyle",Boolean,"","false","");
-   createOption("TextWidth",Integer,"1:200","80","");
+   createOption("SymbolicNag",Boolean,"","false","");
+   createOption("TextWidth",Integer,"0:200","80","");
    createOption("VariationIndentLevel",Integer,"1:200","4","");
    createOption("VariationIndentSize",Integer,"1:10","3","");
    createOption("CommentIndent",String,"Always|OnlyMainline|Never","OnlyMainline","");
