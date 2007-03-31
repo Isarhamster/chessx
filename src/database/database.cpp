@@ -34,26 +34,4 @@ bool Database::loadGameHeaders(int index, Game& game)
 
    return true;
 }
-void Database::saveToPGN(int index, Output& output, QTextStream& out)
-{
-   Game game;
-   loadGame(index,game);
-   out << output.output(&game);
-
-}
-void Database::exportToPGN(QString filename)
-{
-   QFile file(filename);
-   if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-      return;
-
-   Output output(Output::Pgn,"/home/data/chessx/chessx/data/templates/pgn-default.template");
-   QTextStream out(&file);
-   for (int i = 0; i < m_count; i++) {
-      saveToPGN(i, output, out);
-      out << "\n\n";
-   }
-   file.close();
-
-}
 

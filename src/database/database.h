@@ -26,7 +26,6 @@
 #include "search.h"
 #include "query.h"
 #include "index.h"
-#include "output.h"
 
 /** @defgroup Database */
 
@@ -76,11 +75,6 @@ class Database
 
       /** Returns the number of games in the database */
       virtual int count() { return m_count; }
-
-      /** Writes a single game at index to a text stream in PGN format */
-      void saveToPGN(int index, Output& output, QTextStream& out);
-      /** Exports the whole database to file filename in PGN format */
-      void exportToPGN(QString filename);
 
    protected:
       Index m_index;
