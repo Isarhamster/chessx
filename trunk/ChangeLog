@@ -2,6 +2,8 @@
 	* feature: move pieces by drag&drop
 	* feature: remove moves/variations
 	* feature: display side to move
+	* feature: internal support for editable PGN databases (no GUI yet!)
+	* feature: export games in filter/all games to PGN
 	* bugfix: fix incorrect SAN representation of en-passant moves
 	* bugfix: correctly calculate game length displayed in GameInfo
 	* bugfix: display empty game
