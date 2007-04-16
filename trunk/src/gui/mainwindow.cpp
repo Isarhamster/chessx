@@ -726,6 +726,9 @@ void MainWindow::setupActions()
     m_recentFileActions.append(action);
     menuRecent->addAction(action);
   }
+  QMenu* exportMenu = file->addMenu(tr("&Export..."));
+  exportMenu->addAction(createAction(tr("&Games in filter"), SLOT(slotFileExportFilter())));
+  exportMenu->addAction(createAction(tr("&All games"), SLOT(slotFileExportAll())));
   file->addAction(createAction(tr("&Close"), SLOT(slotFileClose()), Qt::CTRL + Qt::Key_W));
   file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), Qt::CTRL + Qt::Key_Q));
 
@@ -823,3 +826,24 @@ void MainWindow::slotSearchReset()
   slotFilterChanged();
 }
 
+void MainWindow::slotFileExportFilter()
+{
+  QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString::null,
+     tr("PGN Database (*.pgn)"));
+  if (!file.isEmpty())
+  {
+     Output output(Output::Pgn);
+     output.output(file, *databaseInfo()->filter());
+  }
+}
+
+void MainWindow::slotFileExportAll()
+{
+  QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString::null,
+     tr("PGN Database (*.pgn)"));
+  if (!file.isEmpty())
+  {
+     Output output(Output::Pgn);
+     output.output(file, database());
+  }
+}

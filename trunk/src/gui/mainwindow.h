@@ -150,6 +150,10 @@ public slots:
   void slotFileOpen();
   /** Open given database from Recent files list. */
   void slotFileOpenRecent();
+  /** Exports games in filter to PGN file. */
+  void slotFileExportFilter();
+  /** Exports all games to PGN file. */
+  void slotFileExportAll();
   /** Close current database. Switches to next active (or clipboard if there is none). */
   void slotFileClose();
   /** Quit ChessX. Ask for confirmation before */
