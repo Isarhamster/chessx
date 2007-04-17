@@ -154,7 +154,7 @@ public:
   bool truncateGameStart(int variation = 0);
 
   //game information methods
-  /** @ECO code for the game */
+  /** @return ECO code for the game */
   QString ecoClassify() const;
 
   /** @return tag id of white player */
