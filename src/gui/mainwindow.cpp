@@ -844,6 +844,6 @@ void MainWindow::slotFileExportAll()
   if (!file.isEmpty())
   {
      Output output(Output::Pgn);
-     output.output(file, database());
+     output.output(file, *database());
   }
 }
