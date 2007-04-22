@@ -13,6 +13,8 @@
 MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 [OPTIONS]
 ColumnStyle=false
+SymbolicNag=true
+TextWidth=0
 MainLineMoveColor=#000000
 CommentColor=#008000
 VariationColor=#0000ff
@@ -28,6 +30,7 @@ HeaderColor=#0000ff
       a.main {color: @MainLineMoveColor@; font-weight: 600;}
       a.var  {color: @VariationColor@;}
       a.comment  {color: @CommentColor@;}
+      a.nag  {color: @NagColor@;}
    </style>
 </head>
 <body>
@@ -43,7 +46,7 @@ MarkupVariationMove=<a class="var" href="move:%1">,</a>
 MarkupMainLine=,\n
 MarkupVariationInline=<span>,</span>\n
 MarkupVariationIndent=<p style="margin-left: 30" class="var">,</p>\n
-MarkupNag=<span>,</span>\n
+MarkupNag=<a class="nag">,</a>\n
 MarkupColumnStyleMove=<td width=50%>,\n
 MarkupColumnStyleRow=<tr class="mainline">,\n
 MarkupColumnStyleMainline=<table border=0 width=50%>,</table>\n
