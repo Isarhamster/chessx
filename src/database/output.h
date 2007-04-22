@@ -25,6 +25,8 @@ db.loadGame(0,game);
 Output o(Output::Html,"/usr/local/data/template-file.template");
 o.output(&game);
 @endcode
+@todo
+Should output all tags, not just the most important ones.
 */
 class Output
 {
@@ -93,7 +95,7 @@ class Output
        * @param out A textstream that will be used to write the results to 
        * @param database A pointer to a database object. All games in the database will be output, one
        *               after the other, using the output(Game* game) method */
-      void output(QTextStream& out, Database* database);
+      void output(QTextStream& out, Database& database);
       /** Create the output for the given filter 
        * @param filename The filename that the output will be written to.
        * @param filter A Filter object. All games in the filter will be output, one
@@ -103,7 +105,7 @@ class Output
        * @param out The filename that the output will be written to.
        * @param database A pointer to a database object. All games in the database will be output, one
        *               after the other, using the output(Game* game) method */
-      void output(QString& filename, Database* database);
+      void output(QString& filename, Database& database);
       /** User definable settings. 
        * Sets the filename of the file that contains the template that will be used
        * when creating the output. See example template files for syntax.
