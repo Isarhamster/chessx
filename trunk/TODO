@@ -1,6 +1,16 @@
-1) Before First Alpha Release:
-   * Port to Qt4?
-   * Filter and search class fix-up
+TODO for 0.4 (Next release, technical)
+    * Configurable quit confirmation
+    * Move Tip to help menu
+    * Improve Tip look&feel
+    * Improve loading speed (delay or speed-up ECO loading)
+    * Improve header search speed
+    * Add progress for open/search
+    * Add header search dialog
+    * Clean up themes (separate pieces and board)
+    * Clean up DatabaseInfo class
+    
+
+TODO for 1.0 (Stable PGN-based version)
    * Toolbar
       - graphics
       - configuration
@@ -9,8 +19,10 @@
       - make GameView tags configurable (color, font)
       - make moves and tags clickable
       - cleanup on database close
-   * GameList
-      - add basic search capabilities
+   * Searches
+      - enhanced header search
+      - board search (+variants)
+      - material search
    * Engine
       - GUI
       - starting analysis
@@ -18,7 +30,6 @@
       - autoconfiguring engines
    * Game editing
       - saving game
-      - modifying moves
       - modifying NAGs
       - modifying comments
       - editing variations
@@ -30,22 +41,23 @@
       - configurable key shortcuts
    * Databases
       - OpenDatabase class
-      - multiple databases; switching  : DONE
-      - triggering & handling databaseChanged() event  : DONE
    * File browser
       - display file info
       - recursively find database files
 
-2) After First Alpha Release:
+
+TODO for 2.0 (Stable Native-based version)
    * Native database format
    * Game sorting
    * Spellchecking
    * Playing/training against engine
-      - Blunder check
+   * Annotation/Blunder check
    * Tournament tables
    * ELO rating calculation
+   * ECO Browser
 
-3) Ideas/Suggestions. Non critical
+
+TODO - Ideas/Suggestions. Non critical
    * Ideas for database switching. 
       - Database window like Scid
       - Dockable toolbar with a tool button for each database (My favourite idea)
