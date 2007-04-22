@@ -20,7 +20,7 @@
 #include "boardtheme.h"
 #include "settings.h"
 
-BoardTheme::BoardTheme() : m_size(0), m_squareType(Scaled)
+BoardTheme::BoardTheme() : m_squareType(Scaled)
 {
 }
 
@@ -125,7 +125,8 @@ bool BoardTheme::load(const QString& themeFile, LoadTheme load)
     m_boardFilename = themePath;
   }
   // Restore previous size
-  setSize(size() ? size() : realsize);
+  if (size().isEmpty())
+    setSize(QSize(realsize, realsize));
   setSquareType(m_squareType);
   return true;
 }
@@ -138,23 +139,28 @@ bool BoardTheme::load(const QString& pieceFile, const QString& boardFile)
     return load(pieceFile, LoadPieces) && load(boardFile, LoadBoard);
 }
 
-int BoardTheme::size() const
+QSize BoardTheme::size() const
 {
   return m_size;
 }
 
-QRect BoardTheme::rect() const
+QPoint BoardTheme::pieceCenter() const
 {
-  return QRect(QPoint(0, 0), QSize(m_size, m_size));
+  return QPoint(m_size.width() / 2, m_size.height() / 2);
 }
 
-void BoardTheme::setSize(int value)
+QRect BoardTheme::rect() const
+{
+  return QRect(QPoint(0, 0), m_size);
+}
+
+void BoardTheme::setSize(const QSize& value)
 {
   if (!isValid())
     return;
   m_size = value;
   for (int i = 1; i<ConstPieceTypes; i++)
-    m_piece[i] = m_originalPiece[i].scaled(value, value, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    m_piece[i] = m_originalPiece[i].scaled(m_size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
   setSquareType(m_squareType);
 }
 
@@ -165,24 +171,27 @@ BoardTheme::BoardSquare BoardTheme::squareType() const
 
 void BoardTheme::setSquareType(BoardSquare type)
 {
-  if(type == Unscaled && size() > m_originalPiece[WhiteRook].width()) {
+  if(type == Unscaled && (m_size.width() > m_originalPiece[WhiteRook].width()
+     || m_size.height() > m_originalPiece[WhiteRook].height()))
     type = Scaled;
-  }
 
   m_squareType = type;
   if (!isValid())
     return;
   if (type == Plain)
   {
-    m_square[0] = QPixmap(size(), size());
+    m_square[0] = QPixmap(m_size);
     m_square[0].fill(lightColor().rgb());
-    m_square[1] = QPixmap(size(), size());
+    m_square[1] = QPixmap(m_size);
     m_square[1].fill(darkColor().rgb());
   }
-  else if (type == Scaled || size() > m_originalPiece[0].width())
+  else if (type == Scaled || (m_size.width() > m_originalPiece[WhiteRook].width()
+     || m_size.height() > m_originalPiece[WhiteRook].height()))
   {
-    m_square[0] =  m_originalSquare[0].scaled(size(), size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    m_square[1] =  m_originalSquare[1].scaled(size(), size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    m_square[0] =  m_originalSquare[0].scaled(size(), Qt::IgnoreAspectRatio,
+                                              Qt::SmoothTransformation);
+    m_square[1] =  m_originalSquare[1].scaled(size(), Qt::IgnoreAspectRatio,
+                                              Qt::SmoothTransformation);
   }
   else
   {
