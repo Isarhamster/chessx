@@ -4,9 +4,11 @@
 	* feature: display side to move
 	* feature: internal support for editable PGN databases (no GUI yet!)
 	* feature: export games in filter/all games to PGN
+	* feature: small sample player database (look for Adams)
 	* bugfix: fix incorrect SAN representation of en-passant moves
 	* bugfix: correctly calculate game length displayed in GameInfo
 	* bugfix: display empty game
+	* bugfix: Sun-Solaris compilation (patch by Atul)
 
 Thu 28 Feb 2007 00:59:47 CET	Version 0.2.0
 
