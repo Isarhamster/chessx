@@ -48,7 +48,7 @@ class QTextBrowser;
 @defgroup GUI
 */
 
-/*
+/**
 @ingroup GUI
 The MainWindow class represents main ChessX window. */
 
