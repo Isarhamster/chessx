@@ -238,7 +238,7 @@ void Output::writeMove(int variation)
       }
       // *** Write the move number
       if (m_game->board().toMove() == White) {
-         m_output += QString::number(m_game->moveNumber()) + ".";
+         m_output += QString::number(m_game->moveNumber()) + ". ";
       } else if (m_dirtyBlack) {
          m_output += QString::number(m_game->moveNumber()) + "...";
       }
@@ -423,7 +423,7 @@ QString Output::output(Game* game)
    // Chop it up, if TextWidth option is not equal to 0
    int textWidth = m_options.getOptionAsInt("TextWidth");
    if (textWidth) {
-      int start = m_output.indexOf("1.");
+      int start = m_output.indexOf(QRegExp("\n\\d+\\."));
       int length = m_output.length()-start;
       while (length > textWidth) {
          start = m_output.lastIndexOf(" ",start + textWidth);
@@ -440,16 +440,16 @@ void Output::output(QTextStream& out, Filter& filter)
    for (int i = 0; i < filter.count(); ++i) {
       filter.database()->loadGame(filter.indexToGame(i),game);
       out << output(&game);
-      out << "\n";
+      out << "\n\n";
    }
 }
-void Output::output(QTextStream& out, Database* database)
+void Output::output(QTextStream& out, Database& database)
 {
    Game game;
-   for (int i = 0; i < database->count(); ++i) {
-      database->loadGame(i,game);
+   for (int i = 0; i < database.count(); ++i) {
+      database.loadGame(i,game);
       out << output(&game);
-      out << "\n";
+      out << "\n\n";
    }
 }
 void Output::output(QString& filename, Filter& filter)
@@ -461,7 +461,7 @@ void Output::output(QString& filename, Filter& filter)
    output (out, filter);
    f.close();
 }
-void Output::output(QString& filename, Database* database)
+void Output::output(QString& filename, Database& database)
 {
    QFile f(filename);
    if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
