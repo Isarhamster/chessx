@@ -102,6 +102,7 @@ private:
   int m_flags;
   Piece m_dragged;
   QPoint m_dragStart;
+  QPoint m_dragPoint;
 };
 
 #endif

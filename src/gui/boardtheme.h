@@ -67,9 +67,11 @@ public:
   /** Returns theme directory */
   QString themeDirectory() const;
   /** Sets current size for pixmaps. Resizes all pixmaps. */
-  void setSize(int value);
+  void setSize(const QSize& size);
   /** Returns current size of pixmaps. */
-  int size() const;
+  QSize size() const;
+  /** Returns center point of piece pixmap. Useful for centering piece when dragging. */
+  QPoint pieceCenter() const;
   /** Returns current rectangle of pixmaps. */
   QRect rect() const;
   /** Sets background type. */
@@ -82,7 +84,7 @@ private:
   QPixmap m_piece[ConstPieceTypes];
   QPixmap m_originalSquare[2];
   QPixmap m_square[2];
-  int m_size;
+  QSize m_size;
   bool m_plainSquares;
   BoardSquare m_squareType;
   QColor m_lightColor;

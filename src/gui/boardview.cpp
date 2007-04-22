@@ -71,34 +71,36 @@ void BoardView::paintEvent(QPaintEvent* event)
       continue;
     int x = isFlipped() ? 7 - square % 8 : square % 8;
     int y = isFlipped() ? square / 8 : 7 - square / 8;
-    int posx = x * m_theme.size();
-    int posy = y * m_theme.size();
-    p.drawPixmap(QPoint(posx, posy), m_theme.square((x + y) % 2));
-    p.drawPixmap(QPoint(posx, posy), m_theme.piece(m_board.at(square)));
+    QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
+    p.drawPixmap(pos, m_theme.square((x + y) % 2));
+    p.drawPixmap(pos, m_theme.piece(m_board.at(square)));
     if (square == m_selectedSquare)
     {
       QPen pen;
       pen.setColor(QColor(Qt::yellow));
       pen.setWidth(2);
       p.setPen(pen);
-      p.drawRect(posx + 1 + m_showFrame, posy + 1 + m_showFrame,
-         m_theme.size() - 2 - m_showFrame, m_theme.size() - 2 - m_showFrame);
+      p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
+         m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
      }
      if (m_showFrame)
      {
        p.setPen(QColor(Qt::black));
-       p.drawRect(posx, posy, m_theme.size(), m_theme.size());
+       p.drawRect(QRect(pos, m_theme.size()));
      }
   }
+  // Draw dragged piece
+  if (m_dragged != Empty)
+    p.drawPixmap(m_dragPoint, m_theme.piece(m_dragged));
   // Draw side to move indicator
   bool white = m_board.toMove() == White;
-  int square = m_theme.size() / 3;
+  int square = m_theme.size().width() / 3;
   QColor color = white ? Qt::white : Qt::black;
   QColor border = white ? Qt::black : Qt::white;
-  int posy = (white == m_flipped) ? 1 : 8 * m_theme.size() - square;
+  int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
   p.setPen(border);
   p.setBrush(QColor(color));
-  p.drawRect(8 * m_theme.size() + 8, posy, square, square);
+  p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
 }
 
 void BoardView::resizeBoard()
@@ -107,7 +109,7 @@ void BoardView::resizeBoard()
   int xsize = (width() - (8 + width() / 24) - 1) / 8;
   int ysize = (height() - 1) / 8;
   int size = xsize < ysize ? xsize : ysize;
-  m_theme.setSize(size);
+  m_theme.setSize(QSize(size, size));
 }
 
 void BoardView::resizeEvent(QResizeEvent*)
@@ -117,8 +119,8 @@ void BoardView::resizeEvent(QResizeEvent*)
 
 Square BoardView::squareAt(const QPoint& p) const
 {
-  int x = isFlipped() ? 7 - p.x() / m_theme.size() : p.x() / m_theme.size();
-  int y = isFlipped() ? p.y() / m_theme.size() : 7 - p.y() / m_theme.size();
+  int x = isFlipped() ? 7 - p.x() / m_theme.size().width() : p.x() / m_theme.size().width();
+  int y = isFlipped() ? p.y() / m_theme.size().height() : 7 - p.y() / m_theme.size().height();
   if (x >= 0 && x < 8 && y >= 0 && y <= 8)
     return 8 * y + x;
   else return InvalidSquare;
@@ -126,8 +128,6 @@ Square BoardView::squareAt(const QPoint& p) const
 
 void BoardView::mousePressEvent(QMouseEvent* event)
 {
-  Square s = squareAt(event->pos());
-  if (event->button() == Qt::LeftButton && canDrag(s))
     m_dragStart = event->pos();
 }
 
@@ -135,6 +135,14 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
 {
   if (!(event->buttons() & Qt::LeftButton))
     return;
+  if (m_dragged != Empty)
+  {
+    QRect old = QRect(m_dragPoint, m_theme.size());
+    m_dragPoint = event->pos() - m_theme.pieceCenter();
+    update(old);
+    update(QRect(m_dragPoint, m_theme.size()));
+    return;
+  }
   if ((event->pos() - m_dragStart).manhattanLength()
       < QApplication::startDragDistance())  // Click and move - start dragging
     return;
@@ -142,11 +150,10 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
   if (!canDrag(s))
     return;
   m_dragged = m_board.at(s);
+  m_dragPoint = event->pos() - m_theme.pieceCenter();
   m_board.removeFrom(s);
   update(squareRect(s));
   QPixmap icon = m_theme.piece(m_dragged);
-  QCursor cursor(icon);
-  setCursor(cursor);
 }
 
 void BoardView::mouseReleaseEvent(QMouseEvent* event)
@@ -158,11 +165,12 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
     return;
   if (m_dragged != Empty)
   {
-    unsetCursor();
     Square from = squareAt(m_dragStart);
     m_board.setAt(from, m_dragged);
-    update(squareRect(from));
+    QRect oldr = QRect(m_dragPoint, m_theme.size());
     m_dragged = Empty;
+    update(squareRect(from));
+    update(oldr);
     if (s != InvalidSquare)
       emit moveMade(from, s);
   }
@@ -249,7 +257,8 @@ QRect BoardView::squareRect(Square square)
 {
   int x = isFlipped() ? 7 - square % 8 : square % 8;
   int y = isFlipped() ? square / 8 : 7 - square / 8;
-  return QRect(x * m_theme.size(), y * m_theme.size(), m_theme.size(), m_theme.size());
+  return QRect(QPoint(x * m_theme.size().width(), y * m_theme.size().height()), 
+               m_theme.size());
 }
 
 bool BoardView::canDrag(Square s) const
