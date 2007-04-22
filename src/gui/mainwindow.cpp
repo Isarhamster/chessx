@@ -314,7 +314,7 @@ PlayerDialog* MainWindow::playerDialog()
   if (!m_playerDialog)
   {
     PlayerDatabase* db = new PlayerDatabase;
-    QString path = AppSettings->dataPath().remove("/data") + "/tests/playerdatabase/data/players";
+    QString path = AppSettings->dataPath() + "/players";
     //if (!db->open(path)); Bug in PlayerDatabase - always returns false
     if (!QFile::exists(path + ".cpm"))
       QMessageBox::information (0, "No player database",
