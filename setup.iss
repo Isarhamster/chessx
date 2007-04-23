@@ -4,7 +4,7 @@
 ; Inno Setup creates install files for MS Windows.
 
 #define MyAppName "ChessX"
-#define MyAppVerName "ChessX-0.2.0"
+#define MyAppVerName "ChessX-0.3.0"
 #define MyAppPublisher "ChessX Team"
 #define MyAppURL "http://chessx.sourceforge.net"
 #define MyAppExeName "chessx.exe"
@@ -22,8 +22,6 @@ OutputBaseFilename={#MyAppVerName}
 Compression=lzma/ultra
 InternalCompressLevel=ultra
 SolidCompression=true
-Compression=lzma
-SolidCompression=yes
 
 [Languages]
 Name: "eng"; MessagesFile: "compiler:Default.isl"
@@ -56,7 +54,7 @@ Source: "data\*.*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"
-Name: "{group}\{cm:UninstallProgram,{#MyAppName}"; Filename: "{uninstallexe}"
+Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Tasks: quicklaunchicon
 
