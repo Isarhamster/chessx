@@ -1,4 +1,6 @@
 TODO for 0.4 (Next release, technical)
+    * Cleanup MessageBoxes (use text instead of Yes/No)
+    * Cleanup QFileDialogs (add default suffix etc.)
     * Configurable quit confirmation
     * Move Tip to help menu
     * Improve Tip look&feel
