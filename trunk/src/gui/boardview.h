@@ -103,6 +103,7 @@ private:
   Piece m_dragged;
   QPoint m_dragStart;
   QPoint m_dragPoint;
+  bool m_clickUsed;
 };
 
 #endif
