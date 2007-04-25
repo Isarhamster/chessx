@@ -34,7 +34,7 @@ class BoardView : public QWidget
   Q_OBJECT
 public:
   enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
-  enum {IgnoreSideToMove = 1};
+  enum {IgnoreSideToMove = 1, SuppressGuessMove = 2};
   /** Create board widget. */
   BoardView(QWidget* parent = 0, int flags = 0);
   /** Destroy widget. */
@@ -93,12 +93,20 @@ private:
   void unselectSquare();
   /** Check if piece at square @p square can be dragged */
   bool canDrag(Square s) const;
+  /** Highlights the from and to squares of a guessed move. */
+  void showGuess(Square s);
+  /** Remove the guessed move highlight from the board. */
+  void removeGuess();
 
   Board m_board;
   BoardTheme m_theme;
   bool m_flipped;
   bool m_showFrame;
+  bool m_guessMove;
   int m_selectedSquare;
+  int m_hoverSquare;
+  int m_hifrom;
+  int m_hito;
   int m_flags;
   Piece m_dragged;
   QPoint m_dragStart;

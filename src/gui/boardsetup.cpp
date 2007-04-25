@@ -30,7 +30,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 {
   ui.setupUi(this);
   ui.boardView->configure();
-  ui.boardView->setFlags(BoardView::IgnoreSideToMove);
+  ui.boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
 
   m_actions = new QActionGroup(this);
   m_actions->setExclusive(true);

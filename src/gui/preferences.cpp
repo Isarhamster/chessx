@@ -74,6 +74,7 @@ void PreferencesDialog::restoreSettings()
   AppSettings->beginGroup("/Board/");
   ui.boardTypeCombo->setCurrentIndex(AppSettings->value("squareType", 0).toInt());
   ui.boardFrameCheck->setChecked(AppSettings->value("showFrame", true).toBool());
+  ui.guessMoveCheck->setChecked(AppSettings->value("guessMove", true).toBool());
   QString pieceTheme = AppSettings->value("pieceTheme", "default").toString();
   QString boardTheme = AppSettings->value("boardTheme", "default").toString();
   QVariant color = AppSettings->value("lightColor", "#d0d0d0");
@@ -109,6 +110,7 @@ void PreferencesDialog::saveSettings()
   AppSettings->beginGroup("/Board/");
   AppSettings->setValue("squareType", ui.boardTypeCombo->currentIndex());
   AppSettings->setValue("showFrame", ui.boardFrameCheck->isChecked());
+  AppSettings->setValue("guessMove", ui.guessMoveCheck->isChecked());
   AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());
   AppSettings->setValue("boardTheme", ui.boardThemeCombo->currentText());
   AppSettings->setValue("lightColor", buttonColor(ui.boardLightButton));

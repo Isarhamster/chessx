@@ -1,5 +1,5 @@
 # Build library and database
 
 TEMPLATE = subdirs
-SUBDIRS = database gui
+SUBDIRS = guess database gui
 CONFIG += ordered

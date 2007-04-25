@@ -33,6 +33,7 @@ SOURCES += mainwindow.cpp \
 	   main.cpp
 TEMPLATE = app
 INCLUDEPATH += ../database 
+INCLUDEPATH += ../guess
 RESOURCES += helpwindow.qrc \
                  tipoftheday.qrc
 
@@ -52,6 +53,8 @@ else {
   LIBS += ../database/libdatabase.a
   PRE_TARGETDEPS += ../database/libdatabase.a
 }
+LIBS += ../guess/libguess.a
+PRE_TARGETDEPS += ../guess/libguess.a
 
 macx {
      ICON = ../../data/images/chessx.icns

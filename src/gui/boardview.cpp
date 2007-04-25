@@ -16,6 +16,7 @@
 
 #include "boardview.h"
 #include "settings.h"
+#include "guess.h"
 
 #include <QApplication>
 #include <QMessageBox>
@@ -29,9 +30,11 @@
 using namespace Qt;
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
-   m_flipped(false), m_showFrame(false), m_selectedSquare(InvalidSquare), m_flags(flags),
+   m_flipped(false), m_showFrame(false), m_guessMove(false), m_selectedSquare(InvalidSquare),
+   m_hoverSquare(false), m_hifrom(InvalidSquare), m_hito(InvalidSquare), m_flags(flags),
    m_dragged(Empty), m_clickUsed(false)
 {
+   setMouseTracking(true);
 }
 
 BoardView::~BoardView()
@@ -75,7 +78,7 @@ void BoardView::paintEvent(QPaintEvent* event)
     QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
     p.drawPixmap(pos, m_theme.square((x + y) % 2));
     p.drawPixmap(pos, m_theme.piece(m_board.at(square)));
-    if (square == m_selectedSquare)
+    if (square == m_selectedSquare || square == m_hifrom || square == m_hito)
     {
       QPen pen;
       pen.setColor(QColor(Qt::yellow));
@@ -132,10 +135,37 @@ void BoardView::mousePressEvent(QMouseEvent* event)
     m_dragStart = event->pos();
 }
 
+void BoardView::showGuess(Square s)
+{
+   if (m_guessMove && s != m_hoverSquare && !(m_flags & SuppressGuessMove)) {
+      m_hoverSquare = s;
+      removeGuess();
+      Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFEN()), (int) s);
+      if (!sm.error) {
+         m_hifrom = sm.from;
+         m_hito = sm.to;
+         update(squareRect(m_hifrom));
+         update(squareRect(m_hito));
+      }
+   }
+}
+
+void BoardView::removeGuess()
+{
+   if (m_hifrom != InvalidSquare) {
+      update(squareRect(m_hifrom));
+      update(squareRect(m_hito));
+      m_hifrom = m_hito = InvalidSquare;
+   }
+}
+
 void BoardView::mouseMoveEvent(QMouseEvent *event)
 {
   if (!(event->buttons() & Qt::LeftButton))
+  {
+    showGuess(squareAt(event->pos()));
     return;
+  }
   if (m_dragged != Empty)
   {
     QRect old = QRect(m_dragPoint, m_theme.size());
@@ -150,6 +180,7 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
   Square s = squareAt(m_dragStart);
   if (!canDrag(s))
     return;
+  removeGuess();
   m_dragged = m_board.at(s);
   m_dragPoint = event->pos() - m_theme.pieceCenter();
   m_board.removeFrom(s);
@@ -186,6 +217,13 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
     unselectSquare();
     if (s != InvalidSquare)
       emit moveMade(from, s);
+  }
+  else if (m_hifrom != InvalidSquare)
+  {
+    if (s == m_hifrom || s == m_hito)
+        emit moveMade(m_hifrom, m_hito);
+    m_hoverSquare = InvalidSquare;
+    showGuess(s);
   }
   else {
          if (s != InvalidSquare)
@@ -236,6 +274,7 @@ void BoardView::configure()
 {
   AppSettings->beginGroup("/Board/");
   m_showFrame = AppSettings->value("showFrame", true).toBool();
+  m_guessMove = AppSettings->value("guessMove", true).toBool();
   m_theme.setSquareType(BoardTheme::BoardSquare(AppSettings->value("squareType", 0).toInt()));
   m_theme.setLightColor(AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
   m_theme.setDarkColor(AppSettings->value("darkColor", "#a0a0a0").value<QColor>());
@@ -243,6 +282,8 @@ void BoardView::configure()
   QString boardTheme = AppSettings->value("boardTheme", "default").toString();
   setTheme(pieceTheme, boardTheme);
   AppSettings->endGroup();
+  removeGuess();
+  unselectSquare();
   update();
 }
 
