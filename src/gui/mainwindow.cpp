@@ -48,13 +48,6 @@
 #include <QStatusBar>
 #include <QTime>
 
-bool yesNo(const QString& question, QMessageBox::Icon icon = QMessageBox::Question)
-{
-  QMessageBox mb("ChessX", question, icon, QMessageBox::Yes, QMessageBox::No,
-     Qt::NoButton);
-  return mb.exec() == QMessageBox::Yes;
-}
-
 
 MainWindow::MainWindow() : QMainWindow(),
   m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_showPgnSource(false)
@@ -179,9 +172,22 @@ MainWindow::~MainWindow()
   delete m_tipDialog;
 }
 
+bool MainWindow::confirm(const QString& title, const QString& question,
+                        const QString& proceed)
+{
+  QMessageBox mb(this);
+  mb.setWindowTitle(title);
+  mb.setText(question);
+  mb.setIcon(QMessageBox::Question);
+  QPushButton* okButton = mb.addButton(proceed, QMessageBox::ActionRole);
+  mb.addButton(QMessageBox::Cancel);
+  mb.exec();
+  return mb.clickedButton() == okButton;
+}
+
 void MainWindow::closeEvent(QCloseEvent* e)
 {
-  if (yesNo(tr("Do you want to quit?"))) {
+  if (confirm(tr("Quit"), tr("Do you want to quit?"))) {
     m_recentFiles.save("History", "RecentFiles");
     AppSettings->setLayout(m_playerDialog);
     AppSettings->setLayout(m_helpWindow);
