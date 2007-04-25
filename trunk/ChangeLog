@@ -1,3 +1,8 @@
+	* feature: move guesser
+	* bugfix: update theme when pieces are changed
+	* bugfix: fix some drag&drop problems
+	* bugfix: segfault when truncating moves from empty game
+
 Mon 23 Feb 2007 18:59:47 CET	Version 0.3
 
 	* feature: display ECO information
