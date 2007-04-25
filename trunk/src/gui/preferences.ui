@@ -41,6 +41,82 @@
        <property name="spacing" >
         <number>6</number>
        </property>
+       <item row="0" column="1" >
+        <widget class="QComboBox" name="pieceThemeCombo" >
+         <property name="sizePolicy" >
+          <sizepolicy>
+           <hsizetype>7</hsizetype>
+           <vsizetype>0</vsizetype>
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="textLabel1_3" >
+         <property name="text" >
+          <string>Board:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>50</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="0" colspan="2" >
+        <widget class="QCheckBox" name="boardFrameCheck" >
+         <property name="text" >
+          <string>Draw frame between squares</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" >
+        <widget class="QLabel" name="textLabel1_2" >
+         <property name="text" >
+          <string>Pieces theme:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" >
+        <widget class="QComboBox" name="boardTypeCombo" >
+         <property name="sizePolicy" >
+          <sizepolicy>
+           <hsizetype>7</hsizetype>
+           <vsizetype>0</vsizetype>
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <item>
+          <property name="text" >
+           <string>Unscaled pixmap</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Scaled pixmap</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Plain colors</string>
+          </property>
+         </item>
+        </widget>
+       </item>
        <item row="2" column="0" colspan="2" >
         <widget class="QStackedWidget" name="widgetStack" >
          <property name="currentIndex" >
@@ -137,79 +213,10 @@
          </widget>
         </widget>
        </item>
-       <item row="3" column="1" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>50</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0" >
-        <widget class="QLabel" name="textLabel1_3" >
+       <item row="4" column="0" >
+        <widget class="QCheckBox" name="guessMoveCheck" >
          <property name="text" >
-          <string>Board:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" >
-        <widget class="QLabel" name="textLabel1_2" >
-         <property name="text" >
-          <string>Pieces theme:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" >
-        <widget class="QComboBox" name="pieceThemeCombo" >
-         <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>7</hsizetype>
-           <vsizetype>0</vsizetype>
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" >
-        <widget class="QComboBox" name="boardTypeCombo" >
-         <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>7</hsizetype>
-           <vsizetype>0</vsizetype>
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <item>
-          <property name="text" >
-           <string>Unscaled pixmap</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Scaled pixmap</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>Plain colors</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="2" >
-        <widget class="QCheckBox" name="boardFrameCheck" >
-         <property name="text" >
-          <string>Draw frame between squares</string>
+          <string>Guess move on left-click</string>
          </property>
         </widget>
        </item>
