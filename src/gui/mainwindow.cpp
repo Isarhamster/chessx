@@ -476,7 +476,8 @@ void MainWindow::slotMove(Square from, Square to)
 {
   Board board = game()->board();
   Move m(board, from, to);
-  if ((to < 8 || to > 55) && (board.at(from) == WhitePawn || board.at(from) == BlackPawn))
+  if ((to < 8 && from < 16 && board.at(from) == BlackPawn) ||
+      (to > 55 && from > 47 && board.at(from) == WhitePawn))
   {
     QStringList moves;
     moves << tr("Queen") << tr("Rook") << tr("Bishop") << tr("Knight");
