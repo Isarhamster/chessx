@@ -127,6 +127,8 @@ bool BoardTheme::load(const QString& themeFile, LoadTheme load)
   // Restore previous size
   if (size().isEmpty())
     setSize(QSize(realsize, realsize));
+  else
+    setSize(size());
   setSquareType(m_squareType);
   return true;
 }
