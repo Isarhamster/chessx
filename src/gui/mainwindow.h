@@ -187,6 +187,8 @@ private:
                         const QString& tip = QString());
   /** Create all the menus and actions */
   void setupActions();
+  /** Answer simple questions. */
+  bool confirm(const QString& title, const QString& question, const QString& proceed = tr("Yes"));
 
   enum {GameFirst, GameLast, GameNext, GamePrevious, GameRandom, MoveFirst, MoveLast, MoveNext, MovePrevious,
      MoveNextN, MovePreviousN};
