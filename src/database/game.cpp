@@ -883,8 +883,11 @@ void Game::compact()
 	
 	//copy nodes to new storage
 	newMoveNodes[0].nextNode = 0;
+   newMoveNodes[0].parentNode = 0;
+   newMoveNodes[0].nextVariation = 0;
 	m_nextFreeNode = 1;
-	copyVariation(0, m_moveNodes[0].nextNode, newMoveNodes);
+	copyVariation(0, m_moveNodes[0].nextNode, newMoveNodes, m_totalNodeCount);
+   //gameDumper();
 
 	m_deletedNodeCount = 0;
 	
@@ -894,7 +897,7 @@ void Game::compact()
 	m_totalNodeCount = newSize;
 }
 
-void Game::copyVariation(int parentNode, int startNode,	MoveNode* destinationNodes)
+void Game::copyVariation(int parentNode, int startNode,	MoveNode* destinationNodes, int endNode)
 {
 	int previousNode = parentNode;
 	int sourceNode = startNode;
@@ -903,10 +906,13 @@ void Game::copyVariation(int parentNode, int startNode,	MoveNode* destinationNod
 		
 		//allocate new node
 		int destinationNode = m_nextFreeNode++;
+      if (destinationNode >= endNode) {
+         break;
+      }
 		
 		//conect node to previous node
 		if(!destinationNodes[previousNode].nextNode) {
-		destinationNodes[previousNode].nextNode = destinationNode;
+         destinationNodes[previousNode].nextNode = destinationNode;
 		}
 		
 		//copy data to new node
@@ -922,9 +928,9 @@ void Game::copyVariation(int parentNode, int startNode,	MoveNode* destinationNod
 		int variationNode = m_moveNodes[sourceNode].nextVariation;
 		int previousVariationNode = destinationNode;
 		
-		while(variationNode) {
+		if(variationNode) {
 			destinationNodes[previousVariationNode].nextVariation = m_nextFreeNode;
-			copyVariation(previousNode, variationNode, destinationNodes);
+			copyVariation(previousNode, variationNode, destinationNodes, endNode);
 			variationNode = m_moveNodes[variationNode].nextVariation;
 			previousVariationNode = destinationNodes[previousVariationNode].nextVariation;
 		}

@@ -221,7 +221,7 @@ private:
   /** Compacts nodes and allocates more space if reqiured */
   void compact();
   /** Copys a variation, used by compact for copying nodes to new storage */
-  void copyVariation(int parentNode, int startNode, MoveNode* destinationNodes);
+  void copyVariation(int parentNode, int startNode, MoveNode* destinationNodes, int endNode = 0);
   /** Counts the number of moves, comments and nags, in all variations, to the end of the game */
   void moveCount(int node, int* moves, int* comments, int* nags);
   /** Counts number of descendant nodes, for recording number of deleted nodes */
