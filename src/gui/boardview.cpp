@@ -94,9 +94,6 @@ void BoardView::paintEvent(QPaintEvent* event)
        p.drawRect(QRect(pos, m_theme.size()));
      }
   }
-  // Draw dragged piece
-  if (m_dragged != Empty)
-    p.drawPixmap(m_dragPoint, m_theme.piece(m_dragged));
   // Draw side to move indicator
   bool white = m_board.toMove() == White;
   int square = m_theme.size().width() / 3;
@@ -106,6 +103,22 @@ void BoardView::paintEvent(QPaintEvent* event)
   p.setPen(border);
   p.setBrush(QColor(color));
   p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
+
+  // Fix border up
+  if (m_showFrame) {
+	QPen pen;
+	pen.setColor(QColor(Qt::black));
+	pen.setWidth(1);
+	p.setPen(pen);
+	int flx = m_theme.size().width() * 8;
+	int fly = m_theme.size().height() * 8;
+	p.drawLine(flx,0,flx,fly);
+	p.drawLine(0,fly,flx,fly);
+  }
+
+  // Draw dragged piece
+  if (m_dragged != Empty)
+    p.drawPixmap(m_dragPoint, m_theme.piece(m_dragged));
 }
 
 void BoardView::resizeBoard()
