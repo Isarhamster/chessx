@@ -71,7 +71,6 @@ BoardSetupDialog::~BoardSetupDialog()
 Board BoardSetupDialog::board() const
 {
   Board b = ui.boardView->board();
-  b.setToMove(m_toMove);
   return b;
 }
 
@@ -172,6 +171,9 @@ void BoardSetupDialog::showSideToMove()
 void BoardSetupDialog::slotToggleSide()
 {
   m_toMove = oppositeColor(m_toMove);
+  Board b = ui.boardView->board();
+  b.setToMove(m_toMove);
+  ui.boardView->setBoard(b);
   showSideToMove();
 }
 
