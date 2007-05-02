@@ -1208,6 +1208,16 @@ Move Board::singleMove(const QString& SAN)
   else return Move();
 }
 
+inline void disambiguate(bool& row, bool& column, bool& provisional, int from, int square)
+{
+	if((from & ~7) == (square & ~7))
+		column = true;
+	else if((from & 7) == (square & 7))
+		row = true;
+	else
+		provisional = true;
+}
+
 QString Board::moveToSAN(const Move& move)
 {
    disableHashing();
@@ -1231,6 +1241,7 @@ QString Board::moveToSAN(const Move& move)
 			
 			bool column = false;
 			bool row = false;
+			bool provisional = false;
 			int vector, range, square;
 			
 			switch(piece) {
@@ -1239,13 +1250,8 @@ QString Board::moveToSAN(const Move& move)
 					for(vector = 0; vector < 8; vector++) {
 						if(knightData[to][vector]) {
 							square = to + knightVectors[vector];
-							if(at(square) == WhiteKnight && square != from && isLegal(Move(square, to))) {
-								if((from & 7) != (square & 7)) {
-									column = true;
-								} else {
-									row = true;
-								}
-							}
+							if(at(square) == piece && square != from && isLegal(Move(square, to)))
+								disambiguate(row, column, provisional, from, square);
 						}
 					}
 					break;
@@ -1255,13 +1261,8 @@ QString Board::moveToSAN(const Move& move)
 						square = to;
 						for(range = 1; range <= bishopData[to][vector]; range++) {
 							square += bishopVectors[vector];
-							if(at(square) == WhiteBishop && square != from && isLegal(Move(square, to))) {
-								if((from & 7) != (square & 7)) {
-									column = true;
-								} else {
-									row = true;
-								}
-							}
+							if(at(square) == piece && square != from && isLegal(Move(square, to)))
+								disambiguate(row, column, provisional, from, square);
 						}
 					}
 					break;
@@ -1271,13 +1272,8 @@ QString Board::moveToSAN(const Move& move)
 						square = to;
 						for(range = 1; range <= rookData[to][vector]; range++) {
 							square += rookVectors[vector];
-							if(at(square) == WhiteRook && square != from && isLegal(Move(square, to))) {
-								if((from & 7) != (square & 7)) {
-									column = true;
-								} else {
-									row = true;
-								}
-							}
+							if(at(square) == piece && square != from && isLegal(Move(square, to)))
+								disambiguate(row, column, provisional, from, square);
 						}
 					}
 					break;
@@ -1287,24 +1283,14 @@ QString Board::moveToSAN(const Move& move)
 						square = to;
 						for(range = 1; range <= bishopData[to][vector]; range++) {
 							square += bishopVectors[vector];
-							if(at(square) == WhiteQueen && square != from && isLegal(Move(square, to))) {
-								if((from & 7) != (square & 7)) {
-									column = true;
-								} else {
-									row = true;
-								}
-							}
+							if(at(square) == piece && square != from && isLegal(Move(square, to)))
+								disambiguate(row, column, provisional, from, square);
 						}
 						square = to;
 						for(range = 1; range <= rookData[to][vector]; range++) {
 							square += rookVectors[vector];
-							if(at(square) == WhiteQueen && square != from && isLegal(Move(square, to))) {
-								if((from & 7) != (square & 7)) {
-									column = true;
-								} else {
-									row = true;
-								}
-							}
+							if(at(square) == piece && square != from && isLegal(Move(square, to)))
+								disambiguate(row, column, provisional, from, square);
 						}
 					}
 					break;
@@ -1313,13 +1299,8 @@ QString Board::moveToSAN(const Move& move)
 					for(vector = 0; vector < 8; vector++) {
 						if(knightData[to][vector]) {
 							square = to + knightVectors[vector];
-							if(at(square) == BlackKnight && square != from && isLegal(Move(square, to))) {
-								if((from & 7) != (square & 7)) {
-									column = true;
-								} else {
-									row = true;
-								}
-							}
+							if(at(square) == piece && square != from && isLegal(Move(square, to)))
+								disambiguate(row, column, provisional, from, square);
 						}
 					}
 					break;
@@ -1329,13 +1310,8 @@ QString Board::moveToSAN(const Move& move)
 						square = to;
 						for(range = 1; range <= bishopData[to][vector]; range++) {
 							square += bishopVectors[vector];
-							if(at(square) == BlackBishop && square != from && isLegal(Move(square, to))) {
-								if((from & 7) != (square & 7)) {
-									column = true;
-								} else {
-									row = true;
-								}
-							}
+							if(at(square) == piece && square != from && isLegal(Move(square, to)))
+								disambiguate(row, column, provisional, from, square);
 						}
 					}
 					break;
@@ -1345,13 +1321,8 @@ QString Board::moveToSAN(const Move& move)
 						square = to;
 						for(range = 1; range <= rookData[to][vector]; range++) {
 							square += rookVectors[vector];
-							if(at(square) == BlackRook && square != from && isLegal(Move(square, to))) {
-								if((from & 7) != (square & 7)) {
-									column = true;
-								} else {
-									row = true;
-								}
-							}
+							if(at(square) == piece && square != from && isLegal(Move(square, to)))
+								disambiguate(row, column, provisional, from, square);
 						}
 					}
 					break;
@@ -1361,24 +1332,14 @@ QString Board::moveToSAN(const Move& move)
 						square = to;
 						for(range = 1; range <= bishopData[to][vector]; range++) {
 							square += bishopVectors[vector];
-							if(at(square) == BlackQueen && square != from && isLegal(Move(square, to))) {
-								if((from & 7) != (square & 7)) {
-									column = true;
-								} else {
-									row = true;
-								}
-							}
+							if(at(square) == piece && square != from && isLegal(Move(square, to)))
+								disambiguate(row, column, provisional, from, square);
 						}
 						square = to;
 						for(range = 1; range <= rookData[to][vector]; range++) {
 							square += rookVectors[vector];
-							if(at(square) == BlackQueen && square != from && isLegal(Move(square, to))) {
-								if((from & 7) != (square & 7)) {
-									column = true;
-								} else {
-									row = true;
-								}
-							}
+							if(at(square) == piece && square != from && isLegal(Move(square, to)))
+								disambiguate(row, column, provisional, from, square);
 						}
 					}
 					break;
@@ -1386,6 +1347,8 @@ QString Board::moveToSAN(const Move& move)
 				default:
 					break;
 			}
+			if (provisional && !row)
+				column = true;
 			
 			if(column) {
 				moveString += 'a' + (from & 7);
