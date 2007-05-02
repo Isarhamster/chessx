@@ -491,37 +491,32 @@ int Game::addMove(const Move& move, const QString& annotation, NagSet nags)
 	if(m_nextFreeNode == m_totalNodeCount) {
 		compact();
 	}
-	
+
 	//set up node
 	m_moveNodes[m_nextFreeNode].move = move;
 	m_moveNodes[m_nextFreeNode].annotation = annotation;
 	m_moveNodes[m_nextFreeNode].nags = nags;
 	m_moveNodes[m_nextFreeNode].nextNode = 0;
 	m_moveNodes[m_nextFreeNode].nextVariation = 0;
-	
+	m_moveNodes[m_nextFreeNode].parentNode = 0;
+
 	//link back to previous node
 	int variation = 0;
-	if(atStart()) {
-		m_moveNodes[m_nextFreeNode].previousNode = 0;
-		m_moveNodes[m_nextFreeNode].parentNode = 0;
+	m_moveNodes[m_nextFreeNode].previousNode = m_currentNode;
+
+	//link forward from previous move or last variation
+	int lastNode = m_moveNodes[m_currentNode].nextNode;
+	if(!lastNode) {
 		m_moveNodes[m_currentNode].nextNode = m_nextFreeNode;
+		m_moveNodes[m_nextFreeNode].parentNode = m_moveNodes[m_currentNode].parentNode;
 	} else {
-		m_moveNodes[m_nextFreeNode].previousNode = m_currentNode;
-		
-		//link forward from previous move or last variation
-		int lastNode = m_moveNodes[m_currentNode].nextNode;
-		if(!lastNode) {
-			m_moveNodes[m_currentNode].nextNode = m_nextFreeNode;
-			m_moveNodes[m_nextFreeNode].parentNode = m_moveNodes[m_currentNode].parentNode;
-		} else {
+		variation++;
+		while(m_moveNodes[lastNode].nextVariation) {
+			lastNode = m_moveNodes[lastNode].nextVariation;
 			variation++;
-			while(m_moveNodes[lastNode].nextVariation) {
-				lastNode = m_moveNodes[lastNode].nextVariation;
-				variation++;
-			}
-			m_moveNodes[m_nextFreeNode].parentNode = m_currentNode;
-			m_moveNodes[lastNode].nextVariation = m_nextFreeNode;
 		}
+		m_moveNodes[m_nextFreeNode].parentNode = m_currentNode;
+		m_moveNodes[lastNode].nextVariation = m_nextFreeNode;
 	}
 
 	//node now added
