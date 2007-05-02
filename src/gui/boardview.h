@@ -95,6 +95,8 @@ private:
   bool canDrag(Square s) const;
   /** Highlights the from and to squares of a guessed move. */
   void showGuess(Square s);
+  /** Recalculate guess when board is changed */
+	void updateGuess();
   /** Remove the guessed move highlight from the board. */
   void removeGuess();
 
