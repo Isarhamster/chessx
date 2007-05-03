@@ -32,6 +32,7 @@
 #include "savedialog.h"
 #include "settings.h"
 #include "tipoftheday.h"
+#include "tablebase.h"
 
 #include <QActionGroup>
 #include <QApplication>
@@ -56,6 +57,8 @@ MainWindow::MainWindow() : QMainWindow(),
   /* Active database */
   m_databases.append(new DatabaseInfo);
   m_currentDatabase = 0;
+	m_tablebase = new Shredder;
+	connect(m_tablebase, SIGNAL(bestMove(Move,int)), this, SLOT(showTablebaseMove(Move,int)));
 
   /* Actions */
   m_actions = new QActionGroup(this);
@@ -170,6 +173,7 @@ MainWindow::~MainWindow()
   delete m_helpWindow;
   delete m_output;
   delete m_tipDialog;
+	delete m_tablebase;
 }
 
 bool MainWindow::confirm(const QString& title, const QString& question,
@@ -564,8 +568,28 @@ void MainWindow::slotMoveChanged()
         var.append(" &nbsp; ");
      }
   }
-  m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4%5<qt>").arg(players).arg(result)
+  m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4%5<br></qt>").arg(players).arg(result)
       .arg(header).arg(move).arg(var));
+	m_tablebase->getBestMove(g->toFen());
+}
+
+void MainWindow::showTablebaseMove(Move move, int score)
+{
+	QString result;
+	if (score < 0)
+		result = QString("Loses in %1 move").arg(score*-1);
+	else if (score > 0)
+		result = QString("Wins in %1 move").arg(score);
+	else
+		result = "Draw";
+	if (score < -1 || score > 1)
+		result.append("s");
+
+	QString san(m_boardView->board().moveToSAN(move));
+	QString update = m_moveView->toHtml();
+	int s = update.lastIndexOf("</p>");
+	update.insert(s, QString("Tablebase: <a href=\"egtb:%1\">%1</a> -- %2").arg(san).arg(result));
+	m_moveView->setHtml(update);
 }
 
 void MainWindow::slotGameMoveWheel(int wheel)
@@ -574,7 +598,7 @@ void MainWindow::slotGameMoveWheel(int wheel)
     if (wheel & BoardView::WheelDown) slotGameMoveLast(); else slotGameMoveFirst();
   else if (wheel & Qt::ControlModifier)
     if (wheel & BoardView::WheelDown) slotGameMoveNextN(); else slotGameMovePreviousN();
-  else 
+  else
     if (wheel & BoardView::WheelDown) slotGameMoveNext(); else slotGameMovePrevious();
 }
 
@@ -634,10 +658,16 @@ void MainWindow::slotGameViewLink(const QUrl& url)
     if (url.path() == "prev") game()->backward();
     else if (url.path() == "next") game()->forward();
     else if (url.path() == "exit") game()->exitVariation();
-    else 
+    else
       game()->moveToId(url.path().toInt());
     slotMoveChanged();
   }
+  else if (url.scheme() == "egtb")
+	{
+		game()->addMove(url.path());
+		game()->forward();
+		slotGameChanged();
+	}
   else if (url.scheme() == "tag")
   {
     if (url.path() == "white")

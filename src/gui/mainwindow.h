@@ -23,6 +23,7 @@
 #include <QUrl>
 
 #include "common.h"
+#include "move.h"
 #include "historylist.h"
 
 class PlayerDialog;
@@ -35,6 +36,7 @@ class Database;
 class DatabaseInfo;
 class Output;
 class TipOfDayDialog;
+class Tablebase;
 
 class ChessBrowser;
 class QActionGroup;
@@ -177,6 +179,8 @@ public slots:
   void slotDatabaseChanged();
   /** Show window, then show tip dialog if enabled. */
   virtual void show();
+	/** Show tablebase move information */
+	void showTablebaseMove(Move move, int score);
 signals:
   /** Re-read configuration */
   void reconfigure();
@@ -220,6 +224,7 @@ private:
   QActionGroup* m_actions;
   bool m_showTip;
   bool m_showPgnSource; // for debugging
+  Tablebase* m_tablebase;
 };
 
 

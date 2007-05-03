@@ -31,7 +31,8 @@ HEADERS += board.h \
            databaseinfo.h \
            indexitem.h \
            index.h \
-           filtermodel.h
+           filtermodel.h \
+           tablebase.h
 SOURCES += board.cpp \
            move.cpp \
            common.cpp \
@@ -63,7 +64,8 @@ SOURCES += board.cpp \
            databaseinfo.cpp \
            indexitem.cpp \
            index.cpp \
-           filtermodel.cpp
+           filtermodel.cpp \
+           tablebase.cpp
 
 include(../common.pro)
 TARGET = database
