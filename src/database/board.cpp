@@ -195,6 +195,20 @@ int countFiles (const QString& rank)
    return count;
 }
 
+
+inline bool isWhitePiece(Piece p)
+{
+	if (p >= WhiteKing && p <= WhitePawn)
+		return true;
+	return false;
+}
+
+inline bool isBlackPiece(Piece p)
+{
+	if (p >= BlackKing && p <= BlackPawn)
+		return true;
+	return false;
+}
 Board::Board()
 {
   clear();
@@ -205,6 +219,36 @@ Board::Board()
 	}
    m_calcHashValue = true;
    m_hashStatusStack.clear();
+}
+
+bool Board::isPieceOnSquare(Square s) const
+{
+	if (s < 64) {
+		unsigned char b = m_board[s];
+		if (b < 32)
+			return isWhitePiece(m_pieceType[b]) || isBlackPiece(m_pieceType[b]);
+	}
+	return false;
+}
+
+bool Board::whitePieceOnSquare(Square s) const
+{
+	if (s < 64) {
+		unsigned char b = m_board[s];
+		if (b < 32)
+			return isWhitePiece(m_pieceType[b]);
+	}
+	return false;
+}
+
+bool Board::blackPieceOnSquare(Square s) const
+{
+	if (s < 64) {
+		unsigned char b = m_board[s];
+		if (b < 32)
+			return isBlackPiece(m_pieceType[b]);
+	}
+	return false;
 }
 
 void Board::setDebugName(QString debugName)
@@ -506,44 +550,18 @@ bool Board::setAt(Square s, Piece p)
             if ((m_pieceType[i] == Empty) && (emptyIndex == 127) && (i != 0) && (i != 16)) {
                emptyIndex = i;
             }
-            // Count the black and white pieces
-            switch (m_pieceType[i]) {
-               case WhiteKing:
-               case WhiteQueen:
-               case WhiteKnight:
-               case WhiteBishop:
-               case WhiteRook:
-               case WhitePawn:
-                  if ((m_pieceType[i] >= WhiteKing) && 
-                      (m_pieceType[i] <= WhitePawn) &&
-                      (m_piecePosition[i] == s)) {
-                     // If there is already a white piece on the square, 
-                     // don't count it because it will be removed
-                     if (emptyIndex == 127) emptyIndex = i;
-                     break;
-                  }
-                  whitePieceCount++;
-                  break;
-               case BlackKing:
-               case BlackQueen:
-               case BlackKnight:
-               case BlackBishop:
-               case BlackRook:
-               case BlackPawn:
-                  if ((m_pieceType[i] >= BlackKing) && 
-                      (m_pieceType[i] <= BlackPawn) &&
-                      (m_piecePosition[i] == s)) {
-                     // If there is already a black piece on the square, 
-                     // don't count it because it will be removed
-                     if (emptyIndex == 127) emptyIndex = i;
-                     break;
-                  }
-                  blackPieceCount++;
-                  break;
-               default :
-                  // The default is just to remove compilation warnings.
-                  break;
-            }
+				// Count the black and white pieces (except any piece that exists on target square)
+				if (isWhitePiece(m_pieceType[i])) {
+					if (m_piecePosition[i] != s)
+						whitePieceCount++;
+					else if (emptyIndex == 127)
+						emptyIndex = i;
+				} else if (isBlackPiece(m_pieceType[i])) {
+					if (m_piecePosition[i] != s)
+						blackPieceCount++;
+					else if (emptyIndex == 127)
+						emptyIndex = i;
+				}
          }
    }
    if ((whitePieceCount == 16) && (p >= WhiteKing) && (p <= WhitePawn)) {
@@ -576,17 +594,14 @@ bool Board::setAt(Square s, Piece p)
 
 void Board::removeFrom(Square s)
 {
-   // If the square is already empty, let's just leave it that way.
-   if ((m_pieceType[m_board[s]] == Empty) ||
-      (m_board[s] == InvalidSquare))
-      return;
-   // Now remove the piece
-   m_pieceCount[m_pieceType[m_board[s]]]--;
-   m_pieceType[m_board[s]] = Empty;
-   m_piecePosition[m_board[s]] = InvalidSquare;
-   m_board[s] = InvalidPiece;
-   // And update the hash
-   hashPiece(s,m_pieceType[m_board[s]]);
+	Q_ASSERT(s < 64);
+	if (isPieceOnSquare(s)) {
+		m_pieceCount[m_pieceType[m_board[s]]]--;
+		m_pieceType[m_board[s]] = Empty;
+		m_piecePosition[m_board[s]] = InvalidSquare;
+		m_board[s] = InvalidPiece;
+		hashPiece(s,m_pieceType[m_board[s]]);
+	}
 }
 
 bool Board::isValid(int* state)
@@ -629,13 +644,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < kingData[from][vector]; range++) {
                      tempSq += kingVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+							if (whitePieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+								if (blackPieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -647,13 +660,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < knightData[from][vector]; range++) {
                      tempSq += knightVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+							if (whitePieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+								if (blackPieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -665,13 +676,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < bishopData[from][vector]; range++) {
                      tempSq += bishopVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+							if (whitePieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+								if (blackPieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -683,13 +692,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < rookData[from][vector]; range++) {
                      tempSq += rookVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+							if (whitePieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+								if (blackPieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -701,13 +708,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < bishopData[from][vector]; range++) {
                      tempSq += bishopVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+							if (whitePieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+								if (blackPieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -717,13 +722,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < rookData[from][vector]; range++) {
                      tempSq += rookVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                         (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+							if (whitePieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                            (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+								if (blackPieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -738,12 +741,10 @@ MoveList Board::legalMoves()
                    (m_board[from+16] == InvalidPiece) && isLegal(Move(from,from+16))) {
                   moveList.append(Move(from, from+16, DoubleAdvance));
                }
-               if ((m_pieceType[m_board[from+7]] >= BlackKing) &&
-                   (m_pieceType[m_board[from+7]] <= BlackPawn) && isLegal(Move(from,from+7))) {
+               if (blackPieceOnSquare(from+7) && isLegal(Move(from,from+7))) {
                   moveList.append(Move(from, from+7));
                }
-               if ((m_pieceType[m_board[from+9]] >= BlackKing) &&
-                   (m_pieceType[m_board[from+9]] <= BlackPawn) && isLegal(Move(from,from+9))) {
+               if (blackPieceOnSquare(from+9) && isLegal(Move(from,from+9))) {
                   moveList.append(Move(from, from+9));
                }
                break;
@@ -757,13 +758,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < kingData[from][vector]; range++) {
                      tempSq += kingVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+							if (blackPieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+								if (whitePieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -775,13 +774,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < knightData[from][vector]; range++) {
                      tempSq += knightVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+							if (blackPieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+								if (whitePieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -793,13 +790,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < bishopData[from][vector]; range++) {
                      tempSq += bishopVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+							if (blackPieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+								if (whitePieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -811,13 +806,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < rookData[from][vector]; range++) {
                      tempSq += rookVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+							if (blackPieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+								if (whitePieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -829,13 +822,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < bishopData[from][vector]; range++) {
                      tempSq += bishopVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+							if (blackPieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+								if (whitePieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -845,13 +836,11 @@ MoveList Board::legalMoves()
                   tempSq = from;
                   for (unsigned char range=0; range < rookData[from][vector]; range++) {
                      tempSq += rookVectors[vector];
-                     if ((m_pieceType[m_board[tempSq]] >= BlackKing) && 
-                         (m_pieceType[m_board[tempSq]] <= BlackPawn)){
+							if (blackPieceOnSquare(tempSq)) {
                         break;
                      } else if (isLegal(Move(from,tempSq))) {
                         moveList.append(Move(from, tempSq));
-                        if ((m_pieceType[m_board[tempSq]] >= WhiteKing) && 
-                            (m_pieceType[m_board[tempSq]] <= WhitePawn)){
+								if (whitePieceOnSquare(tempSq)) {
                            break;
                         }
                      }
@@ -866,12 +855,10 @@ MoveList Board::legalMoves()
                    (m_board[from-16] == InvalidPiece) && isLegal(Move(from,from-16))) {
                   moveList.append(Move(from, from-16, DoubleAdvance));
                }
-               if ((m_pieceType[m_board[from-7]] >= WhiteKing) &&
-                   (m_pieceType[m_board[from-7]] <= WhitePawn) && isLegal(Move(from,from-7))) {
+               if (whitePieceOnSquare(from-7) && isLegal(Move(from,from-7))) {
                   moveList.append(Move(from, from-7));
                }
-               if ((m_pieceType[m_board[from-9]] >= WhiteKing) &&
-                   (m_pieceType[m_board[from-9]] <= WhitePawn) && isLegal(Move(from,from-9))) {
+               if (whitePieceOnSquare(from-9) && isLegal(Move(from,from-9))) {
                   moveList.append(Move(from, from-9));
                }
                break;
@@ -974,17 +961,14 @@ QString Board::toASCII()
 
 Piece Board::at(Square s) const
 {
-  return (m_board[s] != InvalidPiece) ? m_pieceType[m_board[s]] : Empty;
+	if (isPieceOnSquare(s))
+		return m_pieceType[m_board[s]];
+	return Empty;
 }
 
 Piece Board::at(Coord x, Coord y) const
 {
   return at(8 * y + x);
-}
-
-Piece Board::atIndex(int i) const
-{
-  return m_pieceType[i];
 }
 
 Square Board::piecePosition(int index) const
@@ -1894,46 +1878,59 @@ bool Board::isStalemate()
 
 void Board::movePiece(Square from, Square to)
 {
-   hashPiece(from, m_pieceType[m_board[from]]);
-   if (m_board[to] != InvalidPiece) { // capture
-      hashPiece(to, m_pieceType[m_board[to]]);
-      m_pieceCount[m_pieceType[m_board[to]]]--;
-      m_pieceType[m_board[to]] = Empty;
-      m_halfMoveClock = 0;
-   }
-   m_board[to] = m_board[from];
-   m_piecePosition[m_board[from]] = to;
-   m_board[from] = InvalidPiece;
-   hashPiece(to, m_pieceType[m_board[to]]);
+	Q_ASSERT(from < 64);
+	Q_ASSERT(to < 64);
+	Q_ASSERT(isPieceOnSquare(from));
+
+	hashPiece(from, at(from));
+	if (isPieceOnSquare(to)) { // capture
+		hashPiece(to, at(to));
+		m_pieceCount[at(to)]--;
+		m_pieceType[m_board[to]] = Empty;
+		m_halfMoveClock = 0;
+	}
+	m_board[to] = m_board[from];
+	m_piecePosition[m_board[to]] = to;
+	m_board[from] = InvalidPiece;
+	hashPiece(to, at(to));
 }
 
 void Board::restorePiece(Square from, Piece piece, int index)
 {
-  m_pieceCount[piece]++;
-  m_pieceType[index] = piece;
-  m_piecePosition[index] = from;
-  m_board[from] = index;
-  hashPiece(from ,piece);
+	Q_ASSERT(from < 64);
+	Q_ASSERT(index < 32);
+	Q_ASSERT(piece < ConstPieceTypes);;
+
+	m_pieceCount[piece]++;
+	m_pieceType[index] = piece;
+	m_piecePosition[index] = from;
+	m_board[from] = index;
+	hashPiece(from, piece);
 }
 
 void Board::promotePiece(Square square, Piece promoted)
 {
-	m_pieceCount[m_pieceType[m_board[square]]]--;
-   hashPiece(square, m_pieceType[m_board[square]]);
+	Q_ASSERT(square < 64);
+	Q_ASSERT(promoted < ConstPieceTypes);;
+	Q_ASSERT(isPieceOnSquare(square));
+
+	m_pieceCount[at(square)]--;
+	hashPiece(square, at(square));
 	m_pieceCount[promoted]++;
 	m_pieceType[m_board[square]] = promoted;
-   hashPiece(square, promoted);
+	hashPiece(square, promoted);
 }
 
 void Board::hashPiece(Square s, Piece p)
 {
    if (m_calcHashValue) {
-      if ((p > Empty) && (p < InvalidPiece)) { 
+      if ((p > Empty) && (p < InvalidPiece)) {
          m_hashValue = m_hashValue ^ RAND_VALUES[p-1][s];
          m_hashValue2 = m_hashValue2 ^ RAND_VALUES2[p-1][s];
       }
    }
 }
+
 void Board::hashToMove()
 {
    if (m_calcHashValue) {
