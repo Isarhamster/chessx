@@ -102,7 +102,7 @@ class Output
        *               after the other, using the output(Game* game) method */
       void output(QString& filename, Filter& filter);
       /** Create the output for the given database 
-       * @param out The filename that the output will be written to.
+       * @param filename The filename that the output will be written to.
        * @param database A pointer to a database object. All games in the database will be output, one
        *               after the other, using the output(Game* game) method */
       void output(QString& filename, Database& database);
