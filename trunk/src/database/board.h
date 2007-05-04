@@ -66,8 +66,6 @@ public:
   Piece at(Square s) const;
   /** @return piece on given square (defined by x,y from 0-7 range) */
   Piece at(Coord x, Coord y) const;
-  /** @return piece at given @p index (0..31) */
-  Piece atIndex(int i) const;
   /** @return position of piece given by @p index (0..31) */
   Square piecePosition(int index) const;
 
@@ -144,6 +142,12 @@ private:
   void restorePiece(Square from, Piece piece, int index);
   /** Promotes a piece / changes its type*/
   void promotePiece(Square square, Piece promoted);
+	/** Helper function for move legality testing */
+	bool whitePieceOnSquare(Square s) const;
+	/** Helper function for move legality testing */
+	bool blackPieceOnSquare(Square s) const;
+	/** Helper function for move legality testing */
+	bool isPieceOnSquare(Square s) const;
 
   QString m_debugName;
   unsigned char m_board[64];

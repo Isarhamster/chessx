@@ -18,6 +18,7 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
+#include <QtDebug>
 #include <QMap>
 #include <QString>
 #include <QStringList>
