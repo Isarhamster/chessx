@@ -91,6 +91,8 @@ protected:
   /** Save Game dialog (created when used first) */
   SaveDialog* saveDialog();
   /** Help window (created when used first) */
+  TipOfDayDialog* tipDialog();
+  /** Help window (created when used first) */
   HelpWindow* helpWindow();
 public slots:
   void slotPlayerDialog();
@@ -106,6 +108,8 @@ public slots:
   void slotConfigureChessEngines();
   /** Display help */
   void slotHelp();
+  /** Show tip of the day */
+  void slotHelpTip();
   /** About ChessX */
   void slotHelpAbout();
   /** Display Tracker at ChessX SourceForge */
@@ -177,10 +181,8 @@ public slots:
   void slotDatabaseChange();
   /** Database was changed - change informations */
   void slotDatabaseChanged();
-  /** Show window, then show tip dialog if enabled. */
-  virtual void show();
-	/** Show tablebase move information */
-	void showTablebaseMove(Move move, int score);
+  /** Show tablebase move information */
+  void showTablebaseMove(Move move, int score);
 signals:
   /** Re-read configuration */
   void reconfigure();
@@ -222,7 +224,6 @@ private:
   int m_currentDatabase;
   QString m_eco;
   QActionGroup* m_actions;
-  bool m_showTip;
   bool m_showPgnSource; // for debugging
   Tablebase* m_tablebase;
 };

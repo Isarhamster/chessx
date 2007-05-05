@@ -2,7 +2,7 @@
                       BoardView - view of the current board
                              -------------------
     begin                : Sun 21 Aug 2005
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+    copyright            : (C) 2005-2007 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -217,9 +217,9 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
   Square s = squareAt(event->pos());
   m_clickUsed = false;
   if (event->button() != Qt::LeftButton) {
-       if (s != InvalidSquare)
-               emit clicked(s, event->button() + event->modifiers());
-       return;
+    if (s != InvalidSquare)
+      emit clicked(s, event->button() + event->modifiers());
+    return;
   }
 
   if (m_dragged != Empty)
@@ -244,15 +244,16 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
   else if (m_hifrom != InvalidSquare)
   {
     if (s == m_hifrom || s == m_hito)
-        emit moveMade(m_hifrom, m_hito);
+      emit moveMade(m_hifrom, m_hito);
     m_hoverSquare = InvalidSquare;
     showGuess(s);
   }
-  else {
-         if (s != InvalidSquare)
-                 emit clicked(s, event->button() + event->modifiers());
-         if (!m_clickUsed && isPieceColor(m_board.at(s), m_board.toMove()))
-                 selectSquare(s);
+  else
+  {
+    if (s != InvalidSquare)
+      emit clicked(s, event->button() + event->modifiers());
+    if (!m_clickUsed && isPieceColor(m_board.at(s), m_board.toMove()))
+      selectSquare(s);
   }
 }
 

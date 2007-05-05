@@ -1,5 +1,19 @@
-#ChessX tips of the day file. The format is NNN.Text of the tip
-001.ChessX reads and writes PGN databases
-002.To download the latest version of ChessX visit http://chessx.sourceforge.net
-003.The playerdatabase displays pictures of well known players
-004.Using the Preferences menu you can choose a board theme
+You can download the latest version of ChessX from 
+<a href="http://chessx.sourceforge.net">http://chessx.sourceforge.net</a>
+
+You can quickly find games by player, event or site by clicking on
+appropriate tag in Game List header.
+
+You can paste position from another program using notation by pressing
+<code>Ctrl+Shift+V</code>.
+
+ChessX tries to guess next move when you enter a game. If you do not like
+this feature, disable it in Board tab of Preferences dialog.
+
+You can switch between databases using <code>Ctrl+1</code>, <code>Ctrl+2</code>
+etc.
+
+
+
+
+

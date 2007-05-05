@@ -98,11 +98,6 @@ void PreferencesDialog::restoreSettings()
   ui.playersRatingsCheck->setChecked(AppSettings->value("rating", true).toBool());
   ui.playersSpinbox->setValue(AppSettings->value("count", 100).toInt());
   AppSettings->endGroup();
-
-  //Read general settings
-  AppSettings->beginGroup("/Tips/");
-  ui.tipOfTheDay->setChecked(AppSettings->value("showTips", true).toBool());
-  AppSettings->endGroup();
 }
 
 void PreferencesDialog::saveSettings()
@@ -119,9 +114,6 @@ void PreferencesDialog::saveSettings()
   AppSettings->beginGroup("/Players/");
   AppSettings->setValue("rating", ui.playersRatingsCheck->isChecked());
   AppSettings->setValue("count", ui.playersSpinbox->value());
-  AppSettings->endGroup();
-  AppSettings->beginGroup("/Tips/");
-  AppSettings->setValue("showTips",ui.tipOfTheDay->isChecked());
   AppSettings->endGroup();
 }
 
