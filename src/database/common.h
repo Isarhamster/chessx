@@ -26,8 +26,8 @@
 typedef unsigned char Square;
 typedef unsigned char Coord;
 
-const QString ChessXVersion = "0.3";
-const uint ChessXVersionNumber = 00300;
+const QString ChessXVersion = "0.4";
+const uint ChessXVersionNumber = 00400;
 
 enum Color {White, Black};
 enum Piece {Empty, WhiteKing, WhiteQueen, WhiteRook, WhiteBishop, WhiteKnight, WhitePawn,
