@@ -103,8 +103,6 @@ class PgnDatabase : public Database
 		QString m_gameText;
 		
 		//parsing variables
-		static const int MaxLineLength = 512;
-		char m_charLine[MaxLineLength];
 		QString m_currentLine;
 		int m_pos;
 		bool m_gameOver;

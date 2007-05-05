@@ -158,19 +158,21 @@ void PgnDatabase::addOffset(qint32 offset)
 void PgnDatabase::readLine()
 {
 	m_filePos += m_currentLineSize;
-	m_currentLineSize = m_file->readLine(m_charLine, MaxLineLength);
-	m_currentLine = QString(m_charLine).trimmed();
-   m_currentLine.replace ("("," ( ");
-   m_currentLine.replace (")"," ) ");
-   m_currentLine.replace ("{"," { ");
-   m_currentLine.replace ("}"," } ");
+	QByteArray line = m_file->readLine();
+	m_currentLineSize = line.size();
+	m_currentLine = QString(line).trimmed();
+	m_currentLine.replace ("("," ( ");
+	m_currentLine.replace (")"," ) ");
+	m_currentLine.replace ("{"," { ");
+	m_currentLine.replace ("}"," } ");
 }
 
 void PgnDatabase::seekGame(int index)
 {
 	m_file->seek(m_filePos = offset(index));
-	m_currentLineSize = m_file->readLine(m_charLine, MaxLineLength);
-	m_currentLine = QString(m_charLine).trimmed();
+	QByteArray line = m_file->readLine();
+	m_currentLineSize = line.size();
+	m_currentLine = QString(line).trimmed();
 }
 
 void PgnDatabase::parseTagsIntoIndex()
