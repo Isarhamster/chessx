@@ -51,7 +51,8 @@
 
 
 MainWindow::MainWindow() : QMainWindow(),
-  m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_showPgnSource(false)
+  m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_tipDialog(0),
+  m_showPgnSource(false)
 {
   setObjectName("MainWindow");
   /* Active database */
@@ -136,15 +137,21 @@ MainWindow::MainWindow() : QMainWindow(),
   AppSettings->endGroup();
   emit reconfigure();
 
-  Game::loadEcoFile(AppSettings->dataPath() + "/chessx.eco");
-
   /* Reset board - not earlier, as all widgets have to be created. */
   slotGameChanged();
 
   /* Status */
   m_statusFilter = new QLabel(statusBar());
   statusBar()->addPermanentWidget(m_statusFilter);
-  slotStatusMessage(tr("Ready."));
+
+  /* Display main window */
+  show();
+
+  /* Load files from command line */
+  QStringList args = qApp->arguments();
+  for (int i = 1; i < args.count(); i++)
+    if (!QFile::exists(args[i]))
+      openDatabase(args[i]);
 
   /* Activate clipboard */
   updateMenuDatabases();
@@ -152,17 +159,17 @@ MainWindow::MainWindow() : QMainWindow(),
 
   /* Tip of the day */
   AppSettings->beginGroup("/Tips/");
-  m_showTip = AppSettings->value("showTips", true).toBool();
+  if (AppSettings->value("showTips", true).toBool())
+    slotHelpTip();
   AppSettings->endGroup();
-  m_tipDialog = new TipOfDayDialog(this);
 
-}
-
-void MainWindow::show()
-{
-  this->QMainWindow::show();
-  if(m_showTip)
-      m_tipDialog->show();
+  /* Load ECO file */
+  slotStatusMessage(tr("Loading ECO file..."));
+  qApp->processEvents();
+  qApp->setOverrideCursor(Qt::WaitCursor);
+  Game::loadEcoFile(AppSettings->dataPath() + "/chessx.eco");
+  qApp->restoreOverrideCursor();
+  slotStatusMessage(tr("Ready."));
 }
 
 MainWindow::~MainWindow()
@@ -302,7 +309,7 @@ bool MainWindow::openDatabase(const QString& fname)
     {
       m_currentDatabase = i;
       slotDatabaseChanged();
-      slotStatusMessage(tr("Database %1 already opened.").arg(fname.section('/', -1)));
+      slotStatusMessage(tr("Database %1 is already opened.").arg(fname.section('/', -1)));
       return false;
     }
 
@@ -352,6 +359,13 @@ HelpWindow* MainWindow::helpWindow()
     AppSettings->layout(m_helpWindow);
   }
   return m_helpWindow;
+}
+
+TipOfDayDialog* MainWindow::tipDialog()
+{
+  if (!m_tipDialog)
+    m_tipDialog = new TipOfDayDialog(this);
+  return m_tipDialog;
 }
 
 
@@ -417,10 +431,10 @@ void MainWindow::slotEditCopyFEN()
 
 void MainWindow::slotEditPasteFEN()
 {
-  QString fen = QApplication::clipboard()->text();
+  QString fen = QApplication::clipboard()->text().trimmed();
   if (!game()->board().isValidFEN(fen))
   {
-    QString msg = fen.trimmed().length() ?
+    QString msg = fen.length() ?
         tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
         tr("There is no text in clipboard.");
     QMessageBox::warning(0, "Paste FEN", msg);
@@ -462,6 +476,11 @@ void MainWindow::slotHelp()
   helpWindow()->show();
 }
 
+void MainWindow::slotHelpTip()
+{
+  tipDialog()->show();
+}
+
 void MainWindow::slotHelpAbout()
 {
   QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
@@ -486,10 +505,13 @@ void MainWindow::slotMove(Square from, Square to)
 {
   Board board = game()->board();
   Move m(board, from, to);
-  if ((to < 8 && from < 16 && board.at(from) == BlackPawn) ||
-      (to > 55 && from > 47 && board.at(from) == WhitePawn))
+  if ((board.at(from) == BlackPawn && to / 8 == 0) ||
+      (board.at(from) == WhitePawn && to / 8 == 7))
   {
-    QStringList moves;
+    m.setPromotionPiece(board.toMove() == White ? WhiteQueen : BlackQueen);
+    if (!board.isLegal(m))  // If promotion, check for legality with queen
+      return;
+    QStringList moves;      // Move is legal, ask for promoted piece
     moves << tr("Queen") << tr("Rook") << tr("Bishop") << tr("Knight");
     bool ok;
     int index = moves.indexOf(QInputDialog::getItem(0, tr("Promotion"), tr("Promote to:"), 
@@ -503,8 +525,8 @@ void MainWindow::slotMove(Square from, Square to)
       game()->addMove(m);
     else
     {
-      // Find how way we should add a moveMade
-      QMessageBox mbox(QMessageBox::Question, tr("Add move"), 
+      // Find how way we should add new move
+      QMessageBox mbox(QMessageBox::Question, tr("Add move"),
                       tr("There is already next move in current game. What do you want to do?"));
       QPushButton* addVar = mbox.addButton(tr("Add variation"), QMessageBox::YesRole);
       QPushButton* newMain = mbox.addButton(tr("Add new mainline"), QMessageBox::AcceptRole);
@@ -719,7 +741,7 @@ void MainWindow::slotStatusMessage(const QString& msg)
 
 void MainWindow::slotDatabaseChange()
 {
-  QAction *action = qobject_cast<QAction *>(sender());
+  QAction* action = qobject_cast<QAction*>(sender());
   if (action && m_currentDatabase != action->data().toInt())
   {
     m_currentDatabase = action->data().toInt();
@@ -815,8 +837,8 @@ void MainWindow::setupActions()
   /* View menu */
   m_menuView = menuBar()->addMenu(tr("&View"));
   m_menuDatabases = m_menuView->addMenu(tr("&Database"));;
-  //m_menuView->addAction(createAction(tr("&Game list"), SLOT(slotFilterSwitch()), Qt::CTRL + Qt::Key_L));
-  m_menuView->addAction(createAction(tr("&Player Database..."), SLOT(slotPlayerDialog()), Qt::CTRL + Qt::SHIFT + Qt::Key_P));
+  m_menuView->addAction(createAction(tr("&Player Database..."), SLOT(slotPlayerDialog()),
+                        Qt::CTRL + Qt::SHIFT + Qt::Key_P));
 
   /* Settings menu */
   QMenu *settings = menuBar()->addMenu(tr("&Settings"));
@@ -827,9 +849,12 @@ void MainWindow::setupActions()
   /* Help menu */
   menuBar()->addSeparator();
   QMenu *help = menuBar()->addMenu(tr("&Help"));
-//  help->addAction(createAction(tr("ChessX &help..."), SLOT(slotHelp()), Qt::CTRL + Qt::Key_F10));
+//  help->addAction(createAction(tr("ChessX &help..."), SLOT(slotHelp()), Qt::CTRL + Qt::Key_F1));
+  help->addAction(createAction(tr("&Tip of the day"), SLOT(slotHelpTip()) ));
+  help->addAction(createAction(tr("&Report a bug..."), SLOT(slotHelpBug()) ));
+  help->addSeparator();
   help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()) ));
-  help->addAction(createAction(tr("&Report a bug"), SLOT(slotHelpBug()) ));
+
   QMenu* debug = help->addMenu(tr("&Debug"));
 #ifndef QT_DEBUG
   debug->setVisible(false);
@@ -884,3 +909,4 @@ void MainWindow::slotFileExportAll()
      output.output(file, *database());
   }
 }
+

@@ -20,7 +20,9 @@
 #define __TIPOFTHEDAY__
 
 #include "ui_tipoftheday.h"
-#include <QMap>
+#include <QList>
+
+class QCloseEvent;
 
 /** @ingroup GUI 
 The TipOfDayDialog class is a dialog to shows tips. */
@@ -32,18 +34,19 @@ public:
   ~TipOfDayDialog();
 
 public slots:
-
-  void accept();
   void slotNextTip();
-
+  void slotPreviousTip();
+  void slotSaveConfiguration();
+  virtual void show();
+protected:
 private:
-
-  Ui::TipOfDayDialog tipDialog;
-  QMap<int, QString> tipsMap;
-  
-  QString readNextTip();
+  void setCurrentTip(int tip);
+  QString currentTip() const;
+  Ui::TipOfDayDialog ui;
+  QStringList m_tips;
+  int m_current;
   /** Loads all tips into memory */
-  int loadTips();
+  bool loadTips();
 
 };
 

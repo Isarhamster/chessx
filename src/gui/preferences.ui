@@ -288,27 +288,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab" >
-      <attribute name="title" >
-       <string>&amp;General settings</string>
-      </attribute>
-      <attribute name="toolTip" >
-       <string>General settings for ChessX</string>
-      </attribute>
-      <widget class="QCheckBox" name="tipOfTheDay" >
-       <property name="geometry" >
-        <rect>
-         <x>10</x>
-         <y>30</y>
-         <width>361</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text" >
-        <string>Show tip of the day</string>
-       </property>
-      </widget>
-     </widget>
     </widget>
    </item>
    <item row="1" column="0" >

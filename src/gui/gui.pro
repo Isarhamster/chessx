@@ -1,7 +1,8 @@
 # Main application
 
 include(../common.pro)
-CONFIG += uic
+CONFIG += uic 
+QT += xml
 
 FORMS += playerdialog.ui \
          preferences.ui \
