@@ -1,10 +1,15 @@
 
 	* feature: improve look&feel and usability of Tip of the day
 	* feature: move guesser
+	* feature: support for online tablebases
 	* bugfix: update theme when pieces are changed
 	* bugfix: fix some drag&drop problems
 	* bugfix: segfault when truncating moves from empty game
 	* bugfix: ask for promoted piece only for legal moves
+	* bugfix: allow variations in starting position
+	* bugfix: correctly redraw board frame
+	* bugfix: correctly show side to move in Setup Position dialog
+	* bugfix: fix rare bug when # symbol was displayed instead of +
 
 Mon 23 Apr 2007 18:59:47 CET	Version 0.3
 
