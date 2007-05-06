@@ -15,10 +15,10 @@
  ***************************************************************************/
 
 #include <QHeaderView>
-#include <QInputDialog>
 
-#include "gamelist.h"
 #include "filtermodel.h"
+#include "gamelist.h"
+#include "quicksearch.h"
 #include "search.h"
 #include "settings.h"
 
@@ -90,14 +90,21 @@ void GameList::simpleSearch(int tagid)
   const QString tagNames[] = {"Nr", "White", "Black", "Event", "Site", "Round", "Date",
      "Result", "ECO", "Length", ""};
 
-  QString tag = tagNames[tagid];
-  if (tag.isEmpty())
+  QuickSearchDialog dialog(this);
+
+  dialog.setTag(tagid);
+  if (dialog.exec() != QDialog::Accepted)
     return;
-  QString value = QInputDialog::getText(0, tr("Find %1").arg(tag), tr("Value:"));
+
+  QString tag = tagNames[dialog.tag()];
+  QString value = dialog.value();
   if (value.isEmpty())
-    return;
-  TagSearch ts(m_model->filter()->database(), tag, value);
-  m_model->filter()->executeSearch(ts);
+    m_model->filter()->setAll(true);
+  else
+  {
+    TagSearch ts(m_model->filter()->database(), tag, value);
+    m_model->filter()->executeSearch(ts);
+  }
   updateFilter();
   emit searchDone();
 }

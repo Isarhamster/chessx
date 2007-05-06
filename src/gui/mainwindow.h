@@ -165,6 +165,8 @@ public slots:
   void slotFileClose();
   /** Quit ChessX. Ask for confirmation before */
   void slotFileQuit();
+  /** Find games matching single tag. */
+ void slotSearchTag();
   /** Find current position */
  void slotSearchBoard();
   /** Reset current filter */

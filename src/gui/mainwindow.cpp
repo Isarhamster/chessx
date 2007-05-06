@@ -16,10 +16,11 @@
 
 #include "boardsetup.h"
 #include "boardview.h"
-#include "filtermodel.h"
 #include "chessbrowser.h"
-//#include "enginesetup.h"
 #include "databaseinfo.h"
+#include "ecothread.h"
+//#include "enginesetup.h"
+#include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"
 #include "helpwindow.h"
@@ -31,9 +32,8 @@
 #include "preferences.h"
 #include "savedialog.h"
 #include "settings.h"
-#include "tipoftheday.h"
 #include "tablebase.h"
-#include "ecothread.h"
+#include "tipoftheday.h"
 
 #include <QActionGroup>
 #include <QApplication>
@@ -843,6 +843,8 @@ void MainWindow::setupActions()
 
   /* Search menu */
   QMenu* search = menuBar()->addMenu(tr("&Search"));
+  search->addAction(createAction(tr("&Find tag"), SLOT(slotSearchTag()), Qt::CTRL +
+      Qt::SHIFT + Qt::Key_T));
   search->addAction(createAction(tr("&Find position"), SLOT(slotSearchBoard()), Qt::CTRL +
       Qt::SHIFT + Qt::Key_B));
   search->addAction(createAction(tr("&Reset filter"), SLOT(slotSearchReset()), Qt::CTRL + Qt::Key_F));
@@ -878,6 +880,11 @@ void MainWindow::setupActions()
   debug->addAction(source = createAction("Toggle game view format", 0, Qt::Key_F12));
   source->setCheckable(true);
   connect(source, SIGNAL(toggled(bool)), SLOT(slotGameViewToggle(bool)));
+}
+
+void MainWindow::slotSearchTag()
+{
+  m_gameList->simpleSearch(1);
 }
 
 void MainWindow::slotSearchBoard()
