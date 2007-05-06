@@ -27,6 +27,8 @@
 #include "partialdate.h"
 #include "nag.h"
 
+#define COMPILED_ECO_FILE_ID ((quint32)0xCD5CBD02U)
+
 /** @ingroup Database  
    The Game class represents a chess game. Moves and variations can be added
 	 and removed. Moves can have associated comments and nag values. For methods
