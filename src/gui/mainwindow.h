@@ -105,6 +105,7 @@ public slots:
   void slotEditPasteFEN();
   /** Truncate next moves */
   void slotEditTruncate();
+  void slotReconfigure();
   void slotConfigure();
   void slotConfigureChessEngines();
   /** Display help */

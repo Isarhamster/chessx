@@ -39,6 +39,7 @@ public slots:
   void slotBoardLightColor();
   void slotBoardDarkColor();
   void slotBoardMode(int mode);
+  void slotApply();
 
 private:
   Ui::PreferencesDialog ui;
@@ -49,7 +50,7 @@ private:
   QColor buttonColor(const QPushButton* button) const;
 
 signals:
-  /** Signal emitted when changes are done. */
+  /** Signal emitted when changes are applied. */
   void reconfigure();
 };
 

@@ -30,6 +30,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 
   connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
   connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
+  connect(ui.applyButton, SIGNAL(clicked()), SLOT(slotApply()));
   connect(ui.boardLightButton, SIGNAL(clicked()), SLOT(slotBoardLightColor()));
   connect(ui.boardDarkButton, SIGNAL(clicked()), SLOT(slotBoardDarkColor()));
   connect(ui.boardTypeCombo, SIGNAL(activated(int)), SLOT(slotBoardMode(int)));
@@ -44,8 +45,17 @@ int PreferencesDialog::exec()
 {
   int result = QDialog::exec();
   if (result == QDialog::Accepted)
+  {
     saveSettings();
+    emit reconfigure();
+  }
   return result;
+}
+
+void PreferencesDialog::slotApply()
+{
+  saveSettings();
+  emit reconfigure();
 }
 
 void PreferencesDialog::slotBoardLightColor()
@@ -142,3 +152,4 @@ QColor PreferencesDialog::buttonColor(const QPushButton* button) const
 {
   return button->palette().color(button->backgroundRole());
 }
+

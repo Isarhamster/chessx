@@ -418,8 +418,14 @@ void MainWindow::slotPlayerDialog()
 void MainWindow::slotConfigure()
 {
   PreferencesDialog P;
-  if (P.exec() == QDialog::Accepted)
-    emit reconfigure();
+  connect(&P, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
+  P.exec();
+}
+
+void MainWindow::slotReconfigure()
+{
+  // Re-emit for children
+  emit reconfigure(); 
 }
 
 void MainWindow::slotConfigureChessEngines()
