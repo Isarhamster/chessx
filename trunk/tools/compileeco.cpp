@@ -13,6 +13,7 @@ bool loadEcoFile(const QString& ecoFile)
 	QFile file(ecoFile);
 	file.open(QIODevice::ReadOnly);
 	QTextStream ecoStream(&file);
+	ecoStream.setCodec("ISO-8859-1");
 
 	QString line;
 	Board board;
