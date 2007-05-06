@@ -33,9 +33,9 @@ bool Spellchecker::load(const QString& filename)
 	if(!file.open(QIODevice::ReadOnly)) {
 		return false;
 	}
-	QDataStream stream(&file); 
+	QDataStream stream(&file);
 	quint32 magicNumber;
-	
+
 	stream >> magicNumber;
 	if(magicNumber != 0xCD5CBD01U) {
 		if(magicNumber & 0xFFFFFF != 0xCD5CBD00) {
@@ -45,19 +45,19 @@ bool Spellchecker::load(const QString& filename)
 		}
 		return false;
 	}
-	
+
 	stream.setVersion(5); //QDataStream::Qt_3_1
 
 	//remove any existing rules
 	clear();
-	
+
 	//read in data
 	for(int ruleType = 0; ruleType < RuleTypeCount; ruleType++) {
 		for(int spellingType = 0; spellingType < SpellingTypeCount; spellingType++) {
 			stream >> m_maps[ruleType][spellingType];
 		}
 	}
-	
+
 	//check for errors
 	file.close();
 	if(file.error() == QFile::NoError) {
@@ -77,7 +77,7 @@ bool Spellchecker::save(const QString& filename)
 		QDir dir;
 		dir.rename(filename, filename + "~");
 	}
-	
+
 	//open new file and initialise stream
 	file.open(QIODevice::WriteOnly);
 	QDataStream stream(&file);
@@ -85,13 +85,13 @@ bool Spellchecker::save(const QString& filename)
 
 	//write out data
 	stream << (quint32)0xCD5CBD01U;
-	
+
 	for(int ruleType = 0; ruleType < RuleTypeCount; ruleType++) {
 		for(int spellingType = 0; spellingType < SpellingTypeCount; spellingType++) {
 			stream << m_maps[ruleType][spellingType];
 		}
 	}
-	
+
 	//if successful remove backup, otherwise restore it
 	file.close();
 	if(file.error() == QFile::NoError) {
@@ -129,16 +129,16 @@ bool Spellchecker::import(const QString& filename)
 
 	file.close();
 	return imported;
-}     
+}
 
 QString Spellchecker::correct(const QString& string,
 																SpellingType spellingType) const
 {
 	QString corrected = string;
-	
+
 	//apply substitution rules first
 	QMap<QString,QString>::const_iterator iterator;
-	
+
 	//prefixes
 	for(iterator = m_maps[Prefix][spellingType].constBegin();
 				iterator != m_maps[Prefix][spellingType].constEnd(); iterator++) {
@@ -163,7 +163,7 @@ QString Spellchecker::correct(const QString& string,
 			break;
 		}
 	}
-	
+
 	//look for literal match
 	QString standardised = standardise(corrected, spellingType);
 	QString literalMatch = m_maps[Literal][spellingType][standardised];
@@ -176,7 +176,7 @@ QString Spellchecker::correct(const QString& string,
 		if(spellingType == Player) {
 			standardised = standardise(corrected.section(' ', -1) +
 																		corrected.section(' ', 0, -2),
-																		spellingType);	
+																		spellingType);
 			literalMatch = m_maps[Literal][spellingType][standardised];
 			if(literalMatch != "") {
 				//found, return
@@ -184,7 +184,7 @@ QString Spellchecker::correct(const QString& string,
 			}
 		}
 	}
-	
+
 	return corrected;
 }
 
@@ -195,14 +195,14 @@ QStringList Spellchecker::findSpellings(const QString& correct,
 	//iterate through map looking for matches
 	QStringList spellingList;
 	QMap<QString,QString>::const_iterator iterator;
-	
+
 	for(iterator = m_maps[ruleType][spellingType].constBegin();
 				iterator != m_maps[ruleType][spellingType].constEnd(); iterator++) {
 		if(iterator.value() == correct) {
 			spellingList << iterator.key();
 		}
 	}
-	
+
 	return spellingList;
 }
 
@@ -220,7 +220,7 @@ bool Spellchecker::removeRule(const QString& incorrect, RuleType ruleType,
 																SpellingType spellingType)
 {
 	QString standardised = standardise(incorrect, spellingType);
-	
+
 	bool removed = m_maps[ruleType][spellingType].contains(standardised);
 	m_maps[ruleType][spellingType].remove(standardised);
 	return removed;
@@ -229,16 +229,16 @@ bool Spellchecker::removeRule(const QString& incorrect, RuleType ruleType,
 int Spellchecker::count() const
 {
 	int count = 0;
-	
+
 	for(int ruleType = 0; ruleType < RuleTypeCount; ruleType++) {
 		for(int spellingType = 0; spellingType < SpellingTypeCount; spellingType++) {
 			count += m_maps[ruleType][spellingType].count();
 		}
 	}
-	
+
 	return count;
 }
-				
+
 void Spellchecker::clear()
 {
 	for(int ruleType = 0; ruleType < RuleTypeCount; ruleType++) {
@@ -253,7 +253,7 @@ bool Spellchecker::importSection(QTextStream& stream, const QString& section,
 {
 	//locate section
 	QString line;
-	
+
 	while(true) {
 		if(stream.atEnd()) {
 			return false;
@@ -266,7 +266,7 @@ bool Spellchecker::importSection(QTextStream& stream, const QString& section,
 			break;
 		}
 	}
-	
+
 	//add rules in section
 	int lineNo = 0;
 	QString incorrect = "";
@@ -278,17 +278,17 @@ bool Spellchecker::importSection(QTextStream& stream, const QString& section,
 		line = line.trimmed();
 		lineNo++;
 
-		
+
 		if(line.length() == 0) {
 			//empty line, ignore
 			continue;
 		}
-		
+
 		if(line == "### END OF " + section + " SECTION") {
 			//end of section, finish
 			break;
 		}
-		
+
 		if(line.at(0) == '#') {
 			//comment, ignore line
 			continue;
@@ -332,13 +332,13 @@ bool Spellchecker::importSection(QTextStream& stream, const QString& section,
 				qWarning("Error at line %d whilst importing Spellcheck file", lineNo);
 				return false;
 			}
-			
+
 			line.remove(0, 1); // remove =
 			line = line.trimmed();
 			addRule(line, correct, Literal, spellingType);
 			continue;
 		}
-		
+
 		//must be a correctly spelled name, remove comments and store
 		int hashIndex = line.indexOf('#');
 		if(hashIndex != -1) {
@@ -357,14 +357,14 @@ QString Spellchecker::standardise(const QString& string,
 	//remove exterraneous characters
 	QString standardised = string;
 	standardised.remove(QRegExp("[.,\\s-_()]"));
-	
+
 	if(spellingType == Player) {
 		//capitalise first letter
 		standardised.replace(0, 1, string.at(0).toUpper());
-	
+
 		//standardise captilisation of names beginning with "Van de"
 		standardised.replace("van de", "Van de", Qt::CaseInsensitive);
 	}
-	
+
 	return standardised;
 }

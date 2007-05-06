@@ -19,15 +19,13 @@
 */
 
 #include<spellcheckertests.h>
-//#include<iostream> 
-
 
 void SpellCheckerTests::testNoRule(){
   QCOMPARE( speller.count(), 0 );
 }
 
 void SpellCheckerTests::testImportSpellingFile(){
-  const QString spelling_file = "./data/spelling.ssp"; 
+  const QString spelling_file = "./data/spelling.ssp";
 
   QVERIFY( speller.import( spelling_file ) );
   speller.save( "./data/spell.txt" );
@@ -61,7 +59,7 @@ void SpellCheckerTests::testCorrectSite(){
   Spellchecker::SpellingType spellingType = Spellchecker::Site;
   const QString typo = "Wien AUT";
   const QString correct = "Vienna AUT";
- 
+
   speller.load( "./data/spell.txt" );
   QCOMPARE( speller.correct( typo , spellingType ), correct );
 }
@@ -87,14 +85,14 @@ void SpellCheckerTests::testFindSpellingsLiteral(){
   Spellchecker::RuleType ruleType = Spellchecker::Literal;
   const QString correct = "Korchnoi, Viktor L";
   speller.load( "./data/spell.txt" );
-  /**on reading the comment on findSpellings I think that it schould return only 13 
+  /**on reading the comment on findSpellings I think that it schould return only 13
      it seems to me that the result includes also the correct spelling) */
   QStringList incorrect = speller.findSpellings( correct, ruleType, spellingType );
   //  size_t size = 13;
 
-  //  for ( QStringList::Iterator it = incorrect.begin(); it != incorrect.end(); ++it ) {
-  //  std::cout << "testFindSpellingsLiteral: " << ( *it ).ascii() << std::endl;
-  //  } 
+  //for ( QStringList::Iterator it = incorrect.begin(); it != incorrect.end(); ++it ) {
+  //  qDebug() << "testFindSpellingsLiteral:" << ( *it );
+  //}
 
   //  QCOMPARE( incorrect.count(), size );
 QCOMPARE( incorrect.count(), 13 );
@@ -123,7 +121,7 @@ void SpellCheckerTests::testRemoveRule(){
 
 void SpellCheckerTests::testRemoveRuleFail(){
   newSpell.load( "./data/newspell.txt" );
-  bool removeIsOk = newSpell.removeRule( "02", Spellchecker::Literal, Spellchecker::Round ); 
+  bool removeIsOk = newSpell.removeRule( "02", Spellchecker::Literal, Spellchecker::Round );
   QVERIFY( removeIsOk );
 }
 
@@ -132,10 +130,10 @@ void SpellCheckerTests::testFindSpellingsLiteralInNewSpell(){
   Spellchecker::RuleType ruleType = Spellchecker::Literal;
   const QString correct = "Karpov, Anatoly";
   newSpell.load( "./data/newspell.txt" );
-  QStringList incorrect = newSpell.findSpellings( correct, ruleType, spellingType ); 
+  QStringList incorrect = newSpell.findSpellings( correct, ruleType, spellingType );
   // for ( QStringList::Iterator it = incorrect.begin(); it != incorrect.end(); ++it ) {
   //  std::cout << "testFindSpellingsLiteralInNewSpell: " << (*it).ascii() << std::endl; }
-  
+
   //     size_t size = 1;
 
     /**should return 1 */
@@ -145,12 +143,12 @@ void SpellCheckerTests::testFindSpellingsLiteralInNewSpell(){
 }
 
 void SpellCheckerTests::initTestCase()
-{ 
+{
   //not used
-} 
-    
+}
+
 void SpellCheckerTests::init()
-{ 
+{
   //not used
 } 
 
