@@ -16,12 +16,6 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
-    <number>6</number>
-   </property>
    <item row="0" column="0" >
     <widget class="QTabWidget" name="tabWidget" >
      <property name="autoFillBackground" >
@@ -35,18 +29,28 @@
        <string>&amp;Board</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="margin" >
+       <property name="leftMargin" >
         <number>9</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin" >
+        <number>9</number>
+       </property>
+       <property name="rightMargin" >
+        <number>9</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>9</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>6</number>
+       </property>
+       <property name="verticalSpacing" >
         <number>6</number>
        </property>
        <item row="0" column="1" >
         <widget class="QComboBox" name="pieceThemeCombo" >
          <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>7</hsizetype>
-           <vsizetype>0</vsizetype>
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -76,13 +80,6 @@
          </property>
         </spacer>
        </item>
-       <item row="5" column="0" colspan="2" >
-        <widget class="QCheckBox" name="boardFrameCheck" >
-         <property name="text" >
-          <string>Draw frame between squares</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0" >
         <widget class="QLabel" name="textLabel1_2" >
          <property name="text" >
@@ -93,9 +90,7 @@
        <item row="1" column="1" >
         <widget class="QComboBox" name="boardTypeCombo" >
          <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>7</hsizetype>
-           <vsizetype>0</vsizetype>
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -124,11 +119,20 @@
          </property>
          <widget class="QWidget" name="themeBoardWidget" >
           <layout class="QHBoxLayout" >
-           <property name="margin" >
-            <number>9</number>
-           </property>
            <property name="spacing" >
             <number>6</number>
+           </property>
+           <property name="leftMargin" >
+            <number>9</number>
+           </property>
+           <property name="topMargin" >
+            <number>9</number>
+           </property>
+           <property name="rightMargin" >
+            <number>9</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>9</number>
            </property>
            <item>
             <widget class="QLabel" name="textLabel1_2_2" >
@@ -140,9 +144,7 @@
            <item>
             <widget class="QComboBox" name="boardThemeCombo" >
              <property name="sizePolicy" >
-              <sizepolicy>
-               <hsizetype>7</hsizetype>
-               <vsizetype>0</vsizetype>
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -153,11 +155,20 @@
          </widget>
          <widget class="QWidget" name="plainBoardWidget" >
           <layout class="QHBoxLayout" >
-           <property name="margin" >
-            <number>9</number>
-           </property>
            <property name="spacing" >
             <number>6</number>
+           </property>
+           <property name="leftMargin" >
+            <number>9</number>
+           </property>
+           <property name="topMargin" >
+            <number>9</number>
+           </property>
+           <property name="rightMargin" >
+            <number>9</number>
+           </property>
+           <property name="bottomMargin" >
+            <number>9</number>
            </property>
            <item>
             <widget class="QLabel" name="textLabel2" >
@@ -169,9 +180,7 @@
            <item>
             <widget class="QPushButton" name="boardLightButton" >
              <property name="sizePolicy" >
-              <sizepolicy>
-               <hsizetype>7</hsizetype>
-               <vsizetype>0</vsizetype>
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
                <horstretch>1</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -194,9 +203,7 @@
            <item>
             <widget class="QPushButton" name="boardDarkButton" >
              <property name="sizePolicy" >
-              <sizepolicy>
-               <hsizetype>7</hsizetype>
-               <vsizetype>0</vsizetype>
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
                <horstretch>1</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -220,6 +227,13 @@
          </property>
         </widget>
        </item>
+       <item row="5" column="0" colspan="2" >
+        <widget class="QCheckBox" name="boardFrameCheck" >
+         <property name="text" >
+          <string>Draw frame between squares</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tabPlayers" >
@@ -227,19 +241,40 @@
        <string>&amp;Players</string>
       </attribute>
       <layout class="QGridLayout" >
-       <property name="margin" >
+       <property name="leftMargin" >
         <number>6</number>
        </property>
-       <property name="spacing" >
+       <property name="topMargin" >
+        <number>6</number>
+       </property>
+       <property name="rightMargin" >
+        <number>6</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>6</number>
+       </property>
+       <property name="horizontalSpacing" >
+        <number>6</number>
+       </property>
+       <property name="verticalSpacing" >
         <number>6</number>
        </property>
        <item row="0" column="0" >
         <layout class="QHBoxLayout" >
-         <property name="margin" >
-          <number>0</number>
-         </property>
          <property name="spacing" >
           <number>6</number>
+         </property>
+         <property name="leftMargin" >
+          <number>0</number>
+         </property>
+         <property name="topMargin" >
+          <number>0</number>
+         </property>
+         <property name="rightMargin" >
+          <number>0</number>
+         </property>
+         <property name="bottomMargin" >
+          <number>0</number>
          </property>
          <item>
           <widget class="QLabel" name="textLabel1" >
@@ -250,11 +285,11 @@
          </item>
          <item>
           <widget class="QSpinBox" name="playersSpinbox" >
-           <property name="maximum" >
-            <number>500</number>
-           </property>
            <property name="minimum" >
             <number>10</number>
+           </property>
+           <property name="maximum" >
+            <number>500</number>
            </property>
            <property name="singleStep" >
             <number>10</number>
@@ -292,12 +327,6 @@
    </item>
    <item row="1" column="0" >
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
      <item>
       <spacer>
        <property name="orientation" >
@@ -308,8 +337,8 @@
        </property>
        <property name="sizeHint" >
         <size>
-         <width>345</width>
-         <height>20</height>
+         <width>121</width>
+         <height>29</height>
         </size>
        </property>
       </spacer>
@@ -318,6 +347,19 @@
       <widget class="QPushButton" name="okButton" >
        <property name="text" >
         <string>&amp;Ok</string>
+       </property>
+       <property name="shortcut" >
+        <string>Alt+O</string>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="applyButton" >
+       <property name="text" >
+        <string>&amp;Apply</string>
        </property>
        <property name="shortcut" >
         <string>Alt+O</string>
