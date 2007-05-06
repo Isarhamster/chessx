@@ -7,6 +7,7 @@ QT += xml
 FORMS += playerdialog.ui \
          preferences.ui \
          boardsetup.ui \
+         quicksearch.ui \
          savedialog.ui \
          tipoftheday.ui
 HEADERS += mainwindow.h \
@@ -20,6 +21,7 @@ HEADERS += mainwindow.h \
            gamelist.h \
            chessbrowser.h \
            ecothread.h \
+           quicksearch.h \
            tipoftheday.h
 SOURCES += mainwindow.cpp \
            playerdialog.cpp \
@@ -30,6 +32,7 @@ SOURCES += mainwindow.cpp \
            helpwindow.cpp \
            savedialog.cpp \
            gamelist.cpp \
+           quicksearch.cpp \
 	   chessbrowser.cpp \
            tipoftheday.cpp \
 	   main.cpp
