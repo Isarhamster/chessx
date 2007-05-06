@@ -345,7 +345,6 @@ bool Spellchecker::importSection(QTextStream& stream, const QString& section,
 			line.truncate(hashIndex - 1);
 		}
 		correct = line.trimmed();
-		addRule(correct, correct, Literal, spellingType);
 	}
 
 	return true;
