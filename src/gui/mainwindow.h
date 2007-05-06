@@ -37,6 +37,7 @@ class DatabaseInfo;
 class Output;
 class TipOfDayDialog;
 class Tablebase;
+class EcoThread;
 
 class ChessBrowser;
 class QActionGroup;
@@ -46,7 +47,7 @@ class QMenu;
 class QSplitter;
 class QTextBrowser;
 
-/** 
+/**
 @defgroup GUI
 */
 
@@ -187,6 +188,10 @@ signals:
   /** Re-read configuration */
   void reconfigure();
 
+private slots:
+	/** Cleanup after ECO file loaded */
+	void ecoLoaded();
+
 private:
   /** Create single menu action. */
   QAction* createAction(const QString& name, const char* slot, const QKeySequence& key = QKeySequence(),
@@ -226,6 +231,7 @@ private:
   QActionGroup* m_actions;
   bool m_showPgnSource; // for debugging
   Tablebase* m_tablebase;
+  EcoThread* m_ecothread;
 };
 
 

@@ -18,7 +18,8 @@ HEADERS += mainwindow.h \
            boardsetup.h \
            savedialog.h \
            gamelist.h \
-	   chessbrowser.h \
+           chessbrowser.h \
+           ecothread.h \
            tipoftheday.h
 SOURCES += mainwindow.cpp \
            playerdialog.cpp \

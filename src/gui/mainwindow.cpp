@@ -33,6 +33,7 @@
 #include "settings.h"
 #include "tipoftheday.h"
 #include "tablebase.h"
+#include "ecothread.h"
 
 #include <QActionGroup>
 #include <QApplication>
@@ -165,11 +166,10 @@ MainWindow::MainWindow() : QMainWindow(),
 
   /* Load ECO file */
   slotStatusMessage(tr("Loading ECO file..."));
-  qApp->processEvents();
   qApp->setOverrideCursor(Qt::WaitCursor);
-  Game::loadEcoFile(AppSettings->dataPath() + "/chessx.eco");
-  qApp->restoreOverrideCursor();
-  slotStatusMessage(tr("Ready."));
+	m_ecothread = new EcoThread(AppSettings->dataPath() + "/chessx.eco");
+	connect(m_ecothread, SIGNAL(loaded()), this, SLOT(ecoLoaded()));
+	m_ecothread->start();
 }
 
 MainWindow::~MainWindow()
@@ -181,6 +181,15 @@ MainWindow::~MainWindow()
   delete m_output;
   delete m_tipDialog;
 	delete m_tablebase;
+}
+
+void MainWindow::ecoLoaded()
+{
+	qApp->restoreOverrideCursor();
+	slotStatusMessage(tr("ECO Loaded."));
+	m_ecothread->wait();
+	delete m_ecothread;
+	m_ecothread = NULL;
 }
 
 bool MainWindow::confirm(const QString& title, const QString& question,
