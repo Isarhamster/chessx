@@ -1801,7 +1801,8 @@ HistoryItem Board::doMove(const Move& m)
 		} else {
 			if (m.isCastling()) {
 				movePiece(m.castlingRookFrom(), m.castlingRookTo());
-         } else if (m.isEnPassant()) {
+		} else if (m.isEnPassant()) {
+				hashPiece(m.enPassantSquare(), at(m.enPassantSquare()));
 				historyItem.setIndex(m_board[m.enPassantSquare()]);
 				historyItem.setPiece(at(m.enPassantSquare()));
 				m_board[m.enPassantSquare()] = InvalidPiece;
