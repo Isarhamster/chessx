@@ -85,17 +85,12 @@ void SpellCheckerTests::testFindSpellingsLiteral(){
   Spellchecker::RuleType ruleType = Spellchecker::Literal;
   const QString correct = "Korchnoi, Viktor L";
   speller.load( "./data/spell.txt" );
-  /**on reading the comment on findSpellings I think that it schould return only 13
-     it seems to me that the result includes also the correct spelling) */
   QStringList incorrect = speller.findSpellings( correct, ruleType, spellingType );
-  //  size_t size = 13;
+  QCOMPARE( incorrect.count(), 13 );
 
   //for ( QStringList::Iterator it = incorrect.begin(); it != incorrect.end(); ++it ) {
   //  qDebug() << "testFindSpellingsLiteral:" << ( *it );
   //}
-
-  //  QCOMPARE( incorrect.count(), size );
-QCOMPARE( incorrect.count(), 13 );
 }
 
 
