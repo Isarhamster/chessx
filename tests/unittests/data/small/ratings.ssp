@@ -1,0 +1,2167 @@
+######################################################################
+#
+# ratings.ssp
+#
+# Spellcheck file for Scid (Shane's Chess Information Database).
+# Copyright (C) 2001-2004 Shane Hudson. All rights reserved.
+#
+# Author: Shane Hudson.
+# Email:  sgh@users.sourceforge.net
+# Last edited: January 2004.
+# Scid website: http://scid.sourceforge.net/
+#
+# This file is ONLY for use in the Scid chess database program.
+# For any other use, please contact the author first for permission.
+# Updates and improvements are welcome, please send them to the author.
+#
+# This file contains four sections:
+#
+#    (1) Player information: more than 14,000 players.
+#    (2) Site information: more than 800 city names.
+#    (3) Event information.
+#    (4) Round information.
+#
+# This file (ratings.ssp) is identical to the standard Scid spellcheck
+# file (spelling.ssp) but with "%Elo" lines containing FIDE Elo rating
+# information. The Elo data was automatically generated from Anjo 
+# Anjewierden's data at www.anjo.demon.nl.
+#
+######################################################################
+
+
+######################################################################
+#
+# PLAYER SECTION
+#
+# The format is: the correct spelling is unindented, and
+# alternative spellings are indented on the following lines starting
+# with a "=".  Lines starting with a "%Bio" are biography notes.
+#
+# Everything from a hash ("#") to end-of-line is a comment and is ignored.
+# Players have a special comment that stores extra information about them.
+# The format for this extra information is:
+#   * Titles: where more than one, each is seperated by a "+".
+#        gm: Grandmaster
+#        im: International Master
+#        fm: FIDE Master
+#       wgm: Woman Grandmaster
+#       wim: Woman International Master
+#       wfm: Woman FIDE Master
+#       cgm: Correspondence GM
+#       cim: Correspondence IM
+#       hgm: Honorary Grandmaster
+#      comp: Computer
+#         -: None/unknown
+#   * Country or countries, earliest first, each separated by a "/".
+#   * Highest FIDE Elo rating, to nearest 10 points, [in-square-brackets],
+#       only used to give a rough indication of peak playing strength.
+#   * Date of birth (and possibly death), if known.
+#
+# Most modern names have spelling as they appear in the latest FIDE rating
+# list, although I have used my personal preference for some spellings.
+#
+# Most historical players now have an estimated rating, denoted with a "*".
+# Estimated ratings are only intended as a rough guide to the approximate
+# strength of the player in modern terms.
+#
+# Before checking name spelling, some basic standardisation is done:
+# (1) "Van Der" and "van der" at the start of a name are all
+#     standardised to "Van der". Similarly for "Van den" and "Van de".
+# (2) A lower case first name (such as "van", "de", "le", etc)
+#     is capitalised.
+# (3) Spaces, dots, commas and dashes are all removed from the name and
+#       alternate spellling for the purposes of matching.
+#       For example: the two lines
+#             Speelman, Jonathan S
+#                = Speelman, JS
+#       would match any name that is a prefix of "SpeelmanJonathanS" and
+#       "SpeelmanJS" so it would correct "Speelman, J.S." and "Speelman JS"
+#       to "Speelman, Jonathan S".
+# (4) For spelling of player names (not other types), Scid will also try
+#       to move the text after the last space in the name to the start of
+#       the name for correction purposes, when it cannot find a correction.
+#       This is done to correct names where the surname is last. For example,
+#       the two lines above will even correct "J. S. Speelman" and
+#       "Jonathan Speelman" to "Speelman, Jonathan S".
+
+
+# The "@PLAYER" line below informs Scid that this section contains Player
+# name corrections, and that it should exclude spaces, dots, commas,
+# dashes and underscores from Player names for comparison purposes:
+
+@PLAYER "., -_*"
+
+Aaberg, Anton           #-   SWE [2410] 1972.01.17
+      %Elo 1991:2235 1995:2275,2275 1996:2310,2310 1997:2310,2300
+      %Elo 1998:2300,2300 1999:2300,2300 2000:2300,2300 2001:2300,2347,2373,2388
+      %Elo 2002:2388,2408,2408,2404 2003:2404,2404,2404,2383
+      %Elo 2004:2383
+Adams, Michael          #gm  ENG [2755] 1971.11.17
+      %Elo 1986:2295 1987:?,2360 1988:?,2460 1989:2510,2505 
+      %Elo 1990:2555,2590 1991:2600,2615 1992:2590,2610 1993:2630,2630 
+      %Elo 1994:2660,2640 1995:2655,2660 1996:2660,2685 1997:2665,2680 
+      %Elo 1998:2670,2715 1999:2716,2708 2000:2715,2755 2001:2746,2750,2744,2731 
+      %Elo 2002:2742,2744,2752,2745 2003:2734,2723,2719,2725 
+      %Elo 2004:2720,2731,2738,2740 2005:2741,2737,2719 
+   = Adams, M
+Anderssen, Adolf        #-   GER [2600*] 1818.07.06--1879.03.13
+   = Anderssen, Karl Ernst Adolf
+   = Anderssen, Karl E A
+   = Anderssen, K E Adolf
+   = Anderssen, KEA
+Antic, Dejan            #gm  SCG [2520] 1968.12.09
+      %Elo 1988:?,2325 1994:?,2385 1995:2375,2380 1996:2445,2435
+      %Elo 1997:2450,2450 1998:2460,2495 1999:2479,2494 2000:2491,2518
+      %Elo 2001:2481,2485,2474,2464 2002:2470,2496,2481,2457
+      %Elo 2003:2448,2450,2466,2466 2004:2488
+Barendregt, Johan T     #im  NED [2390] 1924.02.16
+      %Elo 1971:2340,2330 1972:?,2325 1973:?,2325
+Barendse, Ted           #-   NED [2240] 1956.08.15
+      %Elo 1998:2240,2185 1999:2175,2201 2000:2198,2198 2001:2202,2184,2182,2182
+      %Elo 2002:2182,2182,2157,2157 2003:2157,2206,2206,2206
+      %Elo 2004:2206
+Botvinnik, Mikhail URS  #gm  URS [2630] 1911.08.17--1995.05.05
+      %Title gm:1950
+      %Bio World Champion, 1948-57, 1958-60, 1961-63.
+      %Elo 1971:2630,2630 
+   = Botvinnik, Mikhail Moiseyevich
+   = Botvinnik, Mikhail
+   = Botwinnik, Mikhail M
+   = Botvinnik, MM
+   = Botvinnik, M
+   = Botvinnik, Mikhail M
+Cichocki, Adam          #fm  POL [2410] 1962.11.03
+      %Elo 1990:2335 1995:2375,2375 1996:2330,2335 1997:2330,2330
+      %Elo 1998:2365,2365 1999:2377,2377 2000:2388,2366 2001:2367,2367,2367,2358
+      %Elo 2002:2363,2362,2362,2362 2003:2347,2347,2347,2338
+      %Elo 2004:2332
+Den Boer, Ber           #fm  NED [2350] 1971.12.12
+      %Elo 1995:2335,2335 1996:2335,2350 1997:?,2350 1999:2350,2350
+      %Elo 2000:2353,2350 2001:2350,2350,2350,2350 2002:2350,2350,2350,2350
+      %Elo 2003:2350,2350,2350,2350 2004:2350
+Dos Santos, Ramiro      #fm  ARG [2390] 1975.07.10
+      %Elo 1994:?,2315 1995:2320,2350 1996:2385,2380 1997:2360,2345
+      %Elo 1998:2355,2370 1999:2370,2370 2000:2370,2370 2001:2370,2370,2370,2370
+      %Elo 2002:2370,2390 2003:2390
+Estrin, Yakov B         #gm+cgm RUS [2450] 1923.04.21--1987.02.02
+      %Title cgm:1966 gm:1984
+      %Bio Winner, 7. World Correspondence Ch (1972-78)
+      %Elo 1971:2330,2400 1973:?,2420 1974:?,2450
+   = Estrin, Yakov Borisovich
+   = Estrin, Yacov B
+   = Estrin, YB
+Figler, Ilye            #fm  USA [2400] 1947.03.03
+      %Elo 1998:?,2380 1999:2384,2378 2000:2401,2360 2001:2378,2394,2375,2378
+      %Elo 2002:2366,2396,2380,2356 2003:2360,2360,2350,2328
+      %Elo 2004:2304
+Garbett, Paul A         #fm  NZL [2370] 1952.12.18
+      %Elo 1986:?,2310 1995:2300,2315 1996:2315,2300 1997:2300,2360
+      %Elo 1998:2360,2360 1999:2372,2360 2000:2360,2368 2001:2368,2359,2359,2359
+      %Elo 2002:2359,2359,2329,2329 2003:2329,2312,2304,2304
+      %Elo 2004:2304
+   = Garbett, Paul Anthony
+   = Garbett, PA
+Groszpeter, Attila      #gm  HUN [2570] 1960.06.09
+      %Elo 1978:2230 1979:2375 1980:2480 1981:2435 1982:2475,2480
+      %Elo 1983:2505,2475 1984:2490,2480 1985:2470,2445 1986:2470
+      %Elo 1988:?,2510 1989:?,2515 1992:2495,2520 1993:2525,2515
+      %Elo 1994:?,2520 1995:2520,2555 1996:2565,2545 1997:2540,2530
+      %Elo 1998:2505,2505 1999:2482,2480 2000:2470,2478 2001:2483,2483,2493,2497
+      %Elo 2002:2498,2498,2491,2479 2003:2486,2486,2502,2497
+      %Elo 2004:2508
+   = Groszpeter, Atilla
+Grotnes, Nils R         #fm  NOR [2330] 1964.06.04
+      %Elo 1985:2260 1992:2310,2345 1994:2325 1995:2325,2320 1996:2300,2265
+      %Elo 1997:2265,2265 1998:2265,2265 1999:2265,2265 2000:2265,2265
+      %Elo 2001:2291,2291,2291,2275 2002:2260,2260,2260,2260
+      %Elo 2003:2260,2260,2256,2256 2004:2256
+Gruber, Thomas          #-   GER [2290] 1970.01.08
+      %Elo 1991:2230 1995:2220,2220 1996:2220,2220 1997:2220,2240
+      %Elo 1998:?,2240 1999:2243,2243 2000:2244,2238 2001:2238,2238,2238,2238
+      %Elo 2002:2238,2238,2254,2254 2003:2266,2277,2277,2277
+      %Elo 2004:2291
+Grubert, Christian      #-   DEN [2190] 1976.05.04
+      %Elo 2001:2170,2194,2177,2177 2002:2177,2177,2177,2177
+      %Elo 2003:2177,2177,2168,2169 2004:2169
+Gruchacz, Robert        #im  USA [2400] 1953.11.30
+      %Elo 1978:2400 1980:2365 1995:2335 1997:?,2335 1999:2335,2335
+      %Elo 2000:2335,2335 2001:2335,2335,2335,2335 2002:2335,2335,2335,2335
+      %Elo 2003:2335,2335,2335,2335 2004:2335
+Heinatz, Thomas         #fm  GER [2380] 1965.05.11
+      %Elo 1995:2360,2345 1996:2365,2380 1997:2380,2330 1998:2330,2320
+      %Elo 1999:2320,2349 2000:2338,2317 2001:2317,2317,2310,2310
+      %Elo 2002:2310,2310,2315,2315 2003:2315,2315,2332,2332
+      %Elo 2004:2332
+Jedynak, Radoslaw       #im  POL [2450] 1982.06.09
+      %Elo 1995:2045,2115 1996:2140,2140 1997:2145,2140 1998:2210,2220
+      %Elo 1999:2194,2223 2000:2299,2298 2001:2347,2347,2347,2390
+      %Elo 2002:2403,2416,2419,2427 2003:2432,2442,2453,2448
+      %Elo 2004:2428
+Jegorovas, Aleksandras  #-   LTU [2280]
+      %Elo 1999:?,2212 2000:2214,2234 2001:2195,2182,2176,2174
+      %Elo 2002:2184,2191,2200,2250 2003:2275,2275,?,2270
+      %Elo 2004:2270
+Jelen, Igor             #im  SLO [2440] 1972.07.13
+      %Elo 1992:?,2355 1994:2385 1995:2360,2400 1996:2400,2415 1997:2405,2435
+      %Elo 1998:2430,2345 1999:2389,2395 2000:2427,2423 2001:2396,2398,2398,2398
+      %Elo 2002:2374,2365,2365,2362 2003:2372,2372,2372,2374
+      %Elo 2004:2369
+Karalkin, Maksim        #-   RUS [2260] 1977.03.01
+      %Elo 1998:2250,2180 1999:2172,2208 2000:2211,2195 2001:2194,2194,2194,2213
+      %Elo 2002:2213,2217,2255,2257 2003:2260,2255,2255,2255
+      %Elo 2004:2222
+Karanda, Konstantin     #-   UKR [2260] 1985.04.16
+      %Elo 2001:?,?,2258,2239 2002:2177,2171,2171,2167 2003:2167,2181,2181,2197
+      %Elo 2004:2197
+Kolev, Atanas           #gm  BUL [2580] 1967.07.15
+      %Elo 1986:?,2350 1993:2510,2500 1994:2490,2495 1995:2505,2500
+      %Elo 1996:2510,2520 1997:2545,2530 1998:2540,2550 1999:2541,2558
+      %Elo 2000:2548,2582 2001:2582,2571,2571,2571 2002:2568,2570,2575,2562
+      %Elo 2003:2556,2556,2543,2530 2004:2540
+Lapicki, Raul           #-   ARG [2300] 1951.11.01
+      %Elo 1995:2260 1996:?,2270 1997:2270 1998:?,2280 1999:2298,2298
+      %Elo 2000:2298,2304 2001:2304,2304,2304,2304 2002:2304,2304
+      %Elo 2003:2304
+Lapienis, Donatas P     #fm+cgm LTU [2350] 1936.04.08
+      %Elo 1995:2345,2340 1996:2335,2350 1997:2350,2340 1998:2325,2305
+      %Elo 1999:2302,2294 2000:2292,2292 2001:2311,2311,2311,2311
+      %Elo 2002:2292,2292,2287,2287 2003:2287,2311,?,2311
+      %Elo 2004:2311
+   = Lapienis, Donatas Petras
+   = Lapienis, DP
+Manaenkov, Vladimir     #-   RUS [2260] 1960.07.31
+      %Elo 2001:2255,2225,2215,2215 2002:2200,2200,2200,2200
+      %Elo 2003:2216,2216,2205,2205 2004:2205
+Managadze, Nikoloz      #im  GEO [2470] 1969.06.07
+      %Elo 1995:2305,2305 1996:2345,2350 1997:2350,2350 1998:2335,2435
+      %Elo 1999:2448,2437 2000:2447,2456 2001:2417,2417,2420,2419
+      %Elo 2002:2413,2413,2428,2442 2003:2462,2471,2474,2464
+      %Elo 2004:2470
+Manakov, Ilya           #-   RUS [2330] 1968.06.29
+      %Elo 1995:2330,2330 1996:2305,2290 1997:2280,2280 1998:2280,2280
+      %Elo 1999:2280,2280 2000:2279,2303 2001:2327,2333,2333,2333
+      %Elo 2002:2333,2333,2333,2333 2003:2333,2333,2333,2333
+      %Elo 2004:2333
+Paschall, William M     #im  USA [2460] 1972.12.19
+      %Elo 1994:2230 1995:2370,2330 1996:2285,2245 1997:2285,2280
+      %Elo 1998:2375,2365 1999:2321,2332 2000:2377,2382 2001:2375,2370,2390,2393
+      %Elo 2002:2422,2428,2442,2463 2003:2444,2429,2411,2407
+      %Elo 2004:2401
+   = Paschall, WM
+Pascual Arevalo, Ruben  #-   ESP [2340] 1966.06.14
+      %Elo 1996:?,2340 1997:2290,2315 1998:2305,2265 1999:2266,2259
+      %Elo 2000:2239,2259 2001:2252,2195,2188,2169 2002:2169,2169,2168,2168
+      %Elo 2003:2168,2177,2178,2178 2004:2178
+Pascual Paredes, Javier #-   ESP [2280] 1979.08.09
+      %Elo 1998:2225,2225 1999:2208,2208 2000:2208,2208 2001:2212,2210,2221,2244
+      %Elo 2002:2235,2235,2235,2220 2003:2224,2240,2240,2252
+      %Elo 2004:2284
+Pashikian, Arman        #-   ARM [2450] 1987.07.28
+      %Elo 1999:2260,2260 2000:2268,2268 2001:2268,2268,2282,2272
+      %Elo 2002:2272,2272,?,2304 2003:2293,2293,2366,2400
+      %Elo 2004:2451
+Pasko, Alexander        #-   UKR [2330] 1988.10.24
+      %Elo 2003:?,?,2303,2303 2004:2332
+Pasman, Michael         #fm  ISR [2370] 1960.08.05
+      %Elo 1982:2310 1984:2335 1994:?,2310 1997:?,2310 1999:2310,2310
+      %Elo 2000:2310,2310 2001:2310,2310,2310,2310 2002:2310,2299,2345,2345
+      %Elo 2003:2338,2350,2367,2367 2004:2367
+Passerotti, Pierluigi   #fm  ITA [2380] 1954.06.09
+      %Elo 1980:2330 1981:2335,2345 1984:2325 1985:2280 1990:2335
+      %Elo 1994:2330,2290 1995:2290,2290 1996:2290,2290 1997:2300,2310
+      %Elo 1998:2305,2305 1999:2305,2307 2000:2278,2265 2001:2263,2270,2273,2257
+      %Elo 2002:2276,2264,2284,2267 2003:2267,2278,2287,2295
+      %Elo 2004:2286
+Polgar, Judit           #gm+wgm HUN [2735] 1976.07.23
+      %Elo 1986:?,2355 1989:2555,2555 1990:2550,2540 1991:2540,2550 
+      %Elo 1992:2550,2575 1993:2595,2630 1994:2630,2630 1995:2630,2635 
+      %Elo 1996:2675,2665 1997:2645,2670 1998:2675,2665 1999:2677,2671 
+      %Elo 2000:2658,2656 2001:2676,2679,2686,2686 2002:2677,2677,2681,2685 
+      %Elo 2003:2700,2715,2718,2722 2004:2728,2728,2728,2728 
+      %Elo 2005:2728,2732,2735 
+   = Polgar, Judit (GM)
+   = Polgar, Judith
+Polugaevsky, Lev A      #gm  RUS [2650] 1934.11.20--1995.08.30
+      %Elo 1971:2630,2640 1972:?,2645 1973:?,2625 1974:?,2630 1975:2645
+      %Elo 1976:2635 1977:2620 1978:2620 1979:2625 1980:2635 1981:2620,2610
+      %Elo 1982:2600,2610 1983:2625,2620 1984:2615,2625 1985:2625,2600
+      %Elo 1986:2575,2575 1987:2585,2595 1988:2575,2590 1989:2575,2585
+      %Elo 1990:2610,2610 1991:2610,2630 1992:2630,2640 1993:2635,2605
+      %Elo 1994:2595,2585 1995:2585,2585 1996:2585
+   = Polugaevsky, Lev Abramovich
+   = Polugaevsky, LA
+   = Polugayevsky, Lev A
+   = Polugayevsky, LA
+   = Polugajevskij, Lev A
+   = Polugajewski, Lew A
+Poluljahov, Aleksandr   #gm  RUS [2570] 1965.06.06
+      %Elo 1993:2515 1994:2510,2485 1995:2450,2460 1996:2480,2490
+      %Elo 1997:2510,2510 1998:2505,2530 1999:2566,2554 2000:2526,2543
+      %Elo 2001:2525,2502,2506,2532 2002:2527,2533,2512,2501
+      %Elo 2003:2527,2534,2530,2516 2004:2526
+Rosito, Jorge           #im  ARG [2460] 1970.03.03
+      %Elo 1994:2315 1995:2325,2340 1996:2395,2420 1997:2460,2400
+      %Elo 1998:2360,2360 1999:2379,2379 2000:2374,2354 2001:2354,2390,2400,2400
+      %Elo 2002:2424,2424 2003:2410,2410,2426,2456
+Roskar, Robert          #-   SLO [2300] 1975.05.15
+      %Elo 1994:2255 1995:2200,2200 1996:2200,2200 1997:2210,2230
+      %Elo 1998:2270,2270 1999:2242,2242 2000:2293,2293 2001:2279,2279,2279,2279
+      %Elo 2002:2279,2279,2279,2297 2003:2255,2255,2255,2244
+      %Elo 2004:2249
+Rosmuller, Anton        #-   NED [2220] 1947.03.25
+      %Elo 1999:?,2204 2000:2220,2169 2001:2184,2184,2173,2161
+      %Elo 2002:2161,2161,2138,2155 2003:2155,2155,2155,2177
+      %Elo 2004:2177
+Saverymuttu, Seth       #-   ENG [2340]
+      %Elo 1997:?,2280 1999:2280,2280 2000:2280,2280 2001:2280,2280,2280,2280
+      %Elo 2002:2280,2280,2280,2280 2003:2280,2280,2280,2280
+      %Elo 2004:2280
+Savic, Marijana         #wfm SCG [2210] 1984.04.06
+      %Elo 1999:2010,2005 2000:2016,2039 2001:2099,2150,2180,2178
+      %Elo 2002:2169,2181,2205,2176 2003:2159,2139,2129,2129
+      %Elo 2004:2163
+Tetenkina, Irina        #wim BLR [2290] 1978.05.22
+      %Elo 1996:2120,2105 1997:2130,2105 1998:2085,2085 1999:2085,2141
+      %Elo 2000:2107,2143 2001:2147,2221,2232,2253 2002:2252,2221,?,2251
+      %Elo 2003:2292,2278,2247,2197 2004:2197
+Teterev, Vitaly         #-   BLR [2510] 1983.01.07
+      %Elo 1998:2030,2040 1999:2078,2121 2000:2159,2223 2001:2249,2279,2279,2301
+      %Elo 2002:2342,2342,?,2507 2003:2507,2490,2497,2460
+      %Elo 2004:2460
+Teufel, Juergen         #-   GER [2340] 1946.07.02
+      %Elo 1971:2340,2340 1997:?,2215 1999:2215,2233 2000:2233,2235
+      %Elo 2001:2235,2235,2240,2240 2002:2240,2240,2233,2233
+      %Elo 2003:2233,2233,2233,2233 2004:2233
+   = Teufel, Jurgen
+Thal, Olaf              #fm  GER [2360] 1935.12.14
+      %Elo 1995:2320,2320 1996:2320,2325 1997:2310,2295 1998:2270,2280
+      %Elo 1999:2280,2249 2000:2249,2282 2001:2282,2282,2273,2273
+      %Elo 2002:2273,2273,2273,2273 2003:2273,2273,2273,2273
+      %Elo 2004:2273
+Van Houtte, Thierry     #-   BEL [2240] 1959.11.09
+      %Elo 1995:2205 1996:2210,2215 1997:2235,2235 1998:2235,2220
+      %Elo 1999:2220,2220 2000:2235,2229 2001:2229,2225,2225,2225
+      %Elo 2002:2225,2225,2225,2217 2003:2204,2204,2211,2211
+      %Elo 2004:2211
+Van Hul, Chris          #-   BEL [2270] 1953.09.13
+      %Elo 1995:2260,2265 1996:2260,2260 1997:2250,2245 1998:2245,2235
+      %Elo 1999:2240,2240 2000:2181,2187 2001:2187,2187,2187,2187
+      %Elo 2002:2187,2187,2187,2203 2003:2203,2203,2199,2199
+      %Elo 2004:2199
+Van Kemenade, Rudy      #-   ENG [2140] 1946.06.04
+      %Elo 2001:?,?,?,2143 2002:2124,2124,2141,2140 2003:2140,2142,2140,2140
+      %Elo 2004:2119
+   = Van Kemenade, Rudi
+Wen Yang                #-   CHN [2270] 1988.07.07
+      %Elo 2002:2273,2273,2273,2271 2003:2271,2271,2271,2271
+Wenaas, Eric            #-   CAN [2180]
+      %Elo 1998:2080,2080 1999:2116,2156 2000:2182,2182 2001:2171,2171,2171,2171
+      %Elo 2002:2171,2171,2171,2171 2003:2171,2171,2171,2171
+      %Elo 2004:2171
+Wendel, Stefan          #-   GER [2250] 1966.10.06
+      %Elo 1995:2245 1997:?,2240 1998:2220,2195 1999:2191,2184 2000:2184,2205
+      %Elo 2001:2217,2217,2215,2214 2002:2214,2214,2214,2214
+      %Elo 2003:2206,2206,2241,2224 2004:2208
+Zude, Erik              #fm  GER [2370] 1965.06.02
+      %Elo 1995:2355,2335 1996:2325,2370 1997:2370,2365 1998:2360,2355
+      %Elo 1999:2335,2330 2000:2320,2326 2001:2326,2326,2315,2315
+      %Elo 2002:2314,2314,2295,2295 2003:2312,2312,2325,2349
+      %Elo 2004:2354
+Zudov, Oleg             #-   RUS [2370] 1980.07.08
+      %Elo 1995:2105,2095 1996:2100,2165 1997:2235,2245 1998:2245,2270
+      %Elo 1999:2260,2268 2000:2257,2326 2001:2354,2366,2366,2366
+      %Elo 2002:2366,2356,2356,2356 2003:2356,2356,2356,2356
+      %Elo 2004:2356
+Zueger, Beat            #im  SUI [2480] 1961.06.03
+      %Elo 1981:?,2360 1984:?,2385 1985:?,2435 1986:2435,2425 1987:?,2405
+      %Elo 1988:?,2445 1989:?,2435 1991:?,2430 1992:?,2440 1993:?,2395
+      %Elo 1994:2425,2420 1995:2480,2470 1996:2465,2460 1997:2455,2440
+      %Elo 1998:2445,2425 1999:2424,2434 2000:2420,2416 2001:2448,2448,2418,2418
+      %Elo 2002:2423,2423,2430,2444 2003:2448,2448,2419,2404
+      %Elo 2004:2395
+   = Zuger, Beat
+   = Züger, Beat
+Zwaig, Arne             #im  NOR [2480]
+      %Elo 1971:2440,2440 1972:?,2425 1974:?,2425 1975:2430 1977:2450
+      %Elo 1997:?,2450 1999:2450,2450 2000:2450,2450 2001:2439,2439,2439,2439
+      %Elo 2002:2439,2439,2439,2439 2003:2439,2439,2439,2439
+      %Elo 2004:2439
+Zwanzger, Johannes      #-   GER [2340] 1982.03.05
+      %Elo 1997:?,2230 1998:2235,2260 1999:2266,2280 2000:2275,2270
+      %Elo 2001:2269,2277,2289,2279 2002:2279,2279,2287,2268
+      %Elo 2003:2281,2281,2343,2343 2004:2343
+Zygouris, Hristos       #-   GRE [2270] 1974.10.06
+      %Elo 1994:2245 1995:2250,2250 1996:2250,2250 1997:2250,2250
+      %Elo 1998:2245 1999:2245,2245 2000:2245,2257 2001:2257,2257,2271,2271
+      %Elo 2002:2271,2271,2271,2271 2003:2271,2271,2268,2268
+      %Elo 2004:2264
+Zyla, Janusz            #fm  POL [2340] 1956.03.09
+      %Elo 1990:2275 1993:?,2320 1995:2280,2280 1996:2285,2305 1997:2305,2305
+      %Elo 1998:2300,2300 1999:2329,2336 2000:2329,2303 2001:2273,2273,2273,2273
+      %Elo 2002:2273,2273,2273,2270 2003:2270,2270,2270,2270
+      %Elo 2004:2270
+Zysk, Robert            #im  GER [2460] 1966.05.04
+      %Elo 1984:?,2325 1992:2390 1995:2450,2440 1996:2440,2445 1997:2445,2445
+      %Elo 1998:2430,2430 1999:2430,2430 2000:2436,2436 2001:2436,2436,2436,2436
+      %Elo 2002:2436,2436,2436,2436 2003:2436,2436,2436,2448
+      %Elo 2004:2462
+
+
+### END OF PLAYER SECTION
+
+
+######################################################################
+#
+# SITE SECTION
+#
+# Common chess sites, ordered by country code then alphabetically by city.
+#
+# The "@SITE" line below informs Scid that this section contains Site
+# name corrections, and that it should exclude spaces, dots, commas,
+# dashes and underscores from Site names for comparison purposes:
+
+@SITE "., -_()"
+
+
+### A ###
+#   AHO  Netherlands Antilles
+#   AND  Andorra
+#   ARG  Argentina
+#   ARM  Armenia
+#   AUS  Australia
+#   AUT  Austria
+#   AZE  Azerbaijan
+
+Curacao AHO
+Willemstad AHO
+
+Andorra AND
+Andorra la Vella AND
+Escaldes AND
+
+%Suffix "(Argentina)" "ARG"
+Acasusso ARG
+Boca ARG
+Buenos Aires ARG
+Cordoba ARG
+General Pico City ARG
+Mar del Plata ARG
+Mendoza ARG
+Pinamar ARG
+Rosario ARG
+Saenz Pena City ARG
+San Luis ARG
+San Martin City ARG
+Trelew ARG
+Tucuman ARG
+Villa Ballester ARG
+Villa Gesell ARG
+Villa Martelli ARG
+
+%Suffix "(Armenia)" "ARM"
+Erevan ARM
+   = Yerevan ARM
+   = Erevan (Armenia)
+
+
+%Suffix "(Australia)" "AUS"
+Adelaide AUS
+Ballarat AUS
+Brisbane AUS
+Canberra AUS
+   = Canbarra AUS
+Gold Coast AUS
+Melbourne AUS
+Perth AUS
+Suncoast AUS
+Sydney AUS
+
+%Suffix "(Austria)" "AUT"
+Aschach AUT
+Eichgraben AUT
+Feldbach AUT
+Fuerstenfeld AUT
+Graz AUT
+Hartberg AUT
+Innsbruk AUT
+Kapfenberg AUT
+Klagenfurt AUT
+Linz AUT
+Mureck AUT
+Oberwart AUT
+Salzburg AUT
+Semmering AUT
+Traun AUT
+Vienna AUT
+   = Wien AUT
+   = Viena AUT
+
+Baku AZE
+Nakhchivan AZE
+
+
+### B ###
+#   BAN  Bangladesh
+#   BAR  Barbados
+#   BEL  Belgium
+#   BER  Bermuda
+#   BIH  Bosnia & Herzogovina
+#   BLR  Belarus
+#   BOL  Bolivia
+#   BRA  Brazil
+#   BUL  Bulgaria
+
+Dhaka BAN
+   = Dacca BAN
+
+%Suffix "(Belgium)" "BEL"
+Antwerp BEL
+   = Antwerpen BEL
+Bruges BEL
+Brussels BEL
+   = Bruxelles BEL
+Eupen BEL
+Geel BEL
+Gent BEL
+Leopoldsburg BEL
+
+Bermuda BER
+   = Bermuda USA
+Mermaid Beach BER
+
+Banja Luka BIH
+   = Banja Luka YUG
+Bihac BIH
+Bugojno BIH
+   = Bugojuno BIH
+   = Bugojno YUG
+Neum BIH
+Sarajevo BIH
+   = Sarajevo BHG
+   = Sarajevo YUG
+Zenica BIH
+
+%Suffix "(Belarus)" "BLR"
+Minsk BLR
+
+La Paz BOL
+
+%Suffix "(Brazil)" "BRA"
+Americana BRA
+Brasilia BRA
+Fortaleza BRA
+Guarapuava BRA
+Rio de Janeiro BRA
+   = Rio De Janeiro BRA
+Sao Paulo BRA
+
+%Suffix "(Bulgaria)" "BUL"
+Bourgas BUL
+   = Burgas BUL
+Plovdiv BUL
+Sofia BUL
+Varna BUL
+
+
+### C ###
+#   CAN  Canada
+#   CHI  Chile
+#   CHN  China
+#   COL  Columbia
+#   CRC  Costa Rica
+#   CRO  Croatia
+#   CUB  Cuba
+#   CZE  Czechoslovakia
+
+%Suffix "(Canada)" "CAN"
+Brantford CAN
+Calgary CAN
+Edmondton CAN
+Montreal CAN
+North Bay CAN
+Ontario CAN
+Ottawa CAN
+Quebec CAN
+Toronto CAN
+Vancouver BC CAN
+   = Vancouver CAN
+   = Vanvouver, British Columbia CAN
+Winnipeg CAN
+
+%Suffix "(Chile)" "CHI"
+Santiago CHI
+   = Santiago CHL
+Vina del Mar CHI
+
+%Suffix "(China)" "CHN"
+Beijing CHN
+Shanghai CHN
+   = Shanghai PRC
+Shenyang CHN
+
+%Suffix "(Colombia)" "COL"
+Barranquilla COL
+Bogota COL
+Cali COL
+Medellin COL
+
+%Suffix "(Costa Rica)" "CRC"
+%Suffix " CRA" " CRC"
+San Jose CRC
+
+%Suffix "(Croatia)" "CRO"
+Kastav CRO
+Kastel Stari CRO
+Porec CRO
+Ptuj CRO
+Pula CRO
+Rovinj/Zagreb CRO
+Split CRO
+Umag CRO
+Vinkovci CRO
+Zadar CRO
+Zagreb CRO
+
+%Suffix "(Cuba)" "CUB"
+Camaguey CUB
+Cienfuegos City CUB
+   = Cienfuegos CUB
+Havana CUB
+   = Habana CUB
+   = La Habana CUB
+Las Tunas CUB
+Matanzas City CUB
+   = Matanzas CUB
+Santa Clara CUB
+Villa Clara CUB
+
+%Suffix "(Czech Republic)" "CZE"
+%Suffix "(Czechoslovakia)" "CZE"
+Bad Pistyan CZE
+Brno CZE
+Carlsbad CZE
+   = Karlsbad CZE
+Ceske Budejovice CZE
+Decin CZE
+Frydek Mistek CZE
+   = Fridek Mistek CZE
+Havirov CZE
+Hradec Kralove CZE
+   = Hradek Kralove CZE
+Klatovy CZE
+Lazne Bohdanec CZE
+Litomysl CZE
+Luhacovice CZE
+Marienbad CZE
+Mlada Boleslav CZE
+Olomouc CZE
+Ostrava CZE
+Pardubice CZE
+Plzen CZE
+Podebrady CZE
+Policka CZE
+Prague CZE
+   = Praha CZE
+Trinec CZE
+Tyniste CZE
+Zlin CZE
+
+
+### D ###
+#   DEN  Denmark
+#   DOM  Dominican Republic
+
+%Suffix "(Denmark)" "DEN"
+Aalborg DEN
+Aarhus DEN
+   = Arhus DEN
+Aars DEN
+Copenhagen DEN
+   = Copehagen DEN
+   = Kobenhavn DEN
+Esbjerg DEN
+Gistrup DEN
+Gladsaxe DEN
+Greve DEN
+Koge DEN
+Lyngby DEN
+Naestved DEN
+Odense DEN
+Randers DEN
+Ribe DEN
+Roskilde DEN
+Silkeborg DEN
+Taastrup DEN
+Vejen DEN
+Vejle DEN
+Vejstrup DEN
+Viborg DEN
+
+
+### E ###
+#   ECU  Ecuador
+#   EGY  Egypt
+#   ENG  England
+#   ESA  El Salvador
+#   ESP  Spain
+#   EST  Estonia
+
+Guayaquil ECU
+Quito ECU
+
+%Suffix "(Egypt)" "EGY"
+Cairo EGY
+Tanta City EGY
+   = Tanta EGY
+
+%Suffix "(England)" "ENG"
+Bath ENG
+Birmingham ENG
+Blackpool ENG
+Brighton ENG
+Bristol ENG
+Coventry ENG
+Folkestone ENG
+   = Folkstone ENG
+Hampstead ENG
+Hastings ENG
+Hove ENG
+Islington ENG
+London ENG
+Manchester ENG
+Margate ENG
+Norwich ENG
+Nottingham ENG
+Oakham ENG
+Oxford ENG
+Portsmouth ENG
+Scarborough ENG
+Southampton ENG
+Southport ENG
+Teesside ENG
+   = Teeside ENG
+Telford ENG
+Torquay ENG
+Witley ENG
+York ENG
+
+San Salvador ESA
+
+%Suffix "(Spain)" "ESP"
+%Suffix "(Espana)" "ESP"
+%Suffix " SPA" " ESP"
+ESP
+   = Spain
+   = Espana
+Albacete ESP
+Alicante ESP
+Ampuriabrava ESP
+Aviles ESP
+Barcelona ESP
+Benasque ESP
+Cadaques ESP
+Cala Galdana ESP
+Canaries ESP
+Dos Hermanas ESP
+Elgoibar ESP
+Las Palmas ESP
+Leon ESP
+   = León ESP
+Linares ESP
+Madrid ESP
+Malaga ESP
+   = Málaga ESP
+Mondariz ESP
+Montilla ESP
+Oropesa del Mar ESP
+Oviedo ESP
+Palencia ESP
+Palma de Majorca ESP
+   = Palma de Mallorca ESP
+Pamplona ESP
+Paretana ESP
+Salamanca ESP
+San Sebastian ESP
+   = San Sebastián ESP
+Seville ESP
+   = Sevilla ESP
+Terrassa ESP
+Torremolinos ESP
+Torrevieja ESP
+Ubeda ESP
+
+%Suffix "(Estonia)" "EST"
+Paide EST
+Parnu EST
+Rakvere EST
+Tallinn EST
+   = Tallin EST
+
+
+### F ###
+#   FAI  Faroe Islands
+#   FIN  Finland
+#   FRA  France
+
+Klaksvik FAI
+Torshavn FAI
+
+%Suffix "(Finland)" "FIN"
+Helsinki FIN
+Jyvaskyla FIN
+
+%Suffix "(France)" "FRA"
+Agneaux FRA
+Agneaux Saint Lo FRA
+   = Agneaux St Lô FRA
+   = Agneaux St Lo FRA
+Alsace FRA
+Aubervilliers FRA
+Auxerre FRA
+Avoine FRA
+Bagneux FRA
+Bastia FRA
+Belfort FRA
+Besancon FRA
+   = Bescanon FRA
+Bethune FRA
+Bischwiller FRA
+Bordeaux FRA
+Bourbon-Lancy FRA
+Brest FRA
+Cannes FRA
+Cap d'Agde FRA
+   = Cap D'Agde FRA
+Cappelle la Grande FRA
+   = Cappelle La Grande FRA
+   = Cappelle Le Grand FRA
+Cergy FRA
+Charleville FRA
+Clermont-Ferrand FRA
+Clichy FRA
+Creon FRA
+   = Créon FRA
+Creteil FRA
+Dijon FRA
+Elancourt FRA
+Enghien les Bains FRA
+   = Enghien Les Bains FRA
+Epinal FRA
+Fouesnant FRA
+Guingamp FRA
+Herlies FRA
+Hyeres FRA
+L'Etang FRA
+Le Mans FRA
+Lille FRA
+Lyon FRA
+Marseille FRA
+Metz FRA
+Montpellier FRA
+Mulhouse FRA
+Muret FRA
+Nantes FRA
+Narbonne FRA
+Naujac sur Mer FRA
+Nice FRA
+Paris FRA
+Parthenay FRA
+Plancoet FRA
+   = Plancoët FRA
+Queven FRA
+Rouen FRA
+Saint Affrique FRA
+   = St Affrique FRA
+Saint Lo FRA
+   = Saint Lô FRA
+   = St Lô FRA
+   = St Lo FRA
+Saint Quentin FRA
+   = St Quentin FRA
+Sautron FRA
+Strasbourg FRA
+Toulon FRA
+Toulouse FRA
+Trignac FRA
+Val d'Isere FRA
+Val Thorens FRA
+
+
+### G ###
+#   GCI  Guernsey
+#   GEO  Georgia
+#   GER  Germany
+#   GRE  Greece
+#   GRL  Greenland
+#   GUA  Guatemala
+
+Guernsey GCI
+
+%Suffix "(Georgia)" "GEO"
+Batumi GEO
+Sukhumi GEO
+Tbilisi GEO
+
+%Suffix "(Germany)" "GER"
+%Suffix "(West Germany)" "GER"
+%Suffix " BRD" " GER"
+%Suffix " FRG" " GER"
+GER
+   = Germany
+   = FRG
+   = BRD
+Aachen GER
+Aschersleben GER
+Altenkirchen GER
+Altensteig GER
+Augsburg GER
+Bad Aachen GER
+Bad Aibling GER
+Bad Godesberg GER
+Bad Homburg GER
+Bad Kissingen GER
+Bad Lauterberg GER
+Bad Neuenahr GER
+Bad Oeynhausen GER
+Bad Pyrmont GER
+Bad Wiessee GER
+Bad Wildbad GER
+Bad Woerishofen GER
+   = Bad Worishofen GER
+Bad Zwesten GER
+Baden-Baden GER
+Barmen GER
+Baunatal GER
+Berlin GER
+Binz GER
+Bochum GER
+Boeblinger GER
+   = Boblinger GER
+Bonn GER
+Bremen GER
+Breslau GER
+Castrop-Rauxel GER
+Cologne GER
+   = Koeln GER
+   = Köln GER
+Debrecen GER
+Deizisau GER
+Delmenhorst GER
+Dortmund GER
+Dresden GER
+   = Dresden GDR
+Dudweiler GER
+Duesseldorf GER
+   = Dusseldorf GER
+   = Düsseldorf GER
+East Berlin GER
+   = East Berlin GDR
+Eislingen GER
+Erfurt GER
+Essen GER
+Frankfurt GER
+   = Frankfurt am Main GER
+   = Frankfurt a. Main GER
+Fuerstenwalde GER
+Fuerth GER
+Gelsenkirchen GER
+Gladenbach GER
+Greifswald GER
+Grieskirchen GER
+Halle GER
+Hamburg GER
+Hannover GER
+   = Hanover GER
+Hockenheim GER
+Kiel GER
+Kleve GER
+Krefeld GER
+Leipzig GER
+Leverkusen GER
+Lippstadt GER
+Luebeck GER
+   = Lubeck GER
+   = Lübeck GER
+Magdeburg GER
+Mannheim GER
+Muenster GER
+Munich GER
+   = Munchen GER
+   = München GER
+Neubrandenburg GER
+Nuerenberg GER
+   = Nurenberg GER
+   = Nürnberg GER
+   = Nuremberg GER
+Paderborn GER
+Porz GER
+Potsdam GER
+Recklinghausen GER
+Regensberg GER
+Reichenberg GER
+Rostock GER
+Schwerin GER
+Siegen GER
+Solingen GER
+Stuttgart GER
+Teplitz-Schoenau GER
+   = Teplitz-Schonau GER
+Velden GER
+Viernheim GER
+Weilburg GER
+Werther GER
+West Berlin GER
+Wichern GER
+Wiesbaden GER
+Zinnowitz GER
+
+%Suffix "(Greece)" "GRE"
+Agios Kyrikos GRE
+Agios Nikolaos GRE
+Ambelokipi GRE
+Ano Liosia GRE
+Athens GRE
+   = Athinai GRE
+Chania GRE
+Corfu GRE
+Halkidiki GRE
+Heraklio GRE
+Ikaros GRE
+Kavala GRE
+Korinthos GRE
+Litohoto GRE
+Panormo GRE
+Patras GRE
+Poros GRE
+Rethymnon GRE
+Thessaloniki GRE
+   = Salonika GRE
+
+Qaqortoq GRL
+
+Guatemala City GUA
+
+
+### H ###
+#   HUN  Hungary
+#   HKG  Hong Kong
+
+%Suffix "(Hungary)" "HUN"
+HUN
+   = Hungary
+Balatonbereny HUN
+Balatonlelle HUN
+Budapest HUN
+Cseppko HUN
+Debrecen HUN
+Gyula HUN
+Hajduboszormeny HUN
+Kecskemet HUN
+Koszeg HUN
+Magyarorszag HUN
+Paks HUN
+Szeged HUN
+Szirak
+Zanka HUN
+
+
+### I ###
+#   INA  Indonesia
+#   IND  India
+#   INT  Internet
+#   IOM  Isle of Man
+#   IRI  Iran
+#   IRL  Ireland
+#   IRQ  Iraq
+#   ISL  Iceland
+#   ISR  Israel
+#   ITA  Italy
+
+Bali INA
+   = Bali IND
+Jakarta INA
+
+%Suffix "(India)" "IND"
+Bombay IND
+Calcutta IND
+Calicut IND
+Goa IND
+Hyderabad IND
+Kasaragod IND
+Madras IND
+Mumbai IND
+Nagpur IND
+New Delhi IND
+
+Internet INT
+   = Internet
+Internet Chess Club INT
+   = ICC INT
+   = ICC Internet
+   = Internet ICC
+FICS INT
+   = FICS Internet
+   = Internet FICS
+chess.net INT
+
+Isle of Man IOM
+Port Erin IOM
+   = Port Erin ENG
+
+Tehran IRI
+   = Tehran IRA
+
+%Suffix "(Ireland)" "IRL"
+%Suffix " IRE" " IRL"
+Belfast IRL
+Bunratty IRL
+Dublin IRL
+   = Dublin IRE
+Kilkenny IRL
+   = Kilkenny IRE
+
+%Suffix "(Iceland)" "ISL"
+%Suffix " ICE" " ISL"
+%Suffix " ICL" " ISL"
+Gardabaer ISL
+Hafnarfjordur ISL
+   = Hafnarfjordur ICE
+   = Hafnarfjordur ICL
+Reykjavik ISL
+   = Reykjavik ICE
+   = Reykjavik ICL
+   = Reykjavic ICE
+   = Reykjavic ICL
+   = Reykjavic ISL
+
+%Suffix "(Israel)" "ISR"
+Beer Sheba ISR
+   = Beersheba ISR
+   = Beer Sheva ISR
+Haifa ISR
+Herzeliya ISR
+   = Herzelia ISR
+Jerusalem ISR
+Netanya ISR
+Nir-Galim ISR
+Ramat Aviv ISR
+Tel Aviv ISR
+
+%Suffix "(Italy)" "ITA"
+Arco ITA
+Arvier ITA
+Asti ITA
+Bari ITA
+Bolzano ITA
+Bozen ITA
+Bratto ITA
+Caorle ITA
+Castellaneta ITA
+Cattolica ITA
+Cesenatico ITA
+Chianciano ITA
+Ciocco ITA
+Estensi ITA
+Firenze ITA
+Genova ITA
+Ischia ITA
+Meran ITA
+   = Merano ITA
+Milan ITA
+   = Milano ITA
+Montecatini Terme ITA
+Naples ITA
+   = Napoli ITA
+Nuoro ITA
+Padova ITA
+Reggio Emilia ITA
+Rome ITA
+   = Roma ITA
+Saint Vincent ITA
+   = St Vincent ITA
+Salerno ITA
+San Remo ITA
+Sottomarina ITA
+Turin ITA
+   = Torino ITA
+Venice ITA
+   = Venezia ITA
+   = Venecia ITA
+Verona ITA
+
+
+### J ###
+#   JAM  Jamaica
+#   JCI  Jersey
+#   JPN  Japan
+
+St Helier JCI
+   = St Helier JER
+   = St Heliers JER
+
+Tokyo JPN
+
+
+### K ###
+#   KAZ  Kazakhstan
+#   KGZ  Kyrgyzstan
+
+Alma Ata KAZ
+Astana KAZ
+
+Frunze KGZ
+
+
+### L ###
+#   LAT  Latvia
+#   LIB  Lebanon
+#   LIE  Liechtenstein
+#   LTU  Lithuania
+#   LUX  Luxembourg
+
+%Suffix "(Latvia)" "LAT"
+Daugavpils LAT
+Jurmala LAT
+Kemeri LAT
+Riga LAT
+
+%Suffix "(Lebanon)" "LIB"
+Beirut LIB
+   = Beirut LEB
+   = Beruit LIB
+
+Schaan LIE
+
+Vilnius LTU
+   = Vilnius LIT
+
+Bonnevoie LUX
+
+
+### M ###
+#   MAR  Morocco
+#   MAS  Malaysia
+#   MDA  Moldova
+#   MEX  Mexico
+#   MGL  Mongolia
+#   MKD  Macedonia
+#   MLT  Malta
+#   MNC  Monaco
+#   MYA  Myanmar
+
+Casablanca MAR
+
+%Suffix "(Malaysia)" "MAS"
+%Suffix " MAL" " MAS"
+Genting Highlands MAS
+   = Genting Highlands MAL
+Kuala Lumpur MAS
+Penang MAS
+
+Kishinev MDA
+   = Kishnev MDA
+
+%Suffix "(Mexico)" "MEX"
+Linares MEX
+Merida MEX
+Mexico City MEX
+
+Ulaanbaatar MGL
+   = Ulaanbaatar MON
+   = Ulan Bator MGL
+
+%Suffix " FRM" " MKD"
+Ohrid MKD
+Skopje MKD
+
+Malta MLT
+
+%Suffix "(Monaco)" "MNC"
+Monaco MNC
+   = Monaco MCO
+   = Monaco MON
+Monte Carlo MNC
+   = Monte Carlo MON
+
+Yangon MYA
+   = Yangyon MYA
+
+
+### N ###
+#   NCA  Nicaragua
+#   NCL  New Caledonia
+#   NED  Netherlands
+#   NGR  Nigeria
+#   NOR  Norway
+#   NZL  New Zealand
+
+Managua NCA
+
+Noumea NCL
+
+%Suffix "(Netherlands)" "NED"
+%Suffix "(Holland)" "NED"
+%Suffix "Holland" "NED"
+NED
+   = Netherlands
+Amsterdam NED
+Apeldoorn NED
+   = Apeldorn NED
+Arnhem NED
+Beverwijk NED
+Breda NED
+Dieren NED
+Dordrecht NED
+Eindhoven NED
+Enschede NED
+Groningen NED
+   = Groningen SC NED
+Haarlem NED
+Hengelo NED
+Hilversum NED
+Hoogeveen NED
+Leeuwarden NED
+Leiden NED
+Maastricht NED
+Nijmegen NED
+Rotterdam NED
+Sas van Gent NED
+   = Sas Van Gent NED
+Scheveningen NED
+Soest NED
+Ter Apel NED
+The Hague NED
+   = Hague NED
+   = Den Haag NED
+   = Haag NED
+Tilburg NED
+Utrecht NED
+Vlissingen NED
+Wijk aan Zee NED
+   = Wijk Aan Zee NED
+Zandvoort NED
+Zwolle NED
+
+Abuja NGR
+
+%Suffix "(Norway)" "NOR"
+Alta NOR
+Asker NOR
+Bergen NOR
+Gausdal NOR
+Hallsdall NOR
+Langesund NOR
+Oslo NOR
+Stavanger NOR
+Trondheim NOR
+
+%Suffix "(New Zealand)" "NZL"
+%Suffix " NZD" " NZL"
+Auckland NZL
+Christchurch NZL
+Dunedin NZL
+Wellington NZL
+
+
+### P ###
+#   PAN  Panama
+#   PAR  Paraguay
+#   PER  Peru
+#   PHI  Philippines
+#   PNG  Papua New Guinea
+#   POL  Poland
+#   POR  Portugal
+#   PUR  Puerto Rico
+
+Panama PAN
+
+Asuncion PAR
+
+Lima PER
+Miraflores PER
+
+Baguio City PHI
+   = Baguio PHI
+Greenhills PHI
+Manila PHI
+Quezon City PHI
+
+Port Moresby PNG
+
+%Suffix "(Poland)" "POL"
+Brzeg Dolny POL
+Bydgoszcz POL
+Bytom POL
+Gdansk POL
+Gdynia POL
+Katowice POL
+Koszalin POL
+Krakow POL
+   = Kraków POL
+Krynica POL
+Laczna POL
+Lodz POL
+   = Lódz POL
+Lublin POL
+Lubniewice POL
+Polanica Zdroj POL
+Poznan POL
+Rowy POL
+Suwalki POL
+Swidnica POL
+Warsaw POL
+   = Warszawa POL
+Wroclaw POL
+Zagan POL
+Zakopane POL
+
+%Suffix "(Portugal)" "POR"
+Algarve POR
+Aveiro POR
+Barreiro POR
+Faro POR
+Honra POR
+Lisbon POR
+   = Lisboa POR
+Loures POR
+Porto POR
+
+
+### Q ###
+#   QAT  Qatar
+
+Doha QAT
+
+
+### R ###
+#   ROM  Romania
+#   RSA  South Africa
+#   RUS  Russia
+
+%Suffix "(Romania)" "ROM"
+Bucharest ROM
+   = Bucarest ROM
+   = Bucuresti ROM
+Lasi ROM
+Satu-Mare ROM
+
+Cape Town RSA
+Gauteng RSA
+Pretoria RSA
+
+%Suffix "(Russia)" "RUS"
+%Suffix "(Soviet Union)" "URS"
+%Suffix "(USSR)" "URS"
+Arkhangelsk RUS
+Belgorod RUS
+Chelyabinsk RUS
+   = Cheljabinsk RUS
+   = Cheliabinsk RUS
+Cherepovets RUS
+Ekaterinburg RUS
+Elista RUS
+Kazan RUS
+Krasnodar RUS
+Kstovo RUS
+Leningrad RUS
+   = Leningrad URS
+Maikop RUS
+Moscow RUS
+   = Moscow URS
+   = Moskva RUS
+   = Moskva URS
+Novgorod RUS
+Novosibirsk RUS
+Omsk RUS
+Perm RUS
+Podolsk RUS
+Rostov RUS
+Samara RUS
+Smolensk RUS
+Sochi RUS
+St Petersburg RUS
+   = Saint Petersburg RUS
+Togliatty RUS
+Tomsk RUS
+Tula RUS
+Vladivostok RUS
+Volgograd RUS
+Voronezh RUS
+
+
+### S ###
+#   SCG  Serbia & Montenegro
+#   SCO  Scotland
+#   SIN  Singapore
+#   SLO  Slovenia
+#   SUI  Switzerland
+#   SVK  Slovakia
+#   SWE  Sweden
+#   SYR  Syria
+
+%Suffix "(Serbia)" "SCG"
+Belgrade SCG
+   = Belgrade YUG
+   = Beograd YUG
+Budva SCG
+   = Budva YUG
+Subotica SCG
+   = Subotica SCG
+
+%Suffix "(Scotland)" "SCO"
+Aberdeen SCO
+Aviemore SCO
+Ayr SCO
+Dundee SCO
+Edinburgh SCO
+Glasgow SCO
+Glenalmond SCO
+Oban SCO
+
+Singapore SIN
+
+%Suffix "(Slovenia)" "SLO"
+Bled SLO
+Kranj SLO
+Ljubljana SLO
+   = Ljubljana YUG
+Ljubljana/Portoroz SLO
+Nova Gorica SLO
+Portoroz SLO
+
+#SPAIN: see country code ESP
+
+%Suffix "(Switzerland)" "SUI"
+Bad Ragaz SUI
+Baden SUI
+Basel SUI
+   = Basle SUI
+Bern SUI
+   = Berne SUI
+   = Bern SWI
+Biel SUI
+Geneva SUI
+   = Geneve SUI
+   = Genève SUI
+Horgen SUI
+Lausanne SUI
+Lenk SUI
+Lucerne SUI
+   = Lucern SUI
+   = Luzern SUI
+Lugano SUI
+Mendrisio SUI
+Zurich SUI
+   = Zuerich SUI
+   = Zürich SUI
+
+%Suffix "(Slovakia)" "SVK"
+Bratislava SVK
+   = Bratislava SLO
+Presov SVK
+Rimavska Sobota SVK
+   = Rimavska Sobota SLO
+Nove Zamky SVK
+Novy Smokovec SVK
+Stary Smokovec SVK
+Tatranske Zruby SVK
+Trencianske Teplice SVK
+Trnava SVK
+
+%Suffix "(Sweden)" "SWE"
+Borlange SWE
+Eksjo SWE
+Eskilstuna SWE
+Goteborg SWE
+   = Göteborg SWE
+   = Goeteborg SWE
+   = Gothenburg SWE
+Gotland SWE
+Hallsberg SWE
+Haninge SWE
+Linkoping SWE
+Malmo SWE
+   = Malmö SWE
+   = Malmoe SWE
+Orebro SWE
+Saltsjobaden SWE
+Skara SWE
+Skelleftea SWE
+Stockholm SWE
+
+Damascus SYR
+
+
+### T ###
+#   TJK  Tajikistan
+#   TKM  Turkmenistan
+#   TUN  Tunisia
+#   TUR  Turkey
+
+Ashgabat TKM
+
+Sousse TUN
+Tunis TUN
+
+%Suffix "(Turkey)" "TUR"
+Ankara TUR
+Antalya TUR
+Istanbul TUR
+Izmir TUR
+Kocaeli TUR
+
+
+### U ###
+#   UAE  United Arab Emirates
+#   UKR  Ukraine
+#   URU  Uruguay
+#   USA  United States of America
+#   UZB  Uzbekistan
+
+Abudhabi UAE
+   = Abu Dhabi UAE
+Dubai UAE
+Sharjah UAE
+
+%Suffix "(Ukraine)" "UKR"
+Alushta UKR
+Artek UKR
+Donetsk UKR
+Kharkov UKR
+Kherson UKR
+Kiev UKR
+   = Kyiv UKR
+Lvov UKR
+   = Lviv UKR
+Nikolaev UKR
+Odessa UKR
+Sevastopol UKR
+Simferopol UKR
+Yalta UKR
+
+Montevideo URU
+
+%Suffix "(United States)" "USA"
+%Suffix " Alabama USA" " AL USA"
+%Suffix " Alaska USA" " AK USA"
+%Suffix " Arkansas USA" " AR USA"
+%Suffix " Arizona USA" " AZ USA"
+%Suffix " California USA" " CA USA"
+%Suffix " Cal. USA" " CA USA"
+%Suffix " Colorado USA" " CO USA"
+%Suffix " Connecticut USA" " CT USA"
+%Suffix " Delaware USA" " DE USA"
+%Suffix " Florida USA" " FL USA"
+%Suffix " Georgia USA" " GA USA"
+%Suffix " Hawaii USA" " HI USA"
+%Suffix " Idaho USA" " ID USA"
+%Suffix " Illinois USA" " IL USA"
+%Suffix " Indiana USA" " IN USA"
+%Suffix " Iowa USA" " IA USA"
+%Suffix " Kansas USA" " KS USA"
+%Suffix " Kentucky USA" " KY USA"
+%Suffix " Louisiana USA" " LA USA"
+%Suffix " Massachusetts USA" " MA USA"
+%Suffix " Maryland USA" " MD USA"
+%Suffix " Maine USA" " ME USA"
+%Suffix " Michigan USA" " MI USA"
+%Suffix " Minnesota USA" " MN USA"
+%Suffix " Missouri USA" " MO USA"
+%Suffix " Mississippi USA" " MS USA"
+%Suffix " Montana USA" " MT USA"
+%Suffix " Nebraska USA" " NE USA"
+%Suffix " Nevada USA" " NV USA"
+%Suffix " New Hampshire USA" " NH USA"
+%Suffix " New Jersey USA" " NJ USA"
+%Suffix " New Mexico USA" " NM USA"
+%Suffix " New York USA" " NY USA"
+%Suffix " North Carolina USA" " NC USA"
+%Suffix " North Dakota USA" " ND USA"
+%Suffix " Ohio USA" " OH USA"
+%Suffix " Oklahoma USA" " OK USA"
+%Suffix " Oregon USA" " OR USA"
+%Suffix " Pennsylvania USA" " PA USA"
+%Suffix " Rhode Island USA" " RI USA"
+%Suffix " South Carolina USA" " SC USA"
+%Suffix " South Dakota USA" " SD USA"
+%Suffix " Tennessee USA" " TN USA"
+%Suffix " Texas USA" " TX USA"
+%Suffix " Utah USA" " UT USA"
+%Suffix " Vermont USA" " VT USA"
+%Suffix " Virginia USA" " VA USA"
+%Suffix " Washington USA" " WA USA"
+%Suffix " Wisconsin USA" " WI USA"
+%Suffix " West Virginia USA" " WV USA"
+%Suffix " Wyoming USA" " WY USA"
+Alexandria, VA USA
+   = Alexandria USA
+Arlington, VA USA
+   = Arlington USA
+Augusta, GA USA
+   = Augusta USA
+Austin, TX USA
+   = Austin USA
+Baltimore, MD USA
+   = Baltimore USA
+Boston, MA USA
+   = Boston USA
+Catonsville, MD USA
+   = Catonsville, USA
+Chandler, AZ USA
+   = Chandler USA
+Chicago, IL USA
+   = Chicago USA
+Cleveland, OH USA
+   = Cleveland USA
+Columbus, OH USA
+   = Columbus USA
+Concord, CA USA
+Concord, NH USA
+Dallas, TX USA
+   = Dallas USA
+Dayton, OH USA
+   = Dayton USA
+Denver, CO USA
+   = Denver USA
+Des Moines, IA USA
+Detroit, MI USA
+   = Detroit USA
+El Paso, TX USA
+   = El Paso USA
+Fort Worth, TX USA
+   = Fort Worth USA
+   = Ft. Worth USA
+Framingham, MA USA
+   = Framingham USA
+Fredericksburg, VA USA
+   = Fredericksburg USA
+Hawaii USA
+Houston, TX USA
+   = Houston USA
+Indianapolis, IN USA
+   = Indianapolis USA
+Irvine, CA USA
+   = Irvine USA
+Jacksonville, FL USA
+   = Jacksonville USA
+Key West, FL USA
+   = Key West USA
+Kona, HI USA
+   = Kona USA
+Las Vegas, NV USA
+   = Las Vegas USA
+Lexington, KY USA
+   = Lexington USA
+Lone Pine, CA USA
+   = Lone Pine USA
+Long Beach, CA USA
+   = Long Beach USA
+Los Angeles, CA USA
+   = Los Angeles USA
+Manhattan, KS USA
+Manhattan, NY USA
+   = Manhattan USA
+Mashantucket, CT USA
+   = Mashantucket USA
+Memphis, TN USA
+   = Memphis USA
+Merrillville, IN USA
+   = Merrillville USA
+Milwaukee, WI USA
+   = Milwaukee USA
+Modesto, CA USA
+   = Modesto USA
+Nashville, TN USA
+   = Nashville USA
+New Orleans, LA USA
+   = New Orleans USA
+New York, NY USA
+   = New York USA
+   = New York City, NY USA
+Newark, NJ USA
+   = Newark USA
+Oak Bridge, IL USA
+   = Oak Bridge USA
+Oberlin, OH USA
+   = Oberlin USA
+Oklahoma City, OK USA
+   = Oklahoma City USA
+Parsippany, NJ USA
+   = Parsippany USA
+Pasadena, CA USA
+   = Pasadena USA
+Philadelphia, PA USA
+   = Philadelphia USA
+Phoenix, AZ USA
+   = Phoenix USA
+Portland, OR USA
+   = Portland USA
+Portsmouth, NH USA
+Portsmouth, VA USA
+Providence, RI USA
+   = Providence USA
+Rochester, NY USA
+   = Rochester USA
+Saint Paul, MN USA
+   = Saint Paul USA
+Salt Lake City, UT USA
+   = Salt Lake City USA
+San Antonio, TX USA
+   = San Antonio USA
+San Diego, CA USA
+   = San Diego USA
+San Francisco, CA USA
+   = San Francisco USA
+   = San Fransisco, CA USA
+   = San Fransisco USA
+San Jose, CA USA
+   = San Jose USA
+San Mateo, CA USA
+   = San Mateo USA
+Santa Monica, CA USA
+   = Santa Monica USA
+Saratoga Springs, NY USA
+   = Saratoga Springs USA
+Seattle, WA USA
+   = Seattle USA
+Sioux Falls, SD USA
+   = Sioux Falls USA
+Stratton Mountain, VT USA
+   = Stratton Mountain USA
+Tucson, AZ USA
+   = Tucson USA
+Vancouver, WA USA
+   = Vancouver USA
+Virginia Beach, VA USA
+   = Virginia Beach USA
+Waikiki, HI USA
+   = Waikiki USA
+Washington, DC USA
+   # = Washington USA
+
+Tashkent UZB
+
+
+### V ###
+#   VEN  Venezuela
+#   VIE  Vietnam
+
+Caracas VEN
+
+Ho Chi Minh City VIE
+Vung Tau VIE
+   = Vung Tau City VIE
+
+
+### W ###
+#   WLS  Wales
+
+%Suffix "(Wales)" "WLS"
+%Suffix " WAL" " WLS"
+Cardiff WLS
+Newport WLS
+Swansea WLS
+Wrexham WLS
+
+
+### Y ###
+#   YEM  Yemen
+#   SCG  Yugoslavia - most are now SCG (Serbia and Montenegro)
+
+Aden YEM
+
+
+# TODO: Split these Yugoslavia sites into SCG, CRO, BIH.
+#
+%Suffix "(Yugoslavia)" "YUG"
+Banja Vrucica YUG
+Dubrovnik YUG
+Herceg Novi YUG
+Kragujevac YUG
+Niksic YUG
+Nis YUG
+Novi Sad YUG
+Vrnjacka Banja YUG
+Vrsac YUG
+
+
+### END OF SITE SECTION
+
+
+######################################################################
+#
+# EVENT SECTION
+#
+# The "@EVENT" line below informs Scid that this section contains Event
+# name corrections, and that it should exclude spaces, dots, commas,
+# dashes and underscores from Event names for comparison purposes:
+
+@EVENT ",. -_"
+
+%Prefix "01. " "1. "
+%Prefix "02. " "2. "
+%Prefix "03. " "3. "
+%Prefix "04. " "4. "
+%Prefix "05. " "5. "
+%Prefix "06. " "6. "
+%Prefix "07. " "7. "
+%Prefix "08. " "8. "
+%Prefix "09. " "9. "
+
+%Prefix "II "   "2. "
+%Prefix "III "  "3. "
+%Prefix "IV "   "4. "
+%Prefix "V "    "5. "
+%Prefix "VI "   "6. "
+%Prefix "VII "  "7. "
+%Prefix "VIII " "8. "
+%Prefix "IX "   "9. "
+
+%Infix "1st " "1. "
+%Infix "2nd " "2. "
+%Infix "3rd " "3. "
+%Infix "4th " "4. "
+%Infix "5th " "5. "
+%Infix "6th " "6. "
+%Infix "7th " "7. "
+%Infix "8th " "8. "
+%Infix "9th " "9. "
+%Infix "0th " "0. "
+%Infix "11th " "11. "
+%Infix "12th " "12. "
+%Infix "13th " "13. "
+
+# Standardize playoff/women/team/etc suffixes:
+
+%Suffix " ch" " Ch"
+%Suffix "-ch" " Ch"
+%Suffix " ChT" " Team Ch"
+%Suffix "-chT" " Team Ch"
+%Infix "-ch " " Ch "
+%Infix "-chT " " Team Ch "
+
+%Suffix " Playoff" " playoff"
+%Suffix " Play-Off" " playoff"
+%Suffix " Play-off" " playoff"
+%Suffix " play-off" " playoff"
+%Suffix " plof" " playoff"
+%Suffix " p/o" " playoff"
+
+%Suffix " mem" " Memorial"
+%Suffix " memorial" " Memorial"
+%Suffix " Mem" " Memorial"
+%Infix " mem " " Memorial "
+
+%Suffix " (team)" " team"
+
+%Suffix " (Women)" " women"
+%Suffix " (women)" " women"
+%Suffix " Women"   " women"
+%Suffix " w" " women"
+%Suffix " (w)" " women"
+
+%Suffix " (Junior)" " junior"
+%Suffix " (junior)" " junior"
+%Suffix " Junior"   " junior"
+%Suffix " jr"   " junior"
+%Suffix " Jr"   " junior"
+
+Corr
+   = corr
+   = cr
+%Prefix "corr " "Corr "
+%Prefix "cr " "Corr "
+
+%Prefix "Eu " "Europe "
+
+Interzonal
+   = IZ
+   = izt
+   = IZT
+
+It
+   = it
+%Prefix "it " "It "
+
+Match
+   = match
+   = m
+%Prefix "m " "Match "
+%Prefix "match " "Match "
+
+Olympiad
+   = ol
+
+Olympiad (men)
+   = ol (m)
+   = ol (men)
+   = Ol (men)
+
+Olympiad (women)
+   = ol (w)
+   = ol (women)
+   = Ol (women)
+
+Open
+   = open
+%Prefix "open " "Open "
+%Prefix "Op " "Open "
+%Suffix " (open)" " Open"
+%Suffix " open" " Open"
+%Suffix " op" " Open"
+%Infix " open " " Open "
+%Infix " op " " Open "
+
+# %Prefix "wch" "WCh"
+
+Zonal
+   = zonal
+   = Zone
+   = zone
+   = zt
+   = Zt
+   = ZT
+%Prefix "Zt " "Zonal "
+%Prefix "zt " "Zonal "
+
+# Standardize national championships:
+
+%Prefix "ch-ARG" "ARG Ch"
+%Prefix "ch-ARM" "ARM Ch"
+%Prefix "ch-AUS" "AUS Ch"
+%Prefix "ch-AUT" "AUT Ch"
+%Prefix "ch-Africa" "Africa Ch"
+%Prefix "ch-Asia" "Asia Ch"
+%Prefix "ch-BEL" "BEL Ch"
+%Prefix "ch-BRA" "BRA Ch"
+%Prefix "ch-BUL" "BUL Ch"
+%Prefix "ch-BCF" "BCF Ch"
+%Prefix "ch-CAN" "CAN Ch"
+%Prefix "ch-CHI" "CHI Ch"
+%Prefix "ch-CHN" "CHN Ch"
+%Prefix "ch-COL" "COL Ch"
+%Prefix "ch-CRO" "CRO Ch"
+%Prefix "ch-CUB" "CUB Ch"
+%Prefix "ch-CZE" "CZE Ch"
+%Prefix "ch-DEN" "DEN Ch"
+%Prefix "ch-ESP" "ESP Ch"
+%Prefix "ch-EST" "EST Ch"
+%Prefix "ch-FAI" "FAI Ch"
+%Prefix "ch-FIN" "FIN Ch"
+%Prefix "ch-FRA" "FRA Ch"
+%Prefix "ch-GER" "GER Ch"
+%Prefix "ch-GRE" "GRE Ch"
+%Prefix "ch-HUN" "HUN Ch"
+%Prefix "ch-ICE" "ICE Ch"
+%Prefix "ch-IND" "IND Ch"
+%Prefix "ch-IRI" "IRI Ch"
+%Prefix "ch-IRL" "IRL Ch"
+%Prefix "ch-ISL" "ISL Ch"
+%Prefix "ch-ISR" "ISR Ch"
+%Prefix "ch-ITA" "ITA Ch"
+%Prefix "ch-LIB" "LIB Ch"
+%Prefix "ch-LTU" "LTU Ch"
+%Prefix "ch-MAR" "MAR Ch"
+%Prefix "ch-NED" "NED Ch"
+%Prefix "sf ch-NED" "NED Ch sf"
+%Prefix "ch-NOR" "NOR Ch"
+%Prefix "ch-NZL" "NZL Ch"
+%Prefix "ch-PER" "PER Ch"
+%Prefix "ch-PHI" "PHI Ch"
+%Prefix "ch-POL" "POL Ch"
+%Prefix "ch-POR" "POR Ch"
+%Prefix "ch-ROM" "ROM Ch"
+%Prefix "ch-RSA" "RSA Ch"
+%Prefix "ch-RUS" "RUS Ch"
+%Prefix "ch-SCG" "SCG Ch"
+%Prefix "ch-SCO" "SCO Ch"
+%Prefix "ch-SLO" "SLO Ch"
+%Prefix "ch-SUI" "SUI Ch"
+%Prefix "ch-SVK" "SVK Ch"
+%Prefix "ch-SWE" "SWE Ch"
+%Prefix "ch-TKM" "TKM Ch"
+%Prefix "ch-UKR" "UKR Ch"
+%Prefix "ch-URS" "URS Ch"
+%Prefix "ch-URU" "URU Ch"
+%Prefix "ch-USA" "USA Ch"
+%Prefix "ch-VIE" "VIE Ch"
+%Prefix "ch-YUG" "YUG Ch"
+
+### END OF EVENT SECTION
+
+
+######################################################################
+#
+# ROUND SECTION
+#
+# The "@ROUND" line below informs Scid that this section contains Round
+# name corrections, and that it should not exclude any particular
+# characters from Round names for comparison purposes:
+
+@ROUND ""
+
+1
+   = 01
+   = (01)
+   = (1)
+2
+   = 02
+   = (02)
+   = (2)
+3
+   = 03
+   = (03)
+   = (3)
+4
+   = 04
+   = (04)
+   = (4)
+5
+   = 05
+   = (05)
+   = (5)
+6
+   = 06
+   = (06)
+   = (6)
+7
+   = 07
+   = (07)
+   = (7)
+8
+   = 08
+   = (08)
+   = (8)
+9
+   = 09
+   = (09)
+   = (9)
+10
+   = (10)
+11
+   = (11)
+12
+   = (12)
+13
+   = (13)
+14
+   = (14)
+15
+   = (15)
+16
+   = (16)
+17
+   = (17)
+18
+   = (18)
+19
+   = (19)
+20
+   = (20)
+
+
+### END OF ROUND SECTION
+
+
+### END OF SCID SPELLING FILE
+######################################################################
