@@ -569,8 +569,14 @@ void MainWindow::slotMoveChanged()
   QString white = g->tag("White");
   QString black = g->tag("Black");
   QString eco = m_eco.isNull() ? g->tag("ECO") : m_eco;
+  QString whiteElo = g->tag("WhiteElo");
+  QString blackElo = g->tag("BlackElo");
+  if (whiteElo == "?")
+    whiteElo = QString();
+  if (blackElo == "?")
+    blackElo = QString();
   QString players = tr("Game %1: <a href=\"tag:white\">%2</a> %3 - <a href=\"tag:black\">%4</a> %5")
-      .arg(gameIndex() + 1).arg(white).arg(g->tag("WhiteElo")).arg(black).arg(g->tag("BlackElo"));
+      .arg(gameIndex() + 1).arg(white).arg(whiteElo).arg(black).arg(blackElo);
   QString result = tr("%1(%2) %3").arg(g->tag("Result")).arg((g->plyCount() + 1) / 2)
       .arg(eco);
   QString header = tr("%1, %2, %3, round %4").arg(g->tag("Event")).arg(g->tag("Site"))
