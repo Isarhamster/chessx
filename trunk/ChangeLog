@@ -2,6 +2,8 @@
 	* feature: improve look&feel and usability of Tip of the day
 	* feature: move guesser
 	* feature: support for online tablebases
+	* feature: binary ECO file format (faster startup)
+	* feature: simple tag search dialog for single tag searches
 	* bugfix: update theme when pieces are changed
 	* bugfix: fix some drag&drop problems
 	* bugfix: segfault when truncating moves from empty game
