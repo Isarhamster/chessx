@@ -2,10 +2,9 @@
                           pgndatabase.h  -  pgn database class
                              -------------------
     begin                : 8 December 2005
-    copyright            : (C) 2005, 2006 William Hoggarth
-													 <whoggarth@users.sourceforge.net>
-													 (C) 2005 Ejner Borgbjerg 
-                           <ejner@users.sourceforge.net>
+    copyright            : (C) 2005, 2006 William Hoggarth <whoggarth@users.sourceforge.net>
+													 (C) 2006 Ejner Borgbjerg <ejner@users.sourceforge.net>
+													 (C) 2007 Marius Roets <roets.marius@gmail.com>
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,9 +18,9 @@
 
 #ifndef __PGNDATABASE_H__
 #define __PGNDATABASE_H__
- 
+
 #include <QFile>
-#include <QTextStream>
+#include <QByteArray>
 
 #include "database.h"
 
@@ -64,11 +63,11 @@ class PgnDatabase : public Database
 		/** Parses a comment from the file */
 		void parseComment(Game* game);
 		/** Skips past any data which is not valid tag or move data */
-		void readJunk();
+		void skipJunk();
 		/** Skips past any tag data */
-		void readTags();
+		void skipTags();
 		/** Skips past any move data */
-		void readMoves();
+		void skipMoves();
       /** Parses the tags, and adds the supported types to the index 'm_index' */
       void parseTagsIntoIndex();
 
@@ -92,14 +91,14 @@ class PgnDatabase : public Database
 		//file methods
 		/** Reads the next line of text from the PGN file */
 		void readLine();
+		/** Skips the next line of text from the PGN file */
+		void skipLine();
 		/** Moves the file position to the start of the given game */
 		void seekGame(int index);
 		
 
 		//file variables
 		QString m_filename;
-		QFile* m_newFile;
-		QTextStream* m_newStream;
 		QString m_gameText;
 		
 		//parsing variables
@@ -118,7 +117,7 @@ class PgnDatabase : public Database
 		static const int AllocationSize = 512;
 		int m_allocated;
 		qint32* m_gameOffsets;
-		
+    QByteArray m_lineBuffer;
 		
 };
 
