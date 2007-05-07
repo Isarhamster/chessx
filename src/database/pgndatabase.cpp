@@ -2,10 +2,9 @@
                           pgndatabase.cpp  -  pgn database class
                              -------------------
     begin                : 8 December 2005
-    copyright            : (C) 2005, 2006 William Hoggarth
-													 <whoggarth@users.sourceforge.net>
-													 (C) 2005 Ejner Borgbjerg 
-                           <ejner@users.sourceforge.net>
+    copyright            : (C) 2005, 2006 William Hoggarth <whoggarth@users.sourceforge.net>
+                           (C) 2006 Ejner Borgbjerg <ejner@users.sourceforge.net>
+                           (C) 2007 Marius Roets <roets.marius@gmail.com>
  ***************************************************************************/
 
 /***************************************************************************
@@ -34,9 +33,8 @@ PgnDatabase::PgnDatabase()
 
 PgnDatabase::~PgnDatabase()
 {
-	if(m_isOpen) {
-		close();
-	}
+  if(m_isOpen) 
+    close();
 }
 
 bool PgnDatabase::open(const QString& filename)
@@ -57,10 +55,10 @@ bool PgnDatabase::parseFile()
    m_index.setCacheEnabled(true);
 	//indexing game positions in the file, game contents are ignored
 	while(!m_file->atEnd()) {		
-		readJunk();
+		skipJunk();
 		addOffset();
 		parseTagsIntoIndex(); // This will parse the tags into memory
-		readMoves();
+		skipMoves();
 	}
    m_index.setCacheEnabled(false);
    return true;
@@ -109,8 +107,8 @@ bool PgnDatabase::loadGame(int index, Game& game)
 	game.clear();
    loadGameHeaders(index, game);
 	seekGame(index);
-	readTags();
-	if((game.tag("FEN") != QString::null) && (game.tag("FEN") != "?")) {
+	skipTags();
+	if(!game.tag("FEN").isEmpty() && (game.tag("FEN") != "?")) {
       qDebug() << game.tag("FEN");
 		Board board;
 		board.fromFEN(game.tag("FEN"));
@@ -123,18 +121,16 @@ bool PgnDatabase::loadGame(int index, Game& game)
 
 void PgnDatabase::initialise()
 {
-	m_isOpen = false;
-	m_filename = "";
-   m_newFile = 0;
-   m_newStream = 0;
-   m_count = 0;
-   m_gameOffsets = 0;
-   m_allocated = 0;
+  m_isOpen = false;
+  m_filename = QString();
+  m_count = 0;
+  m_gameOffsets = 0;
+  m_allocated = 0;
 }
 
 qint32 PgnDatabase::offset(int index)
 {
-	return m_gameOffsets[index];
+  return m_gameOffsets[index];
 }
 
 void PgnDatabase::addOffset()
@@ -144,27 +140,36 @@ void PgnDatabase::addOffset()
 
 void PgnDatabase::addOffset(qint32 offset)
 {
-	if(m_count == m_allocated) {
-		//out of space reallocate memory
-		qint32* newAllocation = new qint32[m_allocated += AllocationSize];
-		memcpy(newAllocation, m_gameOffsets, sizeof(qint32) * m_count);
-		delete m_gameOffsets;
-		m_gameOffsets = newAllocation;
-	}
-	
-	m_gameOffsets[m_count++] = offset;
+  if (m_count == m_allocated)
+  {
+    //out of space reallocate memory
+    qint32 *newAllocation = new qint32[m_allocated += AllocationSize];
+    memcpy(newAllocation, m_gameOffsets, sizeof(qint32) * m_count);
+    delete m_gameOffsets;
+    m_gameOffsets = newAllocation;
+  }
+
+  m_gameOffsets[m_count++] = offset;
 }
+
 
 void PgnDatabase::readLine()
 {
-	m_filePos += m_currentLineSize;
-	QByteArray line = m_file->readLine();
-	m_currentLineSize = line.size();
-	m_currentLine = QString(line).trimmed();
-	m_currentLine.replace ("("," ( ");
-	m_currentLine.replace (")"," ) ");
-	m_currentLine.replace ("{"," { ");
-	m_currentLine.replace ("}"," } ");
+  m_filePos += m_currentLineSize;
+  m_lineBuffer = m_file->readLine();
+  m_currentLineSize = m_lineBuffer.size();
+  m_currentLine = QString(m_lineBuffer).trimmed();
+  m_currentLine.replace ("("," ( ");
+  m_currentLine.replace (")"," ) ");
+  m_currentLine.replace ("{"," { ");
+  m_currentLine.replace ("}"," } ");
+}
+
+void PgnDatabase::skipLine()
+{
+  m_filePos += m_currentLineSize;
+  m_lineBuffer = m_file->readLine();
+  m_currentLineSize = m_lineBuffer.size();
 }
 
 void PgnDatabase::seekGame(int index)
@@ -376,34 +381,40 @@ void PgnDatabase::parseComment(Game* game)
   }
 }
 
-void PgnDatabase::readJunk()
-{	
-	while(!m_currentLine.startsWith(QString("[")) && !m_file->atEnd()) {
-		readLine();
-	}
+bool onlyWhite(const QByteArray& b)
+{
+  for (int i = 0; i < b.length(); i++)
+    if (!isspace(b[i]))
+      return false;
+  return true;
 }
 
-void PgnDatabase::readTags()
+void PgnDatabase::skipJunk()
 {
-	while(m_currentLine.startsWith(QString("[")) && !m_file->atEnd()) {
-		readLine();
-	}
-	
-	//swallow trailing whitespace
-	while(m_currentLine == "" && !m_file->atEnd()) {
-		readLine();
-	}
+  while ((!m_lineBuffer.length() || m_lineBuffer[0] != '[') && !m_file->atEnd()) 
+    skipLine();
+  m_currentLine = m_lineBuffer.trimmed();
 }
 
-void PgnDatabase::readMoves()
+void PgnDatabase::skipTags()
 {
-	while(m_currentLine != "" && !m_file->atEnd()) {
-		readLine();
-	}
+	while (m_lineBuffer.length() && m_lineBuffer[0] == '[' && !m_file->atEnd())
+		skipLine();
 	
 	//swallow trailing whitespace
-	while(m_currentLine == "" && !m_file->atEnd()) {
-		readLine();
-	}
+	while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
+		skipLine();
+	m_currentLine = m_lineBuffer.trimmed();
+}
+
+void PgnDatabase::skipMoves()
+{
+	while(!onlyWhite(m_lineBuffer) && !m_file->atEnd()) 
+		skipLine();
+	
+	//swallow trailing whitespace
+	while(onlyWhite(m_lineBuffer) && !m_file->atEnd()) 
+		skipLine();
+  m_currentLine = m_lineBuffer.trimmed();
 }
 

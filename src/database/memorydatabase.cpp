@@ -85,7 +85,7 @@ bool MemoryDatabase::parseFile()
    m_index.setCacheEnabled(true);
 	//indexing game positions in the file, game contents are ignored
 	while(!m_file->atEnd()) {		
-		readJunk();
+		skipJunk();
 		addOffset();
 		parseTagsIntoIndex(); // This will parse the tags into memory
       Game* game = new Game;
