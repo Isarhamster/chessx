@@ -273,7 +273,7 @@ bool BoardView::setTheme(const QString& pieceFile, const QString& boardFile)
     // If there is no theme, try to load default
     if (!m_theme.isValid())
     {
-      result = m_theme.load("default");
+      result = m_theme.load("merida");
       if (result)
         resizeBoard();
     }
@@ -332,7 +332,7 @@ QRect BoardView::squareRect(Square square)
 {
   int x = isFlipped() ? 7 - square % 8 : square % 8;
   int y = isFlipped() ? square / 8 : 7 - square / 8;
-  return QRect(QPoint(x * m_theme.size().width(), y * m_theme.size().height()), 
+  return QRect(QPoint(x * m_theme.size().width(), y * m_theme.size().height()),
                m_theme.size());
 }
 
