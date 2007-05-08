@@ -1,10 +1,12 @@
 
-	* feature: improve look&feel and usability of Tip of the day
+	* feature: new, much improved themes
 	* feature: move guesser
 	* feature: support for online tablebases
 	* feature: binary ECO file format (faster startup)
 	* feature: simple tag search dialog for single tag searches
+	* feature: improve look&feel and usability of Tip of the day
 	* feature: Apply button for Preferences dialog
+	* feature: configurable square highlight color
 	* bugfix: update theme when pieces are changed
 	* bugfix: fix some drag&drop problems
 	* bugfix: segfault when truncating moves from empty game
@@ -14,6 +16,8 @@
 	* bugfix: correctly show side to move in Setup Position dialog
 	* bugfix: fix rare bug when # symbol was displayed instead of +
 	* bugfix: correctly calculate hash value for en passant
+	* bugfix: re-enable FEN tag support
+	* change: optimize PGN loading (loads 10-20% faster)
 
 Mon 23 Apr 2007 18:59:47 CET	Version 0.3
 
