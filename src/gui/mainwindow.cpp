@@ -425,7 +425,7 @@ void MainWindow::slotConfigure()
 void MainWindow::slotReconfigure()
 {
   // Re-emit for children
-  emit reconfigure(); 
+  emit reconfigure();
 }
 
 void MainWindow::slotConfigureChessEngines()
@@ -500,10 +500,10 @@ void MainWindow::slotHelpAbout()
 {
   QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
     "<p>Free chess database.<br>Version %1</br>"
-    "<p>Copyright 2005-2007 ChessX developers:<br>"
-     "Database: Marius Roets, William Hoggarth, Ejner Borgbjerg.<br>"
-     "GUI: Michal Rudolf, Heinz Hopfgartner."
-    "<p>Homepage: <a href=\"http://chessx.sf.net\">http://chessx.sf.net</a><br>"
+    "<p>Copyright 2005-2007 ChessX developers<br>"
+     "Core developers: Sean Estabrooks, Marius Roets, Michal Rudolf.<br>"
+     "Additional coding : Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.<br>"
+     "<p>Homepage: <a href=\"http://chessx.sf.net\">http://chessx.sf.net</a><br>"
     "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">"
                                "chessx-users@lists.sourceforge.net").arg(ChessXVersion),
     QMessageBox::NoIcon, QMessageBox::Ok, Qt::NoButton, Qt::NoButton, this);
@@ -529,7 +529,7 @@ void MainWindow::slotMove(Square from, Square to)
     QStringList moves;      // Move is legal, ask for promoted piece
     moves << tr("Queen") << tr("Rook") << tr("Bishop") << tr("Knight");
     bool ok;
-    int index = moves.indexOf(QInputDialog::getItem(0, tr("Promotion"), tr("Promote to:"), 
+    int index = moves.indexOf(QInputDialog::getItem(0, tr("Promotion"), tr("Promote to:"),
                               moves, 0, false, &ok));
     if (!ok) return;
     m.setPromotionPiece(Piece(index + (board.toMove() == White ? WhiteQueen : BlackQueen)));
