@@ -96,7 +96,7 @@ private:
   /** Highlights the from and to squares of a guessed move. */
   void showGuess(Square s);
   /** Recalculate guess when board is changed */
-	void updateGuess();
+	void updateGuess(Square s);
   /** Remove the guessed move highlight from the board. */
   void removeGuess();
 

@@ -51,7 +51,7 @@ void BoardView::setBoard(const Board& value)
   m_clickUsed = true;
   Board oldboard = m_board;
   m_board = value;
-	updateGuess();
+	updateGuess(m_hoverSquare);
   update();
 }
 
@@ -166,12 +166,11 @@ void BoardView::showGuess(Square s)
    }
 }
 
-void BoardView::updateGuess()
+void BoardView::updateGuess(Square s)
 {
 	unselectSquare();
-	int ohs = m_hoverSquare;
 	m_hoverSquare = InvalidSquare;
-	showGuess(ohs);
+	showGuess(s);
 }
 
 void BoardView::removeGuess()
@@ -234,7 +233,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
     update(oldr);
     if (s != InvalidSquare)
       emit moveMade(from, s);
-		updateGuess();
+		updateGuess(s);
   }
   else if (m_selectedSquare != InvalidSquare)
   {
