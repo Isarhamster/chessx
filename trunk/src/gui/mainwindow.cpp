@@ -53,7 +53,7 @@
 
 MainWindow::MainWindow() : QMainWindow(),
   m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_tipDialog(0),
-  m_showPgnSource(false)
+  m_showPgnSource(false), m_useTablebase(false)
 {
   setObjectName("MainWindow");
   /* Active database */
@@ -207,7 +207,9 @@ bool MainWindow::confirm(const QString& title, const QString& question,
 
 void MainWindow::closeEvent(QCloseEvent* e)
 {
-  if (confirm(tr("Quit"), tr("Do you want to quit?"))) {
+  if (!AppSettings->value("/General/confirmQuit", true).toBool() ||
+        confirm(tr("Quit"), tr("Do you want to quit?")))
+  {
     m_recentFiles.save("History", "RecentFiles");
     AppSettings->setLayout(m_playerDialog);
     AppSettings->setLayout(m_helpWindow);
@@ -218,7 +220,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
     AppSettings->endGroup();
     e->accept();
     qApp->quit();
-    }
+  }
   else
     e->ignore();
 }
@@ -424,6 +426,8 @@ void MainWindow::slotConfigure()
 
 void MainWindow::slotReconfigure()
 {
+  m_useTablebase = AppSettings->value("/General/onlineTablebases", true).toBool();
+
   // Re-emit for children
   emit reconfigure();
 }
@@ -564,8 +568,8 @@ void MainWindow::slotMove(Square from, Square to)
 void MainWindow::slotMoveChanged()
 {
   Game* g = game();
-  // Set board first
 
+  // Set board first
   m_tablebase->abortLookup();
   m_boardView->setBoard(g->board());
   // Highlight current move
@@ -615,7 +619,8 @@ void MainWindow::slotMoveChanged()
   }
   m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4%5<br></qt>").arg(players).arg(result)
       .arg(header).arg(move).arg(var));
-	m_tablebase->getBestMove(g->toFen());
+  if (m_useTablebase)
+    m_tablebase->getBestMove(g->toFen());
 }
 
 void MainWindow::showTablebaseMove(Move move, int score)
