@@ -72,10 +72,14 @@ void PreferencesDialog::slotBoardDarkColor()
 
 void PreferencesDialog::slotBoardMode(int mode)
 {
-  if (mode == 2)
-    ui.widgetStack->setCurrentWidget(ui.plainBoardWidget);
-  else
-    ui.widgetStack->setCurrentWidget(ui.themeBoardWidget);
+  bool theme = mode != 2;
+  ui.lightLabel->setVisible(!theme);
+  ui.darkLabel->setVisible(!theme);
+  ui.darkLabel->setVisible(!theme);
+  ui.boardLightButton->setVisible(!theme);
+  ui.boardDarkButton->setVisible(!theme);
+  ui.boardThemeLabel->setVisible(theme);
+  ui.boardThemeCombo->setVisible(theme);
 }
 
 void PreferencesDialog::restoreSettings()
@@ -108,6 +112,8 @@ void PreferencesDialog::restoreSettings()
   ui.playersRatingsCheck->setChecked(AppSettings->value("rating", true).toBool());
   ui.playersSpinbox->setValue(AppSettings->value("count", 100).toInt());
   AppSettings->endGroup();
+
+  slotBoardMode(ui.boardTypeCombo->currentIndex());
 }
 
 void PreferencesDialog::saveSettings()
