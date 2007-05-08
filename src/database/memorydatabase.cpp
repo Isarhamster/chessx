@@ -84,13 +84,20 @@ bool MemoryDatabase::parseFile()
 {
    m_index.setCacheEnabled(true);
 	//indexing game positions in the file, game contents are ignored
-	while(!m_file->atEnd()) {		
+	while(!m_file->atEnd()) {
 		skipJunk();
 		addOffset();
 		parseTagsIntoIndex(); // This will parse the tags into memory
       Game* game = new Game;
-		parseMoves(game);
-      m_games.append(game);
+    QString fen = m_index.tagValue(TagFEN, m_games.count());
+    if (!fen.isEmpty() && fen != "?")
+    {
+      Board board;
+		  board.fromFEN(fen);
+		  game->setStartBoard(board);
+    }
+    parseMoves(game);
+    m_games.append(game);
 	}
    m_index.setCacheEnabled(false);
    return true;
