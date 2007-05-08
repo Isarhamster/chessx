@@ -52,6 +52,16 @@ void BoardTheme::setDarkColor(const QColor& value)
     setSquareType(m_squareType);
 }
 
+QColor BoardTheme::highlightColor() const
+{
+  return m_highlightColor;
+}
+
+void BoardTheme::setHighlightColor(const QColor& value)
+{
+  m_highlightColor = value;
+}
+
 const QPixmap& BoardTheme::piece(Piece p) const
 {
   return m_piece[p];

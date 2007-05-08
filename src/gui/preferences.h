@@ -21,7 +21,7 @@
 
 class QComboBox;
 
-/** @ingroup GUI 
+/** @ingroup GUI
 The PreferencesDialog class is a dialog for configuring ChessX.
 After changes are done, reconfigure() signal is emitted. */
 class PreferencesDialog : public QDialog
@@ -36,8 +36,7 @@ public:
 public slots:
   /** Execute dialog, save options on exit */
   int exec();
-  void slotBoardLightColor();
-  void slotBoardDarkColor();
+  void slotBoardColor();
   void slotBoardMode(int mode);
   void slotApply();
 

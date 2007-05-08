@@ -31,7 +31,7 @@
 */
 
 
-class BoardTheme 
+class BoardTheme
 {
 public:
   enum BoardSquare {Unscaled, Scaled, Plain};
@@ -50,6 +50,10 @@ public:
   void setDarkColor(const QColor& value);
   /** @return color of dark squares. */
   QColor darkColor() const;
+  /** Sets the color to highlight squares. */
+  void setHighlightColor(const QColor& value);
+  /** @return color to highlight squares. */
+  QColor highlightColor() const;
   /** @return pixmap for given piece scaled to current size(). */
   const QPixmap& piece(Piece p) const;
   /** @return unscaled pixmap for given piece. */
@@ -89,6 +93,7 @@ private:
   BoardSquare m_squareType;
   QColor m_lightColor;
   QColor m_darkColor;
+  QColor m_highlightColor;
   QString m_pieceFilename;
   QString m_boardFilename;
 };

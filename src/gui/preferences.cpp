@@ -31,8 +31,9 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
   connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
   connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
   connect(ui.applyButton, SIGNAL(clicked()), SLOT(slotApply()));
-  connect(ui.boardLightButton, SIGNAL(clicked()), SLOT(slotBoardLightColor()));
-  connect(ui.boardDarkButton, SIGNAL(clicked()), SLOT(slotBoardDarkColor()));
+  connect(ui.boardLightButton, SIGNAL(clicked()), SLOT(slotBoardColor()));
+  connect(ui.boardDarkButton, SIGNAL(clicked()), SLOT(slotBoardColor()));
+  connect(ui.boardHighlightButton, SIGNAL(clicked()), SLOT(slotBoardColor()));
   connect(ui.boardTypeCombo, SIGNAL(activated(int)), SLOT(slotBoardMode(int)));
   restoreSettings();
 }
@@ -58,16 +59,14 @@ void PreferencesDialog::slotApply()
   emit reconfigure();
 }
 
-void PreferencesDialog::slotBoardLightColor()
+void PreferencesDialog::slotBoardColor()
 {
-  QColor color = QColorDialog::getColor(buttonColor(ui.boardLightButton));
-  setButtonColor(ui.boardLightButton, color);
-}
-
-void PreferencesDialog::slotBoardDarkColor()
-{
-  QColor color = QColorDialog::getColor(buttonColor(ui.boardDarkButton));
-  setButtonColor(ui.boardDarkButton, color);
+  QPushButton* button = qobject_cast<QPushButton*>(sender());
+  if (button)
+  {
+    QColor color = QColorDialog::getColor(buttonColor(button));
+    setButtonColor(button, color);
+  }
 }
 
 void PreferencesDialog::slotBoardMode(int mode)
@@ -95,6 +94,8 @@ void PreferencesDialog::restoreSettings()
   setButtonColor(ui.boardLightButton, color.value<QColor>());
   color = AppSettings->value("darkColor", "#a0a0a0");
   setButtonColor(ui.boardDarkButton, color.value<QColor>());
+  color = AppSettings->value("highlightColor", "#ffff00");
+  setButtonColor(ui.boardHighlightButton, color.value<QColor>());
   AppSettings->endGroup();
 
   QStringList themes = QDir(AppSettings->dataPath() + "/themes").entryList(QStringList("*.png"));
@@ -125,6 +126,7 @@ void PreferencesDialog::saveSettings()
   AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());
   AppSettings->setValue("boardTheme", ui.boardThemeCombo->currentText());
   AppSettings->setValue("lightColor", buttonColor(ui.boardLightButton));
+  AppSettings->setValue("highlightColor", buttonColor(ui.boardHighlightButton));
   AppSettings->setValue("darkColor", buttonColor(ui.boardDarkButton));
   AppSettings->endGroup();
   AppSettings->beginGroup("/Players/");

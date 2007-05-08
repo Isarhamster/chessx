@@ -82,7 +82,7 @@ void BoardView::paintEvent(QPaintEvent* event)
     if (square == m_selectedSquare || square == m_hifrom || square == m_hito)
     {
       QPen pen;
-      pen.setColor(QColor(Qt::yellow));
+      pen.setColor(m_theme.highlightColor());
       pen.setWidth(2);
       p.setPen(pen);
       p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
@@ -304,6 +304,7 @@ void BoardView::configure()
   m_theme.setSquareType(BoardTheme::BoardSquare(AppSettings->value("squareType", 0).toInt()));
   m_theme.setLightColor(AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
   m_theme.setDarkColor(AppSettings->value("darkColor", "#a0a0a0").value<QColor>());
+  m_theme.setHighlightColor(AppSettings->value("highlightColor", "#ffff00").value<QColor>());
   QString pieceTheme = AppSettings->value("pieceTheme", "default").toString();
   QString boardTheme = AppSettings->value("boardTheme", "default").toString();
   setTheme(pieceTheme, boardTheme);
