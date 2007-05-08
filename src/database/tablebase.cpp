@@ -16,6 +16,11 @@ Shredder::~Shredder()
 	delete m_http;
 }
 
+void Shredder::abortLookup()
+{
+	m_http->abort();
+}
+
 void Shredder::getBestMove(QString fen)
 {
 	QString prep(fen.simplified());
