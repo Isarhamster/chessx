@@ -565,10 +565,12 @@ void MainWindow::slotMoveChanged()
 {
   Game* g = game();
   // Set board first
+
+  m_tablebase->abortLookup();
   m_boardView->setBoard(g->board());
   // Highlight current move
   int id = game()->currentMoveId();
-  if (!id) 
+  if (!id)
     id = 1;
   m_gameView->selectAnchor(QString("move:%1").arg(id));
   // Finally update game information

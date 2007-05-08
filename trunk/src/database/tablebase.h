@@ -25,6 +25,8 @@ signals:
 public slots:
 	/** Request best move from table base given FEN position */
 	virtual void getBestMove(QString fen) = 0;
+	/** Cancel the previous lookup */
+	virtual void abortLookup() = 0;
 };
 
 
@@ -42,6 +44,7 @@ signals:
 	virtual void bestMove(Move move, int score);
 public slots:
 	void getBestMove(QString fen);
+	void abortLookup();
 private slots:
 	void httpDone(bool error);
 private:
