@@ -30,7 +30,57 @@
      <property name="currentIndex" >
       <number>0</number>
      </property>
-     <widget class="QWidget" name="TabPage" >
+     <widget class="QWidget" name="tabPlayers" >
+      <attribute name="title" >
+       <string>&amp;General</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="1" column="0" >
+        <widget class="QCheckBox" name="tablebaseCheck" >
+         <property name="text" >
+          <string>Use online tablebase servers</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" >
+        <widget class="QCheckBox" name="playersRatingsCheck" >
+         <property name="text" >
+          <string>Show rating information in Player dialog</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QCheckBox" name="quitCheck" >
+         <property name="text" >
+          <string>Confirm before quit</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>161</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabGeneral" >
       <attribute name="title" >
        <string>&amp;Board</string>
       </attribute>
@@ -246,72 +296,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabPlayers" >
-      <attribute name="title" >
-       <string>&amp;Players</string>
-      </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
-        <number>11</number>
-       </property>
-       <property name="spacing" >
-        <number>6</number>
-       </property>
-       <item row="0" column="0" >
-        <layout class="QHBoxLayout" >
-         <property name="margin" >
-          <number>11</number>
-         </property>
-         <property name="spacing" >
-          <number>6</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="textLabel1" >
-           <property name="text" >
-            <string>Players in the list:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="playersSpinbox" >
-           <property name="maximum" >
-            <number>500</number>
-           </property>
-           <property name="minimum" >
-            <number>10</number>
-           </property>
-           <property name="singleStep" >
-            <number>10</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="1" column="0" >
-        <widget class="QCheckBox" name="playersRatingsCheck" >
-         <property name="text" >
-          <string>Show detailed rating information</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>161</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
    <item row="1" column="0" >
@@ -379,6 +363,23 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>playersRatingsCheck</tabstop>
+  <tabstop>tablebaseCheck</tabstop>
+  <tabstop>quitCheck</tabstop>
+  <tabstop>okButton</tabstop>
+  <tabstop>applyButton</tabstop>
+  <tabstop>cancelButton</tabstop>
+  <tabstop>pieceThemeCombo</tabstop>
+  <tabstop>boardTypeCombo</tabstop>
+  <tabstop>boardThemeCombo</tabstop>
+  <tabstop>boardLightButton</tabstop>
+  <tabstop>boardDarkButton</tabstop>
+  <tabstop>boardHighlightButton</tabstop>
+  <tabstop>guessMoveCheck</tabstop>
+  <tabstop>boardFrameCheck</tabstop>
+  <tabstop>tabWidget</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

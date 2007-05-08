@@ -84,6 +84,10 @@ void PreferencesDialog::slotBoardMode(int mode)
 void PreferencesDialog::restoreSettings()
 {
   // Read Board settings
+  AppSettings->beginGroup("/General/");
+  ui.quitCheck->setChecked(AppSettings->value("confirmQuit", true).toBool());
+  ui.tablebaseCheck->setChecked(AppSettings->value("onlineTablebases", true).toBool());
+  AppSettings->endGroup();
   AppSettings->beginGroup("/Board/");
   ui.boardTypeCombo->setCurrentIndex(AppSettings->value("squareType", 0).toInt());
   ui.boardFrameCheck->setChecked(AppSettings->value("showFrame", true).toBool());
@@ -111,7 +115,7 @@ void PreferencesDialog::restoreSettings()
   // Read Players settings
   AppSettings->beginGroup("/Players/");
   ui.playersRatingsCheck->setChecked(AppSettings->value("rating", true).toBool());
-  ui.playersSpinbox->setValue(AppSettings->value("count", 100).toInt());
+  //ui.playersSpinbox->setValue(AppSettings->value("count", 100).toInt());
   AppSettings->endGroup();
 
   slotBoardMode(ui.boardTypeCombo->currentIndex());
@@ -119,6 +123,10 @@ void PreferencesDialog::restoreSettings()
 
 void PreferencesDialog::saveSettings()
 {
+  AppSettings->beginGroup("/General/");
+  AppSettings->setValue("confirmQuit", ui.quitCheck->isChecked());
+  AppSettings->setValue("onlineTablebases", ui.tablebaseCheck->isChecked());
+  AppSettings->endGroup();
   AppSettings->beginGroup("/Board/");
   AppSettings->setValue("squareType", ui.boardTypeCombo->currentIndex());
   AppSettings->setValue("showFrame", ui.boardFrameCheck->isChecked());
@@ -131,7 +139,7 @@ void PreferencesDialog::saveSettings()
   AppSettings->endGroup();
   AppSettings->beginGroup("/Players/");
   AppSettings->setValue("rating", ui.playersRatingsCheck->isChecked());
-  AppSettings->setValue("count", ui.playersSpinbox->value());
+  //AppSettings->setValue("count", ui.playersSpinbox->value());
   AppSettings->endGroup();
 }
 

@@ -176,7 +176,7 @@ public slots:
   void slotSearchReverse();
   /** Made given move on the board */
   void slotMove(Square from, Square to);
-  /** Update GUI after current move was changed. Update BoardView to current board, 
+  /** Update GUI after current move was changed. Update BoardView to current board,
   updates GameInfo and highlight current move in GameView. */
   void slotMoveChanged();
   /** Show temporary message. */
@@ -233,6 +233,7 @@ private:
   QString m_eco;
   QActionGroup* m_actions;
   bool m_showPgnSource; // for debugging
+  bool m_useTablebase; // for debugging
   Tablebase* m_tablebase;
   EcoThread* m_ecothread;
 };
