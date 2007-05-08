@@ -137,11 +137,13 @@ void BoardView::resizeEvent(QResizeEvent*)
 
 Square BoardView::squareAt(const QPoint& p) const
 {
-  int x = isFlipped() ? 7 - p.x() / m_theme.size().width() : p.x() / m_theme.size().width();
-  int y = isFlipped() ? p.y() / m_theme.size().height() : 7 - p.y() / m_theme.size().height();
-  if (x >= 0 && x < 8 && y >= 0 && y <= 8)
-    return 8 * y + x;
-  else return InvalidSquare;
+  int x = p.x(), y = p.y();
+  int width = m_theme.size().width();
+  int height = m_theme.size().height();
+  if (x <= 0 || y <= 0 || x >= width*8 || y >= height*8)
+    return InvalidSquare;
+  x /= width; y /= height;
+  return isFlipped() ? (8 * y + 7 - x) : (8 * (7 - y) + x);
 }
 
 void BoardView::mousePressEvent(QMouseEvent* event)
