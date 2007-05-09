@@ -89,18 +89,14 @@ bool MemoryDatabase::parseFile()
 		addOffset();
 		parseTagsIntoIndex(); // This will parse the tags into memory
       Game* game = new Game;
-#warning Crashes if no FEN, without it disregards FEN
-		/*
-	 QString fen = m_index.tagValue(TagFEN, m_games.count());
-    if (!fen.isEmpty() && fen != "?")
-    {
-      Board board;
-		  board.fromFEN(fen);
-		  game->setStartBoard(board);
-    }
-	 */
-    parseMoves(game);
-    m_games.append(game);
+      QString fen = m_index.tagValue(TagFEN,m_count-1);
+      if (fen != "?") {
+         Board board;
+         board.fromFEN(fen);
+         game->setStartBoard(board);
+      }
+		parseMoves(game);
+      m_games.append(game);
 	}
    m_index.setCacheEnabled(false);
    return true;
