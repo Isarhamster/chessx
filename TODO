@@ -1,10 +1,6 @@
-TODO for 0.4 (Next release, technical)
+TODO for 0.5 (Next release, technical)
     * Cleanup MessageBoxes (use text instead of Yes/No)
     * Cleanup QFileDialogs (add default suffix etc.)
-    * Configurable quit confirmation
-    * Move Tip to help menu
-    * Improve Tip look&feel
-    * Improve loading speed (delay or speed-up ECO loading)
     * Improve header search speed
     * Add progress for open/search
     * Add header search dialog
