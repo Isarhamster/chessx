@@ -833,7 +833,7 @@ void MainWindow::setupActions()
 
   /* Game menu */
   QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
-  QMenu* loadMenu = gameMenu->addMenu(tr("&Load..."));
+  QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
 
   /* Game->Load submenu */
   loadMenu->addAction(createAction(tr("&First"), SLOT(slotGameLoadFirst()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
@@ -844,7 +844,7 @@ void MainWindow::setupActions()
   loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
 
   /* Game->Go to submenu */
-  QMenu* goMenu = gameMenu->addMenu(tr("&Go..."));
+  QMenu* goMenu = gameMenu->addMenu(tr("&Go to"));
   goMenu->addAction(createAction(tr("&Start"), SLOT(slotGameMoveFirst()), Qt::Key_Home));
   goMenu->addAction(createAction(tr("&End"), SLOT(slotGameMoveLast()), Qt::Key_End));
   goMenu->addAction(createAction(tr("&Next move"), SLOT(slotGameMoveNext()), Qt::Key_Right));
@@ -855,11 +855,12 @@ void MainWindow::setupActions()
   gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), Qt::CTRL + Qt::Key_S));
 
   /* Search menu */
-  QMenu* search = menuBar()->addMenu(tr("&Search"));
-  search->addAction(createAction(tr("&Find tag"), SLOT(slotSearchTag()), Qt::CTRL +
+  QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
+  search->addAction(createAction(tr("Find &tag"), SLOT(slotSearchTag()), Qt::CTRL +
       Qt::SHIFT + Qt::Key_T));
-  search->addAction(createAction(tr("&Find position"), SLOT(slotSearchBoard()), Qt::CTRL +
+  search->addAction(createAction(tr("Find &position"), SLOT(slotSearchBoard()), Qt::CTRL +
       Qt::SHIFT + Qt::Key_B));
+  search->addSeparator();
   search->addAction(createAction(tr("&Reset filter"), SLOT(slotSearchReset()), Qt::CTRL + Qt::Key_F));
   search->addAction(createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()),
                     Qt::CTRL + Qt::SHIFT + Qt::Key_F));
