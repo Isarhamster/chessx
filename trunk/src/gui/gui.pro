@@ -47,19 +47,23 @@ win32 {
   release {
      LIBS += ../database/release/libdatabase.a
      PRE_TARGETDEPS += ../database/release/libdatabase.a
+     LIBS += ../guess/release/libguess.a
+     PRE_TARGETDEPS += ../guess/release/libguess.a
   }
   else {
      LIBS += ../database/debug/libdatabase.a
      PRE_TARGETDEPS += ../database/debug/libdatabase.a
+     LIBS += ../guess/debug/libguess.a
+     PRE_TARGETDEPS += ../guess/debug/libguess.a
   }
 }
 else { 
   TARGET = ../../bin/chessx
   LIBS += ../database/libdatabase.a
   PRE_TARGETDEPS += ../database/libdatabase.a
+  LIBS += ../guess/libguess.a
+  PRE_TARGETDEPS += ../guess/libguess.a
 }
-LIBS += ../guess/libguess.a
-PRE_TARGETDEPS += ../guess/libguess.a
 
 macx {
      ICON = ../../data/images/chessx.icns
