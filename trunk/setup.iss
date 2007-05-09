@@ -4,7 +4,7 @@
 ; Inno Setup creates install files for MS Windows.
 
 #define MyAppName "ChessX"
-#define MyAppVerName "ChessX-0.3.0"
+#define MyAppVerName "ChessX-0.4"
 #define MyAppPublisher "ChessX Team"
 #define MyAppURL "http://chessx.sourceforge.net"
 #define MyAppExeName "chessx.exe"
