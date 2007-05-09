@@ -85,7 +85,7 @@ TagIndex IndexItem::index(int offset, int size)
 {
    // Could this test be skipped, abandonning safety for speed?
    if ((offset+size) > m_size)
-      return -1;
+      return 0;
    if (size == 1) {
       return *(quint8*)(m_data+offset);
    } else if (size == 2) {
@@ -95,7 +95,7 @@ TagIndex IndexItem::index(int offset, int size)
    } else if (size == 3) {
       return (*(quint32*)(m_data + offset)) & 0x00FFFFFF;
    }
-   return -1;
+   return 0;
 }
 void IndexItem::write(QDataStream& out)
 {
