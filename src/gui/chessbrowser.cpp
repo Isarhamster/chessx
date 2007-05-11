@@ -12,34 +12,29 @@
 #include <QTextBlock>
 
 ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p)
-{
-}
+{}
 
 void ChessBrowser::setSource(const QUrl&)
-{
-}
+{}
 
 void ChessBrowser::selectAnchor(const QString& href)
 {
-  for (QTextBlock block = document()->begin(); block != document()->end(); block = block.next())
-  {
-    QTextBlock::iterator it;
-    for (it = block.begin(); !it.atEnd(); ++it)
-    {
-      QTextFragment fragment = it.fragment();
-      if (!fragment.isValid())
-        continue;
-      QTextCharFormat format = fragment.charFormat();
-      if (format.isAnchor() && format.anchorHref() == href)
-      {
-        QTextCursor cursor(document());
-        cursor.setPosition(fragment.position());
-        cursor.setPosition(fragment.position() + fragment.length(), QTextCursor::KeepAnchor);
-        setTextCursor(cursor);
-        ensureCursorVisible();
-        return;
-      }
-    }
-  }
+	for (QTextBlock block = document()->begin(); block != document()->end(); block = block.next()) {
+		QTextBlock::iterator it;
+		for (it = block.begin(); !it.atEnd(); ++it) {
+			QTextFragment fragment = it.fragment();
+			if (!fragment.isValid())
+				continue;
+			QTextCharFormat format = fragment.charFormat();
+			if (format.isAnchor() && format.anchorHref() == href) {
+				QTextCursor cursor(document());
+				cursor.setPosition(fragment.position());
+				cursor.setPosition(fragment.position() + fragment.length(), QTextCursor::KeepAnchor);
+				setTextCursor(cursor);
+				ensureCursorVisible();
+				return;
+			}
+		}
+	}
 }
 

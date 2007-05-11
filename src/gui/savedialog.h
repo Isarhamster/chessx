@@ -22,17 +22,17 @@
 
 class Game;
 
-/** @ingroup GUI 
+/** @ingroup GUI
 The SaveDialog class is a simple dialog to edit and save game header. */
 class SaveDialog : public QDialog
 {
-  Q_OBJECT
+	Q_OBJECT
 public:
-  SaveDialog(QWidget* parent = 0);
-  virtual ~SaveDialog();
-  virtual int exec(Game* game);
+	SaveDialog(QWidget* parent = 0);
+	virtual ~SaveDialog();
+	virtual int exec(Game* game);
 private:
-  Ui::SaveDialog ui;
+	Ui::SaveDialog ui;
 };
 
 

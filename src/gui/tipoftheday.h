@@ -2,7 +2,7 @@
                           tipoftheday.h  -  tip of the day window
                              -------------------
     begin                : 27.12.2006
-    copyright            : (C) 2006 Heinz R. Hopfgartner 
+    copyright            : (C) 2006 Heinz R. Hopfgartner
                            <heinz.hopfgartner@gmx.at>
  ***************************************************************************/
 
@@ -24,29 +24,29 @@
 
 class QCloseEvent;
 
-/** @ingroup GUI 
+/** @ingroup GUI
 The TipOfDayDialog class is a dialog to shows tips. */
 class TipOfDayDialog: public QDialog
 {
-  Q_OBJECT
+	Q_OBJECT
 public:
-  TipOfDayDialog(QWidget* parent = 0);
-  ~TipOfDayDialog();
+	TipOfDayDialog(QWidget* parent = 0);
+	~TipOfDayDialog();
 
 public slots:
-  void slotNextTip();
-  void slotPreviousTip();
-  void slotSaveConfiguration();
-  virtual void show();
+	void slotNextTip();
+	void slotPreviousTip();
+	void slotSaveConfiguration();
+	virtual void show();
 protected:
 private:
-  void setCurrentTip(int tip);
-  QString currentTip() const;
-  Ui::TipOfDayDialog ui;
-  QStringList m_tips;
-  int m_current;
-  /** Loads all tips into memory */
-  bool loadTips();
+	void setCurrentTip(int tip);
+	QString currentTip() const;
+	Ui::TipOfDayDialog ui;
+	QStringList m_tips;
+	int m_current;
+	/** Loads all tips into memory */
+	bool loadTips();
 
 };
 

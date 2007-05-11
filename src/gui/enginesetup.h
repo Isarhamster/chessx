@@ -18,33 +18,34 @@
 
 class EngineSetupDialog : public QDialog
 {
-  Q_OBJECT
+	Q_OBJECT
 
 public:
-  EngineSetupDialog(QWidget* parent = 0);
-  virtual ~EngineSetupDialog();
+	EngineSetupDialog(QWidget* parent = 0);
+	virtual ~EngineSetupDialog();
 
 public slots:
-  void slotListChanged(Q3ListBoxItem*);
-  void slotNameChanged(const QString& name);
-  void slotCommandChanged(const QString& command);
-  void slotProtocolChanged(int);
-  void slotBrowse();
-  void slotDelete();
-  void slotNew();
+	void slotListChanged(Q3ListBoxItem*);
+	void slotNameChanged(const QString& name);
+	void slotCommandChanged(const QString& command);
+	void slotProtocolChanged(int);
+	void slotBrowse();
+	void slotDelete();
+	void slotNew();
 
 private:
-  Ui::EngineSetupDialog ui;
+	Ui::EngineSetupDialog ui;
 
-  typedef enum { Winboard, UCI } Protocol;
+	typedef enum { Winboard, UCI }
+	Protocol;
 
-  void removeEntry();
-  void writeEntry();
-  void setControlsEnabled(bool enabled);
-  void updateControls();
+	void removeEntry();
+	void writeEntry();
+	void setControlsEnabled(bool enabled);
+	void updateControls();
 
-  int m_engine;
-  QString m_name;
-  QString m_command;
-  Protocol m_protocol;
+	int m_engine;
+	QString m_name;
+	QString m_command;
+	Protocol m_protocol;
 };

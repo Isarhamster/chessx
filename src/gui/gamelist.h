@@ -22,37 +22,37 @@
 class Filter;
 class FilterModel;
 
-/** @ingroup GUI 
-The GameList class displays list of the games in current filter. It allows 
+/** @ingroup GUI
+The GameList class displays list of the games in current filter. It allows
 user to click on list header and perform simple tag searches. */
 
 class GameList : public QTableView
 {
-  Q_OBJECT
+	Q_OBJECT
 public:
-  GameList(Filter* filter, QWidget* parent = 0);
-  ~GameList();
-  /** Set current database */
+	GameList(Filter* filter, QWidget* parent = 0);
+	~GameList();
+	/** Set current database */
 public slots:
-  /** Read current configuration */
-  void configure();
-  /** Store current configuration */
-  void saveConfig();
-  /** Change current filter/database */
-  void setFilter(Filter* filter);
-  /** Update filter (called after changing filter outside) */
-  void updateFilter();
-  /** Perform simple search */
-  void simpleSearch(int tag);
-  /** Select and show current game in the list */
-  void selectGame(int index);
+	/** Read current configuration */
+	void configure();
+	/** Store current configuration */
+	void saveConfig();
+	/** Change current filter/database */
+	void setFilter(Filter* filter);
+	/** Update filter (called after changing filter outside) */
+	void updateFilter();
+	/** Perform simple search */
+	void simpleSearch(int tag);
+	/** Select and show current game in the list */
+	void selectGame(int index);
 private slots:
-  void itemSelected(const QModelIndex& index);
+	void itemSelected(const QModelIndex& index);
 signals:
-  void selected(int);
-  void searchDone();
+	void selected(int);
+	void searchDone();
 private:
-  FilterModel* m_model;
+	FilterModel* m_model;
 };
 
 #endif

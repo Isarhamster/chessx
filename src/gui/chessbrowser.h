@@ -21,17 +21,17 @@
 #include <QTextBrowser>
 
 /** @ingroup GUI
-   The ChessBrowser class is a slightly modified QTextBrowser 
+   The ChessBrowser class is a slightly modified QTextBrowser
    that handles internal pseudo-links. */
 class ChessBrowser : public QTextBrowser
 {
-  Q_OBJECT
-  public:
-    ChessBrowser(QWidget* p);
-    virtual void selectAnchor(const QString& href);
-  protected:
-    virtual void setSource(const QUrl& url);
-  private:
+	Q_OBJECT
+public:
+	ChessBrowser(QWidget* p);
+	virtual void selectAnchor(const QString& href);
+protected:
+	virtual void setSource(const QUrl& url);
+private:
 };
 
 #endif

@@ -21,199 +21,190 @@
 #include "settings.h"
 
 BoardTheme::BoardTheme() : m_squareType(Scaled)
-{
-}
+{}
 
 BoardTheme::~BoardTheme()
-{
-}
+{}
 
 QColor BoardTheme::lightColor() const
 {
-  return m_lightColor;
+	return m_lightColor;
 }
 
 void BoardTheme::setLightColor(const QColor& value)
 {
-  m_lightColor = value;
-  if (m_squareType == Plain)
-    setSquareType(m_squareType);
+	m_lightColor = value;
+	if (m_squareType == Plain)
+		setSquareType(m_squareType);
 }
 
 QColor BoardTheme::darkColor() const
 {
-  return m_darkColor;
+	return m_darkColor;
 }
 
 void BoardTheme::setDarkColor(const QColor& value)
 {
-  m_darkColor = value;
-  if (m_squareType == Plain)
-    setSquareType(m_squareType);
+	m_darkColor = value;
+	if (m_squareType == Plain)
+		setSquareType(m_squareType);
 }
 
 QColor BoardTheme::highlightColor() const
 {
-  return m_highlightColor;
+	return m_highlightColor;
 }
 
 void BoardTheme::setHighlightColor(const QColor& value)
 {
-  m_highlightColor = value;
+	m_highlightColor = value;
 }
 
 const QPixmap& BoardTheme::piece(Piece p) const
 {
-  return m_piece[p];
+	return m_piece[p];
 }
 
 const QPixmap& BoardTheme::square(bool dark) const
 {
-  return m_square[dark];
+	return m_square[dark];
 }
 
 const QPixmap& BoardTheme::originalPiece(Piece p) const
 {
-  return m_originalPiece[p];
+	return m_originalPiece[p];
 }
 
 const QPixmap& BoardTheme::originalSquare(bool dark) const
 {
-  return m_originalSquare[dark];
+	return m_originalSquare[dark];
 }
 
 QString BoardTheme::pieceThemeName() const
 {
-  int start = m_pieceFilename.lastIndexOf('/') + 1;
-  return m_pieceFilename.mid(start + 1, m_pieceFilename.length() - start - 4);
+	int start = m_pieceFilename.lastIndexOf('/') + 1;
+	return m_pieceFilename.mid(start + 1, m_pieceFilename.length() - start - 4);
 }
 
 QString BoardTheme::boardThemeName() const
 {
-  int start = m_boardFilename.lastIndexOf('/') + 1;
-  return m_boardFilename.mid(start + 1, m_pieceFilename.length() - start - 4);
+	int start = m_boardFilename.lastIndexOf('/') + 1;
+	return m_boardFilename.mid(start + 1, m_pieceFilename.length() - start - 4);
 }
 
 bool BoardTheme::isValid() const
 {
-  return !m_pieceFilename.isNull() && !m_boardFilename.isNull();
+	return !m_pieceFilename.isNull() && !m_boardFilename.isNull();
 }
 
 bool BoardTheme::load(const QString& themeFile, LoadTheme load)
 {
-  QString themePath = QString("%1/%2.png").arg(themeDirectory()).arg(themeFile);
-  QPixmap big;
-  if (!big.load(themePath) || big.width() < 160)
-    return false;
-  int realsize = big.height() / 2;
-  if (realsize != big.width() / 7)
-    return false;
+	QString themePath = QString("%1/%2.png").arg(themeDirectory()).arg(themeFile);
+	QPixmap big;
+	if (!big.load(themePath) || big.width() < 160)
+		return false;
+	int realsize = big.height() / 2;
+	if (realsize != big.width() / 7)
+		return false;
 
-  /* Cut big theme bitmap into separate pieces */
-  if (load & LoadPieces)
-  {
-    m_originalPiece[WhiteRook] = big.copy(0 * realsize, 0, realsize, realsize);
-    m_originalPiece[WhiteKnight] = big.copy(1 * realsize, 0, realsize, realsize);
-    m_originalPiece[WhiteBishop] = big.copy(2 * realsize, 0, realsize, realsize);
-    m_originalPiece[WhiteQueen] = big.copy(3 * realsize, 0, realsize, realsize);
-    m_originalPiece[WhiteKing] = big.copy(4 * realsize, 0, realsize, realsize);
-    m_originalPiece[WhitePawn] = big.copy(5 * realsize, 0, realsize, realsize);
-    m_originalPiece[BlackRook] = big.copy(0 * realsize, realsize, realsize, realsize);
-    m_originalPiece[BlackKnight] = big.copy(1 * realsize, realsize, realsize, realsize);
-    m_originalPiece[BlackBishop] = big.copy(2 * realsize, realsize, realsize, realsize);
-    m_originalPiece[BlackQueen] = big.copy(3 * realsize, realsize, realsize, realsize);
-    m_originalPiece[BlackKing] = big.copy(4 * realsize, realsize, realsize, realsize);
-    m_originalPiece[BlackPawn] = big.copy(5 * realsize, realsize, realsize, realsize);
-    m_pieceFilename = themePath;
-  }
+	/* Cut big theme bitmap into separate pieces */
+	if (load & LoadPieces) {
+		m_originalPiece[WhiteRook] = big.copy(0 * realsize, 0, realsize, realsize);
+		m_originalPiece[WhiteKnight] = big.copy(1 * realsize, 0, realsize, realsize);
+		m_originalPiece[WhiteBishop] = big.copy(2 * realsize, 0, realsize, realsize);
+		m_originalPiece[WhiteQueen] = big.copy(3 * realsize, 0, realsize, realsize);
+		m_originalPiece[WhiteKing] = big.copy(4 * realsize, 0, realsize, realsize);
+		m_originalPiece[WhitePawn] = big.copy(5 * realsize, 0, realsize, realsize);
+		m_originalPiece[BlackRook] = big.copy(0 * realsize, realsize, realsize, realsize);
+		m_originalPiece[BlackKnight] = big.copy(1 * realsize, realsize, realsize, realsize);
+		m_originalPiece[BlackBishop] = big.copy(2 * realsize, realsize, realsize, realsize);
+		m_originalPiece[BlackQueen] = big.copy(3 * realsize, realsize, realsize, realsize);
+		m_originalPiece[BlackKing] = big.copy(4 * realsize, realsize, realsize, realsize);
+		m_originalPiece[BlackPawn] = big.copy(5 * realsize, realsize, realsize, realsize);
+		m_pieceFilename = themePath;
+	}
 
-  /* Background */
-  if (load & LoadBoard)
-  {
-    m_originalSquare[0] = big.copy(6 * realsize, 0, realsize, realsize);
-    m_originalSquare[1] = big.copy(6 * realsize, realsize, realsize, realsize);
-    m_boardFilename = themePath;
-  }
-  // Restore previous size
-  if (size().isEmpty())
-    setSize(QSize(realsize, realsize));
-  else
-    setSize(size());
-  setSquareType(m_squareType);
-  return true;
+	/* Background */
+	if (load & LoadBoard) {
+		m_originalSquare[0] = big.copy(6 * realsize, 0, realsize, realsize);
+		m_originalSquare[1] = big.copy(6 * realsize, realsize, realsize, realsize);
+		m_boardFilename = themePath;
+	}
+	// Restore previous size
+	if (size().isEmpty())
+		setSize(QSize(realsize, realsize));
+	else
+		setSize(size());
+	setSquareType(m_squareType);
+	return true;
 }
 
 bool BoardTheme::load(const QString& pieceFile, const QString& boardFile)
 {
-  if (pieceFile == boardFile)
-    return load(pieceFile, LoadAll);
-  else
-    return load(pieceFile, LoadPieces) && load(boardFile, LoadBoard);
+	if (pieceFile == boardFile)
+		return load(pieceFile, LoadAll);
+	else
+		return load(pieceFile, LoadPieces) && load(boardFile, LoadBoard);
 }
 
 QSize BoardTheme::size() const
 {
-  return m_size;
+	return m_size;
 }
 
 QPoint BoardTheme::pieceCenter() const
 {
-  return QPoint(m_size.width() / 2, m_size.height() / 2);
+	return QPoint(m_size.width() / 2, m_size.height() / 2);
 }
 
 QRect BoardTheme::rect() const
 {
-  return QRect(QPoint(0, 0), m_size);
+	return QRect(QPoint(0, 0), m_size);
 }
 
 void BoardTheme::setSize(const QSize& value)
 {
-  if (!isValid())
-    return;
-  m_size = value;
-  for (int i = 1; i<ConstPieceTypes; i++)
-    m_piece[i] = m_originalPiece[i].scaled(m_size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-  setSquareType(m_squareType);
+	if (!isValid())
+		return;
+	m_size = value;
+	for (int i = 1; i < ConstPieceTypes; i++)
+		m_piece[i] = m_originalPiece[i].scaled(m_size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+	setSquareType(m_squareType);
 }
 
 BoardTheme::BoardSquare BoardTheme::squareType() const
 {
-  return m_squareType;
+	return m_squareType;
 }
 
 void BoardTheme::setSquareType(BoardSquare type)
 {
-  if(type == Unscaled && (m_size.width() > m_originalPiece[WhiteRook].width()
-     || m_size.height() > m_originalPiece[WhiteRook].height()))
-    type = Scaled;
+	if (type == Unscaled && (m_size.width() > m_originalPiece[WhiteRook].width()
+				 || m_size.height() > m_originalPiece[WhiteRook].height()))
+		type = Scaled;
 
-  m_squareType = type;
-  if (!isValid())
-    return;
-  if (type == Plain)
-  {
-    m_square[0] = QPixmap(m_size);
-    m_square[0].fill(lightColor().rgb());
-    m_square[1] = QPixmap(m_size);
-    m_square[1].fill(darkColor().rgb());
-  }
-  else if (type == Scaled || (m_size.width() > m_originalPiece[WhiteRook].width()
-     || m_size.height() > m_originalPiece[WhiteRook].height()))
-  {
-    m_square[0] =  m_originalSquare[0].scaled(size(), Qt::IgnoreAspectRatio,
-                                              Qt::SmoothTransformation);
-    m_square[1] =  m_originalSquare[1].scaled(size(), Qt::IgnoreAspectRatio,
-                                              Qt::SmoothTransformation);
-  }
-  else
-  {
-    m_square[0] =  m_originalSquare[0].copy(rect());
-    m_square[1] =  m_originalSquare[1].copy(rect());
-  }
+	m_squareType = type;
+	if (!isValid())
+		return;
+	if (type == Plain) {
+		m_square[0] = QPixmap(m_size);
+		m_square[0].fill(lightColor().rgb());
+		m_square[1] = QPixmap(m_size);
+		m_square[1].fill(darkColor().rgb());
+	} else if (type == Scaled || (m_size.width() > m_originalPiece[WhiteRook].width()
+				      || m_size.height() > m_originalPiece[WhiteRook].height())) {
+		m_square[0] =  m_originalSquare[0].scaled(size(), Qt::IgnoreAspectRatio,
+				Qt::SmoothTransformation);
+		m_square[1] =  m_originalSquare[1].scaled(size(), Qt::IgnoreAspectRatio,
+				Qt::SmoothTransformation);
+	} else {
+		m_square[0] =  m_originalSquare[0].copy(rect());
+		m_square[1] =  m_originalSquare[1].copy(rect());
+	}
 }
 
 QString BoardTheme::themeDirectory() const
 {
-  return AppSettings->dataPath() + "/themes";
+	return AppSettings->dataPath() + "/themes";
 }
 
