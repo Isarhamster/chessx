@@ -21,35 +21,34 @@
 
 QuickSearchDialog::QuickSearchDialog(QWidget* parent) : QDialog(parent)
 {
-  ui.setupUi(this);
+	ui.setupUi(this);
 
-  connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
-  connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
+	connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
+	connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
 }
 
 QuickSearchDialog::~QuickSearchDialog()
-{
-}
+{}
 
 void QuickSearchDialog::setTag(int tag)
 {
-  ui.tagCombo->setCurrentIndex(tag);
+	ui.tagCombo->setCurrentIndex(tag);
 }
 
 int QuickSearchDialog::tag() const
 {
-  return ui.tagCombo->currentIndex();
+	return ui.tagCombo->currentIndex();
 }
 
 QString QuickSearchDialog::value() const
 {
-  return ui.valueEdit->text();
+	return ui.valueEdit->text();
 }
 
 int QuickSearchDialog::exec()
 {
-  ui.valueEdit->setFocus();
-  return QDialog::exec();
+	ui.valueEdit->setFocus();
+	return QDialog::exec();
 }
 
 

@@ -30,9 +30,9 @@
 
 EngineSetupDialog::EngineSetupDialog(QWidget* parent) : QDialog(parent)
 {
-  ui.setupUi(this);
+	ui.setupUi(this);
 
- //no current engine active
+//no current engine active
 	m_engine = -1;
 	m_name = QString();
 	m_command = QString();
@@ -52,97 +52,93 @@ EngineSetupDialog::EngineSetupDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.deletePushButton, SIGNAL(clicked()), SLOT(slotDelete()));
 
 	//select first engine
-	if(ui.engineListBox->count()) {
+	if (ui.engineListBox->count()) {
 		ui.engineListBox->setSelected(0, true);
 	}
 }
 
 EngineSetupDialog::~EngineSetupDialog()
-{
-}
+{}
 
 void EngineSetupDialog::slotListChanged(Q3ListBoxItem*)
 {
-  //check it really has changed
-  int engine = ui.engineListBox->currentItem();
-  if (engine == m_engine)
-    return;
+	//check it really has changed
+	int engine = ui.engineListBox->currentItem();
+	if (engine == m_engine)
+		return;
 
-  m_engine = engine;
-  
-  //update controls as required
-  if(m_engine != -1) {
-    m_name = ui.engineListBox->text(m_engine);
-    m_command = AppSettings->readEntry("/Engines/" + m_name + "/Command", "", NULL);
-    m_protocol = ("UCI" == AppSettings->readEntry("/Engines/" + m_name + "/Protocol", "", NULL)) ? UCI : Winboard;
-    updateControls();
-    setControlsEnabled(true);
-  } else {
-    m_name = "";
-    m_command = "";
-    m_protocol = Winboard;
-    updateControls();
-    setControlsEnabled(false);
-  }
+	m_engine = engine;
+
+	//update controls as required
+	if (m_engine != -1) {
+		m_name = ui.engineListBox->text(m_engine);
+		m_command = AppSettings->readEntry("/Engines/" + m_name + "/Command", "", NULL);
+		m_protocol = ("UCI" == AppSettings->readEntry("/Engines/" + m_name + "/Protocol", "", NULL)) ? UCI : Winboard;
+		updateControls();
+		setControlsEnabled(true);
+	} else {
+		m_name = "";
+		m_command = "";
+		m_protocol = Winboard;
+		updateControls();
+		setControlsEnabled(false);
+	}
 }
 
 void EngineSetupDialog::slotNameChanged(const QString& name)
 {
-  //check it really has changed
-  if(name == m_name) {
-    return;
-  }
-  
-  //update entry and list box
-  removeEntry();
-  m_name = name;
-  writeEntry();
-  ui.engineListBox->changeItem(m_name, m_engine);
+	//check it really has changed
+	if (name == m_name) {
+		return;
+	}
+
+	//update entry and list box
+	removeEntry();
+	m_name = name;
+	writeEntry();
+	ui.engineListBox->changeItem(m_name, m_engine);
 }
 
 void EngineSetupDialog::slotCommandChanged(const QString& command)
 {
-  m_command = command;
-  writeEntry();
+	m_command = command;
+	writeEntry();
 }
 
 void EngineSetupDialog::slotProtocolChanged(int)
 {
-  m_protocol =  ui.winboardRadioButton->isOn() ? Winboard : UCI;
-  writeEntry();
+	m_protocol =  ui.winboardRadioButton->isOn() ? Winboard : UCI;
+	writeEntry();
 }
 
 void EngineSetupDialog::slotBrowse()
 {
-  QString command = Q3FileDialog::getOpenFileName("","",this,"","Select a chess engine executable");
-  if(command != "") {
-    ui.commandLineEdit->setText(command);
-  }
+	QString command = Q3FileDialog::getOpenFileName("", "", this, "", "Select a chess engine executable");
+	if (command != "") {
+		ui.commandLineEdit->setText(command);
+	}
 }
 
 void EngineSetupDialog::slotDelete()
 {
-  removeEntry();
-  ui.engineListBox->removeItem(m_engine);
+	removeEntry();
+	ui.engineListBox->removeItem(m_engine);
 
-  if (ui.engineListBox->count() == 0) 
-  {
-    m_name = "";
-    m_command = "";
-    m_protocol = Winboard;
-    updateControls();
-  }
-  else 
-  {
-    if (m_engine > (signed int)ui.engineListBox->count() - 1) {
-      m_engine = ui.engineListBox->count() - 1;
-    }
-    m_name = ui.engineListBox->text(m_engine);
-    m_command = AppSettings->readEntry("/Engines/" + m_name + "/Command", "", NULL);
-    m_protocol = ("UCI" == AppSettings->readEntry("/Engines/" + m_name + "/Protocol", "", NULL)) ? UCI : Winboard;
-    updateControls();
-    ui.engineListBox->setSelected(m_engine, true);
-  }
+	if (ui.engineListBox->count() == 0) {
+		m_name = "";
+		m_command = "";
+		m_protocol = Winboard;
+		updateControls();
+	} else {
+		if (m_engine > (signed int)ui.engineListBox->count() - 1) {
+			m_engine = ui.engineListBox->count() - 1;
+		}
+		m_name = ui.engineListBox->text(m_engine);
+		m_command = AppSettings->readEntry("/Engines/" + m_name + "/Command", "", NULL);
+		m_protocol = ("UCI" == AppSettings->readEntry("/Engines/" + m_name + "/Protocol", "", NULL)) ? UCI : Winboard;
+		updateControls();
+		ui.engineListBox->setSelected(m_engine, true);
+	}
 }
 
 void EngineSetupDialog::slotNew()
@@ -152,21 +148,21 @@ void EngineSetupDialog::slotNew()
 	bool exists;
 	AppSettings->readEntry("/Engines/" + engineName + "/Name", "", &exists);
 	int number = 2;
-	while(exists) {
+	while (exists) {
 		engineName = "New Engine " + QString::number(number++);
 		AppSettings->readEntry("/Engines/" + engineName + "/Name", "", &exists);
 	}
 
-	//create the entry	
+	//create the entry
 	m_engine = ui.engineListBox->count();
 	m_name = engineName;
 	m_command = engineName;
 	m_protocol = Winboard;
-	
+
 	writeEntry();
 	ui.engineListBox->insertItem(m_name);
 	ui.engineListBox->setSelected(m_engine, true);
-	
+
 	//update controls
 	updateControls();
 	setControlsEnabled(true);
@@ -183,7 +179,7 @@ void EngineSetupDialog::writeEntry()
 {
 	AppSettings->writeEntry("/Engines/" + m_name + "/Name", m_name);
 	AppSettings->writeEntry("/Engines/" + m_name + "/Command", m_command);
-	if(m_protocol == Winboard) {
+	if (m_protocol == Winboard) {
 		AppSettings->writeEntry("/Engines/" + m_name + "/Protocol", "Winboard");
 	} else {
 		AppSettings->writeEntry("/Engines/" + m_name + "/Protocol", "UCI");
@@ -192,21 +188,21 @@ void EngineSetupDialog::writeEntry()
 
 void EngineSetupDialog::setControlsEnabled(bool enabled)
 {
-  ui.nameLabel->setEnabled(enabled);
-  ui.nameLineEdit->setEnabled(enabled);
-  ui.commandLabel->setEnabled(enabled);	
-  ui.commandLineEdit->setEnabled(enabled);
-  ui.browsePushButton->setEnabled(enabled);
-  ui.protocolButtonGroup->setEnabled(enabled);
-  ui.deletePushButton->setEnabled(enabled);
+	ui.nameLabel->setEnabled(enabled);
+	ui.nameLineEdit->setEnabled(enabled);
+	ui.commandLabel->setEnabled(enabled);
+	ui.commandLineEdit->setEnabled(enabled);
+	ui.browsePushButton->setEnabled(enabled);
+	ui.protocolButtonGroup->setEnabled(enabled);
+	ui.deletePushButton->setEnabled(enabled);
 }
 
 void EngineSetupDialog::updateControls()
 {
-  ui.nameLineEdit->setText(m_name);
-  ui.commandLineEdit->setText(m_command);
-  if (m_protocol == Winboard)
-    ui.winboardRadioButton->setChecked(true);
-  else
-    ui.uciRadioButton->setChecked(true);
+	ui.nameLineEdit->setText(m_name);
+	ui.commandLineEdit->setText(m_command);
+	if (m_protocol == Winboard)
+		ui.winboardRadioButton->setChecked(true);
+	else
+		ui.uciRadioButton->setChecked(true);
 }

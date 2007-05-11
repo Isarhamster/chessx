@@ -20,13 +20,13 @@
 
 int main(int argc, char** argv)
 {
-  AppSettings = new Settings;
-  QApplication a(argc, argv);
-  MainWindow* mw = new MainWindow;
-  mw->show();
-  a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
-  int result = a.exec();
-  delete AppSettings;
-  return result;
+	AppSettings = new Settings;
+	QApplication a(argc, argv);
+	MainWindow* mw = new MainWindow;
+	mw->show();
+	a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
+	int result = a.exec();
+	delete AppSettings;
+	return result;
 }
 

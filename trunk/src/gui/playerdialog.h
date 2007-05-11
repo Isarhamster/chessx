@@ -22,33 +22,33 @@
 
 class PlayerDatabase;
 
-/** @ingroup GUI 
+/** @ingroup GUI
 The PlayerDialog class is a dialog to browse player information. */
 class PlayerDialog : public QDialog
 {
-  Q_OBJECT
+	Q_OBJECT
 public:
-  PlayerDialog(PlayerDatabase* db, QWidget* parent = 0);
-  virtual ~PlayerDialog();
+	PlayerDialog(PlayerDatabase* db, QWidget* parent = 0);
+	virtual ~PlayerDialog();
 
 public slots:
-  /** Find players matching @p player . Put the list in the Players combo and show the first match. */
-  void findPlayers(const QString& player);
-  /** Find players matching current combo text. */
-  void findPlayers();
-  /** Show currently selected player */
-  void showPlayer();
-  /** Show given player. Do not change Player combo */
-  void showPlayer(const QString& player);
-  /** Re-read configuration */
-  void configure();
+	/** Find players matching @p player . Put the list in the Players combo and show the first match. */
+	void findPlayers(const QString& player);
+	/** Find players matching current combo text. */
+	void findPlayers();
+	/** Show currently selected player */
+	void showPlayer();
+	/** Show given player. Do not change Player combo */
+	void showPlayer(const QString& player);
+	/** Re-read configuration */
+	void configure();
 private:
-  /** Information about a player */
-  QString formatPlayer(const QString& player);
-  Ui::PlayerDialog ui;
-  PlayerDatabase* m_database;
-  bool m_showRating;
-  int m_showLimit;
+	/** Information about a player */
+	QString formatPlayer(const QString& player);
+	Ui::PlayerDialog ui;
+	PlayerDatabase* m_database;
+	bool m_showRating;
+	int m_showLimit;
 };
 
 

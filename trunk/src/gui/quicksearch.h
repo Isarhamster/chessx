@@ -21,24 +21,24 @@
 
 class QuickSearchDialog : public QDialog
 {
-  Q_OBJECT
+	Q_OBJECT
 public:
-  /** Create Quick search dialog */
-  QuickSearchDialog(QWidget* parent = 0);
-  /** Destroy the dialog */
-  virtual ~QuickSearchDialog();
-  /** Set default tag */
-  void setTag(int tag);
-  /** @return current tag */
-  int tag() const;
-  /** @return current value. */
-  QString value() const;
+	/** Create Quick search dialog */
+	QuickSearchDialog(QWidget* parent = 0);
+	/** Destroy the dialog */
+	virtual ~QuickSearchDialog();
+	/** Set default tag */
+	void setTag(int tag);
+	/** @return current tag */
+	int tag() const;
+	/** @return current value. */
+	QString value() const;
 
 public slots:
-  /** Execute dialog, save options on exit */
-  int exec();
+	/** Execute dialog, save options on exit */
+	int exec();
 private:
-  Ui::QuickSearchDialog ui;
+	Ui::QuickSearchDialog ui;
 };
 
 #endif

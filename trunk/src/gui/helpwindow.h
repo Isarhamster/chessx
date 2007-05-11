@@ -2,7 +2,7 @@
                           common  -  description
                              -------------------
     begin                : 01/10/2005
-    copyright            : (C) 2005 Heinz R. Hopfgartner 
+    copyright            : (C) 2005 Heinz R. Hopfgartner
                            <heinz.hopfgartner@gmx.at>
 ***************************************************************************/
 
@@ -34,53 +34,53 @@ The HelpWindow class displays help pages in html format. */
 
 class HelpWindow : public QMainWindow
 {
- Q_OBJECT
-   public:
-  HelpWindow();
-  ~HelpWindow();
+	Q_OBJECT
+public:
+	HelpWindow();
+	~HelpWindow();
 
- protected:
-  /** Close event is reimplemented to hide the window when the frame is closed */
-  void closeEvent( QCloseEvent* );
+protected:
+	/** Close event is reimplemented to hide the window when the frame is closed */
+	void closeEvent(QCloseEvent*);
 
- private slots:
- 
-  void about();
-  void aboutQt();
-  void openFile();
-  void print();
-  void sourceChanged(const QUrl&);
+private slots:
 
-  /** When using the History ComboBox for navigation this method is called. 
-      Sets a new source in the QTextBrowser */
-  void historyComboChanged();
+	void about();
+	void aboutQt();
+	void openFile();
+	void print();
+	void sourceChanged(const QUrl&);
 
- private:
+	/** When using the History ComboBox for navigation this method is called.
+	    Sets a new source in the QTextBrowser */
+	void historyComboChanged();
 
-  void configure();
-  void createActions();
-  void createMenus();
-  void createToolBar();
-  void createStatusBar();
- 
-  QTextBrowser *m_browser;
-  QComboBox *m_historyCombo;
-  QString *m_bookmarkFile;
-  QString m_home;
+private:
 
-  QMenu *m_fileMenu;
-  QMenu *m_navigateMenu;
-  QMenu *m_helpMenu;
-  QToolBar *m_toolBar;
+	void configure();
+	void createActions();
+	void createMenus();
+	void createToolBar();
+	void createStatusBar();
 
-  QAction *m_openAct;
-  QAction *m_printAct;
-  QAction *m_exitAct;
-  QAction *m_forwardAct;
-  QAction *m_backwardAct;
-  QAction *m_homeAct;
-  QAction *m_aboutAct;
-  QAction *m_aboutQtAct;  
+	QTextBrowser *m_browser;
+	QComboBox *m_historyCombo;
+	QString *m_bookmarkFile;
+	QString m_home;
+
+	QMenu *m_fileMenu;
+	QMenu *m_navigateMenu;
+	QMenu *m_helpMenu;
+	QToolBar *m_toolBar;
+
+	QAction *m_openAct;
+	QAction *m_printAct;
+	QAction *m_exitAct;
+	QAction *m_forwardAct;
+	QAction *m_backwardAct;
+	QAction *m_homeAct;
+	QAction *m_aboutAct;
+	QAction *m_aboutQtAct;
 };
 
 #endif

@@ -22,89 +22,86 @@
 
 TipOfDayDialog::TipOfDayDialog(QWidget* parent) : QDialog(parent)
 {
-  ui.setupUi(this);
+	ui.setupUi(this);
 
-  connect(ui.nextButton, SIGNAL(clicked()), SLOT(slotNextTip()));
-  connect(ui.previousButton, SIGNAL(clicked()), SLOT(slotPreviousTip()));
-  connect(this, SIGNAL(finished(int)), SLOT(slotSaveConfiguration()));
-  loadTips();
+	connect(ui.nextButton, SIGNAL(clicked()), SLOT(slotNextTip()));
+	connect(ui.previousButton, SIGNAL(clicked()), SLOT(slotPreviousTip()));
+	connect(this, SIGNAL(finished(int)), SLOT(slotSaveConfiguration()));
+	loadTips();
 }
 
 TipOfDayDialog::~TipOfDayDialog()
-{
-}
+{}
 
 void TipOfDayDialog::slotNextTip()
 {
-  setCurrentTip(m_current + 1);
-  ui.tipBrowser->setText(currentTip());
+	setCurrentTip(m_current + 1);
+	ui.tipBrowser->setText(currentTip());
 }
 
 void TipOfDayDialog::slotPreviousTip()
 {
-  setCurrentTip(m_current - 1);
-  ui.tipBrowser->setText(currentTip());
+	setCurrentTip(m_current - 1);
+	ui.tipBrowser->setText(currentTip());
 }
 
 bool TipOfDayDialog::loadTips()
 {
-  Q_INIT_RESOURCE(tipoftheday);
-  QFile tipsFile(":tips.txt");
-  if (!tipsFile.open(QIODevice::ReadOnly | QIODevice::Text))
-    return false;
+	Q_INIT_RESOURCE(tipoftheday);
+	QFile tipsFile(":tips.txt");
+	if (!tipsFile.open(QIODevice::ReadOnly | QIODevice::Text))
+		return false;
 
-  QTextStream tips(&tipsFile);
-  QString tip, s;
-  while (!tips.atEnd())
-  {
-    s = tips.readLine().trimmed();
-    if (!s.isEmpty())
-      tip += s + ' ';
-    else
-    {
-      if (!tip.isEmpty())
-        m_tips.append(tip);
-      tip = QString();
-    }
-  }
-  if (!tip.isEmpty())
-    m_tips.append(tip);
-  tipsFile.close();
-  Q_CLEANUP_RESOURCE(tipoftheday);
-  return true;
+	QTextStream tips(&tipsFile);
+	QString tip, s;
+	while (!tips.atEnd()) {
+		s = tips.readLine().trimmed();
+		if (!s.isEmpty())
+			tip += s + ' ';
+		else {
+			if (!tip.isEmpty())
+				m_tips.append(tip);
+			tip = QString();
+		}
+	}
+	if (!tip.isEmpty())
+		m_tips.append(tip);
+	tipsFile.close();
+	Q_CLEANUP_RESOURCE(tipoftheday);
+	return true;
 }
 
 QString TipOfDayDialog::currentTip() const
 {
-  if (m_current >= m_tips.count())
-    return tr("No tips available!");
-  return m_tips[m_current];
+	if (m_current >= m_tips.count())
+		return tr("No tips available!");
+	return m_tips[m_current];
 }
 
 void TipOfDayDialog::setCurrentTip(int tip)
 {
-  if (!m_tips.count() || tip >= m_tips.count())
-    m_current = 0;
-  else if (tip < 0)
-    m_current = m_tips.count() - 1;
-  else m_current = tip;
+	if (!m_tips.count() || tip >= m_tips.count())
+		m_current = 0;
+	else if (tip < 0)
+		m_current = m_tips.count() - 1;
+	else m_current = tip;
 }
 
 void TipOfDayDialog::show()
 {
-  AppSettings->beginGroup("/Tips/");
-  ui.startupCheck->setChecked(AppSettings->value("showTips", true).toBool());
-  setCurrentTip(AppSettings->value("next", 0).toInt());
-  AppSettings->endGroup();
-  ui.tipBrowser->setText(currentTip());
-  QDialog::show();
+	AppSettings->beginGroup("/Tips/");
+	ui.startupCheck->setChecked(AppSettings->value("showTips", true).toBool());
+	setCurrentTip(AppSettings->value("next", 0).toInt());
+	AppSettings->endGroup();
+	ui.tipBrowser->setText(currentTip());
+	QDialog::show();
 }
 
 void TipOfDayDialog::slotSaveConfiguration()
 {
-  AppSettings->beginGroup("/Tips/");
-  AppSettings->setValue("showTips", ui.startupCheck->isChecked());
-  setCurrentTip(m_current + 1);
-  AppSettings->setValue("next", m_current);
-  AppSettings->endGroup();
+	AppSettings->beginGroup("/Tips/");
+	AppSettings->setValue("showTips", ui.startupCheck->isChecked());
+	setCurrentTip(m_current + 1);
+	AppSettings->setValue("next", m_current);
+	AppSettings->endGroup();
 }

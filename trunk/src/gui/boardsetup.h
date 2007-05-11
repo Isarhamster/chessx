@@ -24,55 +24,55 @@ class QMenu;
 class QAction;
 class QActionGroup;
 
-/**  @ingroup GUI 
+/**  @ingroup GUI
   The BoardSetupDialog class represents a dialog for setting up a position.  */
 
 class BoardSetupDialog : public QDialog
 {
-  Q_OBJECT
-  public:
-    /** Create ChessX Preferences dialog */
-    BoardSetupDialog(QWidget* parent = 0);
-    /** Destroy the dialog */
-    virtual ~BoardSetupDialog();
-    /** Set current board */
-    void setBoard(const Board& b);
-    /** Return current board */
-    Board board() const;
-    /** Set current move number */
-    void setMoveNumber(int i);
-    /** Return current move number*/
-    int moveNumber() const;
+	Q_OBJECT
+public:
+	/** Create ChessX Preferences dialog */
+	BoardSetupDialog(QWidget* parent = 0);
+	/** Destroy the dialog */
+	virtual ~BoardSetupDialog();
+	/** Set current board */
+	void setBoard(const Board& b);
+	/** Return current board */
+	Board board() const;
+	/** Set current move number */
+	void setMoveNumber(int i);
+	/** Return current move number*/
+	int moveNumber() const;
 
-  public slots:
-    /** Execute dialog */
-    int exec();
-  private slots:
-    /** If the position is legal, accept it and close the dialog. */
-    void slotAccept();
-    /** Clear board. */
-    void slotClear();
-    /** Restore standard position */
-    void slotReset();
-    /** Change current piece using wheel */
-    void slotChangePiece(int dir);
-    /** Choose piece */
-    void slotChoosePiece(QAction*);
-    /** Select square and insert piece */
-    void slotSelected(Square s, int button);
-    /** Move piece */
-    void slotMovePiece(Square from, Square to);
-    /** Toggle side to move */
-    void slotToggleSide();
-  private:
-    Ui::BoardSetupDialog ui;
-    QActionGroup* m_actions;
-    Color m_toMove;
-    /** Display side to move */
-    void showSideToMove();
-  protected:
-    /** Scroll current piece with a wheel */
-    virtual void wheelEvent(QWheelEvent* e);
+public slots:
+	/** Execute dialog */
+	int exec();
+private slots:
+	/** If the position is legal, accept it and close the dialog. */
+	void slotAccept();
+	/** Clear board. */
+	void slotClear();
+	/** Restore standard position */
+	void slotReset();
+	/** Change current piece using wheel */
+	void slotChangePiece(int dir);
+	/** Choose piece */
+	void slotChoosePiece(QAction*);
+	/** Select square and insert piece */
+	void slotSelected(Square s, int button);
+	/** Move piece */
+	void slotMovePiece(Square from, Square to);
+	/** Toggle side to move */
+	void slotToggleSide();
+private:
+	Ui::BoardSetupDialog ui;
+	QActionGroup* m_actions;
+	Color m_toMove;
+	/** Display side to move */
+	void showSideToMove();
+protected:
+	/** Scroll current piece with a wheel */
+	virtual void wheelEvent(QWheelEvent* e);
 };
 
 

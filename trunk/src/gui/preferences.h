@@ -26,31 +26,31 @@ The PreferencesDialog class is a dialog for configuring ChessX.
 After changes are done, reconfigure() signal is emitted. */
 class PreferencesDialog : public QDialog
 {
-  Q_OBJECT
+	Q_OBJECT
 public:
-  /** Create ChessX Preferences dialog */
-  PreferencesDialog(QWidget* parent = 0);
-  /** Destroy the dialog */
-  virtual ~PreferencesDialog();
+	/** Create ChessX Preferences dialog */
+	PreferencesDialog(QWidget* parent = 0);
+	/** Destroy the dialog */
+	virtual ~PreferencesDialog();
 
 public slots:
-  /** Execute dialog, save options on exit */
-  int exec();
-  void slotBoardColor();
-  void slotBoardMode(int mode);
-  void slotApply();
+	/** Execute dialog, save options on exit */
+	int exec();
+	void slotBoardColor();
+	void slotBoardMode(int mode);
+	void slotApply();
 
 private:
-  Ui::PreferencesDialog ui;
-  void restoreSettings();
-  void saveSettings();
-  bool selectInCombo(QComboBox* combo, const QString& text);
-  void setButtonColor(QPushButton* button, const QColor& color);
-  QColor buttonColor(const QPushButton* button) const;
+	Ui::PreferencesDialog ui;
+	void restoreSettings();
+	void saveSettings();
+	bool selectInCombo(QComboBox* combo, const QString& text);
+	void setButtonColor(QPushButton* button, const QColor& color);
+	QColor buttonColor(const QPushButton* button) const;
 
 signals:
-  /** Signal emitted when changes are applied. */
-  void reconfigure();
+	/** Signal emitted when changes are applied. */
+	void reconfigure();
 };
 
 
