@@ -1,0 +1,42 @@
+If you start working with code, please read though the following rules:
+
+
+1. Use Qt naming scheme. You may have a look at Qt API to learn it.
+Here is some examples
+
+* classes: BoardView, Filter
+* classes with acronyms: PgnDatabase
+* class variables: m_list, m_darkSquareColor
+* reading class variable: QString title() const
+* setting class variable: void setTitle(const QString& s) const
+* checks: isReadOnly()
+* functions with acronyms: moveToSan(), fromSan()
+
+2. Use Doxygen format to comment your code
+
+* start class documentation with Doxygen header
+  /** @ingroup Database
+    The Board class represents a chess position.
+    Pieces are kept directly on the board which is internally represented as simple array[0..63].
+    You can easily and quickly make and undo moves, although undoing moves requires keeping track
+    of captured pieces.
+  */
+  @ingroup should contain Database (for non-GUI classes) or GUI
+  Next sentence should have 'The XXX class represents' or '... is' syntax
+  
+* document each function 
+  /** Sets widget color. */ 
+  void setColor(const QColor& color);
+  /** @return widget color. */ 
+  QColor color() const;
+  
+* rebuild documentation with 'doxygen Doxyfile' and verify that your class is documented correctly.
+
+3. Format your code with TABs. We advocate using astyle
+(http://astyle.sourceforge.net) to indent your code. To use astyle, put
+
+suffix=none style=linux mode=c force-indent=tab=8 one-line=keep-blocks unpad=paren pad=oper
+
+in ~/.astylerc. Then you can indent your code using:
+atyle file1 file2 ...
+
