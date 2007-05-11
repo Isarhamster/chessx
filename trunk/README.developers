@@ -2,7 +2,7 @@ If you start working with code, please read though the following rules:
 
 
 1. Use Qt naming scheme. You may have a look at Qt API to learn it.
-Here is some examples
+Here are some examples:
 
 * classes: BoardView, Filter
 * classes with acronyms: PgnDatabase
@@ -38,5 +38,5 @@ Here is some examples
 suffix=none style=linux mode=c force-indent=tab=8 one-line=keep-blocks unpad=paren pad=oper
 
 in ~/.astylerc. Then you can indent your code using:
-atyle file1 file2 ...
+astyle <file1> <file2> ...
 
