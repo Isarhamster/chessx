@@ -28,58 +28,8 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex" >
-      <number>1</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="tabPlayers" >
-      <attribute name="title" >
-       <string>&amp;General</string>
-      </attribute>
-      <layout class="QGridLayout" >
-       <property name="margin" >
-        <number>9</number>
-       </property>
-       <property name="spacing" >
-        <number>6</number>
-       </property>
-       <item row="1" column="0" >
-        <widget class="QCheckBox" name="tablebaseCheck" >
-         <property name="text" >
-          <string>Use online tablebase servers</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" >
-        <widget class="QCheckBox" name="playersRatingsCheck" >
-         <property name="text" >
-          <string>Show rating information in Player dialog</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" >
-        <widget class="QCheckBox" name="quitCheck" >
-         <property name="text" >
-          <string>Confirm before quit</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType" >
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" >
-          <size>
-           <width>20</width>
-           <height>161</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="tabGeneral" >
       <attribute name="title" >
        <string>&amp;Board</string>
@@ -94,7 +44,7 @@
        <item row="2" column="0" colspan="2" >
         <widget class="QLabel" name="label" >
          <property name="text" >
-          <string>Board &amp;colors:</string>
+          <string>&amp;Colors:</string>
          </property>
          <property name="buddy" >
           <cstring>boardColorsList</cstring>
@@ -119,7 +69,7 @@
        <item row="1" column="0" >
         <widget class="QLabel" name="boardThemeLabel" >
          <property name="text" >
-          <string>Board &amp;theme:</string>
+          <string>Board &amp;style:</string>
          </property>
          <property name="buddy" >
           <cstring>boardThemeCombo</cstring>
@@ -171,12 +121,62 @@
        <item row="0" column="0" >
         <widget class="QLabel" name="pieceThemeLabel" >
          <property name="text" >
-          <string>&amp;Pieces theme:</string>
+          <string>&amp;Chess set:</string>
          </property>
          <property name="buddy" >
           <cstring>pieceThemeCombo</cstring>
          </property>
         </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabPlayers" >
+      <attribute name="title" >
+       <string>&amp;General</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="1" column="0" >
+        <widget class="QCheckBox" name="tablebaseCheck" >
+         <property name="text" >
+          <string>Use online tablebase servers</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" >
+        <widget class="QCheckBox" name="playersRatingsCheck" >
+         <property name="text" >
+          <string>Show rating information in Player dialog</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QCheckBox" name="quitCheck" >
+         <property name="text" >
+          <string>Confirm before quit</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>161</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
