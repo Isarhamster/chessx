@@ -95,7 +95,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	/* Move view */
 	m_moveView = new ChessBrowser(m_boardSplitter);
-	m_moveView->zoomOut();
+	//m_moveView->zoomOut();
 	m_moveView->setMinimumHeight(80);
 	connect(m_moveView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 
@@ -565,18 +565,24 @@ void MainWindow::slotMoveChanged()
 	QString white = g->tag("White");
 	QString black = g->tag("Black");
 	QString eco = m_eco.isNull() ? g->tag("ECO") : m_eco;
+	if (!eco.isEmpty())
+	{
+		int comma = eco.lastIndexOf(',');
+		if (comma != -1 && eco.at(comma+2).isNumber())
+			eco.truncate(comma);
+	}
 	QString whiteElo = g->tag("WhiteElo");
 	QString blackElo = g->tag("BlackElo");
 	if (whiteElo == "?")
 		whiteElo = QString();
 	if (blackElo == "?")
 		blackElo = QString();
-	QString players = tr("Game %1: <a href=\"tag:white\">%2</a> %3 - <a href=\"tag:black\">%4</a> %5")
+	QString players = tr("Game %1: <b><a href=\"tag:white\">%2</a> %3 - <a href=\"tag:black\">%4</a> %5</b>")
 			  .arg(gameIndex() + 1).arg(white).arg(whiteElo).arg(black).arg(blackElo);
 	QString result = tr("%1(%2) %3").arg(g->tag("Result")).arg((g->plyCount() + 1) / 2)
 			 .arg(eco);
-	QString header = tr("%1, %2, %3, round %4").arg(g->tag("Event")).arg(g->tag("Site"))
-			 .arg(g->tag("Date")).arg(g->tag("Round"));
+	QString header = tr("<i>%1(%2), %3, %4</i>").arg(g->tag("Event")).arg(g->tag("Round"))
+			.arg(g->tag("Site")).arg(g->tag("Date"));
 	QString lastmove, nextmove;
 	if (!g->atStart())
 		lastmove = QString("<a href=\"move:prev\">%1</a>").arg(g->previousMoveToSan(Game::FullDetail));
