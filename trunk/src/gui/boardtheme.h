@@ -34,6 +34,7 @@
 class BoardTheme
 {
 public:
+	enum ColorRole {LightSquare, DarkSquare, Highlight, Frame};
 	enum LoadTheme {LoadBoard = 1, LoadPieces = 2, LoadAll = LoadBoard | LoadPieces};
 	BoardTheme();
 	~BoardTheme();
@@ -41,18 +42,10 @@ public:
 	bool load(const QString& themeFile, LoadTheme = LoadAll);
 	/** Loads theme description from Eboard-compatible PNG file. */
 	bool load(const QString& pieceFile, const QString& boardFile);
-	/** Sets the color of light squares. */
-	void setLightColor(const QColor& value);
-	/** @return color of light squares. */
-	QColor lightColor() const;
-	/** Sets the color of dark squares. */
-	void setDarkColor(const QColor& value);
-	/** @return color of dark squares. */
-	QColor darkColor() const;
-	/** Sets the color to highlight squares. */
-	void setHighlightColor(const QColor& value);
-	/** @return color to highlight squares. */
-	QColor highlightColor() const;
+	/** Sets one of the board colors. */
+	void setColor(ColorRole role, const QColor& value);
+	/** @return one of the board colors. */
+	QColor color(ColorRole role) const;
 	/** @return pixmap for given piece scaled to current size(). */
 	const QPixmap& piece(Piece p) const;
 	/** @return unscaled pixmap for given piece. */
@@ -87,9 +80,7 @@ private:
 	QPixmap m_originalSquare[2];
 	QPixmap m_square[2];
 	QSize m_size;
-	QColor m_lightColor;
-	QColor m_darkColor;
-	QColor m_highlightColor;
+	QColor m_colors[4];
 	QString m_pieceFilename;
 	QString m_boardFilename;
 };

@@ -26,38 +26,6 @@ BoardTheme::BoardTheme()
 BoardTheme::~BoardTheme()
 {}
 
-QColor BoardTheme::lightColor() const
-{
-	return m_lightColor;
-}
-
-void BoardTheme::setLightColor(const QColor& value)
-{
-	m_lightColor = value;
-	updateSquares();
-}
-
-QColor BoardTheme::darkColor() const
-{
-	return m_darkColor;
-}
-
-void BoardTheme::setDarkColor(const QColor& value)
-{
-	m_darkColor = value;
-	updateSquares();
-}
-
-QColor BoardTheme::highlightColor() const
-{
-	return m_highlightColor;
-}
-
-void BoardTheme::setHighlightColor(const QColor& value)
-{
-	m_highlightColor = value;
-}
-
 const QPixmap& BoardTheme::piece(Piece p) const
 {
 	return m_piece[p];
@@ -183,9 +151,9 @@ void BoardTheme::updateSquares()
 			|| m_size.width() < 30 || m_size.height() < 30;
 	if (isBoardPlain()) {
 		m_square[0] = QPixmap(m_size);
-		m_square[0].fill(lightColor().rgb());
+		m_square[0].fill(color(LightSquare).rgb());
 		m_square[1] = QPixmap(m_size);
-		m_square[1].fill(darkColor().rgb());
+		m_square[1].fill(color(DarkSquare).rgb());
 	} else if (scale) {
 		m_square[0] =  m_originalSquare[0].scaled(size(), Qt::IgnoreAspectRatio,
 				Qt::SmoothTransformation);
@@ -205,5 +173,17 @@ QString BoardTheme::themeDirectory() const
 bool BoardTheme::isBoardPlain() const
 {
 	return m_boardFilename.isEmpty();
+}
+
+void BoardTheme::setColor(ColorRole role, const QColor& value)
+{
+	m_colors[role] = value;
+	if (role == LightSquare || role == DarkSquare)
+		updateSquares();
+}
+
+QColor BoardTheme::color(ColorRole role) const
+{
+	return m_colors[role];
 }
 
