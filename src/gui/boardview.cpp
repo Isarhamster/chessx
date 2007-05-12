@@ -79,14 +79,14 @@ void BoardView::paintEvent(QPaintEvent* event)
 		p.drawPixmap(pos, m_theme.piece(m_board.at(square)));
 		if (square == m_selectedSquare || square == m_hifrom || square == m_hito) {
 			QPen pen;
-			pen.setColor(m_theme.highlightColor());
+			pen.setColor(m_theme.color(BoardTheme::Highlight));
 			pen.setWidth(2);
 			p.setPen(pen);
 			p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
 				   m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
 		}
 		if (m_showFrame) {
-			p.setPen(QColor(Qt::black));
+			p.setPen(m_theme.color(BoardTheme::Frame));
 			p.drawRect(QRect(pos, m_theme.size()));
 		}
 	}
@@ -103,7 +103,7 @@ void BoardView::paintEvent(QPaintEvent* event)
 	// Fix border up
 	if (m_showFrame) {
 		QPen pen;
-		pen.setColor(QColor(Qt::black));
+		pen.setColor(m_theme.color(BoardTheme::Frame));
 		pen.setWidth(1);
 		p.setPen(pen);
 		int flx = m_theme.size().width() * 8;
@@ -286,9 +286,11 @@ void BoardView::configure()
 	AppSettings->beginGroup("/Board/");
 	m_showFrame = AppSettings->value("showFrame", true).toBool();
 	m_guessMove = AppSettings->value("guessMove", true).toBool();
-	m_theme.setLightColor(AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
-	m_theme.setDarkColor(AppSettings->value("darkColor", "#a0a0a0").value<QColor>());
-	m_theme.setHighlightColor(AppSettings->value("highlightColor", "#ffff00").value<QColor>());
+	m_theme.setColor(BoardTheme::LightSquare, AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
+	m_theme.setColor(BoardTheme::DarkSquare, AppSettings->value("darkColor", "#a0a0a0").value<QColor>());
+	m_theme.setColor(BoardTheme::Highlight, AppSettings->value("highlightColor",
+						   "#ffff00").value<QColor>());
+	m_theme.setColor(BoardTheme::Frame, AppSettings->value("frameColor", "#000000").value<QColor>());
 	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
 	QString boardTheme = AppSettings->value("boardTheme", "merida").toString();
 	setTheme(pieceTheme, boardTheme);

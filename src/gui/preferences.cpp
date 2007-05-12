@@ -42,6 +42,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 	restoreColorItem(ui.boardColorsList, tr("Light squares"), "lightColor", "#a0a0a0");
 	restoreColorItem(ui.boardColorsList, tr("Dark squares"), "darkColor", "#d0d0d0");
 	restoreColorItem(ui.boardColorsList, tr("Highlighted squares"), "highlightColor", "#ffff00");
+	restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor", "#000000");
 	AppSettings->endGroup();
 }
 
