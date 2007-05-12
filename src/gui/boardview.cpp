@@ -286,12 +286,11 @@ void BoardView::configure()
 	AppSettings->beginGroup("/Board/");
 	m_showFrame = AppSettings->value("showFrame", true).toBool();
 	m_guessMove = AppSettings->value("guessMove", true).toBool();
-	m_theme.setSquareType(BoardTheme::BoardSquare(AppSettings->value("squareType", 0).toInt()));
 	m_theme.setLightColor(AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
 	m_theme.setDarkColor(AppSettings->value("darkColor", "#a0a0a0").value<QColor>());
 	m_theme.setHighlightColor(AppSettings->value("highlightColor", "#ffff00").value<QColor>());
-	QString pieceTheme = AppSettings->value("pieceTheme", "default").toString();
-	QString boardTheme = AppSettings->value("boardTheme", "default").toString();
+	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
+	QString boardTheme = AppSettings->value("boardTheme", "merida").toString();
 	setTheme(pieceTheme, boardTheme);
 	AppSettings->endGroup();
 	removeGuess();

@@ -20,7 +20,7 @@
 #include "boardtheme.h"
 #include "settings.h"
 
-BoardTheme::BoardTheme() : m_squareType(Scaled)
+BoardTheme::BoardTheme()
 {}
 
 BoardTheme::~BoardTheme()
@@ -34,8 +34,7 @@ QColor BoardTheme::lightColor() const
 void BoardTheme::setLightColor(const QColor& value)
 {
 	m_lightColor = value;
-	if (m_squareType == Plain)
-		setSquareType(m_squareType);
+	updateSquares();
 }
 
 QColor BoardTheme::darkColor() const
@@ -46,8 +45,7 @@ QColor BoardTheme::darkColor() const
 void BoardTheme::setDarkColor(const QColor& value)
 {
 	m_darkColor = value;
-	if (m_squareType == Plain)
-		setSquareType(m_squareType);
+	updateSquares();
 }
 
 QColor BoardTheme::highlightColor() const
@@ -94,7 +92,7 @@ QString BoardTheme::boardThemeName() const
 
 bool BoardTheme::isValid() const
 {
-	return !m_pieceFilename.isNull() && !m_boardFilename.isNull();
+	return !m_pieceFilename.isNull();
 }
 
 bool BoardTheme::load(const QString& themeFile, LoadTheme load)
@@ -135,7 +133,7 @@ bool BoardTheme::load(const QString& themeFile, LoadTheme load)
 		setSize(QSize(realsize, realsize));
 	else
 		setSize(size());
-	setSquareType(m_squareType);
+	updateSquares();
 	return true;
 }
 
@@ -143,8 +141,12 @@ bool BoardTheme::load(const QString& pieceFile, const QString& boardFile)
 {
 	if (pieceFile == boardFile)
 		return load(pieceFile, LoadAll);
-	else
+	else if (!boardFile.isEmpty())
 		return load(pieceFile, LoadPieces) && load(boardFile, LoadBoard);
+	else {
+		m_boardFilename = QString();
+		return load(pieceFile, LoadPieces);
+	}
 }
 
 QSize BoardTheme::size() const
@@ -169,30 +171,22 @@ void BoardTheme::setSize(const QSize& value)
 	m_size = value;
 	for (int i = 1; i < ConstPieceTypes; i++)
 		m_piece[i] = m_originalPiece[i].scaled(m_size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-	setSquareType(m_squareType);
+	updateSquares();
 }
 
-BoardTheme::BoardSquare BoardTheme::squareType() const
+void BoardTheme::updateSquares()
 {
-	return m_squareType;
-}
-
-void BoardTheme::setSquareType(BoardSquare type)
-{
-	if (type == Unscaled && (m_size.width() > m_originalPiece[WhiteRook].width()
-				 || m_size.height() > m_originalPiece[WhiteRook].height()))
-		type = Scaled;
-
-	m_squareType = type;
 	if (!isValid())
 		return;
-	if (type == Plain) {
+	bool scale = m_size.width() > m_originalPiece[WhiteRook].width()
+			|| m_size.height() > m_originalPiece[WhiteRook].height()
+			|| m_size.width() < 30 || m_size.height() < 30;
+	if (isBoardPlain()) {
 		m_square[0] = QPixmap(m_size);
 		m_square[0].fill(lightColor().rgb());
 		m_square[1] = QPixmap(m_size);
 		m_square[1].fill(darkColor().rgb());
-	} else if (type == Scaled || (m_size.width() > m_originalPiece[WhiteRook].width()
-				      || m_size.height() > m_originalPiece[WhiteRook].height())) {
+	} else if (scale) {
 		m_square[0] =  m_originalSquare[0].scaled(size(), Qt::IgnoreAspectRatio,
 				Qt::SmoothTransformation);
 		m_square[1] =  m_originalSquare[1].scaled(size(), Qt::IgnoreAspectRatio,
@@ -206,5 +200,10 @@ void BoardTheme::setSquareType(BoardSquare type)
 QString BoardTheme::themeDirectory() const
 {
 	return AppSettings->dataPath() + "/themes";
+}
+
+bool BoardTheme::isBoardPlain() const
+{
+	return m_boardFilename.isEmpty();
 }
 

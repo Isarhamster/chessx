@@ -17,7 +17,8 @@ HEADERS += mainwindow.h \
            boardview.h \
            boardtheme.h \
            boardsetup.h \
-           savedialog.h \
+			  colorlistitem.h \
+			  savedialog.h \
            gamelist.h \
            chessbrowser.h \
            ecothread.h \
@@ -25,6 +26,7 @@ HEADERS += mainwindow.h \
            tipoftheday.h
 SOURCES += mainwindow.cpp \
            playerdialog.cpp \
+			  colorlistitem.cpp \
            preferences.cpp \
            boardview.cpp \
            boardtheme.cpp \
@@ -33,8 +35,8 @@ SOURCES += mainwindow.cpp \
            savedialog.cpp \
            gamelist.cpp \
            quicksearch.cpp \
-	   chessbrowser.cpp \
-           tipoftheday.cpp \
+           chessbrowser.cpp \
+      	  tipoftheday.cpp \
 	   main.cpp
 TEMPLATE = app
 INCLUDEPATH += ../database 
