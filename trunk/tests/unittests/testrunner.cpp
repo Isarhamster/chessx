@@ -50,6 +50,11 @@ int main(int argc, char *argv[])
   // QTest::qExec( &boardTests, argc, argv );
   QTest::qExec( &databaseConversionTests, argc, argv );
 
+
+  // Cleanup
+  QFile("data/spell.txt").remove();
+  QFile("data/spell_1.txt").remove();
+  QFile("data/newspell.txt").remove();
   return 0;
 }
 
