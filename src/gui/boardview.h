@@ -99,6 +99,8 @@ private:
 	void updateGuess(Square s);
 	/** Remove the guessed move highlight from the board. */
 	void removeGuess();
+	/** Catch mouse events */
+	bool eventFilter(QObject *obj, QEvent *ev);
 
 	Board m_board;
 	BoardTheme m_theme;

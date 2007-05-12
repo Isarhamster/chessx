@@ -26,19 +26,28 @@
 #include <QPixmap>
 #include <QResizeEvent>
 #include <QWheelEvent>
+#include <QEvent>
 
 using namespace Qt;
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
 		m_flipped(false), m_showFrame(false), m_guessMove(false), m_selectedSquare(InvalidSquare),
-		m_hoverSquare(false), m_hifrom(InvalidSquare), m_hito(InvalidSquare), m_flags(flags),
+		m_hoverSquare(InvalidSquare), m_hifrom(InvalidSquare), m_hito(InvalidSquare), m_flags(flags),
 		m_dragged(Empty), m_clickUsed(false)
 {
 	setMouseTracking(true);
+	installEventFilter(this);
 }
 
 BoardView::~BoardView()
 {}
+
+bool BoardView::eventFilter(QObject *obj, QEvent *ev)
+{
+	if (ev->type() == QEvent::Leave || ev->type() == QEvent::WindowDeactivate)
+		removeGuess();
+	return QWidget::eventFilter(obj, ev);
+}
 
 void BoardView::setFlags(int flags)
 {
@@ -150,6 +159,8 @@ void BoardView::mousePressEvent(QMouseEvent* event)
 
 void BoardView::showGuess(Square s)
 {
+	// Don't want to constantly recalculate guess, so remember which square
+	// the mouse is hovering over, and only show new guess when it changes
 	if (m_guessMove && s != m_hoverSquare && !(m_flags & SuppressGuessMove)) {
 		m_hoverSquare = s;
 		removeGuess();
@@ -165,7 +176,7 @@ void BoardView::showGuess(Square s)
 
 void BoardView::updateGuess(Square s)
 {
-	unselectSquare();
+	// Invalidate any currently displayed guess to allow new guess to show
 	m_hoverSquare = InvalidSquare;
 	showGuess(s);
 }
@@ -175,7 +186,7 @@ void BoardView::removeGuess()
 	if (m_hifrom != InvalidSquare) {
 		update(squareRect(m_hifrom));
 		update(squareRect(m_hito));
-		m_hifrom = m_hito = InvalidSquare;
+		m_hoverSquare = m_hifrom = m_hito = InvalidSquare;
 	}
 }
 
@@ -236,8 +247,9 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 	} else if (m_hifrom != InvalidSquare) {
 		if (s == m_hifrom || s == m_hito)
 			emit moveMade(m_hifrom, m_hito);
-		m_hoverSquare = InvalidSquare;
-		showGuess(s);
+		// Only update guess if "emit moveMade()" did not pop up a window (eg. promotion)
+		if (m_hifrom != InvalidSquare)
+			updateGuess(s);
 	} else {
 		if (s != InvalidSquare)
 			emit clicked(s, event->button() + event->modifiers());
@@ -302,6 +314,9 @@ void BoardView::configure()
 
 void BoardView::selectSquare(Square s)
 {
+	// You can't select a square when guess move is enabled
+	if (m_guessMove && !(m_flags & SuppressGuessMove))
+		return;
 	if (m_selectedSquare == s)
 		return;
 	unselectSquare();
