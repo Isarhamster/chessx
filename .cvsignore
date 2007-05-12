@@ -3,3 +3,4 @@ bin
 *.pcs
 *.kdevses
 html
+Makefile
