@@ -1,0 +1,5 @@
+moc*
+Makefile
+ui_*.h
+*.log
+testrunner
