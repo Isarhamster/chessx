@@ -186,7 +186,7 @@ void BoardView::removeGuess()
 	if (m_hifrom != InvalidSquare) {
 		update(squareRect(m_hifrom));
 		update(squareRect(m_hito));
-		m_hoverSquare = m_hifrom = m_hito = InvalidSquare;
+		m_hifrom = m_hito = InvalidSquare;
 	}
 }
 
@@ -247,6 +247,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 	} else if (m_hifrom != InvalidSquare) {
 		if (s == m_hifrom || s == m_hito)
 			emit moveMade(m_hifrom, m_hito);
+		m_hoverSquare = InvalidSquare;
 		// Only update guess if "emit moveMade()" did not pop up a window (eg. promotion)
 		if (m_hifrom != InvalidSquare)
 			updateGuess(s);
