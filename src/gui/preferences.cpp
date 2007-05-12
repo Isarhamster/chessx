@@ -86,7 +86,7 @@ void PreferencesDialog::restoreSettings()
 		ui.pieceThemeCombo->addItem(*it);
 		ui.boardThemeCombo->addItem(*it);
 	}
-	ui.boardThemeCombo->addItem(tr("[none]"));
+	ui.boardThemeCombo->addItem(tr("[plain colors]"));
 	selectInCombo(ui.pieceThemeCombo, pieceTheme);
 	selectInCombo(ui.boardThemeCombo, boardTheme);
 
