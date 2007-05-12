@@ -19,7 +19,7 @@
 
 #include "ui_preferences.h"
 
-class QComboBox;
+
 
 /** @ingroup GUI
 The PreferencesDialog class is a dialog for configuring ChessX.
@@ -36,24 +36,21 @@ public:
 public slots:
 	/** Execute dialog, save options on exit */
 	int exec();
-	void slotBoardColor();
-	void slotBoardMode(int mode);
 	void slotApply();
-
+	void slotColorItem(QListWidgetItem* item);
 private:
 	Ui::PreferencesDialog ui;
 	void restoreSettings();
 	void saveSettings();
+	/** Select given item in combo. If not found, select last one. */
 	bool selectInCombo(QComboBox* combo, const QString& text);
-	void setButtonColor(QPushButton* button, const QColor& color);
-	QColor buttonColor(const QPushButton* button) const;
-
+	void restoreColorItem(QListWidget* list, const QString& text, const QString& cfgname,
+			      const QColor& cfgcolor);
+	void saveColorList(QListWidget* list);
 signals:
 	/** Signal emitted when changes are applied. */
 	void reconfigure();
 };
-
-
 
 
 #endif

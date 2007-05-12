@@ -34,7 +34,6 @@
 class BoardTheme
 {
 public:
-	enum BoardSquare {Unscaled, Scaled, Plain};
 	enum LoadTheme {LoadBoard = 1, LoadPieces = 2, LoadAll = LoadBoard | LoadPieces};
 	BoardTheme();
 	~BoardTheme();
@@ -78,19 +77,16 @@ public:
 	QPoint pieceCenter() const;
 	/** Returns current rectangle of pixmaps. */
 	QRect rect() const;
-	/** Sets background type. */
-	void setSquareType(BoardSquare type);
-	/** @return whether board pixmaps are scaled or clipped. */
-	BoardSquare squareType() const;
+	/** Updates board square. */
+	void updateSquares();
 
 private:
+	bool isBoardPlain() const;
 	QPixmap m_originalPiece[ConstPieceTypes];
 	QPixmap m_piece[ConstPieceTypes];
 	QPixmap m_originalSquare[2];
 	QPixmap m_square[2];
 	QSize m_size;
-	bool m_plainSquares;
-	BoardSquare m_squareType;
 	QColor m_lightColor;
 	QColor m_darkColor;
 	QColor m_highlightColor;
