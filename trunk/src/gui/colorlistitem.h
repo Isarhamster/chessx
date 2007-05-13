@@ -26,6 +26,7 @@ class QListWidgetItem;
 */
 class ColorListItem : public QWidget
 {
+	Q_OBJECT
 public:
 	/** Standard constructor. */
 	ColorListItem(QListWidgetItem* item);
