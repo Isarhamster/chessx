@@ -283,9 +283,9 @@ bool BoardView::setTheme(const QString& pieceFile, const QString& boardFile)
 	return result;
 }
 
-void BoardView::flip()
+void BoardView::setFlipped(bool flipped)
 {
-	m_flipped = !m_flipped;
+	m_flipped = flipped;
 	update();
 }
 

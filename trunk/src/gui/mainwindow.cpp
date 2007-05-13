@@ -431,7 +431,7 @@ void MainWindow::slotConfigureChessEngines()
 
 void MainWindow::slotConfigureFlip()
 {
-	m_boardView->flip();
+	m_boardView->setFlipped(!m_boardView->isFlipped());
 }
 
 void MainWindow::slotEditCopyFEN()
@@ -469,6 +469,7 @@ void MainWindow::slotEditBoard()
 {
 	BoardSetupDialog B;
 	B.setBoard(game()->board());
+	B.setFlipped(m_boardView->isFlipped());
 	B.setMoveNumber(game()->moveNumber());
 	if (B.exec() == QDialog::Accepted) {
 		game()->setStartBoard(B.board(), B.moveNumber());

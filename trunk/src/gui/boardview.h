@@ -53,7 +53,7 @@ public:
 	board from the second. */
 	bool setTheme(const QString& themeFile, const QString& boardFile);
 	/** Flips/unflips board. */
-	void flip();
+	void setFlipped(bool flipped);
 	/** @return @p true if board is displayed upside down. */
 	bool isFlipped() const;
 public slots:
