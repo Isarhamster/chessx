@@ -37,6 +37,8 @@ public:
 	virtual ~BoardSetupDialog();
 	/** Set current board */
 	void setBoard(const Board& b);
+	/** Set current board */
+	void setFlipped(bool flipped);
 	/** Return current board */
 	Board board() const;
 	/** Set current move number */

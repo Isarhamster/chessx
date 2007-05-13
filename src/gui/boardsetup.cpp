@@ -72,6 +72,11 @@ Board BoardSetupDialog::board() const
 	return b;
 }
 
+void BoardSetupDialog::setFlipped(bool flipped)
+{
+	ui.boardView->setFlipped(flipped);
+}
+
 void BoardSetupDialog::setBoard(const Board& b)
 {
 	ui.boardView->setBoard(b);
@@ -203,5 +208,6 @@ void BoardSetupDialog::wheelEvent(QWheelEvent* e)
 {
 	slotChangePiece(e->delta() < 0 ? BoardView::WheelDown : BoardView::WheelUp);
 }
+
 
 
