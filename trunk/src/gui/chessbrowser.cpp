@@ -17,6 +17,17 @@ ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p)
 void ChessBrowser::setSource(const QUrl&)
 {}
 
+void ChessBrowser::showMove(int id)
+{
+	if (id)
+		selectAnchor(QString("move:%1").arg(id));
+	else {	// First move
+		QTextCursor cursor = textCursor();
+		cursor.movePosition(QTextCursor::Start);
+		setTextCursor(cursor);
+	}
+}
+
 void ChessBrowser::selectAnchor(const QString& href)
 {
 	for (QTextBlock block = document()->begin(); block != document()->end(); block = block.next()) {

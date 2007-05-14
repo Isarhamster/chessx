@@ -557,19 +557,17 @@ void MainWindow::slotMoveChanged()
 	// Set board first
 	m_tablebase->abortLookup();
 	m_boardView->setBoard(g->board());
+
 	// Highlight current move
-	int id = game()->currentMoveId();
-	if (!id)
-		id = 1;
-	m_gameView->selectAnchor(QString("move:%1").arg(id));
+	m_gameView->showMove(game()->currentMoveId());
+
 	// Finally update game information
 	QString white = g->tag("White");
 	QString black = g->tag("Black");
 	QString eco = m_eco.isNull() ? g->tag("ECO") : m_eco;
-	if (!eco.isEmpty())
-	{
+	if (!eco.isEmpty()) {
 		int comma = eco.lastIndexOf(',');
-		if (comma != -1 && eco.at(comma+2).isNumber())
+		if (comma != -1 && eco.at(comma + 2).isNumber())
 			eco.truncate(comma);
 	}
 	QString whiteElo = g->tag("WhiteElo");
@@ -583,7 +581,7 @@ void MainWindow::slotMoveChanged()
 	QString result = tr("%1(%2) %3").arg(g->tag("Result")).arg((g->plyCount() + 1) / 2)
 			 .arg(eco);
 	QString header = tr("<i>%1(%2), %3, %4</i>").arg(g->tag("Event")).arg(g->tag("Round"))
-			.arg(g->tag("Site")).arg(g->tag("Date"));
+			 .arg(g->tag("Site")).arg(g->tag("Date"));
 	QString lastmove, nextmove;
 	if (!g->atStart())
 		lastmove = QString("<a href=\"move:prev\">%1</a>").arg(g->previousMoveToSan(Game::FullDetail));
@@ -712,21 +710,6 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 		else if (url.path() == "black")
 			playerDialog()->findPlayers(game()->tag("Black"));
 	}
-	/*QString command = link.section(':', 0, 0);
-	QString arg =  link.section(':', 1);
-	else if (command == "var")
-	{
-	  if (arg == "exit")
-	    game()->exitVariation();
-	  else
-	    game()->enterVariation(arg.toInt());
-	  m_boardView->setBoard(game()->board());
-	}
-	else if (link.startsWith("player:"))
-	{
-	  playerDialog()->findPlayers(arg);
-	  playerDialog()->show();
-	}*/
 }
 
 void MainWindow::slotGameViewToggle(bool toggled)

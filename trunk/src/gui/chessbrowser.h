@@ -28,8 +28,10 @@ class ChessBrowser : public QTextBrowser
 	Q_OBJECT
 public:
 	ChessBrowser(QWidget* p);
-	virtual void selectAnchor(const QString& href);
+public slots:
+	void showMove(int id);
 protected:
+	virtual void selectAnchor(const QString& href);
 	virtual void setSource(const QUrl& url);
 private:
 };
