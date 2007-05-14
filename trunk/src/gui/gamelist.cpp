@@ -100,7 +100,7 @@ void GameList::simpleSearch(int tagid)
 	QString tag = tagNames[dialog.tag()];
 	QString value = dialog.value();
 	if (value.isEmpty())
-		m_model->filter()->setAll(true);
+		m_model->filter()->setAll(1);
 	else {
 		TagSearch ts(m_model->filter()->database(), tag, value);
 		m_model->filter()->executeSearch(ts);
