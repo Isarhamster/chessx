@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include "stringtagvalues.h"
+#include <QtDebug>
 
 StringTagValues::StringTagValues()
 {
@@ -103,4 +104,20 @@ void StringTagValues::write(QDataStream& out)
       out << m_list[i];
    }
 
+}
+QBitArray StringTagValues::listContainingValue( const QString& value )
+{
+   QBitArray list(count(),false);
+   for (int i = 0; i < count(); ++i) {
+      list.setBit(i, m_list[i].contains(value, Qt::CaseInsensitive));
+   }
+   return list;
+}
+QBitArray StringTagValues::listInRange( const QString& minValue, const QString& maxValue )
+{
+   QBitArray list(count(),false);
+   for (int i = 0; i < count(); ++i) {
+      list.setBit(i, ((m_list[i] >= minValue) && (m_list[i] <= maxValue)));
+   }
+   return list;
 }

@@ -21,6 +21,7 @@
 #include <QStringList>
 #include <QDataStream>
 #include <QHash>
+#include <QBitArray>
 
 #include "tagvalues.h"
 
@@ -61,6 +62,10 @@ class StringTagValues : public TagValues
       void read(QDataStream& in);
       /** Write the current list values to a data stream */
       void write(QDataStream& out);
+      /** Returns a list of indexes containing value */
+      QBitArray listContainingValue( const QString& value );
+      /** Returns a list of indexes that falls in the specified range */
+      QBitArray listInRange( const QString& minValue, const QString& maxValue );
 
    private:
       typedef QHash <QString, int> TagCache;

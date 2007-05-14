@@ -67,6 +67,19 @@ class Index {
       /** Enables fast loading of many values */
       void setCacheEnabled (bool enabled);
 
+      /** Returns a bit array that indicates which values match the string value */
+      QBitArray listContainingValue(Tag tag, const QString& value);
+      /** Returns a bit array that indicates which values are in the range
+       * minValue - maxValue*/
+      QBitArray listInRange(Tag tag, const QString& minValue, const QString& maxValue);
+      /** Returns the index of the value in the appropriate tag list */
+      int valueIndex(Tag tag, int gameId);
+      /** Returns the Tag value for the given tag name */
+      Tag tagFromString(const QString& tagName);
+      /** Return a pointer to the index item for the given game id */
+      IndexItem* item(int gameId);
+
+
 
    private:
       TagList m_tagList;
