@@ -1,0 +1,216 @@
+[Event "Venice"]
+[Site "Venice"]
+[Date "1948.??.??"]
+[Round "?"]
+[White "Tartakower, Saviely"]
+[Black "Lokvenc, Josef"]
+[Result "1-0"]
+[ECO "B21y"]
+[EventDate "1948.??.??"]
+[PlyCount "81"]
+[Source "ChessBase"]
+
+1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 Nc6 5. Nf3 d6 6. Bc4 e6 7. Bf4 Nf6 
+8. Qe2 Nh5 9. Be3 Be7 10. Rd1 Qa5 11. O-O Nf6 12. Bg5 O-O 13. Nb5 d5 14. 
+exd5 exd5 15. Bxf6 Bxf6 16. Bxd5 Bg4 17. Nd6 Qb6 18. Ne4 Be7 19. Nc3 Bf6 
+20. Ne4 Be5 21. Neg5 Bxf3 22. Qd3 g6 23. Qxf3 Nd8 24. Qh3 h5 25. g4 Bf4 
+26. Ne4 hxg4 27. Qxg4 Bh6 28. Bb3 Kg7 29. Rd6 Qc7 30. Rfd1 Qa5 31. R6d5 
+Qc7 32. Rd6 Qa5 33. Rd7 Qe5 34. R1d6 Kh8 35. Rf6 Rc8 36. Kg2 Rc7 37. Rd5 
+Qxb2 38. Rh5 Kg7 39. Rxh6 Kxh6 40. Qf4+ Kg7 41. Qxc7 1-0
+
+[Event "Schlechter mem"]
+[Site "Vienna"]
+[Date "1949.??.??"]
+[Round "5"]
+[White "Galia, Karl"]
+[Black "Foltys, Jan"]
+[Result "0-1"]
+[ECO "B21z"]
+[EventDate "1949.??.??"]
+[PlyCount "64"]
+[Source "ChessBase"]
+[WhiteTeamCountry "YUG"]
+[BlackTeamCountry "SUI"]
+
+1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 Nc6 5. Nf3 d6 6. Bc4 e6 7. O-O Be7 
+8. Qe2 Nf6 9. Rd1 O-O 10. Bf4 Ne8 11. Rac1 Bd7 12. Nb5 e5 13. Be3 Kh8 14. 
+Qd2 Bg4 15. Bd5 Bxf3 16. gxf3 Qd7 17. Qc3 a6 18. Na3 Qh3 19. Bb6 Rc8 20. 
+Rd3 Nf6 21. Qe1 Nxd5 22. Rxd5 Nb4 23. Rxc8 Rxc8 24. Rd1 Qxf3 25. Rc1 Rxc1 
+26. Qxc1 Qg4+ 27. Kf1 Nd3 28. Qc7 Qd1+ 29. Kg2 Nf4+ 30. Kg3 Bh4+ 31. Kxh4 
+Qh5+ 32. Kg3 Qh3# 0-1
+
+[Event "Schlechter mem"]
+[Site "Vienna"]
+[Date "1949.??.??"]
+[Round "11"]
+[White "Galia, Karl"]
+[Black "Platt, Josef"]
+[Result "0-1"]
+[ECO "B21z"]
+[EventDate "1949.??.??"]
+[PlyCount "97"]
+[Source "ChessBase"]
+[WhiteTeamCountry "YUG"]
+[BlackTeamCountry "SUI"]
+
+1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 Nc6 5. Nf3 d6 6. Bc4 e6 7. O-O Nf6 
+8. Qe2 Be7 9. Rd1 O-O 10. Bf4 Ne8 11. Nb5 Bd7 12. Nxd6 Nxd6 13. Bxd6 Bxd6 
+14. Rxd6 Qe7 15. Rad1 Rfd8 16. e5 Be8 17. Qd2 Rdc8 18. b4 a5 19. b5 Nb4 
+20. Qe2 Qc7 21. R1d4 Qc5 22. Ng5 Nd5 23. Qd3 g6 24. Ne4 Qb4 25. g3 Qe1+ 
+26. Kg2 Nb4 27. Qf3 Nc2 28. Rxe6 Rxc4 29. Rxe8+ Rxe8 30. Rxc4 Qb1 31. Nf6+
+Kf8 32. Qf4 Ne1+ 33. Kh3 Nd3 34. Qh6+ Ke7 35. Rc7+ Ke6 36. Qe3 Qf1+ 37. 
+Kh4 Nxf2 38. Qb6+ Kf5 39. g4+ Nxg4 40. Nxg4 g5+ 41. Kg3 Qf4+ 42. Kg2 Qxg4+
+43. Kf2 Qf4+ 44. Kg1 Qg4+ 45. Kf2 Qh4+ 46. Kg2 Qe4+ 47. Kf2 Rxe5 48. Rxf7+
+Kg4 49. h3+ 0-1
+
+[Event "DDR-ch 02nd"]
+[Site "Schwerin"]
+[Date "1951.??.??"]
+[Round "11"]
+[White "Schlieder, Rolf"]
+[Black "Rathai, Volker"]
+[Result "0-1"]
+[ECO "B21z"]
+[EventDate "1951.07.01"]
+[PlyCount "85"]
+[Source "ChessBase"]
+[SourceDate "1999.11.16"]
+[WhiteTeamCountry "PER"]
+[BlackTeamCountry "ITA"]
+
+1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 d6 5. Bc4 e6 6. Nf3 Nc6 7. O-O Nf6 
+8. Bg5 Be7 9. Qe2 a6 10. a4 O-O 11. Rfd1 Qa5 12. Rac1 Rd8 13. Ba2 Bd7 14. 
+Bf4 Ne5 15. Nd4 Bxa4 16. Nxa4 Qxa4 17. Bb3 Qe8 18. Rc3 Kh8 19. Rh3 Ng6 20.
+ Bg5 Nf8 21. Bc2 Rac8 22. Be3 Rc7 23. g4 g6 24. g5 N6d7 25. f4 e5 26. Nf5 
+Rdc8 27. Bb1 Ne6 28. Nxd6 Bxd6 29. Rxd6 Nxf4 30. Bxf4 exf4 31. Rd1 Qe5 32.
+ Qg4 Nf8 33. Rhd3 Ne6 34. Rd5 Qxb2 35. R5d2 Qb6+ 36. Kg2 Rc1 37. Rd7 Rxd1 
+38. Qxd1 Rd8 39. Rxd8+ Qxd8 40. Qd5 Qxg5+ 41. Kf3 Qxd5 42. exd5 Nd8 43. 
+Kxf4 0-1
+
+[Event "POL-ch"]
+[Site "Lodz"]
+[Date "1954.??.??"]
+[Round "?"]
+[White "Ziembinski, Marian"]
+[Black "Gawlikowski, Stanislaw"]
+[Result "1-0"]
+[ECO "B21y"]
+[EventDate "1954.??.??"]
+[PlyCount "51"]
+[Source "ChessBase"]
+[SourceDate "1998.11.10"]
+[WhiteTeamCountry "PER"]
+[BlackTeamCountry "ITA"]
+
+1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 Nc6 5. Nf3 d6 6. Bc4 Nf6 7. e5 dxe5
+8. Qxd8+ Nxd8 9. Nb5 e6 10. Nc7+ Kd7 11. Nxa8 Bd6 12. Be3 Nc6 13. Bb5 b6 
+14. O-O-O Nd5 15. Nxb6+ axb6 16. Bxb6 Bb7 17. Be3 Ke7 18. Rhe1 Ncb4 19. 
+Kb1 Nxe3 20. Rxe3 f5 21. Nxe5 Bxg2 22. Rxd6 Kxd6 23. Nf7+ Kc5 24. Nxh8 
+Kxb5 25. a3 Nd5 26. Rxe6 1-0
+
+[Event "Mar del Plata"]
+[Site "Mar del Plata"]
+[Date "1955.??.??"]
+[Round "3"]
+[White "Ivkov, Borislav"]
+[Black "Bauza, Lorenzo"]
+[Result "1-0"]
+[ECO "B21t"]
+[EventDate "1955.??.??"]
+[PlyCount "37"]
+[Source "ChessBase"]
+[WhiteTeamCountry "PER"]
+[BlackTeamCountry "ITA"]
+
+1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 d6 5. Nf3 Nd7 6. Bc4 e6 7. Bf4 e5 
+8. Qb3 d5 9. Bxd5 Nc5 10. Bxf7+ Ke7 11. Bg5+ Nf6 12. Nd5+ Kxf7 13. Nxe5+ 
+Ke8 14. Nxf6+ Qxf6 15. Qb5+ Bd7 16. Nxd7 Nd3+ 17. Qxd3 Qxg5 18. Nxf8 Rxf8 
+19. O-O 1-0
+
+[Event "Zagreb"]
+[Site "Zagreb"]
+[Date "1955.??.??"]
+[Round "9"]
+[White "Ivkov, Borislav"]
+[Black "Fuderer, Andrija"]
+[Result "1-0"]
+[ECO "B21x"]
+[EventDate "1955.??.??"]
+[PlyCount "115"]
+[Source "ChessBase"]
+[WhiteTeamCountry "PER"]
+[BlackTeamCountry "ITA"]
+
+1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 Nc6 5. Nf3 e6 6. Bf4 a6 7. e5 Nge7 
+8. Bd3 Ng6 9. Bg3 Qc7 10. O-O Be7 11. Re1 O-O 12. h4 d5 13. exd6 Bxd6 14. 
+Bxd6 Qxd6 15. Bxg6 Qxd1 16. Bxh7+ Kxh7 17. Raxd1 f6 18. Nd4 Nxd4 19. Rxd4 
+e5 20. Rd6 Bf5 21. Red1 Rac8 22. f3 Rc4 23. g3 Rfc8 24. Kf2 R8c6 25. Ke3 
+Kg6 26. g4 Be6 27. a3 Kf7 28. Ne4 Ke7 29. Rxc6 Rxc6 30. Nc3 Rb6 31. b4 Rc6
+32. Rc1 Kd7 33. Kd2 Rc4 34. Ne4 Rd4+ 35. Ke3 Bc4 36. Rc3 b6 37. h5 Ke6 38.
+ Ng3 b5 39. Ne4 Kd5 40. h6 gxh6 41. Nxf6+ Kc6 42. Ng8 h5 43. gxh5 Rh4 44. 
+Nf6 Kd6 45. Rc2 Ke7 46. Ne4 Rxh5 47. Rg2 Rh1 48. Rg7+ Kf8 49. Ra7 Rh2 50. 
+Nf2 Bf1 51. Rxa6 Ke7 52. Rc6 Rg2 53. Rc1 Bc4 54. a4 Ke6 55. a5 Kf5 56. a6 
+Ke6 57. Rh1 Bd5 58. Rh6+ 1-0
+
+[Event "Zittau-B 5th"]
+[Site "Zittau"]
+[Date "1955.??.??"]
+[Round "8"]
+[White "Tritzschler, Helmut"]
+[Black "Maedler, Juergen"]
+[Result "0-1"]
+[ECO "B21y"]
+[EventDate "1955.12.26"]
+[PlyCount "72"]
+[Source "ChessBase"]
+[SourceDate "2002.11.25"]
+
+1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 d6 5. Nf3 Nc6 6. Bc4 e6 7. Bf4 Nf6 
+8. Qe2 e5 9. Rd1 Bg4 10. Be3 Rc8 11. O-O Be7 12. h3 Be6 13. Bxe6 fxe6 14. 
+Ng5 Qd7 15. f4 O-O 16. f5 Nd8 17. g4 exf5 18. gxf5 h6 19. Nf3 Qc6 20. Nh4 
+Nxe4 21. Ng6 Rf7 22. Nxe7+ Rxe7 23. Nxe4 Qxe4 24. Rxd6 Rf7 25. Qf3 Qxf3 
+26. Rxf3 Nc6 27. Bxh6 gxh6 28. Rxh6 Nd4 29. Rg3+ Rg7 30. Rxg7+ Kxg7 31. 
+Rd6 Rf8 32. b4 Rxf5 33. a4 Rf6 34. Rd5 Rf7 35. b5 Kf6 36. a5 Ke6 0-1
+
+[Event "JUG-ch"]
+[Site "Skopje"]
+[Date "1956.??.??"]
+[Round "?"]
+[White "Maric, Rudolf"]
+[Black "Karaklajic, Nikola"]
+[Result "1/2-1/2"]
+[ECO "B21z"]
+[EventDate "1956.??.??"]
+[PlyCount "63"]
+[Source "ChessBase"]
+[SourceDate "2000.11.22"]
+
+1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 Nc6 5. Nf3 d6 6. Bc4 e6 7. O-O Nf6 
+8. Qe2 Be7 9. Rd1 e5 10. h3 O-O 11. Be3 Be6 12. Rac1 Bxc4 13. Qxc4 Rc8 14.
+ Qa4 Qd7 15. b4 a6 16. b5 axb5 17. Qxb5 Ra8 18. Rb1 Rfb8 19. a4 h6 20. Nd2
+Na5 21. Qd3 Rc8 22. Bb6 Bd8 23. Be3 Ra6 24. Rb5 Rac6 25. Nd5 Nc4 26. Nxc4 
+Rxc4 27. Nxf6+ Bxf6 28. Qxd6 Qxd6 29. Rxd6 R8c7 30. a5 Rxe4 31. Rdb6 Ra4 
+32. Bxh6 1/2-1/2
+
+[Event "Krynica"]
+[Site "Krynica"]
+[Date "1956.??.??"]
+[Round "5"]
+[White "Puc, Stojan"]
+[Black "Plater, Kazimierz"]
+[Result "1/2-1/2"]
+[ECO "B21x"]
+[EventDate "1956.??.??"]
+[PlyCount "86"]
+[Source "ChessBase"]
+[SourceDate "1999.11.16"]
+
+1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 e6 5. Nf3 Nc6 6. Bf4 d6 7. Bc4 Be7 
+8. O-O Nf6 9. h3 O-O 10. Qe2 Na5 11. Bd3 e5 12. Be3 Be6 13. Rfd1 Nd7 14. 
+Rac1 a6 15. Nd5 Nc6 16. Bc4 Rc8 17. b4 Kh8 18. a3 f5 19. exf5 Bxf5 20. Bb3
+Nf6 21. Bb6 Qd7 22. Qe3 Nxd5 23. Bxd5 Bf6 24. Bb3 Be6 25. Bxe6 Qxe6 26. 
+Qe4 Rfe8 27. Nh2 Re7 28. Ng4 Rd7 29. f4 d5 30. Qe2 e4 31. f5 Qxf5 32. Rf1 
+Qe6 33. Nxf6 gxf6 34. Qh5 Rf8 35. Qh6 Rdf7 36. Rf4 e3 37. Re1 Ne5 38. Bd4 
+Nc4 39. Rxf6 Qxf6 40. Bxf6+ Rxf6 41. Qh5 Rf5 42. Qd1 h6 43. Qd4+ Kh7 
+1/2-1/2
+
