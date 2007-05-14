@@ -20,15 +20,15 @@
 /*** Engine ***/
 
 Engine::Engine(const QString& name, const QString& command,
-								QTextStream* logStream) : QObject()
+	       QTextStream* logStream) : QObject()
 {
- m_name = name;
- m_command = command;
- m_logStream = logStream;
- m_process = 0;
- m_processStream = 0;
- m_active = false;
- m_analyzing = false;
+	m_name = name;
+	m_command = command;
+	m_logStream = logStream;
+	m_process = 0;
+	m_processStream = 0;
+	m_active = false;
+	m_analyzing = false;
 }
 
 Engine::~Engine()
@@ -43,26 +43,26 @@ void Engine::setLogStream(QTextStream* logStream)
 
 void Engine::activate()
 {
- if(m_active) {
-	 return;
- }
+	if (m_active) {
+		return;
+	}
 
- m_process = new QProcess(this);
- m_processStream = new QTextStream(m_process);
- connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(pollProcess()));
- connect(m_process, SIGNAL(processFinished(int, ExitStatus)), this, SLOT(processExited()));
+	m_process = new QProcess(this);
+	m_processStream = new QTextStream(m_process);
+	connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(pollProcess()));
+	connect(m_process, SIGNAL(processFinished(int, ExitStatus)), this, SLOT(processExited()));
 
- m_process->start(m_command);
- protocolStart();
+	m_process->start(m_command);
+	protocolStart();
 }
 
 void Engine::deactivate()
 {
- if(!m_active) {
-	 return;
- }
- 
- protocolEnd();
+	if (!m_active) {
+		return;
+	}
+
+	protocolEnd();
 }
 
 bool Engine::isActive()
@@ -77,21 +77,21 @@ bool Engine::isAnalyzing()
 
 void Engine::send(const QString& message)
 {
-	if(m_logStream) {
+	if (m_logStream) {
 		*m_logStream << "<-- " << message << endl;
 		emit logUpdated();
 	}
-	
+
 	*m_processStream << message << endl;
 }
 
 void Engine::setActive(bool active)
 {
-	if(active && !m_active) {
+	if (active && !m_active) {
 		m_active = true;
 		emit activated();
 	} else {
-		if(!active && m_active) {
+		if (!active && m_active) {
 			setAnalyzing(false);
 			m_active = false;
 			emit deactivated();
@@ -101,11 +101,11 @@ void Engine::setActive(bool active)
 
 void Engine::setAnalyzing(bool analyzing)
 {
-	if(analyzing) {
+	if (analyzing) {
 		m_analyzing = true;
 		emit analysisStarted();
 	} else {
-		if(!analyzing && m_analyzing) {
+		if (!analyzing && m_analyzing) {
 			m_analyzing = false;
 			emit analysisStopped();
 		}
@@ -120,16 +120,16 @@ void Engine::sendAnalysis(const Analysis& analysis)
 void Engine::pollProcess()
 {
 	QString message;
-	while(m_process->canReadLine()) {
+	while (m_process->canReadLine()) {
 		*m_processStream >> message;
-		if(m_logStream) {
+		if (m_logStream) {
 			*m_logStream << "--> " << message << endl;
 			emit logUpdated();
 		}
 		processMessage(message);
 	}
 }
-				
+
 void Engine::processExited()
 {
 	setActive(false);

@@ -13,12 +13,12 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
- ***************************************************************************/ 
+ ***************************************************************************/
 
-#include "wbengine.h" 
+#include "wbengine.h"
 
 WBEngine::WBEngine(const QString& name, const QString& command,
-										QTextStream* logStream) : Engine(name, command, logStream)
+		   QTextStream* logStream) : Engine(name, command, logStream)
 {
 	m_analyze = false;
 	m_setboard = false;
@@ -27,38 +27,38 @@ WBEngine::WBEngine(const QString& name, const QString& command,
 
 bool WBEngine::startAnalysis(const Board& board)
 {
-	if(!m_analyze || !isActive()) {
+	if (!m_analyze || !isActive()) {
 		return false;
 	}
-	
+
 	m_board = board;
-	
+
 	//stop any current analysis
-	if(isAnalyzing()) {
+	if (isAnalyzing()) {
 		stopAnalysis();
 	}
-	
+
 	//determine method of setting up the board
-	if(m_setboard) {
+	if (m_setboard) {
 		send("setboard " + board.toFEN());
 		send("post");
 		send("analyze");
 	}
 	setAnalyzing(true);
-	
+
 	return true;
 }
-		
+
 bool WBEngine::stopAnalysis()
 {
-	if(!isAnalyzing()) {
+	if (!isAnalyzing()) {
 		return false;
 	}
-	
+
 	//exit analysis mode
 	send("exit");
 	setAnalyzing(false);
-	
+
 	return true;
 }
 
@@ -66,14 +66,14 @@ void WBEngine::protocolStart()
 {
 	send("xboard");
 	send("protover 2");
-	
+
 	//set feature timeout
 	m_featureTimer = startTimer(2000);
 }
 
 void WBEngine::protocolEnd()
 {
-	if(isAnalyzing()) {
+	if (isAnalyzing()) {
 		stopAnalysis();
 	}
 	send("quit");
@@ -84,14 +84,14 @@ void WBEngine::processMessage(const QString& message)
 {
 	//determine command
 	QString command = message.section(" ", 0, 0);
-	
+
 	//identify and process the command
-	if(command == "feature") {
+	if (command == "feature") {
 		feature(message);
 		return;
 	}
-	
-	if(isAnalyzing()) {
+
+	if (isAnalyzing()) {
 		parseAnalysis(message);
 	}
 }
@@ -104,48 +104,48 @@ void WBEngine::feature(const QString& command)
 	int endIndex;
 	QString feature;
 	QString value;
-	
-	while(index < (int)command.length()) {
-		
+
+	while (index < (int)command.length()) {
+
 		//feature name terminates with an =
 		equalsIndex = command.indexOf('=', index);
 		feature = command.mid(index, equalsIndex - index);
-		
+
 		//string values are delimited by ", others end with whitespace
-		if(command[equalsIndex + 1] == '"') {
+		if (command[equalsIndex + 1] == '"') {
 			endIndex = command.indexOf('"', equalsIndex + 2);
-			value = command.mid(equalsIndex + 2,  (endIndex - equalsIndex) - 2);
+			value = command.mid(equalsIndex + 2, (endIndex - equalsIndex) - 2);
 			index = endIndex + 2;
 		} else {
 			endIndex = command.indexOf(' ', equalsIndex + 1);
-			value = command.mid(equalsIndex + 1,  (endIndex - equalsIndex) - 1);
+			value = command.mid(equalsIndex + 1, (endIndex - equalsIndex) - 1);
 			index = endIndex + 1;
 		}
-		
+
 		//if endIndex is -1 then the end of the string has been reached
-		if(endIndex == -1) {   
-			index = command.length();                 
-		}                             
-		
+		if (endIndex == -1) {
+			index = command.length();
+		}
+
 		//process feature/value pair
-		if(feature == "setboard") {
+		if (feature == "setboard") {
 			m_setboard = (bool)value.toInt();
 			send("accepted " + feature);
 			continue;
 		}
-		
-		if(feature == "analyze") {
+
+		if (feature == "analyze") {
 			m_analyze = (bool)value.toInt();
 			send("accepted " + feature);
 			continue;
 		}
-		
-		if(feature == "done") {
+
+		if (feature == "done") {
 			featureDone((bool)value.toInt());
 			send("accepted " + feature);
 			continue;
 		}
-		
+
 		//unknown feature, reject it
 		send("rejected " + feature);
 	}
@@ -153,7 +153,7 @@ void WBEngine::feature(const QString& command)
 
 void WBEngine::featureDone(bool done)
 {
-	if(done) {
+	if (done) {
 		send("hard");
 		send("easy");
 		setActive(true);
@@ -170,61 +170,61 @@ void WBEngine::parseAnalysis(const QString& message)
 	Analysis analysis;
 	bool ok;
 	bool timeInSeconds = false;
-	
+
 	//Depth
 	QString depth = trimmed.section(' ', 0, 0);
 	analysis.depth = depth.toInt(&ok);
-	if(!ok) {
+	if (!ok) {
 		depth.truncate(depth.length() - 1);
 		analysis.depth = depth.toInt(&ok);
-		if(!ok) {
+		if (!ok) {
 			return;
 		}
 		timeInSeconds = true;
 	}
-	
+
 	//Score
 	analysis.score = (float)trimmed.section(' ', 1, 1).toInt(&ok) / 100;
-	if(!ok) {
+	if (!ok) {
 		return;
 	}
-	
+
 	//Time
 	analysis.time = trimmed.section(' ', 2, 2).toInt(&ok);
-	if(!ok) {
+	if (!ok) {
 		return;
 	}
-	if(!timeInSeconds) {
+	if (!timeInSeconds) {
 		analysis.time /= 100;
 	}
-	
+
 	//Node
-	analysis.nodes = trimmed.section(' ',3 ,3).toLongLong(&ok);
-	if(!ok) {
+	analysis.nodes = trimmed.section(' ', 3 , 3).toLongLong(&ok);
+	if (!ok) {
 		return;
 	}
-	
+
 	//Variation
 	Board board = m_board;
 	QString sanMove;
 	int section = 4;
-	while((sanMove = trimmed.section(' ', section, section)) != "") {
-		if(sanMove.startsWith("(")) {
+	while ((sanMove = trimmed.section(' ', section, section)) != "") {
+		if (sanMove.startsWith("(")) {
 			break;
 		}
-		if(!sanMove.endsWith(".")) {
+		if (!sanMove.endsWith(".")) {
 			qWarning("! move: |%s|", sanMove.toLatin1().constData());
 			Move move = board.singleMove(sanMove);
-			if(!move.isValid()) {
+			if (!move.isValid()) {
 				qWarning("Variation parsing failed\n");
 				break;
-			} 
+			}
 			board.doMove(move);
 			analysis.variation.append(move);
 		}
 		section++;
 	}
-	
+
 	sendAnalysis(analysis);
 	qWarning("! depth = %d\n", analysis.depth);
 	qWarning("! score = %g\n", analysis.score);

@@ -22,9 +22,10 @@
 #include "common.h"
 #include <QStack>
 
-/** @ingroup Database  
+/** @ingroup Database
 The HistoryItem class stores move history for undoing moves. */
-class HistoryItem {
+class HistoryItem
+{
 public:
 
 	/** Default Constructor */
@@ -33,17 +34,17 @@ public:
 	/** Constructs a history item which contains the extra information required
 			for undoing a move */
 	HistoryItem(int capturedIndex, Piece capturedPiece,
-							CastlingRights castlingRights, Square epSquare, int halfMoveClock);
-	
-  /* @return captured piece. */
-  Piece piece() const;
-  /* Sets captured piece. */
-  void setPiece(Piece p);
-  /* @return index of captured piece. */
-  int index() const;
-  /* Sets captured piece. */
-  void setIndex(int index);
-  /* @return castling rights */
+		    CastlingRights castlingRights, Square epSquare, int halfMoveClock);
+
+	/* @return captured piece. */
+	Piece piece() const;
+	/* Sets captured piece. */
+	void setPiece(Piece p);
+	/* @return index of captured piece. */
+	int index() const;
+	/* Sets captured piece. */
+	void setIndex(int index);
+	/* @return castling rights */
 	CastlingRights castlingRights() const;
 	/* Sets castling rights */
 	void setCastlingRights(CastlingRights castlingRights);
@@ -57,7 +58,7 @@ public:
 	void setHalfMoveClock(int halfMoveClock);
 
 private:
-	
+
 	int m_index;
 	Piece m_piece;
 	CastlingRights m_castlingRights;

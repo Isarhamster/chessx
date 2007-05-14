@@ -29,8 +29,7 @@ Move::Move(Square f, Square t) : m_from(f), m_to(t)
 }
 
 Move::Move(Square from, Square to, MoveType moveType) : m_from(from), m_to(to), m_type(moveType)
-{
-}
+{}
 
 Move::Move(Square f, Square t, Piece p) : m_from(f), m_to(t)
 {
@@ -38,16 +37,16 @@ Move::Move(Square f, Square t, Piece p) : m_from(f), m_to(t)
 }
 
 Move::Move(const Board& board, Square from, Square to) : m_from(from), m_to(to)
-{	
-	if(board.at(from) == WhitePawn || board.at(from) == BlackPawn) {
-		if(abs(from - to) == 16) {
+{
+	if (board.at(from) == WhitePawn || board.at(from) == BlackPawn) {
+		if (abs(from - to) == 16) {
 			m_type = DoubleAdvance;
-		} else if(to == board.enPassantSquare()) {
+		} else if (to == board.enPassantSquare()) {
 			m_type = EnPassant;
 		} else {
 			m_type = StandardMove;
 		}
-	} else if((board.at(from) == WhiteKing || board.at(from) == BlackKing) && abs(from - to) == 2) {
+	} else if ((board.at(from) == WhiteKing || board.at(from) == BlackKing) && abs(from - to) == 2) {
 		m_type = Castling;
 	} else {
 		m_type = StandardMove;
@@ -56,49 +55,49 @@ Move::Move(const Board& board, Square from, Square to) : m_from(from), m_to(to)
 
 Square Move::from() const
 {
-  return m_from;
+	return m_from;
 }
 
 void Move::setFrom(Square f)
 {
-  m_from = f;
+	m_from = f;
 }
 
 Square Move::to() const
 {
-  return m_to;
+	return m_to;
 }
 
 void Move::setTo(Square t)
 {
-  m_to = t;
+	m_to = t;
 }
 
 void Move::setMove(Square f, Square t, MoveType tp)
 {
-  m_from = f;
-  m_to = t;
-  m_type = tp;
+	m_from = f;
+	m_to = t;
+	m_type = tp;
 }
 
 void Move::setType(MoveType tp)
 {
-  m_type = tp;
+	m_type = tp;
 }
 
 MoveType Move::type() const
 {
-  return m_type;
+	return m_type;
 }
 
 bool Move::isSpecial() const
 {
-  return m_type != StandardMove;
+	return m_type != StandardMove;
 }
 
 bool Move::isPromotion() const
 {
-  return m_type >= PromotionWhiteQueen && m_type <= PromotionBlackKnight;
+	return m_type >= PromotionWhiteQueen && m_type <= PromotionBlackKnight;
 }
 
 void Move::setPromotionPiece(Piece p)
@@ -108,22 +107,22 @@ void Move::setPromotionPiece(Piece p)
 
 Piece Move::promotionPiece() const
 {
-  return (Piece)m_type;
+	return (Piece)m_type;
 }
 
 bool Move::isCastling() const
 {
-  return m_type == Castling;
+	return m_type == Castling;
 }
 
 Square Move::castlingRookFrom() const
 {
-  return (m_to % 8 == 2) ? m_to - 2 : m_to + 1;
+	return (m_to % 8 == 2) ? m_to - 2 : m_to + 1;
 }
 
 Square Move::castlingRookTo() const
 {
-  return (m_from + m_to) / 2;
+	return (m_from + m_to) / 2;
 }
 
 bool Move::isDoubleAdvance() const
@@ -133,21 +132,21 @@ bool Move::isDoubleAdvance() const
 
 bool Move::isEnPassant() const
 {
-  return m_type == EnPassant;
+	return m_type == EnPassant;
 }
 
 Square Move::enPassantSquare() const
 {
-  return m_from > 31 ? m_to - 8 : m_to + 8;
+	return m_from > 31 ? m_to - 8 : m_to + 8;
 }
 
 bool Move::isValid() const
 {
-  return m_from != m_to && m_from < 64 && m_to < 64;
+	return m_from != m_to && m_from < 64 && m_to < 64;
 }
 
 bool operator==(const Move& m1, const Move& m2)
 {
-  return m1.from() == m2.from() && m1.to() == m2.to() && m1.type() == m2.type();
+	return m1.from() == m2.from() && m1.to() == m2.to() && m1.type() == m2.type();
 }
 

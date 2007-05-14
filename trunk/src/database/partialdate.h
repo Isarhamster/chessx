@@ -28,53 +28,53 @@
 class PartialDate
 {
 public:
-  /** Empty constructor. Date is undefined. */
-  PartialDate();
-  /** Partial constructor. Only year is known. */
-  PartialDate(int y);
-  /** Partial constructor. Only year and month are known. */
-  PartialDate(int y, int m);
-  /** Full constructor. All is known. */
-  PartialDate(int y, int m, int d);
-  /** String constructor. Creates date from PGN date format (e.g. "1990.01.??"). */
-  PartialDate(const QString& s);
-  /** QDate constructor. */
-  PartialDate(const QDate& d);
-  /** Converts date to QDate. Undefined parts will be replaced with 0 for year, 1 for month and day */
-  QDate asDate() const;
-  /** Converts date to string. Uses PGN date format (e.g. "1990.01.??"). */
-  QString asString() const;
-  /** Converts date to string. Uses short format (e.g. "1990", "1990.01", "1990.01.15"). */
-  QString asShortString() const;
-  /** Returns @p true if all date parts are defined. */
-  bool isFull() const;
-  /** Returns year, @p 0 if undefined. */
-  int year() const;
-  /** Returns month, @p 0 if undefined. */
-  int month() const;
-  /** Returns day, @p 0 if undefined. */
-  int day() const;
-  /** Sets year. */
-  void setYear(int y);
-  /** Sets month. Only partial checking is done (m = 0..12) */
-  void setMonth(int m);
-  /** Sets day. Only partial checking is done (d = 0..31), so entering incorrect date is possible. */
-  void setDay(int d);
-  /** Sets date from string in PGN date format (e.g. "1990.01.??"). */
-  void fromString(const QString& s);
+	/** Empty constructor. Date is undefined. */
+	PartialDate();
+	/** Partial constructor. Only year is known. */
+	PartialDate(int y);
+	/** Partial constructor. Only year and month are known. */
+	PartialDate(int y, int m);
+	/** Full constructor. All is known. */
+	PartialDate(int y, int m, int d);
+	/** String constructor. Creates date from PGN date format (e.g. "1990.01.??"). */
+	PartialDate(const QString& s);
+	/** QDate constructor. */
+	PartialDate(const QDate& d);
+	/** Converts date to QDate. Undefined parts will be replaced with 0 for year, 1 for month and day */
+	QDate asDate() const;
+	/** Converts date to string. Uses PGN date format (e.g. "1990.01.??"). */
+	QString asString() const;
+	/** Converts date to string. Uses short format (e.g. "1990", "1990.01", "1990.01.15"). */
+	QString asShortString() const;
+	/** Returns @p true if all date parts are defined. */
+	bool isFull() const;
+	/** Returns year, @p 0 if undefined. */
+	int year() const;
+	/** Returns month, @p 0 if undefined. */
+	int month() const;
+	/** Returns day, @p 0 if undefined. */
+	int day() const;
+	/** Sets year. */
+	void setYear(int y);
+	/** Sets month. Only partial checking is done (m = 0..12) */
+	void setMonth(int m);
+	/** Sets day. Only partial checking is done (d = 0..31), so entering incorrect date is possible. */
+	void setDay(int d);
+	/** Sets date from string in PGN date format (e.g. "1990.01.??"). */
+	void fromString(const QString& s);
 
-  friend bool operator==(const PartialDate& d1, const PartialDate& d2);
-  friend bool operator>=(const PartialDate& d1, const PartialDate& d2);
-  friend bool operator<=(const PartialDate& d1, const PartialDate& d2);
-  friend bool operator<(const PartialDate& d1, const PartialDate& d2);
-  friend bool operator>(const PartialDate& d1, const PartialDate& d2);
-  friend bool operator!=(const PartialDate& d1, const PartialDate& d2);
+	friend bool operator==(const PartialDate& d1, const PartialDate& d2);
+	friend bool operator>=(const PartialDate& d1, const PartialDate& d2);
+	friend bool operator<=(const PartialDate& d1, const PartialDate& d2);
+	friend bool operator<(const PartialDate& d1, const PartialDate& d2);
+	friend bool operator>(const PartialDate& d1, const PartialDate& d2);
+	friend bool operator!=(const PartialDate& d1, const PartialDate& d2);
 
 private:
- short int m_year;
- unsigned char m_month;
- unsigned char m_day;
- QString numberToString(int d, QChar fill = '0') const;
+	short int m_year;
+	unsigned char m_month;
+	unsigned char m_day;
+	QString numberToString(int d, QChar fill = '0') const;
 };
 
 

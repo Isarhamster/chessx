@@ -2,7 +2,7 @@
                           common  -  description
                              -------------------
     begin                : 28/05/2005
-    copyright            : (C) 2005 Ejner Borgbjerg 
+    copyright            : (C) 2005 Ejner Borgbjerg
                            <ejner@users.sourceforge.net>
  ***************************************************************************/
 
@@ -25,18 +25,19 @@ into ChessX format.
 #include "playerdatabase.h"
 #include <QDir>
 
-class DatabaseConversion{
+class DatabaseConversion
+{
 
 public:
-/**
-convert Scid ratings.ssp to player database
-outFileName is filename without extension
-inFileName is full path for ratings.ssp
-pictureDir is directory where player pictures are - 
-format can be jpg, gif, or any format that QImage(file) will
-understand
-*/
-static bool playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& pictureDir);
+	/**
+	convert Scid ratings.ssp to player database
+	outFileName is filename without extension
+	inFileName is full path for ratings.ssp
+	pictureDir is directory where player pictures are -
+	format can be jpg, gif, or any format that QImage(file) will
+	understand
+	*/
+	static bool playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& pictureDir);
 
 };
 

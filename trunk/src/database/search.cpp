@@ -25,138 +25,131 @@
 /* Search abstract base clase
  * ********************************/
 Search::Search()
-{
-}
+{}
 Search::~Search()
-{
-}
+{}
 void Search::setDatabase(Database* database)
 {
-   m_database = database;
+	m_database = database;
 }
 
 /* NullSearch Class
  * *********************/
 NullSearch::NullSearch()
-{
-}
+{}
 NullSearch::~NullSearch()
-{
-}
+{}
 NullSearch* NullSearch::clone() const
 {
 	return new NullSearch;
 }
 Search::Type NullSearch::type() const
 {
-   return Search::NullSearch;
+	return Search::NullSearch;
 }
-int NullSearch::matches(int )
+int NullSearch::matches(int)
 {
-   return false;
+	return false;
 }
 
 /* PositionSearch Class
  * ******************************/
 PositionSearch::PositionSearch()
-{
-}
+{}
 PositionSearch::PositionSearch(Database* db, const Board& position)
 {
-   setPosition(position);
-   m_database = db;
+	setPosition(position);
+	m_database = db;
 }
 PositionSearch* PositionSearch::clone() const
 {
-  return new PositionSearch(*this);
+	return new PositionSearch(*this);
 }
 PositionSearch::~PositionSearch()
-{
-}
+{}
 Search::Type PositionSearch::type() const
 {
-   return Search::PositionSearch;
+	return Search::PositionSearch;
 }
 Board PositionSearch::position() const
 {
-   return m_position;
+	return m_position;
 }
 void PositionSearch::setPosition(const Board& position)
 {
-   m_position.fromFEN(position.toFEN());
-   qDebug() << position.toFEN();
+	m_position.fromFEN(position.toFEN());
+	qDebug() << position.toFEN();
 }
 int PositionSearch::matches(int index)
 {
-   m_database->loadGame(index, m_game);
-   m_game.moveToStart();
-   while (!m_game.atEnd()) {
-      if (m_game.board() == m_position) {
-         return m_game.ply()+1;
-      }
-      m_game.forward();
-   }
-   // Check the end position
-   if (m_game.board() == m_position) {
-      return m_game.ply()+1;
-   }
+	m_database->loadGame(index, m_game);
+	m_game.moveToStart();
+	while (!m_game.atEnd()) {
+		if (m_game.board() == m_position) {
+			return m_game.ply() + 1;
+		}
+		m_game.forward();
+	}
+	// Check the end position
+	if (m_game.board() == m_position) {
+		return m_game.ply() + 1;
+	}
 
-   return 0;
+	return 0;
 }
 
 /* EloSearch class
  * **********************/
 EloSearch::EloSearch(Database* database, int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlacElo)
 {
-   m_database = database;
-   setEloSearch(minWhiteElo, maxWhiteElo, minBlackElo, maxBlacElo);
-   initialize();
+	m_database = database;
+	setEloSearch(minWhiteElo, maxWhiteElo, minBlackElo, maxBlacElo);
+	initialize();
 }
 EloSearch* EloSearch::clone() const
 {
 	return new EloSearch(*this);
 }
 EloSearch::~EloSearch()
-{
-}
+{}
 void EloSearch::initialize()
 {
-   m_matches = m_database->index()->listInRange(TagPlayerElo,QString::number(m_minWhiteElo),
-         QString::number(m_maxWhiteElo));
-   m_matches &= m_database->index()->listInRange(TagPlayerElo,QString::number(m_minBlackElo),
-         QString::number(m_maxBlackElo));
+	m_matches = m_database->index()->listInRange(TagPlayerElo, QString::number(m_minWhiteElo),
+			QString::number(m_maxWhiteElo));
+	m_matches &= m_database->index()->listInRange(TagPlayerElo, QString::number(m_minBlackElo),
+			QString::number(m_maxBlackElo));
 }
 void EloSearch::setEloSearch(int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlacElo)
 {
-   m_minWhiteElo = minWhiteElo;
-   m_maxWhiteElo = maxWhiteElo;
-   m_minBlackElo = minBlackElo;
-   m_maxBlackElo = maxBlacElo;
-   initialize();
+	m_minWhiteElo = minWhiteElo;
+	m_maxWhiteElo = maxWhiteElo;
+	m_minBlackElo = minBlackElo;
+	m_maxBlackElo = maxBlacElo;
+	initialize();
 }
 Search::Type EloSearch::type() const
 {
-   return Search::EloSearch;
+	return Search::EloSearch;
 }
 int EloSearch::maxWhiteElo() const
 {
-   return m_maxWhiteElo;
+	return m_maxWhiteElo;
 }
 int EloSearch::minWhiteElo() const
 {
-   return m_minWhiteElo;
+	return m_minWhiteElo;
 }
 int EloSearch::maxBlackElo() const
 {
-   return m_maxBlackElo;
+	return m_maxBlackElo;
 }
 int EloSearch::minBlackElo() const
 {
-   return m_minBlackElo;
+	return m_minBlackElo;
 }
 int EloSearch::matches(int index)
 {
-   return m_matches[m_database->index()->valueIndex(TagPlayerElo,index)];
+	return m_matches[m_database->index()->valueIndex(TagPlayerElo,index)];
 }
 
 /* DateSearch class
@@ -168,7 +161,7 @@ DateSearch::DateSearch()
 DateSearch::DateSearch(PartialDate minDate, PartialDate maxDate)
 {
 	Q_ASSERT(minDate < maxDate);
-	
+
 	m_minDate = minDate;
 	m_maxDate = maxDate;
 }
@@ -177,8 +170,7 @@ DateSearch* DateSearch::clone() const
 	return new DateSearch(*this);
 }
 DateSearch::~DateSearch()
-{
-}
+{}
 Search::Type DateSearch::type() const
 {
 	return Search::DateSearch;
@@ -199,8 +191,8 @@ void DateSearch::setDateRange(PartialDate minDate, PartialDate maxDate)
 }
 int DateSearch::matches(int index)
 {
-   m_database->loadGameHeaders(index, m_game);
-   PartialDate date(m_game.tag("Date"));
+	m_database->loadGameHeaders(index, m_game);
+	PartialDate date(m_game.tag("Date"));
 
 	return (date >= m_minDate && date <= m_maxDate);
 }
@@ -209,15 +201,15 @@ int DateSearch::matches(int index)
  * ***************/
 TagSearch::TagSearch(Database* database, const QString& tag, const QString& value)
 {
-  m_database = database;
-  m_tagName = tag;
-  m_value = value;
-  m_tag = database->index()->tagFromString(m_tagName);
-  initialize();
+	m_database = database;
+	m_tagName = tag;
+	m_value = value;
+	m_tag = database->index()->tagFromString(m_tagName);
+	initialize();
 }
 void TagSearch::initialize()
 {
-   m_matches = m_database->index()->listContainingValue(m_tag, m_value);
+	m_matches = m_database->index()->listContainingValue(m_tag, m_value);
 }
 TagSearch* TagSearch::clone() const
 {
@@ -225,7 +217,7 @@ TagSearch* TagSearch::clone() const
 }
 TagSearch::~TagSearch()
 {
-   //delete m_matches;
+	//delete m_matches;
 }
 Search::Type TagSearch::type() const
 {
@@ -242,51 +234,48 @@ QString TagSearch::value() const
 void TagSearch::setTag(const QString& tag)
 {
 	m_tagName = tag;
-   m_tag = m_database->index()->tagFromString(m_tagName);
-   initialize();
+	m_tag = m_database->index()->tagFromString(m_tagName);
+	initialize();
 }
 void TagSearch::setValue(const QString& value)
 {
 	m_value = value;
-   initialize();
+	initialize();
 }
 int TagSearch::matches(int index)
 {
-   return m_matches[m_database->index()->valueIndex(m_tag,index)];
+	return m_matches[m_database->index()->valueIndex(m_tag,index)];
 }
 
 /* FilterSearch class
  * **********************/
 FilterSearch::FilterSearch() : m_filter(0)
-{
-}
+{}
 FilterSearch::FilterSearch(Filter* filter) : m_filter(filter)
-{
-}
+{}
 FilterSearch* FilterSearch::clone() const
 {
 	return new FilterSearch(*this);
 }
 FilterSearch::~FilterSearch()
-{
-}
+{}
 Search::Type FilterSearch::type() const
 {
-   return Search::FilterSearch;
+	return Search::FilterSearch;
 }
 bool FilterSearch::contains(int game) const
 {
-   return m_filter->contains(game);
+	return m_filter->contains(game);
 }
 Filter* FilterSearch::filter() const
 {
-   return m_filter;
+	return m_filter;
 }
 void FilterSearch::setFilter(Filter* filter)
 {
-   m_filter = filter;
-} 
+	m_filter = filter;
+}
 int FilterSearch::matches(int index)
 {
-   return m_filter->contains(index);
+	return m_filter->contains(index);
 }
