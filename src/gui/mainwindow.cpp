@@ -905,7 +905,7 @@ void MainWindow::slotSearchReverse()
 
 void MainWindow::slotSearchReset()
 {
-	databaseInfo()->filter()->setAll(true);
+	databaseInfo()->filter()->setAll(1);
 	m_gameList->updateFilter();
 	slotFilterChanged();
 }
