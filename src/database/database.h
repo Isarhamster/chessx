@@ -72,7 +72,8 @@ class Database
       virtual bool remove(const Filter& ) { return false; }
       /** Compacts the database */
       virtual void compact() {}
-
+      /** Returns a pointer to the index of the database */
+      Index* index();
       /** Returns the number of games in the database */
       virtual int count() { return m_count; }
 
