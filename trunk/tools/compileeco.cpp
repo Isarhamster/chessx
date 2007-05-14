@@ -4,7 +4,7 @@
 
 #include <QFile>
 
-static QMap<quint64,QString> m_ecoPositions;
+static QMap<quint64, QString> m_ecoPositions;
 
 bool loadEcoFile(const QString& ecoFile)
 {
@@ -23,16 +23,16 @@ bool loadEcoFile(const QString& ecoFile)
 	QString token;
 	Move move;
 
-	while(!ecoStream.atEnd()) {
+	while (!ecoStream.atEnd()) {
 		line = ecoStream.readLine();
 
 		//ignore comments and blank lines
-		if(line.startsWith("#") || line == "") {
+		if (line.startsWith("#") || line == "") {
 			continue;
 		}
 
 		//if line starts with eco code, store and begin new line
-		if(line.indexOf(ecoRegExp) == 0) {
+		if (line.indexOf(ecoRegExp) == 0) {
 			ecoCode = line.section(' ', 0, 0);
 			ecoCode += " " + line.section('"', 1, 1);
 			board.setStandardPosition();
@@ -42,24 +42,24 @@ bool loadEcoFile(const QString& ecoFile)
 		//parse any moves on line
 		tokenList = line.split(" ");
 		for (QStringList::Iterator iterator = tokenList.begin(); iterator != tokenList.end(); iterator++) {
-				token = *iterator;
-				if(token == "*") {
-					m_ecoPositions.insert(board.getHashValue(), ecoCode);
-					continue;
+			token = *iterator;
+			if (token == "*") {
+				m_ecoPositions.insert(board.getHashValue(), ecoCode);
+				continue;
+			}
+			if (token.contains('.')) {
+				token = token.section('.', 1, 1);
+			}
+			if (token != "") {
+				move = board.singleMove(token);
+				if (board.isLegal(move)) {
+					board.doMove(move);
+				} else {
+					m_ecoPositions.clear();
+					return false;
 				}
-				if(token.contains('.')) {
-					token = token.section('.', 1, 1);
-				}
-				if(token != "") {
-					move = board.singleMove(token);
-					if(board.isLegal(move)) {
-						board.doMove(move);
-					} else {
-						m_ecoPositions.clear();
-						return false;
-					}
-				}
-	  }
+			}
+		}
 
 	}
 

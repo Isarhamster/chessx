@@ -2,7 +2,7 @@
                           common  -  description
                              -------------------
     begin                : 27/11/2005
-    copyright            : (C) 2005, 2006, 2007 Heinz R. Hopfgartner 
+    copyright            : (C) 2005, 2006, 2007 Heinz R. Hopfgartner
                            <heinz.hopfgartner@gmx.at>
  ***************************************************************************/
 
@@ -27,21 +27,21 @@ Unit tests for the DatabaseConversion class.
 class DatabaseConversionTest : public QObject
 {
 
-Q_OBJECT
+	Q_OBJECT
 
 private slots:
-  void initTestCase();
-  void init();
-  void cleanup();
-  void cleanupTestCase();
+	void initTestCase();
+	void init();
+	void cleanup();
+	void cleanupTestCase();
 
-  void testConvertDatabase();
+	void testConvertDatabase();
 
- private:
+private:
 
-  QString db_name;
-  QString source;
-  QString picture_dir;
+	QString db_name;
+	QString source;
+	QString picture_dir;
 };
 
-#endif 
+#endif

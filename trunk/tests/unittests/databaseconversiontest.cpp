@@ -2,7 +2,7 @@
                           common  -  description
                              -------------------
     begin                : 27/11/2005
-    copyright            : (C) 2005, 2006, 2007 Heinz R. Hopfgartner 
+    copyright            : (C) 2005, 2006, 2007 Heinz R. Hopfgartner
                            <heinz.hopfgartner@gmx.at>
  ***************************************************************************/
 
@@ -28,15 +28,15 @@ void DatabaseConversionTest::cleanup(){};
 
 void DatabaseConversionTest::initTestCase()
 {
-  db_name = "./data/small/players_converted";
-  source = "./data/small/ratings.ssp";
-  picture_dir = "./data/small/playerphotos"; 
+	db_name = "./data/small/players_converted";
+	source = "./data/small/ratings.ssp";
+	picture_dir = "./data/small/playerphotos";
 }
 
 void DatabaseConversionTest::cleanupTestCase(){}
 
 void DatabaseConversionTest::testConvertDatabase()
 {
-  DatabaseConversion converter;
-  QVERIFY( converter.playerDatabaseFromScidRatings( source, db_name, picture_dir ) );
+	DatabaseConversion converter;
+	QVERIFY(converter.playerDatabaseFromScidRatings(source, db_name, picture_dir));
 }
