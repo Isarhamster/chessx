@@ -604,7 +604,7 @@ void MainWindow::slotMoveChanged()
 				var.append(" &nbsp; ");
 		}
 	}
-	m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4%5<br></qt>").arg(players).arg(result)
+	m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4%5</qt>").arg(players).arg(result)
 			    .arg(header).arg(move).arg(var));
 	if (m_useTablebase)
 		m_tablebase->getBestMove(g->toFen());
