@@ -1,5 +1,0 @@
-A small player database with 59 players, for testing.
-It was converted from the ratings.ssp file. 
-
-How to query the database - see the test function in 
-chessdatabase/tests/playerdatabase/main.cpp
