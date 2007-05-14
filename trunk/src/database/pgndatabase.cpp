@@ -109,7 +109,6 @@ bool PgnDatabase::loadGame(int index, Game& game)
 	seekGame(index);
 	skipTags();
 	if(!game.tag("FEN").isEmpty() && (game.tag("FEN") != "?")) {
-      qDebug() << game.tag("FEN");
 		Board board;
 		board.fromFEN(game.tag("FEN"));
 		game.setStartBoard(board);
