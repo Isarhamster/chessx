@@ -41,6 +41,7 @@ SOURCES += mainwindow.cpp \
 TEMPLATE = app
 INCLUDEPATH += ../database 
 INCLUDEPATH += ../guess
+DEPENDPATH=../database
 RESOURCES += helpwindow.qrc \
                  tipoftheday.qrc
 
