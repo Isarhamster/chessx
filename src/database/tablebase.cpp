@@ -5,7 +5,7 @@
 #include "tablebase.h"
 
 Shredder::Shredder()
-	:m_http(new QHttp)
+		: m_http(new QHttp)
 {
 	QObject::connect(m_http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)));
 }
@@ -29,15 +29,16 @@ void Shredder::getBestMove(QString fen)
 	int black = count.count(QRegExp("[a-z]"));
 	if (white + black > 6 || black > 4 || white > 4 || black < 1 || white < 1)
 		return;
-	QChar toMove=(prep[prep.indexOf(QString(" "))+1].toLower());
+	QChar toMove = (prep[prep.indexOf(QString(" "))+1].toLower());
 	QUrl url(QString("/online/playshredder/fetch.php?action=egtb&hook=%1&fen=%2")
-		.arg(toMove).arg(fen));
+		 .arg(toMove).arg(fen));
 	m_http->abort();
 	m_http->setHost("www.shredderchess.com");
 	m_http->get(url.toEncoded());
 }
 
-void Shredder::httpDone(bool error) {
+void Shredder::httpDone(bool error)
+{
 
 	if (error)
 		return;
@@ -49,7 +50,7 @@ void Shredder::httpDone(bool error) {
 	if (ret[5] == 'w')
 		ret.remove(QRegExp("NEXTCOLOR.*\\n"));
 	else	ret.remove(QRegExp(".*NEXTCOLOR\\n"));
-	ret.remove(0,ret.indexOf("\n")+1);
+	ret.remove(0, ret.indexOf("\n") + 1);
 	ret.remove(":");
 	ret.remove("Win in ");
 	ret.replace(QRegExp("[-x]"), " ");
@@ -63,12 +64,21 @@ void Shredder::httpDone(bool error) {
 	Move move(fld[0].toInt(), fld[1].toInt());
 	int score = fld[2].toInt();
 	if (fld.size() > 3) {
-		switch(score) {
-		case 8: move.setPromotionPiece(Queen); break;
-		case 9: move.setPromotionPiece(Rook); break;
-		case 10: move.setPromotionPiece(Bishop); break;
-		case 11: move.setPromotionPiece(Knight); break;
-		default: return;
+		switch (score) {
+		case 8:
+			move.setPromotionPiece(Queen);
+			break;
+		case 9:
+			move.setPromotionPiece(Rook);
+			break;
+		case 10:
+			move.setPromotionPiece(Bishop);
+			break;
+		case 11:
+			move.setPromotionPiece(Knight);
+			break;
+		default:
+			return;
 		}
 		score = fld[3].toInt();
 	}

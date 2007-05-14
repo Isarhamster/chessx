@@ -28,7 +28,7 @@ HistoryItem::HistoryItem()
 }
 
 HistoryItem::HistoryItem(int capturedIndex, Piece capturedPiece,
-							CastlingRights castlingRights, Square epSquare, int halfMoveClock)
+			 CastlingRights castlingRights, Square epSquare, int halfMoveClock)
 {
 	m_index = capturedIndex;
 	m_piece = capturedPiece;
@@ -39,22 +39,22 @@ HistoryItem::HistoryItem(int capturedIndex, Piece capturedPiece,
 
 Piece HistoryItem::piece() const
 {
-  return m_piece;
+	return m_piece;
 }
 
 void HistoryItem::setPiece(Piece p)
 {
-  m_piece = p;
+	m_piece = p;
 }
 
 int HistoryItem::index() const
 {
-  return m_index;
+	return m_index;
 }
 
 void HistoryItem::setIndex(int index)
 {
-  m_index = index;
+	m_index = index;
 }
 
 CastlingRights HistoryItem::castlingRights() const

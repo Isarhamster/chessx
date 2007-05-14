@@ -23,53 +23,50 @@
 
 DatabaseInfo::DatabaseInfo(const QString& fname)
 {
-  if (fname.isNull())
-  {
-    m_database = new MemoryDatabase();
-    m_database->open(QString());
-  }
-  else
-  {
-    QFile file(fname);
-    if (file.size() < 4000000) {
-       m_database = new MemoryDatabase();
-    } else {
-       m_database = new PgnDatabase();
-    }
-    m_database->open(fname);
-  }
-  m_game = new Game;
-  m_filter = new Filter(m_database);
-  m_index = -1;
-  loadGame(0);
+	if (fname.isNull()) {
+		m_database = new MemoryDatabase();
+		m_database->open(QString());
+	} else {
+		QFile file(fname);
+		if (file.size() < 4000000) {
+			m_database = new MemoryDatabase();
+		} else {
+			m_database = new PgnDatabase();
+		}
+		m_database->open(fname);
+	}
+	m_game = new Game;
+	m_filter = new Filter(m_database);
+	m_index = -1;
+	loadGame(0);
 }
 
 DatabaseInfo::~DatabaseInfo()
 {
-  delete m_filter;
-  delete m_database;
-  delete m_game;
+	delete m_filter;
+	delete m_database;
+	delete m_game;
 }
 
 bool DatabaseInfo::loadGame(int index)
 {
-  if (!m_database)
-    return false;
-  if (m_index == index)
-    return true;
-  if (!m_database->loadGame(index, *m_game))
-    return false;
-  m_index = index;
-  m_game->moveToPly(m_filter->gamePosition(index)-1);
-  return true;
+	if (!m_database)
+		return false;
+	if (m_index == index)
+		return true;
+	if (!m_database->loadGame(index, *m_game))
+		return false;
+	m_index = index;
+	m_game->moveToPly(m_filter->gamePosition(index) - 1);
+	return true;
 }
 
 QString DatabaseInfo::name() const
 {
-  QString name = m_database->filename().section('/', -1);
-  int ext = name.lastIndexOf('.');
-  if (ext > name.length() - 5)
-    name = name.left(ext);
-  return name;
+	QString name = m_database->filename().section('/', -1);
+	int ext = name.lastIndexOf('.');
+	if (ext > name.length() - 5)
+		name = name.left(ext);
+	return name;
 }
 

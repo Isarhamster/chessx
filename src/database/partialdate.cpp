@@ -30,128 +30,128 @@ PartialDate::PartialDate(int y, int m, int d) : m_year(y), m_month(m), m_day(d)
 
 PartialDate::PartialDate(const QString& s)
 {
-  fromString(s);
+	fromString(s);
 }
 
 PartialDate::PartialDate(const QDate& d)
 {
-  m_year = d.year();
-  m_month = d.month();
-  m_day = d.day();
+	m_year = d.year();
+	m_month = d.month();
+	m_day = d.day();
 }
 
 
 bool PartialDate::isFull() const
 {
-  return m_year && m_month && m_day;
+	return m_year && m_month && m_day;
 }
 
 int PartialDate::year() const
 {
-  return m_year;
+	return m_year;
 }
 
 int PartialDate::month() const
 {
-  return m_month;
+	return m_month;
 }
 
 int PartialDate::day() const
 {
-  return m_day;
+	return m_day;
 }
 
 void PartialDate::setYear(int y)
 {
-  if (y >= 0)
-    m_year = y;
+	if (y >= 0)
+		m_year = y;
 }
 
 void PartialDate::setMonth(int m)
 {
-  if (m >= 0 && m <= 12) 
-    m_month = m;
+	if (m >= 0 && m <= 12)
+		m_month = m;
 }
 
 void PartialDate::setDay(int d)
 {
-  if (d >= 0 && d <= 31) 
-    m_day = d;
+	if (d >= 0 && d <= 31)
+		m_day = d;
 }
 
 void PartialDate::fromString(const QString& s)
 {
-  m_year = s.section('.', 0, 0).toInt();
-  m_month = s.section('.', 1, 1).toInt();
-  m_day = s.section('.', 2, 2).toInt();
+	m_year = s.section('.', 0, 0).toInt();
+	m_month = s.section('.', 1, 1).toInt();
+	m_day = s.section('.', 2, 2).toInt();
 }
 
 
 QDate PartialDate::asDate() const
 {
-  return QDate(m_year, m_month, m_day);
+	return QDate(m_year, m_month, m_day);
 }
 
 QString PartialDate::asString() const
 {
-  if (!m_year)
-    return "????.??.??";
-  QString s = QString("%1.%2.%3").arg(m_year, 4).arg(numberToString(m_month))
-     .arg(numberToString(m_day));
-  return s;
+	if (!m_year)
+		return "????.??.??";
+	QString s = QString("%1.%2.%3").arg(m_year, 4).arg(numberToString(m_month))
+		    .arg(numberToString(m_day));
+	return s;
 }
 
 QString PartialDate::asShortString() const
 {
-  if (!m_year)
-    return QString::null;
-  QString s = QString("%1").arg(m_year, 4);
-  if (!m_month)
-    return s;
-  s.append("." + numberToString(m_month));
-  if (!m_day)
-    return s;
-  s.append("." + numberToString(m_day));
-  return s;
+	if (!m_year)
+		return QString::null;
+	QString s = QString("%1").arg(m_year, 4);
+	if (!m_month)
+		return s;
+	s.append("." + numberToString(m_month));
+	if (!m_day)
+		return s;
+	s.append("." + numberToString(m_day));
+	return s;
 }
 
 QString PartialDate::numberToString(int d, QChar fill) const
 {
-  if (!d)
-    return QString(fill) + fill;
-  return d < 10 ? fill + QString::number(d) : QString::number(d);
+	if (!d)
+		return QString(fill) + fill;
+	return d < 10 ? fill + QString::number(d) : QString::number(d);
 }
 
 bool operator==(const PartialDate& d1, const PartialDate& d2)
 {
-  return d1.year() == d2.year() && d1.month() == d2.month() && d1.day() == d2.day();
+	return d1.year() == d2.year() && d1.month() == d2.month() && d1.day() == d2.day();
 }
 
 bool operator<(const PartialDate& d1, const PartialDate& d2)
 {
-  return d2.year() > d1.year() ||
-        ((d2.year() == d1.year()) && 
-         (d2.month() > d1.month() || (d2.month() == d1.month() && d2.day() > d1.day())));
+	return d2.year() > d1.year() ||
+	       ((d2.year() == d1.year()) &&
+		(d2.month() > d1.month() || (d2.month() == d1.month() && d2.day() > d1.day())));
 }
 
 bool operator>(const PartialDate& d1, const PartialDate& d2)
 {
-  return d1.year() > d2.year() ||
-        ((d1.year() == d2.year()) && 
-         (d1.month() > d2.month() || (d1.month() == d2.month() && d1.day() > d2.day())));
+	return d1.year() > d2.year() ||
+	       ((d1.year() == d2.year()) &&
+		(d1.month() > d2.month() || (d1.month() == d2.month() && d1.day() > d2.day())));
 }
 
 bool operator>=(const PartialDate& d1, const PartialDate& d2)
 {
-  return d2 < d1 || d2 == d1;
+	return d2 < d1 || d2 == d1;
 }
 
- bool operator<=(const PartialDate& d1, const PartialDate& d2)
+bool operator<=(const PartialDate& d1, const PartialDate& d2)
 {
-  return d2 > d1 || d2 == d1;
+	return d2 > d1 || d2 == d1;
 }
 
 bool operator!=(const PartialDate& d1, const PartialDate& d2)
 {
-  return d1.year() != d2.year() || d1.month() != d2.month() || d1.day() != d2.day();
+	return d1.year() != d2.year() || d1.month() != d2.month() || d1.day() != d2.day();
 }

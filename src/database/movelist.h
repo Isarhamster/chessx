@@ -16,7 +16,7 @@
  ***************************************************************************/
 
 #include <QVector>
- 
-#include "move.h" 
- 
+
+#include "move.h"
+
 typedef QVector<Move> MoveList;
