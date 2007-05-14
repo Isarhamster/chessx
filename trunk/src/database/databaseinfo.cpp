@@ -60,7 +60,7 @@ bool DatabaseInfo::loadGame(int index)
   if (!m_database->loadGame(index, *m_game))
     return false;
   m_index = index;
-  m_game->moveToStart();
+  m_game->moveToPly(m_filter->gamePosition(index)-1);
   return true;
 }
 
