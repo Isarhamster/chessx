@@ -23,10 +23,8 @@
 Filter::Filter(Database* database)
 {
    m_database = database;
-   qDebug() << m_database->count();
    m_count = m_database->count();
-   m_bitArray = new QBitArray(m_count);
-   m_bitArray->fill(true);
+   m_byteArray = new QByteArray(m_count,1);
    m_cache.first = m_cache.second = 0;
    m_gamesSearched = 0;
    m_searchTime = 0;
@@ -34,7 +32,7 @@ Filter::Filter(Database* database)
 
 Filter::Filter(const Filter& filter)
 {
-  m_bitArray = new QBitArray(filter.bitArray());
+  m_byteArray = new QByteArray(filter.byteArray());
   m_count = filter.m_count;
   m_cache.first = m_cache.second = 0;
   m_gamesSearched = 0;
@@ -43,8 +41,8 @@ Filter::Filter(const Filter& filter)
 
 Filter Filter::operator=(const Filter& filter)
 {
-  delete m_bitArray;
-  m_bitArray = new QBitArray(filter.bitArray());
+  delete m_byteArray;
+  m_byteArray = new QByteArray(filter.byteArray());
   m_count = filter.count();
   m_cache = filter.m_cache;
   m_gamesSearched = 0;
@@ -54,7 +52,7 @@ Filter Filter::operator=(const Filter& filter)
 
 Filter::~Filter()
 {
-  delete m_bitArray;
+  delete m_byteArray;
 }
 
 Database* Filter::database()
@@ -62,22 +60,22 @@ Database* Filter::database()
    return m_database;
 }
 
-void Filter::set(int game, bool value)
+void Filter::set(int game, int value)
 {
-  if (game >= size() || contains(game) == value)
+  if ((game >= size()) || (gamePosition(game) == value)) {
     return;
-  m_bitArray->setBit(game, value);
-  if (value) {
-      m_count++;
   }
-  else {
+  if (value && !contains(game)) {
+      m_count++;
+  } else if (!value && contains(game)) {
       m_count--;
   }
+  (*m_byteArray)[game] = value;
 }
 
-void Filter::setAll(bool value)
+void Filter::setAll(int value)
 {
-  m_bitArray->fill(value);
+  m_byteArray->fill(value);
   m_count = value ? size() : 0;
   if (value)
     m_cache.first = m_cache.second = m_count / 2;
@@ -85,9 +83,13 @@ void Filter::setAll(bool value)
     m_cache.first = m_cache.second = 0;
 }
 
-bool Filter::contains(const int game) const
+bool Filter::contains(int game) const
 {
-  return m_bitArray->at(game);
+  return (m_byteArray->at(game) > 0);
+}
+int Filter::gamePosition(int game) const
+{
+  return m_byteArray->at(game);
 }
 
 int Filter::count() const
@@ -97,7 +99,7 @@ int Filter::count() const
 
 int Filter::size() const
 {
-  return (int)m_bitArray->size();
+  return (int)m_byteArray->size();
 }
 
 int Filter::gameToIndex(int index)
@@ -121,7 +123,7 @@ int Filter::gameToIndex(int index)
 
 int Filter::indexToGame(int index)
 {
-  if (index > m_count) return -1;
+  if (index >= m_count) return -1;
   if (index < m_count / 2)
     for (int i = 0; i < size(); i++)
     {
@@ -157,14 +159,20 @@ void Filter::resize(int newsize)
 {
   for (int i = newsize; i < size(); i++)  // Decrease count by number of removed games
     if (contains(i)) m_count--;
-  m_bitArray->resize(newsize);
+  m_byteArray->resize(newsize);
 }
 
 void Filter::reverse()
 {
   m_count = size() - m_count;
-  for (int i = 0; i < size(); i++)
-    m_bitArray->toggleBit(i);
+  for (int i = 0; i < size(); i++) {
+    if (m_byteArray->at(i)) {
+       (*m_byteArray)[i] = 0;
+    } else {
+       (*m_byteArray)[i] = 1;
+    }
+  }
+
 }
 
  const bool ops[4][2][2] = {{{0, 0}, {0, 1}} /* And */, {{0, 1}, {1, 1}} /* Or */,
@@ -178,32 +186,39 @@ void Filter::join(const Filter& filter, Operator op)
   m_count = 0;
   for(int i = 0; i < size(); i++)
   {
-    m_bitArray->setBit(i, ops[op][contains(i)][filter.contains(i)]);
+    (*m_byteArray)[i] = ops[op][contains(i)][filter.contains(i)];
     m_count += contains(i);
   }
 }
 
-QBitArray Filter::bitArray() const
+QByteArray Filter::byteArray() const
 {
-  return *m_bitArray;
+  return *m_byteArray;
 }
 
-void Filter::executeSearch(const Search& search)
+void Filter::executeSearch(Search& search)
 {
-  //Turn search into a query and execute it
-  Query query;
-  query.append(search);
-  executeQuery(query);
+  for (int searchIndex = 0; searchIndex < size(); searchIndex++) {
+     set(searchIndex,search.matches(searchIndex));
+  }
 }
-void Filter::executeSearch(const Search& search, Search::Operator searchOperator)
+void Filter::executeSearch(Search& search, Search::Operator searchOperator)
 {
-  //Turn search into a query and execute it
-  Query query;
-  FilterSearch filterSearch(this);
-  query.append(search);
-  query.append(filterSearch);
-  query.append(searchOperator);
-  executeQuery(query);
+	for (int searchIndex = 0; searchIndex < size(); searchIndex++) {
+		if ((searchOperator == Search::And) && contains(searchIndex)) {
+			set(searchIndex,search.matches(searchIndex));
+		}
+		if ((searchOperator == Search::Or) && !contains(searchIndex)) {
+			set(searchIndex,search.matches(searchIndex));
+		}
+
+	}
+	/*   Query query;
+		  FilterSearch filterSearch(this);
+		  query.append(search);
+		  query.append(filterSearch);
+		  query.append(searchOperator);
+		  executeQuery(query); */
 }
 void Filter::executeQuery(Query& query)
 {
@@ -218,7 +233,7 @@ void Filter::executeQuery(Query& query)
 
   m_triStateTree = TriStateTree(query);
 
-  /* Make a list of all filter searches, filter searches separately */
+  /* Make a list of all searches, filter searches separately */
   int leafNode = 0;
   for (int element = 0; element < query.count(); element++)
   {

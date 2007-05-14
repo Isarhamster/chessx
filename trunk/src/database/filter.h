@@ -52,11 +52,13 @@ public:
   /** @return a pointer to the database on which the filter is. */
   Database* database();
   /** Add or remove game @p game . Does nothing if the game is not in filter. */
-  void set(int game, bool value);
+  void set(int game, int value);
   /** Set all games in the filter to the same value. */
-  void setAll(bool value);
+  void setAll(int value);
   /** @return true if the game is in the filter. */
   bool contains(int game) const;
+  /** @return the ply at which the game in the filter is. Zero if game is not in filter */
+  int gamePosition(int game) const;
   /** @return number of games in the filter. */
   int count() const;
   /** @return the size of the filter. */
@@ -80,10 +82,10 @@ public:
   void join(const Filter& filter, Operator op);
   /** Executes search 'search' on database m_database,
      and sets this filter to contain the results. */
-  void executeSearch(const Search& search);
+  void executeSearch(Search& search);
    /** Executes search 'search' on database m_database,
       and modifies this filter with the results. */
-   void executeSearch(const Search& search, Search::Operator searchOperator);
+   void executeSearch(Search& search, Search::Operator searchOperator);
    /** Executes query 'query' on database m_database,
        and sets this filter to contain the results. */
    void executeQuery(Query& query);
@@ -95,10 +97,12 @@ public:
 
 protected:
   /** returns the filter as a implicitely shared QBitArray. */
-  QBitArray bitArray() const;
+/*   QBitArray bitArray() const; */
+  QByteArray byteArray() const;
 
   int m_count;
-  QBitArray* m_bitArray;
+/*   QBitArray* m_bitArray; */
+  QByteArray* m_byteArray;
   QPair<int, int> m_cache;
   Database* m_database;
   TriStateTree m_triStateTree; 
