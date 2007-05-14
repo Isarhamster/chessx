@@ -498,7 +498,7 @@ void Output::setTemplateFile(const QString& filename)
 			dataPath = AppSettings->dataPath();
 		} else {
 			/* This is temporary. AppSettings should always be defined.
-			 * This enables testing the class in isolation from the main 
+			 * This enables testing the class in isolation from the main
 			 * program
 			 */
 			dataPath = "/home/mroets/data/chessx/qt3/data";

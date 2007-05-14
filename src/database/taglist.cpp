@@ -50,8 +50,8 @@ TagList::TagList()
 		/* Here is something that could be worked on later. It is
 		 * strictly speaking not necessary to create a value list
 		 * for every possible tag. However the Black/White -> PlayerName
-		 * conversion is much simpler this way. The downside is that 
-		 * between 12 and ? empty and unused objects are created 
+		 * conversion is much simpler this way. The downside is that
+		 * between 12 and ? empty and unused objects are created
 		 * per database. Currently this seems like a small price to pay. */
 		m_list.append(NULL);
 	}

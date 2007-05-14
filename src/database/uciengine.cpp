@@ -116,7 +116,7 @@ void UCIEngine::parseAnalysis(const QString& message)
 			int depth;
 			float score;
 			QString variation;
-		
+
 			info score cp 20  depth 3 nodes 423 time 15 pv f1c4 g8f6 b1c3
 	*/
 	Analysis analysis;

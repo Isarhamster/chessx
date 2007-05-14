@@ -25,14 +25,14 @@
 
 static const int castlingMask[64] =
 	{
-		~WhiteQueenside,	AllRights, AllRights, AllRights, ~WhiteBothSides,	AllRights, AllRights, ~WhiteKingside,
-		AllRights, 				AllRights, AllRights, AllRights, AllRights, 				AllRights, AllRights, AllRights,
-		AllRights, 				AllRights, AllRights, AllRights, AllRights, 				AllRights, AllRights, AllRights,
-		AllRights, 				AllRights, AllRights, AllRights, AllRights, 				AllRights, AllRights, AllRights,
-		AllRights, 				AllRights, AllRights, AllRights, AllRights, 				AllRights, AllRights, AllRights,
-		AllRights, 				AllRights, AllRights, AllRights, AllRights, 				AllRights, AllRights, AllRights,
-		AllRights, 				AllRights, AllRights, AllRights, AllRights, 				AllRights, AllRights, AllRights,
-		~BlackQueenside,	AllRights, AllRights, AllRights, ~BlackBothSides,	AllRights, AllRights, ~BlackKingside
+		~WhiteQueenside, AllRights, AllRights, AllRights, ~WhiteBothSides, AllRights, AllRights, ~WhiteKingside,
+		AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights,
+		AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights,
+		AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights,
+		AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights,
+		AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights,
+		AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights, AllRights,
+		~BlackQueenside, AllRights, AllRights, AllRights, ~BlackBothSides, AllRights, AllRights, ~BlackKingside
 	};
 
 static bool initialized = false;
@@ -524,7 +524,7 @@ bool Board::setAt(Square s, Piece p)
 	default :
 		/*** Note:
 		 * Looking at the fromFEN function, I saw that the first empty index was used
-		 * for a piece in m_pieceType, regardless of the colour. I'm not sure if this was 
+		 * for a piece in m_pieceType, regardless of the colour. I'm not sure if this was
 		 * the intention. However, I have implemented it the same way here.
 		 * If this is the case, the white king and black king could just as easily have been
 		 * indexed at 0 and 1 instead of 0 and 16.

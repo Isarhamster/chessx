@@ -54,7 +54,7 @@ public:
 	/** returns true if the list contains the string 'value' */
 	virtual bool contains(const QString&) { return true; }
 	/** When cache is enabled, adding values is very quick. It uses twice as
-	  * much RAM though. Useful for adding lots of values quickly. 
+	  * much RAM though. Useful for adding lots of values quickly.
 	  * Remember to disable afterwards to free extra memory.*/
 	virtual void setCacheEnabled(const bool) {}
 
