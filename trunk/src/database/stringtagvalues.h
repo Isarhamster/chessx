@@ -51,7 +51,7 @@ public:
 	/** Returns the index of a value 'value */
 	int indexOf(const QString& value);
 	/** When cache is enabled, adding values is very quick. It uses twice as
-	  * much RAM though. Useful for adding lots of values quickly. 
+	  * much RAM though. Useful for adding lots of values quickly.
 	  * Remember to disable afterwards to free extra memory.*/
 	void setCacheEnabled(const bool enabled);
 	/** Returns the number of values in the list */
