@@ -2,7 +2,7 @@
             testrunner.cpp  -  runs all ChessX unit tests
                              -------------------
     begin                : 20/01/2007
-    copyright            : (C) 2007 Heinz R. Hopfgartner 
+    copyright            : (C) 2007 Heinz R. Hopfgartner
                            <heinz.hopfgartner@gmx.at>
 ***************************************************************************/
 
@@ -37,24 +37,24 @@ Do not forget to update the testrunner.pro - add the source files!
 int main(int argc, char *argv[])
 {
 
-  PlayerDatabaseTest playerDBtests;
-  PgnDatabaseTest pgnDBtests;
-  SpellCheckerTests spellCheckerTests;
-  BoardTest boardTests;
-  DatabaseConversionTest databaseConversionTests;
+	PlayerDatabaseTest playerDBtests;
+	PgnDatabaseTest pgnDBtests;
+	SpellCheckerTests spellCheckerTests;
+	BoardTest boardTests;
+	DatabaseConversionTest databaseConversionTests;
 
-  QTest::qExec( &playerDBtests, argc, argv );
-  QTest::qExec( &pgnDBtests, argc, argv );
-  QTest::qExec( &spellCheckerTests, argc, argv );
-  //QFATAL Error with this test - therefore commented
-  // QTest::qExec( &boardTests, argc, argv );
-  QTest::qExec( &databaseConversionTests, argc, argv );
+	QTest::qExec(&playerDBtests, argc, argv);
+	QTest::qExec(&pgnDBtests, argc, argv);
+	QTest::qExec(&spellCheckerTests, argc, argv);
+	//QFATAL Error with this test - therefore commented
+	// QTest::qExec( &boardTests, argc, argv );
+	QTest::qExec(&databaseConversionTests, argc, argv);
 
 
-  // Cleanup
-  QFile("data/spell.txt").remove();
-  QFile("data/spell_1.txt").remove();
-  QFile("data/newspell.txt").remove();
-  return 0;
+	// Cleanup
+	QFile("data/spell.txt").remove();
+	QFile("data/spell_1.txt").remove();
+	QFile("data/newspell.txt").remove();
+	return 0;
 }
 

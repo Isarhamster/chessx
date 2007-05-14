@@ -19,48 +19,48 @@
 */
 
 
-#ifndef __SPELLCHECKERTESTS_H 
-#define __SPELLCHECKERTESTS_H  
+#ifndef __SPELLCHECKERTESTS_H
+#define __SPELLCHECKERTESTS_H
 
-#include<spellchecker.h> 
+#include<spellchecker.h>
 #include <QtTest/QtTest>
 
 
 class SpellCheckerTests : public QObject
 {
-    
-Q_OBJECT
+
+	Q_OBJECT
 
 private slots:
 
-  void initTestCase();
-  void init();
-  void cleanup();
-  void cleanupTestCase();
+	void initTestCase();
+	void init();
+	void cleanup();
+	void cleanupTestCase();
 
-  void testNoRule();
-  void testImportSpellingFile();
-  void testSaveSpellings();
-  void testRemoveRules();
-  void testLoadSpellings();
-  void testCorrectPlayer();
-  void testCorrectSite();
-  void testCorrectEvent();
-  void testCorrectRound();
-  void testFindSpellingsLiteral();
-  void testAddRuleSpelling();
-  void testRemoveRule();
-  void testRemoveRuleFail();
-  void testFindSpellingsLiteralInNewSpell();
+	void testNoRule();
+	void testImportSpellingFile();
+	void testSaveSpellings();
+	void testRemoveRules();
+	void testLoadSpellings();
+	void testCorrectPlayer();
+	void testCorrectSite();
+	void testCorrectEvent();
+	void testCorrectRound();
+	void testFindSpellingsLiteral();
+	void testAddRuleSpelling();
+	void testRemoveRule();
+	void testRemoveRuleFail();
+	void testFindSpellingsLiteralInNewSpell();
 
- private:
+private:
 
-  /** used to import the scid spellchecker file */
-  Spellchecker speller;
+	/** used to import the scid spellchecker file */
+	Spellchecker speller;
 
-  /** used for a blank spellchecker file */
-  Spellchecker newSpell;
-}; 
+	/** used for a blank spellchecker file */
+	Spellchecker newSpell;
+};
 
 
-#endif 
+#endif

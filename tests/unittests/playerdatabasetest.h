@@ -2,7 +2,7 @@
             playerdatabasetest.cpp  -  testcases for PlayerDatabase
                              -------------------
     begin                : 16/01/2007
-    copyright            : (C) 2007 Heinz R. Hopfgartner 
+    copyright            : (C) 2007 Heinz R. Hopfgartner
                            <heinz.hopfgartner@gmx.at>
 ***************************************************************************/
 
@@ -25,28 +25,28 @@
 #include <QtTest/QtTest>
 #include "../../src/database/playerdatabase.h"
 
-class PlayerDatabaseTest: public QObject 
+class PlayerDatabaseTest: public QObject
 {
 
-Q_OBJECT
+	Q_OBJECT
 
-  PlayerDatabase pdb, newDb;
-  QString db_name;
+	PlayerDatabase pdb, newDb;
+	QString db_name;
 
 private slots:
-  void initTestCase();
-  void init();
-  void cleanup();
-  void cleanupTestCase();
+	void initTestCase();
+	void init();
+	void cleanup();
+	void cleanupTestCase();
 
-  void testCreateDatabase();
-  void testOpenDatabase();
-  void testRemoveDatabase();
-  void testPlayerCount();
-  void testPlayerExists();
-  void testNonExistingPlayer();
-  void testCurrentPlayer();
-  void testDatabaseClose();
+	void testCreateDatabase();
+	void testOpenDatabase();
+	void testRemoveDatabase();
+	void testPlayerCount();
+	void testPlayerExists();
+	void testNonExistingPlayer();
+	void testCurrentPlayer();
+	void testDatabaseClose();
 
 };
 

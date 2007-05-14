@@ -2,7 +2,7 @@
                           common  -  description
                              -------------------
     begin                : 30/04/2006
-    copyright            : (C) 2006 Heinz R. Hopfgartner 
+    copyright            : (C) 2006 Heinz R. Hopfgartner
                            <heinz.hopfgartner@gmx.at>
  ***************************************************************************/
 
@@ -32,63 +32,69 @@ void PgnDatabaseTest::initTestCase() {}
 void PgnDatabaseTest::init(){}
 void PgnDatabaseTest::cleanup(){}
 
-void PgnDatabaseTest::cleanupTestCase() {
-    QDir toRemove;
-    toRemove.remove( "./data/new.pgn" );
-    toRemove.remove( "./data/new1.pgn" );
+void PgnDatabaseTest::cleanupTestCase()
+{
+	QDir toRemove;
+	toRemove.remove("./data/new.pgn");
+	toRemove.remove("./data/new1.pgn");
 }
 
-void PgnDatabaseTest::testCreateDatabase() {
-  PgnDatabase* db = new PgnDatabase();
-  db->create(  QString( "./data/new1.pgn" ) );
-  QCOMPARE( db->count(), 0 );
-  delete db;
+void PgnDatabaseTest::testCreateDatabase()
+{
+	PgnDatabase* db = new PgnDatabase();
+	db->create(QString("./data/new1.pgn"));
+	QCOMPARE(db->count(), 0);
+	delete db;
 }
 
-void PgnDatabaseTest::testName() {
-    PgnDatabase* db = new PgnDatabase();
-    db->open(  QString( "./data/game1.pgn" ) );
-    const QString name = QString("./data/game1.pgn");
-    QCOMPARE( db->filename(), name );
-    delete db;
-
-}
-
-void PgnDatabaseTest::testLoad() {
-    PgnDatabase* db = new PgnDatabase();
-    db->open(  QString( "./data/game1.pgn" ) );
-    Game game;
-    QCOMPARE( 2 , db->count() );
-    QCOMPARE( db->loadGame( 1, game ), true );
-    QCOMPARE( db->loadGame( 0, game ), true );
-    QCOMPARE( db->loadGame( 2, game ), false );
-    delete db;
+void PgnDatabaseTest::testName()
+{
+	PgnDatabase* db = new PgnDatabase();
+	db->open(QString("./data/game1.pgn"));
+	const QString name = QString("./data/game1.pgn");
+	QCOMPARE(db->filename(), name);
+	delete db;
 
 }
 
-void PgnDatabaseTest::testCopyGameIntoNewDB() {
-    PgnDatabase* db = new PgnDatabase();
-    db->open(  QString( "./data/game1.pgn" ) );
-    Game game;
-    bool success = db->loadGame( 1, game );
-    PgnDatabase* dbNew = new PgnDatabase();
-    dbNew->create( QString("./data/new.pgn" ));
-    dbNew->add( game );
-    success = db->loadGame( 0, game );
-    dbNew->add( game );
-    QCOMPARE( dbNew->count(), 2 );
-    delete dbNew;
-    delete db;
+void PgnDatabaseTest::testLoad()
+{
+	PgnDatabase* db = new PgnDatabase();
+	db->open(QString("./data/game1.pgn"));
+	Game game;
+	QCOMPARE(2 , db->count());
+	QCOMPARE(db->loadGame(1, game), true);
+	QCOMPARE(db->loadGame(0, game), true);
+	QCOMPARE(db->loadGame(2, game), false);
+	delete db;
+
 }
 
-void PgnDatabaseTest::testRemoveGame() {
-    PgnDatabase* dbNew = new PgnDatabase();
-    dbNew->open( QString("./data/new.pgn" ));
-    dbNew->remove( 1 );
-    QCOMPARE( dbNew->count(), 1 );
-    dbNew->remove( 0 );
-    QCOMPARE( dbNew->count(), 0 );
-    delete dbNew;
+void PgnDatabaseTest::testCopyGameIntoNewDB()
+{
+	PgnDatabase* db = new PgnDatabase();
+	db->open(QString("./data/game1.pgn"));
+	Game game;
+	bool success = db->loadGame(1, game);
+	PgnDatabase* dbNew = new PgnDatabase();
+	dbNew->create(QString("./data/new.pgn"));
+	dbNew->add(game);
+	success = db->loadGame(0, game);
+	dbNew->add(game);
+	QCOMPARE(dbNew->count(), 2);
+	delete dbNew;
+	delete db;
+}
+
+void PgnDatabaseTest::testRemoveGame()
+{
+	PgnDatabase* dbNew = new PgnDatabase();
+	dbNew->open(QString("./data/new.pgn"));
+	dbNew->remove(1);
+	QCOMPARE(dbNew->count(), 1);
+	dbNew->remove(0);
+	QCOMPARE(dbNew->count(), 0);
+	delete dbNew;
 }
 
 // void PgnDatabaseTest::testExecuteSearch() {
@@ -113,10 +119,10 @@ void PgnDatabaseTest::testRemoveGame() {
 //     db->open( QString( "./data/game1.pgn" ));
 //     Game game;
 //     QCOMPARE( true, db->loadGame( 1, game ) );
-    
+
 //     PgnDatabase* dbNew = new PgnDatabase();
 //     dbNew->create( QString( "./data/new1.pgn" ));
-    
+
 //     QCOMPARE( dbNew->save( 0, game ), true );
 //     QCOMPARE( db->loadGame( 0, game ), true );
 //     QCOMPARE( true, dbNew->save( 1, game ) );

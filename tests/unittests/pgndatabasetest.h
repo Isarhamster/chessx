@@ -2,7 +2,7 @@
                           common  -  description
                              -------------------
     begin                : 30/04/2006
-    copyright            : (C) 2006 Heinz R. Hopfgartner 
+    copyright            : (C) 2006 Heinz R. Hopfgartner
                            <heinz.hopfgartner@gmx.at>
  ***************************************************************************/
 
@@ -27,22 +27,22 @@ Unit tests for the PgnDatabase class.
 class PgnDatabaseTest : public QObject
 {
 
- Q_OBJECT
+	Q_OBJECT
 
 private slots:
-  void initTestCase();
-  void init();
-  void cleanup();
-  void cleanupTestCase();
+	void initTestCase();
+	void init();
+	void cleanup();
+	void cleanupTestCase();
 
-  void testCreateDatabase();
-  void testName();
-  void testLoad();
-  void testCopyGameIntoNewDB();
-  void testRemoveGame();
-  //  void testExecuteSearch();
-  //  void testSave();
+	void testCreateDatabase();
+	void testName();
+	void testLoad();
+	void testCopyGameIntoNewDB();
+	void testRemoveGame();
+	//  void testExecuteSearch();
+	//  void testSave();
 
 };
 
-#endif 
+#endif

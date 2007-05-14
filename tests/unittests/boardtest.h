@@ -27,17 +27,17 @@ Unit tests for the Board class.
 class BoardTest : public QObject
 {
 
- Q_OBJECT
+	Q_OBJECT
 
 private slots:
-  void initTestCase();
-  void init();
-  void cleanup();
-  void cleanupTestCase();
+	void initTestCase();
+	void init();
+	void cleanup();
+	void cleanupTestCase();
 
-  void testIsValidFEN();
-  void testCreateHash();
+	void testIsValidFEN();
+	void testCreateHash();
 
 };
 
-#endif 
+#endif
