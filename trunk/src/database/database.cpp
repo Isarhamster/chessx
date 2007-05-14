@@ -35,3 +35,7 @@ bool Database::loadGameHeaders(int index, Game& game)
    return true;
 }
 
+Index* Database::index()
+{
+   return &m_index;
+}
