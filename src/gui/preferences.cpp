@@ -36,6 +36,8 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.applyButton, SIGNAL(clicked()), SLOT(slotApply()));
 	connect(ui.boardColorsList, SIGNAL(itemActivated(QListWidgetItem*)),
 		SLOT(slotColorItem(QListWidgetItem*)));
+	connect(ui.boardColorsList, SIGNAL(itemClicked(QListWidgetItem*)),
+			  SLOT(slotColorItem(QListWidgetItem*)));
 
 	restoreSettings();
 	AppSettings->beginGroup("/Board/");
