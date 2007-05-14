@@ -48,7 +48,7 @@ class Search
       /** Standard destructor. */
       virtual ~Search() = 0;
       virtual Type type() const = 0;
-      virtual bool matches(int index) = 0;
+      virtual int matches(int index) = 0;
       virtual void setDatabase(Database* database);
    protected:
       Database *m_database;
@@ -65,7 +65,7 @@ class NullSearch : public Search
   virtual NullSearch* clone() const;
     virtual ~NullSearch();
     virtual Type type() const;
-    bool matches(int index);
+    virtual int matches(int index);
 };
 
 /** @ingroup Database
@@ -89,7 +89,8 @@ public:
   Board position() const;
   /** Sets sought position. */
   void setPosition(const Board & position);
-  bool matches(int index);
+  /** Return the ply in the game if the game at index matches the search */
+  virtual int matches(int index);
 private:
   Board m_position;
 };
@@ -100,8 +101,8 @@ class EloSearch : public Search
 {
 public:
   /** Standard constructor. */
-  EloSearch(int minWhiteElo = 0, int maxWhiteElo = 4000, int minBlackElo = 0, int maxBlacElo =
-      4000);
+  EloSearch(Database* database, int minWhiteElo = 0, int maxWhiteElo = 4000, 
+        int minBlackElo = 0, int maxBlacElo = 4000);
   /** Cloning - probably obsolete. */
   virtual EloSearch *clone() const;
   /** Standard destructor. */
@@ -119,13 +120,16 @@ public:
   /** Set acceptable rating ranges. */
   void setEloSearch(int minWhiteElo = 0, int maxWhiteElo = 4000, int minBlackElo =
       0, int maxBlacElo = 4000);
-  bool matches(int index);
+  void initialize();
+  /** Return true if the game at index matches the search */
+  virtual int matches(int index);
    
 private:
   int m_minWhiteElo;
   int m_maxWhiteElo;
   int m_minBlackElo;
   int m_maxBlackElo;
+  QBitArray m_matches;
 };
 
 /** @ingroup Database
@@ -149,11 +153,13 @@ public:
   PartialDate maxDate() const;
   /** Sets whole period. */
   void setDateRange(PartialDate minDate, PartialDate maxDate);
-  bool matches(int index);
+  /** Return true if the game at index matches the search */
+  virtual int matches(int index);
 
 private:
   PartialDate m_minDate;
   PartialDate m_maxDate;
+  QBitArray m_matches;
 };
 
 
@@ -182,12 +188,15 @@ public:
   void setTag(const QString& tag);
   /** Set value to be matched */
   void setValue(const QString& value);
-  bool matches(int index);
+  /** Return true if the game at index matches the search */
+  virtual int matches(int index);
+  /** initialize the search. Done automatically in constructor, or when values are changed */
   void initialize();
 private:
-  QString m_tag;
+  QString m_tagName;
+  Tag m_tag;
   QString m_value;
-  QBitArray *m_matches;
+  QBitArray m_matches;
 };
 
 /** @ingroup Database
@@ -209,7 +218,7 @@ class FilterSearch : public Search
       bool contains(int game) const;
       Filter* filter() const;
       void setFilter(Filter* filter);
-      bool matches(int game);
+      virtual int matches(int game);
    private:
       Filter *m_filter;
 }; 

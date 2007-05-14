@@ -51,7 +51,7 @@ Search::Type NullSearch::type() const
 {
    return Search::NullSearch;
 }
-bool NullSearch::matches(int )
+int NullSearch::matches(int )
 {
    return false;
 }
@@ -84,30 +84,33 @@ Board PositionSearch::position() const
 void PositionSearch::setPosition(const Board& position)
 {
    m_position.fromFEN(position.toFEN());
+   qDebug() << position.toFEN();
 }
-bool PositionSearch::matches(int index)
+int PositionSearch::matches(int index)
 {
    m_database->loadGame(index, m_game);
    m_game.moveToStart();
    while (!m_game.atEnd()) {
       if (m_game.board() == m_position) {
-         return true;
+         return m_game.ply()+1;
       }
       m_game.forward();
    }
    // Check the end position
    if (m_game.board() == m_position) {
-      return true;
+      return m_game.ply()+1;
    }
 
-   return false;
+   return 0;
 }
 
 /* EloSearch class
  * **********************/
-EloSearch::EloSearch(int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlacElo)
+EloSearch::EloSearch(Database* database, int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlacElo)
 {
+   m_database = database;
    setEloSearch(minWhiteElo, maxWhiteElo, minBlackElo, maxBlacElo);
+   initialize();
 }
 EloSearch* EloSearch::clone() const
 {
@@ -116,12 +119,20 @@ EloSearch* EloSearch::clone() const
 EloSearch::~EloSearch()
 {
 }
+void EloSearch::initialize()
+{
+   m_matches = m_database->index()->listInRange(TagPlayerElo,QString::number(m_minWhiteElo),
+         QString::number(m_maxWhiteElo));
+   m_matches &= m_database->index()->listInRange(TagPlayerElo,QString::number(m_minBlackElo),
+         QString::number(m_maxBlackElo));
+}
 void EloSearch::setEloSearch(int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlacElo)
 {
    m_minWhiteElo = minWhiteElo;
    m_maxWhiteElo = maxWhiteElo;
    m_minBlackElo = minBlackElo;
    m_maxBlackElo = maxBlacElo;
+   initialize();
 }
 Search::Type EloSearch::type() const
 {
@@ -143,12 +154,9 @@ int EloSearch::minBlackElo() const
 {
    return m_minBlackElo;
 }
-bool EloSearch::matches(int index)
+int EloSearch::matches(int index)
 {
-   m_database->loadGameHeaders(index, m_game);
-   int whiteElo = m_game.tag("WhiteElo").toInt(); 
-   int blackElo = m_game.tag("BlackElo").toInt();
-	return whiteElo >= m_minWhiteElo && whiteElo <= m_maxWhiteElo && blackElo >= m_minBlackElo && blackElo <= m_maxBlackElo;
+   return m_matches[m_database->index()->valueIndex(TagPlayerElo,index)];
 }
 
 /* DateSearch class
@@ -189,7 +197,7 @@ void DateSearch::setDateRange(PartialDate minDate, PartialDate maxDate)
 	m_minDate = minDate;
 	m_maxDate = maxDate;
 }
-bool DateSearch::matches(int index)
+int DateSearch::matches(int index)
 {
    m_database->loadGameHeaders(index, m_game);
    PartialDate date(m_game.tag("Date"));
@@ -202,13 +210,14 @@ bool DateSearch::matches(int index)
 TagSearch::TagSearch(Database* database, const QString& tag, const QString& value)
 {
   m_database = database;
-  m_tag = tag;
+  m_tagName = tag;
   m_value = value;
-  //initialize();
+  m_tag = database->index()->tagFromString(m_tagName);
+  initialize();
 }
 void TagSearch::initialize()
 {
-   //m_matches = new QBitArray;
+   m_matches = m_database->index()->listContainingValue(m_tag, m_value);
 }
 TagSearch* TagSearch::clone() const
 {
@@ -224,7 +233,7 @@ Search::Type TagSearch::type() const
 }
 QString TagSearch::tag() const
 {
-	return m_tag;
+	return m_tagName;
 }
 QString TagSearch::value() const
 {
@@ -232,16 +241,18 @@ QString TagSearch::value() const
 }
 void TagSearch::setTag(const QString& tag)
 {
-	m_tag = tag;
+	m_tagName = tag;
+   m_tag = m_database->index()->tagFromString(m_tagName);
+   initialize();
 }
 void TagSearch::setValue(const QString& value)
 {
 	m_value = value;
+   initialize();
 }
-bool TagSearch::matches(int index)
+int TagSearch::matches(int index)
 {
-   m_database->loadGameHeaders(index, m_game);
-   return m_game.tag(m_tag).contains(m_value);
+   return m_matches[m_database->index()->valueIndex(m_tag,index)];
 }
 
 /* FilterSearch class
@@ -275,7 +286,7 @@ void FilterSearch::setFilter(Filter* filter)
 {
    m_filter = filter;
 } 
-bool FilterSearch::matches(int index)
+int FilterSearch::matches(int index)
 {
    return m_filter->contains(index);
 }

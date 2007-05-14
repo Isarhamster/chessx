@@ -59,6 +59,7 @@ int IndexItem::allocate(const int size, bool clear)
 QString IndexItem::output()
 {
    QString str;
+   str = QString("size: ") + QString::number(m_size) + QString("\n");
 
    for (int i=0;i < m_size; ++i) {
       str += QString("%1 ").arg((quint8)(*(m_data+i)),2,16,QChar('0'));
