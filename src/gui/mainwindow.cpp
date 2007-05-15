@@ -494,7 +494,7 @@ void MainWindow::slotHelpAbout()
 				      "<p>Free chess database.<br>Version %1</br>"
 				      "<p>Copyright 2005-2007 ChessX developers<br>"
 				      "Core developers: Sean Estabrooks, Marius Roets, Michal Rudolf.<br>"
-				      "Additional coding : Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.<br>"
+				      "Additional coding: Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.<br>"
 				      "<p>Homepage: <a href=\"http://chessx.sf.net\">http://chessx.sf.net</a><br>"
 				      "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">"
 				      "chessx-users@lists.sourceforge.net").arg(ChessXVersion),
