@@ -59,6 +59,7 @@ QVariant ColorListItem::data() const
 
 void ColorListItem::edit()
 {
+	m_list->listWidget()->setCurrentItem(m_list);
 	QColor col = QColorDialog::getColor(color());
 	if (col.isValid())
 		setColor(col);
@@ -67,7 +68,7 @@ void ColorListItem::edit()
 void ColorListItem::paintEvent(QPaintEvent* event)
 {
 	QPainter painter(this);
-	if (m_list == m_list->listWidget()->currentItem()) {
+	if (m_list->listWidget()->hasFocus() && m_list == m_list->listWidget()->currentItem()) {
 		painter.fillRect(event->rect(), palette().highlight());
 		painter.setPen(palette().color(QPalette::HighlightedText));
 	} else {

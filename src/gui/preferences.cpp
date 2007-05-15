@@ -36,9 +36,10 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.applyButton, SIGNAL(clicked()), SLOT(slotApply()));
 	connect(ui.boardColorsList, SIGNAL(itemActivated(QListWidgetItem*)),
 		SLOT(slotColorItem(QListWidgetItem*)));
+#ifdef Q_WS_WIN
 	connect(ui.boardColorsList, SIGNAL(itemClicked(QListWidgetItem*)),
 			  SLOT(slotColorItem(QListWidgetItem*)));
-
+#endif
 	restoreSettings();
 	AppSettings->beginGroup("/Board/");
 	restoreColorItem(ui.boardColorsList, tr("Light squares"), "lightColor", "#a0a0a0");
