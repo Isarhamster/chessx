@@ -8,7 +8,7 @@ TARGET = testrunner
 DEPENDPATH += .
 INCLUDEPATH += . ../../src/database/
 LIBS += ../../src/database/libdatabase.a
-TARGETDEPS += ../../src/database/libdatabase.a 
+TARGETDEPS += ../../src/database/libdatabase.a
 
 # Input
 HEADERS += playerdatabasetest.h \
@@ -21,7 +21,7 @@ HEADERS += playerdatabasetest.h \
            indexitemtest.h \
            indextest.h \
            filtertest.h
-           
+
 SOURCES += testrunner.cpp playerdatabasetest.cpp \
            pgndatabasetest.cpp \
            spellcheckertests.cpp \

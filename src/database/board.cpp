@@ -476,14 +476,10 @@ bool Board::isValidFEN(const QString& fen) const
 		return false;
 	}
 	// Now that the FEN is valid, test that the actual position is valid
-	Board *tempBoard = new Board();
-	tempBoard->fromFEN(fen);
-	if (!tempBoard->isValid()) {
-		// The given fen position is invalid
-		delete(tempBoard);
+	Board tempBoard;
+	tempBoard.fromFEN(fen);
+	if (!tempBoard.isValid())
 		return false;
-	}
-	delete(tempBoard);
 
 	return true;
 }
