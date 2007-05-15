@@ -42,34 +42,33 @@ Do not forget to update the testrunner.pro - add the source files!
 int main(int argc, char *argv[])
 {
 
-  PlayerDatabaseTest playerDBtests;
-  PgnDatabaseTest pgnDBtests;
-  SpellCheckerTests spellCheckerTests;
-  BoardTest boardTests;
-  DatabaseConversionTest databaseConversionTests;
-  StringTagValuesTest stringTagValuesTests;
-  TagListTest tagListTests;
-  IndexItemTest indexItemTests;
-  IndexTest indexTests;
-  FilterTest filterTests;
+	PlayerDatabaseTest playerDBtests;
+	PgnDatabaseTest pgnDBtests;
+	SpellCheckerTests spellCheckerTests;
+	BoardTest boardTests;
+	DatabaseConversionTest databaseConversionTests;
+	StringTagValuesTest stringTagValuesTests;
+	TagListTest tagListTests;
+	IndexItemTest indexItemTests;
+	IndexTest indexTests;
+	FilterTest filterTests;
 
-  QTest::qExec( &playerDBtests, argc, argv );
-  QTest::qExec( &pgnDBtests, argc, argv );
-  QTest::qExec( &spellCheckerTests, argc, argv );
-  //QFATAL Error with this test - therefore commented
-  // QTest::qExec( &boardTests, argc, argv );
-  QTest::qExec( &databaseConversionTests, argc, argv );
-  QTest::qExec( &stringTagValuesTests, argc, argv );
-  QTest::qExec( &tagListTests, argc, argv );
-  QTest::qExec( &indexItemTests, argc, argv );
-  QTest::qExec( &indexTests, argc, argv );
-  QTest::qExec( &filterTests, argc, argv );
+	QTest::qExec(&playerDBtests, argc, argv);
+	QTest::qExec(&pgnDBtests, argc, argv);
+	QTest::qExec(&spellCheckerTests, argc, argv);
+	QTest::qExec( &boardTests, argc, argv );
+	QTest::qExec(&databaseConversionTests, argc, argv);
+	QTest::qExec(&stringTagValuesTests, argc, argv);
+	QTest::qExec(&tagListTests, argc, argv);
+	QTest::qExec(&indexItemTests, argc, argv);
+	QTest::qExec(&indexTests, argc, argv);
+	QTest::qExec(&filterTests, argc, argv);
 
 
-  // Cleanup
-  QFile("data/spell.txt").remove();
-  QFile("data/spell_1.txt").remove();
-  QFile("data/newspell.txt").remove();
-  return 0;
+	// Cleanup
+	QFile("data/spell.txt").remove();
+	QFile("data/spell_1.txt").remove();
+	QFile("data/newspell.txt").remove();
+	return 0;
 }
 
