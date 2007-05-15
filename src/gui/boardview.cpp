@@ -302,7 +302,7 @@ void BoardView::configure()
 	m_theme.setColor(BoardTheme::LightSquare, AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
 	m_theme.setColor(BoardTheme::DarkSquare, AppSettings->value("darkColor", "#a0a0a0").value<QColor>());
 	m_theme.setColor(BoardTheme::Highlight, AppSettings->value("highlightColor",
-						   "#ffff00").value<QColor>());
+			 "#ffff00").value<QColor>());
 	m_theme.setColor(BoardTheme::Frame, AppSettings->value("frameColor", "#000000").value<QColor>());
 	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
 	QString boardTheme = AppSettings->value("boardTheme", "merida").toString();

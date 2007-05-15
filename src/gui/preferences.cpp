@@ -54,8 +54,7 @@ PreferencesDialog::~PreferencesDialog()
 int PreferencesDialog::exec()
 {
 	int result = QDialog::exec();
-	if (result == QDialog::Accepted)
-	{
+	if (result == QDialog::Accepted) {
 		saveSettings();
 		emit reconfigure();
 	}
@@ -83,8 +82,7 @@ void PreferencesDialog::restoreSettings()
 	AppSettings->endGroup();
 
 	QStringList themes = QDir(AppSettings->dataPath() + "/themes").entryList(QStringList("*.png"));
-	for (QStringList::Iterator it = themes.begin(); it != themes.end(); ++it)
-	{
+	for (QStringList::Iterator it = themes.begin(); it != themes.end(); ++it) {
 		(*it).truncate((*it).length() - 4);
 		ui.pieceThemeCombo->addItem(*it);
 		ui.boardThemeCombo->addItem(*it);
@@ -123,8 +121,7 @@ void PreferencesDialog::saveSettings()
 bool PreferencesDialog::selectInCombo(QComboBox* combo, const QString& text)
 {
 	for (int i = 0; i < combo->count(); i++)
-		if (combo->itemText(i) == text)
-		{
+		if (combo->itemText(i) == text) {
 			combo->setCurrentIndex(i);
 			return true;
 		}
@@ -151,8 +148,7 @@ void PreferencesDialog::restoreColorItem(QListWidget* list, const QString& text,
 
 void PreferencesDialog::saveColorList(QListWidget* list)
 {
-	for (int i = 0; i < list->count(); i++)
-	{
+	for (int i = 0; i < list->count(); i++) {
 		ColorListItem* c = qobject_cast<ColorListItem*>(list->itemWidget(list->item(i)));
 		if (c)
 			AppSettings->setValue(c->data().toString(), c->color());

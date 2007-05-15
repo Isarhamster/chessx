@@ -147,8 +147,8 @@ void BoardTheme::updateSquares()
 	if (!isValid())
 		return;
 	bool scale = m_size.width() > m_originalPiece[WhiteRook].width()
-			|| m_size.height() > m_originalPiece[WhiteRook].height()
-			|| m_size.width() < 30 || m_size.height() < 30;
+		     || m_size.height() > m_originalPiece[WhiteRook].height()
+		     || m_size.width() < 30 || m_size.height() < 30;
 	if (isBoardPlain()) {
 		m_square[0] = QPixmap(m_size);
 		m_square[0].fill(color(LightSquare).rgb());
