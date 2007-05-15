@@ -67,13 +67,10 @@ void ColorListItem::edit()
 void ColorListItem::paintEvent(QPaintEvent* event)
 {
 	QPainter painter(this);
-	if (m_list == m_list->listWidget()->currentItem())
-	{
+	if (m_list == m_list->listWidget()->currentItem()) {
 		painter.fillRect(event->rect(), palette().highlight());
 		painter.setPen(palette().color(QPalette::HighlightedText));
-	}
-	else
-	{
+	} else {
 		painter.fillRect(event->rect(), palette().base());
 		painter.setPen(palette().color(QPalette::Text));
 	}
