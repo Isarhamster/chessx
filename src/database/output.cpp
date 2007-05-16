@@ -301,45 +301,43 @@ void Output::writeVariation()
 	while (!m_game->atEnd()) {
 		// *** Writes move in the current variation
 		writeMove();
-		if (m_game->variationCount() > 1) {
-			for (int i = 1;i < m_game->variationCount();++i) {
-				m_currentVariationLevel += 1;
-				if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 1)) {
-					m_output += m_endTagMap[MarkupColumnStyleMainline];
-				}
-				//qDebug ("VariationIndentLevel - %d",m_options.getOptionAsInt("VariationIndentLevel"));
-				if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
-					m_output += m_startTagMap[MarkupVariationIndent];
-				} else {
-					m_output += m_startTagMap[MarkupVariationInline];
-				}
-
-				m_output +=  "(";
-				m_dirtyBlack = true;
-
-				// *** Writes the first move in variation i
-				writeMove(i);
-
-				// *** Enter variation i, and write the rest of the moves
-				m_game->enterVariation(i);
-				writeVariation();
-				m_game->exitVariation();
-
-				// *** End the variation
-				m_output.replace(QRegExp("\\s+$"), "");     // We don't want any spaces before the )
-				m_output += ")";
-				//qDebug ("VariationIndentLevel - %d",m_options.getOptionAsInt("VariationIndentLevel"));
-				if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
-					m_output += m_endTagMap[MarkupVariationIndent];
-				} else {
-					m_output += m_endTagMap[MarkupVariationInline];
-				}
-				m_currentVariationLevel -= 1;
-				if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
-					m_output += m_startTagMap[MarkupColumnStyleMainline];
-				}
-				m_dirtyBlack = true;
+		for (int i=1; i < m_game->variationCount(); ++i) {
+			m_currentVariationLevel += 1;
+			if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 1)) {
+				m_output += m_endTagMap[MarkupColumnStyleMainline];
 			}
+			//qDebug ("VariationIndentLevel - %d",m_options.getOptionAsInt("VariationIndentLevel"));
+			if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
+				m_output += m_startTagMap[MarkupVariationIndent];
+			} else {
+				m_output += m_startTagMap[MarkupVariationInline];
+			}
+
+			m_output +=  "(";
+			m_dirtyBlack = true;
+
+			// *** Writes the first move in variation i
+			writeMove(i);
+
+			// *** Enter variation i, and write the rest of the moves
+			m_game->enterVariation(i);
+			writeVariation();
+			m_game->exitVariation();
+
+			// *** End the variation
+			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
+			m_output += ")";
+			//qDebug ("VariationIndentLevel - %d",m_options.getOptionAsInt("VariationIndentLevel"));
+			if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
+				m_output += m_endTagMap[MarkupVariationIndent];
+			} else {
+				m_output += m_endTagMap[MarkupVariationInline];
+			}
+			m_currentVariationLevel -= 1;
+			if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
+				m_output += m_startTagMap[MarkupColumnStyleMainline];
+			}
+			m_dirtyBlack = true;
 		}
 		m_game->forward();
 	}
