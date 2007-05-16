@@ -510,22 +510,19 @@ void MainWindow::slotHelpBug()
 
 void MainWindow::slotMove(Square from, Square to)
 {
-	Board board = game()->board();
-	Move m(board, from, to);
-	if ((board.at(from) == BlackPawn && to / 8 == 0) ||
-			(board.at(from) == WhitePawn && to / 8 == 7)) {
-		m.setPromotionPiece(board.toMove() == White ? WhiteQueen : BlackQueen);
-		if (!board.isLegal(m))  // If promotion, check for legality with queen
-			return;
-		QStringList moves;      // Move is legal, ask for promoted piece
-		moves << tr("Queen") << tr("Rook") << tr("Bishop") << tr("Knight");
-		bool ok;
-		int index = moves.indexOf(QInputDialog::getItem(0, tr("Promotion"), tr("Promote to:"),
-					  moves, 0, false, &ok));
-		if (!ok) return;
-		m.setPromotionPiece(Piece(index + (board.toMove() == White ? WhiteQueen : BlackQueen)));
-	}
-	if (board.isLegal(m)) {
+	const Board& board = game()->board();
+	Move m(board.createMove(from, to));
+	if (m.isLegal()) {
+		if (m.isPromotion()) {
+			bool ok;
+			QStringList moves;
+			moves << tr("Queen") << tr("Rook") << tr("Bishop") << tr("Knight");
+			int index = moves.indexOf(QInputDialog::getItem(0, tr("Promotion"), tr("Promote to:"),
+						  moves, 0, false, &ok));
+			if (!ok)
+				return;
+			m.setPromotionPiece(Piece(index + Queen));
+		}
 		if (game()->atEnd())
 			game()->addMove(m);
 		else {
