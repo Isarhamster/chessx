@@ -188,7 +188,7 @@ void Output::writeMove(int variation)
 			// ** If it is black to move and we need the ... then add a extra
 			// ** column before adding the column for the move
 			m_output += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
-			m_output += QString::number(m_game->moveNumber()) + ". ...";
+			m_output += QString::number(m_game->moveNumber()) + ". ... ";
 			m_output += m_startTagMap[MarkupColumnStyleMove];
 			if (m_currentVariationLevel > 0) {
 				if (m_expandable[MarkupVariationMove]) {
@@ -239,7 +239,7 @@ void Output::writeMove(int variation)
 		if (m_game->board().toMove() == White) {
 			m_output += QString::number(m_game->moveNumber()) + ". ";
 		} else if (m_dirtyBlack) {
-			m_output += QString::number(m_game->moveNumber()) + "...";
+			m_output += QString::number(m_game->moveNumber()) + "... ";
 		}
 	}
 	m_dirtyBlack = false;
