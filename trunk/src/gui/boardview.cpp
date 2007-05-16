@@ -90,6 +90,7 @@ void BoardView::paintEvent(QPaintEvent* event)
 			QPen pen;
 			pen.setColor(m_theme.color(BoardTheme::Highlight));
 			pen.setWidth(2);
+			pen.setJoinStyle(Qt::MiterJoin);
 			p.setPen(pen);
 			p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
 				   m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
