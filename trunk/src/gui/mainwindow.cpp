@@ -614,18 +614,15 @@ void MainWindow::showTablebaseMove(Move move, int score)
 {
 	QString result;
 	if (score < 0)
-		result = QString("Loses in %1 move").arg(score * -1);
+		result = tr("Loses in %n move(s)", "", score * -1);
 	else if (score > 0)
-		result = QString("Wins in %1 move").arg(score);
+		result = tr("Wins in %n move(s)", "", score);
 	else
-		result = "Draw";
-	if (score < -1 || score > 1)
-		result.append("s");
+		result = tr("Draw");
 
 	QString san(m_boardView->board().moveToSAN(move));
 	QString update = m_moveView->toHtml();
 	int s = update.lastIndexOf("</p>");
-//	update.insert(s, QString("Tablebase: <a href=\"egtb:%1\">%1</a> -- %2").arg(san).arg(result));
 	update.insert(s, tr("<br>Tablebase: <a href=\"egtb:%1\">%2%3 %1</a> -- %4")
 			.arg(san).arg(game()->moveNumber())
 			.arg(game()->board().toMove() == White ? "." : "...").arg(result));
