@@ -37,16 +37,15 @@ public slots:
 	/** Execute dialog, save options on exit */
 	int exec();
 	void slotApply();
-	void slotColorItem(QListWidgetItem* item);
 private:
 	Ui::PreferencesDialog ui;
 	void restoreSettings();
 	void saveSettings();
 	/** Select given item in combo. If not found, select last one. */
 	bool selectInCombo(QComboBox* combo, const QString& text);
-	void restoreColorItem(QListWidget* list, const QString& text, const QString& cfgname,
+	void restoreColorItem(ColorList* list, const QString& text, const QString& cfgname,
 			      const QColor& cfgcolor);
-	void saveColorList(QListWidget* list);
+	void saveColorList(ColorList* list, const QStringList& cfgnames);
 signals:
 	/** Signal emitted when changes are applied. */
 	void reconfigure();

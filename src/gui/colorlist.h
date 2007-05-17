@@ -1,5 +1,5 @@
 /***************************************************************************
-                          colorlistitem  -  QListWidget item to edit color
+                          colorlist  -  QListWidget item to edit colors
                              -------------------
     copyright            : (C) 2007 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
@@ -12,47 +12,38 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#ifndef COLORLISTITEM_H
-#define COLORLISTITEM_H
+#ifndef COLORLIST_H
+#define COLORLIST_H
 
-class QListWidgetItem;
-
-#include <QVariant>
-#include <QWidget>
+#include <QListWidget>
 
 /**
 	@ingroup GUI
-	The ColorListItem class is a helper class to edit color in QListWidget.
+	The ColorList class is a list of editable colors.
 */
-class ColorListItem : public QWidget
+class ColorList : public QListWidget
 {
 	Q_OBJECT
 public:
 	/** Standard constructor. */
-	ColorListItem(QListWidgetItem* item);
-	/** Standard constructor with initialization. */
-	ColorListItem(QListWidgetItem* item, const QString& text, const QColor& color);
-	/** Change color. */
-	void setColor(const QColor& color);
-	/** @return current color. */
-	QColor color() const;
-	/** Change text. */
-	void setText(const QString& text);
-	/** @return current text. */
-	QColor text() const;
-	/** Change data. */
-	void setData(const QVariant& dats);
-	/** @return current data. */
-	QVariant data() const;
-public slots:
-	void edit();
+	ColorList(QWidget* parent);
+	/** Standard constructor. */
+	virtual ~ColorList();
+	/** @return color of given item. */
+	QColor color(QListWidgetItem*) const;
+	/** @return color of given item. */
+	QColor color(int index) const;
+	/** Create new item. */
+	virtual void addItem(const QString& text, const QColor& color);
 protected:
-	virtual void paintEvent(QPaintEvent*);
-private:
-	QListWidgetItem* m_list;
-	QString m_text;
-	QColor m_color;
-	QVariant m_data;
+	/** Edit color on left click. */
+	virtual void mousePressEvent(QMouseEvent* event);
+	/** Edit color on Enter. */
+	virtual void keyPressEvent(QKeyEvent* event);
+	/** Set item color. */
+	void setItemColor(QListWidgetItem* item, const QColor& color);
+	/** Edit item color. */
+	void editItemColor(QListWidgetItem*);
 };
 
 #endif
