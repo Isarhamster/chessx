@@ -38,6 +38,7 @@ SOURCES += mainwindow.cpp \
            chessbrowser.cpp \
       	  tipoftheday.cpp \
 	   main.cpp
+
 TEMPLATE = app
 INCLUDEPATH += ../database 
 INCLUDEPATH += ../guess
@@ -71,3 +72,5 @@ else {
 macx {
      ICON = ../../data/images/chessx.icns
 }
+
+TRANSLATIONS = chessx_pl.ts
