@@ -5,25 +5,39 @@
 #include "tablebase.h"
 
 Shredder::Shredder()
-		: m_http(new QHttp)
+		: m_http(new QHttp), m_timer(new QTimer)
 {
-	QObject::connect(m_http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)));
+	connect(m_http, SIGNAL(requestFinished(int, bool)), this, SLOT(httpDone(int, bool)));
+	connect(m_timer, SIGNAL(timeout()), this, SLOT(sendIt()));
 }
 
 Shredder::~Shredder()
 {
+	m_timer->stop();
 	m_http->abort();
 	delete m_http;
+	delete m_timer;
 }
 
 void Shredder::abortLookup()
 {
-	m_http->abort();
+	m_timer->stop();
+	if (m_http->hasPendingRequests())
+		m_http->abort();
 }
 
 void Shredder::getBestMove(QString fen)
 {
-	QString prep(fen.simplified());
+	m_id++;
+	abortLookup();
+	m_fen = fen;
+	m_timer->start(300);
+}
+
+void Shredder::sendIt()
+{
+	m_timer->stop();
+	QString prep(m_fen.simplified());
 	QString count(prep.left(prep.indexOf(" ")));
 	int white = count.count(QRegExp("[A-Z]"));
 	int black = count.count(QRegExp("[a-z]"));
@@ -31,16 +45,15 @@ void Shredder::getBestMove(QString fen)
 		return;
 	QChar toMove = (prep[prep.indexOf(QString(" "))+1].toLower());
 	QUrl url(QString("/online/playshredder/fetch.php?action=egtb&hook=%1&fen=%2")
-		 .arg(toMove).arg(fen));
-	m_http->abort();
+		 .arg(toMove).arg(m_fen));
 	m_http->setHost("www.shredderchess.com");
-	m_http->get(url.toEncoded());
+	m_id=m_http->get(url.toEncoded());
 }
 
-void Shredder::httpDone(bool error)
+void Shredder::httpDone(int id, bool error)
 {
 
-	if (error)
+	if (error || id != m_id)
 		return;
 
 	QString ret(m_http->readAll());
