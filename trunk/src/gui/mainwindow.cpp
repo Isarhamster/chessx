@@ -713,7 +713,10 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 			game()->moveToId(url.path().toInt());
 		slotMoveChanged();
 	} else if (url.scheme() == "egtb") {
-		game()->addMove(url.path());
+		if (!game()->atEnd())
+			game()->enterVariation(game()->addMove(url.path()));
+		else
+			game()->addMove(url.path());
 		game()->forward();
 		slotGameChanged();
 	} else if (url.scheme() == "tag") {
