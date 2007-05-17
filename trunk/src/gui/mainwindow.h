@@ -130,8 +130,6 @@ public slots:
 	void slotGameMoveNextN()  {gameMoveBy(10);}
 	/** Go N moves backward in the game. For now fixed at @p 10 */
 	void slotGameMovePreviousN()  {gameMoveBy(-10);}
-	/** Browse current game by mouse wheel */
-	void slotGameMoveWheel(int wheel);
 	/** Load first game */
 	void slotGameLoadFirst();
 	/** Load next game */
@@ -175,7 +173,11 @@ public slots:
 	/** Reverse current filter */
 	void slotSearchReverse();
 	/** Made given move on the board */
-	void slotMove(Square from, Square to);
+	void slotBoardMove(Square from, Square to);
+	/** Board square was clicked */
+	void slotBoardClick(Square square, int button);
+	/** Browse current game by mouse wheel */
+	void slotBoardMoveWheel(int wheel);
 	/** Update GUI after current move was changed. Update BoardView to current board,
 	updates GameInfo and highlight current move in GameView. */
 	void slotMoveChanged();
