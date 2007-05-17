@@ -1,6 +1,7 @@
 #ifndef __TABLEBASE_H__
 #define __TABLEBASE_H__
 
+#include <QTimer>
 #include "common.h"
 #include "move.h"
 
@@ -46,9 +47,13 @@ public slots:
 	void getBestMove(QString fen);
 	void abortLookup();
 private slots:
-	void httpDone(bool error);
+	void httpDone(int id, bool error);
+	void sendIt();
 private:
 	QHttp* m_http;
+	QTimer* m_timer;
+	QString m_fen;
+	int m_id;
 };
 
 #endif // __TABLEBASE_H__
