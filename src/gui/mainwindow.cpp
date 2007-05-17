@@ -90,8 +90,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_boardView->setMinimumSize(200, 200);
 	m_boardView->resize(500, 5400);
 	connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
-	connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMove(Square, Square)));
-	connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotGameMoveWheel(int)));
+	connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotBoardMove(Square, Square)));
+	connect(m_boardView, SIGNAL(clicked(Square, int)), SLOT(slotBoardClick(Square, int)));
+	connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
 
 	/* Move view */
 	m_moveView = new ChessBrowser(m_boardSplitter);
@@ -388,8 +389,7 @@ void MainWindow::slotFileOpenRecent()
 
 void MainWindow::slotFileClose()
 {
-	if (m_currentDatabase) // Clipboard
-	{
+	if (m_currentDatabase) {// Clipboard
 		m_databases.removeAt(m_currentDatabase);
 		if (m_currentDatabase == m_databases.count())
 			m_currentDatabase--;
@@ -455,12 +455,7 @@ void MainWindow::slotEditPasteFEN()
 
 void MainWindow::slotEditTruncate()
 {
-	if (!game()->isMainline() && game()->atEnd()) {
-		int var = game()->currentVariation();
-		game()->exitVariation();
-		game()->removeVariation(var);
-	} else
-		game()->truncateGameEnd();
+	game()->truncateGameEnd();
 	slotGameChanged();
 }
 
@@ -508,7 +503,7 @@ void MainWindow::slotHelpBug()
 }
 
 
-void MainWindow::slotMove(Square from, Square to)
+void MainWindow::slotBoardMove(Square from, Square to)
 {
 	Board board = game()->board();
 	Move m(board, from, to);
@@ -546,6 +541,23 @@ void MainWindow::slotMove(Square from, Square to)
 			else return;
 		}
 		game()->forward();
+		slotGameChanged();
+	}
+}
+
+void MainWindow::slotBoardClick(Square, int button)
+{
+	if (button != Qt::RightButton)
+		return;
+	bool remove = game()->atEnd();
+	int var = game()->currentVariation();
+	gameMoveBy(-1);
+	if (remove)
+	{
+		if (var && game()->isMainline())
+			game()->removeVariation(var);
+		else
+			game()->truncateGameEnd();
 		slotGameChanged();
 	}
 }
@@ -629,7 +641,7 @@ void MainWindow::showTablebaseMove(Move move, int score)
 	m_moveView->setHtml(update);
 }
 
-void MainWindow::slotGameMoveWheel(int wheel)
+void MainWindow::slotBoardMoveWheel(int wheel)
 {
 	if (wheel & Qt::AltModifier)
 		if (wheel & BoardView::WheelDown) slotGameMoveLast();
