@@ -60,7 +60,7 @@ void ColorList::mousePressEvent(QMouseEvent* event)
 void ColorList::keyPressEvent(QKeyEvent* event)
 {
 #ifdef Q_WS_MAC
-	if (event->key() == Qt::Key_0 && event->modifiers() == Qt::Control)
+	if (event->key() == Qt::Key_0 && event->modifiers() == Qt::Key_Control)
 #else
 	if (event->key() == Qt::Key_Return)
 #endif
