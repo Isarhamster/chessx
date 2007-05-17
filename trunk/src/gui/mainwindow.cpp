@@ -136,7 +136,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	AppSettings->beginGroup("MainWindow");
 	m_boardSplitter->restoreState(AppSettings->value("BoardSplit").toByteArray());
 	AppSettings->endGroup();
-	emit reconfigure();
+	slotReconfigure();
 
 	/* Reset board - not earlier, as all widgets have to be created. */
 	slotGameChanged();
@@ -625,7 +625,10 @@ void MainWindow::showTablebaseMove(Move move, int score)
 	QString san(m_boardView->board().moveToSAN(move));
 	QString update = m_moveView->toHtml();
 	int s = update.lastIndexOf("</p>");
-	update.insert(s, QString("Tablebase: <a href=\"egtb:%1\">%1</a> -- %2").arg(san).arg(result));
+//	update.insert(s, QString("Tablebase: <a href=\"egtb:%1\">%1</a> -- %2").arg(san).arg(result));
+	update.insert(s, tr("<br>Tablebase: <a href=\"egtb:%1\">%2%3 %1</a> -- %4")
+			.arg(san).arg(game()->moveNumber())
+			.arg(game()->board().toMove() == White ? "." : "...").arg(result));
 	m_moveView->setHtml(update);
 }
 
