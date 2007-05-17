@@ -17,7 +17,7 @@ HEADERS += mainwindow.h \
            boardview.h \
            boardtheme.h \
            boardsetup.h \
-			  colorlistitem.h \
+			  colorlist.h \
 			  savedialog.h \
            gamelist.h \
            chessbrowser.h \
@@ -26,7 +26,7 @@ HEADERS += mainwindow.h \
            tipoftheday.h
 SOURCES += mainwindow.cpp \
            playerdialog.cpp \
-			  colorlistitem.cpp \
+			  colorlist.cpp \
            preferences.cpp \
            boardview.cpp \
            boardtheme.cpp \

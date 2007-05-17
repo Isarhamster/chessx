@@ -14,7 +14,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "colorlistitem.h"
+#include "colorlist.h"
 #include "preferences.h"
 #include "settings.h"
 
@@ -34,12 +34,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
 	connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
 	connect(ui.applyButton, SIGNAL(clicked()), SLOT(slotApply()));
-	connect(ui.boardColorsList, SIGNAL(itemActivated(QListWidgetItem*)),
-		SLOT(slotColorItem(QListWidgetItem*)));
-#ifdef Q_WS_WIN
-	connect(ui.boardColorsList, SIGNAL(itemClicked(QListWidgetItem*)),
-			  SLOT(slotColorItem(QListWidgetItem*)));
-#endif
+
 	restoreSettings();
 	AppSettings->beginGroup("/Board/");
 	restoreColorItem(ui.boardColorsList, tr("Light squares"), "lightColor", "#a0a0a0");
@@ -112,7 +107,9 @@ void PreferencesDialog::saveSettings()
 		AppSettings->setValue("boardTheme", ui.boardThemeCombo->currentText());
 	else
 		AppSettings->setValue("boardTheme", QString());
-	saveColorList(ui.boardColorsList);
+	QStringList colorNames;
+	colorNames << "lightColor" << "darkColor" << "highlightColor" << "frameColor";
+	saveColorList(ui.boardColorsList, colorNames);
 	AppSettings->endGroup();
 	AppSettings->beginGroup("/Players/");
 	AppSettings->setValue("rating", ui.playersRatingsCheck->isChecked());
@@ -129,29 +126,14 @@ bool PreferencesDialog::selectInCombo(QComboBox* combo, const QString& text)
 	combo->setCurrentIndex(combo->count() - 1);
 	return false;
 }
-
-void PreferencesDialog::slotColorItem(QListWidgetItem* item)
+void PreferencesDialog::restoreColorItem(ColorList* list, const QString& text, const QString& cfgname, const QColor& cfgcolor)
 {
-	ColorListItem* c = qobject_cast<ColorListItem*>(item->listWidget()->itemWidget(item));
-	if (c)
-		c->edit();
-}
-
-void PreferencesDialog::restoreColorItem(QListWidget* list, const QString& text, const QString& cfgname,
-		const QColor& cfgcolor)
-{
-	QListWidgetItem* item = new QListWidgetItem(list);
 	QColor color = AppSettings->value(cfgname, cfgcolor).value<QColor>();
-	ColorListItem* citem = new ColorListItem(item, text, color);
-	citem->setData(cfgname);
-	list->setItemWidget(item, citem);
+	list->addItem(text, color);
 }
 
-void PreferencesDialog::saveColorList(QListWidget* list)
+void PreferencesDialog::saveColorList(ColorList* list, const QStringList& cfgnames)
 {
-	for (int i = 0; i < list->count(); i++) {
-		ColorListItem* c = qobject_cast<ColorListItem*>(list->itemWidget(list->item(i)));
-		if (c)
-			AppSettings->setValue(c->data().toString(), c->color());
-	}
+	for (int i = 0; i < list->count(); i++)
+		AppSettings->setValue(cfgnames[i], list->color(i));
 }
