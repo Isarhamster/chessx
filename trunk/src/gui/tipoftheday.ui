@@ -59,21 +59,21 @@
      <item>
       <widget class="QPushButton" name="previousButton" >
        <property name="text" >
-        <string>Previous</string>
+        <string>&amp;Previous</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="nextButton" >
        <property name="text" >
-        <string>Next</string>
+        <string>&amp;Next</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="closeButton" >
        <property name="text" >
-        <string>Close</string>
+        <string>&amp;Close</string>
        </property>
       </widget>
      </item>
