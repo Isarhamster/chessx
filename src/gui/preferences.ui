@@ -28,7 +28,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex" >
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabGeneral" >
       <attribute name="title" >
@@ -211,9 +211,6 @@
        <property name="text" >
         <string>&amp;Ok</string>
        </property>
-       <property name="shortcut" >
-        <string>Alt+O</string>
-       </property>
        <property name="default" >
         <bool>true</bool>
        </property>
@@ -224,9 +221,6 @@
        <property name="text" >
         <string>&amp;Apply</string>
        </property>
-       <property name="shortcut" >
-        <string>Alt+O</string>
-       </property>
        <property name="default" >
         <bool>true</bool>
        </property>
@@ -236,9 +230,6 @@
       <widget class="QPushButton" name="cancelButton" >
        <property name="text" >
         <string>&amp;Cancel</string>
-       </property>
-       <property name="shortcut" >
-        <string>Alt+C</string>
        </property>
       </widget>
      </item>

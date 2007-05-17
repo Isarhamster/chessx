@@ -97,9 +97,6 @@
        <property name="text" >
         <string>&amp;Reset</string>
        </property>
-       <property name="shortcut" >
-        <string>Alt+R</string>
-       </property>
       </widget>
      </item>
      <item>
@@ -149,18 +146,12 @@
        <property name="text" >
         <string>&amp;Ok</string>
        </property>
-       <property name="shortcut" >
-        <string>Alt+O</string>
-       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="cancelButton" >
        <property name="text" >
         <string>&amp;Cancel</string>
-       </property>
-       <property name="shortcut" >
-        <string>Alt+C</string>
        </property>
       </widget>
      </item>

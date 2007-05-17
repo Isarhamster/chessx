@@ -23,9 +23,8 @@
 int main(int argc, char** argv)
 {
 	AppSettings = new Settings;
-	QString loc = QLocale::system().name().left(2);
 	QTranslator translator;
-	translator.load(QString("chessx_%1.qm").arg(loc), "../data/lang");
+	translator.load(QString("chessx_%1.qm").arg(QLocale::system().name()), "../data/lang");
 	QApplication a(argc, argv);
 	a.installTranslator(&translator);
 	MainWindow* mw = new MainWindow;

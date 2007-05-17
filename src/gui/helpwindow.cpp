@@ -64,43 +64,38 @@ void HelpWindow::aboutQt()
 void HelpWindow::createActions()
 {
 	m_openAct = new QAction(QIcon(":fileopen.png"), tr("&Open ..."), this);
-	m_openAct->setShortcut(tr("Ctrl+O"));
+	m_openAct->setShortcut(Qt::CTRL + Qt::Key_O);
 	m_openAct->setStatusTip(tr("Opens a help page"));
 	connect(m_openAct, SIGNAL(triggered()), this, SLOT(openFile()));
 
 	m_printAct = new QAction(QIcon(":print.png"), tr("&Print"), this);
-	m_printAct->setShortcut(tr("Ctrl+P"));
+	m_printAct->setShortcut(Qt::CTRL + Qt::Key_P);
 	m_printAct->setStatusTip(tr("Prints the current page"));
 	connect(m_printAct, SIGNAL(triggered()), this, SLOT(print()));
 
 	m_exitAct = new QAction(tr("E&xit"), this);
-	m_exitAct->setShortcut(tr("Ctrl+X"));
+	m_exitAct->setShortcut(Qt::CTRL + Qt::Key_X);
 	m_exitAct->setStatusTip(tr("Exits the help browser"));
 	connect(m_exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
 	m_forwardAct = new QAction(QIcon(":forward.png"), tr("&Forward"), this);
-	m_forwardAct->setShortcut(tr("Ctrl+F"));
+	m_forwardAct->setShortcut(Qt::CTRL + Qt::Key_F);
 	m_forwardAct->setStatusTip(tr("Next document in history"));
 	connect(m_forwardAct, SIGNAL(triggered()), m_browser, SLOT(forward()));
 
 	m_backwardAct = new QAction(QIcon(":back.png"), tr("&Back"), this);
-	m_backwardAct->setShortcut(tr("Ctrl+B"));
+	m_backwardAct->setShortcut(Qt::CTRL + Qt::Key_B);
 	m_backwardAct->setStatusTip(tr("Go back in history"));
 	connect(m_backwardAct, SIGNAL(triggered()), m_browser, SLOT(backward()));
 
 	m_homeAct = new QAction(QIcon(":home.png"), tr("&Home"), this);
-	m_homeAct->setShortcut(tr("Ctrl+H"));
+	m_homeAct->setShortcut(Qt::CTRL + Qt::Key_P);
 	m_homeAct->setStatusTip(tr("Open the start page of the helpsystem"));
 	connect(m_homeAct, SIGNAL(triggered()), m_browser, SLOT(home()));
 
 	m_aboutAct = new QAction(tr("&About"), this);
-	m_aboutAct->setShortcut(tr("Ctrl+A"));
 	m_aboutAct->setStatusTip(tr("About ChessX"));
 	connect(m_aboutAct, SIGNAL(triggered()), this, SLOT(about()));
-
-	m_aboutQtAct = new QAction(tr("About &Qt"), this);
-	m_aboutQtAct->setStatusTip(tr("Show the Qt library's About box"));
-	connect(m_aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 }
 
 void HelpWindow::createToolBar()

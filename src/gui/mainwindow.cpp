@@ -486,7 +486,7 @@ void MainWindow::slotHelpTip()
 void MainWindow::slotHelpAbout()
 {
 	QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
-				      "<p>Free chess database.<br>Version %1</br>"
+				      "<p>Free chess database.<br>Version %1<br>"
 				      "<p>Copyright 2005-2007 ChessX developers<br>"
 				      "Core developers: Sean Estabrooks, Marius Roets, Michal Rudolf.<br>"
 				      "Additional coding: Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.<br>"
