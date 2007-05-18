@@ -59,6 +59,12 @@ bool DatabaseInfo::loadGame(int index)
 	return true;
 }
 
+void DatabaseInfo::newGame()
+{
+	m_game.clear();
+	m_index = m_database->count();
+}
+
 QString DatabaseInfo::name() const
 {
 	QString name = m_database->filename().section('/', -1);

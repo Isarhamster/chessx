@@ -258,12 +258,17 @@ int MainWindow::gameIndex() const
 	return databaseInfo()->currentIndex();
 }
 
-void MainWindow::gameLoad(int index)
+void MainWindow::gameLoad(int index, bool force)
 {
-	if (index < 0 || index >= database()->count())
+	if (index >= 0 && index < database()->count())
+	{
+		databaseInfo()->loadGame(index);
+		m_gameList->selectGame(index);
+	}
+	else if (!force)
 		return;
-	databaseInfo()->loadGame(index);
-	m_gameList->selectGame(index);
+	else
+		databaseInfo()->newGame();
 	qobject_cast<QWidget*>(m_gameView->parent())->setWindowTitle(tr("Game: %1").arg(index + 1));
 	slotGameChanged();
 }
@@ -766,7 +771,7 @@ void MainWindow::slotDatabaseChanged()
 	setWindowTitle(tr("ChessX - %1").arg(databaseName()));
 	m_gameList->setFilter(databaseInfo()->filter());
 	slotFilterChanged();
-	gameLoad(gameIndex());
+	gameLoad(gameIndex(), true);
 }
 
 QAction* MainWindow::createAction(const QString& name, const char* slot, const QKeySequence& key,

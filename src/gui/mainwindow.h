@@ -79,8 +79,9 @@ protected:
 	int gameIndex() const;
 	/** Open database */
 	bool openDatabase(const QString& fname);
-	/** Load game @p index. Does nothing if @p index is not correct. */
-	void gameLoad(int index);
+	/** Load game @p index. If @p force is false, does nothing for incorrect @p index .
+	With @p force set, creates empty game. */
+	void gameLoad(int index, bool force = false);
 	/** Make given number of moves in current game */
 	void gameMoveBy(int change);
 	/** Update recent files menu */
