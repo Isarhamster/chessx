@@ -19,8 +19,7 @@
 #define __SAVEDIALOG_H__
 
 #include "ui_savedialog.h"
-
-class Game;
+#include "game.h"
 
 /** @ingroup GUI
 The SaveDialog class is a simple dialog to edit and save game header. */
@@ -30,7 +29,7 @@ class SaveDialog : public QDialog
 public:
 	SaveDialog(QWidget* parent = 0);
 	virtual ~SaveDialog();
-	virtual int exec(Game* game);
+	virtual int exec(Game& game);
 private:
 	Ui::SaveDialog ui;
 };

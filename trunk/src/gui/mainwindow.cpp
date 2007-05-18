@@ -248,7 +248,7 @@ QString MainWindow::databaseName(int index) const
 	return name;
 }
 
-Game* MainWindow::game()
+Game& MainWindow::game()
 {
 	return databaseInfo()->currentGame();
 }
@@ -270,7 +270,7 @@ void MainWindow::gameLoad(int index)
 
 void MainWindow::gameMoveBy(int change)
 {
-	if (game()->moveByPly(change))
+	if (game().moveByPly(change))
 		slotMoveChanged();
 }
 
@@ -436,26 +436,26 @@ void MainWindow::slotConfigureFlip()
 
 void MainWindow::slotEditCopyFEN()
 {
-	QApplication::clipboard()->setText(game()->toFen());
+	QApplication::clipboard()->setText(game().toFen());
 }
 
 void MainWindow::slotEditPasteFEN()
 {
 	QString fen = QApplication::clipboard()->text().trimmed();
-	if (!game()->board().isValidFEN(fen)) {
+	if (!game().board().isValidFEN(fen)) {
 		QString msg = fen.length() ?
 			      tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
 			      tr("There is no text in clipboard.");
 		QMessageBox::warning(0, "Paste FEN", msg);
 		return;
 	}
-	game()->setStartBoard(fen);
+	game().setStartBoard(fen);
 	slotGameChanged();
 }
 
 void MainWindow::slotEditTruncate()
 {
-	game()->truncateGameEnd();
+	game().truncateGameEnd();
 	slotGameChanged();
 }
 
@@ -463,11 +463,11 @@ void MainWindow::slotEditTruncate()
 void MainWindow::slotEditBoard()
 {
 	BoardSetupDialog B;
-	B.setBoard(game()->board());
+	B.setBoard(game().board());
 	B.setFlipped(m_boardView->isFlipped());
-	B.setMoveNumber(game()->moveNumber());
+	B.setMoveNumber(game().moveNumber());
 	if (B.exec() == QDialog::Accepted) {
-		game()->setStartBoard(B.board(), B.moveNumber());
+		game().setStartBoard(B.board(), B.moveNumber());
 		slotGameChanged();
 	}
 }
@@ -505,7 +505,7 @@ void MainWindow::slotHelpBug()
 
 void MainWindow::slotBoardMove(Square from, Square to)
 {
-	Board board = game()->board();
+	Board board = game().board();
 	Move m(board, from, to);
 	if ((board.at(from) == BlackPawn && to / 8 == 0) ||
 			(board.at(from) == WhitePawn && to / 8 == 7)) {
@@ -521,8 +521,8 @@ void MainWindow::slotBoardMove(Square from, Square to)
 		m.setPromotionPiece(Piece(index + (board.toMove() == White ? WhiteQueen : BlackQueen)));
 	}
 	if (board.isLegal(m)) {
-		if (game()->atEnd())
-			game()->addMove(m);
+		if (game().atEnd())
+			game().addMove(m);
 		else {
 			// Find how way we should add new move
 			QMessageBox mbox(QMessageBox::Question, tr("Add move"),
@@ -533,14 +533,14 @@ void MainWindow::slotBoardMove(Square from, Square to)
 			mbox.addButton(tr("Cancel"), QMessageBox::RejectRole);
 			mbox.exec();
 			if (mbox.clickedButton() == addVar)
-				game()->enterVariation(game()->addMove(m));
+				game().enterVariation(game().addMove(m));
 			else if (mbox.clickedButton() == newMain)
-				game()->promoteVariation(game()->addMove(m));
+				game().promoteVariation(game().addMove(m));
 			else if (mbox.clickedButton() == replaceMain)
-				game()->replaceMove(m);
+				game().replaceMove(m);
 			else return;
 		}
-		game()->forward();
+		game().forward();
 		slotGameChanged();
 	}
 }
@@ -549,77 +549,77 @@ void MainWindow::slotBoardClick(Square, int button)
 {
 	if (button != Qt::RightButton)
 		return;
-	bool remove = game()->atEnd();
-	int var = game()->currentVariation();
+	bool remove = game().atEnd();
+	int var = game().currentVariation();
 	gameMoveBy(-1);
 	if (remove)
 	{
-		if (var && game()->isMainline())
-			game()->removeVariation(var);
+		if (var && game().isMainline())
+			game().removeVariation(var);
 		else
-			game()->truncateGameEnd();
+			game().truncateGameEnd();
 		slotGameChanged();
 	}
 }
 
 void MainWindow::slotMoveChanged()
 {
-	Game* g = game();
+	Game& g = game();
 
 	// Set board first
 	m_tablebase->abortLookup();
-	m_boardView->setBoard(g->board());
+	m_boardView->setBoard(g.board());
 
 	// Highlight current move
-	m_gameView->showMove(game()->currentMoveId());
+	m_gameView->showMove(g.currentMoveId());
 
 	// Finally update game information
-	QString white = g->tag("White");
-	QString black = g->tag("Black");
-	QString eco = m_eco.isNull() ? g->tag("ECO") : m_eco;
+	QString white = g.tag("White");
+	QString black = g.tag("Black");
+	QString eco = m_eco.isNull() ? g.tag("ECO") : m_eco;
 	if (!eco.isEmpty()) {
 		int comma = eco.lastIndexOf(',');
 		if (comma != -1 && eco.at(comma + 2).isNumber())
 			eco.truncate(comma);
 	}
-	QString whiteElo = g->tag("WhiteElo");
-	QString blackElo = g->tag("BlackElo");
+	QString whiteElo = g.tag("WhiteElo");
+	QString blackElo = g.tag("BlackElo");
 	if (whiteElo == "?")
 		whiteElo = QString();
 	if (blackElo == "?")
 		blackElo = QString();
 	QString players = tr("Game %1: <b><a href=\"tag:white\">%2</a> %3 - <a href=\"tag:black\">%4</a> %5</b>")
 			  .arg(gameIndex() + 1).arg(white).arg(whiteElo).arg(black).arg(blackElo);
-	QString result = tr("%1(%2) %3").arg(g->tag("Result")).arg((g->plyCount() + 1) / 2)
+	QString result = tr("%1(%2) %3").arg(g.tag("Result")).arg((g.plyCount() + 1) / 2)
 			 .arg(eco);
-	QString header = tr("<i>%1(%2), %3, %4</i>").arg(g->tag("Event")).arg(g->tag("Round"))
-			 .arg(g->tag("Site")).arg(g->tag("Date"));
+	QString header = tr("<i>%1(%2), %3, %4</i>").arg(g.tag("Event")).arg(g.tag("Round"))
+			 .arg(g.tag("Site")).arg(g.tag("Date"));
 	QString lastmove, nextmove;
-	if (!g->atStart())
-		lastmove = QString("<a href=\"move:prev\">%1</a>").arg(g->previousMoveToSan(Game::FullDetail));
+	if (!g.atStart())
+		lastmove = QString("<a href=\"move:prev\">%1</a>").arg(g.previousMoveToSan(Game::FullDetail));
 	else
 		lastmove = tr("(Start of game)");
-	if (!g->atEnd())
-		nextmove = QString("<a href=\"move:next\">%1</a>").arg(g->moveToSan(Game::FullDetail));
+	if (!g.atEnd())
+		nextmove = QString("<a href=\"move:next\">%1</a>").arg(g.moveToSan(Game::FullDetail));
 	else
-		nextmove = g->isMainline() ? tr("(End of game)") : tr("(End of line)");
+		nextmove = g.isMainline() ? tr("(End of game)") : tr("(End of line)");
 	QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
-	if (!g->isMainline())
+	if (!g.isMainline())
 		move.append(QString(" &nbsp; &nbsp; <a href=\"move:exit\">%1</a>").arg(tr("(&lt;-Var)")));
 	QString var;
-	if (g->variationCount() > 1) {
+	if (g.variationCount() > 1) {
 		var = tr("<br>Variations: &nbsp; ");
-		for (int i = 1; i < g->variationCount(); i++) {
-			var.append(QString("v%1: <a href=\"move:%2\">%3</a>").arg(i).arg(g->moveId(i))
-				   .arg(g->moveToSan(Game::FullDetail, i)));
-			if (i != g->variationCount() - 1)
+		for (int i = 1; i < g.variationCount(); i++) {
+			var.append(QString("v%1: <a href=\"move:%2\">%3</a>").arg(i).arg(g.moveId(i))
+				   .arg(g.moveToSan(Game::FullDetail, i)));
+			if (i != g.variationCount() - 1)
 				var.append(" &nbsp; ");
 		}
 	}
 	m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4%5</qt>").arg(players).arg(result)
 			    .arg(header).arg(move).arg(var));
 	if (m_useTablebase)
-		m_tablebase->getBestMove(g->toFen());
+		m_tablebase->getBestMove(g.toFen());
 }
 
 void MainWindow::showTablebaseMove(Move move, int score)
@@ -636,8 +636,8 @@ void MainWindow::showTablebaseMove(Move move, int score)
 	QString update = m_moveView->toHtml();
 	int s = update.lastIndexOf("</p>");
 	update.insert(s, tr("<br>Tablebase: <a href=\"egtb:%1\">%2%3 %1</a> -- %4")
-			.arg(san).arg(game()->moveNumber())
-			.arg(game()->board().toMove() == White ? "." : "...").arg(result));
+			.arg(san).arg(game().moveNumber())
+			.arg(game().board().toMove() == White ? "." : "...").arg(result));
 	m_moveView->setHtml(update);
 }
 
@@ -696,34 +696,34 @@ void MainWindow::slotGameSave()
 void MainWindow::slotGameChanged()
 {
 	if (m_showPgnSource)
-		m_gameView->setPlainText(m_output->output(game()));
+		m_gameView->setPlainText(m_output->output(&game()));
 	else
-		m_gameView->setText(m_output->output(game()));
-	m_eco = game()->ecoClassify();
+		m_gameView->setText(m_output->output(&game()));
+	m_eco = game().ecoClassify();
 	slotMoveChanged();
 }
 
 void MainWindow::slotGameViewLink(const QUrl& url)
 {
 	if (url.scheme() == "move") {
-		if (url.path() == "prev") game()->backward();
-		else if (url.path() == "next") game()->forward();
-		else if (url.path() == "exit") game()->exitVariation();
+		if (url.path() == "prev") game().backward();
+		else if (url.path() == "next") game().forward();
+		else if (url.path() == "exit") game().exitVariation();
 		else
-			game()->moveToId(url.path().toInt());
+			game().moveToId(url.path().toInt());
 		slotMoveChanged();
 	} else if (url.scheme() == "egtb") {
-		if (!game()->atEnd())
-			game()->enterVariation(game()->addMove(url.path()));
+		if (!game().atEnd())
+			game().enterVariation(game().addMove(url.path()));
 		else
-			game()->addMove(url.path());
-		game()->forward();
+			game().addMove(url.path());
+		game().forward();
 		slotGameChanged();
 	} else if (url.scheme() == "tag") {
 		if (url.path() == "white")
-			playerDialog()->findPlayers(game()->tag("White"));
+			playerDialog()->findPlayers(game().tag("White"));
 		else if (url.path() == "black")
-			playerDialog()->findPlayers(game()->tag("Black"));
+			playerDialog()->findPlayers(game().tag("Black"));
 	}
 }
 
