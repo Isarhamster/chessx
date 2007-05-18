@@ -17,11 +17,11 @@
 #ifndef __DATABASEINFO_H__
 #define __DATABASEINFO_H__
 
+#include "game.h"
 #include <QString>
 
 class Database;
 class Filter;
-class Game;
 
 /** @ingroup Database
 The DatabaseInfo class is a simple class to keep various database-related
@@ -41,7 +41,7 @@ public:
 	/** @return current filter */
 	Filter* filter()  {return m_filter;}
 	/** @return current game  */
-	Game* currentGame() {return m_game;}
+	Game& currentGame() {return m_game;}
 	/** @return index of current game  */
 	int currentIndex() const   {return m_index;}
 	/** Load game @p index */
@@ -51,7 +51,7 @@ public:
 private:
 	Database* m_database;
 	Filter* m_filter;
-	Game* m_game;
+	Game m_game;
 	int m_index;
 };
 

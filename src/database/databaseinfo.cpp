@@ -35,7 +35,6 @@ DatabaseInfo::DatabaseInfo(const QString& fname)
 		}
 		m_database->open(fname);
 	}
-	m_game = new Game;
 	m_filter = new Filter(m_database);
 	m_index = -1;
 	loadGame(0);
@@ -45,7 +44,6 @@ DatabaseInfo::~DatabaseInfo()
 {
 	delete m_filter;
 	delete m_database;
-	delete m_game;
 }
 
 bool DatabaseInfo::loadGame(int index)
@@ -54,10 +52,10 @@ bool DatabaseInfo::loadGame(int index)
 		return false;
 	if (m_index == index)
 		return true;
-	if (!m_database->loadGame(index, *m_game))
+	if (!m_database->loadGame(index, m_game))
 		return false;
 	m_index = index;
-	m_game->moveToPly(m_filter->gamePosition(index) - 1);
+	m_game.moveToPly(m_filter->gamePosition(index) - 1);
 	return true;
 }
 

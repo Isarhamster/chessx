@@ -74,7 +74,7 @@ protected:
 	/** @return active database structure */
 	const DatabaseInfo* databaseInfo() const;
 	/** @return active game */
-	Game* game();
+	Game& game();
 	/** @return index of active game */
 	int gameIndex() const;
 	/** Open database */
