@@ -32,7 +32,7 @@ SaveDialog::~SaveDialog()
 int SaveDialog::exec(Game& game)
 {
 	ui.whiteCombo->setEditText(game.tag("White"));
-	ui.blackEloEdit->setText(game.tag("WhiteElo"));
+	ui.whiteEloEdit->setText(game.tag("WhiteElo"));
 	ui.blackCombo->setEditText(game.tag("Black"));
 	ui.blackEloEdit->setText(game.tag("BlackElo"));
 	ui.eventCombo->setEditText(game.tag("Event"));

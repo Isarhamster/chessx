@@ -353,7 +353,7 @@ PlayerDialog* MainWindow::playerDialog()
 	return m_playerDialog;
 }
 
-SaveDialog * MainWindow::saveDialog()
+SaveDialog* MainWindow::saveDialog()
 {
 	if (!m_saveDialog)
 		m_saveDialog = new SaveDialog;
@@ -694,8 +694,12 @@ void MainWindow::slotGameLoadChosen()
 
 void MainWindow::slotGameSave()
 {
-	if (saveDialog()->exec(game()) == QMessageBox::Ok)
+	if (database()->isReadOnly())
+		QMessageBox::critical(this, tr("Save game"), tr("This database is read only."));
+	else if (saveDialog()->exec(game()) == QDialog::Accepted) {
+		databaseInfo()->saveGame();
 		slotGameChanged();
+	}
 }
 
 void MainWindow::slotGameChanged()

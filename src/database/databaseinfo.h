@@ -48,6 +48,9 @@ public:
 	bool loadGame(int index);
 	/** Starts new game, giving it @p index equal to the number of games in the database */
 	void newGame();
+	/** Saves game, replacing current one or adding new. If @ref currentIndex() is
+	in the database, game will be replaced, else if will be appended at the end. */
+	bool saveGame();
 	/** Database name */
 	QString name() const;
 private:
