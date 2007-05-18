@@ -147,9 +147,6 @@
          <height>32767</height>
         </size>
        </property>
-       <property name="inputMask" >
-        <string>[####]; </string>
-       </property>
       </widget>
      </item>
      <item row="1" column="2" >
@@ -169,7 +166,7 @@
         </size>
        </property>
        <property name="inputMask" >
-        <string>[####]; </string>
+        <string>0000; </string>
        </property>
       </widget>
      </item>
@@ -190,7 +187,7 @@
         </size>
        </property>
        <property name="inputMask" >
-        <string>[####]; </string>
+        <string>0000; </string>
        </property>
       </widget>
      </item>

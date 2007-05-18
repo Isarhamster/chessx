@@ -74,3 +74,13 @@ QString DatabaseInfo::name() const
 	return name;
 }
 
+bool DatabaseInfo::saveGame()
+{
+	if (m_database->isReadOnly())
+		return false;
+	if (m_index < m_database->count())
+		return m_database->replace(m_index, m_game);
+	else
+		return m_database->add(m_game);
+}
+
