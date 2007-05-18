@@ -108,7 +108,8 @@ bool PgnDatabase::loadGame(int index, Game& game)
 	loadGameHeaders(index, game);
 	seekGame(index);
 	skipTags();
-	if (!game.tag("FEN").isEmpty() && (game.tag("FEN") != "?")) {
+	QString fen = m_index.tagValue(TagFEN, m_count - 1);
+	if (fen != "?") {
 		Board board;
 		board.fromFEN(game.tag("FEN"));
 		game.setStartBoard(board);
@@ -173,9 +174,7 @@ void PgnDatabase::skipLine()
 void PgnDatabase::seekGame(int index)
 {
 	m_file->seek(m_filePos = offset(index));
-	QByteArray line = m_file->readLine();
-	m_currentLineSize = line.size();
-	m_currentLine = QString(line).trimmed();
+	readLine();
 }
 
 void PgnDatabase::parseTagsIntoIndex()
@@ -394,7 +393,7 @@ void PgnDatabase::skipJunk()
 
 void PgnDatabase::skipTags()
 {
-	while (m_lineBuffer.length() && m_lineBuffer[0] == '[' && !m_file->atEnd())
+	while (m_lineBuffer.length() && (m_lineBuffer[0] == '[') && !m_file->atEnd())
 		skipLine();
 
 	//swallow trailing whitespace
