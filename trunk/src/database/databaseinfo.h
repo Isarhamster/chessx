@@ -46,6 +46,8 @@ public:
 	int currentIndex() const   {return m_index;}
 	/** Load game @p index */
 	bool loadGame(int index);
+	/** Starts new game, giving it @p index equal to the number of games in the database */
+	void newGame();
 	/** Database name */
 	QString name() const;
 private:
