@@ -32,6 +32,8 @@ Index::Index()
 	setTagIndexPosition(TagWhite, 8, 4);
 	setTagIndexPosition(TagBlack, 12, 4);
 	setTagIndexPosition(TagResult, 16, 1);
+	setTagIndexPosition(TagPlyCount, 17, 2);
+	createIndexItems();
 	reallocateIndexItems();
 }
 Index::~Index()
