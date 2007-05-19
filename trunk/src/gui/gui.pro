@@ -73,4 +73,5 @@ macx {
      ICON = ../../data/images/chessx.icns
 }
 
-TRANSLATIONS = chessx_pl.ts
+TRANSLATIONS = chessx_pl.ts \
+               chessx_de.ts
