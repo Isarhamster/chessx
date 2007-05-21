@@ -253,10 +253,11 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 		if (m_hifrom != InvalidSquare)
 			updateGuess(s);
 	} else {
-		if (s != InvalidSquare)
+		if (s != InvalidSquare) {
 			emit clicked(s, event->button() + event->modifiers());
-		if (!m_clickUsed && isPieceColor(m_board.at(s), m_board.toMove()))
-			selectSquare(s);
+			if (!m_clickUsed && isPieceColor(m_board.at(s), m_board.toMove()))
+				selectSquare(s);
+		}
 	}
 }
 
