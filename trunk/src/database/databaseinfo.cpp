@@ -81,6 +81,6 @@ bool DatabaseInfo::saveGame()
 	if (m_index < m_database->count())
 		return m_database->replace(m_index, m_game);
 	else
-		return m_database->add(m_game);
+		return m_database->appendGame(m_game);
 }
 

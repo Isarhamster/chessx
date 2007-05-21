@@ -56,6 +56,8 @@ public:
 	virtual void close() = 0;
 	/** Returns whether the database is read-only or not */
 	virtual bool isReadOnly() = 0;
+	/** Removes all games from the database, return true if succesful */
+	virtual bool clear() { return false; }
 
 	//game retrieval & storage
 	/** Loads a game from the given position, returns true if successful */
@@ -65,7 +67,7 @@ public:
 	/** Saves a game at the given position, returns true if successful */
 	virtual bool replace(int , Game&) { return false; }
 	/** Adds a game to the database */
-	virtual bool add(Game&) { return false; }
+	virtual bool appendGame(Game&) { return false; }
 	/** Removes a game from the database */
 	virtual bool remove(int) { return false; };
 	/** Removes multiple games from the database as specified by the filter */
