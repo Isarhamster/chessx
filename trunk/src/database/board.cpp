@@ -1700,7 +1700,14 @@ HistoryItem Board::doMove(const Move& m)
 
 	if (m.isSpecial()) {
 		if (m.isDoubleAdvance()) {
-			m_epSquare = (m.from() + m.to()) >> 1;
+			m_epSquare = NoEPSquare;
+			Square tmp = (m.from() + m.to()) >> 1;
+			int f = (tmp % 8) + 1;
+			Piece match = (toMove() == White ? BlackPawn : WhitePawn);
+			if (f > 1 && at(m.to()-1) == match)
+				m_epSquare = tmp;
+			if (f < 8 && at(m.to()+1) == match)
+				m_epSquare = tmp;
 			hashEpSquare();
 		} else {
 			if (m.isCastling()) {
