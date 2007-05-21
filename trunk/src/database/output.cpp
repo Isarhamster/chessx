@@ -261,7 +261,7 @@ void Output::writeMove(int variation)
 		}
 	}
 	// *** Write the annotations if any
-	if (m_game->annotation(variation) != QString()) {
+	if (!m_game->annotation(variation).isEmpty()) {
 		if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
 			m_output += m_endTagMap[MarkupColumnStyleMainline];
 		}
