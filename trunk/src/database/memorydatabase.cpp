@@ -101,3 +101,11 @@ bool MemoryDatabase::parseFile()
 	m_index.setCacheEnabled(false);
 	return true;
 }
+bool MemoryDatabase::clear()
+{
+	for (int i = 0; i < m_games.count(); ++i) {
+		delete m_games[i];
+	}
+	m_games.clear();
+	return true;
+}
