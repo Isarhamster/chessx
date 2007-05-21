@@ -219,11 +219,11 @@ QString Game::moveToSan(Game::MoveStringFlags flags, int variation)
 	//move number
 	if (m_currentBoard.toMove() == Black) {
 		if (flags & BlackNumbers) {
-			san += QString::number(moveNumber()) + "...";
+			san += QString::number(moveNumber()) + "... ";
 		}
 	} else {
 		if (flags & WhiteNumbers) {
-			san += QString::number(moveNumber()) + ".";
+			san += QString::number(moveNumber()) + ". ";
 		}
 	}
 
