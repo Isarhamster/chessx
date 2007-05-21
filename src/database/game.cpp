@@ -899,7 +899,7 @@ void Game::moveCount(int node, int* moves, int* comments, int* nags)
 	//add this node
 	*moves += 1;
 	*nags += m_moveNodes[node].nags.count();
-	if (m_moveNodes[node].annotation != QString()) {
+	if (!m_moveNodes[node].annotation.isEmpty()) {
 		*comments += 1;
 	}
 
