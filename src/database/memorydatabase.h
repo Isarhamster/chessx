@@ -44,6 +44,8 @@ public:
 	bool remove(const Filter& filter);
 	/** Saves a game at the given position, returns true if successful */
 	bool replace(int index, Game& game);
+	/** Removes all games from the database, return true if succesful */
+	virtual bool clear();
 
 	/** Loads a game from the given position, returns true if successful */
 	bool loadGame(int index, Game& game);
