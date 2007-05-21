@@ -104,7 +104,7 @@ QString PartialDate::asString() const
 QString PartialDate::asShortString() const
 {
 	if (!m_year)
-		return QString::null;
+		return QString();
 	QString s = QString("%1").arg(m_year, 4);
 	if (!m_month)
 		return s;

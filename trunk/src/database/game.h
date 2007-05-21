@@ -139,13 +139,13 @@ public:
 
 	//tree modification methods
 	/** Adds a move at the current position, returns variation number of newly added move */
-	int addMove(const Move& move, const QString& annotation = QString::null, NagSet nags = NagSet());
+	int addMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Adds a move at the current position, returns variation number of newly added move */
-	int addMove(const QString& sanMove, const QString& annotation = QString::null, NagSet nags = NagSet());
+	int addMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Replaces the next move in the given variation, returns true if sucessful */
-	bool replaceMove(const Move& move, const QString& annotation = QString::null, NagSet nags = NagSet(), int variation = 0);
+	bool replaceMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet(), int variation = 0);
 	/** Replaces the next move in the given variation, returns true if sucessful */
-	bool replaceMove(const QString& sanMove, const QString& annotation = QString::null, NagSet nags = NagSet(), int variation = 0);
+	bool replaceMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet(), int variation = 0);
 	/** Promotes the given variation to the main line, returns true if sucessful */
 	bool promoteVariation(int variation);
 	/** Removes the given variation, returns true if sucessful */

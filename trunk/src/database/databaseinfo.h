@@ -31,7 +31,7 @@ class DatabaseInfo
 {
 public:
 	/** Create information for open database */
-	DatabaseInfo(const QString& fname = QString::null);
+	DatabaseInfo(const QString& fname = QString());
 	/** Close database and free memory */
 	~DatabaseInfo();
 	/** @return @p true if database is valid */
