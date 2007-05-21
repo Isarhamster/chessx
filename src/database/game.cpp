@@ -368,6 +368,9 @@ void Game::moveToStart()
 
 int Game::moveToPly(int ply)
 {
+	if (ply == 0) {
+		moveToStart();
+	}
 	int diff = ply - m_ply;
 
 	if (diff > 0) {
