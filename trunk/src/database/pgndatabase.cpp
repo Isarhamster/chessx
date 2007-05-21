@@ -404,8 +404,14 @@ void PgnDatabase::skipTags()
 
 void PgnDatabase::skipMoves()
 {
-	while (!onlyWhite(m_lineBuffer) && !m_file->atEnd())
+	QString gameText = "";
+	QRegExp gameNumber("\\s(\\d+)\\s*\\.");
+	while (!onlyWhite(m_lineBuffer) && !m_file->atEnd()) {
+		gameText += " " + QString(m_lineBuffer).trimmed();
 		skipLine();
+	}
+	gameNumber.lastIndexIn(gameText);
+	m_index.setTag("Length", gameNumber.cap(1),m_count-1);
 
 	//swallow trailing whitespace
 	while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
