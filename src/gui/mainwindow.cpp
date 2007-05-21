@@ -379,7 +379,7 @@ TipOfDayDialog* MainWindow::tipDialog()
 
 void MainWindow::slotFileOpen()
 {
-	QString file = QFileDialog::getOpenFileName(this, tr("Open database"), QString::null,
+	QString file = QFileDialog::getOpenFileName(this, tr("Open database"), QString(),
 			tr("PGN Database (*.pgn)"));
 	if (!file.isEmpty())
 		openDatabase(file);
@@ -919,7 +919,7 @@ void MainWindow::slotSearchReset()
 
 void MainWindow::slotFileExportFilter()
 {
-	QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString::null,
+	QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString(),
 			tr("PGN Database (*.pgn)"));
 	if (!file.isEmpty()) {
 		Output output(Output::Pgn);
@@ -929,7 +929,7 @@ void MainWindow::slotFileExportFilter()
 
 void MainWindow::slotFileExportAll()
 {
-	QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString::null,
+	QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString(),
 			tr("PGN Database (*.pgn)"));
 	if (!file.isEmpty()) {
 		Output output(Output::Pgn);

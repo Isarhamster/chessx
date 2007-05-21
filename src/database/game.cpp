@@ -29,7 +29,7 @@ Game::Game()
 {
 	m_startBoard.fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	m_currentBoard = m_startBoard;
-	m_startAnnotation = QString::null;
+	m_startAnnotation = QString();
 	m_result = Unknown;
 
 	m_currentNode = 0;
@@ -180,7 +180,7 @@ QString Game::annotation(int variation) const
 		count++;
 	}
 
-	return QString::null;
+	return QString();
 }
 
 NagSet Game::nags(int variation) const
@@ -208,13 +208,13 @@ QString Game::previousMoveToSan(Game::MoveStringFlags flags)
 		enterVariation(originalVariation);
 		return san;
 	} else {
-		return "";
+		return QString();
 	}
 }
 
 QString Game::moveToSan(Game::MoveStringFlags flags, int variation)
 {
-	QString san = "";
+	QString san;
 
 	//move number
 	if (m_currentBoard.toMove() == Black) {
@@ -711,7 +711,7 @@ void Game::clear()
 {
 	m_startBoard.fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	m_currentBoard = m_startBoard;
-	m_startAnnotation = QString::null;
+	m_startAnnotation = QString();
 	m_result = Unknown;
 
 	m_currentNode = 0;
@@ -755,7 +755,7 @@ void Game::setStartBoard(const Board& board, int firstMove)
 	m_currentBoard = board;
 
 	// reset game, otherwise it may be invalid
-	m_startAnnotation = QString::null;
+	m_startAnnotation = QString();
 	m_result = Unknown;
 
 	m_currentNode = 0;
@@ -776,7 +776,7 @@ void Game::setStartBoard(const QString& fen)
 		m_startPly = (start - 1) * 2 + (m_startBoard.toMove() == Black);
 	else m_startPly = 0;
 	// reset game, otherwise it may be invalid
-	m_startAnnotation = QString::null;
+	m_startAnnotation = QString();
 	m_result = Unknown;
 
 	m_currentNode = 0;
@@ -899,7 +899,7 @@ void Game::moveCount(int node, int* moves, int* comments, int* nags)
 	//add this node
 	*moves += 1;
 	*nags += m_moveNodes[node].nags.count();
-	if (m_moveNodes[node].annotation != QString::null) {
+	if (m_moveNodes[node].annotation != QString()) {
 		*comments += 1;
 	}
 

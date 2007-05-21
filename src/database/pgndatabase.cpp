@@ -351,11 +351,11 @@ void PgnDatabase::parseToken(Game* game, QString token)
 
 		if (token != "") {
 			if (m_newVariation) {
-				m_variation = game->addMove(token, QString::null, nag);
+				m_variation = game->addMove(token, QString(), nag);
 				m_newVariation = false;
 			} else {
 				game->enterVariation(m_variation);
-				m_variation = game->addMove(token, QString::null, nag);
+				m_variation = game->addMove(token, QString(), nag);
 			}
 		}
 	}
