@@ -25,7 +25,7 @@ MemoryDatabase::~MemoryDatabase()
 		delete m_games[i];
 	}
 }
-bool MemoryDatabase::add(Game& game)
+bool MemoryDatabase::appendGame(Game& game)
 {
 	int index = m_count;
 	// Add to index
@@ -95,6 +95,7 @@ bool MemoryDatabase::parseFile()
 			game->setStartBoard(board);
 		}
 		parseMoves(game);
+		m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2),m_count-1);
 		m_games.append(game);
 	}
 	m_index.setCacheEnabled(false);

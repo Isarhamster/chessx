@@ -37,7 +37,7 @@ public:
 	/** Returns whether the database is read-only or not */
 	bool isReadOnly() { return false; }
 	/** Adds a game to the database */
-	bool add(Game& game);
+	bool appendGame(Game& game);
 	/** Removes a game from the database */
 	bool remove(int index);
 	/** Removes multiple games from the database as specified by the filter */
