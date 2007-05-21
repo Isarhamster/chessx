@@ -51,8 +51,8 @@ enum MoveType
 	Castling = 128, EnPassant, DoubleAdvance
 };
 
-typedef int CastlingRights;
-enum { NoRights = 0, WhiteKingside = 1, WhiteQueenside = 2, WhiteBothSides = 3, BlackKingside = 4, BlackQueenside = 8, BlackBothSides = 12, AllRights = 15 } ;
+typedef uchar CastlingRights;
+enum { NoRights = 0, WhiteKingside = 1, BlackKingside = 2, WhiteQueenside = 4, BlackQueenside = 8, WhiteBothSides = 5, BlackBothSides = 10, AllRights = 15 } ;
 
 enum Result { Unknown, WhiteWin, Draw, BlackWin };
 
