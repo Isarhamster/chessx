@@ -9,6 +9,7 @@
 	* bugfix: sometimes online tablebase wasn't used even if enabled
 	* bugfix: flip setup board if main board is flipped
 	* bugfix: various small fixes to move guesser
+	* bugfix: some errors in Game/tags handling
 	* change: don't highlight first move in starting position
 	* change: redesign Board tab in Preferences dialog
 
