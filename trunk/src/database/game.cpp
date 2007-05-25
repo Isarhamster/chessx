@@ -108,7 +108,7 @@ Game::~Game()
 	delete[] m_moveNodes;
 }
 
-Board Game::board() const
+const Board& Game::board() const
 {
 	return m_currentBoard;
 }

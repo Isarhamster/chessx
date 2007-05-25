@@ -68,7 +68,7 @@ public:
 
 	//node information methods
 	/** @return current position */
-	Board board() const;
+	const Board& board() const;
 	/** @return current position in FEN */
 	QString toFen() const;
 	/** @return whether the current position is in the mainline */
@@ -116,7 +116,7 @@ public:
 	int variationCount() const;
 
 	//tree traversal methods
-	/** Moves to the begining of the game */
+	/** Moves to the beginning of the game */
 	void moveToStart();
 	/** Moves by given ply, returns actual ply reached */
 	int moveByPly(int diff);
@@ -140,17 +140,17 @@ public:
 	int addMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Adds a move at the current position, returns variation number of newly added move */
 	int addMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
-	/** Replaces the next move in the given variation, returns true if sucessful */
+	/** Replaces the next move in the given variation, returns true if successful */
 	bool replaceMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet(), int variation = 0);
-	/** Replaces the next move in the given variation, returns true if sucessful */
+	/** Replaces the next move in the given variation, returns true if successful */
 	bool replaceMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet(), int variation = 0);
-	/** Promotes the given variation to the main line, returns true if sucessful */
+	/** Promotes the given variation to the main line, returns true if successful */
 	bool promoteVariation(int variation);
-	/** Removes the given variation, returns true if sucessful */
+	/** Removes the given variation, returns true if successful */
 	bool removeVariation(int variation = 0);
 	/** Removes all variations and mainline moves after the current position */
 	void truncateGameEnd();
-	/** Truncates the game to the given variation, returns true is sucessful */
+	/** Truncates the game to the given variation, returns true is successful */
 	bool truncateGameStart(int variation = 0);
 
 	//game information methods
@@ -191,16 +191,16 @@ public:
 	/** Removes a tag */
 	void removeTag(const QString& tag);
 
-	/** Sets the games start position */
+	/** Set the game start position */
 	void setStartBoard(const Board& startBoard, int firstMove = 1);
-	/** Sets the games start position from FEN. Correctly recognizes move number. */
+	/** Set the game start position from FEN. */
 	void setStartBoard(const QString& fen);
-	/** Sets annotaions at the start of the game */
+	/** Set annotations at the start of the game */
 	void setStartAnnotation(const QString& annotation);
-	/** Sets the game result */
+	/** Set the game result */
 	void setResult(const Result result);
 
-	/** Class method that loads a file containing ECO classications for use by the ecoClassify method. Returns true if successful */
+	/** Class method that loads a file containing ECO classifications for use by the ecoClassify method. Returns true if successful */
 	static bool loadEcoFile(const QString& ecoFile);
 
 private:
@@ -219,9 +219,9 @@ private:
 	};
 
 	//memory  management methods
-	/** Compacts nodes and allocates more space if reqiured */
+	/** Compacts nodes and allocates more space if required */
 	void compact();
-	/** Copys a variation, used by compact for copying nodes to new storage */
+	/** Copies a variation, used by compact for copying nodes to new storage */
 	void copyVariation(int parentNode, int startNode, MoveNode* destinationNodes, int endNode = 0);
 	/** Counts the number of moves, comments and nags, in all variations, to the end of the game */
 	void moveCount(int node, int* moves, int* comments, int* nags);
