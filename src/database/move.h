@@ -78,7 +78,7 @@ public:
 
 	/** Check whether move is valid. The only checks that are done are: whether squares are within range (0..63) and
 	    whether @p from differs from @p to. */
-	bool isValid() const;
+	bool isLegal() const;
 
 	/** Check whether two moves are the same. Moves are considered the same, if both from and to are equal */
 	friend bool operator==(const Move& m1, const Move& m2);

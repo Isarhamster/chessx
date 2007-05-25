@@ -215,7 +215,7 @@ void WBEngine::parseAnalysis(const QString& message)
 		if (!sanMove.endsWith(".")) {
 			qWarning("! move: |%s|", sanMove.toLatin1().constData());
 			Move move = board.parseMove(sanMove);
-			if (!move.isValid()) {
+			if (!move.isLegal()) {
 				qWarning("Variation parsing failed\n");
 				break;
 			}
