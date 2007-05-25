@@ -421,7 +421,7 @@ void Game::moveToEnd()
 {
 	while (m_moveNodes[m_currentNode].nextNode) {
 		m_currentNode = m_moveNodes[m_currentNode].nextNode;
-		Q_ASSERT(m_currentBoard.isLegal(m_moveNodes[m_currentNode].move));
+		Q_ASSERT(m_currentBoard.debugCheckMove(m_moveNodes[m_currentNode].move));
 		m_history.push(m_currentBoard.doMove(m_moveNodes[m_currentNode].move));
 		m_ply++;
 	}
@@ -433,7 +433,7 @@ int Game::forward(int count)
 
 	while (count && m_moveNodes[m_currentNode].nextNode) {
 		m_currentNode = m_moveNodes[m_currentNode].nextNode;
-		Q_ASSERT(m_currentBoard.isLegal(m_moveNodes[m_currentNode].move));
+		Q_ASSERT(m_currentBoard.debugCheckMove(m_moveNodes[m_currentNode].move));
 		m_history.push(m_currentBoard.doMove(m_moveNodes[m_currentNode].move));
 		m_ply++;
 		count--;
@@ -464,7 +464,7 @@ bool Game::enterVariation(int variation)
 	while (node) {
 		if (count == variation) {
 			m_currentNode = node;
-			Q_ASSERT(m_currentBoard.isLegal(m_moveNodes[m_currentNode].move));
+			Q_ASSERT(m_currentBoard.debugCheckMove(m_moveNodes[m_currentNode].move));
 			m_history.push(m_currentBoard.doMove(m_moveNodes[m_currentNode].move));
 			m_ply++;
 			return true;
