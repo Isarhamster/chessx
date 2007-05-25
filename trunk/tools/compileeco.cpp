@@ -51,7 +51,7 @@ bool loadEcoFile(const QString& ecoFile)
 				token = token.section('.', 1, 1);
 			}
 			if (token != "") {
-				move = board.singleMove(token);
+				move = board.parseMove(token);
 				if (board.isLegal(move)) {
 					board.doMove(move);
 				} else {

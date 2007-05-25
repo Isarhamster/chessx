@@ -527,7 +527,7 @@ int Game::addMove(const Move& move, const QString& annotation, NagSet nags)
 
 int Game::addMove(const QString& sanMove, const QString& annotation, NagSet nags)
 {
-	Move move = m_currentBoard.singleMove(sanMove);
+	Move move = m_currentBoard.parseMove(sanMove);
 	if (!move.isValid()) {
 		return -1;
 	}
@@ -569,7 +569,7 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags,
 
 bool Game::replaceMove(const QString& sanMove, const QString& annotation, NagSet nags, int variation)
 {
-	return replaceMove(m_currentBoard.singleMove(sanMove), annotation, nags, variation);
+	return replaceMove(m_currentBoard.parseMove(sanMove), annotation, nags, variation);
 }
 
 bool Game::promoteVariation(int variation)
