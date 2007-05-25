@@ -77,7 +77,7 @@ Board PositionSearch::position() const
 }
 void PositionSearch::setPosition(const Board& position)
 {
-	m_position.fromFEN(position.toFEN());
+	m_position.fromFen(position.toFen());
 }
 int PositionSearch::matches(int index)
 {

@@ -32,83 +32,83 @@ void BoardTest::cleanupTestCase() {}
 void BoardTest::testIsValidFEN()
 {
 	// ****** Starting position *******
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
 	// ****** Test piece placement *******
 	// invalid piece o
-	QVERIFY(!board.isValidFEN("rnbqkbnr/ppppppop/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/ppppppop/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
 	// invalid number of files 9
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/9/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/9/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
 	// invalid number of files 0
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/0/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/0/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
 	// invalid number of ranks (extra /8)
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/8 b KQkq - 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/8 b KQkq - 0 1"));
 	// invalid number of files in second rank
-	QVERIFY(!board.isValidFEN("rnbqkbnr/3pppp/8/8/8/8/3PPPPP/RNBQKBNR b KQkq - 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/3pppp/8/8/8/8/3PPPPP/RNBQKBNR b KQkq - 0 1"));
 	// ******* Test color to play *******
 	// Invalid color W
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR W KQkq - 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR W KQkq - 0 1"));
 	// Invalid color B
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR B KQkq - 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR B KQkq - 0 1"));
 	// Invalid color k
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR k KQkq - 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR k KQkq - 0 1"));
 	// ******* Test Castling *******
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b K - 0 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b Q - 0 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b q - 0 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b k - 0 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b Qq - 0 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b Kk - 0 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQ - 0 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b kq - 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b K - 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b Q - 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b q - 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b k - 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b Qq - 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b Kk - 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQ - 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b kq - 0 1"));
 	// '-' should be alone, not with other characters
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b k- - 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b k- - 0 1"));
 	// '-' should be alone, not with other characters
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b k-q - 0 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b - - 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b k-q - 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b - - 0 1"));
 	// ******* Test en passant square *******
 	// e4 can never be an en passant target square
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e4 0 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e3 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e4 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e3 0 1"));
 	// With e6 as en passant square, it should be white to move
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e6 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e6 0 1"));
 	// No i6 (luckily)
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq i6 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq i6 0 1"));
 	// No A6 (must be lower case)
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq A6 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq A6 0 1"));
 	// With h6 as en passant square, it should be white to move
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq h6 0 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq h6 0 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq h6 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq h6 0 1"));
 	// ******* Test half move clock *******
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 1 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 2 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 1 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 2 1"));
 	// half move clock must be a number
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - a 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - a 1"));
 	// half move clock must be larger than or equal to 0
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - -1 1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - -1 1"));
 
 	// ******* Test full move count *******
 	// full move count must be larger than 0
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 0"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
-	QVERIFY(board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 2"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 0"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
+	QVERIFY(board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 2"));
 	// full move count must be a number
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 a"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 a"));
 	// full move count must be larger than 0
-	QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 -1"));
+	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 -1"));
 
 // SBE -- FIXME -- MUST FIX AND REENABLE THESE TESTS
 	/*
 		// ******* Test some positions *******
 		// Too many pawns
-		QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/p7/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
+		QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/p7/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
 		// Too many pieces
-		QVERIFY(!board.isValidFEN("rnbqkbnr/pppppppp/5nnn/8/8/5NNN/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
+		QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/5nnn/8/8/5NNN/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
 		// No white king
-		QVERIFY(!board.isValidFEN("k7/8/8/8/8/8/8/8 b KQkq - 0 1"));
-		QVERIFY(board.isValidFEN("k7/8/8/8/8/8/8/K7 b KQkq - 0 1"));
+		QVERIFY(!board.isValidFen("k7/8/8/8/8/8/8/8 b KQkq - 0 1"));
+		QVERIFY(board.isValidFen("k7/8/8/8/8/8/8/K7 b KQkq - 0 1"));
 		// Invalid check
-		QVERIFY(!board.isValidFEN("k7/8/8/r7/8/8/8/K7 b KQkq - 0 1"));
-		QVERIFY(board.isValidFEN("k7/8/8/r7/8/8/8/K7 w KQkq - 0 1"));
+		QVERIFY(!board.isValidFen("k7/8/8/r7/8/8/8/K7 b KQkq - 0 1"));
+		QVERIFY(board.isValidFen("k7/8/8/r7/8/8/8/K7 w KQkq - 0 1"));
 	*/
 }
 
@@ -157,14 +157,14 @@ void BoardTest::testCreateHash()
 
 	//printf ("%s - %s\n",QString::number(h1,16).latin1(),QString::number(h2,16).latin1());
 	board.clear();
-	board.fromFEN("rnbqkbnr/p1ppp1pp/8/1p2Pp2/8/8/PPPP1PPP/RNBQKBNR b KQkq b6 0 1");
+	board.fromFen("rnbqkbnr/p1ppp1pp/8/1p2Pp2/8/8/PPPP1PPP/RNBQKBNR b KQkq b6 0 1");
 	//printf("%s\n",board.toASCII().latin1());
 	//printf("%s\n",board2.toASCII().latin1());
 	//board2.createHash();
 	//printf("%s\n",board.toASCII().latin1());
 	//printf("%s\n",board2.toASCII().latin1());
 	QVERIFY(board != board2);
-	board.fromFEN(board2.toFEN());
+	board.fromFen(board2.toFen());
 	QVERIFY(board == board2);
 	board.setToMove(Black);
 	QVERIFY(board != board2);
@@ -182,7 +182,7 @@ void BoardTest::testCreateHash()
 	//printf("*** Castling\n");
 	board.doMove(board.singleMove("O-O"));
 	//printf("%s\n",board.toASCII().latin1());
-	//printf("%s\n",board.toFEN().latin1());
-	board2.fromFEN(board.toFEN());
+	//printf("%s\n",board.toFen().latin1());
+	board2.fromFen(board.toFen());
 	QVERIFY(board == board2);
 }

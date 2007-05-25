@@ -27,7 +27,7 @@ QMap<quint64, QString> Game::m_ecoPositions;
 
 Game::Game()
 {
-	m_startBoard.fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	m_startBoard.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	m_currentBoard = m_startBoard;
 	m_startAnnotation = QString();
 	m_result = Unknown;
@@ -117,7 +117,7 @@ Board Game::board() const
 
 QString Game::toFen() const
 {
-	return m_currentBoard.toFEN(moveNumber());
+	return m_currentBoard.toFen(moveNumber());
 }
 
 bool Game::isMainline()
@@ -228,7 +228,7 @@ QString Game::moveToSan(Game::MoveStringFlags flags, int variation)
 	}
 
 	//move
-	san += m_currentBoard.moveToSAN(move(variation));
+	san += m_currentBoard.moveToSan(move(variation));
 
 	//nags
 	if (flags & Nags) {
@@ -712,7 +712,7 @@ Result Game::result() const
 
 void Game::clear()
 {
-	m_startBoard.fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	m_startBoard.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	m_currentBoard = m_startBoard;
 	m_startAnnotation = QString();
 	m_result = Unknown;
@@ -771,7 +771,7 @@ void Game::setStartBoard(const Board& board, int firstMove)
 
 void Game::setStartBoard(const QString& fen)
 {
-	m_startBoard.fromFEN(fen);
+	m_startBoard.fromFen(fen);
 	m_currentBoard = m_startBoard;
 	bool ok;
 	int start = fen.section(' ', -1).toInt(&ok);

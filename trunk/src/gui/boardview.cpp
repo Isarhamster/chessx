@@ -165,7 +165,7 @@ void BoardView::showGuess(Square s)
 	if (m_guessMove && s != m_hoverSquare && !(m_flags & SuppressGuessMove)) {
 		m_hoverSquare = s;
 		removeGuess();
-		Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFEN()), (int) s);
+		Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), (int) s);
 		if (!sm.error) {
 			m_hifrom = sm.from;
 			m_hito = sm.to;

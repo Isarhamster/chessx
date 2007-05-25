@@ -263,7 +263,7 @@ void Board::clear()
 	m_hashValue2 = 0;
 }
 
-void Board::fromFEN(const QString& fen)
+void Board::fromFen(const QString& fen)
 {
 	clear();
 	// rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
@@ -362,7 +362,7 @@ void Board::fromFEN(const QString& fen)
 	createHash();
 }
 
-QString Board::toFEN(int move) const
+QString Board::toFen(int move) const
 {
 	QString fen = "";
 	Piece piece;
@@ -426,7 +426,7 @@ QString Board::toFEN(int move) const
 	return fen;
 }
 
-bool Board::isValidFEN(const QString& fen) const
+bool Board::isValidFen(const QString& fen) const
 {
 	QString piecePlacement = fen.section(QRegExp("\\s+"), 0, 0);
 	QString activeColor = fen.section(QRegExp("\\s+"), 1, 1);
@@ -477,7 +477,7 @@ bool Board::isValidFEN(const QString& fen) const
 	}
 	// Now that the FEN is valid, test that the actual position is valid
 	Board tempBoard;
-	tempBoard.fromFEN(fen);
+	tempBoard.fromFen(fen);
 	if (!tempBoard.isValid())
 		return false;
 
@@ -519,7 +519,7 @@ bool Board::setAt(Square s, Piece p)
 		// No break because default should be executed if there is no error.
 	default :
 		/*** Note:
-		 * Looking at the fromFEN function, I saw that the first empty index was used
+		 * Looking at the fromFen function, I saw that the first empty index was used
 		 * for a piece in m_pieceType, regardless of the colour. I'm not sure if this was
 		 * the intention. However, I have implemented it the same way here.
 		 * If this is the case, the white king and black king could just as easily have been
@@ -892,7 +892,7 @@ Square Board::enPassantSquare() const
 void Board::setStandardPosition()
 {
 	// lazy way to implement it
-	fromFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 
 QString Board::toASCII()
@@ -1167,7 +1167,7 @@ inline void disambiguate(bool& row, bool& column, bool& provisional, int from, i
 		provisional = true;
 }
 
-QString Board::moveToSAN(const Move& move)
+QString Board::moveToSan(const Move& move)
 {
 	disableHashing();
 	QString moveString = "";
