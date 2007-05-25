@@ -89,11 +89,8 @@ bool MemoryDatabase::parseFile()
 		parseTagsIntoIndex(); // This will parse the tags into memory
 		Game* game = new Game;
 		QString fen = m_index.tagValue(TagFEN, m_count - 1);
-		if (fen != "?") {
-			Board board;
-			board.fromFen(fen);
-			game->setStartBoard(board);
-		}
+		if (fen != "?")
+			game->setStartBoard(fen);
 		parseMoves(game);
 		m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2),m_count-1);
 		m_games.append(game);

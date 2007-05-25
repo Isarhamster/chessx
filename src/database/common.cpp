@@ -17,14 +17,6 @@
 
 #include "common.h"
 
-bool isPieceColor(Piece piece, Color color)
-{
-	if (color == White)
-		return piece >= WhiteKing && piece <= WhitePawn;
-	else
-		return piece >= BlackKing && piece <= BlackPawn;
-}
-
 QString resultString(Result result)
 {
 	switch (result) {

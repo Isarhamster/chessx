@@ -27,7 +27,7 @@ QMap<quint64, QString> Game::m_ecoPositions;
 
 Game::Game()
 {
-	m_startBoard.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	m_startBoard.setStandardPosition();
 	m_currentBoard = m_startBoard;
 	m_startAnnotation = QString();
 	m_result = Unknown;
@@ -701,7 +701,7 @@ Result Game::result() const
 
 void Game::clear()
 {
-	m_startBoard.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	m_startBoard.setStandardPosition();
 	m_currentBoard = m_startBoard;
 	m_startAnnotation = QString();
 	m_result = Unknown;
@@ -758,13 +758,12 @@ void Game::setStartBoard(const Board& board, int firstMove)
 
 void Game::setStartBoard(const QString& fen)
 {
-	m_startBoard.fromFen(fen);
+	int start = 0;
+	m_startBoard.fromFen(fen, &start);
 	m_currentBoard = m_startBoard;
-	bool ok;
-	int start = fen.section(' ', -1).toInt(&ok);
-	if (ok && start > 0)
+	if (start > 0)
 		m_startPly = (start - 1) * 2 + (m_startBoard.toMove() == Black);
-	else m_startPly = 0;
+	else	m_startPly = 0;
 	// reset game, otherwise it may be invalid
 	m_startAnnotation = QString();
 	m_result = Unknown;
