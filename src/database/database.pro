@@ -3,7 +3,6 @@
 HEADERS += board.h \
            move.h \
            common.h \
-           history.h \
            game.h \
            partialdate.h \
            playerdatabase.h \
@@ -32,11 +31,10 @@ HEADERS += board.h \
            indexitem.h \
            index.h \
            filtermodel.h \
-           tablebase.h
+           tablebase.h \
+           bitboard.h
 SOURCES += board.cpp \
-           move.cpp \
            common.cpp \
-           history.cpp \
            game.cpp \
            databaseconversion.cpp \
            partialdate.cpp \
@@ -65,9 +63,14 @@ SOURCES += board.cpp \
            indexitem.cpp \
            index.cpp \
            filtermodel.cpp \
-           tablebase.cpp
+           tablebase.cpp \
+           bitboard.cpp
 
 include(../common.pro)
 TARGET = database
 CONFIG += staticlib
 TEMPLATE = lib
+
+fastbits {
+	DEFINES += FASTBITS
+}

@@ -58,7 +58,6 @@ Game::Game(const Game& game)
 	m_ply = game.m_ply;
 	m_startPly = game.m_startPly;
 	m_currentBoard = game.m_currentBoard;
-	m_history = game.m_history;
 
 	m_nextFreeNode = game.m_nextFreeNode;
 	m_deletedNodeCount = game.m_deletedNodeCount;
@@ -82,7 +81,6 @@ Game& Game::operator=(const Game& game)
 	m_ply = game.m_ply;
 	m_startPly = game.m_startPly;
 	m_currentBoard = game.m_currentBoard;
-	m_history = game.m_history;
 
 	m_nextFreeNode = game.m_nextFreeNode;
 	m_deletedNodeCount = game.m_deletedNodeCount;
@@ -358,7 +356,6 @@ void Game::moveToStart()
 	m_currentNode = 0;
 	m_ply = 0;
 	m_currentBoard = m_startBoard;
-	m_history.clear();
 }
 
 int Game::moveToPly(int ply)
@@ -404,11 +401,10 @@ void Game::moveToId(int moveId)
 	m_currentNode = moveId;
 	m_ply = 0;
 	m_currentBoard = m_startBoard;
-	m_history.clear();
 
 	while (!moveStack.isEmpty()) {
 		m_ply++;
-		m_history.push(m_currentBoard.doMove(moveStack.pop()));
+		m_currentBoard.doMove(moveStack.pop());
 	}
 }
 
@@ -417,7 +413,7 @@ void Game::moveToEnd()
 	while (m_moveNodes[m_currentNode].nextNode) {
 		m_currentNode = m_moveNodes[m_currentNode].nextNode;
 		Q_ASSERT(m_currentBoard.debugCheckMove(m_moveNodes[m_currentNode].move));
-		m_history.push(m_currentBoard.doMove(m_moveNodes[m_currentNode].move));
+		m_currentBoard.doMove(m_moveNodes[m_currentNode].move);
 		m_ply++;
 	}
 }
@@ -429,7 +425,7 @@ int Game::forward(int count)
 	while (count && m_moveNodes[m_currentNode].nextNode) {
 		m_currentNode = m_moveNodes[m_currentNode].nextNode;
 		Q_ASSERT(m_currentBoard.debugCheckMove(m_moveNodes[m_currentNode].move));
-		m_history.push(m_currentBoard.doMove(m_moveNodes[m_currentNode].move));
+		m_currentBoard.doMove(m_moveNodes[m_currentNode].move);
 		m_ply++;
 		count--;
 	}
@@ -442,7 +438,7 @@ int Game::backward(int count)
 	int toMove = count;
 
 	while (count && m_currentNode) {
-		m_currentBoard.undoMove(m_moveNodes[m_currentNode].move, m_history.pop());
+		m_currentBoard.undoMove(m_moveNodes[m_currentNode].move);
 		m_currentNode = m_moveNodes[m_currentNode].previousNode;
 		m_ply--;
 		count--;
@@ -460,7 +456,7 @@ bool Game::enterVariation(int variation)
 		if (count == variation) {
 			m_currentNode = node;
 			Q_ASSERT(m_currentBoard.debugCheckMove(m_moveNodes[m_currentNode].move));
-			m_history.push(m_currentBoard.doMove(m_moveNodes[m_currentNode].move));
+			m_currentBoard.doMove(m_moveNodes[m_currentNode].move);
 			m_ply++;
 			return true;
 		};
@@ -475,7 +471,7 @@ void Game::exitVariation()
 {
 	int parentNode = m_moveNodes[m_currentNode].parentNode;
 	while (m_currentNode != parentNode) {
-		m_currentBoard.undoMove(m_moveNodes[m_currentNode].move, m_history.pop());
+		m_currentBoard.undoMove(m_moveNodes[m_currentNode].move);
 		m_currentNode = m_moveNodes[m_currentNode].previousNode;
 		m_ply--;
 	}
@@ -668,11 +664,10 @@ QString Game::ecoClassify() const
 	//move to end of main line
 	int node = 0;
 	Board board = m_startBoard;
-	History history;
 
 	while (m_moveNodes[node].nextNode) {
 		node = m_moveNodes[node].nextNode;
-		history.push(board.doMove(m_moveNodes[node].move));
+		board.doMove(m_moveNodes[node].move);
 	}
 
 	//search backwards for the first eco position
@@ -681,7 +676,7 @@ QString Game::ecoClassify() const
 		if (m_ecoPositions.contains(key)) {
 			return m_ecoPositions[key];
 		}
-		board.undoMove(m_moveNodes[node].move, history.pop());
+		board.undoMove(m_moveNodes[node].move);
 		node = m_moveNodes[node].previousNode;
 	}
 
@@ -719,12 +714,10 @@ void Game::clear()
 	m_moveNodes[0].nextNode = 0;
 
 	m_tags.clear();
-	m_history.clear();
 }
 void Game::clearTags()
 {
 	m_tags.clear();
-	m_history.clear();
 }
 
 QString Game::tag(const QString& tag) const

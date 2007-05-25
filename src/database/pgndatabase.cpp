@@ -21,7 +21,6 @@
 #include <QtDebug>
 
 #include "board.h"
-#include "history.h"
 #include "nag.h"
 
 #include "pgndatabase.h"

@@ -238,7 +238,6 @@ private:
 	int m_ply;
 	int m_startPly; // Non-zero if boards doesn't start from starting position
 	Board m_currentBoard;
-	History m_history;
 
 	int m_nextFreeNode;
 	int m_deletedNodeCount;
