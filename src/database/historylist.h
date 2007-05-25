@@ -19,7 +19,7 @@
 
 #include <QStringList>
 
-/** @ingroup Database
+/** @ingroup Core
   The HistoryList class provides a list of @p N recent string items that
   can be stored/restored.
 */

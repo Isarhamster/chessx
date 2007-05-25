@@ -16,6 +16,10 @@
  *                                                                         *
  ***************************************************************************/
 
+/**
+ * @defgroup Core Core - Low level machinery
+ * */
+
 #ifndef __GAME_H__
 #define __GAME_H__
 
@@ -29,7 +33,7 @@
 
 #define COMPILED_ECO_FILE_ID ((quint32)0xCD5CBD02U)
 
-/** @ingroup Database
+/** @ingroup Core
    The Game class represents a chess game. Moves and variations can be added
 	 and removed. Moves can have associated comments and nag values. For methods
 	 that accept a variation number 0 is the main line, with 1 and above being the

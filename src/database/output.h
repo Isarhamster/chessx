@@ -15,7 +15,7 @@
 #define DEFAULT_LATEX_TEMPLATE "latex-default.template"
 #define DEFAULT_PGN_TEMPLATE "pgn-default.template"
 
-/** @ingroup Database
+/** @ingroup Core
 The Output class converts game to various formats.
 Usage:
 @code

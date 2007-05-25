@@ -30,7 +30,7 @@
 #include <QStack>
 
 
-/** @ingroup Database
+/** @ingroup Core
    Track a chess game, and calculate a hash for each position.  This hash
    can be used by other parts of ChessX to do position searches etc.
 

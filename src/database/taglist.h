@@ -25,7 +25,7 @@
 #include "common.h"
 
 
-/** @ingroup Database
+/** @ingroup Core
 TagList holds a list of TagValues objects. It represents the
 values of all the tags in a database. It has the ability to
 dump, and read it's data using QDataStream, and calling on

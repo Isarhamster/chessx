@@ -29,8 +29,14 @@
 #include "movelist.h"
 
 /**
-	 The Engine class provides a simple interface to a chess engine.
- */
+ * @defgroup Feature Feature - assorted feature classes of ChessX
+ **/
+
+/**
+ * @ingroup Feature
+ *
+ *	Provides a simple interface to a chess engine.
+ **/
 
 class Engine : public QObject
 {

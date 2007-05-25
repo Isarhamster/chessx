@@ -23,8 +23,8 @@
 
 #include "engine.h"
 
-/** @ingroup Database
-The UCIEngine class provides an interface to Winboard/XBoard engines.
+/** @ingroup Feature
+* The UCIEngine class provides an interface to Winboard/XBoard engines.
 */
 class UCIEngine : public Engine
 {

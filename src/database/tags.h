@@ -27,7 +27,7 @@
 #include <QPair>
 
 
-/** @ingroup Database
+/** @ingroup Core
 Tags class maps string tags to integers.
 One instance holds all the tag values used in a game database.
 Documentation for managing QDataset format version, see
