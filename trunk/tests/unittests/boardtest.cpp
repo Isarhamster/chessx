@@ -20,14 +20,131 @@ Unit tests for the Board class.
 
 #include "boardtest.h"
 #include "board.h"
-#include "qstring.h"
+#include <QStack>
+#include <QString>
 
 Board board;
 
-void BoardTest::initTestCase() {}
-void BoardTest::init(){}
-void BoardTest::cleanup(){}
-void BoardTest::cleanupTestCase() {}
+class TestGame {
+public:
+	TestGame() {};
+	TestGame(const QString& m, const QString& f) : moves(m), finalFen(f) {};
+	QString moves, finalFen;
+};
+typedef QStack<TestGame> TestGameList;
+
+static const char* game1 =
+	"e4 e5 d4 f5 d5 c5 dxc6 dxc6 Bd2 Bd6 Nc3 Nf6 Qe2 O-O"
+	" O-O-O f4 g4 fxg3 hxg3 Be6 Kb1 Kh8 Qh5 Nfd7 Qxh7#";
+static const char* fen1 =
+	"rn1q1r1k/pp1n2pQ/2pbb3/4p3/4P3/2N3P1/PPPB1P2/1K1R1BNR b - - 0 13";
+
+TestGameList loadGames()
+{
+	TestGameList list;
+	list.push(TestGame(game1,fen1));
+	return list;
+}
+
+// Ensure that each move played in given games gets a unique hash,
+// and that hash is identical as the game is undone one move at a
+// time back to the starting position
+void BoardTest::testReversableHash()
+{
+	TestGameList allgames(loadGames());
+
+	while (!allgames.isEmpty()) {
+		TestGame current(allgames.pop());
+
+		quint64 previousHash = 0;
+		int moveNum = 1;
+		board.setStandardPosition();
+		QStringList moves(current.moves.split(' '));
+		QStringListIterator mi(moves);
+		QStack<quint64> hash;
+		QStack<Move> move;
+		while (mi.hasNext()) {
+			QString san(mi.next());
+			hash.push(board.getHashValue());
+			QVERIFY(hash.top() != previousHash);
+			previousHash = hash.top();
+			move.push(board.parseMove(san));
+			board.doMove(move.top());
+			if (move.top() == Black)
+				++moveNum;
+		}
+		QVERIFY(board.toFen(moveNum) == current.finalFen);
+		while (!move.isEmpty()) {
+			board.undoMove(move.pop());
+			QVERIFY(hash.pop() == board.getHashValue());
+		}
+	}
+}
+
+void BoardTest::testValidate()
+{
+	// Life is good
+	QVERIFY(board.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+	QVERIFY(board.validate() == Valid);
+
+	// Too many pawns
+	QVERIFY(board.fromFen("rnbqkbnr/pppppppp/p7/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
+	QVERIFY(board.validate() == TooManyBlackPawns);
+
+	// Too many pieces
+	QVERIFY(board.fromFen("rnbqkbnr/pppppppp/8/8/8/5NNN/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
+	QVERIFY(board.validate() == TooManyWhite);
+
+	// Too many pieces
+	QVERIFY(board.fromFen("rnbqkbnr/pppppppp/nnn5/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
+	QVERIFY(board.validate() == TooManyBlack);
+
+	// Missing Kings
+	QVERIFY(board.fromFen("k7/8/8/8/8/8/8/8 b - - 0 1"));
+	QVERIFY(board.validate() == NoWhiteKing);
+	QVERIFY(board.fromFen("8/8/8/8/8/8/8/K7 b - - 0 1"));
+	QVERIFY(board.validate() == NoBlackKing);
+
+	// Invalid check
+	QVERIFY(board.fromFen("k7/8/8/r7/8/8/8/K7 b - - 0 1"));
+	QVERIFY(board.validate() == OppositeCheck);
+	QVERIFY(board.fromFen("k7/8/8/r7/8/8/8/K7 w - - 0 1"));
+	QVERIFY(board.validate() == Valid);
+
+	// Kings can't kiss
+	QVERIFY(board.fromFen("8/8/8/3kK3/8/8/8/8 b - - 0 1"));
+	QVERIFY(board.validate() == DoubleCheck);
+
+	// Too many kings
+	QVERIFY(board.fromFen("k7/8/8/3K4/8/8/8/7K b - - 0 1"));
+	QVERIFY(board.validate() == TooManyKings);
+	QVERIFY(board.fromFen("k7/8/8/3k4/8/8/8/7K b - - 0 1"));
+	QVERIFY(board.validate() == TooManyKings);
+
+	// Pawn on first or eighth rank is a no no
+	QVERIFY(board.fromFen("p7/8/8/k7/7K/8/8/8 b - - 0 1"));
+	QVERIFY(board.validate() == PawnsOn18);
+	QVERIFY(board.fromFen("P7/8/8/k7/7K/8/8/8 b - - 0 1"));
+	QVERIFY(board.validate() == PawnsOn18);
+	QVERIFY(board.fromFen("8/8/8/k7/7K/8/8/7p b - - 0 1"));
+	QVERIFY(board.validate() == PawnsOn18);
+	QVERIFY(board.fromFen("8/8/8/k7/7K/8/8/7P b - - 0 1"));
+	QVERIFY(board.validate() == PawnsOn18);
+
+	// Can't castle without a rook or if king has moved
+	QVERIFY(board.fromFen("1nbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
+	QVERIFY(board.validate() == BadCastlingRights);
+	QVERIFY(board.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBN1 b KQkq - 0 1"));
+	QVERIFY(board.validate() == BadCastlingRights);
+	QVERIFY(board.fromFen("rnbqkbnr/pppppppp/8/8/8/4P3/PPPPKPPP/RNBQ1BNR b Kkq - 0 1"));
+	QVERIFY(board.validate() == BadCastlingRights);
+	QVERIFY(board.fromFen("rnbqkbnr/pppppppp/8/8/8/4P3/PPPPKPPP/RNBQ1BNR b Qkq - 0 1"));
+	QVERIFY(board.validate() == BadCastlingRights);
+
+	// End on a happy note
+	QVERIFY(board.fromFen("rnbqkbnr/pppppppp/8/8/8/4P3/PPPPKPPP/RNBQ1BNR b kq - 0 1"));
+	QVERIFY(board.validate() == Valid);
+}
 
 void BoardTest::testIsValidFEN()
 {
@@ -96,76 +213,68 @@ void BoardTest::testIsValidFEN()
 	// full move count must be larger than 0
 	QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 -1"));
 
-// SBE -- FIXME -- MUST FIX AND REENABLE THESE TESTS
-	/*
-		// ******* Test some positions *******
-		// Too many pawns
-		QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/p7/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
-		// Too many pieces
-		QVERIFY(!board.isValidFen("rnbqkbnr/pppppppp/5nnn/8/8/5NNN/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
-		// No white king
-		QVERIFY(!board.isValidFen("k7/8/8/8/8/8/8/8 b KQkq - 0 1"));
-		QVERIFY(board.isValidFen("k7/8/8/8/8/8/8/K7 b KQkq - 0 1"));
-		// Invalid check
-		QVERIFY(!board.isValidFen("k7/8/8/r7/8/8/8/K7 b KQkq - 0 1"));
-		QVERIFY(board.isValidFen("k7/8/8/r7/8/8/8/K7 w KQkq - 0 1"));
-	*/
 }
 
 void BoardTest::testCreateHash()
 {
 	Board board2;
-	board.setDebugName("Board1");
-	board2.setDebugName("Board2");
+
 	board.clear();
-	board.setStandardPosition();
 	board2.clear();
-	board2.setStandardPosition();
-	//printf ("%s - %s\n",QString::number(board.getHashValue(),16).latin1(),QString::number(board2.getHashValue(),16).latin1());
 	QVERIFY(board == board2);
-	/*board2.setAt(0,WhiteRook); board2.setAt(1,WhiteKnight); board2.setAt(2,WhiteBishop);
-	board2.setAt(3,WhiteQueen); board2.setAt(4,WhiteKing); board2.setAt(5,WhiteBishop);
-	board2.setAt(6,WhiteKnight); board2.setAt(7,WhiteRook); board2.setAt(8,WhitePawn);
-	board2.setAt(9,WhitePawn); board2.setAt(10,WhitePawn); board2.setAt(11,WhitePawn);
-	board2.setAt(12,WhitePawn); board2.setAt(13,WhitePawn); board2.setAt(14,WhitePawn);
-	board2.setAt(15,WhitePawn); board2.setAt(48,BlackPawn); board2.setAt(49,BlackPawn);
-	board2.setAt(50,BlackPawn); board2.setAt(51,BlackPawn); board2.setAt(52,BlackPawn);
-	board2.setAt(53,BlackPawn); board2.setAt(54,BlackPawn); board2.setAt(55,BlackPawn);
-	board2.setAt(56,BlackRook); board2.setAt(57,BlackKnight); board2.setAt(58,BlackBishop);
-	board2.setAt(59,BlackQueen); board2.setAt(60,BlackKing); board2.setAt(61,BlackBishop);
-	board2.setAt(62,BlackKnight); board2.setAt(63,BlackRook);*/
-	//printf("Board1: Move 1\n");
-	board.doMove(board.parseMove("e4"));
-	//printf("Board2: Move 1\n");
+
+	board.setStandardPosition();
+	QVERIFY(board != board2);
+	board2.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	QVERIFY(board == board2);
+
+	// Create a move from algebraic notation, and do a few tests on it
+	Move m(board.parseMove("e4"));
+	QVERIFY(m.isLegal());
+	QVERIFY(m.isDoubleAdvance());
+	QVERIFY(m == WhitePawn);
+	QVERIFY(m != Black);
+
+	// Play the move on board, and make sure it applies properly
+	board.doMove(m);
+	QVERIFY(board.toFen() == "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1");
+
+	// Do same move on board 2
 	board2.doMove(board2.parseMove("e4"));
 	QVERIFY(board == board2);
-	//printf("Board1: Move 2\n");
+
+	// See if desired move really is a black pawn
+	QVERIFY(board.parseMove("b5") == BlackPawn);
+
+	// Play a few more moves
 	board.doMove(board.parseMove("b5"));
-	//printf("Board2: Move 2\n");
 	board2.doMove(board2.parseMove("f5"));
 	QVERIFY(board != board2);
-	//printf("Board1: Move 3\n");
 	board.doMove(board.parseMove("e5"));
-	//printf("Board2: Move 3\n");
 	board2.doMove(board2.parseMove("e5"));
 	QVERIFY(board != board2);
-	//printf("Board1: Move 4\n");
 	board.doMove(board.parseMove("f5"));
-	//printf("Board2: Move 4\n");
 	board2.doMove(board2.parseMove("b5"));
 	QVERIFY(board != board2);
 
-	//printf ("%s - %s\n",QString::number(h1,16).latin1(),QString::number(h2,16).latin1());
+	// Getting back a FEN
+	QVERIFY(board2.toFen(3) == "rnbqkbnr/p1ppp1pp/8/1p2Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3");
+
+	// Setting a FEN
 	board.clear();
-	board.fromFen("rnbqkbnr/p1ppp1pp/8/1p2Pp2/8/8/PPPP1PPP/RNBQKBNR b KQkq b6 0 1");
-	//printf("%s\n",board.toASCII().latin1());
-	//printf("%s\n",board2.toASCII().latin1());
-	//board2.createHash();
-	//printf("%s\n",board.toASCII().latin1());
-	//printf("%s\n",board2.toASCII().latin1());
+	QString testfen("rnbqkbnr/p1ppp1pp/8/1p2Pp2/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1");
+	QVERIFY(board.fromFen(testfen));
+	QCOMPARE(board.toFen(), testfen);
+	QVERIFY(board.toMove() == Black);
 	QVERIFY(board != board2);
-	board.fromFen(board2.toFen());
+
+	// Now restore board back to board2 game
+	QVERIFY(board.fromFen(board2.toFen()));
 	QVERIFY(board == board2);
+
+	// Side to move
+	QVERIFY(board.toMove() == White);
+	QVERIFY(board2.toMove() == White);
 	board.setToMove(Black);
 	QVERIFY(board != board2);
 	board.setToMove(Black);
@@ -175,14 +284,16 @@ void BoardTest::testCreateHash()
 	board.swapToMove();
 	QVERIFY(board != board2);
 	board.swapToMove();
+
 	board.doMove(board.parseMove("Bc4"));
 	board.doMove(board.parseMove("Bb7"));
 	board.doMove(board.parseMove("Nf3"));
 	board.doMove(board.parseMove("Nf6"));
-	//printf("*** Castling\n");
 	board.doMove(board.parseMove("O-O"));
-	//printf("%s\n",board.toASCII().latin1());
-	//printf("%s\n",board.toFen().latin1());
 	board2.fromFen(board.toFen());
 	QVERIFY(board == board2);
 }
+
+// FIXME -- Add setAt hash testing
+// FIXME -- Validate forward and backward hashing match
+// FIXME -- Add tests for bad moves.. and bad parsing strings

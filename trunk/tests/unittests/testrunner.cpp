@@ -31,13 +31,13 @@ Do not forget to update the testrunner.pro - add the source files!
 #include "playerdatabasetest.h"
 #include "pgndatabasetest.h"
 #include "spellcheckertests.h"
-#include "boardtest.cpp"
 #include "databaseconversiontest.h"
 #include "stringtagvaluestest.h"
 #include "taglisttest.h"
 #include "indexitemtest.h"
 #include "indextest.h"
 #include "filtertest.h"
+#include "boardtest.h"
 
 int main(int argc, char *argv[])
 {
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 	QTest::qExec(&playerDBtests, argc, argv);
 	QTest::qExec(&pgnDBtests, argc, argv);
 	QTest::qExec(&spellCheckerTests, argc, argv);
-	QTest::qExec( &boardTests, argc, argv );
+	QTest::qExec(&boardTests, argc, argv );
 	QTest::qExec(&databaseConversionTests, argc, argv);
 	QTest::qExec(&stringTagValuesTests, argc, argv);
 	QTest::qExec(&tagListTests, argc, argv);

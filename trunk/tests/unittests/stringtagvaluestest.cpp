@@ -33,7 +33,7 @@ void StringTagValuesTest::testStringTagValues()
 		// This is a slow operation.
 		//tagValues.add(line);
 	}
-	qDebug("Inserted 100,000 values without using cache: %d ms", t.elapsed());
+//	qDebug("Inserted 100,000 values without using cache: %d ms", t.elapsed());
 	file.close();
 	tagValues.clear();
 
@@ -48,7 +48,7 @@ void StringTagValuesTest::testStringTagValues()
 		tagValues.add(line);
 	}
 	tagValues.setCacheEnabled(false);
-	qDebug("Inserted 100,000 values using cache: %d ms", t.elapsed());
+//	qDebug("Inserted 100,000 values using cache: %d ms", t.elapsed());
 	file.close();
 	file.remove();
 

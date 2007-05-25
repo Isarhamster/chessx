@@ -52,9 +52,10 @@ bool loadEcoFile(const QString& ecoFile)
 			}
 			if (token != "") {
 				move = board.parseMove(token);
-				if (board.isLegal(move)) {
+				if (move.isLegal()) {
 					board.doMove(move);
 				} else {
+					qDebug() << "failed on" << token;
 					m_ecoPositions.clear();
 					return false;
 				}

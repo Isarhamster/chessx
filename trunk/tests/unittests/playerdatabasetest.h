@@ -23,11 +23,10 @@
 #define PLAYERDATABASETEST_H
 
 #include <QtTest/QtTest>
-#include "../../src/database/playerdatabase.h"
+#include "playerdatabase.h"
 
 class PlayerDatabaseTest: public QObject
 {
-
 	Q_OBJECT
 
 	PlayerDatabase pdb, newDb;
@@ -47,7 +46,6 @@ private slots:
 	void testNonExistingPlayer();
 	void testCurrentPlayer();
 	void testDatabaseClose();
-
 };
 
 #endif

@@ -29,12 +29,12 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
 	QStringList pictures = dir.entryList();
 
 	if (pdb.removeDatabase(outFileName)) {
-		std::cout << "removed " << (char*)outFileName.toLatin1().constData() << "\n";
+//		std::cout << "removed " << (char*)outFileName.toLatin1().constData() << "\n";
 	} else {
 		std::cout << "failure removing " << outFileName.toLatin1().constData() << "\n";
 	}
 	if (pdb.create(outFileName)) {
-		std::cout << "created " << outFileName.toLatin1().constData() << "\n";
+//		std::cout << "created " << outFileName.toLatin1().constData() << "\n";
 	} else {
 		std::cout << "failure creating " << outFileName.toLatin1().constData() << "\n";
 		return false;
@@ -176,11 +176,11 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
 
 	inFile.close();
 
-	std::cout << numberOfPlayers << " players read in from ratings.ssp\n";
-	std::cout << numberOfPictures << " players had a picture\n";
-	for (QStringList::Iterator it = pictures.begin(); it != pictures.end(); ++it) {
-		std::cout << "player picture that was not converted: " << (*it).toLatin1().constData() << "\n";
-	}
+//	std::cout << numberOfPlayers << " players read in from ratings.ssp\n";
+//	std::cout << numberOfPictures << " players had a picture\n";
+//	for (QStringList::Iterator it = pictures.begin(); it != pictures.end(); ++it) {
+//		std::cout << "player picture that was not converted: " << (*it).toLatin1().constData() << "\n";
+//	}
 
 	pdb.commit();
 	pdb.close();
