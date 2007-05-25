@@ -23,6 +23,72 @@
 #include "board.h"
 #include "settings.h"
 
+Piece charToPiece(const QChar& letter)
+{
+	char pieceChar = letter.toLatin1();
+
+	switch (pieceChar) {
+	case 'K':
+		return WhiteKing;
+	case 'Q':
+		return WhiteQueen;
+	case 'R':
+		return WhiteRook;
+	case 'B':
+		return WhiteBishop;
+	case 'N':
+		return WhiteKnight;
+	case 'P':
+		return WhitePawn;
+	case 'k':
+		return BlackKing;
+	case 'q':
+		return BlackQueen;
+	case 'r':
+		return BlackRook;
+	case 'b':
+		return BlackBishop;
+	case 'n':
+		return BlackKnight;
+	case 'p':
+		return BlackPawn;
+	default:
+		return InvalidPiece;
+	}
+}
+
+QChar pieceToChar(Piece piece)
+{
+	switch (piece) {
+	case WhiteKing:
+		return 'K';
+	case WhiteQueen:
+		return 'Q';
+	case WhiteRook:
+		return 'R';
+	case WhiteBishop:
+		return 'B';
+	case WhiteKnight:
+		return 'N';
+	case WhitePawn:
+		return 'P';
+	case BlackKing:
+		return 'k';
+	case BlackQueen:
+		return 'q';
+	case BlackRook:
+		return 'r';
+	case BlackBishop:
+		return 'b';
+	case BlackKnight:
+		return 'n';
+	case BlackPawn:
+		return 'p';
+	default:
+		return '?';
+	}
+}
+
 static const int castlingMask[64] =
 	{
 		~WhiteQueenside, AllRights, AllRights, AllRights, ~WhiteBothSides, AllRights, AllRights, ~WhiteKingside,
@@ -1006,10 +1072,10 @@ Move Board::singleMove(const QString& SAN)
 		else p = (toMove() == White) ? WhitePawn : BlackPawn;
 		i = SAN.lastIndexOf(QRegExp("[=][NBRQ]"), -1);
 		if (i > -1) {
-			if (SAN.at(i + 1) == 'Q')m.setType((toMove() == White) ? PromotionWhiteQueen : PromotionBlackQueen);
-			else if (SAN.at(i + 1) == 'R')m.setType((toMove() == White) ? PromotionWhiteRook : PromotionBlackRook);
-			else if (SAN.at(i + 1) == 'B')m.setType((toMove() == White) ? PromotionWhiteBishop : PromotionBlackBishop);
-			else m.setType((toMove() == White) ? PromotionWhiteKnight : PromotionBlackKnight);
+			if (SAN.at(i + 1) == 'Q')	m.setPromotionPiece(Queen);
+			else if (SAN.at(i + 1) == 'R')	m.setPromotionPiece(Rook);
+			else if (SAN.at(i + 1) == 'B')	m.setPromotionPiece(Bishop);
+			else m.setPromotionPiece(Knight);
 		}
 		i = SAN.lastIndexOf(QRegExp("[a-h][1-8]"), -1);
 		if (i == -1)return Move();
@@ -1349,25 +1415,23 @@ Move Board::singleLANMove(QString& LAN)
 
 	//check for promotion piece
 	if (LAN.length() == 5) {
-		Piece piece;
 		switch (LAN[4].toLatin1()) {
 		case 'q':
-			piece = m_toMove == White ? WhiteQueen : BlackQueen;
+			move.setPromotionPiece(Queen);
 			break;
 		case 'r':
-			piece = m_toMove == White ? WhiteRook : BlackRook;
+			move.setPromotionPiece(Rook);
 			break;
 		case 'b':
-			piece = m_toMove == White ? WhiteBishop : BlackBishop;
+			move.setPromotionPiece(Bishop);
 			break;
 		case 'n':
-			piece = m_toMove == White ? WhiteKnight : BlackKnight;
+			move.setPromotionPiece(Knight);
 			break;
 		default:
-			piece = m_toMove == White ? WhiteQueen : BlackQueen;
+			move.setPromotionPiece(Queen);
 			break;
 		}
-		move.setPromotionPiece(piece);
 	} else {
 		switch (at(from)) {
 			//check for pawn double advance
@@ -1718,7 +1782,8 @@ HistoryItem Board::doMove(const Move& m)
 				historyItem.setPiece(at(m.enPassantSquare()));
 				m_board[m.enPassantSquare()] = InvalidPiece;
 			} else  /* promotion */
-				promotePiece(m.to(), m.promotionPiece());
+				promotePiece(m.to(),
+					Piece(m.promotionPiece() + (toMove() == White ? 0 : 6)));
 		}
 	}
 	swapToMove();

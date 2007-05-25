@@ -514,7 +514,7 @@ void MainWindow::slotBoardMove(Square from, Square to)
 	Move m(board, from, to);
 	if ((board.at(from) == BlackPawn && to / 8 == 0) ||
 			(board.at(from) == WhitePawn && to / 8 == 7)) {
-		m.setPromotionPiece(board.toMove() == White ? WhiteQueen : BlackQueen);
+		m.setPromotionPiece(PieceType(Queen));
 		if (!board.isLegal(m))  // If promotion, check for legality with queen
 			return;
 		QStringList moves;      // Move is legal, ask for promoted piece
@@ -523,7 +523,7 @@ void MainWindow::slotBoardMove(Square from, Square to)
 		int index = moves.indexOf(QInputDialog::getItem(0, tr("Promotion"), tr("Promote to:"),
 					  moves, 0, false, &ok));
 		if (!ok) return;
-		m.setPromotionPiece(Piece(index + (board.toMove() == White ? WhiteQueen : BlackQueen)));
+		m.setPromotionPiece(PieceType(index + Queen));
 	}
 	if (board.isLegal(m)) {
 		if (game().atEnd())
