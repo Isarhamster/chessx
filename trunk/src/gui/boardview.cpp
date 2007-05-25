@@ -85,7 +85,7 @@ void BoardView::paintEvent(QPaintEvent* event)
 		int y = isFlipped() ? square / 8 : 7 - square / 8;
 		QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
 		p.drawPixmap(pos, m_theme.square((x + y) % 2));
-		p.drawPixmap(pos, m_theme.piece(m_board.at(square)));
+		p.drawPixmap(pos, m_theme.piece(m_board.pieceAt(square)));
 		if (square == m_selectedSquare || square == m_hifrom || square == m_hito) {
 			QPen pen;
 			pen.setColor(m_theme.color(BoardTheme::Highlight));
@@ -211,7 +211,7 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
 	if (!canDrag(s))
 		return;
 	removeGuess();
-	m_dragged = m_board.at(s);
+	m_dragged = m_board.pieceAt(s);
 	m_dragPoint = event->pos() - m_theme.pieceCenter();
 	m_board.removeFrom(s);
 	update(squareRect(s));
@@ -255,7 +255,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 	} else {
 		if (s != InvalidSquare) {
 			emit clicked(s, event->button() + event->modifiers());
-			if (!m_clickUsed && isPieceColor(m_board.at(s), m_board.toMove()))
+			if (!m_clickUsed && m_board.isMovable(s))
 				selectSquare(s);
 		}
 	}
@@ -350,7 +350,7 @@ bool BoardView::canDrag(Square s) const
 	if (s == InvalidSquare)
 		return false;
 	else if (m_flags & IgnoreSideToMove)
-		return m_board.at(s) != Empty;
-	else return isPieceColor(m_board.at(s), m_board.toMove());
+		return m_board.pieceAt(s) != Empty;
+	else return m_board.isMovable(s);
 }
 

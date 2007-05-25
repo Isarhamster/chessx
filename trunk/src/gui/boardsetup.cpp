@@ -101,30 +101,53 @@ void BoardSetupDialog::slotReset()
 
 void BoardSetupDialog::slotAccept()
 {
-	int state;
-	if (ui.boardView->board().isValid(&state))
+	QString reason;
+	switch (ui.boardView->board().validate()) {
+	case Valid:
 		accept();
-	else {
-		QString reason = tr("uknown");
-		switch (state) {
-		case NoWhiteKing:
-			reason = tr("no white king");
-			break;
-		case NoBlackKing:
-			reason = tr("no black king");
-			break;
-		case DoubleCheck:
-			reason = tr("both kings in check");
-			break;
-		case OppositeCheck:
-			reason = tr("side not to move is in check");
-			break;
-		default:
-			reason = tr("unknown");
-		}
-		QMessageBox::critical(0, tr("Invalid position"),
-				      tr("Current position is not valid.\nReason: %1.").arg(reason));
+		return;
+	case NoWhiteKing:
+		reason = tr("No white king");
+		break;
+	case NoBlackKing:
+		reason = tr("No black king");
+		break;
+	case DoubleCheck:
+		reason = tr("Both kings are in check");
+		break;
+	case OppositeCheck:
+		reason = tr("Side to move has opponent in check already");
+		break;
+	case TooManyBlackPawns:
+		reason = tr("Black has too many pawns");
+		break;
+	case TooManyWhitePawns:
+		reason = tr("White has too many pawns");
+		break;
+	case PawnsOn18:
+		reason = tr("There are pawns on the first or eighth rank");
+		break;
+	case TooManyKings:
+		reason = tr("Too many kings");
+		break;
+	case TooManyBlack:
+		reason = tr("Too many black pieces");
+		break;
+	case TooManyWhite:
+		reason = tr("Too many white pieces");
+		break;
+	case BadCastlingRights:
+		reason = tr("Bad castling rights");
+		break;
+	case InvalidEnPassant:
+		reason = tr("En passant square is not correct");
+		break;
+	default:
+		reason = tr("Unknown reason");
+		break;
 	}
+	QMessageBox::critical(0, tr("Invalid position"),
+		      tr("Current position is not valid.\n\n%1.").arg(reason));
 }
 
 void BoardSetupDialog::slotClear()
@@ -149,7 +172,7 @@ void BoardSetupDialog::slotSelected(Square square, int button)
 			piece = (Piece)(piece + (BlackKing - WhiteKing));
 	}
 	Board board = ui.boardView->board();
-	if (board.at(square) == piece)
+	if (board.pieceAt(square) == piece)
 		piece = Empty;
 	board.setAt(square, piece);
 	ui.boardView->setBoard(board);
@@ -198,7 +221,7 @@ void BoardSetupDialog::slotChangePiece(int dir)
 void BoardSetupDialog::slotMovePiece(Square from, Square to)
 {
 	Board b = ui.boardView->board();
-	Piece p = b.at(from);
+	Piece p = b.pieceAt(from);
 	b.removeFrom(from);
 	b.setAt(to, p);
 	ui.boardView->setBoard(b);
