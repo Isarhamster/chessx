@@ -33,7 +33,7 @@ bool UCIEngine::startAnalysis(const Board& board)
 
 	m_board = board;
 
-	m_position = board.toFEN();
+	m_position = board.toFen();
 	m_waitingOn = "ucinewgame";
 	send("ucinewgame");
 	send("isready");

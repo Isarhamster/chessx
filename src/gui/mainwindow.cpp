@@ -447,7 +447,7 @@ void MainWindow::slotEditCopyFEN()
 void MainWindow::slotEditPasteFEN()
 {
 	QString fen = QApplication::clipboard()->text().trimmed();
-	if (!game().board().isValidFEN(fen)) {
+	if (!game().board().isValidFen(fen)) {
 		QString msg = fen.length() ?
 			      tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
 			      tr("There is no text in clipboard.");
@@ -637,7 +637,7 @@ void MainWindow::showTablebaseMove(Move move, int score)
 	else
 		result = tr("Draw");
 
-	QString san(m_boardView->board().moveToSAN(move));
+	QString san(m_boardView->board().moveToSan(move));
 	QString update = m_moveView->toHtml();
 	int s = update.lastIndexOf("</p>");
 	update.insert(s, tr("<br>Tablebase: <a href=\"egtb:%1\">%2%3 %1</a> -- %4")

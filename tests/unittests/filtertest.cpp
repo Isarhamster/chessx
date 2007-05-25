@@ -45,7 +45,7 @@ void FilterTest::testFilter()
 	QCOMPARE(filter.count() , 10);
 	// Commented out because causing test to fail. Need to investigate.
 	/*    Board board;
-	   board.fromFEN("r1bqkbnr/pp3ppp/2npp3/8/2B1PB2/2N2N2/PP3PPP/R2QK2R b KQkq - 1 7");
+	   board.fromFen("r1bqkbnr/pp3ppp/2npp3/8/2B1PB2/2N2N2/PP3PPP/R2QK2R b KQkq - 1 7");
 	   PositionSearch pos(&db, board);
 	   filter.executeSearch(pos);
 	   QCOMPARE ( filter.count() , 2 ); //Should be 3

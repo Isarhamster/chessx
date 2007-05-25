@@ -53,11 +53,11 @@ public:
 	/** Resets board, restoring startup position */
 	void setStandardPosition();
 	/** Sets position from FEN */
-	void fromFEN(const QString& fen);
+	void fromFen(const QString& fen);
 	/** @return FEN string for position, assuming that current move is @p move */
-	QString toFEN(int move = 0) const;
+	QString toFen(int move = 0) const;
 	/** @return true is the FEN string is valid */
-	bool isValidFEN(const QString& fen) const;
+	bool isValidFen(const QString& fen) const;
 	/** @return ASCII representation for debugging */
 	QString toASCII();
 
@@ -95,7 +95,7 @@ public:
 	/** @return move object represented by the given short algerbraic notation */
 	Move singleMove(const QString& SAN);
 	/** @return string representing the given move in short algebraic notations */
-	QString moveToSAN(const Move& move);
+	QString moveToSan(const Move& move);
 	/** @return move object represented by the given long algerbraic notation */
 	Move singleLANMove(QString& LAN);
 	/** @return whether is particular sqaure is attacked */

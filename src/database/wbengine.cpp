@@ -40,7 +40,7 @@ bool WBEngine::startAnalysis(const Board& board)
 
 	//determine method of setting up the board
 	if (m_setboard) {
-		send("setboard " + board.toFEN());
+		send("setboard " + board.toFen());
 		send("post");
 		send("analyze");
 	}

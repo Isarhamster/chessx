@@ -91,7 +91,7 @@ bool MemoryDatabase::parseFile()
 		QString fen = m_index.tagValue(TagFEN, m_count - 1);
 		if (fen != "?") {
 			Board board;
-			board.fromFEN(fen);
+			board.fromFen(fen);
 			game->setStartBoard(board);
 		}
 		parseMoves(game);

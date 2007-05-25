@@ -111,7 +111,7 @@ bool PgnDatabase::loadGame(int index, Game& game)
 	QString fen = m_index.tagValue(TagFEN, m_count - 1);
 	if (fen != "?") {
 		Board board;
-		board.fromFEN(game.tag("FEN"));
+		board.fromFen(game.tag("FEN"));
 		game.setStartBoard(board);
 	}
 	parseMoves(&game);
