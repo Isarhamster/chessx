@@ -102,6 +102,8 @@ public:
 	bool isAttacked(Square sq, Color c) const;
 	/** @return whether a given move is legal in the current position */
 	bool isLegal(const Move& m);
+	/** validate that move is valid in position, only used for debugging */
+	bool debugCheckMove(const Move& m) { return isLegal(m); }
 
 	/* move / undo move methods */
 	/** Make standard move. */
