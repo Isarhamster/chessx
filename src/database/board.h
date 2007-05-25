@@ -93,7 +93,7 @@ public:
 
 	/* move information methods */
 	/** @return move object represented by the given short algerbraic notation */
-	Move singleMove(const QString& SAN);
+	Move parseMove(const QString& SAN);
 	/** @return string representing the given move in short algebraic notations */
 	QString moveToSan(const Move& move);
 	/** @return move object represented by the given long algerbraic notation */

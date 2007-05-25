@@ -187,7 +187,7 @@ void UCIEngine::parseAnalysis(const QString& message)
 			section++;
 			while ((lanMove = info.section(' ', section, section)) != "") {
 				qWarning("! move: |%s|", lanMove.toLatin1().constData());
-				Move move = board.singleLANMove(lanMove);
+				Move move = board.parseMove(lanMove);
 				if (!move.isValid()) {
 					qWarning("Variation parsing failed\n");
 					break;

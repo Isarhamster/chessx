@@ -1050,7 +1050,7 @@ void Board::swapToMove()
 	hashToMove();
 }
 
-Move Board::singleMove(const QString& SAN)
+Move Board::parseMove(const QString& SAN)
 {
 	int a, b, i, j;
 	Move m;
