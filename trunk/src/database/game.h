@@ -73,8 +73,6 @@ public:
 	QString toFen() const;
 	/** @return whether the current position is in the mainline */
 	bool isMainline();
-	/** @return whether the given move is legal in the current position */
-	bool isMoveLegal(const Move& move);
 	/** @return first move in given variation */
 	Move move(int variation = 0) const;
 	/** @return integer id for move. Note that @p id is supposed to change after the game is modified. */
