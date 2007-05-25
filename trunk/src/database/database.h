@@ -27,7 +27,7 @@
 #include "query.h"
 #include "index.h"
 
-/** @defgroup Database */
+/** @defgroup Database Database - classes to manipulate chess game files*/
 
 /** @ingroup Database
    The Database class is abstract, providing a common interface for all

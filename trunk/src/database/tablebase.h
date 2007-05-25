@@ -7,7 +7,7 @@
 
 class QHttp;
 
-/** @ingroup Database
+/** @ingroup Feature
  * Abstract base class for different types of tablebase access
  *
  * @todo
@@ -31,7 +31,7 @@ public slots:
 };
 
 
-/** @ingroup Database
+/** @ingroup Feature
  * Implement Tablebase access to ShredderChess.com 6 piece tablebases.
  *
  */

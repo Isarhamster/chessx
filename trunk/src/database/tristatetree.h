@@ -21,7 +21,7 @@
 #include "search.h"
 #include "query.h"
 
-/** @ingroup Database
+/** @ingroup Search
    The TriStateTree class helps facilitate the efficient evaluation of queries.
    The tree is built from a query with each leaf node representing a search,
 	 all other nodes representing the search operators (and, or etc). Each

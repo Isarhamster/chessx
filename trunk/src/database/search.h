@@ -26,7 +26,11 @@ class Filter;
 #include "partialdate.h"
 #include <QBitArray>
 
-/** @ingroup Database
+/**
+ * @defgroup Search Search - different ways to lookup games
+ **/
+
+/** @ingroup Search
 The Search class is an abstract base class that represents a search on one criteria.
 @todo
 - Operators for joining may be obsolete.
@@ -56,7 +60,7 @@ protected:
 
 };
 
-/** @ingroup Database
+/** @ingroup Search
 The NullSearch class is empty search, doing nothing. */
 class NullSearch : public Search
 {
@@ -68,7 +72,7 @@ public :
 	virtual int matches(int index);
 };
 
-/** @ingroup Database
+/** @ingroup Search
 The PositionSearch class is a search that checks for given position.
 @todo Performance is seriously bad
 */
@@ -95,7 +99,7 @@ private:
 	Board m_position;
 };
 
-/** @ingroup Database
+/** @ingroup Search
 The EloSearch class is used for searching both white and black player Elo. */
 class EloSearch : public Search
 {
@@ -132,7 +136,7 @@ private:
 	QBitArray m_matches;
 };
 
-/** @ingroup Database
+/** @ingroup Search
 The DataSearch class defines a search based on a date range */
 class DateSearch : public Search
 {
@@ -163,7 +167,7 @@ private:
 };
 
 
-/** @ingroup Database
+/** @ingroup Search
 The TagSearch class is used for tag search. Only simple substring searches
 are supported for now.
 
@@ -199,7 +203,7 @@ private:
 	QBitArray m_matches;
 };
 
-/** @ingroup Database
+/** @ingroup Search
  *  The FilterSearch class is not a real search class. It is used to
  *  combine other searches with a filter, in order to solve the search
  *  tree quicker if possible. For instance if a search is combined with a

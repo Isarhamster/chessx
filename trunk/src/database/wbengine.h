@@ -24,7 +24,7 @@
 
 #include "engine.h"
 
-/** @ingroup Database
+/** @ingroup Feature
   The WBEngine class provides an interface to a Winboard chess engine.
 */
 

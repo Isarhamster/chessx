@@ -24,8 +24,8 @@ class Search;
 #include "search.h"
 #include <QList>
 
-/** @ingroup Database
-The Query class is used to store and combine simple and complicated queries.
+/** @ingroup Search
+ *  Store and combine simple and complicated queries.
  * This is done by using reverse polish (postfix) notation. The Query class is a conceptual
  * list of operands (different kinds of searches) and operators (logical AND, OR, NOT),
  * and methods to manipulate this list.

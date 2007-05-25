@@ -24,7 +24,7 @@
 
 typedef quint32 TagIndex;
 
-/** @ingroup Database
+/** @ingroup Core
 TagValues class holds a list of integer values. The list
 represents all the values of a particular tag in the database.
 For integer values, the actual values are not stored. The reasoning

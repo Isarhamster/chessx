@@ -22,7 +22,7 @@
 
 class BitBoard;
 
-/** @ingroup Database
+/** @ingroup Core
    Moves are dependent on current position, (remembers piece, check, capture etc)
    and don't make much sense when considered without a Board.
    However, you can create a move with only a source and destination square,

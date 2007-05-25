@@ -26,7 +26,7 @@
 #include "tagvalues.h"
 
 
-/** @ingroup Database
+/** @ingroup Core
 StringTagValues class inherits from TagValues, and contains
 a list of unique strings. The list represents all the values
 for a given tag in the database.  It has the ability to dump,

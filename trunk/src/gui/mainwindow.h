@@ -48,7 +48,7 @@ class QSplitter;
 class QTextBrowser;
 
 /**
-@defgroup GUI
+@defgroup GUI GUI - User interface components
 */
 
 /**
