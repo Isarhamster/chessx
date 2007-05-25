@@ -56,7 +56,7 @@ public:
 	/** Set whole move */
 	void setMove(Square f, Square t, MoveType tp = StandardMove);
 	/** Set promiotion piece */
-	void setPromotionPiece(Piece p);
+	void setPromotionPiece(PieceType p);
 	/** If move is promotion, get promotion piece. Result is undefined if there is no promotion */
 	Piece promotionPiece() const;
 	/** Check whether move is special (promotion, castling, en passant */

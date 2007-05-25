@@ -97,10 +97,10 @@ bool Move::isSpecial() const
 
 bool Move::isPromotion() const
 {
-	return m_type >= PromotionWhiteQueen && m_type <= PromotionBlackKnight;
+	return m_type >= PromotionQueen && m_type <= PromotionKnight;
 }
 
-void Move::setPromotionPiece(Piece p)
+void Move::setPromotionPiece(PieceType p)
 {
 	m_type = (MoveType)p;
 }
