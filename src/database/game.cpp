@@ -125,11 +125,6 @@ bool Game::isMainline()
 	return !m_moveNodes[m_currentNode].parentNode;
 }
 
-bool Game::isMoveLegal(const Move& move)
-{
-	return m_currentBoard.isLegal(move);
-}
-
 Move Game::move(int variation) const
 {
 	int count = 0;
