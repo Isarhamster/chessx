@@ -23,21 +23,15 @@ Unit tests for the Board class.
 
 #include <QtTest/QtTest>
 
-
 class BoardTest : public QObject
 {
-
 	Q_OBJECT
 
 private slots:
-	void initTestCase();
-	void init();
-	void cleanup();
-	void cleanupTestCase();
-
 	void testIsValidFEN();
 	void testCreateHash();
-
+	void testValidate();
+	void testReversableHash();
 };
 
 #endif
