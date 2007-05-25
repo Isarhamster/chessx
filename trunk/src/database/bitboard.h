@@ -8,7 +8,7 @@ enum BoardStatus
 	Valid, NoWhiteKing, NoBlackKing, DoubleCheck,
 	OppositeCheck, TooManyBlackPawns, TooManyWhitePawns,
 	PawnsOn18, TooManyKings, TooManyWhite, TooManyBlack,
-	BadCastlingRights, InvalidEnPassant
+	BadCastlingRights, InvalidEnPassant, MultiCheck
 };
 
 /** @ingroup Core
@@ -19,118 +19,149 @@ class BitBoard
 public:
 	BitBoard();
 
-	// Play moves
+	// Play moves on board
+	//
+	/** Play given move, updating board state appropriately */
 	bool doMove(const Move&);
+	/** Return board to state prior to given move */
 	void undoMove(const Move&);
 
 	// Setup board
+	//
+	/** Remove all pieces and state from board */
 	void clear();
+	/** Set initial chess game position on the board */
 	void setStandardPosition();
+	/** Set the given piece on the board at the given square */
 	void setAt(const Square s, const Piece p);
+	/** Remove any piece sitting on given square */
 	void removeAt(const Square s);
+	/** Set side to move as that of given color */
 	void setToMove(const Color& c);
+	/** Swap the side to move */
 	void swapToMove();
-	int fromFen(const QString& fen);
+	/** Parse given FEN, return true if loaded properly otherwise false */
+	bool fromFen(const QString& fen, int* moveNumber = NULL);
 
 	// Move factories
+	//
+	/** parse SAN or LAN representation of move, and return proper Move() object */
 	Move parseMove(const QString& algebraic) const;
+	/** Return a proper Move() object given only a from-to move specification */
 	Move prepareMove(const Square& from, const Square& to) const;
 
 	// Query
+	//
+	/** Is piece sitting on given square moveable ? */
 	bool isMovable(const Square s) const;
-	bool canCastle(const uint c) const;
-	bool canCastleShort(const uint c) const;
-	bool canCastleLong(const uint c) const;
-	bool isSquareEmpty(const Square s) const;
-	bool isCheck() const;
+	/** Return piece sitting at given square on the board */
 	Piece pieceAt(Square s) const;
+	/** Return number of ply since a pawn move or capture */
 	uint halfMoveClock() const;
+	/** Return color of side next to move */
 	Color toMove() const;
-	Square enPassantSquare() const;
-	CastlingRights castlingRights() const;
 
 	// Query other formats
+	//
+	/** Return a FEN string based on current board position */
 	QString toFen(int move=0) const;
+	/** Return a SAN string representation of given move */
 	QString moveToSan(const Move& move) const;
 
 	// Validation
+	//
+	/** Check current position and return "Valid" or problem */
 	BoardStatus validate() const;
+	/** Return true if given FEN can be parsed */
 	bool isValidFen(const QString& fen) const;
+	/** validate that move is valid in position, only used for debugging */
+	bool debugCheckMove(const Move& m) const;
+
+protected:
+	/** Return the internal castling rights data (used by hash function) */
+	CastlingRights castlingRights() const;
+	/** Return square where En passant capture may occur, or "NoEPSquare" */
+	Square enPassantSquare() const;
 
 private:
+	/** Return true if side to move is in check */
+	bool isCheck() const;
+	/** Return true if the side to move is in checkmate */
 	bool isCheckmate() const;
+	/** Return true if the side to move is stalemated */
 	bool isStalemate() const;
+	/** Test to see if given color has the right to castle on kingside */
+	bool canCastleShort(const uint c) const;
+	/** Test to see if given color has the right to castle on queenside */
+	bool canCastleLong(const uint c) const;
+	/** Test to see if given color has any castling rights remaining */
+	bool canCastle(const uint c) const;
+
+	/** Return true if making move would put oneself into check */
 	bool isIntoCheck(const Move& move) const;
-	bool isAttacked(const uint sq) const;
-	bool blackOnSquare(const Square& sq) const;
-
-	int fromGoodFen(const QString& fen);
-	MoveList  GenMoves() const;
-
-	void SetCastleShort(uint c);
-	void SetCastleLong(uint c);
-	void DestroyCastle(uint c);
-	void removeIllegal(quint64& b, const Move& move) const;
-	void fixupBoards();
-
-	quint64 whiteBB() const;
-	quint64 blackBB() const;
-	quint64 Occupied(uint co) const;
-	quint64 KnightAttacksFrom(const int s) const;
-	quint64 BishopAttacksFrom(const int s) const;
-	quint64 RookAttacksFrom(const int s) const;
-	quint64 QueenAttacksFrom(const int s) const;
-	quint64 KingAttacksFrom(const int s) const;
-	QChar pieceToChar(const Piece piece) const;
-
-	/* only used once: ??? */
-	quint64 AttackL45(const int s, const quint64 o) const;
-	quint64 AttackR45(const int s, const quint64 o) const;
-	quint64 AttackFile(const int s, const quint64 o) const;
-	quint64 AttackRank(const int s, const quint64 o) const;
-
-	uint File(const uint sq) const;
-	uint Rank(const uint sq) const;
-	quint64 SetBit(const uint sq) const;
-
-	/* Update move with castling details, return false if no castle possible */
-	bool prepareCastle(Move& move) const;
-	void epFile2Square();
+	/** Return true if the given square is attacked by the given color */
 	bool IsAttackedBy(const uint co, const uint sq) const;
+
+	/** Return all squares attacked by a knight on given square */
+	quint64 knightAttacksFrom(const Square s) const;
+	/** Return all squares attacked by a bishop on given square */
+	quint64 bishopAttacksFrom(const Square s) const;
+	/** Return all squares attacked by a rook on given square */
+	quint64 rookAttacksFrom(const Square s) const;
+	/** Return all squares attacked by a queen on given square */
+	quint64 queenAttacksFrom(const Square s) const;
+	/** Return all squares attacked by a king on given square */
+	quint64 kingAttacksFrom(const Square s) const;
+	/** Return all possible pawn moves from given square */
 	quint64 pawnMovesFrom(const Square s) const;
 
-	quint64 m_pawns, knights, bishops, rooks, queens, kings;
-	quint64 occupied_co[2];
-	quint64 occupied;
-	quint64 occupied_l90;       // rotated counter clockwise 90 deg
-	quint64 occupied_l45;       // an odd transformation, to straighten out diagonals
-	quint64 occupied_r45;       // the opposite odd transformation, just as messy
+	/** Remove impossible moves from given bitboard to aid disambiguation */
+	void removeIllegal(const Move& move, quint64& b) const;
+	/** Update move with castling details, return false if no castle is possible */
+	bool prepareCastle(Move& move) const;
+	/** Generate all possible moves in a given position */
+	MoveList generateMoves() const;
 
-	uchar piece[64];             // type of piece on this square
-	uchar stm;                   // side to move
-	uchar ksq[2];                // square of the kings
-	uchar epfile;                // file of a possible ep capture
-	uchar epSquare;              // This is requested by hash routine enough that we keep it pre calculated
-	uchar castle;                // flags for castle legality  (these can be merged)
+	/** Grant castling rights on the kingside to the given color */
+	void setCastleShort(uint color);
+	/** Grant castling rights on the queenside to the given color */
+	void setCastleLong(uint color);
+	/** Revoke all castling rights from the given color */
+	void destroyCastle(uint color);
+	/** Update the epSquare value based on a new epFile value */
+	void epFile2Square();
 
-	ushort m_halfMoves;
+	/** Setup board according to FEN string, return given move number */
+	bool fromGoodFen(const QString& fen, int* moveNumber = NULL);
+
+
+	// Actual Bit-board data
+	quint64 m_pawns, m_knights, m_bishops, m_rooks, m_queens, m_kings;
+	quint64 m_occupied_co[2];     // Square mask of those occupied by each color
+	quint64 m_occupied;           // Square is empty or holds a piece
+	quint64 m_occupied_l90;       // rotated counter clockwise 90 deg
+	quint64 m_occupied_l45;       // an odd transformation, to straighten out diagonals
+	quint64 m_occupied_r45;       // the opposite odd transformation, just as messy
+
+	// Extra state data
+	uchar m_piece[64];             // type of piece on this square
+	uchar m_stm;                   // side to move
+	uchar m_ksq[2];                // square of the m_kings
+	uchar m_epFile;                // file of a possible ep capture
+	uchar m_epSquare;              // This is requested by hash routine enough that we keep it pre calculated
+	uchar m_castle;                // flags for castle legality  (these can be merged)
+	ushort m_halfMoves;            // Number of moves since last pawn move or capture
 };
 
-extern quint64 PawnBB[2][64];
-extern quint64 KnightBB[64];
-extern quint64 BishopR45[64][64];
-extern quint64 BishopL45[64][64];
-extern quint64 KingBB[64];
-extern quint64 RookL00[64][64];
-extern quint64 RookL90[64][64];
-extern quint64 files[8];
-extern quint64 ranks[8];
-extern quint64 Mask[64];
-extern quint64 MaskL90[64];
-extern quint64 MaskL45[64];
-extern quint64 MaskR45[64];
+extern quint64 bb_PawnAttacks[2][64];
+extern quint64 bb_KnightAttacks[64];
+extern quint64 bb_R45Attacks[64][64];
+extern quint64 bb_L45Attacks[64][64];
+extern quint64 bb_KingAttacks[64];
+extern quint64 bb_RankAttacks[64][64];
+extern quint64 bb_FileAttacks[64][64];
 
-const uint ShiftR45[64] = {
+const uint bb_ShiftR45[64] = {
 	1, 58, 51, 44, 37, 30, 23, 16,
 	9, 1, 58, 51, 44, 37, 30, 23,
 	17, 9, 1, 58, 51, 44, 37, 30,
@@ -141,7 +172,7 @@ const uint ShiftR45[64] = {
 	57, 49, 41, 33, 25, 17, 9, 1
 };
 
-const uint ShiftL45[64] = {
+const uint bb_ShiftL45[64] = {
 	9, 17, 25, 33, 41, 49, 57, 1,
 	17, 25, 33, 41, 49, 57, 1, 10,
 	25, 33, 41, 49, 57, 1, 10, 19,
@@ -154,155 +185,86 @@ const uint ShiftL45[64] = {
 
 inline bool BitBoard::IsAttackedBy(const uint co, const uint sq) const
 {
-	if (KingBB[sq] & (kings | queens) & Occupied(co))
+	if (bb_PawnAttacks[co^1][sq] & (m_pawns | m_bishops) & m_occupied_co[co])
 		return 1;
-	if (PawnBB[co^1][sq] & (m_pawns | bishops) &Occupied(co))
+	if (knightAttacksFrom(sq) & m_knights & m_occupied_co[co])
 		return 1;
-	if (KnightBB[sq] & knights & Occupied(co))
+	if (bishopAttacksFrom(sq) & (m_bishops | m_queens) & m_occupied_co[co])
 		return 1;
-	if (RookAttacksFrom(sq) & (rooks | queens) & Occupied(co))
+	if (rookAttacksFrom(sq) & (m_rooks | m_queens) & m_occupied_co[co])
 		return 1;
-	if (BishopAttacksFrom(sq) & (bishops | queens) & Occupied(co))
+	if (kingAttacksFrom(sq) & (m_kings | m_queens) & m_occupied_co[co])
 		return 1;
 	return 0;
 };
 
-inline void BitBoard::SetCastleShort(uint c)
+inline void BitBoard::setCastleShort(uint color)
 {
-	castle |= 1 << c;
+	m_castle |= 1 << color;
 }
 
-inline void BitBoard::SetCastleLong(uint c)
+inline void BitBoard::setCastleLong(uint color)
 {
-	castle |= 4 << c;
+	m_castle |= 4 << color;
 }
 
-inline void BitBoard::DestroyCastle(uint c)
+inline void BitBoard::destroyCastle(uint color)
 {
-	castle &= ~(5 << c);
+	m_castle &= ~(5 << color);
 }
 
-inline quint64 BitBoard::whiteBB() const
+inline quint64 BitBoard::knightAttacksFrom(const Square s) const
 {
-	return occupied_co[White];
+	return bb_KnightAttacks[s];
 }
 
-inline quint64 BitBoard::blackBB() const
+inline quint64 BitBoard::bishopAttacksFrom(const Square s) const
 {
-	return occupied_co[Black];
+	return bb_R45Attacks[s][(m_occupied_r45 >> bb_ShiftR45[s]) & 63] |
+		bb_L45Attacks[s][(m_occupied_l45 >> bb_ShiftL45[s]) & 63];
 }
 
-inline quint64 BitBoard::Occupied(uint co) const
+inline quint64 BitBoard::rookAttacksFrom(const Square s) const
 {
-	return occupied_co[co];
+	return bb_RankAttacks[s][(m_occupied >> ((s & ~7) + 1)) & 63] |
+		 bb_FileAttacks[s][(m_occupied_l90 >> (((s & 7) << 3) + 1)) & 63];
 }
 
-inline quint64 BitBoard::KnightAttacksFrom(const int s) const
+inline quint64 BitBoard::queenAttacksFrom(const Square s) const
 {
-	return KnightBB[s];
+	return rookAttacksFrom(s) | bishopAttacksFrom(s);
 }
 
-inline quint64 BitBoard::AttackL45(const int s,const quint64 o) const
+inline quint64 BitBoard::kingAttacksFrom(const Square s)  const
 {
-	return BishopL45[s][(o >> ShiftL45[s]) & 63];
+	return bb_KingAttacks[s];
 }
-
-inline quint64 BitBoard::AttackR45(const int s, const quint64 o) const
-{
-	return BishopR45[s][(o >> ShiftR45[s]) & 63];
-}
-
-inline quint64 BitBoard::BishopAttacksFrom(const int s) const
-{
-	return AttackR45(s,occupied_r45) | AttackL45(s,occupied_l45);
-}
-
-inline quint64 BitBoard::AttackFile(const int s, const quint64 o) const
-{
-	return RookL90[s][(o >> (((s & 7) << 3) + 1)) & 63];
-}
-
-inline quint64 BitBoard::AttackRank(const int s, const quint64 o) const
-{
-	return RookL00[s][(o >> ((s & ~7) + 1)) & 63];
-}
-
-inline quint64 BitBoard::RookAttacksFrom(const int s) const
-{
-	return AttackRank(s,occupied) | AttackFile(s,occupied_l90);
-}
-
-inline quint64 BitBoard::QueenAttacksFrom(const int s) const
-{
-	return RookAttacksFrom(s) | BishopAttacksFrom(s);
-}
-
-inline quint64 BitBoard::KingAttacksFrom(const int s)  const
-{
-	return KingBB[s];
-}
-
-inline bool BitBoard::blackOnSquare(const Square& sq) const
-{
-	return occupied_co[Black] & SetBit(sq);
-}
-
-inline QChar BitBoard::pieceToChar(const Piece piece) const
-{
-	return piece > BlackPawn ? '?' : " KQRBNPkqrbnp"[piece];
-};
 
 inline void BitBoard::epFile2Square()
 {
-	if (epfile)
-		epSquare = epfile + (stm == White ? a6:a3) - 1;
-	else	epSquare = NoEPSquare;
+	if (m_epFile)
+		m_epSquare = m_epFile + (m_stm == White ? a6:a3) - 1;
+	else	m_epSquare = NoEPSquare;
 }
 
-inline bool BitBoard::isAttacked(const uint sq) const
-{
-	return IsAttackedBy(stm ^ 1, sq);
-};
-
-inline uint BitBoard::File(const uint sq) const
-{
-	return sq & 7;
-}
-
-inline uint BitBoard::Rank(const uint sq) const
-{
-	return sq >> 3;
-}
-
-inline quint64 BitBoard::SetBit(const uint sq) const
-{
-	return Mask[sq];
-}
-
-/** Test to see if given color has any castling rights remaining */
 inline bool BitBoard::canCastle(const uint c) const
 {
-	return castle & (5 << c);
+	return m_castle & (5 << c);
 }
 
 inline bool BitBoard::canCastleShort(const uint c) const
 {
-	return castle & (1 << c);
+	return m_castle & (1 << c);
 }
 
 inline bool BitBoard::canCastleLong(const uint c)  const
 {
-	return castle&(4 << c);
-}
-
-inline bool BitBoard::isSquareEmpty(const Square s) const
-{
-	return !(occupied & SetBit(s));
+	return m_castle&(4 << c);
 }
 
 inline bool BitBoard::isCheck() const
 {
-	return IsAttackedBy(stm^1, ksq[stm]);
+	return IsAttackedBy(m_stm^1, m_ksq[m_stm]);
 }
 
 inline uint BitBoard::halfMoveClock() const
@@ -312,27 +274,33 @@ inline uint BitBoard::halfMoveClock() const
 
 inline Color BitBoard::toMove() const
 {
-	return Color(stm);
+	return Color(m_stm);
 }
 
 inline Square BitBoard::enPassantSquare() const
 {
-	return epSquare;
+	return m_epSquare;
 }
 
 inline CastlingRights BitBoard::castlingRights() const
 {
-	return castle;
+	return m_castle;
 }
 
+/** Set the side to move to the given color */
 inline void BitBoard::setToMove(const Color& c)
 {
-	stm = c;
+	m_stm = c;
 }
 
 inline void BitBoard::swapToMove()
 {
-	stm ^= 1;
+	m_stm ^= 1;
+}
+
+inline bool BitBoard::debugCheckMove(const Move& m) const
+{
+	return BitBoard(*this).prepareMove(m.from(), m.to()).isLegal();
 }
 
 #endif // __BITBOARD_H__

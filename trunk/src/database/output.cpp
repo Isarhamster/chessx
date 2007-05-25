@@ -325,7 +325,7 @@ void Output::writeVariation()
 			m_game->exitVariation();
 
 			// *** End the variation
-			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
+//			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
 			m_output += ")";
 			//qDebug ("VariationIndentLevel - %d",m_options.getOptionAsInt("VariationIndentLevel"));
 			if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
