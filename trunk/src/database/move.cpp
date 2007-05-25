@@ -140,7 +140,7 @@ Square Move::enPassantSquare() const
 	return m_from > 31 ? m_to - 8 : m_to + 8;
 }
 
-bool Move::isValid() const
+bool Move::isLegal() const
 {
 	return m_from != m_to && m_from < 64 && m_to < 64;
 }
