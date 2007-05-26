@@ -31,6 +31,10 @@ public:
 	void setTag(int tag);
 	/** @return current tag */
 	int tag() const;
+	/** Set default mode */
+	void setMode(int index);
+	/** @return current mode for combining searches. */
+	int mode() const;
 	/** @return current value. */
 	QString value() const;
 

@@ -94,6 +94,8 @@ void GameList::simpleSearch(int tagid)
 	QuickSearchDialog dialog(this);
 
 	dialog.setTag(tagid);
+	if (m_model->filter()->count() <= 1)
+		dialog.setMode(1);
 	if (dialog.exec() != QDialog::Accepted)
 		return;
 
@@ -102,8 +104,11 @@ void GameList::simpleSearch(int tagid)
 	if (value.isEmpty())
 		m_model->filter()->setAll(1);
 	else {
+#warning Fix after Search::Operator cleanup
 		TagSearch ts(m_model->filter()->database(), tag, value);
-		m_model->filter()->executeSearch(ts);
+		if (dialog.mode())
+			m_model->filter()->executeSearch(ts, Search::Operator(dialog.mode()));
+		else m_model->filter()->executeSearch(ts);
 	}
 	updateFilter();
 	emit searchDone();
