@@ -15,9 +15,11 @@
  ***************************************************************************/
 
 #include "quicksearch.h"
+#include "search.h"
 
 #include <QComboBox>
 #include <QLineEdit>
+
 
 QuickSearchDialog::QuickSearchDialog(QWidget* parent) : QDialog(parent)
 {
@@ -25,6 +27,9 @@ QuickSearchDialog::QuickSearchDialog(QWidget* parent) : QDialog(parent)
 
 	connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
 	connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
+	ui.modeCombo->addItem(tr("Find in current filter"), Search::And);
+	ui.modeCombo->addItem(tr("Search whole database"), Search::NullOperator);
+	ui.modeCombo->addItem(tr("Add to current filter"), Search::Or);
 }
 
 QuickSearchDialog::~QuickSearchDialog()
@@ -51,11 +56,15 @@ int QuickSearchDialog::exec()
 	return QDialog::exec();
 }
 
+int QuickSearchDialog::mode() const
+{
+	if (ui.modeCombo->currentIndex() == -1)
+		return 0;
+	return ui.modeCombo->itemData(ui.modeCombo->currentIndex()).toInt();
+}
 
-
-
-
-
-
-
+void QuickSearchDialog::setMode(int index)
+{
+	ui.modeCombo->setCurrentIndex(index);
+}
 
