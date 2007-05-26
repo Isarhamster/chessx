@@ -1554,6 +1554,8 @@ void BitBoardInit()
 	mask = 1;
 	for (i = 0;i < 64;i++) {
 		bb_Mask[i] = mask << i;
+	}
+	for (i = 0;i < 64;i++) {
 		bb_MaskL90[i] = SetBit(RotateL90[i]);
 		bb_MaskL45[i] = SetBit(RotateL45[i]);
 		bb_MaskR45[i] = SetBit(RotateR45[i]);

@@ -78,9 +78,9 @@ void PgnDatabaseTest::testCopyGameIntoNewDB()
 	bool success = db->loadGame(1, game);
 	PgnDatabase* dbNew = new PgnDatabase();
 	dbNew->create(QString("./data/new.pgn"));
-	dbNew->add(game);
+	dbNew->appendGame(game);
 	success = db->loadGame(0, game);
-	dbNew->add(game);
+	dbNew->appendGame(game);
 	// FIXME -- Test below is failing
 //	QCOMPARE(dbNew->count(), 2);
 	delete dbNew;
