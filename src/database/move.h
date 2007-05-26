@@ -36,10 +36,10 @@ public:
 	Move();
 
 	/** Move entry constructor, untested (illegal) move with only from, and to squares set */
-	Move(const Square f, const Square t);
+	Move(const Square from, const Square to);
 
 	/** Set promotion piece.  Default promotion is to Queen, use this to change piece afterward */
-	void setPromotionPiece(PieceType t);
+	void setPromotionPiece(PieceType type);
 
 	// Query
 	/** return Square piece sits on after move */
@@ -74,9 +74,9 @@ public:
 	bool isLegal() const;
 
 	/** Return true if this move was made by given color */
-	bool operator==(const Color& c) const;
+	bool operator==(const Color& color) const;
 	/** Return true if this move was NOT made by given color */
-	bool operator!=(const Color& c) const;
+	bool operator!=(const Color& color) const;
 	/** Return true if this move was made by given piece */
 	bool operator==(const Piece& p) const;
 	/** Return true if this move was NOT made by given piece */
@@ -104,41 +104,41 @@ private:
 	static const quint64 BLACKTM = 1 << 26;
 
 	/** Set Pawn move of one forward */
-	void GenOneForward(uint f, uint t);
+	void genOneForward(uint from, uint to);
 	/** Set two-squares forward move of Pawn */
-	void GenTwoForward(uint f, uint t);
-	/** Set pawn promotion move to given Piecetype r */
-	void GenPromote(uint f, uint t, uint r);
-	/** Set pawn capture and promotion, promote to piece type r, capturing type c */
-	void GenCapturePromote(uint f, uint t, uint r, uint c);
+	void genTwoForward(uint from, uint to);
+	/** Set pawn promotion move to given Piecetype */
+	void genPromote(uint from, uint to, uint type);
+	/** Set pawn capture and promotion, promote to piece type, capturing type */
+	void genCapturePromote(uint from, uint to, uint type, uint captured);
 	/** Set pawn en passant capture of opponent pawn */
-	void GenEnPassant(uint f, uint t);
-	/** Set simple pawn move with capture of piece type c */
-	void GenPawnMove(uint f, uint t, uint c);
-	/** Set knight move, capturing piece type c */
-	void GenKnightMove(uint f, uint t, uint c);
-	/** Set bishop move, capturing piece type c */
-	void GenBishopMove(uint f, uint t, uint c);
-	/** Set rook move, capturing piece type c */
-	void GenRookMove(uint f, uint t, uint c);
-	/** Set queen move, capturing piece type c */
-	void GenQueenMove(uint f, uint t, uint c);
-	/** Set king move, capturing piece type c */
-	void GenKingMove(uint f, uint t, uint c);
+	void genEnPassant(uint from, uint to);
+	/** Set simple pawn move with capture of piece type */
+	void genPawnMove(uint from, uint to, uint captured);
+	/** Set knight move, capturing piece type */
+	void genKnightMove(uint from, uint to, uint captured);
+	/** Set bishop move, capturing piece type */
+	void genBishopMove(uint from, uint to, uint captured);
+	/** Set rook move, capturing piece type */
+	void genRookMove(uint from, uint to, uint captured);
+	/** Set queen move, capturing piece type */
+	void genQueenMove(uint from, uint to, uint captured);
+	/** Set king move, capturing piece type */
+	void genKingMove(uint from, uint to, uint captured);
 	/** Set castling short move for White with king and rook */
-	void GenWhiteOO();
+	void genWhiteOO();
 	/** Set castling long move for White with king and rook */
-	void GenWhiteOOO();
+	void genWhiteOOO();
 	/** Set castling short move for Black with king and rook */
-	void GenBlackOO();
+	void genBlackOO();
 	/** Set castling long move for Black with king and rook */
-	void GenBlackOOO();
+	void genBlackOOO();
 	/** Mark this move as validated and fully legal in position */
 	void setLegalMove();
 	/** Set source square for this move */
-	void setFrom(Square f);
+	void setFrom(Square from);
 	/** Set destination square for this move */
-	void setTo(Square t);
+	void setTo(Square to);
 	/** Mark this move as being made by the Black side */
 	void setBlack();
 	/** Return piece type of promoted piece (or 0 if none) */
@@ -159,11 +159,11 @@ private:
 	void setMate();
 
 	/** Return pawn2forward, castle or piece type for doMove() and undoMove() */
-	uint Action() const;
+	uint action() const;
 	/** Return captured piece or En passant for doMove() and undoMove() */
-	uint Removal() const;
+	uint removal() const;
 	/** Return piece type of captured piece (or 0 if none) */
-	uint captured() const;
+	uint capturedType() const;
 
 	// The move definition 'm' bitfield layout:
 	// 00000000 00000000 00000000 00111111 = from square     = bits 1-6
@@ -191,9 +191,9 @@ private:
 };
 
 
-inline void Move::setPromotionPiece(const PieceType t)
+inline void Move::setPromotionPiece(const PieceType type)
 {
-	m &= ~(7 << 22); m |= ((uint) t & 7) << 22;
+	m &= ~(7 << 22); m |= ((uint) type & 7) << 22;
 }
 
 inline Square Move::from() const
@@ -210,8 +210,8 @@ inline Move::Move()
 	: m(0), u(0)
 {}
 
-inline Move::Move(const Square f, const Square t)
-	: m(f | (t << 6)), u(0)
+inline Move::Move(const Square from, const Square to)
+	: m(from | (to << 6)), u(0)
 {}
 
 inline Square Move::castlingRookFrom() const
@@ -277,77 +277,77 @@ inline bool Move::isLegal() const
 	return m & LEGALITYBIT;
 }
 
-inline void Move::GenOneForward(uint f, uint t)
+inline void Move::genOneForward(uint from, uint to)
 {
-	m = f | (t << 6) | (Pawn << 12);
+	m = from | (to << 6) | (Pawn << 12);
 }
 
-inline void Move::GenTwoForward(uint f, uint t)
+inline void Move::genTwoForward(uint from, uint to)
 {
-	m = f | (t << 6) | (Pawn << 12)   | (1 << 16);
+	m = from | (to << 6) | (Pawn << 12)   | (1 << 16);
 }
 
-inline void Move::GenPromote(uint f, uint t, uint r)
+inline void Move::genPromote(uint from, uint to, uint type)
 {
-	m = f  | (t << 6) | (Pawn << 12)   | (r << 22)  | (1 << 17);
+	m = from  | (to << 6) | (Pawn << 12)   | (type << 22)  | (1 << 17);
 }
 
-inline void Move::GenCapturePromote(uint f, uint t, uint r, uint c)
+inline void Move::genCapturePromote(uint from, uint to, uint type, uint captured)
 {
-	m = f | (t << 6) | (Pawn << 12) | (c << 18) | (r << 22) | (1 << 17);
+	m = from | (to << 6) | (Pawn << 12) | (captured << 18) | (type << 22) | (1 << 17);
 }
 
-inline void Move::GenEnPassant(uint f, uint t)
+inline void Move::genEnPassant(uint from, uint to)
 {
-	m = f  | (t << 6) | (Pawn << 12) | (Pawn << 18) | (1 << 21);
+	m = from  | (to << 6) | (Pawn << 12) | (Pawn << 18) | (1 << 21);
 }
 
-inline void Move::GenPawnMove(uint f, uint t, uint c)
+inline void Move::genPawnMove(uint from, uint to, uint captured)
 {
-	m = f  | (t << 6) | (Pawn << 12) | (c << 18);
+	m = from  | (to << 6) | (Pawn << 12) | (captured << 18);
 }
 
-inline void Move::GenKnightMove(uint f, uint t, uint c)
+inline void Move::genKnightMove(uint from, uint to, uint captured)
 {
-	m = f  | (t << 6) | (Knight << 12) | (c << 18);
+	m = from  | (to << 6) | (Knight << 12) | (captured << 18);
 }
 
-inline void Move::GenBishopMove(uint f, uint t, uint c)
+inline void Move::genBishopMove(uint from, uint to, uint captured)
 {
-	m = f  | (t << 6) | (Bishop << 12) | (c << 18);
+	m = from  | (to << 6) | (Bishop << 12) | (captured << 18);
 }
 
-inline void Move::GenRookMove(uint f, uint t, uint c)
+inline void Move::genRookMove(uint from, uint to, uint captured)
 {
-	m = f  | (t << 6) | (Rook << 12)   | (c << 18);
+	m = from  | (to << 6) | (Rook << 12)   | (captured << 18);
 }
 
-inline void Move::GenQueenMove(uint f, uint t, uint c)
+inline void Move::genQueenMove(uint from, uint to, uint captured)
 {
-	m = f  | (t << 6) | (Queen << 12)  | (c << 18);
+	m = from  | (to << 6) | (Queen << 12)  | (captured << 18);
 }
 
-inline void Move::GenKingMove(uint f, uint t, uint c)
+inline void Move::genKingMove(uint from, uint to, uint captured)
 {
-	m = f  | (t << 6) | (King << 12)   | (c << 18);
+	m = from  | (to << 6) | (King << 12)   | (captured << 18);
 }
 
-inline void Move::GenWhiteOO()
+inline void Move::genWhiteOO()
 {
 	m = 4 | (6 << 6) | (King << 12)  | (1 << 15);
 }
 
-inline void Move::GenWhiteOOO()
+inline void Move::genWhiteOOO()
 {
 	m = 4 | (2 << 6) | (King << 12)  | (1 << 15);
 }
 
-inline void Move::GenBlackOO()
+inline void Move::genBlackOO()
 {
 	m = 60 | (62 << 6) | (King << 12)  | (1 << 15);
 }
 
-inline void Move::GenBlackOOO()
+inline void Move::genBlackOOO()
 {
 	m = 60 | (58 << 6) | (King << 12)  | (1 << 15);
 }
@@ -357,22 +357,22 @@ inline void Move::setLegalMove()
 	m |= LEGALITYBIT;
 }
 
-inline void Move::setFrom(Square f)
+inline void Move::setFrom(Square from)
 {
-	m = (m & (~63)) | f; m &= ~LEGALITYBIT;
+	m = (m & (~63)) | from; m &= ~LEGALITYBIT;
 }
 
-inline void Move::setTo(Square t)
+inline void Move::setTo(Square to)
 {
-	m = (m & (~(63 << 6))) | (t << 6); m &= ~LEGALITYBIT;
+	m = (m & (~(63 << 6))) | (to << 6); m &= ~LEGALITYBIT;
 }
 
-inline uint Move::Action() const
+inline uint Move::action() const
 {
 	return (m >> 12) & 63;
 }
 
-inline uint Move::Removal() const
+inline uint Move::removal() const
 {
 	return (m >> 18) & 15;
 }
@@ -387,9 +387,9 @@ inline uint Move::promoted() const
 	return 7&(m >> 22);
 }
 
-inline uint Move::captured() const
+inline uint Move::capturedType() const
 {
-	return  7&(m >> 18);
+	return  (m >> 18) & 7;
 }
 
 inline void Move::setPieceType(const uchar p)
@@ -432,14 +432,14 @@ inline bool operator==(const Move& m1, const Move& m2)
 	return m1.m == m2.m;
 }
 
-inline bool Move::operator==(const Color& c) const
+inline bool Move::operator==(const Color& color) const
 {
-	return c == ((m&BLACKTM) ? Black : White);
+	return color == ((m&BLACKTM) ? Black : White);
 }
 
-inline bool Move::operator!=(const Color& c) const
+inline bool Move::operator!=(const Color& color) const
 {
-	return !(*this == c);
+	return !(*this == color);
 }
 
 inline bool Move::operator==(const Piece& p) const
