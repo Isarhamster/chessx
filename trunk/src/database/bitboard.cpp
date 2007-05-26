@@ -57,8 +57,8 @@ quint64 bb_MaskR45[64];
 BitBoard standardPosition;
 BitBoard clearedPosition;
 
-bool BitBoardInitRun;
-void BitBoardInit();
+bool bitBoardInitRun;
+void bitBoardInit();
 
 
 const quint64 A1=1,     B1=A1<<1, C1=B1<<1, D1=C1<<1, E1=D1<<1, F1=E1<<1, G1=F1<<1, H1=G1<<1;
@@ -146,7 +146,7 @@ const quint64 fileNotGH   = ~(fileG | fileH);
 
 // This makes a pretty big difference on BitBoard speed...
 // To use the assembler version type: qmake -r "CONFIG+=fastbits"
-inline uint GetFirstBitAndClear64(quint64& bb)
+inline uint getFirstBitAndClear64(quint64& bb)
 {
 #if defined(Q_OS_WIN32) && defined(FASTBITS)
 	// thanks to Gerd Isenberg
@@ -208,8 +208,8 @@ inline uint GetFirstBitAndClear64(quint64& bb)
 BitBoard::BitBoard()
 {
 	memset(this, 0, sizeof(BitBoard));
-	if (!BitBoardInitRun)
-		BitBoardInit();
+	if (!bitBoardInitRun)
+		bitBoardInit();
 }
 
 bool BitBoard::isCheckmate() const
@@ -359,7 +359,7 @@ bool BitBoard::isMovable(const Square from) const
 		}
 		squares &= ~m_occupied_co[m_stm];
 		while (squares) {
-			Square to = GetFirstBitAndClear64(squares);
+			Square to = getFirstBitAndClear64(squares);
 			if (!isIntoCheck(Move(from,to)))
 				return true;
 		}
@@ -482,8 +482,8 @@ BoardStatus BitBoard::validate() const
 	if ((bk + bp + bo) > 16) return TooManyBlack;
 
 	// Bad checks
-	bool check =  IsAttackedBy(m_stm^1, m_ksq[m_stm]);
-	bool check2 = IsAttackedBy(m_stm, m_ksq[m_stm^1]);
+	bool check =  isAttackedBy(m_stm^1, m_ksq[m_stm]);
+	bool check2 = isAttackedBy(m_stm, m_ksq[m_stm^1]);
 	if (check && check2) return DoubleCheck;
 	if (check2) return OppositeCheck;
 
@@ -716,15 +716,15 @@ MoveList BitBoard::generateMoves() const
 		// castle moves
 		if (canCastle(White)) {
 			if (canCastleShort(White) && !((F1 | G1)&m_occupied))
-				if (!IsAttackedBy(Black, e1) &&
-					!IsAttackedBy(Black, f1)
-					&& !IsAttackedBy(Black, g1))
-						p.add().GenWhiteOO();
+				if (!isAttackedBy(Black, e1) &&
+					!isAttackedBy(Black, f1)
+					&& !isAttackedBy(Black, g1))
+						p.add().genWhiteOO();
 			if (canCastleLong(White)  && !((B1 | C1 | D1)&m_occupied))
-				if (!IsAttackedBy(Black, c1) &&
-					!IsAttackedBy(Black, d1)
-					&& !IsAttackedBy(Black, e1))
-						p.add().GenWhiteOOO();
+				if (!isAttackedBy(Black, c1) &&
+					!isAttackedBy(Black, d1)
+					&& !isAttackedBy(Black, e1))
+						p.add().genWhiteOOO();
 		}
 
 		// pawn en passant moves
@@ -732,34 +732,34 @@ MoveList BitBoard::generateMoves() const
 		if (m_epSquare != NoEPSquare) {
 			moves = bb_PawnAttacks[Black][m_epSquare] & movers;
 			while (moves) {
-				from = GetFirstBitAndClear64(moves);
-				p.add().GenEnPassant(from, m_epSquare);
+				from = getFirstBitAndClear64(moves);
+				p.add().genEnPassant(from, m_epSquare);
 			}
 		}
 
 		// pawn captures
 		moves = ShiftUpRight(movers) & m_occupied_co[Black];
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
+			to = getFirstBitAndClear64(moves);
 			if (Rank(to) != 7) {
-				p.add().GenPawnMove(to - 9, to, m_piece[to]);
+				p.add().genPawnMove(to - 9, to, m_piece[to]);
 			} else {
-				p.add().GenCapturePromote(to - 9, to, Queen, m_piece[to]);
-				p.add().GenCapturePromote(to - 9, to, Knight, m_piece[to]);
-				p.add().GenCapturePromote(to - 9, to, Rook, m_piece[to]);
-				p.add().GenCapturePromote(to - 9, to, Bishop, m_piece[to]);
+				p.add().genCapturePromote(to - 9, to, Queen, m_piece[to]);
+				p.add().genCapturePromote(to - 9, to, Knight, m_piece[to]);
+				p.add().genCapturePromote(to - 9, to, Rook, m_piece[to]);
+				p.add().genCapturePromote(to - 9, to, Bishop, m_piece[to]);
 			}
 		}
 		moves = ShiftUpLeft(movers) & m_occupied_co[Black];
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
+			to = getFirstBitAndClear64(moves);
 			if (Rank(to) != 7) {
-				p.add().GenPawnMove(to - 7, to, m_piece[to]);
+				p.add().genPawnMove(to - 7, to, m_piece[to]);
 			} else {
-				p.add().GenCapturePromote(to - 7, to, Queen, m_piece[to]);
-				p.add().GenCapturePromote(to - 7, to, Knight, m_piece[to]);
-				p.add().GenCapturePromote(to - 7, to, Rook, m_piece[to]);
-				p.add().GenCapturePromote(to - 7, to, Bishop, m_piece[to]);
+				p.add().genCapturePromote(to - 7, to, Queen, m_piece[to]);
+				p.add().genCapturePromote(to - 7, to, Knight, m_piece[to]);
+				p.add().genCapturePromote(to - 7, to, Rook, m_piece[to]);
+				p.add().genCapturePromote(to - 7, to, Bishop, m_piece[to]);
 			}
 		}
 
@@ -767,21 +767,21 @@ MoveList BitBoard::generateMoves() const
 		moves = ShiftUp(movers) & ~m_occupied;
 		movers = moves;
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
+			to = getFirstBitAndClear64(moves);
 			if (Rank(to) != 7) {
-				p.add().GenOneForward(to - 8, to);
+				p.add().genOneForward(to - 8, to);
 			} else {
-				p.add().GenPromote(to - 8, to, Queen);
-				p.add().GenPromote(to - 8, to, Knight);
-				p.add().GenPromote(to - 8, to, Rook);
-				p.add().GenPromote(to - 8, to, Bishop);
+				p.add().genPromote(to - 8, to, Queen);
+				p.add().genPromote(to - 8, to, Knight);
+				p.add().genPromote(to - 8, to, Rook);
+				p.add().genPromote(to - 8, to, Bishop);
 			}
 		}
 		// pawns 2 forward
 		moves = ShiftUp(movers) & rank4 & ~m_occupied;
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
-			p.add().GenTwoForward(to - 16, to);
+			to = getFirstBitAndClear64(moves);
+			p.add().genTwoForward(to - 16, to);
 		}
 
 	} else {
@@ -789,15 +789,15 @@ MoveList BitBoard::generateMoves() const
 		// castle moves
 		if (canCastle(Black)) {
 			if (canCastleShort(Black) && !((F8 | G8)&m_occupied))
-				if (!IsAttackedBy(White, e8) &&
-					!IsAttackedBy(White, f8) &&
-					!IsAttackedBy(White, g8))
-						p.add().GenBlackOO();
+				if (!isAttackedBy(White, e8) &&
+					!isAttackedBy(White, f8) &&
+					!isAttackedBy(White, g8))
+						p.add().genBlackOO();
 			if (canCastleLong(Black)  && !((B8 | C8 | D8)&m_occupied))
-				if (!IsAttackedBy(White, e8) &&
-					!IsAttackedBy(White, d8) &&
-					!IsAttackedBy(White, c8))
-						p.add().GenBlackOOO();
+				if (!isAttackedBy(White, e8) &&
+					!isAttackedBy(White, d8) &&
+					!isAttackedBy(White, c8))
+						p.add().genBlackOOO();
 		}
 
 		// pawn en passant moves
@@ -805,34 +805,34 @@ MoveList BitBoard::generateMoves() const
 		if (m_epSquare != NoEPSquare) {
 			moves = bb_PawnAttacks[White][m_epSquare] & movers;
 			while (moves) {
-				from = GetFirstBitAndClear64(moves);
-				p.add().GenEnPassant(from, m_epSquare);
+				from = getFirstBitAndClear64(moves);
+				p.add().genEnPassant(from, m_epSquare);
 			}
 		}
 
 		// pawn captures
 		moves = ShiftDownLeft(movers) & m_occupied_co[White];
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
+			to = getFirstBitAndClear64(moves);
 			if (Rank(to) != 0) {
-				p.add().GenPawnMove(to + 9, to, m_piece[to]);
+				p.add().genPawnMove(to + 9, to, m_piece[to]);
 			} else {
-				p.add().GenCapturePromote(to + 9, to, Queen, m_piece[to]);
-				p.add().GenCapturePromote(to + 9, to, Knight, m_piece[to]);
-				p.add().GenCapturePromote(to + 9, to, Rook, m_piece[to]);
-				p.add().GenCapturePromote(to + 9, to, Bishop, m_piece[to]);
+				p.add().genCapturePromote(to + 9, to, Queen, m_piece[to]);
+				p.add().genCapturePromote(to + 9, to, Knight, m_piece[to]);
+				p.add().genCapturePromote(to + 9, to, Rook, m_piece[to]);
+				p.add().genCapturePromote(to + 9, to, Bishop, m_piece[to]);
 			}
 		}
 		moves = ShiftDownRight(movers) & m_occupied_co[White];
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
+			to = getFirstBitAndClear64(moves);
 			if (Rank(to) != 0) {
-				p.add().GenPawnMove(to + 7, to, m_piece[to]);
+				p.add().genPawnMove(to + 7, to, m_piece[to]);
 			} else {
-				p.add().GenCapturePromote(to + 7, to, Queen, m_piece[to]);
-				p.add().GenCapturePromote(to + 7, to, Knight, m_piece[to]);
-				p.add().GenCapturePromote(to + 7, to, Rook, m_piece[to]);
-				p.add().GenCapturePromote(to + 7, to, Bishop, m_piece[to]);
+				p.add().genCapturePromote(to + 7, to, Queen, m_piece[to]);
+				p.add().genCapturePromote(to + 7, to, Knight, m_piece[to]);
+				p.add().genCapturePromote(to + 7, to, Rook, m_piece[to]);
+				p.add().genCapturePromote(to + 7, to, Bishop, m_piece[to]);
 			}
 		}
 
@@ -840,70 +840,70 @@ MoveList BitBoard::generateMoves() const
 		moves = ShiftDown(movers) & ~m_occupied;
 		movers = moves;
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
+			to = getFirstBitAndClear64(moves);
 			if (Rank(to) != 0) {
-				p.add().GenOneForward(to + 8, to);
+				p.add().genOneForward(to + 8, to);
 			} else {
-				p.add().GenPromote(to + 8, to, Queen);
-				p.add().GenPromote(to + 8, to, Knight);
-				p.add().GenPromote(to + 8, to, Rook);
-				p.add().GenPromote(to + 8, to, Bishop);
+				p.add().genPromote(to + 8, to, Queen);
+				p.add().genPromote(to + 8, to, Knight);
+				p.add().genPromote(to + 8, to, Rook);
+				p.add().genPromote(to + 8, to, Bishop);
 			}
 		}
 		// pawns 2 forward
 		moves = ShiftDown(movers) & rank5 & ~m_occupied;
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
-			p.add().GenTwoForward(to + 16, to);
+			to = getFirstBitAndClear64(moves);
+			p.add().genTwoForward(to + 16, to);
 		}
 	}
 
 	// knight moves
 	movers = m_knights & m_occupied_co[m_stm];
 	while (movers) {
-		from = GetFirstBitAndClear64(movers);
+		from = getFirstBitAndClear64(movers);
 		moves = knightAttacksFrom(from) & ~m_occupied_co[m_stm];
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
-			p.add().GenKnightMove(from, to, m_piece[to]);
+			to = getFirstBitAndClear64(moves);
+			p.add().genKnightMove(from, to, m_piece[to]);
 		}
 	}
 	// bishop moves
 	movers = m_bishops & m_occupied_co[m_stm];
 	while (movers) {
-		from = GetFirstBitAndClear64(movers);
+		from = getFirstBitAndClear64(movers);
 		moves = bishopAttacksFrom(from) & ~m_occupied_co[m_stm];
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
-			p.add().GenBishopMove(from, to, m_piece[to]);
+			to = getFirstBitAndClear64(moves);
+			p.add().genBishopMove(from, to, m_piece[to]);
 		}
 	}
 	// rook moves
 	movers = m_rooks & m_occupied_co[m_stm];
 	while (movers) {
-		from = GetFirstBitAndClear64(movers);
+		from = getFirstBitAndClear64(movers);
 		moves = rookAttacksFrom(from) & ~m_occupied_co[m_stm];
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
-			p.add().GenRookMove(from, to, m_piece[to]);
+			to = getFirstBitAndClear64(moves);
+			p.add().genRookMove(from, to, m_piece[to]);
 		}
 	}
 	// queen moves
 	movers = m_queens & m_occupied_co[m_stm];
 	while (movers) {
-		from = GetFirstBitAndClear64(movers);
+		from = getFirstBitAndClear64(movers);
 		moves = queenAttacksFrom(from) & ~m_occupied_co[m_stm];
 		while (moves) {
-			to = GetFirstBitAndClear64(moves);
-			p.add().GenQueenMove(from, to, m_piece[to]);
+			to = getFirstBitAndClear64(moves);
+			p.add().genQueenMove(from, to, m_piece[to]);
 		}
 	}
 	// king moves
 	moves = kingAttacksFrom(m_ksq[m_stm]) & ~m_occupied_co[m_stm];
 	while (moves) {
-		to = GetFirstBitAndClear64(moves);
-		if (!IsAttackedBy(m_stm ^ 1, to))
-			p.add().GenKingMove(m_ksq[m_stm], to, m_piece[to]);
+		to = getFirstBitAndClear64(moves);
+		if (!isAttackedBy(m_stm ^ 1, to))
+			p.add().genKingMove(m_ksq[m_stm], to, m_piece[to]);
 	}
 
 	return p;
@@ -1039,13 +1039,13 @@ Move BitBoard::parseMove(const QString& algebraic) const
 			match &= bb_rankMask[fromRank];
 		else if (fromFile >= 0)
 			match &= bb_fileMask[fromFile];
-		fromSquare = GetFirstBitAndClear64(match);
+		fromSquare = getFirstBitAndClear64(match);
 
 		// If not yet fully disambiguated, all but one move must be illegal
 		//  Cycle through them, and pick the first legal move.
 		while (match) {
 			if (isIntoCheck(Move(fromSquare, toSquare)))
-				fromSquare = GetFirstBitAndClear64(match);
+				fromSquare = getFirstBitAndClear64(match);
 			else	break;
 		}
 	}
@@ -1067,7 +1067,7 @@ bool BitBoard::doMove(const Move& m)
 	m_epFile = 0;
 	m_halfMoves++;	// Number of moves since last capture or pawn move
 
-	uint action = m.Action();
+	uint action = m.action();
 	switch (action) {
 	case Pawn:
 		m_halfMoves = 0;
@@ -1167,7 +1167,7 @@ bool BitBoard::doMove(const Move& m)
 		break;
 	}
 
-	switch (m.Removal()) {
+	switch (m.removal()) {
 	case Empty:
 		m_occupied_l90 ^= SetBitL90(to);     // extra cleanup needed for non-captures
 		m_occupied_l45 ^= SetBitL45(to);
@@ -1233,7 +1233,7 @@ void BitBoard::undoMove(const Move& m)
 	register quint64 bb_to = SetBit(to);
 	uint rook_from=0, rook_to=0; // =0 just to quiet compiler warnings
 
-	uint action = m.Action();
+	uint action = m.action();
 	switch (action) {
 	case Pawn:
 	case Move::TWOFORWARD:
@@ -1313,8 +1313,8 @@ void BitBoard::undoMove(const Move& m)
 		break;
 	}
 
-	uint replace = m.captured();
-	switch (m.Removal()) {  // Reverse captures
+	uint replace = m.capturedType();
+	switch (m.removal()) {  // Reverse captures
 	case Empty:
 		m_occupied_l90 ^= SetBitL90(to);     // extra cleanup needed for non-captures
 		m_occupied_l45 ^= SetBitL45(to);
@@ -1437,24 +1437,24 @@ bool BitBoard::prepareCastle(Move& move) const
 	Square to = move.to();
 	if (m_stm == White) {
 		if (to == g1 && canCastleShort(White) && !((F1|G1)&m_occupied))
-			if (!IsAttackedBy(Black, e1) && !IsAttackedBy(Black, f1)) {
-				move.GenWhiteOO();
+			if (!isAttackedBy(Black, e1) && !isAttackedBy(Black, f1)) {
+				move.genWhiteOO();
 				return true;
 			}
 		if (to == c1 && canCastleLong(White) && !((B1|C1|D1)&m_occupied))
-			if (!IsAttackedBy(Black, e1) && !IsAttackedBy(Black, d1)) {
-				move.GenWhiteOOO();
+			if (!isAttackedBy(Black, e1) && !isAttackedBy(Black, d1)) {
+				move.genWhiteOOO();
 				return true;
 			}
 	} else {
 		if (to == g8 && canCastleShort(Black) && !((F8|G8)&m_occupied))
-			if (!IsAttackedBy(White, e8) && !IsAttackedBy(White, f8)) {
-				move.GenBlackOO();
+			if (!isAttackedBy(White, e8) && !isAttackedBy(White, f8)) {
+				move.genBlackOO();
 				return true;
 			}
 		if (to == c8 && canCastleLong(Black) && !((B8|C8|D8)&m_occupied))
-			if (!IsAttackedBy(White, e8) && !IsAttackedBy(White, d8)) {
-				move.GenBlackOOO();
+			if (!isAttackedBy(White, e8) && !isAttackedBy(White, d8)) {
+				move.genBlackOOO();
 				return true;
 			}
 	}
@@ -1544,9 +1544,9 @@ QString BitBoard::toFen(int move) const
 
 
 /** Calculate global bit board values before starting */
-void BitBoardInit()
+void bitBoardInit()
 {
-	BitBoardInitRun = true;
+	bitBoardInitRun = true;
 	int i, q;
 	quint64 mask;
 

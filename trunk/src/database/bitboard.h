@@ -100,7 +100,7 @@ private:
 	/** Return true if making move would put oneself into check */
 	bool isIntoCheck(const Move& move) const;
 	/** Return true if the given square is attacked by the given color */
-	bool IsAttackedBy(const uint co, const uint sq) const;
+	bool isAttackedBy(const uint color, const uint square) const;
 
 	/** Return all squares attacked by a knight on given square */
 	quint64 knightAttacksFrom(const Square s) const;
@@ -183,17 +183,17 @@ const uint bb_ShiftL45[64] = {
 	1, 10, 19, 28, 37, 46, 55, 64
 };
 
-inline bool BitBoard::IsAttackedBy(const uint co, const uint sq) const
+inline bool BitBoard::isAttackedBy(const uint color, const uint square) const
 {
-	if (bb_PawnAttacks[co^1][sq] & (m_pawns | m_bishops) & m_occupied_co[co])
+	if (bb_PawnAttacks[color^1][square] & (m_pawns | m_bishops) & m_occupied_co[color])
 		return 1;
-	if (knightAttacksFrom(sq) & m_knights & m_occupied_co[co])
+	if (knightAttacksFrom(square) & m_knights & m_occupied_co[color])
 		return 1;
-	if (bishopAttacksFrom(sq) & (m_bishops | m_queens) & m_occupied_co[co])
+	if (bishopAttacksFrom(square) & (m_bishops | m_queens) & m_occupied_co[color])
 		return 1;
-	if (rookAttacksFrom(sq) & (m_rooks | m_queens) & m_occupied_co[co])
+	if (rookAttacksFrom(square) & (m_rooks|m_queens) & m_occupied_co[color])
 		return 1;
-	if (kingAttacksFrom(sq) & (m_kings | m_queens) & m_occupied_co[co])
+	if (kingAttacksFrom(square) & (m_kings | m_queens) & m_occupied_co[color])
 		return 1;
 	return 0;
 };
@@ -264,7 +264,7 @@ inline bool BitBoard::canCastleLong(const uint c)  const
 
 inline bool BitBoard::isCheck() const
 {
-	return IsAttackedBy(m_stm^1, m_ksq[m_stm]);
+	return isAttackedBy(m_stm^1, m_ksq[m_stm]);
 }
 
 inline uint BitBoard::halfMoveClock() const
