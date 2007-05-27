@@ -14,7 +14,9 @@ class EcoThread : public QThread
 
 public:
 	EcoThread(QString path) : m_path(path) {};
-	void run() { Game::loadEcoFile(m_path); emit loaded(); };
+	void run() {	Game::loadEcoFile(m_path+".eco");
+			Board::loadEcoFile(m_path+".gtm");
+			emit loaded(); };
 signals:
 	void loaded();
 private:

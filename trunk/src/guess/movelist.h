@@ -84,6 +84,7 @@ public:
     void Sort (void);
     bool IsSorted (void);
     uint SelectBySquare (squareT sq);
+    uint SelectBySquares(squareT f1, squareT t1, squareT f2, squareT t2);
 };
 
 inline void

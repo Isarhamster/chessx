@@ -16,8 +16,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#include <QFile>
 #include "board.h"
 
+QMap<quint64, QList<Square> > ecoGuessPositions;
 
 Board::Board()
 	: m_hashValue(0), m_hashValue2(0)
@@ -159,6 +161,38 @@ void Board::createHash()
 		hashToMove();
 	hashCastlingRights(CastlingRights(0));
 	hashEpSquare();
+}
+
+bool Board::ecoMove(const Square square, int* from, int* to) const
+{
+	quint64 key = getHashPlusSquare(square);
+	if (ecoGuessPositions.contains(key)) {
+		QList<Square> data = ecoGuessPositions[key];
+		*from = data[0];
+		*to = data[1];
+		return true;
+	}
+	return false;
+}
+
+bool Board::loadEcoFile(const QString& ecoFile)
+{
+	QFile file(ecoFile);
+	file.open(QIODevice::ReadOnly);
+	QDataStream sin(&file);
+	quint32 id;
+	sin >> id;
+	sin >> ecoGuessPositions;
+	file.close();
+	if (id != COMPILED_GUESS_FILE_ID)
+		return false;
+	return true;
+}
+
+
+quint64 Board::getHashPlusSquare(const Square square) const
+{
+	return m_hashValue ^ RAND_EN_PASSANT2[square];
 }
 
 quint64 Board::getHashValue() const

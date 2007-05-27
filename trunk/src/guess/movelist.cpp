@@ -70,6 +70,27 @@ MoveList::Find (simpleMoveT * sm)
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// MoveList::SelectBySquares
+//   Restricts the list to only contain only the two
+//   moves suggested by (from1,to1) and (from2,to2)
+//   Returns the new size of the list.
+uint
+MoveList::SelectBySquares (squareT f1, squareT t1, squareT f2, squareT t2)
+{
+    uint index = 0;
+    for (uint i=0; i < ListSize; i++) {
+        simpleMoveT * sm = &(Moves[i]);
+	if ((sm->from == f1 && sm->to == t1) || (sm->from == f2 && sm->to == t2)) {
+		if (i != index)
+		    Moves[index] = *sm;
+		index++;
+	}
+    }
+    ListSize = index;
+    return ListSize;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // MoveList::SelectBySquare
 //   Restricts the list to only contain moves which
 //   move a piece to or from the specified square.
