@@ -165,12 +165,18 @@ void BoardView::showGuess(Square s)
 	if (m_guessMove && s != m_hoverSquare && !(m_flags & SuppressGuessMove)) {
 		m_hoverSquare = s;
 		removeGuess();
-		Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), (int) s);
-		if (!sm.error) {
-			m_hifrom = sm.from;
-			m_hito = sm.to;
+		if (m_board.ecoMove(s, &m_hifrom, &m_hito)) {
 			update(squareRect(m_hifrom));
 			update(squareRect(m_hito));
+		} else {
+			Guess::Result sm = Guess::guessMove(
+					qPrintable(m_board.toFen()), (int) s);
+			if (!sm.error) {
+				m_hifrom = sm.from;
+				m_hito = sm.to;
+				update(squareRect(m_hifrom));
+				update(squareRect(m_hito));
+			}
 		}
 	}
 }

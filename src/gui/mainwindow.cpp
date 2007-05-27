@@ -168,7 +168,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Load ECO file */
 	slotStatusMessage(tr("Loading ECO file..."));
 	qApp->setOverrideCursor(Qt::WaitCursor);
-	m_ecothread = new EcoThread(AppSettings->dataPath() + "/chessx.eco");
+	m_ecothread = new EcoThread(AppSettings->dataPath() + "/chessx");
 	connect(m_ecothread, SIGNAL(loaded()), this, SLOT(ecoLoaded()));
 	m_ecothread->start();
 }
