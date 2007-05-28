@@ -360,7 +360,7 @@ bool BitBoard::isMovable(const Square from) const
 		squares &= ~m_occupied_co[m_stm];
 		while (squares) {
 			Square to = getFirstBitAndClear64(squares);
-			if (!isIntoCheck(Move(from,to)))
+			if (prepareMove(from,to).isLegal())
 				return true;
 		}
 	}
@@ -1044,9 +1044,9 @@ Move BitBoard::parseMove(const QString& algebraic) const
 		// If not yet fully disambiguated, all but one move must be illegal
 		//  Cycle through them, and pick the first legal move.
 		while (match) {
-			if (isIntoCheck(Move(fromSquare, toSquare)))
-				fromSquare = getFirstBitAndClear64(match);
-			else	break;
+			if (prepareMove(fromSquare, toSquare).isLegal())
+				break;
+			fromSquare = getFirstBitAndClear64(match);
 		}
 	}
 
