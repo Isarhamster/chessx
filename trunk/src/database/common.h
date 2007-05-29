@@ -51,7 +51,7 @@ inline bool isBlack(const Piece p) {return p >= BlackKing && p <= BlackPawn;}
 
 /** Return PieceType of given Piece */
 inline PieceType pieceType(const Piece p)
-	{return PieceType(isWhite(p) ? p : isBlack ? p-6 : 0);}
+	{return PieceType(isWhite(p) ? p : (isBlack(p) ? p-6 : 0));}
 
 /** Return Color of given Piece */
 inline Color pieceColor(const Piece p) {return isBlack(p) ? Black : White;}
