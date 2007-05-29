@@ -370,7 +370,7 @@ bool BitBoard::isMovable(const Square from) const
 void BitBoard::setAt(const Square s, const Piece p)
 {
 	Q_ASSERT(s < 64);
-	Q_ASSERT(isValidPiece(p));
+	Q_ASSERT(isValidPiece(p) || p == Empty);
 
 	quint64 bit = SetBit(s);
 	if (m_occupied & bit)
