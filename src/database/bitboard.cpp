@@ -416,10 +416,13 @@ void BitBoard::removeAt(const Square s)
 	case Pawn:	m_pawns   ^= bit; break;
 	case Knight:	m_knights ^= bit; break;
 	case Bishop:	m_bishops ^= bit; break;
-	case Rook:	m_rooks   ^= bit; break;
+	case Rook:	m_rooks   ^= bit;
+			m_castle &= Castle[s];
+			break;
 	case Queen:	m_queens  ^= bit; break;
 	case King:	m_kings   ^= bit;
 			m_ksq[_color]= InvalidSquare;
+			destroyCastle(_color);
 			break;
 	default: break; // ERROR
 	}
