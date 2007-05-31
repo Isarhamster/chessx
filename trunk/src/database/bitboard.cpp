@@ -148,25 +148,28 @@ const quint64 fileNotGH   = ~(fileG | fileH);
 // To use the assembler version type: qmake -r "CONFIG+=fastbits"
 inline uint getFirstBitAndClear64(quint64& bb)
 {
-#if defined(Q_OS_WIN32) && defined(FASTBITS)
-	// thanks to Gerd Isenberg
-	__asm
-	{
-		xor	edx, edx
-		mov	ebx, [bb]
-		xor	eax, eax
-		inc	edx
-		bsf	ecx, [ebx]
-		jnz	found
-		bsf	ecx, [ebx+4]
-		lea	ebx, [ebx+4]
-		xor	eax, 32
-	found:
-		shl	edx, cl
-		xor	eax, ecx
-		xor	[ebx], edx
-	}
-#elif defined(FASTBITS)
+
+// Comment this out until we can find someone to fix/test it
+//#if defined(Q_OS_WIN32) && defined(FASTBITS)
+//	// thanks to Gerd Isenberg
+//	__asm
+//	{
+//		xor	edx, edx
+//		mov	ebx, [bb]
+//		xor	eax, eax
+//		inc	edx
+//		bsf	ecx, [ebx]
+//		jnz	found
+//		bsf	ecx, [ebx+4]
+//		lea	ebx, [ebx+4]
+//		xor	eax, 32
+//	found:
+//		shl	edx, cl
+//		xor	eax, ecx
+//		xor	[ebx], edx
+//	}
+//#elif defined(FASTBITS)
+#if defined(FASTBITS)
 	// Assuming x86 hardware...
 	// Testing showed this to be about 20 times faster than the C++ code
 	register uint ret;
