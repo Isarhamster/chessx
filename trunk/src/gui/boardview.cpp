@@ -35,6 +35,9 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
 		m_hoverSquare(InvalidSquare), m_hifrom(InvalidSquare), m_hito(InvalidSquare), m_flags(flags),
 		m_dragged(Empty), m_clickUsed(false)
 {
+	QSizePolicy policy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+	policy.setHeightForWidth(true);
+	setSizePolicy(policy);
 	setMouseTracking(true);
 	installEventFilter(this);
 }
@@ -360,3 +363,7 @@ bool BoardView::canDrag(Square s) const
 	else return m_board.isMovable(s);
 }
 
+int BoardView::heightForWidth(int width) const
+{
+	return width - 9 - width / 24;
+}
