@@ -345,6 +345,18 @@ void BitBoard::setStandardPosition()
 	*this = standardPosition;
 }
 
+void BitBoard::clearEnPassantSquare()
+{
+	m_epFile = 0;
+	m_epSquare = NoEPSquare;
+}
+
+void BitBoard::setEnPassantSquare(const Square s)
+{
+	m_epSquare = s;
+	m_epFile = File(s);
+}
+
 bool BitBoard::isMovable(const Square from) const
 {
 	Q_ASSERT(from < 64);
@@ -510,7 +522,20 @@ BoardStatus BitBoard::validate() const
 		return BadCastlingRights;
 
 	// Detect unreasonable ep square
-	// FIXME -- need code here to return InvalidEnPassant
+	if (m_epSquare != NoEPSquare) {
+		if (m_stm == White && (m_epSquare < a6 || m_epSquare > h6))
+			return InvalidEnPassant;
+		if (m_stm == Black && (m_epSquare < a3 || m_epSquare > h3))
+			return InvalidEnPassant;
+		if (m_occupied & SetBit(m_epSquare))
+			return InvalidEnPassant;
+		if (m_occupied & bb_PawnF1[m_stm][m_epSquare])
+			return InvalidEnPassant;
+		if (!(bb_PawnAttacks[m_stm^1][m_epSquare] & m_pawns & m_occupied_co[m_stm]))
+			return InvalidEnPassant;
+		if (!(bb_PawnF1[m_stm^1][m_epSquare] & m_pawns & m_occupied_co[m_stm^1]))
+			return InvalidEnPassant;
+	}
 
 	// Don't allow triple(or more) checks.
 	// FIXME -- need code here to return MultiCheck
