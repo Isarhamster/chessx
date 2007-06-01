@@ -56,6 +56,8 @@ public:
 	void setFlipped(bool flipped);
 	/** @return @p true if board is displayed upside down. */
 	bool isFlipped() const;
+	/** Make it almost square. */
+	virtual int heightForWidth(int width) const;
 public slots:
 	/** Reconfigure current theme. */
 	void configure();
