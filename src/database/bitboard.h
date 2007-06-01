@@ -42,6 +42,10 @@ public:
 	void swapToMove();
 	/** Parse given FEN, return true if loaded properly otherwise false */
 	bool fromFen(const QString& fen, int* moveNumber = NULL);
+	/** Set En Passant Square */
+	void setEnPassantSquare(const Square s);
+	/** Remove En Passant privilege */
+	void clearEnPassantSquare();
 
 	// Move factories
 	//
