@@ -269,7 +269,7 @@ void MainWindow::gameLoad(int index, bool force)
 		return;
 	else
 		databaseInfo()->newGame();
-	qobject_cast<QWidget*>(m_gameView->parent())->setWindowTitle(tr("Game: %1").arg(index + 1));
+	//qobject_cast<QWidget*>(m_gameView->parent())->setWindowTitle(tr("Game: %1").arg(index + 1));
 	slotGameChanged();
 }
 
