@@ -678,8 +678,10 @@ void MainWindow::slotGameLoadNext()
 
 void MainWindow::slotGameLoadRandom()
 {
-	int random = rand() % databaseInfo()->filter()->count();
-	gameLoad(databaseInfo()->filter()->indexToGame(random));
+	if (databaseInfo()->filter()->count()) {
+		int random = rand() % databaseInfo()->filter()->count();
+		gameLoad(databaseInfo()->filter()->indexToGame(random));
+	}
 }
 
 void MainWindow::slotGameLoadChosen()
