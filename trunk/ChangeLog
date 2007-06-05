@@ -1,16 +1,25 @@
+	* feature: Setup Position dialog enhancements
+	* feature: use ECO information to guess moves
+	* feature: option to combine searches
 	* feature: enable translations
 	* feature: make frame color configurable
 	* feature: remove last move with right click
-	* feature: rewrite tag search to make it much faster
 	* feature: remember matching position in position search
 	* feature: improve layout of Game Info
+	* feature: display game length in Game List
+	* feature: save/replace games in PGN
+	* feature: remove last move with right-click
 	* bugfix: fix move loading failure in large databases
 	* bugfix: don't flood tablebase servers with too many requests
 	* bugfix: sometimes online tablebase wasn't used even if enabled
 	* bugfix: flip setup board if main board is flipped
 	* bugfix: various small fixes to move guesser
 	* bugfix: some errors in Game/tags handling
-	* change: don't highlight first move in starting position
+	* bugfix: do not crash when loading random game from empty filter
+	* change: lower network usage for EGTB server
+	* change: new, much faster Board implementation
+	* change: much faster Tag search
+	* change: do not highlight first move in starting position
 	* change: redesign Board tab in Preferences dialog
 
 Wed 9 May 2007 18:59:47 CET	Version 0.4
