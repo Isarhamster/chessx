@@ -213,6 +213,7 @@ BitBoard::BitBoard()
 	memset(this, 0, sizeof(BitBoard));
 	if (!bitBoardInitRun)
 		bitBoardInit();
+	m_epSquare = NoEPSquare;
 }
 
 bool BitBoard::isCheckmate() const
@@ -1404,7 +1405,9 @@ quint64 BitBoard::pawnMovesFrom(const Square s) const
 	quint64 targets = bb_PawnF1[m_stm][s] & ~m_occupied;
 	if (targets)
 		targets |= bb_PawnF2[m_stm][s] & ~m_occupied;
-	targets |= bb_PawnAttacks[m_stm][s] & (m_occupied_co[m_stm^1] | SetBit(m_epSquare));
+	if (m_epSquare == NoEPSquare)
+		targets |= bb_PawnAttacks[m_stm][s] & m_occupied_co[m_stm^1];
+	else	targets |= bb_PawnAttacks[m_stm][s] & (m_occupied_co[m_stm^1] | SetBit(m_epSquare));
 	return targets;
 }
 
@@ -1738,6 +1741,5 @@ void bitBoardInit()
 
 	// Now that global data has been calculated, we can create a start position
 	standardPosition.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-	clearedPosition.fromFen("8/8/8/8/8/8/8/8 w KQkq - 0 1");
 }
 
