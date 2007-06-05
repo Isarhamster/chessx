@@ -41,6 +41,7 @@ GameList::GameList(Filter* filter, QWidget* parent) : QTableView(parent)
 	m_model = new FilterModel(filter, this);
 	setModel(m_model);
 	connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
+	connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
 	configure();
 
 	horizontalHeader()->setClickable(true);
