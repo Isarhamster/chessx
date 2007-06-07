@@ -25,6 +25,7 @@
 #include "gamelist.h"
 #include "helpwindow.h"
 #include "mainwindow.h"
+#include "memorydatabase.h"
 #include "output.h"
 #include "pgndatabase.h"
 #include "playerdatabase.h"
@@ -392,14 +393,45 @@ void MainWindow::slotFileOpenRecent()
 		openDatabase(action->data().toString());
 }
 
+
+void MainWindow::slotFileSave()
+{
+	if (m_currentDatabase && dynamic_cast<MemoryDatabase*>(database())) {
+		Output output(Output::Pgn);
+		output.output(database()->filename(), *database());
+		slotStatusMessage(tr("Database %1 successfully saved.")
+				.arg(database()->filename().section('/', -1)));
+	}
+}
+
 void MainWindow::slotFileClose()
 {
-	if (m_currentDatabase) {// Clipboard
+	if (m_currentDatabase) {// Don't remove Clipboard
 		m_databases.removeAt(m_currentDatabase);
 		if (m_currentDatabase == m_databases.count())
 			m_currentDatabase--;
 		updateMenuDatabases();
 		slotDatabaseChanged();
+	}
+}
+
+void MainWindow::slotFileExportFilter()
+{
+	QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString(),
+															  tr("PGN Database (*.pgn)"));
+	if (!file.isEmpty()) {
+		Output output(Output::Pgn);
+		output.output(file, *databaseInfo()->filter());
+	}
+}
+
+void MainWindow::slotFileExportAll()
+{
+	QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString(),
+															  tr("PGN Database (*.pgn)"));
+	if (!file.isEmpty()) {
+		Output output(Output::Pgn);
+		output.output(file, *database());
 	}
 }
 
@@ -804,6 +836,7 @@ void MainWindow::setupActions()
 		m_recentFileActions.append(action);
 		menuRecent->addAction(action);
 	}
+	file->addAction(createAction(tr("&Save"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S));
 	QMenu* exportMenu = file->addMenu(tr("&Export..."));
 	exportMenu->addAction(createAction(tr("&Games in filter"), SLOT(slotFileExportFilter())));
 	exportMenu->addAction(createAction(tr("&All games"), SLOT(slotFileExportAll())));
@@ -820,7 +853,7 @@ void MainWindow::setupActions()
 	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
 				     Qt::CTRL + Qt::SHIFT + Qt::Key_V));
 	edit->addAction(createAction(tr("Position &Setup..."), SLOT(slotEditBoard()),
-				     Qt::CTRL + Qt::SHIFT + Qt::Key_S));
+				     Qt::CTRL + Qt::Key_E));
 
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
@@ -914,25 +947,5 @@ void MainWindow::slotSearchReset()
 	databaseInfo()->filter()->setAll(1);
 	m_gameList->updateFilter();
 	slotFilterChanged();
-}
-
-void MainWindow::slotFileExportFilter()
-{
-	QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString(),
-			tr("PGN Database (*.pgn)"));
-	if (!file.isEmpty()) {
-		Output output(Output::Pgn);
-		output.output(file, *databaseInfo()->filter());
-	}
-}
-
-void MainWindow::slotFileExportAll()
-{
-	QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString(),
-			tr("PGN Database (*.pgn)"));
-	if (!file.isEmpty()) {
-		Output output(Output::Pgn);
-		output.output(file, *database());
-	}
 }
 
