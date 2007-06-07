@@ -89,7 +89,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_boardView = new BoardView(m_boardSplitter);
 	m_boardView->setObjectName("BoardView");
 	m_boardView->setMinimumSize(200, 200);
-	m_boardView->resize(500, 5400);
+	m_boardView->resize(500, 540);
 	connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
 	connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotBoardMove(Square, Square)));
 	connect(m_boardView, SIGNAL(clicked(Square, int)), SLOT(slotBoardClick(Square, int)));
