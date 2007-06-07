@@ -393,6 +393,9 @@ QString Output::output(Game* game)
 	writeTag("Result");
 	m_output += m_endTagMap[MarkupHeaderBlock];
 
+	// start of move output....
+	int start = m_output.length();
+
 	m_game->moveToStart();
 	m_dirtyBlack = m_game->board().toMove() == Black;
 	m_output += m_startTagMap[MarkupNotationBlock];
@@ -420,7 +423,6 @@ QString Output::output(Game* game)
 	// Chop it up, if TextWidth option is not equal to 0
 	int textWidth = m_options.getOptionAsInt("TextWidth");
 	if (textWidth) {
-		int start = m_output.indexOf(QRegExp("\n\\d+\\."));
 		int length = m_output.length() - start;
 		while (length > textWidth) {
 			start = m_output.lastIndexOf(" ", start + textWidth);
