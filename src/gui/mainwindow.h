@@ -155,6 +155,8 @@ public slots:
 	void slotFilterLoad(int index);
 	/** Open File dialog, choose a database and open it */
 	void slotFileOpen();
+	/** Save database to current file. */
+	void slotFileSave();
 	/** Open given database from Recent files list. */
 	void slotFileOpenRecent();
 	/** Exports games in filter to PGN file. */
