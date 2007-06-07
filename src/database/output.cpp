@@ -28,7 +28,7 @@ void Output::initialize()
 	readTemplateFile(m_templateFilename);
 }
 
-void Output::readTemplateFile(QString path)
+void Output::readTemplateFile(const QString& path)
 {
 	QFile file(path);
 	QStringList optionDefFields;
@@ -343,7 +343,7 @@ void Output::writeVariation()
 	}
 }
 
-void Output::writeTag(QString tagName)
+void Output::writeTag(const QString& tagName)
 {
 	MarkupType specialTag = MarkupNoFormat;
 	if (tagName == "Event") {
@@ -449,7 +449,7 @@ void Output::output(QTextStream& out, Database& database)
 		out << "\n\n";
 	}
 }
-void Output::output(QString& filename, Filter& filter)
+void Output::output(const QString& filename, Filter& filter)
 {
 	QFile f(filename);
 	if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -458,7 +458,7 @@ void Output::output(QString& filename, Filter& filter)
 	output(out, filter);
 	f.close();
 }
-void Output::output(QString& filename, Database& database)
+void Output::output(const QString& filename, Database& database)
 {
 	QFile f(filename);
 	if (!f.open(QIODevice::WriteOnly | QIODevice::Text))

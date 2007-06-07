@@ -100,12 +100,12 @@ public:
 	 * @param filename The filename that the output will be written to.
 	 * @param filter A Filter object. All games in the filter will be output, one
 	 *               after the other, using the output(Game* game) method */
-	void output(QString& filename, Filter& filter);
+	void output(const QString& filename, Filter& filter);
 	/** Create the output for the given database
 	 * @param filename The filename that the output will be written to.
 	 * @param database A pointer to a database object. All games in the database will be output, one
 	 *               after the other, using the output(Game* game) method */
-	void output(QString& filename, Database& database);
+	void output(const QString& filename, Database& database);
 	/** User definable settings.
 	 * Sets the filename of the file that contains the template that will be used
 	 * when creating the output. See example template files for syntax.
@@ -172,13 +172,13 @@ private:
 	/** Sets the start and end tag for a certain markup type */
 	void setMarkupTag(MarkupType type, const QString& startTag, const QString& endTag);
 	/** Returns the start and end tag for a certain markup type in startTag and endTag */
-	void markupTag(MarkupType type , QString& startTag, QString& endTag);
+	void markupTag(MarkupType type, QString& startTag, QString& endTag);
 	/** Read tag settings from user settings */
 	void readConfig();
 	/** Write tag settings to user settings */
 	void writeConfig();
 	/** Read the template file */
-	void readTemplateFile(QString path);
+	void readTemplateFile(const QString& path);
 	/** Sets the default settings for the specific output format */
 	void initialize();
 	/** Reload default tag settings */
@@ -192,7 +192,7 @@ private:
 	/** Writes a newline, and indent the following line */
 	void writeNewlineIndent();
 	/** Writes a game tag */
-	void writeTag(QString tagName);
+	void writeTag(const QString& tagName);
 
 };
 
