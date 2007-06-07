@@ -118,7 +118,6 @@ public slots:
 	/** Display Tracker at ChessX SourceForge */
 	void slotHelpBug();
 	void slotConfigureFlip();
-	void slotGameSave();
 	/** Go to first move of the game */
 	void slotGameMoveFirst()  {gameMoveBy(-999);}
 	/** Go to next move of the game */
@@ -149,6 +148,10 @@ public slots:
 	void slotGameViewLink(const QUrl& link);
 	/** Show/hide GameView source - useful for debugging. */
 	void slotGameViewToggle(bool source);
+	/** Create new empty game (to be appended to the database. */
+	void slotGameNew();
+	/** Save game, replacing old one if it is edited, appending if it is new */
+	void slotGameSave();
 	/** Filter was changed - update status bar information */
 	void slotFilterChanged();
 	/** Load given game (triggered from Game List) */

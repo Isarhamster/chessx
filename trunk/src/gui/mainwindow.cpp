@@ -723,13 +723,23 @@ void MainWindow::slotGameLoadChosen()
 	gameLoad(index - 1);
 }
 
+void MainWindow::slotGameNew()
+{
+	if (database()->isReadOnly())
+		QMessageBox::critical(this, tr("New game"), tr("This database is read only."));
+	else {
+		databaseInfo()->newGame();
+		slotGameChanged();
+	}
+}
+
 void MainWindow::slotGameSave()
 {
 	if (database()->isReadOnly())
 		QMessageBox::critical(this, tr("Save game"), tr("This database is read only."));
 	else if (saveDialog()->exec(game()) == QDialog::Accepted) {
 		databaseInfo()->saveGame();
-		slotGameChanged();
+		slotDatabaseChanged();
 	}
 }
 
@@ -876,6 +886,7 @@ void MainWindow::setupActions()
 	goMenu->addAction(createAction(tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down));
 	goMenu->addAction(createAction(tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up));
 
+	gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), Qt::CTRL + Qt::Key_N));
 	gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), Qt::CTRL + Qt::Key_S));
 
 	/* Search menu */
