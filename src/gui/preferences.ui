@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>461</height>
+    <width>349</width>
+    <height>460</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -187,12 +187,224 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tabEngines" >
+      <attribute name="title" >
+       <string>&amp;Engines</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <property name="margin" >
+        <number>9</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item row="1" column="0" >
+        <widget class="QWidget" native="1" name="engineEditWidget" >
+         <property name="sizePolicy" >
+          <sizepolicy>
+           <hsizetype>5</hsizetype>
+           <vsizetype>4</vsizetype>
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>1</number>
+          </property>
+          <property name="spacing" >
+           <number>1</number>
+          </property>
+          <item row="4" column="1" colspan="2" >
+           <layout class="QVBoxLayout" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <property name="spacing" >
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QRadioButton" name="engineProtocolUCI" >
+              <property name="text" >
+               <string>UCI</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="engineProtocolWinBoard" >
+              <property name="text" >
+               <string>WinBoard / XBoard</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="4" column="0" >
+           <layout class="QVBoxLayout" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <property name="spacing" >
+             <number>6</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_4" >
+              <property name="sizePolicy" >
+               <sizepolicy>
+                <hsizetype>4</hsizetype>
+                <vsizetype>4</vsizetype>
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>Protocol:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="2" >
+           <widget class="QPushButton" name="commandButton" >
+            <property name="text" >
+             <string>Select</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_6" >
+            <property name="text" >
+             <string>Name:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_3" >
+            <property name="text" >
+             <string>Command:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_5" >
+            <property name="text" >
+             <string>Options:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
+             <string>Directory:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" colspan="2" >
+           <widget class="QLineEdit" name="engineOptions" />
+          </item>
+          <item row="1" column="1" >
+           <widget class="QLineEdit" name="engineCommand" />
+          </item>
+          <item row="0" column="1" colspan="2" >
+           <widget class="QLineEdit" name="engineName" />
+          </item>
+          <item row="3" column="2" >
+           <widget class="QPushButton" name="directoryButton" >
+            <property name="text" >
+             <string>Select</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" >
+           <widget class="QLineEdit" name="engineDirectory" />
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0" >
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QListWidget" name="engineList" >
+           <property name="editTriggers" >
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="dragEnabled" >
+            <bool>false</bool>
+           </property>
+           <property name="movement" >
+            <enum>QListView::Static</enum>
+           </property>
+           <property name="sortingEnabled" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" >
+           <property name="margin" >
+            <number>0</number>
+           </property>
+           <property name="spacing" >
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="newEngineButton" >
+             <property name="text" >
+              <string>New Engine</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="deleteEngineButton" >
+             <property name="text" >
+              <string>Delete</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item row="1" column="0" >
     <layout class="QHBoxLayout" >
      <property name="margin" >
-      <number>11</number>
+      <number>4</number>
      </property>
      <property name="spacing" >
       <number>6</number>
@@ -253,19 +465,30 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>playersRatingsCheck</tabstop>
+  <tabstop>tablebaseCheck</tabstop>
+  <tabstop>tipCheck</tabstop>
+  <tabstop>quitCheck</tabstop>
   <tabstop>pieceThemeCombo</tabstop>
   <tabstop>boardThemeCombo</tabstop>
   <tabstop>boardColorsList</tabstop>
   <tabstop>guessMoveCheck</tabstop>
   <tabstop>boardFrameCheck</tabstop>
-  <tabstop>playersRatingsCheck</tabstop>
-  <tabstop>tablebaseCheck</tabstop>
-  <tabstop>tipCheck</tabstop>
-  <tabstop>quitCheck</tabstop>
+  <tabstop>engineList</tabstop>
+  <tabstop>newEngineButton</tabstop>
+  <tabstop>deleteEngineButton</tabstop>
+  <tabstop>engineName</tabstop>
+  <tabstop>engineCommand</tabstop>
+  <tabstop>commandButton</tabstop>
+  <tabstop>engineOptions</tabstop>
+  <tabstop>engineDirectory</tabstop>
+  <tabstop>directoryButton</tabstop>
+  <tabstop>engineProtocolUCI</tabstop>
+  <tabstop>engineProtocolWinBoard</tabstop>
   <tabstop>okButton</tabstop>
   <tabstop>applyButton</tabstop>
   <tabstop>cancelButton</tabstop>
-  <tabstop>tabWidget</tabstop>
  </tabstops>
  <resources/>
  <connections/>
