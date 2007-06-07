@@ -19,8 +19,6 @@
 
 #include "ui_preferences.h"
 
-
-
 /** @ingroup GUI
 The PreferencesDialog class is a dialog for configuring ChessX.
 After changes are done, reconfigure() signal is emitted. */
@@ -37,6 +35,18 @@ public slots:
 	/** Execute dialog, save options on exit */
 	int exec();
 	void slotApply();
+	/** select given engine # for display */
+	void slotSelectEngine(int);
+	/** user asked for a new engine entry */
+	void slotNewEngine();
+	/** user asked to remove current engine entry */
+	void slotDeleteEngine();
+	/** user changed the name of an engine */
+	void slotEngineNameChange(const QString&);
+	/** user wants to use file dialog to select engine command */
+	void slotSelectEngineCommand();
+	/** user wants file dialog to select directory in which engine will run */
+	void slotSelectEngineDirectory();
 private:
 	Ui::PreferencesDialog ui;
 	void restoreSettings();
@@ -46,6 +56,22 @@ private:
 	void restoreColorItem(ColorList* list, const QString& text, const QString& cfgname,
 			      const QColor& cfgcolor);
 	void saveColorList(ColorList* list, const QStringList& cfgnames);
+
+	enum EngineProtocol {WinBoard, UCI};
+	struct EngineData {
+		EngineData() {};
+		EngineData(const QString& newName) : name(newName) {};
+		QString name;
+		QString command;
+		QString options;
+		QString directory;
+		EngineProtocol protocol;
+	};
+	QList<EngineData> engineData;
+	int currentEngineRow;
+	/** Store any changes made to Engine fields in UI, into list */
+	void updateCurrentEngineData();
+
 signals:
 	/** Signal emitted when changes are applied. */
 	void reconfigure();
