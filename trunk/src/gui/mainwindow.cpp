@@ -521,7 +521,7 @@ void MainWindow::slotHelpTip()
 
 void MainWindow::slotHelpAbout()
 {
-	QString fastbits = Board::fastbitsOption ? "Compiled with 'fastbits' option<br>" : "";
+	QString fastbits = Board::fastbitsOption ? tr("Compiled with 'fastbits' option<br>") : tr("");
 	QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
 				      "<p>Free chess database.<br>Version %1<br>%2"
 				      "<p>Copyright 2005-2007 ChessX developers<br>"
