@@ -57,7 +57,6 @@ void BoardTest::testReversableHash()
 		TestGame current(allgames.pop());
 
 		quint64 previousHash = 0;
-		int moveNum = 1;
 		board.setStandardPosition();
 		QStringList moves(current.moves.split(' '));
 		QStringListIterator mi(moves);
@@ -70,10 +69,8 @@ void BoardTest::testReversableHash()
 			previousHash = hash.top();
 			move.push(board.parseMove(san));
 			board.doMove(move.top());
-			if (move.top() == Black)
-				++moveNum;
 		}
-		QVERIFY(board.toFen(moveNum) == current.finalFen);
+		QVERIFY(board.toFen() == current.finalFen);
 		while (!move.isEmpty()) {
 			board.undoMove(move.pop());
 			QVERIFY(hash.pop() == board.getHashValue());
@@ -258,7 +255,7 @@ void BoardTest::testCreateHash()
 	QVERIFY(board != board2);
 
 	// Getting back a FEN
-	QVERIFY(board2.toFen(3) == "rnbqkbnr/p1ppp1pp/8/1p2Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3");
+	QVERIFY(board2.toFen() == "rnbqkbnr/p1ppp1pp/8/1p2Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 3");
 
 	// Setting a FEN
 	board.clear();

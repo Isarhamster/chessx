@@ -456,10 +456,10 @@ bool BitBoard::isValidFen(const QString& fen) const
 	return BitBoard().fromGoodFen(fen);
 }
 
-bool BitBoard::fromFen(const QString& fen, int* moveNumber)
+bool BitBoard::fromFen(const QString& fen)
 {
 	if (isValidFen(fen))
-		return fromGoodFen(fen, moveNumber);
+		return fromGoodFen(fen);
 	return false;
 }
 
@@ -559,13 +559,12 @@ public:
 	}
 };
 
-bool BitBoard::fromGoodFen(const QString& qfen, int* moveNumber)
+bool BitBoard::fromGoodFen(const QString& qfen)
 {
 	SaneString fen(qfen);
 	int i;
 	uint s;
 	char c = fen[0];
-	int moveNum=0;
 
 	memset(this, 0, sizeof(BitBoard));
 
@@ -715,10 +714,10 @@ bool BitBoard::fromGoodFen(const QString& qfen, int* moveNumber)
 	c = fen[++i];
 	if (c < '0' || c > '9')
 		return false;
-	moveNum = fen.mid(i).toInt();
+	m_moveNumber = fen.mid(i).toInt();
 	while (c >= '0' && c <= '9')
 		c = fen[++i];
-	if (moveNum < 1)
+	if (m_moveNumber < 1)
 		return false;
 
 	// Set remainder of bitboard data appropriately
@@ -731,8 +730,6 @@ bool BitBoard::fromGoodFen(const QString& qfen, int* moveNumber)
 		}
 	}
 
-	if (moveNumber)
-		*moveNumber = moveNum;
 	return true;
 }
 
@@ -1251,6 +1248,9 @@ bool BitBoard::doMove(const Move& m)
 	m_occupied_r45 ^= SetBitR45(from);
 	m_occupied = m_occupied_co[White] + m_occupied_co[Black];
 
+	if (m_stm == Black)
+		++m_moveNumber;
+
 	m_stm ^= 1;	// toggle side to move
 	epFile2Square();
 	return true;
@@ -1394,6 +1394,9 @@ void BitBoard::undoMove(const Move& m)
 
 	m_stm ^= 1;	// toggle side to move
 
+	if (m_stm == Black)
+		--m_moveNumber;
+
 	m_halfMoves = m.u & 0xFF;
 	m_castle = (m.u >> 8) & 0xF;
 	m_epFile = (m.u >> 12) & 0xF;
@@ -1514,7 +1517,7 @@ inline QChar pieceToChar(const Piece piece)
 	return piece > BlackPawn ? '?' : " KQRBNPkqrbnp"[piece];
 };
 
-QString BitBoard::toFen(int move) const
+QString BitBoard::toFen() const
 {
 	QString fen = "";
 	Piece piece;
@@ -1567,11 +1570,11 @@ QString BitBoard::toFen(int move) const
 		fen += ' ';
 	}
 
-	//half move clock
+	// half move clock
 	fen += QString::number(halfMoveClock());
 
-	//full move number not used by board
-	fen += move <= 0 ? " 1" : " " + QString::number(move);
+	// move number
+	fen += m_moveNumber <= 0 ? " 1" : " " + QString::number(m_moveNumber);
 
 	return fen;
 }

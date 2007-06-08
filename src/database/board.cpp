@@ -38,9 +38,9 @@ void Board::setStandardPosition()
 	createHash();
 }
 
-bool Board::fromFen(const QString& fen, int* moveNumber)
+bool Board::fromFen(const QString& fen)
 {
-	if (BitBoard::fromFen(fen, moveNumber)) {
+	if (BitBoard::fromFen(fen)) {
 		createHash();
 		return true;
 	}

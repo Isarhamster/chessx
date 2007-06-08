@@ -30,6 +30,8 @@ public:
 	//
 	/** Remove all pieces and state from board */
 	void clear();
+	/** Set move number in game */
+	void setMoveNumber(uint moveNumber);
 	/** Set initial chess game position on the board */
 	void setStandardPosition();
 	/** Set the given piece on the board at the given square */
@@ -41,7 +43,7 @@ public:
 	/** Swap the side to move */
 	void swapToMove();
 	/** Parse given FEN, return true if loaded properly otherwise false */
-	bool fromFen(const QString& fen, int* moveNumber = NULL);
+	bool fromFen(const QString& fen);
 	/** Set En Passant Square */
 	void setEnPassantSquare(const Square s);
 	/** Remove En Passant privilege */
@@ -62,13 +64,15 @@ public:
 	Piece pieceAt(Square s) const;
 	/** Return number of ply since a pawn move or capture */
 	uint halfMoveClock() const;
+	/** Return the current move number in the game */
+	uint moveNumber() const;
 	/** Return color of side next to move */
 	Color toMove() const;
 
 	// Query other formats
 	//
 	/** Return a FEN string based on current board position */
-	QString toFen(int move=0) const;
+	QString toFen() const;
 	/** Return a SAN string representation of given move */
 	QString moveToSan(const Move& move) const;
 
@@ -135,8 +139,8 @@ private:
 	/** Update the epSquare value based on a new epFile value */
 	void epFile2Square();
 
-	/** Setup board according to FEN string, return given move number */
-	bool fromGoodFen(const QString& fen, int* moveNumber = NULL);
+	/** Setup board according to FEN string */
+	bool fromGoodFen(const QString& fen);
 
 
 	// Actual Bit-board data
@@ -155,6 +159,7 @@ private:
 	uchar m_epSquare;              // This is requested by hash routine enough that we keep it pre calculated
 	uchar m_castle;                // flags for castle legality  (these can be merged)
 	ushort m_halfMoves;            // Number of moves since last pawn move or capture
+	uint m_moveNumber;             // Move number in game (incremented after each black move)
 };
 
 extern quint64 bb_PawnAttacks[2][64];
@@ -276,6 +281,11 @@ inline uint BitBoard::halfMoveClock() const
 	return m_halfMoves;
 }
 
+inline uint BitBoard::moveNumber() const
+{
+	return m_moveNumber;
+}
+
 inline Color BitBoard::toMove() const
 {
 	return Color(m_stm);
@@ -305,6 +315,11 @@ inline void BitBoard::swapToMove()
 inline bool BitBoard::debugCheckMove(const Move& m) const
 {
 	return BitBoard(*this).prepareMove(m.from(), m.to()).isLegal();
+}
+
+inline void BitBoard::setMoveNumber(uint moveNumber)
+{
+	m_moveNumber = moveNumber;
 }
 
 #endif // __BITBOARD_H__

@@ -52,7 +52,7 @@ public:
 	void setStandardPosition();
 
 	/** Sets position from FEN, returns true if FEN was loaded */
-	bool fromFen(const QString& fen, int* moveNumber = NULL);
+	bool fromFen(const QString& fen);
 
 	/** Clear board of all pieces and other state */
 	void clear();
