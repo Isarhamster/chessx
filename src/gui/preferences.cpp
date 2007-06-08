@@ -129,15 +129,25 @@ void PreferencesDialog::slotSelectEngine(int newRow)
 	// Store any edits done to current data
 	updateCurrentEngineData();
 
-	// Fill edit fields with data for selected engine
-	currentEngineRow = newRow;
-	ui.engineName->setText(engineData[currentEngineRow].name);
-	ui.engineCommand->setText(engineData[currentEngineRow].command);
-	ui.engineOptions->setText(engineData[currentEngineRow].options);
-	ui.engineDirectory->setText(engineData[currentEngineRow].directory);
-	if (engineData[currentEngineRow].protocol == WinBoard)
-		ui.engineProtocolWinBoard->setChecked(true);
-	else	ui.engineProtocolUCI->setChecked(true);
+	if (newRow >= 0) {
+		// Fill edit fields with data for selected engine
+		currentEngineRow = newRow;
+		ui.engineName->setText(engineData[currentEngineRow].name);
+		ui.engineCommand->setText(engineData[currentEngineRow].command);
+		ui.engineOptions->setText(engineData[currentEngineRow].options);
+		ui.engineDirectory->setText(engineData[currentEngineRow].directory);
+		if (engineData[currentEngineRow].protocol == WinBoard)
+			ui.engineProtocolWinBoard->setChecked(true);
+		else	ui.engineProtocolUCI->setChecked(true);
+	} else {
+		currentEngineRow = -1;
+		ui.engineName->clear();
+		ui.engineCommand->clear();
+		ui.engineOptions->clear();
+		ui.engineDirectory->clear();
+		ui.engineProtocolUCI->setChecked(true);
+		ui.engineEditWidget->setEnabled(false);
+	}
 }
 
 int PreferencesDialog::exec()
