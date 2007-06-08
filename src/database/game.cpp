@@ -739,10 +739,11 @@ void Game::removeTag(const QString& tag)
 	m_tags.remove(tag);
 }
 
-void Game::setStartBoard(const Board& board, int firstMove)
+void Game::setStartBoard(const Board& board)
 {
 	m_startBoard = board;
 	m_currentBoard = board;
+	uint firstMove = board.moveNumber();
 
 	// reset game, otherwise it may be invalid
 	m_startAnnotation = QString();

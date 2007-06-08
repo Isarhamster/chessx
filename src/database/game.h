@@ -196,7 +196,7 @@ public:
 	void removeTag(const QString& tag);
 
 	/** Set the game start position */
-	void setStartBoard(const Board& startBoard, int firstMove = 1);
+	void setStartBoard(const Board& startBoard);
 	/** Set the game start position from FEN. */
 	void setStartBoard(const QString& fen);
 	/** Set annotations at the start of the game */

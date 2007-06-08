@@ -41,10 +41,6 @@ public:
 	void setFlipped(bool flipped);
 	/** Return current board */
 	Board board() const;
-	/** Set current move number */
-	void setMoveNumber(int i);
-	/** Return current move number*/
-	int moveNumber() const;
 
 public slots:
 	/** Execute dialog */

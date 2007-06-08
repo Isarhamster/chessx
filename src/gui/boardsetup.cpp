@@ -80,6 +80,7 @@ void BoardSetupDialog::setFlipped(bool flipped)
 void BoardSetupDialog::setBoard(const Board& b)
 {
 	ui.boardView->setBoard(b);
+	ui.moveSpin->setValue(b.moveNumber());
 	m_toMove = b.toMove();
 	showSideToMove();
 }
@@ -94,13 +95,16 @@ void BoardSetupDialog::slotReset()
 {
 	Board b;
 	b.setStandardPosition();
-	ui.boardView->setBoard(b);
-	m_toMove = White;
-	showSideToMove();
+	setBoard(b);
 }
 
 void BoardSetupDialog::slotAccept()
 {
+	// Need to make sure the board is updated with move number set by user
+	Board b(ui.boardView->board());
+	b.setMoveNumber(ui.moveSpin->value());
+	ui.boardView->setBoard(b);
+
 	QString reason;
 	switch (ui.boardView->board().validate()) {
 	case Valid:
@@ -152,9 +156,7 @@ void BoardSetupDialog::slotAccept()
 
 void BoardSetupDialog::slotClear()
 {
-	ui.boardView->setBoard(Board());
-	m_toMove = White;
-	showSideToMove();
+	setBoard(Board());
 }
 
 void BoardSetupDialog::slotChoosePiece(QAction* action)
@@ -176,16 +178,6 @@ void BoardSetupDialog::slotSelected(Square square, int button)
 		piece = Empty;
 	board.setAt(square, piece);
 	ui.boardView->setBoard(board);
-}
-
-void BoardSetupDialog::setMoveNumber(int i)
-{
-	ui.moveSpin->setValue(i);
-}
-
-int BoardSetupDialog::moveNumber() const
-{
-	return ui.moveSpin->value();
 }
 
 void BoardSetupDialog::showSideToMove()
