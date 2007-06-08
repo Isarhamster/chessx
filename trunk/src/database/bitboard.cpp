@@ -144,6 +144,12 @@ const quint64 fileNotGH   = ~(fileG | fileH);
 #define File(s)           ((s)&7)
 #define Rank(s)           ((s)>>3)
 
+#if defined(FASTBITS)
+const bool BitBoard::fastbitsOption = true;
+#else
+const bool BitBoard::fastbitsOption = false;
+#endif
+
 // This makes a pretty big difference on BitBoard speed...
 // To use the assembler version type: qmake -r "CONFIG+=fastbits"
 inline uint getFirstBitAndClear64(quint64& bb)
