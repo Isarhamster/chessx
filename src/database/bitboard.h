@@ -85,6 +85,9 @@ public:
 	/** validate that move is valid in position, only used for debugging */
 	bool debugCheckMove(const Move& m) const;
 
+	/** Return true if fastbits option was compiled in */
+	static const bool fastbitsOption;
+
 protected:
 	/** Return the internal castling rights data (used by hash function) */
 	CastlingRights castlingRights() const;

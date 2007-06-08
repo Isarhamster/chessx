@@ -521,14 +521,15 @@ void MainWindow::slotHelpTip()
 
 void MainWindow::slotHelpAbout()
 {
+	QString fastbits = Board::fastbitsOption ? "Compiled with 'fastbits' option<br>" : "";
 	QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
-				      "<p>Free chess database.<br>Version %1<br>"
+				      "<p>Free chess database.<br>Version %1<br>%2"
 				      "<p>Copyright 2005-2007 ChessX developers<br>"
 				      "Core developers: Sean Estabrooks, Marius Roets, Michal Rudolf.<br>"
 				      "Additional coding: Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.<br>"
 				      "<p>Homepage: <a href=\"http://chessx.sf.net\">http://chessx.sf.net</a><br>"
 				      "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">"
-				      "chessx-users@lists.sourceforge.net").arg(ChessXVersion),
+				      "chessx-users@lists.sourceforge.net").arg(ChessXVersion).arg(fastbits),
 			   QMessageBox::NoIcon, QMessageBox::Ok, Qt::NoButton, Qt::NoButton, this);
 	dialog.exec();
 }
