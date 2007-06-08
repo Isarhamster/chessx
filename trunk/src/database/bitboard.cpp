@@ -1068,7 +1068,10 @@ Move BitBoard::parseMove(const QString& algebraic) const
 			match &= bb_rankMask[fromRank];
 		else if (fromFile >= 0)
 			match &= bb_fileMask[fromFile];
-		fromSquare = getFirstBitAndClear64(match);
+
+		if (match)
+			fromSquare = getFirstBitAndClear64(match);
+		else	return move;
 
 		// If not yet fully disambiguated, all but one move must be illegal
 		//  Cycle through them, and pick the first legal move.
