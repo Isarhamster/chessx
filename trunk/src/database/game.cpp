@@ -115,7 +115,7 @@ const Board& Game::board() const
 
 QString Game::toFen() const
 {
-	return m_currentBoard.toFen(moveNumber());
+	return m_currentBoard.toFen();
 }
 
 bool Game::isMainline()
@@ -758,9 +758,9 @@ void Game::setStartBoard(const Board& board, int firstMove)
 
 void Game::setStartBoard(const QString& fen)
 {
-	int start = 0;
-	m_startBoard.fromFen(fen, &start);
+	m_startBoard.fromFen(fen);
 	m_currentBoard = m_startBoard;
+	uint start = m_startBoard.moveNumber();
 	if (start > 0)
 		m_startPly = (start - 1) * 2 + (m_startBoard.toMove() == Black);
 	else	m_startPly = 0;
