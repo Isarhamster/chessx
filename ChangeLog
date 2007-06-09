@@ -9,7 +9,9 @@
 	* feature: display game length in Game List
 	* feature: save/replace games in PGN
 	* feature: remove last move with right-click
+	* feature: shortcuts for Game List and Game Text
 	* bugfix: fix move loading failure in large databases
+	* bugfix: open PGN files from command line
 	* bugfix: don't flood tablebase servers with too many requests
 	* bugfix: sometimes online tablebase wasn't used even if enabled
 	* bugfix: flip setup board if main board is flipped
