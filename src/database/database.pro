@@ -32,7 +32,8 @@ HEADERS += board.h \
            index.h \
            filtermodel.h \
            tablebase.h \
-           bitboard.h
+           bitboard.h \
+			  openingtree.h
 SOURCES += board.cpp \
            common.cpp \
            game.cpp \
@@ -64,7 +65,8 @@ SOURCES += board.cpp \
            index.cpp \
            filtermodel.cpp \
            tablebase.cpp \
-           bitboard.cpp
+           bitboard.cpp \
+			  openingtree.cpp
 
 include(../common.pro)
 TARGET = database

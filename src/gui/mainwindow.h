@@ -228,6 +228,7 @@ private:
 	QSplitter* m_boardSplitter;
 	ChessBrowser* m_moveView;
 	ChessBrowser* m_gameView;
+	ChessBrowser* m_openingTree;
 	/* Status */
 	QLabel* m_statusFilter;
 	/* Menus */

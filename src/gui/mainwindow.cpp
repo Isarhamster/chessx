@@ -19,13 +19,13 @@
 #include "chessbrowser.h"
 #include "databaseinfo.h"
 #include "ecothread.h"
-//#include "enginesetup.h"
 #include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"
 #include "helpwindow.h"
 #include "mainwindow.h"
 #include "memorydatabase.h"
+#include "openingtree.h"
 #include "output.h"
 #include "pgndatabase.h"
 #include "playerdatabase.h"
@@ -130,6 +130,16 @@ MainWindow::MainWindow() : QMainWindow(),
 	addDockWidget(Qt::BottomDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());
 	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_L);
+
+	/* Opening Tree */
+	dock = new QDockWidget(tr("Opening Tree"), this);
+	dock->setObjectName("OpeningTree");
+	m_openingTree = new ChessBrowser(dock);
+	m_openingTree->setMinimumSize(150, 100);
+	dock->setWidget(m_openingTree);
+	addDockWidget(Qt::RightDockWidgetArea, dock);
+	m_menuView->addAction(dock->toggleViewAction());
+	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
 
 	/* Randomize */
 	srand(time(0));
@@ -263,8 +273,7 @@ int MainWindow::gameIndex() const
 
 void MainWindow::gameLoad(int index, bool force)
 {
-	if (index >= 0 && index < database()->count())
-	{
+	if (index >= 0 && index < database()->count()) {
 		databaseInfo()->loadGame(index);
 		m_gameList->selectGame(index);
 	}
@@ -272,7 +281,6 @@ void MainWindow::gameLoad(int index, bool force)
 		return;
 	else
 		databaseInfo()->newGame();
-	//qobject_cast<QWidget*>(m_gameView->parent())->setWindowTitle(tr("Game: %1").arg(index + 1));
 	slotGameChanged();
 }
 
@@ -657,6 +665,11 @@ void MainWindow::slotMoveChanged()
 			    .arg(header).arg(move).arg(var));
 	if (AppSettings->value("/General/onlineTablebases", true).toBool())
 		m_tablebase->getBestMove(g.toFen());
+
+	if (m_openingTree->isVisible() && database()->count()) {
+		OpeningTree tree(*databaseInfo()->filter(), m_boardView->board());
+		m_openingTree->setText(tree.debug());
+	}
 }
 
 void MainWindow::showTablebaseMove(Move move, int score)
