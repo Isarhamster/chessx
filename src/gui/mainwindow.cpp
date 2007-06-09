@@ -913,8 +913,9 @@ void MainWindow::setupActions()
 	/* Settings menu */
 	QMenu *settings = menuBar()->addMenu(tr("&Settings"));
 	settings->addAction(createAction(tr("&Configure ChessX..."), SLOT(slotConfigure())));
-//  settings ->addAction(createAction(tr("Chess &Engines..."), this, SLOT(slotConfigureChessEngines()));
-	settings ->addAction(createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B));
+	QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
+	flip->setCheckable(true);
+	settings->addAction(flip);
 
 	/* Help menu */
 	menuBar()->addSeparator();
