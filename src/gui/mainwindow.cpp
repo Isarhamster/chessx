@@ -54,7 +54,7 @@
 
 MainWindow::MainWindow() : QMainWindow(),
 		m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_tipDialog(0),
-		m_showPgnSource(false), m_useTablebase(false)
+		m_showPgnSource(false)
 {
 	setObjectName("MainWindow");
 	/* Active database */
@@ -380,10 +380,13 @@ TipOfDayDialog* MainWindow::tipDialog()
 
 void MainWindow::slotFileOpen()
 {
-	QString file = QFileDialog::getOpenFileName(this, tr("Open database"), QString(),
+	QString file = QFileDialog::getOpenFileName(this, tr("Open database"),
+			AppSettings->value("/General/databasePath").toString(),
 			tr("PGN Database (*.pgn)"));
-	if (!file.isEmpty())
+	if (!file.isEmpty()) {
+		AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
 		openDatabase(file);
+	}
 }
 
 void MainWindow::slotFileOpenRecent()
@@ -454,8 +457,6 @@ void MainWindow::slotConfigure()
 
 void MainWindow::slotReconfigure()
 {
-	m_useTablebase = AppSettings->value("/General/onlineTablebases", true).toBool();
-
 	// Re-emit for children
 	emit reconfigure();
 }
@@ -652,7 +653,7 @@ void MainWindow::slotMoveChanged()
 	}
 	m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4%5</qt>").arg(players).arg(result)
 			    .arg(header).arg(move).arg(var));
-	if (m_useTablebase)
+	if (AppSettings->value("/General/onlineTablebases", true).toBool())
 		m_tablebase->getBestMove(g.toFen());
 }
 

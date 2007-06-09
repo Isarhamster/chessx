@@ -244,7 +244,6 @@ private:
 	QString m_eco;
 	QActionGroup* m_actions;
 	bool m_showPgnSource; // for debugging
-	bool m_useTablebase; // for debugging
 	Tablebase* m_tablebase;
 	EcoThread* m_ecothread;
 };
