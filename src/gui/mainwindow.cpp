@@ -155,7 +155,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Load files from command line */
 	QStringList args = qApp->arguments();
 	for (int i = 1; i < args.count(); i++)
-		if (!QFile::exists(args[i]))
+		if (QFile::exists(args[i]))
 			openDatabase(args[i]);
 
 	/* Activate clipboard */
