@@ -115,6 +115,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	dock->setWidget(m_gameView);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());
+	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_P);
 
 	/* Game List */
 	dock = new QDockWidget(tr("Game List"), this);
@@ -128,6 +129,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	dock->setWidget(m_gameList);
 	addDockWidget(Qt::BottomDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());
+	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_L);
 
 	/* Randomize */
 	srand(time(0));
