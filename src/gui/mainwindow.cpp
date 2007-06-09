@@ -667,8 +667,11 @@ void MainWindow::slotMoveChanged()
 		m_tablebase->getBestMove(g.toFen());
 
 	if (m_openingTree->isVisible() && database()->count()) {
+		QTime time;
+		time.start();
 		OpeningTree tree(*databaseInfo()->filter(), m_boardView->board());
 		m_openingTree->setText(tree.debug());
+		slotStatusMessage(tr("Tree updated (%1 s.)").arg(time.elapsed() / 100 / 10.0));
 	}
 }
 
