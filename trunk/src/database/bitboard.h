@@ -68,6 +68,8 @@ public:
 	uint moveNumber() const;
 	/** Return color of side next to move */
 	Color toMove() const;
+	/** Return true if its possible for this position to follow target position */
+	bool canBeReachedFrom(const BitBoard& target) const;
 
 	// Query other formats
 	//

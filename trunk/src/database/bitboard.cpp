@@ -1508,6 +1508,46 @@ bool BitBoard::prepareCastle(Move& move) const
 	return false;
 }
 
+bool BitBoard::canBeReachedFrom(const BitBoard& target) const
+{
+	short whitePawnCount=0;
+	short blackPawnCount=0;
+	short whitePieceCount=0;
+	short blackPieceCount=0;
+
+	for (quint64 bit=1; bit; bit >>= 1) {
+		if (target.m_occupied & bit) {
+			if (target.m_occupied_co[White] & bit) {
+				if (target.m_pawns & bit)
+					++whitePawnCount;
+				else	++whitePieceCount;
+			} else {
+				if (target.m_pawns & bit)
+					++blackPawnCount;
+				else	++blackPieceCount;
+			}
+		}
+		if (m_occupied & bit) {
+			if (m_occupied_co[White] & bit) {
+				if (m_pawns & bit)
+					--whitePawnCount;
+				else	--whitePieceCount;
+			} else {
+				if (m_pawns & bit)
+					--blackPawnCount;
+				else	--blackPieceCount;
+			}
+		}
+	}
+
+	// If we have more pieces or pawns on this board, no way we can come after target
+	if (whitePawnCount < 0 || whitePieceCount < 0 ||
+	    blackPawnCount < 0 || blackPieceCount < 0)
+		return false;
+
+	return true;
+}
+
 Piece BitBoard::pieceAt(Square s) const
 {
 	Q_ASSERT(s < 64);
