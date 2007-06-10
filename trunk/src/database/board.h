@@ -92,20 +92,17 @@ public:
 	/** Compare one board to another for equality, based on hash values */
 	bool operator == (const Board& b) const
 	{
-		return ((m_hashValue == b.getHashValue()) &&
-			(m_hashValue2 == b.getHashValue2()));
+		return m_hashValue == b.getHashValue();
 	}
 
 	/** Compare one board to another for differences, based on hash values */
 	bool operator != (const Board& b) const
 	{
-		return ((m_hashValue != b.getHashValue()) ||
-			(m_hashValue2 != b.getHashValue2()));
+		return m_hashValue != b.getHashValue();
 	}
 
 private:
 	quint64 m_hashValue;
-	quint64 m_hashValue2;
 
 	/** Play (or undo) move on board and calculate hash value for new position */
 	bool doIt(const Move& m, bool undo);
