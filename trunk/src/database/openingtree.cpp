@@ -62,14 +62,18 @@ void OpeningTree::update(Filter& f, const Board& b)
 {
 	Game g;
 	QMap<Move, MoveData> moves;
-	for (int i = 0; i < f.size(); i++)
+	for (int i = 0; i < f.size(); i++) {
 		f.database()->loadGameMoves(i, g);
-		if (g.findPosition(b)) {
-			//g.moveToPly(f.gamePosition(i) - 1);
+		int ply = g.findPosition(b);
+		f.set(i, ply);
+		if (ply)
+		{
+			g.moveToPly(ply - 1);
 			if (!g.atEnd()) {
 				moves[g.move()].addGame(g, b.toMove());
 			}
 		}
+	}
 	m_moves.clear();
 	for (QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
 		m_moves.append(it.value());
