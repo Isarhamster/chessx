@@ -806,6 +806,7 @@ void MainWindow::slotGameViewToggle(bool toggled)
 
 void MainWindow::slotFilterChanged()
 {
+	m_gameList->selectGame(gameIndex());
 	int count = databaseInfo()->filter()->count();
 	QString f = count == database()->count() ? "all" : QString::number(count);
 	m_statusFilter->setText(tr(" %1: %2/%3 ").arg(databaseName())
