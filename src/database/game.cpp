@@ -418,6 +418,26 @@ void Game::moveToEnd()
 	}
 }
 
+int Game::findPosition(const BitBoard& position)
+{
+	moveToStart();
+
+	int ply = m_ply + 1;
+	int current = m_currentNode;
+	BitBoard game(m_currentBoard);
+
+	for (;;) {
+		if (game.positionIsSame(position))
+			return ply;
+		current = m_moveNodes[current].nextNode;
+		if (!current || !game.canBeReachedFrom(position))
+			break;
+		game.doMove(m_moveNodes[current].move);
+		++ply;
+	}
+	return 0;
+}
+
 int Game::forward(int count)
 {
 	int toMove = count;

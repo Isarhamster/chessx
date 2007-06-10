@@ -160,6 +160,8 @@ public:
 	//game information methods
 	/** @return ECO code for the game */
 	QString ecoClassify() const;
+	/** Search game to see if given position exists, if it does return ply */
+	int findPosition(const BitBoard& position);
 
 	/** @return tag id of white player */
 	int white() const;
