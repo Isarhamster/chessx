@@ -167,6 +167,8 @@ private:
 	uchar m_castle;                // flags for castle legality  (these can be merged)
 	ushort m_halfMoves;            // Number of moves since last pawn move or capture
 	uint m_moveNumber;             // Move number in game (incremented after each black move)
+	char m_pawnCount[2];           // Number of pawns for each side
+	char m_pieceCount[2];           // Number of pieces for each side
 };
 
 extern quint64 bb_PawnAttacks[2][64];

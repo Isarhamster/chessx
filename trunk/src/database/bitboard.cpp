@@ -403,8 +403,9 @@ void BitBoard::setAt(const Square s, const Piece p)
 		return;
 
 	Color _color = pieceColor(p);
+	++m_pieceCount[_color];
 	switch (pt) {
-	case Pawn:	m_pawns   |= bit; break;
+	case Pawn:	m_pawns   |= bit; ++m_pawnCount[_color]; break;
 	case Knight:	m_knights |= bit; break;
 	case Bishop:	m_bishops |= bit; break;
 	case Rook:	m_rooks   |= bit; break;
@@ -434,8 +435,9 @@ void BitBoard::removeAt(const Square s)
 		return;
 
 	Color _color = m_occupied_co[White] & bit ? White : Black;
+	--m_pieceCount[_color];
 	switch (m_piece[s]) {
-	case Pawn:	m_pawns   ^= bit; break;
+	case Pawn:	m_pawns   ^= bit; --m_pawnCount[_color]; break;
 	case Knight:	m_knights ^= bit; break;
 	case Bishop:	m_bishops ^= bit; break;
 	case Rook:	m_rooks   ^= bit;
@@ -492,6 +494,11 @@ BoardStatus BitBoard::validate() const
 			++bo;
 		}
 	}
+
+	Q_ASSERT(wp == m_pawnCount[White]);
+	Q_ASSERT(bp == m_pawnCount[Black]);
+	Q_ASSERT(wp+wk+wo == m_pieceCount[White]);
+	Q_ASSERT(bp+bk+bo == m_pieceCount[Black]);
 
 	// Exactly one king per side
 	if (wk == 0) return NoWhiteKing;
@@ -592,30 +599,36 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 			m_piece[s] = Pawn;
 			m_pawns |= SetBit(s);
 			m_occupied_co[Black] |= SetBit(s);
+			++m_pawnCount[Black];
+			++m_pieceCount[Black];
 			s++;
 			break;
 		case 'n':
 			m_piece[s] = Knight;
 			m_knights |= SetBit(s);
 			m_occupied_co[Black] |= SetBit(s);
+			++m_pieceCount[Black];
 			s++;
 			break;
 		case 'b':
 			m_piece[s] = Bishop;
 			m_bishops |= SetBit(s);
 			m_occupied_co[Black] |= SetBit(s);
+			++m_pieceCount[Black];
 			s++;
 			break;
 		case 'r':
 			m_piece[s] = Rook;
 			m_rooks |= SetBit(s);
 			m_occupied_co[Black] |= SetBit(s);
+			++m_pieceCount[Black];
 			s++;
 			break;
 		case 'q':
 			m_piece[s] = Queen;
 			m_queens |= SetBit(s);
 			m_occupied_co[Black] |= SetBit(s);
+			++m_pieceCount[Black];
 			s++;
 			break;
 		case 'k':
@@ -623,36 +636,43 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 			m_kings |= SetBit(s);
 			m_occupied_co[Black] |= SetBit(s);
 			m_ksq[Black] = s;
+			++m_pieceCount[Black];
 			s++;
 			break;
 		case 'P':
 			m_piece[s] = Pawn;
 			m_pawns |= SetBit(s);
 			m_occupied_co[White] |= SetBit(s);
+			++m_pawnCount[White];
+			++m_pieceCount[Black];
 			s++;
 			break;
 		case 'N':
 			m_piece[s] = Knight;
 			m_knights |= SetBit(s);
 			m_occupied_co[White] |= SetBit(s);
+			++m_pieceCount[White];
 			s++;
 			break;
 		case 'B':
 			m_piece[s] = Bishop;
 			m_bishops |= SetBit(s);
 			m_occupied_co[White] |= SetBit(s);
+			++m_pieceCount[White];
 			s++;
 			break;
 		case 'R':
 			m_piece[s] = Rook;
 			m_rooks |= SetBit(s);
 			m_occupied_co[White] |= SetBit(s);
+			++m_pieceCount[White];
 			s++;
 			break;
 		case 'Q':
 			m_piece[s] = Queen;
 			m_queens |= SetBit(s);
 			m_occupied_co[White] |= SetBit(s);
+			++m_pieceCount[White];
 			s++;
 			break;
 		case 'K':
@@ -660,6 +680,7 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 			m_kings |= SetBit(s);
 			m_occupied_co[White] |= SetBit(s);
 			m_ksq[White] = s;
+			++m_pieceCount[White];
 			s++;
 			break;
 		default:
@@ -1182,6 +1203,8 @@ bool BitBoard::doMove(const Move& m)
 	case Move::PROMOTE:
 		m_halfMoves = 0;
 		m_pawns ^= bb_from;
+		++m_pieceCount[m_stm];
+		--m_pawnCount[m_stm];
 		switch (m.promoted()) {
 		case Knight:
 			m_knights ^= bb_to;
@@ -1212,21 +1235,26 @@ bool BitBoard::doMove(const Move& m)
 		m_occupied_r45 ^= SetBitR45(to);
 		break;
 	case Pawn:
+		--m_pawnCount[sntm];
+		--m_pieceCount[sntm];
 		m_halfMoves = 0;
 		m_pawns ^= bb_to;
 		m_occupied_co[sntm] ^= bb_to;
 		break;
 	case Knight:
+		--m_pieceCount[sntm];
 		m_halfMoves = 0;
 		m_knights ^= bb_to;
 		m_occupied_co[sntm] ^= bb_to;
 		break;
 	case Bishop:
+		--m_pieceCount[sntm];
 		m_halfMoves = 0;
 		m_bishops ^= bb_to;
 		m_occupied_co[sntm] ^= bb_to;
 		break;
 	case Rook:
+		--m_pieceCount[sntm];
 		m_halfMoves = 0;
 		m_rooks ^= bb_to;
 		m_occupied_co[sntm] ^= bb_to;
@@ -1234,11 +1262,14 @@ bool BitBoard::doMove(const Move& m)
 			m_castle &= Castle[to];
 		break;
 	case Queen:
+		--m_pieceCount[sntm];
 		m_halfMoves = 0;
 		m_queens ^= bb_to;
 		m_occupied_co[sntm] ^= bb_to;
 		break;
 	case Move::ENPASSANT:
+		--m_pawnCount[sntm];
+		--m_pieceCount[sntm];
 		m_halfMoves = 0;
 		uint epsq = to + (m_stm == White ? -8 : 8);  // annoying move, the capture is not on the 'to' square
 		m_piece[epsq] = Empty;
@@ -1335,6 +1366,8 @@ void BitBoard::undoMove(const Move& m)
 	case Move::PROMOTE:
 		m_pawns ^= bb_from;
 		m_piece[from] = Pawn;
+		--m_pieceCount[m_stm];
+		++m_pawnCount[m_stm];
 		switch (m.promoted()) {
 		case Knight:
 			m_knights ^= bb_to;
@@ -1362,26 +1395,34 @@ void BitBoard::undoMove(const Move& m)
 		m_occupied_r45 ^= SetBitR45(to);
 		break;
 	case Pawn:
+		++m_pawnCount[m_stm];
+		++m_pieceCount[m_stm];
 		m_pawns ^= bb_to;
 		m_occupied_co[m_stm] ^= bb_to;
 		break;
 	case Knight:
+		++m_pieceCount[m_stm];
 		m_knights ^= bb_to;
 		m_occupied_co[m_stm] ^= bb_to;
 		break;
 	case Bishop:
+		++m_pieceCount[m_stm];
 		m_bishops ^= bb_to;
 		m_occupied_co[m_stm] ^= bb_to;
 		break;
 	case Rook:
+		++m_pieceCount[m_stm];
 		m_rooks ^= bb_to;
 		m_occupied_co[m_stm] ^= bb_to;
 		break;
 	case Queen:
+		++m_pieceCount[m_stm];
 		m_queens ^= bb_to;
 		m_occupied_co[m_stm] ^= bb_to;
 		break;
 	case Move::ENPASSANT:
+		++m_pawnCount[m_stm];
+		++m_pieceCount[m_stm];
 		replace = Empty;
 		uint epsq = to + (sntm == White ? -8 : 8);  // annoying move, the capture is not on the 'to' square
 		m_piece[epsq] = Pawn;
@@ -1510,41 +1551,11 @@ bool BitBoard::prepareCastle(Move& move) const
 
 bool BitBoard::canBeReachedFrom(const BitBoard& target) const
 {
-	short whitePawnCount=0;
-	short blackPawnCount=0;
-	short whitePieceCount=0;
-	short blackPieceCount=0;
-
-	for (quint64 bit=1; bit; bit <<= 1) {
-		if (target.m_occupied & bit) {
-			if (target.m_occupied_co[White] & bit) {
-				if (target.m_pawns & bit)
-					++whitePawnCount;
-				else	++whitePieceCount;
-			} else {
-				if (target.m_pawns & bit)
-					++blackPawnCount;
-				else	++blackPieceCount;
-			}
-		}
-		if (m_occupied & bit) {
-			if (m_occupied_co[White] & bit) {
-				if (m_pawns & bit)
-					--whitePawnCount;
-				else	--whitePieceCount;
-			} else {
-				if (m_pawns & bit)
-					--blackPawnCount;
-				else	--blackPieceCount;
-			}
-		}
-	}
-
-	// If we have more pieces or pawns on this board, no way we can come after target
-	if (whitePawnCount < 0 || whitePieceCount < 0 ||
-	    blackPawnCount < 0 || blackPieceCount < 0)
-		return false;
-
+	if (	m_pieceCount[White] > target.m_pieceCount[White] ||
+		m_pieceCount[Black] > target.m_pieceCount[Black] ||
+		m_pawnCount[White] > target.m_pawnCount[White] ||
+		m_pawnCount[Black] > target.m_pawnCount[Black])
+			return false;
 	return true;
 }
 
