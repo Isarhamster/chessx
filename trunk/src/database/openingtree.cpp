@@ -30,7 +30,7 @@ MoveData::MoveData()
 void MoveData::addGame(Game& g, Color c)
 {
 	if (move.isEmpty())
-		move = g.moveToSan();
+		move = g.atEnd() ? "[end]" : g.moveToSan();
 	count++;
 	result[g.result()]++;
 	unsigned elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
@@ -66,12 +66,9 @@ void OpeningTree::update(Filter& f, const Board& b)
 		f.database()->loadGameMoves(i, g);
 		int ply = g.findPosition(b);
 		f.set(i, ply);
-		if (ply)
-		{
+		if (ply)	{
 			g.moveToPly(ply - 1);
-			if (!g.atEnd()) {
-				moves[g.move()].addGame(g, b.toMove());
-			}
+			moves[g.atEnd() ? Move() : g.move()].addGame(g, b.toMove());
 		}
 	}
 	m_moves.clear();
