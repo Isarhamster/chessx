@@ -96,6 +96,19 @@ void PgnDatabase::close()
 	initialise();
 }
 
+void PgnDatabase::loadGameMoves(int index, Game& game)
+{
+	if (!m_isOpen || index >= m_count)
+		return;
+	game.clear();
+	seekGame(index);
+	skipTags();
+	QString fen = m_index.tagValue(TagFEN, m_count - 1);
+	if (fen != "?")
+		game.setStartBoard(fen);
+	parseMoves(&game);
+}
+
 bool PgnDatabase::loadGame(int index, Game& game)
 {
 	if (!m_isOpen || index >= m_count) {

@@ -51,6 +51,8 @@ public:
 	//game retrieval & storage
 	/** Loads a game from the given position, returns true if successful */
 	bool loadGame(int index, Game& game);
+	/** Loads only moves into a game from the given position */
+	void loadGameMoves(int index, Game& game);
 
 protected:
 	//parsing methods
