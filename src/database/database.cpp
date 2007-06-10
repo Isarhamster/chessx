@@ -22,18 +22,6 @@
 Database::~Database()
 {}
 
-bool Database::loadGameHeaders(int index, Game& game)
-{
-	QList <QPair< QString, QString> > gameTags;
-	gameTags = m_index.allGameTags(index);
-
-	for (int i = 0; i < gameTags.count(); ++i) {
-		game.setTag(gameTags[i].first, gameTags[i].second);
-	}
-
-	return true;
-}
-
 Index* Database::index()
 {
 	return &m_index;

@@ -43,10 +43,6 @@ Index::~Index()
 	}
 
 }
-void Index::setFilename(const QString& filename)
-{
-	m_filename = filename;
-}
 void Index::setTag(Tag tag, QString value, int gameId)
 {
 	// Add value to taglist
@@ -80,12 +76,11 @@ void Index::setTag(const QString& tagName, QString value, int gameId)
 		index);
 }
 
-TagIndex Index::add ()
+GameId Index::add()
 {
 	int gameId = m_indexItems.count();
 	m_indexItems.append(new IndexItem);
 	m_indexItems[gameId]->allocate(m_tagIndexSize);
-
 	return gameId;
 }
 void Index::createIndexItems()
@@ -128,6 +123,7 @@ QString Index::tagValue(Tag tag, int gameId)
 					     m_tagIndexPosition[tag].first,
 					     m_tagIndexPosition[tag].second));
 }
+/*
 void Index::write()
 {
 	QFile file(m_filename);
@@ -166,6 +162,11 @@ void Index::read()
 	}
 
 }
+void Index::setFilename(const QString& filename)
+{
+	m_filename = filename;
+}
+*/
 void Index::clear()
 {
 	for (int i = 0 ; i < m_indexItems.count() ; ++i) {
@@ -216,4 +217,13 @@ Tag Index::tagFromString(const QString& tagName)
 IndexItem* Index::item(int gameId)
 {
 	return m_indexItems[gameId];
+}
+
+void Index::loadGameHeaders(GameId id, Game& game)
+{
+	QList <QPair< QString, QString> > gameTags;
+	gameTags = allGameTags(id);
+
+	for (int i = 0; i < gameTags.count(); ++i)
+		game.setTag(gameTags[i].first, gameTags[i].second);
 }

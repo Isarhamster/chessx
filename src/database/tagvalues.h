@@ -23,6 +23,7 @@
 #include <QBitArray>
 
 typedef quint32 TagIndex;
+typedef quint32 GameId;
 
 /** @ingroup Core
 TagValues class holds a list of integer values. The list

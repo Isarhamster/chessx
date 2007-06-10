@@ -38,51 +38,52 @@ class Index
 public:
 	Index();
 	~Index();
-	/** Removes index item for game gameIndex */
-	void remove (int gameIndex);
 
-
-	/** Sets the tag value for game 'gameId, tag 'tag, to value 'value' */
+	// Storing tags //
+	//
+	/** Store the tag value for the given game, tag is given by tag id */
 	void setTag(Tag tag, QString value, int gameId);
+
+	/** Store the tag value for the given game, tag is given by name */
 	void setTag(const QString& tagName, QString value, int gameId);
-	/** Get the value of tag 'tag' for game 'gameId' */
+
+	/** Create new gameId in index and store all tags from game object into it */
+	GameId add(const Game& game);
+
+
+	// Retrieving tags //
+	//
+	/** Restore all tags from gameId into game object */
+	void loadGameHeaders(GameId id, Game& game);
+
+	/** Get the tag value for given game */
 	QString tagValue(Tag tag, int gameId);
 
-	/** Recreates Index, removing all unused TagValues */
-	bool compact();
-	/** Write the index to disk, using m_filename */
-	void write();
-	/** Read the index from disk, using m_filename */
-	void read();
-	/** Sets the filename for reading and saving index */
-	void setFilename(const QString& filename);
-	/** Adds a index item, and initialize with the headers from game */
-	TagIndex add (const Game& game);
 
-	/** Returns a map of all tag name/tag value pairs for a given game.
-	 * Currently all tags in the database are returned, if the game does
-	 * not a have a value for a particular tag, a default value is returned.
-	 */
-	QList<QPair<QString, QString> > allGameTags(int gameId);
+	// Searching tags //
+	//
+	/** Return a bit array to indicate which games in index have tag with matching value */
+	QBitArray listContainingValue(Tag tag, const QString& value);
 
+	/** Returns a bit array to indicate which games in index have a tag value in given range */
+	QBitArray listInRange(Tag tag, const QString& minValue, const QString& maxValue);
+
+
+	// Utility //
+	//
 	/** Enables fast loading of many values */
 	void setCacheEnabled(bool enabled);
 
-	/** Returns a bit array that indicates which values match the string value */
-	QBitArray listContainingValue(Tag tag, const QString& value);
-	/** Returns a bit array that indicates which values are in the range
-	 * minValue - maxValue*/
-	QBitArray listInRange(Tag tag, const QString& minValue, const QString& maxValue);
 	/** Returns the index of the value in the appropriate tag list */
 	int valueIndex(Tag tag, int gameId);
-	/** Returns the Tag value for the given tag name */
+
+	/** Returns the Tag id associated with tag-name string */
 	Tag tagFromString(const QString& tagName);
+
+private:
 	/** Return a pointer to the index item for the given game id */
 	IndexItem* item(int gameId);
 
-
-
-private:
 	TagList m_tagList;
 	QList<IndexItem*> m_indexItems;
 
@@ -111,7 +112,24 @@ private:
 	/** Uncompress the data when reading from disk. Is this necessary? */
 	void unpack();
 
+	/** Returns a map of all tag name/tag value pairs for a given game.
+	 * Currently all tags in the database are returned, if the game does
+	 * not a have a value for a particular tag, a default value is returned.
+	 */
+	QList<QPair<QString, QString> > allGameTags(int gameId);
 
+// Unused:
+//	/** Recreates Index, removing all unused TagValues */
+//	bool compact();
+//	/** Write the index to disk, using m_filename */
+//	void write();
+//	/** Read the index from disk, using m_filename */
+//	void read();
+//	/** Sets the filename for reading and saving index */
+//	void setFilename(const QString& filename);
+
+	/** Removes index item for game gameIndex */
+	void remove (int gameIndex);
 
 };
 
