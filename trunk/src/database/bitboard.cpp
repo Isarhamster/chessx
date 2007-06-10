@@ -1515,7 +1515,7 @@ bool BitBoard::canBeReachedFrom(const BitBoard& target) const
 	short whitePieceCount=0;
 	short blackPieceCount=0;
 
-	for (quint64 bit=1; bit; bit >>= 1) {
+	for (quint64 bit=1; bit; bit <<= 1) {
 		if (target.m_occupied & bit) {
 			if (target.m_occupied_co[White] & bit) {
 				if (target.m_pawns & bit)

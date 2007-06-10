@@ -430,7 +430,7 @@ int Game::findPosition(const BitBoard& position)
 		if (game.positionIsSame(position))
 			return ply;
 		current = m_moveNodes[current].nextNode;
-		if (!current || !game.canBeReachedFrom(position))
+		if (!current || !position.canBeReachedFrom(game))
 			break;
 		game.doMove(m_moveNodes[current].move);
 		++ply;
