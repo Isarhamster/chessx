@@ -68,15 +68,20 @@ bool MemoryDatabase::replace(int index, Game& game)
 	m_games[index]->clearTags();
 	return true;
 }
+
+void MemoryDatabase::loadGameMoves(int index, Game& game)
+{
+	if (!m_isOpen || index >= m_count)
+		return;
+	game = *m_games[index];
+}
+
 bool MemoryDatabase::loadGame(int index, Game& game)
 {
-	if (!m_isOpen || index >= m_count) {
+	if (!m_isOpen || index >= m_count)
 		return false;
-	}
-	game.clear();
 	game = *m_games[index];
 	loadGameHeaders(index, game);
-
 	return true;
 }
 bool MemoryDatabase::parseFile()

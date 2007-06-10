@@ -64,6 +64,8 @@ public:
 	virtual bool loadGame(int index, Game& game) = 0;
 	/** Load all tags for GameId from index into game object */
 	virtual void loadGameHeaders(GameId id, Game& game) { m_index.loadGameHeaders(id, game); }
+	/** Loads only moves into a game from the given position */
+	virtual void loadGameMoves(int index, Game& game) = 0;
 	/** Saves a game at the given position, returns true if successful */
 	virtual bool replace(int , Game&) { return false; }
 	/** Adds a game to the database */
