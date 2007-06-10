@@ -178,6 +178,8 @@ public slots:
 	void slotSearchReset();
 	/** Reverse current filter */
 	void slotSearchReverse();
+	/** Show opening tree */
+	void slotSearchTree();
 	/** Made given move on the board */
 	void slotBoardMove(Square from, Square to);
 	/** Board square was clicked */

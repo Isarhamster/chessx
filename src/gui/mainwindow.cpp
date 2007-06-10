@@ -139,6 +139,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	dock->setWidget(m_openingTree);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());
+	connect(dock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
 	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
 
 	/* Randomize */
@@ -342,7 +343,7 @@ bool MainWindow::openDatabase(const QString& fname)
 	updateMenuRecent();
 	updateMenuDatabases();
 	slotStatusMessage(tr("Database %1 opened successfully (%2 seconds).")
-			  .arg(fname.section('/', -1)).arg((time.elapsed() + 500) / 1000));
+			  .arg(fname.section('/', -1)).arg((time.elapsed() / 100 / 10.0));
 	slotDatabaseChanged();
 	return true;
 }
@@ -666,15 +667,7 @@ void MainWindow::slotMoveChanged()
 	if (AppSettings->value("/General/onlineTablebases", true).toBool())
 		m_tablebase->getBestMove(g.toFen());
 
-	if (m_openingTree->isVisible() && database()->count()) {
-		QTime time;
-		time.start();
-		OpeningTree tree(*databaseInfo()->filter(), m_boardView->board());
-		m_openingTree->setText(tree.debug());
-		m_gameList->updateFilter();
-		slotFilterChanged();
-		slotStatusMessage(tr("Tree updated (%1 s.)").arg(time.elapsed() / 100 / 10.0));
-	}
+	slotSearchTree();
 }
 
 void MainWindow::showTablebaseMove(Move move, int score)
@@ -981,5 +974,18 @@ void MainWindow::slotSearchReset()
 	databaseInfo()->filter()->setAll(1);
 	m_gameList->updateFilter();
 	slotFilterChanged();
+}
+
+void MainWindow::slotSearchTree()
+{
+	if (!database()->count() || !m_openingTree->isVisible())
+		return;
+	QTime time;
+	time.start();
+	OpeningTree tree(*databaseInfo()->filter(), m_boardView->board());
+	m_openingTree->setText(tree.debug());
+	m_gameList->updateFilter();
+	slotFilterChanged();
+	slotStatusMessage(tr("Tree updated (%1 s.)").arg(time.elapsed() / 100 / 10.0));
 }
 
