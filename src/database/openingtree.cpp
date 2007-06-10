@@ -60,14 +60,12 @@ bool operator<(const MoveData& m1, const MoveData& m2)
 
 void OpeningTree::update(Filter& f, const Board& b)
 {
-	PositionSearch ps(f.database(), b);
-	f.executeSearch(ps);
 	Game g;
 	QMap<Move, MoveData> moves;
 	for (int i = 0; i < f.size(); i++)
-		if (f.contains(i)) {
-			f.database()->loadGame(i, g);
-			g.moveToPly(f.gamePosition(i) - 1);
+		f.database()->loadGameMoves(i, g);
+		if (g.findPosition(b)) {
+			//g.moveToPly(f.gamePosition(i) - 1);
 			if (!g.atEnd()) {
 				moves[g.move()].addGame(g, b.toMove());
 			}
