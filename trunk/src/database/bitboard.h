@@ -70,6 +70,8 @@ public:
 	Color toMove() const;
 	/** Return true if its possible for this position to follow target position */
 	bool canBeReachedFrom(const BitBoard& target) const;
+	/** Return true if position is same, but don't consider Move # in determination */
+	bool positionIsSame(const BitBoard& target) const;
 
 	// Query other formats
 	//
@@ -325,6 +327,21 @@ inline bool BitBoard::debugCheckMove(const Move& m) const
 inline void BitBoard::setMoveNumber(uint moveNumber)
 {
 	m_moveNumber = moveNumber;
+}
+
+inline bool BitBoard::positionIsSame(const BitBoard& target) const
+{
+	if (	m_occupied_co[White] != target.m_occupied_co[White] ||
+		m_occupied_co[Black] != target.m_occupied_co[Black] ||
+		m_pawns != target.m_pawns ||
+		m_knights != target.m_knights ||
+		m_bishops != target.m_bishops ||
+		m_rooks != target.m_rooks ||
+		m_queens != target.m_queens ||
+		m_kings != target.m_kings ||
+		m_stm != target.m_stm)
+			return false;
+	return true;
 }
 
 #endif // __BITBOARD_H__
