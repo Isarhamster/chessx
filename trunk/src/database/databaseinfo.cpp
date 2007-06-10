@@ -28,7 +28,7 @@ DatabaseInfo::DatabaseInfo(const QString& fname)
 		m_database->open(QString());
 	} else {
 		QFile file(fname);
-		if (file.size() < 40000000) {
+		if (file.size() < 10000000) {
 			m_database = new MemoryDatabase();
 		} else {
 			m_database = new PgnDatabase();
