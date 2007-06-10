@@ -77,23 +77,20 @@ Board PositionSearch::position() const
 }
 void PositionSearch::setPosition(const Board& position)
 {
-	m_position.fromFen(position.toFen());
+	m_position = position;
 }
 int PositionSearch::matches(int index)
 {
-	m_database->loadGame(index, m_game);
+	m_database->loadGameMoves(index, m_game);
 	m_game.moveToStart();
-	while (!m_game.atEnd()) {
-		if (m_game.board() == m_position) {
+	for (;;) {
+		const Board& board(m_game.board());
+		if (board == m_position)
 			return m_game.ply() + 1;
-		}
+		if (m_game.atEnd() || !board.canBeReachedFrom(m_position))
+			break;
 		m_game.forward();
 	}
-	// Check the end position
-	if (m_game.board() == m_position) {
-		return m_game.ply() + 1;
-	}
-
 	return 0;
 }
 
