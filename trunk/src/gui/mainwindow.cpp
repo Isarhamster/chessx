@@ -343,7 +343,7 @@ bool MainWindow::openDatabase(const QString& fname)
 	updateMenuRecent();
 	updateMenuDatabases();
 	slotStatusMessage(tr("Database %1 opened successfully (%2 seconds).")
-			  .arg(fname.section('/', -1)).arg((time.elapsed() / 100 / 10.0));
+			  .arg(fname.section('/', -1)).arg((time.elapsed() / 100 / 10.0)));
 	slotDatabaseChanged();
 	return true;
 }
