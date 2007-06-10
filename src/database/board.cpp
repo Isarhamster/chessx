@@ -22,7 +22,7 @@
 QMap<quint64, QList<Square> > ecoGuessPositions;
 
 Board::Board()
-	: m_hashValue(0), m_hashValue2(0)
+	: m_hashValue(0)
 {
 }
 
@@ -35,7 +35,10 @@ void Board::clear()
 void Board::setStandardPosition()
 {
 	BitBoard::setStandardPosition();
-	createHash();
+
+//	Just use precalculated hash values which is _much_ faster
+//	createHash();
+	m_hashValue = 17059429555746339296ULL;
 }
 
 bool Board::fromFen(const QString& fen)
@@ -107,35 +110,25 @@ void Board::hashPiece(Square s, Piece p)
 {
 	if ((p > Empty) && (p < InvalidPiece)) {
 		m_hashValue ^= RAND_VALUES[p-1][s];
-		m_hashValue2 ^= RAND_VALUES2[p-1][s];
 	}
 }
 
 void Board::hashToMove()
 {
 	m_hashValue = m_hashValue ^ RAND_TO_MOVE;
-	m_hashValue2 = m_hashValue2 ^ RAND_TO_MOVE2;
 }
 
 void Board::hashCastlingRights(CastlingRights oldCastlingRights)
 {
 	oldCastlingRights ^= castlingRights();
-	if (oldCastlingRights & WhiteKingside) {
+	if (oldCastlingRights & WhiteKingside)
 		m_hashValue ^= RAND_WHITE_CASTLING_KS;
-		m_hashValue2 ^= RAND_WHITE_CASTLING_KS2;
-	}
-	if (oldCastlingRights & WhiteQueenside) {
+	if (oldCastlingRights & WhiteQueenside)
 		m_hashValue ^= RAND_WHITE_CASTLING_QS;
-		m_hashValue2 ^= RAND_WHITE_CASTLING_QS2;
-	}
-	if (oldCastlingRights & BlackKingside) {
+	if (oldCastlingRights & BlackKingside)
 		m_hashValue ^= RAND_BLACK_CASTLING_KS;
-		m_hashValue2 ^= RAND_BLACK_CASTLING_KS2;
-	}
-	if (oldCastlingRights & BlackQueenside) {
+	if (oldCastlingRights & BlackQueenside)
 		m_hashValue ^= RAND_BLACK_CASTLING_QS;
-		m_hashValue2 ^= RAND_BLACK_CASTLING_QS2;
-	}
 }
 
 void Board::hashEpSquare()
@@ -148,13 +141,11 @@ void Board::hashEpSquare()
 		epSquareIndex = sq - 32;
 	else	return;
 	m_hashValue ^= RAND_EN_PASSANT[epSquareIndex];
-	m_hashValue2 ^= RAND_EN_PASSANT2[epSquareIndex];
 }
 
 void Board::createHash()
 {
 	m_hashValue = 0;
-	m_hashValue2 = 0;
 	for (int i=0; i < MAX_SQUARES; ++i)
 		hashPiece(i, pieceAt(i));
 	if (toMove() == Black)
@@ -199,9 +190,3 @@ quint64 Board::getHashValue() const
 {
 	return m_hashValue;
 }
-
-quint64 Board::getHashValue2() const
-{
-	return m_hashValue2;
-}
-
