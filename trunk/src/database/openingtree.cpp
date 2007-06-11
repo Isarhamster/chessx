@@ -34,6 +34,7 @@ void MoveData::addGame(Game& g, Color c)
 	count++;
 	result[g.result()]++;
 	unsigned elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
+	qDebug("Elo %d", elo);
 	if (elo > 1000) {
 		rating += elo;
 		rated++;
@@ -67,6 +68,7 @@ void OpeningTree::update(Filter& f, const Board& b)
 		int ply = g.findPosition(b);
 		f.set(i, ply);
 		if (ply)	{
+			f.database()->loadGameHeaders(i, g);
 			g.moveToPly(ply - 1);
 			moves[g.atEnd() ? Move() : g.move()].addGame(g, b.toMove());
 		}
@@ -75,6 +77,7 @@ void OpeningTree::update(Filter& f, const Board& b)
 	for (QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
 		m_moves.append(it.value());
 	qSort(m_moves.begin(), m_moves.end());
+	reset();
 }
 
 QString OpeningTree::debug()
@@ -84,5 +87,51 @@ QString OpeningTree::debug()
 		s.append(QString("%1. %2\t%3 games\t%4%\n")
 				.arg(i+1).arg(m_moves[i].move).arg(m_moves[i].count).arg(m_moves[i].percentage()));
 	return s;
+}
+
+int OpeningTree::rowCount(const QModelIndex& parent) const
+{
+	return parent.isValid() ? 0 : m_moves.count();
+}
+
+int OpeningTree::columnCount(const QModelIndex&) const
+{
+	return m_names.count();
+}
+
+OpeningTree::OpeningTree()
+{
+	m_names << tr("Nr") << tr("Move") << tr("Count") << tr("Score") << tr("Rating");
+}
+
+OpeningTree::OpeningTree(Filter & f, const Board & b)
+{
+	m_names << tr("Nr") << tr("Move") << tr("Count") << tr("Score") << tr("Rating");
+	update(f, b);
+}
+
+QVariant OpeningTree::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
+		return m_names[section];
+	else return QVariant();
+}
+
+QVariant OpeningTree::data(const QModelIndex& index, int role) const
+{
+	if (role != Qt::DisplayRole || !index.isValid() || index.row() >= m_moves.count())
+		return QVariant();
+	switch (index.column()) {
+		case 0: return index.row() + 1;
+		case 1: return m_moves[index.row()].move;
+		case 2: return m_moves[index.row()].count;
+		case 3: return QString("%1%").arg(m_moves[index.row()].percentage());
+		case 4: {
+				     unsigned ave = m_moves[index.row()].averageRating();
+				     return ave ? ave : QVariant();
+				  }
+		default:
+			return QVariant();
+	}
 }
 

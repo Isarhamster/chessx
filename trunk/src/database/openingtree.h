@@ -46,20 +46,30 @@ public:
 /** @ingroup Search
 The OpeningTree class is a class to calculate opening tree for given position. */
 
-class OpeningTree //: public QAbstractTableModel
+class OpeningTree : public QAbstractTableModel
 {
 public:
-	/** Empty constructor */
-	OpeningTree()	{}
+	/** Empty constructor. */
+	OpeningTree();
 	/** Initialized constructor, performing automatic update */
-	OpeningTree(Filter& f, const Board& b)	{update(f, b);}
+	OpeningTree(Filter& f, const Board& b);
 	/** Calculate opening tree from given position, using given filter. It sets
 	the filter to contain only game matching position @p b . */
 	void update(Filter& f, const Board& b);
 	/** Debug string */
 	QString debug();
+	/** Returns the number of moves in the Opening Tree */
+	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	/** Returns the number of columns of the Opening Tree */
+	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
+	/** Returns an item of data given the item 'index' */
+	virtual QVariant data(const QModelIndex &index, int role) const;
+	/** Returns the header information for header 'section' */
+	virtual QVariant headerData(int section, Qt::Orientation orientation,
+										 int role = Qt::DisplayRole) const;
 private:
 	QList<MoveData> m_moves;
+	QStringList m_names;
 };
 
 #endif
