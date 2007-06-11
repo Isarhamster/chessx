@@ -14,10 +14,10 @@
   </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="spacing" >
-    <number>6</number>
+    <number>3</number>
    </property>
    <item>
     <layout class="QHBoxLayout" >
@@ -41,6 +41,14 @@
      </item>
      <item>
       <widget class="QPushButton" name="analyzeButton" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>1</hsizetype>
+         <vsizetype>1</vsizetype>
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text" >
         <string>Analyze</string>
        </property>
@@ -58,7 +66,7 @@
     <widget class="QWidget" native="1" name="boardView" />
    </item>
    <item>
-    <widget class="QTextEdit" name="variationText" />
+    <widget class="QTextBrowser" name="variationText" />
    </item>
   </layout>
  </widget>
