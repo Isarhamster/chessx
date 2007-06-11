@@ -34,7 +34,6 @@ void MoveData::addGame(Game& g, Color c)
 	count++;
 	result[g.result()]++;
 	unsigned elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
-	qDebug("Elo %d", elo);
 	if (elo > 1000) {
 		rating += elo;
 		rated++;
