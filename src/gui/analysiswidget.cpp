@@ -90,7 +90,7 @@ void AnalysisWidget::slotReconfigure()
 void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const
 {
 	Board board = m_board;
-	QString out;
+	QString out = (analysis.score > 0.0 ? QString("+%1 ") : QString("%1 ")).arg(analysis.score, 2);
 	int moveNo = m_board.moveNumber();
 	bool white = m_board.toMove() == White;
 	for (int i=0; i < analysis.variation.size(); ++i) {
@@ -104,7 +104,8 @@ void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const
 		board.doMove(m);
 		white = !white;
 	}
-	ui.variationText->setPlainText(out);
+	out += QString(" (depth %1)").arg(analysis.depth);
+	ui.variationText->setText(out);
 }
 
 void AnalysisWidget::setPosition(const Board& board)
