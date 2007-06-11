@@ -38,6 +38,8 @@ class Output;
 class TipOfDayDialog;
 class Tablebase;
 class EcoThread;
+class AnalysisWidget;
+class Board;
 
 class ChessBrowser;
 class QActionGroup;
@@ -108,7 +110,6 @@ public slots:
 	void slotEditTruncate();
 	void slotReconfigure();
 	void slotConfigure();
-	void slotConfigureChessEngines();
 	/** Display help */
 	void slotHelp();
 	/** Show tip of the day */
@@ -200,6 +201,8 @@ public slots:
 signals:
 	/** Re-read configuration */
 	void reconfigure();
+	/** Main game has been updated */
+	void boardChange(const Board& board);
 
 private slots:
 	/** Cleanup after ECO file loaded */
@@ -249,6 +252,7 @@ private:
 	bool m_showPgnSource; // for debugging
 	Tablebase* m_tablebase;
 	EcoThread* m_ecothread;
+	AnalysisWidget* m_analysis;
 };
 
 

@@ -35,6 +35,7 @@
 #include "settings.h"
 #include "tablebase.h"
 #include "tipoftheday.h"
+#include "analysiswidget.h"
 
 #include <QActionGroup>
 #include <QApplication>
@@ -56,6 +57,8 @@ MainWindow::MainWindow() : QMainWindow(),
 		m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_tipDialog(0),
 		m_showPgnSource(false)
 {
+
+
 	setObjectName("MainWindow");
 	/* Active database */
 	m_databases.append(new DatabaseInfo);
@@ -142,6 +145,22 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(dock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
 	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
 
+	/* Analysis Dock */
+	dock = new QDockWidget(tr("Analysis"), this);
+	dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+	dock->setObjectName("analysis");
+	m_analysis = new AnalysisWidget();
+	m_analysis->setMinimumSize(150, 100);
+	dock->setWidget(m_analysis);
+	addDockWidget(Qt::RightDockWidgetArea, dock);
+	QAction *action = dock->toggleViewAction();
+	m_menuView->addAction(action);
+	connect(this, SIGNAL(boardChange(const Board&)), m_analysis, SLOT(setPosition(const Board&)));
+	connect(this, SIGNAL(reconfigure()), m_analysis, SLOT(slotReconfigure()));
+	// Make sure engine is disabled if dock is hidden
+	connect(action, SIGNAL(toggled(bool)), m_analysis, SLOT(setShown(bool)));
+
+
 	/* Randomize */
 	srand(time(0));
 
@@ -196,6 +215,7 @@ MainWindow::~MainWindow()
 	delete m_output;
 	delete m_tipDialog;
 	delete m_tablebase;
+	delete m_analysis;
 }
 
 void MainWindow::ecoLoaded()
@@ -472,12 +492,6 @@ void MainWindow::slotReconfigure()
 	emit reconfigure();
 }
 
-void MainWindow::slotConfigureChessEngines()
-{
-	//EngineSetupDialog dlg;
-	//dlg.exec();
-}
-
 void MainWindow::slotConfigureFlip()
 {
 	m_boardView->setFlipped(!m_boardView->isFlipped());
@@ -668,6 +682,7 @@ void MainWindow::slotMoveChanged()
 		m_tablebase->getBestMove(g.toFen());
 
 	slotSearchTree();
+	emit boardChange(g.board());
 }
 
 void MainWindow::showTablebaseMove(Move move, int score)
