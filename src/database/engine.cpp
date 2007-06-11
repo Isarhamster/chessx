@@ -15,26 +15,64 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "settings.h"
 #include "engine.h"
+#include "wbengine.h"
+#include "uciengine.h"
 
 /*** Engine ***/
 
-Engine::Engine(const QString& name, const QString& command,
-	       QTextStream* logStream) : QObject()
+Engine::Engine(const QString& name,
+		const QString& command,
+		const QString& directory,
+		QTextStream* logStream) : QObject()
 {
 	m_name = name;
 	m_command = command;
 	m_logStream = logStream;
 	m_process = 0;
-	m_processStream = 0;
 	m_active = false;
 	m_analyzing = false;
+	m_directory = directory;
+}
+
+Engine* Engine::newEngine(int index)
+{
+//	QTextStream* ts = new QTextStream(stderr);
+//	m_engine = new WBEngine(name, "crafty", ts);
+//
+	Engine *engine = NULL;
+
+        QStringList engines;
+        AppSettings->beginGroup("/Engines/");
+	QString key(QString::number(index));
+	QString name = AppSettings->value(key + "/Name").toString();
+	QString command = AppSettings->value(key + "/Command").toString();
+	QString options = AppSettings->value(key + "/Options").toString();
+	QString directory = AppSettings->value(key + "/Directory").toString();
+	QString protocol = AppSettings->value(key + "/Protocol").toString();
+        AppSettings->endGroup();
+
+	QString exe = QString("%1 %2").arg(command).arg(options);
+
+	if (protocol == "WinBoard")
+		engine = new WBEngine(name, exe, directory);
+	else	engine = new UCIEngine(name, exe, directory);
+
+	return engine;
 }
 
 Engine::~Engine()
 {
-	deactivate();
+	if (m_process) {
+		deactivate();
+		m_process->kill();
+		m_process->waitForFinished(1000);
+		delete m_process;
+		m_process = 0;
+	}
 }
+
 
 void Engine::setLogStream(QTextStream* logStream)
 {
@@ -48,11 +86,22 @@ void Engine::activate()
 	}
 
 	m_process = new QProcess(this);
-	m_processStream = new QTextStream(m_process);
-	connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(pollProcess()));
-	connect(m_process, SIGNAL(processFinished(int, ExitStatus)), this, SLOT(processExited()));
+	m_process->setReadChannel(QProcess::StandardOutput);
+	if (!m_directory.isEmpty())
+		m_process->setWorkingDirectory(m_directory);
+	connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(setToGo()));
+	connect(m_process, SIGNAL(finished(int, QProcess::ExitStatus)), SLOT(processExited()));
 
 	m_process->start(m_command);
+}
+
+void Engine::setToGo()
+{
+	while (m_process->canReadLine()) {
+		QString message = m_process->readLine();
+	}
+	m_process->disconnect(SIGNAL(readyReadStandardOutput()));
+	connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(pollProcess()));
 	protocolStart();
 }
 
@@ -82,7 +131,10 @@ void Engine::send(const QString& message)
 		emit logUpdated();
 	}
 
-	*m_processStream << message << endl;
+	QString out(message);
+	out += "\n";
+	if (m_process && message != "")
+		m_process->write(out.toLocal8Bit());
 }
 
 void Engine::setActive(bool active)
@@ -112,7 +164,7 @@ void Engine::setAnalyzing(bool analyzing)
 	}
 }
 
-void Engine::sendAnalysis(const Analysis& analysis)
+void Engine::sendAnalysis(const Engine::Analysis& analysis)
 {
 	emit analysisUpdated(analysis);
 }
@@ -121,7 +173,8 @@ void Engine::pollProcess()
 {
 	QString message;
 	while (m_process->canReadLine()) {
-		*m_processStream >> message;
+		message = m_process->readLine();
+		message = message.trimmed();
 		if (m_logStream) {
 			*m_logStream << "--> " << message << endl;
 			emit logUpdated();
@@ -133,7 +186,6 @@ void Engine::pollProcess()
 void Engine::processExited()
 {
 	setActive(false);
-	delete m_processStream;
 	delete m_process;
 	m_process = 0;
 }

@@ -30,14 +30,16 @@ class UCIEngine : public Engine
 {
 public:
 	/** Constucts an engine with a given path/command, and log stream */
-	UCIEngine(const QString& name, const QString& command,
-		  QTextStream* logStream = NULL);
+	UCIEngine(const QString& name,
+		const QString& command,
+		const QString& directory = QString(),
+		QTextStream* logStream = NULL);
 
 	/** Analyses the the given position */
 	bool startAnalysis(const Board& board);
 
 	/** Stops any analysis */
-	bool stopAnalysis();
+	void stopAnalysis();
 
 protected:
 	/** Performs any initialisation required by the engine protocol */

@@ -52,33 +52,38 @@ public:
 		MoveList variation;
 	};
 
-	/** Constucts an engine with a given path/command, and log stream */
-	Engine(const QString& name, const QString& command,
-	       QTextStream* logStream = NULL);
+	/** Constructs an engine with a given path/command, and log stream */
+	Engine(const QString& name,
+		const QString& command,
+		const QString& directory = QString(),
+		QTextStream* logStream = NULL);
 
-	/** Virtual desctructor */
+	/** Virtual destructor */
 	virtual ~Engine();
 
 	/** Set the stream that the debug output goes to */
 	void setLogStream(QTextStream* logStream = NULL);
 
-	/** Launches and intialises the engine */
+	/** Launch and initialize engine, fire activated() signal when done*/
 	void activate();
 
-	/** Shuts down and terminates the engine */
+	/** Destroy engine process */
 	void deactivate();
 
 	/** Returns whether the engine is active or not */
 	bool isActive();
 
-	/** Analyses the the given position */
+	/** Analyzes the given position */
 	virtual bool startAnalysis(const Board& board) = 0;
 
 	/** Stops any analysis */
-	virtual bool stopAnalysis() = 0;
+	virtual void stopAnalysis() = 0;
 
 	/** Returns whether the engine is analyzing or not */
 	bool isAnalyzing();
+
+	/** Create a new engine, pass index into engine settings list */
+	static Engine* newEngine(int index);
 
 signals:
 	/** Fired when the engine is activated */
@@ -94,7 +99,7 @@ signals:
 	void analysisStopped();
 
 	/** Fired when the engine has produced some analysis */
-	void analysisUpdated(const Analysis& analysis);
+	void analysisUpdated(const Engine::Analysis& analysis);
 
 	/** Fired when a log item has been written to the log */
 	void logUpdated();
@@ -128,9 +133,13 @@ private slots:
 	/** Receives notification that the process has terminated */
 	void processExited();
 
+	/** The engine should be ready for us to use it */
+	void setToGo();
+
 private:
 	QString m_name;
 	QString	m_command;
+	QString	m_directory;
 	QTextStream* m_logStream;
 	QProcess* m_process;
 	QTextStream* m_processStream;
