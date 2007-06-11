@@ -5,51 +5,60 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>308</width>
-    <height>284</height>
+    <width>446</width>
+    <height>268</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" >
+  <layout class="QVBoxLayout" >
    <property name="margin" >
-    <number>9</number>
+    <number>0</number>
    </property>
    <property name="spacing" >
     <number>6</number>
    </property>
-   <item row="2" column="2" >
-    <spacer>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
+   <item>
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
      </property>
-     <property name="sizeHint" >
-      <size>
-       <width>101</width>
-       <height>20</height>
-      </size>
+     <property name="spacing" >
+      <number>6</number>
      </property>
-    </spacer>
+     <item>
+      <widget class="QComboBox" name="engineList" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>7</hsizetype>
+         <vsizetype>0</vsizetype>
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="analyzeButton" >
+       <property name="text" >
+        <string>Analyze</string>
+       </property>
+       <property name="shortcut" >
+        <string>F2</string>
+       </property>
+       <property name="checkable" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
-   <item row="0" column="0" colspan="3" >
-    <widget class="QComboBox" name="engineList" />
-   </item>
-   <item row="1" column="0" colspan="3" >
-    <widget class="QTextEdit" name="variationText" />
-   </item>
-   <item row="1" column="3" >
+   <item>
     <widget class="QWidget" native="1" name="boardView" />
    </item>
-   <item row="2" column="0" >
-    <widget class="QPushButton" name="analyzeButton" >
-     <property name="text" >
-      <string>Analyze</string>
-     </property>
-     <property name="checkable" >
-      <bool>true</bool>
-     </property>
-    </widget>
+   <item>
+    <widget class="QTextEdit" name="variationText" />
    </item>
   </layout>
  </widget>
