@@ -48,6 +48,7 @@ class QLabel;
 class QMenu;
 class QSplitter;
 class QTextBrowser;
+class QTableView;
 
 /**
 @defgroup GUI GUI - User interface components
@@ -233,7 +234,7 @@ private:
 	QSplitter* m_boardSplitter;
 	ChessBrowser* m_moveView;
 	ChessBrowser* m_gameView;
-	ChessBrowser* m_openingTree;
+	QTableView* m_openingTree;
 	/* Status */
 	QLabel* m_statusFilter;
 	/* Menus */

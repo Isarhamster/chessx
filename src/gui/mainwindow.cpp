@@ -44,6 +44,7 @@
 #include <QDesktopServices>
 #include <QDockWidget>
 #include <QFileDialog>
+#include <QHeaderView>
 #include <QInputDialog>
 #include <QLabel>
 #include <QMenuBar>
@@ -51,14 +52,13 @@
 #include <QSplitter>
 #include <QStatusBar>
 #include <QTime>
+#include <QTableView>
 
 
 MainWindow::MainWindow() : QMainWindow(),
 		m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_tipDialog(0),
 		m_showPgnSource(false)
 {
-
-
 	setObjectName("MainWindow");
 	/* Active database */
 	m_databases.append(new DatabaseInfo);
@@ -137,8 +137,15 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Opening Tree */
 	dock = new QDockWidget(tr("Opening Tree"), this);
 	dock->setObjectName("OpeningTree");
-	m_openingTree = new ChessBrowser(dock);
+	m_openingTree = new QTableView(dock);
 	m_openingTree->setMinimumSize(150, 100);
+	m_openingTree->setShowGrid(false);
+	m_openingTree->setSelectionBehavior(QAbstractItemView::SelectRows);
+	m_openingTree->setSelectionMode(QAbstractItemView::SingleSelection);
+	m_openingTree->setTextElideMode(Qt::ElideRight);
+	m_openingTree->verticalHeader()->setDefaultSectionSize(fontMetrics().lineSpacing());
+	m_openingTree->verticalHeader()->hide();
+	m_openingTree->setModel(new OpeningTree);
 	dock->setWidget(m_openingTree);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());
@@ -998,8 +1005,7 @@ void MainWindow::slotSearchTree()
 		return;
 	QTime time;
 	time.start();
-	OpeningTree tree(*databaseInfo()->filter(), m_boardView->board());
-	m_openingTree->setText(tree.debug());
+	dynamic_cast<OpeningTree*>(m_openingTree->model())->update(*databaseInfo()->filter(), m_boardView->board());
 	m_gameList->updateFilter();
 	slotFilterChanged();
 	slotStatusMessage(tr("Tree updated (%1 s.)").arg(time.elapsed() / 100 / 10.0));
