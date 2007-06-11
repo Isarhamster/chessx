@@ -32,14 +32,16 @@ class WBEngine : public Engine
 {
 public:
 	/** Constucts an engine with a given path/command, and log stream */
-	WBEngine(const QString& name, const QString& command,
-		 QTextStream* logStream = NULL);
+	WBEngine(const QString& name,
+		const QString& command,
+		const QString& directory,
+		QTextStream* logStream = NULL);
 
 	/** Analyses the the given position */
 	bool startAnalysis(const Board& board);
 
 	/** Stops any analysis */
-	bool stopAnalysis();
+	void stopAnalysis();
 
 protected:
 	/** Initialises the winboard protocol */
@@ -63,6 +65,9 @@ private:
 
 	/** Processes the feature time out */
 	void timerEvent(QTimerEvent*);
+
+	/** Instruct version 1 engine to stop pondering */
+	void v1TurnOffPondering();
 
 	Board m_board;
 

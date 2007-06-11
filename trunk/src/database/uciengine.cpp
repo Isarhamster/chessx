@@ -17,8 +17,10 @@
 
 #include "uciengine.h"
 
-UCIEngine::UCIEngine(const QString& name, const QString& command,
-		     QTextStream* logStream) : Engine(name, command, logStream)
+UCIEngine::UCIEngine(const QString& name,
+		const QString& command,
+		const QString& directory,
+		QTextStream* logStream) : Engine(name, command, directory, logStream)
 {
 	m_position = "";
 	m_waitingOn = "";
@@ -35,6 +37,7 @@ bool UCIEngine::startAnalysis(const Board& board)
 
 	m_position = board.toFen();
 	m_waitingOn = "ucinewgame";
+	send("stop");
 	send("ucinewgame");
 	send("isready");
 	setAnalyzing(true);
@@ -42,15 +45,10 @@ bool UCIEngine::startAnalysis(const Board& board)
 	return true;
 }
 
-bool UCIEngine::stopAnalysis()
+void UCIEngine::stopAnalysis()
 {
-	if (!isAnalyzing()) {
-		return false;
-	}
-
-	send("stop");
-
-	return true;
+	if (isAnalyzing())
+		send("stop");
 }
 
 void UCIEngine::protocolStart()
@@ -61,13 +59,8 @@ void UCIEngine::protocolStart()
 
 void UCIEngine::protocolEnd()
 {
-	if (isAnalyzing()) {
-		stopAnalysis();
-		m_quitAfterAnalysis = true;
-	} else {
-		send("quit");
-		setActive(false);
-	}
+	send("quit");
+	setActive(false);
 }
 
 void UCIEngine::processMessage(const QString& message)
@@ -83,6 +76,7 @@ void UCIEngine::processMessage(const QString& message)
 			//engine is now initialised and ready to go
 			m_waitingOn = "";
 			setActive(true);
+			send("setoption name UCI_AnalyseMode value true");
 		}
 
 		if (m_waitingOn == "ucinewgame") {
@@ -93,15 +87,15 @@ void UCIEngine::processMessage(const QString& message)
 		}
 	}
 
-	if (message.section(' ', 0, 0) == "bestmove") {
-		//analysis finished
-		setAnalyzing(false);
-
-		if (m_quitAfterAnalysis) {
-			send("quit");
-			setActive(false);
-		}
-	}
+//	if (message.section(' ', 0, 0) == "bestmove") {
+//		//analysis finished
+//		setAnalyzing(false);
+//
+//		if (m_quitAfterAnalysis) {
+//			send("quit");
+//			setActive(false);
+//		}
+//	}
 
 	if (message.section(' ', 0, 0) == "info" && isAnalyzing()) {
 		parseAnalysis(message);
@@ -183,20 +177,21 @@ void UCIEngine::parseAnalysis(const QString& message)
 		if (name == "pv") {
 
 			Board board = m_board;
+
 			QString lanMove;
 			section++;
 			while ((lanMove = info.section(' ', section, section)) != "") {
-				qWarning("! move: |%s|", lanMove.toLatin1().constData());
+//				qWarning("! move: |%s|", lanMove.toLatin1().constData());
 				Move move = board.parseMove(lanMove);
 				if (!move.isLegal()) {
-					qWarning("Variation parsing failed\n");
+//					qWarning("Variation parsing failed\n");
 					break;
 				}
 				board.doMove(move);
 				analysis.variation.append(move);
 				section++;
 			}
-			break;
+			// break;
 			//analysis.variation.append();
 		}
 
@@ -206,9 +201,9 @@ void UCIEngine::parseAnalysis(const QString& message)
 
 	if (timeFound && nodesFound && depthFound && scoreFound) {
 		sendAnalysis(analysis);
-		qWarning("! depth = %d\n", analysis.depth);
-		qWarning("! score = %g\n", analysis.score);
-		qWarning("! time = %g\n", analysis.time);
-		qWarning("! nodes = %ld\n", (long)analysis.nodes);
+//		qWarning("! depth = %d\n", analysis.depth);
+//		qWarning("! score = %g\n", analysis.score);
+//		qWarning("! time = %g\n", analysis.time);
+//		qWarning("! nodes = %ld\n", (long)analysis.nodes);
 	}
 }

@@ -17,49 +17,36 @@
 
 #include "wbengine.h"
 
-WBEngine::WBEngine(const QString& name, const QString& command,
-		   QTextStream* logStream) : Engine(name, command, logStream)
+WBEngine::WBEngine(const QString& name,
+		const QString& command,
+		const QString& directory,
+		QTextStream* logStream) : Engine(name, command, directory, logStream)
 {
 	m_analyze = false;
-	m_setboard = false;
+	m_setboard = false;		// We do not support version 1 xboard protocol, so this _must_ be set true by feature discovery
 	m_featureTimer = 0;
 }
 
 bool WBEngine::startAnalysis(const Board& board)
 {
-	if (!m_analyze || !isActive()) {
-		return false;
-	}
-
+	stopAnalysis();
 	m_board = board;
-
-	//stop any current analysis
-	if (isAnalyzing()) {
-		stopAnalysis();
-	}
-
-	//determine method of setting up the board
-	if (m_setboard) {
+	if (m_analyze && isActive() && m_setboard) {
 		send("setboard " + board.toFen());
 		send("post");
 		send("analyze");
+		setAnalyzing(true);
+		return true;
 	}
-	setAnalyzing(true);
-
-	return true;
+	return false;
 }
 
-bool WBEngine::stopAnalysis()
+void WBEngine::stopAnalysis()
 {
-	if (!isAnalyzing()) {
-		return false;
+	if (isAnalyzing()) {
+		send("exit");
+		setAnalyzing(false);
 	}
-
-	//exit analysis mode
-	send("exit");
-	setAnalyzing(false);
-
-	return true;
 }
 
 void WBEngine::protocolStart()
@@ -67,32 +54,40 @@ void WBEngine::protocolStart()
 	send("xboard");
 	send("protover 2");
 
-	//set feature timeout
+	// By spec we must wait up to 2 seconds to receive all features offers from engine
 	m_featureTimer = startTimer(2000);
 }
 
 void WBEngine::protocolEnd()
 {
-	if (isAnalyzing()) {
-		stopAnalysis();
-	}
+	stopAnalysis();
 	send("quit");
 	setActive(false);
 }
 
 void WBEngine::processMessage(const QString& message)
 {
+	QString trim(message);
+
+	// GNU Chess always prompts ...
+	if (trim.startsWith("White (1) : "))
+		trim=message.mid(12);
+
+	trim = trim.trimmed();
+
+
 	//determine command
-	QString command = message.section(" ", 0, 0);
+	QString command = trim.section(" ", 0, 0);
+	static bool setup = false;
 
 	//identify and process the command
 	if (command == "feature") {
-		feature(message);
+		feature(trim);
 		return;
 	}
 
 	if (isAnalyzing()) {
-		parseAnalysis(message);
+		parseAnalysis(trim);
 	}
 }
 
@@ -153,15 +148,23 @@ void WBEngine::feature(const QString& command)
 
 void WBEngine::featureDone(bool done)
 {
+	// We've received a "done" feature offer from engine,
+	// so it supports V2 or better of the xboard protocol
+
+	// No need to wait any longer wondering if we're talking to a V1 engine
+	if (m_featureTimer) {
+		killTimer(m_featureTimer);
+		m_featureTimer=0;
+	}
+
+	// The engine will send done=1, when its ready to go,
+	//  and done=0 if it needs more than 2 seconds to start.
 	if (done) {
 		send("hard");
 		send("easy");
 		setActive(true);
-		killTimer(m_featureTimer);
-	} else {
-		killTimer(m_featureTimer);
-		m_featureTimer = startTimer(60 * 60 * 1000);
 	}
+
 }
 
 void WBEngine::parseAnalysis(const QString& message)
@@ -212,11 +215,12 @@ void WBEngine::parseAnalysis(const QString& message)
 		if (sanMove.startsWith("(")) {
 			break;
 		}
-		if (!sanMove.endsWith(".")) {
-			qWarning("! move: |%s|", sanMove.toLatin1().constData());
+		// SBE -- What the heck is "<HT>" and why does crafty send it?
+		if (!sanMove.endsWith(".") && sanMove != "<HT>") {
 			Move move = board.parseMove(sanMove);
 			if (!move.isLegal()) {
-				qWarning("Variation parsing failed\n");
+//				qWarning("! move: |%s|", sanMove.toLatin1().constData());
+//				qWarning("Variation parsing failed");
 				break;
 			}
 			board.doMove(move);
@@ -226,16 +230,29 @@ void WBEngine::parseAnalysis(const QString& message)
 	}
 
 	sendAnalysis(analysis);
-	qWarning("! depth = %d\n", analysis.depth);
-	qWarning("! score = %g\n", analysis.score);
-	qWarning("! time = %g\n", analysis.time);
-	qWarning("! nodes = %ld\n", (long)analysis.nodes);
+//	qWarning("! depth = %d", analysis.depth);
+//	qWarning("! score = %g", analysis.score);
+//	qWarning("! time = %g", analysis.time);
+//	qWarning("! nodes = %ld", (long)analysis.nodes);
+}
+
+void WBEngine::v1TurnOffPondering()
+{
+	send("hard");
+	send("easy");
 }
 
 void WBEngine::timerEvent(QTimerEvent*)
 {
-	//assuming pre version 2 engine
-	send("hard");
-	send("easy");
+	// Two seconds passed and we didn't get a "done" feature from engine
+	//   So, we'll assume we're talking to a version 1 engine
+	//     version 1 support is not yet complete (ie. we need "edit" command instead of setboard)
+
+	// Make sure timer doesn't fire again
+	killTimer(m_featureTimer);
+	m_featureTimer=0;
+
+	v1TurnOffPondering();
 	setActive(true);
 }
+
