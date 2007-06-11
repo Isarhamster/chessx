@@ -27,7 +27,7 @@ class MoveData
 public:
 	MoveData();
 	void addGame(Game& g, Color c);
-	int percentage() const;
+	double percentage() const;
 	int averageRating() const;
 	QString move;
 	unsigned count;
@@ -69,6 +69,7 @@ public:
 										 int role = Qt::DisplayRole) const;
 private:
 	QList<MoveData> m_moves;
+	unsigned m_games;
 	QStringList m_names;
 };
 

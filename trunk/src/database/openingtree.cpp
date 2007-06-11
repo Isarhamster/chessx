@@ -40,10 +40,10 @@ void MoveData::addGame(Game& g, Color c)
 	}
 }
 
-int MoveData::percentage() const
+double MoveData::percentage() const
 {
 	unsigned c = result[Unknown] + 2 * result[WhiteWin] + result[Draw];
-	return c * 50 / count;
+	return c * 500 / count / 10.0;
 }
 
 int MoveData::averageRating() const
@@ -62,6 +62,7 @@ void OpeningTree::update(Filter& f, const Board& b)
 {
 	Game g;
 	QMap<Move, MoveData> moves;
+	m_games = 0;
 	for (int i = 0; i < f.size(); i++) {
 		f.database()->loadGameMoves(i, g);
 		int ply = g.findPosition(b);
@@ -69,6 +70,7 @@ void OpeningTree::update(Filter& f, const Board& b)
 		if (ply)	{
 			f.database()->loadGameHeaders(i, g);
 			g.moveToPly(ply - 1);
+			m_games++;
 			moves[g.atEnd() ? Move() : g.move()].addGame(g, b.toMove());
 		}
 	}
@@ -100,12 +102,12 @@ int OpeningTree::columnCount(const QModelIndex&) const
 
 OpeningTree::OpeningTree()
 {
-	m_names << tr("Nr") << tr("Move") << tr("Count") << tr("Score") << tr("Rating");
+	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating");
 }
 
 OpeningTree::OpeningTree(Filter & f, const Board & b)
 {
-	m_names << tr("Nr") << tr("Move") << tr("Count") << tr("Score") << tr("Rating");
+	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating");
 	update(f, b);
 }
 
@@ -121,11 +123,11 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
 	if (role != Qt::DisplayRole || !index.isValid() || index.row() >= m_moves.count())
 		return QVariant();
 	switch (index.column()) {
-		case 0: return index.row() + 1;
-		case 1: return m_moves[index.row()].move;
-		case 2: return m_moves[index.row()].count;
-		case 3: return QString("%1%").arg(m_moves[index.row()].percentage());
-		case 4: {
+		case 0: return QString("%1: %2").arg(index.row() + 1).arg(m_moves[index.row()].move);
+		case 1: return QString("%1: %2%").arg(m_moves[index.row()].count)
+				.arg(m_moves[index.row()].count * 1000 / m_games / 10.0);
+		case 2: return QString("%1%").arg(m_moves[index.row()].percentage());
+		case 3: {
 				     unsigned ave = m_moves[index.row()].averageRating();
 				     return ave ? ave : QVariant();
 				  }
