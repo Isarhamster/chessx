@@ -54,12 +54,14 @@ void AnalysisWidget::analyze(bool run)
 	if (m_engine) {
 		if (run) {
 			m_engine->activate();
-			ui.variationText->setPlainText("");
+			ui.variationText->clear();
 			ui.analyzeButton->setChecked(true);
+			ui.analyzeButton->setText(tr("Stop"));
 		} else {
 			m_active = false;
 			m_engine->deactivate();
 			ui.analyzeButton->setChecked(false);
+			ui.analyzeButton->setText(tr("Analyze"));
 		}
 	}
 }
