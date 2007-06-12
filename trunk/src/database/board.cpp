@@ -183,7 +183,7 @@ bool Board::loadEcoFile(const QString& ecoFile)
 
 quint64 Board::getHashPlusSquare(const Square square) const
 {
-	return m_hashValue ^ RAND_EN_PASSANT2[square];
+	return m_hashValue ^ RAND_ECO_SQUARE[square];
 }
 
 quint64 Board::getHashValue() const
