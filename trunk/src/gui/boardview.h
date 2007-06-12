@@ -49,9 +49,6 @@ public:
 	Board board() const;
 	/** @return current theme */
 	const BoardTheme& theme() const;
-	/** Reads new theme from file. If two files are given, pieces are read from the first one,
-	board from the second. */
-	bool setTheme(const QString& themeFile, const QString& boardFile);
 	/** Flips/unflips board. */
 	void setFlipped(bool flipped);
 	/** @return @p true if board is displayed upside down. */

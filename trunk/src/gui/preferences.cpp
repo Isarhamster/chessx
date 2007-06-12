@@ -180,18 +180,32 @@ void PreferencesDialog::restoreSettings()
 	ui.boardFrameCheck->setChecked(AppSettings->value("showFrame", true).toBool());
 	ui.guessMoveCheck->setChecked(AppSettings->value("guessMove", true).toBool());
 	QString pieceTheme = AppSettings->value("pieceTheme", "default").toString();
+	QString pieceEffect = AppSettings->value("pieceEffect", "Plain").toString();
 	QString boardTheme = AppSettings->value("boardTheme", "default").toString();
 	AppSettings->endGroup();
 
-	QStringList themes = QDir(AppSettings->dataPath() + "/themes").entryList(QStringList("*.png"));
+	QString themeDir(AppSettings->dataPath() + "/themes");
+	QStringList themes = QDir(themeDir).entryList(QStringList("*.png"));
 	for (QStringList::Iterator it = themes.begin(); it != themes.end(); ++it) {
 		(*it).truncate((*it).length() - 4);
 		ui.pieceThemeCombo->addItem(*it);
-		ui.boardThemeCombo->addItem(*it);
+	}
+
+	themes = QDir(themeDir+"/boards").entryList(QStringList("*.png"));
+	QStringListIterator it(themes);
+	while (it.hasNext()) {
+		QString trim(it.next());
+		ui.boardThemeCombo->addItem(trim.left(trim.length() - 4));
 	}
 	ui.boardThemeCombo->addItem(tr("[plain colors]"));
+
+	ui.pieceEffect->addItem(tr("Plain"));
+	ui.pieceEffect->addItem(tr("Outline"));
+	ui.pieceEffect->addItem(tr("Shadow"));
+
 	selectInCombo(ui.pieceThemeCombo, pieceTheme);
 	selectInCombo(ui.boardThemeCombo, boardTheme);
+	selectInCombo(ui.pieceEffect, pieceEffect);
 
 	// Read Players settings
 	AppSettings->beginGroup("/Players/");
@@ -233,10 +247,10 @@ void PreferencesDialog::saveSettings()
 	AppSettings->setValue("showFrame", ui.boardFrameCheck->isChecked());
 	AppSettings->setValue("guessMove", ui.guessMoveCheck->isChecked());
 	AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());
+	AppSettings->setValue("pieceEffect", ui.pieceEffect->currentText());
 	if (ui.boardThemeCombo->currentIndex() != ui.boardThemeCombo->count() - 1)
 		AppSettings->setValue("boardTheme", ui.boardThemeCombo->currentText());
-	else
-		AppSettings->setValue("boardTheme", QString());
+	else	AppSettings->setValue("boardTheme", QString());
 	QStringList colorNames;
 	colorNames << "lightColor" << "darkColor" << "highlightColor" << "frameColor";
 	saveColorList(ui.boardColorsList, colorNames);

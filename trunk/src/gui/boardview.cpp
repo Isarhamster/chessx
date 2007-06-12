@@ -276,24 +276,6 @@ void BoardView::wheelEvent(QWheelEvent* e)
 	emit wheelScrolled(change + e->modifiers());
 }
 
-bool BoardView::setTheme(const QString& pieceFile, const QString& boardFile)
-{
-	bool result = m_theme.load(pieceFile, boardFile);
-	if (!result) {
-		QMessageBox::warning(0, tr("Error"), tr("<qt>Cannot open theme <b>%1</b> from directory:<br>%2</qt>")
-				     .arg(pieceFile).arg(m_theme.themeDirectory()));
-		// If there is no theme, try to load default
-		if (!m_theme.isValid()) {
-			result = m_theme.load("merida");
-			if (result)
-				resizeBoard();
-		}
-	}
-	if (result)
-		update();
-	return result;
-}
-
 void BoardView::setFlipped(bool flipped)
 {
 	m_flipped = flipped;
@@ -317,7 +299,7 @@ void BoardView::configure()
 	m_theme.setColor(BoardTheme::Frame, AppSettings->value("frameColor", "#000000").value<QColor>());
 	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
 	QString boardTheme = AppSettings->value("boardTheme", "merida").toString();
-	setTheme(pieceTheme, boardTheme);
+	m_theme.configure();
 	AppSettings->endGroup();
 	removeGuess();
 	unselectSquare();

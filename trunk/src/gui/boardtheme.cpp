@@ -63,58 +63,76 @@ bool BoardTheme::isValid() const
 	return !m_pieceFilename.isNull();
 }
 
-bool BoardTheme::load(const QString& themeFile, LoadTheme load)
+bool BoardTheme::loadPieces(const QString& pieces, const QString& effect)
 {
-	QString themePath = QString("%1/%2.png").arg(themeDirectory()).arg(themeFile);
+	QString etest = effect.toLower();
+	QString effectPath = "/";
+	if (etest != "plain")
+		effectPath += etest + "/";
+	QString themePath = QString("%1%2%3.png").arg(themeDirectory()).arg(effectPath).arg(pieces);
+
 	QPixmap big;
 	if (!big.load(themePath) || big.width() < 160)
 		return false;
+
 	int realsize = big.height() / 2;
-	if (realsize != big.width() / 7)
+	if (realsize != big.width() / 6)
 		return false;
 
 	/* Cut big theme bitmap into separate pieces */
-	if (load & LoadPieces) {
-		m_originalPiece[WhiteRook] = big.copy(0 * realsize, 0, realsize, realsize);
-		m_originalPiece[WhiteKnight] = big.copy(1 * realsize, 0, realsize, realsize);
-		m_originalPiece[WhiteBishop] = big.copy(2 * realsize, 0, realsize, realsize);
-		m_originalPiece[WhiteQueen] = big.copy(3 * realsize, 0, realsize, realsize);
-		m_originalPiece[WhiteKing] = big.copy(4 * realsize, 0, realsize, realsize);
-		m_originalPiece[WhitePawn] = big.copy(5 * realsize, 0, realsize, realsize);
-		m_originalPiece[BlackRook] = big.copy(0 * realsize, realsize, realsize, realsize);
-		m_originalPiece[BlackKnight] = big.copy(1 * realsize, realsize, realsize, realsize);
-		m_originalPiece[BlackBishop] = big.copy(2 * realsize, realsize, realsize, realsize);
-		m_originalPiece[BlackQueen] = big.copy(3 * realsize, realsize, realsize, realsize);
-		m_originalPiece[BlackKing] = big.copy(4 * realsize, realsize, realsize, realsize);
-		m_originalPiece[BlackPawn] = big.copy(5 * realsize, realsize, realsize, realsize);
-		m_pieceFilename = themePath;
-	}
+	m_originalPiece[WhiteRook] = big.copy(0 * realsize, 0, realsize, realsize);
+	m_originalPiece[WhiteKnight] = big.copy(1 * realsize, 0, realsize, realsize);
+	m_originalPiece[WhiteBishop] = big.copy(2 * realsize, 0, realsize, realsize);
+	m_originalPiece[WhiteQueen] = big.copy(3 * realsize, 0, realsize, realsize);
+	m_originalPiece[WhiteKing] = big.copy(4 * realsize, 0, realsize, realsize);
+	m_originalPiece[WhitePawn] = big.copy(5 * realsize, 0, realsize, realsize);
+	m_originalPiece[BlackRook] = big.copy(0 * realsize, realsize, realsize, realsize);
+	m_originalPiece[BlackKnight] = big.copy(1 * realsize, realsize, realsize, realsize);
+	m_originalPiece[BlackBishop] = big.copy(2 * realsize, realsize, realsize, realsize);
+	m_originalPiece[BlackQueen] = big.copy(3 * realsize, realsize, realsize, realsize);
+	m_originalPiece[BlackKing] = big.copy(4 * realsize, realsize, realsize, realsize);
+	m_originalPiece[BlackPawn] = big.copy(5 * realsize, realsize, realsize, realsize);
+	m_pieceFilename = themePath;
 
-	/* Background */
-	if (load & LoadBoard) {
-		m_originalSquare[0] = big.copy(6 * realsize, 0, realsize, realsize);
-		m_originalSquare[1] = big.copy(6 * realsize, realsize, realsize, realsize);
-		m_boardFilename = themePath;
-	}
-	// Restore previous size
 	if (size().isEmpty())
 		setSize(QSize(realsize, realsize));
-	else
-		setSize(size());
+	else	setSize(size());
+	return true;
+}
+
+bool BoardTheme::loadBoard(const QString& board)
+{
+	if (board.isEmpty()) {
+		m_boardFilename = board;
+		updateSquares();
+		return true;
+	}
+	QString themePath = QString("%1/boards/%2.png").arg(themeDirectory()).arg(board);
+	QPixmap big;
+	if (!big.load(themePath))
+		return false;
+	int realsize = big.height() / 2;
+	if (realsize != big.width())
+		return false;
+
+	m_originalSquare[0] = big.copy(0, 0, realsize, realsize);
+	m_originalSquare[1] = big.copy(0, realsize, realsize, realsize);
+	m_boardFilename = themePath;
+
 	updateSquares();
 	return true;
 }
 
-bool BoardTheme::load(const QString& pieceFile, const QString& boardFile)
+void BoardTheme::configure()
 {
-	if (pieceFile == boardFile)
-		return load(pieceFile, LoadAll);
-	else if (!boardFile.isEmpty())
-		return load(pieceFile, LoadPieces) && load(boardFile, LoadBoard);
-	else {
-		m_boardFilename = QString();
-		return load(pieceFile, LoadPieces);
-	}
+	QString pieceTheme = AppSettings->value("pieceTheme", "default").toString();
+	QString pieceEffect = AppSettings->value("pieceEffect", "Plain").toString();
+	QString boardTheme = AppSettings->value("boardTheme", "default").toString();
+
+	if (!loadPieces(pieceTheme, pieceEffect))
+		if (!loadPieces(pieceTheme, "plain"))
+			loadPieces("merida", "outline");
+	loadBoard(boardTheme);
 }
 
 QSize BoardTheme::size() const
