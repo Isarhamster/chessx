@@ -1,4 +1,3 @@
-
 #include "settings.h"
 #include "board.h"
 #include "analysiswidget.h"
@@ -90,14 +89,18 @@ void AnalysisWidget::slotReconfigure()
 void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const
 {
 	Board board = m_board;
-	QString out = (analysis.score > 0.0 ? QString("+%1 ") : QString("%1 ")).arg(analysis.score, 2);
+	float score = board.toMove() == White ? analysis.score : -analysis.score;
+	QString out;
+	if (score >= 0.0)
+		out = QString("<font color=\"#000080\"><b>+%1</b></font> ").arg(score, 0, 'f', 2);
+	else out = QString("<font color=\"#800000\"><b>%1</b></font> ").arg(score, 0, 'f', 2);
 	int moveNo = m_board.moveNumber();
 	bool white = m_board.toMove() == White;
 	for (int i=0; i < analysis.variation.size(); ++i) {
 		if (white)
 			out += QString::number(moveNo++) + ". ";
 		else  if (i == 0)
-			out += QString::number(moveNo++) + ". ... ";
+			out += QString::number(moveNo++) + "... ";
 		const Move& m = analysis.variation[i];
 		out += board.moveToSan(m);
 		out += " ";
