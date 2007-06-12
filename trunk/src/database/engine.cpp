@@ -53,6 +53,8 @@ Engine* Engine::newEngine(int index)
 	QString protocol = AppSettings->value(key + "/Protocol").toString();
         AppSettings->endGroup();
 
+	if (command.contains(' '))
+		command = QString("\"%1\"").arg(command);
 	QString exe = QString("%1 %2").arg(command).arg(options);
 
 	if (protocol == "WinBoard")
