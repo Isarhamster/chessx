@@ -125,13 +125,13 @@ bool BoardTheme::loadBoard(const QString& board)
 
 void BoardTheme::configure()
 {
-	QString pieceTheme = AppSettings->value("pieceTheme", "default").toString();
-	QString pieceEffect = AppSettings->value("pieceEffect", "Plain").toString();
-	QString boardTheme = AppSettings->value("boardTheme", "default").toString();
+	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
+	QString pieceEffect = AppSettings->value("pieceEffect", "shadow").toString();
+	QString boardTheme = AppSettings->value("boardTheme", "slate").toString();
 
 	if (!loadPieces(pieceTheme, pieceEffect))
 		if (!loadPieces(pieceTheme, "plain"))
-			loadPieces("merida", "outline");
+			loadPieces("merida", "plain");
 	loadBoard(boardTheme);
 }
 

@@ -179,9 +179,9 @@ void PreferencesDialog::restoreSettings()
 	AppSettings->beginGroup("/Board/");
 	ui.boardFrameCheck->setChecked(AppSettings->value("showFrame", true).toBool());
 	ui.guessMoveCheck->setChecked(AppSettings->value("guessMove", true).toBool());
-	QString pieceTheme = AppSettings->value("pieceTheme", "default").toString();
-	QString pieceEffect = AppSettings->value("pieceEffect", "Plain").toString();
-	QString boardTheme = AppSettings->value("boardTheme", "default").toString();
+	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
+	QString pieceEffect = AppSettings->value("pieceEffect", "shadow").toString();
+	QString boardTheme = AppSettings->value("boardTheme", "slate").toString();
 	AppSettings->endGroup();
 
 	QString themeDir(AppSettings->dataPath() + "/themes");
@@ -199,9 +199,9 @@ void PreferencesDialog::restoreSettings()
 	}
 	ui.boardThemeCombo->addItem(tr("[plain colors]"));
 
-	ui.pieceEffect->addItem(tr("Plain"));
-	ui.pieceEffect->addItem(tr("Outline"));
-	ui.pieceEffect->addItem(tr("Shadow"));
+	ui.pieceEffect->addItem(tr("plain"));
+	ui.pieceEffect->addItem(tr("outline"));
+	ui.pieceEffect->addItem(tr("shadow"));
 
 	selectInCombo(ui.pieceThemeCombo, pieceTheme);
 	selectInCombo(ui.boardThemeCombo, boardTheme);
