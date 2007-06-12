@@ -38,10 +38,12 @@ public:
 	enum LoadTheme {LoadBoard = 1, LoadPieces = 2, LoadAll = LoadBoard | LoadPieces};
 	BoardTheme();
 	~BoardTheme();
-	/** Loads theme description from Eboard-compatible PNG file. */
-	bool load(const QString& themeFile, LoadTheme = LoadAll);
-	/** Loads theme description from Eboard-compatible PNG file. */
-	bool load(const QString& pieceFile, const QString& boardFile);
+	/** Reset piece and board selections based on config values */
+	void configure();
+	/** Load piece graphics named by string + effect name */
+	bool loadPieces(const QString& pieces, const QString& effect);
+	/** Load board graphics named by string */
+	bool loadBoard(const QString& board);
 	/** Sets one of the board colors. */
 	void setColor(ColorRole role, const QColor& value);
 	/** @return one of the board colors. */
