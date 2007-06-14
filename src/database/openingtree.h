@@ -38,10 +38,11 @@ public:
 	long year;
 	unsigned dated;
 	friend bool operator<(const MoveData& m1, const MoveData& m2);
+	friend bool compareMove(const MoveData& m1, const MoveData& m2);
+	friend bool compareScore(const MoveData& m1, const MoveData& m2);
+	friend bool compareRating(const MoveData& m1, const MoveData& m2);
+	friend bool compareYear(const MoveData& m1, const MoveData& m2);
 };
-
-
-
 
 
 
@@ -70,10 +71,16 @@ public:
 	/** Returns the header information for header 'section' */
 	virtual QVariant headerData(int section, Qt::Orientation orientation,
 										 int role = Qt::DisplayRole) const;
+	/** Support sorting. */
+	virtual void sort(int column, Qt::SortOrder order);
+	/** Support sorting. */
+	virtual void sort();
 private:
 	QList<MoveData> m_moves;
 	unsigned m_games;
 	QStringList m_names;
+	int m_sortcolumn;
+	Qt::SortOrder m_order;
 };
 
 #endif
