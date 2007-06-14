@@ -28,7 +28,6 @@
 
 #include "board.h"
 #include "movelist.h"
-#include "partialdate.h"
 #include "nag.h"
 
 #define COMPILED_ECO_FILE_ID ((quint32)0xCD5CBD02U)
@@ -164,17 +163,17 @@ public:
 	int findPosition(const BitBoard& position);
 
 	/** @return tag id of white player */
-	int white() const;
+//	int white() const;
 	/** @return tag id of black player */
-	int black() const;
+	//int black() const;
 	/** @return date of game */
-	PartialDate date() const;
+	//PartialDate date() const;
 	/** @return game event */
-	int event() const;
+	//int event() const;
 	/** @return game site */
-	int site() const;
+	//int site() const;
 	/** @return game round */
-	int round() const;
+	//int round() const;
 
 	/** @return start position of game */
 	Board startBoard() const;
