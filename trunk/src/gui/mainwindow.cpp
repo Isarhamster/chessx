@@ -965,14 +965,13 @@ void MainWindow::setupActions()
 	help->addSeparator();
 	help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout())));
 
+#ifdef QT_DEBUG
 	QMenu* debug = help->addMenu(tr("&Debug"));
-#ifndef QT_DEBUG
-	debug->setVisible(false);
-#endif
 	QAction* source;
 	debug->addAction(source = createAction("Toggle game view format", 0, Qt::Key_F12));
 	source->setCheckable(true);
 	connect(source, SIGNAL(toggled(bool)), SLOT(slotGameViewToggle(bool)));
+#endif
 }
 
 void MainWindow::slotSearchTag()
