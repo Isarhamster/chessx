@@ -18,6 +18,9 @@
 #include "common.h"
 #include "database.h"
 
+const unsigned MinAveYear = 1;
+const unsigned MinAveRating = 5;
+
 MoveData::MoveData()
 {
 	count = 0;
@@ -140,14 +143,10 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
 		case 1: return QString("%1: %2%").arg(m_moves[index.row()].count)
 				.arg(m_moves[index.row()].count * 1000 / m_games / 10.0);
 		case 2: return QString("%1%").arg(m_moves[index.row()].percentage());
-		case 3: {
-						unsigned ave = m_moves[index.row()].averageRating();
-						return ave ? ave : QVariant();
-				  }
-		case 4: {
-						unsigned ave = m_moves[index.row()].averageYear();
-						return ave ? ave : QVariant();
-				  }
+		case 3: return m_moves[index.row()].rated >= MinAveRating ?
+						m_moves[index.row()].averageRating() : QVariant();
+		case 4:return m_moves[index.row()].dated >= MinAveYear ?
+						m_moves[index.row()].averageYear() : QVariant();
 
 		default:
 			return QVariant();
