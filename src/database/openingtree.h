@@ -29,11 +29,14 @@ public:
 	void addGame(Game& g, Color c);
 	double percentage() const;
 	int averageRating() const;
+	int averageYear() const;
 	QString move;
 	unsigned count;
 	unsigned result[4];
 	long rating;
 	unsigned rated;
+	long year;
+	unsigned dated;
 	friend bool operator<(const MoveData& m1, const MoveData& m2);
 };
 

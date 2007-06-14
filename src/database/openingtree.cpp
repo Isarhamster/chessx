@@ -23,8 +23,9 @@ MoveData::MoveData()
 	count = 0;
 	for (int  r = Unknown; r <= BlackWin; r++)
 		result[r] = 0;
-	rating = 0;
-	rated = 0;
+	year = rating = 0;
+	dated = rated = 0;
+
 }
 
 void MoveData::addGame(Game& g, Color c)
@@ -34,9 +35,14 @@ void MoveData::addGame(Game& g, Color c)
 	count++;
 	result[g.result()]++;
 	unsigned elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
-	if (elo > 1000) {
+	if (elo >= 1000) {
 		rating += elo;
 		rated++;
+	}
+	unsigned y = g.tag("Date").section(".", 0, 0).toInt();
+	if (y > 1000) {
+		year += y;
+		dated++;
 	}
 }
 
@@ -49,6 +55,11 @@ double MoveData::percentage() const
 int MoveData::averageRating() const
 {
 	return rated ? rating / rated : 0;
+}
+
+int MoveData::averageYear() const
+{
+	return dated ? year / dated : 0;
 }
 
 bool operator<(const MoveData& m1, const MoveData& m2)
@@ -102,12 +113,14 @@ int OpeningTree::columnCount(const QModelIndex&) const
 
 OpeningTree::OpeningTree()
 {
-	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating");
+	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
+			<< tr("Year");
 }
 
 OpeningTree::OpeningTree(Filter & f, const Board & b)
 {
-	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating");
+	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
+			<< tr("Year");
 	update(f, b);
 }
 
@@ -128,9 +141,14 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
 				.arg(m_moves[index.row()].count * 1000 / m_games / 10.0);
 		case 2: return QString("%1%").arg(m_moves[index.row()].percentage());
 		case 3: {
-				     unsigned ave = m_moves[index.row()].averageRating();
-				     return ave ? ave : QVariant();
+						unsigned ave = m_moves[index.row()].averageRating();
+						return ave ? ave : QVariant();
 				  }
+		case 4: {
+						unsigned ave = m_moves[index.row()].averageYear();
+						return ave ? ave : QVariant();
+				  }
+
 		default:
 			return QVariant();
 	}
