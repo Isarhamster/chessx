@@ -145,7 +145,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_openingTree->setTextElideMode(Qt::ElideRight);
 	m_openingTree->verticalHeader()->setDefaultSectionSize(fontMetrics().lineSpacing());
 	m_openingTree->verticalHeader()->hide();
+	m_openingTree->setSortingEnabled(true);
 	m_openingTree->setModel(new OpeningTree);
+	m_openingTree->sortByColumn(1, Qt::DescendingOrder);
 	dock->setWidget(m_openingTree);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());

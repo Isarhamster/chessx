@@ -67,9 +67,31 @@ int MoveData::averageYear() const
 
 bool operator<(const MoveData& m1, const MoveData& m2)
 {
-	return m1.count > m2.count || (m1.count == m2.count && m1.move < m2.move);
+	return m1.count < m2.count || (m1.count == m2.count && m1.move < m2.move);
 }
 
+bool compareMove(const MoveData& m1, const MoveData& m2)
+{
+	return m1.move < m2.move;
+}
+
+bool compareScore(const MoveData& m1, const MoveData& m2)
+{
+	return m1.percentage() < m2.percentage() ||
+			(m1.percentage() == m2.percentage() && m1.move < m2.move);
+}
+
+bool compareRating(const MoveData& m1, const MoveData& m2)
+{
+	return m1.averageRating() < m2.averageRating() ||
+			(m1.averageRating() == m2.averageRating() && m1.move < m2.move);
+}
+
+bool compareYear(const MoveData& m1, const MoveData& m2)
+{
+	return m1.averageYear() < m2.averageYear() ||
+			(m1.averageYear() == m2.averageYear() && m1.move < m2.move);
+}
 
 
 void OpeningTree::update(Filter& f, const Board& b)
@@ -92,7 +114,7 @@ void OpeningTree::update(Filter& f, const Board& b)
 	for (QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
 		m_moves.append(it.value());
 	qSort(m_moves.begin(), m_moves.end());
-	reset();
+	sort();
 }
 
 QString OpeningTree::debug()
@@ -114,13 +136,14 @@ int OpeningTree::columnCount(const QModelIndex&) const
 	return m_names.count();
 }
 
-OpeningTree::OpeningTree()
+OpeningTree::OpeningTree() : m_sortcolumn(1), m_order(Qt::DescendingOrder)
 {
 	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
 			<< tr("Year");
 }
 
-OpeningTree::OpeningTree(Filter & f, const Board & b)
+OpeningTree::OpeningTree(Filter & f, const Board & b) :
+		m_sortcolumn(1), m_order(Qt::DescendingOrder)
 {
 	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
 			<< tr("Year");
@@ -151,5 +174,27 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
 		default:
 			return QVariant();
 	}
+}
+
+void OpeningTree::sort(int column, Qt::SortOrder order)
+{
+	m_sortcolumn = column;
+	m_order = order;
+	switch (column) {
+		case 0: qSort(m_moves.begin(), m_moves.end(), compareMove); break;
+		case 1: qSort(m_moves.begin(), m_moves.end()); break;
+		case 2: qSort(m_moves.begin(), m_moves.end(), compareScore); break;
+		case 3: qSort(m_moves.begin(), m_moves.end(), compareRating); break;
+		case 4: qSort(m_moves.begin(), m_moves.end(), compareYear); break;
+	};
+	if (order == Qt::DescendingOrder)
+		for (int i = 0; i < m_moves.count() / 2; i++)
+			qSwap(m_moves[i], m_moves[m_moves.count() - i -1]);
+	reset();
+}
+
+void OpeningTree::sort()
+{
+	sort(m_sortcolumn, m_order);
 }
 
