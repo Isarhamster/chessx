@@ -161,11 +161,15 @@ void UCIEngine::parseAnalysis(const QString& message)
 
 		//Score
 		if (name == "score") {
-			if (info.section(' ', section + 1, section + 1) == "cp") {
+			QString type = info.section(' ', section + 1, section + 1);
+			if (type == "cp" || type == "mate") {
 				analysis.score = info.section(' ', section + 2, section + 2).toInt(&ok);
 				analysis.score /= 100;
 				if (m_invertBlack && m_board.toMove() == Black)
 					analysis.score *= -1;
+				// FIXME -- should actually tell analysis widget, its mate in "score" moves
+				if (type == "mate")
+					analysis.score *= 10000;
 				section += 3;
 				if (ok) {
 					scoreFound = true;
