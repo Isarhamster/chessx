@@ -8,8 +8,7 @@ AnalysisWidget::AnalysisWidget()
 	: m_engine(0), m_active(false), m_closeTimer(0)
 {
 	ui.setupUi(this);
-	slotReconfigure();
-	connect(ui.engineList, SIGNAL(currentIndexChanged(int)), SLOT(changeEngine(int)));
+	connect(ui.engineList, SIGNAL(activated(int)), SLOT(changeEngine(int)));
 	connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(analyze(bool)));
 }
 
@@ -32,13 +31,15 @@ void AnalysisWidget::changeEngine(int index)
 {
 	bool oldValue = m_active;
 	removeEngine();
-	if (index >= 0) {
+	if (index >= 0 && index < ui.engineList->count()) {
+		ui.engineList->setCurrentIndex(index);
 		m_engine = Engine::newEngine(index);
 		connect(m_engine,
 			SIGNAL(analysisUpdated(const Engine::Analysis&)),
 			SLOT(showAnalysis(const Engine::Analysis&)));
 		connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
 		analyze(oldValue);
+		AppSettings->setValue("/Analysis/Engine", ui.engineList->itemText(index));
 	}
 }
 
@@ -79,11 +80,14 @@ void AnalysisWidget::slotReconfigure()
 	QStringList engines;
 	AppSettings->beginGroup("/Engines/");
 	QStringList keys = AppSettings->childGroups();
-	for (int i=0; i < keys.size(); ++i)
+	for (int i = 0; i < keys.size(); ++i)
 		engines.append(AppSettings->value(keys[i] + "/Name").toString());
 	AppSettings->endGroup();
 	ui.engineList->clear();
-	ui.engineList->insertItems(0,engines);
+	ui.engineList->insertItems(0,	engines);
+	int index = engines.indexOf(AppSettings->value("/Analysis/Engine").toString());
+	if (index >= 0)
+		changeEngine(index);
 }
 
 void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const
@@ -92,7 +96,7 @@ void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const
 	float score = analysis.score;
 	QString out;
 	if (analysis.mateIn) {
-		int mateIn = score;
+		int mateIn = int(score);
 		QString color = mateIn >= 0 ? "000080" : "800000";
 		QString text = tr("Mate in");
 		out = QString("<font color=\"#%1\"><b>%2 %3</b></font> ")
