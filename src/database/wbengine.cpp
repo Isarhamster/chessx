@@ -173,6 +173,7 @@ void WBEngine::parseAnalysis(const QString& message)
 {
 	QString trimmed = message.simplified();
 	Analysis analysis;
+	analysis.mateIn = false;
 	bool ok;
 	bool timeInSeconds = false;
 

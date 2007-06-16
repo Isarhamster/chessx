@@ -91,7 +91,13 @@ void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const
 	Board board = m_board;
 	float score = analysis.score;
 	QString out;
-	if (score >= 0.0)
+	if (analysis.mateIn) {
+		int mateIn = score;
+		QString color = mateIn >= 0 ? "000080" : "800000";
+		QString text = tr("Mate in");
+		out = QString("<font color=\"#%1\"><b>%2 %3</b></font> ")
+			.arg(color).arg(text).arg(mateIn);
+	} else if (score >= 0.0)
 		out = QString("<font color=\"#000080\"><b>+%1</b></font> ").arg(score, 0, 'f', 2);
 	else out = QString("<font color=\"#800000\"><b>%1</b></font> ").arg(score, 0, 'f', 2);
 	int moveNo = m_board.moveNumber();

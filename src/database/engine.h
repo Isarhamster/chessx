@@ -50,6 +50,7 @@ public:
 		int depth;
 		float score;
 		MoveList variation;
+		bool mateIn;
 	};
 
 	/** Constructs an engine with a given path/command, and log stream */
