@@ -78,7 +78,6 @@ void WBEngine::processMessage(const QString& message)
 
 	//determine command
 	QString command = trim.section(" ", 0, 0);
-	static bool setup = false;
 
 	//identify and process the command
 	if (command == "feature") {

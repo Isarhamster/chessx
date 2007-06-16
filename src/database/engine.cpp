@@ -91,20 +91,10 @@ void Engine::activate()
 	m_process->setReadChannel(QProcess::StandardOutput);
 	if (!m_directory.isEmpty())
 		m_process->setWorkingDirectory(m_directory);
-	connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(setToGo()));
-	connect(m_process, SIGNAL(finished(int, QProcess::ExitStatus)), SLOT(processExited()));
-
-	m_process->start(m_command);
-}
-
-void Engine::setToGo()
-{
-	while (m_process->canReadLine()) {
-		QString message = m_process->readLine();
-	}
-	m_process->disconnect(SIGNAL(readyReadStandardOutput()));
+	connect(m_process, SIGNAL(started()), SLOT(protocolStart()));
 	connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(pollProcess()));
-	protocolStart();
+	connect(m_process, SIGNAL(finished(int, QProcess::ExitStatus)), SLOT(processExited()));
+	m_process->start(m_command);
 }
 
 void Engine::deactivate()
