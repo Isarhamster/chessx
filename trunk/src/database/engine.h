@@ -105,9 +105,6 @@ signals:
 	void logUpdated();
 
 protected:
-	/** Performs any initialisation required by the engine protocol */
-	virtual void protocolStart() = 0;
-
 	/** Performs any shutdown procedure required by the engine protocol */
 	virtual void protocolEnd() = 0;
 
@@ -133,8 +130,8 @@ private slots:
 	/** Receives notification that the process has terminated */
 	void processExited();
 
-	/** The engine should be ready for us to use it */
-	void setToGo();
+	/** Performs any initialisation required by the engine protocol */
+	virtual void protocolStart() = 0;
 
 private:
 	QString m_name;
