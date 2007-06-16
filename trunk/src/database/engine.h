@@ -123,6 +123,8 @@ protected:
 	/** Sends an analysis signal */
 	void sendAnalysis(const Analysis& analysis);
 
+	bool m_invertBlack;
+
 private slots:
 	/** Receives notification that there is process output to read */
 	void pollProcess();

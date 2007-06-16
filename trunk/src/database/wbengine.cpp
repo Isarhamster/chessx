@@ -25,6 +25,7 @@ WBEngine::WBEngine(const QString& name,
 	m_analyze = false;
 	m_setboard = false;		// We do not support version 1 xboard protocol, so this _must_ be set true by feature discovery
 	m_featureTimer = 0;
+	m_invertBlack = true;
 }
 
 bool WBEngine::startAnalysis(const Board& board)
@@ -75,6 +76,8 @@ void WBEngine::processMessage(const QString& message)
 
 	trim = trim.trimmed();
 
+	if (!isActive() && trim.startsWith("Crafty v"))
+		m_invertBlack = false;
 
 	//determine command
 	QString command = trim.section(" ", 0, 0);
@@ -190,6 +193,8 @@ void WBEngine::parseAnalysis(const QString& message)
 	if (!ok) {
 		return;
 	}
+	if (m_invertBlack && m_board.toMove() == Black)
+		analysis.score *= -1;
 
 	//Time
 	analysis.time = trimmed.section(' ', 2, 2).toInt(&ok);
