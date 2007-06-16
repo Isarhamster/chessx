@@ -25,6 +25,7 @@ UCIEngine::UCIEngine(const QString& name,
 	m_position = "";
 	m_waitingOn = "";
 	m_quitAfterAnalysis = false;
+	m_invertBlack = true;
 }
 
 bool UCIEngine::startAnalysis(const Board& board)
@@ -163,6 +164,8 @@ void UCIEngine::parseAnalysis(const QString& message)
 			if (info.section(' ', section + 1, section + 1) == "cp") {
 				analysis.score = info.section(' ', section + 2, section + 2).toInt(&ok);
 				analysis.score /= 100;
+				if (m_invertBlack && m_board.toMove() == Black)
+					analysis.score *= -1;
 				section += 3;
 				if (ok) {
 					scoreFound = true;

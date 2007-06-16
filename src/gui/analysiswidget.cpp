@@ -89,7 +89,7 @@ void AnalysisWidget::slotReconfigure()
 void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const
 {
 	Board board = m_board;
-	float score = board.toMove() == White ? analysis.score : -analysis.score;
+	float score = analysis.score;
 	QString out;
 	if (score >= 0.0)
 		out = QString("<font color=\"#000080\"><b>+%1</b></font> ").arg(score, 0, 'f', 2);
