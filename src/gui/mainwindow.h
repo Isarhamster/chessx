@@ -21,6 +21,7 @@
 #include <QList>
 #include <QMainWindow>
 #include <QUrl>
+#include <QAbstractItemView>
 
 #include "common.h"
 #include "move.h"
@@ -183,6 +184,8 @@ public slots:
 	void slotSearchReverse();
 	/** Show opening tree */
 	void slotSearchTree();
+	/** Move @p index was selected in Opening Tree. */
+	void slotSearchTreeMove(const QModelIndex& index);
 	/** Made given move on the board */
 	void slotBoardMove(Square from, Square to);
 	/** Board square was clicked */
