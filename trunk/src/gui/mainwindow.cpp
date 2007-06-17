@@ -34,6 +34,7 @@
 #include "savedialog.h"
 #include "settings.h"
 #include "tablebase.h"
+#include "tableview.h"
 #include "tipoftheday.h"
 #include "analysiswidget.h"
 
@@ -52,7 +53,7 @@
 #include <QSplitter>
 #include <QStatusBar>
 #include <QTime>
-#include <QTableView>
+
 
 
 MainWindow::MainWindow() : QMainWindow(),
@@ -111,7 +112,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Game view */
 	QDockWidget* dock = new QDockWidget(tr("Game Text"), this);
 	dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-	dock->setObjectName("GameText");
+	dock->setObjectName("GameTextDock");
 	m_gameView = new ChessBrowser(dock);
 	m_gameView->setMinimumSize(150, 100);
 	connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
@@ -136,18 +137,14 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	/* Opening Tree */
 	dock = new QDockWidget(tr("Opening Tree"), this);
-	dock->setObjectName("OpeningTree");
-	m_openingTree = new QTableView(dock);
+	dock->setObjectName("OpeningTreeDock");
+	m_openingTree = new TableView(dock);
+	m_openingTree->setObjectName("OpeningTree");
 	m_openingTree->setMinimumSize(150, 100);
-	m_openingTree->setShowGrid(false);
-	m_openingTree->setSelectionBehavior(QAbstractItemView::SelectRows);
-	m_openingTree->setSelectionMode(QAbstractItemView::SingleSelection);
-	m_openingTree->setTextElideMode(Qt::ElideRight);
-	m_openingTree->verticalHeader()->setDefaultSectionSize(fontMetrics().lineSpacing());
-	m_openingTree->verticalHeader()->hide();
 	m_openingTree->setSortingEnabled(true);
 	m_openingTree->setModel(new OpeningTree);
 	m_openingTree->sortByColumn(1, Qt::DescendingOrder);
+	m_openingTree->slotReconfigure();
 	dock->setWidget(m_openingTree);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());
@@ -157,7 +154,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Analysis Dock */
 	dock = new QDockWidget(tr("Analysis"), this);
 	dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-	dock->setObjectName("analysis");
+	dock->setObjectName("AnalysisDock");
 	m_analysis = new AnalysisWidget();
 	m_analysis->setMinimumSize(150, 100);
 	dock->setWidget(m_analysis);
@@ -257,6 +254,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		AppSettings->setLayout(m_playerDialog);
 		AppSettings->setLayout(m_helpWindow);
 		m_gameList->saveConfig();
+		m_openingTree->saveConfig();
 		AppSettings->setLayout(this);
 		AppSettings->beginGroup("MainWindow");
 		AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());

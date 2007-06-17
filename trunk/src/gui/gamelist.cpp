@@ -22,57 +22,24 @@
 #include "search.h"
 #include "settings.h"
 
-GameList::GameList(Filter* filter, QWidget* parent) : QTableView(parent)
+GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 {
 	setObjectName("GameList");
 	setWindowTitle(tr("Game list"));
-
-	QFont f = font();
-	f.setPointSize(f.pointSize() - 1);
-	setFont(f);
-
-	setShowGrid(false);
-	setSelectionBehavior(QAbstractItemView::SelectRows);
-	setSelectionMode(QAbstractItemView::SingleSelection);
-	setTextElideMode(Qt::ElideRight);
-	verticalHeader()->setDefaultSectionSize(fontMetrics().lineSpacing());
-	verticalHeader()->hide();
-
 	m_model = new FilterModel(filter, this);
 	setModel(m_model);
 	connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
 	connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
-	configure();
 
 	horizontalHeader()->setClickable(true);
 	connect(horizontalHeader(), SIGNAL(sectionClicked(int)), SLOT(simpleSearch(int)));
+
+	slotReconfigure();
 }
 
 void GameList::itemSelected(const QModelIndex& index)
 {
 	emit selected(m_model->filter()->indexToGame(index.row()));
-}
-
-void GameList::configure()
-{
-	AppSettings->layout(this);
-	AppSettings->beginGroup("GameList");
-	QList<int> sections;
-	if (AppSettings->list("Sections", sections, m_model->columnCount()))
-		for (int i = 0; i < sections.count(); i++)
-			setColumnWidth(i, sections[i]);
-	AppSettings->endGroup();
-}
-
-void GameList::saveConfig()
-{
-	AppSettings->setLayout(this);
-	AppSettings->beginGroup("GameList");
-	QList<int> sections;
-	for (int i = 0; i < m_model->columnCount(); i++)
-		sections.append(columnWidth(i));
-	AppSettings->setList("Sections", sections);
-	AppSettings->endGroup();
 }
 
 void GameList::setFilter(Filter* filter)

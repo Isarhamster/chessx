@@ -40,15 +40,16 @@ class Tablebase;
 class EcoThread;
 class AnalysisWidget;
 class Board;
-
 class ChessBrowser;
+class TableView;
+
 class QActionGroup;
 class QCloseEvent;
 class QLabel;
 class QMenu;
 class QSplitter;
 class QTextBrowser;
-class QTableView;
+
 
 /**
 @defgroup GUI GUI - User interface components
@@ -234,7 +235,7 @@ private:
 	QSplitter* m_boardSplitter;
 	ChessBrowser* m_moveView;
 	ChessBrowser* m_gameView;
-	QTableView* m_openingTree;
+	TableView* m_openingTree;
 	/* Status */
 	QLabel* m_statusFilter;
 	/* Menus */
