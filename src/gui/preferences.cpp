@@ -32,13 +32,20 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 {
 	ui.setupUi(this);
 
+#ifndef Q_WS_WIN
+	ui.engineProtocolWinBoard->setText(tr("XBoard"));
+#endif
+
 	connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
 	connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
 	connect(ui.applyButton, SIGNAL(clicked()), SLOT(slotApply()));
-	connect(ui.engineList, SIGNAL(currentRowChanged(int)), SLOT(slotSelectEngine(int)));
+	connect(ui.engineList, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+			  SLOT(slotSelectEngine(QListWidgetItem*, QListWidgetItem*)));
 	connect(ui.engineName, SIGNAL(textChanged(const QString&)), SLOT(slotEngineNameChange(const QString&)));
 	connect(ui.newEngineButton, SIGNAL(clicked(bool)), SLOT(slotNewEngine()));
 	connect(ui.deleteEngineButton, SIGNAL(clicked(bool)), SLOT(slotDeleteEngine()));
+	connect(ui.engineUpButton, SIGNAL(clicked(bool)), SLOT(slotEngineUp()));
+	connect(ui.engineDownButton, SIGNAL(clicked(bool)), SLOT(slotEngineDown()));
 	connect(ui.directoryButton, SIGNAL(clicked(bool)), SLOT(slotSelectEngineDirectory()));
 	connect(ui.commandButton, SIGNAL(clicked(bool)), SLOT(slotSelectEngineCommand()));
 
@@ -50,9 +57,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 	restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor", "#000000");
 	AppSettings->endGroup();
 
-
 	// Start off with no Engine selected
-	currentEngineRow = -1;
 	ui.engineEditWidget->setEnabled(false);
 }
 
@@ -88,7 +93,6 @@ void PreferencesDialog::slotDeleteEngine()
 		QListWidgetItem *del = ui.engineList->takeItem(row);
 		delete del;
 		engineData.removeAt(row);
-		currentEngineRow = ui.engineList->currentRow();
 	}
 }
 
@@ -102,45 +106,60 @@ void PreferencesDialog::slotNewEngine()
 
 void PreferencesDialog::slotEngineNameChange(const QString& name)
 {
-	if (currentEngineRow >= 0) {
-		ui.engineList->currentItem()->setText(name);
-		engineData[currentEngineRow].name = name;
+	ui.engineList->currentItem()->setText(name);
+	engineData[ui.engineList->currentIndex().row()].name = name;
+}
+
+void PreferencesDialog::slotEngineUp()
+{
+	int index = ui.engineList->currentIndex().row();
+	if (index > 0) {
+		engineData.swap(index, index - 1);
+		QListWidgetItem* item = ui.engineList->takeItem(index-1);
+		ui.engineList->insertItem(index, item);
 	}
 }
 
-void PreferencesDialog::updateCurrentEngineData()
+void PreferencesDialog::slotEngineDown()
 {
-	if (currentEngineRow >= 0) {
-		engineData[currentEngineRow].name = ui.engineName->text();
-		engineData[currentEngineRow].command = ui.engineCommand->text();
-		engineData[currentEngineRow].options = ui.engineOptions->text();
-		engineData[currentEngineRow].directory = ui.engineDirectory->text();
-		if (ui.engineProtocolWinBoard->isChecked())
-			engineData[currentEngineRow].protocol = WinBoard;
-		else	engineData[currentEngineRow].protocol = UCI;
+	int index = ui.engineList->currentIndex().row();
+	if (index < ui.engineList->count() - 1) {
+		engineData.swap(index, index + 1);
+		QListWidgetItem* item = ui.engineList->takeItem(index+1);
+		ui.engineList->insertItem(index, item);
 	}
 }
 
-void PreferencesDialog::slotSelectEngine(int newRow)
+void PreferencesDialog::updateEngineData(int index)
 {
-	if (currentEngineRow < 0)
-		ui.engineEditWidget->setEnabled(true);
+	if (index < 0 || index >= engineData.count())
+		return;
+	engineData[index].name = ui.engineName->text();
+	engineData[index].command = ui.engineCommand->text();
+	engineData[index].options = ui.engineOptions->text();
+	engineData[index].directory = ui.engineDirectory->text();
+	engineData[index].protocol = ui.engineProtocolWinBoard->isChecked() ?
+			WinBoard : UCI;
+}
 
+void PreferencesDialog::slotSelectEngine(QListWidgetItem* current, QListWidgetItem* previous)
+{
 	// Store any edits done to current data
-	updateCurrentEngineData();
+	if (previous)
+		updateEngineData(ui.engineList->row(previous));
 
-	if (newRow >= 0) {
+	if (current) {
+		ui.engineEditWidget->setEnabled(true);
 		// Fill edit fields with data for selected engine
-		currentEngineRow = newRow;
-		ui.engineName->setText(engineData[currentEngineRow].name);
-		ui.engineCommand->setText(engineData[currentEngineRow].command);
-		ui.engineOptions->setText(engineData[currentEngineRow].options);
-		ui.engineDirectory->setText(engineData[currentEngineRow].directory);
-		if (engineData[currentEngineRow].protocol == WinBoard)
+		int index = ui.engineList->row(current);
+		ui.engineName->setText(engineData[index].name);
+		ui.engineCommand->setText(engineData[index].command);
+		ui.engineOptions->setText(engineData[index].options);
+		ui.engineDirectory->setText(engineData[index].directory);
+		if (engineData[index].protocol == WinBoard)
 			ui.engineProtocolWinBoard->setChecked(true);
 		else	ui.engineProtocolUCI->setChecked(true);
 	} else {
-		currentEngineRow = -1;
 		ui.engineName->clear();
 		ui.engineCommand->clear();
 		ui.engineOptions->clear();
@@ -260,7 +279,7 @@ void PreferencesDialog::saveSettings()
 	AppSettings->endGroup();
 
 	// Save engine settings
-	updateCurrentEngineData();  // Make sure current edits are saved
+	updateEngineData(ui.engineList->currentIndex().row());  // Make sure current edits are saved
 	AppSettings->beginGroup("/Engines/");
 	AppSettings->remove("");
 	for (int i=0; i < engineData.size(); ++i) {
@@ -298,3 +317,4 @@ void PreferencesDialog::saveColorList(ColorList* list, const QStringList& cfgnam
 	for (int i = 0; i < list->count(); i++)
 		AppSettings->setValue(cfgnames[i], list->color(i));
 }
+

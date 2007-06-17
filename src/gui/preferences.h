@@ -36,12 +36,16 @@ public slots:
 	int exec();
 	void slotApply();
 	/** select given engine # for display */
-	void slotSelectEngine(int);
+	void slotSelectEngine(QListWidgetItem* current, QListWidgetItem* previous);
 	/** user asked for a new engine entry */
 	void slotNewEngine();
 	/** user asked to remove current engine entry */
 	void slotDeleteEngine();
 	/** user changed the name of an engine */
+	void slotEngineUp();
+	/** User asked to move current engine up in the list. */
+	void slotEngineDown();
+	/** User asked to move current engine down in the list. */
 	void slotEngineNameChange(const QString&);
 	/** user wants to use file dialog to select engine command */
 	void slotSelectEngineCommand();
@@ -68,9 +72,8 @@ private:
 		EngineProtocol protocol;
 	};
 	QList<EngineData> engineData;
-	int currentEngineRow;
 	/** Store any changes made to Engine fields in UI, into list */
-	void updateCurrentEngineData();
+	void updateEngineData(int index);
 
 signals:
 	/** Signal emitted when changes are applied. */
