@@ -1,3 +1,12 @@
+	* feature: improve Engine tab of Preferences dialog, add reordering
+	* feature: remember current engine
+	* bugfix: show correct score for Crafty
+	* bugfix: correctly display variations leading to mate in UCI engines
+
+Wed 13 Jun 2007 19:47:32 CET	Version 0.5
+	
+	* feature: engine analysis
+	* feature: Opening Tree
 	* feature: Setup Position dialog enhancements
 	* feature: use ECO information to guess moves
 	* feature: option to combine searches
@@ -7,7 +16,6 @@
 	* feature: remember matching position in position search
 	* feature: improve layout of Game Info
 	* feature: display game length in Game List
-	* feature: save/replace games in PGN
 	* feature: remove last move with right-click
 	* feature: shortcuts for Game List and Game Text
 	* bugfix: fix move loading failure in large databases
