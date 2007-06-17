@@ -25,7 +25,8 @@ HEADERS += mainwindow.h \
 	ecothread.h \
 	quicksearch.h \
 	tipoftheday.h \
-	analysiswidget.h
+	analysiswidget.h \
+ tableview.h
 SOURCES += mainwindow.cpp \
 	playerdialog.cpp \
 	colorlist.cpp \
@@ -40,40 +41,41 @@ SOURCES += mainwindow.cpp \
 	chessbrowser.cpp \
 	tipoftheday.cpp \
 	analysiswidget.cpp \
-	main.cpp
+	main.cpp \
+ tableview.cpp
 
 TEMPLATE = app
 INCLUDEPATH += ../database 
 INCLUDEPATH += ../guess
-DEPENDPATH=../database
+DEPENDPATH =../database
 RESOURCES += helpwindow.qrc \
                  tipoftheday.qrc
 
 win32 {
-  TARGET = ../../../bin/chessx
-  release {
-     LIBS += ../database/release/libdatabase.a
-     PRE_TARGETDEPS += ../database/release/libdatabase.a
-     LIBS += ../guess/release/libguess.a
-     PRE_TARGETDEPS += ../guess/release/libguess.a
-  }
-  else {
-     LIBS += ../database/debug/libdatabase.a
-     PRE_TARGETDEPS += ../database/debug/libdatabase.a
-     LIBS += ../guess/debug/libguess.a
-     PRE_TARGETDEPS += ../guess/debug/libguess.a
-  }
+    TARGET = ../../../bin/chessx
+    release {
+        LIBS += ../database/release/libdatabase.a
+        PRE_TARGETDEPS += ../database/release/libdatabase.a
+        LIBS += ../guess/release/libguess.a
+        PRE_TARGETDEPS += ../guess/release/libguess.a
+    }
+    else {
+        LIBS += ../database/debug/libdatabase.a
+        PRE_TARGETDEPS += ../database/debug/libdatabase.a
+        LIBS += ../guess/debug/libguess.a
+        PRE_TARGETDEPS += ../guess/debug/libguess.a
+    }
 }
-else { 
-  TARGET = ../../bin/chessx
-  LIBS += ../database/libdatabase.a
-  PRE_TARGETDEPS += ../database/libdatabase.a
-  LIBS += ../guess/libguess.a
-  PRE_TARGETDEPS += ../guess/libguess.a
+else {
+    TARGET = ../../bin/chessx
+    LIBS += ../database/libdatabase.a
+    PRE_TARGETDEPS += ../database/libdatabase.a
+    LIBS += ../guess/libguess.a
+    PRE_TARGETDEPS += ../guess/libguess.a
 }
 
 macx {
-     ICON = ../../data/images/chessx.icns
+    ICON = ../../data/images/chessx.icns
 }
 
 TRANSLATIONS = chessx_pl.ts \

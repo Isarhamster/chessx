@@ -17,7 +17,7 @@
 #ifndef __GAMELIST_H__
 #define __GAMELIST_H__
 
-#include <QTableView>
+#include "tableview.h"
 
 class Filter;
 class FilterModel;
@@ -26,7 +26,7 @@ class FilterModel;
 The GameList class displays list of the games in current filter. It allows
 user to click on list header and perform simple tag searches. */
 
-class GameList : public QTableView
+class GameList : public TableView
 {
 	Q_OBJECT
 public:
@@ -34,10 +34,6 @@ public:
 	~GameList();
 	/** Set current database */
 public slots:
-	/** Read current configuration */
-	void configure();
-	/** Store current configuration */
-	void saveConfig();
 	/** Change current filter/database */
 	void setFilter(Filter* filter);
 	/** Update filter (called after changing filter outside) */
