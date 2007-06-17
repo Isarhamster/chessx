@@ -82,8 +82,15 @@ void PreferencesDialog::slotSelectEngineCommand()
 			this,
 			tr("Select engine command file to run"),
 			ui.engineCommand->text());
-	if (!com.isEmpty())
+	if (!com.isEmpty()) {
 		ui.engineCommand->setText(com);
+		if (engineData[ui.engineList->currentIndex().row()].name == tr("New Engine")) {
+			QString name = com.section('/', -1, -1);
+			if (!name.isEmpty())
+				name[0] = name[0].toUpper();
+			ui.engineName->setText(name);
+		}
+	}
 }
 
 void PreferencesDialog::slotDeleteEngine()
