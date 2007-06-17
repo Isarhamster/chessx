@@ -198,3 +198,8 @@ void OpeningTree::sort()
 	sort(m_sortcolumn, m_order);
 }
 
+QString OpeningTree::move(const QModelIndex& index) const
+{
+	return index.isValid() ? m_moves[index.row()].move : QString();
+}
+

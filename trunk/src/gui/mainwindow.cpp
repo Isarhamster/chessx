@@ -145,6 +145,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_openingTree->setModel(new OpeningTree);
 	m_openingTree->sortByColumn(1, Qt::DescendingOrder);
 	m_openingTree->slotReconfigure();
+	connect(m_openingTree, SIGNAL(clicked(const QModelIndex&)),
+			  SLOT(slotSearchTreeMove(const QModelIndex&)));
 	dock->setWidget(m_openingTree);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());
@@ -1012,5 +1014,12 @@ void MainWindow::slotSearchTree()
 	m_gameList->updateFilter();
 	slotFilterChanged();
 	slotStatusMessage(tr("Tree updated (%1 s.)").arg(time.elapsed() / 100 / 10.0));
+}
+
+void MainWindow::slotSearchTreeMove(const QModelIndex& index)
+{
+	QString move = dynamic_cast<OpeningTree*>(m_openingTree->model())->move(index);
+	Move m = m_boardView->board().parseMove(move);
+	slotBoardMove(m.from(), m.to());
 }
 

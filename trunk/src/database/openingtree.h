@@ -75,6 +75,8 @@ public:
 	virtual void sort(int column, Qt::SortOrder order);
 	/** Support sorting. */
 	virtual void sort();
+	/** Move leading to given entry. */
+	QString move(const QModelIndex& index) const;
 private:
 	QList<MoveData> m_moves;
 	unsigned m_games;
