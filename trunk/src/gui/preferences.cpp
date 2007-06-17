@@ -88,6 +88,8 @@ void PreferencesDialog::slotSelectEngineCommand()
 			QString name = com.section('/', -1, -1);
 			if (!name.isEmpty())
 				name[0] = name[0].toUpper();
+			if (name.endsWith(".exe"))
+				name.truncate(name.length() - 4);
 			ui.engineName->setText(name);
 		}
 	}
