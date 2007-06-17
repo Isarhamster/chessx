@@ -1020,6 +1020,9 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 {
 	QString move = dynamic_cast<OpeningTree*>(m_openingTree->model())->move(index);
 	Move m = m_boardView->board().parseMove(move);
-	slotBoardMove(m.from(), m.to());
+	if (m == game().move())
+		slotGameMoveNext();
+	else
+		slotBoardMove(m.from(), m.to());
 }
 
