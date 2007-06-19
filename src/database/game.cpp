@@ -42,6 +42,7 @@ Game::Game()
 	m_moveNodes[0].nextNode = 0;
 	m_moveNodes[0].parentNode = 0;
 	m_moveNodes[0].nextVariation = 0;
+	m_isModified = false;
 }
 
 Game::Game(const Game& game)
@@ -66,6 +67,7 @@ Game::Game(const Game& game)
 	//copy node array
 	m_moveNodes = new MoveNode[m_totalNodeCount];
 	memcpy(m_moveNodes, game.m_moveNodes, sizeof(MoveNode) * m_totalNodeCount);
+	m_isModified = false;
 }
 
 Game& Game::operator=(const Game& game)
@@ -99,6 +101,7 @@ Game& Game::operator=(const Game& game)
 			m_moveNodes[node] = game.m_moveNodes[node];
 		}
 	}
+	m_isModified = true;
 
 	return *this;
 }
@@ -250,6 +253,7 @@ bool Game::setAnnotation(QString annotation, int variation)
 		count++;
 	}
 
+	m_isModified = true;
 	return false;
 }
 
@@ -267,6 +271,7 @@ bool Game::addNag(Nag nag, int variation)
 		count++;
 	}
 
+	m_isModified = true;
 	return false;
 }
 
@@ -284,6 +289,7 @@ bool Game::setNags(NagSet nags, int variation)
 		count++;
 	}
 
+	m_isModified = true;
 	return false;
 }
 
@@ -349,6 +355,11 @@ int Game::variationCount() const
 	}
 
 	return count;
+}
+
+bool Game::isModified()
+{
+	return m_isModified;
 }
 
 void Game::moveToStart()
@@ -533,6 +544,7 @@ int Game::addMove(const Move& move, const QString& annotation, NagSet nags)
 
 	//node now added
 	m_nextFreeNode++;
+	m_isModified = true;
 	return variation;
 }
 
@@ -574,6 +586,7 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags,
 		count++;
 	}
 
+	m_isModified = true;
 	return false;
 }
 
@@ -619,6 +632,7 @@ bool Game::promoteVariation(int variation)
 		count++;
 	}
 
+	m_isModified = true;
 	return false;
 }
 
@@ -647,6 +661,7 @@ bool Game::removeVariation(int variation)
 		count++;
 	}
 
+	m_isModified = true;
 	return false;
 }
 
@@ -655,6 +670,7 @@ void Game::truncateGameEnd()
 	//effectively remove nodes by disconnecting from tree
 	m_deletedNodeCount += nodeCount(m_currentNode) - 1;
 	m_moveNodes[m_currentNode].nextNode = 0;
+	m_isModified = true;
 }
 
 bool Game::truncateGameStart(int variation)
@@ -676,6 +692,7 @@ bool Game::truncateGameStart(int variation)
 		count++;
 	}
 
+	m_isModified = true;
 	return false;
 }
 
@@ -734,10 +751,12 @@ void Game::clear()
 	m_moveNodes[0].nextNode = 0;
 
 	m_tags.clear();
+	m_isModified = true;
 }
 void Game::clearTags()
 {
 	m_tags.clear();
+	m_isModified = true;
 }
 
 QString Game::tag(const QString& tag) const
@@ -752,11 +771,13 @@ QMap<QString, QString> Game::tags() const
 void Game::setTag(const QString& tag, const QString& value)
 {
 	m_tags.insert(tag, value);
+	m_isModified = true;
 }
 
 void Game::removeTag(const QString& tag)
 {
 	m_tags.remove(tag);
+	m_isModified = true;
 }
 
 void Game::setStartBoard(const Board& board)
@@ -775,6 +796,7 @@ void Game::setStartBoard(const Board& board)
 	m_nextFreeNode = 1;
 	m_deletedNodeCount = 0;
 	m_moveNodes[0].nextNode = 0;
+	m_isModified = true;
 }
 
 void Game::setStartBoard(const QString& fen)
@@ -794,16 +816,19 @@ void Game::setStartBoard(const QString& fen)
 	m_nextFreeNode = 1;
 	m_deletedNodeCount = 0;
 	m_moveNodes[0].nextNode = 0;
+	m_isModified = true;
 }
 
 void Game::setStartAnnotation(const QString& annotation)
 {
 	m_startAnnotation = annotation;
+	m_isModified = true;
 }
 
 void Game::setResult(const Result result)
 {
 	m_result = result;
+	m_isModified = true;
 }
 
 bool Game::loadEcoFile(const QString& ecoFile)
