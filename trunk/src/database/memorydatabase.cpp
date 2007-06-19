@@ -18,7 +18,9 @@
 #include "memorydatabase.h"
 
 MemoryDatabase::MemoryDatabase()
-{}
+{
+	m_isModified = false;
+}
 MemoryDatabase::~MemoryDatabase()
 {
 	for (int i = 0; i < m_games.count(); ++i) {
@@ -41,14 +43,17 @@ bool MemoryDatabase::appendGame(Game& game)
 	newGame->clearTags();
 	m_games.append(newGame);
 	m_count++;
+	m_isModified = true;
 	return true;
 }
 bool MemoryDatabase::remove(int)
 {
+	m_isModified = true;
 	return false;
 }
 bool MemoryDatabase::remove(const Filter&)
 {
+	m_isModified = true;
 	return false;
 }
 bool MemoryDatabase::replace(int index, Game& game)
@@ -66,6 +71,7 @@ bool MemoryDatabase::replace(int index, Game& game)
 	// Upate game array
 	*m_games[index] = game;
 	m_games[index]->clearTags();
+	m_isModified = true;
 	return true;
 }
 
@@ -101,6 +107,7 @@ bool MemoryDatabase::parseFile()
 		m_games.append(game);
 	}
 	m_index.setCacheEnabled(false);
+	m_isModified = false;
 	return true;
 }
 bool MemoryDatabase::clear()
@@ -109,5 +116,6 @@ bool MemoryDatabase::clear()
 		delete m_games[i];
 	}
 	m_games.clear();
+	m_isModified = true;
 	return true;
 }
