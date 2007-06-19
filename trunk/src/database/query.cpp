@@ -100,7 +100,6 @@ bool Query::isValid()
 			switch (op) {
 			case Search::And :
 			case Search::Or :
-			case Search::Add :
 			case Search::Remove :
 				// These operators need 2 operands, and leaves one answer on the stack
 				if (operandCount < 2) {
@@ -300,7 +299,6 @@ bool Query::internalCheck()
 			switch (op) {
 			case Search::And :
 			case Search::Or :
-			case Search::Add :
 			case Search::Remove :
 			case Search::Not :
 			case Search::NullOperator :
