@@ -209,12 +209,6 @@ void Filter::executeSearch(Search& search, Search::Operator searchOperator)
 		}
 
 	}
-	/*   Query query;
-		  FilterSearch filterSearch(this);
-		  query.append(search);
-		  query.append(filterSearch);
-		  query.append(searchOperator);
-		  executeQuery(query); */
 }
 void Filter::executeQuery(Query& query)
 {

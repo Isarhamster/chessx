@@ -245,7 +245,6 @@ TriStateTree::State TriStateTree::update(Node* node)
 		break;
 
 	case Search::Or:
-	case Search::Add:
 		if (leftState == True || rightState == True) {
 			node->m_state = True;
 		} else if (leftState == Unknown || rightState == Unknown) {

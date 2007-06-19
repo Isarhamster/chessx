@@ -43,7 +43,7 @@ class Search
 public:
 	enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch};
 	/** Operator for joining filters */
-	enum Operator {NullOperator, Not, And, Or, Add, Remove };
+	enum Operator {NullOperator, Not, And, Or, Remove };
 
 	/** Standard constructor. */
 	Search();
