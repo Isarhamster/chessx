@@ -80,10 +80,13 @@ public:
 	Index* index();
 	/** Returns the number of games in the database */
 	virtual int count() { return m_count; }
+	/** Returns true if the database has been modified */
+	virtual bool isModified() { return m_isModified; }
 
 protected:
 	Index m_index;
 	int m_count;
+	bool m_isModified;
 
 };
 
