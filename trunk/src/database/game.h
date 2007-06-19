@@ -117,6 +117,8 @@ public:
 	int currentVariation() const;
 	/** @return number of variations at the current position (includes main line) */
 	int variationCount() const;
+	/** @return true if the game has been modified */
+	bool isModified();
 
 	//tree traversal methods
 	/** Moves to the beginning of the game */
@@ -161,19 +163,6 @@ public:
 	QString ecoClassify() const;
 	/** Search game to see if given position exists, if it does return ply */
 	int findPosition(const BitBoard& position);
-
-	/** @return tag id of white player */
-//	int white() const;
-	/** @return tag id of black player */
-	//int black() const;
-	/** @return date of game */
-	//PartialDate date() const;
-	/** @return game event */
-	//int event() const;
-	/** @return game site */
-	//int site() const;
-	/** @return game round */
-	//int round() const;
 
 	/** @return start position of game */
 	Board startBoard() const;
@@ -250,6 +239,7 @@ private:
 	MoveNode* m_moveNodes;
 	//eco data
 	static QMap<quint64, QString> m_ecoPositions;
+	bool m_isModified;
 };
 
 #endif	// __GAME_H__
