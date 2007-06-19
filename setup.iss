@@ -44,7 +44,6 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "bin\chessx.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "BUGS"; DestDir: "{app}"; Flags: ignoreversion
 Source: "COPYING"; DestDir: "{app}"; Flags: ignoreversion
 Source: "TODO"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Changelog"; DestDir: "{app}"; Flags: ignoreversion
