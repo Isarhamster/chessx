@@ -67,7 +67,7 @@ private:
 	 * about the game */
 	Game* m_game;
 	/** Current game index - used for caching */
-	int* m_gameIndex;
+	mutable int m_gameIndex;
 };
 
 #endif	// __FilterModelBase_H__
