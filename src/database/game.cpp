@@ -678,6 +678,7 @@ bool Game::truncateGameStart(int variation)
 	int count = 0;
 	int node = m_moveNodes[m_currentNode].nextNode;
 
+	m_startPly = m_ply;
 	while (node) {
 		if (count == variation) {
 			//effectively remove nodes by disconnecting from tree
