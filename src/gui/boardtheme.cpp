@@ -66,10 +66,9 @@ bool BoardTheme::isValid() const
 bool BoardTheme::loadPieces(const QString& pieces, int effect)
 {
 	QString effectPath;
-	if (!effect) effectPath = "plain";
-	else if (effect == Outline) effectPath = "outline";
-	else if (effect == Shadow) effectPath = "shadow";
-	QString themePath = QString("%1/%2/%3.png").arg(themeDirectory()).arg(effectPath).arg(pieces);
+	if (effect == Outline) effectPath = "/outline";
+	else if (effect == Shadow) effectPath = "/shadow";
+	QString themePath = QString("%1%2/%3.png").arg(themeDirectory()).arg(effectPath).arg(pieces);
 
 	QPixmap big;
 	if (!big.load(themePath) || big.width() < 160)
