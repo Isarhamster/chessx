@@ -56,6 +56,7 @@ bool DatabaseInfo::loadGame(int index)
 		return false;
 	m_index = index;
 	m_game.moveToPly(m_filter->gamePosition(index) - 1);
+	m_game.setModified(false);
 	return true;
 }
 

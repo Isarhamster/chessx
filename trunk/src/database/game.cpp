@@ -357,9 +357,14 @@ int Game::variationCount() const
 	return count;
 }
 
-bool Game::isModified()
+bool Game::isModified() const
 {
 	return m_isModified;
+}
+
+void Game::setModified(bool set)
+{
+	m_isModified = set;
 }
 
 void Game::moveToStart()
