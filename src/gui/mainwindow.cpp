@@ -1030,7 +1030,14 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 	Move m = m_boardView->board().parseMove(move);
 	if (m == game().move())
 		slotGameMoveNext();
-	else
+	else if (game().isModified())
 		slotBoardMove(m.from(), m.to());
+	else {
+		Board board = m_boardView->board();
+		board.doMove(m);
+		m_boardView->setBoard(board);
+		slotSearchTree();
+		slotGameLoadFirst();
+	}
 }
 
