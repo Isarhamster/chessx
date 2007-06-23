@@ -96,6 +96,10 @@ bool compareYear(const MoveData& m1, const MoveData& m2)
 
 void OpeningTree::update(Filter& f, const Board& b)
 {
+	if (m_filter == &f && m_board == b)
+		return;
+	m_filter = &f;
+	m_board = b;
 	Game g;
 	QMap<Move, MoveData> moves;
 	m_games = 0;
@@ -136,14 +140,14 @@ int OpeningTree::columnCount(const QModelIndex&) const
 	return m_names.count();
 }
 
-OpeningTree::OpeningTree() : m_sortcolumn(1), m_order(Qt::DescendingOrder)
+OpeningTree::OpeningTree() : m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
 {
 	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
 			<< tr("Year");
 }
 
 OpeningTree::OpeningTree(Filter & f, const Board & b) :
-		m_sortcolumn(1), m_order(Qt::DescendingOrder)
+		m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
 {
 	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
 			<< tr("Year");

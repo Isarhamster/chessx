@@ -83,6 +83,8 @@ private:
 	QStringList m_names;
 	int m_sortcolumn;
 	Qt::SortOrder m_order;
+	Board m_board;
+	Filter* m_filter;
 };
 
 #endif
