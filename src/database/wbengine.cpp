@@ -30,6 +30,8 @@ WBEngine::WBEngine(const QString& name,
 
 bool WBEngine::startAnalysis(const Board& board)
 {
+	if (isActive() && m_board == board)
+		return true;
 	stopAnalysis();
 	m_board = board;
 	if (m_analyze && isActive() && m_setboard) {

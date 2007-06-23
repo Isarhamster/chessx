@@ -34,6 +34,8 @@ bool UCIEngine::startAnalysis(const Board& board)
 		return false;
 	}
 
+	if (m_board == board)
+		return true;
 	m_board = board;
 
 	m_position = board.toFen();
