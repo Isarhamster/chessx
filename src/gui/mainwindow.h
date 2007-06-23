@@ -109,8 +109,10 @@ public slots:
 	void slotEditCopyFEN();
 	/** Set position using FEN from clipboard. */
 	void slotEditPasteFEN();
-	/** Truncate next moves */
-	void slotEditTruncate();
+	/** Truncate moves to the end of the game. */
+	void slotEditTruncateEnd();
+	/** Truncate moves from the beginning of the game. */
+	void slotEditTruncateStart();
 	void slotReconfigure();
 	void slotConfigure();
 	/** Display help */
