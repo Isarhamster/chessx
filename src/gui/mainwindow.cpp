@@ -167,7 +167,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(this, SIGNAL(reconfigure()), m_analysis, SLOT(slotReconfigure()));
 	// Make sure engine is disabled if dock is hidden
 	connect(action, SIGNAL(toggled(bool)), m_analysis, SLOT(setShown(bool)));
-
+	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_A);
 
 	/* Randomize */
 	srand(time(0));
