@@ -118,7 +118,9 @@ public:
 	/** @return number of variations at the current position (includes main line) */
 	int variationCount() const;
 	/** @return true if the game has been modified */
-	bool isModified();
+	bool isModified() const;
+	/** Clear/set game's @p modified flag. */
+	void setModified(bool set);
 
 	//tree traversal methods
 	/** Moves to the beginning of the game */
