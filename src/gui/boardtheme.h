@@ -36,12 +36,13 @@ class BoardTheme
 public:
 	enum ColorRole {LightSquare, DarkSquare, Highlight, Frame};
 	enum LoadTheme {LoadBoard = 1, LoadPieces = 2, LoadAll = LoadBoard | LoadPieces};
+	enum Effects {Plain, Outline = 1, Shadow = 2};
 	BoardTheme();
 	~BoardTheme();
 	/** Reset piece and board selections based on config values */
 	void configure();
-	/** Load piece graphics named by string + effect name */
-	bool loadPieces(const QString& pieces, const QString& effect);
+	/** Load piece graphics named by string + effect flag */
+	bool loadPieces(const QString& pieces, int effect);
 	/** Load board graphics named by string */
 	bool loadBoard(const QString& board);
 	/** Sets one of the board colors. */
