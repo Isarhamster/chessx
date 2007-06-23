@@ -525,12 +525,17 @@ void MainWindow::slotEditPasteFEN()
 	slotGameChanged();
 }
 
-void MainWindow::slotEditTruncate()
+void MainWindow::slotEditTruncateEnd()
 {
 	game().truncateGameEnd();
 	slotGameChanged();
 }
 
+void MainWindow::slotEditTruncateStart()
+{
+	game().truncateGameStart();
+	slotGameChanged();
+}
 
 void MainWindow::slotEditBoard()
 {
@@ -897,15 +902,18 @@ void MainWindow::setupActions()
 
 	/* Edit menu */
 	QMenu* edit = menuBar()->addMenu(tr("&Edit"));
-	edit->addAction(createAction(tr("Truncate moves"), SLOT(slotEditTruncate()),
+	edit->addAction(createAction(tr("Position &Setup..."), SLOT(slotEditBoard()),
+						 Qt::CTRL + Qt::Key_E));
+	QMenu* editremove = edit->addMenu(tr("&Remove"));
+	editremove->addAction(createAction(tr("Moves from the beginning"),
+								 SLOT(slotEditTruncateStart())));
+	editremove->addAction(createAction(tr("Moves to the end"), SLOT(slotEditTruncateEnd()),
 				     Qt::SHIFT + Qt::Key_Delete));
 	edit->addSeparator();
 	edit->addAction(createAction(tr("&Copy FEN"), SLOT(slotEditCopyFEN()),
 				     Qt::CTRL + Qt::SHIFT + Qt::Key_C));
 	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
 				     Qt::CTRL + Qt::SHIFT + Qt::Key_V));
-	edit->addAction(createAction(tr("Position &Setup..."), SLOT(slotEditBoard()),
-				     Qt::CTRL + Qt::Key_E));
 
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
