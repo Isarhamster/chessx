@@ -63,13 +63,13 @@ bool BoardTheme::isValid() const
 	return !m_pieceFilename.isNull();
 }
 
-bool BoardTheme::loadPieces(const QString& pieces, const QString& effect)
+bool BoardTheme::loadPieces(const QString& pieces, int effect)
 {
-	QString etest = effect.toLower();
-	QString effectPath = "/";
-	if (etest != "plain")
-		effectPath += etest + "/";
-	QString themePath = QString("%1%2%3.png").arg(themeDirectory()).arg(effectPath).arg(pieces);
+	QString effectPath;
+	if (!effect) effectPath = "plain";
+	else if (effect == Outline) effectPath = "outline";
+	else if (effect == Shadow) effectPath = "shadow";
+	QString themePath = QString("%1/%2/%3.png").arg(themeDirectory()).arg(effectPath).arg(pieces);
 
 	QPixmap big;
 	if (!big.load(themePath) || big.width() < 160)
@@ -126,12 +126,12 @@ bool BoardTheme::loadBoard(const QString& board)
 void BoardTheme::configure()
 {
 	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
-	QString pieceEffect = AppSettings->value("pieceEffect", "shadow").toString();
+	int pieceEffect = AppSettings->value("pieceEffect", Shadow).toInt();
 	QString boardTheme = AppSettings->value("boardTheme", "slate").toString();
 
 	if (!loadPieces(pieceTheme, pieceEffect))
-		if (!loadPieces(pieceTheme, "plain"))
-			loadPieces("merida", "plain");
+		if (!loadPieces(pieceTheme, Plain))
+			loadPieces("merida", Plain);
 	loadBoard(boardTheme);
 }
 

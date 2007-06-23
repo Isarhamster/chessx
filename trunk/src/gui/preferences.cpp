@@ -208,7 +208,7 @@ void PreferencesDialog::restoreSettings()
 	ui.boardFrameCheck->setChecked(AppSettings->value("showFrame", true).toBool());
 	ui.guessMoveCheck->setChecked(AppSettings->value("guessMove", true).toBool());
 	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
-	QString pieceEffect = AppSettings->value("pieceEffect", "shadow").toString();
+	ui.pieceEffect->setCurrentIndex(AppSettings->value("pieceEffect", 2).toInt());
 	QString boardTheme = AppSettings->value("boardTheme", "slate").toString();
 	AppSettings->endGroup();
 
@@ -227,13 +227,8 @@ void PreferencesDialog::restoreSettings()
 	}
 	ui.boardThemeCombo->addItem(tr("[plain colors]"));
 
-	ui.pieceEffect->addItem(tr("plain"));
-	ui.pieceEffect->addItem(tr("outline"));
-	ui.pieceEffect->addItem(tr("shadow"));
-
 	selectInCombo(ui.pieceThemeCombo, pieceTheme);
 	selectInCombo(ui.boardThemeCombo, boardTheme);
-	selectInCombo(ui.pieceEffect, pieceEffect);
 
 	// Read Players settings
 	AppSettings->beginGroup("/Players/");
@@ -275,7 +270,7 @@ void PreferencesDialog::saveSettings()
 	AppSettings->setValue("showFrame", ui.boardFrameCheck->isChecked());
 	AppSettings->setValue("guessMove", ui.guessMoveCheck->isChecked());
 	AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());
-	AppSettings->setValue("pieceEffect", ui.pieceEffect->currentText());
+	AppSettings->setValue("pieceEffect", ui.pieceEffect->currentIndex());
 	if (ui.boardThemeCombo->currentIndex() != ui.boardThemeCombo->count() - 1)
 		AppSettings->setValue("boardTheme", ui.boardThemeCombo->currentText());
 	else	AppSettings->setValue("boardTheme", QString());

@@ -138,6 +138,21 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <item>
+            <property name="text" >
+             <string>plain</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>outline</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>outline+shadow</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>
