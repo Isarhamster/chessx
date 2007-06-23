@@ -838,7 +838,8 @@ void MainWindow::slotFilterChanged()
 
 void MainWindow::slotFilterLoad(int index)
 {
-	gameLoad(index);
+	if (gameIndex() != index)
+		gameLoad(index);
 	activateWindow();
 }
 
