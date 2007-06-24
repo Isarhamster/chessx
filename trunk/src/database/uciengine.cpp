@@ -50,8 +50,9 @@ bool UCIEngine::startAnalysis(const Board& board)
 
 void UCIEngine::stopAnalysis()
 {
-	if (isAnalyzing())
+	if (isAnalyzing()) {
 		send("stop");
+	}
 }
 
 void UCIEngine::protocolStart()
@@ -64,6 +65,7 @@ void UCIEngine::protocolEnd()
 {
 	send("quit");
 	setActive(false);
+	m_board.clear();
 }
 
 void UCIEngine::processMessage(const QString& message)

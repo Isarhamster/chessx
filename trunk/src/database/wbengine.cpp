@@ -66,6 +66,7 @@ void WBEngine::protocolEnd()
 	stopAnalysis();
 	send("quit");
 	setActive(false);
+	m_board.clear();
 }
 
 void WBEngine::processMessage(const QString& message)
