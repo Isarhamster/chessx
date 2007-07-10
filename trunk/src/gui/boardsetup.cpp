@@ -17,7 +17,9 @@
 #include "boardsetup.h"
 #include "boardview.h"
 
+#include <QApplication>
 #include <QActionGroup>
+#include <QClipboard>
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QPushButton>
@@ -59,6 +61,17 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMovePiece(Square, Square)));
 	connect(ui.boardView, SIGNAL(wheelScrolled(int)), SLOT(slotChangePiece(int)));
 	connect(ui.toMoveButton, SIGNAL(clicked()), SLOT(slotToggleSide()));
+
+	QAction* copyFen = new QAction(tr("Copy position to clipboard"), this);
+	copyFen->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_C);
+	connect(copyFen, SIGNAL(triggered(bool)), SLOT(slotCopyFen()));
+	addAction(copyFen);
+	QAction* pasteFen = new QAction(tr("Paste position from clipboard"), this);
+	pasteFen->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_V);
+	connect(pasteFen, SIGNAL(triggered(bool)), SLOT(slotPasteFen()));
+	addAction(pasteFen);
+	setContextMenuPolicy(Qt::ActionsContextMenu);
+
 }
 
 BoardSetupDialog::~BoardSetupDialog()
@@ -114,7 +127,6 @@ void BoardSetupDialog::slotAccept()
 void BoardSetupDialog::slotClear()
 {
 	setBoard(Board());
-	setStatusMessage();
 }
 
 void BoardSetupDialog::slotChoosePiece(QAction* action)
@@ -225,6 +237,28 @@ void BoardSetupDialog::setStatusMessage()
 	else
 		ui.fenLabel->setText(tr("Illegal position: %1").arg(reason));
 }
+
+void BoardSetupDialog::slotCopyFen()
+{
+	QApplication::clipboard()->setText(ui.boardView->board().toFen());
+}
+
+void BoardSetupDialog::slotPasteFen()
+{
+	QString fen = QApplication::clipboard()->text().trimmed();
+	if (!ui.boardView->board().isValidFen(fen)) {
+		QString msg = fen.length() ?
+			      tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
+				tr("There is no text in clipboard.");
+		QMessageBox::warning(0, "Paste FEN", msg);
+	}
+	else {
+		Board b;
+		b.fromFen(fen);
+		setBoard(b);
+	}
+}
+
 
 
 
