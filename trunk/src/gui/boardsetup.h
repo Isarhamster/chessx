@@ -68,6 +68,10 @@ private:
 	Color m_toMove;
 	/** Display side to move */
 	void showSideToMove();
+	/** Message for incorrect setups. Returns empty string if the position is correct. */
+	QString boardStatusMessage() const;
+	/** Sets status message for the board (either fen or error message). */
+	void setStatusMessage();
 protected:
 	/** Scroll current piece with a wheel */
 	virtual void wheelEvent(QWheelEvent* e);
