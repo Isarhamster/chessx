@@ -52,6 +52,10 @@ private slots:
 	void slotClear();
 	/** Restore standard position */
 	void slotReset();
+	/** Copy current position as FEN. */
+	void slotCopyFen();
+	/** Paste FEN from clipboard as current position. */
+	void slotPasteFen();
 	/** Change current piece using wheel */
 	void slotChangePiece(int dir);
 	/** Choose piece */
