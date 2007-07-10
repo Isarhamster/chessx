@@ -580,11 +580,13 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 	char c = fen[0];
 
 	memset(this, 0, sizeof(BitBoard));
+	m_moveNumber = 1;
+	m_epSquare = NoEPSquare;
 
 	// Piece position
 	i = 0;
 	s = 56;
-	while (c != ' ' && s <= 64) {
+	while (c && c != ' ' && s <= 64) {
 		switch (c) {
 		case '/': s -= 16; break;
 		case '1': s += 1; break;
@@ -691,15 +693,27 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 	if (s != 8)
 		return false;
 
+	// Set remainder of bitboard data appropriately
+	m_occupied = m_occupied_co[White] + m_occupied_co[Black];
+	for (int i = 0; i < 64; i++) {
+		if (SetBit(i)&m_occupied) {
+			m_occupied_l90 |= SetBitL90(i);
+			m_occupied_l45 |= SetBitL45(i);
+			m_occupied_r45 |= SetBitR45(i);
+		}
+	}
+
 	// Side to move
 	c = fen[++i];
 	if (c == 'w') m_stm = White;
 	else if (c == 'b') m_stm = Black;
+	else if (c == 0) return true;
 	else return false;
 	c = fen[++i];
 
 	// Castling Rights
 	c = fen[++i];
+	if (c == 0) return true;
 	if (c != '-') {
 		while (c != ' ') {
 			if (c == 'K')  setCastleShort(White);
@@ -712,8 +726,8 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 	} else	++i;  // Bypass space
 
 	// EnPassant Square
-	m_epFile = 0;
 	c = fen[++i];
+	if (c == 0) return true;
 	if (c != '-') {
 		if (c >= 'a' && c <= 'h')
 			m_epFile = c - 'a' + 1;
@@ -731,6 +745,8 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 
 	// Half move clock
 	c = fen[++i];
+	if (c == 0)
+		return true;
 	if (c < '0' || c > '9')
 		return false;
 	m_halfMoves = fen.mid(i).toInt();
@@ -739,6 +755,8 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 
 	// Move number
 	c = fen[++i];
+	if (c == 0)
+		return true;
 	if (c < '0' || c > '9')
 		return false;
 	m_moveNumber = fen.mid(i).toInt();
@@ -746,16 +764,6 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 		c = fen[++i];
 	if (m_moveNumber < 1)
 		return false;
-
-	// Set remainder of bitboard data appropriately
-	m_occupied = m_occupied_co[White] + m_occupied_co[Black];
-	for (int i = 0; i < 64; i++) {
-		if (SetBit(i)&m_occupied) {
-			m_occupied_l90 |= SetBitL90(i);
-			m_occupied_l45 |= SetBitL45(i);
-			m_occupied_r45 |= SetBitR45(i);
-		}
-	}
 
 	return true;
 }
