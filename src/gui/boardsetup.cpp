@@ -62,11 +62,11 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.boardView, SIGNAL(wheelScrolled(int)), SLOT(slotChangePiece(int)));
 	connect(ui.toMoveButton, SIGNAL(clicked()), SLOT(slotToggleSide()));
 
-	QAction* copyFen = new QAction(tr("Copy position to clipboard"), this);
+	QAction* copyFen = new QAction(tr("Copy FEN to clipboard"), this);
 	copyFen->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_C);
 	connect(copyFen, SIGNAL(triggered(bool)), SLOT(slotCopyFen()));
 	addAction(copyFen);
-	QAction* pasteFen = new QAction(tr("Paste position from clipboard"), this);
+	QAction* pasteFen = new QAction(tr("Paste FEN from clipboard"), this);
 	pasteFen->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_V);
 	connect(pasteFen, SIGNAL(triggered(bool)), SLOT(slotPasteFen()));
 	addAction(pasteFen);
