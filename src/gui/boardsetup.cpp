@@ -24,8 +24,6 @@
 #include <QToolButton>
 #include <QWheelEvent>
 
-using namespace Qt;
-
 BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 {
 	ui.setupUi(this);
@@ -83,6 +81,7 @@ void BoardSetupDialog::setBoard(const Board& b)
 	ui.moveSpin->setValue(b.moveNumber());
 	m_toMove = b.toMove();
 	showSideToMove();
+	setStatusMessage();
 }
 
 int BoardSetupDialog::exec()
@@ -105,58 +104,17 @@ void BoardSetupDialog::slotAccept()
 	b.setMoveNumber(ui.moveSpin->value());
 	ui.boardView->setBoard(b);
 
-	QString reason;
-	switch (ui.boardView->board().validate()) {
-	case Valid:
+	QString reason = boardStatusMessage();
+	if (reason.isEmpty())
 		accept();
-		return;
-	case NoWhiteKing:
-		reason = tr("No white king");
-		break;
-	case NoBlackKing:
-		reason = tr("No black king");
-		break;
-	case DoubleCheck:
-		reason = tr("Both kings are in check");
-		break;
-	case OppositeCheck:
-		reason = tr("Side to move has opponent in check already");
-		break;
-	case TooManyBlackPawns:
-		reason = tr("Black has too many pawns");
-		break;
-	case TooManyWhitePawns:
-		reason = tr("White has too many pawns");
-		break;
-	case PawnsOn18:
-		reason = tr("There are pawns on the first or eighth rank");
-		break;
-	case TooManyKings:
-		reason = tr("Too many kings");
-		break;
-	case TooManyBlack:
-		reason = tr("Too many black pieces");
-		break;
-	case TooManyWhite:
-		reason = tr("Too many white pieces");
-		break;
-	case BadCastlingRights:
-		reason = tr("Bad castling rights");
-		break;
-	case InvalidEnPassant:
-		reason = tr("En passant square is not correct");
-		break;
-	default:
-		reason = tr("Unknown reason");
-		break;
-	}
-	QMessageBox::critical(0, tr("Invalid position"),
-		      tr("Current position is not valid.\n\n%1.").arg(reason));
+	else QMessageBox::critical(0, tr("Invalid position"),
+		tr("Current position is not valid.\n\n%1.").arg(reason));
 }
 
 void BoardSetupDialog::slotClear()
 {
 	setBoard(Board());
+	setStatusMessage();
 }
 
 void BoardSetupDialog::slotChoosePiece(QAction* action)
@@ -178,6 +136,7 @@ void BoardSetupDialog::slotSelected(Square square, int button)
 		piece = Empty;
 	board.setAt(square, piece);
 	ui.boardView->setBoard(board);
+	setStatusMessage();
 }
 
 void BoardSetupDialog::showSideToMove()
@@ -197,8 +156,7 @@ void BoardSetupDialog::slotToggleSide()
 	m_toMove = oppositeColor(m_toMove);
 	Board b = ui.boardView->board();
 	b.setToMove(m_toMove);
-	ui.boardView->setBoard(b);
-	showSideToMove();
+	setBoard(b);
 }
 
 void BoardSetupDialog::slotChangePiece(int dir)
@@ -216,12 +174,56 @@ void BoardSetupDialog::slotMovePiece(Square from, Square to)
 	Piece p = b.pieceAt(from);
 	b.removeFrom(from);
 	b.setAt(to, p);
-	ui.boardView->setBoard(b);
+	setBoard(b);
 }
 
 void BoardSetupDialog::wheelEvent(QWheelEvent* e)
 {
 	slotChangePiece(e->delta() < 0 ? BoardView::WheelDown : BoardView::WheelUp);
+}
+
+QString BoardSetupDialog::boardStatusMessage() const
+{
+	switch (ui.boardView->board().validate()) {
+	case Valid:
+		return QString();
+	case NoWhiteKing:
+		return tr("No white king");
+	case NoBlackKing:
+		return tr("No black king");
+	case DoubleCheck:
+		return tr("Both kings are in check");
+	case OppositeCheck:
+		return tr("Side to move has opponent in check already");
+	case TooManyBlackPawns:
+		return tr("Black has too many pawns");
+	case TooManyWhitePawns:
+		return tr("White has too many pawns");
+	case PawnsOn18:
+		return tr("There are pawns on the first or eighth rank");
+	case TooManyKings:
+		return tr("Too many kings");
+	case TooManyBlack:
+		return tr("Too many black pieces");
+	case TooManyWhite:
+		return tr("Too many white pieces");
+	case BadCastlingRights:
+		return tr("Bad castling rights");
+	case InvalidEnPassant:
+		return tr("En passant square is not correct");
+	default:
+		return tr("Unknown reason");
+	}
+}
+
+void BoardSetupDialog::setStatusMessage()
+{
+	QString reason = boardStatusMessage();
+	ui.okButton->setEnabled(reason.isEmpty());
+	if (reason.isEmpty())
+		ui.fenLabel->setText(tr("FEN: %1").arg(ui.boardView->board().toFen()));
+	else
+		ui.fenLabel->setText(tr("Illegal position: %1").arg(reason));
 }
 
 
