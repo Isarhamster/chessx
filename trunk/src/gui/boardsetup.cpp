@@ -40,7 +40,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 		QAction* action = new QAction(QString(), m_actions);
 		action->setData(piece);
 		action->setCheckable(true);
-		if (piece == WhiteKing)
+		if (piece == Empty)
 			action->setChecked(true);
 		action->setIcon(ui.boardView->theme().piece(Piece(piece)));
 		QToolButton* button = new QToolButton(ui.buttonWidget);
