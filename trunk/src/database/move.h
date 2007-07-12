@@ -27,11 +27,16 @@ class BitBoard;
    and don't make much sense when considered without a Board.
    However, you can create a move with only a source and destination square,
    Such moves are considered "illegal", but can be convenient when dealing with move entry.
+
+	@todo Clean or merge setPromotionPiece() and setPromoted() functions. When setting move from scratch
+	(e. g. in @ref Shredder class), setPromotionPiece() fails probably because isPromotion() returns
+	@p false .
 */
 
 class Move
 {
-public:
+	public:
+
 	/** Default constructor, creates an empty (illegal) move */
 	Move();
 
@@ -40,6 +45,8 @@ public:
 
 	/** Set promotion piece.  Default promotion is to Queen, use this to change piece afterward */
 	void setPromotionPiece(PieceType type);
+	/** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) pawn promoted to */
+	void setPromoted(const uchar p);
 
 	// Query
 	/** return Square piece sits on after move */
@@ -81,6 +88,7 @@ public:
 	bool operator==(const Piece& p) const;
 	/** Return true if this move was NOT made by given piece */
 	bool operator!=(const Piece& p) const;
+
 
 	/** Moves are considered the same, only if they match exactly */
 	friend bool operator==(const Move& m1, const Move& m2);
@@ -145,8 +153,6 @@ private:
 	void setBlack();
 	/** Return piece type of promoted piece (or 0 if none) */
 	uint promoted() const;
-	/** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) pawn promoted to */
-	void setPromoted(const uchar p);
 	/** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) making move */
 	void setPieceType(const uchar p);
 	/** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) captured */
