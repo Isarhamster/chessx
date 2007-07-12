@@ -1060,15 +1060,14 @@ Move BitBoard::parseMove(const QString& algebraic) const
 
 	if (type == Pawn) {
 		// Promotion as in bxc8=Q or bxc8(Q)
-		if (c == '=' || c == '(') {
+		if (c == '=' || c == '(')
 			c = *(s++);
-			switch (c) {
-				case 'Q': promotePiece = Queen; break;
-				case 'R': promotePiece = Rook; break;
-				case 'B': promotePiece = Bishop; break;
-				case 'N': promotePiece = Knight; break;
-				default: return move;
-			}
+		switch (toupper(c)) {
+			case 'Q': promotePiece = Queen; break;
+			case 'R': promotePiece = Rook; break;
+			case 'B': promotePiece = Bishop; break;
+			case 'N': promotePiece = Knight; break;
+			default: ;//return move;
 		}
 		if (fromSquare < 0) {
 			int base = (m_stm == White ? -8 : 8);
