@@ -79,16 +79,16 @@ void Shredder::httpDone(int id, bool error)
 	if (fld.size() > 3) {
 		switch (score) {
 		case 8:
-			move.setPromotionPiece(Queen);
+			move.setPromoted(Queen);
 			break;
 		case 9:
-			move.setPromotionPiece(Rook);
+			move.setPromoted(Rook);
 			break;
 		case 10:
-			move.setPromotionPiece(Bishop);
+			move.setPromoted(Bishop);
 			break;
 		case 11:
-			move.setPromotionPiece(Knight);
+			move.setPromoted(Knight);
 			break;
 		default:
 			return;
