@@ -514,14 +514,21 @@ void MainWindow::slotEditCopyFEN()
 void MainWindow::slotEditPasteFEN()
 {
 	QString fen = QApplication::clipboard()->text().trimmed();
-	if (!game().board().isValidFen(fen)) {
+	Board board;
+	if (!board.isValidFen(fen)) {
 		QString msg = fen.length() ?
 			      tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
 			      tr("There is no text in clipboard.");
 		QMessageBox::warning(0, "Paste FEN", msg);
 		return;
 	}
-	game().setStartBoard(fen);
+	board.fromFen(fen);
+	if (board.validate() != Valid) {
+		QMessageBox::warning(0, "Paste FEN", tr("The clipboard contains FEN, but with illegal position. "
+				"You can only paste such positions in <b>Setup position</b> dialog."));
+		return;
+	}
+	game().setStartBoard(board);
 	slotGameChanged();
 }
 
