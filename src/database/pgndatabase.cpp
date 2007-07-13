@@ -318,7 +318,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 			game->setResult(WhiteWin);
 			m_gameOver = true;
 			break;
-		} else if (token == "1/2-1/2") {
+		} else if (token == "1/2-1/2" || token == "1/2") {
 			game->setResult(Draw);
 			m_gameOver = true;
 			break;
