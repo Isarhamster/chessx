@@ -37,6 +37,8 @@
 	 and removed. Moves can have associated comments and nag values. For methods
 	 that accept a variation number 0 is the main line, with 1 and above being the
 	 alternative lines.
+
+	@todo Result is stored both internally and as a tag. This is redundant and allows inconsistency.
 */
 
 class Game
