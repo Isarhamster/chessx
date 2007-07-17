@@ -820,6 +820,7 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 		game().forward();
 		slotGameChanged();
 	} else if (url.scheme() == "tag") {
+		playerDialog()->setDatabase(database());
 		if (url.path() == "white")
 			playerDialog()->findPlayers(game().tag("White"));
 		else if (url.path() == "black")
