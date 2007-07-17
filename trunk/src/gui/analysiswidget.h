@@ -20,14 +20,18 @@ public:
 	AnalysisWidget();
 	~AnalysisWidget();
 public slots:
+	/** Sets new position. If analysis is active, the current content will be cleared and
+	new analysis will be triggered. */
 	void setPosition(const Board& board);
+	/** Displays given analysis received from an engine. */
 	void showAnalysis(const Engine::Analysis& analysis) const;
+	/** Called when configuration was changed (probably by accepting changes in Preferences dialog. */
 	void slotReconfigure();
-	/** user wants to use a different engine for analysis */
+	/** Use a different engine for analysis. */
 	void changeEngine(int index);
-	/** user wants to begin or end analysis */
+	/** Toggle analysis. */
 	void analyze(bool run);
-	/** destroy existing engine */
+	/** Stops analysis and destroys current engine. Used when changing engine or deleting whole widget. */
 	void removeEngine();
 	/** The engine is now ready, as requested */
 	void engineActivated();
