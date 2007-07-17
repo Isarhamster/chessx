@@ -125,8 +125,10 @@ void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const
 void AnalysisWidget::setPosition(const Board& board)
 {
 	m_board = board;
-	if (m_engine && m_active)
+	if (m_engine && m_active) {
+		ui.variationText->clear();
 		m_engine->startAnalysis(m_board);
+	}
 }
 
 void AnalysisWidget::stopTimer()
