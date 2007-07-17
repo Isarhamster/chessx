@@ -51,6 +51,10 @@ public slots:
 	void slotSelectEngineCommand();
 	/** user wants file dialog to select directory in which engine will run */
 	void slotSelectEngineDirectory();
+protected:
+	/** Overridden to save size */
+	void closeEvent(QCloseEvent* e);
+
 private:
 	Ui::PreferencesDialog ui;
 	void restoreSettings();

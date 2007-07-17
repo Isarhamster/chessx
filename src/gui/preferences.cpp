@@ -65,6 +65,11 @@ PreferencesDialog::~PreferencesDialog()
 {
 }
 
+void PreferencesDialog::closeEvent(QCloseEvent*)
+{
+	AppSettings->setLayout(this);
+}
+
 void PreferencesDialog::slotSelectEngineDirectory()
 {
 	QString dir = QFileDialog::getExistingDirectory(
@@ -196,6 +201,9 @@ void PreferencesDialog::slotApply()
 
 void PreferencesDialog::restoreSettings()
 {
+	// Restore size
+	AppSettings->layout(this);
+
 	// Read Board settings
 	AppSettings->beginGroup("/General/");
 	ui.quitCheck->setChecked(AppSettings->value("confirmQuit", true).toBool());
