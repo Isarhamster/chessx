@@ -216,6 +216,8 @@ MainWindow::MainWindow() : QMainWindow(),
 
 MainWindow::~MainWindow()
 {
+	/* Stop analysis. */
+	m_analysis->analyze(false);
 	qDeleteAll(m_databases.begin(), m_databases.end());
 	delete m_saveDialog;
 	delete m_playerDialog;
@@ -223,7 +225,6 @@ MainWindow::~MainWindow()
 	delete m_output;
 	delete m_tipDialog;
 	delete m_tablebase;
-	delete m_analysis;
 }
 
 void MainWindow::ecoLoaded()
