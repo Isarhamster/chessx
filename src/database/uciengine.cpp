@@ -210,7 +210,7 @@ void UCIEngine::parseAnalysis(const QString& message)
 		section += 2;
 	}
 
-	if (timeFound && nodesFound && depthFound && scoreFound) {
+	if (timeFound && nodesFound && depthFound && scoreFound && analysis.variation.size()) {
 		sendAnalysis(analysis);
 //		qWarning("! depth = %d\n", analysis.depth);
 //		qWarning("! score = %g\n", analysis.score);
