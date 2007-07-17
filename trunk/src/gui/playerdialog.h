@@ -21,6 +21,7 @@
 
 
 class PlayerDatabase;
+class Database;
 
 /** @ingroup GUI
 The PlayerDialog class is a dialog to browse player information. */
@@ -40,15 +41,23 @@ public slots:
 	void showPlayer();
 	/** Show given player. Do not change Player combo */
 	void showPlayer(const QString& player);
+	/** Show given player. Do not change Player combo. Set current database */
+	void showPlayer(const QString& player, Database* db);
 	/** Re-read configuration */
 	void configure();
+	/** Set database used for getting player information. */
+	void setDatabase(Database* db);
 private:
+	/** Get formatted info about player from current database. */
+	QString databaseInfo(const QString& player);
 	/** Information about a player */
 	QString formatPlayer(const QString& player);
 	Ui::PlayerDialog ui;
-	PlayerDatabase* m_database;
+	PlayerDatabase* m_playerDatabase;
+	Database* m_database;
 	bool m_showRating;
 	int m_showLimit;
+
 };
 
 
