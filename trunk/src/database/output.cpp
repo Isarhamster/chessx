@@ -409,7 +409,7 @@ QString Output::output(Game* game)
 	}
 	m_output += m_endTagMap[MarkupMainLine];
 	m_output += m_endTagMap[MarkupNotationBlock];
-	m_output += m_startTagMap[MarkupResult] + resultString(game->result()) + m_endTagMap[MarkupResult];
+	m_output += m_startTagMap[MarkupResult] + game->tag("Result") + m_endTagMap[MarkupResult];
 	m_output += m_footer;
 
 	QRegExp var("@(\\w+)@");
