@@ -61,6 +61,12 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMovePiece(Square, Square)));
 	connect(ui.boardView, SIGNAL(wheelScrolled(int)), SLOT(slotChangePiece(int)));
 	connect(ui.toMoveButton, SIGNAL(clicked()), SLOT(slotToggleSide()));
+	connect(ui.wkCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
+	connect(ui.wqCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
+	connect(ui.bkCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
+	connect(ui.bqCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
+	connect(ui.epCombo, SIGNAL(currentIndexChanged(int)), SLOT(slotEnPassantSquare()));
+	connect(ui.halfmoveSpin, SIGNAL(valueChanged(int)), SLOT(slotHalfmoveClock()));
 
 	QAction* copyFen = new QAction(tr("Copy FEN to clipboard"), this);
 	copyFen->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_C);
@@ -71,7 +77,6 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 	connect(pasteFen, SIGNAL(triggered(bool)), SLOT(slotPasteFen()));
 	addAction(pasteFen);
 	setContextMenuPolicy(Qt::ActionsContextMenu);
-
 }
 
 BoardSetupDialog::~BoardSetupDialog()
@@ -147,8 +152,8 @@ void BoardSetupDialog::slotSelected(Square square, int button)
 	if (board.pieceAt(square) == piece)
 		piece = Empty;
 	board.setAt(square, piece);
-	ui.boardView->setBoard(board);
-	setStatusMessage();
+	setBoard(board);
+	slotCastlingRights();
 }
 
 void BoardSetupDialog::showSideToMove()
@@ -187,6 +192,7 @@ void BoardSetupDialog::slotMovePiece(Square from, Square to)
 	b.removeFrom(from);
 	b.setAt(to, p);
 	setBoard(b);
+	slotCastlingRights();
 }
 
 void BoardSetupDialog::wheelEvent(QWheelEvent* e)
@@ -259,6 +265,37 @@ void BoardSetupDialog::slotPasteFen()
 	}
 }
 
+void BoardSetupDialog::slotCastlingRights()
+{
+	Board b(board());
+	CastlingRights cr = 0;
+	if (ui.wkCastleCheck->isChecked() && b.pieceAt(4) == WhiteKing && b.pieceAt(7) == WhiteRook)
+		cr += WhiteKingside;
+	if (ui.wqCastleCheck->isChecked() && b.pieceAt(4) == WhiteKing && b.pieceAt(0) == WhiteRook)
+		cr += WhiteQueenside;
+	if (ui.bkCastleCheck->isChecked() && b.pieceAt(60) == BlackKing && b.pieceAt(63) == BlackRook)
+		cr += BlackKingside;
+	if (ui.bqCastleCheck->isChecked() && b.pieceAt(60) == BlackKing && b.pieceAt(56) == BlackRook)
+		cr += BlackQueenside;
+	b.setCastlingRights(cr);
+	setBoard(b);
+}
 
+void BoardSetupDialog::slotEnPassantSquare()
+{
+	Board b(board());
+	if (ui.epCombo->currentIndex() == 0)
+		b.clearEnPassantSquare();
+	else {
+		int shift = b.toMove() == White ? 39 : 15;
+		b.setEnPassantSquare(shift + ui.epCombo->currentIndex());
+	}
+	setBoard(b);
+}
 
-
+void BoardSetupDialog::slotHalfmoveClock()
+{
+	Board b(board());
+	b.setHalfMoveClock(ui.halfmoveSpin->value());
+	setBoard(b);
+}

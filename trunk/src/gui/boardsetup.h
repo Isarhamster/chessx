@@ -62,11 +62,17 @@ private slots:
 	void slotChoosePiece(QAction*);
 	/** Select square and insert piece */
 	void slotSelected(Square s, int button);
+	/** Manually adjust castling rights. */
+	void slotCastlingRights();
+	/** Manually adjust en passant square. */
+	void slotEnPassantSquare();
+	/** Adjust halfmove clock. */
+	void slotHalfmoveClock();
 	/** Move piece */
 	void slotMovePiece(Square from, Square to);
 	/** Toggle side to move */
 	void slotToggleSide();
-private:
+	private:
 	Ui::BoardSetupDialog ui;
 	QActionGroup* m_actions;
 	Color m_toMove;

@@ -60,17 +60,19 @@ public:
 	//
 	/** Is piece sitting on given square moveable ? */
 	bool isMovable(const Square s) const;
-	/** Return piece sitting at given square on the board */
+	/** @return piece sitting at given square on the board */
 	Piece pieceAt(Square s) const;
-	/** Return number of ply since a pawn move or capture */
+	/** @return number of ply since a pawn move or capture */
 	uint halfMoveClock() const;
-	/** Return the current move number in the game */
+	/** Set number of ply since a pawn move or capture */
+	void setHalfMoveClock(uint i);
+	/** @return the current move number in the game */
 	uint moveNumber() const;
-	/** Return color of side next to move */
+	/** @return color of side next to move */
 	Color toMove() const;
-	/** Return true if its possible for this position to follow target position */
+	/** @return true if its possible for this position to follow target position */
 	bool canBeReachedFrom(const BitBoard& target) const;
-	/** Return true if position is same, but don't consider Move # in determination */
+	/** @return true if position is same, but don't consider Move # in determination */
 	bool positionIsSame(const BitBoard& target) const;
 
 	// Query other formats
@@ -92,6 +94,8 @@ public:
 	/** Return true if fastbits option was compiled in */
 	static const bool fastbitsOption;
 
+	/** Set castling rights. */
+	void setCastlingRights(CastlingRights cr);
 protected:
 	/** Return the internal castling rights data (used by hash function) */
 	CastlingRights castlingRights() const;
@@ -290,6 +294,11 @@ inline uint BitBoard::halfMoveClock() const
 	return m_halfMoves;
 }
 
+inline void BitBoard::setHalfMoveClock(uint i)
+{
+	m_halfMoves = i;
+}
+
 inline uint BitBoard::moveNumber() const
 {
 	return m_moveNumber;
@@ -308,6 +317,11 @@ inline Square BitBoard::enPassantSquare() const
 inline CastlingRights BitBoard::castlingRights() const
 {
 	return m_castle;
+}
+
+inline void BitBoard::setCastlingRights(CastlingRights cr)
+{
+	m_castle = cr;
 }
 
 /** Set the side to move to the given color */
