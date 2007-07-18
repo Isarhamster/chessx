@@ -45,6 +45,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 		action->setIcon(ui.boardView->theme().piece(Piece(piece)));
 		QToolButton* button = new QToolButton(ui.buttonWidget);
 		button->setDefaultAction(action);
+		button->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 		if (piece == Empty)
 			layout->addWidget(button, 6, 0);
 		else
@@ -97,6 +98,14 @@ void BoardSetupDialog::setBoard(const Board& b)
 {
 	ui.boardView->setBoard(b);
 	ui.moveSpin->setValue(b.moveNumber());
+	ui.halfmoveSpin->setValue(b.halfMoveClock());
+	if (b.enPassantSquare() == NoEPSquare)
+		ui.epCombo->setCurrentIndex(0);
+	else ui.epCombo->setCurrentIndex(b.enPassantSquare() % 8 + 1);
+   ui.wkCastleCheck->setChecked(b.castlingRights() & WhiteKingside);
+	ui.wqCastleCheck->setChecked(b.castlingRights() & WhiteQueenside);
+	ui.bkCastleCheck->setChecked(b.castlingRights() & BlackKingside);
+	ui.bqCastleCheck->setChecked(b.castlingRights() & BlackQueenside);
 	m_toMove = b.toMove();
 	showSideToMove();
 	setStatusMessage();
@@ -153,7 +162,6 @@ void BoardSetupDialog::slotSelected(Square square, int button)
 		piece = Empty;
 	board.setAt(square, piece);
 	setBoard(board);
-	slotCastlingRights();
 }
 
 void BoardSetupDialog::showSideToMove()
@@ -192,7 +200,6 @@ void BoardSetupDialog::slotMovePiece(Square from, Square to)
 	b.removeFrom(from);
 	b.setAt(to, p);
 	setBoard(b);
-	slotCastlingRights();
 }
 
 void BoardSetupDialog::wheelEvent(QWheelEvent* e)
@@ -269,13 +276,13 @@ void BoardSetupDialog::slotCastlingRights()
 {
 	Board b(board());
 	CastlingRights cr = 0;
-	if (ui.wkCastleCheck->isChecked() && b.pieceAt(4) == WhiteKing && b.pieceAt(7) == WhiteRook)
+	if (ui.wkCastleCheck->isChecked()) // && b.pieceAt(4) == WhiteKing && b.pieceAt(7) == WhiteRook)
 		cr += WhiteKingside;
-	if (ui.wqCastleCheck->isChecked() && b.pieceAt(4) == WhiteKing && b.pieceAt(0) == WhiteRook)
+	if (ui.wqCastleCheck->isChecked()) // && b.pieceAt(4) == WhiteKing && b.pieceAt(0) == WhiteRook)
 		cr += WhiteQueenside;
-	if (ui.bkCastleCheck->isChecked() && b.pieceAt(60) == BlackKing && b.pieceAt(63) == BlackRook)
+	if (ui.bkCastleCheck->isChecked()) // && b.pieceAt(60) == BlackKing && b.pieceAt(63) == BlackRook)
 		cr += BlackKingside;
-	if (ui.bqCastleCheck->isChecked() && b.pieceAt(60) == BlackKing && b.pieceAt(56) == BlackRook)
+	if (ui.bqCastleCheck->isChecked()) // && b.pieceAt(60) == BlackKing && b.pieceAt(56) == BlackRook)
 		cr += BlackQueenside;
 	b.setCastlingRights(cr);
 	setBoard(b);

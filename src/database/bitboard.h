@@ -96,7 +96,6 @@ public:
 
 	/** Set castling rights. */
 	void setCastlingRights(CastlingRights cr);
-protected:
 	/** Return the internal castling rights data (used by hash function) */
 	CastlingRights castlingRights() const;
 	/** Return square where En passant capture may occur, or "NoEPSquare" */
