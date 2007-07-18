@@ -176,9 +176,8 @@ void BoardSetupDialog::showSideToMove()
 		ui.toMoveButton->setText(tr("White"));
 	else ui.toMoveButton->setText(tr("Black"));
 	QPalette palette;
-	palette.setColor(ui.toMoveButton->backgroundRole(), m_toMove == White ? Qt::white : Qt::black);
-	ui.toMoveButton->setPalette(palette);
-	palette.setColor(ui.toMoveButton->foregroundRole(), m_toMove == White ? Qt::black : Qt::white);
+	palette.setColor(QPalette::Button, m_toMove == White ? Qt::white : QColor("#404040"));
+	palette.setColor(QPalette::ButtonText, m_toMove == White ? Qt::black : Qt::white);
 	ui.toMoveButton->setPalette(palette);
 }
 
