@@ -101,7 +101,13 @@ void BoardSetupDialog::setBoard(const Board& b)
 	ui.halfmoveSpin->setValue(b.halfMoveClock());
 	if (b.enPassantSquare() == NoEPSquare)
 		ui.epCombo->setCurrentIndex(0);
-	else ui.epCombo->setCurrentIndex(b.enPassantSquare() % 8 + 1);
+	else if (b.toMove() == White && b.pieceAt(b.enPassantSquare() - 8) == BlackPawn &&
+				b.pieceAt(b.enPassantSquare()) == Empty && b.pieceAt(b.enPassantSquare() + 8) == Empty)
+		ui.epCombo->setCurrentIndex(b.enPassantSquare() % 8 + 1);
+	else if (b.toMove() == Black && b.pieceAt(b.enPassantSquare() + 8) == WhitePawn &&
+				b.pieceAt(b.enPassantSquare()) == Empty && b.pieceAt(b.enPassantSquare() - 8) == Empty)
+		ui.epCombo->setCurrentIndex(b.enPassantSquare() % 8 + 1);
+	else ui.epCombo->setCurrentIndex(0);
    ui.wkCastleCheck->setChecked(b.castlingRights() & WhiteKingside);
 	ui.wqCastleCheck->setChecked(b.castlingRights() & WhiteQueenside);
 	ui.bkCastleCheck->setChecked(b.castlingRights() & BlackKingside);
