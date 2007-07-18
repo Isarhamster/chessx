@@ -94,9 +94,6 @@
            <property name="text" >
             <string>White</string>
            </property>
-           <property name="flat" >
-            <bool>true</bool>
-           </property>
           </widget>
          </item>
          <item>
