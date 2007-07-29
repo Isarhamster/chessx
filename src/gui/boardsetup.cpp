@@ -68,16 +68,8 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.bqCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
 	connect(ui.epCombo, SIGNAL(currentIndexChanged(int)), SLOT(slotEnPassantSquare()));
 	connect(ui.halfmoveSpin, SIGNAL(valueChanged(int)), SLOT(slotHalfmoveClock()));
-
-	QAction* copyFen = new QAction(tr("Copy FEN to clipboard"), this);
-	copyFen->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_C);
-	connect(copyFen, SIGNAL(triggered(bool)), SLOT(slotCopyFen()));
-	addAction(copyFen);
-	QAction* pasteFen = new QAction(tr("Paste FEN from clipboard"), this);
-	pasteFen->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_V);
-	connect(pasteFen, SIGNAL(triggered(bool)), SLOT(slotPasteFen()));
-	addAction(pasteFen);
-	setContextMenuPolicy(Qt::ActionsContextMenu);
+	connect(ui.copyButton, SIGNAL(clicked()), SLOT(slotCopyFen()));
+	connect(ui.pasteButton, SIGNAL(clicked()), SLOT(slotPasteFen()));
 }
 
 BoardSetupDialog::~BoardSetupDialog()
@@ -160,7 +152,7 @@ void BoardSetupDialog::slotSelected(Square square, int button)
 	if (button & Qt::RightButton) {
 		if (piece >= BlackKing)
 			piece = (Piece)(piece - (BlackKing - WhiteKing));
-		else
+		else if (piece != Empty)
 			piece = (Piece)(piece + (BlackKing - WhiteKing));
 	}
 	Board board = ui.boardView->board();
