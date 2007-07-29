@@ -246,9 +246,14 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 		m_dragged = Empty;
 		update(squareRect(from));
 		update(oldr);
-		if (s != InvalidSquare)
-			emit moveMade(from, s);
-		updateGuess(s);
+		if (s != InvalidSquare) {
+			if (!(event->modifiers() & Qt::ControlModifier)) {
+				emit moveMade(from, s);
+				updateGuess(s);
+			}
+			else if (m_board.pieceAt(from) != Empty)
+				emit copyPiece(from, s);
+		}
 	} else if (m_selectedSquare != InvalidSquare) {
 		Square from = m_selectedSquare;
 		unselectSquare();

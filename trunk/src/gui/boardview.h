@@ -62,6 +62,8 @@ public slots:
 signals:
 	/** User clicked source and destination squares */
 	void moveMade(Square from, Square to);
+	/** User dragged and dropped a piece holding Control */
+	void copyPiece(Square from, Square to);
 	/** User clicked square */
 	void clicked(Square square, int button);
 	/** User moved mouse wheel. */
