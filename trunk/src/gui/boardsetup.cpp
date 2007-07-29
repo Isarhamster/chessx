@@ -139,7 +139,10 @@ void BoardSetupDialog::slotAccept()
 
 void BoardSetupDialog::slotClear()
 {
-	setBoard(Board());
+	Board b;
+	b.setAt(e1, WhiteKing);
+	b.setAt(e8, BlackKing);
+	setBoard(b);
 }
 
 void BoardSetupDialog::slotChoosePiece(QAction* action)
