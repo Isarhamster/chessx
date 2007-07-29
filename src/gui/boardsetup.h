@@ -70,6 +70,8 @@ private slots:
 	void slotHalfmoveClock();
 	/** Move piece */
 	void slotMovePiece(Square from, Square to);
+	/** Copy piece */
+	void slotCopyPiece(Square from, Square to);
 	/** Toggle side to move */
 	void slotToggleSide();
 	private:
