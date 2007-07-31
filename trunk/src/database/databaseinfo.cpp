@@ -36,8 +36,9 @@ DatabaseInfo::DatabaseInfo(const QString& fname)
 		m_database->open(fname);
 	}
 	m_filter = new Filter(m_database);
-	m_index = -1;
-	loadGame(0);
+	m_index = NewGame;
+	if (!loadGame(0))
+		newGame();
 }
 
 DatabaseInfo::~DatabaseInfo()
@@ -48,10 +49,10 @@ DatabaseInfo::~DatabaseInfo()
 
 bool DatabaseInfo::loadGame(int index)
 {
-	if (!m_database)
-		return false;
 	if (m_index == index)
 		return true;
+	if (!m_database || index < 0 || index >= m_database->count())
+		return false;
 	if (!m_database->loadGame(index, m_game))
 		return false;
 	m_index = index;
@@ -63,7 +64,7 @@ bool DatabaseInfo::loadGame(int index)
 void DatabaseInfo::newGame()
 {
 	m_game.clear();
-	m_index = m_database->count();
+	m_index = NewGame;
 }
 
 QString DatabaseInfo::name() const
@@ -79,9 +80,9 @@ bool DatabaseInfo::saveGame()
 {
 	if (m_database->isReadOnly())
 		return false;
-	if (m_index < m_database->count())
+	if (m_index < m_database->count() && m_index >= 0)
 		return m_database->replace(m_index, m_game);
-	else {
+	else if (m_index == NewGame) {
 		bool ok = m_database->appendGame(m_game);
 		if (ok) {
 			m_filter->resize(m_database->count());
@@ -89,5 +90,6 @@ bool DatabaseInfo::saveGame()
 		}
 		return ok;
 	}
+	else return false;
 }
 
