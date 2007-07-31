@@ -343,37 +343,40 @@ void Output::writeVariation()
 	}
 }
 
-void Output::writeTag(const QString& tagName)
+void Output::writeTag(const QString& tagName, const QString& tagValue)
 {
-	MarkupType specialTag = MarkupNoFormat;
-	if (tagName == "Event") {
-		specialTag = MarkupEventTag;
-	} else if (tagName == "Site") {
-		specialTag = MarkupSiteTag;
-	} else if (tagName == "Round") {
-		specialTag = MarkupRoundTag;
-	} else if (tagName == "Date") {
-		specialTag = MarkupDateTag;
-	} else if (tagName == "White") {
-		specialTag = MarkupWhiteTag;
-	} else if (tagName == "Black") {
-		specialTag = MarkupBlackTag;
-	} else if (tagName == "Result") {
-		specialTag = MarkupResultTag;
-	}
-
 	m_output += m_startTagMap[MarkupHeaderLine] +
-		    m_startTagMap[specialTag] +
-		    m_startTagMap[MarkupHeaderTagName] +
-		    tagName + " " +
-		    m_endTagMap[MarkupHeaderTagName] +
+			 m_startTagMap[MarkupHeaderTagName] +
+		    tagName + m_endTagMap[MarkupHeaderTagName] +
+			" " +
 		    m_startTagMap[MarkupHeaderTagValue] +
-		    m_game->tag(tagName) +
+		    tagValue +
 		    m_endTagMap[MarkupHeaderTagValue] +
-		    m_endTagMap[specialTag] +
-		    m_endTagMap[MarkupHeaderLine];
+			m_endTagMap[MarkupHeaderLine];
 
 }
+
+
+// 7 standard tags that are required by PGN standard and should be written in given order.
+const QString StandardTags[7] = {"Event", "Site", "Date", "Round", "White", "Black", "Result"};
+
+void Output::writeAllTags()
+{
+	QMap<QString, QString> tags = m_game->tags();
+	// write standard tags
+	for (int i = 0; i < 7; i++) {
+		writeTag(StandardTags[i], tags[StandardTags[i]]);
+		tags.remove(StandardTags[i]);
+	}
+	// write other tags written in ascii order, as suggested by standard
+	QMapIterator<QString, QString> it(tags);
+	while (it.hasNext()) {
+		it.next();
+		writeTag(it.key(), it.value());
+	}
+}
+
+
 
 QString Output::output(Game* game)
 {
@@ -384,13 +387,7 @@ QString Output::output(Game* game)
 
 	m_output = m_header;
 	m_output += m_startTagMap[MarkupHeaderBlock];
-	writeTag("Event");
-	writeTag("Site");
-	writeTag("Date");
-	writeTag("Round");
-	writeTag("White");
-	writeTag("Black");
-	writeTag("Result");
+	writeAllTags();
 	m_output += m_endTagMap[MarkupHeaderBlock];
 
 	// start of move output....
@@ -433,6 +430,7 @@ QString Output::output(Game* game)
 
 	return m_output;
 }
+
 void Output::output(QTextStream& out, Filter& filter)
 {
 	Game game;
@@ -442,6 +440,7 @@ void Output::output(QTextStream& out, Filter& filter)
 		out << "\n\n";
 	}
 }
+
 void Output::output(QTextStream& out, Database& database)
 {
 	Game game;
@@ -451,6 +450,7 @@ void Output::output(QTextStream& out, Database& database)
 		out << "\n\n";
 	}
 }
+
 void Output::output(const QString& filename, Filter& filter)
 {
 	QFile f(filename);
@@ -460,6 +460,7 @@ void Output::output(const QString& filename, Filter& filter)
 	output(out, filter);
 	f.close();
 }
+
 void Output::output(const QString& filename, Database& database)
 {
 	QFile f(filename);
@@ -469,6 +470,7 @@ void Output::output(const QString& filename, Database& database)
 	output(out, database);
 	f.close();
 }
+
 void Output::setTemplateFile(const QString& filename)
 {
 	if (filename.isEmpty()) {
