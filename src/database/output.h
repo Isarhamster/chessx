@@ -192,7 +192,9 @@ private:
 	/** Writes a newline, and indent the following line */
 	void writeNewlineIndent();
 	/** Writes a game tag */
-	void writeTag(const QString& tagName);
+	void writeTag(const QString& tagName, const QString& tagValue);
+	/** Writes all game tags */
+	void writeAllTags();
 
 };
 
