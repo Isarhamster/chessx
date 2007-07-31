@@ -104,7 +104,7 @@ int Filter::size() const
 
 int Filter::gameToIndex(int index)
 {
-	if (index > size() || !contains(index)) return -1;
+	if (index > size() || index < 0 || !contains(index)) return -1;
 	if (index < size() / 2) {
 		int count = 0;
 		for (int i = 0; i < index; i++)
@@ -137,7 +137,7 @@ int Filter::indexToGame(int index)
 int Filter::previousGame(int current) const
 {
 	if (!m_count) return -1;
-	for (int i = current - 1; i >= 0; i--)
+	for (int i = qBound(-1, current, size()) - 1; i >= 0; i--)
 		if (contains(i)) return i;
 	return -1;
 }
@@ -145,7 +145,7 @@ int Filter::previousGame(int current) const
 int Filter::nextGame(int current) const
 {
 	if (!m_count) return -1;
-	for (int i = current + 1; i < size(); i++)
+	for (int i = qBound(-1, current, size()) + 1; i < size(); i++)
 		if (contains(i)) return i;
 	return -1;
 }
