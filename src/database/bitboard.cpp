@@ -646,7 +646,7 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 			m_pawns |= SetBit(s);
 			m_occupied_co[White] |= SetBit(s);
 			++m_pawnCount[White];
-			++m_pieceCount[Black];
+			++m_pieceCount[White];
 			s++;
 			break;
 		case 'N':
