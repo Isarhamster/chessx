@@ -304,10 +304,8 @@ int MainWindow::gameIndex() const
 
 void MainWindow::gameLoad(int index, bool force)
 {
-	if (index >= 0 && index < database()->count()) {
-		databaseInfo()->loadGame(index);
+	if (databaseInfo()->loadGame(index))
 		m_gameList->selectGame(index);
-	}
 	else if (!force)
 		return;
 	else
@@ -837,7 +835,6 @@ void MainWindow::slotGameViewToggle(bool toggled)
 
 void MainWindow::slotFilterChanged()
 {
-	qDebug("GameIndex: %d/%d", gameIndex(), database()->count());
 	if (gameIndex() >= 0)
 		m_gameList->selectGame(gameIndex());
 	int count = databaseInfo()->filter()->count();
@@ -848,8 +845,7 @@ void MainWindow::slotFilterChanged()
 
 void MainWindow::slotFilterLoad(int index)
 {
-	if (gameIndex() != index)
-		gameLoad(index);
+	gameLoad(index);
 	activateWindow();
 }
 
