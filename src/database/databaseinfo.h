@@ -30,6 +30,7 @@ information together. */
 class DatabaseInfo
 {
 public:
+	enum {NewGame = -1};
 	/** Create information for open database */
 	DatabaseInfo(const QString& fname = QString());
 	/** Close database and free memory */

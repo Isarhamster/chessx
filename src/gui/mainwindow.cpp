@@ -837,6 +837,7 @@ void MainWindow::slotGameViewToggle(bool toggled)
 
 void MainWindow::slotFilterChanged()
 {
+	qDebug("GameIndex: %d/%d", gameIndex(), database()->count());
 	if (gameIndex() >= 0)
 		m_gameList->selectGame(gameIndex());
 	int count = databaseInfo()->filter()->count();
