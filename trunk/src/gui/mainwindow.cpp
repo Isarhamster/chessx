@@ -898,9 +898,7 @@ void MainWindow::setupActions()
 		m_recentFileActions.append(action);
 		menuRecent->addAction(action);
 	}
-#ifdef QT_DEBUG
 	file->addAction(createAction(tr("&Save"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S));
-#endif
 	QMenu* exportMenu = file->addMenu(tr("&Export..."));
 	exportMenu->addAction(createAction(tr("&Games in filter"), SLOT(slotFileExportFilter())));
 	exportMenu->addAction(createAction(tr("&All games"), SLOT(slotFileExportAll())));
@@ -943,10 +941,8 @@ void MainWindow::setupActions()
 	goMenu->addAction(createAction(tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down));
 	goMenu->addAction(createAction(tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up));
 
-#ifdef QT_DEBUG
 	gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), Qt::CTRL + Qt::Key_N));
 	gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), Qt::CTRL + Qt::Key_S));
-#endif
 
 	/* Search menu */
 	QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
