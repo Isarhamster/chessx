@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>471</width>
-    <height>218</height>
+    <width>469</width>
+    <height>373</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -17,12 +17,25 @@
   </property>
   <layout class="QGridLayout" >
    <property name="margin" >
-    <number>11</number>
+    <number>9</number>
    </property>
    <property name="spacing" >
     <number>6</number>
    </property>
-   <item row="1" column="0" colspan="3" >
+   <item row="3" column="0" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>451</width>
+       <height>16</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="0" >
     <layout class="QHBoxLayout" >
      <property name="margin" >
       <number>0</number>
@@ -71,277 +84,388 @@
      </item>
     </layout>
    </item>
-   <item row="0" column="2" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item row="3" column="0" >
-      <widget class="QLabel" name="textLabel2_4" >
-       <property name="text" >
-        <string>&amp;Date:</string>
-       </property>
-       <property name="buddy" >
-        <cstring>whiteEloEdit</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0" colspan="2" >
-      <widget class="QLabel" name="textLabel2_2" >
-       <property name="text" >
-        <string>Black Elo:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" colspan="2" >
-      <widget class="QLabel" name="textLabel2_3" >
-       <property name="text" >
-        <string>&amp;Round:</string>
-       </property>
-       <property name="buddy" >
-        <cstring>roundEdit</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1" colspan="2" >
-      <widget class="QLineEdit" name="dateEdit" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>0</hsizetype>
-         <vsizetype>0</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize" >
-        <size>
-         <width>160</width>
-         <height>32767</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0" colspan="2" >
-      <widget class="QLabel" name="textLabel2" >
-       <property name="text" >
-        <string>White Elo:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2" >
-      <widget class="QLineEdit" name="roundEdit" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>0</hsizetype>
-         <vsizetype>0</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize" >
-        <size>
-         <width>80</width>
-         <height>32767</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2" >
-      <widget class="QLineEdit" name="blackEloEdit" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>0</hsizetype>
-         <vsizetype>0</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize" >
-        <size>
-         <width>80</width>
-         <height>32767</height>
-        </size>
-       </property>
-       <property name="inputMask" >
-        <string>0000; </string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2" >
-      <widget class="QLineEdit" name="whiteEloEdit" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>0</hsizetype>
-         <vsizetype>0</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize" >
-        <size>
-         <width>80</width>
-         <height>32767</height>
-        </size>
-       </property>
-       <property name="inputMask" >
-        <string>0000; </string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="0" >
-    <layout class="QGridLayout" >
-     <property name="margin" >
-      <number>0</number>
+    <widget class="QGroupBox" name="groupBox" >
+     <property name="title" >
+      <string>Players</string>
      </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item row="1" column="1" >
-      <widget class="QComboBox" name="blackCombo" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>7</hsizetype>
-         <vsizetype>0</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="editable" >
-        <bool>true</bool>
-       </property>
-       <property name="autoCompletion" >
-        <bool>true</bool>
-       </property>
-       <property name="duplicatesEnabled" >
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0" >
-      <widget class="QLabel" name="textLabel1_2" >
-       <property name="text" >
-        <string>&amp;Black:</string>
-       </property>
-       <property name="buddy" >
-        <cstring>whiteCombo</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1" >
-      <widget class="QComboBox" name="whiteCombo" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>7</hsizetype>
-         <vsizetype>0</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="editable" >
-        <bool>true</bool>
-       </property>
-       <property name="autoCompletion" >
-        <bool>true</bool>
-       </property>
-       <property name="duplicatesEnabled" >
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0" >
-      <widget class="QLabel" name="textLabel1_2_2" >
-       <property name="text" >
-        <string>&amp;Site:</string>
-       </property>
-       <property name="buddy" >
-        <cstring>whiteCombo</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1" >
-      <widget class="QComboBox" name="eventCombo" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>7</hsizetype>
-         <vsizetype>0</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="editable" >
-        <bool>true</bool>
-       </property>
-       <property name="autoCompletion" >
-        <bool>true</bool>
-       </property>
-       <property name="duplicatesEnabled" >
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" >
-      <widget class="QLabel" name="textLabel1_2_3" >
-       <property name="text" >
-        <string>&amp;Event:</string>
-       </property>
-       <property name="buddy" >
-        <cstring>whiteCombo</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1" >
-      <widget class="QComboBox" name="siteCombo" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>7</hsizetype>
-         <vsizetype>0</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="editable" >
-        <bool>true</bool>
-       </property>
-       <property name="autoCompletion" >
-        <bool>true</bool>
-       </property>
-       <property name="duplicatesEnabled" >
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0" >
-      <widget class="QLabel" name="textLabel1" >
-       <property name="text" >
-        <string>&amp;White:</string>
-       </property>
-       <property name="buddy" >
-        <cstring>whiteCombo</cstring>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="1" column="3" >
+       <widget class="QLineEdit" name="blackEloEdit" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>0</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>80</width>
+          <height>32767</height>
+         </size>
+        </property>
+        <property name="inputMask" >
+         <string>0000; </string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" >
+       <widget class="QLabel" name="textLabel2_2" >
+        <property name="text" >
+         <string>Elo:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <widget class="QLabel" name="textLabel2" >
+        <property name="text" >
+         <string>Elo:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3" >
+       <widget class="QLineEdit" name="whiteEloEdit" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>0</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>80</width>
+          <height>32767</height>
+         </size>
+        </property>
+        <property name="inputMask" >
+         <string>0000; </string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="textLabel1" >
+        <property name="text" >
+         <string>&amp;White:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>whiteCombo</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QComboBox" name="whiteCombo" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>7</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="editable" >
+         <bool>true</bool>
+        </property>
+        <property name="autoCompletion" >
+         <bool>true</bool>
+        </property>
+        <property name="duplicatesEnabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QComboBox" name="blackCombo" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>7</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="editable" >
+         <bool>true</bool>
+        </property>
+        <property name="autoCompletion" >
+         <bool>true</bool>
+        </property>
+        <property name="duplicatesEnabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="textLabel1_2" >
+        <property name="text" >
+         <string>&amp;Black:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>blackCombo</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
-   <item row="0" column="1" >
-    <spacer>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
+   <item row="1" column="0" >
+    <widget class="QGroupBox" name="groupBox_2" >
+     <property name="title" >
+      <string>Tournament</string>
      </property>
-     <property name="sizeType" >
-      <enum>QSizePolicy::Fixed</enum>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="1" column="3" >
+       <widget class="QLineEdit" name="eventDateEdit" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>0</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>160</width>
+          <height>32767</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QComboBox" name="siteCombo" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>7</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="editable" >
+         <bool>true</bool>
+        </property>
+        <property name="autoCompletion" >
+         <bool>true</bool>
+        </property>
+        <property name="duplicatesEnabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" >
+       <widget class="QLabel" name="textLabel2_5" >
+        <property name="text" >
+         <string>E&amp;vent date:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>eventDateEdit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" colspan="3" >
+       <widget class="QComboBox" name="eventCombo" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>7</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="editable" >
+         <bool>true</bool>
+        </property>
+        <property name="autoCompletion" >
+         <bool>true</bool>
+        </property>
+        <property name="duplicatesEnabled" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="textLabel1_2_2" >
+        <property name="text" >
+         <string>&amp;Site:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>siteCombo</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="textLabel1_2_3" >
+        <property name="text" >
+         <string>&amp;Event:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>eventCombo</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" >
+    <widget class="QGroupBox" name="gameGroupBox" >
+     <property name="title" >
+      <string>Game Information</string>
      </property>
-     <property name="sizeHint" >
-      <size>
-       <width>41</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="0" column="1" >
+       <widget class="QLineEdit" name="roundEdit" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>0</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>80</width>
+          <height>32767</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="textLabel2_3" >
+        <property name="text" >
+         <string>&amp;Round:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>roundEdit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3" >
+       <widget class="QLabel" name="textLabel2_4" >
+        <property name="text" >
+         <string>&amp;Date:</string>
+        </property>
+        <property name="buddy" >
+         <cstring>dateEdit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4" >
+       <widget class="QLineEdit" name="dateEdit" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>0</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize" >
+         <size>
+          <width>160</width>
+          <height>32767</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0" colspan="4" >
+       <layout class="QHBoxLayout" >
+        <property name="margin" >
+         <number>0</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label" >
+          <property name="text" >
+           <string>Result:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="result1Button" >
+          <property name="text" >
+           <string>1-0</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="result5Button" >
+          <property name="text" >
+           <string>1/2-1/2</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="result0Button" >
+          <property name="text" >
+           <string>0-1</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="resultNoneButton" >
+          <property name="text" >
+           <string>*</string>
+          </property>
+          <property name="checked" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" >
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -352,9 +476,14 @@
   <tabstop>blackCombo</tabstop>
   <tabstop>blackEloEdit</tabstop>
   <tabstop>eventCombo</tabstop>
-  <tabstop>roundEdit</tabstop>
   <tabstop>siteCombo</tabstop>
+  <tabstop>eventDateEdit</tabstop>
+  <tabstop>roundEdit</tabstop>
   <tabstop>dateEdit</tabstop>
+  <tabstop>result1Button</tabstop>
+  <tabstop>result5Button</tabstop>
+  <tabstop>result0Button</tabstop>
+  <tabstop>resultNoneButton</tabstop>
   <tabstop>buttonOk</tabstop>
   <tabstop>buttonCancel</tabstop>
  </tabstops>
