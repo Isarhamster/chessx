@@ -24,6 +24,11 @@
 SaveDialog::SaveDialog(QWidget* parent) : QDialog(parent)
 {
 	ui.setupUi(this);
+	QButtonGroup* group = new QButtonGroup(this);
+	group->addButton(ui.result1Button);
+	group->addButton(ui.result5Button);
+	group->addButton(ui.result0Button);
+	group->addButton(ui.resultNoneButton);
 }
 
 SaveDialog::~SaveDialog()
@@ -50,6 +55,11 @@ int SaveDialog::exec(Game& game)
 	ui.siteCombo->setEditText(game.tag("Site"));
 	ui.roundEdit->setText(game.tag("Round"));
 	ui.dateEdit->setText(game.tag("Date"));
+	ui.eventDateEdit->setText(game.tag("EventDate"));
+	QList<QAbstractButton*> buttons = ui.result1Button->group()->buttons();
+	for (int i = 0; i < buttons.count(); i++)
+		if (buttons[i]->text() == game.tag("Result"))
+			buttons[i]->setChecked(true);
 	int result = QDialog::exec();
 	if (result) {
 		game.setTag("White", formatTagValue(ui.whiteCombo->currentText()));
@@ -58,6 +68,8 @@ int SaveDialog::exec(Game& game)
 		game.setTag("Site", formatTagValue(ui.siteCombo->currentText()));
 		game.setTag("Round", formatTagValue(ui.roundEdit->text()));
 		game.setTag("Date", formatTagDate(ui.dateEdit->text()));
+		game.setTag("EventDate", formatTagDate(ui.eventDateEdit->text()));
+		game.setTag("Result", ui.result1Button->group()->checkedButton()->text());
 		// Optional tag
 		if (ui.whiteEloEdit->text().toInt() || game.tag("WhiteElo").toInt())
 			game.setTag("WhiteElo", ui.whiteEloEdit->text());
