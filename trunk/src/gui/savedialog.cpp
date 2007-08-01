@@ -29,6 +29,17 @@ SaveDialog::SaveDialog(QWidget* parent) : QDialog(parent)
 SaveDialog::~SaveDialog()
 {}
 
+
+QString formatTagValue(const QString& s)
+{
+	return (s.trimmed().isEmpty()) ? "?" : s;
+}
+
+QString formatTagDate(const QString& s)
+{
+	return (s.trimmed().isEmpty()) ? "????.??.??" : s;
+}
+
 int SaveDialog::exec(Game& game)
 {
 	ui.whiteCombo->setEditText(game.tag("White"));
@@ -41,14 +52,17 @@ int SaveDialog::exec(Game& game)
 	ui.dateEdit->setText(game.tag("Date"));
 	int result = QDialog::exec();
 	if (result) {
-		game.setTag("White", ui.whiteCombo->currentText());
-		game.setTag("WhiteElo", ui.whiteEloEdit->text());
-		game.setTag("Black", ui.blackCombo->currentText());
-		game.setTag("BlackElo", ui.blackEloEdit->text());
-		game.setTag("Event", ui.eventCombo->currentText());
-		game.setTag("Site", ui.siteCombo->currentText());
-		game.setTag("Round", ui.roundEdit->text());
-		game.setTag("Date", ui.dateEdit->text());
+		game.setTag("White", formatTagValue(ui.whiteCombo->currentText()));
+		game.setTag("Black", formatTagValue(ui.blackCombo->currentText()));
+		game.setTag("Event", formatTagValue(ui.eventCombo->currentText()));
+		game.setTag("Site", formatTagValue(ui.siteCombo->currentText()));
+		game.setTag("Round", formatTagValue(ui.roundEdit->text()));
+		game.setTag("Date", formatTagDate(ui.dateEdit->text()));
+		// Optional tag
+		if (ui.whiteEloEdit->text().toInt() || game.tag("WhiteElo").toInt())
+			game.setTag("WhiteElo", ui.whiteEloEdit->text());
+		if (ui.whiteEloEdit->text().toInt() || game.tag("BlackElo").toInt())
+			game.setTag("BlackElo", ui.blackEloEdit->text());
 	}
 	return result;
 }
