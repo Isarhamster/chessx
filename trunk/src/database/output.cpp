@@ -372,7 +372,9 @@ void Output::writeAllTags()
 	QMapIterator<QString, QString> it(tags);
 	while (it.hasNext()) {
 		it.next();
-		writeTag(it.key(), it.value());
+	// workaround for problems with IndexItem implementation
+		if (!it.value().isEmpty() && it.value() != "?" && it.key() != "Length")
+			writeTag(it.key(), it.value());
 	}
 }
 
