@@ -33,6 +33,11 @@
  stored instead of the id.
 
  @todo
+ Index items seem to be implemented in an inefficient way, as all the tags
+ appearing in database are stored for each game. The correct way will be
+ to store only basic tags (let's say 7 standard tags, ratings and EventDate),
+ using notation: tag name + tag value for others.
+ When this is fixed, Output::writeAllTags() should be adjusted.
 */
 
 class IndexItem
