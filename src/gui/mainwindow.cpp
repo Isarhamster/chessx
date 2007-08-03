@@ -376,6 +376,29 @@ bool MainWindow::openDatabase(const QString& fname)
 	return true;
 }
 
+QString MainWindow::exportFileName(int& format)
+{
+	QFileDialog fd(this);
+	fd.setAcceptMode(QFileDialog::AcceptSave);
+	fd.setFileMode(QFileDialog::AnyFile);
+	fd.setWindowTitle(tr("Export games"));
+	fd.setViewMode(QFileDialog::Detail);
+	fd.setDirectory(QDir::homePath());
+	QStringList filters;
+	filters << tr("PGN file (*.pgn)")
+			<< tr("HTML page (*.html)")
+			<< tr("LaTeX document (*.tex)");
+	fd.setFilters(filters);
+	if (fd.exec() != QDialog::Accepted)
+		return QString();
+	if (fd.selectedFilter().contains("*.tex"))
+		format = Output::Latex;
+	else if (fd.selectedFilter().contains("*.html"))
+		format = Output::Html;
+	else format = Output::Pgn;
+	return fd.selectedFiles().first();
+}
+
 PlayerDialog* MainWindow::playerDialog()
 {
 	if (!m_playerDialog) {
@@ -459,21 +482,21 @@ void MainWindow::slotFileClose()
 
 void MainWindow::slotFileExportFilter()
 {
-	QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString(),
-															  tr("PGN Database (*.pgn)"));
-	if (!file.isEmpty()) {
-		Output output(Output::Pgn);
-		output.output(file, *databaseInfo()->filter());
+	int format;
+	QString filename = exportFileName(format);
+	if (!filename.isEmpty()) {
+		Output output((Output::OutputType)format);
+		output.output(filename, *(databaseInfo()->filter()));
 	}
 }
 
 void MainWindow::slotFileExportAll()
 {
-	QString file = QFileDialog::getSaveFileName(this, tr("Export games"), QString(),
-															  tr("PGN Database (*.pgn)"));
-	if (!file.isEmpty()) {
-		Output output(Output::Pgn);
-		output.output(file, *database());
+	int format;
+	QString filename = exportFileName(format);
+	if (!filename.isEmpty()) {
+		Output output((Output::OutputType)format);
+		output.output(filename, *database());
 	}
 }
 
