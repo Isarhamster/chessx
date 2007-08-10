@@ -1040,7 +1040,7 @@ void MainWindow::slotSearchReset()
 
 void MainWindow::slotSearchTree()
 {
-	if (!database()->count() || !m_openingTree->isVisible())
+	if (!m_openingTree->isVisible())
 		return;
 	QTime time;
 	time.start();
