@@ -160,6 +160,15 @@ void PlayerDialog::setDatabase(Database* db)
 	m_database = db;
 }
 
+
+QString formatResult(int results[5])
+{
+	int score = 2 * results[WhiteWin] + results[Draw] + results[Unknown];
+	return QString(" %1% +%2 =%3 -%4 %5/%6").arg(score / (0.02 * results[4]), 0, 'f', 2)
+			.arg(results[WhiteWin]).arg(results[Draw]).arg(results[BlackWin])
+			.arg(score / 2.0).arg(results[4]);
+}
+
 int toResult(const QString& res)
 {
 	if (res == "1-0") return WhiteWin;
@@ -167,9 +176,6 @@ int toResult(const QString& res)
 	else if (res == "0-1") return BlackWin;
 	else return Unknown;
 }
-
-
-
 
 QString PlayerDialog::databaseInfo(const QString& player)
 {
@@ -200,7 +206,7 @@ QString PlayerDialog::databaseInfo(const QString& player)
 		}
 	ts.setTag("Black");
 	filter.executeSearch(ts);
-	unsigned bresults[5] = {0};
+	int bresults[5] = {0};
 	for (int i = 0; i < filter.size(); i++)
 		if (filter.contains(i))	{
 			m_database->loadGameHeaders(i, game);
@@ -217,24 +223,20 @@ QString PlayerDialog::databaseInfo(const QString& player)
 				dates[1] = qMax(dates[1], date);
 			}
 		}
+	qSwap(bresults[WhiteWin], bresults[BlackWin]);
 	if (!(results[4] + bresults[0]))
 		return tr("<i>No games in current database.</i>");
-	int wscore = 2 * results[WhiteWin] + results[Draw] + results[Unknown];
-	QString white = tr("White: %1% +%2 =%3 -%4 %5/%6").arg(wscore / (0.02 * results[4]))
-			.arg(results[WhiteWin]).arg(results[Draw]).arg(results[BlackWin])
-			.arg(wscore / 2.0).arg(results[4]);
-	int bscore = 2 * bresults[BlackWin] + bresults[Draw] + bresults[Unknown];
-	QString black = tr("Black: %1% +%2 =%3 -%4 %5/%6").arg(bscore / (0.02 * bresults[4]))
-			.arg(bresults[BlackWin]).arg(bresults[Draw]).arg(bresults[WhiteWin])
-			.arg(bscore / 2.0).arg(bresults[4]);
-	QString total = tr("Total: %1% +%2 =%3 -%4 %5/%6").arg((bscore + wscore) / (0.02 * (results[4] + bresults[4])))
-			.arg(results[WhiteWin] + bresults[BlackWin]).arg(results[Draw] + bresults[Draw])
-			.arg(results[BlackWin] + bresults[WhiteWin]).arg((wscore + bscore) / 2.0)
-			.arg(results[4] + bresults[4]);
+
+
+	QString white = tr("White:") + formatResult(results);
+	QString black = tr("Black:") + formatResult(bresults);
+	for (int i = 0 ; i < 5; i++)
+		results[i] += bresults[i];
+	QString total = tr("Total:") + formatResult(results);
 	QString daterange;
 	if (dates[0] == dates[1])
 		daterange = QString("(%1)").arg(dates[0].asString());
-	else daterange = QString("(%1 -%2)").arg(dates[0].asString()).arg(dates[1].asString());
+	else daterange = QString("(%1 - %2)").arg(dates[0].asString()).arg(dates[1].asString());
 	return tr("Games in current database: %1 %2<br>%3<br>%4<br>%5<br>").arg((results[4] + bresults[4]))
 			.arg(daterange).arg(white).arg(black).arg(total);
 }
