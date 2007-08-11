@@ -228,3 +228,9 @@ void Index::loadGameHeaders(GameId id, Game& game)
 	for (int i = 0; i < gameTags.count(); ++i)
 		game.setTag(gameTags[i].first, gameTags[i].second);
 }
+
+TagValues* Index::tagValues(Tag tag)
+{
+	return m_tagList[tag];
+}
+

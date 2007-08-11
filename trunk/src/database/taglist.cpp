@@ -136,10 +136,17 @@ TagValues* TagList::operator[](int index)
 {
 	return m_list[BasicTagMap[(Tag)index]];
 }
+
+TagValues* TagList::operator[](int index) const
+{
+	return m_list[BasicTagMap[(Tag)index]];
+}
+
 int TagList::tagFromString(const QString& tagName)
 {
 	return (Tag)m_tagNameToInt.value(tagName);
 }
+
 QString TagList::stringFromTag(Tag tag)
 {
 	return m_tagNameToInt.key(tag);

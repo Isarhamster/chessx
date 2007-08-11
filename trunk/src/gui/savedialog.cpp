@@ -16,10 +16,10 @@
 
 #include "savedialog.h"
 #include "game.h"
+#include "database.h"
 
-#include <QComboBox>
 #include <QLineEdit>
-
+#include <QCompleter>
 
 SaveDialog::SaveDialog(QWidget* parent) : QDialog(parent)
 {
@@ -45,14 +45,14 @@ QString formatTagDate(const QString& s)
 	return (s.trimmed().isEmpty()) ? "????.??.??" : s;
 }
 
-int SaveDialog::exec(Game& game)
+int SaveDialog::exec(Database* database, Game& game)
 {
-	ui.whiteCombo->setEditText(game.tag("White"));
+	ui.whiteEdit->setText(game.tag("White"));
 	ui.whiteEloEdit->setText(game.tag("WhiteElo"));
-	ui.blackCombo->setEditText(game.tag("Black"));
+	ui.blackEdit->setText(game.tag("Black"));
 	ui.blackEloEdit->setText(game.tag("BlackElo"));
-	ui.eventCombo->setEditText(game.tag("Event"));
-	ui.siteCombo->setEditText(game.tag("Site"));
+	ui.eventEdit->setText(game.tag("Event"));
+	ui.siteEdit->setText(game.tag("Site"));
 	ui.roundEdit->setText(game.tag("Round"));
 	ui.dateEdit->setText(game.tag("Date"));
 	ui.eventDateEdit->setText(game.tag("EventDate"));
@@ -60,12 +60,17 @@ int SaveDialog::exec(Game& game)
 	for (int i = 0; i < buttons.count(); i++)
 		if (buttons[i]->text() == game.tag("Result"))
 			buttons[i]->setChecked(true);
+	// Completion
+	setLineEdit(ui.whiteEdit, database, TagWhite);
+	setLineEdit(ui.blackEdit, database, TagBlack);
+	setLineEdit(ui.siteEdit, database, TagSite);
+	setLineEdit(ui.eventEdit, database, TagEvent);
 	int result = QDialog::exec();
 	if (result) {
-		game.setTag("White", formatTagValue(ui.whiteCombo->currentText()));
-		game.setTag("Black", formatTagValue(ui.blackCombo->currentText()));
-		game.setTag("Event", formatTagValue(ui.eventCombo->currentText()));
-		game.setTag("Site", formatTagValue(ui.siteCombo->currentText()));
+		game.setTag("White", formatTagValue(ui.whiteEdit->text()));
+		game.setTag("Black", formatTagValue(ui.blackEdit->text()));
+		game.setTag("Event", formatTagValue(ui.eventEdit->text()));
+		game.setTag("Site", formatTagValue(ui.siteEdit->text()));
 		game.setTag("Round", formatTagValue(ui.roundEdit->text()));
 		game.setTag("Date", formatTagDate(ui.dateEdit->text()));
 		game.setTag("EventDate", formatTagDate(ui.eventDateEdit->text()));
@@ -77,5 +82,12 @@ int SaveDialog::exec(Game& game)
 			game.setTag("BlackElo", ui.blackEloEdit->text());
 	}
 	return result;
+}
+
+void SaveDialog::setLineEdit(QLineEdit* edit, Database* database, Tag tag)
+{
+	QCompleter* completer = new QCompleter(database->index()->tagValues(tag), this);
+	completer->setCaseSensitivity(Qt::CaseInsensitive);
+	edit->setCompleter(completer);
 }
 

@@ -17,4 +17,32 @@
 
 #include "tagvalues.h"
 
+QVariant TagValues::data(const QModelIndex & index, int role) const
+{
+	if ((role == Qt::EditRole || role == Qt::DisplayRole) && index.isValid() && index.row() < count())
+		return QVariant(value(index.row()));
+	return QVariant();
+}
+
+QModelIndex TagValues::index(int row, int column, const QModelIndex& parent) const
+{
+	if (parent.isValid())
+		return QModelIndex();
+	return createIndex(row, column);
+}
+
+int TagValues::columnCount(const QModelIndex&) const
+{
+	return 1;
+}
+
+int TagValues::rowCount(const QModelIndex& parent) const
+{
+	return parent.isValid() ? 0 : count();
+}
+
+QModelIndex TagValues::parent(const QModelIndex&) const
+{
+	return QModelIndex();
+}
 

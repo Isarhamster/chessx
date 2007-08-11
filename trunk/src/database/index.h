@@ -68,7 +68,6 @@ public:
 	/** Returns a bit array to indicate which games in index have a tag value in given range */
 	QBitArray listInRange(Tag tag, const QString& minValue, const QString& maxValue);
 
-
 	// Utility //
 	//
 	/** Enables fast loading of many values */
@@ -79,6 +78,9 @@ public:
 
 	/** Returns the Tag id associated with tag-name string */
 	Tag tagFromString(const QString& tagName);
+
+	/** Return TagValues for given tag (used as QAbstractItemModel for completion). */
+	TagValues* tagValues(Tag tag);
 
 private:
 	/** Return a pointer to the index item for the given game id */

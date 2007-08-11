@@ -21,6 +21,7 @@
 #include <QStringList>
 #include <QHash>
 #include <QBitArray>
+#include <QAbstractItemModel>
 
 typedef quint32 TagIndex;
 typedef quint32 GameId;
@@ -35,7 +36,7 @@ a particular index, actually returns the index.
 
 @todo
 */
-class TagValues
+class TagValues : public QAbstractItemModel
 {
 
 public:
@@ -43,17 +44,17 @@ public:
 	virtual ~TagValues() {}
 
 	/** Adds a string value to the list, quickly if cache is enabled */
-	virtual int add(const QString& value) { return value.toInt(); }
+	virtual int add(const QString& value) {return value.toInt();}
 	/** Adds a integer value to the list. Integer values are not stored */
-	virtual int add(const int value) { return value; }
+	virtual int add(const int value) {return value;}
 	/** Returns a value from the list, given the index 'index' */
-	virtual QString value(const int index) { return QString::number(index); }
+	virtual QString value(int index) const {return QString::number(index);}
 	/** Returns the index of a value 'value */
-	virtual int indexOf(const QString& value) { return value.toInt(); }
+	virtual int indexOf(const QString& value) const {return value.toInt();}
 	/** Returns the number of values in the list */
-	virtual int count() { return 0; }
+	virtual int count() const {return 0;}
 	/** returns true if the list contains the string 'value' */
-	virtual bool contains(const QString&) { return true; }
+	virtual bool contains(const QString&) {return true;}
 	/** When cache is enabled, adding values is very quick. It uses twice as
 	  * much RAM though. Useful for adding lots of values quickly.
 	  * Remember to disable afterwards to free extra memory.*/
@@ -64,8 +65,12 @@ public:
 	/** Write the current list values to a data stream */
 	virtual void write(QDataStream&) {}
 
-
-
+	/** Abstract item model functions. */
+	virtual QVariant data (const QModelIndex& index, int role = Qt::DisplayRole) const;
+	virtual QModelIndex index (int row, int column, const QModelIndex & parent = QModelIndex()) const;
+	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
+	virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+	virtual QModelIndex parent(const QModelIndex&) const;
 private:
 	// Contains no data
 
