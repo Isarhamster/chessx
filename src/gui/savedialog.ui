@@ -158,12 +158,12 @@
          <string>&amp;White:</string>
         </property>
         <property name="buddy" >
-         <cstring>whiteCombo</cstring>
+         <cstring>whiteEdit</cstring>
         </property>
        </widget>
       </item>
       <item row="0" column="1" >
-       <widget class="QComboBox" name="whiteCombo" >
+       <widget class="QLineEdit" name="whiteEdit" >
         <property name="sizePolicy" >
          <sizepolicy>
           <hsizetype>7</hsizetype>
@@ -186,20 +186,11 @@ p, li { white-space: pre-wrap; }
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-style:italic;">Kasparov, Garry&lt;/span>&lt;/p>
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;">Tal, Mikhail N&lt;/p>
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;">Granda Zuniga, Julio E&lt;/p>&lt;/body>&lt;/html></string>
-        </property>
-        <property name="editable" >
-         <bool>true</bool>
-        </property>
-        <property name="autoCompletion" >
-         <bool>true</bool>
-        </property>
-        <property name="duplicatesEnabled" >
-         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item row="1" column="1" >
-       <widget class="QComboBox" name="blackCombo" >
+       <widget class="QLineEdit" name="blackEdit" >
         <property name="sizePolicy" >
          <sizepolicy>
           <hsizetype>7</hsizetype>
@@ -222,15 +213,6 @@ p, li { white-space: pre-wrap; }
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-style:italic;">Kasparov, Garry&lt;/span>&lt;/p>
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;">Tal, Mikhail N&lt;/p>
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;">Granda Zuniga, Julio E&lt;/p>&lt;/body>&lt;/html></string>
-        </property>
-        <property name="editable" >
-         <bool>true</bool>
-        </property>
-        <property name="autoCompletion" >
-         <bool>true</bool>
-        </property>
-        <property name="duplicatesEnabled" >
-         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -240,7 +222,7 @@ p, li { white-space: pre-wrap; }
          <string>&amp;Black:</string>
         </property>
         <property name="buddy" >
-         <cstring>blackCombo</cstring>
+         <cstring>blackEdit</cstring>
         </property>
        </widget>
       </item>
@@ -288,7 +270,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item row="1" column="1" >
-       <widget class="QComboBox" name="siteCombo" >
+       <widget class="QLineEdit" name="siteEdit" >
         <property name="sizePolicy" >
          <sizepolicy>
           <hsizetype>7</hsizetype>
@@ -306,15 +288,6 @@ p, li { white-space: pre-wrap; }
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;">Warsaw POL&lt;/p>
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;">New York USA&lt;/p>&lt;/body>&lt;/html></string>
         </property>
-        <property name="editable" >
-         <bool>true</bool>
-        </property>
-        <property name="autoCompletion" >
-         <bool>true</bool>
-        </property>
-        <property name="duplicatesEnabled" >
-         <bool>false</bool>
-        </property>
        </widget>
       </item>
       <item row="1" column="2" >
@@ -328,7 +301,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item row="0" column="1" colspan="3" >
-       <widget class="QComboBox" name="eventCombo" >
+       <widget class="QLineEdit" name="eventEdit" >
         <property name="sizePolicy" >
          <sizepolicy>
           <hsizetype>7</hsizetype>
@@ -336,15 +309,6 @@ p, li { white-space: pre-wrap; }
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="editable" >
-         <bool>true</bool>
-        </property>
-        <property name="autoCompletion" >
-         <bool>true</bool>
-        </property>
-        <property name="duplicatesEnabled" >
-         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -354,7 +318,7 @@ p, li { white-space: pre-wrap; }
          <string>&amp;Site:</string>
         </property>
         <property name="buddy" >
-         <cstring>siteCombo</cstring>
+         <cstring>siteEdit</cstring>
         </property>
        </widget>
       </item>
@@ -364,7 +328,7 @@ p, li { white-space: pre-wrap; }
          <string>&amp;Event:</string>
         </property>
         <property name="buddy" >
-         <cstring>eventCombo</cstring>
+         <cstring>eventEdit</cstring>
         </property>
        </widget>
       </item>
@@ -540,12 +504,12 @@ p, li { white-space: pre-wrap; }
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <tabstops>
-  <tabstop>whiteCombo</tabstop>
+  <tabstop>whiteEdit</tabstop>
   <tabstop>whiteEloEdit</tabstop>
-  <tabstop>blackCombo</tabstop>
+  <tabstop>blackEdit</tabstop>
   <tabstop>blackEloEdit</tabstop>
-  <tabstop>eventCombo</tabstop>
-  <tabstop>siteCombo</tabstop>
+  <tabstop>eventEdit</tabstop>
+  <tabstop>siteEdit</tabstop>
   <tabstop>eventDateEdit</tabstop>
   <tabstop>roundEdit</tabstop>
   <tabstop>dateEdit</tabstop>

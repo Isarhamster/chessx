@@ -45,17 +45,17 @@ public:
 	/** Adds a value to the list, quickly if cache is enabled */
 	int add(const QString& value);
 	/** Returns a value from the list, given the index 'index' */
-	QString value(const int index);
+	QString value(int index) const;
 	/** Clears all values from the list */
 	void clear();
 	/** Returns the index of a value 'value */
-	int indexOf(const QString& value);
+	int indexOf(const QString& value) const;
 	/** When cache is enabled, adding values is very quick. It uses twice as
 	  * much RAM though. Useful for adding lots of values quickly.
 	  * Remember to disable afterwards to free extra memory.*/
-	void setCacheEnabled(const bool enabled);
+	void setCacheEnabled(bool enabled);
 	/** Returns the number of values in the list */
-	virtual int count();
+	virtual int count() const;
 	/** returns true if the list contains the string 'value' */
 	virtual bool contains(const QString& value);
 	/** Read the values for list from a data stream */
@@ -66,6 +66,8 @@ public:
 	QBitArray listContainingValue(const QString& value);
 	/** Returns a list of indexes that falls in the specified range */
 	QBitArray listInRange(const QString& minValue, const QString& maxValue);
+	/** Returns a list of strings starting with given prefix. Used for completion. */
+	QStringList listContainingPrefix(const QString& value, int max) const;
 
 private:
 	typedef QHash <QString, int> TagCache;

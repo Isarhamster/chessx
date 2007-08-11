@@ -24,10 +24,12 @@ StringTagValues::StringTagValues()
 	m_cache = NULL;
 	setCacheEnabled(false);
 }
+
 StringTagValues::~StringTagValues()
 {
 	setCacheEnabled(false);
 }
+
 int StringTagValues::add(const QString& value)
 {
 	if (m_cache) {
@@ -46,21 +48,25 @@ int StringTagValues::add(const QString& value)
 		return (m_list.count() - 1);
 	}
 }
-QString StringTagValues::value(int index)
+
+QString StringTagValues::value(int index) const
 {
 	Q_ASSERT((index >= 0) && (index < m_list.count()));
 	return m_list[index];
 }
+
 void StringTagValues::clear()
 {
 	setCacheEnabled(false);
 	m_list.clear();
 }
-int StringTagValues::indexOf(const QString& value)
+
+int StringTagValues::indexOf(const QString& value) const
 {
 	return m_list.indexOf(value);
 }
-void StringTagValues::setCacheEnabled(const bool enabled)
+
+void StringTagValues::setCacheEnabled(bool enabled)
 {
 	if (enabled) {
 		m_cache = new TagCache;
@@ -72,14 +78,17 @@ void StringTagValues::setCacheEnabled(const bool enabled)
 		m_cache = NULL;
 	}
 }
-int StringTagValues::count()
+
+int StringTagValues::count() const
 {
 	return m_list.count();
 }
+
 bool StringTagValues::contains(const QString& value)
 {
 	return m_list.contains(value);
 }
+
 void StringTagValues::read(QDataStream& in)
 {
 	int count;
@@ -97,6 +106,7 @@ void StringTagValues::read(QDataStream& in)
 	}
 	setCacheEnabled(false);
 }
+
 void StringTagValues::write(QDataStream& out)
 {
 	out << m_list.count();
@@ -105,6 +115,7 @@ void StringTagValues::write(QDataStream& out)
 	}
 
 }
+
 QBitArray StringTagValues::listContainingValue(const QString& value)
 {
 	QBitArray list(count(), false);
@@ -113,6 +124,7 @@ QBitArray StringTagValues::listContainingValue(const QString& value)
 	}
 	return list;
 }
+
 QBitArray StringTagValues::listInRange(const QString& minValue, const QString& maxValue)
 {
 	QBitArray list(count(), false);

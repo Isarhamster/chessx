@@ -809,7 +809,7 @@ void MainWindow::slotGameSave()
 {
 	if (database()->isReadOnly())
 		QMessageBox::critical(this, tr("Save game"), tr("This database is read only."));
-	else if (saveDialog()->exec(game()) == QDialog::Accepted) {
+	else if (saveDialog()->exec(database(), game()) == QDialog::Accepted) {
 		databaseInfo()->saveGame();
 		slotDatabaseChanged();
 	}

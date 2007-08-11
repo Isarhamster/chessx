@@ -58,6 +58,8 @@ public:
 	TagValues* tagValueList(int index);
 	/** Returns the TagValues instance stored at index */
 	TagValues* operator[](int index);
+	/** Returns the TagValues instance stored at index (const version). */
+	TagValues* operator[](int index) const;
 	/** Returns the number of TagValues instances in the list */
 	int count();
 	/** Clears the list and frees all associated memory */
