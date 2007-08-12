@@ -29,11 +29,19 @@ class ChessBrowser : public QTextBrowser
 public:
 	ChessBrowser(QWidget* p);
 public slots:
+	/** Store current configuration. */
+	void saveConfig();
+	/** Restore current configuration. */
+	void slotReconfigure();
+	/** Scroll to show given mode. */
 	void showMove(int id);
+	/** Toggle font */
+	void slotToggleFont(bool toggled);
 protected:
 	virtual void selectAnchor(const QString& href);
 	virtual void setSource(const QUrl& url);
 private:
+	QAction* m_smallfont;
 };
 
 #endif

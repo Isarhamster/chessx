@@ -8,11 +8,20 @@
  ***************************************************************************/
 
 #include "chessbrowser.h"
+#include "settings.h"
+#include <QAction>
 #include <QMouseEvent>
 #include <QTextBlock>
 
 ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p)
-{}
+{
+	m_smallfont = new QAction(tr("Small font"), this);
+	m_smallfont->setCheckable(true);
+	m_smallfont->setChecked(false);
+	connect(m_smallfont, SIGNAL(toggled(bool)), SLOT(slotToggleFont(bool)));
+	addAction(m_smallfont);
+	setContextMenuPolicy(Qt::ActionsContextMenu);
+}
 
 void ChessBrowser::setSource(const QUrl&)
 {}
@@ -47,5 +56,29 @@ void ChessBrowser::selectAnchor(const QString& href)
 			}
 		}
 	}
+}
+
+void ChessBrowser::saveConfig()
+{
+	AppSettings->setLayout(this);
+	AppSettings->beginGroup(objectName());
+	AppSettings->setValue("SmallFont", m_smallfont->isChecked());
+}
+
+void ChessBrowser::slotReconfigure()
+{
+	AppSettings->layout(this);
+	AppSettings->beginGroup(objectName());
+	if (AppSettings->value("SmallFont", false).toBool())
+		m_smallfont->setChecked(true);
+	AppSettings->endGroup();
+}
+
+void ChessBrowser::slotToggleFont(bool toggled)
+{
+	if (toggled)
+		zoomOut();
+	else
+		zoomIn();
 }
 
