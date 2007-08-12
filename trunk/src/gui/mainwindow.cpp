@@ -101,8 +101,8 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	/* Move view */
 	m_moveView = new ChessBrowser(m_boardSplitter);
-	//m_moveView->zoomOut();
 	m_moveView->setMinimumHeight(80);
+	m_moveView->slotReconfigure();
 	connect(m_moveView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 
 	/* Board layout */
@@ -115,6 +115,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	dock->setObjectName("GameTextDock");
 	m_gameView = new ChessBrowser(dock);
 	m_gameView->setMinimumSize(150, 100);
+	m_gameView->slotReconfigure();
 	connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 	dock->setWidget(m_gameView);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
@@ -258,6 +259,8 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		AppSettings->setLayout(m_helpWindow);
 		m_gameList->saveConfig();
 		m_openingTree->saveConfig();
+		m_gameView->saveConfig();
+		m_moveView->saveConfig();
 		AppSettings->setLayout(this);
 		AppSettings->beginGroup("MainWindow");
 		AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
