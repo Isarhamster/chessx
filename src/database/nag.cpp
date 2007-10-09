@@ -76,7 +76,7 @@ void NagSet::clear()
 	m_noNags = 0;
 }
 
-int NagSet::count()
+int NagSet::count() const
 {
 	return m_noNags;
 }
@@ -86,7 +86,7 @@ QVector<Nag> NagSet::nags() const
 	QVector<Nag> nags;
 
 	for (int nag = 0; nag < m_noNags; nag++) {
-		nags[nag] = (Nag)m_nags[nag];
+		nags.push_back((Nag)m_nags[nag]);
 	}
 
 	return nags;

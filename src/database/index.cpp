@@ -53,8 +53,8 @@ void Index::setTag(Tag tag, QString value, int gameId)
 		return;
 	}
 	// Create a index item if it does not exist
-	if (!m_indexItems.at(gameId)) {
-		add();
+	if (gameId >= m_indexItems.size()) {
+	  for(int i=m_indexItems.size(); i<=gameId; ++i) add();
 	}
 	// At index value to itemindex
 	m_indexItems[gameId]->set(m_tagIndexPosition[tag].first, m_tagIndexPosition[tag].second, index);
@@ -77,6 +77,7 @@ void Index::setTag(const QString& tagName, QString value, int gameId)
 		index);
 }
 
+
 GameId Index::add()
 {
 	int gameId = m_indexItems.count();
@@ -84,6 +85,13 @@ GameId Index::add()
 	m_indexItems[gameId]->allocate(m_tagIndexSize);
 	return gameId;
 }
+
+// only a dummy implementation at the moment
+GameId Index::add(const Game& game)
+{
+  return add();
+}
+
 void Index::createIndexItems()
 {
 	for (int i = 0; i < INDEX_ITEM_BUFFER_SIZE ; ++i) {

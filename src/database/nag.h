@@ -354,7 +354,7 @@ public:
 	void addNag(Nag nag);
 	void removeNag(Nag nag);
 	void clear();
-	int count();
+	int count() const;
 
 	QVector<Nag> nags() const;
 	QString toString() const;

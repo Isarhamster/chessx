@@ -3,7 +3,7 @@
                              -------------------
     begin                : 9 April 2006
     copyright            : (C) 2006 William Hoggarth
-														<whoggarth@users.sourceforge.net>
+				<whoggarth@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************

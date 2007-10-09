@@ -33,7 +33,8 @@ HEADERS += board.h \
            filtermodel.h \
            tablebase.h \
            bitboard.h \
-			  openingtree.h
+	   openingtree.h \
+	   chessxdatabase.h
 SOURCES += board.cpp \
            common.cpp \
            game.cpp \
@@ -66,12 +67,14 @@ SOURCES += board.cpp \
            filtermodel.cpp \
            tablebase.cpp \
            bitboard.cpp \
-			  openingtree.cpp
+	   openingtree.cpp \
+	   chessxdatabase.cpp
 
 include(../common.pro)
 TARGET = database
 CONFIG += staticlib
 TEMPLATE = lib
+QT += xml
 
 fastbits {
 	DEFINES += FASTBITS
