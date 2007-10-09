@@ -48,8 +48,11 @@ public:
 	void setTag(const QString& tagName, QString value, int gameId);
 
 	/** Create new gameId in index and store all tags from game object into it */
+        // this is only a dummy implementation at the moment
 	GameId add(const Game& game);
 
+	/** Adds a empty indexitem */
+	GameId add ();
 
 	// Retrieving tags //
 	//
@@ -104,8 +107,6 @@ private:
 
 	/** Adds a index item */
 	TagIndex add (const IndexItem& item);
-	/** Adds a empty indexitem */
-	TagIndex add ();
 	/** Create index items */
 	void createIndexItems();
 

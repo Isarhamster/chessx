@@ -5,4 +5,3 @@
 
 SUBDIRS = src 
 TEMPLATE = subdirs
-

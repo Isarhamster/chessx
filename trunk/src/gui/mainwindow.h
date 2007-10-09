@@ -164,6 +164,8 @@ public slots:
 	void slotFilterChanged();
 	/** Load given game (triggered from Game List) */
 	void slotFilterLoad(int index);
+	/** Creates an empty chessxdatabase*/
+	void slotFileNew();
 	/** Open File dialog, choose a database and open it */
 	void slotFileOpen();
 	/** Save database to current file. */

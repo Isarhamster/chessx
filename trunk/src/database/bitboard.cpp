@@ -54,8 +54,13 @@ quint64 bb_MaskL90[64];
 quint64 bb_MaskL45[64];
 quint64 bb_MaskR45[64];
 
-BitBoard standardPosition;
+BitBoard getStandardPosition();
+// Calling the function getStandardPosition for initialization avoids
+// initialization side effects when using BitBoards in other translation
+// units.
+BitBoard standardPosition=getStandardPosition();
 BitBoard clearedPosition;
+
 
 bool bitBoardInitRun;
 void bitBoardInit();
@@ -1813,3 +1818,9 @@ void bitBoardInit()
 	standardPosition.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 
+BitBoard getStandardPosition()
+{
+  BitBoard b;
+  b.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+  return b;
+}
