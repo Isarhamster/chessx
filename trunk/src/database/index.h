@@ -3,6 +3,7 @@
                              -------------------
     begin                :
     copyright            : (C) 2006 Marius Roets <saidinwielder@sourceforge.net>
+                           (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -36,6 +37,9 @@
 class Index
 {
 public:
+	friend class CxdIndex;
+        static const int defaultIndexItemSize;
+
 	Index();
 	~Index();
 
@@ -47,9 +51,12 @@ public:
 	/** Store the tag value for the given game, tag is given by name */
 	void setTag(const QString& tagName, QString value, int gameId);
 
-	/** Create new gameId in index and store all tags from game object into it */
+	/** Create new IndexItem in index and store all tags from game object into it */
         // this is only a dummy implementation at the moment
 	GameId add(const Game& game);
+
+        /** Creates new IndexItem in index and store all tags of CxdIndex::tags into it */ 
+        GameId cxdAdd(const Game& game);
 
 	/** Adds a empty indexitem */
 	GameId add ();
@@ -86,6 +93,8 @@ public:
 	TagValues* tagValues(Tag tag);
 
 private:
+        int m_nbUsedIndexItems;
+
 	/** Return a pointer to the index item for the given game id */
 	IndexItem* item(int gameId);
 
@@ -105,8 +114,15 @@ private:
 
 	QString m_filename;
 
-	/** Adds a index item */
+	/** Adds an IndexItem. item will be copied in a new item which will
+         *  be dynamically allocated. This adds some overhead but in this
+         *  way the caller of the function does not have to create item
+         *  with new. To avoid this overhead use add(IndexItem*). */
 	TagIndex add (const IndexItem& item);
+        
+        /** Adds item to m_indexItems. item should be dynamically allocated.*/ 
+        TagIndex add (IndexItem* item);
+
 	/** Create index items */
 	void createIndexItems();
 
@@ -115,11 +131,12 @@ private:
 	/** Uncompress the data when reading from disk. Is this necessary? */
 	void unpack();
 
-	/** Returns a map of all tag name/tag value pairs for a given game.
+        /** Writes all tag name/tag value pairs for a given game in list.
 	 * Currently all tags in the database are returned, if the game does
 	 * not a have a value for a particular tag, a default value is returned.
 	 */
-	QList<QPair<QString, QString> > allGameTags(int gameId);
+	void allGameTags(int gameId, QList<QPair<QString,QString> >&);
+
 
 // Unused:
 //	/** Recreates Index, removing all unused TagValues */

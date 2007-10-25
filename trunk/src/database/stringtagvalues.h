@@ -2,8 +2,8 @@
                           common  -  description
                              -------------------
     begin                : 20/02/2007
-    copyright            : (C) 2007 Marius Roets
-                           <saidinwielder@users.sourceforge.net>
+    copyright            : (C) 2007 Marius Roets <saidinwielder@users.sourceforge.net>
+                           (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -62,6 +62,8 @@ public:
 	void read(QDataStream& in);
 	/** Write the current list values to a data stream */
 	void write(QDataStream& out);
+        /** Appends value at the end of out */ 
+	void appendToStream(const QString& value, QDataStream& out);
 	/** Returns a list of indexes containing value */
 	QBitArray listContainingValue(const QString& value);
 	/** Returns a list of indexes that falls in the specified range */

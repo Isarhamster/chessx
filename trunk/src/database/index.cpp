@@ -3,6 +3,7 @@
                              -------------------
     begin                :
     copyright            : (C) 2006 Marius Roets <saidinwielder@sourceforge.net>
+                           (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,9 +20,11 @@
 #include <QDataStream>
 
 #include "index.h"
+#include "cxdindex.h"
 
 #define INDEX_ITEM_BUFFER_SIZE 500
 
+const int Index::defaultIndexItemSize=27;
 
 Index::Index()
 {
@@ -34,8 +37,13 @@ Index::Index()
 	setTagIndexPosition(TagResult, 16, 1);
 	setTagIndexPosition(TagPlyCount, 17, 2);
 	setTagIndexPosition(TagFEN, 19, 2);
+        setTagIndexPosition(TagWhiteElo, 21, 2);
+        setTagIndexPosition(TagBlackElo, 23, 2);
+        setTagIndexPosition(TagECO, 25, 2);
 	createIndexItems();
 	reallocateIndexItems();
+
+	m_nbUsedIndexItems=0;
 }
 Index::~Index()
 {
@@ -89,7 +97,16 @@ GameId Index::add()
 // only a dummy implementation at the moment
 GameId Index::add(const Game& game)
 {
-  return add();
+ ++m_nbUsedIndexItems;
+ return add();
+}
+
+
+GameId Index::cxdAdd(const Game& game)
+{
+  for(int i=0; i<CxdIndex::m_nbIndexTags; ++i)
+  {setTag(CxdIndex::tags[i],game.tag(TagNames[CxdIndex::tags[i]]),m_nbUsedIndexItems);}
+  return m_nbUsedIndexItems++;
 }
 
 void Index::createIndexItems()
@@ -118,6 +135,19 @@ void Index::calculateIndexSize()
 		++i;
 	}
 }
+
+TagIndex Index::add(const IndexItem& item)
+{
+  return add(new IndexItem(item));
+}
+
+TagIndex Index::add(IndexItem* item)
+{
+  if(m_nbUsedIndexItems==m_indexItems.count()) createIndexItems();
+  m_indexItems[m_nbUsedIndexItems]=item;
+  return m_nbUsedIndexItems++;
+}
+
 void Index::reallocateIndexItems(bool clear)
 {
 	calculateIndexSize();
@@ -171,6 +201,7 @@ void Index::read()
 	}
 
 }
+
 void Index::setFilename(const QString& filename)
 {
 	m_filename = filename;
@@ -182,14 +213,15 @@ void Index::clear()
 		delete m_indexItems[i];
 	}
 	m_indexItems.clear();
+        m_tagList.clear();
 }
 void Index::setCacheEnabled(bool enabled)
 {
 	m_tagList.setCacheEnabled(enabled);
 }
-QList<QPair<QString, QString> > Index::allGameTags(int gameId)
+
+void Index::allGameTags(int gameId, QList<QPair<QString, QString> >& list)
 {
-	QList<QPair<QString, QString> > list;
 	QMap <int, QPair<quint8 , quint8 > >::const_iterator i = m_tagIndexPosition.constBegin();
 	while (i != m_tagIndexPosition.constEnd()) {
 		QString tagName = m_tagList.stringFromTag((Tag)i.key());
@@ -201,7 +233,6 @@ QList<QPair<QString, QString> > Index::allGameTags(int gameId)
 
 		++i;
 	}
-	return list;
 }
 QBitArray Index::listContainingValue(Tag tag, const QString& value)
 {
@@ -231,7 +262,7 @@ IndexItem* Index::item(int gameId)
 void Index::loadGameHeaders(GameId id, Game& game)
 {
 	QList <QPair< QString, QString> > gameTags;
-	gameTags = allGameTags(id);
+	allGameTags(id,gameTags);
 
 	for (int i = 0; i < gameTags.count(); ++i)
 		game.setTag(gameTags[i].first, gameTags[i].second);

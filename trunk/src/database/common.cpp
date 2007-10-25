@@ -32,3 +32,4 @@ QString resultString(Result result)
 	}
 }
 
+QMap<Tag, Tag> BasicTagMap;

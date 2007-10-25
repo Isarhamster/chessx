@@ -2,8 +2,8 @@
                           common  -  description
                              -------------------
     begin                : 20/02/2007
-    copyright            : (C) 2007 Marius Roets
-                           <saidinwielder@users.sourceforge.net>
+    copyright            : (C) 2007 Marius Roets <saidinwielder@users.sourceforge.net>
+                           (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -22,7 +22,9 @@ StringTagValues::StringTagValues()
 {
 	m_list.append("?");
 	m_cache = NULL;
-	setCacheEnabled(false);
+//	setCacheEnabled(false);
+// rico: changed caching to be default behavior
+        setCacheEnabled(true);
 }
 
 StringTagValues::~StringTagValues()
@@ -58,6 +60,7 @@ QString StringTagValues::value(int index) const
 void StringTagValues::clear()
 {
 	setCacheEnabled(false);
+        setCacheEnabled(true);
 	m_list.clear();
 }
 
@@ -91,29 +94,39 @@ bool StringTagValues::contains(const QString& value)
 
 void StringTagValues::read(QDataStream& in)
 {
-	int count;
+//	int count;
 	QString line;
-	int lineNr = 0;
+//	int lineNr = 0;
 
-	clear();
-	setCacheEnabled(true);
+//	clear();
+//	setCacheEnabled(true);
 
-	in >> count;
-	while (lineNr < count) {
-		in >> line;
-		add(line);
-		lineNr++;
+//	in >> count;
+//	while (lineNr < count) {
+//		in >> line;
+//		add(line);
+//		lineNr++;
+//	}
+        while(!in.atEnd())
+	{
+	  in >> line;
+          add(line);
 	}
-	setCacheEnabled(false);
+//	setCacheEnabled(false);
 }
 
 void StringTagValues::write(QDataStream& out)
 {
-	out << m_list.count();
+//      out << m_list.count();
 	for (int i = 0; i < m_list.count(); ++i) {
 		out << m_list[i];
 	}
 
+}
+
+void StringTagValues::appendToStream(const QString& value, QDataStream& out)
+{
+        out << value;
 }
 
 QBitArray StringTagValues::listContainingValue(const QString& value)

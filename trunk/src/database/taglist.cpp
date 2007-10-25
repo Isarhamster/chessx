@@ -52,7 +52,10 @@ TagList::TagList()
 		 * for every possible tag. However the Black/White -> PlayerName
 		 * conversion is much simpler this way. The downside is that
 		 * between 12 and ? empty and unused objects are created
-		 * per database. Currently this seems like a small price to pay. */
+		 * per database. Currently this seems like a small price to pay. */	
+ 		// rico: I do not think this is a big issue. Furthermore it makes
+ 		// access to the tags a bit easier. The implementation of chessxdatabase
+ 		// currently relies on this handling of m_list.
 		m_list.append(NULL);
 	}
 	// I comment these out, because I am not sure how to handle the integers currently.
@@ -132,6 +135,7 @@ TagValues* TagList::tagValueList(int index)
 {
 	return m_list[BasicTagMap[(Tag)index]];
 }
+
 TagValues* TagList::operator[](int index)
 {
 	return m_list[BasicTagMap[(Tag)index]];
@@ -163,7 +167,7 @@ void TagList::clear()
 			m_list[i] = NULL;
 		}
 	}
-	m_list.clear();
+        for(int i=TagLastTag; i<m_list.size(); ++i) m_list.removeLast();
 }
 void TagList::write(QDataStream& out)
 {
@@ -183,4 +187,11 @@ void TagList::read(QDataStream& in)
 		m_list[i] = static_cast<TagValues*>(new StringTagValues);
 		m_list[i]->read(in);
 	}
+}
+
+void TagList::addTagValues(const Tag& tag, TagValues* tagvalues)
+{
+  if(m_list[tag]) // tagvaluelist already there
+  {return;}
+  m_list[tag]=tagvalues;
 }

@@ -150,7 +150,7 @@ static QStringList TagNames  = (QStringList() << "Event" << "Site"
 				<< "WhiteElo" << "BlackElo" << "WhiteUSCF" << "BlackUSCF"
 				<< "WhiteNA" << "BlackNA" << "WhiteType" << "BlackType");
 
-static QMap<Tag, Tag> BasicTagMap;
+extern QMap<Tag, Tag> BasicTagMap;
 //PlayerTagMap[TagWhite] = PlayerName;
 
 #endif

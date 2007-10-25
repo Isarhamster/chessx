@@ -2,8 +2,8 @@
                           common  -  description
                              -------------------
     begin                : 20/02/2007
-    copyright            : (C) 2007 Marius Roets
-                           <saidinwielder@users.sourceforge.net>
+    copyright            : (C) 2007 Marius Roets <saidinwielder@users.sourceforge.net>
+                           (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -64,6 +64,9 @@ public:
 	virtual void read(QDataStream&) {}
 	/** Write the current list values to a data stream */
 	virtual void write(QDataStream&) {}
+
+	/** Appends value at the end of out */
+        virtual void appendToStream(const QString& value, QDataStream& out) {}
 
 	/** Abstract item model functions. */
 	virtual QVariant data (const QModelIndex& index, int role = Qt::DisplayRole) const;
