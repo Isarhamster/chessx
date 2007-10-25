@@ -454,6 +454,7 @@ void MainWindow::slotFileNew()
 	  QMessageBox::warning(0,"New database",tr("ChessX database could not be created.")) ;
 	  return;
 	}
+        cxd.close();
 	openDatabase(file);
 	AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
 }

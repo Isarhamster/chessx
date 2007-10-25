@@ -3,6 +3,7 @@
                              -------------------
     begin                :
     copyright            : (C) 2006 Marius Roets <saidinwielder@sourceforge.net>
+			   (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -14,12 +15,16 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtDebug>
+
 #include "indexitem.h"
+#include "index.h"
+
 
 IndexItem::IndexItem()
 {
 	m_data = NULL;
-	allocate(MINIMUM_ARRAY_SIZE);
+	allocate(Index::defaultIndexItemSize);
 }
 IndexItem::~IndexItem()
 {
@@ -98,14 +103,15 @@ TagIndex IndexItem::index(int offset, int size)
 	}
 	return 0;
 }
-void IndexItem::write(QDataStream& out)
+
+void IndexItem::write(QDataStream& out) const
 {
 	out << m_size;
 	for (int i = 0;i < m_size; ++i) {
 		out << m_data[i];
 	}
-
 }
+
 void IndexItem::read(QDataStream& in)
 {
 	in >> m_size;
@@ -113,6 +119,18 @@ void IndexItem::read(QDataStream& in)
 	for (int i = 0;i < m_size; ++i) {
 		in >> m_data[i];
 	}
-
-
 }
+
+void IndexItem::cxdWrite(QIODevice& qiod) const
+{
+  Q_ASSERT(m_size==Index::defaultIndexItemSize);
+  qiod.write((const char*)m_data,m_size);
+}
+void IndexItem::cxdRead(QIODevice& qiod)
+{
+  Q_ASSERT(m_size==Index::defaultIndexItemSize);
+  // Here we assume that the right space is allocated. This should be done by
+  // default in the IndexItem construcor.
+  qiod.read((char*)m_data,Index::defaultIndexItemSize);
+}
+

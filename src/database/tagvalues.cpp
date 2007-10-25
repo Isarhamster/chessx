@@ -2,8 +2,8 @@
                           common  -  description
                              -------------------
     begin                : 20/02/2007
-    copyright            : (C) 2007 Marius Roets
-                           <saidinwielder@users.sourceforge.net>
+    copyright            : (C) 2007 Marius Roets <saidinwielder@users.sourceforge.net>
+                           (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************

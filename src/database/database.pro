@@ -34,7 +34,10 @@ HEADERS += board.h \
            tablebase.h \
            bitboard.h \
 	   openingtree.h \
-	   chessxdatabase.h
+	   chessxdatabase.h \
+           cxdmoves.h \
+           cxdsaxhandler.h \
+	   cxdindex.h
 SOURCES += board.cpp \
            common.cpp \
            game.cpp \
@@ -68,7 +71,10 @@ SOURCES += board.cpp \
            tablebase.cpp \
            bitboard.cpp \
 	   openingtree.cpp \
-	   chessxdatabase.cpp
+	   chessxdatabase.cpp \
+           cxdmoves.cpp \
+           cxdsaxhandler.cpp \
+	   cxdindex.cpp
 
 include(../common.pro)
 TARGET = database

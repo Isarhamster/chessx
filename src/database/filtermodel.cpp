@@ -23,14 +23,16 @@ FilterModel::FilterModel(Filter* filter, QObject* parent)
 {
 	m_columnNames << "Nr"
 	<< "White"
+        << "WhiteElo"
 	<< "Black"
+        << "BlackElo"
 	<< "Event"
 	<< "Site"
 	<< "Round"
 	<< "Date"
 	<< "Result"
 	<< "ECO"
-	<< "Length";
+	<< "PlyCount";
 	m_game = new Game;
 }
 
@@ -57,8 +59,12 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
 		int i = m_filter->indexToGame(index.row());
 		if (i != -1) {
 			if (i != m_gameIndex)
-				m_filter->database()->loadGameHeaders(i, *m_game);
-			m_gameIndex = i;
+                          {
+// rico: it would perhaps be better to lead here only header information that is
+// currently used and not the whole header information.
+                            m_filter->database()->loadGameHeaders(i, *m_game);
+			    m_gameIndex = i;
+                          }
 			if (index.column() == 0)
 				return i + 1;
 			else

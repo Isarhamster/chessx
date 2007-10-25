@@ -3,6 +3,7 @@
                              -------------------
     begin                :
     copyright            : (C) 2006 Marius Roets <saidinwielder@sourceforge.net>
+                           (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -21,8 +22,6 @@
 #include "common.h"
 #include <QList>
 #include <QDataStream>
-
-#define MINIMUM_ARRAY_SIZE 30
 
 /** @ingroup Database
  The IndexItem class holds one item that is listed in a index
@@ -59,10 +58,16 @@ public:
 	/** returns value of index stored at 'offset' with given 'size' */
 	TagIndex index(int offset, int size);
 	/** Write the data of the instance to a QDataStream */
-	void write(QDataStream& out);
+	void write(QDataStream& out) const;
 	/** Reads the data of the instance from a QDataStream.
 	 * All data is cleared first. */
 	void read(QDataStream& in);
+        /** Write the data of the instance to a QIODevice.
+         *  This function should be faster then the one for writing to
+         *  a QDataStream. */
+        void cxdWrite(QIODevice& qiod) const;
+        /** Reads the data of the instance from a QIODevice. */
+        void cxdRead(QIODevice& qiod);
 
 	/** A debugging function, used to dump the contents of the memory
 	 * structure that holds the values */

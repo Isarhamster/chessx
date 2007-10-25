@@ -32,6 +32,7 @@ dump, and read it's data using QDataStream, and calling on
 TagValues' read() and write() methods.
 
 @todo
+- m_tagNameToInt can be moved to common.h/.cpp
 */
 
 class TagList
@@ -80,6 +81,12 @@ public:
 	 * White and Black are both mapped to PlayerName, so each name is stored
 	 * only once */
 	static void createBasicTagMap();
+
+        /** Adds tagvalues to the taglist. tag indicates to which tag the
+         *  tagvalues correspond. tagvalues should be dynamically allocated.
+         *  This function only does something if there is not already in
+         *  m_list a TagValues object corresponding to tag. */
+        void addTagValues(const Tag& tag, TagValues* tagvalues);
 
 private:
 	/** holds the TagValues instances */
