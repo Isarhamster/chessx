@@ -60,7 +60,7 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
 		if (i != -1) {
 			if (i != m_gameIndex)
                           {
-// rico: it would perhaps be better to lead here only header information that is
+// rico: it would perhaps be better to read here only header information that is
 // currently used and not the whole header information.
                             m_filter->database()->loadGameHeaders(i, *m_game);
 			    m_gameIndex = i;
