@@ -56,7 +56,7 @@ public:
 	virtual void close() = 0;
 	/** Returns whether the database is read-only or not */
 	virtual bool isReadOnly() = 0;
-	/** Removes all games from the database, return true if succesful */
+	/** Removes all games from the database, return true if successful */
 	virtual bool clear() { return false; }
 
 	//game retrieval & storage

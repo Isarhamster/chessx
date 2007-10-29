@@ -1,5 +1,5 @@
 /***************************************************************************
-                          chessxdatabase.h  - chessx native database class 
+                          chessxdatabase.cpp  - chessx native database class 
                              -------------------
    begin                : 15 July 2007
    copyright            : (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>

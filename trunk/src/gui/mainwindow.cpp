@@ -883,6 +883,9 @@ void MainWindow::slotFilterChanged()
 	QString f = count == database()->count() ? "all" : QString::number(count);
 	m_statusFilter->setText(tr(" %1: %2/%3 ").arg(databaseName())
 				.arg(f).arg(database()->count()));
+  // rico: there should be a more clever way to update the filter as just to
+  // reset all items. On this could be worked later.
+        m_gameList->updateFilter();
 }
 
 void MainWindow::slotFilterLoad(int index)
