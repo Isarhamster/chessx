@@ -5,6 +5,7 @@
     copyright            : (C) 2005 Ejner Borgbjerg <ejner@users.sourceforge.net>
                            (C) 2006 William Hoggarth <whoggarth@users.sourceforge.net>
                            (C) 2006 Michal Rudolf <mrudolf@kdewebdev.org>
+                           (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
  ***************************************************************************/
 
 /***************************************************************************
@@ -155,6 +156,9 @@ void Filter::resize(int newsize)
 	for (int i = newsize; i < size(); i++)  // Decrease count by number of removed games
 		if (contains(i)) m_count--;
 	m_byteArray->resize(newsize);
+        // New bytes obtained by resizing a QByteArray are in uninitialized state. We
+        // therefore have to set them explicitely to 0.
+        for (int i = size(); i<newsize; ++i) (*m_byteArray)[i]=0;
 }
 
 void Filter::reverse()
