@@ -444,7 +444,7 @@ TipOfDayDialog* MainWindow::tipDialog()
 }
 
 void MainWindow::slotFileNew()
-{	
+{
 	QString file = QFileDialog::getSaveFileName(this, tr("New database"),
 		 	AppSettings->value("/General/databasePath").toString());
 	if(!file.endsWith(".cxd")) file+=".cxd";
@@ -613,8 +613,8 @@ void MainWindow::slotHelpAbout()
 	QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
 				      "<p>Free chess database.<br>Version %1<br>%2"
 				      "<p>Copyright 2005-2007 ChessX developers<br>"
-				      "Core developers: Sean Estabrooks, Marius Roets, Michal Rudolf.<br>"
-				      "Additional coding: Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.<br>"
+						"Core developers: Marius Roets, Michal Rudolf, Rico Zenklusen.<br>"
+						"Additional coding: Sean Estabrooks, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.<br>"
 				      "<p>Homepage: <a href=\"http://chessx.sf.net\">http://chessx.sf.net</a><br>"
 				      "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">"
 				      "chessx-users@lists.sourceforge.net").arg(ChessXVersion).arg(fastbits),
