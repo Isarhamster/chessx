@@ -908,6 +908,11 @@ void MainWindow::slotDatabaseChange()
 
 void MainWindow::slotDatabaseCopy()
 {
+	if (m_databases.count() < 2) {
+		QMessageBox::warning(0, tr("Copy games"),
+			tr("You need at least two open databases to copy games"));
+		return;
+	}
 	CopyDialog dlg(this);
 	QStringList db;
 	for (int i = 0; i < m_databases.count(); i++)
