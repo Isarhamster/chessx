@@ -16,6 +16,7 @@
 
 #include "boardsetup.h"
 #include "boardview.h"
+#include "copydialog.h"
 #include "chessbrowser.h"
 #include "databaseinfo.h"
 #include "ecothread.h"
@@ -905,6 +906,45 @@ void MainWindow::slotDatabaseChange()
 	}
 }
 
+void MainWindow::slotDatabaseCopy()
+{
+	CopyDialog dlg(this);
+	QStringList db;
+	for (int i = 0; i < m_databases.count(); i++)
+		if (i != m_currentDatabase)
+			db.append(tr("%1. %2 (%3 games)").arg(i).arg(m_databases[i]->name())
+					.arg(m_databases[i]->database()->count()));
+	dlg.setDatabases(db);
+	if (dlg.exec() != QDialog::Accepted)
+		return;
+	int target = dlg.getDatabase();
+	if (target >= m_currentDatabase)
+		target++;
+	Game g;
+	int oldsize = m_databases[target]->database()->count();
+	switch (dlg.getMode()) {
+		case CopyDialog::SingleGame:
+			m_databases[target]->database()->appendGame(game());
+			break;
+		case CopyDialog::Filter:
+			for (int i = 0; i < database()->count(); i++)
+				if (databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
+					m_databases[target]->database()->appendGame(g);
+			break;
+		case CopyDialog::AllGames:
+			for (int i = 0; i < database()->count(); i++)
+				if (database()->loadGame(i, g))
+					m_databases[target]->database()->appendGame(g);
+			break;
+		default:
+			;
+	}
+	m_databases[target]->filter()->resize(m_databases[target]->database()->count());
+	for (int i = oldsize; i < m_databases[target]->database()->count(); i++)
+		m_databases[target]->filter()->set(i, true);
+}
+
+
 void MainWindow::slotDatabaseChanged()
 {
 	setWindowTitle(tr("ChessX - %1").arg(databaseName()));
@@ -998,10 +1038,14 @@ void MainWindow::setupActions()
 	search->addAction(createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()),
 				       Qt::CTRL + Qt::SHIFT + Qt::Key_F));
 
+	/* Database menu */
+	QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
+	m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
+	menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()),
+								 Qt::Key_F5));
+
 	/* View menu */
 	m_menuView = menuBar()->addMenu(tr("&View"));
-	m_menuDatabases = m_menuView->addMenu(tr("&Database"));
-	;
 	m_menuView->addAction(createAction(tr("&Player Database..."), SLOT(slotPlayerDialog()),
 					   Qt::CTRL + Qt::SHIFT + Qt::Key_P));
 

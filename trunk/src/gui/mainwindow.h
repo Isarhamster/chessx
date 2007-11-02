@@ -205,6 +205,8 @@ public slots:
 	void slotStatusMessage(const QString& msg);
 	/** Change database */
 	void slotDatabaseChange();
+	/** Copy games between databases */
+	void slotDatabaseCopy();
 	/** Database was changed - change informations */
 	void slotDatabaseChanged();
 	/** Show tablebase move information */
