@@ -918,7 +918,7 @@ void MainWindow::slotDatabaseCopy()
 	QStringList db;
 	for (int i = 0; i < m_databases.count(); i++)
 		if (i != m_currentDatabase)
-			db.append(tr("%1. %2 (%3 games)").arg(i).arg(m_databases[i]->name())
+			db.append(tr("%1. %2 (%3 games)").arg(i).arg(databaseName(i))
 					.arg(m_databases[i]->database()->count()));
 	dlg.setDatabases(db);
 	if (dlg.exec() != QDialog::Accepted)
