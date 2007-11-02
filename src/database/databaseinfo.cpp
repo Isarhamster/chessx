@@ -30,7 +30,7 @@ DatabaseInfo::DatabaseInfo(const QString& fname)
 		m_database->open(QString());
 	} else {
 		QFile file(fname);
-		if(fname.endsWith(".cxd"))
+		if (fname.endsWith(".cxd"))
          m_database = new ChessXDatabase();
 		else if (file.size() < 10000000) m_database = new MemoryDatabase();
 		else m_database = new PgnDatabase();
