@@ -26,9 +26,6 @@
 typedef unsigned char Square;
 typedef unsigned char Coord;
 
-const QString ChessXVersion = "0.6-CVS";
-const uint ChessXVersionNumber = 590;
-
 enum Piece
 {
 	Empty,
