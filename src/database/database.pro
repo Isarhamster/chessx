@@ -37,7 +37,8 @@ HEADERS += board.h \
 	   chessxdatabase.h \
            cxdmoves.h \
            cxdsaxhandler.h \
-	   cxdindex.h
+	   cxdindex.h \
+ version.h
 SOURCES += board.cpp \
            common.cpp \
            game.cpp \
@@ -83,5 +84,5 @@ TEMPLATE = lib
 QT += xml
 
 fastbits {
-	DEFINES += FASTBITS
+    DEFINES += FASTBITS
 }

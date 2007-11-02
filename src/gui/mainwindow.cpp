@@ -39,6 +39,7 @@
 #include "tableview.h"
 #include "tipoftheday.h"
 #include "analysiswidget.h"
+#include "version.h"
 
 #include <QActionGroup>
 #include <QApplication>
@@ -612,7 +613,7 @@ void MainWindow::slotHelpAbout()
 {
 	QString fastbits = Board::fastbitsOption ? tr("Compiled with 'fastbits' option<br>") : tr("");
 	QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
-				      "<p>Free chess database.<br>Version %1<br>%2"
+				      "<p>Free chess database available under GPLv2.<br>Version %1<br>%2"
 				      "<p>Copyright 2005-2007 ChessX developers<br>"
 						"Core developers: Marius Roets, Michal Rudolf, Rico Zenklusen.<br>"
 						"Additional coding: Sean Estabrooks, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.<br>"
@@ -977,7 +978,7 @@ void MainWindow::setupActions()
 	QMenu* file = menuBar()->addMenu(tr("&File"));
         file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew())));
 	file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), Qt::CTRL + Qt::Key_O));
-	QMenu* menuRecent = file->addMenu(tr("&Recent files..."));
+	QMenu* menuRecent = file->addMenu(tr("Open &recent..."));
 	const int MaxRecentFiles = 10;
 	for (int i = 0; i < MaxRecentFiles; ++i) {
 		QAction* action = new QAction(this);
