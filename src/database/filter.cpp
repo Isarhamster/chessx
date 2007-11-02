@@ -151,14 +151,18 @@ int Filter::nextGame(int current) const
 	return -1;
 }
 
-void Filter::resize(int newsize)
+void Filter::resize(int newsize, bool includeNew)
 {
 	for (int i = newsize; i < size(); i++)  // Decrease count by number of removed games
-		if (contains(i)) m_count--;
+		if (contains(i))
+			m_count--;
+	int oldsize = size();
 	m_byteArray->resize(newsize);
-        // New bytes obtained by resizing a QByteArray are in uninitialized state. We
-        // therefore have to set them explicitely to 0.
-        for (int i = size(); i<newsize; ++i) (*m_byteArray)[i]=0;
+   // Set new (uninitialized games) to 'includeNew' value.
+   for (int i = oldsize; i < newsize; ++i)
+		(*m_byteArray)[i] = includeNew;
+	if (includeNew)
+		m_count += newsize - oldsize;
 }
 
 void Filter::reverse()

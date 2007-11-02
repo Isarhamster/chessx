@@ -945,9 +945,7 @@ void MainWindow::slotDatabaseCopy()
 		default:
 			;
 	}
-	m_databases[target]->filter()->resize(m_databases[target]->database()->count());
-	for (int i = oldsize; i < m_databases[target]->database()->count(); i++)
-		m_databases[target]->filter()->set(i, true);
+	m_databases[target]->filter()->resize(m_databases[target]->database()->count(), 1);
 }
 
 

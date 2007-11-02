@@ -85,10 +85,8 @@ bool DatabaseInfo::saveGame()
 		return m_database->replace(m_index, m_game);
 	else if (m_index == NewGame) {
 		bool ok = m_database->appendGame(m_game);
-		if (ok) {
-			m_filter->resize(m_database->count());
-			m_filter->set(m_database->count() - 1, 1);
-		}
+		if (ok)
+			m_filter->resize(m_database->count(), 1);
 		return ok;
 	}
 	else return false;
