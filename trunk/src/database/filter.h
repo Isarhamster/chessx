@@ -72,9 +72,9 @@ public:
 	/** @return database index of @p number game from filter or @p -1 if the game
 	is not in filter. */
 	int indexToGame(int number);
-	/** Resize the filter to the specified size. Keeps the current filter content.
-	If the filter is increased, added game will be initialized to @p false (not in filter). */
-	void resize(int newsize);
+	/** Resize the filter to the specified size, keeping current content. If the filter is increased,
+	added game will be initialized to @p includeNew (by default - not in filter). */
+	void resize(int newsize, bool includeNew = 0);
 	/** Reverse the filter (complement set). */
 	void reverse();
 	/** Join filter with another filter, using one of possible operators @p op .
