@@ -463,7 +463,7 @@ void MainWindow::slotFileOpen()
 {
 	QString file = QFileDialog::getOpenFileName(this, tr("Open database"),
 			AppSettings->value("/General/databasePath").toString(),
-			tr("Chessx Database (*.cxd);;PGN Database (*.pgn)"));
+			tr("All databases (*.cxd *.pgn);;ChessX databases (*.cxd);;PGN databases (*.pgn)"));
 	if (!file.isEmpty()) {
 		AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
 		openDatabase(file);
