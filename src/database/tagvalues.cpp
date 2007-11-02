@@ -46,3 +46,8 @@ QModelIndex TagValues::parent(const QModelIndex&) const
 	return QModelIndex();
 }
 
+void TagValues::appendToStream(const QString&, QDataStream &)
+{
+#warning appendToStream is not implemented yet.
+}
+

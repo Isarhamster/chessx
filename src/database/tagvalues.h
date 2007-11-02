@@ -66,7 +66,7 @@ public:
 	virtual void write(QDataStream&) {}
 
 	/** Appends value at the end of out */
-        virtual void appendToStream(const QString& value, QDataStream& out) {}
+   virtual void appendToStream(const QString& value, QDataStream& out);
 
 	/** Abstract item model functions. */
 	virtual QVariant data (const QModelIndex& index, int role = Qt::DisplayRole) const;
