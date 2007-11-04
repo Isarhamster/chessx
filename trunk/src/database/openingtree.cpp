@@ -17,6 +17,7 @@
 #include "openingtree.h"
 #include "common.h"
 #include "database.h"
+#include <QApplication>
 
 const unsigned MinAveYear = 1;
 const unsigned MinAveRating = 5;
@@ -34,7 +35,7 @@ MoveData::MoveData()
 void MoveData::addGame(Game& g, Color c)
 {
 	if (move.isEmpty())
-		move = g.atEnd() ? "[end]" : g.moveToSan();
+		move = g.atEnd() ? qApp->translate("MoveData", "[end]") : g.moveToSan();
 	count++;
 	result[g.result()]++;
 	unsigned elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
