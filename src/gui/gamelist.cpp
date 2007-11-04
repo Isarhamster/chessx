@@ -55,9 +55,8 @@ GameList::~GameList()
 void GameList::simpleSearch(int tagid)
 {
 #warning Unify with <filtermodel.cpp>
-	const QString tagNames[] = {"Nr", "White", "WhiteElo", "BlackElo", "Black", "Event", "Site", "Round", "Date",
-				    "Result", "ECO", "PlyCount", ""
-				   };
+	const QString tagNames[] = {"Nr", "White", "WhiteElo", "Black", "BlackElo", "Event", "Site", "Round", "Date",
+			"Result", "ECO", "PlyCount", ""};
 
 	QuickSearchDialog dialog(this);
 

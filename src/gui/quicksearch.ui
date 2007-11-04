@@ -36,7 +36,17 @@
      </item>
      <item>
       <property name="text" >
+       <string>White Elo</string>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
        <string>Black</string>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
+       <string>Black Elo</string>
       </property>
      </item>
      <item>
