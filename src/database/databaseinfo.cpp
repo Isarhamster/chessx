@@ -21,7 +21,6 @@
 #include "pgndatabase.h"
 #include "chessxdatabase.h"
 #include "memorydatabase.h"
-#include <iostream>
 
 DatabaseInfo::DatabaseInfo(const QString& fname)
 {
