@@ -448,17 +448,22 @@ TipOfDayDialog* MainWindow::tipDialog()
 void MainWindow::slotFileNew()
 {
 	QString file = QFileDialog::getSaveFileName(this, tr("New database"),
-		 	AppSettings->value("/General/databasePath").toString());
-	if(!file.endsWith(".cxd")) file+=".cxd";
-        ChessXDatabase cxd;
-        if(!cxd.create(file))
-	{
-	  QMessageBox::warning(0,"New database",tr("ChessX database could not be created.")) ;
-	  return;
+		AppSettings->value("/General/databasePath").toString(),
+		tr("ChessX databases (*.cxd)"));
+	if (file.isEmpty())
+		return;
+	if (!file.endsWith(".cxd"))
+		file += ".cxd";
+	ChessXDatabase cxd;
+	if (!cxd.create(file)) {
+		QMessageBox::warning(0, tr("New database"),
+			tr("Cannot create ChessX database."));
+		return;
 	}
-        cxd.close();
+	cxd.close();
 	openDatabase(file);
-	AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
+	AppSettings->setValue("/General/databasePath",
+		QFileInfo(file).absolutePath());
 }
 
 void MainWindow::slotFileOpen()
