@@ -1,5 +1,5 @@
 /***************************************************************************
-                          chessxdatabase.cpp  - chessx native database class 
+                          chessxdatabase.cpp  - chessx native database class
                              -------------------
    begin                : 15 July 2007
    copyright            : (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
@@ -14,7 +14,7 @@
  *  This program is distributed in the hope that it will be useful,        *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
- *  GNU General Public License version 3 for more details.                 * 
+ *  GNU General Public License version 3 for more details.                 *
  *                                                                         *
  ***************************************************************************/
 
@@ -61,7 +61,7 @@ const QString ChessXDatabase::m_otherTagsAFilenameExt="cxu";
 ChessXDatabase::ChessXDatabase()
 :m_cxdIndex(m_index)
 {initialise();}
-	
+
 ChessXDatabase::~ChessXDatabase()
 {if(m_isOpen) close();}
 
@@ -69,13 +69,13 @@ bool ChessXDatabase::create(const QString& filename)
 {
   m_xmlFilename=filename;
 
-  QString basef(m_xmlFilename); 
+  QString basef(m_xmlFilename);
   if(m_xmlFilename.endsWith(".cxd")) basef.chop(4);
-  
+
   m_saxhandler.m_version=m_currentVersion;
   m_saxhandler.m_gameFilename=basef+"."+m_gameFilenameExt;
   m_saxhandler.m_gameAccessFilename=basef+"."+m_gameAFilenameExt;
-  m_saxhandler.m_indexFilename=basef+"."+m_indexFilenameExt; 
+  m_saxhandler.m_indexFilename=basef+"."+m_indexFilenameExt;
 
   m_saxhandler.m_indexEventFilename=basef+"_event."+m_tagValueFilenameExt;
   m_saxhandler.m_indexSiteFilename=basef+"_site."+m_tagValueFilenameExt;
@@ -162,12 +162,14 @@ void ChessXDatabase::loadGameMoves(int index, Game& game)
   m_cxdMoves.loadMoves(index,game);
 }
 
-bool ChessXDatabase::replace(int index, Game& game)
-{return false;}
+bool ChessXDatabase::replace(int, Game&)
+{
+	return false;
+}
 
 bool ChessXDatabase::appendGame(Game& game)
 {
-  if(!m_cxdMoves.appendGame(game)) 
+  if(!m_cxdMoves.appendGame(game))
   {
     // todo: depending on what went wrong, some cleanup operations
     // have probably to be implemented.
@@ -181,7 +183,7 @@ bool ChessXDatabase::appendGame(Game& game)
   return 1;
 }
 
-bool ChessXDatabase::remove(int index)
+bool ChessXDatabase::remove(int)
 {
   Q_ASSERT_X(1,"remove","NOT IMPLEMENTED");
   return 0;
@@ -213,12 +215,12 @@ bool ChessXDatabase::parseCxdFile(const QString& filename)
  QXmlSimpleReader reader;
  reader.setContentHandler(&m_saxhandler);
  reader.setErrorHandler(&m_saxhandler);
- 
- if(!reader.parse(inputSource)) return 0; 
+
+ if(!reader.parse(inputSource)) return 0;
 
 // additional tests could be added here for example to see if the files
 // indicated in the xml file exist.
- 
+
  m_xmlFilename=filename;
  return 1;
 }
@@ -285,7 +287,7 @@ void ricoTest()
     pgnd.loadGame(i,g);
     cxd.appendGame(g);
   }
-  
+
   cxd.close();
   pgnd.close();
 

@@ -95,8 +95,9 @@ GameId Index::add()
 }
 
 // only a dummy implementation at the moment
-GameId Index::add(const Game& game)
+GameId Index::add(const Game&)
 {
+#warning Just a dummy implementation of Index::add()
  ++m_nbUsedIndexItems;
  return add();
 }

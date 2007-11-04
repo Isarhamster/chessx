@@ -927,7 +927,6 @@ void MainWindow::slotDatabaseCopy()
 	if (target >= m_currentDatabase)
 		target++;
 	Game g;
-	int oldsize = m_databases[target]->database()->count();
 	switch (dlg.getMode()) {
 		case CopyDialog::SingleGame:
 			m_databases[target]->database()->appendGame(game());
