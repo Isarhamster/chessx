@@ -23,9 +23,9 @@ FilterModel::FilterModel(Filter* filter, QObject* parent)
 {
 	m_columnNames << "Nr"
 	<< "White"
-        << "WhiteElo"
+   << "WhiteElo"
 	<< "Black"
-        << "BlackElo"
+   << "BlackElo"
 	<< "Event"
 	<< "Site"
 	<< "Round"
