@@ -425,14 +425,14 @@ PlayerDialog* MainWindow::playerDialog()
 SaveDialog* MainWindow::saveDialog()
 {
 	if (!m_saveDialog)
-		m_saveDialog = new SaveDialog;
+		m_saveDialog = new SaveDialog(this);
 	return m_saveDialog;
 }
 
 HelpWindow* MainWindow::helpWindow()
 {
 	if (!m_helpWindow) {
-		m_helpWindow = new HelpWindow();
+		m_helpWindow = new HelpWindow;
 		AppSettings->layout(m_helpWindow);
 	}
 	return m_helpWindow;
@@ -456,7 +456,7 @@ void MainWindow::slotFileNew()
 		file += ".cxd";
 	ChessXDatabase cxd;
 	if (!cxd.create(file)) {
-		QMessageBox::warning(0, tr("New database"),
+		QMessageBox::warning(this, tr("New database"),
 			tr("Cannot create ChessX database."));
 		return;
 	}
@@ -538,7 +538,7 @@ void MainWindow::slotPlayerDialog()
 
 void MainWindow::slotConfigure()
 {
-	PreferencesDialog P;
+	PreferencesDialog P(this);
 	connect(&P, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
 	P.exec();
 }
@@ -567,12 +567,12 @@ void MainWindow::slotEditPasteFEN()
 		QString msg = fen.length() ?
 			      tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
 			      tr("There is no text in clipboard.");
-		QMessageBox::warning(0, "Paste FEN", msg);
+		QMessageBox::warning(this, "Paste FEN", msg);
 		return;
 	}
 	board.fromFen(fen);
 	if (board.validate() != Valid) {
-		QMessageBox::warning(0, "Paste FEN", tr("The clipboard contains FEN, but with illegal position. "
+		QMessageBox::warning(this, "Paste FEN", tr("The clipboard contains FEN, but with illegal position. "
 				"You can only paste such positions in <b>Setup position</b> dialog."));
 		return;
 	}
@@ -594,7 +594,7 @@ void MainWindow::slotEditTruncateStart()
 
 void MainWindow::slotEditBoard()
 {
-	BoardSetupDialog B;
+	BoardSetupDialog B(this);
 	B.setBoard(game().board());
 	B.setFlipped(m_boardView->isFlipped());
 	if (B.exec() == QDialog::Accepted) {
@@ -659,7 +659,6 @@ void MainWindow::slotBoardMove(Square from, Square to)
 			QPushButton* addVar = mbox.addButton(tr("Add variation"), QMessageBox::YesRole);
 			QPushButton* newMain = mbox.addButton(tr("Add new mainline"), QMessageBox::AcceptRole);
 			QPushButton* replaceMain = mbox.addButton(tr("Replace current move"), QMessageBox::DestructiveRole);
-			//mbox.addButton(tr("Cancel"), QMessageBox::RejectRole);
 			mbox.exec();
 			if (mbox.clickedButton() == addVar)
 				game().enterVariation(game().addMove(m));
@@ -816,7 +815,7 @@ void MainWindow::slotGameLoadRandom()
 
 void MainWindow::slotGameLoadChosen()
 {
-	int index = QInputDialog::getInteger(0, tr("Load Game"), tr("Game number:"), gameIndex() + 1,
+	int index = QInputDialog::getInteger(this, tr("Load Game"), tr("Game number:"), gameIndex() + 1,
 					     1, database()->count());
 	gameLoad(index - 1);
 }
@@ -915,7 +914,7 @@ void MainWindow::slotDatabaseChange()
 void MainWindow::slotDatabaseCopy()
 {
 	if (m_databases.count() < 2) {
-		QMessageBox::warning(0, tr("Copy games"),
+		QMessageBox::warning(this, tr("Copy games"),
 			tr("You need at least two open databases to copy games"));
 		return;
 	}
