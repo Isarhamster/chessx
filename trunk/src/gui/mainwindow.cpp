@@ -844,6 +844,7 @@ void MainWindow::slotGameSave()
 void MainWindow::slotGameModify(int action, int move)
 {
 	game().moveToId(move);
+	slotMoveChanged();
 	switch (action) {
 		case ChessBrowser::RemoveNextMoves:
 			game().truncateGameEnd();
@@ -856,6 +857,15 @@ void MainWindow::slotGameModify(int action, int move)
 				int var = game().currentVariation();
 				game().exitVariation();
 				game().removeVariation(var);
+				break;
+			}
+		case ChessBrowser::EditComment:
+			{
+				bool ok;
+				QString cmt = QInputDialog::getText(this, tr("Edit comment"), tr("Comment:"),
+						QLineEdit::Normal, game().annotation(game().currentVariation()), &ok);
+				if (ok)
+					game().setAnnotation(cmt, (game().currentVariation()));
 				break;
 			}
 			default:
