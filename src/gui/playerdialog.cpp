@@ -224,7 +224,7 @@ QString PlayerDialog::databaseInfo(const QString& player)
 			}
 		}
 	qSwap(bresults[WhiteWin], bresults[BlackWin]);
-	if (!(results[4] + bresults[0]))
+	if (!(results[4] + bresults[4]))
 		return tr("<i>No games in current database.</i>");
 
 
