@@ -84,6 +84,8 @@ protected:
 	int gameIndex() const;
 	/** Open database */
 	bool openDatabase(const QString& fname);
+	/** Edit comment */
+	bool gameEditComment();
 	/** Get export filename*/
 	QString exportFileName(int& format);
 	/** Load game @p index. If @p force is false, does nothing for incorrect @p index .

@@ -406,6 +406,16 @@ QString MainWindow::exportFileName(int& format)
 	return fd.selectedFiles().first();
 }
 
+bool MainWindow::gameEditComment()
+{
+	bool ok;
+	QString cmt = QInputDialog::getText(this, tr("Edit comment"), tr("Comment:"),
+													QLineEdit::Normal, game().annotation(game().currentVariation()), &ok);
+	if (ok)
+		game().setAnnotation(cmt, (game().currentVariation()));
+	return ok;
+}
+
 PlayerDialog* MainWindow::playerDialog()
 {
 	if (!m_playerDialog) {
@@ -860,15 +870,10 @@ void MainWindow::slotGameModify(int action, int move)
 				break;
 			}
 		case ChessBrowser::EditComment:
-			{
-				bool ok;
-				QString cmt = QInputDialog::getText(this, tr("Edit comment"), tr("Comment:"),
-						QLineEdit::Normal, game().annotation(game().currentVariation()), &ok);
-				if (ok)
-					game().setAnnotation(cmt, (game().currentVariation()));
-				break;
-			}
-			default:
+			if (!gameEditComment())
+				return;
+			break;
+		default:
 			;
 	}
 	slotGameChanged();
@@ -894,7 +899,13 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 		else
 			game().moveToId(url.path().toInt());
 		slotMoveChanged();
-	} else if (url.scheme() == "egtb") {
+	} else if (url.scheme() == "cmt") {
+		game().moveToId(url.path().toInt());
+		slotMoveChanged();
+		if (gameEditComment())
+			slotGameChanged();
+	}
+	else if (url.scheme() == "egtb") {
 		if (!game().atEnd())
 			game().enterVariation(game().addMove(url.path()));
 		else
@@ -1172,4 +1183,3 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 		slotGameLoadFirst();
 	}
 }
-
