@@ -1,4 +1,4 @@
-/***************************************************************************
+/*************************************nodeCount**************************************
                           game.cpp - chess game
                              -------------------
     begin                : 27 August 2005
@@ -165,11 +165,20 @@ int Game::currentMoveId() const
 	return m_currentNode;
 }
 
-QString Game::annotation(int moveId) const
+QString Game::annotation(int variation) const
 {
-	if (moveId == CurrentMoveId)
-		moveId = currentMoveId();
-	return m_moveNodes[moveId].annotation;
+	int count = 0;
+	int node = m_moveNodes[m_currentNode].nextNode;
+
+	while (node) {
+		if (count == variation) {
+			return m_moveNodes[node].annotation;
+		}
+		node = m_moveNodes[node].nextVariation;
+		count++;
+	}
+
+	return QString();
 }
 
 NagSet Game::nags(int variation) const
@@ -232,11 +241,20 @@ QString Game::moveToSan(Game::MoveStringFlags flags, int variation)
 }
 
 
-bool Game::setAnnotation(QString annotation, int moveId)
+bool Game::setAnnotation(QString annotation, int variation)
 {
-	if (moveId == CurrentMoveId)
-		moveId = currentMoveId();
-	m_moveNodes[moveId].annotation = annotation;
+	int count = 0;
+	int node = m_moveNodes[m_currentNode].nextNode;
+
+	while (node) {
+		if (count == variation) {
+			m_moveNodes[node].annotation = annotation;
+			return true;
+		}
+		node = m_moveNodes[node].nextVariation;
+		count++;
+	}
+
 	m_isModified = true;
 	return false;
 }
