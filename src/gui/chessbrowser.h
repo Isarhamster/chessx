@@ -29,7 +29,8 @@ class ChessBrowser : public QTextBrowser
 {
 	Q_OBJECT
 public:
-	enum Action {NoAction, RemovePreviousMoves, RemoveNextMoves, RemoveVariation, AddNag};
+	enum Action {NoAction, RemovePreviousMoves, RemoveNextMoves, RemoveVariation, AddNag,
+		EditComment};
 	ChessBrowser(QWidget* p);
 public slots:
 	/** Store current configuration. */

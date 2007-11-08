@@ -84,16 +84,18 @@ void ChessBrowser::setupMenu()
 	connect(m_popup, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
 
-	m_smallfont = createAction(tr("Small font"), NoAction);
-	m_smallfont->setCheckable(true);
-	m_smallfont->setChecked(false);
-	connect(m_smallfont, SIGNAL(toggled(bool)), SLOT(slotToggleFont(bool)));
-	m_popup->addAction(m_smallfont);
+	m_popup->addAction(createAction(tr("Edit comment..."), EditComment));
 
 	QMenu* remove = m_popup->addMenu(tr("Remove"));
 	remove->addAction(createAction(tr("Previous moves"), RemovePreviousMoves));
 	remove->addAction(createAction(tr("Next moves"), RemoveNextMoves));
 	remove->addAction(createAction(tr("Current variation"), RemoveVariation));
+
+	m_smallfont = createAction(tr("Small font"), NoAction);
+	m_smallfont->setCheckable(true);
+	m_smallfont->setChecked(false);
+	connect(m_smallfont, SIGNAL(toggled(bool)), SLOT(slotToggleFont(bool)));
+	m_popup->addAction(m_smallfont);
 }
 
 void ChessBrowser::slotContextMenu(const QPoint& pos)
