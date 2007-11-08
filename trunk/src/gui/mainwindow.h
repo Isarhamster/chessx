@@ -150,6 +150,8 @@ public slots:
 	void slotGameLoadRandom();
 	/** Choose a game and load it */
 	void slotGameLoadChosen();
+	/** Modify game on user's request. */
+	void slotGameModify(int action, int move);
 	/** Update GameView content after game was change. Triggers also @ref slotMoveChanged . */
 	void slotGameChanged();
 	/** Handle link click in Game View panel */
