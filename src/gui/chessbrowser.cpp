@@ -10,17 +10,14 @@
 #include "chessbrowser.h"
 #include "settings.h"
 #include <QAction>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QTextBlock>
 
 ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p)
 {
-	m_smallfont = new QAction(tr("Small font"), this);
-	m_smallfont->setCheckable(true);
-	m_smallfont->setChecked(false);
-	connect(m_smallfont, SIGNAL(toggled(bool)), SLOT(slotToggleFont(bool)));
-	addAction(m_smallfont);
-	setContextMenuPolicy(Qt::ActionsContextMenu);
+	setContextMenuPolicy(Qt::CustomContextMenu);
+	setupMenu();
 }
 
 void ChessBrowser::setSource(const QUrl&)
@@ -74,11 +71,51 @@ void ChessBrowser::slotReconfigure()
 	AppSettings->endGroup();
 }
 
+QAction* ChessBrowser::createAction(const QString& name, int data)
+{
+	QAction* action = new QAction(name, this);
+	action->setData(data);
+	return action;
+}
+
+void ChessBrowser::setupMenu()
+{
+	m_popup = new QMenu(this);
+	connect(m_popup, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
+
+	m_smallfont = createAction(tr("Small font"), NoAction);
+	m_smallfont->setCheckable(true);
+	m_smallfont->setChecked(false);
+	connect(m_smallfont, SIGNAL(toggled(bool)), SLOT(slotToggleFont(bool)));
+	m_popup->addAction(m_smallfont);
+
+	QMenu* remove = m_popup->addMenu(tr("Remove"));
+	remove->addAction(createAction(tr("Previous moves"), RemovePreviousMoves));
+	remove->addAction(createAction(tr("Next moves"), RemoveNextMoves));
+	remove->addAction(createAction(tr("Current variation"), RemoveVariation));
+}
+
+void ChessBrowser::slotContextMenu(const QPoint& pos)
+{
+	QString link = anchorAt(pos);
+	if (!link.isEmpty()) {
+		m_currentMove = link.section(':', 1).toInt();
+		m_popup->exec(mapToGlobal(pos));
+	}
+}
+
 void ChessBrowser::slotToggleFont(bool toggled)
 {
 	if (toggled)
 		zoomOut();
 	else
 		zoomIn();
+}
+
+void ChessBrowser::slotAction(QAction* action)
+{
+	if (action->data().toInt() != NoAction)
+		emit actionRequested(action->data().toInt(), m_currentMove);
 }
 

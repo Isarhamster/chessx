@@ -20,6 +20,8 @@
 
 #include <QTextBrowser>
 
+class QMenu;
+
 /** @ingroup GUI
    The ChessBrowser class is a slightly modified QTextBrowser
    that handles internal pseudo-links. */
@@ -27,6 +29,7 @@ class ChessBrowser : public QTextBrowser
 {
 	Q_OBJECT
 public:
+	enum Action {NoAction, RemovePreviousMoves, RemoveNextMoves, RemoveVariation, AddNag};
 	ChessBrowser(QWidget* p);
 public slots:
 	/** Store current configuration. */
@@ -37,11 +40,23 @@ public slots:
 	void showMove(int id);
 	/** Toggle font */
 	void slotToggleFont(bool toggled);
+	/** Invoke action */
+	void slotAction(QAction* action);
+	/** Show menu */
+	void slotContextMenu(const QPoint& pos);
+
+signals:
+	void actionRequested(int action, int move);
+
 protected:
 	virtual void selectAnchor(const QString& href);
 	virtual void setSource(const QUrl& url);
+	virtual void setupMenu();
+virtual QAction* createAction(const QString& name, int action);
 private:
 	QAction* m_smallfont;
+	QMenu* m_popup;
+	int m_currentMove;
 };
 
 #endif

@@ -120,6 +120,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_gameView->setMinimumSize(150, 100);
 	m_gameView->slotReconfigure();
 	connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
+	connect(m_gameView, SIGNAL(actionRequested(int, int)), SLOT(slotGameModify(int, int)));
 	dock->setWidget(m_gameView);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());
@@ -839,6 +840,30 @@ void MainWindow::slotGameSave()
 		slotDatabaseChanged();
 	}
 }
+
+void MainWindow::slotGameModify(int action, int move)
+{
+	game().moveToId(move);
+	switch (action) {
+		case ChessBrowser::RemoveNextMoves:
+			game().truncateGameEnd();
+			break;
+		case ChessBrowser::RemovePreviousMoves:
+			game().truncateGameStart();
+			break;
+		case ChessBrowser::RemoveVariation:
+			{
+				int var = game().currentVariation();
+				game().exitVariation();
+				game().removeVariation(var);
+				break;
+			}
+			default:
+			;
+	}
+	slotGameChanged();
+}
+
 
 void MainWindow::slotGameChanged()
 {
