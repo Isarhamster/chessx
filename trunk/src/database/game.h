@@ -64,6 +64,10 @@ public:
 		NextMove = 1,
 		End = 1000
 	};
+	/* Added when porting some broken functions to new API, using moveId (M. Rudolf) */
+	enum {
+		CurrentMoveId = -1
+	};
 	//constructors
 	/** Creates a game with no moves and a standard start position. */
 	Game();
@@ -84,8 +88,8 @@ public:
 	int moveId(int variation = 0) const;
 	/** @return current move id. */
 	int currentMoveId() const;
-	/** @return comment associated with the first move in the given variation */
-	QString annotation(int variation = 0) const;
+	/** @return comment associated with given move. */
+	QString annotation(int modeId = CurrentMoveId) const;
 	/** @return nags associated with the first move in the given variation */
 	NagSet nags(int variation = 0) const;
 	/** @return previous move in short algebraic notation, returns empty string if no such move */
@@ -94,8 +98,8 @@ public:
 	QString moveToSan(MoveStringFlags flags = MoveOnly, int variation = 0);
 
 	//node modification methods
-	/** Sets the comment associated with the first move in the given variation */
-	bool setAnnotation(QString annotation, int variation = 0);
+	/** Sets the comment associated with given move in the given variation */
+	bool setAnnotation(QString annotation, int moveId = CurrentMoveId);
 	/** Adds a nag to the first move in the given variation */
 	bool addNag(Nag nag, int variation = 0);
 	/** Sets the nags associated with the first move in the given variation */

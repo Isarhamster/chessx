@@ -261,7 +261,7 @@ void Output::writeMove(int variation)
 		}
 	}
 	// *** Write the annotations if any
-	if (!m_game->annotation(variation).isEmpty()) {
+	if (!m_game->annotation().isEmpty()) {
 		if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
 			m_output += m_endTagMap[MarkupColumnStyleMainline];
 		}
@@ -270,21 +270,21 @@ void Output::writeMove(int variation)
 				    && (m_currentVariationLevel == 0))) {
 			if (m_expandable[MarkupAnnotationIndent]) {
 				m_output += m_startTagMap[MarkupAnnotationIndent].arg(mvno) +
-					    m_game->annotation(variation) +
+					    m_game->annotation() +
 					    m_endTagMap[MarkupAnnotationIndent];
 			} else {
 				m_output += m_startTagMap[MarkupAnnotationIndent] +
-					    m_game->annotation(variation) +
+					    m_game->annotation() +
 					    m_endTagMap[MarkupAnnotationIndent];
 			}
 		} else {
 			if (m_expandable[MarkupAnnotationInline]) {
 				m_output += " " + m_startTagMap[MarkupAnnotationInline].arg(mvno) +
-					    m_game->annotation(variation) +
+					    m_game->annotation() +
 					    m_endTagMap[MarkupAnnotationInline];
 			} else {
 				m_output += " " + m_startTagMap[MarkupAnnotationInline] +
-					    m_game->annotation(variation) +
+					    m_game->annotation() +
 					    m_endTagMap[MarkupAnnotationInline];
 			}
 		}
