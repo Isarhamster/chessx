@@ -31,33 +31,33 @@
 <context>
     <name>BoardSetupDialog</name>
     <message>
-        <location filename="boardsetup.cpp" line="191"/>
+        <location filename="boardsetup.cpp" line="226"/>
         <source>No white king</source>
         <translation type="unfinished">Kein schwarzer König</translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="193"/>
+        <location filename="boardsetup.cpp" line="228"/>
         <source>No black king</source>
         <translation type="unfinished">Beide Könige sind  im Schach</translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="195"/>
+        <location filename="boardsetup.cpp" line="230"/>
         <source>Both kings are in check</source>
         <translation type="unfinished">Im Schach aber nicht am Zug
 </translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="110"/>
+        <location filename="boardsetup.cpp" line="136"/>
         <source>Invalid position</source>
         <translation>Ungültige Stellung</translation>
     </message>
     <message>
-        <location filename="boardsetup.ui" line="157"/>
+        <location filename="boardsetup.ui" line="95"/>
         <source>White</source>
         <translation>Weiß</translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="146"/>
+        <location filename="boardsetup.cpp" line="173"/>
         <source>Black</source>
         <translation>Schwarz</translation>
     </message>
@@ -67,95 +67,251 @@
         <translation>Stellung aufbauen</translation>
     </message>
     <message>
-        <location filename="boardsetup.ui" line="167"/>
+        <location filename="boardsetup.ui" line="105"/>
         <source>Move: </source>
         <translation>Zug:</translation>
     </message>
     <message>
-        <location filename="boardsetup.ui" line="114"/>
+        <location filename="boardsetup.ui" line="68"/>
         <source>Clear</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="boardsetup.ui" line="121"/>
+        <location filename="boardsetup.ui" line="75"/>
         <source>&amp;Reset</source>
         <translation>&amp;Zurücksetzen</translation>
     </message>
     <message>
-        <location filename="boardsetup.ui" line="71"/>
+        <location filename="boardsetup.ui" line="378"/>
         <source>&amp;Ok</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="boardsetup.ui" line="78"/>
+        <location filename="boardsetup.ui" line="385"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="197"/>
+        <location filename="boardsetup.cpp" line="232"/>
         <source>Side to move has opponent in check already</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="199"/>
+        <location filename="boardsetup.cpp" line="234"/>
         <source>Black has too many pawns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="201"/>
+        <location filename="boardsetup.cpp" line="236"/>
         <source>White has too many pawns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="203"/>
+        <location filename="boardsetup.cpp" line="238"/>
         <source>There are pawns on the first or eighth rank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="205"/>
+        <location filename="boardsetup.cpp" line="240"/>
         <source>Too many kings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="207"/>
+        <location filename="boardsetup.cpp" line="242"/>
         <source>Too many black pieces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="209"/>
+        <location filename="boardsetup.cpp" line="244"/>
         <source>Too many white pieces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="211"/>
+        <location filename="boardsetup.cpp" line="246"/>
         <source>Bad castling rights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="213"/>
+        <location filename="boardsetup.cpp" line="248"/>
         <source>En passant square is not correct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="215"/>
+        <location filename="boardsetup.cpp" line="250"/>
         <source>Unknown reason</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="111"/>
+        <location filename="boardsetup.cpp" line="137"/>
         <source>Current position is not valid.
 
 %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="224"/>
+        <location filename="boardsetup.cpp" line="259"/>
         <source>FEN: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="boardsetup.cpp" line="226"/>
+        <location filename="boardsetup.cpp" line="261"/>
         <source>Illegal position: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.cpp" line="274"/>
+        <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished">In der Zwischenablage ist kein gültige FEN Position: &lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
+    </message>
+    <message>
+        <location filename="boardsetup.cpp" line="275"/>
+        <source>There is no text in clipboard.</source>
+        <translation type="unfinished">Zwischenablage ist leer.</translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="29"/>
+        <source>Board</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="152"/>
+        <source>&amp;Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="172"/>
+        <source>Ply: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="214"/>
+        <source>En passant file:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="221"/>
+        <source>Castling rights</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="233"/>
+        <source>Black O-O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="240"/>
+        <source>White O-O-O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="247"/>
+        <source>White O-O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="254"/>
+        <source>Black O-O-O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="268"/>
+        <source>-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="273"/>
+        <source>a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="278"/>
+        <source>b</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="283"/>
+        <source>c</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="288"/>
+        <source>d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="293"/>
+        <source>e</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="298"/>
+        <source>f</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="303"/>
+        <source>g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="308"/>
+        <source>h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="316"/>
+        <source>Halfmove clock:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="348"/>
+        <source>Paste FEN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="boardsetup.ui" line="355"/>
+        <source>Copy FEN</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChessBrowser</name>
+    <message>
+        <location filename="chessbrowser.cpp" line="18"/>
+        <source>Small font</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CopyDialog</name>
+    <message>
+        <location filename="copydialog.ui" line="13"/>
+        <source>Copy Games</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="copydialog.ui" line="25"/>
+        <source>Copy:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="copydialog.ui" line="37"/>
+        <source>&amp;Current game</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="copydialog.ui" line="44"/>
+        <source>Games in &amp;filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="copydialog.ui" line="54"/>
+        <source>&amp;All games</source>
+        <translation type="unfinished">&amp;Alle Partien</translation>
+    </message>
+    <message>
+        <location filename="copydialog.ui" line="64"/>
+        <source>&amp;To:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -283,177 +439,177 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="mainwindow.cpp" line="113"/>
+        <location filename="mainwindow.cpp" line="116"/>
         <source>Game Text</source>
         <translation>Notation</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="125"/>
+        <location filename="mainwindow.cpp" line="129"/>
         <source>Game List</source>
         <translation>Partien</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="210"/>
+        <location filename="mainwindow.cpp" line="214"/>
         <source>Loading ECO file...</source>
         <translation>Lade ECO Datei...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="232"/>
+        <location filename="mainwindow.cpp" line="237"/>
         <source>ECO Loaded.</source>
         <translation>ECO geladen.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="254"/>
+        <location filename="mainwindow.cpp" line="259"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="254"/>
+        <location filename="mainwindow.cpp" line="259"/>
         <source>Do you want to quit?</source>
         <translation>Möchten Sie das Programm verlassen?</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="290"/>
+        <location filename="mainwindow.cpp" line="297"/>
         <source>[Clipboard]</source>
         <translation>[Zwischenablage]</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="363"/>
+        <location filename="mainwindow.cpp" line="368"/>
         <source>Database %1 is already opened.</source>
         <translation>Datenbank %1 ist bereits geöffnet.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="375"/>
+        <location filename="mainwindow.cpp" line="380"/>
         <source>Database %1 opened successfully (%2 seconds).</source>
         <translation>Datenbank %1 geöffnet (%2 Sekunden).</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="423"/>
+        <location filename="mainwindow.cpp" line="466"/>
         <source>Open database</source>
         <translation>Datenbank öffnen</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="474"/>
         <source>PGN Database (*.pgn)</source>
-        <translation>PGN Datenbank (*.pgn)</translation>
+        <translation type="obsolete">PGN Datenbank (*.pgn)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="519"/>
+        <location filename="mainwindow.cpp" line="563"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
         <translation>In der Zwischenablage ist kein gültige FEN Position: &lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="520"/>
+        <location filename="mainwindow.cpp" line="564"/>
         <source>There is no text in clipboard.</source>
         <translation>Zwischenablage ist leer.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="591"/>
+        <location filename="mainwindow.cpp" line="641"/>
         <source>Queen</source>
         <translation>Dame</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="591"/>
+        <location filename="mainwindow.cpp" line="641"/>
         <source>Rook</source>
         <translation>Turm</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="591"/>
+        <location filename="mainwindow.cpp" line="641"/>
         <source>Bishop</source>
         <translation>Läufer</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="591"/>
+        <location filename="mainwindow.cpp" line="641"/>
         <source>Knight</source>
         <translation>Springer</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="592"/>
+        <location filename="mainwindow.cpp" line="642"/>
         <source>Promotion</source>
         <translation>Umwandlung</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="592"/>
+        <location filename="mainwindow.cpp" line="642"/>
         <source>Promote to:</source>
         <translation>Umwandeln in:</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="602"/>
+        <location filename="mainwindow.cpp" line="652"/>
         <source>Add move</source>
         <translation>Zug hinzufügen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="603"/>
+        <location filename="mainwindow.cpp" line="653"/>
         <source>There is already next move in current game. What do you want to do?</source>
         <translation>Es existiert bereits ein nächster Zug in der aktuellen Partie. Was möchten Sie tun?</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="604"/>
+        <location filename="mainwindow.cpp" line="654"/>
         <source>Add variation</source>
         <translation>Variante hinzufügen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="605"/>
+        <location filename="mainwindow.cpp" line="655"/>
         <source>Add new mainline</source>
         <translation>Neue Hauptvariante hinzufügen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="606"/>
+        <location filename="mainwindow.cpp" line="656"/>
         <source>Replace current move</source>
         <translation>Aktuellen Zug ersetzen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="607"/>
+        <location filename="mainwindow.cpp" line="657"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="666"/>
+        <location filename="mainwindow.cpp" line="716"/>
         <source>Game %1: &lt;b&gt;&lt;a href=&quot;tag:white&quot;&gt;%2&lt;/a&gt; %3 - &lt;a href=&quot;tag:black&quot;&gt;%4&lt;/a&gt; %5&lt;/b&gt;</source>
         <translation>Partie %1: &lt;b&gt;&lt;a href=&quot;tag:white&quot;&gt;%2&lt;/a&gt; %3 - &lt;a href=&quot;tag:black&quot;&gt;%4&lt;/a&gt; %5&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="667"/>
+        <location filename="mainwindow.cpp" line="717"/>
         <source>%1(%2) %3</source>
         <translation>%1(%2) %3</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="669"/>
+        <location filename="mainwindow.cpp" line="719"/>
         <source>&lt;i&gt;%1(%2), %3, %4&lt;/i&gt;</source>
         <translation>&lt;i&gt;%1(%2), %3, %4&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="675"/>
+        <location filename="mainwindow.cpp" line="725"/>
         <source>(Start of game)</source>
         <translation>(Partieanfang)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="679"/>
+        <location filename="mainwindow.cpp" line="729"/>
         <source>(End of game)</source>
         <translation>(Partieende)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="679"/>
+        <location filename="mainwindow.cpp" line="729"/>
         <source>(End of line)</source>
         <translation>(Variantenende)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="680"/>
+        <location filename="mainwindow.cpp" line="730"/>
         <source>Last move: %1 &amp;nbsp; &amp;nbsp; Next: %2</source>
         <translation>Letzter Zug: %1 &amp;nbsp; &amp;nbsp; Nächster: %2</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="682"/>
+        <location filename="mainwindow.cpp" line="732"/>
         <source>(&amp;lt;-Var)</source>
         <translation>(&amp;lt;-Var)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="685"/>
+        <location filename="mainwindow.cpp" line="735"/>
         <source>&lt;br&gt;Variations: &amp;nbsp; </source>
         <translation>&lt;br&gt;Varianten: &amp;nbsp; </translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow.cpp" line="706"/>
+        <location filename="mainwindow.cpp" line="756"/>
         <source>Loses in %n move(s)</source>
         <translation>
             <numerusform>Verliert in %n Zug</numerusform>
@@ -461,7 +617,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow.cpp" line="708"/>
+        <location filename="mainwindow.cpp" line="758"/>
         <source>Wins in %n move(s)</source>
         <translation>
             <numerusform>Gewinnt in %n Zug</numerusform>
@@ -469,333 +625,408 @@
         </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="710"/>
+        <location filename="mainwindow.cpp" line="760"/>
         <source>Draw</source>
         <translation>Remies</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="716"/>
+        <location filename="mainwindow.cpp" line="766"/>
         <source>&lt;br&gt;Tablebase: &lt;a href=&quot;egtb:%1&quot;&gt;%2%3 %1&lt;/a&gt; -- %4</source>
         <translation>&lt;br&gt;Tablebase: &lt;a href=&quot;egtb:%1&quot;&gt;%2%3 %1&lt;/a&gt; -- %4</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="764"/>
+        <location filename="mainwindow.cpp" line="814"/>
         <source>Load Game</source>
         <translation>Partie laden</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="764"/>
+        <location filename="mainwindow.cpp" line="814"/>
         <source>Game number:</source>
         <translation>Partienummer:</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="782"/>
+        <location filename="mainwindow.cpp" line="832"/>
         <source>Save game</source>
         <translation>Partie sichern</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="782"/>
+        <location filename="mainwindow.cpp" line="832"/>
         <source>This database is read only.</source>
         <translation>Diese Datenbank ist nicht änderbar.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="835"/>
+        <location filename="mainwindow.cpp" line="886"/>
         <source> %1: %2/%3 </source>
         <translation> %1: %2/%3 </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="862"/>
+        <location filename="mainwindow.cpp" line="954"/>
         <source>ChessX - %1</source>
         <translation>ChessX - %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="884"/>
+        <location filename="mainwindow.cpp" line="976"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="885"/>
+        <location filename="mainwindow.cpp" line="978"/>
         <source>&amp;Open...</source>
         <translation>&amp;Öffnen...</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="886"/>
         <source>&amp;Recent files...</source>
-        <translation>&amp;Zuletzt verwendete Dateien...</translation>
+        <translation type="obsolete">&amp;Zuletzt verwendete Dateien...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="898"/>
+        <location filename="mainwindow.cpp" line="989"/>
         <source>&amp;Export...</source>
         <translation>&amp;Exportieren...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="899"/>
+        <location filename="mainwindow.cpp" line="990"/>
         <source>&amp;Games in filter</source>
         <translation>&amp;Partien im Filter</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="900"/>
+        <location filename="mainwindow.cpp" line="991"/>
         <source>&amp;All games</source>
         <translation>&amp;Alle Partien</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="901"/>
+        <location filename="mainwindow.cpp" line="992"/>
         <source>&amp;Close</source>
         <translation>&amp;Schliessen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="902"/>
+        <location filename="mainwindow.cpp" line="993"/>
         <source>&amp;Quit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="905"/>
+        <location filename="mainwindow.cpp" line="996"/>
         <source>&amp;Edit</source>
         <translation>&amp;Ändern</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="914"/>
+        <location filename="mainwindow.cpp" line="1005"/>
         <source>&amp;Copy FEN</source>
         <translation>&amp;Kopiere FEN</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="916"/>
+        <location filename="mainwindow.cpp" line="1007"/>
         <source>&amp;Paste FEN</source>
         <translation>&amp;Einfügen FEN</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="906"/>
+        <location filename="mainwindow.cpp" line="997"/>
         <source>Position &amp;Setup...</source>
         <translation>Stellung &amp;Aufbauen...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="920"/>
+        <location filename="mainwindow.cpp" line="1011"/>
         <source>&amp;Game</source>
         <translation>&amp;Partie</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="921"/>
+        <location filename="mainwindow.cpp" line="1012"/>
         <source>&amp;Load</source>
         <translation>&amp;Laden</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="924"/>
+        <location filename="mainwindow.cpp" line="1015"/>
         <source>&amp;First</source>
         <translation>&amp;Erste</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="925"/>
+        <location filename="mainwindow.cpp" line="1016"/>
         <source>&amp;Last</source>
         <translation>&amp;Letzte</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="926"/>
+        <location filename="mainwindow.cpp" line="1017"/>
         <source>&amp;Next</source>
         <translation>&amp;Nächste</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="927"/>
+        <location filename="mainwindow.cpp" line="1018"/>
         <source>&amp;Previous</source>
         <translation>&amp;Vorhergehende</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="928"/>
+        <location filename="mainwindow.cpp" line="1019"/>
         <source>&amp;Go to game...</source>
         <translation>&amp;Springe zur Partie...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="929"/>
+        <location filename="mainwindow.cpp" line="1020"/>
         <source>&amp;Random</source>
         <translation>&amp;Zufällig</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="932"/>
+        <location filename="mainwindow.cpp" line="1023"/>
         <source>&amp;Go to</source>
         <translation>&amp;Springe zu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="933"/>
+        <location filename="mainwindow.cpp" line="1024"/>
         <source>&amp;Start</source>
         <translation>&amp;Beginnen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="934"/>
+        <location filename="mainwindow.cpp" line="1025"/>
         <source>&amp;End</source>
         <translation>&amp;Ende</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="935"/>
+        <location filename="mainwindow.cpp" line="1026"/>
         <source>&amp;Next move</source>
         <translation>&amp;Nächster Zug</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="936"/>
+        <location filename="mainwindow.cpp" line="1027"/>
         <source>&amp;Previous move</source>
         <translation>&amp;Vorheriger Zug</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="937"/>
+        <location filename="mainwindow.cpp" line="1028"/>
         <source>5 moves &amp;forward</source>
         <translation>5 Züge &amp;vorwärtzs</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="938"/>
+        <location filename="mainwindow.cpp" line="1029"/>
         <source>5 moves &amp;backward</source>
         <translation>5 Züger &amp;zurück</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="942"/>
+        <location filename="mainwindow.cpp" line="1032"/>
         <source>&amp;Save....</source>
         <translation>&amp;Sichern...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="946"/>
+        <location filename="mainwindow.cpp" line="1035"/>
         <source>Fi&amp;nd</source>
         <translation>&amp;Suchen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="947"/>
+        <location filename="mainwindow.cpp" line="1036"/>
         <source>Find &amp;tag</source>
         <translation>Suche &amp;Partiedaten</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="949"/>
+        <location filename="mainwindow.cpp" line="1038"/>
         <source>Find &amp;position</source>
         <translation>Suche &amp;Stellung</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="952"/>
+        <location filename="mainwindow.cpp" line="1041"/>
         <source>&amp;Reset filter</source>
         <translation>&amp;Filter zurücksetzen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="953"/>
+        <location filename="mainwindow.cpp" line="1042"/>
         <source>&amp;Reverse filter</source>
         <translation>&amp;Filter umkehren</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="957"/>
+        <location filename="mainwindow.cpp" line="1052"/>
         <source>&amp;View</source>
         <translation>&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="958"/>
+        <location filename="mainwindow.cpp" line="1046"/>
         <source>&amp;Database</source>
         <translation>&amp;Datenbank</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="960"/>
+        <location filename="mainwindow.cpp" line="1053"/>
         <source>&amp;Player Database...</source>
         <translation>&amp;Spieler Datenbank...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="964"/>
+        <location filename="mainwindow.cpp" line="1057"/>
         <source>&amp;Settings</source>
         <translation>&amp;Einstellungen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="965"/>
+        <location filename="mainwindow.cpp" line="1058"/>
         <source>&amp;Configure ChessX...</source>
         <translation>ChessX &amp;Einstellungen...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="966"/>
+        <location filename="mainwindow.cpp" line="1059"/>
         <source>&amp;Flip board</source>
         <translation>&amp;Brett drehen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="972"/>
+        <location filename="mainwindow.cpp" line="1065"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="974"/>
+        <location filename="mainwindow.cpp" line="1067"/>
         <source>&amp;Tip of the day</source>
         <translation>&amp;Tip des Tages</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="975"/>
+        <location filename="mainwindow.cpp" line="1068"/>
         <source>&amp;Report a bug...</source>
         <translation>&amp;Bug melden...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="977"/>
+        <location filename="mainwindow.cpp" line="1070"/>
         <source>&amp;About ChessX</source>
         <translation>&amp;Über ChessX</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="980"/>
+        <location filename="mainwindow.cpp" line="1073"/>
         <source>&amp;Debug</source>
         <translation>&amp;Debug</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="473"/>
+        <location filename="mainwindow.cpp" line="390"/>
         <source>Export games</source>
         <translation>Partien eportieren</translation>
     </message>
     <message>
-        <location filename="mainwindow.h" line="225"/>
+        <location filename="mainwindow.h" line="231"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="139"/>
+        <location filename="mainwindow.cpp" line="143"/>
         <source>Opening Tree</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="157"/>
+        <location filename="mainwindow.cpp" line="161"/>
         <source>Analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="446"/>
+        <location filename="mainwindow.cpp" line="489"/>
         <source>Database %1 successfully saved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="564"/>
+        <location filename="mainwindow.cpp" line="614"/>
         <source>Compiled with &apos;fastbits&apos; option&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="572"/>
-        <source>&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Free chess database.&lt;br&gt;Version %1&lt;br&gt;%2&lt;p&gt;Copyright 2005-2007 ChessX developers&lt;br&gt;Core developers: Sean Estabrooks, Marius Roets, Michal Rudolf.&lt;br&gt;Additional coding: Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;br&gt;&lt;p&gt;Homepage: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Mailing list: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="772"/>
+        <location filename="mainwindow.cpp" line="822"/>
         <source>New game</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="896"/>
+        <location filename="mainwindow.cpp" line="988"/>
         <source>&amp;Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="908"/>
+        <location filename="mainwindow.cpp" line="999"/>
         <source>&amp;Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="909"/>
+        <location filename="mainwindow.cpp" line="1000"/>
         <source>Moves from the beginning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="911"/>
+        <location filename="mainwindow.cpp" line="1002"/>
         <source>Moves to the end</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="941"/>
+        <location filename="mainwindow.cpp" line="1031"/>
         <source>&amp;New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1025"/>
+        <location filename="mainwindow.cpp" line="1118"/>
         <source>Tree updated (%1 s.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="395"/>
+        <source>PGN file (*.pgn)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="396"/>
+        <source>HTML page (*.html)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="396"/>
+        <source>LaTeX document (*.tex)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="450"/>
+        <source>New database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="456"/>
+        <source>ChessX database could not be created.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="468"/>
+        <source>All databases (*.cxd *.pgn);;ChessX databases (*.cxd);;PGN databases (*.pgn)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="571"/>
+        <source>The clipboard contains FEN, but with illegal position. You can only paste such positions in &lt;b&gt;Setup position&lt;/b&gt; dialog.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="622"/>
+        <source>&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Free chess database available under GPLv2.&lt;br&gt;Version %1&lt;br&gt;%2&lt;p&gt;Copyright 2005-2007 ChessX developers&lt;br&gt;Core developers: Marius Roets, Michal Rudolf, Rico Zenklusen.&lt;br&gt;Additional coding: Sean Estabrooks, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;br&gt;&lt;p&gt;Homepage: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Mailing list: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="913"/>
+        <source>Copy games</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="914"/>
+        <source>You need at least two open databases to copy games</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="921"/>
+        <source>%1. %2 (%3 games)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="977"/>
+        <source>&amp;New database...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="979"/>
+        <source>Open &amp;recent...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="1047"/>
+        <source>&amp;Switch to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="1048"/>
+        <source>&amp;Copy games...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="615"/>
+        <source></source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -804,46 +1035,46 @@
     <message>
         <location filename="playerdialog.cpp" line="82"/>
         <source>&lt;html&gt;&lt;i&gt;No player found&lt;/i&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;i&gt;Kein Spieler gefunden&lt;/i&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;i&gt;Kein Spieler gefunden&lt;/i&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="playerdialog.cpp" line="97"/>
+        <location filename="playerdialog.cpp" line="113"/>
         <source>Born %1.</source>
         <translation>Geburtstag %1.</translation>
     </message>
     <message>
-        <location filename="playerdialog.cpp" line="98"/>
+        <location filename="playerdialog.cpp" line="114"/>
         <source>Born: %1, died %2.</source>
         <translation>Geburtstag: %1, gestorben %2.</translation>
     </message>
     <message>
-        <location filename="playerdialog.cpp" line="108"/>
+        <location filename="playerdialog.cpp" line="124"/>
         <source>&lt;h3&gt;Biography&lt;/h3&gt;%1
 </source>
         <translation>&lt;h3&gt;Biographie&lt;/h3&gt;%1</translation>
     </message>
     <message>
-        <location filename="playerdialog.cpp" line="115"/>
+        <location filename="playerdialog.cpp" line="131"/>
         <source>Highest rating: %1&lt;br&gt;</source>
         <translation>Höchstes Rating: %1&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="playerdialog.cpp" line="119"/>
+        <location filename="playerdialog.cpp" line="135"/>
         <source>Last rating: %1 (%2)</source>
         <translation>Letztes Rating: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="playerdialog.cpp" line="122"/>
+        <location filename="playerdialog.cpp" line="138"/>
         <source>&lt;br&gt;Rating history:&lt;br&gt;&lt;blockquote&gt;</source>
         <translation>&lt;br&gt;Rating Verlauf:&lt;br&gt;&lt;blockquote&gt;</translation>
     </message>
     <message>
-        <location filename="playerdialog.cpp" line="136"/>
+        <location filename="playerdialog.cpp" line="152"/>
         <source>&lt;h2&gt;Rating&lt;/h2&gt;</source>
         <translation>&lt;h2&gt;Rating&lt;/h2&gt;</translation>
     </message>
     <message>
-        <location filename="playerdialog.cpp" line="139"/>
+        <location filename="playerdialog.cpp" line="155"/>
         <source>&lt;h2&gt;%1&lt;/h2&gt;%2%3&lt;br&gt;Country: %4&lt;br&gt;Title: %5
 %6%7</source>
         <translation>&lt;h2&gt;%1&lt;/h2&gt;%2%3&lt;br&gt;Land: %4&lt;br&gt;Titel: %5
@@ -863,6 +1094,36 @@
         <location filename="playerdialog.ui" line="50"/>
         <source>&amp;Find</source>
         <translation>&amp;Suchen</translation>
+    </message>
+    <message>
+        <location filename="playerdialog.cpp" line="81"/>
+        <source>&lt;html&gt;&lt;h2&gt;%1&lt;/h2&gt;%2&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playerdialog.cpp" line="228"/>
+        <source>&lt;i&gt;No games in current database.&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playerdialog.cpp" line="231"/>
+        <source>White:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playerdialog.cpp" line="232"/>
+        <source>Black:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playerdialog.cpp" line="235"/>
+        <source>Total:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="playerdialog.cpp" line="240"/>
+        <source>Games in current database: %1 %2&lt;br&gt;%3&lt;br&gt;%4&lt;br&gt;%5&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -888,7 +1149,7 @@
         <translation>Rahmen</translation>
     </message>
     <message>
-        <location filename="preferences.cpp" line="228"/>
+        <location filename="preferences.cpp" line="236"/>
         <source>[plain colors]</source>
         <translation>[Grundfarben]</translation>
     </message>
@@ -973,17 +1234,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences.cpp" line="72"/>
+        <location filename="preferences.cpp" line="77"/>
         <source>Select Directory in which Engine will run</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences.cpp" line="83"/>
+        <location filename="preferences.cpp" line="88"/>
         <source>Select engine command file to run</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="preferences.cpp" line="112"/>
+        <location filename="preferences.cpp" line="117"/>
         <source>New Engine</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1086,52 +1347,52 @@
         <translation>Weiß</translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="39"/>
+        <location filename="quicksearch.ui" line="44"/>
         <source>Black</source>
         <translation>Schwarz</translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="44"/>
+        <location filename="quicksearch.ui" line="54"/>
         <source>Event</source>
         <translation>Turnier</translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="49"/>
+        <location filename="quicksearch.ui" line="59"/>
         <source>Site</source>
         <translation>Ort</translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="54"/>
+        <location filename="quicksearch.ui" line="64"/>
         <source>Round</source>
         <translation>Runde</translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="59"/>
+        <location filename="quicksearch.ui" line="69"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="64"/>
+        <location filename="quicksearch.ui" line="74"/>
         <source>Result</source>
         <translation>Ergebnis</translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="69"/>
+        <location filename="quicksearch.ui" line="79"/>
         <source>ECO</source>
         <translation>ECO</translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="74"/>
+        <location filename="quicksearch.ui" line="84"/>
         <source>Length</source>
         <translation>Länge</translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="103"/>
+        <location filename="quicksearch.ui" line="113"/>
         <source>&amp;Find</source>
         <translation>&amp;Suchen</translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="113"/>
+        <location filename="quicksearch.ui" line="123"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
     </message>
@@ -1151,18 +1412,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="125"/>
+        <location filename="quicksearch.ui" line="135"/>
         <source>&amp;Value:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="135"/>
+        <location filename="quicksearch.ui" line="145"/>
         <source>&amp;Tag:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="quicksearch.ui" line="145"/>
+        <location filename="quicksearch.ui" line="155"/>
         <source>&amp;Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="quicksearch.ui" line="39"/>
+        <source>White Elo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="quicksearch.ui" line="49"/>
+        <source>Black Elo</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1174,59 +1445,170 @@
         <translation>Partie sichern</translation>
     </message>
     <message>
-        <location filename="savedialog.ui" line="52"/>
+        <location filename="savedialog.ui" line="65"/>
         <source>&amp;OK</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="savedialog.ui" line="65"/>
+        <location filename="savedialog.ui" line="78"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="savedialog.ui" line="85"/>
+        <location filename="savedialog.ui" line="391"/>
         <source>&amp;Date:</source>
         <translation>&amp;Datum:</translation>
     </message>
     <message>
         <location filename="savedialog.ui" line="95"/>
         <source>Black Elo:</source>
-        <translation>Schwarz Elo:</translation>
+        <translation type="obsolete">Schwarz Elo:</translation>
     </message>
     <message>
-        <location filename="savedialog.ui" line="102"/>
+        <location filename="savedialog.ui" line="381"/>
         <source>&amp;Round:</source>
         <translation>&amp;Runde:</translation>
     </message>
     <message>
         <location filename="savedialog.ui" line="130"/>
-        <source>White Elo:</source>
-        <translation>Weiß Elo:</translation>
+        <source>Elo:</source>
+        <translation type="unfinished">Weiß Elo:</translation>
     </message>
     <message>
-        <location filename="savedialog.ui" line="190"/>
+        <location filename="savedialog.ui" line="151"/>
         <source>0000; </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="savedialog.ui" line="228"/>
+        <location filename="savedialog.ui" line="222"/>
         <source>&amp;Black:</source>
         <translation>&amp;Schwarz:</translation>
     </message>
     <message>
-        <location filename="savedialog.ui" line="259"/>
+        <location filename="savedialog.ui" line="318"/>
         <source>&amp;Site:</source>
         <translation>&amp;Ort:</translation>
     </message>
     <message>
-        <location filename="savedialog.ui" line="290"/>
+        <location filename="savedialog.ui" line="328"/>
         <source>&amp;Event:</source>
         <translation>&amp;Turnier:</translation>
     </message>
     <message>
-        <location filename="savedialog.ui" line="321"/>
+        <location filename="savedialog.ui" line="158"/>
         <source>&amp;White:</source>
         <translation>&amp;Weiß:</translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="90"/>
+        <source>Players</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="203"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="209"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Player name in &lt;span style=&quot; font-weight:600;&quot;&gt;surname, name&lt;/span&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt; &lt;/span&gt;format. Some examples:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Kasparov, Garry&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Tal, Mikhail N&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Granda Zuniga, Julio E&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="235"/>
+        <source>Tournament</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="261"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Date of the first round of the tournament in &lt;span style=&quot; font-weight:600;&quot;&gt;YYYY.MM.DD&lt;/span&gt; format. Replace trailing part with ?? if necessary.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Some examples:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.??&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.??&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="283"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Site of the tournament in &lt;span style=&quot; font-weight:600;&quot;&gt;Place CNT&lt;/span&gt; format, where CNT is three-letter country code. Some examples:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Ontario CAN&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Warsaw POL&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;New York USA&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="296"/>
+        <source>E&amp;vent date:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="341"/>
+        <source>Game Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="367"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Round number. For rounds with more than one game (usually in knock out or team tournaments) &lt;span style=&quot; font-weight:600;&quot;&gt;X.Y &lt;/span&gt;format is used.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Some examples:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;3&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1.4&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;8.15&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="415"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Date of this round of the tournament in &lt;span style=&quot; font-weight:600;&quot;&gt;YYYY.MM.DD&lt;/span&gt; format. Replace trailing part with ?? if necessary.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Some examples:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.??&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.??&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="450"/>
+        <source>Result:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="457"/>
+        <source>1-0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="464"/>
+        <source>1/2-1/2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="471"/>
+        <source>0-1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="savedialog.ui" line="478"/>
+        <source>*</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
