@@ -15,7 +15,7 @@
  *  This program is distributed in the hope that it will be useful,        *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
- *  GNU General Public License version 3 for more details.                 * 
+ *  GNU General Public License version 3 for more details.                 *
  *                                                                         *
  ***************************************************************************/
 
@@ -55,7 +55,7 @@ Board getStandardStartBoard()
 const Board standardStartBoard=getStandardStartBoard();
 const unsigned char nopiece=255;
 const Square standardwpiecesquares[16]=
-  {e1,a1,b1,c1,d1,f1,g1,h1,a2,b2,c2,d2,e2,f2,g2,h2}; 
+  {e1,a1,b1,c1,d1,f1,g1,h1,a2,b2,c2,d2,e2,f2,g2,h2};
 const Square standardbpiecesquares[16]=
   {e8,a8,b8,c8,d8,f8,g8,h8,a7,b7,c7,d7,e7,f7,g7,h7};
 const PieceType standardPieceTypes[16]=
@@ -68,7 +68,7 @@ const unsigned char startComment=12;
 const unsigned char beginVariation=13;
 const unsigned char endVariation=14;
 const unsigned char nextByteIsSpecial=15;
-  
+
 const unsigned char endComment='\0';
 
 
@@ -110,7 +110,7 @@ public:
   // The arrays link the piece numbers
   // of the white resp black pieces to their corresponding
   // squares. If a piece number is not used, the corresponding
-  // square is InvalidSquare (=255). 
+  // square is InvalidSquare (=255).
   Square wpiecesquares[16];
   Square bpiecesquares[16];
 
@@ -135,7 +135,7 @@ public:
 			const unsigned char* squareDiff);
 
   void decodeKing(const unsigned char& piecenumber,
-    	          const unsigned char& movecode, 
+    	          const unsigned char& movecode,
 		  const Color& color,
 	          Square& from,
 		  Square& to);
@@ -192,7 +192,7 @@ public:
     qiod.write(s.c_str(),s.size());
     qiod.putChar(endComment);
   }
-  
+
   void Encoding::setToStandardPieceNumbers()
   {
     // It would not be necessary to put everywhere "nopiece" where there
@@ -217,14 +217,14 @@ public:
 //         nopiece,nopiece,nopiece,nopiece,nopiece,nopiece,nopiece,nopiece,
 //         nopiece,nopiece,nopiece,nopiece,nopiece,nopiece,nopiece,nopiece,
 //         8,  9, 10, 11, 12, 13, 14, 15,
-//         1,  2,  3,  4,  0,  5,  6,  7 
+//         1,  2,  3,  4,  0,  5,  6,  7
 //      };
   }
 
   // Sets piecenumbers according to the position given by b. If the board
   // b is possible to encode then true is returned, otherwise false. A
   // position is possible to encode if every site has no more than 16
-  // pieces containing exactly one King.  
+  // pieces containing exactly one King.
   bool Encoding::setPieceNumbers(const Board& b)
   {
     unsigned char wPieceIndex(1),bPieceIndex(1);
@@ -235,7 +235,7 @@ public:
       if(currentPiece==Empty)
       {piecenumbers[i]=nopiece;}
       else if(currentPiece==WhiteKing || currentPiece==BlackKing)
-      {piecenumbers[i]=0;}	
+      {piecenumbers[i]=0;}
       else if(isWhite(currentPiece))
       {
 	if(wPieceIndex>15) return 0;
@@ -269,7 +269,7 @@ public:
     // of the end-sqare to the start-square. The following differences
     // are possible:
     // -9, -8, -7, -1, 1, 7, 8, 9, and -2 and 2 for castling.
-    // These differences will be converted into a value in the 
+    // These differences will be converted into a value in the
     // range [1-10] by adding 9 and looking up in the array val.
     //
     // The move value 0 corresponds to an "emtpy move", the values
@@ -277,7 +277,7 @@ public:
 
     int diff(m.to()-m.from());
     static const unsigned char val[19] = {
-    // -9 -8 -7 -6 -5 -4 -3 -2 -1  0  1   2  3  4  5  6  7  8  9 
+    // -9 -8 -7 -6 -5 -4 -3 -2 -1  0  1   2  3  4  5  6  7  8  9
         1, 2, 3, 0, 0, 0, 0, 9, 4, 0, 5, 10, 0, 0, 0, 0, 6, 7, 8
     };
 
@@ -301,7 +301,7 @@ public:
         case c8:
 	  piecenumbers[d8]=piecenumbers[a8];
 	  break;
-      }	
+      }
     }
   }
 
@@ -314,9 +314,9 @@ public:
 
     int diff(m.to()-m.from());
     static const unsigned char val[35] = {
-    // -17 -16 -15 -14 -13 -12 -11 -10 -9 -8 -7 -6 -5 -4 -3 -2 -1  0 
+    // -17 -16 -15 -14 -13 -12 -11 -10 -9 -8 -7 -6 -5 -4 -3 -2 -1  0
         1,  0,  2,  0,  0,  0,  0,  3,  0, 0, 0, 4, 0, 0, 0, 0, 0, 0,
-    //  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 
+    //  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17
         0, 0, 0, 0, 0, 5, 0, 0, 0, 6, 0, 0, 0, 0, 7, 0, 8
     };
 
@@ -330,8 +330,8 @@ public:
     // rank and indicate the file on which the rook move ends
     // (one number is not used as it corresponds to the starting
     // file of the rook). The number 8,9,...,15 are used in the
-    // same way to indicate rook moves on the same file. 
-    unsigned char movecode(0); 
+    // same way to indicate rook moves on the same file.
+    unsigned char movecode(0);
     int diff(m.to()-m.from());
     if(diff%8) // rook move on the same rank
     {movecode=m.to()%8;}
@@ -364,7 +364,7 @@ public:
     // byte, diagonal Queen moves will be encoded in a second
     // byte by indicating the end square. To indicate a diagonal
     // Queen move, the first byte
-    // contains a "horizontal move" to its own square. 
+    // contains a "horizontal move" to its own square.
     if(m.from()/8==m.to()/8) // horizontal move
     {writeMoveByte(piecenumbers[m.from()],m.to()%8,qiod);}
     else if(m.from()%8==m.to()%8) // vertical move
@@ -397,7 +397,7 @@ public:
     int diff(m.to()-m.from());
     static const unsigned char val[33] = {
     // -16 -15 -14 -13 -12 -11 -10
-        15, -1, -1, -1, -1, -1, -1,   
+        15, -1, -1, -1, -1, -1, -1,
     // -9 -8 -7 -6 -5 -4 -3 -2 -1  0
         0, 1, 2,-1,-1,-1,-1,-1,-1,-1,
     //  1  2  3  4  5  6  7  8  9
@@ -406,7 +406,7 @@ public:
        -1,-1,-1,-1,-1,-1,15
 
     };
-    unsigned char movecode=val[diff+16]; 
+    unsigned char movecode=val[diff+16];
     if(m.isPromotion())
     {
       switch (pieceType(m.promotedPiece())) {
@@ -474,11 +474,11 @@ public:
 
   // Encodes a variation and subvariations occuring in this variation
   // by recursive calls. If variation=0 then all sibling variations at
-  // the first move will also be encoded. Assumes that piecenumbers 
+  // the first move will also be encoded. Assumes that piecenumbers
   // is correctly set. The variation to encode must not be empty.
   void Encoding::encodeVariation(Game& game, const int& variation, QIODevice& qiod)
   {
-    Move m; 
+    Move m;
     int var(variation);
 
     // The following variable holds the piecenumber of the piece
@@ -489,9 +489,10 @@ public:
 
     qiod.putChar(beginVariation);
     while(true){
-      m=game.move(var);  
+      m=game.move(var);
       encodeNags(game.nags(var),qiod);
-      if(game.annotation(var)!="") encodeComment(game.annotation(var),qiod);
+      if (!game.annotation().isEmpty())
+			encodeComment(game.annotation(var),qiod);
       to_pn=piecenumbers[m.to()];
       encodeMove(m,qiod);
       if(var==0 && game.variationCount()>1)
@@ -526,19 +527,19 @@ public:
   {
     // Encode flag to indicate if start position is standard.
     // 1: standard
-    // 0: non-standard 
+    // 0: non-standard
     Board startBoard(game.startBoard());
     if(startBoard==standardStartBoard)
     {
       setToStandardPieceNumbers();
       qiod.putChar('1');
     }
-    else 
-    { 
+    else
+    {
       if(!setPieceNumbers(startBoard)) return 0;
       qiod.putChar('0');
     }
-  
+
     // Encode start annotation.
     if(game.startAnnotation()!="")
     {encodeComment(game.startAnnotation(),qiod);}
@@ -625,14 +626,14 @@ public:
     }
     else
     {
-      from=bpiecesquares[piecenumber]; 
+      from=bpiecesquares[piecenumber];
       to=from+squareDiff[movecode];
       bpiecesquares[piecenumber]=to;
     }
   }
 
   void Decoding::decodeKing(const unsigned char& piecenumber,
-    	          const unsigned char& movecode, 
+    	          const unsigned char& movecode,
 		  const Color& color,
 	          Square& from,
 		  Square& to)
@@ -702,7 +703,7 @@ public:
     }
     else
     {
-      from=bpiecesquares[piecenumber]; 
+      from=bpiecesquares[piecenumber];
       to=from+squareDiff[movecode];
       bpiecesquares[piecenumber]=to;
     }
@@ -717,7 +718,7 @@ public:
     Square* cpiecesquares;
     if(color==White) cpiecesquares=wpiecesquares;
     else cpiecesquares=bpiecesquares;
-    
+
     from=cpiecesquares[piecenumber];
 
     int diff;
@@ -748,7 +749,7 @@ public:
     int filediff((movecode%8)-(from%8));
     to=from+diffunit*filediff;
 
-    cpiecesquares[piecenumber]=to; 
+    cpiecesquares[piecenumber]=to;
   }
 
   void Decoding::decodeQueen(const unsigned char& piecenumber,
@@ -855,7 +856,7 @@ public:
 
   // The position of qiod must be just after a nag tag. The position
   // of qiod after calling decodeNags will be just after the last
-  // byte corresponding to a nag encoding. 
+  // byte corresponding to a nag encoding.
   void Decoding::decodeNags(NagSet& ns, QIODevice& qiod) const
   {
     ns.clear();
@@ -900,7 +901,7 @@ public:
       {
         case nag:
           decodeNags(ns,qiod);
-	  break; 
+	  break;
 	case startComment:
 	  decodeComment(comment,qiod);
 	  break;
@@ -917,7 +918,7 @@ public:
 	    cxDec_sub.wpiecetypes[piecenumber]=pieceType(m.pieceMoved());
 	    if(m.isCastling())
 	    {
-              int rookpn=getWpiecenumber(m.castlingRookTo()); 
+              int rookpn=getWpiecenumber(m.castlingRookTo());
 	      cxDec_sub.wpiecesquares[rookpn]=m.castlingRookFrom();
 	    }
 	  }
@@ -927,7 +928,7 @@ public:
 	    cxDec_sub.bpiecetypes[piecenumber]=pieceType(m.pieceMoved());
 	    if(m.isCastling())
 	    {
-              int rookpn=getBpiecenumber(m.castlingRookTo()); 
+              int rookpn=getBpiecenumber(m.castlingRookTo());
 	      cxDec_sub.bpiecesquares[rookpn]=m.castlingRookFrom();
 	    }
 	  }
@@ -942,7 +943,7 @@ public:
 	  return;
 	default: // normal move
 	  piecenumber=u>>4;
-	  movecode=u&15; 
+	  movecode=u&15;
 	  decodeMove(piecenumber,movecode,
 		     game.board().toMove(),from,to,qiod,pt);
 	  m=game.board().prepareMove(from,to);
@@ -952,7 +953,7 @@ public:
 
           variation=game.addMove(m,comment,ns);
 	  game.enterVariation(variation);
-	  ns.clear(); 
+	  ns.clear();
 	  comment="";
 	  break;
       }
@@ -981,7 +982,7 @@ public:
       // be interesting to control if game is already in the
       // standard start position).
       game.setStartBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP"
-		      "/RNBQKBNR w KQkq - 0 1"); 
+		      "/RNBQKBNR w KQkq - 0 1");
     }
     else // non standard start position
     {
@@ -1032,7 +1033,7 @@ CxdMoves::CxdMoves()
 {
  m_isOpen=false;
 }
-	
+
 CxdMoves::~CxdMoves()
 {if(m_isOpen) close();}
 
@@ -1041,7 +1042,7 @@ bool CxdMoves::open(const SaxHandler& saxhandler)
   if(m_isOpen) return 0;
   m_gameFile.setFileName(saxhandler.m_gameFilename);
   m_gameAFile.setFileName(saxhandler.m_gameAccessFilename);
-  if(!m_gameFile.exists() || !m_gameAFile.exists()) return 0; 
+  if(!m_gameFile.exists() || !m_gameAFile.exists()) return 0;
   m_gameFile.open(QIODevice::ReadWrite);
   m_gameAFile.open(QIODevice::ReadWrite);
 
@@ -1060,7 +1061,7 @@ void CxdMoves::close()
 bool CxdMoves::create(const SaxHandler& saxhandler)
 {
   if(m_isOpen) return 0;
-  
+
   m_gameFile.setFileName(saxhandler.m_gameFilename);
   m_gameAFile.setFileName(saxhandler.m_gameAccessFilename);
   // Here we could warn if the files already exist
@@ -1076,7 +1077,7 @@ bool CxdMoves::loadMoves(const int& index, Game& game)
 {
   qint64 pos(gamePos(index));
   m_gameFile.seek(pos);
-  cxDec.decodeNonHeader(game,m_gameFile); 
+  cxDec.decodeNonHeader(game,m_gameFile);
   return 1;
 }
 
@@ -1112,11 +1113,11 @@ int CxdMoves::nb_games()
 
 qint64 CxdMoves::gamePos(const int& index)
 {
-  m_gameAFile.seek(gameARecordSize*index); 
+  m_gameAFile.seek(gameARecordSize*index);
   QDataStream ds(&m_gameAFile);
   qint64 pos;
   ds >> pos;
-  return pos;  
+  return pos;
 }
 
 qint64 CxdMoves::appendToGameFile(Game& game)
