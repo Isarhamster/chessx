@@ -130,7 +130,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	dock = new QDockWidget(tr("Game List"), this);
 	dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
 	dock->setObjectName("GameList");
-	dock->setFloating(true);
 	m_gameList = new GameList(databaseInfo()->filter(), dock);
 	m_gameList->setMinimumSize(150, 100);
 	connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
