@@ -377,10 +377,10 @@ void PgnDatabase::parseComment(Game* game)
 	if (end >= 0) {
 		m_comment.append(m_currentLine.left(end));
 		m_inComment = false;
-		game->setAnnotation(m_comment, m_variation);
+		game->setAnnotation(m_comment.trimmed(), m_variation);
 		m_currentLine = m_currentLine.right((m_currentLine.length() - end) - 1);
 	} else {
-		m_comment.append(m_currentLine + " ");
+		m_comment.append(m_currentLine + ' ');
 		readLine();
 	}
 }
