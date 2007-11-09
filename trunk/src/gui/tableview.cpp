@@ -9,7 +9,7 @@
 #include <QHeaderView>
 
 TableView::TableView(QWidget *parent)
- : QTableView(parent)
+		: QTableView(parent)
 {
 
 	setShowGrid(false);
@@ -64,8 +64,7 @@ void TableView::slotToggleFont(bool toggled)
 		f.setPointSize(f.pointSize() - 1);
 		setFont(f);
 		horizontalHeader()->setFont(f);
-	}
-	else {
+	} else {
 		setFont(qApp->font());
 		horizontalHeader()->setFont(qApp->font());
 	}

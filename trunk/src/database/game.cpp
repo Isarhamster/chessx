@@ -67,12 +67,12 @@ Game::Game(const Game& game)
 	//copy node array
 	m_moveNodes = new MoveNode[m_totalNodeCount];
 //	memcpy(m_moveNodes, game.m_moveNodes, sizeof(MoveNode) * m_totalNodeCount);
-	for(int i=0; i<m_totalNodeCount; ++i)
-	{m_moveNodes[i]=game.m_moveNodes[i];}
+	for (int i = 0; i < m_totalNodeCount; ++i)
+		{m_moveNodes[i] = game.m_moveNodes[i];}
 	m_isModified = false;
 }
 
-Game& Game::operator=(const Game& game)
+Game& Game::operator=(const Game & game)
 {
 	//assign non pointer variables
 	m_tags = game.m_tags;

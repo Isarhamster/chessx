@@ -77,7 +77,7 @@ void ColorList::setItemColor(QListWidgetItem* item, const QColor& color)
 	painter.setBrush(palette().color(QPalette::Background));
 	painter.setPen(palette().color(QPalette::Text));
 	painter.setBrush(color);
-	painter.drawRect(0, 0, 99, iconSize().height()-1);
+	painter.drawRect(0, 0, 99, iconSize().height() - 1);
 	QIcon icon;
 	icon.addPixmap(pix, QIcon::Normal);
 	icon.addPixmap(pix, QIcon::Selected);

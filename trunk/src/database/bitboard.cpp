@@ -58,7 +58,7 @@ BitBoard getStandardPosition();
 // Calling the function getStandardPosition for initialization avoids
 // initialization side effects when using BitBoards in other translation
 // units.
-BitBoard standardPosition=getStandardPosition();
+BitBoard standardPosition = getStandardPosition();
 BitBoard clearedPosition;
 
 
@@ -66,14 +66,14 @@ bool bitBoardInitRun;
 void bitBoardInit();
 
 
-const quint64 A1=1,     B1=A1<<1, C1=B1<<1, D1=C1<<1, E1=D1<<1, F1=E1<<1, G1=F1<<1, H1=G1<<1;
-const quint64 A2=H1<<1, B2=A2<<1, C2=B2<<1, D2=C2<<1, E2=D2<<1, F2=E2<<1, G2=F2<<1, H2=G2<<1;
-const quint64 A3=H2<<1, B3=A3<<1, C3=B3<<1, D3=C3<<1, E3=D3<<1, F3=E3<<1, G3=F3<<1, H3=G3<<1;
-const quint64 A4=H3<<1, B4=A4<<1, C4=B4<<1, D4=C4<<1, E4=D4<<1, F4=E4<<1, G4=F4<<1, H4=G4<<1;
-const quint64 A5=H4<<1, B5=A5<<1, C5=B5<<1, D5=C5<<1, E5=D5<<1, F5=E5<<1, G5=F5<<1, H5=G5<<1;
-const quint64 A6=H5<<1, B6=A6<<1, C6=B6<<1, D6=C6<<1, E6=D6<<1, F6=E6<<1, G6=F6<<1, H6=G6<<1;
-const quint64 A7=H6<<1, B7=A7<<1, C7=B7<<1, D7=C7<<1, E7=D7<<1, F7=E7<<1, G7=F7<<1, H7=G7<<1;
-const quint64 A8=H7<<1, B8=A8<<1, C8=B8<<1, D8=C8<<1, E8=D8<<1, F8=E8<<1, G8=F8<<1, H8=G8<<1;
+const quint64 A1 = 1,     B1 = A1 << 1, C1 = B1 << 1, D1 = C1 << 1, E1 = D1 << 1, F1 = E1 << 1, G1 = F1 << 1, H1 = G1 << 1;
+const quint64 A2 = H1 << 1, B2 = A2 << 1, C2 = B2 << 1, D2 = C2 << 1, E2 = D2 << 1, F2 = E2 << 1, G2 = F2 << 1, H2 = G2 << 1;
+const quint64 A3 = H2 << 1, B3 = A3 << 1, C3 = B3 << 1, D3 = C3 << 1, E3 = D3 << 1, F3 = E3 << 1, G3 = F3 << 1, H3 = G3 << 1;
+const quint64 A4 = H3 << 1, B4 = A4 << 1, C4 = B4 << 1, D4 = C4 << 1, E4 = D4 << 1, F4 = E4 << 1, G4 = F4 << 1, H4 = G4 << 1;
+const quint64 A5 = H4 << 1, B5 = A5 << 1, C5 = B5 << 1, D5 = C5 << 1, E5 = D5 << 1, F5 = E5 << 1, G5 = F5 << 1, H5 = G5 << 1;
+const quint64 A6 = H5 << 1, B6 = A6 << 1, C6 = B6 << 1, D6 = C6 << 1, E6 = D6 << 1, F6 = E6 << 1, G6 = F6 << 1, H6 = G6 << 1;
+const quint64 A7 = H6 << 1, B7 = A7 << 1, C7 = B7 << 1, D7 = C7 << 1, E7 = D7 << 1, F7 = E7 << 1, G7 = F7 << 1, H7 = G7 << 1;
+const quint64 A8 = H7 << 1, B8 = A8 << 1, C8 = B8 << 1, D8 = C8 << 1, E8 = D8 << 1, F8 = E8 << 1, G8 = F8 << 1, H8 = G8 << 1;
 
 const uint RotateL90[64] = {
 	h1, h2, h3, h4, h5, h6, h7, h8,
@@ -184,7 +184,7 @@ inline uint getFirstBitAndClear64(quint64& bb)
 	// Assuming x86 hardware...
 	// Testing showed this to be about 20 times faster than the C++ code
 	register uint ret;
-	asm volatile (
+	asm volatile(
 		"pushl  %%ebx \n"
 		"mov	%0, %%ebx \n"
 		"xor	%%edx, %%edx \n"
@@ -196,7 +196,7 @@ inline uint getFirstBitAndClear64(quint64& bb)
 		"lea	4(%%ebx), %%ebx \n"
 		"xor	$32, %%eax \n"
 		"1: \n"
-	        "shl	%%cl, %%edx \n"
+		"shl	%%cl, %%edx \n"
 		"xor	%%ecx, %%eax \n"
 		"xor	%%edx, (%%ebx) \n"
 		"popl   %%ebx \n"
@@ -376,18 +376,18 @@ bool BitBoard::isMovable(const Square from) const
 	if (m_occupied_co[m_stm] & SetBit(from)) {
 		quint64 squares = 0;
 		switch (m_piece[from]) {
-		case Pawn:	squares=pawnMovesFrom(from); break;
-		case Knight:	squares=knightAttacksFrom(from); break;
-		case Bishop:	squares=bishopAttacksFrom(from); break;
-		case Rook:	squares=rookAttacksFrom(from); break;
-		case Queen:	squares=queenAttacksFrom(from); break;
-		case King:	squares=kingAttacksFrom(m_ksq[m_stm]); break;
+		case Pawn:	squares = pawnMovesFrom(from); break;
+		case Knight:	squares = knightAttacksFrom(from); break;
+		case Bishop:	squares = bishopAttacksFrom(from); break;
+		case Rook:	squares = rookAttacksFrom(from); break;
+		case Queen:	squares = queenAttacksFrom(from); break;
+		case King:	squares = kingAttacksFrom(m_ksq[m_stm]); break;
 		default: break;
 		}
 		squares &= ~m_occupied_co[m_stm];
 		while (squares) {
 			Square to = getFirstBitAndClear64(squares);
-			if (prepareMove(from,to).isLegal())
+			if (prepareMove(from, to).isLegal())
 				return true;
 		}
 	}
@@ -416,10 +416,10 @@ void BitBoard::setAt(const Square s, const Piece p)
 	case Rook:	m_rooks   |= bit; break;
 	case Queen:	m_queens  |= bit; break;
 	case King:	if (m_kings & m_occupied_co[_color])
-				removeAt(m_ksq[_color]);
-			m_kings   |= bit;
-			m_ksq[_color]=s;
-			break;
+			removeAt(m_ksq[_color]);
+		m_kings   |= bit;
+		m_ksq[_color] = s;
+		break;
 	default: break; // ERROR
 	}
 
@@ -446,13 +446,13 @@ void BitBoard::removeAt(const Square s)
 	case Knight:	m_knights ^= bit; break;
 	case Bishop:	m_bishops ^= bit; break;
 	case Rook:	m_rooks   ^= bit;
-			m_castle &= Castle[s];
-			break;
+		m_castle &= Castle[s];
+		break;
 	case Queen:	m_queens  ^= bit; break;
 	case King:	m_kings   ^= bit;
-			m_ksq[_color]= InvalidSquare;
-			destroyCastle(_color);
-			break;
+		m_ksq[_color] = InvalidSquare;
+		destroyCastle(_color);
+		break;
 	default: break; // ERROR
 	}
 
@@ -478,8 +478,8 @@ bool BitBoard::fromFen(const QString& fen)
 
 BoardStatus BitBoard::validate() const
 {
-	uint wk=0, bk=0, wp=0, bp=0, bo=0, wo=0;
-	for (uint i=0; i < 64; ++i) {
+	uint wk = 0, bk = 0, wp = 0, bp = 0, bo = 0, wo = 0;
+	for (uint i = 0; i < 64; ++i) {
 		Piece p = pieceAt(i);
 		if (p == WhiteKing) {
 			++wk;
@@ -502,8 +502,8 @@ BoardStatus BitBoard::validate() const
 
 	Q_ASSERT(wp == m_pawnCount[White]);
 	Q_ASSERT(bp == m_pawnCount[Black]);
-	Q_ASSERT(wp+wk+wo == m_pieceCount[White]);
-	Q_ASSERT(bp+bk+bo == m_pieceCount[Black]);
+	Q_ASSERT(wp + wk + wo == m_pieceCount[White]);
+	Q_ASSERT(bp + bk + bo == m_pieceCount[Black]);
 
 	// Exactly one king per side
 	if (wk == 0) return NoWhiteKing;
@@ -519,7 +519,7 @@ BoardStatus BitBoard::validate() const
 	if ((bk + bp + bo) > 16) return TooManyBlack;
 
 	// Bad checks
-	bool check =  isAttackedBy(m_stm^1, m_ksq[m_stm]);
+	bool check =  isAttackedBy(m_stm ^ 1, m_ksq[m_stm]);
 	bool check2 = isAttackedBy(m_stm, m_ksq[m_stm^1]);
 	if (check && check2) return DoubleCheck;
 	if (check2) return OppositeCheck;
@@ -569,8 +569,7 @@ class SaneString : public QString
 {
 public:
 	SaneString(const QString& q) : QString(q) {};
-	char operator[] (const int index) const
-	{
+	char operator[](const int index) const {
 		if (index < this->length())
 			return QString::operator[](index).toAscii();
 		return 0;
@@ -786,14 +785,14 @@ MoveList BitBoard::generateMoves() const
 		if (canCastle(White)) {
 			if (canCastleShort(White) && !((F1 | G1)&m_occupied))
 				if (!isAttackedBy(Black, e1) &&
-					!isAttackedBy(Black, f1)
-					&& !isAttackedBy(Black, g1))
-						p.add().genWhiteOO();
+						!isAttackedBy(Black, f1)
+						&& !isAttackedBy(Black, g1))
+					p.add().genWhiteOO();
 			if (canCastleLong(White)  && !((B1 | C1 | D1)&m_occupied))
 				if (!isAttackedBy(Black, c1) &&
-					!isAttackedBy(Black, d1)
-					&& !isAttackedBy(Black, e1))
-						p.add().genWhiteOOO();
+						!isAttackedBy(Black, d1)
+						&& !isAttackedBy(Black, e1))
+					p.add().genWhiteOOO();
 		}
 
 		// pawn en passant moves
@@ -859,14 +858,14 @@ MoveList BitBoard::generateMoves() const
 		if (canCastle(Black)) {
 			if (canCastleShort(Black) && !((F8 | G8)&m_occupied))
 				if (!isAttackedBy(White, e8) &&
-					!isAttackedBy(White, f8) &&
-					!isAttackedBy(White, g8))
-						p.add().genBlackOO();
+						!isAttackedBy(White, f8) &&
+						!isAttackedBy(White, g8))
+					p.add().genBlackOO();
 			if (canCastleLong(Black)  && !((B8 | C8 | D8)&m_occupied))
 				if (!isAttackedBy(White, e8) &&
-					!isAttackedBy(White, d8) &&
-					!isAttackedBy(White, c8))
-						p.add().genBlackOOO();
+						!isAttackedBy(White, d8) &&
+						!isAttackedBy(White, c8))
+					p.add().genBlackOOO();
 		}
 
 		// pawn en passant moves
@@ -1068,11 +1067,11 @@ Move BitBoard::parseMove(const QString& algebraic) const
 		if (c == '=' || c == '(')
 			c = *(s++);
 		switch (toupper(c)) {
-			case 'Q': promotePiece = Queen; break;
-			case 'R': promotePiece = Rook; break;
-			case 'B': promotePiece = Bishop; break;
-			case 'N': promotePiece = Knight; break;
-			default: ;//return move;
+		case 'Q': promotePiece = Queen; break;
+		case 'R': promotePiece = Rook; break;
+		case 'B': promotePiece = Bishop; break;
+		case 'N': promotePiece = Knight; break;
+		default: ;//return move;
 		}
 		if (fromSquare < 0) {
 			int base = (m_stm == White ? -8 : 8);
@@ -1092,7 +1091,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
 		return move;
 	}
 
-	if  (fromSquare < 0) {
+	if (fromSquare < 0) {
 		switch (type) {
 		case Queen: match = queenAttacksFrom(toSquare) & m_queens; break;
 		case Rook: match = rookAttacksFrom(toSquare) & m_rooks; break;
@@ -1133,7 +1132,7 @@ bool BitBoard::doMove(const Move& m)
 	register uint sntm = m_stm ^ 1; // side not to move
 	register quint64 bb_from = SetBit(from);
 	register quint64 bb_to = SetBit(to);
-	uint rook_from=0, rook_to=0;
+	uint rook_from = 0, rook_to = 0;
 
 	m_epFile = 0;
 	m_halfMoves++;	// Number of moves since last capture or pawn move
@@ -1315,7 +1314,7 @@ void BitBoard::undoMove(const Move& m)
 	register uint sntm = m_stm ^ 1; // side not to move
 	register quint64 bb_from = SetBit(from);
 	register quint64 bb_to = SetBit(to);
-	uint rook_from=0, rook_to=0; // =0 just to quiet compiler warnings
+	uint rook_from = 0, rook_to = 0; // =0 just to quiet compiler warnings
 
 	uint action = m.action();
 	switch (action) {
@@ -1535,23 +1534,23 @@ bool BitBoard::prepareCastle(Move& move) const
 
 	Square to = move.to();
 	if (m_stm == White) {
-		if (to == g1 && canCastleShort(White) && !((F1|G1)&m_occupied))
+		if (to == g1 && canCastleShort(White) && !((F1 | G1)&m_occupied))
 			if (!isAttackedBy(Black, e1) && !isAttackedBy(Black, f1)) {
 				move.genWhiteOO();
 				return true;
 			}
-		if (to == c1 && canCastleLong(White) && !((B1|C1|D1)&m_occupied))
+		if (to == c1 && canCastleLong(White) && !((B1 | C1 | D1)&m_occupied))
 			if (!isAttackedBy(Black, e1) && !isAttackedBy(Black, d1)) {
 				move.genWhiteOOO();
 				return true;
 			}
 	} else {
-		if (to == g8 && canCastleShort(Black) && !((F8|G8)&m_occupied))
+		if (to == g8 && canCastleShort(Black) && !((F8 | G8)&m_occupied))
 			if (!isAttackedBy(White, e8) && !isAttackedBy(White, f8)) {
 				move.genBlackOO();
 				return true;
 			}
-		if (to == c8 && canCastleLong(Black) && !((B8|C8|D8)&m_occupied))
+		if (to == c8 && canCastleLong(Black) && !((B8 | C8 | D8)&m_occupied))
 			if (!isAttackedBy(White, e8) && !isAttackedBy(White, d8)) {
 				move.genBlackOOO();
 				return true;
@@ -1563,11 +1562,11 @@ bool BitBoard::prepareCastle(Move& move) const
 
 bool BitBoard::canBeReachedFrom(const BitBoard& target) const
 {
-	if (	m_pieceCount[White] > target.m_pieceCount[White] ||
-		m_pieceCount[Black] > target.m_pieceCount[Black] ||
-		m_pawnCount[White] > target.m_pawnCount[White] ||
-		m_pawnCount[Black] > target.m_pawnCount[Black])
-			return false;
+	if (m_pieceCount[White] > target.m_pieceCount[White] ||
+			m_pieceCount[Black] > target.m_pieceCount[Black] ||
+			m_pawnCount[White] > target.m_pawnCount[White] ||
+			m_pawnCount[Black] > target.m_pawnCount[Black])
+		return false;
 	return true;
 }
 
@@ -1686,12 +1685,12 @@ void bitBoardInit()
 		bb_PawnF2[Black][i]  = Shift2Down(mask) & rank5;
 
 		bb_PawnALL[White][i] = bb_PawnAttacks[White][i] |
-					bb_PawnF1[White][i] |
-					bb_PawnF2[White][i];
+				       bb_PawnF1[White][i] |
+				       bb_PawnF2[White][i];
 
 		bb_PawnALL[Black][i] = bb_PawnAttacks[Black][i] |
-					bb_PawnF1[Black][i] |
-					bb_PawnF2[Black][i];
+				       bb_PawnF1[Black][i] |
+				       bb_PawnF2[Black][i];
 	}
 
 	// Knight attacks
@@ -1820,7 +1819,7 @@ void bitBoardInit()
 
 BitBoard getStandardPosition()
 {
-  BitBoard b;
-  b.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-  return b;
+	BitBoard b;
+	b.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	return b;
 }

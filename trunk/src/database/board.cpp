@@ -22,7 +22,7 @@
 QMap<quint64, QList<Square> > ecoGuessPositions;
 
 Board::Board()
-	: m_hashValue(0)
+		: m_hashValue(0)
 {
 }
 
@@ -90,8 +90,8 @@ bool Board::doIt(const Move& m, bool undo)
 		hashPiece(m.castlingRookTo(), p);
 	} else if (m.isEnPassant()) {
 		if (m == White)
-			hashPiece(m.to()-8, m.capturedPiece());
-		else	hashPiece(m.to()+8, m.capturedPiece());
+			hashPiece(m.to() - 8, m.capturedPiece());
+		else	hashPiece(m.to() + 8, m.capturedPiece());
 	} else if (m.capturedPiece()) {
 		hashPiece(m.to(), m.capturedPiece());
 	}
@@ -146,7 +146,7 @@ void Board::hashEpSquare()
 void Board::createHash()
 {
 	m_hashValue = 0;
-	for (int i=0; i < MAX_SQUARES; ++i)
+	for (int i = 0; i < MAX_SQUARES; ++i)
 		hashPiece(i, pieceAt(i));
 	if (toMove() == Black)
 		hashToMove();

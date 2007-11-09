@@ -24,7 +24,7 @@
 
 #define INDEX_ITEM_BUFFER_SIZE 500
 
-const int Index::defaultIndexItemSize=27;
+const int Index::defaultIndexItemSize = 27;
 
 Index::Index()
 {
@@ -37,13 +37,13 @@ Index::Index()
 	setTagIndexPosition(TagResult, 16, 1);
 	setTagIndexPosition(TagPlyCount, 17, 2);
 	setTagIndexPosition(TagFEN, 19, 2);
-        setTagIndexPosition(TagWhiteElo, 21, 2);
-        setTagIndexPosition(TagBlackElo, 23, 2);
-        setTagIndexPosition(TagECO, 25, 2);
+	setTagIndexPosition(TagWhiteElo, 21, 2);
+	setTagIndexPosition(TagBlackElo, 23, 2);
+	setTagIndexPosition(TagECO, 25, 2);
 	createIndexItems();
 	reallocateIndexItems();
 
-	m_nbUsedIndexItems=0;
+	m_nbUsedIndexItems = 0;
 }
 Index::~Index()
 {
@@ -62,7 +62,7 @@ void Index::setTag(Tag tag, QString value, int gameId)
 	}
 	// Create a index item if it does not exist
 	if (gameId >= m_indexItems.size()) {
-	  for(int i=m_indexItems.size(); i<=gameId; ++i) add();
+		for (int i = m_indexItems.size(); i <= gameId; ++i) add();
 	}
 	// At index value to itemindex
 	m_indexItems[gameId]->set(m_tagIndexPosition[tag].first, m_tagIndexPosition[tag].second, index);
@@ -102,16 +102,16 @@ GameId Index::add(const Game&)
 #else // VisualC++
 #pragma message("Just a dummy implementation of Index::add()")
 #endif
- ++m_nbUsedIndexItems;
- return add();
+	++m_nbUsedIndexItems;
+	return add();
 }
 
 
 GameId Index::cxdAdd(const Game& game)
 {
-  for(int i=0; i<CxdIndex::m_nbIndexTags; ++i)
-  {setTag(CxdIndex::tags[i],game.tag(TagNames[CxdIndex::tags[i]]),m_nbUsedIndexItems);}
-  return m_nbUsedIndexItems++;
+	for (int i = 0; i < CxdIndex::m_nbIndexTags; ++i)
+		{setTag(CxdIndex::tags[i], game.tag(TagNames[CxdIndex::tags[i]]), m_nbUsedIndexItems);}
+	return m_nbUsedIndexItems++;
 }
 
 void Index::createIndexItems()
@@ -143,14 +143,14 @@ void Index::calculateIndexSize()
 
 TagIndex Index::add(const IndexItem& item)
 {
-  return add(new IndexItem(item));
+	return add(new IndexItem(item));
 }
 
 TagIndex Index::add(IndexItem* item)
 {
-  if(m_nbUsedIndexItems==m_indexItems.count()) createIndexItems();
-  m_indexItems[m_nbUsedIndexItems]=item;
-  return m_nbUsedIndexItems++;
+	if (m_nbUsedIndexItems == m_indexItems.count()) createIndexItems();
+	m_indexItems[m_nbUsedIndexItems] = item;
+	return m_nbUsedIndexItems++;
 }
 
 void Index::reallocateIndexItems(bool clear)
@@ -218,7 +218,7 @@ void Index::clear()
 		delete m_indexItems[i];
 	}
 	m_indexItems.clear();
-        m_tagList.clear();
+	m_tagList.clear();
 }
 void Index::setCacheEnabled(bool enabled)
 {
@@ -267,7 +267,7 @@ IndexItem* Index::item(int gameId)
 void Index::loadGameHeaders(GameId id, Game& game)
 {
 	QList <QPair< QString, QString> > gameTags;
-	allGameTags(id,gameTags);
+	allGameTags(id, gameTags);
 
 	for (int i = 0; i < gameTags.count(); ++i)
 		game.setTag(gameTags[i].first, gameTags[i].second);

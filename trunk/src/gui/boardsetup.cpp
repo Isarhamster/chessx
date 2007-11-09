@@ -95,13 +95,13 @@ void BoardSetupDialog::setBoard(const Board& b)
 	if (b.enPassantSquare() == NoEPSquare)
 		ui.epCombo->setCurrentIndex(0);
 	else if (b.toMove() == White && b.pieceAt(b.enPassantSquare() - 8) == BlackPawn &&
-				b.pieceAt(b.enPassantSquare()) == Empty && b.pieceAt(b.enPassantSquare() + 8) == Empty)
+			b.pieceAt(b.enPassantSquare()) == Empty && b.pieceAt(b.enPassantSquare() + 8) == Empty)
 		ui.epCombo->setCurrentIndex(b.enPassantSquare() % 8 + 1);
 	else if (b.toMove() == Black && b.pieceAt(b.enPassantSquare() + 8) == WhitePawn &&
-				b.pieceAt(b.enPassantSquare()) == Empty && b.pieceAt(b.enPassantSquare() - 8) == Empty)
+			b.pieceAt(b.enPassantSquare()) == Empty && b.pieceAt(b.enPassantSquare() - 8) == Empty)
 		ui.epCombo->setCurrentIndex(b.enPassantSquare() % 8 + 1);
 	else ui.epCombo->setCurrentIndex(0);
-   ui.wkCastleCheck->setChecked(b.castlingRights() & WhiteKingside);
+	ui.wkCastleCheck->setChecked(b.castlingRights() & WhiteKingside);
 	ui.wqCastleCheck->setChecked(b.castlingRights() & WhiteQueenside);
 	ui.bkCastleCheck->setChecked(b.castlingRights() & BlackKingside);
 	ui.bqCastleCheck->setChecked(b.castlingRights() & BlackQueenside);
@@ -134,7 +134,7 @@ void BoardSetupDialog::slotAccept()
 	if (reason.isEmpty())
 		accept();
 	else QMessageBox::critical(0, tr("Invalid position"),
-		tr("Current position is not valid.\n\n%1.").arg(reason));
+					   tr("Current position is not valid.\n\n%1.").arg(reason));
 }
 
 void BoardSetupDialog::slotClear()
@@ -272,10 +272,9 @@ void BoardSetupDialog::slotPasteFen()
 	if (!ui.boardView->board().isValidFen(fen)) {
 		QString msg = fen.length() ?
 			      tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
-				tr("There is no text in clipboard.");
+			      tr("There is no text in clipboard.");
 		QMessageBox::warning(0, "Paste FEN", msg);
-	}
-	else {
+	} else {
 		Board b;
 		b.fromFen(fen);
 		setBoard(b);

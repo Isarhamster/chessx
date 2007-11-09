@@ -79,19 +79,19 @@ bool compareMove(const MoveData& m1, const MoveData& m2)
 bool compareScore(const MoveData& m1, const MoveData& m2)
 {
 	return m1.percentage() < m2.percentage() ||
-			(m1.percentage() == m2.percentage() && m1.move < m2.move);
+	       (m1.percentage() == m2.percentage() && m1.move < m2.move);
 }
 
 bool compareRating(const MoveData& m1, const MoveData& m2)
 {
 	return m1.averageRating() < m2.averageRating() ||
-			(m1.averageRating() == m2.averageRating() && m1.move < m2.move);
+	       (m1.averageRating() == m2.averageRating() && m1.move < m2.move);
 }
 
 bool compareYear(const MoveData& m1, const MoveData& m2)
 {
 	return m1.averageYear() < m2.averageYear() ||
-			(m1.averageYear() == m2.averageYear() && m1.move < m2.move);
+	       (m1.averageYear() == m2.averageYear() && m1.move < m2.move);
 }
 
 
@@ -127,7 +127,7 @@ QString OpeningTree::debug()
 	QString s;
 	for (int i = 0; i < m_moves.count(); i++)
 		s.append(QString("%1. %2\t%3 games\t%4%\n")
-				.arg(i+1).arg(m_moves[i].move).arg(m_moves[i].count).arg(m_moves[i].percentage()));
+			 .arg(i + 1).arg(m_moves[i].move).arg(m_moves[i].count).arg(m_moves[i].percentage()));
 	return s;
 }
 
@@ -144,14 +144,14 @@ int OpeningTree::columnCount(const QModelIndex&) const
 OpeningTree::OpeningTree() : m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
 {
 	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
-			<< tr("Year");
+	<< tr("Year");
 }
 
 OpeningTree::OpeningTree(Filter & f, const Board & b) :
 		m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
 {
 	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
-			<< tr("Year");
+	<< tr("Year");
 	update(f, b);
 }
 
@@ -167,17 +167,17 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
 	if (role != Qt::DisplayRole || !index.isValid() || index.row() >= m_moves.count())
 		return QVariant();
 	switch (index.column()) {
-		case 0: return QString("%1: %2").arg(index.row() + 1).arg(m_moves[index.row()].move);
-		case 1: return QString("%1: %2%").arg(m_moves[index.row()].count)
-				.arg(m_moves[index.row()].count * 1000 / m_games / 10.0);
-		case 2: return QString("%1%").arg(m_moves[index.row()].percentage());
-		case 3: return m_moves[index.row()].rated >= MinAveRating ?
-						m_moves[index.row()].averageRating() : QVariant();
-		case 4:return m_moves[index.row()].dated >= MinAveYear ?
-						m_moves[index.row()].averageYear() : QVariant();
+	case 0: return QString("%1: %2").arg(index.row() + 1).arg(m_moves[index.row()].move);
+	case 1: return QString("%1: %2%").arg(m_moves[index.row()].count)
+			       .arg(m_moves[index.row()].count * 1000 / m_games / 10.0);
+	case 2: return QString("%1%").arg(m_moves[index.row()].percentage());
+	case 3: return m_moves[index.row()].rated >= MinAveRating ?
+			       m_moves[index.row()].averageRating() : QVariant();
+	case 4: return m_moves[index.row()].dated >= MinAveYear ?
+			       m_moves[index.row()].averageYear() : QVariant();
 
-		default:
-			return QVariant();
+	default:
+		return QVariant();
 	}
 }
 
@@ -186,11 +186,11 @@ void OpeningTree::sort(int column, Qt::SortOrder order)
 	m_sortcolumn = column;
 	m_order = order;
 	switch (column) {
-		case 0: qSort(m_moves.begin(), m_moves.end(), compareMove); break;
-		case 1: qSort(m_moves.begin(), m_moves.end()); break;
-		case 2: qSort(m_moves.begin(), m_moves.end(), compareScore); break;
-		case 3: qSort(m_moves.begin(), m_moves.end(), compareRating); break;
-		case 4: qSort(m_moves.begin(), m_moves.end(), compareYear); break;
+	case 0: qSort(m_moves.begin(), m_moves.end(), compareMove); break;
+	case 1: qSort(m_moves.begin(), m_moves.end()); break;
+	case 2: qSort(m_moves.begin(), m_moves.end(), compareScore); break;
+	case 3: qSort(m_moves.begin(), m_moves.end(), compareRating); break;
+	case 4: qSort(m_moves.begin(), m_moves.end(), compareYear); break;
 	};
 	if (order == Qt::DescendingOrder)
 		for (int i = 0; i < m_moves.count() / 2; i++)

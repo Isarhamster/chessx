@@ -103,7 +103,7 @@ bool MemoryDatabase::parseFile()
 		if (fen != "?")
 			game->setStartBoard(fen);
 		parseMoves(game);
-		m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2),m_count-1);
+		m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2), m_count - 1);
 		m_games.append(game);
 	}
 	m_index.setCacheEnabled(false);

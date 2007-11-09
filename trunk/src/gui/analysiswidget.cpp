@@ -5,7 +5,7 @@
 #include <QShowEvent>
 
 AnalysisWidget::AnalysisWidget()
-	: m_engine(0), m_active(false), m_closeTimer(0)
+		: m_engine(0), m_active(false), m_closeTimer(0)
 {
 	ui.setupUi(this);
 	connect(ui.engineList, SIGNAL(activated(int)), SLOT(changeEngine(int)));
@@ -100,14 +100,13 @@ void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const
 		QString color = mateIn >= 0 ? "000080" : "800000";
 		QString text = tr("Mate in");
 		out = QString("<font color=\"#%1\"><b>%2 %3</b></font> ")
-			.arg(color).arg(text).arg(abs(mateIn));
-	}
-	else if (score >= 0.0)
+		      .arg(color).arg(text).arg(abs(mateIn));
+	} else if (score >= 0.0)
 		out = QString("<font color=\"#000080\"><b>+%1</b></font> ").arg(score, 0, 'f', 2);
 	else out = QString("<font color=\"#800000\"><b>%1</b></font> ").arg(score, 0, 'f', 2);
 	int moveNo = m_board.moveNumber();
 	bool white = m_board.toMove() == White;
-	for (int i=0; i < analysis.variation.size(); ++i) {
+	for (int i = 0; i < analysis.variation.size(); ++i) {
 		if (white)
 			out += QString::number(moveNo++) + ". ";
 		else  if (i == 0)

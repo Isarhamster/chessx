@@ -152,7 +152,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_openingTree->sortByColumn(1, Qt::DescendingOrder);
 	m_openingTree->slotReconfigure();
 	connect(m_openingTree, SIGNAL(clicked(const QModelIndex&)),
-			  SLOT(slotSearchTreeMove(const QModelIndex&)));
+		SLOT(slotSearchTreeMove(const QModelIndex&)));
 	dock->setWidget(m_openingTree);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());
@@ -394,8 +394,8 @@ QString MainWindow::exportFileName(int& format)
 	fd.setDirectory(QDir::homePath());
 	QStringList filters;
 	filters << tr("PGN file (*.pgn)")
-			<< tr("HTML page (*.html)")
-			<< tr("LaTeX document (*.tex)");
+	<< tr("HTML page (*.html)")
+	<< tr("LaTeX document (*.tex)");
 	fd.setFilters(filters);
 	if (fd.exec() != QDialog::Accepted)
 		return QString();
@@ -411,7 +411,7 @@ bool MainWindow::gameEditComment()
 {
 	bool ok;
 	QString cmt = QInputDialog::getText(this, tr("Edit comment"), tr("Comment:"),
-													QLineEdit::Normal, game().annotation(game().currentVariation()), &ok);
+					    QLineEdit::Normal, game().annotation(game().currentVariation()), &ok);
 	if (ok)
 		game().setAnnotation(cmt, (game().currentVariation()));
 	return ok;
@@ -460,8 +460,8 @@ TipOfDayDialog* MainWindow::tipDialog()
 void MainWindow::slotFileNew()
 {
 	QString file = QFileDialog::getSaveFileName(this, tr("New database"),
-		AppSettings->value("/General/databasePath").toString(),
-		tr("ChessX databases (*.cxd)"));
+			AppSettings->value("/General/databasePath").toString(),
+			tr("ChessX databases (*.cxd)"));
 	if (file.isEmpty())
 		return;
 	if (!file.endsWith(".cxd"))
@@ -469,13 +469,13 @@ void MainWindow::slotFileNew()
 	ChessXDatabase cxd;
 	if (!cxd.create(file)) {
 		QMessageBox::warning(this, tr("New database"),
-			tr("Cannot create ChessX database."));
+				     tr("Cannot create ChessX database."));
 		return;
 	}
 	cxd.close();
 	openDatabase(file);
 	AppSettings->setValue("/General/databasePath",
-		QFileInfo(file).absolutePath());
+			      QFileInfo(file).absolutePath());
 }
 
 void MainWindow::slotFileOpen()
@@ -503,7 +503,7 @@ void MainWindow::slotFileSave()
 		Output output(Output::Pgn);
 		output.output(database()->filename(), *database());
 		slotStatusMessage(tr("Database %1 successfully saved.")
-				.arg(database()->filename().section('/', -1)));
+				  .arg(database()->filename().section('/', -1)));
 	}
 }
 
@@ -585,7 +585,7 @@ void MainWindow::slotEditPasteFEN()
 	board.fromFen(fen);
 	if (board.validate() != Valid) {
 		QMessageBox::warning(this, "Paste FEN", tr("The clipboard contains FEN, but with illegal position. "
-				"You can only paste such positions in <b>Setup position</b> dialog."));
+				     "You can only paste such positions in <b>Setup position</b> dialog."));
 		return;
 	}
 	game().setStartBoard(board);
@@ -632,8 +632,8 @@ void MainWindow::slotHelpAbout()
 	QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
 				      "<p>Free chess database available under GPLv2.<br>Version %1<br>%2"
 				      "<p>Copyright 2005-2007 ChessX developers<br>"
-						"Core developers: Marius Roets, Michal Rudolf, Rico Zenklusen.<br>"
-						"Additional coding: Sean Estabrooks, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.<br>"
+				      "Core developers: Marius Roets, Michal Rudolf, Rico Zenklusen.<br>"
+				      "Additional coding: Sean Estabrooks, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.<br>"
 				      "<p>Homepage: <a href=\"http://chessx.sf.net\">http://chessx.sf.net</a><br>"
 				      "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">"
 				      "chessx-users@lists.sourceforge.net").arg(ChessXVersion).arg(fastbits),
@@ -692,8 +692,7 @@ void MainWindow::slotBoardClick(Square, int button)
 	bool remove = game().atEnd();
 	int var = game().currentVariation();
 	gameMoveBy(-1);
-	if (remove)
-	{
+	if (remove) {
 		if (var && game().isMainline())
 			game().removeVariation(var);
 		else
@@ -779,8 +778,8 @@ void MainWindow::showTablebaseMove(Move move, int score)
 	QString update = m_moveView->toHtml();
 	int s = update.lastIndexOf("</p>");
 	update.insert(s, tr("<br>Tablebase: <a href=\"egtb:%1\">%2%3 %1</a> -- %4")
-			.arg(san).arg(game().moveNumber())
-			.arg(game().board().toMove() == White ? "." : "...").arg(result));
+		      .arg(san).arg(game().moveNumber())
+		      .arg(game().board().toMove() == White ? "." : "...").arg(result));
 	m_moveView->setHtml(update);
 }
 
@@ -857,25 +856,24 @@ void MainWindow::slotGameModify(int action, int move)
 	game().moveToId(move);
 	slotMoveChanged();
 	switch (action) {
-		case ChessBrowser::RemoveNextMoves:
-			game().truncateGameEnd();
-			break;
-		case ChessBrowser::RemovePreviousMoves:
-			game().truncateGameStart();
-			break;
-		case ChessBrowser::RemoveVariation:
-			{
-				int var = game().currentVariation();
-				game().exitVariation();
-				game().removeVariation(var);
-				break;
-			}
-		case ChessBrowser::EditComment:
-			if (!gameEditComment())
-				return;
-			break;
-		default:
-			;
+	case ChessBrowser::RemoveNextMoves:
+		game().truncateGameEnd();
+		break;
+	case ChessBrowser::RemovePreviousMoves:
+		game().truncateGameStart();
+		break;
+	case ChessBrowser::RemoveVariation: {
+		int var = game().currentVariation();
+		game().exitVariation();
+		game().removeVariation(var);
+		break;
+	}
+	case ChessBrowser::EditComment:
+		if (!gameEditComment())
+			return;
+		break;
+	default:
+		;
 	}
 	slotGameChanged();
 }
@@ -905,8 +903,7 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 		slotMoveChanged();
 		if (gameEditComment())
 			slotGameChanged();
-	}
-	else if (url.scheme() == "egtb") {
+	} else if (url.scheme() == "egtb") {
 		if (!game().atEnd())
 			game().enterVariation(game().addMove(url.path()));
 		else
@@ -962,7 +959,7 @@ void MainWindow::slotDatabaseCopy()
 {
 	if (m_databases.count() < 2) {
 		QMessageBox::warning(this, tr("Copy games"),
-			tr("You need at least two open databases to copy games"));
+				     tr("You need at least two open databases to copy games"));
 		return;
 	}
 	CopyDialog dlg(this);
@@ -970,7 +967,7 @@ void MainWindow::slotDatabaseCopy()
 	for (int i = 0; i < m_databases.count(); i++)
 		if (i != m_currentDatabase)
 			db.append(tr("%1. %2 (%3 games)").arg(i).arg(databaseName(i))
-					.arg(m_databases[i]->database()->count()));
+				  .arg(m_databases[i]->database()->count()));
 	dlg.setDatabases(db);
 	if (dlg.exec() != QDialog::Accepted)
 		return;
@@ -979,21 +976,21 @@ void MainWindow::slotDatabaseCopy()
 		target++;
 	Game g;
 	switch (dlg.getMode()) {
-		case CopyDialog::SingleGame:
-			m_databases[target]->database()->appendGame(game());
-			break;
-		case CopyDialog::Filter:
-			for (int i = 0; i < database()->count(); i++)
-				if (databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
-					m_databases[target]->database()->appendGame(g);
-			break;
-		case CopyDialog::AllGames:
-			for (int i = 0; i < database()->count(); i++)
-				if (database()->loadGame(i, g))
-					m_databases[target]->database()->appendGame(g);
-			break;
-		default:
-			;
+	case CopyDialog::SingleGame:
+		m_databases[target]->database()->appendGame(game());
+		break;
+	case CopyDialog::Filter:
+		for (int i = 0; i < database()->count(); i++)
+			if (databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
+				m_databases[target]->database()->appendGame(g);
+		break;
+	case CopyDialog::AllGames:
+		for (int i = 0; i < database()->count(); i++)
+			if (database()->loadGame(i, g))
+				m_databases[target]->database()->appendGame(g);
+		break;
+	default:
+		;
 	}
 	m_databases[target]->filter()->resize(m_databases[target]->database()->count(), 1);
 }
@@ -1024,7 +1021,7 @@ void MainWindow::setupActions()
 {
 	/* File menu */
 	QMenu* file = menuBar()->addMenu(tr("&File"));
-        file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew())));
+	file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew())));
 	file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), Qt::CTRL + Qt::Key_O));
 	QMenu* menuRecent = file->addMenu(tr("Open &recent..."));
 	const int MaxRecentFiles = 10;
@@ -1045,12 +1042,12 @@ void MainWindow::setupActions()
 	/* Edit menu */
 	QMenu* edit = menuBar()->addMenu(tr("&Edit"));
 	edit->addAction(createAction(tr("Position &Setup..."), SLOT(slotEditBoard()),
-						 Qt::CTRL + Qt::Key_E));
+				     Qt::CTRL + Qt::Key_E));
 	QMenu* editremove = edit->addMenu(tr("&Remove"));
 	editremove->addAction(createAction(tr("Moves from the beginning"),
-								 SLOT(slotEditTruncateStart())));
+					   SLOT(slotEditTruncateStart())));
 	editremove->addAction(createAction(tr("Moves to the end"), SLOT(slotEditTruncateEnd()),
-				     Qt::SHIFT + Qt::Key_Delete));
+					   Qt::SHIFT + Qt::Key_Delete));
 	edit->addSeparator();
 	edit->addAction(createAction(tr("&Copy FEN"), SLOT(slotEditCopyFEN()),
 				     Qt::CTRL + Qt::SHIFT + Qt::Key_C));
@@ -1096,7 +1093,7 @@ void MainWindow::setupActions()
 	QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
 	m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
 	menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()),
-								 Qt::Key_F5));
+					     Qt::Key_F5));
 
 	/* View menu */
 	m_menuView = menuBar()->addMenu(tr("&View"));
