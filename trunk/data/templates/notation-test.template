@@ -5,7 +5,7 @@
 #Allow Values - The values that are allowed for this option. Ignored
 #               for type Boolean(1|0|true|false) and Color. Values are
 #               are a | seperated list of values. For Integer types a
-#               range is allowed, specified as in 1:200 
+#               range is allowed, specified as in 1:200
 #Default - The default to be used. Must be in allowed values (duh)
 #Description - Short description, will be used in the GUI to change the
 #              option.
@@ -15,6 +15,7 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 ColumnStyle=false
 SymbolicNag=true
 TextWidth=0
+CommentIndent=Never
 MainLineMoveColor=#000000
 CommentColor=#008000
 VariationColor=#0000ff
@@ -39,7 +40,7 @@ HeaderColor=#0000ff
 </html>
 [MARKUPTAGS]
 MarkupHeaderBlock=,<br>\n
-MarkupNotationBlock=, 
+MarkupNotationBlock=,
 MarkupResult=,
 MarkupMainLineMove=<a class="main" href="move:%1">,</a>
 MarkupVariationMove=<a class="var" href="move:%1">,</a>
@@ -55,10 +56,3 @@ MarkupAnnotationIndent=<p class="comment"><a class="comment" href="cmt:%1">,</a>
 MarkupHeaderLine=<b>,</b><br>\n
 MarkupHeaderTagName=[,
 MarkupHeaderTagValue=","]
-MarkupWhiteTag=<a class="tag" href="tag:white">,</a>
-MarkupBlackTag=<a class="tag" href="tag:black">,</a>
-MarkupEventTag=,
-MarkupDateTag=,
-MarkupSiteTag=,
-MarkupResultTag=,
-MarkupRoundTag=,
