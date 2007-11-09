@@ -33,8 +33,8 @@ TriStateTree::TriStateTree(const Query& query)
 	m_nodes = new Node[m_nodeCount];
 	m_leafCount = 0;
 	m_leafs = new Node*[m_nodeCount];
+	Node** nodeStack = new Node*[m_nodeCount];
 	int stackTop = -1;
-	Node* nodeStack[m_nodeCount];
 
 	for (int element = 0; element < m_nodeCount; element++) {
 		if (query.isElementSearch(element)) {
@@ -61,6 +61,8 @@ TriStateTree::TriStateTree(const Query& query)
 			nodeStack[++stackTop] = &m_nodes[element];
 		}
 	}
+
+	delete[] nodeStack;
 
 	//stack should now be empty
 	Q_ASSERT(stackTop == 0);

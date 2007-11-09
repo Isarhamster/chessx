@@ -53,7 +53,7 @@ public:
 	/** When cache is enabled, adding values is very quick. It uses twice as
 	  * much RAM though. Useful for adding lots of values quickly.
 	  * Remember to disable afterwards to free extra memory.*/
-	void setCacheEnabled(bool enabled);
+	void setCacheEnabled(const bool enabled);
 	/** Returns the number of values in the list */
 	virtual int count() const;
 	/** returns true if the list contains the string 'value' */

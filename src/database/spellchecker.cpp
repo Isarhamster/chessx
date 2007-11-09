@@ -37,7 +37,7 @@ bool Spellchecker::load(const QString& filename)
 
 	stream >> magicNumber;
 	if (magicNumber != 0xCD5CBD01U) {
-		if (magicNumber & 0xFFFFFF != 0xCD5CBD00) {
+		if ((magicNumber & 0xFFFFFF) != 0xCD5CBD00) {
 			qWarning("Incorrect magic number for Spellchecker file.");
 		} else {
 			qWarning("Spellchecker file format newer than this program version");

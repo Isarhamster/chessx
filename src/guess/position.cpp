@@ -354,7 +354,7 @@ Position::GenKingMoves (MoveList * mlist, genMovesT genType, bool castling)
     colorT enemy = color_Flip(ToMove);
     const squareT * destPtr;
     pieceT king = piece_Make (ToMove, KING);
-    bool genNonCaptures = (genType & GEN_NON_CAPS);
+    bool genNonCaptures = ((genType & GEN_NON_CAPS) != 0);
 
     ASSERT (Board[kingSq] == king);
 
@@ -448,7 +448,7 @@ void
 Position::GenPawnMoves (MoveList * mlist, squareT from,
                         directionT dir, SquareSet * sqset, genMovesT genType)
 {
-    bool genNonCaptures = (genType & GEN_NON_CAPS);
+    bool genNonCaptures = ((genType & GEN_NON_CAPS) != 0);
     directionT oppdir = direction_Opposite(dir);
     directionT forward;
     rankT promoRank;
@@ -792,7 +792,7 @@ void
 Position::GenerateMoves (MoveList * mlist, pieceT pieceType,
                          genMovesT genType, bool maybeInCheck)
 {
-    bool genNonCaptures = (genType & GEN_NON_CAPS);
+    bool genNonCaptures = ((genType & GEN_NON_CAPS) != 0);
     bool capturesOnly = !genNonCaptures;
 
     uint mask = 0;
@@ -1303,7 +1303,7 @@ Position::GenCheckEvasions (MoveList * mlist, pieceT mask, genMovesT genType,
     // Assert that king IS actually in check:    
     ASSERT (numChecks > 0);
 
-    bool genNonCaptures = (genType & GEN_NON_CAPS);
+    bool genNonCaptures = ((genType & GEN_NON_CAPS) != 0);
     bool capturesOnly = !genNonCaptures;
     mlist->Clear();
 

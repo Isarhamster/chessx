@@ -97,7 +97,11 @@ GameId Index::add()
 // only a dummy implementation at the moment
 GameId Index::add(const Game&)
 {
+#ifdef __GNUG__
 #warning Just a dummy implementation of Index::add()
+#else // VisualC++
+#pragma message("Just a dummy implementation of Index::add()")
+#endif
  ++m_nbUsedIndexItems;
  return add();
 }

@@ -32,7 +32,7 @@ The PlayerDatabase class is used to acces player data.
 #include <QDataStream>
 #include <QFile>
 #include <QStringList>
-#include <playerdata.h>
+#include "playerdata.h"
 
 class PlayerDatabase
 {

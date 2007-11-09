@@ -45,7 +45,7 @@ setTimer (msecTimerT *t)
     // Use ftime() call in Windows:
     struct timeb tb;
     ftime (&tb);
-    t->seconds = tb.time;
+    t->seconds = (long)tb.time;
     t->milliseconds = tb.millitm;
 #else
 #  ifdef NO_GETTIMEOFDAY
