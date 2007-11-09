@@ -50,11 +50,3 @@ MarkupAnnotationIndent=<div class="comment-indent">,</div>\n
 MarkupHeaderLine=<span class="headerline">[,]</span><br>\n
 MarkupHeaderTagName=,
 MarkupHeaderTagValue=","
-MarkupWhiteTag=,
-MarkupBlackTag=,
-MarkupEventTag=,
-MarkupDateTag=,
-MarkupSiteTag=,
-MarkupResultTag=,
-MarkupRoundTag=,
-

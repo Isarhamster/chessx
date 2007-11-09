@@ -41,10 +41,3 @@ MarkupAnnotationIndent=<a href="cmt%1"><annotationindent>,</annotationindent></a
 MarkupHeaderLine=<pgnheader>[,]</pgnheader><br>\n
 MarkupHeaderTagName=,
 MarkupHeaderTagValue=","
-MarkupWhiteTag=,
-MarkupBlackTag=,
-MarkupEventTag=,
-MarkupDateTag=,
-MarkupSiteTag=,
-MarkupResultTag=,
-MarkupRoundTag=,
