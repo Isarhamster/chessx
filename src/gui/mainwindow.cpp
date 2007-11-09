@@ -1053,6 +1053,8 @@ void MainWindow::setupActions()
 				     Qt::CTRL + Qt::SHIFT + Qt::Key_C));
 	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
 				     Qt::CTRL + Qt::SHIFT + Qt::Key_V));
+	edit->addSeparator();
+	edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure())));
 
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
@@ -1097,15 +1099,12 @@ void MainWindow::setupActions()
 
 	/* View menu */
 	m_menuView = menuBar()->addMenu(tr("&View"));
+	QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
+	flip->setCheckable(true);
+	m_menuView->addAction(flip);
 	m_menuView->addAction(createAction(tr("&Player Database..."), SLOT(slotPlayerDialog()),
 					   Qt::CTRL + Qt::SHIFT + Qt::Key_P));
 
-	/* Settings menu */
-	QMenu *settings = menuBar()->addMenu(tr("&Settings"));
-	settings->addAction(createAction(tr("&Configure ChessX..."), SLOT(slotConfigure())));
-	QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
-	flip->setCheckable(true);
-	settings->addAction(flip);
 
 	/* Help menu */
 	menuBar()->addSeparator();
