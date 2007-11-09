@@ -80,22 +80,23 @@ QAction* ChessBrowser::createAction(const QString& name, int data)
 
 void ChessBrowser::setupMenu()
 {
-	m_popup = new QMenu(this);
-	connect(m_popup, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
+	m_gameMenu = new QMenu(this);
+	connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
 
-	m_popup->addAction(createAction(tr("Edit comment..."), EditComment));
+	m_gameMenu->addAction(createAction(tr("Edit comment..."), EditComment));
 
-	QMenu* remove = m_popup->addMenu(tr("Remove"));
+	QMenu* remove = m_gameMenu->addMenu(tr("Remove"));
 	remove->addAction(createAction(tr("Previous moves"), RemovePreviousMoves));
 	remove->addAction(createAction(tr("Next moves"), RemoveNextMoves));
 	remove->addAction(createAction(tr("Current variation"), RemoveVariation));
 
+	m_mainMenu = new QMenu(this);
 	m_smallfont = createAction(tr("Small font"), NoAction);
 	m_smallfont->setCheckable(true);
 	m_smallfont->setChecked(false);
 	connect(m_smallfont, SIGNAL(toggled(bool)), SLOT(slotToggleFont(bool)));
-	m_popup->addAction(m_smallfont);
+	m_mainMenu->addAction(m_smallfont);
 }
 
 void ChessBrowser::slotContextMenu(const QPoint& pos)
@@ -103,8 +104,9 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
 	QString link = anchorAt(pos);
 	if (!link.isEmpty()) {
 		m_currentMove = link.section(':', 1).toInt();
-		m_popup->exec(mapToGlobal(pos));
+		m_gameMenu->exec(mapToGlobal(pos));
 	}
+	else m_mainMenu->exec(mapToGlobal(pos));
 }
 
 void ChessBrowser::slotToggleFont(bool toggled)
