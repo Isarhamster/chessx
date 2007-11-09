@@ -41,10 +41,3 @@ MarkupAnnotationIndent=<blockquote style="margin-left:30px"><a style="font-weigh
 MarkupHeaderLine=<span style="color:blue">[,]</span><br>\n
 MarkupHeaderTagName=,
 MarkupHeaderTagValue=","
-MarkupWhiteTag=,
-MarkupBlackTag=,
-MarkupEventTag=,
-MarkupDateTag=,
-MarkupSiteTag=,
-MarkupResultTag=,
-MarkupRoundTag=,

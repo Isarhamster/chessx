@@ -17,11 +17,4 @@ MarkupAnnotationIndent={,}
 MarkupHeaderLine=[,]\n
 MarkupHeaderTagName=,
 MarkupHeaderTagValue=","
-MarkupWhiteTag=,
-MarkupBlackTag=,
-MarkupEventTag=,
-MarkupDateTag=,
-MarkupSiteTag=,
-MarkupResultTag=,
-MarkupRoundTag=,
 
