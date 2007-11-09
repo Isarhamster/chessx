@@ -18,9 +18,9 @@
 #include "uciengine.h"
 
 UCIEngine::UCIEngine(const QString& name,
-		const QString& command,
-		const QString& directory,
-		QTextStream* logStream) : Engine(name, command, directory, logStream)
+		     const QString& command,
+		     const QString& directory,
+		     QTextStream* logStream) : Engine(name, command, directory, logStream)
 {
 	m_position = "";
 	m_waitingOn = "";

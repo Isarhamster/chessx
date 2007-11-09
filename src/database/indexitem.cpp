@@ -123,14 +123,14 @@ void IndexItem::read(QDataStream& in)
 
 void IndexItem::cxdWrite(QIODevice& qiod) const
 {
-  Q_ASSERT(m_size==Index::defaultIndexItemSize);
-  qiod.write((const char*)m_data,m_size);
+	Q_ASSERT(m_size == Index::defaultIndexItemSize);
+	qiod.write((const char*)m_data, m_size);
 }
 void IndexItem::cxdRead(QIODevice& qiod)
 {
-  Q_ASSERT(m_size==Index::defaultIndexItemSize);
-  // Here we assume that the right space is allocated. This should be done by
-  // default in the IndexItem construcor.
-  qiod.read((char*)m_data,Index::defaultIndexItemSize);
+	Q_ASSERT(m_size == Index::defaultIndexItemSize);
+	// Here we assume that the right space is allocated. This should be done by
+	// default in the IndexItem construcor.
+	qiod.read((char*)m_data, Index::defaultIndexItemSize);
 }
 

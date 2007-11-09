@@ -105,8 +105,7 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
 	if (!link.isEmpty()) {
 		m_currentMove = link.section(':', 1).toInt();
 		m_gameMenu->exec(mapToGlobal(pos));
-	}
-	else m_mainMenu->exec(mapToGlobal(pos));
+	} else m_mainMenu->exec(mapToGlobal(pos));
 }
 
 void ChessBrowser::slotToggleFont(bool toggled)

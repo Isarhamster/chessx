@@ -23,9 +23,9 @@
 /*** Engine ***/
 
 Engine::Engine(const QString& name,
-		const QString& command,
-		const QString& directory,
-		QTextStream* logStream) : QObject()
+	       const QString& command,
+	       const QString& directory,
+	       QTextStream* logStream) : QObject()
 {
 	m_name = name;
 	m_command = command;
@@ -43,15 +43,15 @@ Engine* Engine::newEngine(int index)
 //
 	Engine *engine = NULL;
 
-        QStringList engines;
-        AppSettings->beginGroup("/Engines/");
+	QStringList engines;
+	AppSettings->beginGroup("/Engines/");
 	QString key(QString::number(index));
 	QString name = AppSettings->value(key + "/Name").toString();
 	QString command = AppSettings->value(key + "/Command").toString();
 	QString options = AppSettings->value(key + "/Options").toString();
 	QString directory = AppSettings->value(key + "/Directory").toString();
 	QString protocol = AppSettings->value(key + "/Protocol").toString();
-        AppSettings->endGroup();
+	AppSettings->endGroup();
 
 	if (command.contains(' '))
 		command = QString("\"%1\"").arg(command);

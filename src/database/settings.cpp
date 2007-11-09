@@ -33,12 +33,10 @@ bool Settings::layout(QWidget* w)
 	beginGroup("Geometry");
 	QList<int> values;
 	bool valid = list(w->objectName(), values, 5);
-	if (valid)  // Enough values
-	{
+	if (valid) { // Enough values
 		w->resize(QSize(values[2], values[3]));
 		w->move(QPoint(values[0], values[1]));
-		if (qobject_cast<QMainWindow*>(w))
-		{
+		if (qobject_cast<QMainWindow*>(w)) {
 			QByteArray docks = value("Docks", QByteArray()).toByteArray();
 			if (docks.count())
 				qobject_cast<QMainWindow*>(w)->restoreState(docks, 0);

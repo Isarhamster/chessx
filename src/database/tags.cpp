@@ -22,13 +22,12 @@
 static quint32 Magic = (quint32)0x00DDB0DE; // 'magic' number
 static quint32 Version = (quint32)100; // file format version
 static QString Tagfile_suffix = ".ctf";
-static char* knownTagNames[] =
-	{"Event", "Site", "Date", "Round", "Name", "Result",
-	 "Title", "Elo", "USCF", "NA", "Type", "EventDate", "EventSponsor", "Section", "Stage", "Board",
-	 "Opening", "Variation", "Subvariation", "ECO", "NIC", "Time", "UTCTime", "UTCDate",
-	 "TimeControl", "SetUp", "FEN", "Termination", "Annotator", "Mode", "PlyCount",
-	 "Source"
-	};
+static char* knownTagNames[] = {"Event", "Site", "Date", "Round", "Name", "Result",
+				"Title", "Elo", "USCF", "NA", "Type", "EventDate", "EventSponsor", "Section", "Stage", "Board",
+				"Opening", "Variation", "Subvariation", "ECO", "NIC", "Time", "UTCTime", "UTCDate",
+				"TimeControl", "SetUp", "FEN", "Termination", "Annotator", "Mode", "PlyCount",
+				"Source"
+			       };
 
 Tags::Tags(const QString& fname)
 {

@@ -104,7 +104,7 @@ TriStateTree::TriStateTree(const TriStateTree& tree)
 	}
 }
 
-TriStateTree& TriStateTree::operator=(const TriStateTree& tree)
+TriStateTree& TriStateTree::operator=(const TriStateTree & tree)
 {
 	//assign data members
 	m_state = tree.m_state;

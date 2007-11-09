@@ -40,7 +40,7 @@ Filter::Filter(const Filter& filter)
 	m_searchTime = 0;
 }
 
-Filter Filter::operator=(const Filter& filter)
+Filter Filter::operator=(const Filter & filter)
 {
 	delete m_byteArray;
 	m_byteArray = new QByteArray(filter.byteArray());
@@ -158,8 +158,8 @@ void Filter::resize(int newsize, bool includeNew)
 			m_count--;
 	int oldsize = size();
 	m_byteArray->resize(newsize);
-   // Set new (uninitialized games) to 'includeNew' value.
-   for (int i = oldsize; i < newsize; ++i)
+	// Set new (uninitialized games) to 'includeNew' value.
+	for (int i = oldsize; i < newsize; ++i)
 		(*m_byteArray)[i] = includeNew;
 	if (includeNew)
 		m_count += newsize - oldsize;
@@ -178,10 +178,9 @@ void Filter::reverse()
 
 }
 
-const bool ops[4][2][2] =
-	{ { {0, 0}, {0, 1}} /* And */, {{0, 1}, {1, 1}} /* Or */,
-	  {{0, 1}, {1, 0}} /* Xor */, {{0, 0}, {1, 0}} /* Minus */
-	};
+const bool ops[4][2][2] = { { {0, 0}, {0, 1}} /* And */, {{0, 1}, {1, 1}} /* Or */,
+	{{0, 1}, {1, 0}} /* Xor */, {{0, 0}, {1, 0}} /* Minus */
+};
 
 
 void Filter::join(const Filter& filter, Operator op)

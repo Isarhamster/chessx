@@ -173,7 +173,7 @@ void BoardView::showGuess(Square s)
 			update(squareRect(m_hito));
 		} else {
 			Guess::Result sm = Guess::guessMove(
-					qPrintable(m_board.toFen()), (int) s);
+						   qPrintable(m_board.toFen()), (int) s);
 			if (!sm.error) {
 				m_hifrom = sm.from;
 				m_hito = sm.to;
@@ -250,8 +250,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 			if (!(event->modifiers() & Qt::ControlModifier)) {
 				emit moveMade(from, s);
 				updateGuess(s);
-			}
-			else if (m_board.pieceAt(from) != Empty)
+			} else if (m_board.pieceAt(from) != Empty)
 				emit copyPiece(from, s);
 		}
 	} else if (m_selectedSquare != InvalidSquare) {

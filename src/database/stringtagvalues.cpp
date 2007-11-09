@@ -24,7 +24,7 @@ StringTagValues::StringTagValues()
 	m_cache = NULL;
 //	setCacheEnabled(false);
 // rico: changed caching to be default behavior
-        setCacheEnabled(true);
+	setCacheEnabled(true);
 }
 
 StringTagValues::~StringTagValues()
@@ -60,7 +60,7 @@ QString StringTagValues::value(int index) const
 void StringTagValues::clear()
 {
 	setCacheEnabled(false);
-        setCacheEnabled(true);
+	setCacheEnabled(true);
 	m_list.clear();
 }
 
@@ -107,10 +107,9 @@ void StringTagValues::read(QDataStream& in)
 //		add(line);
 //		lineNr++;
 //	}
-        while(!in.atEnd())
-	{
-	  in >> line;
-          add(line);
+	while (!in.atEnd()) {
+		in >> line;
+		add(line);
 	}
 //	setCacheEnabled(false);
 }
@@ -126,7 +125,7 @@ void StringTagValues::write(QDataStream& out)
 
 void StringTagValues::appendToStream(const QString& value, QDataStream& out)
 {
-        out << value;
+	out << value;
 }
 
 QBitArray StringTagValues::listContainingValue(const QString& value)

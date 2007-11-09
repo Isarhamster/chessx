@@ -47,7 +47,7 @@ void Shredder::sendIt()
 	QUrl url(QString("/online/playshredder/fetch.php?action=egtb&hook=%1&fen=%2")
 		 .arg(toMove).arg(m_fen));
 	m_http->setHost("www.shredderchess.com");
-	m_id=m_http->get(url.toEncoded());
+	m_id = m_http->get(url.toEncoded());
 }
 
 void Shredder::httpDone(int id, bool error)

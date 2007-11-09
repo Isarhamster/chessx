@@ -420,7 +420,7 @@ void PgnDatabase::skipMoves()
 		skipLine();
 	}
 	gameNumber.lastIndexIn(gameText);
-	m_index.setTag("Length", gameNumber.cap(1),m_count-1);
+	m_index.setTag("Length", gameNumber.cap(1), m_count - 1);
 
 	//swallow trailing whitespace
 	while (onlyWhite(m_lineBuffer) && !m_file->atEnd())

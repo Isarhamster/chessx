@@ -19,13 +19,13 @@
 #include "filtermodel.h"
 
 FilterModel::FilterModel(Filter* filter, QObject* parent)
-	: QAbstractItemModel(parent), m_filter(filter), m_gameIndex(-1)
+		: QAbstractItemModel(parent), m_filter(filter), m_gameIndex(-1)
 {
 	m_columnNames << "Nr"
 	<< "White"
-   << "WhiteElo"
+	<< "WhiteElo"
 	<< "Black"
-   << "BlackElo"
+	<< "BlackElo"
 	<< "Event"
 	<< "Site"
 	<< "Round"
@@ -58,13 +58,12 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
 	if (role == Qt::DisplayRole && index.isValid() && index.row() < m_filter->count()) {
 		int i = m_filter->indexToGame(index.row());
 		if (i != -1) {
-			if (i != m_gameIndex)
-                          {
+			if (i != m_gameIndex) {
 // rico: it would perhaps be better to read here only header information that is
 // currently used and not the whole header information.
-                            m_filter->database()->loadGameHeaders(i, *m_game);
-			    m_gameIndex = i;
-                          }
+				m_filter->database()->loadGameHeaders(i, *m_game);
+				m_gameIndex = i;
+			}
 			if (index.column() == 0)
 				return i + 1;
 			else

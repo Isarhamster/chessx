@@ -63,8 +63,7 @@ void PlayerDialog::findPlayers(const QString& s)
 		foreach(player, players)
 		ui.playerCombo->addItem(player);
 		showPlayer(ui.playerCombo->itemText(0));
-	}
-	else
+	} else
 		showPlayer(s);
 	ui.playerCombo->setEditText(s);
 	show();
@@ -165,8 +164,8 @@ QString formatResult(int results[5])
 {
 	int score = 2 * results[WhiteWin] + results[Draw] + results[Unknown];
 	return QString(" %1% +%2 =%3 -%4 %5/%6").arg(score / (0.02 * results[4]), 0, 'f', 2)
-			.arg(results[WhiteWin]).arg(results[Draw]).arg(results[BlackWin])
-			.arg(score / 2.0).arg(results[4]);
+	       .arg(results[WhiteWin]).arg(results[Draw]).arg(results[BlackWin])
+	       .arg(score / 2.0).arg(results[4]);
 }
 
 int toResult(const QString& res)
@@ -238,6 +237,6 @@ QString PlayerDialog::databaseInfo(const QString& player)
 		daterange = QString("(%1)").arg(dates[0].asString());
 	else daterange = QString("(%1 - %2)").arg(dates[0].asString()).arg(dates[1].asString());
 	return tr("Games in current database: %1 %2<br>%3<br>%4<br>%5<br>").arg((results[4] + bresults[4]))
-			.arg(daterange).arg(white).arg(black).arg(total);
+	       .arg(daterange).arg(white).arg(black).arg(total);
 }
 

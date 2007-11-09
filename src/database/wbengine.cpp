@@ -18,9 +18,9 @@
 #include "wbengine.h"
 
 WBEngine::WBEngine(const QString& name,
-		const QString& command,
-		const QString& directory,
-		QTextStream* logStream) : Engine(name, command, directory, logStream)
+		   const QString& command,
+		   const QString& directory,
+		   QTextStream* logStream) : Engine(name, command, directory, logStream)
 {
 	m_analyze = false;
 	m_setboard = false;		// We do not support version 1 xboard protocol, so this _must_ be set true by feature discovery
@@ -75,7 +75,7 @@ void WBEngine::processMessage(const QString& message)
 
 	// GNU Chess always prompts ...
 	if (trim.startsWith("White (1) : "))
-		trim=message.mid(12);
+		trim = message.mid(12);
 
 	trim = trim.trimmed();
 
@@ -159,7 +159,7 @@ void WBEngine::featureDone(bool done)
 	// No need to wait any longer wondering if we're talking to a V1 engine
 	if (m_featureTimer) {
 		killTimer(m_featureTimer);
-		m_featureTimer=0;
+		m_featureTimer = 0;
 	}
 
 	// The engine will send done=1, when its ready to go,
@@ -258,7 +258,7 @@ void WBEngine::timerEvent(QTimerEvent*)
 
 	// Make sure timer doesn't fire again
 	killTimer(m_featureTimer);
-	m_featureTimer=0;
+	m_featureTimer = 0;
 
 	v1TurnOffPondering();
 	setActive(true);

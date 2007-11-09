@@ -301,7 +301,7 @@ void Output::writeVariation()
 	while (!m_game->atEnd()) {
 		// *** Writes move in the current variation
 		writeMove();
-		for (int i=1; i < m_game->variationCount(); ++i) {
+		for (int i = 1; i < m_game->variationCount(); ++i) {
 			m_currentVariationLevel += 1;
 			if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 1)) {
 				m_output += m_endTagMap[MarkupColumnStyleMainline];
@@ -346,13 +346,13 @@ void Output::writeVariation()
 void Output::writeTag(const QString& tagName, const QString& tagValue)
 {
 	m_output += m_startTagMap[MarkupHeaderLine] +
-			 m_startTagMap[MarkupHeaderTagName] +
+		    m_startTagMap[MarkupHeaderTagName] +
 		    tagName + m_endTagMap[MarkupHeaderTagName] +
-			" " +
+		    " " +
 		    m_startTagMap[MarkupHeaderTagValue] +
 		    tagValue +
 		    m_endTagMap[MarkupHeaderTagValue] +
-			m_endTagMap[MarkupHeaderLine];
+		    m_endTagMap[MarkupHeaderLine];
 
 }
 
@@ -372,7 +372,7 @@ void Output::writeAllTags()
 	QMapIterator<QString, QString> it(tags);
 	while (it.hasNext()) {
 		it.next();
-	// workaround for problems with IndexItem implementation
+		// workaround for problems with IndexItem implementation
 		if (!it.value().isEmpty() && it.value() != "?" && it.key() != "Length")
 			writeTag(it.key(), it.value());
 	}
