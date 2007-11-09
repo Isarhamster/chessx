@@ -340,6 +340,7 @@ const QString NagStrings[NagCount] =
 		"Bishops of same color"
 	};
 
+const int MaxNags = 8;
 
 /** @ingroup Database
 The NagSet class stores set of PGN NAGs.
@@ -366,7 +367,6 @@ public:
 private:
 	static void initialize();
 
-	static const int MaxNags = 8;
 	quint8 m_noNags;
 	quint8 m_nags[MaxNags];
 

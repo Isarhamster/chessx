@@ -205,7 +205,7 @@ inline uint getFirstBitAndClear64(quint64& bb)
 #else
 	// SBE - After a fair bit of testing, this is the fastest portable version
 	// i could come up with, it's about twice as fast as shift-testing 64 times.
-	register quint64 x = bb & -bb;
+	register quint64 x = bb & -(qint64)bb;
 	register uint r =  0;
 	bb ^= x;
 	if (!(x & 0xffffffff)) { x >>= 32; r |= 32; }

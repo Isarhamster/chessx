@@ -14,7 +14,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <playerdata.h>
+#include "playerdata.h"
 
 PlayerData::PlayerData()
 {

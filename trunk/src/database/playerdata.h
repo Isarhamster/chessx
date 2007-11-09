@@ -22,7 +22,7 @@
 #include <QImage>
 #include <QMap>
 #include <QList>
-#include <partialdate.h>
+#include "partialdate.h"
 
 /** @ingroup Database
 The PlayerData class holds information about single player.

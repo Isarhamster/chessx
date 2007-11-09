@@ -158,8 +158,8 @@ const flagT FLAG_EMPTY = 0;
 const flagT FLAG_YES = 1;
 const flagT FLAG_NO = 2;
 const flagT FLAG_BOTH = 3;
-inline bool flag_Yes (flagT t) { return (t & FLAG_YES); }
-inline bool flag_No (flagT t) { return (t & FLAG_NO); }
+inline bool flag_Yes (flagT t) { return ((t & FLAG_YES) != 0); }
+inline bool flag_No (flagT t) { return ((t & FLAG_NO) != 0); }
 flagT  strGetFlag (const char * str);
 
 squareT strGetSquare (const char * str);

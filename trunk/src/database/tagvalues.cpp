@@ -48,6 +48,10 @@ QModelIndex TagValues::parent(const QModelIndex&) const
 
 void TagValues::appendToStream(const QString&, QDataStream &)
 {
+#ifdef __GNUG__
 #warning appendToStream is not implemented yet.
+#else // VisualC++
+#pragma message("appendToStream is not implemented yet.")
+#endif
 }
 

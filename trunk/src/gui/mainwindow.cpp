@@ -41,6 +41,8 @@
 #include "analysiswidget.h"
 #include "version.h"
 
+#include <time.h>
+
 #include <QActionGroup>
 #include <QApplication>
 #include <QClipboard>

@@ -54,7 +54,11 @@ GameList::~GameList()
 
 void GameList::simpleSearch(int tagid)
 {
+#ifdef __GNUG__
 #warning Unify with <filtermodel.cpp>
+#else // VisualC++
+#pragma message("Unify with <filtermodel.cpp>")
+#endif
 	const QString tagNames[] = {"Nr", "White", "WhiteElo", "Black", "BlackElo", "Event", "Site", "Round", "Date",
 			"Result", "ECO", "PlyCount", ""};
 
@@ -71,7 +75,11 @@ void GameList::simpleSearch(int tagid)
 	if (value.isEmpty())
 		m_model->filter()->setAll(1);
 	else {
+#ifdef __GNUG__
 #warning Fix after Search::Operator cleanup
+#else // VisualC++
+#pragma message("Fix after Search::Operator cleanup")
+#endif
 		TagSearch ts(m_model->filter()->database(), tag, value);
 		if (dialog.mode())
 			m_model->filter()->executeSearch(ts, Search::Operator(dialog.mode()));
