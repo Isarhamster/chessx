@@ -56,7 +56,8 @@ protected:
 virtual QAction* createAction(const QString& name, int action);
 private:
 	QAction* m_smallfont;
-	QMenu* m_popup;
+	QMenu* m_gameMenu;
+	QMenu* m_mainMenu;
 	int m_currentMove;
 };
 
