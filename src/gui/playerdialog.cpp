@@ -218,10 +218,10 @@ QString PlayerDialog::databaseInfo(const QString& player)
 	QString daterange;
 	if (dates[0] == dates[1])
 		daterange = QString("(%1)").arg(dates[0].asString());
-	else daterange = QString("(%1 - %2)").arg(dates[0].asString()).arg(dates[1].asString());
+	else daterange = QString("%1 - %2").arg(dates[0].asString()).arg(dates[1].asString());
 	return tr("Games in current database: <b>%1</b><br>"
 			"Time span: <b>%2</b><br>%3<br>%4<br>%5<br>")
 			 .arg((results[4] + bresults[4]))
-	       .arg(daterange).arg(white).arg(black).arg(total);
+			.arg(daterange).arg(total).arg(white).arg(black);
 }
 
