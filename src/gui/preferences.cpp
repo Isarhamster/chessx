@@ -239,9 +239,8 @@ void PreferencesDialog::restoreSettings()
 	selectInCombo(ui.boardThemeCombo, boardTheme);
 
 	// Read Players settings
-	AppSettings->beginGroup("/Players/");
-	ui.playersRatingsCheck->setChecked(AppSettings->value("rating", true).toBool());
-	AppSettings->endGroup();
+	//AppSettings->beginGroup("/Players/");
+	//AppSettings->endGroup();
 
 	// Read Engine settings
 	QStringList lnames;
@@ -286,9 +285,9 @@ void PreferencesDialog::saveSettings()
 	colorNames << "lightColor" << "darkColor" << "highlightColor" << "frameColor";
 	saveColorList(ui.boardColorsList, colorNames);
 	AppSettings->endGroup();
-	AppSettings->beginGroup("/Players/");
-	AppSettings->setValue("rating", ui.playersRatingsCheck->isChecked());
-	AppSettings->endGroup();
+	//AppSettings->beginGroup("/Players/");
+	//AppSettings->setValue("rating", ui.playersRatingsCheck->isChecked());
+	//AppSettings->endGroup();
 
 	// Save engine settings
 	updateEngineData(ui.engineList->currentIndex().row());  // Make sure current edits are saved

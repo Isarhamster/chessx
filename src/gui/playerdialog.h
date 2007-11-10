@@ -51,8 +51,6 @@ private:
 	Ui::PlayerDialog ui;
 	PlayerDatabase* m_playerDatabase;
 	Database* m_database;
-	bool m_showRating;
-	int m_showLimit;
 	QSortFilterProxyModel* m_filterModel;
 };
 
