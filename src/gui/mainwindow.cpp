@@ -545,6 +545,7 @@ void MainWindow::slotFileQuit()
 
 void MainWindow::slotPlayerDialog()
 {
+	playerDialog()->setDatabase(database());
 	playerDialog()->show();
 }
 
@@ -911,11 +912,10 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 		game().forward();
 		slotGameChanged();
 	} else if (url.scheme() == "tag") {
-		playerDialog()->setDatabase(database());
 		if (url.path() == "white")
-			playerDialog()->findPlayers(game().tag("White"));
+			playerDialog()->showPlayer(game().tag("White"));
 		else if (url.path() == "black")
-			playerDialog()->findPlayers(game().tag("Black"));
+			playerDialog()->showPlayer(game().tag("Black"));
 	}
 }
 
@@ -1002,6 +1002,8 @@ void MainWindow::slotDatabaseChanged()
 	m_gameList->setFilter(databaseInfo()->filter());
 	slotFilterChanged();
 	gameLoad(gameIndex(), true);
+	if (m_playerDialog && playerDialog()->isVisible())
+		playerDialog()->setDatabase(database());
 }
 
 QAction* MainWindow::createAction(const QString& name, const char* slot, const QKeySequence& key,

@@ -15,6 +15,7 @@
  ***************************************************************************/
 
 #include <QComboBox>
+#include <QSortFilterProxyModel>
 #include <QtGlobal>
 #include <QTextBrowser>
 
@@ -28,12 +29,16 @@
 PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : QDialog(parent)
 {
 	ui.setupUi(this);
+	m_filterModel = new QSortFilterProxyModel(this);
+	m_filterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+	ui.playersView->setModel(m_filterModel);
 
 	setObjectName("PlayerDialog");
 	m_playerDatabase = db;
 	m_database = 0;
-	connect(ui.findButton, SIGNAL(clicked()), SLOT(findPlayers()));
-	connect(ui.playerCombo, SIGNAL(activated(const QString&)), SLOT(showPlayer(const QString&)));
+	connect(ui.showButton, SIGNAL(clicked()), SLOT(showPlayer()));
+	connect(ui.filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findPlayers(const QString&)));
+	connect(ui.playersView, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(showPlayer()));
 	if (parent)
 		connect(parent, SIGNAL(reconfigure()), SLOT(configure()));
 	configure();
@@ -52,32 +57,15 @@ void PlayerDialog::configure()
 
 void PlayerDialog::findPlayers(const QString& s)
 {
-	// Capitalize first letter
-	QString name = s;
-	if (!name.isEmpty())
-		name[0] = name[0].toUpper();
-	QStringList players = m_playerDatabase->findPlayers(name, m_showLimit);
-	ui.playerCombo->clear();
-	if (players.count()) {
-		QString player;
-		foreach(player, players)
-		ui.playerCombo->addItem(player);
-		showPlayer(ui.playerCombo->itemText(0));
-	} else
-		showPlayer(s);
-	ui.playerCombo->setEditText(s);
-	show();
-}
-
-void PlayerDialog::findPlayers()
-{
-	findPlayers(ui.playerCombo->currentText());
+	m_filterModel->setFilterFixedString(s);
 }
 
 void PlayerDialog::showPlayer(const QString& player)
 {
 	QString found;
-	ui.playerView->setText(tr("<html><h2>%1</h2>%2</html>").arg(player).arg(databaseInfo(player)));
+	ui.tabs->setCurrentIndex(1);
+	ui.playerView->setText(tr("<html><h2>%1</h2>%2</html>").arg(player)
+			.arg(databaseInfo(player)));
 	/*
 	if (m_playerDatabase->exists(player))
 		found = player;
@@ -95,14 +83,9 @@ void PlayerDialog::showPlayer(const QString& player)
 
 void PlayerDialog::showPlayer()
 {
-	showPlayer(ui.playerCombo->currentText());
+	showPlayer(ui.playersView->currentIndex().data().toString());
 }
 
-void PlayerDialog::showPlayer(const QString& player, Database* db)
-{
-	m_database = db;
-	showPlayer(player);
-}
 
 QString PlayerDialog::formatPlayer(const QString& player)
 {
@@ -157,6 +140,8 @@ QString PlayerDialog::formatPlayer(const QString& player)
 void PlayerDialog::setDatabase(Database* db)
 {
 	m_database = db;
+	m_filterModel->setSourceModel(m_database->index()->tagValues(TagWhite));
+	m_filterModel->sort(0);
 }
 
 
@@ -236,7 +221,9 @@ QString PlayerDialog::databaseInfo(const QString& player)
 	if (dates[0] == dates[1])
 		daterange = QString("(%1)").arg(dates[0].asString());
 	else daterange = QString("(%1 - %2)").arg(dates[0].asString()).arg(dates[1].asString());
-	return tr("Games in current database: %1 %2<br>%3<br>%4<br>%5<br>").arg((results[4] + bresults[4]))
+	return tr("Games in current database: <b>%1</b><br>"
+			"Time span: <b>%2</b><br>%3<br>%4<br>%5<br>")
+			 .arg((results[4] + bresults[4]))
 	       .arg(daterange).arg(white).arg(black).arg(total);
 }
 
