@@ -19,9 +19,9 @@
 
 #include "ui_playerdialog.h"
 
-
 class PlayerDatabase;
 class Database;
+class QSortFilterProxyModel;
 
 /** @ingroup GUI
 The PlayerDialog class is a dialog to browse player information. */
@@ -35,14 +35,10 @@ public:
 public slots:
 	/** Find players matching @p player . Put the list in the Players combo and show the first match. */
 	void findPlayers(const QString& player);
-	/** Find players matching current combo text. */
-	void findPlayers();
 	/** Show currently selected player */
 	void showPlayer();
-	/** Show given player. Do not change Player combo */
+	/** Show information about given player from current database. */
 	void showPlayer(const QString& player);
-	/** Show given player. Do not change Player combo. Set current database */
-	void showPlayer(const QString& player, Database* db);
 	/** Re-read configuration */
 	void configure();
 	/** Set database used for getting player information. */
@@ -57,7 +53,7 @@ private:
 	Database* m_database;
 	bool m_showRating;
 	int m_showLimit;
-
+	QSortFilterProxyModel* m_filterModel;
 };
 
 
