@@ -49,10 +49,10 @@ PlayerDialog::~PlayerDialog()
 
 void PlayerDialog::configure()
 {
+	/*
 	AppSettings->beginGroup("/Players/");
-	m_showRating = AppSettings->value("rating", true).toBool();
-	m_showLimit = AppSettings->value("count", 100).toInt();
 	AppSettings->endGroup();
+	*/
 }
 
 void PlayerDialog::findPlayers(const QString& s)
@@ -116,20 +116,18 @@ QString PlayerDialog::formatPlayer(const QString& player)
 	if (elo)
 		rating.append(tr("Last rating: %1 (%2)").arg(elo)
 			      .arg(m_playerDatabase->eloListToDate(eloindex).asShortString()));
-	if (m_showRating) {
-		rating.append(tr("<br>Rating history:<br><blockquote>"));
-		int start = m_playerDatabase->firstEloListIndex();
-		int end = m_playerDatabase->lastEloListIndex();
-		for (int i = start; i <= end; i++) {
-			int elo = m_playerDatabase->elo(i);
-			if (!elo)
-				continue;
-			if (i != start)
-				rating.append(", ");
-			rating.append(QString("%1:&nbsp;%2").arg(m_playerDatabase->eloListToDate(i).asShortString()).arg(elo));
-		}
-		rating.append("</blockquote>\n");
+	rating.append(tr("<br>Rating history:<br><blockquote>"));
+	int start = m_playerDatabase->firstEloListIndex();
+	int end = m_playerDatabase->lastEloListIndex();
+	for (int i = start; i <= end; i++) {
+		int elo = m_playerDatabase->elo(i);
+		if (!elo)
+			continue;
+		if (i != start)
+			rating.append(", ");
+		rating.append(QString("%1:&nbsp;%2").arg(m_playerDatabase->eloListToDate(i).asShortString()).arg(elo));
 	}
+	rating.append("</blockquote>\n");
 	if (!rating.isEmpty())
 		rating.prepend(tr("<h2>Rating</h2>"));
 

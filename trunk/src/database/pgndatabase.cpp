@@ -213,7 +213,7 @@ void PgnDatabase::parseMoves(Game* game)
 {
 	m_gameOver = false;
 	m_inComment = false;
-	m_comment = "";
+	m_comment.clear();
 	m_newVariation = false;
 	m_variation = 0;
 
@@ -264,7 +264,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 		m_variation = 0;
 		break;
 	case '{':
-		m_comment = "";
+		m_comment.clear();
 		m_inComment = true;
 		m_currentLine = m_currentLine.right((m_currentLine.length() - m_pos) - 1);
 		break;
