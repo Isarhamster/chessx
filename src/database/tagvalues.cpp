@@ -19,8 +19,8 @@
 
 QVariant TagValues::data(const QModelIndex & index, int role) const
 {
-	if ((role == Qt::EditRole || role == Qt::DisplayRole) && index.isValid() && index.row() < count())
-		return QVariant(value(index.row()));
+	if ((role == Qt::EditRole || role == Qt::DisplayRole) && index.isValid() && index.row() < count() - 1)
+		return QVariant(value(index.row() + 1));
 	return QVariant();
 }
 
@@ -38,7 +38,7 @@ int TagValues::columnCount(const QModelIndex&) const
 
 int TagValues::rowCount(const QModelIndex& parent) const
 {
-	return parent.isValid() ? 0 : count();
+	return parent.isValid() || !count() ? 0 : count() - 1;
 }
 
 QModelIndex TagValues::parent(const QModelIndex&) const
