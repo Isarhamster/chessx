@@ -22,7 +22,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex" >
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="playerWidget" >
       <attribute name="title" >
@@ -84,9 +84,32 @@
       <attribute name="title" >
        <string>&amp;Information</string>
       </attribute>
-      <layout class="QHBoxLayout" >
-       <item>
+      <layout class="QGridLayout" >
+       <item row="0" column="0" colspan="2" >
         <widget class="QTextBrowser" name="playerView" />
+       </item>
+       <item row="1" column="0" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="1" >
+        <widget class="QPushButton" name="updatePlayerButton" >
+         <property name="text" >
+          <string>&amp;Update player</string>
+         </property>
+         <property name="default" >
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

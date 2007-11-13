@@ -36,7 +36,9 @@ public slots:
 	/** Find players matching @p player . Put the list in the Players combo and show the first match. */
 	void findPlayers(const QString& player);
 	/** Show currently selected player */
-	void showPlayer();
+	void showSelectedPlayer();
+	/** Update current player using current database */
+	void updatePlayer();
 	/** Show information about given player from current database. */
 	void showPlayer(const QString& player);
 	/** Re-read configuration */
@@ -51,6 +53,7 @@ private:
 	Ui::PlayerDialog ui;
 	PlayerDatabase* m_playerDatabase;
 	Database* m_database;
+	QString m_player;
 	QSortFilterProxyModel* m_filterModel;
 };
 

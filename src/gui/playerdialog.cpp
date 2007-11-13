@@ -36,9 +36,10 @@ PlayerDialog::PlayerDialog(PlayerDatabase* db, QWidget* parent) : QDialog(parent
 	setObjectName("PlayerDialog");
 	m_playerDatabase = db;
 	m_database = 0;
-	connect(ui.showButton, SIGNAL(clicked()), SLOT(showPlayer()));
 	connect(ui.filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findPlayers(const QString&)));
-	connect(ui.playersView, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(showPlayer()));
+	connect(ui.showButton, SIGNAL(clicked()), SLOT(showSelectedPlayer()));
+	connect(ui.playersView, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(showSelectedPlayer()));
+	connect(ui.updatePlayerButton, SIGNAL(clicked()), SLOT(updatePlayer()));
 	if (parent)
 		connect(parent, SIGNAL(reconfigure()), SLOT(configure()));
 	configure();
@@ -63,6 +64,7 @@ void PlayerDialog::findPlayers(const QString& s)
 void PlayerDialog::showPlayer(const QString& player)
 {
 	QString found;
+	m_player = player;
 	ui.playerView->setText(tr("<html><h2>%1</h2>%2</html>").arg(player)
 			.arg(databaseInfo(player)));
 	ui.tabs->setCurrentIndex(1);
@@ -82,10 +84,15 @@ void PlayerDialog::showPlayer(const QString& player)
 	*/
 }
 
-void PlayerDialog::showPlayer()
+void PlayerDialog::showSelectedPlayer()
 {
 	if (ui.playersView->currentIndex().isValid())
 		showPlayer(ui.playersView->currentIndex().data().toString());
+}
+
+void PlayerDialog::updatePlayer()
+{
+	showPlayer(m_player);
 }
 
 
