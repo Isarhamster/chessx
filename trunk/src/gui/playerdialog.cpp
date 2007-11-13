@@ -152,10 +152,12 @@ void PlayerDialog::setDatabase(Database* db)
 }
 
 
-QString formatResult(int results[5])
+QString PlayerDialog::formatResult(int results[5])
 {
+	if (!results[4])
+		return tr("no games");
 	int score = 2 * results[WhiteWin] + results[Draw] + results[Unknown];
-	return QString(" %1% +%2 =%3 -%4 %5/%6").arg(score / (0.02 * results[4]), 0, 'f', 2)
+	return QString("%1% +%2 =%3 -%4 %5/%6").arg(score / (0.02 * results[4]), 0, 'f', 2)
 	       .arg(results[WhiteWin]).arg(results[Draw]).arg(results[BlackWin])
 	       .arg(score / 2.0).arg(results[4]);
 }
@@ -219,11 +221,11 @@ QString PlayerDialog::databaseInfo(const QString& player)
 		return tr("<i>No games in database %1.</i>").arg(m_database->name());
 
 
-	QString white = tr("White:") + formatResult(results);
-	QString black = tr("Black:") + formatResult(bresults);
+	QString white = tr("White: ") + formatResult(results);
+	QString black = tr("Black: ") + formatResult(bresults);
 	for (int i = 0 ; i < 5; i++)
 		results[i] += bresults[i];
-	QString total = tr("Total:") + formatResult(results);
+	QString total = tr("Total: ") + formatResult(results);
 	QString daterange;
 	if (dates[0] == dates[1])
 		daterange = QString("(%1)").arg(dates[0].asString());

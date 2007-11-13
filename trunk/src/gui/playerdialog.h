@@ -50,6 +50,8 @@ private:
 	QString databaseInfo(const QString& player);
 	/** Information about a player */
 	QString formatPlayer(const QString& player);
+	/** Format single color. */
+	QString formatResult(int results[5]);
 	Ui::PlayerDialog ui;
 	PlayerDatabase* m_playerDatabase;
 	Database* m_database;
