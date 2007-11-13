@@ -84,7 +84,8 @@ void PlayerDialog::showPlayer(const QString& player)
 
 void PlayerDialog::showPlayer()
 {
-	showPlayer(ui.playersView->currentIndex().data().toString());
+	if (ui.playersView->currentIndex().isValid())
+		showPlayer(ui.playersView->currentIndex().data().toString());
 }
 
 
