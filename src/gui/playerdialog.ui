@@ -22,7 +22,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex" >
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="playerWidget" >
       <attribute name="title" >
@@ -119,8 +119,13 @@
  </widget>
  <layoutdefault spacing="6" margin="6" />
  <tabstops>
+  <tabstop>filterEdit</tabstop>
+  <tabstop>playersView</tabstop>
   <tabstop>showButton</tabstop>
+  <tabstop>updateButton</tabstop>
+  <tabstop>tabs</tabstop>
   <tabstop>playerView</tabstop>
+  <tabstop>updatePlayerButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>
