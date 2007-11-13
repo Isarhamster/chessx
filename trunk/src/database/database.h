@@ -52,6 +52,8 @@ public:
 	virtual bool open(const QString& filename) = 0;
 	/** File-based database name */
 	virtual QString filename() const = 0;
+	/** File-based database name for displayng (no path and extension. */
+	virtual QString name() const;
 	/** Closes the database */
 	virtual void close() = 0;
 	/** Returns whether the database is read-only or not */
