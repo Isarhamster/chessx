@@ -63,9 +63,10 @@ void PlayerDialog::findPlayers(const QString& s)
 void PlayerDialog::showPlayer(const QString& player)
 {
 	QString found;
-	ui.tabs->setCurrentIndex(1);
 	ui.playerView->setText(tr("<html><h2>%1</h2>%2</html>").arg(player)
 			.arg(databaseInfo(player)));
+	ui.tabs->setCurrentIndex(1);
+	show();
 	/*
 	if (m_playerDatabase->exists(player))
 		found = player;
@@ -138,7 +139,7 @@ QString PlayerDialog::formatPlayer(const QString& player)
 void PlayerDialog::setDatabase(Database* db)
 {
 	m_database = db;
-	m_filterModel->setSourceModel(m_database->index()->tagValues(TagWhite));
+	m_filterModel->setSourceModel(m_database->index()->tagValues(TagPlayerName));
 	m_filterModel->sort(0);
 }
 
@@ -221,7 +222,7 @@ QString PlayerDialog::databaseInfo(const QString& player)
 	else daterange = QString("%1 - %2").arg(dates[0].asString()).arg(dates[1].asString());
 	return tr("Games in current database: <b>%1</b><br>"
 			"Time span: <b>%2</b><br>%3<br>%4<br>%5<br>")
-			 .arg((results[4] + bresults[4]))
+			 .arg((results[4]))
 			.arg(daterange).arg(total).arg(white).arg(black);
 }
 
