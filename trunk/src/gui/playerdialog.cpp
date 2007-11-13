@@ -65,9 +65,13 @@ void PlayerDialog::showPlayer(const QString& player)
 {
 	QString found;
 	m_player = player;
-	ui.playerView->setText(tr("<html><h2>%1</h2>%2</html>").arg(player)
+	if (!m_player.isEmpty()) {
+		ui.playerView->setText(tr("<html><h2>%1</h2>%2</html>").arg(player)
 			.arg(databaseInfo(player)));
-	ui.tabs->setCurrentIndex(1);
+		ui.tabs->setCurrentIndex(1);
+	}
+	else
+		ui.playerView->setText(tr("<html><i>No player chosen.</i></html>"));
 	show();
 	/*
 	if (m_playerDatabase->exists(player))
