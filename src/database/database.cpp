@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QFileInfo>
 #include <QtDebug>
 #include "database.h"
 
@@ -26,3 +27,10 @@ Index* Database::index()
 {
 	return &m_index;
 }
+
+QString Database::name() const
+{
+	QFileInfo fi(filename());
+	return fi.baseName();;
+}
+

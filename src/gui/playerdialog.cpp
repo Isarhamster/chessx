@@ -208,7 +208,7 @@ QString PlayerDialog::databaseInfo(const QString& player)
 		}
 	qSwap(bresults[WhiteWin], bresults[BlackWin]);
 	if (!(results[4] + bresults[4]))
-		return tr("<i>No games in current database.</i>");
+		return tr("<i>No games in database %1.</i>").arg(m_database->name());
 
 
 	QString white = tr("White:") + formatResult(results);
@@ -220,9 +220,9 @@ QString PlayerDialog::databaseInfo(const QString& player)
 	if (dates[0] == dates[1])
 		daterange = QString("(%1)").arg(dates[0].asString());
 	else daterange = QString("%1 - %2").arg(dates[0].asString()).arg(dates[1].asString());
-	return tr("Games in current database: <b>%1</b><br>"
-			"Time span: <b>%2</b><br>%3<br>%4<br>%5<br>")
-			 .arg((results[4]))
+	return tr("Games in database <i>%1</i>: <b>%2</b><br>"
+			"Time span: <b>%3</b><br>%4<br>%5<br>%6<br>")
+			.arg(m_database->name()).arg((results[4]))
 			.arg(daterange).arg(total).arg(white).arg(black);
 }
 
