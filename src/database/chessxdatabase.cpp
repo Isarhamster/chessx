@@ -173,6 +173,9 @@ bool ChessXDatabase::appendGame(Game& game)
 	}
 	// adjust index:
 	// at the moment this implementation only handles index-tags
+	//
+	// todo: when start position is not standard we should make sure
+	// that FEN is added to the index correctly as it is used for decoding.
 	m_cxdIndex.appendGame(game);
 
 	++m_count;
