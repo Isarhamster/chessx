@@ -117,5 +117,7 @@ private:
 	/** Adjust hash value based on the castling rights each side has */
 	void hashCastlingRights(CastlingRights oldCastlingRights);
 };
+
+extern const Board standardStartBoard;
 #endif
 

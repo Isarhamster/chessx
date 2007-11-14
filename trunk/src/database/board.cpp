@@ -190,3 +190,12 @@ quint64 Board::getHashValue() const
 {
 	return m_hashValue;
 }
+
+Board getStandardStartBoard()
+{
+	Board b;
+	b.setStandardPosition();
+	return b;
+}
+
+const Board standardStartBoard=getStandardStartBoard();

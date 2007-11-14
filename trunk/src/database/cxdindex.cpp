@@ -23,7 +23,8 @@
 #include "common.h"
 
 const Tag CxdIndex::tags[12] = {TagEvent, TagSite, TagDate, TagRound, TagWhite, TagBlack,
-				TagResult, TagFEN, TagWhiteElo, TagBlackElo, TagPlyCount, TagECO
+				TagResult, TagWhiteElo, TagBlackElo, TagPlyCount, TagECO,
+				TagFEN
 			       };
 
 
@@ -121,6 +122,11 @@ GameId CxdIndex::appendGame(Game& game)
 	//  the tagindex.
 	game.setTag(TagNames[TagPlyCount], QString().setNum(game.plyCount()));
 	game.setTag(TagNames[TagECO], game.ecoClassify());
+	Board startb(game.startBoard());
+        if(startb!=standardStartBoard)
+	{
+	  game.setTag(TagNames[TagFEN],startb.toFen());
+	}
 
 	// updating indextag-files
 	QString s;

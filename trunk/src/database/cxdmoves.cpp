@@ -44,16 +44,6 @@ class error{}; // default error throwed in exception handling
 // ------------------------------------------------
 // ------------------------------------------------
 
-
-Board getStandardStartBoard()
-{
-	Board b;
-	b.setStandardPosition();
-	return b;
-}
-
-
-const Board standardStartBoard = getStandardStartBoard();
 const unsigned char nopiece = 255;
 const Square standardwpiecesquares[16] = {e1, a1, b1, c1, d1, f1, g1, h1, a2, b2, c2, d2, e2, f2, g2, h2};
 const Square standardbpiecesquares[16] = {e8, a8, b8, c8, d8, f8, g8, h8, a7, b7, c7, d7, e7, f7, g7, h7};
@@ -128,6 +118,9 @@ public:
 	void decodeComment(QString& qs, QIODevice& qiod) const;
 	void setToStandardPieceSquares();
 	void setToStandardPieceTypes();
+
+        void setPieceTypesAndSquares(const Board& game);
+
 	void squareDiffDecode(const unsigned char& piecenumber,
 			      const unsigned char& movecode,
 			      const Color& color,
@@ -510,16 +503,11 @@ void Encoding::encodeVariation(Game& game, const int& variation, QIODevice& qiod
 // failed.
 bool Encoding::encodeNonHeader(Game& game, QIODevice& qiod)
 {
-	// Encode flag to indicate if start position is standard.
-	// 1: standard
-	// 0: non-standard
 	Board startBoard(game.startBoard());
 	if (startBoard == standardStartBoard) {
 		setToStandardPieceNumbers();
-		qiod.putChar('1');
 	} else {
 		if (!setPieceNumbers(startBoard)) return 0;
-		qiod.putChar('0');
 	}
 
 	// Encode start annotation.
@@ -585,6 +573,47 @@ void Decoding::setToStandardPieceTypes()
 {
 	for (int i = 0; i < 16; ++i)
 		{wpiecetypes[i] = bpiecetypes[i] = standardPieceTypes[i];}
+}
+
+void Decoding::setPieceTypesAndSquares(const Board& b)
+{
+	unsigned char wPieceIndex(1), bPieceIndex(1);
+	Piece currentPiece;
+	PieceType currentPieceType;
+	for(int i=0; i<64; ++i) {
+		currentPiece = b.pieceAt(i);
+		currentPieceType = pieceType(currentPiece);
+		if(isWhite(currentPiece))
+		{
+                  if(currentPieceType==King)
+                  {
+			wpiecetypes[0]=King;
+			wpiecesquares[0]=i;
+                  }
+		  else
+		  {
+			wpiecetypes[wPieceIndex]=currentPieceType;
+			wpiecesquares[wPieceIndex]=i;
+			++wPieceIndex;
+		  }
+                }
+		else if(isBlack(currentPiece))
+		{
+		  if(currentPieceType==King)
+		  {
+			bpiecetypes[0]=King;
+			bpiecesquares[0]=i;
+		  }
+		  else
+		  {
+			bpiecetypes[bPieceIndex]=currentPieceType;
+			bpiecesquares[bPieceIndex]=i;
+			++bPieceIndex;
+		  }
+		}
+	}
+	for(int i=wPieceIndex; i<16; ++i) wpiecesquares[i]=InvalidSquare;
+	for(int i=bPieceIndex; i<16; ++i) bpiecesquares[i]=InvalidSquare;
 }
 
 // Decoding of a move using a squareDiff array which indicates
@@ -919,26 +948,24 @@ void Decoding::decodeVariation(Game& game, QIODevice& qiod)
 // tags).
 void Decoding::decodeNonHeader(Game& game, QIODevice& qiod)
 {
-	// Read flag indicating if start position is standard.
-	// 1: standard
-	// 0: non-standard -> FEN of header-file has to be read
 	char c;
 	unsigned char u;
-	qiod.getChar(&c);
 	// Setting piece squares and types.
-	if (c == '1') { // standard start position
-		setToStandardPieceTypes();
-		setToStandardPieceSquares();
+	if (game.tag(TagNames[TagFEN]) == QString()) { // standard start position
+
 		// todo: exchange the following line to something more
 		// efficient (beside other optimization it would perhaps
 		// be interesting to control if game is already in the
 		// standard start position).
 		game.setStartBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP"
 				   "/RNBQKBNR w KQkq - 0 1");
+
+		setToStandardPieceTypes();
+		setToStandardPieceSquares();
 	} else { // non standard start position
-		// FEN of header-file has to be read
-		// CURRENTLY NOT IMPLEMENTED
-		Q_ASSERT_X(1, "decodeNonHeader", "Non standard start position is NOT IMPLEMENTED");
+		// FEN of header-file is read
+		game.setStartBoard(game.tag(TagNames[TagFEN]));
+                setPieceTypesAndSquares(game.board());
 	}
 
 	// Decode start annotation.

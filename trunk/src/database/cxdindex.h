@@ -47,9 +47,9 @@ class CxdIndex
   static const int m_nbTagFiles=10;
 
   /** Special Tags are tags which do not need to be saved in a game in standard way
-   * as the can be determined on demand such as TagPlyCount and
-   * TagECO. These Tags should always be at the end of CxdIndex::tags. */
-  static const int m_nbSpecialTags=2;
+   * the can be determined out of the game object as TagPlyCount,TagECO,TagFEN.
+   * These Tags should always be at the end of CxdIndex::tags. */
+  static const int m_nbSpecialTags=3;
 
   /** Lists the tags */
   static const Tag tags[m_nbIndexTags]; 
