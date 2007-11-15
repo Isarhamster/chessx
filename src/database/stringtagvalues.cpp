@@ -118,7 +118,7 @@ void StringTagValues::write(QDataStream& out)
 {
 //      out << m_list.count();
 	for (int i = 0; i < m_list.count(); ++i) {
-		out << m_list[i];
+		appendToStream(m_list[i],out);
 	}
 
 }

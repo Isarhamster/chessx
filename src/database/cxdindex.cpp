@@ -106,6 +106,10 @@ bool CxdIndex::create(SaxHandler& saxhandler)
 	for (int i = 0; i < m_nbTagFiles; ++i)
 		{m_tagFiles[i].resize(0);}
 	openFiles();
+	// Because of the possibility that tagvalues contain by construction
+	// default values we write their current status to disk.
+	for (int i = 0; i < m_nbTagFiles; ++i)
+	        {m_index->m_tagList[tags[i]]->write(m_tagDataStreams[i]);}
 
 	m_isOpen = true;
 	return 1;
@@ -126,6 +130,10 @@ GameId CxdIndex::appendGame(Game& game)
         if(startb!=standardStartBoard)
 	{
 	  game.setTag(TagNames[TagFEN],startb.toFen());
+	}
+	else
+	{
+	  game.setTag(TagNames[TagFEN],QString());
 	}
 
 	// updating indextag-files
