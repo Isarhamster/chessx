@@ -61,8 +61,8 @@ int SaveDialog::exec(Database* database, Game& game)
 		if (buttons[i]->text() == game.tag("Result"))
 			buttons[i]->setChecked(true);
 	// Completion
-	setLineEdit(ui.whiteEdit, database, TagWhite);
-	setLineEdit(ui.blackEdit, database, TagBlack);
+	setLineEdit(ui.whiteEdit, database, TagPlayerName);
+	setLineEdit(ui.blackEdit, database, TagPlayerName);
 	setLineEdit(ui.siteEdit, database, TagSite);
 	setLineEdit(ui.eventEdit, database, TagEvent);
 	int result = QDialog::exec();
