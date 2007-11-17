@@ -23,7 +23,7 @@
 
 class Database;
 
-class PlayerInfo{
+class PlayerInfo {
 public:
 	/** Standard constructor. Does nothing. */
 	PlayerInfo();
@@ -39,18 +39,20 @@ public:
 	QString name() const;
 	/** Recalculates all statistics. */
 	void update();
+	/** Retrieve score statistics. */
+	QString formattedScore() const;
 private:
 	/** Clears all statistics. */
 	void reset();
 	/** Add statistics for game @p index when player has given color. */
 	void addGameStats(int index, Color color);
-
-	enum StatColor {White, Black, AnyColor};
-	enum StatResult {Unknown, WhiteWin, Draw, BlackWin, AnyResult};
+	/** Format score statistics for single color. */
+	QString formattedScore(const int results[4], int count) const;
 	typedef QList<QPair<QString, unsigned> > EcoFrequency;
 	QString m_name;
 	Database* m_database;
-	unsigned m_results[AnyColor+1][AnyResult+1];
+	int m_result[2][4];
+	int m_count[2];
 	EcoFrequency m_eco[2];
 };
 
