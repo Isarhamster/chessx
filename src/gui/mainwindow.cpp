@@ -293,7 +293,7 @@ Database* MainWindow::database()
 QString MainWindow::databaseName(int index) const
 {
 	if (index < 0) index = m_currentDatabase;
-	QString name = m_databases[index]->name();
+	QString name = m_databases[index]->database()->name();
 	if (name.isEmpty())
 		return tr("[Clipboard]");
 	return name;

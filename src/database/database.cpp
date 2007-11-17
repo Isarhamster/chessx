@@ -31,6 +31,6 @@ Index* Database::index()
 QString Database::name() const
 {
 	QFileInfo fi(filename());
-	return fi.baseName();;
+	return fi.completeBaseName();
 }
 
