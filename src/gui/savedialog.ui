@@ -144,7 +144,7 @@
          </size>
         </property>
         <property name="inputMask" >
-         <string>0000; </string>
+         <string>D999; </string>
         </property>
        </widget>
       </item>
@@ -177,7 +177,7 @@
          </size>
         </property>
         <property name="inputMask" >
-         <string>0000; </string>
+         <string>D999; </string>
         </property>
        </widget>
       </item>
