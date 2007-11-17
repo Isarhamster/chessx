@@ -41,6 +41,8 @@ public:
 	void update();
 	/** Retrieve score statistics. */
 	QString formattedScore() const;
+	/** Retrieve game count. */
+	QString formattedGameCount() const;
 private:
 	/** Clears all statistics. */
 	void reset();
