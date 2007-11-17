@@ -96,9 +96,11 @@ QString PlayerInfo::formattedScore(const int result[4], int count) const
 	for (int i = WhiteWin; i <= BlackWin; i++)
 		score += QString(" &nbsp;%1%2").arg(scoresign[i]).arg(result[i]);
 	if (result[Unknown])
-		score += QString(" *%1").arg(result[Unknown]);
-	score += QString(" &nbsp;(%1%)</b>").arg((100.0 * result[WhiteWin] + 50.0 * result[Draw]) / count,
+		score += QString(" &nbsp;*%1").arg(result[Unknown]);
+	if (count - result[Unknown])
+		score += QString(" &nbsp;(%1%)").arg((100.0 * result[WhiteWin] + 50.0 * result[Draw]) / (count - result[Unknown]),
 														 1, 'f', 1);
+	score += "</b>";
 	return score;
 }
 
