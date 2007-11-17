@@ -38,7 +38,7 @@ class Index
 {
 public:
 	friend class CxdIndex;
-        static const int defaultIndexItemSize;
+   static const int defaultIndexItemSize;
 
 	Index();
 	~Index();
@@ -55,8 +55,8 @@ public:
         // this is only a dummy implementation at the moment
 	GameId add(const Game& game);
 
-        /** Creates new IndexItem in index and store all tags of CxdIndex::tags into it */ 
-        GameId cxdAdd(const Game& game);
+   /** Creates new IndexItem in index and store all tags of CxdIndex::tags into it */
+   GameId cxdAdd(const Game& game);
 
 	/** Adds a empty indexitem */
 	GameId add ();
@@ -83,8 +83,17 @@ public:
 	/** Enables fast loading of many values */
 	void setCacheEnabled(bool enabled);
 
-	/** Returns the index of the value in the appropriate tag list */
-	int valueIndex(Tag tag, int gameId);
+	/** @return numerical value of tag for given game. */
+	int gameTagIndex(Tag tag, int gameId) const;
+
+	/** @return string value of tag for given game. */
+	QString gameTagValue(Tag tag, int gameId) const;
+
+	/** @return string value of given index for tag @p tag. Very fast. */
+	QString indexToValue(Tag tag, int value) const;
+
+	/** @return index of given string value for tag @p tag. With cache disabled requires searching all values. */
+	int valueToIndex(Tag tag, const QString& value) const;
 
 	/** Returns the Tag id associated with tag-name string */
 	Tag tagFromString(const QString& tagName);
@@ -93,7 +102,7 @@ public:
 	TagValues* tagValues(Tag tag);
 
 private:
-        int m_nbUsedIndexItems;
+	int m_nbUsedIndexItems;
 
 	/** Return a pointer to the index item for the given game id */
 	IndexItem* item(int gameId);
@@ -115,13 +124,13 @@ private:
 	QString m_filename;
 
 	/** Adds an IndexItem. item will be copied in a new item which will
-         *  be dynamically allocated. This adds some overhead but in this
-         *  way the caller of the function does not have to create item
-         *  with new. To avoid this overhead use add(IndexItem*). */
+   be dynamically allocated. This adds some overhead but in this
+   way the caller of the function does not have to create item
+   with @p new. To avoid this overhead use add(IndexItem*). */
 	TagIndex add (const IndexItem& item);
-        
-        /** Adds item to m_indexItems. item should be dynamically allocated.*/ 
-        TagIndex add (IndexItem* item);
+
+	/** Adds new index item. @p item should be dynamically allocated.*/
+   TagIndex add (IndexItem* item);
 
 	/** Create index items */
 	void createIndexItems();
@@ -131,10 +140,9 @@ private:
 	/** Uncompress the data when reading from disk. Is this necessary? */
 	void unpack();
 
-        /** Writes all tag name/tag value pairs for a given game in list.
-	 * Currently all tags in the database are returned, if the game does
-	 * not a have a value for a particular tag, a default value is returned.
-	 */
+   /** Writes all tag name/tag value pairs for a given game in list.
+	Currently all tags in the database are returned, if the game does
+	not a have a value for a particular tag, a default value is returned. */
 	void allGameTags(int gameId, QList<QPair<QString,QString> >&);
 
 

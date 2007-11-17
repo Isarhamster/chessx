@@ -244,21 +244,39 @@ QBitArray Index::listContainingValue(Tag tag, const QString& value)
 	Q_ASSERT((tag >= 0) && (tag <= TagLastTag));
 	return ((StringTagValues*)m_tagList[tag])->listContainingValue(value);
 }
+
 QBitArray Index::listInRange(Tag tag, const QString& minValue, const QString& maxValue)
 {
 	Q_ASSERT((tag >= 0) && (tag <= TagLastTag));
 	return ((StringTagValues*)m_tagList[tag])->listInRange(minValue, maxValue);
 }
-int Index::valueIndex(Tag tag, int gameId)
+
+int Index::valueToIndex(Tag tag, const QString& value) const
 {
-	return m_indexItems[gameId]->index(
-		       m_tagIndexPosition[tag].first,
-		       m_tagIndexPosition[tag].second);
+	return m_tagList[tag]->indexOf(value);
 }
+
+QString Index::indexToValue(Tag tag, int value) const
+{
+	return m_tagList[tag]->value(value);
+}
+
+QString Index::gameTagValue(Tag tag, int gameId) const
+{
+	return indexToValue(tag, gameTagIndex(tag, gameId));
+}
+
+int Index::gameTagIndex(Tag tag, int gameId) const
+{
+	return m_indexItems[gameId]->index(m_tagIndexPosition[tag].first,
+												  m_tagIndexPosition[tag].second);
+}
+
 Tag Index::tagFromString(const QString& tagName)
 {
-	return (Tag)m_tagList.tagFromString(tagName);
+	return Tag(m_tagList.tagFromString(tagName));
 }
+
 IndexItem* Index::item(int gameId)
 {
 	return m_indexItems[gameId];
