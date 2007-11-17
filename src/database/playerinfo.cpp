@@ -86,6 +86,9 @@ void PlayerInfo::update()
 		int elo = index->gameTagValue(c == White ? TagWhiteElo : TagBlackElo, i).toInt();
 		m_rating[0] = qMin(elo, m_rating[0]);
 		m_rating[1] = qMax(elo, m_rating[1]);
+		PartialDate date(index->gameTagValue(TagDate, i));
+		m_date[0] = qMin(date, m_date[0]);
+		m_date[1] = qMax(date, m_date[1]);
 		QString eco = index->gameTagValue(TagECO, i).left(3);
 		openings[c][eco]++;
 	}
@@ -131,6 +134,8 @@ void PlayerInfo::reset()
 	}
 	m_rating[0] = 99999;
 	m_rating[1] = 0;
+	m_date[0].setYear(9999);
+	m_date[1].setYear(1);
 
 }
 
@@ -147,7 +152,15 @@ QString PlayerInfo::formattedRating() const
 	else if (m_rating[0] == m_rating[1])
 		return QCoreApplication::translate("PlayerInfo", "Rating: <b>%1</b><br>").arg(m_rating[0]);
 	else
-		return QCoreApplication::translate("PlayerInfo", "Rating: <b>%1 - %2</b><br>")
+		return QCoreApplication::translate("PlayerInfo", "Rating: <b>%1-%2</b><br>")
 				.arg(m_rating[0]).arg(m_rating[1]);
+}
+
+QString PlayerInfo::formattedRange() const
+{
+	if (m_date[0].year() < 1000)
+		return QString();
+	else
+		return QCoreApplication::translate("PlayerInfo", "Date: <b>%1</b><br>").arg(m_date[0].range(m_date[1]));
 }
 

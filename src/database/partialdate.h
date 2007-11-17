@@ -28,6 +28,7 @@
 class PartialDate
 {
 public:
+	enum {Year = 1, Month = 2, Day = 4, All = Year | Month | Day};
 	/** Empty constructor. Date is undefined. */
 	PartialDate();
 	/** Partial constructor. Only year is known. */
@@ -44,15 +45,16 @@ public:
 	QDate asDate() const;
 	/** Converts date to string. Uses PGN date format (e.g. "1990.01.??"). */
 	QString asString() const;
-	/** Converts date to string. Uses short format (e.g. "1990", "1990.01", "1990.01.15"). */
-	QString asShortString() const;
-	/** Returns @p true if all date parts are defined. */
+	/** Converts date to string. Uses short format (e.g. "1990", "1990.01", "1990.01.15").
+	Optionally saves just a part of date. */
+	QString asShortString(int part = All) const;
+	/** @return @p true if all date parts are defined. */
 	bool isFull() const;
-	/** Returns year, @p 0 if undefined. */
+	/** @return year, @p 0 if undefined. */
 	int year() const;
-	/** Returns month, @p 0 if undefined. */
+	/** @return month, @p 0 if undefined. */
 	int month() const;
-	/** Returns day, @p 0 if undefined. */
+	/** @return day, @p 0 if undefined. */
 	int day() const;
 	/** Sets year. */
 	void setYear(int y);
@@ -62,6 +64,8 @@ public:
 	void setDay(int d);
 	/** Sets date from string in PGN date format (e.g. "1990.01.??"). */
 	void fromString(const QString& s);
+	/** @return formatted date range (e. g. "1990.01.12-02.13", "1992-1997.11.12") */
+	QString range(const PartialDate& d) const;
 
 	friend bool operator==(const PartialDate& d1, const PartialDate& d2);
 	friend bool operator>=(const PartialDate& d1, const PartialDate& d2);

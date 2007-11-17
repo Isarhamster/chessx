@@ -101,17 +101,25 @@ QString PartialDate::asString() const
 	return s;
 }
 
-QString PartialDate::asShortString() const
+QString PartialDate::asShortString(int part) const
 {
 	if (!m_year)
 		return QString();
-	QString s = QString("%1").arg(m_year, 4);
+	QString s;
+	if (part & Year)
+		s = numberToString(m_year, 4);
 	if (!m_month)
 		return s;
-	s.append("." + numberToString(m_month));
+	if (part & Month) {
+		if (!s.isEmpty()) s += '.';
+		s += numberToString(m_month);
+	}
 	if (!m_day)
 		return s;
-	s.append("." + numberToString(m_day));
+	if (part & Day) {
+		if (!s.isEmpty()) s += '.';
+		s += numberToString(m_day);
+	}
 	return s;
 }
 
@@ -155,3 +163,18 @@ bool operator!=(const PartialDate& d1, const PartialDate& d2)
 {
 	return d1.year() != d2.year() || d1.month() != d2.month() || d1.day() != d2.day();
 }
+
+QString PartialDate::range(const PartialDate& d) const
+{
+	if (year() != d.year())
+		return asShortString() + "-" + d.asShortString();
+	QString result = numberToString(year());
+	if (month() != d.month())
+		return QString("%1.%2-%3").arg(year()).arg(asShortString(Month | Day))
+				.arg(d.asShortString(Month | Day));
+	else if (day() != d.day())
+		return QString("%1.%2.%3-%4").arg(year()).arg(asShortString(Day))
+				.arg(d.asShortString(Day));
+	else return asShortString();
+}
+

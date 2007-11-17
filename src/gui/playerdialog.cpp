@@ -63,8 +63,9 @@ void PlayerDialog::showPlayer(const QString& player)
 	if (!player.isEmpty()) {
 		m_player.setName(player);
 		m_player.update();
-		ui.playerView->setText(QString("<h1>%1</h1><p>%2%3%4")
+		ui.playerView->setText(QString("<h1>%1</h1><p>%2%3%4%5")
 				.arg(m_player.name()).arg(m_player.formattedGameCount())
+				.arg(m_player.formattedRange())
 				.arg(m_player.formattedRating()).arg(m_player.formattedScore()));
 		ui.tabs->setCurrentIndex(1);
 	}
