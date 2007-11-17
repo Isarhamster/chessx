@@ -30,7 +30,6 @@
 #include "output.h"
 #include "pgndatabase.h"
 #include "chessxdatabase.h"
-#include "playerdatabase.h"
 #include "playerdialog.h"
 #include "preferences.h"
 #include "savedialog.h"
@@ -420,15 +419,7 @@ bool MainWindow::gameEditComment()
 PlayerDialog* MainWindow::playerDialog()
 {
 	if (!m_playerDialog) {
-		PlayerDatabase* db = new PlayerDatabase;
-		QString path = AppSettings->dataPath() + "/players";
-		//if (!db->open(path)); Bug in PlayerDatabase - always returns false
-		if (!QFile::exists(path + ".cpm"))
-			QMessageBox::information(0, "No player database",
-						 QString("Player database was not found at\n%1").arg(path));
-		else
-			db->open(path);
-		m_playerDialog = new PlayerDialog(db, this);
+		m_playerDialog = new PlayerDialog(this);
 		AppSettings->layout(m_playerDialog);
 	}
 	return m_playerDialog;

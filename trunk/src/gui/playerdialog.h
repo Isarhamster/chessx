@@ -1,8 +1,7 @@
 /***************************************************************************
                           PlayerDialog - browser of player's database
                              -------------------
-    begin                : sob maj 7 2005
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+    copyright            : (C) 2006,2007 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,8 +17,8 @@
 #define __PLAYERDIALOG_H__
 
 #include "ui_playerdialog.h"
+#include "playerinfo.h"
 
-class PlayerDatabase;
 class Database;
 class QSortFilterProxyModel;
 
@@ -29,7 +28,7 @@ class PlayerDialog : public QDialog
 {
 	Q_OBJECT
 public:
-	PlayerDialog(PlayerDatabase* db, QWidget* parent = 0);
+	PlayerDialog(QWidget* parent = 0);
 	virtual ~PlayerDialog();
 
 public slots:
@@ -46,16 +45,8 @@ public slots:
 	/** Set database used for getting player information. */
 	void setDatabase(Database* db);
 private:
-	/** Get formatted info about player from current database. */
-	QString databaseInfo(const QString& player);
-	/** Information about a player */
-	QString formatPlayer(const QString& player);
-	/** Format single color. */
-	QString formatResult(int results[5]);
 	Ui::PlayerDialog ui;
-	PlayerDatabase* m_playerDatabase;
-	Database* m_database;
-	QString m_player;
+	PlayerInfo m_player;
 	QSortFilterProxyModel* m_filterModel;
 };
 
