@@ -48,7 +48,7 @@ public:
 	QString value(int index) const;
 	/** Clears all values from the list */
 	void clear();
-	/** Returns the index of a value 'value */
+	/** @return the index of a value @p value . Returns @p -1 if value is not found. */
 	int indexOf(const QString& value) const;
 	/** When cache is enabled, adding values is very quick. It uses twice as
 	  * much RAM though. Useful for adding lots of values quickly.
@@ -62,7 +62,7 @@ public:
 	void read(QDataStream& in);
 	/** Write the current list values to a data stream */
 	void write(QDataStream& out);
-        /** Appends value at the end of out */ 
+        /** Appends value at the end of out */
 	void appendToStream(const QString& value, QDataStream& out);
 	/** Returns a list of indexes containing value */
 	QBitArray listContainingValue(const QString& value);

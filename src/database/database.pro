@@ -38,7 +38,8 @@ HEADERS += board.h \
            cxdmoves.h \
            cxdsaxhandler.h \
 	   cxdindex.h \
- version.h
+ version.h \
+ playerinfo.h
 SOURCES += board.cpp \
            common.cpp \
            game.cpp \
@@ -75,7 +76,8 @@ SOURCES += board.cpp \
 	   chessxdatabase.cpp \
            cxdmoves.cpp \
            cxdsaxhandler.cpp \
-	   cxdindex.cpp
+	   cxdindex.cpp \
+ playerinfo.cpp
 
 include(../common.pro)
 TARGET = database
