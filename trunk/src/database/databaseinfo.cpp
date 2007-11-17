@@ -67,15 +67,6 @@ void DatabaseInfo::newGame()
 	m_index = NewGame;
 }
 
-QString DatabaseInfo::name() const
-{
-	QString name = m_database->filename().section('/', -1);
-	int ext = name.lastIndexOf('.');
-	if (ext > name.length() - 5)
-		name = name.left(ext);
-	return name;
-}
-
 bool DatabaseInfo::saveGame()
 {
 	if (m_database->isReadOnly())

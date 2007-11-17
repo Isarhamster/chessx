@@ -52,8 +52,6 @@ public:
 	/** Saves game, replacing current one or adding new. If @ref currentIndex() is
 	in the database, game will be replaced, else if will be appended at the end. */
 	bool saveGame();
-	/** Database name */
-	QString name() const;
 private:
 	Database* m_database;
 	Filter* m_filter;
