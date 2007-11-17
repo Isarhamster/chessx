@@ -39,9 +39,11 @@ public:
 	QString name() const;
 	/** Recalculates all statistics. */
 	void update();
-	/** Retrieve score statistics. */
+	/** @return string with formatted score statistics. */
 	QString formattedScore() const;
-	/** Retrieve game count. */
+	/** @return string with formatted rating. */
+	QString formattedRating() const;
+	/** @return string with formatted game count. */
 	QString formattedGameCount() const;
 private:
 	/** Clears all statistics. */
@@ -55,6 +57,7 @@ private:
 	Database* m_database;
 	int m_result[2][4];
 	int m_count[2];
+	int m_rating[2];
 	EcoFrequency m_eco[2];
 };
 
