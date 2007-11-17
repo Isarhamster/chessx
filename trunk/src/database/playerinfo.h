@@ -16,6 +16,7 @@
 #define PLAYERINFO_H
 
 #include "common.h"
+#include "partialdate.h"
 
 #include <QString>
 #include <QList>
@@ -41,6 +42,8 @@ public:
 	void update();
 	/** @return string with formatted score statistics. */
 	QString formattedScore() const;
+	/** @return string with formatted date range. */
+	QString formattedRange() const;
 	/** @return string with formatted rating. */
 	QString formattedRating() const;
 	/** @return string with formatted game count. */
@@ -59,6 +62,7 @@ private:
 	int m_count[2];
 	int m_rating[2];
 	EcoFrequency m_eco[2];
+	PartialDate m_date[2];
 };
 
 #endif
