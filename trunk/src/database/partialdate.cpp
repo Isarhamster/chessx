@@ -173,8 +173,8 @@ QString PartialDate::range(const PartialDate& d) const
 		return QString("%1.%2-%3").arg(year()).arg(asShortString(Month | Day))
 				.arg(d.asShortString(Month | Day));
 	else if (day() != d.day())
-		return QString("%1.%2.%3-%4").arg(year()).arg(asShortString(Day))
-				.arg(d.asShortString(Day));
+		return QString("%1.%2.%3-%4").arg(year()).arg(month())
+				.arg(asShortString(Day)).arg(d.asShortString(Day));
 	else return asShortString();
 }
 
