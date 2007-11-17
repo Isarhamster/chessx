@@ -93,10 +93,12 @@ QString PlayerInfo::formattedScore(const int result[4], int count) const
 		return QCoreApplication::translate("PlayerInfo", "<i>no games</i>");
 	QString score = "<b>";
 	QChar scoresign[4] = {'*', '+', '=', '-'};
-	for (int i = 0; i < 4; i++)
-		if (result[i])
-			score += QString("  %1%2").arg(scoresign[i]).arg(result[i]);
-	score += QString("(%1%)</b>").arg((100 * result[WhiteWin] + 50 * result[Draw]) / count);
+	for (int i = WhiteWin; i <= BlackWin; i++)
+		score += QString(" &nbsp;%1%2").arg(scoresign[i]).arg(result[i]);
+	if (result[Unknown])
+		score += QString(" *%1").arg(result[Unknown]);
+	score += QString(" &nbsp;(%1%)</b>").arg((100.0 * result[WhiteWin] + 50.0 * result[Draw]) / count,
+														 1, 'f', 1);
 	return score;
 }
 
@@ -264,5 +266,11 @@ void PlayerInfo::reset()
 		m_count[c] = 0;
 		m_eco[c].clear();
 	}
+}
+
+QString PlayerInfo::formattedGameCount() const
+{
+	return QCoreApplication::translate("PlayerInfo", "Games in database <i>%1</i>: <b>%2</b><br>")
+			.arg(m_database->name()).arg(m_count[White] + m_count[Black]);
 }
 
