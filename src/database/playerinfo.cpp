@@ -84,11 +84,15 @@ void PlayerInfo::update()
 		m_result[c][res]++;
 		m_count[c]++;
 		int elo = index->gameTagValue(c == White ? TagWhiteElo : TagBlackElo, i).toInt();
-		m_rating[0] = qMin(elo, m_rating[0]);
-		m_rating[1] = qMax(elo, m_rating[1]);
+		if (elo) {
+			m_rating[0] = qMin(elo, m_rating[0]);
+			m_rating[1] = qMax(elo, m_rating[1]);
+		}
 		PartialDate date(index->gameTagValue(TagDate, i));
-		m_date[0] = qMin(date, m_date[0]);
-		m_date[1] = qMax(date, m_date[1]);
+		if (date.year() > 1000) {
+			m_date[0] = qMin(date, m_date[0]);
+			m_date[1] = qMax(date, m_date[1]);
+		}
 		QString eco = index->gameTagValue(TagECO, i).left(3);
 		openings[c][eco]++;
 	}
