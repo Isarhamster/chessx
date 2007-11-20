@@ -4,7 +4,7 @@ You can download the latest version of ChessX from
 You can quickly find games by player, event or site by clicking on
 appropriate tag in Game List header.
 
-You can paste position from another program using notation by pressing
+You can paste position in FEN notation from another program by pressing
 <code>Ctrl+Shift+V</code>.
 
 ChessX tries to guess next move when you enter a game. If you do not like
