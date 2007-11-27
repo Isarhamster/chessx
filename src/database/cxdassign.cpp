@@ -87,7 +87,15 @@ bool CxdAssign::append(const qint32& iid)
 bool CxdAssign::replace(const qint32& id, const qint32& iid)
 {
   Q_ASSERT(0<=id && id<nb_id());
+
+  // update in memory
   m_assign[id]=iid;
+
+  // update on disk
+  m_assignFile.seek(id*4);
+  m_assignDataStream << iid;
+  m_assignFile.flush();
+  
   return 1;
 }
 
