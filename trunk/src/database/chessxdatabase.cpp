@@ -131,7 +131,7 @@ bool ChessXDatabase::open(const QString& filename)
 		return 0;
 	}
 
-	m_count = m_cxdMoves.nb_games();
+	m_count = m_cxdAssign.nb_id();
 
 	m_isOpen = 1;
 	return 1;

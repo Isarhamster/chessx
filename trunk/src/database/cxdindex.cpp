@@ -148,7 +148,7 @@ void CxdIndex::replaceGame(Game& game, const int& gameId)
 	m_index->cxdReplace(game,gameId);
 
 	// updating index on disk
-	m_indexFile.seek(gameId);
+	m_indexFile.seek(gameId*Index::defaultIndexItemSize);
 	m_index->m_indexItems[gameId]->cxdWrite(m_indexFile);
 	m_indexFile.flush();
 }
