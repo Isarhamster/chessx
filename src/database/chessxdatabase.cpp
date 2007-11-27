@@ -34,10 +34,11 @@
 #include "pgndatabase.h"
 #include "memorydatabase.h"
 
-const QString ChessXDatabase::m_currentVersion = "0.1";
+const QString ChessXDatabase::m_currentVersion = "0.2";
 const QString ChessXDatabase::m_xmlFilenameExt = "cxd";
 const QString ChessXDatabase::m_gameFilenameExt = "cxg";
 const QString ChessXDatabase::m_gameAFilenameExt = "cxa";
+const QString ChessXDatabase::m_assignFilenameExt = "cxs";
 const QString ChessXDatabase::m_indexFilenameExt = "cxi";
 const QString ChessXDatabase::m_tagValueFilenameExt = "cxv";
 const QString ChessXDatabase::m_otherTagsFilenameExt = "cxt";
@@ -75,6 +76,9 @@ bool ChessXDatabase::create(const QString& filename)
 	m_saxhandler.m_version = m_currentVersion;
 	m_saxhandler.m_gameFilename = basef + "." + m_gameFilenameExt;
 	m_saxhandler.m_gameAccessFilename = basef + "." + m_gameAFilenameExt;
+
+        m_saxhandler.m_assignFilename = basef + "." + m_assignFilenameExt;
+
 	m_saxhandler.m_indexFilename = basef + "." + m_indexFilenameExt;
 
 	m_saxhandler.m_indexEventFilename = basef + "_event." + m_tagValueFilenameExt;
@@ -89,6 +93,7 @@ bool ChessXDatabase::create(const QString& filename)
 	m_saxhandler.m_indexECOFilename = basef + "_eco." + m_tagValueFilenameExt;
 
 	m_cxdMoves.create(m_saxhandler);
+	m_cxdAssign.create(m_saxhandler);
 	m_cxdIndex.create(m_saxhandler);
 
 	writeCxdFile(m_xmlFilename);
@@ -107,18 +112,26 @@ bool ChessXDatabase::open(const QString& filename)
 		return 0;
 	}
 
+	if (m_saxhandler.m_version!=m_currentVersion) // Versions are not compatible.
+	{
+		QMessageBox::warning(0, QObject::tr("ChessX"),
+                   QObject::tr("The database cannot be opened, because its version number is incompatible "
+		   "with the version of ChessX you use.\n\n")+
+                   QObject::tr("Version of the database to open: ")+m_saxhandler.m_version+"\n"+
+	           QObject::tr("Supported version: ")+m_currentVersion,
+                   QMessageBox::Ok);
+		initialise();
+		return 0;
+	}
+
 	if (!m_cxdMoves.open(m_saxhandler) ||
-			!m_cxdIndex.open(m_saxhandler)) {
+			!m_cxdIndex.open(m_saxhandler) ||
+			!m_cxdAssign.open(m_saxhandler)) {
 		initialise();
 		return 0;
 	}
 
 	m_count = m_cxdMoves.nb_games();
-
-	if (!readIndexData()) {
-		initialise();
-		return 0;
-	}
 
 	m_isOpen = 1;
 	return 1;
@@ -131,6 +144,7 @@ void ChessXDatabase::close()
 {
 	if (!m_isOpen) return;
 	m_cxdMoves.close();
+	m_cxdAssign.close();
 	m_cxdIndex.close();
 	initialise();
 }
@@ -150,18 +164,35 @@ bool ChessXDatabase::loadGame(int index, Game& game)
 	game.clear();
 	loadGameHeaders(index, game);
 
-	if (!m_cxdMoves.loadMoves(index, game)) return false;
+	if (!m_cxdMoves.loadMoves(m_cxdAssign.iid(index), game)) return false;
 	return true;
 }
 
 void ChessXDatabase::loadGameMoves(int index, Game& game)
 {
-	m_cxdMoves.loadMoves(index, game);
+	m_cxdMoves.loadMoves(m_cxdAssign.iid(index), game);
 }
 
-bool ChessXDatabase::replace(int, Game&)
+bool ChessXDatabase::replace(int index, Game& game)
 {
-	return false;
+        Q_ASSERT(0 <= index && index < count());
+	if (!m_cxdMoves.appendGame(game)) {
+		// todo: depending on what went wrong, some cleanup operations
+		// have probably to be implemented. 
+		return false;
+	}	
+
+	if (!m_cxdAssign.replace(index,m_cxdMoves.nb_games()-1)) {
+		// todo: depending on what went wrong, some cleanup operations
+		// have probably to be implemented. 
+		return false;
+	}
+
+	// adjust index:
+	// at the moment this implementation only handles index-tags
+        m_cxdIndex.replaceGame(game,index);	
+
+	return true;
 }
 
 bool ChessXDatabase::appendGame(Game& game)
@@ -171,15 +202,19 @@ bool ChessXDatabase::appendGame(Game& game)
 		// have probably to be implemented.
 		return false;
 	}
+
+	if (!m_cxdAssign.append(m_cxdMoves.nb_games()-1)) {
+		// todo: depending on what went wrong, some cleanup operations
+		// may be necessary here.
+		return false;
+	}
+
 	// adjust index:
 	// at the moment this implementation only handles index-tags
-	//
-	// todo: when start position is not standard we should make sure
-	// that FEN is added to the index correctly as it is used for decoding.
 	m_cxdIndex.appendGame(game);
 
 	++m_count;
-	return 1;
+	return true;
 }
 
 bool ChessXDatabase::remove(int)
@@ -227,15 +262,6 @@ bool ChessXDatabase::parseCxdFile(const QString& filename)
 bool ChessXDatabase::writeCxdFile(const QString& filename) const
 {
 	return m_saxhandler.writeCxdFile(filename);
-}
-
-bool ChessXDatabase::readIndexData()
-{
-//  for(int i=0; i<m_count; ++i)
-//  {m_index.setTag(TagWhite, QString("Game ")+QString().setNum(i+1),i);}
-	for (int i = 0; i < m_count; ++i)
-		{m_index.add();}
-	return 1;
 }
 
 // ------------------------------------------------

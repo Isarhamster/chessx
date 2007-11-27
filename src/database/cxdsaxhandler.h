@@ -60,6 +60,8 @@ public:
   QString m_gameFilename;
   QString m_gameAccessFilename;
 
+  QString m_assignFilename;
+
   QString m_indexFilename;
 
   QString m_indexEventFilename;
@@ -72,6 +74,7 @@ public:
   QString m_indexFENFilename;
   QString m_indexPlayerEloFilename;
   QString m_indexECOFilename;
+
 
 
   QString m_tagFilename;
