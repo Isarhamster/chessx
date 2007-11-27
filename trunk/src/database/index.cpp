@@ -109,9 +109,20 @@ GameId Index::add(const Game&)
 
 GameId Index::cxdAdd(const Game& game)
 {
-	for (int i = 0; i < CxdIndex::m_nbIndexTags; ++i)
-		{setTag(CxdIndex::tags[i], game.tag(TagNames[CxdIndex::tags[i]]), m_nbUsedIndexItems);}
+	cxdSetIndex(game, m_nbUsedIndexItems);
 	return m_nbUsedIndexItems++;
+}
+
+void Index::cxdReplace(const Game& game, const int& gameId)
+{
+	Q_ASSERT(0 <= gameId && gameId < m_nbUsedIndexItems);
+	cxdSetIndex(game,gameId);
+}
+
+void Index::cxdSetIndex(const Game& game, const int& gameId)
+{
+	for (int i = 0; i < CxdIndex::m_nbIndexTags; ++i)
+		{setTag(CxdIndex::tags[i], game.tag(TagNames[CxdIndex::tags[i]]), gameId);}
 }
 
 void Index::createIndexItems()
@@ -151,6 +162,17 @@ TagIndex Index::add(IndexItem* item)
 	if (m_nbUsedIndexItems == m_indexItems.count()) createIndexItems();
 	m_indexItems[m_nbUsedIndexItems] = item;
 	return m_nbUsedIndexItems++;
+}
+
+void Index::replace(const IndexItem& item, const int& gameId)
+{
+	return replace(new IndexItem(item),gameId);
+}
+
+void Index::replace(IndexItem* item, const int& gameId)
+{
+	delete m_indexItems[gameId];
+	m_indexItems[gameId]=item;
 }
 
 void Index::reallocateIndexItems(bool clear)

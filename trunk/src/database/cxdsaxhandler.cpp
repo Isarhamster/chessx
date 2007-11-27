@@ -51,6 +51,7 @@ bool SaxHandler::endElement(const QString& ,
 	if (qName == "version") m_version = m_currentText;
 	else if (qName == "gameFilename") m_gameFilename = m_currentText;
 	else if (qName == "gameAccessFilename") m_gameAccessFilename = m_currentText;
+        else if (qName == "assignFilename") m_assignFilename = m_currentText;
 	else if (qName == "indexFilename") m_indexFilename = m_currentText;
 	else if (qName == "indexEventFilename") m_indexEventFilename = m_currentText;
 	else if (qName == "indexSiteFilename") m_indexSiteFilename = m_currentText;
@@ -93,6 +94,8 @@ bool SaxHandler::writeCxdFile(const QString& filename) const
 	writeSimpleXmlTag("version", ChessXDatabase::m_currentVersion, file);
 	writeSimpleXmlTag("gameFilename", m_gameFilename, file);
 	writeSimpleXmlTag("gameAccessFilename", m_gameAccessFilename, file);
+
+	writeSimpleXmlTag("assignFilename", m_assignFilename, file);
 
 	writeSimpleXmlTag("indexFilename", m_indexFilename, file);
 	writeSimpleXmlTag("indexEventFilename", m_indexEventFilename, file);

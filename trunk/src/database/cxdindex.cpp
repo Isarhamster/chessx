@@ -19,6 +19,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtDebug>
+
 #include "cxdindex.h"
 #include "common.h"
 
@@ -41,8 +43,6 @@ CxdIndex::CxdIndex(Index& index)
 	for (int i = 0; i < m_nbTagFiles; ++i) {
 		m_tagDataStreams[i].setDevice(&m_tagFiles[i]);
 	}
-
-	m_indexDataStream.setDevice(&m_indexFile);
 
 	m_saxhandler = 0;
 	m_isOpen = false;
@@ -119,7 +119,62 @@ bool CxdIndex::create(SaxHandler& saxhandler)
 
 GameId CxdIndex::appendGame(Game& game)
 {
-	// special tags are set explicitly.
+	//  Special tags are set explicitly.
+	prepareGameTags(game);	
+
+	// updating indextag-files
+	addToIndexTagFiles(game);
+
+	// updating index in memory
+	int gameId = m_index->cxdAdd(game);
+
+	// updating index on disk
+	m_indexFile.seek(m_indexFile.size());
+	m_index->m_indexItems[gameId]->cxdWrite(m_indexFile);
+	m_indexFile.flush();
+
+	return gameId;
+}
+
+void CxdIndex::replaceGame(Game& game, const int& gameId)
+{
+	//  Special tags are set explicitly.
+	prepareGameTags(game);	
+
+	// updating indextag-files
+	addToIndexTagFiles(game);
+
+	// updating index in memory
+	m_index->cxdReplace(game,gameId);
+
+	// updating index on disk
+	m_indexFile.seek(gameId);
+	m_index->m_indexItems[gameId]->cxdWrite(m_indexFile);
+	m_indexFile.flush();
+}
+
+void CxdIndex::seekIndexFile(const int& gameId)
+{
+	Q_ASSERT(0<=gameId && gameId<=m_index->m_nbUsedIndexItems);	
+	m_indexFile.seek(gameId*Index::defaultIndexItemSize);
+}
+
+int CxdIndex::getTagFileIndex(const Tag& tag)
+{
+	Tag t(tag);
+	if (t == TagPlayerName) t = TagWhite;
+	else if (t == TagPlayerElo) t = TagWhiteElo;
+	int i = 0;
+	while (i < m_nbIndexTags) {
+		if (tags[i] == t) break;
+		++i;
+	}
+	if (i == m_nbIndexTags) return -1;
+	return m_toTagFileIndex[i];
+}
+
+void CxdIndex::prepareGameTags(Game& game)
+{
 	//  The use of setTag with TagNames is not very efficient. On
 	//  this could be worked later by introducing an appropriate
 	//  function in game allowing to set tags directly by giving
@@ -135,8 +190,10 @@ GameId CxdIndex::appendGame(Game& game)
 	{
 	  game.setTag(TagNames[TagFEN],QString());
 	}
+}
 
-	// updating indextag-files
+void CxdIndex::addToIndexTagFiles(Game& game)
+{
 	QString s;
 	TagValues* tv;
 	for (int i = 0; i < m_nbIndexTags; ++i) {
@@ -147,30 +204,6 @@ GameId CxdIndex::appendGame(Game& game)
 			m_tagFiles[m_toTagFileIndex[i]].flush();
 		}
 	}
-
-	// updating index in memory
-	int gameId = m_index->cxdAdd(game);
-
-	// updating index on disk
-	m_indexFile.seek(m_indexFile.size());
-	m_index->m_indexItems[gameId]->cxdWrite(m_indexFile);
-	m_indexFile.flush();
-
-	return gameId;
-}
-
-int CxdIndex::getTagFileIndex(const Tag& tag)
-{
-	Tag t(tag);
-	if (t == TagPlayerName) t = TagWhite;
-	else if (t == TagPlayerElo) t = TagWhiteElo;
-	int i = 0;
-	while (i < m_nbIndexTags) {
-		if (tags[i] == t) break;
-		++i;
-	}
-	if (i == m_nbIndexTags) return -1;
-	return m_toTagFileIndex[i];
 }
 
 void CxdIndex::setFilenamesFromSaxHandler()

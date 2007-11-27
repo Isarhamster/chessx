@@ -55,8 +55,12 @@ public:
         // this is only a dummy implementation at the moment
 	GameId add(const Game& game);
 
-   /** Creates new IndexItem in index and store all tags of CxdIndex::tags into it */
-   GameId cxdAdd(const Game& game);
+   	/** Creates new IndexItem in index and store all tags of CxdIndex::tags into it */
+   	GameId cxdAdd(const Game& game);
+
+	/** Replaces the all tags of CxdIndex::tags into the IndexItem at position gameId
+ 	  * by the correpsonding values in game. gameId must be valid. */
+        void cxdReplace(const Game& game, const int& gameId);
 
 	/** Adds a empty indexitem */
 	GameId add ();
@@ -110,6 +114,9 @@ private:
 	TagList m_tagList;
 	QList<IndexItem*> m_indexItems;
 
+	/** Contains information which games are marked for deletion */
+	QList<bool> m_deleteflags;
+
 	/** Clears the index, and frees all associated memory */
 	void clear();
 
@@ -130,7 +137,20 @@ private:
 	TagIndex add (const IndexItem& item);
 
 	/** Adds new index item. @p item should be dynamically allocated.*/
-   TagIndex add (IndexItem* item);
+   	TagIndex add (IndexItem* item);
+
+	/** Replaces Indexitem corresponding to gamId with item. As a new item will
+          * be dynamically allocated, this operation has some overhead that can
+          * be avoided using replace(IndexItem*,const int&)*/
+	void replace (const IndexItem& item, const int& gameId);
+
+	/** Replaces IndexItem corresponding to gameId with item. @p item
+ 	  * should be dynamically allocated.*/
+	void replace (IndexItem* item, const int& gameId);
+
+	/** Replaces/Adds the all tags of CxdIndex::tags into the IndexItem at position gameId
+ 	  * by the corresponding values in game. This function does not adjust m_nbUsedIndexItems.*/
+	void cxdSetIndex(const Game& game, const int& gameId);
 
 	/** Create index items */
 	void createIndexItems();

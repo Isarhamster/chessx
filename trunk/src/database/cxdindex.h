@@ -77,6 +77,10 @@ class CxdIndex
   /** Appends a game to the index. */
   GameId appendGame(Game& game);
 
+  /** Replaces the current index at position gameId by the data contained in game.
+    * gameId must be valid.*/
+  void replaceGame(Game& game, const int& gameId);
+
 
   private:
   bool m_isOpen;
@@ -85,7 +89,11 @@ class CxdIndex
   SaxHandler* m_saxhandler;
   
   QFile m_indexFile;
-  QDataStream m_indexDataStream;
+  /** Seeks the m_indexFile to the position corresponding to gameId. gameId must
+    * must be a valid id, which means either the id of an existing game
+    * or the next free id. More formally gameId must be in
+    * [0,...,m_index->m_nbUsedIndexItems].*/
+  void seekIndexFile(const int& gameId);
 
   QFile m_tagFiles[m_nbTagFiles];
   // maps the indices of tags to the indices corresponding to the files of m_tagFiles.
@@ -98,6 +106,14 @@ class CxdIndex
   int getTagFileIndex(const Tag& tag);
 
   QDataStream m_tagDataStreams[m_nbTagFiles];
+
+  /** Sets different special Tags as TagPlyCount, TagECO and TagFEN which are
+    * used in standard IndexItems.*/
+  void prepareGameTags(Game& game); 
+
+  /** Adds the tagvalues contained in game to the tagfiles on disk. */
+  void addToIndexTagFiles(Game& game);
+  
 
   void setFilenamesFromSaxHandler();
   void openFiles();

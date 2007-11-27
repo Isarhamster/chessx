@@ -28,6 +28,7 @@
 #include "database.h"
 #include "cxdmoves.h"
 #include "cxdindex.h"
+#include "cxdassign.h"
 #include "game.h"
 #include "cxdsaxhandler.h"
 
@@ -42,6 +43,8 @@
 
    @todo
    - handle correcty the m_isModified attribute
+   - make version check when opening database
+   - update version number to mirror incompatibilities
 */
 
 // The main file of a ChessXDatabase is an xml file containing meta-information
@@ -77,10 +80,7 @@ public:
   /** Loads only moves into a game from the given position */
   virtual void loadGameMoves(int index, Game& game);
   /** Saves a game at the given position, returns true if successful.
-      As saving of a game at a particular index is in general not an
-      efficient operation, it is not supported by this database type
-      and always return false.
-  */ 
+   *  The index must be valid. */ 
   virtual bool replace(int index, Game& game);
   /** Adds a game to the database */
   virtual bool appendGame(Game& game);
@@ -102,10 +102,13 @@ private:
   CxdMoves m_cxdMoves;
   CxdIndex m_cxdIndex;
 
+  CxdAssign m_cxdAssign;
+
   QString m_xmlFilename;
   static const QString m_xmlFilenameExt; // .cxd
   static const QString m_gameFilenameExt; // .cxg
   static const QString m_gameAFilenameExt; // .cxa
+  static const QString m_assignFilenameExt; // .cxs
 
   static const QString m_indexFilenameExt; // .cxi
   static const QString m_tagValueFilenameExt; // .cxv
@@ -118,15 +121,10 @@ private:
   
   //parsing variables 
   
-  // Parses a xcd file
+  // Parses a cxd file
   bool parseCxdFile(const QString& filename);
   bool writeCxdFile(const QString& filename) const;
 
-  // Reads the data for Index from the indexfile. It returns
-  // true when successful.
-  // UNDER CONSTRUCTION: This function is currently only a dummy
-  // function filling m_index in a trivial way.
-  bool readIndexData(); 
 
 };
 
