@@ -21,12 +21,14 @@ MemoryDatabase::MemoryDatabase()
 {
 	m_isModified = false;
 }
+
 MemoryDatabase::~MemoryDatabase()
 {
 	for (int i = 0; i < m_games.count(); ++i) {
 		delete m_games[i];
 	}
 }
+
 bool MemoryDatabase::appendGame(Game& game)
 {
 	int index = m_count;
@@ -46,16 +48,19 @@ bool MemoryDatabase::appendGame(Game& game)
 	m_isModified = true;
 	return true;
 }
+
 bool MemoryDatabase::remove(int)
 {
-	m_isModified = true;
+//	m_isModified = true;
 	return false;
 }
+
 bool MemoryDatabase::remove(const Filter&)
 {
-	m_isModified = true;
+//	m_isModified = true;
 	return false;
 }
+
 bool MemoryDatabase::replace(int index, Game& game)
 {
 	if (index >= m_count) {
