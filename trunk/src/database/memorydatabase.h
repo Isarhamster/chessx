@@ -25,6 +25,11 @@
    Games are stored in memory, and are editable.
    The class is derived from the PgnDatabase class, providing methods for the
    loading and saving of games, and for performing searches and queries.
+
+*/
+
+/** @todo
+	Removing from database is not implemented.
 */
 
 class MemoryDatabase : public PgnDatabase
