@@ -25,6 +25,7 @@
 #include "gamelist.h"
 #include "helpwindow.h"
 #include "mainwindow.h"
+#include "messagedialog.h"
 #include "memorydatabase.h"
 #include "openingtree.h"
 #include "output.h"
@@ -241,23 +242,10 @@ void MainWindow::ecoLoaded()
 	m_ecothread = NULL;
 }
 
-bool MainWindow::confirm(const QString& title, const QString& question,
-			 const QString& proceed)
-{
-	QMessageBox mb(this);
-	mb.setWindowTitle(title);
-	mb.setText(question);
-	mb.setIcon(QMessageBox::Question);
-	QPushButton* okButton = mb.addButton(proceed, QMessageBox::ActionRole);
-	mb.addButton(QMessageBox::Cancel);
-	mb.exec();
-	return mb.clickedButton() == okButton;
-}
-
 void MainWindow::closeEvent(QCloseEvent* e)
 {
 	if (!AppSettings->value("/General/confirmQuit", true).toBool() ||
-			confirm(tr("Quit"), tr("Do you want to quit?"))) {
+			MessageDialog::okCancel(this, tr("Do you want to quit?"), tr("Quit"), tr("Quit"))) {
 		m_recentFiles.save("History", "RecentFiles");
 		AppSettings->setLayout(m_playerDialog);
 		AppSettings->setLayout(m_helpWindow);
@@ -459,8 +447,7 @@ void MainWindow::slotFileNew()
 		file += ".cxd";
 	ChessXDatabase cxd;
 	if (!cxd.create(file)) {
-		QMessageBox::warning(this, tr("New database"),
-				     tr("Cannot create ChessX database."));
+		MessageDialog::warning(this, tr("Cannot create ChessX database."), tr("New database"));
 		return;
 	}
 	cxd.close();
@@ -571,12 +558,12 @@ void MainWindow::slotEditPasteFEN()
 		QString msg = fen.length() ?
 			      tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
 			      tr("There is no text in clipboard.");
-		QMessageBox::warning(this, "Paste FEN", msg);
+		MessageDialog::warning(this, msg);
 		return;
 	}
 	board.fromFen(fen);
 	if (board.validate() != Valid) {
-		QMessageBox::warning(this, "Paste FEN", tr("The clipboard contains FEN, but with illegal position. "
+		MessageDialog::warning(this, tr("The clipboard contains FEN, but with illegal position. "
 				     "You can only paste such positions in <b>Setup position</b> dialog."));
 		return;
 	}
@@ -826,7 +813,7 @@ void MainWindow::slotGameLoadChosen()
 void MainWindow::slotGameNew()
 {
 	if (database()->isReadOnly())
-		QMessageBox::critical(this, tr("New game"), tr("This database is read only."));
+		MessageDialog::error(this, tr("This database is read only."));
 	else {
 		databaseInfo()->newGame();
 		slotGameChanged();
@@ -836,7 +823,7 @@ void MainWindow::slotGameNew()
 void MainWindow::slotGameSave()
 {
 	if (database()->isReadOnly())
-		QMessageBox::critical(this, tr("Save game"), tr("This database is read only."));
+		MessageDialog::error(this, tr("This database is read only."));
 	else if (saveDialog()->exec(database(), game()) == QDialog::Accepted) {
 		databaseInfo()->saveGame();
 		slotDatabaseChanged();
@@ -950,8 +937,7 @@ void MainWindow::slotDatabaseChange()
 void MainWindow::slotDatabaseCopy()
 {
 	if (m_databases.count() < 2) {
-		QMessageBox::warning(this, tr("Copy games"),
-				     tr("You need at least two open databases to copy games"));
+		MessageDialog::error(this, tr("You need at least two open databases to copy games"));
 		return;
 	}
 	CopyDialog dlg(this);
@@ -1092,7 +1078,8 @@ void MainWindow::setupActions()
 					     Qt::Key_F5));
 	QMenu* menuRemove = menuDatabase->addMenu(tr("Delete"));
 	menuRemove->addAction(createAction(tr("&Current game"), SLOT(slotDatabaseDeleteGame())));
-	menuRemove->addAction(createAction(tr("&Games in filter"), SLOT(slotDatabaseDeleteGame())));
+	menuRemove->addAction(createAction(tr("&Games in filter"), SLOT(slotDatabaseDeleteFilter())));
+	menuDatabase->addAction(createAction(tr("&Compact"), SLOT(slotDatabaseCompact())));
 
 	/* View menu */
 	m_menuView = menuBar()->addMenu(tr("&View"));
@@ -1187,3 +1174,11 @@ void MainWindow::slotDatabaseDeleteFilter()
 {
 	database()->remove(*databaseInfo()->filter());
 }
+
+void MainWindow::slotDatabaseCompact()
+{
+	database()->compact();
+}
+
+
+

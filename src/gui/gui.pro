@@ -11,7 +11,7 @@ FORMS += playerdialog.ui \
 	savedialog.ui \
 	tipoftheday.ui \
 	analysiswidget.ui \
- copydialog.ui
+	copydialog.ui
 HEADERS += mainwindow.h \
 	playerdialog.h \
 	preferences.h \
@@ -27,8 +27,9 @@ HEADERS += mainwindow.h \
 	quicksearch.h \
 	tipoftheday.h \
 	analysiswidget.h \
- tableview.h \
- copydialog.h
+	tableview.h \
+	copydialog.h \
+	messagedialog.h
 SOURCES += mainwindow.cpp \
 	playerdialog.cpp \
 	colorlist.cpp \
@@ -44,8 +45,9 @@ SOURCES += mainwindow.cpp \
 	tipoftheday.cpp \
 	analysiswidget.cpp \
 	main.cpp \
- tableview.cpp \
- copydialog.cpp
+	tableview.cpp \
+	copydialog.cpp \
+	messagedialog.cpp
 
 TEMPLATE = app
 INCLUDEPATH += ../database 
