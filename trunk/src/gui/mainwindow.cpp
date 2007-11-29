@@ -1090,6 +1090,9 @@ void MainWindow::setupActions()
 	m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
 	menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()),
 					     Qt::Key_F5));
+	QMenu* menuRemove = menuDatabase->addMenu(tr("Delete"));
+	menuRemove->addAction(createAction(tr("&Current game"), SLOT(slotDatabaseDeleteGame())));
+	menuRemove->addAction(createAction(tr("&Games in filter"), SLOT(slotDatabaseDeleteGame())));
 
 	/* View menu */
 	m_menuView = menuBar()->addMenu(tr("&View"));
@@ -1173,4 +1176,14 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 		slotSearchTree();
 		slotGameLoadFirst();
 	}
+}
+
+void MainWindow::slotDatabaseDeleteGame()
+{
+	database()->remove(gameIndex());
+}
+
+void MainWindow::slotDatabaseDeleteFilter()
+{
+	database()->remove(*databaseInfo()->filter());
 }
