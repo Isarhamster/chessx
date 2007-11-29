@@ -213,6 +213,10 @@ public slots:
 	void slotDatabaseCopy();
 	/** Database was changed - change informations */
 	void slotDatabaseChanged();
+	/** Delete current game */
+	void slotDatabaseDeleteGame();
+	/** Delete all game in filter */
+	void slotDatabaseDeleteFilter();
 	/** Show tablebase move information */
 	void showTablebaseMove(Move move, int score);
 signals:
