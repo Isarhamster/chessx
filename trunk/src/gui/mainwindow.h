@@ -207,26 +207,28 @@ public slots:
 	void slotMoveChanged();
 	/** Show temporary message. */
 	void slotStatusMessage(const QString& msg);
-	/** Change database */
+	/** Change database. */
 	void slotDatabaseChange();
-	/** Copy games between databases */
+	/** Copy games between databases. */
 	void slotDatabaseCopy();
-	/** Database was changed - change informations */
+	/** Database was changed - change informations. */
 	void slotDatabaseChanged();
-	/** Delete current game */
+	/** Delete current game. */
 	void slotDatabaseDeleteGame();
-	/** Delete all game in filter */
+	/** Delete all game in filter. */
 	void slotDatabaseDeleteFilter();
-	/** Show tablebase move information */
+	/** Compact database by removing obsolete information. */
+	void slotDatabaseCompact();
+	/** Show tablebase move information. */
 	void showTablebaseMove(Move move, int score);
 signals:
-	/** Re-read configuration */
+	/** Re-read configuration. */
 	void reconfigure();
-	/** Main game has been updated */
+	/** Main game has been updated. */
 	void boardChange(const Board& board);
 
 private slots:
-	/** Cleanup after ECO file loaded */
+	/** Cleanup after ECO file loaded. */
 	void ecoLoaded();
 
 private:
@@ -235,8 +237,6 @@ private:
 			      const QString& tip = QString());
 	/** Create all the menus and actions */
 	void setupActions();
-	/** Answer simple questions. */
-	bool confirm(const QString& title, const QString& question, const QString& proceed = tr("Yes"));
 
 	enum
 	{
