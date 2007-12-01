@@ -71,7 +71,7 @@ CxdCBlockT<T>::CxdCBlockT(CxdCFile& cf, const int& offset)
 template <class T>
 T CxdCBlockT<T>::read(const int& id)
 {
-  m_cf->seek(id);
+  m_cf->seek(id,m_offset);
   T t;
   m_qds >> t;
   return t; 
@@ -80,7 +80,7 @@ T CxdCBlockT<T>::read(const int& id)
 template <class T>
 void CxdCBlockT<T>::write(const int& id, const T& t)
 {
-  m_cf->seek(id);
+  m_cf->seek(id,m_offset);
   m_qds << t; 
   m_qf->flush();
 }
