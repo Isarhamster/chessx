@@ -51,3 +51,12 @@ const char* CxdCBlock::defaultentry() const
 {
   return m_defaultentry;
 }
+
+int CxdCBlock::nb_entries() const
+{
+  return m_cf->nb_entries();
+}
+
+
+// Some explicit template instantiations
+template class CxdCBlockT<qint64>;

@@ -779,6 +779,14 @@ QMap<QString, QString> Game::tags() const
 void Game::setTag(const QString& tag, const QString& value)
 {
 	m_tags.insert(tag, value);
+
+	if(tag==TagNames[TagResult])
+	{
+          if (value==resultString(WhiteWin)) setResult(WhiteWin);
+          else if (value==resultString(Draw)) setResult(Draw);
+          else if (value==resultString(BlackWin)) setResult(BlackWin);
+          else setResult(Unknown);	
+	}
 	m_isModified = true;
 }
 

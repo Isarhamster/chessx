@@ -165,6 +165,7 @@ bool ChessXDatabase::loadGame(int index, Game& game)
 	loadGameHeaders(index, game);
 
 	if (!m_cxdMoves.loadMoves(m_cxdAssign.iid(index), game)) return false;
+ 
 	return true;
 }
 
