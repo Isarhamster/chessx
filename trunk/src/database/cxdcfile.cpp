@@ -59,10 +59,10 @@ bool CxdCFile::create(const QString& filename)
   return 1;
 }
 
-void CxdCFile::seek(const int& id)
+void CxdCFile::seek(const int& id, const int& offset)
 {
   Q_ASSERT(isInRange(id));
-  m_qf.seek(id*m_recordsize);
+  m_qf.seek(id*m_recordsize+offset);
 }
 
 void CxdCFile::compact(QList<bool>& ql)

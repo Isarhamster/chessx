@@ -45,8 +45,10 @@ class CxdCFile
 /** Creates empty file corresponding to filename and sets it for administration.*/
    bool create(const QString& filename);
 
-/** Seeks position in m_qf corresponding to gameId id.*/
-   void seek(const int& id);
+/** Seeks position in m_qf corresponding offset bytes after beginning of entry
+ *  corresponding to gameId id.*/
+   void seek(const int& id, const int& offset=0);
+
 /** Compactifies file corresponding to ql. ql contains false for every entry which
  *  has to be deleted.*/
    void compact(QList<bool>& ql);
