@@ -27,6 +27,8 @@
 
 #include "game.h"
 #include "cxdsaxhandler.h"
+#include "cxdcfile.h"
+#include "cxdcblock.h"
 
 // Just for tests
 #include <iostream>
@@ -76,9 +78,10 @@ class CxdMoves
 
   static const int gameARecordSize;
   QFile m_gameFile;
-  QFile m_gameAFile;
+  CxdCFile m_gameACFile; 
+  CxdCBlockT<qint64> m_gameACBlock;
+//  QFile m_gameAFile;
 
-  qint64 gamePos(const int& index);
   qint64 appendToGameFile(Game& game);
   bool appendToGameAFile(const qint64& pos);
 

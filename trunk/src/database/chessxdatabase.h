@@ -104,6 +104,7 @@ private:
 
   CxdAssign m_cxdAssign;
 
+
   QString m_xmlFilename;
   static const QString m_xmlFilenameExt; // .cxd
   static const QString m_gameFilenameExt; // .cxg

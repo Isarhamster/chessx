@@ -39,6 +39,8 @@ HEADERS += board.h \
            cxdsaxhandler.h \
 	   cxdindex.h \
 	   cxdassign.h \
+           cxdcfile.h \
+           cxdcblock.h \
  version.h \
  playerinfo.h
 SOURCES += board.cpp \
@@ -79,6 +81,8 @@ SOURCES += board.cpp \
            cxdsaxhandler.cpp \
 	   cxdindex.cpp \
 	   cxdassign.cpp \
+           cxdcfile.cpp \
+           cxdcblock.cpp \
  playerinfo.cpp
 
 include(../common.pro)
