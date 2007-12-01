@@ -1006,6 +1006,7 @@ Decoding cxDec; //object that will be used for all decodings
 const int CxdMoves::gameARecordSize = 8;
 
 CxdMoves::CxdMoves()
+:m_gameACFile(sizeof(qint64)), m_gameACBlock(m_gameACFile,0)
 {
 	m_isOpen = false;
 }
@@ -1017,10 +1018,9 @@ bool CxdMoves::open(const SaxHandler& saxhandler)
 {
 	if (m_isOpen) return 0;
 	m_gameFile.setFileName(saxhandler.m_gameFilename);
-	m_gameAFile.setFileName(saxhandler.m_gameAccessFilename);
-	if (!m_gameFile.exists() || !m_gameAFile.exists()) return 0;
+	if (!m_gameFile.exists()) return 0;
 	m_gameFile.open(QIODevice::ReadWrite);
-	m_gameAFile.open(QIODevice::ReadWrite);
+	if (!m_gameACFile.open(saxhandler.m_gameAccessFilename)) return 0;
 
 	m_isOpen = 1;
 	return 1;
@@ -1030,7 +1030,7 @@ void CxdMoves::close()
 {
 	if (!m_isOpen) return;
 	m_gameFile.close();
-	m_gameAFile.close();
+	m_gameACFile.close();
 	m_isOpen = false;
 }
 
@@ -1039,19 +1039,17 @@ bool CxdMoves::create(const SaxHandler& saxhandler)
 	if (m_isOpen) return 0;
 
 	m_gameFile.setFileName(saxhandler.m_gameFilename);
-	m_gameAFile.setFileName(saxhandler.m_gameAccessFilename);
 	// Here we could warn if the files already exist
 	m_gameFile.resize(0);
-	m_gameAFile.resize(0);
 	m_gameFile.open(QIODevice::ReadWrite);
-	m_gameAFile.open(QIODevice::ReadWrite);
+	if(!m_gameACFile.create(saxhandler.m_gameAccessFilename)) return 0;
 	m_isOpen = 1;
 	return 1;
 }
 
 bool CxdMoves::loadMoves(const int& index, Game& game)
 {
-	qint64 pos(gamePos(index));
+	qint64 pos(m_gameACBlock.read(index));
 	m_gameFile.seek(pos);
 	cxDec.decodeNonHeader(game, m_gameFile);
 	return 1;
@@ -1080,19 +1078,10 @@ QString CxdMoves::gameFilename() const
 {return m_gameFile.fileName();}
 
 QString CxdMoves::gameAFilename() const
-{return m_gameAFile.fileName();}
+{return m_gameACFile.fileName();}
 
 int CxdMoves::nb_games()
-{return m_gameAFile.size() / gameARecordSize;}
-
-qint64 CxdMoves::gamePos(const int& index)
-{
-	m_gameAFile.seek(gameARecordSize*index);
-	QDataStream ds(&m_gameAFile);
-	qint64 pos;
-	ds >> pos;
-	return pos;
-}
+{return m_gameACFile.nb_entries();}
 
 qint64 CxdMoves::appendToGameFile(Game& game)
 {
@@ -1106,14 +1095,8 @@ qint64 CxdMoves::appendToGameFile(Game& game)
 
 bool CxdMoves::appendToGameAFile(const qint64& pos)
 {
-	m_gameAFile.seek(m_gameAFile.size());
-
-	// We just write qint64 objects in this file, so versioning information
-	// for the QDataStream should not be necessary.
-	QDataStream ds(&m_gameAFile);
-
-	ds << pos;
-	m_gameAFile.flush();
+	m_gameACFile.appendEntries();
+        m_gameACBlock.write(nb_games()-1,pos);
 	return 1;
 }
 
