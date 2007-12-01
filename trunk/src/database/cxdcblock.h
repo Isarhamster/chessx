@@ -36,6 +36,8 @@ class CxdCBlock
     int lastbyte() const;
     const char* defaultentry() const;
 
+    int nb_entries() const;
+
   protected:
     int m_offset;
     int m_blocksize;
@@ -85,5 +87,7 @@ void CxdCBlockT<T>::write(const int& id, const T& t)
   m_qf->flush();
 }
 
+// Some explicit template instantiations
+extern template class CxdCBlockT<qint64>;
 
 #endif

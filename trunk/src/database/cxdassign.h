@@ -23,6 +23,8 @@
 #define __CXDASSIGN_H__
 
 #include "cxdsaxhandler.h"
+#include "cxdcfile.h"
+#include "cxdcblock.h"
 
 #include <QFile>
 
@@ -74,8 +76,8 @@ class CxdAssign
   // in m_assignFile.
   bool appendToAssignFile(const qint32& iid);
 
-  QFile m_assignFile;
-  QDataStream m_assignDataStream;
+  CxdCFile m_assignCFile;
+  CxdCBlockT<qint32> m_assignCBlock;
 
   QList<qint32> m_assign;
 

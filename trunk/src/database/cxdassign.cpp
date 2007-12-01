@@ -23,26 +23,21 @@
 #include "common.h"
 
 CxdAssign::CxdAssign()
+:m_assignCFile(sizeof(qint32)), m_assignCBlock(m_assignCFile,0)
 {
-  m_assignDataStream.setDevice(&m_assignFile);
   m_isOpen=0;
 }
 
 bool CxdAssign::open(SaxHandler& saxhandler)
 {
   if(m_isOpen) return 1;
-  m_assignFile.setFileName(saxhandler.m_assignFilename);
-  if(!m_assignFile.exists()) return 0;
-  m_assignFile.open(QIODevice::ReadWrite);
+  if(!m_assignCFile.open(saxhandler.m_assignFilename)) return 0;
 
   // loading data into memory
   m_assign.clear();
-  m_assignFile.peek(0);
-  qint32 i;
-  while(!m_assignFile.atEnd())
+  for(int i=0; i<m_assignCBlock.nb_entries(); ++i)
   {
-    m_assignDataStream >> i;
-    m_assign.append(i);
+    m_assign.append(m_assignCBlock.read(i));
   }
 
   m_isOpen=1;
@@ -52,18 +47,15 @@ bool CxdAssign::open(SaxHandler& saxhandler)
 void CxdAssign::close()
 {
   if(!m_isOpen) return;
-  m_assignFile.close();
+  m_assignCFile.close();
   m_isOpen=false;
 }
 
 bool CxdAssign::create(SaxHandler& saxhandler)
 {
   if(m_isOpen) return 0;
+  if(!m_assignCFile.create(saxhandler.m_assignFilename)) return 0;
 
-  m_assignFile.setFileName(saxhandler.m_assignFilename);
-  // Here we could warn if the file already exists.
-  m_assignFile.resize(0);
-  m_assignFile.open(QIODevice::ReadWrite);
   m_isOpen=1;
   return 1;
 }
@@ -92,18 +84,17 @@ bool CxdAssign::replace(const qint32& id, const qint32& iid)
   m_assign[id]=iid;
 
   // update on disk
-  m_assignFile.seek(id*4);
-  m_assignDataStream << iid;
-  m_assignFile.flush();
+  m_assignCBlock.write(id,iid);
   
   return 1;
 }
 
 bool CxdAssign::appendToAssignFile(const qint32& iid)
 {
-  m_assignFile.seek(m_assignFile.size());
-  
-  m_assignDataStream << iid;
-  m_assignFile.flush();
+  // This is a non-standard way for adding an item to the file managed by
+  // m_assignCFile. Normally we should first call the appendEntries function
+  // of m_assignCFile. In this special case as m_assignCBlock is the only
+  // block working with the file we can avoid this overhead.
+  m_assignCBlock.write(m_assignCBlock.nb_entries(),iid);
   return 1;
 }

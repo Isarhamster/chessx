@@ -1095,8 +1095,10 @@ qint64 CxdMoves::appendToGameFile(Game& game)
 
 bool CxdMoves::appendToGameAFile(const qint64& pos)
 {
-	m_gameACFile.appendEntries();
-        m_gameACBlock.write(nb_games()-1,pos);
+        // Normally the appendEntries function of m_gameACFile should
+        // first be called. But in this special case as only one CBlock
+        // manages the file we can avoid the overhead.
+        m_gameACBlock.write(nb_games(),pos);
 	return 1;
 }
 
