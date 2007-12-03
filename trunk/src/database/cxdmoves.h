@@ -80,7 +80,6 @@ class CxdMoves
   QFile m_gameFile;
   CxdCFile m_gameACFile; 
   CxdCBlockT<qint64> m_gameACBlock;
-//  QFile m_gameAFile;
 
   qint64 appendToGameFile(Game& game);
   bool appendToGameAFile(const qint64& pos);

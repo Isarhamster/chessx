@@ -62,7 +62,10 @@ void Index::setTag(Tag tag, QString value, int gameId)
 	}
 	// Create a index item if it does not exist
 	if (gameId >= m_indexItems.size()) {
-		for (int i = m_indexItems.size(); i <= gameId; ++i) add();
+		for (int i = m_indexItems.size(); i <= gameId; ++i)
+		{
+	  	  add();
+		}
 	}
 	// At index value to itemindex
 	m_indexItems[gameId]->set(m_tagIndexPosition[tag].first, m_tagIndexPosition[tag].second, index);
@@ -91,6 +94,7 @@ GameId Index::add()
 	int gameId = m_indexItems.count();
 	m_indexItems.append(new IndexItem);
 	m_indexItems[gameId]->allocate(m_tagIndexSize);
+	m_deleteFlags.append(0);
 	return gameId;
 }
 
@@ -189,6 +193,22 @@ QString Index::tagValue(Tag tag, int gameId)
 					     m_tagIndexPosition[tag].first,
 					     m_tagIndexPosition[tag].second));
 }
+
+bool Index::deleteFlag(const int& gameId) const
+{
+	return m_deleteFlags[gameId];
+}
+
+void Index::setDeleteFlag(const int& gameId, const bool& df)
+{
+	m_deleteFlags[gameId]=df;
+}
+
+bool Index::toggleDeleteFlag(const int& gameId)
+{
+	return m_deleteFlags[gameId]=!m_deleteFlags[gameId];
+}
+
 /*
 void Index::write()
 {
@@ -291,7 +311,7 @@ QString Index::gameTagValue(Tag tag, int gameId) const
 int Index::gameTagIndex(Tag tag, int gameId) const
 {
 	return m_indexItems[gameId]->index(m_tagIndexPosition[tag].first,
-												  m_tagIndexPosition[tag].second);
+						m_tagIndexPosition[tag].second);
 }
 
 Tag Index::tagFromString(const QString& tagName)

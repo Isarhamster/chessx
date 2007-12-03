@@ -26,7 +26,7 @@ class CxdCBlock
 {
   public:
     CxdCBlock(CxdCFile& cf, const int& offset, const int& blocksize);
-    virtual ~CxdCBlock()=0;
+    virtual ~CxdCBlock();
 
     virtual void close();
 
@@ -35,8 +35,10 @@ class CxdCBlock
 /** Returns index of last managed byte.*/
     int lastbyte() const;
     const char* defaultentry() const;
+    void seek(const int& id);
 
     int nb_entries() const;
+    bool isInRange(const int& id) const;
 
   protected:
     int m_offset;
@@ -63,6 +65,10 @@ template <class T> class CxdCBlockT : public CxdCBlock
 
 };
 
+// Some explicit template instantiations
+extern template class CxdCBlockT<qint64>;
+extern template class CxdCBlockT<qint32>;
+
 template <class T>
 CxdCBlockT<T>::CxdCBlockT(CxdCFile& cf, const int& offset)
  :CxdCBlock(cf,offset,sizeof(T))
@@ -73,7 +79,7 @@ CxdCBlockT<T>::CxdCBlockT(CxdCFile& cf, const int& offset)
 template <class T>
 T CxdCBlockT<T>::read(const int& id)
 {
-  m_cf->seek(id,m_offset);
+  seek(id);
   T t;
   m_qds >> t;
   return t; 
@@ -82,12 +88,10 @@ T CxdCBlockT<T>::read(const int& id)
 template <class T>
 void CxdCBlockT<T>::write(const int& id, const T& t)
 {
-  m_cf->seek(id,m_offset);
+  seek(id);
   m_qds << t; 
   m_qf->flush();
 }
 
-// Some explicit template instantiations
-extern template class CxdCBlockT<qint64>;
 
 #endif

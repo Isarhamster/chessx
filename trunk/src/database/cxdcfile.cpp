@@ -25,7 +25,8 @@ CxdCFile::CxdCFile(const int& recordsize)
 
 CxdCFile::~CxdCFile()
 {
-  close();
+  delete[] m_defaultentry;
+  if(m_isOpen) close();
 }
 
 bool CxdCFile::open(const QString& filename)
@@ -43,7 +44,6 @@ void CxdCFile::close()
 {
   if(!m_isOpen) return;
   m_qf.close();
-  delete[] m_defaultentry;
   for(int i=0; i<m_blocklist.size(); ++i) m_blocklist[i]->close();
   m_isOpen=0;
 }
@@ -61,7 +61,6 @@ bool CxdCFile::create(const QString& filename)
 
 void CxdCFile::seek(const int& id, const int& offset)
 {
-  Q_ASSERT(isInRange(id));
   m_qf.seek(id*m_recordsize+offset);
 }
 
@@ -93,6 +92,7 @@ void CxdCFile::appendEntries(const int& nb)
   {
     m_qf.write(m_defaultentry,m_recordsize);
   }
+  m_qf.flush();
 }
 
 bool CxdCFile::addBlock(CxdCBlock& cb)
@@ -130,6 +130,11 @@ bool CxdCFile::doesOverlap(CxdCBlock& cb) const
   return 0;
 }
 
+int CxdCFile::recordsize() const
+{
+  return m_recordsize;
+}
+
 void CxdCFile::copyentry(const int& sourceId, const int& destId)
 {
   Q_ASSERT(isInRange(sourceId) && isInRange(destId));
@@ -137,6 +142,11 @@ void CxdCFile::copyentry(const int& sourceId, const int& destId)
   QByteArray qba = m_qf.read(m_recordsize);
   seek(destId);
   m_qf.write(qba);
+}
+
+QFile* CxdCFile::qf()
+{
+  return &m_qf;
 }
 
 

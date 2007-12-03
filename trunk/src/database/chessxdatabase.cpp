@@ -34,12 +34,13 @@
 #include "pgndatabase.h"
 #include "memorydatabase.h"
 
-const QString ChessXDatabase::m_currentVersion = "0.2";
+const QString ChessXDatabase::m_currentVersion = "0.3";
 const QString ChessXDatabase::m_xmlFilenameExt = "cxd";
 const QString ChessXDatabase::m_gameFilenameExt = "cxg";
 const QString ChessXDatabase::m_gameAFilenameExt = "cxa";
 const QString ChessXDatabase::m_assignFilenameExt = "cxs";
 const QString ChessXDatabase::m_indexFilenameExt = "cxi";
+const QString ChessXDatabase::m_flagsFilenameExt = "cxc";
 const QString ChessXDatabase::m_tagValueFilenameExt = "cxv";
 const QString ChessXDatabase::m_otherTagsFilenameExt = "cxt";
 const QString ChessXDatabase::m_otherTagsAFilenameExt = "cxu";
@@ -60,7 +61,7 @@ const QString ChessXDatabase::m_otherTagsAFilenameExt = "cxu";
 
 
 ChessXDatabase::ChessXDatabase()
-		: m_cxdIndex(m_index)
+		: m_cxdIndex(m_index), m_cxdFlags(m_index)
 {initialise();}
 
 ChessXDatabase::~ChessXDatabase()
@@ -80,6 +81,7 @@ bool ChessXDatabase::create(const QString& filename)
         m_saxhandler.m_assignFilename = basef + "." + m_assignFilenameExt;
 
 	m_saxhandler.m_indexFilename = basef + "." + m_indexFilenameExt;
+	m_saxhandler.m_flagsFilename = basef + "." + m_flagsFilenameExt;
 
 	m_saxhandler.m_indexEventFilename = basef + "_event." + m_tagValueFilenameExt;
 	m_saxhandler.m_indexSiteFilename = basef + "_site." + m_tagValueFilenameExt;
@@ -95,6 +97,7 @@ bool ChessXDatabase::create(const QString& filename)
 	m_cxdMoves.create(m_saxhandler);
 	m_cxdAssign.create(m_saxhandler);
 	m_cxdIndex.create(m_saxhandler);
+	m_cxdFlags.create(m_saxhandler);
 
 	writeCxdFile(m_xmlFilename);
 
@@ -125,8 +128,9 @@ bool ChessXDatabase::open(const QString& filename)
 	}
 
 	if (!m_cxdMoves.open(m_saxhandler) ||
+			!m_cxdAssign.open(m_saxhandler) || 
 			!m_cxdIndex.open(m_saxhandler) ||
-			!m_cxdAssign.open(m_saxhandler)) {
+			!m_cxdFlags.open(m_saxhandler)) {
 		initialise();
 		return 0;
 	}
@@ -146,6 +150,7 @@ void ChessXDatabase::close()
 	m_cxdMoves.close();
 	m_cxdAssign.close();
 	m_cxdIndex.close();
+	m_cxdFlags.close();
 	initialise();
 }
 
@@ -192,7 +197,8 @@ bool ChessXDatabase::replace(int index, Game& game)
 	// adjust index:
 	// at the moment this implementation only handles index-tags
         m_cxdIndex.replaceGame(game,index);	
-
+	// A replaced game is per default not set for deletion.
+	m_cxdFlags.setDeleteFlag(index,0);
 	return true;
 }
 
@@ -213,13 +219,16 @@ bool ChessXDatabase::appendGame(Game& game)
 	// adjust index:
 	// at the moment this implementation only handles index-tags
 	m_cxdIndex.appendGame(game);
+	m_cxdFlags.append();
 
 	++m_count;
 	return true;
 }
 
-bool ChessXDatabase::remove(int)
+bool ChessXDatabase::remove(int index)
 {
+	m_index.setDeleteFlag(index,1);
+	m_cxdFlags.setDeleteFlag(index,1);
 	Q_ASSERT_X(1, "remove", "NOT IMPLEMENTED");
 	return 0;
 }

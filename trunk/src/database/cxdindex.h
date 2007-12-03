@@ -24,6 +24,9 @@
 
 #include "index.h"
 #include "cxdsaxhandler.h"
+#include "cxdcfile.h"
+#include "cxdcblock.h"
+#include "cxdflags.h"
 
 #include <QFile>
 
@@ -87,13 +90,11 @@ class CxdIndex
 
   Index* m_index;
   SaxHandler* m_saxhandler;
-  
-  QFile m_indexFile;
-  /** Seeks the m_indexFile to the position corresponding to gameId. gameId must
-    * must be a valid id, which means either the id of an existing game
-    * or the next free id. More formally gameId must be in
-    * [0,...,m_index->m_nbUsedIndexItems].*/
-  void seekIndexFile(const int& gameId);
+
+  CxdCFile m_indexCFile;
+// This file is managed by m_indexCFile. But direct access allows to speed up some
+// operations.
+  QFile* m_indexFile;
 
   QFile m_tagFiles[m_nbTagFiles];
   // maps the indices of tags to the indices corresponding to the files of m_tagFiles.
@@ -115,8 +116,8 @@ class CxdIndex
   void addToIndexTagFiles(Game& game);
   
 
-  void setFilenamesFromSaxHandler();
-  void openFiles();
+  void setTagFilenamesFromSaxHandler();
+  void openTagFiles();
 
 };
 

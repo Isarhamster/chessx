@@ -28,6 +28,7 @@
 #include "database.h"
 #include "cxdmoves.h"
 #include "cxdindex.h"
+#include "cxdflags.h"
 #include "cxdassign.h"
 #include "game.h"
 #include "cxdsaxhandler.h"
@@ -100,7 +101,9 @@ private:
   SaxHandler m_saxhandler;
 
   CxdMoves m_cxdMoves;
+
   CxdIndex m_cxdIndex;
+  CxdFlags m_cxdFlags;
 
   CxdAssign m_cxdAssign;
 
@@ -112,6 +115,7 @@ private:
   static const QString m_assignFilenameExt; // .cxs
 
   static const QString m_indexFilenameExt; // .cxi
+  static const QString m_flagsFilenameExt; // .cxc
   static const QString m_tagValueFilenameExt; // .cxv
   static const QString m_otherTagsFilenameExt; // .cxt
   static const QString m_otherTagsAFilenameExt; // .cxu

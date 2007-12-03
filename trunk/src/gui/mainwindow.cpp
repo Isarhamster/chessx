@@ -1168,16 +1168,19 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 void MainWindow::slotDatabaseDeleteGame()
 {
 	database()->remove(gameIndex());
+	slotFilterChanged();
 }
 
 void MainWindow::slotDatabaseDeleteFilter()
 {
 	database()->remove(*databaseInfo()->filter());
+	slotFilterChanged();
 }
 
 void MainWindow::slotDatabaseCompact()
 {
 	database()->compact();
+	slotFilterChanged();
 }
 
 

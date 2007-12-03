@@ -53,6 +53,7 @@ bool SaxHandler::endElement(const QString& ,
 	else if (qName == "gameAccessFilename") m_gameAccessFilename = m_currentText;
         else if (qName == "assignFilename") m_assignFilename = m_currentText;
 	else if (qName == "indexFilename") m_indexFilename = m_currentText;
+	else if (qName == "flagsFilename") m_flagsFilename = m_currentText;
 	else if (qName == "indexEventFilename") m_indexEventFilename = m_currentText;
 	else if (qName == "indexSiteFilename") m_indexSiteFilename = m_currentText;
 	else if (qName == "indexDateFilename") m_indexDateFilename = m_currentText;
@@ -98,6 +99,7 @@ bool SaxHandler::writeCxdFile(const QString& filename) const
 	writeSimpleXmlTag("assignFilename", m_assignFilename, file);
 
 	writeSimpleXmlTag("indexFilename", m_indexFilename, file);
+	writeSimpleXmlTag("flagsFilename", m_flagsFilename, file);
 	writeSimpleXmlTag("indexEventFilename", m_indexEventFilename, file);
 	writeSimpleXmlTag("indexSiteFilename", m_indexSiteFilename, file);
 	writeSimpleXmlTag("indexDateFilename", m_indexDateFilename, file);
