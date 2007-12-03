@@ -22,6 +22,7 @@ FilterModel::FilterModel(Filter* filter, QObject* parent)
 		: QAbstractItemModel(parent), m_filter(filter), m_gameIndex(-1)
 {
 	m_columnNames << "Nr"
+	<< "D"
 	<< "White"
 	<< "WhiteElo"
 	<< "Black"
@@ -66,6 +67,8 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
 			}
 			if (index.column() == 0)
 				return i + 1;
+			else if(index.column() == 1)
+				return m_filter->database()->index()->deleteFlag(i) ? "x" : "";
 			else
 				return m_game->tag(m_columnNames.at(index.column()));
 			//qDebug("Loading game %d: %s-%s", i,

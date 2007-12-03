@@ -46,7 +46,8 @@ class CxdCFile
    bool create(const QString& filename);
 
 /** Seeks position in m_qf corresponding offset bytes after beginning of entry
- *  corresponding to gameId id.*/
+ *  corresponding to gameId id. This function can be used for seeking at
+ *  the end of a file.*/
    void seek(const int& id, const int& offset=0);
 
 /** Compactifies file corresponding to ql. ql contains false for every entry which
@@ -75,6 +76,16 @@ class CxdCFile
 /** Returns the name of the underlying file. */
    QString fileName() const;
 
+/** Returns m_recordsize. */
+   int recordsize() const;
+
+/** Copies the entry corresponding from sourceId to destId. Range checking is only done
+ *  in debug mode. */
+   void copyentry(const int& sourceId, const int& destId);
+
+/** Returns a pointer to m_qf. */
+   QFile* qf();
+
   private:
    bool m_isOpen;
    QFile m_qf;
@@ -84,10 +95,6 @@ class CxdCFile
    QList<CxdCBlock*> m_blocklist;
 
    bool doesOverlap(CxdCBlock& cb) const;
-
-   /** Copies the entry corresponding from sourceId to destId. Range checking is only done
-    *  in debug mode. */
-   void copyentry(const int& sourceId, const int& destId);
 
 }; 
 

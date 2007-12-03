@@ -63,6 +63,7 @@ public:
   QString m_assignFilename;
 
   QString m_indexFilename;
+  QString m_flagsFilename;
 
   QString m_indexEventFilename;
   QString m_indexSiteFilename;

@@ -38,7 +38,8 @@ class Index
 {
 public:
 	friend class CxdIndex;
-   static const int defaultIndexItemSize;
+	friend class CxdFlags;
+	static const int defaultIndexItemSize;
 
 	Index();
 	~Index();
@@ -73,6 +74,15 @@ public:
 	/** Get the tag value for given game */
 	QString tagValue(Tag tag, int gameId);
 
+	/** Returns the value of the delete flag corresponding to gameId. */
+	bool deleteFlag(const int& gameId) const;
+
+	/** Sets delete flag of game corresponding to gameId to df. */
+	void setDeleteFlag(const int& gameId, const bool& df);
+
+	/** Switches the state of the delete flag corresponding to gameId and
+ 	 *  returns afterwards its state. */
+	bool toggleDeleteFlag(const int& gameId);
 
 	// Searching tags //
 	//
@@ -115,7 +125,7 @@ private:
 	QList<IndexItem*> m_indexItems;
 
 	/** Contains information which games are marked for deletion */
-	QList<bool> m_deleteflags;
+	QList<bool> m_deleteFlags;
 
 	/** Clears the index, and frees all associated memory */
 	void clear();

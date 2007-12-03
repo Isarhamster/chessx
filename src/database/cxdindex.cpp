@@ -31,7 +31,9 @@ const Tag CxdIndex::tags[12] = {TagEvent, TagSite, TagDate, TagRound, TagWhite, 
 
 
 CxdIndex::CxdIndex(Index& index)
+:m_indexCFile(Index::defaultIndexItemSize)
 {
+	m_indexFile=m_indexCFile.qf();
 	m_index = &index;
 
 	for (int i = 0, k = 0; i < m_nbIndexTags; ++i) {
@@ -56,8 +58,10 @@ CxdIndex::~CxdIndex()
 bool CxdIndex::open(SaxHandler& saxhandler)
 {
 	m_saxhandler = &saxhandler;
-	setFilenamesFromSaxHandler();
-	openFiles();
+
+	m_indexCFile.open(saxhandler.m_indexFilename);
+	setTagFilenamesFromSaxHandler();
+	openTagFiles();
 
 	m_index->clear();
 	// loading tagvalues into memory
@@ -69,10 +73,10 @@ bool CxdIndex::open(SaxHandler& saxhandler)
 	}
 
 	// loading index into memory
-	m_indexFile.peek(0);
-	while (!m_indexFile.atEnd()) {
+	m_indexCFile.qf()->seek(0);
+	while (!m_indexFile->atEnd()) {
 		IndexItem* i = new IndexItem;
-		i->cxdRead(m_indexFile);
+		i->cxdRead(*m_indexFile);
 		m_index->add(i);
 	}
 
@@ -83,7 +87,7 @@ bool CxdIndex::open(SaxHandler& saxhandler)
 void CxdIndex::close()
 {
 	if (!m_isOpen) return;
-	m_indexFile.close();
+	m_indexCFile.close();
 	for (int i = 0; i < m_nbTagFiles; ++i)
 		{m_tagFiles[i].close();}
 	m_isOpen = false;
@@ -92,7 +96,9 @@ void CxdIndex::close()
 bool CxdIndex::create(SaxHandler& saxhandler)
 {
 	m_saxhandler = &saxhandler;
-	setFilenamesFromSaxHandler();
+	m_indexCFile.create(saxhandler.m_indexFilename);
+
+	setTagFilenamesFromSaxHandler();
 
 	// Creating tagvalues
 	m_index->clear();
@@ -101,11 +107,9 @@ bool CxdIndex::create(SaxHandler& saxhandler)
 		m_index->m_tagList.addTagValues(m_mappedTags[i], tv);
 	}
 
-	// Here we could warn if the files already exist.
-	m_indexFile.resize(0);
 	for (int i = 0; i < m_nbTagFiles; ++i)
 		{m_tagFiles[i].resize(0);}
-	openFiles();
+	openTagFiles();
 	// Because of the possibility that tagvalues contain by construction
 	// default values we write their current status to disk.
 	for (int i = 0; i < m_nbTagFiles; ++i)
@@ -129,9 +133,9 @@ GameId CxdIndex::appendGame(Game& game)
 	int gameId = m_index->cxdAdd(game);
 
 	// updating index on disk
-	m_indexFile.seek(m_indexFile.size());
-	m_index->m_indexItems[gameId]->cxdWrite(m_indexFile);
-	m_indexFile.flush();
+	m_indexFile->seek(m_indexFile->size());
+	m_index->m_indexItems[gameId]->cxdWrite(*m_indexFile);
+	m_indexFile->flush();
 
 	return gameId;
 }
@@ -148,15 +152,9 @@ void CxdIndex::replaceGame(Game& game, const int& gameId)
 	m_index->cxdReplace(game,gameId);
 
 	// updating index on disk
-	seekIndexFile(gameId);
-	m_index->m_indexItems[gameId]->cxdWrite(m_indexFile);
-	m_indexFile.flush();
-}
-
-void CxdIndex::seekIndexFile(const int& gameId)
-{
-	Q_ASSERT(0<=gameId && gameId<=m_index->m_nbUsedIndexItems);	
-	m_indexFile.seek(gameId*Index::defaultIndexItemSize);
+	m_indexCFile.seek(gameId);
+	m_index->m_indexItems[gameId]->cxdWrite(*m_indexFile);
+	m_indexFile->flush();
 }
 
 int CxdIndex::getTagFileIndex(const Tag& tag)
@@ -206,10 +204,8 @@ void CxdIndex::addToIndexTagFiles(Game& game)
 	}
 }
 
-void CxdIndex::setFilenamesFromSaxHandler()
+void CxdIndex::setTagFilenamesFromSaxHandler()
 {
-	m_indexFile.setFileName(m_saxhandler->m_indexFilename);
-
 	m_tagFiles[getTagFileIndex(TagEvent)].setFileName(m_saxhandler->m_indexEventFilename);
 	m_tagFiles[getTagFileIndex(TagSite)].setFileName(m_saxhandler->m_indexSiteFilename);
 	m_tagFiles[getTagFileIndex(TagDate)].setFileName(m_saxhandler->m_indexDateFilename);
@@ -222,9 +218,8 @@ void CxdIndex::setFilenamesFromSaxHandler()
 	m_tagFiles[getTagFileIndex(TagECO)].setFileName(m_saxhandler->m_indexECOFilename);
 }
 
-void CxdIndex::openFiles()
+void CxdIndex::openTagFiles()
 {
-	m_indexFile.open(QIODevice::ReadWrite);
 	for (int i = 0;i < m_nbTagFiles; ++i)
 		{m_tagFiles[i].open(QIODevice::ReadWrite);}
 }

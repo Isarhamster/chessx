@@ -52,11 +52,22 @@ const char* CxdCBlock::defaultentry() const
   return m_defaultentry;
 }
 
+void CxdCBlock::seek(const int& id)
+{
+  m_cf->seek(id,m_offset);
+}
+
 int CxdCBlock::nb_entries() const
 {
   return m_cf->nb_entries();
 }
 
+bool CxdCBlock::isInRange(const int& id) const
+{
+  return m_cf->isInRange(id);
+}
+
 
 // Some explicit template instantiations
 template class CxdCBlockT<qint64>;
+template class CxdCBlockT<qint32>;
