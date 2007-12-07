@@ -102,6 +102,11 @@ bool CxdFlags::create(const SaxHandler& saxhandler)
   return 1;
 }
 
+void CxdFlags::compact(const QList<bool>& ql)
+{
+  m_flagsCFile.compact(ql);
+}
+
 void CxdFlags::append()
 {
   m_flagsCFile.appendEntries(1);

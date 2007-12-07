@@ -47,9 +47,9 @@ DatabaseInfo::~DatabaseInfo()
 	delete m_database;
 }
 
-bool DatabaseInfo::loadGame(int index)
+bool DatabaseInfo::loadGame(int index, bool reload)
 {
-	if (m_index == index)
+	if (!reload && m_index == index)
 		return true;
 	if (!m_database || index < 0 || index >= m_database->count())
 		return false;
@@ -78,5 +78,11 @@ bool DatabaseInfo::saveGame()
 		m_index = m_database->count() - 1;
 		return true;
 	} else return false;
+}
+
+void DatabaseInfo::resetFilter()
+{
+	m_filter->resize(m_database->count());
+	m_filter->setAll(1);
 }
 

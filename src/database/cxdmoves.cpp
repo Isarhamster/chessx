@@ -1047,9 +1047,30 @@ bool CxdMoves::create(const SaxHandler& saxhandler)
 	return 1;
 }
 
+void CxdMoves::compact(const QList<bool>& ql, const CxdAssign& cxda)
+{
+  int gameAi=0;
+  qint64 nextPos=0;
+  int firstid=-1;
+  for(int i=0; i<=ql.size(); ++i)
+  {
+    if(firstid!=-1 && (i==ql.size() || !ql[i]))
+    {
+      copyInterval(firstid, i-1, nextPos, gameAi);
+      gameAi+=i-firstid;
+      nextPos=endPos(gameAi-1);
+      firstid=-1;
+    }
+    else if(firstid==-1) firstid=i;
+  }
+  // resize files
+  m_gameFile.resize(nextPos);
+  m_gameACFile.qf()->resize(gameAi*m_gameACFile.recordsize());
+}
+
 bool CxdMoves::loadMoves(const int& index, Game& game)
 {
-	qint64 pos(m_gameACBlock.read(index));
+	qint64 pos(startPos(index));
 	m_gameFile.seek(pos);
 	cxDec.decodeNonHeader(game, m_gameFile);
 	return 1;
@@ -1083,6 +1104,17 @@ QString CxdMoves::gameAFilename() const
 int CxdMoves::nb_games()
 {return m_gameACFile.nb_entries();}
 
+qint64 CxdMoves::startPos(const int& index)
+{
+	return m_gameACBlock.read(index);	
+}
+
+qint64 CxdMoves::endPos(const int& index)
+{
+	if(index==nb_games()-1) return m_gameFile.size();
+	return startPos(index+1);	
+}
+
 qint64 CxdMoves::appendToGameFile(Game& game)
 {
 	qint64 pos(m_gameFile.size());
@@ -1101,4 +1133,31 @@ bool CxdMoves::appendToGameAFile(const qint64& pos)
         m_gameACBlock.write(nb_games(),pos);
 	return 1;
 }
+
+void CxdMoves::writeToGameAFile(const int& index, const qint64& pos)
+{
+	m_gameACBlock.write(index,pos);
+} 
+
+void CxdMoves::copyMemInGameFile(const qint64& sourceStart, const qint64& sourceEnd,
+				 const qint64& destStart)
+{
+	m_gameFile.seek(sourceStart);
+	QByteArray qba(m_gameFile.read(sourceEnd-sourceStart));
+	m_gameFile.seek(destStart);
+	m_gameFile.write(qba);
+}
+
+void CxdMoves::copyInterval(const int& sourceFirst, const int& sourceLast,
+			    const qint64& destPos, const int& destAPos)
+{
+  copyMemInGameFile(startPos(sourceFirst),endPos(sourceLast),destPos);
+  qint64 delta=destPos-startPos(sourceFirst);
+  for(int i=sourceFirst; i<=sourceLast; ++i)
+  {
+    writeToGameAFile(destAPos+i-sourceFirst,startPos(i)+delta);
+  }
+}
+
+
 

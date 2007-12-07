@@ -52,7 +52,7 @@ class CxdCFile
 
 /** Compactifies file corresponding to ql. ql contains false for every entry which
  *  has to be deleted.*/
-   void compact(QList<bool>& ql);
+   void compact(const QList<bool>& ql);
 
 /** Returns the number of entries in the managed file.*/
    int nb_entries() const;

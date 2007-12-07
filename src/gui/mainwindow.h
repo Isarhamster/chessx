@@ -90,7 +90,7 @@ protected:
 	QString exportFileName(int& format);
 	/** Load game @p index. If @p force is false, does nothing for incorrect @p index .
 	With @p force set, creates empty game. */
-	void gameLoad(int index, bool force = false);
+	void gameLoad(int index, bool force = false, bool reload=0);
 	/** Make given number of moves in current game */
 	void gameMoveBy(int change);
 	/** Update recent files menu */

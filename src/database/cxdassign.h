@@ -63,6 +63,10 @@ class CxdAssign
   /** Replaces the internal index at position id by iid. id should be
     * in the range [0,...,nb_id()-1].*/
   bool replace(const qint32& id, const qint32& iid);
+
+  /** Compactifies .cxs file. ql contains zero for all games which are to be
+   * deleted.*/
+  void compact(const QList<bool>& ql);
   
 
   /** Returns the number of id's used. */

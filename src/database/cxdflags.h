@@ -66,6 +66,8 @@ class CxdFlags
     void close();
     bool create(const SaxHandler& saxhandler);
 
+    void compact(const QList<bool>& ql);
+
     void append();
 
     int nb_entries() const;
