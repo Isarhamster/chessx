@@ -23,8 +23,9 @@
 
 #include "cxdindex.h"
 #include "common.h"
+#include "cxdcompact.h"
 
-const Tag CxdIndex::tags[12] = {TagEvent, TagSite, TagDate, TagRound, TagWhite, TagBlack,
+const Tag CxdIndex::tags[m_nbIndexTags] = {TagEvent, TagSite, TagDate, TagRound, TagWhite, TagBlack,
 				TagResult, TagWhiteElo, TagBlackElo, TagPlyCount, TagECO,
 				TagFEN
 			       };
@@ -119,6 +120,83 @@ bool CxdIndex::create(SaxHandler& saxhandler)
 	return 1;
 }
 
+void CxdIndex::compact(const QList<bool>& ql)
+{
+	for(int i=0; i<m_nbTagFiles; ++i)
+	{
+	  Tag t=m_mappedTags[i];
+	  TagValues* tv=m_index->tagValues(t);
+	  QVector<bool> qv(tv->count(),0);
+	  QList<Tag> tagTList;
+	  for(int j=0; j<m_nbIndexTags ; ++j)
+	  {
+	    if(BasicTagMap[tags[j]]==t) tagTList.append(tags[j]);
+	  }
+
+	  // Fill qv
+	  for(int k=0; k<tagTList.size(); ++k)
+	  {
+	    Tag ct(tagTList[k]);
+	    int indexoffset=m_index->m_tagIndexPosition[ct].first;
+	    int indexsize=m_index->m_tagIndexPosition[ct].second;
+	    for(int j=0; j<ql.size(); ++j)
+	    {
+	      if(ql[j]) qv[m_index->m_indexItems[j]->index(indexoffset,indexsize)]=1;
+	    }
+	  }
+
+	  // The default tagvalue in stringtagvalue should never be removed.
+	  // Todo: eliminate default tag value or clean up this part such that
+	  // it works for all tagvalues and not only stringtagvalues.
+	  qv[0]=1;
+
+	  // Building index map
+	  QVector<qint32> indexMap(tv->count());
+	  int newindex=0;
+	  for(int j=0; j<tv->count(); ++j)
+	  {
+	    if(qv[j]) indexMap[j]=newindex++; 
+	  }
+
+	  // Changing index in memory
+	  for(int k=0; k<tagTList.size(); ++k)
+	  { 
+	    Tag ct(tagTList[k]);
+	    int indexoffset=m_index->m_tagIndexPosition[ct].first;
+	    int indexsize=m_index->m_tagIndexPosition[ct].second;
+	    for(int j=0; j<ql.size(); ++j)
+	    {
+	      if(ql[j]) // The index will only be adapted for games not to be deleted.
+	      {
+	      m_index->m_indexItems[j]->set(indexoffset,indexsize,
+		  indexMap[m_index->m_indexItems[j]->index(indexoffset,indexsize)]);
+	      }
+	    }
+	  }
+
+	  // Changing tagvalues in memory.
+	  tv->compact(qv);
+
+
+	  // Writing tagvalues to disk
+	  m_tagFiles[i].resize(0);	  
+	  tv->write(m_tagDataStreams[i]);
+	  m_tagFiles[i].flush();
+	}
+
+	// Compacting index and flags on memory.
+	CxdCompact::compactList(m_index->m_indexItems,ql);
+	CxdCompact::compactList(m_index->m_deleteFlags,ql);
+	m_index->m_nbUsedIndexItems=m_index->m_deleteFlags.size();
+
+	// Writing new index to disk
+	m_indexFile->seek(0);
+	for(int i=0; i<m_index->m_nbUsedIndexItems; ++i)
+	{
+	  m_index->m_indexItems[i]->cxdWrite(*m_indexFile);
+	}
+	m_indexFile->resize(m_index->m_nbUsedIndexItems*m_indexCFile.recordsize());
+}
 
 
 GameId CxdIndex::appendGame(Game& game)

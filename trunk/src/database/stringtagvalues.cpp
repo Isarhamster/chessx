@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include "stringtagvalues.h"
+#include "cxdcompact.h"
 #include <QtDebug>
 
 StringTagValues::StringTagValues()
@@ -145,3 +146,18 @@ QBitArray StringTagValues::listInRange(const QString& minValue, const QString& m
 	}
 	return list;
 }
+
+void StringTagValues::compact(const QVector<bool>& qv)
+{
+  // updating cache
+  if(m_cache)
+  {
+    for(int i=0; i<qv.size(); ++i)
+    {
+      if(!qv[i]) m_cache->remove(m_list[i]); 
+    }
+  }
+  // updating m_list
+  CxdCompact::compactList(m_list,qv);
+}
+

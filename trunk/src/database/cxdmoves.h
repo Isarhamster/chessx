@@ -29,6 +29,7 @@
 #include "cxdsaxhandler.h"
 #include "cxdcfile.h"
 #include "cxdcblock.h"
+#include "cxdassign.h"
 
 // Just for tests
 #include <iostream>
@@ -40,7 +41,9 @@
    the moves, nags and comments of a ChessX database.
 
    @todo
-   - serialize input/output operations of QIODevice by QDatastream
+    - perhaps: add an auxiliary entry add the end of m_gameAFile containing
+      position of end of file. This for example implementation of endPos
+      function.
 */
 
 class CxdMoves
@@ -59,6 +62,11 @@ class CxdMoves
   /** Creates files for encoding moves and initializes the CxdMoves object
    *  corresponding to the data contained in saxhandler. */
   bool create(const SaxHandler& saxhandler);
+
+  /** Compactifies gamefile and gameaccess file. ql contains zero for all games
+   * not to be deleted. ql is with respect to external indices. cxda is used
+   * to map the external indices to internal ones.*/
+  void compact(const QList<bool>& ql, const CxdAssign& cxda);
 
   /** Loads moves, nags and comments into game */
   bool loadMoves(const int& index, Game& game);
@@ -81,8 +89,23 @@ class CxdMoves
   CxdCFile m_gameACFile; 
   CxdCBlockT<qint64> m_gameACBlock;
 
+  qint64 startPos(const int& index);
+  qint64 endPos(const int& index);
+
   qint64 appendToGameFile(Game& game);
   bool appendToGameAFile(const qint64& pos);
+  void writeToGameAFile(const int& index, const qint64& pos);
+
+// ATTENTION: All copy operations are only valid for copying content from
+// higher indices/positions to lower ones.
+
+// Copies the memory [sourceStart, sourceEnd[ to
+// [destStart, destStart+(sourceEnd-sourceStart)[
+  void copyMemInGameFile(const qint64& sourceStart, const qint64& sourceEnd,
+			 const qint64& destStart);
+// Copies entries in m_gameFile and m_gameAFile
+  void copyInterval(const int& sourceFirst, const int& sourceLast,
+	            const qint64& destPos, const int& destAPos);
 
 };
 

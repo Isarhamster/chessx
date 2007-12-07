@@ -229,13 +229,39 @@ bool ChessXDatabase::remove(int index)
 {
 	m_index.setDeleteFlag(index,1);
 	m_cxdFlags.setDeleteFlag(index,1);
-	Q_ASSERT_X(1, "remove", "NOT IMPLEMENTED");
-	return 0;
+	return 1;
+}
+
+bool ChessXDatabase::remove(const Filter& filter)
+{
+	int id=filter.nextGame(-1); // get first game in filter
+	while(id!=-1)
+	{
+	  remove(id);
+	  id=filter.nextGame(id);
+	}
+	return 1;
 }
 
 void ChessXDatabase::compact()
 {
-	Q_ASSERT_X(1, "compact", "NOT IMPLEMENTED");
+	QList<bool> ql; // List containing games not to be deleted
+	for(int i=0; i<m_count; ++i) ql.append(!m_index.deleteFlag(i));
+
+	// Compact cxdMoves (.cxg .cxa)
+	m_cxdMoves.compact(ql,m_cxdAssign);
+	
+	// Compact cxdIndex, flags in memory and tagvalues (.cxi, and all .cxv files)
+	m_cxdIndex.compact(ql);
+
+	// Compact cxdFlags (.cxc file)
+	m_cxdFlags.compact(ql);
+
+	// Compact cxdAssign (.cxs file)
+	m_cxdAssign.compact(ql);	
+	
+	// updating m_count
+	m_count=m_cxdAssign.nb_id();	
 }
 
 bool ChessXDatabase::isModified()

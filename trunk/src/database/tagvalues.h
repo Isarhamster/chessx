@@ -65,6 +65,11 @@ public:
 	/** Write the current list values to a data stream */
 	virtual void write(QDataStream&) {}
 
+	/** Compacts tavalues with respect to the given vector where a zero
+         *  in the vector means that the corresponding tagvalue has to be
+         *  deleted. */
+	virtual void compact(const QVector<bool>& ) {};
+
 	/** Appends value at the end of out */
    virtual void appendToStream(const QString& value, QDataStream& out);
 

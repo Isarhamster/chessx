@@ -87,6 +87,8 @@ public:
   virtual bool appendGame(Game& game);
   /** Removes a game from the database */
   virtual bool remove(int index);
+  /** Removes multiple games from the database as specified by filter. */
+  virtual bool remove(const Filter& filter);
   /** Compacts the database */
   virtual void compact();
   /** Returns true if the database has been modified */

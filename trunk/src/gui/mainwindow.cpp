@@ -297,9 +297,9 @@ int MainWindow::gameIndex() const
 	return databaseInfo()->currentIndex();
 }
 
-void MainWindow::gameLoad(int index, bool force)
+void MainWindow::gameLoad(int index, bool force, bool reload)
 {
-	if (databaseInfo()->loadGame(index))
+	if (databaseInfo()->loadGame(index,reload))
 		m_gameList->selectGame(index);
 	else if (!force)
 		return;
@@ -979,7 +979,7 @@ void MainWindow::slotDatabaseChanged()
 	setWindowTitle(tr("ChessX - %1").arg(databaseName()));
 	m_gameList->setFilter(databaseInfo()->filter());
 	slotFilterChanged();
-	gameLoad(gameIndex(), true);
+	gameLoad(gameIndex(), true, true);
 	if (m_playerDialog && playerDialog()->isVisible())
 		playerDialog()->setDatabase(database());
 }
@@ -1168,19 +1168,21 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 void MainWindow::slotDatabaseDeleteGame()
 {
 	database()->remove(gameIndex());
-	slotFilterChanged();
+	m_gameList->updateFilter();
 }
 
 void MainWindow::slotDatabaseDeleteFilter()
 {
 	database()->remove(*databaseInfo()->filter());
-	slotFilterChanged();
+	m_gameList->updateFilter();
 }
 
 void MainWindow::slotDatabaseCompact()
 {
 	database()->compact();
-	slotFilterChanged();
+	databaseInfo()->resetFilter();
+	slotDatabaseChanged();
+	m_gameList->updateFilter();
 }
 
 

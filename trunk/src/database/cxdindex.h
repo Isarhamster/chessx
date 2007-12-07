@@ -77,6 +77,10 @@ class CxdIndex
    *  for handling tags */
   bool create(SaxHandler& saxhandler);
 
+  /** Compactifies index file and all tagvalues files corresponding to ql. ql
+   *  contains zero for every entry which has to be deleted.*/
+  void compact(const QList<bool>& ql);
+
   /** Appends a game to the index. */
   GameId appendGame(Game& game);
 

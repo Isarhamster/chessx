@@ -46,12 +46,16 @@ public:
 	/** @return index of current game  */
 	int currentIndex() const   {return m_index;}
 	/** Load game @p index */
-	bool loadGame(int index);
+	bool loadGame(int index, bool reload=0);
 	/** Starts new game, giving it @p index equal to the number of games in the database */
 	void newGame();
 	/** Saves game, replacing current one or adding new. If @ref currentIndex() is
 	in the database, game will be replaced, else if will be appended at the end. */
 	bool saveGame();
+
+	/** Resizes the filter to the number of games in the database and puts
+         *  all games in the filter.*/
+	void resetFilter();
 private:
 	Database* m_database;
 	Filter* m_filter;

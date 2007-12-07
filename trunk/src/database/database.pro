@@ -42,6 +42,7 @@ HEADERS += board.h \
            cxdcfile.h \
            cxdcblock.h \
 	   cxdflags.h \
+	   cxdcompact.h \
  version.h \
  playerinfo.h
 SOURCES += board.cpp \
@@ -85,6 +86,7 @@ SOURCES += board.cpp \
            cxdcfile.cpp \
            cxdcblock.cpp \
            cxdflags.cpp \
+	   cxdcompact.cpp \
  playerinfo.cpp
 
 include(../common.pro)

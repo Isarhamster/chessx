@@ -64,7 +64,7 @@ void CxdCFile::seek(const int& id, const int& offset)
   m_qf.seek(id*m_recordsize+offset);
 }
 
-void CxdCFile::compact(QList<bool>& ql)
+void CxdCFile::compact(const QList<bool>& ql)
 {
   Q_ASSERT(ql.size()==nb_entries());
   int newid=0;
@@ -78,6 +78,7 @@ void CxdCFile::compact(QList<bool>& ql)
   }
   // Now newid contains the number of elements after compactification.
   m_qf.resize(newid*m_recordsize);
+  m_qf.flush();
 }
 
 int CxdCFile::nb_entries() const

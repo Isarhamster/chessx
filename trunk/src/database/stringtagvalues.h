@@ -71,12 +71,15 @@ public:
 	/** Returns a list of strings starting with given prefix. Used for completion. */
 	QStringList listContainingPrefix(const QString& value, int max) const;
 
+        /** Compacts tavalues with respect to the given vector where a zero
+         *  in the vector means that the corresponding tagvalue has to be
+         *  deleted. */	
+	void compact(const QVector<bool>& qv);
+
 private:
 	typedef QHash <QString, int> TagCache;
 	QStringList m_list;
 	TagCache *m_cache;
-	// Considered
-	QList<int> m_referenceCount;
 
 };
 

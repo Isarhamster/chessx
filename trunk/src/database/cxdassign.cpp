@@ -21,6 +21,7 @@
 
 #include "cxdassign.h"
 #include "common.h"
+#include "cxdcompact.h"
 
 CxdAssign::CxdAssign()
 :m_assignCFile(sizeof(qint32)), m_assignCBlock(m_assignCFile,0)
@@ -87,6 +88,36 @@ bool CxdAssign::replace(const qint32& id, const qint32& iid)
   m_assignCBlock.write(id,iid);
   
   return 1;
+}
+
+void CxdAssign::compact(const QList<bool>& ql)
+{
+  CxdCompact::compactList(m_assign,ql);
+
+  qint32 maxiid(0);
+  for(int i=0; i<m_assign.size(); ++i)
+  {if(maxiid<m_assign[i]) maxiid=m_assign[i];}
+
+  QList<qint32> sortediid(m_assign);
+  qSort(sortediid);
+
+  QVector<qint32> iidmap(maxiid+1);
+  for(int i=0; i<sortediid.size(); ++i)
+  {
+   iidmap[sortediid[i]]=i;
+  } 
+  // Compact memory
+  for(int i=0; i<m_assign.size(); ++i)
+  {
+    m_assign[i]=iidmap[m_assign[i]];
+  }
+ 
+  // Compact file
+  m_assignCFile.qf()->resize(m_assign.size()*m_assignCFile.recordsize());
+  for(int i=0; i<m_assign.size(); ++i)
+  {
+    m_assignCBlock.write(i,m_assign[i]);
+  }
 }
 
 bool CxdAssign::appendToAssignFile(const qint32& iid)
