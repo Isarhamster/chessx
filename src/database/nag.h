@@ -351,6 +351,9 @@ public:
 	NagSet();
 	NagSet(Nag nag);
 	NagSet(const QVector<Nag>& nags);
+	NagSet& operator=(const NagSet& nagset);
+	Nag operator[](int index);
+	Nag operator[](int index) const;
 
 	void addNag(Nag nag);
 	void removeNag(Nag nag);
