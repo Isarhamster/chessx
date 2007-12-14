@@ -5,6 +5,7 @@ DatabaseConversion
 PgnDatabase
 PlayerDatabase
 Spellchecker
+Game
 
 
 (C) 2007 Heinz R. Hopfgartner <heinz.hopfgartner@gmx.at>

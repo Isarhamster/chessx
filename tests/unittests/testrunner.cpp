@@ -38,6 +38,7 @@ Do not forget to update the testrunner.pro - add the source files!
 #include "indextest.h"
 #include "filtertest.h"
 #include "boardtest.h"
+#include "gametest.h"
 
 int main(int argc, char *argv[])
 {
@@ -52,17 +53,19 @@ int main(int argc, char *argv[])
 	IndexItemTest indexItemTests;
 	IndexTest indexTests;
 	FilterTest filterTests;
+	GameTest gameTests;
 
 	QTest::qExec(&playerDBtests, argc, argv);
 	QTest::qExec(&pgnDBtests, argc, argv);
 	QTest::qExec(&spellCheckerTests, argc, argv);
-	QTest::qExec(&boardTests, argc, argv );
+	QTest::qExec(&boardTests, argc, argv);
 	QTest::qExec(&databaseConversionTests, argc, argv);
 	QTest::qExec(&stringTagValuesTests, argc, argv);
 	QTest::qExec(&tagListTests, argc, argv);
 	QTest::qExec(&indexItemTests, argc, argv);
 	QTest::qExec(&indexTests, argc, argv);
 	QTest::qExec(&filterTests, argc, argv);
+	QTest::qExec(&gameTests, argc, argv);
 
 
 	// Cleanup

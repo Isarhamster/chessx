@@ -20,6 +20,7 @@ HEADERS += playerdatabasetest.h \
            taglisttest.h \
            indexitemtest.h \
            indextest.h \
+           gametest.h \
            filtertest.h
 
 SOURCES += testrunner.cpp playerdatabasetest.cpp \
@@ -31,4 +32,5 @@ SOURCES += testrunner.cpp playerdatabasetest.cpp \
            taglisttest.cpp \
            indexitemtest.cpp \
            indextest.cpp \
+           gametest.cpp \
            filtertest.cpp
