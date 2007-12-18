@@ -31,6 +31,22 @@ void GameTest::init(){}
 void GameTest::cleanup(){}
 void GameTest::cleanupTestCase() {}
 
+void GameTest::testEmptyGame()
+{
+	m_game->moveToStart();
+	m_game->moveToId(2);
+	QCOMPARE(m_game->forward(), 0);
+	QCOMPARE(m_game->backward(), 0);
+	QCOMPARE(m_game->moveByPly(2), 0);
+	QCOMPARE(m_game->moveToPly(2), 0);
+	QCOMPARE(m_game->plyCount(), 0);
+	int moves, comments, nags;
+	m_game->moveCount(&moves, &comments, &nags);
+	QCOMPARE(moves,0);
+	QCOMPARE(comments,0);
+	QCOMPARE(nags,0);
+	QCOMPARE(m_game->moveToSan(),QString());
+}
 void GameTest::testAddMove_data()
 {
    QTest::addColumn<QString> ("move");
@@ -113,6 +129,10 @@ void GameTest::testAddVariation()
    } else {
       QCOMPARE(m_game->addMove(move),node);
    }
+}
+void GameTest::testDumpNodes()
+{
+	//m_game->dumpAllMoveNodes();
 }
 void GameTest::testAnnotation()
 {

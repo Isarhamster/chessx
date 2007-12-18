@@ -119,7 +119,7 @@ public:
 	void setToStandardPieceSquares();
 	void setToStandardPieceTypes();
 
-        void setPieceTypesAndSquares(const Board& game);
+	void setPieceTypesAndSquares(const Board& game);
 
 	void squareDiffDecode(const unsigned char& piecenumber,
 			      const unsigned char& movecode,
@@ -471,9 +471,9 @@ void Encoding::encodeVariation(Game& game, const int& variation, QIODevice& qiod
 
 	qiod.putChar(beginVariation);
 	while (true) {
-		m = game.move(var);
-		encodeNags(game.nags(var), qiod);
-		if (game.annotation(var) != "") encodeComment(game.annotation(var), qiod);
+		m = game.move();
+		encodeNags(game.nags(), qiod);
+		if (game.annotation() != "") encodeComment(game.annotation(), qiod);
 		to_pn = piecenumbers[m.to()];
 		encodeMove(m, qiod);
 		if (var == 0 && game.variationCount() > 1) {
@@ -490,8 +490,9 @@ void Encoding::encodeVariation(Game& game, const int& variation, QIODevice& qiod
 				cxEnc_sub.encodeVariation(g, i, qiod);
 			}
 		}
-		game.enterVariation(var);
-		if (game.atEnd()) break;
+		//PROBLEM
+		//game.enterVariation(var);
+		if (game.atGameEnd()) break;
 		var = 0;
 	}
 	qiod.putChar(endVariation);
@@ -503,7 +504,7 @@ void Encoding::encodeVariation(Game& game, const int& variation, QIODevice& qiod
 // failed.
 bool Encoding::encodeNonHeader(Game& game, QIODevice& qiod)
 {
-	Board startBoard(game.startBoard());
+	Board startBoard(game.startingBoard());
 	if (startBoard == standardStartBoard) {
 		setToStandardPieceNumbers();
 	} else {
@@ -511,8 +512,8 @@ bool Encoding::encodeNonHeader(Game& game, QIODevice& qiod)
 	}
 
 	// Encode start annotation.
-	if (game.startAnnotation() != "")
-		{encodeComment(game.startAnnotation(), qiod);}
+	if (!game.annotation(CURRENT_MOVE, Game::BeforeMove).isEmpty())
+		{encodeComment(game.annotation(CURRENT_MOVE, Game::BeforeMove), qiod);}
 
 	// Encode variations. The variation part of a game without
 	// moves is encoded by beginVariation EndVariation.
@@ -580,40 +581,31 @@ void Decoding::setPieceTypesAndSquares(const Board& b)
 	unsigned char wPieceIndex(1), bPieceIndex(1);
 	Piece currentPiece;
 	PieceType currentPieceType;
-	for(int i=0; i<64; ++i) {
+	for (int i = 0; i < 64; ++i) {
 		currentPiece = b.pieceAt(i);
 		currentPieceType = pieceType(currentPiece);
-		if(isWhite(currentPiece))
-		{
-                  if(currentPieceType==King)
-                  {
-			wpiecetypes[0]=King;
-			wpiecesquares[0]=i;
-                  }
-		  else
-		  {
-			wpiecetypes[wPieceIndex]=currentPieceType;
-			wpiecesquares[wPieceIndex]=i;
-			++wPieceIndex;
-		  }
-                }
-		else if(isBlack(currentPiece))
-		{
-		  if(currentPieceType==King)
-		  {
-			bpiecetypes[0]=King;
-			bpiecesquares[0]=i;
-		  }
-		  else
-		  {
-			bpiecetypes[bPieceIndex]=currentPieceType;
-			bpiecesquares[bPieceIndex]=i;
-			++bPieceIndex;
-		  }
+		if (isWhite(currentPiece)) {
+			if (currentPieceType == King) {
+				wpiecetypes[0] = King;
+				wpiecesquares[0] = i;
+			} else {
+				wpiecetypes[wPieceIndex] = currentPieceType;
+				wpiecesquares[wPieceIndex] = i;
+				++wPieceIndex;
+			}
+		} else if (isBlack(currentPiece)) {
+			if (currentPieceType == King) {
+				bpiecetypes[0] = King;
+				bpiecesquares[0] = i;
+			} else {
+				bpiecetypes[bPieceIndex] = currentPieceType;
+				bpiecesquares[bPieceIndex] = i;
+				++bPieceIndex;
+			}
 		}
 	}
-	for(int i=wPieceIndex; i<16; ++i) wpiecesquares[i]=InvalidSquare;
-	for(int i=bPieceIndex; i<16; ++i) bpiecesquares[i]=InvalidSquare;
+	for (int i = wPieceIndex; i < 16; ++i) wpiecesquares[i] = InvalidSquare;
+	for (int i = bPieceIndex; i < 16; ++i) bpiecesquares[i] = InvalidSquare;
 }
 
 // Decoding of a move using a squareDiff array which indicates
@@ -893,7 +885,7 @@ void Decoding::decodeVariation(Game& game, QIODevice& qiod)
 			decodeComment(comment, qiod);
 			break;
 		case beginVariation:
-			mid = game.currentMoveId();
+			mid = game.currentMove();
 			game.backward();
 
 			{ // begin scope
@@ -934,7 +926,8 @@ void Decoding::decodeVariation(Game& game, QIODevice& qiod)
 			if (m.isPromotion()) m.setPromotionPiece(pt);
 
 			variation = game.addMove(m, comment, ns);
-			game.enterVariation(variation);
+			// PROBLEM
+			//game.enterVariation(variation);
 			ns.clear();
 			comment = "";
 			break;
@@ -957,15 +950,15 @@ void Decoding::decodeNonHeader(Game& game, QIODevice& qiod)
 		// efficient (beside other optimization it would perhaps
 		// be interesting to control if game is already in the
 		// standard start position).
-		game.setStartBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP"
-				   "/RNBQKBNR w KQkq - 0 1");
+		game.setStartingBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP"
+				      "/RNBQKBNR w KQkq - 0 1");
 
 		setToStandardPieceTypes();
 		setToStandardPieceSquares();
 	} else { // non standard start position
 		// FEN of header-file is read
-		game.setStartBoard(game.tag(TagNames[TagFEN]));
-                setPieceTypesAndSquares(game.board());
+		game.setStartingBoard(game.tag(TagNames[TagFEN]));
+		setPieceTypesAndSquares(game.board());
 	}
 
 	// Decode start annotation.
@@ -974,7 +967,7 @@ void Decoding::decodeNonHeader(Game& game, QIODevice& qiod)
 	if (u == startComment) {
 		QString qs;
 		decodeComment(qs, qiod);
-		game.setStartAnnotation(qs);
+		game.setAnnotation(qs, CURRENT_MOVE, Game::BeforeMove);
 	}
 	// Decode variations.
 	qiod.getChar(&c);
@@ -1006,7 +999,7 @@ Decoding cxDec; //object that will be used for all decodings
 const int CxdMoves::gameARecordSize = 8;
 
 CxdMoves::CxdMoves()
-:m_gameACFile(sizeof(qint64)), m_gameACBlock(m_gameACFile,0)
+		: m_gameACFile(sizeof(qint64)), m_gameACBlock(m_gameACFile, 0)
 {
 	m_isOpen = false;
 }
@@ -1042,30 +1035,27 @@ bool CxdMoves::create(const SaxHandler& saxhandler)
 	// Here we could warn if the files already exist
 	m_gameFile.resize(0);
 	m_gameFile.open(QIODevice::ReadWrite);
-	if(!m_gameACFile.create(saxhandler.m_gameAccessFilename)) return 0;
+	if (!m_gameACFile.create(saxhandler.m_gameAccessFilename)) return 0;
 	m_isOpen = 1;
 	return 1;
 }
 
 void CxdMoves::compact(const QList<bool>& ql, const CxdAssign& cxda)
 {
-  int gameAi=0;
-  qint64 nextPos=0;
-  int firstid=-1;
-  for(int i=0; i<=ql.size(); ++i)
-  {
-    if(firstid!=-1 && (i==ql.size() || !ql[i]))
-    {
-      copyInterval(firstid, i-1, nextPos, gameAi);
-      gameAi+=i-firstid;
-      nextPos=endPos(gameAi-1);
-      firstid=-1;
-    }
-    else if(firstid==-1) firstid=i;
-  }
-  // resize files
-  m_gameFile.resize(nextPos);
-  m_gameACFile.qf()->resize(gameAi*m_gameACFile.recordsize());
+	int gameAi = 0;
+	qint64 nextPos = 0;
+	int firstid = -1;
+	for (int i = 0; i <= ql.size(); ++i) {
+		if (firstid != -1 && (i == ql.size() || !ql[i])) {
+			copyInterval(firstid, i - 1, nextPos, gameAi);
+			gameAi += i - firstid;
+			nextPos = endPos(gameAi - 1);
+			firstid = -1;
+		} else if (firstid == -1) firstid = i;
+	}
+	// resize files
+	m_gameFile.resize(nextPos);
+	m_gameACFile.qf()->resize(gameAi*m_gameACFile.recordsize());
 }
 
 bool CxdMoves::loadMoves(const int& index, Game& game)
@@ -1106,13 +1096,13 @@ int CxdMoves::nb_games()
 
 qint64 CxdMoves::startPos(const int& index)
 {
-	return m_gameACBlock.read(index);	
+	return m_gameACBlock.read(index);
 }
 
 qint64 CxdMoves::endPos(const int& index)
 {
-	if(index==nb_games()-1) return m_gameFile.size();
-	return startPos(index+1);	
+	if (index == nb_games() - 1) return m_gameFile.size();
+	return startPos(index + 1);
 }
 
 qint64 CxdMoves::appendToGameFile(Game& game)
@@ -1127,23 +1117,23 @@ qint64 CxdMoves::appendToGameFile(Game& game)
 
 bool CxdMoves::appendToGameAFile(const qint64& pos)
 {
-        // Normally the appendEntries function of m_gameACFile should
-        // first be called. But in this special case as only one CBlock
-        // manages the file we can avoid the overhead.
-        m_gameACBlock.write(nb_games(),pos);
+	// Normally the appendEntries function of m_gameACFile should
+	// first be called. But in this special case as only one CBlock
+	// manages the file we can avoid the overhead.
+	m_gameACBlock.write(nb_games(), pos);
 	return 1;
 }
 
 void CxdMoves::writeToGameAFile(const int& index, const qint64& pos)
 {
-	m_gameACBlock.write(index,pos);
-} 
+	m_gameACBlock.write(index, pos);
+}
 
 void CxdMoves::copyMemInGameFile(const qint64& sourceStart, const qint64& sourceEnd,
 				 const qint64& destStart)
 {
 	m_gameFile.seek(sourceStart);
-	QByteArray qba(m_gameFile.read(sourceEnd-sourceStart));
+	QByteArray qba(m_gameFile.read(sourceEnd - sourceStart));
 	m_gameFile.seek(destStart);
 	m_gameFile.write(qba);
 }
@@ -1151,12 +1141,11 @@ void CxdMoves::copyMemInGameFile(const qint64& sourceStart, const qint64& source
 void CxdMoves::copyInterval(const int& sourceFirst, const int& sourceLast,
 			    const qint64& destPos, const int& destAPos)
 {
-  copyMemInGameFile(startPos(sourceFirst),endPos(sourceLast),destPos);
-  qint64 delta=destPos-startPos(sourceFirst);
-  for(int i=sourceFirst; i<=sourceLast; ++i)
-  {
-    writeToGameAFile(destAPos+i-sourceFirst,startPos(i)+delta);
-  }
+	copyMemInGameFile(startPos(sourceFirst), endPos(sourceLast), destPos);
+	qint64 delta = destPos - startPos(sourceFirst);
+	for (int i = sourceFirst; i <= sourceLast; ++i) {
+		writeToGameAFile(destAPos + i - sourceFirst, startPos(i) + delta);
+	}
 }
 
 

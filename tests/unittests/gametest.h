@@ -36,10 +36,12 @@ private slots:
 	void cleanup();
 	void cleanupTestCase();
 
+	void testEmptyGame();
 	void testAddMove_data();
 	void testAddMove();
 	void testAddVariation_data();
 	void testAddVariation();
+	void testDumpNodes();
 	void testAnnotation();
 	void testLineLimits_data();
 	void testLineLimits();
