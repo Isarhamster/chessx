@@ -1,10 +1,8 @@
 /***************************************************************************
-                          game.h - chess game
+                          filename - description
                              -------------------
-    begin                : sob maj 7 2005
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
-                           (C) 2005 Kamil Przybyla <kamilprz@poczta.onet.pl>
-                           (C) 2005, 2006 William Hoggarth <whoggarth@users.sourceforge.net>
+    begin                :
+    copyright            : (C) yyyy [name] <[email]>
  ***************************************************************************/
 
 /***************************************************************************
@@ -16,34 +14,43 @@
  *                                                                         *
  ***************************************************************************/
 
-/**
- * @defgroup Core Core - Low level machinery
- * */
-
 #ifndef __GAME_H__
 #define __GAME_H__
-
-#include <QMap>
-#include <QString>
 
 #include "board.h"
 #include "movelist.h"
 #include "nag.h"
 
+#define NO_MOVE -1
+#define CURRENT_MOVE -2
+#define CURRENT_VARIATION -3
 #define COMPILED_ECO_FILE_ID ((quint32)0xCD5CBD02U)
-
 /** @ingroup Core
-   The Game class represents a chess game. Moves and variations can be added
-	 and removed. Moves can have associated comments and nag values. For methods
-	 that accept a variation number 0 is the main line, with 1 and above being the
-	 alternative lines.
+   The Game class represents a chess game. This is a complete rewrite, with simpler
+   API.  Moves and variations can be added and removed.
+   Moves can have associated comments and nag values. Each variation can have a
+   comment before the variation. The game can also have a pre-comment.
 
-	@todo Result is stored both internally and as a tag. This is redundant and allows inconsistency.
+   Each node has a unique id that identifies it. Each variation is identified
+   by the first node of the variation.
+
+   Representation of a game tree
+   0   1   2   3   4   5   6
+   *---*---*---*---*---*---*
+            \
+             \ 7   8   9   10  11
+               *---*---*---*---*
+   0 is the parent node of the game. It does not represent a move
+   1 represents the first move in the mainline.
+   2 is the parent node of the first variation
+   7 is the variation number.
+
 */
+typedef int MoveId;
 
 class Game
 {
-public:
+public :
 	/**
 	    Flags indicating how a move string should be constructed
 
@@ -57,127 +64,128 @@ public:
 		Nags = 4,         /**< Nags/symbolic annotation should be included */
 		FullDetail = 7    /**< Specifies all move numbers and nags should be included */
 	};
-
-	enum {
-		Start = -1000,
-		PreviousMove = -1,
-		NextMove = 1,
-		End = 1000
+	enum Position {
+		BeforeMove,
+		AfterMove
 	};
-	//constructors
-	/** Creates a game with no moves and a standard start position. */
+	enum NextPreviousMove {
+		NextMove,
+		PreviousMove
+	};
 	Game();
 	Game(const Game& game);
 	Game& operator=(const Game& game);
 	~Game();
-
-	//node information methods
+	// **** Querying game information ****
 	/** @return current position */
 	const Board& board() const;
 	/** @return current position in FEN */
 	QString toFen() const;
 	/** @return whether the current position is in the mainline */
-	bool isMainline();
-	/** @return first move in given variation */
-	Move move(int variation = 0) const;
-	/** @return integer id for move. Note that @p id is supposed to change after the game is modified. */
-	int moveId(int variation = 0) const;
+	bool isMainline(MoveId moveId = CURRENT_MOVE) const;
+	/** @return start position of game */
+	Board startingBoard() const;
+	/** @return game result */
+	Result result() const;
+	/** @return the move at node @p moveId. */
+	Move move(MoveId moveId = CURRENT_MOVE) const;
 	/** @return current move id. */
-	int currentMoveId() const;
-	/** @return comment associated with the first move in the given variation */
-	QString annotation(int variation = 0) const;
-	/** @return nags associated with the first move in the given variation */
-	NagSet nags(int variation = 0) const;
-	/** @return previous move in short algebraic notation, returns empty string if no such move */
-	QString previousMoveToSan(MoveStringFlags flags = MoveOnly);
-	/** @return move in short algebraic notation */
-	QString moveToSan(MoveStringFlags flags = MoveOnly, int variation = 0);
+	MoveId currentMove() const;
+	/** @return comment at move at node @p moveId. */
+	QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
+	/** @return nags for move at node @p moveId */
+	NagSet nags(MoveId moveId = CURRENT_MOVE) const;
+	/** @return next move in short algebraic notation, returns empty string if no such move */
+	QString moveToSan(MoveStringFlags flags = MoveOnly,
+			  NextPreviousMove nextPrevious = NextMove, MoveId moveId = CURRENT_MOVE);
 
-	//node modification methods
-	/** Sets the comment associated with the first move in the given variation */
-	bool setAnnotation(QString annotation, int variation = 0);
-	/** Adds a nag to the first move in the given variation */
-	bool addNag(Nag nag, int variation = 0);
-	/** Sets the nags associated with the first move in the given variation */
-	bool setNags(NagSet nags, int variation = 0);
+	// **** node modification methods ****
+	/** Sets the comment associated with move at node @p moveId */
+	bool setAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
+	/** Adds a nag to move at node @p moveId */
+	bool addNag(Nag nag, MoveId moveId = CURRENT_MOVE);
+	/** Sets nags for move at node @p moveId */
+	bool setNags(NagSet nags, MoveId moveId = CURRENT_MOVE);
 
-	//tree information methods
+	// **** tree information methods *****
 	/** @return whether the game is currently at the start position */
-	bool atStart() const;
+	bool atLineStart(MoveId moveId = CURRENT_MOVE) const;
+	bool atGameStart(MoveId moveId = CURRENT_MOVE) const;
 	/** @return whether the game is at the end of the current variation */
-	bool atEnd() const;
-	/** Counts the number of moves, comments and nags, in all variations, to the end of the game */
+	bool atLineEnd(MoveId moveId = CURRENT_MOVE) const;
+	bool atGameEnd(MoveId moveId = CURRENT_MOVE) const;
+	/** Counts the number of moves, comments and nags, in mainline, to the end of the game */
 	void moveCount(int* moves, int* comments, int* nags);
 	/** @return number of half moves made since the beginning of the game */
-	int ply() const;
+	int ply(MoveId moveId = CURRENT_MOVE) const;
 	/** @return current move. Equals to @p ply/2 for standard games, but may be different
 	*/
-	int moveNumber() const;
-	/** @return number of ply in current variation */
+	int moveNumber(MoveId moveId = CURRENT_MOVE) const;
+	/** @return number of ply for the whole game (mainline only) */
 	int plyCount() const;
-	/** @return number of current variation relative to previous move*/
-	int currentVariation() const;
-	/** @return number of variations at the current position (includes main line) */
-	int variationCount() const;
+	/** @return number of current variation */
+	int variationNumber(MoveId moveId = CURRENT_MOVE) const;
+	/** @return number of variations at the current position */
+	int variationCount(MoveId moveId = CURRENT_MOVE) const;
 	/** @return true if the game has been modified */
 	bool isModified() const;
 	/** Clear/set game's @p modified flag. */
 	void setModified(bool set);
+	/** @return moveId of the previous move */
+	MoveId previousMove() const;
+	/** @return moveId of the next move */
+	MoveId nextMove() const;
+	/** @return moveId of the parent node */
+	MoveId parentMove() const;
+	/** @return list of variation at the current move */
+	QList <MoveId> variations() const;
 
-	//tree traversal methods
+	// ***** Moving through game *****
 	/** Moves to the beginning of the game */
 	void moveToStart();
+	/** Moves to the end of the game */
+	void moveToEnd();
 	/** Moves by given ply, returns actual ply reached */
 	int moveByPly(int diff);
-	/** Moves to the given ply, returns actual ply reached */
-	int moveToPly(int ply);
 	/** Moves to the position corresponding to the given move id */
-	void moveToId(int moveId);
-	/** Moves to the end of the current variation */
-	void moveToEnd();
+	void moveToId(MoveId moveId);
+	/** Moves to the given ply */
+	int moveToPly(int ply);
 	/** Move forward the given number of moves, returns actual number of moves made */
 	int forward(int count = 1);
 	/** Move back the given number of moves, returns actual number of moves undone */
 	int backward(int count = 1);
-	/** Enters the given variation, returns if successful */
-	bool enterVariation(int variation);
-	/** Exits the current variation */
-	void exitVariation();
 
-	//tree modification methods
-	/** Adds a move at the current position, returns variation number of newly added move */
+	// ***** game modification methods *****
+	/** Adds a move at the current position, returns the move id of the added move */
 	int addMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
-	/** Adds a move at the current position, returns variation number of newly added move */
+	/** Adds a move at the current position, returns the move id of the added move */
 	int addMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
-	/** Replaces the next move in the given variation, returns true if successful */
-	bool replaceMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet(), int variation = 0);
-	/** Replaces the next move in the given variation, returns true if successful */
-	bool replaceMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet(), int variation = 0);
+	/** Replace the move after the current position */
+	bool replaceMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
+	/** Replace the move after the current position */
+	bool replaceMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+	/** Adds a move at the current position as a variation,
+	 * returns the move id of the added move */
+	int addVariation(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
+	/** Adds a move at the current position as a variation,
+	 * returns the move id of the added move */
+	int addVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Promotes the given variation to the main line, returns true if successful */
 	bool promoteVariation(int variation);
 	/** Removes the given variation, returns true if successful */
-	bool removeVariation(int variation = 0);
-	/** Removes all variations and mainline moves after the current position */
-	void truncateGameEnd();
-	/** Truncates the game to the given variation, returns true is successful */
-	bool truncateGameStart(int variation = 0);
-
-	//game information methods
-	/** @return ECO code for the game */
-	QString ecoClassify() const;
-	/** Search game to see if given position exists, if it does return ply */
-	int findPosition(const BitBoard& position);
-
-	/** @return start position of game */
-	Board startBoard() const;
-	/** @return annotation at start of game */
-	QString startAnnotation() const;
-	/** @return game result */
-	Result result() const;
-
-	//game modification methods
+	bool removeVariation(int variation);
+	/** Removes all variations and mainline moves after the current position,
+	* or before the current position if @p position == BeforeMove */
+	void truncateVariation(Position position = AfterMove);
 	/** Removes all tags and moves */
 	void clear();
+	/** Set the game start position */
+	void setStartingBoard(const Board& startingBoard);
+	/** Set the game start position from FEN. */
+	void setStartingBoard(const QString& fen);
+
+	/* Manipulating and querying tags */
 	/** Removes all tags */
 	void clearTags();
 	/** @return value of the given tag */
@@ -188,62 +196,70 @@ public:
 	void setTag(const QString& tag, const QString& value);
 	/** Removes a tag */
 	void removeTag(const QString& tag);
-
-	/** Set the game start position */
-	void setStartBoard(const Board& startBoard);
-	/** Set the game start position from FEN. */
-	void setStartBoard(const QString& fen);
-	/** Set annotations at the start of the game */
-	void setStartAnnotation(const QString& annotation);
 	/** Set the game result */
-	void setResult(const Result result);
+	void setResult(Result result);
 
-	/** Class method that loads a file containing ECO classifications for use by the ecoClassify method. Returns true if successful */
+	// Searching
+	/** Search game to see if given position exists, if it does return move id */
+	MoveId findPosition(const BitBoard& position);
+
+	/** @return ECO code for the game */
+	QString ecoClassify();
+
+	/** Method that loads a file containing ECO classifications for use by the ecoClassify method. Returns true if successful */
 	static bool loadEcoFile(const QString& ecoFile);
 
+	/* Debug */
+	/** Dump a move node using qDebug() */
+	void dumpMoveNode(MoveId moveId = CURRENT_MOVE);
+	/** Repeatedly call dumpMoveNode for all nodes */
+	void dumpAllMoveNodes();
+
 private:
-	//definitions
-	static const int defaultSize = 1000;
 
-	struct MoveNode
-	{
+	struct MoveNode {
 		Move move;
-		QString annotation;
 		NagSet nags;
-		int previousNode;
-		int nextNode;
-		int parentNode;
-		int nextVariation;
+		MoveId previousNode;
+		MoveId nextNode;
+		MoveId parentNode;
+		bool deleted;
+		QList <int> variations;
 	};
-
-	//memory  management methods
-	/** Compacts nodes and allocates more space if required */
-	void compact();
-	/** Copies a variation, used by compact for copying nodes to new storage */
-	void copyVariation(int parentNode, int startNode, MoveNode* destinationNodes, int endNode = 0);
-	/** Counts the number of moves, comments and nags, in all variations, to the end of the game */
-	void moveCount(int node, int* moves, int* comments, int* nags);
-	/** Counts number of descendant nodes, for recording number of deleted nodes */
-	int nodeCount(int node);
-	//game data
-	QMap<QString, QString> m_tags;
-	Board m_startBoard;
-	QString m_startAnnotation;
-	Result m_result;
-
-	//tree data
-	int m_currentNode;
-	int m_ply;
-	int m_startPly; // Non-zero if boards doesn't start from starting position
+	/** List of nodes */
+	QList <MoveNode> m_moveNodes;
+	/** Keeps the current node in the game */
+	MoveId m_currentNode;
+	/** Keeps the start position of the game */
+	Board m_startingBoard;
+	/** Keeps the current position of the game */
 	Board m_currentBoard;
+	/** Keeps the current ply in the game */
+	int m_ply;
+	/** Keeps the start ply of the game, 0 for standard starting position */
+	int m_startPly;
+	/** Flag indicating if the game has been modified */
+	bool m_isModified;
+	/** Start annotations for each variation */
+	QMap <int, QString> m_variationStartAnnotations;
+	/** Annotations for move nodes */
+	QMap <int, QString> m_annotations;
+	/** Map keeping pgn tags of the game */
+	QMap<QString, QString> m_tags;
 
-	int m_nextFreeNode;
-	int m_deletedNodeCount;
-	int m_totalNodeCount;
-	MoveNode* m_moveNodes;
+	// **** memory  management methods ****
+	/** Remove all deleted nodes */
+	void compact();
+	/** Deletes the node at @p moveId */
+	void deleteNode(MoveId moveId = CURRENT_MOVE);
+
+	/** Checks if a moveId is valid, returns the moveId if it is, 0 if not */
+	MoveId nodeValid(MoveId moveId = CURRENT_MOVE) const;
+
 	//eco data
 	static QMap<quint64, QString> m_ecoPositions;
-	bool m_isModified;
 };
 
+
 #endif	// __GAME_H__
+

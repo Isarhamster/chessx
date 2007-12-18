@@ -105,7 +105,7 @@ void PgnDatabase::loadGameMoves(int index, Game& game)
 	skipTags();
 	QString fen = m_index.tagValue(TagFEN, m_count - 1);
 	if (fen != "?")
-		game.setStartBoard(fen);
+		game.setStartingBoard(fen);
 	parseMoves(&game);
 }
 
@@ -122,7 +122,7 @@ bool PgnDatabase::loadGame(int index, Game& game)
 	skipTags();
 	QString fen = m_index.tagValue(TagFEN, m_count - 1);
 	if (fen != "?")
-		game.setStartBoard(fen);
+		game.setStartingBoard(fen);
 	parseMoves(&game);
 
 	return m_variation != -1;
@@ -257,9 +257,8 @@ void PgnDatabase::parseToken(Game* game, QString token)
 		m_newVariation = true;
 		break;
 	case ')':
-		if (!m_variation) {
-			game->exitVariation();
-		}
+		game->moveToId(game->parentMove());
+		game->forward();
 		m_newVariation = false;
 		m_variation = 0;
 		break;
@@ -269,43 +268,43 @@ void PgnDatabase::parseToken(Game* game, QString token)
 		m_currentLine = m_currentLine.right((m_currentLine.length() - m_pos) - 1);
 		break;
 	case '$':
-		game->addNag((Nag)token.mid(1).toInt(), m_variation);
+		game->addNag((Nag)token.mid(1).toInt());
 		break;
 	case '!':
 		if (token == "!") {
-			game->addNag(GoodMove, m_variation);
+			game->addNag(GoodMove);
 		} else if (token == "!!") {
-			game->addNag(VeryGoodMove, m_variation);
+			game->addNag(VeryGoodMove);
 		} else if (token == "!?") {
-			game->addNag(SpeculativeMove, m_variation);
+			game->addNag(SpeculativeMove);
 		}
 		break;
 	case '?':
 		if (token == "?") {
-			game->addNag(PoorMove, m_variation);
+			game->addNag(PoorMove);
 		} else if (token == "??") {
-			game->addNag(VeryPoorMove, m_variation);
+			game->addNag(VeryPoorMove);
 		} else if (token == "?!") {
-			game->addNag(QuestionableMove, m_variation);
+			game->addNag(QuestionableMove);
 		}
 		break;
 	case '+':
 		if (token == "+=") {
-			game->addNag(WhiteHasASlightAdvantage, m_variation);
+			game->addNag(WhiteHasASlightAdvantage);
 		} else if (token == "+/-") {
-			game->addNag(WhiteHasAModerateAdvantage, m_variation);
+			game->addNag(WhiteHasAModerateAdvantage);
 		}
 		break;
 	case '-':
 		if (token == "-/+") {
-			game->addNag(BlackHasAModerateAdvantage, m_variation);
+			game->addNag(BlackHasAModerateAdvantage);
 		}
 		break;
 	case '=':
 		if (token == "=") {
-			game->addNag(DrawishPosition, m_variation);
+			game->addNag(DrawishPosition);
 		} else if (token == "=+") {
-			game->addNag(BlackHasASlightAdvantage, m_variation);
+			game->addNag(BlackHasASlightAdvantage);
 		}
 		break;
 	case '*':
@@ -360,10 +359,11 @@ void PgnDatabase::parseToken(Game* game, QString token)
 
 		if (token != "") {
 			if (m_newVariation) {
-				m_variation = game->addMove(token, QString(), nag);
+				game->backward();
+				m_variation = game->addVariation(token, QString(), nag);
 				m_newVariation = false;
 			} else {
-				game->enterVariation(m_variation);
+				//game->enterVariation(m_variation);
 				m_variation = game->addMove(token, QString(), nag);
 			}
 		}
@@ -377,7 +377,7 @@ void PgnDatabase::parseComment(Game* game)
 	if (end >= 0) {
 		m_comment.append(m_currentLine.left(end));
 		m_inComment = false;
-		game->setAnnotation(m_comment.trimmed(), m_variation);
+		game->setAnnotation(m_comment.trimmed());
 		m_currentLine = m_currentLine.right((m_currentLine.length() - end) - 1);
 	} else {
 		m_comment.append(m_currentLine + ' ');

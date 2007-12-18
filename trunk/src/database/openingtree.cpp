@@ -35,7 +35,7 @@ MoveData::MoveData()
 void MoveData::addGame(Game& g, Color c)
 {
 	if (move.isEmpty())
-		move = g.atEnd() ? qApp->translate("MoveData", "[end]") : g.moveToSan();
+		move = g.atLineEnd() ? qApp->translate("MoveData", "[end]") : g.moveToSan(Game::MoveOnly, Game::PreviousMove);
 	count++;
 	result[g.result()]++;
 	unsigned elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
@@ -106,13 +106,15 @@ void OpeningTree::update(Filter& f, const Board& b)
 	m_games = 0;
 	for (int i = 0; i < f.size(); i++) {
 		f.database()->loadGameMoves(i, g);
-		int ply = g.findPosition(b);
-		f.set(i, ply);
-		if (ply)	{
+		int id = g.findPosition(b);
+		if (id != NO_MOVE)	{
+			f.set(i, id);
 			f.database()->loadGameHeaders(i, g);
-			g.moveToPly(ply - 1);
+			g.moveToId(id);
 			m_games++;
-			moves[g.atEnd() ? Move() : g.move()].addGame(g, b.toMove());
+			moves[g.atLineEnd() ? Move() : g.move()].addGame(g, b.toMove());
+		} else {
+			f.set(i, 0);
 		}
 	}
 	m_moves.clear();

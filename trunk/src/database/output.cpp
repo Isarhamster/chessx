@@ -161,91 +161,63 @@ QMap<Output::OutputType, QString>& Output::getFormats()
 	return m_outputMap;
 }
 
-void Output::writeMove(int variation)
+void Output::writeMove(MoveToWrite moveToWrite)
 {
-	QString mvno = QString::number(m_game->moveId(variation));
-	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
-		// *** If the column style option is set and it's a mainline move
-		// *** some special markup is required
-		if (m_game->board().toMove() == White) {
-			// ** If it is white to move, start a new row
-			m_output += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
-			if (m_currentVariationLevel > 0) {
-				if (m_expandable[MarkupVariationMove]) {
-					m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
-				} else {
-					m_output += m_startTagMap[MarkupVariationMove];
-				}
-			} else {
-				if (m_expandable[MarkupMainLineMove]) {
-					m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
-				} else {
-					m_output += m_startTagMap[MarkupMainLineMove];
-				}
-			}
-			m_output += QString::number(m_game->moveNumber()) + ".";
-		} else if (m_dirtyBlack) {
-			// ** If it is black to move and we need the ... then add a extra
-			// ** column before adding the column for the move
-			m_output += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
-			m_output += QString::number(m_game->moveNumber()) + ". ... ";
-			m_output += m_startTagMap[MarkupColumnStyleMove];
-			if (m_currentVariationLevel > 0) {
-				if (m_expandable[MarkupVariationMove]) {
-					m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
-				} else {
-					m_output += m_startTagMap[MarkupVariationMove];
-				}
-			} else {
-				if (m_expandable[MarkupMainLineMove]) {
-					m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
-				} else {
-					m_output += m_startTagMap[MarkupMainLineMove];
-				}
-			}
+	QString mvno;
+	QString nagString = "";
+	QString commentString = "";
+	int moveNumber;
+	if (moveToWrite == NextMove) {
+		moveNumber = m_game->nextMove();
+	} else {
+		moveNumber = m_game->currentMove();
+	}
+	mvno = QString::number(moveNumber);
+	if (m_game->nags(moveNumber).count() > 0) {
+		if (m_options.getOptionAsBool("SymbolicNag")) {
+			nagString += m_game->nags(moveNumber).toString();
 		} else {
-			// ** If it is black to move and we don't need the ...
-			m_output += m_startTagMap[MarkupColumnStyleMove];
-			if (m_currentVariationLevel > 0) {
-				if (m_expandable[MarkupVariationMove]) {
-					m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
-				} else {
-					m_output += m_startTagMap[MarkupVariationMove];
-				}
-			} else {
-				if (m_expandable[MarkupMainLineMove]) {
-					m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
-				} else {
-					m_output += m_startTagMap[MarkupMainLineMove];
-				}
-			}
+			nagString += m_game->nags(moveNumber).toPGNString();
+		}
+	}
+	if (!m_game->annotation(moveNumber).isEmpty()) {
+		commentString = m_game->annotation(moveNumber);
+	}
+	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
+		m_output += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
+	}
+	// *** Markup for the move
+	if (m_currentVariationLevel > 0) {
+		if (m_expandable[MarkupVariationMove]) {
+			m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
+		} else {
+			m_output += m_startTagMap[MarkupVariationMove];
 		}
 	} else {
-		// *** Markup for the move
-		if (m_currentVariationLevel > 0) {
-			if (m_expandable[MarkupVariationMove]) {
-				m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
-			} else {
-				m_output += m_startTagMap[MarkupVariationMove];
-			}
+		if (m_expandable[MarkupMainLineMove]) {
+			m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
 		} else {
-			if (m_expandable[MarkupMainLineMove]) {
-				m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
-			} else {
-				m_output += m_startTagMap[MarkupMainLineMove];
-			}
+			m_output += m_startTagMap[MarkupMainLineMove];
 		}
-		// *** Write the move number
-		if (m_game->board().toMove() == White) {
-			m_output += QString::number(m_game->moveNumber()) + ". ";
-		} else if (m_dirtyBlack) {
-			m_output += QString::number(m_game->moveNumber()) + "... ";
-		}
+	}
+	// *** Write the move number
+	Color c = m_game->board().toMove();
+	if (moveToWrite == PreviousMove) {
+		c = oppositeColor(c);
+	}
+	if (c == White) {
+		m_output += QString::number(m_game->moveNumber()) + ". ";
+	} else if (m_dirtyBlack) {
+		m_output += QString::number(m_game->moveNumber()) + "... ";
 	}
 	m_dirtyBlack = false;
 
 	// *** Write the actual move
-	m_output += m_game->moveToSan(Game::MoveOnly, variation);
+	if (moveToWrite == NextMove) {
+		m_output += m_game->moveToSan();
+	} else {
+		m_output += m_game->moveToSan(Game::MoveOnly, Game::PreviousMove);
+	}
 	// *** End the markup for the move
 	if (m_currentVariationLevel > 0) {
 		m_output += m_endTagMap[MarkupVariationMove];
@@ -253,15 +225,11 @@ void Output::writeMove(int variation)
 		m_output += m_endTagMap[MarkupMainLineMove];
 	}
 	// *** Write the nags if there are any
-	if (m_game->nags(variation).count() > 0) {
-		if (m_options.getOptionAsBool("SymbolicNag")) {
-			m_output += m_startTagMap[MarkupNag] + m_game->nags(variation).toString() + m_endTagMap[MarkupNag];
-		} else {
-			m_output += m_startTagMap[MarkupNag] + m_game->nags(variation).toPGNString() + m_endTagMap[MarkupNag];
-		}
+	if (!nagString.isEmpty()) {
+		m_output += m_startTagMap[MarkupNag] + nagString + m_endTagMap[MarkupNag];
 	}
 	// *** Write the annotations if any
-	if (!m_game->annotation(variation).isEmpty()) {
+	if (!commentString.isEmpty()) {
 		if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
 			m_output += m_endTagMap[MarkupColumnStyleMainline];
 		}
@@ -270,21 +238,21 @@ void Output::writeMove(int variation)
 				    && (m_currentVariationLevel == 0))) {
 			if (m_expandable[MarkupAnnotationIndent]) {
 				m_output += m_startTagMap[MarkupAnnotationIndent].arg(mvno) +
-					    m_game->annotation(variation) +
+					    commentString +
 					    m_endTagMap[MarkupAnnotationIndent];
 			} else {
 				m_output += m_startTagMap[MarkupAnnotationIndent] +
-					    m_game->annotation(variation) +
+					    commentString +
 					    m_endTagMap[MarkupAnnotationIndent];
 			}
 		} else {
 			if (m_expandable[MarkupAnnotationInline]) {
 				m_output += " " + m_startTagMap[MarkupAnnotationInline].arg(mvno) +
-					    m_game->annotation(variation) +
+					    commentString +
 					    m_endTagMap[MarkupAnnotationInline];
 			} else {
 				m_output += " " + m_startTagMap[MarkupAnnotationInline] +
-					    m_game->annotation(variation) +
+					    m_game->annotation() +
 					    m_endTagMap[MarkupAnnotationInline];
 			}
 		}
@@ -298,46 +266,47 @@ void Output::writeMove(int variation)
 void Output::writeVariation()
 {
 	QString variation("");
-	while (!m_game->atEnd()) {
+	while (!m_game->atLineEnd()) {
 		// *** Writes move in the current variation
 		writeMove();
-		for (int i = 1; i < m_game->variationCount(); ++i) {
-			m_currentVariationLevel += 1;
-			if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 1)) {
-				m_output += m_endTagMap[MarkupColumnStyleMainline];
-			}
-			//qDebug ("VariationIndentLevel - %d",m_options.getOptionAsInt("VariationIndentLevel"));
-			if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
-				m_output += m_startTagMap[MarkupVariationIndent];
-			} else {
-				m_output += m_startTagMap[MarkupVariationInline];
-			}
+		if (m_game->variationCount()) {
+			QList <int> variations = m_game->variations();
+			for (int i = 0; i < variations.size(); ++i) {
+				m_currentVariationLevel++;
+				if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 1)) {
+					m_output += m_endTagMap[MarkupColumnStyleMainline];
+				}
+				//qDebug ("VariationIndentLevel - %d",m_options.getOptionAsInt("VariationIndentLevel"));
+				if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
+					m_output += m_startTagMap[MarkupVariationIndent];
+				} else {
+					m_output += m_startTagMap[MarkupVariationInline];
+				}
 
-			m_output +=  "(";
-			m_dirtyBlack = true;
+				m_output +=  "(";
+				m_dirtyBlack = true;
 
-			// *** Writes the first move in variation i
-			writeMove(i);
+				// *** Enter variation i, and write the rest of the moves
+				m_game->moveToId(variations[i]);
+				writeMove(PreviousMove);
+				writeVariation();
 
-			// *** Enter variation i, and write the rest of the moves
-			m_game->enterVariation(i);
-			writeVariation();
-			m_game->exitVariation();
-
-			// *** End the variation
-//			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
-			m_output += ")";
-			//qDebug ("VariationIndentLevel - %d",m_options.getOptionAsInt("VariationIndentLevel"));
-			if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
-				m_output += m_endTagMap[MarkupVariationIndent];
-			} else {
-				m_output += m_endTagMap[MarkupVariationInline];
+				// *** End the variation
+				//			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
+				m_output += ")";
+				//qDebug ("VariationIndentLevel - %d",m_options.getOptionAsInt("VariationIndentLevel"));
+				if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
+					m_output += m_endTagMap[MarkupVariationIndent];
+				} else {
+					m_output += m_endTagMap[MarkupVariationInline];
+				}
+				m_currentVariationLevel--;
+				if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
+					m_output += m_startTagMap[MarkupColumnStyleMainline];
+				}
+				m_dirtyBlack = true;
 			}
-			m_currentVariationLevel -= 1;
-			if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
-				m_output += m_startTagMap[MarkupColumnStyleMainline];
-			}
-			m_dirtyBlack = true;
+			m_game->moveToId(m_game->parentMove());
 		}
 		m_game->forward();
 	}
@@ -384,7 +353,7 @@ QString Output::output(Game* game)
 {
 
 	m_game = game;
-	int id = m_game->currentMoveId();
+	int id = m_game->currentMove();
 	m_currentVariationLevel = 0;
 
 	m_output = m_header;

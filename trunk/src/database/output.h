@@ -68,6 +68,10 @@ public:
 		Latex, /**< Exports the game in Latex format */
 		NotationWidget /**< Exports the game in format appropriate for the notation widget */
 	};
+	enum MoveToWrite {
+		PreviousMove,
+		NextMove
+	};
 	/* enum CommentIndentOption {
 	 *    Always,
 	 *    OnlyMainline,
@@ -186,7 +190,7 @@ private:
 
 	/* Writing Methods */
 	/** Writes a single move including nag and annotation */
-	void writeMove(int variation = 0);
+	void writeMove(MoveToWrite moveToWrite = NextMove);
 	/** Writes a variation, including sub variations */
 	void writeVariation();
 	/** Writes a newline, and indent the following line */

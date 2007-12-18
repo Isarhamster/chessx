@@ -26,15 +26,15 @@
 #include "cxdcompact.h"
 
 const Tag CxdIndex::tags[m_nbIndexTags] = {TagEvent, TagSite, TagDate, TagRound, TagWhite, TagBlack,
-				TagResult, TagWhiteElo, TagBlackElo, TagPlyCount, TagECO,
-				TagFEN
-			       };
+		TagResult, TagWhiteElo, TagBlackElo, TagPlyCount, TagECO,
+		TagFEN
+					  };
 
 
 CxdIndex::CxdIndex(Index& index)
-:m_indexCFile(Index::defaultIndexItemSize)
+		: m_indexCFile(Index::defaultIndexItemSize)
 {
-	m_indexFile=m_indexCFile.qf();
+	m_indexFile = m_indexCFile.qf();
 	m_index = &index;
 
 	for (int i = 0, k = 0; i < m_nbIndexTags; ++i) {
@@ -114,7 +114,7 @@ bool CxdIndex::create(SaxHandler& saxhandler)
 	// Because of the possibility that tagvalues contain by construction
 	// default values we write their current status to disk.
 	for (int i = 0; i < m_nbTagFiles; ++i)
-	        {m_index->m_tagList[tags[i]]->write(m_tagDataStreams[i]);}
+		{m_index->m_tagList[tags[i]]->write(m_tagDataStreams[i]);}
 
 	m_isOpen = true;
 	return 1;
@@ -122,78 +122,69 @@ bool CxdIndex::create(SaxHandler& saxhandler)
 
 void CxdIndex::compact(const QList<bool>& ql)
 {
-	for(int i=0; i<m_nbTagFiles; ++i)
-	{
-	  Tag t=m_mappedTags[i];
-	  TagValues* tv=m_index->tagValues(t);
-	  QVector<bool> qv(tv->count(),0);
-	  QList<Tag> tagTList;
-	  for(int j=0; j<m_nbIndexTags ; ++j)
-	  {
-	    if(BasicTagMap[tags[j]]==t) tagTList.append(tags[j]);
-	  }
+	for (int i = 0; i < m_nbTagFiles; ++i) {
+		Tag t = m_mappedTags[i];
+		TagValues* tv = m_index->tagValues(t);
+		QVector<bool> qv(tv->count(), 0);
+		QList<Tag> tagTList;
+		for (int j = 0; j < m_nbIndexTags ; ++j) {
+			if (BasicTagMap[tags[j]] == t) tagTList.append(tags[j]);
+		}
 
-	  // Fill qv
-	  for(int k=0; k<tagTList.size(); ++k)
-	  {
-	    Tag ct(tagTList[k]);
-	    int indexoffset=m_index->m_tagIndexPosition[ct].first;
-	    int indexsize=m_index->m_tagIndexPosition[ct].second;
-	    for(int j=0; j<ql.size(); ++j)
-	    {
-	      if(ql[j]) qv[m_index->m_indexItems[j]->index(indexoffset,indexsize)]=1;
-	    }
-	  }
+		// Fill qv
+		for (int k = 0; k < tagTList.size(); ++k) {
+			Tag ct(tagTList[k]);
+			int indexoffset = m_index->m_tagIndexPosition[ct].first;
+			int indexsize = m_index->m_tagIndexPosition[ct].second;
+			for (int j = 0; j < ql.size(); ++j) {
+				if (ql[j]) qv[m_index->m_indexItems[j]->index(indexoffset, indexsize)] = 1;
+			}
+		}
 
-	  // The default tagvalue in stringtagvalue should never be removed.
-	  // Todo: eliminate default tag value or clean up this part such that
-	  // it works for all tagvalues and not only stringtagvalues.
-	  qv[0]=1;
+		// The default tagvalue in stringtagvalue should never be removed.
+		// Todo: eliminate default tag value or clean up this part such that
+		// it works for all tagvalues and not only stringtagvalues.
+		qv[0] = 1;
 
-	  // Building index map
-	  QVector<qint32> indexMap(tv->count());
-	  int newindex=0;
-	  for(int j=0; j<tv->count(); ++j)
-	  {
-	    if(qv[j]) indexMap[j]=newindex++; 
-	  }
+		// Building index map
+		QVector<qint32> indexMap(tv->count());
+		int newindex = 0;
+		for (int j = 0; j < tv->count(); ++j) {
+			if (qv[j]) indexMap[j] = newindex++;
+		}
 
-	  // Changing index in memory
-	  for(int k=0; k<tagTList.size(); ++k)
-	  { 
-	    Tag ct(tagTList[k]);
-	    int indexoffset=m_index->m_tagIndexPosition[ct].first;
-	    int indexsize=m_index->m_tagIndexPosition[ct].second;
-	    for(int j=0; j<ql.size(); ++j)
-	    {
-	      if(ql[j]) // The index will only be adapted for games not to be deleted.
-	      {
-	      m_index->m_indexItems[j]->set(indexoffset,indexsize,
-		  indexMap[m_index->m_indexItems[j]->index(indexoffset,indexsize)]);
-	      }
-	    }
-	  }
+		// Changing index in memory
+		for (int k = 0; k < tagTList.size(); ++k) {
+			Tag ct(tagTList[k]);
+			int indexoffset = m_index->m_tagIndexPosition[ct].first;
+			int indexsize = m_index->m_tagIndexPosition[ct].second;
+			for (int j = 0; j < ql.size(); ++j) {
+				if (ql[j]) { // The index will only be adapted for games not to be deleted.
+					m_index->m_indexItems[j]->set(indexoffset, indexsize,
+								      indexMap[m_index->m_indexItems[j]->index(indexoffset, indexsize)]);
+				}
+			}
+		}
 
-	  // Changing tagvalues in memory.
-	  tv->compact(qv);
+		// Changing tagvalues in memory.
+		tv->compact(qv);
 
 
-	  // Writing tagvalues to disk
-	  m_tagFiles[i].resize(0);	  
-	  tv->write(m_tagDataStreams[i]);
-	  m_tagFiles[i].flush();
+		// Writing tagvalues to disk
+		m_tagFiles[i].resize(0);
+		tv->write(m_tagDataStreams[i]);
+		m_tagFiles[i].flush();
 	}
 
 	// Compacting index and flags on memory.
-	CxdCompact::compactList(m_index->m_indexItems,ql);
-	CxdCompact::compactList(m_index->m_deleteFlags,ql);
-	m_index->m_nbUsedIndexItems=m_index->m_deleteFlags.size();
+	CxdCompact::compactList(m_index->m_indexItems, ql);
+	CxdCompact::compactList(m_index->m_deleteFlags, ql);
+	m_index->m_nbUsedIndexItems = m_index->m_deleteFlags.size();
 
 	// Writing new index to disk
 	m_indexFile->seek(0);
-	for(int i=0; i<m_index->m_nbUsedIndexItems; ++i)
-	{
-	  m_index->m_indexItems[i]->cxdWrite(*m_indexFile);
+	for (int i = 0; i < m_index->m_nbUsedIndexItems; ++i) {
+		m_index->m_indexItems[i]->cxdWrite(*m_indexFile);
 	}
 	m_indexFile->resize(m_index->m_nbUsedIndexItems*m_indexCFile.recordsize());
 }
@@ -202,7 +193,7 @@ void CxdIndex::compact(const QList<bool>& ql)
 GameId CxdIndex::appendGame(Game& game)
 {
 	//  Special tags are set explicitly.
-	prepareGameTags(game);	
+	prepareGameTags(game);
 
 	// updating indextag-files
 	addToIndexTagFiles(game);
@@ -221,13 +212,13 @@ GameId CxdIndex::appendGame(Game& game)
 void CxdIndex::replaceGame(Game& game, const int& gameId)
 {
 	//  Special tags are set explicitly.
-	prepareGameTags(game);	
+	prepareGameTags(game);
 
 	// updating indextag-files
 	addToIndexTagFiles(game);
 
 	// updating index in memory
-	m_index->cxdReplace(game,gameId);
+	m_index->cxdReplace(game, gameId);
 
 	// updating index on disk
 	m_indexCFile.seek(gameId);
@@ -257,14 +248,11 @@ void CxdIndex::prepareGameTags(Game& game)
 	//  the tagindex.
 	game.setTag(TagNames[TagPlyCount], QString().setNum(game.plyCount()));
 	game.setTag(TagNames[TagECO], game.ecoClassify());
-	Board startb(game.startBoard());
-        if(startb!=standardStartBoard)
-	{
-	  game.setTag(TagNames[TagFEN],startb.toFen());
-	}
-	else
-	{
-	  game.setTag(TagNames[TagFEN],QString());
+	Board startb(game.startingBoard());
+	if (startb != standardStartBoard) {
+		game.setTag(TagNames[TagFEN], startb.toFen());
+	} else {
+		game.setTag(TagNames[TagFEN], QString());
 	}
 }
 

@@ -299,7 +299,7 @@ int MainWindow::gameIndex() const
 
 void MainWindow::gameLoad(int index, bool force, bool reload)
 {
-	if (databaseInfo()->loadGame(index,reload))
+	if (databaseInfo()->loadGame(index, reload))
 		m_gameList->selectGame(index);
 	else if (!force)
 		return;
@@ -398,9 +398,9 @@ bool MainWindow::gameEditComment()
 {
 	bool ok;
 	QString cmt = QInputDialog::getText(this, tr("Edit comment"), tr("Comment:"),
-					    QLineEdit::Normal, game().annotation(game().currentVariation()), &ok);
+					    QLineEdit::Normal, game().annotation(), &ok);
 	if (ok)
-		game().setAnnotation(cmt, (game().currentVariation()));
+		game().setAnnotation(cmt);
 	return ok;
 }
 
@@ -564,22 +564,22 @@ void MainWindow::slotEditPasteFEN()
 	board.fromFen(fen);
 	if (board.validate() != Valid) {
 		MessageDialog::warning(this, tr("The clipboard contains FEN, but with illegal position. "
-				     "You can only paste such positions in <b>Setup position</b> dialog."));
+						"You can only paste such positions in <b>Setup position</b> dialog."));
 		return;
 	}
-	game().setStartBoard(board);
+	game().setStartingBoard(board);
 	slotGameChanged();
 }
 
 void MainWindow::slotEditTruncateEnd()
 {
-	game().truncateGameEnd();
+	game().truncateVariation(Game::AfterMove);
 	slotGameChanged();
 }
 
 void MainWindow::slotEditTruncateStart()
 {
-	game().truncateGameStart();
+	game().truncateVariation(Game::BeforeMove);
 	slotGameChanged();
 }
 
@@ -589,7 +589,7 @@ void MainWindow::slotEditBoard()
 	B.setBoard(game().board());
 	B.setFlipped(m_boardView->isFlipped());
 	if (B.exec() == QDialog::Accepted) {
-		game().setStartBoard(B.board());
+		game().setStartingBoard(B.board());
 		slotGameChanged();
 	}
 }
@@ -641,7 +641,7 @@ void MainWindow::slotBoardMove(Square from, Square to)
 				return;
 			m.setPromotionPiece(PieceType(Queen + index));
 		}
-		if (game().atEnd())
+		if (game().atLineEnd())
 			game().addMove(m);
 		else {
 			// Find how way we should add new move
@@ -652,9 +652,9 @@ void MainWindow::slotBoardMove(Square from, Square to)
 			QPushButton* replaceMain = mbox.addButton(tr("Replace current move"), QMessageBox::DestructiveRole);
 			mbox.exec();
 			if (mbox.clickedButton() == addVar)
-				game().enterVariation(game().addMove(m));
+				game().addVariation(m);
 			else if (mbox.clickedButton() == newMain)
-				game().promoteVariation(game().addMove(m));
+				game().promoteVariation(game().addVariation(m));
 			else if (mbox.clickedButton() == replaceMain)
 				game().replaceMove(m);
 			else return;
@@ -668,14 +668,14 @@ void MainWindow::slotBoardClick(Square, int button)
 {
 	if (button != Qt::RightButton)
 		return;
-	bool remove = game().atEnd();
-	int var = game().currentVariation();
+	bool remove = game().atLineEnd();
+	int var = game().variationNumber();
 	gameMoveBy(-1);
 	if (remove) {
 		if (var && game().isMainline())
 			game().removeVariation(var);
 		else
-			game().truncateGameEnd();
+			game().truncateVariation();
 		slotGameChanged();
 	}
 }
@@ -689,7 +689,7 @@ void MainWindow::slotMoveChanged()
 	m_boardView->setBoard(g.board());
 
 	// Highlight current move
-	m_gameView->showMove(g.currentMoveId());
+	m_gameView->showMove(g.currentMove());
 
 	// Finally update game information
 	QString white = g.tag("White");
@@ -713,24 +713,25 @@ void MainWindow::slotMoveChanged()
 	QString header = tr("<i>%1(%2), %3, %4</i>").arg(g.tag("Event")).arg(g.tag("Round"))
 			 .arg(g.tag("Site")).arg(g.tag("Date"));
 	QString lastmove, nextmove;
-	if (!g.atStart())
-		lastmove = QString("<a href=\"move:prev\">%1</a>").arg(g.previousMoveToSan(Game::FullDetail));
+	if (!g.atGameStart())
+		lastmove = QString("<a href=\"move:prev\">%1</a>").arg(g.moveToSan(Game::FullDetail, Game::PreviousMove));
 	else
 		lastmove = tr("(Start of game)");
-	if (!g.atEnd())
-		nextmove = QString("<a href=\"move:next\">%1</a>").arg(g.moveToSan(Game::FullDetail));
+	if (!g.atGameEnd())
+		nextmove = QString("<a href=\"move:next\">%1</a>").arg(g.moveToSan(Game::FullDetail, Game::NextMove));
 	else
 		nextmove = g.isMainline() ? tr("(End of game)") : tr("(End of line)");
 	QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
 	if (!g.isMainline())
 		move.append(QString(" &nbsp; &nbsp; <a href=\"move:exit\">%1</a>").arg(tr("(&lt;-Var)")));
 	QString var;
-	if (g.variationCount() > 1) {
+	if (g.variationCount()) {
 		var = tr("<br>Variations: &nbsp; ");
-		for (int i = 1; i < g.variationCount(); i++) {
-			var.append(QString("v%1: <a href=\"move:%2\">%3</a>").arg(i).arg(g.moveId(i))
-				   .arg(g.moveToSan(Game::FullDetail, i)));
-			if (i != g.variationCount() - 1)
+		QList <int> variations = g.variations();
+		for (int i = 1; i <= variations.size(); i++) {
+			var.append(QString("v%1: <a href=\"move:%2\">%3</a>").arg(i).arg(variations[i-1])
+				   .arg(g.moveToSan(Game::FullDetail, Game::PreviousMove, variations[i-1])));
+			if (i != variations.size())
 				var.append(" &nbsp; ");
 		}
 	}
@@ -836,15 +837,13 @@ void MainWindow::slotGameModify(int action, int move)
 	slotMoveChanged();
 	switch (action) {
 	case ChessBrowser::RemoveNextMoves:
-		game().truncateGameEnd();
+		game().truncateVariation();
 		break;
 	case ChessBrowser::RemovePreviousMoves:
-		game().truncateGameStart();
+		game().truncateVariation(Game::BeforeMove);
 		break;
 	case ChessBrowser::RemoveVariation: {
-		int var = game().currentVariation();
-		game().exitVariation();
-		game().removeVariation(var);
+		game().removeVariation(game().variationNumber());
 		break;
 	}
 	case ChessBrowser::EditComment:
@@ -873,7 +872,7 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 	if (url.scheme() == "move") {
 		if (url.path() == "prev") game().backward();
 		else if (url.path() == "next") game().forward();
-		else if (url.path() == "exit") game().exitVariation();
+		else if (url.path() == "exit") game().moveToId(game().parentMove());
 		else
 			game().moveToId(url.path().toInt());
 		slotMoveChanged();
@@ -883,8 +882,8 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 		if (gameEditComment())
 			slotGameChanged();
 	} else if (url.scheme() == "egtb") {
-		if (!game().atEnd())
-			game().enterVariation(game().addMove(url.path()));
+		if (!game().atGameEnd())
+			game().addVariation(url.path());
 		else
 			game().addMove(url.path());
 		game().forward();
@@ -1152,7 +1151,7 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 {
 	QString move = dynamic_cast<OpeningTree*>(m_openingTree->model())->move(index);
 	Move m = m_boardView->board().parseMove(move);
-	if (m == game().move())
+	if (m == game().move(game().nextMove()))
 		slotGameMoveNext();
 	else if (game().isModified())
 		slotBoardMove(m.from(), m.to());
