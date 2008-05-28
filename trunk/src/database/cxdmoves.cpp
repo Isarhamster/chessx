@@ -380,7 +380,7 @@ void Encoding::encodePawn(const Move& m, QIODevice& qiod)
 	// 15 : two squares forward
 
 	int diff(m.to() - m.from());
-	static const unsigned char val[33] = {
+	static const signed char val[33] = {
 		// -16 -15 -14 -13 -12 -11 -10
 		15, -1, -1, -1, -1, -1, -1,
 		// -9 -8 -7 -6 -5 -4 -3 -2 -1  0
