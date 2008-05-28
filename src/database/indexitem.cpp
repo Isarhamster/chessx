@@ -75,7 +75,7 @@ TagIndex IndexItem::set(int offset, int size, TagIndex index)
 {
 	// Could this test be skipped, abandonning safety for speed?
 	if ((offset + size) > m_size)
-		return -1;
+		return static_cast<TagIndex>(-1);
 	if (size == 1) {
 		*(quint8*)(m_data + offset) = (quint8) index;
 	} else if (size == 2) {

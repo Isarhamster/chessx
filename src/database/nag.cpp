@@ -41,18 +41,20 @@ NagSet::NagSet(const QVector<Nag>& nags)
 }
 NagSet& NagSet::operator=(const NagSet& nagset)
 {
-   m_noNags = MaxNags < (int)nagset.count() ? MaxNags : nagset.count();
-   for (int nag = 0; nag <= m_noNags; nag++) {
-      m_nags[nag] = nagset[nag];
-   }
+	m_noNags = MaxNags < (int)nagset.count() ? MaxNags : nagset.count();
+	for (int nag = 0; nag <= m_noNags; nag++) {
+		m_nags[nag] = nagset[nag];
+	}
+
+	return *this;
 }
 Nag NagSet::operator[](int index)
 {
-   return (Nag)m_nags[index];
+	return (Nag)m_nags[index];
 }
 Nag NagSet::operator[](int index) const
 {
-   return (Nag)m_nags[index];
+	return (Nag)m_nags[index];
 }
 
 void NagSet::addNag(Nag nag)
