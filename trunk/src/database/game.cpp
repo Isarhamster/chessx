@@ -361,7 +361,7 @@ int Game::ply(MoveId moveId) const
 			return m_ply;
 		}
 		int count = 0;
-		while (m_moveNodes[node].previousNode) {
+		while (node) {
 			count++;
 			node = m_moveNodes[node].previousNode;
 		}

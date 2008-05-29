@@ -206,9 +206,9 @@ void Output::writeMove(MoveToWrite moveToWrite)
 		c = oppositeColor(c);
 	}
 	if (c == White) {
-		m_output += QString::number(m_game->moveNumber()) + ". ";
+		m_output += QString::number(m_game->moveNumber(moveNumber)) + ". ";
 	} else if (m_dirtyBlack) {
-		m_output += QString::number(m_game->moveNumber()) + "... ";
+		m_output += QString::number(m_game->moveNumber(moveNumber)) + "... ";
 	}
 	m_dirtyBlack = false;
 
