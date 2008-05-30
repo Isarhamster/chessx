@@ -118,13 +118,13 @@ public :
 	void moveCount(int* moves, int* comments, int* nags);
 	/** @return number of half moves made since the beginning of the game */
 	int ply(MoveId moveId = CURRENT_MOVE) const;
-	/** @return current move. Equals to @p ply/2 for standard games, but may be different
+	/** @return current move. Equals to (ply-1)/2+1 for standard games, but may be different
 	*/
 	int moveNumber(MoveId moveId = CURRENT_MOVE) const;
 	/** @return number of ply for the whole game (mainline only) */
 	int plyCount() const;
 	/** @return number of current variation */
-	int variationNumber(MoveId moveId = CURRENT_MOVE) const;
+	MoveId variationNumber(MoveId moveId = CURRENT_MOVE) const;
 	/** @return number of variations at the current position */
 	int variationCount(MoveId moveId = CURRENT_MOVE) const;
 	/** @return true if the game has been modified */
@@ -158,23 +158,23 @@ public :
 
 	// ***** game modification methods *****
 	/** Adds a move at the current position, returns the move id of the added move */
-	int addMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
+	MoveId addMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Adds a move at the current position, returns the move id of the added move */
-	int addMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+	MoveId addMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Replace the move after the current position */
 	bool replaceMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Replace the move after the current position */
 	bool replaceMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Adds a move at the current position as a variation,
 	 * returns the move id of the added move */
-	int addVariation(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
+	MoveId addVariation(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Adds a move at the current position as a variation,
 	 * returns the move id of the added move */
-	int addVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+	MoveId addVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Promotes the given variation to the main line, returns true if successful */
-	bool promoteVariation(int variation);
+	bool promoteVariation(MoveId variation);
 	/** Removes the given variation, returns true if successful */
-	bool removeVariation(int variation);
+	bool removeVariation(MoveId variation);
 	/** Removes all variations and mainline moves after the current position,
 	* or before the current position if @p position == BeforeMove */
 	void truncateVariation(Position position = AfterMove);
@@ -224,7 +224,7 @@ private:
 		MoveId nextNode;
 		MoveId parentNode;
 		bool deleted;
-		QList <int> variations;
+		QList <MoveId> variations;
 	};
 	/** List of nodes */
 	QList <MoveNode> m_moveNodes;
@@ -241,9 +241,9 @@ private:
 	/** Flag indicating if the game has been modified */
 	bool m_isModified;
 	/** Start annotations for each variation */
-	QMap <int, QString> m_variationStartAnnotations;
+	QMap <MoveId, QString> m_variationStartAnnotations;
 	/** Annotations for move nodes */
-	QMap <int, QString> m_annotations;
+	QMap <MoveId, QString> m_annotations;
 	/** Map keeping pgn tags of the game */
 	QMap<QString, QString> m_tags;
 
