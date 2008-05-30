@@ -151,7 +151,7 @@ int Game::addVariation(const QString& sanMove, const QString& annotation, NagSet
 	return (m_moveNodes.size() - 1);
 }
 bool Game::promoteVariation(int variation)
-{
+{ 
 	MoveId currentNode = m_currentNode;
 	moveToId(m_moveNodes[variation].parentNode);
 	MoveId demotedVariationParentNode = m_moveNodes[m_currentNode].parentNode;
@@ -165,6 +165,16 @@ bool Game::promoteVariation(int variation)
 	while (forward()) {
 		m_moveNodes[m_currentNode].parentNode = demotedVariationParentNode;
 	}
+
+	// updating promoted variation parent node
+	MoveNode& variationParent = m_moveNodes[promotedVariationParentNode];
+	if (variationParent.nextNode != NO_MOVE) {
+		QList<int>& vars = variationParent.variations;
+		for (int i = 0; i < vars.size(); ++i)
+			if (vars.at(i) == variation)
+				vars[i] = variationParent.nextNode;
+	}
+	variationParent.nextNode = variation;
 
 	moveToId(currentNode);
 	return true;
