@@ -224,6 +224,7 @@ private:
 		MoveId nextNode;
 		MoveId parentNode;
 		bool deleted;
+		int ply;
 		QList <MoveId> variations;
 	};
 	/** List of nodes */
@@ -234,8 +235,6 @@ private:
 	Board m_startingBoard;
 	/** Keeps the current position of the game */
 	Board m_currentBoard;
-	/** Keeps the current ply in the game */
-	int m_ply;
 	/** Keeps the start ply of the game, 0 for standard starting position */
 	int m_startPly;
 	/** Flag indicating if the game has been modified */

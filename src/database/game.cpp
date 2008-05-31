@@ -35,7 +35,6 @@ Game::Game(const Game& game)
 	m_annotations = game.m_variationStartAnnotations;
 
 	m_currentNode = game.m_currentNode;
-	m_ply = game.m_ply;
 	m_startPly = game.m_startPly;
 	m_currentBoard = game.m_currentBoard;
 
@@ -56,7 +55,6 @@ Game& Game::operator=(const Game & game)
 	m_annotations = game.m_variationStartAnnotations;
 
 	m_currentNode = game.m_currentNode;
-	m_ply = game.m_ply;
 	m_startPly = game.m_startPly;
 	m_currentBoard = game.m_currentBoard;
 
@@ -82,12 +80,12 @@ MoveId Game::addMove(const Move& move, const QString& annotation, NagSet nags)
 	node.move = move;
 	node.nags = nags;
 	node.deleted = false;
+	node.ply = ply() + 1;
 	m_moveNodes.append(node);
 	m_currentNode = m_moveNodes.size() - 1;
 	setAnnotation(annotation);
 	m_moveNodes[previousNode].nextNode = m_currentNode;
 	m_currentBoard.doMove(move);
-	m_ply++;
 	m_isModified = true;
 
 	return m_currentNode;
@@ -104,7 +102,7 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags)
 	int node;
 	node = m_moveNodes[m_currentNode].nextNode;
 
-	if (!node) {
+	if (node == NO_MOVE) {
 		addMove(move, annotation, nags);
 		return true;
 	}
@@ -116,8 +114,10 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags)
 		setAnnotation(annotation, node);
 	}
 
-	//remove any following nodes by disconnecting them from the tree
+	//remove any following nodes after replaced move by disconnecting them from the tree
+	forward();
 	truncateVariation();
+	backward();
 
 	m_isModified = true;
 	return true;
@@ -367,15 +367,7 @@ int Game::ply(MoveId moveId) const
 {
 	MoveId node = nodeValid(moveId);
 	if (node != NO_MOVE) {
-		if (m_currentNode == node) {
-			return m_ply;
-		}
-		int count = 0;
-		while (node) {
-			count++;
-			node = m_moveNodes[node].previousNode;
-		}
-		return count;
+		return m_moveNodes[node].ply;
 	}
 	return 0;
 }
@@ -398,7 +390,7 @@ int Game::plyCount() const
 	}
 	// Counted one too much, because we have to start at zero
 	// (an empty game has no node 1)
-	return count -1;
+	return count - 1;
 }
 MoveId Game::variationNumber(MoveId moveId) const
 {
@@ -455,7 +447,6 @@ void Game::setModified(bool set)
 void Game::moveToStart()
 {
 	m_currentNode = 0;
-	m_ply = 0;
 	m_currentBoard = m_startingBoard;
 }
 int Game::moveByPly(int diff)
@@ -481,10 +472,8 @@ void Game::moveToId(MoveId moveId)
 
 	//reset the board, then make the moves on the stack to create the correct position
 	m_currentNode = moveId;
-	m_ply = 0;
 	m_currentBoard = m_startingBoard;
 	while (!moveStack.isEmpty()) {
-		m_ply++;
 		m_currentBoard.doMove(moveStack.pop());
 	}
 }
@@ -492,16 +481,17 @@ int Game::moveToPly(int ply)
 {
 	if (ply == 0) {
 		moveToStart();
+		return 0;
 	}
-	int diff = ply - m_ply;
+
+	int currentPly = this->ply();
+	int diff = ply - currentPly;
 
 	if (diff > 0) {
-		forward(diff);
+		return currentPly + forward(diff);
 	} else {
-		backward(-diff);
+		return currentPly - backward(-diff);
 	}
-
-	return m_ply;
 }
 Move Game::move(MoveId moveId) const
 {
@@ -527,7 +517,6 @@ int Game::forward(int count)
 	int moved = 0;
 	while ((m_moveNodes[m_currentNode].nextNode != NO_MOVE) && (moved < count)) {
 		m_currentNode = m_moveNodes[m_currentNode].nextNode;
-		m_ply++;
 		moved++;
 		m_currentBoard.doMove(m_moveNodes[m_currentNode].move);
 	}
@@ -539,7 +528,6 @@ int Game::backward(int count)
 	while ((m_moveNodes[m_currentNode].previousNode >= 0) && (moved < count)) {
 		m_currentBoard.undoMove(m_moveNodes[m_currentNode].move);
 		m_currentNode = m_moveNodes[m_currentNode].previousNode;
-		m_ply--;
 		moved++;
 	}
 	return moved;
@@ -567,7 +555,6 @@ void Game::clear()
 {
 	clearTags();
 	m_moveNodes.clear();
-	m_ply = 0;
 	m_startPly = 0;
 	m_currentNode = 0;
 
@@ -581,6 +568,7 @@ void Game::clear()
 	firstNode.move = Move();
 	firstNode.nags = NagSet();
 	firstNode.deleted = false;
+	firstNode.ply = 0;
 	m_moveNodes.append(firstNode);
 	m_isModified = true;
 
