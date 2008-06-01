@@ -25,6 +25,9 @@
 #define CURRENT_MOVE -2
 #define CURRENT_VARIATION -3
 #define COMPILED_ECO_FILE_ID ((quint32)0xCD5CBD02U)
+
+typedef int MoveId;
+
 /** @ingroup Core
    The Game class represents a chess game. This is a complete rewrite, with simpler
    API.  Moves and variations can be added and removed.
@@ -46,7 +49,6 @@
    7 is the variation number.
 
 */
-typedef int MoveId;
 
 class Game
 {
@@ -138,7 +140,7 @@ public :
 	/** @return moveId of the parent node */
 	MoveId parentMove() const;
 	/** @return list of variation at the current move */
-	QList <MoveId> variations() const;
+	const QList<MoveId>& variations() const;
 
 	// ***** Moving through game *****
 	/** Moves to the beginning of the game */
@@ -155,6 +157,12 @@ public :
 	int forward(int count = 1);
 	/** Move back the given number of moves, returns actual number of moves undone */
 	int backward(int count = 1);
+
+	/** Enters the variation that corresponds to moveId. moveId must be a MoveId that
+	    corresponds to a subvariation of the current position. Compared to moveToId
+            this function runs in constant time.
+	*/
+	void enterVariation(const MoveId& moveId);
 
 	// ***** game modification methods *****
 	/** Adds a move at the current position, returns the move id of the added move */
