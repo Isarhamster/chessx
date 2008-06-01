@@ -32,11 +32,14 @@
 
 #include "cxdmoves.h"
 
+using namespace std;
+
 
 namespace   //unnamed namespace for helper classes and functions
 {
 
 class error{}; // default error throwed in exception handling
+
 
 // ------------------------------------------------
 // ------------------------------------------------
@@ -462,6 +465,7 @@ void Encoding::encodeVariation(Game& game, const int& variation, QIODevice& qiod
 {
 	Move m;
 	int var(variation);
+	MoveId mid;
 
 	// The following variable holds the piecenumber of the piece
 	// where the current move ends. It will be used for recursively
@@ -471,13 +475,15 @@ void Encoding::encodeVariation(Game& game, const int& variation, QIODevice& qiod
 
 	qiod.putChar(beginVariation);
 	while (true) {
-		m = game.move();
-		encodeNags(game.nags(), qiod);
-		if (game.annotation() != "") encodeComment(game.annotation(), qiod);
+		if(var==0) mid=game.nextMove();
+		else mid = game.variations()[var-1];
+		m = game.move(mid);
+		encodeNags(game.nags(mid), qiod);
+		if (game.annotation(mid) != "") encodeComment(game.annotation(mid), qiod);
 		to_pn = piecenumbers[m.to()];
 		encodeMove(m, qiod);
-		if (var == 0 && game.variationCount() > 1) {
-			for (int i = 1; i < game.variationCount(); ++i) {
+		if (var == 0 && game.variationCount() >= 1) {
+			for (int i = 1; i <= game.variationCount(); ++i) {
 				Encoding cxEnc_sub(*this);
 				// setting cxEnc_sub to its state one move earlier
 				cxEnc_sub.piecenumbers[m.from()] = piecenumbers[m.to()];
@@ -490,9 +496,9 @@ void Encoding::encodeVariation(Game& game, const int& variation, QIODevice& qiod
 				cxEnc_sub.encodeVariation(g, i, qiod);
 			}
 		}
-		//PROBLEM
-		//game.enterVariation(var);
-		if (game.atGameEnd()) break;
+		if(var==0) game.forward();
+		else game.enterVariation(mid);
+		if (game.atLineEnd()) break;
 		var = 0;
 	}
 	qiod.putChar(endVariation);
@@ -518,7 +524,7 @@ bool Encoding::encodeNonHeader(Game& game, QIODevice& qiod)
 	// Encode variations. The variation part of a game without
 	// moves is encoded by beginVariation EndVariation.
 	game.moveToStart();
-	if (game.variationCount()) // game has variations
+	if (!game.atGameEnd()) // game has variations
 		{encodeVariation(game, 0, qiod);}
 	else { // game has no variations to encode
 		qiod.putChar(beginVariation);
@@ -864,7 +870,7 @@ void Decoding::decodeNags(NagSet& ns, QIODevice& qiod) const
 // Variation.
 void Decoding::decodeVariation(Game& game, QIODevice& qiod)
 {
-	int variation;
+	MoveId variation;
 	char c;
 	unsigned char u;
 	qiod.getChar(&c);
@@ -925,9 +931,15 @@ void Decoding::decodeVariation(Game& game, QIODevice& qiod)
 			// Set right promotion piece if move is pawn promotion.
 			if (m.isPromotion()) m.setPromotionPiece(pt);
 
-			variation = game.addMove(m, comment, ns);
-			// PROBLEM
-			//game.enterVariation(variation);
+			if (game.atLineEnd())
+			{
+			  game.addMove(m, comment, ns);
+			}
+			else
+			{
+			  variation=game.addVariation(m, comment, ns);
+			}
+
 			ns.clear();
 			comment = "";
 			break;

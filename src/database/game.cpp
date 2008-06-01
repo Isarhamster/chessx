@@ -424,7 +424,7 @@ MoveId Game::currentMove() const
 {
 	return m_currentNode;
 }
-QList <MoveId> Game::variations() const
+const QList<MoveId>& Game::variations() const
 {
 	return m_moveNodes[m_currentNode].variations;
 }
@@ -532,6 +532,12 @@ int Game::backward(int count)
 	}
 	return moved;
 }
+void Game::enterVariation(const MoveId& moveId)
+{
+	Q_ASSERT(variations().contains(moveId));
+	m_currentBoard.doMove(m_moveNodes[moveId].move);
+	m_currentNode=moveId;
+}
 void Game::deleteNode(MoveId moveId)
 {
 	MoveId node = nodeValid(moveId);
@@ -555,6 +561,8 @@ void Game::clear()
 {
 	clearTags();
 	m_moveNodes.clear();
+	m_variationStartAnnotations.clear();
+	m_annotations.clear();
 	m_startPly = 0;
 	m_currentNode = 0;
 
