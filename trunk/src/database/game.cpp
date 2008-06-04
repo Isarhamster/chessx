@@ -184,7 +184,10 @@ bool Game::removeVariation(MoveId variation)
 	MoveId parentNode = m_moveNodes[variation].parentNode;
 	deleteNode(variation);
 	moveToId(parentNode);
-	m_moveNodes[m_currentNode].variations.removeAt(m_moveNodes[m_currentNode].variations.indexOf(variation));
+
+	QList<MoveId> &vars = m_moveNodes[m_currentNode].variations;
+	vars.removeAt(vars.indexOf(variation));
+
 	compact();
 	return true;
 }
@@ -734,12 +737,29 @@ bool Game::loadEcoFile(const QString& ecoFile)
 }
 void Game::compact()
 {
+	int oldSize = m_moveNodes.size();
 	QList <MoveNode> moveNodes;
-	for (int i = 0; i < m_moveNodes.size(); ++i) {
+	QVector <int> oldIdNewIdMapping(oldSize);
+
+	for (int i = 0; i < oldSize; ++i) {
 		if (!m_moveNodes[i].deleted) {
+			oldIdNewIdMapping[i] = moveNodes.size();
 			moveNodes.append(m_moveNodes[i]);
 		}
 	}
+
+	// update nodes links to other nodes in shrinked list (prev, next, variations)
+	for (int i = 0, newSize = moveNodes.size(); i < newSize; ++i) {
+		MoveNode& node = moveNodes[i];
+#define GAME_UPDATE_MOVEID(aMoveId) if (aMoveId != NO_MOVE) aMoveId = oldIdNewIdMapping[aMoveId]
+		GAME_UPDATE_MOVEID(node.nextNode);
+		GAME_UPDATE_MOVEID(node.previousNode);
+		QList<MoveId>& vars = node.variations;
+		for (int j = 0; j < vars.size(); ++j)
+			GAME_UPDATE_MOVEID(vars[j]);
+#undef  GAME_UPDATE_LINK
+	}
+
 	m_moveNodes.clear();
 	m_moveNodes = moveNodes;
 }
