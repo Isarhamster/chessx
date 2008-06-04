@@ -54,6 +54,10 @@ GameList::~GameList()
 
 void GameList::simpleSearch(int tagid)
 {
+	// now tags are shifted (see the warning) after the tag number 1. 
+	if (tagid == 1) return;
+	if (tagid > 1) --tagid;
+
 #ifdef __GNUG__
 #warning Unify with <filtermodel.cpp>
 #else // VisualC++
