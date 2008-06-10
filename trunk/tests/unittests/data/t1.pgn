@@ -1,0 +1,12 @@
+[Event "test"]
+[Site "test"]
+[Date "2008.??.??"]
+[Round "?"]
+[White "A, B"]
+[Black "X, Y"]
+[Result "1-0"]
+[ECO "B21y"]
+[EventDate "2008.??.??"]
+[PlyCount "4"]
+
+1. f3 e6 2. g4 Qh4#

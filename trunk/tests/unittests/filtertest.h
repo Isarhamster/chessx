@@ -22,11 +22,15 @@ Unit tests for the Filter class
 #define FILTERTEST_H
 
 #include <QtTest/QtTest>
+#include "pgndatabase.h"
 
 class FilterTest : public QObject
 {
 
 	Q_OBJECT
+
+private:
+	PgnDatabase db;
 
 private slots:
 	void initTestCase();
@@ -35,6 +39,7 @@ private slots:
 	void cleanupTestCase();
 
 	void testFilter();
+	void testFilterOnStartPos();
 
 };
 

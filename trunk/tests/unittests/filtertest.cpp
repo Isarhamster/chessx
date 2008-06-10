@@ -1,19 +1,16 @@
 
 #include "filtertest.h"
-#include "pgndatabase.h"
 #include "filter.h"
 #include "search.h"
 #include "board.h"
 
-void FilterTest::initTestCase() {}
+void FilterTest::initTestCase() { db.open("data/game10.pgn"); }
 void FilterTest::init(){}
 void FilterTest::cleanup(){}
-void FilterTest::cleanupTestCase() {}
+void FilterTest::cleanupTestCase() { db.close(); }
 
 void FilterTest::testFilter()
 {
-	PgnDatabase db;
-	db.open("data/game10.pgn");
 	Filter filter(&db);
 
 	QCOMPARE(filter.count() , 10);
@@ -41,6 +38,10 @@ void FilterTest::testFilter()
 	QCOMPARE(filter.gameToIndex(7) , -1);
 	QCOMPARE(filter.gameToIndex(8) , -1);
 	QCOMPARE(filter.gameToIndex(9) , -1);
+
+	filter.reverse();
+	QCOMPARE(filter.count() , 6);
+
 	filter.setAll(1);
 	QCOMPARE(filter.count() , 10);
 	// Commented out because causing test to fail. Need to investigate.
@@ -80,10 +81,14 @@ void FilterTest::testFilter()
 	   QCOMPARE ( filter.contains(7) , true );
 	   QCOMPARE ( filter.contains(8) , false );
 	   QCOMPARE ( filter.contains(9) , true ); */
-
-
-
-
-
 }
 
+void FilterTest::testFilterOnStartPos() {
+	Filter filter(&db);
+	Board board;
+	board.setStandardPosition();
+	PositionSearch posSearch(&db, board);
+
+	filter.executeSearch(posSearch);
+	QCOMPARE(filter.count(), 10);
+}

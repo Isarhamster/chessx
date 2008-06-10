@@ -39,6 +39,7 @@ Do not forget to update the testrunner.pro - add the source files!
 #include "filtertest.h"
 #include "boardtest.h"
 #include "gametest.h"
+#include "positionsearchtest.h"
 
 int main(int argc, char *argv[])
 {
@@ -54,6 +55,7 @@ int main(int argc, char *argv[])
 	IndexTest indexTests;
 	FilterTest filterTests;
 	GameTest gameTests;
+	PositionSearchTest posSearchTests;
 
 	QTest::qExec(&playerDBtests, argc, argv);
 	QTest::qExec(&pgnDBtests, argc, argv);
@@ -66,7 +68,7 @@ int main(int argc, char *argv[])
 	QTest::qExec(&indexTests, argc, argv);
 	QTest::qExec(&filterTests, argc, argv);
 	QTest::qExec(&gameTests, argc, argv);
-
+	QTest::qExec(&posSearchTests, argc, argv);
 
 	// Cleanup
 	QFile("data/spell.txt").remove();

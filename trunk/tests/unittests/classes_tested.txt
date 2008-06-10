@@ -6,6 +6,8 @@ PgnDatabase
 PlayerDatabase
 Spellchecker
 Game
+Filter
+PositionSearch
 
 
 (C) 2007 Heinz R. Hopfgartner <heinz.hopfgartner@gmx.at>
