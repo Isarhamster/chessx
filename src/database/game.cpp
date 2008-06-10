@@ -713,11 +713,13 @@ int Game::findPosition(const BitBoard& position)
 	BitBoard currentBoard (m_currentBoard);
 
 	for (;;) {
-		current = m_moveNodes[current].nextNode;
-		if ((current == NO_MOVE) || !position.canBeReachedFrom(currentBoard))
-			break;
 		if (currentBoard.positionIsSame(position))
 			return current;
+		
+		current = m_moveNodes[current].nextNode;
+		if (current == NO_MOVE || !position.canBeReachedFrom(currentBoard))
+			return NO_MOVE;
+		
 		currentBoard.doMove(m_moveNodes[current].move);
 	}
 	return NO_MOVE;
