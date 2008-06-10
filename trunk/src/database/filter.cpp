@@ -25,7 +25,7 @@ Filter::Filter(Database* database)
 {
 	m_database = database;
 	m_count = m_database->count();
-	m_byteArray = new QByteArray(m_count, 1);
+	m_vector = new QVector<int>(m_count, 1);
 	m_cache.first = m_cache.second = 0;
 	m_gamesSearched = 0;
 	m_searchTime = 0;
@@ -33,7 +33,7 @@ Filter::Filter(Database* database)
 
 Filter::Filter(const Filter& filter)
 {
-	m_byteArray = new QByteArray(filter.byteArray());
+	m_vector = new QVector<int>(filter.intVector());
 	m_count = filter.m_count;
 	m_cache.first = m_cache.second = 0;
 	m_gamesSearched = 0;
@@ -42,8 +42,8 @@ Filter::Filter(const Filter& filter)
 
 Filter Filter::operator=(const Filter & filter)
 {
-	delete m_byteArray;
-	m_byteArray = new QByteArray(filter.byteArray());
+	delete m_vector;
+	m_vector = new QVector<int>(filter.intVector());
 	m_count = filter.count();
 	m_cache = filter.m_cache;
 	m_gamesSearched = 0;
@@ -53,7 +53,7 @@ Filter Filter::operator=(const Filter & filter)
 
 Filter::~Filter()
 {
-	delete m_byteArray;
+	delete m_vector;
 }
 
 Database* Filter::database()
@@ -71,12 +71,12 @@ void Filter::set(int game, int value)
 	} else if (!value && contains(game)) {
 		m_count--;
 	}
-	(*m_byteArray)[game] = value;
+	(*m_vector)[game] = value;
 }
 
 void Filter::setAll(int value)
 {
-	m_byteArray->fill(value);
+	m_vector->fill(value);
 	m_count = value ? size() : 0;
 	if (value)
 		m_cache.first = m_cache.second = m_count / 2;
@@ -86,11 +86,11 @@ void Filter::setAll(int value)
 
 bool Filter::contains(int game) const
 {
-	return (m_byteArray->at(game) > 0);
+	return (m_vector->at(game) != 0);
 }
 int Filter::gamePosition(int game) const
 {
-	return m_byteArray->at(game);
+	return m_vector->at(game);
 }
 
 int Filter::count() const
@@ -100,7 +100,7 @@ int Filter::count() const
 
 int Filter::size() const
 {
-	return (int)m_byteArray->size();
+	return m_vector->size();
 }
 
 int Filter::gameToIndex(int index)
@@ -157,10 +157,10 @@ void Filter::resize(int newsize, bool includeNew)
 		if (contains(i))
 			m_count--;
 	int oldsize = size();
-	m_byteArray->resize(newsize);
+	m_vector->resize(newsize);
 	// Set new (uninitialized games) to 'includeNew' value.
 	for (int i = oldsize; i < newsize; ++i)
-		(*m_byteArray)[i] = includeNew;
+		(*m_vector)[i] = includeNew;
 	if (includeNew)
 		m_count += newsize - oldsize;
 }
@@ -169,10 +169,10 @@ void Filter::reverse()
 {
 	m_count = size() - m_count;
 	for (int i = 0; i < size(); i++) {
-		if (m_byteArray->at(i)) {
-			(*m_byteArray)[i] = 0;
+		if (m_vector->at(i)) {
+			(*m_vector)[i] = 0;
 		} else {
-			(*m_byteArray)[i] = 1;
+			(*m_vector)[i] = 1;
 		}
 	}
 
@@ -189,14 +189,14 @@ void Filter::join(const Filter& filter, Operator op)
 		return;
 	m_count = 0;
 	for (int i = 0; i < size(); i++) {
-		(*m_byteArray)[i] = ops[op][contains(i)][filter.contains(i)];
+		(*m_vector)[i] = ops[op][contains(i)][filter.contains(i)];
 		m_count += contains(i);
 	}
 }
 
-QByteArray Filter::byteArray() const
+QVector<int> Filter::intVector() const
 {
-	return *m_byteArray;
+	return *m_vector;
 }
 
 void Filter::executeSearch(Search& search)

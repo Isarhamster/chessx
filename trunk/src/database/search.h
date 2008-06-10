@@ -93,7 +93,9 @@ public:
 	Board position() const;
 	/** Sets sought position. */
 	void setPosition(const Board & position);
-	/** Return the ply in the game if the game at index matches the search */
+	/** Return moveId the move of  after which the game matches the search + 1. E.g. for standard game and chess start position 
+		1 is returned.
+	*/
 	virtual int matches(int index);
 private:
 	Board m_position;

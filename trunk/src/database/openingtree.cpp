@@ -108,9 +108,10 @@ void OpeningTree::update(Filter& f, const Board& b)
 		f.database()->loadGameMoves(i, g);
 		int id = g.findPosition(b);
 		if (id != NO_MOVE)	{
-			f.set(i, id);
+			f.set(i, id + 1); // not zero means success, but id could be 0.
 			f.database()->loadGameHeaders(i, g);
 			g.moveToId(id);
+			g.forward();
 			m_games++;
 			moves[g.atLineEnd() ? Move() : g.move()].addGame(g, b.toMove());
 		} else {

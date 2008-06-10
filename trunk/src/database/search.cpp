@@ -101,7 +101,7 @@ void PositionSearch::setPosition(const Board& position)
 int PositionSearch::matches(int index)
 {
 	m_database->loadGameMoves(index, m_game);
-	return m_game.findPosition(m_position);
+	return m_game.findPosition(m_position)+1;
 }
 
 /* EloSearch class

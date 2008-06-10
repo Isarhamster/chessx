@@ -96,13 +96,11 @@ public:
 	const int searchTime();
 
 protected:
-	/** returns the filter as a implicitely shared QBitArray. */
-	/*   QBitArray bitArray() const; */
-	QByteArray byteArray() const;
+	
+	QVector<int> intVector() const;
 
 	int m_count;
-	/*   QBitArray* m_bitArray; */
-	QByteArray* m_byteArray;
+	QVector<int>* m_vector;
 	QPair<int, int> m_cache;
 	Database* m_database;
 	TriStateTree m_triStateTree;
