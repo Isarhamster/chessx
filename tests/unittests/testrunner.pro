@@ -21,7 +21,8 @@ HEADERS += playerdatabasetest.h \
            indexitemtest.h \
            indextest.h \
            gametest.h \
-           filtertest.h
+           filtertest.h \
+		   positionsearchtest.h
 
 SOURCES += testrunner.cpp playerdatabasetest.cpp \
            pgndatabasetest.cpp \
@@ -33,4 +34,5 @@ SOURCES += testrunner.cpp playerdatabasetest.cpp \
            indexitemtest.cpp \
            indextest.cpp \
            gametest.cpp \
-           filtertest.cpp
+           filtertest.cpp \
+		   positionsearchtest.cpp
