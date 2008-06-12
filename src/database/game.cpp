@@ -151,7 +151,7 @@ MoveId Game::addVariation(const QString& sanMove, const QString& annotation, Nag
 	return (m_moveNodes.size() - 1);
 }
 bool Game::promoteVariation(MoveId variation)
-{ 
+{
 	MoveId currentNode = m_currentNode;
 	moveToId(m_moveNodes[variation].parentNode);
 	MoveId demotedVariationParentNode = m_moveNodes[m_currentNode].parentNode;
@@ -181,6 +181,9 @@ bool Game::promoteVariation(MoveId variation)
 }
 bool Game::removeVariation(MoveId variation)
 {
+	// don't remove whole game
+	if (!variation)
+		return false;
 	MoveId parentNode = m_moveNodes[variation].parentNode;
 	deleteNode(variation);
 	moveToId(parentNode);
@@ -655,7 +658,7 @@ QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, Mo
 			}
 		} else {
 			if (flags & WhiteNumbers) {
-				san += QString::number(moveNumber()) + ". ";
+				san += QString::number(moveNumber() + (nextPrevious == NextMove)) + ". ";
 			}
 		}
 		//move
@@ -715,11 +718,11 @@ int Game::findPosition(const BitBoard& position)
 	for (;;) {
 		if (currentBoard.positionIsSame(position))
 			return current;
-		
+
 		current = m_moveNodes[current].nextNode;
 		if (current == NO_MOVE || !position.canBeReachedFrom(currentBoard))
 			return NO_MOVE;
-		
+
 		currentBoard.doMove(m_moveNodes[current].move);
 	}
 	return NO_MOVE;
@@ -741,7 +744,7 @@ void Game::compact()
 {
 	int oldSize = m_moveNodes.size();
 	QList <MoveNode> moveNodes;
-	QVector <int> oldIdNewIdMapping(oldSize);
+	QVector <int> oldIdNewIdMapping(oldSize, NO_MOVE);
 
 	for (int i = 0; i < oldSize; ++i) {
 		if (!m_moveNodes[i].deleted) {
@@ -756,14 +759,17 @@ void Game::compact()
 #define GAME_UPDATE_MOVEID(aMoveId) if (aMoveId != NO_MOVE) aMoveId = oldIdNewIdMapping[aMoveId]
 		GAME_UPDATE_MOVEID(node.nextNode);
 		GAME_UPDATE_MOVEID(node.previousNode);
+		GAME_UPDATE_MOVEID(node.parentNode);
 		QList<MoveId>& vars = node.variations;
 		for (int j = 0; j < vars.size(); ++j)
 			GAME_UPDATE_MOVEID(vars[j]);
+		vars.removeAll(NO_MOVE);
 #undef  GAME_UPDATE_LINK
 	}
 
 	m_moveNodes.clear();
 	m_moveNodes = moveNodes;
+	m_currentNode = oldIdNewIdMapping[m_currentNode];
 }
 QString Game::ecoClassify()
 {
