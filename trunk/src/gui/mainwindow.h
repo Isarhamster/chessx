@@ -226,6 +226,8 @@ signals:
 	void reconfigure();
 	/** Main game has been updated. */
 	void boardChange(const Board& board);
+	/** Current database changed. */
+	void databaseChanged(DatabaseInfo* databaseInfo);
 
 private slots:
 	/** Cleanup after ECO file loaded. */

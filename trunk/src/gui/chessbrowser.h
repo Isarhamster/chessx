@@ -21,6 +21,7 @@
 #include <QTextBrowser>
 
 class QMenu;
+class DatabaseInfo;
 
 /** @ingroup GUI
    The ChessBrowser class is a slightly modified QTextBrowser
@@ -31,7 +32,9 @@ class ChessBrowser : public QTextBrowser
 public:
 	enum Action {NoAction, RemovePreviousMoves, RemoveNextMoves, RemoveVariation, AddNag,
 		EditComment};
-	ChessBrowser(QWidget* p);
+
+	/** Constructs new instance with parent @p parent. If @p showGameMenu is false, game menu is never shown. */
+	ChessBrowser(QWidget* p, bool showGameMenu = false);
 public slots:
 	/** Store current configuration. */
 	void saveConfig();
@@ -45,6 +48,8 @@ public slots:
 	void slotAction(QAction* action);
 	/** Show menu */
 	void slotContextMenu(const QPoint& pos);
+	/** Database changed */
+	void slotDatabaseChanged(DatabaseInfo* dbInfo);
 
 signals:
 	void actionRequested(int action, int move);
@@ -52,13 +57,19 @@ signals:
 protected:
 	virtual void selectAnchor(const QString& href);
 	virtual void setSource(const QUrl& url);
-	virtual void setupMenu();
+	void setupMenu(bool setupGameMenu);
 virtual QAction* createAction(const QString& name, int action);
 private:
+	/** Calculates if 'remove current variation' menu item should be disabled. 
+		It is called just before showing context game menu. */
+	bool removeVariationDisabled() const;
+
 	QAction* m_smallfont;
+	QAction* m_removeVariation;
 	QMenu* m_gameMenu;
 	QMenu* m_mainMenu;
 	int m_currentMove;
+	DatabaseInfo* m_databaseInfo;
 };
 
 #endif

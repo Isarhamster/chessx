@@ -118,11 +118,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	QDockWidget* dock = new QDockWidget(tr("Game Text"), this);
 	dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 	dock->setObjectName("GameTextDock");
-	m_gameView = new ChessBrowser(dock);
+	m_gameView = new ChessBrowser(dock, true);
 	m_gameView->setMinimumSize(150, 100);
 	m_gameView->slotReconfigure();
 	connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 	connect(m_gameView, SIGNAL(actionRequested(int, int)), SLOT(slotGameModify(int, int)));
+	connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_gameView, SLOT(slotDatabaseChanged(DatabaseInfo*)));
 	dock->setWidget(m_gameView);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());
@@ -981,6 +982,8 @@ void MainWindow::slotDatabaseChanged()
 	gameLoad(gameIndex(), true, true);
 	if (m_playerDialog && playerDialog()->isVisible())
 		playerDialog()->setDatabase(database());
+	
+	emit databaseChanged(databaseInfo());
 }
 
 QAction* MainWindow::createAction(const QString& name, const char* slot, const QKeySequence& key,
