@@ -9,15 +9,18 @@
 
 #include "chessbrowser.h"
 #include "settings.h"
+#include "game.h"
+#include "databaseinfo.h"
+
 #include <QAction>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QTextBlock>
 
-ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p)
+ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), m_gameMenu(NULL), m_databaseInfo(NULL)
 {
 	setContextMenuPolicy(Qt::CustomContextMenu);
-	setupMenu();
+	setupMenu(showGameMenu);
 }
 
 void ChessBrowser::setSource(const QUrl&)
@@ -78,18 +81,22 @@ QAction* ChessBrowser::createAction(const QString& name, int data)
 	return action;
 }
 
-void ChessBrowser::setupMenu()
+void ChessBrowser::setupMenu(bool setupGameMenu)
 {
-	m_gameMenu = new QMenu(this);
-	connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
+	if (setupGameMenu) {
+		m_gameMenu = new QMenu(this);
+		connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
+
+		m_gameMenu->addAction(createAction(tr("Edit comment..."), EditComment));
+
+		QMenu* remove = m_gameMenu->addMenu(tr("Remove"));
+		remove->addAction(createAction(tr("Previous moves"), RemovePreviousMoves));
+		remove->addAction(createAction(tr("Next moves"), RemoveNextMoves));
+		m_removeVariation = createAction(tr("Current variation"), RemoveVariation);
+		remove->addAction(m_removeVariation);
+	}
+	
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
-
-	m_gameMenu->addAction(createAction(tr("Edit comment..."), EditComment));
-
-	QMenu* remove = m_gameMenu->addMenu(tr("Remove"));
-	remove->addAction(createAction(tr("Previous moves"), RemovePreviousMoves));
-	remove->addAction(createAction(tr("Next moves"), RemoveNextMoves));
-	remove->addAction(createAction(tr("Current variation"), RemoveVariation));
 
 	m_mainMenu = new QMenu(this);
 	m_smallfont = createAction(tr("Small font"), NoAction);
@@ -101,11 +108,22 @@ void ChessBrowser::setupMenu()
 
 void ChessBrowser::slotContextMenu(const QPoint& pos)
 {
-	QString link = anchorAt(pos);
-	if (!link.isEmpty()) {
-		m_currentMove = link.section(':', 1).toInt();
-		m_gameMenu->exec(mapToGlobal(pos));
-	} else m_mainMenu->exec(mapToGlobal(pos));
+	if (m_gameMenu) {
+		QString link = anchorAt(pos);
+		if (!link.isEmpty()) {
+			m_currentMove = link.section(':', 1).toInt();
+			m_removeVariation->setDisabled(removeVariationDisabled());
+			m_gameMenu->exec(mapToGlobal(pos));
+			return;
+		} 
+	}
+	
+	m_mainMenu->exec(mapToGlobal(pos));
+}
+
+void ChessBrowser::slotDatabaseChanged(DatabaseInfo* dbInfo)
+{
+	m_databaseInfo = dbInfo;
 }
 
 void ChessBrowser::slotToggleFont(bool toggled)
@@ -122,3 +140,9 @@ void ChessBrowser::slotAction(QAction* action)
 		emit actionRequested(action->data().toInt(), m_currentMove);
 }
 
+bool ChessBrowser::removeVariationDisabled() const
+{
+	if (!m_databaseInfo)
+		return true;
+	return m_databaseInfo->currentGame().isMainline(m_currentMove);
+}
