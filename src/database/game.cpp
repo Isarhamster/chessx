@@ -381,7 +381,9 @@ int Game::moveNumber(MoveId moveId) const
 {
 	MoveId node = nodeValid(moveId);
 	if (node != NO_MOVE) {
-		return (m_startPly + ply(node) - 1) / 2 + 1;
+		if (int plyNum = ply(node))
+			return (m_startPly + plyNum - 1) / 2 + 1;
+		return 0;
 	}
 	return -1;
 }
