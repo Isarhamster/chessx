@@ -162,7 +162,9 @@ QString PlayerInfo::formattedRating() const
 
 QString PlayerInfo::formattedRange() const
 {
-	if (m_date[0].year() < 1000)
+	if (m_date[0].year() == 9999)	// No date
+		return QCoreApplication::translate("PlayerInfo","Date: <b>????.??.??<b><br>");
+	else if (m_date[0].year() < 1000)
 		return QString();
 	else
 		return QCoreApplication::translate("PlayerInfo", "Date: <b>%1</b><br>").arg(m_date[0].range(m_date[1]));
