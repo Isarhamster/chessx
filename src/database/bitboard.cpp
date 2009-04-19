@@ -1214,7 +1214,6 @@ bool BitBoard::doMove(const Move& m)
 	case Move::PROMOTE:
 		m_halfMoves = 0;
 		m_pawns ^= bb_from;
-		++m_pieceCount[m_stm];
 		--m_pawnCount[m_stm];
 		switch (m.promoted()) {
 		case Knight:
@@ -1377,8 +1376,7 @@ void BitBoard::undoMove(const Move& m)
 	case Move::PROMOTE:
 		m_pawns ^= bb_from;
 		m_piece[from] = Pawn;
-		--m_pieceCount[m_stm];
-		++m_pawnCount[m_stm];
+		++m_pawnCount[sntm];
 		switch (m.promoted()) {
 		case Knight:
 			m_knights ^= bb_to;
