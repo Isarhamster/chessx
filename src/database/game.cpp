@@ -676,6 +676,7 @@ void Game::setStartingBoard(const Board& startingBoard)
 {
 	clear();
 	m_startingBoard = startingBoard;
+	m_currentBoard = m_startingBoard;
 	m_startPly = (m_startingBoard.moveNumber() - 1) * 2 + (m_startingBoard.toMove() == Black);
 }
 
@@ -683,6 +684,7 @@ void Game::setStartingBoard(const QString& fen)
 {
 	clear();
 	m_startingBoard.fromFen(fen);
+	m_currentBoard = m_startingBoard;
 	m_startPly = (m_startingBoard.moveNumber() - 1) * 2 + (m_startingBoard.toMove() == Black);
 }
 
