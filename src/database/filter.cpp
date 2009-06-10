@@ -291,11 +291,13 @@ void Filter::executeQuery(Query& query)
 	m_searchTime = t.elapsed();
 
 }
-const int Filter::gamesSearched()
+
+int Filter::gamesSearched() const 
 {
 	return m_gamesSearched;
 }
-const int Filter::searchTime()
+
+int Filter::searchTime() const 
 {
 	return m_searchTime;
 }

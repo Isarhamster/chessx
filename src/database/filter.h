@@ -91,9 +91,9 @@ public:
 	void executeQuery(Query& query);
 
 	/** Returns the number of games searched during the previous search */
-	const int gamesSearched();
+	int gamesSearched() const;
 	/** Returns the time taken for the previous search in milliseconds  */
-	const int searchTime();
+	int searchTime() const;
 
 protected:
 	
