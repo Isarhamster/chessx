@@ -196,6 +196,9 @@ void PgnDatabase::parseTagsIntoIndex()
 		// parse tag
 		QString tag = m_currentLine.mid(1, m_currentLine.indexOf(' ') - 1);
 		QString value = m_currentLine.section('"', 1, 1);
+		// quick fix for non-standard draw mark.
+		if (tag == "Result" && value == "1/2")
+			value = "1/2-1/2";
 
 		// update index
 		m_index.setTag(tag, value, m_count - 1);
