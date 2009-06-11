@@ -164,28 +164,36 @@ QMap<Output::OutputType, QString>& Output::getFormats()
 void Output::writeMove(MoveToWrite moveToWrite)
 {
 	QString mvno;
-	QString nagString = "";
-	QString commentString = "";
-	int moveNumber;
+	QString nagString;
+	QString precommentString;
+	QString commentString;
+	MoveId moveId;
 	if (moveToWrite == NextMove) {
-		moveNumber = m_game->nextMove();
+		moveId = m_game->nextMove();
 	} else {
-		moveNumber = m_game->currentMove();
+		moveId = m_game->currentMove();
 	}
-	mvno = QString::number(moveNumber);
-	if (m_game->nags(moveNumber).count() > 0) {
+	mvno = QString::number(moveId);
+	if (m_game->nags(moveId).count() > 0) {
 		if (m_options.getOptionAsBool("SymbolicNag")) {
-			nagString += m_game->nags(moveNumber).toString();
+			nagString += m_game->nags(moveId).toString();
 		} else {
-			nagString += m_game->nags(moveNumber).toPGNString();
+			nagString += m_game->nags(moveId).toPGNString();
 		}
 	}
-	if (!m_game->annotation(moveNumber).isEmpty()) {
-		commentString = m_game->annotation(moveNumber);
+	if (m_game->atLineStart(moveId) && 
+			!m_game->annotation(moveId, Game::BeforeMove).isEmpty()) {
+		precommentString = m_game->annotation(moveId, Game::BeforeMove);
+	}
+	if (!m_game->annotation().isEmpty()) {
+		commentString = m_game->annotation(moveId);
 	}
 	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
 		m_output += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
 	}
+	// Write precomment if any
+	if (!precommentString.isEmpty())
+		writeComment(precommentString, mvno);
 	// *** Markup for the move
 	if (m_currentVariationLevel > 0) {
 		if (m_expandable[MarkupVariationMove]) {
@@ -206,9 +214,9 @@ void Output::writeMove(MoveToWrite moveToWrite)
 		c = oppositeColor(c);
 	}
 	if (c == White) {
-		m_output += QString::number(m_game->moveNumber(moveNumber)) + ". ";
+		m_output += QString::number(m_game->moveNumber(moveId)) + ". ";
 	} else if (m_dirtyBlack) {
-		m_output += QString::number(m_game->moveNumber(moveNumber)) + "... ";
+		m_output += QString::number(m_game->moveNumber(moveId)) + "... ";
 	}
 	m_dirtyBlack = false;
 
@@ -228,44 +236,14 @@ void Output::writeMove(MoveToWrite moveToWrite)
 	if (!nagString.isEmpty()) {
 		m_output += m_startTagMap[MarkupNag] + nagString + m_endTagMap[MarkupNag];
 	}
-	// *** Write the annotations if any
-	if (!commentString.isEmpty()) {
-		if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
-			m_output += m_endTagMap[MarkupColumnStyleMainline];
-		}
-		if ((m_options.getOptionAsString("CommentIndent") == "Always")
-				|| ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline")
-				    && (m_currentVariationLevel == 0))) {
-			if (m_expandable[MarkupAnnotationIndent]) {
-				m_output += m_startTagMap[MarkupAnnotationIndent].arg(mvno) +
-					    commentString +
-					    m_endTagMap[MarkupAnnotationIndent];
-			} else {
-				m_output += m_startTagMap[MarkupAnnotationIndent] +
-					    commentString +
-					    m_endTagMap[MarkupAnnotationIndent];
-			}
-		} else {
-			if (m_expandable[MarkupAnnotationInline]) {
-				m_output += " " + m_startTagMap[MarkupAnnotationInline].arg(mvno) +
-					    commentString +
-					    m_endTagMap[MarkupAnnotationInline];
-			} else {
-				m_output += " " + m_startTagMap[MarkupAnnotationInline] +
-					    m_game->annotation() +
-					    m_endTagMap[MarkupAnnotationInline];
-			}
-		}
-		if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
-			m_output += m_startTagMap[MarkupColumnStyleMainline];
-		}
-		m_dirtyBlack = true;
-	}
+	if (!commentString.isEmpty())
+		writeComment(commentString, mvno);
 	m_output += " ";
 }
+
 void Output::writeVariation()
 {
-	QString variation("");
+	QString variation;
 	while (!m_game->atLineEnd()) {
 		// *** Writes move in the current variation
 		writeMove();
@@ -324,6 +302,38 @@ void Output::writeTag(const QString& tagName, const QString& tagValue)
 		    m_endTagMap[MarkupHeaderLine];
 
 }
+
+void Output::writeComment(const QString& comment, const QString& mvno)
+{
+	if (comment.isEmpty())
+		return;
+	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0))
+		m_output += m_endTagMap[MarkupColumnStyleMainline];
+	if ((m_options.getOptionAsString("CommentIndent") == "Always")
+			|| ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline")
+				&& (m_currentVariationLevel == 0))) {
+		if (m_expandable[MarkupAnnotationIndent]) {
+			m_output += m_startTagMap[MarkupAnnotationIndent].arg(mvno) +
+				comment + m_endTagMap[MarkupAnnotationIndent];
+		} else {
+			m_output += m_startTagMap[MarkupAnnotationIndent] +
+				comment + m_endTagMap[MarkupAnnotationIndent];
+		}
+	} else {
+		if (m_expandable[MarkupAnnotationInline]) {
+			m_output += " " + m_startTagMap[MarkupAnnotationInline].arg(mvno) +
+				comment + m_endTagMap[MarkupAnnotationInline];
+		} else {
+			m_output += " " + m_startTagMap[MarkupAnnotationInline] +
+				m_game->annotation() + m_endTagMap[MarkupAnnotationInline];
+		}
+	}
+	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
+		m_output += m_startTagMap[MarkupColumnStyleMainline];
+	}
+	m_dirtyBlack = true;
+}
+
 
 
 // 7 standard tags that are required by PGN standard and should be written in given order.

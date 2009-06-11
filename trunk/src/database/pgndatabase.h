@@ -112,6 +112,7 @@ private:
 	bool m_gameOver;
 	bool m_inComment;
 	QString m_comment;
+	QString m_precomment;
 	bool m_newVariation;
 	int m_variation;
 
