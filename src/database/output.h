@@ -199,6 +199,8 @@ private:
 	void writeTag(const QString& tagName, const QString& tagValue);
 	/** Writes all game tags */
 	void writeAllTags();
+	/** Writes comment. @p mvno keeps a string representing move number (used for indentation. */
+	void writeComment(const QString& comment, const QString& mvno);
 
 };
 

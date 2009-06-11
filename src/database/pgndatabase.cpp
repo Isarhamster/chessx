@@ -218,6 +218,7 @@ void PgnDatabase::parseMoves(Game* game)
 	m_gameOver = false;
 	m_inComment = false;
 	m_comment.clear();
+	m_precomment.clear();
 	m_newVariation = false;
 	m_variation = 0;
 
@@ -268,6 +269,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 		break;
 	case '{':
 		m_comment.clear();
+		m_precomment.clear();
 		m_inComment = true;
 		m_currentLine = m_currentLine.right((m_currentLine.length() - m_pos) - 1);
 		break;
@@ -361,14 +363,22 @@ void PgnDatabase::parseToken(Game* game, QString token)
 			}
 		}
 
-		if (token != "") {
+		if (!token.isEmpty()) {
 			if (m_newVariation) {
 				game->backward();
 				m_variation = game->addVariation(token, QString(), nag);
+				if (!m_precomment.isEmpty()) {
+					game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
+					m_precomment.clear();
+				}
 				m_newVariation = false;
 			} else {
 				//game->enterVariation(m_variation);
 				m_variation = game->addMove(token, QString(), nag);
+				if (!m_precomment.isEmpty()) {
+					game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
+					m_precomment.clear();
+				}
 			}
 		}
 	}
@@ -381,7 +391,9 @@ void PgnDatabase::parseComment(Game* game)
 	if (end >= 0) {
 		m_comment.append(m_currentLine.left(end));
 		m_inComment = false;
-		game->setAnnotation(m_comment.trimmed());
+		if (m_newVariation || game->plyCount() == 0)
+			m_precomment = m_comment.trimmed();
+		else game->setAnnotation(m_comment.trimmed());
 		m_currentLine = m_currentLine.right((m_currentLine.length() - end) - 1);
 	} else {
 		m_comment.append(m_currentLine + ' ');
