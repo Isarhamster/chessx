@@ -296,27 +296,30 @@ bool Game::atLineEnd(MoveId moveId) const
 
 bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
 {
-
-	if (annotation.isEmpty()) {
-		return false;
-	}
 	//if (int node = nodeValid(moveId)) {
 	MoveId node = nodeValid(moveId);
 	if (node != NO_MOVE) {
 		if (position == AfterMove) {
 			// The default is to add a annotation after the move
-			m_annotations[node] = annotation;
+			if (annotation.isEmpty())
+				m_annotations.remove(node);
+			else m_annotations[node] = annotation;
 			return true;
 		} else {
 			// We can also add an annotation before a move
 			if (atLineStart(node)) {
-				m_variationStartAnnotations[node] = annotation;
+				if (annotation.isEmpty())
+					m_variationStartAnnotations.remove(node);
+				else m_variationStartAnnotations[node] = annotation;
 				return true;
 			} else {
 				// If we are not at the start of a line, the annotation is added
 				// after the previous move, assuming that if we are not at the
 				// start of a line, there must be a previous move.
-				m_annotations[m_moveNodes[node].previousNode] = annotation;
+				node = m_moveNodes[node].previousNode;
+				if (annotation.isEmpty())
+					m_annotations.remove(node);
+				m_annotations[node] = annotation;
 				return true;
 			}
 		}
