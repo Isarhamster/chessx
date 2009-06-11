@@ -546,6 +546,8 @@ BoardStatus BitBoard::validate() const
 			return InvalidEnPassant;
 		if (m_stm == Black && (m_epSquare < a3 || m_epSquare > h3))
 			return InvalidEnPassant;
+		// According to PGN standard, ep should be set even if no capture is possible
+		/*
 		if (m_occupied & SetBit(m_epSquare))
 			return InvalidEnPassant;
 		if (m_occupied & bb_PawnF1[m_stm][m_epSquare])
@@ -554,6 +556,7 @@ BoardStatus BitBoard::validate() const
 			return InvalidEnPassant;
 		if (!(bb_PawnF1[m_stm^1][m_epSquare] & m_pawns & m_occupied_co[m_stm^1]))
 			return InvalidEnPassant;
+			*/
 	}
 
 	// Don't allow triple(or more) checks.
@@ -1203,6 +1206,9 @@ bool BitBoard::doMove(const Move& m)
 		m_halfMoves = 0;
 		m_pawns ^= bb_from ^ bb_to;
 		m_piece[to] = Pawn;
+		// According to PGN standard, ep square should be always set.
+		m_epFile = File(to) + 1;
+		/*
 		if (m_stm == White) {
 			if (bb_PawnAttacks[White][to-8] & m_occupied_co[sntm] & m_pawns)
 				m_epFile = File(to) + 1;
@@ -1210,6 +1216,7 @@ bool BitBoard::doMove(const Move& m)
 			if (bb_PawnAttacks[Black][to+8] & m_occupied_co[sntm] & m_pawns)
 				m_epFile = File(to) + 1;
 		}
+		*/
 		break;
 	case Move::PROMOTE:
 		m_halfMoves = 0;
