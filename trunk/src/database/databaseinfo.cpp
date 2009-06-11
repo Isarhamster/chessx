@@ -25,8 +25,8 @@
 DatabaseInfo::DatabaseInfo(const QString& fname)
 {
 	if (fname.isNull()) {
+		// Clipboard database
 		m_database = new MemoryDatabase();
-		m_database->open(QString());
 	} else {
 		QFile file(fname);
 		if (fname.endsWith(".cxd"))

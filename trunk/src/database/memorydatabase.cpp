@@ -82,14 +82,14 @@ bool MemoryDatabase::replace(int index, Game& game)
 
 void MemoryDatabase::loadGameMoves(int index, Game& game)
 {
-	if (!m_isOpen || index >= m_count)
+	if (index >= m_count)
 		return;
 	game = *m_games[index];
 }
 
 bool MemoryDatabase::loadGame(int index, Game& game)
 {
-	if (!m_isOpen || index >= m_count)
+	if (index >= m_count)
 		return false;
 	game = *m_games[index];
 	loadGameHeaders(index, game);

@@ -62,6 +62,7 @@ bool PgnDatabase::parseFile()
 	m_index.setCacheEnabled(false);
 	return true;
 }
+
 bool PgnDatabase::openFile(const QString& filename)
 {
 	//open file
