@@ -41,7 +41,7 @@ The Search class is an abstract base class that represents a search on one crite
 class Search
 {
 public:
-	enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch};
+	enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch, NumberSearch};
 	/** Operator for joining filters */
 	enum Operator {NullOperator, Not, And, Or, Remove };
 
@@ -204,6 +204,34 @@ private:
 	QString m_value;
 	QBitArray m_matches;
 };
+
+/** @ingroup Search
+The NumberSearch class is used for game number search.  */
+
+class NumberSearch : public Search
+{
+public:
+	/** Simple constructor */
+	NumberSearch(Database* database, int start, int end);
+	/** Simple constructor. Supports "N1" or "N1-N2" format */
+	NumberSearch(Database* database, const QString& value);
+	/** Type - probably obsolete. */
+	Search::Type type() const;
+	/** Makes a deep copy of TagSearch object. Probably obsolete */
+	virtual NumberSearch* clone() const;
+	/** Set range to be selected */
+	void setRange(int start, int end);
+	/** Set range to be selected. Supports "N1" or "N1-N2" format. */
+	void setRange(const QString& value);
+	/** Return true if the game at index matches the search */
+	virtual int matches(int index);
+private:
+	int m_start, m_end;
+};
+
+
+
+
 
 /** @ingroup Search
  *  The FilterSearch class is not a real search class. It is used to

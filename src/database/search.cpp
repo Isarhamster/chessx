@@ -281,6 +281,59 @@ int TagSearch::matches(int index)
 	return m_matches[m_database->index()->gameTagIndex(m_tag, index)];
 }
 
+
+
+
+/* Number class
+ * ***************/
+NumberSearch::NumberSearch(Database* database, int start, int end)
+{
+	m_database = database;
+	setRange(start, end);
+}
+
+NumberSearch::NumberSearch(Database* database, const QString& range)
+{
+	m_database = database;
+	setRange(range);
+}
+
+NumberSearch* NumberSearch::clone() const
+{
+	return new NumberSearch(*this);
+}
+
+Search::Type NumberSearch::type() const
+{
+	return Search::NumberSearch;
+}
+
+void NumberSearch::setRange(int start, int end)
+{
+	m_start = start - 1;
+	m_end = end - 1;
+}
+
+void NumberSearch::setRange(const QString& range)
+{
+	int sep = range.indexOf('-');
+	if (sep != -1) {
+		m_start = range.left(sep).toInt() - 1;
+		m_end = range.mid(sep+1).toInt() - 1;
+	}
+	else m_start = m_end = range.toInt() - 1;
+	if (m_end < 0)
+		m_end = m_database->count();
+}
+
+int NumberSearch::matches(int index)
+{
+	return index >= m_start && index <= m_end;
+}
+
+
+
+
 /* FilterSearch class
  * **********************/
 FilterSearch::FilterSearch() : m_filter(0)
