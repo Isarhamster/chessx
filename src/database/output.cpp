@@ -36,7 +36,6 @@ void Output::readTemplateFile(const QString& path)
 	ReadingStatus status = NONE;
 	m_header = "";
 	m_footer = "";
-	//qDebug ("Reading template file %s", path.latin1());
 	if (file.open(QIODevice::ReadOnly)) {
 		QTextStream stream(&file);
 		QString line;
@@ -44,7 +43,6 @@ void Output::readTemplateFile(const QString& path)
 		while (!stream.atEnd()) {
 			line = stream.readLine(); // line of text excluding '\n'
 			i++;
-			//qDebug ("Line %d",i);
 			if ((line.indexOf(QRegExp("^\\s*$")) != -1) || (line.indexOf(QRegExp("^\\s*#")) != -1)) {
 				// Skip blank lines and comments (#)
 				continue;
@@ -112,6 +110,10 @@ void Output::readTemplateFile(const QString& path)
 					setMarkupTag(MarkupAnnotationInline, tags[0], tags[1]);
 				} else if (name == "MarkupAnnotationIndent") {
 					setMarkupTag(MarkupAnnotationIndent, tags[0], tags[1]);
+				} else if (name == "MarkupPreAnnotationInline") {
+					setMarkupTag(MarkupPreAnnotationInline, tags[0], tags[1]);
+				} else if (name == "MarkupPreAnnotationIndent") {
+					setMarkupTag(MarkupPreAnnotationIndent, tags[0], tags[1]);
 				} else if (name == "MarkupHeaderLine") {
 					setMarkupTag(MarkupHeaderLine, tags[0], tags[1]);
 				} else if (name == "MarkupHeaderTagName") {
@@ -193,7 +195,7 @@ void Output::writeMove(MoveToWrite moveToWrite)
 	}
 	// Write precomment if any
 	if (!precommentString.isEmpty())
-		writeComment(precommentString, mvno);
+		writeComment(precommentString, mvno, Precomment);
 	// *** Markup for the move
 	if (m_currentVariationLevel > 0) {
 		if (m_expandable[MarkupVariationMove]) {
@@ -237,7 +239,7 @@ void Output::writeMove(MoveToWrite moveToWrite)
 		m_output += m_startTagMap[MarkupNag] + nagString + m_endTagMap[MarkupNag];
 	}
 	if (!commentString.isEmpty())
-		writeComment(commentString, mvno);
+		writeComment(commentString, mvno, Comment);
 	m_output += " ";
 }
 
@@ -254,7 +256,6 @@ void Output::writeVariation()
 				if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 1)) {
 					m_output += m_endTagMap[MarkupColumnStyleMainline];
 				}
-				//qDebug ("VariationIndentLevel - %d",m_options.getOptionAsInt("VariationIndentLevel"));
 				if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
 					m_output += m_startTagMap[MarkupVariationIndent];
 				} else {
@@ -272,7 +273,6 @@ void Output::writeVariation()
 				// *** End the variation
 				//			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
 				m_output += ")";
-				//qDebug ("VariationIndentLevel - %d",m_options.getOptionAsInt("VariationIndentLevel"));
 				if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
 					m_output += m_endTagMap[MarkupVariationIndent];
 				} else {
@@ -303,8 +303,11 @@ void Output::writeTag(const QString& tagName, const QString& tagValue)
 
 }
 
-void Output::writeComment(const QString& comment, const QString& mvno)
+void Output::writeComment(const QString& comment, const QString& mvno, CommentType type)
 {
+	MarkupType markupIndent = type == Comment ? MarkupAnnotationIndent : MarkupPreAnnotationIndent;
+	MarkupType markupInline = type == Comment ? MarkupAnnotationInline : MarkupPreAnnotationInline;
+		
 	if (comment.isEmpty())
 		return;
 	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0))
@@ -312,20 +315,20 @@ void Output::writeComment(const QString& comment, const QString& mvno)
 	if ((m_options.getOptionAsString("CommentIndent") == "Always")
 			|| ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline")
 				&& (m_currentVariationLevel == 0))) {
-		if (m_expandable[MarkupAnnotationIndent]) {
-			m_output += m_startTagMap[MarkupAnnotationIndent].arg(mvno) +
-				comment + m_endTagMap[MarkupAnnotationIndent];
+		if (m_expandable[markupIndent]) {
+			m_output += m_startTagMap[markupIndent].arg(mvno) +
+				comment + m_endTagMap[markupIndent];
 		} else {
-			m_output += m_startTagMap[MarkupAnnotationIndent] +
-				comment + m_endTagMap[MarkupAnnotationIndent];
+			m_output += m_startTagMap[markupIndent] +
+				comment + m_endTagMap[markupIndent];
 		}
 	} else {
-		if (m_expandable[MarkupAnnotationInline]) {
-			m_output += " " + m_startTagMap[MarkupAnnotationInline].arg(mvno) +
-				comment + m_endTagMap[MarkupAnnotationInline];
+		if (m_expandable[markupInline]) {
+			m_output += " " + m_startTagMap[markupInline].arg(mvno) +
+				comment + m_endTagMap[markupInline];
 		} else {
-			m_output += " " + m_startTagMap[MarkupAnnotationInline] +
-				m_game->annotation() + m_endTagMap[MarkupAnnotationInline];
+			m_output += " " + m_startTagMap[markupInline] +
+				comment + m_endTagMap[markupInline];
 		}
 	}
 	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {

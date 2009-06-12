@@ -395,13 +395,20 @@ QString MainWindow::exportFileName(int& format)
 	return fd.selectedFiles().first();
 }
 
-bool MainWindow::gameEditComment()
+bool MainWindow::gameEditComment(Output::CommentType type)
 {
 	bool ok;
+	QString annotation;
+	if (type == Output::Precomment)
+		annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
+	else annotation = game().annotation();
 	QString cmt = QInputDialog::getText(this, tr("Edit comment"), tr("Comment:"),
-					    QLineEdit::Normal, game().annotation(), &ok);
-	if (ok)
-		game().setAnnotation(cmt);
+					    QLineEdit::Normal, annotation, &ok);
+	if (ok) {
+		if (type == Output::Precomment)
+			game().setAnnotation(cmt, CURRENT_MOVE, Game::BeforeMove);
+		else game().setAnnotation(cmt);
+	}
 	return ok;
 }
 
@@ -847,8 +854,12 @@ void MainWindow::slotGameModify(int action, int move)
 		game().removeVariation(game().variationNumber());
 		break;
 	}
+	case ChessBrowser::EditPrecomment:
+		if (!gameEditComment(Output::Precomment))
+			return;
+		break;
 	case ChessBrowser::EditComment:
-		if (!gameEditComment())
+		if (!gameEditComment(Output::Comment))
 			return;
 		break;
 	default:
@@ -877,10 +888,11 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 		else
 			game().moveToId(url.path().toInt());
 		slotMoveChanged();
-	} else if (url.scheme() == "cmt") {
+	} else if (url.scheme() == "precmt" || url.scheme() == "cmt") {
 		game().moveToId(url.path().toInt());
 		slotMoveChanged();
-		if (gameEditComment())
+		Output::CommentType type = url.scheme() == "cmt" ? Output::Comment : Output::Precomment;
+		if (gameEditComment(type))
 			slotGameChanged();
 	} else if (url.scheme() == "egtb") {
 		if (!game().atGameEnd())

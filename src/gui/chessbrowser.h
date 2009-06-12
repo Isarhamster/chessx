@@ -31,7 +31,7 @@ class ChessBrowser : public QTextBrowser
 	Q_OBJECT
 public:
 	enum Action {NoAction, RemovePreviousMoves, RemoveNextMoves, RemoveVariation, AddNag,
-		EditComment};
+		EditPrecomment, EditComment};
 
 	/** Constructs new instance with parent @p parent. If @p showGameMenu is false, game menu is never shown. */
 	ChessBrowser(QWidget* p, bool showGameMenu = false);

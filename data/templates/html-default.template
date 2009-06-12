@@ -47,6 +47,8 @@ MarkupColumnStyleRow=<tr class="mainline">,
 MarkupColumnStyleMainline=<table border=0 width=50%>,</table>
 MarkupAnnotationInline=<span class="comment-inline">,</span>\n
 MarkupAnnotationIndent=<div class="comment-indent">,</div>\n
+MarkupPreAnnotationInline=<span class="comment-inline">,</span>\n
+MarkupPreAnnotationIndent=<div class="comment-indent">,</div>\n
 MarkupHeaderLine=<span class="headerline">[,]</span><br>\n
 MarkupHeaderTagName=,
 MarkupHeaderTagValue=","

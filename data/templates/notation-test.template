@@ -53,6 +53,8 @@ MarkupColumnStyleRow=<tr class="mainline">,\n
 MarkupColumnStyleMainline=<table border=0 width=50%>,</table>\n
 MarkupAnnotationInline=<a class="comment" href="cmt:%1">,</a>\n
 MarkupAnnotationIndent=<p class="comment"><a class="comment" href="cmt:%1">,</a></p>\n
+MarkupPreAnnotationInline=<a class="comment" href="precmt:%1">,</a>\n
+MarkupPreAnnotationIndent=<p class="comment"><a class="comment" href="precmt:%1">,</a></p>\n
 MarkupHeaderLine=<b>,</b><br>\n
 MarkupHeaderTagName=[,
 MarkupHeaderTagValue=","]
