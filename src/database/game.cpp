@@ -430,7 +430,7 @@ int Game::moveNumber(MoveId moveId) const
 
 int Game::plyCount() const
 {
-	int count = m_startPly;
+	int count = 0;
 	int node = 0;
 
 	while (node != NO_MOVE) {
