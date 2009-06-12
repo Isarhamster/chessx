@@ -187,7 +187,7 @@ void Output::writeMove(MoveToWrite moveToWrite)
 			!m_game->annotation(moveId, Game::BeforeMove).isEmpty()) {
 		precommentString = m_game->annotation(moveId, Game::BeforeMove);
 	}
-	if (!m_game->annotation().isEmpty()) {
+	if (!m_game->annotation(moveId).isEmpty()) {
 		commentString = m_game->annotation(moveId);
 	}
 	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
