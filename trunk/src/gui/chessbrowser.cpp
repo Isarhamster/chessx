@@ -87,6 +87,7 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 		m_gameMenu = new QMenu(this);
 		connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 
+		m_gameMenu->addAction(createAction(tr("Edit preceeding comment..."), EditPrecomment));
 		m_gameMenu->addAction(createAction(tr("Edit comment..."), EditComment));
 
 		QMenu* remove = m_gameMenu->addMenu(tr("Remove"));

@@ -26,6 +26,7 @@
 #include "common.h"
 #include "move.h"
 #include "historylist.h"
+#include "output.h"
 
 class PlayerDialog;
 class GameList;
@@ -35,7 +36,6 @@ class BoardView;
 class Game;
 class Database;
 class DatabaseInfo;
-class Output;
 class TipOfDayDialog;
 class Tablebase;
 class EcoThread;
@@ -85,7 +85,7 @@ protected:
 	/** Open database */
 	bool openDatabase(const QString& fname);
 	/** Edit comment */
-	bool gameEditComment();
+	bool gameEditComment(Output::CommentType type);
 	/** Get export filename*/
 	QString exportFileName(int& format);
 	/** Load game @p index. If @p force is false, does nothing for incorrect @p index .

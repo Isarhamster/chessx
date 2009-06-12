@@ -50,6 +50,8 @@ public:
 		MarkupNag,
 		MarkupAnnotationInline,
 		MarkupAnnotationIndent,
+		MarkupPreAnnotationInline,
+		MarkupPreAnnotationIndent,
 		MarkupHeaderLine,
 		MarkupHeaderTagName,
 		MarkupHeaderTagValue,
@@ -71,6 +73,10 @@ public:
 	enum MoveToWrite {
 		PreviousMove,
 		NextMove
+	};
+	enum CommentType {
+		Precomment,
+		Comment
 	};
 	/* enum CommentIndentOption {
 	 *    Always,
@@ -200,7 +206,7 @@ private:
 	/** Writes all game tags */
 	void writeAllTags();
 	/** Writes comment. @p mvno keeps a string representing move number (used for indentation. */
-	void writeComment(const QString& comment, const QString& mvno);
+	void writeComment(const QString& comment, const QString& mvno, CommentType type = Comment);
 
 };
 

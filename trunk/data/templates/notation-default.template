@@ -38,6 +38,8 @@ MarkupColumnStyleRow=<tr class="mainline">,\n
 MarkupColumnStyleMainline=<table border=0 width=50%>,</table>\n
 MarkupAnnotationInline=<a style="font-weight:300;text-decoration:none;color:green;font-style:normal" href="cmt%2">,</a>\n
 MarkupAnnotationIndent=<blockquote style="margin-left:30px"><a style="font-weight:300;text-decoration:none;color:green;font-style:normal" href="cmt%2">,</a></blockquote>\n
+MarkupPreAnnotationInline=<a style="font-weight:300;text-decoration:none;color:green;font-style:normal" href="precmt%2">,</a>\n
+MarkupPreAnnotationIndent=<blockquote style="margin-left:30px"><a style="font-weight:300;text-decoration:none;color:green;font-style:normal" href="precmt%2">,</a></blockquote>\n
 MarkupHeaderLine=<span style="color:blue">[,]</span><br>\n
 MarkupHeaderTagName=,
 MarkupHeaderTagValue=","
