@@ -79,6 +79,12 @@ void GameList::simpleSearch(int tagid)
 	QString value = dialog.value();
 	if (value.isEmpty())
 		m_model->filter()->setAll(1);
+	else if (dialog.tag() == 0) {	// filter by game number
+		NumberSearch ns(m_model->filter()->database(), value);
+		if (dialog.mode())
+			m_model->filter()->executeSearch(ns, Search::Operator(dialog.mode()));
+		else m_model->filter()->executeSearch(ns);
+	}
 	else {
 #ifdef __GNUG__
 #warning Fix after Search::Operator cleanup
