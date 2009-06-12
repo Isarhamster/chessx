@@ -55,6 +55,8 @@ bool PgnDatabase::parseFile()
 	//indexing game positions in the file, game contents are ignored
 	while (!m_file->atEnd()) {
 		skipJunk();
+		if (m_file->atEnd()) 
+			break;
 		addOffset();
 		parseTagsIntoIndex(); // This will parse the tags into memory
 		skipMoves();
