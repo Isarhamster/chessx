@@ -261,7 +261,6 @@ void Output::writeVariation()
 					m_output += m_startTagMap[MarkupVariationInline];
 				}
 
-				m_output +=  "(";
 				m_dirtyBlack = true;
 
 				// *** Enter variation i, and write the rest of the moves
@@ -271,7 +270,6 @@ void Output::writeVariation()
 
 				// *** End the variation
 				//			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
-				m_output += ")";
 				if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
 					m_output += m_endTagMap[MarkupVariationIndent];
 				} else {
