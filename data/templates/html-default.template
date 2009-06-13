@@ -39,8 +39,8 @@ MarkupResult=,
 MarkupMainLineMove=,
 MarkupVariationMove=,
 MarkupMainLine=<div class="mainline">,</div>\n
-MarkupVariationInline=<span class="variation-inline">,</span>\n
-MarkupVariationIndent=<div class="variation-indent">,</div>\n
+MarkupVariationInline=<span class="variation-inline">(,)</span>\n
+MarkupVariationIndent=<div class="variation-indent">(,)</div>\n
 MarkupNag=<span class="nag">,</span>\n
 MarkupColumnStyleMove=<td width=50%>,
 MarkupColumnStyleRow=<tr class="mainline">,
