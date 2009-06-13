@@ -231,10 +231,13 @@ private:
 		MoveId previousNode;
 		MoveId nextNode;
 		MoveId parentNode;
-		bool deleted;
+		bool removed;
 		int ply;
 		QList <MoveId> variations;
+		void remove()	{parentNode = previousNode = nextNode = NO_MOVE; removed = true;}
+		MoveNode()		{parentNode = nextNode = previousNode = NO_MOVE; removed = false; ply = 0;}
 	};
+
 	/** List of nodes */
 	QList <MoveNode> m_moveNodes;
 	/** Keeps the current node in the game */
@@ -255,10 +258,10 @@ private:
 	QMap<QString, QString> m_tags;
 
 	// **** memory  management methods ****
-	/** Remove all deleted nodes */
+	/** Remove all removed nodes */
 	void compact();
-	/** Deletes the node at @p moveId */
-	void deleteNode(MoveId moveId = CURRENT_MOVE);
+	/** Removes the node at @p moveId */
+	void removeNode(MoveId moveId = CURRENT_MOVE);
 
 	/** Checks if a moveId is valid, returns the moveId if it is, 0 if not */
 	MoveId nodeValid(MoveId moveId = CURRENT_MOVE) const;
