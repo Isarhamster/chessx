@@ -95,6 +95,8 @@ public :
 	MoveId currentMove() const;
 	/** @return comment at move at node @p moveId. */
 	QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
+	/** @return @p true if a move can have annotation before the move. */
+	bool canHaveStartAnnotation(MoveId moveId = CURRENT_MOVE) const;
 	/** @return nags for move at node @p moveId */
 	NagSet nags(MoveId moveId = CURRENT_MOVE) const;
 	/** @return next move in short algebraic notation, returns empty string if no such move */

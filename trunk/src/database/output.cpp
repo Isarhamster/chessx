@@ -182,14 +182,13 @@ void Output::writeMove(MoveToWrite moveToWrite)
 		} else {
 			nagString += m_game->nags(moveId).toString(NagSet::PGN);
 		}
+	
 	}
-	if (m_game->atLineStart(moveId) &&
-			!m_game->annotation(moveId, Game::BeforeMove).isEmpty()) {
+	// Read comments
+	if (m_game->canHaveStartAnnotation(moveId))
 		precommentString = m_game->annotation(moveId, Game::BeforeMove);
-	}
-	if (!m_game->annotation(moveId).isEmpty()) {
-		commentString = m_game->annotation(moveId);
-	}
+	commentString = m_game->annotation(moveId);
+
 	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
 		m_output += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
 	}
