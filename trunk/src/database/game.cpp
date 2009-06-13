@@ -219,6 +219,21 @@ void Game::truncateVariation(Position position)
 		int node = m_moveNodes[m_currentNode].nextNode;
 		deleteNode(node);
 	}
+	else if (position == BeforeMove) {
+		MoveNode firstNode;
+		firstNode.nextNode = m_currentNode;
+		firstNode.previousNode = NO_MOVE;
+		firstNode.parentNode = 0;
+		firstNode.move = Move();
+		firstNode.nags = NagSet();
+		firstNode.deleted = false;
+		firstNode.ply = m_moveNodes[m_currentNode].ply - 1;
+		m_moveNodes[0] = firstNode;
+		//m_startPly = m_startPly + ply();
+		m_moveNodes[m_currentNode].previousNode = 0;
+		backward();
+		m_startingBoard = m_currentBoard;
+	}
 	compact();
 }
 
