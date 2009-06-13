@@ -85,8 +85,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	updateMenuRecent();
 
 	/* Output */
-	m_output = new Output(Output::NotationWidget,
-			      AppSettings->dataPath() + "/templates/notation-test.template");
+	m_output = new Output(Output::NotationWidget);
 
 	setDockNestingEnabled(true);
 
