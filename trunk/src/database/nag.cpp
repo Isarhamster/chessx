@@ -37,39 +37,13 @@ QString NagSet::toString(unsigned format) const
 	QString otherNags;
 
 	for (unsigned i = 0; i < count(); i++) {
-		switch (this->at(i)) {
-		case GoodMove:
-		case PoorMove:
-		case VeryGoodMove:
-		case VeryPoorMove:
-		case SpeculativeMove:
-		case QuestionableMove:
-		case ForcedMove:
-		case SingularMove:
-		case WorstMove:
-			moveNag = format == PGN ? "$" + QString::number(at(i)) : nagToString(at(i));
-			break;
-		case DrawishPosition:
-		case EqualChancesQuietPosition:
-		case EqualChancesActivePosition:
-		case UnclearPosition:
-		case WhiteHasASlightAdvantage:
-		case BlackHasASlightAdvantage:
-		case WhiteHasAModerateAdvantage:
-		case BlackHasAModerateAdvantage:
-		case WhiteHasADecisiveAdvantage:
-		case BlackHasADecisiveAdvantage:
-		case WhiteHasACrushingAdvantage:
-		case BlackHasACrushingAdvantage:
-			evaluationNag = format == PGN ? "$" + QString::number(at(i)) : nagToString(at(i));
-			break;
-
-		default:
-			otherNags = format == PGN ? "$" + QString::number(at(i)) : nagToString(at(i));
-			break;
-		}
+		if (at(i) >= MoveNagStart && at(i) <= MoveNagEnd)
+			moveNag = format == PGN ? " $" + QString::number(at(i)) : nagToString(at(i));
+		else if (at(i) >= EvaluationNagStart && at(i) <= EvaluationNagEnd)
+			evaluationNag = format == PGN ? " $" + QString::number(at(i)) : nagToString(at(i));
+		else
+			otherNags = format == PGN ? " $" + QString::number(at(i)) : nagToString(at(i));
 	}
-
 	return moveNag + evaluationNag + otherNags.simplified();
 }
 
