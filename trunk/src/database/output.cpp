@@ -180,10 +180,10 @@ void Output::writeMove(MoveToWrite moveToWrite)
 		if (m_options.getOptionAsBool("SymbolicNag")) {
 			nagString += m_game->nags(moveId).toString();
 		} else {
-			nagString += m_game->nags(moveId).toPGNString();
+			nagString += m_game->nags(moveId).toString(NagSet::PGN);
 		}
 	}
-	if (m_game->atLineStart(moveId) && 
+	if (m_game->atLineStart(moveId) &&
 			!m_game->annotation(moveId, Game::BeforeMove).isEmpty()) {
 		precommentString = m_game->annotation(moveId, Game::BeforeMove);
 	}
@@ -307,28 +307,28 @@ void Output::writeComment(const QString& comment, const QString& mvno, CommentTy
 {
 	MarkupType markupIndent = type == Comment ? MarkupAnnotationIndent : MarkupPreAnnotationIndent;
 	MarkupType markupInline = type == Comment ? MarkupAnnotationInline : MarkupPreAnnotationInline;
-		
+
 	if (comment.isEmpty())
 		return;
 	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0))
 		m_output += m_endTagMap[MarkupColumnStyleMainline];
 	if ((m_options.getOptionAsString("CommentIndent") == "Always")
 			|| ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline")
-				&& (m_currentVariationLevel == 0))) {
+			    && (m_currentVariationLevel == 0))) {
 		if (m_expandable[markupIndent]) {
 			m_output += m_startTagMap[markupIndent].arg(mvno) +
-				comment + m_endTagMap[markupIndent];
+				    comment + m_endTagMap[markupIndent];
 		} else {
 			m_output += m_startTagMap[markupIndent] +
-				comment + m_endTagMap[markupIndent];
+				    comment + m_endTagMap[markupIndent];
 		}
 	} else {
 		if (m_expandable[markupInline]) {
 			m_output += " " + m_startTagMap[markupInline].arg(mvno) +
-				comment + m_endTagMap[markupInline];
+				    comment + m_endTagMap[markupInline];
 		} else {
 			m_output += " " + m_startTagMap[markupInline] +
-				comment + m_endTagMap[markupInline];
+				    comment + m_endTagMap[markupInline];
 		}
 	}
 	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
