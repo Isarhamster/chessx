@@ -1,12 +1,4 @@
 /***************************************************************************
-                          filename - description
-                             -------------------
-    begin                :
-    copyright            : (C) 2006 Marius Roets <saidinwielder@sourceforge.net>
-                           (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
- ***************************************************************************/
-
-/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -20,7 +12,6 @@
 #include <QDataStream>
 
 #include "index.h"
-#include "cxdindex.h"
 
 #define INDEX_ITEM_BUFFER_SIZE 500
 
@@ -110,24 +101,6 @@ GameId Index::add(const Game&)
 	return add();
 }
 
-
-GameId Index::cxdAdd(const Game& game)
-{
-	cxdSetIndex(game, m_nbUsedIndexItems);
-	return m_nbUsedIndexItems++;
-}
-
-void Index::cxdReplace(const Game& game, const int& gameId)
-{
-	Q_ASSERT(0 <= gameId && gameId < m_nbUsedIndexItems);
-	cxdSetIndex(game,gameId);
-}
-
-void Index::cxdSetIndex(const Game& game, const int& gameId)
-{
-	for (int i = 0; i < CxdIndex::m_nbIndexTags; ++i)
-		{setTag(CxdIndex::tags[i], game.tag(TagNames[CxdIndex::tags[i]]), gameId);}
-}
 
 void Index::createIndexItems()
 {

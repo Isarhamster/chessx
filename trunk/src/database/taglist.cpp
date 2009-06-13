@@ -54,8 +54,7 @@ TagList::TagList()
 		 * between 12 and ? empty and unused objects are created
 		 * per database. Currently this seems like a small price to pay. */
 		// rico: I do not think this is a big issue. Furthermore it makes
-		// access to the tags a bit easier. The implementation of chessxdatabase
-		// currently relies on this handling of m_list.
+		// access to the tags a bit easier. 
 		m_list.append(NULL);
 	}
 	// I comment these out, because I am not sure how to handle the integers currently.

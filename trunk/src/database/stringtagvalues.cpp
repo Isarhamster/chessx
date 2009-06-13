@@ -16,7 +16,6 @@
  ***************************************************************************/
 
 #include "stringtagvalues.h"
-#include "cxdcompact.h"
 #include <QtDebug>
 
 StringTagValues::StringTagValues()
@@ -157,7 +156,5 @@ void StringTagValues::compact(const QVector<bool>& qv)
       if(!qv[i]) m_cache->remove(m_list[i]); 
     }
   }
-  // updating m_list
-  CxdCompact::compactList(m_list,qv);
 }
 

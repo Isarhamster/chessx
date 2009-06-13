@@ -33,16 +33,7 @@ HEADERS += board.h \
            filtermodel.h \
            tablebase.h \
            bitboard.h \
-	   openingtree.h \
-	   chessxdatabase.h \
-           cxdmoves.h \
-           cxdsaxhandler.h \
-	   cxdindex.h \
-	   cxdassign.h \
-           cxdcfile.h \
-           cxdcblock.h \
-	   cxdflags.h \
-	   cxdcompact.h \
+           openingtree.h \
  version.h \
  playerinfo.h
 SOURCES += board.cpp \
@@ -77,17 +68,8 @@ SOURCES += board.cpp \
            filtermodel.cpp \
            tablebase.cpp \
            bitboard.cpp \
-	   openingtree.cpp \
-	   chessxdatabase.cpp \
-           cxdmoves.cpp \
-           cxdsaxhandler.cpp \
-	   cxdindex.cpp \
-	   cxdassign.cpp \
-           cxdcfile.cpp \
-           cxdcblock.cpp \
-           cxdflags.cpp \
-	   cxdcompact.cpp \
- playerinfo.cpp
+           openingtree.cpp \
+           playerinfo.cpp
 
 include(../common.pro)
 TARGET = database

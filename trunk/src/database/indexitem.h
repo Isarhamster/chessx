@@ -62,12 +62,6 @@ public:
 	/** Reads the data of the instance from a QDataStream.
 	 * All data is cleared first. */
 	void read(QDataStream& in);
-        /** Write the data of the instance to a QIODevice.
-         *  This function should be faster then the one for writing to
-         *  a QDataStream. */
-        void cxdWrite(QIODevice& qiod) const;
-        /** Reads the data of the instance from a QIODevice. */
-        void cxdRead(QIODevice& qiod);
 
 	/** A debugging function, used to dump the contents of the memory
 	 * structure that holds the values */
