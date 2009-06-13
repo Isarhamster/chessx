@@ -93,7 +93,8 @@ MoveId Game::addMove(const Move& move, const QString& annotation, NagSet nags)
 	node.ply = ply() + 1;
 	m_moveNodes.append(node);
 	m_currentNode = m_moveNodes.size() - 1;
-	setAnnotation(annotation);
+	if (!annotation.isEmpty())
+		setAnnotation(annotation);
 	m_moveNodes[previousNode].nextNode = m_currentNode;
 	m_currentBoard.doMove(move);
 	m_isModified = true;
@@ -122,9 +123,7 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags)
 	//replace node data with new move
 	m_moveNodes[node].move = move;
 	m_moveNodes[node].nags = nags;
-	if (!annotation.isEmpty()) {
-		setAnnotation(annotation, node);
-	}
+	setAnnotation(annotation, node);
 
 	//remove any following nodes after replaced move by disconnecting them from the tree
 	forward();
@@ -269,14 +268,11 @@ Result Game::result() const
 
 bool Game::atLineStart(MoveId moveId) const
 {
-	if (moveId == 0) return true;
 	MoveId node = nodeValid(moveId);
-	if (node != NO_MOVE) {
-		if ((m_moveNodes[node].previousNode == m_moveNodes[node].parentNode)) {
-			return true;
-		}
-	}
-	return false;
+	if (node == NO_MOVE) 
+		return false;
+	return (m_moveNodes[node].previousNode == m_moveNodes[node].parentNode)
+		|| m_moveNodes[node].previousNode == NO_MOVE;
 }
 
 bool Game::atGameStart(MoveId moveId) const
@@ -305,50 +301,35 @@ bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
 {
 	//if (int node = nodeValid(moveId)) {
 	MoveId node = nodeValid(moveId);
-	if (node != NO_MOVE) {
-		if (position == AfterMove) {
-			// The default is to add a annotation after the move
-			if (annotation.isEmpty())
-				m_annotations.remove(node);
-			else m_annotations[node] = annotation;
-			return true;
-		} else {
-			// We can also add an annotation before a move
-			if (atLineStart(node)) {
-				if (annotation.isEmpty())
-					m_variationStartAnnotations.remove(node);
-				else m_variationStartAnnotations[node] = annotation;
-				return true;
-			} else {
-				// If we are not at the start of a line, the annotation is added
-				// after the previous move, assuming that if we are not at the
-				// start of a line, there must be a previous move.
-				node = m_moveNodes[node].previousNode;
-				if (annotation.isEmpty())
-					m_annotations.remove(node);
-				m_annotations[node] = annotation;
-				return true;
-			}
-		}
+	if (node == NO_MOVE)
+		return false;
+
+	if (position == AfterMove) {
+		if (annotation.isEmpty())
+			m_annotations.remove(node);
+		else m_annotations[node] = annotation;
+	} 
+	else if (canHaveStartAnnotation(node)) {	// Pre-move comment
+		if (annotation.isEmpty())
+			m_variationStartAnnotations.remove(node);
+		else m_variationStartAnnotations[node] = annotation;
 	}
-	return false;
+	return true;
 }
 
 QString Game::annotation(MoveId moveId, Position position) const
 {
 	MoveId node = nodeValid(moveId);
-	if (node != NO_MOVE) {
-		if (position == AfterMove) {
-			return m_annotations[node];
-		} else {
-			if (atLineStart(node)) {
-				return m_variationStartAnnotations[node];
-			} else {
-				return m_annotations[m_moveNodes[node].previousNode];
-			}
-		}
-	}
-	return QString();
+	if (position == AfterMove)
+		return m_annotations.value(node, "");
+	else 
+		return m_variationStartAnnotations.value(node, "");
+}
+
+bool Game::canHaveStartAnnotation(MoveId moveId) const
+{
+	MoveId node = nodeValid(moveId);
+	return atLineStart(moveId) || atGameStart(m_moveNodes[node].previousNode);
 }
 
 bool Game::addNag(Nag nag, MoveId moveId)

@@ -374,8 +374,7 @@ void PgnDatabase::parseToken(Game* game, QString token)
 					m_precomment.clear();
 				}
 				m_newVariation = false;
-			} else {
-				//game->enterVariation(m_variation);
+			} else {	// First move in the game
 				m_variation = game->addMove(token, QString(), nag);
 				if (!m_precomment.isEmpty()) {
 					game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
