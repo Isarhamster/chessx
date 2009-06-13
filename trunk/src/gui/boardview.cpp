@@ -62,7 +62,8 @@ void BoardView::setBoard(const Board& value)
 	m_clickUsed = true;
 	Board oldboard = m_board;
 	m_board = value;
-	updateGuess(m_hoverSquare);
+	if (underMouse())
+		updateGuess(m_hoverSquare);
 	update();
 }
 
