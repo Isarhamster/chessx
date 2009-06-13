@@ -30,7 +30,6 @@
 #include "openingtree.h"
 #include "output.h"
 #include "pgndatabase.h"
-#include "chessxdatabase.h"
 #include "playerdialog.h"
 #include "preferences.h"
 #include "savedialog.h"
@@ -448,27 +447,27 @@ void MainWindow::slotFileNew()
 {
 	QString file = QFileDialog::getSaveFileName(this, tr("New database"),
 			AppSettings->value("/General/databasePath").toString(),
-			tr("ChessX databases (*.cxd)"));
+			tr("PGN database (*.pgn)"));
 	if (file.isEmpty())
 		return;
-	if (!file.endsWith(".cxd"))
-		file += ".cxd";
-	ChessXDatabase cxd;
-	if (!cxd.create(file)) {
+	if (!file.endsWith(".pgn"))
+		file += ".pgn";
+	QFile pgnfile(file);
+	if (!pgnfile.open(QIODevice::WriteOnly)) 
 		MessageDialog::warning(this, tr("Cannot create ChessX database."), tr("New database"));
-		return;
+	else {
+		pgnfile.close();
+		openDatabase(file);
+		AppSettings->setValue("/General/databasePath",
+				QFileInfo(file).absolutePath());
 	}
-	cxd.close();
-	openDatabase(file);
-	AppSettings->setValue("/General/databasePath",
-			      QFileInfo(file).absolutePath());
 }
 
 void MainWindow::slotFileOpen()
 {
 	QString file = QFileDialog::getOpenFileName(this, tr("Open database"),
 			AppSettings->value("/General/databasePath").toString(),
-			tr("All databases (*.cxd *.pgn);;ChessX databases (*.cxd);;PGN databases (*.pgn)"));
+			tr("PGN databases (*.pgn)"));
 	if (!file.isEmpty()) {
 		AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
 		openDatabase(file);

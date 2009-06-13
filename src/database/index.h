@@ -37,8 +37,6 @@
 class Index
 {
 public:
-	friend class CxdIndex;
-	friend class CxdFlags;
 	static const int defaultIndexItemSize;
 
 	Index();
@@ -55,13 +53,6 @@ public:
 	/** Create new IndexItem in index and store all tags from game object into it */
         // this is only a dummy implementation at the moment
 	GameId add(const Game& game);
-
-   	/** Creates new IndexItem in index and store all tags of CxdIndex::tags into it */
-   	GameId cxdAdd(const Game& game);
-
-	/** Replaces the all tags of CxdIndex::tags into the IndexItem at position gameId
- 	  * by the correpsonding values in game. gameId must be valid. */
-        void cxdReplace(const Game& game, const int& gameId);
 
 	/** Adds a empty indexitem */
 	GameId add ();
@@ -157,10 +148,6 @@ private:
 	/** Replaces IndexItem corresponding to gameId with item. @p item
  	  * should be dynamically allocated.*/
 	void replace (IndexItem* item, const int& gameId);
-
-	/** Replaces/Adds the all tags of CxdIndex::tags into the IndexItem at position gameId
- 	  * by the corresponding values in game. This function does not adjust m_nbUsedIndexItems.*/
-	void cxdSetIndex(const Game& game, const int& gameId);
 
 	/** Create index items */
 	void createIndexItems();
