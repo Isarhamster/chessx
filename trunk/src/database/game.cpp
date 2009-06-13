@@ -249,10 +249,9 @@ bool Game::isMainline(MoveId moveId) const
 {
 	if (moveId == 0) return true;
 	MoveId node = nodeValid(moveId);
-	if (node != NO_MOVE) {
-		return m_moveNodes[node].parentNode != NO_MOVE;
-	}
-	return false;
+	if (node == NO_MOVE)
+		return false;
+	else return m_moveNodes[node].parentNode == NO_MOVE;
 }
 
 Result Game::result() const
