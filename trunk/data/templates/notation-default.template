@@ -46,14 +46,14 @@ MarkupMainLineMove=<a class="main" href="move:%1">,</a>
 MarkupVariationMove=<a class="var" href="move:%1">,</a>
 MarkupMainLine=,
 MarkupVariationInline=<span>(,)</span>
-MarkupVariationIndent=<p style="margin-left: 30" class="var">(,)</p>\n
+MarkupVariationIndent=<p class="var">(,)</p>\n
 MarkupNag=<a class="nag">,</a>
 MarkupColumnStyleMove=<td width=50%>,\n
 MarkupColumnStyleRow=<tr class="mainline">,\n
 MarkupColumnStyleMainline=<table border=0 width=50%>,</table>\n
-MarkupAnnotationInline=<a class="comment" href="cmt:%1">,</a>\n
+MarkupAnnotationInline= <a class="comment" href="cmt:%1">,</a>\n
 MarkupAnnotationIndent=<p class="comment"><a class="comment" href="cmt:%1">,</a></p>
-MarkupPreAnnotationInline=<a class="comment" href="precmt:%1">,</a>\n
+MarkupPreAnnotationInline= <a class="comment" href="precmt:%1">,</a>\n
 MarkupPreAnnotationIndent=<p class="comment"><a class="comment" href="precmt:%1">,</a></p>
 MarkupHeaderLine=<b>,</b><br>\n
 MarkupHeaderTagName=[,
