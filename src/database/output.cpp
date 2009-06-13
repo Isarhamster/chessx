@@ -321,10 +321,10 @@ void Output::writeComment(const QString& comment, const QString& mvno, CommentTy
 		}
 	} else {
 		if (m_expandable[markupInline]) {
-			m_output += " " + m_startTagMap[markupInline].arg(mvno) +
+			m_output += m_startTagMap[markupInline].arg(mvno) +
 				    comment + m_endTagMap[markupInline];
 		} else {
-			m_output += " " + m_startTagMap[markupInline] +
+			m_output += m_startTagMap[markupInline] +
 				    comment + m_endTagMap[markupInline];
 		}
 	}

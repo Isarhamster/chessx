@@ -44,7 +44,7 @@ QString NagSet::toString(unsigned format) const
 		else
 			otherNags = format == PGN ? " $" + QString::number(at(i)) : nagToString(at(i));
 	}
-	return moveNag + evaluationNag + otherNags.simplified();
+	return moveNag + evaluationNag + otherNags;
 }
 
 static const QString g_nagStringList[NagCount] = {
