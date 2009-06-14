@@ -175,6 +175,7 @@ void PgnDatabase::readLine()
 		m_currentLine.replace(")", " ) ");
 		m_currentLine.replace("{", " { ");
 		m_currentLine.replace("}", " } ");
+		m_currentLine.replace("$", " $");
 	}
 }
 
