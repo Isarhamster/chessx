@@ -170,10 +170,12 @@ void PgnDatabase::readLine()
 	m_lineBuffer = m_file->readLine();
 	m_currentLineSize = m_lineBuffer.size();
 	m_currentLine = QString(m_lineBuffer).trimmed();
-	m_currentLine.replace("(", " ( ");
-	m_currentLine.replace(")", " ) ");
-	m_currentLine.replace("{", " { ");
-	m_currentLine.replace("}", " } ");
+	if (!m_currentLine.startsWith("[")) {
+		m_currentLine.replace("(", " ( ");
+		m_currentLine.replace(")", " ) ");
+		m_currentLine.replace("{", " { ");
+		m_currentLine.replace("}", " } ");
+	}
 }
 
 void PgnDatabase::skipLine()
@@ -191,14 +193,27 @@ void PgnDatabase::seekGame(int index)
 
 void PgnDatabase::parseTagsIntoIndex()
 {
-	do {
-		if (!m_currentLine.startsWith(QString("["))) {
-			break;
-		}
+	while (m_currentLine.startsWith(QString("[")) && !m_file->atEnd()) {
+		int tagend = m_currentLine.indexOf(' ');
+		QString tag = m_currentLine.mid(1, tagend - 1);
+		int valuestart = m_currentLine.indexOf('\"', tagend + 1);
+		QString value = m_currentLine.mid(valuestart + 1);
+		bool hasNextTag = false;
 
-		// parse tag
-		QString tag = m_currentLine.mid(1, m_currentLine.indexOf(' ') - 1);
-		QString value = m_currentLine.section('"', 1, 1);
+		while (!value.endsWith("]") && !m_file->atEnd()) {
+			readLine();
+			if (m_currentLine.isEmpty() || m_currentLine.startsWith("[")) {
+				hasNextTag = true;
+				break;
+			}
+			value += ' ' + m_currentLine;
+		}
+		int valueend = value.lastIndexOf('\"');
+		if (valueend != -1)
+			value.truncate(valueend);
+		if (value.contains("\\\""))
+			value.replace("\\\"", "\"");
+	
 		// quick fix for non-standard draw mark.
 		if (tag == "Result" && value == "1/2")
 			value = "1/2-1/2";
@@ -206,13 +221,13 @@ void PgnDatabase::parseTagsIntoIndex()
 		// update index
 		m_index.setTag(tag, value, m_count - 1);
 
-		readLine();
-	} while (!m_file->atEnd() || m_currentLine != "");
-
-	//swallow trailing whitespace
-	while (m_currentLine == "" && !m_file->atEnd()) {
-		readLine();
+		if (!hasNextTag)
+			readLine();
 	}
+
+	// skip trailing whitespace
+	while (m_currentLine.isEmpty() && !m_file->atEnd()) 
+		readLine();
 }
 
 void PgnDatabase::parseMoves(Game* game)
