@@ -28,7 +28,7 @@
 class MoveList : public QVector<Move>
 {
 public:
-    MoveList() : QVector<Move>(100) {}
+    MoveList() : QVector<Move>() {}
     inline Move& add() { push_back(Move()); return back(); }
 };
 
