@@ -19,6 +19,8 @@ TableView::TableView(QWidget *parent)
 	verticalHeader()->setDefaultSectionSize(fontMetrics().lineSpacing());
 	verticalHeader()->hide();
 	horizontalHeader()->setHighlightSections(false);
+	setTabKeyNavigation(false);
+	setFocusPolicy(Qt::NoFocus);
 	m_smallfont = new QAction(tr("Small font"), this);
 	m_smallfont->setCheckable(true);
 	m_smallfont->setChecked(false);
