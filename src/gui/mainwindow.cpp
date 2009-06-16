@@ -752,7 +752,6 @@ void MainWindow::slotMoveChanged()
 			    .arg(header).arg(move).arg(var));
 	if (AppSettings->value("/General/onlineTablebases", true).toBool())
 		m_tablebase->getBestMove(g.toFen());
-	m_gameView->setFocus();
 
 	slotSearchTree();
 	emit boardChange(g.board());
