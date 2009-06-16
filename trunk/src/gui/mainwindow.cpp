@@ -217,10 +217,17 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_ecothread = new EcoThread(AppSettings->dataPath() + "/chessx");
 	connect(m_ecothread, SIGNAL(loaded()), this, SLOT(ecoLoaded()));
 	m_ecothread->start();
+
+	m_timer = new QTimer(this);
+	m_timer->setInterval(100);
+	m_timer->setSingleShot(true);
+   connect(m_timer, SIGNAL(timeout()), this, SLOT(slotGameLoadPending()));
+
 }
 
 MainWindow::~MainWindow()
 {
+	m_timer->stop();
 	/* Stop analysis. */
 	m_analysis->analyze(false);
 	qDeleteAll(m_databases.begin(), m_databases.end());
@@ -795,13 +802,30 @@ void MainWindow::slotGameLoadLast()
 
 void MainWindow::slotGameLoadPrevious()
 {
-	gameLoad(databaseInfo()->filter()->previousGame(gameIndex()));
+	int game = m_gameList->currentIndex().row();
+	game = databaseInfo()->filter()->indexToGame(game);
+	game = databaseInfo()->filter()->previousGame(game);
+	m_gameList->selectGame(game);
+	m_pending = PendingLoad(database(), game);
+	m_timer->start();
 }
 
 void MainWindow::slotGameLoadNext()
 {
-	gameLoad(databaseInfo()->filter()->nextGame(gameIndex()));
+	int game = m_gameList->currentIndex().row();
+	game = databaseInfo()->filter()->indexToGame(game);
+	game = databaseInfo()->filter()->nextGame(game);
+	m_gameList->selectGame(game);
+	m_pending = PendingLoad(database(), game);
+	m_timer->start();
 }
+
+void MainWindow::slotGameLoadPending()
+{
+	if (m_pending.database == database())
+		gameLoad(m_pending.game);
+}
+
 
 void MainWindow::slotGameLoadRandom()
 {

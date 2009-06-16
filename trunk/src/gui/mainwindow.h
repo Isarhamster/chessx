@@ -18,6 +18,7 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
+#include <QTimer>
 #include <QList>
 #include <QMainWindow>
 #include <QUrl>
@@ -156,6 +157,8 @@ public slots:
 	void slotGameModify(int action, int move);
 	/** Update GameView content after game was change. Triggers also @ref slotMoveChanged . */
 	void slotGameChanged();
+	/** Load pending game. */
+	void slotGameLoadPending();
 	/** Handle link click in Game View panel */
 	void slotGameViewLink(const QUrl& link);
 	/** Show/hide GameView source - useful for debugging. */
@@ -276,6 +279,15 @@ private:
 	Tablebase* m_tablebase;
 	EcoThread* m_ecothread;
 	AnalysisWidget* m_analysis;
+	QTimer* m_timer;
+
+	struct PendingLoad {
+		Database* database;
+		int game;
+		PendingLoad(Database* d, int g)	{database = d; game = g;}
+		PendingLoad()	{database = 0; game = 0;}
+	};
+	PendingLoad m_pending;
 };
 
 
