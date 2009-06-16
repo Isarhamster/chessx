@@ -805,9 +805,11 @@ void MainWindow::slotGameLoadPrevious()
 	int game = m_gameList->currentIndex().row();
 	game = databaseInfo()->filter()->indexToGame(game);
 	game = databaseInfo()->filter()->previousGame(game);
-	m_gameList->selectGame(game);
-	m_pending = PendingLoad(database(), game);
-	m_timer->start();
+	if (game != -1) {
+		m_gameList->selectGame(game);
+		m_pending = PendingLoad(database(), game);
+		m_timer->start();
+	}
 }
 
 void MainWindow::slotGameLoadNext()
@@ -815,9 +817,11 @@ void MainWindow::slotGameLoadNext()
 	int game = m_gameList->currentIndex().row();
 	game = databaseInfo()->filter()->indexToGame(game);
 	game = databaseInfo()->filter()->nextGame(game);
-	m_gameList->selectGame(game);
-	m_pending = PendingLoad(database(), game);
-	m_timer->start();
+	if (game != -1) {
+		m_gameList->selectGame(game);
+		m_pending = PendingLoad(database(), game);
+		m_timer->start();
+	}
 }
 
 void MainWindow::slotGameLoadPending()
