@@ -100,8 +100,10 @@ void GameList::simpleSearch(int tagid)
 void GameList::selectGame(int index)
 {
 	int i = m_model->filter()->gameToIndex(index);
-	if (i != -1)
+	if (i != -1) {
 		setCurrentIndex(m_model->index(i, 0));
+		selectRow(i);
+	}
 }
 
 void GameList::updateFilter()
