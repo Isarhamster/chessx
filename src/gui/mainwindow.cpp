@@ -316,8 +316,10 @@ void MainWindow::gameLoad(int index, bool force, bool reload)
 
 void MainWindow::gameMoveBy(int change)
 {
-	if (game().moveByPly(change))
+	if (game().moveByPly(change)) {
 		slotMoveChanged();
+		m_gameView->setFocus();
+	}
 }
 
 void MainWindow::updateMenuRecent()
