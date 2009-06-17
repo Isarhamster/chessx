@@ -794,11 +794,13 @@ void MainWindow::slotBoardMoveWheel(int wheel)
 void MainWindow::slotGameLoadFirst()
 {
 	gameLoad(databaseInfo()->filter()->indexToGame(0));
+	m_gameList->setFocus();
 }
 
 void MainWindow::slotGameLoadLast()
 {
 	gameLoad(databaseInfo()->filter()->indexToGame(databaseInfo()->filter()->count() - 1));
+	m_gameList->setFocus();
 }
 
 void MainWindow::slotGameLoadPrevious()
@@ -808,6 +810,7 @@ void MainWindow::slotGameLoadPrevious()
 	game = databaseInfo()->filter()->previousGame(game);
 	if (game != -1) {
 		m_gameList->selectGame(game);
+		m_gameList->setFocus();
 		m_pending = PendingLoad(database(), game);
 		m_timer->start();
 	}
@@ -820,6 +823,7 @@ void MainWindow::slotGameLoadNext()
 	game = databaseInfo()->filter()->nextGame(game);
 	if (game != -1) {
 		m_gameList->selectGame(game);
+		m_gameList->setFocus();
 		m_pending = PendingLoad(database(), game);
 		m_timer->start();
 	}
@@ -837,6 +841,7 @@ void MainWindow::slotGameLoadRandom()
 	if (databaseInfo()->filter()->count()) {
 		int random = rand() % databaseInfo()->filter()->count();
 		gameLoad(databaseInfo()->filter()->indexToGame(random));
+		m_gameList->setFocus();
 	}
 }
 
@@ -845,6 +850,7 @@ void MainWindow::slotGameLoadChosen()
 	int index = QInputDialog::getInteger(this, tr("Load Game"), tr("Game number:"), gameIndex() + 1,
 					     1, database()->count());
 	gameLoad(index - 1);
+	m_gameList->setFocus();
 }
 
 void MainWindow::slotGameNew()
