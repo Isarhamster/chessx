@@ -185,12 +185,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	AppSettings->endGroup();
 	slotReconfigure();
 
-	/* Reset board - not earlier, as all widgets have to be created. */
-	slotGameChanged();
-
 	/* Status */
 	m_statusFilter = new QLabel(statusBar());
 	statusBar()->addPermanentWidget(m_statusFilter);
+
+	/* Reset board - not earlier, as all widgets have to be created. */
+	slotGameChanged();
 
 	/* Display main window */
 	show();
