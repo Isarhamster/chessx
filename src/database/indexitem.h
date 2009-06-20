@@ -22,6 +22,7 @@
 #include "common.h"
 #include <QList>
 #include <QDataStream>
+#include <QByteArray>
 
 /** @ingroup Database
  The IndexItem class holds one item that is listed in a index
@@ -70,11 +71,7 @@ public:
 private:
 
 	/* Data structure */
-	unsigned char* m_data;
-	/** Size in bytes of the data structure */
-	int m_size;
-	/* or to be considered later */
-	//QByteArray m_data
+	QByteArray m_data;
 
 };
 
