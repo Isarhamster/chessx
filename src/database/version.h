@@ -14,6 +14,6 @@
  *                                                                         *
  ***************************************************************************/
 
-const QString ChessXVersion = "0.6-SVN";
-const uint ChessXVersionNumber = 590;
+const QString ChessXVersion = "0.6";
+const uint ChessXVersionNumber = 600;
 
