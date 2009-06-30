@@ -68,6 +68,8 @@ private slots:
 	void slotEnPassantSquare();
 	/** Adjust halfmove clock. */
 	void slotHalfmoveClock();
+	/** Adjust move number. */
+	void slotMoveNumber();
 	/** Move piece */
 	void slotMovePiece(Square from, Square to);
 	/** Copy piece */

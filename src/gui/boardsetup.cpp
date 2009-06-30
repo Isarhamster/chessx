@@ -70,6 +70,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.bqCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
 	connect(ui.epCombo, SIGNAL(currentIndexChanged(int)), SLOT(slotEnPassantSquare()));
 	connect(ui.halfmoveSpin, SIGNAL(valueChanged(int)), SLOT(slotHalfmoveClock()));
+	connect(ui.moveSpin, SIGNAL(valueChanged(int)), SLOT(slotMoveNumber()));
 	connect(ui.copyButton, SIGNAL(clicked()), SLOT(slotCopyFen()));
 	connect(ui.pasteButton, SIGNAL(clicked()), SLOT(slotPasteFen()));
 }
@@ -314,3 +315,11 @@ void BoardSetupDialog::slotHalfmoveClock()
 	b.setHalfMoveClock(ui.halfmoveSpin->value());
 	setBoard(b);
 }
+
+void BoardSetupDialog::slotMoveNumber()
+{
+	Board b(board());
+	b.setMoveNumber(ui.moveSpin->value());
+	setBoard(b);
+}
+
