@@ -110,7 +110,7 @@
             <number>1</number>
            </property>
            <property name="maximum">
-            <number>300</number>
+            <number>999</number>
            </property>
            <property name="value">
             <number>1</number>
@@ -166,14 +166,11 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="prefix">
-          <string>Ply: </string>
-         </property>
          <property name="minimum">
           <number>0</number>
          </property>
          <property name="maximum">
-          <number>100</number>
+          <number>99</number>
          </property>
          <property name="value">
           <number>0</number>
