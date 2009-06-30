@@ -88,41 +88,24 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QPushButton" name="toMoveButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="autoFillBackground">
-            <bool>true</bool>
-           </property>
+          <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>White</string>
+            <string>Side to move:</string>
            </property>
-           <property name="flat">
-            <bool>true</bool>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="toMoveButton"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Move:</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QSpinBox" name="moveSpin">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="prefix">
-            <string>Move: </string>
-           </property>
            <property name="minimum">
             <number>1</number>
            </property>
@@ -440,7 +423,6 @@
   <tabstop>halfmoveSpin</tabstop>
   <tabstop>clearButton</tabstop>
   <tabstop>resetButton</tabstop>
-  <tabstop>toMoveButton</tabstop>
   <tabstop>moveSpin</tabstop>
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>

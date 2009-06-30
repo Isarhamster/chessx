@@ -168,14 +168,9 @@ void BoardSetupDialog::slotSelected(Square square, int button)
 
 void BoardSetupDialog::showSideToMove()
 {
-	if (m_toMove == White)
-		ui.toMoveButton->setText(tr("White"));
-	else ui.toMoveButton->setText(tr("Black"));
-	QPalette palette;
-	palette.setColor(ui.toMoveButton->backgroundRole(), m_toMove == White ? Qt::white : Qt::black);
-	ui.toMoveButton->setPalette(palette);
-	palette.setColor(ui.toMoveButton->foregroundRole(), m_toMove == White ? Qt::black : Qt::white);
-	ui.toMoveButton->setPalette(palette);
+	QPixmap pixmap(ui.toMoveButton->iconSize());
+	pixmap.fill(m_toMove == White ? Qt::white : Qt::black);
+	ui.toMoveButton->setIcon(QIcon(pixmap));
 }
 
 void BoardSetupDialog::slotToggleSide()
