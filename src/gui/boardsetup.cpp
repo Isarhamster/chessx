@@ -25,6 +25,7 @@
 #include <QPushButton>
 #include <QToolButton>
 #include <QWheelEvent>
+#include <QPainter>
 
 BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 {
@@ -168,8 +169,11 @@ void BoardSetupDialog::slotSelected(Square square, int button)
 
 void BoardSetupDialog::showSideToMove()
 {
-	QPixmap pixmap(ui.toMoveButton->iconSize());
-	pixmap.fill(m_toMove == White ? Qt::white : Qt::black);
+	QSize size = ui.toMoveButton->iconSize();
+	QPixmap pixmap(size);
+	QPainter painter(&pixmap);
+	painter.fillRect(0, 0, size.width(), size.height(), m_toMove == White ? Qt::black : Qt::white);
+	painter.fillRect(1, 1, size.width() - 2, size.height() - 2, m_toMove == White ? Qt::white : Qt::black);
 	ui.toMoveButton->setIcon(QIcon(pixmap));
 }
 
