@@ -1,7 +1,46 @@
+Wed 1 Jul 2009, 00:50:22 CET Version 0.6
+
 	* feature: improve Engine tab of Preferences dialog, add reordering
 	* feature: remember current engine
 	* bugfix: show correct score for Crafty
 	* bugfix: correctly display variations leading to mate in UCI engines
+	* bugfix: update ECO database for opening detection and move guesser
+	* bugfix: improve focus handling in game list and game text
+	* feature: timer-delayed game loading when pressing Ctrl+Down/Up
+	* bugfix: remove bold column names in TableView
+	* bugfix: support NAGs not preceeded with space in PGN parser
+	* bugfix: make PGN parser more robust
+	* bugfix: optimize PGN output
+	* bugfix: enable leading comment in mainline and variations
+	* bugfix: slightly improve PGN export formatting
+	* feature: allow creating new PGN databases
+	* change: drop CXD databases support
+	* bugfix: guess move only with mouse over the board
+	* feature: truncate from the beginning
+	* bugfix: correct tag order for QuickSearch
+	* feature: search games by number or number range
+	* bugfix: do not read a game beyong the end of file
+	* feature: allow editing pre-move comments
+	* bugfix: PGN standard compliant ep square in FEN
+	* bugfix: reparent some dialogs
+	* bugfix: remove flickering at startup
+	* feature: make comments editable
+	* feature: correctly read PGNs with FEN
+	* feature: new Leipzig theme
+	* feature: allow removing variations
+	* feature: enable HTML export
+	* feature: allow setting small fonts in chess text widgets (useful for laptops).
+	* bugfix: save all PGN tags
+	* bugfix: display correct move number in starting position
+	* feature: allow copying games between databases
+	* feature: allow copying pieces in BoardSetup by using Ctrl
+	* change: add Advanced setting to BoardSetup
+	* feature: PlayerInfo dialog with player statistics
+	* feature: display FEN in BoardSetup
+	* feature: copy/paste position in BoardSetup
+	* bugfix: correctly recognize promotions in UCI engines
+	* bugfix: correctly handle promotion in tablebases
+	* bugfix: support 1/2 as a draw symbol
 
 Wed 13 Jun 2007 19:47:32 CET	Version 0.5
 	
@@ -88,6 +127,4 @@ Thu 28 Feb 2007 00:59:47 CET	Version 0.2
 	* bugfix: fix segfault when removing piece from empty square
 	* bugfix: correctly finding installed data path on Debian.
 	* change: clean configuration file format
-
-Mon 19 Feb 2007 00:59:47 CET	Version 0.1
 
