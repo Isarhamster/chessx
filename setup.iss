@@ -4,7 +4,7 @@
 ; Inno Setup creates install files for MS Windows.
 
 #define MyAppName "ChessX"
-#define MyAppVerName "ChessX-0.5"
+#define MyAppVerName "ChessX-0.6"
 #define MyAppPublisher "ChessX Team"
 #define MyAppURL "http://chessx.sourceforge.net"
 #define MyAppExeName "chessx.exe"
@@ -34,9 +34,7 @@ Name: hungarian; MessagesFile: compiler:Languages\Hungarian.isl
 Name: italian; MessagesFile: compiler:Languages\Italian.isl
 Name: norwegian; MessagesFile: compiler:Languages\Norwegian.isl
 Name: polish; MessagesFile: compiler:Languages\Polish.isl
-Name: serbian; MessagesFile: compiler:Languages\Serbian.isl
 Name: spanish; MessagesFile: compiler:Languages\Spanish.isl
-Name: swedish; MessagesFile: compiler:Languages\Swedish.isl
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -49,6 +47,9 @@ Source: "TODO"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Changelog"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\MinGW\bin\mingwm10.dll"; DestDir: "{sys}";
 Source: "data\*.*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs
+Source: "C:\Qt\4.5.0\bin\QtCore4.dll"; DestDir: "{sys}";
+Source: "C:\Qt\4.5.0\bin\QtGui4.dll"; DestDir: "{sys}";
+Source: "C:\Qt\4.5.0\bin\QtNetwork4.dll"; DestDir: "{sys}";
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
