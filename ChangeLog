@@ -1,5 +1,6 @@
 Wed 1 Jul 2009, 00:50:22 CET Version 0.6
 
+	* feature: warn when quitting with unsaved databases
 	* feature: improve Engine tab of Preferences dialog, add reordering
 	* feature: remember current engine
 	* bugfix: show correct score for Crafty

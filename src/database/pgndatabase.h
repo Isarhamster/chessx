@@ -53,9 +53,6 @@ public:
 	bool loadGame(int index, Game& game);
 	/** Loads only moves into a game from the given position */
 	void loadGameMoves(int index, Game& game);
-	/** Returns true if the database has been modified. PgnDatabase is read only, 
-	 * always returns false */
-	virtual bool isModified() { return false; }
 
 protected:
 	//parsing methods
