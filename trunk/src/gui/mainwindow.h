@@ -242,6 +242,8 @@ private:
 			      const QString& tip = QString());
 	/** Create all the menus and actions */
 	void setupActions();
+	/** Confirm quitting and save modified databases. */
+	bool confirmQuit();
 
 	enum
 	{

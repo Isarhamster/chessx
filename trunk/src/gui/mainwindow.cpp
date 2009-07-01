@@ -59,7 +59,6 @@
 #include <QTime>
 
 
-
 MainWindow::MainWindow() : QMainWindow(),
 		m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_tipDialog(0),
 		m_showPgnSource(false)
@@ -250,8 +249,7 @@ void MainWindow::ecoLoaded()
 
 void MainWindow::closeEvent(QCloseEvent* e)
 {
-	if (!AppSettings->value("/General/confirmQuit", true).toBool() ||
-			MessageDialog::okCancel(this, tr("Do you want to quit?"), tr("Quit"), tr("Quit"))) {
+	if (confirmQuit()) {
 		m_recentFiles.save("History", "RecentFiles");
 		AppSettings->setLayout(m_playerDialog);
 		AppSettings->setLayout(m_helpWindow);
@@ -1236,5 +1234,26 @@ void MainWindow::slotDatabaseCompact()
 	m_gameList->updateFilter();
 }
 
-
+bool MainWindow::confirmQuit() 
+{
+	if (AppSettings->value("/General/confirmQuit", true).toBool() &&
+			!MessageDialog::okCancel(this, tr("Do you want to quit?"), tr("Quit"), tr("Quit")))
+		return false;
+	QString modified;
+	for (int i = 1; i < m_databases.size(); i++)
+		if (m_databases[i]->database()->isModified())
+			modified += m_databases[i]->database()->name() + '\n';
+	if (!modified.isEmpty()) {
+		int response = MessageDialog::yesNoCancel(this, tr("Following databases are modified:")
+					+ '\n' + modified + tr("Save them?"));
+		if (response == MessageDialog::Cancel)
+			return false;
+		Output output(Output::Pgn);
+		for (int i = 1; i < m_databases.size(); i++)
+			if (m_databases[i]->database()->isModified())
+				output.output(m_databases[i]->database()->filename(), 
+						*(m_databases[i]->database()));
+	}
+	return true;
+}
 

@@ -23,6 +23,7 @@ class MessageDialog : public QObject
 {
 	Q_OBJECT
 public:
+	enum {Yes, No, Cancel};
 	/** Standard information dialog. */
 	static void error(QWidget* parent, const QString& text, const QString& title = tr("Error"));
 	/** Standard warning dialog. */
@@ -35,6 +36,9 @@ public:
 	/** Standard Ok-Cancel dialog. Escape cancels, 'Ok' is default. */
 	static bool okCancel(QWidget* parent, const QString& text, const QString& title = tr("Question"),
 							  const QString& ok = tr("&OK"), const QString& cancel = tr("&Cancel"));
+	static int yesNoCancel(QWidget* parent, const QString& text, const QString& title = tr("Question"),
+							  const QString& yes = tr("&Yes"), const QString& no = tr("&No"), 
+							  const QString& cancel = tr("&Cancel"));
 };
 
 #endif

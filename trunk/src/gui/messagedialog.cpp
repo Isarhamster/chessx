@@ -34,9 +34,9 @@ bool MessageDialog::yesNo(QWidget* parent, const QString& text, const QString& t
 	mb.setWindowTitle(title);
 	mb.setText(text);
 	mb.setIcon(QMessageBox::Question);
-	QPushButton* y = mb.addButton(yes, QMessageBox::ActionRole);
+	QPushButton* y = mb.addButton(yes, QMessageBox::YesRole);
 	mb.setDefaultButton(y);
-	mb.addButton(no, QMessageBox::RejectRole);
+	mb.addButton(no, QMessageBox::NoRole);
 	mb.exec();
 	return mb.clickedButton() == y;
 }
@@ -55,4 +55,25 @@ bool MessageDialog::okCancel(QWidget* parent, const QString& text, const QString
 	mb.exec();
 	return mb.clickedButton() == o;
 }
+
+int MessageDialog::yesNoCancel(QWidget* parent, const QString& text, const QString& title, const QString& yes,
+								  const QString& no, const QString& cancel)
+{
+	QMessageBox mb(parent);
+	mb.setWindowTitle(title);
+	mb.setText(text);
+	mb.setIcon(QMessageBox::Question);
+	QPushButton* y = mb.addButton(yes, QMessageBox::ActionRole);
+	mb.setDefaultButton(y);
+	QPushButton* n = mb.addButton(no, QMessageBox::NoRole);
+	QPushButton* c = mb.addButton(cancel, QMessageBox::RejectRole);
+	mb.setEscapeButton(c);
+	mb.exec();
+	if (mb.clickedButton() == y)
+		return Yes;
+	else if (mb.clickedButton() == n)
+		return No;
+	else return Cancel;
+}
+
 
