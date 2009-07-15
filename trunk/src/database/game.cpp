@@ -674,57 +674,43 @@ void Game::setResult(Result result)
 	m_isModified = true;
 }
 
-//QString Game::moveToSan(MoveStringFlags flags, MoveId moveId)
 QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, MoveId moveId)
 {
-	int saveNode = -1;
-	QString san = "";
 	MoveId node = nodeValid(moveId);
-	Move move;
-	if (node != NO_MOVE) {
-		if (nextPrevious == PreviousMove) {
-			if (node == 0) return san;
-			move = m_moveNodes[node].move;
-		} else {
-			if (m_moveNodes[node].nextNode == NO_MOVE) return san;
-			move = m_moveNodes[m_moveNodes[node].nextNode].move;
-		}
+	if (node != NO_MOVE && nextPrevious == NextMove)
+		node = m_moveNodes[node].nextNode;
+	if (node == NO_MOVE)
+		return QString();
 
-		if (node != m_currentNode) {
-			// save position and jump to node
-			saveNode = m_currentNode;
-			moveToId(node);
-		}
-		Board board = m_currentBoard;
-		if (nextPrevious == PreviousMove) {
-			board.undoMove(move);
-		}
-		//
-		//move number
-		if (board.toMove() == Black) {
-			if (flags & BlackNumbers) {
-				san += QString::number(moveNumber()) + "... ";
-			}
-		} else {
-			if (flags & WhiteNumbers) {
-				san += QString::number(moveNumber() + (nextPrevious == NextMove)) + ". ";
-			}
-		}
-		//move
-		san += board.moveToSan(move);
-		//nags
-		if (flags & Nags) {
-			QString nagString = nags().toString();
-			if (!nags().count() || nagString.startsWith("!") || nagString.startsWith("?")) {
-				san += nagString;
-			} else {
-				san += " " + nagString;
-			}
-		}
-		// Jump back to previous position
-		if (saveNode != -1)
-			moveToId(saveNode);
+	MoveNode move;
+	move = m_moveNodes[node];
+	if (!move.move.isLegal())
+		return QString();
+
+	// Save current node
+	MoveId saveNode = NO_MOVE;
+	MoveId boardNode = m_moveNodes[node].previousNode;
+	if (boardNode != m_currentNode) {
+		saveNode = m_currentNode;
+		moveToId(boardNode);
 	}
+
+	// Move number
+	QString san;
+	if (m_currentBoard.toMove() == Black && flags & BlackNumbers) 
+		san += QString::number(moveNumber(node)) + "... ";
+	else if (m_currentBoard.toMove() == White && flags & WhiteNumbers) 
+		san += QString::number(moveNumber(node)) + ". ";
+
+	// Move and SAN
+	san += m_currentBoard.moveToSan(move.move);
+	if (flags & Nags)
+		san += nags(node).toString();
+		
+	// Restore previous position
+	if (saveNode != NO_MOVE)
+		moveToId(saveNode);
+	
 	return san;
 }
 
