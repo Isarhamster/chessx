@@ -59,6 +59,8 @@ class Move
 	Square enPassantSquare() const;
 	/** return Square where rook was placed before castling */
 	Square castlingRookFrom() const;
+	/** Convert to algebraic notation (e2e4, g8f6 etc.) */
+	QString toAlgebraic() const;
 
 	/** Get the piece type moving -- note, returns Pawn, QUEEN, etc.. not colorized */
 	Piece pieceMoved() const;
@@ -230,6 +232,17 @@ inline Square Move::castlingRookFrom() const
 inline Square Move::castlingRookTo() const
 {
 	return (from() + to()) / 2;
+}
+
+inline QString Move::toAlgebraic() const
+{
+	if (!isLegal()) return "?";
+	QString alg(4, ' ');
+	alg[0] = QChar('a' + from() % 8);
+	alg[1] = QChar('1' + from() / 8);
+	alg[2] = QChar('a' + to() % 8);
+	alg[3] = QChar('1' + to() / 8);
+	return alg;
 }
 
 inline Square Move::enPassantSquare() const
