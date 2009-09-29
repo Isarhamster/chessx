@@ -42,31 +42,18 @@
 
 #include <time.h>
 
-#include <QActionGroup>
-#include <QApplication>
-#include <QClipboard>
-#include <QCloseEvent>
-#include <QDesktopServices>
-#include <QDockWidget>
-#include <QFileDialog>
-#include <QHeaderView>
-#include <QInputDialog>
-#include <QLabel>
-#include <QMenuBar>
-#include <QMessageBox>
-#include <QSplitter>
-#include <QStatusBar>
-#include <QTime>
-
+#include <QtGui>
 
 MainWindow::MainWindow() : QMainWindow(),
 		m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_tipDialog(0),
 		m_showPgnSource(false)
 {
 	setObjectName("MainWindow");
-	/* Active database */
+
+	/* Create clipboard database */
 	m_databases.append(new DatabaseInfo);
 	m_currentDatabase = 0;
+	
 	m_tablebase = new Shredder;
 	connect(m_tablebase, SIGNAL(bestMove(Move, int)), this, SLOT(showTablebaseMove(Move, int)));
 
@@ -187,6 +174,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Status */
 	m_statusFilter = new QLabel(statusBar());
 	statusBar()->addPermanentWidget(m_statusFilter);
+	m_progressBar = new QProgressBar(statusBar());
 
 	/* Reset board - not earlier, as all widgets have to be created. */
 	slotGameChanged();
@@ -366,9 +354,21 @@ bool MainWindow::openDatabase(const QString& fname)
 
 	QTime time;
 	time.start();
-	m_databases.append(new DatabaseInfo(fname));
+	// Create database, connect progress bar and open file
+	DatabaseInfo* db = new DatabaseInfo(fname);
+	connect(db->database(), SIGNAL(fileOpened(const QString&)), SLOT(slotStatusFileOpened(const QString&)));
+	connect(db->database(), SIGNAL(fileClosed(const QString&)), SLOT(slotStatusFileClosed(const QString&)));
+	connect(db->database(), SIGNAL(fileProgress(int)), SLOT(slotStatusProgress(int)));
+
+	if (!db->open()) {
+		delete db;
+		return false;
+	}
+
+	m_databases.append(db);
 	m_currentDatabase = m_databases.count() - 1;
 	m_recentFiles.append(fname);
+	
 	updateMenuRecent();
 	updateMenuDatabases();
 	slotStatusMessage(tr("Database %1 opened successfully (%2 seconds).")
@@ -971,6 +971,27 @@ void MainWindow::slotStatusMessage(const QString& msg)
 {
 	statusBar()->showMessage(msg);
 }
+
+void MainWindow::slotStatusFileOpened(const QString& file)
+{
+	QFileInfo info(file);
+	statusBar()->showMessage(tr("Opening %1...").arg(info.fileName()));
+	statusBar()->addPermanentWidget(m_progressBar);
+	m_progressBar->setValue(0);
+	m_progressBar->show();
+
+}
+	
+void MainWindow::slotStatusFileClosed(const QString&)
+{
+	statusBar()->removeWidget(m_progressBar);
+}
+
+void MainWindow::slotStatusProgress(int progress)
+{
+	m_progressBar->setValue(progress);
+}
+
 
 void MainWindow::slotDatabaseChange()
 {

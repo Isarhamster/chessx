@@ -31,10 +31,16 @@ class DatabaseInfo
 {
 public:
 	enum {NewGame = -1};
-	/** Create information for open database */
-	DatabaseInfo(const QString& fname = QString());
+	/** Create information for clipboard database */
+	DatabaseInfo();
+	/** Create information for file database */
+	DatabaseInfo(const QString& filename);
 	/** Close database and free memory */
 	~DatabaseInfo();
+	/** Open database. */
+	bool open();
+	/** Close database. */
+	void close();
 	/** @return @p true if database is valid */
 	bool isValid() const  {return m_database;}
 	/** @return Database object */
@@ -60,6 +66,7 @@ private:
 	Database* m_database;
 	Filter* m_filter;
 	Game m_game;
+	QString m_filename;
 	int m_index;
 };
 

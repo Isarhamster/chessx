@@ -39,8 +39,9 @@
    Add isReadOnly()
 */
 
-class Database
+class Database : public QObject
 {
+	Q_OBJECT
 public:
 	/** Virtual destructor */
 	virtual ~Database();
@@ -84,6 +85,14 @@ public:
 	virtual int count() { return m_count; }
 	/** Returns true if the database has been modified */
 	virtual bool isModified() { return m_isModified; }
+
+signals:
+	/** Signal emitted when file is started. */
+	void fileOpened(const QString&);
+	/** Signal emitted when some progress is done. */
+	void fileProgress(int);
+	/** Signal emitted when file is closed. */
+	void fileClosed(const QString&);
 
 protected:
 	Index m_index;

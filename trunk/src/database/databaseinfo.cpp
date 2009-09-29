@@ -21,31 +21,50 @@
 #include "pgndatabase.h"
 #include "memorydatabase.h"
 
-DatabaseInfo::DatabaseInfo(const QString& fname)
+DatabaseInfo::DatabaseInfo()
 {
-	if (fname.isNull()) {
-		// Clipboard database
-		m_database = new MemoryDatabase();
-	} else {
-		QFile file(fname);
-		if (file.size() < 10000000) m_database = new MemoryDatabase();
-		else m_database = new PgnDatabase();
-		m_database->open(fname);
-	}
+	m_database = new MemoryDatabase;
 	m_filter = new Filter(m_database);
-	m_index = NewGame;
+	newGame();
+}
+
+DatabaseInfo::DatabaseInfo(const QString& fname) : m_filter(0), m_index(NewGame)
+{
+	m_filename = fname;
+	QFile file(fname);
+	if (file.size() < 10000000) 
+		m_database = new MemoryDatabase;
+	else m_database = new PgnDatabase;
+}
+
+bool DatabaseInfo::open()
+{
+	if (!m_database->open(m_filename)) {
+		close();
+		return false;
+	}
+	delete m_filter;
+	m_filter = new Filter(m_database);
 	if (!loadGame(0))
 		newGame();
+	return true;
+}
+
+void DatabaseInfo::close()
+{
+	delete m_database;
+	delete m_filter;
 }
 
 DatabaseInfo::~DatabaseInfo()
 {
-	delete m_filter;
-	delete m_database;
+	close();
 }
 
 bool DatabaseInfo::loadGame(int index, bool reload)
 {
+	if (!isValid())
+		return false;
 	if (!reload && m_index == index)
 		return true;
 	if (!m_database || index < 0 || index >= m_database->count())
@@ -66,7 +85,7 @@ void DatabaseInfo::newGame()
 
 bool DatabaseInfo::saveGame()
 {
-	if (m_database->isReadOnly())
+	if (!isValid() || m_database->isReadOnly())
 		return false;
 	if (m_index < m_database->count() && m_index >= 0)
 		return m_database->replace(m_index, m_game);
@@ -79,7 +98,9 @@ bool DatabaseInfo::saveGame()
 
 void DatabaseInfo::resetFilter()
 {
-	m_filter->resize(m_database->count());
-	m_filter->setAll(1);
+	if (m_filter) {
+		m_filter->resize(m_database->count());
+		m_filter->setAll(1);
+	}
 }
 

@@ -51,7 +51,11 @@ bool PgnDatabase::open(const QString& filename)
 
 bool PgnDatabase::parseFile()
 {
+	emit fileOpened(m_filename);
+	emit fileProgress(0);
 	m_index.setCacheEnabled(true);
+	int progress = 0;
+	qint64 size = m_file->size();
 	//indexing game positions in the file, game contents are ignored
 	while (!m_file->atEnd()) {
 		skipJunk();
@@ -60,8 +64,15 @@ bool PgnDatabase::parseFile()
 		addOffset();
 		parseTagsIntoIndex(); // This will parse the tags into memory
 		skipMoves();
+		int progress2 = m_file->pos() * 100 / size;
+		if (progress2 > progress) {
+			progress = progress2;
+			emit fileProgress(progress);
+		}
 	}
 	m_index.setCacheEnabled(false);
+	emit fileProgress(100);
+	emit fileClosed(m_filename);
 	return true;
 }
 

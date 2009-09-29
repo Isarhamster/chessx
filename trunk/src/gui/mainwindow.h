@@ -51,7 +51,7 @@ class QLabel;
 class QMenu;
 class QSplitter;
 class QTextBrowser;
-
+class QProgressBar;
 
 /**
 @defgroup GUI GUI - User interface components
@@ -210,6 +210,12 @@ public slots:
 	void slotMoveChanged();
 	/** Show temporary message. */
 	void slotStatusMessage(const QString& msg);
+	/** Show progress bar for open file. */
+	void slotStatusFileOpened(const QString& file);
+	/** Show progress bar for successfuly open file. */
+	void slotStatusFileClosed(const QString& file);
+	/** Show progress bar for open file. */
+	void slotStatusProgress(int progress);
 	/** Change database. */
 	void slotDatabaseChange();
 	/** Copy games between databases. */
@@ -262,6 +268,7 @@ private:
 	ChessBrowser* m_moveView;
 	ChessBrowser* m_gameView;
 	TableView* m_openingTree;
+	QProgressBar* m_progressBar;
 	/* Status */
 	QLabel* m_statusFilter;
 	/* Menus */
