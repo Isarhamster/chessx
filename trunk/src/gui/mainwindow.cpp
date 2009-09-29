@@ -976,6 +976,7 @@ void MainWindow::slotStatusFileOpened(const QString& file)
 {
 	QFileInfo info(file);
 	statusBar()->showMessage(tr("Opening %1...").arg(info.fileName()));
+	m_progressBar->setMaximumHeight(m_statusFilter->height());
 	statusBar()->insertPermanentWidget(0, m_progressBar);
 	m_progressBar->setValue(0);
 	m_progressBar->show();
