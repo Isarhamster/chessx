@@ -174,7 +174,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Status */
 	m_statusFilter = new QLabel(statusBar());
 	statusBar()->addPermanentWidget(m_statusFilter);
-	m_progressBar = new QProgressBar(statusBar());
+	m_progressBar = new QProgressBar;
 
 	/* Reset board - not earlier, as all widgets have to be created. */
 	slotGameChanged();
@@ -976,7 +976,7 @@ void MainWindow::slotStatusFileOpened(const QString& file)
 {
 	QFileInfo info(file);
 	statusBar()->showMessage(tr("Opening %1...").arg(info.fileName()));
-	statusBar()->addPermanentWidget(m_progressBar);
+	statusBar()->insertPermanentWidget(0, m_progressBar);
 	m_progressBar->setValue(0);
 	m_progressBar->show();
 
