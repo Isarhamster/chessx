@@ -34,8 +34,8 @@ HEADERS += board.h \
            tablebase.h \
            bitboard.h \
            openingtree.h \
- version.h \
- playerinfo.h
+           version.h \
+           playerinfo.h
 SOURCES += board.cpp \
            common.cpp \
            game.cpp \
