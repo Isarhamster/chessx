@@ -34,6 +34,7 @@
 
 class MemoryDatabase : public PgnDatabase
 {
+	Q_OBJECT
 public:
 	/** Default constructor */
 	MemoryDatabase();

@@ -32,6 +32,7 @@
 
 class PgnDatabase : public Database
 {
+	Q_OBJECT
 public:
 	/** Default constructor */
 	PgnDatabase();
