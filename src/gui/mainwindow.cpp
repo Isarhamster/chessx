@@ -501,6 +501,7 @@ void MainWindow::slotFileSave()
 void MainWindow::slotFileClose()
 {
 	if (m_currentDatabase) {// Don't remove Clipboard
+		delete m_databases[m_currentDatabase];
 		m_databases.removeAt(m_currentDatabase);
 		if (m_currentDatabase == m_databases.count())
 			m_currentDatabase--;
@@ -991,6 +992,7 @@ void MainWindow::slotStatusFileClosed(const QString&)
 void MainWindow::slotStatusProgress(int progress)
 {
 	m_progressBar->setValue(progress);
+	qApp->processEvents();
 }
 
 
