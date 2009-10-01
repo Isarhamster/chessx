@@ -78,7 +78,10 @@ void MainWindow::slotFileOpenRecent()
 
 void MainWindow::slotFileSave()
 {
-	if (m_currentDatabase && dynamic_cast<MemoryDatabase*>(database())) {
+	if (database()->isReadOnly())
+		MessageDialog::warning(this, tr("<html>The database <i>%1</i> is read-only and cannot be saved.</html>")
+				.arg(database()->name()));
+	else if (m_currentDatabase && dynamic_cast<MemoryDatabase*>(database())) {
 		startOperation(tr("Saving %1...").arg(database()->name()));
 		Output output(Output::Pgn);
 		connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
