@@ -343,27 +343,26 @@ bool MainWindow::openDatabase(const QString& fname)
 			return false;
 		}
 
-	QTime time;
-	time.start();
+
 	// Create database, connect progress bar and open file
 	DatabaseInfo* db = new DatabaseInfo(fname);
-	connect(db->database(), SIGNAL(fileOpened(const QString&)), SLOT(slotOperationStarted(const QString&)));
-	connect(db->database(), SIGNAL(fileClosed(const QString&)), SLOT(slotOperationFinished(const QString&)));
-	connect(db->database(), SIGNAL(fileProgress(int)), SLOT(slotOperationProgress(int)));
+	QString basefile = QFileInfo(fname).completeBaseName();
+	startOperation(tr("Opening %1...").arg(basefile));
+	connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
 
 	if (!db->open()) {
+		cancelOperation(tr("Cannot open file"));
 		delete db;
 		return false;
 	}
 
+	finishOperation(tr("%1 opened").arg(basefile));
 	m_databases.append(db);
 	m_currentDatabase = m_databases.count() - 1;
 	m_recentFiles.append(fname);
 	
 	updateMenuRecent();
 	updateMenuDatabases();
-	slotStatusMessage(tr("Database %1 opened successfully (%2 seconds).")
-			  .arg(fname.section('/', -1)).arg((time.elapsed() / 100 / 10.0)));
 	slotDatabaseChanged();
 	return true;
 }
@@ -608,3 +607,24 @@ bool MainWindow::confirmQuit()
 	return true;
 }
 
+void MainWindow::startOperation(const QString& msg)
+{
+	m_operationTime.start();
+	statusBar()->showMessage(msg);
+	m_progressBar->setMaximumHeight(m_statusFilter->height());
+	statusBar()->insertPermanentWidget(0, m_progressBar);
+	m_progressBar->setValue(0);
+	m_progressBar->show();
+}
+
+void MainWindow::finishOperation(const QString& msg)
+{
+	statusBar()->showMessage(msg + tr(" (%1 s.)").arg(m_operationTime.elapsed() / 100 / 10.0));
+	statusBar()->removeWidget(m_progressBar);
+}
+
+void MainWindow::cancelOperation(const QString& msg)
+{
+	statusBar()->showMessage(msg);
+	statusBar()->removeWidget(m_progressBar);
+}

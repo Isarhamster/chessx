@@ -100,9 +100,7 @@ bool MemoryDatabase::parseFile()
 {
 	//indexing game positions in the file, game contents are ignored
 	m_index.setCacheEnabled(true);
-	QString basefile = QFileInfo(filename()).fileName();
-	emit fileOpened(tr("Opening %1...").arg(basefile));
-	int progress = 0;
+	int percentDone = 0;
 	quint64 size = m_file->size();
 	while (!m_file->atEnd()) {
 		skipJunk();
@@ -117,14 +115,10 @@ bool MemoryDatabase::parseFile()
 		parseMoves(game);
 		m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2), m_count - 1);
 		m_games.append(game);
-		int progress2 = m_file->pos() * 100 / size;
-		if (progress2 > progress) {
-			progress = progress2;
-			emit fileProgress(progress);
-		}
+		int percentDone2 = m_file->pos() * 100 / size;
+		if (percentDone2 > percentDone)
+			emit progress((percentDone = percentDone2));
 	}
-	emit fileProgress(100);
-	emit fileClosed(tr("%1 opened.").arg(basefile));
 	m_index.setCacheEnabled(false);
 	m_isModified = false;
 	return true;

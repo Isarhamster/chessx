@@ -126,12 +126,8 @@ public:
 	static QMap<OutputType, QString>& getFormats();
 
 signals:
-	/** Operation started. */
-	void operationStarted(const QString&);
 	/** Operation progress. */
-	void operationProgress(int);
-	/** Operation finished. */
-	void operationFinished(const QString&);
+	void progress(int);
 private:
 	/* User definable settings */
 	OutputOptions m_options;

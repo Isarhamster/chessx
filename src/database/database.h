@@ -87,12 +87,8 @@ public:
 	virtual bool isModified() { return m_isModified; }
 
 signals:
-	/** Signal emitted when file is started. */
-	void fileOpened(const QString&);
 	/** Signal emitted when some progress is done. */
-	void fileProgress(int);
-	/** Signal emitted when file is closed. */
-	void fileClosed(const QString&);
+	void progress(int);
 
 protected:
 	Index m_index;

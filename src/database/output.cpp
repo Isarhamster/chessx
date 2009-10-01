@@ -420,56 +420,50 @@ QString Output::output(Game* game)
 
 void Output::output(QTextStream& out, Filter& filter)
 {
-	int progress = 0;
+	int percentDone = 0;
 	Game game;
 	for (int i = 0; i < filter.count(); ++i) {
 		filter.database()->loadGame(filter.indexToGame(i), game);
 		out << output(&game);
 		out << "\n\n";
-		int newprogress = (i + 1) * 100 / filter.count();
-		if (newprogress > progress)
-			emit operationProgress((progress = newprogress));
+		int percentDone2 = (i + 1) * 100 / filter.count();
+		if (percentDone2 > percentDone)
+			emit progress((percentDone = percentDone2));
 	}
 }
 
 void Output::output(QTextStream& out, Database& database)
 {
-	int progress = 0;
+	int percentDone = 0;
 	Game game;
 	for (int i = 0; i < database.count(); ++i) {
 		database.loadGame(i, game);
 		out << output(&game);
 		out << "\n\n";
-		int newprogress = (i + 1) * 100 / database.count();
-		if (newprogress > progress)
-			emit operationProgress((progress = newprogress));
+		int percentDone2 = (i + 1) * 100 / database.count();
+		if (percentDone2 > percentDone)
+			emit progress((percentDone = percentDone2));
 	}
 }
 
 void Output::output(const QString& filename, Filter& filter)
 {
-	QString basename = QFileInfo(filename).fileName();
-	emit operationStarted(tr("Saving %1...").arg(basename));
 	QFile f(filename);
 	if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&f);
 	output(out, filter);
 	f.close();
-	emit operationFinished(tr("%1 saved.").arg(basename));
 }
 
 void Output::output(const QString& filename, Database& database)
 {
-	QString basename = QFileInfo(filename).fileName();
-	emit operationStarted(tr("Saving %1...").arg(basename));
 	QFile f(filename);
 	if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&f);
 	output(out, database);
 	f.close();
-	emit operationFinished(tr("%1 saved.").arg(basename));
 }
 
 void Output::setTemplateFile(const QString& filename)

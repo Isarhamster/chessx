@@ -200,10 +200,6 @@ public slots:
 	/** Show temporary message. */
 	void slotStatusMessage(const QString& msg);
 	/** Show progress bar for open file. */
-	void slotOperationStarted(const QString& msg);
-	/** Show progress bar for successfuly open file. */
-	void slotOperationFinished(const QString& msg);
-	/** Show progress bar for open file. */
 	void slotOperationProgress(int progress);
 	/** Change database. */
 	void slotDatabaseChange();
@@ -239,6 +235,13 @@ private:
 	void setupActions();
 	/** Confirm quitting and save modified databases. */
 	bool confirmQuit();
+	/** Start operation with progress reporting. Shows progress bar. */
+	void startOperation(const QString& msg);
+	/** Finish operation with progress reporting. Hides progress bar. */
+	void finishOperation(const QString& msg);
+	/** Cancel operation with progress reporting. Hides progress bar. */
+	void cancelOperation(const QString& msg);
+
 
 	enum
 	{
@@ -278,6 +281,7 @@ private:
 	EcoThread* m_ecothread;
 	AnalysisWidget* m_analysis;
 	QTimer* m_timer;
+	QTime m_operationTime;
 
 	struct PendingLoad {
 		Database* database;
