@@ -41,7 +41,9 @@ public:
 	/** Destructor */
 	~MemoryDatabase();
 	/** Returns whether the database is read-only or not */
-	bool isReadOnly() { return false; }
+	bool isReadOnly() const { return false; }
+	/** @return whether the database was modified. */
+	bool isModified() const	{ return m_isModified; }
 	/** Adds a game to the database */
 	bool appendGame(Game& game);
 	/** Removes a game from the database */
@@ -61,6 +63,7 @@ public:
 private:
 	QVector <Game*> m_games;
 	bool parseFile();
+	bool m_isModified;
 };
 
 #endif	// __MEMORYDATABASE_H__

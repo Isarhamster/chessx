@@ -43,6 +43,8 @@ class Database : public QObject
 {
 	Q_OBJECT
 public:
+	/** Standard constructor. */
+	Database();
 	/** Virtual destructor */
 	virtual ~Database();
 
@@ -58,7 +60,7 @@ public:
 	/** Closes the database */
 	virtual void close() = 0;
 	/** Returns whether the database is read-only or not */
-	virtual bool isReadOnly() = 0;
+	virtual bool isReadOnly() const {return true;}
 	/** Removes all games from the database, return true if successful */
 	virtual bool clear() { return false; }
 
@@ -83,8 +85,8 @@ public:
 	Index* index();
 	/** Returns the number of games in the database */
 	virtual int count() { return m_count; }
-	/** Returns true if the database has been modified */
-	virtual bool isModified() { return m_isModified; }
+	/** @return true if the database has been modified. By default database is read-only. */
+	virtual bool isModified() const { return false; }
 
 signals:
 	/** Signal emitted when some progress is done. */
@@ -93,7 +95,6 @@ signals:
 protected:
 	Index m_index;
 	int m_count;
-	bool m_isModified;
 
 };
 
