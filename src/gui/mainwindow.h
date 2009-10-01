@@ -18,11 +18,7 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
-#include <QTimer>
-#include <QList>
-#include <QMainWindow>
-#include <QUrl>
-#include <QAbstractItemView>
+#include <QtGui>
 
 #include "common.h"
 #include "move.h"
@@ -45,13 +41,6 @@ class Board;
 class ChessBrowser;
 class TableView;
 
-class QActionGroup;
-class QCloseEvent;
-class QLabel;
-class QMenu;
-class QSplitter;
-class QTextBrowser;
-class QProgressBar;
 
 /**
 @defgroup GUI GUI - User interface components
@@ -211,11 +200,11 @@ public slots:
 	/** Show temporary message. */
 	void slotStatusMessage(const QString& msg);
 	/** Show progress bar for open file. */
-	void slotStatusFileOpened(const QString& file);
+	void slotOperationStarted(const QString& msg);
 	/** Show progress bar for successfuly open file. */
-	void slotStatusFileClosed(const QString& file);
+	void slotOperationFinished(const QString& msg);
 	/** Show progress bar for open file. */
-	void slotStatusProgress(int progress);
+	void slotOperationProgress(int progress);
 	/** Change database. */
 	void slotDatabaseChange();
 	/** Copy games between databases. */

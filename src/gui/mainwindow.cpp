@@ -35,8 +35,6 @@
 
 #include <time.h>
 
-#include <QtGui>
-
 MainWindow::MainWindow() : QMainWindow(),
 		m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_tipDialog(0),
 		m_showPgnSource(false)
@@ -349,9 +347,9 @@ bool MainWindow::openDatabase(const QString& fname)
 	time.start();
 	// Create database, connect progress bar and open file
 	DatabaseInfo* db = new DatabaseInfo(fname);
-	connect(db->database(), SIGNAL(fileOpened(const QString&)), SLOT(slotStatusFileOpened(const QString&)));
-	connect(db->database(), SIGNAL(fileClosed(const QString&)), SLOT(slotStatusFileClosed(const QString&)));
-	connect(db->database(), SIGNAL(fileProgress(int)), SLOT(slotStatusProgress(int)));
+	connect(db->database(), SIGNAL(fileOpened(const QString&)), SLOT(slotOperationStarted(const QString&)));
+	connect(db->database(), SIGNAL(fileClosed(const QString&)), SLOT(slotOperationFinished(const QString&)));
+	connect(db->database(), SIGNAL(fileProgress(int)), SLOT(slotOperationProgress(int)));
 
 	if (!db->open()) {
 		delete db;

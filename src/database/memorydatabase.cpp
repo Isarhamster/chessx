@@ -15,6 +15,7 @@
  ***************************************************************************/
 
 #include <QtDebug>
+#include <QFileInfo>
 #include "memorydatabase.h"
 
 MemoryDatabase::MemoryDatabase()
@@ -97,10 +98,10 @@ bool MemoryDatabase::loadGame(int index, Game& game)
 }
 bool MemoryDatabase::parseFile()
 {
-	m_index.setCacheEnabled(true);
 	//indexing game positions in the file, game contents are ignored
-	emit fileOpened(filename());
-	emit fileProgress(0);
+	m_index.setCacheEnabled(true);
+	QString basefile = QFileInfo(filename()).fileName();
+	emit fileOpened(tr("Opening %1...").arg(basefile));
 	int progress = 0;
 	quint64 size = m_file->size();
 	while (!m_file->atEnd()) {
@@ -123,7 +124,7 @@ bool MemoryDatabase::parseFile()
 		}
 	}
 	emit fileProgress(100);
-	emit fileClosed(filename());
+	emit fileClosed(tr("%1 opened.").arg(basefile));
 	m_index.setCacheEnabled(false);
 	m_isModified = false;
 	return true;

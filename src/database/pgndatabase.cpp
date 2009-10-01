@@ -51,8 +51,8 @@ bool PgnDatabase::open(const QString& filename)
 
 bool PgnDatabase::parseFile()
 {
-	emit fileOpened(m_filename);
-	emit fileProgress(0);
+	QString basefile = QFileInfo(filename()).fileName();
+	emit fileOpened(tr("Opening %1...").arg(basefile));
 	m_index.setCacheEnabled(true);
 	int progress = 0;
 	qint64 size = m_file->size();
@@ -72,7 +72,7 @@ bool PgnDatabase::parseFile()
 	}
 	m_index.setCacheEnabled(false);
 	emit fileProgress(100);
-	emit fileClosed(m_filename);
+	emit fileClosed(tr("%1 opened.").arg(basefile));
 	return true;
 }
 

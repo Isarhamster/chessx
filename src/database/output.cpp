@@ -1,8 +1,14 @@
+/***************************************************************************
+ *   (C) 2006-2007 Marius Roets <roets.marius@gmail.com>                   *
+ *   (C) 2007-2009 by Michal Rudolf mrudolf@kdewebdev.org                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ ***************************************************************************/
+
 #include "output.h"
-#include "qregexp.h"
-#include <QFile>
-#include <QTextStream>
-#include <QtDebug>
 #include "settings.h"
 
 QMap <Output::OutputType, QString> Output::m_outputMap;
@@ -414,42 +420,56 @@ QString Output::output(Game* game)
 
 void Output::output(QTextStream& out, Filter& filter)
 {
+	int progress = 0;
 	Game game;
 	for (int i = 0; i < filter.count(); ++i) {
 		filter.database()->loadGame(filter.indexToGame(i), game);
 		out << output(&game);
 		out << "\n\n";
+		int newprogress = (i + 1) * 100 / filter.count();
+		if (newprogress > progress)
+			emit operationProgress((progress = newprogress));
 	}
 }
 
 void Output::output(QTextStream& out, Database& database)
 {
+	int progress = 0;
 	Game game;
 	for (int i = 0; i < database.count(); ++i) {
 		database.loadGame(i, game);
 		out << output(&game);
 		out << "\n\n";
+		int newprogress = (i + 1) * 100 / database.count();
+		if (newprogress > progress)
+			emit operationProgress((progress = newprogress));
 	}
 }
 
 void Output::output(const QString& filename, Filter& filter)
 {
+	QString basename = QFileInfo(filename).fileName();
+	emit operationStarted(tr("Saving %1...").arg(basename));
 	QFile f(filename);
 	if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&f);
 	output(out, filter);
 	f.close();
+	emit operationFinished(tr("%1 saved.").arg(basename));
 }
 
 void Output::output(const QString& filename, Database& database)
 {
+	QString basename = QFileInfo(filename).fileName();
+	emit operationStarted(tr("Saving %1...").arg(basename));
 	QFile f(filename);
 	if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&f);
 	output(out, database);
 	f.close();
+	emit operationFinished(tr("%1 saved.").arg(basename));
 }
 
 void Output::setTemplateFile(const QString& filename)
