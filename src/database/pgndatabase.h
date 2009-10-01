@@ -46,8 +46,6 @@ public:
 	virtual QString filename() const;
 	/** Closes the database */
 	virtual void close();
-	/** Returns whether the database is read-only or not */
-	virtual bool isReadOnly() { return true; }
 
 	//game retrieval & storage
 	/** Loads a game from the given position, returns true if successful */

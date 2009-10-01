@@ -18,9 +18,8 @@
 #include <QFileInfo>
 #include "memorydatabase.h"
 
-MemoryDatabase::MemoryDatabase()
+MemoryDatabase::MemoryDatabase() : m_isModified(false)
 {
-	m_isModified = false;
 }
 
 MemoryDatabase::~MemoryDatabase()
