@@ -31,6 +31,7 @@ HEADERS += mainwindow.h \
 	copydialog.h \
 	messagedialog.h
 SOURCES += mainwindow.cpp \
+	mainwindowactions.cpp \
 	playerdialog.cpp \
 	colorlist.cpp \
 	preferences.cpp \
