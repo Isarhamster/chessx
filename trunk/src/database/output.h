@@ -1,19 +1,28 @@
+/***************************************************************************
+ *   (C) 2006-2007 Marius Roets <roets.marius@gmail.com>                   *
+ *   (C) 2007-2009 by Michal Rudolf mrudolf@kdewebdev.org                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ ***************************************************************************/
 
 #ifndef __OUTPUT_H__
 #define __OUTPUT_H__
 
-#include <QString>
-#include <QMap>
 #include "game.h"
 #include "outputoptions.h"
 #include "database.h"
 #include "filter.h"
 
-#define TEMPLATE_DIR "templates"
-#define DEFAULT_HTML_TEMPLATE "html-default.template"
-#define DEFAULT_NOTATION_TEMPLATE "notation-default.template"
-#define DEFAULT_LATEX_TEMPLATE "latex-default.template"
-#define DEFAULT_PGN_TEMPLATE "pgn-default.template"
+#include <QtCore>
+
+const QString TEMPLATE_DIR = "templates";
+const QString DEFAULT_HTML_TEMPLATE = "html-default.template";
+const QString DEFAULT_NOTATION_TEMPLATE = "notation-default.template";
+const QString DEFAULT_LATEX_TEMPLATE = "latex-default.template";
+const QString DEFAULT_PGN_TEMPLATE = "pgn-default.template";
 
 /** @ingroup Core
 The Output class converts game to various formats.
@@ -28,8 +37,10 @@ o.output(&game);
 @todo
 Should output all tags, not just the most important ones.
 */
-class Output
+
+class Output : public QObject
 {
+	Q_OBJECT
 public:
 	/** The different types of markup that can be used.
 	 * The settings for each is set in the template file.
@@ -97,16 +108,6 @@ public:
 	 * @param game A pointer to the game object being output */
 	QString output(Game* game);
 	/** Create the output for the given filter
-	 * @param out A textstream that will be used to write the results to
-	 * @param filter A Filter object. All games in the filter will be output, one
-	 *               after the other, using the output(Game* game) method */
-	void output(QTextStream& out, Filter& filter);
-	/** Create the output for the given database
-	 * @param out A textstream that will be used to write the results to
-	 * @param database A pointer to a database object. All games in the database will be output, one
-	 *               after the other, using the output(Game* game) method */
-	void output(QTextStream& out, Database& database);
-	/** Create the output for the given filter
 	 * @param filename The filename that the output will be written to.
 	 * @param filter A Filter object. All games in the filter will be output, one
 	 *               after the other, using the output(Game* game) method */
@@ -124,6 +125,13 @@ public:
 	/** Static list of objects. */
 	static QMap<OutputType, QString>& getFormats();
 
+signals:
+	/** Operation started. */
+	void operationStarted(const QString&);
+	/** Operation progress. */
+	void operationProgress(int);
+	/** Operation finished. */
+	void operationFinished(const QString&);
 private:
 	/* User definable settings */
 	OutputOptions m_options;
@@ -193,6 +201,17 @@ private:
 	void initialize();
 	/** Reload default tag settings */
 	void reset();
+
+	/** Create the output for the given filter
+	 * @param out A textstream that will be used to write the results to
+	 * @param filter A Filter object. All games in the filter will be output, one
+	 *               after the other, using the output(Game* game) method */
+	void output(QTextStream& out, Filter& filter);
+	/** Create the output for the given database
+	 * @param out A textstream that will be used to write the results to
+	 * @param database A pointer to a database object. All games in the database will be output, one
+	 *               after the other, using the output(Game* game) method */
+	void output(QTextStream& out, Database& database);
 
 	/* Writing Methods */
 	/** Writes a single move including nag and annotation */

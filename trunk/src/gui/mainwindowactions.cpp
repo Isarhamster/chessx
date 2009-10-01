@@ -80,9 +80,10 @@ void MainWindow::slotFileSave()
 {
 	if (m_currentDatabase && dynamic_cast<MemoryDatabase*>(database())) {
 		Output output(Output::Pgn);
+		connect(&output, SIGNAL(operationStarted(const QString&)), SLOT(slotOperationStarted(const QString&)));
+		connect(&output, SIGNAL(operationFinished(const QString&)), SLOT(slotOperationFinished(const QString&)));
+		connect(&output, SIGNAL(operationProgress(int)), SLOT(slotOperationProgress(int)));
 		output.output(database()->filename(), *database());
-		slotStatusMessage(tr("Database %1 successfully saved.")
-				  .arg(database()->filename().section('/', -1)));
 	}
 }
 
@@ -542,23 +543,22 @@ void MainWindow::slotStatusMessage(const QString& msg)
 	statusBar()->showMessage(msg);
 }
 
-void MainWindow::slotStatusFileOpened(const QString& file)
+void MainWindow::slotOperationStarted(const QString& msg)
 {
-	QFileInfo info(file);
-	statusBar()->showMessage(tr("Opening %1...").arg(info.fileName()));
+	statusBar()->showMessage(msg);
 	m_progressBar->setMaximumHeight(m_statusFilter->height());
 	statusBar()->insertPermanentWidget(0, m_progressBar);
 	m_progressBar->setValue(0);
 	m_progressBar->show();
-
 }
 	
-void MainWindow::slotStatusFileClosed(const QString&)
+void MainWindow::slotOperationFinished(const QString& msg)
 {
+	statusBar()->showMessage(msg);
 	statusBar()->removeWidget(m_progressBar);
 }
 
-void MainWindow::slotStatusProgress(int progress)
+void MainWindow::slotOperationProgress(int progress)
 {
 	m_progressBar->setValue(progress);
 	qApp->processEvents();
