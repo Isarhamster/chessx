@@ -599,11 +599,13 @@ bool MainWindow::confirmQuit()
 					+ '\n' + modified + tr("Save them?"));
 		if (response == MessageDialog::Cancel)
 			return false;
-		Output output(Output::Pgn);
-		for (int i = 1; i < m_databases.size(); i++)
-			if (m_databases[i]->database()->isModified())
-				output.output(m_databases[i]->database()->filename(), 
-						*(m_databases[i]->database()));
+		if (response == MessageDialog::Yes) {
+			Output output(Output::Pgn);
+			for (int i = 1; i < m_databases.size(); i++)
+				if (m_databases[i]->database()->isModified())
+					output.output(m_databases[i]->database()->filename(), 
+							*(m_databases[i]->database()));
+		}
 	}
 	return true;
 }
