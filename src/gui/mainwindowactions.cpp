@@ -463,6 +463,10 @@ void MainWindow::slotGameModify(int action, int move)
 		game().removeVariation(game().variationNumber());
 		break;
 	}
+	case ChessBrowser::PromoteVariation: {
+		game().promoteVariation(move);
+		break;
+	}
 	case ChessBrowser::EditPrecomment:
 		if (!gameEditComment(Output::Precomment))
 			return;

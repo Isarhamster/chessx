@@ -30,7 +30,7 @@ class ChessBrowser : public QTextBrowser
 {
 	Q_OBJECT
 public:
-	enum Action {NoAction, RemovePreviousMoves, RemoveNextMoves, RemoveVariation, AddNag,
+	enum Action {NoAction, RemovePreviousMoves, RemoveNextMoves, RemoveVariation, PromoteVariation, AddNag,
 		EditPrecomment, EditComment};
 
 	/** Constructs new instance with parent @p parent. If @p showGameMenu is false, game menu is never shown. */
@@ -60,12 +60,12 @@ protected:
 	void setupMenu(bool setupGameMenu);
 virtual QAction* createAction(const QString& name, int action);
 private:
-	/** Calculates if 'remove current variation' menu item should be disabled. 
-		It is called just before showing context game menu. */
-	bool removeVariationDisabled() const;
+	/** Calculates if we are in the variation. */
+	bool isVariation() const;
 
 	QAction* m_smallfont;
 	QAction* m_removeVariation;
+	QAction* m_promoteVariation;
 	QMenu* m_gameMenu;
 	QMenu* m_mainMenu;
 	int m_currentMove;
