@@ -89,6 +89,7 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 
 		m_gameMenu->addAction(createAction(tr("Edit preceeding comment..."), EditPrecomment));
 		m_gameMenu->addAction(createAction(tr("Edit comment..."), EditComment));
+		m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to mainline"), PromoteVariation)));
 
 		QMenu* remove = m_gameMenu->addMenu(tr("Remove"));
 		remove->addAction(createAction(tr("Previous moves"), RemovePreviousMoves));
@@ -113,7 +114,8 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
 		QString link = anchorAt(pos);
 		if (!link.isEmpty()) {
 			m_currentMove = link.section(':', 1).toInt();
-			m_removeVariation->setDisabled(removeVariationDisabled());
+			m_promoteVariation->setEnabled(isVariation());
+			m_removeVariation->setEnabled(isVariation());
 			m_gameMenu->exec(mapToGlobal(pos));
 			return;
 		} 
@@ -141,9 +143,7 @@ void ChessBrowser::slotAction(QAction* action)
 		emit actionRequested(action->data().toInt(), m_currentMove);
 }
 
-bool ChessBrowser::removeVariationDisabled() const
+bool ChessBrowser::isVariation() const
 {
-	if (!m_databaseInfo)
-		return true;
-	return m_databaseInfo->currentGame().isMainline(m_currentMove);
+	return m_databaseInfo && !m_databaseInfo->currentGame().isMainline(m_currentMove);
 }
