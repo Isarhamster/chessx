@@ -53,6 +53,7 @@ The OpeningTree class is a class to calculate opening tree for given position. *
 
 class OpeningTree : public QAbstractTableModel
 {
+	Q_OBJECT
 public:
 	/** Empty constructor. */
 	OpeningTree();
@@ -78,6 +79,8 @@ public:
 	virtual void sort();
 	/** Move leading to given entry. */
 	QString move(const QModelIndex& index) const;
+signals:
+	void progress(int);
 private:
 	QList<MoveData> m_moves;
 	unsigned m_games;
