@@ -120,15 +120,17 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Opening Tree */
 	dock = new QDockWidget(tr("Opening Tree"), this);
 	dock->setObjectName("OpeningTreeDock");
+	OpeningTree* openingTree = new OpeningTree;
 	m_openingTree = new TableView(dock);
 	m_openingTree->setObjectName("OpeningTree");
 	m_openingTree->setMinimumSize(150, 100);
 	m_openingTree->setSortingEnabled(true);
-	m_openingTree->setModel(new OpeningTree);
+	m_openingTree->setModel(openingTree);
 	m_openingTree->sortByColumn(1, Qt::DescendingOrder);
 	m_openingTree->slotReconfigure();
 	connect(m_openingTree, SIGNAL(clicked(const QModelIndex&)),
 		SLOT(slotSearchTreeMove(const QModelIndex&)));
+	connect(openingTree, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
 	dock->setWidget(m_openingTree);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
 	m_menuView->addAction(dock->toggleViewAction());

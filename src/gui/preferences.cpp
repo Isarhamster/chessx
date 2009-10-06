@@ -261,6 +261,9 @@ void PreferencesDialog::restoreSettings()
 	}
 	AppSettings->endGroup();
 
+	// Read Advanced settings
+	ui.limitSpin->setValue(AppSettings->value("/General/EditLimit", 10).toInt()); 
+
 	ui.engineList->insertItems(0, lnames);
 }
 
@@ -304,6 +307,8 @@ void PreferencesDialog::saveSettings()
 		else	AppSettings->setValue(key + "/Protocol", "UCI");
 	}
 	AppSettings->endGroup();
+
+	AppSettings->setValue("/General/EditLimit", ui.limitSpin->value());
 
 }
 

@@ -650,12 +650,11 @@ void MainWindow::slotSearchTree()
 {
 	if (!m_openingTree->isVisible())
 		return;
-	QTime time;
-	time.start();
+	startOperation(tr("Updating tree..."));
 	dynamic_cast<OpeningTree*>(m_openingTree->model())->update(*databaseInfo()->filter(), m_boardView->board());
 	m_gameList->updateFilter();
 	slotFilterChanged();
-	slotStatusMessage(tr("Tree updated (%1 s.)").arg(time.elapsed() / 100 / 10.0));
+	finishOperation(tr("Tree updated"));
 }
 
 void MainWindow::slotSearchTreeMove(const QModelIndex& index)

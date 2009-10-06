@@ -20,6 +20,7 @@
 #include "game.h"
 #include "pgndatabase.h"
 #include "memorydatabase.h"
+#include "settings.h"
 
 DatabaseInfo::DatabaseInfo()
 {
@@ -32,7 +33,7 @@ DatabaseInfo::DatabaseInfo(const QString& fname) : m_filter(0), m_index(NewGame)
 {
 	m_filename = fname;
 	QFile file(fname);
-	if (file.size() < 10000000) 
+	if (file.size() < 1024 * 1024 * AppSettings->value("/General/EditLimit", 10).toInt()) 
 		m_database = new MemoryDatabase;
 	else m_database = new PgnDatabase;
 }
