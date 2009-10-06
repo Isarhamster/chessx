@@ -77,7 +77,6 @@ CONFIG += staticlib
 TEMPLATE = lib
 QT += xml
 
-
 fastbits {
     DEFINES += FASTBITS
 }
