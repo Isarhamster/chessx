@@ -211,7 +211,7 @@ public :
 
 	// Searching
 	/** Search game to see if given position exists, if it does return move id */
-	MoveId findPosition(const BitBoard& position);
+	MoveId findPosition(const Board& position);
 
 	/** @return ECO code for the game */
 	QString ecoClassify();

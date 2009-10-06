@@ -746,15 +746,15 @@ void Game::dumpAllMoveNodes()
 	qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags;
 }
 
-int Game::findPosition(const BitBoard& position)
+int Game::findPosition(const Board& position)
 {
 	moveToStart();
 
 	int current = m_currentNode;
-	BitBoard currentBoard(m_currentBoard);
+	Board currentBoard(m_currentBoard);
 
 	for (;;) {
-		if (currentBoard.positionIsSame(position))
+		if (currentBoard == position && currentBoard.positionIsSame(position))
 			return current;
 
 		current = m_moveNodes[current].nextNode;
