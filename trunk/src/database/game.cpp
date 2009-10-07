@@ -167,31 +167,31 @@ MoveId Game::addVariation(const QString& sanMove, const QString& annotation, Nag
 
 bool Game::promoteVariation(MoveId variation)
 {
-	MoveId currentNode = m_currentNode;
-	moveToId(m_moveNodes[variation].parentNode);
-	MoveId demotedVariationParentNode = m_moveNodes[m_currentNode].parentNode;
-	MoveId promotedVariationParentNode = m_moveNodes[variation].parentNode;
+	if (isMainline(variation))
+		return false;
 
-	while (forward()) {
-		m_moveNodes[m_currentNode].parentNode = promotedVariationParentNode;
-	}
-	moveToId(variation);
-	m_moveNodes[m_currentNode].parentNode = demotedVariationParentNode;
-	while (forward()) {
-		m_moveNodes[m_currentNode].parentNode = demotedVariationParentNode;
-	}
+	MoveId currentNode = m_currentNode;	// Save current move
 
-	// updating promoted variation parent node
-	MoveNode& variationParent = m_moveNodes[promotedVariationParentNode];
-	if (variationParent.nextNode != NO_MOVE) {
-		QList<MoveId>& vars = variationParent.variations;
-		for (int i = 0; i < vars.size(); ++i)
-			if (vars.at(i) == variation)
-				vars[i] = variationParent.nextNode;
-	}
-	variationParent.nextNode = variation;
+	// Find first move of the variation
+	while (!atLineStart(variation))
+		variation = m_moveNodes[variation].previousNode;
+	MoveId parent = m_moveNodes[variation].parentNode;
 
-	moveToId(currentNode);
+	// Link old main line to parent 
+	for (MoveId demoted = m_moveNodes[parent].nextNode; demoted != NO_MOVE;
+			demoted = m_moveNodes[demoted].nextNode)
+		m_moveNodes[demoted].parentNode = parent;
+
+	// Link new main line to parent's parent
+	for (MoveId promoted = variation; promoted != NO_MOVE; 
+			promoted = m_moveNodes[promoted].nextNode)
+		m_moveNodes[promoted].parentNode = m_moveNodes[parent].parentNode;
+
+	// Swap main line and the variation
+	int index = m_moveNodes[parent].variations.indexOf(variation);
+	qSwap(m_moveNodes[parent].nextNode, m_moveNodes[parent].variations[index]);
+
+	moveToId(currentNode);	// Restore current move
 	return true;
 }
 
