@@ -178,14 +178,9 @@ bool Game::promoteVariation(MoveId variation)
 	MoveId parent = m_moveNodes[variation].parentNode;
 
 	// Link old main line to parent 
-	for (MoveId demoted = m_moveNodes[parent].nextNode; demoted != NO_MOVE;
-			demoted = m_moveNodes[demoted].nextNode)
-		m_moveNodes[demoted].parentNode = parent;
-
+	reparentVariation(m_moveNodes[parent].nextNode, parent);
 	// Link new main line to parent's parent
-	for (MoveId promoted = variation; promoted != NO_MOVE; 
-			promoted = m_moveNodes[promoted].nextNode)
-		m_moveNodes[promoted].parentNode = m_moveNodes[parent].parentNode;
+	reparentVariation(variation, m_moveNodes[parent].parentNode);
 
 	// Swap main line and the variation
 	int index = m_moveNodes[parent].variations.indexOf(variation);
@@ -830,3 +825,12 @@ QString Game::ecoClassify()
 
 	return QString();
 }
+
+
+void Game::reparentVariation(MoveId variation, MoveId parent)
+{
+	for (MoveId node = variation; node != NO_MOVE; node = m_moveNodes[node].nextNode)
+		m_moveNodes[node].parentNode = parent;
+}
+
+
