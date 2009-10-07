@@ -267,6 +267,8 @@ private:
 
 	/** Checks if a moveId is valid, returns the moveId if it is, 0 if not */
 	MoveId nodeValid(MoveId moveId = CURRENT_MOVE) const;
+	/** Change parent of each move of a variation. */
+	void reparentVariation(MoveId variation, MoveId parent);
 
 	//eco data
 	static QMap<quint64, QString> m_ecoPositions;
