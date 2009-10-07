@@ -213,13 +213,20 @@ void Game::truncateVariation(Position position)
 		removeNode(node);
 	}
 	else if (position == BeforeMove && m_currentNode != 0) {
+		MoveId current = m_currentNode;
 		MoveNode firstNode;
 		firstNode.nextNode = m_currentNode;
 		firstNode.ply = m_moveNodes[m_currentNode].ply - 1;
+		firstNode.variations = m_moveNodes[m_moveNodes[m_currentNode].previousNode].variations;
+		foreach(MoveId var, firstNode.variations) {
+			reparentVariation(var, 0);
+			m_moveNodes[var].previousNode = 0;
+		}
 		m_moveNodes[0] = firstNode;
 		m_moveNodes[m_currentNode].previousNode = 0;
 		backward();
 		m_startingBoard = m_currentBoard;
+		moveToId(current);
 	}
 	compact();
 }
