@@ -87,15 +87,13 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 		m_gameMenu = new QMenu(this);
 		connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 
-		m_gameMenu->addAction(createAction(tr("Edit preceeding comment..."), EditPrecomment));
-		m_gameMenu->addAction(createAction(tr("Edit comment..."), EditComment));
-		m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to mainline"), PromoteVariation)));
-
-		QMenu* remove = m_gameMenu->addMenu(tr("Remove"));
-		remove->addAction(createAction(tr("Previous moves"), RemovePreviousMoves));
-		remove->addAction(createAction(tr("Next moves"), RemoveNextMoves));
-		m_removeVariation = createAction(tr("Current variation"), RemoveVariation);
-		remove->addAction(m_removeVariation);
+		m_gameMenu->addAction((m_startComment = createAction(tr("Add start comment..."), EditPrecomment)));
+		m_gameMenu->addAction((m_addComment = createAction(tr("Add comment..."), EditComment)));
+		m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to main line"), PromoteVariation)));
+		m_gameMenu->addSeparator();
+		m_gameMenu->addAction((m_removeVariation = createAction(tr("Remove variation"), RemoveVariation)));
+		m_gameMenu->addAction((m_removePrevious = createAction(tr("Remove previous moves"), RemovePreviousMoves)));
+		m_gameMenu->addAction((m_removeNext = createAction(tr("Remove next moves"), RemoveNextMoves)));
 	}
 	
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
@@ -110,18 +108,32 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 
 void ChessBrowser::slotContextMenu(const QPoint& pos)
 {
-	if (m_gameMenu) {
-		QString link = anchorAt(pos);
-		if (!link.isEmpty()) {
-			m_currentMove = link.section(':', 1).toInt();
-			m_promoteVariation->setEnabled(isVariation());
-			m_removeVariation->setEnabled(isVariation());
-			m_gameMenu->exec(mapToGlobal(pos));
-			return;
-		} 
+	// Handle non-game browser
+	if (!m_gameMenu) {
+		m_mainMenu->exec(mapToGlobal(pos));
+		return;
 	}
 	
-	m_mainMenu->exec(mapToGlobal(pos));
+	// Handle game browser
+	if (!m_databaseInfo)
+		return;
+	QString link = anchorAt(pos);
+	if (link.isEmpty())
+		return;
+
+	m_currentMove = link.section(':', 1).toInt();
+	bool isVariation = !m_databaseInfo->currentGame().isMainline(m_currentMove);
+	bool atLineStart = m_databaseInfo->currentGame().atLineStart(m_currentMove);
+	bool hasComment = !m_databaseInfo->currentGame().annotation(m_currentMove).isEmpty();
+	bool hasPrecomment = !m_databaseInfo->currentGame().annotation(m_currentMove, 
+			Game::BeforeMove).isEmpty();
+	bool atLineEnd = m_databaseInfo->currentGame().atLineEnd(m_currentMove);
+	m_startComment->setVisible(atLineStart && !hasPrecomment);
+	m_addComment->setVisible(!hasComment);
+	m_promoteVariation->setVisible(isVariation);
+	m_removeVariation->setVisible(isVariation);
+	m_removeNext->setVisible(!atLineEnd);
+	m_gameMenu->exec(mapToGlobal(pos));
 }
 
 void ChessBrowser::slotDatabaseChanged(DatabaseInfo* dbInfo)
@@ -143,7 +155,3 @@ void ChessBrowser::slotAction(QAction* action)
 		emit actionRequested(action->data().toInt(), m_currentMove);
 }
 
-bool ChessBrowser::isVariation() const
-{
-	return m_databaseInfo && !m_databaseInfo->currentGame().isMainline(m_currentMove);
-}

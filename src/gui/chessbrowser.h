@@ -60,12 +60,14 @@ protected:
 	void setupMenu(bool setupGameMenu);
 virtual QAction* createAction(const QString& name, int action);
 private:
-	/** Calculates if we are in the variation. */
-	bool isVariation() const;
 
 	QAction* m_smallfont;
+	QAction* m_startComment;
+	QAction* m_addComment;
 	QAction* m_removeVariation;
 	QAction* m_promoteVariation;
+	QAction* m_removePrevious;
+	QAction* m_removeNext;
 	QMenu* m_gameMenu;
 	QMenu* m_mainMenu;
 	int m_currentMove;
