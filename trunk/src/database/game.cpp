@@ -274,7 +274,7 @@ bool Game::atLineStart(MoveId moveId) const
 	if (node == NO_MOVE) 
 		return false;
 	return (m_moveNodes[node].previousNode == m_moveNodes[node].parentNode)
-		|| m_moveNodes[node].previousNode == NO_MOVE;
+		|| m_moveNodes[node].previousNode == 0;
 }
 
 bool Game::atGameStart(MoveId moveId) const
