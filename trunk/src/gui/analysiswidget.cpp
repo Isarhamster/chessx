@@ -10,6 +10,7 @@ AnalysisWidget::AnalysisWidget()
 	ui.setupUi(this);
 	connect(ui.engineList, SIGNAL(activated(int)), SLOT(changeEngine(int)));
 	connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(analyze(bool)));
+	ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 }
 
 AnalysisWidget::~AnalysisWidget()
