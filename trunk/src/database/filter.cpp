@@ -1,20 +1,12 @@
 /***************************************************************************
-                          filter.cpp  -  holds search results in memory
-                             -------------------
-    begin                : 27/11/2005
-    copyright            : (C) 2005 Ejner Borgbjerg <ejner@users.sourceforge.net>
-                           (C) 2006 William Hoggarth <whoggarth@users.sourceforge.net>
-                           (C) 2006 Michal Rudolf <mrudolf@kdewebdev.org>
-                           (C) 2007 Rico Zenklusen <rico_z@users.sourceforge.net>
- ***************************************************************************/
-
-/***************************************************************************
+ *   (C) 2005 Ejner Borgbjerg <ejner@users.sourceforge.net>                *
+ *   (C) 2006 William Hoggarth <whoggarth@users.sourceforge.net>           *
+ *   (C) 2007-2009 Michal Rudolf <mrudolf@kdewebdev.org>                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
- *                                                                         *
  ***************************************************************************/
 
 #include "database.h"

@@ -1,18 +1,11 @@
 /***************************************************************************
-                          nag.h - NAG definitions and NagSet class
-                             -------------------
-    begin                : 14 April 2006
-    copyright            : (C) 2006 William Hoggarth
-													 <whoggarth@users.sourceforge.net>
- ***************************************************************************/
-
-/***************************************************************************
+ *   (C) 2006 William Hoggarth <whoggarth@users.sourceforge.net>           *
+ *   (C) 2006-2009 Michal Rudolf <mrudolf@kdewebdev.org>                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
- *                                                                         *
  ***************************************************************************/
 
 #ifndef __NAG_H__
