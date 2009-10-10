@@ -61,10 +61,11 @@ Engine::~Engine()
 {
 	if (m_process) {
 		deactivate();
+		m_process->disconnect();
+		disconnect(m_process, SIGNAL(readyReadStandardOutput()),0,0);
 		m_process->kill();
 		m_process->waitForFinished(1000);
 		delete m_process;
-		m_process = 0;
 	}
 }
 
@@ -92,11 +93,8 @@ void Engine::activate()
 
 void Engine::deactivate()
 {
-	if (!m_active) {
-		return;
-	}
-
-	protocolEnd();
+	if (m_active)
+		protocolEnd();
 }
 
 bool Engine::isActive()
