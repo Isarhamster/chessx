@@ -211,10 +211,13 @@ void Game::truncateVariation(Position position)
 		MoveNode firstNode;
 		firstNode.nextNode = m_currentNode;
 		firstNode.ply = m_moveNodes[m_currentNode].ply - 1;
-		firstNode.variations = m_moveNodes[m_moveNodes[m_currentNode].previousNode].variations;
-		foreach(MoveId var, firstNode.variations) {
-			reparentVariation(var, 0);
-			m_moveNodes[var].previousNode = 0;
+		// Keep variation if truncating main line
+		if (m_moveNodes[m_moveNodes[m_currentNode].previousNode].nextNode == m_currentNode) {
+			firstNode.variations = m_moveNodes[m_moveNodes[m_currentNode].previousNode].variations;
+			foreach(MoveId var, firstNode.variations) {
+				reparentVariation(var, 0);
+				m_moveNodes[var].previousNode = 0;
+			}
 		}
 		m_moveNodes[0] = firstNode;
 		m_moveNodes[m_currentNode].previousNode = 0;
