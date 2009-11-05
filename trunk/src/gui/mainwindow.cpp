@@ -31,8 +31,6 @@
 #include "tableview.h"
 #include "tipoftheday.h"
 #include "analysiswidget.h"
-#include "version.h"
-
 #include <time.h>
 
 MainWindow::MainWindow() : QMainWindow(),
