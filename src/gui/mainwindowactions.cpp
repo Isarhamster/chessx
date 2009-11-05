@@ -211,24 +211,6 @@ void MainWindow::slotHelpTip()
 	tipDialog()->show();
 }
 
-void MainWindow::slotHelpAbout()
-{
-	QString fastbits = Board::fastbitsOption ? tr("<br>Compiled with 'fastbits' option") : "";
-	QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
-				      "<p>Free chess database available under GPLv2.<br>Version %1%2<br>"
-				      "Copyright 2005-2009 ChessX developers"
-				      "<p>Current developer and maintainer: Michal Rudolf <a href=\"mailto:mrudolf"
-				      "@kdewebdev.org\">&lt;mrudolf"
-				      "@kdewebdev.org&gt;</a>"
-				      "<p>Additional coding: Marius Roets, Sean Estabrooks, Rico Zenklusen, "
-				      "Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth."
-				      "<p>Homepage: <a href=\"http://chessx.sf.net\">http://chessx.sf.net</a><br>"
-				      "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">"
-				      "chessx-users@lists.sourceforge.net").arg(ChessXVersion).arg(fastbits),
-			   QMessageBox::NoIcon, QMessageBox::Ok, Qt::NoButton, Qt::NoButton, this);
-	dialog.exec();
-}
-
 void MainWindow::slotHelpBug()
 {
 	QDesktopServices::openUrl(QUrl("http://sourceforge.net/tracker/?group_id=163833&atid=829300"));

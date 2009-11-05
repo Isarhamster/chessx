@@ -32,6 +32,7 @@ HEADERS += mainwindow.h \
 	messagedialog.h
 SOURCES += mainwindow.cpp \
 	mainwindowactions.cpp \
+	mainwindowabout.cpp \
 	playerdialog.cpp \
 	colorlist.cpp \
 	preferences.cpp \
