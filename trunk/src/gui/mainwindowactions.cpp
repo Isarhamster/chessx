@@ -630,18 +630,19 @@ void MainWindow::slotSearchReset()
 
 void MainWindow::slotSearchTree()
 {
-	if (!m_openingTree->isVisible())
+	if (!g_openingTree->isVisible())
 		return;
 	startOperation(tr("Updating tree..."));
-	dynamic_cast<OpeningTree*>(m_openingTree->model())->update(*databaseInfo()->filter(), m_boardView->board());
-	m_gameList->updateFilter();
-	slotFilterChanged();
-	finishOperation(tr("Tree updated"));
+	if (m_openingTree->update(*databaseInfo()->filter(), m_boardView->board())) {
+		m_gameList->updateFilter();
+		slotFilterChanged();
+		finishOperation(tr("Tree updated"));
+	}
 }
 
 void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 {
-	QString move = dynamic_cast<OpeningTree*>(m_openingTree->model())->move(index);
+	QString move = dynamic_cast<OpeningTree*>(g_openingTree->model())->move(index);
 	Move m = m_boardView->board().parseMove(move);
 	if (!m.isLegal())
 		return;

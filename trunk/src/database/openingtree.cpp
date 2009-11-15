@@ -89,16 +89,19 @@ bool compareYear(const MoveData& m1, const MoveData& m2)
 }
 
 
-void OpeningTree::update(Filter& f, const Board& b)
+bool OpeningTree::update(Filter& f, const Board& b)
 {
 	if (m_filter == &f && m_board == b)
-		return;
+		return false;
+	int operationId = ++m_operationId;
 	m_filter = &f;
 	m_board = b;
 	Game g;
 	QMap<Move, MoveData> moves;
 	m_games = 0;
 	for (int i = 0; i < f.size(); i++) {
+		if (operationId != m_operationId)
+			return false;
 		f.database()->loadGameMoves(i, g);
 		int id = g.findPosition(b);
 		if (id != NO_MOVE)	{
@@ -123,6 +126,7 @@ void OpeningTree::update(Filter& f, const Board& b)
 		m_moves.append(it.value());
 	qSort(m_moves.begin(), m_moves.end());
 	sort();
+	return true;
 }
 
 QString OpeningTree::debug()
@@ -144,14 +148,15 @@ int OpeningTree::columnCount(const QModelIndex&) const
 	return m_names.count();
 }
 
-OpeningTree::OpeningTree() : m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
+OpeningTree::OpeningTree() : m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0),
+		m_operationId(0)
 {
 	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
 	<< tr("Year");
 }
 
 OpeningTree::OpeningTree(Filter & f, const Board & b) :
-		m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
+		m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0), m_operationId(0)
 {
 	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
 	<< tr("Year");
