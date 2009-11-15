@@ -13,9 +13,8 @@
 void MainWindow::slotHelpAbout()
 {
 	QString fastbits = Board::fastbitsOption ? tr("Compiled with 'fastbits' option<br>") : "";
-	QString build = ChessXRevision.section(' ', 1, 1);
 	QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
-				      "<p>Free chess database available under GPLv2.<br>Version %1, build %2<br>%3"
+						"<p>Free chess database available under GPLv2.<br>Version %1<br>%2"
 				      "Copyright 2005-2009 ChessX developers"
 				      "<p>Current developer and maintainer: Michal Rudolf <a href=\"mailto:mrudolf"
 				      "@kdewebdev.org\">&lt;mrudolf"
@@ -24,7 +23,7 @@ void MainWindow::slotHelpAbout()
 				      "Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth."
 				      "<p>Homepage: <a href=\"http://chessx.sf.net\">http://chessx.sf.net</a><br>"
 				      "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">"
-				      "chessx-users@lists.sourceforge.net").arg(ChessXVersion).arg(build)
+						"chessx-users@lists.sourceforge.net").arg(ChessXVersion)
 				.arg(fastbits),
 			   QMessageBox::NoIcon, QMessageBox::Ok, Qt::NoButton, Qt::NoButton, this);
 	dialog.exec();

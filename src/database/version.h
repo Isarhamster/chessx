@@ -9,4 +9,3 @@
 
 const QString ChessXVersion = "0.7-SVN";
 const uint ChessXVersionNumber = 690;
-const QString ChessXRevision = "$Revision$";
