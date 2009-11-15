@@ -53,8 +53,9 @@ public:
 	/** Initialized constructor, performing automatic update */
 	OpeningTree(Filter& f, const Board& b);
 	/** Calculate opening tree from given position, using given filter. It sets
-	the filter to contain only game matching position @p b . */
-	void update(Filter& f, const Board& b);
+	the filter to contain only game matching position @p b .
+	@return true if the update was not cancelled.*/
+	bool update(Filter& f, const Board& b);
 	/** Debug string */
 	QString debug();
 	/** Returns the number of moves in the Opening Tree */
@@ -75,6 +76,7 @@ public:
 signals:
 	void progress(int);
 private:
+
 	QList<MoveData> m_moves;
 	unsigned m_games;
 	QStringList m_names;
@@ -82,6 +84,7 @@ private:
 	Qt::SortOrder m_order;
 	Board m_board;
 	Filter* m_filter;
+	int m_operationId;
 };
 
 #endif

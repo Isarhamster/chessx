@@ -32,7 +32,7 @@ class AnalysisWidget;
 class Board;
 class ChessBrowser;
 class TableView;
-
+class OpeningTree;
 
 /**
 @defgroup GUI GUI - User interface components
@@ -251,7 +251,7 @@ private:
 	QSplitter* m_boardSplitter;
 	ChessBrowser* m_moveView;
 	ChessBrowser* m_gameView;
-	TableView* m_openingTree;
+	TableView* g_openingTree;
 	QProgressBar* m_progressBar;
 	/* Status */
 	QLabel* m_statusFilter;
@@ -274,6 +274,8 @@ private:
 	AnalysisWidget* m_analysis;
 	QTimer* m_timer;
 	QTime m_operationTime;
+	/** Currently updated tree. May be NULL if no updated in progress. */
+	OpeningTree* m_openingTree;
 
 	struct PendingLoad {
 		Database* database;
