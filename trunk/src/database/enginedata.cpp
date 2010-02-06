@@ -4,6 +4,6 @@
 
 #include "enginedata.h"
 
-EngineData::EngineData(const QString& newName) : name(newName)
+EngineData::EngineData(const QString& newName) : name(newName), protocol(UCI)
 {
 }

@@ -89,7 +89,7 @@ void PreferencesDialog::slotSelectEngineCommand()
 			      ui.engineCommand->text());
 	if (!com.isEmpty()) {
 		ui.engineCommand->setText(com);
-		if (engineData[ui.engineList->currentIndex().row()].name == tr("New Engine")) {
+		if (engineList[ui.engineList->currentIndex().row()].name == tr("New Engine")) {
 			QString name = com.section('/', -1, -1);
 			if (!name.isEmpty())
 				name[0] = name[0].toUpper();
@@ -106,29 +106,29 @@ void PreferencesDialog::slotDeleteEngine()
 	if (row >= 0) {
 		QListWidgetItem *del = ui.engineList->takeItem(row);
 		delete del;
-		engineData.removeAt(row);
+		engineList.removeAt(row);
 	}
 }
 
 void PreferencesDialog::slotNewEngine()
 {
-	int newnum = engineData.count();
+	int newnum = engineList.count();
 	ui.engineList->insertItem(newnum, tr("New Engine"));
-	engineData.append(EngineData(tr("New Engine")));
+	engineList.append(EngineData(tr("New Engine")));
 	ui.engineList->setCurrentRow(newnum);
 }
 
 void PreferencesDialog::slotEngineNameChange(const QString& name)
 {
 	ui.engineList->currentItem()->setText(name);
-	engineData[ui.engineList->currentIndex().row()].name = name;
+	engineList[ui.engineList->currentIndex().row()].name = name;
 }
 
 void PreferencesDialog::slotEngineUp()
 {
 	int index = ui.engineList->currentIndex().row();
 	if (index > 0) {
-		engineData.swap(index, index - 1);
+		engineList.swap(index, index - 1);
 		QListWidgetItem* item = ui.engineList->takeItem(index - 1);
 		ui.engineList->insertItem(index, item);
 	}
@@ -138,7 +138,7 @@ void PreferencesDialog::slotEngineDown()
 {
 	int index = ui.engineList->currentIndex().row();
 	if (index < ui.engineList->count() - 1) {
-		engineData.swap(index, index + 1);
+		engineList.swap(index, index + 1);
 		QListWidgetItem* item = ui.engineList->takeItem(index + 1);
 		ui.engineList->insertItem(index, item);
 	}
@@ -146,14 +146,14 @@ void PreferencesDialog::slotEngineDown()
 
 void PreferencesDialog::updateEngineData(int index)
 {
-	if (index < 0 || index >= engineData.count())
+	if (index < 0 || index >= engineList.count())
 		return;
-	engineData[index].name = ui.engineName->text();
-	engineData[index].command = ui.engineCommand->text();
-	engineData[index].options = ui.engineOptions->text();
-	engineData[index].directory = ui.engineDirectory->text();
-	engineData[index].protocol = ui.engineProtocolWinBoard->isChecked() ?
-				     WinBoard : UCI;
+	engineList[index].name = ui.engineName->text();
+	engineList[index].command = ui.engineCommand->text();
+	engineList[index].options = ui.engineOptions->text();
+	engineList[index].directory = ui.engineDirectory->text();
+	engineList[index].protocol = ui.engineProtocolWinBoard->isChecked() ?
+					  EngineData::WinBoard : EngineData::UCI;
 }
 
 void PreferencesDialog::slotSelectEngine(QListWidgetItem* current, QListWidgetItem* previous)
@@ -166,13 +166,13 @@ void PreferencesDialog::slotSelectEngine(QListWidgetItem* current, QListWidgetIt
 		ui.engineEditWidget->setEnabled(true);
 		// Fill edit fields with data for selected engine
 		int index = ui.engineList->row(current);
-		ui.engineName->setText(engineData[index].name);
-		ui.engineCommand->setText(engineData[index].command);
-		ui.engineOptions->setText(engineData[index].options);
-		ui.engineDirectory->setText(engineData[index].directory);
-		if (engineData[index].protocol == WinBoard)
+		ui.engineName->setText(engineList[index].name);
+		ui.engineCommand->setText(engineList[index].command);
+		ui.engineOptions->setText(engineList[index].options);
+		ui.engineDirectory->setText(engineList[index].directory);
+		if (engineList[index].protocol == EngineData::WinBoard)
 			ui.engineProtocolWinBoard->setChecked(true);
-		else	ui.engineProtocolUCI->setChecked(true);
+		else ui.engineProtocolUCI->setChecked(true);
 	} else {
 		ui.engineName->clear();
 		ui.engineCommand->clear();
@@ -243,28 +243,13 @@ void PreferencesDialog::restoreSettings()
 	//AppSettings->endGroup();
 
 	// Read Engine settings
-	QStringList lnames;
-	AppSettings->beginGroup("/Engines/");
-	QStringList engines = AppSettings->childGroups();
-	for (int i = 0; i < engines.size(); ++i) {
-		QString key = engines[i];
-		QString name = AppSettings->value(key + "/Name").toString();
-		lnames.append(name);
-		engineData.append(EngineData(name));
-		engineData[i].command = AppSettings->value(key + "/Command").toString();
-		engineData[i].options = AppSettings->value(key + "/Options").toString();
-		engineData[i].directory = AppSettings->value(key + "/Directory").toString();
-		QString protocolName = AppSettings->value(key + "/Protocol").toString();
-		if (protocolName == "WinBoard")
-			engineData[i].protocol = WinBoard;
-		else	engineData[i].protocol = UCI;
-	}
-	AppSettings->endGroup();
+	engineList.restore();
+	ui.engineList->clear();
+	ui.engineList->insertItems(0, engineList.names());
 
 	// Read Advanced settings
 	ui.limitSpin->setValue(AppSettings->value("/General/EditLimit", 10).toInt()); 
 
-	ui.engineList->insertItems(0, lnames);
 }
 
 void PreferencesDialog::saveSettings()
@@ -294,19 +279,7 @@ void PreferencesDialog::saveSettings()
 
 	// Save engine settings
 	updateEngineData(ui.engineList->currentIndex().row());  // Make sure current edits are saved
-	AppSettings->beginGroup("/Engines/");
-	AppSettings->remove("");
-	for (int i = 0; i < engineData.size(); ++i) {
-		QString key = QString::number(i);
-		AppSettings->setValue(key + "/Name", engineData[i].name);
-		AppSettings->setValue(key + "/Command", engineData[i].command);
-		AppSettings->setValue(key + "/Options", engineData[i].options);
-		AppSettings->setValue(key + "/Directory", engineData[i].directory);
-		if (engineData[i].protocol == WinBoard)
-			AppSettings->setValue(key + "/Protocol", "WinBoard");
-		else	AppSettings->setValue(key + "/Protocol", "UCI");
-	}
-	AppSettings->endGroup();
+	engineList.save();
 
 	AppSettings->setValue("/General/EditLimit", ui.limitSpin->value());
 

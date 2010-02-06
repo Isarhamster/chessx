@@ -8,10 +8,19 @@
 #include <QtCore>
 #include "enginedata.h"
 
+
+/** The EngineList class contains configuration of all installed engines. */
 class EngineList : public QList<EngineData>
 {
 public:
-    EngineList();
+	/** Standard constructor. */
+	EngineList();
+	/** Restore configuration from INI file. */
+	void restore();
+	/** Store configuration in INI file. */
+	void save();
+	/** Retrieve list of engine names in current order. */
+	QStringList names() const;
 };
 
 #endif // ENGINELIST_H

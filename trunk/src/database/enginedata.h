@@ -7,16 +7,18 @@
 
 #include <QtCore>
 
-enum EngineProtocol {WinBoard, UCI};
 
+/** The EngineData class contains configuration of a single engine. */
 class EngineData {
 public:
-	 EngineData(const QString& newName = "");
-	 QString name;
-	 QString command;
-	 QString options;
-	 QString directory;
-	 EngineProtocol protocol;
+	enum EngineProtocol {WinBoard, UCI};
+	/** Standard constructor. */
+	EngineData(const QString& newName = "");
+	QString name;
+	QString command;
+	QString options;
+	QString directory;
+	EngineProtocol protocol;
 };
 
 #endif // ENGINEDATA_H
