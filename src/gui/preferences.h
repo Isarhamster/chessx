@@ -66,7 +66,7 @@ private:
 			      const QColor& cfgcolor);
 	void saveColorList(ColorList* list, const QStringList& cfgnames);
 
-	EngineList engineData;
+	EngineList engineList;
 	/** Store any changes made to Engine fields in UI, into list */
 	void updateEngineData(int index);
 
