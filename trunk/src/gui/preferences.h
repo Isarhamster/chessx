@@ -18,6 +18,7 @@
 #define __PREFERENCESDIALOG_H__
 
 #include "ui_preferences.h"
+#include "enginelist.h"
 
 /** @ingroup GUI
 The PreferencesDialog class is a dialog for configuring ChessX.
@@ -65,17 +66,7 @@ private:
 			      const QColor& cfgcolor);
 	void saveColorList(ColorList* list, const QStringList& cfgnames);
 
-	enum EngineProtocol {WinBoard, UCI};
-	struct EngineData {
-		EngineData() {};
-		EngineData(const QString& newName) : name(newName) {};
-		QString name;
-		QString command;
-		QString options;
-		QString directory;
-		EngineProtocol protocol;
-	};
-	QList<EngineData> engineData;
+	EngineList engineData;
 	/** Store any changes made to Engine fields in UI, into list */
 	void updateEngineData(int index);
 
