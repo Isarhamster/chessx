@@ -6,7 +6,7 @@
 #include <QShowEvent>
 
 AnalysisWidget::AnalysisWidget()
-		: m_engine(0), m_active(false)
+		: m_engine(0)
 {
 	ui.setupUi(this);
 	connect(ui.engineList, SIGNAL(activated(int)), SLOT(changeEngine(int)));
@@ -30,7 +30,7 @@ void AnalysisWidget::removeEngine()
 
 void AnalysisWidget::changeEngine(int index)
 {
-	bool oldValue = m_active;
+	bool analysing = ui.analyzeButton->isChecked();
 	removeEngine();
 	if (index >= 0 && index < ui.engineList->count()) {
 		ui.engineList->setCurrentIndex(index);
@@ -39,14 +39,13 @@ void AnalysisWidget::changeEngine(int index)
 			SIGNAL(analysisUpdated(const Engine::Analysis&)),
 			SLOT(showAnalysis(const Engine::Analysis&)));
 		connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
-		analyze(oldValue);
+		analyze(analysing);
 		AppSettings->setValue("/Analysis/Engine", ui.engineList->itemText(index));
 	}
 }
 
 void AnalysisWidget::engineActivated()
 {
-	m_active = true;
 	m_engine->startAnalysis(m_board);
 }
 
@@ -59,7 +58,6 @@ void AnalysisWidget::analyze(bool run)
 			ui.analyzeButton->setChecked(true);
 			ui.analyzeButton->setText(tr("Stop"));
 		} else {
-			m_active = false;
 			m_engine->deactivate();
 			ui.analyzeButton->setChecked(false);
 			ui.analyzeButton->setText(tr("Analyze"));
@@ -122,7 +120,7 @@ void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const
 void AnalysisWidget::setPosition(const Board& board)
 {
 	m_board = board;
-	if (m_engine && m_active) {
+	if (m_engine && m_engine->isActive()) {
 		ui.variationText->clear();
 		m_engine->startAnalysis(m_board);
 	}
