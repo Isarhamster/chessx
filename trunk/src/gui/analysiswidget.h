@@ -25,20 +25,20 @@ public slots:
 	void setPosition(const Board& board);
 	/** Called when configuration was changed (either on startup or from Preferences dialog. */
 	void slotReconfigure();
-	/** Toggle analysis. */
-	void analyze(bool run);
 	/** Stop if analysis is no longer visible. */
 	void visibilityChanged();
+	/** Start currently selected engine. */
+	void startEngine();
+	/** Stop any running  engine. */
+	void stopEngine();
 private slots:
-	/** Use a different engine for analysis. */
-	void changeEngine(int index);
+	/** Toggle analysis. */
+	void analyze(bool run);
 	/** Displays given analysis received from an engine. */
 	void showAnalysis(const Engine::Analysis& analysis) const;
 	/** The engine is now ready, as requested */
 	void engineActivated();
 private:
-	/** Stops analysis and destroys current engine. Used when changing engine or deleting whole widget. */
-	void removeEngine();
 
 	Ui::AnalysisWidget ui;
 	Engine* m_engine;
