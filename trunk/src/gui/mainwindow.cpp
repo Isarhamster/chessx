@@ -145,7 +145,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(this, SIGNAL(boardChange(const Board&)), m_analysis, SLOT(setPosition(const Board&)));
 	connect(this, SIGNAL(reconfigure()), m_analysis, SLOT(slotReconfigure()));
 	// Make sure engine is disabled if dock is hidden
-	connect(analysisDock->toggleViewAction(), SIGNAL(toggled(bool)),
+	connect(analysisDock, SIGNAL(visibilityChanged(bool)),
 			  SLOT(slotGameAnalysisStop(bool)));
 	m_menuView->addAction(analysisDock->toggleViewAction());
 	analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_A);
