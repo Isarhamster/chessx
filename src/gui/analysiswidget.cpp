@@ -1,6 +1,7 @@
 #include "settings.h"
 #include "board.h"
 #include "analysiswidget.h"
+#include "enginelist.h"
 
 #include <QShowEvent>
 
@@ -22,7 +23,6 @@ void AnalysisWidget::removeEngine()
 {
 	if (m_engine) {
 		analyze(false);
-		// SBE -- do we have to destroy connected signals manually here?
 		delete m_engine;
 		m_engine = NULL;
 	}
@@ -76,19 +76,18 @@ void AnalysisWidget::setShown(bool show)
 
 void AnalysisWidget::slotReconfigure()
 {
-	removeEngine();
+	QString oldEngineName = ui.engineList->currentText();
+	qDebug() << oldEngineName;
 
-	QStringList engines;
-	AppSettings->beginGroup("/Engines/");
-	QStringList keys = AppSettings->childGroups();
-	for (int i = 0; i < keys.size(); ++i)
-		engines.append(AppSettings->value(keys[i] + "/Name").toString());
-	AppSettings->endGroup();
+	EngineList enginesList;
+	enginesList.restore();
+	QStringList names = enginesList.names();
 	ui.engineList->clear();
-	ui.engineList->insertItems(0,	engines);
-	int index = engines.indexOf(AppSettings->value("/Analysis/Engine").toString());
-	if (index >= 0)
-		changeEngine(index);
+	ui.engineList->insertItems(0,	names);
+	int index = names.indexOf(oldEngineName);
+	if (index != -1)
+		ui.engineList->setCurrentIndex(index);
+	else changeEngine(0);
 }
 
 void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const
