@@ -9,17 +9,17 @@ AnalysisWidget::AnalysisWidget()
 		: m_engine(0)
 {
 	ui.setupUi(this);
-	connect(ui.engineList, SIGNAL(activated(int)), SLOT(changeEngine(int)));
+	connect(ui.engineList, SIGNAL(activated(int)), SLOT(startEngine()));
 	connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(analyze(bool)));
 	ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 }
 
 AnalysisWidget::~AnalysisWidget()
 {
-	removeEngine();
+	stopEngine();
 }
 
-void AnalysisWidget::removeEngine()
+void AnalysisWidget::stopEngine()
 {
 	if (m_engine) {
 		analyze(false);
@@ -28,17 +28,16 @@ void AnalysisWidget::removeEngine()
 	}
 }
 
-void AnalysisWidget::changeEngine(int index)
+void AnalysisWidget::startEngine()
 {
 	bool analysing = ui.analyzeButton->isChecked();
-	removeEngine();
-	if (index >= 0 && index < ui.engineList->count()) {
-		ui.engineList->setCurrentIndex(index);
+	int index = ui.engineList->currentIndex();
+	stopEngine();
+	if (index != -1) {
 		m_engine = Engine::newEngine(index);
-		connect(m_engine,
-			SIGNAL(analysisUpdated(const Engine::Analysis&)),
-			SLOT(showAnalysis(const Engine::Analysis&)));
 		connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
+		connect(m_engine, SIGNAL(analysisUpdated(const Engine::Analysis&)),
+				  SLOT(showAnalysis(const Engine::Analysis&)));
 		analyze(analysing);
 		AppSettings->setValue("/Analysis/Engine", ui.engineList->itemText(index));
 	}
@@ -74,6 +73,8 @@ void AnalysisWidget::visibilityChanged()
 void AnalysisWidget::slotReconfigure()
 {
 	QString oldEngineName = ui.engineList->currentText();
+	if (oldEngineName.isEmpty())
+		oldEngineName = AppSettings->value("/Analysis/Engine").toString();
 
 	EngineList enginesList;
 	enginesList.restore();
@@ -83,7 +84,8 @@ void AnalysisWidget::slotReconfigure()
 	int index = names.indexOf(oldEngineName);
 	if (index != -1)
 		ui.engineList->setCurrentIndex(index);
-	else changeEngine(0);
+	else
+		ui.engineList->setCurrentIndex(0);
 }
 
 void AnalysisWidget::showAnalysis(const Engine::Analysis& analysis) const

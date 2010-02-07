@@ -205,7 +205,7 @@ MainWindow::~MainWindow()
 {
 	m_timer->stop();
 	/* Stop analysis. */
-	m_analysis->analyze(false);
+	m_analysis->stopEngine();
 	qDeleteAll(m_databases.begin(), m_databases.end());
 	delete m_saveDialog;
 	delete m_playerDialog;
