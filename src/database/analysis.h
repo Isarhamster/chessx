@@ -7,8 +7,29 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include "enginedata.h"
 
-EngineData::EngineData(const QString& newName) : name(newName), protocol(UCI)
+#ifndef ANALYSIS_H
+#define ANALYSIS_H
+
+#include <QtCore>
+#include "movelist.h"
+
+class Board;
+
+/** The analysis class contains engine analysis. */
+class Analysis
 {
-}
+public:
+	 Analysis();
+	 /** Convert analysis to formatted text. */
+	 QString toString(const Board& board) const;
+	 float time;
+	 quint64 nodes;
+	 int depth;
+	 float score;
+	 MoveList variation;
+	 bool mateIn;
+
+};
+
+#endif // ANALYSIS_H

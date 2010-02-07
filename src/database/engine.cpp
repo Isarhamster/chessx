@@ -146,7 +146,7 @@ void Engine::setAnalyzing(bool analyzing)
 	}
 }
 
-void Engine::sendAnalysis(const Engine::Analysis& analysis)
+void Engine::sendAnalysis(const Analysis& analysis)
 {
 	emit analysisUpdated(analysis);
 }
