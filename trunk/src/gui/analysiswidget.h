@@ -40,6 +40,8 @@ public slots:
 	void startEngine();
 	/** Stop any running  engine. */
 	void stopEngine();
+	/** Is any engine running. */
+	bool isEngineRunning() const;
 private slots:
 	/** Displays given analysis received from an engine. */
 	void showAnalysis(const Analysis& analysis) const;

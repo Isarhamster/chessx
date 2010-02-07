@@ -20,8 +20,8 @@ AnalysisWidget::AnalysisWidget()
 {
 	ui.setupUi(this);
 	connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
-	ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 	connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(toggleAnalysis()));
+	ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 }
 
 AnalysisWidget::~AnalysisWidget()
@@ -34,6 +34,8 @@ void AnalysisWidget::startEngine()
 	int index = ui.engineList->currentIndex();
 	stopEngine();
 	if (index != -1) {
+		if (parentWidget() && !parentWidget()->isVisible())
+			parentWidget()->show();
 		ui.variationText->clear();
 		m_engine = Engine::newEngine(index);
 		connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
@@ -46,6 +48,8 @@ void AnalysisWidget::startEngine()
 
 void AnalysisWidget::stopEngine()
 {
+	ui.analyzeButton->setChecked(false);
+	ui.analyzeButton->setText(tr("Start"));
 	if (m_engine) {
 		m_engine->deactivate();
 		delete m_engine;
@@ -53,8 +57,15 @@ void AnalysisWidget::stopEngine()
 	}
 }
 
+bool AnalysisWidget::isEngineRunning() const
+{
+	return m_engine && ui.analyzeButton->isChecked();
+}
+
 void AnalysisWidget::engineActivated()
 {
+	ui.analyzeButton->setChecked(true);
+	ui.analyzeButton->setText(tr("Stop"));
 	m_engine->startAnalysis(m_board);
 }
 

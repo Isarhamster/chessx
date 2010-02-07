@@ -148,6 +148,8 @@ public slots:
 	void slotGameNew();
 	/** Save game, replacing old one if it is edited, appending if it is new */
 	void slotGameSave();
+	/** Start/stop game analysis. */
+	void slotGameAnalyze();
 	/** Filter was changed - update status bar information */
 	void slotFilterChanged();
 	/** Load given game (triggered from Game List) */
@@ -222,7 +224,7 @@ private slots:
 private:
 	/** Create single menu action. */
 	QAction* createAction(const QString& name, const char* slot, const QKeySequence& key = QKeySequence(),
-			      const QString& tip = QString());
+					const QString& tip = QString());
 	/** Create all the menus and actions */
 	void setupActions();
 	/** Confirm quitting and save modified databases. */
