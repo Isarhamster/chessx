@@ -144,10 +144,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	addDockWidget(Qt::RightDockWidgetArea, dock);
 	connect(this, SIGNAL(boardChange(const Board&)), m_analysis, SLOT(setPosition(const Board&)));
 	connect(this, SIGNAL(reconfigure()), m_analysis, SLOT(slotReconfigure()));
-	// Make sure engine is disabled if dock is hidden
-	connect(dock, SIGNAL(visibilityChanged(bool)), m_analysis, SLOT(visibilityChanged()));
-	m_menuView->addAction(dock->toggleViewAction());
-	dock->toggleViewAction()->setShortcut(Qt::Key_F2);
 
 	/* Randomize */
 	srand(time(0));
@@ -158,12 +154,20 @@ MainWindow::MainWindow() : QMainWindow(),
 	AppSettings->beginGroup("MainWindow");
 	m_boardSplitter->restoreState(AppSettings->value("BoardSplit").toByteArray());
 	AppSettings->endGroup();
-	slotReconfigure();
+
+	// Make sure engine is disabled if dock is hidden
+	dock->close();
+	connect(dock, SIGNAL(visibilityChanged(bool)), m_analysis, SLOT(visibilityChanged()));
+	m_menuView->addAction(dock->toggleViewAction());
+	dock->toggleViewAction()->setShortcut(Qt::Key_F2);
 
 	/* Status */
 	m_statusFilter = new QLabel(statusBar());
 	statusBar()->addPermanentWidget(m_statusFilter);
 	m_progressBar = new QProgressBar;
+
+	/** Reconfigure. */
+	slotReconfigure();
 
 	/* Reset board - not earlier, as all widgets have to be created. */
 	slotGameChanged();
