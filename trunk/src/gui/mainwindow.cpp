@@ -42,7 +42,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Create clipboard database */
 	m_databases.append(new DatabaseInfo);
 	m_currentDatabase = 0;
-	
+
 	m_tablebase = new Shredder;
 	connect(m_tablebase, SIGNAL(bestMove(Move, int)), this, SLOT(showTablebaseMove(Move, int)));
 
@@ -156,10 +156,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	AppSettings->endGroup();
 
 	// Make sure engine is disabled if dock is hidden
-	dock->close();
-	connect(dock, SIGNAL(visibilityChanged(bool)), m_analysis, SLOT(visibilityChanged()));
+	connect(dock, SIGNAL(visibilityChanged(bool)), m_analysis, SLOT(toggleAnalysis()));
 	m_menuView->addAction(dock->toggleViewAction());
-	dock->toggleViewAction()->setShortcut(Qt::Key_F2);
+	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_A);
 
 	/* Status */
 	m_statusFilter = new QLabel(statusBar());
@@ -201,7 +200,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_timer = new QTimer(this);
 	m_timer->setInterval(100);
 	m_timer->setSingleShot(true);
-   connect(m_timer, SIGNAL(timeout()), this, SLOT(slotGameLoadPending()));
+	connect(m_timer, SIGNAL(timeout()), this, SLOT(slotGameLoadPending()));
 
 }
 
@@ -362,7 +361,7 @@ bool MainWindow::openDatabase(const QString& fname)
 	m_databases.append(db);
 	m_currentDatabase = m_databases.count() - 1;
 	m_recentFiles.append(fname);
-	
+
 	updateMenuRecent();
 	updateMenuDatabases();
 	slotDatabaseChanged();
@@ -400,7 +399,7 @@ bool MainWindow::gameEditComment(Output::CommentType type)
 		annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
 	else annotation = game().annotation();
 	QString cmt = QInputDialog::getText(this, tr("Edit comment"), tr("Comment:"),
-					    QLineEdit::Normal, annotation, &ok);
+						 QLineEdit::Normal, annotation, &ok);
 	if (ok) {
 		if (type == Output::Precomment)
 			game().setAnnotation(cmt, CURRENT_MOVE, Game::BeforeMove);
@@ -455,8 +454,8 @@ void MainWindow::showTablebaseMove(Move move, int score)
 	QString update = m_moveView->toHtml();
 	int s = update.lastIndexOf("</p>");
 	update.insert(s, tr("<br>Tablebase: <a href=\"egtb:%1\">%2%3 %1</a> -- %4")
-		      .arg(san).arg(game().moveNumber())
-		      .arg(game().board().toMove() == White ? "." : "...").arg(result));
+				.arg(san).arg(game().moveNumber())
+				.arg(game().board().toMove() == White ? "." : "...").arg(result));
 	m_moveView->setHtml(update);
 }
 
@@ -498,17 +497,17 @@ void MainWindow::setupActions()
 	/* Edit menu */
 	QMenu* edit = menuBar()->addMenu(tr("&Edit"));
 	edit->addAction(createAction(tr("Position &Setup..."), SLOT(slotEditBoard()),
-				     Qt::CTRL + Qt::Key_E));
+					  Qt::CTRL + Qt::Key_E));
 	QMenu* editremove = edit->addMenu(tr("&Remove"));
 	editremove->addAction(createAction(tr("Moves from the beginning"),
-					   SLOT(slotEditTruncateStart())));
+						SLOT(slotEditTruncateStart())));
 	editremove->addAction(createAction(tr("Moves to the end"), SLOT(slotEditTruncateEnd()),
-					   Qt::SHIFT + Qt::Key_Delete));
+						Qt::SHIFT + Qt::Key_Delete));
 	edit->addSeparator();
 	edit->addAction(createAction(tr("&Copy FEN"), SLOT(slotEditCopyFEN()),
-				     Qt::CTRL + Qt::SHIFT + Qt::Key_C));
+					  Qt::CTRL + Qt::SHIFT + Qt::Key_C));
 	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
-				     Qt::CTRL + Qt::SHIFT + Qt::Key_V));
+					  Qt::CTRL + Qt::SHIFT + Qt::Key_V));
 	edit->addSeparator();
 	edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure())));
 
@@ -539,19 +538,19 @@ void MainWindow::setupActions()
 	/* Search menu */
 	QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
 	search->addAction(createAction(tr("Find &tag"), SLOT(slotSearchTag()), Qt::CTRL +
-				       Qt::SHIFT + Qt::Key_T));
+						 Qt::SHIFT + Qt::Key_T));
 	search->addAction(createAction(tr("Find &position"), SLOT(slotSearchBoard()), Qt::CTRL +
-				       Qt::SHIFT + Qt::Key_B));
+						 Qt::SHIFT + Qt::Key_B));
 	search->addSeparator();
 	search->addAction(createAction(tr("&Reset filter"), SLOT(slotSearchReset()), Qt::CTRL + Qt::Key_F));
 	search->addAction(createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()),
-				       Qt::CTRL + Qt::SHIFT + Qt::Key_F));
+						 Qt::CTRL + Qt::SHIFT + Qt::Key_F));
 
 	/* Database menu */
 	QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
 	m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
 	menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()),
-					     Qt::Key_F5));
+						  Qt::Key_F5));
 	QMenu* menuRemove = menuDatabase->addMenu(tr("Delete"));
 	menuRemove->addAction(createAction(tr("&Current game"), SLOT(slotDatabaseDeleteGame())));
 	menuRemove->addAction(createAction(tr("&Games in filter"), SLOT(slotDatabaseDeleteFilter())));
@@ -563,7 +562,7 @@ void MainWindow::setupActions()
 	flip->setCheckable(true);
 	m_menuView->addAction(flip);
 	m_menuView->addAction(createAction(tr("&Player Database..."), SLOT(slotPlayerDialog()),
-					   Qt::CTRL + Qt::SHIFT + Qt::Key_P));
+						Qt::CTRL + Qt::SHIFT + Qt::Key_P));
 
 
 	/* Help menu */
@@ -584,7 +583,7 @@ void MainWindow::setupActions()
 #endif
 }
 
-bool MainWindow::confirmQuit() 
+bool MainWindow::confirmQuit()
 {
 	if (AppSettings->value("/General/confirmQuit", true).toBool() &&
 			!MessageDialog::okCancel(this, tr("Do you want to quit?"), tr("Quit"), tr("Quit")))
@@ -602,7 +601,7 @@ bool MainWindow::confirmQuit()
 			Output output(Output::Pgn);
 			for (int i = 1; i < m_databases.size(); i++)
 				if (m_databases[i]->database()->isModified())
-					output.output(m_databases[i]->database()->filename(), 
+					output.output(m_databases[i]->database()->filename(),
 							*(m_databases[i]->database()));
 		}
 	}

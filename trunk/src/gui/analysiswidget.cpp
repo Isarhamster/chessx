@@ -19,10 +19,9 @@ AnalysisWidget::AnalysisWidget()
 		: m_engine(0)
 {
 	ui.setupUi(this);
-	connect(ui.engineList, SIGNAL(activated(int)), SLOT(startEngine()));
-	ui.analyzeButton->hide();
-	//connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(analyze(bool)));
-	//ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
+	connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
+	ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
+	connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(toggleAnalysis()));
 }
 
 AnalysisWidget::~AnalysisWidget()
@@ -59,12 +58,11 @@ void AnalysisWidget::engineActivated()
 	m_engine->startAnalysis(m_board);
 }
 
-void AnalysisWidget::visibilityChanged()
+void AnalysisWidget::toggleAnalysis()
 {
-	if (!parentWidget() || !parentWidget()->isVisible())
+	if (!isAnalysisEnabled())
 		stopEngine();
-	else if (parentWidget() && parentWidget()->isVisible() && !m_engine)
-		startEngine();
+	else startEngine();
 }
 
 void AnalysisWidget::slotReconfigure()
@@ -101,3 +99,11 @@ void AnalysisWidget::setPosition(const Board& board)
 	}
 }
 
+bool AnalysisWidget::isAnalysisEnabled() const
+{
+	if (!parentWidget())
+		return false;
+	if (!parentWidget()->isVisible() || !ui.analyzeButton->isChecked())
+		return false;
+	return true;
+}
