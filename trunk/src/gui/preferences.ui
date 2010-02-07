@@ -82,7 +82,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -367,22 +367,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0" rowspan="5">
-          <widget class="QListWidget" name="engineList">
-           <property name="editTriggers">
-            <set>QAbstractItemView::NoEditTriggers</set>
-           </property>
-           <property name="dragEnabled">
-            <bool>false</bool>
-           </property>
-           <property name="movement">
-            <enum>QListView::Static</enum>
-           </property>
-           <property name="sortingEnabled">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="1">
           <widget class="QPushButton" name="deleteEngineButton">
            <property name="text">
@@ -414,6 +398,19 @@
           <widget class="QPushButton" name="engineUpButton">
            <property name="text">
             <string>Up</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" rowspan="5">
+          <widget class="QListView" name="engineList">
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="dragEnabled">
+            <bool>false</bool>
+           </property>
+           <property name="movement">
+            <enum>QListView::Static</enum>
            </property>
           </widget>
          </item>

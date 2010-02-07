@@ -1,8 +1,8 @@
 /***************************************************************************
-                          preferences  -  Preferences dialog
-                             -------------------
-    begin                : Thu 18 Aug 2005
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+								  preferences  -  Preferences dialog
+									  -------------------
+	 begin                : Thu 18 Aug 2005
+	 copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -17,6 +17,7 @@
 #ifndef __PREFERENCESDIALOG_H__
 #define __PREFERENCESDIALOG_H__
 
+#include <QStringListModel>
 #include "ui_preferences.h"
 #include "enginelist.h"
 
@@ -37,7 +38,7 @@ public slots:
 	int exec();
 	void slotApply();
 	/** select given engine # for display */
-	void slotSelectEngine(QListWidgetItem* current, QListWidgetItem* previous);
+	void slotSelectEngine();
 	/** user asked for a new engine entry */
 	void slotNewEngine();
 	/** user asked to remove current engine entry */
@@ -58,17 +59,21 @@ protected:
 
 private:
 	Ui::PreferencesDialog ui;
+	QStringListModel* m_engineListModel;
+	int m_engineCurrent;
+
 	void restoreSettings();
 	void saveSettings();
 	/** Select given item in combo. If not found, select last one. */
 	bool selectInCombo(QComboBox* combo, const QString& text);
 	void restoreColorItem(ColorList* list, const QString& text, const QString& cfgname,
-			      const QColor& cfgcolor);
+					const QColor& cfgcolor);
 	void saveColorList(ColorList* list, const QStringList& cfgnames);
 
 	EngineList engineList;
 	/** Store any changes made to Engine fields in UI, into list */
 	void updateEngineData(int index);
+	void updateEngineList(int current = -1);
 
 signals:
 	/** Signal emitted when changes are applied. */

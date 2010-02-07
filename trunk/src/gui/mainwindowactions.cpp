@@ -520,7 +520,6 @@ void MainWindow::slotGameAnalysis()
 
 void MainWindow::slotGameAnalysisStop(bool visible)
 {
-	qDebug() << "H=" << visible << ", V=" << !m_analysis->parentWidget()->isVisible();
 	if (m_analysis->isEngineRunning() && !visible && !m_analysis->parentWidget()->isVisible())
 		m_analysis->stopEngine();
 }
