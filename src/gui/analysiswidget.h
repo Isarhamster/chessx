@@ -16,7 +16,7 @@
 #include "ui_analysiswidget.h"
 
 /** @ingroup GUI
-   The Analysis widget which shows engine output
+	The Analysis widget which shows engine output
 */
 
 class Analysis;
@@ -35,7 +35,7 @@ public slots:
 	/** Called when configuration was changed (either on startup or from Preferences dialog. */
 	void slotReconfigure();
 	/** Stop if analysis is no longer visible. */
-	void visibilityChanged();
+	void toggleAnalysis();
 	/** Start currently selected engine. */
 	void startEngine();
 	/** Stop any running  engine. */
@@ -46,6 +46,8 @@ private slots:
 	/** The engine is now ready, as requested */
 	void engineActivated();
 private:
+	/** Should analysis be running. */
+	bool isAnalysisEnabled() const;
 
 	Ui::AnalysisWidget ui;
 	Engine* m_engine;
