@@ -139,17 +139,15 @@ MainWindow::MainWindow() : QMainWindow(),
 	dock = new QDockWidget(tr("Analysis"), this);
 	dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 	dock->setObjectName("AnalysisDock");
-	m_analysis = new AnalysisWidget();
-	m_analysis->setMinimumSize(150, 100);
+	m_analysis = new AnalysisWidget;
 	dock->setWidget(m_analysis);
 	addDockWidget(Qt::RightDockWidgetArea, dock);
-	QAction *action = dock->toggleViewAction();
-	m_menuView->addAction(action);
 	connect(this, SIGNAL(boardChange(const Board&)), m_analysis, SLOT(setPosition(const Board&)));
 	connect(this, SIGNAL(reconfigure()), m_analysis, SLOT(slotReconfigure()));
 	// Make sure engine is disabled if dock is hidden
-	connect(action, SIGNAL(toggled(bool)), m_analysis, SLOT(setShown(bool)));
-	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_A);
+	connect(dock, SIGNAL(visibilityChanged(bool)), m_analysis, SLOT(visibilityChanged()));
+	m_menuView->addAction(dock->toggleViewAction());
+	dock->toggleViewAction()->setShortcut(Qt::Key_F2);
 
 	/* Randomize */
 	srand(time(0));

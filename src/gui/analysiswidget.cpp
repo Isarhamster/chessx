@@ -6,7 +6,7 @@
 #include <QShowEvent>
 
 AnalysisWidget::AnalysisWidget()
-		: m_engine(0), m_active(false), m_closeTimer(0)
+		: m_engine(0), m_active(false)
 {
 	ui.setupUi(this);
 	connect(ui.engineList, SIGNAL(activated(int)), SLOT(changeEngine(int)));
@@ -67,17 +67,15 @@ void AnalysisWidget::analyze(bool run)
 	}
 }
 
-void AnalysisWidget::setShown(bool show)
+void AnalysisWidget::visibilityChanged()
 {
-	if (show)
-		stopTimer();
-	else	m_closeTimer = startTimer(250);
+	if (!parentWidget() || !parentWidget()->isVisible())
+		analyze(false);
 }
 
 void AnalysisWidget::slotReconfigure()
 {
 	QString oldEngineName = ui.engineList->currentText();
-	qDebug() << oldEngineName;
 
 	EngineList enginesList;
 	enginesList.restore();
@@ -128,40 +126,5 @@ void AnalysisWidget::setPosition(const Board& board)
 		ui.variationText->clear();
 		m_engine->startAnalysis(m_board);
 	}
-}
-
-void AnalysisWidget::stopTimer()
-{
-	if (m_closeTimer) {
-		killTimer(m_closeTimer);
-		m_closeTimer = 0;
-	}
-}
-
-void AnalysisWidget::timerEvent(QTimerEvent*)
-{
-	/*
-	 * If user closes dock that contains AnalysisWidget we want to
-	 * stop the engine.  So we monitor the toggled(bool) signal to
-	 * shut the engine off when we see toggled(false).
-	 *
-	 * However Qt sends a toggled(false) followed immediately by
-	 * a toggled(true) when a dock is simply moved to a new location.
-	 * This unfortunate Qt policy means the engine would be stopped
-	 * if the user simply relocates the dock.
-	 *
-	 * To deal with this, we wait 1/4 second after receiving
-	 * toggled(false) to see if we get a toggled(true).  If we
-	 * don't receive the toggled(true) promptly, this method will run.
-	 *
-	 * If this method runs, the dock must really be hidden, not just
-	 * being moved, so disable engine.
-	 *
-	 * Surely there is a better way to get a clean signal from Qt to
-	 * tell us when Dock is hidden and avoid the need for this hack.
-	 *
-	 */
-	stopTimer();
-	analyze(false);
 }
 

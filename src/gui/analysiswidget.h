@@ -35,16 +35,13 @@ public slots:
 	void removeEngine();
 	/** The engine is now ready, as requested */
 	void engineActivated();
+	/** Stop if analysis is no longer visible. */
+	void visibilityChanged();
 private:
 	Ui::AnalysisWidget ui;
 	Engine* m_engine;
 	bool m_active;
 	Board m_board;
-	int m_closeTimer;
-	void timerEvent(QTimerEvent*);
-	void stopTimer();
-private slots:
-	void setShown(bool show);
 };
 
 #endif // __ANALYSIS_H__
