@@ -16,10 +16,9 @@
 #include <QTextStream>
 #include <QProcess>
 
-
+#include "analysis.h"
 #include "board.h"
 #include "move.h"
-#include "movelist.h"
 
 /**
  * @defgroup Feature Feature - assorted feature classes of ChessX
@@ -36,15 +35,6 @@ class Engine : public QObject
 	Q_OBJECT
 
 public:
-	struct Analysis
-	{
-		float time;
-		quint64 nodes;
-		int depth;
-		float score;
-		MoveList variation;
-		bool mateIn;
-	};
 
 	/** Constructs an engine with a given path/command, and log stream */
 	Engine(const QString& name,
@@ -93,7 +83,7 @@ signals:
 	void analysisStopped();
 
 	/** Fired when the engine has produced some analysis */
-	void analysisUpdated(const Engine::Analysis& analysis);
+	void analysisUpdated(const Analysis& analysis);
 
 	/** Fired when a log item has been written to the log */
 	void logUpdated();
