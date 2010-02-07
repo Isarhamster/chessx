@@ -1,7 +1,15 @@
+/***************************************************************************
+ *   (C) 2008-2010 Michal Rudolf <mrudolf@kdewebdev.org>                   *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ ***************************************************************************/
+
 #ifndef __ANALYSIS_WIDGET_H__
 #define __ANALYSIS_WIDGET_H__
 
-#include "board.h"
 #include "engine.h"
 #include "wbengine.h"
 #include "uciengine.h"
@@ -11,6 +19,7 @@
    The Analysis widget which shows engine output
 */
 
+class Analysis;
 class Board;
 
 class AnalysisWidget : public QWidget
@@ -32,10 +41,8 @@ public slots:
 	/** Stop any running  engine. */
 	void stopEngine();
 private slots:
-	/** Toggle analysis. */
-	void analyze(bool run);
 	/** Displays given analysis received from an engine. */
-	void showAnalysis(const Engine::Analysis& analysis) const;
+	void showAnalysis(const Analysis& analysis) const;
 	/** The engine is now ready, as requested */
 	void engineActivated();
 private:
