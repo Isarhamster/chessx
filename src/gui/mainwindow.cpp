@@ -144,6 +144,11 @@ MainWindow::MainWindow() : QMainWindow(),
 	addDockWidget(Qt::RightDockWidgetArea, analysisDock);
 	connect(this, SIGNAL(boardChange(const Board&)), m_analysis, SLOT(setPosition(const Board&)));
 	connect(this, SIGNAL(reconfigure()), m_analysis, SLOT(slotReconfigure()));
+	// Make sure engine is disabled if dock is hidden
+	connect(analysisDock->toggleViewAction(), SIGNAL(toggled(bool)), m_analysis,
+			  SLOT(slotGameAnalysisStop(bool)));
+	m_menuView->addAction(analysisDock->toggleViewAction());
+	analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_A);
 
 	/* Randomize */
 	srand(time(0));
@@ -155,10 +160,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_boardSplitter->restoreState(AppSettings->value("BoardSplit").toByteArray());
 	AppSettings->endGroup();
 
-	// Make sure engine is disabled if dock is hidden
-	connect(analysisDock, SIGNAL(visibilityChanged(bool)), m_analysis, SLOT(toggleAnalysis()));
-	m_menuView->addAction(analysisDock->toggleViewAction());
-	analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_A);
+
 
 	/* Status */
 	m_statusFilter = new QLabel(statusBar());
@@ -534,7 +536,7 @@ void MainWindow::setupActions()
 
 	gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), Qt::CTRL + Qt::Key_N));
 	gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), Qt::CTRL + Qt::Key_S));
-	gameMenu->addAction(createAction(tr("&Analyze"), SLOT(slotGameAnalyze()), Qt::Key_F2));
+	gameMenu->addAction(createAction(tr("&Analyze"), SLOT(slotGameAnalysis()), Qt::Key_F2));
 
 	/* Search menu */
 	QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
