@@ -149,7 +149,9 @@ public slots:
 	/** Save game, replacing old one if it is edited, appending if it is new */
 	void slotGameSave();
 	/** Start/stop game analysis. */
-	void slotGameAnalyze();
+	void slotGameAnalysis();
+	/** Stop game analysis when analysis dock is hidden. */
+	void slotGameAnalysisStop(bool visible);
 	/** Filter was changed - update status bar information */
 	void slotFilterChanged();
 	/** Load given game (triggered from Game List) */

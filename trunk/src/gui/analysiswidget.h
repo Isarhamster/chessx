@@ -34,8 +34,6 @@ public slots:
 	void setPosition(const Board& board);
 	/** Called when configuration was changed (either on startup or from Preferences dialog. */
 	void slotReconfigure();
-	/** Stop if analysis is no longer visible. */
-	void toggleAnalysis();
 	/** Start currently selected engine. */
 	void startEngine();
 	/** Stop any running  engine. */
@@ -43,6 +41,8 @@ public slots:
 	/** Is any engine running. */
 	bool isEngineRunning() const;
 private slots:
+	/** Stop if analysis is no longer visible. */
+	void toggleAnalysis();
 	/** Displays given analysis received from an engine. */
 	void showAnalysis(const Analysis& analysis) const;
 	/** The engine is now ready, as requested */

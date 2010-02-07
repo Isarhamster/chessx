@@ -511,11 +511,17 @@ void MainWindow::slotGameViewToggle(bool toggled)
 	slotGameChanged();
 }
 
-void MainWindow::slotGameAnalyze()
+void MainWindow::slotGameAnalysis()
 {
 	if (m_analysis->isEngineRunning())
 		m_analysis->stopEngine();
 	else m_analysis->startEngine();
+}
+
+void MainWindow::slotGameAnalysisStop(bool visible)
+{
+	if (m_analysis->isEngineRunning() && !visible)
+		m_analysis->stopEngine();
 }
 
 void MainWindow::slotFilterChanged()
