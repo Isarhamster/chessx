@@ -47,7 +47,7 @@ void MainWindow::slotFileNew()
 	if (!file.endsWith(".pgn"))
 		file += ".pgn";
 	QFile pgnfile(file);
-	if (!pgnfile.open(QIODevice::WriteOnly)) 
+	if (!pgnfile.open(QIODevice::WriteOnly))
 		MessageDialog::warning(this, tr("Cannot create ChessX database."), tr("New database"));
 	else {
 		pgnfile.close();
@@ -162,8 +162,8 @@ void MainWindow::slotEditPasteFEN()
 	Board board;
 	if (!board.isValidFen(fen)) {
 		QString msg = fen.length() ?
-			      tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
-			      tr("There is no text in clipboard.");
+					tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
+					tr("There is no text in clipboard.");
 		MessageDialog::warning(this, msg);
 		return;
 	}
@@ -321,13 +321,13 @@ void MainWindow::slotMoveChanged()
 		QList <int> variations = g.variations();
 		for (int i = 1; i <= variations.size(); i++) {
 			var.append(QString("v%1: <a href=\"move:%2\">%3</a>").arg(i).arg(variations[i-1])
-				   .arg(g.moveToSan(Game::FullDetail, Game::PreviousMove, variations[i-1])));
+					.arg(g.moveToSan(Game::FullDetail, Game::PreviousMove, variations[i-1])));
 			if (i != variations.size())
 				var.append(" &nbsp; ");
 		}
 	}
 	m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4%5</qt>").arg(players).arg(result)
-			    .arg(header).arg(move).arg(var));
+				 .arg(header).arg(move).arg(var));
 	if (AppSettings->value("/General/onlineTablebases", true).toBool())
 		m_tablebase->getBestMove(g.toFen());
 
@@ -405,7 +405,7 @@ void MainWindow::slotGameLoadRandom()
 void MainWindow::slotGameLoadChosen()
 {
 	int index = QInputDialog::getInteger(this, tr("Load Game"), tr("Game number:"), gameIndex() + 1,
-					     1, database()->count());
+						  1, database()->count());
 	gameLoad(index - 1);
 	m_gameList->setFocus();
 }
@@ -511,6 +511,13 @@ void MainWindow::slotGameViewToggle(bool toggled)
 	slotGameChanged();
 }
 
+void MainWindow::slotGameAnalyze()
+{
+	if (m_analysis->isEngineRunning())
+		m_analysis->stopEngine();
+	else m_analysis->startEngine();
+}
+
 void MainWindow::slotFilterChanged()
 {
 	if (gameIndex() >= 0)
@@ -596,7 +603,7 @@ void MainWindow::slotDatabaseChanged()
 	gameLoad(gameIndex(), true, true);
 	if (m_playerDialog && playerDialog()->isVisible())
 		playerDialog()->setDatabase(database());
-	
+
 	emit databaseChanged(databaseInfo());
 }
 
