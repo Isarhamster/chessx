@@ -20,7 +20,7 @@ void EngineList::restore()
 	AppSettings->beginGroup("/Engines/");
 	QStringList engines = AppSettings->childGroups();
 	for (int i = 0; i < engines.size(); ++i) {
-		QString key = engines[i];
+		QString key = QString::number(i);
 		QString name = AppSettings->value(key + "/Name").toString();
 		EngineData data(name);
 		data.command = AppSettings->value(key + "/Command").toString();
