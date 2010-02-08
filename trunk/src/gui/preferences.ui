@@ -82,7 +82,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -391,9 +391,9 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QPushButton" name="newEngineButton">
+          <widget class="QPushButton" name="addEngineButton">
            <property name="text">
-            <string>New</string>
+            <string>Add...</string>
            </property>
           </widget>
          </item>
@@ -534,7 +534,7 @@
   <tabstop>guessMoveCheck</tabstop>
   <tabstop>boardFrameCheck</tabstop>
   <tabstop>engineList</tabstop>
-  <tabstop>newEngineButton</tabstop>
+  <tabstop>addEngineButton</tabstop>
   <tabstop>deleteEngineButton</tabstop>
   <tabstop>engineName</tabstop>
   <tabstop>engineCommand</tabstop>
