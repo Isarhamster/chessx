@@ -24,6 +24,7 @@ public:
 	QString options;
 	QString directory;
 	EngineProtocol protocol;
+	static QString commandToName(const QString& command);
 };
 
 #endif // ENGINEDATA_H

@@ -42,7 +42,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.engineList, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
 		SLOT(slotSelectEngine(QListWidgetItem*, QListWidgetItem*)));
 	connect(ui.engineName, SIGNAL(textChanged(const QString&)), SLOT(slotEngineNameChange(const QString&)));
-	connect(ui.newEngineButton, SIGNAL(clicked(bool)), SLOT(slotNewEngine()));
+	connect(ui.addEngineButton, SIGNAL(clicked(bool)), SLOT(slotAddEngine()));
 	connect(ui.deleteEngineButton, SIGNAL(clicked(bool)), SLOT(slotDeleteEngine()));
 	connect(ui.engineUpButton, SIGNAL(clicked(bool)), SLOT(slotEngineUp()));
 	connect(ui.engineDownButton, SIGNAL(clicked(bool)), SLOT(slotEngineDown()));
@@ -72,31 +72,32 @@ void PreferencesDialog::closeEvent(QCloseEvent*)
 
 void PreferencesDialog::slotSelectEngineDirectory()
 {
-	QString dir = QFileDialog::getExistingDirectory(
-					this,
-					tr("Select Directory in which Engine will run"),
-					ui.engineDirectory->text(),
+	QString dir = QFileDialog::getExistingDirectory(this,
+					tr("Select engine directory"), ui.engineDirectory->text(),
 					QFileDialog::ShowDirsOnly);
 	if (!dir.isEmpty())
 		ui.engineDirectory->setText(dir);
 }
 
+void PreferencesDialog::slotAddEngine()
+{
+	QString command = selectEngineFile();
+	if (command.isEmpty())
+		return;
+	QString name = EngineData::commandToName(command);
+	EngineData data(name);
+	data.command = command;
+	engineList.append(data);
+	ui.engineList->addItem(name);
+	ui.engineList->setCurrentRow(engineList.count() - 1);
+}
+
 void PreferencesDialog::slotSelectEngineCommand()
 {
-	QString com = QFileDialog::getOpenFileName(
-					this,
-					tr("Select engine command file to run"),
-					ui.engineCommand->text());
-	if (!com.isEmpty()) {
-		ui.engineCommand->setText(com);
-		if (engineList[ui.engineList->currentIndex().row()].name == tr("New Engine")) {
-			QString name = com.section('/', -1, -1);
-			if (!name.isEmpty())
-				name[0] = name[0].toUpper();
-			if (name.endsWith(".exe"))
-				name.truncate(name.length() - 4);
-			ui.engineName->setText(name);
-		}
+	QString command = selectEngineFile(ui.engineCommand->text());
+	if (!command.isEmpty()) {
+		ui.engineCommand->setText(command);
+		ui.engineName->setText(EngineData::commandToName(command));
 	}
 }
 
@@ -111,14 +112,6 @@ void PreferencesDialog::slotDeleteEngine()
 		delete del;
 		engineList.removeAt(row);
 	}
-}
-
-void PreferencesDialog::slotNewEngine()
-{
-	int newnum = engineList.count();
-	ui.engineList->insertItem(newnum, tr("New Engine"));
-	engineList.append(EngineData(tr("New Engine")));
-	ui.engineList->setCurrentRow(newnum);
 }
 
 void PreferencesDialog::slotEngineNameChange(const QString& name)
@@ -188,6 +181,16 @@ void PreferencesDialog::slotSelectEngine(QListWidgetItem* currentItem, QListWidg
 		ui.engineEditWidget->setEnabled(false);
 	}
 }
+
+QString PreferencesDialog::selectEngineFile(const QString& oldpath)
+{
+	return QFileDialog::getOpenFileName(this, tr("Select engine executable"),
+					oldpath);
+}
+
+
+
+
 
 int PreferencesDialog::exec()
 {
@@ -301,6 +304,7 @@ bool PreferencesDialog::selectInCombo(QComboBox* combo, const QString& text)
 	combo->setCurrentIndex(combo->count() - 1);
 	return false;
 }
+
 void PreferencesDialog::restoreColorItem(ColorList* list, const QString& text, const QString& cfgname, const QColor& cfgcolor)
 {
 	QColor color = AppSettings->value(cfgname, cfgcolor).value<QColor>();

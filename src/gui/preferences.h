@@ -1,8 +1,8 @@
 /***************************************************************************
-                          preferences  -  Preferences dialog
-                             -------------------
-    begin                : Thu 18 Aug 2005
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+								  preferences  -  Preferences dialog
+									  -------------------
+	 begin                : Thu 18 Aug 2005
+	 copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -39,7 +39,7 @@ public slots:
 	/** select given engine # for display */
 	void slotSelectEngine(QListWidgetItem* current, QListWidgetItem* previous);
 	/** user asked for a new engine entry */
-	void slotNewEngine();
+	void slotAddEngine();
 	/** user asked to remove current engine entry */
 	void slotDeleteEngine();
 	/** user changed the name of an engine */
@@ -63,12 +63,14 @@ private:
 	/** Select given item in combo. If not found, select last one. */
 	bool selectInCombo(QComboBox* combo, const QString& text);
 	void restoreColorItem(ColorList* list, const QString& text, const QString& cfgname,
-			      const QColor& cfgcolor);
+					const QColor& cfgcolor);
 	void saveColorList(ColorList* list, const QStringList& cfgnames);
 
 	EngineList engineList;
 	/** Store any changes made to Engine fields in UI, into list */
 	void updateEngineData(int index);
+	/** Select engine file. */
+	QString selectEngineFile(const QString& path = "");
 
 signals:
 	/** Signal emitted when changes are applied. */
