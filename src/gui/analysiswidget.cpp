@@ -49,7 +49,7 @@ void AnalysisWidget::startEngine()
 void AnalysisWidget::stopEngine()
 {
 	ui.analyzeButton->setChecked(false);
-	ui.analyzeButton->setText(tr("Start"));
+	ui.analyzeButton->setText(tr("Analyze"));
 	if (m_engine) {
 		m_engine->deactivate();
 		delete m_engine;
