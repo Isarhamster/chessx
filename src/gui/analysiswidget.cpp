@@ -92,7 +92,7 @@ void AnalysisWidget::slotReconfigure()
 		ui.engineList->setCurrentIndex(index);
 	else {
 		ui.engineList->setCurrentIndex(0);
-		startEngine();
+		stopEngine();
 	}
 }
 
