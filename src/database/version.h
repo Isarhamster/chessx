@@ -7,5 +7,5 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-const QString ChessXVersion = "0.7-SVN";
-const uint ChessXVersionNumber = 690;
+const QString ChessXVersion = "0.7";
+const uint ChessXVersionNumber = 700;
