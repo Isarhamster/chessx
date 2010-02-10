@@ -25,7 +25,6 @@ class BoardView;
 class Game;
 class Database;
 class DatabaseInfo;
-class TipOfDayDialog;
 class Tablebase;
 class EcoThread;
 class AnalysisWidget;
@@ -84,8 +83,6 @@ protected:
 	/** Save Game dialog (created when used first) */
 	SaveDialog* saveDialog();
 	/** Help window (created when used first) */
-	TipOfDayDialog* tipDialog();
-	/** Help window (created when used first) */
 	HelpWindow* helpWindow();
 public slots:
 	void slotPlayerDialog();
@@ -103,8 +100,6 @@ public slots:
 	void slotConfigure();
 	/** Display help */
 	void slotHelp();
-	/** Show tip of the day */
-	void slotHelpTip();
 	/** About ChessX */
 	void slotHelpAbout();
 	/** Display Tracker at ChessX SourceForge */
@@ -249,7 +244,6 @@ private:
 	GameList* m_gameList;
 	SaveDialog* m_saveDialog;
 	HelpWindow* m_helpWindow;
-	TipOfDayDialog* m_tipDialog;
 	/* Main gui parts */
 	BoardView* m_boardView;
 	QSplitter* m_boardSplitter;

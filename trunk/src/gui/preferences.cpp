@@ -218,9 +218,6 @@ void PreferencesDialog::restoreSettings()
 	ui.quitCheck->setChecked(AppSettings->value("confirmQuit", true).toBool());
 	ui.tablebaseCheck->setChecked(AppSettings->value("onlineTablebases", true).toBool());
 	AppSettings->endGroup();
-	AppSettings->beginGroup("/Tips/");
-	ui.tipCheck->setChecked(AppSettings->value("showTips", true).toBool());
-	AppSettings->endGroup();
 	AppSettings->beginGroup("/Board/");
 	ui.boardFrameCheck->setChecked(AppSettings->value("showFrame", true).toBool());
 	ui.guessMoveCheck->setChecked(AppSettings->value("guessMove", true).toBool());
@@ -266,9 +263,6 @@ void PreferencesDialog::saveSettings()
 	AppSettings->beginGroup("/General/");
 	AppSettings->setValue("confirmQuit", ui.quitCheck->isChecked());
 	AppSettings->setValue("onlineTablebases", ui.tablebaseCheck->isChecked());
-	AppSettings->endGroup();
-	AppSettings->beginGroup("/Tips/");
-	AppSettings->setValue("showTips", ui.tipCheck->isChecked());
 	AppSettings->endGroup();
 	AppSettings->beginGroup("/Board/");
 	AppSettings->setValue("showFrame", ui.boardFrameCheck->isChecked());

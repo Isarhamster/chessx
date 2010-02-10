@@ -82,7 +82,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -434,20 +434,13 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QCheckBox" name="tipCheck">
-         <property name="text">
-          <string>Show Tip of the day on startup</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
         <widget class="QCheckBox" name="quitCheck">
          <property name="text">
           <string>Confirm before quit</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="2" column="0">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -526,7 +519,6 @@
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>tablebaseCheck</tabstop>
-  <tabstop>tipCheck</tabstop>
   <tabstop>quitCheck</tabstop>
   <tabstop>pieceThemeCombo</tabstop>
   <tabstop>boardThemeCombo</tabstop>
