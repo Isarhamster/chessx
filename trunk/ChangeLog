@@ -1,3 +1,19 @@
+Wed 10 Feb 2010, 01:40:00 CET Version 0.7
+
+	* bugfix: do not crash when removing engines
+	* bugfix: no problems with more than 10 engines
+	* bugfix: do not stop running engine on minimize/hide
+	* usability: browse for executable when adding new engines
+	* bugfix: correctly display NAGs below the board
+	* bugfix: correctly truncate previous moves
+	* feature: global shortcut F2 to start/stop engine
+	* change: speedup by canceling previous OpeningTree search before the next
+	* bugfix: ignore clicks on illegal OpeningTree moves like [end]
+	* feature: make editable PGN size limit configurable
+	* feature: show progress bar when opening/saving files
+	* feature: show progress bar for OpeningTree
+	* feature: promote variation
+
 Wed 1 Jul 2009, 00:50:22 CET Version 0.6
 
 	* feature: warn when quitting with unsaved databases
