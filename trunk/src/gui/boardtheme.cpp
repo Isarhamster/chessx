@@ -1,8 +1,8 @@
 /***************************************************************************
-                          BoardTheme - graphics theme for BoardView
-                             -------------------
-    begin                : nie sie 21 2005
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+								  BoardTheme - graphics theme for BoardView
+									  -------------------
+	 begin                : nie sie 21 2005
+	 copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -126,7 +126,7 @@ void BoardTheme::configure()
 {
 	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
 	int pieceEffect = AppSettings->value("pieceEffect", Shadow).toInt();
-	QString boardTheme = AppSettings->value("boardTheme", "slate").toString();
+	QString boardTheme = AppSettings->value("boardTheme", "aluminium").toString();
 
 	if (!loadPieces(pieceTheme, pieceEffect))
 		if (!loadPieces(pieceTheme, Plain))
@@ -164,8 +164,8 @@ void BoardTheme::updateSquares()
 	if (!isValid())
 		return;
 	bool scale = m_size.width() > m_originalPiece[WhiteRook].width()
-		     || m_size.height() > m_originalPiece[WhiteRook].height()
-		     || m_size.width() < 30 || m_size.height() < 30;
+			  || m_size.height() > m_originalPiece[WhiteRook].height()
+			  || m_size.width() < 30 || m_size.height() < 30;
 	if (isBoardPlain()) {
 		m_square[0] = QPixmap(m_size);
 		m_square[0].fill(color(LightSquare).rgb());
