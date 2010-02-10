@@ -1,8 +1,8 @@
 /***************************************************************************
-                      BoardView - view of the current board
-                             -------------------
-    begin                : Sun 21 Aug 2005
-    copyright            : (C) 2005-2007 Michal Rudolf <mrudolf@kdewebdev.org>
+							 BoardView - view of the current board
+									  -------------------
+	 begin                : Sun 21 Aug 2005
+	 copyright            : (C) 2005-2007 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -97,7 +97,7 @@ void BoardView::paintEvent(QPaintEvent* event)
 			pen.setJoinStyle(Qt::MiterJoin);
 			p.setPen(pen);
 			p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
-				   m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
+					m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
 		}
 		if (m_showFrame) {
 			p.setPen(m_theme.color(BoardTheme::Frame));
@@ -174,7 +174,7 @@ void BoardView::showGuess(Square s)
 			update(squareRect(m_hito));
 		} else {
 			Guess::Result sm = Guess::guessMove(
-						   qPrintable(m_board.toFen()), (int) s);
+							qPrintable(m_board.toFen()), (int) s);
 			if (!sm.error) {
 				m_hifrom = sm.from;
 				m_hito = sm.to;
@@ -302,8 +302,6 @@ void BoardView::configure()
 	m_theme.setColor(BoardTheme::Highlight, AppSettings->value("highlightColor",
 			 "#ffff00").value<QColor>());
 	m_theme.setColor(BoardTheme::Frame, AppSettings->value("frameColor", "#000000").value<QColor>());
-	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
-	QString boardTheme = AppSettings->value("boardTheme", "merida").toString();
 	m_theme.configure();
 	AppSettings->endGroup();
 	removeGuess();
@@ -336,7 +334,7 @@ QRect BoardView::squareRect(Square square)
 	int x = isFlipped() ? 7 - square % 8 : square % 8;
 	int y = isFlipped() ? square / 8 : 7 - square / 8;
 	return QRect(QPoint(x * m_theme.size().width(), y * m_theme.size().height()),
-		     m_theme.size());
+			  m_theme.size());
 }
 
 bool BoardView::canDrag(Square s) const

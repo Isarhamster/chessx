@@ -223,7 +223,7 @@ void PreferencesDialog::restoreSettings()
 	ui.guessMoveCheck->setChecked(AppSettings->value("guessMove", true).toBool());
 	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
 	ui.pieceEffect->setCurrentIndex(AppSettings->value("pieceEffect", 2).toInt());
-	QString boardTheme = AppSettings->value("boardTheme", "slate").toString();
+	QString boardTheme = AppSettings->value("boardTheme", "aluminium").toString();
 	AppSettings->endGroup();
 
 	QString themeDir(AppSettings->dataPath() + "/themes");
