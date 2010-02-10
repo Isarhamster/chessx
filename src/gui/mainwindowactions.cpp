@@ -29,7 +29,6 @@
 #include "settings.h"
 #include "tablebase.h"
 #include "tableview.h"
-#include "tipoftheday.h"
 #include "analysiswidget.h"
 #include "version.h"
 
@@ -204,11 +203,6 @@ void MainWindow::slotEditBoard()
 void MainWindow::slotHelp()
 {
 	helpWindow()->show();
-}
-
-void MainWindow::slotHelpTip()
-{
-	tipDialog()->show();
 }
 
 void MainWindow::slotHelpBug()

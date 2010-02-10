@@ -29,12 +29,11 @@
 #include "settings.h"
 #include "tablebase.h"
 #include "tableview.h"
-#include "tipoftheday.h"
 #include "analysiswidget.h"
 #include <time.h>
 
 MainWindow::MainWindow() : QMainWindow(),
-		m_playerDialog(0), m_saveDialog(0), m_helpWindow(0), m_tipDialog(0),
+		m_playerDialog(0), m_saveDialog(0), m_helpWindow(0),
 		m_showPgnSource(false)
 {
 	setObjectName("MainWindow");
@@ -186,12 +185,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	updateMenuDatabases();
 	slotDatabaseChanged();
 
-	/* Tip of the day */
-	AppSettings->beginGroup("/Tips/");
-	if (AppSettings->value("showTips", true).toBool())
-		slotHelpTip();
-	AppSettings->endGroup();
-
 	/* Load ECO file */
 	slotStatusMessage(tr("Loading ECO file..."));
 	qApp->setOverrideCursor(Qt::WaitCursor);
@@ -216,7 +209,6 @@ MainWindow::~MainWindow()
 	delete m_playerDialog;
 	delete m_helpWindow;
 	delete m_output;
-	delete m_tipDialog;
 	delete m_tablebase;
 }
 
@@ -435,13 +427,6 @@ HelpWindow* MainWindow::helpWindow()
 	return m_helpWindow;
 }
 
-TipOfDayDialog* MainWindow::tipDialog()
-{
-	if (!m_tipDialog)
-		m_tipDialog = new TipOfDayDialog(this);
-	return m_tipDialog;
-}
-
 void MainWindow::showTablebaseMove(Move move, int score)
 {
 	QString result;
@@ -572,7 +557,6 @@ void MainWindow::setupActions()
 	menuBar()->addSeparator();
 	QMenu *help = menuBar()->addMenu(tr("&Help"));
 //  help->addAction(createAction(tr("ChessX &help..."), SLOT(slotHelp()), Qt::CTRL + Qt::Key_F1));
-	help->addAction(createAction(tr("&Tip of the day"), SLOT(slotHelpTip())));
 	help->addAction(createAction(tr("&Report a bug..."), SLOT(slotHelpBug())));
 	help->addSeparator();
 	help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout())));
