@@ -133,6 +133,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_menuView->addAction(dock->toggleViewAction());
 	connect(dock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
 	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
+	dock->hide();
 
 	/* Analysis Dock */
 	QDockWidget* analysisDock = new QDockWidget(tr("Analysis"), this);
@@ -148,6 +149,7 @@ MainWindow::MainWindow() : QMainWindow(),
 			  SLOT(slotGameAnalysisStop(bool)));
 	m_menuView->addAction(analysisDock->toggleViewAction());
 	analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_A);
+	analysisDock->hide();
 
 	/* Randomize */
 	srand(time(0));
