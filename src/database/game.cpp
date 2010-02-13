@@ -151,16 +151,17 @@ MoveId Game::addVariation(const MoveList& moveList, const QString& annotation)
 		return NO_MOVE;
 	MoveId currentPosition = currentMove();
 	MoveId varStart;
-	int start = 0;
-	if (atGameEnd() && ! atGameStart()) {
+	int start = 1;
+	if (!atGameEnd()) {
+		varStart = addVariation(moveList.first());
+	}
+	else if (!atGameStart()) {
 		Move oldMove = move();
 		backward();
 		varStart = addVariation(oldMove);
+		start = 0;
 	}
-	else {
-		varStart = addVariation(moveList.first());
-		start = 1;
-	}
+	else varStart = addMove(moveList.first());
 	moveToId(varStart);
 	for (int i = start; i < moveList.count(); i++) {
 		addMove(moveList[i]);
@@ -303,7 +304,7 @@ bool Game::atLineStart(MoveId moveId) const
 
 bool Game::atGameStart(MoveId moveId) const
 {
-	return (moveId == 0);
+	return (nodeValid(moveId) == 0);
 }
 
 bool Game::atGameEnd(MoveId moveId) const
