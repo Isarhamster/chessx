@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>PlayerDialog</class>
- <widget class="QDialog" name="PlayerDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="PlayerDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,48 +10,48 @@
     <height>544</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string>Player Database</string>
+  <property name="windowTitle">
+   <string>Player Information</string>
   </property>
-  <layout class="QGridLayout" >
-   <item row="0" column="0" >
-    <widget class="QTabWidget" name="tabs" >
-     <property name="tabPosition" >
+  <layout class="QGridLayout">
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabs">
+     <property name="tabPosition">
       <enum>QTabWidget::West</enum>
      </property>
-     <property name="tabShape" >
+     <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
-     <property name="currentIndex" >
+     <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="playerWidget" >
-      <attribute name="title" >
+     <widget class="QWidget" name="playerWidget">
+      <attribute name="title">
        <string>&amp;Players</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <item row="0" column="0" >
-        <widget class="QLabel" name="label" >
-         <property name="text" >
+      <layout class="QGridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
           <string>&amp;Find:</string>
          </property>
-         <property name="buddy" >
+         <property name="buddy">
           <cstring>filterEdit</cstring>
          </property>
         </widget>
        </item>
-       <item row="0" column="1" colspan="2" >
-        <widget class="QLineEdit" name="filterEdit" />
+       <item row="0" column="1" colspan="2">
+        <widget class="QLineEdit" name="filterEdit"/>
        </item>
-       <item row="1" column="0" colspan="4" >
-        <widget class="QListView" name="playersView" />
+       <item row="1" column="0" colspan="4">
+        <widget class="QListView" name="playersView"/>
        </item>
-       <item row="2" column="1" >
+       <item row="2" column="1">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
            <height>20</height>
@@ -58,42 +59,42 @@
          </property>
         </spacer>
        </item>
-       <item row="2" column="2" >
-        <widget class="QPushButton" name="showButton" >
-         <property name="text" >
+       <item row="2" column="2">
+        <widget class="QPushButton" name="showButton">
+         <property name="text">
           <string>&amp;Show player</string>
          </property>
-         <property name="default" >
+         <property name="default">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="2" column="3" >
-        <widget class="QPushButton" name="updateButton" >
-         <property name="text" >
+       <item row="2" column="3">
+        <widget class="QPushButton" name="updateButton">
+         <property name="text">
           <string>&amp;Update list</string>
          </property>
-         <property name="default" >
+         <property name="default">
           <bool>true</bool>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="infoWidget" >
-      <attribute name="title" >
+     <widget class="QWidget" name="infoWidget">
+      <attribute name="title">
        <string>&amp;Information</string>
       </attribute>
-      <layout class="QGridLayout" >
-       <item row="0" column="0" colspan="2" >
-        <widget class="QTextBrowser" name="playerView" />
+      <layout class="QGridLayout">
+       <item row="0" column="0" colspan="2">
+        <widget class="QTextBrowser" name="playerView"/>
        </item>
-       <item row="1" column="0" >
+       <item row="1" column="0">
         <spacer>
-         <property name="orientation" >
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
            <height>20</height>
@@ -101,12 +102,12 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="1" >
-        <widget class="QPushButton" name="updatePlayerButton" >
-         <property name="text" >
+       <item row="1" column="1">
+        <widget class="QPushButton" name="updatePlayerButton">
+         <property name="text">
           <string>&amp;Update player</string>
          </property>
-         <property name="default" >
+         <property name="default">
           <bool>true</bool>
          </property>
         </widget>
@@ -117,7 +118,7 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="6" />
+ <layoutdefault spacing="6" margin="6"/>
  <tabstops>
   <tabstop>filterEdit</tabstop>
   <tabstop>playersView</tabstop>
