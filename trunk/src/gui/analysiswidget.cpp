@@ -21,6 +21,8 @@ AnalysisWidget::AnalysisWidget()
 	ui.setupUi(this);
 	connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
 	connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(toggleAnalysis()));
+	connect(ui.variationText, SIGNAL(anchorClicked(QUrl)),
+			  SLOT(slotLinkClicked(QUrl)));
 	ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 }
 
@@ -96,9 +98,10 @@ void AnalysisWidget::slotReconfigure()
 	}
 }
 
-void AnalysisWidget::showAnalysis(const Analysis& analysis) const
+void AnalysisWidget::showAnalysis(const Analysis& analysis)
 {
 	ui.variationText->setText(analysis.toString(m_board));
+	m_analysis = analysis;
 }
 
 void AnalysisWidget::setPosition(const Board& board)
@@ -109,6 +112,12 @@ void AnalysisWidget::setPosition(const Board& board)
 		m_engine->startAnalysis(m_board);
 	}
 }
+
+void AnalysisWidget::slotLinkClicked(const QUrl&)
+{
+	emit addVariation(m_analysis);
+}
+
 
 bool AnalysisWidget::isAnalysisEnabled() const
 {

@@ -44,13 +44,18 @@ private slots:
 	/** Stop if analysis is no longer visible. */
 	void toggleAnalysis();
 	/** Displays given analysis received from an engine. */
-	void showAnalysis(const Analysis& analysis) const;
+	void showAnalysis(const Analysis& analysis);
 	/** The engine is now ready, as requested */
 	void engineActivated();
+	/** Add variation. */
+	void slotLinkClicked(const QUrl& link);
+signals:
+	void addVariation(const Analysis& analysis);
 private:
 	/** Should analysis be running. */
 	bool isAnalysisEnabled() const;
 
+	Analysis m_analysis;
 	Ui::AnalysisWidget ui;
 	Engine* m_engine;
 	bool m_active;

@@ -145,6 +145,23 @@ MoveId Game::addVariation(const Move& move, const QString& annotation, NagSet na
 	return (m_moveNodes.size() - 1);
 }
 
+MoveId Game::addVariation(const MoveList& moveList, const QString& annotation)
+{
+	if (moveList.isEmpty())
+		return NO_MOVE;
+	MoveId currentPosition = currentMove();
+	MoveId newVar = addVariation(moveList.first());
+	moveToId(newVar);
+	for (int i = 1; i < moveList.count(); i++) {
+		addMove(moveList[i]);
+		forward();
+	}
+	if (!annotation.isEmpty())
+		setAnnotation(annotation);
+	moveToId(currentPosition);
+	return newVar;
+}
+
 MoveId Game::addVariation(const QString& sanMove, const QString& annotation, NagSet nags)
 {
 	MoveId previousNode = m_currentNode;
