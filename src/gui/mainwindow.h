@@ -17,6 +17,7 @@
 #include "historylist.h"
 #include "output.h"
 
+class Analysis;
 class PlayerDialog;
 class GameList;
 class SaveDialog;
@@ -147,6 +148,8 @@ public slots:
 	void slotGameAnalysis();
 	/** Stop game analysis when analysis dock is hidden. */
 	void slotGameAnalysisStop(bool visible);
+	/** Add variation to current position. */
+	void slotGameAddVariation(const Analysis& analysis);
 	/** Filter was changed - update status bar information */
 	void slotFilterChanged();
 	/** Load given game (triggered from Game List) */

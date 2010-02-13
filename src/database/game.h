@@ -174,6 +174,9 @@ public :
 	MoveId addVariation(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Adds a move at the current position as a variation,
 	 * returns the move id of the added move */
+	MoveId addVariation(const MoveList& moveList, const QString& annotation = QString());
+	/** Adds a move at the current position as a variation,
+	 * returns the move id of the added move */
 	MoveId addVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Promotes the given variation to the main line, returns true if successful */
 	bool promoteVariation(MoveId variation);

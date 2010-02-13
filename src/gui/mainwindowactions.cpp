@@ -518,6 +518,13 @@ void MainWindow::slotGameAnalysisStop(bool visible)
 		m_analysis->stopEngine();
 }
 
+void MainWindow::slotGameAddVariation(const Analysis& analysis)
+{
+	game().addVariation(analysis.variation,
+								QString::number(analysis.score, 'g', 2));
+	slotGameChanged();
+}
+
 void MainWindow::slotFilterChanged()
 {
 	if (gameIndex() >= 0)

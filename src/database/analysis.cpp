@@ -42,6 +42,7 @@ QString Analysis::toString(const Board& board) const
 		white = !white;
 	}
 	out += qApp->tr(" (depth %1)").arg(depth);
+	out += " <a href=\"var\">[+]</a>";
 	return out;
 }
 

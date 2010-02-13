@@ -87,38 +87,38 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_boardSplitter->addWidget(m_moveView);
 
 	/* Game view */
-	QDockWidget* dock = new QDockWidget(tr("Game Text"), this);
-	dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-	dock->setObjectName("GameTextDock");
-	m_gameView = new ChessBrowser(dock, true);
+	QDockWidget* gameTextDock = new QDockWidget(tr("Game Text"), this);
+	gameTextDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+	gameTextDock->setObjectName("GameTextDock");
+	m_gameView = new ChessBrowser(gameTextDock, true);
 	m_gameView->setMinimumSize(150, 100);
 	m_gameView->slotReconfigure();
 	connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 	connect(m_gameView, SIGNAL(actionRequested(int, int)), SLOT(slotGameModify(int, int)));
 	connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_gameView, SLOT(slotDatabaseChanged(DatabaseInfo*)));
-	dock->setWidget(m_gameView);
-	addDockWidget(Qt::RightDockWidgetArea, dock);
-	m_menuView->addAction(dock->toggleViewAction());
-	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_P);
+	gameTextDock->setWidget(m_gameView);
+	addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
+	m_menuView->addAction(gameTextDock->toggleViewAction());
+	gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_P);
 
 	/* Game List */
-	dock = new QDockWidget(tr("Game List"), this);
-	dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
-	dock->setObjectName("GameList");
-	m_gameList = new GameList(databaseInfo()->filter(), dock);
+	QDockWidget* gameListDock = new QDockWidget(tr("Game List"), this);
+	gameListDock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+	gameListDock->setObjectName("GameList");
+	m_gameList = new GameList(databaseInfo()->filter(), gameListDock);
 	m_gameList->setMinimumSize(150, 100);
 	connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
 	connect(m_gameList, SIGNAL(searchDone()), SLOT(slotFilterChanged()));
-	dock->setWidget(m_gameList);
-	addDockWidget(Qt::BottomDockWidgetArea, dock);
-	m_menuView->addAction(dock->toggleViewAction());
-	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_L);
+	gameListDock->setWidget(m_gameList);
+	addDockWidget(Qt::BottomDockWidgetArea, gameListDock);
+	m_menuView->addAction(gameListDock->toggleViewAction());
+	gameListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_L);
 
 	/* Opening Tree */
-	dock = new QDockWidget(tr("Opening Tree"), this);
-	dock->setObjectName("OpeningTreeDock");
+	QDockWidget* openingDock = new QDockWidget(tr("Opening Tree"), this);
+	openingDock->setObjectName("OpeningTreeDock");
 	m_openingTree = new OpeningTree;
-	g_openingTree = new TableView(dock);
+	g_openingTree = new TableView(openingDock);
 	g_openingTree->setObjectName("OpeningTree");
 	g_openingTree->setMinimumSize(150, 100);
 	g_openingTree->setSortingEnabled(true);
@@ -128,12 +128,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(g_openingTree, SIGNAL(clicked(const QModelIndex&)),
 		SLOT(slotSearchTreeMove(const QModelIndex&)));
 	connect(m_openingTree, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
-	dock->setWidget(g_openingTree);
-	addDockWidget(Qt::RightDockWidgetArea, dock);
-	m_menuView->addAction(dock->toggleViewAction());
-	connect(dock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
-	dock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
-	dock->hide();
+	openingDock->setWidget(g_openingTree);
+	addDockWidget(Qt::RightDockWidgetArea, openingDock);
+	m_menuView->addAction(openingDock->toggleViewAction());
+	connect(openingDock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
+	openingDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
+	openingDock->hide();
 
 	/* Analysis Dock */
 	QDockWidget* analysisDock = new QDockWidget(tr("Analysis"), this);
@@ -142,6 +142,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_analysis = new AnalysisWidget;
 	analysisDock->setWidget(m_analysis);
 	addDockWidget(Qt::RightDockWidgetArea, analysisDock);
+	connect(m_analysis, SIGNAL(addVariation(Analysis)),
+			  SLOT(slotGameAddVariation(Analysis)));
 	connect(this, SIGNAL(boardChange(const Board&)), m_analysis, SLOT(setPosition(const Board&)));
 	connect(this, SIGNAL(reconfigure()), m_analysis, SLOT(slotReconfigure()));
 	// Make sure engine is disabled if dock is hidden
@@ -161,8 +163,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_boardSplitter->restoreState(AppSettings->value("BoardSplit").toByteArray());
 	AppSettings->endGroup();
 
-
-
 	/* Status */
 	m_statusFilter = new QLabel(statusBar());
 	statusBar()->addPermanentWidget(m_statusFilter);
@@ -176,6 +176,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	/* Display main window */
 	show();
+	m_moveView->resize(-1, 100);
 
 	/* Load files from command line */
 	QStringList args = qApp->arguments();
