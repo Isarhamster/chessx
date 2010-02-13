@@ -575,9 +575,6 @@ void MainWindow::setupActions()
 
 bool MainWindow::confirmQuit()
 {
-	if (AppSettings->value("/General/confirmQuit", true).toBool() &&
-			!MessageDialog::okCancel(this, tr("Do you want to quit?"), tr("Quit"), tr("Quit")))
-		return false;
 	QString modified;
 	for (int i = 1; i < m_databases.size(); i++)
 		if (m_databases[i]->database()->isModified())
