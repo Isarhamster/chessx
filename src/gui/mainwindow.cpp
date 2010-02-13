@@ -501,6 +501,15 @@ void MainWindow::setupActions()
 	edit->addSeparator();
 	edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure())));
 
+
+	/* View menu */
+	m_menuView = menuBar()->addMenu(tr("&View"));
+	QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
+	flip->setCheckable(true);
+	m_menuView->addAction(flip);
+	m_menuView->addAction(createAction(tr("&Player Database..."), SLOT(slotPlayerDialog()),
+						Qt::CTRL + Qt::SHIFT + Qt::Key_P));
+
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
 	QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
@@ -542,19 +551,12 @@ void MainWindow::setupActions()
 	m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
 	menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()),
 						  Qt::Key_F5));
-	QMenu* menuRemove = menuDatabase->addMenu(tr("Delete"));
-	menuRemove->addAction(createAction(tr("&Current game"), SLOT(slotDatabaseDeleteGame())));
-	menuRemove->addAction(createAction(tr("&Games in filter"), SLOT(slotDatabaseDeleteFilter())));
-	menuDatabase->addAction(createAction(tr("&Compact"), SLOT(slotDatabaseCompact())));
 
-	/* View menu */
-	m_menuView = menuBar()->addMenu(tr("&View"));
-	QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
-	flip->setCheckable(true);
-	m_menuView->addAction(flip);
-	m_menuView->addAction(createAction(tr("&Player Database..."), SLOT(slotPlayerDialog()),
-						Qt::CTRL + Qt::SHIFT + Qt::Key_P));
-
+//	Hidden until functional
+//	QMenu* menuRemove = menuDatabase->addMenu(tr("Delete"));
+//	menuRemove->addAction(createAction(tr("&Current game"), SLOT(slotDatabaseDeleteGame())));
+//	menuRemove->addAction(createAction(tr("&Games in filter"), SLOT(slotDatabaseDeleteFilter())));
+//	menuDatabase->addAction(createAction(tr("&Compact"), SLOT(slotDatabaseCompact())));
 
 	/* Help menu */
 	menuBar()->addSeparator();
