@@ -13,7 +13,7 @@
 void MainWindow::slotHelpAbout()
 {
 	QString fastbits = Board::fastbitsOption ? tr("Compiled with 'fastbits' option<br>") : "";
-	QMessageBox dialog(tr(""), tr("<h1>ChessX</h1>"
+	QMessageBox dialog(tr("About ChessX"), tr("<h1>ChessX</h1>"
 						"<p>Free chess database available under GPLv2.<br>Version %1<br>%2"
 				      "Copyright 2005-2010 ChessX developers"
 				      "<p>Current developer and maintainer: Michal Rudolf <a href=\"mailto:mrudolf"
