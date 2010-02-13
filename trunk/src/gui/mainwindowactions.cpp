@@ -604,7 +604,7 @@ void MainWindow::slotDatabaseCopy()
 
 void MainWindow::slotDatabaseChanged()
 {
-	setWindowTitle(tr("ChessX - %1").arg(databaseName()));
+	setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
 	m_gameList->setFilter(databaseInfo()->filter());
 	slotFilterChanged();
 	gameLoad(gameIndex(), true, true);
