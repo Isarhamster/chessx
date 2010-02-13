@@ -215,7 +215,6 @@ void PreferencesDialog::restoreSettings()
 
 	// Read Board settings
 	AppSettings->beginGroup("/General/");
-	ui.quitCheck->setChecked(AppSettings->value("confirmQuit", true).toBool());
 	ui.tablebaseCheck->setChecked(AppSettings->value("onlineTablebases", true).toBool());
 	AppSettings->endGroup();
 	AppSettings->beginGroup("/Board/");
@@ -261,7 +260,6 @@ void PreferencesDialog::restoreSettings()
 void PreferencesDialog::saveSettings()
 {
 	AppSettings->beginGroup("/General/");
-	AppSettings->setValue("confirmQuit", ui.quitCheck->isChecked());
 	AppSettings->setValue("onlineTablebases", ui.tablebaseCheck->isChecked());
 	AppSettings->endGroup();
 	AppSettings->beginGroup("/Board/");
