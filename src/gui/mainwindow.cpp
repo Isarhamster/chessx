@@ -507,7 +507,7 @@ void MainWindow::setupActions()
 	QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
 	flip->setCheckable(true);
 	m_menuView->addAction(flip);
-	m_menuView->addAction(createAction(tr("&Player Database..."), SLOT(slotPlayerDialog()),
+	m_menuView->addAction(createAction(tr("&Player information..."), SLOT(slotPlayerDialog()),
 						Qt::CTRL + Qt::SHIFT + Qt::Key_P));
 
 	/* Game menu */
