@@ -13,36 +13,117 @@
 
 Analysis::Analysis()
 {
+	clear();
+}
+
+void Analysis::clear()
+{
+	m_score = m_msec = m_depth = m_mateIn = 0;
+	m_nodes = 0;
+	m_variation.clear();
+}
+
+
+bool Analysis::isValid() const
+{
+	return !m_variation.isEmpty() && m_depth > 0 && m_msec > 0;
+}
+
+int Analysis::time() const
+{
+	return m_msec;
+}
+
+void Analysis::setTime(int msec)
+{
+	m_msec = msec;
+}
+
+int Analysis::score() const
+{
+	return m_score;
+}
+
+void Analysis::setScore(int score)
+{
+	m_score = score;
+}
+
+int Analysis::depth() const
+{
+	return m_depth;
+}
+
+void Analysis::setDepth(int depth)
+{
+	m_depth = depth;
+}
+
+
+quint64 Analysis::nodes() const
+{
+	return m_nodes;
+}
+
+void Analysis::setNodes(quint64 nodes)
+{
+	m_nodes = nodes;
+}
+
+MoveList Analysis::variation() const
+{
+	return m_variation;
+}
+
+void Analysis::setVariation(const MoveList& variation)
+{
+	m_variation = variation;
+}
+
+bool Analysis::isMate() const
+{
+	return m_mateIn != 0;
+}
+
+int Analysis::movesToMate() const
+{
+	return m_mateIn;
+}
+
+void Analysis::setMovesToMate(int mate)
+{
+	m_mateIn = mate;
 }
 
 QString Analysis::toString(const Board& board) const
 {
 	Board testBoard = board;
 	QString out;
-	if (mateIn) {
-		int movesToMate = int(score);
-		QString color = movesToMate >= 0 ? "000080" : "800000";
+	if (isMate()) {
+		QString color = testBoard.toMove() == White ? "000080" : "800000";
 		QString text = qApp->tr("Mate in");
 		out = QString("<font color=\"#%1\"><b>%2 %3</b></font> ")
-				.arg(color).arg(text).arg(abs(movesToMate));
-	} else if (score >= 0.0)
-		out = QString("<font color=\"#000080\"><b>+%1</b></font> ").arg(score, 0, 'f', 2);
-	else out = QString("<font color=\"#800000\"><b>%1</b></font> ").arg(score, 0, 'f', 2);
+				.arg(color).arg(text).arg(movesToMate());
+	}
+	else if (score() > 0)
+		out = QString("<font color=\"#000080\"><b>+%1</b></font> ").arg(score() / 100.0, 0, 'f', 2);
+	else out = QString("<font color=\"#800000\"><b>%1</b></font> ").arg(score() / 100.0, 0, 'f', 2);
+
 	int moveNo = testBoard.moveNumber();
 	bool white = testBoard.toMove() == White;
-	for (int i = 0; i < variation.size(); ++i) {
+	QString moveText;
+	foreach (Move move, variation()) {
 		if (white)
-			out += QString::number(moveNo++) + ". ";
-		else  if (i == 0)
-			out += QString::number(moveNo++) + "... ";
-		const Move& m = variation[i];
-		out += testBoard.moveToSan(m);
-		out += " ";
-		testBoard.doMove(m);
+			moveText += QString::number(moveNo++) + ". ";
+		else  if (moveText.isEmpty())
+			moveText += QString::number(moveNo++) + "... ";
+		moveText += testBoard.moveToSan(move);
+		moveText += " ";
+		testBoard.doMove(move);
 		white = !white;
 	}
-	out += qApp->tr(" (depth %1)").arg(depth);
+	out += moveText;
+	out += qApp->tr(" (depth %1)").arg(depth());
 	out += " <a href=\"var\">[+]</a>";
 	return out;
 }
-

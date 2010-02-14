@@ -169,48 +169,46 @@ void WBEngine::parseAnalysis(const QString& message)
 {
 	QString trimmed = message.simplified();
 	Analysis analysis;
-	analysis.mateIn = false;
 	bool ok;
 	bool timeInSeconds = false;
 
 	//Depth
 	QString depth = trimmed.section(' ', 0, 0);
-	analysis.depth = depth.toInt(&ok);
+	analysis.setDepth(depth.toInt(&ok));
 	if (!ok) {
 		depth.truncate(depth.length() - 1);
-		analysis.depth = depth.toInt(&ok);
-		if (!ok) {
+		analysis.setDepth(depth.toInt(&ok));
+		if (!ok)
 			return;
-		}
 		timeInSeconds = true;
 	}
 
 	//Score
-	analysis.score = (float)trimmed.section(' ', 1, 1).toInt(&ok) / 100;
-	if (!ok) {
+	int score = trimmed.section(' ', 1, 1).toInt(&ok);
+	if (!ok)
 		return;
-	}
 	if (m_invertBlack && m_board.toMove() == Black)
-		analysis.score *= -1;
+		score = -score;
+	analysis.setScore(score);
 
 	//Time
-	analysis.time = trimmed.section(' ', 2, 2).toInt(&ok);
-	if (!ok) {
+	int time = trimmed.section(' ', 2, 2).toInt(&ok);
+	if (!ok)
 		return;
-	}
-	if (!timeInSeconds) {
-		analysis.time /= 100;
-	}
+	if (timeInSeconds)
+		time = time * 1000;
+	else time *= 10;
+	analysis.setTime(time);
 
 	//Node
-	analysis.nodes = trimmed.section(' ', 3 , 3).toLongLong(&ok);
-	if (!ok) {
+	analysis.setNodes(trimmed.section(' ', 3 , 3).toLongLong(&ok));
+	if (!ok)
 		return;
-	}
 
 	//Variation
 	Board board = m_board;
 	QString sanMove;
+	MoveList moves;
 	int section = 4;
 	while ((sanMove = trimmed.section(' ', section, section)) != "") {
 		if (sanMove.startsWith("(")) {
@@ -225,16 +223,14 @@ void WBEngine::parseAnalysis(const QString& message)
 				break;
 			}
 			board.doMove(move);
-			analysis.variation.append(move);
+			moves.append(move);
 		}
 		section++;
 	}
+	analysis.setVariation(moves);
 
-	sendAnalysis(analysis);
-//	qWarning("! depth = %d", analysis.depth);
-//	qWarning("! score = %g", analysis.score);
-//	qWarning("! time = %g", analysis.time);
-//	qWarning("! nodes = %ld", (long)analysis.nodes);
+	if (analysis.isValid())
+		sendAnalysis(analysis);
 }
 
 void WBEngine::v1TurnOffPondering()
