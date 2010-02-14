@@ -21,15 +21,46 @@ class Analysis
 {
 public:
 	 Analysis();
+	 /** Reset values. */
+	 void clear();
+	  /** Check if analysis is valid. */
+	 bool isValid() const;
+	 /** Time elapsed in miliseconds. */
+	 int time() const;
+	 /** Set time in miliseconds. */
+	 void setTime(int msec);
+	 /** Evaluation in centipawns. */
+	 int score() const;
+	 /** Set evaluation in centipawns. */
+	 void setScore(int score);
+	 /** Depth in plies. */
+	 int depth() const;
+	 /** Set depth in plies. */
+	 void setDepth(int depth);
+	 /** Nodes spent on analysis. */
+	 quint64 nodes() const;
+	 /** Set nodes spent on analysis. */
+	 void setNodes(quint64 nodes);
+	 /** Main variation. */
+	 MoveList variation() const;
+	 /** Set main variation. */
+	 void setVariation(const MoveList& variation);
+	 /** Is mate. */
+	 bool isMate() const;
+	 /** @return moves to mate */
+	 int movesToMate() const;
+	 /** Set moves to mate. */
+	 void setMovesToMate(int mate);
+	 /** Moves to mate. */
 	 /** Convert analysis to formatted text. */
-	 QString toString(const Board& board) const;
-	 float time;
-	 quint64 nodes;
-	 int depth;
-	 float score;
-	 MoveList variation;
-	 bool mateIn;
-
+	QString toString(const Board& board) const;
+private:
+	 int m_msec;
+	 int m_mateIn;
+	 int m_depth;
+	 int m_score;
+	 quint64 m_nodes;
+	 MoveList m_variation;
 };
 
 #endif // ANALYSIS_H

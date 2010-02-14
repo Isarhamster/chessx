@@ -102,17 +102,9 @@ void UCIEngine::processMessage(const QString& message)
 
 void UCIEngine::parseAnalysis(const QString& message)
 {
-	/*
-			float time;
-			Q_UINT64 nodes;
-			int depth;
-			float score;
-			QString variation;
+	// Sample: info score cp 20  depth 3 nodes 423 time 15 pv f1c4 g8f6 b1c3
 
-			info score cp 20  depth 3 nodes 423 time 15 pv f1c4 g8f6 b1c3
-	*/
 	Analysis analysis;
-	analysis.mateIn = false;
 	bool timeFound, nodesFound, depthFound, scoreFound, variationFound;
 	timeFound = nodesFound = depthFound = scoreFound = variationFound = false;
 
@@ -125,10 +117,8 @@ void UCIEngine::parseAnalysis(const QString& message)
 	while (info.section(' ', section, section + 1) != "") {
 		name = info.section(' ', section, section);
 
-		//Time
 		if (name == "time") {
-			analysis.time = info.section(' ', section + 1, section + 1).toInt(&ok);
-			analysis.time /= 1000;
+			analysis.setTime(info.section(' ', section + 1, section + 1).toInt(&ok));
 			section += 2;
 			if (ok) {
 				timeFound = true;
@@ -136,10 +126,8 @@ void UCIEngine::parseAnalysis(const QString& message)
 			}
 		}
 
-		//Nodes
 		if (name == "nodes") {
-			analysis.nodes = info.section(' ', section + 1,
-						      section + 1).toLongLong(&ok);
+			analysis.setNodes(info.section(' ', section + 1, section + 1).toLongLong(&ok));
 			section += 2;
 			if (ok) {
 				nodesFound = true;
@@ -147,9 +135,8 @@ void UCIEngine::parseAnalysis(const QString& message)
 			}
 		}
 
-		//Depth
 		if (name == "depth") {
-			analysis.depth = info.section(' ', section + 1, section + 1).toInt(&ok);
+			analysis.setDepth(info.section(' ', section + 1, section + 1).toInt(&ok));
 			section += 2;
 			if (ok) {
 				depthFound = true;
@@ -157,57 +144,47 @@ void UCIEngine::parseAnalysis(const QString& message)
 			}
 		}
 
-		//Score
 		if (name == "score") {
 			QString type = info.section(' ', section + 1, section + 1);
 			if (type == "cp" || type == "mate") {
-				analysis.score = info.section(' ', section + 2, section + 2).toInt(&ok);
-				if (type == "mate") {
-					analysis.mateIn = true;
-				} else	analysis.score /= 100;
-				if (m_invertBlack && m_board.toMove() == Black)
-					analysis.score *= -1;
+				int score = info.section(' ', section + 2, section + 2).toInt(&ok);
+				if (type == "mate")
+					analysis.setMovesToMate(abs(score));
+				else if (m_invertBlack && m_board.toMove() == Black)
+					analysis.setScore(-score);
+				else analysis.setScore(score);
 				section += 3;
 				if (ok) {
 					scoreFound = true;
 					continue;
 				}
-			} else {
-				section += 3;
 			}
+			else section += 3;
 		}
 
-		//PV
 		if (name == "pv") {
-
 			Board board = m_board;
-
-			QString lanMove;
+			MoveList moves;
+			QString moveText;
 			section++;
-			while ((lanMove = info.section(' ', section, section)) != "") {
+			while ((moveText = info.section(' ', section, section)) != "") {
 //				qWarning("! move: |%s|", lanMove.toLatin1().constData());
-				Move move = board.parseMove(lanMove);
+				Move move = board.parseMove(moveText);
 				if (!move.isLegal()) {
 //					qWarning("Variation parsing failed\n");
 					break;
 				}
 				board.doMove(move);
-				analysis.variation.append(move);
+				moves.append(move);
 				section++;
 			}
-			// break;
-			//analysis.variation.append();
+			analysis.setVariation(moves);
 		}
 
 		//not understood, skip
 		section += 2;
 	}
 
-	if (timeFound && nodesFound && depthFound && scoreFound && analysis.variation.size()) {
+	if (timeFound && nodesFound && scoreFound && analysis.isValid())
 		sendAnalysis(analysis);
-//		qWarning("! depth = %d\n", analysis.depth);
-//		qWarning("! score = %g\n", analysis.score);
-//		qWarning("! time = %g\n", analysis.time);
-//		qWarning("! nodes = %ld\n", (long)analysis.nodes);
-	}
 }

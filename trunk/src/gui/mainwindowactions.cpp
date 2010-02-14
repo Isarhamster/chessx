@@ -520,8 +520,8 @@ void MainWindow::slotGameAnalysisStop(bool visible)
 
 void MainWindow::slotGameAddVariation(const Analysis& analysis)
 {
-	game().addVariation(analysis.variation,
-								QString::number(analysis.score, 'g', 2));
+	game().addVariation(analysis.variation(),
+								QString::number(analysis.score() / 100.0, 'f', 2));
 	slotGameChanged();
 }
 
