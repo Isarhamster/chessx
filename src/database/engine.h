@@ -76,6 +76,9 @@ signals:
 	/** Fired when the engine is deactivated */
 	void deactivated();
 
+	/** Fired when the engine is deactivated */
+	void error();
+
 	/** Fired when analysis starts */
 	void analysisStarted();
 
@@ -118,6 +121,9 @@ private slots:
 
 	/** Performs any initialisation required by the engine protocol */
 	virtual void protocolStart() = 0;
+
+	/** Processes messages from the chess engine */
+	void processError();
 
 private:
 	QString m_name;

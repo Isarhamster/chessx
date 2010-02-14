@@ -47,6 +47,8 @@ private slots:
 	void showAnalysis(const Analysis& analysis);
 	/** The engine is now ready, as requested */
 	void engineActivated();
+	/** There was an error while running engine. */
+	void engineError();
 	/** Add variation. */
 	void slotLinkClicked(const QUrl& link);
 signals:
