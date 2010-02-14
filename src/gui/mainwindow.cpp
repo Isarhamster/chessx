@@ -176,7 +176,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	/* Display main window */
 	show();
-	m_moveView->resize(-1, 100);
 
 	/* Load files from command line */
 	QStringList args = qApp->arguments();
