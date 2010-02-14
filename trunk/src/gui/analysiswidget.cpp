@@ -14,6 +14,7 @@
 #include "enginelist.h"
 
 #include <QShowEvent>
+#include <QMessageBox>
 
 AnalysisWidget::AnalysisWidget()
 		: m_engine(0)
@@ -41,6 +42,7 @@ void AnalysisWidget::startEngine()
 		ui.variationText->clear();
 		m_engine = Engine::newEngine(index);
 		connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
+		connect(m_engine, SIGNAL(error()), SLOT(engineError()));
 		connect(m_engine, SIGNAL(analysisUpdated(const Analysis&)),
 				  SLOT(showAnalysis(const Analysis&)));
 		m_engine->activate();
@@ -55,7 +57,7 @@ void AnalysisWidget::stopEngine()
 	if (m_engine) {
 		m_engine->deactivate();
 		delete m_engine;
-		m_engine = NULL;
+		m_engine = 0;
 	}
 }
 
@@ -69,6 +71,16 @@ void AnalysisWidget::engineActivated()
 	ui.analyzeButton->setChecked(true);
 	ui.analyzeButton->setText(tr("Stop"));
 	m_engine->startAnalysis(m_board);
+}
+
+void AnalysisWidget::engineError()
+{
+	QMessageBox::warning(this, tr("Error"),
+						 tr("There was an error running engine <b>%1</b>.")
+						 .arg(ui.engineList->currentText()));
+	delete m_engine;
+	m_engine = 0;
+	stopEngine();
 }
 
 void AnalysisWidget::toggleAnalysis()

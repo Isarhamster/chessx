@@ -31,9 +31,6 @@ Engine::Engine(const QString& name,
 
 Engine* Engine::newEngine(int index)
 {
-//	QTextStream* ts = new QTextStream(stderr);
-//	m_engine = new WBEngine(name, "crafty", ts);
-//
 	Engine *engine = NULL;
 
 	QStringList engines;
@@ -85,6 +82,7 @@ void Engine::activate()
 	if (!m_directory.isEmpty())
 		m_process->setWorkingDirectory(m_directory);
 	connect(m_process, SIGNAL(started()), SLOT(protocolStart()));
+	connect(m_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError()));
 	connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(pollProcess()));
 	connect(m_process, SIGNAL(finished(int, QProcess::ExitStatus)), SLOT(processExited()));
 	m_process->start(m_command);
@@ -163,6 +161,11 @@ void Engine::pollProcess()
 		}
 		processMessage(message);
 	}
+}
+
+void Engine::processError()
+{
+	emit error();
 }
 
 void Engine::processExited()
