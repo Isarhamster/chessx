@@ -1,64 +1,71 @@
 TODO for 0.5 (Next release, technical)
-    * Cleanup MessageBoxes (use text instead of Yes/No)
-    * Cleanup QFileDialogs (add default suffix etc.)
-    * Improve header search speed
-    * Add progress for open/search
-    * Add header search dialog
-    * Clean up themes (separate pieces and board)
-    * Clean up DatabaseInfo class
-    
+* Cleanup MessageBoxes (use text instead of Yes/No)
+* Cleanup QFileDialogs (add default suffix etc.)
+* Improve header search speed
+* Add progress for open/search
+* Add header search dialog
+* Clean up themes (separate pieces and board)
+* Clean up DatabaseInfo class
+
 
 TODO for 1.0 (Stable PGN-based version)
-   * Toolbar
-      - graphics
-      - configuration
-   * GameView
-      - add custom tags to GameView
-      - make GameView tags configurable (color, font)
-      - make moves and tags clickable
-      - cleanup on database close
-   * Searches
-      - enhanced header search
-      - board search (+variants)
-      - material search
-   * Engine
-      - GUI
-      - starting analysis
-      - configuring engines
-      - autoconfiguring engines
-   * Game editing
-      - saving game
-      - modifying NAGs
-      - modifying comments
-      - editing variations
-      - detecting & handling modified game
-      - ECO classifier
-   * MainWindow
-      - menus->actions (possible toolbars)
-      - actions handling/creating->mainactions.cpp
-      - configurable key shortcuts
-   * Databases
-      - OpenDatabase class
-   * File browser
-      - display file info
-      - recursively find database files
+* Toolbar
+	- graphics
+	- configuration
+* GameView
+	- display custom tags in GameView
+	- make GameView tags configurable (color, font)
+	- make tags clickable
+* BoardView
+	- optional coordinates
+* Searches
+	- simple header search
+* Game editing
+	- adding/modifying NAGs
+	- modifying comments
+	- detecting & handling modified game
+
+
+TODO for 1.5 (Extended PGN-based version)
+* File browser
+	- display file info
+	- recursively find database files
+* Searches
+	- enhanced header search
+	- board search (+variants)
+	- material search
+* BoardView
+	- optional last move highlight
+	- move animation
+* Engines
+	- display MultiPV
+	- configuring engines
+	- autoconfiguring engines
+* MainWindow
+	- configurable key shortcuts
+
+
+
+
+
+
 
 
 TODO for 2.0 (Stable Native-based version)
-   * Native database format
-   * Game sorting
-   * Spellchecking
-   * Playing/training against engine
-   * Annotation/Blunder check
-   * Tournament tables
-   * ELO rating calculation
-   * ECO Browser
+* Native database format
+* Game sorting
+* Spellchecking
+* Playing/training against engine
+* Annotation/Blunder check
+* Tournament tables
+* ELO rating calculation
+* ECO Browser
 
 
 TODO - Ideas/Suggestions. Non critical
-   * Ideas for database switching. 
-      - Database window like Scid
-      - Dockable toolbar with a tool button for each database (My favourite idea)
-      - Tab bar with a tab for each database
-   * Format for electronic books
-   * Format for exercises, tactics/endgmae training etc.
+* Ideas for database switching.
+	- Database window like Scid
+	- Dockable toolbar with a tool button for each database (My favourite idea)
+	- Tab bar with a tab for each database
+* Format for electronic books
+* Format for exercises, tactics/endgmae training etc.
