@@ -73,19 +73,19 @@ bool compareMove(const MoveData& m1, const MoveData& m2)
 bool compareScore(const MoveData& m1, const MoveData& m2)
 {
 	return m1.percentage() < m2.percentage() ||
-	       (m1.percentage() == m2.percentage() && m1.move < m2.move);
+			 (m1.percentage() == m2.percentage() && m1.move < m2.move);
 }
 
 bool compareRating(const MoveData& m1, const MoveData& m2)
 {
 	return m1.averageRating() < m2.averageRating() ||
-	       (m1.averageRating() == m2.averageRating() && m1.move < m2.move);
+			 (m1.averageRating() == m2.averageRating() && m1.move < m2.move);
 }
 
 bool compareYear(const MoveData& m1, const MoveData& m2)
 {
 	return m1.averageYear() < m2.averageYear() ||
-	       (m1.averageYear() == m2.averageYear() && m1.move < m2.move);
+			 (m1.averageYear() == m2.averageYear() && m1.move < m2.move);
 }
 
 
@@ -176,13 +176,13 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
 		return QVariant();
 	switch (index.column()) {
 	case 0: return QString("%1: %2").arg(index.row() + 1).arg(m_moves[index.row()].move);
-	case 1: return QString("%1: %2%").arg(m_moves[index.row()].count)
-			       .arg(m_moves[index.row()].count * 1000 / m_games / 10.0);
+	case 1: return m_games == 0 ? "" : QString("%1: %2%").arg(m_moves[index.row()].count)
+					 .arg(m_moves[index.row()].count * 1000 / m_games / 10.0);
 	case 2: return QString("%1%").arg(m_moves[index.row()].percentage());
 	case 3: return m_moves[index.row()].rated >= MinAveRating ?
-			       m_moves[index.row()].averageRating() : QVariant();
+					 m_moves[index.row()].averageRating() : QVariant();
 	case 4: return m_moves[index.row()].dated >= MinAveYear ?
-			       m_moves[index.row()].averageYear() : QVariant();
+					 m_moves[index.row()].averageYear() : QVariant();
 
 	default:
 		return QVariant();
