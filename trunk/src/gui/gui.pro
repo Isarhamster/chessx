@@ -72,6 +72,11 @@ else {
     LIBS += ../guess/libguess.a
     PRE_TARGETDEPS += ../guess/libguess.a
 }
-macx:ICON = ../../data/images/chessx.icns
+macx {
+ INSTALLATION_DATA.files = ../../data
+ INSTALLATION_DATA.path = Contents/MacOS
+ QMAKE_BUNDLE_DATA += INSTALLATION_DATA
+ ICON = ../../data/images/chessx.icns
+}
 TRANSLATIONS = chessx_pl.ts \
     chessx_de.ts
