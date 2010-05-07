@@ -449,7 +449,7 @@ void MainWindow::showTablebaseMove(Move move, int score)
 }
 
 QAction* MainWindow::createAction(const QString& name, const char* slot, const QKeySequence& key,
-				  const QString& tip)
+                                  const QString& tip, QAction::MenuRole menuRole)
 {
 	QAction* action = new QAction(name, m_actions);
 	if (!tip.isEmpty())
@@ -458,6 +458,7 @@ QAction* MainWindow::createAction(const QString& name, const char* slot, const Q
 		action->setShortcut(key);
 	if (slot)
 		connect(action, SIGNAL(triggered()), slot);
+        action->setMenuRole(menuRole);
 	return action;
 }
 
@@ -465,8 +466,8 @@ void MainWindow::setupActions()
 {
 	/* File menu */
 	QMenu* file = menuBar()->addMenu(tr("&File"));
-	file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew())));
-	file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), Qt::CTRL + Qt::Key_O));
+        file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew())));
+        file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open));
 	QMenu* menuRecent = file->addMenu(tr("Open &recent..."));
 	const int MaxRecentFiles = 10;
 	for (int i = 0; i < MaxRecentFiles; ++i) {
@@ -480,8 +481,8 @@ void MainWindow::setupActions()
 	QMenu* exportMenu = file->addMenu(tr("&Export..."));
 	exportMenu->addAction(createAction(tr("&Games in filter"), SLOT(slotFileExportFilter())));
 	exportMenu->addAction(createAction(tr("&All games"), SLOT(slotFileExportAll())));
-	file->addAction(createAction(tr("&Close"), SLOT(slotFileClose()), Qt::CTRL + Qt::Key_W));
-	file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), Qt::CTRL + Qt::Key_Q));
+        file->addAction(createAction(tr("&Close"), SLOT(slotFileClose()), QKeySequence::Close));
+        file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), QKeySequence::Quit, QString(), QAction::QuitRole));
 
 	/* Edit menu */
 	QMenu* edit = menuBar()->addMenu(tr("&Edit"));
@@ -498,7 +499,8 @@ void MainWindow::setupActions()
 	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
 					  Qt::CTRL + Qt::SHIFT + Qt::Key_V));
 	edit->addSeparator();
-	edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure())));
+        edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence::Preferences,
+                                     QString(), QAction::PreferencesRole));
 
 
 	/* View menu */
@@ -530,8 +532,8 @@ void MainWindow::setupActions()
 	goMenu->addAction(createAction(tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down));
 	goMenu->addAction(createAction(tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up));
 
-	gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), Qt::CTRL + Qt::Key_N));
-	gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), Qt::CTRL + Qt::Key_S));
+        gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New));
+        gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
 	gameMenu->addAction(createAction(tr("&Analyze"), SLOT(slotGameAnalysis()), Qt::Key_F2));
 
 	/* Search menu */
@@ -563,7 +565,7 @@ void MainWindow::setupActions()
 //  help->addAction(createAction(tr("ChessX &help..."), SLOT(slotHelp()), Qt::CTRL + Qt::Key_F1));
 	help->addAction(createAction(tr("&Report a bug..."), SLOT(slotHelpBug())));
 	help->addSeparator();
-	help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout())));
+        help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), QString(), QAction::AboutRole));
 
 #ifdef QT_DEBUG
 	QMenu* debug = help->addMenu(tr("&Debug"));
