@@ -1,8 +1,8 @@
 /***************************************************************************
-                          BoardTheme - graphics theme for BoardView
-                             -------------------
-    begin                : Sun 21 Aug 2005
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+								  BoardTheme - graphics theme for BoardView
+									  -------------------
+	 begin                : Sun 21 Aug 2005
+	 copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -17,22 +17,22 @@
 #ifndef __BOARDTHEME_H__
 #define __BOARDTHEME_H__
 
-#include <QString>
-#include <QPixmap>
+#include <QtGui>
 
 #include "common.h"
 
 /** @ingroup GUI
-   The BoardTheme class contains set of pixmaps and options to
-   define current board theme. Themes are read from INI files pointing
-   to set of external pixmaps.
+	The BoardTheme class contains set of pixmaps and options to
+	define current board theme. Themes are read from INI files pointing
+	to set of external pixmaps.
 
-   Pixmaps are automatically scaled to given size.
+	Pixmaps are automatically scaled to given size.
 */
 
 
-class BoardTheme
+class BoardTheme : public QObject
 {
+	Q_OBJECT
 public:
 	enum ColorRole {LightSquare, DarkSquare, Highlight, Frame};
 	enum LoadTheme {LoadBoard = 1, LoadPieces = 2, LoadAll = LoadBoard | LoadPieces};

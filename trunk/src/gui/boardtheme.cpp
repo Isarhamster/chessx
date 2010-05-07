@@ -14,9 +14,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QBitmap>
-#include <QPixmap>
-
 #include "boardtheme.h"
 #include "settings.h"
 
@@ -128,10 +125,11 @@ void BoardTheme::configure()
 	int pieceEffect = AppSettings->value("pieceEffect", Shadow).toInt();
 	QString boardTheme = AppSettings->value("boardTheme", "aluminium").toString();
 
-	if (!loadPieces(pieceTheme, pieceEffect))
-		if (!loadPieces(pieceTheme, Plain))
-			loadPieces("merida", Plain);
-	loadBoard(boardTheme);
+	if (!loadPieces(pieceTheme, pieceEffect) &&
+		 !loadPieces(pieceTheme, Plain) &&
+		 !loadPieces("merida", Plain))
+		QMessageBox::critical(0, tr("Error"), tr("Cannot find piece data.\nPlease check your installation."));
+	else loadBoard(boardTheme);
 }
 
 QSize BoardTheme::size() const
