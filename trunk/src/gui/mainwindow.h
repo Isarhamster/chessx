@@ -224,7 +224,7 @@ private slots:
 private:
 	/** Create single menu action. */
 	QAction* createAction(const QString& name, const char* slot, const QKeySequence& key = QKeySequence(),
-					const QString& tip = QString());
+                              const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole );
 	/** Create all the menus and actions */
 	void setupActions();
 	/** Confirm quitting and save modified databases. */
