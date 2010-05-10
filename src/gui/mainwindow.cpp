@@ -481,8 +481,8 @@ void MainWindow::setupActions()
 	QMenu* exportMenu = file->addMenu(tr("&Export..."));
 	exportMenu->addAction(createAction(tr("&Games in filter"), SLOT(slotFileExportFilter())));
 	exportMenu->addAction(createAction(tr("&All games"), SLOT(slotFileExportAll())));
-        file->addAction(createAction(tr("&Close"), SLOT(slotFileClose()), QKeySequence::Close));
-        file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), QKeySequence::Quit, QString(), QAction::QuitRole));
+	file->addAction(createAction(tr("&Close"), SLOT(slotFileClose()), QKeySequence::Close));
+	file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), QKeySequence(), QString(), QAction::QuitRole));
 
 	/* Edit menu */
 	QMenu* edit = menuBar()->addMenu(tr("&Edit"));
@@ -499,7 +499,7 @@ void MainWindow::setupActions()
 	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
 					  Qt::CTRL + Qt::SHIFT + Qt::Key_V));
 	edit->addSeparator();
-        edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence::Preferences,
+	edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(),
                                      QString(), QAction::PreferencesRole));
 
 
