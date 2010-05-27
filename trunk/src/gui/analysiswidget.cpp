@@ -125,11 +125,13 @@ void AnalysisWidget::showAnalysis(const Analysis& analysis)
 
 void AnalysisWidget::setPosition(const Board& board)
 {
-	m_board = board;
-	m_analyses.clear();
-	if (m_engine && m_engine->isActive()) {
-		ui.variationText->clear();
-					 m_engine->startAnalysis(m_board,ui.vpcount->value());
+	if (m_board != board) {
+		m_board = board;
+		m_analyses.clear();
+		if (m_engine && m_engine->isActive()) {
+			ui.variationText->clear();
+			m_engine->startAnalysis(m_board, ui.vpcount->value());
+		}
 	}
 }
 
