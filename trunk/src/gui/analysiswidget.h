@@ -52,6 +52,8 @@ private slots:
 	void engineError();
 	/** Add variation. */
 	void slotLinkClicked(const QUrl& link);
+	/** Number of visible lines was changed. */
+	void slotMpvChanged(int mpv);
 signals:
 	void addVariation(const Analysis& analysis);
 private:

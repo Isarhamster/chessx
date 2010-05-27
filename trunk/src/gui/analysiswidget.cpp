@@ -21,6 +21,7 @@ AnalysisWidget::AnalysisWidget()
 	connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(toggleAnalysis()));
 	connect(ui.variationText, SIGNAL(anchorClicked(QUrl)),
 			  SLOT(slotLinkClicked(QUrl)));
+	connect(ui.vpcount, SIGNAL(valueChanged(int)), SLOT(slotMpvChanged(int)));
 	ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 }
 
@@ -50,7 +51,6 @@ void AnalysisWidget::startEngine()
 void AnalysisWidget::stopEngine()
 {
 	ui.analyzeButton->setChecked(false);
-	ui.vpcount->setEnabled(true);
 	ui.analyzeButton->setText(tr("Analyze"));
 	if (m_engine) {
 		m_engine->deactivate();
@@ -67,7 +67,6 @@ bool AnalysisWidget::isEngineRunning() const
 void AnalysisWidget::engineActivated()
 {
 	ui.analyzeButton->setChecked(true);
-	ui.vpcount->setEnabled(false);
 	ui.analyzeButton->setText(tr("Stop"));
 	m_analyses.clear();
 	m_engine->startAnalysis(m_board, ui.vpcount->value());
@@ -113,7 +112,7 @@ void AnalysisWidget::slotReconfigure()
 void AnalysisWidget::showAnalysis(const Analysis& analysis)
 {
 	int mpv = analysis.mpv() - 1;
-	if (mpv < 0 || mpv > m_analyses.count())
+	if (mpv < 0 || mpv > m_analyses.count() || mpv >= ui.vpcount->value())
 		return;
 	else if (mpv == m_analyses.count())
 		m_analyses.append(analysis);
@@ -135,11 +134,19 @@ void AnalysisWidget::setPosition(const Board& board)
 
 void AnalysisWidget::slotLinkClicked(const QUrl& url)
 {
-	int mpv = url.toString().toInt();
-	if (mpv < m_analyses.count())
+	int mpv = url.toString().toInt() - 1;
+	if (mpv >= 0 && mpv < m_analyses.count())
 		emit addVariation(m_analyses[mpv]);
 }
 
+void AnalysisWidget::slotMpvChanged(int mpv)
+{
+	if (isEngineRunning()) {
+		while (m_analyses.count() > mpv)
+			m_analyses.removeLast();
+		m_engine->setMpv(mpv);
+	}
+}
 
 bool AnalysisWidget::isAnalysisEnabled() const
 {
@@ -149,3 +156,4 @@ bool AnalysisWidget::isAnalysisEnabled() const
 		return false;
 	return true;
 }
+
