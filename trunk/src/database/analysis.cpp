@@ -20,6 +20,7 @@ void Analysis::clear()
 {
 	m_score = m_msec = m_depth = m_mateIn = 0;
 	m_nodes = 0;
+		  m_numpv = 1;
 	m_variation.clear();
 }
 
@@ -27,6 +28,16 @@ void Analysis::clear()
 bool Analysis::isValid() const
 {
 	return !m_variation.isEmpty() && m_depth > 0 && m_msec > 0;
+}
+
+int Analysis::mpv() const
+{
+	 return m_numpv;
+}
+
+void Analysis::setNumpv(int n)
+{
+	 m_numpv = n;
 }
 
 int Analysis::time() const
@@ -124,6 +135,6 @@ QString Analysis::toString(const Board& board) const
 	}
 	out += moveText;
 	out += qApp->tr(" (depth %1)").arg(depth());
-	out += " <a href=\"var\">[+]</a>";
+		  out += " <a href=\""+QString::number(m_numpv)+"\">[+]</a>";
 	return out;
 }

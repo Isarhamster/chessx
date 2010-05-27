@@ -13,9 +13,6 @@
 #include "analysiswidget.h"
 #include "enginelist.h"
 
-#include <QShowEvent>
-#include <QMessageBox>
-
 AnalysisWidget::AnalysisWidget()
 		: m_engine(0)
 {
@@ -53,6 +50,7 @@ void AnalysisWidget::startEngine()
 void AnalysisWidget::stopEngine()
 {
 	ui.analyzeButton->setChecked(false);
+	ui.vpcount->setEnabled(true);
 	ui.analyzeButton->setText(tr("Analyze"));
 	if (m_engine) {
 		m_engine->deactivate();
@@ -69,8 +67,10 @@ bool AnalysisWidget::isEngineRunning() const
 void AnalysisWidget::engineActivated()
 {
 	ui.analyzeButton->setChecked(true);
+	ui.vpcount->setEnabled(false);
 	ui.analyzeButton->setText(tr("Stop"));
-	m_engine->startAnalysis(m_board);
+	m_analyses.clear();
+	m_engine->startAnalysis(m_board, ui.vpcount->value());
 }
 
 void AnalysisWidget::engineError()
@@ -112,8 +112,16 @@ void AnalysisWidget::slotReconfigure()
 
 void AnalysisWidget::showAnalysis(const Analysis& analysis)
 {
-	ui.variationText->setText(analysis.toString(m_board));
-	m_analysis = analysis;
+	int mpv = analysis.mpv() - 1;
+	if (mpv < 0 || mpv > m_analyses.count())
+		return;
+	else if (mpv == m_analyses.count())
+		m_analyses.append(analysis);
+	else m_analyses[mpv] = analysis;
+	QString text;
+	foreach (Analysis a, m_analyses)
+		text.append(a.toString(m_board) + "<br>");
+	ui.variationText->setText(text);
 }
 
 void AnalysisWidget::setPosition(const Board& board)
@@ -121,13 +129,15 @@ void AnalysisWidget::setPosition(const Board& board)
 	m_board = board;
 	if (m_engine && m_engine->isActive()) {
 		ui.variationText->clear();
-		m_engine->startAnalysis(m_board);
+					 m_engine->startAnalysis(m_board,ui.vpcount->value());
 	}
 }
 
-void AnalysisWidget::slotLinkClicked(const QUrl&)
+void AnalysisWidget::slotLinkClicked(const QUrl& url)
 {
-	emit addVariation(m_analysis);
+	int mpv = url.toString().toInt();
+	if (mpv < m_analyses.count())
+		emit addVariation(m_analyses[mpv]);
 }
 
 

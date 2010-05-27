@@ -35,6 +35,16 @@
       <number>0</number>
      </property>
      <item>
+      <widget class="QSpinBox" name="vpcount">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>7</number>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QComboBox" name="engineList">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">

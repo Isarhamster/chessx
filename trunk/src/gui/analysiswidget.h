@@ -14,6 +14,7 @@
 #include "wbengine.h"
 #include "uciengine.h"
 #include "ui_analysiswidget.h"
+#include <QtGui>
 
 /** @ingroup GUI
 	The Analysis widget which shows engine output
@@ -57,12 +58,12 @@ private:
 	/** Should analysis be running. */
 	bool isAnalysisEnabled() const;
 
-	Analysis m_analysis;
+	QList<Analysis> m_analyses;
 	Ui::AnalysisWidget ui;
 	Engine* m_engine;
 	bool m_active;
 	Board m_board;
 };
 
-#endif // __ANALYSIS_H__
+#endif // __ANALYSIS_WIDGET_H__
 
