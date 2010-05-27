@@ -1,8 +1,8 @@
 /***************************************************************************
-                          BoardView - view of the current board
-                             -------------------
-    begin                : Sun 21 Aug 2005
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+								  BoardView - view of the current board
+									  -------------------
+	 begin                : Sun 21 Aug 2005
+	 copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -16,8 +16,6 @@
 
 #ifndef __BOARDVIEW_H__
 #define __BOARDVIEW_H__
-
-#include <QWidget>
 
 #include "common.h"
 #include "board.h"
@@ -113,6 +111,7 @@ private:
 	int m_hifrom;
 	int m_hito;
 	int m_flags;
+	bool m_coordinates;
 	Piece m_dragged;
 	QPoint m_dragStart;
 	QPoint m_dragPoint;

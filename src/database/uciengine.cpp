@@ -21,8 +21,9 @@ UCIEngine::UCIEngine(const QString& name,
 	m_invertBlack = true;
 }
 
-bool UCIEngine::startAnalysis(const Board& board)
+bool UCIEngine::startAnalysis(const Board& board, int nv)
 {
+        m_nv = nv;
 	if (!isActive()) {
 		return false;
 	}
@@ -80,6 +81,7 @@ void UCIEngine::processMessage(const QString& message)
 		if (m_waitingOn == "ucinewgame") {
 			//engine is now ready to analyse a new position
 			m_waitingOn = "";
+                        send("setoption name MultiPV value "+QString::number(m_nv));
 			send("position fen " + m_position);
 			send("go infinite");
 		}
@@ -105,8 +107,8 @@ void UCIEngine::parseAnalysis(const QString& message)
 	// Sample: info score cp 20  depth 3 nodes 423 time 15 pv f1c4 g8f6 b1c3
 
 	Analysis analysis;
-	bool timeFound, nodesFound, depthFound, scoreFound, variationFound;
-	timeFound = nodesFound = depthFound = scoreFound = variationFound = false;
+        bool multiPVFound, timeFound, nodesFound, depthFound, scoreFound, variationFound;
+        multiPVFound = timeFound = nodesFound = depthFound = scoreFound = variationFound = false;
 
 	QString info = message.section(' ', 1, -1);
 	int section = 0;
@@ -116,6 +118,15 @@ void UCIEngine::parseAnalysis(const QString& message)
 	//loop around the name value tuples
 	while (info.section(' ', section, section + 1) != "") {
 		name = info.section(' ', section, section);
+
+                if (name == "multipv") {
+                        analysis.setNumpv(info.section(' ', section + 1, section + 1).toInt(&ok));
+                        section += 2;
+                        if (ok) {
+                            multiPVFound = true;
+                            continue;
+                        }
+                }
 
 		if (name == "time") {
 			analysis.setTime(info.section(' ', section + 1, section + 1).toInt(&ok));
@@ -185,6 +196,8 @@ void UCIEngine::parseAnalysis(const QString& message)
 		section += 2;
 	}
 
-	if (timeFound && nodesFound && scoreFound && analysis.isValid())
-		sendAnalysis(analysis);
+        if (timeFound && nodesFound && scoreFound && analysis.isValid()) {
+            if(!multiPVFound) analysis.setNumpv(1);
+            sendAnalysis(analysis);
+        }
 }

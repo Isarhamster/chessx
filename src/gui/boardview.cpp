@@ -18,22 +18,14 @@
 #include "settings.h"
 #include "guess.h"
 
-#include <QApplication>
-#include <QMessageBox>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPaintEvent>
-#include <QPixmap>
-#include <QResizeEvent>
-#include <QWheelEvent>
-#include <QEvent>
-
 using namespace Qt;
+
+const int CoordinateSize = 10;
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
 		m_flipped(false), m_showFrame(false), m_guessMove(false), m_selectedSquare(InvalidSquare),
 		m_hoverSquare(InvalidSquare), m_hifrom(InvalidSquare), m_hito(InvalidSquare), m_flags(flags),
-		m_dragged(Empty), m_clickUsed(false)
+		m_coordinates(false), m_dragged(Empty), m_clickUsed(false)
 {
 	QSizePolicy policy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	policy.setHeightForWidth(true);
@@ -115,6 +107,7 @@ void BoardView::paintEvent(QPaintEvent* event)
 	p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
 
 	// Fix border up
+	/*
 	if (m_showFrame) {
 		QPen pen;
 		pen.setColor(m_theme.color(BoardTheme::Frame));
@@ -124,7 +117,7 @@ void BoardView::paintEvent(QPaintEvent* event)
 		int fly = m_theme.size().height() * 8;
 		p.drawLine(flx, 0, flx, fly);
 		p.drawLine(0, fly, flx, fly);
-	}
+	}*/
 
 	// Draw dragged piece
 	if (m_dragged != Empty)
@@ -134,8 +127,9 @@ void BoardView::paintEvent(QPaintEvent* event)
 void BoardView::resizeBoard()
 {
 	// subtract move indicator from width
-	int xsize = (width() - (8 + width() / 24) - 1) / 8;
-	int ysize = (height() - 1) / 8;
+	int coord = m_coordinates * CoordinateSize;
+	int xsize = (width() - 2 * coord - (8 + width() / 24) - 1) / 8;
+	int ysize = (height() - 2 * coord - 1) / 8;
 	int size = xsize < ysize ? xsize : ysize;
 	m_theme.setSize(QSize(size, size));
 }
@@ -150,6 +144,10 @@ Square BoardView::squareAt(const QPoint& p) const
 	int x = p.x(), y = p.y();
 	int width = m_theme.size().width();
 	int height = m_theme.size().height();
+	if (m_coordinates) {
+		x -= CoordinateSize;
+		y -= CoordinateSize;
+	}
 	if (x <= 0 || y <= 0 || x >= width*8 || y >= height*8)
 		return InvalidSquare;
 	x /= width;
@@ -227,7 +225,7 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
 	update(squareRect(s));
 	update(QRect(m_dragPoint, m_theme.size()));
 	unselectSquare();
-	QPixmap icon = m_theme.piece(m_dragged);
+	//QPixmap icon = m_theme.piece(m_dragged);
 }
 
 void BoardView::mouseReleaseEvent(QMouseEvent* event)
@@ -331,10 +329,11 @@ void BoardView::unselectSquare()
 
 QRect BoardView::squareRect(Square square)
 {
+	int coord =  m_coordinates * CoordinateSize;
 	int x = isFlipped() ? 7 - square % 8 : square % 8;
 	int y = isFlipped() ? square / 8 : 7 - square / 8;
-	return QRect(QPoint(x * m_theme.size().width(), y * m_theme.size().height()),
-			  m_theme.size());
+	return QRect(QPoint(x * m_theme.size().width() + coord,
+							  y * m_theme.size().height() + coord),  m_theme.size());
 }
 
 bool BoardView::canDrag(Square s) const

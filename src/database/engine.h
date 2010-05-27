@@ -58,7 +58,7 @@ public:
 	bool isActive();
 
 	/** Analyzes the given position */
-	virtual bool startAnalysis(const Board& board) = 0;
+        virtual bool startAnalysis(const Board& board, int nv) = 0;
 
 	/** Stops any analysis */
 	virtual void stopAnalysis() = 0;
@@ -111,6 +111,7 @@ protected:
 	void sendAnalysis(const Analysis& analysis);
 
 	bool m_invertBlack;
+        int m_nv;
 
 private slots:
 	/** Receives notification that there is process output to read */
@@ -125,7 +126,7 @@ private slots:
 	/** Processes messages from the chess engine */
 	void processError();
 
-private:
+private:       
 	QString m_name;
 	QString	m_command;
 	QString	m_directory;

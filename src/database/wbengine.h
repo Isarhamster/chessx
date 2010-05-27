@@ -31,7 +31,7 @@ public:
 		QTextStream* logStream = NULL);
 
 	/** Analyses the the given position */
-	bool startAnalysis(const Board& board);
+        bool startAnalysis(const Board& board, int nv);
 
 	/** Stops any analysis */
 	void stopAnalysis();

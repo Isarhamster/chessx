@@ -25,6 +25,10 @@ public:
 	 void clear();
 	  /** Check if analysis is valid. */
 	 bool isValid() const;
+			/** order of the variarion in the variation list */
+			int mpv() const;
+			/** Set order of the variation. */
+			void setNumpv(int n);
 	 /** Time elapsed in miliseconds. */
 	 int time() const;
 	 /** Set time in miliseconds. */
@@ -55,6 +59,7 @@ public:
 	 /** Convert analysis to formatted text. */
 	QString toString(const Board& board) const;
 private:
+			int m_numpv;
 	 int m_msec;
 	 int m_mateIn;
 	 int m_depth;
