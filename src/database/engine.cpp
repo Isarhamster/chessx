@@ -16,9 +16,9 @@
 /*** Engine ***/
 
 Engine::Engine(const QString& name,
-	       const QString& command,
-	       const QString& directory,
-	       QTextStream* logStream) : QObject()
+			 const QString& command,
+			 const QString& directory,
+			 QTextStream* logStream) : QObject()
 {
 	m_name = name;
 	m_command = command;
@@ -147,6 +147,11 @@ void Engine::setAnalyzing(bool analyzing)
 void Engine::sendAnalysis(const Analysis& analysis)
 {
 	emit analysisUpdated(analysis);
+}
+
+void Engine::setMpv(int mpv)
+{
+	m_mpv = mpv;
 }
 
 void Engine::pollProcess()

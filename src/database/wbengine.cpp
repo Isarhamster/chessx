@@ -23,7 +23,7 @@ WBEngine::WBEngine(const QString& name,
 
 bool WBEngine::startAnalysis(const Board& board, int nv)
 {
-        m_nv = nv;
+        m_mpv = nv;
 	if (isActive() && m_board == board)
 		return true;
 	stopAnalysis();

@@ -11,9 +11,9 @@
 #include "uciengine.h"
 
 UCIEngine::UCIEngine(const QString& name,
-		     const QString& command,
-		     const QString& directory,
-		     QTextStream* logStream) : Engine(name, command, directory, logStream)
+			  const QString& command,
+			  const QString& directory,
+			  QTextStream* logStream) : Engine(name, command, directory, logStream)
 {
 	m_position = "";
 	m_waitingOn = "";
@@ -23,7 +23,7 @@ UCIEngine::UCIEngine(const QString& name,
 
 bool UCIEngine::startAnalysis(const Board& board, int nv)
 {
-        m_nv = nv;
+	m_mpv = nv;
 	if (!isActive()) {
 		return false;
 	}
@@ -48,6 +48,17 @@ void UCIEngine::stopAnalysis()
 		send("stop");
 	}
 }
+
+void UCIEngine::setMpv(int mpv)
+{
+	m_mpv = mpv;
+	if (isAnalyzing()) {
+		send("stop");
+		send(QString("setoption name MultiPV value %1").arg(m_mpv));
+		send("go infinite");
+	}
+}
+
 
 void UCIEngine::protocolStart()
 {
@@ -81,7 +92,7 @@ void UCIEngine::processMessage(const QString& message)
 		if (m_waitingOn == "ucinewgame") {
 			//engine is now ready to analyse a new position
 			m_waitingOn = "";
-                        send("setoption name MultiPV value "+QString::number(m_nv));
+			send(QString("setoption name MultiPV value %1").arg(m_mpv));
 			send("position fen " + m_position);
 			send("go infinite");
 		}
@@ -107,8 +118,8 @@ void UCIEngine::parseAnalysis(const QString& message)
 	// Sample: info score cp 20  depth 3 nodes 423 time 15 pv f1c4 g8f6 b1c3
 
 	Analysis analysis;
-        bool multiPVFound, timeFound, nodesFound, depthFound, scoreFound, variationFound;
-        multiPVFound = timeFound = nodesFound = depthFound = scoreFound = variationFound = false;
+		  bool multiPVFound, timeFound, nodesFound, depthFound, scoreFound, variationFound;
+		  multiPVFound = timeFound = nodesFound = depthFound = scoreFound = variationFound = false;
 
 	QString info = message.section(' ', 1, -1);
 	int section = 0;
@@ -119,14 +130,14 @@ void UCIEngine::parseAnalysis(const QString& message)
 	while (info.section(' ', section, section + 1) != "") {
 		name = info.section(' ', section, section);
 
-                if (name == "multipv") {
-                        analysis.setNumpv(info.section(' ', section + 1, section + 1).toInt(&ok));
-                        section += 2;
-                        if (ok) {
-                            multiPVFound = true;
-                            continue;
-                        }
-                }
+					 if (name == "multipv") {
+								analysis.setNumpv(info.section(' ', section + 1, section + 1).toInt(&ok));
+								section += 2;
+								if (ok) {
+									 multiPVFound = true;
+									 continue;
+								}
+					 }
 
 		if (name == "time") {
 			analysis.setTime(info.section(' ', section + 1, section + 1).toInt(&ok));
@@ -196,8 +207,9 @@ void UCIEngine::parseAnalysis(const QString& message)
 		section += 2;
 	}
 
-        if (timeFound && nodesFound && scoreFound && analysis.isValid()) {
-            if(!multiPVFound) analysis.setNumpv(1);
-            sendAnalysis(analysis);
-        }
+		  if (timeFound && nodesFound && scoreFound && analysis.isValid()) {
+				if(!multiPVFound) analysis.setNumpv(1);
+				sendAnalysis(analysis);
+		  }
 }
+
