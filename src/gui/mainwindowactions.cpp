@@ -420,7 +420,8 @@ void MainWindow::slotGameSave()
 		MessageDialog::error(this, tr("This database is read only."));
 	else if (saveDialog()->exec(database(), game()) == QDialog::Accepted) {
 		databaseInfo()->saveGame();
-		slotDatabaseChanged();
+		slotFilterChanged();
+		slotGameChanged();
 	}
 }
 
