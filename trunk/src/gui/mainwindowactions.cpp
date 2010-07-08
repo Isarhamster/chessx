@@ -12,6 +12,7 @@
 #include "copydialog.h"
 #include "chessbrowser.h"
 #include "databaseinfo.h"
+#include "editaction.h"
 #include "ecothread.h"
 #include "filtermodel.h"
 #include "game.h"
@@ -425,35 +426,41 @@ void MainWindow::slotGameSave()
 	}
 }
 
-void MainWindow::slotGameModify(int action, int move)
+void MainWindow::slotGameModify(const EditAction& action)
 {
-	game().moveToId(move);
+	game().moveToId(action.move());
 	slotMoveChanged();
-	switch (action) {
-	case ChessBrowser::RemoveNextMoves:
+	switch (action.type()) {
+	case EditAction::RemoveNextMoves:
 		game().truncateVariation();
 		break;
-	case ChessBrowser::RemovePreviousMoves:
+	case EditAction::RemovePreviousMoves:
 		game().truncateVariation(Game::BeforeMove);
 		break;
-	case ChessBrowser::RemoveVariation: {
+	case EditAction::RemoveVariation: {
 		game().removeVariation(game().variationNumber());
 		break;
 	}
-	case ChessBrowser::PromoteVariation: {
-		game().promoteVariation(move);
+	case EditAction::PromoteVariation: {
+		game().promoteVariation(action.move());
 		break;
 	}
-	case ChessBrowser::EditPrecomment:
+	case EditAction::EditPrecomment:
 		if (!gameEditComment(Output::Precomment))
 			return;
 		break;
-	case ChessBrowser::EditComment:
+	case EditAction::EditComment:
 		if (!gameEditComment(Output::Comment))
 			return;
 		break;
+	case EditAction::AddNag:
+		game().addNag(Nag(action.data().toInt()), action.move());
+		break;
+	case EditAction::ClearNags:
+		game().setNags(NagSet(), action.move());
+		break;
 	default:
-		;
+		break;
 	}
 	slotGameChanged();
 }

@@ -37,7 +37,8 @@ HEADERS += board.h \
     playerinfo.h \
     enginelist.h \
     enginedata.h \
-    analysis.h
+    analysis.h \
+    editaction.h
 SOURCES += board.cpp \
     common.cpp \
     game.cpp \
@@ -74,7 +75,8 @@ SOURCES += board.cpp \
     playerinfo.cpp \
     enginelist.cpp \
     enginedata.cpp \
-    analysis.cpp
+    analysis.cpp \
+    editaction.cpp
 include(../common.pro)
 TARGET = database
 CONFIG += staticlib
