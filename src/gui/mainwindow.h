@@ -17,6 +17,7 @@
 #include "historylist.h"
 #include "output.h"
 
+class EditAction;
 class Analysis;
 class PlayerDialog;
 class GameList;
@@ -131,7 +132,7 @@ public slots:
 	/** Choose a game and load it */
 	void slotGameLoadChosen();
 	/** Modify game on user's request. */
-	void slotGameModify(int action, int move);
+	void slotGameModify(const EditAction& action);
 	/** Update GameView content after game was change. Triggers also @ref slotMoveChanged . */
 	void slotGameChanged();
 	/** Load pending game. */
@@ -224,7 +225,7 @@ private slots:
 private:
 	/** Create single menu action. */
 	QAction* createAction(const QString& name, const char* slot, const QKeySequence& key = QKeySequence(),
-                              const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole );
+										const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole );
 	/** Create all the menus and actions */
 	void setupActions();
 	/** Confirm quitting and save modified databases. */

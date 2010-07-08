@@ -12,10 +12,6 @@
 #include "game.h"
 #include "databaseinfo.h"
 
-#include <QAction>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QTextBlock>
 
 ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), m_gameMenu(NULL), m_databaseInfo(NULL)
 {
@@ -24,7 +20,8 @@ ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), m_g
 }
 
 void ChessBrowser::setSource(const QUrl&)
-{}
+{
+}
 
 void ChessBrowser::showMove(int id)
 {
@@ -74,32 +71,52 @@ void ChessBrowser::slotReconfigure()
 	AppSettings->endGroup();
 }
 
-QAction* ChessBrowser::createAction(const QString& name, int data)
-{
-	QAction* action = new QAction(name, this);
-	action->setData(data);
-	return action;
-}
-
 void ChessBrowser::setupMenu(bool setupGameMenu)
 {
 	if (setupGameMenu) {
 		m_gameMenu = new QMenu(this);
 		connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 
-		m_gameMenu->addAction((m_startComment = createAction(tr("Add start comment..."), EditPrecomment)));
-		m_gameMenu->addAction((m_addComment = createAction(tr("Add comment..."), EditComment)));
-		m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to main line"), PromoteVariation)));
+		m_gameMenu->addAction((m_startComment = createAction(tr("Add start comment..."),
+																			  EditAction::EditPrecomment)));
+		m_gameMenu->addAction((m_addComment = createAction(tr("Add comment..."),
+																			EditAction::EditComment)));
+
+		// Nag menus
+		QMenu* nagMoveMenu = m_gameMenu->addMenu(tr("Add move symbol"));
+		for (int n = MoveNagStart; n <= MoveNagEnd; n++)
+			nagMoveMenu->addAction(createNagAction(Nag(n)));
+		QMenu* nagPositionMenu = m_gameMenu->addMenu(tr("Add evaluation symbol"));
+		nagPositionMenu->addAction(createNagAction(DrawishPosition));
+		for (int n = UnclearPosition; n <= BlackHasADecisiveAdvantage; n++)
+			nagPositionMenu->addAction(createNagAction(Nag(n)));
+		QMenu* nagSpecialMenu = m_gameMenu->addMenu(tr("Add other symbol"));
+		nagSpecialMenu->addAction(createNagAction(WhiteIsInZugzwang));
+		nagSpecialMenu->addAction(createNagAction(WithTheIdea));
+		nagSpecialMenu->addAction(createNagAction(BetterMove));
+		nagSpecialMenu->addAction(createNagAction(Novelty));
+		nagSpecialMenu->addAction(createNagAction(WeakPoint));
+		nagSpecialMenu->addAction(createNagAction(EndGame));
+		nagSpecialMenu->addAction(createNagAction(BishopsOfOppositeColor));
+		nagSpecialMenu->addAction(createNagAction(BishopsOfSameColor));
+		nagSpecialMenu->addAction(createNagAction(WhiteHasSevereTimeControlPressure));
+		m_gameMenu->addAction(createAction(tr("Remove symbols"), EditAction::ClearNags));
+
 		m_gameMenu->addSeparator();
-		m_gameMenu->addAction((m_removeVariation = createAction(tr("Remove variation"), RemoveVariation)));
-		m_gameMenu->addAction((m_removePrevious = createAction(tr("Remove previous moves"), RemovePreviousMoves)));
-		m_gameMenu->addAction((m_removeNext = createAction(tr("Remove next moves"), RemoveNextMoves)));
+		m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to main line"),
+																					EditAction::PromoteVariation)));
+		m_gameMenu->addAction((m_removeVariation = createAction(tr("Remove variation"),
+																				  EditAction::RemoveVariation)));
+		m_gameMenu->addAction((m_removePrevious = createAction(tr("Remove previous moves"),
+																				 EditAction::RemovePreviousMoves)));
+		m_gameMenu->addAction((m_removeNext = createAction(tr("Remove next moves"),
+																			EditAction::RemoveNextMoves)));
 	}
-	
+
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
 
 	m_mainMenu = new QMenu(this);
-	m_smallfont = createAction(tr("Small font"), NoAction);
+	m_smallfont = createAction(tr("Small font"), EditAction::None);
 	m_smallfont->setCheckable(true);
 	m_smallfont->setChecked(false);
 	connect(m_smallfont, SIGNAL(toggled(bool)), SLOT(slotToggleFont(bool)));
@@ -113,7 +130,7 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
 		m_mainMenu->exec(mapToGlobal(pos));
 		return;
 	}
-	
+
 	// Handle game browser
 	if (!m_databaseInfo)
 		return;
@@ -125,7 +142,7 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
 	bool isVariation = !m_databaseInfo->currentGame().isMainline(m_currentMove);
 	bool atLineStart = m_databaseInfo->currentGame().atLineStart(m_currentMove);
 	bool hasComment = !m_databaseInfo->currentGame().annotation(m_currentMove).isEmpty();
-	bool hasPrecomment = !m_databaseInfo->currentGame().annotation(m_currentMove, 
+	bool hasPrecomment = !m_databaseInfo->currentGame().annotation(m_currentMove,
 			Game::BeforeMove).isEmpty();
 	bool atLineEnd = m_databaseInfo->currentGame().atLineEnd(m_currentMove);
 	m_startComment->setVisible(atLineStart && !hasPrecomment);
@@ -151,7 +168,24 @@ void ChessBrowser::slotToggleFont(bool toggled)
 
 void ChessBrowser::slotAction(QAction* action)
 {
-	if (action->data().toInt() != NoAction)
-		emit actionRequested(action->data().toInt(), m_currentMove);
+	if (m_actions.contains(action)) {
+		EditAction editAction = m_actions[action];
+		editAction.setMove(m_currentMove);
+		emit actionRequested(editAction);
+	}
+}
+
+QAction *ChessBrowser::createAction(const QString& name, EditAction::Type type)
+{
+	QAction* action = new QAction(name, this);
+	m_actions[action] = EditAction(type);
+	return action;
+}
+
+QAction *ChessBrowser::createNagAction(const Nag& nag)
+{
+	QAction* action = new QAction(NagSet::nagToString(nag), this);
+	m_actions[action] = EditAction(EditAction::AddNag, nag);
+	return action;
 }
 

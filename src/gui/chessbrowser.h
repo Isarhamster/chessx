@@ -1,8 +1,8 @@
 /***************************************************************************
-                          chessbrowser.h  -  Tweaked QTextBrowser
-                             -------------------
-    begin                : Thu 31 Aug 2006
-    copyright            : (C) 2006 Michal Rudolf <mrudolf@kdewebdev.org>
+								  chessbrowser.h  -  Tweaked QTextBrowser
+									  -------------------
+	 begin                : Thu 31 Aug 2006
+	 copyright            : (C) 2006 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,21 +18,18 @@
 #ifndef __CHESSBROWSER_H__
 #define __CHESSBROWSER_H__
 
-#include <QTextBrowser>
+#include <QtGui>
+#include "editaction.h"
 
-class QMenu;
 class DatabaseInfo;
 
 /** @ingroup GUI
-   The ChessBrowser class is a slightly modified QTextBrowser
-   that handles internal pseudo-links. */
+	The ChessBrowser class is a slightly modified QTextBrowser
+	that handles internal pseudo-links. */
 class ChessBrowser : public QTextBrowser
 {
 	Q_OBJECT
 public:
-	enum Action {NoAction, RemovePreviousMoves, RemoveNextMoves, RemoveVariation, PromoteVariation, AddNag,
-		EditPrecomment, EditComment};
-
 	/** Constructs new instance with parent @p parent. If @p showGameMenu is false, game menu is never shown. */
 	ChessBrowser(QWidget* p, bool showGameMenu = false);
 public slots:
@@ -52,14 +49,16 @@ public slots:
 	void slotDatabaseChanged(DatabaseInfo* dbInfo);
 
 signals:
-	void actionRequested(int action, int move);
+	void actionRequested(const EditAction& action);
 
 protected:
 	virtual void selectAnchor(const QString& href);
 	virtual void setSource(const QUrl& url);
 	void setupMenu(bool setupGameMenu);
-virtual QAction* createAction(const QString& name, int action);
+	QAction* createAction(const QString& name, EditAction::Type type);
+	QAction* createNagAction(const Nag& nag);
 private:
+	QMap<QAction*, EditAction> m_actions;
 
 	QAction* m_smallfont;
 	QAction* m_startComment;
