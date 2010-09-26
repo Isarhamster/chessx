@@ -487,8 +487,10 @@ void MainWindow::setupActions()
 
 	/* Edit menu */
 	QMenu* edit = menuBar()->addMenu(tr("&Edit"));
+	edit->addAction(createAction(tr("Comment"), SLOT(slotEditComment()),
+										  Qt::CTRL + Qt::Key_A));
 	edit->addAction(createAction(tr("Setup &position..."), SLOT(slotEditBoard()),
-					  Qt::CTRL + Qt::Key_E));
+										  Qt::SHIFT + Qt::CTRL + Qt::Key_E));
 	QMenu* editremove = edit->addMenu(tr("&Remove"));
 	editremove->addAction(createAction(tr("Moves from the beginning"),
 						SLOT(slotEditTruncateStart())));
@@ -620,3 +622,4 @@ void MainWindow::cancelOperation(const QString& msg)
 	statusBar()->showMessage(msg);
 	statusBar()->removeWidget(m_progressBar);
 }
+

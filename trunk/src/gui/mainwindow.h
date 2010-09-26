@@ -90,6 +90,8 @@ public slots:
 	void slotPlayerDialog();
 	/** Show Setup Position dialog and set current board. */
 	void slotEditBoard();
+	/** Edit current comment. */
+	void slotEditComment();
 	/** Set position's FEN to clipboard. */
 	void slotEditCopyFEN();
 	/** Set position using FEN from clipboard. */
