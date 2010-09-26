@@ -1,2 +1,4 @@
-CONFIG += release warn_on qt
+CONFIG += release \
+	 warn_on \
+	 qt
 QT += network
