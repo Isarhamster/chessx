@@ -156,6 +156,12 @@ void MainWindow::slotEditCopyFEN()
 	QApplication::clipboard()->setText(game().toFen());
 }
 
+void MainWindow::slotEditComment()
+{
+	if (gameEditComment(Output::Comment))
+		slotGameChanged();
+}
+
 void MainWindow::slotEditPasteFEN()
 {
 	QString fen = QApplication::clipboard()->text().trimmed();
