@@ -11,6 +11,7 @@
 #include "boardview.h"
 #include "copydialog.h"
 #include "chessbrowser.h"
+#include "commentdialog.h"
 #include "databaseinfo.h"
 #include "ecothread.h"
 #include "filtermodel.h"
@@ -389,19 +390,19 @@ QString MainWindow::exportFileName(int& format)
 
 bool MainWindow::gameEditComment(Output::CommentType type)
 {
-	bool ok;
 	QString annotation;
 	if (type == Output::Precomment)
 		annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
 	else annotation = game().annotation();
-	QString cmt = QInputDialog::getText(this, tr("Edit comment"), tr("Comment:"),
-						 QLineEdit::Normal, annotation, &ok);
-	if (ok) {
-		if (type == Output::Precomment)
-			game().setAnnotation(cmt, CURRENT_MOVE, Game::BeforeMove);
-		else game().setAnnotation(cmt);
-	}
-	return ok;
+	CommentDialog dlg(this);
+	dlg.setText(annotation);
+	if (!dlg.exec())
+		return false;
+
+	if (type == Output::Precomment)
+		game().setAnnotation(dlg.text(), CURRENT_MOVE, Game::BeforeMove);
+	else game().setAnnotation(dlg.text());
+	return true;
 }
 
 PlayerDialog* MainWindow::playerDialog()
