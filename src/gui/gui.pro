@@ -8,7 +8,8 @@ FORMS += playerdialog.ui \
     quicksearch.ui \
     savedialog.ui \
     analysiswidget.ui \
-    copydialog.ui
+    copydialog.ui \
+    commentdialog.ui
 HEADERS += mainwindow.h \
     playerdialog.h \
     preferences.h \
@@ -25,7 +26,8 @@ HEADERS += mainwindow.h \
     analysiswidget.h \
     tableview.h \
     copydialog.h \
-    messagedialog.h
+    messagedialog.h \
+    commentdialog.h
 SOURCES += mainwindow.cpp \
     mainwindowactions.cpp \
     mainwindowabout.cpp \
@@ -44,7 +46,8 @@ SOURCES += mainwindow.cpp \
     main.cpp \
     tableview.cpp \
     copydialog.cpp \
-    messagedialog.cpp
+    messagedialog.cpp \
+    commentdialog.cpp
 TEMPLATE = app
 INCLUDEPATH += ../database
 INCLUDEPATH += ../guess
