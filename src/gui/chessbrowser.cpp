@@ -102,7 +102,7 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 		nagSpecialMenu->addAction(createNagAction(BishopsOfOppositeColor));
 		nagSpecialMenu->addAction(createNagAction(BishopsOfSameColor));
 		nagSpecialMenu->addAction(createNagAction(WhiteHasSevereTimeControlPressure));
-		m_gameMenu->addAction(createAction(tr("Remove symbols"), EditAction::ClearNags));
+		m_gameMenu->addAction(m_removeNags = createAction(tr("Remove symbols"), EditAction::ClearNags));
 
 		m_gameMenu->addSeparator();
 		m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to main line"),
@@ -143,15 +143,19 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
 	m_currentMove = link.section(':', 1).toInt();
 	bool isVariation = !m_databaseInfo->currentGame().isMainline(m_currentMove);
 	bool atLineStart = m_databaseInfo->currentGame().atLineStart(m_currentMove);
+	bool atGameStart = m_currentMove == 0 || m_databaseInfo->currentGame().atGameStart(m_currentMove - 1);
 	bool hasComment = !m_databaseInfo->currentGame().annotation(m_currentMove).isEmpty();
 	bool hasPrecomment = !m_databaseInfo->currentGame().annotation(m_currentMove,
 			Game::BeforeMove).isEmpty();
+	bool hasNags = !m_databaseInfo->currentGame().nags().isEmpty();
 	bool atLineEnd = m_databaseInfo->currentGame().atLineEnd(m_currentMove);
 	m_startComment->setVisible(atLineStart && !hasPrecomment);
 	m_addComment->setVisible(!hasComment);
 	m_promoteVariation->setVisible(isVariation);
 	m_removeVariation->setVisible(isVariation);
 	m_removeNext->setVisible(!atLineEnd);
+	m_removePrevious->setVisible(!atGameStart);
+	m_removeNags->setVisible(hasNags);
 	m_gameMenu->exec(mapToGlobal(pos));
 }
 
