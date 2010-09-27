@@ -32,6 +32,7 @@ bool OutputOptions::createDefaultOptions()
 	createOption("CommentColor", Color, "", "green", "");
 	createOption("NagColor", Color, "", "red", "");
 	createOption("HeaderColor", Color, "", "blue", "");
+	createOption("ShowHeader", Boolean, "", "true", "");
 	return true;
 }
 

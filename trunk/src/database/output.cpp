@@ -75,7 +75,7 @@ void Output::readTemplateFile(const QString& path)
 			case ReadingOptionDefs:
 				optionDefFields = line.split(",");
 				if (!m_options.createOption(optionDefFields[0], optionDefFields[1],
-							    optionDefFields[2], optionDefFields[3], optionDefFields[4])) {
+								 optionDefFields[2], optionDefFields[3], optionDefFields[4])) {
 					qWarning("Could not create option. Ignoring line %d in file %s :\n%s", i, path.toLatin1().constData(), line.toLatin1().constData());
 				}
 
@@ -188,7 +188,7 @@ void Output::writeMove(MoveToWrite moveToWrite)
 		} else {
 			nagString += m_game->nags(moveId).toString(NagSet::PGN);
 		}
-	
+
 	}
 	// Read comments
 	if (m_game->canHaveStartAnnotation(moveId))
@@ -296,13 +296,13 @@ void Output::writeVariation()
 void Output::writeTag(const QString& tagName, const QString& tagValue)
 {
 	m_output += m_startTagMap[MarkupHeaderLine] +
-		    m_startTagMap[MarkupHeaderTagName] +
-		    tagName + m_endTagMap[MarkupHeaderTagName] +
-		    " " +
-		    m_startTagMap[MarkupHeaderTagValue] +
-		    tagValue +
-		    m_endTagMap[MarkupHeaderTagValue] +
-		    m_endTagMap[MarkupHeaderLine];
+			 m_startTagMap[MarkupHeaderTagName] +
+			 tagName + m_endTagMap[MarkupHeaderTagName] +
+			 " " +
+			 m_startTagMap[MarkupHeaderTagValue] +
+			 tagValue +
+			 m_endTagMap[MarkupHeaderTagValue] +
+			 m_endTagMap[MarkupHeaderLine];
 
 }
 
@@ -317,21 +317,21 @@ void Output::writeComment(const QString& comment, const QString& mvno, CommentTy
 		m_output += m_endTagMap[MarkupColumnStyleMainline];
 	if ((m_options.getOptionAsString("CommentIndent") == "Always")
 			|| ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline")
-			    && (m_currentVariationLevel == 0))) {
+				 && (m_currentVariationLevel == 0))) {
 		if (m_expandable[markupIndent]) {
 			m_output += m_startTagMap[markupIndent].arg(mvno) +
-				    comment + m_endTagMap[markupIndent];
+					 comment + m_endTagMap[markupIndent];
 		} else {
 			m_output += m_startTagMap[markupIndent] +
-				    comment + m_endTagMap[markupIndent];
+					 comment + m_endTagMap[markupIndent];
 		}
 	} else {
 		if (m_expandable[markupInline]) {
 			m_output += m_startTagMap[markupInline].arg(mvno) +
-				    comment + m_endTagMap[markupInline];
+					 comment + m_endTagMap[markupInline];
 		} else {
 			m_output += m_startTagMap[markupInline] +
-				    comment + m_endTagMap[markupInline];
+					 comment + m_endTagMap[markupInline];
 		}
 	}
 	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
@@ -373,9 +373,12 @@ QString Output::output(Game* game)
 	m_currentVariationLevel = 0;
 
 	m_output = m_header;
-	m_output += m_startTagMap[MarkupHeaderBlock];
-	writeAllTags();
-	m_output += m_endTagMap[MarkupHeaderBlock];
+
+	if (m_options.getOptionAsBool("ShowHeader")) {
+		m_output += m_startTagMap[MarkupHeaderBlock];
+		writeAllTags();
+		m_output += m_endTagMap[MarkupHeaderBlock];
+	}
 
 	// start of move output....
 	int start = m_output.length();
