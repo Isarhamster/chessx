@@ -471,11 +471,12 @@ void MainWindow::slotGameChanged()
 			  .arg(white).arg(whiteElo).arg(black).arg(blackElo);
 	QString result = tr("%1(%2) %3").arg(game().tag("Result")).arg((game().plyCount() + 1) / 2)
 			 .arg(eco);
-	QString header = tr("<i>%1(%2), %3, %4</i>").arg(game().tag("Event")).arg(game().tag("Round"))
-			 .arg(game().tag("Site")).arg(game().tag("Date"));
+	QString site = game().tag("Site").left(30);
+	QString event = game().tag("Event").left(30);
+	QString header = tr("<i>%1(%2), %3, %4</i>").arg(event).arg(game().tag("Round"))
+			 .arg(site).arg(game().tag("Date"));
 	g_gameTitle->setText(QString("<qt>%1, %2<br>%3</qt>").arg(players).arg(result)
 				 .arg(header));
-	qDebug() << g_gameTitle->text();
 	slotMoveChanged();
 }
 
