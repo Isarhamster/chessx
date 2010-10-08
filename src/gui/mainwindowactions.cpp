@@ -494,7 +494,7 @@ void MainWindow::slotGameChanged()
 		title.append(players);
 	else title.append("<b>New game</b>");
 	if (game().result() != Unknown || !eco.isEmpty())
-		title.append(result);
+		title.append(QString(", ") + result);
 	if (header.length() > 8)
 		title.append(QString("<br>") + header);
 	g_gameTitle->setText(QString("<qt>%1</qt>").arg(title));
