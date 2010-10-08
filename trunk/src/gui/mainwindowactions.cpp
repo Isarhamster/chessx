@@ -469,8 +469,7 @@ void MainWindow::slotGameChanged()
 		blackElo = QString();
 	QString players = tr("<b><a href=\"tag:white\">%1</a> %2 - <a href=\"tag:black\">%3</a> %4</b>")
 			  .arg(white).arg(whiteElo).arg(black).arg(blackElo);
-	QString result = tr("%1 (%2) %3").arg(game().tag("Result")).arg((game().plyCount() + 1) / 2)
-			 .arg(eco);
+	QString result = tr("<b>%1</b> &nbsp; %2").arg(game().tag("Result")).arg(eco);
 	QString site = game().tag("Site").left(30);
 	QString event = game().tag("Event").left(30);
 	QString header = "<i>";
