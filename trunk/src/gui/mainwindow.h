@@ -88,6 +88,10 @@ protected:
 	HelpWindow* helpWindow();
 public slots:
 	void slotPlayerDialog();
+	/** Promote current variation. */
+	void slotEditVarPromote();
+	/** Remove current variation. */
+	void slotEditVarRemove();
 	/** Show Setup Position dialog and set current board. */
 	void slotEditBoard();
 	/** Edit current comment. */

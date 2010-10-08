@@ -162,6 +162,23 @@ void MainWindow::slotEditComment()
 		slotGameChanged();
 }
 
+void MainWindow::slotEditVarPromote()
+{
+	if (!game().isMainline()) {
+		game().promoteVariation(game().currentMove());
+		slotGameChanged();
+	}
+}
+
+void MainWindow::slotEditVarRemove()
+{
+	if (!game().isMainline()) {
+		game().removeVariation(game().currentMove());
+		slotGameChanged();
+	}
+}
+
+
 void MainWindow::slotEditPasteFEN()
 {
 	QString fen = QApplication::clipboard()->text().trimmed();

@@ -489,14 +489,19 @@ void MainWindow::setupActions()
 	QMenu* edit = menuBar()->addMenu(tr("&Edit"));
 	edit->addAction(createAction(tr("Comment"), SLOT(slotEditComment()),
 										  Qt::CTRL + Qt::Key_A));
-	edit->addAction(createAction(tr("Setup &position..."), SLOT(slotEditBoard()),
-										  Qt::SHIFT + Qt::CTRL + Qt::Key_E));
+	QMenu* editVariation = edit->addMenu(tr("Variation"));
+	editVariation->addAction(createAction(tr("Promote"), SLOT(slotEditVarPromote()),
+													  Qt::CTRL + Qt::Key_J));
+	editVariation->addAction(createAction(tr("Remove"), SLOT(slotEditVarRemove()),
+													  Qt::CTRL + Qt::Key_Delete));
 	QMenu* editremove = edit->addMenu(tr("&Remove"));
 	editremove->addAction(createAction(tr("Moves from the beginning"),
 						SLOT(slotEditTruncateStart())));
 	editremove->addAction(createAction(tr("Moves to the end"), SLOT(slotEditTruncateEnd()),
 						Qt::SHIFT + Qt::Key_Delete));
 	edit->addSeparator();
+	edit->addAction(createAction(tr("Setup &position..."), SLOT(slotEditBoard()),
+										  Qt::SHIFT + Qt::CTRL + Qt::Key_E));
 	edit->addAction(createAction(tr("&Copy FEN"), SLOT(slotEditCopyFEN()),
 					  Qt::CTRL + Qt::SHIFT + Qt::Key_C));
 	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
