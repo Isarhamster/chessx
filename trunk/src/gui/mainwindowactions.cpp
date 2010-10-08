@@ -285,52 +285,7 @@ void MainWindow::slotMoveChanged()
 	// Highlight current move
 	m_gameView->showMove(g.currentMove());
 
-	// Finally update game information
-	QString white = g.tag("White");
-	QString black = g.tag("Black");
-	QString eco = m_eco.isNull() ? g.tag("ECO") : m_eco;
-	if (!eco.isEmpty()) {
-		int comma = eco.lastIndexOf(',');
-		if (comma != -1 && eco.at(comma + 2).isNumber())
-			eco.truncate(comma);
-	}
-	QString whiteElo = g.tag("WhiteElo");
-	QString blackElo = g.tag("BlackElo");
-	if (whiteElo == "?")
-		whiteElo = QString();
-	if (blackElo == "?")
-		blackElo = QString();
-	QString players = tr("Game %1: <b><a href=\"tag:white\">%2</a> %3 - <a href=\"tag:black\">%4</a> %5</b>")
-			  .arg(gameIndex() + 1).arg(white).arg(whiteElo).arg(black).arg(blackElo);
-	QString result = tr("%1(%2) %3").arg(g.tag("Result")).arg((g.plyCount() + 1) / 2)
-			 .arg(eco);
-	QString header = tr("<i>%1(%2), %3, %4</i>").arg(g.tag("Event")).arg(g.tag("Round"))
-			 .arg(g.tag("Site")).arg(g.tag("Date"));
-	QString lastmove, nextmove;
-	if (!g.atGameStart())
-		lastmove = QString("<a href=\"move:prev\">%1</a>").arg(g.moveToSan(Game::FullDetail, Game::PreviousMove));
-	else
-		lastmove = tr("(Start of game)");
-	if (!g.atGameEnd())
-		nextmove = QString("<a href=\"move:next\">%1</a>").arg(g.moveToSan(Game::FullDetail, Game::NextMove));
-	else
-		nextmove = g.isMainline() ? tr("(End of game)") : tr("(End of line)");
-	QString move = tr("Last move: %1 &nbsp; &nbsp; Next: %2").arg(lastmove).arg(nextmove);
-	if (!g.isMainline())
-		move.append(QString(" &nbsp; &nbsp; <a href=\"move:exit\">%1</a>").arg(tr("(&lt;-Var)")));
-	QString var;
-	if (g.variationCount()) {
-		var = tr("<br>Variations: &nbsp; ");
-		QList <int> variations = g.variations();
-		for (int i = 1; i <= variations.size(); i++) {
-			var.append(QString("v%1: <a href=\"move:%2\">%3</a>").arg(i).arg(variations[i-1])
-					.arg(g.moveToSan(Game::FullDetail, Game::PreviousMove, variations[i-1])));
-			if (i != variations.size())
-				var.append(" &nbsp; ");
-		}
-	}
-	m_moveView->setText(QString("<qt>%1<br>%2<br>%3<br>%4%5</qt>").arg(players).arg(result)
-				 .arg(header).arg(move).arg(var));
+
 	if (AppSettings->value("/General/onlineTablebases", true).toBool())
 		m_tablebase->getBestMove(g.toFen());
 
@@ -499,6 +454,31 @@ void MainWindow::slotGameChanged()
 	else
 		m_gameView->setText(m_output->output(&game()));
 	m_eco = game().ecoClassify();
+
+	// Finally update game information
+	QString white = game().tag("White");
+	QString black = game().tag("Black");
+	QString eco = m_eco.isNull() ? game().tag("ECO") : m_eco;
+	if (!eco.isEmpty()) {
+		int comma = eco.lastIndexOf(',');
+		if (comma != -1 && eco.at(comma + 2).isNumber())
+			eco.truncate(comma);
+	}
+	QString whiteElo = game().tag("WhiteElo");
+	QString blackElo = game().tag("BlackElo");
+	if (whiteElo == "?")
+		whiteElo = QString();
+	if (blackElo == "?")
+		blackElo = QString();
+	QString players = tr("<b><a href=\"tag:white\">%1</a> %2 - <a href=\"tag:black\">%3</a> %4</b>")
+			  .arg(white).arg(whiteElo).arg(black).arg(blackElo);
+	QString result = tr("%1(%2) %3").arg(game().tag("Result")).arg((game().plyCount() + 1) / 2)
+			 .arg(eco);
+	QString header = tr("<i>%1(%2), %3, %4</i>").arg(game().tag("Event")).arg(game().tag("Round"))
+			 .arg(game().tag("Site")).arg(game().tag("Date"));
+	g_gameTitle->setText(QString("<qt>%1, %2<br>%3</qt>").arg(players).arg(result)
+				 .arg(header));
+
 	slotMoveChanged();
 }
 
@@ -531,6 +511,11 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 		else if (url.path() == "black")
 			playerDialog()->showPlayer(game().tag("Black"));
 	}
+}
+
+void MainWindow::slotGameViewLink(const QString& url)
+{
+	slotGameViewLink(QUrl(url));
 }
 
 void MainWindow::slotGameViewToggle(bool toggled)

@@ -77,20 +77,14 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(m_boardView, SIGNAL(clicked(Square, int)), SLOT(slotBoardClick(Square, int)));
 	connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
 
-	/* Move view */
-	m_moveView = new ChessBrowser(m_boardSplitter);
-	m_moveView->setMinimumHeight(80);
-	m_moveView->slotReconfigure();
-	connect(m_moveView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
-
 	/* Board layout */
 	m_boardSplitter->addWidget(m_boardView);
-	m_boardSplitter->addWidget(m_moveView);
 
 	/* Game view */
 	QDockWidget* gameTextDock = new QDockWidget(tr("Game Text"), this);
 	gameTextDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 	gameTextDock->setObjectName("GameTextDock");
+	gameTextDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 	m_gameView = new ChessBrowser(gameTextDock, true);
 	m_gameView->setMinimumSize(150, 100);
 	m_gameView->slotReconfigure();
@@ -99,8 +93,10 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_gameView, SLOT(slotDatabaseChanged(DatabaseInfo*)));
 	gameTextDock->setWidget(m_gameView);
 	addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
-	m_menuView->addAction(gameTextDock->toggleViewAction());
-	gameTextDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_P);
+	g_gameTitle = new QLabel;
+	g_gameTitle->setWordWrap(true);
+	connect(g_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
+	gameTextDock->setTitleBarWidget(g_gameTitle);
 
 	/* Game List */
 	QDockWidget* gameListDock = new QDockWidget(tr("Game List"), this);
@@ -233,7 +229,6 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		m_gameList->saveConfig();
 		g_openingTree->saveConfig();
 		m_gameView->saveConfig();
-		m_moveView->saveConfig();
 		AppSettings->setLayout(this);
 		AppSettings->beginGroup("MainWindow");
 		AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
@@ -440,13 +435,10 @@ void MainWindow::showTablebaseMove(Move move, int score)
 	else
 		result = tr("Draw");
 
+	// Disabled
 	QString san(m_boardView->board().moveToSan(move));
-	QString update = m_moveView->toHtml();
-	int s = update.lastIndexOf("</p>");
-	update.insert(s, tr("<br>Tablebase: <a href=\"egtb:%1\">%2%3 %1</a> -- %4")
-				.arg(san).arg(game().moveNumber())
-				.arg(game().board().toMove() == White ? "." : "...").arg(result));
-	m_moveView->setHtml(update);
+	QString tablebase = tr("<br>Tablebase: <a href=\"egtb:%1\">%2%3 %1</a> -- %4")
+				.arg(san).arg(game().moveNumber());
 }
 
 QAction* MainWindow::createAction(const QString& name, const char* slot, const QKeySequence& key,
