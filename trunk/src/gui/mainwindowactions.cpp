@@ -235,22 +235,7 @@ void MainWindow::slotBoardMove(Square from, Square to)
 		}
 		if (game().atLineEnd())
 			game().addMove(m);
-		else {
-			// Find how way we should add new move
-			QMessageBox mbox(QMessageBox::Question, tr("Add move"),
-					 tr("There is already next move in current game. What do you want to do?"), QMessageBox::Cancel, this);
-			QPushButton* addVar = mbox.addButton(tr("Add variation"), QMessageBox::YesRole);
-			QPushButton* newMain = mbox.addButton(tr("Add new mainline"), QMessageBox::AcceptRole);
-			QPushButton* replaceMain = mbox.addButton(tr("Replace current move"), QMessageBox::DestructiveRole);
-			mbox.exec();
-			if (mbox.clickedButton() == addVar)
-				game().addVariation(m);
-			else if (mbox.clickedButton() == newMain)
-				game().promoteVariation(game().addVariation(m));
-			else if (mbox.clickedButton() == replaceMain)
-				game().replaceMove(m);
-			else return;
-		}
+		else game().addVariation(m);
 		game().forward();
 		slotGameChanged();
 	}
