@@ -351,6 +351,24 @@ void MainWindow::slotBoardMoveWheel(int wheel)
 		else slotGameMovePrevious();
 }
 
+void MainWindow::slotGameVarEnter()
+{
+	if (game().variationCount(game().currentMove())) {
+		game().moveToId(game().variations().first());
+		slotMoveChanged();
+	}
+}
+
+void MainWindow::slotGameVarExit()
+{
+	if (!game().isMainline()) {
+		while (!game().atLineStart())
+			game().backward();
+		game().backward();
+		slotMoveChanged();
+	}
+}
+
 void MainWindow::slotGameLoadFirst()
 {
 	gameLoad(databaseInfo()->filter()->indexToGame(0));

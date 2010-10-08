@@ -539,6 +539,8 @@ void MainWindow::setupActions()
 	goMenu->addAction(createAction(tr("&Previous move"), SLOT(slotGameMovePrevious()), Qt::Key_Left));
 	goMenu->addAction(createAction(tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down));
 	goMenu->addAction(createAction(tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up));
+	goMenu->addAction(createAction(tr("Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right));
+	goMenu->addAction(createAction(tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL + Qt::Key_Left));
 
 		  gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New));
 		  gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
