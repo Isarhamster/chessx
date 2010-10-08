@@ -149,6 +149,8 @@ public slots:
 	void slotGameLoadPending();
 	/** Handle link click in Game View panel */
 	void slotGameViewLink(const QUrl& link);
+	/** Handle link click in Game View panel */
+	void slotGameViewLink(const QString& link);
 	/** Show/hide GameView source - useful for debugging. */
 	void slotGameViewToggle(bool source);
 	/** Create new empty game (to be appended to the database. */
@@ -261,12 +263,12 @@ private:
 	/* Main gui parts */
 	BoardView* m_boardView;
 	QSplitter* m_boardSplitter;
-	ChessBrowser* m_moveView;
 	ChessBrowser* m_gameView;
 	TableView* g_openingTree;
 	QProgressBar* m_progressBar;
 	/* Status */
 	QLabel* m_statusFilter;
+	QLabel* g_gameTitle;
 	/* Menus */
 	QMenu* m_menuDatabases;
 	QMenu* m_menuView;
