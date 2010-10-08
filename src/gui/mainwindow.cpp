@@ -94,7 +94,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	gameTextDock->setWidget(m_gameView);
 	addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
 	g_gameTitle = new QLabel;
-	g_gameTitle->setWordWrap(true);
+//	g_gameTitle->setWordWrap(true);
 	connect(g_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
 	gameTextDock->setTitleBarWidget(g_gameTitle);
 
