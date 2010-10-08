@@ -42,7 +42,7 @@ ShowHeader=false
 [MARKUPTAGS]
 MarkupHeaderBlock=,<br>\n
 MarkupNotationBlock=,
-MarkupResult=,
+MarkupResult=<b>,</b>
 MarkupMainLineMove=<a class="main" href="move:%1">,</a>
 MarkupVariationMove=<a class="var" href="move:%1">,</a>
 MarkupMainLine=,
