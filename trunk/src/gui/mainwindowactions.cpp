@@ -469,14 +469,35 @@ void MainWindow::slotGameChanged()
 		blackElo = QString();
 	QString players = tr("<b><a href=\"tag:white\">%1</a> %2 - <a href=\"tag:black\">%3</a> %4</b>")
 			  .arg(white).arg(whiteElo).arg(black).arg(blackElo);
-	QString result = tr("%1(%2) %3").arg(game().tag("Result")).arg((game().plyCount() + 1) / 2)
+	QString result = tr("%1 (%2) %3").arg(game().tag("Result")).arg((game().plyCount() + 1) / 2)
 			 .arg(eco);
 	QString site = game().tag("Site").left(30);
 	QString event = game().tag("Event").left(30);
-	QString header = tr("<i>%1(%2), %3, %4</i>").arg(event).arg(game().tag("Round"))
-			 .arg(site).arg(game().tag("Date"));
-	g_gameTitle->setText(QString("<qt>%1, %2<br>%3</qt>").arg(players).arg(result)
-				 .arg(header));
+	QString header = "<i>";
+	if (!event.isEmpty()) {
+		header.append(site);
+		if (game().result() != Unknown)
+			header.append(QString(" (%1)").arg(game().tag("Round")));
+		if (!site.isEmpty())
+			header.append(", ");
+	}
+	header.append(site);
+	if (!game().tag("Date").startsWith("?")) {
+		if (header.length() > 4)
+			header.append(", ");
+		header.append(game().tag("Date"));
+	}
+	header.append("</i>");
+
+	QString title;
+	if (!white.isEmpty() || !black.isEmpty())
+		title.append(players);
+	else title.append("<b>New game</b>");
+	if (game().result() != Unknown || !eco.isEmpty())
+		title.append(result);
+	if (header.length() > 8)
+		title.append(QString("<br>") + header);
+	g_gameTitle->setText(QString("<qt>%1</qt>").arg(title));
 	slotMoveChanged();
 }
 
