@@ -453,17 +453,14 @@ void MainWindow::slotGameChanged()
 		m_gameView->setPlainText(m_output->output(&game()));
 	else
 		m_gameView->setText(m_output->output(&game()));
-	m_eco = game().ecoClassify();
 
 	// Finally update game information
 	QString white = game().tag("White");
 	QString black = game().tag("Black");
-	QString eco = m_eco.isNull() ? game().tag("ECO") : m_eco;
-	if (!eco.isEmpty()) {
-		int comma = eco.lastIndexOf(',');
-		if (comma != -1 && eco.at(comma + 2).isNumber())
-			eco.truncate(comma);
-	}
+	QString eco = game().tag("ECO").left(3);
+	if (eco == "?")
+		eco = "";
+
 	QString whiteElo = game().tag("WhiteElo");
 	QString blackElo = game().tag("BlackElo");
 	if (whiteElo == "?")
@@ -478,7 +475,7 @@ void MainWindow::slotGameChanged()
 			 .arg(game().tag("Site")).arg(game().tag("Date"));
 	g_gameTitle->setText(QString("<qt>%1, %2<br>%3</qt>").arg(players).arg(result)
 				 .arg(header));
-
+	qDebug() << g_gameTitle->text();
 	slotMoveChanged();
 }
 

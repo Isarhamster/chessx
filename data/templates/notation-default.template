@@ -21,7 +21,7 @@ CommentColor=#008000
 VariationColor=#0000ff
 NagColor=#ff0000
 HeaderColor=#0000ff
-ShowHeader=true
+ShowHeader=false
 [OUTPUTHEADER]
 <html>
 <head>
