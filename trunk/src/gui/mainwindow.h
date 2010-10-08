@@ -137,6 +137,10 @@ public slots:
 	void slotGameLoadRandom();
 	/** Choose a game and load it */
 	void slotGameLoadChosen();
+	/** Enter variation. */
+	void slotGameVarEnter();
+	/** Exit variation. */
+	void slotGameVarExit();
 	/** Modify game on user's request. */
 	void slotGameModify(const EditAction& action);
 	/** Update GameView content after game was change. Triggers also @ref slotMoveChanged . */
