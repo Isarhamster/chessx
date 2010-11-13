@@ -15,7 +15,7 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 ColumnStyle=false
 SymbolicNag=true
 TextWidth=0
-CommentIndent=Never
+CommentIndent=OnlyMainline
 MainLineMoveColor=#000000
 CommentColor=#008000
 VariationColor=#0000ff
@@ -27,7 +27,9 @@ ShowHeader=false
 <head>
    <style>
       p      {margin-top: 0; margin-bottom: 0}
-      p.var  {margin-left: 30}
+      p.var  {margin-left: 20px}
+      p.comment  {margin-left: 20px}
+      p.precomment  {margin-left: 0}
       a      {text-decoration: none;}
       a.main {color: @MainLineMoveColor@; font-weight: 600;}
       a.var  {color: @VariationColor@;}
@@ -55,7 +57,7 @@ MarkupColumnStyleMainline=<table border=0 width=50%>,</table>\n
 MarkupAnnotationInline= <a class="comment" href="cmt:%1">,</a>\n
 MarkupAnnotationIndent=<p class="comment"><a class="comment" href="cmt:%1">,</a></p>
 MarkupPreAnnotationInline= <a class="comment" href="precmt:%1">,</a>\n
-MarkupPreAnnotationIndent=<p class="comment"><a class="comment" href="precmt:%1">,</a></p>
+MarkupPreAnnotationIndent=<p class="precomment"><a class="comment" href="precmt:%1">,</a></p>
 MarkupHeaderLine=<b>,</b><br>\n
 MarkupHeaderTagName=[,
 MarkupHeaderTagValue=","]
