@@ -59,8 +59,10 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
 			}
 			if (index.column() == 0)
 				return i + 1;
-			else
-				return m_game->tag(m_columnNames.at(index.column()));
+			else {
+				QString tag = m_game->tag(m_columnNames.at(index.column()));
+				return tag == "?" ? QString() : tag;
+			}
 		}
 	}
 	return QVariant();
