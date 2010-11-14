@@ -23,11 +23,15 @@ AnalysisWidget::AnalysisWidget()
 			  SLOT(slotLinkClicked(QUrl)));
 	connect(ui.vpcount, SIGNAL(valueChanged(int)), SLOT(slotMpvChanged(int)));
 	ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
+
+	m_tablebase = new Shredder;
+	connect(m_tablebase, SIGNAL(bestMove(Move, int)), this, SLOT(showTablebaseMove(Move, int)));
 }
 
 AnalysisWidget::~AnalysisWidget()
 {
 	stopEngine();
+	delete m_tablebase;
 }
 
 void AnalysisWidget::startEngine()
@@ -117,10 +121,7 @@ void AnalysisWidget::showAnalysis(const Analysis& analysis)
 	else if (mpv == m_analyses.count())
 		m_analyses.append(analysis);
 	else m_analyses[mpv] = analysis;
-	QString text;
-	foreach (Analysis a, m_analyses)
-		text.append(a.toString(m_board) + "<br>");
-	ui.variationText->setText(text);
+	updateAnalysis();
 }
 
 void AnalysisWidget::setPosition(const Board& board)
@@ -128,7 +129,12 @@ void AnalysisWidget::setPosition(const Board& board)
 	if (m_board != board) {
 		m_board = board;
 		m_analyses.clear();
-		ui.variationText->clear();
+		m_tablebase->abortLookup();
+		m_tablebaseEvaluation.clear();
+		if (AppSettings->value("/General/onlineTablebases", true).toBool())
+			m_tablebase->getBestMove(m_board.toFen());
+
+		updateAnalysis();
 		if (m_engine && m_engine->isActive())
 			m_engine->startAnalysis(m_board, ui.vpcount->value());
 	}
@@ -157,5 +163,30 @@ bool AnalysisWidget::isAnalysisEnabled() const
 	if (!parentWidget()->isVisible() || !ui.analyzeButton->isChecked())
 		return false;
 	return true;
+}
+
+void AnalysisWidget::showTablebaseMove(Move move, int score)
+{
+	QString result;
+	if (score == 0)
+		result = tr("Draw");
+	else if (score < 0 == m_board.toMove() == Black)
+		result = tr("White wins in %n moves", "", qAbs(score));
+	else
+		result = tr("Black wins in %n moves", "", qAbs(score));
+
+	m_tablebaseEvaluation = QString("%1 - %2")
+				.arg(m_board.moveToFullSan(move)).arg(result);
+	updateAnalysis();
+}
+
+void AnalysisWidget::updateAnalysis()
+{
+	QString text;
+	foreach (Analysis a, m_analyses)
+		text.append(a.toString(m_board) + "<br>");
+	if (!m_tablebaseEvaluation.isEmpty())
+		text.append(tr("<b>Tablebase:</b> ") + m_tablebaseEvaluation);
+	ui.variationText->setText(text);
 }
 

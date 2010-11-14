@@ -92,6 +92,8 @@ public:
 	QString toFen() const;
 	/** Return a SAN string representation of given move */
 	QString moveToSan(const Move& move) const;
+	/** @return a SAN string representing a given move with move number. */
+	QString moveToFullSan(const Move& move) const;
 
 	// Validation
 	//

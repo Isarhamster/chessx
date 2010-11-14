@@ -43,9 +43,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_databases.append(new DatabaseInfo);
 	m_currentDatabase = 0;
 
-	m_tablebase = new Shredder;
-	connect(m_tablebase, SIGNAL(bestMove(Move, int)), this, SLOT(showTablebaseMove(Move, int)));
-
 	/* Actions */
 	m_actions = new QActionGroup(this);
 	m_actions->setExclusive(false);
@@ -208,7 +205,6 @@ MainWindow::~MainWindow()
 	delete m_playerDialog;
 	delete m_helpWindow;
 	delete m_output;
-	delete m_tablebase;
 }
 
 void MainWindow::ecoLoaded()
@@ -423,22 +419,6 @@ HelpWindow* MainWindow::helpWindow()
 		AppSettings->layout(m_helpWindow);
 	}
 	return m_helpWindow;
-}
-
-void MainWindow::showTablebaseMove(Move move, int score)
-{
-	QString result;
-	if (score < 0)
-		result = tr("Loses in %n move(s)", "", score * -1);
-	else if (score > 0)
-		result = tr("Wins in %n move(s)", "", score);
-	else
-		result = tr("Draw");
-
-	// Disabled
-	QString san(m_boardView->board().moveToSan(move));
-	QString tablebase = tr("<br>Tablebase: <a href=\"egtb:%1\">%2%3 %1</a> -- %4")
-				.arg(san).arg(game().moveNumber());
 }
 
 QAction* MainWindow::createAction(const QString& name, const char* slot, const QKeySequence& key,

@@ -14,6 +14,7 @@
 #include "wbengine.h"
 #include "uciengine.h"
 #include "ui_analysiswidget.h"
+#include "tablebase.h"
 #include <QtGui>
 
 /** @ingroup GUI
@@ -54,17 +55,23 @@ private slots:
 	void slotLinkClicked(const QUrl& link);
 	/** Number of visible lines was changed. */
 	void slotMpvChanged(int mpv);
+	/** Show tablebase move information. */
+	void showTablebaseMove(Move move, int score);
 signals:
 	void addVariation(const Analysis& analysis);
 private:
 	/** Should analysis be running. */
 	bool isAnalysisEnabled() const;
+	/** Update analysis. */
+	void updateAnalysis();
 
 	QList<Analysis> m_analyses;
 	Ui::AnalysisWidget ui;
 	Engine* m_engine;
 	bool m_active;
 	Board m_board;
+	QString m_tablebaseEvaluation;
+	Tablebase* m_tablebase;
 };
 
 #endif // __ANALYSIS_WIDGET_H__

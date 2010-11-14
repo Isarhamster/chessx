@@ -27,7 +27,6 @@ class BoardView;
 class Game;
 class Database;
 class DatabaseInfo;
-class Tablebase;
 class EcoThread;
 class AnalysisWidget;
 class Board;
@@ -220,8 +219,7 @@ public slots:
 	void slotDatabaseDeleteFilter();
 	/** Compact database by removing obsolete information. */
 	void slotDatabaseCompact();
-	/** Show tablebase move information. */
-	void showTablebaseMove(Move move, int score);
+
 signals:
 	/** Re-read configuration. */
 	void reconfigure();
@@ -283,7 +281,6 @@ private:
 	QString m_eco;
 	QActionGroup* m_actions;
 	bool m_showPgnSource; // for debugging
-	Tablebase* m_tablebase;
 	EcoThread* m_ecothread;
 	AnalysisWidget* m_analysis;
 	QTimer* m_timer;
