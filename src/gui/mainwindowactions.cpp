@@ -279,15 +279,10 @@ void MainWindow::slotMoveChanged()
 	Game& g = game();
 
 	// Set board first
-	m_tablebase->abortLookup();
 	m_boardView->setBoard(g.board());
 
 	// Highlight current move
 	m_gameView->showMove(g.currentMove());
-
-
-	if (AppSettings->value("/General/onlineTablebases", true).toBool())
-		m_tablebase->getBestMove(g.toFen());
 
 	slotSearchTree();
 	emit boardChange(g.board());

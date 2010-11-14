@@ -245,12 +245,11 @@ void Output::writeMove(MoveToWrite moveToWrite)
 	}
 	if (!commentString.isEmpty())
 		writeComment(commentString, mvno, Comment);
-	m_output += " ";
+		m_output += " ";
 }
 
 void Output::writeVariation()
 {
-	QString variation;
 	while (!m_game->atLineEnd()) {
 		// *** Writes move in the current variation
 		writeMove();

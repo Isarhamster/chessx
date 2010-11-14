@@ -1668,12 +1668,12 @@ void bitBoardInit()
 		bb_PawnF2[Black][i]  = Shift2Down(mask) & rank5;
 
 		bb_PawnALL[White][i] = bb_PawnAttacks[White][i] |
-				       bb_PawnF1[White][i] |
-				       bb_PawnF2[White][i];
+						 bb_PawnF1[White][i] |
+						 bb_PawnF2[White][i];
 
 		bb_PawnALL[Black][i] = bb_PawnAttacks[Black][i] |
-				       bb_PawnF1[Black][i] |
-				       bb_PawnF2[Black][i];
+						 bb_PawnF1[Black][i] |
+						 bb_PawnF2[Black][i];
 	}
 
 	// Knight attacks
@@ -1805,4 +1805,10 @@ BitBoard getStandardPosition()
 	BitBoard b;
 	b.fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	return b;
+}
+
+QString BitBoard::moveToFullSan(const Move &move) const
+{
+	QString dots = toMove() == White ? "." : "...";
+	return QString("%1%2%3").arg(m_moveNumber).arg(dots).arg(moveToSan(move));
 }
