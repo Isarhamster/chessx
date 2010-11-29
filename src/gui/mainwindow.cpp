@@ -17,7 +17,6 @@
 #include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"
-#include "helpwindow.h"
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "memorydatabase.h"
@@ -34,7 +33,7 @@
 #include <time.h>
 
 MainWindow::MainWindow() : QMainWindow(),
-		m_playerDialog(0), m_saveDialog(0), m_helpWindow(0),
+		m_playerDialog(0), m_saveDialog(0),
 		m_showPgnSource(false)
 {
 	setObjectName("MainWindow");
@@ -203,7 +202,6 @@ MainWindow::~MainWindow()
 	qDeleteAll(m_databases.begin(), m_databases.end());
 	delete m_saveDialog;
 	delete m_playerDialog;
-	delete m_helpWindow;
 	delete m_output;
 }
 
@@ -221,7 +219,6 @@ void MainWindow::closeEvent(QCloseEvent* e)
 	if (confirmQuit()) {
 		m_recentFiles.save("History", "RecentFiles");
 		AppSettings->setLayout(m_playerDialog);
-		AppSettings->setLayout(m_helpWindow);
 		m_gameList->saveConfig();
 		g_openingTree->saveConfig();
 		m_gameView->saveConfig();
@@ -412,15 +409,6 @@ SaveDialog* MainWindow::saveDialog()
 	return m_saveDialog;
 }
 
-HelpWindow* MainWindow::helpWindow()
-{
-	if (!m_helpWindow) {
-		m_helpWindow = new HelpWindow;
-		AppSettings->layout(m_helpWindow);
-	}
-	return m_helpWindow;
-}
-
 QAction* MainWindow::createAction(const QString& name, const char* slot, const QKeySequence& key,
 											 const QString& tip, QAction::MenuRole menuRole)
 {
@@ -544,10 +532,9 @@ void MainWindow::setupActions()
 	/* Help menu */
 	menuBar()->addSeparator();
 	QMenu *help = menuBar()->addMenu(tr("&Help"));
-//  help->addAction(createAction(tr("ChessX &help..."), SLOT(slotHelp()), Qt::CTRL + Qt::Key_F1));
 	help->addAction(createAction(tr("&Report a bug..."), SLOT(slotHelpBug())));
 	help->addSeparator();
-		  help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), QString(), QAction::AboutRole));
+	help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), QString(), QAction::AboutRole));
 
 #ifdef QT_DEBUG
 	QMenu* debug = help->addMenu(tr("&Debug"));

@@ -1,6 +1,6 @@
 #include "guess.h"
 #include "position.h"
-#include "engine.h"
+#include "guessengine.h"
 
 namespace Guess
 {

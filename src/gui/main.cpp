@@ -1,8 +1,8 @@
 /***************************************************************************
-                          main.cpp  -  main application
-                             -------------------
-    begin                : sob maj 7 2005
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+								  main.cpp  -  main application
+									  -------------------
+	 begin                : sob maj 7 2005
+	 copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -23,11 +23,16 @@
 int main(int argc, char** argv)
 {
 	AppSettings = new Settings;
-	QTranslator translator;
 	QApplication a(argc, argv);
+
+	QTranslator translator;
+	QString lang = QString("chessx_%1.qm").arg(QLocale::system().name().left(2));
+
+	if (!translator.load(AppSettings->dataPath() + "/lang/" + lang))
+		translator.load(QString(":i18n/") + lang);
+	else qDebug() << "Got it";
 	a.installTranslator(&translator);
-	translator.load(QString("chessx_%1.qm").arg(QLocale::system().name()),
-			AppSettings->dataPath() + "/lang");
+
 	MainWindow* mw = new MainWindow;
 	mw->show();
 	a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
