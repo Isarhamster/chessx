@@ -13,14 +13,14 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "attacks.h"
-#include "engine.h"
+#include "guessengine.h"
 #include "recog.h"
 
 namespace Guess
 {
 
 // The Engine class implements the Scid built-in chess engine.
-// See engine.h for details.
+// See guessengine.h for details.
 
 
 // Evaluation constants:

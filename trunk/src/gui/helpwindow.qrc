@@ -1,9 +1,0 @@
-    <!DOCTYPE RCC><RCC version="1.0">
-    <qresource>
-        <file alias="forward.png">../../data/images/forward.png</file>
-        <file alias="back.png">../../data/images/back.png</file>
-        <file alias="home.png">../../data/images/home.png</file>
-        <file alias="print.png">../../data/images/print.png</file>
-        <file alias="fileopen.png">../../data/images/fileopen.png</file>
-    </qresource>
-    </RCC>

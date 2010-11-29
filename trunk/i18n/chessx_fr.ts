@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="zh_CN">
+<TS version="2.0" language="fr_FR">
 <context>
     <name>Analysis</name>
     <message>
@@ -19,57 +19,59 @@
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="20"/>
         <source>Analysis</source>
-        <translation>分析框</translation>
+        <translation>Analyse</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="40"/>
         <source>&amp;Lines:</source>
-        <translation>行(&amp;L):</translation>
+        <translation>&amp;lignes:</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="76"/>
         <location filename="../src/gui/analysiswidget.cpp" line="58"/>
         <source>Analyze</source>
-        <translation>分析</translation>
+        <translation>Analyser</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="74"/>
         <source>Stop</source>
-        <translation>停止</translation>
+        <translation>Arrêter</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="81"/>
         <source>Error</source>
-        <translation>错误</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="82"/>
         <source>There was an error running engine &lt;b&gt;%1&lt;/b&gt;.</source>
-        <translation>引擎运行时错误: &lt;b&gt;%1&lt;/b&gt;.</translation>
+        <translation>Erreur lors de l&apos;exécution du module &lt;b&gt;%1&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="172"/>
         <source>Draw</source>
-        <translation type="unfinished">和棋</translation>
+        <translation>Partie nulle</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/analysiswidget.cpp" line="174"/>
         <source>White wins in %n moves</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Les blancs gagnent en %n coup</numerusform>
+            <numerusform>Les blancs gagnent en %n coups</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/analysiswidget.cpp" line="176"/>
         <source>Black wins in %n moves</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Les noirs gagnent en %n coup</numerusform>
+            <numerusform>Les noirs gagnent en %n coups</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="190"/>
         <source>&lt;b&gt;Tablebase:&lt;/b&gt; </source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Table de finale : &lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -77,67 +79,68 @@
     <message>
         <location filename="../src/gui/boardsetup.ui" line="14"/>
         <source>Setup position</source>
-        <translation>设置位置</translation>
+        <translatorcomment>Inspired from Fritz GUI</translatorcomment>
+        <translation>Définir une position</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="30"/>
         <source>Board</source>
-        <translation>棋盘</translation>
+        <translation>Échiquier</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="69"/>
         <source>Clear</source>
-        <translation>清除</translation>
+        <translation>Tout vider</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="76"/>
         <source>&amp;Reset</source>
-        <translation>重置(&amp;R)</translation>
+        <translation>&amp;Initialiser</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="93"/>
         <source>Side to move:</source>
-        <translation>先走棋的一方:</translation>
+        <translation>Trait aux :</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="103"/>
         <source>Move:</source>
-        <translation>走棋:</translation>
+        <translation>Coup :</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="152"/>
         <source>&amp;Advanced</source>
-        <translation>高级选项(&amp;A)</translation>
+        <translation>&amp;Paramètres avancés</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="209"/>
         <source>En passant file:</source>
-        <translation>过路兵:</translation>
+        <translation>Rangée en passant :</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="216"/>
         <source>Castling rights</source>
-        <translation>王车易位权利</translation>
+        <translation>Droits au roque</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="228"/>
         <source>Black O-O</source>
-        <translation>黑方 O-O</translation>
+        <translation>Noirs O-O</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="235"/>
         <source>White O-O-O</source>
-        <translation>白方 O-O-O</translation>
+        <translation>Blancs O-O-O</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="242"/>
         <source>White O-O</source>
-        <translation>白方 O-O</translation>
+        <translation>Blancs O-O</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="249"/>
         <source>Black O-O-O</source>
-        <translation>黑方 O-O-O</translation>
+        <translation>Noirs O-O-O</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="263"/>
@@ -147,164 +150,167 @@
     <message>
         <location filename="../src/gui/boardsetup.ui" line="268"/>
         <source>a</source>
-        <translation></translation>
+        <translation>a</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="273"/>
         <source>b</source>
-        <translation></translation>
+        <translation>b</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="278"/>
         <source>c</source>
-        <translation></translation>
+        <translation>c</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="283"/>
         <source>d</source>
-        <translation></translation>
+        <translation>d</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="288"/>
         <source>e</source>
-        <translation></translation>
+        <translation>e</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="293"/>
         <source>f</source>
-        <translation></translation>
+        <translation>f</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="298"/>
         <source>g</source>
-        <translation></translation>
+        <translation>g</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="303"/>
         <source>h</source>
-        <translation></translation>
+        <translation>h</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="311"/>
         <source>Halfmove clock:</source>
-        <translation>半成时钟:</translation>
+        <translatorcomment>No equivalent in French</translatorcomment>
+        <translation>Compteur demi-coups :</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="343"/>
         <source>Paste FEN</source>
-        <translation>粘贴FEN</translation>
+        <translation>Coller FEN</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="350"/>
         <source>Copy FEN</source>
-        <translation>复制FEN</translation>
+        <translation>Copier FEN</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="373"/>
         <source>&amp;Ok</source>
-        <translation>确定(&amp;O)</translation>
+        <translation>&amp;Valider</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="380"/>
         <source>&amp;Cancel</source>
-        <translation>取消(&amp;C)</translation>
+        <translation>&amp;Annuler</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="138"/>
         <source>Invalid position</source>
-        <translation>无效位置</translation>
+        <translation>Position non valide</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="139"/>
         <source>Current position is not valid.
 
 %1.</source>
-        <translation>当前位置无效. %1.</translation>
+        <translation>La position n&apos;est pas valide.
+
+%1.</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="226"/>
         <source>No white king</source>
-        <translation>白方王不存在</translation>
+        <translation>Pas de roi blanc</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="228"/>
         <source>No black king</source>
-        <translation>黑方王不存在</translation>
+        <translation>Pas de roi noir</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="230"/>
         <source>Both kings are in check</source>
-        <translation>双方王都被将军</translation>
+        <translation>Les deux rois sont en echec</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="232"/>
         <source>Side to move has opponent in check already</source>
-        <translation>走棋方已经将军</translation>
+        <translation>Le camp qui a le trait est en échec</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="234"/>
         <source>Black has too many pawns</source>
-        <translation>黑方多兵</translation>
+        <translation>Les Noirs ont trop de pions</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="236"/>
         <source>White has too many pawns</source>
-        <translation>白方多兵</translation>
+        <translation>Les blancs ont trop de pions</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="238"/>
         <source>There are pawns on the first or eighth rank</source>
-        <translation>兵已经在第一行或者第八行</translation>
+        <translation>Des pions se trouvent sur la première ou sur la huitième rangée</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="240"/>
         <source>Too many kings</source>
-        <translation>王太多</translation>
+        <translation>Trop de rois</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="242"/>
         <source>Too many black pieces</source>
-        <translation>黑方棋子太多</translation>
+        <translation>Les noirs ont trop de pièces</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="244"/>
         <source>Too many white pieces</source>
-        <translation>白方棋子太多</translation>
+        <translation>Les blancs ont trop de pièces</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="246"/>
         <source>Bad castling rights</source>
-        <translation>没有易位权限</translation>
+        <translation>Roque non autorisé</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="248"/>
         <source>En passant square is not correct</source>
-        <translation>吃过路兵方法错误</translation>
+        <translation>La case en passant n&apos;est pas correcte</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="250"/>
         <source>Unknown reason</source>
-        <translation>未知原因</translation>
+        <translation>Impossible de valider la position</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="259"/>
         <source>FEN: %1</source>
-        <translation>FEN:%1</translation>
+        <translation>FEN : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="261"/>
         <source>Illegal position: %1</source>
-        <translation>非法位置:%1</translation>
+        <translation>Position illégale : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="274"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>剪贴板上的FEN无效:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
+        <translation>Le texte dans le presse-papier n&apos;est pas au format FEN : &lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="275"/>
         <source>There is no text in clipboard.</source>
-        <translation>剪贴板为空.</translation>
+        <translation>Pas de texte dans le presse-papier.</translation>
     </message>
 </context>
 <context>
@@ -312,13 +318,13 @@
     <message>
         <location filename="../src/gui/boardtheme.cpp" line="131"/>
         <source>Error</source>
-        <translation>错误</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <location filename="../src/gui/boardtheme.cpp" line="131"/>
         <source>Cannot find piece data.
 Please check your installation.</source>
-        <translation>无法找到棋子数据.\n请检查您的安装是否正确.</translation>
+        <translation>Impossible de charger les pièces. Merci de vérifier votre installation.</translation>
     </message>
 </context>
 <context>
@@ -326,57 +332,57 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="80"/>
         <source>Add start comment...</source>
-        <translation>添加开始评论...</translation>
+        <translation>Ajouter un commentaire au début...</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="82"/>
         <source>Add comment...</source>
-        <translation>添加评论...</translation>
+        <translation>Ajouter un commentaire...</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="86"/>
         <source>Add move symbol</source>
-        <translation>添加走棋符号</translation>
+        <translation>Ajouter symbole de coup</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="90"/>
         <source>Add evaluation symbol</source>
-        <translation>添加棋局评估符</translation>
+        <translation>Ajouter symbole d&apos;évaluation</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="95"/>
         <source>Add other symbol</source>
-        <translation>添加其他符号</translation>
+        <translation>Ajouter autre symbole</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="105"/>
         <source>Remove symbols</source>
-        <translation>移除符号</translation>
+        <translation>Supprimer les symboles</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="108"/>
         <source>Promote to main line</source>
-        <translation>升级为主线</translation>
+        <translation>Promouvoir la variante</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="110"/>
         <source>Remove variation</source>
-        <translation>移除变种</translation>
+        <translation>Supprimer la variante</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="112"/>
         <source>Remove previous moves</source>
-        <translation>悔棋</translation>
+        <translation>Supprimer les coups précédents</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="114"/>
         <source>Remove next moves</source>
-        <translation>取消悔棋</translation>
+        <translation>Supprimer les coups suivants</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="121"/>
         <source>Small font</source>
-        <translation>小字体</translation>
+        <translation>Réduire la taille du texte</translation>
     </message>
 </context>
 <context>
@@ -384,7 +390,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/commentdialog.ui" line="14"/>
         <source>Edit Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifier le commentaire</translation>
     </message>
 </context>
 <context>
@@ -392,32 +398,32 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/copydialog.ui" line="13"/>
         <source>Copy Games</source>
-        <translation>复制棋局</translation>
+        <translation>Copier des parties</translation>
     </message>
     <message>
         <location filename="../src/gui/copydialog.ui" line="25"/>
         <source>Copy:</source>
-        <translation>复制:</translation>
+        <translation>Copier :</translation>
     </message>
     <message>
         <location filename="../src/gui/copydialog.ui" line="37"/>
         <source>&amp;Current game</source>
-        <translation>当前棋局(&amp;C)</translation>
+        <translation>&amp;Partie en cours</translation>
     </message>
     <message>
         <location filename="../src/gui/copydialog.ui" line="44"/>
         <source>Games in &amp;filter</source>
-        <translation>使用过滤器(&amp;f)</translation>
+        <translation>Parties &amp;filtrées</translation>
     </message>
     <message>
         <location filename="../src/gui/copydialog.ui" line="54"/>
         <source>&amp;All games</source>
-        <translation>所有棋局(&amp;A)</translation>
+        <translation>&amp;Toutes les parties</translation>
     </message>
     <message>
         <location filename="../src/gui/copydialog.ui" line="64"/>
         <source>&amp;To:</source>
-        <translation>复制到(&amp;T):</translation>
+        <translation>&amp;Vers:</translation>
     </message>
 </context>
 <context>
@@ -433,98 +439,98 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="28"/>
         <source>Game list</source>
-        <translation>棋局列表</translation>
+        <translation>Liste des parties</translation>
     </message>
 </context>
 <context>
     <name>HelpWindow</name>
     <message>
         <source>ChessX - help viewer</source>
-        <translation type="obsolete">ChessX - 帮助</translation>
+        <translation type="obsolete">ChessX - Visionneur d&apos;aide</translation>
     </message>
     <message>
         <source>&amp;Open ...</source>
-        <translation type="obsolete">打开(&amp;O)...</translation>
+        <translation type="obsolete">&amp;Ouvrir...</translation>
     </message>
     <message>
         <source>Opens a help page</source>
-        <translation type="obsolete">打开帮助页面</translation>
+        <translation type="obsolete">Ouvre une page d&apos;aide</translation>
     </message>
     <message>
         <source>&amp;Print</source>
-        <translation type="obsolete">打印(&amp;P)</translation>
+        <translation type="obsolete">&amp;Imprimer</translation>
     </message>
     <message>
         <source>Prints the current page</source>
-        <translation type="obsolete">打印当前页</translation>
+        <translation type="obsolete">Imprimer la page en cours</translation>
     </message>
     <message>
         <source>E&amp;xit</source>
-        <translation type="obsolete">退出(&amp;x)</translation>
+        <translation type="obsolete">&amp;Quitter</translation>
     </message>
     <message>
         <source>Exits the help browser</source>
-        <translation type="obsolete">退出帮助浏览器</translation>
+        <translation type="obsolete">Quitter le navigateur d&apos;aide</translation>
     </message>
     <message>
         <source>&amp;Forward</source>
-        <translation type="obsolete">前进(&amp;F)</translation>
+        <translation type="obsolete">&amp;Avancer d&apos;une page</translation>
     </message>
     <message>
         <source>Next document in history</source>
-        <translation type="obsolete">下一页</translation>
+        <translation type="obsolete">Suivant dans l&apos;historique du document</translation>
     </message>
     <message>
         <source>&amp;Back</source>
-        <translation type="obsolete">倒退(&amp;B)</translation>
+        <translation type="obsolete">&amp;Reculer d&apos;une page</translation>
     </message>
     <message>
         <source>Go back in history</source>
-        <translation type="obsolete">上一页</translation>
+        <translation type="obsolete">Aller en arrière dans l&apos;historique</translation>
     </message>
     <message>
         <source>&amp;Home</source>
-        <translation type="obsolete">主页(&amp;H)</translation>
+        <translation type="obsolete">&amp;Page d&apos;accueil</translation>
     </message>
     <message>
         <source>Open the start page of the helpsystem</source>
-        <translation type="obsolete">打开帮助起始页</translation>
+        <translation type="obsolete">Ouvrir la page de démarrage du système d&apos;aide</translation>
     </message>
     <message>
         <source>&amp;About</source>
-        <translation type="obsolete">关于(&amp;A)</translation>
+        <translation type="obsolete">À &amp;propos</translation>
     </message>
     <message>
         <source>About ChessX</source>
-        <translation type="obsolete">关于ChessX</translation>
+        <translation type="obsolete">À propos de ChessX</translation>
     </message>
     <message>
         <source>History</source>
-        <translation type="obsolete">历史</translation>
+        <translation type="obsolete">Historique</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation type="obsolete">文件(&amp;F)</translation>
+        <translation type="obsolete">&amp;Fichier</translation>
     </message>
     <message>
         <source>Na&amp;vigate</source>
-        <translation type="obsolete">导航(&amp;v)</translation>
+        <translation type="obsolete">Na&amp;viguer</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="obsolete">帮助(&amp;H)</translation>
+        <translation type="obsolete">&amp;Aide</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="obsolete">就绪</translation>
+        <translation type="obsolete">prêt</translation>
     </message>
     <message>
         <source>Select a help file ...</source>
-        <translation type="obsolete">选择帮助文件...</translation>
+        <translation type="obsolete">Choisir un fichier d&apos;aide ...</translation>
     </message>
     <message>
         <source>Help pages (*.html *.htm )</source>
-        <translation type="obsolete">帮助网页(*.html *.htm)</translation>
+        <translation type="obsolete">Pages d&apos;aide (*.html *.htm)</translation>
     </message>
 </context>
 <context>
@@ -532,603 +538,516 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="80"/>
         <source>Game Text</source>
-        <translation>棋谱</translation>
+        <translation>Texte de la partie</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="98"/>
         <source>Game List</source>
-        <translation>棋局列表</translation>
+        <translation>Liste des parties</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="111"/>
         <source>Opening Tree</source>
-        <translation>打开目录数</translation>
+        <translation>Arbre d&apos;ouvertures</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="132"/>
         <source>Analysis</source>
-        <translation>分析</translation>
+        <translation>Analyse</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="184"/>
         <source>Loading ECO file...</source>
-        <translation>载入开局文件...</translation>
+        <translation>Chargement du fichier ECO...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="211"/>
         <source>ECO Loaded.</source>
-        <translation>开局文件已载入.</translation>
+        <translation>ECO chargé.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="255"/>
         <source>[Clipboard]</source>
-        <translation>[剪贴板]</translation>
+        <translation>[Presse-papier]</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="328"/>
         <source>Database %1 is already opened.</source>
-        <translation>数据库 %1 已经打开.</translation>
+        <translation>La base de données %1 est déjà ouverte.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="336"/>
         <source>Opening %1...</source>
-        <translation>打开中 %1...</translation>
+        <translation>Ouverture de %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="340"/>
         <source>Cannot open file</source>
-        <translation>无法打开文件</translation>
+        <translation>Impossible d&apos;ouvir le fichier</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="345"/>
         <source>%1 opened</source>
-        <translation>%1 已打开</translation>
+        <translation>%1 ouvert</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="361"/>
         <source>Export games</source>
-        <translation>输出 棋局</translation>
+        <translation>Exporter les parties</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="365"/>
         <source>PGN file (*.pgn)</source>
-        <translation>PGN 文件(*.pgn)</translation>
+        <translation>Fichier PGN (*.pgn)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="366"/>
         <source>HTML page (*.html)</source>
-        <translation>HTML 网页(*.html)</translation>
+        <translation>Page HTML (*.html)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="367"/>
         <source>LaTeX document (*.tex)</source>
-        <translation>LaTeX 文档(*.tex)</translation>
-    </message>
-    <message>
-        <source>Edit comment</source>
-        <translation type="obsolete">编辑注释</translation>
-    </message>
-    <message>
-        <source>Comment:</source>
-        <translation type="obsolete">注释:</translation>
-    </message>
-    <message numerus="yes">
-        <source>Loses in %n move(s)</source>
-        <translation type="obsolete">
-            <numerusform>在 %n 步时输棋</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>Wins in %n move(s)</source>
-        <translation type="obsolete">
-            <numerusform>在 %n 步时赢棋</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Draw</source>
-        <translation type="obsolete">和棋</translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;Tablebase: &lt;a href=&quot;egtb:%1&quot;&gt;%2%3 %1&lt;/a&gt; -- %4</source>
-        <translation type="obsolete">&lt;br&gt;桌面数据: &lt;a href=&quot;egtb:%1&quot;&gt;%2%3 %1&lt;/a&gt; -- %4</translation>
+        <translation>Document LaTeX (*.tex)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="429"/>
         <source>&amp;File</source>
-        <translation>文件(&amp;F)</translation>
+        <translation>&amp;Fichier</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="430"/>
         <source>&amp;New database...</source>
-        <translation>新数据库(&amp;N)...</translation>
+        <translation>&amp;Nouvelle base de données...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="431"/>
         <source>&amp;Open...</source>
-        <translation>打开(&amp;O)...</translation>
+        <translation>&amp;Ouvrir...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="432"/>
         <source>Open &amp;recent...</source>
-        <translation>打开最近(&amp;r)...</translation>
+        <translation>Fichiers &amp;récents...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="441"/>
         <source>&amp;Save</source>
-        <translation>保存(&amp;S)</translation>
+        <translation>&amp;Enregistrer</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="442"/>
         <source>&amp;Export...</source>
-        <translation>输出(&amp;E)...</translation>
+        <translation>E&amp;xporter...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="443"/>
         <source>&amp;Games in filter</source>
-        <translation>过滤器中的棋局(&amp;G)</translation>
+        <translation>&amp;Parties filtrées</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="444"/>
         <source>&amp;All games</source>
-        <translation>所有棋局(&amp;A)</translation>
+        <translation>&amp;Toutes les parties</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="445"/>
         <source>&amp;Close</source>
-        <translation>关闭(&amp;C)</translation>
+        <translation>&amp;Fermer</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="446"/>
         <source>&amp;Quit</source>
-        <translation>退出(&amp;Q)</translation>
+        <translation>&amp;Quitter</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="449"/>
         <source>&amp;Edit</source>
-        <translation>编辑(&amp;E)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow.cpp" line="463"/>
-        <source>Setup &amp;position...</source>
-        <translation>设置位置(&amp;p)...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow.cpp" line="457"/>
-        <source>&amp;Remove</source>
-        <translation>移除(&amp;R)</translation>
+        <translation>&amp;Édition</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="450"/>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Commentaire</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="452"/>
         <location filename="../src/gui/mainwindow.cpp" line="502"/>
         <source>Variation</source>
-        <translation type="unfinished"></translation>
+        <translation>Variante</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="453"/>
         <source>Promote</source>
-        <translation type="unfinished"></translation>
+        <translation>Promouvoir la variante</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="455"/>
         <source>Remove</source>
-        <translation type="unfinished">移除</translation>
+        <translation>Supprimer</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="457"/>
+        <source>&amp;Remove</source>
+        <translation>&amp;Supprimer</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="458"/>
         <source>Moves from the beginning</source>
-        <translation>回到开始</translation>
+        <translation>Coups précédents</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="460"/>
         <source>Moves to the end</source>
-        <translation>跳到结束</translation>
+        <translation>Coups restants</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="463"/>
+        <source>Setup &amp;position...</source>
+        <translation>Définir une &amp;position...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="465"/>
         <source>&amp;Copy FEN</source>
-        <translation>复制FEN(&amp;C)</translation>
+        <translation>&amp;Copier FEN</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="467"/>
         <source>&amp;Paste FEN</source>
-        <translation>粘贴FEN(&amp;P)</translation>
+        <translation>C&amp;oller FEN</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="470"/>
         <source>&amp;Preferences...</source>
-        <translation>偏好(&amp;P)...</translation>
+        <translation>&amp;Préférences...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="475"/>
         <source>&amp;View</source>
-        <translation>视图(&amp;V)</translation>
+        <translation>&amp;Affichage</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="476"/>
         <source>&amp;Flip board</source>
-        <translation>翻转棋盘(&amp;F)</translation>
+        <translation>&amp;Pivoter l&apos;Échiquier à 180°</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="479"/>
         <source>&amp;Player information...</source>
-        <translation>选手信息(&amp;P)...</translation>
+        <translation>&amp;Informations sur le joueur...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="483"/>
         <source>&amp;Game</source>
-        <translation>棋局(&amp;G)</translation>
+        <translation>&amp;Partie</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="484"/>
         <source>&amp;Load</source>
-        <translation>载入(&amp;L)</translation>
+        <translation>&amp;Charger</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="487"/>
         <source>&amp;First</source>
-        <translation>第一局(&amp;F)</translation>
+        <translation>La &amp;première</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="488"/>
         <source>&amp;Last</source>
-        <translation>最后一局(&amp;L)</translation>
+        <translation>La &amp;dernière</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="489"/>
         <source>&amp;Next</source>
-        <translation>下一局(&amp;N)</translation>
+        <translation>La &amp;suivante</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="490"/>
         <source>&amp;Previous</source>
-        <translation>上一局(&amp;P)</translation>
+        <translation>La p&amp;récédente</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="491"/>
         <source>&amp;Go to game...</source>
-        <translation>选择局数(&amp;G)...</translation>
+        <translation>&amp;Aller à la partie n°...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="492"/>
         <source>&amp;Random</source>
-        <translation>随机(&amp;R)</translation>
+        <translation>A&amp;léatoire</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="495"/>
         <source>&amp;Go to</source>
-        <translation>跳到(&amp;G)</translation>
+        <translation>Aller &amp;vers</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="496"/>
         <source>&amp;Start</source>
-        <translation>开始(&amp;S)</translation>
+        <translation>Le &amp;Début</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="497"/>
         <source>&amp;End</source>
-        <translation>结束(&amp;E)</translation>
+        <translation>La &amp;Fin</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="498"/>
         <source>&amp;Next move</source>
-        <translation>下一步(&amp;N)</translation>
+        <translation>Le coup &amp;suivant</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="499"/>
         <source>&amp;Previous move</source>
-        <translation>上一步(&amp;P)</translation>
+        <translation>Le coup &amp;précédent</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="500"/>
         <source>5 moves &amp;forward</source>
-        <translation>向前走5步(&amp;f)</translation>
+        <translation>5 coups en a&amp;rrière</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="501"/>
         <source>5 moves &amp;backward</source>
-        <translation>向后退5步(&amp;b)</translation>
+        <translation>5 coups en &amp;avant</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="503"/>
         <source>Back to main line</source>
-        <translation type="unfinished"></translation>
+        <translation>Retour sur la ligne principale</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="505"/>
         <source>&amp;New</source>
-        <translation>新建(&amp;N)</translation>
+        <translation>&amp;Nouvelle</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="506"/>
         <source>&amp;Save....</source>
-        <translation>保存(&amp;S)...</translation>
+        <translation>&amp;Enregistrer...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="507"/>
         <source>&amp;Analyze</source>
-        <translation>分析(&amp;A)</translation>
+        <translation>&amp;Analyser</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="510"/>
         <source>Fi&amp;nd</source>
-        <translation>查找(&amp;n)</translation>
+        <translation>&amp;Rechercher</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="511"/>
         <source>Find &amp;tag</source>
-        <translation>查找标签(&amp;t)</translation>
+        <translation>Rechercher un &amp;critère</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="513"/>
         <source>Find &amp;position</source>
-        <translation>查找位置(&amp;p)</translation>
+        <translation>Rechercher la position</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="516"/>
         <source>&amp;Reset filter</source>
-        <translation>重置过滤器(&amp;R)</translation>
+        <translation>&amp;Réinitialiser le filtre</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="517"/>
         <source>&amp;Reverse filter</source>
-        <translation>反转过滤器(&amp;R)</translation>
+        <translation>&amp;Inverser le filtre</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="521"/>
         <source>&amp;Database</source>
-        <translation>数据库(&amp;D)</translation>
+        <translation>&amp;Base de données</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="522"/>
         <source>&amp;Switch to</source>
-        <translation>切换到(&amp;S)</translation>
+        <translation>&amp;Basculer vers</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="523"/>
         <source>&amp;Copy games...</source>
-        <translation>复制棋局(&amp;C)...</translation>
+        <translation>&amp;Copier les parties...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="534"/>
         <source>&amp;Help</source>
-        <translation>帮助(&amp;H)</translation>
+        <translation>&amp;Aide</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="535"/>
         <source>&amp;Report a bug...</source>
-        <translation>报告缺陷(&amp;R)...</translation>
+        <translation>&amp;Signaler un bug...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="537"/>
         <source>&amp;About ChessX</source>
-        <translation>关于ChessX(&amp;A)</translation>
+        <translation>À &amp;propos de ChessX</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="540"/>
         <source>&amp;Debug</source>
-        <translation>调试(&amp;D)</translation>
+        <translation>&amp;Déboguer</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="555"/>
         <source>Following databases are modified:</source>
-        <translation>以下数据库已被修改:</translation>
+        <translation>Les bases de données suivantes ont été modifiées:</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="556"/>
         <source>Save them?</source>
-        <translation>保存?</translation>
+        <translation>Enregistrer les changements?</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="582"/>
         <source> (%1 s.)</source>
-        <translation>(%1 妙)</translation>
+        <translation>(%1 s.)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowabout.cpp" line="15"/>
         <source>Compiled with &apos;fastbits&apos; option&lt;br&gt;</source>
-        <translation>编译是添加&apos;fastbit&apos;选项&lt;br&gt;</translation>
+        <translation>Compilé avec l&apos;option &apos;fastbits&apos;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowabout.cpp" line="16"/>
         <source>About ChessX</source>
-        <translation>关于 ChessX</translation>
+        <translation>À propos de ChessX</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowabout.cpp" line="16"/>
         <source>&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Free chess database available under GPLv2.&lt;br&gt;Version %1&lt;br&gt;%2Copyright 2005-2010 ChessX developers&lt;p&gt;Current developer and maintainer: &lt;a href=&quot;mailto:mrudolf@kdewebdev.org&quot;&gt;Michal Rudolf&lt;/a&gt;&lt;p&gt;Testing, usability and website: Bruno Rizzuti&lt;p&gt;Additional coding: Marius Roets, Sean Estabrooks, Rico Zenklusen, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;p&gt;Homepage: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Mailing list: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Free chess database available under GPLv2.&lt;br&gt;Version %1&lt;br&gt;%2Copyright 2005-2010 ChessX developers&lt;p&gt;Current developer and maintainer: Michal Rudolf &lt;a href=&quot;mailto:mrudolf@kdewebdev.org&quot;&gt;&amp;lt;mrudolf@kdewebdev.org&amp;gt;&lt;/a&gt;&lt;p&gt;Additional coding: Marius Roets, Sean Estabrooks, Rico Zenklusen, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;p&gt;Homepage: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Mailing list: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</source>
-        <translation type="obsolete">&lt;h1&gt;ChessX&gt;&lt;/h1&gt;&lt;p&gt;基于GPLv2的免费国际象棋数据库.&lt;br&gt;版本 %1&lt;br&gt;%2 版权 2005-2010 ChessX 开发人员&lt;p&gt;当前开发和维护者:Michal Rudolf &lt;a href=&quot;mailto:mrudolf@kdewebdev.org&quot;&gt;&amp;lt;mrudolf@kdewebdev.org&amp;gt;&lt;/a&gt;&lt;p&gt;其它编码人员: Marius Roets, Sean Estabrooks, Rico Zenklusen, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;p&gt;主页: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;邮件列表: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</translation>
+        <translation>&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Logiciel libre de base de données d&apos;échecs disponible sous la GPLv2.&lt;br&gt;Version %1&lt;br&gt;%2Copyright 2005-2010 ChessX developers&lt;p&gt;Développeur principal : &lt;a href=&quot;mailto:mrudolf@kdewebdev.org&quot;&gt;Michal Rudolf&lt;/a&gt;&lt;p&gt;Tests, usabilité et site web : Bruno Rizzuti&lt;p&gt;Dévelopements additionnels : Marius Roets, Sean Estabrooks, Rico Zenklusen, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;p&gt;Site : &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Mailing list: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="41"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="50"/>
         <source>New database</source>
-        <translation>新数据库</translation>
+        <translation>Nouvelle base de données</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="43"/>
         <source>PGN database (*.pgn)</source>
-        <translation>PGN 数据库(*.pgn)</translation>
+        <translation>Base de données PGN (*.pgn)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="50"/>
         <source>Cannot create ChessX database.</source>
-        <translation>无法创建ChessX数据库.</translation>
+        <translation>Impossible de créer une base de données ChessX.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="61"/>
         <source>Open database</source>
-        <translation>打开数据库</translation>
+        <translation>Ouvrie base de données</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="63"/>
         <source>PGN databases (*.pgn)</source>
-        <translation>PGN 数据库(*.pgn)</translation>
+        <translation>Base de données PGN (*.pgn)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="81"/>
         <source>&lt;html&gt;The database &lt;i&gt;%1&lt;/i&gt; is read-only and cannot be saved.&lt;/html&gt;</source>
-        <translation>&lt;html&gt;数据库&lt;i&gt;%1&lt;/i&gt;是只读的并且无法保存.&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;La base de données &lt;i&gt;%1&lt;/i&gt; est en lecture seule et ne pas être enregistrée.&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="84"/>
         <source>Saving %1...</source>
-        <translation>保存中 %1...</translation>
+        <translation>Enregistrement %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="88"/>
         <source>%1 saved</source>
-        <translation>%1 已保存</translation>
+        <translation>%1 Enregistré</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="187"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>剪贴板上不是有效的FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
+        <translatorcomment>Le texte du presse-papier n&apos;est pas au format FEN :&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="188"/>
         <source>There is no text in clipboard.</source>
-        <translation>剪贴板为空.</translation>
+        <translation>Il n&apos;y a pas de texte dans le presse-papier.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="194"/>
         <source>The clipboard contains FEN, but with illegal position. You can only paste such positions in &lt;b&gt;Setup position&lt;/b&gt; dialog.</source>
-        <translation>剪贴板上包含FEN, 但是位置无效. 只能忽略..</translation>
+        <translation>Le presse papier contient une chaîne FEN, mais avec une position non réglementaire. Vous ne pouvez coller ce genre de position que dans la boîte de dialogue &lt;b&gt;Définir position&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="239"/>
         <source>Queen</source>
-        <translation>皇后</translation>
+        <translation>Reine</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="239"/>
         <source>Rook</source>
-        <translation>车</translation>
+        <translation>Tour</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="239"/>
         <source>Bishop</source>
-        <translation>象</translation>
+        <translation>Fou</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="239"/>
         <source>Knight</source>
-        <translation>马</translation>
+        <translation>Cavalier</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="240"/>
         <source>Promotion</source>
-        <translation>升级</translation>
+        <translation>Promotion</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="240"/>
         <source>Promote to:</source>
-        <translation>升级为:</translation>
-    </message>
-    <message>
-        <source>Add move</source>
-        <translation type="obsolete">添加一步棋</translation>
-    </message>
-    <message>
-        <source>There is already next move in current game. What do you want to do?</source>
-        <translation type="obsolete">当前棋局已经有下一步棋了。 你想做什么?</translation>
-    </message>
-    <message>
-        <source>Add variation</source>
-        <translation type="obsolete">添加变种</translation>
-    </message>
-    <message>
-        <source>Add new mainline</source>
-        <translation type="obsolete">添加新的主线</translation>
-    </message>
-    <message>
-        <source>Replace current move</source>
-        <translation type="obsolete">替换当前的一步棋</translation>
-    </message>
-    <message>
-        <source>Game %1: &lt;b&gt;&lt;a href=&quot;tag:white&quot;&gt;%2&lt;/a&gt; %3 - &lt;a href=&quot;tag:black&quot;&gt;%4&lt;/a&gt; %5&lt;/b&gt;</source>
-        <translation type="obsolete">棋局 %1: &lt;b&gt;&lt;a href=&quot;标签:白方&quot;&gt;%2&lt;/a&gt; %3 - &lt;a href=&quot;标签:黑方&quot;&gt;%4&lt;/a&gt; %5&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>%1(%2) %3</source>
-        <translation type="obsolete">%1(%2)%3</translation>
-    </message>
-    <message>
-        <source>&lt;i&gt;%1(%2), %3, %4&lt;/i&gt;</source>
-        <translation type="obsolete">&lt;i&gt;%1(%2), %3, %4&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>(Start of game)</source>
-        <translation type="obsolete">(棋局开始)</translation>
-    </message>
-    <message>
-        <source>(End of game)</source>
-        <translation type="obsolete">(棋局结束)</translation>
-    </message>
-    <message>
-        <source>(End of line)</source>
-        <translation type="obsolete">(分支结束)</translation>
-    </message>
-    <message>
-        <source>Last move: %1 &amp;nbsp; &amp;nbsp; Next: %2</source>
-        <translation type="obsolete">上一步:%1 &amp;nbsp; &amp;nbsp; 下一步: %2</translation>
-    </message>
-    <message>
-        <source>(&amp;lt;-Var)</source>
-        <translation type="obsolete">(当前;变种)</translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;Variations: &amp;nbsp; </source>
-        <translation type="obsolete">&lt;br&gt;变种: &amp;nbsp;</translation>
+        <translation>Promouvoir en :</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="371"/>
         <source>Load Game</source>
-        <translation>载入棋局</translation>
+        <translation>Charger une partie</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="371"/>
         <source>Game number:</source>
-        <translation>棋局号:</translation>
+        <translation>Partie n° :</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="380"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="390"/>
         <source>This database is read only.</source>
-        <translation>数据库为只读.</translation>
+        <translation>Cette base de données est en lecture seule.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="458"/>
         <source>&lt;b&gt;&lt;a href=&quot;tag:white&quot;&gt;%1&lt;/a&gt;&lt;/b&gt; %2 - &lt;b&gt;&lt;a href=&quot;tag:black&quot;&gt;%3&lt;/a&gt;&lt;/b&gt; %4</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;&lt;a href=&quot;tag:white&quot;&gt;%1&lt;/a&gt;&lt;/b&gt; %2 - &lt;b&gt;&lt;a href=&quot;tag:black&quot;&gt;%3&lt;/a&gt;&lt;/b&gt; %4</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="460"/>
         <source>&lt;b&gt;%1&lt;/b&gt; &amp;nbsp; %2</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1&lt;/b&gt; &amp;nbsp; %2</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="559"/>
         <source> %1: %2/%3 </source>
-        <translation>%1: %2/%3</translation>
+        <translation> %1: %2/%3 </translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="593"/>
         <source>You need at least two open databases to copy games</source>
-        <translation>复制棋局至少需要打开两个数据库</translation>
+        <translation>Vous avez besoin au moins d&apos;ouvrir deux bases de données pour copier des parties</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="600"/>
         <source>%1. %2 (%3 games)</source>
-        <translation>%1. %2 (%3 棋局)</translation>
+        <translation>%1. %2 (%3 parties)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="632"/>
@@ -1138,12 +1057,12 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="674"/>
         <source>Updating tree...</source>
-        <translation>更新目录树...</translation>
+        <translation>Mise à jour de l&apos;arbre...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="678"/>
         <source>Tree updated</source>
-        <translation>目录树已更新</translation>
+        <translation>Arbre mis à jour</translation>
     </message>
 </context>
 <context>
@@ -1151,47 +1070,47 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/messagedialog.h" line="28"/>
         <source>Error</source>
-        <translation>错误</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <location filename="../src/gui/messagedialog.h" line="30"/>
         <source>Warning</source>
-        <translation>警告</translation>
+        <translation>Attention</translation>
     </message>
     <message>
         <location filename="../src/gui/messagedialog.h" line="32"/>
         <source>Information</source>
-        <translation>消息</translation>
+        <translation>Information</translation>
     </message>
     <message>
         <location filename="../src/gui/messagedialog.h" line="34"/>
         <location filename="../src/gui/messagedialog.h" line="37"/>
         <location filename="../src/gui/messagedialog.h" line="39"/>
         <source>Question</source>
-        <translation>问题</translation>
+        <translation>Question</translation>
     </message>
     <message>
         <location filename="../src/gui/messagedialog.h" line="35"/>
         <location filename="../src/gui/messagedialog.h" line="40"/>
         <source>&amp;Yes</source>
-        <translation>是(&amp;Y)</translation>
+        <translation>&amp;Oui</translation>
     </message>
     <message>
         <location filename="../src/gui/messagedialog.h" line="35"/>
         <location filename="../src/gui/messagedialog.h" line="40"/>
         <source>&amp;No</source>
-        <translation>否(&amp;N)</translation>
+        <translation>&amp;Non</translation>
     </message>
     <message>
         <location filename="../src/gui/messagedialog.h" line="38"/>
         <source>&amp;OK</source>
-        <translation>确定(&amp;O)</translation>
+        <translation>&amp;Valider</translation>
     </message>
     <message>
         <location filename="../src/gui/messagedialog.h" line="38"/>
         <location filename="../src/gui/messagedialog.h" line="41"/>
         <source>&amp;Cancel</source>
-        <translation>取消(&amp;C)</translation>
+        <translation>&amp;Annuler</translation>
     </message>
 </context>
 <context>
@@ -1240,42 +1159,42 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/playerdialog.ui" line="14"/>
         <source>Player Information</source>
-        <translation>选手信息</translation>
+        <translation>Information sur un joueur</translation>
     </message>
     <message>
         <location filename="../src/gui/playerdialog.ui" line="30"/>
         <source>&amp;Players</source>
-        <translation>选手(&amp;P)</translation>
+        <translation>&amp;Joueurs</translation>
     </message>
     <message>
         <location filename="../src/gui/playerdialog.ui" line="36"/>
         <source>&amp;Find:</source>
-        <translation>查找(&amp;F):</translation>
+        <translation>&amp;Rechercher :</translation>
     </message>
     <message>
         <location filename="../src/gui/playerdialog.ui" line="65"/>
         <source>&amp;Show player</source>
-        <translation>显示选手(&amp;S)</translation>
+        <translation>&amp;Voir le joueur</translation>
     </message>
     <message>
         <location filename="../src/gui/playerdialog.ui" line="75"/>
         <source>&amp;Update list</source>
-        <translation>更新列表(&amp;U)</translation>
+        <translation>&amp;Actualiser</translation>
     </message>
     <message>
         <location filename="../src/gui/playerdialog.ui" line="86"/>
         <source>&amp;Information</source>
-        <translation>信息(&amp;I)</translation>
+        <translation>&amp;Information</translation>
     </message>
     <message>
         <location filename="../src/gui/playerdialog.ui" line="108"/>
         <source>&amp;Update player</source>
-        <translation>更新选手信息(&amp;U)</translation>
+        <translation>&amp;Actualiser</translation>
     </message>
     <message>
         <location filename="../src/gui/playerdialog.cpp" line="73"/>
         <source>&lt;html&gt;&lt;i&gt;No player chosen.&lt;/i&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;i&gt;没有选择选手&lt;/i&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;i&gt;Aucun joueur sélectionné.&lt;/i&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1321,77 +1240,77 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/preferences.ui" line="14"/>
         <source>Preferences</source>
-        <translation>选项</translation>
+        <translation>Préférences</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="53"/>
         <source>&amp;Ok</source>
-        <translation>确定(&amp;O)</translation>
+        <translation>&amp;Valider</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="63"/>
         <source>&amp;Apply</source>
-        <translation>应用(&amp;A)</translation>
+        <translation>&amp;Appliquer</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="73"/>
         <source>&amp;Cancel</source>
-        <translation>取消(&amp;C)</translation>
+        <translation>&amp;Annuler</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="89"/>
         <source>&amp;Board</source>
-        <translation>棋盘(&amp;B)</translation>
+        <translation>&amp;Echiquier</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="101"/>
         <source>&amp;Chess set:</source>
-        <translation>棋子样式(&amp;C):</translation>
+        <translation>&amp;Pièces :</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="136"/>
         <source>plain</source>
-        <translation>简单</translation>
+        <translation>Simple</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="141"/>
         <source>outline</source>
-        <translation>轮廓</translation>
+        <translation>Bordure</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="146"/>
         <source>outline+shadow</source>
-        <translation>轮廓阴影</translation>
+        <translation>Bordure + ombre</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="159"/>
         <source>&amp;Draw frame between squares</source>
-        <translation>棋盘方格间带线条(&amp;D)</translation>
+        <translation>&amp;Bordure entre les cases</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="166"/>
         <source>&amp;Guess move on left-click</source>
-        <translation>点击左键，预测下一步(&amp;G)</translation>
+        <translation>&amp;Anticipation du coup au clic gauche</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="189"/>
         <source>Board &amp;style:</source>
-        <translation>棋盘样式(&amp;s):</translation>
+        <translation>&amp;Style du Plateau :</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="209"/>
         <source>&amp;Colors:</source>
-        <translation>颜色(&amp;C):</translation>
+        <translation>&amp;couleurs :</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="220"/>
         <source>&amp;Engines</source>
-        <translation>引擎(&amp;E)</translation>
+        <translation>&amp;Modules</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="260"/>
         <source>WinBoard</source>
-        <translation>WinBoard</translation>
+        <translation>Winboard</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="267"/>
@@ -1407,107 +1326,107 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/preferences.ui" line="288"/>
         <source>Name:</source>
-        <translation>名字:</translation>
+        <translation>Nom :</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="295"/>
         <source>Command:</source>
-        <translation>指令:</translation>
+        <translation>Commande :</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="302"/>
         <source>Options:</source>
-        <translation>选项:</translation>
+        <translation>Options :</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="309"/>
         <source>Directory:</source>
-        <translation>目录:</translation>
+        <translation>Dossier :</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="328"/>
         <source>Protocol:</source>
-        <translation>通信协议:</translation>
+        <translation>Protocole :</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="366"/>
         <source>Down</source>
-        <translation>向下</translation>
+        <translation>Vers le bas</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="389"/>
         <source>Remove</source>
-        <translation>移除</translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="396"/>
         <source>Add...</source>
-        <translation>添加...</translation>
+        <translation>Ajouter...</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="416"/>
         <source>Up</source>
-        <translation>向上</translation>
+        <translation>Vers le haut</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="426"/>
         <source>&amp;Advanced</source>
-        <translation>高级选项(&amp;A)</translation>
+        <translation>&amp;Avancé</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="432"/>
         <source>Use online tablebase servers</source>
-        <translation>使用在线象棋服务器</translation>
+        <translation>Utiliser table de finale en ligne</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="441"/>
         <source>&amp;Edit PGN files smaller than:</source>
-        <translation>编辑的PGN文件小于(&amp;E):</translation>
+        <translation>&amp;Modifier fichiers PGN inférieurs à :</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="451"/>
         <source> MB</source>
-        <translation>兆(MB)</translation>
+        <translation>Mo</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="36"/>
         <source>XBoard</source>
-        <translation>X棋盘</translation>
+        <translation>Xboard</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="54"/>
         <source>Light squares</source>
-        <translation>浅格颜色</translation>
+        <translation>Cases claires</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="55"/>
         <source>Dark squares</source>
-        <translation>深格颜色</translation>
+        <translation>Cases foncées</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="56"/>
         <source>Highlighted squares</source>
-        <translation>高亮显示的棋格颜色</translation>
+        <translation>Cases en surbrillance</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="57"/>
         <source>Frame</source>
-        <translation>边线颜色</translation>
+        <translation>Bordure</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="76"/>
         <source>Select engine directory</source>
-        <translation>选择引擎目录</translation>
+        <translation>Choisir le dossier du module</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="187"/>
         <source>Select engine executable</source>
-        <translation>选择引擎可执行文件</translation>
+        <translation>Choisir l&apos;exécutable du module</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="241"/>
         <source>[plain colors]</source>
-        <translation>[简单颜色]</translation>
+        <translation>[couleurs simples]</translation>
     </message>
 </context>
 <context>
@@ -1515,107 +1434,107 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="13"/>
         <source>Quick Tag Search</source>
-        <translation>标签快速查找</translation>
+        <translation>Recherche rapide de critères</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="29"/>
         <source>Game number</source>
-        <translation>棋局号</translation>
+        <translation>Numéro de partie</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="34"/>
         <source>White</source>
-        <translation>白</translation>
+        <translation>Blancs</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="39"/>
         <source>White Elo</source>
-        <translation>白方得分</translation>
+        <translation>Elo des blancs</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="44"/>
         <source>Black</source>
-        <translation>黑</translation>
+        <translation>Noirs</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="49"/>
         <source>Black Elo</source>
-        <translation>黑方得分</translation>
+        <translation>Elo des noirs</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="54"/>
         <source>Event</source>
-        <translation>比赛</translation>
+        <translation>Évènement</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="59"/>
         <source>Site</source>
-        <translation>比赛地点</translation>
+        <translation>Lieu</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="64"/>
         <source>Round</source>
-        <translation>轮数</translation>
+        <translation>Ronde</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="69"/>
         <source>Date</source>
-        <translation>比赛日期</translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="74"/>
         <source>Result</source>
-        <translation>比赛结果</translation>
+        <translation>Résultat</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="79"/>
         <source>ECO</source>
-        <translation>开局</translation>
+        <translation>ECO</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="84"/>
         <source>Length</source>
-        <translation>长度</translation>
+        <translation>Nombre de coups</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="113"/>
         <source>&amp;Find</source>
-        <translation>查找(&amp;F)</translation>
+        <translation>&amp;Rechercher</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="123"/>
         <source>&amp;Cancel</source>
-        <translation>取消(&amp;C)</translation>
+        <translation>&amp;Annuler</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="135"/>
         <source>&amp;Value:</source>
-        <translation>值(&amp;V):</translation>
+        <translation>&amp;Valeur :</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="145"/>
         <source>&amp;Tag:</source>
-        <translation>标签(&amp;T):</translation>
+        <translation>&amp;Critère :</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="155"/>
         <source>&amp;Mode:</source>
-        <translation>模式(&amp;M):</translation>
+        <translation>&amp;Mode :</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.cpp" line="30"/>
         <source>Find in current filter</source>
-        <translation>在当前过滤器中查找</translation>
+        <translation>Rechercher dans le filtre en cours</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.cpp" line="31"/>
         <source>Search whole database</source>
-        <translation>查询整个数据库</translation>
+        <translation>Rechercher dans toute la base de données</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.cpp" line="32"/>
         <source>Add to current filter</source>
-        <translation>加入当前过滤器</translation>
+        <translation>Ajouter au filtre en cours</translation>
     </message>
 </context>
 <context>
@@ -1623,33 +1542,33 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/savedialog.ui" line="13"/>
         <source>Save Game</source>
-        <translation>保存棋局</translation>
+        <translation>Sauvegarde de la partie</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="86"/>
         <source>&amp;OK</source>
-        <translation>确定(&amp;O)</translation>
+        <translation>&amp;Valider</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="99"/>
         <source>&amp;Cancel</source>
-        <translation>取消(&amp;C)</translation>
+        <translation>&amp;Annuler</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="111"/>
         <source>Players</source>
-        <translation>选手</translation>
+        <translation>Joueurs</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="151"/>
         <location filename="../src/gui/savedialog.ui" line="158"/>
         <source>Elo:</source>
-        <translation>得分:</translation>
+        <translation>Elo :</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="181"/>
         <source>&amp;White:</source>
-        <translation>白方(&amp;W):</translation>
+        <translation>&amp;Blancs :</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="197"/>
@@ -1661,17 +1580,23 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Kasparov, Garry&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Tal, Mikhail N&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Granda Zuniga, Julio E&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nom du joueur au format &lt;span style=&quot; font-weight:600;&quot;&gt;nom, prénom&lt;/span&gt;. Quelques exemples : &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Kasparov, Garry&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Tal, Mikhail N&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Granda Zuniga, Julio E&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="229"/>
         <source>&amp;Black:</source>
-        <translation>黑方(&amp;Bf):</translation>
+        <translation>&amp;Noirs :</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="242"/>
         <source>Tournament</source>
-        <translation>比赛</translation>
+        <translation>Tournoi</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="278"/>
@@ -1683,7 +1608,14 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.?? &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Date de la première ronde du tournoi au format &lt;span style=&quot; font-weight:600;&quot;&gt;YYYY.MM.DD&lt;/span&gt;.Remplacer les parties manquantes par ?? si nécessaire.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Quelques exemples :&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.?? &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="298"/>
@@ -1694,12 +1626,18 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Ontario CAN&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Warsaw POL&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;New York USA&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Lieu du tournoi au format &lt;span style=&quot; font-weight:600;&quot;&gt;Lieu CNT&lt;/span&gt;, où CNT correspond au code du pays sur trois lettres. Quelques exemples :&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Ontario CAN&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Warsaw POL&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;New York USA&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="311"/>
         <source>E&amp;vent date:</source>
-        <translation>比赛日期(&amp;v):</translation>
+        <translation>Date de l&apos;é&amp;vènement :</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="327"/>
@@ -1707,22 +1645,25 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="337"/>
         <source>&amp;Site:</source>
-        <translation>比赛地点(&amp;S):</translation>
+        <translation>&amp;Lieu :</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="347"/>
         <source>&amp;Event:</source>
-        <translation>比赛项目(&amp;E):</translation>
+        <translation>&amp;Evènement :</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="360"/>
         <source>Game Information</source>
-        <translation>棋局信息</translation>
+        <translation>Informations sur la partie</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="396"/>
@@ -1734,17 +1675,24 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;3&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1.4&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;8.15&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Numéro de la ronde. Pour les rondes qui ont plus d&apos;une partie (habituellement dans les tournois au KO ou dans les tournois en équipe) le format &lt;span style=&quot; font-weight:600;&quot;&gt;X.Y &lt;/span&gt;est utilisé.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Quelques exemples :&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;3&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1.4&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;8.15&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="410"/>
         <source>&amp;Round:</source>
-        <translation>轮数(&amp;R):</translation>
+        <translation>&amp;Ronde :</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="420"/>
         <source>&amp;Date:</source>
-        <translation>比赛日期(&amp;D):</translation>
+        <translation>&amp;Date :</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="442"/>
@@ -1756,12 +1704,19 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.?? &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Date de la rounde au format &lt;span style=&quot; font-weight:600;&quot;&gt;YYYY.MM.DD&lt;/span&gt;. Remplacer les parties manquantes par des ?? si nécessaire.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Quelques exemples :&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.?? &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="486"/>
         <source>Result:</source>
-        <translation>结果:</translation>
+        <translation>Résultat :</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="493"/>
@@ -1789,7 +1744,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/gui/tableview.cpp" line="23"/>
         <source>Small font</source>
-        <translation>小字体</translation>
+        <translation>Réduire la taille du texte</translation>
     </message>
 </context>
 </TS>

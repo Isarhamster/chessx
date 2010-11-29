@@ -22,7 +22,6 @@ class Analysis;
 class PlayerDialog;
 class GameList;
 class SaveDialog;
-class HelpWindow;
 class BoardView;
 class Game;
 class Database;
@@ -83,8 +82,6 @@ protected:
 	PlayerDialog* playerDialog();
 	/** Save Game dialog (created when used first) */
 	SaveDialog* saveDialog();
-	/** Help window (created when used first) */
-	HelpWindow* helpWindow();
 public slots:
 	void slotPlayerDialog();
 	/** Promote current variation. */
@@ -105,8 +102,6 @@ public slots:
 	void slotEditTruncateStart();
 	void slotReconfigure();
 	void slotConfigure();
-	/** Display help */
-	void slotHelp();
 	/** About ChessX */
 	void slotHelpAbout();
 	/** Display Tracker at ChessX SourceForge */
@@ -257,7 +252,6 @@ private:
 	PlayerDialog* m_playerDialog;
 	GameList* m_gameList;
 	SaveDialog* m_saveDialog;
-	HelpWindow* m_helpWindow;
 	/* Main gui parts */
 	BoardView* m_boardView;
 	QSplitter* m_boardSplitter;

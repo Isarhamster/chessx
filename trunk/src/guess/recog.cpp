@@ -12,7 +12,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "engine.h"
+#include "guessengine.h"
 #include "recog.h"
 
 namespace Guess

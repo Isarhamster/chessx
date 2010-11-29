@@ -17,7 +17,6 @@
 #include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"
-#include "helpwindow.h"
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "memorydatabase.h"
@@ -221,12 +220,6 @@ void MainWindow::slotEditBoard()
 		game().setStartingBoard(B.board());
 		slotGameChanged();
 	}
-}
-
-
-void MainWindow::slotHelp()
-{
-	helpWindow()->show();
 }
 
 void MainWindow::slotHelpBug()

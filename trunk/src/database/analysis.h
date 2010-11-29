@@ -59,13 +59,14 @@ public:
 	 /** Convert analysis to formatted text. */
 	QString toString(const Board& board) const;
 private:
-			int m_numpv;
-	 int m_msec;
-	 int m_mateIn;
-	 int m_depth;
-	 int m_score;
-	 quint64 m_nodes;
-	 MoveList m_variation;
+	int m_numpv;
+	int m_msec;
+	int m_mateIn;
+	int m_depth;
+	int m_score;
+	quint64 m_nodes;
+	MoveList m_variation;
+	Q_DECLARE_TR_FUNCTIONS(Analysis)
 };
 
 #endif // ANALYSIS_H

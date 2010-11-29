@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////
 //
-//  FILE:       engine.h
+//  FILE:       guessengine.h
 //              Engine class
 //
 //  Part of:    Scid (Shane's Chess Information Database)
@@ -18,8 +18,8 @@
 // which of the possible legal moves to or from a particular square
 // to suggest as the best move for faster mouse input.
 
-#ifndef SCID_ENGINE_H
-#define SCID_ENGINE_H
+#ifndef SCID_GUESSENGINE_H
+#define SCID_GUESSENGINE_H
 
 #include <stdarg.h>
 
@@ -400,5 +400,5 @@ Engine::GetHistoryValue (simpleMoveT * sm)
 #endif  // SCID_ENGINE_H
 
 //////////////////////////////////////////////////////////////////////
-//  EOF: engine.h
+//  EOF: guessengine.h
 //////////////////////////////////////////////////////////////////////
