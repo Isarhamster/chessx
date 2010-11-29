@@ -25,20 +25,19 @@ int main(int argc, char** argv)
 	AppSettings = new Settings;
 	QApplication a(argc, argv);
 
-	QTranslator translator;
 	QString lang = QString("chessx_%1.qm").arg(QLocale::system().name().left(2));
-
+	QTranslator translator;
 	if (!translator.load(AppSettings->dataPath() + "/lang/" + lang))
 		translator.load(QString(":i18n/") + lang);
-	else qDebug() << "Got it";
 	a.installTranslator(&translator);
 
-	MainWindow* mw = new MainWindow;
-	mw->show();
+	MainWindow* mainWindow = new MainWindow;
+	mainWindow->show();
+
+	// Destroy main window and close application
 	a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
-
-
 	int result = a.exec();
+
 	delete AppSettings;
 	return result;
 }

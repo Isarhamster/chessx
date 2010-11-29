@@ -226,8 +226,6 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		AppSettings->beginGroup("MainWindow");
 		AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
 		AppSettings->endGroup();
-		e->accept();
-		qApp->quit();
 	} else
 		e->ignore();
 }
