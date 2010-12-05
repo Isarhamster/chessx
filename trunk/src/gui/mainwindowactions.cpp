@@ -47,7 +47,7 @@ void MainWindow::slotFileNew()
 		file += ".pgn";
 	QFile pgnfile(file);
 	if (!pgnfile.open(QIODevice::WriteOnly))
-		MessageDialog::warning(this, tr("Cannot create ChessX database."), tr("New database"));
+		MessageDialog::warning(tr("Cannot create ChessX database."), tr("New database"));
 	else {
 		pgnfile.close();
 		openDatabase(file);
@@ -78,7 +78,7 @@ void MainWindow::slotFileOpenRecent()
 void MainWindow::slotFileSave()
 {
 	if (database()->isReadOnly())
-		MessageDialog::warning(this, tr("<html>The database <i>%1</i> is read-only and cannot be saved.</html>")
+		MessageDialog::warning(tr("<html>The database <i>%1</i> is read-only and cannot be saved.</html>")
 				.arg(database()->name()));
 	else if (m_currentDatabase && dynamic_cast<MemoryDatabase*>(database())) {
 		startOperation(tr("Saving %1...").arg(database()->name()));
@@ -186,12 +186,12 @@ void MainWindow::slotEditPasteFEN()
 		QString msg = fen.length() ?
 					tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
 					tr("There is no text in clipboard.");
-		MessageDialog::warning(this, msg);
+		MessageDialog::warning(msg);
 		return;
 	}
 	board.fromFen(fen);
 	if (board.validate() != Valid) {
-		MessageDialog::warning(this, tr("The clipboard contains FEN, but with illegal position. "
+		MessageDialog::warning(tr("The clipboard contains FEN, but with illegal position. "
 						"You can only paste such positions in <b>Setup position</b> dialog."));
 		return;
 	}
@@ -377,7 +377,7 @@ void MainWindow::slotGameLoadChosen()
 void MainWindow::slotGameNew()
 {
 	if (database()->isReadOnly())
-		MessageDialog::error(this, tr("This database is read only."));
+		MessageDialog::error(tr("This database is read only."));
 	else {
 		databaseInfo()->newGame();
 		slotGameChanged();
@@ -387,9 +387,10 @@ void MainWindow::slotGameNew()
 void MainWindow::slotGameSave()
 {
 	if (database()->isReadOnly())
-		MessageDialog::error(this, tr("This database is read only."));
+		MessageDialog::error(tr("This database is read only."));
 	else if (saveDialog()->exec(database(), game()) == QDialog::Accepted) {
 		databaseInfo()->saveGame();
+		m_gameList->updateFilter();
 		slotFilterChanged();
 		slotGameChanged();
 	}
@@ -590,7 +591,7 @@ void MainWindow::slotDatabaseChange()
 void MainWindow::slotDatabaseCopy()
 {
 	if (m_databases.count() < 2) {
-		MessageDialog::error(this, tr("You need at least two open databases to copy games"));
+		MessageDialog::error(tr("You need at least two open databases to copy games"));
 		return;
 	}
 	CopyDialog dlg(this);
