@@ -550,7 +550,7 @@ bool MainWindow::confirmQuit()
 		if (m_databases[i]->database()->isModified())
 			modified += m_databases[i]->database()->name() + '\n';
 	if (!modified.isEmpty()) {
-		int response = MessageDialog::yesNoCancel(this, tr("Following databases are modified:")
+		int response = MessageDialog::yesNoCancel(tr("Following databases are modified:")
 					+ '\n' + modified + tr("Save them?"));
 		if (response == MessageDialog::Cancel)
 			return false;

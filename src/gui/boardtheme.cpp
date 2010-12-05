@@ -16,6 +16,7 @@
 
 #include "boardtheme.h"
 #include "settings.h"
+#include "messagedialog.h"
 
 BoardTheme::BoardTheme()
 {}
@@ -128,7 +129,7 @@ void BoardTheme::configure()
 	if (!loadPieces(pieceTheme, pieceEffect) &&
 		 !loadPieces(pieceTheme, Plain) &&
 		 !loadPieces("merida", Plain))
-		QMessageBox::critical(0, tr("Error"), tr("Cannot find piece data.\nPlease check your installation."));
+		MessageDialog::error(tr("Cannot find piece data.\nPlease check your installation."));
 	else loadBoard(boardTheme);
 }
 

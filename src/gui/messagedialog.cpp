@@ -1,36 +1,35 @@
 /***************************************************************************
-   MessageDialog - wrapper for QMessageDialog
-   (C) 2007 Michal Rudolf <mrudolf@kdewebdev.org>
+	MessageDialog - wrapper for QMessageDialog
+	(C) 2007 Michal Rudolf <mrudolf@kdewebdev.org>
 
-   This file is a part of Chessx (http:/chess.sourceforge.net).
- 	ChessX is free software; you can redistribute it and/or modify
+	This file is a part of Chessx (http:/chess.sourceforge.net).
+	ChessX is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License version 3,
 	as published by the Free Software Foundation.
 ***************************************************************************/
 
 #include "messagedialog.h"
-#include <QMessageBox>
-#include <QPushButton>
+#include <QtGui>
 
-void MessageDialog::error(QWidget* parent, const QString& text, const QString& title)
+void MessageDialog::error(const QString& text, const QString& title)
 {
-	QMessageBox::critical(parent, title, text);
+	QMessageBox::critical(QApplication::activeWindow(), title, text);
 }
 
-void MessageDialog::warning(QWidget* parent, const QString& text, const QString& title)
+void MessageDialog::warning(const QString& text, const QString& title)
 {
-	QMessageBox::warning(parent, title, text);
+	QMessageBox::warning(QApplication::activeWindow(), title, text);
 }
 
-void MessageDialog::information(QWidget* parent, const QString& text, const QString& title)
+void MessageDialog::information(const QString& text, const QString& title)
 {
-	QMessageBox::information(parent, title, text);
+	QMessageBox::information(QApplication::activeWindow(), title, text);
 }
 
-bool MessageDialog::yesNo(QWidget* parent, const QString& text, const QString& title, const QString& yes,
+bool MessageDialog::yesNo(const QString& text, const QString& title, const QString& yes,
 									 const QString& no)
 {
-	QMessageBox mb(parent);
+	QMessageBox mb(QApplication::activeWindow());
 	mb.setWindowTitle(title);
 	mb.setText(text);
 	mb.setIcon(QMessageBox::Question);
@@ -41,10 +40,10 @@ bool MessageDialog::yesNo(QWidget* parent, const QString& text, const QString& t
 	return mb.clickedButton() == y;
 }
 
-bool MessageDialog::okCancel(QWidget* parent, const QString& text, const QString& title, const QString& ok,
+bool MessageDialog::okCancel(const QString& text, const QString& title, const QString& ok,
 								  const QString& cancel)
 {
-	QMessageBox mb(parent);
+	QMessageBox mb(QApplication::activeWindow());
 	mb.setWindowTitle(title);
 	mb.setText(text);
 	mb.setIcon(QMessageBox::Question);
@@ -56,10 +55,10 @@ bool MessageDialog::okCancel(QWidget* parent, const QString& text, const QString
 	return mb.clickedButton() == o;
 }
 
-int MessageDialog::yesNoCancel(QWidget* parent, const QString& text, const QString& title, const QString& yes,
+int MessageDialog::yesNoCancel(const QString& text, const QString& title, const QString& yes,
 								  const QString& no, const QString& cancel)
 {
-	QMessageBox mb(parent);
+	QMessageBox mb(QApplication::activeWindow());
 	mb.setWindowTitle(title);
 	mb.setText(text);
 	mb.setIcon(QMessageBox::Question);

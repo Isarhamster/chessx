@@ -12,6 +12,7 @@
 #include "board.h"
 #include "analysiswidget.h"
 #include "enginelist.h"
+#include "messagedialog.h"
 
 AnalysisWidget::AnalysisWidget()
 		: m_engine(0)
@@ -78,8 +79,7 @@ void AnalysisWidget::engineActivated()
 
 void AnalysisWidget::engineError()
 {
-	QMessageBox::warning(this, tr("Error"),
-						 tr("There was an error running engine <b>%1</b>.")
+	MessageDialog::warning(tr("There was an error running engine <b>%1</b>.")
 						 .arg(ui.engineList->currentText()));
 	delete m_engine;
 	m_engine = 0;

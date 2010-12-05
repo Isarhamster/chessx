@@ -1,8 +1,8 @@
 /***************************************************************************
-                          boardsetup.cpp  -  Board setup dialog
-                             -------------------
-    begin                :
-    copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
+								  boardsetup.cpp  -  Board setup dialog
+									  -------------------
+	 begin                :
+	 copyright            : (C) 2005 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -16,16 +16,8 @@
 
 #include "boardsetup.h"
 #include "boardview.h"
-
-#include <QApplication>
-#include <QActionGroup>
-#include <QClipboard>
-#include <QGridLayout>
-#include <QMessageBox>
-#include <QPushButton>
-#include <QToolButton>
-#include <QWheelEvent>
-#include <QPainter>
+#include "messagedialog.h"
+#include <QtGui>
 
 BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 {
@@ -135,8 +127,7 @@ void BoardSetupDialog::slotAccept()
 	QString reason = boardStatusMessage();
 	if (reason.isEmpty())
 		accept();
-	else QMessageBox::critical(0, tr("Invalid position"),
-					   tr("Current position is not valid.\n\n%1.").arg(reason));
+	else MessageDialog::error(tr("Current position is not valid.\n\n%1.").arg(reason));
 }
 
 void BoardSetupDialog::slotClear()
@@ -271,9 +262,9 @@ void BoardSetupDialog::slotPasteFen()
 	QString fen = QApplication::clipboard()->text().trimmed();
 	if (!ui.boardView->board().isValidFen(fen)) {
 		QString msg = fen.length() ?
-			      tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
-			      tr("There is no text in clipboard.");
-		QMessageBox::warning(0, "Paste FEN", msg);
+					tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
+					tr("There is no text in clipboard.");
+		MessageDialog::warning(msg);
 	} else {
 		Board b;
 		b.fromFen(fen);
