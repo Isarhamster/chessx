@@ -28,19 +28,18 @@
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="76"/>
-        <location filename="../src/gui/analysiswidget.cpp" line="58"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="59"/>
         <source>Analyze</source>
         <translation>Analyser</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="74"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="75"/>
         <source>Stop</source>
         <translation>Arrêter</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="81"/>
         <source>Error</source>
-        <translation>Erreur</translation>
+        <translation type="obsolete">Erreur</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="82"/>
@@ -214,12 +213,11 @@
         <translation>&amp;Annuler</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="138"/>
         <source>Invalid position</source>
-        <translation>Position non valide</translation>
+        <translation type="obsolete">Position non valide</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="139"/>
+        <location filename="../src/gui/boardsetup.cpp" line="130"/>
         <source>Current position is not valid.
 
 %1.</source>
@@ -228,87 +226,87 @@
 %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="226"/>
+        <location filename="../src/gui/boardsetup.cpp" line="217"/>
         <source>No white king</source>
         <translation>Pas de roi blanc</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="228"/>
+        <location filename="../src/gui/boardsetup.cpp" line="219"/>
         <source>No black king</source>
         <translation>Pas de roi noir</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="230"/>
+        <location filename="../src/gui/boardsetup.cpp" line="221"/>
         <source>Both kings are in check</source>
         <translation>Les deux rois sont en echec</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="232"/>
+        <location filename="../src/gui/boardsetup.cpp" line="223"/>
         <source>Side to move has opponent in check already</source>
         <translation>Le camp qui a le trait est en échec</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="234"/>
+        <location filename="../src/gui/boardsetup.cpp" line="225"/>
         <source>Black has too many pawns</source>
         <translation>Les Noirs ont trop de pions</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="236"/>
+        <location filename="../src/gui/boardsetup.cpp" line="227"/>
         <source>White has too many pawns</source>
         <translation>Les blancs ont trop de pions</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="238"/>
+        <location filename="../src/gui/boardsetup.cpp" line="229"/>
         <source>There are pawns on the first or eighth rank</source>
         <translation>Des pions se trouvent sur la première ou sur la huitième rangée</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="240"/>
+        <location filename="../src/gui/boardsetup.cpp" line="231"/>
         <source>Too many kings</source>
         <translation>Trop de rois</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="242"/>
+        <location filename="../src/gui/boardsetup.cpp" line="233"/>
         <source>Too many black pieces</source>
         <translation>Les noirs ont trop de pièces</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="244"/>
+        <location filename="../src/gui/boardsetup.cpp" line="235"/>
         <source>Too many white pieces</source>
         <translation>Les blancs ont trop de pièces</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="246"/>
+        <location filename="../src/gui/boardsetup.cpp" line="237"/>
         <source>Bad castling rights</source>
         <translation>Roque non autorisé</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="248"/>
+        <location filename="../src/gui/boardsetup.cpp" line="239"/>
         <source>En passant square is not correct</source>
         <translation>La case en passant n&apos;est pas correcte</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="250"/>
+        <location filename="../src/gui/boardsetup.cpp" line="241"/>
         <source>Unknown reason</source>
         <translation>Impossible de valider la position</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="259"/>
+        <location filename="../src/gui/boardsetup.cpp" line="250"/>
         <source>FEN: %1</source>
         <translation>FEN : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="261"/>
+        <location filename="../src/gui/boardsetup.cpp" line="252"/>
         <source>Illegal position: %1</source>
         <translation>Position illégale : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="274"/>
+        <location filename="../src/gui/boardsetup.cpp" line="265"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Le texte dans le presse-papier n&apos;est pas au format FEN : &lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="275"/>
+        <location filename="../src/gui/boardsetup.cpp" line="266"/>
         <source>There is no text in clipboard.</source>
         <translation>Pas de texte dans le presse-papier.</translation>
     </message>
@@ -316,12 +314,11 @@
 <context>
     <name>BoardTheme</name>
     <message>
-        <location filename="../src/gui/boardtheme.cpp" line="131"/>
         <source>Error</source>
-        <translation>Erreur</translation>
+        <translation type="obsolete">Erreur</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardtheme.cpp" line="131"/>
+        <location filename="../src/gui/boardtheme.cpp" line="132"/>
         <source>Cannot find piece data.
 Please check your installation.</source>
         <translation>Impossible de charger les pièces. Merci de vérifier votre installation.</translation>
@@ -1540,39 +1537,37 @@ Please check your installation.</source>
 <context>
     <name>SaveDialog</name>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="13"/>
+        <location filename="../src/gui/savedialog.ui" line="14"/>
         <source>Save Game</source>
         <translation>Sauvegarde de la partie</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="86"/>
+        <location filename="../src/gui/savedialog.ui" line="66"/>
         <source>&amp;OK</source>
         <translation>&amp;Valider</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="99"/>
+        <location filename="../src/gui/savedialog.ui" line="79"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Annuler</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="111"/>
+        <location filename="../src/gui/savedialog.ui" line="91"/>
         <source>Players</source>
         <translation>Joueurs</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="151"/>
-        <location filename="../src/gui/savedialog.ui" line="158"/>
+        <location filename="../src/gui/savedialog.ui" line="119"/>
+        <location filename="../src/gui/savedialog.ui" line="126"/>
         <source>Elo:</source>
         <translation>Elo :</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="181"/>
+        <location filename="../src/gui/savedialog.ui" line="149"/>
         <source>&amp;White:</source>
         <translation>&amp;Blancs :</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="197"/>
-        <location filename="../src/gui/savedialog.ui" line="216"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -1580,7 +1575,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Kasparov, Garry&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Tal, Mikhail N&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Granda Zuniga, Julio E&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nom du joueur au format &lt;span style=&quot; font-weight:600;&quot;&gt;nom, prénom&lt;/span&gt;. Quelques exemples : &lt;/p&gt;
@@ -1589,17 +1584,16 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Granda Zuniga, Julio E&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="229"/>
+        <location filename="../src/gui/savedialog.ui" line="179"/>
         <source>&amp;Black:</source>
         <translation>&amp;Noirs :</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="242"/>
+        <location filename="../src/gui/savedialog.ui" line="192"/>
         <source>Tournament</source>
         <translation>Tournoi</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="278"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
@@ -1608,7 +1602,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.?? &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Date de la première ronde du tournoi au format &lt;span style=&quot; font-weight:600;&quot;&gt;YYYY.MM.DD&lt;/span&gt;.Remplacer les parties manquantes par ?? si nécessaire.&lt;/p&gt;
@@ -1618,7 +1612,6 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="298"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -1626,7 +1619,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Ontario CAN&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Warsaw POL&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;New York USA&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Lieu du tournoi au format &lt;span style=&quot; font-weight:600;&quot;&gt;Lieu CNT&lt;/span&gt;, où CNT correspond au code du pays sur trois lettres. Quelques exemples :&lt;/p&gt;
@@ -1635,38 +1628,36 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;New York USA&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="311"/>
+        <location filename="../src/gui/savedialog.ui" line="230"/>
         <source>E&amp;vent date:</source>
         <translation>Date de l&apos;é&amp;vènement :</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="327"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="337"/>
+        <location filename="../src/gui/savedialog.ui" line="250"/>
         <source>&amp;Site:</source>
         <translation>&amp;Lieu :</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="347"/>
+        <location filename="../src/gui/savedialog.ui" line="260"/>
         <source>&amp;Event:</source>
         <translation>&amp;Evènement :</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="360"/>
+        <location filename="../src/gui/savedialog.ui" line="273"/>
         <source>Game Information</source>
         <translation>Informations sur la partie</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="396"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
@@ -1675,7 +1666,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;3&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1.4&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;8.15&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Numéro de la ronde. Pour les rondes qui ont plus d&apos;une partie (habituellement dans les tournois au KO ou dans les tournois en équipe) le format &lt;span style=&quot; font-weight:600;&quot;&gt;X.Y &lt;/span&gt;est utilisé.&lt;/p&gt;
@@ -1685,17 +1676,16 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;8.15&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="410"/>
+        <location filename="../src/gui/savedialog.ui" line="301"/>
         <source>&amp;Round:</source>
         <translation>&amp;Ronde :</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="420"/>
+        <location filename="../src/gui/savedialog.ui" line="311"/>
         <source>&amp;Date:</source>
         <translation>&amp;Date :</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="442"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
@@ -1704,7 +1694,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;2007.03.03&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;2006.05.?? &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Date de la rounde au format &lt;span style=&quot; font-weight:600;&quot;&gt;YYYY.MM.DD&lt;/span&gt;. Remplacer les parties manquantes par des ?? si nécessaire.&lt;/p&gt;
@@ -1714,27 +1704,27 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;1935.??.?? &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="486"/>
+        <location filename="../src/gui/savedialog.ui" line="358"/>
         <source>Result:</source>
         <translation>Résultat :</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="493"/>
+        <location filename="../src/gui/savedialog.ui" line="365"/>
         <source>1-0</source>
         <translation>1-0</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="500"/>
+        <location filename="../src/gui/savedialog.ui" line="372"/>
         <source>1/2-1/2</source>
         <translation>1/2-1/2</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="507"/>
+        <location filename="../src/gui/savedialog.ui" line="379"/>
         <source>0-1</source>
         <translation>0-1</translation>
     </message>
     <message>
-        <location filename="../src/gui/savedialog.ui" line="514"/>
+        <location filename="../src/gui/savedialog.ui" line="386"/>
         <source>*</source>
         <translation>*</translation>
     </message>
