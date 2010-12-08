@@ -25,11 +25,17 @@ int main(int argc, char** argv)
 	AppSettings = new Settings;
 	QApplication a(argc, argv);
 
-	QString lang = QString("chessx_%1.qm").arg(QLocale::system().name().left(2));
+	QString shortLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(2));
+	QString fullLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(5));
+
+	qDebug() << fullLang;
+	// Lanuage may have two forms: "pt_BR" or "pl"
 	QTranslator translator;
-	if (!translator.load(AppSettings->dataPath() + "/lang/" + lang))
-		translator.load(QString(":i18n/") + lang);
-	a.installTranslator(&translator);
+	if (translator.load(AppSettings->dataPath() + "/lang/" + fullLang) ||
+		 translator.load(QString(":i18n/") + fullLang) ||
+		 translator.load(AppSettings->dataPath() + "/lang/" + shortLang) ||
+		 translator.load(QString(":i18n/") + shortLang))
+		a.installTranslator(&translator);
 
 	MainWindow* mainWindow = new MainWindow;
 	mainWindow->show();

@@ -4,5 +4,7 @@
         <file>i18n/chessx_fr.qm</file>
         <file>i18n/chessx_de.qm</file>
         <file>i18n/chessx_zh.qm</file>
+        <file>i18n/chessx_it.qm</file>
+        <file>i18n/chessx_pt_BR.qm</file>
     </qresource>
 </RCC>
