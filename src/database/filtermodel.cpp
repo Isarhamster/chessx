@@ -88,9 +88,10 @@ QModelIndex FilterModel::index(int row, int column, const QModelIndex& parent) c
 
 void FilterModel::setFilter(Filter* filter)
 {
+	beginResetModel();
 	m_filter = filter;
 	m_gameIndex = -1;
-	reset();
+	endResetModel();
 }
 
 Filter* FilterModel::filter()
