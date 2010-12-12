@@ -1,8 +1,8 @@
 /***************************************************************************
-                          gamelist.cpp  -  Game List window
-                             -------------------
-    begin                : Sun 23 Jul 2006
-    copyright            : (C) 2006 Michal Rudolf <mrudolf@kdewebdev.org>
+								  gamelist.cpp  -  Game List window
+									  -------------------
+	 begin                : Sun 23 Jul 2006
+	 copyright            : (C) 2006 Michal Rudolf <mrudolf@kdewebdev.org>
  ***************************************************************************/
 
 /***************************************************************************
@@ -61,8 +61,8 @@ void GameList::simpleSearch(int tagid)
 #pragma message("Unify with <filtermodel.cpp>")
 #endif
 	const QString tagNames[] = {"Nr", "White", "WhiteElo", "Black", "BlackElo", "Event", "Site", "Round", "Date",
-				    "Result", "ECO", "PlyCount", ""
-				   };
+					 "Result", "ECO", "PlyCount", ""
+					};
 
 	QuickSearchDialog dialog(this);
 

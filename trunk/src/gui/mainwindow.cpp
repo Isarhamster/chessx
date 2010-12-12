@@ -230,6 +230,27 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		e->ignore();
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *e)
+{
+	const int Key_Enter = 0x0d;
+	qDebug() << "Key: " << e->key();
+	if (e->key() == Qt::Key_Escape)
+		m_nagText.clear();
+	if (game().atLineStart() || game().atGameStart() ||
+		 e->key() == Qt::Key_Escape || e->text().isEmpty())
+		return;
+
+	if (e->key() != Key_Enter)
+		m_nagText.append(e->text());
+	int matches = NagSet::prefixCount(m_nagText);
+	if (matches == 0)
+		m_nagText.clear();
+	else if (matches == 1 || e->key() == Key_Enter) {
+		game().addNag(NagSet::fromString(m_nagText));
+		slotGameChanged();
+	}
+}
+
 DatabaseInfo* MainWindow::databaseInfo()
 {
 	return m_databases[m_currentDatabase];
@@ -586,4 +607,5 @@ void MainWindow::cancelOperation(const QString& msg)
 	statusBar()->showMessage(msg);
 	statusBar()->removeWidget(m_progressBar);
 }
+
 

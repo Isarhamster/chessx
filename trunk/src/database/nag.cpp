@@ -203,3 +203,21 @@ const QString& NagSet::nagToString(Nag nag)
 	return g_nagStringList[nag];
 }
 
+Nag NagSet::fromString(const QString &nag)
+{
+	for (int i = 1; i < NagCount; i++)
+		if (g_nagStringList[i] == nag)
+			return Nag(i);
+	return NullNag;
+}
+
+int NagSet::prefixCount(const QString &nag)
+{
+	QSet<QString> matches;
+	for (int i = 1; i < NagCount; i++)
+		if (g_nagStringList[i].startsWith(nag))
+			matches.insert(g_nagStringList[i]);
+	return matches.count();
+
+}
+

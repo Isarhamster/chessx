@@ -228,7 +228,7 @@ void Filter::executeQuery(Query& query)
 		if (query.isElementSearch(element)) {
 			if (query.search(element)->type() == Search::FilterSearch) {
 				filterSearches.append(QPair < FilterSearch,
-						      int > (*static_cast < const FilterSearch * >(query.search(element)), leafNode));
+								int > (*static_cast < const FilterSearch * >(query.search(element)), leafNode));
 			} else {
 				searches.append(QPair < Search*, int >(query.search(element), leafNode));
 			}
@@ -249,7 +249,7 @@ void Filter::executeQuery(Query& query)
 		if (filterSearchCount) {
 			for (int search = 0; search < filterSearchCount; search++) {
 				if (m_triStateTree.setState(filterSearches.at(search).second,
-							    filterSearches.at(search).first.contains(searchIndex))) {
+								 filterSearches.at(search).first.contains(searchIndex))) {
 					/* This means the tree evaluated to true */
 					break;
 				}
@@ -259,7 +259,7 @@ void Filter::executeQuery(Query& query)
 			if (m_triStateTree.state() == TriStateTree::Unknown) {
 				for (int search = 0; search < searchCount; search++) {
 					if (m_triStateTree.setState(searches.at(search).second,
-								    searches.at(search).first->matches(searchIndex))) {
+									 searches.at(search).first->matches(searchIndex))) {
 						break;
 					}
 				}
@@ -270,7 +270,7 @@ void Filter::executeQuery(Query& query)
 			 * there is no way the tree could have been solved, so just check the game */
 			for (int search = 0; search < searchCount; search++) {
 				if (m_triStateTree.setState(searches.at(search).second,
-							    searches.at(search).first->matches(searchIndex))) {
+								 searches.at(search).first->matches(searchIndex))) {
 					break;
 				}
 			}
@@ -284,12 +284,12 @@ void Filter::executeQuery(Query& query)
 
 }
 
-int Filter::gamesSearched() const 
+int Filter::gamesSearched() const
 {
 	return m_gamesSearched;
 }
 
-int Filter::searchTime() const 
+int Filter::searchTime() const
 {
 	return m_searchTime;
 }
