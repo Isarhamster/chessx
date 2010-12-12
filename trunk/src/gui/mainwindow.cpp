@@ -233,7 +233,6 @@ void MainWindow::closeEvent(QCloseEvent* e)
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
 	const int Key_Enter = 0x0d;
-	qDebug() << "Key: " << e->key();
 	if (e->key() == Qt::Key_Escape)
 		m_nagText.clear();
 	if (game().atLineStart() || game().atGameStart() ||

@@ -12,7 +12,14 @@
 
 void NagSet::addNag(Nag nag)
 {
-	if (nag != NullNag) push_back(nag);
+	if (contains(nag) || nag == NullNag)
+		return;
+	if (nag >= MoveNagStart && nag <= MoveNagEnd && nag != ForcedMove &&
+		 nag != SingularMove)
+		removeNagRange(MoveNagStart, MoveNagEnd);
+	else if (nag >= EvaluationNagStart && nag <= EvaluationNagEnd)
+		removeNagRange(EvaluationNagStart, EvaluationNagEnd);
+	append(nag);
 }
 
 void NagSet::removeNag(Nag nag)
@@ -31,11 +38,11 @@ QString NagSet::toString(unsigned format) const
 
 	for (int i = 0; i < count(); i++) {
 		if (at(i) >= MoveNagStart && at(i) <= MoveNagEnd)
-			moveNag = format == PGN ? " $" + QString::number(at(i)) : nagToString(at(i));
+			moveNag.append(format == PGN ? " $" + QString::number(at(i)) : nagToString(at(i)));
 		else if (at(i) >= EvaluationNagStart && at(i) <= EvaluationNagEnd)
-			evaluationNag = format == PGN ? " $" + QString::number(at(i)) : nagToString(at(i));
+			evaluationNag.append(format == PGN ? " $" + QString::number(at(i)) : nagToString(at(i)));
 		else
-			otherNags = format == PGN ? " $" + QString::number(at(i)) : nagToString(at(i));
+			otherNags.append(format == PGN ? " $" + QString::number(at(i)) : nagToString(at(i)));
 	}
 	return moveNag + evaluationNag + otherNags;
 }
@@ -219,5 +226,12 @@ int NagSet::prefixCount(const QString &nag)
 			matches.insert(g_nagStringList[i]);
 	return matches.count();
 
+}
+
+void NagSet::removeNagRange(Nag from, Nag to)
+{
+	for (int i = count() - 1; i >= 0; i--)
+		if (at(i) >= from && at(i) <= to)
+			remove(i);
 }
 
