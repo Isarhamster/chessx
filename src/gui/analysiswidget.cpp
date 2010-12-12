@@ -170,7 +170,7 @@ void AnalysisWidget::showTablebaseMove(Move move, int score)
 	QString result;
 	if (score == 0)
 		result = tr("Draw");
-	else if (score < 0 == (m_board.toMove() == Black))
+	else if ((score < 0) == (m_board.toMove() == Black))
 		result = tr("White wins in %n moves", "", qAbs(score));
 	else
 		result = tr("Black wins in %n moves", "", qAbs(score));

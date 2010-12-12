@@ -279,6 +279,9 @@ void MainWindow::slotMoveChanged()
 
 	slotSearchTree();
 	emit boardChange(g.board());
+
+	// Clear nag entries
+	m_nagText.clear();
 }
 
 void MainWindow::slotBoardMoveWheel(int wheel)

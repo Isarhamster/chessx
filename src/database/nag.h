@@ -11,8 +11,7 @@
 #ifndef __NAG_H__
 #define __NAG_H__
 
-#include <QString>
-#include <QVector>
+#include <QtCore>
 
 /* Don't forget to add string for each 'nag' in source file. */
 typedef enum
@@ -185,15 +184,17 @@ The NagSet class stores set of PGN NAGs.
 class NagSet : public QVector<Nag>
 {
 public:
-    enum { Simple, PGN }; /**< format of a string */
+	 enum { Simple, PGN }; /**< format of a string */
 
-    NagSet() {}
-    NagSet(Nag nag) { addNag(nag); }
+	 NagSet() {}
+	 NagSet(Nag nag) { addNag(nag); }
 
-    void addNag(Nag nag);
-    void removeNag(Nag nag);
+	 void addNag(Nag nag);
+	 void removeNag(Nag nag);
 	QString toString(unsigned format = Simple) const;
 	static const QString& nagToString(Nag nag);
+	static int prefixCount(const QString& nag);
+	static Nag fromString(const QString& nag);
 };
 
 #endif	// __NAG_H__

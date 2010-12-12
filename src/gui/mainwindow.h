@@ -51,6 +51,8 @@ public:
 protected:
 	/** Overridden to ask for confirmation */
 	void closeEvent(QCloseEvent* e);
+	/** Filter key events. */
+	void keyPressEvent(QKeyEvent *e);
 	/** @return active database */
 	Database* database();
 	/** @return active database structure */
@@ -281,6 +283,7 @@ private:
 	QTime m_operationTime;
 	/** Currently updated tree. May be NULL if no updated in progress. */
 	OpeningTree* m_openingTree;
+	QString m_nagText;
 
 	struct PendingLoad {
 		Database* database;
