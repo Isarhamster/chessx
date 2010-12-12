@@ -195,6 +195,8 @@ public:
 	static const QString& nagToString(Nag nag);
 	static int prefixCount(const QString& nag);
 	static Nag fromString(const QString& nag);
+private:
+	void removeNagRange(Nag from, Nag to);
 };
 
 #endif	// __NAG_H__
