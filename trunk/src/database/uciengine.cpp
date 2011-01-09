@@ -15,8 +15,6 @@ UCIEngine::UCIEngine(const QString& name,
 			  const QString& directory,
 			  QTextStream* logStream) : Engine(name, command, directory, logStream)
 {
-	m_position = "";
-	m_waitingOn = "";
 	m_quitAfterAnalysis = false;
 	m_invertBlack = true;
 }
@@ -44,9 +42,8 @@ bool UCIEngine::startAnalysis(const Board& board, int nv)
 
 void UCIEngine::stopAnalysis()
 {
-	if (isAnalyzing()) {
+	if (isAnalyzing())
 		send("stop");
-	}
 }
 
 void UCIEngine::setMpv(int mpv)
@@ -116,31 +113,30 @@ void UCIEngine::processMessage(const QString& message)
 void UCIEngine::parseAnalysis(const QString& message)
 {
 	// Sample: info score cp 20  depth 3 nodes 423 time 15 pv f1c4 g8f6 b1c3
-
 	Analysis analysis;
 		  bool multiPVFound, timeFound, nodesFound, depthFound, scoreFound, variationFound;
 		  multiPVFound = timeFound = nodesFound = depthFound = scoreFound = variationFound = false;
 
-	QString info = message.section(' ', 1, -1);
+	QString info = message.section(' ', 1, -1, QString::SectionSkipEmpty);
 	int section = 0;
-	QString name, value;
+	QString name;
 	bool ok;
 
 	//loop around the name value tuples
-	while (info.section(' ', section, section + 1) != "") {
-		name = info.section(' ', section, section);
+	while (!info.section(' ', section, section + 1, QString::SectionSkipEmpty).isEmpty()) {
+		name = info.section(' ', section, section, QString::SectionSkipEmpty);
 
-					 if (name == "multipv") {
-								analysis.setNumpv(info.section(' ', section + 1, section + 1).toInt(&ok));
-								section += 2;
-								if (ok) {
-									 multiPVFound = true;
-									 continue;
-								}
-					 }
+		if (name == "multipv") {
+			analysis.setNumpv(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toInt(&ok));
+			section += 2;
+			if (ok) {
+				multiPVFound = true;
+				continue;
+			}
+		}
 
 		if (name == "time") {
-			analysis.setTime(info.section(' ', section + 1, section + 1).toInt(&ok));
+			analysis.setTime(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toInt(&ok));
 			section += 2;
 			if (ok) {
 				timeFound = true;
@@ -149,7 +145,7 @@ void UCIEngine::parseAnalysis(const QString& message)
 		}
 
 		if (name == "nodes") {
-			analysis.setNodes(info.section(' ', section + 1, section + 1).toLongLong(&ok));
+			analysis.setNodes(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toLongLong(&ok));
 			section += 2;
 			if (ok) {
 				nodesFound = true;
@@ -158,7 +154,7 @@ void UCIEngine::parseAnalysis(const QString& message)
 		}
 
 		if (name == "depth") {
-			analysis.setDepth(info.section(' ', section + 1, section + 1).toInt(&ok));
+			analysis.setDepth(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toInt(&ok));
 			section += 2;
 			if (ok) {
 				depthFound = true;
@@ -167,7 +163,7 @@ void UCIEngine::parseAnalysis(const QString& message)
 		}
 
 		if (name == "score") {
-			QString type = info.section(' ', section + 1, section + 1);
+			QString type = info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty);
 			if (type == "cp" || type == "mate") {
 				int score = info.section(' ', section + 2, section + 2).toInt(&ok);
 				if (type == "mate")
@@ -189,13 +185,10 @@ void UCIEngine::parseAnalysis(const QString& message)
 			MoveList moves;
 			QString moveText;
 			section++;
-			while ((moveText = info.section(' ', section, section)) != "") {
-//				qWarning("! move: |%s|", lanMove.toLatin1().constData());
+			while ((moveText = info.section(' ', section, section, QString::SectionSkipEmpty)) != "") {
 				Move move = board.parseMove(moveText);
-				if (!move.isLegal()) {
-//					qWarning("Variation parsing failed\n");
+				if (!move.isLegal())
 					break;
-				}
 				board.doMove(move);
 				moves.append(move);
 				section++;
@@ -207,9 +200,10 @@ void UCIEngine::parseAnalysis(const QString& message)
 		section += 2;
 	}
 
-		  if (timeFound && nodesFound && scoreFound && analysis.isValid()) {
-				if(!multiPVFound) analysis.setNumpv(1);
-				sendAnalysis(analysis);
-		  }
+	if (timeFound && nodesFound && scoreFound && analysis.isValid()) {
+		if (!multiPVFound)
+			analysis.setNumpv(1);
+		sendAnalysis(analysis);
+	}
 }
 

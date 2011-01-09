@@ -18,7 +18,7 @@
 Engine::Engine(const QString& name,
 			 const QString& command,
 			 const QString& directory,
-			 QTextStream* logStream) : QObject()
+			 QTextStream* logStream)
 {
 	m_name = name;
 	m_command = command;
@@ -31,9 +31,8 @@ Engine::Engine(const QString& name,
 
 Engine* Engine::newEngine(int index)
 {
-	Engine *engine = NULL;
+	Engine *engine = 0;
 
-	QStringList engines;
 	AppSettings->beginGroup("/Engines/");
 	QString key(QString::number(index));
 	QString name = AppSettings->value(key + "/Name").toString();
@@ -112,9 +111,9 @@ void Engine::send(const QString& message)
 	}
 
 	QString out(message);
-	out += "\n";
-	if (m_process && message != "")
-		m_process->write(out.toLocal8Bit());
+	out.append('\n');
+	if (m_process && !message.isEmpty())
+		m_process->write(out.toLatin1());
 }
 
 void Engine::setActive(bool active)
@@ -158,8 +157,7 @@ void Engine::pollProcess()
 {
 	QString message;
 	while (m_process->canReadLine()) {
-		message = m_process->readLine();
-		message = message.trimmed();
+		message = m_process->readLine().trimmed();
 		if (m_logStream) {
 			*m_logStream << "--> " << message << endl;
 			emit logUpdated();
