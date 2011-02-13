@@ -12,7 +12,7 @@
 
 void NagSet::addNag(Nag nag)
 {
-	if (contains(nag) || nag == NullNag)
+	if (contains(nag) || nag == NullNag || nag >= NagCount)
 		return;
 	if (nag >= MoveNagStart && nag <= MoveNagEnd && nag != ForcedMove &&
 		 nag != SingularMove)
