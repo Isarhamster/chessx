@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 	QString shortLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(2));
 	QString fullLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(5));
 
-	// Lanuage may have two forms: "pt_BR" or "pl"
+	// Language may have two forms: "pt_BR" or "pl"
 	QTranslator translator;
 	if (translator.load(AppSettings->dataPath() + "/lang/" + fullLang) ||
 		 translator.load(QString(":i18n/") + fullLang) ||
