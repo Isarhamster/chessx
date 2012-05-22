@@ -99,44 +99,46 @@ TriStateTree::TriStateTree(const TriStateTree& tree)
 
 TriStateTree& TriStateTree::operator=(const TriStateTree & tree)
 {
-	//assign data members
-	m_state = tree.m_state;
-	m_nodeCount = tree.m_nodeCount;
-	m_leafCount = tree.m_leafCount;
+	if (this != &tree)
+	{
+		//assign data members
+		m_state = tree.m_state;
+		m_nodeCount = tree.m_nodeCount;
+		m_leafCount = tree.m_leafCount;
 
-	//copy nodes
-	Node* nodes = new Node[m_nodeCount];
-	Node** leafs = new Node*[m_nodeCount];
+		//copy nodes
+		Node* nodes = new Node[m_nodeCount];
+		Node** leafs = new Node*[m_nodeCount];
 
-	for (int node = 0; node < m_nodeCount; node++) {
-		nodes[node].m_state = tree.m_nodes[node].m_state;
-		nodes[node].m_operator = tree.m_nodes[node].m_operator;
-		if (tree.m_nodes[node].m_parent) {
-			nodes[node].m_parent = nodes + (tree.m_nodes[node].m_parent - tree.m_nodes);
-		} else {
-			nodes[node].m_parent = 0;
+		for (int node = 0; node < m_nodeCount; node++) {
+			nodes[node].m_state = tree.m_nodes[node].m_state;
+			nodes[node].m_operator = tree.m_nodes[node].m_operator;
+			if (tree.m_nodes[node].m_parent) {
+				nodes[node].m_parent = nodes + (tree.m_nodes[node].m_parent - tree.m_nodes);
+			} else {
+				nodes[node].m_parent = 0;
+			}
+			if (tree.m_nodes[node].m_leftChild) {
+				nodes[node].m_leftChild = nodes + (tree.m_nodes[node].m_leftChild - tree.m_nodes);
+			} else {
+				nodes[node].m_leftChild = 0;
+			}
+			if (tree.m_nodes[node].m_rightChild) {
+				nodes[node].m_rightChild = nodes + (tree.m_nodes[node].m_rightChild - tree.m_nodes);
+			} else {
+				nodes[node].m_rightChild = 0;
+			}
 		}
-		if (tree.m_nodes[node].m_leftChild) {
-			nodes[node].m_leftChild = nodes + (tree.m_nodes[node].m_leftChild - tree.m_nodes);
-		} else {
-			nodes[node].m_leftChild = 0;
+
+		for (int node = 0; node < m_leafCount; node++) {
+			leafs[node] = nodes + (tree.m_leafs[node] - tree.m_nodes);
 		}
-		if (tree.m_nodes[node].m_rightChild) {
-			nodes[node].m_rightChild = nodes + (tree.m_nodes[node].m_rightChild - tree.m_nodes);
-		} else {
-			nodes[node].m_rightChild = 0;
-		}
+
+		delete[]m_nodes;
+		m_nodes = nodes;
+		delete[]m_leafs;
+		m_leafs = leafs;
 	}
-
-	for (int node = 0; node < m_leafCount; node++) {
-		leafs[node] = nodes + (tree.m_leafs[node] - tree.m_nodes);
-	}
-
-	delete[]m_nodes;
-	m_nodes = nodes;
-	delete[]m_leafs;
-	m_leafs = leafs;
-
 	return *this;
 }
 

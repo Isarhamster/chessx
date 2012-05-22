@@ -83,7 +83,7 @@ public:
 
 signals:
 	/** Signal emitted when some progress is done. */
-	void progress(int);
+    void progress(int, bool& bQuit);
 
 protected:
 	Index m_index;

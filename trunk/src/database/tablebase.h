@@ -32,7 +32,7 @@ class Tablebase : public QObject
 	Q_OBJECT
 signals:
 	/** Emitted when best move has been gathered from tablebase */
-	virtual void bestMove(Move move, int score) = 0;
+	void bestMove(Move move, int score);
 public slots:
 	/** Request best move from table base given FEN position */
 	virtual void getBestMove(QString fen) = 0;
@@ -52,7 +52,7 @@ public:
 	Shredder();
 	~Shredder();
 signals:
-	virtual void bestMove(Move move, int score);
+	void bestMove(Move move, int score);
 public slots:
 	void getBestMove(QString fen);
 	void abortLookup();

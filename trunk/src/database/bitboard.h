@@ -67,6 +67,9 @@ public:
 	/** Return a proper Move() object given only a from-to move specification */
 	Move prepareMove(const Square& from, const Square& to) const;
 
+	// Return a nullMove -- King to the same square
+	Move nullMove() const;
+	
 	// Query
 	//
 	/** Is piece sitting on given square moveable ? */

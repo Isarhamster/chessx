@@ -38,7 +38,7 @@ public:
 	/** Construct filter from another filter. */
 	Filter(const Filter& filter);
 	/** Assignment operator. */
-	Filter operator=(const Filter& filter);
+	Filter& operator=(const Filter& filter);
 	/** Destructor. */
 	~Filter();
 	/** @return a pointer to the database on which the filter is. */

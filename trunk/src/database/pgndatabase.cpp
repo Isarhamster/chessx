@@ -58,8 +58,12 @@ bool PgnDatabase::parseFile()
 		skipMoves();
 		int percentDone2 = m_file->pos() * 100 / size;
 		if (percentDone2 > percentDone)
-			emit progress((percentDone = percentDone2));
-	}
+        {
+            bool bQuit;
+            emit progress((percentDone = percentDone2), bQuit);
+            if (bQuit) return false;
+        }
+    }
 	m_index.setCacheEnabled(false);
 	return true;
 }
@@ -254,7 +258,9 @@ void PgnDatabase::parseMoves(Game* game)
 
 void PgnDatabase::parseLine(Game* game)
 {
-	QStringList list = m_currentLine.split(" ");
+    m_currentLine.replace("\t"," ");
+
+    QStringList list = m_currentLine.split(" ");
 	m_pos = 0;
 
 	for (QStringList::Iterator it = list.begin(); it != list.end() && !m_inComment; it++) {
@@ -272,7 +278,55 @@ void PgnDatabase::parseLine(Game* game)
 	}
 }
 
-void PgnDatabase::parseToken(Game* game, QString token)
+void PgnDatabase::parseDefaultToken(Game* game, QString token)
+{
+    //strip any move numbers
+    if (token.contains("...")) {
+        token = token.section("...", 1, 1);
+    } else if (token.contains('.')) {
+        token = token.section('.',	1, 1);
+    }
+
+    //look for nags
+    Nag nag = NullNag;
+    if (token.endsWith("!")) {
+        if (token.endsWith("!!")) {
+            nag = VeryGoodMove;
+        } else if (token.endsWith("!?")) {
+            nag = SpeculativeMove;
+        } else {
+            nag = GoodMove;
+        }
+    } else if (token.endsWith("?")) {
+        if (token.endsWith("??")) {
+            nag = VeryPoorMove;
+        } else if (token.endsWith("?!")) {
+            nag = QuestionableMove;
+        } else {
+            nag = PoorMove;
+        }
+    }
+
+    if (!token.isEmpty()) {
+        if (m_newVariation) {
+            game->backward();
+            m_variation = game->addVariation(token, QString(), nag);
+            if (!m_precomment.isEmpty()) {
+                game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
+                m_precomment.clear();
+            }
+            m_newVariation = false;
+        } else {	// First move in the game
+            m_variation = game->addMove(token, QString(), nag);
+            if (!m_precomment.isEmpty()) {
+                game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
+                m_precomment.clear();
+            }
+        }
+    }
+}
+
+void PgnDatabase::parseToken(Game* game, const QString& token)
 {
 	switch (token.at(0).toLatin1()) {
 	case '(':
@@ -318,11 +372,6 @@ void PgnDatabase::parseToken(Game* game, QString token)
 			game->addNag(WhiteHasAModerateAdvantage);
 		}
 		break;
-	case '-':
-		if (token == "-/+") {
-			game->addNag(BlackHasAModerateAdvantage);
-		}
-		break;
 	case '=':
 		if (token == "=") {
 			game->addNag(DrawishPosition);
@@ -333,18 +382,18 @@ void PgnDatabase::parseToken(Game* game, QString token)
 	case '*':
 		game->setResult(Unknown);
 		m_gameOver = true;
-
-		break;
+        break;
+    // From here, cases may fall through into default!!
 	case '1':
 		if (token == "1-0") {
 			game->setResult(WhiteWin);
 			m_gameOver = true;
-			break;
-		} else if (token == "1/2-1/2" || token == "1/2") {
+            break;
+        } else if (token == "1/2-1/2" || token == "1/2") {
 			game->setResult(Draw);
 			m_gameOver = true;
-			break;
-		}
+            break;
+        }
 
 	case '0':
 		if (token == "0-1") {
@@ -352,51 +401,20 @@ void PgnDatabase::parseToken(Game* game, QString token)
 			m_gameOver = true;
 			break;
 		}
+
+	case '-':
+		if (token == "-/+") {
+			game->addNag(BlackHasAModerateAdvantage);
+            break;
+        } else if (token == "--") {
+            // parse a null move!
+            parseDefaultToken(game,token);
+            break;
+        }
+
 	default:
-		//strip any move numbers
-		if (token.contains("...")) {
-			token = token.section("...", 1, 1);
-		} else if (token.contains('.')) {
-			token = token.section('.',	1, 1);
-		}
-
-		//look for nags
-		Nag nag = NullNag;
-		if (token.endsWith("!")) {
-			if (token.endsWith("!!")) {
-				nag = VeryGoodMove;
-			} else if (token.endsWith("!?")) {
-				nag = SpeculativeMove;
-			} else {
-				nag = GoodMove;
-			}
-		} else if (token.endsWith("?")) {
-			if (token.endsWith("??")) {
-				nag = VeryPoorMove;
-			} else if (token.endsWith("?!")) {
-				nag = QuestionableMove;
-			} else {
-				nag = PoorMove;
-			}
-		}
-
-		if (!token.isEmpty()) {
-			if (m_newVariation) {
-				game->backward();
-				m_variation = game->addVariation(token, QString(), nag);
-				if (!m_precomment.isEmpty()) {
-					game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
-					m_precomment.clear();
-				}
-				m_newVariation = false;
-			} else {	// First move in the game
-				m_variation = game->addMove(token, QString(), nag);
-				if (!m_precomment.isEmpty()) {
-					game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
-					m_precomment.clear();
-				}
-			}
-		}
+        parseDefaultToken(game,token);
+        break;
 	}
 }
 

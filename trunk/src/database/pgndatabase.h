@@ -53,8 +53,10 @@ protected:
 	void parseMoves(Game* game);
 	/** Parses a line from the file */
 	void parseLine(Game* game);
+    /** Parses a move token from the file */
+    void parseDefaultToken(Game* game, QString token);
 	/** Parses a token from the file */
-	void parseToken(Game* game, QString token);
+    void parseToken(Game* game, const QString& token);
 	/** Parses a comment from the file */
 	void parseComment(Game* game);
 	/** Skips past any data which is not valid tag or move data */

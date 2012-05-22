@@ -34,7 +34,6 @@ DatabaseInfo::DatabaseInfo(const QString& fname) : m_filter(0), m_index(NewGame)
 bool DatabaseInfo::open()
 {
 	if (!m_database->open(m_filename)) {
-		close();
 		return false;
 	}
 	delete m_filter;
@@ -46,8 +45,10 @@ bool DatabaseInfo::open()
 
 void DatabaseInfo::close()
 {
-	delete m_database;
-	delete m_filter;
+	if (m_database) delete m_database;
+	if (m_filter) delete m_filter;
+	m_database = NULL;
+	m_filter = NULL;
 }
 
 DatabaseInfo::~DatabaseInfo()

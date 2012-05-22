@@ -43,30 +43,33 @@ Game::Game(const Game& game)
 
 Game& Game::operator=(const Game & game)
 {
-	clear();
-	//assign non pointer variables
-	m_tags = game.m_tags;
-	m_startingBoard = game.m_startingBoard;
-	m_variationStartAnnotations = game.m_variationStartAnnotations;
-	m_annotations = game.m_variationStartAnnotations;
+	if (this!=&game)
+	{
+		clear();
+		//assign non pointer variables
+		m_tags = game.m_tags;
+		m_startingBoard = game.m_startingBoard;
+		m_variationStartAnnotations = game.m_variationStartAnnotations;
+		m_annotations = game.m_variationStartAnnotations;
 
-	m_currentNode = game.m_currentNode;
-	m_startPly = game.m_startPly;
-	m_currentBoard = game.m_currentBoard;
+		m_currentNode = game.m_currentNode;
+		m_startPly = game.m_startPly;
+		m_currentBoard = game.m_currentBoard;
 
-	//copy annotations
-	m_annotations.clear();
-	QMapIterator<int, QString> i(game.m_annotations);
-	while (i.hasNext()) {
-		i.next();
-		m_annotations.insert(i.key(), i.value());
+		//copy annotations
+		m_annotations.clear();
+		QMapIterator<int, QString> i(game.m_annotations);
+		while (i.hasNext()) {
+			i.next();
+			m_annotations.insert(i.key(), i.value());
+		}
+		//copy node array
+		m_moveNodes.clear();
+		for (int i = 0; i < game.m_moveNodes.size(); ++i) {
+			m_moveNodes.append(game.m_moveNodes[i]);
+		}
+		m_isModified = true;
 	}
-	//copy node array
-	m_moveNodes.clear();
-	for (int i = 0; i < game.m_moveNodes.size(); ++i) {
-		m_moveNodes.append(game.m_moveNodes[i]);
-	}
-	m_isModified = true;
 	return *this;
 }
 
@@ -99,7 +102,7 @@ MoveId Game::addMove(const Move& move, const QString& annotation, NagSet nags)
 MoveId Game::addMove(const QString& sanMove, const QString& annotation, NagSet nags)
 {
 	Move move = m_currentBoard.parseMove(sanMove);
-	if (move.isLegal())
+    if (move.isLegal() || move.isNullMove())
 		return addMove(move, annotation, nags);
 	return NO_MOVE;
 }
@@ -711,7 +714,7 @@ QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, Mo
 
 	MoveNode move;
 	move = m_moveNodes[node];
-	if (!move.move.isLegal())
+    if (!( move.move.isLegal() || move.move.isNullMove()))
 		return QString();
 
 	// Save current node
