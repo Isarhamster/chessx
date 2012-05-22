@@ -273,6 +273,11 @@ QString BitBoard::moveToSan(const Move& move) const
 	int to = move.to();
 	bool isPawn = m_piece[from] == Pawn;
 
+    if (move.isNullMove()) {
+        san = "--";
+        return san;
+    }
+
 	if (move.isCastling()) {
 		if (from < to)
 			san = "O-O";
