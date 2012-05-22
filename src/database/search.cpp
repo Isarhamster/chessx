@@ -237,7 +237,6 @@ TagSearch* TagSearch::clone() const
 
 TagSearch::~TagSearch()
 {
-	//delete m_matches;
 }
 
 Search::Type TagSearch::type() const

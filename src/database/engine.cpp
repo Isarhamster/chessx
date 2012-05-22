@@ -60,7 +60,6 @@ Engine::~Engine()
 		m_process->disconnect();
 		m_process->kill();
 		m_process->waitForFinished(1000);
-		delete m_process;
 	}
 }
 
@@ -174,6 +173,5 @@ void Engine::processError()
 void Engine::processExited()
 {
 	setActive(false);
-	delete m_process;
 	m_process = 0;
 }

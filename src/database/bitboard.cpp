@@ -127,6 +127,7 @@ const quint64 fileNotGH   = ~(fileG | fileH);
 #define File(s)           ((s)&7)
 #define Rank(s)           ((s)>>3)
 
+
 #if defined(FASTBITS)
 const bool BitBoard::fastbitsOption = true;
 #else
@@ -159,6 +160,24 @@ inline uint getFirstBitAndClear64(quint64& bb)
 //	}
 //#elif defined(FASTBITS)
 #if defined(FASTBITS)
+#ifdef __x86_64
+    // Assuming x86 hardware...
+    // Testing showed this to be about 20 times faster than the C++ code
+    register quint64 ret;
+    asm volatile(
+        "pushq  %%rbx \n"
+        "movq	%0, %%rbx \n"
+        "xor	%%rdx, %%rdx \n"
+        "inc	%%edx \n"
+        "bsfq	(%%rbx), %%rcx \n"
+        "shl	%%cl, %%rdx \n"
+        "mov	%%rcx, %%rax \n"
+        "xor	%%rdx, (%%rbx) \n"
+        "popq   %%rbx \n"
+    : "=a"(ret), "=m"(bb) : "0"(&bb) : "%ecx", "%edx");
+    return (uint)ret;
+
+#else
 	// Assuming x86 hardware...
 	// Testing showed this to be about 20 times faster than the C++ code
 	register uint ret;
@@ -180,19 +199,26 @@ inline uint getFirstBitAndClear64(quint64& bb)
 		"popl   %%ebx \n"
 	: "=a"(ret), "=m"(bb) : "0"(&bb) : "%ecx", "%edx");
 	return ret;
+#endif
 #else
-	// SBE - After a fair bit of testing, this is the fastest portable version
+#ifdef __GNUG__
+    register quint64 x = bb & -(qint64)bb;
+    bb ^= x;
+    return 63-__builtin_clzll(x);
+#else
+    // SBE - After a fair bit of testing, this is the fastest portable version
 	// i could come up with, it's about twice as fast as shift-testing 64 times.
-	register quint64 x = bb & -(qint64)bb;
+    register quint64 x = bb & -(qint64)bb;
 	register uint r =  0;
-	bb ^= x;
+    bb ^= x;
 	if (!(x & 0xffffffff)) { x >>= 32; r |= 32; }
 	if (!(x & 0xffff)) { x >>= 16; r |= 16; }
 	if (!(x & 0xff)) { x >>= 8; r |= 8; }
 	if (!(x & 0xf)) { x >>= 4; r |= 4; }
 	if (!(x & 0x3)) { x >>= 2; r |= 2; }
-	if (!(x & 0x1)) { r |= 1; }
+    if (!(x & 0x1)) { r |= 1; }
 	return r;
+#endif
 #endif
 }
 
@@ -969,6 +995,21 @@ bool BitBoard::isIntoCheck(const Move& move) const
 inline bool isFile(const char c) {return c >= 'a' && c <= 'h';}
 inline bool isRank(const char c) {return c >= '1' && c <= '8';}
 
+// Create a null move
+// A Null Move is a move by a king to its own square
+// and is represented in pgn by a "--" although illegal
+// it is often used in ebooks to annotate ideas
+Move BitBoard::nullMove() const
+{
+	Move m;
+	static Square kingSquare = m_ksq[m_stm];
+	m = prepareMove( kingSquare, kingSquare);
+    if (m_stm == Black)
+        m.setBlack();
+
+	return m;
+}
+
 Move BitBoard::parseMove(const QString& algebraic) const
 {
 	const QByteArray& bs(algebraic.toAscii());
@@ -985,18 +1026,26 @@ Move BitBoard::parseMove(const QString& algebraic) const
 	uint type;
 
 	// Castling
-	if (c == 'O' || c == '0') {
-		if (strncmp(san, "O-O-O", 5) == 0 || strncmp(san, "0-0-0", 5)  == 0) {
+    if (c == 'o' || c == 'O' || c == '0') {
+        if (strncmp(san, "o-o-o", 5) == 0 || strncmp(san, "O-O-O", 5) == 0 || strncmp(san, "0-0-0", 5)  == 0) {
 			if (m_stm == White)
 				return prepareMove(e1, c1);
 			else	return prepareMove(e8, c8);
-		} else if (strncmp(san, "O-O", 3) == 0 || strncmp(san, "0-0", 3)  == 0) {
+        } else if (strncmp(san, "o-o", 3) == 0 || strncmp(san, "O-O", 3) == 0 || strncmp(san, "0-0", 3)  == 0) {
 			if (m_stm == White)
 				return prepareMove(e1, g1);
 			else	return prepareMove(e8, g8);
 		}
 		return move;
 	}
+
+	// Null Move
+	if (c == '-') {
+		if (strncmp(san, "--", 2) == 0) {
+				return nullMove();
+		}
+	}
+
 
 	// Piece
 	switch (c) {
@@ -1147,7 +1196,10 @@ bool BitBoard::doMove(const Move& m)
 		m_kings ^= bb_from ^ bb_to;
 		m_ksq[m_stm] = to;
 		m_piece[to] = King;
-		destroyCastle(m_stm);	// king is moving so definitely destroy castle stuff!
+        if (! m.isNullMove())
+        {
+            destroyCastle(m_stm);	// king is moving so definitely destroy castle stuff!
+        }
 		break;
 	case Move::CASTLE:
 		m_kings ^= bb_from ^ bb_to;
@@ -1468,14 +1520,32 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
 	Move move(from, to);
 	uchar p = m_piece[from];
 
-	if (!(m_occupied_co[m_stm] & src) || m_occupied_co[m_stm] & dest)
-		return move;
+    // Check for Illegal Move
+    // first the source square must not be vacant
+    if (!(m_occupied_co[m_stm] & src))
+        return move;
+
+    // Check for Illegal Move
+    // If the destination square is a piece of the moving color
+    if (m_occupied_co[m_stm] & dest)
+    {
+        // If Not a null move
+        if( (src != dest) || p != King )
+        {
+            // move is neither legal nor a null move
+            return move;
+        }
+    }
 
 	move.setPieceType(p);
 	move.setCaptureType(m_piece[to]);
 	if (p == King) {
-		if (!(kingAttacksFrom(to) & src) && !prepareCastle(move))
-			return move;
+        // if not a null Move
+        if( src != dest )
+        {
+            if (!(kingAttacksFrom(to) & src) && !prepareCastle(move))
+                return move;
+        }
 	} else if (p == Pawn) {
 		if (!(pawnMovesFrom(from) & dest))
 			return move;
@@ -1498,15 +1568,19 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
 	BitBoard peek(*this);
 	peek.doMove(move);
 	peek.swapToMove();
-	if (peek.isCheck())  // Don't allow move into check
-		return move;
+    if (peek.isCheck()) { // Don't allow move into check even if its a null move
+            return move;
+    }
 
 	if (m_stm == Black)
 		move.setBlack();
 	move.u = m_halfMoves;
 	move.u |= (((ushort) m_castle & 0xF) << 8);
 	move.u |= (((ushort) m_epFile & 0xF) << 12);
-	move.setLegalMove();
+    if( src != dest)
+    {
+        move.setLegalMove();
+    }
 	return move;
 }
 

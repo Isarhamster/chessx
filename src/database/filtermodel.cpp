@@ -14,7 +14,20 @@
 FilterModel::FilterModel(Filter* filter, QObject* parent)
 		: QAbstractItemModel(parent), m_filter(filter), m_gameIndex(-1)
 {
-	m_columnNames << "Nr"
+	m_columnNames << tr("Nr")
+	<< tr("White")
+	<< tr("WhiteElo")
+	<< tr("Black")
+	<< tr("BlackElo")
+	<< tr("Event")
+	<< tr("Site")
+	<< tr("Round")
+	<< tr("Date")
+	<< tr("Result")
+	<< tr("ECO")
+	<< tr("PlyCount");
+
+	m_columnTags << "Nr"
 	<< "White"
 	<< "WhiteElo"
 	<< "Black"
@@ -26,6 +39,7 @@ FilterModel::FilterModel(Filter* filter, QObject* parent)
 	<< "Result"
 	<< "ECO"
 	<< "PlyCount";
+
 	m_game = new Game;
 }
 
@@ -60,7 +74,7 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
 			if (index.column() == 0)
 				return i + 1;
 			else {
-				QString tag = m_game->tag(m_columnNames.at(index.column()));
+				QString tag = m_game->tag(m_columnTags.at(index.column()));
 				return tag == "?" ? QString() : tag;
 			}
 		}

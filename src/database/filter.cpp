@@ -32,14 +32,17 @@ Filter::Filter(const Filter& filter)
 	m_searchTime = 0;
 }
 
-Filter Filter::operator=(const Filter & filter)
+Filter& Filter::operator=(const Filter & filter)
 {
-	delete m_vector;
-	m_vector = new QVector<int>(filter.intVector());
-	m_count = filter.count();
-	m_cache = filter.m_cache;
-	m_gamesSearched = 0;
-	m_searchTime = 0;
+	if (this != &filter)
+	{
+		delete m_vector;
+		m_vector = new QVector<int>(filter.intVector());
+		m_count = filter.count();
+		m_cache = filter.m_cache;
+		m_gamesSearched = 0;
+		m_searchTime = 0;
+	}
 	return *this;
 }
 

@@ -110,7 +110,11 @@ bool MemoryDatabase::parseFile()
 		m_games.append(game);
 		int percentDone2 = m_file->pos() * 100 / size;
 		if (percentDone2 > percentDone)
-			emit progress((percentDone = percentDone2));
+        {
+            bool bQuit;
+            emit progress((percentDone = percentDone2), bQuit);
+            if (bQuit) return false;
+        }
 	}
 	m_index.setCacheEnabled(false);
 	m_isModified = false;

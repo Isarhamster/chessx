@@ -56,6 +56,8 @@ private:
 	Filter* m_filter;
 	/** The column names of the model */
 	QStringList m_columnNames;
+	/** Map of coulmuns and database tags */
+	QStringList m_columnTags;
 	/** A pointer to a game object, to hold the retrieved information
 	 * about the game */
 	Game* m_game;

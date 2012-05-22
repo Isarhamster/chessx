@@ -62,6 +62,8 @@ class Move
 	/** If move is promotion, get promotion piece. Result is undefined if there is no promotion */
 	Piece promotedPiece() const;
 
+	bool isNullMove() const;
+
 	/** Check whether move is special (promotion, castling, en passant */
 	bool isSpecial() const;
 	/** Check whether move is a promotion */
@@ -193,6 +195,22 @@ private:
 	ushort u;
 };
 
+// return true if a null move
+// that is moving a king to its same square
+// while it is not legal it is often used
+// to annotate ideas
+inline bool Move::isNullMove() const
+{
+
+    if ( from() == to()  )
+    {
+        Piece p = pieceMoved();
+        PieceType pt = pieceType(p);
+        if ( pt == King )
+        return true;
+    }
+    return false;
+}
 
 inline void Move::setPromotionPiece(const PieceType type)
 {
