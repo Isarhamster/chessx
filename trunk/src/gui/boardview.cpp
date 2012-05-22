@@ -98,13 +98,15 @@ void BoardView::paintEvent(QPaintEvent* event)
 	}
 	// Draw side to move indicator
 	bool white = m_board.toMove() == White;
-	int square = m_theme.size().width() / 3;
-	QColor color = white ? Qt::white : Qt::black;
+    //int square = m_theme.size().width() / 3;
+    int square = m_theme.size().width() / 6;
+    QColor color = white ? Qt::white : Qt::black;
 	QColor border = white ? Qt::black : Qt::white;
 	int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
 	p.setPen(border);
 	p.setBrush(QColor(color));
-	p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
+    //p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
+    p.drawRect(8 * m_theme.size().width() + 4, posy, square, square);
 
 	// Fix border up
 	/*
@@ -128,8 +130,9 @@ void BoardView::resizeBoard()
 {
 	// subtract move indicator from width
 	int coord = m_coordinates * CoordinateSize;
-	int xsize = (width() - 2 * coord - (8 + width() / 24) - 1) / 8;
-	int ysize = (height() - 2 * coord - 1) / 8;
+    //int xsize = (width() - 2 * coord - (8 + width() / 24) - 1) / 8;
+    int xsize = (width() - 2 * coord - (8 + width() / 48) - 1) / 8;
+    int ysize = (height() - 2 * coord - 1) / 8;
 	int size = xsize < ysize ? xsize : ysize;
 	m_theme.setSize(QSize(size, size));
 }

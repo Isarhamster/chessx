@@ -37,6 +37,7 @@ int main(int argc, char** argv)
 		a.installTranslator(&translator);
 
 	MainWindow* mainWindow = new MainWindow;
+
 	mainWindow->show();
 
 	// Destroy main window and close application

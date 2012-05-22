@@ -24,6 +24,7 @@
 #include "output.h"
 #include "pgndatabase.h"
 #include "playerdialog.h"
+#include "playerlist.h"
 #include "preferences.h"
 #include "savedialog.h"
 #include "settings.h"
@@ -83,7 +84,7 @@ void MainWindow::slotFileSave()
 	else if (m_currentDatabase && dynamic_cast<MemoryDatabase*>(database())) {
 		startOperation(tr("Saving %1...").arg(database()->name()));
 		Output output(Output::Pgn);
-		connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
+        connect(&output, SIGNAL(progress(int,bool&)), SLOT(slotOperationProgress(int,bool&)));
 		output.output(database()->filename(), *database());
 		finishOperation(tr("%1 saved").arg(database()->name()));
 	}
@@ -161,6 +162,11 @@ void MainWindow::slotEditComment()
 		slotGameChanged();
 }
 
+void MainWindow::slotEditCommentBefore()
+{
+    if (gameEditComment(Output::Precomment))
+        slotGameChanged();
+}
 void MainWindow::slotEditVarPromote()
 {
 	if (!game().isMainline()) {
@@ -393,7 +399,7 @@ void MainWindow::slotGameSave()
 		MessageDialog::error(tr("This database is read only."));
 	else if (saveDialog()->exec(database(), game()) == QDialog::Accepted) {
 		databaseInfo()->saveGame();
-		m_gameList->updateFilter();
+        m_gameList->updateFilter();
 		slotFilterChanged();
 		slotGameChanged();
 	}
@@ -459,9 +465,9 @@ void MainWindow::slotGameChanged()
 		whiteElo = QString();
 	if (blackElo == "?")
 		blackElo = QString();
-	QString players = tr("<b><a href=\"tag:white\">%1</a></b> %2 - <b><a href=\"tag:black\">%3</a></b> %4")
+	QString players = QString("<b><a href=\"tag:white\">%1</a></b> %2 - <b><a href=\"tag:black\">%3</a></b> %4")
 			  .arg(white).arg(whiteElo).arg(black).arg(blackElo);
-	QString result = tr("<b>%1</b> &nbsp; %2").arg(game().tag("Result")).arg(eco);
+	QString result = QString("<b>%1</b> &nbsp; %2").arg(game().tag("Result")).arg(eco);
 	QString site = game().tag("Site").left(30);
 	QString event = game().tag("Event").left(30);
 	QString header = "<i>";
@@ -483,7 +489,7 @@ void MainWindow::slotGameChanged()
 	QString title;
 	if (!white.isEmpty() || !black.isEmpty())
 		title.append(players);
-	else title.append("<b>New game</b>");
+	else title.append(tr("<b>New game</b>"));
 	if (game().result() != Unknown || !eco.isEmpty())
 		title.append(QString(", ") + result);
 	if (header.length() > 8)
@@ -517,9 +523,15 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 	} else if (url.scheme() == "tag") {
 		playerDialog()->setDatabase(database());
 		if (url.path() == "white")
-			playerDialog()->showPlayer(game().tag("White"));
+        {
+            m_playerList->selectPlayer(game().tag("White"));
+            playerDialog()->showPlayer(game().tag("White"));
+        }
 		else if (url.path() == "black")
+        {
+            m_playerList->selectPlayer(game().tag("Black"));
 			playerDialog()->showPlayer(game().tag("Black"));
+        }
 	}
 }
 
@@ -532,19 +544,6 @@ void MainWindow::slotGameViewToggle(bool toggled)
 {
 	m_showPgnSource = toggled;
 	slotGameChanged();
-}
-
-void MainWindow::slotGameAnalysis()
-{
-	if (m_analysis->isEngineRunning())
-		m_analysis->stopEngine();
-	else m_analysis->startEngine();
-}
-
-void MainWindow::slotGameAnalysisStop(bool visible)
-{
-	if (m_analysis->isEngineRunning() && !visible && !m_analysis->parentWidget()->isVisible())
-		m_analysis->stopEngine();
 }
 
 void MainWindow::slotGameAddVariation(const Analysis& analysis)
@@ -575,10 +574,13 @@ void MainWindow::slotStatusMessage(const QString& msg)
 	statusBar()->showMessage(msg);
 }
 
-void MainWindow::slotOperationProgress(int progress)
+void MainWindow::slotOperationProgress(int progress,bool& bQuit)
 {
 	m_progressBar->setValue(progress);
-	qApp->processEvents();
+    bQuit = m_bQuitRequest;
+    m_notInMainLoop++;
+    qApp->processEvents();
+    m_notInMainLoop--;
 }
 
 
@@ -639,7 +641,7 @@ void MainWindow::slotDatabaseChanged()
 	gameLoad(gameIndex(), true, true);
 	if (m_playerDialog && playerDialog()->isVisible())
 		playerDialog()->setDatabase(database());
-
+    m_playerList->setDatabase(database());
 	emit databaseChanged(databaseInfo());
 }
 
@@ -671,13 +673,19 @@ void MainWindow::slotSearchReset()
 	slotFilterChanged();
 }
 
+void MainWindow::slotToggleFilter()
+{
+    m_gameList->m_FilterActive = m_toggleFilter->isChecked();
+    m_gameList->updateFilter();
+}
+
 void MainWindow::slotSearchTree()
 {
-	if (!g_openingTree->isVisible())
+    if (!g_openingTree->isVisible() || !m_gameList->m_FilterActive)
 		return;
-	startOperation(tr("Updating tree..."));
 	if (m_openingTree->update(*databaseInfo()->filter(), m_boardView->board())) {
-		m_gameList->updateFilter();
+        startOperation(tr("Updating tree..."));
+        m_gameList->updateFilter();
 		slotFilterChanged();
 		finishOperation(tr("Tree updated"));
 	}
@@ -705,7 +713,7 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 void MainWindow::slotDatabaseDeleteGame()
 {
 	database()->remove(gameIndex());
-	m_gameList->updateFilter();
+    m_gameList->updateFilter();
 }
 
 void MainWindow::slotDatabaseDeleteFilter()

@@ -59,9 +59,15 @@ void AnalysisWidget::stopEngine()
 	ui.analyzeButton->setText(tr("Analyze"));
 	if (m_engine) {
 		m_engine->deactivate();
-		delete m_engine;
+        m_engine->deleteLater();
 		m_engine = 0;
 	}
+}
+
+void AnalysisWidget::slotVisibilityChanged(bool visible)
+{
+    if (isEngineRunning() && !visible && !parentWidget()->isVisible())
+        stopEngine();
 }
 
 bool AnalysisWidget::isEngineRunning() const
@@ -81,8 +87,6 @@ void AnalysisWidget::engineError()
 {
 	MessageDialog::warning(tr("There was an error running engine <b>%1</b>.")
 						 .arg(ui.engineList->currentText()));
-	delete m_engine;
-	m_engine = 0;
 	stopEngine();
 }
 

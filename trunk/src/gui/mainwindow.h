@@ -21,6 +21,8 @@ class EditAction;
 class Analysis;
 class PlayerDialog;
 class GameList;
+class PlayerList;
+class DatabaseList;
 class SaveDialog;
 class BoardView;
 class Game;
@@ -49,6 +51,8 @@ public:
 	~MainWindow();
 
 protected:
+	/** QObjects Eventfilter for QApplication events */
+	bool eventFilter(QObject *obj, QEvent *event);
 	/** Overridden to ask for confirmation */
 	void closeEvent(QCloseEvent* e);
 	/** Filter key events. */
@@ -65,8 +69,6 @@ protected:
 	Game& game();
 	/** @return index of active game */
 	int gameIndex() const;
-	/** Open database */
-	bool openDatabase(const QString& fname);
 	/** Edit comment */
 	bool gameEditComment(Output::CommentType type);
 	/** Get export filename*/
@@ -85,6 +87,9 @@ protected:
 	/** Save Game dialog (created when used first) */
 	SaveDialog* saveDialog();
 public slots:
+    /** Open database */
+    bool openDatabase(const QString& fname);
+    /** Open Player dialog */
 	void slotPlayerDialog();
 	/** Promote current variation. */
 	void slotEditVarPromote();
@@ -94,7 +99,9 @@ public slots:
 	void slotEditBoard();
 	/** Edit current comment. */
 	void slotEditComment();
-	/** Set position's FEN to clipboard. */
+    /** Edit current comment. */
+    void slotEditCommentBefore();
+    /** Set position's FEN to clipboard. */
 	void slotEditCopyFEN();
 	/** Set position using FEN from clipboard. */
 	void slotEditPasteFEN();
@@ -153,10 +160,6 @@ public slots:
 	void slotGameNew();
 	/** Save game, replacing old one if it is edited, appending if it is new */
 	void slotGameSave();
-	/** Start/stop game analysis. */
-	void slotGameAnalysis();
-	/** Stop game analysis when analysis dock is hidden. */
-	void slotGameAnalysisStop(bool visible);
 	/** Add variation to current position. */
 	void slotGameAddVariation(const Analysis& analysis);
 	/** Filter was changed - update status bar information */
@@ -185,7 +188,9 @@ public slots:
 	void slotSearchBoard();
 	/** Reset current filter */
 	void slotSearchReset();
-	/** Reverse current filter */
+    /** Toggle filter */
+    void slotToggleFilter();
+    /** Reverse current filter */
 	void slotSearchReverse();
 	/** Show opening tree */
 	void slotSearchTree();
@@ -203,7 +208,7 @@ public slots:
 	/** Show temporary message. */
 	void slotStatusMessage(const QString& msg);
 	/** Show progress bar for open file. */
-	void slotOperationProgress(int progress);
+    void slotOperationProgress(int progress, bool& bQuit);
 	/** Change database. */
 	void slotDatabaseChange();
 	/** Copy games between databases. */
@@ -245,14 +250,12 @@ private:
 	void cancelOperation(const QString& msg);
 
 
-	enum
-	{
-		GameFirst, GameLast, GameNext, GamePrevious, GameRandom, MoveFirst, MoveLast, MoveNext, MovePrevious,
-		MoveNextN, MovePreviousN
-	};
+
 	/* Dialogs  */
 	PlayerDialog* m_playerDialog;
 	GameList* m_gameList;
+    PlayerList* m_playerList;
+    DatabaseList* m_databaseList;
 	SaveDialog* m_saveDialog;
 	/* Main gui parts */
 	BoardView* m_boardView;
@@ -278,7 +281,6 @@ private:
 	QActionGroup* m_actions;
 	bool m_showPgnSource; // for debugging
 	EcoThread* m_ecothread;
-	AnalysisWidget* m_analysis;
 	QTimer* m_timer;
 	QTime m_operationTime;
 	/** Currently updated tree. May be NULL if no updated in progress. */
@@ -292,6 +294,9 @@ private:
 		PendingLoad()	{database = 0; game = 0;}
 	};
 	PendingLoad m_pending;
+    QAction* m_toggleFilter;
+    int m_notInMainLoop;
+    bool m_bQuitRequest;  // Enable quit during long running actions
 };
 
 

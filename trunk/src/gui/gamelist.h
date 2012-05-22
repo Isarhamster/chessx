@@ -31,7 +31,9 @@ class GameList : public TableView
 	Q_OBJECT
 public:
 	GameList(Filter* filter, QWidget* parent = 0);
-	~GameList();
+    ~GameList();
+    bool m_FilterActive;
+
 	/** Set current database */
 public slots:
 	/** Change current filter/database */
@@ -42,11 +44,14 @@ public slots:
 	void simpleSearch(int tag);
 	/** Select and show current game in the list */
 	void selectGame(int index);
+    /** Select and show current game in the list */
+    void slotFilterListByPlayer(QString ns);
 private slots:
 	void itemSelected(const QModelIndex& index);
 signals:
 	void selected(int);
 	void searchDone();
+    void raiseRequest();
 private:
 	FilterModel* m_model;
 };
