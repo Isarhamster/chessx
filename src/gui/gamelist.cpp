@@ -45,6 +45,7 @@ void GameList::itemSelected(const QModelIndex& index)
 void GameList::setFilter(Filter* filter)
 {
 	m_model->setFilter(filter);
+    emit raiseRequest();
 }
 
 GameList::~GameList()
@@ -93,8 +94,20 @@ void GameList::simpleSearch(int tagid)
 			m_model->filter()->executeSearch(ts, Search::Operator(dialog.mode()));
 		else m_model->filter()->executeSearch(ts);
 	}
-	updateFilter();
+    m_model->setFilter(m_model->filter());
 	emit searchDone();
+}
+
+/** Select and show current game in the list */
+void  GameList::slotFilterListByPlayer(QString s)
+{
+    TagSearch ts(m_model->filter()->database(), "White", s);
+    m_model->filter()->executeSearch(ts);
+    TagSearch ts2(m_model->filter()->database(), "Black", s);
+    m_model->filter()->executeSearch(ts2,Search::Or);
+    m_model->setFilter(m_model->filter());
+    emit raiseRequest();
+    emit searchDone();
 }
 
 void GameList::selectGame(int index)
@@ -108,6 +121,6 @@ void GameList::selectGame(int index)
 
 void GameList::updateFilter()
 {
-	m_model->setFilter(m_model->filter());
+    m_model->setFilter(m_model->filter());
 }
 

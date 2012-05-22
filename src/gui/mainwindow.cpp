@@ -24,17 +24,22 @@
 #include "output.h"
 #include "pgndatabase.h"
 #include "playerdialog.h"
+#include "playerlist.h"
+#include "databaselist.h"
 #include "preferences.h"
 #include "savedialog.h"
 #include "settings.h"
 #include "tablebase.h"
 #include "tableview.h"
 #include "analysiswidget.h"
+#include "dockwidgetex.h"
 #include <time.h>
 
 MainWindow::MainWindow() : QMainWindow(),
-		m_playerDialog(0), m_saveDialog(0),
-		m_showPgnSource(false)
+    m_playerDialog(0), m_saveDialog(0),
+    m_showPgnSource(false),
+    m_notInMainLoop(0),
+    m_bQuitRequest(false)
 {
 	setObjectName("MainWindow");
 
@@ -50,15 +55,10 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Delete on close */
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	/* Recent files */
-	m_recentFiles.restore("History", "RecentFiles");
-	m_recentFiles.removeMissingFiles();
-	updateMenuRecent();
-
 	/* Output */
 	m_output = new Output(Output::NotationWidget);
 
-	setDockNestingEnabled(true);
+	setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AllowNestedDocks);
 
 	/* Board */
 	m_boardSplitter = new QSplitter(Qt::Vertical);
@@ -77,8 +77,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_boardSplitter->addWidget(m_boardView);
 
 	/* Game view */
-	QDockWidget* gameTextDock = new QDockWidget(tr("Game Text"), this);
-	gameTextDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    DockWidgetEx* gameTextDock = new DockWidgetEx(tr("Game Text"), this);
 	gameTextDock->setObjectName("GameTextDock");
 	gameTextDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 	m_gameView = new ChessBrowser(gameTextDock, true);
@@ -95,8 +94,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	gameTextDock->setTitleBarWidget(g_gameTitle);
 
 	/* Game List */
-	QDockWidget* gameListDock = new QDockWidget(tr("Game List"), this);
-	gameListDock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+    DockWidgetEx* gameListDock = new DockWidgetEx(tr("Game List"), this);
 	gameListDock->setObjectName("GameList");
 	m_gameList = new GameList(databaseInfo()->filter(), gameListDock);
 	m_gameList->setMinimumSize(150, 100);
@@ -106,9 +104,41 @@ MainWindow::MainWindow() : QMainWindow(),
 	addDockWidget(Qt::BottomDockWidgetArea, gameListDock);
 	m_menuView->addAction(gameListDock->toggleViewAction());
 	gameListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_L);
+    connect(m_gameList, SIGNAL(raiseRequest()), gameListDock, SLOT(raise()));
 
-	/* Opening Tree */
-	QDockWidget* openingDock = new QDockWidget(tr("Opening Tree"), this);
+
+    // Player List
+    DockWidgetEx* playerListDock = new DockWidgetEx(tr("Players"), this);
+    playerListDock->setObjectName("PlayerList");
+    m_playerList = new PlayerList(this);
+    m_playerList->setMinimumSize(150, 100);
+    playerListDock->setWidget(m_playerList);
+    addDockWidget(Qt::TopDockWidgetArea, playerListDock);
+    m_menuView->addAction(playerListDock->toggleViewAction());
+    playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
+    connect(m_playerList, SIGNAL(raiseRequest()), playerListDock, SLOT(raise()));
+
+    connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
+
+    // Database List
+    DockWidgetEx* dbListDock = new DockWidgetEx(tr("Databases"), this);
+    dbListDock->setObjectName("Databases");
+    m_databaseList = new DatabaseList(this);
+    m_databaseList->setMinimumSize(150, 100);
+    dbListDock->setWidget(m_databaseList);
+    addDockWidget(Qt::TopDockWidgetArea, dbListDock);
+    m_menuView->addAction(dbListDock->toggleViewAction());
+    dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
+    connect(m_databaseList, SIGNAL(requestOpenDatabase(QString)),
+            this, SLOT(openDatabase(QString)));
+
+    /* Recent files */
+    m_recentFiles.restore("History", "RecentFiles");
+    m_recentFiles.removeMissingFiles();
+    updateMenuRecent();
+
+    /* Opening Tree */
+    DockWidgetEx* openingDock = new DockWidgetEx(tr("Opening Tree"), this);
 	openingDock->setObjectName("OpeningTreeDock");
 	m_openingTree = new OpeningTree;
 	g_openingTree = new TableView(openingDock);
@@ -120,31 +150,46 @@ MainWindow::MainWindow() : QMainWindow(),
 	g_openingTree->slotReconfigure();
 	connect(g_openingTree, SIGNAL(clicked(const QModelIndex&)),
 		SLOT(slotSearchTreeMove(const QModelIndex&)));
-	connect(m_openingTree, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
+    connect(m_openingTree, SIGNAL(progress(int, bool&)), SLOT(slotOperationProgress(int, bool&)));
 	openingDock->setWidget(g_openingTree);
 	addDockWidget(Qt::RightDockWidgetArea, openingDock);
 	m_menuView->addAction(openingDock->toggleViewAction());
 	connect(openingDock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
 	openingDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
 	openingDock->hide();
-
+	
 	/* Analysis Dock */
-	QDockWidget* analysisDock = new QDockWidget(tr("Analysis"), this);
-	analysisDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-	analysisDock->setObjectName("AnalysisDock");
-	m_analysis = new AnalysisWidget;
-	analysisDock->setWidget(m_analysis);
+    DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
+    analysisDock->setObjectName("AnalysisDock1");
+    AnalysisWidget* analyis = new AnalysisWidget;
+    analysisDock->setWidget(analyis);
 	addDockWidget(Qt::RightDockWidgetArea, analysisDock);
-	connect(m_analysis, SIGNAL(addVariation(Analysis)),
+    connect(analyis, SIGNAL(addVariation(Analysis)),
 			  SLOT(slotGameAddVariation(Analysis)));
-	connect(this, SIGNAL(boardChange(const Board&)), m_analysis, SLOT(setPosition(const Board&)));
-	connect(this, SIGNAL(reconfigure()), m_analysis, SLOT(slotReconfigure()));
+    connect(this, SIGNAL(boardChange(const Board&)), analyis, SLOT(setPosition(const Board&)));
+    connect(this, SIGNAL(reconfigure()), analyis, SLOT(slotReconfigure()));
 	// Make sure engine is disabled if dock is hidden
 	connect(analysisDock, SIGNAL(visibilityChanged(bool)),
-			  SLOT(slotGameAnalysisStop(bool)));
+              analyis, SLOT(slotVisibilityChanged(bool)));
 	m_menuView->addAction(analysisDock->toggleViewAction());
-	analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::SHIFT + Qt::Key_A);
+    analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F2);
 	analysisDock->hide();
+
+	/* Analysis Dock 2 */
+    DockWidgetEx* analysisDock2 = new DockWidgetEx(tr("Analysis 2"), this);
+	analysisDock2->setObjectName("AnalysisDock2");
+    analyis = new AnalysisWidget;
+    analysisDock2->setWidget(analyis);
+	addDockWidget(Qt::RightDockWidgetArea, analysisDock2);
+    connect(analyis, SIGNAL(addVariation(Analysis)),
+			  SLOT(slotGameAddVariation(Analysis)));
+    connect(this, SIGNAL(boardChange(const Board&)), analyis, SLOT(setPosition(const Board&)));
+    connect(this, SIGNAL(reconfigure()), analyis, SLOT(slotReconfigure()));
+	// Make sure engine is disabled if dock is hidden
+	connect(analysisDock2, SIGNAL(visibilityChanged(bool)),
+              analyis,SLOT(slotVisibilityChanged(bool)));
+	m_menuView->addAction(analysisDock2->toggleViewAction());
+    analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F3);
 
 	/* Randomize */
 	srand(time(0));
@@ -154,7 +199,9 @@ MainWindow::MainWindow() : QMainWindow(),
 		resize(800, 600);
 	AppSettings->beginGroup("MainWindow");
 	m_boardSplitter->restoreState(AppSettings->value("BoardSplit").toByteArray());
+    m_gameList->m_FilterActive = AppSettings->value("FilterFollowsGame", QVariant(false)).toBool();
 	AppSettings->endGroup();
+    m_toggleFilter->setChecked(m_gameList->m_FilterActive);
 
 	/* Status */
 	m_statusFilter = new QLabel(statusBar());
@@ -176,6 +223,7 @@ MainWindow::MainWindow() : QMainWindow(),
 		if (QFile::exists(args[i]))
 			openDatabase(args[i]);
 
+	qApp->installEventFilter(this);
 	/* Activate clipboard */
 	updateMenuDatabases();
 	slotDatabaseChanged();
@@ -197,12 +245,32 @@ MainWindow::MainWindow() : QMainWindow(),
 MainWindow::~MainWindow()
 {
 	m_timer->stop();
-	/* Stop analysis. */
-	m_analysis->stopEngine();
 	qDeleteAll(m_databases.begin(), m_databases.end());
 	delete m_saveDialog;
 	delete m_playerDialog;
 	delete m_output;
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::FileOpen)
+    {
+        openDatabase(static_cast<QFileOpenEvent*>(event)->file());
+        return true;
+    }
+    else
+    {
+        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
+        if (keyEvent && (keyEvent->key() == Qt::Key_Escape ||
+                         keyEvent->key() == Qt::Key_Return ||
+                         keyEvent->key() == Qt::Key_Enter))
+        {
+            keyPressEvent(keyEvent);
+            return true;
+        }
+        // standard event processing
+        return QObject::eventFilter(obj, event);
+    }
 }
 
 void MainWindow::ecoLoaded()
@@ -216,7 +284,13 @@ void MainWindow::ecoLoaded()
 
 void MainWindow::closeEvent(QCloseEvent* e)
 {
-	if (confirmQuit()) {
+    if (m_notInMainLoop > 0)
+    {
+        m_bQuitRequest = true;
+        e->ignore();
+    }
+    else if (confirmQuit())
+    {
 		m_recentFiles.save("History", "RecentFiles");
 		AppSettings->setLayout(m_playerDialog);
 		m_gameList->saveConfig();
@@ -225,26 +299,32 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		AppSettings->setLayout(this);
 		AppSettings->beginGroup("MainWindow");
 		AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
+        AppSettings->setValue("FilterFollowsGame", m_gameList->m_FilterActive);
 		AppSettings->endGroup();
-	} else
+        m_bQuitRequest = true;
+    }
+    else
+    {
 		e->ignore();
+    }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
-	const int Key_Enter = 0x0d;
 	if (e->key() == Qt::Key_Escape)
 		m_nagText.clear();
 	if (game().atLineStart() || game().atGameStart() ||
 		 e->key() == Qt::Key_Escape || e->text().isEmpty())
 		return;
 
-	if (e->key() != Key_Enter)
+    bool enterPressed = (e->key()==Qt::Key_X || (e->key() == Qt::Key_Enter) || (e->key() == Qt::Key_Return));
+
+    if (!enterPressed)
 		m_nagText.append(e->text());
 	int matches = NagSet::prefixCount(m_nagText);
 	if (matches == 0)
 		m_nagText.clear();
-	else if (matches == 1 || e->key() == Key_Enter) {
+    else if (matches == 1 || enterPressed) {
 		game().addNag(NagSet::fromString(m_nagText));
 		slotGameChanged();
 	}
@@ -309,6 +389,7 @@ void MainWindow::updateMenuRecent()
 		m_recentFileActions[i]->setVisible(true);
 		m_recentFileActions[i]->setText(QString("&%1: %2").arg(i + 1).arg(m_recentFiles[i]));
 		m_recentFileActions[i]->setData(m_recentFiles[i]);
+        m_databaseList->addRecentFile(m_recentFiles[i]);
 	}
 	for (int i = m_recentFiles.count(); i < m_recentFileActions.count(); i++)
 		m_recentFileActions[i]->setVisible(false);
@@ -326,7 +407,7 @@ void MainWindow::updateMenuDatabases()
 		m_databaseActions[i]->setVisible(true);
 		m_databaseActions[i]->setData(i);
 		m_databaseActions[i]->setText(QString("&%1: %2").arg(i).arg(databaseName(i)));
-		int key = Qt::CTRL + Qt::Key_1 + (i - 1);
+        int key = Qt::CTRL + Qt::SHIFT + Qt::Key_1 + (i - 1);
 		if (i < 10)
 			m_databaseActions[i]->setShortcut(key);
 	}
@@ -343,7 +424,7 @@ bool MainWindow::openDatabase(const QString& fname)
 		if (m_databases[i]->database()->filename() == fname) {
 			m_currentDatabase = i;
 			slotDatabaseChanged();
-			slotStatusMessage(tr("Database %1 is already opened.").arg(fname.section('/', -1)));
+            slotStatusMessage(tr("Database %1 is already open.").arg(fname.section('/', -1)));
 			return false;
 		}
 
@@ -352,10 +433,13 @@ bool MainWindow::openDatabase(const QString& fname)
 	DatabaseInfo* db = new DatabaseInfo(fname);
 	QString basefile = QFileInfo(fname).completeBaseName();
 	startOperation(tr("Opening %1...").arg(basefile));
-	connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
+    connect(db->database(), SIGNAL(progress(int, bool&)), SLOT(slotOperationProgress(int, bool&)));
 
 	if (!db->open()) {
-		cancelOperation(tr("Cannot open file"));
+        if (!m_bQuitRequest)
+            cancelOperation(tr("Cannot open file"));
+        else
+            qApp->quit();
 		delete db;
 		return false;
 	}
@@ -467,7 +551,9 @@ void MainWindow::setupActions()
 	QMenu* edit = menuBar()->addMenu(tr("&Edit"));
 	edit->addAction(createAction(tr("Comment"), SLOT(slotEditComment()),
 										  Qt::CTRL + Qt::Key_A));
-	QMenu* editVariation = edit->addMenu(tr("Variation"));
+    edit->addAction(createAction(tr("Comment Before"), SLOT(slotEditCommentBefore()),
+                                          Qt::CTRL + Qt::ALT + Qt::Key_A));
+    QMenu* editVariation = edit->addMenu(tr("Variation"));
 	editVariation->addAction(createAction(tr("Promote"), SLOT(slotEditVarPromote()),
 													  Qt::CTRL + Qt::Key_J));
 	editVariation->addAction(createAction(tr("Remove"), SLOT(slotEditVarRemove()),
@@ -491,15 +577,19 @@ void MainWindow::setupActions()
 
 	/* View menu */
 	m_menuView = menuBar()->addMenu(tr("&View"));
-	QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
-	flip->setCheckable(true);
-	m_menuView->addAction(flip);
 	m_menuView->addAction(createAction(tr("&Player information..."), SLOT(slotPlayerDialog()),
 						Qt::CTRL + Qt::SHIFT + Qt::Key_P));
 
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
-	QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
+
+    QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
+    flip->setCheckable(true);
+    gameMenu->addAction(flip);
+
+    gameMenu->addSeparator();
+
+    QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
 
 	/* Game->Load submenu */
 	loadMenu->addAction(createAction(tr("&First"), SLOT(slotGameLoadFirst()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
@@ -520,9 +610,8 @@ void MainWindow::setupActions()
 	goMenu->addAction(createAction(tr("Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right));
 	goMenu->addAction(createAction(tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL + Qt::Key_Left));
 
-		  gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New));
-		  gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
-	gameMenu->addAction(createAction(tr("&Analyze"), SLOT(slotGameAnalysis()), Qt::Key_F2));
+    gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New));
+    gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
 
 	/* Search menu */
 	QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
@@ -531,9 +620,11 @@ void MainWindow::setupActions()
 	search->addAction(createAction(tr("Find &position"), SLOT(slotSearchBoard()), Qt::CTRL +
 						 Qt::SHIFT + Qt::Key_B));
 	search->addSeparator();
-	search->addAction(createAction(tr("&Reset filter"), SLOT(slotSearchReset()), Qt::CTRL + Qt::Key_F));
-	search->addAction(createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()),
-						 Qt::CTRL + Qt::SHIFT + Qt::Key_F));
+    m_toggleFilter = createAction(tr("&Enable filter"),SLOT(slotToggleFilter()), Qt::CTRL + Qt::ALT + Qt::Key_F);
+    m_toggleFilter->setCheckable(true);
+    search->addAction(m_toggleFilter);
+    search->addAction(createAction(tr("&Reset filter"), SLOT(slotSearchReset()),     Qt::CTRL + Qt::Key_F));
+    search->addAction(createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()), Qt::CTRL + Qt::SHIFT + Qt::Key_F));
 
 	/* Database menu */
 	QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));

@@ -40,6 +40,8 @@ public slots:
 	void startEngine();
 	/** Stop any running  engine. */
 	void stopEngine();
+    /** Stop game analysis when analysis dock is hidden. */
+    void slotVisibilityChanged(bool);
 	/** Is any engine running. */
 	bool isEngineRunning() const;
 private slots:
