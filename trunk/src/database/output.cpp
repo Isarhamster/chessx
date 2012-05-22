@@ -68,8 +68,12 @@ void Output::readTemplateFile(const QString& path)
 			} else if (line == "[MARKUPTAGS]") {
 				status = ReadingMarkupTags;
 				continue;
-			}
-			line.replace("\\n", "\n");
+            }
+
+            // Hack to replace \\n with newline but leavin tags like \\newenvironment intact
+            line.replace("\\\\n", "\\\\^");
+            line.replace("\\n", "\n");
+            line.replace("\\\\^", "\\n");
 
 			switch (status) {
 			case ReadingOptionDefs:
