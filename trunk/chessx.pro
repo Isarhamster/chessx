@@ -1,7 +1,11 @@
 # Main application
-DEFINES += FASTBITS
+DEFINES +=
 CONFIG += uic warn_on
 QT += xml network
+
+macx {
+	QMAKE_CXXFLAGS += -fvisibility=hidden
+}
 
 FORMS += src/gui/playerdialog.ui \
 	src/gui/preferences.ui \
@@ -86,7 +90,12 @@ HEADERS += src/database/board.h \
 	src/gui/copydialog.h \
 	src/gui/messagedialog.h \
 	src/gui/commentdialog.h \
-	src/gui/plaintextedit.h
+	src/gui/plaintextedit.h \
+    src/gui/playerlist.h \
+    src/database/playerlistmodel.h \
+    src/gui/databaselist.h \
+    src/gui/databaselistmodel.h \
+    src/gui/dockwidgetex.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -153,21 +162,25 @@ SOURCES += src/database/board.cpp \
 	src/gui/copydialog.cpp \
 	src/gui/messagedialog.cpp \
 	src/gui/commentdialog.cpp \
-	src/gui/plaintextedit.cpp
+	src/gui/plaintextedit.cpp \
+    src/gui/playerlist.cpp \
+    src/database/playerlistmodel.cpp \
+    src/gui/databaselist.cpp \
+    src/gui/databaselistmodel.cpp \
+    src/gui/dockwidgetex.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
 INCLUDEPATH += src/guess
 INCLUDEPATH += src/gui
+TARGET = bin/chessx
 
 macx {
  INSTALLATION_DATA.files = data
  INSTALLATION_DATA.path = Contents/MacOS
  QMAKE_BUNDLE_DATA += INSTALLATION_DATA
- ICON = data/images/chessx.icns
-}
-else {
-	TARGET = bin/chessx
+ ICON = data/images/chessx.icns 
+ QMAKE_INFO_PLIST = mac_osx/Info.plist
 }
 
 RESOURCES = resources.qrc
@@ -189,8 +202,19 @@ isEmpty(TS_DIR):TS_DIR = i18n
 TSQM.name = lrelease ${QMAKE_FILE_IN}
 TSQM.input = TRANSLATIONS
 TSQM.output = $$TS_DIR/${QMAKE_FILE_BASE}.qm
-TSQM.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN}
-TSQM.CONFIG = no_link
+TSQM.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
+TSQM.CONFIG += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += TSQM
 PRE_TARGETDEPS += compiler_TSQM_make_all
  
+macx {
+  OTHER_FILES += \
+    mac_osx/Info.plist
+}
+
+OTHER_FILES += \
+    data/templates/pgn-default.template \
+    data/templates/notation-default.template \
+    data/templates/latex-default.template \
+    data/templates/html-default.template
+

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleTypeIconFile</key>
+			<string>chessx.icns</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>pgn</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>PGN Files</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+		</dict>
+	</array>
+	<key>CFBundleIconFile</key>
+	<string>chessx.icns</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleGetInfoString</key>
+        <string>chessx for Mac OS 10.7</string>
+	<key>CFBundleSignature</key>
+	<string>@TYPEINFO@</string>
+	<key>CFBundleExecutable</key>
+	<string>@EXECUTABLE@</string>
+	<key>CFBundleIdentifier</key>
+	<string>net.sourceforge.chessx</string>
+	<key>CFBundleVersion</key>
+        <string>0.8.1</string>
+	<key>CFBundleShortVersionString</key>
+        <string>0.8.1</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>(C) 2005-2010 ChessX developers</string>
+</dict>
+</plist>
