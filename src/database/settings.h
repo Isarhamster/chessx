@@ -19,6 +19,12 @@ class QWidget;
     easily save/restore application settings and get paths for various resources.
  */
 
+#ifdef Q_OS_MAC
+    #define MIN_WHEEL_COUNT 120
+#else
+    #define MIN_WHEEL_COUNT 0
+#endif
+
 class Settings : public QSettings
 {
 	Q_OBJECT

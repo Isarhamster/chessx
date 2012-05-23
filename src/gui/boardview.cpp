@@ -23,9 +23,10 @@ using namespace Qt;
 const int CoordinateSize = 10;
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
-		m_flipped(false), m_showFrame(false), m_guessMove(false), m_selectedSquare(InvalidSquare),
-		m_hoverSquare(InvalidSquare), m_hifrom(InvalidSquare), m_hito(InvalidSquare), m_flags(flags),
-		m_coordinates(false), m_dragged(Empty), m_clickUsed(false)
+    m_flipped(false), m_showFrame(false), m_guessMove(false), m_selectedSquare(InvalidSquare),
+    m_hoverSquare(InvalidSquare), m_hifrom(InvalidSquare), m_hito(InvalidSquare), m_flags(flags),
+    m_coordinates(false), m_dragged(Empty), m_clickUsed(false),m_wheelCurrentDelta(0),
+    m_minDeltaWheel(0)
 {
 	QSizePolicy policy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	policy.setHeightForWidth(true);
@@ -278,8 +279,13 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 
 void BoardView::wheelEvent(QWheelEvent* e)
 {
-	int change = e->delta() < 0 ? WheelDown : WheelUp;
-	emit wheelScrolled(change + e->modifiers());
+    m_wheelCurrentDelta += e->delta();
+    if (abs(m_wheelCurrentDelta) > m_minDeltaWheel)
+    {
+        int change = m_wheelCurrentDelta < 0 ? WheelDown : WheelUp;
+        emit wheelScrolled(change + e->modifiers());
+        m_wheelCurrentDelta = 0;
+    }
 }
 
 void BoardView::setFlipped(bool flipped)
@@ -297,8 +303,9 @@ void BoardView::configure()
 {
 	AppSettings->beginGroup("/Board/");
 	m_showFrame = AppSettings->value("showFrame", true).toBool();
-	m_guessMove = AppSettings->value("guessMove", true).toBool();
-	m_theme.setColor(BoardTheme::LightSquare, AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
+	m_guessMove = AppSettings->value("guessMove", true).toBool();    
+    m_minDeltaWheel = AppSettings->value("minWheelCount", MIN_WHEEL_COUNT).toInt();
+    m_theme.setColor(BoardTheme::LightSquare, AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
 	m_theme.setColor(BoardTheme::DarkSquare, AppSettings->value("darkColor", "#a0a0a0").value<QColor>());
 	m_theme.setColor(BoardTheme::Highlight, AppSettings->value("highlightColor",
 			 "#ffff00").value<QColor>());
