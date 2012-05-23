@@ -116,6 +116,8 @@ private:
 	QPoint m_dragStart;
 	QPoint m_dragPoint;
 	bool m_clickUsed;
+    int m_wheelCurrentDelta;
+    int m_minDeltaWheel;
 };
 
 #endif

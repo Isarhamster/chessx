@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>474</width>
+    <width>558</width>
     <height>468</height>
    </rect>
   </property>
@@ -16,67 +16,8 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout">
-   <property name="margin">
-    <number>9</number>
-   </property>
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <property name="margin">
-      <number>4</number>
-     </property>
-     <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>121</width>
-         <height>29</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="okButton">
-       <property name="text">
-        <string>&amp;Ok</string>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="applyButton">
-       <property name="text">
-        <string>&amp;Apply</string>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton">
-       <property name="text">
-        <string>&amp;Cancel</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="autoFillBackground">
       <bool>false</bool>
@@ -89,12 +30,6 @@
        <string>&amp;Board</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="margin">
-        <number>9</number>
-       </property>
-       <property name="spacing">
-        <number>6</number>
-       </property>
        <item row="0" column="0">
         <widget class="QLabel" name="pieceThemeLabel">
          <property name="text">
@@ -107,12 +42,6 @@
        </item>
        <item row="0" column="2">
         <layout class="QHBoxLayout">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <property name="margin">
-          <number>0</number>
-         </property>
          <item>
           <widget class="QComboBox" name="pieceThemeCombo">
            <property name="sizePolicy">
@@ -153,36 +82,6 @@
        <item row="3" column="0" colspan="3">
         <widget class="ColorList" name="boardColorsList"/>
        </item>
-       <item row="6" column="0" colspan="3">
-        <widget class="QCheckBox" name="boardFrameCheck">
-         <property name="text">
-          <string>&amp;Draw frame between squares</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0" colspan="3">
-        <widget class="QCheckBox" name="guessMoveCheck">
-         <property name="text">
-          <string>&amp;Guess move on left-click</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>150</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="boardThemeLabel">
          <property name="text">
@@ -213,6 +112,75 @@
          </property>
         </widget>
        </item>
+       <item row="5" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>150</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="6" column="0" colspan="3">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Mouse Behaviour</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetDefaultConstraint</enum>
+          </property>
+          <item>
+           <widget class="QCheckBox" name="guessMoveCheck">
+            <property name="text">
+             <string>&amp;Guess move on left-click</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Wheel sensitivity</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="minWheelCount">
+              <property name="maximum">
+               <number>500</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QCheckBox" name="boardFrameCheck">
+         <property name="text">
+          <string>&amp;Draw frame between squares</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tabEngines">
@@ -220,12 +188,6 @@
        <string>&amp;Engines</string>
       </attribute>
       <layout class="QGridLayout">
-       <property name="margin">
-        <number>9</number>
-       </property>
-       <property name="spacing">
-        <number>6</number>
-       </property>
        <item row="1" column="0">
         <widget class="QWidget" name="engineEditWidget" native="true">
          <property name="sizePolicy">
@@ -235,12 +197,6 @@
           </sizepolicy>
          </property>
          <layout class="QGridLayout">
-          <property name="margin">
-           <number>9</number>
-          </property>
-          <property name="spacing">
-           <number>6</number>
-          </property>
           <item row="4" column="3">
            <spacer>
             <property name="orientation">
@@ -354,12 +310,6 @@
        </item>
        <item row="0" column="0">
         <layout class="QGridLayout">
-         <property name="margin">
-          <number>0</number>
-         </property>
-         <property name="spacing">
-          <number>6</number>
-         </property>
          <item row="3" column="1">
           <widget class="QPushButton" name="engineDownButton">
            <property name="text">
@@ -480,6 +430,56 @@
      </widget>
     </widget>
    </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <property name="margin">
+      <number>4</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>121</width>
+         <height>29</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="okButton">
+       <property name="text">
+        <string>&amp;Ok</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="applyButton">
+       <property name="text">
+        <string>&amp;Apply</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelButton">
+       <property name="text">
+        <string>&amp;Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -495,8 +495,6 @@
   <tabstop>pieceThemeCombo</tabstop>
   <tabstop>boardThemeCombo</tabstop>
   <tabstop>boardColorsList</tabstop>
-  <tabstop>guessMoveCheck</tabstop>
-  <tabstop>boardFrameCheck</tabstop>
   <tabstop>engineList</tabstop>
   <tabstop>addEngineButton</tabstop>
   <tabstop>deleteEngineButton</tabstop>
