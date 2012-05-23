@@ -1333,12 +1333,14 @@ bool BitBoard::doMove(const Move& m)
 		break;
 	}  // ...no I did not forget the king :)
 
-	m_piece[from] = Empty;
-	m_occupied_co[m_stm] ^= bb_from ^ bb_to;
-	m_occupied_l90 ^= SetBitL90(from);
-	m_occupied_l45 ^= SetBitL45(from);
-	m_occupied_r45 ^= SetBitR45(from);
-	m_occupied = m_occupied_co[White] + m_occupied_co[Black];
+    if(!m.isNullMove()) {
+        m_piece[from] = Empty;
+        m_occupied_co[m_stm] ^= bb_from ^ bb_to;
+        m_occupied_l90 ^= SetBitL90(from);
+        m_occupied_l45 ^= SetBitL45(from);
+        m_occupied_r45 ^= SetBitR45(from);
+        m_occupied = m_occupied_co[White] + m_occupied_co[Black];
+    }
 
 	if (m_stm == Black)
 		++m_moveNumber;
@@ -1381,9 +1383,11 @@ void BitBoard::undoMove(const Move& m)
 		m_piece[from] = Queen;
 		break;
 	case King:
-		m_kings ^= bb_from ^ bb_to;
-		m_ksq[sntm] = from;
-		m_piece[from] = King;
+        if(!m.isNullMove()) {
+            m_kings ^= bb_from ^ bb_to;
+            m_ksq[sntm] = from;
+            m_piece[from] = King;
+        }
 		break;
 	case Move::CASTLE:
 		m_kings ^= bb_from ^ bb_to;
@@ -1485,13 +1489,15 @@ void BitBoard::undoMove(const Move& m)
 		break;
 	}  // ...no I did not forget the king :)
 
+    if(!m.isNullMove()) {
 
-	m_piece[to] = replace;
-	m_occupied_co[sntm] ^= bb_from ^ bb_to;
-	m_occupied_l90 ^= SetBitL90(from);
-	m_occupied_l45 ^= SetBitL45(from);
-	m_occupied_r45 ^= SetBitR45(from);
-	m_occupied = m_occupied_co[White] + m_occupied_co[Black];
+        m_piece[to] = replace;
+        m_occupied_co[sntm] ^= bb_from ^ bb_to;
+        m_occupied_l90 ^= SetBitL90(from);
+        m_occupied_l45 ^= SetBitL45(from);
+        m_occupied_r45 ^= SetBitR45(from);
+        m_occupied = m_occupied_co[White] + m_occupied_co[Black];
+    }
 
 	m_stm ^= 1;	// toggle side to move
 
