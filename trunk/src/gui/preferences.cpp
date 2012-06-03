@@ -256,6 +256,10 @@ void PreferencesDialog::restoreSettings()
 	// Read Advanced settings
 	ui.limitSpin->setValue(AppSettings->value("/General/EditLimit", 10).toInt());
 
+    // Read Game List settings
+    ui.gameTextFontSizeSpin->setValue(AppSettings->value("/GameText/FontSize", 14).toInt());
+
+
 }
 
 void PreferencesDialog::saveSettings()
@@ -284,7 +288,9 @@ void PreferencesDialog::saveSettings()
 	updateEngineData(ui.engineList->currentIndex().row());  // Make sure current edits are saved
 	engineList.save();
 
-	AppSettings->setValue("/General/EditLimit", ui.limitSpin->value());
+    AppSettings->setValue("/General/EditLimit", ui.limitSpin->value());
+
+    AppSettings->setValue("/GameText/FontSize", ui.gameTextFontSizeSpin->value());
 
 }
 

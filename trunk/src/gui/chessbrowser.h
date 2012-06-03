@@ -39,8 +39,7 @@ public slots:
 	void slotReconfigure();
 	/** Scroll to show given mode. */
 	void showMove(int id);
-	/** Toggle font */
-	void slotToggleFont(bool toggled);
+
 	/** Invoke action */
 	void slotAction(QAction* action);
 	/** Show menu */
@@ -57,10 +56,12 @@ protected:
 	void setupMenu(bool setupGameMenu);
 	QAction* createAction(const QString& name, EditAction::Type type);
 	QAction* createNagAction(const Nag& nag);
+
+    void setFontSize(int size);
+
 private:
 	QMap<QAction*, EditAction> m_actions;
 
-	QAction* m_smallfont;
 	QAction* m_startComment;
 	QAction* m_addComment;
 	QAction* m_removeVariation;
@@ -71,6 +72,7 @@ private:
 	QMenu* m_gameMenu;
 	QMenu* m_mainMenu;
 	int m_currentMove;
+    int m_fontSize;
 	DatabaseInfo* m_databaseInfo;
 };
 

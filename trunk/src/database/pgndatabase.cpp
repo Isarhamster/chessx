@@ -136,6 +136,7 @@ bool PgnDatabase::loadGame(int index, Game& game)
 
 void PgnDatabase::initialise()
 {
+    m_inComment = false;
 	m_isOpen = false;
 	m_filename = QString();
 	m_count = 0;
@@ -173,8 +174,8 @@ void PgnDatabase::readLine()
 	m_lineBuffer = m_file->readLine();
 	m_currentLineSize = m_lineBuffer.size();
 	m_currentLine = QString(m_lineBuffer).trimmed();
-	if (!m_currentLine.startsWith("[")) {
-		m_currentLine.replace("(", " ( ");
+    if (m_inComment || !m_currentLine.startsWith("[")) {
+        m_currentLine.replace("(", " ( ");
 		m_currentLine.replace(")", " ) ");
 		m_currentLine.replace("{", " { ");
 		m_currentLine.replace("}", " } ");
@@ -236,7 +237,7 @@ void PgnDatabase::parseTagsIntoIndex()
 
 void PgnDatabase::parseMoves(Game* game)
 {
-	m_gameOver = false;
+    m_gameOver = false;
 	m_inComment = false;
 	m_comment.clear();
 	m_precomment.clear();
@@ -249,10 +250,19 @@ void PgnDatabase::parseMoves(Game* game)
 		} else {
 			parseLine(game);
 			if (m_variation == -1) {
-				return;
+                return;
 			}
 		}
 	} while (!m_gameOver && (!m_file->atEnd() || m_currentLine != ""));
+
+    if( m_gameOver ) {
+        if(game->plyCount() == 0) {
+            if( !m_precomment.isEmpty()) {
+                game->setGameComment(m_precomment);
+                m_precomment.clear();
+            }
+        }
+    }
 
 }
 

@@ -62,6 +62,7 @@ class Move
 	/** If move is promotion, get promotion piece. Result is undefined if there is no promotion */
 	Piece promotedPiece() const;
 
+    /** Check whether a given move is a null move ( an illegal move by the king to its own square ) often used as a placeholder in ebooks */
 	bool isNullMove() const;
 
 	/** Check whether move is special (promotion, castling, en passant */

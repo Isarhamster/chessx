@@ -41,3 +41,28 @@ void DatabaseList::addRecentFile(const QString& s)
 {
     m_model->addRecentFile(s);
 }
+
+void DatabaseList::addFileOpen(const QString& s)
+{
+    m_model->addFileOpen(s);
+}
+
+void DatabaseList::setFileModified(const QString& s, bool modified)
+{
+    m_model->setFileModified(s,modified);
+}
+
+void DatabaseList::setFileFavorite(const QString& s)
+{
+    m_model->addFavoriteFile(s);
+}
+
+void DatabaseList::setFileClose(const QString& s)
+{
+    m_model->setFileClose(s);
+}
+
+void DatabaseList::setFileCurrent(const QString& s)
+{
+    m_model->setFileCurrent(s);
+}

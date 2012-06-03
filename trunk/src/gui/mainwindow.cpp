@@ -86,7 +86,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 	connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
 	connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_gameView, SLOT(slotDatabaseChanged(DatabaseInfo*)));
-	gameTextDock->setWidget(m_gameView);
+    connect(this, SIGNAL(reconfigure()), m_gameView, SLOT(slotReconfigure()));
+    gameTextDock->setWidget(m_gameView);
 	addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
 	g_gameTitle = new QLabel;
 //	g_gameTitle->setWordWrap(true);
@@ -100,7 +101,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_gameList->setMinimumSize(150, 100);
 	connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
 	connect(m_gameList, SIGNAL(searchDone()), SLOT(slotFilterChanged()));
-	gameListDock->setWidget(m_gameList);
+    gameListDock->setWidget(m_gameList);
 	addDockWidget(Qt::BottomDockWidgetArea, gameListDock);
 	m_menuView->addAction(gameListDock->toggleViewAction());
 	gameListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_L);
@@ -422,12 +423,12 @@ bool MainWindow::openDatabase(const QString& fname)
 	/* Check if the database isn't already open */
 	for (int i = 0; i < m_databases.count(); i++)
 		if (m_databases[i]->database()->filename() == fname) {
-			m_currentDatabase = i;
+            m_currentDatabase = i;
+            m_databaseList->setFileCurrent(fname);
 			slotDatabaseChanged();
             slotStatusMessage(tr("Database %1 is already open.").arg(fname.section('/', -1)));
 			return false;
 		}
-
 
 	// Create database, connect progress bar and open file
 	DatabaseInfo* db = new DatabaseInfo(fname);
@@ -444,9 +445,12 @@ bool MainWindow::openDatabase(const QString& fname)
 		return false;
 	}
 
+    m_databaseList->addFileOpen(fname);
+
 	finishOperation(tr("%1 opened").arg(basefile));
 	m_databases.append(db);
 	m_currentDatabase = m_databases.count() - 1;
+    m_databaseList->setFileCurrent(fname);
 	m_recentFiles.append(fname);
 
 	updateMenuRecent();

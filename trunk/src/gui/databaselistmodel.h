@@ -13,19 +13,46 @@ enum DatabaseListEntryState
     EDBL_FAVORITE  ///< Database is a user added favorite (overrides RECENT)
 };
 
-struct DatabaseListEntry
+class DatabaseListEntry
 {
+public:
+    DatabaseListEntry()
+    {
+        m_isFavorite = false;
+        m_isCurrent  = false;
+        m_state      = EDBL_RECENT;
+    }
+
     QString m_name;
     QString m_path;
+    bool    m_isFavorite;
+    bool    m_isCurrent;
     DatabaseListEntryState m_state;
 };
+
+inline bool operator==(DatabaseListEntry const& lhs, DatabaseListEntry const& rhs)
+{
+    return (lhs.m_path == rhs.m_path);
+}
+
+inline bool operator != (DatabaseListEntry const& lhs, DatabaseListEntry const& rhs)
+{
+  return ! (lhs==rhs);
+}
 
 class DatabaseListModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
     explicit DatabaseListModel(QObject *parent = 0);
+
+public slots:
     void addRecentFile(const QString& s);
+    void addFileOpen(const QString& s);
+    void setFileModified(const QString& s, bool modified);
+    void addFavoriteFile(const QString& s);
+    void setFileClose(const QString& s);
+    void setFileCurrent(const QString& s);
 
 public:
     virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
@@ -43,6 +70,7 @@ protected:
 
 protected:
     QString stateString(DatabaseListEntryState e) const;
+    void addEntry(DatabaseListEntry& d, const QString& s);
 
 };
 
