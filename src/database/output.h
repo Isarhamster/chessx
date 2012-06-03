@@ -210,6 +210,8 @@ private:
 	void output(QTextStream& out, Database& database);
 
 	/* Writing Methods */
+    /** writes a comment associated with a game with no moves */
+    void writeGameComment(const QString& comment );
 	/** Writes a single move including nag and annotation */
 	void writeMove(MoveToWrite moveToWrite = NextMove);
 	/** Writes a variation, including sub variations */

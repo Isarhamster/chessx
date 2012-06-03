@@ -96,6 +96,8 @@ public :
 	/** @return next move in short algebraic notation, returns empty string if no such move */
 	QString moveToSan(MoveStringFlags flags = MoveOnly,
 			  NextPreviousMove nextPrevious = NextMove, MoveId moveId = CURRENT_MOVE);
+    /** return comment associated with game */
+    QString gameComment() const;
 
 	// **** node modification methods ****
 	/** Sets the comment associated with move at node @p moveId */
@@ -153,6 +155,8 @@ public :
 	int forward(int count = 1);
 	/** Move back the given number of moves, returns actual number of moves undone */
 	int backward(int count = 1);
+    /** Moves forward if the next move matches (from,to) */
+    bool findNextMove(Square from, Square to);
 
 	/** Enters the variation that corresponds to moveId. moveId must be a MoveId that
 	    corresponds to a subvariation of the current position. Compared to moveToId
@@ -191,6 +195,8 @@ public :
 	void setStartingBoard(const Board& startingBoard);
 	/** Set the game start position from FEN. */
 	void setStartingBoard(const QString& fen);
+    /** set comment associated with game */
+    void setGameComment( const QString& gameComment);
 
 	/* Manipulating and querying tags */
 	/** Removes all tags */
@@ -236,6 +242,9 @@ private:
 		void remove()	{parentNode = previousNode = nextNode = NO_MOVE; removed = true;}
 		MoveNode()		{parentNode = nextNode = previousNode = NO_MOVE; removed = false; ply = 0;}
 	};
+
+    /** commment associated with game */
+    QString m_gameComment;
 
 	/** List of nodes */
 	QList <MoveNode> m_moveNodes;

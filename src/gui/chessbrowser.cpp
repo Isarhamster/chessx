@@ -17,6 +17,10 @@ ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), m_g
 {
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	setupMenu(showGameMenu);
+
+    int fontsize = AppSettings->value("/GameText/FontSize",14).toInt();
+    setFontSize(fontsize);
+
 }
 
 void ChessBrowser::setSource(const QUrl&)
@@ -58,17 +62,17 @@ void ChessBrowser::selectAnchor(const QString& href)
 void ChessBrowser::saveConfig()
 {
 	AppSettings->setLayout(this);
-	AppSettings->beginGroup(objectName());
-	AppSettings->setValue("SmallFont", m_smallfont->isChecked());
 }
 
 void ChessBrowser::slotReconfigure()
 {
 	AppSettings->layout(this);
-	AppSettings->beginGroup(objectName());
-	if (AppSettings->value("SmallFont", false).toBool())
-		m_smallfont->setChecked(true);
-	AppSettings->endGroup();
+
+    int fontSizeSettingValue = AppSettings->value("/GameText/FontSize",14).toInt();
+    if( fontSizeSettingValue != m_fontSize )
+    {
+        setFontSize(fontSizeSettingValue);
+    }
 }
 
 void ChessBrowser::setupMenu(bool setupGameMenu)
@@ -117,18 +121,13 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
 
-	m_mainMenu = new QMenu(this);
-	m_smallfont = createAction(tr("Small font"), EditAction::None);
-	m_smallfont->setCheckable(true);
-	m_smallfont->setChecked(false);
-	connect(m_smallfont, SIGNAL(toggled(bool)), SLOT(slotToggleFont(bool)));
-	m_mainMenu->addAction(m_smallfont);
 }
 
 void ChessBrowser::slotContextMenu(const QPoint& pos)
 {
 	// Handle non-game browser
-	if (!m_gameMenu) {
+    if (!m_gameMenu)
+    {
 		m_mainMenu->exec(mapToGlobal(pos));
 		return;
 	}
@@ -164,13 +163,15 @@ void ChessBrowser::slotDatabaseChanged(DatabaseInfo* dbInfo)
 	m_databaseInfo = dbInfo;
 }
 
-void ChessBrowser::slotToggleFont(bool toggled)
+void ChessBrowser::setFontSize(int size)
 {
-	if (toggled)
-		zoomOut();
-	else
-		zoomIn();
+    QFont f = qApp->font();
+    qreal r = size;
+    f.setPointSize(r);
+    setFont(f);
+    m_fontSize = size;
 }
+
 
 void ChessBrowser::slotAction(QAction* action)
 {

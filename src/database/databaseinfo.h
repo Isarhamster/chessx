@@ -55,6 +55,7 @@ public:
 	/** Resizes the filter to the number of games in the database and puts
          *  all games in the filter.*/
 	void resetFilter();
+    QString filePath() const { return m_filename; }
 private:
 	Database* m_database;
 	Filter* m_filter;

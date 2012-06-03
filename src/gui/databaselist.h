@@ -12,13 +12,17 @@ public:
     explicit DatabaseList(QWidget *parent = 0);
     ~DatabaseList();
 
+public slots:
     void addRecentFile(const QString& s);
+    void addFileOpen(const QString& s);
+    void setFileModified(const QString& s, bool modified);
+    void setFileFavorite(const QString& s);
+    void setFileClose(const QString& s);
+    void setFileCurrent(const QString& s);
 
 signals:
     void selected(int);
     void requestOpenDatabase(QString s);
-
-public slots:
 
 private slots:
     void itemSelected(const QModelIndex& index);

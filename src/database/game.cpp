@@ -39,6 +39,7 @@ Game::Game(const Game& game)
 		m_moveNodes.append(game.m_moveNodes[i]);
 	}
 	m_isModified = false;
+    m_gameComment = "";
 }
 
 Game& Game::operator=(const Game & game)
@@ -55,6 +56,7 @@ Game& Game::operator=(const Game & game)
 		m_currentNode = game.m_currentNode;
 		m_startPly = game.m_startPly;
 		m_currentBoard = game.m_currentBoard;
+        m_gameComment = game.m_gameComment;
 
 		//copy annotations
 		m_annotations.clear();
@@ -105,6 +107,36 @@ MoveId Game::addMove(const QString& sanMove, const QString& annotation, NagSet n
     if (move.isLegal() || move.isNullMove())
 		return addMove(move, annotation, nags);
 	return NO_MOVE;
+}
+
+// does the next main move or one of the variations go from square from to square to
+// if so make it on the board
+bool Game::findNextMove(Square from, Square to)
+{
+    int node;
+    node = m_moveNodes[m_currentNode].nextNode;
+    if( node != NO_MOVE ) {
+        Move m = m_moveNodes[node].move ;
+        if( m.from() == from && m.to() == to )
+        {
+            forward();
+            return true;
+        } else
+        {
+            QList<MoveId> vs = m_moveNodes[m_currentNode].variations;
+            QList<MoveId>::iterator i;
+            for (i = vs.begin(); i != vs.end(); ++i)
+            {
+                Move m = move(*i);
+                if( m.from() == from && m.to() == to )
+                {
+                    moveToId(*i);
+                    return true;
+                }
+            }
+         }
+    }
+    return false;
 }
 
 bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags)
@@ -273,6 +305,17 @@ QString Game::toFen() const
 {
 	return m_currentBoard.toFen();
 }
+
+QString Game::gameComment() const
+{
+    return m_gameComment;
+}
+
+void Game::setGameComment(const QString& gameComment)
+{
+    m_gameComment = gameComment;
+}
+
 
 bool Game::isMainline(MoveId moveId) const
 {

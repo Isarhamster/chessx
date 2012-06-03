@@ -343,6 +343,28 @@ void Output::writeComment(const QString& comment, const QString& mvno, CommentTy
 	m_dirtyBlack = true;
 }
 
+void Output::writeGameComment(const QString& comment )
+{
+    MarkupType markupIndent = MarkupPreAnnotationIndent;
+    MarkupType markupInline = MarkupPreAnnotationInline;
+
+    if (comment.isEmpty())
+        return;
+    if (m_options.getOptionAsBool("ColumnStyle") )
+        m_output += m_endTagMap[MarkupColumnStyleMainline];
+    if ((m_options.getOptionAsString("CommentIndent") == "Always")
+            || ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline") )) {
+
+        m_output += m_startTagMap[markupIndent] +
+                     comment + m_endTagMap[markupIndent];
+    } else {
+            m_output += m_startTagMap[markupInline] +
+                     comment + m_endTagMap[markupInline];
+    }
+    if (m_options.getOptionAsBool("ColumnStyle") ) {
+        m_output += m_startTagMap[MarkupColumnStyleMainline];
+    }
+}
 
 
 // 7 standard tags that are required by PGN standard and should be written in given order.
@@ -393,7 +415,12 @@ QString Output::output(Game* game)
 	if (m_options.getOptionAsBool("ColumnStyle")) {
 		m_output += m_startTagMap[MarkupColumnStyleMainline];
 	}
-	writeVariation();
+
+    if( !game->gameComment().isEmpty()){
+        writeGameComment(game->gameComment());
+    }
+
+    writeVariation();
 	if (m_options.getOptionAsBool("ColumnStyle")) {
 		m_output += m_endTagMap[MarkupColumnStyleMainline];
 	}

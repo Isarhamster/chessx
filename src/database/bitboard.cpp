@@ -1006,9 +1006,8 @@ inline bool isRank(const char c) {return c >= '1' && c <= '8';}
 // it is often used in ebooks to annotate ideas
 Move BitBoard::nullMove() const
 {
-	Move m;
-	static Square kingSquare = m_ksq[m_stm];
-	m = prepareMove( kingSquare, kingSquare);
+    Square kingSquare = m_ksq[m_stm];
+    Move m = prepareMove( kingSquare, kingSquare);
     if (m_stm == Black)
         m.setBlack();
 
@@ -1198,11 +1197,11 @@ bool BitBoard::doMove(const Move& m)
 		m_piece[to] = Queen;
 		break;
 	case King:
-		m_kings ^= bb_from ^ bb_to;
-		m_ksq[m_stm] = to;
-		m_piece[to] = King;
         if (! m.isNullMove())
         {
+            m_kings ^= bb_from ^ bb_to;
+            m_ksq[m_stm] = to;
+            m_piece[to] = King;
             destroyCastle(m_stm);	// king is moving so definitely destroy castle stuff!
         }
 		break;

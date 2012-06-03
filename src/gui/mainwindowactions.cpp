@@ -12,6 +12,7 @@
 #include "copydialog.h"
 #include "chessbrowser.h"
 #include "databaseinfo.h"
+#include "databaselist.h"
 #include "editaction.h"
 #include "ecothread.h"
 #include "filtermodel.h"
@@ -93,10 +94,12 @@ void MainWindow::slotFileSave()
 void MainWindow::slotFileClose()
 {
 	if (m_currentDatabase) {// Don't remove Clipboard
+        m_databaseList->setFileClose(m_databases[m_currentDatabase]->filePath());
 		delete m_databases[m_currentDatabase];
 		m_databases.removeAt(m_currentDatabase);
 		if (m_currentDatabase == m_databases.count())
 			m_currentDatabase--;
+        m_databaseList->setFileCurrent(m_databases[m_currentDatabase]->filePath());
 		updateMenuDatabases();
 		slotDatabaseChanged();
 	}
@@ -236,6 +239,12 @@ void MainWindow::slotHelpBug()
 
 void MainWindow::slotBoardMove(Square from, Square to)
 {
+    // Use an existing move if it already exists
+    if( game().findNextMove(from,to)) {
+        slotGameChanged();
+        return;
+    }
+
 	const Board& board = game().board();
 	Move m(board.prepareMove(from, to));
 	if (m.isLegal()) {
@@ -589,6 +598,7 @@ void MainWindow::slotDatabaseChange()
 	QAction* action = qobject_cast<QAction*>(sender());
 	if (action && m_currentDatabase != action->data().toInt()) {
 		m_currentDatabase = action->data().toInt();
+        m_databases[m_currentDatabase]->filePath();
 		slotDatabaseChanged();
 	}
 }

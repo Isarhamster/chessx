@@ -95,7 +95,15 @@ HEADERS += src/database/board.h \
     src/database/playerlistmodel.h \
     src/gui/databaselist.h \
     src/gui/databaselistmodel.h \
-    src/gui/dockwidgetex.h
+    src/gui/dockwidgetex.h \
+    ui_analysiswidget.h \
+    ui_boardsetup.h \
+    ui_commentdialog.h \
+    ui_copydialog.h \
+    ui_playerdialog.h \
+    ui_preferences.h \
+    ui_quicksearch.h \
+    ui_savedialog.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
