@@ -25,7 +25,7 @@ FilterModel::FilterModel(Filter* filter, QObject* parent)
 	<< tr("Date")
 	<< tr("Result")
 	<< tr("ECO")
-	<< tr("PlyCount");
+    << tr("Moves");
 
 	m_columnTags << "Nr"
 	<< "White"
@@ -38,7 +38,7 @@ FilterModel::FilterModel(Filter* filter, QObject* parent)
 	<< "Date"
 	<< "Result"
 	<< "ECO"
-	<< "PlyCount";
+    << "Length";
 
 	m_game = new Game;
 }
