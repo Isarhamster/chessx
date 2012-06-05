@@ -268,7 +268,7 @@ void PgnDatabase::parseMoves(Game* game)
 
 void PgnDatabase::parseLine(Game* game)
 {
-    m_currentLine.replace("\t"," ");
+    m_currentLine = m_currentLine.simplified();
 
     QStringList list = m_currentLine.split(" ");
 	m_pos = 0;
@@ -291,10 +291,17 @@ void PgnDatabase::parseLine(Game* game)
 void PgnDatabase::parseDefaultToken(Game* game, QString token)
 {
     //strip any move numbers
-    if (token.contains("...")) {
+    if (token.contains("..."))
+    {
         token = token.section("...", 1, 1);
-    } else if (token.contains('.')) {
+    }
+    else if (token.contains('.'))
+    {
         token = token.section('.',	1, 1);
+    }
+    else if (token.indexOf(QRegExp("[1-9]"))==0)
+    {
+        token.clear();
     }
 
     //look for nags
@@ -399,24 +406,30 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
 			game->setResult(WhiteWin);
 			m_gameOver = true;
             break;
-        } else if (token == "1/2-1/2" || token == "1/2") {
+        }
+        else if (token == "1/2-1/2" || token == "1/2")
+        {
 			game->setResult(Draw);
 			m_gameOver = true;
             break;
         }
 
 	case '0':
-		if (token == "0-1") {
+        if (token == "0-1")
+        {
 			game->setResult(BlackWin);
 			m_gameOver = true;
 			break;
 		}
 
 	case '-':
-		if (token == "-/+") {
+        if (token == "-/+")
+        {
 			game->addNag(BlackHasAModerateAdvantage);
             break;
-        } else if (token == "--") {
+        }
+        else if (token == "--")
+        {
             // parse a null move!
             parseDefaultToken(game,token);
             break;
