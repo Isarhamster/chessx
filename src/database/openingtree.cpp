@@ -119,7 +119,10 @@ bool OpeningTree::update(Filter& f, const Board& b)
 			f.set(i, 0);
 		}
 		if (i * 100 / f.size() > (i - 1) / f.size())
-			emit progress(i * 100 / f.size());
+        {
+            emit progress(i * 100 / f.size());
+        }
+
 	}
 	m_moves.clear();
 	for (QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
