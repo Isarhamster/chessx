@@ -133,8 +133,9 @@ QString Analysis::toString(const Board& board) const
 		testBoard.doMove(move);
 		white = !white;
 	}
+    out += " <a href=\""+QString::number(m_numpv)+"\">[+]</a> ";
 	out += moveText;
 	out += tr(" (depth %1)").arg(depth());
-	out += " <a href=\""+QString::number(m_numpv)+"\">[+]</a>";
+
 	return out;
 }
