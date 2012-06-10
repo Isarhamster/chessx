@@ -187,7 +187,7 @@ MoveId Game::addVariation(const MoveList& moveList, const QString& annotation)
 	MoveId currentPosition = currentMove();
 	MoveId varStart;
 	int start = 1;
-	if (!atGameEnd()) {
+    if (!atLineEnd()) {
 		varStart = addVariation(moveList.first());
 	}
 	else if (!atGameStart()) {
