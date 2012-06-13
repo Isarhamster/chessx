@@ -135,7 +135,10 @@ QString Analysis::toString(const Board& board) const
 	}
     out += " <a href=\""+QString::number(m_numpv)+"\">[+]</a> ";
 	out += moveText;
-	out += tr(" (depth %1)").arg(depth());
+    QTime t(0,0,0,0);
+    t = t.addMSecs(time());
+    QString elapsed = t.toString("h:mm:ss");
+    out += tr(" (depth %1, %2)").arg(depth()).arg(elapsed);
 
 	return out;
 }
