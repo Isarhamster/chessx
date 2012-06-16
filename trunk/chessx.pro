@@ -95,7 +95,8 @@ HEADERS += src/database/board.h \
     src/database/playerlistmodel.h \
     src/gui/databaselist.h \
     src/gui/databaselistmodel.h \
-    src/gui/dockwidgetex.h
+    src/gui/dockwidgetex.h \
+    src/gui/logstream.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -167,7 +168,8 @@ SOURCES += src/database/board.cpp \
     src/database/playerlistmodel.cpp \
     src/gui/databaselist.cpp \
     src/gui/databaselistmodel.cpp \
-    src/gui/dockwidgetex.cpp
+    src/gui/dockwidgetex.cpp \
+    src/gui/logstream.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
