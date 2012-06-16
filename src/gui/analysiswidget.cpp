@@ -44,6 +44,13 @@ void AnalysisWidget::startEngine()
 			parentWidget()->show();
 		ui.variationText->clear();
 		m_engine = Engine::newEngine(index);
+        ui.vpcount->setEnabled(m_engine->providesMvp());
+        ui.label->setEnabled(m_engine->providesMvp());
+        if (!m_engine->providesMvp())
+        {
+            ui.vpcount->setValue(1);
+        }
+
 		connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
 		connect(m_engine, SIGNAL(error()), SLOT(engineError()));
 		connect(m_engine, SIGNAL(analysisUpdated(const Analysis&)),
