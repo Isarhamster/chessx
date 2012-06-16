@@ -17,7 +17,6 @@ WBEngine::WBEngine(const QString& name,
 {
 	m_analyze = false;
 	m_setboard = false;		// We do not support version 1 xboard protocol, so this _must_ be set true by feature discovery
-	m_featureTimer = 0;
 	m_invertBlack = true;
 }
 
@@ -49,17 +48,20 @@ void WBEngine::stopAnalysis()
 void WBEngine::protocolStart()
 {
 	send("xboard");
-	send("protover 2");
 
-	// By spec we must wait up to 2 seconds to receive all features offers from engine
-	m_featureTimer = startTimer(2000);
+    // By spec we must wait up to 2 seconds to receive all features offers from engine
+    // Strange bug - if a timer is running, we don't receive messages
+
+    QTimer::singleShot(2000, this, SLOT(featureTimeout()));
+
+	send("protover 2");    
 }
 
 void WBEngine::protocolEnd()
 {
 	stopAnalysis();
 	send("quit");
-	setActive(false);
+    setActive(false);
 	m_board.clear();
 }
 
@@ -151,19 +153,23 @@ void WBEngine::featureDone(bool done)
 	// so it supports V2 or better of the xboard protocol
 
 	// No need to wait any longer wondering if we're talking to a V1 engine
-	if (m_featureTimer) {
-		killTimer(m_featureTimer);
-		m_featureTimer = 0;
-	}
+
+    if (done)
+    {
+        setActive(true);
+    }
 
 	// The engine will send done=1, when its ready to go,
 	//  and done=0 if it needs more than 2 seconds to start.
-	if (done) {
-		send("hard");
-		send("easy");
-		setActive(true);
-	}
+}
 
+void WBEngine::featureTimeout()
+{
+    if (!isActive())
+    {
+        v1TurnOffPondering();
+        setActive(true);
+    }
 }
 
 void WBEngine::parseAnalysis(const QString& message)
@@ -240,17 +246,4 @@ void WBEngine::v1TurnOffPondering()
 	send("easy");
 }
 
-void WBEngine::timerEvent(QTimerEvent*)
-{
-	// Two seconds passed and we didn't get a "done" feature from engine
-	//   So, we'll assume we're talking to a version 1 engine
-	//     version 1 support is not yet complete (ie. we need "edit" command instead of setboard)
-
-	// Make sure timer doesn't fire again
-	killTimer(m_featureTimer);
-	m_featureTimer = 0;
-
-	v1TurnOffPondering();
-	setActive(true);
-}
 

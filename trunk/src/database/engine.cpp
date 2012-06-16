@@ -48,7 +48,8 @@ Engine* Engine::newEngine(int index)
 
 	if (protocol == "WinBoard")
 		engine = new WBEngine(name, exe, directory);
-	else	engine = new UCIEngine(name, exe, directory);
+    else
+        engine = new UCIEngine(name, exe, directory);
 
 	return engine;
 }
@@ -59,7 +60,8 @@ Engine::~Engine()
 		deactivate();
 		m_process->disconnect();
 		m_process->kill();
-		m_process->waitForFinished(1000);
+        m_process->waitForFinished(2000);
+        m_process = 0;
 	}
 }
 
@@ -76,14 +78,17 @@ void Engine::activate()
 	}
 
 	m_process = new QProcess(this);
-	m_process->setReadChannel(QProcess::StandardOutput);
-	if (!m_directory.isEmpty())
-		m_process->setWorkingDirectory(m_directory);
-	connect(m_process, SIGNAL(started()), SLOT(protocolStart()));
-	connect(m_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError()));
-	connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(pollProcess()));
-	connect(m_process, SIGNAL(finished(int, QProcess::ExitStatus)), SLOT(processExited()));
-	m_process->start(m_command);
+    if (m_process)
+    {
+        m_process->setReadChannel(QProcess::StandardOutput);
+        if (!m_directory.isEmpty())
+            m_process->setWorkingDirectory(m_directory);
+        connect(m_process, SIGNAL(started()), SLOT(protocolStart()));
+        connect(m_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError()));
+        connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(pollProcess()));
+        connect(m_process, SIGNAL(finished(int, QProcess::ExitStatus)), SLOT(processExited()));
+        m_process->start(m_command);
+    }
 }
 
 void Engine::deactivate()
@@ -104,10 +109,7 @@ bool Engine::isAnalyzing()
 
 void Engine::send(const QString& message)
 {
-	if (m_logStream) {
-		*m_logStream << "<-- " << message << endl;
-		emit logUpdated();
-	}
+    qDebug() << "<-- " << message << endl;
 
 	QString out(message);
 	out.append('\n');
@@ -155,13 +157,11 @@ void Engine::setMpv(int mpv)
 void Engine::pollProcess()
 {
 	QString message;
-	while (m_process->canReadLine()) {
+
+    while (m_process && m_process->canReadLine()) {
 		message = m_process->readLine().trimmed();
-		if (m_logStream) {
-			*m_logStream << "--> " << message << endl;
-			emit logUpdated();
-		}
-		processMessage(message);
+        qDebug() << "--> " << message << endl;
+        processMessage(message);
 	}
 }
 
