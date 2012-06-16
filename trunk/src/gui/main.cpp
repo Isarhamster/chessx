@@ -19,6 +19,7 @@
 #include <QTranslator>
 #include "mainwindow.h"
 #include "settings.h"
+#include "logstream.h"
 
 int main(int argc, char** argv)
 {
@@ -42,7 +43,10 @@ int main(int argc, char** argv)
 
 	// Destroy main window and close application
 	a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
+
+    startFileLog();
 	int result = a.exec();
+    stopFileLog();
 
 	delete AppSettings;
 	return result;
