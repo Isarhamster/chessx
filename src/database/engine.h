@@ -72,6 +72,7 @@ public:
 	/** Set number of lines. */
 	virtual void setMpv(int mpv);
 
+    virtual bool providesMvp() { return false; }
 signals:
 	/** Fired when the engine is activated */
 	void activated();

@@ -37,7 +37,7 @@ public:
 	/** Update number of displayed lines. Restarts engine. */
 	virtual void setMpv(int mpv);
 
-
+    virtual bool providesMvp() { return true; }
 protected:
 	/** Performs any initialisation required by the engine protocol */
 	void protocolStart();

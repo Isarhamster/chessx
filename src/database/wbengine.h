@@ -46,6 +46,9 @@ protected:
 	/** Processes messages from the chess engine */
 	void processMessage(const QString& message);
 
+protected slots:
+    void featureTimeout();
+
 private:
 	/** Processes the feature command */
 	void feature(const QString& command);
@@ -56,9 +59,6 @@ private:
 	/** Parses analysis */
 	void parseAnalysis(const QString& message);
 
-	/** Processes the feature time out */
-	void timerEvent(QTimerEvent*);
-
 	/** Instruct version 1 engine to stop pondering */
 	void v1TurnOffPondering();
 
@@ -66,7 +66,6 @@ private:
 
 	bool m_analyze;
 	bool m_setboard;
-	int m_featureTimer;
 };
 
 #endif // __WBENGINE_H__

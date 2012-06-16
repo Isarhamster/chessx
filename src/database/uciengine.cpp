@@ -95,16 +95,6 @@ void UCIEngine::processMessage(const QString& message)
 		}
 	}
 
-//	if (message.section(' ', 0, 0) == "bestmove") {
-//		//analysis finished
-//		setAnalyzing(false);
-//
-//		if (m_quitAfterAnalysis) {
-//			send("quit");
-//			setActive(false);
-//		}
-//	}
-
 	if (message.section(' ', 0, 0) == "info" && isAnalyzing()) {
 		parseAnalysis(message);
 	}
