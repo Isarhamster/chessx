@@ -68,6 +68,7 @@ private:
 	QAction* m_promoteVariation;
 	QAction* m_removePrevious;
 	QAction* m_removeNext;
+    QAction* m_addNullMove;
 	QAction* m_removeNags;
 	QMenu* m_gameMenu;
 	QMenu* m_mainMenu;

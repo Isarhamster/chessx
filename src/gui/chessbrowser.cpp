@@ -117,6 +117,8 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 																				 EditAction::RemovePreviousMoves)));
 		m_gameMenu->addAction((m_removeNext = createAction(tr("Remove next moves"),
 																			EditAction::RemoveNextMoves)));
+        m_gameMenu->addAction((m_addNullMove = createAction(tr("Insert threat"),
+                                                                            EditAction::AddNullMove)));
 	}
 
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
@@ -155,6 +157,7 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
 	m_removeNext->setVisible(!atLineEnd);
 	m_removePrevious->setVisible(!atGameStart);
 	m_removeNags->setVisible(hasNags);
+    m_addNullMove->setVisible(atLineEnd);
 	m_gameMenu->exec(mapToGlobal(pos));
 }
 
