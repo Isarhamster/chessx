@@ -89,10 +89,10 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(this, SIGNAL(reconfigure()), m_gameView, SLOT(slotReconfigure()));
     gameTextDock->setWidget(m_gameView);
 	addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
-	g_gameTitle = new QLabel;
+    m_gameTitle = new QLabel;
 //	g_gameTitle->setWordWrap(true);
-	connect(g_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
-	gameTextDock->setTitleBarWidget(g_gameTitle);
+    connect(m_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
+    gameTextDock->setTitleBarWidget(m_gameTitle);
 
 	/* Game List */
     DockWidgetEx* gameListDock = new DockWidgetEx(tr("Game List"), this);
@@ -142,17 +142,17 @@ MainWindow::MainWindow() : QMainWindow(),
     DockWidgetEx* openingDock = new DockWidgetEx(tr("Opening Tree"), this);
 	openingDock->setObjectName("OpeningTreeDock");
 	m_openingTree = new OpeningTree;
-	g_openingTree = new TableView(openingDock);
-	g_openingTree->setObjectName("OpeningTree");
-	g_openingTree->setMinimumSize(150, 100);
-	g_openingTree->setSortingEnabled(true);
-	g_openingTree->setModel(m_openingTree);
-	g_openingTree->sortByColumn(1, Qt::DescendingOrder);
-	g_openingTree->slotReconfigure();
-	connect(g_openingTree, SIGNAL(clicked(const QModelIndex&)),
+    m_openingTreeView = new TableView(openingDock);
+    m_openingTreeView->setObjectName("OpeningTree");
+    m_openingTreeView->setMinimumSize(150, 100);
+    m_openingTreeView->setSortingEnabled(true);
+    m_openingTreeView->setModel(m_openingTree);
+    m_openingTreeView->sortByColumn(1, Qt::DescendingOrder);
+    m_openingTreeView->slotReconfigure();
+    connect(m_openingTreeView, SIGNAL(clicked(const QModelIndex&)),
 		SLOT(slotSearchTreeMove(const QModelIndex&)));
-    connect(m_openingTree, SIGNAL(progress(int, bool&)), SLOT(slotOperationProgress(int, bool&)));
-	openingDock->setWidget(g_openingTree);
+    connect(m_openingTree, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
+    openingDock->setWidget(m_openingTreeView);
 	addDockWidget(Qt::RightDockWidgetArea, openingDock);
 	m_menuView->addAction(openingDock->toggleViewAction());
 	connect(openingDock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
@@ -295,7 +295,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		m_recentFiles.save("History", "RecentFiles");
 		AppSettings->setLayout(m_playerDialog);
 		m_gameList->saveConfig();
-		g_openingTree->saveConfig();
+        m_openingTreeView->saveConfig();
 		m_gameView->saveConfig();
 		AppSettings->setLayout(this);
 		AppSettings->beginGroup("MainWindow");

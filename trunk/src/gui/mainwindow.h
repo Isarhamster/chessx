@@ -209,7 +209,9 @@ public slots:
 	void slotStatusMessage(const QString& msg);
 	/** Show progress bar for open file. */
     void slotOperationProgress(int progress, bool& bQuit);
-	/** Change database. */
+    /** Show progress bar for open file. */
+    void slotOperationProgress(int progress);
+    /** Change database. */
 	void slotDatabaseChange();
 	/** Copy games between databases. */
 	void slotDatabaseCopy();
@@ -261,11 +263,11 @@ private:
 	BoardView* m_boardView;
 	QSplitter* m_boardSplitter;
 	ChessBrowser* m_gameView;
-	TableView* g_openingTree;
+    TableView* m_openingTreeView;
 	QProgressBar* m_progressBar;
 	/* Status */
 	QLabel* m_statusFilter;
-	QLabel* g_gameTitle;
+    QLabel* m_gameTitle;
 	/* Menus */
 	QMenu* m_menuDatabases;
 	QMenu* m_menuView;

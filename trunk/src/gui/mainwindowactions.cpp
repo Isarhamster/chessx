@@ -447,6 +447,9 @@ void MainWindow::slotGameModify(const EditAction& action)
 	case EditAction::ClearNags:
 		game().setNags(NagSet(), action.move());
 		break;
+    case EditAction::AddNullMove:
+        game().addMove(m_boardView->board().nullMove());
+        break;
 	default:
 		break;
 	}
@@ -503,7 +506,7 @@ void MainWindow::slotGameChanged()
 		title.append(QString(", ") + result);
 	if (header.length() > 8)
 		title.append(QString("<br>") + header);
-	g_gameTitle->setText(QString("<qt>%1</qt>").arg(title));
+    m_gameTitle->setText(QString("<qt>%1</qt>").arg(title));
 	slotMoveChanged();
 }
 
@@ -581,6 +584,14 @@ void MainWindow::slotFilterLoad(int index)
 void MainWindow::slotStatusMessage(const QString& msg)
 {
 	statusBar()->showMessage(msg);
+}
+
+void MainWindow::slotOperationProgress(int progress)
+{
+    m_progressBar->setValue(progress);
+    m_notInMainLoop++;
+    qApp->processEvents();
+    m_notInMainLoop--;
 }
 
 void MainWindow::slotOperationProgress(int progress,bool& bQuit)
@@ -691,7 +702,7 @@ void MainWindow::slotToggleFilter()
 
 void MainWindow::slotSearchTree()
 {
-    if (!g_openingTree->isVisible() || !m_gameList->m_FilterActive)
+    if (!m_openingTreeView->isVisible() || !m_gameList->m_FilterActive)
 		return;
 	if (m_openingTree->update(*databaseInfo()->filter(), m_boardView->board())) {
         startOperation(tr("Updating tree..."));
@@ -703,7 +714,7 @@ void MainWindow::slotSearchTree()
 
 void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 {
-	QString move = dynamic_cast<OpeningTree*>(g_openingTree->model())->move(index);
+    QString move = dynamic_cast<OpeningTree*>(m_openingTreeView->model())->move(index);
 	Move m = m_boardView->board().parseMove(move);
 	if (!m.isLegal())
 		return;
