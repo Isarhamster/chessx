@@ -26,7 +26,7 @@
     <widget class="QComboBox" name="tagCombo" >
      <item>
       <property name="text" >
-       <string>Game number</string>
+       <string>Game Number</string>
       </property>
      </item>
      <item>
@@ -81,7 +81,7 @@
      </item>
      <item>
       <property name="text" >
-       <string>Length</string>
+       <string>Number of Moves</string>
       </property>
      </item>
     </widget>
