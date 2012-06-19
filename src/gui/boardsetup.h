@@ -74,6 +74,8 @@ private slots:
 	void slotMovePiece(Square from, Square to);
 	/** Copy piece */
 	void slotCopyPiece(Square from, Square to);
+    /** Remove piece */
+    void slotInvalidMove(Square from);
 	/** Toggle side to move */
 	void slotToggleSide();
 	private:

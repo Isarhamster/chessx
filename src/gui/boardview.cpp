@@ -256,6 +256,10 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 			} else if (m_board.pieceAt(from) != Empty)
 				emit copyPiece(from, s);
 		}
+        else
+        {
+            emit invalidMove(from);
+        }
 	} else if (m_selectedSquare != InvalidSquare) {
 		Square from = m_selectedSquare;
 		unselectSquare();
