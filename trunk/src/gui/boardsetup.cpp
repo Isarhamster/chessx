@@ -53,7 +53,8 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
 	connect(ui.boardView, SIGNAL(clicked(Square, int)), SLOT(slotSelected(Square, int)));
 	connect(ui.boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMovePiece(Square, Square)));
-	connect(ui.boardView, SIGNAL(copyPiece(Square, Square)), SLOT(slotCopyPiece(Square, Square)));
+    connect(ui.boardView, SIGNAL(copyPiece(Square, Square)), SLOT(slotCopyPiece(Square, Square)));
+    connect(ui.boardView, SIGNAL(invalidMove(Square)), SLOT(slotInvalidMove(Square)));
 	connect(ui.boardView, SIGNAL(wheelScrolled(int)), SLOT(slotChangePiece(int)));
 	connect(ui.toMoveButton, SIGNAL(clicked()), SLOT(slotToggleSide()));
 	connect(ui.wkCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
@@ -201,6 +202,17 @@ void BoardSetupDialog::slotCopyPiece(Square from, Square to)
 	Piece p = b.pieceAt(from);
 	b.setAt(to, p);
 	setBoard(b);
+}
+
+void BoardSetupDialog::slotInvalidMove(Square from)
+{
+    Board b = ui.boardView->board();
+    Piece p = b.pieceAt(from);
+    if (pieceType(p) != King)
+    {
+        b.removeFrom(from);
+        setBoard(b);
+    }
 }
 
 void BoardSetupDialog::wheelEvent(QWheelEvent* e)
