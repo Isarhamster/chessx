@@ -20,9 +20,10 @@ HistoryList::HistoryList(int historySize) : m_unique(true)
 HistoryList::~HistoryList()
 {}
 
-void HistoryList::restore(const QString& group, const QString& key)
+void HistoryList::restore(const QString& group, const QString& keySize, const QString& key)
 {
 	AppSettings->beginGroup(group);
+    setSize(AppSettings->value(keySize,4).toInt());
 	QStringList list = AppSettings->value(key).toStringList();
 	AppSettings->endGroup();
 	setItems(list);
@@ -37,11 +38,14 @@ void HistoryList::save(const QString& group, const QString& key) const
 
 void HistoryList::append(const QString& item)
 {
-	if (m_unique)
-		remove(item);
-	if (count() == size())
-		m_data.pop_back();
-	m_data.prepend(item);
+    if (size())
+    {
+        if (m_unique)
+            remove(item);
+        if (count() == size())
+            m_data.pop_back();
+        m_data.prepend(item);
+    }
 }
 
 void HistoryList::remove(const QString& item)

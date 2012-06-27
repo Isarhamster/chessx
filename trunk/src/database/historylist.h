@@ -27,14 +27,14 @@ public:
 	HistoryList(int historySize = 10);
 	~HistoryList();
 	/** Restore the list from application settings. */
-	void restore(const QString& group, const QString& key);
+    void restore(const QString& group, const QString& keySize, const QString& key);
 	/** Save the list with application settings. */
 	void save(const QString& group, const QString& key) const;
 	/** @return current number of items. */
 	int count() const;
 	/** @return current size. */
 	int size() const;
-	/** Sets current size. */
+    /** Sets maximum size. */
 	void setSize(int newSize);
 	/** Adds new item. If there are too many items, last ones will be dropped. */
 	void append(const QString& item);
