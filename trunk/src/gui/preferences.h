@@ -33,6 +33,8 @@ public:
 	virtual ~PreferencesDialog();
 
 public slots:
+    /** Restore Default values */
+    void slotReset();
 	/** Execute dialog, save options on exit */
 	int exec();
 	void slotApply();
