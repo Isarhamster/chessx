@@ -50,7 +50,10 @@ public:
 	virtual Filter* filter();
 	/** Changes current database. Resets any views. */
 	virtual void setFilter(Filter* filter);
-
+    /** Get the column tags. */
+    const QStringList GetColumnTags()  { return m_columnTags; }
+    /** Get the column names. */
+    const QStringList GetColumnNames() { return m_columnNames; }
 private:
 	/** A pointer to filter on which the model opperates */
 	Filter* m_filter;
