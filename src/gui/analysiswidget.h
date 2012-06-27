@@ -61,6 +61,7 @@ private slots:
 	void showTablebaseMove(Move move, int score);
 signals:
 	void addVariation(const Analysis& analysis);
+    void addVariation(const QString& san);
 private:
 	/** Should analysis be running. */
 	bool isAnalysisEnabled() const;
