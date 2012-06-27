@@ -94,7 +94,7 @@ bool MemoryDatabase::parseFile()
 	//indexing game positions in the file, game contents are ignored
 	m_index.setCacheEnabled(true);
 	int percentDone = 0;
-	quint64 size = m_file->size();
+    quint64 size = m_file->size();
 	while (!m_file->atEnd()) {
 		skipJunk();
 		if (m_file->atEnd()) 
@@ -108,7 +108,7 @@ bool MemoryDatabase::parseFile()
 		parseMoves(game);
 		m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2), m_count - 1);
 		m_games.append(game);
-		int percentDone2 = m_file->pos() * 100 / size;
+        int percentDone2 = m_file->pos() * 100 / size;
 		if (percentDone2 > percentDone)
         {
             bool bQuit;
