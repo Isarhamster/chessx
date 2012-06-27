@@ -73,7 +73,7 @@ protected:
 	/** Adds the current file position as a new offset */
 	void addOffset();
 	/** Adds a new file offset */
-	void addOffset(qint32 offset);
+    void addOffset(qint64 offset);
 
 	QFile* m_file;
 	bool m_isOpen;
@@ -83,7 +83,7 @@ private:
 
 	//offset methods
 	/** Returns the file offset for the given game */
-	qint32 offset(int index);
+    qint64 offset(int index);
 
 	//file methods
 	/** Reads the next line of text from the PGN file */
@@ -109,14 +109,10 @@ private:
 	int m_variation;
 
 	//game index
-	qint32 m_filePos;
-	qint32 m_currentLineSize;
-
 	static const int AllocationSize = 512;
 	int m_allocated;
 	qint32* m_gameOffsets;
-	QByteArray m_lineBuffer;
-
+    QByteArray m_lineBuffer;
 };
 
 #endif
