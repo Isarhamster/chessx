@@ -183,6 +183,9 @@ RCC_DIR = src/generated
 
 OBJECTS_DIR = objects
 
+ICON = data/images/chessx.icns
+RC_FILE = src/chessx.rc
+
 macx {
  INSTALLATION_DATA.files = data
  INSTALLATION_DATA.path = Contents/MacOS
