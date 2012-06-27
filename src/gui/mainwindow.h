@@ -162,6 +162,8 @@ public slots:
 	void slotGameSave();
 	/** Add variation to current position. */
 	void slotGameAddVariation(const Analysis& analysis);
+    /** Add variation to current position. */
+    void slotGameAddVariation(const QString& san);
 	/** Filter was changed - update status bar information */
 	void slotFilterChanged();
 	/** Load given game (triggered from Game List) */
