@@ -17,6 +17,7 @@
 #include "colorlist.h"
 #include "preferences.h"
 #include "settings.h"
+#include "messagedialog.h"
 
 #include <QCheckBox>
 #include <QColorDialog>
@@ -37,6 +38,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 #endif
 
 	connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
+    connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
 	connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
 	connect(ui.applyButton, SIGNAL(clicked()), SLOT(slotApply()));
 	connect(ui.engineList, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
@@ -50,12 +52,6 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.commandButton, SIGNAL(clicked(bool)), SLOT(slotSelectEngineCommand()));
 
 	restoreSettings();
-	AppSettings->beginGroup("/Board/");
-	restoreColorItem(ui.boardColorsList, tr("Light squares"), "lightColor", "#a0a0a0");
-	restoreColorItem(ui.boardColorsList, tr("Dark squares"), "darkColor", "#d0d0d0");
-	restoreColorItem(ui.boardColorsList, tr("Highlighted squares"), "highlightColor", "#ffff00");
-	restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor", "#000000");
-	AppSettings->endGroup();
 
 	// Start off with no Engine selected
 	ui.engineEditWidget->setEnabled(false);
@@ -202,6 +198,16 @@ int PreferencesDialog::exec()
 	return result;
 }
 
+void PreferencesDialog::slotReset()
+{
+    if (MessageDialog::yesNo(tr("Clear all application settings?"),tr("Warning")))
+    {
+        AppSettings->clear();
+        restoreSettings();
+        emit reconfigure();
+    }
+}
+
 void PreferencesDialog::slotApply()
 {
 	saveSettings();
@@ -224,7 +230,13 @@ void PreferencesDialog::restoreSettings()
 	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
 	ui.pieceEffect->setCurrentIndex(AppSettings->value("pieceEffect", 2).toInt());
 	QString boardTheme = AppSettings->value("boardTheme", "aluminium").toString();
-	AppSettings->endGroup();
+
+    ui.boardColorsList->clear();
+    restoreColorItem(ui.boardColorsList, tr("Light squares"), "lightColor", QColor(Qt::lightGray));
+    restoreColorItem(ui.boardColorsList, tr("Dark squares"), "darkColor", QColor(Qt::darkGray));
+    restoreColorItem(ui.boardColorsList, tr("Highlighted squares"), "highlightColor", QColor(Qt::yellow));
+    restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor", QColor(Qt::black));
+    AppSettings->endGroup();
 
 	QString themeDir(AppSettings->dataPath() + "/themes");
 	QStringList themes = QDir(themeDir).entryList(QStringList("*.png"));
@@ -255,6 +267,7 @@ void PreferencesDialog::restoreSettings()
 
 	// Read Advanced settings
 	ui.limitSpin->setValue(AppSettings->value("/General/EditLimit", 10).toInt());
+    ui.spinBoxRecentFiles->setValue(AppSettings->value("/History/MaxEntries", 4).toInt());
 
     // Read Game List settings
     ui.gameTextFontSizeSpin->setValue(AppSettings->value("/GameText/FontSize", 14).toInt());
@@ -289,7 +302,7 @@ void PreferencesDialog::saveSettings()
 	engineList.save();
 
     AppSettings->setValue("/General/EditLimit", ui.limitSpin->value());
-
+    AppSettings->setValue("/History/MaxEntries", ui.spinBoxRecentFiles->value());
     AppSettings->setValue("/GameText/FontSize", ui.gameTextFontSizeSpin->value());
 
 }
