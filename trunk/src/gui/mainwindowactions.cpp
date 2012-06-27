@@ -60,6 +60,7 @@ void MainWindow::slotFileNew()
 
 void MainWindow::slotFileOpen()
 {
+    // todo use getopenfilenames here!
 	QString file = QFileDialog::getOpenFileName(this, tr("Open database"),
 			AppSettings->value("/General/databasePath").toString(),
 			tr("PGN databases (*.pgn)"));
@@ -145,8 +146,9 @@ void MainWindow::slotConfigure()
 
 void MainWindow::slotReconfigure()
 {
-	// Re-emit for children
-	emit reconfigure();
+    m_recentFiles.restore("History", "MaxEntries", "RecentFiles");
+    updateMenuRecent();
+    emit reconfigure(); 	// Re-emit for children
 }
 
 void MainWindow::slotConfigureFlip()
@@ -563,6 +565,18 @@ void MainWindow::slotGameAddVariation(const Analysis& analysis)
 	game().addVariation(analysis.variation(),
 								QString::number(analysis.score() / 100.0, 'f', 2));
 	slotGameChanged();
+}
+
+void MainWindow::slotGameAddVariation(const QString& san)
+{
+    QString s = san;
+    s = s.remove(QRegExp("-.*"));
+    s = s.remove(QRegExp("[0-9]*\\."));
+    if (game().atLineEnd())
+            game().addMove(s);
+    else
+        game().addVariation(s);
+    slotGameChanged();
 }
 
 void MainWindow::slotFilterChanged()
