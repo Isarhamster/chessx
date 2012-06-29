@@ -60,14 +60,16 @@ void MainWindow::slotFileNew()
 
 void MainWindow::slotFileOpen()
 {
-    // todo use getopenfilenames here!
-	QString file = QFileDialog::getOpenFileName(this, tr("Open database"),
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Open database"),
 			AppSettings->value("/General/databasePath").toString(),
 			tr("PGN databases (*.pgn)"));
-	if (!file.isEmpty()) {
-		AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
-		openDatabase(file);
-	}
+    foreach (QString file, files)
+    {
+        if (!file.isEmpty()) {
+            AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
+            openDatabase(file);
+        }
+    }
 }
 
 void MainWindow::slotFileOpenRecent()
