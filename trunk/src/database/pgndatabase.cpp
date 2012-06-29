@@ -475,7 +475,7 @@ void PgnDatabase::skipJunk()
 {
 	while ((!m_lineBuffer.length() || m_lineBuffer[0] != '[') && !m_file->atEnd())
 		skipLine();
-    m_currentLine = m_lineBuffer.simplified(); // todo: necessary?
+    m_currentLine = m_lineBuffer.simplified();
 }
 
 void PgnDatabase::skipTags()
@@ -486,7 +486,7 @@ void PgnDatabase::skipTags()
 	//swallow trailing whitespace
 	while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
 		skipLine();
-    m_currentLine = m_lineBuffer.simplified(); // todo: necessary?
+    m_currentLine = m_lineBuffer.simplified();
 }
 
 void PgnDatabase::skipMoves()
@@ -494,7 +494,7 @@ void PgnDatabase::skipMoves()
     QString gameText = " ";
     QRegExp gameNumber("\\s(\\d+)\\s*\\.");
 	while (!onlyWhite(m_lineBuffer) && !m_file->atEnd()) {
-        gameText += " " + QString(m_lineBuffer).simplified(); // todo: necessary?
+        gameText += QString(m_lineBuffer).simplified() + " ";
 		skipLine();
 	}
 	gameNumber.lastIndexIn(gameText);
@@ -503,6 +503,6 @@ void PgnDatabase::skipMoves()
 	//swallow trailing whitespace
 	while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
 		skipLine();
-    m_currentLine = m_lineBuffer.simplified(); // todo: necessary?
+    m_currentLine = m_lineBuffer.simplified();
 }
 
