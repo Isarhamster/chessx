@@ -25,10 +25,6 @@ public slots:
 	void saveConfig();
 	/** Restore current configuration. */
 	void slotReconfigure();
-	/** Toggle font */
-	void slotToggleFont(bool toggled);
-private:
-	QAction* m_smallfont;
 };
 
 #endif
