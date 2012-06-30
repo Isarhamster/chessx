@@ -265,8 +265,6 @@ void PgnDatabase::parseMoves(Game* game)
 
 void PgnDatabase::parseLine(Game* game)
 {
-    m_currentLine = m_currentLine.simplified();
-
     QStringList list = m_currentLine.split(" ");
 	m_pos = 0;
 
