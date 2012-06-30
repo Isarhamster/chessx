@@ -1548,7 +1548,13 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
     }
 
 	move.setPieceType(p);
-	move.setCaptureType(m_piece[to]);
+    uchar pCaptured = m_piece[to];
+    move.setCaptureType(pCaptured);
+    if (pCaptured == King)
+    {
+        // This test became necessary with Null-Moves
+        return move;
+    }
 	if (p == King) {
         // if not a null Move
         if( src != dest )
