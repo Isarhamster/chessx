@@ -31,7 +31,7 @@ const QPixmap& BoardTheme::piece(Piece p) const
 
 const QPixmap& BoardTheme::square(bool dark) const
 {
-	return m_square[dark];
+    return m_square[dark?1:0];
 }
 
 const QPixmap& BoardTheme::originalPiece(Piece p) const
@@ -41,7 +41,7 @@ const QPixmap& BoardTheme::originalPiece(Piece p) const
 
 const QPixmap& BoardTheme::originalSquare(bool dark) const
 {
-	return m_originalSquare[dark];
+    return m_originalSquare[dark?1:0];
 }
 
 QString BoardTheme::pieceThemeName() const
