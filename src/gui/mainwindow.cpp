@@ -388,13 +388,13 @@ void MainWindow::gameMoveBy(int change)
 
 void MainWindow::updateMenuRecent()
 {
-	for (int i = 0; i < m_recentFiles.count(); i++) {
+    for (int i = 0; (i < m_recentFiles.count()) && (i<MaxRecentFiles); ++i) {
 		m_recentFileActions[i]->setVisible(true);
 		m_recentFileActions[i]->setText(QString("&%1: %2").arg(i + 1).arg(m_recentFiles[i]));
 		m_recentFileActions[i]->setData(m_recentFiles[i]);
         m_databaseList->addRecentFile(m_recentFiles[i]);
 	}
-	for (int i = m_recentFiles.count(); i < m_recentFileActions.count(); i++)
+    for (int i = m_recentFiles.count(); i < MaxRecentFiles; i++)
 		m_recentFileActions[i]->setVisible(false);
 }
 
@@ -538,7 +538,7 @@ void MainWindow::setupActions()
 		  file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew())));
 		  file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open));
 	QMenu* menuRecent = file->addMenu(tr("Open &recent..."));
-	const int MaxRecentFiles = 10;
+
 	for (int i = 0; i < MaxRecentFiles; ++i) {
 		QAction* action = new QAction(this);
 		action->setVisible(false);

@@ -50,6 +50,8 @@ public:
 	MainWindow();
 	~MainWindow();
 
+    static const int MaxRecentFiles = 10;
+
 protected:
 	/** QObjects Eventfilter for QApplication events */
 	bool eventFilter(QObject *obj, QEvent *event);
