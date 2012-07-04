@@ -17,6 +17,7 @@
 #include "boardview.h"
 #include "settings.h"
 #include "guess.h"
+#include "movelist.h"
 
 using namespace Qt;
 
@@ -26,7 +27,7 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_flipped(false), m_showFrame(false), m_guessMove(false), m_selectedSquare(InvalidSquare),
     m_hoverSquare(InvalidSquare), m_hifrom(InvalidSquare), m_hito(InvalidSquare), m_flags(flags),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false),m_wheelCurrentDelta(0),
-    m_minDeltaWheel(0)
+    m_minDeltaWheel(0),m_moveListCurrent(0)
 {
 	QSizePolicy policy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	policy.setHeightForWidth(true);
@@ -164,19 +165,25 @@ void BoardView::mousePressEvent(QMouseEvent* event)
 	m_dragStart = event->pos();
 }
 
-void BoardView::showGuess(Square s)
+bool BoardView::showGuess(Square s)
 {
 	// Don't want to constantly recalculate guess, so remember which square
 	// the mouse is hovering over, and only show new guess when it changes
-	if (m_guessMove && s != m_hoverSquare && !(m_flags & SuppressGuessMove)) {
+    if (m_guessMove && s != m_hoverSquare && !(m_flags & SuppressGuessMove))
+    {
 		m_hoverSquare = s;
 		removeGuess();
+        m_moveListCurrent = 0;
+        m_moveList.Clear();
+#ifdef USE_ECO_GUESS
 		if (m_board.ecoMove(s, &m_hifrom, &m_hito)) {
 			update(squareRect(m_hifrom));
 			update(squareRect(m_hito));
-		} else {
-			Guess::Result sm = Guess::guessMove(
-							qPrintable(m_board.toFen()), (int) s);
+        }
+        else
+#endif
+        {
+            Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), (int) s, m_moveList);
 			if (!sm.error) {
 				m_hifrom = sm.from;
 				m_hito = sm.to;
@@ -184,7 +191,9 @@ void BoardView::showGuess(Square s)
 				update(squareRect(m_hito));
 			}
 		}
+        return true;
 	}
+    return false;
 }
 
 void BoardView::updateGuess(Square s)
@@ -201,6 +210,34 @@ void BoardView::removeGuess()
 		update(squareRect(m_hito));
 		m_hifrom = m_hito = InvalidSquare;
 	}
+}
+
+void BoardView::nextGuess(Square s)
+{
+    if (!showGuess(s))
+    {
+        if (m_moveList.Size() && m_moveListCurrent<m_moveList.Size())
+        {
+            Guess::simpleMoveT * sold = m_moveList.Get(m_moveListCurrent);
+            update(squareRect(sold->from));
+            update(squareRect(sold->to));
+
+            if (m_moveListCurrent<m_moveList.Size()-1)
+            {
+                ++m_moveListCurrent;
+            }
+            else
+            {
+                m_moveListCurrent = 0;
+            }
+
+            Guess::simpleMoveT * sm = m_moveList.Get(m_moveListCurrent);
+            m_hifrom = sm->from;
+            m_hito = sm->to;
+            update(squareRect(m_hifrom));
+            update(squareRect(m_hito));
+        }
+    }
 }
 
 void BoardView::mouseMoveEvent(QMouseEvent *event)

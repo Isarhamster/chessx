@@ -270,20 +270,29 @@ void MainWindow::slotBoardMove(Square from, Square to)
 	}
 }
 
-void MainWindow::slotBoardClick(Square, int button)
+void MainWindow::slotBoardClick(Square s, int button)
 {
-	if (button != Qt::RightButton)
-		return;
-	bool remove = game().atLineEnd();
-	int var = game().variationNumber();
-	gameMoveBy(-1);
-	if (remove) {
-		if (var && game().isMainline())
-			game().removeVariation(var);
-		else
-			game().truncateVariation();
-		slotGameChanged();
-	}
+    if (button & Qt::RightButton)
+    {
+        bool nextGuess = AppSettings->value("/Board/nextGuess", false).toBool();
+        if (!nextGuess || (button & Qt::ControlModifier))
+        {
+            bool remove = game().atLineEnd();
+            int var = game().variationNumber();
+            gameMoveBy(-1);
+            if (remove) {
+                if (var && game().isMainline())
+                    game().removeVariation(var);
+                else
+                    game().truncateVariation();
+                slotGameChanged();
+            }
+        }
+        else
+        {
+            m_boardView->nextGuess(s);
+        }
+    }
 }
 
 void MainWindow::slotMoveChanged()
