@@ -20,6 +20,7 @@
 #include "common.h"
 #include "board.h"
 #include "boardtheme.h"
+#include "guess.h"
 
 class BoardTheme;
 
@@ -53,6 +54,9 @@ public:
 	bool isFlipped() const;
 	/** Make it almost square. */
 	virtual int heightForWidth(int width) const;
+    /** Switch to next guess */
+    void nextGuess(Square s);
+
 public slots:
 	/** Reconfigure current theme. */
 	void configure();
@@ -95,12 +99,12 @@ private:
 	/** Check if piece at square @p square can be dragged */
 	bool canDrag(Square s) const;
 	/** Highlights the from and to squares of a guessed move. */
-	void showGuess(Square s);
+    bool showGuess(Square s);
 	/** Recalculate guess when board is changed */
 	void updateGuess(Square s);
 	/** Remove the guessed move highlight from the board. */
 	void removeGuess();
-	/** Catch mouse events */
+    /** Catch mouse events */
 	bool eventFilter(QObject *obj, QEvent *ev);
 
 	Board m_board;
@@ -120,6 +124,8 @@ private:
 	bool m_clickUsed;
     int m_wheelCurrentDelta;
     int m_minDeltaWheel;
+    Guess::MoveList m_moveList;
+    unsigned int m_moveListCurrent;
 };
 
 #endif

@@ -4,7 +4,7 @@
 
 namespace Guess
 {
-	Result guessMove(const char* fen, int square)
+    Result guessMove(const char* fen, int square, MoveList& mlist)
 	{
 		Result r;
 		r.error = -1;
@@ -14,7 +14,6 @@ namespace Guess
 		Position pos;
 		pos.ReadFromFEN(fen);
 
-		MoveList mlist;
 		pos.GenerateMoves(&mlist);
 		mlist.SelectBySquare(sq);
 		if (mlist.Size() == 0)

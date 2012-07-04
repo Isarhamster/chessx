@@ -226,6 +226,7 @@ void PreferencesDialog::restoreSettings()
 	AppSettings->beginGroup("/Board/");
 	ui.boardFrameCheck->setChecked(AppSettings->value("showFrame", true).toBool());
 	ui.guessMoveCheck->setChecked(AppSettings->value("guessMove", true).toBool());
+    ui.guessNextMove->setChecked(AppSettings->value("nextGuess", false).toBool());
     ui.minWheelCount->setValue(AppSettings->value("minWheelCount", MIN_WHEEL_COUNT).toInt());
 	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
 	ui.pieceEffect->setCurrentIndex(AppSettings->value("pieceEffect", 2).toInt());
@@ -283,6 +284,7 @@ void PreferencesDialog::saveSettings()
 	AppSettings->beginGroup("/Board/");
 	AppSettings->setValue("showFrame", ui.boardFrameCheck->isChecked());
 	AppSettings->setValue("guessMove", ui.guessMoveCheck->isChecked());
+    AppSettings->setValue("nextGuess", ui.guessNextMove->isChecked());
     AppSettings->setValue("minWheelCount", ui.minWheelCount->value());
 	AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());
 	AppSettings->setValue("pieceEffect", ui.pieceEffect->currentIndex());

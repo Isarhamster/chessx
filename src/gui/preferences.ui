@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>560</width>
-    <height>468</height>
+    <height>477</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -157,6 +157,13 @@
            <widget class="QCheckBox" name="guessMoveCheck">
             <property name="text">
              <string>&amp;Guess move on left-click</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="guessNextMove">
+            <property name="text">
+             <string>Next guess on right click</string>
             </property>
            </widget>
           </item>
