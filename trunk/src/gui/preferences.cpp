@@ -29,6 +29,8 @@
 #include <QSpinBox>
 #include <QFileDialog>
 
+int PreferencesDialog::s_lastIndex = 0;
+
 PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 {
 	ui.setupUi(this);
@@ -55,12 +57,17 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 
 	// Start off with no Engine selected
 	ui.engineEditWidget->setEnabled(false);
+    ui.tabWidget->setCurrentIndex(s_lastIndex);
 }
 
 PreferencesDialog::~PreferencesDialog()
 {
 }
 
+void PreferencesDialog::done( int r ) {
+    QDialog::done( r );
+    close();
+}
 void PreferencesDialog::closeEvent(QCloseEvent*)
 {
 	AppSettings->setLayout(this);
@@ -184,13 +191,10 @@ QString PreferencesDialog::selectEngineFile(const QString& oldpath)
 					oldpath);
 }
 
-
-
-
-
 int PreferencesDialog::exec()
 {
 	int result = QDialog::exec();
+    s_lastIndex = ui.tabWidget->currentIndex();
 	if (result == QDialog::Accepted) {
 		saveSettings();
 		emit reconfigure();
@@ -272,8 +276,6 @@ void PreferencesDialog::restoreSettings()
 
     // Read Game List settings
     ui.gameTextFontSizeSpin->setValue(AppSettings->value("/GameText/FontSize", 14).toInt());
-
-
 }
 
 void PreferencesDialog::saveSettings()
