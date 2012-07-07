@@ -56,7 +56,9 @@ public slots:
 	void slotSelectEngineDirectory();
 protected:
 	/** Overridden to save size */
-	void closeEvent(QCloseEvent* e);
+    virtual void closeEvent(QCloseEvent* e);
+    /** Overridden to save size */
+    virtual void done(int);
 
 private:
 	Ui::PreferencesDialog ui;
@@ -73,6 +75,7 @@ private:
 	void updateEngineData(int index);
 	/** Select engine file. */
 	QString selectEngineFile(const QString& path = "");
+    static int s_lastIndex;
 
 signals:
 	/** Signal emitted when changes are applied. */
