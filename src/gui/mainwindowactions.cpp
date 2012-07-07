@@ -275,7 +275,8 @@ void MainWindow::slotBoardClick(Square s, int button)
     if (button & Qt::RightButton)
     {
         bool nextGuess = AppSettings->value("/Board/nextGuess", false).toBool();
-        if (!nextGuess || (button & Qt::ControlModifier))
+        if (button & Qt::ControlModifier) nextGuess = !nextGuess; // CTRL selects the other mapping
+        if (!nextGuess)
         {
             bool remove = game().atLineEnd();
             int var = game().variationNumber();
