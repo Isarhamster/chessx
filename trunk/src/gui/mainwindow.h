@@ -90,7 +90,7 @@ protected:
 	SaveDialog* saveDialog();
 public slots:
     /** Open database */
-    bool openDatabase(const QString& fname);
+    bool openDatabase(QString fname);
     /** Open Player dialog */
 	void slotPlayerDialog();
 	/** Promote current variation. */
