@@ -28,6 +28,7 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QFileDialog>
+#include <QDesktopServices>
 
 int PreferencesDialog::s_lastIndex = 0;
 
@@ -52,6 +53,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.engineDownButton, SIGNAL(clicked(bool)), SLOT(slotEngineDown()));
 	connect(ui.directoryButton, SIGNAL(clicked(bool)), SLOT(slotSelectEngineDirectory()));
 	connect(ui.commandButton, SIGNAL(clicked(bool)), SLOT(slotSelectEngineCommand()));
+    connect(ui.browsePathButton, SIGNAL(clicked(bool)), SLOT(slotSelectDataBasePath()));
 
 	restoreSettings();
 
@@ -78,8 +80,17 @@ void PreferencesDialog::slotSelectEngineDirectory()
 	QString dir = QFileDialog::getExistingDirectory(this,
 					tr("Select engine directory"), ui.engineDirectory->text(),
 					QFileDialog::ShowDirsOnly);
-	if (!dir.isEmpty())
+    if (QDir(dir).exists())
 		ui.engineDirectory->setText(dir);
+}
+
+void PreferencesDialog::slotSelectDataBasePath()
+{
+    QString dir = QFileDialog::getExistingDirectory(this,
+                    tr("Select databases folder"), ui.defaultDataBasePath->text(),
+                    QFileDialog::ShowDirsOnly);
+    if (QDir(dir).exists())
+        ui.defaultDataBasePath->setText(dir);
 }
 
 void PreferencesDialog::slotAddEngine()
@@ -274,6 +285,9 @@ void PreferencesDialog::restoreSettings()
 	ui.limitSpin->setValue(AppSettings->value("/General/EditLimit", 10).toInt());
     ui.spinBoxRecentFiles->setValue(AppSettings->value("/History/MaxEntries", 4).toInt());
 
+    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+    ui.defaultDataBasePath->setText(AppSettings->value("/General/DefaultDataPath", dataPath).toString());
+
     // Read Game List settings
     ui.gameTextFontSizeSpin->setValue(AppSettings->value("/GameText/FontSize", 14).toInt());
 }
@@ -307,6 +321,7 @@ void PreferencesDialog::saveSettings()
 
     AppSettings->setValue("/General/EditLimit", ui.limitSpin->value());
     AppSettings->setValue("/History/MaxEntries", ui.spinBoxRecentFiles->value());
+    AppSettings->setValue("/General/DefaultDataPath", ui.defaultDataBasePath->text());
     AppSettings->setValue("/GameText/FontSize", ui.gameTextFontSizeSpin->value());
 
 }
