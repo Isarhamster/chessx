@@ -420,21 +420,32 @@ void MainWindow::updateMenuDatabases()
 	}
 }
 
-bool MainWindow::openDatabase(const QString& fname)
+bool MainWindow::openDatabase(QString fname)
 {
+    QFileInfo fi = QFileInfo(fname);
+
+    fname = fi.canonicalFilePath();
+
+    if (!QFile::exists(fname))
+    {
+        slotStatusMessage(tr("Cannot open file '%1'.").arg(fi.fileName()));
+        return false;
+    }
+
+
 	/* Check if the database isn't already open */
 	for (int i = 0; i < m_databases.count(); i++)
 		if (m_databases[i]->database()->filename() == fname) {
             m_currentDatabase = i;
             m_databaseList->setFileCurrent(fname);
 			slotDatabaseChanged();
-            slotStatusMessage(tr("Database %1 is already open.").arg(fname.section('/', -1)));
+            slotStatusMessage(tr("Database %1 is already open.").arg(fi.fileName()));
 			return false;
 		}
 
 	// Create database, connect progress bar and open file
 	DatabaseInfo* db = new DatabaseInfo(fname);
-	QString basefile = QFileInfo(fname).completeBaseName();
+    QString basefile = fi.completeBaseName();
 	startOperation(tr("Opening %1...").arg(basefile));
     connect(db->database(), SIGNAL(progress(int, bool&)), SLOT(slotOperationProgress(int, bool&)));
 
