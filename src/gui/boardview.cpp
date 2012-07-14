@@ -266,7 +266,6 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
 	update(squareRect(s));
 	update(QRect(m_dragPoint, m_theme.size()));
 	unselectSquare();
-	//QPixmap icon = m_theme.piece(m_dragged);
 }
 
 void BoardView::mouseReleaseEvent(QMouseEvent* event)
