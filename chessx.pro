@@ -227,5 +227,7 @@ OTHER_FILES += \
     data/templates/pgn-default.template \
     data/templates/notation-default.template \
     data/templates/latex-default.template \
-    data/templates/html-default.template
+    data/templates/html-default.template \
+    src/chessx.rc \
+    src/chessx.ico
 
