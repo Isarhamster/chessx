@@ -17,36 +17,45 @@
 #include "boardsetup.h"
 #include "boardview.h"
 #include "messagedialog.h"
+#include "settings.h"
 #include <QtGui>
+#include "boardsetuptoolbutton.h"
 
-BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
+
+BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_wheelCurrentDelta(0), m_selectedPiece(Empty)
 {
 	ui.setupUi(this);
 	ui.boardView->configure();
 	ui.boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
 
-	m_actions = new QActionGroup(this);
-	m_actions->setExclusive(true);
 
-	QGridLayout *layout = new QGridLayout;
+    m_minDeltaWheel = AppSettings->value("minWheelCount", MIN_WHEEL_COUNT).toInt();
+    BoardSetupToolButton* emptyButton;
+
 	for (int piece = Empty; piece <= BlackPawn; piece++) {
-		QAction* action = new QAction(QString(), m_actions);
-		action->setData(piece);
-		action->setCheckable(true);
-		if (piece == Empty)
-			action->setChecked(true);
-		action->setIcon(ui.boardView->theme().piece(Piece(piece)));
-		QToolButton* button = new QToolButton(ui.buttonWidget);
-		button->setDefaultAction(action);
-		button->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-		if (piece == Empty)
-			layout->addWidget(button, 6, 0);
+        BoardSetupToolButton* button = new BoardSetupToolButton(this);
+        button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        //button->setAlignment(Qt::AlignJustify|Qt::AlignVCenter);
+        button->setMinimumSize(QSize(10,10));
+        button->m_piece = (Piece)piece;
+        if (piece == Empty)
+        {
+            emptyButton = button;
+            button->m_pixmap = 0;
+            ui.buttonLayout->addWidget(button, 6, 0);
+        }
 		else
-			layout->addWidget(button, (piece - 1) % 6, piece >= BlackKing);
+        {
+            button->m_pixmap = ui.boardView->theme().piece(Piece(piece));
+            ui.buttonLayout->addWidget(button, (piece - 1) % 6, piece >= BlackKing);
+        }
+        connect(button, SIGNAL(signalDragStarted(QWidget*,QMouseEvent*)), this, SLOT(startDrag(QWidget*,QMouseEvent*)));
+        connect(button, SIGNAL(signalClicked(Piece)), this, SLOT(labelClicked(Piece)));
+        connect(this, SIGNAL(signalClearBackground(Piece)),button, SLOT(slotClearBackground(Piece)));
 	}
-	ui.buttonWidget->setLayout(layout);
 
-	connect(m_actions, SIGNAL(triggered(QAction*)), SLOT(slotChoosePiece(QAction*)));
+    emit signalClearBackground(Empty);
+
 	connect(ui.okButton, SIGNAL(clicked()), SLOT(slotAccept()));
 	connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
 	connect(ui.clearButton, SIGNAL(clicked()), SLOT(slotClear()));
@@ -56,6 +65,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent)
     connect(ui.boardView, SIGNAL(copyPiece(Square, Square)), SLOT(slotCopyPiece(Square, Square)));
     connect(ui.boardView, SIGNAL(invalidMove(Square)), SLOT(slotInvalidMove(Square)));
 	connect(ui.boardView, SIGNAL(wheelScrolled(int)), SLOT(slotChangePiece(int)));
+    connect(ui.boardView, SIGNAL(pieceDropped(Square,Piece)), SLOT(slotDroppedPiece(Square, Piece)));
 	connect(ui.toMoveButton, SIGNAL(clicked()), SLOT(slotToggleSide()));
 	connect(ui.wkCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
 	connect(ui.wqCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
@@ -139,25 +149,20 @@ void BoardSetupDialog::slotClear()
 	setBoard(b);
 }
 
-void BoardSetupDialog::slotChoosePiece(QAction* action)
-{
-	action->setChecked(true);
-}
-
 void BoardSetupDialog::slotSelected(Square square, int button)
 {
-	Piece piece = (button & Qt::MidButton) ? Empty : Piece(m_actions->checkedAction()->data().toInt());
-	if (button & Qt::RightButton) {
-		if (piece >= BlackKing)
-			piece = (Piece)(piece - (BlackKing - WhiteKing));
-		else if (piece != Empty)
-			piece = (Piece)(piece + (BlackKing - WhiteKing));
-	}
-	Board board = ui.boardView->board();
-	if (board.pieceAt(square) == piece)
-		piece = Empty;
-	board.setAt(square, piece);
-	setBoard(board);
+    Piece piece = (button & Qt::MidButton) ? Empty : m_selectedPiece;
+    if (button & Qt::RightButton) {
+        if (piece >= BlackKing)
+            piece = (Piece)(piece - (BlackKing - WhiteKing));
+        else if (piece != Empty)
+            piece = (Piece)(piece + (BlackKing - WhiteKing));
+    }
+    Board board = ui.boardView->board();
+    if (board.pieceAt(square) == piece)
+        piece = Empty;
+    board.setAt(square, piece);
+    setBoard(board);
 }
 
 void BoardSetupDialog::showSideToMove()
@@ -180,11 +185,19 @@ void BoardSetupDialog::slotToggleSide()
 
 void BoardSetupDialog::slotChangePiece(int dir)
 {
-	int i = m_actions->actions().indexOf(m_actions->checkedAction());
-	i += (dir == BoardView::WheelUp) ? -1 : 1;
-	if (i < 0) i = m_actions->actions().count() - 1;
-	else if (i == m_actions->actions().count()) i = 0;
-	m_actions->actions().at(i)->setChecked(true);
+    int i = m_selectedPiece;
+    i += (dir == BoardView::WheelUp) ? -1 : 1;
+    if (i < 0) i = (int) BlackPawn;
+    else if (i>BlackPawn) i = (int) Empty;
+    m_selectedPiece = (Piece) i;
+    emit signalClearBackground(m_selectedPiece);
+}
+
+void BoardSetupDialog::slotDroppedPiece(Square s, Piece p)
+{
+    Board b = ui.boardView->board();
+    b.setAt(s, p);
+    setBoard(b);
 }
 
 void BoardSetupDialog::slotMovePiece(Square from, Square to)
@@ -217,7 +230,13 @@ void BoardSetupDialog::slotInvalidMove(Square from)
 
 void BoardSetupDialog::wheelEvent(QWheelEvent* e)
 {
-	slotChangePiece(e->delta() < 0 ? BoardView::WheelDown : BoardView::WheelUp);
+    m_wheelCurrentDelta += e->delta();
+    if (abs(m_wheelCurrentDelta) > m_minDeltaWheel)
+    {
+        slotChangePiece(m_wheelCurrentDelta < 0 ? BoardView::WheelDown : BoardView::WheelUp);
+        m_wheelCurrentDelta = 0;
+    }
+
 }
 
 QString BoardSetupDialog::boardStatusMessage() const
@@ -272,14 +291,26 @@ void BoardSetupDialog::slotCopyFen()
 void BoardSetupDialog::slotPasteFen()
 {
 	QString fen = QApplication::clipboard()->text().trimmed();
-	if (!ui.boardView->board().isValidFen(fen)) {
+    if (fen.contains("\""))
+    {
+        int n1 = fen.indexOf('"');
+        int n2 = fen.lastIndexOf('"');
+        if (n2>n1+1)
+        {
+            fen = fen.mid(n1+1,n2-n1-1);
+        }
+    }
+
+    Board b;
+    if (!b.fromFen(fen))
+    {
 		QString msg = fen.length() ?
 					tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
 					tr("There is no text in clipboard.");
 		MessageDialog::warning(msg);
-	} else {
-		Board b;
-		b.fromFen(fen);
+    }
+    else
+    {
 		setBoard(b);
 	}
 }
@@ -326,3 +357,33 @@ void BoardSetupDialog::slotMoveNumber()
 	setBoard(b);
 }
 
+void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
+{
+    BoardSetupToolButton *child = dynamic_cast<BoardSetupToolButton*>(w);
+    if (!child)
+        return;
+    Piece p = child->m_piece;
+
+    QPoint hotSpot = event->pos();
+
+    BoardViewMimeData *mimeData = new BoardViewMimeData;
+    mimeData->m_piece = p;
+
+    QPixmap pixmap = *child->pixmap();
+
+    m_pDrag = new QDrag(this);
+    m_pDrag->setMimeData(mimeData);
+    m_pDrag->setPixmap(pixmap);
+    m_pDrag->setHotSpot(hotSpot);
+
+    Qt::DropAction dropAction = m_pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+
+    if (dropAction == Qt::MoveAction)
+        child->close();
+}
+
+void BoardSetupDialog::labelClicked(Piece p)
+{
+    m_selectedPiece = p;
+    emit signalClearBackground(m_selectedPiece);
+}

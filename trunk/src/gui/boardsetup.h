@@ -19,6 +19,7 @@
 
 #include "ui_boardsetup.h"
 #include "board.h"
+#include "common.h"
 
 class QMenu;
 class QAction;
@@ -41,10 +42,17 @@ public:
 	void setFlipped(bool flipped);
 	/** Return current board */
 	Board board() const;
+    QDrag* m_pDrag;
 
 public slots:
 	/** Execute dialog */
 	int exec();
+    /** Start a drag operation */
+    void startDrag(QWidget* w, QMouseEvent* event);
+    void labelClicked(Piece p);
+signals:
+    void signalClearBackground(Piece p);
+
 private slots:
 	/** If the position is legal, accept it and close the dialog. */
 	void slotAccept();
@@ -58,8 +66,8 @@ private slots:
 	void slotPasteFen();
 	/** Change current piece using wheel */
 	void slotChangePiece(int dir);
-	/** Choose piece */
-	void slotChoosePiece(QAction*);
+    /** A Drop operation was inidcated by the boardview */
+    void slotDroppedPiece(Square s, Piece p);
 	/** Select square and insert piece */
 	void slotSelected(Square s, int button);
 	/** Manually adjust castling rights. */
@@ -80,7 +88,7 @@ private slots:
 	void slotToggleSide();
 	private:
 	Ui::BoardSetupDialog ui;
-	QActionGroup* m_actions;
+
 	Color m_toMove;
 	/** Display side to move */
 	void showSideToMove();
@@ -91,6 +99,9 @@ private slots:
 protected:
 	/** Scroll current piece with a wheel */
 	virtual void wheelEvent(QWheelEvent* e);
+    int m_wheelCurrentDelta;
+    int m_minDeltaWheel;
+    Piece m_selectedPiece;
 };
 
 

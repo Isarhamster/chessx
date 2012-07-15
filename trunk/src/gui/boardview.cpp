@@ -401,3 +401,33 @@ int BoardView::heightForWidth(int width) const
 {
 	return width - 9 - width / 24;
 }
+
+void BoardView::dragEnterEvent(QDragEnterEvent *event)
+{
+    const BoardViewMimeData *mimeData = qobject_cast<const BoardViewMimeData *>(event->mimeData());
+    if (mimeData)
+    {
+        event->acceptProposedAction();
+    }
+}
+
+void BoardView::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->acceptProposedAction();
+}
+
+void BoardView::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    event->accept();
+}
+
+void BoardView::dropEvent(QDropEvent *event)
+{
+    const BoardViewMimeData *mimeData = qobject_cast<const BoardViewMimeData *>(event->mimeData());
+    if (mimeData)
+    {
+        Square s = squareAt(event->pos());
+        emit pieceDropped(s, mimeData->m_piece);
+        event->acceptProposedAction();
+    }
+}
