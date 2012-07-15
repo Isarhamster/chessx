@@ -732,11 +732,15 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 	if (c == 0) return true;
 	if (c != '-') {
 		while (c != ' ') {
-			if (c == 'K')  setCastleShort(White);
-			else if (c == 'Q')  setCastleLong(White);
-			else if (c == 'k')  setCastleShort(Black);
-			else if (c == 'q')  setCastleLong(Black);
-			else return false;
+            switch (c)
+            {
+            case 'K': setCastleShort(White); break;
+            case 'Q': setCastleLong(White); break;
+            case 'k': setCastleShort(Black); break;
+            case 'q': setCastleLong(Black); break;
+            default:  return false;
+            }
+
 			c = fen[++i];
 		}
 	} else	++i;  // Bypass space
