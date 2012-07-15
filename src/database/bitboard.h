@@ -125,11 +125,11 @@ private:
 	/** Return true if the side to move is stalemated */
 	bool isStalemate() const;
 	/** Test to see if given color has the right to castle on kingside */
-	bool canCastleShort(const uint c) const;
+    bool canCastleShort(const uint color) const;
 	/** Test to see if given color has the right to castle on queenside */
-	bool canCastleLong(const uint c) const;
+    bool canCastleLong(const uint color) const;
 	/** Test to see if given color has any castling rights remaining */
-	bool canCastle(const uint c) const;
+    bool canCastle(const uint color) const;
 
 	/** Return true if making move would put oneself into check */
 	bool isIntoCheck(const Move& move) const;
@@ -284,19 +284,19 @@ inline void BitBoard::epFile2Square()
 	else	m_epSquare = NoEPSquare;
 }
 
-inline bool BitBoard::canCastle(const uint c) const
+inline bool BitBoard::canCastle(const uint color) const
 {
-	return m_castle & (5 << c);
+    return m_castle & (5 << color);
 }
 
-inline bool BitBoard::canCastleShort(const uint c) const
+inline bool BitBoard::canCastleShort(const uint color) const
 {
-	return m_castle & (1 << c);
+    return m_castle & (1 << color);
 }
 
-inline bool BitBoard::canCastleLong(const uint c)  const
+inline bool BitBoard::canCastleLong(const uint color)  const
 {
-	return m_castle&(4 << c);
+    return m_castle&(4 << color);
 }
 
 inline bool BitBoard::isCheck() const
