@@ -72,6 +72,8 @@ signals:
 	void clicked(Square square, int button);
 	/** User moved mouse wheel. */
 	void wheelScrolled(int dir);
+    /** Indicate that a piece was dropped to the board */
+    void pieceDropped(Square to, Piece p);
 protected:
 	/** Redraws whole board if necessary. */
 	virtual void paintEvent(QPaintEvent*);
@@ -85,6 +87,13 @@ protected:
 	virtual void mouseReleaseEvent(QMouseEvent* e);
 	/** Handle mouse wheel events */
 	virtual void wheelEvent(QWheelEvent* e);
+
+protected: //Drag'n'Drop Support
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dragLeaveEvent(QDragLeaveEvent *event);
+    void dropEvent(QDropEvent *event);
+
 private:
 	/** Resizes pieces for new board size. */
 	void resizeBoard();
@@ -126,6 +135,14 @@ private:
     int m_minDeltaWheel;
     Guess::MoveList m_moveList;
     unsigned int m_moveListCurrent;
+};
+
+class BoardViewMimeData : public QMimeData
+{
+    Q_OBJECT
+
+public:
+    Piece m_piece;
 };
 
 #endif
