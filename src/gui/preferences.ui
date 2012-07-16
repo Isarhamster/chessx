@@ -436,7 +436,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout">
+        <layout class="QGridLayout" name="gridLayout4">
          <item row="0" column="1">
           <widget class="QSpinBox" name="limitSpin">
            <property name="suffix">
