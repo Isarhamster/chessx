@@ -10,6 +10,7 @@
 
 #include "output.h"
 #include "settings.h"
+#include "board.h"
 
 QMap <Output::OutputType, QString> Output::m_outputMap;
 
@@ -366,10 +367,6 @@ void Output::writeGameComment(const QString& comment )
     }
 }
 
-
-// 7 standard tags that are required by PGN standard and should be written in given order.
-const QString StandardTags[7] = {"Event", "Site", "Date", "Round", "White", "Black", "Result"};
-
 void Output::writeAllTags()
 {
 	QMap<QString, QString> tags = m_game->tags();
@@ -378,16 +375,18 @@ void Output::writeAllTags()
 		writeTag(StandardTags[i], tags[StandardTags[i]]);
 		tags.remove(StandardTags[i]);
 	}
+
 	// write other tags written in ascii order, as suggested by standard
 	QMapIterator<QString, QString> it(tags);
 	while (it.hasNext()) {
 		it.next();
 		// workaround for problems with IndexItem implementation
-		if (!it.value().isEmpty() && it.value() != "?" && it.value() != "????.??.??" && it.key() != "Length")
+        if (!it.value().isEmpty() && it.value() != "?" && it.value() != "????.??.??" && it.key() != "Length")
+        {
 			writeTag(it.key(), it.value());
+        }
 	}
 }
-
 
 
 QString Output::output(Game* game)
