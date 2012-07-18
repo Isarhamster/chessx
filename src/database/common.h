@@ -128,7 +128,7 @@ enum Tag
 };
 // Please ensure that the order and number of these names are the
 // same as that of the Tag enum.
-static QStringList TagNames  = (QStringList() << "Event" << "Site"
+static const QStringList TagNames = (QStringList() << "Event" << "Site"
 				<<  "Date" <<  "Round" <<  "Name" << "Result" << "Title"
 				<<  "Elo" <<  "USCF" <<  "NA" <<  "Type" <<  "EventDate"
 				<<  "EventSponsor" <<  "Section" <<  "Stage" <<  "Board"
@@ -139,6 +139,9 @@ static QStringList TagNames  = (QStringList() << "Event" << "Site"
 				<< "White" << "Black" << "WhiteTitle" << "BlackTitle"
 				<< "WhiteElo" << "BlackElo" << "WhiteUSCF" << "BlackUSCF"
 				<< "WhiteNA" << "BlackNA" << "WhiteType" << "BlackType");
+
+// 7 standard tags that are required by PGN standard and should be written in given order.
+const QString StandardTags[7] = {"Event", "Site", "Date", "Round", "White", "Black", "Result"};
 
 extern QMap<Tag, Tag> BasicTagMap;
 //PlayerTagMap[TagWhite] = PlayerName;

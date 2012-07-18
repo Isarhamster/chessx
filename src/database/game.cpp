@@ -286,6 +286,11 @@ void Game::truncateVariation(Position position)
 		m_moveNodes[m_currentNode].previousNode = 0;
 		backward();
 		m_startingBoard = m_currentBoard;
+        if (m_startingBoard != standardStartBoard)
+        {
+            m_tags[TagNames[TagFEN]] = m_startingBoard.toFen();
+            m_tags[TagNames[TagSetUp]] = "1";
+        }
 		moveToId(current);
 	}
 	compact();
@@ -727,16 +732,18 @@ void Game::removeTag(const QString& tag)
 
 void Game::setStartingBoard(const Board& startingBoard)
 {
-	clear();
-	m_startingBoard = startingBoard;
-	m_currentBoard = m_startingBoard;
-	m_startPly = (m_startingBoard.moveNumber() - 1) * 2 + (m_startingBoard.toMove() == Black);
+    setStartingBoard(startingBoard.toFen());
 }
 
 void Game::setStartingBoard(const QString& fen)
 {
-	clear();
+    clear();
 	m_startingBoard.fromFen(fen);
+    if (m_startingBoard != standardStartBoard)
+    {
+        m_tags[TagNames[TagFEN]] = fen;
+        m_tags[TagNames[TagSetUp]] = "1";
+    }
 	m_currentBoard = m_startingBoard;
 	m_startPly = (m_startingBoard.moveNumber() - 1) * 2 + (m_startingBoard.toMove() == Black);
 }
@@ -744,7 +751,7 @@ void Game::setStartingBoard(const QString& fen)
 void Game::setResult(Result result)
 {
 	m_tags["Result"] = resultString(result);
-	m_isModified = true;
+    m_isModified = true;
 }
 
 QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, MoveId moveId)
