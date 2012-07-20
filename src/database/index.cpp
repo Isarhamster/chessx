@@ -17,22 +17,22 @@
 
 #define INDEX_ITEM_BUFFER_SIZE 500
 
-const int Index::defaultIndexItemSize = 27;
+const int Index::defaultIndexItemSize = 33;
 
 Index::Index()
 {
-	setTagIndexPosition(TagEvent, 0, 2);
-	setTagIndexPosition(TagSite, 2, 2);
-	setTagIndexPosition(TagDate, 4, 2);
-	setTagIndexPosition(TagRound, 6, 2);
-	setTagIndexPosition(TagWhite, 8, 4);
-	setTagIndexPosition(TagBlack, 12, 4);
-	setTagIndexPosition(TagResult, 16, 1);
-	setTagIndexPosition(TagPlyCount, 17, 2);
-	setTagIndexPosition(TagFEN, 19, 2);
-	setTagIndexPosition(TagWhiteElo, 21, 2);
-	setTagIndexPosition(TagBlackElo, 23, 2);
-	setTagIndexPosition(TagECO, 25, 2);
+    setTagIndexPosition(TagEvent, 0, 4);
+    setTagIndexPosition(TagSite, 4, 4);
+    setTagIndexPosition(TagDate, 8, 2);
+    setTagIndexPosition(TagRound, 10, 2);
+    setTagIndexPosition(TagWhite, 12, 4);
+    setTagIndexPosition(TagBlack, 16, 4);
+    setTagIndexPosition(TagResult, 20, 1);
+    setTagIndexPosition(TagPlyCount, 21, 2);
+    setTagIndexPosition(TagFEN, 23, 4);
+    setTagIndexPosition(TagWhiteElo, 27, 2);
+    setTagIndexPosition(TagBlackElo, 29, 2);
+    setTagIndexPosition(TagECO, 31, 2);
 	createIndexItems();
 	reallocateIndexItems();
 
@@ -138,7 +138,10 @@ TagIndex Index::add(const IndexItem& item)
 
 TagIndex Index::add(IndexItem* item)
 {
-	if (m_nbUsedIndexItems == m_indexItems.count()) createIndexItems();
+    if (m_nbUsedIndexItems >= m_indexItems.count())
+    {
+        createIndexItems();
+    }
 	m_indexItems[m_nbUsedIndexItems] = item;
 	return m_nbUsedIndexItems++;
 }
