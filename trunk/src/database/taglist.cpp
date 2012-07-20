@@ -17,7 +17,7 @@ void TagList::createBasicTagMap()
 	BasicTagMap.clear();
 	// Choose some sufficiently large value, there should not be more
 	// tags created than this value.
-	for (int i = 0; i < 200; ++i) {
+    for (int i = 0; i < (int)TagLastTag; ++i) {
 		BasicTagMap[(Tag)i] = (Tag)i;
 	}
 	BasicTagMap[TagWhite] = TagPlayerName;
@@ -82,31 +82,23 @@ int TagList::add(Tag tag, const QString& value)
 	// To add a value to a list using Tag, the list needs to exist.
 	// Otherwise the value must be added using a tag name
 	if (tag >= TagLastTag) return -1;
-	return m_list[BasicTagMap[tag]]->add(value);
+    return m_list[BasicTagMap.value(tag,tag)]->add(value);
 }
 int TagList::add(const QString& tagName, const QString& value)
 {
+    Tag tag;
 	if (!m_tagNameToInt.contains(tagName)) {
 		// Create a new StringTagValues item
 		m_tagNameToInt.insert(tagName, m_list.count());
 		m_list.append(static_cast<TagValues*>(new StringTagValues));
-		m_list[BasicTagMap[(Tag)m_tagNameToInt[tagName]]]->setCacheEnabled(m_cacheEnabled);
+        tag = (Tag) m_tagNameToInt[tagName];
+        m_list[BasicTagMap.value(tag,tag)]->setCacheEnabled(m_cacheEnabled);
 	}
-	return m_list[BasicTagMap[(Tag)m_tagNameToInt[tagName]]]->add(value);
-}
-int TagList::add(Tag tag, int value)
-{
-	if (tag >= TagLastTag) return -1;
-	return m_list[BasicTagMap[tag]]->add(value);
-}
-int TagList::add(const QString& tagName, int value)
-{
-	if (!m_tagNameToInt.contains(tagName)) {
-		m_tagNameToInt.insert(tagName, m_tagNameToInt.count());
-		m_list.append(new TagValues);
-		m_list[BasicTagMap[(Tag)m_tagNameToInt[tagName]]]->setCacheEnabled(m_cacheEnabled);
-	}
-	return m_list[BasicTagMap[(Tag)m_tagNameToInt[tagName]]]->add(value);
+    else
+    {
+        tag = (Tag) m_tagNameToInt[tagName];
+    }
+    return m_list[BasicTagMap.value(tag,tag)]->add(value);
 }
 QString TagList::tagValue(const QString& tagName, int index)
 {
@@ -114,33 +106,37 @@ QString TagList::tagValue(const QString& tagName, int index)
 		// If we don't know the tag name, return a empty string.
 		return QString();
 	}
-	return m_list[BasicTagMap[(Tag)m_tagNameToInt[tagName]]]->value(index);
+    Tag tag = (Tag)m_tagNameToInt[tagName];
+    return m_list[BasicTagMap.value(tag,tag)]->value(index);
 }
 QString TagList::tagValue(Tag tag, int index)
 {
 	// Only predefined tags can be returned using Tag
 	// Custom tags must be retrieved using the tag name
 	if (tag >= TagLastTag) return QString();
-	return m_list[BasicTagMap[tag]]->value(index);
+    return m_list[BasicTagMap.value(tag,tag)]->value(index);
 }
 TagValues* TagList::tagValueList(int index)
 {
-	return m_list[BasicTagMap[(Tag)index]];
+    Tag tag = (Tag)index;
+    return m_list[BasicTagMap.value(tag,tag)];
 }
 
 TagValues* TagList::operator[](int index)
 {
-	return m_list[BasicTagMap[(Tag)index]];
+    Tag tag = (Tag)index;
+    return m_list[BasicTagMap.value(tag,tag)];
 }
 
-TagValues* TagList::operator[](int index) const
+const TagValues* TagList::operator[](int index) const
 {
-	return m_list[BasicTagMap[(Tag)index]];
+    Tag tag = (Tag)index;
+    return m_list[BasicTagMap.value(tag,tag)];
 }
 
 int TagList::tagFromString(const QString& tagName)
 {
-	return (Tag)m_tagNameToInt.value(tagName);
+    return m_tagNameToInt.value(tagName);
 }
 
 QString TagList::stringFromTag(Tag tag)

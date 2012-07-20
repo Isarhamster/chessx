@@ -37,12 +37,8 @@ public:
 
 	/** Adds a string value to a TagValues object, identified by tag */
 	int add(Tag tag, const QString& value);
-	/** Adds a integer value to a TagValues object, identified by tag */
-	int add(Tag tag, int value);
 	/** Adds a string value to a TagValues object, identified by tagName */
 	int add(const QString& tagName, const QString& value);
-	/** Adds a integer value to a TagValues object, identified by tagName */
-	int add(const QString& tagName, int value);
 	/** Gets the value for tag identified by tagName, stored at index
 	 * in the TagValues instance */
 	QString tagValue(const QString& tagName, int index);
@@ -54,7 +50,7 @@ public:
 	/** Returns the TagValues instance stored at index */
 	TagValues* operator[](int index);
 	/** Returns the TagValues instance stored at index (const version). */
-	TagValues* operator[](int index) const;
+    const TagValues* operator[](int index) const;
 	/** Returns the number of TagValues instances in the list */
 	int count();
 	/** Clears the list and frees all associated memory */
