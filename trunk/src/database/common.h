@@ -143,7 +143,7 @@ static const QStringList TagNames = (QStringList() << "Event" << "Site"
 // 7 standard tags that are required by PGN standard and should be written in given order.
 const QString StandardTags[7] = {"Event", "Site", "Date", "Round", "White", "Black", "Result"};
 
-extern QMap<Tag, Tag> BasicTagMap;
+typedef QMap<Tag, Tag> BasicTagMapType;
 //PlayerTagMap[TagWhite] = PlayerName;
 
 #endif

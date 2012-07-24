@@ -46,6 +46,8 @@ public:
 	virtual bool create(const QString&) { return false; }
 	/** Opens the given database */
 	virtual bool open(const QString& filename) = 0;
+    /** Opens the given database */
+    virtual bool parseFile() = 0;
 	/** File-based database name */
 	virtual QString filename() const = 0;
 	/** File-based database name for displayng (no path and extension. */
@@ -83,7 +85,7 @@ public:
 
 signals:
 	/** Signal emitted when some progress is done. */
-    void progress(int, bool& bQuit);
+    void progress(int);
 
 protected:
 	Index m_index;

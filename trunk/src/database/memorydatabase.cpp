@@ -111,9 +111,7 @@ bool MemoryDatabase::parseFile()
         int percentDone2 = m_file->pos() * 100 / size;
 		if (percentDone2 > percentDone)
         {
-            bool bQuit;
-            emit progress((percentDone = percentDone2), bQuit);
-            if (bQuit) return false;
+            emit progress((percentDone = percentDone2));
         }
 	}
 	m_index.setCacheEnabled(false);

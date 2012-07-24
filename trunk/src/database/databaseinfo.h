@@ -20,11 +20,13 @@ class Filter;
 The DatabaseInfo class is a simple class to keep various database-related
 information together. */
 
-class DatabaseInfo
+class DatabaseInfo: public QThread
 {
+    Q_OBJECT
 public:
+    void run();
 	enum {NewGame = -1};
-	/** Create information for clipboard database */
+    /** Create information for clipboard database */
 	DatabaseInfo();
 	/** Create information for file database */
 	DatabaseInfo(const QString& filename);
@@ -35,9 +37,9 @@ public:
 	/** Close database. */
 	void close();
 	/** @return @p true if database is valid */
-	bool isValid() const  {return m_database;}
+    bool isValid() const  {return m_bLoaded?m_database:0;}
 	/** @return Database object */
-	Database* database()  {return m_database;}
+    Database* database()  {return m_database;}
 	/** @return current filter */
 	Filter* filter()  {return m_filter;}
 	/** @return current game  */
@@ -56,12 +58,16 @@ public:
          *  all games in the filter.*/
 	void resetFilter();
     QString filePath() const { return m_filename; }
+    bool IsLoaded() const { return m_bLoaded; }
+signals:
+    void LoadFinished(DatabaseInfo*);
 private:
 	Database* m_database;
 	Filter* m_filter;
 	Game m_game;
 	QString m_filename;
 	int m_index;
+    bool m_bLoaded;
 };
 
 #endif
