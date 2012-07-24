@@ -97,14 +97,16 @@ void MainWindow::slotFileSave()
 void MainWindow::slotFileClose()
 {
 	if (m_currentDatabase) {// Don't remove Clipboard
-        m_databaseList->setFileClose(m_databases[m_currentDatabase]->filePath());
-		delete m_databases[m_currentDatabase];
-		m_databases.removeAt(m_currentDatabase);
-		if (m_currentDatabase == m_databases.count())
-			m_currentDatabase--;
-        m_databaseList->setFileCurrent(m_databases[m_currentDatabase]->filePath());
-		updateMenuDatabases();
-		slotDatabaseChanged();
+        if (databaseInfo()->IsLoaded())
+        {
+            m_databaseList->setFileClose(m_databases[m_currentDatabase]->filePath());
+            delete m_databases[m_currentDatabase];
+            m_databases.removeAt(m_currentDatabase);
+            m_currentDatabase = 0; // Switch to clipboard is always safe
+            m_databaseList->setFileCurrent(QString());
+            updateMenuDatabases();
+            slotDatabaseChanged();
+        }
 	}
 }
 
@@ -615,27 +617,14 @@ void MainWindow::slotStatusMessage(const QString& msg)
 void MainWindow::slotOperationProgress(int progress)
 {
     m_progressBar->setValue(progress);
-    m_notInMainLoop++;
-    qApp->processEvents();
-    m_notInMainLoop--;
 }
-
-void MainWindow::slotOperationProgress(int progress,bool& bQuit)
-{
-	m_progressBar->setValue(progress);
-    bQuit = m_bQuitRequest;
-    m_notInMainLoop++;
-    qApp->processEvents();
-    m_notInMainLoop--;
-}
-
 
 void MainWindow::slotDatabaseChange()
 {
 	QAction* action = qobject_cast<QAction*>(sender());
 	if (action && m_currentDatabase != action->data().toInt()) {
 		m_currentDatabase = action->data().toInt();
-        m_databases[m_currentDatabase]->filePath();
+        m_databaseList->setFileCurrent(m_databases[m_currentDatabase]->filePath());
 		slotDatabaseChanged();
 	}
 }

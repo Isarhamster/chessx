@@ -420,7 +420,7 @@ void MainWindow::updateMenuDatabases()
 	}
 }
 
-bool MainWindow::openDatabase(QString fname)
+void MainWindow::openDatabase(QString fname)
 {
     QFileInfo fi = QFileInfo(fname);
 
@@ -429,47 +429,78 @@ bool MainWindow::openDatabase(QString fname)
     if (!QFile::exists(fname))
     {
         slotStatusMessage(tr("Cannot open file '%1'.").arg(fi.fileName()));
-        return false;
+        return;
     }
 
 
 	/* Check if the database isn't already open */
 	for (int i = 0; i < m_databases.count(); i++)
+    {
 		if (m_databases[i]->database()->filename() == fname) {
-            m_currentDatabase = i;
-            m_databaseList->setFileCurrent(fname);
-			slotDatabaseChanged();
-            slotStatusMessage(tr("Database %1 is already open.").arg(fi.fileName()));
-			return false;
+            if (m_databases[i]->isValid())
+            {
+                m_currentDatabase = i;
+                m_databaseList->setFileCurrent(fname);
+                slotDatabaseChanged();
+                slotStatusMessage(tr("Database %1 is already open.").arg(fi.fileName()));
+            }
+            else
+            {
+                slotStatusMessage(tr("Database %1 cannot be accessed at the moment.").arg(fi.fileName()));
+            }
+            return;
 		}
+    }
 
 	// Create database, connect progress bar and open file
 	DatabaseInfo* db = new DatabaseInfo(fname);
     QString basefile = fi.completeBaseName();
-	startOperation(tr("Opening %1...").arg(basefile));
-    connect(db->database(), SIGNAL(progress(int, bool&)), SLOT(slotOperationProgress(int, bool&)));
 
-	if (!db->open()) {
+	startOperation(tr("Opening %1...").arg(basefile));
+    connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
+    connect(db, SIGNAL(LoadFinished(DatabaseInfo*)), this, SLOT(slotDataBaseLoaded(DatabaseInfo*)));
+    if (!db->open())
+    {
+        slotDataBaseLoaded(db);
+    }
+    else
+    {
+        m_databases.append(db);
+    }
+}
+
+void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
+{
+    if (!db->IsLoaded()) {
         if (!m_bQuitRequest)
             cancelOperation(tr("Cannot open file"));
         else
             qApp->quit();
-		delete db;
-		return false;
+        m_databases.removeOne(db);
+        delete db;
+        return;
 	}
+    QString fname = db->filePath();
+    QFileInfo fi = QFileInfo(fname);
+    QString basefile = fi.completeBaseName();
 
     m_databaseList->addFileOpen(fname);
 
 	finishOperation(tr("%1 opened").arg(basefile));
-	m_databases.append(db);
-	m_currentDatabase = m_databases.count() - 1;
+
+    for (int i = 0; i < m_databases.count(); i++)
+    {
+        if (m_databases[i]->database()->filename() == fname)
+        {
+            m_currentDatabase = i;
+        }
+    }
     m_databaseList->setFileCurrent(fname);
 	m_recentFiles.append(fname);
 
 	updateMenuRecent();
 	updateMenuDatabases();
 	slotDatabaseChanged();
-	return true;
 }
 
 QString MainWindow::exportFileName(int& format)

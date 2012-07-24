@@ -90,7 +90,7 @@ protected:
 	SaveDialog* saveDialog();
 public slots:
     /** Open database */
-    bool openDatabase(QString fname);
+    void openDatabase(QString fname);
     /** Open Player dialog */
 	void slotPlayerDialog();
 	/** Promote current variation. */
@@ -211,8 +211,6 @@ public slots:
 	void slotMoveChanged();
 	/** Show temporary message. */
 	void slotStatusMessage(const QString& msg);
-	/** Show progress bar for open file. */
-    void slotOperationProgress(int progress, bool& bQuit);
     /** Show progress bar for open file. */
     void slotOperationProgress(int progress);
     /** Change database. */
@@ -227,6 +225,8 @@ public slots:
 	void slotDatabaseDeleteFilter();
 	/** Compact database by removing obsolete information. */
 	void slotDatabaseCompact();
+    /** Slot that updates internal info upon loading a complete db */
+    void slotDataBaseLoaded(DatabaseInfo* db);
 
 signals:
 	/** Re-read configuration. */

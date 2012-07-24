@@ -16,9 +16,9 @@ StringTagValues::StringTagValues()
 {
 	m_list.append("?");
 	m_cache = NULL;
-//	setCacheEnabled(false);
+    setCacheEnabled(false); // jens: this is slightly fast than with cache enabled
 // rico: changed caching to be default behavior
-	setCacheEnabled(true);
+//    setCacheEnabled(true);
 }
 
 StringTagValues::~StringTagValues()

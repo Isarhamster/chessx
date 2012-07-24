@@ -18,36 +18,48 @@
 DatabaseInfo::DatabaseInfo()
 {
 	m_database = new MemoryDatabase;
-	m_filter = new Filter(m_database);
-	newGame();
+    m_filter = new Filter(m_database);
+    m_bLoaded = true;
+    newGame();
 }
 
-DatabaseInfo::DatabaseInfo(const QString& fname) : m_filter(0), m_index(NewGame)
+DatabaseInfo::DatabaseInfo(const QString& fname): m_filter(0), m_index(NewGame)
 {
 	m_filename = fname;
+    m_bLoaded = false;
 	QFile file(fname);
 	if (file.size() < 1024 * 1024 * AppSettings->value("/General/EditLimit", 10).toInt()) 
 		m_database = new MemoryDatabase;
 	else m_database = new PgnDatabase;
 }
 
+void DatabaseInfo::run()
+{
+    m_database->parseFile();
+    delete m_filter;
+    m_filter = new Filter(m_database);
+    if (!loadGame(0))
+        newGame();
+    m_bLoaded = true;
+    emit LoadFinished(this);
+}
+
 bool DatabaseInfo::open()
 {
-	if (!m_database->open(m_filename)) {
+    m_bLoaded = false;
+    if (!m_database->open(m_filename)) {
 		return false;
 	}
-	delete m_filter;
-	m_filter = new Filter(m_database);
-	if (!loadGame(0))
-		newGame();
-	return true;
+    start();
+    return true;
 }
 
 void DatabaseInfo::close()
 {
 	if (m_database) delete m_database;
 	if (m_filter) delete m_filter;
-	m_database = NULL;
+    m_bLoaded = false;
+    m_database = NULL;
 	m_filter = NULL;
 }
 
@@ -58,6 +70,8 @@ DatabaseInfo::~DatabaseInfo()
 
 bool DatabaseInfo::loadGame(int index, bool reload)
 {
+    if (!m_bLoaded)
+        return false;
 	if (!isValid())
 		return false;
 	if (!reload && m_index == index)
@@ -80,6 +94,8 @@ void DatabaseInfo::newGame()
 
 bool DatabaseInfo::saveGame()
 {
+    if (!m_bLoaded)
+        return false;
 	if (!isValid() || m_database->isReadOnly())
 		return false;
 	if (m_index < m_database->count() && m_index >= 0)

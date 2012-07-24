@@ -24,5 +24,3 @@ QString resultString(Result result)
 		return "*";
 	}
 }
-
-QMap<Tag, Tag> BasicTagMap;

@@ -36,8 +36,8 @@ bool PgnDatabase::open(const QString& filename)
 		return false;
 	}
 	m_filename = filename;
-	if (openFile(filename) && parseFile()) {
-		m_isOpen = true;
+    if (openFile(filename)) {
+        m_isOpen = true;
 		return true;
 	}
 	return false;
@@ -56,12 +56,12 @@ bool PgnDatabase::parseFile()
 		addOffset();
 		parseTagsIntoIndex(); // This will parse the tags into memory
 		skipMoves();
+        if (m_file->atEnd())
+            break;
         int percentDone2 = m_file->pos() * 100 / size;
 		if (percentDone2 > percentDone)
         {
-            bool bQuit;
-            emit progress((percentDone = percentDone2), bQuit);
-            if (bQuit) return false;
+           emit progress((percentDone = percentDone2));
         }
     }
 	m_index.setCacheEnabled(false);
@@ -176,14 +176,14 @@ void PgnDatabase::readLine()
 
     if (m_inComment || !m_currentLine.startsWith("[")) {
         m_currentLine.replace("(", " ( ");
-		m_currentLine.replace(")", " ) ");
-		m_currentLine.replace("{", " { ");
-		m_currentLine.replace("}", " } ");
-		m_currentLine.replace("$", " $");
-	}
+        m_currentLine.replace(")", " ) ");
+        m_currentLine.replace("{", " { ");
+        m_currentLine.replace("}", " } ");
+        m_currentLine.replace("$", " $");
+    }
 }
 
-void PgnDatabase::skipLine()
+inline void PgnDatabase::skipLine()
 {
     m_lineBuffer = m_file->readLine();
 }
@@ -284,7 +284,7 @@ void PgnDatabase::parseLine(Game* game)
 	}
 }
 
-void PgnDatabase::parseDefaultToken(Game* game, QString token)
+inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
 {
     //strip any move numbers
     if (token.contains("..."))
@@ -454,7 +454,7 @@ void PgnDatabase::parseComment(Game* game)
 	}
 }
 
-bool onlyWhite(const QString& b)
+inline bool onlyWhite(const QString& b)
 {
     for (int i = 0; i < b.length(); i++)
         if (!isspace(b.at(i).toAscii()))
@@ -462,7 +462,7 @@ bool onlyWhite(const QString& b)
     return true;
 }
 
-bool onlyWhite(const QByteArray& b)
+inline bool onlyWhite(const QByteArray& b)
 {
 	for (int i = 0; i < b.length(); i++)
         if (!isspace(b[i]))
@@ -483,8 +483,8 @@ void PgnDatabase::skipTags()
 		skipLine();
 
 	//swallow trailing whitespace
-	while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
-		skipLine();
+    while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
+        skipLine();
     m_currentLine = m_lineBuffer.simplified();
 }
 
@@ -492,16 +492,16 @@ void PgnDatabase::skipMoves()
 {
     QString gameText = " ";
     QRegExp gameNumber("\\s(\\d+)\\s*\\.");
-	while (!onlyWhite(m_lineBuffer) && !m_file->atEnd()) {
-        gameText += QString(m_lineBuffer).simplified() + " ";
+    while (!onlyWhite(m_lineBuffer) && !m_file->atEnd()) {
+        gameText += QString(m_lineBuffer) + " ";
 		skipLine();
 	}
 	gameNumber.lastIndexIn(gameText);
 	m_index.setTag("Length", gameNumber.cap(1), m_count - 1);
 
 	//swallow trailing whitespace
-	while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
-		skipLine();
+    while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
+        skipLine();
     m_currentLine = m_lineBuffer.simplified();
 }
 

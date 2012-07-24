@@ -70,7 +70,7 @@ public:
 	 * that are colour dependant to a color independant list. Example:
 	 * White and Black are both mapped to PlayerName, so each name is stored
 	 * only once */
-	static void createBasicTagMap();
+    void createBasicTagMap();
 
         /** Adds tagvalues to the taglist. tag indicates to which tag the
          *  tagvalues correspond. tagvalues should be dynamically allocated.
@@ -88,7 +88,7 @@ private:
 	 * new TagValues instances added to the list, will have their cache enabled
 	 * as well */
 	bool m_cacheEnabled;
-
+    BasicTagMapType BasicTagMap;
 };
 
 #endif

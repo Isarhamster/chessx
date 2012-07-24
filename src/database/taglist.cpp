@@ -35,7 +35,7 @@ void TagList::createBasicTagMap()
 }
 TagList::TagList()
 {
-	TagList::createBasicTagMap();
+    createBasicTagMap();
 	m_list.clear();
 
 	for (int i = 0 ; i < TagLastTag; ++i) {
