@@ -20,11 +20,13 @@ IndexItem::IndexItem()
 	m_data = NULL;
 	allocate(Index::defaultIndexItemSize);
 }
+
 IndexItem::~IndexItem()
 {
 	if (m_data)
 		free(m_data);
 }
+
 int IndexItem::allocate(const int size, bool clear)
 {
 	// We use malloc and realloc to be able to change the size of the array
@@ -48,13 +50,15 @@ int IndexItem::allocate(const int size, bool clear)
 				*(quint8*)(m_data + i) = (quint8) 0;
 			}
 		}
-		m_size = size;
-		return m_size;
-	} else {
+		m_size = size;	
+    }
+    else
+    {
 		m_size = 0;
-		return 0;
 	}
+    return m_size;
 }
+
 QString IndexItem::output()
 {
 	QString str;
@@ -65,6 +69,7 @@ QString IndexItem::output()
 	}
 	return str;
 }
+
 TagIndex IndexItem::set(int offset, int size, TagIndex index)
 {
 	// Could this test be skipped, abandonning safety for speed?
@@ -81,6 +86,7 @@ TagIndex IndexItem::set(int offset, int size, TagIndex index)
 	}
 	return index;
 }
+
 TagIndex IndexItem::index(int offset, int size)
 {
 	// Could this test be skipped, abandonning safety for speed?
