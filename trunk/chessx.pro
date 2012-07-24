@@ -183,7 +183,8 @@ UI_DIR = src/generated
 MOC_DIR = src/generated
 RCC_DIR = src/generated
 
-OBJECTS_DIR = objects
+debug:OBJECTS_DIR = obj_dbg
+release:OBJECTS_DIR = obj_rel
 
 ICON = data/images/chessx.icns
 RC_FILE = src/chessx.rc
