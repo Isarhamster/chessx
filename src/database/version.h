@@ -7,5 +7,17 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-const QString ChessXVersion = "0.8";
-const uint ChessXVersionNumber = 800;
+#define VERSION_MAJOR   0
+#define VERSION_MINOR   8
+#define REVISION        1158
+
+#define XGLUE2(a,b) #a "," #b
+#define GLUE2(a,b)  XGLUE2(a,b)
+
+#define XGLUE4(a,b,c,d) #a "," #b "," #c "," #d
+#define GLUE4(a,b,c,d)  XGLUE4(a,b,c,d)
+
+#define STR_VERSION     GLUE2(VERSION_MAJOR,VERSION_MINOR)
+#define STR_REVISION    GLUE4(VERSION_MAJOR,VERSION_MINOR,0,REVISION)
+
+#define COPYRIGHT "Copyright (C) 2012"
