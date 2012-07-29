@@ -127,80 +127,9 @@ const quint64 fileNotGH   = ~(fileG | fileH);
 #define File(s)           ((s)&7)
 #define Rank(s)           ((s)>>3)
 
-
-#if defined(FASTBITS)
-const bool BitBoard::fastbitsOption = true;
-#else
-const bool BitBoard::fastbitsOption = false;
-#endif
-
-// This makes a pretty big difference on BitBoard speed...
-// To use the assembler version type: qmake -r "CONFIG+=fastbits"
+// This C++ version is as fast as the assembly
 inline uint getFirstBitAndClear64(quint64& bb)
 {
-
-// Comment this out until we can find someone to fix/test it
-//#if defined(Q_OS_WIN32) && defined(FASTBITS)
-//	// thanks to Gerd Isenberg
-//	__asm
-//	{
-//		xor	edx, edx
-//		mov	ebx, [bb]
-//		xor	eax, eax
-//		inc	edx
-//		bsf	ecx, [ebx]
-//		jnz	found
-//		bsf	ecx, [ebx+4]
-//		lea	ebx, [ebx+4]
-//		xor	eax, 32
-//	found:
-//		shl	edx, cl
-//		xor	eax, ecx
-//		xor	[ebx], edx
-//	}
-//#elif defined(FASTBITS)
-#if defined(FASTBITS)
-#ifdef __x86_64
-    // Assuming x86 hardware...
-    // Testing showed this to be about 20 times faster than the C++ code
-    register quint64 ret;
-    asm volatile(
-        "pushq  %%rbx \n"
-        "movq	%0, %%rbx \n"
-        "xor	%%rdx, %%rdx \n"
-        "inc	%%edx \n"
-        "bsfq	(%%rbx), %%rcx \n"
-        "shl	%%cl, %%rdx \n"
-        "mov	%%rcx, %%rax \n"
-        "xor	%%rdx, (%%rbx) \n"
-        "popq   %%rbx \n"
-    : "=a"(ret), "=m"(bb) : "0"(&bb) : "%ecx", "%edx");
-    return (uint)ret;
-
-#else
-	// Assuming x86 hardware...
-	// Testing showed this to be about 20 times faster than the C++ code
-	register uint ret;
-	asm volatile(
-		"pushl  %%ebx \n"
-		"mov	%0, %%ebx \n"
-		"xor	%%edx, %%edx \n"
-		"xor	%%eax, %%eax \n"
-		"inc	%%edx \n"
-		"bsf	(%%ebx), %%ecx \n"
-		"jnz	1f \n"
-		"bsf	4(%%ebx), %%ecx \n"
-		"lea	4(%%ebx), %%ebx \n"
-		"xor	$32, %%eax \n"
-		"1: \n"
-		"shl	%%cl, %%edx \n"
-		"xor	%%ecx, %%eax \n"
-		"xor	%%edx, (%%ebx) \n"
-		"popl   %%ebx \n"
-	: "=a"(ret), "=m"(bb) : "0"(&bb) : "%ecx", "%edx");
-	return ret;
-#endif
-#else
 #ifdef __GNUG__
     register quint64 x = bb & -(qint64)bb;
     bb ^= x;
@@ -218,7 +147,6 @@ inline uint getFirstBitAndClear64(quint64& bb)
 	if (!(x & 0x3)) { x >>= 2; r |= 2; }
     if (!(x & 0x1)) { r |= 1; }
 	return r;
-#endif
 #endif
 }
 
