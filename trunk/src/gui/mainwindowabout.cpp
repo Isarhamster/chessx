@@ -13,19 +13,18 @@
 void MainWindow::slotHelpAbout()
 {
     QString version = QString(STR_VERSION).replace(',','.');
-	QString fastbits = Board::fastbitsOption ? tr("Compiled with 'fastbits' option<br>") : "";
 	QMessageBox dialog(tr("About ChessX"), tr("<h1>ChessX</h1>"
-						"<p>Free chess database available under GPLv2.<br>Version %1<br>%2"
+                        "<p>Free chess database Version %1</p>"
                         COPYRIGHT
-						"<p>Current developer and maintainer: <a href=\"mailto:mrudolf"
-						"@kdewebdev.org\">Michal Rudolf</a>"
-						"<p>Testing, usability and website: Bruno Rizzuti"
-						"<p>Additional coding: Marius Roets, Sean Estabrooks, Rico Zenklusen, "
-						"Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth."
-						"<p>Homepage: <a href=\"http://chessx.sf.net\">http://chessx.sf.net</a><br>"
-						"Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">"
-                        "chessx-users@lists.sourceforge.net").arg(version)
-				.arg(fastbits),
+                        "<p>License: GNU Public License 2 - GPLv2</p>"
+                        "<p>Current maintainer: <a href=\"mailto:jens.chessx@gmx.net\">Jens Nissen</a></p>"
+                        "<p>Testing, usability and website: Bruno Rizzuti</p>"
+                        "<p>Further maintainers: Michal Rudolf, Ejner Borgbjerg</p>"
+                        "<p>Additional coding: James Coons, Marius Roets, Sean Estabrooks, Rico Zenklusen, "
+                        "Heinz Hopfgartner, William Hoggarth.</p>"
+                        "<p>Homepage: <a href=\"http://chessx.sourceforge.net\">http://chessx.sourceforge.net</a><br>"
+                        "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">chessx-users@lists.sourceforge.net</a></p>")
+                        .arg(version),
 				QMessageBox::NoIcon, QMessageBox::Ok, Qt::NoButton, Qt::NoButton, this);
 	dialog.exec();
 }
