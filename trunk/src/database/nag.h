@@ -127,6 +127,7 @@ typedef enum
 	BlackHasGoodPieceCoordination,
 	EvaluationNagEnd = BlackHasGoodPieceCoordination,
 	WhiteHasPlayedTheOpeningVeryPoorly,
+    OpeningNagStart = WhiteHasPlayedTheOpeningVeryPoorly,
 	BlackHasPlayedTheOpeningVeryPoorly,
 	WhiteHasPlayedTheOpeningPoorly,
 	BlackHasPlayedTheOpeningPoorly,
@@ -134,7 +135,9 @@ typedef enum
 	BlackHasPlayedTheOpeningWell,
 	WhiteHasPlayedTheOpeningVeryWell,
 	BlackHasPlayedTheOpeningVeryWell,
+    OpeningNagEnd = BlackHasPlayedTheOpeningVeryWell,
 	WhiteHasPlayedTheMiddlegameVeryPoorly,
+    MiddleGameNagStart = WhiteHasPlayedTheMiddlegameVeryPoorly,
 	BlackHasPlayedTheMiddlegameVeryPoorly,
 	WhiteHasPlayedTheMiddlegamePoorly,
 	BlackHasPlayedTheMiddlegamePoorly,
@@ -142,7 +145,9 @@ typedef enum
 	BlackHasPlayedTheMiddlegameWell,
 	WhiteHasPlayedTheMiddlegameVeryWell,
 	BlackHasPlayedTheMiddlegameVeryWell,
+    MiddleGameNagEnd = BlackHasPlayedTheMiddlegameVeryWell,
 	WhiteHasPlayedTheEndingVeryPoorly,
+    EndingNagStart = WhiteHasPlayedTheEndingVeryPoorly,
 	BlackHasPlayedTheEndingVeryPoorly,
 	WhiteHasPlayedTheEndingPoorly,
 	BlackHasPlayedTheEndingPoorly,
@@ -150,6 +155,7 @@ typedef enum
 	BlackHasPlayedTheEndingWell,
 	WhiteHasPlayedTheEndingVeryWell,
 	BlackHasPlayedTheEndingVeryWell,
+    EndingNagEnd = BlackHasPlayedTheEndingVeryWell,
 	WhiteHasSlightCounterplay,
 	BlackHasSlightCounterplay,
 	WhiteHasModerateCounterplay,
@@ -174,7 +180,9 @@ typedef enum
 	WhiteHasAPairOfBishops,
 	BlackHasAPairOfBishops,
 	BishopsOfOppositeColor,
+    BishopNagStart = BishopsOfOppositeColor,
 	BishopsOfSameColor,
+    BishopNagEnd = BishopsOfSameColor,
 	NagCount
 } Nag;
 
@@ -193,9 +201,11 @@ public:
 	 void removeNag(Nag nag);
 	QString toString(unsigned format = Simple) const;
 	static const QString& nagToString(Nag nag);
+    static QString nagToMenuString(Nag nag);
 	static int prefixCount(const QString& nag);
 	static Nag fromString(const QString& nag);
 private:
+    bool conditionalRemoveNagRange(Nag nag, Nag start, Nag end);
 	void removeNagRange(Nag from, Nag to);
 };
 
