@@ -97,15 +97,22 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 			nagPositionMenu->addAction(createNagAction(Nag(n)));
 		nagPositionMenu->addAction(createNagAction(Nag(WhiteHasSufficientCompensationForMaterialDeficit)));
 		QMenu* nagSpecialMenu = m_gameMenu->addMenu(tr("Add other symbol"));
-		nagSpecialMenu->addAction(createNagAction(WhiteIsInZugzwang));
+        QMenu* subMenu;
+        nagSpecialMenu->addAction(createNagAction(WhiteHasTheInitiative));
+        nagSpecialMenu->addAction(createNagAction(WhiteHasTheAttack));
+        nagSpecialMenu->addAction(createNagAction(WhiteHasModerateCounterplay));
 		nagSpecialMenu->addAction(createNagAction(WithTheIdea));
 		nagSpecialMenu->addAction(createNagAction(BetterMove));
 		nagSpecialMenu->addAction(createNagAction(Novelty));
-		nagSpecialMenu->addAction(createNagAction(WeakPoint));
+        nagSpecialMenu->addAction(createNagAction(WhiteIsInZugzwang));
+        nagSpecialMenu->addAction(createNagAction(WeakPoint));
 		nagSpecialMenu->addAction(createNagAction(EndGame));
-		nagSpecialMenu->addAction(createNagAction(BishopsOfOppositeColor));
-		nagSpecialMenu->addAction(createNagAction(BishopsOfSameColor));
-		nagSpecialMenu->addAction(createNagAction(WhiteHasSevereTimeControlPressure));
+        nagSpecialMenu->addAction(createNagAction(WhiteHasSevereTimeControlPressure));
+        subMenu = nagSpecialMenu->addMenu(tr("Bishops"));
+        subMenu->addAction(createNagAction(WhiteHasAPairOfBishops));
+        subMenu->addAction(createNagAction(BishopsOfOppositeColor));
+        subMenu->addAction(createNagAction(BishopsOfSameColor));
+
 		m_gameMenu->addAction(m_removeNags = createAction(tr("Remove symbols"), EditAction::ClearNags));
 
 		m_gameMenu->addSeparator();
@@ -194,7 +201,7 @@ QAction *ChessBrowser::createAction(const QString& name, EditAction::Type type)
 
 QAction *ChessBrowser::createNagAction(const Nag& nag)
 {
-	QAction* action = new QAction(NagSet::nagToString(nag), this);
+    QAction* action = new QAction(NagSet::nagToMenuString(nag), this);
 	m_actions[action] = EditAction(EditAction::AddNag, nag);
 	return action;
 }
