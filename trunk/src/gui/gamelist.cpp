@@ -34,7 +34,9 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 	horizontalHeader()->setClickable(true);
 	connect(horizontalHeader(), SIGNAL(sectionClicked(int)), SLOT(simpleSearch(int)));
 
-	slotReconfigure();
+    slotReconfigure();
+
+    setSortingEnabled(false);
 }
 
 void GameList::itemSelected(const QModelIndex& index)
@@ -44,7 +46,7 @@ void GameList::itemSelected(const QModelIndex& index)
 
 void GameList::setFilter(Filter* filter)
 {
-	m_model->setFilter(filter);
+    m_model->setFilter(filter);
     emit raiseRequest();
 }
 
@@ -61,9 +63,6 @@ void GameList::simpleSearch(int tagid)
 #else // VisualC++
 #pragma message("Unify with <filtermodel.cpp>")
 #endif
-	const QString tagNames[] = {"Nr", "White", "WhiteElo", "Black", "BlackElo", "Event", "Site", "Round", "Date",
-					 "Result", "ECO", "PlyCount", ""
-					};
 
 	QuickSearchDialog dialog(this);
 
@@ -73,7 +72,7 @@ void GameList::simpleSearch(int tagid)
 	if (dialog.exec() != QDialog::Accepted)
 		return;
 
-	QString tag = tagNames[dialog.tag()];
+    QString tag = m_model->GetColumnTags().at(dialog.tag());
 	QString value = dialog.value();
 	if (value.isEmpty())
 		m_model->filter()->setAll(1);
@@ -94,7 +93,7 @@ void GameList::simpleSearch(int tagid)
 			m_model->filter()->executeSearch(ts, Search::Operator(dialog.mode()));
 		else m_model->filter()->executeSearch(ts);
 	}
-    m_model->setFilter(m_model->filter());
+    updateFilter();
 	emit searchDone();
 }
 
@@ -105,8 +104,8 @@ void  GameList::slotFilterListByPlayer(QString s)
     m_model->filter()->executeSearch(ts);
     TagSearch ts2(m_model->filter()->database(), "Black", s);
     m_model->filter()->executeSearch(ts2,Search::Or);
-    m_model->setFilter(m_model->filter());
-    emit raiseRequest();
+    updateFilter();
+    emit raiseRequest();	
     emit searchDone();
 }
 

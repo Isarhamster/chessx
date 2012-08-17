@@ -423,7 +423,8 @@ void MainWindow::slotGameSave()
 	if (database()->isReadOnly())
 		MessageDialog::error(tr("This database is read only."));
 	else if (saveDialog()->exec(database(), game()) == QDialog::Accepted) {
-		databaseInfo()->saveGame();
+        databaseInfo()->saveGame();
+        database()->index()->setTag("Length", QString::number((game().plyCount() + 1) / 2), gameIndex() );
         m_gameList->updateFilter();
 		slotFilterChanged();
 		slotGameChanged();
