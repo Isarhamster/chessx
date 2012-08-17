@@ -81,7 +81,11 @@ void Filter::setAll(int value)
 
 bool Filter::contains(int game) const
 {
-	return (m_vector->at(game) != 0);
+    if (game <= m_vector->count())
+    {
+        return (m_vector->at(game) != 0);
+    }
+    return false;
 }
 int Filter::gamePosition(int game) const
 {
