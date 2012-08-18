@@ -269,7 +269,13 @@ void Game::truncateVariation(Position position)
 		int node = m_moveNodes[m_currentNode].nextNode;
 		removeNode(node);
 	}
-	else if (position == BeforeMove && m_currentNode != 0) {
+    else if (position == BeforeMove && m_currentNode != 0)
+    {
+        if (atLineStart())
+        {
+            backward();
+            forward();
+        }
 		MoveId current = m_currentNode;
 		MoveNode firstNode;
 		firstNode.nextNode = m_currentNode;
