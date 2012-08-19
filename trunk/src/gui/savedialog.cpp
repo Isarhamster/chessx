@@ -95,8 +95,8 @@ void SaveDialog::setLineEdit(QLineEdit* edit, Database* database, Tag tag)
 
 void SaveDialog::accept()
 {
-    if ((PartialDate::fromString(ui.dateEdit->text()).isValid()) &&
-        (PartialDate::fromString(ui.eventDateEdit->text()).isValid()))
+    if ((PartialDate().fromString(ui.dateEdit->text()).isValid()) &&
+        (PartialDate().fromString(ui.eventDateEdit->text()).isValid()))
     {
         //  dates are formatted properly
         QDialog::accept();
