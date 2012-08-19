@@ -361,7 +361,7 @@
         </widget>
        </item>
        <item row="0" column="0">
-        <layout class="QGridLayout">
+        <layout class="QGridLayout" name="gridLayout5">
          <item row="3" column="1">
           <widget class="QPushButton" name="engineDownButton">
            <property name="text">
@@ -400,7 +400,7 @@
           </widget>
          </item>
          <item row="4" column="1">
-          <spacer>
+          <spacer name="horizontalSpace1">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
