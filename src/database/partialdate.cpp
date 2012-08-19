@@ -49,7 +49,7 @@ int PartialDate::day() const
 	return m_day;
 }
 
-void PartialDate::fromString(const QString& s)
+PartialDate& PartialDate::fromString(const QString& s)
 {
     QString test = s.trimmed();
     QRegExp regExp("^[\\?0-9]{4}(\\.([\\?0-9]){1,2}){,2}$");
@@ -65,6 +65,7 @@ void PartialDate::fromString(const QString& s)
     {
         m_bIsValid = false;
     }
+    return *this;
 }
 
 

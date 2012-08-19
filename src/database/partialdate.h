@@ -44,7 +44,7 @@ public:
 	int day() const;
 
     /** Sets date from string in PGN date format (e.g. "1990.01.??"). */
-	void fromString(const QString& s);
+    PartialDate& fromString(const QString& s);
 	/** @return formatted date range (e. g. "1990.01.12-02.13", "1992-1997.11.12") */
 	QString range(const PartialDate& d) const;
     /** Test if PartialDate is valid */
