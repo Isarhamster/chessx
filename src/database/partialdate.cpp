@@ -8,35 +8,30 @@
  ***************************************************************************/
 
 #include "partialdate.h"
+#include <QRegExp>
 
-PartialDate::PartialDate() : m_year(0), m_month(0), m_day(0)
-{}
-
-PartialDate::PartialDate(int y) : m_year(y), m_month(0), m_day(0)
-{}
-
-PartialDate::PartialDate(int y, int m) : m_year(y), m_month(m), m_day(0)
-{}
-
-PartialDate::PartialDate(int y, int m, int d) : m_year(y), m_month(m), m_day(d)
-{}
+PartialDate::PartialDate(int y, int m, int d) :
+    m_year(y),
+    m_month(m),
+    m_day(d)
+{
+    m_bIsValid = !m_year || asDate().isValid();
+}
 
 PartialDate::PartialDate(const QString& s)
 {
-	fromString(s);
+    m_year = 0;
+    m_month = 0;
+    m_day = 0;
+    fromString(s);
 }
 
 PartialDate::PartialDate(const QDate& d)
 {
+    m_bIsValid = true;
 	m_year = d.year();
 	m_month = d.month();
 	m_day = d.day();
-}
-
-
-bool PartialDate::isFull() const
-{
-	return m_year && m_month && m_day;
 }
 
 int PartialDate::year() const
@@ -54,35 +49,33 @@ int PartialDate::day() const
 	return m_day;
 }
 
-void PartialDate::setYear(int y)
-{
-	if (y >= 0)
-		m_year = y;
-}
-
-void PartialDate::setMonth(int m)
-{
-	if (m >= 0 && m <= 12)
-		m_month = m;
-}
-
-void PartialDate::setDay(int d)
-{
-	if (d >= 0 && d <= 31)
-		m_day = d;
-}
-
 void PartialDate::fromString(const QString& s)
 {
-	m_year = s.section('.', 0, 0).toInt();
-	m_month = s.section('.', 1, 1).toInt();
-	m_day = s.section('.', 2, 2).toInt();
+    QString test = s.trimmed();
+    QRegExp regExp("^[\\?0-9]{4}(\\.([\\?0-9]){1,2}){,2}$");
+    if (regExp.exactMatch(test) || test.isEmpty())
+    {
+        m_year = s.section('.', 0, 0).toInt();
+        m_month = s.section('.', 1, 1).toInt();
+        m_day = s.section('.', 2, 2).toInt();
+        m_bIsValid = !year() ||
+                      asDate().isValid();
+    }
+    else
+    {
+        m_bIsValid = false;
+    }
 }
 
 
 QDate PartialDate::asDate() const
 {
-	return QDate(m_year, m_month, m_day);
+    return QDate(m_year, m_month?m_month:1, m_day?m_day:1);
+}
+
+bool PartialDate::isValid() const
+{
+    return m_bIsValid;
 }
 
 QString PartialDate::asString() const

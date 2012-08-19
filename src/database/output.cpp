@@ -381,7 +381,7 @@ void Output::writeAllTags()
 	while (it.hasNext()) {
 		it.next();
 		// workaround for problems with IndexItem implementation
-        if (!it.value().isEmpty() && it.value() != "?" && it.value() != "????.??.??" && it.key() != "Length")
+        if (!it.value().isEmpty() && it.value() != "?" && it.value() != PDInvalidDate.asString() && it.key() != "Length")
         {
 			writeTag(it.key(), it.value());
         }

@@ -493,7 +493,7 @@ int PlayerDatabase::eloList(const int year, const int index) const
 PartialDate PlayerDatabase::eloListToDate(const int index)
 {
 	if (index < 1)
-		return PartialDate(0, 0, 0);
+        return PDInvalidDate;
 	int year;
 	int rem;
 	int month;
