@@ -179,8 +179,8 @@ void PlayerInfo::reset()
 	}
 	m_rating[0] = 99999;
 	m_rating[1] = 0;
-	m_date[0].setYear(9999);
-	m_date[1].setYear(1);
+    m_date[0] = PDMaxDate;
+    m_date[1] = PDMinDate;
 
 }
 
@@ -219,7 +219,7 @@ QString PlayerInfo::formattedRating() const
 QString PlayerInfo::unformattedRange() const
 {
     if (m_date[0].year() == 9999)	// No date
-        return QString("????.??.??");
+        return PDInvalidDate.asString();
     else if (m_date[0].year() < 1000)
         return QString();
     else
