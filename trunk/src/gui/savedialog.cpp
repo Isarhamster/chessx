@@ -17,6 +17,8 @@
 #include "savedialog.h"
 #include "game.h"
 #include "database.h"
+#include "partialdate.h"
+#include "messagedialog.h"
 
 #include <QLineEdit>
 #include <QCompleter>
@@ -42,7 +44,7 @@ QString formatTagValue(const QString& s)
 
 QString formatTagDate(const QString& s)
 {
-	return (s.trimmed().isEmpty()) ? "????.??.??" : s;
+    return (s.trimmed().isEmpty()) ? PDInvalidDate.asString() : s;
 }
 
 int SaveDialog::exec(Database* database, Game& game)
@@ -66,7 +68,7 @@ int SaveDialog::exec(Database* database, Game& game)
 	setLineEdit(ui.siteEdit, database, TagSite);
 	setLineEdit(ui.eventEdit, database, TagEvent);
 	int result = QDialog::exec();
-	if (result) {
+    if (result == Accepted) {
 		game.setTag("White", formatTagValue(ui.whiteEdit->text()));
 		game.setTag("Black", formatTagValue(ui.blackEdit->text()));
 		game.setTag("Event", formatTagValue(ui.eventEdit->text()));
@@ -91,3 +93,16 @@ void SaveDialog::setLineEdit(QLineEdit* edit, Database* database, Tag tag)
 	edit->setCompleter(completer);
 }
 
+void SaveDialog::accept()
+{
+    if ((PartialDate::fromString(ui.dateEdit->text()).isValid()) &&
+        (PartialDate::fromString(ui.eventDateEdit->text()).isValid()))
+    {
+        //  dates are formatted properly
+        QDialog::accept();
+    }
+    else
+    {
+        MessageDialog::error(tr("Dates are not properly formatted!","Invalid Data"));
+    }
+}
