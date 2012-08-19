@@ -34,6 +34,7 @@ public:
 	SaveDialog(QWidget* parent = 0);
 	virtual ~SaveDialog();
 	virtual int exec(Database* database, Game& game);
+    virtual void accept();
 private:
 	void setLineEdit(QLineEdit* edit, Database* database, Tag tag);
 	Ui::SaveDialog ui;
