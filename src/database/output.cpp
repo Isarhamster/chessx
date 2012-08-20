@@ -151,6 +151,8 @@ void Output::readTemplateFile(const QString& path)
 					setMarkupTag(MarkupColumnStyleRow, tags[0], tags[1]);
 				} else if (name == "MarkupColumnStyleMainline") {
 					setMarkupTag(MarkupColumnStyleMainline, tags[0], tags[1]);
+                } else if (name == "MarkupMate") {
+                    setMarkupTag(MarkupMate, tags[0], tags[1]);
 				} else {
 					qWarning("Unkown Markup Tag found in file %s line %d. Ignoring : %s", path.toLatin1().constData(), i,  line.toLatin1().constData());
 				}
@@ -233,11 +235,16 @@ void Output::writeMove(MoveToWrite moveToWrite)
 	m_dirtyBlack = false;
 
 	// *** Write the actual move
+    QString san;
 	if (moveToWrite == NextMove) {
-		m_output += m_game->moveToSan();
+        san = m_game->moveToSan();
 	} else {
-		m_output += m_game->moveToSan(Game::MoveOnly, Game::PreviousMove);
+        san = m_game->moveToSan(Game::MoveOnly, Game::PreviousMove);
 	}
+    QString mate = m_startTagMap[MarkupMate] + "#" + m_endTagMap[MarkupMate];
+    san.replace("#", mate);
+    m_output += san;
+
 	// *** End the markup for the move
 	if (m_currentVariationLevel > 0) {
 		m_output += m_endTagMap[MarkupVariationMove];
@@ -391,7 +398,6 @@ void Output::writeAllTags()
 
 QString Output::output(Game* game)
 {
-
 	m_game = game;
 	int id = m_game->currentMove();
 	m_currentVariationLevel = 0;
