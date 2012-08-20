@@ -55,3 +55,4 @@ MarkupPreAnnotationIndent=\begin{nochess}{\rm ,}\end{nochess}
 MarkupHeaderLine=, \\\\
 MarkupHeaderTagName=,
 MarkupHeaderTagValue=\\,\\
+MarkupMate=\,
