@@ -116,6 +116,11 @@ private:
     /** Catch mouse events */
 	bool eventFilter(QObject *obj, QEvent *ev);
 
+    void drawSquareAnnotations(QPaintEvent* event);
+    void drawSquareAnnotation(QPaintEvent* event, QString annotation);
+    void drawArrowAnnotations(QPaintEvent* event);
+    void drawArrowAnnotation(QPaintEvent* event, QString annotation);
+
 	Board m_board;
 	BoardTheme m_theme;
 	bool m_flipped;

@@ -73,59 +73,80 @@ const BoardTheme& BoardView::theme() const
 
 void BoardView::paintEvent(QPaintEvent* event)
 {
-	QPainter p(this);
 	// Draw squares
-	for (Square square = 0; square < 64; square++) {
-		QRect rect = squareRect(square);
-		if (!event->region().intersects(rect))
-			continue;
-		int x = isFlipped() ? 7 - square % 8 : square % 8;
-		int y = isFlipped() ? square / 8 : 7 - square / 8;
-		QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
-		p.drawPixmap(pos, m_theme.square((x + y) % 2));
-		p.drawPixmap(pos, m_theme.piece(m_board.pieceAt(square)));
-		if (square == m_selectedSquare || square == m_hifrom || square == m_hito) {
-			QPen pen;
-			pen.setColor(m_theme.color(BoardTheme::Highlight));
-			pen.setWidth(2);
-			pen.setJoinStyle(Qt::MiterJoin);
-			p.setPen(pen);
-			p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
-					m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
-		}
-		if (m_showFrame) {
-			p.setPen(m_theme.color(BoardTheme::Frame));
-			p.drawRect(QRect(pos, m_theme.size()));
-		}
-	}
-	// Draw side to move indicator
-	bool white = m_board.toMove() == White;
-    //int square = m_theme.size().width() / 3;
-    int square = m_theme.size().width() / 6;
-    QColor color = white ? Qt::white : Qt::black;
-	QColor border = white ? Qt::black : Qt::white;
-	int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
-	p.setPen(border);
-	p.setBrush(QColor(color));
-    //p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
-    p.drawRect(8 * m_theme.size().width() + 4, posy, square, square);
+    {
+        QPainter p(this);
+        for (Square square = 0; square < 64; square++) {
+            QRect rect = squareRect(square);
+            if (!event->region().intersects(rect))
+                continue;
+            int x = isFlipped() ? 7 - square % 8 : square % 8;
+            int y = isFlipped() ? square / 8 : 7 - square / 8;
+            QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
+            p.drawPixmap(pos, m_theme.square((x + y) % 2));
+        }
+    }
 
-	// Fix border up
-	/*
-	if (m_showFrame) {
-		QPen pen;
-		pen.setColor(m_theme.color(BoardTheme::Frame));
-		pen.setWidth(1);
-		p.setPen(pen);
-		int flx = m_theme.size().width() * 8;
-		int fly = m_theme.size().height() * 8;
-		p.drawLine(flx, 0, flx, fly);
-		p.drawLine(0, fly, flx, fly);
-	}*/
+    drawSquareAnnotations(event);
 
-	// Draw dragged piece
-	if (m_dragged != Empty)
-		p.drawPixmap(m_dragPoint, m_theme.piece(m_dragged));
+    {
+        QPainter p(this);
+
+        for (Square square = 0; square < 64; square++) {
+            QRect rect = squareRect(square);
+            if (!event->region().intersects(rect))
+                 continue;
+            int x = isFlipped() ? 7 - square % 8 : square % 8;
+            int y = isFlipped() ? square / 8 : 7 - square / 8;
+            QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
+
+            p.drawPixmap(pos, m_theme.piece(m_board.pieceAt(square)));
+            if (square == m_selectedSquare || square == m_hifrom || square == m_hito) {
+                QPen pen;
+                pen.setColor(m_theme.color(BoardTheme::Highlight));
+                pen.setWidth(2);
+                pen.setJoinStyle(Qt::MiterJoin);
+                p.setPen(pen);
+                p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
+                        m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
+            }
+            if (m_showFrame) {
+                p.setPen(m_theme.color(BoardTheme::Frame));
+                p.drawRect(QRect(pos, m_theme.size()));
+            }
+        }
+
+        // Draw side to move indicator
+        bool white = m_board.toMove() == White;
+        //int square = m_theme.size().width() / 3;
+        int square = m_theme.size().width() / 6;
+        QColor color = white ? Qt::white : Qt::black;
+        QColor border = white ? Qt::black : Qt::white;
+        int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
+        p.setPen(border);
+        p.setBrush(QColor(color));
+        //p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
+        p.drawRect(8 * m_theme.size().width() + 4, posy, square, square);
+
+        // Fix border up
+        /*
+        if (m_showFrame) {
+            QPen pen;
+            pen.setColor(m_theme.color(BoardTheme::Frame));
+            pen.setWidth(1);
+            p.setPen(pen);
+            int flx = m_theme.size().width() * 8;
+            int fly = m_theme.size().height() * 8;
+            p.drawLine(flx, 0, flx, fly);
+            p.drawLine(0, fly, flx, fly);
+        }*/
+
+        // Draw dragged piece
+        if (m_dragged != Empty)
+            p.drawPixmap(m_dragPoint, m_theme.piece(m_dragged));
+    }
+    drawArrowAnnotations(event);
+
 }
 
 void BoardView::resizeBoard()
@@ -242,6 +263,7 @@ void BoardView::nextGuess(Square s)
 
 void BoardView::mouseMoveEvent(QMouseEvent *event)
 {
+
 	if (!(event->buttons() & Qt::LeftButton)) {
 		showGuess(squareAt(event->pos()));
 		return;
@@ -270,6 +292,7 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
 
 void BoardView::mouseReleaseEvent(QMouseEvent* event)
 {
+
 	Square s = squareAt(event->pos());
 	m_clickUsed = false;
 	if (event->button() != Qt::LeftButton) {
@@ -431,3 +454,179 @@ void BoardView::dropEvent(QDropEvent *event)
         event->acceptProposedAction();
     }
 }
+
+void BoardView::drawSquareAnnotations(QPaintEvent* event)
+{
+    QString annotation = m_board.squareAnnotation();
+
+    if( !annotation.isEmpty() && !annotation.isNull())
+    {
+        QStringList list = annotation.split(",");
+
+        for (QStringList::Iterator it = list.begin(); it != list.end(); it++) {
+            if (*it != "") {
+                drawSquareAnnotation(event,*it);
+            }
+        }
+    }
+
+}
+
+void BoardView::drawArrowAnnotations(QPaintEvent* event)
+{
+    QString annotation = m_board.arrowAnnotation();
+
+    if( !annotation.isEmpty() && !annotation.isNull())
+    {
+        QStringList list = annotation.split(",");
+
+        for (QStringList::Iterator it = list.begin(); it != list.end(); it++) {
+            if (*it != "") {
+                drawArrowAnnotation(event,*it);
+            }
+        }
+    }
+
+}
+
+void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
+{
+    QPainter p(this);
+    QString trimmed = annotation.simplified();
+    QChar colorChar = trimmed[0];
+    QChar fileChar = trimmed[1];
+    QChar rankChar = trimmed[2];
+    QString files = "abcdefgh";
+    QString ranks = "12345678";
+    int file = files.indexOf(fileChar);
+    int rank = ranks.indexOf(rankChar);
+    int square = rank * 8 + file;
+
+    QRect rect = squareRect(square);
+    if (!event->region().intersects(rect))
+        return;
+    int x = isFlipped() ? 7 - square % 8 : square % 8;
+    int y = isFlipped() ? square / 8 : 7 - square / 8;
+    QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
+    //p.drawPixmap(pos, m_theme.square((x + y) % 2));
+
+    QColor color = Qt::red;
+    if(colorChar == 'Y') {
+        color = Qt::yellow;
+    } else if(colorChar == 'G') {
+        color = Qt::green;
+    } else if(colorChar == 'B') {
+        color = Qt::blue;
+    }
+
+    p.save();
+    QPen pen(color);
+    QBrush brush(color);
+    p.setPen(pen);
+    p.setBrush(brush);
+
+    p.setOpacity(.20);
+
+    p.drawRect(pos.x(),pos.y(),m_theme.size().width(),m_theme.size().height());
+
+    p.restore();
+
+}
+
+void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
+{
+    QPainter p(this);
+
+    static QString letters = "abcdefgh";
+    static QString numbers = "12345678";
+
+
+    QString trimmed = annotation.simplified();
+
+    QChar colorChar = trimmed[0];
+    QChar fileChar1 = trimmed[1];
+    QChar rankChar1 = trimmed[2];
+    QChar fileChar2 = trimmed[3];
+    QChar rankChar2 = trimmed[4];
+    int file1 = letters.indexOf(fileChar1);
+    int rank1 = numbers.indexOf(rankChar1);
+    int file2 = letters.indexOf(fileChar2);
+    int rank2 = numbers.indexOf(rankChar2);
+
+    if( file1 < 0 || file2 < 0 || rank1 < 0 || rank2 < 0 )
+    {
+        return;
+    }
+    int square1 = rank1 * 8 + file1;
+    int square2 = rank2 * 8 + file2;
+
+    QRect rect1 = squareRect(square1);
+    QRect rect2 = squareRect(square2);
+    QRect u = rect1.unite(rect2);
+    if (!event->region().intersects(u))
+        return;
+    int x1 = isFlipped() ? 7 - square1 % 8 : square1 % 8;
+    int y1 = isFlipped() ? square1 / 8 : 7 - square1 / 8;
+    int x2 = isFlipped() ? 7 - square2 % 8 : square2 % 8;
+    int y2 = isFlipped() ? square2 / 8 : 7 - square2 / 8;
+    int w = m_theme.size().width();
+    int h = m_theme.size().height();
+    QPoint pos1((x1 * w) + (w/2), (y1 * h) + (h/2));
+    QPoint pos2((x2 * w )+ (w/2), (y2 * h) + (h/2));
+
+    QColor color = Qt::red;
+    if(colorChar == 'Y') {
+        color = Qt::yellow;
+    } else if(colorChar == 'G') {
+        color = Qt::green;
+    } else if(colorChar == 'B') {
+        color = Qt::blue;
+    }
+
+    p.save();
+    QPen pen(color);
+    pen.setWidth(2);
+    p.setPen(pen);
+
+    p.drawLine(pos1,pos2);
+
+
+    // Now to Draw Arrow Head
+    qreal headWidth = 16.0;
+    qreal headLength = 16.0;
+    qreal headIndent = 4.0;
+    qreal netIndent = headLength- headIndent;
+
+    qreal halfHead = headWidth / 2;
+    int px1 = pos1.x();
+    int px2 = pos2.x();
+    int py1 = pos1.y();
+    int py2 = pos2.y();
+    int dX = px2 - px1;
+    int dY = py2 - py1;
+
+    qreal  arrowLength = qSqrt( dX * dX + dY * dY );
+
+    QPointF arrowPts[7];
+
+    // calculate the points that form the arrow
+    arrowPts[0].setX( px2 - ((netIndent * dX) / arrowLength));
+    arrowPts[0].setY( py2 - ((netIndent * dY) / arrowLength));
+    arrowPts[6].setX( px2 - ((headLength * dX) / arrowLength));
+    arrowPts[6].setY( py2 - ((headLength * dY) / arrowLength));
+    arrowPts[1].setX( arrowPts[6].x() - ((halfHead * (dY)) / arrowLength));
+    arrowPts[1].setY( arrowPts[6].y() - ((halfHead * (-dX)) / arrowLength));
+    arrowPts[3].setX( arrowPts[6].x() + ((halfHead * (dY)) / arrowLength));
+    arrowPts[3].setY( arrowPts[6].y() + ((halfHead * (-dX)) / arrowLength));
+    arrowPts[2].setX( px2);
+    arrowPts[2].setY( py2);
+
+
+    // For now only draw part of the arrowhead
+    p.drawLine(arrowPts[2],arrowPts[1]);
+    p.drawLine(arrowPts[2],arrowPts[3]);
+
+    p.restore();
+
+}
+

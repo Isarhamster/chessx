@@ -530,7 +530,19 @@ bool MainWindow::gameEditComment(Output::CommentType type)
 {
 	QString annotation;
 	if (type == Output::Precomment)
-		annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
+    {
+        int moves;
+        int comments;
+        int nags;
+        game().moveCount(&moves,&comments,&nags);
+        if( moves > 0 )
+        {
+            annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
+        } else
+        {
+            annotation = game().gameComment();
+        }
+    }
 	else annotation = game().annotation();
 	CommentDialog dlg(this);
 	dlg.setText(annotation);
@@ -538,7 +550,19 @@ bool MainWindow::gameEditComment(Output::CommentType type)
 		return false;
 
 	if (type == Output::Precomment)
-		game().setAnnotation(dlg.text(), CURRENT_MOVE, Game::BeforeMove);
+    {
+        int moves;
+        int comments;
+        int nags;
+        game().moveCount(&moves,&comments,&nags);
+        if( moves > 0 )
+        {
+            game().setAnnotation(dlg.text(), CURRENT_MOVE, Game::BeforeMove);
+        } else
+        {
+            game().setGameComment(dlg.text());
+        }
+    }
 	else game().setAnnotation(dlg.text());
 	return true;
 }

@@ -256,7 +256,8 @@ void PgnDatabase::parseMoves(Game* game)
     if( m_gameOver ) {
         if(game->plyCount() == 0) {
             if( !m_precomment.isEmpty()) {
-                game->setGameComment(m_precomment);
+                //game->setGameComment(m_precomment);
+                game->setAnnotation(m_precomment);
                 m_precomment.clear();
             }
         }
@@ -356,7 +357,7 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
 		m_precomment.clear();
 		m_inComment = true;
 		m_currentLine = m_currentLine.right((m_currentLine.length() - m_pos) - 1);
-		break;
+        break;
 	case '$':
 		game->addNag((Nag)token.mid(1).toInt());
 		break;
@@ -439,12 +440,13 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
 
 void PgnDatabase::parseComment(Game* game)
 {
+
 	int end = m_currentLine.indexOf('}');
 
 	if (end >= 0) {
 		m_comment.append(m_currentLine.left(end));
 		m_inComment = false;
-		if (m_newVariation || game->plyCount() == 0)
+        if (m_newVariation || game->plyCount() == 0)
 			m_precomment = m_comment.trimmed();
 		else game->setAnnotation(m_comment.trimmed());
 		m_currentLine = m_currentLine.right((m_currentLine.length() - end) - 1);

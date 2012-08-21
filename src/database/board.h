@@ -94,8 +94,35 @@ public:
 		return m_hashValue != b.getHashValue();
 	}
 
+    /** Sets the squareAnnotation*/
+    void setSquareAnnotation(QString squareAnnotation)
+    {
+        m_squareAnnotation = squareAnnotation;
+    }
+
+    /** Gets the square annotation*/
+    QString squareAnnotation()
+    {
+        return m_squareAnnotation;
+    }
+
+    /** Sets the arrowAnnotation*/
+    void setArrowAnnotation(QString arrowAnnotation)
+    {
+        m_arrowAnnotation = arrowAnnotation;
+    }
+
+    /** Gets the square annotation*/
+    QString arrowAnnotation()
+    {
+        return m_arrowAnnotation;
+    }
+
 private:
 	quint64 m_hashValue;
+
+    QString m_squareAnnotation;
+    QString m_arrowAnnotation;
 
 	/** Play (or undo) move on board and calculate hash value for new position */
 	bool doIt(const Move& m, bool undo);
