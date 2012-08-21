@@ -89,7 +89,13 @@ public :
 	MoveId currentMove() const;
 	/** @return comment at move at node @p moveId. */
 	QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
-	/** @return @p true if a move can have annotation before the move. */
+
+    /** @return squareAnnotation at move at node @p moveId. */
+    QString squareAnnotation(MoveId moveId = CURRENT_MOVE) const;
+    /** @return arrowAnnotation at move at node @p moveId. */
+    QString arrowAnnotation(MoveId moveId = CURRENT_MOVE) const;
+
+    /** @return @p true if a move can have annotation before the move. */
 	bool canHaveStartAnnotation(MoveId moveId = CURRENT_MOVE) const;
 	/** @return nags for move at node @p moveId */
 	NagSet nags(MoveId moveId = CURRENT_MOVE) const;
@@ -101,8 +107,15 @@ public :
 
 	// **** node modification methods ****
 	/** Sets the comment associated with move at node @p moveId */
-	bool setAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
-	/** Adds a nag to move at node @p moveId */
+    bool setAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
+
+    /** Sets the squareAnnotation associated with move at node @p moveId */
+    bool setSquareAnnotation(QString squareAnnotation, MoveId moveId = CURRENT_MOVE);
+
+    /** Sets the arrowAnnotation associated with move at node @p moveId */
+    bool setArrowAnnotation(QString arrowAnnotation, MoveId moveId = CURRENT_MOVE);
+
+    /** Adds a nag to move at node @p moveId */
 	bool addNag(Nag nag, MoveId moveId = CURRENT_MOVE);
 	/** Sets nags for move at node @p moveId */
 	bool setNags(NagSet nags, MoveId moveId = CURRENT_MOVE);
@@ -230,6 +243,8 @@ public :
 
 private:
 
+    QString specialAnnotation(QString& annotation, QString specialMark ); // [%csl  [%cal
+
 	struct MoveNode {
 		Move move;
 		NagSet nags;
@@ -262,7 +277,14 @@ private:
 	QMap <MoveId, QString> m_variationStartAnnotations;
 	/** Annotations for move nodes */
 	QMap <MoveId, QString> m_annotations;
-	/** Map keeping pgn tags of the game */
+
+    /** SquareAnnotations for move nodes */
+    QMap <MoveId, QString> m_squareAnnotations;
+
+    /** ArrowAnnotations for move nodes */
+    QMap <MoveId, QString> m_arrowAnnotations;
+
+    /** Map keeping pgn tags of the game */
 	QMap<QString, QString> m_tags;
 
 	// **** memory  management methods ****

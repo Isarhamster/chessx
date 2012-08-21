@@ -18,12 +18,14 @@ QMap<quint64, QList<Square> > ecoGuessPositions;
 Board::Board()
 		: m_hashValue(0)
 {
+    m_squareAnnotation = "";
 }
 
 void Board::clear()
 {
 	BitBoard::clear();
 	createHash();
+    m_squareAnnotation = "";
 }
 
 void Board::setStandardPosition()
@@ -33,12 +35,14 @@ void Board::setStandardPosition()
 //	Just use precalculated hash values which is _much_ faster
 //	createHash();
 	m_hashValue = 17059429555746339296ULL;
+    m_squareAnnotation = "";
 }
 
 bool Board::fromFen(const QString& fen)
 {
 	if (BitBoard::fromFen(fen)) {
 		createHash();
+        m_squareAnnotation = "";
 		return true;
 	}
 	return false;
