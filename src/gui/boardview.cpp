@@ -583,14 +583,6 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
         color = Qt::blue;
     }
 
-    p.save();
-    QPen pen(color);
-    pen.setWidth(2);
-    p.setPen(pen);
-
-    p.drawLine(pos1,pos2);
-
-
     // Now to Draw Arrow Head
     qreal headWidth = 16.0;
     qreal headLength = 16.0;
@@ -609,23 +601,46 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
 
     QPointF arrowPts[7];
 
+    // we will shorten the line somewhat to avoid arrows all colliding in the center of the square
+    int adjust = ( w + h ) / 6;
+
+    px1 = px1 + (( adjust * dX ) / arrowLength);
+    px2 = px2 - (( adjust * dX ) / arrowLength);
+    py1 = py1 + (( adjust * dY ) / arrowLength);
+    py2 = py2 - (( adjust * dY ) / arrowLength);
+
+
     // calculate the points that form the arrow
     arrowPts[0].setX( px2 - ((netIndent * dX) / arrowLength));
     arrowPts[0].setY( py2 - ((netIndent * dY) / arrowLength));
-    arrowPts[6].setX( px2 - ((headLength * dX) / arrowLength));
-    arrowPts[6].setY( py2 - ((headLength * dY) / arrowLength));
-    arrowPts[1].setX( arrowPts[6].x() - ((halfHead * (dY)) / arrowLength));
-    arrowPts[1].setY( arrowPts[6].y() - ((halfHead * (-dX)) / arrowLength));
-    arrowPts[3].setX( arrowPts[6].x() + ((halfHead * (dY)) / arrowLength));
-    arrowPts[3].setY( arrowPts[6].y() + ((halfHead * (-dX)) / arrowLength));
+    arrowPts[4].setX( px2 - ((headLength * dX) / arrowLength));
+    arrowPts[4].setY( py2 - ((headLength * dY) / arrowLength));
+    arrowPts[1].setX( arrowPts[4].x() - ((halfHead * (dY)) / arrowLength));
+    arrowPts[1].setY( arrowPts[4].y() - ((halfHead * (-dX)) / arrowLength));
+    arrowPts[3].setX( arrowPts[4].x() + ((halfHead * (dY)) / arrowLength));
+    arrowPts[3].setY( arrowPts[4].y() + ((halfHead * (-dX)) / arrowLength));
     arrowPts[2].setX( px2);
     arrowPts[2].setY( py2);
 
+    QPoint pos3(px1,py1);
+    QPoint pos4(px2,py2);
+
+    p.save();
+    QPen pen(color);
+    pen.setWidth(2);
+    p.setPen(pen);
+
+    p.drawLine(pos3,pos4);
 
     // For now only draw part of the arrowhead
-    p.drawLine(arrowPts[2],arrowPts[1]);
-    p.drawLine(arrowPts[2],arrowPts[3]);
+    //p.drawLine(arrowPts[2],arrowPts[1]);
+    //p.drawLine(arrowPts[2],arrowPts[3]);
 
+    QBrush brush(color);
+    p.setBrush(brush);
+
+
+    p.drawPolygon(arrowPts,4);
     p.restore();
 
 }
