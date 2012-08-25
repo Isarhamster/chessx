@@ -254,8 +254,8 @@ private:
 	void finishOperation(const QString& msg);
 	/** Cancel operation with progress reporting. Hides progress bar. */
 	void cancelOperation(const QString& msg);
-
-
+    /** Restore the list of recent files */
+    void restoreRecentFiles();
 
 	/* Dialogs  */
 	PlayerDialog* m_playerDialog;
@@ -278,6 +278,7 @@ private:
 
 	/* Local variables */
 	HistoryList m_recentFiles;
+    QStringList m_favoriteFiles;
 	Output* m_output;
 	QList<DatabaseInfo*> m_databases;
 	QList<QAction*> m_recentFileActions;

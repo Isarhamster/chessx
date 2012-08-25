@@ -132,6 +132,9 @@ MainWindow::MainWindow() : QMainWindow(),
     dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
     connect(m_databaseList, SIGNAL(requestOpenDatabase(QString)),
             this, SLOT(openDatabase(QString)));
+    m_databaseList->addFileOpen(QString());
+    m_databaseList->setFileCurrent(QString());
+    restoreRecentFiles();
 
     /* Recent files */
     m_recentFiles.restore("History", "MaxEntries", "RecentFiles");
@@ -295,6 +298,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
     else if (confirmQuit())
     {
 		m_recentFiles.save("History", "RecentFiles");
+        m_databaseList->save();
 		AppSettings->setLayout(m_playerDialog);
 		m_gameList->saveConfig();
         m_openingTreeView->saveConfig();
@@ -392,7 +396,6 @@ void MainWindow::updateMenuRecent()
 		m_recentFileActions[i]->setVisible(true);
 		m_recentFileActions[i]->setText(QString("&%1: %2").arg(i + 1).arg(m_recentFiles[i]));
 		m_recentFileActions[i]->setData(m_recentFiles[i]);
-        m_databaseList->addRecentFile(m_recentFiles[i]);
 	}
     for (int i = m_recentFiles.count(); i < MaxRecentFiles; i++)
 		m_recentFileActions[i]->setVisible(false);
@@ -424,14 +427,16 @@ void MainWindow::openDatabase(QString fname)
 {
     QFileInfo fi = QFileInfo(fname);
 
-    fname = fi.canonicalFilePath();
-
-    if (!QFile::exists(fname))
+    if (!fname.isEmpty())
     {
-        slotStatusMessage(tr("Cannot open file '%1'.").arg(fi.fileName()));
-        return;
-    }
+        fname = fi.canonicalFilePath();
 
+        if (!QFile::exists(fname))
+        {
+            slotStatusMessage(tr("Cannot open file '%1'.").arg(fi.fileName()));
+            return;
+        }
+    }
 
 	/* Check if the database isn't already open */
 	for (int i = 0; i < m_databases.count(); i++)
@@ -442,7 +447,6 @@ void MainWindow::openDatabase(QString fname)
                 m_currentDatabase = i;
                 m_databaseList->setFileCurrent(fname);
                 slotDatabaseChanged();
-                slotStatusMessage(tr("Database %1 is already open.").arg(fi.fileName()));
             }
             else
             {
@@ -770,4 +774,14 @@ void MainWindow::cancelOperation(const QString& msg)
 	statusBar()->removeWidget(m_progressBar);
 }
 
+void MainWindow::restoreRecentFiles()
+{
+    AppSettings->beginGroup("Favorites");
+    QStringList list = AppSettings->value("Files").toStringList();
+    AppSettings->endGroup();
+    foreach (QString s, list)
+    {
+        m_databaseList->setFileFavorite(s,true);
+    }
+}
 

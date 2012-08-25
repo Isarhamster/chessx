@@ -7,10 +7,8 @@
 
 enum DatabaseListEntryState
 {
-    EDBL_RECENT,   ///< Database was recently opened but is not open now
     EDBL_OPEN,     ///< Database is open
-    EDBL_MODIFIED, ///< Database is open and at least one game needs saving
-    EDBL_FAVORITE  ///< Database is a user added favorite (overrides RECENT)
+    EDBL_CLOSE     ///< Database is closed
 };
 
 class DatabaseListEntry
@@ -20,7 +18,7 @@ public:
     {
         m_isFavorite = false;
         m_isCurrent  = false;
-        m_state      = EDBL_RECENT;
+        m_state      = EDBL_CLOSE;
     }
 
     QString m_name;
@@ -39,6 +37,14 @@ inline bool operator != (DatabaseListEntry const& lhs, DatabaseListEntry const& 
 {
   return ! (lhs==rhs);
 }
+enum DblvColumns
+{
+    DBLV_FAVORITE,
+    DBLV_NAME,
+    DBLV_SIZE,
+    DBLV_OPEN,
+    DBLV_PATH
+};
 
 class DatabaseListModel : public QAbstractItemModel
 {
@@ -47,14 +53,14 @@ public:
     explicit DatabaseListModel(QObject *parent = 0);
 
 public slots:
-    void addRecentFile(const QString& s);
     void addFileOpen(const QString& s);
-    void setFileModified(const QString& s, bool modified);
-    void addFavoriteFile(const QString& s);
+    void addFavoriteFile(const QString& s, bool bFavorite);
     void setFileClose(const QString& s);
     void setFileCurrent(const QString& s);
 
 public:
+    void toStringList(QStringList&);
+
     virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
     virtual QModelIndex parent(const QModelIndex &child) const;
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -69,7 +75,6 @@ protected:
     QList<DatabaseListEntry> m_databases;
 
 protected:
-    QString stateString(DatabaseListEntryState e) const;
     void addEntry(DatabaseListEntry& d, const QString& s);
 
 };

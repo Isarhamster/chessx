@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/" >
+    <qresource prefix="/">
         <file>i18n/chessx_pl.qm</file>
         <file>i18n/chessx_fr.qm</file>
         <file>i18n/chessx_de.qm</file>
@@ -7,5 +7,12 @@
         <file>i18n/chessx_it.qm</file>
         <file>i18n/chessx_nl.qm</file>
         <file>i18n/chessx_pt_BR.qm</file>
+        <file alias="fileopen.png">src/fileopen.png</file>
+        <file alias="folder_favorite.png">src/folder_favorite.png</file>
+        <file alias="folder_grey.png">src/folder_grey.png</file>
+        <file alias="folder_locked.png">src/folder_locked.png</file>
+        <file alias="folder_new.png">src/folder_new.png</file>
+        <file alias="folder_txt-png">src/folder_txt.png</file>
+        <file alias="folder2.png">src/folder2.png</file>
     </qresource>
 </RCC>
