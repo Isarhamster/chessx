@@ -1,11 +1,12 @@
 #include "databaselistmodel.h"
 #include <QFileInfo>
 #include <QFont>
+#include <QPixmap>
 
 DatabaseListModel::DatabaseListModel(QObject *parent) :
     QAbstractItemModel(parent)
 {
-    m_columnNames << tr("Name") << tr("Size") << tr("State") << tr("Path");
+    m_columnNames << tr("Favorite") << tr("Name") << tr("Size") << tr("Open") << tr("Path");
 }
 
 QModelIndex DatabaseListModel::index(int row, int column, const QModelIndex &parent) const
@@ -41,13 +42,41 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
 {
     if (index.isValid())
     {
-        if (role == Qt::DisplayRole)
+        if (role == Qt::DecorationRole)
         {
             switch (index.column())
             {
-            case 0:
-                return m_databases.at(index.row()).m_name;
-            case 1:
+            case DBLV_FAVORITE:
+                {
+                    bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
+                    return QPixmap(bIsFavorite ? ":/folder_favorite.png" : ":/folder_grey.png");
+                }
+            case DBLV_OPEN:
+                {
+                    bool bIsOpen = m_databases.at(index.row()).m_state == EDBL_OPEN;
+                    bool bIsCurrent = m_databases.at(index.row()).m_isCurrent;
+                    if (bIsOpen)
+                        return QPixmap(bIsCurrent ? ":/folder_new.png" : ":/fileopen.png");
+                    else
+                        return QVariant();
+                }
+                default:
+                    return QVariant();
+            }
+        }
+        else if (role == Qt::DisplayRole)
+        {
+            switch (index.column())
+            {
+            case DBLV_FAVORITE:
+                return QVariant();
+            case DBLV_NAME:
+            {
+                QString s = m_databases.at(index.row()).m_name;
+                if (s.isEmpty()) return tr("ClipBoard");
+                return s;
+            }
+            case DBLV_SIZE:
             {
                 QStringList sizes;
                 sizes << "" << "k" << "M" << "G" << "T" << "P";
@@ -61,9 +90,9 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 }
                 return QString("%1%2").arg(size).arg(sizes[i]);
             }
-            case 2:
-                return stateString(m_databases.at(index.row()).m_state);
-            case 3:
+            case DBLV_OPEN:
+                return QVariant();
+            case DBLV_PATH:
                 return m_databases.at(index.row()).m_path;
             default:
                 break;
@@ -73,14 +102,38 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
         {
             if (m_databases.at(index.row()).m_isCurrent)
             {
-                if (index.column() == 0) //change font only for cell(0,0)
+                if ((index.column() == DBLV_NAME) || (index.column() == DBLV_PATH))
                 {
                     QFont boldFont;
                     boldFont.setBold(true);
                     return boldFont;
                 }
             }
-       }
+        }
+        else if (role == Qt::ToolTipRole)
+        {
+            switch (index.column())
+            {
+            case DBLV_FAVORITE:
+                {
+                    bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
+                    bool bIsClipBoard = m_databases.at(index.row()).m_name.isEmpty();
+                    return QString(bIsFavorite ? "Favorite" : bIsClipBoard ? "ClipBoard" : "");
+                }
+            case DBLV_PATH:
+                {
+                    QString s = m_databases.at(index.row()).m_name;
+                    return s;
+                }
+            case DBLV_OPEN:
+                {
+                    bool bIsOpen = m_databases.at(index.row()).m_state == EDBL_OPEN;
+                    return QString(bIsOpen ? "Open" : "Closed");
+                }
+            default:
+                break;
+            }
+        }
     }
 
     return QVariant();
@@ -105,26 +158,6 @@ void DatabaseListModel::addEntry(DatabaseListEntry& d, const QString& s)
     endInsertRows();
 }
 
-void DatabaseListModel::addRecentFile(const QString& s)
-{
-    QMutableListIterator<DatabaseListEntry> i(m_databases);
-    DatabaseListEntry d;
-    d.m_path = s;
-    if (i.findNext(d))
-    {
-        DatabaseListEntry& e = i.previous();
-        if ((e.m_state != EDBL_OPEN) && (e.m_state != EDBL_MODIFIED))
-        {
-            e.m_state = e.m_isFavorite ? EDBL_FAVORITE : EDBL_RECENT;
-            QModelIndex m = createIndex(m_databases.indexOf(e),2);
-            emit QAbstractItemModel::dataChanged(m,m);
-        }
-        return;
-    }
-
-    addEntry(d,s);
-}
-
 void DatabaseListModel::addFileOpen(const QString& s)
 {
     QMutableListIterator<DatabaseListEntry> i(m_databases);
@@ -134,10 +167,10 @@ void DatabaseListModel::addFileOpen(const QString& s)
     if (i.findNext(d))
     {
         DatabaseListEntry& e = i.previous();
-        if (e.m_state != EDBL_MODIFIED)
+        if (e.m_state != EDBL_OPEN)
         {
             e.m_state = EDBL_OPEN;
-            QModelIndex m = createIndex(m_databases.indexOf(e),2);
+            QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_OPEN);
             emit QAbstractItemModel::dataChanged(m,m);
         }
         return;
@@ -147,40 +180,24 @@ void DatabaseListModel::addFileOpen(const QString& s)
     addEntry(d,s);
 }
 
-void DatabaseListModel::setFileModified(const QString& s, bool modified)
+void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite)
 {
     QMutableListIterator<DatabaseListEntry> i(m_databases);
     DatabaseListEntry d;
     d.m_path = s;
     if (i.findNext(d))
     {
-        DatabaseListEntry& e = i.previous();
-        e.m_state = modified ? EDBL_MODIFIED : EDBL_OPEN;
-        QModelIndex m = createIndex(m_databases.indexOf(e),2);
-        emit QAbstractItemModel::dataChanged(m,m);
-        return;
-    }
-}
-
-void DatabaseListModel::addFavoriteFile(const QString& s)
-{
-    QMutableListIterator<DatabaseListEntry> i(m_databases);
-    DatabaseListEntry d;
-    d.m_path = s;
-    if (i.findNext(d))
-    {
-        DatabaseListEntry& e = i.previous();
-        if (e.m_state == EDBL_RECENT)
+        DatabaseListEntry& e = i.previous();      
+        if (e.m_isFavorite != bFavorite)
         {
-            e.m_isFavorite = true;
-            e.m_state = EDBL_FAVORITE;
-            QModelIndex m = createIndex(m_databases.indexOf(e),2);
+            e.m_isFavorite = bFavorite;
+            QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_FAVORITE);
             emit QAbstractItemModel::dataChanged(m,m);
         }
         return;
     }
 
-    d.m_state = EDBL_FAVORITE;
+    d.m_isFavorite = bFavorite;
     addEntry(d,s);
 }
 
@@ -194,11 +211,10 @@ void DatabaseListModel::setFileClose(const QString& s)
         DatabaseListEntry& e = i.previous();
         if (e.m_state == EDBL_OPEN)
         {
-            e.m_state = e.m_isFavorite ? EDBL_FAVORITE : EDBL_RECENT;
-            QModelIndex m = createIndex(m_databases.indexOf(e),2);
+            e.m_state = EDBL_CLOSE;
+            QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_OPEN);
             emit QAbstractItemModel::dataChanged(m,m);
         }
-        return;
     }
 }
 
@@ -209,8 +225,9 @@ void DatabaseListModel::setFileCurrent(const QString& s)
         if (m_databases[i].m_isCurrent)
         {
             m_databases[i].m_isCurrent = false;
-            QModelIndex m = createIndex(i,0);
-            emit QAbstractItemModel::dataChanged(m,m);
+            QModelIndex m = createIndex(i,DBLV_NAME);
+            QModelIndex n = createIndex(i,DBLV_PATH);
+            emit QAbstractItemModel::dataChanged(m,n);
         }
     }
 
@@ -221,19 +238,20 @@ void DatabaseListModel::setFileCurrent(const QString& s)
     {
         DatabaseListEntry& e = i.previous();
         e.m_isCurrent = true;
-        QModelIndex m = createIndex(m_databases.indexOf(e),0);
-        emit QAbstractItemModel::dataChanged(m,m);
+        QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_NAME);
+        QModelIndex n = createIndex(m_databases.indexOf(e),DBLV_PATH);
+        emit QAbstractItemModel::dataChanged(m,n);
     }
 }
 
-QString DatabaseListModel::stateString(DatabaseListEntryState e) const
+void DatabaseListModel::toStringList(QStringList& list)
 {
-    switch (e)
+    for (int i=1; i<m_databases.count();i++)
     {
-    case EDBL_RECENT:   return tr("Recent");
-    case EDBL_OPEN:     return tr("Open");
-    case EDBL_MODIFIED: return tr("Modified");
-    case EDBL_FAVORITE: return tr("Favorite");
+        if (m_databases[i].m_isFavorite)
+        {
+            list.append(m_databases[i].m_path);
+        }
     }
-    return "";
 }
+
