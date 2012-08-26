@@ -360,6 +360,7 @@ void MainWindow::slotGameLoadLast()
 
 void MainWindow::slotGameLoadPrevious()
 {
+    QuerySaveGame();
 	int game = m_gameList->currentIndex().row();
 	game = databaseInfo()->filter()->indexToGame(game);
 	game = databaseInfo()->filter()->previousGame(game);
@@ -367,12 +368,13 @@ void MainWindow::slotGameLoadPrevious()
 		m_gameList->selectGame(game);
 		m_gameList->setFocus();
 		m_pending = PendingLoad(database(), game);
-		m_timer->start();
+        QTimer::singleShot(100, this, SLOT(slotGameLoadPending()));
 	}
 }
 
 void MainWindow::slotGameLoadNext()
 {
+    QuerySaveGame();
 	int game = m_gameList->currentIndex().row();
 	game = databaseInfo()->filter()->indexToGame(game);
 	game = databaseInfo()->filter()->nextGame(game);
@@ -380,7 +382,7 @@ void MainWindow::slotGameLoadNext()
 		m_gameList->selectGame(game);
 		m_gameList->setFocus();
 		m_pending = PendingLoad(database(), game);
-		m_timer->start();
+        QTimer::singleShot(100, this, SLOT(slotGameLoadPending()));
 	}
 }
 
@@ -412,7 +414,8 @@ void MainWindow::slotGameNew()
 {
 	if (database()->isReadOnly())
 		MessageDialog::error(tr("This database is read only."));
-	else {
+    else {
+        QuerySaveGame();
 		databaseInfo()->newGame();
 		slotGameChanged();
 	}

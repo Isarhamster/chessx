@@ -17,7 +17,7 @@ QMap<quint64, QString> Game::m_ecoPositions;
 Game::Game()
 {
 	clear();
-	m_isModified = false;
+    setModified(false);
 }
 
 Game::Game(const Game& game)
@@ -41,7 +41,7 @@ Game::Game(const Game& game)
 	for (int i = 0; i < game.m_moveNodes.size(); ++i) {
 		m_moveNodes.append(game.m_moveNodes[i]);
 	}
-	m_isModified = false;
+    setModified(false);
     m_gameComment = "";
 
     //copy annotations
@@ -118,7 +118,7 @@ Game& Game::operator=(const Game & game)
 		for (int i = 0; i < game.m_moveNodes.size(); ++i) {
 			m_moveNodes.append(game.m_moveNodes[i]);
 		}
-		m_isModified = true;
+        setModified(true);
 	}
 	return *this;
 }
@@ -144,7 +144,7 @@ MoveId Game::addMove(const Move& move, const QString& annotation, NagSet nags)
 		setAnnotation(annotation);
 	m_moveNodes[previousNode].nextNode = m_currentNode;
 	m_currentBoard.doMove(move);
-	m_isModified = true;
+    setModified(true);
 
 	return m_currentNode;
 }
@@ -207,7 +207,7 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags)
 	truncateVariation();
 	backward();
 
-	m_isModified = true;
+    setModified(true);
 	return true;
 }
 
@@ -861,13 +861,13 @@ void Game::clear()
 	m_currentBoard = m_startingBoard;
 
 	m_moveNodes.append(MoveNode());
-	m_isModified = true;
+    setModified(true);
 }
 
 void Game::clearTags()
 {
 	m_tags.clear();
-	m_isModified = true;
+    setModified(true);
 }
 
 QString Game::tag(const QString& tag) const
@@ -911,7 +911,7 @@ void Game::setStartingBoard(const QString& fen)
 void Game::setResult(Result result)
 {
 	m_tags["Result"] = resultString(result);
-    m_isModified = true;
+    setModified(true);
 }
 
 QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, MoveId moveId)

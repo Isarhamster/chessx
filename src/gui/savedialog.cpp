@@ -49,6 +49,27 @@ QString formatTagDate(const QString& s)
 
 int SaveDialog::exec(Database* database, Game& game)
 {
+    QString gameTitle;
+    QString baseName = database->name();
+    if (baseName.isEmpty()) baseName = tr("ClipBoard");
+
+    if (game.tag("White").isEmpty() && game.tag("Black").isEmpty())
+    {
+        gameTitle = "Save game to ";
+    }
+    else
+    {
+        QString name1 = game.tag("White");
+        if (name1.isEmpty()) name1 = "?";
+        QString name2 = game.tag("Black");
+        if (name2.isEmpty()) name2 = "?";
+
+        gameTitle = QString("Save game '%1 vs. %2' to ").arg(name1).arg(name2);
+    }
+    gameTitle.append(baseName);
+
+    setWindowTitle(gameTitle);
+
 	ui.whiteEdit->setText(game.tag("White"));
 	ui.whiteEloEdit->setText(game.tag("WhiteElo"));
 	ui.blackEdit->setText(game.tag("Black"));

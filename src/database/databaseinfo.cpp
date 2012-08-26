@@ -89,6 +89,7 @@ bool DatabaseInfo::loadGame(int index, bool reload)
 void DatabaseInfo::newGame()
 {
 	m_game.clear();
+    m_game.setModified(false);
 	m_index = NewGame;
 }
 
@@ -99,12 +100,21 @@ bool DatabaseInfo::saveGame()
 	if (!isValid() || m_database->isReadOnly())
 		return false;
 	if (m_index < m_database->count() && m_index >= 0)
-		return m_database->replace(m_index, m_game);
-	else if (m_index == NewGame && m_database->appendGame(m_game)) {
+    {
+        if (m_database->replace(m_index, m_game))
+        {
+            m_game.setModified(false);
+            return true;
+        }
+    }
+    else if (m_index == NewGame && m_database->appendGame(m_game))
+    {
 		m_filter->resize(m_database->count(), 1);
 		m_index = m_database->count() - 1;
+        m_game.setModified(false);
 		return true;
-	} else return false;
+    }
+    return false;
 }
 
 void DatabaseInfo::resetFilter()

@@ -240,17 +240,10 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_ecothread = new EcoThread(AppSettings->dataPath() + "/chessx");
 	connect(m_ecothread, SIGNAL(loaded()), this, SLOT(ecoLoaded()));
 	m_ecothread->start();
-
-	m_timer = new QTimer(this);
-	m_timer->setInterval(100);
-	m_timer->setSingleShot(true);
-	connect(m_timer, SIGNAL(timeout()), this, SLOT(slotGameLoadPending()));
-
 }
 
 MainWindow::~MainWindow()
 {
-	m_timer->stop();
 	qDeleteAll(m_databases.begin(), m_databases.end());
 	delete m_saveDialog;
 	delete m_playerDialog;
@@ -373,6 +366,7 @@ int MainWindow::gameIndex() const
 
 void MainWindow::gameLoad(int index, bool force, bool reload)
 {
+    QuerySaveGame();
 	if (databaseInfo()->loadGame(index, reload))
 		m_gameList->selectGame(index);
 	else if (!force)
@@ -425,6 +419,8 @@ void MainWindow::updateMenuDatabases()
 
 void MainWindow::openDatabase(QString fname)
 {
+    QuerySaveGame();
+
     QFileInfo fi = QFileInfo(fname);
 
     if (!fname.isEmpty())
@@ -772,6 +768,14 @@ void MainWindow::cancelOperation(const QString& msg)
 {
 	statusBar()->showMessage(msg);
 	statusBar()->removeWidget(m_progressBar);
+}
+
+void MainWindow::QuerySaveGame()
+{
+    if (game().isModified())
+    {
+        slotGameSave();
+    }
 }
 
 void MainWindow::restoreRecentFiles()

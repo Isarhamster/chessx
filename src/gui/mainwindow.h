@@ -256,6 +256,8 @@ private:
 	void cancelOperation(const QString& msg);
     /** Restore the list of recent files */
     void restoreRecentFiles();
+    /** Query User and save game if game was modified */
+    void QuerySaveGame();
 
 	/* Dialogs  */
 	PlayerDialog* m_playerDialog;
@@ -288,7 +290,6 @@ private:
 	QActionGroup* m_actions;
 	bool m_showPgnSource; // for debugging
 	EcoThread* m_ecothread;
-	QTimer* m_timer;
 	QTime m_operationTime;
 	/** Currently updated tree. May be NULL if no updated in progress. */
 	OpeningTree* m_openingTree;
