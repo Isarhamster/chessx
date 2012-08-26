@@ -25,7 +25,7 @@ class CopyDialog : public QDialog
 {
 	Q_OBJECT
 	public:
-		enum {SingleGame, Filter, AllGames};
+        enum SrcMode {SingleGame, Filter, AllGames};
 		/** Create ChessX Preferences dialog */
 		CopyDialog(QWidget* parent = 0);
 		/** Destroy the dialog */
@@ -36,6 +36,8 @@ class CopyDialog : public QDialog
 		int getDatabase() const;
 		/** Get selected mode. */
 		int getMode() const;
+        /** Set the preferred mode. */
+        void setMode(SrcMode mode);
 	private:
 		Ui::CopyDialog ui;
 };

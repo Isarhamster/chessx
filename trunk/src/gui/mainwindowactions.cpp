@@ -633,13 +633,14 @@ void MainWindow::slotDatabaseChange()
 	}
 }
 
-void MainWindow::slotDatabaseCopy()
+void MainWindow::slotDatabaseCopy(int preselect)
 {
 	if (m_databases.count() < 2) {
 		MessageDialog::error(tr("You need at least two open databases to copy games"));
 		return;
 	}
 	CopyDialog dlg(this);
+    dlg.setMode((CopyDialog::SrcMode)preselect);
 	QStringList db;
 	for (int i = 0; i < m_databases.count(); i++)
 		if (i != m_currentDatabase)
@@ -672,6 +673,10 @@ void MainWindow::slotDatabaseCopy()
 	m_databases[target]->filter()->resize(m_databases[target]->database()->count(), 1);
 }
 
+void MainWindow::slotDatabaseCopySingle()
+{
+    slotDatabaseCopy(0);
+}
 
 void MainWindow::slotDatabaseChanged()
 {

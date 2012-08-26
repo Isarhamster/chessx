@@ -37,6 +37,22 @@ int CopyDialog::getDatabase() const
 	return ui.databaseList->currentRow();
 }
 
+void CopyDialog::setMode(SrcMode mode)
+{
+    switch (mode)
+    {
+    case SingleGame:
+        ui.singleButton->setChecked(true);
+        break;
+    case Filter:
+        ui.filterButton->setChecked(true);
+        break;
+    case AllGames:
+        ui.allButton->setChecked(true);
+        break;
+    }
+}
+
 int CopyDialog::getMode() const
 {
 	if (ui.singleButton->isChecked())
