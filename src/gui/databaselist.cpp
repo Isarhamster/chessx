@@ -42,19 +42,19 @@ DatabaseList::~DatabaseList()
 
 void DatabaseList::slotContextMenu(const QPoint& pos)
 {
-    QMenu *menu = new QMenu;
     m_cell = indexAt(pos);
     // Make sure the right click occured on a cell!
     if (m_cell.isValid())
     {
+        QMenu menu(this);
         bool bIsFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::ToolTipRole).toString() == "Favorite";
         bool bIsNotFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::ToolTipRole).toString().isEmpty();
         bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH), Qt::ToolTipRole).toString().isEmpty();
-        menu->addAction("Add to favorites", this, SLOT(dbAddToFavorites()))->setEnabled(bIsNotFavorite);
-        menu->addAction("Remove from Favorites", this, SLOT(dbRemoveFromFavorites()))->setEnabled(bIsFavorite);
-        menu->addSeparator();
-        menu->addAction("Show in Finder", this, SLOT(slotShowInFinder()))->setEnabled(bHasPath);
-        menu->exec(mapToGlobal(pos));
+        menu.addAction(tr("Add to favorites"), this, SLOT(dbAddToFavorites()))->setEnabled(bIsNotFavorite);
+        menu.addAction(tr("Remove from Favorites"), this, SLOT(dbRemoveFromFavorites()))->setEnabled(bIsFavorite);
+        menu.addSeparator();
+        menu.addAction(tr("Show in Finder"), this, SLOT(slotShowInFinder()))->setEnabled(bHasPath);
+        menu.exec(mapToGlobal(pos));
     }
 }
 

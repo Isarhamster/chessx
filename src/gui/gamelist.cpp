@@ -15,6 +15,7 @@
  ***************************************************************************/
 
 #include <QHeaderView>
+#include <QMenu>
 
 #include "filtermodel.h"
 #include "gamelist.h"
@@ -30,6 +31,7 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 	setModel(m_model);
 	connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
 	connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
 
 	horizontalHeader()->setClickable(true);
 	connect(horizontalHeader(), SIGNAL(sectionClicked(int)), SLOT(simpleSearch(int)));
@@ -37,6 +39,12 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
     slotReconfigure();
 
     setSortingEnabled(false);
+}
+
+
+GameList::~GameList()
+{
+    delete m_model;
 }
 
 void GameList::itemSelected(const QModelIndex& index)
@@ -50,9 +58,17 @@ void GameList::setFilter(Filter* filter)
     emit raiseRequest();
 }
 
-GameList::~GameList()
+void GameList::slotContextMenu(const QPoint& pos)
 {
-	delete m_model;
+    QModelIndex cell = indexAt(pos);
+    QModelIndexList selection = selectedIndexes();
+    // Make sure the right click occured on a cell!
+    if (cell.isValid() && selection.contains(cell))
+    {
+        QMenu menu(this);
+        menu.addAction(tr("Copy games..."), this, SLOT(slotCopyGame()));
+        menu.exec(mapToGlobal(pos));
+    }
 }
 
 void GameList::simpleSearch(int tagid)
@@ -123,5 +139,10 @@ void GameList::selectGame(int index)
 void GameList::updateFilter()
 {
     m_model->setFilter(m_model->filter());
+}
+
+void GameList::slotCopyGame()
+{
+    emit requestCopyGame();
 }
 

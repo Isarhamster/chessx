@@ -101,6 +101,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_gameList->setMinimumSize(150, 100);
 	connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
 	connect(m_gameList, SIGNAL(searchDone()), SLOT(slotFilterChanged()));
+    connect(m_gameList, SIGNAL(requestCopyGame()), SLOT(slotDatabaseCopySingle()));
     gameListDock->setWidget(m_gameList);
 	addDockWidget(Qt::BottomDockWidgetArea, gameListDock);
 	m_menuView->addAction(gameListDock->toggleViewAction());

@@ -47,11 +47,18 @@ public slots:
     /** Select and show current game in the list */
     void slotFilterListByPlayer(QString ns);
 private slots:
+    /** Re-emit the request to the receivers to perform some action */
 	void itemSelected(const QModelIndex& index);
+    /** Request a context menu for the list members */
+    void slotContextMenu(const QPoint& pos);
+    /** Request a copy dialog for the game identified by m_cell */
+    void slotCopyGame();
+
 signals:
 	void selected(int);
 	void searchDone();
     void raiseRequest();
+    void requestCopyGame();
 private:
 	FilterModel* m_model;
 };

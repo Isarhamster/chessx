@@ -216,7 +216,9 @@ public slots:
     /** Change database. */
 	void slotDatabaseChange();
 	/** Copy games between databases. */
-	void slotDatabaseCopy();
+    void slotDatabaseCopy(int preselect = 1);
+    /** Copy games between databases. */
+    void slotDatabaseCopySingle();
 	/** Database was changed - change informations. */
 	void slotDatabaseChanged();
 	/** Delete current game. */
