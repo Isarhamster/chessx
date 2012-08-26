@@ -98,10 +98,10 @@ int PositionSearch::matches(int index)
 
 /* EloSearch class
  * **********************/
-EloSearch::EloSearch(Database* database, int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlacElo)
+EloSearch::EloSearch(Database* database, int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlackElo)
 {
 	m_database = database;
-	setEloSearch(minWhiteElo, maxWhiteElo, minBlackElo, maxBlacElo);
+    setEloSearch(minWhiteElo, maxWhiteElo, minBlackElo, maxBlackElo);
 	initialize();
 }
 
@@ -122,12 +122,12 @@ void EloSearch::initialize()
 			QString::number(m_maxBlackElo));
 }
 
-void EloSearch::setEloSearch(int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlacElo)
+void EloSearch::setEloSearch(int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlackElo)
 {
 	m_minWhiteElo = minWhiteElo;
 	m_maxWhiteElo = maxWhiteElo;
 	m_minBlackElo = minBlackElo;
-	m_maxBlackElo = maxBlacElo;
+    m_maxBlackElo = maxBlackElo;
 	initialize();
 }
 

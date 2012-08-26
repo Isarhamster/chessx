@@ -57,13 +57,6 @@ GameList::~GameList()
 
 void GameList::simpleSearch(int tagid)
 {
-
-#ifdef __GNUG__
-#warning Unify with <filtermodel.cpp>
-#else // VisualC++
-#pragma message("Unify with <filtermodel.cpp>")
-#endif
-
 	QuickSearchDialog dialog(this);
 
 	dialog.setTag(tagid);
@@ -75,23 +68,32 @@ void GameList::simpleSearch(int tagid)
     QString tag = m_model->GetColumnTags().at(dialog.tag());
 	QString value = dialog.value();
 	if (value.isEmpty())
+    {
 		m_model->filter()->setAll(1);
-	else if (dialog.tag() == 0) {	// filter by game number
+    }
+    else if (dialog.tag() == 0)
+    {	// filter by game number
 		NumberSearch ns(m_model->filter()->database(), value);
 		if (dialog.mode())
+        {
 			m_model->filter()->executeSearch(ns, Search::Operator(dialog.mode()));
-		else m_model->filter()->executeSearch(ns);
+        }
+        else
+        {
+            m_model->filter()->executeSearch(ns);
+        }
 	}
-	else {
-#ifdef __GNUG__
-#warning Fix after Search::Operator cleanup
-#else // VisualC++
-#pragma message("Fix after Search::Operator cleanup")
-#endif
+    else
+    {
 		TagSearch ts(m_model->filter()->database(), tag, value);
 		if (dialog.mode())
+        {
 			m_model->filter()->executeSearch(ts, Search::Operator(dialog.mode()));
-		else m_model->filter()->executeSearch(ts);
+        }
+        else
+        {
+            m_model->filter()->executeSearch(ts);
+        }
 	}
     updateFilter();
 	emit searchDone();
@@ -101,8 +103,8 @@ void GameList::simpleSearch(int tagid)
 void  GameList::slotFilterListByPlayer(QString s)
 {
     TagSearch ts(m_model->filter()->database(), "White", s);
-    m_model->filter()->executeSearch(ts);
     TagSearch ts2(m_model->filter()->database(), "Black", s);
+    m_model->filter()->executeSearch(ts);
     m_model->filter()->executeSearch(ts2,Search::Or);
     updateFilter();
     emit raiseRequest();	

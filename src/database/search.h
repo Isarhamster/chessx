@@ -101,7 +101,7 @@ class EloSearch : public Search
 public:
 	/** Standard constructor. */
 	EloSearch(Database* database, int minWhiteElo = 0, int maxWhiteElo = 4000,
-		  int minBlackElo = 0, int maxBlacElo = 4000);
+          int minBlackElo = 0, int maxBlackElo = 4000);
 	/** Cloning - probably obsolete. */
 	virtual EloSearch *clone() const;
 	/** Standard destructor. */
@@ -118,7 +118,7 @@ public:
 	int maxBlackElo() const;
 	/** Set acceptable rating ranges. */
 	void setEloSearch(int minWhiteElo = 0, int maxWhiteElo = 4000, int minBlackElo =
-				  0, int maxBlacElo = 4000);
+                  0, int maxBlackElo = 4000);
 	void initialize();
 	/** Return true if the game at index matches the search */
 	virtual int matches(int index);

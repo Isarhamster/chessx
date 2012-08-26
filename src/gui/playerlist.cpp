@@ -20,7 +20,7 @@ PlayerList::PlayerList(QWidget *parent) :
     connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
     connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
 
-    setSortingEnabled(true);
+    setSortingEnabled(false); // Todo: Sorting is extremely slow, reactive if this can be done faster
     configure();
 }
 
