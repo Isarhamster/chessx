@@ -255,13 +255,22 @@ void PreferencesDialog::restoreSettings()
     AppSettings->endGroup();
 
 	QString themeDir(AppSettings->dataPath() + "/themes");
+
+    if (!QFile::exists(themeDir))
+        themeDir = QString(":/themes");
+
 	QStringList themes = QDir(themeDir).entryList(QStringList("*.png"));
 	for (QStringList::Iterator it = themes.begin(); it != themes.end(); ++it) {
 		(*it).truncate((*it).length() - 4);
 		ui.pieceThemeCombo->addItem(*it);
 	}
 
-	themes = QDir(themeDir + "/boards").entryList(QStringList("*.png"));
+    QString boardDir(AppSettings->dataPath() + "/themes/boards");
+
+    if (!QFile::exists(boardDir))
+        boardDir = QString(":/themes/boards");
+
+    themes = QDir(boardDir).entryList(QStringList("*.png"));
 	QStringListIterator it(themes);
 	while (it.hasNext()) {
 		QString trim(it.next());

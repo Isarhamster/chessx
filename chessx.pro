@@ -193,7 +193,6 @@ macx {
  INSTALLATION_DATA.files = data
  INSTALLATION_DATA.path = Contents/MacOS
  QMAKE_BUNDLE_DATA += INSTALLATION_DATA
- ICON = data/images/chessx.icns 
  QMAKE_INFO_PLIST = mac_osx/Info.plist
 }
 
