@@ -64,9 +64,9 @@ bool BoardTheme::isValid() const
 bool BoardTheme::loadPieces(const QString& pieces, int effect)
 {
 	QString effectPath;
-	if (effect == Outline) effectPath = "/outline";
-	else if (effect == Shadow) effectPath = "/shadow";
-	QString themePath = QString("%1%2/%3.png").arg(themeDirectory()).arg(effectPath).arg(pieces);
+    if (effect == Outline) effectPath = "outline";
+    else if (effect == Shadow) effectPath = "shadow";
+    QString themePath = QString("%1/%2/%3.png").arg(themeDirectory()).arg(effectPath).arg(pieces);
 
 	QPixmap big;
 	if (!big.load(themePath) || big.width() < 160)
@@ -104,7 +104,7 @@ bool BoardTheme::loadBoard(const QString& board)
 		updateSquares();
 		return true;
 	}
-	QString themePath = QString("%1/boards/%2.png").arg(themeDirectory()).arg(board);
+    QString themePath = QString("%1/%2.png").arg(boardDirectory()).arg(board);
 	QPixmap big;
 	if (!big.load(themePath))
 		return false;
@@ -183,7 +183,20 @@ void BoardTheme::updateSquares()
 
 QString BoardTheme::themeDirectory() const
 {
-	return AppSettings->dataPath() + "/themes";
+    QString path = AppSettings->dataPath() + "/themes";
+    if (QFile::exists(path))
+        return path;
+    else
+        return QString(":/themes");
+}
+
+QString BoardTheme::boardDirectory() const
+{
+    QString path = AppSettings->dataPath() + "/themes/boards";
+    if (QFile::exists(path))
+        return path;
+    else
+        return QString(":/themes/boards");
 }
 
 bool BoardTheme::isBoardPlain() const

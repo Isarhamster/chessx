@@ -122,7 +122,7 @@ public:
 	 * Sets the filename of the file that contains the template that will be used
 	 * when creating the output. See example template files for syntax.
 	 * @param filename The full path to the file containing the template for the output */
-	void setTemplateFile(const QString& filename = "");
+    void setTemplateFile(QString filename = "");
 	/** Static list of objects. */
 	static QMap<OutputType, QString>& getFormats();
 

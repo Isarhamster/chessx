@@ -14,5 +14,30 @@
         <file alias="folder_new.png">src/folder_new.png</file>
         <file alias="folder_txt-png">src/folder_txt.png</file>
         <file alias="folder2.png">src/folder2.png</file>
+        <file alias="templates/html-default.template">data/templates/html-default.template</file>
+        <file alias="templates/latex-default.template">data/templates/latex-default.template</file>
+        <file alias="templates/notation-default.template">data/templates/notation-default.template</file>
+        <file alias="templates/pgn-default.template">data/templates/pgn-default.template</file>
+        <file alias="themes/boards/aluminium.png">data/themes/boards/aluminium.png</file>
+        <file alias="themes/boards/cherry.png">data/themes/boards/cherry.png</file>
+        <file alias="themes/boards/lapis.png">data/themes/boards/lapis.png</file>
+        <file alias="themes/boards/marble.png">data/themes/boards/marble.png</file>
+        <file alias="themes/boards/sand.png">data/themes/boards/sand.png</file>
+        <file alias="themes/boards/slate.png">data/themes/boards/slate.png</file>
+        <file alias="themes/boards/wood.png">data/themes/boards/wood.png</file>
+        <file alias="themes/alpha.png">data/themes/alpha.png</file>
+        <file alias="themes/berlin.png">data/themes/berlin.png</file>
+        <file alias="themes/fantasy.png">data/themes/fantasy.png</file>
+        <file alias="themes/leipzig.png">data/themes/leipzig.png</file>
+        <file alias="themes/merida.png">data/themes/merida.png</file>
+        <file alias="themes/spatial.png">data/themes/spatial.png</file>
+        <file alias="themes/outline/alpha.png">data/themes/outline/alpha.png</file>
+        <file alias="themes/outline/berlin.png">data/themes/outline/berlin.png</file>
+        <file alias="themes/outline/leipzig.png">data/themes/outline/leipzig.png</file>
+        <file alias="themes/outline/merida.png">data/themes/outline/merida.png</file>
+        <file alias="themes/shadow/alpha.png">data/themes/shadow/alpha.png</file>
+        <file alias="themes/shadow/berlin.png">data/themes/shadow/berlin.png</file>
+        <file alias="themes/shadow/leipzig.png">data/themes/shadow/leipzig.png</file>
+        <file alias="themes/shadow/merida.png">data/themes/shadow/merida.png</file>
     </qresource>
 </RCC>

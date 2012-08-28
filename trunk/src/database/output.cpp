@@ -504,47 +504,39 @@ void Output::output(const QString& filename, Database& database)
 	f.close();
 }
 
-void Output::setTemplateFile(const QString& filename)
+void Output::setTemplateFile(QString filename)
 {
 	if (filename.isEmpty()) {
 		switch (m_outputType) {
 		case Html:
-			m_templateFilename = DEFAULT_HTML_TEMPLATE;
+            filename = DEFAULT_HTML_TEMPLATE;
 			break;
 		case Latex:
-			m_templateFilename = DEFAULT_LATEX_TEMPLATE;
+            filename = DEFAULT_LATEX_TEMPLATE;
 			break;
 		case NotationWidget:
-			m_templateFilename = DEFAULT_NOTATION_TEMPLATE;
+            filename = DEFAULT_NOTATION_TEMPLATE;
 			break;
 		case Pgn:
-			m_templateFilename = DEFAULT_PGN_TEMPLATE;
+            filename = DEFAULT_PGN_TEMPLATE;
 			break;
 		default :
 			qWarning("Could not decide which template file to use. Maybe strange OutputType");
 		}
-	} else {
-		m_templateFilename = filename;
-	}
+    }
 
-	if (!QFile::exists(m_templateFilename)) {
-		QString dataPath;
-		if (AppSettings) {
-			dataPath = AppSettings->dataPath();
-		} else {
-			/* This is temporary. AppSettings should always be defined.
-			 * This enables testing the class in isolation from the main
-			 * program
-			 */
-			dataPath = "/home/mroets/data/chessx/qt3/data";
-		}
-		m_templateFilename = dataPath + "/" + TEMPLATE_DIR + "/" + m_templateFilename;
+    if (!QFile::exists(filename)) {
+        QString dataPath = AppSettings->dataPath();
+
+        m_templateFilename = dataPath + "/" + TEMPLATE_DIR + "/" + filename;
 		if (!QFile::exists(m_templateFilename)) {
-			qWarning("Could not set template file");
+            m_templateFilename = ":/" + TEMPLATE_DIR + "/" + filename;
 		}
-
 	}
-
+    else
+    {
+        m_templateFilename = filename;
+    }
 }
 
 void Output::setMarkupTag(MarkupType type, const QString& startTag, const QString& endTag)
