@@ -57,8 +57,10 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH), Qt::ToolTipRole).toString().isEmpty();
         menu.addAction(tr("Add to favorites"), this, SLOT(dbAddToFavorites()))->setEnabled(bIsNotFavorite);
         menu.addAction(tr("Remove from Favorites"), this, SLOT(dbRemoveFromFavorites()))->setEnabled(bIsFavorite);
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
         menu.addSeparator();
         menu.addAction(tr("Show in Finder"), this, SLOT(slotShowInFinder()))->setEnabled(bHasPath);
+#endif
         menu.exec(mapToGlobal(pos));
     }
 }
@@ -98,15 +100,11 @@ void DatabaseList::slotShowInFinder()
     QString pathIn = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
     // Mac, Windows support folder or file.
 #if defined(Q_OS_WIN)
-    const QString explorer = Environment::systemEnvironment().searchInPath(QLatin1String("explorer.exe"));
-    if (explorer.isEmpty()) {
-        return;
-    }
     QString param;
     if (!QFileInfo(pathIn).isDir())
         param = QLatin1String("/select,");
     param += QDir::toNativeSeparators(pathIn);
-    QProcess::startDetached(explorer, QStringList(param));
+    QProcess::startDetached("explorer.exe", QStringList(param));
 #elif defined(Q_OS_MAC)
     QStringList scriptArgs;
     scriptArgs << QLatin1String("-e")
@@ -117,18 +115,6 @@ void DatabaseList::slotShowInFinder()
     scriptArgs << QLatin1String("-e")
                << QLatin1String("tell application \"Finder\" to activate");
     QProcess::execute("/usr/bin/osascript", scriptArgs);
-#else
-    // we cannot select a file here, because no file browser really supports it...
-    const QFileInfo fileInfo(pathIn);
-    const QString folder = fileInfo.absoluteFilePath();
-    const QString app = Utils::UnixUtils::fileBrowser(Core::ICore::instance()->settings());
-    QProcess browserProc;
-    const QString browserArgs = Utils::UnixUtils::substituteFileBrowserParameters(app, folder);
-    if (debug)
-        qDebug() <<  browserArgs;
-    bool success = browserProc.startDetached(browserArgs);
-    const QString error = QString::fromLocal8Bit(browserProc.readAllStandardError());
-    success = success && error.isEmpty();
 #endif
 }
 
