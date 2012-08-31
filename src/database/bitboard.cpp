@@ -1485,6 +1485,12 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
     if (pCaptured == King)
     {
         // This test became necessary with Null-Moves
+        if (m_stm == Black)
+            move.setBlack();
+        move.u = m_halfMoves;
+        move.u |= (((ushort) m_castle & 0xF) << 8);
+        move.u |= (((ushort) m_epFile & 0xF) << 12);
+
         return move;
     }
 	if (p == King) {
