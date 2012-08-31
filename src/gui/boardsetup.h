@@ -42,7 +42,6 @@ public:
 	void setFlipped(bool flipped);
 	/** Return current board */
 	Board board() const;
-    QDrag* m_pDrag;
 
 public slots:
 	/** Execute dialog */

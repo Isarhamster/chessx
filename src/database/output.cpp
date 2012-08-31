@@ -504,6 +504,16 @@ void Output::output(const QString& filename, Database& database)
 	f.close();
 }
 
+void Output::append(const QString& filename, Game& game)
+{
+    QFile f(filename);
+    if (!f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+        return;
+    QTextStream out(&f);
+    out << output(&game);
+    f.close();
+}
+
 void Output::setTemplateFile(QString filename)
 {
 	if (filename.isEmpty()) {

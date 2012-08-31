@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #include "databaselistmodel.h"
 #include <QFileInfo>
 #include <QFont>

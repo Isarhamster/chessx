@@ -16,12 +16,15 @@
 
 #include <QHeaderView>
 #include <QMenu>
+#include <QDrag>
 
 #include "filtermodel.h"
 #include "gamelist.h"
 #include "quicksearch.h"
 #include "search.h"
 #include "settings.h"
+#include "GameMimeData.h"
+#include "game.h"
 
 GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 {
@@ -39,6 +42,7 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
     slotReconfigure();
 
     setSortingEnabled(false);
+    setDragEnabled(true);
 }
 
 
@@ -50,6 +54,7 @@ GameList::~GameList()
 void GameList::itemSelected(const QModelIndex& index)
 {
 	emit selected(m_model->filter()->indexToGame(index.row()));
+    startDrag(index);
 }
 
 void GameList::setFilter(Filter* filter)
@@ -144,5 +149,19 @@ void GameList::updateFilter()
 void GameList::slotCopyGame()
 {
     emit requestCopyGame();
+}
+
+void GameList::startDrag(const QModelIndex&)
+{
+    GameMimeData *mimeData = new GameMimeData;
+    emit requestGameData(mimeData->m_game);
+    QPixmap pixmap = style()->standardPixmap(QStyle::SP_FileIcon);
+
+    QDrag* pDrag = new QDrag(this);
+    pDrag->setMimeData(mimeData);
+    pDrag->setPixmap(pixmap);
+    // pDrag->setHotSpot(hotSpot);
+
+    pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
 }
 

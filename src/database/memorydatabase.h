@@ -39,7 +39,7 @@ public:
 	/** @return whether the database was modified. */
 	bool isModified() const	{ return m_isModified; }
 	/** Adds a game to the database */
-	bool appendGame(Game& game);
+    bool appendGame(const Game& game);
 	/** Removes a game from the database */
 	bool remove(int index);
 	/** Removes multiple games from the database as specified by the filter */

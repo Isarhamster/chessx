@@ -371,12 +371,12 @@ void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
 
     QPixmap pixmap = *child->pixmap();
 
-    m_pDrag = new QDrag(this);
-    m_pDrag->setMimeData(mimeData);
-    m_pDrag->setPixmap(pixmap);
-    m_pDrag->setHotSpot(hotSpot);
+    QDrag* pDrag = new QDrag(this);
+    pDrag->setMimeData(mimeData);
+    pDrag->setPixmap(pixmap);
+    pDrag->setHotSpot(hotSpot);
 
-    Qt::DropAction dropAction = m_pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+    Qt::DropAction dropAction = pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
 
     if (dropAction == Qt::MoveAction)
         child->close();

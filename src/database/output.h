@@ -107,7 +107,7 @@ public:
 	/** Create the output for the given game
 	 * @return A string containing the game in the specified format
 	 * @param game A pointer to the game object being output */
-	QString output(Game* game);
+    QString output(Game* game);
 	/** Create the output for the given filter
 	 * @param filename The filename that the output will be written to.
 	 * @param filter A Filter object. All games in the filter will be output, one
@@ -118,7 +118,11 @@ public:
 	 * @param database A pointer to a database object. All games in the database will be output, one
 	 *               after the other, using the output(Game* game) method */
 	void output(const QString& filename, Database& database);
-	/** User definable settings.
+
+    /** Append output to a closed file */
+    void append(const QString& filename, Game& game);
+
+    /** User definable settings.
 	 * Sets the filename of the file that contains the template that will be used
 	 * when creating the output. See example template files for syntax.
 	 * @param filename The full path to the file containing the template for the output */

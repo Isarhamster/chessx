@@ -18,6 +18,7 @@
 #define __GAMELIST_H__
 
 #include "tableview.h"
+#include "game.h"
 
 class Filter;
 class FilterModel;
@@ -59,6 +60,11 @@ signals:
 	void searchDone();
     void raiseRequest();
     void requestCopyGame();
+    void requestGameData(Game&);
+
+protected: //Drag'n'Drop Support
+    void startDrag(const QModelIndex&);
+
 private:
 	FilterModel* m_model;
 };

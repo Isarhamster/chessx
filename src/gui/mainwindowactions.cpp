@@ -633,6 +633,27 @@ void MainWindow::slotDatabaseChange()
 	}
 }
 
+void MainWindow::copyGame(int target, const Game& game)
+{
+    if (m_databases[target]->isValid())
+    {
+        m_databases[target]->database()->appendGame(game);
+    }
+}
+
+void MainWindow::copyGame(QString fileName, const Game& game)
+{
+    for (int i=0; i < m_databases.count(); ++i)
+    {
+        if (m_databases[i]->filePath() == fileName)
+        {
+            copyGame(i,game);
+            m_databases[i]->filter()->resize(m_databases[i]->database()->count(), true);
+            break;
+        }
+    }
+}
+
 void MainWindow::slotDatabaseCopy(int preselect)
 {
 	if (m_databases.count() < 2) {
@@ -642,7 +663,7 @@ void MainWindow::slotDatabaseCopy(int preselect)
 	CopyDialog dlg(this);
     dlg.setMode((CopyDialog::SrcMode)preselect);
 	QStringList db;
-	for (int i = 0; i < m_databases.count(); i++)
+    for (int i = 0; i < m_databases.count(); ++i)
 		if (i != m_currentDatabase)
 			db.append(tr("%1. %2 (%3 games)").arg(i).arg(databaseName(i))
 				  .arg(m_databases[i]->database()->count()));
@@ -670,7 +691,7 @@ void MainWindow::slotDatabaseCopy(int preselect)
 	default:
 		;
 	}
-	m_databases[target]->filter()->resize(m_databases[target]->database()->count(), 1);
+    m_databases[target]->filter()->resize(m_databases[target]->database()->count(), true);
 }
 
 void MainWindow::slotDatabaseCopySingle()
@@ -773,6 +794,11 @@ void MainWindow::slotDatabaseCompact()
 	databaseInfo()->resetFilter();
 	slotDatabaseChanged();
 	m_gameList->updateFilter();
+}
+
+void MainWindow::slotGetGameData(Game& g)
+{
+    g = game();
 }
 
 

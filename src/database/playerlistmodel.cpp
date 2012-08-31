@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #include "playerlistmodel.h"
 #include "database.h"
 #include "playerinfo.h"

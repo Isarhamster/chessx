@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #ifndef DATABASELISTMODEL_H
 #define DATABASELISTMODEL_H
 

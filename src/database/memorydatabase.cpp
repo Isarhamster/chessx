@@ -23,14 +23,13 @@ MemoryDatabase::~MemoryDatabase()
 	}
 }
 
-bool MemoryDatabase::appendGame(Game& game)
+bool MemoryDatabase::appendGame(const Game& game)
 {
-	int index = m_count;
 	// Add to index
 	QMap <QString, QString> tags = game.tags();
 	QMap <QString, QString>::const_iterator i = tags.constBegin();
 	while (i != tags.constEnd()) {
-		m_index.setTag(i.key(), i.value(), index);
+        m_index.setTag(i.key(), i.value(), m_count);
 		++i;
 	}
 	// Upate game array
