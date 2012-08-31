@@ -102,6 +102,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
 	connect(m_gameList, SIGNAL(searchDone()), SLOT(slotFilterChanged()));
     connect(m_gameList, SIGNAL(requestCopyGame()), SLOT(slotDatabaseCopySingle()));
+    connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
     gameListDock->setWidget(m_gameList);
 	addDockWidget(Qt::BottomDockWidgetArea, gameListDock);
 	m_menuView->addAction(gameListDock->toggleViewAction());
@@ -133,6 +134,10 @@ MainWindow::MainWindow() : QMainWindow(),
     dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
     connect(m_databaseList, SIGNAL(requestOpenDatabase(QString)),
             this, SLOT(openDatabase(QString)));
+    connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
+            this, SLOT(setFavoriteDatabase(QString)));
+    connect(m_databaseList, SIGNAL(requestAppendGame(QString,const Game&)),
+            this, SLOT(copyGame(QString,const Game&)));
     m_databaseList->addFileOpen(QString());
     m_databaseList->setFileCurrent(QString());
     restoreRecentFiles();
@@ -416,6 +421,11 @@ void MainWindow::updateMenuDatabases()
 		m_databaseActions[i]->setVisible(false);
 		m_databaseActions[i]->setShortcut(0);
 	}
+}
+
+void MainWindow::setFavoriteDatabase(QString fname)
+{
+   m_databaseList->setFileFavorite(fname, true);
 }
 
 void MainWindow::openDatabase(QString fname)

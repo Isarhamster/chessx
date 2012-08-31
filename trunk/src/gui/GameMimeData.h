@@ -2,10 +2,18 @@
 *   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
-#ifndef LOGSTRAM_H
-#define LOGSTRAM_H
+#ifndef GAMEMIMEDATA_H
+#define GAMEMIMEDATA_H
 
-void startFileLog();
-void stopFileLog();
+#include <QMimeData>
+#include "game.h"
 
-#endif // LOGSTRAM_H
+class GameMimeData : public QMimeData
+{
+    Q_OBJECT
+
+public:
+    Game m_game;
+};
+
+#endif // GAMEMIMEDATA_H

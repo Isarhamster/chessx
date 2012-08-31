@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #include "databaselist.h"
 #include "databaselistmodel.h"
 #include <QHeaderView>
@@ -5,6 +9,7 @@
 #include <QMenu>
 #include <QtGui>
 #include "settings.h"
+#include "GameMimeData.h"
 
 DatabaseList::DatabaseList(QWidget *parent) :
     TableView(parent)
@@ -158,12 +163,19 @@ void DatabaseList::setFileCurrent(const QString& s)
 
 void DatabaseList::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (event->mimeData()->hasUrls())
+    m_lastModifier = event->keyboardModifiers();
+
+    const QMimeData *mimeData = event->mimeData();
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+
+    if (gameMimeData || event->mimeData()->hasUrls())
         event->acceptProposedAction();
 }
 
 void DatabaseList::dragMoveEvent(QDragMoveEvent *event)
 {
+    m_lastModifier = event->keyboardModifiers();
+
     event->acceptProposedAction();
 }
 
@@ -175,15 +187,36 @@ void DatabaseList::dragLeaveEvent(QDragLeaveEvent *event)
 void DatabaseList::dropEvent(QDropEvent *event)
 {
     const QMimeData *mimeData = event->mimeData();
-    if (mimeData->hasUrls())
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    if (gameMimeData)
+    {
+        appendGameToDataBase(event->pos(), gameMimeData->m_game);
+    }
+    else if (mimeData->hasUrls())
     {
         QList<QUrl> urlList = mimeData->urls();
         foreach(QUrl url, urlList)
         {
             QString ts = url.toLocalFile();
             emit requestOpenDatabase(ts);
+
+            if (m_lastModifier == Qt::AltModifier)
+            {
+                emit requestLinkDatabase(ts);
+            }
         }
     }
 
     event->acceptProposedAction();
+}
+
+void DatabaseList::appendGameToDataBase(QPoint pos, const Game& g)
+{
+    m_cell = indexAt(pos);
+    // Make sure the drop occured on a cell!
+    if (m_cell.isValid())
+    {
+        QString path = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
+        emit requestAppendGame(path, g);
+    }
 }

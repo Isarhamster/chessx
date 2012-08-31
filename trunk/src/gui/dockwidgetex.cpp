@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #include "dockwidgetex.h"
 
 DockWidgetEx::DockWidgetEx(const QString &title, QWidget *parent, Qt::WindowFlags flags) :

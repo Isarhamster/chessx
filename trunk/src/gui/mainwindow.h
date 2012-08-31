@@ -91,6 +91,8 @@ protected:
 public slots:
     /** Open database */
     void openDatabase(QString fname);
+    /** Add favorite status to a database */
+    void setFavoriteDatabase(QString fname);
     /** Open Player dialog */
 	void slotPlayerDialog();
 	/** Promote current variation. */
@@ -229,6 +231,14 @@ public slots:
 	void slotDatabaseCompact();
     /** Slot that updates internal info upon loading a complete db */
     void slotDataBaseLoaded(DatabaseInfo* db);
+    /** Fill up the current game (drag request from game list) */
+    void slotGetGameData(Game& g);
+    /** Copy game from other database by drag'n'drop */
+    void copyGame(QString fileName, const Game& game);
+
+protected:
+    void copyGame(int target, const Game& game);
+
 
 signals:
 	/** Re-read configuration. */

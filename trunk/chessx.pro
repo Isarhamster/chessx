@@ -97,7 +97,8 @@ HEADERS += src/database/board.h \
     src/gui/databaselistmodel.h \
     src/gui/dockwidgetex.h \
     src/gui/logstream.h \
-    src/gui/boardsetuptoolbutton.h
+    src/gui/boardsetuptoolbutton.h \
+    src/gui/GameMimeData.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \

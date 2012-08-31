@@ -1,7 +1,13 @@
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #ifndef DATABASELIST_H
 #define DATABASELIST_H
 
 #include "tableview.h"
+#include "game.h"
+
 class QSortFilterProxyModel;
 class DatabaseListModel;
 
@@ -23,12 +29,17 @@ public slots:
 signals:
     void selected(int);
     void requestOpenDatabase(QString s);
+    void requestLinkDatabase(QString s);
+    void requestAppendGame(QString path, const Game& game);
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
+
+    void appendGameToDataBase(QPoint, const Game& g);
+
 
 private slots:
     void itemSelected(const QModelIndex& index);
@@ -42,6 +53,7 @@ private:
     DatabaseListModel* m_model;
     QSortFilterProxyModel* m_filterModel;
     QModelIndex m_cell;
+    Qt::KeyboardModifiers m_lastModifier;
 };
 
 #endif // DATABASELIST_H

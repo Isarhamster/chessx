@@ -69,7 +69,7 @@ public:
 	/** Saves a game at the given position, returns true if successful */
 	virtual bool replace(int , Game&) { return false; }
 	/** Adds a game to the database */
-	virtual bool appendGame(Game&) { return false; }
+    virtual bool appendGame(const Game&) { return false; }
 	/** Removes a game from the database */
 	virtual bool remove(int) { return false; };
 	/** Removes multiple games from the database as specified by the filter */

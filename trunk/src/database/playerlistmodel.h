@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #ifndef PLAYERLISTMODEL_H
 #define PLAYERLISTMODEL_H
 
