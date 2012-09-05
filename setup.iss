@@ -41,15 +41,14 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "bin\chessx.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "release\bin\chessx.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "COPYING"; DestDir: "{app}"; Flags: ignoreversion
 Source: "TODO"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Changelog"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\MinGW\bin\mingwm10.dll"; DestDir: "{sys}";
-Source: "data\*.*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs
-Source: "C:\Qt\4.5.0\bin\QtCore4.dll"; DestDir: "{sys}";
-Source: "C:\Qt\4.5.0\bin\QtGui4.dll"; DestDir: "{sys}";
-Source: "C:\Qt\4.5.0\bin\QtNetwork4.dll"; DestDir: "{sys}";
+Source: "win32\mingwm10.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "win32\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "win32\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "win32\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
