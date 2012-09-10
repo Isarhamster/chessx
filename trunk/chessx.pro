@@ -178,14 +178,21 @@ TEMPLATE = app
 INCLUDEPATH += src/database
 INCLUDEPATH += src/guess
 INCLUDEPATH += src/gui
-TARGET = bin/chessx
 
 UI_DIR = src/generated
 MOC_DIR = src/generated
 RCC_DIR = src/generated
 
-debug:OBJECTS_DIR = obj_dbg
-release:OBJECTS_DIR = obj_rel
+CONFIG(debug, debug|release) {
+    DESTDIR = "debug"
+    OBJECTS_DIR = "obj_dbg"
+}
+CONFIG(release, debug|release) {
+    DESTDIR = "release"
+    OBJECTS_DIR = "obj_rel"
+}
+
+TARGET = chessx
 
 ICON = data/images/chessx.icns
 RC_FILE = src/chessx.rc
@@ -209,7 +216,7 @@ TRANSLATIONS = i18n/chessx_de.ts \
 
 # automatically build translations
 isEmpty(QMAKE_LRELEASE) {
-     win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe
+     win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
      else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
 }
 isEmpty(TS_DIR):TS_DIR = i18n
