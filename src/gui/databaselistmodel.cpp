@@ -248,6 +248,20 @@ void DatabaseListModel::setFileCurrent(const QString& s)
     }
 }
 
+void DatabaseListModel::update(const QString& s)
+{
+    QMutableListIterator<DatabaseListEntry> i(m_databases);
+    DatabaseListEntry d;
+    d.m_path = s;
+    if (i.findNext(d))
+    {
+        DatabaseListEntry& e = i.previous();
+        QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_NAME);
+        QModelIndex n = createIndex(m_databases.indexOf(e),DBLV_PATH);
+        emit QAbstractItemModel::dataChanged(m,n);
+    }
+}
+
 void DatabaseListModel::toStringList(QStringList& list)
 {
     for (int i=1; i<m_databases.count();i++)

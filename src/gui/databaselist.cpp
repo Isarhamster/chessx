@@ -147,6 +147,11 @@ void DatabaseList::setFileCurrent(const QString& s)
     m_model->setFileCurrent(s);
 }
 
+void DatabaseList::update(const QString& s)
+{
+    m_model->update(s);
+}
+
 void DatabaseList::dragEnterEvent(QDragEnterEvent *event)
 {
     m_lastModifier = event->keyboardModifiers();

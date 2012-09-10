@@ -37,7 +37,7 @@ public:
 	/** Close database. */
 	void close();
 	/** @return @p true if database is valid */
-    bool isValid() const  {return m_bLoaded?m_database:0;}
+    bool isValid() const  {return m_bLoaded?m_database!=0:false;}
 	/** @return Database object */
     Database* database()  {return m_database;}
 	/** @return current filter */

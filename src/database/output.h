@@ -154,7 +154,7 @@ private:
 	/** Character/string used for newline */
 	QString m_newlineChar;
 	/** Pointer to the game being exported */
-	Game * m_game;
+    Game * m_game;
 	/** The export result */
 	QString m_output;
 	/** Map containing the different types of outputs available, and a description of each */
