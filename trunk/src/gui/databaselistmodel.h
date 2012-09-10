@@ -61,6 +61,7 @@ public slots:
     void addFavoriteFile(const QString& s, bool bFavorite);
     void setFileClose(const QString& s);
     void setFileCurrent(const QString& s);
+    void update(const QString& s);
 
 public:
     void toStringList(QStringList&);

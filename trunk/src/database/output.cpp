@@ -398,7 +398,7 @@ void Output::writeAllTags()
 
 QString Output::output(Game* game)
 {
-	m_game = game;
+    m_game = game;
 	int id = m_game->currentMove();
 	m_currentVariationLevel = 0;
 

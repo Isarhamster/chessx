@@ -637,6 +637,7 @@ void MainWindow::copyGame(int target, const Game& game)
 {
     if (m_databases[target]->isValid())
     {
+        // The database is open and accessible
         m_databases[target]->database()->appendGame(game);
     }
 }
@@ -647,11 +648,20 @@ void MainWindow::copyGame(QString fileName, const Game& game)
     {
         if (m_databases[i]->filePath() == fileName)
         {
-            copyGame(i,game);
-            m_databases[i]->filter()->resize(m_databases[i]->database()->count(), true);
-            break;
+            if (m_databases[i]->isValid())
+            {
+                copyGame(i,game);
+                m_databases[i]->filter()->resize(m_databases[i]->database()->count(), true);
+            }
+            return;
         }
     }
+
+    // The database is closed
+    Output writer(Output::Pgn);
+    Game g = game;
+    writer.append(fileName, g);
+    m_databaseList->update(fileName);
 }
 
 void MainWindow::slotDatabaseCopy(int preselect)
