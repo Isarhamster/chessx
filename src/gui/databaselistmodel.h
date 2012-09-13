@@ -56,6 +56,9 @@ class DatabaseListModel : public QAbstractItemModel
 public:
     explicit DatabaseListModel(QObject *parent = 0);
 
+signals:
+    void OnSelectIndex(const QModelIndex&);
+
 public slots:
     void addFileOpen(const QString& s);
     void addFavoriteFile(const QString& s, bool bFavorite);
