@@ -242,9 +242,11 @@ void DatabaseListModel::setFileCurrent(const QString& s)
     {
         DatabaseListEntry& e = i.previous();
         e.m_isCurrent = true;
-        QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_NAME);
-        QModelIndex n = createIndex(m_databases.indexOf(e),DBLV_PATH);
+        int index = m_databases.indexOf(e);
+        QModelIndex m = createIndex(index,DBLV_NAME);
+        QModelIndex n = createIndex(index,DBLV_PATH);
         emit QAbstractItemModel::dataChanged(m,n);
+        emit OnSelectIndex(createIndex(index,DBLV_FAVORITE));
     }
 }
 

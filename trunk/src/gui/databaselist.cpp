@@ -30,6 +30,7 @@ DatabaseList::DatabaseList(QWidget *parent) :
     connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
     connect(m_filterModel, SIGNAL(rowsInserted(const QModelIndex &,int,int)), SLOT(rowsChanged (const QModelIndex &,int,int)));
+    connect(m_model, SIGNAL(OnSelectIndex(const QModelIndex &)), SLOT(slotCurrentIndexChanged (const QModelIndex &)));
 
     setSortingEnabled(false);
     setAcceptDrops(true);
@@ -43,6 +44,12 @@ DatabaseList::DatabaseList(QWidget *parent) :
 
 DatabaseList::~DatabaseList()
 {
+}
+
+void DatabaseList::slotCurrentIndexChanged(const QModelIndex& source)
+{
+    QModelIndex i = m_filterModel->mapFromSource(source);
+    selectRow(i.row());
 }
 
 void DatabaseList::slotContextMenu(const QPoint& pos)
