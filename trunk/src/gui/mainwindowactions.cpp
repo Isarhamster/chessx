@@ -88,7 +88,7 @@ void MainWindow::slotFileSave()
 	else if (m_currentDatabase && dynamic_cast<MemoryDatabase*>(database())) {
 		startOperation(tr("Saving %1...").arg(database()->name()));
 		Output output(Output::Pgn);
-        connect(&output, SIGNAL(progress(int,bool&)), SLOT(slotOperationProgress(int,bool&)));
+        connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
 		output.output(database()->filename(), *database());
 		finishOperation(tr("%1 saved").arg(database()->name()));
 	}
