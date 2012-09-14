@@ -39,5 +39,6 @@
         <file alias="themes/shadow/berlin.png">data/themes/shadow/berlin.png</file>
         <file alias="themes/shadow/leipzig.png">data/themes/shadow/leipzig.png</file>
         <file alias="themes/shadow/merida.png">data/themes/shadow/merida.png</file>
+        <file alias="themes/boards/mahogony.png">data/themes/boards/mahogony.png</file>
     </qresource>
 </RCC>

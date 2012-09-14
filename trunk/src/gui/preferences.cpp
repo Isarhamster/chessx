@@ -245,7 +245,7 @@ void PreferencesDialog::restoreSettings()
     ui.minWheelCount->setValue(AppSettings->value("minWheelCount", MIN_WHEEL_COUNT).toInt());
 	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
 	ui.pieceEffect->setCurrentIndex(AppSettings->value("pieceEffect", 2).toInt());
-	QString boardTheme = AppSettings->value("boardTheme", "aluminium").toString();
+    QString boardTheme = AppSettings->value("boardTheme", "mahogony").toString();
 
     ui.boardColorsList->clear();
     restoreColorItem(ui.boardColorsList, tr("Light squares"), "lightColor", QColor(Qt::lightGray));
