@@ -124,7 +124,7 @@ void BoardTheme::configure()
 {
 	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
 	int pieceEffect = AppSettings->value("pieceEffect", Shadow).toInt();
-	QString boardTheme = AppSettings->value("boardTheme", "aluminium").toString();
+    QString boardTheme = AppSettings->value("boardTheme", "mahogony").toString();
 
 	if (!loadPieces(pieceTheme, pieceEffect) &&
 		 !loadPieces(pieceTheme, Plain) &&
