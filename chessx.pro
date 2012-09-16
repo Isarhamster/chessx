@@ -3,6 +3,11 @@ DEFINES +=
 CONFIG += uic warn_on
 QT += xml network
 
+static { // Everything below takes effect with CONFIG += static
+    DEFINES += STATIC
+    message("Static build.")
+}
+
 macx {
 	QMAKE_CXXFLAGS += -fvisibility=hidden
 }
@@ -192,27 +197,32 @@ CONFIG(release, debug|release) {
     OBJECTS_DIR = "obj_rel"
 }
 
+static {
+    DESTDIR = "static"
+    OBJECTS_DIR = "obj_static"
+}
+
 TARGET = chessx
 
 ICON = data/images/chessx.icns
 RC_FILE = src/chessx.rc
 
 macx {
- INSTALLATION_DATA.files = data
- INSTALLATION_DATA.path = Contents/MacOS
+ INSTALLATION_DATA.files = mac_osx/qt_menu.nib
+ INSTALLATION_DATA.path = Contents/Resources/
  QMAKE_BUNDLE_DATA += INSTALLATION_DATA
  QMAKE_INFO_PLIST = mac_osx/Info.plist
 }
 
 RESOURCES = resources.qrc
 
-TRANSLATIONS = i18n/chessx_de.ts \
-	i18n/chessx_fr.ts \
-	i18n/chessx_it.ts \
-	i18n/chessx_nl.ts \
-	i18n/chessx_pl.ts \
-	i18n/chessx_pt_BR.ts \	 
-	i18n/chessx_zh.ts
+#TRANSLATIONS = i18n/chessx_de.ts \
+#	i18n/chessx_fr.ts \
+#	i18n/chessx_it.ts \
+#	i18n/chessx_nl.ts \
+#	i18n/chessx_pl.ts \
+#	i18n/chessx_pt_BR.ts \
+#	i18n/chessx_zh.ts
 
 # automatically build translations
 isEmpty(QMAKE_LRELEASE) {
@@ -230,7 +240,8 @@ PRE_TARGETDEPS += compiler_TSQM_make_all
  
 macx {
   OTHER_FILES += \
-    mac_osx/Info.plist
+    mac_osx/Info.plist \
+    mac_osx/qt_menu.nib
 }
 
 OTHER_FILES += \

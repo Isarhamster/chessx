@@ -75,11 +75,6 @@ QString Settings::dataPath()
 	return m_dataPath;
 }
 
-QString Settings::iconPath(const QString& name)
-{
-	return QString("%1/images/%2.png").arg(dataPath()).arg(name);
-}
-
 void Settings::setList(const QString& key, QList<int> list)
 {
 	QList<QVariant> varlist;
