@@ -39,8 +39,6 @@ public:
 	virtual void setLayout(const QWidget* w);
 	/** @return directory where data are stored. */
 	virtual QString dataPath();
-	/** @return directory where given icon is stored. Path and extension will be added automatically. */
-	virtual QString iconPath(const QString& name);
 	/** Write integer list to configuration file. Does it by converting it to QString */
 	virtual void setList(const QString& key, QList<int> list);
 	/** Appends values to the list. @return @p true if the list contains exact number of items.
