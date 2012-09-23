@@ -38,8 +38,7 @@
 MainWindow::MainWindow() : QMainWindow(),
     m_playerDialog(0), m_saveDialog(0),
     m_showPgnSource(false),
-    m_notInMainLoop(0),
-    m_bQuitRequest(false)
+    m_bGameChange(false)
 {
 	setObjectName("MainWindow");
 
@@ -161,6 +160,8 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_openingTreeView, SIGNAL(clicked(const QModelIndex&)),
 		SLOT(slotSearchTreeMove(const QModelIndex&)));
     connect(m_openingTree, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
+    connect(m_openingTree, SIGNAL(openingTreeUpdated()), SLOT(slotTreeUpdate()));
+    connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), SLOT(slotTreeUpdateStarted()));
     openingDock->setWidget(m_openingTreeView);
 	addDockWidget(Qt::RightDockWidgetArea, openingDock);
 	m_menuView->addAction(openingDock->toggleViewAction());
@@ -289,12 +290,7 @@ void MainWindow::ecoLoaded()
 
 void MainWindow::closeEvent(QCloseEvent* e)
 {
-    if (m_notInMainLoop > 0)
-    {
-        m_bQuitRequest = true;
-        e->ignore();
-    }
-    else if (confirmQuit())
+    if (confirmQuit())
     {
 		m_recentFiles.save("History", "RecentFiles");
         m_databaseList->save();
@@ -307,7 +303,6 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
         AppSettings->setValue("FilterFollowsGame", m_gameList->m_FilterActive);
 		AppSettings->endGroup();
-        m_bQuitRequest = true;
     }
     else
     {
@@ -483,10 +478,7 @@ void MainWindow::openDatabase(QString fname)
 void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
 {
     if (!db->IsLoaded()) {
-        if (!m_bQuitRequest)
-            cancelOperation(tr("Cannot open file"));
-        else
-            qApp->quit();
+        cancelOperation(tr("Cannot open file"));
         m_databases.removeOne(db);
         delete db;
         return;
@@ -654,8 +646,13 @@ void MainWindow::setupActions()
 	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
 					  Qt::CTRL + Qt::SHIFT + Qt::Key_V));
 	edit->addSeparator();
-	edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(),
-												 QString(), QAction::PreferencesRole));
+    edit->addAction(createAction(tr("&Copy PGN"), SLOT(slotEditCopyPGN()),
+                      Qt::CTRL + Qt::Key_C));
+    edit->addAction(createAction(tr("&Paste PGN"), SLOT(slotEditPastePGN()),
+                      Qt::CTRL + Qt::Key_V));
+    edit->addSeparator();
+    edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(),
+                      QString(), QAction::PreferencesRole));
 
 
 	/* View menu */

@@ -109,7 +109,11 @@ public slots:
 	void slotEditCopyFEN();
 	/** Set position using FEN from clipboard. */
 	void slotEditPasteFEN();
-	/** Truncate moves to the end of the game. */
+    /** Set position's PGN to clipboard. */
+    void slotEditCopyPGN();
+    /** Set position using PGN from clipboard. */
+    void slotEditPastePGN();
+    /** Truncate moves to the end of the game. */
 	void slotEditTruncateEnd();
 	/** Truncate moves from the beginning of the game. */
 	void slotEditTruncateStart();
@@ -198,7 +202,11 @@ public slots:
     void slotToggleFilter();
     /** Reverse current filter */
 	void slotSearchReverse();
-	/** Show opening tree */
+    /** Make an Update of the game list after the opening tree was updated */
+    void slotTreeUpdate();
+    /** Indicate start of tree update */
+    void slotTreeUpdateStarted();
+    /** Show opening tree */
 	void slotSearchTree();
 	/** Move @p index was selected in Opening Tree. */
 	void slotSearchTreeMove(const QModelIndex& index);
@@ -315,8 +323,7 @@ private:
 	};
 	PendingLoad m_pending;
     QAction* m_toggleFilter;
-    int m_notInMainLoop;
-    bool m_bQuitRequest;  // Enable quit during long running actions
+    bool m_bGameChange;
 };
 
 

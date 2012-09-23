@@ -88,48 +88,112 @@ bool compareYear(const MoveData& m1, const MoveData& m2)
 			 (m1.averageYear() == m2.averageYear() && m1.move < m2.move);
 }
 
+OpeningTreeUpdater oupd;
+
+void OpeningTreeUpdater::run()
+{
+    Game g;
+    QMap<Move, MoveData> moves;
+    (*m_games) = 0;
+    for (int i = 0; i < m_filter->size(); i++) {
+        m_filter->database()->loadGameMoves(i, g);
+        int id = g.findPosition(m_board);
+        if (id != NO_MOVE)	{
+            m_filter->set(i, id + 1); // not zero means success, but id could be 0.
+            m_filter->database()->loadGameHeaders(i, g);
+            g.moveToId(id);
+            if (g.atGameEnd())
+                moves[Move()].addGame(g, m_board.toMove(), MoveData::GameEnd);
+            else {
+                g.forward();
+                moves[g.move()].addGame(g, m_board.toMove());
+            }
+            (*m_games)++;
+        } else {
+            m_filter->set(i, 0);
+        }
+        if (i * 100 / m_filter->size() > (i - 1) / m_filter->size())
+        {
+            emit progress(i * 100 / m_filter->size());
+        }
+        if (m_break)
+            break;
+    }
+    m_moves->clear();
+    if (!m_break)
+    {
+        for (QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
+            m_moves->append(it.value());
+        qSort(m_moves->begin(), m_moves->end());
+        emit UpdateFinished(&m_board);
+    }
+    else
+    {
+        emit UpdateTerminated(&m_board);
+    }
+}
+
+void OpeningTreeUpdater::cancel()
+{
+    m_break = true;
+}
+
+bool OpeningTreeUpdater::update(Filter& f, const Board& b, QList<MoveData>& m, int& g)
+{
+    m_break = false;
+    m_filter = &f;
+    m_board = b;
+    m_moves = &m;
+    m_games = &g;
+    // todo: if running wait for stop
+    start();
+    return true;
+}
 
 bool OpeningTree::update(Filter& f, const Board& b)
 {
-	if (m_filter == &f && m_board == b)
-		return false;
-	int operationId = ++m_operationId;
-	m_filter = &f;
-	m_board = b;
-	Game g;
-	QMap<Move, MoveData> moves;
-	m_games = 0;
-	for (int i = 0; i < f.size(); i++) {
-		if (operationId != m_operationId)
-			return false;
-		f.database()->loadGameMoves(i, g);
-		int id = g.findPosition(b);
-		if (id != NO_MOVE)	{
-			f.set(i, id + 1); // not zero means success, but id could be 0.
-			f.database()->loadGameHeaders(i, g);
-			g.moveToId(id);
-			if (g.atGameEnd())
-				moves[Move()].addGame(g, b.toMove(), MoveData::GameEnd);
-			else {
-				g.forward();
-				moves[g.move()].addGame(g, b.toMove());
-			}
-			m_games++;
-		} else {
-			f.set(i, 0);
-		}
-		if (i * 100 / f.size() > (i - 1) / f.size())
-        {
-            emit progress(i * 100 / f.size());
-        }
+    if (!oupd.isRunning())
+    {
+        if (&f==m_filter && b==m_board)
+            return true;
+        emit openingTreeUpdateStarted();
+        m_bRequestPending = false;
+        connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
+        connect(&oupd,SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
+        return oupd.update(f,b, m_moves, m_games);
+    }
+    else
+    {
+        m_board = b;
+        m_filter = &f;
+        m_bRequestPending = true;
+        oupd.cancel();
+        return false;
+    }
+}
 
-	}
-	m_moves.clear();
-	for (QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
-		m_moves.append(it.value());
-	qSort(m_moves.begin(), m_moves.end());
-	sort();
-	return true;
+void OpeningTree::updateFinished(Board* b)
+{
+    sort();
+    emit openingTreeUpdated();
+    if (m_bRequestPending)
+    {
+        updateTerminated(b);
+    }
+}
+
+void OpeningTree::updateTerminated(Board*)
+{
+    if (m_bRequestPending)
+    {
+        emit openingTreeUpdateStarted();
+        m_bRequestPending = false;
+        connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
+        connect(&oupd,SIGNAL(progress(int)),SIGNAL(progress(int)), Qt::UniqueConnection);
+        oupd.update(*m_filter,m_board, m_moves, m_games);
+    }
 }
 
 QString OpeningTree::debug()
@@ -151,15 +215,14 @@ int OpeningTree::columnCount(const QModelIndex&) const
 	return m_names.count();
 }
 
-OpeningTree::OpeningTree() : m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0),
-		m_operationId(0)
+OpeningTree::OpeningTree() : m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
 {
 	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
 	<< tr("Year");
 }
 
 OpeningTree::OpeningTree(Filter & f, const Board & b) :
-		m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0), m_operationId(0)
+        m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
 {
 	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
 	<< tr("Year");
@@ -180,7 +243,7 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
 	switch (index.column()) {
 	case 0: return QString("%1: %2").arg(index.row() + 1).arg(m_moves[index.row()].move);
 	case 1: return m_games == 0 ? "" : QString("%1: %2%").arg(m_moves[index.row()].count)
-					 .arg(m_moves[index.row()].count * 1000 / m_games / 10.0);
+                     .arg(m_moves[index.row()].count * 1000 / m_games / 10.0);
 	case 2: return QString("%1%").arg(m_moves[index.row()].percentage());
 	case 3: return m_moves[index.row()].rated >= MinAveRating ?
 					 m_moves[index.row()].averageRating() : QVariant();

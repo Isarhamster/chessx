@@ -47,6 +47,9 @@ public:
 	/** Loads only moves into a game from the given position */
 	void loadGameMoves(int index, Game& game);
 
+    // Open a PGN Data File from a string
+    bool openString(const QString& content);
+
 protected:
 	//parsing methods
 	/** Reads moves from the file and adds them to the game. Performs position searches if any are active */
@@ -69,13 +72,17 @@ protected:
 	void parseTagsIntoIndex();
 
 	virtual bool parseFile();
+
+    // Open a PGN data File
 	bool openFile(const QString& filename);
+
 	/** Adds the current file position as a new offset */
 	void addOffset();
 	/** Adds a new file offset */
     void addOffset(qint64 offset);
 
-	QFile* m_file;
+    QIODevice* m_file;
+    QByteArray m_ByteArray;
 	bool m_isOpen;
 private:
 	/** Resets/initialises important member variables. Called by constructor and close methods */
