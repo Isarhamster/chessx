@@ -71,13 +71,29 @@ bool PgnDatabase::parseFile()
 bool PgnDatabase::openFile(const QString& filename)
 {
 	//open file
-    m_file = new QFile(filename);
-	if (!m_file->exists()) {
-		delete m_file;
+    QFile* file = new QFile(filename);
+    if (!file->exists()) {
+        delete file;
 		return false;
 	}
-    m_file->open(QIODevice::ReadOnly | QIODevice::Text);
+    file->open(QIODevice::ReadOnly | QIODevice::Text);
+    m_file = file;
 	return true;
+}
+
+bool PgnDatabase::openString(const QString& content)
+{
+    //open file
+    initialise();
+    m_filename = "Internal.pgn";
+    m_isOpen = true;
+    m_ByteArray.clear();
+    m_ByteArray.append(content);
+    QBuffer* buffer = new QBuffer(&m_ByteArray);
+    buffer->open(QIODevice::ReadOnly | QIODevice::Text);
+    m_file = buffer;
+    parseFile();
+    return true;
 }
 
 QString PgnDatabase::filename() const
@@ -127,7 +143,7 @@ bool PgnDatabase::loadGame(int index, Game& game)
     QString fen = m_index.tagValue(TagFEN, index ); // was m_count - 1
 	if (fen != "?")
 		game.setStartingBoard(fen);
-	parseMoves(&game);
+    parseMoves(&game);
 
     return m_variation != -1 || fen != "?";  // Not sure of all of the ramifications of this
                                              // but it seeems to fix the problem with FENs

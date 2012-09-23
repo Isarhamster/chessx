@@ -39,7 +39,27 @@ public:
 };
 
 
+class OpeningTreeUpdater : public QThread
+{
+    Q_OBJECT
+public:
+    void run();
+    void cancel();
+    bool update(Filter& f, const Board& b, QList<MoveData>&, int&);
 
+signals:
+    void UpdateFinished(Board*);
+    void UpdateTerminated(Board*);
+    void progress(int);
+
+private:
+    QList<MoveData>* m_moves;
+    int* m_games;
+
+    bool    m_break;
+    Board   m_board;
+    Filter* m_filter;
+};
 
 /** @ingroup Search
 The OpeningTree class is a class to calculate opening tree for given position. */
@@ -55,7 +75,7 @@ public:
 	/** Calculate opening tree from given position, using given filter. It sets
 	the filter to contain only game matching position @p b .
 	@return true if the update was not cancelled.*/
-	bool update(Filter& f, const Board& b);
+    bool update(Filter& f, const Board& b);
 	/** Debug string */
 	QString debug();
 	/** Returns the number of moves in the Opening Tree */
@@ -73,18 +93,22 @@ public:
 	virtual void sort();
 	/** Move leading to given entry. */
 	QString move(const QModelIndex& index) const;
+protected slots:
+    void updateFinished(Board*);
+    void updateTerminated(Board*);
 signals:
 	void progress(int);
+    void openingTreeUpdated();
+    void openingTreeUpdateStarted();
 private:
-
+    bool m_bRequestPending;
 	QList<MoveData> m_moves;
-	unsigned m_games;
+    int m_games;
 	QStringList m_names;
 	int m_sortcolumn;
 	Qt::SortOrder m_order;
 	Board m_board;
 	Filter* m_filter;
-	int m_operationId;
 };
 
 #endif

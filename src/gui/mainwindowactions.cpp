@@ -165,6 +165,14 @@ void MainWindow::slotEditCopyFEN()
 	QApplication::clipboard()->setText(game().toFen());
 }
 
+void MainWindow::slotEditCopyPGN()
+{
+    Output output(Output::Pgn);
+    QString pgn = output.output(&game());
+    QApplication::clipboard()->setText(pgn);
+}
+
+
 void MainWindow::slotEditComment()
 {
 	if (gameEditComment(Output::Comment))
@@ -176,6 +184,7 @@ void MainWindow::slotEditCommentBefore()
     if (gameEditComment(Output::Precomment))
         slotGameChanged();
 }
+
 void MainWindow::slotEditVarPromote()
 {
 	if (!game().isMainline()) {
@@ -191,7 +200,6 @@ void MainWindow::slotEditVarRemove()
 		slotGameChanged();
 	}
 }
-
 
 void MainWindow::slotEditPasteFEN()
 {
@@ -212,6 +220,23 @@ void MainWindow::slotEditPasteFEN()
 	}
 	game().setStartingBoard(board);
 	slotGameChanged();
+}
+
+void MainWindow::slotEditPastePGN()
+{
+    QString pgn = QApplication::clipboard()->text().trimmed();
+    if (!pgn.isEmpty())
+    {
+        PgnDatabase pgnDatabase;
+        pgnDatabase.openString(pgn);
+        Game g;
+        if (pgnDatabase.loadGame(0,g))
+        {
+            slotGameNew();
+            game() = g;
+            slotGameChanged();
+        }
+    }
 }
 
 void MainWindow::slotEditTruncateEnd()
@@ -755,20 +780,34 @@ void MainWindow::slotToggleFilter()
     m_gameList->updateFilter();
 }
 
+void MainWindow::slotTreeUpdate()
+{
+    m_gameList->updateFilter();
+    slotFilterChanged();
+    finishOperation(tr("Tree updated."));
+    if (m_bGameChange)
+    {
+        slotGameLoadFirst();
+        m_bGameChange = false;
+    }
+}
+
+void MainWindow::slotTreeUpdateStarted()
+{
+    startOperation(tr("Updating tree..."));
+}
+
 void MainWindow::slotSearchTree()
 {
     if (!m_openingTreeView->isVisible() || !m_gameList->m_FilterActive)
 		return;
-	if (m_openingTree->update(*databaseInfo()->filter(), m_boardView->board())) {
-        startOperation(tr("Updating tree..."));
-        m_gameList->updateFilter();
-		slotFilterChanged();
-		finishOperation(tr("Tree updated"));
-	}
+
+    m_openingTree->update(*databaseInfo()->filter(), m_boardView->board());
 }
 
 void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 {
+    m_bGameChange = false;
     QString move = dynamic_cast<OpeningTree*>(m_openingTreeView->model())->move(index);
 	Move m = m_boardView->board().parseMove(move);
 	if (!m.isLegal())
@@ -778,11 +817,11 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 	else if (game().isModified())
 		slotBoardMove(m.from(), m.to());
 	else {
+        m_bGameChange = true;
 		Board board = m_boardView->board();
 		board.doMove(m);
 		m_boardView->setBoard(board);
 		slotSearchTree();
-		slotGameLoadFirst();
 	}
 }
 
