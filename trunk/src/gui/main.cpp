@@ -24,7 +24,11 @@
 int main(int argc, char** argv)
 {
 	AppSettings = new Settings;
-	QApplication a(argc, argv);
+    QApplication a(argc, argv);
+
+#ifdef Q_OS_MAC
+    signal(SIGPIPE, SIG_IGN);
+#endif
 
 	QString shortLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(2));
 	QString fullLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(5));
