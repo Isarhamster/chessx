@@ -54,7 +54,7 @@ GameList::~GameList()
 void GameList::itemSelected(const QModelIndex& index)
 {
 	emit selected(m_model->filter()->indexToGame(index.row()));
-    startDrag(index);
+    startToDrag(index);
 }
 
 void GameList::setFilter(Filter* filter)
@@ -151,7 +151,7 @@ void GameList::slotCopyGame()
     emit requestCopyGame();
 }
 
-void GameList::startDrag(const QModelIndex&)
+void GameList::startToDrag(const QModelIndex&)
 {
     GameMimeData *mimeData = new GameMimeData;
     emit requestGameData(mimeData->m_game);

@@ -63,7 +63,7 @@ signals:
     void requestGameData(Game&);
 
 protected: //Drag'n'Drop Support
-    void startDrag(const QModelIndex&);
+    void startToDrag(const QModelIndex&);
 
 private:
 	FilterModel* m_model;
