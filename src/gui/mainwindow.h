@@ -113,6 +113,8 @@ public slots:
     void slotEditCopyPGN();
     /** Set position using PGN from clipboard. */
     void slotEditPastePGN();
+    /** Set position's Image to clipboard. */
+    void slotEditCopyImage();
     /** Truncate moves to the end of the game. */
 	void slotEditTruncateEnd();
 	/** Truncate moves from the beginning of the game. */

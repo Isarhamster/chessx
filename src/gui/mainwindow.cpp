@@ -651,6 +651,9 @@ void MainWindow::setupActions()
     edit->addAction(createAction(tr("&Paste PGN"), SLOT(slotEditPastePGN()),
                       Qt::CTRL + Qt::Key_V));
     edit->addSeparator();
+    edit->addAction(createAction(tr("&Copy Image"), SLOT(slotEditCopyImage()),
+                      Qt::CTRL + Qt::ALT + Qt::Key_C));
+    edit->addSeparator();
     edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(),
                       QString(), QAction::PreferencesRole));
 
