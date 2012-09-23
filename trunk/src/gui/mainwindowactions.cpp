@@ -262,6 +262,15 @@ void MainWindow::slotEditBoard()
 	}
 }
 
+/** Set position's PGN to clipboard. */
+void MainWindow::slotEditCopyImage()
+{
+    QPixmap pixmap(m_boardView->size());
+    m_boardView->render(&pixmap);
+    QImage image = pixmap.toImage();
+    QApplication::clipboard()->setImage(image);
+}
+
 void MainWindow::slotHelpBug()
 {
 	QDesktopServices::openUrl(QUrl("http://sourceforge.net/tracker/?group_id=163833&atid=829300"));
