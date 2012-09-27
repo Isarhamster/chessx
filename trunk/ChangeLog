@@ -1,3 +1,70 @@
+September 2012 Version 0.9
+	
+	* New Features
+	- Player List as Dock Window
+	- New Database List
+	- Drag and Drop of games
+	- Drag and Drop of Databases
+	- Second analysis window
+	- Locate Databases on harddisk in Explorer/Finder
+	- Multi-Threading Support for opening DB and updating Opening Tree
+	- Copy / Paste of PGN
+	- Create Images of Boards
+	- New Board Styles
+	- All Resources internal
+	- Parsing PGN to draw arrows on board (cf. chessbase)
+	- Parsing PGN to color Squares (cf. chessbase)
+	- Parse / Insert Zero Moves to document / analyze threats
+	- Drag'n'Drop Support setting up a board
+	- Relaxed FEN handling for easier pasting of FENs
+	- Version Resource in Windows
+	- Icon Resource in Windows
+	- UTF8 Support
+	
+	* bugfixes in Parser
+	- Fixed some strange PGN parsing issues - especially issues like the one described in #3396532
+	* bugfixes in GUI
+	- It is not possible to add a variation from Analysis to a game text if standing at end of a variation
+	- Bugfixes starting up engines
+	- Disabled MultiPV on XBoard engines
+	- Added elapsed time for analysis lines
+	
+	* issues closed:
+		
+	- CR#2984375	Saving Clipboard fails silently
+	- CR#3043278	Problem with LaTeX output
+	- CR#3135871	No control performed on input date
+	- CR#3135871	No control performed on input date
+	- CR#2872974	Remove->Previous moves should be smarter
+	- CR#3542101	Changing and saving a file does not update the game list view
+	- CR#2881228 Crash on File->Close (or Quit) with OpeningTree updating
+	- CR#3297478 Crash on move gxh2+
+	- CR#2823746 Crash when trying to analyze with non-existing New Engine
+	- CR#2881228 Crash on File->Close (or Quit) with OpeningTree updating
+	- CR#3170534 Crash if start of engine fails (0.8)
+	- CR#3179203 Do not crash trying to show a special NAG; this should solve bug .
+	- CR#2824024 Confusion between slash and backslash in file paths
+	- CR#1773747 "Change guessed move on right click". The feature can be configured, as currently we have "take back a move" om mouse right click (if configured, CTRL+right-mouse will move back instead)
+	- CR#1651405 "Comments in UTF-8 are broken"
+	- CR#1715720
+	- CR#1984912 Names in GameList vs QuickTagSearch
+	- CR#3043278 Problem with LaTeX output
+	- CR#3396532 errors reading multi line pgn formats
+	- CR#2955889.
+	
+	* Building 
+	- Separate Debug/Release/Static folders
+
+November 20120 Version 0.8
+
+	* bug fixes: engine stuff
+	* feature:Add engine variation to the game
+	* feature:Implement MultiPV analysis for UCI engines (based on patch by Juan Carlos Girardi)
+	* feature:Add basic NAG editing
+	* feature:Simplify adding moves: always add variation if move exists.
+	* feature:Add menu command to remove/promote variation.
+	* feature:Show TableBase result in Analysis window.
+
 Wed 10 Feb 2010, 01:40:00 CET Version 0.7
 
 	* bugfix: do not crash when removing engines
@@ -15,6 +82,7 @@ Wed 10 Feb 2010, 01:40:00 CET Version 0.7
 	* feature: promote variation
 
 Wed 1 Jul 2009, 00:50:22 CET Version 0.6
+
 
 	* feature: warn when quitting with unsaved databases
 	* feature: improve Engine tab of Preferences dialog, add reordering
