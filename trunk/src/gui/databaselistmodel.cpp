@@ -122,7 +122,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 {
                     bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
                     bool bIsClipBoard = m_databases.at(index.row()).m_name.isEmpty();
-                    return QString(bIsFavorite ? "Favorite" : bIsClipBoard ? "ClipBoard" : "");
+                    return QString(bIsFavorite ? tr("Favorite") : bIsClipBoard ? tr("ClipBoard") : "");
                 }
             case DBLV_PATH:
                 {
@@ -132,7 +132,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_OPEN:
                 {
                     bool bIsOpen = m_databases.at(index.row()).m_state == EDBL_OPEN;
-                    return QString(bIsOpen ? "Open" : "Closed");
+                    return QString(bIsOpen ? tr("Open") : tr("Closed"));
                 }
             default:
                 break;
