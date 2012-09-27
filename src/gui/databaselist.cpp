@@ -59,9 +59,11 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
     if (m_cell.isValid())
     {
         QMenu menu(this);
-        bool bIsFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::ToolTipRole).toString() == "Favorite";
+        bool bIsFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::ToolTipRole).toString() == tr("Favorite");
         bool bIsNotFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::ToolTipRole).toString().isEmpty();
         bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH), Qt::ToolTipRole).toString().isEmpty();
+        menu.addAction(tr("Open"), this, SLOT(dbOpen()));
+        menu.addSeparator();
         menu.addAction(tr("Add to favorites"), this, SLOT(dbAddToFavorites()))->setEnabled(bIsNotFavorite);
         menu.addAction(tr("Remove from Favorites"), this, SLOT(dbRemoveFromFavorites()))->setEnabled(bIsFavorite);
 #if defined(Q_OS_WIN) || defined(Q_OS_MAC)
@@ -79,6 +81,13 @@ void DatabaseList::save() const
     m_model->toStringList(list);
     AppSettings->setValue("Files", list);
     AppSettings->endGroup();
+}
+
+void DatabaseList::dbOpen()
+{
+    Q_ASSERT(m_cell.isValid());
+    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
+    emit requestOpenDatabase(ts);
 }
 
 void DatabaseList::dbAddToFavorites()

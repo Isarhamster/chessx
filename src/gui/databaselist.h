@@ -49,6 +49,7 @@ private slots:
     void dbAddToFavorites();
     void dbRemoveFromFavorites();
     void slotShowInFinder();
+    void dbOpen();
     void rowsChanged(const QModelIndex &,int start,int end);
 
 private:
