@@ -8,8 +8,8 @@
  ***************************************************************************/
 
 #define VERSION_MAJOR   0
-#define VERSION_MINOR   8
-#define REVISION        1158
+#define VERSION_MINOR   9
+#define REVISION        0
 
 #define XGLUE2(a,b) #a "," #b
 #define GLUE2(a,b)  XGLUE2(a,b)
