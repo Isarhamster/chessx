@@ -133,6 +133,8 @@ MainWindow::MainWindow() : QMainWindow(),
     dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
     connect(m_databaseList, SIGNAL(requestOpenDatabase(QString)),
             this, SLOT(openDatabase(QString)));
+    connect(m_databaseList, SIGNAL(requestCloseDatabase(QString)),
+            this, SLOT(closeDatabase(QString)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
     connect(m_databaseList, SIGNAL(requestAppendGame(QString,const Game&)),
@@ -157,8 +159,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_openingTreeView->setModel(m_openingTree);
     m_openingTreeView->sortByColumn(1, Qt::DescendingOrder);
     m_openingTreeView->slotReconfigure();
-    connect(m_openingTreeView, SIGNAL(clicked(const QModelIndex&)),
-		SLOT(slotSearchTreeMove(const QModelIndex&)));
+    connect(m_openingTreeView, SIGNAL(clicked(const QModelIndex&)), SLOT(slotSearchTreeMove(const QModelIndex&)));
+    connect(openingDock, SIGNAL(visibilityChanged(bool)), m_openingTree, SLOT(cancel(bool)));
     connect(m_openingTree, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
     connect(m_openingTree, SIGNAL(openingTreeUpdated()), SLOT(slotTreeUpdate()));
     connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), SLOT(slotTreeUpdateStarted()));
@@ -251,6 +253,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
 MainWindow::~MainWindow()
 {
+    m_openingTree->cancel(false);
 	qDeleteAll(m_databases.begin(), m_databases.end());
 	delete m_saveDialog;
 	delete m_playerDialog;

@@ -93,6 +93,9 @@ public:
 	virtual void sort();
 	/** Move leading to given entry. */
 	QString move(const QModelIndex& index) const;
+public slots:
+    /** Cancel a running update */
+    void cancel(bool);
 protected slots:
     void updateFinished(Board*);
     void updateTerminated(Board*);
