@@ -32,10 +32,10 @@
 	<key>CFBundleIdentifier</key>
 	<string>net.sourceforge.chessx</string>
 	<key>CFBundleVersion</key>
-        <string>0.8.1</string>
+        <string>0.9.0</string>
 	<key>CFBundleShortVersionString</key>
-        <string>0.8.1</string>
+        <string>0.9.0</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>(C) 2005-2010 ChessX developers</string>
+        <string>(C) 2005-2012 ChessX developers</string>
 </dict>
 </plist>

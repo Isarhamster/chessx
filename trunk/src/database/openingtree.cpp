@@ -112,7 +112,7 @@ void OpeningTreeUpdater::run()
         } else {
             m_filter->set(i, 0);
         }
-        if (i * 100 / m_filter->size() > (i - 1) / m_filter->size())
+        if (i * 100 / m_filter->size() > (i - 1) * 100 / m_filter->size())
         {
             emit progress(i * 100 / m_filter->size());
         }
@@ -232,15 +232,13 @@ int OpeningTree::columnCount(const QModelIndex&) const
 
 OpeningTree::OpeningTree() : m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
 {
-	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
-	<< tr("Year");
+    m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year");
 }
 
 OpeningTree::OpeningTree(Filter & f, const Board & b) :
         m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
 {
-	m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating")
-	<< tr("Year");
+    m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year");
 	update(f, b);
 }
 
