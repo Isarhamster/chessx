@@ -133,8 +133,6 @@ MainWindow::MainWindow() : QMainWindow(),
     dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
     connect(m_databaseList, SIGNAL(requestOpenDatabase(QString)),
             this, SLOT(openDatabase(QString)));
-    connect(m_databaseList, SIGNAL(requestCloseDatabase(QString)),
-            this, SLOT(closeDatabase(QString)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
     connect(m_databaseList, SIGNAL(requestAppendGame(QString,const Game&)),
