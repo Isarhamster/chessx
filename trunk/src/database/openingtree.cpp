@@ -94,7 +94,7 @@ void OpeningTreeUpdater::run()
 {
     Game g;
     QMap<Move, MoveData> moves;
-    (*m_games) = 0;
+    int games = 0;
     for (int i = 0; i < m_filter->size(); i++) {
         m_filter->database()->loadGameMoves(i, g);
         int id = g.findPosition(m_board);
@@ -108,7 +108,7 @@ void OpeningTreeUpdater::run()
                 g.forward();
                 moves[g.move()].addGame(g, m_board.toMove());
             }
-            (*m_games)++;
+            games++;
         } else {
             m_filter->set(i, 0);
         }
@@ -119,6 +119,7 @@ void OpeningTreeUpdater::run()
         if (m_break)
             break;
     }
+    *m_games = games;
     m_moves->clear();
     if (!m_break)
     {
@@ -156,6 +157,8 @@ bool OpeningTree::update(Filter& f, const Board& b)
     {
         if (&f==m_filter && b==m_board)
             return true;
+        m_board = b;
+        m_filter = &f;
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
@@ -165,11 +168,23 @@ bool OpeningTree::update(Filter& f, const Board& b)
     }
     else
     {
+        if (&f==m_filter && b==m_board)
+            return true;
         m_board = b;
         m_filter = &f;
         m_bRequestPending = true;
         oupd.cancel();
         return false;
+    }
+}
+
+void OpeningTree::cancel(bool bVisible)
+{
+    if (!bVisible && oupd.isRunning())
+    {
+        m_bRequestPending = false;
+        oupd.cancel();
+        oupd.wait(200);
     }
 }
 
