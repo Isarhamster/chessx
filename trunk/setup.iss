@@ -39,6 +39,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: ".\release\chessx.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\win32\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\COPYING"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\ChangeLog"; DestDir: "{app}"
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
