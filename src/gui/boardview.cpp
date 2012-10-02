@@ -27,7 +27,7 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_flipped(false), m_showFrame(false), m_guessMove(false), m_selectedSquare(InvalidSquare),
     m_hoverSquare(InvalidSquare), m_hifrom(InvalidSquare), m_hito(InvalidSquare), m_flags(flags),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false),m_wheelCurrentDelta(0),
-    m_minDeltaWheel(0),m_moveListCurrent(0)
+    m_minDeltaWheel(0),m_moveListCurrent(0),m_showMoveIndicator(true)
 {
 	QSizePolicy policy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	policy.setHeightForWidth(true);
@@ -70,6 +70,12 @@ const BoardTheme& BoardView::theme() const
 {
 	return m_theme;
 }
+
+void BoardView::showMoveIndicator(bool visible )
+{
+    m_showMoveIndicator = visible;
+}
+
 
 void BoardView::paintEvent(QPaintEvent* event)
 {
@@ -116,18 +122,28 @@ void BoardView::paintEvent(QPaintEvent* event)
             }
         }
 
-        // Draw side to move indicator
-        bool white = m_board.toMove() == White;
-        //int square = m_theme.size().width() / 3;
-        int square = m_theme.size().width() / 6;
-        QColor color = white ? Qt::white : Qt::black;
-        QColor border = white ? Qt::black : Qt::white;
-        int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
-        p.setPen(border);
-        p.setBrush(QColor(color));
-        //p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
-        p.drawRect(8 * m_theme.size().width() + 4, posy, square, square);
+        if( m_showMoveIndicator )
+        {
+            // Draw side to move indicator
+            bool white = m_board.toMove() == White;
+            int square = width() - 8 * m_theme.size().width() - 4;
+            int maxsquare = m_theme.size().width() / 2;
+            if (square > maxsquare)
+            {
+                square = maxsquare;
+            }
+            if (square > 0)
+            {
 
+                QColor color = white ? Qt::white : Qt::black;
+                QColor border = white ? Qt::black : Qt::white;
+                int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
+                p.setPen(border);
+                p.setBrush(QColor(color));
+                //p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
+                p.drawRect(8 * m_theme.size().width() + 2, posy, square, square);
+            }
+        }
         // Fix border up
         /*
         if (m_showFrame) {
@@ -153,8 +169,7 @@ void BoardView::resizeBoard()
 {
 	// subtract move indicator from width
 	int coord = m_coordinates * CoordinateSize;
-    //int xsize = (width() - 2 * coord - (8 + width() / 24) - 1) / 8;
-    int xsize = (width() - 2 * coord - (8 + width() / 48) - 1) / 8;
+    int xsize = (width() - 2 * coord - 1) / 8;
     int ysize = (height() - 2 * coord - 1) / 8;
 	int size = xsize < ysize ? xsize : ysize;
 	m_theme.setSize(QSize(size, size));
@@ -422,7 +437,7 @@ bool BoardView::canDrag(Square s) const
 
 int BoardView::heightForWidth(int width) const
 {
-	return width - 9 - width / 24;
+    return width;
 }
 
 void BoardView::dragEnterEvent(QDragEnterEvent *event)

@@ -57,6 +57,8 @@ public:
     /** Switch to next guess */
     void nextGuess(Square s);
 
+    void showMoveIndicator(bool visible );
+
 public slots:
 	/** Reconfigure current theme. */
 	void configure();
@@ -140,6 +142,7 @@ private:
     int m_minDeltaWheel;
     Guess::MoveList m_moveList;
     unsigned int m_moveListCurrent;
+    bool m_showMoveIndicator;
 };
 
 class BoardViewMimeData : public QMimeData
