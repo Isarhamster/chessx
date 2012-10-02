@@ -298,7 +298,8 @@ void PreferencesDialog::restoreSettings()
     ui.defaultDataBasePath->setText(AppSettings->value("/General/DefaultDataPath", dataPath).toString());
 
     // Read Game List settings
-    ui.gameTextFontSizeSpin->setValue(AppSettings->value("/GameText/FontSize", 14).toInt());
+    ui.gameTextFontSizeSpin->setValue(AppSettings->value("/GameText/FontSize", DEFAULT_FONTSIZE).toInt());
+    ui.spinBoxListFontSize->setValue(AppSettings->value("/General/ListFontSize", DEFAULT_LISTFONTSIZE).toInt());
 }
 
 void PreferencesDialog::saveSettings()
@@ -332,6 +333,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/History/MaxEntries", ui.spinBoxRecentFiles->value());
     AppSettings->setValue("/General/DefaultDataPath", ui.defaultDataBasePath->text());
     AppSettings->setValue("/GameText/FontSize", ui.gameTextFontSizeSpin->value());
+    AppSettings->setValue("/General/ListFontSize", ui.spinBoxListFontSize->value());
 
 }
 
