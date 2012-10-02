@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>499</width>
-    <height>480</height>
+    <width>510</width>
+    <height>560</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -47,6 +47,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="4,1">
          <item>
           <widget class="BoardView" name="boardView" native="true">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
