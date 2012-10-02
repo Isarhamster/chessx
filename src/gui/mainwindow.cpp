@@ -80,7 +80,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	gameTextDock->setObjectName("GameTextDock");
 	gameTextDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 	m_gameView = new ChessBrowser(gameTextDock, true);
-	m_gameView->setMinimumSize(150, 100);
+    m_gameView->setMinimumSize(200, 200);
 	m_gameView->slotReconfigure();
 	connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 	connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
@@ -89,7 +89,6 @@ MainWindow::MainWindow() : QMainWindow(),
     gameTextDock->setWidget(m_gameView);
 	addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
     m_gameTitle = new QLabel;
-//	g_gameTitle->setWordWrap(true);
     connect(m_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
     gameTextDock->setTitleBarWidget(m_gameTitle);
 
@@ -102,12 +101,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(m_gameList, SIGNAL(searchDone()), SLOT(slotFilterChanged()));
     connect(m_gameList, SIGNAL(requestCopyGame()), SLOT(slotDatabaseCopySingle()));
     connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
+    connect(this, SIGNAL(reconfigure()), m_gameList, SLOT(slotReconfigure()));
     gameListDock->setWidget(m_gameList);
-	addDockWidget(Qt::BottomDockWidgetArea, gameListDock);
+    addDockWidget(Qt::RightDockWidgetArea, gameListDock);
 	m_menuView->addAction(gameListDock->toggleViewAction());
 	gameListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_L);
     connect(m_gameList, SIGNAL(raiseRequest()), gameListDock, SLOT(raise()));
-
 
     // Player List
     DockWidgetEx* playerListDock = new DockWidgetEx(tr("Players"), this);
@@ -115,12 +114,13 @@ MainWindow::MainWindow() : QMainWindow(),
     m_playerList = new PlayerList(this);
     m_playerList->setMinimumSize(150, 100);
     playerListDock->setWidget(m_playerList);
-    addDockWidget(Qt::TopDockWidgetArea, playerListDock);
+    addDockWidget(Qt::RightDockWidgetArea, playerListDock);
     m_menuView->addAction(playerListDock->toggleViewAction());
     playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
     connect(m_playerList, SIGNAL(raiseRequest()), playerListDock, SLOT(raise()));
-
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
+    connect(this, SIGNAL(reconfigure()), m_playerList, SLOT(slotReconfigure()));
+    playerListDock->hide();
 
     // Database List
     DockWidgetEx* dbListDock = new DockWidgetEx(tr("Databases"), this);
@@ -128,7 +128,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_databaseList = new DatabaseList(this);
     m_databaseList->setMinimumSize(150, 100);
     dbListDock->setWidget(m_databaseList);
-    addDockWidget(Qt::TopDockWidgetArea, dbListDock);
+    addDockWidget(Qt::RightDockWidgetArea, dbListDock);
     m_menuView->addAction(dbListDock->toggleViewAction());
     dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
     connect(m_databaseList, SIGNAL(requestOpenDatabase(QString)),
@@ -137,6 +137,7 @@ MainWindow::MainWindow() : QMainWindow(),
             this, SLOT(setFavoriteDatabase(QString)));
     connect(m_databaseList, SIGNAL(requestAppendGame(QString,const Game&)),
             this, SLOT(copyGame(QString,const Game&)));
+    connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));
     m_databaseList->addFileOpen(QString());
     m_databaseList->setFileCurrent(QString());
     restoreRecentFiles();
@@ -156,25 +157,25 @@ MainWindow::MainWindow() : QMainWindow(),
     m_openingTreeView->setSortingEnabled(true);
     m_openingTreeView->setModel(m_openingTree);
     m_openingTreeView->sortByColumn(1, Qt::DescendingOrder);
-    m_openingTreeView->slotReconfigure();
     connect(m_openingTreeView, SIGNAL(clicked(const QModelIndex&)), SLOT(slotSearchTreeMove(const QModelIndex&)));
     connect(openingDock, SIGNAL(visibilityChanged(bool)), m_openingTree, SLOT(cancel(bool)));
     connect(m_openingTree, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
     connect(m_openingTree, SIGNAL(openingTreeUpdated()), SLOT(slotTreeUpdate()));
     connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), SLOT(slotTreeUpdateStarted()));
     openingDock->setWidget(m_openingTreeView);
-	addDockWidget(Qt::RightDockWidgetArea, openingDock);
+    addDockWidget(Qt::RightDockWidgetArea, openingDock);
 	m_menuView->addAction(openingDock->toggleViewAction());
 	connect(openingDock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
+    connect(this, SIGNAL(reconfigure()), m_openingTreeView, SLOT(slotReconfigure()));
 	openingDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
-	openingDock->hide();
+    openingDock->hide();
 	
 	/* Analysis Dock */
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
     analysisDock->setObjectName("AnalysisDock1");
     AnalysisWidget* analyis = new AnalysisWidget;
     analysisDock->setWidget(analyis);
-	addDockWidget(Qt::RightDockWidgetArea, analysisDock);
+    addDockWidget(Qt::RightDockWidgetArea, analysisDock);
     connect(analyis, SIGNAL(addVariation(Analysis)),
 			  SLOT(slotGameAddVariation(Analysis)));
     connect(analyis, SIGNAL(addVariation(QString)),
@@ -186,7 +187,7 @@ MainWindow::MainWindow() : QMainWindow(),
               analyis, SLOT(slotVisibilityChanged(bool)));
 	m_menuView->addAction(analysisDock->toggleViewAction());
     analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F2);
-	analysisDock->hide();
+    analysisDock->hide();
 
 	/* Analysis Dock 2 */
     DockWidgetEx* analysisDock2 = new DockWidgetEx(tr("Analysis 2"), this);
@@ -203,6 +204,7 @@ MainWindow::MainWindow() : QMainWindow(),
               analyis,SLOT(slotVisibilityChanged(bool)));
 	m_menuView->addAction(analysisDock2->toggleViewAction());
     analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F3);
+    analysisDock2->hide();
 
 	/* Randomize */
 	srand(time(0));
@@ -297,6 +299,8 @@ void MainWindow::closeEvent(QCloseEvent* e)
         m_databaseList->save();
 		AppSettings->setLayout(m_playerDialog);
 		m_gameList->saveConfig();
+        m_databaseList->saveConfig();
+        m_playerList->saveConfig();
         m_openingTreeView->saveConfig();
 		m_gameView->saveConfig();
 		AppSettings->setLayout(this);

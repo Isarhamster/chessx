@@ -42,11 +42,17 @@ void TableView::saveConfig()
 void TableView::slotReconfigure()
 {
 	AppSettings->layout(this);
-	AppSettings->beginGroup(objectName());
+    QString objName = objectName();
+    AppSettings->beginGroup(objName);
 	QList<int> sections;
 	if (AppSettings->list("Sections", sections, model()->columnCount()))
 		for (int i = 0; i < sections.count(); i++)
 			setColumnWidth(i, sections[i]);
 	AppSettings->endGroup();
+    int fontSize = AppSettings->value("/General/ListFontSize", DEFAULT_LISTFONTSIZE).toInt();
+    QFont f = font();
+    f.setPointSize(fontSize);
+    setFont(f);
+    update();
 }
 

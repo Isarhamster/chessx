@@ -21,8 +21,12 @@ class QWidget;
 
 #ifdef Q_OS_MAC
     #define MIN_WHEEL_COUNT 120
+    #define DEFAULT_FONTSIZE 12
+    #define DEFAULT_LISTFONTSIZE 12
 #else
     #define MIN_WHEEL_COUNT 0
+    #define DEFAULT_FONTSIZE 11
+    #define DEFAULT_LISTFONTSIZE 11
 #endif
 
 class Settings : public QSettings

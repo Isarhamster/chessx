@@ -24,7 +24,7 @@ public slots:
 	/** Store current configuration. */
 	void saveConfig();
 	/** Restore current configuration. */
-	void slotReconfigure();
+    virtual void slotReconfigure();
 };
 
 #endif

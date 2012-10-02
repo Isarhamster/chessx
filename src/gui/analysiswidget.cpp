@@ -122,6 +122,12 @@ void AnalysisWidget::slotReconfigure()
 		ui.engineList->setCurrentIndex(0);
 		stopEngine();
 	}
+
+    int fontSize = AppSettings->value("/General/ListFontSize", DEFAULT_LISTFONTSIZE).toInt();
+    QFont f = ui.variationText->font();
+    f.setPointSize(fontSize);
+    setFont(f);
+    ui.variationText->setFont(f);
 }
 
 void AnalysisWidget::showAnalysis(const Analysis& analysis)
