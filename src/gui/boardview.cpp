@@ -132,7 +132,7 @@ void BoardView::paintEvent(QPaintEvent* event)
             {
                 square = maxsquare;
             }
-            if (square > 0)
+            if (square > 8)
             {
 
                 QColor color = white ? Qt::white : Qt::black;
@@ -169,8 +169,8 @@ void BoardView::resizeBoard()
 {
 	// subtract move indicator from width
 	int coord = m_coordinates * CoordinateSize;
-    int xsize = (width() - 2 * coord - 1) / 8;
-    int ysize = (height() - 2 * coord - 1) / 8;
+    int xsize = (width() - 2 * coord ) / 8;
+    int ysize = (height() - 2 * coord ) / 8;
 	int size = xsize < ysize ? xsize : ysize;
 	m_theme.setSize(QSize(size, size));
 }
