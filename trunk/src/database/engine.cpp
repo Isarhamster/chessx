@@ -56,13 +56,10 @@ Engine* Engine::newEngine(int index)
 
 Engine::~Engine()
 {
-	if (m_process) {
-		deactivate();
-		m_process->disconnect();
-		m_process->kill();
-        m_process->waitForFinished(2000);
+    if (m_process) {
+        deactivate();
         m_process = 0;
-	}
+    }
 }
 
 
@@ -73,7 +70,7 @@ void Engine::setLogStream(QTextStream* logStream)
 
 void Engine::activate()
 {
-	if (m_active) {
+    if (m_process) {
 		return;
 	}
 
@@ -93,8 +90,8 @@ void Engine::activate()
 
 void Engine::deactivate()
 {
-	if (m_active)
-		protocolEnd();
+    if (m_active)
+        protocolEnd();
 }
 
 bool Engine::isActive()
@@ -159,7 +156,7 @@ void Engine::pollProcess()
 	QString message;
 
     while (m_process && m_process->canReadLine()) {
-		message = m_process->readLine().trimmed();
+        message = m_process->readLine().simplified();
         qDebug() << "--> " << message << endl;
         processMessage(message);
 	}
