@@ -39,7 +39,7 @@ void EngineList::save()
 {
 	AppSettings->beginGroup("/Engines/");
 	AppSettings->remove("");	// Clear group
-	for (int i = 0; i < count(); i++) {
+    for (int i = 0; i < count(); ++i) {
 		QString key = QString::number(i);
 		AppSettings->setValue(key + "/Name", at(i).name);
 		AppSettings->setValue(key + "/Command", at(i).command);
@@ -57,7 +57,7 @@ void EngineList::save()
 QStringList EngineList::names() const
 {
 	QStringList engineNames;
-	for (int i = 0; i < count(); i++)
+    for (int i = 0; i < count(); ++i)
 		engineNames.append(at(i).name);
 	return engineNames;
 }

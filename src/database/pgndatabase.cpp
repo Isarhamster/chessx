@@ -286,7 +286,7 @@ void PgnDatabase::parseLine(Game* game)
     QStringList list = m_currentLine.split(" ");
 	m_pos = 0;
 
-	for (QStringList::Iterator it = list.begin(); it != list.end() && !m_inComment; it++) {
+    for (QStringList::Iterator it = list.begin(); it != list.end() && !m_inComment; ++it) {
 		if (*it != "") {
 			parseToken(game, *it);
 			if (m_variation == -1) {
@@ -474,7 +474,7 @@ void PgnDatabase::parseComment(Game* game)
 
 inline bool onlyWhite(const QString& b)
 {
-    for (int i = 0; i < b.length(); i++)
+    for (int i = 0; i < b.length(); ++i)
         if (!isspace(b.at(i).toAscii()))
             return false;
     return true;
@@ -482,7 +482,7 @@ inline bool onlyWhite(const QString& b)
 
 inline bool onlyWhite(const QByteArray& b)
 {
-	for (int i = 0; i < b.length(); i++)
+    for (int i = 0; i < b.length(); ++i)
         if (!isspace(b[i]))
 			return false;
 	return true;

@@ -339,7 +339,7 @@ void PreferencesDialog::saveSettings()
 
 bool PreferencesDialog::selectInCombo(QComboBox* combo, const QString& text)
 {
-	for (int i = 0; i < combo->count(); i++)
+    for (int i = 0; i < combo->count(); ++i)
 		if (combo->itemText(i) == text) {
 			combo->setCurrentIndex(i);
 			return true;
@@ -356,7 +356,7 @@ void PreferencesDialog::restoreColorItem(ColorList* list, const QString& text, c
 
 void PreferencesDialog::saveColorList(ColorList* list, const QStringList& cfgnames)
 {
-	for (int i = 0; i < list->count(); i++)
+    for (int i = 0; i < list->count(); ++i)
 		AppSettings->setValue(cfgnames[i], list->color(i));
 }
 

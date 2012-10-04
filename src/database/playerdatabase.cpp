@@ -283,7 +283,7 @@ bool PlayerDatabase::add(const QString& playername)
 	m_currentPlayerName = playername;
 	m_currentPlayer = pd;
 	m_dirty = true;
-	m_npending_adds++;
+    ++m_npending_adds;
 	return true;
 }
 
@@ -464,7 +464,7 @@ QStringList PlayerDatabase::findPlayers(const QString& prefix, const int maxCoun
 			if (i >= maxCount)
 				break;
 			result.push_back(it.key());
-			i++;
+            ++i;
 		}
 	}
 	return result;

@@ -378,7 +378,7 @@ void Output::writeAllTags()
 {
 	QMap<QString, QString> tags = m_game->tags();
 	// write standard tags
-	for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 7; ++i) {
 		writeTag(StandardTags[i], tags[StandardTags[i]]);
 		tags.remove(StandardTags[i]);
 	}

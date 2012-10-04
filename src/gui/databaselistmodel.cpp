@@ -224,7 +224,7 @@ void DatabaseListModel::setFileClose(const QString& s)
 
 void DatabaseListModel::setFileCurrent(const QString& s)
 {
-    for (int i=0; i<m_databases.count();i++)
+    for (int i=0; i<m_databases.count();++i)
     {
         if (m_databases[i].m_isCurrent)
         {
@@ -266,7 +266,7 @@ void DatabaseListModel::update(const QString& s)
 
 void DatabaseListModel::toStringList(QStringList& list)
 {
-    for (int i=1; i<m_databases.count();i++)
+    for (int i=1; i<m_databases.count();++i)
     {
         if (m_databases[i].m_isFavorite)
         {

@@ -99,18 +99,18 @@ initHashValues (void)
     // Fill in the hash values for each valid [piece][square] index,
     // using a table of pre-generated good values:
     const unsigned int * hash = goodHashValues;
-    for (sq=A1; sq <= H8; sq++) { hashVal[WK][sq] = *hash; hash++; }
-    for (sq=A1; sq <= H8; sq++) { hashVal[WQ][sq] = *hash; hash++; }
-    for (sq=A1; sq <= H8; sq++) { hashVal[WR][sq] = *hash; hash++; }
-    for (sq=A1; sq <= H8; sq++) { hashVal[WB][sq] = *hash; hash++; }
-    for (sq=A1; sq <= H8; sq++) { hashVal[WN][sq] = *hash; hash++; }
-    for (sq=A1; sq <= H8; sq++) { hashVal[WP][sq] = *hash; hash++; }
-    for (sq=A1; sq <= H8; sq++) { hashVal[BK][sq] = *hash; hash++; }
-    for (sq=A1; sq <= H8; sq++) { hashVal[BQ][sq] = *hash; hash++; }
-    for (sq=A1; sq <= H8; sq++) { hashVal[BR][sq] = *hash; hash++; }
-    for (sq=A1; sq <= H8; sq++) { hashVal[BB][sq] = *hash; hash++; }
-    for (sq=A1; sq <= H8; sq++) { hashVal[BN][sq] = *hash; hash++; }
-    for (sq=A1; sq <= H8; sq++) { hashVal[BP][sq] = *hash; hash++; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[WK][sq] = *hash; ++hash; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[WQ][sq] = *hash; ++hash; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[WR][sq] = *hash; ++hash; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[WB][sq] = *hash; ++hash; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[WN][sq] = *hash; ++hash; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[WP][sq] = *hash; ++hash; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[BK][sq] = *hash; ++hash; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[BQ][sq] = *hash; ++hash; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[BR][sq] = *hash; ++hash; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[BB][sq] = *hash; ++hash; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[BN][sq] = *hash; ++hash; }
+    for (sq=A1; sq <= H8; ++sq) { hashVal[BP][sq] = *hash; ++hash; }
 
     // Compute the hash values for the standard starting position:
     uint h = 0;
@@ -141,8 +141,8 @@ errorT
 Position::AssertPos ()
 {
     byte mat[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    for (colorT c = WHITE; c <= BLACK; c++) {
-        for (uint i=0; i < Count[c]; i++) {
+    for (colorT c = WHITE; c <= BLACK; ++c) {
+        for (uint i=0; i < Count[c]; ++i) {
             if (ListPos[List[c][i]] != i
                   ||  piece_Color(Board[List[c][i]]) != c) {
                 DumpBoard (stderr);
@@ -576,13 +576,13 @@ void
 Position::Clear (void)
 {
     int i;
-    for (i=A1; i <= H8; i++) { Board[i] = EMPTY; }
-    for (i=WK; i <= BP; i++) {
+    for (i=A1; i <= H8; ++i) { Board[i] = EMPTY; }
+    for (i=WK; i <= BP; ++i) {
         Material[i] = 0;
-        for (uint j=0; j < 8; j++) {
+        for (uint j=0; j < 8; ++j) {
             NumOnRank[i][j] = NumOnFyle[i][j] = 0;
         }
-        for (uint d=0; d < 15; d++) {
+        for (uint d=0; d < 15; ++d) {
             NumOnLeftDiag[i][d] = NumOnRightDiag[i][d] = 0;
         }
         NumOnSquareColor[i][WHITE] = NumOnSquareColor[i][BLACK] = 0;
@@ -1008,7 +1008,7 @@ Position::MatchLegalMove (MoveList * mlist, pieceT mask, squareT target)
     // since the King is always the piece at position 0 in the list.
 
     squareT * sqPtr = &(List[ToMove][1]);
-    for (x=1;  x < Count[ToMove]  &&  count < total;  x++, sqPtr++) {
+    for (x=1;  x < Count[ToMove]  &&  count < total;  ++x, ++sqPtr) {
         p = Board[*sqPtr];
         pt = piece_Type(p);
         if (pt == mask) {
@@ -1017,7 +1017,7 @@ Position::MatchLegalMove (MoveList * mlist, pieceT mask, squareT target)
             // Material[p] pieces of this type.
 
             tryMove = 0;
-            count++;
+            ++count;
             squareT sq;
 
             switch (pt) {
@@ -1335,7 +1335,7 @@ Position::GenCheckEvasions (MoveList * mlist, pieceT mask, genMovesT genType,
         // capture the piece that is giving check!
 
         uint numPieces = Count[ToMove];
-        for (uint p2 = 1; p2 < numPieces; p2++) {
+        for (uint p2 = 1; p2 < numPieces; ++p2) {
             squareT from = List[ToMove][p2];
             pieceT p2piece = Board[from];
             if (Pinned[p2] != NULL_DIR) { continue; }
@@ -1416,7 +1416,7 @@ Position::CalcAttacks (colorT side, squareT target, SquareList * fromSquares)
         if (RankCount(queen,rank) + RankCount(rook,rank) > 0) {
             dirs[ndirs++] = LEFT; dirs[ndirs++] = RIGHT;
         }
-        for (uint i = 0; i < ndirs; i++) {
+        for (uint i = 0; i < ndirs; ++i) {
             directionT dir = dirs[i];
             int delta = direction_Delta (dir);
             squareT dest = target;
@@ -1664,7 +1664,7 @@ Position::Mobility (pieceT p, colorT color, squareT from)
         = { UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT };
     directionT * dirPtr = (p == ROOK ? rookDirs : bishopDirs);
 
-    for (uint i=0; i < 4; i++) {
+    for (uint i=0; i < 4; ++i) {
         directionT dir = dirPtr[i];
         int delta = direction_Delta (dir);
         squareT dest = from;
@@ -1674,11 +1674,11 @@ Position::Mobility (pieceT p, colorT color, squareT from)
             dest += delta;
             pieceT p = Board[dest];
             if (p == EMPTY) {  // Empty square
-                mobility++;
+                ++mobility;
             } else if (piece_Color(p) == color) {  // Friendly piece
                 break;  // Finished with this direction.
             } else {  // Enemy piece
-                mobility++;
+                ++mobility;
                 break;  // Finished with this direction.
             }
         }
@@ -1705,25 +1705,25 @@ Position::SmallestDefender (colorT color, squareT target)
     if (numDefenders == 0) { return EMPTY; }
 
     uint i;
-    for (i=0; i < numDefenders; i++) {
+    for (i=0; i < numDefenders; ++i) {
        defenders[i] = Board[defenderSquares.Get(i)];
     }
     // Look for pawns first:
-    for (i=0; i < numDefenders; i++) {
+    for (i=0; i < numDefenders; ++i) {
         if (piece_Type (defenders[i]) == PAWN) { return PAWN; }
     }
     // Look for knights then bishops:
-    for (i=0; i < numDefenders; i++) {
+    for (i=0; i < numDefenders; ++i) {
         if (piece_Type (defenders[i]) == KNIGHT) { return KNIGHT; }
     }
-    for (i=0; i < numDefenders; i++) {
+    for (i=0; i < numDefenders; ++i) {
         if (piece_Type (defenders[i]) == BISHOP) { return BISHOP; }
     }
     // Look for rooks then queens:
-    for (i=0; i < numDefenders; i++) {
+    for (i=0; i < numDefenders; ++i) {
         if (piece_Type (defenders[i]) == ROOK) { return ROOK; }
     }
-    for (i=0; i < numDefenders; i++) {
+    for (i=0; i < numDefenders; ++i) {
         if (piece_Type (defenders[i]) == QUEEN) { return QUEEN; }
     }
 
@@ -2357,7 +2357,7 @@ Position::ReadMove (simpleMoveT * m, const char * str, tokenT token)
         if (slen == 2  &&  (s[1] >= 'a'  &&  s[1] <= 'h')) {
             toFyle = fyle_FromChar (s[1]);
             // Check each rank in turn, looking for the capture:
-            for (rankT r = RANK_1; r <= RANK_8; r++) {
+            for (rankT r = RANK_1; r <= RANK_8; ++r) {
                 to = square_Make (toFyle, r);
                 if (MatchPawnMove (&mlist, frFyle, to, promo) == OK) {
                     *m = *(mlist.Get(0));
@@ -2410,7 +2410,7 @@ Position::ReadMove (simpleMoveT * m, const char * str, tokenT token)
     if (slen > 3) {
         // There is some ambiguity information in the input string.
 
-        for (uint i=1; i < slen-2; i++) {  // For each extra char:
+        for (uint i=1; i < slen-2; ++i) {  // For each extra char:
             if (isdigit(s[i])) {
                 frRank = rank_FromChar(s[i]);
             } else if (s[i] >= 'a'  &&  s[i] <= 'h') {
@@ -2472,7 +2472,7 @@ Position::ParseMove (simpleMoveT * sm, const char * line)
     // First, strip the move string down to its raw form with no
     // 'x' (capture symbols), etc:
 
-    while (*s != 0  &&  !isalpha(*s)) { s++; }
+    while (*s != 0  &&  !isalpha(*s)) { ++s; }
     if (*s == '\0') { return ERROR_InvalidMove; }
     s2 = mStr; length = 0;
     while (!isspace(*s)  &&  *s != '\0') {
@@ -2578,7 +2578,7 @@ Position::CalcSANStrings (sanFlagT flag)
 
     MoveList mlist;
     GenerateMoves (&mlist);
-    for (ushort i=0; i < mlist.Size(); i++) {
+    for (ushort i=0; i < mlist.Size(); ++i) {
         MakeSANString (mlist.Get(i), SANStrings->list[i], flag);
     }
     SANStrings->num = mlist.Size();
@@ -2597,7 +2597,7 @@ Position::ReadFromLongStr (const char * str)
     pieceFromByte [(int) 'P'] = WP;  pieceFromByte [(int) 'p'] = BP;
 
     Clear();
-    for (squareT sq=A1; sq <= H8; sq++) {
+    for (squareT sq=A1; sq <= H8; ++sq) {
         if (str[sq] == '.') { continue; }
         pieceT p = pieceFromByte [(byte) str[sq]];
         if (p == EMPTY) { return ERROR_Corrupt; }
@@ -2630,7 +2630,7 @@ Position::MakeLongStr (char * str)
 {
     ASSERT (str != NULL);
     char * s = str;
-    for (squareT sq = A1; sq <= H8; sq++) {
+    for (squareT sq = A1; sq <= H8; ++sq) {
         *s++ = PIECE_CHAR[Board[sq]];
     }
     *s++ = ' ';
@@ -2649,7 +2649,7 @@ Position::DumpBoard (FILE * fp)
     squareT s;
     for (int i=7; i>=0; i--) {
         fputs ("   ", fp);
-        for (int j=0; j<8; j++) {
+        for (int j=0; j<8; ++j) {
             s = (i*8) + j;
             putc (PIECE_CHAR[Board[s]], fp);
             putc (' ', fp);
@@ -2667,8 +2667,8 @@ Position::DumpLists (FILE * fp)
 {
     ASSERT (fp != NULL);
     uint i;
-    for (colorT c = WHITE; c <= BLACK; c++) {
-        for (i=0; i < Count[c]; i++) {
+    for (colorT c = WHITE; c <= BLACK; ++c) {
+        for (i=0; i < Count[c]; ++i) {
             pieceT p = Board[List[c][i]];
             fprintf (fp, "%2d:", ListPos[List[c][i]]);
             putc (PIECE_CHAR[p], fp);
@@ -2696,7 +2696,7 @@ errorT
 Position::ReadFromCompactStr (const byte * str)
 {
     Clear();
-    for (uint i=0; i < 32; i++) {
+    for (uint i=0; i < 32; ++i) {
         pieceT p = str[i] >> 4;
         if (p != EMPTY) {
             if (AddPiece (p, i * 2) != OK) {
@@ -2723,7 +2723,7 @@ Position::ReadFromCompactStr (const byte * str)
 void
 Position::PrintCompactStr (char * cboard)
 {
-    for (uint i=0; i < 32; i++) {
+    for (uint i=0; i < 32; ++i) {
         uint i2 = i << 1;
         cboard[i] = (byte)(Board[i2] << 4) | Board[i2+1];
     }
@@ -2752,7 +2752,7 @@ Position::PrintCompactStr (char * cboard)
 void
 Position::PrintCompactStrFlipped (char * cboard)
 {
-    for (uint i=0; i < 32; i++) {
+    for (uint i=0; i < 32; ++i) {
         uint i2 = i << 1;
         // Flip 1st rank to 8th, etc:
         i2 = ((7 - (i2)/8) * 8 + ((i2) % 8));
@@ -2801,7 +2801,7 @@ Position::ReadFromFEN (const char * str)
         firstCall = 0;
 
         // Set up pieceFromByte[]:
-        for (int i=0; i < 256; i++) { pieceFromByte[i] = EMPTY; }
+        for (int i=0; i < 256; ++i) { pieceFromByte[i] = EMPTY; }
         pieceFromByte [(int) 'K'] = WK;  pieceFromByte [(int) 'k'] = BK;
         pieceFromByte [(int) 'Q'] = WQ;  pieceFromByte [(int) 'q'] = BQ;
         pieceFromByte [(int) 'R'] = WR;  pieceFromByte [(int) 'r'] = BR;
@@ -2810,7 +2810,7 @@ Position::ReadFromFEN (const char * str)
         pieceFromByte [(int) 'P'] = WP;  pieceFromByte [(int) 'p'] = BP;
 
         // Set up fenSqToRealSq[]:
-        for (int sq=0; sq < 64; sq++) {
+        for (int sq=0; sq < 64; ++sq) {
             fenSqToRealSquare [sq] = (squareT)((7 - (sq)/8) * 8 + ((sq) % 8));
         }
     }
@@ -2949,17 +2949,17 @@ Position::PrintFEN (char * str, uint flags)
     ASSERT (str != NULL);
     uint emptyRun, iRank, iFyle;
     pieceT * pBoard = Board;
-    for (iRank = 0; iRank < 8; iRank++) {
+    for (iRank = 0; iRank < 8; ++iRank) {
         pBoard = &(Board[(7 - iRank) * 8]);
         emptyRun = 0;
         if (iRank > 0  &&  flags > FEN_COMPACT) { *str++ = '/'; }
-        for (iFyle = 0; iFyle < 8; iFyle++, pBoard++) {
+        for (iFyle = 0; iFyle < 8; ++iFyle, ++pBoard) {
             if (*pBoard != EMPTY) {
                 if (emptyRun) { *str++ = (byte) emptyRun + '0'; }
                 emptyRun = 0;
                 *str++ = PIECE_CHAR[*pBoard];
             } else {
-                emptyRun++;
+                ++emptyRun;
             }
         }
         if (emptyRun) { *str++ = (byte) emptyRun + '0'; }
@@ -3038,10 +3038,10 @@ Position::DumpHtmlBoard (DString * dstr, uint style, const char * dir, bool flip
 
     dstr->Append ("<br><br><center>\n");
     dstr->Append ("<table Border=1 CellSpacing=0 CellPadding=0>\n");
-    for (iRank = 0; iRank < 8; iRank++) {
+    for (iRank = 0; iRank < 8; ++iRank) {
         dstr->Append ("<tr>\n");
         pBoard = &(Board[(7 - iRank) * 8]);
-        for (iFyle = 0; iFyle < 8; iFyle++, pBoard++) {
+        for (iFyle = 0; iFyle < 8; ++iFyle, ++pBoard) {
             pieceT piece = *pBoard;
             if (flip) { piece = Board[iRank * 8 + (7 - iFyle)]; }
             dstr->Append ("  <td><img border=0 ");
@@ -3103,9 +3103,9 @@ Position::DumpLatexBoard (DString * dstr, bool flip)
     uint iRank, iFyle;
     pieceT * pBoard;
     dstr->Append ("\\board{");
-    for (iRank = 0; iRank < 8; iRank++) {
+    for (iRank = 0; iRank < 8; ++iRank) {
         pBoard = &(Board[(7 - iRank) * 8]);
-        for (iFyle = 0; iFyle < 8; iFyle++, pBoard++) {
+        for (iFyle = 0; iFyle < 8; ++iFyle, ++pBoard) {
             pieceT piece = *pBoard;
             if (flip) { piece = Board[iRank * 8 + (7 - iFyle)]; }
             if (piece != EMPTY) {
@@ -3148,22 +3148,22 @@ Position::Compare (Position * p)
 void
 Position::CopyFrom (Position * src)
 {
-    for (pieceT p=A1; p <= NS; p++) {
+    for (pieceT p=A1; p <= NS; ++p) {
         Board[p] = src->Board[p];
     };
     Count[WHITE] = src->Count[WHITE];
     Count[BLACK] = src->Count[BLACK];
     uint i;
-    for (i=0; i < 64; i++) { ListPos[i] = src->ListPos[i]; }
-    for (i=0; i < 16; i++) {
+    for (i=0; i < 64; ++i) { ListPos[i] = src->ListPos[i]; }
+    for (i=0; i < 16; ++i) {
         Material[i] = src->Material[i];
         List[WHITE][i] = src->List[WHITE][i];
         List[BLACK][i] = src->List[BLACK][i];
-        for (uint j=0; j < 8; j++) {
+        for (uint j=0; j < 8; ++j) {
             NumOnFyle[i][j] = src->NumOnFyle[i][j];
             NumOnRank[i][j] = src->NumOnRank[i][j];
         }
-        for (uint d=0; d < 15; d++) {
+        for (uint d=0; d < 15; ++d) {
             NumOnLeftDiag[i][d] = src->NumOnLeftDiag[i][d];
             NumOnRightDiag[i][d] = src->NumOnRightDiag[i][d];
         }
@@ -3263,7 +3263,7 @@ Position::Random (const char * material)
         AddPiece (WK, wk);
         AddPiece (BK, bk);
 
-        for (uint i=0; i < total; i++) {
+        for (uint i=0; i < total; ++i) {
             squareT sq;
             pieceT p = pieces[i];
             bool isPawn = (piece_Type(p) == PAWN);

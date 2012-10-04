@@ -67,7 +67,7 @@ void PlayerInfo::update()
 	// Clean previous statistics
 	reset();
 
-	for (int i = 0; i < m_database->count(); i++) {
+    for (int i = 0; i < m_database->count(); ++i) {
 		Color c;
 		if (index->gameTagIndex(TagWhite, i) == wplayer)
 			c = White;
@@ -99,7 +99,7 @@ QString PlayerInfo::unformattedScore(const int result[4], int count) const
         return QCoreApplication::translate("PlayerInfo", "no games");
     QString score;
     QChar scoresign[4] = {'*', '+', '=', '-'};
-    for (int i = WhiteWin; i <= BlackWin; i++)
+    for (int i = WhiteWin; i <= BlackWin; ++i)
         score += QString(" %1%2").arg(scoresign[i]).arg(result[i]);
     if (result[Unknown])
         score += QString(" *%1").arg(result[Unknown]);
@@ -115,7 +115,7 @@ QString PlayerInfo::formattedScore(const int result[4], int count) const
 		return QCoreApplication::translate("PlayerInfo", "<i>no games</i>");
 	QString score = "<b>";
 	QChar scoresign[4] = {'*', '+', '=', '-'};
-	for (int i = WhiteWin; i <= BlackWin; i++)
+    for (int i = WhiteWin; i <= BlackWin; ++i)
 		score += QString(" &nbsp;%1%2").arg(scoresign[i]).arg(result[i]);
 	if (result[Unknown])
 		score += QString(" &nbsp;*%1").arg(result[Unknown]);
@@ -129,7 +129,7 @@ QString PlayerInfo::formattedScore(const int result[4], int count) const
 QString PlayerInfo::unformattedScoreTotal() const
 {
     int total[4];
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; ++i)
         total[i] = m_result[White][i] + m_result[Black][i];
     int count = m_count[White] + m_count[Black];
     return QString("%1").arg(unformattedScore(total, count));
@@ -148,7 +148,7 @@ QString PlayerInfo::unformattedScoreBlack() const
 QString PlayerInfo::unformattedScore() const
 {
     int total[4];
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; ++i)
         total[i] = m_result[White][i] + m_result[Black][i];
     int count = m_count[White] + m_count[Black];
     return QCoreApplication::translate("PlayerInfo", "Total: %1 White: %2 Black: %3")
@@ -160,7 +160,7 @@ QString PlayerInfo::unformattedScore() const
 QString PlayerInfo::formattedScore() const
 {
 	int total[4];
-	for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; ++i)
 		total[i] = m_result[White][i] + m_result[Black][i];
 	int count = m_count[White] + m_count[Black];
 	return QCoreApplication::translate("PlayerInfo", "Total: %1<br>White: %2<br>Black: %3<br>")
@@ -171,8 +171,8 @@ QString PlayerInfo::formattedScore() const
 
 void PlayerInfo::reset()
 {
-	for (int c = White; c <= Black; c++) {
-		for (int r = 0; r < 4; r++)
+    for (int c = White; c <= Black; ++c) {
+        for (int r = 0; r < 4; ++r)
 			m_result[c][r] = 0;
 		m_count[c] = 0;
 		m_eco[c].clear();

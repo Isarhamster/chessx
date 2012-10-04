@@ -58,7 +58,7 @@ MoveList::SwapWithFirst (uint index)
 int
 MoveList::Find (simpleMoveT * sm)
 {
-    for (uint i=0; i < ListSize; i++) {
+    for (uint i=0; i < ListSize; ++i) {
         simpleMoveT * lsm = &(Moves[i]);
         if (sm->from == lsm->from  &&  sm->to == lsm->to
                 &&  sm->promote == lsm->promote) {
@@ -78,7 +78,7 @@ uint
 MoveList::SelectBySquares (squareT f1, squareT t1, squareT f2, squareT t2)
 {
     uint index = 0;
-    for (uint i=0; i < ListSize; i++) {
+    for (uint i=0; i < ListSize; ++i) {
         simpleMoveT * sm = &(Moves[i]);
 	if ((sm->from == f1 && sm->to == t1) || (sm->from == f2 && sm->to == t2)) {
 		if (i != index)
@@ -109,7 +109,7 @@ MoveList::SelectBySquare (squareT sq)
         if (i != index) {
             Moves[index] = *sm;
         }
-        index++;
+        ++index;
     }
     ListSize = index;
     return ListSize;
@@ -130,7 +130,7 @@ MoveList::FindBest (uint index)
     uint bestIndex = index;
     int bestScore = Moves[index].score;
     // Search the rest of the list for a better-scoring move:
-    for (uint i = index + 1; i < ListSize; i++) {
+    for (uint i = index + 1; i < ListSize; ++i) {
         if (Moves[i].score > bestScore) {
             bestIndex = i;
             bestScore = Moves[i].score;
@@ -152,7 +152,7 @@ void
 MoveList::Sort (void)
 {
     // Do a simple selection sort, which works fine for small list sizes.
-    for (uint i=0; i < ListSize; i++) {
+    for (uint i=0; i < ListSize; ++i) {
         FindBest (i);
     }
 }
@@ -161,7 +161,7 @@ bool
 MoveList::IsSorted (void)
 {
     if (ListSize < 2) { return true; }
-    for (uint i = 0; i < ListSize - 1; i++) {
+    for (uint i = 0; i < ListSize - 1; ++i) {
         if (Moves[i].score < Moves[i+1].score) { return false; }
     }
     return true;
