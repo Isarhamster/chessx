@@ -723,12 +723,12 @@ void MainWindow::slotDatabaseCopy(int preselect)
 		m_databases[target]->database()->appendGame(game());
 		break;
 	case CopyDialog::Filter:
-		for (int i = 0; i < database()->count(); i++)
+        for (int i = 0; i < database()->count(); ++i)
 			if (databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
 				m_databases[target]->database()->appendGame(g);
 		break;
 	case CopyDialog::AllGames:
-		for (int i = 0; i < database()->count(); i++)
+        for (int i = 0; i < database()->count(); ++i)
 			if (database()->loadGame(i, g))
 				m_databases[target]->database()->appendGame(g);
 		break;
@@ -791,8 +791,11 @@ void MainWindow::slotToggleFilter()
 
 void MainWindow::slotTreeUpdate()
 {
-    m_gameList->updateFilter();
-    slotFilterChanged();
+    if (m_gameList->m_FilterActive)
+    {
+        m_gameList->updateFilter();
+        slotFilterChanged();
+    }
     finishOperation(tr("Tree updated."));
     if (m_bGameChange)
     {
@@ -808,10 +811,10 @@ void MainWindow::slotTreeUpdateStarted()
 
 void MainWindow::slotSearchTree()
 {
-    if (!m_openingTreeView->isVisible() || !m_gameList->m_FilterActive)
-		return;
-
-    m_openingTree->update(*databaseInfo()->filter(), m_boardView->board());
+    if (m_openingTreeView->isVisible() )
+    {
+    	m_openingTree->update(*databaseInfo()->filter(), m_boardView->board());
+	}
 }
 
 void MainWindow::slotSearchTreeMove(const QModelIndex& index)
