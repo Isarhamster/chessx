@@ -181,7 +181,7 @@ void BitBoard::removeIllegal(const Move& move, quint64& b) const
 {
 	quint64 mask = 1;
 	Move m = move;
-	for (int sq = 0; sq < 64; sq++) {
+    for (int sq = 0; sq < 64; ++sq) {
 		if (b & mask) {
 			m.setFrom(sq);
 			if (isIntoCheck(m))
@@ -639,7 +639,7 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 
 	// Set remainder of bitboard data appropriately
 	m_occupied = m_occupied_co[White] + m_occupied_co[Black];
-	for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < 64; ++i) {
 		if (SetBit(i)&m_occupied) {
 			m_occupied_l90 |= SetBitL90(i);
 			m_occupied_l45 |= SetBitL45(i);
@@ -1607,7 +1607,7 @@ QString BitBoard::toFen() const
 
 	//piece placement
 	for (int row = 7; row >= 0; row--) {
-		for (int col = 0; col < 8; col++) {
+        for (int col = 0; col < 8; ++col) {
 			piece = pieceAt(8 * row + col);
 			if (piece != Empty) {
 				if (empty != 0) {
@@ -1671,17 +1671,17 @@ void bitBoardInit()
 
 	// Square masks
 	mask = 1;
-	for (i = 0;i < 64;i++) {
+    for (i = 0;i < 64;++i) {
 		bb_Mask[i] = mask << i;
 	}
-	for (i = 0;i < 64;i++) {
+    for (i = 0;i < 64;++i) {
 		bb_MaskL90[i] = SetBit(RotateL90[i]);
 		bb_MaskL45[i] = SetBit(RotateL45[i]);
 		bb_MaskR45[i] = SetBit(RotateR45[i]);
 	}
 
 	// Pawn moves and attacks
-	for (i = 0;i < 64;i++) {
+    for (i = 0;i < 64;++i) {
 		mask = SetBit(i);
 		bb_PawnAttacks[White][i]  = ShiftUpLeft(mask);
 		bb_PawnAttacks[White][i] |= ShiftUpRight(mask);
@@ -1705,7 +1705,7 @@ void bitBoardInit()
 	}
 
 	// Knight attacks
-	for (i = 0;i < 64;i++) {
+    for (i = 0;i < 64;++i) {
 		mask = SetBit(i);
 		bb_KnightAttacks[i]  = ShiftLeft(Shift2Up(mask));
 		bb_KnightAttacks[i] |= ShiftRight(Shift2Up(mask));
@@ -1718,8 +1718,8 @@ void bitBoardInit()
 	}
 
 	// Diagonal attacks
-	for (int s = 0;s < 64;s++) {
-		for (int b = 0;b < 64;b++) {
+    for (int s = 0;s < 64;++s) {
+        for (int b = 0;b < 64;++b) {
 			mask = 0;
 			q = s;
 			while (File(q) > 0 && Rank(q) < 7) {
@@ -1760,8 +1760,8 @@ void bitBoardInit()
 	memset(bb_RankAttacks, 0, sizeof(bb_RankAttacks));
 	memset(bb_FileAttacks, 0, sizeof(bb_FileAttacks));
 	int file, rank;
-	for (int sq = 0;sq < 64;sq++) {
-		for (int bitrow = 0;bitrow < 64;bitrow++) {
+    for (int sq = 0;sq < 64;++sq) {
+        for (int bitrow = 0;bitrow < 64;++bitrow) {
 			file = File(sq);
 			q = sq + 1;
 			while (++file < 8) {
@@ -1798,7 +1798,7 @@ void bitBoardInit()
 	}
 
 	// King:
-	for (i = 0;i < 64;i++) {
+    for (i = 0;i < 64;++i) {
 		mask = SetBit(i);
 		bb_KingAttacks[i]  = ShiftLeft(mask);
 		bb_KingAttacks[i] |= ShiftRight(mask);

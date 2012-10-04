@@ -107,7 +107,7 @@ QStringList HistoryList::items() const
 void HistoryList::setItems(const QStringList& list)
 {
 	clear();
-	for (int i = 0; i < size() && i < list.count(); i++)
+    for (int i = 0; i < size() && i < list.count(); ++i)
 		m_data.append(list[i]);
 }
 

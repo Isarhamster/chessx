@@ -37,7 +37,7 @@ bool MemoryDatabase::appendGame(const Game& game)
 	*newGame = game;
 	newGame->clearTags();
 	m_games.append(newGame);
-	m_count++;
+    ++m_count;
 	m_isModified = true;
 	return true;
 }

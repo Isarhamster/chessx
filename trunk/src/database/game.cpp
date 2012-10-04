@@ -246,7 +246,7 @@ MoveId Game::addVariation(const MoveList& moveList, const QString& annotation)
 	}
 	else varStart = addMove(moveList.first());
 	moveToId(varStart);
-	for (int i = start; i < moveList.count(); i++) {
+    for (int i = start; i < moveList.count(); ++i) {
 		addMove(moveList[i]);
 		forward();
 	}
@@ -626,7 +626,7 @@ int Game::plyCount() const
 	int node = 0;
 
 	while (node != NO_MOVE) {
-		count++;
+        ++count;
 		node = m_moveNodes[node].nextNode;
 	}
 	// Counted one too much, because we have to start at zero
@@ -786,7 +786,7 @@ int Game::forward(int count)
 	int moved = 0;
 	while ((m_moveNodes[m_currentNode].nextNode != NO_MOVE) && (moved < count)) {
 		m_currentNode = m_moveNodes[m_currentNode].nextNode;
-		moved++;
+        ++moved;
 
 		m_currentBoard.doMove(m_moveNodes[m_currentNode].move);
 	}
@@ -805,7 +805,7 @@ int Game::backward(int count)
 	while ((m_moveNodes[m_currentNode].previousNode >= 0) && (moved < count)) {
 		m_currentBoard.undoMove(m_moveNodes[m_currentNode].move);
 		m_currentNode = m_moveNodes[m_currentNode].previousNode;
-		moved++;
+        ++moved;
 	}
 
     QString annotation = squareAnnotation(m_currentNode);

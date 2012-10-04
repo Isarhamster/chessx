@@ -107,8 +107,8 @@ int Filter::gameToIndex(int index)
 	if (index > size() || index < 0 || !contains(index)) return -1;
 	if (index < size() / 2) {
 		int count = 0;
-		for (int i = 0; i < index; i++)
-			if (contains(i)) count++;
+        for (int i = 0; i < index; ++i)
+            if (contains(i)) ++count;
 		return count;
 	} else {
 		int count = m_count - 1;
@@ -122,7 +122,7 @@ int Filter::indexToGame(int index)
 {
 	if (index >= m_count) return -1;
 	if (index < m_count / 2)
-		for (int i = 0; i < size(); i++) {
+        for (int i = 0; i < size(); ++i) {
 			index -= contains(i);
 			if (index < 0) return i;
 		}
@@ -145,14 +145,14 @@ int Filter::previousGame(int current) const
 int Filter::nextGame(int current) const
 {
 	if (!m_count) return -1;
-	for (int i = qBound(-1, current, size()) + 1; i < size(); i++)
+    for (int i = qBound(-1, current, size()) + 1; i < size(); ++i)
 		if (contains(i)) return i;
 	return -1;
 }
 
 void Filter::resize(int newsize, bool includeNew)
 {
-	for (int i = newsize; i < size(); i++)  // Decrease count by number of removed games
+    for (int i = newsize; i < size(); ++i)  // Decrease count by number of removed games
 		if (contains(i))
 			m_count--;
 	int oldsize = size();
@@ -167,7 +167,7 @@ void Filter::resize(int newsize, bool includeNew)
 void Filter::reverse()
 {
 	m_count = size() - m_count;
-	for (int i = 0; i < size(); i++) {
+    for (int i = 0; i < size(); ++i) {
 		if (m_vector->at(i)) {
 			(*m_vector)[i] = 0;
 		} else {
@@ -187,7 +187,7 @@ void Filter::join(const Filter& filter, Operator op)
 	if (filter.size() != size())
 		return;
 	m_count = 0;
-	for (int i = 0; i < size(); i++) {
+    for (int i = 0; i < size(); ++i) {
 		(*m_vector)[i] = ops[op][contains(i)][filter.contains(i)];
 		m_count += contains(i);
 	}
@@ -200,22 +200,22 @@ QVector<int> Filter::intVector() const
 
 void Filter::executeSearch(Search& search)
 {
-	for (int searchIndex = 0; searchIndex < size(); searchIndex++) {
+    for (int searchIndex = 0; searchIndex < size(); ++searchIndex) {
 		set(searchIndex, search.matches(searchIndex));
 	}
 }
 void Filter::executeSearch(Search& search, Search::Operator searchOperator)
 {
-	for (int searchIndex = 0; searchIndex < size(); searchIndex++) {
+    for (int searchIndex = 0; searchIndex < size(); ++searchIndex) {
 		if ((searchOperator == Search::And) && contains(searchIndex)) {
 			set(searchIndex, search.matches(searchIndex));
 		}
 		if ((searchOperator == Search::Or) && !contains(searchIndex)) {
 			set(searchIndex, search.matches(searchIndex));
 		}
-
 	}
 }
+
 void Filter::executeQuery(Query& query)
 {
 	QVector <QPair <FilterSearch, int> > filterSearches;
@@ -231,7 +231,7 @@ void Filter::executeQuery(Query& query)
 
 	/* Make a list of all searches, filter searches separately */
 	int leafNode = 0;
-	for (int element = 0; element < query.count(); element++) {
+    for (int element = 0; element < query.count(); ++element) {
 		if (query.isElementSearch(element)) {
 			if (query.search(element)->type() == Search::FilterSearch) {
 				filterSearches.append(QPair < FilterSearch,
@@ -240,7 +240,7 @@ void Filter::executeQuery(Query& query)
 				searches.append(QPair < Search*, int >(query.search(element), leafNode));
 			}
 
-			leafNode++;
+            ++leafNode;
 		}
 	}
 	filterSearchCount = (int) filterSearches.size();
@@ -248,13 +248,13 @@ void Filter::executeQuery(Query& query)
 
 	/* Iterates through all games in the database.
 	 * Don't worry, a search won't be performed unless necessary */
-	for (int searchIndex = 0; searchIndex < size(); searchIndex++) {
+    for (int searchIndex = 0; searchIndex < size(); ++searchIndex) {
 		m_triStateTree.clear();
 
 		/* Add filter searches to tree. This could solve the tree in certain cases
 		 * making it unecessary to call searchGame() */
 		if (filterSearchCount) {
-			for (int search = 0; search < filterSearchCount; search++) {
+            for (int search = 0; search < filterSearchCount; ++search) {
 				if (m_triStateTree.setState(filterSearches.at(search).second,
 								 filterSearches.at(search).first.contains(searchIndex))) {
 					/* This means the tree evaluated to true */
@@ -264,24 +264,24 @@ void Filter::executeQuery(Query& query)
 			/* So if the filter(s) wasn't enough to solve the tree,
 			 * lets see what we can find in the game */
 			if (m_triStateTree.state() == TriStateTree::Unknown) {
-				for (int search = 0; search < searchCount; search++) {
+                for (int search = 0; search < searchCount; ++search) {
 					if (m_triStateTree.setState(searches.at(search).second,
 									 searches.at(search).first->matches(searchIndex))) {
 						break;
 					}
 				}
-				m_gamesSearched++;
+                ++m_gamesSearched;
 			}
 		} else {
 			/* If the query is not combined with this or any other filter
 			 * there is no way the tree could have been solved, so just check the game */
-			for (int search = 0; search < searchCount; search++) {
+            for (int search = 0; search < searchCount; ++search) {
 				if (m_triStateTree.setState(searches.at(search).second,
 								 searches.at(search).first->matches(searchIndex))) {
 					break;
 				}
 			}
-			m_gamesSearched++;
+            ++m_gamesSearched;
 		}
 
 		/* Update the filter with the result of the tree */

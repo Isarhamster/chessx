@@ -88,12 +88,12 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 
 		// Nag menus
 		QMenu* nagMoveMenu = m_gameMenu->addMenu(tr("Add move symbol"));
-		for (int n = MoveNagStart; n <= MoveNagEnd; n++)
+        for (int n = MoveNagStart; n <= MoveNagEnd; ++n)
 			if (n != SingularMove)
 				nagMoveMenu->addAction(createNagAction(Nag(n)));
 		QMenu* nagPositionMenu = m_gameMenu->addMenu(tr("Add evaluation symbol"));
 		nagPositionMenu->addAction(createNagAction(DrawishPosition));
-		for (int n = UnclearPosition; n <= BlackHasADecisiveAdvantage; n++)
+        for (int n = UnclearPosition; n <= BlackHasADecisiveAdvantage; ++n)
 			nagPositionMenu->addAction(createNagAction(Nag(n)));
 		nagPositionMenu->addAction(createNagAction(Nag(WhiteHasSufficientCompensationForMaterialDeficit)));
 		QMenu* nagSpecialMenu = m_gameMenu->addMenu(tr("Add other symbol"));

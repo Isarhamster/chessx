@@ -33,7 +33,7 @@ void TableView::saveConfig()
 	AppSettings->setLayout(this);
 	AppSettings->beginGroup(objectName());
 	QList<int> sections;
-	for (int i = 0; i < model()->columnCount(); i++)
+    for (int i = 0; i < model()->columnCount(); ++i)
 		sections.append(columnWidth(i));
 	AppSettings->setList("Sections", sections);
 	AppSettings->endGroup();
@@ -46,7 +46,7 @@ void TableView::slotReconfigure()
     AppSettings->beginGroup(objName);
 	QList<int> sections;
 	if (AppSettings->list("Sections", sections, model()->columnCount()))
-		for (int i = 0; i < sections.count(); i++)
+        for (int i = 0; i < sections.count(); ++i)
 			setColumnWidth(i, sections[i]);
 	AppSettings->endGroup();
     int fontSize = AppSettings->value("/General/ListFontSize", DEFAULT_LISTFONTSIZE).toInt();

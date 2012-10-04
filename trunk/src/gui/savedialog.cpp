@@ -80,7 +80,7 @@ int SaveDialog::exec(Database* database, Game& game)
 	ui.dateEdit->setText(game.tag("Date"));
 	ui.eventDateEdit->setText(game.tag("EventDate"));
 	QList<QAbstractButton*> buttons = ui.result1Button->group()->buttons();
-	for (int i = 0; i < buttons.count(); i++)
+    for (int i = 0; i < buttons.count(); ++i)
 		if (buttons[i]->text() == game.tag("Result"))
 			buttons[i]->setChecked(true);
 	// Completion

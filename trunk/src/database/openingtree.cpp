@@ -18,7 +18,7 @@ const unsigned MinAveRating = 5;
 MoveData::MoveData()
 {
 	count = 0;
-	for (int  r = Unknown; r <= BlackWin; r++)
+    for (int  r = Unknown; r <= BlackWin; ++r)
 		result[r] = 0;
 	year = rating = 0;
 	dated = rated = 0;
@@ -30,17 +30,17 @@ void MoveData::addGame(Game& g, Color c, MoveType movetype)
 	if (!count)
 		move = (movetype == StandardMove) ? g.moveToSan(Game::MoveOnly, Game::PreviousMove)
 			: qApp->translate("MoveData", "[end]");
-	count++;
+    ++count;
 	result[g.result()]++;
 	unsigned elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
 	if (elo >= 1000) {
 		rating += elo;
-		rated++;
+        ++rated;
 	}
 	unsigned y = g.tag("Date").section(".", 0, 0).toInt();
 	if (y > 1000) {
 		year += y;
-		dated++;
+        ++dated;
 	}
 }
 
@@ -95,7 +95,7 @@ void OpeningTreeUpdater::run()
     Game g;
     QMap<Move, MoveData> moves;
     int games = 0;
-    for (int i = 0; i < m_filter->size(); i++) {
+    for (int i = 0; i < m_filter->size(); ++i) {
         m_filter->database()->loadGameMoves(i, g);
         int id = g.findPosition(m_board);
         if (id != NO_MOVE)	{
@@ -108,7 +108,7 @@ void OpeningTreeUpdater::run()
                 g.forward();
                 moves[g.move()].addGame(g, m_board.toMove());
             }
-            games++;
+            ++games;
         } else {
             m_filter->set(i, 0);
         }
@@ -214,7 +214,7 @@ void OpeningTree::updateTerminated(Board*)
 QString OpeningTree::debug()
 {
 	QString s;
-	for (int i = 0; i < m_moves.count(); i++)
+    for (int i = 0; i < m_moves.count(); ++i)
 		s.append(QString("%1. %2\t%3 games\t%4%\n")
 			 .arg(i + 1).arg(m_moves[i].move).arg(m_moves[i].count).arg(m_moves[i].percentage()));
 	return s;
@@ -280,7 +280,7 @@ void OpeningTree::sort(int column, Qt::SortOrder order)
 	case 4: qSort(m_moves.begin(), m_moves.end(), compareYear); break;
 	};
 	if (order == Qt::DescendingOrder)
-		for (int i = 0; i < m_moves.count() / 2; i++)
+        for (int i = 0; i < m_moves.count() / 2; ++i)
 			qSwap(m_moves[i], m_moves[m_moves.count() - i -1]);
 	reset();
 }

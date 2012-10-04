@@ -57,7 +57,7 @@ QString NagSet::toString(unsigned format) const
 	QString evaluationNag;
 	QString otherNags;
 
-	for (int i = 0; i < count(); i++) {
+    for (int i = 0; i < count(); ++i) {
 		if (at(i) >= MoveNagStart && at(i) <= MoveNagEnd)
 			moveNag.append(format == PGN ? " $" + QString::number(at(i)) : nagToString(at(i)));
 		else if (at(i) >= EvaluationNagStart && at(i) <= EvaluationNagEnd)
@@ -403,7 +403,7 @@ QString NagSet::nagToMenuString(Nag nag)
 
 Nag NagSet::fromString(const QString &nag)
 {
-	for (int i = 1; i < NagCount; i++)
+    for (int i = 1; i < NagCount; ++i)
 		if (g_nagStringList[i] == nag)
 			return Nag(i);
 	return NullNag;
@@ -412,7 +412,7 @@ Nag NagSet::fromString(const QString &nag)
 int NagSet::prefixCount(const QString &nag)
 {
 	QSet<QString> matches;
-	for (int i = 1; i < NagCount; i++)
+    for (int i = 1; i < NagCount; ++i)
 		if (g_nagStringList[i].startsWith(nag))
 			matches.insert(g_nagStringList[i]);
 	return matches.count();
