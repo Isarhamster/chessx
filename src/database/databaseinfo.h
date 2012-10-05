@@ -33,7 +33,7 @@ public:
 	/** Close database and free memory */
 	~DatabaseInfo();
 	/** Open database. */
-	bool open();
+    bool open(bool utf8);
 	/** Close database. */
 	void close();
 	/** @return @p true if database is valid */
