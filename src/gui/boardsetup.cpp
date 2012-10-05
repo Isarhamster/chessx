@@ -360,7 +360,7 @@ void BoardSetupDialog::slotMoveNumber()
 
 void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
 {
-    BoardSetupToolButton *child = dynamic_cast<BoardSetupToolButton*>(w);
+    BoardSetupToolButton *child = qobject_cast<BoardSetupToolButton*>(w);
     if (!child)
         return;
     Piece p = child->m_piece;

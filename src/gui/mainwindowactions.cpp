@@ -61,8 +61,8 @@ void MainWindow::slotFileNew()
 void MainWindow::slotFileOpen()
 {
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Open database"),
-			AppSettings->value("/General/databasePath").toString(),
-			tr("PGN databases (*.pgn)"));
+            AppSettings->value("/General/databasePath").toString(),
+            tr("PGN databases (*.pgn)"));
     foreach (QString file, files)
     {
         if (!file.isEmpty()) {
@@ -81,7 +81,7 @@ void MainWindow::slotFileOpenUtf8()
     {
         if (!file.isEmpty()) {
             AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
-            openDatabaseEx(file,true);
+            openDatabaseEx(file, true);
         }
     }
 }
@@ -99,7 +99,7 @@ void MainWindow::slotFileSave()
 	if (database()->isReadOnly())
 		MessageDialog::warning(tr("<html>The database <i>%1</i> is read-only and cannot be saved.</html>")
 				.arg(database()->name()));
-	else if (m_currentDatabase && dynamic_cast<MemoryDatabase*>(database())) {
+    else if (m_currentDatabase && qobject_cast<MemoryDatabase*>(database())) {
 		startOperation(tr("Saving %1...").arg(database()->name()));
 		Output output(Output::Pgn);
         connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
@@ -113,6 +113,7 @@ void MainWindow::slotFileClose()
 	if (m_currentDatabase) {// Don't remove Clipboard
         if (databaseInfo()->IsLoaded())
         {
+            m_openingTree->cancel(false);
             m_databaseList->setFileClose(m_databases[m_currentDatabase]->filePath());
             delete m_databases[m_currentDatabase];
             m_databases.removeAt(m_currentDatabase);
@@ -834,7 +835,7 @@ void MainWindow::slotSearchTree()
 void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 {
     m_bGameChange = false;
-    QString move = dynamic_cast<OpeningTree*>(m_openingTreeView->model())->move(index);
+    QString move = qobject_cast<OpeningTree*>(m_openingTreeView->model())->move(index);
 	Move m = m_boardView->board().parseMove(move);
 	if (!m.isLegal())
 		return;

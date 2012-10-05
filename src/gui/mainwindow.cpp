@@ -269,13 +269,16 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
     else
     {
-        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
-        if (keyEvent && (keyEvent->key() == Qt::Key_Escape ||
-                         keyEvent->key() == Qt::Key_Return ||
-                         keyEvent->key() == Qt::Key_Enter))
+        if(event->type() == QEvent::KeyPress)
         {
-            keyPressEvent(keyEvent);
-            return true;
+            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+            if (keyEvent && (keyEvent->key() == Qt::Key_Escape ||
+                    keyEvent->key() == Qt::Key_Return ||
+                    keyEvent->key() == Qt::Key_Enter))
+            {
+                keyPressEvent(keyEvent);
+                return true;
+            }
         }
         // standard event processing
         return QObject::eventFilter(obj, event);
