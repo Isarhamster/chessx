@@ -68,6 +68,7 @@ private:
 	QString m_filename;
 	int m_index;
     bool m_bLoaded;
+    bool m_utf8;
 };
 
 #endif

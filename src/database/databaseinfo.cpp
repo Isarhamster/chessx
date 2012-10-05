@@ -20,6 +20,7 @@ DatabaseInfo::DatabaseInfo()
 	m_database = new MemoryDatabase;
     m_filter = new Filter(m_database);
     m_bLoaded = true;
+    m_utf8 = false;
     newGame();
 }
 
@@ -27,9 +28,10 @@ DatabaseInfo::DatabaseInfo(const QString& fname): m_filter(0), m_index(NewGame)
 {
 	m_filename = fname;
     m_bLoaded = false;
+    m_utf8 = false;
 	QFile file(fname);
 	if (file.size() < 1024 * 1024 * AppSettings->value("/General/EditLimit", 10).toInt()) 
-		m_database = new MemoryDatabase;
+        m_database = new MemoryDatabase;
 	else m_database = new PgnDatabase;
 }
 
