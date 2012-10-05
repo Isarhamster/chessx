@@ -91,6 +91,8 @@ protected:
 public slots:
     /** Open database */
     void openDatabase(QString fname);
+    /** Open database */
+    void openDatabaseEx(QString fname, bool utf8);
     /** Add favorite status to a database */
     void setFavoriteDatabase(QString fname);
     /** Open Player dialog */
@@ -182,6 +184,8 @@ public slots:
 	void slotFileNew();
 	/** Open File dialog, choose a database and open it */
 	void slotFileOpen();
+    /** Open File dialog, choose a database and open it in UTF8 format */
+    void slotFileOpenUtf8();
 	/** Save database to current file. */
 	void slotFileSave();
 	/** Open given database from Recent files list. */

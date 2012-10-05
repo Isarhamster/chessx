@@ -409,13 +409,20 @@ void MainWindow::updateMenuDatabases()
 		m_databaseActions.append(action);
 		m_menuDatabases->addAction(action);
 	}
+    int n = 1;
 	for (int i = 0; i < m_databases.count(); i++) {
-		m_databaseActions[i]->setVisible(true);
-		m_databaseActions[i]->setData(i);
-		m_databaseActions[i]->setText(QString("&%1: %2").arg(i).arg(databaseName(i)));
-        int key = Qt::CTRL + Qt::SHIFT + Qt::Key_1 + (i - 1);
-		if (i < 10)
-			m_databaseActions[i]->setShortcut(key);
+        if (m_databases[i]->isValid())
+        {
+            m_databaseActions[i]->setVisible(true);
+            m_databaseActions[i]->setData(i);
+            m_databaseActions[i]->setText(QString("&%1: %2").arg(i).arg(databaseName(i)));
+            if (n < 10)
+            {
+                int key = Qt::CTRL + Qt::SHIFT + Qt::Key_1 + (n - 1);
+                m_databaseActions[i]->setShortcut(key);
+                ++n;
+            }
+        }
 	}
 	for (int i = m_databases.count(); i < m_databaseActions.count(); i++) {
 		m_databaseActions[i]->setVisible(false);
@@ -429,6 +436,11 @@ void MainWindow::setFavoriteDatabase(QString fname)
 }
 
 void MainWindow::openDatabase(QString fname)
+{
+    openDatabaseEx(fname, false);
+}
+
+void MainWindow::openDatabaseEx(QString fname, bool utf8)
 {
     QuerySaveGame();
 
@@ -470,7 +482,7 @@ void MainWindow::openDatabase(QString fname)
 	startOperation(tr("Opening %1...").arg(basefile));
     connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
     connect(db, SIGNAL(LoadFinished(DatabaseInfo*)), this, SLOT(slotDataBaseLoaded(DatabaseInfo*)));
-    if (!db->open())
+    if (!db->open(utf8))
     {
         slotDataBaseLoaded(db);
     }
@@ -609,8 +621,9 @@ void MainWindow::setupActions()
 {
 	/* File menu */
 	QMenu* file = menuBar()->addMenu(tr("&File"));
-		  file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew())));
-		  file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open));
+    file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew())));
+    file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open));
+    file->addAction(createAction(tr("&Open in UTF8..."), SLOT(slotFileOpenUtf8())));
 	QMenu* menuRecent = file->addMenu(tr("Open &recent..."));
 
 	for (int i = 0; i < MaxRecentFiles; ++i) {
@@ -620,10 +633,12 @@ void MainWindow::setupActions()
 		m_recentFileActions.append(action);
 		menuRecent->addAction(action);
 	}
+    file->addSeparator();
 	file->addAction(createAction(tr("&Save"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S));
 	QMenu* exportMenu = file->addMenu(tr("&Export..."));
 	exportMenu->addAction(createAction(tr("&Games in filter"), SLOT(slotFileExportFilter())));
 	exportMenu->addAction(createAction(tr("&All games"), SLOT(slotFileExportAll())));
+    file->addSeparator();
 	file->addAction(createAction(tr("&Close"), SLOT(slotFileClose()), QKeySequence::Close));
 	file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), QKeySequence(), QString(), QAction::QuitRole));
 
