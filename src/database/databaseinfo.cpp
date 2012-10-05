@@ -44,10 +44,11 @@ void DatabaseInfo::run()
     emit LoadFinished(this);
 }
 
-bool DatabaseInfo::open()
+bool DatabaseInfo::open(bool utf8)
 {
     m_bLoaded = false;
-    if (!m_database->open(m_filename)) {
+    m_utf8 = utf8;
+    if (!m_database->open(m_filename,m_utf8)) {
 		return false;
 	}
     start();
