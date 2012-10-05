@@ -67,7 +67,21 @@ void MainWindow::slotFileOpen()
     {
         if (!file.isEmpty()) {
             AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
-            openDatabase(file);
+            openDatabaseEx(file,false);
+        }
+    }
+}
+
+void MainWindow::slotFileOpenUtf8()
+{
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Open database"),
+            AppSettings->value("/General/databasePath").toString(),
+            tr("PGN databases (*.pgn)"));
+    foreach (QString file, files)
+    {
+        if (!file.isEmpty()) {
+            AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
+            openDatabaseEx(file,true);
         }
     }
 }
