@@ -45,7 +45,7 @@ public:
 	/** Creates a database with the given filename */
 	virtual bool create(const QString&) { return false; }
 	/** Opens the given database */
-	virtual bool open(const QString& filename) = 0;
+    virtual bool open(const QString& filename, bool utf8) = 0;
     /** Opens the given database */
     virtual bool parseFile() = 0;
 	/** File-based database name */

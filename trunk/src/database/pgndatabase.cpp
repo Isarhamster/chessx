@@ -30,7 +30,7 @@ PgnDatabase::~PgnDatabase()
 		close();
 }
 
-bool PgnDatabase::open(const QString& filename)
+bool PgnDatabase::open(const QString& filename, bool utf8)
 {
 	if (m_isOpen) {
 		return false;
@@ -38,6 +38,7 @@ bool PgnDatabase::open(const QString& filename)
 	m_filename = filename;
     if (openFile(filename)) {
         m_isOpen = true;
+        m_utf8 = utf8;
 		return true;
 	}
 	return false;
@@ -92,6 +93,7 @@ bool PgnDatabase::openString(const QString& content)
     QBuffer* buffer = new QBuffer(&m_ByteArray);
     buffer->open(QIODevice::ReadOnly | QIODevice::Text);
     m_file = buffer;
+    m_utf8 = false;
     parseFile();
     return true;
 }
@@ -187,8 +189,15 @@ void PgnDatabase::addOffset(qint64 offset)
 void PgnDatabase::readLine()
 {
 	m_lineBuffer = m_file->readLine();
-    QTextStream textStream(m_lineBuffer);
-    m_currentLine = textStream.readLine().simplified();
+    if (m_utf8)
+    {
+        QTextStream textStream(m_lineBuffer);
+        m_currentLine = textStream.readLine().simplified();
+    }
+    else
+    {
+        m_currentLine = m_lineBuffer.simplified();
+    }
 
     if (m_inComment || !m_currentLine.startsWith("[")) {
         m_currentLine.replace("(", " ( ");

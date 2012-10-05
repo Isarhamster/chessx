@@ -35,7 +35,7 @@ public:
 
 	//database operations
 	/** Opens the given database */
-	virtual bool open(const QString& filename);
+    virtual bool open(const QString& filename, bool utf8);
 	/** File-based database name */
 	virtual QString filename() const;
 	/** Closes the database */
@@ -120,6 +120,7 @@ private:
 	int m_allocated;
 	qint32* m_gameOffsets;
     QByteArray m_lineBuffer;
+    bool m_utf8;
 };
 
 #endif
