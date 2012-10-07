@@ -80,8 +80,9 @@ void DatabaseList::save() const
     QStringList list;
     m_model->toStringList(list);
     AppSettings->setValue("Files", list);
-    m_model->toAttrStringList(list);
-    AppSettings->setValue("Attributes", list);
+    QStringList attrList;
+    m_model->toAttrStringList(attrList);
+    AppSettings->setValue("Attributes", attrList);
     AppSettings->endGroup();
 }
 
@@ -143,7 +144,7 @@ void DatabaseList::itemSelected(const QModelIndex& index)
     if (index.column()==0)
     {
         QString ts = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
-        QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
+        QString utf8 = m_filterModel->data(m_filterModel->index(index.row(),DBLV_UTF8)).toString();
         bool bUtf8 = (utf8.compare("UTF8")==0);
         emit requestOpenDatabase(ts,bUtf8);
     }

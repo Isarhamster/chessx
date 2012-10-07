@@ -822,7 +822,7 @@ void MainWindow::restoreRecentFiles()
     QStringList::iterator it = attributes.begin();
     foreach (QString s, list)
     {
-        QString attribute = *it++;
+        QString attribute = it != attributes.end() ? *it++ : "";
         m_databaseList->setFileFavorite(s,true);
         bool bUtf8 = (attribute.contains("utf8"));
         m_databaseList->setFileUtf8(s, bUtf8);
