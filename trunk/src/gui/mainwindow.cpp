@@ -131,14 +131,14 @@ MainWindow::MainWindow() : QMainWindow(),
     addDockWidget(Qt::RightDockWidgetArea, dbListDock);
     m_menuView->addAction(dbListDock->toggleViewAction());
     dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
-    connect(m_databaseList, SIGNAL(requestOpenDatabase(QString)),
-            this, SLOT(openDatabase(QString)));
+    connect(m_databaseList, SIGNAL(requestOpenDatabase(QString,bool)),
+            this, SLOT(openDatabaseEx(QString,bool)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
     connect(m_databaseList, SIGNAL(requestAppendGame(QString,const Game&)),
             this, SLOT(copyGame(QString,const Game&)));
     connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));
-    m_databaseList->addFileOpen(QString());
+    m_databaseList->addFileOpen(QString(), false);
     m_databaseList->setFileCurrent(QString());
     restoreRecentFiles();
 
@@ -507,7 +507,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
     QFileInfo fi = QFileInfo(fname);
     QString basefile = fi.completeBaseName();
 
-    m_databaseList->addFileOpen(fname);
+    m_databaseList->addFileOpen(fname,db->IsUtf8());
 
 	finishOperation(tr("%1 opened").arg(basefile));
 
@@ -817,10 +817,15 @@ void MainWindow::restoreRecentFiles()
 {
     AppSettings->beginGroup("Favorites");
     QStringList list = AppSettings->value("Files").toStringList();
+    QStringList attributes = AppSettings->value("Attributes").toStringList();
     AppSettings->endGroup();
+    QStringList::iterator it = attributes.begin();
     foreach (QString s, list)
     {
+        QString attribute = *it++;
         m_databaseList->setFileFavorite(s,true);
+        bool bUtf8 = (attribute.contains("utf8"));
+        m_databaseList->setFileUtf8(s, bUtf8);
     }
 }
 

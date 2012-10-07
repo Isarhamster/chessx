@@ -10,7 +10,7 @@
 DatabaseListModel::DatabaseListModel(QObject *parent) :
     QAbstractItemModel(parent)
 {
-    m_columnNames << tr("Favorite") << tr("Name") << tr("Size") << tr("Open") << tr("Path");
+    m_columnNames << tr("Favorite") << tr("Name") << tr("Size") << tr("Open") << tr("Path") << tr("Format");
 }
 
 QModelIndex DatabaseListModel::index(int row, int column, const QModelIndex &parent) const
@@ -98,6 +98,8 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 return QVariant();
             case DBLV_PATH:
                 return m_databases.at(index.row()).m_path;
+            case DBLV_UTF8:
+                return m_databases.at(index.row()).m_utf8 ? "UTF8" : "ANSI";
             default:
                 break;
             }
@@ -154,6 +156,19 @@ QVariant DatabaseListModel::headerData(int section, Qt::Orientation orientation,
         return QString("%1").arg(section);
 }
 
+DatabaseListEntry* DatabaseListModel::FindEntry(QString s)
+{
+    QMutableListIterator<DatabaseListEntry> i(m_databases);
+    DatabaseListEntry d;
+    d.m_path = s;
+
+    if (i.findNext(d))
+    {
+        return &(i.previous());
+    }
+    return 0;
+}
+
 void DatabaseListModel::addEntry(DatabaseListEntry& d, const QString& s)
 {
     beginInsertRows(QModelIndex(), m_databases.count(), m_databases.count());
@@ -162,7 +177,7 @@ void DatabaseListModel::addEntry(DatabaseListEntry& d, const QString& s)
     endInsertRows();
 }
 
-void DatabaseListModel::addFileOpen(const QString& s)
+void DatabaseListModel::addFileOpen(const QString& s, bool utf8)
 {
     QMutableListIterator<DatabaseListEntry> i(m_databases);
     DatabaseListEntry d;
@@ -171,15 +186,19 @@ void DatabaseListModel::addFileOpen(const QString& s)
     if (i.findNext(d))
     {
         DatabaseListEntry& e = i.previous();
+        e.m_utf8 = utf8;
         if (e.m_state != EDBL_OPEN)
         {
             e.m_state = EDBL_OPEN;
             QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_OPEN);
             emit QAbstractItemModel::dataChanged(m,m);
+            m = createIndex(m_databases.indexOf(e),DBLV_UTF8);
+            emit QAbstractItemModel::dataChanged(m,m);
         }
         return;
     }
 
+    d.m_utf8 = utf8;
     d.m_state = EDBL_OPEN;
     addEntry(d,s);
 }
@@ -207,16 +226,25 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite)
 
 void DatabaseListModel::setFileClose(const QString& s)
 {
-    QMutableListIterator<DatabaseListEntry> i(m_databases);
-    DatabaseListEntry d;
-    d.m_path = s;
-    if (i.findNext(d))
+    if (DatabaseListEntry* e = FindEntry(s))
     {
-        DatabaseListEntry& e = i.previous();
-        if (e.m_state == EDBL_OPEN)
+        if (e->m_state == EDBL_OPEN)
         {
-            e.m_state = EDBL_CLOSE;
-            QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_OPEN);
+            e->m_state = EDBL_CLOSE;
+            QModelIndex m = createIndex(m_databases.indexOf(*e),DBLV_OPEN);
+            emit QAbstractItemModel::dataChanged(m,m);
+        }
+    }
+}
+
+void DatabaseListModel::setFileUtf8(const QString& s, bool utf8)
+{
+    if (DatabaseListEntry* e = FindEntry(s))
+    {
+        if (e->m_utf8 != utf8)
+        {
+            e->m_utf8 = utf8;
+            QModelIndex m = createIndex(m_databases.indexOf(*e),DBLV_UTF8);
             emit QAbstractItemModel::dataChanged(m,m);
         }
     }
@@ -230,21 +258,17 @@ void DatabaseListModel::setFileCurrent(const QString& s)
         {
             m_databases[i].m_isCurrent = false;
             QModelIndex m = createIndex(i,DBLV_NAME);
-            QModelIndex n = createIndex(i,DBLV_PATH);
+            QModelIndex n = createIndex(i,DBLV_UTF8);
             emit QAbstractItemModel::dataChanged(m,n);
         }
     }
 
-    QMutableListIterator<DatabaseListEntry> i(m_databases);
-    DatabaseListEntry d;
-    d.m_path = s;
-    if (i.findNext(d))
+    if (DatabaseListEntry* e = FindEntry(s))
     {
-        DatabaseListEntry& e = i.previous();
-        e.m_isCurrent = true;
-        int index = m_databases.indexOf(e);
+        e->m_isCurrent = true;
+        int index = m_databases.indexOf(*e);
         QModelIndex m = createIndex(index,DBLV_NAME);
-        QModelIndex n = createIndex(index,DBLV_PATH);
+        QModelIndex n = createIndex(index,DBLV_UTF8);
         emit QAbstractItemModel::dataChanged(m,n);
         emit OnSelectIndex(createIndex(index,DBLV_FAVORITE));
     }
@@ -252,14 +276,10 @@ void DatabaseListModel::setFileCurrent(const QString& s)
 
 void DatabaseListModel::update(const QString& s)
 {
-    QMutableListIterator<DatabaseListEntry> i(m_databases);
-    DatabaseListEntry d;
-    d.m_path = s;
-    if (i.findNext(d))
+    if (DatabaseListEntry* e = FindEntry(s))
     {
-        DatabaseListEntry& e = i.previous();
-        QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_NAME);
-        QModelIndex n = createIndex(m_databases.indexOf(e),DBLV_PATH);
+        QModelIndex m = createIndex(m_databases.indexOf(*e),DBLV_NAME);
+        QModelIndex n = createIndex(m_databases.indexOf(*e),DBLV_UTF8);
         emit QAbstractItemModel::dataChanged(m,n);
     }
 }
@@ -275,3 +295,20 @@ void DatabaseListModel::toStringList(QStringList& list)
     }
 }
 
+void DatabaseListModel::toAttrStringList(QStringList& list)
+{
+    for (int i=1; i<m_databases.count();++i)
+    {
+        if (m_databases[i].m_isFavorite)
+        {
+            if (m_databases[i].m_utf8)
+            {
+                list.append("utf8");
+            }
+            else
+            {
+                list.append("ansi");
+            }
+        }
+    }
+}

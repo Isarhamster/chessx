@@ -22,6 +22,7 @@ public:
     {
         m_isFavorite = false;
         m_isCurrent  = false;
+        m_utf8       = false;
         m_state      = EDBL_CLOSE;
     }
 
@@ -29,6 +30,7 @@ public:
     QString m_path;
     bool    m_isFavorite;
     bool    m_isCurrent;
+    bool    m_utf8;
     DatabaseListEntryState m_state;
 };
 
@@ -47,7 +49,8 @@ enum DblvColumns
     DBLV_NAME,
     DBLV_SIZE,
     DBLV_OPEN,
-    DBLV_PATH
+    DBLV_PATH,
+    DBLV_UTF8
 };
 
 class DatabaseListModel : public QAbstractItemModel
@@ -60,14 +63,16 @@ signals:
     void OnSelectIndex(const QModelIndex&);
 
 public slots:
-    void addFileOpen(const QString& s);
+    void addFileOpen(const QString& s, bool utf8);
     void addFavoriteFile(const QString& s, bool bFavorite);
+    void setFileUtf8(const QString&, bool);
     void setFileClose(const QString& s);
     void setFileCurrent(const QString& s);
     void update(const QString& s);
 
 public:
     void toStringList(QStringList&);
+    void toAttrStringList(QStringList&);
 
     virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
     virtual QModelIndex parent(const QModelIndex &child) const;
@@ -79,6 +84,7 @@ public:
     virtual QVariant headerData(int section, Qt::Orientation orientation,
                     int role = Qt::DisplayRole) const;
 protected:
+    DatabaseListEntry* FindEntry(QString s);
     QStringList m_columnNames;
     QList<DatabaseListEntry> m_databases;
 

@@ -21,8 +21,9 @@ public:
 
 
 public slots:
-    void addFileOpen(const QString& s);
+    void addFileOpen(const QString& s, bool utf8);
     void setFileFavorite(const QString& s, bool bFavorite);
+    void setFileUtf8(const QString&, bool);
     void setFileClose(const QString& s);
     void setFileCurrent(const QString& s);
     void update(const QString& s);
@@ -30,7 +31,7 @@ public slots:
 
 signals:
     void selected(int);
-    void requestOpenDatabase(QString s);
+    void requestOpenDatabase(QString s, bool utf8);
     void requestLinkDatabase(QString s);
     void requestAppendGame(QString path, const Game& game);
 
