@@ -806,9 +806,10 @@ void MainWindow::cancelOperation(const QString& msg)
 
 void MainWindow::QuerySaveGame()
 {
-    if (game().isModified())
+    if (game().isModified() && !database()->isReadOnly())
     {
         slotGameSave();
+        game().setModified(false);
     }
 }
 
