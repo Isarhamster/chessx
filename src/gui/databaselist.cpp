@@ -80,6 +80,8 @@ void DatabaseList::save() const
     QStringList list;
     m_model->toStringList(list);
     AppSettings->setValue("Files", list);
+    m_model->toAttrStringList(list);
+    AppSettings->setValue("Attributes", list);
     AppSettings->endGroup();
 }
 
@@ -87,7 +89,9 @@ void DatabaseList::dbOpen()
 {
     Q_ASSERT(m_cell.isValid());
     QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
-    emit requestOpenDatabase(ts);
+    QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
+    bool bUtf8 = (utf8.compare("UTF8")==0);
+    emit requestOpenDatabase(ts,bUtf8);
 }
 
 void DatabaseList::dbAddToFavorites()
@@ -139,18 +143,25 @@ void DatabaseList::itemSelected(const QModelIndex& index)
     if (index.column()==0)
     {
         QString ts = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
-        emit requestOpenDatabase(ts);
+        QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
+        bool bUtf8 = (utf8.compare("UTF8")==0);
+        emit requestOpenDatabase(ts,bUtf8);
     }
 }
 
-void DatabaseList::addFileOpen(const QString& s)
+void DatabaseList::addFileOpen(const QString& s, bool utf8)
 {
-    m_model->addFileOpen(s);
+    m_model->addFileOpen(s,utf8);
 }
 
 void DatabaseList::setFileFavorite(const QString& s, bool bFavorite)
 {
     m_model->addFavoriteFile(s, bFavorite);
+}
+
+void DatabaseList::setFileUtf8(const QString& s, bool utf8)
+{
+    m_model->setFileUtf8(s, utf8);
 }
 
 void DatabaseList::setFileClose(const QString& s)
@@ -205,7 +216,7 @@ void DatabaseList::dropEvent(QDropEvent *event)
         foreach(QUrl url, urlList)
         {
             QString ts = url.toLocalFile();
-            emit requestOpenDatabase(ts);
+            emit requestOpenDatabase(ts, false);
 
             if (m_lastModifier == Qt::AltModifier)
             {

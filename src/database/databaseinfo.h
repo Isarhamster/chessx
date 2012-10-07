@@ -59,6 +59,7 @@ public:
 	void resetFilter();
     QString filePath() const { return m_filename; }
     bool IsLoaded() const { return m_bLoaded; }
+    bool IsUtf8() const { return m_utf8; }
 signals:
     void LoadFinished(DatabaseInfo*);
 private:
