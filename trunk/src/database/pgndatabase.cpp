@@ -221,6 +221,7 @@ void PgnDatabase::seekGame(int index)
 
 void PgnDatabase::parseTagsIntoIndex()
 {
+    m_index.setTag("Length", "0", m_count - 1);
 	while (m_currentLine.startsWith(QString("[")) && !m_file->atEnd()) {
 		int tagend = m_currentLine.indexOf(' ');
 		QString tag = m_currentLine.mid(1, tagend - 1);
