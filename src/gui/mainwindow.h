@@ -202,7 +202,11 @@ public slots:
 	void slotSearchTag();
 	/** Find current position */
 	void slotSearchBoard();
-	/** Reset current filter */
+    /** Receives the signal of a search board operation started */
+    void slotBoardSearchStarted();
+    /** Receives the signal of a search board operation end */
+    void slotBoardSearchUpdate();
+    /** Reset current filter */
 	void slotSearchReset();
     /** Toggle filter */
     void slotToggleFilter();
