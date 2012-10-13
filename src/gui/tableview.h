@@ -5,6 +5,7 @@
 #define TABLEVIEW_H
 
 #include <QTableView>
+#include <QMap>
 
 /**
 	The TableView class is a specialized version of QTableView with automatic
@@ -25,6 +26,8 @@ public slots:
 	void saveConfig();
 	/** Restore current configuration. */
     virtual void slotReconfigure();
+    /** Show context menu on header view */
+    void ShowContextMenu(const QPoint&);
 };
 
 #endif
