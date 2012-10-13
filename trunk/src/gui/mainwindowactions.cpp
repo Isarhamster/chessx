@@ -778,10 +778,22 @@ void MainWindow::slotSearchTag()
 void MainWindow::slotSearchBoard()
 {
 	PositionSearch ps(databaseInfo()->filter()->database(), m_boardView->board());
-
+    m_openingTree->cancel(false);
+    slotBoardSearchStarted();
 	databaseInfo()->filter()->executeSearch(ps);
-	m_gameList->updateFilter();
-	slotFilterChanged();
+    slotBoardSearchUpdate();
+}
+
+void MainWindow::slotBoardSearchUpdate()
+{
+    m_gameList->updateFilter();
+    slotFilterChanged();
+    finishOperation(tr("Search ended"));
+}
+
+void MainWindow::slotBoardSearchStarted()
+{
+    startOperation(tr("Updating tree..."));
 }
 
 void MainWindow::slotSearchReverse()

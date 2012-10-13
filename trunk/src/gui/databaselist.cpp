@@ -35,10 +35,11 @@ DatabaseList::DatabaseList(QWidget *parent) :
     setSortingEnabled(false);
     setAcceptDrops(true);
 
-    horizontalHeader()->setStretchLastSection(true);
     setColumnWidth(DBLV_FAVORITE, 50);
     setColumnWidth(DBLV_NAME, 200);
     setColumnWidth(DBLV_SIZE, 75);
+    setColumnWidth(DBLV_OPEN, 50);
+    setColumnWidth(DBLV_PATH, 200);
     setColumnWidth(DBLV_OPEN, 50);
 }
 
