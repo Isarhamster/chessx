@@ -23,6 +23,8 @@
 
 class WBEngine : public Engine
 {
+    Q_OBJECT
+
 public:
 	/** Constucts an engine with a given path/command, and log stream */
 	WBEngine(const QString& name,
