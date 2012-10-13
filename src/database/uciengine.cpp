@@ -9,6 +9,7 @@
  ***************************************************************************/
 
 #include "uciengine.h"
+#include "enginedata.h"
 
 UCIEngine::UCIEngine(const QString& name,
 			  const QString& command,
@@ -78,7 +79,8 @@ void UCIEngine::processMessage(const QString& message)
 		send("isready");
 	}
 
-	if (message == "readyok") {
+    if (message == "readyok")
+    {
 		if (m_waitingOn == "uciok") {
 			//engine is now initialised and ready to go
 			m_waitingOn = "";
@@ -95,9 +97,16 @@ void UCIEngine::processMessage(const QString& message)
 		}
 	}
 
-	if (message.section(' ', 0, 0) == "info" && isAnalyzing()) {
+    QString command = message.section(' ', 0, 0);
+
+    if (command == "info" && isAnalyzing())
+    {
 		parseAnalysis(message);
 	}
+    else if (command == "option")
+    {
+        parseOptions(message);
+    }
 }
 
 void UCIEngine::parseAnalysis(const QString& message)
@@ -197,3 +206,143 @@ void UCIEngine::parseAnalysis(const QString& message)
 	}
 }
 
+void UCIEngine::parseOptions(const QString& message)
+{
+    enum ScanPhase { EXPECT_OPTION,
+                     EXPECT_NAME,
+                     EXPECT_TYPE_TOKEN,
+                     EXPECT_TYPE,
+                     EXPECT_DEFAULT_VALUE,
+                     EXPECT_MIN_MAX_DEFAULT,
+                     EXPECT_MIN_VALUE,
+                     EXPECT_MAX_VALUE,
+                     EXPECT_VAR_TOKEN,
+                     EXPECT_VAR } phase;
+
+    phase = EXPECT_OPTION;
+    QStringList list = message.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+    QStringList nameVals;
+    QString defVal;
+    QString minVal;
+    QString maxVal;
+    QStringList varVals;
+    OptionType optionType;
+    QString error;
+    bool done = false;
+    foreach (QString token, list)
+    {
+        switch (phase)
+        {
+        case EXPECT_OPTION:
+            if (token == "option")
+                phase = EXPECT_NAME;
+            else
+                error = token;
+            break;
+        case EXPECT_NAME:
+            if (token == "name")
+                phase = EXPECT_TYPE;
+            else
+                error = token;
+            break;
+        case EXPECT_TYPE:
+            if (token == "type")
+                phase = EXPECT_TYPE_TOKEN;
+            else
+                nameVals << token;
+            break;
+        case EXPECT_TYPE_TOKEN:
+            if (token == "check")
+                optionType = OPT_TYPE_CHECK;
+            else if (token == "spin")
+                optionType = OPT_TYPE_SPIN;
+            else if (token == "combo")
+                optionType = OPT_TYPE_COMBO;
+            else if (token == "button")
+            {
+                optionType = OPT_TYPE_BUTTON;
+                done = true;
+            }
+            else if (token == "string")
+                optionType = OPT_TYPE_STRING;
+            else error = token;
+
+            phase = EXPECT_MIN_MAX_DEFAULT;
+            break;
+        case EXPECT_DEFAULT_VALUE:
+            defVal = token;
+            switch (optionType)
+            {
+            case OPT_TYPE_SPIN:
+                phase = EXPECT_MIN_MAX_DEFAULT;
+                break;
+            case OPT_TYPE_COMBO:
+                phase = EXPECT_VAR_TOKEN;
+                break;
+            case OPT_TYPE_CHECK:
+            case OPT_TYPE_STRING:
+            default:
+                done = true;
+                break;
+            }
+            break;
+        case EXPECT_MIN_MAX_DEFAULT:
+            if (token == "default")
+                phase = EXPECT_DEFAULT_VALUE;
+            else if (token == "min")
+                phase = EXPECT_MIN_VALUE;
+            else if (token == "max")
+                phase = EXPECT_MAX_VALUE;
+            else
+                done = true;
+            break;
+        case EXPECT_MIN_VALUE:
+            minVal = token;
+            phase = EXPECT_MIN_MAX_DEFAULT;
+            break;
+        case EXPECT_MAX_VALUE:
+            maxVal = token;
+            phase = EXPECT_MIN_MAX_DEFAULT;
+            break;
+        case EXPECT_VAR_TOKEN:
+            if (token == "var")
+                phase = EXPECT_VAR;
+            else
+                done = true;
+            break;
+        case EXPECT_VAR:
+            varVals << token;
+            phase = EXPECT_VAR_TOKEN;
+            break;
+        default:
+            error = token;
+            return;
+        }
+
+        if (done || !error.isEmpty())
+        {
+            break;
+        }
+    }
+    if (!error.isEmpty())
+    {
+        qDebug() << "Cannot parse Option string: '"
+                 << message
+                 << "' looking at token '"
+                 << error
+                 << "'!";
+        return;
+    }
+    if (done || (phase > EXPECT_DEFAULT_VALUE))
+    {
+        QString name = nameVals.join(' ');
+        // TODO: Save the values found
+    }
+    else
+    {
+        qDebug() << "Incomplete syntax parsing Option string: '"
+                 << message
+                 << "'!";
+        return;
+    }
+}
