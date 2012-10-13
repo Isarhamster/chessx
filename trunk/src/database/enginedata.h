@@ -12,7 +12,6 @@
 
 #include <QtCore>
 
-
 /** The EngineData class contains configuration of a single engine. */
 class EngineData {
 public:
@@ -25,6 +24,15 @@ public:
 	QString directory;
 	EngineProtocol protocol;
 	static QString commandToName(const QString& command);
+};
+
+enum OptionType
+{
+    OPT_TYPE_CHECK,
+    OPT_TYPE_SPIN,
+    OPT_TYPE_COMBO,
+    OPT_TYPE_BUTTON,
+    OPT_TYPE_STRING
 };
 
 #endif // ENGINEDATA_H
