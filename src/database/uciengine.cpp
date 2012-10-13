@@ -335,7 +335,7 @@ void UCIEngine::parseOptions(const QString& message)
     }
     if (done || (phase > EXPECT_DEFAULT_VALUE))
     {
-        QString name = nameVals.join(' ');
+        QString name = nameVals.join(" ");
         // TODO: Save the values found
     }
     else
