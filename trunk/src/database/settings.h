@@ -38,16 +38,18 @@ public:
 	~Settings();
 	/** Restore widget's layout based on its name. Optionally show window if it is visible.
 	@return @p true if the state was restored. */
-	virtual bool layout(QWidget* w);
+    virtual bool layout(QWidget* w);
 	/** Write widget's layout with its name. */
 	virtual void setLayout(const QWidget* w);
 	/** @return directory where data are stored. */
-	virtual QString dataPath();
+    virtual QString dataPath();
 	/** Write integer list to configuration file. Does it by converting it to QString */
 	virtual void setList(const QString& key, QList<int> list);
 	/** Appends values to the list. @return @p true if the list contains exact number of items.
 	If @p items is @p -1 , always return @p true. */
-	virtual bool list(const QString& key, QList<int>& list, int items = -1);
+    virtual bool list(const QString& key, QList<int>& list, int items = -1);
+    virtual void setByteArray(const QString& key, const QByteArray& arr);
+    virtual QByteArray byteArray(const QString& key);
 private:
 	QString m_dataPath;
 };

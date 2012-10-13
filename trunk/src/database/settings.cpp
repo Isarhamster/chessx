@@ -95,5 +95,14 @@ bool Settings::list(const QString &key, QList<int>& list, int items)
 	return true;
 }
 
+void Settings::setByteArray(const QString& key, const QByteArray& arr)
+{
+    setValue(key, arr);
+}
+
+QByteArray Settings::byteArray(const QString& key)
+{
+    return value(key, QByteArray()).toByteArray();
+}
 Settings* AppSettings;
 
