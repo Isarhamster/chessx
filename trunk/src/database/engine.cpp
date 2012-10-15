@@ -57,7 +57,6 @@ Engine* Engine::newEngine(int index)
 Engine::~Engine()
 {
     if (m_process) {
-        deactivate();
         m_process = 0;
     }
 }
@@ -91,7 +90,10 @@ void Engine::activate()
 void Engine::deactivate()
 {
     if (m_active)
+    {
         protocolEnd();
+        m_process->waitForFinished(200);
+    }
 }
 
 bool Engine::isActive()
@@ -164,6 +166,7 @@ void Engine::pollProcess()
 
 void Engine::processError()
 {
+    setActive(false);
 	emit error();
 }
 

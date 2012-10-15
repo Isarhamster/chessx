@@ -11,8 +11,6 @@
 #define __ANALYSIS_WIDGET_H__
 
 #include "engine.h"
-#include "wbengine.h"
-#include "uciengine.h"
 #include "ui_analysiswidget.h"
 #include "tablebase.h"
 #include <QtGui>

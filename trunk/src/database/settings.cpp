@@ -104,5 +104,6 @@ QByteArray Settings::byteArray(const QString& key)
 {
     return value(key, QByteArray()).toByteArray();
 }
+
 Settings* AppSettings;
 

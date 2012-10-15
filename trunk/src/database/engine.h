@@ -20,6 +20,8 @@
 #include "board.h"
 #include "move.h"
 
+#include "engineoptiondata.h"
+
 /**
  * @defgroup Feature Feature - assorted feature classes of ChessX
  **/
@@ -130,6 +132,10 @@ private slots:
 
 	/** Processes messages from the chess engine */
 	void processError();
+
+public:
+    QList<EngineOptionData> m_options;
+    QMap<QString, QString> m_mapOptionValues;
 
 private:
 	QString m_name;

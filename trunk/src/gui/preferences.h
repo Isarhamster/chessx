@@ -56,6 +56,8 @@ public slots:
 	void slotSelectEngineDirectory();
     /** user wants file dialog to select directory in which DataBases will be stored */
     void slotSelectDataBasePath();
+    /** user wants option dialog to select parameters which will be sent at startup of engine */
+    void slotShowOptionDialog();
 protected:
 	/** Overridden to save size */
     virtual void closeEvent(QCloseEvent* e);
