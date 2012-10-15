@@ -18,6 +18,7 @@
 #include "preferences.h"
 #include "settings.h"
 #include "messagedialog.h"
+#include "engineoptiondialog.h"
 
 #include <QCheckBox>
 #include <QColorDialog>
@@ -54,6 +55,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
 	connect(ui.directoryButton, SIGNAL(clicked(bool)), SLOT(slotSelectEngineDirectory()));
 	connect(ui.commandButton, SIGNAL(clicked(bool)), SLOT(slotSelectEngineCommand()));
     connect(ui.browsePathButton, SIGNAL(clicked(bool)), SLOT(slotSelectDataBasePath()));
+    connect(ui.engineOptionMore, SIGNAL(clicked(bool)), SLOT(slotShowOptionDialog()));
 
 	restoreSettings();
 
@@ -200,6 +202,12 @@ QString PreferencesDialog::selectEngineFile(const QString& oldpath)
 {
 	return QFileDialog::getOpenFileName(this, tr("Select engine executable"),
 					oldpath);
+}
+
+void PreferencesDialog::slotShowOptionDialog()
+{
+    EngineOptionDialog dlg(0, ui.engineList->currentIndex().row());
+    dlg.exec();
 }
 
 int PreferencesDialog::exec()

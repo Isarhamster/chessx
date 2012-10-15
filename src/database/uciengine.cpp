@@ -103,7 +103,7 @@ void UCIEngine::processMessage(const QString& message)
     {
 		parseAnalysis(message);
 	}
-    else if (command == "option")
+    else if (command == "option" && !isAnalyzing())
     {
         parseOptions(message);
     }
@@ -221,6 +221,7 @@ void UCIEngine::parseOptions(const QString& message)
 
     phase = EXPECT_OPTION;
     QStringList list = message.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+
     QStringList nameVals;
     QString defVal;
     QString minVal;
@@ -336,7 +337,15 @@ void UCIEngine::parseOptions(const QString& message)
     if (done || (phase > EXPECT_DEFAULT_VALUE))
     {
         QString name = nameVals.join(" ");
-        // TODO: Save the values found
+        EngineOptionData option;
+        option.m_name = name;
+        option.m_minVal = minVal;
+        option.m_maxVal = maxVal;
+        option.m_defVal = defVal;
+        option.m_varVals = varVals;
+        option.m_type = optionType;
+
+        m_options.append(option);
     }
     else
     {
