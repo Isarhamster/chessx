@@ -19,7 +19,8 @@ FORMS += src/gui/playerdialog.ui \
 	src/gui/savedialog.ui \
 	src/gui/analysiswidget.ui \
 	src/gui/copydialog.ui \
-	src/gui/commentdialog.ui
+	src/gui/commentdialog.ui \
+    src/gui/engineoptiondialog.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -103,7 +104,11 @@ HEADERS += src/database/board.h \
     src/gui/dockwidgetex.h \
     src/gui/logstream.h \
     src/gui/boardsetuptoolbutton.h \
-    src/gui/GameMimeData.h
+    src/gui/GameMimeData.h \
+    src/database/engineoptiondata.h \
+    src/gui/engineoptionmodel.h \
+    src/gui/engineoptiondialog.h \
+    src/gui/engineoptionlist.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -177,7 +182,11 @@ SOURCES += src/database/board.cpp \
     src/gui/databaselistmodel.cpp \
     src/gui/dockwidgetex.cpp \
     src/gui/logstream.cpp \
-    src/gui/boardsetuptoolbutton.cpp
+    src/gui/boardsetuptoolbutton.cpp \
+    src/database/engineoptiondata.cpp \
+    src/gui/engineoptionmodel.cpp \
+    src/gui/engineoptiondialog.cpp \
+    src/gui/engineoptionlist.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
