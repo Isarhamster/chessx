@@ -13,8 +13,9 @@
 
 UCIEngine::UCIEngine(const QString& name,
 			  const QString& command,
+              bool bTestMode,
 			  const QString& directory,
-			  QTextStream* logStream) : Engine(name, command, directory, logStream)
+              QTextStream* logStream) : Engine(name, command, bTestMode, directory, logStream)
 {
 	m_quitAfterAnalysis = false;
 	m_invertBlack = true;
@@ -85,6 +86,16 @@ void UCIEngine::processMessage(const QString& message)
 			//engine is now initialised and ready to go
 			m_waitingOn = "";
 			setActive(true);
+
+            if (!m_bTestMode)
+            {
+                QMap<QString, QString>::const_iterator i = m_mapOptionValues.constBegin();
+                while (i != m_mapOptionValues.constEnd()) {
+                    send(QString("setoption name %1 value %2").arg(i.key()).arg(i.value()));
+                    ++i;
+                }
+            }
+
 			send("setoption name UCI_AnalyseMode value true");
 		}
 

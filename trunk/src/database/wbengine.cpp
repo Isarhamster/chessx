@@ -12,8 +12,9 @@
 
 WBEngine::WBEngine(const QString& name,
 		   const QString& command,
+           bool bTestMode,
 		   const QString& directory,
-		   QTextStream* logStream) : Engine(name, command, directory, logStream)
+           QTextStream* logStream) : Engine(name, command, bTestMode, directory, logStream)
 {
 	m_analyze = false;
 	m_setboard = false;		// We do not support version 1 xboard protocol, so this _must_ be set true by feature discovery

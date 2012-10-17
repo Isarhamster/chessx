@@ -25,6 +25,7 @@ public:
 	/** Constucts an engine with a given path/command, and log stream */
 	UCIEngine(const QString& name,
 		const QString& command,
+        bool bTestMode,
 		const QString& directory = QString(),
 		QTextStream* logStream = NULL);
 

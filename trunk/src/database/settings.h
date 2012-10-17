@@ -50,24 +50,12 @@ public:
     bool list(const QString& key, QList<int>& list, int items = -1);
     void setByteArray(const QString& key, const QByteArray& arr);
     QByteArray byteArray(const QString& key);
-    template<class KEY, class VALUE>
-    void setMap(const QString& key, const QMap<KEY,VALUE>& map);
-    template<class KEY, class VALUE>
-    void getMap(const QString& key, QMap<KEY,VALUE>& map);
+
+    void setMap(const QString& key, const QMap<QString, QString>& map);
+    void getMap(const QString& key, QMap<QString,QString>& map);
 private:
 	QString m_dataPath;
 };
-
-template<class KEY, class VALUE>
-void setMap(const QString& key, const QMap<KEY,VALUE>& map)
-{
-
-}
-
-template<class KEY, class VALUE>
-void getMap(const QString& key, QMap<KEY,VALUE>& map)
-{
-}
 
 extern Settings* AppSettings;
 

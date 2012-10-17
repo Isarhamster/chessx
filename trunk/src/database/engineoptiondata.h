@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #ifndef ENGINEOPTIONDATA_H
 #define ENGINEOPTIONDATA_H
 #include <QtCore>
