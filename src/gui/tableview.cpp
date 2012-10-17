@@ -1,5 +1,8 @@
-/* QTableView with some adjustments like storing header layout */
-/* (C) 2007 Michal Rudolf <mrudolf@kdewebdev.org> */
+/****************************************************************************
+* QTableView with some adjustments like storing header layout               *
+* (C) 2007 Michal Rudolf <mrudolf@kdewebdev.org>                            *
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
 
 #include "settings.h"
 #include "tableview.h"

@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #ifndef ENGINEOPTIONMODEL_H
 #define ENGINEOPTIONMODEL_H
 

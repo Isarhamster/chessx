@@ -80,7 +80,7 @@ void Settings::setList(const QString& key, QList<int> list)
 	QList<QVariant> varlist;
 	int i;
 	foreach(i, list)
-	varlist.append(QVariant(i));
+        varlist.append(QVariant(i));
 	setValue(key, varlist);
 }
 
@@ -91,7 +91,7 @@ bool Settings::list(const QString &key, QList<int>& list, int items)
 		return false;
 	QVariant v;
 	foreach(v, varlist)
-	list.append(v.toInt());
+        list.append(v.toInt());
 	return true;
 }
 
@@ -103,6 +103,25 @@ void Settings::setByteArray(const QString& key, const QByteArray& arr)
 QByteArray Settings::byteArray(const QString& key)
 {
     return value(key, QByteArray()).toByteArray();
+}
+
+void Settings::setMap(const QString& key, const QMap<QString,QString>& map)
+{
+    QByteArray data;
+    QDataStream * stream = new QDataStream(&data, QIODevice::WriteOnly);
+
+    (*stream) << map;
+    delete stream;
+
+    setByteArray(key, data);
+}
+
+void Settings::getMap(const QString& key, QMap<QString,QString>& map)
+{
+    QByteArray data = byteArray(key);
+    QDataStream * stream = new QDataStream(&data, QIODevice::ReadOnly);
+    (*stream) >> map;
+    delete stream;
 }
 
 Settings* AppSettings;

@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #ifndef ENGINEOPTIONDIALOG_H
 #define ENGINEOPTIONDIALOG_H
 
@@ -16,11 +20,14 @@ class EngineOptionDialog : public QDialog
 public:
     explicit EngineOptionDialog(QWidget *parent = 0, int index = 0);
     ~EngineOptionDialog();
+public slots:
+    void accept();
 protected slots:
     void engineActivated();
 private:
     Ui::EngineOptionDialog *ui;
     Engine* m_engine;
+    int m_index;
 };
 
 

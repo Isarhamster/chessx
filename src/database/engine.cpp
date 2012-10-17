@@ -17,11 +17,13 @@
 
 Engine::Engine(const QString& name,
 			 const QString& command,
+             bool bTestMode,
 			 const QString& directory,
 			 QTextStream* logStream)
 {
 	m_name = name;
 	m_command = command;
+    m_bTestMode = bTestMode;
 	m_logStream = logStream;
 	m_process = 0;
 	m_active = false;
@@ -30,6 +32,11 @@ Engine::Engine(const QString& name,
 }
 
 Engine* Engine::newEngine(int index)
+{
+    return newEngine(index,false);
+}
+
+Engine* Engine::newEngine(int index, bool bTestMode)
 {
 	Engine *engine = 0;
 
@@ -47,9 +54,13 @@ Engine* Engine::newEngine(int index)
 	QString exe = QString("%1 %2").arg(command).arg(options);
 
 	if (protocol == "WinBoard")
-		engine = new WBEngine(name, exe, directory);
+        engine = new WBEngine(name, exe, bTestMode, directory);
     else
-        engine = new UCIEngine(name, exe, directory);
+        engine = new UCIEngine(name, exe, bTestMode, directory);
+
+    AppSettings->beginGroup("/Engines/");
+    AppSettings->getMap(key + "/OptionValues", engine->m_mapOptionValues);
+    AppSettings->endGroup();
 
 	return engine;
 }

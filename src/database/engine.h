@@ -41,6 +41,7 @@ public:
 	/** Constructs an engine with a given path/command, and log stream */
 	Engine(const QString& name,
 		const QString& command,
+        bool  bTestMode,
 		const QString& directory = QString(),
 		QTextStream* logStream = NULL);
 
@@ -69,7 +70,8 @@ public:
 	bool isAnalyzing();
 
 	/** Create a new engine, pass index into engine settings list */
-	static Engine* newEngine(int index);
+    static Engine* newEngine(int index);
+    static Engine* newEngine(int index, bool bTestMode);
 
 	/** Set number of lines. */
 	virtual void setMpv(int mpv);
@@ -119,6 +121,7 @@ protected:
 
 	bool m_invertBlack;
 	int m_mpv;
+    bool m_bTestMode;
 
 private slots:
 	/** Receives notification that there is process output to read */
