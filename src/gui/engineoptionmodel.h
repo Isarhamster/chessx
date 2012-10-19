@@ -5,13 +5,13 @@
 #ifndef ENGINEOPTIONMODEL_H
 #define ENGINEOPTIONMODEL_H
 
-#include <QAbstractItemModel>
+#include <QStandardItemModel>
 #include <QStringList>
 #include <QMap>
 
 class EngineOptionData;
 
-class EngineOptionModel : public QAbstractItemModel
+class EngineOptionModel : public QStandardItemModel
 {
     Q_OBJECT
 public:
@@ -24,6 +24,7 @@ public:
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
     virtual bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    virtual bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
 public:
     virtual QVariant headerData(int section, Qt::Orientation orientation,
                     int role = Qt::DisplayRole) const;
