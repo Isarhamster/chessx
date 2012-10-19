@@ -30,6 +30,7 @@ void EngineList::restore()
 		if (protocolName == "WinBoard")
 			data.protocol = EngineData::WinBoard;
 		else data.protocol = EngineData::UCI;
+        AppSettings->getMap(key + "/OptionValues", data.m_optionValues);
 		append(data);
 	}
 	AppSettings->endGroup();
@@ -50,6 +51,7 @@ void EngineList::save()
 		if (at(i).protocol == EngineData::WinBoard)
 			AppSettings->setValue(key + "/Protocol", "WinBoard");
 		else	AppSettings->setValue(key + "/Protocol", "UCI");
+        AppSettings->setMap(key+"/OptionValues", at(i).m_optionValues);
 	}
 	AppSettings->endGroup();
 }

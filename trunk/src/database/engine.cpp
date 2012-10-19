@@ -47,7 +47,6 @@ Engine* Engine::newEngine(int index, bool bTestMode)
 	QString options = AppSettings->value(key + "/Options").toString();
 	QString directory = AppSettings->value(key + "/Directory").toString();
 	QString protocol = AppSettings->value(key + "/Protocol").toString();
-	AppSettings->endGroup();
 
 	if (command.contains(' '))
 		command = QString("\"%1\"").arg(command);
@@ -58,7 +57,6 @@ Engine* Engine::newEngine(int index, bool bTestMode)
     else
         engine = new UCIEngine(name, exe, bTestMode, directory);
 
-    AppSettings->beginGroup("/Engines/");
     AppSettings->getMap(key + "/OptionValues", engine->m_mapOptionValues);
     AppSettings->endGroup();
 
