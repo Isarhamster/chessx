@@ -22,6 +22,7 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent, int index) :
 
 EngineOptionDialog::~EngineOptionDialog()
 {
+    m_engine->deactivate();
     disconnect();
     delete m_engine;
     delete ui;

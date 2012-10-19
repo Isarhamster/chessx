@@ -44,7 +44,9 @@ QString formatTagValue(const QString& s)
 
 QString formatTagDate(const QString& s)
 {
-    return (s.trimmed().isEmpty()) ? PDInvalidDate.asString() : s;
+    return (s.trimmed().isEmpty()) ?
+                PDInvalidDate.asString() :
+                PartialDate().fromString(s).asString();
 }
 
 int SaveDialog::exec(Database* database, Game& game)

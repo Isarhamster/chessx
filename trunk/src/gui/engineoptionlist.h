@@ -11,8 +11,26 @@
 
 #include <QMap>
 #include <QList>
+#include <QStyledItemDelegate>
 
-class EngineOptionList : public TableView
+class EngineOptionListDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
+
+public:
+    EngineOptionListDelegate(QWidget *parent = 0) : QStyledItemDelegate(parent) {}
+
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
+                          const QModelIndex &index) const;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    void setModelData(QWidget *editor, QAbstractItemModel *model,
+                      const QModelIndex &index) const;
+
+private slots:
+    void commitAndCloseEditor();
+};
+
+class EngineOptionList : public QTableView
 {
     Q_OBJECT
 public:

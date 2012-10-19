@@ -36,6 +36,7 @@ public:
 	Optionally saves just a part of date. */
 	QString asShortString(int part = All) const;
 
+    static PartialDate today();
 	/** @return year, @p 0 if undefined. */
 	int year() const;
 	/** @return month, @p 0 if undefined. */

@@ -34,6 +34,11 @@ PartialDate::PartialDate(const QDate& d)
 	m_day = d.day();
 }
 
+PartialDate PartialDate::today()
+{
+    return PartialDate(QDate::currentDate());
+}
+
 int PartialDate::year() const
 {
 	return m_year;
@@ -52,18 +57,36 @@ int PartialDate::day() const
 PartialDate& PartialDate::fromString(const QString& s)
 {
     QString test = s.trimmed();
-    QRegExp regExp("^[\\?0-9]{4}(\\.([\\?0-9]){1,2}){,2}$");
+    QRegExp regExp("^[\\?0-9]{4}([\\./]([\\?0-9]){1,2}){,2}$");
     if (regExp.exactMatch(test) || test.isEmpty())
     {
-        m_year = s.section('.', 0, 0).toInt();
-        m_month = s.section('.', 1, 1).toInt();
-        m_day = s.section('.', 2, 2).toInt();
-        m_bIsValid = !year() ||
-                      asDate().isValid();
+        QRegExp sep("[\\./]");
+        m_year = test.section(sep, 0, 0).toInt();
+        m_month = test.section(sep, 1, 1).toInt();
+        m_day = test.section(sep, 2, 2).toInt();
+        m_bIsValid = !year() || asDate().isValid();
     }
     else
     {
-        m_bIsValid = false;
+        QRegExp regExpContinental("^(([\\?0-9]){1,2}\\.){,2}[\\?0-9]{4}$");
+        if (regExpContinental.exactMatch(test))
+        {
+            m_day = test.section('.', 0, 0).toInt();
+            m_month = test.section('.', 1, 1).toInt();
+            m_year = test.section('.', 2, 2).toInt();
+            m_bIsValid = !year() || asDate().isValid();
+        }
+        else
+        {
+            QRegExp regExpAmerican("^(([\\?0-9]){1,2}/){,2}[\\?0-9]{4}$");
+            if (regExpAmerican.exactMatch(test))
+            {
+                m_month = test.section('/', 0, 0).toInt();
+                m_day = test.section('/', 1, 1).toInt();
+                m_year = test.section('/', 2, 2).toInt();
+                m_bIsValid = !year() || asDate().isValid();
+            }
+        }
     }
     return *this;
 }
@@ -83,7 +106,9 @@ QString PartialDate::asString() const
 {
 	if (!m_year)
 		return "????.??.??";
-	QString s = QString("%1.%2.%3").arg(m_year, 4).arg(numberToString(m_month))
+    QString s = QString("%1.%2.%3")
+            .arg(m_year, 4)
+            .arg(numberToString(m_month))
 		    .arg(numberToString(m_day));
 	return s;
 }
