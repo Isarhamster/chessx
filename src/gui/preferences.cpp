@@ -206,8 +206,12 @@ QString PreferencesDialog::selectEngineFile(const QString& oldpath)
 
 void PreferencesDialog::slotShowOptionDialog()
 {
-    EngineOptionDialog dlg(0, ui.engineList->currentIndex().row());
-    dlg.exec();
+    int index = ui.engineList->currentIndex().row();
+    EngineOptionDialog dlg(0, index);
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        engineList[index].m_optionValues = dlg.GetResults();
+    }
 }
 
 int PreferencesDialog::exec()
@@ -367,4 +371,3 @@ void PreferencesDialog::saveColorList(ColorList* list, const QStringList& cfgnam
     for (int i = 0; i < list->count(); ++i)
 		AppSettings->setValue(cfgnames[i], list->color(i));
 }
-
