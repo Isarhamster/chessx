@@ -14,6 +14,8 @@ enum OptionType
     OPT_TYPE_STRING
 };
 
+typedef QMap<QString, QVariant> OptionValueList;
+
 class EngineOptionData
 {
 public:
@@ -25,6 +27,10 @@ public:
     QString m_maxVal;
     QStringList m_varVals;
     OptionType m_type;
+
+    static EngineOptionData* FindInList(QString name, QList<EngineOptionData>& list);
 };
+
+
 
 #endif // ENGINEOPTIONDATA_H

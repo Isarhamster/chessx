@@ -138,7 +138,7 @@ private slots:
 
 public:
     QList<EngineOptionData> m_options;
-    QMap<QString, QString> m_mapOptionValues;
+    OptionValueList m_mapOptionValues;
 
 private:
 	QString m_name;

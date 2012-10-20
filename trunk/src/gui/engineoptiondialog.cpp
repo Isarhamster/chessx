@@ -18,6 +18,7 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent, int index) :
     m_engine->activate();
 
     connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
+    connect(ui->resetButton, SIGNAL(clicked()), SLOT(optionReset()));
 }
 
 EngineOptionDialog::~EngineOptionDialog()
@@ -38,14 +39,14 @@ void EngineOptionDialog::engineActivated()
     ui->tableView->setDB(m_engine->m_options, m_engine->m_mapOptionValues);
 }
 
-QMap<QString, QString> EngineOptionDialog::GetResults() const
+OptionValueList EngineOptionDialog::GetResults() const
 {
     return (m_engine ? m_engine->m_mapOptionValues :
-                       QMap<QString,QString>());
-
+                       QMap<QString, QVariant>());
 }
 
-
-
-
-
+void EngineOptionDialog::optionReset()
+{
+    m_engine->m_mapOptionValues.clear();
+    ui->tableView->resetModel();
+}

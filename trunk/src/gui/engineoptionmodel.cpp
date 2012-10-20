@@ -59,9 +59,25 @@ QVariant EngineOptionModel::data(const QModelIndex &index, int role) const
             case 2: return pOptionData->m_minVal;
             case 3: return pOptionData->m_maxVal;
             case 4:
+                switch (pOptionData->m_type)
                 {
-                if (m_pValueMap->contains(pOptionData->m_name))
-                    return (*m_pValueMap)[pOptionData->m_name];
+                case OPT_TYPE_BUTTON:
+                    if (m_pValueMap->contains(pOptionData->m_name))
+                        return (*m_pValueMap)[pOptionData->m_name].toBool();
+                    return false;
+                    break;
+                case OPT_TYPE_CHECK:
+                    if (m_pValueMap->contains(pOptionData->m_name))
+                        return (*m_pValueMap)[pOptionData->m_name].toBool();
+                    return QVariant(pOptionData->m_defVal).toBool();
+                    break;
+                case OPT_TYPE_SPIN:
+                case OPT_TYPE_STRING:
+                case OPT_TYPE_COMBO:
+                    if (m_pValueMap->contains(pOptionData->m_name))
+                        return (*m_pValueMap)[pOptionData->m_name];
+                    return QString();
+                    break;
                 }
                 break;
             }
@@ -76,7 +92,7 @@ bool EngineOptionModel::setData(const QModelIndex & index, const QVariant & valu
     if (m_pOptionDataList && m_pValueMap && (role == Qt::EditRole) && index.isValid() && (index.column() == 4))
     {
         const EngineOptionData* pOptionData = &m_pOptionDataList->at(index.row());
-        (*m_pValueMap)[pOptionData->m_name] = value.toString();
+        (*m_pValueMap)[pOptionData->m_name] = value;
         return true;
     }
     return false;
@@ -91,4 +107,9 @@ QVariant EngineOptionModel::headerData(int section, Qt::Orientation orientation,
         return QString("%1").arg(m_columnNames.at(section));
     else
         return QString("%1").arg(section);
+}
+
+void EngineOptionModel::resetModel()
+{
+    reset();
 }

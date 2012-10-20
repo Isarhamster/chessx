@@ -8,7 +8,6 @@
 #define TABLEVIEW_H
 
 #include <QTableView>
-#include <QMap>
 
 /**
 	The TableView class is a specialized version of QTableView with automatic

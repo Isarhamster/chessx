@@ -185,6 +185,7 @@ void PreferencesDialog::slotSelectEngine(QListWidgetItem* currentItem, QListWidg
 		ui.engineCommand->setText(engineList[current].command);
 		ui.engineOptions->setText(engineList[current].options);
 		ui.engineDirectory->setText(engineList[current].directory);
+        ui.engineOptionMore->setEnabled(true);
 		if (engineList[current].protocol == EngineData::WinBoard)
 			ui.engineProtocolWinBoard->setChecked(true);
 		else ui.engineProtocolUCI->setChecked(true);
@@ -195,6 +196,7 @@ void PreferencesDialog::slotSelectEngine(QListWidgetItem* currentItem, QListWidg
 		ui.engineDirectory->clear();
 		ui.engineProtocolUCI->setChecked(true);
 		ui.engineEditWidget->setEnabled(false);
+        ui.engineOptionMore->setEnabled(false);
 	}
 }
 

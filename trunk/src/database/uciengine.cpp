@@ -89,9 +89,31 @@ void UCIEngine::processMessage(const QString& message)
 
             if (!m_bTestMode)
             {
-                QMap<QString, QString>::const_iterator i = m_mapOptionValues.constBegin();
+                OptionValueList::const_iterator i = m_mapOptionValues.constBegin();
                 while (i != m_mapOptionValues.constEnd()) {
-                    send(QString("setoption name %1 value %2").arg(i.key()).arg(i.value()));
+                    QString key = i.key();
+                    QVariant value = i.value();
+                    if (EngineOptionData* dataSpec = EngineOptionData::FindInList(key, m_options))
+                    {
+                        switch (dataSpec->m_type)
+                        {
+                        case OPT_TYPE_BUTTON:
+                            if (value.toBool())
+                            {
+                                send(QString("setoption name %1 value %2").arg(key));
+                            }
+                            break;
+                        case OPT_TYPE_CHECK:
+                        case OPT_TYPE_SPIN:
+                        case OPT_TYPE_STRING:
+                        case OPT_TYPE_COMBO:
+                            if (dataSpec->m_defVal != value.toString() && !value.toString().isEmpty())
+                            {
+                                send(QString("setoption name %1 value %2").arg(key).arg(value.toString()));
+                            }
+                            break;
+                        }
+                    }
                     ++i;
                 }
             }

@@ -11,6 +11,7 @@
 #define __SETTINGS_H__
 
 #include <QSettings>
+#include "engineoptiondata.h"
 
 class QWidget;
 
@@ -51,8 +52,8 @@ public:
     void setByteArray(const QString& key, const QByteArray& arr);
     QByteArray byteArray(const QString& key);
 
-    void setMap(const QString& key, const QMap<QString, QString>& map);
-    void getMap(const QString& key, QMap<QString,QString>& map);
+    void setMap(const QString& key, const OptionValueList& map);
+    void getMap(const QString& key, OptionValueList& map);
 private:
 	QString m_dataPath;
 };

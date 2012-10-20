@@ -7,6 +7,8 @@
 
 #include <QDialog>
 
+#include "engineoptiondata.h"
+
 class Engine;
 
 namespace Ui {
@@ -20,11 +22,13 @@ class EngineOptionDialog : public QDialog
 public:
     explicit EngineOptionDialog(QWidget *parent = 0, int index = 0);
     ~EngineOptionDialog();
-    QMap<QString, QString> GetResults() const;
+    OptionValueList GetResults() const;
 public slots:
     void accept();
 protected slots:
     void engineActivated();
+    void optionReset();
+
 private:
     Ui::EngineOptionDialog *ui;
     Engine* m_engine;

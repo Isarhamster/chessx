@@ -14,6 +14,7 @@ QWidget *EngineOptionListDelegate::createEditor(QWidget *parent,
 {
     if(index.column() == 4)
     {
+        // todo: figure out the combo box
         return QStyledItemDelegate::createEditor(parent, option, index);
     }
     return 0;
@@ -52,7 +53,7 @@ EngineOptionList::EngineOptionList(QWidget *parent) :
 }
 
 void EngineOptionList::setDB(const QList<EngineOptionData>& options,
-           QMap<QString, QString>& mapOptionValues)
+           OptionValueList& mapOptionValues)
 {
     m_model = new EngineOptionModel(this);
     m_model->m_pOptionDataList = &options;
@@ -60,6 +61,11 @@ void EngineOptionList::setDB(const QList<EngineOptionData>& options,
 
     setModel(m_model);
     setItemDelegate(new EngineOptionListDelegate());
+}
+
+void EngineOptionList::resetModel()
+{
+    m_model->resetModel();
 }
 
 
