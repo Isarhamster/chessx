@@ -8,11 +8,13 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include <QMap>
+
 #include "output.h"
 #include "settings.h"
 #include "board.h"
 
-QMap <Output::OutputType, QString> Output::m_outputMap;
+QMap<Output::OutputType, QString> Output::m_outputMap;
 
 Output::Output(OutputType output, const QString& pathToTemplateFile)
 {

@@ -11,9 +11,9 @@
 #define ENGINEDATA_H
 
 #include <QtCore>
-#include <QMap>
 #include <QList>
 
+#include "engineoptiondata.h"
 
 /** The EngineData class contains configuration of a single engine. */
 class EngineData {
@@ -26,7 +26,7 @@ public:
 	QString options;
 	QString directory;
 	EngineProtocol protocol;
-    QMap<QString, QString> m_optionValues;
+    OptionValueList m_optionValues;
 	static QString commandToName(const QString& command);
 
 };

@@ -11,7 +11,7 @@
 #define __OPENINGTREE_H__
 
 #include <QAbstractTableModel>
-#include <QMap>
+
 #include "filter.h"
 #include "game.h"
 

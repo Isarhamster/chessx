@@ -7,9 +7,8 @@
 
 #include <QStandardItemModel>
 #include <QStringList>
-#include <QMap>
 
-class EngineOptionData;
+#include "engineoptiondata.h"
 
 class EngineOptionModel : public QStandardItemModel
 {
@@ -29,8 +28,9 @@ public:
     virtual QVariant headerData(int section, Qt::Orientation orientation,
                     int role = Qt::DisplayRole) const;
 
-    QMap<QString, QString>* m_pValueMap;
+    OptionValueList* m_pValueMap;
     const QList<EngineOptionData>* m_pOptionDataList;
+    void resetModel();
 
 protected:
     QStringList m_columnNames;

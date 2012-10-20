@@ -9,7 +9,6 @@
 #include "engineoptiondata.h"
 #include "tableview.h"
 
-#include <QMap>
 #include <QList>
 #include <QStyledItemDelegate>
 
@@ -37,7 +36,9 @@ public:
     explicit EngineOptionList(QWidget *parent = 0);
 
     void setDB(const QList<EngineOptionData>& options,
-          QMap<QString, QString>& mapOptionValues);
+          OptionValueList& mapOptionValues);
+
+    void resetModel();
 
 protected:
     EngineOptionModel* m_model;

@@ -158,12 +158,12 @@ private:
 	/** The export result */
 	QString m_output;
 	/** Map containing the different types of outputs available, and a description of each */
-	static QMap <OutputType, QString> m_outputMap;
+    static QMap<OutputType, QString> m_outputMap;
 	/** Map containing the start markup tag for each markup type */
-	QMap <MarkupType, QString> m_startTagMap;
+    QMap<MarkupType, QString> m_startTagMap;
 	/** Map containing the end markup tag for each markup type */
-	QMap <MarkupType, QString> m_endTagMap;
-	QMap <MarkupType, bool> m_expandable;
+    QMap<MarkupType, QString> m_endTagMap;
+    QMap<MarkupType, bool> m_expandable;
 
 	/* Setting and retrieving of option. Methods to inteface
 	 * with OutputOptions class.
