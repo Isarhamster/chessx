@@ -31,6 +31,7 @@ public:
     OptionValueList* m_pValueMap;
     const QList<EngineOptionData>* m_pOptionDataList;
     void resetModel();
+    QStringList getSelections(const QModelIndex& index);
 
 protected:
     QStringList m_columnNames;

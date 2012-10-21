@@ -45,13 +45,12 @@ QVariant EngineOptionModel::data(const QModelIndex &index, int role) const
     if (!m_pOptionDataList || !m_pValueMap)
         return QVariant();
 
-    if ((role == Qt::DisplayRole) || (role == Qt::EditRole))
+    if (index.isValid())
     {
-        if (index.isValid())
+        const EngineOptionData* pOptionData = &m_pOptionDataList->at(index.row());
+        Q_ASSERT(pOptionData);
+        if ((role == Qt::DisplayRole) || (role == Qt::EditRole))
         {
-            const EngineOptionData* pOptionData = &m_pOptionDataList->at(index.row());
-            Q_ASSERT(pOptionData);
-
             switch (index.column())
             {
             case 0: return pOptionData->m_name;
@@ -72,14 +71,44 @@ QVariant EngineOptionModel::data(const QModelIndex &index, int role) const
                     return QVariant(pOptionData->m_defVal).toBool();
                     break;
                 case OPT_TYPE_SPIN:
+                    if (m_pValueMap->contains(pOptionData->m_name))
+                        return (*m_pValueMap)[pOptionData->m_name].toInt();
+                    return pOptionData->m_defVal.toInt();
+                    break;
                 case OPT_TYPE_STRING:
                 case OPT_TYPE_COMBO:
                     if (m_pValueMap->contains(pOptionData->m_name))
                         return (*m_pValueMap)[pOptionData->m_name];
-                    return QString();
+                    return pOptionData->m_defVal;
                     break;
                 }
                 break;
+            }
+        }
+        else if (role == Qt::BackgroundRole)
+        {
+            if (index.column()!=4)
+            {
+                return Qt::lightGray;
+            }
+            else
+            {
+                return Qt::white;
+            }
+        }
+        else if (role == Qt::ForegroundRole)
+        {
+            if (index.column()==4)
+            {
+                if ((!m_pValueMap->contains(pOptionData->m_name)
+                   || (*m_pValueMap)[pOptionData->m_name] == pOptionData->m_defVal))
+                {
+                    return Qt::darkGray;
+                }
+                else
+                {
+                    return Qt::black;
+                }
             }
         }
     }
@@ -112,4 +141,15 @@ QVariant EngineOptionModel::headerData(int section, Qt::Orientation orientation,
 void EngineOptionModel::resetModel()
 {
     reset();
+}
+
+QStringList EngineOptionModel::getSelections(const QModelIndex& index)
+{
+    QStringList list;
+    if (index.isValid())
+    {
+        const EngineOptionData* pOptionData = &m_pOptionDataList->at(index.row());
+        return pOptionData->m_varVals;
+    }
+    return list;
 }
