@@ -52,6 +52,8 @@ protected:
 private:
 	/** Parses analysis */
 	void parseAnalysis(const QString& message);
+
+    /** Parse option string */
     void parseOptions(const QString &message);
 
 	Board m_board;

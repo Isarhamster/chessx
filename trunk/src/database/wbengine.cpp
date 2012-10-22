@@ -23,7 +23,7 @@ WBEngine::WBEngine(const QString& name,
 
 bool WBEngine::startAnalysis(const Board& board, int nv)
 {
-        m_mpv = nv;
+    m_mpv = nv;
 	if (isActive() && m_board == board)
 		return true;
 	stopAnalysis();
@@ -83,12 +83,12 @@ void WBEngine::processMessage(const QString& message)
 	QString command = trim.section(" ", 0, 0);
 
 	//identify and process the command
-	if (command == "feature") {
+    if (command == "feature")
+    {
 		feature(trim);
-		return;
 	}
-
-	if (isAnalyzing()) {
+    else if (isAnalyzing())
+    {
 		parseAnalysis(trim);
 	}
 }
