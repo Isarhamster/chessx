@@ -118,6 +118,11 @@ private:
     /** Catch mouse events */
 	bool eventFilter(QObject *obj, QEvent *ev);
 
+    void drawSquares(QPaintEvent* event);
+    void drawPieces(QPaintEvent* event);
+    void drawMoveIndicator(QPaintEvent* event);
+    void drawDraggedPieces(QPaintEvent* event);
+
     void drawSquareAnnotations(QPaintEvent* event);
     void drawSquareAnnotation(QPaintEvent* event, QString annotation);
     void drawArrowAnnotations(QPaintEvent* event);

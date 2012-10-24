@@ -76,93 +76,93 @@ void BoardView::showMoveIndicator(bool visible )
     m_showMoveIndicator = visible;
 }
 
+void BoardView::drawSquares(QPaintEvent* event)
+{
+    QPainter p(this);
+    for (Square square = 0; square < 64; square++) {
+        QRect rect = squareRect(square);
+        if (!event->region().intersects(rect))
+            continue;
+        int x = isFlipped() ? 7 - square % 8 : square % 8;
+        int y = isFlipped() ? square / 8 : 7 - square / 8;
+        QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
+        p.drawPixmap(pos, m_theme.square((x + y) % 2));
+    }
+}
 
+void BoardView::drawDraggedPieces(QPaintEvent* event)
+{
+    // Draw dragged piece
+    if (m_dragged != Empty)
+    {
+        QPainter p(this);
+        p.drawPixmap(m_dragPoint, m_theme.piece(m_dragged));
+    }
+}
+
+void BoardView::drawMoveIndicator(QPaintEvent* event)
+{
+    if( m_showMoveIndicator )
+    {
+        QPainter p(this);
+        // Draw side to move indicator
+        bool white = m_board.toMove() == White;
+        int square = width() - 8 * m_theme.size().width() - 4;
+        int maxsquare = m_theme.size().width() / 2;
+        if (square > maxsquare)
+        {
+            square = maxsquare;
+        }
+        if (square > 8)
+        {
+
+            QColor color = white ? Qt::white : Qt::black;
+            QColor border = white ? Qt::black : Qt::white;
+            int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
+            p.setPen(border);
+            p.setBrush(QColor(color));
+            //p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
+            p.drawRect(8 * m_theme.size().width() + 2, posy, square, square);
+        }
+    }
+}
+
+void BoardView::drawPieces(QPaintEvent* event)
+{
+    QPainter p(this);
+
+    for (Square square = 0; square < 64; square++) {
+        QRect rect = squareRect(square);
+        if (!event->region().intersects(rect))
+             continue;
+        int x = isFlipped() ? 7 - square % 8 : square % 8;
+        int y = isFlipped() ? square / 8 : 7 - square / 8;
+        QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
+
+        p.drawPixmap(pos, m_theme.piece(m_board.pieceAt(square)));
+        if (square == m_selectedSquare || square == m_hifrom || square == m_hito) {
+            QPen pen;
+            pen.setColor(m_theme.color(BoardTheme::Highlight));
+            pen.setWidth(2);
+            pen.setJoinStyle(Qt::MiterJoin);
+            p.setPen(pen);
+            p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
+                    m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
+        }
+        if (m_showFrame) {
+            p.setPen(m_theme.color(BoardTheme::Frame));
+            p.drawRect(QRect(pos, m_theme.size()));
+        }
+    }
+}
 void BoardView::paintEvent(QPaintEvent* event)
 {
-	// Draw squares
-    {
-        QPainter p(this);
-        for (Square square = 0; square < 64; square++) {
-            QRect rect = squareRect(square);
-            if (!event->region().intersects(rect))
-                continue;
-            int x = isFlipped() ? 7 - square % 8 : square % 8;
-            int y = isFlipped() ? square / 8 : 7 - square / 8;
-            QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
-            p.drawPixmap(pos, m_theme.square((x + y) % 2));
-        }
-    }
-
+    drawSquares(event);
     drawSquareAnnotations(event);
-
-    {
-        QPainter p(this);
-
-        for (Square square = 0; square < 64; square++) {
-            QRect rect = squareRect(square);
-            if (!event->region().intersects(rect))
-                 continue;
-            int x = isFlipped() ? 7 - square % 8 : square % 8;
-            int y = isFlipped() ? square / 8 : 7 - square / 8;
-            QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
-
-            p.drawPixmap(pos, m_theme.piece(m_board.pieceAt(square)));
-            if (square == m_selectedSquare || square == m_hifrom || square == m_hito) {
-                QPen pen;
-                pen.setColor(m_theme.color(BoardTheme::Highlight));
-                pen.setWidth(2);
-                pen.setJoinStyle(Qt::MiterJoin);
-                p.setPen(pen);
-                p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
-                        m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
-            }
-            if (m_showFrame) {
-                p.setPen(m_theme.color(BoardTheme::Frame));
-                p.drawRect(QRect(pos, m_theme.size()));
-            }
-        }
-
-        if( m_showMoveIndicator )
-        {
-            // Draw side to move indicator
-            bool white = m_board.toMove() == White;
-            int square = width() - 8 * m_theme.size().width() - 4;
-            int maxsquare = m_theme.size().width() / 2;
-            if (square > maxsquare)
-            {
-                square = maxsquare;
-            }
-            if (square > 8)
-            {
-
-                QColor color = white ? Qt::white : Qt::black;
-                QColor border = white ? Qt::black : Qt::white;
-                int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
-                p.setPen(border);
-                p.setBrush(QColor(color));
-                //p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
-                p.drawRect(8 * m_theme.size().width() + 2, posy, square, square);
-            }
-        }
-        // Fix border up
-        /*
-        if (m_showFrame) {
-            QPen pen;
-            pen.setColor(m_theme.color(BoardTheme::Frame));
-            pen.setWidth(1);
-            p.setPen(pen);
-            int flx = m_theme.size().width() * 8;
-            int fly = m_theme.size().height() * 8;
-            p.drawLine(flx, 0, flx, fly);
-            p.drawLine(0, fly, flx, fly);
-        }*/
-
-        // Draw dragged piece
-        if (m_dragged != Empty)
-            p.drawPixmap(m_dragPoint, m_theme.piece(m_dragged));
-    }
+    drawPieces(event);
+    drawMoveIndicator(event);
     drawArrowAnnotations(event);
-
+    drawDraggedPieces(event);
 }
 
 void BoardView::resizeBoard()
@@ -484,7 +484,6 @@ void BoardView::drawSquareAnnotations(QPaintEvent* event)
             }
         }
     }
-
 }
 
 void BoardView::drawArrowAnnotations(QPaintEvent* event)
@@ -501,7 +500,6 @@ void BoardView::drawArrowAnnotations(QPaintEvent* event)
             }
         }
     }
-
 }
 
 void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)

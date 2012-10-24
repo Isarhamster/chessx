@@ -379,7 +379,8 @@ void MainWindow::slotBoardMoveWheel(int wheel)
 
 void MainWindow::slotGameVarEnter()
 {
-	if (game().variationCount(game().currentMove())) {
+    if (game().variationCount(game().currentMove()))
+    {
 		game().moveToId(game().variations().first());
 		slotMoveChanged();
 	}
@@ -387,9 +388,12 @@ void MainWindow::slotGameVarEnter()
 
 void MainWindow::slotGameVarExit()
 {
-	if (!game().isMainline()) {
+    if (!game().isMainline())
+    {
 		while (!game().atLineStart())
+        {
 			game().backward();
+        }
 		game().backward();
 		slotMoveChanged();
 	}
@@ -413,7 +417,8 @@ void MainWindow::slotGameLoadPrevious()
 	int game = m_gameList->currentIndex().row();
 	game = databaseInfo()->filter()->indexToGame(game);
 	game = databaseInfo()->filter()->previousGame(game);
-	if (game != -1) {
+    if (game != -1)
+    {
 		m_gameList->selectGame(game);
 		m_gameList->setFocus();
 		m_pending = PendingLoad(database(), game);
@@ -424,10 +429,11 @@ void MainWindow::slotGameLoadPrevious()
 void MainWindow::slotGameLoadNext()
 {
     QuerySaveGame();
-	int game = m_gameList->currentIndex().row();
+    int game = m_gameList->currentIndex().row();
 	game = databaseInfo()->filter()->indexToGame(game);
 	game = databaseInfo()->filter()->nextGame(game);
-	if (game != -1) {
+    if (game != -1)
+    {
 		m_gameList->selectGame(game);
 		m_gameList->setFocus();
 		m_pending = PendingLoad(database(), game);
@@ -438,13 +444,16 @@ void MainWindow::slotGameLoadNext()
 void MainWindow::slotGameLoadPending()
 {
 	if (m_pending.database == database())
+    {
 		gameLoad(m_pending.game);
+    }
 }
 
 
 void MainWindow::slotGameLoadRandom()
 {
-	if (databaseInfo()->filter()->count()) {
+    if (databaseInfo()->filter()->count())
+    {
 		int random = rand() % databaseInfo()->filter()->count();
 		gameLoad(databaseInfo()->filter()->indexToGame(random));
 		m_gameList->setFocus();
@@ -462,8 +471,11 @@ void MainWindow::slotGameLoadChosen()
 void MainWindow::slotGameNew()
 {
 	if (database()->isReadOnly())
+    {
 		MessageDialog::error(tr("This database is read only."));
-    else {
+    }
+    else
+    {
         QuerySaveGame();
 		databaseInfo()->newGame();
 		slotGameChanged();
@@ -473,8 +485,11 @@ void MainWindow::slotGameNew()
 void MainWindow::slotGameSave()
 {
 	if (database()->isReadOnly())
+    {
 		MessageDialog::error(tr("This database is read only."));
-	else if (saveDialog()->exec(database(), game()) == QDialog::Accepted) {
+    }
+    else if (saveDialog()->exec(database(), game()) == QDialog::Accepted)
+    {
         databaseInfo()->saveGame();
         database()->index()->setTag("Length", QString::number((game().plyCount() + 1) / 2), gameIndex() );
         m_gameList->updateFilter();
@@ -640,7 +655,7 @@ void MainWindow::slotGameAddVariation(const QString& san)
     s = s.remove(QRegExp("-.*"));
     s = s.remove(QRegExp("[0-9]*\\."));
     if (game().atLineEnd())
-            game().addMove(s);
+        game().addMove(s);
     else
         game().addVariation(s);
     slotGameChanged();
