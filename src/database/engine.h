@@ -19,6 +19,7 @@
 #include "analysis.h"
 #include "board.h"
 #include "move.h"
+#include "enginelist.h"
 
 #include "engineoptiondata.h"
 
@@ -72,6 +73,7 @@ public:
 	/** Create a new engine, pass index into engine settings list */
     static Engine* newEngine(int index);
     static Engine* newEngine(int index, bool bTestMode);
+    static Engine* newEngine(EngineList& engineList, int index, bool bTestMode);
 
 	/** Set number of lines. */
 	virtual void setMpv(int mpv);

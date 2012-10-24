@@ -36,6 +36,28 @@ Engine* Engine::newEngine(int index)
     return newEngine(index,false);
 }
 
+Engine* Engine::newEngine(EngineList& engineList, int index, bool bTestMode)
+{
+    Engine *engine = 0;
+
+    QString name      = engineList[index].name;
+    QString command   = engineList[index].command;
+    QString options   = engineList[index].options;
+    QString directory = engineList[index].directory;
+    EngineData::EngineProtocol protocol = engineList[index].protocol;
+
+    if (command.contains(' '))
+        command = QString("\"%1\"").arg(command);
+    QString exe = QString("%1 %2").arg(command).arg(options);
+
+    if (protocol == EngineData::WinBoard)
+        engine = new WBEngine(name, exe, bTestMode, directory);
+    else
+        engine = new UCIEngine(name, exe, bTestMode, directory);
+
+    return engine;
+}
+
 Engine* Engine::newEngine(int index, bool bTestMode)
 {
 	Engine *engine = 0;

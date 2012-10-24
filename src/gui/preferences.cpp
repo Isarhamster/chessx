@@ -209,7 +209,8 @@ QString PreferencesDialog::selectEngineFile(const QString& oldpath)
 void PreferencesDialog::slotShowOptionDialog()
 {
     int index = ui.engineList->currentIndex().row();
-    EngineOptionDialog dlg(0, index);
+    updateEngineData(index);
+    EngineOptionDialog dlg(0, engineList, index);
     if (dlg.exec() == QDialog::Accepted)
     {
         engineList[index].m_optionValues = dlg.GetResults();
