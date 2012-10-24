@@ -128,23 +128,27 @@ void WBEngine::feature(const QString& command)
 		if (feature == "setboard") {
 			m_setboard = (bool)value.toInt();
 			send("accepted " + feature);
-			continue;
 		}
-
-		if (feature == "analyze") {
+        else if (feature == "analyze") {
 			m_analyze = (bool)value.toInt();
 			send("accepted " + feature);
-			continue;
 		}
-
-		if (feature == "done") {
+        else if (feature == "done") {
 			featureDone((bool)value.toInt());
 			send("accepted " + feature);
-			continue;
 		}
+        else {
+            //unknown feature, reject it
+            send("rejected " + feature);
+        }
 
-		//unknown feature, reject it
-		send("rejected " + feature);
+        QString name = feature;
+        EngineOptionData option;
+        option.m_name = name;
+        option.m_defVal = value;
+        option.m_type = OPT_TYPE_SPIN;
+
+        m_options.append(option);
 	}
 }
 
