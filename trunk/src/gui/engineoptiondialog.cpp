@@ -8,13 +8,24 @@
 #include "engine.h"
 #include "settings.h"
 
-EngineOptionDialog::EngineOptionDialog(QWidget *parent, int index) :
+EngineOptionDialog::EngineOptionDialog(QWidget *parent,
+                                       EngineList& engineList,
+                                       int index) :
     QDialog(parent),
     ui(new Ui::EngineOptionDialog)
 {
     ui->setupUi(this);
+
+    QString t = windowTitle();
+    QString t1 = QString("%1 %2 (%3)").
+            arg(t).
+            arg(engineList[index].name).
+            arg(QString(engineList[index].protocol==EngineData::UCI ? "UCI" : "WinBoard"));
+
+    setWindowTitle(t1);
+
     m_index = index;
-    m_engine = Engine::newEngine(index,true);
+    m_engine = Engine::newEngine(engineList, index, true);
     m_engine->activate();
 
     connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));

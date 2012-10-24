@@ -8,6 +8,7 @@
 #include <QDialog>
 
 #include "engineoptiondata.h"
+#include "enginelist.h"
 
 class Engine;
 
@@ -20,7 +21,7 @@ class EngineOptionDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit EngineOptionDialog(QWidget *parent = 0, int index = 0);
+    explicit EngineOptionDialog(QWidget *parent, EngineList& engineList, int index);
     ~EngineOptionDialog();
     OptionValueList GetResults() const;
 public slots:
