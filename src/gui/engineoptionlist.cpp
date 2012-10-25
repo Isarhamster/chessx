@@ -90,7 +90,7 @@ EngineOptionList::EngineOptionList(QWidget *parent) :
     setObjectName("EngineOptionList");
     setWindowTitle(tr("Engine Options"));
     setSelectionBehavior(QAbstractItemView::SelectItems);
-    setEditTriggers(QAbstractItemView::AllEditTriggers);
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
     setSortingEnabled(false);
 }
 
