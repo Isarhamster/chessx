@@ -23,7 +23,10 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
             arg(QString(engineList[index].protocol==EngineData::UCI ? "UCI" : "WinBoard"));
 
     setWindowTitle(t1);
-
+    if (engineList[index].protocol==EngineData::UCI)
+    {
+        ui->tableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    }
     m_index = index;
     m_engine = Engine::newEngine(engineList, index, true);
     m_engine->activate();
