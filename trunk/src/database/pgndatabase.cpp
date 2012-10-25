@@ -52,13 +52,11 @@ bool PgnDatabase::parseFile()
 	//indexing game positions in the file, game contents are ignored
 	while (!m_file->atEnd()) {
 		skipJunk();
-		if (m_file->atEnd()) 
-			break;
-		addOffset();
-		parseTagsIntoIndex(); // This will parse the tags into memory
+        if (!addOffset())
+            if (!m_file->atEnd())
+                continue;
+        parseTagsIntoIndex(); // This will parse the tags into memory
 		skipMoves();
-        if (m_file->atEnd())
-            break;
         int percentDone2 = m_file->pos() * 100 / size;
 		if (percentDone2 > percentDone)
         {
@@ -166,13 +164,13 @@ qint64 PgnDatabase::offset(int index)
 	return m_gameOffsets[index];
 }
 
-void PgnDatabase::addOffset()
+bool PgnDatabase::addOffset()
 {
 	qint64 fp = m_file->pos();
-	addOffset(fp);
+    return addOffset(fp);
 }
 
-void PgnDatabase::addOffset(qint64 offset)
+bool PgnDatabase::addOffset(qint64 offset)
 {
 	if (m_count == m_allocated) {
 		//out of space reallocate memory
@@ -181,8 +179,16 @@ void PgnDatabase::addOffset(qint64 offset)
 		delete m_gameOffsets;
 		m_gameOffsets = newAllocation;
 	}
-
-	m_gameOffsets[m_count++] = offset;
+    if ((!m_count) || (m_gameOffsets[m_count-1] != offset))
+    {
+        m_gameOffsets[m_count++] = offset;
+        return true;
+    }
+    else
+    {
+        readLine();
+        return false;
+    }
 }
 
 
@@ -288,7 +294,6 @@ void PgnDatabase::parseMoves(Game* game)
             }
         }
     }
-
 }
 
 void PgnDatabase::parseLine(Game* game)
@@ -498,10 +503,19 @@ inline bool onlyWhite(const QByteArray& b)
 	return true;
 }
 
+//void PgnDatabase::skipJunk()
+//{
+//	while ((!m_lineBuffer.length() || m_lineBuffer[0] != '[') && !m_file->atEnd())
+//		skipLine();
+//   m_currentLine = m_lineBuffer.simplified();
+//}
+
 void PgnDatabase::skipJunk()
 {
-	while ((!m_lineBuffer.length() || m_lineBuffer[0] != '[') && !m_file->atEnd())
-		skipLine();
+   while ((!m_lineBuffer.length()
+          || (m_lineBuffer[0] != '[' && m_lineBuffer[0] != '1'))
+          && !m_file->atEnd())
+        skipLine();
     m_currentLine = m_lineBuffer.simplified();
 }
 

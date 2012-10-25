@@ -77,9 +77,9 @@ protected:
 	bool openFile(const QString& filename);
 
 	/** Adds the current file position as a new offset */
-	void addOffset();
+    bool addOffset();
 	/** Adds a new file offset */
-    void addOffset(qint64 offset);
+    bool addOffset(qint64 offset);
 
     QIODevice* m_file;
     QByteArray m_ByteArray;
