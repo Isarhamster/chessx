@@ -54,6 +54,9 @@ public:
 	/** Loads only moves into a game from the given position */
 	void loadGameMoves(int index, Game& game);
 
+protected:
+    virtual void parseGame();
+
 private:
 	QVector <Game*> m_games;
 	bool parseFile();

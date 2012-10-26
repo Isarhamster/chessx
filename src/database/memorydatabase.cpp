@@ -89,33 +89,20 @@ bool MemoryDatabase::loadGame(int index, Game& game)
 	return true;
 }
 
+void MemoryDatabase::parseGame()
+{
+    Game* game = new Game;
+    QString fen = m_index.tagValue(TagFEN, m_count - 1);
+    if (fen != "?")
+        game->setStartingBoard(fen);
+    parseMoves(game);
+    m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2), m_count - 1);
+    m_games.append(game);
+}
+
 bool MemoryDatabase::parseFile()
 {
-	//indexing game positions in the file, game contents are ignored
-	m_index.setCacheEnabled(true);
-	int percentDone = 0;
-    quint64 size = m_file->size();
-
-    while (!m_file->atEnd()) {
-		skipJunk();
-        if (!addOffset())
-            if (!m_file->atEnd())
-                continue;
-		parseTagsIntoIndex(); // This will parse the tags into memory
-		Game* game = new Game;
-		QString fen = m_index.tagValue(TagFEN, m_count - 1);
-		if (fen != "?")
-			game->setStartingBoard(fen);
-		parseMoves(game);
-		m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2), m_count - 1);
-		m_games.append(game);
-        int percentDone2 = m_file->pos() * 100 / size;
-		if (percentDone2 > percentDone)
-        {
-            emit progress((percentDone = percentDone2));
-        }
-	}
-	m_index.setCacheEnabled(false);
+    PgnDatabase::parseFile();
 	m_isModified = false;
 	return true;
 }
