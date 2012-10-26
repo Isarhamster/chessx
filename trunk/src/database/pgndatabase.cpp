@@ -44,25 +44,36 @@ bool PgnDatabase::open(const QString& filename, bool utf8)
 	return false;
 }
 
+void PgnDatabase::parseGame()
+{
+    skipMoves();
+}
+
 bool PgnDatabase::parseFile()
 {
+    //indexing game positions in the file, game contents are ignored
 	m_index.setCacheEnabled(true);
 	int percentDone = 0;
     qint64 size = m_file->size();
-	//indexing game positions in the file, game contents are ignored
-	while (!m_file->atEnd()) {
+
+    while (!m_file->atEnd())
+    {
 		skipJunk();
         if (!addOffset())
             if (!m_file->atEnd())
                 continue;
-        parseTagsIntoIndex(); // This will parse the tags into memory
-		skipMoves();
+        if (!m_currentLine.isEmpty())
+        {
+            parseTagsIntoIndex(); // This will parse the tags into memory
+            parseGame();
+        }
         int percentDone2 = m_file->pos() * 100 / size;
 		if (percentDone2 > percentDone)
         {
            emit progress((percentDone = percentDone2));
         }
     }
+
 	m_index.setCacheEnabled(false);
 	return true;
 }
@@ -86,9 +97,9 @@ bool PgnDatabase::openString(const QString& content)
     initialise();
     m_filename = "Internal.pgn";
     m_isOpen = true;
-    m_ByteArray.clear();
-    m_ByteArray.append(content);
-    QBuffer* buffer = new QBuffer(&m_ByteArray);
+    QByteArray byteArray;
+    byteArray.append(content);
+    QBuffer* buffer = new QBuffer(&byteArray);
     buffer->open(QIODevice::ReadOnly | QIODevice::Text);
     m_file = buffer;
     m_utf8 = false;
@@ -512,10 +523,12 @@ inline bool onlyWhite(const QByteArray& b)
 
 void PgnDatabase::skipJunk()
 {
-   while ((!m_lineBuffer.length()
+    while ((!m_lineBuffer.length()
           || (m_lineBuffer[0] != '[' && m_lineBuffer[0] != '1'))
           && !m_file->atEnd())
+    {
         skipLine();
+    }
     m_currentLine = m_lineBuffer.simplified();
 }
 

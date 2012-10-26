@@ -72,6 +72,7 @@ protected:
 	void parseTagsIntoIndex();
 
 	virtual bool parseFile();
+    virtual void parseGame();
 
     // Open a PGN data File
 	bool openFile(const QString& filename);
@@ -82,8 +83,8 @@ protected:
     bool addOffset(qint64 offset);
 
     QIODevice* m_file;
-    QByteArray m_ByteArray;
 	bool m_isOpen;
+    QString m_currentLine;
 private:
 	/** Resets/initialises important member variables. Called by constructor and close methods */
 	void initialise();
@@ -106,7 +107,7 @@ private:
 	QString m_gameText;
 
 	//parsing variables
-	QString m_currentLine;
+
 	int m_pos;
 	bool m_gameOver;
 	bool m_inComment;
