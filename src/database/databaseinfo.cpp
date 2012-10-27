@@ -40,9 +40,9 @@ void DatabaseInfo::run()
     m_database->parseFile();
     delete m_filter;
     m_filter = new Filter(m_database);
+    m_bLoaded = true;
     if (!loadGame(0))
         newGame();
-    m_bLoaded = true;
     emit LoadFinished(this);
 }
 
