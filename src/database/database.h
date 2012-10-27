@@ -38,6 +38,7 @@ class Database : public QObject
 public:
 	/** Standard constructor. */
 	Database();
+    volatile bool m_break;
 	/** Virtual destructor */
 	virtual ~Database();
 
