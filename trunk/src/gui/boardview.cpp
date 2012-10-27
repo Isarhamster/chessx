@@ -307,7 +307,6 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
 
 void BoardView::mouseReleaseEvent(QMouseEvent* event)
 {
-
 	Square s = squareAt(event->pos());
 	m_clickUsed = false;
 	if (event->button() != Qt::LeftButton) {
