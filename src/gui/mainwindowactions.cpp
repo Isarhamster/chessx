@@ -115,6 +115,7 @@ void MainWindow::slotFileClose()
         {
             m_openingTree->cancel(false);
             m_databaseList->setFileClose(m_databases[m_currentDatabase]->filePath());
+            m_databases[m_currentDatabase]->close();
             delete m_databases[m_currentDatabase];
             m_databases.removeAt(m_currentDatabase);
             m_currentDatabase = 0; // Switch to clipboard is always safe
