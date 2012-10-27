@@ -254,6 +254,9 @@ MainWindow::MainWindow() : QMainWindow(),
 MainWindow::~MainWindow()
 {
     m_openingTree->cancel(false);
+    foreach (DatabaseInfo* database, m_databases) {
+        database->close();
+    }
 	qDeleteAll(m_databases.begin(), m_databases.end());
 	delete m_saveDialog;
 	delete m_playerDialog;
