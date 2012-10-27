@@ -55,6 +55,7 @@ Engine* Engine::newEngine(EngineList& engineList, int index, bool bTestMode)
     else
         engine = new UCIEngine(name, exe, bTestMode, directory);
 
+    engine->m_mapOptionValues = engineList[index].m_optionValues;
     return engine;
 }
 

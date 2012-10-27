@@ -5,6 +5,9 @@
 #ifndef ENGINEOPTIONDATA_H
 #define ENGINEOPTIONDATA_H
 #include <QtCore>
+#include <QList>
+#include <QMap>
+
 enum OptionType
 {
     OPT_TYPE_CHECK,

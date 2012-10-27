@@ -11,7 +11,6 @@
 #define ENGINEDATA_H
 
 #include <QtCore>
-#include <QList>
 
 #include "engineoptiondata.h"
 

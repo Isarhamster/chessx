@@ -27,6 +27,10 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
     {
         ui->tableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
     }
+    else
+    {
+        ui->resetButton->setEnabled(false);
+    }
     m_index = index;
     m_engine = Engine::newEngine(engineList, index, true);
     m_engine->activate();
