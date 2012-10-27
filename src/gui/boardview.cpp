@@ -90,7 +90,7 @@ void BoardView::drawSquares(QPaintEvent* event)
     }
 }
 
-void BoardView::drawDraggedPieces(QPaintEvent* event)
+void BoardView::drawDraggedPieces(QPaintEvent* /*event*/)
 {
     // Draw dragged piece
     if (m_dragged != Empty)
@@ -100,7 +100,7 @@ void BoardView::drawDraggedPieces(QPaintEvent* event)
     }
 }
 
-void BoardView::drawMoveIndicator(QPaintEvent* event)
+void BoardView::drawMoveIndicator(QPaintEvent* /*event*/)
 {
     if( m_showMoveIndicator )
     {
