@@ -59,6 +59,8 @@ bool PgnDatabase::parseFile()
     while (!m_file->atEnd())
     {
 		skipJunk();
+        if (m_file->atEnd())
+            break;
         if (!addOffset())
             if (!m_file->atEnd())
                 continue;
@@ -66,11 +68,11 @@ bool PgnDatabase::parseFile()
         {
             parseTagsIntoIndex(); // This will parse the tags into memory
             parseGame();
-        }
-        int percentDone2 = m_file->pos() * 100 / size;
-		if (percentDone2 > percentDone)
-        {
-           emit progress((percentDone = percentDone2));
+            int percentDone2 = m_file->pos() * 100 / size;
+            if (percentDone2 > percentDone)
+            {
+               emit progress((percentDone = percentDone2));
+            }
         }
     }
 
