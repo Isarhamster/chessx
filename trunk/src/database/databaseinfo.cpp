@@ -59,16 +59,24 @@ bool DatabaseInfo::open(bool utf8)
 
 void DatabaseInfo::close()
 {
+    m_bLoaded = false;
+    m_database->m_break = true;
+    if (isRunning())
+    {
+        bool bSuccess = wait(5000);
+        if (!bSuccess)
+        {
+            terminate();
+        }
+    }
 	if (m_database) delete m_database;
 	if (m_filter) delete m_filter;
-    m_bLoaded = false;
     m_database = NULL;
 	m_filter = NULL;
 }
 
 DatabaseInfo::~DatabaseInfo()
 {
-	close();
 }
 
 bool DatabaseInfo::loadGame(int index, bool reload)
