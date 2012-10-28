@@ -26,7 +26,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_wheelCu
 {
 	ui.setupUi(this);
 	ui.boardView->configure();
-	ui.boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
+    ui.boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove | BoardView::AllowCopyPiece);
     ui.boardView->showMoveIndicator(false);
 
 
@@ -62,7 +62,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_wheelCu
 	connect(ui.clearButton, SIGNAL(clicked()), SLOT(slotClear()));
 	connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
 	connect(ui.boardView, SIGNAL(clicked(Square, int)), SLOT(slotSelected(Square, int)));
-	connect(ui.boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotMovePiece(Square, Square)));
+    connect(ui.boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotMovePiece(Square, Square)));
     connect(ui.boardView, SIGNAL(copyPiece(Square, Square)), SLOT(slotCopyPiece(Square, Square)));
     connect(ui.boardView, SIGNAL(invalidMove(Square)), SLOT(slotInvalidMove(Square)));
 	connect(ui.boardView, SIGNAL(wheelScrolled(int)), SLOT(slotChangePiece(int)));

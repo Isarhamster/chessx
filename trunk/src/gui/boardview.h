@@ -33,7 +33,7 @@ class BoardView : public QWidget
 	Q_OBJECT
 public:
 	enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
-	enum {IgnoreSideToMove = 1, SuppressGuessMove = 2};
+    enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4};
 	/** Create board widget. */
 	BoardView(QWidget* parent = 0, int flags = 0);
 	/** Destroy widget. */
@@ -65,7 +65,7 @@ public slots:
 
 signals:
 	/** User clicked source and destination squares */
-	void moveMade(Square from, Square to);
+    void moveMade(Square from, Square to, int button);
 	/** User dragged and dropped a piece holding Control */
 	void copyPiece(Square from, Square to);
     /** User dragged and dropped a piece holding Control */
@@ -142,6 +142,7 @@ private:
 	Piece m_dragged;
 	QPoint m_dragStart;
 	QPoint m_dragPoint;
+    int m_button;
 	bool m_clickUsed;
     int m_wheelCurrentDelta;
     int m_minDeltaWheel;
