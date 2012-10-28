@@ -108,7 +108,8 @@ HEADERS += src/database/board.h \
     src/database/engineoptiondata.h \
     src/gui/engineoptionmodel.h \
     src/gui/engineoptiondialog.h \
-    src/gui/engineoptionlist.h
+    src/gui/engineoptionlist.h \
+    src/gui/helpbrowser.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -186,7 +187,8 @@ SOURCES += src/database/board.cpp \
     src/database/engineoptiondata.cpp \
     src/gui/engineoptionmodel.cpp \
     src/gui/engineoptiondialog.cpp \
-    src/gui/engineoptionlist.cpp
+    src/gui/engineoptionlist.cpp \
+    src/gui/helpbrowser.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

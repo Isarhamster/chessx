@@ -221,7 +221,7 @@ public slots:
 	/** Move @p index was selected in Opening Tree. */
 	void slotSearchTreeMove(const QModelIndex& index);
 	/** Made given move on the board */
-	void slotBoardMove(Square from, Square to);
+    void slotBoardMove(Square from, Square to, int button);
 	/** Board square was clicked */
 	void slotBoardClick(Square square, int button);
 	/** Browse current game by mouse wheel */
