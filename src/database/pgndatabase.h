@@ -32,7 +32,6 @@ public:
 	PgnDatabase();
 	/** Destructor */
 	~PgnDatabase();
-
 	//database operations
 	/** Opens the given database */
     virtual bool open(const QString& filename, bool utf8);
@@ -78,9 +77,9 @@ protected:
 	bool openFile(const QString& filename);
 
 	/** Adds the current file position as a new offset */
-    bool addOffset();
+    void addOffset();
 	/** Adds a new file offset */
-    bool addOffset(qint64 offset);
+    void addOffset(qint64 offset);
 
     QIODevice* m_file;
 	bool m_isOpen;

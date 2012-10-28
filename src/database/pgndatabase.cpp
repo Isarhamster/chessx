@@ -19,15 +19,14 @@
 
 #include "pgndatabase.h"
 
-PgnDatabase::PgnDatabase()
+PgnDatabase::PgnDatabase() : Database()
 {
 	initialise();
 }
 
 PgnDatabase::~PgnDatabase()
 {
-	if (m_isOpen)
-		close();
+    close();
 }
 
 bool PgnDatabase::open(const QString& filename, bool utf8)
@@ -35,6 +34,7 @@ bool PgnDatabase::open(const QString& filename, bool utf8)
 	if (m_isOpen) {
 		return false;
 	}
+    m_break = false;
 	m_filename = filename;
     if (openFile(filename)) {
         m_isOpen = true;
@@ -58,16 +58,17 @@ bool PgnDatabase::parseFile()
 
     while (!m_file->atEnd())
     {
+        if (m_break) return false;
 		skipJunk();
         if (m_file->atEnd())
             break;
-        if (!addOffset())
-            if (!m_file->atEnd())
-                continue;
+		addOffset();
         if (!m_currentLine.isEmpty())
         {
             parseTagsIntoIndex(); // This will parse the tags into memory
             parseGame();
+            if (m_file->atEnd())
+                break;
             int percentDone2 = m_file->pos() * 100 / size;
             if (percentDone2 > percentDone)
             {
@@ -116,13 +117,10 @@ QString PgnDatabase::filename() const
 
 void PgnDatabase::close()
 {
-	if (!m_isOpen) {
-		return;
-	}
-
-	//close the file, and delete objects
-    m_file->close();
+    //close the file, and delete objects
+    if (m_file) m_file->close();
 	delete m_file;
+    m_file = 0;
 	delete[] m_gameOffsets;
 
 	//reset member variables
@@ -164,6 +162,8 @@ bool PgnDatabase::loadGame(int index, Game& game)
 
 void PgnDatabase::initialise()
 {
+    m_file = 0;
+    m_gameOffsets = 0;
     m_inComment = false;
 	m_isOpen = false;
 	m_filename = QString();
@@ -177,13 +177,13 @@ qint64 PgnDatabase::offset(int index)
 	return m_gameOffsets[index];
 }
 
-bool PgnDatabase::addOffset()
+void PgnDatabase::addOffset()
 {
 	qint64 fp = m_file->pos();
-    return addOffset(fp);
+	addOffset(fp);
 }
 
-bool PgnDatabase::addOffset(qint64 offset)
+void PgnDatabase::addOffset(qint64 offset)
 {
 	if (m_count == m_allocated) {
 		//out of space reallocate memory
@@ -192,16 +192,8 @@ bool PgnDatabase::addOffset(qint64 offset)
 		delete m_gameOffsets;
 		m_gameOffsets = newAllocation;
 	}
-    if ((!m_count) || (m_gameOffsets[m_count-1] != offset))
-    {
+
         m_gameOffsets[m_count++] = offset;
-        return true;
-    }
-    else
-    {
-        readLine();
-        return false;
-    }
 }
 
 
@@ -484,7 +476,6 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
 
 void PgnDatabase::parseComment(Game* game)
 {
-
 	int end = m_currentLine.indexOf('}');
 
 	if (end >= 0) {
@@ -516,21 +507,10 @@ inline bool onlyWhite(const QByteArray& b)
 	return true;
 }
 
-//void PgnDatabase::skipJunk()
-//{
-//	while ((!m_lineBuffer.length() || m_lineBuffer[0] != '[') && !m_file->atEnd())
-//		skipLine();
-//   m_currentLine = m_lineBuffer.simplified();
-//}
-
 void PgnDatabase::skipJunk()
 {
-    while ((!m_lineBuffer.length()
-          || (m_lineBuffer[0] != '[' && m_lineBuffer[0] != '1'))
-          && !m_file->atEnd())
-    {
+	while ((!m_lineBuffer.length() || m_lineBuffer[0] != '[') && !m_file->atEnd())
         skipLine();
-    }
     m_currentLine = m_lineBuffer.simplified();
 }
 
