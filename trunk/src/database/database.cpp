@@ -13,7 +13,7 @@
 #include <QtDebug>
 #include "database.h"
 
-Database::Database() : m_count(0), m_break(false)
+Database::Database() : m_break(false), m_count(0)
 {
 }
 
