@@ -278,6 +278,15 @@ void BoardView::nextGuess(Square s)
 
 void BoardView::mouseMoveEvent(QMouseEvent *event)
 {
+    m_button = event->button() + event->modifiers();
+    if (event->modifiers() & Qt::ControlModifier)
+    {
+        setCursor(QCursor(Qt::UpArrowCursor));
+    }
+    else
+    {
+        setCursor(QCursor(Qt::ArrowCursor));
+    }
 
 	if (!(event->buttons() & Qt::LeftButton)) {
 		showGuess(squareAt(event->pos()));
@@ -307,11 +316,21 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
 
 void BoardView::mouseReleaseEvent(QMouseEvent* event)
 {
+    setCursor(QCursor(Qt::ArrowCursor));
+    int button = event->button() + event->modifiers();
 	Square s = squareAt(event->pos());
 	m_clickUsed = false;
-	if (event->button() != Qt::LeftButton) {
+    if (!(event->button() & Qt::LeftButton)) {
 		if (s != InvalidSquare)
-			emit clicked(s, event->button() + event->modifiers());
+        {
+            emit clicked(s, button);
+        }
+        else
+        {
+            Square from = squareAt(m_dragStart);
+            emit invalidMove(from);
+        }
+        m_dragged = Empty;
 		return;
 	}
 
@@ -322,12 +341,20 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 		m_dragged = Empty;
 		update(squareRect(from));
 		update(oldr);
-		if (s != InvalidSquare) {
-			if (!(event->modifiers() & Qt::ControlModifier)) {
-				emit moveMade(from, s);
+        if (s != InvalidSquare)
+        {
+            if ((m_flags & AllowCopyPiece) && (event->modifiers() & Qt::ControlModifier))
+            {
+                if (m_board.pieceAt(from) != Empty)
+                {
+                    emit copyPiece(from, s);
+                }
+            }
+            else
+            {
+                emit moveMade(from, s, button);
 				updateGuess(s);
-			} else if (m_board.pieceAt(from) != Empty)
-				emit copyPiece(from, s);
+            }
 		}
         else
         {
@@ -337,17 +364,17 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 		Square from = m_selectedSquare;
 		unselectSquare();
 		if (s != InvalidSquare)
-			emit moveMade(from, s);
+            emit moveMade(from, s, button);
 	} else if (m_hifrom != InvalidSquare) {
 		if (s == m_hifrom || s == m_hito)
-			emit moveMade(m_hifrom, m_hito);
+            emit moveMade(m_hifrom, m_hito, button);
 		m_hoverSquare = InvalidSquare;
 		// Only update guess if "emit moveMade()" did not pop up a window (eg. promotion)
 		if (m_hifrom != InvalidSquare)
 			updateGuess(s);
 	} else {
 		if (s != InvalidSquare) {
-			emit clicked(s, event->button() + event->modifiers());
+            emit clicked(s, button);
 			if (!m_clickUsed && m_board.isMovable(s))
 				selectSquare(s);
 		}

@@ -191,7 +191,7 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags)
 {
 	int node;
 	node = m_moveNodes[m_currentNode].nextNode;
-
+    setModified(true);
 	if (node == NO_MOVE) {
 		addMove(move, annotation, nags);
 		return true;
@@ -207,8 +207,29 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags)
 	truncateVariation();
 	backward();
 
-    setModified(true);
 	return true;
+}
+
+bool Game::insertMove(const Move& move, const QString& annotation, NagSet nags)
+{
+    int node;
+    node = m_moveNodes[m_currentNode].nextNode;
+    setModified(true);
+    if (node == NO_MOVE) {
+        addMove(move, annotation, nags);
+        return true;
+    }
+
+    //replace node data with new move
+    m_moveNodes[node].move = move;
+    m_moveNodes[node].nags = nags;
+    setAnnotation(annotation, node);
+
+    forward();
+//    truncateVariation();
+//    backward();
+
+    return true;
 }
 
 bool Game::replaceMove(const QString& sanMove, const QString& annotation, NagSet nags)

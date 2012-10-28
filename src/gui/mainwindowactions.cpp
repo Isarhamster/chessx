@@ -293,7 +293,7 @@ void MainWindow::slotHelpBug()
 }
 
 
-void MainWindow::slotBoardMove(Square from, Square to)
+void MainWindow::slotBoardMove(Square from, Square to, int button)
 {
     // Use an existing move if it already exists
     if( game().findNextMove(from,to)) {
@@ -314,10 +314,26 @@ void MainWindow::slotBoardMove(Square from, Square to)
 				return;
 			m.setPromotionPiece(PieceType(Queen + index));
 		}
-		if (game().atLineEnd())
-			game().addMove(m);
-		else game().addVariation(m);
-		game().forward();
+        if (game().atLineEnd())
+        {
+            game().addMove(m);
+        }
+        else
+        {
+            if ((button & (Qt::ControlModifier | Qt::ShiftModifier)) == (Qt::ControlModifier | Qt::ShiftModifier))
+            {
+                game().replaceMove(m);
+            }
+            else if (button & Qt::ControlModifier)
+            {
+                game().insertMove(m);
+            }
+            else
+            {
+                game().addVariation(m);
+            }
+        }
+        game().forward();
 		slotGameChanged();
 	}
 }
@@ -870,7 +886,7 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 	else if (m == game().move(game().nextMove()))
 		slotGameMoveNext();
 	else if (game().isModified())
-		slotBoardMove(m.from(), m.to());
+        slotBoardMove(m.from(), m.to(), 0);
 	else {
         m_bGameChange = true;
 		Board board = m_boardView->board();
