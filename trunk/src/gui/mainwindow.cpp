@@ -33,6 +33,7 @@
 #include "tableview.h"
 #include "analysiswidget.h"
 #include "dockwidgetex.h"
+#include "helpbrowser.h"
 #include <time.h>
 
 MainWindow::MainWindow() : QMainWindow(),
@@ -68,7 +69,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_boardView->setMinimumSize(200, 200);
 	m_boardView->resize(500, 540);
 	connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
-	connect(m_boardView, SIGNAL(moveMade(Square, Square)), SLOT(slotBoardMove(Square, Square)));
+    connect(m_boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
 	connect(m_boardView, SIGNAL(clicked(Square, int)), SLOT(slotBoardClick(Square, int)));
 	connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
 
@@ -750,7 +751,19 @@ void MainWindow::setupActions()
 	/* Help menu */
 	menuBar()->addSeparator();
 	QMenu *help = menuBar()->addMenu(tr("&Help"));
-	help->addAction(createAction(tr("&Report a bug..."), SLOT(slotHelpBug())));
+
+    /* Help Window */
+    DockWidgetEx* pHelpDock = new DockWidgetEx(tr("Help"), this);
+    pHelpDock->setObjectName("Help");
+    HelpBrowser* pHelpBrowser = new HelpBrowser(this);
+    pHelpBrowser->setMinimumSize(150, 100);
+    pHelpDock->setWidget(pHelpBrowser);
+    addDockWidget(Qt::RightDockWidgetArea, pHelpDock);
+    help->addAction(pHelpDock->toggleViewAction());
+    pHelpDock->toggleViewAction()->setShortcut(Qt::Key_F1);
+    pHelpDock->hide();
+
+    help->addAction(createAction(tr("&Report a bug..."), SLOT(slotHelpBug())));
 	help->addSeparator();
 	help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), QString(), QAction::AboutRole));
 
@@ -761,6 +774,8 @@ void MainWindow::setupActions()
 	source->setCheckable(true);
 	connect(source, SIGNAL(toggled(bool)), SLOT(slotGameViewToggle(bool)));
 #endif
+
+
 }
 
 bool MainWindow::confirmQuit()

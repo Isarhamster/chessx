@@ -36,5 +36,9 @@
         <file alias="themes/boards/sandlewood.png">data/themes/boards/sandlewood.png</file>
         <file alias="themes/boards/brazilwood.png">data/themes/boards/brazilwood.png</file>
         <file alias="themes/boards/maple.png">data/themes/boards/maple.png</file>
+        <file alias="help/about0.html">data/help/about0.html</file>
+        <file alias="help/about1.html">data/help/about1.html</file>
+        <file alias="help/about2.html">data/help/about2.html</file>
+        <file alias="help/about3.html">data/help/about3.html</file>
     </qresource>
 </RCC>
