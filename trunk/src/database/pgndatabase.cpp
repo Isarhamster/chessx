@@ -199,6 +199,12 @@ void PgnDatabase::addOffset(qint64 offset)
 
 void PgnDatabase::readLine()
 {
+    if (m_file->atEnd())
+    {
+        m_lineBuffer.clear();
+        m_currentLine.clear();
+        return;
+    }
 	m_lineBuffer = m_file->readLine();
     if (m_utf8)
     {

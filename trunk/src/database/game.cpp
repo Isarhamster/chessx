@@ -210,28 +210,6 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags)
 	return true;
 }
 
-bool Game::insertMove(const Move& move, const QString& annotation, NagSet nags)
-{
-    int node;
-    node = m_moveNodes[m_currentNode].nextNode;
-    setModified(true);
-    if (node == NO_MOVE) {
-        addMove(move, annotation, nags);
-        return true;
-    }
-
-    //replace node data with new move
-    m_moveNodes[node].move = move;
-    m_moveNodes[node].nags = nags;
-    setAnnotation(annotation, node);
-
-    forward();
-//    truncateVariation();
-//    backward();
-
-    return true;
-}
-
 bool Game::replaceMove(const QString& sanMove, const QString& annotation, NagSet nags)
 {
 	return replaceMove(m_currentBoard.parseMove(sanMove), annotation, nags);
@@ -239,7 +217,7 @@ bool Game::replaceMove(const QString& sanMove, const QString& annotation, NagSet
 
 MoveId Game::addVariation(const Move& move, const QString& annotation, NagSet nags)
 {
-	MoveId previousNode = m_currentNode;
+    MoveId previousNode = m_currentNode;
 	MoveId saveNextNode = m_moveNodes[m_currentNode].nextNode;
 	MoveId node = addMove(move, annotation, nags);
 	m_moveNodes[m_currentNode].parentNode = previousNode;
@@ -845,10 +823,10 @@ void Game::enterVariation(const MoveId& moveId)
 	m_currentNode = moveId;
 
     QString annotation = squareAnnotation(m_currentNode);
-    m_currentBoard.setSquareAnnotation( annotation);
+    m_currentBoard.setSquareAnnotation(annotation);
 
     annotation = arrowAnnotation(m_currentNode);
-    m_currentBoard.setArrowAnnotation( annotation);
+    m_currentBoard.setArrowAnnotation(annotation);
 
 }
 
