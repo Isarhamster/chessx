@@ -182,8 +182,6 @@ public :
 	MoveId addMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Adds a move at the current position, returns the move id of the added move */
 	MoveId addMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
-    /** Replace the move after the current position keeping as much as possible of the remaining game */
-    bool insertMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Replace the move after the current position */
     bool replaceMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
 	/** Replace the move after the current position */

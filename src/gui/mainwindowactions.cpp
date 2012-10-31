@@ -323,17 +323,22 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             if ((button & (Qt::ControlModifier | Qt::ShiftModifier)) == (Qt::ControlModifier | Qt::ShiftModifier))
             {
                 game().replaceMove(m);
+                game().forward();
             }
             else if (button & Qt::ControlModifier)
             {
-                game().insertMove(m);
+                // TODO: Make a insertMove algorithm start from here
+                // -> need to understand the moving stuff before!
+                game().replaceMove(m);
+                game().forward();
             }
             else
             {
                 game().addVariation(m);
+                game().forward();
             }
         }
-        game().forward();
+
 		slotGameChanged();
 	}
 }
