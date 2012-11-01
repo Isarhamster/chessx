@@ -52,7 +52,7 @@ public:
 protected:
 	//parsing methods
 	/** Reads moves from the file and adds them to the game. Performs position searches if any are active */
-	void parseMoves(Game* game);
+    bool parseMoves(Game* game);
 	/** Parses a line from the file */
 	void parseLine(Game* game);
     /** Parses a move token from the file */
@@ -62,7 +62,7 @@ protected:
 	/** Parses a comment from the file */
 	void parseComment(Game* game);
 	/** Skips past any data which is not valid tag or move data */
-	void skipJunk();
+    qint64 skipJunk();
 	/** Skips past any tag data */
 	void skipTags();
 	/** Skips past any move data */

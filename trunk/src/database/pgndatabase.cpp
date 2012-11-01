@@ -55,24 +55,37 @@ bool PgnDatabase::parseFile()
 	m_index.setCacheEnabled(true);
 	int percentDone = 0;
     qint64 size = m_file->size();
+    int oldFp = -3;
 
     while (!m_file->atEnd())
     {
         if (m_break) return false;
-		skipJunk();
-        if (m_file->atEnd())
-            break;
-		addOffset();
-        if (!m_currentLine.isEmpty())
+        qint64 fp = skipJunk();
+        if (fp == oldFp)
         {
-            parseTagsIntoIndex(); // This will parse the tags into memory
-            parseGame();
-            if (m_file->atEnd())
-                break;
-            int percentDone2 = m_file->pos() * 100 / size;
-            if (percentDone2 > percentDone)
+            skipLine();
+            fp = skipJunk();
+        }
+        oldFp = fp;
+        if (fp != -1)
+        {
+            if (!m_currentLine.isEmpty())
             {
-               emit progress((percentDone = percentDone2));
+                addOffset(fp);
+                parseTagsIntoIndex(); // This will parse the tags into memory
+                parseGame();
+                if (!m_file->atEnd())
+                {
+                    int percentDone2 = m_file->pos() * 100 / size;
+                    if (percentDone2 > percentDone)
+                    {
+                       emit progress((percentDone = percentDone2));
+                    }
+                }
+                else
+                {
+                    emit progress((percentDone = 100));
+                }
             }
         }
     }
@@ -193,7 +206,7 @@ void PgnDatabase::addOffset(qint64 offset)
 		m_gameOffsets = newAllocation;
 	}
 
-        m_gameOffsets[m_count++] = offset;
+    m_gameOffsets[m_count++] = offset;
 }
 
 
@@ -239,6 +252,7 @@ void PgnDatabase::seekGame(int index)
 void PgnDatabase::parseTagsIntoIndex()
 {
     m_index.setTag("Length", "0", m_count - 1);
+    m_index.setTag("Result", "*", m_count - 1);
 	while (m_currentLine.startsWith(QString("[")) && !m_file->atEnd()) {
 		int tagend = m_currentLine.indexOf(' ');
 		QString tag = m_currentLine.mid(1, tagend - 1);
@@ -276,7 +290,7 @@ void PgnDatabase::parseTagsIntoIndex()
 		readLine();
 }
 
-void PgnDatabase::parseMoves(Game* game)
+bool PgnDatabase::parseMoves(Game* game)
 {
     m_gameOver = false;
 	m_inComment = false;
@@ -290,21 +304,24 @@ void PgnDatabase::parseMoves(Game* game)
 			parseComment(game);
 		} else {
 			parseLine(game);
-			if (m_variation == -1) {
-                return;
+            if (m_variation == -1) {
+                return false;
 			}
 		}
 	} while (!m_gameOver && (!m_file->atEnd() || m_currentLine != ""));
 
-    if( m_gameOver ) {
-        if(game->plyCount() == 0) {
-            if( !m_precomment.isEmpty()) {
-                //game->setGameComment(m_precomment);
+    if( m_gameOver )
+    {
+        if(game->plyCount() == 0)
+        {
+            if( !m_precomment.isEmpty())
+            {
                 game->setAnnotation(m_precomment);
                 m_precomment.clear();
             }
         }
     }
+    return true;
 }
 
 void PgnDatabase::parseLine(Game* game)
@@ -315,7 +332,12 @@ void PgnDatabase::parseLine(Game* game)
     for (QStringList::Iterator it = list.begin(); it != list.end() && !m_inComment; ++it) {
 		if (*it != "") {
 			parseToken(game, *it);
-			if (m_variation == -1) {
+            if (m_variation == -1)
+            {
+                if (!(m_currentLine.startsWith("[")))
+                {
+                   skipLine(); // illegal move in the buffer!
+                }
 				return;
 			}
 		}
@@ -513,11 +535,38 @@ inline bool onlyWhite(const QByteArray& b)
 	return true;
 }
 
-void PgnDatabase::skipJunk()
+qint64 PgnDatabase::skipJunk()
 {
-	while ((!m_lineBuffer.length() || m_lineBuffer[0] != '[') && !m_file->atEnd())
+    qint64 fp = -2;
+    if (m_file->atEnd())
+    {
+        fp = -1;
+    }
+
+    while ((!m_lineBuffer.length()
+          || (m_lineBuffer[0] != '[' && m_lineBuffer[0] != '1'))
+          && !m_file->atEnd())
+    {
+        fp = m_file->pos();
         skipLine();
+    }
+
+    if (fp == -2)
+    {
+        fp = m_file->pos() - m_lineBuffer.size();
+    }
+
     m_currentLine = m_lineBuffer.simplified();
+
+    if (m_inComment || !m_currentLine.startsWith("[")) {
+        m_currentLine.replace("(", " ( ");
+        m_currentLine.replace(")", " ) ");
+        m_currentLine.replace("{", " { ");
+        m_currentLine.replace("}", " } ");
+        m_currentLine.replace("$", " $");
+    }
+
+    return fp;
 }
 
 void PgnDatabase::skipTags()
@@ -529,6 +578,14 @@ void PgnDatabase::skipTags()
     while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
         skipLine();
     m_currentLine = m_lineBuffer.simplified();
+
+    if (m_inComment || !m_currentLine.startsWith("[")) {
+        m_currentLine.replace("(", " ( ");
+        m_currentLine.replace(")", " ) ");
+        m_currentLine.replace("{", " { ");
+        m_currentLine.replace("}", " } ");
+        m_currentLine.replace("$", " $");
+    }
 }
 
 void PgnDatabase::skipMoves()
@@ -545,6 +602,7 @@ void PgnDatabase::skipMoves()
 	//swallow trailing whitespace
     while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
         skipLine();
+
     m_currentLine = m_lineBuffer.simplified();
 }
 
