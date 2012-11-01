@@ -62,7 +62,8 @@ int FilterModel::columnCount(const QModelIndex&) const
 
 QVariant FilterModel::data(const QModelIndex &index, int role) const
 {
-	if (role == Qt::DisplayRole && index.isValid() && index.row() < m_filter->count()) {
+    if (index.isValid() && index.row() < m_filter->count())
+    {
 		int i = m_filter->indexToGame(index.row());
 		if (i != -1) {
 			if (i != m_gameIndex) {
@@ -71,6 +72,9 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
 				m_filter->database()->loadGameHeaders(i, *m_game);
 				m_gameIndex = i;
 			}
+        }
+        if (role == Qt::DisplayRole)
+        {
 			if (index.column() == 0)
 				return i + 1;
 			else {
@@ -78,7 +82,15 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
 				return tag == "?" ? QString() : tag;
 			}
 		}
-	}
+        else if (role == Qt::ForegroundRole)
+        {
+            if (m_game->tag("Valid") == "false")
+            {
+                return Qt::red;
+            }
+            return Qt::black;
+        }
+    }
 	return QVariant();
 }
 
