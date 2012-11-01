@@ -243,7 +243,7 @@ void MainWindow::slotEditPastePGN()
     QString pgn = QApplication::clipboard()->text().trimmed();
     if (!pgn.isEmpty())
     {
-        PgnDatabase pgnDatabase;
+        MemoryDatabase pgnDatabase;
         pgnDatabase.openString(pgn);
         Game g;
         if (pgnDatabase.loadGame(0,g))
