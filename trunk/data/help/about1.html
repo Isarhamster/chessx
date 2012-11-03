@@ -124,6 +124,11 @@
 <div id="content">
 <h2><a name="Handbuch">ChessX Manual</a></h2>
 
+ <h3>Opening a database</h3>
+ <p>You can open a database either from the File menu or drag a file from Explorer / Finder into the Databases view.</p>
+ <p>You can make a database stay permanently in the database list by turning it into a "Favorite" (right-click the file).
+ A database is reopened from there by clicking the asterisk or again by the context menu.</p>
+
  <h3>Making moves</h3>
  <p>A move is done by gabbing a piece and dragging it
  to another square.</p>
@@ -146,6 +151,35 @@ want to create a new variation, press CTRL+SHIFT while moving, which replaces th
 <p>Move annotations can be done by activating the context menu in the games text browser or by simply pressing the corresponding key sequence,
 e.g. '!?','!!','??','!x','?x','=','+-','-+' and so on, where 'x' is used in case the first character is ambiguous, 'x' can be the
 Return/Enter-Key or literally the small letter 'x'.</p>
+
+<h3>Saving games</h3>
+<p>Saving games is slightly confusing! A game needs to be saved into the database (Press CTRL+S, Menu Game/Save). From there,
+the whole database needs to be saved to disk by pressing CTRL+Shift+S / Menu File/Save. This is somewhat inconvenient but on the other hand prevents
+you from mistakenly overwriting games or files.</p>
+<p>By default, a clipboard database is open, which does not have a backing file on disk. Anything that remains in the Clipboard is
+lost upon closing ChessX! So you need to open at least one other database for writing and transfer anything from the Clipboard
+into this database by either dragging the games to that database or using "Copy Games" from the Database menu.</p>
+
+<h3>Switching databases</h3>
+<p>Switching between open databases can be achieved by either the Database menu, pressing CTRL+Number 0 .. 9 or clicking onto the asterisk
+in the database list. The currently selected database is also highlighted there!</p>
+
+<h3>Analysing games</h3>
+<p>There are two analysis windows where two different engines can be configured to analyse the current board position.</p>
+<p>Engines must be configured before in the Preferences Dialog. A default engine (Stockfish) comes with this installation
+and will be configured as first engine, if no other entries exist.
+Stockfish is an open source engine (see <a href="http://stockfishchess.org">Homepage of Stockfish</a>. The Mac OS
+version has been compiled less agressively than the original one so that users of pre-I5 Intel computers will have their fun, too.
+The source code for the Stockfish engine is completely unmodified so you can replace the pre-installed versions by the original
+or any other version. The source code for stockfish is also located on the homepage. Note that Sotckfish is licensed under GPLv3,
+see the license text on the Stockfish home.</p>
+<p>You can fine-tune engines with the protocol options dialog (works for UCI only, Winboard is seldom used and due to the clumsy specification
+hard to implement for GUI developers.</p>
+
+
+<h3>Generating content</h3>
+<p>You can copy/paste positions(FEN and images) and complete games(PGN) from/into the clipboard, export games in LATEX, HTML or PGN again.
+See the Edit menu and the File/Export Dialog.</p>
 
 </div>
 </div>
