@@ -175,6 +175,7 @@ MainWindow::MainWindow() : QMainWindow(),
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
     analysisDock->setObjectName("AnalysisDock1");
     AnalysisWidget* analyis = new AnalysisWidget;
+    analyis->setObjectName("Analysis");
     analysisDock->setWidget(analyis);
     addDockWidget(Qt::RightDockWidgetArea, analysisDock);
     connect(analyis, SIGNAL(addVariation(Analysis)),
@@ -194,6 +195,7 @@ MainWindow::MainWindow() : QMainWindow(),
     DockWidgetEx* analysisDock2 = new DockWidgetEx(tr("Analysis 2"), this);
 	analysisDock2->setObjectName("AnalysisDock2");
     analyis = new AnalysisWidget;
+    analyis->setObjectName("Analysis2");
     analysisDock2->setWidget(analyis);
 	addDockWidget(Qt::RightDockWidgetArea, analysisDock2);
     connect(analyis, SIGNAL(addVariation(Analysis)),

@@ -25,7 +25,13 @@ public:
 	/** Store configuration in INI file. */
 	void save();
 	/** Retrieve list of engine names in current order. */
-	QStringList names() const;
+    QStringList names() const;
+
+protected:
+    /** Set the content of the default engine directories into the list of engines */
+    void restoreEmpty();
+    /** Set the content of the given directory into the list of engines */
+    void restoreEmptyFromPath(QString path, EngineData::EngineProtocol protocol);
 };
 
 #endif // ENGINELIST_H
