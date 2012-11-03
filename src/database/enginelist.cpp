@@ -14,25 +14,74 @@ EngineList::EngineList()
 {
 }
 
+void EngineList::restoreEmptyFromPath(QString path, EngineData::EngineProtocol protocol)
+{
+    if (path.isEmpty()) return;
+
+    QStringList engines = QDir(path).entryList(QDir::Executable | QDir::Files | QDir::NoSymLinks);
+
+    for (int i = 0; i < engines.size(); ++i)
+    {
+        QString key = QString::number(i);
+        QString name = engines[i];
+        EngineData data(name);
+        data.command = path + "/" + name;
+        data.directory = path;
+        data.protocol = protocol;
+        append(data);
+    }
+}
+
+void EngineList::restoreEmpty()
+{
+    QString path(AppSettings->dataPath());
+
+#ifdef Q_OS_WIN
+    QString path1 = path + "/engines/uci";
+    QString path2 = path + "/engines/winboard";
+#endif
+
+#ifdef Q_OS_MAC
+    QString path1 = path + "/engines-mac/uci";
+    QString path2 = path + "/engines-mac/winboard";
+#endif
+
+#ifdef Q_OS_LINUX
+    QString path1 = path + "/engines-linux/uci";
+    QString path2 = path + "/engines-linux/winboard";
+#endif
+
+    restoreEmptyFromPath(path1, EngineData::UCI);
+    restoreEmptyFromPath(path2, EngineData::WinBoard);
+}
+
 void EngineList::restore()
 {
 	clear();
 	AppSettings->beginGroup("/Engines/");
-	QStringList engines = AppSettings->childGroups();
-	for (int i = 0; i < engines.size(); ++i) {
-		QString key = QString::number(i);
-		QString name = AppSettings->value(key + "/Name").toString();
-		EngineData data(name);
-		data.command = AppSettings->value(key + "/Command").toString();
-		data.options = AppSettings->value(key + "/Options").toString();
-		data.directory = AppSettings->value(key + "/Directory").toString();
-		QString protocolName = AppSettings->value(key + "/Protocol").toString();
-		if (protocolName == "WinBoard")
-			data.protocol = EngineData::WinBoard;
-		else data.protocol = EngineData::UCI;
-        AppSettings->getMap(key + "/OptionValues", data.m_optionValues);
-		append(data);
-	}
+    QStringList engines = AppSettings->childGroups();
+    if (engines.size())
+    {
+        for (int i = 0; i < engines.size(); ++i)
+        {
+            QString key = QString::number(i);
+            QString name = AppSettings->value(key + "/Name").toString();
+            EngineData data(name);
+            data.command = AppSettings->value(key + "/Command").toString();
+            data.options = AppSettings->value(key + "/Options").toString();
+            data.directory = AppSettings->value(key + "/Directory").toString();
+            QString protocolName = AppSettings->value(key + "/Protocol").toString();
+            if (protocolName == "WinBoard")
+                data.protocol = EngineData::WinBoard;
+            else data.protocol = EngineData::UCI;
+            AppSettings->getMap(key + "/OptionValues", data.m_optionValues);
+            append(data);
+        }
+    }
+    else
+    {
+        restoreEmpty();
+    }
 	AppSettings->endGroup();
 }
 

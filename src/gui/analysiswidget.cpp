@@ -56,7 +56,8 @@ void AnalysisWidget::startEngine()
 		connect(m_engine, SIGNAL(analysisUpdated(const Analysis&)),
 				  SLOT(showAnalysis(const Analysis&)));
 		m_engine->activate();
-		AppSettings->setValue("/Analysis/Engine", ui.engineList->itemText(index));
+        QString key = QString("/")+objectName()+"/Engine";
+        AppSettings->setValue(key, ui.engineList->itemText(index));
 	}
 }
 
@@ -108,7 +109,10 @@ void AnalysisWidget::slotReconfigure()
 {
 	QString oldEngineName = ui.engineList->currentText();
 	if (oldEngineName.isEmpty())
-		oldEngineName = AppSettings->value("/Analysis/Engine").toString();
+    {
+        QString key = QString("/")+objectName()+"/Engine";
+        oldEngineName = AppSettings->value(key).toString();
+    }
 
 	EngineList enginesList;
 	enginesList.restore();
