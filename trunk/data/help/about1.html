@@ -1,105 +1,12 @@
 <html>
 
 <head>
-
-<meta content="de" name="language">
-<meta content="de" http-equiv="Content-Language">
+<link rel="stylesheet" type="text/css" href=":/help/about.css" />
+<link rel="stylesheet" type="text/css" href="about.css" />
+<meta content="en" name="language" />
+<meta content="en" http-equiv="Content-Language" />
 <meta name="viewport" content="user-scalable=no, width=device-width" />
 
-<style type="text/css">
-<!--
-	body {
-		background-color: #ddd; /* Background color */
-		color: #222;            /* Foreground color used for text */
-		font-family: Helvetica; 
-		font-size: 14px;
-		margin: 0;              /* Amount of negative space around the outside of the body */
-		padding: 0;             /* Amount of negative space around the inside of the body */
-	}
-
-	#header h1 {
-		margin: 0;
-		padding: 0;
-	}
-	#header h1 a {
-		background-color: #ccc;
-		border-bottom: 1px solid #666;
-		color: #222;
-		display: block;
-		font-size: 16px;
-		font-weight: bold;
-		padding: 10px 0;
-		text-align: center;
-		text-decoration: none;
-	}
-	#header ul {
-		list-style: none;
-		margin: 10px;
-		padding: 0;
-	}
-	#header ul li a {
-		background-color: #FFFFFF;
-		border: 1px solid #999999;
-		color: #222222;
-		display: block;
-		font-size: 17px;
-		font-weight: bold;
-		margin-bottom: -1px;
-		padding: 8px 6px;
-		text-decoration: none;
-	}
-
-	#header ul li b {
-		background-color: #CCCCCC;
-		border: 1px solid #999999;
-		color: #222222;
-		display: block;
-		font-size: 17px;
-		font-weight: bold;
-		margin-bottom: -1px;
-		padding: 8px 6px;
-		text-decoration: none;
-	}
-	
-	#content, #sidebar {
-		padding: 10px;
-	}
-
-	#footer {
-		display: none;
-	}
-
-	#header h1 a {
-		text-shadow: 0px 1px 0px #fff;
-		background-image: -webkit-gradient(linear, left top, left bottom, 
-										   from(#ccc), to(#999));
-	}
-	#header ul li:first-child a {
-		-webkit-border-top-left-radius: 8px;
-		-webkit-border-top-right-radius: 8px;
-	}
-	#header ul li:last-child a {
-		-webkit-border-bottom-left-radius: 8px;
-		-webkit-border-bottom-right-radius: 8px;
-	}
-	#header h1 b {
-		text-shadow: 0px 1px 0px #fff;
-		background-image: -webkit-gradient(linear, left top, left bottom, 
-										   from(#ccc), to(#999));
-	}
-	#header ul li:first-child b {
-		-webkit-border-top-left-radius: 8px;
-		-webkit-border-top-right-radius: 8px;
-	}
-	#header ul li:last-child b {
-		-webkit-border-bottom-left-radius: 8px;
-		-webkit-border-bottom-right-radius: 8px;
-	}
-	#header ul.hide {
-		display: none;
-	}
---> 
-</style>
 <title>ChessX Manual</title>
 
 <body>
@@ -176,10 +83,17 @@ see the license text on the Stockfish home.</p>
 <p>You can fine-tune engines with the protocol options dialog (works for UCI only, Winboard is seldom used and due to the clumsy specification
 hard to implement for GUI developers.</p>
 
-
 <h3>Generating content</h3>
 <p>You can copy/paste positions(FEN and images) and complete games(PGN) from/into the clipboard, export games in LATEX, HTML or PGN again.
 See the Edit menu and the File/Export Dialog.</p>
+
+<h3>Customizing Listviews</h3>
+<p>All views can have their font-size set in the Preferences Dialog. In addtion, all list header support resizing,
+moving and hiding of columns. Columns are hidden / shown by right-clicking the list header element. All changes are persistent.</p>
+
+<h3>Filtering Games</h3>
+<p>The list of games can be filtered either by the opening tree or by clicking the list header. Several searches can be combined or inverted.
+Further occurrences of the current board position in the current database can be found via the Find / Find Position menu.</p>
 
 </div>
 </div>

@@ -56,7 +56,8 @@ SOURCES += compileeco.cpp \
     ../src/guess/misc.cpp \
     ../src/guess/guessengine.cpp \
     ../src/guess/guess.cpp \
-    ../src/guess/dstring.cpp
+    ../src/guess/dstring.cpp \
+    ../src/database/engineoptiondata.cpp
 
 HEADERS += ../src/database/board.h \
         ../src/database/move.h \
@@ -115,7 +116,8 @@ HEADERS += ../src/database/board.h \
         ../src/guess/sqmove.h \
         ../src/guess/sqset.h \
         ../src/guess/timer.h \
-        ../src/guess/tokens.h
+        ../src/guess/tokens.h \
+    ../src/database/engineoptiondata.h
 
 UI_DIR = generated
 MOC_DIR = generated

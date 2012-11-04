@@ -262,5 +262,10 @@ OTHER_FILES += \
     data/templates/latex-default.template \
     data/templates/html-default.template \
     src/chessx.rc \
-    src/chessx.ico
+    src/chessx.ico \
+    data/help/about.css \
+    data/help/about3.html \
+    data/help/about2.html \
+    data/help/about1.html \
+    data/help/about0.html
 
