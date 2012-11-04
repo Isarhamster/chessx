@@ -1,0 +1,88 @@
+        body {
+                background-color: #ddd; /* Background color */
+                color: #222;            /* Foreground color used for text */
+                font-family: Helvetica;
+                font-size: medium;
+                margin: 0;              /* Amount of negative space around the outside of the body */
+                padding: 0;             /* Amount of negative space around the inside of the body */
+        }
+
+        #header h1 {
+                margin: 0;
+                padding: 0;
+        }
+        #header h1 a {
+                background-color: #ccc;
+                border-bottom: 1px solid #666;
+                color: #222;
+                display: block;
+                font-size: large;
+                font-weight: bold;
+                padding: 10px 0;
+                text-align: center;
+                text-decoration: none;
+        }
+        #header ul {
+                list-style: none;
+                margin: 10px;
+                padding: 0;
+        }
+        #header ul li a {
+                background-color: #FFFFFF;
+                border: 1px solid #999999;
+                color: #222222;
+                display: block;
+                font-size: medium;
+                font-weight: bold;
+                margin-bottom: -1px;
+                padding: 8px 6px;
+                text-decoration: none;
+        }
+
+        #header ul li b {
+                background-color: #CCCCCC;
+                border: 1px solid #999999;
+                color: #222222;
+                display: block;
+                font-size: medium;
+                font-weight: bold;
+                margin-bottom: -1px;
+                padding: 8px 6px;
+                text-decoration: none;
+        }
+
+        #content, #sidebar {
+                padding: 10px;
+        }
+
+        #footer {
+                display: none;
+        }
+
+        #header h1 a {
+                text-shadow: 0px 1px 0px #fff;
+                background-image: -webkit-radial-gradient(white, black);
+        }
+        #header ul li:first-child a {
+                -webkit-border-top-left-radius: 8px;
+                -webkit-border-top-right-radius: 8px;
+        }
+        #header ul li:last-child a {
+                -webkit-border-bottom-left-radius: 8px;
+                -webkit-border-bottom-right-radius: 8px;
+        }
+        #header h1 b {
+                text-shadow: 0px 1px 0px #fff;
+                background-image: -webkit-radial-gradient(white, black);
+        }
+        #header ul li:first-child b {
+                -webkit-border-top-left-radius: 8px;
+                -webkit-border-top-right-radius: 8px;
+        }
+        #header ul li:last-child b {
+                -webkit-border-bottom-left-radius: 8px;
+                -webkit-border-bottom-right-radius: 8px;
+        }
+        #header ul.hide {
+                display: none;
+        }

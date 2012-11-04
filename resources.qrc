@@ -40,5 +40,6 @@
         <file alias="help/about1.html">data/help/about1.html</file>
         <file alias="help/about2.html">data/help/about2.html</file>
         <file alias="help/about3.html">data/help/about3.html</file>
+        <file alias="help/about.css">data/help/about.css</file>
     </qresource>
 </RCC>
