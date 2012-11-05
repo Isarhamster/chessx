@@ -87,7 +87,7 @@ signals:
 	void deactivated();
 
 	/** Fired when the engine is deactivated */
-	void error();
+    void error(QProcess::ProcessError);
 
 	/** Fired when analysis starts */
 	void analysisStarted();
@@ -136,7 +136,7 @@ private slots:
 	virtual void protocolStart() = 0;
 
 	/** Processes messages from the chess engine */
-	void processError();
+    void processError(QProcess::ProcessError);
 
 public:
     QList<EngineOptionData> m_options;

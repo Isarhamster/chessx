@@ -52,7 +52,7 @@ void AnalysisWidget::startEngine()
         }
 
 		connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
-		connect(m_engine, SIGNAL(error()), SLOT(engineError()));
+        connect(m_engine, SIGNAL(error(QProcess::ProcessError)), SLOT(engineError(QProcess::ProcessError)));
 		connect(m_engine, SIGNAL(analysisUpdated(const Analysis&)),
 				  SLOT(showAnalysis(const Analysis&)));
 		m_engine->activate();
@@ -91,10 +91,11 @@ void AnalysisWidget::engineActivated()
 	m_engine->startAnalysis(m_board, ui.vpcount->value());
 }
 
-void AnalysisWidget::engineError()
+void AnalysisWidget::engineError(QProcess::ProcessError e)
 {
-	MessageDialog::warning(tr("There was an error running engine <b>%1</b>.")
-						 .arg(ui.engineList->currentText()));
+    MessageDialog::warning(tr("There was an error (%1) running engine <b>%2</b>.")
+                              .arg(e)
+                              .arg(ui.engineList->currentText()));
 	stopEngine();
 }
 

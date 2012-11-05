@@ -60,6 +60,7 @@ void EngineList::restore()
 	clear();
 	AppSettings->beginGroup("/Engines/");
     QStringList engines = AppSettings->childGroups();
+    bool modified = false;
     if (engines.size())
     {
         for (int i = 0; i < engines.size(); ++i)
@@ -81,8 +82,10 @@ void EngineList::restore()
     else
     {
         restoreEmpty();
+        modified = true;
     }
 	AppSettings->endGroup();
+    if (modified) save();
 }
 
 void EngineList::save()
