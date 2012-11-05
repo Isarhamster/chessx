@@ -84,7 +84,7 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
 		}
         else if (role == Qt::ForegroundRole)
         {
-            if (m_game->tag("Valid") == "false")
+            if (!m_game->isValid())
             {
                 return Qt::red;
             }

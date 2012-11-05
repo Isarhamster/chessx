@@ -1,5 +1,28 @@
+November 2012 Version 0.9.2
+	- Bugfix: Support engines which send multiple spaces
+	- Bugfix: Close Database while updateing opening tree
+	- Bugfix: Filtering for number of moves fails if an empty game is in the database
+	- Bugfix: Not well behaving Xboard engines crash ChessX 
+	- Bugfix: Search of Board crashes when started together with OpeninTree Update
+	- Bugfix: Press CTRL+drag to irritate the guessMove implementation
+
+	- New Feature: Move Indicator adjusts itself in size (James Coons)
+	- New Feature: Common Font Size for all widgets except game view
+	- New Feature: Separate handling of UTF8 files
+	- New feature: List views can be customized (right click title line)
+	- New feature: UCI Option Parser
+	- New Feature: CTRL+drag, CTRL-Shift-Drag replaces or inserts a move
+	- New Feature: F1 starts Help View and some help contents are already there
+	- New Feature: Games with errors insided are marked red in game list
+	- New feature: Added Stockfish as internal Engine in case no engine is configured
+
+	- New board themes Brazilwood and Maple
+	- New Icons
+
+	- Usability: Filterflag only influences gamelist
+
 September 2012 Version 0.9
-	
+
 	* New Features
 	- Player List as Dock Window
 	- New Database List
@@ -20,7 +43,8 @@ September 2012 Version 0.9
 	- Version Resource in Windows
 	- Icon Resource in Windows
 	- UTF8 Support
-	
+
+
 	* bugfixes in Parser
 	- Fixed some strange PGN parsing issues - especially issues like the one described in #3396532
 	* bugfixes in GUI
@@ -28,9 +52,9 @@ September 2012 Version 0.9
 	- Bugfixes starting up engines
 	- Disabled MultiPV on XBoard engines
 	- Added elapsed time for analysis lines
-	
+
 	* issues closed:
-		
+
 	- CR#2984375	Saving Clipboard fails silently
 	- CR#3043278	Problem with LaTeX output
 	- CR#3135871	No control performed on input date
@@ -51,7 +75,7 @@ September 2012 Version 0.9
 	- CR#3043278 Problem with LaTeX output
 	- CR#3396532 errors reading multi line pgn formats
 	- CR#2955889.
-	
+
 	* Building 
 	- Separate Debug/Release/Static folders
 
@@ -82,7 +106,6 @@ Wed 10 Feb 2010, 01:40:00 CET Version 0.7
 	* feature: promote variation
 
 Wed 1 Jul 2009, 00:50:22 CET Version 0.6
-
 
 	* feature: warn when quitting with unsaved databases
 	* feature: improve Engine tab of Preferences dialog, add reordering
@@ -128,7 +151,7 @@ Wed 1 Jul 2009, 00:50:22 CET Version 0.6
 	* bugfix: support 1/2 as a draw symbol
 
 Wed 13 Jun 2007 19:47:32 CET	Version 0.5
-	
+
 	* feature: engine analysis
 	* feature: Opening Tree
 	* feature: Setup Position dialog enhancements
@@ -212,4 +235,3 @@ Thu 28 Feb 2007 00:59:47 CET	Version 0.2
 	* bugfix: fix segfault when removing piece from empty square
 	* bugfix: correctly finding installed data path on Debian.
 	* change: clean configuration file format
-

@@ -73,7 +73,7 @@ public :
 	Game& operator=(const Game& game);
 	~Game();
 	// **** Querying game information ****
-	/** @return current position */
+    /** @return current position */
 	const Board& board() const;
 	/** @return current position in FEN */
 	QString toFen() const;
@@ -225,6 +225,12 @@ public :
 	/** Set the game result */
 	void setResult(Result result);
 
+    /* parsing */
+    /* Set parsing Result */
+    void setValid(bool);
+    /* Get parsing Result */
+    bool isValid() const;
+
 	// Searching
 	/** Search game to see if given position exists, if it does return move id */
 	MoveId findPosition(const Board& position);
@@ -260,6 +266,9 @@ private:
 
     /** commment associated with game */
     QString m_gameComment;
+
+    /** Flag indicating if Parsing was completed without errors */
+    bool m_bValid;
 
 	/** List of nodes */
 	QList <MoveNode> m_moveNodes;

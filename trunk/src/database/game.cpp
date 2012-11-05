@@ -18,6 +18,7 @@ Game::Game()
 {
 	clear();
     setModified(false);
+    m_bValid = true;
 }
 
 Game::Game(const Game& game)
@@ -30,7 +31,7 @@ Game::Game(const Game& game)
     m_annotations = game.m_annotations;
     m_squareAnnotations = game.m_squareAnnotations;
     m_arrowAnnotations = game.m_arrowAnnotations;
-
+    m_bValid = game.m_bValid;
 
 	m_currentNode = game.m_currentNode;
 	m_startPly = game.m_startPly;
@@ -83,6 +84,7 @@ Game& Game::operator=(const Game & game)
         m_annotations = game.m_annotations;
         m_squareAnnotations = game.m_squareAnnotations;
         m_arrowAnnotations = game.m_arrowAnnotations;
+        m_bValid = game.m_bValid;
 
 		m_currentNode = game.m_currentNode;
 		m_startPly = game.m_startPly;
@@ -1093,5 +1095,15 @@ QString Game::specialAnnotation(QString& annotation, QString specialMark ) // [%
         };
     }
     return result;
-
 }
+
+void Game::setValid(bool valid)
+{
+    m_bValid = valid;
+}
+
+bool Game::isValid() const
+{
+    return m_bValid;
+}
+
