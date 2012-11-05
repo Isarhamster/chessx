@@ -112,7 +112,7 @@ void Engine::activate()
         if (!m_directory.isEmpty())
             m_process->setWorkingDirectory(m_directory);
         connect(m_process, SIGNAL(started()), SLOT(protocolStart()));
-        connect(m_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError()));
+        connect(m_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError(QProcess::ProcessError)));
         connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(pollProcess()));
         connect(m_process, SIGNAL(finished(int, QProcess::ExitStatus)), SLOT(processExited()));
         m_process->start(m_command);
@@ -196,10 +196,10 @@ void Engine::pollProcess()
 	}
 }
 
-void Engine::processError()
+void Engine::processError(QProcess::ProcessError errMsg)
 {
     setActive(false);
-	emit error();
+    emit error(errMsg);
 }
 
 void Engine::processExited()

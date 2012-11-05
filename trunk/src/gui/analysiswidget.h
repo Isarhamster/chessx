@@ -50,7 +50,7 @@ private slots:
 	/** The engine is now ready, as requested */
 	void engineActivated();
 	/** There was an error while running engine. */
-	void engineError();
+    void engineError(QProcess::ProcessError);
 	/** Add variation. */
 	void slotLinkClicked(const QUrl& link);
 	/** Number of visible lines was changed. */
