@@ -40,6 +40,7 @@ Source: ".\release\chessx.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\win32\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\COPYING"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ChangeLog"; DestDir: "{app}"
+Source: ".\data\engines\*"; DestDir: "{app}\data\engines\"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
