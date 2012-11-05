@@ -260,7 +260,7 @@ void UCIEngine::parseOptions(const QString& message)
     QString minVal;
     QString maxVal;
     QStringList varVals;
-    OptionType optionType;
+    OptionType optionType = OPT_TYPE_STRING;
     QString error;
     bool done = false;
     foreach (QString token, list)
