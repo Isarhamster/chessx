@@ -206,11 +206,13 @@ CONFIG(debug, debug|release) {
 CONFIG(release, debug|release) {
     DESTDIR = "release"
     OBJECTS_DIR = "obj_rel"
+    DEFINES += QT_NO_DEBUG_OUTPUT
 }
 
 static {
     DESTDIR = "static"
     OBJECTS_DIR = "obj_static"
+    DEFINES += QT_NO_DEBUG_OUTPUT
 }
 
 TARGET = chessx
@@ -249,18 +251,24 @@ RESOURCES = resources.qrc
 #TSQM.CONFIG += no_link target_predeps
 #QMAKE_EXTRA_COMPILERS += TSQM
 #PRE_TARGETDEPS += compiler_TSQM_make_all
- 
-macx {
-  OTHER_FILES += \
-    mac_osx/Info.plist \
-    mac_osx/qt_menu.nib
-}
 
 OTHER_FILES += \
     data/templates/pgn-default.template \
     data/templates/notation-default.template \
     data/templates/latex-default.template \
-    data/templates/html-default.template \
+    data/templates/html-default.template
+
+macx {
+  OTHER_FILES += \
+    mac_osx/Info.plist \
+    mac_osx/qt_menu.nib \
+    data/engines-mac/uci/stockfish-23-64
+}
+
+win32 {
+  OTHER_FILES += \
     src/chessx.rc \
     src/chessx.ico
+}
+
 
