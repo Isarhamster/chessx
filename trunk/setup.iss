@@ -24,7 +24,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=.\COPYING
 OutputBaseFilename=setup-chessx
-SetupIconFile=.\data\images\chessx_32.tiff
+SetupIconFile=.\src\chessx.ico
 Compression=lzma
 SolidCompression=yes
 
