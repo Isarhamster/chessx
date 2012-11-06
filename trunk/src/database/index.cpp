@@ -88,7 +88,8 @@ GameId Index::add()
 	int gameId = m_indexItems.count();
 	m_indexItems.append(new IndexItem);
 	m_indexItems[gameId]->allocate(m_tagIndexSize);
-	m_deleteFlags.append(0);
+    m_deleteFlags.append(false);
+    m_validFlags.append(true);
 	return gameId;
 }
 
@@ -184,6 +185,16 @@ bool Index::deleteFlag(const int& gameId) const
 void Index::setDeleteFlag(const int& gameId, const bool& df)
 {
 	m_deleteFlags[gameId]=df;
+}
+
+void Index::setValidFlag(const int& gameId, bool value)
+{
+    m_validFlags[gameId]=value;
+}
+
+bool Index::isValidFlag(const int& gameId) const
+{
+    return m_validFlags[gameId];
 }
 
 bool Index::toggleDeleteFlag(const int& gameId)

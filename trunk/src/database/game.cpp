@@ -18,58 +18,13 @@ Game::Game()
 {
 	clear();
     setModified(false);
-    m_bValid = true;
 }
 
 Game::Game(const Game& game)
 {
-	clear();
-	//assign non pointer variables
-	m_tags = game.m_tags;
-	m_startingBoard = game.m_startingBoard;
-	m_variationStartAnnotations = game.m_variationStartAnnotations;
-    m_annotations = game.m_annotations;
-    m_squareAnnotations = game.m_squareAnnotations;
-    m_arrowAnnotations = game.m_arrowAnnotations;
-    m_bValid = game.m_bValid;
-
-	m_currentNode = game.m_currentNode;
-	m_startPly = game.m_startPly;
-	m_currentBoard = game.m_currentBoard;
-
-	//copy node array
-	m_moveNodes.clear();
-	for (int i = 0; i < game.m_moveNodes.size(); ++i) {
-		m_moveNodes.append(game.m_moveNodes[i]);
-	}
+    *this = game;
     setModified(false);
     m_gameComment = "";
-
-    //copy annotations
-    m_annotations.clear();
-    QMapIterator<int, QString> i(game.m_annotations);
-    while (i.hasNext()) {
-        i.next();
-        m_annotations.insert(i.key(), i.value());
-    }
-
-
-    //copy square annotations
-    m_squareAnnotations.clear();
-    QMapIterator<int, QString> j(game.m_squareAnnotations);
-    while (j.hasNext()) {
-        j.next();
-        m_squareAnnotations.insert(j.key(), j.value());
-    }
-
-    //copy arrow annotations
-    m_arrowAnnotations.clear();
-    QMapIterator<int, QString> k(game.m_arrowAnnotations);
-    while (k.hasNext()) {
-        k.next();
-        m_arrowAnnotations.insert(k.key(), k.value());
-    }
-
 }
 
 Game& Game::operator=(const Game & game)
@@ -84,7 +39,6 @@ Game& Game::operator=(const Game & game)
         m_annotations = game.m_annotations;
         m_squareAnnotations = game.m_squareAnnotations;
         m_arrowAnnotations = game.m_arrowAnnotations;
-        m_bValid = game.m_bValid;
 
 		m_currentNode = game.m_currentNode;
 		m_startPly = game.m_startPly;
@@ -1097,13 +1051,4 @@ QString Game::specialAnnotation(QString& annotation, QString specialMark ) // [%
     return result;
 }
 
-void Game::setValid(bool valid)
-{
-    m_bValid = valid;
-}
-
-bool Game::isValid() const
-{
-    return m_bValid;
-}
 

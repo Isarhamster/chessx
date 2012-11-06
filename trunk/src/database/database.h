@@ -83,7 +83,8 @@ public:
 	virtual int count() { return m_count; }
 	/** @return true if the database has been modified. By default database is read-only. */
 	virtual bool isModified() const { return false; }
-
+    /** Get the Valid Flag for a given game id from the index */
+    virtual bool getValidFlag(GameId id) const { return m_index.isValidFlag(id); }
 signals:
 	/** Signal emitted when some progress is done. */
     void progress(int);

@@ -72,23 +72,23 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
 				m_filter->database()->loadGameHeaders(i, *m_game);
 				m_gameIndex = i;
 			}
-        }
-        if (role == Qt::DisplayRole)
-        {
-			if (index.column() == 0)
-				return i + 1;
-			else {
-				QString tag = m_game->tag(m_columnTags.at(index.column()));
-				return tag == "?" ? QString() : tag;
-			}
-		}
-        else if (role == Qt::ForegroundRole)
-        {
-            if (!m_game->isValid())
+            if (role == Qt::DisplayRole)
             {
-                return Qt::red;
+                if (index.column() == 0)
+                    return i + 1;
+                else {
+                    QString tag = m_game->tag(m_columnTags.at(index.column()));
+                    return tag == "?" ? QString() : tag;
+                }
             }
-            return Qt::black;
+            else if (role == Qt::ForegroundRole)
+            {
+                if (!m_filter->database()->getValidFlag(i))
+                {
+                    return Qt::red;
+                }
+                return Qt::black;
+            }
         }
     }
 	return QVariant();

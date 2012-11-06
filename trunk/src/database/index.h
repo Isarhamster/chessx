@@ -69,6 +69,11 @@ public:
  	 *  returns afterwards its state. */
 	bool toggleDeleteFlag(const int& gameId);
 
+    /** Set the valid flag accordingly */
+    void setValidFlag(const int& gameId, bool value);
+
+    /** Get the valid flag accordingly */
+    bool isValidFlag(const int& gameId) const;
 	// Searching tags //
 	//
 	/** Return a bit array to indicate which games in index have tag with matching value */
@@ -100,6 +105,7 @@ public:
 	/** Return TagValues for given tag (used as QAbstractItemModel for completion). */
 	TagValues* tagValues(Tag tag);
 
+
 private:
 	int m_nbUsedIndexItems;
 
@@ -111,6 +117,8 @@ private:
 
 	/** Contains information which games are marked for deletion */
 	QList<bool> m_deleteFlags;
+
+    QList<bool> m_validFlags;
 
 	/** Clears the index, and frees all associated memory */
 	void clear();

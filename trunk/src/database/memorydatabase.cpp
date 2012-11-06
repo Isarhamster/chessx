@@ -95,10 +95,7 @@ void MemoryDatabase::parseGame()
     QString fen = m_index.tagValue(TagFEN, m_count - 1);
     if (fen != "?")
         game->setStartingBoard(fen);
-    if (!parseMoves(game))
-    {
-        game->setValid(false);
-    }
+    m_index.setValidFlag(m_count-1,parseMoves(game));
     m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2), m_count - 1);
     m_games.append(game);
 }
