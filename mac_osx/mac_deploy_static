@@ -3,7 +3,7 @@ cd ~/Documents/Projects/chessx
 
 /Applications/PackageMaker.app/Contents/MacOS/PackageMaker \
 --title "ChessX" \
---version 0.9.2 \
+--version 0.9.3 \
 --filter "\.DS_Store" \
 --root-volume-only \
 --domain system \
@@ -21,7 +21,7 @@ mv chessx-installer.pkg dmg/ && echo "Moved Package"
 cp ../chessx/COPYING dmg/ && echo "Copied License"
 cp ../chessx/ChangeLog dmg/ && echo "Copied Changes"
 
-rm -f chessx-r0-9-2.dmg && echo "Removed Target"
-hdiutil create chessx-r0-9-2.dmg -volname "chessx" -fs HFS+ -srcfolder dmg && echo "Made Disk Image"
+rm -f chessx.dmg && echo "Removed Target"
+hdiutil create chessx.dmg -volname "chessx" -fs HFS+ -srcfolder dmg && echo "Made Disk Image"
 cd $BACKDIR && echo "Changed Directory"
 echo "Ready"
