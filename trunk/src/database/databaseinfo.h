@@ -11,6 +11,7 @@
 #define __DATABASEINFO_H__
 
 #include "game.h"
+
 #include <QString>
 
 class Database;
@@ -60,6 +61,10 @@ public:
     QString filePath() const { return m_filename; }
     bool IsLoaded() const { return m_bLoaded; }
     bool IsUtf8() const { return m_utf8; }
+
+protected:
+    void doLoadFile(QString filename);
+
 signals:
     void LoadFinished(DatabaseInfo*);
 private:
