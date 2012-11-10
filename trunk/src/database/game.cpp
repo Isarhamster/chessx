@@ -511,6 +511,11 @@ bool Game::setNags(NagSet nags, MoveId moveId)
 	return false;
 }
 
+bool Game::clearNags(MoveId moveId)
+{
+    return setNags(NagSet(),moveId);
+}
+
 NagSet Game::nags(MoveId moveId) const
 {
 	MoveId node = nodeValid(moveId);

@@ -67,7 +67,7 @@ void MainWindow::slotFileOpen()
     {
         if (!file.isEmpty()) {
             AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
-            openDatabaseEx(file,false);
+            openDatabaseUrl(file,false);
         }
     }
 }
@@ -81,7 +81,7 @@ void MainWindow::slotFileOpenUtf8()
     {
         if (!file.isEmpty()) {
             AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
-            openDatabaseEx(file, true);
+            openDatabaseUrl(file, true);
         }
     }
 }
@@ -551,7 +551,7 @@ void MainWindow::slotGameModify(const EditAction& action)
 		game().addNag(Nag(action.data().toInt()), action.move());
 		break;
 	case EditAction::ClearNags:
-		game().setNags(NagSet(), action.move());
+        game().clearNags(action.move());
 		break;
     case EditAction::AddNullMove:
         game().addMove(m_boardView->board().nullMove());
