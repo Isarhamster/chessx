@@ -67,6 +67,7 @@ protected:
 
 signals:
     void LoadFinished(DatabaseInfo*);
+
 private:
 	Database* m_database;
 	Filter* m_filter;

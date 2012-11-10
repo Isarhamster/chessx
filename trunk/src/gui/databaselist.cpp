@@ -217,7 +217,7 @@ void DatabaseList::dropEvent(QDropEvent *event)
         QList<QUrl> urlList = mimeData->urls();
         foreach(QUrl url, urlList)
         {
-            QString ts = url.toLocalFile();
+            QString ts = url.toString();
             emit requestOpenDatabase(ts, false);
 
             if (m_lastModifier == Qt::AltModifier)
