@@ -35,8 +35,12 @@ DatabaseInfo::DatabaseInfo(const QString& fname): m_filter(0), m_index(NewGame)
 	else m_database = new PgnDatabase;
 }
 
-void DatabaseInfo::run()
+void DatabaseInfo::doLoadFile(QString filename)
 {
+    if (!m_database->open(filename,m_utf8)) {
+        emit LoadFinished(this);
+        return;
+    }
     m_database->parseFile();
     delete m_filter;
     m_filter = new Filter(m_database);
@@ -46,13 +50,17 @@ void DatabaseInfo::run()
     emit LoadFinished(this);
 }
 
+void DatabaseInfo::run()
+{
+    QFileInfo fi = QFileInfo(m_filename);
+    QString fname = fi.canonicalFilePath();
+    doLoadFile(fname);
+}
+
 bool DatabaseInfo::open(bool utf8)
 {
     m_bLoaded = false;
     m_utf8 = utf8;
-    if (!m_database->open(m_filename,m_utf8)) {
-		return false;
-	}
     start();
     return true;
 }
