@@ -7,16 +7,21 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "analysiswidget.h"
 #include "boardsetup.h"
 #include "boardview.h"
 #include "copydialog.h"
 #include "chessbrowser.h"
 #include "commentdialog.h"
 #include "databaseinfo.h"
+#include "databaselist.h"
+#include "dockwidgetex.h"
+#include "downloadmanager.h"
 #include "ecothread.h"
 #include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"
+#include "helpbrowser.h"
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "memorydatabase.h"
@@ -25,15 +30,12 @@
 #include "pgndatabase.h"
 #include "playerdialog.h"
 #include "playerlist.h"
-#include "databaselist.h"
 #include "preferences.h"
 #include "savedialog.h"
 #include "settings.h"
 #include "tablebase.h"
 #include "tableview.h"
-#include "analysiswidget.h"
-#include "dockwidgetex.h"
-#include "helpbrowser.h"
+
 #include <time.h>
 
 MainWindow::MainWindow() : QMainWindow(),
@@ -133,7 +135,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(dbListDock->toggleViewAction());
     dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
     connect(m_databaseList, SIGNAL(requestOpenDatabase(QString,bool)),
-            this, SLOT(openDatabaseEx(QString,bool)));
+            this, SLOT(openDatabaseUrl(QString,bool)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
     connect(m_databaseList, SIGNAL(requestAppendGame(QString,const Game&)),
@@ -326,23 +328,38 @@ void MainWindow::closeEvent(QCloseEvent* e)
 
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Qt::Key_Escape)
+    if ((e->key() == Qt::Key_Escape) || (e->key() == Qt::Key_Backspace))
+    {
 		m_nagText.clear();
-	if (game().atLineStart() || game().atGameStart() ||
-		 e->key() == Qt::Key_Escape || e->text().isEmpty())
-		return;
+        return;
+    }
+
+    if (game().atGameStart())
+        return;
+
+    if (e->key() == Qt::Key_Delete)
+    {
+        game().clearNags();
+        slotGameChanged();
+        return;
+    }
+
+    if (e->text().isEmpty())
+    {
+        return;
+    }
 
     bool enterPressed = (e->key()==Qt::Key_X || (e->key() == Qt::Key_Enter) || (e->key() == Qt::Key_Return));
 
     if (!enterPressed)
-		m_nagText.append(e->text());
-	int matches = NagSet::prefixCount(m_nagText);
-	if (matches == 0)
-		m_nagText.clear();
+        m_nagText.append(e->text());
+    int matches = NagSet::prefixCount(m_nagText);
+    if (matches == 0)
+        m_nagText.clear();
     else if (matches == 1 || enterPressed) {
-		game().addNag(NagSet::fromString(m_nagText));
-		slotGameChanged();
-	}
+        game().addNag(NagSet::fromString(m_nagText));
+        slotGameChanged();
+    }
 }
 
 DatabaseInfo* MainWindow::databaseInfo()
@@ -446,30 +463,36 @@ void MainWindow::setFavoriteDatabase(QString fname)
 
 void MainWindow::openDatabase(QString fname)
 {
-    openDatabaseEx(fname, false);
+    openDatabaseUrl(fname, false);
 }
 
-void MainWindow::openDatabaseEx(QString fname, bool utf8)
+void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
     QuerySaveGame();
 
-    QFileInfo fi = QFileInfo(fname);
-
-    if (!fname.isEmpty())
+    QUrl url = QUrl::fromUserInput(fname);
+    if ((url.scheme()=="http") || (url.scheme()=="ftp"))
     {
-        fname = fi.canonicalFilePath();
-
-        if (!QFile::exists(fname))
-        {
-            slotStatusMessage(tr("Cannot open file '%1'.").arg(fi.fileName()));
-            return;
-        }
+        DownloadManager* downloadManager = new DownloadManager(this);
+        connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)));
+        connect(downloadManager, SIGNAL(downloadFinished(QUrl,QString)), this, SLOT(loadReady(QUrl,QString)));
+        downloadManager->doDownload(url);
+        return;
     }
+
+    openDatabaseFile(fname, utf8);
+}
+
+void MainWindow::openDatabaseFile(QString fname, bool utf8)
+{
+    QFileInfo fi = QFileInfo(fname);
+    fname = fi.canonicalFilePath();
 
 	/* Check if the database isn't already open */
 	for (int i = 0; i < m_databases.count(); i++)
     {
-		if (m_databases[i]->database()->filename() == fname) {
+        if (m_databases[i]->database()->filename() == fname)
+        {
             if (m_databases[i]->isValid())
             {
                 m_currentDatabase = i;
@@ -499,6 +522,17 @@ void MainWindow::openDatabaseEx(QString fname, bool utf8)
     {
         m_databases.append(db);
     }
+}
+
+void MainWindow::loadError(QUrl url)
+{
+    QFileInfo fi = QFileInfo(url.toString());
+    slotStatusMessage(tr("Database %1 cannot be accessed at the moment.").arg(fi.fileName()));
+}
+
+void MainWindow::loadReady(QUrl /*url*/, QString fileName)
+{
+    openDatabaseFile(fileName, false);
 }
 
 void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)

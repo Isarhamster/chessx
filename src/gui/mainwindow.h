@@ -91,8 +91,10 @@ protected:
 public slots:
     /** Open database */
     void openDatabase(QString fname);
-    /** Open database */
-    void openDatabaseEx(QString fname, bool utf8);
+    /** Open database from URL*/
+    void openDatabaseUrl(QString fname, bool utf8);
+    /** Open database from a local File */
+    void openDatabaseFile(QString fname, bool utf8);
     /** Add favorite status to a database */
     void setFavoriteDatabase(QString fname);
     /** Open Player dialog */
@@ -254,9 +256,12 @@ public slots:
     /** Copy game from other database by drag'n'drop */
     void copyGame(QString fileName, const Game& game);
 
+protected slots:
+    void loadError(QUrl url);
+    void loadReady(QUrl url, QString fileName);
+
 protected:
     void copyGame(int target, const Game& game);
-
 
 signals:
 	/** Re-read configuration. */
@@ -265,6 +270,8 @@ signals:
 	void boardChange(const Board& board);
 	/** Current database changed. */
 	void databaseChanged(DatabaseInfo* databaseInfo);
+    /** Emitted upon finishing a file download */
+    void LoadFinished(DatabaseInfo*);
 
 private slots:
 	/** Cleanup after ECO file loaded. */
