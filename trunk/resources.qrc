@@ -41,5 +41,6 @@
         <file alias="help/about2.html">data/help/about2.html</file>
         <file alias="help/about3.html">data/help/about3.html</file>
         <file alias="help/about.css">data/help/about.css</file>
+        <file alias="images/chessx.png">data/images/chessx.png</file>
     </qresource>
 </RCC>
