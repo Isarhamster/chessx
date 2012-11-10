@@ -10,10 +10,12 @@
 #include "mainwindow.h"
 #include "version.h"
 
+#include <QMessageBox>
+
 void MainWindow::slotHelpAbout()
 {
-    QString version = QString(STR_VERSION).replace(',','.');
-	QMessageBox dialog(tr("About ChessX"), tr("<h1>ChessX</h1>"
+    QString version = QString(STR_REVISION).replace(',','.');
+    QMessageBox dialog(QMessageBox::NoIcon, tr("About ChessX"), tr("<h1>ChessX</h1>"
                         "<p>Free chess database Version %1</p>"
                         COPYRIGHT
                         "<p>License: GNU Public License 2 - GPLv2</p>"
@@ -25,7 +27,8 @@ void MainWindow::slotHelpAbout()
                         "<p>Homepage: <a href=\"http://chessx.sourceforge.net\">http://chessx.sourceforge.net</a><br>"
                         "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">chessx-users@lists.sourceforge.net</a></p>")
                         .arg(version),
-				QMessageBox::NoIcon, QMessageBox::Ok, Qt::NoButton, Qt::NoButton, this);
-	dialog.exec();
+                QMessageBox::Ok);
+    dialog.setIconPixmap((QPixmap(":/images/chessx.png")));
+    dialog.exec();
 }
 
