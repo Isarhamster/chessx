@@ -119,6 +119,8 @@ public :
 	bool addNag(Nag nag, MoveId moveId = CURRENT_MOVE);
 	/** Sets nags for move at node @p moveId */
 	bool setNags(NagSet nags, MoveId moveId = CURRENT_MOVE);
+    /** Clear the nags from the node @p moveId */
+    bool clearNags(MoveId moveId = CURRENT_MOVE);
 
 	// **** tree information methods *****
 	/** @return whether the game is currently at the start position */

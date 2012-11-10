@@ -89,8 +89,8 @@ static const QString g_nagStringList[NagCount] = {
 	QString::fromUtf8("∓"),
 	"+-",
 	"-+",
-	"+-",
-	"-+",
+    "++--",
+    "--++",
     QString::fromUtf8("⨀"), // Zugzwang
     QString::fromUtf8("⨀"), // Zugzwang
 	"with slight space advantage",
