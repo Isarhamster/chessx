@@ -8,6 +8,8 @@ static { // Everything below takes effect with CONFIG += static
     message("Static build.")
 }
 
+DEFINES += QUAZIP_STATIC
+
 macx {
 	QMAKE_CXXFLAGS += -fvisibility=hidden
 }
@@ -110,7 +112,23 @@ HEADERS += src/database/board.h \
     src/gui/engineoptiondialog.h \
     src/gui/engineoptionlist.h \
     src/gui/helpbrowser.h \
-    src/database/downloadmanager.h
+    src/database/downloadmanager.h \
+    src/quazip/zip.h \
+    src/quazip/unzip.h \
+    src/quazip/quazipnewinfo.h \
+    src/quazip/quazipfileinfo.h \
+    src/quazip/quazipfile.h \
+    src/quazip/quazipdir.h \
+    src/quazip/quazip.h \
+    src/quazip/quazip_global.h \
+    src/quazip/quaziodevice.h \
+    src/quazip/quagzipfile.h \
+    src/quazip/quacrc32.h \
+    src/quazip/quachecksum32.h \
+    src/quazip/quaadler32.h \
+    src/quazip/JlCompress.h \
+    src/quazip/ioapi.h \
+    src/quazip/crypt.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -190,12 +208,26 @@ SOURCES += src/database/board.cpp \
     src/gui/engineoptiondialog.cpp \
     src/gui/engineoptionlist.cpp \
     src/gui/helpbrowser.cpp \
-    src/database/downloadmanager.cpp
+    src/database/downloadmanager.cpp \
+    src/quazip/quazipnewinfo.cpp \
+    src/quazip/quazipfile.cpp \
+    src/quazip/quazipdir.cpp \
+    src/quazip/quazip.cpp \
+    src/quazip/quaziodevice.cpp \
+    src/quazip/quagzipfile.cpp \
+    src/quazip/quacrc32.cpp \
+    src/quazip/quaadler32.cpp \
+    src/quazip/qioapi.cpp \
+    src/quazip/JlCompress.cpp \
+    src/quazip/zip.c \
+    src/quazip/unzip.c
 
 TEMPLATE = app
 INCLUDEPATH += src/database
 INCLUDEPATH += src/guess
 INCLUDEPATH += src/gui
+INCLUDEPATH += src/quazip
+INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
 
 UI_DIR = src/generated
 MOC_DIR = src/generated
