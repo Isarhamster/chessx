@@ -114,9 +114,9 @@ void MainWindow::slotFileClose()
         if (databaseInfo()->IsLoaded())
         {
             m_openingTree->cancel(false);
-            m_databaseList->setFileClose(m_databases[m_currentDatabase]->filePath());
-            m_databases[m_currentDatabase]->close();
-            delete m_databases[m_currentDatabase];
+            m_databaseList->setFileClose(databaseInfo()->filePath());
+            databaseInfo()->close();
+            delete databaseInfo();
             m_databases.removeAt(m_currentDatabase);
             m_currentDatabase = 0; // Switch to clipboard is always safe
             m_databaseList->setFileCurrent(QString());
@@ -124,6 +124,42 @@ void MainWindow::slotFileClose()
             slotDatabaseChanged();
         }
 	}
+}
+
+void MainWindow::slotFileCloseIndex(int n)
+{
+    if (m_currentDatabase == n)
+    {
+        slotFileClose();
+    }
+    else if (n) // Don't remove Clipboard
+    {
+        if (m_databases[n]->IsLoaded())
+        {
+            m_databaseList->setFileClose(m_databases[n]->filePath());
+            m_databases[n]->close();
+            delete m_databases[n];
+            m_databases.removeAt(n);
+            if (m_currentDatabase > n)
+            {
+                // hack as we have just moved the index by one
+                m_currentDatabase--;
+            }
+            updateMenuDatabases();
+        }
+    }
+}
+
+void MainWindow::slotFileCloseName(QString fname)
+{
+    for (int i = 0; i < m_databases.count(); i++)
+    {
+        if (m_databases[i]->database()->filename() == fname)
+        {
+            slotFileCloseIndex(i);
+            return;
+        }
+    }
 }
 
 void MainWindow::slotFileExportFilter()

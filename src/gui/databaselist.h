@@ -32,6 +32,7 @@ public slots:
 signals:
     void selected(int);
     void requestOpenDatabase(QString s, bool utf8);
+    void requestCloseDatabase(QString s);
     void requestLinkDatabase(QString s);
     void requestAppendGame(QString path, const Game& game);
 
@@ -51,6 +52,7 @@ private slots:
     void dbRemoveFromFavorites();
     void slotShowInFinder();
     void dbOpen();
+    void dbClose();
     void rowsChanged(const QModelIndex &,int start,int end);
 
 private:

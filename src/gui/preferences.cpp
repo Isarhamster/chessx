@@ -347,6 +347,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/GameText/FontSize", ui.gameTextFontSizeSpin->value());
     AppSettings->setValue("/General/ListFontSize", ui.spinBoxListFontSize->value());
 
+    QDir().mkpath(ui.defaultDataBasePath->text());
 }
 
 bool PreferencesDialog::selectInCombo(QComboBox* combo, const QString& text)

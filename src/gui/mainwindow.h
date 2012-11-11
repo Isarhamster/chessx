@@ -200,6 +200,10 @@ public slots:
 	void slotFileExportAll();
 	/** Close current database. Switches to next active (or clipboard if there is none). */
 	void slotFileClose();
+    /** Close selected database. */
+    void slotFileCloseIndex(int);
+    /** Close selected database. */
+    void slotFileCloseName(QString fname);
 	/** Quit ChessX. Ask for confirmation before */
 	void slotFileQuit();
 	/** Find games matching single tag. */

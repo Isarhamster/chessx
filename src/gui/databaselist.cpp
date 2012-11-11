@@ -64,6 +64,7 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         bool bIsNotFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::ToolTipRole).toString().isEmpty();
         bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH), Qt::ToolTipRole).toString().isEmpty();
         menu.addAction(tr("Open"), this, SLOT(dbOpen()));
+        menu.addAction(tr("Close"), this, SLOT(dbClose()))->setEnabled(bHasPath);
         menu.addSeparator();
         menu.addAction(tr("Add to favorites"), this, SLOT(dbAddToFavorites()))->setEnabled(bIsNotFavorite);
         menu.addAction(tr("Remove from Favorites"), this, SLOT(dbRemoveFromFavorites()))->setEnabled(bIsFavorite);
@@ -94,6 +95,13 @@ void DatabaseList::dbOpen()
     QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
     bool bUtf8 = (utf8.compare("UTF8")==0);
     emit requestOpenDatabase(ts,bUtf8);
+}
+
+void DatabaseList::dbClose()
+{
+    Q_ASSERT(m_cell.isValid());
+    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
+    emit requestCloseDatabase(ts);
 }
 
 void DatabaseList::dbAddToFavorites()

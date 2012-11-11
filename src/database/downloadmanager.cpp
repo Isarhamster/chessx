@@ -78,8 +78,10 @@ QString DownloadManager::saveFileName(const QUrl &url)
 {
     QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
     QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
+    QDir().mkpath(dir);
 
     QString path = url.path();
+
     QString basename = QFileInfo(path).fileName();
 
     if (basename.isEmpty())
