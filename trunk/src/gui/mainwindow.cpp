@@ -7,6 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include <zlib.h>
+
 #include "analysiswidget.h"
 #include "boardsetup.h"
 #include "boardview.h"
