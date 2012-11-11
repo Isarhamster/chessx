@@ -228,6 +228,7 @@ INCLUDEPATH += src/guess
 INCLUDEPATH += src/gui
 INCLUDEPATH += src/quazip
 INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
+INCLUDEPATH += /QtSDK/QtSources/4.8.1/src/3rdparty/zlib
 
 UI_DIR = src/generated
 MOC_DIR = src/generated

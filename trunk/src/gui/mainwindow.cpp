@@ -7,8 +7,6 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include <zlib.h>
-
 #include "analysiswidget.h"
 #include "boardsetup.h"
 #include "boardview.h"
@@ -140,6 +138,8 @@ MainWindow::MainWindow() : QMainWindow(),
     dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
     connect(m_databaseList, SIGNAL(requestOpenDatabase(QString,bool)),
             this, SLOT(openDatabaseUrl(QString,bool)));
+    connect(m_databaseList, SIGNAL(requestCloseDatabase(QString)),
+            this, SLOT(slotFileCloseName(QString)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
     connect(m_databaseList, SIGNAL(requestAppendGame(QString,const Game&)),
@@ -484,13 +484,13 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
         return;
     }
 
-    openDatabaseArchive(fname, utf8);
+    openDatabaseArchive(url.toLocalFile(), utf8);
 }
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
 {
     QFileInfo fi = QFileInfo(fname);
-    if (fi.fileName().endsWith("pgn"))
+    if (fi.suffix().toLower() == "pgn")
     {
         openDatabaseFile(fname, utf8);
     }
@@ -499,31 +499,49 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
         QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
         QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
 
-        QuaZip zip(fname);
-        zip.open(QuaZip::mdUnzip);
-        // first, we need some information about archive itself
-        QString comment=zip.getComment();
-        // and now we are going to access files inside it
-        QuaZipFile file(&zip);
-        for(bool more=zip.goToFirstFile(); more; more=zip.goToNextFile())
-        {
-            file.open(QIODevice::ReadOnly);
-            QString outName = dir + "/" + file.getActualFileName();
-            if (!QFile::exists(outName))
-            {
-                QFile out(outName);
-                if (out.open(QIODevice::WriteOnly))
-                {
-                    out.write(file.readAll());
-                    out.close();
-                    openDatabaseFile(outName, utf8);
-                }
-            }
+        fname = fi.canonicalFilePath();
 
-            // do something cool with file here
-            file.close(); // do not forget to close!
+        if (!fname.isEmpty())
+        {
+            QuaZip zip(fname);
+            if (zip.open(QuaZip::mdUnzip))
+            {
+                // first, we need some information about archive itself
+                QString comment=zip.getComment();
+                // and now we are going to access files inside it
+                QuaZipFile file(&zip);
+                for(bool more=zip.goToFirstFile(); more; more=zip.goToNextFile())
+                {
+                    file.open(QIODevice::ReadOnly);
+                    QString outName = dir + "/" + file.getActualFileName();
+                    QDir pathOut;
+                    outName = pathOut.absoluteFilePath(outName);
+                    if (!QFile::exists(outName))
+                    {
+                        QDir().mkpath(dir);
+
+                        QFile out(outName);
+                        if (out.open(QIODevice::WriteOnly))
+                        {
+                            out.write(file.readAll());
+                            out.close();
+                            openDatabaseFile(outName, utf8);
+                        }
+                        else
+                        {
+                            qDebug() << "File Error: " << out.error();
+                        }
+                    }
+                    else
+                    {
+                        openDatabaseFile(outName, utf8);
+                    }
+
+                    file.close();
+                }
+                zip.close();
+            }
         }
-        zip.close();
     }
 }
 
