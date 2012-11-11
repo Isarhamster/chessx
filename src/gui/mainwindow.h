@@ -93,6 +93,8 @@ public slots:
     void openDatabase(QString fname);
     /** Open database from URL*/
     void openDatabaseUrl(QString fname, bool utf8);
+    /** Open a list of databases from a ZIP archive */
+    void openDatabaseArchive(QString fname, bool utf8);
     /** Open database from a local File */
     void openDatabaseFile(QString fname, bool utf8);
     /** Add favorite status to a database */

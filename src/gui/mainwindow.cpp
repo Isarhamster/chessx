@@ -31,6 +31,8 @@
 #include "playerdialog.h"
 #include "playerlist.h"
 #include "preferences.h"
+#include "quazip.h"
+#include "quazipfile.h"
 #include "savedialog.h"
 #include "settings.h"
 #include "tablebase.h"
@@ -480,7 +482,47 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
         return;
     }
 
-    openDatabaseFile(fname, utf8);
+    openDatabaseArchive(fname, utf8);
+}
+
+void MainWindow::openDatabaseArchive(QString fname, bool utf8)
+{
+    QFileInfo fi = QFileInfo(fname);
+    if (fi.fileName().endsWith("pgn"))
+    {
+        openDatabaseFile(fname, utf8);
+    }
+    else
+    {
+        QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+        QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
+
+        QuaZip zip(fname);
+        zip.open(QuaZip::mdUnzip);
+        // first, we need some information about archive itself
+        QString comment=zip.getComment();
+        // and now we are going to access files inside it
+        QuaZipFile file(&zip);
+        for(bool more=zip.goToFirstFile(); more; more=zip.goToNextFile())
+        {
+            file.open(QIODevice::ReadOnly);
+            QString outName = dir + "/" + file.getActualFileName();
+            if (!QFile::exists(outName))
+            {
+                QFile out(outName);
+                if (out.open(QIODevice::WriteOnly))
+                {
+                    out.write(file.readAll());
+                    out.close();
+                    openDatabaseFile(outName, utf8);
+                }
+            }
+
+            // do something cool with file here
+            file.close(); // do not forget to close!
+        }
+        zip.close();
+    }
 }
 
 void MainWindow::openDatabaseFile(QString fname, bool utf8)
@@ -532,7 +574,7 @@ void MainWindow::loadError(QUrl url)
 
 void MainWindow::loadReady(QUrl /*url*/, QString fileName)
 {
-    openDatabaseFile(fileName, false);
+    openDatabaseArchive(fileName, false);
 }
 
 void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
