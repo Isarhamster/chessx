@@ -236,38 +236,28 @@ RCC_DIR = src/generated
 
 CONFIG(debug, debug|release) {
     DESTDIR = "debug"
-    LIBS += -lz
     OBJECTS_DIR = "obj_dbg"
 }
+
 CONFIG(release, debug|release) {
     DESTDIR = "release"
     OBJECTS_DIR = "obj_rel"
-    LIBS += -lz
     DEFINES += QT_NO_DEBUG_OUTPUT
-}
-
-macx {
-    CONFIG(debug, debug|release) {
-        LIBS += -lz
-    }
-    CONFIG(release, debug|release) {
-        LIBS += -lz
-    }
-}
-
-linux {
-    CONFIG(debug, debug|release) {
-        LIBS += -lz
-    }
-    CONFIG(release, debug|release) {
-        LIBS += -lz
-    }
 }
 
 static {
     DESTDIR = "static"
     OBJECTS_DIR = "obj_static"
     DEFINES += QT_NO_DEBUG_OUTPUT
+}
+
+!win32 {
+    CONFIG(debug, debug|release) {
+        LIBS += -lz
+    }
+    CONFIG(release, debug|release) {
+        LIBS += -lz
+    }
 }
 
 TARGET = chessx
