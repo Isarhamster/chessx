@@ -206,6 +206,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	addDockWidget(Qt::RightDockWidgetArea, analysisDock2);
     connect(analyis, SIGNAL(addVariation(Analysis)),
 			  SLOT(slotGameAddVariation(Analysis)));
+    connect(analyis, SIGNAL(addVariation(QString)),
+              SLOT(slotGameAddVariation(QString)));
     connect(this, SIGNAL(boardChange(const Board&)), analyis, SLOT(setPosition(const Board&)));
     connect(this, SIGNAL(reconfigure()), analyis, SLOT(slotReconfigure()));
 	// Make sure engine is disabled if dock is hidden
