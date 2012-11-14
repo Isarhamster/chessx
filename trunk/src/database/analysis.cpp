@@ -133,7 +133,8 @@ QString Analysis::toString(const Board& board) const
 		testBoard.doMove(move);
 		white = !white;
 	}
-    out += " <a href=\""+QString::number(m_numpv)+"\">[+]</a> ";
+    out += " <a href=\""+QString::number(-m_numpv)+"\">[+]</a> ";
+    out += " <a href=\""+QString::number(m_numpv)+"\">[*]</a> ";
 	out += moveText;
     QTime t(0,0,0,0);
     t = t.addMSecs(time());

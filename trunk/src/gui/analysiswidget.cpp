@@ -169,6 +169,14 @@ void AnalysisWidget::slotLinkClicked(const QUrl& url)
 		emit addVariation(m_analyses[mpv]);
     else if (mpv == -1)
         emit addVariation(m_tablebaseEvaluation);
+    else
+    {
+        mpv = (-mpv) - 2;
+        if (mpv < m_analyses.count())
+        {
+            emit addVariation(m_analyses[mpv].variation().at(0).toAlgebraic());
+        }
+    }
 }
 
 void AnalysisWidget::slotMpvChanged(int mpv)
@@ -211,7 +219,9 @@ void AnalysisWidget::updateAnalysis()
 	foreach (Analysis a, m_analyses)
 		text.append(a.toString(m_board) + "<br>");
 	if (!m_tablebaseEvaluation.isEmpty())
+    {
         text.append(tr("<a href=\"0\">[+]</a> <b>Tablebase:</b> ") + m_tablebaseEvaluation);
+    }
 	ui.variationText->setText(text);
 }
 

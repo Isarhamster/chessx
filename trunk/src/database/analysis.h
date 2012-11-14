@@ -20,53 +20,53 @@ class Board;
 class Analysis
 {
 public:
-	 Analysis();
-	 /** Reset values. */
-	 void clear();
-	  /** Check if analysis is valid. */
-	 bool isValid() const;
-			/** order of the variarion in the variation list */
-			int mpv() const;
-			/** Set order of the variation. */
-			void setNumpv(int n);
-	 /** Time elapsed in miliseconds. */
-	 int time() const;
-	 /** Set time in miliseconds. */
-	 void setTime(int msec);
-	 /** Evaluation in centipawns. */
-	 int score() const;
-	 /** Set evaluation in centipawns. */
-	 void setScore(int score);
-	 /** Depth in plies. */
-	 int depth() const;
-	 /** Set depth in plies. */
-	 void setDepth(int depth);
-	 /** Nodes spent on analysis. */
-	 quint64 nodes() const;
-	 /** Set nodes spent on analysis. */
-	 void setNodes(quint64 nodes);
-	 /** Main variation. */
-	 MoveList variation() const;
-	 /** Set main variation. */
-	 void setVariation(const MoveList& variation);
-	 /** Is mate. */
-	 bool isMate() const;
-	 /** @return moves to mate */
-	 int movesToMate() const;
-	 /** Set moves to mate. */
-	 void setMovesToMate(int mate);
-	 /** Moves to mate. */
-	 /** Convert analysis to formatted text. */
-	QString toString(const Board& board) const;
+    Analysis();
+    /** Reset values. */
+    void clear();
+    /** Check if analysis is valid. */
+    bool isValid() const;
+    /** order of the variarion in the variation list */
+    int mpv() const;
+    /** Set order of the variation. */
+    void setNumpv(int n);
+    /** Time elapsed in miliseconds. */
+    int time() const;
+    /** Set time in miliseconds. */
+    void setTime(int msec);
+    /** Evaluation in centipawns. */
+    int score() const;
+    /** Set evaluation in centipawns. */
+    void setScore(int score);
+    /** Depth in plies. */
+    int depth() const;
+    /** Set depth in plies. */
+    void setDepth(int depth);
+    /** Nodes spent on analysis. */
+    quint64 nodes() const;
+    /** Set nodes spent on analysis. */
+    void setNodes(quint64 nodes);
+    /** Main variation. */
+    MoveList variation() const;
+    /** Set main variation. */
+    void setVariation(const MoveList& variation);
+    /** Is mate. */
+    bool isMate() const;
+    /** @return moves to mate */
+    int movesToMate() const;
+    /** Set moves to mate. */
+    void setMovesToMate(int mate);
+    /** Moves to mate. */
+    /** Convert analysis to formatted text. */
+    QString toString(const Board& board) const;
 private:
-	int m_numpv;
-	int m_msec;
-	int m_mateIn;
-	int m_depth;
-	int m_score;
-	quint64 m_nodes;
-	MoveList m_variation;
-	Q_DECLARE_TR_FUNCTIONS(Analysis)
+    int m_numpv;
+    int m_msec;
+    int m_mateIn;
+    int m_depth;
+    int m_score;
+    quint64 m_nodes;
+    MoveList m_variation;
+    Q_DECLARE_TR_FUNCTIONS(Analysis)
 };
 
 #endif // ANALYSIS_H
