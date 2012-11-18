@@ -9,9 +9,10 @@
 
 #include "settings.h"
 
-#include <QApplication>
-#include <QWidget>
-#include <QMainWindow>
+#include <QtCore>
+#include <QtGui>
+#include <QtGui/QWidget>
+#include <QtGui/QMainWindow>
 
 Settings::Settings() : QSettings(IniFormat, UserScope, "chessx", "chessx")
 {}

@@ -3,7 +3,11 @@ DEFINES +=
 CONFIG += uic warn_on
 QT += xml network
 
-static { // Everything below takes effect with CONFIG += static
+greaterThan(QT_MAJOR_VERSION, 4) {
+   QT += printsupport
+}
+
+static { # Everything below takes effect with CONFIG += static
     DEFINES += STATIC
     message("Static build.")
 }

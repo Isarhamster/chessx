@@ -7,7 +7,6 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include <QApplication>
 #include "enginedata.h"
 
 EngineData::EngineData(const QString& newName) : name(newName), protocol(UCI)

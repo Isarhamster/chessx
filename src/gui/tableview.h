@@ -7,15 +7,14 @@
 #ifndef TABLEVIEW_H
 #define TABLEVIEW_H
 
-#include <QTableView>
+#include <QtCore>
+#include <QtGui/QTableView>
 
 /**
 	The TableView class is a specialized version of QTableView with automatic
 	header layout saving.
 
 */
-
-class QAction;
 
 class TableView : public QTableView
 {
