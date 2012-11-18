@@ -32,7 +32,14 @@ DatabaseInfo::DatabaseInfo(const QString& fname): m_filter(0), m_index(NewGame)
 	QFile file(fname);
 	if (file.size() < 1024 * 1024 * AppSettings->value("/General/EditLimit", 10).toInt()) 
         m_database = new MemoryDatabase;
-	else m_database = new PgnDatabase;
+    else if (file.size() < INT_MAX)
+    {
+        m_database = new PgnDatabase(false);
+    }
+    else
+    {
+        m_database = new PgnDatabase(true);
+    }
 }
 
 void DatabaseInfo::doLoadFile(QString filename)

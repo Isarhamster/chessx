@@ -19,7 +19,9 @@
 
 #include "pgndatabase.h"
 
-PgnDatabase::PgnDatabase() : Database()
+PgnDatabase::PgnDatabase(bool b64bit) :
+    Database(),
+    bUse64bit(b64bit)
 {
 	initialise();
 }
@@ -60,7 +62,7 @@ bool PgnDatabase::parseFile()
     while (!m_file->atEnd())
     {
         if (m_break) return false;
-        qint64 fp = skipJunk();
+        IndexBaseType fp = skipJunk();
         if (fp == oldFp)
         {
             skipLine();
@@ -102,7 +104,7 @@ bool PgnDatabase::openFile(const QString& filename)
         delete file;
 		return false;
 	}
-    file->open(QIODevice::ReadOnly | QIODevice::Text);
+    file->open(QIODevice::ReadOnly);
     m_file = file;
 	return true;
 }
@@ -134,7 +136,8 @@ void PgnDatabase::close()
     if (m_file) m_file->close();
 	delete m_file;
     m_file = 0;
-	delete[] m_gameOffsets;
+    delete[] m_gameOffsets64;
+    delete[] m_gameOffsets32;
 
 	//reset member variables
 	initialise();
@@ -176,39 +179,22 @@ bool PgnDatabase::loadGame(int index, Game& game)
 void PgnDatabase::initialise()
 {
     m_file = 0;
-    m_gameOffsets = 0;
+    m_gameOffsets64 = 0;
+    m_gameOffsets32 = 0;
     m_inComment = false;
 	m_isOpen = false;
 	m_filename = QString();
 	m_count = 0;
-	m_gameOffsets = 0;
 	m_allocated = 0;
 }
 
-qint64 PgnDatabase::offset(int index)
-{
-	return m_gameOffsets[index];
-}
+
 
 void PgnDatabase::addOffset()
 {
-	qint64 fp = m_file->pos();
+    IndexBaseType fp = m_file->pos();
 	addOffset(fp);
 }
-
-void PgnDatabase::addOffset(qint64 offset)
-{
-	if (m_count == m_allocated) {
-		//out of space reallocate memory
-		qint32 *newAllocation = new qint32[m_allocated += AllocationSize];
-		memcpy(newAllocation, m_gameOffsets, sizeof(qint32) * m_count);
-		delete m_gameOffsets;
-		m_gameOffsets = newAllocation;
-	}
-
-    m_gameOffsets[m_count++] = offset;
-}
-
 
 void PgnDatabase::readLine()
 {
@@ -245,7 +231,11 @@ inline void PgnDatabase::skipLine()
 
 void PgnDatabase::seekGame(int index)
 {
-    m_file->seek(offset(index));
+    IndexBaseType n = offset(index);
+    if (!m_file->seek(n))
+    {
+        qDebug() << "Seeking offset " << n << " failed!";
+    }
 	readLine();
 }
 
@@ -519,14 +509,6 @@ void PgnDatabase::parseComment(Game* game)
 	}
 }
 
-inline bool onlyWhite(const QString& b)
-{
-    for (int i = 0; i < b.length(); ++i)
-        if (!isspace(b.at(i).toAscii()))
-            return false;
-    return true;
-}
-
 inline bool onlyWhite(const QByteArray& b)
 {
     for (int i = 0; i < b.length(); ++i)
@@ -535,9 +517,9 @@ inline bool onlyWhite(const QByteArray& b)
 	return true;
 }
 
-qint64 PgnDatabase::skipJunk()
+IndexBaseType PgnDatabase::skipJunk()
 {
-    qint64 fp = -2;
+    IndexBaseType fp = -2;
     if (m_file->atEnd())
     {
         fp = -1;

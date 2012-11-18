@@ -12,7 +12,7 @@
 #include <QFileInfo>
 #include "memorydatabase.h"
 
-MemoryDatabase::MemoryDatabase() : m_isModified(false)
+MemoryDatabase::MemoryDatabase() : PgnDatabase(false), m_isModified(false)
 {
 }
 

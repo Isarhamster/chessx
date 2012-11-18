@@ -24,12 +24,14 @@
    loading and saving of games, and for performing searches and queries.
 */
 
+typedef qint64 IndexBaseType;
+
 class PgnDatabase : public Database
 {
 	Q_OBJECT
 public:
 	/** Default constructor */
-	PgnDatabase();
+    PgnDatabase(bool b64Bit);
 	/** Destructor */
 	~PgnDatabase();
 	//database operations
@@ -49,6 +51,8 @@ public:
     // Open a PGN Data File from a string
     bool openString(const QString& content);
 
+    virtual int count() { return m_count; }
+
 protected:
 	//parsing methods
 	/** Reads moves from the file and adds them to the game. Performs position searches if any are active */
@@ -62,7 +66,7 @@ protected:
 	/** Parses a comment from the file */
 	void parseComment(Game* game);
 	/** Skips past any data which is not valid tag or move data */
-    qint64 skipJunk();
+    IndexBaseType skipJunk();
 	/** Skips past any tag data */
 	void skipTags();
 	/** Skips past any move data */
@@ -77,20 +81,16 @@ protected:
 	bool openFile(const QString& filename);
 
 	/** Adds the current file position as a new offset */
+    IndexBaseType m_count;
     void addOffset();
-	/** Adds a new file offset */
-    void addOffset(qint64 offset);
 
     QIODevice* m_file;
 	bool m_isOpen;
     QString m_currentLine;
+
 private:
 	/** Resets/initialises important member variables. Called by constructor and close methods */
 	void initialise();
-
-	//offset methods
-	/** Returns the file offset for the given game */
-    qint64 offset(int index);
 
 	//file methods
 	/** Reads the next line of text from the PGN file */
@@ -101,7 +101,7 @@ private:
 	void seekGame(int index);
 
 
-	//file variables
+    //file variables
 	QString m_filename;
 	QString m_gameText;
 
@@ -116,11 +116,58 @@ private:
 	int m_variation;
 
 	//game index
-	static const int AllocationSize = 512;
+    static const int AllocationSize = 4096;
 	int m_allocated;
-	qint32* m_gameOffsets;
+    qint32* m_gameOffsets32;
+    qint64* m_gameOffsets64;
     QByteArray m_lineBuffer;
     bool m_utf8;
+
+    bool bUse64bit;
+
+    //offset methods
+    /** Returns the file offset for the given game */
+    inline IndexBaseType offset(int index)
+    {
+        if (bUse64bit)
+            return m_gameOffsets64[index];
+        else
+            return m_gameOffsets32[index];
+    }
+
+    /** Adds a new file offset */
+    inline void addOffset(IndexBaseType offset)
+    {
+        //qDebug() << "Add game " << m_count << " at offset " << offset;
+        if (m_count == m_allocated) {
+            //out of space reallocate memory
+            if (bUse64bit)
+            {
+                qint64* newAllocation = new qint64[m_allocated += AllocationSize];
+                memcpy(newAllocation, m_gameOffsets64, m_count * sizeof(qint64));
+                delete[] m_gameOffsets64;
+                m_gameOffsets64 = newAllocation;
+            }
+            else
+            {
+                qint32* newAllocation = new qint32[m_allocated += AllocationSize];
+                memcpy(newAllocation, m_gameOffsets32, m_count * sizeof(qint32));
+                delete[] m_gameOffsets32;
+                m_gameOffsets32 = newAllocation;
+            }
+
+
+        }
+
+        if (bUse64bit)
+            m_gameOffsets64[m_count++] = offset;
+        else
+            m_gameOffsets32[m_count++] = offset;
+    }
 };
+
+
+
+
 
 #endif
