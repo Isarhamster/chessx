@@ -511,7 +511,7 @@ public:
 	SaneString(const QString& q) : QString(q) {};
 	char operator[](const int index) const {
 		if (index < this->length())
-			return QString::operator[](index).toAscii();
+            return QString::operator[](index).toLatin1();
 		return 0;
 	}
 };
@@ -948,7 +948,7 @@ Move BitBoard::nullMove() const
 
 Move BitBoard::parseMove(const QString& algebraic) const
 {
-	const QByteArray& bs(algebraic.toAscii());
+    const QByteArray& bs(algebraic.toLatin1());
 	const char *san = bs.constData();
 	const char* s = san;
 	register char c = *(s++);

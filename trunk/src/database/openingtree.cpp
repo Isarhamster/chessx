@@ -10,7 +10,8 @@
 #include "openingtree.h"
 #include "common.h"
 #include "database.h"
-#include <QApplication>
+
+#include <QtCore>
 
 const unsigned MinAveYear = 1;
 const unsigned MinAveRating = 5;
@@ -282,7 +283,8 @@ void OpeningTree::sort(int column, Qt::SortOrder order)
 	if (order == Qt::DescendingOrder)
         for (int i = 0; i < m_moves.count() / 2; ++i)
 			qSwap(m_moves[i], m_moves[m_moves.count() - i -1]);
-	reset();
+    beginResetModel();
+    endResetModel();
 }
 
 void OpeningTree::sort()

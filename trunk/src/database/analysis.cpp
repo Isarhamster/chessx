@@ -7,7 +7,6 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include <QApplication>
 #include "analysis.h"
 #include "board.h"
 

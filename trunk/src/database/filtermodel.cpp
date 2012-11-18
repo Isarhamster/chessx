@@ -11,6 +11,8 @@
 #include "database.h"
 #include "filtermodel.h"
 
+#include <QtGui>
+
 FilterModel::FilterModel(Filter* filter, QObject* parent)
         : QAbstractItemModel(parent), m_filter(filter), m_gameIndex(-1)
 {
@@ -85,9 +87,11 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
             {
                 if (!m_filter->database()->getValidFlag(i))
                 {
-                    return Qt::red;
+                    QVariant v = QColor(Qt::red);
+                    return v;
                 }
-                return Qt::black;
+                QVariant v = QColor(Qt::black);
+                return v;
             }
         }
     }

@@ -1,7 +1,7 @@
 #ifndef HELPBROWSER_H
 #define HELPBROWSER_H
 
-#include <QTextBrowser>
+#include <QtGui/QTextBrowser>
 
 class HelpBrowser : public QTextBrowser
 {
