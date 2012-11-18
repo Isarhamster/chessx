@@ -4,12 +4,13 @@
 
 #include "databaselist.h"
 #include "databaselistmodel.h"
+#include "GameMimeData.h"
+#include "settings.h"
+
 #include <QHeaderView>
 #include <QSortFilterProxyModel>
 #include <QMenu>
 #include <QtGui>
-#include "settings.h"
-#include "GameMimeData.h"
 
 DatabaseList::DatabaseList(QWidget *parent) :
     TableView(parent)

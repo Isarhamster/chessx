@@ -33,7 +33,7 @@
 */
 
 class Database : public QObject
-{
+{    
 	Q_OBJECT
 public:
 	/** Standard constructor. */
@@ -80,7 +80,7 @@ public:
 	/** Returns a pointer to the index of the database */
 	Index* index();
 	/** Returns the number of games in the database */
-	virtual int count() { return m_count; }
+    virtual int count() { return 0; }
 	/** @return true if the database has been modified. By default database is read-only. */
 	virtual bool isModified() const { return false; }
     /** Get the Valid Flag for a given game id from the index */
@@ -91,7 +91,6 @@ signals:
 
 protected:
 	Index m_index;
-	int m_count;
 
 };
 
