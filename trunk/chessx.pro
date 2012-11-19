@@ -279,6 +279,11 @@ macx {
  QMAKE_INFO_PLIST = mac_osx/Info.plist
 }
 
+unix:!macx {
+ target.path = /usr/games/chessx
+ INSTALLS += target
+}
+
 RESOURCES = resources.qrc
 
 #TRANSLATIONS = i18n/chessx_de.ts \

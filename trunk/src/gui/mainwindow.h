@@ -320,6 +320,7 @@ private:
 	/* Menus */
 	QMenu* m_menuDatabases;
 	QMenu* m_menuView;
+    QToolBar* m_gameToolBar;
 
 	/* Local variables */
 	HistoryList m_recentFiles;

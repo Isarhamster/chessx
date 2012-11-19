@@ -39,6 +39,7 @@
 #include "tableview.h"
 
 #include <time.h>
+#include <QtGui/QSizePolicy>
 
 MainWindow::MainWindow() : QMainWindow(),
     m_playerDialog(0), m_saveDialog(0),
@@ -84,14 +85,38 @@ MainWindow::MainWindow() : QMainWindow(),
     DockWidgetEx* gameTextDock = new DockWidgetEx(tr("Game Text"), this);
 	gameTextDock->setObjectName("GameTextDock");
 	gameTextDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
-	m_gameView = new ChessBrowser(gameTextDock, true);
+    QMainWindow* gameWindow = new QMainWindow(gameTextDock);
+    gameWindow->setWindowFlags(Qt::Widget);
+
+    m_gameToolBar = new QToolBar(tr("Game Time"), gameWindow);
+    gameWindow->addToolBar(Qt::BottomToolBarArea, m_gameToolBar);
+    for (int i=0; i<2; ++i)
+    {
+        QLCDNumber* annotatedTime = new QLCDNumber(m_gameToolBar);
+        m_gameToolBar->addWidget(annotatedTime);
+        annotatedTime->setDigitCount(7);
+        annotatedTime->display("1:00:00");
+        if (i==0)
+        {
+            QWidget* spacer = new QWidget();
+            spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            m_gameToolBar->addWidget(spacer);
+        }
+    }
+
+    m_menuView->addAction(m_gameToolBar->toggleViewAction());
+    m_gameToolBar->hide();
+    m_gameView = new ChessBrowser(gameWindow, true);
+    m_gameView->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
     m_gameView->setMinimumSize(200, 200);
 	m_gameView->slotReconfigure();
 	connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 	connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
 	connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_gameView, SLOT(slotDatabaseChanged(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_gameView, SLOT(slotReconfigure()));
-    gameTextDock->setWidget(m_gameView);
+    gameTextDock->setWidget(gameWindow);
+    gameWindow->setCentralWidget(m_gameView);
 	addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
     m_gameTitle = new QLabel;
     connect(m_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
