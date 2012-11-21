@@ -199,6 +199,7 @@ void Engine::pollProcess()
 void Engine::processError(QProcess::ProcessError errMsg)
 {
     setActive(false);
+    m_process = 0;
     emit error(errMsg);
 }
 
