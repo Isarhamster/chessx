@@ -9,6 +9,7 @@ CommentDialog::CommentDialog(QWidget* parent) :
 {
 	ui.setupUi(this);
     connect(ui.clearTime, SIGNAL(clicked()), this, SLOT(clearTimeSlot()));
+    connect(ui.clearText, SIGNAL(clicked()), this, SLOT(clearTextSlot()));
 }
 
 QString CommentDialog::text() const
@@ -25,28 +26,37 @@ QString CommentDialog::text() const
 
 void CommentDialog::setText(QString text)
 {
-    QRegExp egt("\\[\\%egt\\s*(\\d:\\d\\d:\\d\\d)\\]");
-    QRegExp clk("\\[\\%clk\\s*(\\d:\\d\\d:\\d\\d)\\]");
-    text = text.remove(egt);
-    if (egt.captureCount())
+    QRegExp egt("\\[%egt\\s*(\\d:\\d\\d:\\d\\d)\\]");
+    QRegExp clk("\\[%clk\\s*(\\d:\\d\\d:\\d\\d)\\]");
+    int pos = egt.indexIn(text);
+    if (pos>=0)
     {
         ui.egtTime->setChecked(true);
-        ui.timeEdit->setTime(QTime::fromString(egt.capturedTexts().at(0),"H.mm.ss"));
+        QString segt = egt.cap(1);
+        text = text.remove(egt);
+        ui.timeEdit->setTime(QTime::fromString(segt,"H:mm:ss"));
     }
     else
     {
-        text = text.remove(clk);
-        if (clk.captureCount())
+        int pos = clk.indexIn(text);
+        if (pos>=0)
         {
             ui.clkTime->setChecked(true);
-            ui.timeEdit->setTime(QTime::fromString(clk.capturedTexts().at(0),"H.mm.ss"));
+            QString sclk = clk.cap(1);
+            text = text.remove(clk);
+            ui.timeEdit->setTime(QTime::fromString(sclk,"H:mm:ss"));
         }
     }
 
-	ui.textEdit->setPlainText(text);
+    ui.textEdit->setPlainText(text);
 }
 
 void CommentDialog::clearTimeSlot()
 {
     ui.timeEdit->setTime(QTime(0,0,0));
+}
+
+void CommentDialog::clearTextSlot()
+{
+    ui.textEdit->setPlainText("");
 }
