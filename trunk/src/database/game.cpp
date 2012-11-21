@@ -361,7 +361,6 @@ bool Game::atLineEnd(MoveId moveId) const
 
 bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
 {
-
     MoveId node = nodeValid(moveId);
     if (node == NO_MOVE)
         return false;
