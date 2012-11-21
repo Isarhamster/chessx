@@ -124,7 +124,10 @@ void Engine::deactivate()
     if (m_active)
     {
         protocolEnd();
-        m_process->waitForFinished(200);
+        if (m_process)
+        {
+            m_process->waitForFinished(200);
+        }
     }
 }
 
