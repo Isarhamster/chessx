@@ -16,6 +16,7 @@ public:
 
 protected slots:
      void clearTimeSlot();
+     void clearTextSlot();
 
 private:
 	 Ui::CommentDialog ui;
