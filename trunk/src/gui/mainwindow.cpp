@@ -681,41 +681,46 @@ QString MainWindow::exportFileName(int& format)
 bool MainWindow::gameEditComment(Output::CommentType type)
 {
 	QString annotation;
-	if (type == Output::Precomment)
+    int moves;
+    int comments;
+    int nags;
+    game().moveCount(&moves,&comments,&nags);
+
+    if ((type == Output::Precomment) || (moves <= 0))
     {
-        int moves;
-        int comments;
-        int nags;
-        game().moveCount(&moves,&comments,&nags);
         if( moves > 0 )
         {
             annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
-        } else
+        }
+        else
         {
             annotation = game().gameComment();
         }
     }
-	else annotation = game().annotation();
+    else
+    {
+        annotation = game().annotation();
+    }
 	CommentDialog dlg(this);
 	dlg.setText(annotation);
 	if (!dlg.exec())
 		return false;
 
-	if (type == Output::Precomment)
+    if ((type == Output::Precomment) || (moves <= 0))
     {
-        int moves;
-        int comments;
-        int nags;
-        game().moveCount(&moves,&comments,&nags);
         if( moves > 0 )
         {
             game().setAnnotation(dlg.text(), CURRENT_MOVE, Game::BeforeMove);
-        } else
+        }
+        else
         {
             game().setGameComment(dlg.text());
         }
     }
-	else game().setAnnotation(dlg.text());
+    else
+    {
+        game().setAnnotation(dlg.text());
+    }
 	return true;
 }
 
