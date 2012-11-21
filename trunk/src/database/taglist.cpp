@@ -33,6 +33,7 @@ void TagList::createBasicTagMap()
 	BasicTagMap[TagWhiteType] = TagPlayerType;
 	BasicTagMap[TagBlackType] = TagPlayerType;
 }
+
 TagList::TagList()
 {
     createBasicTagMap();
@@ -59,15 +60,15 @@ TagList::TagList()
 		if (!m_list.at(i)) {
 			m_list[i] = static_cast<TagValues*>(new StringTagValues);
 		}
-
 	}
 	m_cacheEnabled = false;
-
 }
+
 TagList::~TagList()
 {
 	clear();
 }
+
 void TagList::setCacheEnabled(bool enabled)
 {
 	m_cacheEnabled = enabled;
@@ -77,6 +78,7 @@ void TagList::setCacheEnabled(bool enabled)
 		}
 	}
 }
+
 int TagList::add(Tag tag, const QString& value)
 {
 	// To add a value to a list using Tag, the list needs to exist.
@@ -84,6 +86,7 @@ int TagList::add(Tag tag, const QString& value)
 	if (tag >= TagLastTag) return -1;
     return m_list[BasicTagMap.value(tag,tag)]->add(value);
 }
+
 int TagList::add(const QString& tagName, const QString& value)
 {
     Tag tag;
@@ -100,6 +103,7 @@ int TagList::add(const QString& tagName, const QString& value)
     }
     return m_list[BasicTagMap.value(tag,tag)]->add(value);
 }
+
 QString TagList::tagValue(const QString& tagName, int index)
 {
 	if (!m_tagNameToInt.contains(tagName)) {
@@ -109,6 +113,7 @@ QString TagList::tagValue(const QString& tagName, int index)
     Tag tag = (Tag)m_tagNameToInt[tagName];
     return m_list[BasicTagMap.value(tag,tag)]->value(index);
 }
+
 QString TagList::tagValue(Tag tag, int index)
 {
 	// Only predefined tags can be returned using Tag
@@ -116,6 +121,7 @@ QString TagList::tagValue(Tag tag, int index)
 	if (tag >= TagLastTag) return QString();
     return m_list[BasicTagMap.value(tag,tag)]->value(index);
 }
+
 TagValues* TagList::tagValueList(int index)
 {
     Tag tag = (Tag)index;
@@ -143,10 +149,12 @@ QString TagList::stringFromTag(Tag tag)
 {
 	return m_tagNameToInt.key(tag);
 }
+
 int TagList::count()
 {
 	return m_list.count();
 }
+
 void TagList::clear()
 {
 	for (int i = 0; i < m_list.size(); ++i) {
@@ -157,6 +165,7 @@ void TagList::clear()
 	}
 	for (int i = TagLastTag; i < m_list.size(); ++i) m_list.removeLast();
 }
+
 void TagList::write(QDataStream& out)
 {
 	out << count();
@@ -165,6 +174,7 @@ void TagList::write(QDataStream& out)
 	}
 
 }
+
 void TagList::read(QDataStream& in)
 {
 	int listCount;

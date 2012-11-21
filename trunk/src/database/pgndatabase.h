@@ -116,7 +116,7 @@ private:
 	int m_variation;
 
 	//game index
-    static const int AllocationSize = 4096;
+    static const int AllocationSize = 16384;
 	int m_allocated;
     qint32* m_gameOffsets32;
     qint64* m_gameOffsets64;

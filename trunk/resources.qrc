@@ -42,5 +42,11 @@
         <file alias="help/about3.html">data/help/about3.html</file>
         <file alias="help/about.css">data/help/about.css</file>
         <file alias="images/chessx.png">data/images/chessx.png</file>
+        <file alias="images/back.png">data/images/back.png</file>
+        <file alias="images/fileopen.png">data/images/fileopen.png</file>
+        <file alias="images/forward.png">data/images/forward.png</file>
+        <file alias="images/home.png">data/images/home.png</file>
+        <file alias="images/print.png">data/images/print.png</file>
+        <file alias="images/time_clear.png">data/images/time_clear.png</file>
     </qresource>
 </RCC>
