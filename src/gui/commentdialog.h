@@ -11,8 +11,11 @@ class CommentDialog : public QDialog {
 	 Q_OBJECT
 public:
 	 CommentDialog(QWidget *parent = 0);
-	 void setText(const QString& text);
+     void setText(QString text);
 	 QString text() const;
+
+protected slots:
+     void clearTimeSlot();
 
 private:
 	 Ui::CommentDialog ui;

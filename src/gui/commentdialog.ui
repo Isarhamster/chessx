@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>181</height>
+    <height>221</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>1</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Edit Comment</string>
@@ -18,6 +24,56 @@
     <widget class="PlainTextEdit" name="textEdit">
      <property name="tabChangesFocus">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QRadioButton" name="egtTime">
+       <property name="text">
+        <string>Elapsed Time</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="clkTime">
+       <property name="text">
+        <string>Clock Time</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTimeEdit" name="timeEdit">
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::UpDownArrows</enum>
+       </property>
+       <property name="displayFormat">
+        <string>H:mm:ss</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="clearTime">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/images/time_clear.png</normalon>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>

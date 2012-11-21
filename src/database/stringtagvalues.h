@@ -45,11 +45,11 @@ public:
 	void clear();
 	/** @return the index of a value @p value . Returns @p -1 if value is not found. */
 	int indexOf(const QString& value) const;
-	/** When cache is enabled, adding values is very quick. It uses twice as
-	  * much RAM though. Useful for adding lots of values quickly.
-	  * Remember to disable afterwards to free extra memory.*/
-	void setCacheEnabled(const bool enabled);
-	/** Returns the number of values in the list */
+    /** When cache is enabled, adding values is very quick. It uses twice as
+      * much RAM though. Useful for adding lots of values quickly.
+      * Remember to disable afterwards to free extra memory.*/
+    void setCacheEnabled(const bool enabled);
+    /** Returns the number of values in the list */
 	virtual int count() const;
 	/** returns true if the list contains the string 'value' */
 	virtual bool contains(const QString& value);
@@ -72,9 +72,9 @@ public:
 	void compact(const QVector<bool>& qv);
 
 private:
-	typedef QHash <QString, int> TagCache;
-	QStringList m_list;
-	TagCache *m_cache;
+    typedef QHash <QString, int> TagCache;
+    QStringList m_list;
+    TagCache *m_cache;
 
 };
 

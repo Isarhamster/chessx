@@ -15,34 +15,38 @@
 StringTagValues::StringTagValues()
 {
 	m_list.append("?");
-	m_cache = NULL;
-    setCacheEnabled(false); // jens: this is slightly fast than with cache enabled
-// rico: changed caching to be default behavior
-//    setCacheEnabled(true);
+    m_cache = NULL;
+    setCacheEnabled(true);
 }
 
 StringTagValues::~StringTagValues()
 {
-	setCacheEnabled(false);
+    setCacheEnabled(false);
 }
 
 int StringTagValues::add(const QString& value)
 {
-	if (m_cache) {
-		int item = m_cache->value(value, -1);
-		if (item >= 0) {
-			return item;
-		} else {
-			m_cache->insert(value, m_list.count());
-			m_list.append(value);
-			return (m_list.count() - 1);
-		}
-	} else {
-		int position = m_list.indexOf(value);
-		if (position > 0) { return position; }
-		m_list.append(value);
-		return (m_list.count() - 1);
-	}
+    if (m_cache)
+    {
+        int item = m_cache->value(value, -1);
+        if (item >= 0)
+        {
+            return item;
+        }
+        else
+        {
+            m_cache->insert(value, m_list.count());
+            m_list.append(value);
+            return (m_list.count() - 1);
+        }
+    }
+    else
+    {
+        int position = m_list.indexOf(value);
+        if (position > 0) { return position; }
+        m_list.append(value);
+        return (m_list.count() - 1);
+    }
 }
 
 QString StringTagValues::value(int index) const
@@ -53,8 +57,8 @@ QString StringTagValues::value(int index) const
 
 void StringTagValues::clear()
 {
-	setCacheEnabled(false);
-	setCacheEnabled(true);
+    setCacheEnabled(false);
+    setCacheEnabled(true);
 	m_list.clear();
 }
 
@@ -65,15 +69,15 @@ int StringTagValues::indexOf(const QString& value) const
 
 void StringTagValues::setCacheEnabled(bool enabled)
 {
-	if (enabled) {
-		m_cache = new TagCache;
-		for (int i = 0;i < m_list.count();++i) {
-			m_cache->insert(m_list.at(i), i);
-		}
-	} else {
-		if (m_cache) { delete m_cache; }
-		m_cache = NULL;
-	}
+    if (enabled) {
+        m_cache = new TagCache;
+        for (int i = 0;i < m_list.count();++i) {
+            m_cache->insert(m_list.at(i), i);
+        }
+    } else {
+        if (m_cache) { delete m_cache; }
+        m_cache = NULL;
+    }
 }
 
 int StringTagValues::count() const
@@ -88,24 +92,11 @@ bool StringTagValues::contains(const QString& value)
 
 void StringTagValues::read(QDataStream& in)
 {
-//	int count;
 	QString line;
-//	int lineNr = 0;
-
-//	clear();
-//	setCacheEnabled(true);
-
-//	in >> count;
-//	while (lineNr < count) {
-//		in >> line;
-//		add(line);
-//		lineNr++;
-//	}
 	while (!in.atEnd()) {
 		in >> line;
 		add(line);
 	}
-//	setCacheEnabled(false);
 }
 
 void StringTagValues::write(QDataStream& out)
@@ -114,7 +105,6 @@ void StringTagValues::write(QDataStream& out)
 	for (int i = 0; i < m_list.count(); ++i) {
 		appendToStream(m_list[i],out);
 	}
-
 }
 
 void StringTagValues::appendToStream(const QString& value, QDataStream& out)
@@ -147,7 +137,7 @@ void StringTagValues::compact(const QVector<bool>& qv)
   {
     for(int i=0; i<qv.size(); ++i)
     {
-      if(!qv[i]) m_cache->remove(m_list[i]); 
+      if(!qv[i]) m_cache->remove(m_list[i]);
     }
   }
 }
