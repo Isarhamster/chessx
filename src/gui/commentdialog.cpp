@@ -26,7 +26,12 @@ QString CommentDialog::text() const
             lastTimeWasEgt = ui.egtTime->isChecked();
         }
     }
-    s.append(ui.textEdit->toPlainText().trimmed());
+    QString s1 = ui.textEdit->toPlainText().trimmed();
+    if (!s1.isEmpty())
+    {
+        s.append(" ");
+        s.append(s1);
+    }
     return s;
 }
 
