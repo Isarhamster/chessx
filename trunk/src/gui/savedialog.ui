@@ -173,7 +173,7 @@
      <property name="title">
       <string>Time Control</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridlayout4">
       <property name="verticalSpacing">
        <number>6</number>
       </property>
