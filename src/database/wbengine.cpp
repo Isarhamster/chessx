@@ -49,13 +49,8 @@ void WBEngine::stopAnalysis()
 void WBEngine::protocolStart()
 {
 	send("xboard");
-
-    // By spec we must wait up to 2 seconds to receive all features offers from engine
-    // Strange bug - if a timer is running, we don't receive messages
-
+    send("protover 2");
     QTimer::singleShot(2000, this, SLOT(featureTimeout()));
-
-	send("protover 2");    
 }
 
 void WBEngine::protocolEnd()

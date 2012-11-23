@@ -49,5 +49,7 @@
         <file alias="images/print.png">data/images/print.png</file>
         <file alias="images/time_clear.png">data/images/time_clear.png</file>
         <file alias="images/text_clear.png">data/images/text_clear.png</file>
+        <file alias="help/about4.html">data/help/about4.html</file>
+        <file alias="help/about5.html">data/help/about5.html</file>
     </qresource>
 </RCC>

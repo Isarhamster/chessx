@@ -105,6 +105,17 @@ int SaveDialog::exec(Database* database, Game& game)
 			game.setTag("WhiteElo", ui.whiteEloEdit->text());
 		if (ui.whiteEloEdit->text().toInt() || game.tag("BlackElo").toInt())
 			game.setTag("BlackElo", ui.blackEloEdit->text());
+
+        QString t = ui.timeControl->text();
+        QString format = "H:mm:ss";
+        if (!t.isEmpty() || !game.tag("TimeControl").isEmpty())
+            game.setTag("TimeControl", t);
+        t = ui.whiteStartTime->time().toString(format);
+        if (!t.isEmpty() || !game.tag("WhiteClock").isEmpty())
+            game.setTag("WhiteClock", t);
+        t = ui.blackStartTime->time().toString(format);
+        if (!t.isEmpty() || !game.tag("BlackClock").isEmpty())
+            game.setTag("BlackClock", t);
 	}
 	return result;
 }

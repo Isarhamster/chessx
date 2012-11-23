@@ -20,6 +20,7 @@ protected slots:
 
 private:
 	 Ui::CommentDialog ui;
+     static bool lastTimeWasEgt;
 };
 
 #endif // COMMENTDIALOG_H

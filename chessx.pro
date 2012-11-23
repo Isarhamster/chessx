@@ -132,7 +132,8 @@ HEADERS += src/database/board.h \
     src/quazip/quaadler32.h \
     src/quazip/JlCompress.h \
     src/quazip/ioapi.h \
-    src/quazip/crypt.h
+    src/quazip/crypt.h \
+    src/gui/toolmainwindow.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -224,7 +225,8 @@ SOURCES += src/database/board.cpp \
     src/quazip/qioapi.cpp \
     src/quazip/JlCompress.cpp \
     src/quazip/zip.c \
-    src/quazip/unzip.c
+    src/quazip/unzip.c \
+    src/gui/toolmainwindow.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

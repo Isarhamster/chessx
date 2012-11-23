@@ -34,6 +34,7 @@ class Board;
 class ChessBrowser;
 class TableView;
 class OpeningTree;
+class ToolMainWindow;
 
 /**
 @defgroup GUI GUI - User interface components
@@ -278,6 +279,8 @@ signals:
 	void databaseChanged(DatabaseInfo* databaseInfo);
     /** Emitted upon finishing a file download */
     void LoadFinished(DatabaseInfo*);
+    /** Emitted upon a update for the elapsed / clock time */
+    void displayTime(const QString&, Color);
 
 private slots:
 	/** Cleanup after ECO file loaded. */
@@ -314,13 +317,13 @@ private:
 	ChessBrowser* m_gameView;
     TableView* m_openingTreeView;
 	QProgressBar* m_progressBar;
+    ToolMainWindow* m_gameWindow;
 	/* Status */
 	QLabel* m_statusFilter;
     QLabel* m_gameTitle;
 	/* Menus */
 	QMenu* m_menuDatabases;
 	QMenu* m_menuView;
-    QToolBar* m_gameToolBar;
 
 	/* Local variables */
 	HistoryList m_recentFiles;

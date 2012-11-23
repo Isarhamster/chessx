@@ -4,6 +4,8 @@
 
 #include "commentdialog.h"
 
+bool CommentDialog::lastTimeWasEgt = false;
+
 CommentDialog::CommentDialog(QWidget* parent) :
 	 QDialog(parent)
 {
@@ -19,6 +21,10 @@ QString CommentDialog::text() const
     {
         QString format = ui.egtTime->isChecked() ? "[%egt H:mm:ss]" : "[%clk H:mm:ss]";
         s = ui.timeEdit->time().toString(format);
+        if (!s.isEmpty())
+        {
+            lastTimeWasEgt = ui.egtTime->isChecked();
+        }
     }
     s.append(ui.textEdit->toPlainText().trimmed());
     return s;
@@ -35,6 +41,7 @@ void CommentDialog::setText(QString text)
         QString segt = egt.cap(1);
         text = text.remove(egt);
         ui.timeEdit->setTime(QTime::fromString(segt,"H:mm:ss"));
+        lastTimeWasEgt = true;
     }
     else
     {
@@ -45,6 +52,16 @@ void CommentDialog::setText(QString text)
             QString sclk = clk.cap(1);
             text = text.remove(clk);
             ui.timeEdit->setTime(QTime::fromString(sclk,"H:mm:ss"));
+            lastTimeWasEgt = false;
+        }
+        else
+        {
+            if (lastTimeWasEgt)
+            {
+                // Setup GUI with the last value we had in this dialog
+                // That may be a bad guess, as this could come from a different game
+                ui.egtTime->setChecked(true);
+            }
         }
     }
 

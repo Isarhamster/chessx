@@ -90,6 +90,8 @@ public :
 	/** @return comment at move at node @p moveId. */
 	QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
 
+    /** Show annotations on the board for the Nose @p moveId. */
+    void indicateAnnotationsOnBoard(MoveId moveId);
     /** @return squareAnnotation at move at node @p moveId. */
     QString squareAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return arrowAnnotation at move at node @p moveId. */
@@ -98,6 +100,8 @@ public :
     QString egtAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return annotation at move at node @p moveId. */
     QString clkAnnotation(MoveId moveId = CURRENT_MOVE) const;
+    /** @return time annotation (either egt or clock) at move at node @p moveId. */
+    QString timeAnnotation(MoveId moveId = CURRENT_MOVE) const;
 
     /** @return @p true if a move can have annotation before the move. */
 	bool canHaveStartAnnotation(MoveId moveId = CURRENT_MOVE) const;
@@ -281,7 +285,7 @@ private:
 	/** Keeps the current position of the game */
 	Board m_currentBoard;
 	/** Keeps the start ply of the game, 0 for standard starting position */
-	int m_startPly;
+    int m_startPly;
 	/** Flag indicating if the game has been modified */
 	bool m_isModified;
 	/** Start annotations for each variation */

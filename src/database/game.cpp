@@ -494,6 +494,16 @@ QString Game::egtAnnotation(MoveId moveId) const
     return m_egtAnnotations[node];
 }
 
+QString Game::timeAnnotation(MoveId moveId) const
+{
+    QString s = clkAnnotation(moveId);
+    if (s.isEmpty())
+    {
+        return egtAnnotation(moveId);
+    }
+    return s;
+}
+
 bool Game::setClkAnnotation(QString annotation, MoveId node)
 {
     if (annotation.isEmpty())
@@ -694,17 +704,21 @@ void Game::setModified(bool set)
 	m_isModified = set;
 }
 
+void Game::indicateAnnotationsOnBoard(MoveId moveId)
+{
+    QString annotation = squareAnnotation(moveId);
+    m_currentBoard.setSquareAnnotation(annotation);
+
+    annotation = arrowAnnotation(moveId);
+    m_currentBoard.setArrowAnnotation(annotation);
+}
+
 void Game::moveToStart()
 {
 	m_currentNode = 0;
 	m_currentBoard = m_startingBoard;
 
-    QString annotation = squareAnnotation(m_currentNode);
-    m_currentBoard.setSquareAnnotation( annotation);
-
-    annotation = arrowAnnotation(m_currentNode);
-    m_currentBoard.setArrowAnnotation( annotation);
-
+    indicateAnnotationsOnBoard(m_currentNode);
 }
 
 int Game::moveByPly(int diff)
@@ -735,12 +749,8 @@ void Game::moveToId(MoveId moveId)
 	while (!moveStack.isEmpty()) {
 		m_currentBoard.doMove(moveStack.pop());
 	}
-    QString sqannotation = squareAnnotation(moveId);
-    m_currentBoard.setSquareAnnotation( sqannotation);
 
-    QString aannotation = arrowAnnotation(moveId);
-    m_currentBoard.setArrowAnnotation( aannotation);
-
+    indicateAnnotationsOnBoard(moveId);
 }
 
 int Game::moveToPly(int ply)
@@ -790,11 +800,8 @@ int Game::forward(int count)
 
 		m_currentBoard.doMove(m_moveNodes[m_currentNode].move);
 	}
-    QString annotation = squareAnnotation(m_currentNode);
-    m_currentBoard.setSquareAnnotation( annotation);
 
-    annotation = arrowAnnotation(m_currentNode);
-    m_currentBoard.setArrowAnnotation( annotation);
+    indicateAnnotationsOnBoard(m_currentNode);
 
 	return moved;
 }
@@ -808,11 +815,7 @@ int Game::backward(int count)
         ++moved;
 	}
 
-    QString annotation = squareAnnotation(m_currentNode);
-    m_currentBoard.setSquareAnnotation( annotation);
-
-    annotation = arrowAnnotation(m_currentNode);
-    m_currentBoard.setArrowAnnotation( annotation);
+    indicateAnnotationsOnBoard(m_currentNode);
 
 	return moved;
 }
@@ -823,12 +826,7 @@ void Game::enterVariation(const MoveId& moveId)
 	m_currentBoard.doMove(m_moveNodes[moveId].move);
 	m_currentNode = moveId;
 
-    QString annotation = squareAnnotation(m_currentNode);
-    m_currentBoard.setSquareAnnotation(annotation);
-
-    annotation = arrowAnnotation(m_currentNode);
-    m_currentBoard.setArrowAnnotation(annotation);
-
+    indicateAnnotationsOnBoard(m_currentNode);
 }
 
 void Game::removeNode(MoveId moveId)

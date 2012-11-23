@@ -53,6 +53,7 @@ void AnalysisWidget::startEngine()
 
 		connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
         connect(m_engine, SIGNAL(error(QProcess::ProcessError)), SLOT(engineError(QProcess::ProcessError)));
+        connect(m_engine, SIGNAL(deactivated()), SLOT(engineDeactivated()));
 		connect(m_engine, SIGNAL(analysisUpdated(const Analysis&)),
 				  SLOT(showAnalysis(const Analysis&)));
 		m_engine->activate();
@@ -63,8 +64,7 @@ void AnalysisWidget::startEngine()
 
 void AnalysisWidget::stopEngine()
 {
-	ui.analyzeButton->setChecked(false);
-	ui.analyzeButton->setText(tr("Analyze"));
+    engineDeactivated();
 	if (m_engine) {
 		m_engine->deactivate();
         m_engine->deleteLater();
@@ -97,6 +97,12 @@ void AnalysisWidget::engineError(QProcess::ProcessError e)
                               .arg(e)
                               .arg(ui.engineList->currentText()));
 	stopEngine();
+}
+
+void AnalysisWidget::engineDeactivated()
+{
+    ui.analyzeButton->setChecked(false);
+    ui.analyzeButton->setText(tr("Analyze"));
 }
 
 void AnalysisWidget::toggleAnalysis()
