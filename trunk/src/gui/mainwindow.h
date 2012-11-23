@@ -318,6 +318,7 @@ private:
     TableView* m_openingTreeView;
 	QProgressBar* m_progressBar;
     ToolMainWindow* m_gameWindow;
+    QToolBar* m_gameToolBar;
 	/* Status */
 	QLabel* m_statusFilter;
     QLabel* m_gameTitle;

@@ -45,6 +45,7 @@
 MainWindow::MainWindow() : QMainWindow(),
     m_playerDialog(0), m_saveDialog(0),
     m_gameWindow(0),
+    m_gameToolBar(0),
     m_showPgnSource(false),
     m_bGameChange(false)
 {
@@ -92,28 +93,29 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameWindow->setObjectName("GameWindow");
     connect(this, SIGNAL(reconfigure()), m_gameWindow, SLOT(slotReconfigure()));
 
-    QToolBar* gameToolBar = new QToolBar(tr("Game Time"), m_gameWindow);
-    gameToolBar->setObjectName("GameToolBar");
-    m_gameWindow->addToolBar(Qt::BottomToolBarArea, gameToolBar);
+    m_gameToolBar = new QToolBar(tr("Game Time"), m_gameWindow);
+    m_gameToolBar->setObjectName("GameToolBar");
+    m_gameToolBar->setMovable(false);
+    m_gameWindow->addToolBar(Qt::BottomToolBarArea, m_gameToolBar);
     for (int i=0; i<2; ++i)
     {
-        QLCDNumber* annotatedTime = new QLCDNumber(gameToolBar);
+        QLCDNumber* annotatedTime = new QLCDNumber(m_gameToolBar);
         annotatedTime->setObjectName(QString("Clock") + QString::number(i));
-        gameToolBar->addWidget(annotatedTime);
+        m_gameToolBar->addWidget(annotatedTime);
         annotatedTime->setDigitCount(7);
         annotatedTime->display("1:00:00");
         if (i==0)
         {
             QWidget* spacer = new QWidget();
             spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-            gameToolBar->addWidget(spacer);
+            m_gameToolBar->addWidget(spacer);
         }
     }
 
-    m_menuView->addAction(gameToolBar->toggleViewAction());
-    gameToolBar->hide();
+    m_menuView->addAction(m_gameToolBar->toggleViewAction());
+    m_gameToolBar->setVisible(AppSettings->value(("GameToolBar"), false).toBool());
     m_gameView = new ChessBrowser(m_gameWindow, true);
-    m_gameView->toolBar = gameToolBar;
+    m_gameView->toolBar = m_gameToolBar;
     m_gameView->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
     m_gameView->setMinimumSize(200, 200);
@@ -361,6 +363,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
         AppSettings->setValue("FilterFollowsGame", m_gameList->m_FilterActive);
 		AppSettings->endGroup();
+        AppSettings->setValue(("GameToolBar"), m_gameToolBar->isVisible());
     }
     else
     {
