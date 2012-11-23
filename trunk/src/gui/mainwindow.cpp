@@ -37,12 +37,14 @@
 #include "settings.h"
 #include "tablebase.h"
 #include "tableview.h"
+#include "toolmainwindow.h"
 
 #include <time.h>
 #include <QtGui/QSizePolicy>
 
 MainWindow::MainWindow() : QMainWindow(),
     m_playerDialog(0), m_saveDialog(0),
+    m_gameWindow(0),
     m_showPgnSource(false),
     m_bGameChange(false)
 {
@@ -85,28 +87,33 @@ MainWindow::MainWindow() : QMainWindow(),
     DockWidgetEx* gameTextDock = new DockWidgetEx(tr("Game Text"), this);
 	gameTextDock->setObjectName("GameTextDock");
 	gameTextDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
-    QMainWindow* gameWindow = new QMainWindow(gameTextDock);
-    gameWindow->setWindowFlags(Qt::Widget);
 
-    m_gameToolBar = new QToolBar(tr("Game Time"), gameWindow);
-    gameWindow->addToolBar(Qt::BottomToolBarArea, m_gameToolBar);
+    m_gameWindow = new ToolMainWindow(gameTextDock);
+    m_gameWindow->setObjectName("GameWindow");
+    connect(this, SIGNAL(reconfigure()), m_gameWindow, SLOT(slotReconfigure()));
+
+    QToolBar* gameToolBar = new QToolBar(tr("Game Time"), m_gameWindow);
+    gameToolBar->setObjectName("GameToolBar");
+    m_gameWindow->addToolBar(Qt::BottomToolBarArea, gameToolBar);
     for (int i=0; i<2; ++i)
     {
-        QLCDNumber* annotatedTime = new QLCDNumber(m_gameToolBar);
-        m_gameToolBar->addWidget(annotatedTime);
+        QLCDNumber* annotatedTime = new QLCDNumber(gameToolBar);
+        annotatedTime->setObjectName(QString("Clock") + QString::number(i));
+        gameToolBar->addWidget(annotatedTime);
         annotatedTime->setDigitCount(7);
         annotatedTime->display("1:00:00");
         if (i==0)
         {
             QWidget* spacer = new QWidget();
             spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-            m_gameToolBar->addWidget(spacer);
+            gameToolBar->addWidget(spacer);
         }
     }
 
-    m_menuView->addAction(m_gameToolBar->toggleViewAction());
-    m_gameToolBar->hide();
-    m_gameView = new ChessBrowser(gameWindow, true);
+    m_menuView->addAction(gameToolBar->toggleViewAction());
+    gameToolBar->hide();
+    m_gameView = new ChessBrowser(m_gameWindow, true);
+    m_gameView->toolBar = gameToolBar;
     m_gameView->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
     m_gameView->setMinimumSize(200, 200);
@@ -114,9 +121,10 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 	connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
 	connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_gameView, SLOT(slotDatabaseChanged(DatabaseInfo*)));
+    connect(this, SIGNAL(displayTime(const QString&, Color)), m_gameView, SLOT(slotDisplayTime(const QString&, Color)));
+    gameTextDock->setWidget(m_gameWindow);
+    m_gameWindow->setCentralWidget(m_gameView);
     connect(this, SIGNAL(reconfigure()), m_gameView, SLOT(slotReconfigure()));
-    gameTextDock->setWidget(gameWindow);
-    gameWindow->setCentralWidget(m_gameView);
 	addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
     m_gameTitle = new QLabel;
     connect(m_gameTitle, SIGNAL(linkActivated(QString)), this, SLOT(slotGameViewLink(QString)));
@@ -340,11 +348,14 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		m_recentFiles.save("History", "RecentFiles");
         m_databaseList->save();
 		AppSettings->setLayout(m_playerDialog);
-		m_gameList->saveConfig();
+
+        m_gameList->saveConfig();
         m_databaseList->saveConfig();
         m_playerList->saveConfig();
         m_openingTreeView->saveConfig();
-		m_gameView->saveConfig();
+        m_gameWindow->saveConfig();
+        m_gameView->saveConfig();
+
 		AppSettings->setLayout(this);
 		AppSettings->beginGroup("MainWindow");
 		AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());

@@ -210,4 +210,5 @@ void Engine::processExited()
 {
 	setActive(false);
 	m_process = 0;
+    emit deactivated();
 }

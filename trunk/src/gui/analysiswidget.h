@@ -49,6 +49,8 @@ private slots:
 	void showAnalysis(const Analysis& analysis);
 	/** The engine is now ready, as requested */
 	void engineActivated();
+    /** The engine is now deactivated */
+    void engineDeactivated();
 	/** There was an error while running engine. */
     void engineError(QProcess::ProcessError);
 	/** Add variation. */

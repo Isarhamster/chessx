@@ -407,10 +407,12 @@ void MainWindow::slotBoardClick(Square s, int button)
 
 void MainWindow::slotMoveChanged()
 {
-	Game& g = game();
+    const Game& g = game();
 
 	// Set board first
 	m_boardView->setBoard(g.board());
+
+    emit displayTime(g.timeAnnotation(), g.board().toMove());
 
 	// Highlight current move
 	m_gameView->showMove(g.currentMove());

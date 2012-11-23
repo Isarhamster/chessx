@@ -22,6 +22,7 @@
 #include "editaction.h"
 
 class DatabaseInfo;
+class QToolBar;
 
 /** @ingroup GUI
 	The ChessBrowser class is a slightly modified QTextBrowser
@@ -32,6 +33,7 @@ class ChessBrowser : public QTextBrowser
 public:
 	/** Constructs new instance with parent @p parent. If @p showGameMenu is false, game menu is never shown. */
 	ChessBrowser(QWidget* p, bool showGameMenu = false);
+    QToolBar* toolBar;
 public slots:
 	/** Store current configuration. */
 	void saveConfig();
@@ -46,6 +48,9 @@ public slots:
 	void slotContextMenu(const QPoint& pos);
 	/** Database changed */
 	void slotDatabaseChanged(DatabaseInfo* dbInfo);
+
+    /** Show the time in the String for the player with @p color */
+    void slotDisplayTime(const QString& text, Color color);
 
 signals:
 	void actionRequested(const EditAction& action);
@@ -75,6 +80,7 @@ private:
 	int m_currentMove;
     int m_fontSize;
 	DatabaseInfo* m_databaseInfo;
+
 };
 
 #endif

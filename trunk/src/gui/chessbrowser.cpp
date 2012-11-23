@@ -13,8 +13,9 @@
 #include "databaseinfo.h"
 
 
-ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), m_gameMenu(NULL), m_databaseInfo(NULL)
+ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), toolBar(0), m_gameMenu(NULL), m_databaseInfo(NULL)
 {
+    setObjectName("ChessBrowser");
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	setupMenu(showGameMenu);
 
@@ -61,12 +62,12 @@ void ChessBrowser::selectAnchor(const QString& href)
 
 void ChessBrowser::saveConfig()
 {
-	AppSettings->setLayout(this);
+    AppSettings->setLayout(this);
 }
 
 void ChessBrowser::slotReconfigure()
 {
-	AppSettings->layout(this);
+    AppSettings->layout(this);
 
     int fontSizeSettingValue = AppSettings->value("/GameText/FontSize",DEFAULT_FONTSIZE).toInt();
     if( fontSizeSettingValue != m_fontSize )
@@ -192,17 +193,35 @@ void ChessBrowser::slotAction(QAction* action)
 	}
 }
 
-QAction *ChessBrowser::createAction(const QString& name, EditAction::Type type)
+QAction* ChessBrowser::createAction(const QString& name, EditAction::Type type)
 {
 	QAction* action = new QAction(name, this);
 	m_actions[action] = EditAction(type);
 	return action;
 }
 
-QAction *ChessBrowser::createNagAction(const Nag& nag)
+QAction* ChessBrowser::createNagAction(const Nag& nag)
 {
     QAction* action = new QAction(NagSet::nagToMenuString(nag), this);
 	m_actions[action] = EditAction(EditAction::AddNag, nag);
 	return action;
 }
 
+void ChessBrowser::slotDisplayTime(const QString& text, Color color)
+{
+    if (toolBar)
+    {
+        QString objectName = QString("Clock") + QString::number(color);
+        QLCDNumber* clock = toolBar->findChild<QLCDNumber*>(objectName);
+        if (clock)
+        {
+            clock->display(text);
+        }
+        objectName = QString("Clock") + QString::number(1-(int)color);
+        clock = toolBar->findChild<QLCDNumber*>(objectName);
+        if (clock)
+        {
+            clock->display("");
+        }
+    }
+}
