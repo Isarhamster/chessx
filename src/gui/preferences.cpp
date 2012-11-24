@@ -252,6 +252,7 @@ void PreferencesDialog::restoreSettings()
 	// Read Board settings
 	AppSettings->beginGroup("/General/");
 	ui.tablebaseCheck->setChecked(AppSettings->value("onlineTablebases", true).toBool());
+    ui.automaticECO->setChecked(AppSettings->value("automaticECO", true).toBool());
 	AppSettings->endGroup();
 	AppSettings->beginGroup("/Board/");
 	ui.boardFrameCheck->setChecked(AppSettings->value("showFrame", true).toBool());
@@ -321,6 +322,7 @@ void PreferencesDialog::saveSettings()
 {
 	AppSettings->beginGroup("/General/");
 	AppSettings->setValue("onlineTablebases", ui.tablebaseCheck->isChecked());
+    AppSettings->setValue("automaticECO", ui.automaticECO->isChecked());
 	AppSettings->endGroup();
 	AppSettings->beginGroup("/Board/");
 	AppSettings->setValue("showFrame", ui.boardFrameCheck->isChecked());

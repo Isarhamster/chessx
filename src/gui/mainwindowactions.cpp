@@ -612,7 +612,12 @@ void MainWindow::slotGameChanged()
 	QString black = game().tag("Black");
 	QString eco = game().tag("ECO").left(3);
 	if (eco == "?")
-		eco = "";
+        eco.clear();
+
+    if (eco.isEmpty())
+    {
+        eco = game().ecoClassify().left(3);
+    }
 
 	QString whiteElo = game().tag("WhiteElo");
 	QString blackElo = game().tag("BlackElo");

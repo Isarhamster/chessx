@@ -125,6 +125,17 @@ bool DatabaseInfo::saveGame()
         return false;
 	if (!isValid() || m_database->isReadOnly())
 		return false;
+
+    if (AppSettings->value("automaticECO", true).toBool())
+    {
+        QString eco = m_game.ecoClassify().left(3);
+        if (!eco.isEmpty())
+        {
+            m_game.setTag("ECO", eco);
+            database()->index()->setTag("ECO", eco, m_index);
+        }
+    }
+
 	if (m_index < m_database->count() && m_index >= 0)
     {
         if (m_database->replace(m_index, m_game))
