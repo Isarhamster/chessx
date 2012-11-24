@@ -163,17 +163,15 @@ private:
 	Currently all tags in the database are returned, if the game does
 	not a have a value for a particular tag, a default value is returned. */
 	void allGameTags(int gameId, QList<QPair<QString,QString> >&);
-
-
-// Unused:
+public:
 //	/** Recreates Index, removing all unused TagValues */
 //	bool compact();
-//	/** Write the index to disk, using m_filename */
-//	void write();
-//	/** Read the index from disk, using m_filename */
-//	void read();
-//	/** Sets the filename for reading and saving index */
-//	void setFilename(const QString& filename);
+    /** Write the index to disk, using m_filename */
+    void write();
+    /** Read the index from disk, using m_filename */
+    void read();
+    /** Sets the filename for reading and saving index */
+    void setFilename(const QString& filename);
 
 	/** Removes index item for game gameIndex */
 	void remove (int gameIndex);

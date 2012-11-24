@@ -202,14 +202,23 @@ bool Index::toggleDeleteFlag(const int& gameId)
 	return m_deleteFlags[gameId]=!m_deleteFlags[gameId];
 }
 
-/*
 void Index::write()
 {
 	QFile file(m_filename);
-	if (!file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::WriteOnly))
 		return;
 	QDataStream out(&file);
-	// I need to write stuff like versioning information, and magic number here
+
+    short version = 0;
+    unsigned short magic = 0xce55;
+
+    out << version;
+    out << magic;
+
+    QFileInfo fi = QFileInfo(m_filename);
+    QString basefile = fi.completeBaseName();
+
+    out << basefile;
 
 	// Write all the tag values
 	m_tagList.write(out);
@@ -229,6 +238,24 @@ void Index::read()
 		return;
 	QDataStream in(&file);
 
+    short version;
+    unsigned short magic;
+
+    in >> version;
+    in >> magic;
+
+    QString basefile;
+    in >> basefile;
+
+    QFileInfo fi = QFileInfo(m_filename);
+
+    if (!((version == 0) && (magic == 0xce55) &&
+        (basefile == fi.completeBaseName())))
+    {
+        // TODO: Error signal
+        return;
+    }
+
 	// Read all the tag values
 	m_tagList.read(in);
 
@@ -246,7 +273,6 @@ void Index::setFilename(const QString& filename)
 {
 	m_filename = filename;
 }
-*/
 
 void Index::clear()
 {
