@@ -51,5 +51,7 @@
         <file alias="images/text_clear.png">data/images/text_clear.png</file>
         <file alias="help/about4.html">data/help/about4.html</file>
         <file alias="help/about5.html">data/help/about5.html</file>
+        <file alias="chessx.eco">data/chessx.eco</file>
+        <file alias="chessx.gtm">data/chessx.gtm</file>
     </qresource>
 </RCC>

@@ -1011,10 +1011,10 @@ bool Game::loadEcoFile(const QString& ecoFile)
 	QDataStream sin(&file);
 	quint32 id;
 	sin >> id;
-	sin >> m_ecoPositions;
+    if (id != COMPILED_ECO_FILE_ID)
+        return false;
+    sin >> m_ecoPositions;
 	file.close();
-	if (id != COMPILED_ECO_FILE_ID)
-		return false;
 	return true;
 }
 

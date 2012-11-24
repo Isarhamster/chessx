@@ -14,7 +14,6 @@
 #include "databaseinfo.h"
 #include "databaselist.h"
 #include "editaction.h"
-#include "ecothread.h"
 #include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"

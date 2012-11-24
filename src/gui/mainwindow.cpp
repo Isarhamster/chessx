@@ -289,12 +289,15 @@ MainWindow::MainWindow() : QMainWindow(),
 	updateMenuDatabases();
 	slotDatabaseChanged();
 
+    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+    QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
+    QDir().mkpath(dir+"/index");
+
 	/* Load ECO file */
 	slotStatusMessage(tr("Loading ECO file..."));
-	qApp->setOverrideCursor(Qt::WaitCursor);
-	m_ecothread = new EcoThread(AppSettings->dataPath() + "/chessx");
-	connect(m_ecothread, SIGNAL(loaded()), this, SLOT(ecoLoaded()));
-	m_ecothread->start();
+    EcoThread* ecothread = new EcoThread();
+    connect(ecothread, SIGNAL(loaded(QObject*,bool)), this, SLOT(ecoLoaded(QObject*,bool)));
+    ecothread->start();
 }
 
 MainWindow::~MainWindow()
@@ -334,13 +337,11 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
 }
 
-void MainWindow::ecoLoaded()
+void MainWindow::ecoLoaded(QObject* ecoThread, bool ok)
 {
-	qApp->restoreOverrideCursor();
-	slotStatusMessage(tr("ECO Loaded."));
-	m_ecothread->wait();
-	delete m_ecothread;
-	m_ecothread = NULL;
+    slotStatusMessage(ok ? tr("ECO Loaded.") : tr("ECO Load Error."));
+    dynamic_cast<QThread*>(ecoThread)->wait();
+    delete ecoThread;
 }
 
 void MainWindow::closeEvent(QCloseEvent* e)
