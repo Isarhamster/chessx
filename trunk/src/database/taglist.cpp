@@ -168,22 +168,45 @@ void TagList::clear()
 
 void TagList::write(QDataStream& out)
 {
+    int n = 0;
+    for (int i = 0; i < m_list.size(); ++i)
+    {
+        if (m_list[i]) ++n;
+    }
+
+    out << n;
 	out << count();
-	for (int i = 0; i < m_list.size(); ++i) {
-		m_list[i]->write(out);
+
+    for (int i = 0; i < m_list.size(); ++i)
+    {
+        if (m_list[i])
+        {
+            out << i;
+            m_list[i]->write(out);
+        }
 	}
 
 }
 
 void TagList::read(QDataStream& in)
 {
-	int listCount;
+    int n,listCount;
 	clear();
-	in >> listCount;
-	for (int i = 0; i < listCount ; ++i) {
-		m_list.append(NULL);
-		m_list[i] = static_cast<TagValues*>(new StringTagValues);
-		m_list[i]->read(in);
+
+    in >> n;
+    in >> listCount;
+
+    for (int i = 0; i < listCount ; ++i)
+    {
+        m_list.append(NULL);
+    }
+
+    for (int i = 0; i < n ; ++i)
+    {
+        int index;
+        in >> index;
+        m_list[index] = static_cast<TagValues*>(new StringTagValues);
+        m_list[index]->read(in);
 	}
 }
 
