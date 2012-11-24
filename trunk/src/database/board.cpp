@@ -181,10 +181,10 @@ bool Board::loadEcoFile(const QString& ecoFile)
 	QDataStream sin(&file);
 	quint32 id;
 	sin >> id;
-	sin >> ecoGuessPositions;
+    if (id != COMPILED_GUESS_FILE_ID)
+        return false;
+    sin >> ecoGuessPositions;
 	file.close();
-	if (id != COMPILED_GUESS_FILE_ID)
-		return false;
 	return true;
 }
 

@@ -13,14 +13,16 @@ class EcoThread : public QThread
 	Q_OBJECT
 
 public:
-	EcoThread(QString path) : m_path(path) {};
-	void run() {	Game::loadEcoFile(m_path+".eco");
-			Board::loadEcoFile(m_path+".gtm");
-			emit loaded(); };
+    EcoThread() {};
+    void run() {
+        bool ok = true;
+        ok |= Game::loadEcoFile(":chessx.eco");
+        ok |= Board::loadEcoFile(":chessx.gtm");
+        emit loaded(this, ok);
+    };
+
 signals:
-	void loaded();
-private:
-	QString m_path;
+    void loaded(QObject*, bool);
 };
 
 #endif // __ECOTHREAD_H__

@@ -284,7 +284,7 @@ signals:
 
 private slots:
 	/** Cleanup after ECO file loaded. */
-	void ecoLoaded();
+    void ecoLoaded(QObject*,bool);
 
 private:
 	/** Create single menu action. */
@@ -337,7 +337,6 @@ private:
 	QString m_eco;
 	QActionGroup* m_actions;
 	bool m_showPgnSource; // for debugging
-	EcoThread* m_ecothread;
 	QTime m_operationTime;
 	/** Currently updated tree. May be NULL if no updated in progress. */
 	OpeningTree* m_openingTree;
