@@ -11,6 +11,7 @@
 #include <QtDebug>
 #include <QFileInfo>
 #include "memorydatabase.h"
+#include "settings.h"
 
 MemoryDatabase::MemoryDatabase() : PgnDatabase(false), m_isModified(false)
 {
@@ -97,6 +98,25 @@ void MemoryDatabase::parseGame()
         game->setStartingBoard(fen);
     m_index.setValidFlag(m_count-1,parseMoves(game));
     m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2), m_count - 1);
+
+    QString eco = game->tag("ECO").left(3);
+    if (eco == "?")
+        eco.clear();
+
+    if (AppSettings->value("automaticECO", true).toBool())
+    {
+        if (eco.isEmpty())
+        {
+            eco = game->ecoClassify().left(3);
+            if (!eco.isEmpty())
+            {
+                game->setTag("ECO", eco);
+                m_index.setTag("ECO", eco, m_count - 1);
+                m_isModified = true;
+            }
+        }
+    }
+
     m_games.append(game);
 }
 

@@ -478,8 +478,15 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="automaticECO">
+         <property name="text">
+          <string>Automatic classification with ECO Codes</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QGridLayout" name="gridLayout4">
-         <item row="0" column="1">
+         <item row="1" column="1">
           <widget class="QSpinBox" name="limitSpin">
            <property name="suffix">
             <string> MB</string>
@@ -495,7 +502,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
+         <item row="1" column="0">
           <widget class="QLabel" name="label_7">
            <property name="text">
             <string>&amp;Edit PGN files smaller than:</string>
@@ -505,7 +512,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="2" column="0">
           <widget class="QLabel" name="label_8">
            <property name="text">
             <string>Number of recent files:</string>
@@ -515,7 +522,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="2" column="1">
           <widget class="QSpinBox" name="spinBoxRecentFiles">
            <property name="maximum">
             <number>10</number>
@@ -525,7 +532,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="3" column="0">
           <widget class="QLabel" name="label_9">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -541,7 +548,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="3" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
             <widget class="QLineEdit" name="defaultDataBasePath">
