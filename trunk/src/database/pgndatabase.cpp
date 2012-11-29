@@ -13,11 +13,13 @@
 #include <QDir>
 #include <QStringList>
 #include <QtDebug>
+#include <QDesktopServices>
 
 #include "board.h"
 #include "nag.h"
 
 #include "pgndatabase.h"
+#include "settings.h"
 
 PgnDatabase::PgnDatabase(bool b64bit) :
     Database(),
@@ -51,8 +53,162 @@ void PgnDatabase::parseGame()
     skipMoves();
 }
 
+bool PgnDatabase::readIndexFile(QDataStream &in)
+{
+    return (index()->read(in));
+}
+
+bool PgnDatabase::writeIndexFile(QDataStream& out)
+{
+    return (index()->write(out));
+}
+
+QString PgnDatabase::offsetFilename(const QString& filename)
+{
+    QFileInfo fi = QFileInfo(filename);
+    QString basefile = fi.completeBaseName();
+    basefile.append(".cxi");
+
+    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+    QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
+    QString indexPath = dir + "/index";
+    return(indexPath + "/" + basefile);
+}
+
+bool PgnDatabase::readOffsetFile(const QString& filename)
+{
+    return false;
+    if (!AppSettings->value("/General/useIndexFile", true).toBool())
+    {
+        return false;
+    }
+
+    m_gameOffsets32 = 0;
+    m_gameOffsets64 = 0;
+
+    QFile file(offsetFilename(filename));
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        return false;
+    }
+
+    QDataStream in(&file);
+
+    short version;
+    unsigned short magic;
+
+    in >> version;
+    in >> magic;
+
+    if (!((version == 0) && (magic == 0xce55)))
+    {
+        return false;
+    }
+
+    QFileInfo fi = QFileInfo(filename);
+
+    QString basefile;
+    QDateTime lastModified;
+
+    in >> basefile;
+    in >> lastModified;
+
+    if (basefile != fi.completeBaseName() || lastModified != fi.lastModified())
+    {
+        return false;
+    }
+
+    in >> m_allocated;
+
+    if (bUse64bit)
+    {
+        m_gameOffsets64 = new qint64[m_allocated];
+        for (int i=0; i<m_allocated; ++i) in >> m_gameOffsets64[i];
+    }
+    else
+    {
+        m_gameOffsets32 = new qint32[m_allocated];
+        for (int i=0; i<m_allocated; ++i) in >> m_gameOffsets32[i];
+    }
+
+    in >> magic;
+
+    readIndexFile(in);
+
+    unsigned short finalMagic;
+    in >> finalMagic;
+    if (finalMagic != 0x55ec)
+    {
+        delete[] m_gameOffsets32;
+        delete[] m_gameOffsets64;
+        m_index.clear();
+        m_gameOffsets32 = 0;
+        m_gameOffsets64 = 0;
+        m_allocated     = 0;
+        return false;
+    }
+
+    return true;
+}
+
+bool PgnDatabase::writeOffsetFile(const QString& filename)
+{
+    return false;
+    if (!AppSettings->value("/General/useIndexFile", true).toBool())
+    {
+        return false;
+    }
+
+    QFile file(offsetFilename(filename));
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        return false;
+    }
+
+    QDataStream out(&file);
+
+    short version = 0;
+    unsigned short magic = 0xce55;
+
+    out << version;
+    out << magic;
+
+    QFileInfo fi = QFileInfo(filename);
+    QString basefile = fi.completeBaseName();
+
+    out << basefile;
+    out << fi.lastModified();
+
+    out << m_count;
+
+    if (bUse64bit)
+    {
+        for (int i=0; i<m_count; ++i) out << m_gameOffsets64[i];
+    }
+    else
+    {
+        for (int i=0; i<m_count; ++i) out << m_gameOffsets32[i];
+    }
+
+    out << magic;
+
+    writeIndexFile(out);
+
+    unsigned short finalMagic = 0x55ec;
+    out << finalMagic;
+
+    return true;
+}
+
 bool PgnDatabase::parseFile()
 {
+    if (readOffsetFile(m_filename))
+    {
+        m_count = m_allocated;
+        emit progress((100));
+        return true;
+    }
+
     //indexing game positions in the file, game contents are ignored
 	m_index.setCacheEnabled(true);
 	int percentDone = 0;
@@ -92,7 +248,8 @@ bool PgnDatabase::parseFile()
         }
     }
 
-	m_index.setCacheEnabled(false);
+    m_index.setCacheEnabled(false);
+    writeOffsetFile(m_filename);
 	return true;
 }
 
@@ -572,14 +729,35 @@ void PgnDatabase::skipTags()
 
 void PgnDatabase::skipMoves()
 {
-    QString gameText = " ";
-    QRegExp gameNumber("\\s(\\d+)\\s*\\.");
-    while (!onlyWhite(m_lineBuffer) && !m_file->atEnd()) {
-        gameText += QString(m_lineBuffer) + " ";
-		skipLine();
-	}
-	gameNumber.lastIndexIn(gameText);
-	m_index.setTag("Length", gameNumber.cap(1), m_count - 1);
+    QString tag = m_index.tagValue(TagPlyCount, m_count - 1);
+    if (tag=="?") tag.clear();
+    if (!tag.isEmpty())
+    {
+        while (!onlyWhite(m_lineBuffer) && !m_file->atEnd())
+        {
+            skipLine();
+        }
+
+        tag = QString::number((tag.toInt()+1)/2);
+        m_index.setTag("Length", tag, m_count - 1);
+    }
+    else
+    {
+        QRegExp gameNumber("\\s(\\d+)\\s*\\.");
+
+        QString gameText = " ";
+
+        while (!onlyWhite(m_lineBuffer) && !m_file->atEnd())
+        {
+            gameText += QString(m_lineBuffer) + " ";
+            skipLine();
+        }
+
+        gameText = gameText.remove(QRegExp("\\([^\\(\\)]*\\)"));
+
+        gameNumber.lastIndexIn(gameText);
+        m_index.setTag("Length", gameNumber.cap(1), m_count - 1);
+    }
 
 	//swallow trailing whitespace
     while (onlyWhite(m_lineBuffer) && !m_file->atEnd())

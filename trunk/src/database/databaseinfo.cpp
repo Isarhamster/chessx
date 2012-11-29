@@ -52,8 +52,6 @@ void DatabaseInfo::doLoadFile(QString filename)
     delete m_filter;
     m_filter = new Filter(m_database);
     m_bLoaded = true;
-    if (!loadGame(0))
-        newGame();
     emit LoadFinished(this);
 }
 
@@ -126,7 +124,7 @@ bool DatabaseInfo::saveGame()
 	if (!isValid() || m_database->isReadOnly())
 		return false;
 
-    if (AppSettings->value("automaticECO", true).toBool())
+    if (AppSettings->value("/General/automaticECO", true).toBool())
     {
         QString eco = m_game.ecoClassify().left(3);
         if (!eco.isEmpty())

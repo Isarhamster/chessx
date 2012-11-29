@@ -56,6 +56,10 @@ public:
 
 protected:
     virtual void parseGame();
+    virtual bool readIndexFile(QDataStream&) { return false; }
+    virtual bool writeIndexFile(QDataStream&) { return false; }
+    virtual bool readOffsetFile(QDataStream&) { return false; }
+    virtual bool writeOffsetFile(QDataStream&) { return false; }
 
 private:
 	QVector <Game*> m_games;

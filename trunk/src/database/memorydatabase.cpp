@@ -103,7 +103,7 @@ void MemoryDatabase::parseGame()
     if (eco == "?")
         eco.clear();
 
-    if (AppSettings->value("automaticECO", true).toBool())
+    if (AppSettings->value("/General/automaticECO", true).toBool())
     {
         if (eco.isEmpty())
         {

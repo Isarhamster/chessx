@@ -21,6 +21,8 @@ const int Index::defaultIndexItemSize = 32;
 
 Index::Index()
 {
+    m_tagIndexSize = defaultIndexItemSize;
+
     setTagIndexPosition(TagEvent, 0, 4);
     setTagIndexPosition(TagSite, 4, 4);
     setTagIndexPosition(TagDate, 8, 2);
@@ -40,10 +42,7 @@ Index::Index()
 
 Index::~Index()
 {
-	for (int j = 0; j < m_indexItems.count(); ++j) {
-		delete(m_indexItems[j]);
-	}
-
+    clear();
 }
 
 void Index::setTag(Tag tag, QString value, int gameId)
@@ -63,7 +62,6 @@ void Index::setTag(Tag tag, QString value, int gameId)
 	}
 	// At index value to itemindex
 	m_indexItems[gameId]->set(m_tagIndexPosition[tag].first, m_tagIndexPosition[tag].second, index);
-
 }
 
 void Index::setTag(const QString& tagName, QString value, int gameId)
@@ -87,7 +85,7 @@ GameId Index::add()
 {
 	int gameId = m_indexItems.count();
 	m_indexItems.append(new IndexItem);
-	m_indexItems[gameId]->allocate(m_tagIndexSize);
+    m_tagIndexSize = m_indexItems[gameId]->allocate(m_tagIndexSize);
     m_deleteFlags.append(false);
     m_validFlags.append(true);
 	return gameId;
@@ -167,7 +165,7 @@ void Index::reallocateIndexItems(bool clear)
     for (int j = 0; j < m_indexItems.count(); ++j)
     {
         m_indexItems[j]->allocate(m_tagIndexSize, clear);
-	}
+    }
 }
 
 QString Index::tagValue(Tag tag, int gameId)
@@ -202,76 +200,45 @@ bool Index::toggleDeleteFlag(const int& gameId)
 	return m_deleteFlags[gameId]=!m_deleteFlags[gameId];
 }
 
-void Index::write()
+bool Index::write(QDataStream &out)
 {
-	QFile file(m_filename);
-    if (!file.open(QIODevice::WriteOnly))
-		return;
-	QDataStream out(&file);
-
-    short version = 0;
-    unsigned short magic = 0xce55;
-
-    out << version;
-    out << magic;
-
-    QFileInfo fi = QFileInfo(m_filename);
-    QString basefile = fi.completeBaseName();
-
-    out << basefile;
-
 	// Write all the tag values
 	m_tagList.write(out);
 
 	// Write the individual index items
 	out << m_indexItems.count();
+    out << m_tagIndexSize;
+
     for (int i = 0 ; i < m_indexItems.count() ; ++i)
     {
 		m_indexItems[i]->write(out);
 	}
+
+    out << m_tagIndexPosition;
+
+    return true;
 }
 
-void Index::read()
+bool Index::read(QDataStream &in)
 {
-	QFile file(m_filename);
-	if (!file.open(QIODevice::ReadOnly))
-		return;
-	QDataStream in(&file);
-
-    short version;
-    unsigned short magic;
-
-    in >> version;
-    in >> magic;
-
-    QString basefile;
-    in >> basefile;
-
-    QFileInfo fi = QFileInfo(m_filename);
-
-    if (!((version == 0) && (magic == 0xce55) &&
-        (basefile == fi.completeBaseName())))
-    {
-        // TODO: Error signal
-        return;
-    }
-
 	// Read all the tag values
 	m_tagList.read(in);
 
 	// Read the individual index items
-	clear();
 	int indexItemCount;
 	in >> indexItemCount;
+    in >> m_tagIndexSize;
 	for (int i = 0 ; i < indexItemCount ; ++i) {
 		add();
 		m_indexItems[i]->read(in);
 	}
-}
 
-void Index::setFilename(const QString& filename)
-{
-	m_filename = filename;
+    m_tagIndexPosition.clear();
+    in >> m_tagIndexPosition;
+
+    m_nbUsedIndexItems = m_indexItems.count();
+
+    return true;
 }
 
 void Index::clear()
@@ -282,6 +249,8 @@ void Index::clear()
 	}
 	m_indexItems.clear();
 	m_tagList.clear();
+    m_deleteFlags.clear();
+    m_validFlags.clear();
 }
 
 void Index::setCacheEnabled(bool enabled)

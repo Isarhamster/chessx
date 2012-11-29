@@ -191,12 +191,12 @@ void TagList::write(QDataStream& out)
 void TagList::read(QDataStream& in)
 {
     int n,listCount;
-	clear();
 
     in >> n;
     in >> listCount;
 
-    for (int i = 0; i < listCount ; ++i)
+    clear();
+    for (int i = TagLastTag; i < listCount ; ++i)
     {
         m_list.append(NULL);
     }

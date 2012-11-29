@@ -18,6 +18,7 @@
 IndexItem::IndexItem()
 {
 	m_data = NULL;
+    m_size = 0;
 	allocate(Index::defaultIndexItemSize);
 }
 
@@ -25,6 +26,8 @@ IndexItem::~IndexItem()
 {
 	if (m_data)
 		free(m_data);
+    m_data = 0;
+    m_size = 0;
 }
 
 int IndexItem::allocate(const int size, bool clear)
@@ -41,14 +44,17 @@ int IndexItem::allocate(const int size, bool clear)
 	if (m_data) {
 		if (clear) {
 			// Clear all the values to zero
-			for (int i = 0;i < size; ++i) {
-				*(quint8*)(m_data + i) = (quint8) 0;
-			}
+            for (int i = 0;i < size; ++i) {
+                *(quint8*)(m_data + i) = (quint8) 0;
+            }
 		} else {
-			// Clear only newly allocated values to 0
-			for (int i = m_size;i < size; ++i) {
-				*(quint8*)(m_data + i) = (quint8) 0;
-			}
+            if (m_size < size)
+            {
+                // Clear only newly allocated values to 0
+                for (int i = m_size;i < size; ++i) {
+                    *(quint8*)(m_data + i) = (quint8) 0;
+                }
+            }
 		}
 		m_size = size;	
     }

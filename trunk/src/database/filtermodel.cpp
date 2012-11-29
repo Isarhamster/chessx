@@ -80,7 +80,8 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
                     return i + 1;
                 else {
                     QString tag = m_game->tag(m_columnTags.at(index.column()));
-                    return tag == "?" ? QString() : tag;
+                    if (tag == "?") tag.clear();
+                    return tag;
                 }
             }
             else if (role == Qt::ForegroundRole)
