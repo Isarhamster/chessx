@@ -842,7 +842,7 @@ void MainWindow::slotDatabaseChanged()
 	setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
 	m_gameList->setFilter(databaseInfo()->filter());
 	slotFilterChanged();
-	gameLoad(gameIndex(), true, true);
+    gameLoad(gameIndex()>=0 ? gameIndex() : 0, true, true);
 	if (m_playerDialog && playerDialog()->isVisible())
 		playerDialog()->setDatabase(database());
     m_playerList->setDatabase(database());

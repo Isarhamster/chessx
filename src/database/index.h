@@ -105,6 +105,14 @@ public:
 	/** Return TagValues for given tag (used as QAbstractItemModel for completion). */
 	TagValues* tagValues(Tag tag);
 
+    /** Write the index to disk, using m_filename */
+    bool write(QDataStream& out);
+
+    /** Read the index from disk, using m_filename */
+    bool read(QDataStream& in);
+
+    /** Clears the index, and frees all associated memory */
+    void clear();
 
 private:
 	int m_nbUsedIndexItems;
@@ -120,9 +128,6 @@ private:
 
     QList<bool> m_validFlags;
 
-	/** Clears the index, and frees all associated memory */
-	void clear();
-
 	// The following items are related to ItemIndex. These are needed
 	// to know where in ItemIndex the values are stored.
 	QMap <int, QPair<quint8 , quint8 > > m_tagIndexPosition;
@@ -130,8 +135,6 @@ private:
 	quint8 m_tagIndexSize;
 	void reallocateIndexItems(bool clear = true);
 	void calculateIndexSize();
-
-	QString m_filename;
 
 	/** Adds an IndexItem. item will be copied in a new item which will
    be dynamically allocated. This adds some overhead but in this
@@ -163,15 +166,9 @@ private:
 	Currently all tags in the database are returned, if the game does
 	not a have a value for a particular tag, a default value is returned. */
 	void allGameTags(int gameId, QList<QPair<QString,QString> >&);
-public:
+
 //	/** Recreates Index, removing all unused TagValues */
 //	bool compact();
-    /** Write the index to disk, using m_filename */
-    void write();
-    /** Read the index from disk, using m_filename */
-    void read();
-    /** Sets the filename for reading and saving index */
-    void setFilename(const QString& filename);
 
 	/** Removes index item for game gameIndex */
 	void remove (int gameIndex);

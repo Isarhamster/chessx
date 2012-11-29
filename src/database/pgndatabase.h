@@ -77,6 +77,12 @@ protected:
 	virtual bool parseFile();
     virtual void parseGame();
 
+    virtual bool readIndexFile(QDataStream& in);
+    virtual bool writeIndexFile(QDataStream& out);
+    QString offsetFilename(const QString& filename);
+    virtual bool readOffsetFile(const QString&);
+    virtual bool writeOffsetFile(const QString&);
+
     // Open a PGN data File
 	bool openFile(const QString& filename);
 
@@ -117,7 +123,7 @@ private:
 
 	//game index
     static const int AllocationSize = 16384;
-	int m_allocated;
+    IndexBaseType m_allocated;
     qint32* m_gameOffsets32;
     qint64* m_gameOffsets64;
     QByteArray m_lineBuffer;
@@ -155,8 +161,6 @@ private:
                 delete[] m_gameOffsets32;
                 m_gameOffsets32 = newAllocation;
             }
-
-
         }
 
         if (bUse64bit)
@@ -165,9 +169,5 @@ private:
             m_gameOffsets32[m_count++] = offset;
     }
 };
-
-
-
-
 
 #endif

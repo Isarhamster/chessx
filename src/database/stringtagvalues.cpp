@@ -92,8 +92,11 @@ bool StringTagValues::contains(const QString& value)
 
 void StringTagValues::read(QDataStream& in)
 {
+    int n;
+    in >> n;
 	QString line;
-	while (!in.atEnd()) {
+    for (int i = 0; i < n; ++i)
+    {
 		in >> line;
 		add(line);
 	}
@@ -101,7 +104,7 @@ void StringTagValues::read(QDataStream& in)
 
 void StringTagValues::write(QDataStream& out)
 {
-//      out << m_list.count();
+    out << m_list.count();
 	for (int i = 0; i < m_list.count(); ++i) {
 		appendToStream(m_list[i],out);
 	}

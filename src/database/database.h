@@ -85,6 +85,8 @@ public:
 	virtual bool isModified() const { return false; }
     /** Get the Valid Flag for a given game id from the index */
     virtual bool getValidFlag(GameId id) const { return m_index.isValidFlag(id); }
+    virtual bool readIndexFile(QDataStream&) { return false; }
+    virtual bool writeIndexFile(QDataStream&) { return false; }
 signals:
 	/** Signal emitted when some progress is done. */
     void progress(int);
