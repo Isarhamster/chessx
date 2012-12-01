@@ -12,8 +12,6 @@
 #ifndef __BITBOARD_H__
 #define __BITBOARD_H__
 
-#include "movelist.h"
-
 enum BoardStatus
 {
 	Valid, NoWhiteKing, NoBlackKing, DoubleCheck,
