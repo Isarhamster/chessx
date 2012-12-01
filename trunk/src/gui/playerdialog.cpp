@@ -28,8 +28,7 @@
 PlayerDialog::PlayerDialog(QWidget* parent) : QDialog(parent)
 {
 	ui.setupUi(this);
-	m_filterModel = new QSortFilterProxyModel(this);
-	m_filterModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    m_filterModel = new QStringListModel(this);
 	ui.playersView->setModel(m_filterModel);
 
 	setObjectName("PlayerDialog");
@@ -55,7 +54,15 @@ void PlayerDialog::configure()
 
 void PlayerDialog::findPlayers(const QString& s)
 {
-	m_filterModel->setFilterFixedString(s);
+    if (s.isEmpty())
+    {
+        m_filterModel->setStringList(m_list);
+    }
+    else
+    {
+        QStringList newList = m_list.filter(s, Qt::CaseInsensitive);
+        m_filterModel->setStringList(newList);
+    }
 }
 
 void PlayerDialog::showPlayer(const QString& player)
@@ -89,7 +96,8 @@ void PlayerDialog::updatePlayer()
 void PlayerDialog::setDatabase(Database* db)
 {
 	m_player.setDatabase(db);
-	m_filterModel->setSourceModel(db->index()->tagValues(TagPlayerName));
+    m_list = QStringList::fromSet(db->index()->playerNames());
+    m_filterModel->setStringList(m_list);
 	m_filterModel->sort(0);
 }
 
