@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include <string.h>
 #include "movelist.h"
 #include "bitboard.h"
 
