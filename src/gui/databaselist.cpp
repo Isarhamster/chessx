@@ -64,8 +64,16 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         bool bIsFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::ToolTipRole).toString() == tr("Favorite");
         bool bIsNotFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::ToolTipRole).toString().isEmpty();
         bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH), Qt::ToolTipRole).toString().isEmpty();
-        menu.addAction(tr("Open"), this, SLOT(dbOpen()));
-        menu.addAction(tr("Close"), this, SLOT(dbClose()))->setEnabled(bHasPath);
+        bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_OPEN), Qt::ToolTipRole).toString() == tr("Open");
+        menu.addAction(bIsOpen ? tr("Activate") : tr("Open"), this, SLOT(dbOpen()));
+
+        QAction* action = menu.addAction(tr("UTF8"), this, SLOT(dbToggleUTF8()));
+        action->setCheckable(true);
+        QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
+        bool bUtf8 = (utf8.compare("UTF8")==0);
+        action->setChecked(bUtf8);
+
+        menu.addAction(tr("Close"), this, SLOT(dbClose()))->setEnabled(bIsOpen && bHasPath);
         menu.addSeparator();
         menu.addAction(tr("Add to favorites"), this, SLOT(dbAddToFavorites()))->setEnabled(bIsNotFavorite);
         menu.addAction(tr("Remove from Favorites"), this, SLOT(dbRemoveFromFavorites()))->setEnabled(bIsFavorite);
@@ -96,6 +104,14 @@ void DatabaseList::dbOpen()
     QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
     bool bUtf8 = (utf8.compare("UTF8")==0);
     emit requestOpenDatabase(ts,bUtf8);
+}
+
+void DatabaseList::dbToggleUTF8()
+{
+    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
+    QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
+    bool bUtf8 = (utf8.compare("UTF8")==0);
+    setFileUtf8(ts, !bUtf8);
 }
 
 void DatabaseList::dbClose()
