@@ -19,8 +19,9 @@
 #include "ui_playerdialog.h"
 #include "playerinfo.h"
 
+#include <QStringListModel>
+
 class Database;
-class QSortFilterProxyModel;
 
 /** @ingroup GUI
 The PlayerDialog class is a dialog to browse player information. */
@@ -47,7 +48,8 @@ public slots:
 private:
 	Ui::PlayerDialog ui;
 	PlayerInfo m_player;
-	QSortFilterProxyModel* m_filterModel;
+    QStringList m_list;
+    QStringListModel* m_filterModel;
 };
 
 
