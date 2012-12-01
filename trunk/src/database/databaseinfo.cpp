@@ -124,13 +124,17 @@ bool DatabaseInfo::saveGame()
 	if (!isValid() || m_database->isReadOnly())
 		return false;
 
+    QString eco;
     if (AppSettings->value("/General/automaticECO", true).toBool())
     {
-        QString eco = m_game.ecoClassify().left(3);
+        eco = m_game.ecoClassify().left(3);
         if (!eco.isEmpty())
         {
             m_game.setTag("ECO", eco);
-            database()->index()->setTag("ECO", eco, m_index);
+            if (m_index>=0)
+            {
+                database()->index()->setTag("ECO", eco, m_index);
+            }
         }
     }
 
@@ -146,6 +150,10 @@ bool DatabaseInfo::saveGame()
     {
 		m_filter->resize(m_database->count(), 1);
 		m_index = m_database->count() - 1;
+        if (!eco.isEmpty())
+        {
+            database()->index()->setTag("ECO", eco, m_index);
+        }
         m_game.setModified(false);
 		return true;
     }

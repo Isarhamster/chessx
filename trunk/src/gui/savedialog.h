@@ -36,7 +36,7 @@ public:
 	virtual int exec(Database* database, Game& game);
     virtual void accept();
 private:
-	void setLineEdit(QLineEdit* edit, Database* database, Tag tag);
+    void setLineEdit(QLineEdit* edit, Database* database, const QString& tagName);
 	Ui::SaveDialog ui;
 };
 

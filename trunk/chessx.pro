@@ -18,7 +18,7 @@ macx {
 	QMAKE_CXXFLAGS += -fvisibility=hidden
 }
 
-FORMS += src/gui/playerdialog.ui \
+FORMS += \
 	src/gui/preferences.ui \
 	src/gui/boardsetup.ui \
 	src/gui/quicksearch.ui \
@@ -26,7 +26,8 @@ FORMS += src/gui/playerdialog.ui \
 	src/gui/analysiswidget.ui \
 	src/gui/copydialog.ui \
 	src/gui/commentdialog.ui \
-    src/gui/engineoptiondialog.ui
+    src/gui/engineoptiondialog.ui \
+    src/gui/playerlistwidget.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -36,9 +37,6 @@ HEADERS += src/database/board.h \
 	src/database/playerdatabase.h \
 	src/database/playerdata.h \
 	src/database/databaseconversion.h \
-	src/database/tagvalues.h \
-	src/database/taglist.h \
-	src/database/stringtagvalues.h \
 	src/database/engine.h \
 	src/database/wbengine.h \
 	src/database/uciengine.h \
@@ -86,7 +84,6 @@ HEADERS += src/database/board.h \
 	src/guess/timer.h \
 	src/guess/tokens.h \
 	src/gui/mainwindow.h \
-	src/gui/playerdialog.h \
 	src/gui/preferences.h \
 	src/gui/boardview.h \
 	src/gui/boardtheme.h \
@@ -103,8 +100,6 @@ HEADERS += src/database/board.h \
 	src/gui/messagedialog.h \
 	src/gui/commentdialog.h \
 	src/gui/plaintextedit.h \
-    src/gui/playerlist.h \
-    src/database/playerlistmodel.h \
     src/gui/databaselist.h \
     src/gui/databaselistmodel.h \
     src/gui/dockwidgetex.h \
@@ -133,7 +128,8 @@ HEADERS += src/database/board.h \
     src/quazip/JlCompress.h \
     src/quazip/ioapi.h \
     src/quazip/crypt.h \
-    src/gui/toolmainwindow.h
+    src/gui/toolmainwindow.h \
+    src/gui/playerlistwidget.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -142,9 +138,6 @@ SOURCES += src/database/board.cpp \
 	src/database/partialdate.cpp \
 	src/database/playerdatabase.cpp \
 	src/database/playerdata.cpp \
-	src/database/tagvalues.cpp \
-	src/database/stringtagvalues.cpp \
-	src/database/taglist.cpp \
 	src/database/engine.cpp \
 	src/database/wbengine.cpp \
 	src/database/uciengine.cpp \
@@ -184,7 +177,6 @@ SOURCES += src/database/board.cpp \
 	src/gui/mainwindow.cpp \
 	src/gui/mainwindowactions.cpp \
 	src/gui/mainwindowabout.cpp \
-	src/gui/playerdialog.cpp \
 	src/gui/colorlist.cpp \
 	src/gui/preferences.cpp \
 	src/gui/boardview.cpp \
@@ -201,8 +193,6 @@ SOURCES += src/database/board.cpp \
 	src/gui/messagedialog.cpp \
 	src/gui/commentdialog.cpp \
 	src/gui/plaintextedit.cpp \
-    src/gui/playerlist.cpp \
-    src/database/playerlistmodel.cpp \
     src/gui/databaselist.cpp \
     src/gui/databaselistmodel.cpp \
     src/gui/dockwidgetex.cpp \
@@ -226,7 +216,8 @@ SOURCES += src/database/board.cpp \
     src/quazip/JlCompress.cpp \
     src/quazip/zip.c \
     src/quazip/unzip.c \
-    src/gui/toolmainwindow.cpp
+    src/gui/toolmainwindow.cpp \
+    src/gui/playerlistwidget.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

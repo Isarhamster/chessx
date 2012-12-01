@@ -61,33 +61,32 @@ void PlayerInfo::update()
 	const Index* index = m_database->index();
 
 	// Determine matching tag values
-	int wplayer = index->valueToIndex(TagWhite, m_name);
-	int bplayer = index->valueToIndex(TagBlack, m_name);
+    ValueIndex player = index->getValueIndex(m_name);
 
 	// Clean previous statistics
 	reset();
 
     for (int i = 0; i < m_database->count(); ++i) {
 		Color c;
-		if (index->gameTagIndex(TagWhite, i) == wplayer)
+        if (index->valueIndexFromTag(TagNameWhite, i) == player)
 			c = White;
-		else if (index->gameTagIndex(TagBlack, i) == bplayer)
+        else if (index->valueIndexFromTag(TagNameBlack, i) == player)
 			c = Black;
 		else continue;
-		int res = toResult(index->gameTagValue(TagResult, i));
+        int res = toResult(index->tagValue(TagNameResult, i));
 		m_result[c][res]++;
 		m_count[c]++;
-		int elo = index->gameTagValue(c == White ? TagWhiteElo : TagBlackElo, i).toInt();
+        int elo = index->tagValue(c == White ? TagNameWhiteElo : TagNameBlackElo, i).toInt();
 		if (elo) {
 			m_rating[0] = qMin(elo, m_rating[0]);
 			m_rating[1] = qMax(elo, m_rating[1]);
 		}
-		PartialDate date(index->gameTagValue(TagDate, i));
+        PartialDate date(index->tagValue(TagNameDate, i));
 		if (date.year() > 1000) {
 			m_date[0] = qMin(date, m_date[0]);
 			m_date[1] = qMax(date, m_date[1]);
 		}
-		QString eco = index->gameTagValue(TagECO, i).left(3);
+        QString eco = index->tagValue(TagNameECO, i).left(3);
 		openings[c][eco]++;
 	}
 	qSwap(m_result[Black][WhiteWin], m_result[Black][BlackWin]);

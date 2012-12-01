@@ -93,7 +93,7 @@ bool MemoryDatabase::loadGame(int index, Game& game)
 void MemoryDatabase::parseGame()
 {
     Game* game = new Game;
-    QString fen = m_index.tagValue(TagFEN, m_count - 1);
+    QString fen = m_index.tagValue(TagNameFEN, m_count - 1);
     if (fen != "?")
         game->setStartingBoard(fen);
     m_index.setValidFlag(m_count-1,parseMoves(game));
@@ -122,7 +122,7 @@ void MemoryDatabase::parseGame()
 
 bool MemoryDatabase::parseFile()
 {
-    PgnDatabase::parseFile();
+    parseFileIntern();
 	m_isModified = false;
 	return true;
 }

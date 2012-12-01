@@ -193,7 +193,6 @@ public:
 	void initialize();
 private:
 	QString m_tagName;
-	Tag m_tag;
 	QString m_value;
 	QBitArray m_matches;
 };
