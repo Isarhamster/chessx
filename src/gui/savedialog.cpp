@@ -86,10 +86,10 @@ int SaveDialog::exec(Database* database, Game& game)
 		if (buttons[i]->text() == game.tag("Result"))
 			buttons[i]->setChecked(true);
 	// Completion
-	setLineEdit(ui.whiteEdit, database, TagPlayerName);
-	setLineEdit(ui.blackEdit, database, TagPlayerName);
-	setLineEdit(ui.siteEdit, database, TagSite);
-	setLineEdit(ui.eventEdit, database, TagEvent);
+    setLineEdit(ui.whiteEdit, database, TagNameWhite);
+    setLineEdit(ui.blackEdit, database, TagNameBlack);
+    setLineEdit(ui.siteEdit,  database, TagNameSite);
+    setLineEdit(ui.eventEdit, database, TagNameEvent);
 	int result = QDialog::exec();
     if (result == Accepted) {
 		game.setTag("White", formatTagValue(ui.whiteEdit->text()));
@@ -120,11 +120,11 @@ int SaveDialog::exec(Database* database, Game& game)
 	return result;
 }
 
-void SaveDialog::setLineEdit(QLineEdit* edit, Database* database, Tag tag)
+void SaveDialog::setLineEdit(QLineEdit* edit, Database* database, const QString &tagName)
 {
-	QCompleter* completer = new QCompleter(database->index()->tagValues(tag), this);
-	completer->setCaseSensitivity(Qt::CaseInsensitive);
-	edit->setCompleter(completer);
+    //QCompleter* completer = new QCompleter(database->index()->tagValues(tag), this);
+    //completer->setCaseSensitivity(Qt::CaseInsensitive);
+    //edit->setCompleter(completer);
 }
 
 void SaveDialog::accept()

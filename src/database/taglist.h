@@ -34,6 +34,7 @@ class TagList
 public:
 	TagList();
 	~TagList();
+    void Init();
 
 	/** Adds a string value to a TagValues object, identified by tag */
 	int add(Tag tag, const QString& value);

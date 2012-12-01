@@ -16,7 +16,8 @@ QMap<quint64, QString> Game::m_ecoPositions;
 
 Game::Game()
 {
-	clear();
+    clearTags();
+    clear();
     setModified(false);
 }
 
@@ -31,6 +32,7 @@ Game& Game::operator=(const Game & game)
 {
 	if (this!=&game)
 	{
+        clearTags();
 		clear();
 		//assign non pointer variables
 		m_tags = game.m_tags;
@@ -272,8 +274,8 @@ void Game::truncateVariation(Position position)
 		m_startingBoard = m_currentBoard;
         if (m_startingBoard != standardStartBoard)
         {
-            m_tags[TagNames[TagFEN]] = m_startingBoard.toFen();
-            m_tags[TagNames[TagSetUp]] = "1";
+            m_tags[TagNameFEN] = m_startingBoard.toFen();
+            m_tags[TagNameSetUp] = "1";
         }
 		moveToId(current);
 	}
@@ -848,7 +850,6 @@ void Game::removeNode(MoveId moveId)
 
 void Game::clear()
 {
-	clearTags();
 	m_moveNodes.clear();
 	m_variationStartAnnotations.clear();
 	m_annotations.clear();
@@ -873,7 +874,7 @@ QString Game::tag(const QString& tag) const
 	return m_tags[tag];
 }
 
-QMap<QString, QString> Game::tags() const
+const QMap<QString, QString>& Game::tags() const
 {
 	return m_tags;
 }
@@ -899,8 +900,8 @@ void Game::setStartingBoard(const QString& fen)
 	m_startingBoard.fromFen(fen);
     if (m_startingBoard != standardStartBoard)
     {
-        m_tags[TagNames[TagFEN]] = fen;
-        m_tags[TagNames[TagSetUp]] = "1";
+        m_tags[TagNameFEN] = fen;
+        m_tags[TagNameSetUp] = "1";
     }
 	m_currentBoard = m_startingBoard;
 	m_startPly = (m_startingBoard.moveNumber() - 1) * 2 + (m_startingBoard.toMove() == Black);

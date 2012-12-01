@@ -28,8 +28,7 @@
 #include "openingtree.h"
 #include "output.h"
 #include "pgndatabase.h"
-#include "playerdialog.h"
-#include "playerlist.h"
+#include "playerlistwidget.h"
 #include "preferences.h"
 #include "quazip.h"
 #include "quazipfile.h"
@@ -43,7 +42,7 @@
 #include <QtGui/QSizePolicy>
 
 MainWindow::MainWindow() : QMainWindow(),
-    m_playerDialog(0), m_saveDialog(0),
+    m_saveDialog(0),
     m_gameWindow(0),
     m_gameToolBar(0),
     m_showPgnSource(false),
@@ -151,7 +150,7 @@ MainWindow::MainWindow() : QMainWindow(),
     // Player List
     DockWidgetEx* playerListDock = new DockWidgetEx(tr("Players"), this);
     playerListDock->setObjectName("PlayerList");
-    m_playerList = new PlayerList(this);
+    m_playerList = new PlayerListWidget(this);
     m_playerList->setMinimumSize(150, 100);
     playerListDock->setWidget(m_playerList);
     addDockWidget(Qt::RightDockWidgetArea, playerListDock);
@@ -308,7 +307,6 @@ MainWindow::~MainWindow()
     }
 	qDeleteAll(m_databases.begin(), m_databases.end());
 	delete m_saveDialog;
-	delete m_playerDialog;
 	delete m_output;
 }
 
@@ -350,11 +348,10 @@ void MainWindow::closeEvent(QCloseEvent* e)
     {
 		m_recentFiles.save("History", "RecentFiles");
         m_databaseList->save();
-		AppSettings->setLayout(m_playerDialog);
 
         m_gameList->saveConfig();
         m_databaseList->saveConfig();
-        m_playerList->saveConfig();
+//        m_playerList->saveConfig();
         m_openingTreeView->saveConfig();
         m_gameWindow->saveConfig();
         m_gameView->saveConfig();
@@ -739,15 +736,6 @@ bool MainWindow::gameEditComment(Output::CommentType type)
 	return true;
 }
 
-PlayerDialog* MainWindow::playerDialog()
-{
-	if (!m_playerDialog) {
-		m_playerDialog = new PlayerDialog(this);
-		AppSettings->layout(m_playerDialog);
-	}
-	return m_playerDialog;
-}
-
 SaveDialog* MainWindow::saveDialog()
 {
 	if (!m_saveDialog)
@@ -832,8 +820,6 @@ void MainWindow::setupActions()
 
 	/* View menu */
 	m_menuView = menuBar()->addMenu(tr("&View"));
-	m_menuView->addAction(createAction(tr("&Player information..."), SLOT(slotPlayerDialog()),
-						Qt::CTRL + Qt::SHIFT + Qt::Key_P));
 
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));

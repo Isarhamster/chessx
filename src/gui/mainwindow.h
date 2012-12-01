@@ -19,9 +19,8 @@
 
 class EditAction;
 class Analysis;
-class PlayerDialog;
 class GameList;
-class PlayerList;
+class PlayerListWidget;
 class DatabaseList;
 class SaveDialog;
 class BoardView;
@@ -85,8 +84,6 @@ protected:
 	void updateMenuRecent();
 	/** Update recent files menu */
 	void updateMenuDatabases();
-	/** Player dialog (created when used first) */
-	PlayerDialog* playerDialog();
 	/** Save Game dialog (created when used first) */
 	SaveDialog* saveDialog();
 public slots:
@@ -101,8 +98,8 @@ public slots:
     /** Add favorite status to a database */
     void setFavoriteDatabase(QString fname);
     /** Open Player dialog */
-	void slotPlayerDialog();
-	/** Promote current variation. */
+    void slotPlayerListWidget();
+    /** Promote current variation. */
 	void slotEditVarPromote();
 	/** Remove current variation. */
 	void slotEditVarRemove();
@@ -306,9 +303,8 @@ private:
     void QuerySaveGame();
 
 	/* Dialogs  */
-	PlayerDialog* m_playerDialog;
 	GameList* m_gameList;
-    PlayerList* m_playerList;
+    PlayerListWidget* m_playerList;
     DatabaseList* m_databaseList;
 	SaveDialog* m_saveDialog;
 	/* Main gui parts */

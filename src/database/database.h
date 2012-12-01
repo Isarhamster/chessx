@@ -78,7 +78,8 @@ public:
 	/** Compacts the database */
 	virtual void compact() {}
 	/** Returns a pointer to the index of the database */
-	Index* index();
+    Index *index();
+    const Index *index() const;
 	/** Returns the number of games in the database */
     virtual int count() { return 0; }
 	/** @return true if the database has been modified. By default database is read-only. */

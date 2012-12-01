@@ -23,8 +23,7 @@
 #include "openingtree.h"
 #include "output.h"
 #include "pgndatabase.h"
-#include "playerdialog.h"
-#include "playerlist.h"
+#include "playerlistwidget.h"
 #include "preferences.h"
 #include "savedialog.h"
 #include "settings.h"
@@ -186,10 +185,9 @@ void MainWindow::slotFileQuit()
 	qApp->closeAllWindows();
 }
 
-void MainWindow::slotPlayerDialog()
+void MainWindow::slotPlayerListWidget()
 {
-	playerDialog()->setDatabase(database());
-	playerDialog()->show();
+    m_playerList->setDatabase(database());
 }
 
 void MainWindow::slotConfigure()
@@ -681,16 +679,14 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 		game().forward();
 		slotGameChanged();
 	} else if (url.scheme() == "tag") {
-		playerDialog()->setDatabase(database());
+        m_playerList->setDatabase(database());
 		if (url.path() == "white")
         {
             m_playerList->selectPlayer(game().tag("White"));
-            playerDialog()->showPlayer(game().tag("White"));
         }
 		else if (url.path() == "black")
         {
             m_playerList->selectPlayer(game().tag("Black"));
-			playerDialog()->showPlayer(game().tag("Black"));
         }
 	}
 }
@@ -843,8 +839,6 @@ void MainWindow::slotDatabaseChanged()
 	m_gameList->setFilter(databaseInfo()->filter());
 	slotFilterChanged();
     gameLoad(gameIndex()>=0 ? gameIndex() : 0, true, true);
-	if (m_playerDialog && playerDialog()->isVisible())
-		playerDialog()->setDatabase(database());
     m_playerList->setDatabase(database());
 	emit databaseChanged(databaseInfo());
 }

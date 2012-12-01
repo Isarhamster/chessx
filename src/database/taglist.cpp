@@ -37,8 +37,15 @@ void TagList::createBasicTagMap()
 TagList::TagList()
 {
     createBasicTagMap();
-	m_list.clear();
+    Init();
+    clear();
+    Init();
+    clear();
+    Init();
+}
 
+void TagList::Init()
+{
 	for (int i = 0 ; i < TagLastTag; ++i) {
 		m_tagNameToInt.insert(TagNames[i], i);
 		/* Here is something that could be worked on later. It is
@@ -186,6 +193,7 @@ void TagList::write(QDataStream& out)
         }
 	}
 
+    out << m_tagNameToInt;
 }
 
 void TagList::read(QDataStream& in)
@@ -195,8 +203,10 @@ void TagList::read(QDataStream& in)
     in >> n;
     in >> listCount;
 
-    clear();
-    for (int i = TagLastTag; i < listCount ; ++i)
+//    clear();
+//    Init();
+
+    for (int i = 0; i < listCount ; ++i)
     {
         m_list.append(NULL);
     }
@@ -208,6 +218,8 @@ void TagList::read(QDataStream& in)
         m_list[index] = static_cast<TagValues*>(new StringTagValues);
         m_list[index]->read(in);
 	}
+
+    in >> m_tagNameToInt;
 }
 
 void TagList::addTagValues(const Tag& tag, TagValues* tagvalues)

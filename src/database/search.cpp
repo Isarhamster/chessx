@@ -116,9 +116,9 @@ EloSearch::~EloSearch()
 
 void EloSearch::initialize()
 {
-	m_matches = m_database->index()->listInRange(TagPlayerElo, QString::number(m_minWhiteElo),
+    m_matches = m_database->index()->listInRange(TagNameWhiteElo, QString::number(m_minWhiteElo),
 			QString::number(m_maxWhiteElo));
-	m_matches &= m_database->index()->listInRange(TagPlayerElo, QString::number(m_minBlackElo),
+    m_matches &= m_database->index()->listInRange(TagNameBlackElo, QString::number(m_minBlackElo),
 			QString::number(m_maxBlackElo));
 }
 
@@ -156,9 +156,10 @@ int EloSearch::minBlackElo() const
 	return m_minBlackElo;
 }
 
-int EloSearch::matches(int index)
+int EloSearch::matches(int /*index*/)
 {
-	return m_matches[m_database->index()->gameTagIndex(TagPlayerElo,index)];
+    // TODO
+    return 0;
 }
 
 /* DateSearch class
@@ -221,13 +222,12 @@ TagSearch::TagSearch(Database* database, const QString& tag, const QString& valu
 	m_database = database;
 	m_tagName = tag;
 	m_value = value;
-	m_tag = database->index()->tagFromString(m_tagName);
 	initialize();
 }
 
 void TagSearch::initialize()
 {
-	m_matches = m_database->index()->listContainingValue(m_tag, m_value);
+    m_matches = m_database->index()->listContainingValue(m_tagName, m_value);
 }
 
 TagSearch* TagSearch::clone() const
@@ -257,7 +257,6 @@ QString TagSearch::value() const
 void TagSearch::setTag(const QString& tag)
 {
 	m_tagName = tag;
-	m_tag = m_database->index()->tagFromString(m_tagName);
 	initialize();
 }
 
@@ -267,13 +266,11 @@ void TagSearch::setValue(const QString& value)
 	initialize();
 }
 
-int TagSearch::matches(int index)
+int TagSearch::matches(int /*index*/)
 {
-	return m_matches[m_database->index()->gameTagIndex(m_tag, index)];
+    // TODO
+    return 0;
 }
-
-
-
 
 /* Number class
  * ***************/

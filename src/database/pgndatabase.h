@@ -75,13 +75,14 @@ protected:
 	void parseTagsIntoIndex();
 
 	virtual bool parseFile();
+    bool parseFileIntern();
     virtual void parseGame();
 
-    virtual bool readIndexFile(QDataStream& in);
-    virtual bool writeIndexFile(QDataStream& out);
-    QString offsetFilename(const QString& filename);
-    virtual bool readOffsetFile(const QString&);
-    virtual bool writeOffsetFile(const QString&);
+    bool readIndexFile(QDataStream& in);
+    bool writeIndexFile(QDataStream& out) const;
+    QString offsetFilename(const QString& filename) const;
+    bool readOffsetFile(const QString&);
+    bool writeOffsetFile(const QString&) const;
 
     // Open a PGN data File
 	bool openFile(const QString& filename);
@@ -144,7 +145,6 @@ private:
     /** Adds a new file offset */
     inline void addOffset(IndexBaseType offset)
     {
-        //qDebug() << "Add game " << m_count << " at offset " << offset;
         if (m_count == m_allocated) {
             //out of space reallocate memory
             if (bUse64bit)

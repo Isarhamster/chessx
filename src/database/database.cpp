@@ -18,11 +18,17 @@ Database::Database() : m_break(false)
 }
 
 Database::~Database()
-{}
+{
+}
 
 Index* Database::index()
 {
 	return &m_index;
+}
+
+const Index* Database::index() const
+{
+    return &m_index;
 }
 
 QString Database::name() const

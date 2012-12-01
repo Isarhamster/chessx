@@ -58,12 +58,12 @@ bool PgnDatabase::readIndexFile(QDataStream &in)
     return (index()->read(in));
 }
 
-bool PgnDatabase::writeIndexFile(QDataStream& out)
+bool PgnDatabase::writeIndexFile(QDataStream& out) const
 {
     return (index()->write(out));
 }
 
-QString PgnDatabase::offsetFilename(const QString& filename)
+QString PgnDatabase::offsetFilename(const QString& filename) const
 {
     QFileInfo fi = QFileInfo(filename);
     QString basefile = fi.completeBaseName();
@@ -77,7 +77,6 @@ QString PgnDatabase::offsetFilename(const QString& filename)
 
 bool PgnDatabase::readOffsetFile(const QString& filename)
 {
-    return false;
     if (!AppSettings->value("/General/useIndexFile", true).toBool())
     {
         return false;
@@ -151,9 +150,8 @@ bool PgnDatabase::readOffsetFile(const QString& filename)
     return true;
 }
 
-bool PgnDatabase::writeOffsetFile(const QString& filename)
+bool PgnDatabase::writeOffsetFile(const QString& filename) const
 {
-    return false;
     if (!AppSettings->value("/General/useIndexFile", true).toBool())
     {
         return false;
@@ -209,8 +207,15 @@ bool PgnDatabase::parseFile()
         return true;
     }
 
+    parseFileIntern();
+
+    writeOffsetFile(m_filename);
+    return true;
+}
+
+bool PgnDatabase::parseFileIntern()
+{
     //indexing game positions in the file, game contents are ignored
-	m_index.setCacheEnabled(true);
 	int percentDone = 0;
     qint64 size = m_file->size();
     int oldFp = -3;
@@ -247,9 +252,6 @@ bool PgnDatabase::parseFile()
             }
         }
     }
-
-    m_index.setCacheEnabled(false);
-    writeOffsetFile(m_filename);
 	return true;
 }
 
@@ -307,7 +309,7 @@ void PgnDatabase::loadGameMoves(int index, Game& game)
 	game.clear();
 	seekGame(index);
 	skipTags();
-    QString fen = m_index.tagValue(TagFEN, index); // was m_count -1
+    QString fen = m_index.tagValue(TagNameFEN, index); // was m_count -1
 	if (fen != "?")
 		game.setStartingBoard(fen);
 	parseMoves(&game);
@@ -320,11 +322,11 @@ bool PgnDatabase::loadGame(int index, Game& game)
 	}
 
 	//parse the game
-	game.clear();
+    game.clear();
 	loadGameHeaders(index, game);
 	seekGame(index);
 	skipTags();
-    QString fen = m_index.tagValue(TagFEN, index ); // was m_count - 1
+    QString fen = m_index.tagValue(TagNameFEN, index ); // was m_count - 1
 	if (fen != "?")
 		game.setStartingBoard(fen);
     parseMoves(&game);
@@ -729,7 +731,7 @@ void PgnDatabase::skipTags()
 
 void PgnDatabase::skipMoves()
 {
-    QString tag = m_index.tagValue(TagPlyCount, m_count - 1);
+    QString tag = m_index.tagValue(TagNamePlyCount, m_count - 1);
     if (tag=="?") tag.clear();
     if (!tag.isEmpty())
     {
