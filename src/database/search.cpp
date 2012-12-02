@@ -156,10 +156,9 @@ int EloSearch::minBlackElo() const
 	return m_minBlackElo;
 }
 
-int EloSearch::matches(int /*index*/)
+int EloSearch::matches(int index)
 {
-    // TODO
-    return 0;
+    return m_matches[index];
 }
 
 /* DateSearch class
@@ -217,17 +216,36 @@ int DateSearch::matches(int index)
 
 /* TagSearch class
  * ***************/
-TagSearch::TagSearch(Database* database, const QString& tag, const QString& value)
+TagSearch::TagSearch(Database* database, const QString& tag, const QString& value, bool partial)
 {
 	m_database = database;
 	m_tagName = tag;
 	m_value = value;
+    m_bPartial = partial;
 	initialize();
+}
+
+TagSearch::TagSearch(Database* database, const QString& tag, const QString& value, const QString& value2)
+{
+    m_database = database;
+    m_tagName = tag;
+    m_value = value;
+    m_value2 = value2;
+    m_bPartial = false;
+    initializeRange();
 }
 
 void TagSearch::initialize()
 {
-    m_matches = m_database->index()->listContainingValue(m_tagName, m_value);
+    if (m_bPartial)
+        m_matches = m_database->index()->listPartialValue(m_tagName, m_value);
+    else
+        m_matches = m_database->index()->listContainingValue(m_tagName, m_value);
+}
+
+void TagSearch::initializeRange()
+{
+     m_matches = m_database->index()->listInRange(m_tagName, m_value, m_value2);
 }
 
 TagSearch* TagSearch::clone() const
@@ -254,6 +272,16 @@ QString TagSearch::value() const
 	return m_value;
 }
 
+QString TagSearch::minValue() const
+{
+    return m_value;
+}
+
+QString TagSearch::maxValue() const
+{
+    return m_value2;
+}
+
 void TagSearch::setTag(const QString& tag)
 {
 	m_tagName = tag;
@@ -266,10 +294,9 @@ void TagSearch::setValue(const QString& value)
 	initialize();
 }
 
-int TagSearch::matches(int /*index*/)
+int TagSearch::matches(int index)
 {
-    // TODO
-    return 0;
+    return m_matches[index];
 }
 
 /* Number class

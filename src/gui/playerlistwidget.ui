@@ -21,7 +21,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>&amp;Find:</string>
+          <string>&amp;Filter:</string>
          </property>
          <property name="buddy">
           <cstring>filterEdit</cstring>
@@ -34,12 +34,30 @@
       </layout>
      </item>
      <item>
-      <widget class="QListView" name="playersView"/>
+      <widget class="QListView" name="playersView">
+       <property name="toolTip">
+        <string>No players found in database</string>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QTextBrowser" name="playerView"/>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QTextBrowser" name="playerView"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="filterDatabase">
+       <property name="text">
+        <string>Filter Game List!</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

@@ -196,6 +196,18 @@ QBitArray Index::listInRange(const QString& tagName, const QString& minValue, co
     return list;
 }
 
+QBitArray Index::listPartialValue(const QString& tagName, const QString& value) const
+{
+    TagIndex tagIndex = m_tagNameIndex.value(tagName);
+
+    QBitArray list(count(), false);
+    for (int i = 0; i < count(); ++i) {
+        QString gameValue = tagValue(tagIndex,i);
+        list.setBit(i, gameValue.contains(value, Qt::CaseInsensitive));
+    }
+    return list;
+}
+
 QString Index::tagValue(TagIndex tagIndex, int gameId) const
 {
     ValueIndex valueIndex = m_indexItems[gameId]->valueIndex(tagIndex);

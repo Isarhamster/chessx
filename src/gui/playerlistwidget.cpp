@@ -12,7 +12,8 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
 
     setObjectName("PlayerListWidget");
     connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findPlayers(const QString&)));
-    connect(ui->playersView, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(showSelectedPlayer()));
+    connect(ui->playersView, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedPlayer()));
+    connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedPlayer()));
     slotReconfigure();
 }
 
@@ -61,6 +62,15 @@ void PlayerListWidget::showSelectedPlayer()
     {
         QString ts = ui->playersView->currentIndex().data().toString();
         selectPlayer(ts);
+    }
+}
+
+void PlayerListWidget::filterSelectedPlayer()
+{
+    if (ui->playersView->currentIndex().isValid())
+    {
+        QString ts = ui->playersView->currentIndex().data().toString();
+        emit filterRequest(ts);
     }
 }
 

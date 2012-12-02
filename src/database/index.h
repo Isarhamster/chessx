@@ -74,7 +74,10 @@ public:
 	/** Returns a bit array to indicate which games in index have a tag value in given range */
     QBitArray listInRange(const QString& tag, const QString& minValue, const QString& maxValue) const;
 
-	// Utility //
+    /** Returns a bit array to indicate which games in index have a tag value which somewhat matches */
+    QBitArray listPartialValue(const QString& tagName, const QString& value) const;
+
+    // Utility //
 	//
 
     /** Write the index to disk, using m_filename */
