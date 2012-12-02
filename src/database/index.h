@@ -57,14 +57,14 @@ public:
     ValueIndex valueIndexFromIndex(TagIndex tagIndex, GameId gameId) const;
     bool indexItemHasTag(TagIndex tagIndex, GameId gameId) const;
     QString tagValueName(ValueIndex getValueIndex) const;
+    QStringList tagValues(const QString& tagName) const;
     /** Set the valid flag accordingly */
     void setValidFlag(const int& gameId, bool value);
 
     /** Get the valid flag accordingly */
     bool isValidFlag(const int& gameId) const;
 
-    QSet<QString> m_playerNames;
-    QSet<QString> &playerNames();
+    QStringList playerNames() const;
 
     // Searching tags //
 	//

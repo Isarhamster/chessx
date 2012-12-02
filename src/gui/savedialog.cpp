@@ -122,9 +122,19 @@ int SaveDialog::exec(Database* database, Game& game)
 
 void SaveDialog::setLineEdit(QLineEdit* edit, Database* database, const QString &tagName)
 {
-    //QCompleter* completer = new QCompleter(database->index()->tagValues(tag), this);
-    //completer->setCaseSensitivity(Qt::CaseInsensitive);
-    //edit->setCompleter(completer);
+    QStringList words;
+    if ((tagName==TagNameWhite) or (tagName==TagNameBlack))
+    {
+        words = database->index()->playerNames();
+    }
+    else
+    {
+        words = database->index()->tagValues(tagName);
+    }
+    // TODO
+    QCompleter* completer = new QCompleter(words, this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    edit->setCompleter(completer);
 }
 
 void SaveDialog::accept()
