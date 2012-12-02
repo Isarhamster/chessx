@@ -65,10 +65,6 @@ void Index::setTag(const QString& tagName, const QString& value, int gameId)
     TagIndex tagIndex = AddTagName(tagName);
     ValueIndex valueIndex = AddTagValue(value);
 
-    if (tagName == TagNameWhite || tagName == TagNameBlack)
-    {
-        m_playerNames.insert(value);
-    }
     if (m_indexItems.count() <= gameId)
     {
         add();
@@ -272,9 +268,11 @@ void Index::loadGameHeaders(GameId id, Game& game)
     }
 }
 
-QSet<QString>& Index::playerNames()
+QStringList Index::playerNames() const
 {
+    QStringList allPlayerNames;
     QSet<ValueIndex> playerNameIndex;
+
     TagIndex tagIndex = getTagIndex(TagNameWhite);
 
     foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
@@ -291,8 +289,27 @@ QSet<QString>& Index::playerNames()
 
     foreach(ValueIndex valueIndex, playerNameIndex)
     {
-        m_playerNames.insert(tagValueName(valueIndex));
+        allPlayerNames.append(tagValueName(valueIndex));
     }
 
-    return m_playerNames;
+    return allPlayerNames;
+}
+
+QStringList Index::tagValues(const QString& tagName) const
+{
+    QStringList allTagNames;
+    QSet<ValueIndex> tagNameIndex;
+    TagIndex tagIndex = getTagIndex(tagName);
+
+    foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
+    {
+        tagNameIndex.insert(m_indexItems[gameId]->valueIndex(tagIndex));
+    }
+
+    foreach(ValueIndex valueIndex, tagNameIndex)
+    {
+        allTagNames.append(tagValueName(valueIndex));
+    }
+
+    return allTagNames;
 }
