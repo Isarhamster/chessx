@@ -71,5 +71,4 @@ void PlayerListWidget::setDatabase(Database* db)
     m_list = QStringList::fromSet(db->index()->playerNames());
     m_filterModel->setStringList(m_list);
     m_filterModel->sort(0);
-
 }

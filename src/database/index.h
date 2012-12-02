@@ -50,10 +50,12 @@ public:
 	void loadGameHeaders(GameId id, Game& game);
 
 	/** Get the tag value for given game */
-    QString tagValue(const QString&, int gameId) const;
+    QString tagValue(const QString&, GameId gameId) const;
     ValueIndex getValueIndex(const QString&) const;
     TagIndex getTagIndex(const QString& value) const;
-    ValueIndex valueIndexFromTag(const QString& tagName, int gameId) const;
+    ValueIndex valueIndexFromTag(const QString& tagName, GameId gameId) const;
+    ValueIndex valueIndexFromIndex(TagIndex tagIndex, GameId gameId) const;
+    bool indexItemHasTag(TagIndex tagIndex, GameId gameId) const;
     QString tagValueName(ValueIndex getValueIndex) const;
     /** Set the valid flag accordingly */
     void setValidFlag(const int& gameId, bool value);
@@ -81,6 +83,10 @@ public:
     /** Read the index from disk, using m_filename */
     bool read(QDataStream& in);
 
+    /** Calculate missing data from the index file import */
+    void calculateTagMap();
+    void calculateReverseMaps();
+
     /** Clears the index, and frees all associated memory */
     void clear();
 
@@ -89,13 +95,13 @@ private:
 	IndexItem* item(int gameId);
 
     /** Map an Index to a tagName */
-    QHash<int, QString> m_tagNames;
-    QHash<QString, int> m_tagNameIndex;
+    QHash<TagIndex, QString> m_tagNames;
+    QHash<QString, TagIndex> m_tagNameIndex;
     TagIndex AddTagName(QString);
 
     /** Map an Index to a tagValue */
-    QHash<int, QString> m_tagValues;
-    QHash<QString, int> m_tagValueIndex;
+    QHash<ValueIndex, QString> m_tagValues;
+    QHash<QString, ValueIndex> m_tagValueIndex;
     ValueIndex AddTagValue(QString);
 
     QList<IndexItem*> m_indexItems;

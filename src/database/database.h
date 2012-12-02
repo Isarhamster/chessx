@@ -77,8 +77,9 @@ public:
 	virtual bool remove(const Filter&) { return false; }
 	/** Compacts the database */
 	virtual void compact() {}
-	/** Returns a pointer to the index of the database */
+    /** @return pointer to the index of the database */
     Index *index();
+    /** @return const pointer to the index of the database */
     const Index *index() const;
 	/** Returns the number of games in the database */
     virtual int count() { return 0; }
@@ -86,8 +87,6 @@ public:
 	virtual bool isModified() const { return false; }
     /** Get the Valid Flag for a given game id from the index */
     virtual bool getValidFlag(GameId id) const { return m_index.isValidFlag(id); }
-    virtual bool readIndexFile(QDataStream&) { return false; }
-    virtual bool writeIndexFile(QDataStream&) { return false; }
 signals:
 	/** Signal emitted when some progress is done. */
     void progress(int);

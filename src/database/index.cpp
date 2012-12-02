@@ -120,7 +120,36 @@ bool Index::read(QDataStream &in)
     bool extension;
     in >> extension;
 
+    calculateReverseMaps();
+    calculateTagMap();
+
     return true;
+}
+
+void Index::calculateReverseMaps()
+{
+    foreach (TagIndex tagIndex, m_tagNames.keys())
+    {
+        m_tagNameIndex.insert(m_tagNames.value(tagIndex), tagIndex);
+    }
+    foreach (ValueIndex valueIndex, m_tagValues.keys())
+    {
+        m_tagValueIndex.insert(m_tagValues.value(valueIndex), valueIndex);
+    }
+}
+
+void Index::calculateTagMap()
+{
+    foreach (TagIndex tagIndex, m_tagNames.keys())
+    {
+        for (GameId gameId=0; gameId<(GameId)m_indexItems.size(); ++gameId)
+        {
+            if (indexItemHasTag(tagIndex, gameId))
+            {
+                m_mapTagToIndexItems.insertMulti(tagIndex, gameId);
+            }
+        }
+    }
 }
 
 void Index::clear()
@@ -131,7 +160,9 @@ void Index::clear()
 	}
 	m_indexItems.clear();
     m_tagNames.clear();
+    m_tagNameIndex.clear();
     m_tagValues.clear();
+    m_tagValueIndex.clear();
     m_validFlags.clear();
     m_mapTagToIndexItems.clear();
 }
@@ -182,15 +213,25 @@ QString Index::tagValueName(ValueIndex valueIndex) const
     return m_tagValues.value(valueIndex);
 }
 
-QString Index::tagValue(const QString& tagName, int gameId) const
+QString Index::tagValue(const QString& tagName, GameId gameId) const
 {
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
     return tagValue(tagIndex, gameId);
 }
 
-ValueIndex Index::valueIndexFromTag(const QString& tagName, int gameId) const
+ValueIndex Index::valueIndexFromTag(const QString& tagName, GameId gameId) const
 {
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
+    return m_indexItems[gameId]->valueIndex(tagIndex);
+}
+
+bool Index::indexItemHasTag(TagIndex tagIndex, GameId gameId) const
+{
+    return m_indexItems[gameId]->hasTagIndex(tagIndex);
+}
+
+inline ValueIndex Index::valueIndexFromIndex(TagIndex tagIndex, GameId gameId) const
+{
     return m_indexItems[gameId]->valueIndex(tagIndex);
 }
 
