@@ -38,6 +38,11 @@ ValueIndex IndexItem::valueIndex(TagIndex tagIndex) const
     return 0;
 }
 
+bool IndexItem::hasTagIndex(TagIndex tagIndex) const
+{
+    return (m_mapTagIndexToValueIndex.contains(tagIndex));
+}
+
 void IndexItem::write(QDataStream& out) const
 {
     out << m_mapTagIndexToValueIndex;

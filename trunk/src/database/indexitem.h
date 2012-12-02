@@ -44,6 +44,7 @@ public:
     void set(TagIndex tagIndex, ValueIndex valueIndex);
 	/** returns value of index stored at 'offset' with given 'size' */
     ValueIndex valueIndex(TagIndex tagIndex) const;
+    bool hasTagIndex(TagIndex tagIndex) const;
 
     /** Write the data of the instance to a QDataStream */
     void write(QDataStream& out) const;
