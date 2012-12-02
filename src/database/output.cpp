@@ -474,6 +474,15 @@ void Output::output(QTextStream& out, Filter& filter)
 
 void Output::output(QTextStream& out, Database& database)
 {
+    if (!database.isUtf8())
+    {
+        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
+        if (textCodec)
+        {
+            out.setCodec(textCodec);
+        }
+    }
+
 	int percentDone = 0;
 	Game game;
 	for (int i = 0; i < database.count(); ++i) {

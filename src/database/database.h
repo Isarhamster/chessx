@@ -42,6 +42,11 @@ public:
 	/** Virtual destructor */
 	virtual ~Database();
 
+    /** Query file format */
+    bool isUtf8() const { return m_utf8; }
+    /** Set file format */
+    void setUtf8(bool utf8) { m_utf8 = utf8; }
+
 	//database operations
 	/** Creates a database with the given filename */
 	virtual bool create(const QString&) { return false; }
@@ -93,7 +98,7 @@ signals:
 
 protected:
 	Index m_index;
-
+    bool m_utf8;
 };
 
 #endif

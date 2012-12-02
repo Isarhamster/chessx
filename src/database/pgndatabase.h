@@ -128,7 +128,6 @@ private:
     qint32* m_gameOffsets32;
     qint64* m_gameOffsets64;
     QByteArray m_lineBuffer;
-    bool m_utf8;
 
     bool bUse64bit;
 
