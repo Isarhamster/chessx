@@ -92,8 +92,8 @@ void GameList::simpleSearch(int tagid)
     {
 		m_model->filter()->setAll(1);
     }
-    else if (dialog.tag() == 0)
-    {	// filter by game number
+    else if ((dialog.tag() == 0) || (dialog.tag() == 7) || (dialog.tag() == 11))
+    {	// filter by number
 		NumberSearch ns(m_model->filter()->database(), value);
 		if (dialog.mode())
         {
@@ -106,14 +106,32 @@ void GameList::simpleSearch(int tagid)
 	}
     else
     {
-		TagSearch ts(m_model->filter()->database(), tag, value);
-		if (dialog.mode())
+        QStringList list = value.split("-", QString::SkipEmptyParts);
+        if (list.size()>1)
         {
-			m_model->filter()->executeSearch(ts, Search::Operator(dialog.mode()));
+            // Filter a range
+            TagSearch ts(m_model->filter()->database(), tag, list.at(0),list.at(1));
+            if (dialog.mode())
+            {
+                m_model->filter()->executeSearch(ts, Search::Operator(dialog.mode()));
+            }
+            else
+            {
+                m_model->filter()->executeSearch(ts);
+            }
         }
         else
         {
-            m_model->filter()->executeSearch(ts);
+            // Filter tag using partial values
+            TagSearch ts(m_model->filter()->database(), tag, value);
+            if (dialog.mode())
+            {
+                m_model->filter()->executeSearch(ts, Search::Operator(dialog.mode()));
+            }
+            else
+            {
+                m_model->filter()->executeSearch(ts);
+            }
         }
 	}
     updateFilter();

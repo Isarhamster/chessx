@@ -28,6 +28,7 @@ public slots:
     void selectPlayer(const QString& player);
     void setDatabase(Database* db);
     void showSelectedPlayer();
+    void filterSelectedPlayer();
     void slotReconfigure();
 
 private:

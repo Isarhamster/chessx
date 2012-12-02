@@ -172,8 +172,10 @@ class TagSearch : public Search
 {
 public:
 	/** Simple constructor */
-	TagSearch(Database* database, const QString& tag = "tag", const QString& value = "value");
-	/** Makes a deep copy of TagSearch object. Probably obsolete */
+    TagSearch(Database* database, const QString& tag, const QString& value, bool partial = true);
+    /** Range constructor */
+    TagSearch(Database* database, const QString& tag, const QString& value, const QString& value2);
+    /** Makes a deep copy of TagSearch object. Probably obsolete */
 	virtual TagSearch* clone() const;
 	/** Standard destructor. */
 	~TagSearch();
@@ -183,6 +185,8 @@ public:
 	QString tag() const;
 	/** @return value to be matched. */
 	QString value() const;
+    QString minValue() const;
+    QString maxValue() const;
 	/** Set tag to be searched */
 	void setTag(const QString& tag);
 	/** Set value to be matched */
@@ -190,11 +194,15 @@ public:
 	/** Return true if the game at index matches the search */
 	virtual int matches(int index);
 	/** initialize the search. Done automatically in constructor, or when values are changed */
-	void initialize();
+    void initialize();
+    /** initialize the search. Done automatically in constructor, or when values are changed */
+    void initializeRange();
 private:
 	QString m_tagName;
 	QString m_value;
+    QString m_value2;
 	QBitArray m_matches;
+    bool m_bPartial;
 };
 
 /** @ingroup Search

@@ -1,105 +1,94 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>QuickSearchDialog</class>
- <widget class="QDialog" name="QuickSearchDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="QuickSearchDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>392</width>
-    <height>142</height>
+    <height>148</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Quick Tag Search</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
-    <number>6</number>
-   </property>
-   <item row="2" column="1" >
-    <widget class="QComboBox" name="modeCombo" />
+  <layout class="QGridLayout">
+   <item row="2" column="1">
+    <widget class="QComboBox" name="modeCombo"/>
    </item>
-   <item row="0" column="1" >
-    <widget class="QComboBox" name="tagCombo" >
+   <item row="0" column="1">
+    <widget class="QComboBox" name="tagCombo">
      <item>
-      <property name="text" >
+      <property name="text">
        <string>Game Number</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>White</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>White Elo</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>Black</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>Black Elo</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>Event</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>Site</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>Round</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>Date</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>Result</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>ECO</string>
       </property>
      </item>
      <item>
-      <property name="text" >
+      <property name="text">
        <string>Number of Moves</string>
       </property>
      </item>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2" >
-    <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
+   <item row="3" column="0" colspan="2">
+    <layout class="QHBoxLayout">
      <item>
       <spacer>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -108,53 +97,57 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="okButton" >
-       <property name="text" >
+      <widget class="QPushButton" name="okButton">
+       <property name="text">
         <string>&amp;Find</string>
        </property>
-       <property name="default" >
+       <property name="default">
         <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="cancelButton" >
-       <property name="text" >
+      <widget class="QPushButton" name="cancelButton">
+       <property name="text">
         <string>&amp;Cancel</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="1" column="1" >
-    <widget class="QLineEdit" name="valueEdit" />
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="valueEdit">
+     <property name="placeholderText">
+      <string>Value or Range like 2000-2300</string>
+     </property>
+    </widget>
    </item>
-   <item row="1" column="0" >
-    <widget class="QLabel" name="label_2" >
-     <property name="text" >
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
       <string>&amp;Value:</string>
      </property>
-     <property name="buddy" >
+     <property name="buddy">
       <cstring>valueEdit</cstring>
      </property>
     </widget>
    </item>
-   <item row="0" column="0" >
-    <widget class="QLabel" name="label" >
-     <property name="text" >
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
       <string>&amp;Tag:</string>
      </property>
-     <property name="buddy" >
+     <property name="buddy">
       <cstring>tagCombo</cstring>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" >
-    <widget class="QLabel" name="label_3" >
-     <property name="text" >
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
       <string>&amp;Mode:</string>
      </property>
-     <property name="buddy" >
+     <property name="buddy">
       <cstring>modeCombo</cstring>
      </property>
     </widget>
