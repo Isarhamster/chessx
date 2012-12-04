@@ -33,6 +33,24 @@
 
 <h2><a name="Referenz">ChessX Reference</a></h2>
 
+<h3>About PGN Databases</h3>
+
+<p>PGN is a portable format between different chess programs, a file format,
+that can be written and read sequentially, but not modified at random places.</p>
+<p>ChessX is a viewer for these files, thus ChessX is somewhat limited in handling chess data
+as these files can <i>not really</i> be handled like a proper database.</p>
+<p>To work around some of these issues, ChessX handles smaller and larger files differently.
+You can configure the limit where ChessX switches the algorithm according to your computers performance.</p>
+<p>Smaller databases are read completely into memory and can be read and written.</p>
+<p>Larger files are only indexed and as of version 0.9.4, the index is also saved to disk for a faster reopening
+of a PGN file. As the games are not in memory, this algorithm does not allow saving the files again, so the
+database is opened read-only</p>
+<p>The index files are saved in the index-subdirectory of the Default Data Path. If the index directory or one
+of its files is deleted, ChessX will recreate the Index file the next time you open the PGN file.</p>
+<p>ChessX will open the index file instead of the PGN file if the filename fits (e.g. "chess.cxi" fits to any "chess.pgn")
+if the date of the last modification fits to the date stored in the index file. So ChessX won't care for the path
+where your PGN is located (you can relocate the file after indexing), but this limits the Index to only one file
+with the same basename.</p>
 
 </div>
 </div>
