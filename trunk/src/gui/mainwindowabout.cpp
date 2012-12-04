@@ -19,7 +19,7 @@ void MainWindow::slotHelpAbout()
                         "<p>Free chess database Version %1</p>"
                         COPYRIGHT
                         "<p>License: GNU Public License 2 - GPLv2</p>"
-                        "<p>Current maintainer: <a href=\"mailto:jens.chessx@gmx.net\">Jens Nissen</a></p>"
+                        "<p>Current maintainer: <a href=\"mailto:jens-chessx@gmx.net\">Jens Nissen</a></p>"
                         "<p>Testing, usability and website: Bruno Rizzuti</p>"
                         "<p>Further maintainers: Michal Rudolf, Ejner Borgbjerg</p>"
                         "<p>Additional coding: James Coons, Marius Roets, Sean Estabrooks, Rico Zenklusen, "
