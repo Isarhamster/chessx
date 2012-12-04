@@ -1,3 +1,24 @@
+December 2012 Version 0.9.4
+
+        - Bugfix: Writing of files automatically made use of UTF8 instead of ANSI
+        - Bugfix: Crash at loading PolyGlot 1.4
+        - Bugfix: Comment at start of empty game
+        - Bugfix: Databases larger than 4G
+        - Bugfix: Databases with UNIX-LF
+        - Bugfix: Some nags were not properly accessible from keyboard
+        - Bugfix: No keyboard nags for first white move
+
+        - New Feature: Time Editor for elapsed game time
+        - New Feature: CR#3580029 Add only first move from engine analysis
+        - New feature: Close database from the database list with context menu
+        - New feature: Toggle UTF8 flag in database list
+        - New feature: Open compressed archives (from HTTP or local file)
+        - New feature: Open a database from a URL (HTTP)
+        - New Feature: Clear Nags from keyboard with <Del>
+        - New Feature: Create Index File thus accelerating re-loading of large PGN enormously
+        - New Feature: Searching of ranges, e.g. ELO "2000-2300"
+        - New Feature: Automatic classification with ECO of unclassified / new games
+
 November 2012 Version 0.9.2
 	- Bugfix: Support engines which send multiple spaces
 	- Bugfix: Close Database while updateing opening tree

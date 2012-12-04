@@ -53,5 +53,6 @@
         <file alias="help/about5.html">data/help/about5.html</file>
         <file alias="chessx.eco">data/chessx.eco</file>
         <file alias="chessx.gtm">data/chessx.gtm</file>
+        <file alias="themes/rudolph.png">data/themes/rudolph.png</file>
     </qresource>
 </RCC>
