@@ -26,6 +26,8 @@ int main(int argc, char** argv)
 	AppSettings = new Settings;
     QApplication a(argc, argv);
 
+    a.setWindowIcon(QIcon(":/images/chessx.png"));
+
 #ifdef Q_OS_MAC
     signal(SIGPIPE, SIG_IGN);
 #endif

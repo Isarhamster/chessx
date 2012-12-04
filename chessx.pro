@@ -5,6 +5,7 @@ QT += xml network
 
 greaterThan(QT_MAJOR_VERSION, 4) {
    QT += printsupport
+   QT += widgets
 }
 
 static { # Everything below takes effect with CONFIG += static
