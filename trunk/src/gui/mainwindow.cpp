@@ -529,7 +529,7 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
 {
     QFileInfo fi = QFileInfo(fname);
-    if (fi.suffix().toLower() == "pgn")
+    if (fname.isEmpty() || fi.suffix().toLower() == "pgn")
     {
         openDatabaseFile(fname, utf8);
     }

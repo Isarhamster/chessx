@@ -34,6 +34,7 @@ public slots:
     void showSelectedPlayer();
     void filterSelectedPlayer();
     void slotReconfigure();
+    void selectionChangedSlot();
 
 private:
     PlayerInfo m_player;

@@ -131,7 +131,7 @@ void SaveDialog::setLineEdit(QLineEdit* edit, Database* database, const QString 
     {
         words = database->index()->tagValues(tagName);
     }
-    // TODO
+
     QCompleter* completer = new QCompleter(words, this);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     edit->setCompleter(completer);
