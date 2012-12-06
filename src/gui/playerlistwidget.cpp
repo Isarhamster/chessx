@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #include "playerlistwidget.h"
 #include "ui_playerlistwidget.h"
 #include "database.h"
