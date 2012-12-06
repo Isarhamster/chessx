@@ -97,6 +97,17 @@ void DatabaseList::save() const
     AppSettings->endGroup();
 }
 
+void DatabaseList::itemSelected(const QModelIndex& index)
+{
+    if (index.column()==0)
+    {
+        QString ts = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
+        QString utf8 = m_filterModel->data(m_filterModel->index(index.row(),DBLV_UTF8)).toString();
+        bool bUtf8 = (utf8.compare("UTF8")==0);
+        emit requestOpenDatabase(ts,bUtf8);
+    }
+}
+
 void DatabaseList::dbOpen()
 {
     Q_ASSERT(m_cell.isValid());
@@ -163,17 +174,6 @@ void DatabaseList::slotShowInFinder()
                << QLatin1String("tell application \"Finder\" to activate");
     QProcess::execute("/usr/bin/osascript", scriptArgs);
 #endif
-}
-
-void DatabaseList::itemSelected(const QModelIndex& index)
-{
-    if (index.column()==0)
-    {
-        QString ts = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
-        QString utf8 = m_filterModel->data(m_filterModel->index(index.row(),DBLV_UTF8)).toString();
-        bool bUtf8 = (utf8.compare("UTF8")==0);
-        emit requestOpenDatabase(ts,bUtf8);
-    }
 }
 
 void DatabaseList::addFileOpen(const QString& s, bool utf8)

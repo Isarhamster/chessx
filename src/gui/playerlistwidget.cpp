@@ -18,6 +18,12 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
     connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findPlayers(const QString&)));
     connect(ui->playersView, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedPlayer()));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedPlayer()));
+
+    selectPlayer(QString());
+    QItemSelectionModel* selectionModel = ui->playersView->selectionModel();
+    connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+            this, SLOT(selectionChangedSlot()));
+
     slotReconfigure();
 }
 
@@ -28,6 +34,19 @@ PlayerListWidget::~PlayerListWidget()
 
 void PlayerListWidget::slotReconfigure()
 {
+}
+
+void PlayerListWidget::selectionChangedSlot()
+{
+    if (ui->playersView->currentIndex().isValid())
+    {
+        QString ts = ui->playersView->currentIndex().data().toString();
+        selectPlayer(ts);
+    }
+    else
+    {
+        selectPlayer(QString());
+    }
 }
 
 void PlayerListWidget::findPlayers(const QString& s)
@@ -49,6 +68,7 @@ void PlayerListWidget::selectPlayer(const QString& player)
     {
         m_player.setName(player);
         m_player.update();
+        ui->filterDatabase->setEnabled(true);
         ui->playerView->setText(QString("<h1>%1</h1><p>%2%3%4%5")
                 .arg(m_player.name()).arg(m_player.formattedGameCount())
                 .arg(m_player.formattedRange())
@@ -56,6 +76,7 @@ void PlayerListWidget::selectPlayer(const QString& player)
     }
     else
     {
+        ui->filterDatabase->setEnabled(false);
         ui->playerView->setText(tr("<html><i>No player chosen.</i></html>"));
     }
 }
