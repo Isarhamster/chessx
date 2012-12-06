@@ -56,6 +56,7 @@ void Settings::setLayout(const QWidget* w)
 
 QString Settings::dataPath()
 {
+    // TODO - alles Quark!
 	if (m_dataPath.isNull()) {
 		m_dataPath = qApp->applicationDirPath();
 		if (m_dataPath.endsWith("/games/bin")) {
@@ -65,10 +66,10 @@ QString Settings::dataPath()
 			m_dataPath.truncate(m_dataPath.length() - 6);
 			m_dataPath.append("/share/games/chessx");
 		} else {
-			if (m_dataPath.endsWith("/chessdatabase.app/Contents/MacOS"))
+            if (m_dataPath.endsWith("/Contents/MacOS"))
 				//Changed from 33 to 15 to include the data directory in the application directory for MaxOSX
 				m_dataPath.truncate(m_dataPath.length() - 15);
-			if (m_dataPath.endsWith("/bin"))
+            else if (m_dataPath.endsWith("/bin"))
 				m_dataPath.truncate(m_dataPath.length() - 4);
 			m_dataPath.append("/data");
 		}
