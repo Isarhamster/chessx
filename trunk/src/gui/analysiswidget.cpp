@@ -160,7 +160,12 @@ void AnalysisWidget::setPosition(const Board& board)
 		m_tablebase->abortLookup();
 		m_tablebaseEvaluation.clear();
 		if (AppSettings->value("/General/onlineTablebases", true).toBool())
-			m_tablebase->getBestMove(m_board.toFen());
+        {
+            if (objectName() == "Analysis")
+            {
+                m_tablebase->getBestMove(m_board.toFen());
+            }
+        }
 
 		updateAnalysis();
 		if (m_engine && m_engine->isActive())

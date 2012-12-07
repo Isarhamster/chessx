@@ -11,11 +11,12 @@
 #ifndef __TABLEBASE_H__
 #define __TABLEBASE_H__
 
-#include <QTimer>
+#include <QNetworkAccessManager>
+
 #include "common.h"
 #include "move.h"
 
-class QHttp;
+class QNetworkReply;
 
 /** @ingroup Feature
  * Abstract base class for different types of tablebase access
@@ -55,15 +56,14 @@ signals:
 	void bestMove(Move move, int score);
 public slots:
 	void getBestMove(QString fen);
-	void abortLookup();
+    void abortLookup();
 private slots:
-	void httpDone(int id, bool error);
-	void sendIt();
+    void httpDone(QNetworkReply *reply);
+    void sendIt();
 private:
-	QHttp* m_http;
-	QTimer* m_timer;
-	QString m_fen;
-	int m_id;
+    QNetworkAccessManager manager;
+    QString m_requested;
+    QString m_fen;
 };
 
 #endif // __TABLEBASE_H__
