@@ -14,6 +14,8 @@
 
 #include <QList>
 #include <QPair>
+#include <QObject>
+
 #include "indexitem.h"
 #include "search.h"
 #include "game.h"
@@ -27,8 +29,10 @@
  * pack() and unpack() needs to be implemented
  */
 
-class Index
+class Index : public QObject
 {
+    Q_OBJECT
+
 public:
 	static const int defaultIndexItemSize;
 
@@ -92,6 +96,9 @@ public:
 
     /** Clears the index, and frees all associated memory */
     void clear();
+
+signals:
+    void progress(int);
 
 private:
 	/** Return a pointer to the index item for the given game id */
