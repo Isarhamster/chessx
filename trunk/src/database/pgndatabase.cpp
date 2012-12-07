@@ -119,6 +119,8 @@ bool PgnDatabase::readOffsetFile(const QString& filename)
 
     in >> m_allocated;
 
+    emit progress(1);
+
     if (bUse64bit)
     {
         m_gameOffsets64 = new qint64[m_allocated];
@@ -129,6 +131,8 @@ bool PgnDatabase::readOffsetFile(const QString& filename)
         m_gameOffsets32 = new qint32[m_allocated];
         for (int i=0; i<m_allocated; ++i) in >> m_gameOffsets32[i];
     }
+
+    emit progress(2);
 
     in >> magic;
 
@@ -203,7 +207,7 @@ bool PgnDatabase::parseFile()
     if (readOffsetFile(m_filename))
     {
         m_count = m_allocated;
-        emit progress((100));
+        emit progress(100);
         return true;
     }
 

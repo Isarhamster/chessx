@@ -35,6 +35,7 @@
 class Database : public QObject
 {    
 	Q_OBJECT
+
 public:
 	/** Standard constructor. */
 	Database();

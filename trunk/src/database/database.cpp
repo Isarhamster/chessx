@@ -15,6 +15,7 @@
 
 Database::Database() : m_break(false)
 {
+    connect(&m_index, SIGNAL(progress(int)), this, SIGNAL(progress(int)));
 }
 
 Database::~Database()
