@@ -338,7 +338,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 void MainWindow::ecoLoaded(QObject* ecoThread, bool ok)
 {
     slotStatusMessage(ok ? tr("ECO Loaded.") : tr("ECO Load Error."));
-    dynamic_cast<QThread*>(ecoThread)->wait();
+    qobject_cast<QThread*>(ecoThread)->wait();
     delete ecoThread;
 }
 
