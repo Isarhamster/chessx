@@ -220,9 +220,12 @@ bool PgnDatabase::parseFile()
 bool PgnDatabase::parseFileIntern()
 {
     //indexing game positions in the file, game contents are ignored
-	int percentDone = 0;
     qint64 size = m_file->size();
     int oldFp = -3;
+
+    qint64 countDiff = size/100;
+    qint64 nextDiff = countDiff;
+    int percentDone = 0;
 
     while (!m_file->atEnd())
     {
@@ -243,15 +246,15 @@ bool PgnDatabase::parseFileIntern()
                 parseGame();
                 if (!m_file->atEnd())
                 {
-                    int percentDone2 = m_file->pos() * 100 / size;
-                    if (percentDone2 > percentDone)
+                    if (fp > nextDiff)
                     {
-                       emit progress((percentDone = percentDone2));
+                       nextDiff += countDiff;
+                       emit progress(++percentDone);
                     }
                 }
                 else
                 {
-                    emit progress((percentDone = 100));
+                    emit progress(100);
                 }
             }
         }

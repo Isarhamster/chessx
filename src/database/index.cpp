@@ -107,16 +107,18 @@ bool Index::read(QDataStream &in)
     int itemCount;
     in >> itemCount;
 
-    int percentDone = 2;
+    int countDiff = itemCount/100;
+    int nextDiff = countDiff;
+    int percentDone = 0;
 
     for (int i=0; i<itemCount;++i)
     {
         add();
         m_indexItems[i]->read(in);
-        int percentDone2 = i * 100 / itemCount;
-        if (percentDone2 > percentDone)
+        if (i >= nextDiff)
         {
-           emit progress((percentDone = percentDone2));
+           nextDiff += countDiff;
+           emit progress(++percentDone);
         }
     }
     in >> m_validFlags;
