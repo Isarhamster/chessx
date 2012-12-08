@@ -274,7 +274,7 @@ macx {
 }
 
 unix:!macx {
- target.path = /usr/games/chessx
+ target.path = /usr/bin/chessx
  INSTALLS += target
 }
 
