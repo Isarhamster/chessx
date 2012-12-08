@@ -88,11 +88,11 @@ public:
     bool write(QDataStream& out) const;
 
     /** Read the index from disk, using m_filename */
-    bool read(QDataStream& in);
+    bool read(QDataStream& in, volatile bool *breakFlag);
 
     /** Calculate missing data from the index file import */
-    void calculateTagMap();
-    void calculateReverseMaps();
+    void calculateTagMap(volatile bool *breakFlag);
+    void calculateReverseMaps(volatile bool *breakFlag);
 
     /** Clears the index, and frees all associated memory */
     void clear();

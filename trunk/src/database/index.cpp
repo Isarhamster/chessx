@@ -100,7 +100,7 @@ bool Index::write(QDataStream &out) const
     return true;
 }
 
-bool Index::read(QDataStream &in)
+bool Index::read(QDataStream &in, volatile bool *breakFlag)
 {
     in >> m_tagNames;
     in >> m_tagValues;
@@ -113,6 +113,7 @@ bool Index::read(QDataStream &in)
 
     for (int i=0; i<itemCount;++i)
     {
+        if (*breakFlag) return false;
         add();
         m_indexItems[i]->read(in);
         if (i >= nextDiff)
@@ -126,30 +127,33 @@ bool Index::read(QDataStream &in)
     bool extension;
     in >> extension;
 
-    calculateReverseMaps();
-    calculateTagMap();
+    calculateReverseMaps(breakFlag);
+    calculateTagMap(breakFlag);
 
-    return true;
+    return !(*breakFlag);
 }
 
-void Index::calculateReverseMaps()
+void Index::calculateReverseMaps(volatile bool* breakFlag)
 {
     foreach (TagIndex tagIndex, m_tagNames.keys())
     {
+        if (*breakFlag) return;
         m_tagNameIndex.insert(m_tagNames.value(tagIndex), tagIndex);
     }
     foreach (ValueIndex valueIndex, m_tagValues.keys())
     {
+        if (*breakFlag) return;
         m_tagValueIndex.insert(m_tagValues.value(valueIndex), valueIndex);
     }
 }
 
-void Index::calculateTagMap()
+void Index::calculateTagMap(volatile bool *breakFlag)
 {
     foreach (TagIndex tagIndex, m_tagNames.keys())
     {
         for (GameId gameId=0; gameId<(GameId)m_indexItems.size(); ++gameId)
         {
+            if (*breakFlag) return;
             if (indexItemHasTag(tagIndex, gameId))
             {
                 m_mapTagToIndexItems.insertMulti(tagIndex, gameId);
