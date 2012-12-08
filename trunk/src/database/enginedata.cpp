@@ -21,5 +21,5 @@ QString EngineData::commandToName(const QString& command)
 		name[0] = name[0].toUpper();
 	if (name.endsWith(".exe"))
 		name.truncate(name.length() - 4);
-	return name.isEmpty() ? qApp->tr("New engine") : name;
+    return name;
 }

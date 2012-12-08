@@ -101,6 +101,7 @@ void PreferencesDialog::slotAddEngine()
 	if (command.isEmpty())
 		return;
 	QString name = EngineData::commandToName(command);
+    if (name.isEmpty()) name = tr("New Engine");
 	EngineData data(name);
 	data.command = command;
 	engineList.append(data);
