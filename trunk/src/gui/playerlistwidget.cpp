@@ -18,6 +18,7 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
     connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findPlayers(const QString&)));
     connect(ui->playersView, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedPlayer()));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedPlayer()));
+    connect(ui->playersView, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedPlayer()));
 
     selectPlayer(QString());
     QItemSelectionModel* selectionModel = ui->playersView->selectionModel();
