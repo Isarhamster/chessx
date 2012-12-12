@@ -112,6 +112,7 @@ bool DatabaseInfo::loadGame(int index, bool reload)
 
 void DatabaseInfo::newGame()
 {
+    m_game.clearTags();
 	m_game.clear();
     m_game.setModified(false);
 	m_index = NewGame;
