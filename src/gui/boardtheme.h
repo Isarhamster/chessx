@@ -34,7 +34,7 @@ class BoardTheme : public QObject
 {
 	Q_OBJECT
 public:
-	enum ColorRole {LightSquare, DarkSquare, Highlight, Frame};
+    enum ColorRole {LightSquare, DarkSquare, Highlight, Frame, CurrentMove, ColorRoleEndEntry};
 	enum LoadTheme {LoadBoard = 1, LoadPieces = 2, LoadAll = LoadBoard | LoadPieces};
 	enum Effects {Plain, Outline = 1, Shadow = 2};
 	BoardTheme();
@@ -85,7 +85,7 @@ private:
 	QPixmap m_originalSquare[2];
 	QPixmap m_square[2];
 	QSize m_size;
-	QColor m_colors[4];
+    QColor m_colors[ColorRoleEndEntry];
 	QString m_pieceFilename;
 	QString m_boardFilename;
 };

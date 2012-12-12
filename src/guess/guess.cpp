@@ -4,10 +4,12 @@
 
 namespace Guess
 {
-    Result guessMove(const char* fen, int square, MoveList& mlist)
+    Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
 	{
 		Result r;
 		r.error = -1;
+        r.score = 0;
+        r.bValidBC = false;
 
 		squareT sq = square;
 
@@ -19,11 +21,12 @@ namespace Guess
 		if (mlist.Size() == 0)
 			return r;
 
-		if (mlist.Size() > 1) {
+        if (mlist.Size() > 1) {
 			Engine * engine = new Engine();
-			engine->SetSearchTime(25);    // Do a 25 millisecond search
+            engine->SetSearchTime(thinkTime);
 			engine->SetPosition(&pos);
-			engine->Think(&mlist);
+            r.score = engine->Think(&mlist);
+            r.bValidBC = true;
 			delete engine;
 		}
 
@@ -63,6 +66,5 @@ namespace Guess
 		}
 		return -1;
 	}
-
 }
 

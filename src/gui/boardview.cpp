@@ -24,8 +24,12 @@ using namespace Qt;
 const int CoordinateSize = 10;
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
-    m_flipped(false), m_showFrame(false), m_guessMove(false), m_selectedSquare(InvalidSquare),
-    m_hoverSquare(InvalidSquare), m_hifrom(InvalidSquare), m_hito(InvalidSquare), m_flags(flags),
+    m_flipped(false), m_showFrame(false), m_showCurrentMove(true),
+    m_guessMove(false), m_selectedSquare(InvalidSquare),
+    m_hoverSquare(InvalidSquare),
+    m_hiFrom(InvalidSquare), m_hiTo(InvalidSquare),
+    m_currentFrom(InvalidSquare), m_currentTo(InvalidSquare),
+    m_flags(flags),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false),m_wheelCurrentDelta(0),
     m_minDeltaWheel(0),m_moveListCurrent(0),m_showMoveIndicator(true)
 {
@@ -51,11 +55,13 @@ void BoardView::setFlags(int flags)
 	m_flags = flags;
 }
 
-void BoardView::setBoard(const Board& value)
+void BoardView::setBoard(const Board& value,int from, int to)
 {
 	m_clickUsed = true;
 	Board oldboard = m_board;
 	m_board = value;
+    m_currentFrom = from;
+    m_currentTo = to;
 	if (underMouse())
 		updateGuess(m_hoverSquare);
 	update();
@@ -140,7 +146,21 @@ void BoardView::drawPieces(QPaintEvent* event)
         QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
 
         p.drawPixmap(pos, m_theme.piece(m_board.pieceAt(square)));
-        if (square == m_selectedSquare || square == m_hifrom || square == m_hito) {
+
+        if (m_showCurrentMove)
+        {
+            if (square == m_currentFrom || square == m_currentTo) {
+                QPen pen;
+                pen.setColor(m_theme.color(BoardTheme::CurrentMove));
+                pen.setWidth(2);
+                pen.setJoinStyle(Qt::MiterJoin);
+                p.setPen(pen);
+                p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
+                        m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
+            }
+        }
+
+        if (square == m_selectedSquare || square == m_hiFrom || square == m_hiTo) {
             QPen pen;
             pen.setColor(m_theme.color(BoardTheme::Highlight));
             pen.setWidth(2);
@@ -149,7 +169,9 @@ void BoardView::drawPieces(QPaintEvent* event)
             p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
                     m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
         }
-        if (m_showFrame) {
+
+        if (m_showFrame)
+        {
             p.setPen(m_theme.color(BoardTheme::Frame));
             p.drawRect(QRect(pos, m_theme.size()));
         }
@@ -221,10 +243,10 @@ bool BoardView::showGuess(Square s)
         {
             Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), (int) s, m_moveList);
 			if (!sm.error) {
-				m_hifrom = sm.from;
-				m_hito = sm.to;
-				update(squareRect(m_hifrom));
-				update(squareRect(m_hito));
+                m_hiFrom = sm.from;
+                m_hiTo = sm.to;
+                update(squareRect(m_hiFrom));
+                update(squareRect(m_hiTo));
 			}
 		}
         return true;
@@ -241,10 +263,10 @@ void BoardView::updateGuess(Square s)
 
 void BoardView::removeGuess()
 {
-	if (m_hifrom != InvalidSquare) {
-		update(squareRect(m_hifrom));
-		update(squareRect(m_hito));
-		m_hifrom = m_hito = InvalidSquare;
+    if (m_hiFrom != InvalidSquare) {
+        update(squareRect(m_hiFrom));
+        update(squareRect(m_hiTo));
+        m_hiFrom = m_hiTo = InvalidSquare;
 	}
 }
 
@@ -268,10 +290,10 @@ void BoardView::nextGuess(Square s)
             }
 
             Guess::simpleMoveT * sm = m_moveList.Get(m_moveListCurrent);
-            m_hifrom = sm->from;
-            m_hito = sm->to;
-            update(squareRect(m_hifrom));
-            update(squareRect(m_hito));
+            m_hiFrom = sm->from;
+            m_hiTo = sm->to;
+            update(squareRect(m_hiFrom));
+            update(squareRect(m_hiTo));
         }
     }
 }
@@ -365,12 +387,12 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 		unselectSquare();
 		if (s != InvalidSquare)
             emit moveMade(from, s, button);
-	} else if (m_hifrom != InvalidSquare) {
-		if (s == m_hifrom || s == m_hito)
-            emit moveMade(m_hifrom, m_hito, button);
+    } else if (m_hiFrom != InvalidSquare) {
+        if (s == m_hiFrom || s == m_hiTo)
+            emit moveMade(m_hiFrom, m_hiTo, button);
 		m_hoverSquare = InvalidSquare;
 		// Only update guess if "emit moveMade()" did not pop up a window (eg. promotion)
-		if (m_hifrom != InvalidSquare)
+        if (m_hiFrom != InvalidSquare)
 			updateGuess(s);
 	} else {
 		if (s != InvalidSquare) {
@@ -407,12 +429,14 @@ void BoardView::configure()
 {
     AppSettings->beginGroup("/Board/");
     m_showFrame = AppSettings->getValue("showFrame").toBool();
+    m_showCurrentMove = AppSettings->getValue("showCurrentMove").toBool();
     m_guessMove = AppSettings->getValue("guessMove").toBool();
     m_minDeltaWheel = AppSettings->getValue("minWheelCount").toInt();
     m_theme.setColor(BoardTheme::LightSquare, AppSettings->getValue("lightColor").value<QColor>());
     m_theme.setColor(BoardTheme::DarkSquare, AppSettings->getValue("darkColor").value<QColor>());
     m_theme.setColor(BoardTheme::Highlight, AppSettings->getValue("highlightColor").value<QColor>());
     m_theme.setColor(BoardTheme::Frame, AppSettings->getValue("frameColor").value<QColor>());
+    m_theme.setColor(BoardTheme::CurrentMove, AppSettings->getValue("currentMoveColor").value<QColor>());
 	m_theme.configure();
 	AppSettings->endGroup();
 	removeGuess();

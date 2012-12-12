@@ -48,7 +48,11 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameToolBar(0),
     m_showPgnSource(false),
     m_autoPlayTimer(0),
-    m_bGameChange(false)
+    m_bGameChange(false),
+    m_bcValid(false),
+    m_bcValue(0),
+    m_currentFrom(InvalidSquare),
+    m_currentTo(InvalidSquare)
 {
 	setObjectName("MainWindow");
 
@@ -460,7 +464,8 @@ void MainWindow::gameLoad(int index, bool force, bool reload)
 
 void MainWindow::gameMoveBy(int change)
 {
-	if (game().moveByPly(change)) {
+    if (game().moveByPly(change))
+    {
 		slotMoveChanged();
 		m_gameView->setFocus();
 	}
@@ -852,6 +857,10 @@ void MainWindow::setupActions()
     QAction* autoPlay = createAction(tr("&Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_P);
     autoPlay->setCheckable(true);
     gameMenu->addAction(autoPlay);
+
+    QAction* blunderCheck = createAction(tr("&Blunder Check"), SLOT(slotToggleBlunderCheck()), Qt::CTRL + Qt::SHIFT + Qt::Key_B);
+    blunderCheck->setCheckable(true);
+    gameMenu->addAction(blunderCheck);
 
     gameMenu->addSeparator();
 

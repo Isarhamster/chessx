@@ -134,7 +134,7 @@ public slots:
 	/** Go to first move of the game */
 	void slotGameMoveFirst()  {gameMoveBy(-999);}
 	/** Go to next move of the game */
-	void slotGameMoveNext()   {gameMoveBy(1);}
+    void slotGameMoveNext();
 	/** Go to previous move of the game */
 	void slotGameMovePrevious() {gameMoveBy(-1);}
 	/** Go to first move of the game */
@@ -183,6 +183,8 @@ public slots:
     void slotToggleAutoPlayer();
     /** Auto Play Timeout - make next move! */
     void slotAutoPlayTimeout();
+    /** Start / Stop Blunder Check feature */
+    void slotToggleBlunderCheck();
     /** Filter was changed - update status bar information */
 	void slotFilterChanged();
 	/** Load given game (triggered from Game List) */
@@ -271,6 +273,7 @@ protected slots:
 
 protected:
     void copyGame(int target, const Game& game);
+    void blunderCheck();
 
 signals:
 	/** Re-read configuration. */
@@ -353,6 +356,10 @@ private:
 	PendingLoad m_pending;
     QAction* m_toggleFilter;
     bool m_bGameChange;
+    bool m_bcValid;
+    int  m_bcValue;
+    int m_currentFrom;
+    int m_currentTo;
 };
 
 
