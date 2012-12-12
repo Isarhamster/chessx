@@ -251,25 +251,26 @@ void PreferencesDialog::restoreSettings()
 	AppSettings->layout(this);
 
 	// Read Board settings
-	AppSettings->beginGroup("/General/");
-	ui.tablebaseCheck->setChecked(AppSettings->value("onlineTablebases", true).toBool());
-    ui.automaticECO->setChecked(AppSettings->value("automaticECO", true).toBool());
-    ui.useIndexFile->setChecked(AppSettings->value("useIndexFile", true).toBool());
+    AppSettings->beginGroup("/General/");
+    ui.tablebaseCheck->setChecked(AppSettings->getValue("onlineTablebases").toBool());
+    ui.automaticECO->setChecked(AppSettings->getValue("automaticECO").toBool());
+    ui.useIndexFile->setChecked(AppSettings->getValue("useIndexFile").toBool());
 	AppSettings->endGroup();
-	AppSettings->beginGroup("/Board/");
-	ui.boardFrameCheck->setChecked(AppSettings->value("showFrame", true).toBool());
-	ui.guessMoveCheck->setChecked(AppSettings->value("guessMove", true).toBool());
-    ui.guessNextMove->setChecked(AppSettings->value("nextGuess", false).toBool());
-    ui.minWheelCount->setValue(AppSettings->value("minWheelCount", MIN_WHEEL_COUNT).toInt());
-	QString pieceTheme = AppSettings->value("pieceTheme", "merida").toString();
-	ui.pieceEffect->setCurrentIndex(AppSettings->value("pieceEffect", 2).toInt());
-    QString boardTheme = AppSettings->value("boardTheme", "brazilwood").toString();
+    AppSettings->beginGroup("/Board/");
+    ui.boardFrameCheck->setChecked(AppSettings->getValue("showFrame").toBool());
+    ui.guessMoveCheck->setChecked(AppSettings->getValue("guessMove").toBool());
+    ui.guessNextMove->setChecked(AppSettings->getValue("nextGuess").toBool());
+    ui.minWheelCount->setValue(AppSettings->getValue("minWheelCount").toInt());
+    ui.autoPlayInterval->setValue(AppSettings->getValue("AutoPlayerInterval").toInt());
+    QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
+    ui.pieceEffect->setCurrentIndex(AppSettings->getValue("pieceEffect").toInt());
+    QString boardTheme = AppSettings->getValue("boardTheme").toString();
 
     ui.boardColorsList->clear();
-    restoreColorItem(ui.boardColorsList, tr("Light squares"), "lightColor", QColor(Qt::lightGray));
-    restoreColorItem(ui.boardColorsList, tr("Dark squares"), "darkColor", QColor(Qt::darkGray));
-    restoreColorItem(ui.boardColorsList, tr("Highlighted squares"), "highlightColor", QColor(Qt::yellow));
-    restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor", QColor(Qt::black));
+    restoreColorItem(ui.boardColorsList, tr("Light squares"), "lightColor");
+    restoreColorItem(ui.boardColorsList, tr("Dark squares"), "darkColor");
+    restoreColorItem(ui.boardColorsList, tr("Highlighted squares"), "highlightColor");
+    restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor");
     AppSettings->endGroup();
 
 	QString themeDir(AppSettings->dataPath() + "/themes");
@@ -299,10 +300,6 @@ void PreferencesDialog::restoreSettings()
 	selectInCombo(ui.pieceThemeCombo, pieceTheme);
 	selectInCombo(ui.boardThemeCombo, boardTheme);
 
-	// Read Players settings
-	//AppSettings->beginGroup("/Players/");
-	//AppSettings->endGroup();
-
 	// Read Engine settings
 	engineList.restore();
 	ui.engineList->clear();
@@ -322,16 +319,17 @@ void PreferencesDialog::restoreSettings()
 
 void PreferencesDialog::saveSettings()
 {
-	AppSettings->beginGroup("/General/");
-	AppSettings->setValue("onlineTablebases", ui.tablebaseCheck->isChecked());
-    AppSettings->setValue("automaticECO", ui.automaticECO->isChecked());
-    AppSettings->setValue("useIndexFile", ui.useIndexFile->isChecked());
+    AppSettings->beginGroup("/General/");
+    AppSettings->setValue("onlineTablebases", QVariant(ui.tablebaseCheck->isChecked()));
+    AppSettings->setValue("automaticECO", QVariant(ui.automaticECO->isChecked()));
+    AppSettings->setValue("useIndexFile",QVariant( ui.useIndexFile->isChecked()));
 	AppSettings->endGroup();
-	AppSettings->beginGroup("/Board/");
-	AppSettings->setValue("showFrame", ui.boardFrameCheck->isChecked());
-	AppSettings->setValue("guessMove", ui.guessMoveCheck->isChecked());
-    AppSettings->setValue("nextGuess", ui.guessNextMove->isChecked());
+    AppSettings->beginGroup("/Board/");
+    AppSettings->setValue("showFrame", QVariant(ui.boardFrameCheck->isChecked()));
+    AppSettings->setValue("guessMove", QVariant(ui.guessMoveCheck->isChecked()));
+    AppSettings->setValue("nextGuess", QVariant(ui.guessNextMove->isChecked()));
     AppSettings->setValue("minWheelCount", ui.minWheelCount->value());
+    AppSettings->setValue("AutoPlayerInterval", ui.autoPlayInterval->value());
 	AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());
 	AppSettings->setValue("pieceEffect", ui.pieceEffect->currentIndex());
 	if (ui.boardThemeCombo->currentIndex() != ui.boardThemeCombo->count() - 1)
@@ -366,9 +364,9 @@ bool PreferencesDialog::selectInCombo(QComboBox* combo, const QString& text)
 	return false;
 }
 
-void PreferencesDialog::restoreColorItem(ColorList* list, const QString& text, const QString& cfgname, const QColor& cfgcolor)
+void PreferencesDialog::restoreColorItem(ColorList* list, const QString& text, const QString& cfgname)
 {
-	QColor color = AppSettings->value(cfgname, cfgcolor).value<QColor>();
+    QColor color = AppSettings->getValue(cfgname).value<QColor>();
 	list->addItem(text, color);
 }
 

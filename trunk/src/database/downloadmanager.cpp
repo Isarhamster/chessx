@@ -49,7 +49,6 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QStringList>
-#include <QTimer>
 #include <QUrl>
 
 DownloadManager::DownloadManager(QObject *parent) :

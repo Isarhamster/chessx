@@ -29,7 +29,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_wheelCu
     ui.boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove | BoardView::AllowCopyPiece);
     ui.boardView->showMoveIndicator(false);
 
-    m_minDeltaWheel = AppSettings->value("minWheelCount", MIN_WHEEL_COUNT).toInt();
+    m_minDeltaWheel = AppSettings->getValue("/Board/minWheelCount").toInt();
 
 	for (int piece = Empty; piece <= BlackPawn; piece++) {
         BoardSetupToolButton* button = new BoardSetupToolButton(this);

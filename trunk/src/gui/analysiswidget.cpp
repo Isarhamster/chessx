@@ -134,7 +134,7 @@ void AnalysisWidget::slotReconfigure()
 		stopEngine();
 	}
 
-    int fontSize = AppSettings->value("/General/ListFontSize", DEFAULT_LISTFONTSIZE).toInt();
+    int fontSize = AppSettings->getValue("/General/ListFontSize").toInt();
     QFont f = ui.variationText->font();
     f.setPointSize(fontSize);
     setFont(f);
@@ -159,7 +159,7 @@ void AnalysisWidget::setPosition(const Board& board)
 		m_analyses.clear();
 		m_tablebase->abortLookup();
 		m_tablebaseEvaluation.clear();
-		if (AppSettings->value("/General/onlineTablebases", true).toBool())
+        if (AppSettings->getValue("/General/onlineTablebases").toBool())
         {
             if (objectName() == "Analysis")
             {

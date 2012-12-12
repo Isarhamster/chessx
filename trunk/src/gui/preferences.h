@@ -70,8 +70,7 @@ private:
 	void saveSettings();
 	/** Select given item in combo. If not found, select last one. */
 	bool selectInCombo(QComboBox* combo, const QString& text);
-	void restoreColorItem(ColorList* list, const QString& text, const QString& cfgname,
-					const QColor& cfgcolor);
+    void restoreColorItem(ColorList* list, const QString& text, const QString& cfgname);
 	void saveColorList(ColorList* list, const QStringList& cfgnames);
 
 	EngineList engineList;

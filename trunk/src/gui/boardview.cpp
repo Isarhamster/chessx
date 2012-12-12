@@ -405,15 +405,14 @@ bool BoardView::isFlipped() const
 
 void BoardView::configure()
 {
-	AppSettings->beginGroup("/Board/");
-	m_showFrame = AppSettings->value("showFrame", true).toBool();
-	m_guessMove = AppSettings->value("guessMove", true).toBool();    
-    m_minDeltaWheel = AppSettings->value("minWheelCount", MIN_WHEEL_COUNT).toInt();
-    m_theme.setColor(BoardTheme::LightSquare, AppSettings->value("lightColor", "#d0d0d0").value<QColor>());
-	m_theme.setColor(BoardTheme::DarkSquare, AppSettings->value("darkColor", "#a0a0a0").value<QColor>());
-	m_theme.setColor(BoardTheme::Highlight, AppSettings->value("highlightColor",
-			 "#ffff00").value<QColor>());
-	m_theme.setColor(BoardTheme::Frame, AppSettings->value("frameColor", "#000000").value<QColor>());
+    AppSettings->beginGroup("/Board/");
+    m_showFrame = AppSettings->getValue("showFrame").toBool();
+    m_guessMove = AppSettings->getValue("guessMove").toBool();
+    m_minDeltaWheel = AppSettings->getValue("minWheelCount").toInt();
+    m_theme.setColor(BoardTheme::LightSquare, AppSettings->getValue("lightColor").value<QColor>());
+    m_theme.setColor(BoardTheme::DarkSquare, AppSettings->getValue("darkColor").value<QColor>());
+    m_theme.setColor(BoardTheme::Highlight, AppSettings->getValue("highlightColor").value<QColor>());
+    m_theme.setColor(BoardTheme::Frame, AppSettings->getValue("frameColor").value<QColor>());
 	m_theme.configure();
 	AppSettings->endGroup();
 	removeGuess();

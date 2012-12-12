@@ -27,9 +27,9 @@ public:
 	HistoryList(int historySize = 10);
 	~HistoryList();
 	/** Restore the list from application settings. */
-    void restore(const QString& group, const QString& keySize, const QString& key);
+    void restore();
 	/** Save the list with application settings. */
-	void save(const QString& group, const QString& key) const;
+    void save() const;
 	/** @return current number of items. */
 	int count() const;
 	/** @return current size. */

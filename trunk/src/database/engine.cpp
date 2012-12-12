@@ -63,7 +63,7 @@ Engine* Engine::newEngine(int index, bool bTestMode)
 {
 	Engine *engine = 0;
 
-	AppSettings->beginGroup("/Engines/");
+    AppSettings->beginGroup("/Engines/");
 	QString key(QString::number(index));
 	QString name = AppSettings->value(key + "/Name").toString();
 	QString command = AppSettings->value(key + "/Command").toString();

@@ -20,19 +20,19 @@ HistoryList::HistoryList(int historySize) : m_unique(true)
 HistoryList::~HistoryList()
 {}
 
-void HistoryList::restore(const QString& group, const QString& keySize, const QString& key)
+void HistoryList::restore()
 {
-	AppSettings->beginGroup(group);
-    setSize(AppSettings->value(keySize,4).toInt());
-	QStringList list = AppSettings->value(key).toStringList();
+    AppSettings->beginGroup("/History/");
+    setSize(AppSettings->getValue("MaxEntries").toInt());
+    QStringList list = AppSettings->value("RecentFiles").toStringList();
 	AppSettings->endGroup();
 	setItems(list);
 }
 
-void HistoryList::save(const QString& group, const QString& key) const
+void HistoryList::save() const
 {
-	AppSettings->beginGroup(group);
-	AppSettings->setValue(key, items());
+    AppSettings->beginGroup("/History/");
+    AppSettings->setValue("RecentFiles", items());
 	AppSettings->endGroup();
 }
 

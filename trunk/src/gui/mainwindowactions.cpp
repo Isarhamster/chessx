@@ -199,7 +199,7 @@ void MainWindow::slotConfigure()
 
 void MainWindow::slotReconfigure()
 {
-    m_recentFiles.restore("History", "MaxEntries", "RecentFiles");
+    m_recentFiles.restore();
     updateMenuRecent();
     emit reconfigure(); 	// Re-emit for children
 }
@@ -380,7 +380,7 @@ void MainWindow::slotBoardClick(Square s, int button)
 {
     if (button & Qt::RightButton)
     {
-        bool nextGuess = AppSettings->value("/Board/nextGuess", false).toBool();
+        bool nextGuess = AppSettings->getValue("/Board/nextGuess").toBool();
         if (button & Qt::ControlModifier) nextGuess = !nextGuess; // CTRL selects the other mapping
         if (!nextGuess)
         {
@@ -719,6 +719,34 @@ void MainWindow::slotGameAddVariation(const QString& san)
     else
         game().addVariation(s);
     slotGameChanged();
+}
+
+void MainWindow::slotToggleAutoPlayer()
+{
+    QAction* autoPlayAction = (QAction*) sender();
+    if (autoPlayAction)
+    {
+        if (autoPlayAction->isChecked())
+        {
+            int interval = AppSettings->getValue("/Board/AutoPlayerInterval").toInt();
+            if (m_autoPlayTimer->interval() != interval)
+            {
+                m_autoPlayTimer->setInterval(interval);
+            }
+            m_autoPlayTimer->start();
+        }
+        else
+        {
+            m_autoPlayTimer->stop();
+        }
+    }
+}
+
+void MainWindow::slotAutoPlayTimeout()
+{
+    // TODO: Make next move
+    slotGameMoveNext();
+    m_autoPlayTimer->start();
 }
 
 void MainWindow::slotFilterChanged()

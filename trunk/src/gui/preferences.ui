@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>560</width>
-    <height>477</height>
+    <width>553</width>
+    <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,14 +23,17 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
        <string>&amp;Board</string>
       </attribute>
       <layout class="QGridLayout">
-       <item row="4" column="0">
+       <item row="2" column="2">
+        <widget class="ColorList" name="boardColorsList"/>
+       </item>
+       <item row="3" column="2">
         <widget class="QCheckBox" name="boardFrameCheck">
          <property name="text">
           <string>&amp;Draw frame between squares</string>
@@ -42,26 +45,13 @@
          <property name="text">
           <string>&amp;Colors:</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
          <property name="buddy">
           <cstring>boardColorsList</cstring>
          </property>
         </widget>
-       </item>
-       <item row="5" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>150</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="pieceThemeLabel">
@@ -112,9 +102,6 @@
          </item>
         </layout>
        </item>
-       <item row="3" column="0" colspan="3">
-        <widget class="ColorList" name="boardColorsList"/>
-       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="boardThemeLabel">
          <property name="text">
@@ -135,7 +122,7 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0" colspan="3">
+       <item row="9" column="0" colspan="3">
         <widget class="QGroupBox" name="groupBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -223,6 +210,100 @@
             </item>
             <item>
              <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Slow</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>150</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="6" column="0" colspan="3">
+        <widget class="QGroupBox" name="gbBoardOptions">
+         <property name="title">
+          <string>Board Options</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0,0,0">
+            <item>
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Auto-Play Interval</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_12">
+              <property name="text">
+               <string>Fast</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="autoPlayInterval">
+              <property name="minimum">
+               <number>1000</number>
+              </property>
+              <property name="maximum">
+               <number>5000</number>
+              </property>
+              <property name="singleStep">
+               <number>1000</number>
+              </property>
+              <property name="pageStep">
+               <number>1000</number>
+              </property>
+              <property name="value">
+               <number>3000</number>
+              </property>
+              <property name="sliderPosition">
+               <number>3000</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::TicksBothSides</enum>
+              </property>
+              <property name="tickInterval">
+               <number>1000</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_13">
               <property name="text">
                <string>Slow</string>
               </property>
@@ -743,7 +824,6 @@
   <tabstop>tabWidget</tabstop>
   <tabstop>pieceThemeCombo</tabstop>
   <tabstop>boardThemeCombo</tabstop>
-  <tabstop>boardColorsList</tabstop>
   <tabstop>engineList</tabstop>
   <tabstop>addEngineButton</tabstop>
   <tabstop>deleteEngineButton</tabstop>
