@@ -407,7 +407,9 @@ void MainWindow::slotMoveChanged()
     const Game& g = game();
 
 	// Set board first
-	m_boardView->setBoard(g.board());
+    m_boardView->setBoard(g.board(), m_currentFrom, m_currentTo);
+    m_currentFrom = InvalidSquare;
+    m_currentTo = InvalidSquare;
 
     emit displayTime(g.timeAnnotation(), g.board().toMove());
 
@@ -419,6 +421,15 @@ void MainWindow::slotMoveChanged()
 
 	// Clear  entries
 	m_nagText.clear();
+}
+
+void MainWindow::blunderCheck()
+{
+    QAction* blunderCheckAction = (QAction*) sender();
+    if (blunderCheckAction && blunderCheckAction->isChecked())
+    {
+        // TODO
+    }
 }
 
 void MainWindow::slotBoardMoveWheel(int wheel)
@@ -744,9 +755,17 @@ void MainWindow::slotToggleAutoPlayer()
 
 void MainWindow::slotAutoPlayTimeout()
 {
-    // TODO: Make next move
     slotGameMoveNext();
     m_autoPlayTimer->start();
+}
+
+void MainWindow::slotToggleBlunderCheck()
+{
+    QAction* blunderCheckAction = (QAction*) sender();
+    if (blunderCheckAction)
+    {
+        // TODO? (blunderCheckAction->isChecked())
+    }
 }
 
 void MainWindow::slotFilterChanged()
@@ -990,4 +1009,11 @@ void MainWindow::slotGetGameData(Game& g)
     g = game();
 }
 
+void MainWindow::slotGameMoveNext()
+{
+    Move m = game().move(game().nextMove());
+    m_currentFrom = m.from();
+    m_currentTo = m.to();
+    gameMoveBy(1);
+}
 

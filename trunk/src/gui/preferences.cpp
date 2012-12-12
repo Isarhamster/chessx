@@ -258,6 +258,7 @@ void PreferencesDialog::restoreSettings()
 	AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
     ui.boardFrameCheck->setChecked(AppSettings->getValue("showFrame").toBool());
+    ui.hilightCurrentMove->setChecked(AppSettings->getValue("showCurrentMove").toBool());
     ui.guessMoveCheck->setChecked(AppSettings->getValue("guessMove").toBool());
     ui.guessNextMove->setChecked(AppSettings->getValue("nextGuess").toBool());
     ui.minWheelCount->setValue(AppSettings->getValue("minWheelCount").toInt());
@@ -271,6 +272,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.boardColorsList, tr("Dark squares"), "darkColor");
     restoreColorItem(ui.boardColorsList, tr("Highlighted squares"), "highlightColor");
     restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor");
+    restoreColorItem(ui.boardColorsList, tr("Current move"), "currentMoveColor");
     AppSettings->endGroup();
 
 	QString themeDir(AppSettings->dataPath() + "/themes");
@@ -326,6 +328,7 @@ void PreferencesDialog::saveSettings()
 	AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
     AppSettings->setValue("showFrame", QVariant(ui.boardFrameCheck->isChecked()));
+    AppSettings->setValue("showCurrentMove", QVariant(ui.hilightCurrentMove->isChecked()));
     AppSettings->setValue("guessMove", QVariant(ui.guessMoveCheck->isChecked()));
     AppSettings->setValue("nextGuess", QVariant(ui.guessNextMove->isChecked()));
     AppSettings->setValue("minWheelCount", ui.minWheelCount->value());
@@ -336,7 +339,7 @@ void PreferencesDialog::saveSettings()
 		AppSettings->setValue("boardTheme", ui.boardThemeCombo->currentText());
 	else	AppSettings->setValue("boardTheme", QString());
 	QStringList colorNames;
-	colorNames << "lightColor" << "darkColor" << "highlightColor" << "frameColor";
+    colorNames << "lightColor" << "darkColor" << "highlightColor" << "frameColor" << "currentMoveColor";
 	saveColorList(ui.boardColorsList, colorNames);
 	AppSettings->endGroup();
 

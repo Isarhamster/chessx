@@ -43,7 +43,7 @@ public:
 	*/
 	void setFlags(int flags);
 	/** Update and shows current position. */
-	void setBoard(const Board& value);
+    void setBoard(const Board& value, int from = InvalidSquare, int to = InvalidSquare);
 	/** @return displayed position. */
 	Board board() const;
 	/** @return current theme */
@@ -57,7 +57,7 @@ public:
     /** Switch to next guess */
     void nextGuess(Square s);
 
-    void showMoveIndicator(bool visible );
+    void showMoveIndicator(bool visible);
 
 public slots:
 	/** Reconfigure current theme. */
@@ -132,11 +132,14 @@ private:
 	BoardTheme m_theme;
 	bool m_flipped;
 	bool m_showFrame;
+    bool m_showCurrentMove;
 	bool m_guessMove;
 	int m_selectedSquare;
 	int m_hoverSquare;
-	int m_hifrom;
-	int m_hito;
+    int m_hiFrom;
+    int m_hiTo;
+    int m_currentFrom;
+    int m_currentTo;
 	int m_flags;
 	bool m_coordinates;
 	Piece m_dragged;
