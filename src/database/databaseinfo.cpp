@@ -30,7 +30,7 @@ DatabaseInfo::DatabaseInfo(const QString& fname): m_filter(0), m_index(NewGame)
     m_bLoaded = false;
     m_utf8 = false;
 	QFile file(fname);
-	if (file.size() < 1024 * 1024 * AppSettings->value("/General/EditLimit", 10).toInt()) 
+    if (file.size() < 1024 * 1024 * AppSettings->getValue("/General/EditLimit").toInt())
         m_database = new MemoryDatabase;
     else if (file.size() < INT_MAX)
     {
@@ -125,7 +125,7 @@ bool DatabaseInfo::saveGame()
 		return false;
 
     QString eco;
-    if (AppSettings->value("/General/automaticECO", true).toBool())
+    if (AppSettings->getValue("/General/automaticECO").toBool())
     {
         eco = m_game.ecoClassify().left(3);
         if (!eco.isEmpty())

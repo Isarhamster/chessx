@@ -77,7 +77,7 @@ QString PgnDatabase::offsetFilename(const QString& filename) const
 
 bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFlag)
 {
-    if (!AppSettings->value("/General/useIndexFile", true).toBool())
+    if (!AppSettings->getValue("/General/useIndexFile").toBool())
     {
         return false;
     }
@@ -156,7 +156,7 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
 
 bool PgnDatabase::writeOffsetFile(const QString& filename) const
 {
-    if (!AppSettings->value("/General/useIndexFile", true).toBool())
+    if (!AppSettings->getValue("/General/useIndexFile").toBool())
     {
         return false;
     }

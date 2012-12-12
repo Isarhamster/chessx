@@ -34,6 +34,7 @@ class ChessBrowser;
 class TableView;
 class OpeningTree;
 class ToolMainWindow;
+class QTimer;
 
 /**
 @defgroup GUI GUI - User interface components
@@ -178,7 +179,11 @@ public slots:
 	void slotGameAddVariation(const Analysis& analysis);
     /** Add variation to current position. */
     void slotGameAddVariation(const QString& san);
-	/** Filter was changed - update status bar information */
+    /** Start / Stop AutoPlay feature */
+    void slotToggleAutoPlayer();
+    /** Auto Play Timeout - make next move! */
+    void slotAutoPlayTimeout();
+    /** Filter was changed - update status bar information */
 	void slotFilterChanged();
 	/** Load given game (triggered from Game List) */
 	void slotFilterLoad(int index);
@@ -337,6 +342,7 @@ private:
 	/** Currently updated tree. May be NULL if no updated in progress. */
 	OpeningTree* m_openingTree;
 	QString m_nagText;
+    QTimer* m_autoPlayTimer;
 
 	struct PendingLoad {
 		Database* database;

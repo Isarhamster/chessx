@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PlayerListWidget</class>
- <widget class="QWidget" name="PlayerListWidget">
+ <class>TagDetailWidget</class>
+ <widget class="QWidget" name="TagDetailWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -34,7 +34,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QListView" name="playersView">
+      <widget class="QListView" name="tagList">
        <property name="toolTip">
         <string>No players found in database</string>
        </property>
@@ -48,7 +48,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QTextBrowser" name="playerView"/>
+      <widget class="QTextBrowser" name="detailText"/>
      </item>
      <item>
       <widget class="QPushButton" name="filterDatabase">

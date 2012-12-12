@@ -40,15 +40,21 @@
 
 #include <time.h>
 #include <QtGui/QSizePolicy>
+#include <QTimer>
 
 MainWindow::MainWindow() : QMainWindow(),
     m_saveDialog(0),
     m_gameWindow(0),
     m_gameToolBar(0),
     m_showPgnSource(false),
+    m_autoPlayTimer(0),
     m_bGameChange(false)
 {
 	setObjectName("MainWindow");
+
+    m_autoPlayTimer = new QTimer(this);
+    m_autoPlayTimer->setInterval(3000);
+    connect(m_autoPlayTimer, SIGNAL(timeout()), this, SLOT(slotAutoPlayTimeout()));
 
 	/* Create clipboard database */
 	m_databases.append(new DatabaseInfo);
@@ -112,7 +118,7 @@ MainWindow::MainWindow() : QMainWindow(),
     }
 
     m_menuView->addAction(m_gameToolBar->toggleViewAction());
-    m_gameToolBar->setVisible(AppSettings->value(("GameToolBar"), false).toBool());
+    m_gameToolBar->setVisible(AppSettings->getValue("/MainWindow/GameToolBar").toBool());
     m_gameView = new ChessBrowser(m_gameWindow, true);
     m_gameView->toolBar = m_gameToolBar;
     m_gameView->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -184,7 +190,7 @@ MainWindow::MainWindow() : QMainWindow(),
     restoreRecentFiles();
 
     /* Recent files */
-    m_recentFiles.restore("History", "MaxEntries", "RecentFiles");
+    m_recentFiles.restore();
     m_recentFiles.removeMissingFiles();
     updateMenuRecent();
 
@@ -257,9 +263,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Restoring layouts */
 	if (!AppSettings->layout(this))
 		resize(800, 600);
-	AppSettings->beginGroup("MainWindow");
+    AppSettings->beginGroup("/MainWindow/");
 	m_boardSplitter->restoreState(AppSettings->value("BoardSplit").toByteArray());
-    m_gameList->m_FilterActive = AppSettings->value("FilterFollowsGame", QVariant(false)).toBool();
+    m_gameList->m_FilterActive = AppSettings->getValue("FilterFollowsGame").toBool();
 	AppSettings->endGroup();
     m_toggleFilter->setChecked(m_gameList->m_FilterActive);
 
@@ -301,6 +307,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
 MainWindow::~MainWindow()
 {
+    m_autoPlayTimer->stop();
     m_openingTree->cancel(false);
     foreach (DatabaseInfo* database, m_databases) {
         database->close();
@@ -346,7 +353,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
 {
     if (confirmQuit())
     {
-		m_recentFiles.save("History", "RecentFiles");
+        m_recentFiles.save();
         m_databaseList->save();
 
         m_gameList->saveConfig();
@@ -357,11 +364,11 @@ void MainWindow::closeEvent(QCloseEvent* e)
         m_gameView->saveConfig();
 
 		AppSettings->setLayout(this);
-		AppSettings->beginGroup("MainWindow");
+        AppSettings->beginGroup("/MainWindow/");
 		AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
         AppSettings->setValue("FilterFollowsGame", m_gameList->m_FilterActive);
-		AppSettings->endGroup();
-        AppSettings->setValue(("GameToolBar"), m_gameToolBar->isVisible());
+        AppSettings->setValue("GameToolBar", m_gameToolBar->isVisible());
+        AppSettings->endGroup();
     }
     else
     {
@@ -824,21 +831,29 @@ void MainWindow::setupActions()
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
 
+    gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New));
+    QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
+
+    /* Game->Load submenu */
+    loadMenu->addAction(createAction(tr("&First"), SLOT(slotGameLoadFirst()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
+    loadMenu->addAction(createAction(tr("&Last"), SLOT(slotGameLoadLast()), Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
+    loadMenu->addAction(createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::CTRL + Qt::Key_Down));
+    loadMenu->addAction(createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::CTRL + Qt::Key_Up));
+    loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
+    loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
+    gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
+
+    gameMenu->addSeparator();
+
     QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
     flip->setCheckable(true);
     gameMenu->addAction(flip);
 
+    QAction* autoPlay = createAction(tr("&Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_P);
+    autoPlay->setCheckable(true);
+    gameMenu->addAction(autoPlay);
+
     gameMenu->addSeparator();
-
-    QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
-
-	/* Game->Load submenu */
-	loadMenu->addAction(createAction(tr("&First"), SLOT(slotGameLoadFirst()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
-	loadMenu->addAction(createAction(tr("&Last"), SLOT(slotGameLoadLast()), Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
-	loadMenu->addAction(createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::CTRL + Qt::Key_Down));
-	loadMenu->addAction(createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::CTRL + Qt::Key_Up));
-	loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
-	loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
 
 	/* Game->Go to submenu */
 	QMenu* goMenu = gameMenu->addMenu(tr("&Go to"));
@@ -848,11 +863,8 @@ void MainWindow::setupActions()
 	goMenu->addAction(createAction(tr("&Previous move"), SLOT(slotGameMovePrevious()), Qt::Key_Left));
 	goMenu->addAction(createAction(tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down));
 	goMenu->addAction(createAction(tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up));
-	goMenu->addAction(createAction(tr("Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right));
+    goMenu->addAction(createAction(tr("Enter Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right));
 	goMenu->addAction(createAction(tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL + Qt::Key_Left));
-
-    gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New));
-    gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
 
 	/* Search menu */
 	QMenu* search = menuBar()->addMenu(tr("Fi&nd"));

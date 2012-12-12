@@ -19,7 +19,7 @@ ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), too
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	setupMenu(showGameMenu);
 
-    int fontsize = AppSettings->value("/GameText/FontSize",DEFAULT_FONTSIZE).toInt();
+    int fontsize = AppSettings->getValue("/GameText/FontSize").toInt();
     setFontSize(fontsize);
 
 }
@@ -69,7 +69,7 @@ void ChessBrowser::slotReconfigure()
 {
     AppSettings->layout(this);
 
-    int fontSizeSettingValue = AppSettings->value("/GameText/FontSize",DEFAULT_FONTSIZE).toInt();
+    int fontSizeSettingValue = AppSettings->getValue("/GameText/FontSize").toInt();
     if( fontSizeSettingValue != m_fontSize )
     {
         setFontSize(fontSizeSettingValue);

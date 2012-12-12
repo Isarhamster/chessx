@@ -10,7 +10,7 @@
 #include "playerinfo.h"
 
 namespace Ui {
-class PlayerListWidget;
+class TagDetailWidget;
 }
 
 class Database;
@@ -39,7 +39,7 @@ public slots:
 private:
     PlayerInfo m_player;
     QStringList m_list;
-    Ui::PlayerListWidget *ui;
+    Ui::TagDetailWidget *ui;
     QStringListModel* m_filterModel;
 };
 

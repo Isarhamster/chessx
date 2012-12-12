@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "settings.h"
+#include "boardtheme.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -126,5 +127,60 @@ void Settings::getMap(const QString& key, OptionValueList& map)
     delete stream;
 }
 
+QMap<QString, QVariant> Settings::initDefaultValues() const {
+    QMap<QString, QVariant> map;
+    map.insert("/General/EditLimit", 10);
+    map.insert("/General/automaticECO", true);
+    map.insert("/General/useIndexFile", true);
+    map.insert("/General/ListFontSize", DEFAULT_LISTFONTSIZE);
+    map.insert("/General/onlineTablebases", true);
+    map.insert("/GameText/FontSize",DEFAULT_FONTSIZE);
+    map.insert("/MainWindow/GameToolBar", false);
+    map.insert("/MainWindow/FilterFollowsGame", false);
+    map.insert("/History/MaxEntries", 4);
+    map.insert("/Board/showFrame", true);
+    map.insert("/Board/guessMove", true);
+    map.insert("/Board/nextGuess", false);
+    map.insert("/Board/minWheelCount", MIN_WHEEL_COUNT);
+    map.insert("/Board/pieceTheme", "merida");
+    map.insert("/Board/pieceEffect", BoardTheme::Shadow);
+    map.insert("/Board/boardTheme", "brazilwood");
+    map.insert("/Board/lightColor", QColor(Qt::lightGray));
+    map.insert("/Board/darkColor", QColor(Qt::darkGray));
+    map.insert("/Board/highlightColor", QColor(Qt::yellow));
+    map.insert("/Board/frameColor", QColor(Qt::black));
+    map.insert("/Board/AutoPlayerInterval", 3000);
+
+
+    return map;
+}
+
+QVariant Settings::getValue(const QString &key) const
+{
+    static QMap<QString, QVariant> defaultValues = initDefaultValues();
+    if (defaultValues.contains(key))
+    {
+        return value(key, defaultValues.value(key));
+    }
+    else
+    {
+        QString groupKey = QString("/") + group() + "/" + key;
+        if (defaultValues.contains(groupKey))
+        {
+            return value(key, defaultValues.value(groupKey));
+        }
+    }
+    Q_ASSERT(false);
+    return QVariant();
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// The singleton instance pointer of our AppSettings
+//////////////////////////////////////////////////////////////////////////////
+
 Settings* AppSettings;
+
+//////////////////////////////////////////////////////////////////////////////
+// EOF
+//////////////////////////////////////////////////////////////////////////////
 
