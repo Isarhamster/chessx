@@ -1,7 +1,7 @@
 # Main application
 DEFINES +=
 CONFIG += uic warn_on
-QT += xml network
+QT += xml network svg
 
 greaterThan(QT_MAJOR_VERSION, 4) {
    QT += printsupport
@@ -130,7 +130,8 @@ HEADERS += src/database/board.h \
     src/quazip/ioapi.h \
     src/quazip/crypt.h \
     src/gui/toolmainwindow.h \
-    src/gui/playerlistwidget.h
+    src/gui/playerlistwidget.h \
+    src/gui/qled.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -218,7 +219,8 @@ SOURCES += src/database/board.cpp \
     src/quazip/zip.c \
     src/quazip/unzip.c \
     src/gui/toolmainwindow.cpp \
-    src/gui/playerlistwidget.cpp
+    src/gui/playerlistwidget.cpp \
+    src/gui/qled.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

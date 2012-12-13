@@ -24,7 +24,6 @@
 #include <QColorDialog>
 #include <QComboBox>
 #include <QPainter>
-#include <QPaintEvent>
 #include <QDir>
 #include <QPushButton>
 #include <QSpinBox>
