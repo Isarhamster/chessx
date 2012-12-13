@@ -150,6 +150,16 @@ void  GameList::slotFilterListByPlayer(QString s)
     emit searchDone();
 }
 
+/** Select and show current game in the list */
+void  GameList::slotFilterListByEvent(QString s)
+{
+    TagSearch ts(m_model->filter()->database(), "Event", s);
+    m_model->filter()->executeSearch(ts);
+    updateFilter();
+    emit raiseRequest();
+    emit searchDone();
+}
+
 void GameList::selectGame(int index)
 {
 	int i = m_model->filter()->gameToIndex(index);

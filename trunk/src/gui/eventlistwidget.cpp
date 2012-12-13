@@ -2,26 +2,26 @@
 *   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
-#include "playerlistwidget.h"
+#include "eventlistwidget.h"
 #include "ui_tagdetailwidget.h"
 #include "database.h"
 
-PlayerListWidget::PlayerListWidget(QWidget *parent) :
+EventListWidget::EventListWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TagDetailWidget)
 {
-    setObjectName("PlayerListWidget");
+    setObjectName("EventListWidget");
     ui->setupUi(this);
     m_filterModel = new QStringListModel(this);
     ui->tagList->setModel(m_filterModel);
 
-    setObjectName("PlayerListWidget");
-    connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findPlayers(const QString&)));
-    connect(ui->tagList, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedPlayer()));
-    connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedPlayer()));
-    connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedPlayer()));
+    setObjectName("EventListWidget");
+    connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findEvent(const QString&)));
+    connect(ui->tagList, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedEvent()));
+    connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedEvent()));
+    connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedEvent()));
 
-    selectPlayer(QString());
+    selectEvent(QString());
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(selectionChangedSlot()));
@@ -29,29 +29,29 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
     slotReconfigure();
 }
 
-PlayerListWidget::~PlayerListWidget()
+EventListWidget::~EventListWidget()
 {
     delete ui;
 }
 
-void PlayerListWidget::slotReconfigure()
+void EventListWidget::slotReconfigure()
 {
 }
 
-void PlayerListWidget::selectionChangedSlot()
+void EventListWidget::selectionChangedSlot()
 {
     if (ui->tagList->currentIndex().isValid())
     {
         QString ts = ui->tagList->currentIndex().data().toString();
-        selectPlayer(ts);
+        selectEvent(ts);
     }
     else
     {
-        selectPlayer(QString());
+        selectEvent(QString());
     }
 }
 
-void PlayerListWidget::findPlayers(const QString& s)
+void EventListWidget::findEvent(const QString& s)
 {
     if (s.isEmpty())
     {
@@ -64,34 +64,34 @@ void PlayerListWidget::findPlayers(const QString& s)
     }
 }
 
-void PlayerListWidget::selectPlayer(const QString& player)
+void EventListWidget::selectEvent(const QString& event)
 {
-    if (!player.isEmpty())
+    if (!event.isEmpty())
     {
-        m_player.setName(player);
+        m_event.setName(event);
         ui->filterDatabase->setEnabled(true);
         ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5")
-                .arg(m_player.name()).arg(m_player.formattedGameCount())
-                .arg(m_player.formattedRange())
-                .arg(m_player.formattedRating()).arg(m_player.formattedScore()));
+                .arg(m_event.name()).arg(m_event.formattedGameCount())
+                .arg(m_event.formattedRange())
+                .arg(m_event.formattedRating()).arg(m_event.formattedScore()));
     }
     else
     {
         ui->filterDatabase->setEnabled(false);
-        ui->detailText->setText(tr("<html><i>No player chosen.</i></html>"));
+        ui->detailText->setText(tr("<html><i>No event chosen.</i></html>"));
     }
 }
 
-void PlayerListWidget::showSelectedPlayer()
+void EventListWidget::showSelectedEvent()
 {
     if (ui->tagList->currentIndex().isValid())
     {
         QString ts = ui->tagList->currentIndex().data().toString();
-        selectPlayer(ts);
+        selectEvent(ts);
     }
 }
 
-void PlayerListWidget::filterSelectedPlayer()
+void EventListWidget::filterSelectedEvent()
 {
     if (ui->tagList->currentIndex().isValid())
     {
@@ -100,11 +100,11 @@ void PlayerListWidget::filterSelectedPlayer()
     }
 }
 
-void PlayerListWidget::setDatabase(Database* db)
+void EventListWidget::setDatabase(Database* db)
 {
-    ui->detailText->setText(tr("<html><i>No player chosen.</i></html>"));
-    m_player.setDatabase(db);
-    m_list = db->index()->playerNames();
+    ui->detailText->setText(tr("<html><i>No event chosen.</i></html>"));
+    m_event.setDatabase(db);
+    m_list = db->index()->tagValues(TagNameEvent);
     m_filterModel->setStringList(m_list);
     m_filterModel->sort(0);
 }

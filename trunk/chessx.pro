@@ -28,7 +28,7 @@ FORMS += \
 	src/gui/copydialog.ui \
 	src/gui/commentdialog.ui \
     src/gui/engineoptiondialog.ui \
-    src/gui/playerlistwidget.ui
+    src/gui/tagdetailwidget.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -131,7 +131,9 @@ HEADERS += src/database/board.h \
     src/quazip/crypt.h \
     src/gui/toolmainwindow.h \
     src/gui/playerlistwidget.h \
-    src/gui/qled.h
+    src/gui/qled.h \
+    src/gui/eventlistwidget.h \
+    src/database/eventinfo.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -220,7 +222,9 @@ SOURCES += src/database/board.cpp \
     src/quazip/unzip.c \
     src/gui/toolmainwindow.cpp \
     src/gui/playerlistwidget.cpp \
-    src/gui/qled.cpp
+    src/gui/qled.cpp \
+    src/gui/eventlistwidget.cpp \
+    src/database/eventinfo.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

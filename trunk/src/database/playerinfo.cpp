@@ -44,10 +44,11 @@ void PlayerInfo::setDatabase(Database* db)
 void PlayerInfo::setName(const QString& player)
 {
 	m_name = player;
+    update();
 }
 
 
-int toResult(const QString& res)
+int PlayerInfo::toResult(const QString& res) const
 {
 	if (res.startsWith("1/2")) return Draw;
 	else if (res.startsWith('1')) return WhiteWin;
@@ -92,21 +93,6 @@ void PlayerInfo::update()
 	qSwap(m_result[Black][WhiteWin], m_result[Black][BlackWin]);
 }
 
-QString PlayerInfo::unformattedScore(const int result[4], int count) const
-{
-    if (!count)
-        return QCoreApplication::translate("PlayerInfo", "no games");
-    QString score;
-    QChar scoresign[4] = {'*', '+', '=', '-'};
-    for (int i = WhiteWin; i <= BlackWin; ++i)
-        score += QString(" %1%2").arg(scoresign[i]).arg(result[i]);
-    if (result[Unknown])
-        score += QString(" *%1").arg(result[Unknown]);
-    if (count - result[Unknown])
-        score += QString(" (%1%)").arg((100.0 * result[WhiteWin] + 50.0 * result[Draw]) / (count - result[Unknown]),
-                                                         1, 'f', 1);
-    return score;
-}
 
 QString PlayerInfo::formattedScore(const int result[4], int count) const
 {
@@ -125,36 +111,6 @@ QString PlayerInfo::formattedScore(const int result[4], int count) const
 	return score;
 }
 
-QString PlayerInfo::unformattedScoreTotal() const
-{
-    int total[4];
-    for (int i = 0; i < 4; ++i)
-        total[i] = m_result[White][i] + m_result[Black][i];
-    int count = m_count[White] + m_count[Black];
-    return QString("%1").arg(unformattedScore(total, count));
-}
-
-QString PlayerInfo::unformattedScoreWhite() const
-{
-    return QString("%1").arg(unformattedScore(m_result[White], m_count[White]));
-}
-
-QString PlayerInfo::unformattedScoreBlack() const
-{
-    return QString("%1").arg(unformattedScore(m_result[Black], m_count[Black]));
-}
-
-QString PlayerInfo::unformattedScore() const
-{
-    int total[4];
-    for (int i = 0; i < 4; ++i)
-        total[i] = m_result[White][i] + m_result[Black][i];
-    int count = m_count[White] + m_count[Black];
-    return QCoreApplication::translate("PlayerInfo", "Total: %1 White: %2 Black: %3")
-            .arg(unformattedScore(total, count))
-            .arg(unformattedScore(m_result[White], m_count[White]))
-            .arg(unformattedScore(m_result[Black], m_count[Black]));
-}
 
 QString PlayerInfo::formattedScore() const
 {
@@ -183,25 +139,10 @@ void PlayerInfo::reset()
 
 }
 
-QString PlayerInfo::unformattedGameCount() const
-{
-    return QString("%1").arg(m_count[White] + m_count[Black]);
-}
-
 QString PlayerInfo::formattedGameCount() const
 {
 	return QCoreApplication::translate("PlayerInfo", "Games in database <i>%1</i>: <b>%2</b><br>")
 			.arg(m_database->name()).arg(m_count[White] + m_count[Black]);
-}
-
-QString PlayerInfo::unformattedRating() const
-{
-    if (!m_rating[1])
-        return QString();
-    else if (m_rating[0] == m_rating[1])
-        return QString("%1").arg(m_rating[0]);
-    else
-        return QString("%1-%2").arg(m_rating[0]).arg(m_rating[1]);
 }
 
 QString PlayerInfo::formattedRating() const
@@ -213,16 +154,6 @@ QString PlayerInfo::formattedRating() const
 	else
 		return QCoreApplication::translate("PlayerInfo", "Rating: <b>%1-%2</b><br>")
 				.arg(m_rating[0]).arg(m_rating[1]);
-}
-
-QString PlayerInfo::unformattedRange() const
-{
-    if (m_date[0].year() == 9999)	// No date
-        return PDInvalidDate.asString();
-    else if (m_date[0].year() < 1000)
-        return QString();
-    else
-        return m_date[0].range(m_date[1]);
 }
 
 QString PlayerInfo::formattedRange() const

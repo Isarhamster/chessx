@@ -18,6 +18,7 @@
 #include "dockwidgetex.h"
 #include "downloadmanager.h"
 #include "ecothread.h"
+#include "eventlistwidget.h"
 #include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"
@@ -178,6 +179,20 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
     connect(this, SIGNAL(reconfigure()), m_playerList, SLOT(slotReconfigure()));
     playerListDock->hide();
+
+    // Event List
+    DockWidgetEx* eventListDock = new DockWidgetEx(tr("Events"), this);
+    eventListDock->setObjectName("EventList");
+    m_eventList = new EventListWidget(this);
+    m_eventList->setMinimumSize(150, 100);
+    eventListDock->setWidget(m_eventList);
+    addDockWidget(Qt::RightDockWidgetArea, eventListDock);
+    m_menuView->addAction(eventListDock->toggleViewAction());
+    eventListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
+    connect(m_eventList, SIGNAL(raiseRequest()), eventListDock, SLOT(raise()));
+    connect(m_eventList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEvent(QString)));
+    connect(this, SIGNAL(reconfigure()), m_eventList, SLOT(slotReconfigure()));
+    eventListDock->hide();
 
     // Database List
     DockWidgetEx* dbListDock = new DockWidgetEx(tr("Databases"), this);

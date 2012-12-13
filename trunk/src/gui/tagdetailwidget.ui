@@ -36,7 +36,7 @@
      <item>
       <widget class="QListView" name="tagList">
        <property name="toolTip">
-        <string>No players found in database</string>
+        <string/>
        </property>
        <property name="editTriggers">
         <set>QAbstractItemView::NoEditTriggers</set>
