@@ -190,8 +190,20 @@ void BitBoard::removeIllegal(const Move& move, quint64& b) const
 	}
 }
 
+enum LangOutput { LO_EN, LO_DE, LO_FR, LO_PL, LO_ES };
 /** Return the ASCII character for a given piece type */
-inline char sanPiece(const int piece) { return " KQRBN"[piece]; }
+inline char sanPiece(const int piece, int lang=0)
+{
+    switch (lang)
+    {
+    case LO_EN: return " KQRBN"[piece];
+    case LO_DE: return " KDTLS"[piece];
+    case LO_FR: return " RDTFC"[piece];
+    case LO_PL: return " KHWGS"[piece];
+    case LO_ES: return " RDTAC"[piece];
+    default:    return " KQRBN"[piece];
+    }
+}
 
 QString BitBoard::moveToSan(const Move& move) const
 {

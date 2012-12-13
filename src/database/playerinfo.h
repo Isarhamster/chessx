@@ -29,7 +29,7 @@ public:
 	~PlayerInfo();
 	/** Changes database. Does not automatically update statistics. */
 	void setDatabase(Database* db);
-	/** Changes player. Does not automatically update statistics. */
+    /** Changes player. Update statistics automatically. */
 	void setName(const QString& player);
 	/** @return current player name. */
 	QString name() const;
@@ -44,30 +44,14 @@ public:
     /** @return string with formatted game count. */
     QString formattedGameCount() const;
 
-    /** @return string with unformatted score statistics. */
-    QString unformattedScore() const;
-    /** @return string with unformatted score statistics. */
-    QString unformattedScoreTotal() const;
-    /** @return string with unformatted score statistics. */
-    QString unformattedScoreWhite() const;
-    /** @return string with unformatted score statistics. */
-    QString unformattedScoreBlack() const;
-    /** @return string with unformatted date range. */
-    QString unformattedRange() const;
-    /** @return string with unformatted rating. */
-    QString unformattedRating() const;
-    /** @return string with unformatted game count. */
-    QString unformattedGameCount() const;
-
 private:
 	/** Clears all statistics. */
 	void reset();
 	/** Add statistics for game @p index when player has given color. */
 	void addGameStats(int index, Color color);
-    /** @return string with unformatted score statistics. */
-    QString unformattedScore(const int results[4], int count) const;
     /** Format score statistics for single color. */
 	QString formattedScore(const int results[4], int count) const;
+    int toResult(const QString& res) const;
 	typedef QList<QPair<QString, unsigned> > EcoFrequency;
 	QString m_name;
 	Database* m_database;

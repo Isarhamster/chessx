@@ -14,6 +14,7 @@
 #include "databaseinfo.h"
 #include "databaselist.h"
 #include "editaction.h"
+#include "eventlistwidget.h"
 #include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"
@@ -189,6 +190,11 @@ void MainWindow::slotFileQuit()
 void MainWindow::slotPlayerListWidget()
 {
     m_playerList->setDatabase(database());
+}
+
+void MainWindow::slotEventListWidget()
+{
+    m_eventList->setDatabase(database());
 }
 
 void MainWindow::slotConfigure()
@@ -894,6 +900,7 @@ void MainWindow::slotDatabaseChanged()
 	slotFilterChanged();
     gameLoad(gameIndex()>=0 ? gameIndex() : 0, true, true);
     m_playerList->setDatabase(database());
+    m_eventList->setDatabase(database());
 	emit databaseChanged(databaseInfo());
 }
 

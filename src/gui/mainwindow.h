@@ -21,6 +21,7 @@ class EditAction;
 class Analysis;
 class GameList;
 class PlayerListWidget;
+class EventListWidget;
 class DatabaseList;
 class SaveDialog;
 class BoardView;
@@ -100,6 +101,8 @@ public slots:
     void setFavoriteDatabase(QString fname);
     /** Open Player dialog */
     void slotPlayerListWidget();
+    /** Open Event List */
+    void slotEventListWidget();
     /** Promote current variation. */
 	void slotEditVarPromote();
 	/** Remove current variation. */
@@ -313,6 +316,7 @@ private:
 	/* Dialogs  */
 	GameList* m_gameList;
     PlayerListWidget* m_playerList;
+    EventListWidget* m_eventList;
     DatabaseList* m_databaseList;
 	SaveDialog* m_saveDialog;
 	/* Main gui parts */
