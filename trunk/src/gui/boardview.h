@@ -98,7 +98,7 @@ protected: //Drag'n'Drop Support
 
 private:
 	/** Resizes pieces for new board size. */
-	void resizeBoard();
+    void resizeBoard(QSize size);
 	/** Calculate size and position of square */
 	QRect squareRect(Square s);
 	/** @return square at given position */

@@ -33,7 +33,7 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false),m_wheelCurrentDelta(0),
     m_minDeltaWheel(0),m_moveListCurrent(0),m_showMoveIndicator(true)
 {
-	QSizePolicy policy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    QSizePolicy policy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	policy.setHeightForWidth(true);
 	setSizePolicy(policy);
 	setMouseTracking(true);
@@ -77,7 +77,7 @@ const BoardTheme& BoardView::theme() const
 	return m_theme;
 }
 
-void BoardView::showMoveIndicator(bool visible )
+void BoardView::showMoveIndicator(bool visible)
 {
     m_showMoveIndicator = visible;
 }
@@ -121,13 +121,11 @@ void BoardView::drawMoveIndicator(QPaintEvent* /*event*/)
         }
         if (square > 8)
         {
-
             QColor color = white ? Qt::white : Qt::black;
             QColor border = white ? Qt::black : Qt::white;
             int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
             p.setPen(border);
             p.setBrush(QColor(color));
-            //p.drawRect(8 * m_theme.size().width() + 8, posy, square, square);
             p.drawRect(8 * m_theme.size().width() + 2, posy, square, square);
         }
     }
@@ -187,19 +185,19 @@ void BoardView::paintEvent(QPaintEvent* event)
     drawDraggedPieces(event);
 }
 
-void BoardView::resizeBoard()
+void BoardView::resizeBoard(QSize sz)
 {
 	// subtract move indicator from width
 	int coord = m_coordinates * CoordinateSize;
-    int xsize = (width() - 2 * coord ) / 8;
-    int ysize = (height() - 2 * coord ) / 8;
+    int xsize = (sz.width()-1 - 2 * coord ) / 8;
+    int ysize = (sz.height()-1 - 2 * coord ) / 8;
 	int size = xsize < ysize ? xsize : ysize;
 	m_theme.setSize(QSize(size, size));
 }
 
-void BoardView::resizeEvent(QResizeEvent*)
+void BoardView::resizeEvent(QResizeEvent* e)
 {
-	resizeBoard();
+    resizeBoard(e->size());
 }
 
 Square BoardView::squareAt(const QPoint& p) const
