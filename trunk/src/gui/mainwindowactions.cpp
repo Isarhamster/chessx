@@ -31,6 +31,7 @@
 #include "tableview.h"
 #include "analysiswidget.h"
 #include "version.h"
+#include "qled.h"
 
 #include <time.h>
 
@@ -421,6 +422,12 @@ void MainWindow::slotMoveChanged()
 
 	// Clear  entries
 	m_nagText.clear();
+
+//    QLed* led = m_gameToolBar->findChild<QLed*>("blunderLed");
+//    if (led)
+//    {
+//        led->toggleValue();
+//    }
 }
 
 void MainWindow::blunderCheck()

@@ -37,6 +37,7 @@
 #include "tablebase.h"
 #include "tableview.h"
 #include "toolmainwindow.h"
+#include "qled.h"
 
 #include <time.h>
 #include <QtGui/QSizePolicy>
@@ -116,6 +117,13 @@ MainWindow::MainWindow() : QMainWindow(),
         if (i==0)
         {
             QWidget* spacer = new QWidget();
+            spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            m_gameToolBar->addWidget(spacer);
+            QLed* led = new QLed(m_gameToolBar);
+            led->setObjectName("blunderLed");
+            led->setOnColor(QLed::Red);
+            m_gameToolBar->addWidget(led);
+            spacer = new QWidget();
             spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
             m_gameToolBar->addWidget(spacer);
         }
