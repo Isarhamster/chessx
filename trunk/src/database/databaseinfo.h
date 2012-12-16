@@ -45,6 +45,7 @@ public:
 	Filter* filter()  {return m_filter;}
 	/** @return current game  */
 	Game& currentGame() {return m_game;}
+    const Game& currentGame() const {return m_game;}
 	/** @return index of current game  */
 	int currentIndex() const   {return m_index;}
 	/** Load game @p index */
