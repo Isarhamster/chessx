@@ -468,6 +468,11 @@ Game& MainWindow::game()
 	return databaseInfo()->currentGame();
 }
 
+const Game& MainWindow::game() const
+{
+    return databaseInfo()->currentGame();
+}
+
 int MainWindow::gameIndex() const
 {
 	return databaseInfo()->currentIndex();

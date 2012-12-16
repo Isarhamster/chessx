@@ -143,7 +143,7 @@ public :
 	bool atLineEnd(MoveId moveId = CURRENT_MOVE) const;
 	bool atGameEnd(MoveId moveId = CURRENT_MOVE) const;
 	/** Counts the number of moves, comments and nags, in mainline, to the end of the game */
-	void moveCount(int* moves, int* comments, int* nags);
+    void moveCount(int* moves, int* comments, int* nags) const;
 	/** @return number of half moves made since the beginning of the game */
 	int ply(MoveId moveId = CURRENT_MOVE) const;
 	/** @return current move. Equals to (ply-1)/2+1 for standard games, but may be different
@@ -258,7 +258,7 @@ public :
 
 private:
 
-    QString specialAnnotation(QString& annotation, QString specialMark ); // [%csl  [%cal
+    QString specialAnnotation(QString& annotation, QString specialMark ) const; // [%csl  [%cal
 
 	struct MoveNode {
 		Move move;

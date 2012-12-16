@@ -71,6 +71,7 @@ protected:
 	const DatabaseInfo* databaseInfo() const;
 	/** @return active game */
 	Game& game();
+    const Game& game() const;
 	/** @return index of active game */
 	int gameIndex() const;
 	/** Edit comment */

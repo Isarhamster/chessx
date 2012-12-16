@@ -367,6 +367,8 @@ bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
     if (node == NO_MOVE)
         return false;
 
+    setModified(true);
+
     QString specAnnot = specialAnnotation(annotation, "[%csl");
     if( position == Game::AfterMove || node == 0 )
     {
@@ -548,6 +550,7 @@ bool Game::addNag(Nag nag, MoveId moveId)
 	MoveId node = nodeValid(moveId);
 	if (node != NO_MOVE) {
 		m_moveNodes[node].nags.addNag(nag);
+        setModified(true);
 		return true;
 	}
 	return false;
@@ -558,6 +561,7 @@ bool Game::setNags(NagSet nags, MoveId moveId)
 	MoveId node = nodeValid(moveId);
 	if (node != NO_MOVE) {
 		m_moveNodes[node].nags = nags;
+        setModified(true);
 		return true;
 	}
 	return false;
@@ -591,7 +595,7 @@ MoveId Game::nodeValid(MoveId moveId) const
 	return NO_MOVE;
 }
 
-void Game::moveCount(int* moves, int* comments, int* nags)
+void Game::moveCount(int* moves, int* comments, int* nags) const
 {
 	*moves = *comments = *nags = 0;
 
@@ -835,6 +839,8 @@ void Game::removeNode(MoveId moveId)
 {
 	MoveId node = nodeValid(moveId);
 	if (node != NO_MOVE) {
+        setModified(true);
+
 		if (variationCount(node)) {
 			for (int i = 0; i < m_moveNodes[node].variations.size(); ++i) {
 				removeNode(m_moveNodes[node].variations[i]);
@@ -1073,11 +1079,13 @@ QString Game::ecoClassify()
 
 void Game::reparentVariation(MoveId variation, MoveId parent)
 {
+    if (variation != NO_MOVE)
+        setModified(true);
 	for (MoveId node = variation; node != NO_MOVE; node = m_moveNodes[node].nextNode)
 		m_moveNodes[node].parentNode = parent;
 }
 
-QString Game::specialAnnotation(QString& annotation, QString specialMark ) // [%csl  [%cal
+QString Game::specialAnnotation(QString& annotation, QString specialMark ) const // [%csl  [%cal
 {
     QString result = "";
     int specialAnnotationStart = annotation.indexOf(specialMark);
