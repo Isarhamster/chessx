@@ -143,7 +143,7 @@ bool Engine::isAnalyzing()
 
 void Engine::send(const QString& message)
 {
-    qDebug() << "<-- " << message << endl;
+    // qDebug() << "<-- " << message << endl;
 
 	QString out(message);
 	out.append('\n');
@@ -194,7 +194,7 @@ void Engine::pollProcess()
 
     while (m_process && m_process->canReadLine()) {
         message = m_process->readLine().simplified();
-        qDebug() << "--> " << message << endl;
+        // qDebug() << "--> " << message << endl;
         processMessage(message);
 	}
 }
