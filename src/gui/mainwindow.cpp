@@ -314,7 +314,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	QStringList args = qApp->arguments();
 	for (int i = 1; i < args.count(); i++)
 		if (QFile::exists(args[i]))
-			openDatabase(args[i]);
+            openDatabaseUrl(args[i], false);
 
 	qApp->installEventFilter(this);
 	/* Activate clipboard */
@@ -348,7 +348,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::FileOpen)
     {
-        openDatabase(static_cast<QFileOpenEvent*>(event)->file());
+        openDatabaseUrl(static_cast<QFileOpenEvent*>(event)->file(),false);
         return true;
     }
     else
