@@ -110,9 +110,11 @@ void MainWindow::slotFileSave()
 
 void MainWindow::slotFileClose()
 {
-	if (m_currentDatabase) {// Don't remove Clipboard
+    if (m_currentDatabase)
+    {// Don't remove Clipboard
         if (databaseInfo()->IsLoaded())
         {
+            QuerySaveGame();
             m_openingTree->cancel(false);
             m_databaseList->setFileClose(databaseInfo()->filePath());
             databaseInfo()->close();
@@ -500,10 +502,8 @@ void MainWindow::slotGameLoadPrevious()
 	game = databaseInfo()->filter()->previousGame(game);
     if (game != -1)
     {
-		m_gameList->selectGame(game);
-		m_gameList->setFocus();
-		m_pending = PendingLoad(database(), game);
-        QTimer::singleShot(100, this, SLOT(slotGameLoadPending()));
+        gameLoad(game);
+        m_gameList->setFocus();
 	}
 }
 
@@ -515,21 +515,10 @@ void MainWindow::slotGameLoadNext()
 	game = databaseInfo()->filter()->nextGame(game);
     if (game != -1)
     {
-		m_gameList->selectGame(game);
-		m_gameList->setFocus();
-		m_pending = PendingLoad(database(), game);
-        QTimer::singleShot(100, this, SLOT(slotGameLoadPending()));
-	}
-}
-
-void MainWindow::slotGameLoadPending()
-{
-	if (m_pending.database == database())
-    {
-		gameLoad(m_pending.game);
+        gameLoad(game);
+        m_gameList->setFocus();
     }
 }
-
 
 void MainWindow::slotGameLoadRandom()
 {

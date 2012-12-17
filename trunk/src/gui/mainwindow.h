@@ -167,8 +167,6 @@ public slots:
 	void slotGameModify(const EditAction& action);
 	/** Update GameView content after game was change. Triggers also @ref slotMoveChanged . */
 	void slotGameChanged();
-	/** Load pending game. */
-	void slotGameLoadPending();
 	/** Handle link click in Game View panel */
 	void slotGameViewLink(const QUrl& link);
 	/** Handle link click in Game View panel */

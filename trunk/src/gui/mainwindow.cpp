@@ -961,6 +961,8 @@ void MainWindow::setupActions()
 bool MainWindow::confirmQuit()
 {
 	QString modified;
+    if (m_currentDatabase)
+        QuerySaveGame();
 	for (int i = 1; i < m_databases.size(); i++)
 		if (m_databases[i]->database()->isModified())
 			modified += m_databases[i]->database()->name() + '\n';
