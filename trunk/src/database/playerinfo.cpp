@@ -13,6 +13,15 @@
 #include "playerinfo.h"
 #include "database.h"
 
+static bool sortEcoFrequencyLt(const EcoFrequencyItem& a1, const EcoFrequencyItem& a2)
+{
+    if (a1.second == a2.second)
+    {
+        return (a1.first < a2.first);
+    }
+    return a1.second > a2.second;
+}
+
 PlayerInfo::PlayerInfo()
 {
 	m_database = 0;
@@ -58,8 +67,8 @@ int PlayerInfo::toResult(const QString& res) const
 
 void PlayerInfo::update()
 {
-	QHash<QString, unsigned> openings[2];
-	const Index* index = m_database->index();
+    QHash<QString, unsigned> openings[2];
+    const Index* index = m_database->index();
 
 	// Determine matching tag values
     ValueIndex player = index->getValueIndex(m_name);
@@ -88,8 +97,19 @@ void PlayerInfo::update()
 			m_date[1] = qMax(date, m_date[1]);
 		}
         QString eco = index->tagValue(TagNameECO, i).left(3);
-		openings[c][eco]++;
+        if (eco.length()==3)
+            openings[c][eco]++;
 	}
+
+    for (int i=0; i<2; ++i)
+    {
+        foreach(QString s, openings[i].keys())
+        {
+            m_eco[i].append(EcoFrequencyItem(s, openings[i].value(s)));
+            qSort(m_eco[i].begin(),m_eco[i].end(),sortEcoFrequencyLt);
+        }
+    }
+
 	qSwap(m_result[Black][WhiteWin], m_result[Black][BlackWin]);
 }
 
@@ -166,3 +186,21 @@ QString PlayerInfo::formattedRange() const
 		return QCoreApplication::translate("PlayerInfo", "Date: <b>%1</b><br>").arg(m_date[0].range(m_date[1]));
 }
 
+QString PlayerInfo::listOfOpenings() const
+{
+    QStringList openingsList;
+    openingsList.append(QCoreApplication::translate("PlayerInfo","<p>White Openings:</p><ul>"));
+    openingsList.append(QCoreApplication::translate("PlayerInfo","</ul><p>Black Openings:</p><ul>"));
+
+    for (int i=0;i<2;++i)
+    {
+        for (EcoFrequency::const_iterator it=m_eco[i].begin(); it != m_eco[i].end(); ++it)
+        {
+            openingsList[i] += QString("<li> %1: %2").arg((*it).first).arg((*it).second);
+        }
+    }
+    QString s = openingsList.at(0);
+    s = s.append(openingsList.at(1));
+    s = s.append("</ul>");
+    return s;
+}

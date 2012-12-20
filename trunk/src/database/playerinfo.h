@@ -18,6 +18,8 @@
 #include <QPair>
 
 class Database;
+typedef QPair<QString, unsigned int> EcoFrequencyItem;
+typedef QList<EcoFrequencyItem> EcoFrequency;
 
 class PlayerInfo {
 public:
@@ -43,6 +45,8 @@ public:
 	QString formattedRating() const;
     /** @return string with formatted game count. */
     QString formattedGameCount() const;
+    /** @return string with list of openings played */
+    QString listOfOpenings() const;
 
 private:
 	/** Clears all statistics. */
@@ -52,7 +56,7 @@ private:
     /** Format score statistics for single color. */
 	QString formattedScore(const int results[4], int count) const;
     int toResult(const QString& res) const;
-	typedef QList<QPair<QString, unsigned> > EcoFrequency;
+
 	QString m_name;
 	Database* m_database;
 	int m_result[2][4];
