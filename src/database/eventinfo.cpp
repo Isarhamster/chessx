@@ -53,7 +53,7 @@ int EventInfo::toResult(const QString& res) const
 
 void EventInfo::update()
 {
-    QHash<QString, unsigned> openings[2];
+    QHash<QString, unsigned> openings;
     const Index* index = m_database->index();
 
     // Determine matching tag values
@@ -63,29 +63,19 @@ void EventInfo::update()
     reset();
 
     for (int i = 0; i < m_database->count(); ++i) {
-        Color c;
-        if (index->valueIndexFromTag(TagNameWhite, i) == event)
-            c = White;
-        else if (index->valueIndexFromTag(TagNameBlack, i) == event)
-            c = Black;
-        else continue;
+        if (index->valueIndexFromTag(TagNameEvent, i) != event)
+            continue;
         int res = toResult(index->tagValue(TagNameResult, i));
-        m_result[c][res]++;
-        m_count[c]++;
-        int elo = index->tagValue(c == White ? TagNameWhiteElo : TagNameBlackElo, i).toInt();
-        if (elo) {
-            m_rating[0] = qMin(elo, m_rating[0]);
-            m_rating[1] = qMax(elo, m_rating[1]);
-        }
+        m_result[res]++;
+        m_count++;
         PartialDate date(index->tagValue(TagNameDate, i));
         if (date.year() > 1000) {
             m_date[0] = qMin(date, m_date[0]);
             m_date[1] = qMax(date, m_date[1]);
         }
         QString eco = index->tagValue(TagNameECO, i).left(3);
-        openings[c][eco]++;
+        openings[eco]++;
     }
-    qSwap(m_result[Black][WhiteWin], m_result[Black][BlackWin]);
 }
 
 
@@ -110,23 +100,19 @@ QString EventInfo::formattedScore(const int result[4], int count) const
 QString EventInfo::formattedScore() const
 {
     int total[4];
-    for (int i = 0; i < 4; ++i)
-        total[i] = m_result[White][i] + m_result[Black][i];
-    int count = m_count[White] + m_count[Black];
-    return QCoreApplication::translate("EventInfo", "Total: %1<br>White: %2<br>Black: %3<br>")
-            .arg(formattedScore(total, count))
-            .arg(formattedScore(m_result[White], m_count[White]))
-            .arg(formattedScore(m_result[Black], m_count[Black]));
+    return QCoreApplication::translate("EventInfo", "Total: %1")
+            .arg(formattedScore(m_result, m_count));
 }
 
 void EventInfo::reset()
 {
-    for (int c = White; c <= Black; ++c) {
+    for (int c = White; c <= Black; ++c)
+    {
         for (int r = 0; r < 4; ++r)
-            m_result[c][r] = 0;
-        m_count[c] = 0;
-        m_eco[c].clear();
+            m_result[r] = 0;
     }
+    m_eco.clear();
+    m_count = 0;
     m_rating[0] = 99999;
     m_rating[1] = 0;
     m_date[0] = PDMaxDate;
@@ -136,8 +122,8 @@ void EventInfo::reset()
 
 QString EventInfo::formattedGameCount() const
 {
-    return QCoreApplication::translate("EventInfo", "Games in database <i>%1</i>: <b>%2</b><br>")
-            .arg(m_database->name()).arg(m_count[White] + m_count[Black]);
+    return QCoreApplication::translate("EventInfo", "Games in database %1: %2<br>")
+            .arg(m_database->name()).arg(m_count);
 }
 
 QString EventInfo::formattedRating() const

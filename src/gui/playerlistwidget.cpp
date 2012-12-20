@@ -70,10 +70,13 @@ void PlayerListWidget::selectPlayer(const QString& player)
     {
         m_player.setName(player);
         ui->filterDatabase->setEnabled(true);
-        ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5")
+        ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5%6")
                 .arg(m_player.name()).arg(m_player.formattedGameCount())
                 .arg(m_player.formattedRange())
-                .arg(m_player.formattedRating()).arg(m_player.formattedScore()));
+                .arg(m_player.formattedRating())
+                .arg(m_player.formattedScore())
+                .arg(m_player.listOfOpenings())
+                );
     }
     else
     {

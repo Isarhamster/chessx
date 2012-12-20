@@ -54,10 +54,10 @@ private:
     int toResult(const QString& res) const;
 
     typedef QList<QPair<QString, unsigned> > EcoFrequency;
-    int m_result[2][4];
-    int m_count[2];
+    int m_result[4];
+    int m_count;
     int m_rating[2];
-    EcoFrequency m_eco[2];
+    EcoFrequency m_eco;
     PartialDate m_date[2];
 
 };
