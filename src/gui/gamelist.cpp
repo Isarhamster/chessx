@@ -150,11 +150,23 @@ void  GameList::slotFilterListByPlayer(QString s)
     emit searchDone();
 }
 
-/** Select and show current game in the list */
 void  GameList::slotFilterListByEvent(QString s)
 {
     TagSearch ts(m_model->filter()->database(), "Event", s);
     m_model->filter()->executeSearch(ts);
+    updateFilter();
+    emit raiseRequest();
+    emit searchDone();
+}
+
+void  GameList::slotFilterListByEventPlayer(QString event, QString player)
+{
+    TagSearch ts(m_model->filter()->database(), "White", player);
+    TagSearch ts2(m_model->filter()->database(), "Black", player);
+    TagSearch ts3(m_model->filter()->database(), "Event", event);
+    m_model->filter()->executeSearch(ts);
+    m_model->filter()->executeSearch(ts2,Search::Or);
+    m_model->filter()->executeSearch(ts3,Search::And);
     updateFilter();
     emit raiseRequest();
     emit searchDone();

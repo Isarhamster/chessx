@@ -8,6 +8,15 @@
 #include "eventinfo.h"
 #include "database.h"
 
+static bool sortPlayersLt(const PlayerInfoListItem& a1, const PlayerInfoListItem& a2)
+{
+    if (a1.second == a2.second)
+    {
+        return (a1.first < a2.first);
+    }
+    return a1.second > a2.second;
+}
+
 EventInfo::EventInfo()
 {
     m_database = 0;
@@ -51,9 +60,20 @@ int EventInfo::toResult(const QString& res) const
     else return Unknown;
 }
 
+float EventInfo::toPoints(const QString& res) const
+{
+    if (res.startsWith("1/2")) return 0.5;
+    else if (res.startsWith('1')) return 1.0;
+    else if (res.startsWith('0')) return 0.0;
+    else if (res.startsWith("+-")) return 1.0;
+    else if (res.startsWith("-+")) return 0;
+    else return Unknown;
+}
+
 void EventInfo::update()
 {
-    QHash<QString, unsigned> openings;
+    QHash<QString, float> players;
+
     const Index* index = m_database->index();
 
     // Determine matching tag values
@@ -65,7 +85,15 @@ void EventInfo::update()
     for (int i = 0; i < m_database->count(); ++i) {
         if (index->valueIndexFromTag(TagNameEvent, i) != event)
             continue;
-        int res = toResult(index->tagValue(TagNameResult, i));
+        QString result = index->tagValue(TagNameResult, i);
+        int res = toResult(result);
+        QString whitePlayer = index->tagValue(TagNameWhite, i);
+        QString blackPlayer = index->tagValue(TagNameBlack, i);
+        // The following works as QHash initializes a default-constructed value to 0
+        players[whitePlayer] += toPoints(result);
+        players[blackPlayer] += (1.0-toPoints(result));
+        m_games[whitePlayer]++;
+        m_games[blackPlayer]++;
         m_result[res]++;
         m_count++;
         PartialDate date(index->tagValue(TagNameDate, i));
@@ -73,8 +101,12 @@ void EventInfo::update()
             m_date[0] = qMin(date, m_date[0]);
             m_date[1] = qMax(date, m_date[1]);
         }
-        QString eco = index->tagValue(TagNameECO, i).left(3);
-        openings[eco]++;
+    }
+
+    foreach(QString s, players.keys())
+    {
+        m_players.append(PlayerInfoListItem(s, players.value(s)));
+        qSort(m_players.begin(),m_players.end(),sortPlayersLt);
     }
 }
 
@@ -99,7 +131,6 @@ QString EventInfo::formattedScore(const int result[4], int count) const
 
 QString EventInfo::formattedScore() const
 {
-    int total[4];
     return QCoreApplication::translate("EventInfo", "Total: %1")
             .arg(formattedScore(m_result, m_count));
 }
@@ -111,7 +142,8 @@ void EventInfo::reset()
         for (int r = 0; r < 4; ++r)
             m_result[r] = 0;
     }
-    m_eco.clear();
+    m_players.clear();
+    m_games.clear();
     m_count = 0;
     m_rating[0] = 99999;
     m_rating[1] = 0;
@@ -147,3 +179,20 @@ QString EventInfo::formattedRange() const
         return QCoreApplication::translate("EventInfo", "Date: <b>%1</b><br>").arg(m_date[0].range(m_date[1]));
 }
 
+QString EventInfo::listOfPlayers() const
+{
+    QString playersList;
+    playersList.append(QCoreApplication::translate("EventInfo","<table><tr><th>Participants<th>Score"));
+
+    for (PlayerInfoList::const_iterator it=m_players.begin(); it != m_players.end(); ++it)
+    {
+        playersList += QString("<tr><td><a href='player:%1'>%2</a><td>%3/%4")
+                .arg((*it).first)
+                .arg((*it).first)
+                .arg((*it).second)
+                .arg(m_games[(*it).first]);
+    }
+
+    playersList = playersList.append("</table>");
+    return playersList;
+}

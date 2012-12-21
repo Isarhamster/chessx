@@ -26,6 +26,9 @@ EventListWidget::EventListWidget(QWidget *parent) :
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(selectionChangedSlot()));
 
+    ui->detailText->setOpenLinks(false);
+    connect(ui->detailText, SIGNAL(anchorClicked(QUrl)), SLOT(slotLinkClicked(QUrl)));
+
     slotReconfigure();
 }
 
@@ -70,10 +73,12 @@ void EventListWidget::selectEvent(const QString& event)
     {
         m_event.setName(event);
         ui->filterDatabase->setEnabled(true);
-        ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5")
+        ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5%6")
                 .arg(m_event.name()).arg(m_event.formattedGameCount())
                 .arg(m_event.formattedRange())
-                .arg(m_event.formattedRating()).arg(m_event.formattedScore()));
+                .arg(m_event.formattedRating())
+                .arg(m_event.formattedScore())
+                .arg(m_event.listOfPlayers()));
     }
     else
     {
@@ -104,7 +109,20 @@ void EventListWidget::setDatabase(Database* db)
 {
     ui->detailText->setText(tr("<html><i>No event chosen.</i></html>"));
     m_event.setDatabase(db);
-    m_list = db->index()->tagValues(TagNameEvent);
+    m_list.clear();
+    if (db && db->index())
+    {
+        m_list = db->index()->tagValues(TagNameEvent);
+    }
     m_filterModel->setStringList(m_list);
     m_filterModel->sort(0);
+}
+
+void EventListWidget::slotLinkClicked(const QUrl& url)
+{
+    if (url.scheme() == "player")
+    {
+        QString event = ui->tagList->currentIndex().data().toString();
+        emit filterEventPlayerRequest(event, url.path());
+    }
 }

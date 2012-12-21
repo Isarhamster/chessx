@@ -25,6 +25,7 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(selectionChangedSlot()));
+    ui->detailText->setOpenLinks(false);
 
     slotReconfigure();
 }
@@ -107,7 +108,11 @@ void PlayerListWidget::setDatabase(Database* db)
 {
     ui->detailText->setText(tr("<html><i>No player chosen.</i></html>"));
     m_player.setDatabase(db);
-    m_list = db->index()->playerNames();
+    m_list.clear();
+    if (db && db->index())
+    {
+        m_list = db->index()->playerNames();
+    }
     m_filterModel->setStringList(m_list);
     m_filterModel->sort(0);
 }
