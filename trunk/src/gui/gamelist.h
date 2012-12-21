@@ -47,8 +47,10 @@ public slots:
 	void selectGame(int index);
     /** Select and show current game in the list */
     void slotFilterListByPlayer(QString ns);
-    /** Select and show current game in the list */
+    /** Select and show current event in the list */
     void slotFilterListByEvent(QString ns);
+    /** Select and show current event and player in the list */
+    void slotFilterListByEventPlayer(QString event, QString player);
 private slots:
     /** Re-emit the request to the receivers to perform some action */
 	void itemSelected(const QModelIndex& index);

@@ -26,6 +26,7 @@ public:
 
 signals:
     void filterRequest(QString ts);
+    void filterEventPlayerRequest(QString event, QString player);
     void raiseRequest();
 
 public slots:
@@ -36,6 +37,7 @@ public slots:
     void filterSelectedEvent();
     void slotReconfigure();
     void selectionChangedSlot();
+    void slotLinkClicked(const QUrl& url);
 
 private:
     EventInfo m_event;

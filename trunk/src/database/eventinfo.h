@@ -13,6 +13,8 @@
 #include <QPair>
 
 class Database;
+typedef QPair<QString, float> PlayerInfoListItem;
+typedef QList<PlayerInfoListItem> PlayerInfoList;
 
 class EventInfo
 {
@@ -39,6 +41,8 @@ public:
     QString formattedRating() const;
     /** @return string with formatted game count. */
     QString formattedGameCount() const;
+    /** @return string with list of players in the event */
+    QString listOfPlayers() const;
 
 private:
     /** Clears all statistics. */
@@ -52,12 +56,13 @@ private:
     /** Format score statistics for single color. */
     QString formattedScore(const int results[4], int count) const;
     int toResult(const QString& res) const;
+    float toPoints(const QString& res) const;
 
-    typedef QList<QPair<QString, unsigned> > EcoFrequency;
     int m_result[4];
     int m_count;
     int m_rating[2];
-    EcoFrequency m_eco;
+    PlayerInfoList m_players;
+    QHash<QString, int> m_games;
     PartialDate m_date[2];
 
 };
