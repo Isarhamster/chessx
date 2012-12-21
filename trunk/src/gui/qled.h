@@ -18,19 +18,16 @@
 
 #include <Qt>
 #include <QWidget>
-#include <QtDesigner/QDesignerExportWidget>
-
-// My Qt designer widget plugin class
 
 class QColor;
 class QSvgRenderer;
 
-class QDESIGNER_WIDGET_EXPORT QLed : public QWidget
+class QLed : public QWidget
 {
  Q_OBJECT
         Q_ENUMS (ledColor)
         Q_ENUMS (ledShape)
-	Q_PROPERTY(bool value READ value WRITE setValue);
+        Q_PROPERTY(bool value READ value WRITE setValue);
         Q_PROPERTY(ledColor onColor READ onColor WRITE setOnColor);
         Q_PROPERTY(ledColor offColor READ offColor WRITE setOffColor);
         Q_PROPERTY(ledShape shape READ shape WRITE setShape)     
