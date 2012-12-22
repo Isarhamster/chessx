@@ -337,25 +337,34 @@ void MainWindow::slotHelpBug()
 
 void MainWindow::slotBoardMove(Square from, Square to, int button)
 {
-    // Use an existing move if it already exists
-    if( game().findNextMove(from,to)) {
-        slotGameChanged();
-        return;
-    }
+    const Board& board = game().board();
+    Move m(board.prepareMove(from, to));
+    if (m.isLegal()) {
+        if (m.isPromotion()) {
+            bool ok;
+            QStringList moves;
+            moves << tr("Queen") << tr("Rook") << tr("Bishop") << tr("Knight");
+            int index = moves.indexOf(QInputDialog::getItem(0, tr("Promotion"), tr("Promote to:"),
+                          moves, 0, false, &ok));
+            if (!ok)
+                return;
+            m.setPromotionPiece(PieceType(Queen + index));
 
-	const Board& board = game().board();
-	Move m(board.prepareMove(from, to));
-	if (m.isLegal()) {
-		if (m.isPromotion()) {
-			bool ok;
-			QStringList moves;
-			moves << tr("Queen") << tr("Rook") << tr("Bishop") << tr("Knight");
-			int index = moves.indexOf(QInputDialog::getItem(0, tr("Promotion"), tr("Promote to:"),
-						  moves, 0, false, &ok));
-			if (!ok)
-				return;
-			m.setPromotionPiece(PieceType(Queen + index));
-		}
+            // Use an existing move with the correct promotion piece type if it already exists
+            if( game().findNextMove(from,to, PieceType(Queen + index) )) {
+                slotGameChanged();
+                return;
+            }
+
+        } else
+        {
+            // Use an existing move if it already exists
+            if( game().findNextMove(from,to)) {
+                slotGameChanged();
+                return;
+            }
+        }
+
         if (game().atLineEnd())
         {
             game().addMove(m);

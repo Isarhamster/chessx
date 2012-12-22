@@ -120,6 +120,37 @@ bool Game::findNextMove(Square from, Square to)
     return false;
 }
 
+// does the next main move or one of the variations go from square from to square to
+// if so make it on the board
+bool Game::findNextMove(Square from, Square to, PieceType promotionPiece)
+{
+    int node;
+    node = m_moveNodes[m_currentNode].nextNode;
+    if( node != NO_MOVE ) {
+        Move m = m_moveNodes[node].move ;
+        if( m.from() == from && m.to() == to  && m.isPromotion() && (pieceType( m.promotedPiece()) == promotionPiece) )
+        {
+            forward();
+            return true;
+        } else
+        {
+            QList<MoveId> vs = m_moveNodes[m_currentNode].variations;
+            QList<MoveId>::iterator i;
+            for (i = vs.begin(); i != vs.end(); ++i)
+            {
+                Move m = move(*i);
+                if( m.from() == from && m.to() == to && m.isPromotion() && (pieceType( m.promotedPiece()) == promotionPiece) )
+                {
+                    moveToId(*i);
+                    return true;
+                }
+            }
+         }
+    }
+    return false;
+}
+
+
 bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags)
 {
 	int node;
