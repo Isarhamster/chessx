@@ -185,6 +185,9 @@ public :
 	int backward(int count = 1);
     /** Moves forward if the next move matches (from,to) */
     bool findNextMove(Square from, Square to);
+    /** Moves forward if the next move matches (from,to,promotionPiece) */
+    bool findNextMove(Square from, Square to, PieceType promotionPiece);
+
 
 	/** Enters the variation that corresponds to moveId. moveId must be a MoveId that
 	    corresponds to a subvariation of the current position. Compared to moveToId
