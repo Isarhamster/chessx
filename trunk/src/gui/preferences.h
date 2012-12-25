@@ -20,6 +20,8 @@
 #include "ui_preferences.h"
 #include "enginelist.h"
 
+class QListWidgetItem;
+
 /** @ingroup GUI
 The PreferencesDialog class is a dialog for configuring ChessX.
 After changes are done, reconfigure() signal is emitted. */

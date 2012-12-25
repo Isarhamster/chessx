@@ -19,6 +19,7 @@
 #define __CHESSBROWSER_H__
 
 #include <QtGui>
+#include <QTextBrowser>
 #include "editaction.h"
 
 class DatabaseInfo;

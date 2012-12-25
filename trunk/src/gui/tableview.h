@@ -8,7 +8,8 @@
 #define TABLEVIEW_H
 
 #include <QtCore>
-#include <QtGui/QTableView>
+#include <QTableView>
+#include <QTreeView>
 
 /**
 	The TableView class is a specialized version of QTableView with automatic

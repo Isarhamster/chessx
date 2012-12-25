@@ -23,6 +23,7 @@
 #include <QCheckBox>
 #include <QColorDialog>
 #include <QComboBox>
+#include <QListWidget>
 #include <QPainter>
 #include <QDir>
 #include <QPushButton>

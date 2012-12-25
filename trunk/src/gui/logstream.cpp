@@ -19,16 +19,16 @@ void SimpleLoggingHandler(QtMsgType type, const char *msg)
     switch (type)
     {
         case QtDebugMsg:
-            logfile << QTime::currentTime().toString().toAscii().data() << " : "         << msg << endl;
+            logfile << QTime::currentTime().toString().toLatin1().data() << " : "         << msg << endl;
             break;
         case QtCriticalMsg:
-            logfile << QTime::currentTime().toString().toAscii().data() << " Critical: " << msg << endl;
+            logfile << QTime::currentTime().toString().toLatin1().data() << " Critical: " << msg << endl;
             break;
         case QtWarningMsg:
-            logfile << QTime::currentTime().toString().toAscii().data() << " Warning: "  << msg << endl;
+            logfile << QTime::currentTime().toString().toLatin1().data() << " Warning: "  << msg << endl;
             break;
         case QtFatalMsg:
-            logfile << QTime::currentTime().toString().toAscii().data() <<  " Fatal: "   << msg << endl;
+            logfile << QTime::currentTime().toString().toLatin1().data() <<  " Fatal: "   << msg << endl;
             break;
      }
 }
@@ -38,7 +38,7 @@ void startFileLog()
 {
 #ifdef _DEBUG
     QString currentPath = QDir::currentPath()+ "/chessx.log";
-    logfile.open(currentPath.toAscii().data(),ios::app);
+    logfile.open(currentPath.toLatin1().data(),ios::app);
     bDoLog = true;
     qInstallMsgHandler(SimpleLoggingHandler);
 #endif

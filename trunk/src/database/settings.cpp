@@ -12,8 +12,8 @@
 
 #include <QtCore>
 #include <QtGui>
-#include <QtGui/QWidget>
-#include <QtGui/QMainWindow>
+#include <QWidget>
+#include <QMainWindow>
 
 Settings::Settings() : QSettings(IniFormat, UserScope, "chessx", "chessx")
 {}

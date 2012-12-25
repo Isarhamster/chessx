@@ -14,10 +14,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QHeaderView>
-#include <QMenu>
-#include <QDrag>
-
 #include "filtermodel.h"
 #include "gamelist.h"
 #include "quicksearch.h"
@@ -25,6 +21,11 @@
 #include "settings.h"
 #include "GameMimeData.h"
 #include "game.h"
+
+#include <QHeaderView>
+#include <QMenu>
+#include <QDrag>
+#include <QPixmap>
 
 GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 {

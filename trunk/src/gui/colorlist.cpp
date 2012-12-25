@@ -17,10 +17,12 @@
 
 #include <QColorDialog>
 #include <QKeyEvent>
+#include <QListWidget>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPixmap>
 
-ColorList::ColorList(QWidget* parent)	: QListWidget(parent)
+ColorList::ColorList(QWidget* parent) : QListWidget(parent)
 {
 }
 

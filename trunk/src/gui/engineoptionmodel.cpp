@@ -15,7 +15,7 @@ QModelIndex EngineOptionModel::index(int row, int column, const QModelIndex &par
 {
     if (parent.isValid())
         return QModelIndex();
-    return createIndex(row, column);
+    return createIndex(row, column, 0);
 }
 
 QModelIndex EngineOptionModel::parent(const QModelIndex &) const
@@ -89,11 +89,11 @@ QVariant EngineOptionModel::data(const QModelIndex &index, int role) const
         {
             if (index.column()!=4)
             {
-                return Qt::lightGray;
+                return QColor(Qt::lightGray);
             }
             else
             {
-                return Qt::white;
+                return QColor(Qt::white);
             }
         }
         else if (role == Qt::ForegroundRole)
@@ -103,11 +103,11 @@ QVariant EngineOptionModel::data(const QModelIndex &index, int role) const
                 if ((!m_pValueMap->contains(pOptionData->m_name)
                    || (*m_pValueMap)[pOptionData->m_name] == pOptionData->m_defVal))
                 {
-                    return Qt::darkGray;
+                    return QColor(Qt::darkGray);
                 }
                 else
                 {
-                    return Qt::black;
+                    return QColor(Qt::black);
                 }
             }
         }
@@ -140,7 +140,8 @@ QVariant EngineOptionModel::headerData(int section, Qt::Orientation orientation,
 
 void EngineOptionModel::resetModel()
 {
-    reset();
+    beginResetModel();
+    endResetModel();
 }
 
 QStringList EngineOptionModel::getSelections(const QModelIndex& index)

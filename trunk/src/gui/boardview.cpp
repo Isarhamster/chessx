@@ -19,6 +19,8 @@
 #include "guess.h"
 #include "movelist.h"
 
+#include <QApplication>
+
 using namespace Qt;
 
 const int CoordinateSize = 10;
@@ -622,7 +624,7 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
 
     QRect rect1 = squareRect(square1);
     QRect rect2 = squareRect(square2);
-    QRect u = rect1.unite(rect2);
+    QRect u = rect1.united(rect2);
     if (!event->region().intersects(u))
         return;
     int x1 = isFlipped() ? 7 - square1 % 8 : square1 % 8;

@@ -114,7 +114,7 @@ QModelIndex FilterModel::index(int row, int column, const QModelIndex& parent) c
 {
 	if (parent.isValid())
 		return QModelIndex();
-	return createIndex(row, column);
+    return createIndex(row, column, 0);
 }
 
 void FilterModel::setFilter(Filter* filter)

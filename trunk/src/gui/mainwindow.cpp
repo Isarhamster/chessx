@@ -41,8 +41,9 @@
 #include "qled.h"
 
 #include <time.h>
-#include <QtGui/QSizePolicy>
+#include <QSizePolicy>
 #include <QTimer>
+#include <QToolBar>
 
 MainWindow::MainWindow() : QMainWindow(),
     m_saveDialog(0),
