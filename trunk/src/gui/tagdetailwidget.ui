@@ -43,19 +43,19 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QTextBrowser" name="detailText"/>
-     </item>
      <item>
       <widget class="QPushButton" name="filterDatabase">
        <property name="text">
         <string>Filter Game List!</string>
        </property>
       </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QTextBrowser" name="detailText"/>
      </item>
     </layout>
    </item>

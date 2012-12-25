@@ -196,7 +196,10 @@ QString PlayerInfo::listOfOpenings() const
     {
         for (EcoFrequency::const_iterator it=m_eco[i].begin(); it != m_eco[i].end(); ++it)
         {
-            openingsList[i] += QString("<li> %1: %2").arg((*it).first).arg((*it).second);
+            openingsList[i] += QString("<li><a href='eco:%1'>%2</a>: %3")
+                    .arg((*it).first)
+                    .arg((*it).first)
+                    .arg((*it).second);
         }
     }
     QString s = openingsList.at(0);
