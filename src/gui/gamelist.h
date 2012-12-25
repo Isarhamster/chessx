@@ -51,6 +51,9 @@ public slots:
     void slotFilterListByEvent(QString ns);
     /** Select and show current event and player in the list */
     void slotFilterListByEventPlayer(QString event, QString player);
+    /** Select and show current player and ECO in the list */
+    void slotFilterListByEcoPlayer(QString eco, QString player);
+
 private slots:
     /** Re-emit the request to the receivers to perform some action */
 	void itemSelected(const QModelIndex& index);

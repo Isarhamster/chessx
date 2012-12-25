@@ -178,6 +178,7 @@ MainWindow::MainWindow() : QMainWindow(),
     playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
     connect(m_playerList, SIGNAL(raiseRequest()), playerListDock, SLOT(raise()));
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
+    connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString)));
     connect(this, SIGNAL(reconfigure()), m_playerList, SLOT(slotReconfigure()));
     playerListDock->hide();
 

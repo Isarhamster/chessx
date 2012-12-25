@@ -25,7 +25,9 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(selectionChangedSlot()));
+
     ui->detailText->setOpenLinks(false);
+    connect(ui->detailText, SIGNAL(anchorClicked(QUrl)), SLOT(slotLinkClicked(QUrl)));
 
     slotReconfigure();
 }
@@ -115,4 +117,13 @@ void PlayerListWidget::setDatabase(Database* db)
     }
     m_filterModel->setStringList(m_list);
     m_filterModel->sort(0);
+}
+
+void PlayerListWidget::slotLinkClicked(const QUrl& url)
+{
+    if (url.scheme() == "eco")
+    {
+        QString player = ui->tagList->currentIndex().data().toString();
+        emit filterEcoPlayerRequest(url.path(), player);
+    }
 }
