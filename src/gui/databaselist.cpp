@@ -25,6 +25,8 @@ DatabaseList::DatabaseList(QWidget *parent) :
     m_filterModel->setSourceModel(m_model);
     m_filterModel->setDynamicSortFilter(true);
     m_filterModel->sort(1);
+    m_filterModel->setSortRole(Qt::ToolTipRole);
+
     setModel(m_filterModel);
 
     connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
@@ -33,7 +35,8 @@ DatabaseList::DatabaseList(QWidget *parent) :
     connect(m_filterModel, SIGNAL(rowsInserted(const QModelIndex &,int,int)), SLOT(rowsChanged (const QModelIndex &,int,int)));
     connect(m_model, SIGNAL(OnSelectIndex(const QModelIndex &)), SLOT(slotCurrentIndexChanged (const QModelIndex &)));
 
-    setSortingEnabled(false);
+    setAlternatingRowColors(true);
+    setDragEnabled(false);
     setAcceptDrops(true);
 
     setColumnWidth(DBLV_FAVORITE, 50);
@@ -42,6 +45,10 @@ DatabaseList::DatabaseList(QWidget *parent) :
     setColumnWidth(DBLV_OPEN, 50);
     setColumnWidth(DBLV_PATH, 200);
     setColumnWidth(DBLV_OPEN, 50);
+
+    setSortingEnabled(true);
+
+    Q_ASSERT(horizontalHeader()->isSortIndicatorShown());
 }
 
 DatabaseList::~DatabaseList()
@@ -243,11 +250,19 @@ void DatabaseList::dropEvent(QDropEvent *event)
         foreach(QUrl url, urlList)
         {
             QString ts = url.toString();
-            emit requestOpenDatabase(ts, false);
 
             if (m_lastModifier == Qt::AltModifier)
             {
                 emit requestLinkDatabase(ts);
+            }
+            else if (m_lastModifier == Qt::AltModifier + Qt::ShiftModifier)
+            {
+                emit requestOpenDatabase(ts, false);
+                emit requestLinkDatabase(ts);
+            }
+            else
+            {
+                emit requestOpenDatabase(ts, false);
             }
         }
     }

@@ -5,7 +5,7 @@
 #ifndef DOCKWIDGETEX_H
 #define DOCKWIDGETEX_H
 
-#include <QtGui/QDockWidget>
+#include <QDockWidget>
 
 class DockWidgetEx : public QDockWidget
 {

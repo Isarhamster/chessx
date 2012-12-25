@@ -11,6 +11,7 @@
 #include "version.h"
 
 #include <QMessageBox>
+#include <QPixmap>
 
 void MainWindow::slotHelpAbout()
 {

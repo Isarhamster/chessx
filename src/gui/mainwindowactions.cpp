@@ -37,6 +37,8 @@
 #include <time.h>
 
 #include <QtGui>
+#include <QPixmap>
+
 
 void MainWindow::slotFileNew()
 {
@@ -541,7 +543,7 @@ void MainWindow::slotGameLoadRandom()
 
 void MainWindow::slotGameLoadChosen()
 {
-	int index = QInputDialog::getInteger(this, tr("Load Game"), tr("Game number:"), gameIndex() + 1,
+    int index = QInputDialog::getInt(this, tr("Load Game"), tr("Game number:"), gameIndex() + 1,
 						  1, database()->count());
 	gameLoad(index - 1);
 	m_gameList->setFocus();

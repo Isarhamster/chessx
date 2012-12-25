@@ -15,7 +15,7 @@
 #ifndef COLORLIST_H
 #define COLORLIST_H
 
-#include <QtGui/QListWidget>
+#include <QListWidget>
 
 /**
 	@ingroup GUI

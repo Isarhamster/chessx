@@ -6,6 +6,7 @@
 #define PLAINTEXTEDIT_H
 
 #include <QtGui>
+#include <QPlainTextEdit>
 
 class PlainTextEdit : public QPlainTextEdit
 {

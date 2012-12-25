@@ -1,8 +1,10 @@
 #ifndef BOARDSETUPTOOLBUTTON_H
 #define BOARDSETUPTOOLBUTTON_H
 
-#include <QLabel>
 #include "common.h"
+
+#include <QLabel>
+#include <QPixmap>
 
 class BoardSetupToolButton : public QLabel
 {

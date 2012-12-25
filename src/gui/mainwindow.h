@@ -36,6 +36,7 @@ class TableView;
 class OpeningTree;
 class ToolMainWindow;
 class QTimer;
+class QToolBar;
 
 /**
 @defgroup GUI GUI - User interface components

@@ -13,7 +13,7 @@
 #include <QMenu>
 
 TableView::TableView(QWidget *parent)
-		: QTableView(parent)
+        : QTableView(parent)
 {
 	setShowGrid(false);
 	setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -47,6 +47,7 @@ void TableView::saveConfig()
 
 void TableView::slotReconfigure()
 {
+    bool sortIndicator = horizontalHeader()->isSortIndicatorShown();
 	AppSettings->layout(this);
     QString objName = objectName();
     AppSettings->beginGroup(objName);
@@ -63,6 +64,8 @@ void TableView::slotReconfigure()
     QFont f = font();
     f.setPointSize(fontSize);
     setFont(f);
+
+    horizontalHeader()->setSortIndicatorShown(sortIndicator);
     update();
 }
 

@@ -18,6 +18,8 @@
 #include "settings.h"
 #include "messagedialog.h"
 
+#include <QPixmap>
+
 BoardTheme::BoardTheme()
 {}
 

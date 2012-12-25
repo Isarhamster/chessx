@@ -18,9 +18,10 @@
 #include "boardview.h"
 #include "messagedialog.h"
 #include "settings.h"
-#include <QtGui>
 #include "boardsetuptoolbutton.h"
 
+#include <QtGui>
+#include <QPixmap>
 
 BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_wheelCurrentDelta(0), m_selectedPiece(Empty)
 {
@@ -39,7 +40,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_wheelCu
         button->m_piece = (Piece)piece;
         if (piece == Empty)
         {
-            button->m_pixmap = 0;
+            button->m_pixmap = QPixmap(0,0);
             ui.buttonLayout->addWidget(button, 6, 0);
         }
 		else

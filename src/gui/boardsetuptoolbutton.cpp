@@ -3,7 +3,10 @@
 ****************************************************************************/
 
 #include "boardsetuptoolbutton.h"
+
 #include <QtGui>
+#include <QPixmap>
+#include <QStyle>
 
 BoardSetupToolButton::BoardSetupToolButton(QWidget *parent) :
     QLabel(parent)
