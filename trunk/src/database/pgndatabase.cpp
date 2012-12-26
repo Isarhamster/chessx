@@ -68,8 +68,11 @@ QString PgnDatabase::offsetFilename(const QString& filename) const
     QFileInfo fi = QFileInfo(filename);
     QString basefile = fi.completeBaseName();
     basefile.append(".cxi");
-
+#if QT_VERSION < 0x050000
     QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+#else
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
+#endif
     QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
     QString indexPath = dir + "/index";
     return(indexPath + "/" + basefile);
