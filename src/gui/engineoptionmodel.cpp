@@ -15,7 +15,7 @@ QModelIndex EngineOptionModel::index(int row, int column, const QModelIndex &par
 {
     if (parent.isValid())
         return QModelIndex();
-    return createIndex(row, column, 0);
+    return createIndex(row, column, (void*) 0);
 }
 
 QModelIndex EngineOptionModel::parent(const QModelIndex &) const
