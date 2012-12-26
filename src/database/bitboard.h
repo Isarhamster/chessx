@@ -91,6 +91,8 @@ public:
 	//
 	/** Return a FEN string based on current board position */
 	QString toFen() const;
+    /** Return a FEN string in human readable format based on current board position */
+    QString toHumanFen() const;
 	/** Return a SAN string representation of given move */
 	QString moveToSan(const Move& move) const;
 	/** @return a SAN string representing a given move with move number. */

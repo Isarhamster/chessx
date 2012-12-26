@@ -77,6 +77,8 @@ public :
 	const Board& board() const;
 	/** @return current position in FEN */
 	QString toFen() const;
+    /** @return current position in human readable FEN */
+    QString toHumanFen() const;
 	/** @return whether the current position is in the mainline */
 	bool isMainline(MoveId moveId = CURRENT_MOVE) const;
 	/** @return start position of game */

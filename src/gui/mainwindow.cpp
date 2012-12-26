@@ -888,6 +888,7 @@ void MainWindow::setupActions()
 					  Qt::CTRL + Qt::SHIFT + Qt::Key_C));
 	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
 					  Qt::CTRL + Qt::SHIFT + Qt::Key_V));
+    edit->addAction(createAction(tr("Copy &human FEN"), SLOT(slotEditCopyHumanFEN())));
 	edit->addSeparator();
     edit->addAction(createAction(tr("&Copy PGN"), SLOT(slotEditCopyPGN()),
                       Qt::CTRL + Qt::Key_C));

@@ -26,6 +26,13 @@ enum Piece
 	BlackKing, BlackQueen, BlackRook, BlackBishop, BlackKnight, BlackPawn,
 	InvalidPiece = 255
 };
+
+// Pre-Increment
+Piece& operator++(Piece& w);
+
+// Post-Increment
+Piece operator++(Piece& w, int);
+
 const int ConstPieceTypes = BlackPawn + 1;
 enum PieceType { None, King, Queen, Rook, Bishop, Knight, Pawn };
 enum Color {White, Black};
