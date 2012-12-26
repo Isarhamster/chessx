@@ -602,7 +602,6 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
     }
     else
     {
-        //QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
 #if QT_VERSION < 0x050000
         QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
 #else
