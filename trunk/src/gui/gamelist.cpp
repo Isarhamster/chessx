@@ -37,7 +37,11 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 	connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
 
-	horizontalHeader()->setClickable(true);
+#if QT_VERSION < 0x050000
+    horizontalHeader()->setClickable(true);
+#else
+    horizontalHeader()->setSectionsClickable(true);
+#endif
 	connect(horizontalHeader(), SIGNAL(sectionClicked(int)), SLOT(simpleSearch(int)));
 
     slotReconfigure();

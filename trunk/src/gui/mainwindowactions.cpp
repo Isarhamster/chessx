@@ -38,6 +38,9 @@
 
 #include <QtGui>
 #include <QPixmap>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QStatusBar>
 
 
 void MainWindow::slotFileNew()

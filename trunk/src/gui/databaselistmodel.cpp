@@ -17,7 +17,7 @@ QModelIndex DatabaseListModel::index(int row, int column, const QModelIndex &par
 {
     if (parent.isValid())
         return QModelIndex();
-    return createIndex(row, column, 0);
+    return createIndex(row, column, (void*)0);
 }
 
 QModelIndex DatabaseListModel::parent(const QModelIndex &) const
@@ -215,9 +215,9 @@ void DatabaseListModel::addFileOpen(const QString& s, bool utf8)
         if (e.m_state != EDBL_OPEN)
         {
             e.m_state = EDBL_OPEN;
-            QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_OPEN, 0);
+            QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_OPEN, (void*) 0);
             emit QAbstractItemModel::dataChanged(m,m);
-            m = createIndex(m_databases.indexOf(e),DBLV_UTF8, 0);
+            m = createIndex(m_databases.indexOf(e),DBLV_UTF8, (void*) 0);
             emit QAbstractItemModel::dataChanged(m,m);
         }
         return;
@@ -239,7 +239,7 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite)
         if (e.m_isFavorite != bFavorite)
         {
             e.m_isFavorite = bFavorite;
-            QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_FAVORITE, 0);
+            QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_FAVORITE, (void*)  0);
             emit QAbstractItemModel::dataChanged(m,m);
         }
         return;
@@ -256,7 +256,7 @@ void DatabaseListModel::setFileClose(const QString& s)
         if (e->m_state == EDBL_OPEN)
         {
             e->m_state = EDBL_CLOSE;
-            QModelIndex m = createIndex(m_databases.indexOf(*e),DBLV_OPEN, 0);
+            QModelIndex m = createIndex(m_databases.indexOf(*e),DBLV_OPEN, (void*) 0);
             emit QAbstractItemModel::dataChanged(m,m);
         }
     }
@@ -269,7 +269,7 @@ void DatabaseListModel::setFileUtf8(const QString& s, bool utf8)
         if (e->m_utf8 != utf8)
         {
             e->m_utf8 = utf8;
-            QModelIndex m = createIndex(m_databases.indexOf(*e),DBLV_UTF8, 0);
+            QModelIndex m = createIndex(m_databases.indexOf(*e),DBLV_UTF8, (void*) 0);
             emit QAbstractItemModel::dataChanged(m,m);
         }
     }
@@ -282,8 +282,8 @@ void DatabaseListModel::setFileCurrent(const QString& s)
         if (m_databases[i].m_isCurrent)
         {
             m_databases[i].m_isCurrent = false;
-            QModelIndex m = createIndex(i,DBLV_NAME, 0);
-            QModelIndex n = createIndex(i,DBLV_UTF8, 0);
+            QModelIndex m = createIndex(i,DBLV_NAME, (void*) 0);
+            QModelIndex n = createIndex(i,DBLV_UTF8, (void*) 0);
             emit QAbstractItemModel::dataChanged(m,n);
         }
     }
@@ -292,10 +292,10 @@ void DatabaseListModel::setFileCurrent(const QString& s)
     {
         e->m_isCurrent = true;
         int index = m_databases.indexOf(*e);
-        QModelIndex m = createIndex(index,DBLV_NAME, 0);
-        QModelIndex n = createIndex(index,DBLV_UTF8, 0);
+        QModelIndex m = createIndex(index,DBLV_NAME, (void*) 0);
+        QModelIndex n = createIndex(index,DBLV_UTF8, (void*) 0);
         emit QAbstractItemModel::dataChanged(m,n);
-        emit OnSelectIndex(createIndex(index,DBLV_FAVORITE, 0));
+        emit OnSelectIndex(createIndex(index,DBLV_FAVORITE, (void*) 0));
     }
 }
 
@@ -303,8 +303,8 @@ void DatabaseListModel::update(const QString& s)
 {
     if (DatabaseListEntry* e = FindEntry(s))
     {
-        QModelIndex m = createIndex(m_databases.indexOf(*e),DBLV_NAME, 0);
-        QModelIndex n = createIndex(m_databases.indexOf(*e),DBLV_UTF8, 0);
+        QModelIndex m = createIndex(m_databases.indexOf(*e),DBLV_NAME, (void*) 0);
+        QModelIndex n = createIndex(m_databases.indexOf(*e),DBLV_UTF8, (void*) 0);
         emit QAbstractItemModel::dataChanged(m,n);
     }
 }

@@ -12,6 +12,10 @@
 #include "game.h"
 #include "databaseinfo.h"
 
+#include <QMenu>
+#include <QLCDNumber>
+#include <QToolBar>
+
 
 ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), toolBar(0), m_gameMenu(NULL), m_databaseInfo(NULL)
 {

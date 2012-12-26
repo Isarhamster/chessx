@@ -311,7 +311,11 @@ void PreferencesDialog::restoreSettings()
 	ui.limitSpin->setValue(AppSettings->value("/General/EditLimit", 10).toInt());
     ui.spinBoxRecentFiles->setValue(AppSettings->value("/History/MaxEntries", 4).toInt());
 
+#if QT_VERSION < 0x050000
     QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+#else
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
+#endif
     ui.defaultDataBasePath->setText(AppSettings->value("/General/DefaultDataPath", dataPath).toString());
 
     // Read Game List settings
