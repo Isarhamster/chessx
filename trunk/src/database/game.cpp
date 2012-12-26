@@ -1045,15 +1045,18 @@ int Game::findPosition(const Board& position)
 bool Game::loadEcoFile(const QString& ecoFile)
 {
 	QFile file(ecoFile);
-	file.open(QIODevice::ReadOnly);
-	QDataStream sin(&file);
-	quint32 id;
-	sin >> id;
-    if (id != COMPILED_ECO_FILE_ID)
-        return false;
-    sin >> m_ecoPositions;
-	file.close();
-	return true;
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QDataStream sin(&file);
+        quint32 id;
+        sin >> id;
+        if (id == COMPILED_ECO_FILE_ID)
+        {
+            sin >> m_ecoPositions;
+        }
+        return true;
+    }
+    return false;
 }
 
 void Game::compact()

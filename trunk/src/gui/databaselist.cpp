@@ -30,6 +30,7 @@ DatabaseList::DatabaseList(QWidget *parent) :
     setModel(m_filterModel);
 
     connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
+    connect(this, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(slotDoubleClicked(const QModelIndex&)));
     connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
     connect(m_filterModel, SIGNAL(rowsInserted(const QModelIndex &,int,int)), SLOT(rowsChanged (const QModelIndex &,int,int)));
@@ -104,14 +105,19 @@ void DatabaseList::save() const
     AppSettings->endGroup();
 }
 
+void DatabaseList::slotDoubleClicked(const QModelIndex& index)
+{
+    QString ts = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
+    QString utf8 = m_filterModel->data(m_filterModel->index(index.row(),DBLV_UTF8)).toString();
+    bool bUtf8 = (utf8.compare("UTF8")==0);
+    emit requestOpenDatabase(ts,bUtf8);
+}
+
 void DatabaseList::itemSelected(const QModelIndex& index)
 {
     if (index.column()==0)
     {
-        QString ts = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
-        QString utf8 = m_filterModel->data(m_filterModel->index(index.row(),DBLV_UTF8)).toString();
-        bool bUtf8 = (utf8.compare("UTF8")==0);
-        emit requestOpenDatabase(ts,bUtf8);
+        slotDoubleClicked(index);
     }
 }
 
@@ -253,11 +259,6 @@ void DatabaseList::dropEvent(QDropEvent *event)
 
             if (m_lastModifier == Qt::AltModifier)
             {
-                emit requestLinkDatabase(ts);
-            }
-            else if (m_lastModifier == Qt::AltModifier + Qt::ShiftModifier)
-            {
-                emit requestOpenDatabase(ts, false);
                 emit requestLinkDatabase(ts);
             }
             else
