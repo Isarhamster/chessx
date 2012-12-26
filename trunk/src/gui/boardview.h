@@ -22,6 +22,8 @@
 #include "boardtheme.h"
 #include "guess.h"
 
+#include <QWidget>
+
 class BoardTheme;
 
 /** @ingroup GUI

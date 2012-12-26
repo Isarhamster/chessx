@@ -41,7 +41,16 @@
 #include "qled.h"
 
 #include <time.h>
+
+#include <QFileDialog>
+#include <QLabel>
+#include <QLCDNumber>
+#include <QMenu>
+#include <QMenuBar>
+#include <QProgressBar>
 #include <QSizePolicy>
+#include <QSplitter>
+#include <QStatusBar>
 #include <QTimer>
 #include <QToolBar>
 
@@ -300,8 +309,9 @@ MainWindow::MainWindow() : QMainWindow(),
     m_toggleFilter->setChecked(m_gameList->m_FilterActive);
 
 	/* Status */
-	m_statusFilter = new QLabel(statusBar());
-	statusBar()->addPermanentWidget(m_statusFilter);
+    // m_statusFilter = new QLabel(statusBar());
+    m_statusFilter = new QLabel();
+    statusBar()->addPermanentWidget(m_statusFilter);
 	m_progressBar = new QProgressBar;
 
 	/** Reconfigure. */
@@ -324,7 +334,13 @@ MainWindow::MainWindow() : QMainWindow(),
 	updateMenuDatabases();
 	slotDatabaseChanged();
 
+    //QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+#if QT_VERSION < 0x050000
     QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+#else
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
+#endif
+
     QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
     QDir().mkpath(dir+"/index");
 
@@ -578,7 +594,13 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
     }
     else
     {
-        QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+        //QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+#if QT_VERSION < 0x050000
+    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+#else
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
+#endif
+
         QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
 
         fname = fi.canonicalFilePath();
@@ -722,13 +744,24 @@ QString MainWindow::exportFileName(int& format)
 	filters << tr("PGN file (*.pgn)")
 	<< tr("HTML page (*.html)")
 	<< tr("LaTeX document (*.tex)");
-	fd.setFilters(filters);
+#if QT_VERSION < 0x050000
+    fd.setFilters(filters);
+#else
+    fd.setNameFilters(filters);
+#endif
 	if (fd.exec() != QDialog::Accepted)
 		return QString();
-	if (fd.selectedFilter().contains("*.tex"))
+#if QT_VERSION < 0x050000
+    if (fd.selectedFilter().contains("*.tex"))
 		format = Output::Latex;
 	else if (fd.selectedFilter().contains("*.html"))
 		format = Output::Html;
+#else
+    if (fd.selectedNameFilter().contains("*.tex"))
+        format = Output::Latex;
+    else if (fd.selectedNameFilter().contains("*.html"))
+        format = Output::Html;
+#endif
 	else format = Output::Pgn;
 	return fd.selectedFiles().first();
 }
