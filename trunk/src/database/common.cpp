@@ -10,6 +10,21 @@
 
 #include "common.h"
 
+Piece& operator++(Piece& w)
+{
+    if (w<BlackPawn)
+        return w = Piece(w+1);
+    else
+        return w = Empty;
+}
+
+Piece operator++(Piece& w, int)
+{
+    Piece alt = w;
+    ++w;
+    return alt;
+}
+
 QString resultString(Result result)
 {
 	switch (result) {

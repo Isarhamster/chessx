@@ -228,6 +228,11 @@ void MainWindow::slotEditCopyFEN()
 	QApplication::clipboard()->setText(game().toFen());
 }
 
+void MainWindow::slotEditCopyHumanFEN()
+{
+    QApplication::clipboard()->setText(game().toHumanFen());
+}
+
 void MainWindow::slotEditCopyPGN()
 {
     Output output(Output::Pgn);

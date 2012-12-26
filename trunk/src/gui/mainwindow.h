@@ -118,6 +118,8 @@ public slots:
     void slotEditCommentBefore();
     /** Set position's FEN to clipboard. */
 	void slotEditCopyFEN();
+    /** Set position's human readable FEN to clipboard. */
+    void slotEditCopyHumanFEN();
 	/** Set position using FEN from clipboard. */
 	void slotEditPasteFEN();
     /** Set position's PGN to clipboard. */

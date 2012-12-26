@@ -328,6 +328,11 @@ QString Game::toFen() const
 	return m_currentBoard.toFen();
 }
 
+QString Game::toHumanFen() const
+{
+    return m_currentBoard.toHumanFen();
+}
+
 QString Game::gameComment() const
 {
     return m_gameComment;
