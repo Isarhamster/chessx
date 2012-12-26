@@ -10,6 +10,8 @@
 
 #include "messagedialog.h"
 #include <QtGui>
+#include <QMessageBox>
+#include <QApplication>
 
 void MessageDialog::error(const QString& text, const QString& title)
 {
@@ -33,11 +35,11 @@ bool MessageDialog::yesNo(const QString& text, const QString& title, const QStri
 	mb.setWindowTitle(title);
 	mb.setText(text);
 	mb.setIcon(QMessageBox::Question);
-	QPushButton* y = mb.addButton(yes, QMessageBox::YesRole);
+    QPushButton* y = mb.addButton(yes, QMessageBox::YesRole);
 	mb.setDefaultButton(y);
 	mb.addButton(no, QMessageBox::NoRole);
 	mb.exec();
-	return mb.clickedButton() == y;
+    return mb.clickedButton() == (QAbstractButton*) y;
 }
 
 bool MessageDialog::okCancel(const QString& text, const QString& title, const QString& ok,
@@ -50,9 +52,9 @@ bool MessageDialog::okCancel(const QString& text, const QString& title, const QS
 	QPushButton* o = mb.addButton(ok, QMessageBox::ActionRole);
 	mb.setDefaultButton(o);
 	QPushButton* c = mb.addButton(cancel, QMessageBox::RejectRole);
-	mb.setEscapeButton(c);
+    mb.setEscapeButton((QAbstractButton*)c);
 	mb.exec();
-	return mb.clickedButton() == o;
+    return mb.clickedButton() == (QAbstractButton*) o;
 }
 
 int MessageDialog::yesNoCancel(const QString& text, const QString& title, const QString& yes,
@@ -66,11 +68,11 @@ int MessageDialog::yesNoCancel(const QString& text, const QString& title, const 
 	mb.setDefaultButton(y);
 	QPushButton* n = mb.addButton(no, QMessageBox::NoRole);
 	QPushButton* c = mb.addButton(cancel, QMessageBox::RejectRole);
-	mb.setEscapeButton(c);
+    mb.setEscapeButton((QAbstractButton*)c);
 	mb.exec();
-	if (mb.clickedButton() == y)
+    if (mb.clickedButton() == (QAbstractButton*) y)
 		return Yes;
-	else if (mb.clickedButton() == n)
+    else if (mb.clickedButton() == (QAbstractButton*) n)
 		return No;
 	else return Cancel;
 }

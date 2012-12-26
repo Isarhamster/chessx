@@ -11,6 +11,7 @@
 #define __MAINWINDOW_H__
 
 #include <QtGui>
+#include <QMainWindow>
 
 #include "common.h"
 #include "move.h"
