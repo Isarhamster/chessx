@@ -20,6 +20,7 @@
 #include "movelist.h"
 
 #include <QApplication>
+#include <QSizePolicy>
 
 using namespace Qt;
 
@@ -700,7 +701,6 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
 
     QBrush brush(color);
     p.setBrush(brush);
-
 
     p.drawPolygon(arrowPts,4);
     p.restore();

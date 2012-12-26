@@ -28,6 +28,7 @@ public slots:
     void setFileCurrent(const QString& s);
     void update(const QString& s);
     void slotCurrentIndexChanged(const QModelIndex&);
+    void slotDoubleClicked(const QModelIndex&);
 
 signals:
     void selected(int);

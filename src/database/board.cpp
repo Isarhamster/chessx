@@ -177,17 +177,19 @@ bool Board::ecoMove(const Square square, int* from, int* to) const
 bool Board::loadEcoFile(const QString& ecoFile)
 {
 	QFile file(ecoFile);
-	file.open(QIODevice::ReadOnly);
-	QDataStream sin(&file);
-	quint32 id;
-	sin >> id;
-    if (id != COMPILED_GUESS_FILE_ID)
-        return false;
-    sin >> ecoGuessPositions;
-	file.close();
-	return true;
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QDataStream sin(&file);
+        quint32 id;
+        sin >> id;
+        if (id == COMPILED_GUESS_FILE_ID)
+        {
+            sin >> ecoGuessPositions;
+        }
+        return true;
+    }
+    return false;
 }
-
 
 quint64 Board::getHashPlusSquare(const Square square) const
 {

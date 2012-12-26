@@ -560,7 +560,15 @@ void MainWindow::updateMenuDatabases()
 
 void MainWindow::setFavoriteDatabase(QString fname)
 {
-   m_databaseList->setFileFavorite(fname, true);
+    QUrl url = QUrl::fromUserInput(fname);
+    if ((url.scheme()=="http") || (url.scheme()=="ftp"))
+    {
+        m_databaseList->setFileFavorite(fname, true);
+    }
+    else
+    {
+        m_databaseList->setFileFavorite(url.toLocalFile(), true);
+    }
 }
 
 void MainWindow::openDatabase(QString fname)
@@ -596,9 +604,9 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
     {
         //QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
 #if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+        QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
 #else
-    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
+        QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
 #endif
 
         QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
