@@ -43,9 +43,10 @@ void EventListWidget::slotReconfigure()
 
 void EventListWidget::selectionChangedSlot()
 {
-    if (ui->tagList->currentIndex().isValid())
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    if (selection.count())
     {
-        QString ts = ui->tagList->currentIndex().data().toString();
+        QString ts = selection[0].data().toString();
         selectEvent(ts);
     }
     else
@@ -67,6 +68,13 @@ void EventListWidget::findEvent(const QString& s)
     }
 }
 
+void EventListWidget::slotSelectEvent(const QString& event)
+{
+    m_filterModel->setStringList(m_list);
+    ui->filterEdit->clear();
+    selectEvent(event);
+}
+
 void EventListWidget::selectEvent(const QString& event)
 {
     if (!event.isEmpty())
@@ -79,6 +87,17 @@ void EventListWidget::selectEvent(const QString& event)
                 .arg(m_event.formattedRating())
                 .arg(m_event.formattedScore())
                 .arg(m_event.listOfPlayers()));
+        const QStringList& list = m_filterModel->stringList();
+        int row = list.indexOf(event);
+        if (row>=0)
+        {
+            QModelIndex index = m_filterModel->index( row, 0 );
+            if ( index.isValid() )
+            {
+                ui->tagList->selectionModel()->select( index, QItemSelectionModel::ClearAndSelect );
+                ui->tagList->scrollTo(index);
+            }
+        }
     }
     else
     {
@@ -98,9 +117,10 @@ void EventListWidget::showSelectedEvent()
 
 void EventListWidget::filterSelectedEvent()
 {
-    if (ui->tagList->currentIndex().isValid())
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    if (selection.count())
     {
-        QString ts = ui->tagList->currentIndex().data().toString();
+        QString ts = selection[0].data().toString();
         emit filterRequest(ts);
     }
 }
@@ -123,6 +143,6 @@ void EventListWidget::slotLinkClicked(const QUrl& url)
     if (url.scheme() == "player")
     {
         QString event = ui->tagList->currentIndex().data().toString();
-        emit filterEventPlayerRequest(event, url.path());
+        emit filterEventPlayerRequest(url.path(), event);
     }
 }

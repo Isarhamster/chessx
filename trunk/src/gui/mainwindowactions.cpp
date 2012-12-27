@@ -713,11 +713,11 @@ void MainWindow::slotGameViewLink(const QUrl& url)
         m_playerList->setDatabase(database());
 		if (url.path() == "white")
         {
-            m_playerList->selectPlayer(game().tag(TagNameWhite));
+            m_playerList->slotSelectPlayer(game().tag(TagNameWhite));
         }
 		else if (url.path() == "black")
         {
-            m_playerList->selectPlayer(game().tag(TagNameBlack));
+            m_playerList->slotSelectPlayer(game().tag(TagNameBlack));
         }
 	}
 }
