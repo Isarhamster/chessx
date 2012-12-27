@@ -37,11 +37,10 @@
 #include <time.h>
 
 #include <QtGui>
-#include <QPixmap>
+#include <QAction>
 #include <QFileDialog>
 #include <QInputDialog>
-#include <QStatusBar>
-
+#include <QPixmap>
 
 void MainWindow::slotFileNew()
 {
@@ -714,11 +713,11 @@ void MainWindow::slotGameViewLink(const QUrl& url)
         m_playerList->setDatabase(database());
 		if (url.path() == "white")
         {
-            m_playerList->selectPlayer(game().tag("White"));
+            m_playerList->selectPlayer(game().tag(TagNameWhite));
         }
 		else if (url.path() == "black")
         {
-            m_playerList->selectPlayer(game().tag("Black"));
+            m_playerList->selectPlayer(game().tag(TagNameBlack));
         }
 	}
 }
