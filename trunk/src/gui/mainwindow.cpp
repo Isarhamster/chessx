@@ -87,10 +87,17 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Output */
 	m_output = new Output(Output::NotationWidget);
 
-	setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AllowNestedDocks);
+    if (AppSettings->getValue("/MainWindow/VerticalTabs").toBool())
+    {
+        setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks | QMainWindow::VerticalTabs);
+    }
+    else
+    {
+        setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AllowNestedDocks);
+    }
 
 	/* Board */
-	m_boardSplitter = new QSplitter(Qt::Vertical);
+    m_boardSplitter = new QSplitter(Qt::Horizontal);
 	m_boardSplitter->setChildrenCollapsible(false);
 	setCentralWidget(m_boardSplitter);
 	m_boardView = new BoardView(m_boardSplitter);
