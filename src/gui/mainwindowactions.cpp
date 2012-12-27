@@ -41,6 +41,9 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QPixmap>
+#include <QProgressBar>
+#include <QStatusBar>
+
 
 void MainWindow::slotFileNew()
 {

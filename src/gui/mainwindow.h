@@ -10,34 +10,36 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
+#include "common.h"
+#include "historylist.h"
+#include "move.h"
+#include "output.h"
+
 #include <QtGui>
 #include <QMainWindow>
 
-#include "common.h"
-#include "move.h"
-#include "historylist.h"
-#include "output.h"
-
-class EditAction;
 class Analysis;
-class GameList;
-class PlayerListWidget;
-class EventListWidget;
-class DatabaseList;
-class SaveDialog;
+class Board;
 class BoardView;
-class Game;
+class ChessBrowser;
 class Database;
 class DatabaseInfo;
+class DatabaseList;
 class EcoThread;
-class AnalysisWidget;
-class Board;
-class ChessBrowser;
-class TableView;
+class EditAction;
+class EventListWidget;
+class Game;
+class GameList;
 class OpeningTree;
-class ToolMainWindow;
+class PlayerListWidget;
+class QLabel;
+class QProgressBar;
+class QSplitter;
 class QTimer;
 class QToolBar;
+class SaveDialog;
+class TableView;
+class ToolMainWindow;
 
 /**
 @defgroup GUI GUI - User interface components
