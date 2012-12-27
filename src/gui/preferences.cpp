@@ -321,6 +321,7 @@ void PreferencesDialog::restoreSettings()
     // Read Game List settings
     ui.gameTextFontSizeSpin->setValue(AppSettings->value("/GameText/FontSize", DEFAULT_FONTSIZE).toInt());
     ui.spinBoxListFontSize->setValue(AppSettings->value("/General/ListFontSize", DEFAULT_LISTFONTSIZE).toInt());
+    ui.verticalTabs->setChecked(AppSettings->getValue("/MainWindow/VerticalTabs").toBool());
 }
 
 void PreferencesDialog::saveSettings()
@@ -356,6 +357,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/General/DefaultDataPath", ui.defaultDataBasePath->text());
     AppSettings->setValue("/GameText/FontSize", ui.gameTextFontSizeSpin->value());
     AppSettings->setValue("/General/ListFontSize", ui.spinBoxListFontSize->value());
+    AppSettings->setValue("/MainWindow/VerticalTabs", ui.verticalTabs->isChecked());
 
     QDir().mkpath(ui.defaultDataBasePath->text());
 }

@@ -136,6 +136,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const {
     map.insert("/General/onlineTablebases", true);
     map.insert("/GameText/FontSize",DEFAULT_FONTSIZE);
     map.insert("/MainWindow/GameToolBar", false);
+    map.insert("/MainWindow/VerticalTabs", false);
     map.insert("/MainWindow/FilterFollowsGame", false);
     map.insert("/History/MaxEntries", 4);
     map.insert("/Board/showFrame", true);

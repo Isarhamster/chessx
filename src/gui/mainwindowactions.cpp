@@ -212,6 +212,14 @@ void MainWindow::slotConfigure()
 
 void MainWindow::slotReconfigure()
 {
+    if (AppSettings->getValue("/MainWindow/VerticalTabs").toBool())
+    {
+        setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks | QMainWindow::VerticalTabs);
+    }
+    else
+    {
+        setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AllowNestedDocks);
+    }
     m_recentFiles.restore();
     updateMenuRecent();
     emit reconfigure(); 	// Re-emit for children
