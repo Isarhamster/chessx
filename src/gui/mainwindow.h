@@ -16,6 +16,7 @@
 #include "output.h"
 
 #include <QtGui>
+#include <QAction>
 #include <QMainWindow>
 
 class Analysis;
