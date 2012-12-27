@@ -80,6 +80,17 @@ void PlayerListWidget::selectPlayer(const QString& player)
                 .arg(m_player.formattedScore())
                 .arg(m_player.listOfOpenings())
                 );
+        const QStringList& list = m_filterModel->stringList();
+        int row = list.indexOf(player);
+        if (row>=0)
+        {
+            QModelIndex index = m_filterModel->index( row, 0 );
+            if ( index.isValid() )
+            {
+                ui->tagList->selectionModel()->select( index, QItemSelectionModel::Select );
+                ui->tagList->scrollTo(index);
+            }
+        }
     }
     else
     {
