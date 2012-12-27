@@ -25,18 +25,21 @@ public:
 
 signals:
     void filterRequest(QString ts);
-    void filterEcoPlayerRequest(QString eco, QString player);
+    void filterEcoPlayerRequest(QString tag, QString eco, QString player);
     void raiseRequest();
 
 public slots:
     void findPlayers(const QString& s);
-    void selectPlayer(const QString& player);
+    void slotSelectPlayer(const QString& player);
     void setDatabase(Database* db);
     void showSelectedPlayer();
     void filterSelectedPlayer();
     void slotReconfigure();
     void selectionChangedSlot();
     void slotLinkClicked(const QUrl& url);
+
+protected slots:
+    void selectPlayer(const QString& player);
 
 private:
     PlayerInfo m_player;

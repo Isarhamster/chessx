@@ -196,7 +196,8 @@ QString PlayerInfo::listOfOpenings() const
     {
         for (EcoFrequency::const_iterator it=m_eco[i].begin(); it != m_eco[i].end(); ++it)
         {
-            openingsList[i] += QString("<li><a href='eco:%1'>%2</a>: %3")
+            openingsList[i] += QString("<li><a href='eco-%1:%2'>%3</a>: %4")
+                    .arg(i==0 ? "white" : "black")
                     .arg((*it).first)
                     .arg((*it).first)
                     .arg((*it).second);

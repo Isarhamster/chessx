@@ -26,18 +26,21 @@ public:
 
 signals:
     void filterRequest(QString ts);
-    void filterEventPlayerRequest(QString event, QString player);
+    void filterEventPlayerRequest(QString player, QString event);
     void raiseRequest();
 
 public slots:
     void findEvent(const QString& s);
-    void selectEvent(const QString& player);
+    void slotSelectEvent(const QString& player);
     void setDatabase(Database* db);
     void showSelectedEvent();
     void filterSelectedEvent();
     void slotReconfigure();
     void selectionChangedSlot();
     void slotLinkClicked(const QUrl& url);
+
+protected slots:
+    void selectEvent(const QString& player);
 
 private:
     EventInfo m_event;

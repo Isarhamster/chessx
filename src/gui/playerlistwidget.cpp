@@ -43,9 +43,10 @@ void PlayerListWidget::slotReconfigure()
 
 void PlayerListWidget::selectionChangedSlot()
 {
-    if (ui->tagList->currentIndex().isValid())
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    if (selection.count())
     {
-        QString ts = ui->tagList->currentIndex().data().toString();
+        QString ts = selection[0].data().toString();
         selectPlayer(ts);
     }
     else
@@ -65,6 +66,13 @@ void PlayerListWidget::findPlayers(const QString& s)
         QStringList newList = m_list.filter(s, Qt::CaseInsensitive);
         m_filterModel->setStringList(newList);
     }
+}
+
+void PlayerListWidget::slotSelectPlayer(const QString& player)
+{
+    m_filterModel->setStringList(m_list);
+    ui->filterEdit->clear();
+    selectPlayer(player);
 }
 
 void PlayerListWidget::selectPlayer(const QString& player)
@@ -87,7 +95,7 @@ void PlayerListWidget::selectPlayer(const QString& player)
             QModelIndex index = m_filterModel->index( row, 0 );
             if ( index.isValid() )
             {
-                ui->tagList->selectionModel()->select( index, QItemSelectionModel::Select );
+                ui->tagList->selectionModel()->select( index, QItemSelectionModel::ClearAndSelect );
                 ui->tagList->scrollTo(index);
             }
         }
@@ -110,9 +118,10 @@ void PlayerListWidget::showSelectedPlayer()
 
 void PlayerListWidget::filterSelectedPlayer()
 {
-    if (ui->tagList->currentIndex().isValid())
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    if (selection.count())
     {
-        QString ts = ui->tagList->currentIndex().data().toString();
+        QString ts = selection[0].data().toString();
         emit filterRequest(ts);
     }
 }
@@ -132,9 +141,10 @@ void PlayerListWidget::setDatabase(Database* db)
 
 void PlayerListWidget::slotLinkClicked(const QUrl& url)
 {
-    if (url.scheme() == "eco")
+    if (url.scheme().startsWith("eco"))
     {
         QString player = ui->tagList->currentIndex().data().toString();
-        emit filterEcoPlayerRequest(url.path(), player);
+        QString tag = (url.scheme().contains("white")) ? TagNameWhite : TagNameBlack;
+        emit filterEcoPlayerRequest(tag, url.path(), player);
     }
 }

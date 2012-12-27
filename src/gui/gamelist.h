@@ -50,9 +50,9 @@ public slots:
     /** Select and show current event in the list */
     void slotFilterListByEvent(QString ns);
     /** Select and show current event and player in the list */
-    void slotFilterListByEventPlayer(QString event, QString player);
+    void slotFilterListByEventPlayer(QString player, QString event);
     /** Select and show current player and ECO in the list */
-    void slotFilterListByEcoPlayer(QString eco, QString player);
+    void slotFilterListByEcoPlayer(QString tag, QString eco, QString player);
 
 private slots:
     /** Re-emit the request to the receivers to perform some action */
