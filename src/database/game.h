@@ -138,6 +138,8 @@ public :
     bool clearNags(MoveId moveId = CURRENT_MOVE);
 
 	// **** tree information methods *****
+    /** @return number of siblings of current node */
+    int numberOfSiblings(MoveId moveId = CURRENT_MOVE) const;
 	/** @return whether the game is currently at the start position */
 	bool atLineStart(MoveId moveId = CURRENT_MOVE) const;
 	bool atGameStart(MoveId moveId = CURRENT_MOVE) const;
@@ -261,6 +263,8 @@ public :
 	/** Repeatedly call dumpMoveNode for all nodes */
 	void dumpAllMoveNodes();
 
+    void moveVariationUp(MoveId moveId);
+    void moveVariationDown(MoveId moveId);
 private:
 
     QString specialAnnotation(QString& annotation, QString specialMark ) const; // [%csl  [%cal

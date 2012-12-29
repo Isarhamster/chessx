@@ -366,12 +366,23 @@ Result Game::result() const
 	}
 }
 
+int Game::numberOfSiblings(MoveId moveId) const
+{
+    MoveId node = nodeValid(moveId);
+    if (node == NO_MOVE)
+        return 0;
+    MoveId parentNode = m_moveNodes[node].parentNode;
+    if (parentNode == NO_MOVE)
+        return 0;
+    return m_moveNodes[parentNode].variations.size();
+}
+
 bool Game::atLineStart(MoveId moveId) const
 {
 	MoveId node = nodeValid(moveId);
 	if (node == NO_MOVE) 
 		return false;
-	return (m_moveNodes[node].previousNode == m_moveNodes[node].parentNode)
+    return (m_moveNodes[node].previousNode == m_moveNodes[node].parentNode)
 		|| m_moveNodes[node].previousNode == 0;
 }
 
@@ -686,6 +697,30 @@ int Game::plyCount() const
 	return count - 1;
 }
 
+void Game::moveVariationUp(MoveId moveId)
+{
+    if (isMainline()) return;
+    MoveId currentNode = m_currentNode;
+    backward();
+    QList <MoveId>& v = m_moveNodes[m_currentNode].variations;
+    int i = v.indexOf(moveId);
+    if (i > 0) v.swap(i, i-1);
+    moveToId(currentNode);	// Restore current move
+    setModified(true);
+}
+
+void Game::moveVariationDown(MoveId moveId)
+{
+    if (isMainline()) return;
+    MoveId currentNode = m_currentNode;
+    backward();
+    QList <MoveId>& v = m_moveNodes[m_currentNode].variations;
+    int i = v.indexOf(moveId);
+    if (i>=0 && i != v.count()) v.swap(i, i+1);
+    moveToId(currentNode);	// Restore current move
+    setModified(true);
+}
+
 MoveId Game::variationNumber(MoveId moveId) const
 {
 	if (isMainline()) return 0;
@@ -877,7 +912,7 @@ void Game::removeNode(MoveId moveId)
 	if (node != NO_MOVE) {
         setModified(true);
 
-		if (variationCount(node)) {
+        if (variationCount(node)) {
 			for (int i = 0; i < m_moveNodes[node].variations.size(); ++i) {
 				removeNode(m_moveNodes[node].variations[i]);
 			}

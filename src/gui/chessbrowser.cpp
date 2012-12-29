@@ -86,10 +86,8 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 		m_gameMenu = new QMenu(this);
 		connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 
-		m_gameMenu->addAction((m_startComment = createAction(tr("Add start comment..."),
-																			  EditAction::EditPrecomment)));
-		m_gameMenu->addAction((m_addComment = createAction(tr("Add comment..."),
-																			EditAction::EditComment)));
+        m_gameMenu->addAction((m_startComment = createAction(tr("Add start comment..."), EditAction::EditPrecomment)));
+        m_gameMenu->addAction((m_addComment = createAction(tr("Add comment..."), EditAction::EditComment)));
 
 		// Nag menus
 		QMenu* nagMoveMenu = m_gameMenu->addMenu(tr("Add move symbol"));
@@ -121,16 +119,13 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 		m_gameMenu->addAction(m_removeNags = createAction(tr("Remove symbols"), EditAction::ClearNags));
 
 		m_gameMenu->addSeparator();
-		m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to main line"),
-																					EditAction::PromoteVariation)));
-		m_gameMenu->addAction((m_removeVariation = createAction(tr("Remove variation"),
-																				  EditAction::RemoveVariation)));
-		m_gameMenu->addAction((m_removePrevious = createAction(tr("Remove previous moves"),
-																				 EditAction::RemovePreviousMoves)));
-		m_gameMenu->addAction((m_removeNext = createAction(tr("Remove next moves"),
-																			EditAction::RemoveNextMoves)));
-        m_gameMenu->addAction((m_addNullMove = createAction(tr("Insert threat"),
-                                                                            EditAction::AddNullMove)));
+        m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to main line"), EditAction::PromoteVariation)));
+        m_gameMenu->addAction((m_removeVariation = createAction(tr("Remove variation"), EditAction::RemoveVariation)));
+        m_gameMenu->addAction((m_VariationUp = createAction(tr("Move variation up"), EditAction::VariationUp)));
+        m_gameMenu->addAction((m_VariationDown = createAction(tr("Move variation down"), EditAction::VariationDown)));
+        m_gameMenu->addAction((m_removePrevious = createAction(tr("Remove previous moves"), EditAction::RemovePreviousMoves)));
+        m_gameMenu->addAction((m_removeNext = createAction(tr("Remove next moves"), EditAction::RemoveNextMoves)));
+        m_gameMenu->addAction((m_addNullMove = createAction(tr("Insert threat"), EditAction::AddNullMove)));
 	}
 
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
@@ -154,18 +149,21 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
 		return;
 
 	m_currentMove = link.section(':', 1).toInt();
-	bool isVariation = !m_databaseInfo->currentGame().isMainline(m_currentMove);
-	bool atLineStart = m_databaseInfo->currentGame().atLineStart(m_currentMove);
-	bool atGameStart = m_currentMove == 0 || m_databaseInfo->currentGame().atGameStart(m_currentMove - 1);
-	bool hasComment = !m_databaseInfo->currentGame().annotation(m_currentMove).isEmpty();
-	bool hasPrecomment = !m_databaseInfo->currentGame().annotation(m_currentMove,
-			Game::BeforeMove).isEmpty();
-	bool hasNags = !m_databaseInfo->currentGame().nags().isEmpty();
-	bool atLineEnd = m_databaseInfo->currentGame().atLineEnd(m_currentMove);
+    const Game& game = m_databaseInfo->currentGame();
+    bool isVariation = !game.isMainline(m_currentMove);
+    bool atLineStart = game.atLineStart(m_currentMove);
+    bool atGameStart = m_currentMove == 0 || game.atGameStart(m_currentMove - 1);
+    bool hasComment = !game.annotation(m_currentMove).isEmpty();
+    bool hasPrecomment = !game.annotation(m_currentMove, Game::BeforeMove).isEmpty();
+    bool hasNags = !game.nags().isEmpty();
+    bool atLineEnd = game.atLineEnd(m_currentMove);
+    bool hasMoreThanOneVariation = (game.numberOfSiblings(m_currentMove)>1);
 	m_startComment->setVisible(atLineStart && !hasPrecomment);
 	m_addComment->setVisible(!hasComment);
 	m_promoteVariation->setVisible(isVariation);
 	m_removeVariation->setVisible(isVariation);
+    m_VariationUp->setVisible(isVariation && hasMoreThanOneVariation);
+    m_VariationDown->setVisible(isVariation && hasMoreThanOneVariation);
 	m_removeNext->setVisible(!atLineEnd);
 	m_removePrevious->setVisible(!atGameStart);
 	m_removeNags->setVisible(hasNags);

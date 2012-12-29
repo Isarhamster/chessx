@@ -72,6 +72,8 @@ private:
 	QAction* m_addComment;
 	QAction* m_removeVariation;
 	QAction* m_promoteVariation;
+    QAction* m_VariationUp;
+    QAction* m_VariationDown;
 	QAction* m_removePrevious;
 	QAction* m_removeNext;
     QAction* m_addNullMove;
