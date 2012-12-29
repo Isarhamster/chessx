@@ -371,17 +371,33 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             m.setPromotionPiece(PieceType(Queen + index));
 
             // Use an existing move with the correct promotion piece type if it already exists
-            if( game().findNextMove(from,to, PieceType(Queen + index) )) {
-                slotGameChanged();
-                return;
+            if( game().findNextMove(from,to, PieceType(Queen + index) ))
+            {
+                if (!(button & Qt::AltModifier) && !game().atLineEnd())
+                {
+                    slotGameChanged();
+                    return;
+                }
+                else
+                {
+                    game().backward();
+                }
             }
 
         } else
         {
             // Use an existing move if it already exists
-            if( game().findNextMove(from,to)) {
-                slotGameChanged();
-                return;
+            if( game().findNextMove(from,to))
+            {
+                if (!(button & Qt::AltModifier) && !game().atLineEnd())
+                {
+                    slotGameChanged();
+                    return;
+                }
+                else
+                {
+                    game().backward();
+                }
             }
         }
 

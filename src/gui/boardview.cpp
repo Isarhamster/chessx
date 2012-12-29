@@ -306,6 +306,10 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
     {
         setCursor(QCursor(Qt::UpArrowCursor));
     }
+    else if (event->modifiers() & Qt::AltModifier)
+    {
+        setCursor(QCursor(Qt::DragCopyCursor));
+    }
     else
     {
         setCursor(QCursor(Qt::ArrowCursor));
@@ -366,7 +370,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 		update(oldr);
         if (s != InvalidSquare)
         {
-            if ((m_flags & AllowCopyPiece) && (event->modifiers() & Qt::ControlModifier))
+            if ((m_flags & AllowCopyPiece) && (event->modifiers() & Qt::AltModifier))
             {
                 if (m_board.pieceAt(from) != Empty)
                 {
@@ -438,9 +442,9 @@ void BoardView::configure()
     m_theme.setColor(BoardTheme::Highlight, AppSettings->getValue("highlightColor").value<QColor>());
     m_theme.setColor(BoardTheme::Frame, AppSettings->getValue("frameColor").value<QColor>());
     m_theme.setColor(BoardTheme::CurrentMove, AppSettings->getValue("currentMoveColor").value<QColor>());
-	m_theme.configure();
 	AppSettings->endGroup();
-	removeGuess();
+    m_theme.configure();
+    removeGuess();
 	unselectSquare();
 	update();
 }
