@@ -632,6 +632,14 @@ void MainWindow::slotGameModify(const EditAction& action)
 		game().promoteVariation(action.move());
 		break;
 	}
+    case EditAction::VariationUp: {
+        game().moveVariationUp(action.move());
+        break;
+    }
+    case EditAction::VariationDown: {
+        game().moveVariationDown(action.move());
+        break;
+    }
 	case EditAction::EditPrecomment:
 		if (!gameEditComment(Output::Precomment))
 			return;
