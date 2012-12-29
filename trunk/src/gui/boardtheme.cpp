@@ -124,15 +124,19 @@ bool BoardTheme::loadBoard(const QString& board)
 
 void BoardTheme::configure()
 {
-    QString pieceTheme = AppSettings->getValue("/Board/pieceTheme").toString();
+    AppSettings->beginGroup("/Board/");
+    QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     int pieceEffect = AppSettings->getValue("pieceEffect").toInt();
     QString boardTheme = AppSettings->getValue("boardTheme").toString();
+    AppSettings->endGroup();
 
 	if (!loadPieces(pieceTheme, pieceEffect) &&
 		 !loadPieces(pieceTheme, Plain) &&
 		 !loadPieces("merida", Plain))
+    {
 		MessageDialog::error(tr("Cannot find piece data.\nPlease check your installation."));
-	else loadBoard(boardTheme);
+    }
+    loadBoard(boardTheme);
 }
 
 QSize BoardTheme::size() const
