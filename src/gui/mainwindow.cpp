@@ -61,8 +61,6 @@ MainWindow::MainWindow() : QMainWindow(),
     m_showPgnSource(false),
     m_autoPlayTimer(0),
     m_bGameChange(false),
-    m_bcValid(false),
-    m_bcValue(0),
     m_currentFrom(InvalidSquare),
     m_currentTo(InvalidSquare)
 {
@@ -317,9 +315,10 @@ MainWindow::MainWindow() : QMainWindow(),
     m_toggleFilter->setChecked(m_gameList->m_FilterActive);
 
 	/* Status */
-    // m_statusFilter = new QLabel(statusBar());
     m_statusFilter = new QLabel();
     statusBar()->addPermanentWidget(m_statusFilter);
+    statusBar()->setFixedHeight(statusBar()->height());
+    statusBar()->setSizeGripEnabled(true);
 	m_progressBar = new QProgressBar;
 
 	/** Reconfigure. */
@@ -1038,8 +1037,8 @@ void MainWindow::startOperation(const QString& msg)
 {
 	m_operationTime.start();
 	statusBar()->showMessage(msg);
-	m_progressBar->setMaximumHeight(m_statusFilter->height());
-	statusBar()->insertPermanentWidget(0, m_progressBar);
+    m_progressBar->setMaximumHeight(m_statusFilter->height()-3);
+    statusBar()->insertPermanentWidget(0, m_progressBar);
 	m_progressBar->setValue(0);
 	m_progressBar->show();
 }

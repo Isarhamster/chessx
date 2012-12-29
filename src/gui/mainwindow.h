@@ -352,22 +352,12 @@ private:
 	QActionGroup* m_actions;
 	bool m_showPgnSource; // for debugging
 	QTime m_operationTime;
-	/** Currently updated tree. May be NULL if no updated in progress. */
+    /** Currently updated tree. May be NULL if no update in progress. */
 	OpeningTree* m_openingTree;
 	QString m_nagText;
     QTimer* m_autoPlayTimer;
-
-	struct PendingLoad {
-		Database* database;
-		int game;
-		PendingLoad(Database* d, int g)	{database = d; game = g;}
-		PendingLoad()	{database = 0; game = 0;}
-	};
-	PendingLoad m_pending;
     QAction* m_toggleFilter;
     bool m_bGameChange;
-    bool m_bcValid;
-    int  m_bcValue;
     int m_currentFrom;
     int m_currentTo;
 };
