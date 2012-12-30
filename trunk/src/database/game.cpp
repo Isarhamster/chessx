@@ -725,14 +725,13 @@ MoveId Game::variationNumber(MoveId moveId) const
 {
 	if (isMainline()) return 0;
 	MoveId node = nodeValid(moveId);
-	if (node != NO_MOVE) {
+    while (node != NO_MOVE)
+    {
 		int parentNode = m_moveNodes[node].parentNode;
-		for (int i = 0; i < m_moveNodes.size(); ++i) {
-			if ((m_moveNodes[i].previousNode == parentNode) &&
-					(m_moveNodes[i].parentNode == parentNode)) {
-				return i;
-			}
-		}
+        if (m_moveNodes[parentNode].variations.contains(node))
+        {
+            return node;
+        }
 	}
 	return 0;
 }
