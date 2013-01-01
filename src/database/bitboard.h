@@ -179,15 +179,15 @@ private:
 
 	// Extra state data
 	uchar m_piece[64];             // type of piece on this square
-	uchar m_stm;                   // side to move
+    uchar m_stm;                   // side to move
 	uchar m_ksq[2];                // square of the m_kings
 	uchar m_epFile;                // file of a possible ep capture
 	uchar m_epSquare;              // This is requested by hash routine enough that we keep it pre calculated
 	uchar m_castle;                // flags for castle legality  (these can be merged)
 	ushort m_halfMoves;            // Number of moves since last pawn move or capture
 	uint m_moveNumber;             // Move number in game (incremented after each black move)
-	uchar m_pawnCount[2];           // Number of pawns for each side
-	uchar m_pieceCount[2];           // Number of pieces for each side
+    uchar m_pawnCount[2];          // Number of pawns for each side
+    uchar m_pieceCount[2];         // Number of pieces INCLUDING pawns for each side
 };
 
 extern quint64 bb_PawnAttacks[2][64];
@@ -362,7 +362,7 @@ inline void BitBoard::setMoveNumber(uint moveNumber)
 
 inline bool BitBoard::positionIsSame(const BitBoard& target) const
 {
-	if (	m_occupied_co[White] != target.m_occupied_co[White] ||
+    if (m_occupied_co[White] != target.m_occupied_co[White] ||
 		m_occupied_co[Black] != target.m_occupied_co[Black] ||
 		m_pawns != target.m_pawns ||
 		m_knights != target.m_knights ||

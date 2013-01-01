@@ -705,14 +705,15 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 	c = fen[++i];
 
 	// Half move clock
-	c = fen[++i];
-	if (c == 0)
-		return true;
-	if (c < '0' || c > '9')
-		return false;
-	m_halfMoves = fen.mid(i).toInt();
-	while (c >= '0' && c <= '9')
-		c = fen[++i];
+    c = fen[++i];
+    if (c == 0)
+        return true;
+    if (c < '0' || c > '9')
+        return false;
+    int j = i;
+    while (c >= '0' && c <= '9')
+        c = fen[++i];
+    m_halfMoves = fen.mid(j, i - j).toInt();
 
 	// Move number
 	c = fen[++i];
@@ -1186,16 +1187,7 @@ bool BitBoard::doMove(const Move& m)
 		m_pawns ^= bb_from ^ bb_to;
 		m_piece[to] = Pawn;
 		// According to PGN standard, ep square should be always set.
-		m_epFile = File(to) + 1;
-		/*
-		if (m_stm == White) {
-			if (bb_PawnAttacks[White][to-8] & m_occupied_co[sntm] & m_pawns)
-				m_epFile = File(to) + 1;
-		} else {
-			if (bb_PawnAttacks[Black][to+8] & m_occupied_co[sntm] & m_pawns)
-				m_epFile = File(to) + 1;
-		}
-		*/
+        m_epFile = File(to) + 1;
 		break;
 	case Move::PROMOTE:
 		m_halfMoves = 0;
@@ -1591,7 +1583,8 @@ bool BitBoard::canBeReachedFrom(const BitBoard& target) const
 			m_pawnCount[White] > target.m_pawnCount[White] ||
 			m_pawnCount[Black] > target.m_pawnCount[Black])
 		return false;
-	return true;
+
+    return true;
 }
 
 Piece BitBoard::pieceAt(Square s) const
