@@ -138,6 +138,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const {
     map.insert("/MainWindow/GameToolBar", false);
     map.insert("/MainWindow/VerticalTabs", false);
     map.insert("/MainWindow/FilterFollowsGame", false);
+    map.insert("/MainWindow/BlunderCheck", true);
     map.insert("/History/MaxEntries", 4);
     map.insert("/Board/showFrame", true);
     map.insert("/Board/showCurrentMove", true);

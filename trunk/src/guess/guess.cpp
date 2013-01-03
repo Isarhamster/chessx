@@ -9,7 +9,6 @@ namespace Guess
 		Result r;
 		r.error = -1;
         r.score = 0;
-        r.bValidBC = false;
 
 		squareT sq = square;
 
@@ -26,7 +25,6 @@ namespace Guess
             engine->SetSearchTime(thinkTime);
 			engine->SetPosition(&pos);
             r.score = engine->Think(&mlist);
-            r.bValidBC = true;
 			delete engine;
 		}
 
@@ -39,7 +37,31 @@ namespace Guess
 		return r;
 	}
 
-	// Use chess engine to decide if (from1,to1) is better than (from2,to2) move
+    Result evalPos(const char* fen, int thinkTime)
+    {
+        Result r;
+        MoveList mlist;
+
+        Position pos;
+        pos.ReadFromFEN(fen);
+        r.whiteMove = (pos.GetToMove() == WHITE);
+
+        Engine * engine = new Engine();
+        engine->SetSearchTime(thinkTime);
+        engine->SetPosition(&pos);
+        r.score = engine->Think(&mlist);
+        simpleMoveT * sm = mlist.Get(0);
+        ASSERT (sq == sm->from  ||  sq == sm->to);
+
+        r.from = sm->from;
+        r.to = sm->to;
+        r.error = 0;
+
+        delete engine;
+        return r;
+    }
+
+    // Use chess engine to decide if (from1,to1) is better than (from2,to2) move
 	//  it will start from the position given in fen and think for ms milliseconds
 	//  0 is returned if the first move is better or 1 if the second is better
 	//  -1 is returned on error

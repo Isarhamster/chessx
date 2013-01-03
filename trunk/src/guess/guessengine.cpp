@@ -1363,7 +1363,7 @@ Engine::Think (MoveList * mlist)
     ClearHistoryValues();
 
     // If no legal move list was specified, generate and search all moves:
-    if (mlist == NULL) {
+    if (mlist == NULL || !mlist->Size()) {
         Pos.GenerateMoves();
         mlist = Pos.GetLegalMoves();
     }

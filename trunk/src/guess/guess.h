@@ -9,10 +9,11 @@ namespace Guess
 		int error;
 		int from, to;
         int score;
-        bool bValidBC;
+        bool whiteMove;
 	} Result;
 
     Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime = 25);
+    Result evalPos(const char* fen, int thinkTime = 125);
 	int pickBest(const char* fen, int from1, int to1, int from2, int to2, int ms);
 }
 
