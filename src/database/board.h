@@ -41,6 +41,8 @@ public:
 	/** Empty constructor. Creates empty board with no pieces. */
 	Board();
 
+    Board(QString);
+
 	/** Resets board, restoring startup position */
 	void setStandardPosition();
 

@@ -44,9 +44,9 @@ public:
     
 public slots:
 	void setValue(bool);
-        void setOnColor(ledColor);
-        void setOffColor(ledColor);
-        void setShape(ledShape);       
+    void setOnColor(ledColor);
+    void setOffColor(ledColor);
+    void setShape(ledShape);
 	void toggleValue();
 
 protected:

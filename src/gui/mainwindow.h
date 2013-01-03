@@ -282,7 +282,7 @@ protected slots:
 
 protected:
     void copyGame(int target, const Game& game);
-    void blunderCheck();
+    bool blunderCheck(QString oldFen, QString newFen) const;
 
 signals:
 	/** Re-read configuration. */
@@ -347,6 +347,7 @@ private:
 	QList<DatabaseInfo*> m_databases;
 	QList<QAction*> m_recentFileActions;
 	QList<QAction*> m_databaseActions;
+    QAction* m_blunderCheck;
 	int m_currentDatabase;
 	QString m_eco;
 	QActionGroup* m_actions;

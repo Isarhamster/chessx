@@ -411,7 +411,6 @@ void MainWindow::closeEvent(QCloseEvent* e)
 
         m_gameList->saveConfig();
         m_databaseList->saveConfig();
-//        m_playerList->saveConfig();
         m_openingTreeView->saveConfig();
         m_gameWindow->saveConfig();
         m_gameView->saveConfig();
@@ -421,6 +420,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
         AppSettings->setValue("FilterFollowsGame", m_gameList->m_FilterActive);
         AppSettings->setValue("GameToolBar", m_gameToolBar->isVisible());
+        AppSettings->setValue("BlunderCheck", m_blunderCheck->isChecked());
         AppSettings->endGroup();
     }
     else
@@ -937,9 +937,11 @@ void MainWindow::setupActions()
     autoPlay->setCheckable(true);
     gameMenu->addAction(autoPlay);
 
-    QAction* blunderCheck = createAction(tr("&Blunder Check"), SLOT(slotToggleBlunderCheck()), Qt::CTRL + Qt::SHIFT + Qt::Key_B);
-    blunderCheck->setCheckable(true);
-    gameMenu->addAction(blunderCheck);
+    m_blunderCheck = createAction(tr("&Blunder Check"), SLOT(slotToggleBlunderCheck()));
+    m_blunderCheck->setCheckable(true);
+    bool activateBlunderCheck = AppSettings->getValue("/MainWindow/BlunderCheck").toBool();
+    m_blunderCheck->setChecked(activateBlunderCheck);
+    gameMenu->addAction(m_blunderCheck);
 
     gameMenu->addSeparator();
 

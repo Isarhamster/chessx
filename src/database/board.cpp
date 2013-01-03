@@ -21,6 +21,14 @@ Board::Board()
     m_squareAnnotation = "";
 }
 
+Board::Board(QString fen)
+{
+    if (!fromFen(fen))
+    {
+        clear();
+    }
+}
+
 void Board::clear()
 {
 	BitBoard::clear();

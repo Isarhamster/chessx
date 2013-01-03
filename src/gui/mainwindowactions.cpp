@@ -461,6 +461,7 @@ void MainWindow::slotMoveChanged()
     const Game& g = game();
 
 	// Set board first
+    QString fen = m_boardView->board().toFen();
     m_boardView->setBoard(g.board(), m_currentFrom, m_currentTo);
     m_currentFrom = InvalidSquare;
     m_currentTo = InvalidSquare;
@@ -476,20 +477,32 @@ void MainWindow::slotMoveChanged()
 	// Clear  entries
 	m_nagText.clear();
 
-//    QLed* led = m_gameToolBar->findChild<QLed*>("blunderLed");
-//    if (led)
-//    {
-//        led->toggleValue();
-//    }
+    QLed* led = m_gameToolBar->findChild<QLed*>("blunderLed");
+    if (led)
+    {
+        led->setValue(blunderCheck(fen, g.board().toFen()));
+    }
 }
 
-void MainWindow::blunderCheck()
+bool MainWindow::blunderCheck(QString oldFen, QString newFen) const
 {
-    QAction* blunderCheckAction = (QAction*) sender();
-    if (blunderCheckAction && blunderCheckAction->isChecked())
+    if (m_blunderCheck->isChecked() && m_gameToolBar->isVisible())
     {
-        // TODO
+        Guess::Result oldResult = Guess::evalPos(oldFen.toLatin1(),250);
+        if (Board(newFen) != standardStartBoard)
+        {
+            Guess::Result newResult = Guess::evalPos(newFen.toLatin1(),250);
+            if (m_currentFrom != oldResult.from && m_currentTo != oldResult.to)
+            {
+                if (!oldResult.whiteMove) oldResult.score = -oldResult.score;
+                if (!newResult.whiteMove) newResult.score = -newResult.score;
+
+                int diff = abs(newResult.score - oldResult.score);
+                return (diff > 100);
+            }
+        }
     }
+    return false;
 }
 
 void MainWindow::slotBoardMoveWheel(int wheel)
@@ -819,7 +832,11 @@ void MainWindow::slotToggleBlunderCheck()
     QAction* blunderCheckAction = (QAction*) sender();
     if (blunderCheckAction)
     {
-        // TODO? (blunderCheckAction->isChecked())
+        QLed* led = m_gameToolBar->findChild<QLed*>("blunderLed");
+        if (led)
+        {
+            led->setValue(false);
+        }
     }
 }
 
