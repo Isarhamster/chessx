@@ -69,7 +69,6 @@ HEADERS += src/database/board.h \
 	src/database/editaction.h \
 	src/guess/attacks.h \
 	src/guess/common.h \
-	src/guess/dstring.h \
 	src/guess/guessengine.h \
 	src/guess/error.h \
 	src/guess/guess.h \
@@ -82,7 +81,6 @@ HEADERS += src/database/board.h \
 	src/guess/sqlist.h \
 	src/guess/sqmove.h \
 	src/guess/sqset.h \
-	src/guess/timer.h \
 	src/guess/tokens.h \
 	src/gui/mainwindow.h \
 	src/gui/preferences.h \
@@ -170,7 +168,6 @@ SOURCES += src/database/board.cpp \
 	src/database/enginedata.cpp \
 	src/database/analysis.cpp \
 	src/database/editaction.cpp \
-	src/guess/dstring.cpp \
 	src/guess/guessengine.cpp \
 	src/guess/guess.cpp \
 	src/guess/misc.cpp \
@@ -232,7 +229,7 @@ INCLUDEPATH += src/guess
 INCLUDEPATH += src/gui
 INCLUDEPATH += src/quazip
 INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
-INCLUDEPATH += /QtSDK/QtSources/4.8.1/src/3rdparty/zlib
+#INCLUDEPATH += /QtSDK/QtSources/4.8.1/src/3rdparty/zlib
 
 UI_DIR = src/generated
 MOC_DIR = src/generated
