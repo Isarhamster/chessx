@@ -3,7 +3,7 @@ cd ~/Documents/Projects/chessx
 
 /Applications/PackageMaker.app/Contents/MacOS/PackageMaker \
 --title "ChessX" \
---version 0.9.3 \
+--version 0.9.4 \
 --filter "\.DS_Store" \
 --root-volume-only \
 --domain system \
