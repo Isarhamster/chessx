@@ -24,7 +24,8 @@
 #include <stdarg.h>
 
 #include "position.h"
-#include "timer.h"
+
+#include <QElapsedTimer>
 
 namespace Guess
 {
@@ -121,7 +122,7 @@ private:
 
     uint     QNodeCount;    // Nodes examined in quiescent search.
     uint     NodeCount;     // Nodes examined in total.
-    Timer    Elapsed;       // Timer for interrupting search.
+    QElapsedTimer    Elapsed;       // Timer for interrupting search.
     bool     IsOutOfTime;   // Becomes true when search is out of time.
     uint     Ply;           // Current ply being examined.
     bool     EasyMove;      // True if the search indicates one move is
@@ -260,7 +261,6 @@ public:
     principalVarT * GetPV (void) { return &(PV[0]); }
     uint PerfTest (uint depth);
 
-    uint ElapsedTime (void) { return Elapsed.MilliSecs(); }
     int Think (MoveList * mlist);
 };
 

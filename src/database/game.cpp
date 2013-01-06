@@ -725,9 +725,10 @@ MoveId Game::variationNumber(MoveId moveId) const
 {
 	if (isMainline()) return 0;
 	MoveId node = nodeValid(moveId);
-    while (node != NO_MOVE)
+    MoveId parentNode = node;
+    while (parentNode != NO_MOVE)
     {
-		int parentNode = m_moveNodes[node].parentNode;
+        parentNode = m_moveNodes[node].parentNode;
         if (m_moveNodes[parentNode].variations.contains(node))
         {
             return node;

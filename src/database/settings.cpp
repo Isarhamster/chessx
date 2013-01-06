@@ -134,6 +134,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const {
     map.insert("/General/useIndexFile", true);
     map.insert("/General/ListFontSize", DEFAULT_LISTFONTSIZE);
     map.insert("/General/onlineTablebases", true);
+    map.insert("/General/autoCommitDB", false);
     map.insert("/GameText/FontSize",DEFAULT_FONTSIZE);
     map.insert("/MainWindow/GameToolBar", false);
     map.insert("/MainWindow/VerticalTabs", false);
@@ -154,7 +155,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const {
     map.insert("/Board/frameColor", QColor(Qt::black));
     map.insert("/Board/currentMoveColor", QColor(Qt::blue));
     map.insert("/Board/AutoPlayerInterval", 3000);
-
+    map.insert("/Board/AutoSaveAndContinue", false);
     return map;
 }
 

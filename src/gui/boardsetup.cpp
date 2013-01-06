@@ -75,6 +75,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_wheelCu
 	connect(ui.moveSpin, SIGNAL(valueChanged(int)), SLOT(slotMoveNumber()));
 	connect(ui.copyButton, SIGNAL(clicked()), SLOT(slotCopyFen()));
 	connect(ui.pasteButton, SIGNAL(clicked()), SLOT(slotPasteFen()));
+    connect(ui.btCopyText, SIGNAL(clicked()), SLOT(slotCopyText()));
 }
 
 BoardSetupDialog::~BoardSetupDialog()
@@ -235,7 +236,6 @@ void BoardSetupDialog::wheelEvent(QWheelEvent* e)
         slotChangePiece(m_wheelCurrentDelta < 0 ? BoardView::WheelDown : BoardView::WheelUp);
         m_wheelCurrentDelta = 0;
     }
-
 }
 
 QString BoardSetupDialog::boardStatusMessage() const
@@ -276,10 +276,18 @@ void BoardSetupDialog::setStatusMessage()
 {
 	QString reason = boardStatusMessage();
 	ui.okButton->setEnabled(reason.isEmpty());
+    ui.copyButton->setEnabled(reason.isEmpty());
+    ui.btCopyText->setEnabled(reason.isEmpty());
 	if (reason.isEmpty())
-		ui.fenLabel->setText(tr("FEN: %1").arg(ui.boardView->board().toFen()));
+    {
+        ui.fenLabel->setText(ui.boardView->board().toFen());
+        ui.humanFEN->setText(ui.boardView->board().toHumanFen());
+    }
 	else
+    {
 		ui.fenLabel->setText(tr("Illegal position: %1").arg(reason));
+        ui.humanFEN->setText("");
+    }
 }
 
 void BoardSetupDialog::slotCopyFen()
@@ -287,9 +295,14 @@ void BoardSetupDialog::slotCopyFen()
 	QApplication::clipboard()->setText(ui.boardView->board().toFen());
 }
 
+void BoardSetupDialog::slotCopyText()
+{
+    QApplication::clipboard()->setText(ui.boardView->board().toHumanFen());
+}
+
 void BoardSetupDialog::slotPasteFen()
 {
-	QString fen = QApplication::clipboard()->text().trimmed();
+    QString fen = QApplication::clipboard()->text().simplified();
     if (fen.contains("\""))
     {
         int n1 = fen.indexOf('"');
@@ -299,6 +312,8 @@ void BoardSetupDialog::slotPasteFen()
             fen = fen.mid(n1+1,n2-n1-1);
         }
     }
+
+    fen.remove(QRegExp("\\[[^\\]]*\\]"));
 
     Board b;
     if (!b.fromFen(fen))

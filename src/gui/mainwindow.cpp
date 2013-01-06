@@ -62,7 +62,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_autoPlayTimer(0),
     m_bGameChange(false),
     m_currentFrom(InvalidSquare),
-    m_currentTo(InvalidSquare)
+    m_currentTo(InvalidSquare),
+    m_bAutoInsertAnalysis(false)
 {
 	setObjectName("MainWindow");
 
@@ -73,6 +74,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Create clipboard database */
 	m_databases.append(new DatabaseInfo);
 	m_currentDatabase = 0;
+    m_prevDatabase = 0;
 
 	/* Actions */
 	m_actions = new QActionGroup(this);
@@ -516,13 +518,15 @@ void MainWindow::gameLoad(int index, bool force, bool reload)
 	slotGameChanged();
 }
 
-void MainWindow::gameMoveBy(int change)
+bool MainWindow::gameMoveBy(int change)
 {
     if (game().moveByPly(change))
     {
 		slotMoveChanged();
 		m_gameView->setFocus();
+        return true;
 	}
+    return false;
 }
 
 void MainWindow::updateMenuRecent()
@@ -675,6 +679,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
         {
             if (m_databases[i]->isValid())
             {
+                m_prevDatabase = m_currentDatabase;
                 m_currentDatabase = i;
                 m_databaseList->setFileCurrent(fname);
                 slotDatabaseChanged();
@@ -735,6 +740,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
     {
         if (m_databases[i]->database()->filename() == fname)
         {
+            m_prevDatabase = m_currentDatabase;
             m_currentDatabase = i;
         }
     }
@@ -929,13 +935,16 @@ void MainWindow::setupActions()
 
     gameMenu->addSeparator();
 
-    QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
-    flip->setCheckable(true);
-    gameMenu->addAction(flip);
-
-    QAction* autoPlay = createAction(tr("&Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_P);
+    QAction* autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_P);
     autoPlay->setCheckable(true);
     gameMenu->addAction(autoPlay);
+    QAction* autoAnalysis = createAction(tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::ALT + Qt::SHIFT + Qt::Key_P);
+    autoAnalysis->setCheckable(true);
+    gameMenu->addAction(autoAnalysis);
+    QActionGroup* autoGroup = new QActionGroup(this);
+    autoGroup->setExclusive(true);
+    autoGroup->addAction(autoPlay);
+    autoGroup->addAction(autoAnalysis);
 
     m_blunderCheck = createAction(tr("&Blunder Check"), SLOT(slotToggleBlunderCheck()));
     m_blunderCheck->setCheckable(true);
@@ -944,6 +953,10 @@ void MainWindow::setupActions()
     gameMenu->addAction(m_blunderCheck);
 
     gameMenu->addSeparator();
+
+    QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
+    flip->setCheckable(true);
+    gameMenu->addAction(flip);
 
 	/* Game->Go to submenu */
 	QMenu* goMenu = gameMenu->addMenu(tr("&Go to"));
@@ -1062,7 +1075,6 @@ void MainWindow::QuerySaveGame()
     if (game().isModified() && !database()->isReadOnly())
     {
         slotGameSave();
-        game().setModified(false);
     }
 }
 

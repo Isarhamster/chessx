@@ -127,36 +127,57 @@ bool Index::read(QDataStream &in, volatile bool *breakFlag)
     bool extension;
     in >> extension;
 
-    calculateReverseMaps(breakFlag);
-    calculateTagMap(breakFlag);
+    calculateCache(breakFlag);
 
     return !(*breakFlag);
 }
 
+void Index::clearCache()
+{
+    m_tagNameIndex.clear();
+    m_tagValueIndex.clear();
+    m_mapTagToIndexItems.clear();
+}
+
+void Index::calculateCache(volatile bool* breakFlag)
+{
+    calculateReverseMaps(breakFlag);
+    calculateTagMap(breakFlag);
+}
+
 void Index::calculateReverseMaps(volatile bool* breakFlag)
 {
-    foreach (TagIndex tagIndex, m_tagNames.keys())
+    if (m_tagNameIndex.isEmpty())
     {
-        if (*breakFlag) return;
-        m_tagNameIndex.insert(m_tagNames.value(tagIndex), tagIndex);
+        foreach (TagIndex tagIndex, m_tagNames.keys())
+        {
+            if (breakFlag && *breakFlag) return;
+            m_tagNameIndex.insert(m_tagNames.value(tagIndex), tagIndex);
+        }
     }
-    foreach (ValueIndex valueIndex, m_tagValues.keys())
+    if (m_tagValueIndex.isEmpty())
     {
-        if (*breakFlag) return;
-        m_tagValueIndex.insert(m_tagValues.value(valueIndex), valueIndex);
+        foreach (ValueIndex valueIndex, m_tagValues.keys())
+        {
+            if (breakFlag && *breakFlag) return;
+            m_tagValueIndex.insert(m_tagValues.value(valueIndex), valueIndex);
+        }
     }
 }
 
 void Index::calculateTagMap(volatile bool *breakFlag)
 {
-    foreach (TagIndex tagIndex, m_tagNames.keys())
+    if (m_mapTagToIndexItems.isEmpty())
     {
-        for (GameId gameId=0; gameId<(GameId)m_indexItems.size(); ++gameId)
+        foreach (TagIndex tagIndex, m_tagNames.keys())
         {
-            if (*breakFlag) return;
-            if (indexItemHasTag(tagIndex, gameId))
+            for (GameId gameId=0; gameId<(GameId)m_indexItems.size(); ++gameId)
             {
-                m_mapTagToIndexItems.insertMulti(tagIndex, gameId);
+                if (breakFlag && *breakFlag) return;
+                if (indexItemHasTag(tagIndex, gameId))
+                {
+                    m_mapTagToIndexItems.insertMulti(tagIndex, gameId);
+                }
             }
         }
     }

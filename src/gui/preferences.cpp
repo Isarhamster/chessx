@@ -255,6 +255,7 @@ void PreferencesDialog::restoreSettings()
     ui.tablebaseCheck->setChecked(AppSettings->getValue("onlineTablebases").toBool());
     ui.automaticECO->setChecked(AppSettings->getValue("automaticECO").toBool());
     ui.useIndexFile->setChecked(AppSettings->getValue("useIndexFile").toBool());
+    ui.cbAutoCommitDB->setChecked(AppSettings->getValue("autoCommitDB").toBool());
 	AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
     ui.boardFrameCheck->setChecked(AppSettings->getValue("showFrame").toBool());
@@ -263,6 +264,7 @@ void PreferencesDialog::restoreSettings()
     ui.guessNextMove->setChecked(AppSettings->getValue("nextGuess").toBool());
     ui.minWheelCount->setValue(AppSettings->getValue("minWheelCount").toInt());
     ui.autoPlayInterval->setValue(AppSettings->getValue("AutoPlayerInterval").toInt());
+    ui.cbSaveAndContinue->setChecked(AppSettings->getValue("AutoSaveAndContinue").toBool());
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     ui.pieceEffect->setCurrentIndex(AppSettings->getValue("pieceEffect").toInt());
     QString boardTheme = AppSettings->getValue("boardTheme").toString();
@@ -329,7 +331,8 @@ void PreferencesDialog::saveSettings()
     AppSettings->beginGroup("/General/");
     AppSettings->setValue("onlineTablebases", QVariant(ui.tablebaseCheck->isChecked()));
     AppSettings->setValue("automaticECO", QVariant(ui.automaticECO->isChecked()));
-    AppSettings->setValue("useIndexFile",QVariant( ui.useIndexFile->isChecked()));
+    AppSettings->setValue("useIndexFile",QVariant(ui.useIndexFile->isChecked()));
+    AppSettings->setValue("autoCommitDB",QVariant(ui.cbAutoCommitDB->isChecked()));
 	AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
     AppSettings->setValue("showFrame", QVariant(ui.boardFrameCheck->isChecked()));
@@ -340,6 +343,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("AutoPlayerInterval", ui.autoPlayInterval->value());
 	AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());
 	AppSettings->setValue("pieceEffect", ui.pieceEffect->currentIndex());
+    AppSettings->setValue("AutoSaveAndContinue",QVariant(ui.cbSaveAndContinue->isChecked()));
 	if (ui.boardThemeCombo->currentIndex() != ui.boardThemeCombo->count() - 1)
 		AppSettings->setValue("boardTheme", ui.boardThemeCombo->currentText());
 	else	AppSettings->setValue("boardTheme", QString());
