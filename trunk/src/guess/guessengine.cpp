@@ -1349,7 +1349,7 @@ Engine::SetPosition (Position * newpos)
 int
 Engine::Think (MoveList * mlist)
 {
-    Elapsed.Reset();
+    Elapsed.restart();
     NodeCount = 0;
     QNodeCount = 0;
     Ply = 0;
@@ -1405,7 +1405,7 @@ Engine::Think (MoveList * mlist)
         // continuing the search is unlikely to be useful since it
         // will probably spend all remaining time on the first move:
         if (depth > 4) {
-              double used = (double)Elapsed.MilliSecs() / (double)SearchTime;
+              double used = (double)Elapsed.elapsed() / (double)SearchTime;
               if (used > 0.7) { break; }
         }
 
@@ -2253,7 +2253,7 @@ void
 Engine::PrintPV (uint depth, int score, const char * note)
 {
     if (! PostInfo) { return; }
-    uint ms = Elapsed.MilliSecs();
+    uint ms = Elapsed.elapsed();
     if (XBoardMode  &&  ms < 50  &&  Ply < 6) { return; }
 
     if (XBoardMode) {
@@ -2309,7 +2309,7 @@ Engine::OutOfTime ()
     // Only check the time approximately every 1000 nodes for speed:
     if ((NodeCount & 1023) != 0) { return false; }
 
-    int ms = Elapsed.MilliSecs();        
+    int ms = Elapsed.elapsed();
 
     if (EasyMove) {
         IsOutOfTime = (ms > MinSearchTime);

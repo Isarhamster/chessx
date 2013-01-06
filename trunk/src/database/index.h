@@ -90,6 +90,11 @@ public:
     /** Read the index from disk, using m_filename */
     bool read(QDataStream& in, volatile bool *breakFlag);
 
+    /** Clear all cached values */
+    void clearCache();
+    /** Build the tag caches */
+    void calculateCache(volatile bool* breakFlag = 0);
+
     /** Calculate missing data from the index file import */
     void calculateTagMap(volatile bool *breakFlag);
     void calculateReverseMaps(volatile bool *breakFlag);

@@ -14,23 +14,63 @@
    <string>Setup position</string>
   </property>
   <layout class="QGridLayout">
-   <item row="4" column="0">
-    <widget class="QLabel" name="fenLabel">
-     <property name="minimumSize">
-      <size>
-       <width>400</width>
-       <height>0</height>
-      </size>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>FEN</string>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="fenLabel">
+        <property name="minimumSize">
+         <size>
+          <width>400</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Panel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="humanFEN">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>400</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Panel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+     <zorder>fenLabel</zorder>
+     <zorder>fenLabel</zorder>
+     <zorder>humanFEN</zorder>
     </widget>
    </item>
    <item row="2" column="0">
@@ -309,7 +349,7 @@
      </widget>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="6" column="0">
     <layout class="QHBoxLayout">
      <item>
       <widget class="QPushButton" name="pasteButton">
@@ -322,6 +362,13 @@
       <widget class="QPushButton" name="copyButton">
        <property name="text">
         <string>Copy FEN</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btCopyText">
+       <property name="text">
+        <string>Copy Text</string>
        </property>
       </widget>
      </item>

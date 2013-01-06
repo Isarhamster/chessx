@@ -87,7 +87,7 @@ protected:
 	With @p force set, creates empty game. */
 	void gameLoad(int index, bool force = false, bool reload=0);
 	/** Make given number of moves in current game */
-	void gameMoveBy(int change);
+    bool gameMoveBy(int change);
 	/** Update recent files menu */
 	void updateMenuRecent();
 	/** Update recent files menu */
@@ -145,7 +145,7 @@ public slots:
 	/** Go to first move of the game */
 	void slotGameMoveFirst()  {gameMoveBy(-999);}
 	/** Go to next move of the game */
-    void slotGameMoveNext();
+    bool slotGameMoveNext();
 	/** Go to previous move of the game */
 	void slotGameMovePrevious() {gameMoveBy(-1);}
 	/** Go to first move of the game */
@@ -190,6 +190,8 @@ public slots:
     void slotGameAddVariation(const QString& san);
     /** Start / Stop AutoPlay feature */
     void slotToggleAutoPlayer();
+    /** Auto Play Timeout - make next move! */
+    void slotToggleAutoAnalysis();
     /** Auto Play Timeout - make next move! */
     void slotAutoPlayTimeout();
     /** Start / Stop Blunder Check feature */
@@ -318,6 +320,14 @@ private:
     void restoreRecentFiles();
     /** Query User and save game if game was modified */
     void QuerySaveGame();
+    /** Save game without query */
+    void saveGame();
+    /** Load next game without query */
+    void loadNextGame();
+    /** Save Database without query or progress bar */
+    void saveDatabase();
+    /** Save Database with query */
+    void QuerySaveDatabase();
 
 	/* Dialogs  */
 	GameList* m_gameList;
@@ -349,6 +359,7 @@ private:
 	QList<QAction*> m_databaseActions;
     QAction* m_blunderCheck;
 	int m_currentDatabase;
+    int m_prevDatabase;
 	QString m_eco;
 	QActionGroup* m_actions;
 	bool m_showPgnSource; // for debugging
@@ -361,6 +372,7 @@ private:
     bool m_bGameChange;
     int m_currentFrom;
     int m_currentTo;
+    bool m_bAutoInsertAnalysis;
 };
 
 

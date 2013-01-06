@@ -17,12 +17,13 @@
 #define SCID_POSITION_H
 
 #include "common.h"
-#include "dstring.h"
 #include "misc.h"
 #include "movelist.h"
 #include "sqlist.h"
 #include "sqset.h"
 #include "tokens.h"
+
+#include <QtCore>
 
 namespace Guess
 {
@@ -301,15 +302,8 @@ public:
         return (Board[0] << 4) | Board[1];
     }
     void        PrintFEN (char * str, uint flags);
-    void        DumpLatexBoard (DString * dstr, bool flip);
-    void        DumpLatexBoard (DString * dstr) {
-        DumpLatexBoard (dstr, false);
-    }
-    void        DumpHtmlBoard (DString * dstr, uint style, const char * dir,
-                               bool flip);
-    void        DumpHtmlBoard (DString * dstr, uint style, const char * dir) {
-        DumpHtmlBoard (dstr, style, dir, false);
-    }
+    void        DumpLatexBoard (QString *dstr, bool flip = false);
+    void        DumpHtmlBoard (QString *dstr, uint style, const char * dir, bool flip = false);
 
     // Copy, compare positions
     int         Compare (Position * p);

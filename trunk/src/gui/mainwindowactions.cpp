@@ -100,6 +100,35 @@ void MainWindow::slotFileOpenRecent()
 		openDatabase(action->data().toString());
 }
 
+void MainWindow::saveDatabase()
+{
+    if (!database()->isReadOnly() && database()->isModified())
+    {
+        Output output(Output::Pgn);
+        output.output(database()->filename(), *database());
+    }
+}
+
+void MainWindow::QuerySaveDatabase()
+{
+    QuerySaveGame();
+    if (m_currentDatabase && qobject_cast<MemoryDatabase*>(database()))
+    {
+        if (database()->isModified())
+        {
+            bool yes = MessageDialog::yesNo(tr("The current database is modified!")
+                        + '\n' + tr("Save it?"));
+            if (yes)
+            {
+                 startOperation(tr("Saving %1...").arg(database()->name()));
+                 Output output(Output::Pgn);
+                 connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
+                 output.output(database()->filename(), *database());
+                 finishOperation(tr("%1 saved").arg(database()->name()));
+            }
+        }
+    }
+}
 
 void MainWindow::slotFileSave()
 {
@@ -121,12 +150,13 @@ void MainWindow::slotFileClose()
     {// Don't remove Clipboard
         if (databaseInfo()->IsLoaded())
         {
-            QuerySaveGame();
+            QuerySaveDatabase();
             m_openingTree->cancel(false);
             m_databaseList->setFileClose(databaseInfo()->filePath());
             databaseInfo()->close();
             delete databaseInfo();
             m_databases.removeAt(m_currentDatabase);
+            m_prevDatabase = 0;
             m_currentDatabase = 0; // Switch to clipboard is always safe
             m_databaseList->setFileCurrent(QString());
             updateMenuDatabases();
@@ -153,6 +183,7 @@ void MainWindow::slotFileCloseIndex(int n)
             {
                 // hack as we have just moved the index by one
                 m_currentDatabase--;
+                m_prevDatabase = 0;
             }
             updateMenuDatabases();
         }
@@ -488,12 +519,12 @@ bool MainWindow::blunderCheck(QString oldFen, QString newFen) const
 {
     if (m_blunderCheck->isChecked() && m_gameToolBar->isVisible())
     {
-        Guess::Result oldResult = Guess::evalPos(oldFen.toLatin1(),250);
         if (Board(newFen) != standardStartBoard)
         {
-            Guess::Result newResult = Guess::evalPos(newFen.toLatin1(),250);
-            if (m_currentFrom != oldResult.from && m_currentTo != oldResult.to)
+            Guess::Result oldResult = Guess::evalPos(oldFen.toLatin1(),300);
+            if ((m_currentFrom != oldResult.from) || (m_currentTo != oldResult.to))
             {
+                Guess::Result newResult = Guess::evalPos(newFen.toLatin1(),200);
                 if (!oldResult.whiteMove) oldResult.score = -oldResult.score;
                 if (!newResult.whiteMove) newResult.score = -newResult.score;
 
@@ -565,17 +596,22 @@ void MainWindow::slotGameLoadPrevious()
 	}
 }
 
-void MainWindow::slotGameLoadNext()
+void MainWindow::loadNextGame()
 {
-    QuerySaveGame();
     int game = m_gameList->currentIndex().row();
-	game = databaseInfo()->filter()->indexToGame(game);
-	game = databaseInfo()->filter()->nextGame(game);
+    game = databaseInfo()->filter()->indexToGame(game);
+    game = databaseInfo()->filter()->nextGame(game);
     if (game != -1)
     {
         gameLoad(game);
         m_gameList->setFocus();
     }
+}
+
+void MainWindow::slotGameLoadNext()
+{
+    QuerySaveGame();
+    loadNextGame();
 }
 
 void MainWindow::slotGameLoadRandom()
@@ -610,19 +646,34 @@ void MainWindow::slotGameNew()
 	}
 }
 
+void MainWindow::saveGame()
+{
+    if (!database()->isReadOnly())
+    {
+        databaseInfo()->saveGame();
+        database()->index()->setTag("Length", QString::number((game().plyCount() + 1) / 2), gameIndex() );
+        m_gameList->updateFilter();
+        slotFilterChanged();
+        slotGameChanged();
+        game().setModified(false);
+
+        if (AppSettings->getValue("/General/autoCommitDB").toBool())
+        {
+            saveDatabase();
+        }
+    }
+}
+
 void MainWindow::slotGameSave()
 {
 	if (database()->isReadOnly())
     {
 		MessageDialog::error(tr("This database is read only."));
+        game().setModified(false); // Do not notify more than once
     }
     else if (saveDialog()->exec(database(), game()) == QDialog::Accepted)
     {
-        databaseInfo()->saveGame();
-        database()->index()->setTag("Length", QString::number((game().plyCount() + 1) / 2), gameIndex() );
-        m_gameList->updateFilter();
-		slotFilterChanged();
-		slotGameChanged();
+        saveGame();
 	}
 }
 
@@ -800,6 +851,12 @@ void MainWindow::slotGameAddVariation(const QString& san)
     slotGameChanged();
 }
 
+void MainWindow::slotToggleAutoAnalysis()
+{
+    slotToggleAutoPlayer();
+    m_bAutoInsertAnalysis = m_autoPlayTimer->isActive();
+}
+
 void MainWindow::slotToggleAutoPlayer()
 {
     QAction* autoPlayAction = (QAction*) sender();
@@ -823,7 +880,21 @@ void MainWindow::slotToggleAutoPlayer()
 
 void MainWindow::slotAutoPlayTimeout()
 {
-    slotGameMoveNext();
+    if (m_bAutoInsertAnalysis)
+    {
+        // TODO
+        // figure out analysing engines and integrate best move as variation if not move played
+        // Do some NAGs, too?
+    }
+    if (game().atGameEnd() && AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
+    {
+        saveGame();
+        loadNextGame();
+    }
+    else
+    {
+        slotGameMoveNext();
+    }
     m_autoPlayTimer->start();
 }
 
@@ -870,6 +941,8 @@ void MainWindow::slotDatabaseChange()
 {
 	QAction* action = qobject_cast<QAction*>(sender());
 	if (action && m_currentDatabase != action->data().toInt()) {
+        m_prevDatabase = m_currentDatabase;
+        database()->index()->clearCache();
 		m_currentDatabase = action->data().toInt();
         m_databaseList->setFileCurrent(m_databases[m_currentDatabase]->filePath());
 		slotDatabaseChanged();
@@ -954,6 +1027,7 @@ void MainWindow::slotDatabaseCopySingle()
 
 void MainWindow::slotDatabaseChanged()
 {
+    database()->index()->calculateCache();
 	setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
 	m_gameList->setFilter(databaseInfo()->filter());
 	slotFilterChanged();
@@ -1082,11 +1156,11 @@ void MainWindow::slotGetGameData(Game& g)
     g = game();
 }
 
-void MainWindow::slotGameMoveNext()
+bool MainWindow::slotGameMoveNext()
 {
     Move m = game().move(game().nextMove());
     m_currentFrom = m.from();
     m_currentTo = m.to();
-    gameMoveBy(1);
+    return gameMoveBy(1);
 }
 

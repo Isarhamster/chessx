@@ -3022,7 +3022,7 @@ struct htmlStyleT {
 };
 
 void
-Position::DumpHtmlBoard (DString * dstr, uint style, const char * dir, bool flip)
+Position::DumpHtmlBoard (QString * dstr, uint style, const char * dir, bool flip)
 {
     const uint HTML_DIAG_STYLES = 2;
     htmlStyleT hs [HTML_DIAG_STYLES];
@@ -3036,61 +3036,61 @@ Position::DumpHtmlBoard (DString * dstr, uint style, const char * dir, bool flip
     pieceT * pBoard;
     if (dir == NULL) { dir = hs[style].dir; }
 
-    dstr->Append ("<br><br><center>\n");
-    dstr->Append ("<table Border=1 CellSpacing=0 CellPadding=0>\n");
+    dstr->append ("<br><br><center>\n");
+    dstr->append ("<table Border=1 CellSpacing=0 CellPadding=0>\n");
     for (iRank = 0; iRank < 8; ++iRank) {
-        dstr->Append ("<tr>\n");
+        dstr->append ("<tr>\n");
         pBoard = &(Board[(7 - iRank) * 8]);
         for (iFyle = 0; iFyle < 8; ++iFyle, ++pBoard) {
             pieceT piece = *pBoard;
             if (flip) { piece = Board[iRank * 8 + (7 - iFyle)]; }
-            dstr->Append ("  <td><img border=0 ");
+            dstr->append ("  <td><img border=0 ");
             if (width > 0) {
                 char temp[40];
                 sprintf (temp, "width=%u ", width);
-                dstr->Append (temp);
+                dstr->append (temp);
             }
             if (height > 0) {
                 char temp[40];
                 sprintf (temp, "height=%u ", height);
-                dstr->Append (temp);
+                dstr->append (temp);
             }
-            dstr->Append ("src=\"");
-            dstr->Append (dir);
-            dstr->AddChar ('/');
+            dstr->append ("src=\"");
+            dstr->append (dir);
+            dstr->append ('/');
             bool lightSq = ((iRank % 2) == (iFyle % 2));
             if (lightSq) {
-                dstr->AddChar ('w');
+                dstr->append ('w');
             } else {
-                dstr->AddChar ('b');
+                dstr->append ('b');
             }
             if (piece == EMPTY) {
-                dstr->Append ("sq.gif");
+                dstr->append ("sq.gif");
             } else {
                 colorT c = piece_Color(piece);
-                dstr->AddChar (c == WHITE ? 'w' : 'b');
-                dstr->AddChar (tolower (PIECE_CHAR[piece]));
-                dstr->Append (".gif");
+                dstr->append (c == WHITE ? 'w' : 'b');
+                dstr->append (tolower (PIECE_CHAR[piece]));
+                dstr->append (".gif");
             }
-            dstr->Append ("\" alt=\"");
+            dstr->append ("\" alt=\"");
             if (piece == EMPTY) {
-                if (! lightSq) { dstr->Append ("::"); }
+                if (! lightSq) { dstr->append ("::"); }
             } else {
                 colorT c = piece_Color(piece);
-                dstr->AddChar (c == WHITE ? 'W' : 'B');
-                dstr->AddChar (toupper (PIECE_CHAR[piece]));
+                dstr->append (c == WHITE ? 'W' : 'B');
+                dstr->append (toupper (PIECE_CHAR[piece]));
             }
-            dstr->Append ("\"></td>\n");
+            dstr->append ("\"></td>\n");
         }
-        dstr->Append ("</tr>\n");
+        dstr->append ("</tr>\n");
     }
-    dstr->Append ("</table>\n");
+    dstr->append ("</table>\n");
     //if (ToMove == WHITE) {
     //    dstr->Append ("<br><b>White to move.</b>\n");
     //} else {
     //    dstr->Append ("<br><b>Black to move.</b>\n");
     //}
-    dstr->Append("</center><br>");
+    dstr->append("</center><br>");
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -3098,25 +3098,25 @@ Position::DumpHtmlBoard (DString * dstr, uint style, const char * dir, bool flip
 //      Prints the board in a format used by a chess package that is
 //      available for the LaTeX  or TeX typesetting language.
 void
-Position::DumpLatexBoard (DString * dstr, bool flip)
+Position::DumpLatexBoard (QString * dstr, bool flip)
 {
     uint iRank, iFyle;
     pieceT * pBoard;
-    dstr->Append ("\\board{");
+    dstr->append ("\\board{");
     for (iRank = 0; iRank < 8; ++iRank) {
         pBoard = &(Board[(7 - iRank) * 8]);
         for (iFyle = 0; iFyle < 8; ++iFyle, ++pBoard) {
             pieceT piece = *pBoard;
             if (flip) { piece = Board[iRank * 8 + (7 - iFyle)]; }
             if (piece != EMPTY) {
-                dstr->AddChar (PIECE_CHAR[piece]);
+                dstr->append (PIECE_CHAR[piece]);
             } else { // put a space or a '*':
-                dstr->AddChar (((iRank % 2) == (iFyle % 2)) ? ' ' : '*');
+                dstr->append (((iRank % 2) == (iFyle % 2)) ? ' ' : '*');
             }
         }
         if (iRank < 7) {
-            dstr->Append ("}\n {");
-        } else { dstr->AddChar ('}'); }
+            dstr->append ("}\n {");
+        } else { dstr->append ('}'); }
     }
 }
 
