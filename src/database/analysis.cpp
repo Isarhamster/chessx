@@ -15,6 +15,21 @@ Analysis::Analysis()
 	clear();
 }
 
+Analysis& Analysis::operator=(const Analysis& rhs)
+{
+    if (this != &rhs)
+    {
+        m_score     = rhs.m_score;
+        m_msec      = rhs.m_msec;
+        m_depth     = rhs.m_depth;
+        m_mateIn    = rhs.m_mateIn;
+        m_nodes     = rhs.m_nodes;
+        m_numpv     = rhs.m_numpv;
+        m_variation = rhs.m_variation;
+    }
+    return *this;
+}
+
 void Analysis::clear()
 {
 	m_score = m_msec = m_depth = m_mateIn = 0;

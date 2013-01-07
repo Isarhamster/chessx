@@ -20,6 +20,7 @@
 #include <QMainWindow>
 
 class Analysis;
+class AnalysisWidget;
 class Board;
 class BoardView;
 class ChessBrowser;
@@ -373,6 +374,8 @@ private:
     int m_currentFrom;
     int m_currentTo;
     bool m_bAutoInsertAnalysis;
+    AnalysisWidget* m_mainAnalysis;
+    Board m_AutoInsertLastBoard;
 };
 
 

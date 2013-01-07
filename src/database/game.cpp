@@ -90,6 +90,33 @@ MoveId Game::addMove(const QString& sanMove, const QString& annotation, NagSet n
 	return NO_MOVE;
 }
 
+bool Game::currentNodeHasMove(Square from, Square to) const
+{
+    int node;
+    node = m_moveNodes[m_currentNode].nextNode;
+    if( node != NO_MOVE ) {
+        Move m = m_moveNodes[node].move ;
+        if( m.from() == from && m.to() == to )
+        {
+            return true;
+        }
+        else
+        {
+            QList<MoveId> vs = m_moveNodes[m_currentNode].variations;
+            QList<MoveId>::iterator i;
+            for (i = vs.begin(); i != vs.end(); ++i)
+            {
+                Move m = move(*i);
+                if( m.from() == from && m.to() == to )
+                {
+                    return true;
+                }
+            }
+         }
+    }
+    return false;
+}
+
 // does the next main move or one of the variations go from square from to square to
 // if so make it on the board
 bool Game::findNextMove(Square from, Square to)

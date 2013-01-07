@@ -81,9 +81,6 @@ public:
 	/** Return hash value associated with current board position */
 	quint64 getHashValue() const;
 
-	/** Return second hash value associated with current board position */
-	quint64 getHashValue2() const;
-
 	/** Compare one board to another for equality, based on hash values */
 	bool operator == (const Board& b) const
 	{

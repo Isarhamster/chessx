@@ -236,3 +236,12 @@ void AnalysisWidget::updateAnalysis()
 	ui.variationText->setText(text);
 }
 
+Analysis AnalysisWidget::getMainLine() const
+{
+    Analysis a;
+    if (!m_analyses.isEmpty())
+    {
+        a = m_analyses.first();
+    }
+    return a;
+}

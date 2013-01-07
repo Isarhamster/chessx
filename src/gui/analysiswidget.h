@@ -28,6 +28,10 @@ class AnalysisWidget : public QWidget
 public:
 	AnalysisWidget();
 	~AnalysisWidget();
+
+    /** Get the main line */
+    Analysis getMainLine() const;
+
 public slots:
 	/** Sets new position. If analysis is active, the current content will be cleared and
 	new analysis will be performed. */
@@ -59,6 +63,7 @@ private slots:
 	void slotMpvChanged(int mpv);
 	/** Show tablebase move information. */
 	void showTablebaseMove(Move move, int score);
+
 signals:
 	void addVariation(const Analysis& analysis);
     void addVariation(const QString& san);
