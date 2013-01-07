@@ -58,6 +58,8 @@ public:
     /** Moves to mate. */
     /** Convert analysis to formatted text. */
     QString toString(const Board& board) const;
+    /** Assignment operator */
+    Analysis& operator=(const Analysis& rhs);
 private:
     int m_numpv;
     int m_msec;

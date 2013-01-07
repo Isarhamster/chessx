@@ -267,39 +267,41 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Analysis Dock */
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
     analysisDock->setObjectName("AnalysisDock1");
-    AnalysisWidget* analyis = new AnalysisWidget;
-    analyis->setObjectName("Analysis");
-    analysisDock->setWidget(analyis);
+    AnalysisWidget* analysis = new AnalysisWidget;
+    analysis->setObjectName("Analysis");
+    analysisDock->setWidget(analysis);
     addDockWidget(Qt::RightDockWidgetArea, analysisDock);
-    connect(analyis, SIGNAL(addVariation(Analysis)),
+    connect(analysis, SIGNAL(addVariation(Analysis)),
 			  SLOT(slotGameAddVariation(Analysis)));
-    connect(analyis, SIGNAL(addVariation(QString)),
+    connect(analysis, SIGNAL(addVariation(QString)),
               SLOT(slotGameAddVariation(QString)));
-    connect(this, SIGNAL(boardChange(const Board&)), analyis, SLOT(setPosition(const Board&)));
-    connect(this, SIGNAL(reconfigure()), analyis, SLOT(slotReconfigure()));
+    connect(this, SIGNAL(boardChange(const Board&)), analysis, SLOT(setPosition(const Board&)));
+    connect(this, SIGNAL(reconfigure()), analysis, SLOT(slotReconfigure()));
 	// Make sure engine is disabled if dock is hidden
 	connect(analysisDock, SIGNAL(visibilityChanged(bool)),
-              analyis, SLOT(slotVisibilityChanged(bool)));
+              analysis, SLOT(slotVisibilityChanged(bool)));
 	m_menuView->addAction(analysisDock->toggleViewAction());
     analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F2);
     analysisDock->hide();
 
+    m_mainAnalysis = analysis;
+
 	/* Analysis Dock 2 */
     DockWidgetEx* analysisDock2 = new DockWidgetEx(tr("Analysis 2"), this);
 	analysisDock2->setObjectName("AnalysisDock2");
-    analyis = new AnalysisWidget;
-    analyis->setObjectName("Analysis2");
-    analysisDock2->setWidget(analyis);
+    analysis = new AnalysisWidget;
+    analysis->setObjectName("Analysis2");
+    analysisDock2->setWidget(analysis);
 	addDockWidget(Qt::RightDockWidgetArea, analysisDock2);
-    connect(analyis, SIGNAL(addVariation(Analysis)),
+    connect(analysis, SIGNAL(addVariation(Analysis)),
 			  SLOT(slotGameAddVariation(Analysis)));
-    connect(analyis, SIGNAL(addVariation(QString)),
+    connect(analysis, SIGNAL(addVariation(QString)),
               SLOT(slotGameAddVariation(QString)));
-    connect(this, SIGNAL(boardChange(const Board&)), analyis, SLOT(setPosition(const Board&)));
-    connect(this, SIGNAL(reconfigure()), analyis, SLOT(slotReconfigure()));
+    connect(this, SIGNAL(boardChange(const Board&)), analysis, SLOT(setPosition(const Board&)));
+    connect(this, SIGNAL(reconfigure()), analysis, SLOT(slotReconfigure()));
 	// Make sure engine is disabled if dock is hidden
 	connect(analysisDock2, SIGNAL(visibilityChanged(bool)),
-              analyis,SLOT(slotVisibilityChanged(bool)));
+              analysis,SLOT(slotVisibilityChanged(bool)));
 	m_menuView->addAction(analysisDock2->toggleViewAction());
     analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F3);
     analysisDock2->hide();

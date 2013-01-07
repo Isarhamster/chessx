@@ -250,6 +250,8 @@ public :
 	// Searching
 	/** Search game to see if given position exists, if it does return move id */
 	MoveId findPosition(const Board& position);
+    /** @return true if the move @p from @p to is already main move or variation */
+    bool currentNodeHasMove(Square from, Square to) const;
 
 	/** @return ECO code for the game */
 	QString ecoClassify();

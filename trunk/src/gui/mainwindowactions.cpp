@@ -880,11 +880,18 @@ void MainWindow::slotToggleAutoPlayer()
 
 void MainWindow::slotAutoPlayTimeout()
 {
-    if (m_bAutoInsertAnalysis)
+    if (m_bAutoInsertAnalysis && m_mainAnalysis->isEngineRunning() && (m_AutoInsertLastBoard != m_boardView->board()))
     {
-        // TODO
-        // figure out analysing engines and integrate best move as variation if not move played
-        // Do some NAGs, too?
+        Analysis a = m_mainAnalysis->getMainLine();
+        if (!a.variation().isEmpty())
+        {
+            Move m = a.variation().first();
+            if (!game().currentNodeHasMove(m.from(), m.to()) || game().atLineEnd())
+            {
+                slotGameAddVariation(a);
+            }
+        }
+        m_AutoInsertLastBoard = m_boardView->board();
     }
     if (game().atGameEnd() && AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
     {
