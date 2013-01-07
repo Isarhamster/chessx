@@ -280,7 +280,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	// Make sure engine is disabled if dock is hidden
 	connect(analysisDock, SIGNAL(visibilityChanged(bool)),
               analysis, SLOT(slotVisibilityChanged(bool)));
-	m_menuView->addAction(analysisDock->toggleViewAction());
+    m_menuView->addAction(analysisDock->toggleViewAction());
     analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F2);
     analysisDock->hide();
 

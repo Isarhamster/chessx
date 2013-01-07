@@ -25,7 +25,7 @@ void MessageDialog::warning(const QString& text, const QString& title)
 
 void MessageDialog::information(const QString& text, const QString& title)
 {
-	QMessageBox::information(QApplication::activeWindow(), title, text);
+    QMessageBox::information(QApplication::activeWindow(), title, text);
 }
 
 bool MessageDialog::yesNo(const QString& text, const QString& title, const QString& yes,

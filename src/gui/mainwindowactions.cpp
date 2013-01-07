@@ -855,6 +855,10 @@ void MainWindow::slotToggleAutoAnalysis()
 {
     slotToggleAutoPlayer();
     m_bAutoInsertAnalysis = m_autoPlayTimer->isActive();
+    if (m_bAutoInsertAnalysis && !m_mainAnalysis->isEngineRunning())
+    {
+        MessageDialog::information(tr("Analysis Pane 1 is not running an engine for automatic analysis."), tr("Auto Analysis"));
+    }
 }
 
 void MainWindow::slotToggleAutoPlayer()
