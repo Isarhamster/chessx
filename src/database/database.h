@@ -91,6 +91,8 @@ public:
     virtual int count() { return 0; }
 	/** @return true if the database has been modified. By default database is read-only. */
 	virtual bool isModified() const { return false; }
+    /** Set / Reset the modification flag. */
+    virtual void setModified(bool) { }
     /** Get the Valid Flag for a given game id from the index */
     virtual bool getValidFlag(GameId id) const { return m_index.isValidFlag(id); }
 signals:
