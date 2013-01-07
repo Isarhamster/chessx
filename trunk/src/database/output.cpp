@@ -493,6 +493,8 @@ void Output::output(QTextStream& out, Database& database)
 		if (percentDone2 > percentDone)
 			emit progress((percentDone = percentDone2));
 	}
+
+    database.setModified(false);
 }
 
 void Output::output(const QString& filename, Filter& filter)

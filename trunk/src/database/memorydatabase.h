@@ -35,9 +35,11 @@ public:
 	/** Destructor */
 	~MemoryDatabase();
 	/** Returns whether the database is read-only or not */
-	bool isReadOnly() const { return false; }
+    virtual bool isReadOnly() const { return false; }
 	/** @return whether the database was modified. */
-	bool isModified() const	{ return m_isModified; }
+    virtual bool isModified() const	{ return m_isModified; }
+    /** @return whether the database was modified. */
+    void setModified(bool b) { m_isModified = b; }
 	/** Adds a game to the database */
     bool appendGame(const Game& game);
 	/** Removes a game from the database */
