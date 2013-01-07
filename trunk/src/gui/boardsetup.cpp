@@ -302,6 +302,8 @@ void BoardSetupDialog::slotCopyText()
 
 void BoardSetupDialog::slotPasteFen()
 {
+    // Prepare Fen - clean up code like this:
+    // [FEN "***"] to ***
     QString fen = QApplication::clipboard()->text().simplified();
     if (fen.contains("\""))
     {
@@ -313,8 +315,10 @@ void BoardSetupDialog::slotPasteFen()
         }
     }
 
+    // Another go at Fens copied from Wikis: [FEN]***[/FEN] is reduced to ***
     fen.remove(QRegExp("\\[[^\\]]*\\]"));
 
+    // Now parse the hopefully naked Fen
     Board b;
     if (!b.fromFen(fen))
     {
