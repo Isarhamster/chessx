@@ -134,6 +134,7 @@ void EventListWidget::setDatabase(Database* db)
     {
         m_list = db->index()->tagValues(TagNameEvent);
     }
+    m_list.sort();
     m_filterModel->setStringList(m_list);
     m_filterModel->sort(0);
 }
