@@ -100,25 +100,38 @@ void OpeningTreeUpdater::run()
         m_filter->database()->loadGameMoves(i, g);
         int id = g.findPosition(m_board);
         if (id != NO_MOVE)	{
-            m_filter->set(i, id + 1); // not zero means success, but id could be 0.
+            if (m_updateFilter)
+            {
+                m_filter->set(i, id + 1); // not zero means success, but id could be 0.
+            }
             m_filter->database()->loadGameHeaders(i, g);
             g.moveToId(id);
             if (g.atGameEnd())
+            {
                 moves[Move()].addGame(g, m_board.toMove(), MoveData::GameEnd);
-            else {
+            }
+            else
+            {
                 g.forward();
                 moves[g.move()].addGame(g, m_board.toMove());
             }
             ++games;
-        } else {
-            m_filter->set(i, 0);
+        }
+        else
+        {
+            if (m_updateFilter)
+            {
+                m_filter->set(i, 0);
+            }
         }
         if (i * 100 / m_filter->size() > (i - 1) * 100 / m_filter->size())
         {
             emit progress(i * 100 / m_filter->size());
         }
         if (m_break)
+        {
             break;
+        }
     }
     *m_games = games;
     m_moves->clear();
@@ -140,19 +153,20 @@ void OpeningTreeUpdater::cancel()
     m_break = true;
 }
 
-bool OpeningTreeUpdater::update(Filter& f, const Board& b, QList<MoveData>& m, int& g)
+bool OpeningTreeUpdater::update(Filter& f, const Board& b, QList<MoveData>& m, int& g, bool updateFilter)
 {
     m_break = false;
     m_filter = &f;
     m_board = b;
     m_moves = &m;
     m_games = &g;
+    m_updateFilter = updateFilter;
     // todo: if running wait for stop
     start();
     return true;
 }
 
-bool OpeningTree::update(Filter& f, const Board& b)
+bool OpeningTree::update(Filter& f, const Board& b, bool updateFilter)
 {
     if (!oupd.isRunning())
     {
@@ -160,12 +174,13 @@ bool OpeningTree::update(Filter& f, const Board& b)
             return true;
         m_board = b;
         m_filter = &f;
+        m_updateFilter = updateFilter;
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd,SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
-        return oupd.update(f,b, m_moves, m_games);
+        return oupd.update(f,b, m_moves, m_games, m_updateFilter);
     }
     else
     {
@@ -173,6 +188,7 @@ bool OpeningTree::update(Filter& f, const Board& b)
             return true;
         m_board = b;
         m_filter = &f;
+        m_updateFilter = updateFilter;
         m_bRequestPending = true;
         oupd.cancel();
         return false;
@@ -208,7 +224,7 @@ void OpeningTree::updateTerminated(Board*)
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd,SIGNAL(progress(int)),SIGNAL(progress(int)), Qt::UniqueConnection);
-        oupd.update(*m_filter,m_board, m_moves, m_games);
+        oupd.update(*m_filter,m_board, m_moves, m_games, m_updateFilter);
     }
 }
 
@@ -236,11 +252,11 @@ OpeningTree::OpeningTree() : m_sortcolumn(1), m_order(Qt::DescendingOrder), m_fi
     m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year");
 }
 
-OpeningTree::OpeningTree(Filter & f, const Board & b) :
+OpeningTree::OpeningTree(Filter & f, const Board & b, bool updateFilter) :
         m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
 {
     m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year");
-	update(f, b);
+    update(f, b, updateFilter);
 }
 
 QVariant OpeningTree::headerData(int section, Qt::Orientation orientation, int role) const
