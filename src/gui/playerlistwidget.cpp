@@ -135,6 +135,7 @@ void PlayerListWidget::setDatabase(Database* db)
     {
         m_list = db->index()->playerNames();
     }
+    m_list.sort();
     m_filterModel->setStringList(m_list);
     m_filterModel->sort(0);
 }
