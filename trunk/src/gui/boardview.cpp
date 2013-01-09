@@ -49,7 +49,9 @@ BoardView::~BoardView()
 bool BoardView::eventFilter(QObject *obj, QEvent *ev)
 {
 	if (ev->type() == QEvent::Leave || ev->type() == QEvent::WindowDeactivate)
+    {
 		removeGuess();
+    }
 	return QWidget::eventFilter(obj, ev);
 }
 
@@ -60,13 +62,15 @@ void BoardView::setFlags(int flags)
 
 void BoardView::setBoard(const Board& value,int from, int to)
 {
-	m_clickUsed = true;
+    m_clickUsed = true;
 	Board oldboard = m_board;
 	m_board = value;
     m_currentFrom = from;
     m_currentTo = to;
 	if (underMouse())
+    {
 		updateGuess(m_hoverSquare);
+    }
 	update();
 }
 
@@ -178,6 +182,7 @@ void BoardView::drawPieces(QPaintEvent* event)
         }
     }
 }
+
 void BoardView::paintEvent(QPaintEvent* event)
 {
     drawSquares(event);
@@ -243,7 +248,8 @@ bool BoardView::showGuess(Square s)
 #endif
         {
             Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), (int) s, m_moveList);
-			if (!sm.error) {
+            if (!sm.error)
+            {
                 m_hiFrom = sm.from;
                 m_hiTo = sm.to;
                 update(squareRect(m_hiFrom));
@@ -264,7 +270,8 @@ void BoardView::updateGuess(Square s)
 
 void BoardView::removeGuess()
 {
-    if (m_hiFrom != InvalidSquare) {
+    if (m_hiFrom != InvalidSquare)
+    {
         update(squareRect(m_hiFrom));
         update(squareRect(m_hiTo));
         m_hiFrom = m_hiTo = InvalidSquare;
@@ -315,23 +322,40 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
         setCursor(QCursor(Qt::ArrowCursor));
     }
 
-	if (!(event->buttons() & Qt::LeftButton)) {
-		showGuess(squareAt(event->pos()));
+    if (!(event->buttons() & Qt::LeftButton))
+    {
+        if (!(event->modifiers() & Qt::ShiftModifier))
+        {
+            showGuess(squareAt(event->pos()));
+        }
+        else
+        {
+            removeGuess();
+        }
 		return;
 	}
-	if (m_dragged != Empty) {
+
+    if (m_dragged != Empty)
+    {
 		QRect old = QRect(m_dragPoint, m_theme.size());
 		m_dragPoint = event->pos() - m_theme.pieceCenter();
 		update(old);
 		update(QRect(m_dragPoint, m_theme.size()));
 		return;
 	}
+
 	if ((event->pos() - m_dragStart).manhattanLength()
-			< QApplication::startDragDistance())  // Click and move - start dragging
+            < QApplication::startDragDistance())
+    {
+        // Click and move - start dragging
 		return;
+    }
+
 	Square s = squareAt(m_dragStart);
 	if (!canDrag(s))
+    {
 		return;
+    }
 	removeGuess();
 	m_dragged = m_board.pieceAt(s);
 	m_dragPoint = event->pos() - m_theme.pieceCenter();
@@ -347,7 +371,9 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
     int button = event->button() + event->modifiers();
 	Square s = squareAt(event->pos());
 	m_clickUsed = false;
-    if (!(event->button() & Qt::LeftButton)) {
+
+    if (!(event->button() & Qt::LeftButton))
+    {
 		if (s != InvalidSquare)
         {
             emit clicked(s, button);
@@ -360,8 +386,20 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         m_dragged = Empty;
 		return;
 	}
+    else
+    {
+        if (event->modifiers() & Qt::ShiftModifier)
+        {
+            if (s != InvalidSquare)
+            {
+                emit clicked(s, button);
+            }
+        }
+        return;
+    }
 
-	if (m_dragged != Empty) {
+    if (m_dragged != Empty)
+    {
 		Square from = squareAt(m_dragStart);
 		m_board.setAt(from, m_dragged);
 		QRect oldr = QRect(m_dragPoint, m_theme.size());
@@ -387,23 +425,38 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         {
             emit invalidMove(from);
         }
-	} else if (m_selectedSquare != InvalidSquare) {
+    }
+    else if (m_selectedSquare != InvalidSquare)
+    {
 		Square from = m_selectedSquare;
 		unselectSquare();
 		if (s != InvalidSquare)
+        {
             emit moveMade(from, s, button);
-    } else if (m_hiFrom != InvalidSquare) {
+        }
+    }
+    else if (m_hiFrom != InvalidSquare)
+    {
         if (s == m_hiFrom || s == m_hiTo)
+        {
             emit moveMade(m_hiFrom, m_hiTo, button);
+        }
 		m_hoverSquare = InvalidSquare;
 		// Only update guess if "emit moveMade()" did not pop up a window (eg. promotion)
         if (m_hiFrom != InvalidSquare)
+        {
 			updateGuess(s);
-	} else {
-		if (s != InvalidSquare) {
+        }
+    }
+    else
+    {
+        if (s != InvalidSquare)
+        {
             emit clicked(s, button);
 			if (!m_clickUsed && m_board.isMovable(s))
+            {
 				selectSquare(s);
+            }
 		}
 	}
 }
@@ -466,7 +519,9 @@ void BoardView::unselectSquare()
 	Square prev = m_selectedSquare;
 	m_selectedSquare = InvalidSquare;
 	if (prev != InvalidSquare)
+    {
 		update(squareRect(prev));
+    }
 }
 
 QRect BoardView::squareRect(Square square)
