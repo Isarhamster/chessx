@@ -14,17 +14,18 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "database.h"
 #include "filtermodel.h"
+#include "game.h"
 #include "gamelist.h"
+#include "GameMimeData.h"
 #include "quicksearch.h"
 #include "search.h"
 #include "settings.h"
-#include "GameMimeData.h"
-#include "game.h"
 
+#include <QDrag>
 #include <QHeaderView>
 #include <QMenu>
-#include <QDrag>
 #include <QPixmap>
 
 GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
@@ -77,6 +78,12 @@ void GameList::slotContextMenu(const QPoint& pos)
     {
         QMenu menu(this);
         menu.addAction(tr("Copy games..."), this, SLOT(slotCopyGame()));
+        menu.addSeparator();
+        QAction* deleteAction = menu.addAction(tr("Delete game"), this, SLOT(slotDeleteGame()));
+        deleteAction->setCheckable(true);
+        deleteAction->setEnabled(!m_model->filter()->database()->isReadOnly());
+        int n = m_model->filter()->indexToGame(cell.row());
+        deleteAction->setChecked(m_model->filter()->database()->deleted(n));
         menu.exec(mapToGlobal(pos));
     }
 }
@@ -204,6 +211,11 @@ void GameList::updateFilter()
 void GameList::slotCopyGame()
 {
     emit requestCopyGame();
+}
+
+void GameList::slotDeleteGame()
+{
+    emit requestDeleteGame();
 }
 
 void GameList::startToDrag(const QModelIndex&)

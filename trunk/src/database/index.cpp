@@ -32,7 +32,7 @@ GameId Index::add()
 {
     int gameId = m_indexItems.count();
     m_indexItems.append(new IndexItem);
-    m_deleteFlags.append(false);
+    m_deletedGames.append(false);
     m_validFlags.append(true);
     return gameId;
 }
@@ -195,7 +195,7 @@ void Index::clear()
     m_tagNameIndex.clear();
     m_tagValues.clear();
     m_tagValueIndex.clear();
-    m_deleteFlags.clear();
+    m_deletedGames.clear();
     m_validFlags.clear();
     m_mapTagToIndexItems.clear();
 }
@@ -351,12 +351,12 @@ QStringList Index::tagValues(const QString& tagName) const
     return allTagNames;
 }
 
-bool Index::deleteFlag(const int& gameId) const
+bool Index::deleted(const int& gameId) const
 {
-	return m_deleteFlags[gameId];
+    return m_deletedGames[gameId];
 }
 
-void Index::setDeleteFlag(const int& gameId, const bool& df)
+void Index::setDeleted(int gameId, bool df)
 {
-	m_deleteFlags[gameId]=df;
+    m_deletedGames[gameId]=df;
 }

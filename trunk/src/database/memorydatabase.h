@@ -43,9 +43,9 @@ public:
 	/** Adds a game to the database */
     bool appendGame(const Game& game);
 	/** Removes a game from the database */
-	bool remove(int index);
-	/** Removes multiple games from the database as specified by the filter */
-	bool remove(const Filter& filter);
+    bool remove(int gameId);
+    /** Undo the deletion of a game */
+    bool undelete(int gameId);
 	/** Saves a game at the given position, returns true if successful */
 	bool replace(int index, Game& game);
 	/** Removes all games from the database, return true if succesful */

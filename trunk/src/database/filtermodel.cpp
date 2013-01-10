@@ -84,6 +84,15 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
                     return tag;
                 }
             }
+            else if (role == Qt::FontRole)
+            {
+                if (m_filter->database()->deleted(i))
+                {
+                    QFont font;
+                    font.setStrikeOut(true);
+                    return font;
+                }
+            }
             else if (role == Qt::ForegroundRole)
             {
                 if (!m_filter->database()->getValidFlag(i))

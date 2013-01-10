@@ -463,12 +463,16 @@ void Output::output(QTextStream& out, Filter& filter)
 	int percentDone = 0;
 	Game game;
 	for (int i = 0; i < filter.count(); ++i) {
-		filter.database()->loadGame(filter.indexToGame(i), game);
-		out << output(&game);
-		out << "\n\n";
+        if (filter.database()->loadGame(filter.indexToGame(i), game))
+        {
+            out << output(&game);
+            out << "\n\n";
+        }
 		int percentDone2 = (i + 1) * 100 / filter.count();
 		if (percentDone2 > percentDone)
+        {
 			emit progress((percentDone = percentDone2));
+        }
 	}
 }
 
@@ -485,13 +489,18 @@ void Output::output(QTextStream& out, Database& database)
 
 	int percentDone = 0;
 	Game game;
-	for (int i = 0; i < database.count(); ++i) {
-		database.loadGame(i, game);
-		out << output(&game);
-		out << "\n\n";
+    for (int i = 0; i < database.count(); ++i)
+    {
+        if (database.loadGame(i, game))
+        {
+            out << output(&game);
+            out << "\n\n";
+        }
 		int percentDone2 = (i + 1) * 100 / database.count();
 		if (percentDone2 > percentDone)
+        {
 			emit progress((percentDone = percentDone2));
+        }
 	}
 
     database.setModified(false);

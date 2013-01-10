@@ -43,16 +43,18 @@ bool MemoryDatabase::appendGame(const Game& game)
 	return true;
 }
 
-bool MemoryDatabase::remove(int)
+bool MemoryDatabase::remove(int gameId)
 {
-//	m_isModified = true;
-	return false;
+    m_isModified = true;
+    m_index.setDeleted(gameId, true);
+    return true;
 }
 
-bool MemoryDatabase::remove(const Filter&)
+bool MemoryDatabase::undelete(int gameId)
 {
-//	m_isModified = true;
-	return false;
+    m_isModified = true;
+    m_index.setDeleted(gameId, false);
+    return true;
 }
 
 bool MemoryDatabase::replace(int index, Game& game)
@@ -83,8 +85,10 @@ void MemoryDatabase::loadGameMoves(int index, Game& game)
 
 bool MemoryDatabase::loadGame(int index, Game& game)
 {
-	if (index >= m_count)
+    if (index >= m_count || m_index.deleted(index))
+    {
 		return false;
+    }
 	game = *m_games[index];
 	loadGameHeaders(index, game);
 	return true;

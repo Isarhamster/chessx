@@ -175,6 +175,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
 	connect(m_gameList, SIGNAL(searchDone()), SLOT(slotFilterChanged()));
     connect(m_gameList, SIGNAL(requestCopyGame()), SLOT(slotDatabaseCopySingle()));
+    connect(m_gameList, SIGNAL(requestDeleteGame()), SLOT(slotDatabaseDeleteGame()));
     connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
     connect(this, SIGNAL(reconfigure()), m_gameList, SLOT(slotReconfigure()));
     gameListDock->setWidget(m_gameList);
