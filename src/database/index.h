@@ -102,12 +102,17 @@ public:
     /** Clears the index, and frees all associated memory */
     void clear();
 
+    /** Read delete flag */
+    bool deleted(const int& gameId) const;
+    /** Set delete flag */
+    void setDeleted(int gameId, bool df);
+
 signals:
     void progress(int);
 
 private:
 	/** Contains information which games are marked for deletion */
-	QList<bool> m_deleteFlags;
+    QList<bool> m_deletedGames;
 	/** Return a pointer to the index item for the given game id */
 	IndexItem* item(int gameId);
 

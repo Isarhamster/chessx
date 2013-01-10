@@ -61,12 +61,15 @@ private slots:
     void slotContextMenu(const QPoint& pos);
     /** Request a copy dialog for the game identified by m_cell */
     void slotCopyGame();
+    /** Delete or undelete a game */
+    void slotDeleteGame();
 
 signals:
 	void selected(int);
 	void searchDone();
     void raiseRequest();
     void requestCopyGame();
+    void requestDeleteGame();
     void requestGameData(Game&);
 
 protected: //Drag'n'Drop Support

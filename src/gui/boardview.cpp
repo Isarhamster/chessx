@@ -394,8 +394,8 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
             {
                 emit clicked(s, button);
             }
+            return;
         }
-        return;
     }
 
     if (m_dragged != Empty)

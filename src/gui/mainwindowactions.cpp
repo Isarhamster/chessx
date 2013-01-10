@@ -415,7 +415,8 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                 }
             }
 
-        } else
+        }
+        else
         {
             // Use an existing move if it already exists
             if( game().findNextMove(from,to))
@@ -1137,7 +1138,15 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 
 void MainWindow::slotDatabaseDeleteGame()
 {
-	database()->remove(gameIndex());
+    int n = gameIndex();
+    if (database()->deleted(n))
+    {
+        database()->undelete(gameIndex());
+    }
+    else
+    {
+        database()->remove(gameIndex());
+    }
     m_gameList->updateFilter();
 }
 

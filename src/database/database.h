@@ -79,6 +79,8 @@ public:
     virtual bool appendGame(const Game&) { return false; }
 	/** Removes a game from the database */
 	virtual bool remove(int) { return false; };
+    /** Undelete a game from the database */
+    virtual bool undelete(int) { return false; };
 	/** Removes multiple games from the database as specified by the filter */
 	virtual bool remove(const Filter&) { return false; }
 	/** Compacts the database */
@@ -95,6 +97,8 @@ public:
     virtual void setModified(bool) { }
     /** Get the Valid Flag for a given game id from the index */
     virtual bool getValidFlag(GameId id) const { return m_index.isValidFlag(id); }
+    /** Get the Valid Flag for a given game id from the index */
+    virtual bool deleted(GameId id) const { return m_index.deleted(id); }
 signals:
 	/** Signal emitted when some progress is done. */
     void progress(int);
