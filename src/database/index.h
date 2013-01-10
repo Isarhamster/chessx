@@ -106,6 +106,8 @@ signals:
     void progress(int);
 
 private:
+	/** Contains information which games are marked for deletion */
+	QList<bool> m_deleteFlags;
 	/** Return a pointer to the index item for the given game id */
 	IndexItem* item(int gameId);
 
