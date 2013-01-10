@@ -760,6 +760,7 @@ MoveId Game::variationNumber(MoveId moveId) const
         {
             return node;
         }
+        node = parentNode;
 	}
 	return 0;
 }
