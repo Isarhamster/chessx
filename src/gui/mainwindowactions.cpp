@@ -919,6 +919,7 @@ void MainWindow::slotToggleBlunderCheck()
         if (led)
         {
             led->setValue(false);
+            led->setVisible(blunderCheckAction);
         }
     }
 }
