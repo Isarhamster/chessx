@@ -456,7 +456,7 @@ bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
     specAnnot = specialAnnotation(annotation, "[%cal");
     if( position == Game::AfterMove || node == 0)
     {
-        setArrowAnnotation(specAnnot,node);
+            setArrowAnnotation(specAnnot,node);
     }
     else
     {
@@ -508,10 +508,43 @@ bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
 
 bool Game::setSquareAnnotation(QString squareAnnotation, MoveId node)
 {
+    if (squareAnnotation.isEmpty())
+        m_squareAnnotations.remove(node);
+    else m_squareAnnotations[node] = squareAnnotation;
+    return true;
+}
 
-        if (squareAnnotation.isEmpty())
-            m_squareAnnotations.remove(node);
-        else m_squareAnnotations[node] = squareAnnotation;
+bool Game::appendSquareAnnotation(Square s, QChar colorCode)
+{
+    QString newAnnot;
+    QString annot = squareAnnotation();
+    QString sq = strSquareNames[s];
+    if (annot.isEmpty())
+    {
+        if (colorCode != QChar(0))
+        {
+            newAnnot = QString("[%csl %1%2]").arg(colorCode).arg(sq);
+        }
+    }
+    else
+    {
+        annot.replace(QRegExp(QString(".")+sq),"");
+        if (colorCode != QChar(0))
+        {
+            newAnnot = QString("[%csl %1,%2%3]").arg(annot).arg(colorCode).arg(sq);
+        }
+        else
+        {
+            if (!annot.isEmpty())
+            {
+                newAnnot = QString("[%csl %1]").arg(annot);
+            }
+        }
+        newAnnot.replace(" ,"," ");
+        newAnnot.replace(",,",",");
+        newAnnot.replace(",]","]");
+    }
+    setAnnotation(newAnnot);
     return true;
 }
 
@@ -525,7 +558,7 @@ QString Game::squareAnnotation(MoveId moveId) const
     if(annotation.isNull()) {
         return "";
     }
-    return m_squareAnnotations[node];
+    return m_squareAnnotations[node].simplified();
 }
 
 bool Game::setArrowAnnotation(QString arrowAnnotation, MoveId node)
@@ -547,7 +580,7 @@ QString Game::arrowAnnotation(MoveId moveId) const
     if(annotation.isNull()) {
         return "";
     }
-    return m_arrowAnnotations[node];
+    return m_arrowAnnotations[node].simplified();
 }
 
 bool Game::setEgtAnnotation(QString annotation, MoveId node)

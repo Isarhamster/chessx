@@ -248,7 +248,7 @@ public slots:
 	/** Made given move on the board */
     void slotBoardMove(Square from, Square to, int button);
 	/** Board square was clicked */
-	void slotBoardClick(Square square, int button);
+    void slotBoardClick(Square square, int button, QPoint pos);
 	/** Browse current game by mouse wheel */
 	void slotBoardMoveWheel(int wheel);
 	/** Update GUI after current move was changed. Update BoardView to current board,
@@ -282,6 +282,14 @@ public slots:
 protected slots:
     void loadError(QUrl url);
     void loadReady(QUrl url, QString fileName);
+    /** Remove Color of the square in m_annotationSquare */
+    void slotNoColorSquare();
+    /** Colorize the square in m_annotationSquare green */
+    void slotGreenSquare();
+    /** Colorize the square in m_annotationSquare yellow */
+    void slotYellowSquare();
+    /** Colorize the square in m_annotationSquare red */
+    void slotRedSquare();
 
 protected:
     void copyGame(int target, const Game& game);
@@ -376,6 +384,7 @@ private:
     bool m_bAutoInsertAnalysis;
     AnalysisWidget* m_mainAnalysis;
     Board m_AutoInsertLastBoard;
+    Square m_annotationSquare;
 };
 
 

@@ -106,7 +106,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_boardView->resize(500, 540);
 	connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
     connect(m_boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
-	connect(m_boardView, SIGNAL(clicked(Square, int)), SLOT(slotBoardClick(Square, int)));
+    connect(m_boardView, SIGNAL(clicked(Square, int, QPoint)), SLOT(slotBoardClick(Square, int, QPoint)));
 	connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
 
 	/* Board layout */
@@ -140,6 +140,8 @@ MainWindow::MainWindow() : QMainWindow(),
             QLed* led = new QLed(m_gameToolBar);
             led->setObjectName("blunderLed");
             led->setOnColor(QLed::Red);
+            bool activateBlunderCheck = AppSettings->getValue("/MainWindow/BlunderCheck").toBool();
+            led->setVisible(activateBlunderCheck);
             m_gameToolBar->addWidget(led);
             spacer = new QWidget();
             spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -954,6 +956,7 @@ void MainWindow::setupActions()
     bool activateBlunderCheck = AppSettings->getValue("/MainWindow/BlunderCheck").toBool();
     m_blunderCheck->setChecked(activateBlunderCheck);
     gameMenu->addAction(m_blunderCheck);
+
 
     gameMenu->addSeparator();
 
