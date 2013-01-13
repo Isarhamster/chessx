@@ -394,7 +394,7 @@ void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
     pDrag->setPixmap(pixmap);
     pDrag->setHotSpot(hotSpot);
 
-    Qt::DropAction dropAction = pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+    pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
 }
 
 void BoardSetupDialog::labelClicked(Piece p)

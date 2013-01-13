@@ -390,8 +390,10 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
 {
     const Board& board = game().board();
     Move m(board.prepareMove(from, to));
-    if (m.isLegal()) {
-        if (m.isPromotion()) {
+    if (m.isLegal())
+    {
+        if (m.isPromotion())
+        {
             bool ok;
             QStringList moves;
             moves << tr("Queen") << tr("Rook") << tr("Bishop") << tr("Knight");
@@ -414,7 +416,6 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                     game().backward();
                 }
             }
-
         }
         else
         {
@@ -439,25 +440,21 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
         }
         else
         {
-            if ((button & (Qt::ControlModifier | Qt::ShiftModifier)) == (Qt::ControlModifier | Qt::ShiftModifier))
-            {
-                game().replaceMove(m);
-                game().forward();
-            }
-            else if (button & Qt::ControlModifier)
+            if (button & Qt::ControlModifier)
             {
                 // TODO: Make a insertMove algorithm start from here
                 // -> need to understand the moving stuff before!
                 game().replaceMove(m);
-                game().forward();
             }
             else
             {
-                game().addVariation(m);
-                game().forward();
+                if (button & Qt::AltModifier)
+                {
+                    game().addVariation(m);
+                }
             }
+            game().forward();
         }
-
 		slotGameChanged();
 	}
 }
@@ -470,10 +467,10 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos)
         {
             QMenu* menu = new QMenu(this);
             m_annotationSquare = s;
-            menu->addAction(tr("Red Square"), this, SLOT(slotRedSquare()));
-            menu->addAction(tr("Yellow Square"), this, SLOT(slotYellowSquare()));
-            menu->addAction(tr("Green Square"), this, SLOT(slotGreenSquare()));
-            menu->addAction(tr("Remove Color"), this, SLOT(slotNoColorSquare()));
+            menu->addAction(QIcon(":/images/square_red.png"),   tr("Red Square"),    this, SLOT(slotRedSquare()));
+            menu->addAction(QIcon(":/images/square_yellow.png"),tr("Yellow Square"), this, SLOT(slotYellowSquare()));
+            menu->addAction(QIcon(":/images/square_green.png"), tr("Green Square"),  this, SLOT(slotGreenSquare()));
+            menu->addAction(QIcon(":/images/square_none.png"),  tr("Remove Color"),  this, SLOT(slotNoColorSquare()));
             menu->addSeparator();
             menu->addAction(tr("Red Arrow to here"));
             menu->addAction(tr("Yellow Arrow to here"));
