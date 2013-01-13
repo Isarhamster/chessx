@@ -61,5 +61,9 @@
         <file alias="images/circle_orange.svg">data/images/circle_orange.svg</file>
         <file alias="images/circle_red.svg">data/images/circle_red.svg</file>
         <file alias="images/circle_yellow.svg">data/images/circle_yellow.svg</file>
+        <file alias="images/square_green.png">data/images/square_green.png</file>
+        <file alias="images/square_none.png">data/images/square_none.png</file>
+        <file alias="images/square_red.png">data/images/square_red.png</file>
+        <file alias="images/square_yellow.png">data/images/square_yellow.png</file>
     </qresource>
 </RCC>
