@@ -59,7 +59,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_wheelCu
 	connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
 	connect(ui.clearButton, SIGNAL(clicked()), SLOT(slotClear()));
 	connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
-	connect(ui.boardView, SIGNAL(clicked(Square, int)), SLOT(slotSelected(Square, int)));
+    connect(ui.boardView, SIGNAL(clicked(Square, int, QPoint)), SLOT(slotSelected(Square, int)));
     connect(ui.boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotMovePiece(Square, Square)));
     connect(ui.boardView, SIGNAL(copyPiece(Square, Square)), SLOT(slotCopyPiece(Square, Square)));
     connect(ui.boardView, SIGNAL(invalidMove(Square)), SLOT(slotInvalidMove(Square)));
@@ -395,9 +395,6 @@ void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
     pDrag->setHotSpot(hotSpot);
 
     Qt::DropAction dropAction = pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
-
-    if (dropAction == Qt::MoveAction)
-        child->close();
 }
 
 void BoardSetupDialog::labelClicked(Piece p)
