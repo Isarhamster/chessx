@@ -122,6 +122,9 @@ public :
     /** Sets the squareAnnotation associated with move at node @p moveId */
     bool setSquareAnnotation(QString squareAnnotation, MoveId moveId = CURRENT_MOVE);
 
+    /** Append a square to the existing lists of annotations, if there is none, create one */
+    bool appendSquareAnnotation(Square s, QChar colorCode);
+
     /** Sets the arrowAnnotation associated with move at node @p moveId */
     bool setArrowAnnotation(QString arrowAnnotation, MoveId moveId = CURRENT_MOVE);
 

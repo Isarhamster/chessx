@@ -462,28 +462,46 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
 	}
 }
 
-void MainWindow::slotBoardClick(Square s, int button)
+void MainWindow::slotBoardClick(Square s, int button, QPoint pos)
 {
     if (button & Qt::RightButton)
     {
-        bool nextGuess = AppSettings->getValue("/Board/nextGuess").toBool();
-        if (button & Qt::ControlModifier) nextGuess = !nextGuess; // CTRL selects the other mapping
-        if (!nextGuess)
+        if (button & Qt::ShiftModifier)
         {
-            bool remove = game().atLineEnd();
-            int var = game().variationNumber();
-            gameMoveBy(-1);
-            if (remove) {
-                if (var && game().isMainline())
-                    game().removeVariation(var);
-                else
-                    game().truncateVariation();
-                slotGameChanged();
-            }
+            QMenu* menu = new QMenu(this);
+            m_annotationSquare = s;
+            menu->addAction(tr("Red Square"), this, SLOT(slotRedSquare()));
+            menu->addAction(tr("Yellow Square"), this, SLOT(slotYellowSquare()));
+            menu->addAction(tr("Green Square"), this, SLOT(slotGreenSquare()));
+            menu->addAction(tr("Remove Color"), this, SLOT(slotNoColorSquare()));
+            menu->addSeparator();
+            menu->addAction(tr("Red Arrow to here"));
+            menu->addAction(tr("Yellow Arrow to here"));
+            menu->addAction(tr("Green Arrow to here"));
+            menu->addAction(tr("Remove Arrow to here"));
+            menu->exec(pos);
         }
         else
         {
-            m_boardView->nextGuess(s);
+            bool nextGuess = AppSettings->getValue("/Board/nextGuess").toBool();
+            if (button & Qt::ControlModifier) nextGuess = !nextGuess; // CTRL selects the other mapping
+            if (!nextGuess)
+            {
+                bool remove = game().atLineEnd();
+                int var = game().variationNumber();
+                gameMoveBy(-1);
+                if (remove) {
+                    if (var && game().isMainline())
+                        game().removeVariation(var);
+                    else
+                        game().truncateVariation();
+                    slotGameChanged();
+                }
+            }
+            else
+            {
+                m_boardView->nextGuess(s);
+            }
         }
     }
 }
@@ -1177,4 +1195,29 @@ bool MainWindow::slotGameMoveNext()
     m_currentTo = m.to();
     return gameMoveBy(1);
 }
+
+void MainWindow::slotNoColorSquare()
+{
+    game().appendSquareAnnotation(m_annotationSquare, 0);
+    slotGameChanged();
+}
+
+void MainWindow::slotGreenSquare()
+{
+    game().appendSquareAnnotation(m_annotationSquare, 'G');
+    slotGameChanged();
+}
+
+void MainWindow::slotYellowSquare()
+{
+    game().appendSquareAnnotation(m_annotationSquare, 'Y');
+    slotGameChanged();
+}
+
+void MainWindow::slotRedSquare()
+{
+    game().appendSquareAnnotation(m_annotationSquare, 'R');
+    slotGameChanged();
+}
+
 
