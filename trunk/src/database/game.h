@@ -190,11 +190,8 @@ public :
 	int forward(int count = 1);
 	/** Move back the given number of moves, returns actual number of moves undone */
 	int backward(int count = 1);
-    /** Moves forward if the next move matches (from,to) */
-    bool findNextMove(Square from, Square to);
     /** Moves forward if the next move matches (from,to,promotionPiece) */
-    bool findNextMove(Square from, Square to, PieceType promotionPiece);
-
+    bool findNextMove(Square from, Square to, PieceType promotionPiece = None);
 
 	/** Enters the variation that corresponds to moveId. moveId must be a MoveId that
 	    corresponds to a subvariation of the current position. Compared to moveToId
