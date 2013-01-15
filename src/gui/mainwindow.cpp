@@ -513,14 +513,16 @@ int MainWindow::gameIndex() const
 
 void MainWindow::gameLoad(int index, bool force, bool reload)
 {
-    QuerySaveGame();
-	if (databaseInfo()->loadGame(index, reload))
-		m_gameList->selectGame(index);
-	else if (!force)
-		return;
-	else
-		databaseInfo()->newGame();
-	slotGameChanged();
+    if (QuerySaveGame())
+    {
+        if (databaseInfo()->loadGame(index, reload))
+            m_gameList->selectGame(index);
+        else if (!force)
+            return;
+        else
+            databaseInfo()->newGame();
+        slotGameChanged();
+    }
 }
 
 bool MainWindow::gameMoveBy(int change)
@@ -594,19 +596,20 @@ void MainWindow::openDatabase(QString fname)
 
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
-    QuerySaveGame();
-
-    QUrl url = QUrl::fromUserInput(fname);
-    if ((url.scheme()=="http") || (url.scheme()=="ftp"))
+    if (QuerySaveGame())
     {
-        DownloadManager* downloadManager = new DownloadManager(this);
-        connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)));
-        connect(downloadManager, SIGNAL(downloadFinished(QUrl,QString)), this, SLOT(loadReady(QUrl,QString)));
-        downloadManager->doDownload(url);
-        return;
-    }
+        QUrl url = QUrl::fromUserInput(fname);
+        if ((url.scheme()=="http") || (url.scheme()=="ftp"))
+        {
+            DownloadManager* downloadManager = new DownloadManager(this);
+            connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)));
+            connect(downloadManager, SIGNAL(downloadFinished(QUrl,QString)), this, SLOT(loadReady(QUrl,QString)));
+            downloadManager->doDownload(url);
+            return;
+        }
 
-    openDatabaseArchive(url.toLocalFile(), utf8);
+        openDatabaseArchive(url.toLocalFile(), utf8);
+    }
 }
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
@@ -1034,7 +1037,12 @@ bool MainWindow::confirmQuit()
 {
 	QString modified;
     if (m_currentDatabase)
-        QuerySaveGame();
+    {
+        if (!QuerySaveGame())
+        {
+            return false;
+        }
+    }
 	for (int i = 1; i < m_databases.size(); i++)
 		if (m_databases[i]->database()->isModified())
 			modified += m_databases[i]->database()->name() + '\n';
@@ -1042,7 +1050,9 @@ bool MainWindow::confirmQuit()
 		int response = MessageDialog::yesNoCancel(tr("Following databases are modified:")
 					+ '\n' + modified + tr("Save them?"));
 		if (response == MessageDialog::Cancel)
+        {
 			return false;
+        }
 		if (response == MessageDialog::Yes) {
 			Output output(Output::Pgn);
 			for (int i = 1; i < m_databases.size(); i++)
@@ -1076,12 +1086,13 @@ void MainWindow::cancelOperation(const QString& msg)
 	statusBar()->removeWidget(m_progressBar);
 }
 
-void MainWindow::QuerySaveGame()
+bool MainWindow::QuerySaveGame()
 {
     if (game().isModified() && !database()->isReadOnly())
     {
-        slotGameSave();
+        return slotGameSave();
     }
+    return true;
 }
 
 void MainWindow::restoreRecentFiles()
