@@ -109,25 +109,31 @@ void MainWindow::saveDatabase()
     }
 }
 
-void MainWindow::QuerySaveDatabase()
+bool MainWindow::QuerySaveDatabase()
 {
-    QuerySaveGame();
-    if (m_currentDatabase && qobject_cast<MemoryDatabase*>(database()))
+    if (QuerySaveGame())
     {
-        if (database()->isModified())
+        if (m_currentDatabase && qobject_cast<MemoryDatabase*>(database()))
         {
-            bool yes = MessageDialog::yesNo(tr("The current database is modified!")
-                        + '\n' + tr("Save it?"));
-            if (yes)
+            if (database()->isModified())
             {
-                 startOperation(tr("Saving %1...").arg(database()->name()));
-                 Output output(Output::Pgn);
-                 connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
-                 output.output(database()->filename(), *database());
-                 finishOperation(tr("%1 saved").arg(database()->name()));
+                int result = MessageDialog::yesNoCancel(tr("The current database is modified!")
+                            + '\n' + tr("Save it?"));
+                if (MessageDialog::Yes == result)
+                {
+                     startOperation(tr("Saving %1...").arg(database()->name()));
+                     Output output(Output::Pgn);
+                     connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
+                     output.output(database()->filename(), *database());
+                     finishOperation(tr("%1 saved").arg(database()->name()));
+                     return true;
+                }
+                return result != MessageDialog::Cancel;
             }
         }
+        return true;
     }
+    return false;
 }
 
 void MainWindow::slotFileSave()
@@ -150,17 +156,19 @@ void MainWindow::slotFileClose()
     {// Don't remove Clipboard
         if (databaseInfo()->IsLoaded())
         {
-            QuerySaveDatabase();
-            m_openingTree->cancel(false);
-            m_databaseList->setFileClose(databaseInfo()->filePath());
-            databaseInfo()->close();
-            delete databaseInfo();
-            m_databases.removeAt(m_currentDatabase);
-            m_prevDatabase = 0;
-            m_currentDatabase = 0; // Switch to clipboard is always safe
-            m_databaseList->setFileCurrent(QString());
-            updateMenuDatabases();
-            slotDatabaseChanged();
+            if (QuerySaveDatabase())
+            {
+                m_openingTree->cancel(false);
+                m_databaseList->setFileClose(databaseInfo()->filePath());
+                databaseInfo()->close();
+                delete databaseInfo();
+                m_databases.removeAt(m_currentDatabase);
+                m_prevDatabase = 0;
+                m_currentDatabase = 0; // Switch to clipboard is always safe
+                m_databaseList->setFileCurrent(QString());
+                updateMenuDatabases();
+                slotDatabaseChanged();
+            }
         }
 	}
 }
@@ -586,15 +594,17 @@ void MainWindow::slotGameLoadLast()
 
 void MainWindow::slotGameLoadPrevious()
 {
-    QuerySaveGame();
-	int game = m_gameList->currentIndex().row();
-	game = databaseInfo()->filter()->indexToGame(game);
-	game = databaseInfo()->filter()->previousGame(game);
-    if (game != -1)
+    if (QuerySaveGame())
     {
-        gameLoad(game);
-        m_gameList->setFocus();
-	}
+        int game = m_gameList->currentIndex().row();
+        game = databaseInfo()->filter()->indexToGame(game);
+        game = databaseInfo()->filter()->previousGame(game);
+        if (game != -1)
+        {
+            gameLoad(game);
+            m_gameList->setFocus();
+        }
+    }
 }
 
 void MainWindow::loadNextGame()
@@ -611,8 +621,10 @@ void MainWindow::loadNextGame()
 
 void MainWindow::slotGameLoadNext()
 {
-    QuerySaveGame();
-    loadNextGame();
+    if (QuerySaveGame())
+    {
+        loadNextGame();
+    }
 }
 
 void MainWindow::slotGameLoadRandom()
@@ -641,9 +653,11 @@ void MainWindow::slotGameNew()
     }
     else
     {
-        QuerySaveGame();
-		databaseInfo()->newGame();
-		slotGameChanged();
+        if (QuerySaveGame())
+        {
+            databaseInfo()->newGame();
+            slotGameChanged();
+        }
 	}
 }
 
@@ -665,17 +679,21 @@ void MainWindow::saveGame()
     }
 }
 
-void MainWindow::slotGameSave()
+bool MainWindow::slotGameSave()
 {
 	if (database()->isReadOnly())
     {
 		MessageDialog::error(tr("This database is read only."));
         game().setModified(false); // Do not notify more than once
+        return true;
     }
-    else if (saveDialog()->exec(database(), game()) == QDialog::Accepted)
+
+    int n = saveDialog()->exec(database(), game());
+    if (n==QDialog::Accepted)
     {
         saveGame();
-	}
+    }
+    return (n!=QDialog::Rejected);
 }
 
 void MainWindow::slotGameModify(const EditAction& action)

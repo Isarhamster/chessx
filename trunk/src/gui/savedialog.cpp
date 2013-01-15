@@ -31,6 +31,7 @@ SaveDialog::SaveDialog(QWidget* parent) : QDialog(parent)
 	group->addButton(ui.result5Button);
 	group->addButton(ui.result0Button);
 	group->addButton(ui.resultNoneButton);
+    connect(ui.buttonDiscardChanges, SIGNAL(clicked()), SLOT(discardChanges()));
 }
 
 SaveDialog::~SaveDialog()
@@ -149,4 +150,9 @@ void SaveDialog::accept()
     {
         MessageDialog::error(tr("Dates are not properly formatted!","Invalid Data"));
     }
+}
+
+void SaveDialog::discardChanges()
+{
+    done(Discard);
 }

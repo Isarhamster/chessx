@@ -31,10 +31,14 @@ class SaveDialog : public QDialog
 {
 	Q_OBJECT
 public:
+    static const int Discard = 2;
+
 	SaveDialog(QWidget* parent = 0);
 	virtual ~SaveDialog();
 	virtual int exec(Database* database, Game& game);
     virtual void accept();
+protected slots:
+    void discardChanges();
 private:
     void setLineEdit(QLineEdit* edit, Database* database, const QString& tagName);
 	Ui::SaveDialog ui;

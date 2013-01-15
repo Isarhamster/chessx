@@ -183,8 +183,9 @@ public slots:
 	void slotGameViewToggle(bool source);
 	/** Create new empty game (to be appended to the database. */
 	void slotGameNew();
-	/** Save game, replacing old one if it is edited, appending if it is new */
-	void slotGameSave();
+    /** Save game, replacing old one if it is edited, appending if it is new
+        @return false if the saving was cancelled, true if changes are to be saved or discarded. */
+    bool slotGameSave();
 	/** Add variation to current position. */
 	void slotGameAddVariation(const Analysis& analysis);
     /** Add variation to current position. */
@@ -327,8 +328,9 @@ private:
 	void cancelOperation(const QString& msg);
     /** Restore the list of recent files */
     void restoreRecentFiles();
-    /** Query User and save game if game was modified */
-    void QuerySaveGame();
+    /** Query User and save game if game was modified
+        @return true if the next action shall be performed */
+    bool QuerySaveGame();
     /** Save game without query */
     void saveGame();
     /** Load next game without query */
@@ -336,7 +338,7 @@ private:
     /** Save Database without query or progress bar */
     void saveDatabase();
     /** Save Database with query */
-    void QuerySaveDatabase();
+    bool QuerySaveDatabase();
 
 	/* Dialogs  */
 	GameList* m_gameList;

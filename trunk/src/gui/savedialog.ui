@@ -36,6 +36,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="buttonDiscardChanges">
+       <property name="text">
+        <string>Discard Changes</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="buttonCancel">
        <property name="text">
         <string>&amp;Cancel</string>
