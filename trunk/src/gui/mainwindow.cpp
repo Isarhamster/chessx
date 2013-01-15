@@ -386,7 +386,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
     else
     {
-        if(event->type() == QEvent::KeyPress)
+        if((obj == this) && (event->type() == QEvent::KeyPress))
         {
             QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
             if (keyEvent && (keyEvent->key() == Qt::Key_Escape ||
