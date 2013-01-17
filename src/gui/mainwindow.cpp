@@ -960,7 +960,6 @@ void MainWindow::setupActions()
     m_blunderCheck->setChecked(activateBlunderCheck);
     gameMenu->addAction(m_blunderCheck);
 
-
     gameMenu->addSeparator();
 
     QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
@@ -977,6 +976,12 @@ void MainWindow::setupActions()
 	goMenu->addAction(createAction(tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up));
     goMenu->addAction(createAction(tr("Enter Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right));
 	goMenu->addAction(createAction(tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL + Qt::Key_Left));
+
+    gameMenu->addSeparator();
+
+    QMenu* refactorMenu = gameMenu->addMenu(tr("Refactor"));
+    refactorMenu->addAction(createAction(tr("Uncomment"), SLOT(slotGameUncomment())));
+    refactorMenu->addAction(createAction(tr("Remove Variations"), SLOT(slotGameRemoveVariations())));
 
 	/* Search menu */
 	QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
@@ -1028,6 +1033,7 @@ void MainWindow::setupActions()
 	debug->addAction(source = createAction("Toggle game view format", 0, Qt::Key_F12));
 	source->setCheckable(true);
 	connect(source, SIGNAL(toggled(bool)), SLOT(slotGameViewToggle(bool)));
+    debug->addAction(createAction("Dump Movenodes", SLOT(slotGameDumpMoveNodes())));
 #endif
 
 

@@ -111,7 +111,7 @@ public :
 	NagSet nags(MoveId moveId = CURRENT_MOVE) const;
 	/** @return next move in short algebraic notation, returns empty string if no such move */
 	QString moveToSan(MoveStringFlags flags = MoveOnly,
-			  NextPreviousMove nextPrevious = NextMove, MoveId moveId = CURRENT_MOVE);
+              NextPreviousMove nextPrevious = NextMove, MoveId moveId = CURRENT_MOVE);
     /** return comment associated with game */
     QString gameComment() const;
 
@@ -232,6 +232,10 @@ public :
 	void setStartingBoard(const QString& fen);
     /** set comment associated with game */
     void setGameComment( const QString& gameComment);
+    /** Remove all variations */
+    void removeVariations();
+    /** Remove all Comments */
+    void removeComments();
 
 	/* Manipulating and querying tags */
 	/** Removes all tags */
@@ -261,10 +265,11 @@ public :
 
 	/* Debug */
 	/** Dump a move node using qDebug() */
-	void dumpMoveNode(MoveId moveId = CURRENT_MOVE);
+    void dumpMoveNode(MoveId moveId = CURRENT_MOVE);
 	/** Repeatedly call dumpMoveNode for all nodes */
-	void dumpAllMoveNodes();
-
+    void dumpAllMoveNodes();
+    bool canMoveVariationUp(MoveId moveId) const;
+    bool canMoveVariationDown(MoveId moveId) const;
     void moveVariationUp(MoveId moveId);
     void moveVariationDown(MoveId moveId);
 private:
