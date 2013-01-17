@@ -157,13 +157,12 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
     bool hasPrecomment = !game.annotation(m_currentMove, Game::BeforeMove).isEmpty();
     bool hasNags = !game.nags().isEmpty();
     bool atLineEnd = game.atLineEnd(m_currentMove);
-    bool hasMoreThanOneVariation = (game.numberOfSiblings(m_currentMove)>1);
 	m_startComment->setVisible(atLineStart && !hasPrecomment);
 	m_addComment->setVisible(!hasComment);
 	m_promoteVariation->setVisible(isVariation);
 	m_removeVariation->setVisible(isVariation);
-    m_VariationUp->setVisible(isVariation && hasMoreThanOneVariation);
-    m_VariationDown->setVisible(isVariation && hasMoreThanOneVariation);
+    m_VariationUp->setVisible(isVariation && game.canMoveVariationUp(m_currentMove));
+    m_VariationDown->setVisible(isVariation && game.canMoveVariationDown(m_currentMove));
 	m_removeNext->setVisible(!atLineEnd);
 	m_removePrevious->setVisible(!atGameStart);
 	m_removeNags->setVisible(hasNags);

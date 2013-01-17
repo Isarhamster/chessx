@@ -343,6 +343,32 @@ void Game::setGameComment(const QString& gameComment)
     m_gameComment = gameComment;
 }
 
+void Game::removeVariations()
+{
+    for (int i = 0; i < m_moveNodes.size(); ++i)
+    {
+        m_moveNodes[i].variations.clear();
+    }
+    compact();
+    setModified(true);
+}
+
+void Game::removeComments()
+{
+    m_gameComment.clear();
+    m_variationStartAnnotations.clear();
+    m_annotations.clear();
+    m_squareAnnotations.clear();
+    m_arrowAnnotations.clear();
+    m_clkAnnotations.clear();
+    m_egtAnnotations.clear();
+    for (int i = 0; i < m_moveNodes.size(); ++i)
+    {
+        m_moveNodes[i].nags.clear();
+    }
+    compact();
+    setModified(true);
+}
 
 bool Game::isMainline(MoveId moveId) const
 {
@@ -350,7 +376,8 @@ bool Game::isMainline(MoveId moveId) const
 	MoveId node = nodeValid(moveId);
 	if (node == NO_MOVE)
 		return false;
-	else return m_moveNodes[node].parentNode == NO_MOVE;
+    else
+        return m_moveNodes[node].parentNode == NO_MOVE;
 }
 
 Result Game::result() const
@@ -730,45 +757,73 @@ int Game::plyCount() const
 	return count - 1;
 }
 
+bool Game::canMoveVariationUp(MoveId moveId) const
+{
+    if (isMainline()) return false;
+
+    MoveId variation = variationNumber(moveId);
+    MoveId parentNode = m_moveNodes[moveId].parentNode;
+
+    const QList <MoveId>& v = m_moveNodes[parentNode].variations;
+    int i = v.indexOf(variation);
+    return (i > 0);
+}
+
 void Game::moveVariationUp(MoveId moveId)
 {
     if (isMainline()) return;
-    MoveId currentNode = m_currentNode;
-    backward();
-    QList <MoveId>& v = m_moveNodes[m_currentNode].variations;
-    int i = v.indexOf(moveId);
-    if (i > 0) v.swap(i, i-1);
-    moveToId(currentNode);	// Restore current move
-    setModified(true);
+
+    MoveId variation = variationNumber(moveId);
+    MoveId parentNode = m_moveNodes[moveId].parentNode;
+
+    QList <MoveId>& v = m_moveNodes[parentNode].variations;
+    int i = v.indexOf(variation);
+    if (i > 0)
+    {
+        v.swap(i, i-1);
+        setModified(true);
+    }
+}
+
+bool Game::canMoveVariationDown(MoveId moveId) const
+{
+    if (isMainline()) return false;
+
+    MoveId variation = variationNumber(moveId);
+    MoveId parentNode = m_moveNodes[moveId].parentNode;
+
+    const QList <MoveId>& v = m_moveNodes[parentNode].variations;
+    int i = v.indexOf(variation);
+    return (i>=0 && (i+1) < v.count());
 }
 
 void Game::moveVariationDown(MoveId moveId)
 {
     if (isMainline()) return;
-    MoveId currentNode = m_currentNode;
-    backward();
-    QList <MoveId>& v = m_moveNodes[m_currentNode].variations;
-    int i = v.indexOf(moveId);
-    if (i>=0 && i != v.count()) v.swap(i, i+1);
-    moveToId(currentNode);	// Restore current move
-    setModified(true);
+
+    MoveId variation = variationNumber(moveId);
+    MoveId parentNode = m_moveNodes[moveId].parentNode;
+
+    QList <MoveId>& v = m_moveNodes[parentNode].variations;
+    int i = v.indexOf(variation);
+    if (i>=0 && (i+1) < v.count())
+    {
+        v.swap(i, i+1);
+        setModified(true);
+    }
 }
 
 MoveId Game::variationNumber(MoveId moveId) const
 {
 	if (isMainline()) return 0;
 	MoveId node = nodeValid(moveId);
-    MoveId parentNode = node;
-    while (parentNode != NO_MOVE)
+    MoveId parentNode = m_moveNodes[node].parentNode;
+
+    while (m_moveNodes[node].previousNode != parentNode)
     {
-        parentNode = m_moveNodes[node].parentNode;
-        if (m_moveNodes[parentNode].variations.contains(node))
-        {
-            return node;
-        }
-        node = parentNode;
-	}
-	return 0;
+        node = m_moveNodes[node].previousNode;
+    }
+    return node;
 }
 
 MoveId Game::previousMove() const
@@ -961,9 +1016,16 @@ void Game::removeNode(MoveId moveId)
 
 void Game::clear()
 {
+    m_gameComment.clear();
+
 	m_moveNodes.clear();
 	m_variationStartAnnotations.clear();
 	m_annotations.clear();
+    m_squareAnnotations.clear();
+    m_arrowAnnotations.clear();
+    m_clkAnnotations.clear();
+    m_egtAnnotations.clear();
+
 	m_startPly = 0;
 	m_currentNode = 0;
 

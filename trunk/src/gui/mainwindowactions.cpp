@@ -851,6 +851,11 @@ void MainWindow::slotGameViewToggle(bool toggled)
 	slotGameChanged();
 }
 
+void MainWindow::slotGameDumpMoveNodes()
+{
+    game().dumpAllMoveNodes();
+}
+
 void MainWindow::slotGameAddVariation(const Analysis& analysis)
 {
 	game().addVariation(analysis.variation(),
@@ -867,6 +872,18 @@ void MainWindow::slotGameAddVariation(const QString& san)
         game().addMove(s);
     else
         game().addVariation(s);
+    slotGameChanged();
+}
+
+void MainWindow::slotGameUncomment()
+{
+    game().removeComments();
+    slotGameChanged();
+}
+
+void MainWindow::slotGameRemoveVariations()
+{
+    game().removeVariations();
     slotGameChanged();
 }
 

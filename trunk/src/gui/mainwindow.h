@@ -181,7 +181,9 @@ public slots:
 	void slotGameViewLink(const QString& link);
 	/** Show/hide GameView source - useful for debugging. */
 	void slotGameViewToggle(bool source);
-	/** Create new empty game (to be appended to the database. */
+    /** Dump all node information to the console */
+    void slotGameDumpMoveNodes();
+    /** Create new empty game (to be appended to the database. */
 	void slotGameNew();
     /** Save game, replacing old one if it is edited, appending if it is new
         @return false if the saving was cancelled, true if changes are to be saved or discarded. */
@@ -190,6 +192,10 @@ public slots:
 	void slotGameAddVariation(const Analysis& analysis);
     /** Add variation to current position. */
     void slotGameAddVariation(const QString& san);
+    /** Remove all comments. */
+    void slotGameUncomment();
+    /** Remove all variations */
+    void slotGameRemoveVariations();
     /** Start / Stop AutoPlay feature */
     void slotToggleAutoPlayer();
     /** Auto Play Timeout - make next move! */
