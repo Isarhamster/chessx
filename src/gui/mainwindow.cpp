@@ -61,8 +61,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_autoPlayTimer(0),
     m_bGameChange(false),
     m_currentFrom(InvalidSquare),
-    m_currentTo(InvalidSquare),
-    m_bAutoInsertAnalysis(false)
+    m_currentTo(InvalidSquare)
 {
 	setObjectName("MainWindow");
 
@@ -933,12 +932,12 @@ void MainWindow::setupActions()
 
     gameMenu->addSeparator();
 
-    QAction* autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_P);
-    autoPlay->setCheckable(true);
-    gameMenu->addAction(autoPlay);
-    QAction* autoAnalysis = createAction(tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::ALT + Qt::SHIFT + Qt::Key_P);
-    autoAnalysis->setCheckable(true);
-    gameMenu->addAction(autoAnalysis);
+    m_autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_P);
+    m_autoPlay->setCheckable(true);
+    gameMenu->addAction(m_autoPlay);
+    m_autoAnalysis = createAction(tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::ALT + Qt::SHIFT + Qt::Key_P);
+    m_autoAnalysis->setCheckable(true);
+    gameMenu->addAction(m_autoAnalysis);
 
     gameMenu->addSeparator();
 
