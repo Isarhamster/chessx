@@ -385,10 +385,11 @@ private:
     bool m_bGameChange;
     int m_currentFrom;
     int m_currentTo;
-    bool m_bAutoInsertAnalysis;
     AnalysisWidget* m_mainAnalysis;
     Board m_AutoInsertLastBoard;
     Square m_annotationSquare;
+    QAction* m_autoPlay;
+    QAction* m_autoAnalysis;
 };
 
 
