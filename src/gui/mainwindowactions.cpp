@@ -32,7 +32,6 @@
 #include "tableview.h"
 #include "analysiswidget.h"
 #include "version.h"
-#include "qled.h"
 
 #include <time.h>
 
@@ -516,33 +515,6 @@ void MainWindow::slotMoveChanged()
 
 	// Clear  entries
 	m_nagText.clear();
-
-    QLed* led = m_gameToolBar->findChild<QLed*>("blunderLed");
-    if (led)
-    {
-        led->setValue(blunderCheck(fen, g.board().toFen()));
-    }
-}
-
-bool MainWindow::blunderCheck(QString oldFen, QString newFen) const
-{
-    if (m_blunderCheck->isChecked() && m_gameToolBar->isVisible())
-    {
-        if (Board(newFen) != standardStartBoard)
-        {
-            Guess::Result oldResult = Guess::evalPos(oldFen.toLatin1(),300);
-            if ((m_currentFrom != oldResult.from) || (m_currentTo != oldResult.to))
-            {
-                Guess::Result newResult = Guess::evalPos(newFen.toLatin1(),200);
-                if (!oldResult.whiteMove) oldResult.score = -oldResult.score;
-                if (!newResult.whiteMove) newResult.score = -newResult.score;
-
-                int diff = abs(newResult.score - oldResult.score);
-                return (diff > 100);
-            }
-        }
-    }
-    return false;
 }
 
 void MainWindow::slotBoardMoveWheel(int wheel)
@@ -943,20 +915,6 @@ void MainWindow::slotAutoPlayTimeout()
         slotGameMoveNext();
     }
     m_autoPlayTimer->start();
-}
-
-void MainWindow::slotToggleBlunderCheck()
-{
-    QAction* blunderCheckAction = (QAction*) sender();
-    if (blunderCheckAction)
-    {
-        QLed* led = m_gameToolBar->findChild<QLed*>("blunderLed");
-        if (led)
-        {
-            led->setValue(false);
-            led->setVisible(blunderCheckAction);
-        }
-    }
 }
 
 void MainWindow::slotFilterChanged()
