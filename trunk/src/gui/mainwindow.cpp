@@ -38,7 +38,6 @@
 #include "tablebase.h"
 #include "tableview.h"
 #include "toolmainwindow.h"
-#include "qled.h"
 
 #include <time.h>
 
@@ -69,6 +68,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     m_autoPlayTimer = new QTimer(this);
     m_autoPlayTimer->setInterval(3000);
+    m_autoPlayTimer->setSingleShot(true);
     connect(m_autoPlayTimer, SIGNAL(timeout()), this, SLOT(slotAutoPlayTimeout()));
 
 	/* Create clipboard database */
@@ -135,15 +135,6 @@ MainWindow::MainWindow() : QMainWindow(),
         if (i==0)
         {
             QWidget* spacer = new QWidget();
-            spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-            m_gameToolBar->addWidget(spacer);
-            QLed* led = new QLed(m_gameToolBar);
-            led->setObjectName("blunderLed");
-            led->setOnColor(QLed::Red);
-            bool activateBlunderCheck = AppSettings->getValue("/MainWindow/BlunderCheck").toBool();
-            led->setVisible(activateBlunderCheck);
-            m_gameToolBar->addWidget(led);
-            spacer = new QWidget();
             spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
             m_gameToolBar->addWidget(spacer);
         }
@@ -427,7 +418,6 @@ void MainWindow::closeEvent(QCloseEvent* e)
 		AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
         AppSettings->setValue("FilterFollowsGame", m_gameList->m_FilterActive);
         AppSettings->setValue("GameToolBar", m_gameToolBar->isVisible());
-        AppSettings->setValue("BlunderCheck", m_blunderCheck->isChecked());
         AppSettings->endGroup();
     }
     else
@@ -857,7 +847,7 @@ QAction* MainWindow::createAction(const QString& name, const char* slot, const Q
 		action->setShortcut(key);
 	if (slot)
 		connect(action, SIGNAL(triggered()), slot);
-		  action->setMenuRole(menuRole);
+    action->setMenuRole(menuRole);
 	return action;
 }
 
@@ -949,16 +939,6 @@ void MainWindow::setupActions()
     QAction* autoAnalysis = createAction(tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::ALT + Qt::SHIFT + Qt::Key_P);
     autoAnalysis->setCheckable(true);
     gameMenu->addAction(autoAnalysis);
-    QActionGroup* autoGroup = new QActionGroup(this);
-    autoGroup->setExclusive(true);
-    autoGroup->addAction(autoPlay);
-    autoGroup->addAction(autoAnalysis);
-
-    m_blunderCheck = createAction(tr("&Blunder Check"), SLOT(slotToggleBlunderCheck()));
-    m_blunderCheck->setCheckable(true);
-    bool activateBlunderCheck = AppSettings->getValue("/MainWindow/BlunderCheck").toBool();
-    m_blunderCheck->setChecked(activateBlunderCheck);
-    gameMenu->addAction(m_blunderCheck);
 
     gameMenu->addSeparator();
 
@@ -1001,12 +981,6 @@ void MainWindow::setupActions()
 	m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
 	menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()),
 						  Qt::Key_F5));
-
-//	Hidden until functional
-//	QMenu* menuRemove = menuDatabase->addMenu(tr("Delete"));
-//	menuRemove->addAction(createAction(tr("&Current game"), SLOT(slotDatabaseDeleteGame())));
-//	menuRemove->addAction(createAction(tr("&Games in filter"), SLOT(slotDatabaseDeleteFilter())));
-//	menuDatabase->addAction(createAction(tr("&Compact"), SLOT(slotDatabaseCompact())));
 
 	/* Help menu */
 	menuBar()->addSeparator();
