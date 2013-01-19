@@ -256,9 +256,13 @@ public :
 	MoveId findPosition(const Board& position);
     /** @return true if the move @p from @p to is already main move or variation */
     bool currentNodeHasMove(Square from, Square to) const;
+    /** @return true if the move @p from @p to is already in a variation */
+    bool currentNodeHasVariation(Square from, Square to) const;
 
 	/** @return ECO code for the game */
 	QString ecoClassify();
+    /** @return true if current pos is in the ECO list */
+    bool isEcoPosition() const;
 
 	/** Method that loads a file containing ECO classifications for use by the ecoClassify method. Returns true if successful */
 	static bool loadEcoFile(const QString& ecoFile);

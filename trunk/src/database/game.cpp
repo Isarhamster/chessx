@@ -90,29 +90,37 @@ MoveId Game::addMove(const QString& sanMove, const QString& annotation, NagSet n
 	return NO_MOVE;
 }
 
-bool Game::currentNodeHasMove(Square from, Square to) const
+bool Game::currentNodeHasVariation(Square from, Square to) const
 {
-    int node;
-    node = m_moveNodes[m_currentNode].nextNode;
-    if( node != NO_MOVE ) {
-        Move m = m_moveNodes[node].move ;
+    if (m_currentNode == NO_MOVE) return false;
+
+    QList<MoveId> vs = m_moveNodes[m_currentNode].variations;
+    QList<MoveId>::iterator i;
+    for (i = vs.begin(); i != vs.end(); ++i)
+    {
+        Move m = move(*i);
         if( m.from() == from && m.to() == to )
         {
             return true;
         }
-        else
-        {
-            QList<MoveId> vs = m_moveNodes[m_currentNode].variations;
-            QList<MoveId>::iterator i;
-            for (i = vs.begin(); i != vs.end(); ++i)
-            {
-                Move m = move(*i);
-                if( m.from() == from && m.to() == to )
-                {
-                    return true;
-                }
-            }
-         }
+    }
+    return false;
+}
+
+bool Game::currentNodeHasMove(Square from, Square  to) const
+{
+    if (currentNodeHasVariation(from,to))
+    {
+        return true;
+    }
+    int node;
+    node = m_moveNodes[m_currentNode].nextNode;
+    if (node == NO_MOVE)
+        return true;
+    Move m = m_moveNodes[node].move ;
+    if( m.from() == from && m.to() == to )
+    {
+        return (m_moveNodes[node].nextNode != NO_MOVE);
     }
     return false;
 }
@@ -1246,6 +1254,11 @@ QString Game::ecoClassify()
 	return QString();
 }
 
+bool Game::isEcoPosition() const
+{
+    quint64 key = m_currentBoard.getHashValue();
+    return (m_ecoPositions.contains(key));
+}
 
 void Game::reparentVariation(MoveId variation, MoveId parent)
 {

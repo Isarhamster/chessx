@@ -900,9 +900,12 @@ void MainWindow::slotAutoPlayTimeout()
         if (!a.variation().isEmpty())
         {
             Move m = a.variation().first();
-            if (!game().currentNodeHasMove(m.from(), m.to()) || game().atLineEnd())
+            if (!game().currentNodeHasMove(m.from(), m.to()))
             {
-                slotGameAddVariation(a);
+                if (!game().isEcoPosition())
+                {
+                    slotGameAddVariation(a);
+                }
             }
         }
         m_AutoInsertLastBoard = m_boardView->board();

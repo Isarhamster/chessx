@@ -174,9 +174,12 @@ bool Board::ecoMove(const Square square, int* from, int* to) const
 {
 	quint64 key = getHashPlusSquare(square);
 	if (ecoGuessPositions.contains(key)) {
-		QList<Square> data = ecoGuessPositions[key];
-		*from = data[0];
-		*to = data[1];
+        if (from && to)
+        {
+            QList<Square> data = ecoGuessPositions[key];
+            *from = data[0];
+            *to = data[1];
+        }
 		return true;
 	}
 	return false;
