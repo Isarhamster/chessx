@@ -58,6 +58,8 @@
  <p>Usually, making a move will insert a new variation unless you are at the end of the game or a variation. If you do not
 want to create a new variation, press CTRL+SHIFT while moving, which replaces the current move by the new move.</p>
 
+<p>If you want ChessX to replay the game, select "Game->Auto Player". You can change the move rate in the Game Preferences.</p>
+
 <h3>Annotating moves</h3>
 <p>Move annotations can be done by activating the context menu in the games text browser or by simply pressing the corresponding key sequence,
 e.g. '!?','!!','??','!x','?x','=','+-','-+' and so on, where 'x' is used in case the first character is ambiguous, 'x' can be the
@@ -67,13 +69,15 @@ Return/Enter-Key or literally the small letter 'x'.</p>
 <p>Saving games is slightly confusing! A game needs to be saved into the database (Press CTRL+S, Menu Game/Save). From there,
 the whole database needs to be saved to disk by pressing CTRL+Shift+S / Menu File/Save. This is somewhat inconvenient but on the other hand prevents
 you from mistakenly overwriting games or files.</p>
+<p>If you want to commit a database to harddisk immediatelly and automatically when saving a game, you can select Option "Commit Database
+after Saving Game" from the Database Pane in the Preferences Dialog.</p>
 <p>By default, a clipboard database is open, which does not have a backing file on disk. Anything that remains in the Clipboard is
 lost upon closing ChessX! So you need to open at least one other database for writing and transfer anything from the Clipboard
 into this database by either dragging the games to that database or using "Copy Games" from the Database menu.</p>
 
 <h3>Switching databases</h3>
-<p>Switching between open databases can be achieved by either the Database menu, pressing CTRL+Number 0 .. 9 or clicking onto the asterisk
-in the database list. The currently selected database is also highlighted there!</p>
+<p>Switching between open databases can be achieved by either the Database menu, pressing CTRL+Number 0 .. 9 or right-clicking
+into the database list. The currently selected database is highlighted there!</p>
 
 <h3>Analysing games</h3>
 <p>There are two analysis windows where two different engines can be configured to analyse the current board position.</p>
@@ -86,6 +90,19 @@ or any other version. The source code for stockfish is also located on the homep
 see the license text on the Stockfish home.</p>
 <p>You can fine-tune engines with the protocol options dialog (works for UCI only, Winboard is seldom used and due to the clumsy specification
 hard to implement for GUI developers.</p>
+
+<h3>Automatically annotating games</h3>
+<p>Start an engine in the Analysis 1 window and select menu "Game->Auto Analysis". ChessX will start to move through the
+current game, analysing each position for some time. After the alotted time is over, the best move will be inserted as variation into the game
+text. Then ChessX will continue with the next move.</p>
+<p>There are a couple of options which have an influence on the behaviuor:</p>
+<ul>
+<li>Preferences->Game->Auto-Play-Interval determines the time, ChessX will us for each position
+<li>Preferences->Game->Automatically save and continue with next game: This allows analysing a complete database, select this option, start Engine 1,
+open the first game from the database and select move 1.
+<li>Preferences->Database->Commit Database after saving Game: Recommended, commits your results to the harddisk after each game, especially if you
+analyse a complete database, a loss of power will otherwise lose all results so far.
+</ul>
 
 <h3>Generating content</h3>
 <p>You can copy/paste positions(FEN and images) and complete games(PGN) from/into the clipboard, export games in LATEX, HTML or PGN again.
