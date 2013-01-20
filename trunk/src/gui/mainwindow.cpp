@@ -518,7 +518,14 @@ bool MainWindow::gameMoveBy(int change)
 {
     if (game().moveByPly(change))
     {
-		slotMoveChanged();
+        if (m_training->isChecked())
+        {
+            slotGameChanged();
+        }
+        else
+        {
+            slotMoveChanged();
+        }
 		m_gameView->setFocus();
         return true;
 	}
@@ -931,6 +938,10 @@ void MainWindow::setupActions()
     gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
 
     gameMenu->addSeparator();
+
+    m_training = createAction(tr("Training"), SLOT(slotToggleTraining()));
+    m_training->setCheckable(true);
+    gameMenu->addAction(m_training);
 
     m_autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_P);
     m_autoPlay->setCheckable(true);

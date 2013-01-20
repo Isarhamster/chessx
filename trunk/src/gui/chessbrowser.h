@@ -78,6 +78,8 @@ private:
 	QAction* m_removeNext;
     QAction* m_addNullMove;
 	QAction* m_removeNags;
+    QAction* m_enumerateVariations1;
+    QAction* m_enumerateVariations2;
 	QMenu* m_gameMenu;
 	QMenu* m_mainMenu;
 	int m_currentMove;

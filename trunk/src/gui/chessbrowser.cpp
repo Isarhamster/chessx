@@ -117,14 +117,18 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
         subMenu->addAction(createNagAction(BishopsOfSameColor));
 
 		m_gameMenu->addAction(m_removeNags = createAction(tr("Remove symbols"), EditAction::ClearNags));
-
+        m_gameMenu->addSeparator();
+        m_gameMenu->addAction((m_enumerateVariations1 = createAction(tr("Enumerate Variations A) B) C)"), EditAction::EnumerateVariations1)));
+        m_gameMenu->addAction((m_enumerateVariations2 = createAction(tr("Enumerate Variations a) b) c)"), EditAction::EnumerateVariations2)));
 		m_gameMenu->addSeparator();
         m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to main line"), EditAction::PromoteVariation)));
-        m_gameMenu->addAction((m_removeVariation = createAction(tr("Remove variation"), EditAction::RemoveVariation)));
         m_gameMenu->addAction((m_VariationUp = createAction(tr("Move variation up"), EditAction::VariationUp)));
         m_gameMenu->addAction((m_VariationDown = createAction(tr("Move variation down"), EditAction::VariationDown)));
+        m_gameMenu->addSeparator();
+        m_gameMenu->addAction((m_removeVariation = createAction(tr("Remove variation"), EditAction::RemoveVariation)));
         m_gameMenu->addAction((m_removePrevious = createAction(tr("Remove previous moves"), EditAction::RemovePreviousMoves)));
         m_gameMenu->addAction((m_removeNext = createAction(tr("Remove next moves"), EditAction::RemoveNextMoves)));
+        m_gameMenu->addSeparator();
         m_gameMenu->addAction((m_addNullMove = createAction(tr("Insert threat"), EditAction::AddNullMove)));
 	}
 
@@ -159,6 +163,8 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
     bool atLineEnd = game.atLineEnd(m_currentMove);
 	m_startComment->setVisible(atLineStart && !hasPrecomment);
 	m_addComment->setVisible(!hasComment);
+    m_enumerateVariations1->setVisible(isVariation);
+    m_enumerateVariations2->setVisible(isVariation);
 	m_promoteVariation->setVisible(isVariation);
 	m_removeVariation->setVisible(isVariation);
     m_VariationUp->setVisible(isVariation && game.canMoveVariationUp(m_currentMove));

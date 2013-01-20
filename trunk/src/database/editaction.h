@@ -17,7 +17,8 @@
 class EditAction
 {
 public:
-    enum Type {None, RemovePreviousMoves, RemoveNextMoves, RemoveVariation, PromoteVariation, VariationUp, VariationDown,
+    enum Type {None, RemovePreviousMoves, RemoveNextMoves, RemoveVariation, PromoteVariation,
+               EnumerateVariations1, EnumerateVariations2, VariationUp, VariationDown,
             EditPrecomment, EditComment, AddNag, ClearNags, AddNullMove};
 	/** Standard constructor. */
 	EditAction(Type type = None);
