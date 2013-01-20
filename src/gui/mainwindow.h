@@ -238,6 +238,8 @@ public slots:
     void slotBoardSearchUpdate();
     /** Reset current filter */
 	void slotSearchReset();
+    /** Training mode */
+    void slotToggleTraining();
     /** Toggle filter */
     void slotToggleFilter();
     /** Reverse current filter */
@@ -388,6 +390,7 @@ private:
     AnalysisWidget* m_mainAnalysis;
     Board m_AutoInsertLastBoard;
     Square m_annotationSquare;
+    QAction* m_training;
     QAction* m_autoPlay;
     QAction* m_autoAnalysis;
 };

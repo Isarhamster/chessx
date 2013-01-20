@@ -107,7 +107,7 @@ public:
 	/** Create the output for the given game
 	 * @return A string containing the game in the specified format
 	 * @param game A pointer to the game object being output */
-    QString output(Game* game);
+    QString output(Game* game, bool upToCurrentMove = false);
 	/** Create the output for the given filter
 	 * @param filename The filename that the output will be written to.
 	 * @param filter A Filter object. All games in the filter will be output, one
@@ -220,7 +220,7 @@ private:
 	/** Writes a single move including nag and annotation */
 	void writeMove(MoveToWrite moveToWrite = NextMove);
 	/** Writes a variation, including sub variations */
-	void writeVariation();
+    void writeVariation(MoveId upToNode);
 	/** Writes a newline, and indent the following line */
 	void writeNewlineIndent();
 	/** Writes a game tag */

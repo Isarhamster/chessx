@@ -262,9 +262,15 @@ void Output::writeMove(MoveToWrite moveToWrite)
 		m_output += " ";
 }
 
-void Output::writeVariation()
+void Output::writeVariation(MoveId upToNode)
 {
-	while (!m_game->atLineEnd()) {
+    while (!m_game->atLineEnd())
+    {
+        if (m_game->currentMove() == upToNode)
+        {
+            m_output += "*** ";
+            break;
+        }
 		// *** Writes move in the current variation
 		writeMove();
 		if (m_game->variationCount()) {
@@ -285,7 +291,7 @@ void Output::writeVariation()
 				// *** Enter variation i, and write the rest of the moves
 				m_game->moveToId(variations[i]);
 				writeMove(PreviousMove);
-				writeVariation();
+                writeVariation(upToNode);
 
 				// *** End the variation
 				//			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
@@ -398,10 +404,11 @@ void Output::writeAllTags()
 }
 
 
-QString Output::output(Game* game)
+QString Output::output(Game* game, bool upToCurrentMove)
 {
     m_game = game;
 	int id = m_game->currentMove();
+    int mainId = upToCurrentMove ? m_game->mainLineMove() : NO_MOVE;
 	m_currentVariationLevel = 0;
 
 	m_output = m_header;
@@ -427,7 +434,7 @@ QString Output::output(Game* game)
         writeGameComment(game->gameComment());
     }
 
-    writeVariation();
+    writeVariation(mainId);
 	if (m_options.getOptionAsBool("ColumnStyle")) {
 		m_output += m_endTagMap[MarkupColumnStyleMainline];
 	}

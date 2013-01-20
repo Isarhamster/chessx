@@ -535,7 +535,14 @@ void MainWindow::slotGameVarEnter()
     if (game().variationCount(game().currentMove()))
     {
 		game().moveToId(game().variations().first());
-		slotMoveChanged();
+        if (m_training->isChecked())
+        {
+            slotGameChanged();
+        }
+        else
+        {
+            slotMoveChanged();
+        }
 	}
 }
 
@@ -548,7 +555,14 @@ void MainWindow::slotGameVarExit()
 			game().backward();
         }
 		game().backward();
-		slotMoveChanged();
+        if (m_training->isChecked())
+        {
+            slotGameChanged();
+        }
+        else
+        {
+            slotMoveChanged();
+        }
 	}
 }
 
@@ -687,6 +701,14 @@ void MainWindow::slotGameModify(const EditAction& action)
 		game().promoteVariation(action.move());
 		break;
 	}
+    case EditAction::EnumerateVariations1: {
+        game().enumerateVariations(action.move(),'A');
+        break;
+    }
+    case EditAction::EnumerateVariations2: {
+        game().enumerateVariations(action.move(),'a');
+        break;
+    }
     case EditAction::VariationUp: {
         game().moveVariationUp(action.move());
         break;
@@ -718,13 +740,12 @@ void MainWindow::slotGameModify(const EditAction& action)
 	slotGameChanged();
 }
 
-
 void MainWindow::slotGameChanged()
 {
 	if (m_showPgnSource)
 		m_gameView->setPlainText(m_output->output(&game()));
 	else
-		m_gameView->setText(m_output->output(&game()));
+        m_gameView->setText(m_output->output(&game(),m_training->isChecked()));
 
 	// Finally update game information
 	QString white = game().tag("White");
@@ -785,10 +806,24 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 		else if (url.path() == "exit") game().moveToId(game().parentMove());
 		else
 			game().moveToId(url.path().toInt());
-		slotMoveChanged();
+        if (m_training->isChecked())
+        {
+            slotGameChanged();
+        }
+        else
+        {
+            slotMoveChanged();
+        }
 	} else if (url.scheme() == "precmt" || url.scheme() == "cmt") {
 		game().moveToId(url.path().toInt());
-		slotMoveChanged();
+        if (m_training->isChecked())
+        {
+            slotGameChanged();
+        }
+        else
+        {
+            slotMoveChanged();
+        }
 		Output::CommentType type = url.scheme() == "cmt" ? Output::Comment : Output::Precomment;
 		if (gameEditComment(type))
 			slotGameChanged();
@@ -856,6 +891,11 @@ void MainWindow::slotGameUncomment()
 void MainWindow::slotGameRemoveVariations()
 {
     game().removeVariations();
+    slotGameChanged();
+}
+
+void MainWindow::slotToggleTraining()
+{
     slotGameChanged();
 }
 

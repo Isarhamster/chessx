@@ -166,6 +166,8 @@ public :
 	bool isModified() const;
 	/** Clear/set game's @p modified flag. */
 	void setModified(bool set);
+    /** @return moveId of the top main line */
+    MoveId mainLineMove() const;
 	/** @return moveId of the previous move */
 	MoveId previousMove() const;
 	/** @return moveId of the next move */
@@ -274,6 +276,7 @@ public :
     void dumpAllMoveNodes();
     bool canMoveVariationUp(MoveId moveId) const;
     bool canMoveVariationDown(MoveId moveId) const;
+    void enumerateVariations(MoveId moveId, char a);
     void moveVariationUp(MoveId moveId);
     void moveVariationDown(MoveId moveId);
 private:

@@ -821,15 +821,53 @@ void Game::moveVariationDown(MoveId moveId)
     }
 }
 
+void Game::enumerateVariations(MoveId moveId, char a)
+{
+    if (isMainline()) return;
+
+    MoveId node = nodeValid(moveId);
+    if (node != NO_MOVE)
+    {
+        MoveId parentNode = m_moveNodes[node].parentNode;
+        QList <MoveId>& v = m_moveNodes[parentNode].variations;
+        for (int i = 0; i < v.size(); ++i)
+        {
+            QString oldAnnotation = annotation(v[i], Game::BeforeMove);
+            oldAnnotation.remove(QRegExp("^.\\)"));
+            QString s=QString("%1) %2").arg(QChar(a+i)).arg(oldAnnotation).trimmed();
+            setAnnotation(s, v[i], Game::BeforeMove);
+        }
+    }
+}
+
 MoveId Game::variationNumber(MoveId moveId) const
 {
 	if (isMainline()) return 0;
-	MoveId node = nodeValid(moveId);
-    MoveId parentNode = m_moveNodes[node].parentNode;
-
-    while (m_moveNodes[node].previousNode != parentNode)
+    MoveId node = nodeValid(moveId);
+    if (node != NO_MOVE)
     {
-        node = m_moveNodes[node].previousNode;
+        MoveId parentNode = m_moveNodes[node].parentNode;
+
+        while (m_moveNodes[node].previousNode != parentNode)
+        {
+            node = m_moveNodes[node].previousNode;
+        }
+    }
+    return node;
+}
+
+MoveId Game::mainLineMove() const
+{
+    MoveId node = nodeValid(m_currentNode);
+    if (node != NO_MOVE)
+    {
+        bool dive = false;
+        while (m_moveNodes[node].parentNode != NO_MOVE)
+        {
+            dive = true;
+            node = m_moveNodes[node].parentNode;
+        }
+        if (dive) node = m_moveNodes[node].nextNode;
     }
     return node;
 }
