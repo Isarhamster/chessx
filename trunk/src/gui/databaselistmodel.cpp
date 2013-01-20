@@ -58,9 +58,11 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_OPEN:
                 {
                     bool bIsOpen = m_databases.at(index.row()).m_state == EDBL_OPEN;
-                    bool bIsCurrent = m_databases.at(index.row()).m_isCurrent;
+                    bool bIsCurrent = m_databases.at(index.row()).m_isCurrent;                  
                     if (bIsOpen)
+                    {
                         return QPixmap(bIsCurrent ? ":/folder_new.png" : ":/fileopen.png");
+                    }
                     else
                         return QVariant();
                 }

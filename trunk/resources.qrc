@@ -1,12 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="fileopen.png">src/fileopen.png</file>
-        <file alias="folder_favorite.png">src/folder_favorite.png</file>
-        <file alias="folder_grey.png">src/folder_grey.png</file>
-        <file alias="folder_locked.png">src/folder_locked.png</file>
-        <file alias="folder_new.png">src/folder_new.png</file>
-        <file alias="folder_txt-png">src/folder_txt.png</file>
-        <file alias="folder2.png">src/folder2.png</file>
         <file alias="templates/html-default.template">data/templates/html-default.template</file>
         <file alias="templates/latex-default.template">data/templates/latex-default.template</file>
         <file alias="templates/notation-default.template">data/templates/notation-default.template</file>
@@ -43,7 +36,7 @@
         <file alias="help/about.css">data/help/about.css</file>
         <file alias="images/chessx.png">data/images/chessx.png</file>
         <file alias="images/back.png">data/images/back.png</file>
-        <file alias="images/fileopen.png">data/images/fileopen.png</file>
+        <file alias="fileopen.png">data/images/fileopen.png</file>
         <file alias="images/forward.png">data/images/forward.png</file>
         <file alias="images/home.png">data/images/home.png</file>
         <file alias="images/print.png">data/images/print.png</file>
@@ -65,5 +58,11 @@
         <file alias="images/square_none.png">data/images/square_none.png</file>
         <file alias="images/square_red.png">data/images/square_red.png</file>
         <file alias="images/square_yellow.png">data/images/square_yellow.png</file>
+        <file alias="folder_favorite.png">data/images/folder_favorite.png</file>
+        <file alias="folder_grey.png">data/images/folder_grey.png</file>
+        <file alias="folder2.png">data/images/folder2.png</file>
+        <file alias="folder_txt.png">data/images/folder_txt.png</file>
+        <file alias="folder_locked.png">data/images/folder_locked.png</file>
+        <file alias="folder_new.png">data/images/folder_new.png</file>
     </qresource>
 </RCC>
