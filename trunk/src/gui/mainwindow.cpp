@@ -939,14 +939,14 @@ void MainWindow::setupActions()
 
     gameMenu->addSeparator();
 
-    m_training = createAction(tr("Training"), SLOT(slotToggleTraining()));
+    m_training = createAction(tr("Training"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::Key_R);
     m_training->setCheckable(true);
     gameMenu->addAction(m_training);
 
-    m_autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_P);
+    m_autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_R);
     m_autoPlay->setCheckable(true);
     gameMenu->addAction(m_autoPlay);
-    m_autoAnalysis = createAction(tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::ALT + Qt::SHIFT + Qt::Key_P);
+    m_autoAnalysis = createAction(tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::CTRL + Qt::ALT + Qt::Key_R);
     m_autoAnalysis->setCheckable(true);
     gameMenu->addAction(m_autoAnalysis);
 

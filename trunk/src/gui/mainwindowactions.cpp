@@ -429,23 +429,26 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             }
         }
 
-        if (game().atLineEnd())
+        if (!m_training->isChecked())
         {
-            game().addMove(m);
-        }
-        else
-        {
-            if (button & Qt::ControlModifier)
+            if (game().atLineEnd())
             {
-                // TODO: Make a insertMove algorithm start from here
-                // -> need to understand the moving stuff before!
-                game().replaceMove(m);
+                game().addMove(m);
             }
             else
             {
-                game().addVariation(m);
+                if (button & Qt::ControlModifier)
+                {
+                    // TODO: Make a insertMove algorithm start from here
+                    // -> need to understand the moving stuff before!
+                    game().replaceMove(m);
+                }
+                else
+                {
+                    game().addVariation(m);
+                }
+                game().forward();
             }
-            game().forward();
         }
 		slotGameChanged();
 	}
@@ -519,15 +522,15 @@ void MainWindow::slotMoveChanged()
 
 void MainWindow::slotBoardMoveWheel(int wheel)
 {
-	if (wheel & Qt::AltModifier)
-		if (wheel & BoardView::WheelDown) slotGameMoveLast();
-		else slotGameMoveFirst();
-	else if (wheel & Qt::ControlModifier)
-		if (wheel & BoardView::WheelDown) slotGameMoveNextN();
-		else slotGameMovePreviousN();
-	else
-		if (wheel & BoardView::WheelDown) slotGameMoveNext();
-		else slotGameMovePrevious();
+    if (wheel & Qt::AltModifier)
+        if (wheel & BoardView::WheelDown) slotGameMoveLast();
+        else slotGameMoveFirst();
+    else if (wheel & Qt::ControlModifier)
+        if (wheel & BoardView::WheelDown) slotGameMoveNextN();
+        else slotGameMovePreviousN();
+    else
+        if (wheel & BoardView::WheelDown) slotGameMoveNext();
+        else slotGameMovePrevious();
 }
 
 void MainWindow::slotGameVarEnter()

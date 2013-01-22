@@ -38,7 +38,7 @@
      <item>
       <widget class="QPushButton" name="buttonDiscardChanges">
        <property name="text">
-        <string>Discard Changes</string>
+        <string>&amp;Discard Changes</string>
        </property>
       </widget>
      </item>
