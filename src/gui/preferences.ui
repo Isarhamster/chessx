@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -159,13 +159,13 @@
             <item>
              <widget class="QSlider" name="minWheelCount">
               <property name="maximum">
-               <number>240</number>
+               <number>960</number>
               </property>
               <property name="singleStep">
-               <number>60</number>
+               <number>104</number>
               </property>
               <property name="pageStep">
-               <number>60</number>
+               <number>120</number>
               </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -177,7 +177,7 @@
                <enum>QSlider::TicksBothSides</enum>
               </property>
               <property name="tickInterval">
-               <number>60</number>
+               <number>120</number>
               </property>
              </widget>
             </item>
