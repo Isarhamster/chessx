@@ -64,5 +64,9 @@
         <file alias="folder_txt.png">data/images/folder_txt.png</file>
         <file alias="folder_locked.png">data/images/folder_locked.png</file>
         <file alias="folder_new.png">data/images/folder_new.png</file>
+        <file alias="images/arrow_none.png">data/images/arrow_none.png</file>
+        <file alias="images/arrow_green.png">data/images/arrow_green.png</file>
+        <file alias="images/arrow_yellow.png">data/images/arrow_yellow.png</file>
+        <file alias="images/arrow_red.png">data/images/arrow_red.png</file>
     </qresource>
 </RCC>
