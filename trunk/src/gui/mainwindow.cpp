@@ -105,7 +105,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_boardView->resize(500, 540);
 	connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
     connect(m_boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
-    connect(m_boardView, SIGNAL(clicked(Square, int, QPoint)), SLOT(slotBoardClick(Square, int, QPoint)));
+    connect(m_boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
 	connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
 
 	/* Board layout */
@@ -800,14 +800,7 @@ bool MainWindow::gameEditComment(Output::CommentType type)
 
     if ((type == Output::Precomment) || (moves <= 0))
     {
-        if( moves > 0 )
-        {
-            annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
-        }
-        else
-        {
-            annotation = game().gameComment();
-        }
+        annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
     }
     else
     {

@@ -379,9 +379,11 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 
     if (!(event->button() & Qt::LeftButton))
     {
+        Square from = squareAt(m_dragStart);
+        if (s==from) from = InvalidSquare;
 		if (s != InvalidSquare)
         {
-            emit clicked(s, button, mapToGlobal(event->pos()));
+            emit clicked(s, button, mapToGlobal(event->pos()), from);
         }
         else
         {
@@ -397,7 +399,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         {
             if (s != InvalidSquare)
             {
-                emit clicked(s, button, mapToGlobal(event->pos()));
+                emit clicked(s, button, mapToGlobal(event->pos()), InvalidSquare);
             }
             return;
         }
@@ -457,7 +459,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
     {
         if (s != InvalidSquare)
         {
-            emit clicked(s, button, mapToGlobal(event->pos()));
+            emit clicked(s, button, mapToGlobal(event->pos()), InvalidSquare);
 			if (!m_clickUsed && m_board.isMovable(s))
             {
 				selectSquare(s);

@@ -73,7 +73,7 @@ signals:
     /** User dragged and dropped a piece holding Control */
     void invalidMove(Square from);
 	/** User clicked square */
-    void clicked(Square square, int button, QPoint pos);
+    void clicked(Square square, int button, QPoint pos, Square from);
 	/** User moved mouse wheel. */
 	void wheelScrolled(int dir);
     /** Indicate that a piece was dropped to the board */
