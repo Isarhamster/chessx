@@ -462,7 +462,7 @@ QString Output::output(Game* game, bool upToCurrentMove)
 		}
 	}
 
-	return m_output;
+    return m_output.toLatin1();
 }
 
 void Output::output(QTextStream& out, Filter& filter)

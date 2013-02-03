@@ -91,7 +91,7 @@ public :
 	MoveId currentMove() const;
 	/** @return comment at move at node @p moveId. */
 	QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
-
+    QString composeAnnotation(QString freeText, MoveId node) const;
     /** Show annotations on the board for the Nose @p moveId. */
     void indicateAnnotationsOnBoard(MoveId moveId);
     /** @return squareAnnotation at move at node @p moveId. */
@@ -122,8 +122,11 @@ public :
     /** Sets the squareAnnotation associated with move at node @p moveId */
     bool setSquareAnnotation(QString squareAnnotation, MoveId moveId = CURRENT_MOVE);
 
-    /** Append a square to the existing lists of annotations, if there is none, create one */
+    /** Append a square to the existing lists of square annotations, if there is none, create one */
     bool appendSquareAnnotation(Square s, QChar colorCode);
+
+    /** Append an arrow to the existing lists of arrows, if there is none, create one */
+    bool appendArrowAnnotation(Square dest, Square src, QChar colorCode);
 
     /** Sets the arrowAnnotation associated with move at node @p moveId */
     bool setArrowAnnotation(QString arrowAnnotation, MoveId moveId = CURRENT_MOVE);
@@ -272,6 +275,7 @@ public :
 	/* Debug */
 	/** Dump a move node using qDebug() */
     void dumpMoveNode(MoveId moveId = CURRENT_MOVE);
+    void dumpAnnotations(MoveId moveId);
 	/** Repeatedly call dumpMoveNode for all nodes */
     void dumpAllMoveNodes();
     bool canMoveVariationUp(MoveId moveId) const;
@@ -295,9 +299,6 @@ private:
 		void remove()	{parentNode = previousNode = nextNode = NO_MOVE; removed = true;}
 		MoveNode()		{parentNode = nextNode = previousNode = NO_MOVE; removed = false; ply = 0;}
 	};
-
-    /** commment associated with game */
-    QString m_gameComment;
 
 	/** List of nodes */
 	QList <MoveNode> m_moveNodes;

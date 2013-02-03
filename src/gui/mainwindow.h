@@ -255,7 +255,7 @@ public slots:
 	/** Made given move on the board */
     void slotBoardMove(Square from, Square to, int button);
 	/** Board square was clicked */
-    void slotBoardClick(Square square, int button, QPoint pos);
+    void slotBoardClick(Square square, int button, QPoint pos, Square from);
 	/** Browse current game by mouse wheel */
 	void slotBoardMoveWheel(int wheel);
 	/** Update GUI after current move was changed. Update BoardView to current board,
@@ -297,6 +297,14 @@ protected slots:
     void slotYellowSquare();
     /** Colorize the square in m_annotationSquare red */
     void slotRedSquare();
+    /** Remove any arrow */
+    void slotNoArrowHere();
+    /** Draw a green arrow */
+    void slotGreenArrowHere();
+    /** Draw a yellow arrow */
+    void slotYellowArrowHere();
+    /** Draw a red arrow */
+    void slotRedArrowHere();
 
 protected:
     void copyGame(int target, const Game& game);
@@ -390,6 +398,7 @@ private:
     AnalysisWidget* m_mainAnalysis;
     Board m_AutoInsertLastBoard;
     Square m_annotationSquare;
+    Square m_annotationSquareFrom;
     QAction* m_training;
     QAction* m_autoPlay;
     QAction* m_autoAnalysis;

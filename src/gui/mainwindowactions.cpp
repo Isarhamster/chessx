@@ -454,7 +454,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
 	}
 }
 
-void MainWindow::slotBoardClick(Square s, int button, QPoint pos)
+void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
 {
     if (button & Qt::RightButton)
     {
@@ -462,15 +462,17 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos)
         {
             QMenu* menu = new QMenu(this);
             m_annotationSquare = s;
-            menu->addAction(QIcon(":/images/square_red.png"),   tr("Red Square"),    this, SLOT(slotRedSquare()));
-            menu->addAction(QIcon(":/images/square_yellow.png"),tr("Yellow Square"), this, SLOT(slotYellowSquare()));
-            menu->addAction(QIcon(":/images/square_green.png"), tr("Green Square"),  this, SLOT(slotGreenSquare()));
-            menu->addAction(QIcon(":/images/square_none.png"),  tr("Remove Color"),  this, SLOT(slotNoColorSquare()));
+            m_annotationSquareFrom = from;
+            bool twoSquares = (s != from && from != InvalidSquare);
+            menu->addAction(QIcon(":/images/square_red.png"),   tr("Red Square"),    this, SLOT(slotRedSquare()))->setEnabled(!twoSquares);
+            menu->addAction(QIcon(":/images/square_yellow.png"),tr("Yellow Square"), this, SLOT(slotYellowSquare()))->setEnabled(!twoSquares);
+            menu->addAction(QIcon(":/images/square_green.png"), tr("Green Square"),  this, SLOT(slotGreenSquare()))->setEnabled(!twoSquares);
+            menu->addAction(QIcon(":/images/square_none.png"),  tr("Remove Color"),  this, SLOT(slotNoColorSquare()))->setEnabled(!twoSquares);
             menu->addSeparator();
-            menu->addAction(tr("Red Arrow to here"));
-            menu->addAction(tr("Yellow Arrow to here"));
-            menu->addAction(tr("Green Arrow to here"));
-            menu->addAction(tr("Remove Arrow to here"));
+            menu->addAction(QIcon(":/images/arrow_red.png"),   tr("Red Arrow to here"),    this, SLOT(slotRedArrowHere()))->setEnabled(twoSquares);
+            menu->addAction(QIcon(":/images/arrow_yellow.png"),tr("Yellow Arrow to here"), this, SLOT(slotYellowArrowHere()))->setEnabled(twoSquares);
+            menu->addAction(QIcon(":/images/arrow_green.png"), tr("Green Arrow to here"),  this, SLOT(slotGreenArrowHere()))->setEnabled(twoSquares);
+            menu->addAction(QIcon(":/images/arrow_none.png"),  tr("Remove Arrow to here"), this, SLOT(slotNoArrowHere()))->setEnabled(twoSquares);
             menu->exec(pos);
         }
         else
@@ -484,9 +486,13 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos)
                 gameMoveBy(-1);
                 if (remove) {
                     if (var && game().isMainline())
+                    {
                         game().removeVariation(var);
+                    }
                     else
+                    {
                         game().truncateVariation();
+                    }
                     slotGameChanged();
                 }
             }
@@ -1243,4 +1249,27 @@ void MainWindow::slotRedSquare()
     slotGameChanged();
 }
 
+void MainWindow::slotNoArrowHere()
+{
+    game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, 0);
+    slotGameChanged();
+}
+
+void MainWindow::slotGreenArrowHere()
+{
+    game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, 'G');
+    slotGameChanged();
+}
+
+void MainWindow::slotYellowArrowHere()
+{
+    game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, 'Y');
+    slotGameChanged();
+}
+
+void MainWindow::slotRedArrowHere()
+{
+    game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, 'R');
+    slotGameChanged();
+}
 
