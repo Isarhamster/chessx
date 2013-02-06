@@ -19,6 +19,7 @@ EventListWidget::EventListWidget(QWidget *parent) :
     connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findEvent(const QString&)));
     connect(ui->tagList, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedEvent()));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedEvent()));
+    connect(ui->renameItem, SIGNAL(clicked()), SLOT(renameSelectedEvent()));
     connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedEvent()));
 
     selectEvent(QString());
@@ -81,6 +82,7 @@ void EventListWidget::selectEvent(const QString& event)
     {
         m_event.setName(event);
         ui->filterDatabase->setEnabled(true);
+        ui->renameItem->setEnabled(true);
         ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5%6")
                 .arg(m_event.name()).arg(m_event.formattedGameCount())
                 .arg(m_event.formattedRange())
@@ -102,6 +104,7 @@ void EventListWidget::selectEvent(const QString& event)
     else
     {
         ui->filterDatabase->setEnabled(false);
+        ui->renameItem->setEnabled(false);
         ui->detailText->setText(tr("<html><i>No event chosen.</i></html>"));
     }
 }
@@ -122,6 +125,16 @@ void EventListWidget::filterSelectedEvent()
     {
         QString ts = selection[0].data().toString();
         emit filterRequest(ts);
+    }
+}
+
+void EventListWidget::renameSelectedEvent()
+{
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    if (selection.count())
+    {
+        QString ts = selection[0].data().toString();
+        emit renameRequest(ts);
     }
 }
 

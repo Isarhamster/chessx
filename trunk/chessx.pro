@@ -28,7 +28,8 @@ FORMS += \
 	src/gui/copydialog.ui \
 	src/gui/commentdialog.ui \
     src/gui/engineoptiondialog.ui \
-    src/gui/tagdetailwidget.ui
+    src/gui/tagdetailwidget.ui \
+    src/gui/renametagdialog.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -131,7 +132,8 @@ HEADERS += src/database/board.h \
     src/gui/playerlistwidget.h \
     src/gui/qled.h \
     src/gui/eventlistwidget.h \
-    src/database/eventinfo.h
+    src/database/eventinfo.h \
+    src/gui/renametagdialog.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -221,7 +223,8 @@ SOURCES += src/database/board.cpp \
     src/gui/playerlistwidget.cpp \
     src/gui/qled.cpp \
     src/gui/eventlistwidget.cpp \
-    src/database/eventinfo.cpp
+    src/database/eventinfo.cpp \
+    src/gui/renametagdialog.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
