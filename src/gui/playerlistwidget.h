@@ -25,6 +25,7 @@ public:
 
 signals:
     void filterRequest(QString ts);
+    void renameRequest(QString ts);
     void filterEcoPlayerRequest(QString tag, QString eco, QString player);
     void raiseRequest();
 
@@ -34,6 +35,7 @@ public slots:
     void setDatabase(Database* db);
     void showSelectedPlayer();
     void filterSelectedPlayer();
+    void renameSelectedPlayer();
     void slotReconfigure();
     void selectionChangedSlot();
     void slotLinkClicked(const QUrl& url);

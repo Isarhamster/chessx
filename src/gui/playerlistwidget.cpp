@@ -19,6 +19,7 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
     connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findPlayers(const QString&)));
     connect(ui->tagList, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedPlayer()));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedPlayer()));
+    connect(ui->renameItem, SIGNAL(clicked()), SLOT(renameSelectedPlayer()));
     connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedPlayer()));
 
     selectPlayer(QString());
@@ -81,6 +82,7 @@ void PlayerListWidget::selectPlayer(const QString& player)
     {
         m_player.setName(player);
         ui->filterDatabase->setEnabled(true);
+        ui->renameItem->setEnabled(true);
         ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5%6")
                 .arg(m_player.name()).arg(m_player.formattedGameCount())
                 .arg(m_player.formattedRange())
@@ -103,6 +105,7 @@ void PlayerListWidget::selectPlayer(const QString& player)
     else
     {
         ui->filterDatabase->setEnabled(false);
+        ui->renameItem->setEnabled(false);
         ui->detailText->setText(tr("<html><i>No player chosen.</i></html>"));
     }
 }
@@ -125,6 +128,17 @@ void PlayerListWidget::filterSelectedPlayer()
         emit filterRequest(ts);
     }
 }
+
+void PlayerListWidget::renameSelectedPlayer()
+{
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    if (selection.count())
+    {
+        QString ts = selection[0].data().toString();
+        emit renameRequest(ts);
+    }
+}
+
 
 void PlayerListWidget::setDatabase(Database* db)
 {

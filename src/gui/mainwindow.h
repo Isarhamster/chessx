@@ -285,6 +285,10 @@ public slots:
     void slotGetGameData(Game& g);
     /** Copy game from other database by drag'n'drop */
     void copyGame(QString fileName, const Game& game);
+    /** Request renaming a event in the current database */
+    void slotRenameEvent(QString ts);
+    /** Request renaming a player in the current database */
+    void slotRenamePlayer(QString ts);
 
 protected slots:
     void loadError(QUrl url);

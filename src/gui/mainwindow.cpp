@@ -187,6 +187,7 @@ MainWindow::MainWindow() : QMainWindow(),
     playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
     connect(m_playerList, SIGNAL(raiseRequest()), playerListDock, SLOT(raise()));
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
+    connect(m_playerList, SIGNAL(renameRequest(QString)), SLOT(slotRenamePlayer(QString)));
     connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString,QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString,QString)));
     connect(this, SIGNAL(reconfigure()), m_playerList, SLOT(slotReconfigure()));
     playerListDock->hide();
@@ -202,6 +203,7 @@ MainWindow::MainWindow() : QMainWindow(),
     eventListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
     connect(m_eventList, SIGNAL(raiseRequest()), eventListDock, SLOT(raise()));
     connect(m_eventList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEvent(QString)));
+    connect(m_eventList, SIGNAL(renameRequest(QString)), SLOT(slotRenameEvent(QString)));
     connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString,QString)), m_gameList, SLOT(slotFilterListByEventPlayer(QString,QString)));
     connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString,QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
     connect(this, SIGNAL(reconfigure()), m_eventList, SLOT(slotReconfigure()));

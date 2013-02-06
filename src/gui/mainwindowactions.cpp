@@ -7,6 +7,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "analysiswidget.h"
 #include "boardsetup.h"
 #include "boardview.h"
 #include "copydialog.h"
@@ -26,11 +27,11 @@
 #include "pgndatabase.h"
 #include "playerlistwidget.h"
 #include "preferences.h"
+#include "renametagdialog.h"
 #include "savedialog.h"
 #include "settings.h"
 #include "tablebase.h"
 #include "tableview.h"
-#include "analysiswidget.h"
 #include "version.h"
 
 #include <time.h>
@@ -39,6 +40,7 @@
 #include <QAction>
 #include <QFileDialog>
 #include <QInputDialog>
+#include <QMenu>
 #include <QPixmap>
 #include <QProgressBar>
 #include <QStatusBar>
@@ -1196,6 +1198,18 @@ void MainWindow::slotDatabaseDeleteGame()
         database()->remove(gameIndex());
     }
     m_gameList->updateFilter();
+}
+
+void MainWindow::slotRenameEvent(QString ts)
+{
+    RenameTagDialog dlg(0, ts, TagNameEvent);
+    dlg.exec();
+}
+
+void MainWindow::slotRenamePlayer(QString ts)
+{
+    RenameTagDialog dlg(0, ts, TagNameWhite);
+    dlg.exec();
 }
 
 void MainWindow::slotDatabaseDeleteFilter()
