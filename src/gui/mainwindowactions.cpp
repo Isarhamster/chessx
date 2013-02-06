@@ -685,7 +685,7 @@ bool MainWindow::slotGameSave()
         return true;
     }
 
-    int n = saveDialog()->exec(database(), game());
+    int n = saveDialog()->save(database(), game());
     if (n==QDialog::Accepted)
     {
         saveGame();
