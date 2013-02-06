@@ -35,7 +35,7 @@ public:
 
 	SaveDialog(QWidget* parent = 0);
 	virtual ~SaveDialog();
-	virtual int exec(Database* database, Game& game);
+    virtual int save(Database* database, Game& game);
     virtual void accept();
 protected slots:
     void discardChanges();
