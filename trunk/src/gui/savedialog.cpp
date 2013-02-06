@@ -50,7 +50,7 @@ QString formatTagDate(const QString& s)
                 PartialDate().fromString(s).asString();
 }
 
-int SaveDialog::exec(Database* database, Game& game)
+int SaveDialog::save(Database* database, Game& game)
 {
     QString gameTitle;
     QString baseName = database->name();
