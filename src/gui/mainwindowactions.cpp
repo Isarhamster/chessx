@@ -759,9 +759,9 @@ void MainWindow::slotGameChanged()
         m_gameView->setText(m_output->output(&game(),m_training->isChecked()));
 
 	// Finally update game information
-	QString white = game().tag("White");
-	QString black = game().tag("Black");
-	QString eco = game().tag("ECO").left(3);
+    QString white = game().tag(TagNameWhite);
+    QString black = game().tag(TagNameBlack);
+    QString eco = game().tag(TagNameECO).left(3);
 	if (eco == "?")
         eco.clear();
 
@@ -1203,13 +1203,29 @@ void MainWindow::slotDatabaseDeleteGame()
 void MainWindow::slotRenameEvent(QString ts)
 {
     RenameTagDialog dlg(0, ts, TagNameEvent);
+    connect(&dlg, SIGNAL(renameRequest(QString,QString,QString)), SLOT(slotRenameRequest(QString,QString,QString)));
     dlg.exec();
 }
 
 void MainWindow::slotRenamePlayer(QString ts)
 {
     RenameTagDialog dlg(0, ts, TagNameWhite);
+    connect(&dlg, SIGNAL(renameRequest(QString,QString,QString)), SLOT(slotRenameRequest(QString,QString,QString)));
     dlg.exec();
+}
+
+void MainWindow::slotRenameRequest(QString tag, QString newValue, QString oldValue)
+{
+    if (database()->index()->replaceTagValue(tag, newValue, oldValue))
+    {
+        database()->setModified(true);
+        if (tag == TagNameWhite)
+        {
+            database()->index()->replaceTagValue(TagNameBlack, newValue, oldValue);
+        }
+        m_eventList->setDatabase(database());
+        m_playerList->setDatabase(database());
+    }
 }
 
 void MainWindow::slotDatabaseDeleteFilter()

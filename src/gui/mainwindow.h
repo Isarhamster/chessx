@@ -289,6 +289,8 @@ public slots:
     void slotRenameEvent(QString ts);
     /** Request renaming a player in the current database */
     void slotRenamePlayer(QString ts);
+    /** Pass a tag changing request from rename dialog to database */
+    void slotRenameRequest(QString tag, QString newValue, QString oldValue);
 
 protected slots:
     void loadError(QUrl url);

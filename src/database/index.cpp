@@ -79,6 +79,22 @@ void Index::setValidFlag(const int& gameId, bool value)
     m_validFlags[gameId]=value;
 }
 
+bool Index::replaceTagValue(const QString& tagName, const QString& newValue, const QString& oldValue)
+{
+    if (!m_tagNameIndex.contains(tagName))
+        return false;
+    if (!m_tagValueIndex.contains(oldValue))
+        return false;
+
+    ValueIndex valueIndex = m_tagValueIndex[oldValue];
+
+    m_tagValues[valueIndex] = newValue;
+
+    clearCache();
+    calculateCache();
+    return true;
+}
+
 bool Index::isValidFlag(const int& gameId) const
 {
     return m_validFlags[gameId];

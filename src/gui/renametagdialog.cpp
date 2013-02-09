@@ -9,7 +9,8 @@ RenameTagDialog::RenameTagDialog(QWidget *parent, QString ts, QString tagName) :
 {
     ui->setupUi(this);
 
-    ui->labelFrom->setText(m_ts);
+    ui->editFrom->setText(m_ts);
+    ui->editTo->setText(QString());
 
     connect(ui->btClose, SIGNAL(clicked()), SLOT(accept()));
     connect(ui->btRename, SIGNAL(clicked()), SLOT(slotRename()));
@@ -22,5 +23,6 @@ RenameTagDialog::~RenameTagDialog()
 
 void RenameTagDialog::slotRename()
 {
-    // todo
+    emit renameRequest(m_tagName, ui->editTo->text(), m_ts);
+    close();
 }
