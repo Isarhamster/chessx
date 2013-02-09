@@ -68,6 +68,9 @@ public:
     /** Get the valid flag accordingly */
     bool isValidFlag(const int& gameId) const;
 
+    /** Set the valid flag accordingly */
+    bool replaceTagValue(const QString& tagName, const QString& newValue, const QString& oldValue);
+
     QStringList playerNames() const;
 
     // Searching tags //

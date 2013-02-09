@@ -16,6 +16,8 @@ public:
     ~RenameTagDialog();
     
 signals:
+    void renameRequest(QString tag, QString newName, QString oldName);
+
 protected slots:
     /** Start renaming a tag */
     void slotRename();
