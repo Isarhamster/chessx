@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>RenameTagDialog</class>
  <widget class="QDialog" name="RenameTagDialog">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -40,6 +43,9 @@
         </item>
         <item row="0" column="1">
          <widget class="QLineEdit" name="editFrom">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>
@@ -120,6 +126,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>editTo</tabstop>
+  <tabstop>btRename</tabstop>
+  <tabstop>btClose</tabstop>
+  <tabstop>editFrom</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -1218,13 +1218,22 @@ void MainWindow::slotRenameRequest(QString tag, QString newValue, QString oldVal
 {
     if (database()->index()->replaceTagValue(tag, newValue, oldValue))
     {
+        if (game().tag(tag) == oldValue)
+        {
+            game().setTag(tag, newValue);
+        }
         database()->setModified(true);
         if (tag == TagNameWhite)
         {
             database()->index()->replaceTagValue(TagNameBlack, newValue, oldValue);
+            if (game().tag(TagNameBlack) == oldValue)
+            {
+                game().setTag(TagNameBlack, newValue);
+            }
         }
         m_eventList->setDatabase(database());
         m_playerList->setDatabase(database());
+        slotGameChanged();
     }
 }
 
