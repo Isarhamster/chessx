@@ -690,16 +690,22 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 	c = fen[++i];
 	if (c == 0) return true;
 	if (c != '-') {
+        bool epgood = true;
 		if (c >= 'a' && c <= 'h')
 			m_epFile = c - 'a' + 1;
 		else if (c >= 'A' && c <= 'H')
 			m_epFile = c - 'A' + 1;
-		else return false;
-		c = fen[++i];
-		if (m_stm == White && c != '6')
-			return false;
-		else if (m_stm == Black && c != '3')
-			return false;
+        else if (c < '0' || c > '9')
+            return false;
+        else epgood = false;
+        if (epgood)
+        {
+            c = fen[++i];
+            if (m_stm == White && c != '6')
+                return false;
+            else if (m_stm == Black && c != '3')
+                return false;
+        }
 	}
 	epFile2Square();
 	c = fen[++i];

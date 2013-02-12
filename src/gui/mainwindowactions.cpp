@@ -321,7 +321,22 @@ void MainWindow::slotEditVarRemove()
 
 void MainWindow::slotEditPasteFEN()
 {
-	QString fen = QApplication::clipboard()->text().trimmed();
+    // Prepare Fen - clean up code like this:
+    // [FEN "***"] to ***
+    QString fen = QApplication::clipboard()->text().simplified();
+    if (fen.contains("\""))
+    {
+        int n1 = fen.indexOf('"');
+        int n2 = fen.lastIndexOf('"');
+        if (n2>n1+1)
+        {
+            fen = fen.mid(n1+1,n2-n1-1);
+        }
+    }
+
+    // Another go at Fens copied from Wikis: [FEN]***[/FEN] is reduced to ***
+    fen.remove(QRegExp("\\[[^\\]]*\\]"));
+
 	Board board;
 	if (!board.isValidFen(fen)) {
 		QString msg = fen.length() ?
