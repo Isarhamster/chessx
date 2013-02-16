@@ -19,12 +19,13 @@ public:
     ~DatabaseList();
     void save() const;
 
+    int getLastIndex(const QString& s) const;
 
 public slots:
     void addFileOpen(const QString& s, bool utf8);
-    void setFileFavorite(const QString& s, bool bFavorite);
+    void setFileFavorite(const QString& s, bool bFavorite, int index);
     void setFileUtf8(const QString&, bool);
-    void setFileClose(const QString& s);
+    void setFileClose(const QString& s, int lastIndex);
     void setFileCurrent(const QString& s);
     void update(const QString& s);
     void slotCurrentIndexChanged(const QModelIndex&);

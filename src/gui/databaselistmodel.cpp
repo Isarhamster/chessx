@@ -204,6 +204,21 @@ void DatabaseListModel::addEntry(DatabaseListEntry& d, const QString& s)
     endInsertRows();
 }
 
+int DatabaseListModel::getLastIndex(const QString& s) const
+{
+    QListIterator<DatabaseListEntry> i(m_databases);
+    DatabaseListEntry d;
+    d.m_path = s;
+
+    if (i.findNext(d))
+    {
+        const DatabaseListEntry& e = i.previous();
+        return e.m_lastGameIndex;
+    }
+
+    return 0;
+}
+
 void DatabaseListModel::addFileOpen(const QString& s, bool utf8)
 {
     QMutableListIterator<DatabaseListEntry> i(m_databases);
@@ -230,7 +245,7 @@ void DatabaseListModel::addFileOpen(const QString& s, bool utf8)
     addEntry(d,s);
 }
 
-void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite)
+void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite, int index)
 {
     QMutableListIterator<DatabaseListEntry> i(m_databases);
     DatabaseListEntry d;
@@ -241,6 +256,7 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite)
         if (e.m_isFavorite != bFavorite)
         {
             e.m_isFavorite = bFavorite;
+            e.m_lastGameIndex = index;
             QModelIndex m = createIndex(m_databases.indexOf(e),DBLV_FAVORITE, (void*)  0);
             emit QAbstractItemModel::dataChanged(m,m);
         }
@@ -248,16 +264,18 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite)
     }
 
     d.m_isFavorite = bFavorite;
+    d.m_lastGameIndex = index;
     addEntry(d,s);
 }
 
-void DatabaseListModel::setFileClose(const QString& s)
+void DatabaseListModel::setFileClose(const QString& s, int lastIndex)
 {
     if (DatabaseListEntry* e = FindEntry(s))
     {
         if (e->m_state == EDBL_OPEN)
         {
             e->m_state = EDBL_CLOSE;
+            e->m_lastGameIndex = lastIndex;
             QModelIndex m = createIndex(m_databases.indexOf(*e),DBLV_OPEN, (void*) 0);
             emit QAbstractItemModel::dataChanged(m,m);
         }
@@ -322,7 +340,7 @@ void DatabaseListModel::toStringList(QStringList& list)
     }
 }
 
-void DatabaseListModel::toAttrStringList(QStringList& list)
+void DatabaseListModel::toAttrStringList(QStringList& list) const
 {
     for (int i=1; i<m_databases.count();++i)
     {
@@ -336,6 +354,17 @@ void DatabaseListModel::toAttrStringList(QStringList& list)
             {
                 list.append("ansi");
             }
+        }
+    }
+}
+
+void DatabaseListModel::toIndexList(QList<QVariant>& list) const
+{
+    for (int i=1; i<m_databases.count();++i)
+    {
+        if (m_databases[i].m_isFavorite)
+        {
+            list.append(QVariant(m_databases[i].m_lastGameIndex));
         }
     }
 }

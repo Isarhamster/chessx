@@ -579,11 +579,11 @@ void MainWindow::setFavoriteDatabase(QString fname)
     QUrl url = QUrl::fromUserInput(fname);
     if ((url.scheme()=="http") || (url.scheme()=="ftp"))
     {
-        m_databaseList->setFileFavorite(fname, true);
+        m_databaseList->setFileFavorite(fname, true, 0);
     }
     else
     {
-        m_databaseList->setFileFavorite(url.toLocalFile(), true);
+        m_databaseList->setFileFavorite(url.toLocalFile(), true, 0);
     }
 }
 
@@ -1092,12 +1092,16 @@ void MainWindow::restoreRecentFiles()
     AppSettings->beginGroup("Favorites");
     QStringList list = AppSettings->value("Files").toStringList();
     QStringList attributes = AppSettings->value("Attributes").toStringList();
+    QList<int> indexList;
+    AppSettings->list("LastGameIndex", indexList);
     AppSettings->endGroup();
-    QStringList::iterator it = attributes.begin();
+
+    QStringList::const_iterator it = attributes.begin();
+    QList<int>::const_iterator it1 = indexList.begin();
     foreach (QString s, list)
     {
         QString attribute = it != attributes.end() ? *it++ : "";
-        m_databaseList->setFileFavorite(s,true);
+        m_databaseList->setFileFavorite(s,true,*it1++);
         bool bUtf8 = (attribute.contains("utf8"));
         m_databaseList->setFileUtf8(s, bUtf8);
     }

@@ -96,13 +96,20 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
 void DatabaseList::save() const
 {
     AppSettings->beginGroup("Favorites");
+
     QStringList list;
     m_model->toStringList(list);
     AppSettings->setValue("Files", list);
+
     QStringList attrList;
     m_model->toAttrStringList(attrList);
     AppSettings->setValue("Attributes", attrList);
+
     AppSettings->endGroup();
+
+    QList<QVariant> indexList;
+    m_model->toIndexList(indexList);
+    AppSettings->setValue("Favorites/LastGameIndex", indexList);
 }
 
 void DatabaseList::slotDoubleClicked(const QModelIndex& index)
@@ -149,14 +156,14 @@ void DatabaseList::dbAddToFavorites()
 {
     Q_ASSERT(m_cell.isValid());
     QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
-    setFileFavorite(ts,true);
+    setFileFavorite(ts,true,0);
 }
 
 void DatabaseList::dbRemoveFromFavorites()
 {
     Q_ASSERT(m_cell.isValid());
     QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
-    setFileFavorite(ts,false);
+    setFileFavorite(ts,false,0);
 }
 
 void DatabaseList::rowsChanged(const QModelIndex &,int start,int end)
@@ -189,14 +196,19 @@ void DatabaseList::slotShowInFinder()
 #endif
 }
 
+int DatabaseList::getLastIndex(const QString& s) const
+{
+    return m_model->getLastIndex(s);
+}
+
 void DatabaseList::addFileOpen(const QString& s, bool utf8)
 {
     m_model->addFileOpen(s,utf8);
 }
 
-void DatabaseList::setFileFavorite(const QString& s, bool bFavorite)
+void DatabaseList::setFileFavorite(const QString& s, bool bFavorite, int index)
 {
-    m_model->addFavoriteFile(s, bFavorite);
+    m_model->addFavoriteFile(s, bFavorite, index);
 }
 
 void DatabaseList::setFileUtf8(const QString& s, bool utf8)
@@ -204,9 +216,9 @@ void DatabaseList::setFileUtf8(const QString& s, bool utf8)
     m_model->setFileUtf8(s, utf8);
 }
 
-void DatabaseList::setFileClose(const QString& s)
+void DatabaseList::setFileClose(const QString& s, int lastIndex)
 {
-    m_model->setFileClose(s);
+    m_model->setFileClose(s, lastIndex);
 }
 
 void DatabaseList::setFileCurrent(const QString& s)

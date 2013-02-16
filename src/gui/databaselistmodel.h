@@ -20,10 +20,11 @@ class DatabaseListEntry
 public:
     DatabaseListEntry()
     {
-        m_isFavorite = false;
-        m_isCurrent  = false;
-        m_utf8       = false;
-        m_state      = EDBL_CLOSE;
+        m_isFavorite    = false;
+        m_isCurrent     = false;
+        m_utf8          = false;
+        m_state         = EDBL_CLOSE;
+        m_lastGameIndex = 0;
     }
 
     QString m_name;
@@ -31,6 +32,7 @@ public:
     bool    m_isFavorite;
     bool    m_isCurrent;
     bool    m_utf8;
+    int     m_lastGameIndex;
     DatabaseListEntryState m_state;
 };
 
@@ -59,20 +61,23 @@ class DatabaseListModel : public QAbstractItemModel
 public:
     explicit DatabaseListModel(QObject *parent = 0);
 
+    int getLastIndex(const QString& s) const;
+
 signals:
     void OnSelectIndex(const QModelIndex&);
 
 public slots:
     void addFileOpen(const QString& s, bool utf8);
-    void addFavoriteFile(const QString& s, bool bFavorite);
+    void addFavoriteFile(const QString& s, bool bFavorite, int index);
     void setFileUtf8(const QString&, bool);
-    void setFileClose(const QString& s);
+    void setFileClose(const QString& s, int lastIndex);
     void setFileCurrent(const QString& s);
     void update(const QString& s);
 
 public:
     void toStringList(QStringList&);
-    void toAttrStringList(QStringList&);
+    void toAttrStringList(QStringList&) const;
+    void toIndexList(QList<QVariant>& list) const;
 
     virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
     virtual QModelIndex parent(const QModelIndex &child) const;

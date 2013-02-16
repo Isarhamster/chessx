@@ -47,10 +47,12 @@ public:
 
     /** Write integer list to configuration file. Does it by converting it to QString */
     void setList(const QString& key, QList<int> list);
+    void setList(const QString& key, QList<QVariant> list);
 
     /** Appends values to the list. @return @p true if the list contains exact number of items.
 	If @p items is @p -1 , always return @p true. */
     bool list(const QString& key, QList<int>& list, int items = -1);
+    bool list(const QString& key, QList<QVariant>& list, int items = -1);
 
     /// set a QByteArray into the settings
     void setByteArray(const QString& key, const QByteArray& arr);

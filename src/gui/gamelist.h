@@ -63,6 +63,8 @@ private slots:
     void slotCopyGame();
     /** Delete or undelete a game */
     void slotDeleteGame();
+    /** React to a change in selected item */
+    void slotItemSelected(const QModelIndex&);
 
 signals:
 	void selected(int);

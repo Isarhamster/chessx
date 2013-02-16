@@ -160,7 +160,7 @@ void MainWindow::slotFileClose()
             if (QuerySaveDatabase())
             {
                 m_openingTree->cancel(false);
-                m_databaseList->setFileClose(databaseInfo()->filePath());
+                m_databaseList->setFileClose(databaseInfo()->filePath(), databaseInfo()->currentIndex());
                 databaseInfo()->close();
                 delete databaseInfo();
                 m_databases.removeAt(m_currentDatabase);
@@ -184,7 +184,7 @@ void MainWindow::slotFileCloseIndex(int n)
     {
         if (m_databases[n]->IsLoaded())
         {
-            m_databaseList->setFileClose(m_databases[n]->filePath());
+            m_databaseList->setFileClose(m_databases[n]->filePath(), databaseInfo()->currentIndex());
             m_databases[n]->close();
             delete m_databases[n];
             m_databases.removeAt(n);
@@ -1108,10 +1108,12 @@ void MainWindow::slotDatabaseChanged()
 	setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
 	m_gameList->setFilter(databaseInfo()->filter());
 	slotFilterChanged();
-    gameLoad(gameIndex()>=0 ? gameIndex() : 0, true, true);
+    QString fname = databaseInfo()->filePath();
+    int lastGameIndex = m_databaseList->getLastIndex(fname);
+    gameLoad(gameIndex()>=0 ? gameIndex() : lastGameIndex, true, true);
     m_playerList->setDatabase(database());
     m_eventList->setDatabase(database());
-	emit databaseChanged(databaseInfo());
+    emit databaseChanged(databaseInfo());
 }
 
 void MainWindow::slotSearchTag()
