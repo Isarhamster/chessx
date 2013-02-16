@@ -12,6 +12,10 @@
 #include "movelist.h"
 #include "bitboard.h"
 
+#ifdef _MSC_VER
+#include <intrin.h>
+#endif
+
 #include <QtCore>
 
 // Global data that is initialized early on and only read afterward
@@ -131,16 +135,18 @@ const quint64 fileNotGH   = ~(fileG | fileH);
 // This C++ version is as fast as the assembly
 inline uint getFirstBitAndClear64(quint64& bb)
 {
-#ifdef __GNUG__
     register quint64 x = bb & -(qint64)bb;
     bb ^= x;
+#ifdef __GNUG__
     return 63-__builtin_clzll(x);
+#elif _MSC_VER
+    register uint r =  0;
+    _BitScanReverse(&r, x);
+    return r;
 #else
     // SBE - After a fair bit of testing, this is the fastest portable version
 	// i could come up with, it's about twice as fast as shift-testing 64 times.
-    register quint64 x = bb & -(qint64)bb;
 	register uint r =  0;
-    bb ^= x;
 	if (!(x & 0xffffffff)) { x >>= 32; r |= 32; }
 	if (!(x & 0xffff)) { x >>= 16; r |= 16; }
 	if (!(x & 0xff)) { x >>= 8; r |= 8; }

@@ -60,7 +60,7 @@ GameList::~GameList()
 
 void GameList::slotItemSelected(const QModelIndex& index)
 {
-    scrollTo(index);
+    scrollTo(index, EnsureVisible);
 }
 
 void GameList::itemSelected(const QModelIndex& index)
