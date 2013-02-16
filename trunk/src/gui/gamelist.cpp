@@ -37,7 +37,8 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 	connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
 	connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
-
+    connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+            this, SLOT(slotItemSelected(QModelIndex)));
 #if QT_VERSION < 0x050000
     horizontalHeader()->setClickable(true);
 #else
@@ -55,6 +56,11 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 GameList::~GameList()
 {
     delete m_model;
+}
+
+void GameList::slotItemSelected(const QModelIndex& index)
+{
+    scrollTo(index);
 }
 
 void GameList::itemSelected(const QModelIndex& index)

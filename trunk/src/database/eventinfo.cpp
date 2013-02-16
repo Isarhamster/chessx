@@ -66,7 +66,9 @@ float EventInfo::toPoints(const QString& res) const
     else if (res.startsWith('1')) return 1.0;
     else if (res.startsWith('0')) return 0.0;
     else if (res.startsWith("+-")) return 1.0;
-    else if (res.startsWith("-+")) return 0;
+    else if (res.startsWith("-+")) return 0.0;
+    else if (res.startsWith("+--")) return 1.0;
+    else if (res.startsWith("--+")) return 0.0;
     else return Unknown;
 }
 
