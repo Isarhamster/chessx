@@ -166,8 +166,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_gameList->setMinimumSize(150, 100);
 	connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
 	connect(m_gameList, SIGNAL(searchDone()), SLOT(slotFilterChanged()));
-    connect(m_gameList, SIGNAL(requestCopyGame()), SLOT(slotDatabaseCopySingle()));
-    connect(m_gameList, SIGNAL(requestDeleteGame()), SLOT(slotDatabaseDeleteGame()));
+    connect(m_gameList, SIGNAL(requestCopyGame(int)), SLOT(slotDatabaseCopySingle(int)));
+    connect(m_gameList, SIGNAL(requestDeleteGame(int)), SLOT(slotDatabaseDeleteGame(int)));
     connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
     connect(this, SIGNAL(reconfigure()), m_gameList, SLOT(slotReconfigure()));
     gameListDock->setWidget(m_gameList);
@@ -224,8 +224,10 @@ MainWindow::MainWindow() : QMainWindow(),
             this, SLOT(slotFileCloseName(QString)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
-    connect(m_databaseList, SIGNAL(requestAppendGame(QString,const Game&)),
-            this, SLOT(copyGame(QString,const Game&)));
+    connect(m_databaseList, SIGNAL(requestAppendGame(QString,int)),
+            this, SLOT(copyGame(QString,int)));
+    connect(m_databaseList, SIGNAL(requestAppendDatabase(QString,QString)),
+            this, SLOT(copyDatabase(QString,QString)));
     connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));
     m_databaseList->addFileOpen(QString(), false);
     m_databaseList->setFileCurrent(QString());
@@ -485,6 +487,30 @@ QString MainWindow::databaseName(int index) const
 	if (name.isEmpty())
 		return tr("[Clipboard]");
 	return name;
+}
+
+Database* MainWindow::getDatabaseByPath(QString path)
+{
+    if (DatabaseInfo* dbInfo = getDatabaseInfoByPath(path))
+    {
+        if (dbInfo->isValid())
+        {
+            return dbInfo->database();
+        }
+    }
+    return 0;
+}
+
+DatabaseInfo* MainWindow::getDatabaseInfoByPath(QString path)
+{
+    for (int i=0; i < m_databases.count(); ++i)
+    {
+        if (m_databases[i]->filePath() == path)
+        {
+            return m_databases[i];
+        }
+    }
+    return 0;
 }
 
 Game& MainWindow::game()

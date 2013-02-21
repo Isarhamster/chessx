@@ -183,6 +183,23 @@ QVariant DatabaseListModel::headerData(int section, Qt::Orientation orientation,
         return QString("%1").arg(section);
 }
 
+Qt::ItemFlags DatabaseListModel::flags( const QModelIndex &index ) const
+{
+    Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+
+    if (index.isValid())
+    {
+        if (m_databases.at(index.row()).m_state == EDBL_OPEN)
+            return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags | Qt::ItemIsSelectable;
+        else
+            return defaultFlags | Qt::ItemIsSelectable;
+    }
+    else
+    {
+        return Qt::ItemIsDropEnabled | defaultFlags | Qt::ItemIsSelectable;
+    }
+}
+
 DatabaseListEntry* DatabaseListModel::FindEntry(QString s)
 {
     QMutableListIterator<DatabaseListEntry> i(m_databases);

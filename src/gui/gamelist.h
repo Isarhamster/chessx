@@ -70,15 +70,17 @@ signals:
 	void selected(int);
 	void searchDone();
     void raiseRequest();
-    void requestCopyGame();
-    void requestDeleteGame();
+    void requestCopyGame(int);
+    void requestDeleteGame(int);
     void requestGameData(Game&);
 
 protected: //Drag'n'Drop Support
+    void startDrag(Qt::DropActions supportedActions);
     void startToDrag(const QModelIndex&);
 
 private:
 	FilterModel* m_model;
+    QModelIndex m_index;
 };
 
 #endif

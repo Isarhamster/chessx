@@ -40,6 +40,8 @@ public:
 	/** Returns the header information for header 'section' */
 	virtual QVariant headerData(int section, Qt::Orientation orientation,
 				    int role = Qt::DisplayRole) const;
+    /** Return flags for items (especially drag drop hints) */
+    Qt::ItemFlags flags( const QModelIndex &index ) const;
 	/** No tree - always return invalid parent */
 	virtual QModelIndex parent(const QModelIndex&) const  {return QModelIndex();}
 	/** No tree - always return self */

@@ -29,6 +29,7 @@ bool MemoryDatabase::appendGame(const Game& game)
 	// Add to index
 	QMap <QString, QString> tags = game.tags();
 	QMap <QString, QString>::const_iterator i = tags.constBegin();
+    m_count = m_index.add();
 	while (i != tags.constEnd()) {
         m_index.setTag(i.key(), i.value(), m_count);
 		++i;
@@ -85,7 +86,7 @@ void MemoryDatabase::loadGameMoves(int index, Game& game)
 
 bool MemoryDatabase::loadGame(int index, Game& game)
 {
-    if (index >= m_count || m_index.deleted(index))
+    if (index<0 || index >= m_count || m_index.deleted(index))
     {
 		return false;
     }

@@ -6,6 +6,7 @@
 #define GAMEMIMEDATA_H
 
 #include <QMimeData>
+#include <QModelIndex>
 #include "game.h"
 
 class GameMimeData : public QMimeData
@@ -13,7 +14,15 @@ class GameMimeData : public QMimeData
     Q_OBJECT
 
 public:
-    Game m_game;
+    int m_index;
+};
+
+class DbMimeData : public QMimeData
+{
+    Q_OBJECT
+
+public:
+    QString m_path;
 };
 
 #endif // GAMEMIMEDATA_H
