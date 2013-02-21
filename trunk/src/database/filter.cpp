@@ -87,6 +87,7 @@ bool Filter::contains(int game) const
     }
     return false;
 }
+
 int Filter::gamePosition(int game) const
 {
     if (m_vector->contains(game))
