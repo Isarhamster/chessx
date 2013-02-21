@@ -1096,6 +1096,22 @@ void MainWindow::copyDatabase(QString target, QString src)
             }
             pDestDBInfo->filter()->resize(pDestDB->count(), true);
         }
+        else if (!pSrcDB && !pDestDB)
+        {
+            QFile fSrc(src);
+            QFile fDest(target);
+            if( fSrc.open( QIODevice::ReadOnly ) &&
+                fDest.open( QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+            {
+                while(!fSrc.atEnd())
+                {
+                    QByteArray line = fSrc.readLine();
+                    fDest.write(line);
+                }
+            }
+            fDest.close();
+            m_databaseList->update(target);
+        }
     }
 }
 
