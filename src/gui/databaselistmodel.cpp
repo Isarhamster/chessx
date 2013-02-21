@@ -189,10 +189,7 @@ Qt::ItemFlags DatabaseListModel::flags( const QModelIndex &index ) const
 
     if (index.isValid())
     {
-        if (m_databases.at(index.row()).m_state == EDBL_OPEN)
-            return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags | Qt::ItemIsSelectable;
-        else
-            return defaultFlags | Qt::ItemIsSelectable;
+        return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags | Qt::ItemIsSelectable;
     }
     else
     {
