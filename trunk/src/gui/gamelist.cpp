@@ -60,13 +60,13 @@ GameList::~GameList()
 
 void GameList::slotItemSelected(const QModelIndex& index)
 {
+    m_index = index;
     scrollTo(index, EnsureVisible);
 }
 
 void GameList::itemSelected(const QModelIndex& index)
 {
 	emit selected(m_model->filter()->indexToGame(index.row()));
-    startToDrag(index);
 }
 
 void GameList::setFilter(Filter* filter)
@@ -78,6 +78,7 @@ void GameList::setFilter(Filter* filter)
 void GameList::slotContextMenu(const QPoint& pos)
 {
     QModelIndex cell = indexAt(pos);
+    m_index = cell;
     QModelIndexList selection = selectedIndexes();
     // Make sure the right click occured on a cell!
     if (cell.isValid() && selection.contains(cell))
@@ -216,18 +217,18 @@ void GameList::updateFilter()
 
 void GameList::slotCopyGame()
 {
-    emit requestCopyGame();
+    emit requestCopyGame(m_model->filter()->indexToGame(m_index.row()));
 }
 
 void GameList::slotDeleteGame()
 {
-    emit requestDeleteGame();
+    emit requestDeleteGame(m_model->filter()->indexToGame(m_index.row()));
 }
 
-void GameList::startToDrag(const QModelIndex&)
+void GameList::startToDrag(const QModelIndex& index)
 {
     GameMimeData *mimeData = new GameMimeData;
-    emit requestGameData(mimeData->m_game);
+    mimeData->m_index = m_model->filter()->indexToGame(index.row());
     QPixmap pixmap = style()->standardPixmap(QStyle::SP_FileIcon);
 
     QDrag* pDrag = new QDrag(this);
@@ -238,3 +239,7 @@ void GameList::startToDrag(const QModelIndex&)
     pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
 }
 
+void GameList::startDrag(Qt::DropActions /*supportedActions*/)
+{
+    startToDrag(m_index);
+}

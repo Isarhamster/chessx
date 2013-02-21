@@ -1026,16 +1026,25 @@ void MainWindow::slotDatabaseChange()
 	}
 }
 
-void MainWindow::copyGame(int target, const Game& game)
+void MainWindow::copyGame(int target, int index)
 {
     if (m_databases[target]->isValid())
     {
-        // The database is open and accessible
-        m_databases[target]->database()->appendGame(game);
+        Game g;
+        if (database()->loadGame(index, g))
+        {
+            QString fileName = m_databases[target]->filePath();
+            QString msg;
+            msg = QString("Append game %1 to %2.").arg(index+1).arg(fileName.isEmpty() ? "ClipBoard" : fileName);
+            statusBar()->showMessage(msg);
+
+            // The database is open and accessible
+            m_databases[target]->database()->appendGame(g);
+        }
     }
 }
 
-void MainWindow::copyGame(QString fileName, const Game& game)
+void MainWindow::copyGame(QString fileName, int index)
 {
     for (int i=0; i < m_databases.count(); ++i)
     {
@@ -1043,7 +1052,7 @@ void MainWindow::copyGame(QString fileName, const Game& game)
         {
             if (m_databases[i]->isValid())
             {
-                copyGame(i,game);
+                copyGame(i,index);
                 m_databases[i]->filter()->resize(m_databases[i]->database()->count(), true);
             }
             return;
@@ -1052,9 +1061,42 @@ void MainWindow::copyGame(QString fileName, const Game& game)
 
     // The database is closed
     Output writer(Output::Pgn);
-    Game g = game;
-    writer.append(fileName, g);
-    m_databaseList->update(fileName);
+    Game g;
+    if (database()->loadGame(index, g))
+    {
+        QString msg;
+        msg = QString("Append game %1 to %2.").arg(index+1).arg(fileName.isEmpty() ? "ClipBoard" : fileName);
+        statusBar()->showMessage(msg);
+
+        writer.append(fileName, g);
+        m_databaseList->update(fileName);
+    }
+}
+
+void MainWindow::copyDatabase(QString target, QString src)
+{
+    if (target != src)
+    {
+        Database* pSrcDB = getDatabaseByPath(src);
+        Database* pDestDB = getDatabaseByPath(target);
+        DatabaseInfo* pDestDBInfo = getDatabaseInfoByPath(target);
+
+        if (pDestDBInfo && pSrcDB && pDestDB && (pSrcDB != pDestDB))
+        {
+            QString msg;
+            msg = QString("Append games from %1 to %2.").arg(src).arg(target.isEmpty() ? "ClipBoard" : target);
+            statusBar()->showMessage(msg);
+            for (int i = 0; i < pSrcDB->count(); ++i)
+            {
+                Game g;
+                if (pSrcDB->loadGame(i, g))
+                {
+                    pDestDB->appendGame(g);
+                }
+            }
+            pDestDBInfo->filter()->resize(pDestDB->count(), true);
+        }
+    }
 }
 
 void MainWindow::slotDatabaseCopy(int preselect)
@@ -1097,7 +1139,7 @@ void MainWindow::slotDatabaseCopy(int preselect)
     m_databases[target]->filter()->resize(m_databases[target]->database()->count(), true);
 }
 
-void MainWindow::slotDatabaseCopySingle()
+void MainWindow::slotDatabaseCopySingle(int n)
 {
     slotDatabaseCopy(0);
 }
@@ -1203,16 +1245,15 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
         slotBoardMove(m.from(), m.to(), 0);
 }
 
-void MainWindow::slotDatabaseDeleteGame()
+void MainWindow::slotDatabaseDeleteGame(int n)
 {
-    int n = gameIndex();
-    if (database()->deleted(n))
+   if (database()->deleted(n))
     {
-        database()->undelete(gameIndex());
+        database()->undelete(n);
     }
     else
     {
-        database()->remove(gameIndex());
+        database()->remove(n);
     }
     m_gameList->updateFilter();
 }

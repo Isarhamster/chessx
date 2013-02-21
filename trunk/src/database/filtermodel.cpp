@@ -119,6 +119,16 @@ QVariant FilterModel::headerData(int section, Qt::Orientation orientation, int r
 		return QString("%1").arg(section);
 }
 
+Qt::ItemFlags FilterModel::flags( const QModelIndex &index ) const
+{
+    Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+
+    if (index.isValid())
+        return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags | Qt::ItemIsSelectable;
+    else
+        return Qt::ItemIsDropEnabled | defaultFlags | Qt::ItemIsSelectable;
+}
+
 QModelIndex FilterModel::index(int row, int column, const QModelIndex& parent) const
 {
 	if (parent.isValid())

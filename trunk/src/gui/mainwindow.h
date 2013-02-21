@@ -18,6 +18,7 @@
 #include <QtGui>
 #include <QAction>
 #include <QMainWindow>
+#include <QUndoGroup>
 
 class Analysis;
 class AnalysisWidget;
@@ -136,7 +137,9 @@ public slots:
 	void slotEditTruncateEnd();
 	/** Truncate moves from the beginning of the game. */
 	void slotEditTruncateStart();
+    /**  */
 	void slotReconfigure();
+    /**  */
 	void slotConfigure();
 	/** About ChessX */
 	void slotHelpAbout();
@@ -270,11 +273,11 @@ public slots:
 	/** Copy games between databases. */
     void slotDatabaseCopy(int preselect = 1);
     /** Copy games between databases. */
-    void slotDatabaseCopySingle();
+    void slotDatabaseCopySingle(int n);
 	/** Database was changed - change informations. */
 	void slotDatabaseChanged();
 	/** Delete current game. */
-	void slotDatabaseDeleteGame();
+    void slotDatabaseDeleteGame(int n);
 	/** Delete all game in filter. */
 	void slotDatabaseDeleteFilter();
 	/** Compact database by removing obsolete information. */
@@ -284,7 +287,9 @@ public slots:
     /** Fill up the current game (drag request from game list) */
     void slotGetGameData(Game& g);
     /** Copy game from other database by drag'n'drop */
-    void copyGame(QString fileName, const Game& game);
+    void copyGame(QString fileName, int index);
+    /** Copy all games from other database by drag'n'drop */
+    void copyDatabase(QString target, QString src);
     /** Request renaming a event in the current database */
     void slotRenameEvent(QString ts);
     /** Request renaming a player in the current database */
@@ -293,7 +298,9 @@ public slots:
     void slotRenameRequest(QString tag, QString newValue, QString oldValue);
 
 protected slots:
+    /** Receiver for a failed loading of a database */
     void loadError(QUrl url);
+    /** Receiver for a successful loading of a database */
     void loadReady(QUrl url, QString fileName);
     /** Remove Color of the square in m_annotationSquare */
     void slotNoColorSquare();
@@ -313,7 +320,9 @@ protected slots:
     void slotRedArrowHere();
 
 protected:
-    void copyGame(int target, const Game& game);
+    void copyGame(int target, int index);
+    Database* getDatabaseByPath(QString path);
+    DatabaseInfo* getDatabaseInfoByPath(QString path);
 
 signals:
 	/** Re-read configuration. */
@@ -408,6 +417,7 @@ private:
     QAction* m_training;
     QAction* m_autoPlay;
     QAction* m_autoAnalysis;
+    QUndoGroup m_undoGroup;
 };
 
 

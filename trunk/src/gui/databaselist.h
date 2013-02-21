@@ -36,16 +36,21 @@ signals:
     void requestOpenDatabase(QString s, bool utf8);
     void requestCloseDatabase(QString s);
     void requestLinkDatabase(QString s);
-    void requestAppendGame(QString path, const Game& game);
+    void requestAppendGame(QString path, int index);
+    void requestAppendDatabase(QString dest, QString src);
+
+protected: //Drag'n'Drop Support
+    void startToDrag(const QModelIndex&);
 
 protected:
+    void startDrag(Qt::DropActions supportedActions);
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
 
-    void appendGameToDataBase(QPoint, const Game& g);
-
+    void appendGameToDataBase(QModelIndex index, int gameIndex);
+    void appendDataBaseToDataBase(QPoint pos, QString src);
 
 private slots:
     void itemSelected(const QModelIndex& index);

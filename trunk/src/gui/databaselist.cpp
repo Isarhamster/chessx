@@ -37,7 +37,7 @@ DatabaseList::DatabaseList(QWidget *parent) :
     connect(m_model, SIGNAL(OnSelectIndex(const QModelIndex &)), SLOT(slotCurrentIndexChanged (const QModelIndex &)));
 
     setAlternatingRowColors(true);
-    setDragEnabled(false);
+    setDragEnabled(true);
     setAcceptDrops(true);
 
     setColumnWidth(DBLV_FAVORITE, 50);
@@ -237,8 +237,9 @@ void DatabaseList::dragEnterEvent(QDragEnterEvent *event)
 
     const QMimeData *mimeData = event->mimeData();
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
 
-    if (gameMimeData || event->mimeData()->hasUrls())
+    if (gameMimeData || dbMimeData || event->mimeData()->hasUrls())
         event->acceptProposedAction();
 }
 
@@ -258,9 +259,15 @@ void DatabaseList::dropEvent(QDropEvent *event)
 {
     const QMimeData *mimeData = event->mimeData();
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
     if (gameMimeData)
     {
-        appendGameToDataBase(event->pos(), gameMimeData->m_game);
+        QModelIndex index = indexAt(event->pos());
+        appendGameToDataBase(index, gameMimeData->m_index);
+    }
+    else if (dbMimeData)
+    {
+        appendDataBaseToDataBase(event->pos(), dbMimeData->m_path);
     }
     else if (mimeData->hasUrls())
     {
@@ -283,13 +290,42 @@ void DatabaseList::dropEvent(QDropEvent *event)
     event->acceptProposedAction();
 }
 
-void DatabaseList::appendGameToDataBase(QPoint pos, const Game& g)
+void DatabaseList::appendGameToDataBase(QModelIndex index, int gameIndex)
 {
-    m_cell = indexAt(pos);
     // Make sure the drop occured on a cell!
-    if (m_cell.isValid())
+    if (index.isValid())
     {
-        QString path = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
-        emit requestAppendGame(path, g);
+        QString path = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
+        emit requestAppendGame(path, gameIndex);
     }
+}
+
+void DatabaseList::appendDataBaseToDataBase(QPoint pos, QString src)
+{
+    QModelIndex index = indexAt(pos);
+    // Make sure the drop occured on a cell!
+    if (index.isValid())
+    {
+        QString path = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
+        emit requestAppendDatabase(path, src);
+    }
+}
+
+void DatabaseList::startToDrag(const QModelIndex& index)
+{
+    DbMimeData *mimeData = new DbMimeData;
+    mimeData->m_path = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
+
+    QPixmap pixmap = style()->standardPixmap(QStyle::SP_FileIcon);
+
+    QDrag* pDrag = new QDrag(this);
+    pDrag->setMimeData(mimeData);
+    pDrag->setPixmap(pixmap);
+
+    pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+}
+
+void DatabaseList::startDrag(Qt::DropActions supportedActions)
+{
+    startToDrag(currentIndex());
 }
