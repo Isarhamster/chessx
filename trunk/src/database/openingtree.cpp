@@ -99,7 +99,8 @@ void OpeningTreeUpdater::run()
     for (int i = 0; i < m_filter->size(); ++i) {
         m_filter->database()->loadGameMoves(i, g);
         int id = g.findPosition(m_board);
-        if (id != NO_MOVE)	{
+        if (id != NO_MOVE)
+        {
             if (m_updateFilter)
             {
                 m_filter->set(i, id + 1); // not zero means success, but id could be 0.
