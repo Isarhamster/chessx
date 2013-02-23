@@ -736,8 +736,12 @@ bool BitBoard::fromGoodFen(const QString& qfen)
     m_moveNumber = fen.mid(i).toInt();
     while (c >= '0' && c <= '9')
         c = fen[++i];
-    if (m_moveNumber < 1)
-        return false;
+
+    if( m_moveNumber <= 0)
+    {
+        // Silently ignore illegal movenumber
+        m_moveNumber = 1;
+    }
 
     return true;
 }
