@@ -90,9 +90,7 @@ bool Filter::contains(int game) const
 
 int Filter::gamePosition(int game) const
 {
-    if (m_vector->contains(game))
-        return m_vector->at(game);
-    return 0;
+    return m_vector->at(game);
 }
 
 int Filter::count() const

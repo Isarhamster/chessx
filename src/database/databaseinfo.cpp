@@ -105,7 +105,9 @@ bool DatabaseInfo::loadGame(int index, bool reload)
 	if (!m_database->loadGame(index, m_game))
 		return false;
 	m_index = index;
-	m_game.moveToId(m_filter->gamePosition(index)-1);
+    int n = m_filter->gamePosition(index)-1;
+    if (n<0) n=0;
+    m_game.moveToId(n);
 	m_game.setModified(false);
 	return true;
 }
