@@ -56,15 +56,15 @@ int SaveDialog::save(Database* database, Game& game)
     QString baseName = database->name();
     if (baseName.isEmpty()) baseName = tr("ClipBoard");
 
-    if (game.tag("White").isEmpty() && game.tag("Black").isEmpty())
+    if (game.tag(TagNameWhite).isEmpty() && game.tag(TagNameBlack).isEmpty())
     {
         gameTitle = "Save game to ";
     }
     else
     {
-        QString name1 = game.tag("White");
+        QString name1 = game.tag(TagNameWhite);
         if (name1.isEmpty()) name1 = "?";
-        QString name2 = game.tag("Black");
+        QString name2 = game.tag(TagNameBlack);
         if (name2.isEmpty()) name2 = "?";
 
         gameTitle = QString("Save game '%1 vs. %2' to ").arg(name1).arg(name2);
@@ -73,16 +73,18 @@ int SaveDialog::save(Database* database, Game& game)
 
     setWindowTitle(gameTitle);
 
-	ui.whiteEdit->setText(game.tag("White"));
+    ui.whiteEdit->setText(game.tag(TagNameWhite));
 	ui.whiteEloEdit->setText(game.tag("WhiteElo"));
-	ui.blackEdit->setText(game.tag("Black"));
+    ui.blackEdit->setText(game.tag(TagNameBlack));
 	ui.blackEloEdit->setText(game.tag("BlackElo"));
 	ui.eventEdit->setText(game.tag("Event"));
 	ui.siteEdit->setText(game.tag("Site"));
 	ui.roundEdit->setText(game.tag("Round"));
 	ui.dateEdit->setText(game.tag("Date"));
 	ui.eventDateEdit->setText(game.tag("EventDate"));
-	QList<QAbstractButton*> buttons = ui.result1Button->group()->buttons();
+    ui.whiteTeamEdit->setText(game.tag(TagNameWhiteTeam));
+    ui.blackTeamEdit->setText(game.tag(TagNameBlackTeam));
+    QList<QAbstractButton*> buttons = ui.result1Button->group()->buttons();
     for (int i = 0; i < buttons.count(); ++i)
 		if (buttons[i]->text() == game.tag("Result"))
 			buttons[i]->setChecked(true);
@@ -92,7 +94,8 @@ int SaveDialog::save(Database* database, Game& game)
     setLineEdit(ui.siteEdit,  database, TagNameSite);
     setLineEdit(ui.eventEdit, database, TagNameEvent);
 	int result = QDialog::exec();
-    if (result == Accepted) {
+    if (result == Accepted)
+    {
 		game.setTag("White", formatTagValue(ui.whiteEdit->text()));
 		game.setTag("Black", formatTagValue(ui.blackEdit->text()));
 		game.setTag("Event", formatTagValue(ui.eventEdit->text()));
@@ -102,21 +105,34 @@ int SaveDialog::save(Database* database, Game& game)
 		game.setTag("EventDate", formatTagDate(ui.eventDateEdit->text()));
 		game.setTag("Result", ui.result1Button->group()->checkedButton()->text());
 		// Optional tag
-		if (ui.whiteEloEdit->text().toInt() || game.tag("WhiteElo").toInt())
+        if (ui.whiteEloEdit->text().toInt() || game.tag(TagNameWhiteElo).toInt())
 			game.setTag("WhiteElo", ui.whiteEloEdit->text());
-		if (ui.whiteEloEdit->text().toInt() || game.tag("BlackElo").toInt())
+        if (ui.whiteEloEdit->text().toInt() || game.tag(TagNameBlackElo).toInt())
 			game.setTag("BlackElo", ui.blackEloEdit->text());
 
         QString t = ui.timeControl->text();
         QString format = "H:mm:ss";
-        if (!t.isEmpty() || !game.tag("TimeControl").isEmpty())
-            game.setTag("TimeControl", t);
-        t = ui.whiteStartTime->time().toString(format);
-        if (!t.isEmpty() || !game.tag("WhiteClock").isEmpty())
-            game.setTag("WhiteClock", t);
-        t = ui.blackStartTime->time().toString(format);
-        if (!t.isEmpty() || !game.tag("BlackClock").isEmpty())
-            game.setTag("BlackClock", t);
+        if (!t.isEmpty()) game.setTag("TimeControl", t);
+
+        QTime tt = ui.whiteStartTime->time();
+        if (tt.secsTo(QTime(0,0))>0)
+        {
+            t = tt.toString(format);
+            game.setTag(TagNameWhiteClock, t);
+        }
+
+        tt = ui.blackStartTime->time();
+        if (tt.secsTo(QTime(0,0))>0)
+        {
+            t = tt.toString(format);
+            game.setTag(TagNameBlackClock, t);
+        }
+
+        t = ui.whiteTeamEdit->text();
+        if (!t.isEmpty()) game.setTag(TagNameWhiteTeam, t);
+
+        t = ui.blackTeamEdit->text();
+        if (!t.isEmpty()) game.setTag(TagNameBlackTeam, t);
 	}
 	return result;
 }
