@@ -126,8 +126,12 @@ static const QString TagNameSite     = "Site";
 static const QString TagNameRound    = "Round";
 static const QString TagNameDate     = "Date";
 static const QString TagNamePlyCount = "PlyCount";
+static const QString TagNameWhiteClock = "WhiteClock";
+static const QString TagNameBlackClock = "BlackClock";
 static const QString TagNameWhiteElo = "WhiteElo";
 static const QString TagNameBlackElo = "BlackElo";
+static const QString TagNameWhiteTeam = "WhiteTeam";
+static const QString TagNameBlackTeam = "BlackTeam";
 
 const QString StandardTags[7] = {"Event", "Site", "Date", "Round", "White", "Black", "Result"};
 
