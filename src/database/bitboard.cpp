@@ -739,11 +739,8 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 
     if( m_moveNumber <= 0)
     {
-        // Silently ignore illegal movenumber
-        if (m_stm == Black)
-        {
-            m_moveNumber = 2;
-        }
+        // Silently fix illegal movenumber
+        m_moveNumber = 1;
     }
 
     return true;
