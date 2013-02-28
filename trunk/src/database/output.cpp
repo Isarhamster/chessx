@@ -462,7 +462,10 @@ QString Output::output(Game* game, bool upToCurrentMove)
 		}
 	}
 
-    return m_output.toLatin1();
+    if (this->m_outputType == Pgn)
+        return m_output.toLatin1();
+    else
+        return m_output;
 }
 
 void Output::output(QTextStream& out, Filter& filter)
