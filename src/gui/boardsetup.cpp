@@ -59,7 +59,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_wheelCu
 	connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
 	connect(ui.clearButton, SIGNAL(clicked()), SLOT(slotClear()));
 	connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
-    connect(ui.boardView, SIGNAL(clicked(Square, int, QPoint)), SLOT(slotSelected(Square, int)));
+    connect(ui.boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotSelected(Square, int)));
     connect(ui.boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotMovePiece(Square, Square)));
     connect(ui.boardView, SIGNAL(copyPiece(Square, Square)), SLOT(slotCopyPiece(Square, Square)));
     connect(ui.boardView, SIGNAL(invalidMove(Square)), SLOT(slotInvalidMove(Square)));

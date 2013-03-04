@@ -184,7 +184,7 @@ void MainWindow::slotFileCloseIndex(int n)
     {
         if (m_databases[n]->IsLoaded())
         {
-            m_databaseList->setFileClose(m_databases[n]->filePath(), databaseInfo()->currentIndex());
+            m_databaseList->setFileClose(m_databases[n]->filePath(), m_databases[n]->currentIndex());
             m_databases[n]->close();
             delete m_databases[n];
             m_databases.removeAt(n);
@@ -633,10 +633,7 @@ void MainWindow::loadNextGame()
 
 void MainWindow::slotGameLoadNext()
 {
-    if (QuerySaveGame())
-    {
-        loadNextGame();
-    }
+    loadNextGame();
 }
 
 void MainWindow::slotGameLoadRandom()
@@ -704,6 +701,10 @@ bool MainWindow::slotGameSave()
     if (n==QDialog::Accepted)
     {
         saveGame();
+    }
+    else if (n==SaveDialog::Discard)
+    {
+        game().setModified(false); // Do not notify more than once
     }
     return (n!=QDialog::Rejected);
 }
