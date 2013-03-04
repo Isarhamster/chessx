@@ -1079,6 +1079,10 @@ bool MainWindow::confirmQuit()
 							*(m_databases[i]->database()));
 		}
 	}
+    for (int i = 1; i < m_databases.size(); i++)
+    {
+        slotFileCloseIndex(i);
+    }
 	return true;
 }
 

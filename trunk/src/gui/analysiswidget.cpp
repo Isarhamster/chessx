@@ -231,7 +231,7 @@ void AnalysisWidget::updateAnalysis()
 		text.append(a.toString(m_board) + "<br>");
 	if (!m_tablebaseEvaluation.isEmpty())
     {
-        text.append(tr("<a href=\"0\">[+]</a> <b>Tablebase:</b> ") + m_tablebaseEvaluation);
+        text.append(tr("<a href=\"0\" title=\"Click to add move to game\">[+]</a> <b>Tablebase:</b> ") + m_tablebaseEvaluation);
     }
 	ui.variationText->setText(text);
 }
