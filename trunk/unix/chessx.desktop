@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=ChessX
+Comment=Free chess database
+GenericName=Chess Game
+Icon=chessx
+Exec=chessx
+Terminal=false
+Categories=Game;BoardGame;
+MimeType=application/x-chess-pgn;
