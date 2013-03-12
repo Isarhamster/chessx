@@ -46,7 +46,6 @@
         <file alias="help/about5.html">data/help/about5.html</file>
         <file alias="chessx.eco">data/chessx.eco</file>
         <file alias="chessx.gtm">data/chessx.gtm</file>
-        <file alias="themes/rudolph.png">data/themes/rudolph.png</file>
         <file alias="images/circle_black.svg">data/images/circle_black.svg</file>
         <file alias="images/circle_blue.svg">data/images/circle_blue.svg</file>
         <file alias="images/circle_green.svg">data/images/circle_green.svg</file>
