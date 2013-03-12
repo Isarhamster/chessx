@@ -1,3 +1,49 @@
+March 2013 Version 0.9.6
+
+        - Bugfix / Feature removal: Filtering opening tree was somewhat active
+
+        - Bugfix: (thx to James!) Promoting into different pieces cannot start
+        - Bugfix: Before closing a database ask to save a new or modified game
+        - Bugfix: CR#3596577 - Game modifications lost when changing a game
+        - Bugfix: Ctrl+Drag in BoardSetup-Dialog loses a button
+        - Bugfix: DatabaseList view shows Linked local files with annoying scheme
+        - Bugfix: Drawing board when resizing off by 1
+        - Bugfix: Enable Escape-Key for Dialogs
+        - Bugfix: Flickering with OpeningTree open
+        - Bugfix: New Game did not clear the tags from the last game
+        - Bugfix: Openening ECO files missed some checks
+        - Bugfix: Opening ZIP or URL from Commandline or event loop was missing
+        - Bugfix: Parsing half move count in FEN (Francis Monkman)
+        - Bugfix: Removing a variation removed the wrong variation
+        - Bugfix: Saving a database did not reset the modified flag resulting in
+        - Bugfix: Selected wrong game when deleting games from Database 
+        
+        - New Feature: Accept FENs which do not have a valid EnPassant Encoding
+        - New Feature: AutoPlayer
+        - New Feature: Continuous Blunder Checking
+        - New Feature: Drag Drop complete db onto other db
+        - New Feature: Player List with linked ECO filtering
+        - New Feature: PlayerList gives hints on openings played
+        - New Feature: Sorting the list of databases with header click
+        - New Feature: Support Team Tags when saving games
+        - New feature: Accept FEN with invalid movenumber (James Coons suggestion)
+        - New feature: Reload last game at open of database
+        - New feature: Mass changing tags in database (Events, Player Names)
+        - New feature: Shift+Rightclick on Boardview allows editing of colored
+        - New feature: Training mode
+        - New feature: Numbering variations
+        - New feature: Refactor complete game (uncomment / remove all variations)
+        - New feature: Saving a game can now be either cancelled (the new option)
+        - New feature: Edit square colors like in chessbase with Shift+Right-
+        - New feature: Delete games from a database
+        - New feature: Auto Analysis with Engine 1 of one or more games
+        - New feature: Clear cache between database changes
+        - New feature: Reorder variations - CR#3558001
+        - New feature: Force adding a move as variation by pressing ALT while
+        - New feature: Copy Fen in human readable form - CR#3580030
+        - New feature: DatabaseList double click opens file
+	- New feature: Highlight last move done when scrolling through a game
+
 December 2012 Version 0.9.4
 
         - Bugfix: Writing of files automatically made use of UTF8 instead of ANSI
