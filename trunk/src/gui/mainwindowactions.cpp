@@ -665,6 +665,7 @@ void MainWindow::slotGameNew()
         if (QuerySaveGame())
         {
             databaseInfo()->newGame();
+            m_gameList->clearSelection();
             slotGameChanged();
         }
 	}
@@ -822,6 +823,7 @@ void MainWindow::slotGameChanged()
 	if (header.length() > 8)
 		title.append(QString("<br>") + header);
     m_gameTitle->setText(QString("<qt>%1</qt>").arg(title));
+
 	slotMoveChanged();
 }
 
