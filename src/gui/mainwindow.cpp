@@ -532,11 +532,18 @@ void MainWindow::gameLoad(int index, bool force, bool reload)
     if (QuerySaveGame())
     {
         if (databaseInfo()->loadGame(index, reload))
+        {
             m_gameList->selectGame(index);
+        }
         else if (!force)
+        {
             return;
+        }
         else
+        {
             databaseInfo()->newGame();
+            m_gameList->clearSelection();
+        }
         slotGameChanged();
     }
 }
