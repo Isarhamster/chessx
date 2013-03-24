@@ -263,9 +263,31 @@ void MainWindow::slotReconfigure()
     {
         setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AllowNestedDocks);
     }
+    slotToggleStayOnTop();
     m_recentFiles.restore();
     updateMenuRecent();
     emit reconfigure(); 	// Re-emit for children
+}
+
+void MainWindow::slotToggleStayOnTop()
+{
+    QAction* stayOnTop = (QAction*) sender();
+    if (stayOnTop)
+    {
+        AppSettings->setValue("/MainWindow/StayOnTop",stayOnTop->isChecked());
+    }
+
+    Qt::WindowFlags flags = windowFlags();
+    bool visible = isVisible();
+    if (AppSettings->getValue("/MainWindow/StayOnTop").toBool())
+    {
+        setWindowFlags(flags | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
+    }
+    else
+    {
+        setWindowFlags(flags &~ (Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint));
+    }
+    if (visible) show();
 }
 
 void MainWindow::slotConfigureFlip()
