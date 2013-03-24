@@ -318,6 +318,8 @@ protected slots:
     void slotYellowArrowHere();
     /** Draw a red arrow */
     void slotRedArrowHere();
+    /** Set the Stay On Top Property */
+    void slotToggleStayOnTop();
 
 protected:
     void copyGame(int target, int index);

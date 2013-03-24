@@ -86,15 +86,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Output */
 	m_output = new Output(Output::NotationWidget);
 
-    if (AppSettings->getValue("/MainWindow/VerticalTabs").toBool())
-    {
-        setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks | QMainWindow::VerticalTabs);
-    }
-    else
-    {
-        setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AllowNestedDocks);
-    }
-
 	/* Board */
     m_boardSplitter = new QSplitter(Qt::Horizontal);
 	m_boardSplitter->setChildrenCollapsible(false);
@@ -948,6 +939,12 @@ void MainWindow::setupActions()
 
 	/* View menu */
 	m_menuView = menuBar()->addMenu(tr("&View"));
+
+    QAction* stayOnTop = createAction(tr("Stay on Top"), SLOT(slotToggleStayOnTop()));
+    stayOnTop->setCheckable(true);
+    stayOnTop->setChecked(AppSettings->getValue("/MainWindow/StayOnTop").toBool());
+    m_menuView->addAction(stayOnTop);
+    m_menuView->addSeparator();
 
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
