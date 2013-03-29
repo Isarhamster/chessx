@@ -940,11 +940,15 @@ void MainWindow::setupActions()
 	/* View menu */
 	m_menuView = menuBar()->addMenu(tr("&View"));
 
+#if defined(Q_OS_WIN)
     QAction* stayOnTop = createAction(tr("Stay on Top"), SLOT(slotToggleStayOnTop()));
     stayOnTop->setCheckable(true);
     stayOnTop->setChecked(AppSettings->getValue("/MainWindow/StayOnTop").toBool());
     m_menuView->addAction(stayOnTop);
     m_menuView->addSeparator();
+#else
+    AppSettings->setValue("/MainWindow/StayOnTop", false);
+#endif
 
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
