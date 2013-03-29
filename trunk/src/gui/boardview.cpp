@@ -497,13 +497,9 @@ void BoardView::configure()
     m_showCurrentMove = AppSettings->getValue("showCurrentMove").toBool();
     m_guessMove = AppSettings->getValue("guessMove").toBool();
     m_minDeltaWheel = AppSettings->getValue("minWheelCount").toInt();
-    m_theme.setColor(BoardTheme::LightSquare, AppSettings->getValue("lightColor").value<QColor>());
-    m_theme.setColor(BoardTheme::DarkSquare, AppSettings->getValue("darkColor").value<QColor>());
-    m_theme.setColor(BoardTheme::Highlight, AppSettings->getValue("highlightColor").value<QColor>());
-    m_theme.setColor(BoardTheme::Frame, AppSettings->getValue("frameColor").value<QColor>());
-    m_theme.setColor(BoardTheme::CurrentMove, AppSettings->getValue("currentMoveColor").value<QColor>());
 	AppSettings->endGroup();
     m_theme.configure();
+    m_theme.setEnabled(isEnabled());
     removeGuess();
 	unselectSquare();
 	update();
@@ -773,3 +769,12 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
 
 }
 
+void BoardView::setEnabled(bool enabled)
+{
+    QWidget::setEnabled(enabled);
+}
+
+void BoardView::setDisabled(bool disabled)
+{
+    QWidget::setDisabled(disabled);
+}

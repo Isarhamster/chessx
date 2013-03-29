@@ -33,7 +33,7 @@ class EditAction;
 class EventListWidget;
 class Game;
 class GameList;
-class OpeningTree;
+class OpeningTreeWidget;
 class PlayerListWidget;
 class QLabel;
 class QProgressBar;
@@ -380,7 +380,7 @@ private:
 	BoardView* m_boardView;
 	QSplitter* m_boardSplitter;
 	ChessBrowser* m_gameView;
-    TableView* m_openingTreeView;
+    OpeningTreeWidget* m_openingTreeWidget;
 	QProgressBar* m_progressBar;
     ToolMainWindow* m_gameWindow;
     QToolBar* m_gameToolBar;
@@ -405,7 +405,6 @@ private:
 	bool m_showPgnSource; // for debugging
 	QTime m_operationTime;
     /** Currently updated tree. May be NULL if no update in progress. */
-	OpeningTree* m_openingTree;
 	QString m_nagText;
     QTimer* m_autoPlayTimer;
     QAction* m_toggleFilter;

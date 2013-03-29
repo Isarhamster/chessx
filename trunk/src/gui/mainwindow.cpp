@@ -27,6 +27,7 @@
 #include "messagedialog.h"
 #include "memorydatabase.h"
 #include "openingtree.h"
+#include "openingtreewidget.h"
 #include "output.h"
 #include "pgndatabase.h"
 #include "playerlistwidget.h"
@@ -232,23 +233,12 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Opening Tree */
     DockWidgetEx* openingDock = new DockWidgetEx(tr("Opening Tree"), this);
 	openingDock->setObjectName("OpeningTreeDock");
-	m_openingTree = new OpeningTree;
-    m_openingTreeView = new TableView(openingDock);
-    m_openingTreeView->setObjectName("OpeningTree");
-    m_openingTreeView->setMinimumSize(150, 100);
-    m_openingTreeView->setSortingEnabled(true);
-    m_openingTreeView->setModel(m_openingTree);
-    m_openingTreeView->sortByColumn(1, Qt::DescendingOrder);
-    connect(m_openingTreeView, SIGNAL(clicked(const QModelIndex&)), SLOT(slotSearchTreeMove(const QModelIndex&)));
-    connect(openingDock, SIGNAL(visibilityChanged(bool)), m_openingTree, SLOT(cancel(bool)));
-    connect(m_openingTree, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
-    connect(m_openingTree, SIGNAL(openingTreeUpdated()), SLOT(slotTreeUpdate()));
-    connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), SLOT(slotTreeUpdateStarted()));
-    openingDock->setWidget(m_openingTreeView);
+    m_openingTreeWidget = new OpeningTreeWidget(this);
+    openingDock->setWidget(m_openingTreeWidget);
     addDockWidget(Qt::RightDockWidgetArea, openingDock);
 	m_menuView->addAction(openingDock->toggleViewAction());
 	connect(openingDock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
-    connect(this, SIGNAL(reconfigure()), m_openingTreeView, SLOT(slotReconfigure()));
+    connect(openingDock, SIGNAL(visibilityChanged(bool)), m_openingTreeWidget, SLOT(cancel(bool)));
 	openingDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
     openingDock->hide();
 	
@@ -352,7 +342,7 @@ MainWindow::MainWindow() : QMainWindow(),
 MainWindow::~MainWindow()
 {
     m_autoPlayTimer->stop();
-    m_openingTree->cancel(false);
+    m_openingTreeWidget->cancel(false);
     foreach (DatabaseInfo* database, m_databases) {
         database->close();
     }
@@ -402,7 +392,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
 
         m_gameList->saveConfig();
         m_databaseList->saveConfig();
-        m_openingTreeView->saveConfig();
+        m_openingTreeWidget->saveConfig();
         m_gameWindow->saveConfig();
         m_gameView->saveConfig();
 
