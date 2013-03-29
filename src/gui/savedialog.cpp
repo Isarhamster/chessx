@@ -23,7 +23,7 @@
 #include <QLineEdit>
 #include <QCompleter>
 
-SaveDialog::SaveDialog(QWidget* parent) : QDialog(parent)
+SaveDialog::SaveDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	ui.setupUi(this);
 	QButtonGroup* group = new QButtonGroup(this);

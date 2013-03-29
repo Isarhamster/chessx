@@ -31,7 +31,7 @@ void MessageDialog::information(const QString& text, const QString& title)
 bool MessageDialog::yesNo(const QString& text, const QString& title, const QString& yes,
 									 const QString& no)
 {
-	QMessageBox mb(QApplication::activeWindow());
+    QMessageBox mb(QApplication::activeWindow());
 	mb.setWindowTitle(title);
 	mb.setText(text);
 	mb.setIcon(QMessageBox::Question);
@@ -45,7 +45,7 @@ bool MessageDialog::yesNo(const QString& text, const QString& title, const QStri
 bool MessageDialog::okCancel(const QString& text, const QString& title, const QString& ok,
 								  const QString& cancel)
 {
-	QMessageBox mb(QApplication::activeWindow());
+    QMessageBox mb(QApplication::activeWindow());
 	mb.setWindowTitle(title);
 	mb.setText(text);
 	mb.setIcon(QMessageBox::Question);
@@ -60,7 +60,7 @@ bool MessageDialog::okCancel(const QString& text, const QString& title, const QS
 int MessageDialog::yesNoCancel(const QString& text, const QString& title, const QString& yes,
 								  const QString& no, const QString& cancel)
 {
-	QMessageBox mb(QApplication::activeWindow());
+    QMessageBox mb(QApplication::activeWindow());
 	mb.setWindowTitle(title);
 	mb.setText(text);
 	mb.setIcon(QMessageBox::Question);

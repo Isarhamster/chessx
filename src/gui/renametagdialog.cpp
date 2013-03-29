@@ -1,8 +1,8 @@
 #include "renametagdialog.h"
 #include "ui_renametagdialog.h"
 
-RenameTagDialog::RenameTagDialog(QWidget *parent, QString ts, QString tagName) :
-    QDialog(parent),
+RenameTagDialog::RenameTagDialog(QWidget *parent, QString ts, QString tagName, Qt::WindowFlags f) :
+    QDialog(parent, f),
     ui(new Ui::RenameTagDialog),
     m_ts(ts),
     m_tagName(tagName)

@@ -7,8 +7,8 @@
 
 bool CommentDialog::lastTimeWasEgt = false;
 
-CommentDialog::CommentDialog(QWidget* parent) :
-	 QDialog(parent)
+CommentDialog::CommentDialog(QWidget* parent, Qt::WindowFlags f) :
+     QDialog(parent, f)
 {
 	ui.setupUi(this);
     connect(ui.clearTime, SIGNAL(clicked()), this, SLOT(clearTimeSlot()));

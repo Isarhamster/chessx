@@ -97,26 +97,26 @@ void GameList::slotContextMenu(const QPoint& pos)
 
 void GameList::simpleSearch(int tagid)
 {
-	QuickSearchDialog dialog(this);
+    QuickSearchDialog dlg(this);
 
-	dialog.setTag(tagid);
+    dlg.setTag(tagid);
 	if (m_model->filter()->count() <= 1)
-		dialog.setMode(1);
-	if (dialog.exec() != QDialog::Accepted)
+        dlg.setMode(1);
+    if (dlg.exec() != QDialog::Accepted)
 		return;
 
-    QString tag = m_model->GetColumnTags().at(dialog.tag());
-	QString value = dialog.value();
+    QString tag = m_model->GetColumnTags().at(dlg.tag());
+    QString value = dlg.value();
 	if (value.isEmpty())
     {
 		m_model->filter()->setAll(1);
     }
-    else if ((dialog.tag() == 0) || (dialog.tag() == 7) || (dialog.tag() == 11))
+    else if ((dlg.tag() == 0) || (dlg.tag() == 7) || (dlg.tag() == 11))
     {	// filter by number
 		NumberSearch ns(m_model->filter()->database(), value);
-		if (dialog.mode())
+        if (dlg.mode())
         {
-			m_model->filter()->executeSearch(ns, Search::Operator(dialog.mode()));
+            m_model->filter()->executeSearch(ns, Search::Operator(dlg.mode()));
         }
         else
         {
@@ -130,9 +130,9 @@ void GameList::simpleSearch(int tagid)
         {
             // Filter a range
             TagSearch ts(m_model->filter()->database(), tag, list.at(0),list.at(1));
-            if (dialog.mode())
+            if (dlg.mode())
             {
-                m_model->filter()->executeSearch(ts, Search::Operator(dialog.mode()));
+                m_model->filter()->executeSearch(ts, Search::Operator(dlg.mode()));
             }
             else
             {
@@ -143,9 +143,9 @@ void GameList::simpleSearch(int tagid)
         {
             // Filter tag using partial values
             TagSearch ts(m_model->filter()->database(), tag, value);
-            if (dialog.mode())
+            if (dlg.mode())
             {
-                m_model->filter()->executeSearch(ts, Search::Operator(dialog.mode()));
+                m_model->filter()->executeSearch(ts, Search::Operator(dlg.mode()));
             }
             else
             {

@@ -23,7 +23,8 @@
 #include <QtGui>
 #include <QPixmap>
 
-BoardSetupDialog::BoardSetupDialog(QWidget* parent) : QDialog(parent), m_wheelCurrentDelta(0), m_selectedPiece(Empty)
+BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f),
+    m_wheelCurrentDelta(0), m_selectedPiece(Empty)
 {
 	ui.setupUi(this);
 	ui.boardView->configure();

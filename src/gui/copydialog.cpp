@@ -15,7 +15,7 @@
 #include "copydialog.h"
 
 
-CopyDialog::CopyDialog(QWidget * parent) : QDialog(parent)
+CopyDialog::CopyDialog(QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	ui.setupUi(this);
 	connect(ui.databaseList, SIGNAL(itemDoubleClicked(QListWidgetItem *)), SLOT(accept()));

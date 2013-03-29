@@ -43,7 +43,7 @@ void ColorList::editItemColor(QListWidgetItem* item)
 {
 	if (!item)
 		return;
-	QColor col = QColorDialog::getColor(color(item));
+    QColor col = QColorDialog::getColor(color(item));
 	if (col.isValid())
 		setItemColor(item, col);
 }

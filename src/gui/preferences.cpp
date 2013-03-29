@@ -33,7 +33,7 @@
 
 int PreferencesDialog::s_lastIndex = 0;
 
-PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent)
+PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	ui.setupUi(this);
 

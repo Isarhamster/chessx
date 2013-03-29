@@ -10,7 +10,7 @@
 class CommentDialog : public QDialog {
 	 Q_OBJECT
 public:
-	 CommentDialog(QWidget *parent = 0);
+     CommentDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
      void setText(QString text);
 	 QString text() const;
 

@@ -78,8 +78,6 @@ void Board::setToMove(Color c)
 
 bool Board::doIt(const Move& m, bool undo)
 {
-    Q_ASSERT(m.isLegal() || m.isNullMove());
-
     if (m.isNullMove())
     {
         if (undo)
@@ -88,7 +86,6 @@ bool Board::doIt(const Move& m, bool undo)
 
         return true;
     }
-
 
 	if (!m.isLegal())
 		return false;
