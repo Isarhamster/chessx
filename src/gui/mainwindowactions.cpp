@@ -22,7 +22,7 @@
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "memorydatabase.h"
-#include "openingtree.h"
+#include "openingtreewidget.h"
 #include "output.h"
 #include "pgndatabase.h"
 #include "playerlistwidget.h"
@@ -159,7 +159,7 @@ void MainWindow::slotFileClose()
         {
             if (QuerySaveDatabase())
             {
-                m_openingTree->cancel(false);
+                m_openingTreeWidget->cancel(false);
                 m_databaseList->setFileClose(databaseInfo()->filePath(), databaseInfo()->currentIndex());
                 databaseInfo()->close();
                 delete databaseInfo();
@@ -248,9 +248,9 @@ void MainWindow::slotEventListWidget()
 
 void MainWindow::slotConfigure()
 {
-	PreferencesDialog P(this);
-	connect(&P, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
-	P.exec();
+    PreferencesDialog dlg(this);
+    connect(&dlg, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
+    dlg.exec();
 }
 
 void MainWindow::slotReconfigure()
@@ -408,11 +408,11 @@ void MainWindow::slotEditTruncateStart()
 
 void MainWindow::slotEditBoard()
 {
-	BoardSetupDialog B(this);
-	B.setBoard(game().board());
-	B.setFlipped(m_boardView->isFlipped());
-	if (B.exec() == QDialog::Accepted) {
-		game().setStartingBoard(B.board());
+    BoardSetupDialog dlg(this);
+    dlg.setBoard(game().board());
+    dlg.setFlipped(m_boardView->isFlipped());
+    if (dlg.exec() == QDialog::Accepted) {
+        game().setStartingBoard(dlg.board());
 		slotGameChanged();
 	}
 }
@@ -1146,7 +1146,7 @@ void MainWindow::slotDatabaseCopy(int preselect)
 		MessageDialog::error(tr("You need at least two open databases to copy games"));
 		return;
 	}
-	CopyDialog dlg(this);
+    CopyDialog dlg(this);
     dlg.setMode((CopyDialog::SrcMode)preselect);
 	QStringList db;
     for (int i = 0; i < m_databases.count(); ++i)
@@ -1207,7 +1207,7 @@ void MainWindow::slotSearchTag()
 void MainWindow::slotSearchBoard()
 {
 	PositionSearch ps(databaseInfo()->filter()->database(), m_boardView->board());
-    m_openingTree->cancel(false);
+    m_openingTreeWidget->cancel(false);
     slotBoardSearchStarted();
 	databaseInfo()->filter()->executeSearch(ps);
     slotBoardSearchUpdate();
@@ -1267,23 +1267,33 @@ void MainWindow::slotTreeUpdateStarted()
 
 void MainWindow::slotSearchTree()
 {
-    if (m_openingTreeView->isVisible() )
+    if (m_openingTreeWidget->isVisible() )
     {
-        m_openingTree->update(*databaseInfo()->filter(), m_boardView->board(), m_gameList->m_FilterActive);
+        m_openingTreeWidget->update(*databaseInfo()->filter(), m_boardView->board(), m_gameList->m_FilterActive);
 	}
 }
 
 void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 {
     m_bGameChange = false;
-    QString move = qobject_cast<OpeningTree*>(m_openingTreeView->model())->move(index);
-	Move m = m_boardView->board().parseMove(move);
+    QString move = m_openingTreeWidget->move(index);
+    Board b = m_openingTreeWidget->board();
+    Move m = b.parseMove(move);
+/*
 	if (!m.isLegal())
 		return;
 	else if (m == game().move(game().nextMove()))
 		slotGameMoveNext();
     else
         slotBoardMove(m.from(), m.to(), 0);
+*/
+    // evtl. einen BoardView fuer den Tree oder zumindest ein Board fuer den Tree
+
+    b.doMove(m);
+    if (m_openingTreeWidget->isVisible() )
+    {
+        m_openingTreeWidget->update(*databaseInfo()->filter(), b, m_gameList->m_FilterActive);
+    }
 }
 
 void MainWindow::slotDatabaseDeleteGame(int n)

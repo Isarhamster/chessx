@@ -77,7 +77,8 @@ public:
 	QRect rect() const;
 	/** Updates board square. */
 	void updateSquares();
-
+    /** Set the theme according to the parents state */
+    void setEnabled(bool enabled);
 private:
 	bool isBoardPlain() const;
 	QPixmap m_originalPiece[ConstPieceTypes];

@@ -64,6 +64,8 @@ public:
 public slots:
 	/** Reconfigure current theme. */
 	void configure();
+    void setEnabled(bool);
+    void setDisabled(bool);
 
 signals:
 	/** User clicked source and destination squares */
