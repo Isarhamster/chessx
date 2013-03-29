@@ -21,7 +21,7 @@
 #include <QLineEdit>
 
 
-QuickSearchDialog::QuickSearchDialog(QWidget* parent) : QDialog(parent)
+QuickSearchDialog::QuickSearchDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	ui.setupUi(this);
 

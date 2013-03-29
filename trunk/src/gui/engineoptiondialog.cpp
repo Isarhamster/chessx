@@ -10,8 +10,9 @@
 
 EngineOptionDialog::EngineOptionDialog(QWidget *parent,
                                        EngineList& engineList,
-                                       int index) :
-    QDialog(parent),
+                                       int index,
+                                       Qt::WindowFlags f) :
+    QDialog(parent, f),
     ui(new Ui::EngineOptionDialog)
 {
     ui->setupUi(this);

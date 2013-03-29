@@ -94,6 +94,9 @@ public:
 	virtual void sort();
 	/** Move leading to given entry. */
 	QString move(const QModelIndex& index) const;
+    /** Current Board */
+    Board board() const;
+
 public slots:
     /** Cancel a running update */
     void cancel(bool);

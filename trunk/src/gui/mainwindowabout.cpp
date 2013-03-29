@@ -16,7 +16,7 @@
 void MainWindow::slotHelpAbout()
 {
     QString version = QString(STR_REVISION).replace(',','.');
-    QMessageBox dialog(QMessageBox::NoIcon, tr("About ChessX"), tr("<h1>ChessX</h1>"
+    QMessageBox dlg(QMessageBox::NoIcon, tr("About ChessX"), tr("<h1>ChessX</h1>"
                         "<p>Free chess database Version %1</p>"
                         COPYRIGHT
                         "<p>License: GNU Public License 2 - GPLv2</p>"
@@ -29,7 +29,7 @@ void MainWindow::slotHelpAbout()
                         "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">chessx-users@lists.sourceforge.net</a></p>")
                         .arg(version),
                 QMessageBox::Ok);
-    dialog.setIconPixmap((QPixmap(":/images/chessx.png")));
-    dialog.exec();
+    dlg.setIconPixmap((QPixmap(":/images/chessx.png")));
+    dlg.exec();
 }
 

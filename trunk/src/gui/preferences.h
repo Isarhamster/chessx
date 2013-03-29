@@ -30,7 +30,7 @@ class PreferencesDialog : public QDialog
 	Q_OBJECT
 public:
 	/** Create ChessX Preferences dialog */
-	PreferencesDialog(QWidget* parent = 0);
+    PreferencesDialog(QWidget* parent = 0, Qt::WindowFlags f = 0 );
 	/** Destroy the dialog */
 	virtual ~PreferencesDialog();
 

@@ -24,9 +24,9 @@
 int main(int argc, char** argv)
 {
 	AppSettings = new Settings;
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
-    a.setWindowIcon(QIcon(":/images/chessx.png"));
+    app.setWindowIcon(QIcon(":/images/chessx.png"));
 
 #ifdef Q_OS_MAC
     signal(SIGPIPE, SIG_IGN);
@@ -41,17 +41,17 @@ int main(int argc, char** argv)
 		 translator.load(QString(":i18n/") + fullLang) ||
 		 translator.load(AppSettings->dataPath() + "/lang/" + shortLang) ||
 		 translator.load(QString(":i18n/") + shortLang))
-		a.installTranslator(&translator);
+        app.installTranslator(&translator);
 
 	MainWindow* mainWindow = new MainWindow;
 
 	mainWindow->show();
 
 	// Destroy main window and close application
-	a.connect(&a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
+    app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
 
     startFileLog();
-	int result = a.exec();
+    int result = app.exec();
     stopFileLog();
 
 	delete AppSettings;

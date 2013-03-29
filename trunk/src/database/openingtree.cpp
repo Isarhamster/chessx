@@ -314,3 +314,8 @@ QString OpeningTree::move(const QModelIndex& index) const
 	return index.isValid() ? m_moves[index.row()].move : QString();
 }
 
+Board OpeningTree::board() const
+{
+    return m_board;
+}
+
