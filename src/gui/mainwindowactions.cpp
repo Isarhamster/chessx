@@ -1279,15 +1279,6 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
     QString move = m_openingTreeWidget->move(index);
     Board b = m_openingTreeWidget->board();
     Move m = b.parseMove(move);
-/*
-	if (!m.isLegal())
-		return;
-	else if (m == game().move(game().nextMove()))
-		slotGameMoveNext();
-    else
-        slotBoardMove(m.from(), m.to(), 0);
-*/
-    // evtl. einen BoardView fuer den Tree oder zumindest ein Board fuer den Tree
 
     b.doMove(m);
     if (m_openingTreeWidget->isVisible() )
