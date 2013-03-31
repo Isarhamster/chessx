@@ -36,7 +36,7 @@ public slots:
 
 private:
     Ui::OpeningTreeWidget *ui;
-    BoardView* m_boardView;
+    BoardView* m_openingBoardView;
 };
 
 #endif // OPENINGTREEWIDGET_H
