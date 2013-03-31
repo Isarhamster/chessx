@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "analysiswidget.h"
+#include "board.h"
 #include "boardsetup.h"
 #include "boardview.h"
 #include "copydialog.h"
@@ -1417,11 +1418,13 @@ BoardView* MainWindow::CreateBoardView()
     BoardView* boardView = new BoardView(m_tabWidget);
     boardView->setMinimumSize(200, 200);
     boardView->configure();
+    boardView->setBoard(standardStartBoard);
 
     m_boardViews.push_back(boardView);
-    slotActivateBoardView(m_boardViews.count()-1);
-
     m_tabWidget->addTab(boardView,QString("%1").arg(m_boardViews.count()));
+
+    slotActivateBoardView(m_boardViews.count()-1);
+    m_tabWidget->setCurrentIndex(m_boardViews.count()-1);
 
     return boardView;
 }
