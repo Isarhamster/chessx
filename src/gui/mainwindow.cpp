@@ -91,17 +91,18 @@ MainWindow::MainWindow() : QMainWindow(),
     m_boardSplitter = new QSplitter(Qt::Horizontal);
 	m_boardSplitter->setChildrenCollapsible(false);
 	setCentralWidget(m_boardSplitter);
-	m_boardView = new BoardView(m_boardSplitter);
-	m_boardView->setObjectName("BoardView");
-	m_boardView->setMinimumSize(200, 200);
-	m_boardView->resize(500, 540);
-	connect(this, SIGNAL(reconfigure()), m_boardView, SLOT(configure()));
-    connect(m_boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
-    connect(m_boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
-	connect(m_boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
-
+    m_tabWidget = new QTabWidget(this);
+    m_tabWidget->setObjectName("BoardView");
+    m_tabWidget->setTabsClosable(true);
+    QToolButton* button = new QToolButton();
+    button->setIcon(style()->standardIcon(QStyle::SP_FileIcon));
+    m_tabWidget->setCornerWidget(button);
+    connect (button, SIGNAL(clicked()), SLOT(slotCreateBoardView()));
+    connect (m_tabWidget, SIGNAL(tabCloseRequested(int)), SLOT(slotCloseBoardView(int)));
+    connect (m_tabWidget, SIGNAL(currentChanged(int)), SLOT(slotActivateBoardView(int)));
 	/* Board layout */
-	m_boardSplitter->addWidget(m_boardView);
+    m_boardSplitter->addWidget(m_tabWidget);
+    CreateBoardView();
 
 	/* Game view */
     DockWidgetEx* gameTextDock = new DockWidgetEx(tr("Game Text"), this);
