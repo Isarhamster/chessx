@@ -24,12 +24,12 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), parent, SLOT(slotTreeUpdateStarted()));
     connect(parent, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
 
-    m_boardView = new BoardView(this, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
-    m_boardView->setObjectName("OpeningBoardView");
-    m_boardView->setMinimumSize(200, 200);
-    ui->OpeningBoardWidget->addWidget(m_boardView,1);
-    m_boardView->configure();
-    m_boardView->setEnabled(false);
+    m_openingBoardView = new BoardView(this, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
+    m_openingBoardView->setObjectName("OpeningBoardView");
+    m_openingBoardView->setMinimumSize(200, 200);
+    ui->OpeningBoardWidget->addWidget(m_openingBoardView,1);
+    m_openingBoardView->configure();
+    m_openingBoardView->setEnabled(false);
 }
 
 OpeningTreeWidget::~OpeningTreeWidget()
@@ -54,7 +54,7 @@ Board OpeningTreeWidget::board() const
 
 bool OpeningTreeWidget::update(Filter& f, const Board& b, bool updateFilter)
 {
-    m_boardView->setBoard(b);
+    m_openingBoardView->setBoard(b);
     return m_openingTree->update(f, b, updateFilter);
 }
 
@@ -66,9 +66,9 @@ void OpeningTreeWidget::saveConfig()
 
 void OpeningTreeWidget::slotReconfigure()
 {
+    m_openingBoardView->configure();
     AppSettings->layout(this);
     ui->OpeningTreeView->slotReconfigure();
-    m_boardView->configure();
 }
 
 
