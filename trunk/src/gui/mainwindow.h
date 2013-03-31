@@ -320,6 +320,12 @@ protected slots:
     void slotRedArrowHere();
     /** Set the Stay On Top Property */
     void slotToggleStayOnTop();
+    /** Create a new, empty Board document */
+    void slotCreateBoardView();
+    /** Activate an existing board document */
+    void slotActivateBoardView(int);
+    /** Activate an existing board document */
+    void slotCloseBoardView(int);
 
 protected:
     void copyGame(int target, int index);
@@ -369,6 +375,8 @@ private:
     void saveDatabase();
     /** Save Database with query */
     bool QuerySaveDatabase();
+    /** Create a new unassociated boardview */
+    BoardView* CreateBoardView();
 
 	/* Dialogs  */
 	GameList* m_gameList;
@@ -419,6 +427,9 @@ private:
     QAction* m_autoPlay;
     QAction* m_autoAnalysis;
     QUndoGroup m_undoGroup;
+
+    QTabWidget* m_tabWidget;
+    QList<BoardView*> m_boardViews;
 };
 
 

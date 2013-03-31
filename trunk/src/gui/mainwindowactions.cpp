@@ -1412,3 +1412,51 @@ void MainWindow::slotRedArrowHere()
     slotGameChanged();
 }
 
+BoardView* MainWindow::CreateBoardView()
+{
+    BoardView* boardView = new BoardView(m_tabWidget);
+    boardView->setMinimumSize(200, 200);
+    boardView->configure();
+
+    m_boardViews.push_back(boardView);
+    slotActivateBoardView(m_boardViews.count()-1);
+
+    m_tabWidget->addTab(boardView,QString("%1").arg(m_boardViews.count()));
+
+    return boardView;
+}
+
+void MainWindow::slotCreateBoardView()
+{
+    CreateBoardView();
+}
+
+void MainWindow::slotActivateBoardView(int n)
+{
+    if (m_tabWidget->currentIndex() >= 0)
+    {
+        BoardView* lastView = m_boardViews.at(m_tabWidget->currentIndex());
+        disconnect(SIGNAL(reconfigure()), lastView);
+        lastView->disconnect(SIGNAL(moveMade(Square, Square, int)));
+        lastView->disconnect(SIGNAL(clicked(Square, int, QPoint, Square)));
+        lastView->disconnect(SIGNAL(wheelScrolled(int)));
+    }
+
+    BoardView* boardView = m_boardViews.at(n);
+
+    connect(this, SIGNAL(reconfigure()), boardView, SLOT(configure()));
+    connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
+    connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
+    connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
+
+    m_boardView = boardView;
+}
+
+void MainWindow::slotCloseBoardView(int n)
+{
+    if (m_boardViews.count() > 1)
+    {
+        m_boardViews.removeAt(n);
+        m_tabWidget->removeTab(n);
+    }
+}
