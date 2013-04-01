@@ -176,6 +176,8 @@ public slots:
 	void slotGameVarExit();
 	/** Modify game on user's request. */
 	void slotGameModify(const EditAction& action);
+    /** Get a pointer or Null to the active game. */
+    void slotGetActiveGame(const Game* game);
 	/** Update GameView content after game was change. Triggers also @ref slotMoveChanged . */
 	void slotGameChanged();
 	/** Handle link click in Game View panel */
@@ -392,6 +394,8 @@ private:
 	QProgressBar* m_progressBar;
     ToolMainWindow* m_gameWindow;
     QToolBar* m_gameToolBar;
+    QTabWidget* m_tabWidget;
+    QList<BoardView*> m_boardViews;
 	/* Status */
 	QLabel* m_statusFilter;
     QLabel* m_gameTitle;
@@ -407,7 +411,6 @@ private:
 	QList<QAction*> m_recentFileActions;
 	QList<QAction*> m_databaseActions;
 	int m_currentDatabase;
-    int m_prevDatabase;
 	QString m_eco;
 	QActionGroup* m_actions;
 	bool m_showPgnSource; // for debugging
@@ -427,9 +430,6 @@ private:
     QAction* m_autoPlay;
     QAction* m_autoAnalysis;
     QUndoGroup m_undoGroup;
-
-    QTabWidget* m_tabWidget;
-    QList<BoardView*> m_boardViews;
 };
 
 
