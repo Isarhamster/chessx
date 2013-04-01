@@ -165,7 +165,6 @@ void MainWindow::slotFileClose()
                 databaseInfo()->close();
                 delete databaseInfo();
                 m_databases.removeAt(m_currentDatabase);
-                m_prevDatabase = 0;
                 m_currentDatabase = 0; // Switch to clipboard is always safe
                 m_databaseList->setFileCurrent(QString());
                 updateMenuDatabases();
@@ -193,7 +192,6 @@ void MainWindow::slotFileCloseIndex(int n)
             {
                 // hack as we have just moved the index by one
                 m_currentDatabase--;
-                m_prevDatabase = 0;
             }
             updateMenuDatabases();
         }
@@ -791,6 +789,11 @@ void MainWindow::slotGameModify(const EditAction& action)
 	slotGameChanged();
 }
 
+void MainWindow::slotGetActiveGame(const Game* g)
+{
+    g = &game();
+}
+
 void MainWindow::slotGameChanged()
 {
 	if (m_showPgnSource)
@@ -1043,11 +1046,11 @@ void MainWindow::slotOperationProgress(int progress)
 void MainWindow::slotDatabaseChange()
 {
 	QAction* action = qobject_cast<QAction*>(sender());
-	if (action && m_currentDatabase != action->data().toInt()) {
-        m_prevDatabase = m_currentDatabase;
+    if (action && m_currentDatabase != action->data().toInt())
+    {
         database()->index()->clearCache();
 		m_currentDatabase = action->data().toInt();
-        m_databaseList->setFileCurrent(m_databases[m_currentDatabase]->filePath());
+        m_databaseList->setFileCurrent(databaseInfo()->filePath());
 		slotDatabaseChanged();
 	}
 }

@@ -74,7 +74,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Create clipboard database */
 	m_databases.append(new DatabaseInfo);
 	m_currentDatabase = 0;
-    m_prevDatabase = 0;
 
 	/* Actions */
 	m_actions = new QActionGroup(this);
@@ -142,7 +141,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_gameView->slotReconfigure();
 	connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 	connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
-	connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_gameView, SLOT(slotDatabaseChanged(DatabaseInfo*)));
+    connect(m_gameView, SIGNAL(queryActiveGame(const Game*)), this, SLOT(slotGetActiveGame(const Game*)));
     connect(this, SIGNAL(displayTime(const QString&, Color)), m_gameView, SLOT(slotDisplayTime(const QString&, Color)));
     gameTextDock->setWidget(m_gameWindow);
     m_gameWindow->setCentralWidget(m_gameView);
@@ -699,7 +698,6 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
         {
             if (m_databases[i]->isValid())
             {
-                m_prevDatabase = m_currentDatabase;
                 m_currentDatabase = i;
                 m_databaseList->setFileCurrent(fname);
                 slotDatabaseChanged();
@@ -760,7 +758,6 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
     {
         if (m_databases[i]->database()->filename() == fname)
         {
-            m_prevDatabase = m_currentDatabase;
             m_currentDatabase = i;
         }
     }

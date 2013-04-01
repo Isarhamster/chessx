@@ -47,14 +47,12 @@ public slots:
 	void slotAction(QAction* action);
 	/** Show menu */
 	void slotContextMenu(const QPoint& pos);
-	/** Database changed */
-	void slotDatabaseChanged(DatabaseInfo* dbInfo);
-
     /** Show the time in the String for the player with @p color */
     void slotDisplayTime(const QString& text, Color color);
 
 signals:
 	void actionRequested(const EditAction& action);
+    void queryActiveGame(const Game* game);
 
 protected:
 	virtual void selectAnchor(const QString& href);
@@ -84,7 +82,6 @@ private:
 	QMenu* m_mainMenu;
 	int m_currentMove;
     int m_fontSize;
-	DatabaseInfo* m_databaseInfo;
 
 };
 
