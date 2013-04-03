@@ -55,10 +55,6 @@ public:
 	*/
 	void close();
 	/**
-	reclaim unused space in the data file
-	*/
-	void compact();
-	/**
 	number of players in the database
 	*/
 	uint count() const;

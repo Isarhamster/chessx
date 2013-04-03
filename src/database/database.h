@@ -83,8 +83,6 @@ public:
     virtual bool undelete(int) { return false; };
 	/** Removes multiple games from the database as specified by the filter */
 	virtual bool remove(const Filter&) { return false; }
-	/** Compacts the database */
-	virtual void compact() {}
     /** @return pointer to the index of the database */
     Index *index();
     /** @return const pointer to the index of the database */

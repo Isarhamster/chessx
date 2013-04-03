@@ -1347,14 +1347,6 @@ void MainWindow::slotDatabaseDeleteFilter()
 	m_gameList->updateFilter();
 }
 
-void MainWindow::slotDatabaseCompact()
-{
-	database()->compact();
-	databaseInfo()->resetFilter();
-	slotDatabaseChanged();
-	m_gameList->updateFilter();
-}
-
 void MainWindow::slotGetGameData(Game& g)
 {
     g = game();
