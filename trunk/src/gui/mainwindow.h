@@ -282,8 +282,6 @@ public slots:
     void slotDatabaseDeleteGame(int n);
 	/** Delete all game in filter. */
 	void slotDatabaseDeleteFilter();
-	/** Compact database by removing obsolete information. */
-	void slotDatabaseCompact();
     /** Slot that updates internal info upon loading a complete db */
     void slotDataBaseLoaded(DatabaseInfo* db);
     /** Fill up the current game (drag request from game list) */
