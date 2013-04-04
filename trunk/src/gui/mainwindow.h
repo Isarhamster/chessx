@@ -331,6 +331,7 @@ protected:
     void copyGame(int target, int index);
     Database* getDatabaseByPath(QString path);
     DatabaseInfo* getDatabaseInfoByPath(QString path);
+    void activateBoardView(int n);
 
 signals:
 	/** Re-read configuration. */

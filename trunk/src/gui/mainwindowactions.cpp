@@ -166,6 +166,7 @@ void MainWindow::slotFileClose()
                 delete databaseInfo();
                 m_databases.removeAt(m_currentDatabase);
                 m_currentDatabase = 0; // Switch to clipboard is always safe
+                m_boardView->setDbIndex(m_currentDatabase);
                 m_databaseList->setFileCurrent(QString());
                 updateMenuDatabases();
                 slotDatabaseChanged();
@@ -192,6 +193,14 @@ void MainWindow::slotFileCloseIndex(int n)
             {
                 // hack as we have just moved the index by one
                 m_currentDatabase--;
+                m_boardView->setDbIndex(m_currentDatabase);
+                for (int i=0; i<m_boardViews.count();++i)
+                {
+                    if (m_boardViews.at(i)->dbIndex() == n)
+                    {
+                        m_boardViews.at(i)->setDbIndex(0);
+                    }
+                }
             }
             updateMenuDatabases();
         }
@@ -1050,6 +1059,7 @@ void MainWindow::slotDatabaseChange()
     {
         database()->index()->clearCache();
 		m_currentDatabase = action->data().toInt();
+        m_boardView->setDbIndex(m_currentDatabase);
         m_databaseList->setFileCurrent(databaseInfo()->filePath());
 		slotDatabaseChanged();
 	}
@@ -1414,11 +1424,10 @@ BoardView* MainWindow::CreateBoardView()
     boardView->setMinimumSize(200, 200);
     boardView->configure();
     boardView->setBoard(standardStartBoard);
+    boardView->setDbIndex(m_currentDatabase);
 
     m_boardViews.push_back(boardView);
     m_tabWidget->addTab(boardView,QString("%1").arg(m_boardViews.count()));
-
-    slotActivateBoardView(m_boardViews.count()-1);
     m_tabWidget->setCurrentIndex(m_boardViews.count()-1);
 
     return boardView;
@@ -1429,7 +1438,7 @@ void MainWindow::slotCreateBoardView()
     CreateBoardView();
 }
 
-void MainWindow::slotActivateBoardView(int n)
+void MainWindow::activateBoardView(int n)
 {
     if (m_tabWidget->currentIndex() >= 0)
     {
@@ -1442,6 +1451,8 @@ void MainWindow::slotActivateBoardView(int n)
 
     BoardView* boardView = m_boardViews.at(n);
 
+    m_currentDatabase = boardView->dbIndex();
+
     connect(this, SIGNAL(reconfigure()), boardView, SLOT(configure()));
     connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
     connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
@@ -1450,11 +1461,30 @@ void MainWindow::slotActivateBoardView(int n)
     m_boardView = boardView;
 }
 
+void MainWindow::slotActivateBoardView(int n)
+{
+    activateBoardView(n);
+    slotGameChanged();
+    m_databaseList->setFileCurrent(databaseInfo()->filePath());
+    database()->index()->calculateCache();
+    setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
+    m_gameList->setFilter(databaseInfo()->filter());
+    slotFilterChanged();
+    QString fname = databaseInfo()->filePath();
+    m_playerList->setDatabase(database());
+    m_eventList->setDatabase(database());
+    emit databaseChanged(databaseInfo());
+}
+
 void MainWindow::slotCloseBoardView(int n)
 {
     if (m_boardViews.count() > 1)
     {
         m_boardViews.removeAt(n);
         m_tabWidget->removeTab(n);
+    }
+    for (int i=0; i<m_boardViews.count(); ++i)
+    {
+        m_tabWidget->setTabText(i, QString("%1").arg(i+1));
     }
 }

@@ -58,8 +58,12 @@ public:
 	virtual int heightForWidth(int width) const;
     /** Switch to next guess */
     void nextGuess(Square s);
-
+    /** Set Move Indicator property */
     void showMoveIndicator(bool visible);
+    /** Set a reference to the database to which the current view is associated */
+    void setDbIndex(int);
+    /** Get a reference to the database to which the current view is associated */
+    int dbIndex() const;
 
 public slots:
 	/** Reconfigure current theme. */
@@ -156,6 +160,7 @@ private:
     Guess::MoveList m_moveList;
     unsigned int m_moveListCurrent;
     bool m_showMoveIndicator;
+    int m_DbIndex;
 };
 
 class BoardViewMimeData : public QMimeData

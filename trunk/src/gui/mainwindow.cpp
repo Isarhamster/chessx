@@ -101,7 +101,6 @@ MainWindow::MainWindow() : QMainWindow(),
     connect (m_tabWidget, SIGNAL(currentChanged(int)), SLOT(slotActivateBoardView(int)));
 	/* Board layout */
     m_boardSplitter->addWidget(m_tabWidget);
-    CreateBoardView();
 
 	/* Game view */
     DockWidgetEx* gameTextDock = new DockWidgetEx(tr("Game Text"), this);
@@ -284,7 +283,7 @@ MainWindow::MainWindow() : QMainWindow(),
     analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F3);
     analysisDock2->hide();
 
-	/* Randomize */
+    /* Randomize */
 	srand(time(0));
 
 	/* Restoring layouts */
@@ -303,11 +302,11 @@ MainWindow::MainWindow() : QMainWindow(),
     statusBar()->setSizeGripEnabled(true);
 	m_progressBar = new QProgressBar;
 
-	/** Reconfigure. */
-	slotReconfigure();
+    /* Reconfigure. */
+    slotReconfigure();
 
-	/* Reset board - not earlier, as all widgets have to be created. */
-	slotGameChanged();
+    /* Very late as this will update other widgets */
+    CreateBoardView();
 
 	/* Display main window */
 	show();
@@ -349,6 +348,7 @@ MainWindow::~MainWindow()
 	qDeleteAll(m_databases.begin(), m_databases.end());
 	delete m_saveDialog;
 	delete m_output;
+    m_boardViews.clear(); // Widgets are deleted by Qt
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
@@ -699,6 +699,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
             if (m_databases[i]->isValid())
             {
                 m_currentDatabase = i;
+                m_boardView->setDbIndex(m_currentDatabase);
                 m_databaseList->setFileCurrent(fname);
                 slotDatabaseChanged();
             }
@@ -759,6 +760,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
         if (m_databases[i]->database()->filename() == fname)
         {
             m_currentDatabase = i;
+            m_boardView->setDbIndex(m_currentDatabase);
         }
     }
     m_databaseList->setFileCurrent(fname);
