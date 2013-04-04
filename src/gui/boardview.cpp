@@ -34,7 +34,7 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_currentFrom(InvalidSquare), m_currentTo(InvalidSquare),
     m_flags(flags),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false),m_wheelCurrentDelta(0),
-    m_minDeltaWheel(0),m_moveListCurrent(0),m_showMoveIndicator(true)
+    m_minDeltaWheel(0),m_moveListCurrent(0),m_showMoveIndicator(true),m_DbIndex(0)
 {
     QSizePolicy policy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	policy.setHeightForWidth(true);
@@ -766,7 +766,6 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
 
     p.drawPolygon(arrowPts,4);
     p.restore();
-
 }
 
 void BoardView::setEnabled(bool enabled)
@@ -777,4 +776,14 @@ void BoardView::setEnabled(bool enabled)
 void BoardView::setDisabled(bool disabled)
 {
     QWidget::setDisabled(disabled);
+}
+
+void BoardView::setDbIndex(int dbIndex)
+{
+    m_DbIndex = dbIndex;
+}
+
+int BoardView::dbIndex() const
+{
+    return m_DbIndex;
 }
