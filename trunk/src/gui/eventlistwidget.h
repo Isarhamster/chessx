@@ -10,7 +10,8 @@
 
 #include "eventinfo.h"
 
-class Database;
+class DatabaseInfo;
+
 namespace Ui
 {
     class TagDetailWidget;
@@ -33,7 +34,7 @@ signals:
 public slots:
     void findEvent(const QString& s);
     void slotSelectEvent(const QString& player);
-    void setDatabase(Database* db);
+    void setDatabase(DatabaseInfo* dbInfo);
     void showSelectedEvent();
     void filterSelectedEvent();
     void renameSelectedEvent();

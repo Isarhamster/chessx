@@ -13,7 +13,7 @@ namespace Ui {
 class TagDetailWidget;
 }
 
-class Database;
+class DatabaseInfo;
 
 class PlayerListWidget : public QWidget
 {
@@ -32,7 +32,7 @@ signals:
 public slots:
     void findPlayers(const QString& s);
     void slotSelectPlayer(const QString& player);
-    void setDatabase(Database* db);
+    void setDatabase(DatabaseInfo* dbInfo);
     void showSelectedPlayer();
     void filterSelectedPlayer();
     void renameSelectedPlayer();
