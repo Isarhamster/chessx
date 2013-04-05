@@ -167,6 +167,7 @@ void MainWindow::slotFileClose()
                 m_databases.removeAt(m_currentDatabase);
                 m_currentDatabase = 0; // Switch to clipboard is always safe
                 m_boardView->setDbIndex(m_currentDatabase);
+                m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), databaseName());
                 m_databaseList->setFileCurrent(QString());
                 updateMenuDatabases();
                 slotDatabaseChanged();
@@ -194,6 +195,7 @@ void MainWindow::slotFileCloseIndex(int n)
                 // hack as we have just moved the index by one
                 m_currentDatabase--;
                 m_boardView->setDbIndex(m_currentDatabase);
+                m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), databaseName());
                 for (int i=0; i<m_boardViews.count();++i)
                 {
                     if (m_boardViews.at(i)->dbIndex() == n)
@@ -242,16 +244,6 @@ void MainWindow::slotFileExportAll()
 void MainWindow::slotFileQuit()
 {
 	qApp->closeAllWindows();
-}
-
-void MainWindow::slotPlayerListWidget()
-{
-    m_playerList->setDatabase(database());
-}
-
-void MainWindow::slotEventListWidget()
-{
-    m_eventList->setDatabase(database());
 }
 
 void MainWindow::slotConfigure()
@@ -899,7 +891,7 @@ void MainWindow::slotGameViewLink(const QUrl& url)
 		game().forward();
 		slotGameChanged();
 	} else if (url.scheme() == "tag") {
-        m_playerList->setDatabase(database());
+        m_playerList->setDatabase(databaseInfo());
 		if (url.path() == "white")
         {
             m_playerList->slotSelectPlayer(game().tag(TagNameWhite));
@@ -1060,6 +1052,7 @@ void MainWindow::slotDatabaseChange()
         database()->index()->clearCache();
 		m_currentDatabase = action->data().toInt();
         m_boardView->setDbIndex(m_currentDatabase);
+        m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), databaseName());
         m_databaseList->setFileCurrent(databaseInfo()->filePath());
 		slotDatabaseChanged();
 	}
@@ -1208,8 +1201,6 @@ void MainWindow::slotDatabaseChanged()
     QString fname = databaseInfo()->filePath();
     int lastGameIndex = m_databaseList->getLastIndex(fname);
     gameLoad(gameIndex()>=0 ? gameIndex() : lastGameIndex, true, true);
-    m_playerList->setDatabase(database());
-    m_eventList->setDatabase(database());
     emit databaseChanged(databaseInfo());
 }
 
@@ -1345,8 +1336,8 @@ void MainWindow::slotRenameRequest(QString tag, QString newValue, QString oldVal
                 game().setTag(TagNameBlack, newValue);
             }
         }
-        m_eventList->setDatabase(database());
-        m_playerList->setDatabase(database());
+        m_eventList->setDatabase(databaseInfo());
+        m_playerList->setDatabase(databaseInfo());
         slotGameChanged();
     }
 }
@@ -1468,11 +1459,9 @@ void MainWindow::slotActivateBoardView(int n)
     m_databaseList->setFileCurrent(databaseInfo()->filePath());
     database()->index()->calculateCache();
     setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
+    m_tabWidget->setTabToolTip(n, databaseName());
     m_gameList->setFilter(databaseInfo()->filter());
     slotFilterChanged();
-    QString fname = databaseInfo()->filePath();
-    m_playerList->setDatabase(database());
-    m_eventList->setDatabase(database());
     emit databaseChanged(databaseInfo());
 }
 

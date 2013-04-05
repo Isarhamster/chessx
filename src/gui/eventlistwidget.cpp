@@ -5,6 +5,7 @@
 #include "eventlistwidget.h"
 #include "ui_tagdetailwidget.h"
 #include "database.h"
+#include "databaseinfo.h"
 
 EventListWidget::EventListWidget(QWidget *parent) :
     QWidget(parent),
@@ -138,8 +139,9 @@ void EventListWidget::renameSelectedEvent()
     }
 }
 
-void EventListWidget::setDatabase(Database* db)
+void EventListWidget::setDatabase(DatabaseInfo* dbInfo)
 {
+    Database* db = dbInfo->database();
     ui->detailText->setText(tr("<html><i>No event chosen.</i></html>"));
     m_event.setDatabase(db);
     m_list.clear();

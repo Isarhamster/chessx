@@ -180,6 +180,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
     connect(m_playerList, SIGNAL(renameRequest(QString)), SLOT(slotRenamePlayer(QString)));
     connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString,QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString,QString)));
+    connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_playerList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_playerList, SLOT(slotReconfigure()));
     playerListDock->hide();
 
@@ -197,6 +198,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_eventList, SIGNAL(renameRequest(QString)), SLOT(slotRenameEvent(QString)));
     connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString,QString)), m_gameList, SLOT(slotFilterListByEventPlayer(QString,QString)));
     connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString,QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
+    connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_eventList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_eventList, SLOT(slotReconfigure()));
     eventListDock->hide();
 
@@ -700,6 +702,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
             {
                 m_currentDatabase = i;
                 m_boardView->setDbIndex(m_currentDatabase);
+                m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), databaseName());
                 m_databaseList->setFileCurrent(fname);
                 slotDatabaseChanged();
             }
@@ -761,6 +764,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
         {
             m_currentDatabase = i;
             m_boardView->setDbIndex(m_currentDatabase);
+            m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), databaseName());
         }
     }
     m_databaseList->setFileCurrent(fname);

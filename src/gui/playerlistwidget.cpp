@@ -5,6 +5,7 @@
 #include "playerlistwidget.h"
 #include "ui_tagdetailwidget.h"
 #include "database.h"
+#include "databaseinfo.h"
 
 PlayerListWidget::PlayerListWidget(QWidget *parent) :
     QWidget(parent),
@@ -139,9 +140,9 @@ void PlayerListWidget::renameSelectedPlayer()
     }
 }
 
-
-void PlayerListWidget::setDatabase(Database* db)
+void PlayerListWidget::setDatabase(DatabaseInfo* dbInfo)
 {
+    Database* db = dbInfo->database();
     ui->detailText->setText(tr("<html><i>No player chosen.</i></html>"));
     m_player.setDatabase(db);
     m_list.clear();

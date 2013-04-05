@@ -107,10 +107,6 @@ public slots:
     void openDatabaseFile(QString fname, bool utf8);
     /** Add favorite status to a database */
     void setFavoriteDatabase(QString fname);
-    /** Open Player dialog */
-    void slotPlayerListWidget();
-    /** Open Event List */
-    void slotEventListWidget();
     /** Promote current variation. */
 	void slotEditVarPromote();
 	/** Remove current variation. */
