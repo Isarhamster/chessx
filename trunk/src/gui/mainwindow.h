@@ -173,7 +173,7 @@ public slots:
 	/** Modify game on user's request. */
 	void slotGameModify(const EditAction& action);
     /** Get a pointer or Null to the active game. */
-    void slotGetActiveGame(const Game* game);
+    void slotGetActiveGame(const Game** game);
 	/** Update GameView content after game was change. Triggers also @ref slotMoveChanged . */
 	void slotGameChanged();
 	/** Handle link click in Game View panel */

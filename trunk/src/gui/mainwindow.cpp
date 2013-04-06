@@ -140,7 +140,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	m_gameView->slotReconfigure();
 	connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
 	connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
-    connect(m_gameView, SIGNAL(queryActiveGame(const Game*)), this, SLOT(slotGetActiveGame(const Game*)));
+    connect(m_gameView, SIGNAL(queryActiveGame(const Game**)), this, SLOT(slotGetActiveGame(const Game**)));
     connect(this, SIGNAL(displayTime(const QString&, Color)), m_gameView, SLOT(slotDisplayTime(const QString&, Color)));
     gameTextDock->setWidget(m_gameWindow);
     m_gameWindow->setCentralWidget(m_gameView);

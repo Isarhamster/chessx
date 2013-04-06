@@ -145,8 +145,8 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
 		return;
 	}
 
-    const Game* game;
-    emit queryActiveGame(game);
+    const Game* game = 0;
+    emit queryActiveGame(&game);
 
 	// Handle game browser
     if (!game)

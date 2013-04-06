@@ -790,9 +790,9 @@ void MainWindow::slotGameModify(const EditAction& action)
 	slotGameChanged();
 }
 
-void MainWindow::slotGetActiveGame(const Game* g)
+void MainWindow::slotGetActiveGame(const Game** g)
 {
-    g = &game();
+    *g = &game();
 }
 
 void MainWindow::slotGameChanged()

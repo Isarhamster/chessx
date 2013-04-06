@@ -52,7 +52,7 @@ public slots:
 
 signals:
 	void actionRequested(const EditAction& action);
-    void queryActiveGame(const Game* game);
+    void queryActiveGame(const Game** game);
 
 protected:
 	virtual void selectAnchor(const QString& href);
