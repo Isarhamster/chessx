@@ -68,15 +68,12 @@
        </widget>
       </item>
      </layout>
-     <zorder>fenLabel</zorder>
-     <zorder>fenLabel</zorder>
-     <zorder>humanFEN</zorder>
     </widget>
    </item>
    <item row="2" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="boardTab">
       <attribute name="title">
@@ -280,47 +277,47 @@
          </property>
          <item>
           <property name="text">
-           <string>-</string>
+           <string notr="true">-</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>a</string>
+           <string notr="true">a</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>b</string>
+           <string notr="true">b</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>c</string>
+           <string notr="true">c</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>d</string>
+           <string notr="true">d</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>e</string>
+           <string notr="true">e</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>f</string>
+           <string notr="true">f</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>g</string>
+           <string notr="true">g</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>h</string>
+           <string notr="true">h</string>
           </property>
          </item>
         </widget>

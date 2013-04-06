@@ -302,7 +302,7 @@ unix:!macx {
 
 RESOURCES = resources.qrc
 
-#TRANSLATIONS = i18n/chessx_de.ts \
+TRANSLATIONS = i18n/chessx_de.ts
 #	i18n/chessx_fr.ts \
 #	i18n/chessx_it.ts \
 #	i18n/chessx_nl.ts \
@@ -310,20 +310,19 @@ RESOURCES = resources.qrc
 #	i18n/chessx_pt_BR.ts \
 #	i18n/chessx_zh.ts
 
-# automatically build translations
-#isEmpty(QMAKE_LRELEASE) {
-#     win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
-#     else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
-#}
+isEmpty(QMAKE_LRELEASE) {
+     win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
+     else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+}
 
-#isEmpty(TS_DIR):TS_DIR = i18n
-#TSQM.name = lrelease ${QMAKE_FILE_IN}
-#TSQM.input = TRANSLATIONS
-#TSQM.output = $$TS_DIR/${QMAKE_FILE_BASE}.qm
-#TSQM.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
-#TSQM.CONFIG += no_link target_predeps
-#QMAKE_EXTRA_COMPILERS += TSQM
-#PRE_TARGETDEPS += compiler_TSQM_make_all
+isEmpty(TS_DIR):TS_DIR = i18n
+TSQM.name = lrelease ${QMAKE_FILE_IN}
+TSQM.input = TRANSLATIONS
+TSQM.output = $$TS_DIR/${QMAKE_FILE_BASE}.qm
+TSQM.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
+TSQM.CONFIG += no_link target_predeps
+QMAKE_EXTRA_COMPILERS += TSQM
+PRE_TARGETDEPS += compiler_TSQM_make_all
 
 OTHER_FILES += \
     data/templates/pgn-default.template \
@@ -331,7 +330,8 @@ OTHER_FILES += \
     data/templates/latex-default.template \
     data/templates/html-default.template \
     ChangeLog \
-    COPYING
+    COPYING \
+    i18n/chessx_de.ts
 
 macx {
   OTHER_FILES += \
