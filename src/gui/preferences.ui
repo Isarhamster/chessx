@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -433,7 +433,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>...</string>
+             <string notr="true">...</string>
             </property>
            </widget>
           </item>
@@ -454,7 +454,7 @@
           <item row="4" column="2">
            <widget class="QRadioButton" name="engineProtocolWinBoard">
             <property name="text">
-             <string>WinBoard</string>
+             <string notr="true">WinBoard</string>
             </property>
            </widget>
           </item>
@@ -483,7 +483,7 @@
              <enum>Qt::LeftToRight</enum>
             </property>
             <property name="text">
-             <string>...</string>
+             <string notr="true">...</string>
             </property>
            </widget>
           </item>
@@ -510,7 +510,7 @@
           <item row="4" column="1">
            <widget class="QRadioButton" name="engineProtocolUCI">
             <property name="text">
-             <string>UCI</string>
+             <string notr="true">UCI</string>
             </property>
            </widget>
           </item>
@@ -695,7 +695,7 @@
            <item>
             <widget class="QPushButton" name="browsePathButton">
              <property name="text">
-              <string>...</string>
+              <string notr="true">...</string>
              </property>
             </widget>
            </item>

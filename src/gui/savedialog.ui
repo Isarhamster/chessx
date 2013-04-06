@@ -445,28 +445,28 @@
         <item>
          <widget class="QRadioButton" name="result1Button">
           <property name="text">
-           <string>1-0</string>
+           <string notr="true">1-0</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QRadioButton" name="result5Button">
           <property name="text">
-           <string>1/2-1/2</string>
+           <string notr="true">1/2-1/2</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QRadioButton" name="result0Button">
           <property name="text">
-           <string>0-1</string>
+           <string notr="true">0-1</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QRadioButton" name="resultNoneButton">
           <property name="text">
-           <string>*</string>
+           <string notr="true">*</string>
           </property>
           <property name="checked">
            <bool>true</bool>

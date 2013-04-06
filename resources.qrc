@@ -67,5 +67,6 @@
         <file alias="images/arrow_green.png">data/images/arrow_green.png</file>
         <file alias="images/arrow_yellow.png">data/images/arrow_yellow.png</file>
         <file alias="images/arrow_red.png">data/images/arrow_red.png</file>
+        <file alias="i18n/chessx_de.qm">i18n/chessx_de.qm</file>
     </qresource>
 </RCC>
