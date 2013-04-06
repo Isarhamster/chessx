@@ -429,7 +429,7 @@ Bitte Installation prüfen</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation>Favorit</translation>
+        <translation type="obsolete">Favorit</translation>
     </message>
     <message>
         <source>Open</source>
@@ -441,7 +441,7 @@ Bitte Installation prüfen</translation>
     </message>
     <message>
         <source>UTF8</source>
-        <translation>UTF8</translation>
+        <translation type="obsolete">UTF8</translation>
     </message>
     <message>
         <source>Close</source>

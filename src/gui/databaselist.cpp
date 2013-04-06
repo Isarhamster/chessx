@@ -25,7 +25,7 @@ DatabaseList::DatabaseList(QWidget *parent) :
     m_filterModel->setSourceModel(m_model);
     m_filterModel->setDynamicSortFilter(true);
     m_filterModel->sort(1);
-    m_filterModel->setSortRole(Qt::ToolTipRole);
+    m_filterModel->setSortRole(Qt::UserRole);
 
     setModel(m_filterModel);
 
@@ -69,13 +69,13 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
     if (m_cell.isValid())
     {
         QMenu menu(this);
-        bool bIsFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::ToolTipRole).toString() == tr("Favorite");
-        bool bIsNotFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::ToolTipRole).toString().isEmpty();
-        bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH), Qt::ToolTipRole).toString().isEmpty();
-        bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_OPEN), Qt::ToolTipRole).toString() == tr("Open");
+        bool bIsFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::UserRole).toString() == "Favorite";
+        bool bIsNotFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::UserRole).toString().isEmpty();
+        bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH), Qt::UserRole).toString().isEmpty();
+        bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_OPEN), Qt::UserRole).toString() == "Open";
         menu.addAction(bIsOpen ? tr("Activate") : tr("Open"), this, SLOT(dbOpen()));
 
-        QAction* action = menu.addAction(tr("UTF8"), this, SLOT(dbToggleUTF8()));
+        QAction* action = menu.addAction("UTF8", this, SLOT(dbToggleUTF8()));
         action->setCheckable(true);
         QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
         bool bUtf8 = (utf8.compare("UTF8")==0);

@@ -167,6 +167,55 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 break;
             }
         }
+        else if (role == Qt::UserRole)
+        {
+            switch (index.column())
+            {
+            case DBLV_FAVORITE:
+                {
+                    bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
+                    bool bIsClipBoard = m_databases.at(index.row()).m_name.isEmpty();
+                    return QString(bIsFavorite ? "Favorite" : bIsClipBoard ? "ClipBoard" : "");
+                }
+            case DBLV_PATH:
+                {
+                    QString s = m_databases.at(index.row()).m_name;
+                    return s;
+                }
+            case DBLV_OPEN:
+                {
+                    bool bIsOpen = m_databases.at(index.row()).m_state == EDBL_OPEN;
+                    return QString(bIsOpen ? "Open" : "Closed");
+                }
+            case DBLV_UTF8:
+                {
+                    return m_databases.at(index.row()).m_utf8 ? "UTF8" : "ANSI";
+                }
+            case DBLV_NAME:
+                {
+                    QString s = m_databases.at(index.row()).m_name;
+                    if (s.isEmpty()) return "ClipBoard";
+                    s[0] = s[0].toUpper();
+                    return s;
+                }
+            case DBLV_SIZE:
+                {
+                    QStringList sizes;
+                    sizes << "" << "k" << "M" << "G" << "T" << "P";
+                    QFileInfo f(m_databases.at(index.row()).m_path);
+                    int i=0;
+                    qint64 size = f.size();
+                    while ((size>=1024) && (i<sizes.count()))
+                    {
+                           size /= 1024;
+                           i++;
+                    }
+                    return QString("%1%2").arg(size).arg(sizes[i]);
+                }
+            default:
+                break;
+            }
+        }
     }
 
     return QVariant();
