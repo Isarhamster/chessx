@@ -15,6 +15,7 @@
 #include "chessbrowser.h"
 #include "databaseinfo.h"
 #include "databaselist.h"
+#include "ecolistwidget.h"
 #include "editaction.h"
 #include "eventlistwidget.h"
 #include "filtermodel.h"

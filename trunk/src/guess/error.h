@@ -23,7 +23,10 @@ typedef   unsigned short   errorT;
 
 const errorT
     OK = 0,
-    
+
+    // General Error
+    ERROR_General = 1,
+
     // File I/O
     ERROR_FileOpen      = 101,
     ERROR_FileWrite     = 102,

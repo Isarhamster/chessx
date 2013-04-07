@@ -49,6 +49,8 @@ public slots:
     void slotFilterListByPlayer(QString ns);
     /** Select and show current event in the list */
     void slotFilterListByEvent(QString ns);
+    /** Select and show current ECO in the list */
+    void slotFilterListByEco(QString ns);
     /** Select and show current event and player in the list */
     void slotFilterListByEventPlayer(QString player, QString event);
     /** Select and show current player and ECO in the list */

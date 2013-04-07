@@ -28,6 +28,7 @@ class ChessBrowser;
 class Database;
 class DatabaseInfo;
 class DatabaseList;
+class ECOListWidget;
 class EcoThread;
 class EditAction;
 class EventListWidget;
@@ -378,6 +379,7 @@ private:
 	/* Dialogs  */
 	GameList* m_gameList;
     PlayerListWidget* m_playerList;
+    ECOListWidget* m_ecoList;
     EventListWidget* m_eventList;
     DatabaseList* m_databaseList;
 	SaveDialog* m_saveDialog;

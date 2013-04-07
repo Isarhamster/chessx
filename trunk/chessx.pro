@@ -139,7 +139,8 @@ HEADERS += src/database/board.h \
     src/gui/eventlistwidget.h \
     src/database/eventinfo.h \
     src/gui/renametagdialog.h \
-    src/gui/openingtreewidget.h
+    src/gui/openingtreewidget.h \
+    src/gui/ecolistwidget.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -231,7 +232,8 @@ SOURCES += src/database/board.cpp \
     src/gui/eventlistwidget.cpp \
     src/database/eventinfo.cpp \
     src/gui/renametagdialog.cpp \
-    src/gui/openingtreewidget.cpp
+    src/gui/openingtreewidget.cpp \
+    src/gui/ecolistwidget.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
