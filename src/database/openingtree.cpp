@@ -19,7 +19,7 @@ const unsigned MinAveRating = 5;
 MoveData::MoveData()
 {
 	count = 0;
-    for (int  r = Unknown; r <= BlackWin; ++r)
+    for (int  r = ResultUnknown; r <= BlackWin; ++r)
 		result[r] = 0;
 	year = rating = 0;
 	dated = rated = 0;
@@ -47,7 +47,7 @@ void MoveData::addGame(Game& g, Color c, MoveType movetype)
 
 double MoveData::percentage() const
 {
-	unsigned c = result[Unknown] + 2 * result[WhiteWin] + result[Draw];
+	unsigned c = result[ResultUnknown] + 2 * result[WhiteWin] + result[Draw];
 	return c * 500 / count / 10.0;
 }
 

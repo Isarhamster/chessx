@@ -101,7 +101,7 @@ enum
 	AllRights = 15
 };
 
-enum Result { Unknown, WhiteWin, Draw, BlackWin };
+enum Result { ResultUnknown, WhiteWin, Draw, BlackWin };
 
 #define MIN(a,b) (a<b) ? a : b
 #define MAX(a,b) (a>b) ? a : b
