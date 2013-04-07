@@ -23,9 +23,6 @@
 #include <stdio.h>
 #include <ctype.h>
 
-namespace Guess
-{
-
 static uint hashVal [16][64];
 static uint stdStartHash = 0;
 static uint stdStartPawnHash = 0;
@@ -33,6 +30,8 @@ static uint stdStartPawnHash = 0;
 // HASH and UNHASH are identical: XOR the hash value for a (piece,square).
 #define HASH(h,p,sq)    (h) ^= hashVal[(p)][(sq)]
 #define UNHASH(h,p,sq)  (h) ^= hashVal[(p)][(sq)]
+
+using namespace Guess;
 
 inline void
 Position::AddHash (pieceT p, squareT sq)
@@ -147,7 +146,7 @@ Position::AssertPos ()
                   ||  piece_Color(Board[List[c][i]]) != c) {
                 DumpBoard (stderr);
                 DumpLists (stderr);
-                return ERROR;
+                return ERROR_General;
             }
             mat[Board[List[c][i]]]++;
         }
@@ -156,7 +155,7 @@ Position::AssertPos ()
         if (mat[i] != Material[i]) {
             DumpBoard (stderr);
             DumpLists (stderr);
-            return ERROR;
+            return ERROR_General;
         }
     }
     return OK;
@@ -2047,7 +2046,7 @@ errorT
 Position::RelocatePiece (squareT fromSq, squareT toSq)
 {
     // Must have on-board squares:
-    if (fromSq == NS ||  toSq == NS) { return ERROR; }
+    if (fromSq == NS ||  toSq == NS) { return ERROR_General; }
 
     // If squares are identical, just return success:
     if (fromSq == toSq) { return OK; }
@@ -2057,12 +2056,12 @@ Position::RelocatePiece (squareT fromSq, squareT toSq)
     colorT pcolor = piece_Color(piece);
 
     // Must be relocating a nonempty piece to an empty square:
-    if (piece == EMPTY  ||  Board[toSq] != EMPTY) { return ERROR; }
+    if (piece == EMPTY  ||  Board[toSq] != EMPTY) { return ERROR_General; }
 
     // Pawns cannot relocate to the first or last rank:
     if (ptype == PAWN) {
         rankT toRank = square_Rank(toSq);
-        if (toRank == RANK_1  ||  toRank == RANK_8) { return ERROR; }
+        if (toRank == RANK_1  ||  toRank == RANK_8) { return ERROR_General; }
     }
 
     // Locate the piece index in the appropriate list of pieces:
@@ -2081,7 +2080,7 @@ Position::RelocatePiece (squareT fromSq, squareT toSq)
         List[pcolor][index] = fromSq;
         RemoveFromBoard (piece, toSq);
         AddToBoard (piece, fromSq);
-        return ERROR;
+        return ERROR_General;
     }
 
     // Relocation successful:
@@ -3282,8 +3281,6 @@ Position::Random (const char * material)
     }
     return OK;
 }
-
-} // End namespace Guess
 
 //////////////////////////////////////////////////////////////////////
 //  EOF: position.cpp

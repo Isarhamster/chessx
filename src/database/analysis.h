@@ -7,7 +7,6 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-
 #ifndef ANALYSIS_H
 #define ANALYSIS_H
 

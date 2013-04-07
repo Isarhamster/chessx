@@ -17,6 +17,7 @@
 #include "databaselist.h"
 #include "dockwidgetex.h"
 #include "downloadmanager.h"
+#include "ecolistwidget.h"
 #include "ecothread.h"
 #include "eventlistwidget.h"
 #include "filtermodel.h"
@@ -201,6 +202,22 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_eventList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_eventList, SLOT(slotReconfigure()));
     eventListDock->hide();
+
+    // ECO List
+    DockWidgetEx* ecoListDock = new DockWidgetEx(tr("ECO"), this);
+    ecoListDock->setObjectName("EcoList");
+    m_ecoList = new ECOListWidget(this);
+    m_ecoList->setMinimumSize(150, 100);
+    ecoListDock->setWidget(m_ecoList);
+    addDockWidget(Qt::RightDockWidgetArea, ecoListDock);
+    m_menuView->addAction(ecoListDock->toggleViewAction());
+    ecoListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
+    connect(ecoListDock, SIGNAL(raiseRequest()), ecoListDock, SLOT(raise()));
+    connect(ecoListDock, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByECO(QString)));
+    connect(ecoListDock, SIGNAL(filterEcoRequest(QString,QString)), m_gameList, SLOT(slotFilterListByEco(QString,QString)));
+    connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), ecoListDock, SLOT(setDatabase(DatabaseInfo*)));
+    connect(this, SIGNAL(reconfigure()), ecoListDock, SLOT(slotReconfigure()));
+    ecoListDock->hide();
 
     // Database List
     DockWidgetEx* dbListDock = new DockWidgetEx(tr("Databases"), this);
