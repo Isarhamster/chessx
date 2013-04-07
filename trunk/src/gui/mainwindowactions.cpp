@@ -828,7 +828,7 @@ void MainWindow::slotGameChanged()
 	QString header = "<i>";
 	if (!event.isEmpty()) {
 		header.append(site);
-		if (game().result() != Unknown)
+		if (game().result() != ResultUnknown)
 			header.append(QString(" (%1)").arg(game().tag("Round")));
 		if (!site.isEmpty())
 			header.append(", ");
@@ -845,7 +845,7 @@ void MainWindow::slotGameChanged()
 	if (!white.isEmpty() || !black.isEmpty())
 		title.append(players);
 	else title.append(tr("<b>New game</b>"));
-	if (game().result() != Unknown || !eco.isEmpty())
+	if (game().result() != ResultUnknown || !eco.isEmpty())
 		title.append(QString(", ") + result);
 	if (header.length() > 8)
 		title.append(QString("<br>") + header);

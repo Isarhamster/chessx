@@ -57,7 +57,7 @@ int EventInfo::toResult(const QString& res) const
     if (res.startsWith("1/2")) return Draw;
     else if (res.startsWith('1')) return WhiteWin;
     else if (res.startsWith('0')) return BlackWin;
-    else return Unknown;
+    else return ResultUnknown;
 }
 
 float EventInfo::toPoints(const QString& res) const
@@ -69,7 +69,7 @@ float EventInfo::toPoints(const QString& res) const
     else if (res.startsWith("-+")) return 0.0;
     else if (res.startsWith("+--")) return 1.0;
     else if (res.startsWith("--+")) return 0.0;
-    else return Unknown;
+    else return ResultUnknown;
 }
 
 void EventInfo::update()
@@ -121,10 +121,10 @@ QString EventInfo::formattedScore(const int result[4], int count) const
     QChar scoresign[4] = {'*', '+', '=', '-'};
     for (int i = WhiteWin; i <= BlackWin; ++i)
         score += QString(" &nbsp;%1%2").arg(scoresign[i]).arg(result[i]);
-    if (result[Unknown])
-        score += QString(" &nbsp;*%1").arg(result[Unknown]);
-    if (count - result[Unknown])
-        score += QString(" &nbsp;(%1%)").arg((100.0 * result[WhiteWin] + 50.0 * result[Draw]) / (count - result[Unknown]),
+    if (result[ResultUnknown])
+        score += QString(" &nbsp;*%1").arg(result[ResultUnknown]);
+    if (count - result[ResultUnknown])
+        score += QString(" &nbsp;(%1%)").arg((100.0 * result[WhiteWin] + 50.0 * result[Draw]) / (count - result[ResultUnknown]),
                                                          1, 'f', 1);
     score += "</b>";
     return score;

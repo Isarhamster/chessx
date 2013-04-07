@@ -34,7 +34,7 @@ QString resultString(Result result)
 		return "1/2-1/2";
 	case BlackWin:
 		return "0-1";
-	case Unknown:
+	case ResultUnknown:
 	default:
 		return "*";
 	}
