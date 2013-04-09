@@ -212,11 +212,12 @@ MainWindow::MainWindow() : QMainWindow(),
     addDockWidget(Qt::RightDockWidgetArea, ecoListDock);
     m_menuView->addAction(ecoListDock->toggleViewAction());
     ecoListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
-    connect(ecoListDock, SIGNAL(raiseRequest()), ecoListDock, SLOT(raise()));
-    connect(ecoListDock, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByECO(QString)));
-    connect(ecoListDock, SIGNAL(filterEcoRequest(QString,QString)), m_gameList, SLOT(slotFilterListByEco(QString,QString)));
-    connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), ecoListDock, SLOT(setDatabase(DatabaseInfo*)));
-    connect(this, SIGNAL(reconfigure()), ecoListDock, SLOT(slotReconfigure()));
+    connect(m_ecoList, SIGNAL(raiseRequest()), ecoListDock, SLOT(raise()));
+    connect(m_ecoList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEco(QString)));
+    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString)));
+    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString,QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
+    connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_ecoList, SLOT(setDatabase(DatabaseInfo*)));
+    connect(this, SIGNAL(reconfigure()), m_ecoList, SLOT(slotReconfigure()));
     ecoListDock->hide();
 
     // Database List

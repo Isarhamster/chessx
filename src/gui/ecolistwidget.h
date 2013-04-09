@@ -7,7 +7,7 @@
 
 #include <QWidget>
 #include <QStringListModel>
-#include "playerinfo.h"
+#include "ecoinfo.h"
 
 namespace Ui {
 class TagDetailWidget;
@@ -25,7 +25,7 @@ public:
 
 signals:
     void filterRequest(QString ts);
-    void filterEcoRequest(QString tag, QString eco);
+    void filterEcoPlayerRequest(QString tag, QString eco);
     void raiseRequest();
 
 public slots:
@@ -42,6 +42,7 @@ protected slots:
     void selectECO(const QString& eco);
 
 private:
+    EcoInfo m_eco;
     QStringList m_list;
     Ui::TagDetailWidget *ui;
     QStringListModel* m_filterModel;

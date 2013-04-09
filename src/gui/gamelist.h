@@ -53,6 +53,8 @@ public slots:
     void slotFilterListByEco(QString ns);
     /** Select and show current event and player in the list */
     void slotFilterListByEventPlayer(QString player, QString event);
+    /** Select and show current ECO code and player in the list */
+    void slotFilterListByEcoPlayer(QString player, QString eco);
     /** Select and show current player and ECO in the list */
     void slotFilterListByEcoPlayer(QString tag, QString eco, QString player);
 
