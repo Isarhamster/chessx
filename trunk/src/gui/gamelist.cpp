@@ -201,6 +201,19 @@ void GameList::slotFilterListByEventPlayer(QString player, QString event)
     emit searchDone();
 }
 
+void GameList::slotFilterListByEcoPlayer(QString player, QString eco)
+{
+    TagSearch ts(m_model->filter()->database(),  TagNameWhite, player);
+    TagSearch ts2(m_model->filter()->database(), TagNameBlack, player);
+    TagSearch ts3(m_model->filter()->database(), TagNameECO, eco);
+    m_model->filter()->executeSearch(ts);
+    m_model->filter()->executeSearch(ts2,Search::Or);
+    m_model->filter()->executeSearch(ts3,Search::And);
+    updateFilter();
+    emit raiseRequest();
+    emit searchDone();
+}
+
 void GameList::slotFilterListByEco(QString s)
 {
     TagSearch ts(m_model->filter()->database(), "ECO", s);

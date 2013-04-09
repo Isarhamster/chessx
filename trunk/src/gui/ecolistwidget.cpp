@@ -15,13 +15,13 @@ ECOListWidget::ECOListWidget(QWidget *parent) :
     ui->setupUi(this);
     m_filterModel = new QStringListModel(this);
     ui->tagList->setModel(m_filterModel);
+    ui->renameItem->setVisible(false);
 
     setObjectName("ECOListWidget");
-    connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findEvent(const QString&)));
-    connect(ui->tagList, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedEvent()));
-    connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedEvent()));
-    connect(ui->renameItem, SIGNAL(clicked()), SLOT(renameSelectedEvent()));
-    connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedEvent()));
+    connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findECO(const QString&)));
+    connect(ui->tagList, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedECO()));
+    connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedECO()));
+    connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedECO()));
 
     selectECO(QString());
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
@@ -81,16 +81,14 @@ void ECOListWidget::selectECO(const QString& eco)
 {
     if (!eco.isEmpty())
     {
-        // TODO m_event.setName(event);
+        m_eco.setCode(eco);
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
-        /*ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5%6")
-                .arg(m_event.name()).arg(m_event.formattedGameCount())
-                .arg(m_event.formattedRange())
-                .arg(m_event.formattedRating())
-                .arg(m_event.formattedScore())
-                .arg(m_event.listOfPlayers()));
-                */
+        ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5")
+                .arg(m_eco.name()).arg(m_eco.formattedGameCount())
+                .arg(m_eco.formattedRating())
+                .arg(m_eco.formattedScore())
+                .arg(m_eco.listOfPlayers()));
         const QStringList& list = m_filterModel->stringList();
         int row = list.indexOf(eco);
         if (row>=0)
@@ -107,7 +105,7 @@ void ECOListWidget::selectECO(const QString& eco)
     {
         ui->filterDatabase->setEnabled(false);
         ui->renameItem->setEnabled(false);
-        ui->detailText->setText(tr("<html><i>No event chosen.</i></html>"));
+        ui->detailText->setText(tr("<html><i>No ECO code chosen.</i></html>"));
     }
 }
 
@@ -133,12 +131,12 @@ void ECOListWidget::filterSelectedECO()
 void ECOListWidget::setDatabase(DatabaseInfo* dbInfo)
 {
     Database* db = dbInfo->database();
-    ui->detailText->setText(tr("<html><i>No event chosen.</i></html>"));
-    // TODO m_event.setDatabase(db);
+    ui->detailText->setText(tr("<html><i>No ECO code chosen.</i></html>"));
+    m_eco.setDatabase(db);
     m_list.clear();
     if (db && db->index())
     {
-        m_list = db->index()->tagValues(TagNameEvent);
+        m_list = db->index()->tagValues(TagNameECO);
     }
     m_list.sort();
     m_filterModel->setStringList(m_list);
@@ -147,9 +145,9 @@ void ECOListWidget::setDatabase(DatabaseInfo* dbInfo)
 
 void ECOListWidget::slotLinkClicked(const QUrl& url)
 {
-    if (url.scheme() == "eco")
+    if (url.scheme() == "player")
     {
         QString eco = ui->tagList->currentIndex().data().toString();
-        emit filterEcoRequest(url.path(), eco);
+        emit filterEcoPlayerRequest(url.path(),eco);
     }
 }
