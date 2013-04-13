@@ -110,6 +110,7 @@ void MainWindow::saveDatabase()
         Output output(Output::Pgn);
         output.output(database()->filename(), *database());
     }
+    emit databaseChanged(databaseInfo());
 }
 
 bool MainWindow::QuerySaveDatabase()
