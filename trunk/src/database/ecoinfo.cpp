@@ -64,11 +64,7 @@ float EcoInfo::toPoints(const QString& res) const
     if (res.startsWith("1/2")) return 0.5;
     else if (res.startsWith('1')) return 1.0;
     else if (res.startsWith('0')) return 0.0;
-    else if (res.startsWith("+-")) return 1.0;
-    else if (res.startsWith("-+")) return 0.0;
-    else if (res.startsWith("+--")) return 1.0;
-    else if (res.startsWith("--+")) return 0.0;
-    else return ResultUnknown;
+    else return -1.0;
 }
 
 void EcoInfo::update()
@@ -92,10 +88,21 @@ void EcoInfo::update()
         QString whitePlayer = index->tagValue(TagNameWhite, i);
         QString blackPlayer = index->tagValue(TagNameBlack, i);
         // The following works as QHash initializes a default-constructed value to 0
-        playersWhite[whitePlayer] += toPoints(result);
-        playersBlack[blackPlayer] += (1.0-toPoints(result));
-        m_gamesWhite[whitePlayer]++;
-        m_gamesBlack[blackPlayer]++;
+        float fres = toPoints(result);
+        if (fres >= 0)
+        {
+            playersWhite[whitePlayer] += fres;
+            playersBlack[blackPlayer] += (1.0-fres);
+            m_gamesWhite[whitePlayer]++;
+            m_gamesBlack[blackPlayer]++;
+        }
+        else
+        {
+            // This looks silly, but the []operator has a side effect!
+            if (playersWhite[whitePlayer] == 0) playersWhite[whitePlayer] = 0;
+            if (playersBlack[blackPlayer] == 0) playersBlack[blackPlayer] = 0;
+        }
+
         m_result[res]++;
         m_count++;
     }
