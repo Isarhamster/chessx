@@ -56,7 +56,6 @@ void PlayerInfo::setName(const QString& player)
     update();
 }
 
-
 int PlayerInfo::toResult(const QString& res) const
 {
 	if (res.startsWith("1/2")) return Draw;
@@ -125,8 +124,8 @@ QString PlayerInfo::formattedScore(const int result[4], int count) const
 	if (result[ResultUnknown])
 		score += QString(" &nbsp;*%1").arg(result[ResultUnknown]);
 	if (count - result[ResultUnknown])
-		score += QString(" &nbsp;(%1%)").arg((100.0 * result[WhiteWin] + 50.0 * result[Draw]) / (count - result[ResultUnknown]),
-														 1, 'f', 1);
+        score += QString(" &nbsp;(%1%)").
+          arg((100.0 * result[WhiteWin] + 50.0 * result[Draw]) / (count - result[ResultUnknown]), 1, 'f', 1);
 	score += "</b>";
 	return score;
 }
@@ -156,7 +155,6 @@ void PlayerInfo::reset()
 	m_rating[1] = 0;
     m_date[0] = PDMaxDate;
     m_date[1] = PDMinDate;
-
 }
 
 QString PlayerInfo::formattedGameCount() const
