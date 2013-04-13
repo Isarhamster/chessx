@@ -104,13 +104,16 @@ bool PartialDate::isValid() const
 
 QString PartialDate::asString() const
 {
-	if (!m_year)
-		return "????.??.??";
-    QString s = QString("%1.%2.%3")
-            .arg(m_year, 4)
-            .arg(numberToString(m_month))
-		    .arg(numberToString(m_day));
-	return s;
+    QString PartialDate::asString() const
+    {
+        if (!m_year)
+            return "????.??.??";
+        QString s = QString("%1.%2.%3")
+                .arg(m_year, 4)
+                .arg(m_month, 2)
+                .arg(m_day,2);
+        return s;
+    }
 }
 
 QString PartialDate::asShortString(int part) const
