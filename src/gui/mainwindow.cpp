@@ -303,6 +303,10 @@ MainWindow::MainWindow() : QMainWindow(),
     analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F3);
     analysisDock2->hide();
 
+    m_menuView->addSeparator();
+    m_menuView->addAction(createAction(tr("New board"), SLOT(slotCreateBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_N));
+    m_menuView->addAction(createAction(tr("Close current board"), SLOT(slotCloseBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_W));
+
     /* Randomize */
 	srand(time(0));
 
