@@ -322,7 +322,7 @@ protected slots:
     /** Activate an existing board document */
     void slotActivateBoardView(int);
     /** Activate an existing board document */
-    void slotCloseBoardView(int);
+    void slotCloseBoardView(int n=-1);
 
 protected:
     void copyGame(int target, int index);

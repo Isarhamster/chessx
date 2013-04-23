@@ -338,7 +338,7 @@ void MainWindow::slotEditVarPromote()
 void MainWindow::slotEditVarRemove()
 {
 	if (!game().isMainline()) {
-		game().removeVariation(game().currentMove());
+        game().removeVariation(game().variationNumber());
 		slotGameChanged();
 	}
 }
@@ -1469,6 +1469,10 @@ void MainWindow::slotActivateBoardView(int n)
 
 void MainWindow::slotCloseBoardView(int n)
 {
+    if (n<0)
+    {
+        n = m_tabWidget->currentIndex();
+    }
     if (m_boardViews.count() > 1)
     {
         m_boardViews.removeAt(n);
