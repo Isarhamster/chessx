@@ -167,6 +167,19 @@ void MainWindow::slotFileClose()
                 databaseInfo()->close();
                 delete databaseInfo();
                 m_databases.removeAt(m_currentDatabase);
+
+                for (int i=0; i<m_boardViews.count();++i)
+                {
+                    if (m_boardViews.at(i)->dbIndex() == m_currentDatabase)
+                    {
+                        m_boardViews.at(i)->setDbIndex(0);
+                    }
+                    else if (m_boardViews.at(i)->dbIndex() > m_currentDatabase)
+                    {
+                        m_boardViews.at(i)->setDbIndex(m_boardViews.at(i)->dbIndex()-1);
+                    }
+                }
+
                 m_currentDatabase = 0; // Switch to clipboard is always safe
                 m_boardView->setDbIndex(m_currentDatabase);
                 m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), databaseName());
@@ -192,19 +205,21 @@ void MainWindow::slotFileCloseIndex(int n)
             m_databases[n]->close();
             delete m_databases[n];
             m_databases.removeAt(n);
+            for (int i=0; i<m_boardViews.count();++i)
+            {
+                if (m_boardViews.at(i)->dbIndex() == n)
+                {
+                    m_boardViews.at(i)->setDbIndex(0);
+                }
+                else if (m_boardViews.at(i)->dbIndex() > n)
+                {
+                    m_boardViews.at(i)->setDbIndex(m_boardViews.at(i)->dbIndex()-1);
+                }
+            }
             if (m_currentDatabase > n)
             {
                 // hack as we have just moved the index by one
                 m_currentDatabase--;
-                m_boardView->setDbIndex(m_currentDatabase);
-                m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), databaseName());
-                for (int i=0; i<m_boardViews.count();++i)
-                {
-                    if (m_boardViews.at(i)->dbIndex() == n)
-                    {
-                        m_boardViews.at(i)->setDbIndex(0);
-                    }
-                }
             }
             updateMenuDatabases();
         }
