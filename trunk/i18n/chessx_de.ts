@@ -496,6 +496,44 @@ Bitte Installation prüfen</translation>
     </message>
 </context>
 <context>
+    <name>ECOListWidget</name>
+    <message>
+        <source>&lt;html&gt;&lt;i&gt;No ECO code chosen.&lt;/i&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;i&gt;Kein ECO Code ausgewählt.&lt;/i&gt;&lt;/html&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>EcoInfo</name>
+    <message>
+        <source>&lt;i&gt;no games&lt;/i&gt;</source>
+        <translation>&lt;i&gt;Keine Partien&lt;/i&gt;</translation>
+    </message>
+    <message>
+        <source>Total: %1</source>
+        <translation>Gesamt: %1</translation>
+    </message>
+    <message>
+        <source>Games in database %1: %2&lt;br&gt;</source>
+        <translation>Partien in Datenbank %1: %2&lt;br&gt;</translation>
+    </message>
+    <message>
+        <source>Rating: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</source>
+        <translation>Wertung: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</translation>
+    </message>
+    <message>
+        <source>Rating: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</source>
+        <translation>Wertung: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;table&gt;&lt;tr&gt;&lt;th&gt;White Player&lt;th&gt;Score</source>
+        <translation>&lt;table&gt;&lt;tr&gt;&lt;th&gt;Weiß&lt;th&gt;Resultat</translation>
+    </message>
+    <message>
+        <source>&lt;table&gt;&lt;tr&gt;&lt;th&gt;Black Player&lt;th&gt;Score</source>
+        <translation>&lt;table&gt;&lt;tr&gt;&lt;th&gt;Schwarz&lt;th&gt;Resultat</translation>
+    </message>
+</context>
+<context>
     <name>EngineData</name>
     <message>
         <source>New engine</source>
@@ -1402,6 +1440,18 @@ Bitte Installation prüfen</translation>
     <message>
         <source>Tree updated.</source>
         <translation>Eröffnungsbaum aktualisiert.</translation>
+    </message>
+    <message>
+        <source>ECO</source>
+        <translation>ECO</translation>
+    </message>
+    <message>
+        <source>New board</source>
+        <translation>Neues Brett</translation>
+    </message>
+    <message>
+        <source>Close current board</source>
+        <translation>Aktuelles Brett schliessen</translation>
     </message>
 </context>
 <context>
