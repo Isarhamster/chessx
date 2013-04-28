@@ -375,6 +375,8 @@ private:
     bool QuerySaveDatabase();
     /** Create a new unassociated boardview */
     BoardView* CreateBoardView();
+    /** Update Board Information */
+    void UpdateBoardInformation();
 
 	/* Dialogs  */
 	GameList* m_gameList;
