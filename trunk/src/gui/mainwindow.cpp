@@ -724,7 +724,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
             {
                 m_currentDatabase = i;
                 m_boardView->setDbIndex(m_currentDatabase);
-                m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), databaseName());
+                UpdateBoardInformation();
                 m_databaseList->setFileCurrent(fname);
                 slotDatabaseChanged();
             }
@@ -786,7 +786,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
         {
             m_currentDatabase = i;
             m_boardView->setDbIndex(m_currentDatabase);
-            m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), databaseName());
+            UpdateBoardInformation();
         }
     }
     m_databaseList->setFileCurrent(fname);

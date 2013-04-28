@@ -182,7 +182,7 @@ void MainWindow::slotFileClose()
 
                 m_currentDatabase = 0; // Switch to clipboard is always safe
                 m_boardView->setDbIndex(m_currentDatabase);
-                m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), databaseName());
+                UpdateBoardInformation();
                 m_databaseList->setFileCurrent(QString());
                 updateMenuDatabases();
                 slotDatabaseChanged();
@@ -869,6 +869,8 @@ void MainWindow::slotGameChanged()
     m_gameTitle->setText(QString("<qt>%1</qt>").arg(title));
 
 	slotMoveChanged();
+
+    UpdateBoardInformation();
 }
 
 void MainWindow::slotGameViewLink(const QUrl& url)
@@ -1069,7 +1071,6 @@ void MainWindow::slotDatabaseChange()
         database()->index()->clearCache();
 		m_currentDatabase = action->data().toInt();
         m_boardView->setDbIndex(m_currentDatabase);
-        m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), databaseName());
         m_databaseList->setFileCurrent(databaseInfo()->filePath());
 		slotDatabaseChanged();
 	}
@@ -1476,7 +1477,6 @@ void MainWindow::slotActivateBoardView(int n)
     m_databaseList->setFileCurrent(databaseInfo()->filePath());
     database()->index()->calculateCache();
     setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
-    m_tabWidget->setTabToolTip(n, databaseName());
     m_gameList->setFilter(databaseInfo()->filter());
     slotFilterChanged();
     emit databaseChanged(databaseInfo());
@@ -1497,4 +1497,19 @@ void MainWindow::slotCloseBoardView(int n)
     {
         m_tabWidget->setTabText(i, QString("%1").arg(i+1));
     }
+}
+
+void MainWindow::UpdateBoardInformation()
+{
+    QString name = "<div align='center'><p>" + databaseName() + "</p>";
+    QString nameWhite = game().tag(TagNameWhite);
+    QString nameBlack = game().tag(TagNameBlack);
+    if (!(nameWhite.isEmpty() && nameBlack.isEmpty()))
+    {
+        name += "<p align='center'><font color='midnightblue'>" +
+                nameWhite + "-" +
+                nameBlack + "</font></p>";
+    }
+    name += "</div>";
+    m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), name);
 }
