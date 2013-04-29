@@ -18,7 +18,7 @@ Filter::Filter(Database* database)
 	m_database = database;
 	m_count = m_database->count();
 	m_vector = new QVector<int>(m_count, 1);
-	m_cache.first = m_cache.second = 0;
+    m_cache.first = m_cache.second = -1;
 	m_gamesSearched = 0;
 	m_searchTime = 0;
 }
@@ -121,17 +121,30 @@ int Filter::gameToIndex(int index)
 
 int Filter::indexToGame(int index)
 {
-	if (index >= m_count) return -1;
-	if (index < m_count / 2)
-        for (int i = 0; i < size(); ++i) {
-			index -= contains(i);
-			if (index < 0) return i;
-		}
-	else
-		for (int i = size() - 1 ; i >= 0; i--) {
-			index += contains(i);
-			if (index >= m_count) return i;
-		}
+    if (m_cache.first == index) return m_cache.second;
+    m_cache.first = index;
+    if (index < m_count)
+    {
+        if (index < m_count / 2)
+            for (int i = 0; i < size(); ++i) {
+                index -= contains(i);
+                if (index < 0)
+                {
+                    m_cache.second = i;
+                    return i;
+                }
+            }
+        else
+            for (int i = size() - 1 ; i >= 0; i--) {
+                index += contains(i);
+                if (index >= m_count)
+                {
+                    m_cache.second = i;
+                    return i;
+                }
+            }
+    }
+    m_cache.second = -1;
 	return -1;
 }
 
