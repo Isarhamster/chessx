@@ -218,9 +218,13 @@ void AnalysisWidget::showTablebaseMove(Move move, int score)
 	else
 		result = tr("Black wins in %n moves", "", qAbs(score));
 
-	move = m_board.prepareMove(move.from(),move.to());
+    Move move1 = m_board.prepareMove(move.from(),move.to());
+    if (move.isPromotion())
+    {
+        move1.setPromoted(pieceType(move.promotedPiece()));
+    }
 	m_tablebaseEvaluation = QString("%1 - %2")
-				.arg(m_board.moveToFullSan(move)).arg(result);
+                .arg(m_board.moveToFullSan(move1)).arg(result);
 	updateAnalysis();
 }
 
