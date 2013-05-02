@@ -73,10 +73,7 @@ void Filter::setAll(int value)
 {
 	m_vector->fill(value);
 	m_count = value ? size() : 0;
-	if (value)
-		m_cache.first = m_cache.second = m_count / 2;
-	else
-		m_cache.first = m_cache.second = 0;
+    m_cache.first = m_cache.second = -1;
 }
 
 bool Filter::contains(int game) const
