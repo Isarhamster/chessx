@@ -213,7 +213,7 @@ inline bool Move::isNullMove() const
     return false;
 }
 
-inline void Move::setPromotionPiece(const PieceType type)
+inline void Move::setPromotionPiece(PieceType type)
 {
 	m &= ~(7 << 22); m |= ((uint) type & 7) << 22;
 }
