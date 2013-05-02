@@ -1328,8 +1328,9 @@ bool Game::loadEcoFile(const QString& ecoFile)
         if (id == COMPILED_ECO_FILE_ID)
         {
             sin >> m_ecoPositions;
+            return true;
         }
-        return true;
+        return false;
     }
     return false;
 }

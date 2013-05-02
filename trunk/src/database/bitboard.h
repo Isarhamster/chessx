@@ -104,8 +104,6 @@ public:
 	BoardStatus validate() const;
 	/** Return true if given FEN can be parsed */
 	bool isValidFen(const QString& fen) const;
-	/** validate that move is valid in position, only used for debugging */
-	bool debugCheckMove(const Move& m) const;
 
 	/** Return true if fastbits option was compiled in */
 	static const bool fastbitsOption;
@@ -348,11 +346,6 @@ inline void BitBoard::setToMove(const Color& c)
 inline void BitBoard::swapToMove()
 {
 	m_stm ^= 1;
-}
-
-inline bool BitBoard::debugCheckMove(const Move& m) const
-{
-	return BitBoard(*this).prepareMove(m.from(), m.to()).isLegal();
 }
 
 inline void BitBoard::setMoveNumber(uint moveNumber)
