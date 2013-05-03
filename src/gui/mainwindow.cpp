@@ -326,6 +326,9 @@ MainWindow::MainWindow() : QMainWindow(),
     statusBar()->setSizeGripEnabled(true);
 	m_progressBar = new QProgressBar;
 
+    /* Toolbars */
+    setUnifiedTitleAndToolBarOnMac(true);
+
     /* Reconfigure. */
     slotReconfigure();
 
@@ -877,8 +880,8 @@ SaveDialog* MainWindow::saveDialog()
 	return m_saveDialog;
 }
 
-QAction* MainWindow::createAction(const QString& name, const char* slot, const QKeySequence& key,
-											 const QString& tip, QAction::MenuRole menuRole)
+QAction* MainWindow::createAction(const QString& name, const char* slot, const QKeySequence& key, QToolBar* pToolBar, QString image,
+                                  const QString& tip, QAction::MenuRole menuRole)
 {
 	QAction* action = new QAction(name, m_actions);
 	if (!tip.isEmpty())
@@ -888,6 +891,14 @@ QAction* MainWindow::createAction(const QString& name, const char* slot, const Q
 	if (slot)
 		connect(action, SIGNAL(triggered()), slot);
     action->setMenuRole(menuRole);
+    if (!image.isEmpty())
+    {
+        action->setIcon(QIcon(image));
+    }
+    if (pToolBar)
+    {
+        pToolBar->addAction(action);
+    }
 	return action;
 }
 
@@ -895,9 +906,10 @@ void MainWindow::setupActions()
 {
 	/* File menu */
 	QMenu* file = menuBar()->addMenu(tr("&File"));
-    file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew())));
-    file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open));
-    file->addAction(createAction(tr("&Open in UTF8..."), SLOT(slotFileOpenUtf8())));
+    QToolBar* fileToolBar = addToolBar(tr("File"));
+    file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), QKeySequence(), fileToolBar, ":/images/new.png"));
+    file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
+    file->addAction(createAction(tr("&Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
 	QMenu* menuRecent = file->addMenu(tr("Open &recent..."));
 
 	for (int i = 0; i < MaxRecentFiles; ++i) {
@@ -908,33 +920,34 @@ void MainWindow::setupActions()
 		menuRecent->addAction(action);
 	}
     file->addSeparator();
-	file->addAction(createAction(tr("&Save"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S));
+    file->addAction(createAction(tr("&Save"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S, fileToolBar, ":/images/save.png"));
 	QMenu* exportMenu = file->addMenu(tr("&Export..."));
 	exportMenu->addAction(createAction(tr("&Games in filter"), SLOT(slotFileExportFilter())));
 	exportMenu->addAction(createAction(tr("&All games"), SLOT(slotFileExportAll())));
     file->addSeparator();
-	file->addAction(createAction(tr("&Close"), SLOT(slotFileClose()), QKeySequence::Close));
-	file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), QKeySequence(), QString(), QAction::QuitRole));
+    file->addAction(createAction(tr("&Close"), SLOT(slotFileClose()), QKeySequence::Close, fileToolBar, ":/images/folder.png"));
+    file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), QKeySequence(), 0, QString(), QString(), QAction::QuitRole));
 
 	/* Edit menu */
 	QMenu* edit = menuBar()->addMenu(tr("&Edit"));
+    QToolBar* editToolBar = addToolBar(tr("Edit"));
 	edit->addAction(createAction(tr("Comment"), SLOT(slotEditComment()),
-										  Qt::CTRL + Qt::Key_A));
+                                          Qt::CTRL + Qt::Key_A, editToolBar));
     edit->addAction(createAction(tr("Comment Before"), SLOT(slotEditCommentBefore()),
-                                          Qt::CTRL + Qt::ALT + Qt::Key_A));
+                                          Qt::CTRL + Qt::ALT + Qt::Key_A, editToolBar));
     QMenu* editVariation = edit->addMenu(tr("Variation"));
 	editVariation->addAction(createAction(tr("Promote"), SLOT(slotEditVarPromote()),
-													  Qt::CTRL + Qt::Key_J));
+                                                      Qt::CTRL + Qt::Key_J, editToolBar));
 	editVariation->addAction(createAction(tr("Remove"), SLOT(slotEditVarRemove()),
-													  Qt::CTRL + Qt::Key_Delete));
+                                                      Qt::CTRL + Qt::Key_Delete, editToolBar));
 	QMenu* editremove = edit->addMenu(tr("&Remove"));
 	editremove->addAction(createAction(tr("Moves from the beginning"),
-						SLOT(slotEditTruncateStart())));
+                                       SLOT(slotEditTruncateStart()), QKeySequence(), editToolBar));
 	editremove->addAction(createAction(tr("Moves to the end"), SLOT(slotEditTruncateEnd()),
-						Qt::SHIFT + Qt::Key_Delete));
+                        Qt::SHIFT + Qt::Key_Delete, editToolBar));
 	edit->addSeparator();
 	edit->addAction(createAction(tr("Setup &position..."), SLOT(slotEditBoard()),
-										  Qt::SHIFT + Qt::CTRL + Qt::Key_E));
+                                          Qt::SHIFT + Qt::CTRL + Qt::Key_E, editToolBar));
 	edit->addAction(createAction(tr("&Copy FEN"), SLOT(slotEditCopyFEN()),
 					  Qt::CTRL + Qt::SHIFT + Qt::Key_C));
 	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
@@ -942,19 +955,20 @@ void MainWindow::setupActions()
     edit->addAction(createAction(tr("Copy &human FEN"), SLOT(slotEditCopyHumanFEN())));
 	edit->addSeparator();
     edit->addAction(createAction(tr("&Copy PGN"), SLOT(slotEditCopyPGN()),
-                      Qt::CTRL + Qt::Key_C));
+                      Qt::CTRL + Qt::Key_C, editToolBar));
     edit->addAction(createAction(tr("&Paste PGN"), SLOT(slotEditPastePGN()),
-                      Qt::CTRL + Qt::Key_V));
+                      Qt::CTRL + Qt::Key_V, editToolBar));
     edit->addSeparator();
     edit->addAction(createAction(tr("&Copy Image"), SLOT(slotEditCopyImage()),
                       Qt::CTRL + Qt::ALT + Qt::Key_C));
     edit->addSeparator();
-    edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(),
-                      QString(), QAction::PreferencesRole));
-
+    edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(), 0,
+                      QString(), QString(), QAction::PreferencesRole));
 
 	/* View menu */
 	m_menuView = menuBar()->addMenu(tr("&View"));
+    QMenu* toolbars = m_menuView->addMenu(tr("Toolbars"));
+    m_menuView->addSeparator();
 
 #if defined(Q_OS_WIN)
     QAction* stayOnTop = createAction(tr("Stay on Top"), SLOT(slotToggleStayOnTop()));
@@ -968,6 +982,7 @@ void MainWindow::setupActions()
 
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
+    QToolBar* gameToolBar = addToolBar(tr("Game"));
 
     gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New));
     QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
@@ -1009,11 +1024,11 @@ void MainWindow::setupActions()
 
 	/* Game->Go to submenu */
 	QMenu* goMenu = gameMenu->addMenu(tr("&Go to"));
-	goMenu->addAction(createAction(tr("&Start"), SLOT(slotGameMoveFirst()), Qt::Key_Home));
-	goMenu->addAction(createAction(tr("&End"), SLOT(slotGameMoveLast()), Qt::Key_End));
-	goMenu->addAction(createAction(tr("&Next move"), SLOT(slotGameMoveNext()), Qt::Key_Right));
-	goMenu->addAction(createAction(tr("&Previous move"), SLOT(slotGameMovePrevious()), Qt::Key_Left));
-	goMenu->addAction(createAction(tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down));
+    goMenu->addAction(createAction(tr("&Start"), SLOT(slotGameMoveFirst()), Qt::Key_Home, gameToolBar, ":/images/first.png"));
+    goMenu->addAction(createAction(tr("&End"), SLOT(slotGameMoveLast()), Qt::Key_End, gameToolBar, ":/images/last.png"));
+    goMenu->addAction(createAction(tr("&Previous move"), SLOT(slotGameMovePrevious()), Qt::Key_Left, gameToolBar, ":/images/prev.png"));
+    goMenu->addAction(createAction(tr("&Next move"), SLOT(slotGameMoveNext()), Qt::Key_Right, gameToolBar, ":/images/next.png"));
+    goMenu->addAction(createAction(tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down));
 	goMenu->addAction(createAction(tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up));
     goMenu->addAction(createAction(tr("Enter Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right));
 	goMenu->addAction(createAction(tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL + Qt::Key_Left));
@@ -1054,13 +1069,15 @@ void MainWindow::setupActions()
     pHelpBrowser->setMinimumSize(150, 100);
     pHelpDock->setWidget(pHelpBrowser);
     addDockWidget(Qt::RightDockWidgetArea, pHelpDock);
-    help->addAction(pHelpDock->toggleViewAction());
-    pHelpDock->toggleViewAction()->setShortcut(Qt::Key_F1);
+    QAction* helpAction = pHelpDock->toggleViewAction();
+    helpAction->setIcon(QIcon(":/images/help.png"));
+    helpAction->setShortcut(Qt::Key_F1);
+    help->addAction(helpAction);
     pHelpDock->hide();
 
     help->addAction(createAction(tr("&Report a bug..."), SLOT(slotHelpBug())));
 	help->addSeparator();
-	help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), QString(), QAction::AboutRole));
+    help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), 0, QString(), QString(), QAction::AboutRole));
 
 #ifdef QT_DEBUG
 	QMenu* debug = help->addMenu(tr("&Debug"));
@@ -1071,7 +1088,10 @@ void MainWindow::setupActions()
     debug->addAction(createAction("Dump Movenodes", SLOT(slotGameDumpMoveNodes())));
 #endif
 
-
+    fileToolBar->addAction(helpAction);
+    toolbars->addAction(fileToolBar->toggleViewAction());
+    toolbars->addAction(editToolBar->toggleViewAction());
+    toolbars->addAction(gameToolBar->toggleViewAction());
 }
 
 bool MainWindow::confirmQuit()

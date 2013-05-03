@@ -68,5 +68,14 @@
         <file alias="images/arrow_yellow.png">data/images/arrow_yellow.png</file>
         <file alias="images/arrow_red.png">data/images/arrow_red.png</file>
         <file alias="i18n/chessx_de.qm">i18n/chessx_de.qm</file>
+        <file alias="images/folder.png">data/images/folder.png</file>
+        <file alias="images/folder_open.png">data/images/folder_open.png</file>
+        <file alias="images/save.png">data/images/save.png</file>
+        <file alias="images/new.png">data/images/label_blue_new.png</file>
+        <file alias="images/next.png">data/images/button_ffw.png</file>
+        <file alias="images/prev.png">data/images/button_rew.png</file>
+        <file alias="images/first.png">data/images/button_first.png</file>
+        <file alias="images/last.png">data/images/button_last.png</file>
+        <file alias="images/help.png">data/images/help_blue.png</file>
     </qresource>
 </RCC>
