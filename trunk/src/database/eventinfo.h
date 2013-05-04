@@ -18,6 +18,7 @@ typedef QList<PlayerInfoListItem> PlayerInfoList;
 
 class EventInfo
 {
+    Q_DECLARE_TR_FUNCTIONS(EventInfo)
 public:
     EventInfo();
 public:
