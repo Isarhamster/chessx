@@ -77,5 +77,10 @@
         <file alias="images/first.png">data/images/button_first.png</file>
         <file alias="images/last.png">data/images/button_last.png</file>
         <file alias="images/help.png">data/images/help_blue.png</file>
+        <file alias="images/edit_copy.png">data/images/edit_copy.png</file>
+        <file alias="images/edit_paste.png">data/images/edit_paste.png</file>
+        <file alias="images/format_indent_less.png">data/images/format_indent_less.png</file>
+        <file alias="images/edit_after.png">data/images/accessories_text_editor.png</file>
+        <file alias="images/edit_cut.png">data/images/edit_cut.png</file>
     </qresource>
 </RCC>
