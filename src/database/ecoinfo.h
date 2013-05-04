@@ -13,6 +13,8 @@ typedef QList<PlayerInfoListItem> PlayerInfoList;
 
 class EcoInfo
 {
+    Q_DECLARE_TR_FUNCTIONS(EcoInfo)
+
 public:
     EcoInfo();
 public:

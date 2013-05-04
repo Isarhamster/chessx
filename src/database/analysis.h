@@ -18,6 +18,8 @@ class Board;
 /** The analysis class contains engine analysis. */
 class Analysis
 {
+    Q_DECLARE_TR_FUNCTIONS(Analysis)
+
 public:
     Analysis();
     /** Reset values. */
@@ -67,7 +69,6 @@ private:
     int m_score;
     quint64 m_nodes;
     MoveList m_variation;
-    Q_DECLARE_TR_FUNCTIONS(Analysis)
 };
 
 #endif // ANALYSIS_H
