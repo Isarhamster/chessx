@@ -1176,8 +1176,7 @@ Bitte Installation prüfen.</translation>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1006"/>
         <source>&amp;Save....</source>
-        <translatorcomment>Translation is &quot;Sichern&quot; but changes in game are not saved to file, only applied to the PGN-database in memory!</translatorcomment>
-        <translation>&amp;Änderungen behalten...</translation>
+        <translation>&amp;Speichern...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="189"/>
@@ -1403,7 +1402,7 @@ Bitte Installation prüfen.</translation>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="944"/>
         <source>&amp;Remove</source>
-        <translation>&amp;Entfernen</translation>
+        <translation>&amp;Entferne</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="945"/>
