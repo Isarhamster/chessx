@@ -107,7 +107,7 @@ int SaveDialog::save(Database* database, Game& game)
 		// Optional tag
         if (ui.whiteEloEdit->text().toInt() || game.tag(TagNameWhiteElo).toInt())
 			game.setTag("WhiteElo", ui.whiteEloEdit->text());
-        if (ui.whiteEloEdit->text().toInt() || game.tag(TagNameBlackElo).toInt())
+        if (ui.blackEloEdit->text().toInt() || game.tag(TagNameBlackElo).toInt())
 			game.setTag("BlackElo", ui.blackEloEdit->text());
 
         QString t = ui.timeControl->text();
