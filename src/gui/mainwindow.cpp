@@ -990,7 +990,7 @@ void MainWindow::setupActions()
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
     QToolBar* gameToolBar = addToolBar(tr("Game"));
-    gameToolBar->setObjectName("GameToolBar");
+    gameToolBar->setObjectName("GameToolBarMain");
 
     gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New));
     QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
@@ -1047,16 +1047,19 @@ void MainWindow::setupActions()
 
 	/* Search menu */
 	QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
+    QToolBar* searchToolBar = addToolBar(tr("Search"));
+    searchToolBar->setObjectName("SearchToolBar");
+
 	search->addAction(createAction(tr("Find &tag"), SLOT(slotSearchTag()), Qt::CTRL +
-						 Qt::SHIFT + Qt::Key_T));
+                                   Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png"));
 	search->addAction(createAction(tr("Find &position"), SLOT(slotSearchBoard()), Qt::CTRL +
-						 Qt::SHIFT + Qt::Key_B));
+                         Qt::SHIFT + Qt::Key_B, searchToolBar, ":/images/find_pos.png"));
 	search->addSeparator();
-    m_toggleFilter = createAction(tr("&Enable filter"),SLOT(slotToggleFilter()), Qt::CTRL + Qt::ALT + Qt::Key_F);
+    m_toggleFilter = createAction(tr("&Enable filter"),SLOT(slotToggleFilter()), Qt::CTRL + Qt::ALT + Qt::Key_F, searchToolBar, ":/images/filter.png");
     m_toggleFilter->setCheckable(true);
     search->addAction(m_toggleFilter);
-    search->addAction(createAction(tr("&Reset filter"), SLOT(slotSearchReset()),     Qt::CTRL + Qt::Key_F));
-    search->addAction(createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()), Qt::CTRL + Qt::SHIFT + Qt::Key_F));
+    search->addAction(createAction(tr("&Reset filter"), SLOT(slotSearchReset()),     Qt::CTRL + Qt::Key_F, searchToolBar, ":/images/filter_reset.png"));
+    search->addAction(createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()), Qt::CTRL + Qt::SHIFT + Qt::Key_F, searchToolBar, ":/images/filter_rev.png"));
 
 	/* Database menu */
 	QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
@@ -1099,6 +1102,7 @@ void MainWindow::setupActions()
     toolbars->addAction(editToolBar->toggleViewAction());
     toolbars->addAction(viewToolBar->toggleViewAction());
     toolbars->addAction(gameToolBar->toggleViewAction());
+    toolbars->addAction(searchToolBar->toggleViewAction());
 }
 
 bool MainWindow::confirmQuit()
