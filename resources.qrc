@@ -82,5 +82,7 @@
         <file alias="images/format_indent_less.png">data/images/format_indent_less.png</file>
         <file alias="images/edit_after.png">data/images/accessories_text_editor.png</file>
         <file alias="images/edit_cut.png">data/images/edit_cut.png</file>
+        <file alias="images/close_board.png">data/images/close_board.png</file>
+        <file alias="images/new_board.png">data/images/new_board.png</file>
     </qresource>
 </RCC>
