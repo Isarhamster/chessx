@@ -84,5 +84,10 @@
         <file alias="images/edit_cut.png">data/images/edit_cut.png</file>
         <file alias="images/close_board.png">data/images/close_board.png</file>
         <file alias="images/new_board.png">data/images/new_board.png</file>
+        <file alias="images/find_tag.png">data/images/edit_find_tag.png</file>
+        <file alias="images/find_pos.png">data/images/edit_find.png</file>
+        <file alias="images/filter_rev.png">data/images/filter_rev.png</file>
+        <file alias="images/filter.png">data/images/filter.png</file>
+        <file alias="images/filter_reset.png">data/images/filter_reset.png</file>
     </qresource>
 </RCC>
