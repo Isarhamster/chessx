@@ -169,6 +169,10 @@ public slots:
 	void slotGameLoadChosen();
 	/** Enter variation. */
 	void slotGameVarEnter();
+    /** Enter previous variation. */
+    void slotGameVarUp();
+    /** Enter next variation. */
+    void slotGameVarDown();
 	/** Exit variation. */
 	void slotGameVarExit();
 	/** Modify game on user's request. */
