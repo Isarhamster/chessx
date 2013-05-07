@@ -303,10 +303,6 @@ MainWindow::MainWindow() : QMainWindow(),
     analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F3);
     analysisDock2->hide();
 
-    m_menuView->addSeparator();
-    m_menuView->addAction(createAction(tr("New board"), SLOT(slotCreateBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_N));
-    m_menuView->addAction(createAction(tr("Close current board"), SLOT(slotCloseBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_W));
-
     /* Randomize */
 	srand(time(0));
 
@@ -935,8 +931,9 @@ void MainWindow::setupActions()
     edit->addAction(createAction(tr("Comment Before"), SLOT(slotEditCommentBefore()),
                                           Qt::CTRL + Qt::ALT + Qt::Key_A));
     QMenu* editVariation = edit->addMenu(tr("Variation"));
-	editVariation->addAction(createAction(tr("Promote"), SLOT(slotEditVarPromote()),
-                                          Qt::CTRL + Qt::Key_J, editToolBar, ":/images/format_indent_less.png"));
+    QAction* promoteAction = createAction(tr("Promote"), SLOT(slotEditVarPromote()), Qt::CTRL + Qt::Key_J, editToolBar, ":/images/format_indent_less.png");
+    promoteAction->setToolTip(tr("Promote Variation"));
+    editVariation->addAction(promoteAction);
     QAction* removeVariationAction = createAction(tr("Remove"), SLOT(slotEditVarRemove()),
                                                           Qt::CTRL + Qt::Key_Delete, editToolBar, ":/images/edit_cut.png");
     removeVariationAction->setToolTip(tr("Remove Variation"));
@@ -968,6 +965,9 @@ void MainWindow::setupActions()
 
 	/* View menu */
 	m_menuView = menuBar()->addMenu(tr("&View"));
+    QToolBar* viewToolBar = addToolBar(tr("View"));
+    viewToolBar->setObjectName("ViewToolBar");
+
     QMenu* toolbars = m_menuView->addMenu(tr("Toolbars"));
     m_menuView->addSeparator();
 
@@ -981,6 +981,12 @@ void MainWindow::setupActions()
     AppSettings->setValue("/MainWindow/StayOnTop", false);
 #endif
 
+    m_menuView->addAction(createAction(tr("New board"), SLOT(slotCreateBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_N,
+                                       viewToolBar, ":/images/new_board.png"));
+    m_menuView->addAction(createAction(tr("Close current board"), SLOT(slotCloseBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_W,
+                                       viewToolBar, ":/images/close_board.png"));
+    m_menuView->addSeparator();
+
 	/* Game menu */
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
     QToolBar* gameToolBar = addToolBar(tr("Game"));
@@ -990,17 +996,9 @@ void MainWindow::setupActions()
     QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
 
     /* Game->Load submenu */
-    loadMenu->addAction(createAction(tr("&First"), SLOT(slotGameLoadFirst()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
-    loadMenu->addAction(createAction(tr("&Last"), SLOT(slotGameLoadLast()), Qt::CTRL + Qt::SHIFT + Qt::Key_Down));
-
-    QList<QKeySequence> shortCuts;
-    shortCuts.append(Qt::CTRL + Qt::Key_Down);
-    shortCuts.append(Qt::Key_F10);
-    QAction * nextAction = createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::CTRL + Qt::Key_Down);
-    nextAction->setShortcuts(shortCuts);
+    QAction * nextAction = createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::CTRL + Qt::SHIFT + Qt::Key_Down);
     loadMenu->addAction(nextAction);
-
-    loadMenu->addAction(createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::CTRL + Qt::Key_Up));
+    loadMenu->addAction(createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
     loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
     loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
     gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
@@ -1037,6 +1035,8 @@ void MainWindow::setupActions()
     goMenu->addAction(createAction(tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down));
 	goMenu->addAction(createAction(tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up));
     goMenu->addAction(createAction(tr("Enter Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right));
+    goMenu->addAction(createAction(tr("Previous Variation"), SLOT(slotGameVarUp()), Qt::CTRL + Qt::Key_Up));
+    goMenu->addAction(createAction(tr("Next Variation"), SLOT(slotGameVarDown()), Qt::CTRL + Qt::Key_Down));
 	goMenu->addAction(createAction(tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL + Qt::Key_Left));
 
     gameMenu->addSeparator();
@@ -1097,6 +1097,7 @@ void MainWindow::setupActions()
     fileToolBar->addAction(helpAction);
     toolbars->addAction(fileToolBar->toggleViewAction());
     toolbars->addAction(editToolBar->toggleViewAction());
+    toolbars->addAction(viewToolBar->toggleViewAction());
     toolbars->addAction(gameToolBar->toggleViewAction());
 }
 

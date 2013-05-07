@@ -609,6 +609,56 @@ void MainWindow::slotGameVarEnter()
             slotMoveChanged();
         }
 	}
+    else
+    {
+        slotGameMoveNext();
+    }
+}
+
+void MainWindow::slotGameVarUp()
+{
+    if (!game().isMainline())
+    {
+        while (!game().atLineStart())
+        {
+            game().backward();
+        }
+        MoveId currentVar = game().currentMove();
+        game().backward();
+        int n = game().variations().indexOf(currentVar) - 1;
+        if (n>=0)
+        {
+           game().moveToId(game().variations().at(n));
+        }
+    }
+    slotMoveChanged();
+}
+
+void MainWindow::slotGameVarDown()
+{
+    if (!game().isMainline())
+    {
+        while (!game().atLineStart())
+        {
+            game().backward();
+        }
+        MoveId currentVar = game().currentMove();
+        game().backward();
+        int n = game().variations().indexOf(currentVar) + 1;
+        if (n < game().variations().count())
+        {
+           game().moveToId(game().variations().at(n));
+        }
+        else
+        {
+           if (!m_training->isChecked())
+           {
+              // Do not show next move in training mode
+              game().forward();
+           }
+        }
+    }
+    slotMoveChanged();
 }
 
 void MainWindow::slotGameVarExit()
@@ -619,7 +669,7 @@ void MainWindow::slotGameVarExit()
         {
 			game().backward();
         }
-		game().backward();
+        game().backward();
         if (m_training->isChecked())
         {
             slotGameChanged();
@@ -628,7 +678,11 @@ void MainWindow::slotGameVarExit()
         {
             slotMoveChanged();
         }
-	}
+    }
+    else
+    {
+        slotGameMovePrevious();
+    }
 }
 
 void MainWindow::slotGameLoadFirst()
