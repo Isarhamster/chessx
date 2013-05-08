@@ -89,5 +89,8 @@
         <file alias="images/filter_rev.png">data/images/filter_rev.png</file>
         <file alias="images/filter.png">data/images/filter.png</file>
         <file alias="images/filter_reset.png">data/images/filter_reset.png</file>
+        <file alias="images/internet.png">data/images/internet.png</file>
+        <file alias="images/bug.png">data/images/bug_add.png</file>
+        <file alias="images/camera.png">data/images/camera.png</file>
     </qresource>
 </RCC>
