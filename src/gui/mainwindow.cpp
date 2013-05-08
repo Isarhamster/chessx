@@ -958,7 +958,7 @@ void MainWindow::setupActions()
                                  Qt::CTRL + Qt::Key_V, editToolBar, ":/images/edit_paste.png"));
     edit->addSeparator();
     edit->addAction(createAction(tr("&Copy Image"), SLOT(slotEditCopyImage()),
-                      Qt::CTRL + Qt::ALT + Qt::Key_C));
+                                 Qt::CTRL + Qt::ALT + Qt::Key_C, editToolBar, ":/images/camera.png"));
     edit->addSeparator();
     edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(), 0,
                       QString(), QString(), QAction::PreferencesRole));
@@ -1084,7 +1084,9 @@ void MainWindow::setupActions()
     help->addAction(helpAction);
     pHelpDock->hide();
 
-    help->addAction(createAction(tr("&Report a bug..."), SLOT(slotHelpBug())));
+    QAction* reportBugAction = createAction(tr("&Report a bug..."), SLOT(slotHelpBug()));
+    reportBugAction->setIcon(QIcon(":/images/bug.png"));
+    help->addAction(reportBugAction);
 	help->addSeparator();
     help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), 0, QString(), QString(), QAction::AboutRole));
 
