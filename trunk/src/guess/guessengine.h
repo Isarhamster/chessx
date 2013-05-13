@@ -25,7 +25,12 @@
 
 #include "position.h"
 
+#if (QT_VERSION < QT_VERSION_CHECK(4, 7, 0))
+#include <QTime>
+typedef QTime QElapsedTimer;
+#else
 #include <QElapsedTimer>
+#endif
 
 namespace Guess
 {

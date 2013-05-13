@@ -315,7 +315,11 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
     }
     else if (event->modifiers() & Qt::AltModifier)
     {
+#if (QT_VERSION < QT_VERSION_CHECK(4, 7, 0))
+        setCursor(QCursor(Qt::OpenHandCursor));
+#else
         setCursor(QCursor(Qt::DragCopyCursor));
+#endif
     }
     else
     {
