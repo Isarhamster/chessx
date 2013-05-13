@@ -164,7 +164,9 @@ public :
 	/** @return number of current variation */
 	MoveId variationNumber(MoveId moveId = CURRENT_MOVE) const;
 	/** @return number of variations at the current position */
-	int variationCount(MoveId moveId = CURRENT_MOVE) const;
+    int variationCount(MoveId moveId = CURRENT_MOVE) const;
+    /** @return true if the referenced variation has siblings */
+    bool variationHasSiblings(MoveId variation) const;
 	/** @return true if the game has been modified */
 	bool isModified() const;
 	/** Clear/set game's @p modified flag. */

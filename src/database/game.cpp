@@ -985,6 +985,16 @@ int Game::variationCount(MoveId moveId) const
 	return 0;
 }
 
+bool Game::variationHasSiblings(MoveId variation) const
+{
+    if (isMainline(variation))
+        return false;
+    while (!atLineStart(variation))
+        variation = m_moveNodes[variation].previousNode;
+    MoveId parent = m_moveNodes[m_currentNode].parentNode;
+    return (variationCount(parent) > 1);
+}
+
 bool Game::isModified() const
 {
 	return m_isModified;

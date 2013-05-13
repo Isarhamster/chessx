@@ -326,6 +326,7 @@ MainWindow::MainWindow() : QMainWindow(),
     slotReconfigure();
 
     /* Very late as this will update other widgets */
+    connect(this, SIGNAL(databaseModified()), SLOT(slotDatabaseModified()));
     CreateBoardView();
 
 	/* Display main window */
@@ -914,12 +915,22 @@ void MainWindow::setupActions()
 		menuRecent->addAction(action);
 	}
     file->addSeparator();
-    file->addAction(createAction(tr("&Save"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S, fileToolBar, ":/images/save.png"));
+
+    QAction* commitAction = createAction(tr("&Save"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S, fileToolBar, ":/images/save.png");
+    commitAction->setToolTip(tr("Commit Database to disk"));
+    connect(this, SIGNAL(signalCurrentDBisReadWrite(bool)), commitAction, SLOT(setEnabled(bool)));
+    file->addAction(commitAction);
+
 	QMenu* exportMenu = file->addMenu(tr("&Export..."));
+    connect(this, SIGNAL(signalCurrentDBhasGames(bool)), exportMenu, SLOT(setEnabled(bool)));
 	exportMenu->addAction(createAction(tr("&Games in filter"), SLOT(slotFileExportFilter())));
 	exportMenu->addAction(createAction(tr("&All games"), SLOT(slotFileExportAll())));
     file->addSeparator();
-    file->addAction(createAction(tr("&Close"), SLOT(slotFileClose()), QKeySequence::Close, fileToolBar, ":/images/folder.png"));
+
+    QAction* closeFileAction = createAction(tr("&Close"), SLOT(slotFileClose()), QKeySequence::Close, fileToolBar, ":/images/folder.png");
+    connect(this, SIGNAL(signalCurrentDBcanBeClosed(bool)), closeFileAction, SLOT(setEnabled(bool)));
+    file->addAction(closeFileAction);
+
     file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), QKeySequence(), 0, QString(), QString(), QAction::QuitRole));
 
 	/* Edit menu */
@@ -930,15 +941,21 @@ void MainWindow::setupActions()
                                  Qt::CTRL + Qt::Key_A, editToolBar, ":/images/edit_after.png"));
     edit->addAction(createAction(tr("Comment Before"), SLOT(slotEditCommentBefore()),
                                           Qt::CTRL + Qt::ALT + Qt::Key_A));
+
     QMenu* editVariation = edit->addMenu(tr("Variation"));
+
     QAction* promoteAction = createAction(tr("Promote"), SLOT(slotEditVarPromote()), Qt::CTRL + Qt::Key_J, editToolBar, ":/images/format_indent_less.png");
     promoteAction->setToolTip(tr("Promote Variation"));
+    connect(this, SIGNAL(signalMoveHasParent(bool)), promoteAction, SLOT(setEnabled(bool)));
     editVariation->addAction(promoteAction);
+
     QAction* removeVariationAction = createAction(tr("Remove"), SLOT(slotEditVarRemove()),
                                                           Qt::CTRL + Qt::Key_Delete, editToolBar, ":/images/edit_cut.png");
     removeVariationAction->setToolTip(tr("Remove Variation"));
+    connect(this, SIGNAL(signalMoveHasParent(bool)), removeVariationAction, SLOT(setEnabled(bool)));
     editVariation->addAction(removeVariationAction);
-	QMenu* editremove = edit->addMenu(tr("&Remove"));
+
+    QMenu* editremove = edit->addMenu(tr("&Remove"));
 	editremove->addAction(createAction(tr("Moves from the beginning"),
                                        SLOT(slotEditTruncateStart()), QKeySequence()));
 	editremove->addAction(createAction(tr("Moves to the end"), SLOT(slotEditTruncateEnd()),
@@ -1009,7 +1026,7 @@ void MainWindow::setupActions()
     m_training->setCheckable(true);
     gameMenu->addAction(m_training);
 
-    m_autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_R);
+    m_autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_R, gameToolBar, ":/images/replay.png");
     m_autoPlay->setCheckable(true);
     gameMenu->addAction(m_autoPlay);
     m_autoAnalysis = createAction(tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::CTRL + Qt::ALT + Qt::Key_R);
@@ -1026,18 +1043,45 @@ void MainWindow::setupActions()
 	QMenu* goMenu = gameMenu->addMenu(tr("&Go to"));
     QAction* gotoFirstMove = createAction(tr("&Start"), SLOT(slotGameMoveFirst()), Qt::Key_Home, gameToolBar, ":/images/first.png");
     gotoFirstMove->setToolTip(tr("Go to first move"));
+    connect(this, SIGNAL(signalMoveHasPreviousMove(bool)), gotoFirstMove, SLOT(setEnabled(bool)));
     goMenu->addAction(gotoFirstMove);
+
     QAction* gotoLastMove = createAction(tr("&End"), SLOT(slotGameMoveLast()), Qt::Key_End, gameToolBar, ":/images/last.png");
     gotoLastMove->setToolTip(tr("Go to last move"));
+    connect(this, SIGNAL(signalMoveHasNextMove(bool)), gotoLastMove, SLOT(setEnabled(bool)));
     goMenu->addAction(gotoLastMove);
-    goMenu->addAction(createAction(tr("&Previous move"), SLOT(slotGameMovePrevious()), Qt::Key_Left, gameToolBar, ":/images/prev.png"));
-    goMenu->addAction(createAction(tr("&Next move"), SLOT(slotGameMoveNext()), Qt::Key_Right, gameToolBar, ":/images/next.png"));
-    goMenu->addAction(createAction(tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down));
-	goMenu->addAction(createAction(tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up));
-    goMenu->addAction(createAction(tr("Enter Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right));
-    goMenu->addAction(createAction(tr("Previous Variation"), SLOT(slotGameVarUp()), Qt::CTRL + Qt::Key_Up));
-    goMenu->addAction(createAction(tr("Next Variation"), SLOT(slotGameVarDown()), Qt::CTRL + Qt::Key_Down));
-	goMenu->addAction(createAction(tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL + Qt::Key_Left));
+
+    QAction* actionPrevMove = createAction(tr("&Previous move"), SLOT(slotGameMovePrevious()), Qt::Key_Left, gameToolBar, ":/images/prev.png");
+    connect(this, SIGNAL(signalMoveHasPreviousMove(bool)), actionPrevMove, SLOT(setEnabled(bool)));
+    goMenu->addAction(actionPrevMove);
+
+    QAction* actionNextMove = createAction(tr("&Next move"), SLOT(slotGameMoveNext()), Qt::Key_Right, gameToolBar, ":/images/next.png");
+    connect(this, SIGNAL(signalMoveHasNextMove(bool)), actionNextMove, SLOT(setEnabled(bool)));
+    goMenu->addAction(actionNextMove);
+
+    QAction* fiveMovesForward = createAction(tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down);
+    connect(this, SIGNAL(signalMoveHasNextMove(bool)), fiveMovesForward, SLOT(setEnabled(bool)));
+    goMenu->addAction(fiveMovesForward);
+
+    QAction* fiveMovesPrev = createAction(tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up);
+    connect(this, SIGNAL(signalMoveHasPreviousMove(bool)), fiveMovesPrev, SLOT(setEnabled(bool)));
+    goMenu->addAction(fiveMovesPrev);
+
+    QAction* enterVariation = createAction(tr("Enter Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right, gameToolBar, ":/images/go_in.png");
+    connect(this, SIGNAL(signalMoveHasVariation(bool)), enterVariation, SLOT(setEnabled(bool)));
+    goMenu->addAction(enterVariation);
+
+    QAction* prevVariation = createAction(tr("Previous Variation"), SLOT(slotGameVarUp()), Qt::CTRL + Qt::Key_Up, gameToolBar, ":/images/go_up.png");
+    connect(this, SIGNAL(signalVariationHasSibling(bool)), prevVariation, SLOT(setEnabled(bool)));
+    goMenu->addAction(prevVariation);
+
+    QAction* nextVariation = createAction(tr("Next Variation"), SLOT(slotGameVarDown()), Qt::CTRL + Qt::Key_Down, gameToolBar, ":/images/go_down.png");
+    connect(this, SIGNAL(signalVariationHasSibling(bool)), nextVariation, SLOT(setEnabled(bool)));
+    goMenu->addAction(nextVariation);
+
+    QAction* backToMainLine = createAction(tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL + Qt::Key_Left, gameToolBar, ":/images/go_out.png");
+    connect(this, SIGNAL(signalMoveHasParent(bool)), backToMainLine, SLOT(setEnabled(bool)));
+    goMenu->addAction(backToMainLine);
 
     gameMenu->addSeparator();
 
@@ -1050,16 +1094,27 @@ void MainWindow::setupActions()
     QToolBar* searchToolBar = addToolBar(tr("Search"));
     searchToolBar->setObjectName("SearchToolBar");
 
-	search->addAction(createAction(tr("Find &tag"), SLOT(slotSearchTag()), Qt::CTRL +
-                                   Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png"));
-	search->addAction(createAction(tr("Find &position"), SLOT(slotSearchBoard()), Qt::CTRL +
-                         Qt::SHIFT + Qt::Key_B, searchToolBar, ":/images/find_pos.png"));
+    QAction* actionFindTag = createAction(tr("Find &tag"), SLOT(slotSearchTag()), Qt::CTRL + Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png");
+    connect(this, SIGNAL(signalCurrentDBhasGames(bool)), actionFindTag, SLOT(setEnabled(bool)));
+    search->addAction(actionFindTag);
+
+    QAction* actionFindBoard = createAction(tr("Find &position"), SLOT(slotSearchBoard()), Qt::CTRL + Qt::SHIFT + Qt::Key_B, searchToolBar, ":/images/find_pos.png");
+    connect(this, SIGNAL(signalCurrentDBhasGames(bool)), actionFindBoard, SLOT(setEnabled(bool)));
+    search->addAction(actionFindBoard);
+
 	search->addSeparator();
     m_toggleFilter = createAction(tr("&Enable filter"),SLOT(slotToggleFilter()), Qt::CTRL + Qt::ALT + Qt::Key_F, searchToolBar, ":/images/filter.png");
     m_toggleFilter->setCheckable(true);
+    connect(this, SIGNAL(signalCurrentDBhasGames(bool)), m_toggleFilter, SLOT(setEnabled(bool)));
     search->addAction(m_toggleFilter);
-    search->addAction(createAction(tr("&Reset filter"), SLOT(slotSearchReset()),     Qt::CTRL + Qt::Key_F, searchToolBar, ":/images/filter_reset.png"));
-    search->addAction(createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()), Qt::CTRL + Qt::SHIFT + Qt::Key_F, searchToolBar, ":/images/filter_rev.png"));
+
+    QAction* filterReset = createAction(tr("&Reset filter"), SLOT(slotSearchReset()),     Qt::CTRL + Qt::Key_F, searchToolBar, ":/images/filter_reset.png");
+    connect(this, SIGNAL(signalCurrentDBhasGames(bool)), filterReset, SLOT(setEnabled(bool)));
+    search->addAction(filterReset);
+
+    QAction* reverseFilter = createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()), Qt::CTRL + Qt::SHIFT + Qt::Key_F, searchToolBar, ":/images/filter_rev.png");
+    connect(this, SIGNAL(signalCurrentDBhasGames(bool)), reverseFilter, SLOT(setEnabled(bool)));
+    search->addAction(reverseFilter);
 
 	/* Database menu */
 	QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
