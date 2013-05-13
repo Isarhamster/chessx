@@ -563,6 +563,7 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
 void MainWindow::slotMoveChanged()
 {
     const Game& g = game();
+    MoveId m = g.currentMove();
 
 	// Set board first
     QString fen = m_boardView->board().toFen();
@@ -573,13 +574,19 @@ void MainWindow::slotMoveChanged()
     emit displayTime(g.timeAnnotation(), g.board().toMove());
 
 	// Highlight current move
-	m_gameView->showMove(g.currentMove());
+    m_gameView->showMove(m);
 
 	slotSearchTree();
 	emit boardChange(g.board());
 
 	// Clear  entries
 	m_nagText.clear();
+
+    emit signalMoveHasNextMove(!game().atLineEnd());
+    emit signalMoveHasPreviousMove(!game().atGameStart());
+    emit signalMoveHasVariation(game().variationCount() > 0);
+    emit signalMoveHasParent(!game().isMainline());
+    emit signalVariationHasSibling(game().variationHasSiblings(m));
 }
 
 void MainWindow::slotBoardMoveWheel(int wheel)
@@ -782,6 +789,15 @@ void MainWindow::saveGame()
     }
 }
 
+void MainWindow::slotDatabaseModified()
+{
+    m_gameList->updateFilter();
+    slotFilterChanged();
+    emit signalCurrentDBisReadWrite((m_currentDatabase>0) && !databaseInfo()->database()->isReadOnly());
+    emit signalCurrentDBcanBeClosed(m_currentDatabase>0);
+    emit signalCurrentDBhasGames(database()->index()->count()>0);
+}
+
 bool MainWindow::slotGameSave()
 {
 	if (database()->isReadOnly())
@@ -800,6 +816,9 @@ bool MainWindow::slotGameSave()
     {
         game().setModified(false); // Do not notify more than once
     }
+
+    emit databaseModified();
+
     return (n!=QDialog::Rejected);
 }
 
@@ -1144,6 +1163,10 @@ void MainWindow::copyGame(int target, int index)
 
             // The database is open and accessible
             m_databases[target]->database()->appendGame(g);
+            if (index == m_currentDatabase)
+            {
+                emit databaseModified();
+            }
         }
     }
 }
@@ -1216,6 +1239,11 @@ void MainWindow::copyDatabase(QString target, QString src)
             fDest.close();
             m_databaseList->update(target);
         }
+
+        if (databaseInfo() == pDestDBInfo)
+        {
+            emit databaseModified();
+        }
     }
 }
 
@@ -1274,6 +1302,7 @@ void MainWindow::slotDatabaseChanged()
     int lastGameIndex = m_databaseList->getLastIndex(fname);
     gameLoad(gameIndex()>=0 ? gameIndex() : lastGameIndex, true, true);
     emit databaseChanged(databaseInfo());
+    emit databaseModified();
 }
 
 void MainWindow::slotSearchTag()

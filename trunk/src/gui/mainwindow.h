@@ -346,9 +346,22 @@ signals:
     /** Emitted upon a update for the elapsed / clock time */
     void displayTime(const QString&, Color);
 
+    void signalMoveHasVariation(bool);
+    void signalVariationHasSibling(bool);
+    void signalMoveHasPreviousMove(bool);
+    void signalMoveHasNextMove(bool);
+    void signalMoveHasParent(bool);
+
+    void signalCurrentDBisReadWrite(bool);
+    void signalCurrentDBcanBeClosed(bool);
+    void signalCurrentDBhasGames(bool);
+
+    void databaseModified();
+
 private slots:
 	/** Cleanup after ECO file loaded. */
     void ecoLoaded(QObject*,bool);
+    void slotDatabaseModified();
 
 private:
 	/** Create single menu action. */

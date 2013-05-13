@@ -92,5 +92,10 @@
         <file alias="images/internet.png">data/images/internet.png</file>
         <file alias="images/bug.png">data/images/bug_add.png</file>
         <file alias="images/camera.png">data/images/camera.png</file>
+        <file alias="images/replay.png">data/images/replay.png</file>
+        <file alias="images/go_out.png">data/images/edit_out.png</file>
+        <file alias="images/go_in.png">data/images/go_jump.png</file>
+        <file alias="images/go_up.png">data/images/arrow_up_double.png</file>
+        <file alias="images/go_down.png">data/images/arrow_down_double.png</file>
     </qresource>
 </RCC>
