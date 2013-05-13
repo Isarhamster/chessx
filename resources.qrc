@@ -97,5 +97,6 @@
         <file alias="images/go_in.png">data/images/go_jump.png</file>
         <file alias="images/go_up.png">data/images/arrow_up_double.png</file>
         <file alias="images/go_down.png">data/images/arrow_down_double.png</file>
+        <file alias="images/setup_board.png">data/images/setup_board.png</file>
     </qresource>
 </RCC>
