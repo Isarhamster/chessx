@@ -961,8 +961,11 @@ void MainWindow::setupActions()
 	editremove->addAction(createAction(tr("Moves to the end"), SLOT(slotEditTruncateEnd()),
                         Qt::SHIFT + Qt::Key_Delete));
 	edit->addSeparator();
-	edit->addAction(createAction(tr("Setup &position..."), SLOT(slotEditBoard()),
-                                          Qt::SHIFT + Qt::CTRL + Qt::Key_E));
+    QAction* setupBoard = createAction(tr("Setup &position..."),
+                                       SLOT(slotEditBoard()), Qt::SHIFT + Qt::CTRL + Qt::Key_E,
+                                       editToolBar, ":/images/setup_board.png");
+
+    edit->addAction(setupBoard);
 	edit->addAction(createAction(tr("&Copy FEN"), SLOT(slotEditCopyFEN()),
 					  Qt::CTRL + Qt::SHIFT + Qt::Key_C));
 	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
