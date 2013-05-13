@@ -97,7 +97,9 @@ void OpeningTreeUpdater::run()
     QMap<Move, MoveData> moves;
     int games = 0;
     for (int i = 0; i < m_filter->size(); ++i) {
+        m_filter->database()->lock();
         m_filter->database()->loadGameMoves(i, g);
+        m_filter->database()->unlock();
         int id = g.findPosition(m_board);
         if (id != NO_MOVE)
         {
@@ -105,7 +107,9 @@ void OpeningTreeUpdater::run()
             {
                 m_filter->set(i, id + 1); // not zero means success, but id could be 0.
             }
+            m_filter->database()->lock();
             m_filter->database()->loadGameHeaders(i, g);
+            m_filter->database()->unlock();
             g.moveToId(id);
             if (g.atGameEnd())
             {

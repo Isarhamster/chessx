@@ -332,7 +332,7 @@ bool PgnDatabase::loadGame(int index, Game& game)
 	if (!m_isOpen || index >= m_count) {
 		return false;
 	}
-
+    lock();
 	//parse the game
     game.clear();
 	loadGameHeaders(index, game);
@@ -342,6 +342,7 @@ bool PgnDatabase::loadGame(int index, Game& game)
 	if (fen != "?")
 		game.setStartingBoard(fen);
     parseMoves(&game);
+    unlock();
 
     return m_variation != -1 || fen != "?";  // Not sure of all of the ramifications of this
                                              // but it seeems to fix the problem with FENs

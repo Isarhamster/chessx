@@ -19,6 +19,7 @@
 #include "search.h"
 #include "query.h"
 #include "index.h"
+#include "QMutex"
 
 /** @defgroup Database Database - classes to manipulate chess game files*/
 
@@ -47,6 +48,10 @@ public:
     bool isUtf8() const { return m_utf8; }
     /** Set file format */
     void setUtf8(bool utf8) { m_utf8 = utf8; }
+
+    //Mutex operations
+    void lock() { mutex.lock(); }
+    void unlock() { mutex.unlock(); }
 
 	//database operations
 	/** Creates a database with the given filename */
@@ -104,6 +109,7 @@ signals:
 protected:
 	Index m_index;
     bool m_utf8;
+    QMutex mutex;
 };
 
 #endif
