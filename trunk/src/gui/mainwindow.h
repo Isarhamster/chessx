@@ -327,6 +327,8 @@ protected slots:
     void slotActivateBoardView(int);
     /** Activate an existing board document */
     void slotCloseBoardView(int n=-1);
+    /** Make a screenshot and save it to file */
+    void slotScreenShot();
 
 protected:
     void copyGame(int target, int index);

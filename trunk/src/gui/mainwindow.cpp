@@ -1151,10 +1151,11 @@ void MainWindow::setupActions()
 #ifdef QT_DEBUG
 	QMenu* debug = help->addMenu(tr("&Debug"));
 	QAction* source;
-	debug->addAction(source = createAction("Toggle game view format", 0, Qt::Key_F12));
+    debug->addAction(source = createAction("Toggle game view format", 0));
 	source->setCheckable(true);
 	connect(source, SIGNAL(toggled(bool)), SLOT(slotGameViewToggle(bool)));
     debug->addAction(createAction("Dump Movenodes", SLOT(slotGameDumpMoveNodes())));
+    debug->addAction(createAction("Make Screenshot", SLOT(slotScreenShot()), Qt::CTRL + Qt::Key_F12));
 #endif
 
     fileToolBar->addAction(helpAction);
