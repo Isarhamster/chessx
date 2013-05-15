@@ -1611,8 +1611,7 @@ void MainWindow::slotScreenShot()
     QString shotDir = dir + "/shots";
     QDir().mkpath(shotDir);
 
-    QString format = "png";
     QString fileName = shotDir + "/shot-" + QDateTime::currentDateTime().toString() + ".png";
 
-    pixmap.save(fileName, format.toAscii());
+    pixmap.save(fileName);
 }
