@@ -222,9 +222,11 @@ public slots:
 	void slotFileSave();
 	/** Open given database from Recent files list. */
 	void slotFileOpenRecent();
-	/** Exports games in filter to PGN file. */
+    /** Exports game to selected file type. */
+    void slotFileExportGame();
+    /** Exports games in filter to selected file type. */
 	void slotFileExportFilter();
-	/** Exports all games to PGN file. */
+    /** Exports all games to selected file type. */
 	void slotFileExportAll();
 	/** Close current database. Switches to next active (or clipboard if there is none). */
 	void slotFileClose();

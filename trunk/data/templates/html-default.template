@@ -14,10 +14,10 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 [OPTIONS]
 ColumnStyle=false
 MainLineMoveColor=#000000
-VariationColor=#0000ff
-CommentColor=#00ff00
-NagColor=#ff0000
-HeaderColor=#0000ff
+VariationColor=#00008b
+CommentColor=#006400
+NagColor=#8b0000
+HeaderColor=#00008b
 [OUTPUTHEADER]
 <html><head><title>ChessX HTML Output</title><style>\n
 A:link, A:visited { text-decoration: none }\n
@@ -35,7 +35,7 @@ A:active { text-decoration: underline }\n
 [MARKUPTAGS]
 MarkupHeaderBlock=,<br>\n
 MarkupNotationBlock=,
-MarkupResult=,
+MarkupResult=,<br><hr>\n
 MarkupMainLineMove=,
 MarkupVariationMove=,
 MarkupMainLine=<div class="mainline">,</div>\n

@@ -923,6 +923,7 @@ void MainWindow::setupActions()
 
 	QMenu* exportMenu = file->addMenu(tr("&Export..."));
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), exportMenu, SLOT(setEnabled(bool)));
+    exportMenu->addAction(createAction(tr("Current Game"), SLOT(slotFileExportGame())));
 	exportMenu->addAction(createAction(tr("&Games in filter"), SLOT(slotFileExportFilter())));
 	exportMenu->addAction(createAction(tr("&All games"), SLOT(slotFileExportAll())));
     file->addSeparator();
