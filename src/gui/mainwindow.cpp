@@ -214,7 +214,7 @@ MainWindow::MainWindow() : QMainWindow(),
     ecoListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
     connect(m_ecoList, SIGNAL(raiseRequest()), ecoListDock, SLOT(raise()));
     connect(m_ecoList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEco(QString)));
-    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString)));
+    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString,QString,QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString,QString,QString)));
     connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString,QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
     connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_ecoList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_ecoList, SLOT(slotReconfigure()));
@@ -1012,7 +1012,8 @@ void MainWindow::setupActions()
     QToolBar* gameToolBar = addToolBar(tr("Game"));
     gameToolBar->setObjectName("GameToolBarMain");
 
-    gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New));
+    gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New,
+                        gameToolBar, ":/images/new_game.png"));
     QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
 
     /* Game->Load submenu */

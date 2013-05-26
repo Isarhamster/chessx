@@ -3,6 +3,7 @@
 
 #include "common.h"
 
+#include <QtCore>
 #include <QString>
 #include <QList>
 #include <QPair>

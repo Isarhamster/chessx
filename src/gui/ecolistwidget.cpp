@@ -28,7 +28,8 @@ ECOListWidget::ECOListWidget(QWidget *parent) :
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(selectionChangedSlot()));
 
-    ui->detailText->setOpenLinks(false);
+    ui->detailText->setOpenExternalLinks(false);
+    ui->detailText->setOpenLinks(true);
     connect(ui->detailText, SIGNAL(anchorClicked(QUrl)), SLOT(slotLinkClicked(QUrl)));
 
     slotReconfigure();
@@ -145,9 +146,10 @@ void ECOListWidget::setDatabase(DatabaseInfo* dbInfo)
 
 void ECOListWidget::slotLinkClicked(const QUrl& url)
 {
-    if (url.scheme() == "player")
+    if (url.scheme().startsWith("player"))
     {
         QString eco = ui->tagList->currentIndex().data().toString();
-        emit filterEcoPlayerRequest(url.path(),eco);
+        emit filterEcoPlayerRequest(url.scheme().contains("white") ? TagNameWhite:TagNameBlack,
+                                    eco, url.path());
     }
 }
