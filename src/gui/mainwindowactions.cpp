@@ -238,6 +238,16 @@ void MainWindow::slotFileCloseName(QString fname)
     }
 }
 
+void MainWindow::slotFileExportGame()
+{
+    int format;
+    QString filename = exportFileName(format);
+    if (!filename.isEmpty()) {
+        Output output((Output::OutputType)format);
+        output.output(filename, databaseInfo()->currentGame());
+    }
+}
+
 void MainWindow::slotFileExportFilter()
 {
 	int format;

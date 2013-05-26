@@ -516,6 +516,16 @@ void Output::output(QTextStream& out, Database& database)
     database.setModified(false);
 }
 
+void Output::output(const QString& filename, Game& game)
+{
+    QFile f(filename);
+    if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+    QTextStream out(&f);
+    out << output(&game);
+    f.close();
+}
+
 void Output::output(const QString& filename, Filter& filter)
 {
 	QFile f(filename);
