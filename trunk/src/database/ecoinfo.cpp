@@ -181,11 +181,15 @@ QString EcoInfo::formattedRating() const
 QString EcoInfo::listOfPlayers() const
 {
     QString playersList;
-    playersList.append(QCoreApplication::translate("EcoInfo","<table><tr><th>White Player<th>Score"));
+    if (m_playersWhite.count() > 10)
+    {
+        playersList.append(tr("<p><a href='#ListBlack'>Go to Black Players Score</a></p>"));
+    }
+    playersList.append(tr("<table><tr><th>White Player<th>Score"));
 
     for (PlayerInfoList::const_iterator it=m_playersWhite.begin(); it != m_playersWhite.end(); ++it)
     {
-        playersList += QString("<tr><td><a href='player:%1'>%2</a><td>%3/%4")
+        playersList += QString("<tr><td><a href='player-white:%1'>%2</a><td>%3/%4")
                 .arg((*it).first)
                 .arg((*it).first)
                 .arg((*it).second)
@@ -194,11 +198,11 @@ QString EcoInfo::listOfPlayers() const
 
     playersList = playersList.append("</table>");
 
-    playersList.append(QCoreApplication::translate("EcoInfo","<table><tr><th>Black Player<th>Score"));
+    playersList.append(tr("<a name='ListBlack'></a><table><tr><th>Black Player<th>Score"));
 
     for (PlayerInfoList::const_iterator it=m_playersBlack.begin(); it != m_playersBlack.end(); ++it)
     {
-        playersList += QString("<tr><td><a href='player:%1'>%2</a><td>%3/%4")
+        playersList += QString("<tr><td><a href='player-black:%1'>%2</a><td>%3/%4")
                 .arg((*it).first)
                 .arg((*it).first)
                 .arg((*it).second)
