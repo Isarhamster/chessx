@@ -13,13 +13,20 @@
 MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 [OPTIONS]
 ColumnStyle=false
+SymbolicNag=true
 MainLineMoveColor=#000000
 VariationColor=#00008b
 CommentColor=#006400
 NagColor=#8b0000
 HeaderColor=#00008b
+ShowDiagram=true
+DiagramSize=100
 [OUTPUTHEADER]
-<html><head><title>ChessX HTML Output</title><style>\n
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf8">
+<title>ChessX HTML Output</title><style>\n
 A:link, A:visited { text-decoration: none }\n
 A:active { text-decoration: underline }\n
 .mainline {font-weight: @MainLineFontWeight@; color: @MainLineMoveColor@}\n

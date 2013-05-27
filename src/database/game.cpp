@@ -1250,7 +1250,7 @@ QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, Mo
 	// Move and SAN
 	san += m_currentBoard.moveToSan(move.move);
 	if (flags & Nags)
-		san += nags(node).toString();
+        san += nags(node).toString(NagSet::Simple);
 		
 	// Restore previous position
 	if (saveNode != NO_MOVE)
@@ -1269,7 +1269,7 @@ void Game::dumpMoveNode(MoveId moveId)
 		qDebug() << "   Next node   : " << m_moveNodes[moveId].nextNode;
 		qDebug() << "   Prev node   : " << m_moveNodes[moveId].previousNode;
 		qDebug() << "   Parent node : " << m_moveNodes[moveId].parentNode;
-		qDebug() << "   Nags        : " << m_moveNodes[moveId].nags.toString();
+        qDebug() << "   Nags        : " << m_moveNodes[moveId].nags.toString(NagSet::Simple);
 		qDebug() << "   Deleted     : " << m_moveNodes[moveId].removed;
 		qDebug() << "   # Variations: " << m_moveNodes[moveId].variations.size();
 		qDebug() << "   Variations  : " << m_moveNodes[moveId].variations;

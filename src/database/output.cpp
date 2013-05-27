@@ -193,7 +193,7 @@ void Output::writeMove(MoveToWrite moveToWrite)
 	mvno = QString::number(moveId);
 	if (m_game->nags(moveId).count() > 0) {
 		if (m_options.getOptionAsBool("SymbolicNag")) {
-			nagString += m_game->nags(moveId).toString();
+            nagString += m_game->nags(moveId).toString(m_outputType == Html ? NagSet::HTML : NagSet::Simple);
 		} else {
 			nagString += m_game->nags(moveId).toString(NagSet::PGN);
 		}
@@ -488,7 +488,7 @@ void Output::output(QTextStream& out, Filter& filter)
 
 void Output::output(QTextStream& out, Database& database)
 {
-    if (!database.isUtf8())
+    if (!database.isUtf8() && (m_outputType == Pgn))
     {
         QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
         if (textCodec)
@@ -522,6 +522,10 @@ void Output::output(const QString& filename, Game& game)
     if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
     QTextStream out(&f);
+    if (m_outputType == Html)
+    {
+        out.setCodec(QTextCodec::codecForName("utf8"));
+    }
     out << output(&game);
     f.close();
 }
@@ -532,7 +536,11 @@ void Output::output(const QString& filename, Filter& filter)
 	if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&f);
-	output(out, filter);
+    if (m_outputType == Html)
+    {
+        out.setCodec(QTextCodec::codecForName("utf8"));
+    }
+    output(out, filter);
 	f.close();
 }
 
@@ -542,7 +550,11 @@ void Output::output(const QString& filename, Database& database)
 	if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&f);
-	output(out, database);
+    if (m_outputType == Html)
+    {
+        out.setCodec(QTextCodec::codecForName("utf8"));
+    }
+    output(out, database);
 	f.close();
 }
 
@@ -552,6 +564,10 @@ void Output::append(const QString& filename, Game& game)
     if (!f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
         return;
     QTextStream out(&f);
+    if (m_outputType == Html)
+    {
+        out.setCodec(QTextCodec::codecForName("utf8"));
+    }
     out << output(&game);
     f.close();
 }
