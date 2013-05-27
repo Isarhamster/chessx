@@ -33,6 +33,9 @@ bool OutputOptions::createDefaultOptions()
 	createOption("NagColor", Color, "", "red", "");
 	createOption("HeaderColor", Color, "", "blue", "");
 	createOption("ShowHeader", Boolean, "", "true", "");
+
+    createOption("ShowDiagram", Boolean, "", "false", "");
+    createOption("DiagramSize", Integer, "0:200", "100", "");
 	return true;
 }
 

@@ -183,7 +183,8 @@ typedef enum
     BishopNagStart = BishopsOfOppositeColor,
 	BishopsOfSameColor,
     BishopNagEnd = BishopsOfSameColor,
-	NagCount
+    NagDiagram = 201, // SCID compatibility
+    NagCount
 } Nag;
 
 /** @ingroup Database
@@ -192,15 +193,19 @@ The NagSet class stores set of PGN NAGs.
 class NagSet : public QVector<Nag>
 {
 public:
-	 enum { Simple, PGN }; /**< format of a string */
+     enum { Simple, PGN, HTML }; /**< format of a string */
 
 	 NagSet() {}
 	 NagSet(Nag nag) { addNag(nag); }
 
 	 void addNag(Nag nag);
 	 void removeNag(Nag nag);
-	QString toString(unsigned format = Simple) const;
+    QString toString(unsigned format) const;
 	static const QString& nagToString(Nag nag);
+    static const QString& nagToStringHTML(Nag nag);
+    static bool isMoveNag(Nag nag);
+    static bool isEvalNag(Nag nag);
+    static bool isOtherNag(Nag nag);
     static QString nagToMenuString(Nag nag);
 	static int prefixCount(const QString& nag);
 	static Nag fromString(const QString& nag);
