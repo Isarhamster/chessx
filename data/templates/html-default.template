@@ -20,7 +20,7 @@ CommentColor=#006400
 NagColor=#8b0000
 HeaderColor=#00008b
 ShowDiagram=true
-DiagramSize=100
+DiagramSize=200
 [OUTPUTHEADER]
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>

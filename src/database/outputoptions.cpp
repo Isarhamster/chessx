@@ -35,7 +35,7 @@ bool OutputOptions::createDefaultOptions()
 	createOption("ShowHeader", Boolean, "", "true", "");
 
     createOption("ShowDiagram", Boolean, "", "false", "");
-    createOption("DiagramSize", Integer, "0:200", "100", "");
+    createOption("DiagramSize", Integer, "0:500", "200", "");
 	return true;
 }
 

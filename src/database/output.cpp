@@ -9,10 +9,13 @@
  ***************************************************************************/
 
 #include <QMap>
+#include <QThread>
 
 #include "output.h"
 #include "settings.h"
 #include "board.h"
+#include "boardview.h"
+
 
 QMap<Output::OutputType, QString> Output::m_outputMap;
 
@@ -192,9 +195,35 @@ void Output::writeMove(MoveToWrite moveToWrite)
 	}
 	mvno = QString::number(moveId);
 	if (m_game->nags(moveId).count() > 0) {
-		if (m_options.getOptionAsBool("SymbolicNag")) {
+        if (m_options.getOptionAsBool("SymbolicNag"))
+        {
             nagString += m_game->nags(moveId).toString(m_outputType == Html ? NagSet::HTML : NagSet::Simple);
-		} else {
+            if ((m_outputType == Html || m_outputType == NotationWidget) && (m_game->nags(moveId).contains(NagDiagram)))
+            {
+                BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
+                boardView.setObjectName("XView");
+                int n = m_options.getOptionAsInt("DiagramSize");
+                boardView.setMinimumSize(n,n);
+                boardView.setEnabled(false);
+                boardView.configure();
+                boardView.setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+                Game g = *m_game;
+                g.forward(1);
+                boardView.setBoard(g.board());
+                boardView.resize(n,n);
+                QPixmap pixmap(n,n);
+                boardView.render(&pixmap);
+                QImage image = pixmap.toImage();
+                QByteArray byteArray;
+                QBuffer buffer(&byteArray);
+                image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer
+                QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
+                QString embHTMLBase64 = QString("<br><img src='data:image/gif;base64,%1'><br>").arg(iconBase64);
+                nagString += embHTMLBase64;
+            }
+        }
+        else
+        {
 			nagString += m_game->nags(moveId).toString(NagSet::PGN);
 		}
 
@@ -457,6 +486,7 @@ QString Output::output(Game* game, bool upToCurrentMove)
 		int length = m_output.length() - start;
 		while (length > textWidth) {
 			start = m_output.lastIndexOf(" ", start + textWidth);
+            if (start == -1) break;
 			m_output.replace(start, 1, '\n');
 			length = m_output.length() - start;
 		}
