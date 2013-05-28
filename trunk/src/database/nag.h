@@ -192,6 +192,8 @@ The NagSet class stores set of PGN NAGs.
 */
 class NagSet : public QVector<Nag>
 {
+    Q_DECLARE_TR_FUNCTIONS(NagSet)
+
 public:
      enum { Simple, PGN, HTML }; /**< format of a string */
 
@@ -210,6 +212,8 @@ public:
 	static int prefixCount(const QString& nag);
 	static Nag fromString(const QString& nag);
 private:
+    static void InitNagStringListLong();
+    static QStringList g_nagStringListLong;
     bool conditionalRemoveNagRange(Nag nag, Nag start, Nag end);
 	void removeNagRange(Nag from, Nag to);
 };
