@@ -114,24 +114,26 @@ bool isPieceColor(Piece piece, Color color);
 /** Returns a string representation of a result */
 QString resultString(Result result);
 
-static const QString TagNameFEN      = "FEN";
-static const QString TagNameECO      = "ECO";
-static const QString TagNameSetUp    = "Setup";
-static const QString TagNameSource   = "Source";
-static const QString TagNameResult   = "Result";
-static const QString TagNameWhite    = "White";
-static const QString TagNameBlack    = "Black";
-static const QString TagNameEvent    = "Event";
-static const QString TagNameSite     = "Site";
-static const QString TagNameRound    = "Round";
-static const QString TagNameDate     = "Date";
-static const QString TagNamePlyCount = "PlyCount";
-static const QString TagNameWhiteClock = "WhiteClock";
-static const QString TagNameBlackClock = "BlackClock";
-static const QString TagNameWhiteElo = "WhiteElo";
-static const QString TagNameBlackElo = "BlackElo";
-static const QString TagNameWhiteTeam = "WhiteTeam";
-static const QString TagNameBlackTeam = "BlackTeam";
+static const QString TagNameFEN         = "FEN";
+static const QString TagNameECO         = "ECO";
+static const QString TagNameSetUp       = "Setup";
+static const QString TagNameSource      = "Source";
+static const QString TagNameResult      = "Result";
+static const QString TagNameWhite       = "White";
+static const QString TagNameBlack       = "Black";
+static const QString TagNameEvent       = "Event";
+static const QString TagNameSite        = "Site";
+static const QString TagNameRound       = "Round";
+static const QString TagNameDate        = "Date";
+static const QString TagNameEventDate   = "EventDate";
+static const QString TagNamePlyCount    = "PlyCount";
+static const QString TagNameWhiteClock  = "WhiteClock";
+static const QString TagNameBlackClock  = "BlackClock";
+static const QString TagNameWhiteElo    = "WhiteElo";
+static const QString TagNameBlackElo    = "BlackElo";
+static const QString TagNameWhiteTeam   = "WhiteTeam";
+static const QString TagNameBlackTeam   = "BlackTeam";
+static const QString TagNameTimeControl = "TimeControl";
 
 const QString StandardTags[7] = {"Event", "Site", "Date", "Round", "White", "Black", "Result"};
 

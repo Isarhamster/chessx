@@ -902,57 +902,8 @@ void MainWindow::slotGameChanged()
 	else
         m_gameView->setText(m_output->output(&game(),m_training->isChecked()));
 
-	// Finally update game information
-    QString white = game().tag(TagNameWhite);
-    QString black = game().tag(TagNameBlack);
-    QString eco = game().tag(TagNameECO).left(3);
-	if (eco == "?")
-        eco.clear();
-
-    if (eco.isEmpty())
-    {
-        eco = game().ecoClassify().left(3);
-    }
-
-	QString whiteElo = game().tag("WhiteElo");
-	QString blackElo = game().tag("BlackElo");
-	if (whiteElo == "?")
-		whiteElo = QString();
-	if (blackElo == "?")
-		blackElo = QString();
-	QString players = QString("<b><a href=\"tag:white\">%1</a></b> %2 - <b><a href=\"tag:black\">%3</a></b> %4")
-			  .arg(white).arg(whiteElo).arg(black).arg(blackElo);
-	QString result = QString("<b>%1</b> &nbsp; %2").arg(game().tag("Result")).arg(eco);
-	QString site = game().tag("Site").left(30);
-	QString event = game().tag("Event").left(30);
-	QString header = "<i>";
-	if (!event.isEmpty()) {
-		header.append(site);
-		if (game().result() != ResultUnknown)
-			header.append(QString(" (%1)").arg(game().tag("Round")));
-		if (!site.isEmpty())
-			header.append(", ");
-	}
-	header.append(site);
-	if (!game().tag("Date").startsWith("?")) {
-		if (header.length() > 4)
-			header.append(", ");
-		header.append(game().tag("Date"));
-	}
-	header.append("</i>");
-
-	QString title;
-	if (!white.isEmpty() || !black.isEmpty())
-		title.append(players);
-	else title.append(tr("<b>New game</b>"));
-	if (game().result() != ResultUnknown || !eco.isEmpty())
-		title.append(QString(", ") + result);
-	if (header.length() > 8)
-		title.append(QString("<br>") + header);
-    m_gameTitle->setText(QString("<qt>%1</qt>").arg(title));
-
+    UpdateGameTitle();
 	slotMoveChanged();
-
     UpdateBoardInformation();
 }
 
@@ -1592,6 +1543,57 @@ void MainWindow::slotCloseBoardView(int n)
     }
 }
 
+void MainWindow::UpdateGameTitle()
+{
+    QString white = game().tag(TagNameWhite);
+    QString black = game().tag(TagNameBlack);
+    QString eco = game().tag(TagNameECO).left(3);
+    if (eco == "?")
+        eco.clear();
+
+    if (eco.isEmpty())
+    {
+        eco = game().ecoClassify().left(3);
+    }
+
+    QString whiteElo = game().tag(TagNameWhiteElo);
+    QString blackElo = game().tag(TagNameBlackElo);
+    if (whiteElo == "?")
+        whiteElo = QString();
+    if (blackElo == "?")
+        blackElo = QString();
+    QString players = QString("<b><a href=\"tag:white\">%1</a></b> %2 - <b><a href=\"tag:black\">%3</a></b> %4")
+              .arg(white).arg(whiteElo).arg(black).arg(blackElo);
+    QString result = QString("<b>%1</b> &nbsp; %2").arg(game().tag("Result")).arg(eco);
+    QString site = game().tag(TagNameSite).left(30);
+    QString event = game().tag(TagNameEvent).left(30);
+    QString header = "<i>";
+    if (!site.isEmpty()) {
+        header.append(site);
+        if (game().tag("Round") != "?")
+            header.append(QString(" (%1)").arg(game().tag("Round")));
+        if (!event.isEmpty())
+            header.append(", ");
+    }
+    header.append(event);
+    if (!game().tag("Date").startsWith("?")) {
+        if (header.length() > 4)
+            header.append(", ");
+        header.append(game().tag(TagNameDate));
+    }
+    header.append("</i>");
+
+    QString title;
+    if (!white.isEmpty() || !black.isEmpty())
+        title.append(players);
+    else title.append(tr("<b>New game</b>"));
+    if (game().result() != ResultUnknown || !eco.isEmpty())
+        title.append(QString(", ") + result);
+    if (header.length() > 8)
+        title.append(QString("<br>") + header);
+    m_gameTitle->setText(QString("<qt>%1</qt>").arg(title));
+}
+
 void MainWindow::UpdateBoardInformation()
 {
     QString name = "<div align='center'><p>" + databaseName() + "</p>";
@@ -1600,7 +1602,7 @@ void MainWindow::UpdateBoardInformation()
     if (!(nameWhite.isEmpty() && nameBlack.isEmpty()))
     {
         name += "<p align='center'><font color='midnightblue'>" +
-                nameWhite + "-" +
+                nameWhite  + "-" +
                 nameBlack + "</font></p>";
     }
     name += "</div>";
