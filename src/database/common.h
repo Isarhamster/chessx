@@ -139,5 +139,7 @@ typedef quint32 TagIndex;
 typedef quint32 ValueIndex;
 typedef quint32 GameId;
 
+#define TagNoIndex 0xFFFFFFFF
+
 #endif
 

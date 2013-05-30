@@ -298,7 +298,9 @@ inline ValueIndex Index::valueIndexFromIndex(TagIndex tagIndex, GameId gameId) c
 
 TagIndex Index::getTagIndex(const QString& value) const
 {
-    return m_tagNameIndex.value(value);
+    if (m_tagNameIndex.contains(value))
+        return m_tagNameIndex.value(value);
+    return TagNoIndex;
 }
 
 ValueIndex Index::getValueIndex(const QString& value) const
@@ -327,17 +329,21 @@ QStringList Index::playerNames() const
     QSet<ValueIndex> playerNameIndex;
 
     TagIndex tagIndex = getTagIndex(TagNameWhite);
-
-    foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
+    if (tagIndex != TagNoIndex)
     {
-        playerNameIndex.insert(m_indexItems[gameId]->valueIndex(tagIndex));
+        foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
+        {
+            playerNameIndex.insert(m_indexItems[gameId]->valueIndex(tagIndex));
+        }
     }
 
     tagIndex = getTagIndex(TagNameBlack);
-
-    foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
+    if (tagIndex != TagNoIndex)
     {
-        playerNameIndex.insert(m_indexItems[gameId]->valueIndex(tagIndex));
+        foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
+        {
+            playerNameIndex.insert(m_indexItems[gameId]->valueIndex(tagIndex));
+        }
     }
 
     foreach(ValueIndex valueIndex, playerNameIndex)
@@ -354,14 +360,17 @@ QStringList Index::tagValues(const QString& tagName) const
     QSet<ValueIndex> tagNameIndex;
     TagIndex tagIndex = getTagIndex(tagName);
 
-    foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
+    if (tagIndex != TagNoIndex)
     {
-        tagNameIndex.insert(m_indexItems[gameId]->valueIndex(tagIndex));
-    }
+        foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
+        {
+            tagNameIndex.insert(m_indexItems[gameId]->valueIndex(tagIndex));
+        }
 
-    foreach(ValueIndex valueIndex, tagNameIndex)
-    {
-        allTagNames.append(tagValueName(valueIndex));
+        foreach(ValueIndex valueIndex, tagNameIndex)
+        {
+            allTagNames.append(tagValueName(valueIndex));
+        }
     }
 
     return allTagNames;
