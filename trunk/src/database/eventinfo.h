@@ -8,6 +8,7 @@
 #include "common.h"
 #include "partialdate.h"
 
+#include <QtCore>
 #include <QString>
 #include <QList>
 #include <QPair>
