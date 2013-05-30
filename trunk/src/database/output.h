@@ -49,6 +49,7 @@ public:
 		MarkupHeaderBlock,
 		MarkupNotationBlock,
 		MarkupResult,
+        MarkupDiagram,
 		MarkupNoFormat,
 		MarkupColumnStyleMainline,
 		MarkupColumnStyleMove,
