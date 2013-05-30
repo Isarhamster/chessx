@@ -222,6 +222,8 @@ private:
 	/* Writing Methods */
     /** writes a comment associated with a game with no moves */
     void writeGameComment(const QString& comment );
+    /** Writes a diagram */
+    QString writeDiagram(int n);
 	/** Writes a single move including nag and annotation */
 	void writeMove(MoveToWrite moveToWrite = NextMove);
 	/** Writes a variation, including sub variations */
@@ -232,6 +234,8 @@ private:
 	void writeTag(const QString& tagName, const QString& tagValue);
 	/** Writes all game tags */
 	void writeAllTags();
+    /** Writes basic Tags for HTML */
+    void writeBasicTagsHTML();
 	/** Writes comment. @p mvno keeps a string representing move number (used for indentation. */
 	void writeComment(const QString& comment, const QString& mvno, CommentType type = Comment);
 

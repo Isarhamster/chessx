@@ -183,6 +183,30 @@ QMap<Output::OutputType, QString>& Output::getFormats()
 	return m_outputMap;
 }
 
+QString Output::writeDiagram(int n)
+{
+    BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
+    boardView.setMinimumSize(n,n);
+    boardView.setEnabled(false);
+    boardView.configure();
+    Game g = *m_game;
+    g.forward(1);
+    boardView.setBoard(g.board());
+    boardView.resize(n,n);
+    QPixmap pixmap(n,n);
+    boardView.render(&pixmap);
+    QImage image = pixmap.toImage();
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer
+    QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
+    QString imageString = (QString("\n") +
+            m_startTagMap[MarkupDiagram] +
+            "<img alt='Diagram' src='data:image/gif;base64,%1'>\n" +
+            m_endTagMap[MarkupDiagram]).arg(iconBase64);
+    return imageString;
+}
+
 void Output::writeMove(MoveToWrite moveToWrite)
 {
 	QString mvno;
@@ -206,25 +230,7 @@ void Output::writeMove(MoveToWrite moveToWrite)
                 int n = m_options.getOptionAsInt("DiagramSize");
                 if (n)
                 {
-                    BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
-                    boardView.setMinimumSize(n,n);
-                    boardView.setEnabled(false);
-                    boardView.configure();
-                    Game g = *m_game;
-                    g.forward(1);
-                    boardView.setBoard(g.board());
-                    boardView.resize(n,n);
-                    QPixmap pixmap(n,n);
-                    boardView.render(&pixmap);
-                    QImage image = pixmap.toImage();
-                    QByteArray byteArray;
-                    QBuffer buffer(&byteArray);
-                    image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer
-                    QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
-                    imageString = (QString("\n") +
-                            m_startTagMap[MarkupDiagram] +
-                            "<img alt='Diagram' src='data:image/gif;base64,%1'>\n" +
-                            m_endTagMap[MarkupDiagram]).arg(iconBase64);
+                    imageString = writeDiagram(n);
                 }
             }
         }
@@ -367,7 +373,6 @@ void Output::writeTag(const QString& tagName, const QString& tagValue)
 			 tagValue +
 			 m_endTagMap[MarkupHeaderTagValue] +
 			 m_endTagMap[MarkupHeaderLine];
-
 }
 
 void Output::writeComment(const QString& comment, const QString& mvno, CommentType type)
@@ -448,6 +453,33 @@ void Output::writeAllTags()
 	}
 }
 
+void Output::writeBasicTagsHTML()
+{
+    QMap<QString, QString> tags = m_game->tags();
+
+    QString eco = tags[TagNameECO].left(3);
+    if (eco == "?")
+        eco.clear();
+    else
+        eco = QString(" ") + eco;
+
+    QString whiteElo = tags[TagNameWhiteElo].length()>1 ? QString(" (%1)").arg(tags[TagNameWhiteElo]) : QString();
+    QString blackElo = tags[TagNameBlackElo].length()>1 ? QString(" (%1)").arg(tags[TagNameBlackElo]) : QString();
+
+    m_output += m_startTagMap[MarkupHeaderLine] +
+            tags[TagNameWhite] + whiteElo + " - " + tags[TagNameBlack] + blackElo + eco +
+            m_endTagMap[MarkupHeaderLine] + "\n";
+
+    QString event = tags[TagNameEvent] != "?" ? QString("%1").arg(tags[TagNameEvent]) : QString();
+    QString place = tags[TagNameSite]  != "?" ? QString("%1").arg(tags[TagNameSite]) : QString();
+    QString round = tags[TagNameRound] != "?" ? QString(" (%1)").arg(tags[TagNameRound]) : QString();
+
+    m_output += m_startTagMap[MarkupHeaderLine] +
+            event +
+            ((event.isEmpty() && !place.isEmpty()) ? "" : ", ") + place +
+            round +
+            m_endTagMap[MarkupHeaderLine] + "\n";
+}
 
 QString Output::output(Game* game, bool upToCurrentMove)
 {
@@ -460,7 +492,10 @@ QString Output::output(Game* game, bool upToCurrentMove)
 
 	if (m_options.getOptionAsBool("ShowHeader")) {
 		m_output += m_startTagMap[MarkupHeaderBlock];
-		writeAllTags();
+        if (m_outputType == Html)
+            writeBasicTagsHTML();
+        else
+            writeAllTags();
 		m_output += m_endTagMap[MarkupHeaderBlock];
 	}
 

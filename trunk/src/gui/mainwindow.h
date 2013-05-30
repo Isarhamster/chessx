@@ -398,6 +398,8 @@ private:
     BoardView* CreateBoardView();
     /** Update Board Information */
     void UpdateBoardInformation();
+    /** Update Game Title */
+    void UpdateGameTitle();
 
 	/* Dialogs  */
 	GameList* m_gameList;

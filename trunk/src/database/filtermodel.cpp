@@ -30,16 +30,16 @@ FilterModel::FilterModel(Filter* filter, QObject* parent)
     << tr("Moves");
 
 	m_columnTags << "Nr"
-	<< "White"
-	<< "WhiteElo"
-	<< "Black"
-	<< "BlackElo"
-	<< "Event"
-	<< "Site"
-	<< "Round"
-	<< "Date"
-	<< "Result"
-	<< "ECO"
+    << TagNameWhite
+    << TagNameWhiteElo
+    << TagNameBlack
+    << TagNameBlackElo
+    << TagNameEvent
+    << TagNameSite
+    << TagNameRound
+    << TagNameDate
+    << TagNameResult
+    << TagNameECO
     << "Length";
 
 	m_game = new Game;
