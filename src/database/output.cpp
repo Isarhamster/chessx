@@ -110,9 +110,11 @@ void Output::readTemplateFile(const QString& path)
 					setMarkupTag(MarkupNotationBlock, tags[0], tags[1]);
 				} else if (name == "MarkupResult") {
 					setMarkupTag(MarkupResult, tags[0], tags[1]);
-				} else if (name == "MarkupMainLineMove") {
-					setMarkupTag(MarkupMainLineMove, tags[0], tags[1]);
-				} else if (name == "MarkupVariationMove") {
+                } else if (name == "MarkupDiagram") {
+                    setMarkupTag(MarkupDiagram, tags[0], tags[1]);
+                } else if (name == "MarkupMainLineMove") {
+                    setMarkupTag(MarkupMainLineMove, tags[0], tags[1]);
+                } else if (name == "MarkupVariationMove") {
 					setMarkupTag(MarkupVariationMove, tags[0], tags[1]);
 				} else if (name == "MarkupMainLine") {
 					setMarkupTag(MarkupMainLine, tags[0], tags[1]);
@@ -185,6 +187,7 @@ void Output::writeMove(MoveToWrite moveToWrite)
 {
 	QString mvno;
 	QString nagString;
+    QString imageString;
 	QString precommentString;
 	QString commentString;
 	MoveId moveId;
@@ -200,26 +203,29 @@ void Output::writeMove(MoveToWrite moveToWrite)
             nagString += m_game->nags(moveId).toString(m_outputType == Html ? NagSet::HTML : NagSet::Simple);
             if ((m_outputType == Html || m_outputType == NotationWidget) && (m_game->nags(moveId).contains(NagDiagram)))
             {
-                BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
-                boardView.setObjectName("XView");
                 int n = m_options.getOptionAsInt("DiagramSize");
-                boardView.setMinimumSize(n,n);
-                boardView.setEnabled(false);
-                boardView.configure();
-                boardView.setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-                Game g = *m_game;
-                g.forward(1);
-                boardView.setBoard(g.board());
-                boardView.resize(n,n);
-                QPixmap pixmap(n,n);
-                boardView.render(&pixmap);
-                QImage image = pixmap.toImage();
-                QByteArray byteArray;
-                QBuffer buffer(&byteArray);
-                image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer
-                QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
-                QString embHTMLBase64 = QString("<br><img src='data:image/gif;base64,%1'><br>").arg(iconBase64);
-                nagString += embHTMLBase64;
+                if (n)
+                {
+                    BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
+                    boardView.setMinimumSize(n,n);
+                    boardView.setEnabled(false);
+                    boardView.configure();
+                    Game g = *m_game;
+                    g.forward(1);
+                    boardView.setBoard(g.board());
+                    boardView.resize(n,n);
+                    QPixmap pixmap(n,n);
+                    boardView.render(&pixmap);
+                    QImage image = pixmap.toImage();
+                    QByteArray byteArray;
+                    QBuffer buffer(&byteArray);
+                    image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer
+                    QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
+                    imageString = (QString("\n") +
+                            m_startTagMap[MarkupDiagram] +
+                            "<img alt='Diagram' src='data:image/gif;base64,%1'>\n" +
+                            m_endTagMap[MarkupDiagram]).arg(iconBase64);
+                }
             }
         }
         else
@@ -286,9 +292,19 @@ void Output::writeMove(MoveToWrite moveToWrite)
 	if (!nagString.isEmpty()) {
 		m_output += m_startTagMap[MarkupNag] + nagString + m_endTagMap[MarkupNag];
 	}
+
+    m_output += imageString;
+    if (!imageString.isEmpty())
+    {
+        m_dirtyBlack = true;
+    }
+
 	if (!commentString.isEmpty())
+    {
+        m_output += " ";
 		writeComment(commentString, mvno, Comment);
-		m_output += " ";
+    }
+    m_output += " ";
 }
 
 void Output::writeVariation(MoveId upToNode)

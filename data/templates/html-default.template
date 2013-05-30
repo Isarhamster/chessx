@@ -25,15 +25,16 @@ DiagramSize=200
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=utf8">
-<title>ChessX HTML Output</title><style>\n
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>ChessX HTML Output</title><style type="text/css">\n
 A:link, A:visited { text-decoration: none }\n
 A:active { text-decoration: underline }\n
 .mainline {font-weight: @MainLineFontWeight@; color: @MainLineMoveColor@}\n
 .variation-inline {font-weight: normal; color: @VariationColor@}\n
-.variation-indent {margin-left: 30; font-weight: normal; color: @VariationColor@}\n
+.variation-indent {margin-left: 30px; font-weight: normal; color: @VariationColor@}\n
+.diagram-indent {lfloat:right; }\n
 .comment-inline {font-weight: normal; text-decoration: none; color: @CommentColor@; font-style: normal}\n
-.comment-indent {margin-left: 30; font-weight: normal; text-decoration: none; color: @CommentColor@; font-style: normal}\n
+.comment-indent {margin-left: 30px; font-weight: normal; text-decoration: none; color: @CommentColor@; font-style: normal}\n
 .nag {font-weight: normal; text-decoration: none; color: @NagColor@; font-style: normal }\n
 .headerline {color : @HeaderColor@ }
 </style></head><body>\n
@@ -43,6 +44,7 @@ A:active { text-decoration: underline }\n
 MarkupHeaderBlock=,<br>\n
 MarkupNotationBlock=,
 MarkupResult=,<br><hr>\n
+MarkupDiagram=<div class="diagram-indent">,</div>
 MarkupMainLineMove=,
 MarkupVariationMove=,
 MarkupMainLine=<div class="mainline">,</div>\n
