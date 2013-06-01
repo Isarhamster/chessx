@@ -400,6 +400,8 @@ private:
     void UpdateBoardInformation();
     /** Update Game Title */
     void UpdateGameTitle();
+    /** Update Game Text */
+    void UpdateGameText();
 
 	/* Dialogs  */
 	GameList* m_gameList;

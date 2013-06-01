@@ -11,11 +11,10 @@
 #include <QMap>
 #include <QThread>
 
-#include "output.h"
-#include "settings.h"
 #include "board.h"
 #include "boardview.h"
-
+#include "output.h"
+#include "settings.h"
 
 QMap<Output::OutputType, QString> Output::m_outputMap;
 
@@ -185,25 +184,30 @@ QMap<Output::OutputType, QString>& Output::getFormats()
 
 QString Output::writeDiagram(int n)
 {
-    BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
-    boardView.setMinimumSize(n,n);
-    boardView.setEnabled(false);
-    boardView.configure();
-    Game g = *m_game;
-    g.forward(1);
-    boardView.setBoard(g.board());
-    boardView.resize(n,n);
-    QPixmap pixmap(n,n);
-    boardView.render(&pixmap);
-    QImage image = pixmap.toImage();
-    QByteArray byteArray;
-    QBuffer buffer(&byteArray);
-    image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer
-    QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
-    QString imageString = (QString("\n") +
-            m_startTagMap[MarkupDiagram] +
-            "<img alt='Diagram' src='data:image/gif;base64,%1'>\n" +
-            m_endTagMap[MarkupDiagram]).arg(iconBase64);
+    QString imageString;
+    if ((m_outputType == NotationWidget) && (AppSettings->getValue("/GameText/ShowDiagrams").toBool()))
+    {
+        BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
+        boardView.setMinimumSize(n,n);
+        boardView.setEnabled(false);
+        boardView.configure();
+        Game g = *m_game;
+        g.forward(1);
+        boardView.setBoard(g.board());
+        boardView.resize(n,n);
+        QPixmap pixmap(n,n);
+        boardView.render(&pixmap);
+        QImage image = pixmap.toImage();
+        QByteArray byteArray;
+        QBuffer buffer(&byteArray);
+        image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer
+        QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
+        imageString = (QString("\n") +
+                m_startTagMap[MarkupDiagram] +
+                "<img alt='Diagram' src='data:image/gif;base64,%1'>\n" +
+                m_endTagMap[MarkupDiagram]).arg(iconBase64);
+    }
+
     return imageString;
 }
 
