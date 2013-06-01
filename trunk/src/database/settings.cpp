@@ -143,6 +143,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const {
     map.insert("/MainWindow/FilterFollowsGame", false);
     map.insert("/History/MaxEntries", 4);
     map.insert("/Board/showFrame", true);
+    map.insert("/Board/showCoordinates", true);
     map.insert("/Board/showCurrentMove", true);
     map.insert("/Board/guessMove", true);
     map.insert("/Board/nextGuess", false);
