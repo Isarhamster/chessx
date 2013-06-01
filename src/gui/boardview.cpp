@@ -666,8 +666,8 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
 {
     QPainter p(this);
 
-    static QString letters = "abcdefgh";
-    static QString numbers = "12345678";
+    static const QString letters = "abcdefgh";
+    static const QString numbers = "12345678";
 
 
     QString trimmed = annotation.simplified();
@@ -713,9 +713,9 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
     }
 
     // Now to Draw Arrow Head
-    qreal headWidth = 16.0;
-    qreal headLength = 16.0;
-    qreal headIndent = 4.0;
+    qreal headWidth = m_theme.size().width() / 4;
+    qreal headLength = headWidth;
+    qreal headIndent = headWidth / 4;
     qreal netIndent = headLength- headIndent;
 
     qreal halfHead = headWidth / 2;
@@ -731,7 +731,7 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
     QPointF arrowPts[7];
 
     // we will shorten the line somewhat to avoid arrows all colliding in the center of the square
-    int adjust = ( w + h ) / 6;
+    int adjust = ( w + h ) / 8;
 
     px1 = px1 + (( adjust * dX ) / arrowLength);
     px2 = px2 - (( adjust * dX ) / arrowLength);
@@ -756,7 +756,8 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
 
     p.save();
     QPen pen(color);
-    pen.setWidth(2);
+    int penWidth = std::max(1,(int)(headWidth/8));
+    pen.setWidth(penWidth);
     p.setPen(pen);
 
     p.drawLine(pos3,pos4);
