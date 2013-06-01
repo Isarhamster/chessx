@@ -294,6 +294,18 @@ void MainWindow::slotReconfigure()
     m_recentFiles.restore();
     updateMenuRecent();
     emit reconfigure(); 	// Re-emit for children
+    UpdateGameText();
+}
+
+void MainWindow::UpdateGameText()
+{
+    if (m_gameView)
+    {
+        if (m_showPgnSource)
+            m_gameView->setPlainText(m_output->output(&game()));
+        else
+            m_gameView->setText(m_output->output(&game(),m_training->isChecked()));
+    }
 }
 
 void MainWindow::slotToggleStayOnTop()
@@ -897,11 +909,7 @@ void MainWindow::slotGetActiveGame(const Game** g)
 
 void MainWindow::slotGameChanged()
 {
-	if (m_showPgnSource)
-		m_gameView->setPlainText(m_output->output(&game()));
-	else
-        m_gameView->setText(m_output->output(&game(),m_training->isChecked()));
-
+    UpdateGameText();
     UpdateGameTitle();
 	slotMoveChanged();
     UpdateBoardInformation();

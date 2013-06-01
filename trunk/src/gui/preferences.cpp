@@ -321,8 +321,9 @@ void PreferencesDialog::restoreSettings()
     ui.defaultDataBasePath->setText(AppSettings->value("/General/DefaultDataPath", dataPath).toString());
 
     // Read Game List settings
-    ui.gameTextFontSizeSpin->setValue(AppSettings->value("/GameText/FontSize", DEFAULT_FONTSIZE).toInt());
-    ui.spinBoxListFontSize->setValue(AppSettings->value("/General/ListFontSize", DEFAULT_LISTFONTSIZE).toInt());
+    ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("/GameText/FontSize").toInt());
+    ui.cbShowDiagrams->setChecked(AppSettings->getValue("/GameText/ShowDiagrams").toBool());
+    ui.spinBoxListFontSize->setValue(AppSettings->getValue("/General/ListFontSize").toInt());
     ui.verticalTabs->setChecked(AppSettings->getValue("/MainWindow/VerticalTabs").toBool());
 }
 
@@ -360,6 +361,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/History/MaxEntries", ui.spinBoxRecentFiles->value());
     AppSettings->setValue("/General/DefaultDataPath", ui.defaultDataBasePath->text());
     AppSettings->setValue("/GameText/FontSize", ui.gameTextFontSizeSpin->value());
+    AppSettings->setValue("/GameText/ShowDiagrams", ui.cbShowDiagrams->isChecked());
     AppSettings->setValue("/General/ListFontSize", ui.spinBoxListFontSize->value());
     AppSettings->setValue("/MainWindow/VerticalTabs", ui.verticalTabs->isChecked());
 

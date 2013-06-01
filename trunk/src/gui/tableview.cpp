@@ -64,7 +64,7 @@ void TableView::slotReconfigure()
     horizontalHeader()->restoreState(visualIndex);
 
     AppSettings->endGroup();
-    int fontSize = AppSettings->value("/General/ListFontSize", DEFAULT_LISTFONTSIZE).toInt();
+    int fontSize = AppSettings->getValue("/General/ListFontSize").toInt();
     QFont f = font();
     f.setPointSize(fontSize);
     setFont(f);
