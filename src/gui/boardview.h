@@ -109,6 +109,10 @@ private:
     void resizeBoard(QSize size);
 	/** Calculate size and position of square */
 	QRect squareRect(Square s);
+    /** Calculate size and position of a coordinate indicator in vertical direction */
+    QRect coordinateRectVertical(Square square);
+    /** Calculate size and position of a coordinate indicator in horizontal direction */
+    QRect coordinateRectHorizontal(Square square);
 	/** @return square at given position */
 	Square squareAt(const QPoint& p) const;
 	/** Selects given square. Previously selected square is unselected automatically. */
@@ -130,6 +134,7 @@ private:
     void drawPieces(QPaintEvent* event);
     void drawMoveIndicator(QPaintEvent* event);
     void drawDraggedPieces(QPaintEvent* event);
+    void drawCoordinates(QPaintEvent* event);
 
     void drawSquareAnnotations(QPaintEvent* event);
     void drawSquareAnnotation(QPaintEvent* event, QString annotation);
