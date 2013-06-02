@@ -101,6 +101,7 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 		nagPositionMenu->addAction(createNagAction(Nag(WhiteHasSufficientCompensationForMaterialDeficit)));
 		QMenu* nagSpecialMenu = m_gameMenu->addMenu(tr("Add other symbol"));
         QMenu* subMenu;
+        nagSpecialMenu->addAction(createNagAction(NagDiagram));
         nagSpecialMenu->addAction(createNagAction(WhiteHasTheInitiative));
         nagSpecialMenu->addAction(createNagAction(WhiteHasTheAttack));
         nagSpecialMenu->addAction(createNagAction(WhiteHasModerateCounterplay));

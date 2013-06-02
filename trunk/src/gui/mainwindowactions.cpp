@@ -450,7 +450,8 @@ void MainWindow::slotEditBoard()
     BoardSetupDialog dlg(this);
     dlg.setBoard(game().board());
     dlg.setFlipped(m_boardView->isFlipped());
-    if (dlg.exec() == QDialog::Accepted) {
+    if (dlg.exec() == QDialog::Accepted)
+    {
         game().setStartingBoard(dlg.board());
 		slotGameChanged();
 	}
