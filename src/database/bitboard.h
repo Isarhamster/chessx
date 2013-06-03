@@ -9,6 +9,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "movelist.h"
+
 #ifndef __BITBOARD_H__
 #define __BITBOARD_H__
 
@@ -94,7 +96,7 @@ public:
     /** Return a FEN string in human readable format based on current board position */
     QString toHumanFen() const;
 	/** Return a SAN string representation of given move */
-	QString moveToSan(const Move& move) const;
+    QString moveToSan(const Move& move, bool translate=false) const;
 	/** @return a SAN string representing a given move with move number. */
 	QString moveToFullSan(const Move& move) const;
 

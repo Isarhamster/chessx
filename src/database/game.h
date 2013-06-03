@@ -54,11 +54,12 @@ public :
 	    a move string.
 	*/
 	enum MoveStringFlags {
-		MoveOnly = 0,     /**< Only the algebraic notation should be included */
-		WhiteNumbers = 1, /**< White moves should be preceded by a move number */
-		BlackNumbers = 2, /**< Black moves should be preceded by a move number */
-		Nags = 4,         /**< Nags/symbolic annotation should be included */
-		FullDetail = 7    /**< Specifies all move numbers and nags should be included */
+        MoveOnly = 0,      /**< Only the algebraic notation should be included */
+        WhiteNumbers = 1,  /**< White moves should be preceded by a move number */
+        BlackNumbers = 2,  /**< Black moves should be preceded by a move number */
+        Nags = 4,          /**< Nags/symbolic annotation should be included */
+        FullDetail = 7,    /**< Specifies all move numbers and nags should be included */
+        TranslatePiece = 8 /**< Translate using the user-defined translation */
 	};
 	enum Position {
 		BeforeMove,

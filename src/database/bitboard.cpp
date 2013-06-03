@@ -9,8 +9,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include "movelist.h"
 #include "bitboard.h"
+#include "settings.h"
 
 #ifdef _MSC_VER
 #include <intrin.h>
@@ -198,22 +198,16 @@ void BitBoard::removeIllegal(const Move& move, quint64& b) const
     }
 }
 
-enum LangOutput { LO_EN, LO_DE, LO_FR, LO_PL, LO_ES };
-/** Return the ASCII character for a given piece type */
-inline char sanPiece(const int piece, int lang=0)
+inline char sanPiece(int piece, bool translate=false)
 {
-    switch (lang)
-    {
-    case LO_EN: return " KQRBN"[piece];
-    case LO_DE: return " KDTLS"[piece];
-    case LO_FR: return " RDTFC"[piece];
-    case LO_PL: return " KHWGS"[piece];
-    case LO_ES: return " RDTAC"[piece];
-    default:    return " KQRBN"[piece];
-    }
+    if (!translate)
+        return " KQRBN"[piece];
+
+    QString pieceString = AppSettings->getValue("/GameText/PieceString").toString();
+    return pieceString.at(piece).toLatin1();
 }
 
-QString BitBoard::moveToSan(const Move& move) const
+QString BitBoard::moveToSan(const Move& move, bool translate) const
 {
     QString san;
     int from = move.from();
@@ -231,7 +225,7 @@ QString BitBoard::moveToSan(const Move& move) const
         else	san = "O-O-O";
     } else {
         if (!isPawn) {
-            san = sanPiece(m_piece[from]);
+            san = sanPiece(m_piece[from], translate);
 
             // We may need disambiguation
             quint64 others = 0;
@@ -289,7 +283,7 @@ QString BitBoard::moveToSan(const Move& move) const
 
     if (move.isPromotion()) {
         san += '=';
-        san += sanPiece(move.promoted());
+        san += sanPiece(move.promoted(), translate);
     }
 
     BitBoard check(*this);
