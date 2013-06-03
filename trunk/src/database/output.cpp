@@ -283,10 +283,11 @@ void Output::writeMove(MoveToWrite moveToWrite)
 
 	// *** Write the actual move
     QString san;
+    Game::MoveStringFlags flags = (m_outputType == NotationWidget) ? Game::TranslatePiece : Game::MoveOnly;
 	if (moveToWrite == NextMove) {
-        san = m_game->moveToSan();
+        san = m_game->moveToSan(flags);
 	} else {
-        san = m_game->moveToSan(Game::MoveOnly, Game::PreviousMove);
+        san = m_game->moveToSan((Game::MoveStringFlags)(flags | Game::MoveOnly), Game::PreviousMove);
 	}
     QString mate = m_startTagMap[MarkupMate] + "#" + m_endTagMap[MarkupMate];
     san.replace("#", mate);

@@ -99,5 +99,9 @@
         <file alias="images/go_down.png">data/images/arrow_down_double.png</file>
         <file alias="images/setup_board.png">data/images/setup_board.png</file>
         <file alias="images/new_game.png">data/images/new_game.png</file>
+        <file alias="images/FlagFrance.png">data/images/FlagFrance.png</file>
+        <file alias="images/FlagGermany.png">data/images/FlagGermany.png</file>
+        <file alias="images/FlagPoland.png">data/images/FlagPoland.png</file>
+        <file alias="images/FlagUK.png">data/images/FlagUK.png</file>
     </qresource>
 </RCC>

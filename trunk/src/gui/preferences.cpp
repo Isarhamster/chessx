@@ -57,6 +57,10 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     connect(ui.browsePathButton, SIGNAL(clicked(bool)), SLOT(slotSelectDataBasePath()));
     connect(ui.engineOptionMore, SIGNAL(clicked(bool)), SLOT(slotShowOptionDialog()));
 
+    connect(ui.tbUK, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbGermany, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbFrance, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbPoland, SIGNAL(clicked()), SLOT(slotChangePieceString()));
 	restoreSettings();
 
 	// Start off with no Engine selected
@@ -218,6 +222,32 @@ void PreferencesDialog::slotShowOptionDialog()
     }
 }
 
+void PreferencesDialog::slotChangePieceString()
+{
+    QString pieceString;
+    if ((QToolButton*)sender() == ui.tbUK)
+    {
+        pieceString = " KQRBN";
+    }
+    else if ((QToolButton*)sender() == ui.tbGermany)
+    {
+        pieceString = " KDTLS";
+    }
+    else if ((QToolButton*)sender() == ui.tbFrance)
+    {
+        pieceString = " RDTFC";
+    }
+    else if ((QToolButton*)sender() == ui.tbPoland)
+    {
+        pieceString = " KHWGS";
+    }
+    else
+    {
+        pieceString = " KQRBN";
+    }
+    ui.pieceString->setText(pieceString);
+}
+
 int PreferencesDialog::exec()
 {
 	int result = QDialog::exec();
@@ -311,8 +341,8 @@ void PreferencesDialog::restoreSettings()
 	ui.engineList->insertItems(0, engineList.names());
 
 	// Read Advanced settings
-	ui.limitSpin->setValue(AppSettings->value("/General/EditLimit", 10).toInt());
-    ui.spinBoxRecentFiles->setValue(AppSettings->value("/History/MaxEntries", 4).toInt());
+    ui.limitSpin->setValue(AppSettings->getValue("/General/EditLimit").toInt());
+    ui.spinBoxRecentFiles->setValue(AppSettings->getValue("/History/MaxEntries").toInt());
 
 #if QT_VERSION < 0x050000
     QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
@@ -324,6 +354,7 @@ void PreferencesDialog::restoreSettings()
     // Read Game List settings
     ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("/GameText/FontSize").toInt());
     ui.cbShowDiagrams->setChecked(AppSettings->getValue("/GameText/ShowDiagrams").toBool());
+    ui.pieceString->setText(AppSettings->getValue("/GameText/PieceString").toString());
     ui.spinBoxListFontSize->setValue(AppSettings->getValue("/General/ListFontSize").toInt());
     ui.verticalTabs->setChecked(AppSettings->getValue("/MainWindow/VerticalTabs").toBool());
 }
@@ -364,6 +395,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/General/DefaultDataPath", ui.defaultDataBasePath->text());
     AppSettings->setValue("/GameText/FontSize", ui.gameTextFontSizeSpin->value());
     AppSettings->setValue("/GameText/ShowDiagrams", ui.cbShowDiagrams->isChecked());
+    AppSettings->setValue("/GameText/PieceString", ui.pieceString->text());
     AppSettings->setValue("/General/ListFontSize", ui.spinBoxListFontSize->value());
     AppSettings->setValue("/MainWindow/VerticalTabs", ui.verticalTabs->isChecked());
 

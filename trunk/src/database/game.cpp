@@ -1248,7 +1248,7 @@ QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, Mo
 		san += QString::number(moveNumber(node)) + ". ";
 
 	// Move and SAN
-	san += m_currentBoard.moveToSan(move.move);
+    san += m_currentBoard.moveToSan(move.move, flags & TranslatePiece);
 	if (flags & Nags)
         san += nags(node).toString(NagSet::Simple);
 		

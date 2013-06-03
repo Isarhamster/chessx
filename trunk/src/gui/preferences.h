@@ -60,6 +60,9 @@ public slots:
     void slotSelectDataBasePath();
     /** user wants option dialog to select parameters which will be sent at startup of engine */
     void slotShowOptionDialog();
+    /** User pressed a flag to change the piece string */
+    void slotChangePieceString();
+
 protected:
 	/** Overridden to save size */
     virtual void closeEvent(QCloseEvent* e);
