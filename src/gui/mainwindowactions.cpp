@@ -1111,11 +1111,23 @@ void MainWindow::slotDatabaseChange()
 	QAction* action = qobject_cast<QAction*>(sender());
     if (action && m_currentDatabase != action->data().toInt())
     {
-        database()->index()->clearCache();
 		m_currentDatabase = action->data().toInt();
         m_boardView->setDbIndex(m_currentDatabase);
         m_databaseList->setFileCurrent(databaseInfo()->filePath());
 		slotDatabaseChanged();
+        if (database()->isReadOnly())
+        {
+            for (int i=0; i < m_databases.count(); ++i)
+            {
+                if (i!=m_currentDatabase)
+                {
+                    if (m_databases[i]->isValid() && m_databases[i]->database()->isReadOnly())
+                    {
+                        m_databases[i]->database()->index()->clearCache();
+                    }
+                }
+            }
+        }
 	}
 }
 
