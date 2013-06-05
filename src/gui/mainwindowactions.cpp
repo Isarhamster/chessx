@@ -310,6 +310,7 @@ void MainWindow::UpdateGameText()
 
 void MainWindow::slotToggleStayOnTop()
 {
+#ifdef Q_OS_WIN
     QAction* stayOnTop = (QAction*) sender();
     if (stayOnTop)
     {
@@ -327,6 +328,7 @@ void MainWindow::slotToggleStayOnTop()
         setWindowFlags(flags &~ (Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint));
     }
     if (visible) show();
+#endif
 }
 
 void MainWindow::slotConfigureFlip()
