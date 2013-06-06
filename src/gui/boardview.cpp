@@ -700,7 +700,8 @@ void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
 
     p.setOpacity(.20);
 
-    p.drawRect(pos.x(),pos.y(),m_theme.size().width(),m_theme.size().height());
+    int coord =  m_coordinates ? CoordinateSize : 0;
+    p.drawRect(coord + pos.x(),pos.y(),m_theme.size().width(),m_theme.size().height());
 
     p.restore();
 
