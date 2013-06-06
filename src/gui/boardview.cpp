@@ -137,7 +137,7 @@ void BoardView::drawDraggedPieces(QPaintEvent* /*event*/)
     }
 }
 
-void BoardView::drawMoveIndicator(QPaintEvent* /*event*/)
+void BoardView::drawMoveIndicator(QPaintEvent* event)
 {
     if( m_showMoveIndicator )
     {
@@ -156,9 +156,12 @@ void BoardView::drawMoveIndicator(QPaintEvent* /*event*/)
             QColor color = white ? Qt::white : Qt::black;
             QColor border = white ? Qt::black : Qt::white;
             int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
+            QRect rect(8 * m_theme.size().width() + 2 + coord, posy, square, square);
+            if (!event->region().intersects(rect))
+                return;
             p.setPen(border);
             p.setBrush(QColor(color));
-            p.drawRect(8 * m_theme.size().width() + 2 + coord, posy, square, square);
+            p.drawRect(rect);
         }
     }
 }
