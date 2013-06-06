@@ -539,10 +539,18 @@ bool Game::appendSquareAnnotation(Square s, QChar colorCode)
     }
     else
     {
-        annot.replace(QRegExp(QString(".")+sq),"");
-        if (colorCode != QChar(0))
+        annot.replace(QRegExp(QString(",.")+sq),""); 	// if not first annotation remove annotation with preceding comma
+        annot.replace(QRegExp(QString(".")+sq+","),""); // if first annotation remove annotation with trailing comma
+        annot.replace(QRegExp(QString(".")+sq),""); 	// if only annotation remove annotation
+          if (colorCode != QChar(0))
         {
-            newAnnot = QString("%1,%2%3").arg(annot).arg(colorCode).arg(sq);
+            if( annot.isEmpty())
+            {
+                newAnnot = QString("%1%2").arg(colorCode).arg(sq);	// If only annotation don't add comma
+            } else
+            {
+                newAnnot = QString("%1,%2%3").arg(annot).arg(colorCode).arg(sq);	// if not only annotation add comma
+            }
         }
         else
         {
@@ -554,7 +562,7 @@ bool Game::appendSquareAnnotation(Square s, QChar colorCode)
         newAnnot.replace(" ,"," ");
         newAnnot.replace(",,",",");
         if (newAnnot.endsWith("'")) newAnnot.truncate(newAnnot.length()-1);
-    }
+     }
     setSquareAnnotation(newAnnot);
     return true;
 }
