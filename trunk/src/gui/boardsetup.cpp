@@ -26,6 +26,7 @@
 BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f),
     m_wheelCurrentDelta(0), m_selectedPiece(Empty)
 {
+    setObjectName("BoardSetupDialog");
 	ui.setupUi(this);
 	ui.boardView->configure();
     ui.boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove | BoardView::AllowCopyPiece);
