@@ -585,7 +585,11 @@ bool Game::appendArrowAnnotation(Square dest, Square src, QChar colorCode)
     }
     else
     {
-        annot.replace(QRegExp(QString(".")+sqSrc+sqDest),"");
+
+        annot.replace(QRegExp(QString(",.")+sqSrc+sqDest),""); 	// if not first annotation remove annotation with preceding comma
+        annot.replace(QRegExp(QString(".")+sqSrc+sqDest+","),""); // if first annotation remove annotation with trailing comma
+        annot.replace(QRegExp(QString(".")+sqSrc+sqDest),""); 	// if only annotation remove annotation
+
         if (colorCode != QChar(0))
         {
             newAnnot = QString("%1,%2%3%4").arg(annot).arg(colorCode).arg(sqSrc).arg(sqDest);
