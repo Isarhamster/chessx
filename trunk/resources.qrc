@@ -103,5 +103,7 @@
         <file alias="images/FlagGermany.png">data/images/FlagGermany.png</file>
         <file alias="images/FlagPoland.png">data/images/FlagPoland.png</file>
         <file alias="images/FlagUK.png">data/images/FlagUK.png</file>
+        <file alias="images/game_up.png">data/images/go_up_black.png</file>
+        <file alias="images/game_down.png">data/images/go_down_black.png</file>
     </qresource>
 </RCC>
