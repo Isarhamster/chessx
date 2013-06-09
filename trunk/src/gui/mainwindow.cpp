@@ -547,8 +547,8 @@ void MainWindow::gameLoad(int index, bool force, bool reload)
             m_gameList->clearSelection();
         }
         slotGameChanged();
-        emit signalFirstGameLoaded(index == 0);
-        emit signalLastGameLoaded(index+1 >= databaseInfo()->database()->count());
+        emit signalFirstGameLoaded(databaseInfo()->filter()->previousGame(index)==-1);
+        emit signalLastGameLoaded(databaseInfo()->filter()->nextGame(index)==-1);
     }
 }
 
