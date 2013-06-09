@@ -547,6 +547,8 @@ void MainWindow::gameLoad(int index, bool force, bool reload)
             m_gameList->clearSelection();
         }
         slotGameChanged();
+        emit signalFirstGameLoaded(index == 0);
+        emit signalLastGameLoaded(index+1 >= databaseInfo()->database()->count());
     }
 }
 
@@ -1012,15 +1014,22 @@ void MainWindow::setupActions()
 	QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
     QToolBar* gameToolBar = addToolBar(tr("Game"));
     gameToolBar->setObjectName("GameToolBarMain");
+    QToolBar* dbToolBar = addToolBar(tr("Database"));
+    dbToolBar->setObjectName("DbToolBarMain");
 
     gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New,
-                        gameToolBar, ":/images/new_game.png"));
+                        dbToolBar, ":/images/new_game.png"));
     QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
 
     /* Game->Load submenu */
-    QAction * nextAction = createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::CTRL + Qt::SHIFT + Qt::Key_Down);
+    QAction * nextAction = createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::CTRL + Qt::SHIFT + Qt::Key_Down,
+                                        dbToolBar, ":/images/game_down.png");
+    connect(this, SIGNAL(signalLastGameLoaded(bool)), nextAction, SLOT(setDisabled(bool)));
     loadMenu->addAction(nextAction);
-    loadMenu->addAction(createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up));
+    QAction * prevAction = createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up,
+                                        dbToolBar, ":/images/game_up.png");
+    connect(this, SIGNAL(signalFirstGameLoaded(bool)), prevAction, SLOT(setDisabled(bool)));
+    loadMenu->addAction(prevAction);
     loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
     loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
     gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
@@ -1163,7 +1172,8 @@ void MainWindow::setupActions()
     fileToolBar->addAction(helpAction);
     toolbars->addAction(fileToolBar->toggleViewAction());
     toolbars->addAction(editToolBar->toggleViewAction());
-    toolbars->addAction(viewToolBar->toggleViewAction());
+    toolbars->addAction(viewToolBar->toggleViewAction());    
+    toolbars->addAction(dbToolBar->toggleViewAction());
     toolbars->addAction(gameToolBar->toggleViewAction());
     toolbars->addAction(searchToolBar->toggleViewAction());
 }
