@@ -360,6 +360,9 @@ signals:
     void signalCurrentDBcanBeClosed(bool);
     void signalCurrentDBhasGames(bool);
 
+    void signalFirstGameLoaded(bool);
+    void signalLastGameLoaded(bool);
+
     void databaseModified();
 
 private slots:

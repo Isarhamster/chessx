@@ -791,6 +791,8 @@ void MainWindow::slotGameNew()
         {
             databaseInfo()->newGame();
             m_gameList->clearSelection();
+            emit signalFirstGameLoaded(true);
+            emit signalLastGameLoaded(true);
             slotGameChanged();
         }
 	}
