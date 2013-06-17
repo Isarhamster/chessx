@@ -43,13 +43,28 @@ public:
 	/** Return current board */
 	Board board() const;
 
+protected:
+    /** Resize board upon showing it the first time */
+    virtual void showEvent(QShowEvent *e);
+    /** Scroll current piece with a wheel */
+    virtual void wheelEvent(QWheelEvent* e);
+
+protected:
+    /** Display side to move */
+    void showSideToMove();
+    /** Message for incorrect setups. Returns empty string if the position is correct. */
+    QString boardStatusMessage() const;
+    /** Sets status message for the board (either fen or error message). */
+    void setStatusMessage();
+
 public slots:
-	/** Execute dialog */
-	int exec();
     /** Start a drag operation */
     void startDrag(QWidget* w, QMouseEvent* event);
+    /** A Piece was clicked */
     void labelClicked(Piece p);
+
 signals:
+    /** Request to clear the background of a piece label */
     void signalClearBackground(Piece p);
 
 private slots:
@@ -87,19 +102,11 @@ private slots:
     void slotInvalidMove(Square from);
 	/** Toggle side to move */
 	void slotToggleSide();
-	private:
-	Ui::BoardSetupDialog ui;
 
-	Color m_toMove;
-	/** Display side to move */
-	void showSideToMove();
-	/** Message for incorrect setups. Returns empty string if the position is correct. */
-	QString boardStatusMessage() const;
-	/** Sets status message for the board (either fen or error message). */
-	void setStatusMessage();
-protected:
-	/** Scroll current piece with a wheel */
-	virtual void wheelEvent(QWheelEvent* e);
+private:
+    Ui::BoardSetupDialog ui;
+
+    Color m_toMove;
     int m_wheelCurrentDelta;
     int m_minDeltaWheel;
     Piece m_selectedPiece;
