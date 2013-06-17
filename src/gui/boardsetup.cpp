@@ -28,7 +28,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
 {
     setObjectName("BoardSetupDialog");
 	ui.setupUi(this);
-	ui.boardView->configure();
+    ui.boardView->configure();
     ui.boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove | BoardView::AllowCopyPiece);
     ui.boardView->showMoveIndicator(false);
 
@@ -78,6 +78,8 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
 	connect(ui.copyButton, SIGNAL(clicked()), SLOT(slotCopyFen()));
 	connect(ui.pasteButton, SIGNAL(clicked()), SLOT(slotPasteFen()));
     connect(ui.btCopyText, SIGNAL(clicked()), SLOT(slotCopyText()));
+
+    ui.tabWidget->setCurrentIndex(0);
 }
 
 BoardSetupDialog::~BoardSetupDialog()
@@ -114,13 +116,13 @@ void BoardSetupDialog::setBoard(const Board& b)
 	ui.bqCastleCheck->setChecked(b.castlingRights() & BlackQueenside);
 	m_toMove = b.toMove();
 	showSideToMove();
-	setStatusMessage();
+    setStatusMessage();
 }
 
-int BoardSetupDialog::exec()
+void BoardSetupDialog::showEvent(QShowEvent *e)
 {
-	ui.boardView->configure();
-	return QDialog::exec();
+    QDialog::showEvent(e);
+    adjustSize();
 }
 
 void BoardSetupDialog::slotReset()
