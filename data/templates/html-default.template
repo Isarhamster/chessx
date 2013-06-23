@@ -25,8 +25,9 @@ DiagramSize=200
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>ChessX HTML Output</title><style type="text/css">\n
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>ChessX HTML Output</title>\n
+<style type="text/css">\n
 A:link, A:visited { text-decoration: none }\n
 A:active { text-decoration: underline }\n
 .mainline {font-weight: @MainLineFontWeight@; color: @MainLineMoveColor@}\n
@@ -36,8 +37,9 @@ A:active { text-decoration: underline }\n
 .comment-inline {font-weight: normal; text-decoration: none; color: @CommentColor@; font-style: normal}\n
 .comment-indent {margin-left: 30px; font-weight: normal; text-decoration: none; color: @CommentColor@; font-style: normal}\n
 .nag {font-weight: normal; text-decoration: none; color: @NagColor@; font-style: normal }\n
-.headerline {color : @HeaderColor@ }
-</style></head><body>\n
+.headerline {color : @HeaderColor@ }\n
+</style>\n
+</head><body>\n
 [OUTPUTFOOTER]
 </body></html>\n
 [MARKUPTAGS]
