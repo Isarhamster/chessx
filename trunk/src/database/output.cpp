@@ -493,7 +493,7 @@ QString Output::output(Game* game, bool upToCurrentMove)
     int mainId = upToCurrentMove ? m_game->mainLineMove() : NO_MOVE;
 	m_currentVariationLevel = 0;
 
-	m_output = m_header;
+    m_output = m_header;
 
 	if (m_options.getOptionAsBool("ShowHeader")) {
 		m_output += m_startTagMap[MarkupHeaderBlock];
@@ -608,7 +608,7 @@ void Output::output(const QString& filename, Game& game)
     if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
     QTextStream out(&f);
-    if (m_outputType == Html)
+    if ((m_outputType == Html) || (m_outputType == NotationWidget))
     {
         out.setCodec(QTextCodec::codecForName("utf8"));
     }
@@ -622,7 +622,7 @@ void Output::output(const QString& filename, Filter& filter)
 	if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&f);
-    if (m_outputType == Html)
+    if ((m_outputType == Html) || (m_outputType == NotationWidget))
     {
         out.setCodec(QTextCodec::codecForName("utf8"));
     }
@@ -636,7 +636,7 @@ void Output::output(const QString& filename, Database& database)
 	if (!f.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&f);
-    if (m_outputType == Html)
+    if ((m_outputType == Html) || (m_outputType == NotationWidget))
     {
         out.setCodec(QTextCodec::codecForName("utf8"));
     }
@@ -650,7 +650,7 @@ void Output::append(const QString& filename, Game& game)
     if (!f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
         return;
     QTextStream out(&f);
-    if (m_outputType == Html)
+    if ((m_outputType == Html) || (m_outputType == NotationWidget))
     {
         out.setCodec(QTextCodec::codecForName("utf8"));
     }
