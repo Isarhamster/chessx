@@ -61,6 +61,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     connect(ui.tbGermany, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbFrance, SIGNAL(clicked()), SLOT(slotChangePieceString()));
     connect(ui.tbPoland, SIGNAL(clicked()), SLOT(slotChangePieceString()));
+    connect(ui.tbSymbolic, SIGNAL(clicked()), SLOT(slotChangePieceString()));
 	restoreSettings();
 
 	// Start off with no Engine selected
@@ -240,6 +241,10 @@ void PreferencesDialog::slotChangePieceString()
     else if ((QToolButton*)sender() == ui.tbPoland)
     {
         pieceString = " KHWGS";
+    }
+    else if ((QToolButton*)sender() == ui.tbSymbolic)
+    {
+        pieceString.clear();
     }
     else
     {

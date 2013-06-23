@@ -198,13 +198,26 @@ void BitBoard::removeIllegal(const Move& move, quint64& b) const
     }
 }
 
-inline char sanPiece(int piece, bool translate=false)
+inline QString sanPiece(int piece, bool translate=false)
 {
     if (!translate)
-        return " KQRBN"[piece];
+        return QString(" KQRBN"[piece]);
 
     QString pieceString = AppSettings->getValue("/GameText/PieceString").toString();
-    return pieceString.at(piece).toLatin1();
+    if (pieceString.length() == 6)
+        return QString(pieceString.at(piece));
+
+    switch (piece)
+    {
+        case 0: return " ";
+        case 1: return "<span style=\"font-family:'Arial Unicode MS',Menlo\">&#x2654;</span>";
+        case 2: return "<span style=\"font-family:'Arial Unicode MS',Menlo\">&#x2655;</span>";
+        case 3: return "<span style=\"font-family:'Arial Unicode MS',Menlo\">&#x2656;</span>";
+        case 4: return "<span style=\"font-family:'Arial Unicode MS',Menlo\">&#x2657;</span>";
+        case 5: return "<span style=\"font-family:'Arial Unicode MS',Menlo\">&#x2658;</span>";
+    }
+
+    return " ";
 }
 
 QString BitBoard::moveToSan(const Move& move, bool translate) const
