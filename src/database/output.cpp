@@ -195,7 +195,13 @@ QString Output::writeDiagram(int n)
         g.forward(1);
         boardView.setBoard(g.board());
         boardView.resize(n,n);
+        QPalette Pal(boardView.palette());
+        // set black background
+        Pal.setColor(QPalette::Background, Qt::transparent);
+        boardView.setAutoFillBackground(true);
+        boardView.setPalette(Pal);
         QPixmap pixmap(n,n);
+        pixmap.fill();
         boardView.render(&pixmap);
         QImage image = pixmap.toImage();
         QByteArray byteArray;

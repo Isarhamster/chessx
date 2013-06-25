@@ -463,6 +463,7 @@ void MainWindow::slotEditBoard()
 void MainWindow::slotEditCopyImage()
 {
     QPixmap pixmap(m_boardView->size());
+    pixmap.fill(Qt::transparent);
     m_boardView->render(&pixmap);
     QImage image = pixmap.toImage();
     QApplication::clipboard()->setImage(image);
