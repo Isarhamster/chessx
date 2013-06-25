@@ -14,6 +14,8 @@ static { # Everything below takes effect with CONFIG += static
 }
 
 DEFINES += QUAZIP_STATIC
+DEFINES += QT_NO_CAST_TO_ASCII
+DEFINES *= QT_USE_QSTRINGBUILDER
 
 macx {
 	QMAKE_CXXFLAGS += -fvisibility=hidden
