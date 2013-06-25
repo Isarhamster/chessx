@@ -384,8 +384,13 @@ void PgnDatabase::readLine()
     }
     else
     {
-        m_currentLine = m_lineBuffer.simplified();
-        m_currentLine = m_currentLine.toLatin1();
+        QTextStream textStream(m_lineBuffer);
+        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
+        if (textCodec)
+        {
+            textStream.setCodec(textCodec);
+        }
+        m_currentLine = textStream.readLine().simplified();
     }
 
     if (m_inComment || !m_currentLine.startsWith("[")) {
