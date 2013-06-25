@@ -287,7 +287,7 @@ bool PgnDatabase::openString(const QString& content)
     m_filename = "Internal.pgn";
     m_isOpen = true;
     QByteArray byteArray;
-    byteArray.append(content);
+    byteArray.append(content.toLatin1());
     QBuffer* buffer = new QBuffer(&byteArray);
     buffer->open(QIODevice::ReadOnly | QIODevice::Text);
     m_file = buffer;
@@ -385,6 +385,7 @@ void PgnDatabase::readLine()
     else
     {
         m_currentLine = m_lineBuffer.simplified();
+        m_currentLine = m_currentLine.toLatin1();
     }
 
     if (m_inComment || !m_currentLine.startsWith("[")) {

@@ -202,10 +202,10 @@ QString Output::writeDiagram(int n)
         QBuffer buffer(&byteArray);
         image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer
         QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
-        imageString = (QString("\n") +
+        imageString = QString("\n") +
                 m_startTagMap[MarkupDiagram] +
-                "<img alt='Diagram' src='data:image/gif;base64,%1'>\n" +
-                m_endTagMap[MarkupDiagram]).arg(iconBase64);
+                "<img alt='Diagram' src='data:image/gif;base64," + iconBase64 + "'>\n" +
+                m_endTagMap[MarkupDiagram];
     }
 
     return imageString;
@@ -548,10 +548,7 @@ QString Output::output(Game* game, bool upToCurrentMove)
 		}
 	}
 
-    if (this->m_outputType == Pgn)
-        return m_output.toLatin1();
-    else
-        return m_output;
+    return m_output;
 }
 
 void Output::output(QTextStream& out, Filter& filter)
