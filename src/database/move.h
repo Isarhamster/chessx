@@ -249,7 +249,7 @@ inline Square Move::castlingRookTo() const
 inline QString Move::toAlgebraic() const
 {
     if (!isLegal())
-        return "?";
+        return QString("?");
 	QString alg(4, ' ');
 	alg[0] = QChar('a' + from() % 8);
 	alg[1] = QChar('1' + from() / 8);
