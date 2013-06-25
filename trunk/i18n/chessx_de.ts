@@ -454,7 +454,7 @@ Bitte Installation prüfen.</translation>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="86"/>
         <source>Add to favorites</source>
-        <translation>Zu Favoriten hinzüfgen</translation>
+        <translation>Zu Favoriten hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="87"/>
