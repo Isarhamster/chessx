@@ -1689,9 +1689,9 @@ QString BitBoard::toFen() const
 
     // half move clock
     fen += QString::number(halfMoveClock());
-
+    fen += " ";
     // move number
-    fen += m_moveNumber <= 0 ? " 1" : " " + QString::number(m_moveNumber);
+    fen += QString::number(m_moveNumber<=0 ? 1:m_moveNumber);
 
     return fen;
 }
