@@ -52,7 +52,8 @@ enum DblvColumns
     DBLV_SIZE,
     DBLV_OPEN,
     DBLV_PATH,
-    DBLV_UTF8
+    DBLV_UTF8,
+    DBLV_DATE
 };
 
 class DatabaseListModel : public QAbstractItemModel
