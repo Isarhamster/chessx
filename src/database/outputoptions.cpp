@@ -94,13 +94,18 @@ bool OutputOptions::setOption(const QString& optionName, int optionValue)
 {
 	return setOption(optionName, QString::number(optionValue));
 }
-int OutputOptions::getOptionAsInt(const QString& optionName)
+int OutputOptions::getOptionAsInt(const QString& optionName) const
 {
-	return m_list[optionName].toInt();
+    if (m_list.contains(optionName))
+        return m_list.value(optionName).toInt();
+    return 0;
 }
-QString OutputOptions::getOptionAsString(const QString& optionName)
+
+QString OutputOptions::getOptionAsString(const QString& optionName) const
 {
-	return m_list[optionName];
+    if (m_list.contains(optionName))
+        return m_list.value(optionName);
+    return "";
 }
 bool OutputOptions::getOptionAsBool(const QString& optionName)
 {
