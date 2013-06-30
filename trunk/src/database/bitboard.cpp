@@ -210,11 +210,11 @@ inline QString sanPiece(int piece, bool translate=false)
     switch (piece)
     {
         case 0: return " ";
-        case 1: return "<span style=\"font-family:'Arial Unicode MS',Menlo\">&#x2654;</span>";
-        case 2: return "<span style=\"font-family:'Arial Unicode MS',Menlo\">&#x2655;</span>";
-        case 3: return "<span style=\"font-family:'Arial Unicode MS',Menlo\">&#x2656;</span>";
-        case 4: return "<span style=\"font-family:'Arial Unicode MS',Menlo\">&#x2657;</span>";
-        case 5: return "<span style=\"font-family:'Arial Unicode MS',Menlo\">&#x2658;</span>";
+        case 1: return "&#x2654;";
+        case 2: return "&#x2655;";
+        case 3: return "&#x2656;";
+        case 4: return "&#x2657;";
+        case 5: return "&#x2658;";
     }
 
     return " ";
