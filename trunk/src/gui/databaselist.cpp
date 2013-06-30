@@ -46,6 +46,7 @@ DatabaseList::DatabaseList(QWidget *parent) :
     setColumnWidth(DBLV_OPEN, 50);
     setColumnWidth(DBLV_PATH, 200);
     setColumnWidth(DBLV_OPEN, 50);
+    setColumnWidth(DBLV_DATE, 75);
 
     setSortingEnabled(true);
 

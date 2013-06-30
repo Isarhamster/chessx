@@ -3,6 +3,7 @@
 ****************************************************************************/
 
 #include "databaselistmodel.h"
+#include <QDateTime>
 #include <QFileInfo>
 #include <QFont>
 #include <QPixmap>
@@ -10,7 +11,7 @@
 DatabaseListModel::DatabaseListModel(QObject *parent) :
     QAbstractItemModel(parent)
 {
-    m_columnNames << tr("Favorite") << tr("Name") << tr("Size") << tr("Open") << tr("Path") << tr("Format");
+    m_columnNames << tr("Favorite") << tr("Name") << tr("Size") << tr("Open") << tr("Path") << tr("Format") << tr("Date");
 }
 
 QModelIndex DatabaseListModel::index(int row, int column, const QModelIndex &parent) const
@@ -96,6 +97,11 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 }
                 return QString("%1%2").arg(size).arg(sizes[i]);
             }
+            case DBLV_DATE:
+            {
+                QFileInfo f(m_databases.at(index.row()).m_path);
+                return f.lastModified().date();
+            }
             case DBLV_OPEN:
                 return QVariant();
             case DBLV_PATH:
@@ -149,6 +155,11 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                     s[0] = s[0].toUpper();
                     return s;
                 }
+            case DBLV_DATE:
+                {
+                    QFileInfo f(m_databases.at(index.row()).m_path);
+                    return f.lastModified();
+                }
             case DBLV_SIZE:
                 {
                     QStringList sizes;
@@ -198,19 +209,16 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                     s[0] = s[0].toUpper();
                     return s;
                 }
+            case DBLV_DATE:
+                {
+                    QFileInfo f(m_databases.at(index.row()).m_path);
+                    return f.lastModified();
+                }
             case DBLV_SIZE:
                 {
-                    QStringList sizes;
-                    sizes << "" << "k" << "M" << "G" << "T" << "P";
                     QFileInfo f(m_databases.at(index.row()).m_path);
-                    int i=0;
                     qint64 size = f.size();
-                    while ((size>=1024) && (i<sizes.count()))
-                    {
-                           size /= 1024;
-                           i++;
-                    }
-                    return QString("%1%2").arg(size).arg(sizes[i]);
+                    return size;
                 }
             default:
                 break;
