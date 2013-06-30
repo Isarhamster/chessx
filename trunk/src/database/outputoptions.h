@@ -37,8 +37,8 @@ public :
 	bool setOption(const QString& optionName, int optionValue);
 
 	/* Retrieving values */
-	int getOptionAsInt(const QString& optionName);
-	QString getOptionAsString(const QString& optionName);
+    int getOptionAsInt(const QString& optionName) const;
+    QString getOptionAsString(const QString& optionName) const;
 	bool getOptionAsBool(const QString& optionName);
 	QString getOptionDescription(const QString& optionName);
 	QStringList getOptionList();
