@@ -19,6 +19,7 @@ CommentIndent=OnlyMainline
 MainLineMoveColor=#000000
 CommentColor=#008000
 VariationColor=#0000ff
+VariationIndentLevel=1
 NagColor=#C05050
 HeaderColor=#0000ff
 ShowHeader=false
@@ -33,12 +34,14 @@ ShowHeader=false
   p.var  {margin-left: 20px}\n
   p.comment  {margin-left: 20px}\n
   p.precomment  {margin-left: 0}\n
-  a      {text-decoration: none}\n
+  a      {font-family:'Arial Unicode MS',Menlo; text-decoration: none}\n
   a.main {color: @MainLineMoveColor@; font-weight: 600}\n
   a.var  {color: @VariationColor@}\n
   a.comment  {color: @CommentColor@}\n
   a.nag  {color: @NagColor@}\n
-  .diagram-indent {lfloat: right}\n
+  td.mainline {padding-left: 10px; padding-right: 10px; color: @MainLineMoveColor@; width:50%}\n
+  .diagram-indent {lfloat: right; margin-top: 8px;}\n
+  .mainline {margin-left: 20px; color: @MainLineMoveColor@}\n
 </style>\n
 </head>\n
 <body>
@@ -53,12 +56,12 @@ MarkupDiagram=<div class="diagram-indent">,</div>
 MarkupMainLineMove=<a class="main" href="move:%1">,</a>
 MarkupVariationMove=<a class="var" href="move:%1">,</a>
 MarkupMainLine=,
-MarkupVariationInline=<span>(,)</span>
+MarkupVariationInline=<span class="var">(,)</span>
 MarkupVariationIndent=<p class="var">(,)</p>\n
 MarkupNag=<a class="nag">,</a>
-MarkupColumnStyleMove=<td width=50%>,\n
-MarkupColumnStyleRow=<tr class="mainline">,\n
-MarkupColumnStyleMainline=<table border=0 width=50%>,</table>\n
+MarkupColumnStyleMove=<td class="mainline">,</td>\n
+MarkupColumnStyleRow=<tr class="mainline">,</tr>\n
+MarkupColumnStyleMainline=<table border=0>,</table>\n
 MarkupAnnotationInline= <a class="comment" href="cmt:%1">,</a>\n
 MarkupAnnotationIndent=<p class="comment"><a class="comment" href="cmt:%1">,</a></p>
 MarkupPreAnnotationInline= <a class="comment" href="precmt:%1">,</a>\n

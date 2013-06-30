@@ -219,6 +219,11 @@ private:
 	 *               after the other, using the output(Game* game) method */
 	void output(QTextStream& out, Database& database);
 
+    /** Output of a single game - requires postProcessing */
+    QString outputGame(Game* game, bool upToCurrentMove);
+    /** postProcessing of a game output or a dataBase output */
+    void postProcessOutput(QString& text) const;
+
 	/* Writing Methods */
     /** writes a comment associated with a game with no moves */
     void writeGameComment(const QString& comment );

@@ -16,6 +16,7 @@ ColumnStyle=false
 SymbolicNag=true
 MainLineMoveColor=#000000
 VariationColor=#00008b
+VariationIndentLevel=1
 CommentColor=#006400
 NagColor=#8b0000
 HeaderColor=#00008b
@@ -33,11 +34,12 @@ A:active { text-decoration: underline }\n
 .mainline {font-weight: @MainLineFontWeight@; color: @MainLineMoveColor@}\n
 .variation-inline {font-weight: normal; color: @VariationColor@}\n
 .variation-indent {margin-left: 30px; font-weight: normal; color: @VariationColor@}\n
-.diagram-indent {lfloat:right; }\n
+.diagram-indent {lfloat:right; ; margin-top: 10px; }\n
 .comment-inline {font-weight: normal; text-decoration: none; color: @CommentColor@; font-style: normal}\n
 .comment-indent {margin-left: 30px; font-weight: normal; text-decoration: none; color: @CommentColor@; font-style: normal}\n
 .nag {font-weight: normal; text-decoration: none; color: @NagColor@; font-style: normal }\n
 .headerline {color : @HeaderColor@ }\n
+td.mainline {padding-left: 10px; padding-right: 10px; color: @MainLineMoveColor@; width:50%}\n
 </style>\n
 </head><body>\n
 [OUTPUTFOOTER]

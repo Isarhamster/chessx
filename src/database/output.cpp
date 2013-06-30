@@ -255,9 +255,21 @@ void Output::writeMove(MoveToWrite moveToWrite)
 		precommentString = m_game->annotation(moveId, Game::BeforeMove);
 	commentString = m_game->annotation(moveId);
 
-	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
+    Color c = m_game->board().toMove();
+
+    if ((m_options.getOptionAsBool("ColumnStyle")) &&
+        (m_currentVariationLevel == 0) &&
+        (c==White))
+    {
 		m_output += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
 	}
+    if ((m_options.getOptionAsBool("ColumnStyle")) &&
+        (m_currentVariationLevel == 0) &&
+        (c==Black))
+    {
+        m_output += m_startTagMap[MarkupColumnStyleMove];
+    }
+
 	// Write precomment if any
 	if (!precommentString.isEmpty())
 		writeComment(precommentString, mvno, Precomment);
@@ -275,8 +287,8 @@ void Output::writeMove(MoveToWrite moveToWrite)
 			m_output += m_startTagMap[MarkupMainLineMove];
 		}
 	}
-	// *** Write the move number
-	Color c = m_game->board().toMove();
+
+    // *** Write the move number
 	if (moveToWrite == PreviousMove) {
 		c = oppositeColor(c);
 	}
@@ -309,6 +321,20 @@ void Output::writeMove(MoveToWrite moveToWrite)
 	if (!nagString.isEmpty()) {
 		m_output += m_startTagMap[MarkupNag] + nagString + m_endTagMap[MarkupNag];
 	}
+
+    if ((m_options.getOptionAsBool("ColumnStyle")) &&
+        (m_currentVariationLevel == 0) &&
+        (c==White))
+    {
+        m_output += m_endTagMap[MarkupColumnStyleMove];
+    }
+
+    if ((m_options.getOptionAsBool("ColumnStyle")) &&
+        (m_currentVariationLevel == 0) &&
+        (c==Black))
+    {
+        m_output += m_endTagMap[MarkupColumnStyleMove] + m_endTagMap[MarkupColumnStyleRow];
+    }
 
     m_output += imageString;
     if (!imageString.isEmpty())
@@ -485,86 +511,100 @@ void Output::writeBasicTagsHTML()
     QString place = tags[TagNameSite]  != "?" ? QString("%1").arg(tags[TagNameSite]) : QString();
     QString round = tags[TagNameRound] != "?" ? QString(" (%1)").arg(tags[TagNameRound]) : QString();
 
+    if (!(QString(event+place+round)).isEmpty())
     m_output += m_startTagMap[MarkupHeaderLine] +
             event +
-            ((event.isEmpty() && !place.isEmpty()) ? "" : ", ") + place +
+            ((!event.isEmpty() && !place.isEmpty()) ? ", " : "") + place +
             round +
             m_endTagMap[MarkupHeaderLine] + "\n";
 }
 
 QString Output::output(Game* game, bool upToCurrentMove)
 {
-    m_game = game;
-	int id = m_game->currentMove();
-    int mainId = upToCurrentMove ? m_game->mainLineMove() : NO_MOVE;
-	m_currentVariationLevel = 0;
-
     m_output = m_header;
+    outputGame(game, upToCurrentMove);
+    m_output += m_footer;
+    postProcessOutput(m_output);
+    return m_output;
+}
 
-	if (m_options.getOptionAsBool("ShowHeader")) {
-		m_output += m_startTagMap[MarkupHeaderBlock];
+QString Output::outputGame(Game* game, bool upToCurrentMove)
+{
+    m_game = game;
+    int id = m_game->currentMove();
+    int mainId = upToCurrentMove ? m_game->mainLineMove() : NO_MOVE;
+    m_currentVariationLevel = 0;
+
+    if (m_options.getOptionAsBool("ShowHeader")) {
+        m_output += m_startTagMap[MarkupHeaderBlock];
         if (m_outputType == Html)
             writeBasicTagsHTML();
         else
             writeAllTags();
-		m_output += m_endTagMap[MarkupHeaderBlock];
-	}
+        m_output += m_endTagMap[MarkupHeaderBlock];
+    }
 
-	// start of move output....
-	int start = m_output.length();
-
-	m_game->moveToStart();
-	m_dirtyBlack = m_game->board().toMove() == Black;
-	m_output += m_startTagMap[MarkupNotationBlock];
-	m_output += m_startTagMap[MarkupMainLine];
-	if (m_options.getOptionAsBool("ColumnStyle")) {
-		m_output += m_startTagMap[MarkupColumnStyleMainline];
-	}
+    m_game->moveToStart();
+    m_dirtyBlack = m_game->board().toMove() == Black;
+    m_output += m_startTagMap[MarkupNotationBlock];
+    m_output += m_startTagMap[MarkupMainLine];
+    if (m_options.getOptionAsBool("ColumnStyle")) {
+        m_output += m_startTagMap[MarkupColumnStyleMainline];
+    }
 
     if( !game->gameComment().isEmpty()){
         writeGameComment(game->gameComment());
     }
 
     writeVariation(mainId);
-	if (m_options.getOptionAsBool("ColumnStyle")) {
-		m_output += m_endTagMap[MarkupColumnStyleMainline];
-	}
-	m_output += m_endTagMap[MarkupMainLine];
-	m_output += m_endTagMap[MarkupNotationBlock];
-	m_output += m_startTagMap[MarkupResult] + game->tag("Result") + m_endTagMap[MarkupResult];
-	m_output += m_footer;
+    if (m_options.getOptionAsBool("ColumnStyle")) {
+        m_output += m_endTagMap[MarkupColumnStyleMainline];
+    }
+    m_output += m_endTagMap[MarkupMainLine];
+    m_output += m_endTagMap[MarkupNotationBlock];
+    m_output += m_startTagMap[MarkupResult] + game->tag("Result") + m_endTagMap[MarkupResult];
 
-	QRegExp var("@(\\w+)@");
-	while (var.indexIn(m_output) != -1) {
-		QStringList cap = var.capturedTexts();
-		m_output.replace("@" + cap[1] + "@", m_options.getOptionAsString(cap[1]));
-	}
-
-	m_game->moveToId(id);
-
-	// Chop it up, if TextWidth option is not equal to 0
-	int textWidth = m_options.getOptionAsInt("TextWidth");
-	if (textWidth) {
-		int length = m_output.length() - start;
-		while (length > textWidth) {
-			start = m_output.lastIndexOf(" ", start + textWidth);
-            if (start == -1) break;
-			m_output.replace(start, 1, '\n');
-			length = m_output.length() - start;
-		}
-	}
+    m_game->moveToId(id);
 
     return m_output;
+}
+
+void Output::postProcessOutput(QString& text) const
+{
+    QRegExp var("@(\\w+)@");
+    while (var.indexIn(text) != -1) {
+        QStringList cap = var.capturedTexts();
+        text.replace("@" + cap[1] + "@", m_options.getOptionAsString(cap[1]));
+    }
+
+    // Chop it up, if TextWidth option is not equal to 0
+    int start = m_output.length();
+    int textWidth = m_options.getOptionAsInt("TextWidth");
+    if (textWidth) {
+        int length = text.length() - start;
+        while (length > textWidth) {
+            start = text.lastIndexOf(" ", start + textWidth);
+            if (start == -1) break;
+            text.replace(start, 1, '\n');
+            length = text.length() - start;
+        }
+    }
 }
 
 void Output::output(QTextStream& out, Filter& filter)
 {
 	int percentDone = 0;
 	Game game;
-	for (int i = 0; i < filter.count(); ++i) {
+    QString header = m_header;
+    postProcessOutput(header);
+    out << header;
+
+    for (int i = 0; i < filter.count(); ++i) {
         if (filter.database()->loadGame(filter.indexToGame(i), game))
         {
-            out << output(&game);
+            QString outText = outputGame(&game,false);
+            postProcessOutput(outText);
+            out << outText;
             out << "\n\n";
         }
 		int percentDone2 = (i + 1) * 100 / filter.count();
@@ -572,7 +612,11 @@ void Output::output(QTextStream& out, Filter& filter)
         {
 			emit progress((percentDone = percentDone2));
         }
-	}
+    }
+
+    QString footer = m_footer;
+    postProcessOutput(footer);
+    out << footer;
 }
 
 void Output::output(QTextStream& out, Database& database)
@@ -586,13 +630,19 @@ void Output::output(QTextStream& out, Database& database)
         }
     }
 
+    QString header = m_header;
+    postProcessOutput(header);
+    out << header;
+
 	int percentDone = 0;
 	Game game;
     for (int i = 0; i < database.count(); ++i)
     {
         if (database.loadGame(i, game))
         {
-            out << output(&game);
+            QString outText = outputGame(&game,false);
+            postProcessOutput(outText);
+            out << outText;
             out << "\n\n";
         }
 		int percentDone2 = (i + 1) * 100 / database.count();
@@ -601,6 +651,11 @@ void Output::output(QTextStream& out, Database& database)
 			emit progress((percentDone = percentDone2));
         }
 	}
+
+
+    QString footer = m_footer;
+    postProcessOutput(footer);
+    out << footer;
 
     database.setModified(false);
 }
