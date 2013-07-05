@@ -20,22 +20,22 @@ bool OutputOptions::createDefaultOptions()
 	m_type.clear();
 	m_default.clear();
 	m_allow.clear();
-	createOption("ColumnStyle", Boolean, "", "false", "");
-	createOption("SymbolicNag", Boolean, "", "false", "");
-	createOption("TextWidth", Integer, "0:200", "80", "");
-	createOption("VariationIndentLevel", Integer, "1:200", "4", "");
-	createOption("VariationIndentSize", Integer, "1:10", "3", "");
-	createOption("CommentIndent", String, "Always|OnlyMainline|Never", "OnlyMainline", "");
+    createOption("ColumnStyle", Boolean, "", "false", tr("Notation in Column Style"));
+    createOption("SymbolicNag", Boolean, "", "false", tr("Show symbolic Nags"));
+    createOption("TextWidth", Integer, "0:200", "80", tr("Text width"));
+    createOption("VariationIndentLevel", Integer, "1:200", "4", tr("Indent variations from Level"));
+    createOption("VariationIndentSize", Integer, "1:10", "3", tr("Variation Indentation"));
+    createOption("CommentIndent", String, "Always|OnlyMainline|Never", "OnlyMainline", tr("Comment Indenation"));
 
-	createOption("MainLineMoveColor", Color, "", "black", "");
-	createOption("VariationColor", Color, "", "blue", "");
-	createOption("CommentColor", Color, "", "green", "");
-	createOption("NagColor", Color, "", "red", "");
-	createOption("HeaderColor", Color, "", "blue", "");
-	createOption("ShowHeader", Boolean, "", "true", "");
+    createOption("MainLineMoveColor", Color, "", "black", tr("Main Line Color"));
+    createOption("VariationColor", Color, "", "blue", tr("Variation Color"));
+    createOption("CommentColor", Color, "", "green", tr("Comment Color"));
+    createOption("NagColor", Color, "", "red", tr("Nag Color"));
+    createOption("HeaderColor", Color, "", "blue", tr("Header Color"));
+    createOption("ShowHeader", Boolean, "", "true", tr("Show Header"));
 
-    createOption("ShowDiagram", Boolean, "", "false", "");
-    createOption("DiagramSize", Integer, "0:500", "200", "");
+    createOption("ShowDiagram", Boolean, "", "false", tr("Show Diagrams"));
+    createOption("DiagramSize", Integer, "0:500", "200", tr("Diagram Size"));
 	return true;
 }
 
@@ -45,6 +45,7 @@ bool OutputOptions::createOption(const QString& optionName, const QString& optio
 	return createOption(optionName, optionString2Type(optionType), allowValues, defaultValue, description);
 
 }
+
 bool OutputOptions::createOption(const QString& optionName, OutputOptionType optionType, const QString& allowValues,
 				 const QString& defaultValue, const QString& description)
 {
@@ -61,18 +62,17 @@ bool OutputOptions::createOption(const QString& optionName, OutputOptionType opt
 		m_default.remove(optionName);
 		m_description.remove(optionName);
 		qWarning("Option '%s' could not be created", optionName.toLatin1().constData());
-
 		return false;
 	}
-
 	return true;
-
 }
+
 bool OutputOptions::setOption(const QString& optionString)
 {
 	QStringList temp = optionString.split('=');
 	return setOption(temp[0], temp[1]);
 }
+
 bool OutputOptions::setOption(const QString& optionName, const QString& optionValue)
 {
 	if (!validateValue(optionName, optionValue)) {
@@ -82,6 +82,7 @@ bool OutputOptions::setOption(const QString& optionName, const QString& optionVa
 	m_list[optionName] = optionValue;
 	return true;
 }
+
 bool OutputOptions::setOption(const QString& optionName, bool optionValue)
 {
 	if (optionValue) {
@@ -90,10 +91,12 @@ bool OutputOptions::setOption(const QString& optionName, bool optionValue)
 		return setOption(optionName, QString("false"));
 	}
 }
+
 bool OutputOptions::setOption(const QString& optionName, int optionValue)
 {
 	return setOption(optionName, QString::number(optionValue));
 }
+
 int OutputOptions::getOptionAsInt(const QString& optionName) const
 {
     if (m_list.contains(optionName))
@@ -107,13 +110,10 @@ QString OutputOptions::getOptionAsString(const QString& optionName) const
         return m_list.value(optionName);
     return "";
 }
+
 bool OutputOptions::getOptionAsBool(const QString& optionName)
 {
-	if ((m_list[optionName] == "true") || (m_list[optionName] == "1")) {
-		return true;
-	} else {
-		return false;
-	}
+    return ((m_list[optionName] == "true") || (m_list[optionName] == "1"));
 }
 
 bool OutputOptions::validateValue(const QString& optionName, const QString& value)
@@ -190,15 +190,12 @@ QString OutputOptions::getOptionDescription(const QString& optionName)
 {
 	return m_description[optionName];
 }
+
 QStringList OutputOptions::getOptionList()
 {
 	return m_list.keys();
 }
 
-QMap<QString, QString> OutputOptions::getOptionListAndDescription()
-{
-	return m_description;
-}
 OutputOptions::OutputOptionType OutputOptions::optionString2Type(const QString& optionTypeStr)
 {
 	if (optionTypeStr == "String") {

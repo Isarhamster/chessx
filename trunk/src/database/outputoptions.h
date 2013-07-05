@@ -11,8 +11,9 @@
 #ifndef __OUTPUTOPTIONS_H__
 #define __OUTPUTOPTIONS_H__
 
-#include <QString>
+#include <QtCore>
 #include <QMap>
+#include <QString>
 #include <QStringList>
 
 /** @ingroup Core
@@ -20,6 +21,8 @@ The OutputOptions class manages options for @ref Output class.
 */
 class OutputOptions
 {
+    Q_DECLARE_TR_FUNCTIONS(OutputOptions)
+
 public :
 	enum OutputOptionType { Boolean, String, Integer, Color };
 	OutputOptions();
@@ -42,7 +45,6 @@ public :
 	bool getOptionAsBool(const QString& optionName);
 	QString getOptionDescription(const QString& optionName);
 	QStringList getOptionList();
-	QMap<QString, QString> getOptionListAndDescription();
 
 private :
 
