@@ -159,6 +159,7 @@ void GameList::simpleSearch(int tagid)
 
 void GameList::slotFilterListByPlayer(QString s)
 {
+    m_model->filter()->setAll(1);
     TagSearch ts(m_model->filter()->database(),  TagNameWhite, s);
     TagSearch ts2(m_model->filter()->database(), TagNameBlack, s);
     m_model->filter()->executeSearch(ts);
@@ -170,6 +171,7 @@ void GameList::slotFilterListByPlayer(QString s)
 
 void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString player)
 {
+    m_model->filter()->setAll(1);
     TagSearch ts(m_model->filter()->database(),  tag, player);
     TagSearch ts3(m_model->filter()->database(), TagNameECO,   eco);
     m_model->filter()->executeSearch(ts);
@@ -181,6 +183,7 @@ void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString playe
 
 void GameList::slotFilterListByEvent(QString s)
 {
+    m_model->filter()->setAll(1);
     TagSearch ts(m_model->filter()->database(), "Event", s);
     m_model->filter()->executeSearch(ts);
     updateFilter();
@@ -190,6 +193,7 @@ void GameList::slotFilterListByEvent(QString s)
 
 void GameList::slotFilterListByEventPlayer(QString player, QString event)
 {
+    m_model->filter()->setAll(1);
     TagSearch ts(m_model->filter()->database(),  TagNameWhite, player);
     TagSearch ts2(m_model->filter()->database(), TagNameBlack, player);
     TagSearch ts3(m_model->filter()->database(), TagNameEvent, event);
@@ -201,21 +205,9 @@ void GameList::slotFilterListByEventPlayer(QString player, QString event)
     emit searchDone();
 }
 
-void GameList::slotFilterListByEcoPlayer(QString player, QString eco)
-{
-    TagSearch ts(m_model->filter()->database(),  TagNameWhite, player);
-    TagSearch ts2(m_model->filter()->database(), TagNameBlack, player);
-    TagSearch ts3(m_model->filter()->database(), TagNameECO, eco);
-    m_model->filter()->executeSearch(ts);
-    m_model->filter()->executeSearch(ts2,Search::Or);
-    m_model->filter()->executeSearch(ts3,Search::And);
-    updateFilter();
-    emit raiseRequest();
-    emit searchDone();
-}
-
 void GameList::slotFilterListByEco(QString s)
 {
+    m_model->filter()->setAll(1);
     TagSearch ts(m_model->filter()->database(), "ECO", s);
     m_model->filter()->executeSearch(ts);
     updateFilter();

@@ -115,9 +115,18 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     in >> basefile;
     in >> lastModified;
 
-    if (basefile != fi.completeBaseName() || lastModified != fi.lastModified())
+    if (basefile != fi.completeBaseName())
     {
         return false;
+    }
+
+    QDateTime lastModifiedStored = fi.lastModified();
+    if (lastModified != lastModifiedStored.toUTC())
+    {
+        if (lastModified.toUTC() != lastModifiedStored.toUTC())
+        {
+            return false;
+        }
     }
 
     in >> m_allocated;
@@ -182,7 +191,7 @@ bool PgnDatabase::writeOffsetFile(const QString& filename) const
     QString basefile = fi.completeBaseName();
 
     out << basefile;
-    out << fi.lastModified();
+    out << fi.lastModified().toUTC();
 
     out << m_count;
 
