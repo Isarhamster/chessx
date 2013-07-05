@@ -613,6 +613,7 @@ void MainWindow::slotMoveChanged()
     emit signalMoveHasVariation(game().variationCount() > 0);
     emit signalMoveHasParent(!game().isMainline());
     emit signalVariationHasSibling(game().variationHasSiblings(m));
+    emit signalGameIsEmpty(false);
 }
 
 void MainWindow::slotBoardMoveWheel(int wheel)
@@ -792,9 +793,10 @@ void MainWindow::slotGameNew()
         {
             databaseInfo()->newGame();
             m_gameList->clearSelection();
+            slotGameChanged();
             emit signalFirstGameLoaded(true);
             emit signalLastGameLoaded(true);
-            slotGameChanged();
+            emit signalGameIsEmpty(true); // repair effect of slotGameChanged
         }
 	}
 }
