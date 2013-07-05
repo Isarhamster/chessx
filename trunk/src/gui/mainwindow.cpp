@@ -342,6 +342,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	/* Activate clipboard */
 	updateMenuDatabases();
 	slotDatabaseChanged();
+    emit signalGameIsEmpty(true);
 
 #if QT_VERSION < 0x050000
     QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
@@ -535,7 +536,7 @@ void MainWindow::gameLoad(int index, bool force, bool reload)
     {
         if (databaseInfo()->loadGame(index, reload))
         {
-            m_gameList->selectGame(index);
+            m_gameList->selectGame(index);emit signalGameIsEmpty(true);
         }
         else if (!force)
         {
@@ -1017,8 +1018,11 @@ void MainWindow::setupActions()
     QToolBar* dbToolBar = addToolBar(tr("Database"));
     dbToolBar->setObjectName("DbToolBarMain");
 
-    gameMenu->addAction(createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New,
-                        dbToolBar, ":/images/new_game.png"));
+    QAction* newAction = createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New,
+                        dbToolBar, ":/images/new_game.png");
+    gameMenu->addAction(newAction);
+    connect(this, SIGNAL(signalGameIsEmpty(bool)), newAction, SLOT(setDisabled(bool)));
+
     QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
 
     /* Game->Load submenu */
