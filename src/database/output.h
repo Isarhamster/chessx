@@ -191,8 +191,6 @@ private:
 	QString getOptionDescription(const QString& optionName);
 	/** Return a list of all options */
 	QStringList getOptionList();
-	/** Return a list of all options with their descriptions */
-	QMap<QString, QString> getOptionListAndDescription();
 	/** Sets the start and end tag for a certain markup type */
 	void setMarkupTag(MarkupType type, const QString& startTag, const QString& endTag);
 	/** Returns the start and end tag for a certain markup type in startTag and endTag */

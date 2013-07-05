@@ -802,8 +802,4 @@ QStringList Output::getOptionList()
 {
 	return m_options.getOptionList();
 }
-QMap<QString, QString> Output::getOptionListAndDescription()
-{
-	return m_options.getOptionListAndDescription();
-}
 
