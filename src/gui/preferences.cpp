@@ -288,6 +288,7 @@ void PreferencesDialog::restoreSettings()
 	// Read Board settings
     AppSettings->beginGroup("/General/");
     ui.tablebaseCheck->setChecked(AppSettings->getValue("onlineTablebases").toBool());
+    ui.versionCheck->setChecked(AppSettings->getValue("onlineVersionCheck").toBool());
     ui.automaticECO->setChecked(AppSettings->getValue("automaticECO").toBool());
     ui.useIndexFile->setChecked(AppSettings->getValue("useIndexFile").toBool());
     ui.cbAutoCommitDB->setChecked(AppSettings->getValue("autoCommitDB").toBool());
@@ -368,6 +369,7 @@ void PreferencesDialog::saveSettings()
 {
     AppSettings->beginGroup("/General/");
     AppSettings->setValue("onlineTablebases", QVariant(ui.tablebaseCheck->isChecked()));
+    AppSettings->setValue("onlineVersionCheck", QVariant(ui.versionCheck->isChecked()));
     AppSettings->setValue("automaticECO", QVariant(ui.automaticECO->isChecked()));
     AppSettings->setValue("useIndexFile",QVariant(ui.useIndexFile->isChecked()));
     AppSettings->setValue("autoCommitDB",QVariant(ui.cbAutoCommitDB->isChecked()));

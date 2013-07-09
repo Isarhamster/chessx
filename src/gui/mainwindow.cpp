@@ -1275,16 +1275,19 @@ void MainWindow::restoreRecentFiles()
 
 void MainWindow::StartCheckUpdate()
 {
-    m_manager = new QNetworkAccessManager(this);
-    connect(m_manager, SIGNAL(finished(QNetworkReply*)),
-            SLOT(slotHttpDone(QNetworkReply*)));
-    connect(this, SIGNAL(signalVersionFound(int,int,int)),
-            SLOT(slotVersionFound(int,int,int)));
-    QUrl url("/");
-    url.setScheme("http");
-    url.setHost("chessx.sourceforge.net");
-    QNetworkRequest request(url);
-    m_manager->get(request);
+    if (AppSettings->getValue("/General/onlineVersionCheck").toBool())
+    {
+        m_manager = new QNetworkAccessManager(this);
+        connect(m_manager, SIGNAL(finished(QNetworkReply*)),
+                SLOT(slotHttpDone(QNetworkReply*)));
+        connect(this, SIGNAL(signalVersionFound(int,int,int)),
+                SLOT(slotVersionFound(int,int,int)));
+        QUrl url("/");
+        url.setScheme("http");
+        url.setHost("chessx.sourceforge.net");
+        QNetworkRequest request(url);
+        m_manager->get(request);
+    }
 }
 
 void MainWindow::slotHttpDone(QNetworkReply *reply)

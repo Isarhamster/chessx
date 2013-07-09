@@ -134,6 +134,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const {
     map.insert("/General/useIndexFile", true);
     map.insert("/General/ListFontSize", DEFAULT_LISTFONTSIZE);
     map.insert("/General/onlineTablebases", true);
+    map.insert("/General/onlineVersionCheck", true);
     map.insert("/General/autoCommitDB", false);
     map.insert("/GameText/FontSize",DEFAULT_FONTSIZE);
     map.insert("/GameText/ShowDiagrams",true);
