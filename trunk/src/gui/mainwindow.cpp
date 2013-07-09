@@ -40,6 +40,7 @@
 #include "tablebase.h"
 #include "tableview.h"
 #include "toolmainwindow.h"
+#include "version.h"
 
 #include <time.h>
 
@@ -48,6 +49,9 @@
 #include <QLCDNumber>
 #include <QMenu>
 #include <QMenuBar>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 #include <QProgressBar>
 #include <QSizePolicy>
 #include <QSplitter>
@@ -358,6 +362,7 @@ MainWindow::MainWindow() : QMainWindow(),
     EcoThread* ecothread = new EcoThread();
     connect(ecothread, SIGNAL(loaded(QObject*,bool)), this, SLOT(ecoLoaded(QObject*,bool)));
     ecothread->start();
+    StartCheckUpdate();
 }
 
 MainWindow::~MainWindow()
@@ -1268,3 +1273,53 @@ void MainWindow::restoreRecentFiles()
     }
 }
 
+void MainWindow::StartCheckUpdate()
+{
+    m_manager = new QNetworkAccessManager(this);
+    connect(m_manager, SIGNAL(finished(QNetworkReply*)),
+            SLOT(slotHttpDone(QNetworkReply*)));
+    connect(this, SIGNAL(signalVersionFound(int,int,int)),
+            SLOT(slotVersionFound(int,int,int)));
+    QUrl url("/");
+    url.setScheme("http");
+    url.setHost("chessx.sourceforge.net");
+    QNetworkRequest request(url);
+    m_manager->get(request);
+}
+
+void MainWindow::slotHttpDone(QNetworkReply *reply)
+{
+    QUrl url = reply->url();
+
+    if (!reply->error())
+    {
+        QString answer(reply->readAll());
+        QRegExp rx("/chessx/(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)/");
+        if (answer.indexOf(rx))
+        {
+            int major = rx.capturedTexts().at(0).toInt();
+            int minor = rx.capturedTexts().at(1).toInt();
+            int build = rx.capturedTexts().at(2).toInt();
+            emit signalVersionFound(major,minor,build);
+        }
+    }
+    reply->deleteLater();
+}
+
+void MainWindow::slotVersionFound(int major, int minor, int build)
+{
+    int verInternet = major * 10000 + minor * 100 + build;
+    int verCurrent = VERSION_MAJOR * 10000 + VERSION_MINOR * 100 + REVISION;
+    if (verInternet == verCurrent)
+    {
+        statusBar()->showMessage("Current version is latest stable");
+    }
+    else if (verInternet > verCurrent)
+    {
+        statusBar()->showMessage("A new version is available at chessx.sourceforge.net");
+    }
+    else
+    {
+        statusBar()->showMessage("The current version is newer than the latest stable");
+    }
+}

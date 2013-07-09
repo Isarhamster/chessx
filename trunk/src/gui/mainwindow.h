@@ -37,6 +37,8 @@ class GameList;
 class OpeningTreeWidget;
 class PlayerListWidget;
 class QLabel;
+class QNetworkAccessManager;
+class QNetworkReply;
 class QProgressBar;
 class QSplitter;
 class QTimer;
@@ -364,12 +366,16 @@ signals:
     void signalFirstGameLoaded(bool);
     void signalLastGameLoaded(bool);
 
+    void signalVersionFound(int,int,int);
+
     void databaseModified();
 
 private slots:
 	/** Cleanup after ECO file loaded. */
     void ecoLoaded(QObject*,bool);
     void slotDatabaseModified();
+    void slotHttpDone(QNetworkReply *reply);
+    void slotVersionFound(int major, int minor, int build);
 
 private:
 	/** Create single menu action. */
@@ -406,6 +412,8 @@ private:
     void UpdateGameTitle();
     /** Update Game Text */
     void UpdateGameText();
+    /** Check if an update is available online */
+    void StartCheckUpdate();
 
 	/* Dialogs  */
 	GameList* m_gameList;
@@ -458,6 +466,7 @@ private:
     QAction* m_autoPlay;
     QAction* m_autoAnalysis;
     QUndoGroup m_undoGroup;
+    QNetworkAccessManager* m_manager;
 };
 
 
