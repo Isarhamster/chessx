@@ -102,11 +102,18 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     in >> version;
     in >> magic;
 
-    if (!((version == 0) && (magic == 0xce55)))
+    if (!((version <= 1) && (magic == 0xce55)))
     {
         return false;
     }
 
+    int streamVersion = QDataStream::Qt_4_7;
+    if (version > 0)
+    {
+        in >> streamVersion;
+    }
+
+    in.setVersion(streamVersion);
     QFileInfo fi = QFileInfo(filename);
 
     QString basefile;
@@ -121,12 +128,9 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     }
 
     QDateTime lastModifiedStored = fi.lastModified();
-    if (lastModified != lastModifiedStored.toUTC())
+    if (lastModified != lastModifiedStored)
     {
-        if (lastModified.toUTC() != lastModifiedStored.toUTC())
-        {
-            return false;
-        }
+        return false;
     }
 
     in >> m_allocated;
@@ -181,11 +185,13 @@ bool PgnDatabase::writeOffsetFile(const QString& filename) const
 
     QDataStream out(&file);
 
-    short version = 0;
+    short version = 1;
     unsigned short magic = 0xce55;
+    int streamVersion = out.version();
 
     out << version;
     out << magic;
+    out << streamVersion;
 
     QFileInfo fi = QFileInfo(filename);
     QString basefile = fi.completeBaseName();
