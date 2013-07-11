@@ -1282,9 +1282,9 @@ void MainWindow::StartCheckUpdate()
                 SLOT(slotHttpDone(QNetworkReply*)));
         connect(this, SIGNAL(signalVersionFound(int,int,int)),
                 SLOT(slotVersionFound(int,int,int)));
-        QUrl url("/");
+        QUrl url("/projects/chessx/");
         url.setScheme("http");
-        url.setHost("chessx.sourceforge.net");
+        url.setHost("sourceforge.net");
         QNetworkRequest request(url);
         m_manager->get(request);
     }
@@ -1297,12 +1297,13 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
     if (!reply->error())
     {
         QString answer(reply->readAll());
+        qDebug() << answer;
         QRegExp rx("/chessx/(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)/");
-        if (answer.indexOf(rx))
+        if (answer.indexOf(rx)>-1)
         {
-            int major = rx.capturedTexts().at(0).toInt();
-            int minor = rx.capturedTexts().at(1).toInt();
-            int build = rx.capturedTexts().at(2).toInt();
+            int major = rx.capturedTexts().at(1).toInt();
+            int minor = rx.capturedTexts().at(2).toInt();
+            int build = rx.capturedTexts().at(3).toInt();
             emit signalVersionFound(major,minor,build);
         }
     }
@@ -1315,14 +1316,14 @@ void MainWindow::slotVersionFound(int major, int minor, int build)
     int verCurrent = VERSION_MAJOR * 10000 + VERSION_MINOR * 100 + REVISION;
     if (verInternet == verCurrent)
     {
-        statusBar()->showMessage("Current version is latest stable");
+        statusBar()->showMessage(tr("Current version is latest stable"));
     }
     else if (verInternet > verCurrent)
     {
-        statusBar()->showMessage("A new version is available at chessx.sourceforge.net");
+        statusBar()->showMessage(tr("A new version is available at chessx.sourceforge.net"));
     }
     else
     {
-        statusBar()->showMessage("The current version is newer than the latest stable");
+        statusBar()->showMessage(tr("The current version is newer than the latest stable"));
     }
 }
