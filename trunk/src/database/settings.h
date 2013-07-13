@@ -64,6 +64,17 @@ public:
 
     void setMap(const QString& key, const OptionValueList& map);
     void getMap(const QString& key, OptionValueList& map);
+
+    QString getThemaPath() const;
+    QStringList getThemeList() const;
+
+    QString getImagePath() const;
+
+    QString getBoardPath() const;
+    QStringList getBoardList() const;
+
+    QString getTranslationPath() const;
+    QStringList getTranslations() const;
 private:
 
     QMap<QString, QVariant> initDefaultValues() const;

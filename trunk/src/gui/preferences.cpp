@@ -292,6 +292,7 @@ void PreferencesDialog::restoreSettings()
     ui.automaticECO->setChecked(AppSettings->getValue("automaticECO").toBool());
     ui.useIndexFile->setChecked(AppSettings->getValue("useIndexFile").toBool());
     ui.cbAutoCommitDB->setChecked(AppSettings->getValue("autoCommitDB").toBool());
+    QString lang = AppSettings->getValue("language").toString();
 	AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
     ui.boardFrameCheck->setChecked(AppSettings->getValue("showFrame").toBool());
@@ -314,30 +315,31 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.boardColorsList, tr("Current move"), "currentMoveColor");
     AppSettings->endGroup();
 
-	QString themeDir(AppSettings->dataPath() + "/themes");
-
-    if (!QFile::exists(themeDir))
-        themeDir = QString(":/themes");
-
-	QStringList themes = QDir(themeDir).entryList(QStringList("*.png"));
+    QStringList themes = AppSettings->getThemeList();
 	for (QStringList::Iterator it = themes.begin(); it != themes.end(); ++it) {
 		(*it).truncate((*it).length() - 4);
 		ui.pieceThemeCombo->addItem(*it);
 	}
 
-    QString boardDir(AppSettings->dataPath() + "/themes/boards");
+    QStringList translations = AppSettings->getTranslations();
+    ui.cbLanguage->addItem("Default");
+    QStringListIterator it1(translations);
+    while (it1.hasNext()) {
+        QString trim(it1.next());
+        trim.remove(QRegExp("[^_]*_"));
+        trim.remove(".qm");
+        ui.cbLanguage->addItem(trim);
+    }
 
-    if (!QFile::exists(boardDir))
-        boardDir = QString(":/themes/boards");
-
-    themes = QDir(boardDir).entryList(QStringList("*.png"));
-	QStringListIterator it(themes);
+    QStringList boards = AppSettings->getBoardList();
+    QStringListIterator it(boards);
 	while (it.hasNext()) {
 		QString trim(it.next());
 		ui.boardThemeCombo->addItem(trim.left(trim.length() - 4));
 	}
 	ui.boardThemeCombo->addItem(tr("[plain colors]"));
 
+    selectInCombo(ui.cbLanguage, lang);
 	selectInCombo(ui.pieceThemeCombo, pieceTheme);
 	selectInCombo(ui.boardThemeCombo, boardTheme);
 
@@ -373,6 +375,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("automaticECO", QVariant(ui.automaticECO->isChecked()));
     AppSettings->setValue("useIndexFile",QVariant(ui.useIndexFile->isChecked()));
     AppSettings->setValue("autoCommitDB",QVariant(ui.cbAutoCommitDB->isChecked()));
+    AppSettings->setValue("language",QVariant(ui.cbLanguage->currentText()));
 	AppSettings->endGroup();
     AppSettings->beginGroup("/Board/");
     AppSettings->setValue("showFrame", QVariant(ui.boardFrameCheck->isChecked()));

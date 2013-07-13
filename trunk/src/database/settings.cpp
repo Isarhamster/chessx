@@ -136,6 +136,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const {
     map.insert("/General/onlineTablebases", true);
     map.insert("/General/onlineVersionCheck", true);
     map.insert("/General/autoCommitDB", false);
+    map.insert("/General/language", "Default");
     map.insert("/GameText/FontSize",DEFAULT_FONTSIZE);
     map.insert("/GameText/ShowDiagrams",true);
     map.insert("/GameText/PieceString"," KQRBN");
@@ -180,6 +181,64 @@ QVariant Settings::getValue(const QString &key) const
     }
     Q_ASSERT(false);
     return QVariant();
+}
+
+QString Settings::getThemaPath() const
+{
+    QString themeDir(AppSettings->dataPath() + "/themes");
+
+    if (!QFile::exists(themeDir))
+        themeDir = QString(":/themes");
+
+    return themeDir;
+}
+
+QStringList Settings::getThemeList() const
+{
+    QStringList themes = QDir(getThemaPath()).entryList(QStringList("*.png"));
+    return themes;
+}
+
+QString Settings::getBoardPath() const
+{
+    QString boardDir(AppSettings->dataPath() + "/themes/boards");
+
+    if (!QFile::exists(boardDir))
+        boardDir = QString(":/themes/boards");
+
+    return boardDir;
+}
+
+QStringList Settings::getBoardList() const
+{
+    QStringList boards = QDir(getBoardPath()).entryList(QStringList("*.png"));
+    return boards;
+}
+
+QString Settings::getImagePath() const
+{
+    QString imgDir(AppSettings->dataPath() + "/data/images");
+
+    if (!QFile::exists(imgDir))
+        imgDir = QString(":/data/images");
+
+    return imgDir;
+}
+
+QString Settings::getTranslationPath() const
+{
+    QString themeDir(AppSettings->dataPath() + "/lang");
+
+    if (!QFile::exists(themeDir))
+        themeDir = QString(":i18n");
+
+    return themeDir;
+}
+
+QStringList Settings::getTranslations() const
+{
+    QStringList translations = QDir(getTranslationPath()).entryList(QStringList("*.qm"));
+    return translations;
 }
 
 //////////////////////////////////////////////////////////////////////////////

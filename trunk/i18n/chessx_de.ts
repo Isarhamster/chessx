@@ -1174,17 +1174,17 @@ Bitte Installation prüfen.</translation>
         <translation>&amp;Nächster Zug</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1319"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1318"/>
         <source>Current version is latest stable</source>
         <translation>Laufende Version ist aktuell</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1323"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1322"/>
         <source>A new version is available at chessx.sourceforge.net</source>
         <translation>Eine neue Version ist verfügnar unter chessx.sourceforge.net</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1327"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1326"/>
         <source>The current version is newer than the latest stable</source>
         <translation>Die laufende Version ist neuer als die aktuell veröffentlichte</translation>
     </message>
@@ -2328,22 +2328,22 @@ Bitte Installation prüfen.</translation>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="310"/>
+        <location filename="../src/gui/preferences.cpp" line="311"/>
         <source>Light squares</source>
         <translation>Weiße Felder</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="311"/>
+        <location filename="../src/gui/preferences.cpp" line="312"/>
         <source>Dark squares</source>
         <translation>Schwarze Felder</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="312"/>
+        <location filename="../src/gui/preferences.cpp" line="313"/>
         <source>Highlighted squares</source>
         <translation>Ausgewählte Felder</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="313"/>
+        <location filename="../src/gui/preferences.cpp" line="314"/>
         <source>Frame</source>
         <translation>Rahmen</translation>
     </message>
@@ -2373,12 +2373,12 @@ Bitte Installation prüfen.</translation>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="314"/>
+        <location filename="../src/gui/preferences.cpp" line="315"/>
         <source>Current move</source>
         <translation>Aktueller Zug</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="339"/>
+        <location filename="../src/gui/preferences.cpp" line="340"/>
         <source>[plain colors]</source>
         <translation>[Grundfarben]</translation>
     </message>
@@ -2444,7 +2444,7 @@ Bitte Installation prüfen.</translation>
         <translation>Standard-Pfad zum Speichern von Dateien</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.ui" line="1002"/>
+        <location filename="../src/gui/preferences.ui" line="1048"/>
         <source>&amp;Ok</source>
         <translation>&amp;OK</translation>
     </message>
@@ -2532,17 +2532,27 @@ Bitte Installation prüfen.</translation>
         <translation>Updateprüfung nach dem Start</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.ui" line="1012"/>
+        <location filename="../src/gui/preferences.ui" line="963"/>
+        <source>Language</source>
+        <translation>Sprache</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/preferences.ui" line="991"/>
+        <source>Changing the language requires restarting the application!</source>
+        <translation>Die Änderung der Sprache wird nach einem Neustart wirksam!</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/preferences.ui" line="1058"/>
         <source>&amp;Apply</source>
         <translation>&amp;Anwenden</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.ui" line="1022"/>
+        <location filename="../src/gui/preferences.ui" line="1068"/>
         <source>&amp;Reset</source>
         <translation>&amp;Zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.ui" line="1029"/>
+        <location filename="../src/gui/preferences.ui" line="1075"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
     </message>
@@ -2670,6 +2680,7 @@ Bitte Installation prüfen.</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="477"/>
+        <location filename="../src/gui/preferences.ui" line="955"/>
         <source>Options</source>
         <translation>Optionen</translation>
     </message>
