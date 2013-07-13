@@ -36,12 +36,18 @@ int main(int argc, char** argv)
 	QString fullLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(5));
 
 	// Language may have two forms: "pt_BR" or "pl"
+    QString lang = QString("chessx_%1.qm").arg(AppSettings->getValue("/General/language").toString());
+
 	QTranslator translator;
-	if (translator.load(AppSettings->dataPath() + "/lang/" + fullLang) ||
-		 translator.load(QString(":i18n/") + fullLang) ||
-		 translator.load(AppSettings->dataPath() + "/lang/" + shortLang) ||
-		 translator.load(QString(":i18n/") + shortLang))
+    if (translator.load(AppSettings->dataPath() + "/lang/" + lang) ||
+        translator.load(QString(":i18n/") + lang) ||
+        translator.load(AppSettings->dataPath() + "/lang/" + fullLang) ||
+        translator.load(QString(":i18n/") + fullLang) ||
+        translator.load(AppSettings->dataPath() + "/lang/" + shortLang) ||
+        translator.load(QString(":i18n/") + shortLang))
+    {
         app.installTranslator(&translator);
+    }
 
 	MainWindow* mainWindow = new MainWindow;
 
