@@ -105,5 +105,8 @@
         <file alias="images/FlagUK.png">data/images/FlagUK.png</file>
         <file alias="images/game_up.png">data/images/go_up_black.png</file>
         <file alias="images/game_down.png">data/images/go_down_black.png</file>
+        <file alias="i18n/chessx_fr.qm">i18n/chessx_fr.qm</file>
+        <file alias="i18n/chessx_it.qm">i18n/chessx_it.qm</file>
+        <file alias="i18n/chessx_pl.qm">i18n/chessx_pl.qm</file>
     </qresource>
 </RCC>
