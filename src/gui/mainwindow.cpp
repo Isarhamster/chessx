@@ -1297,7 +1297,6 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
     if (!reply->error())
     {
         QString answer(reply->readAll());
-        qDebug() << answer;
         QRegExp rx("/chessx/(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)/");
         if (answer.indexOf(rx)>-1)
         {
