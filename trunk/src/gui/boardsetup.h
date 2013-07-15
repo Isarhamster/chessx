@@ -62,6 +62,9 @@ public slots:
     void startDrag(QWidget* w, QMouseEvent* event);
     /** A Piece was clicked */
     void labelClicked(Piece p);
+    void mirrorVertical();
+    void mirrorHorizontal();
+    void swapColors();
 
 signals:
     /** Request to clear the background of a piece label */

@@ -50,8 +50,6 @@ public:
 	Board board() const;
 	/** @return current theme */
 	const BoardTheme& theme() const;
-	/** Flips/unflips board. */
-	void setFlipped(bool flipped);
 	/** @return @p true if board is displayed upside down. */
 	bool isFlipped() const;
 	/** Make it almost square. */
@@ -66,10 +64,17 @@ public:
     int dbIndex() const;
 
 public slots:
-	/** Reconfigure current theme. */
-	void configure();
-    void setEnabled(bool);
-    void setDisabled(bool);
+
+    /** Flips/unflips board. */
+    void setFlipped(bool flipped);
+    /** Flips/unflips board. */
+    void flip();
+    /** Reconfigure current theme. */
+    void configure();
+    /** Enable / Disable Board for move entry. */
+    void setEnabled(bool enabled);
+    /** Disable / Enable Board for move entry. */
+    void setDisabled(bool disabled);
 
 signals:
 	/** User clicked source and destination squares */

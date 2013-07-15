@@ -108,5 +108,8 @@
         <file alias="i18n/chessx_fr.qm">i18n/chessx_fr.qm</file>
         <file alias="i18n/chessx_it.qm">i18n/chessx_it.qm</file>
         <file alias="i18n/chessx_pl.qm">i18n/chessx_pl.qm</file>
+        <file alias="images/flip-vertical.png">data/images/flip-vertical.png</file>
+        <file alias="images/flip-horizontal.png">data/images/flip-horizontal.png</file>
+        <file alias="images/swap-color.png">data/images/swap-color.png</file>
     </qresource>
 </RCC>
