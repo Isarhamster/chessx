@@ -89,17 +89,17 @@ b%2
 <context>
     <name>BoardSetupDialog</name>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="251"/>
+        <location filename="../src/gui/boardsetup.cpp" line="313"/>
         <source>No white king</source>
         <translation>Kein weißer König</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="253"/>
+        <location filename="../src/gui/boardsetup.cpp" line="315"/>
         <source>No black king</source>
         <translation>Kein schwarzer König</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="255"/>
+        <location filename="../src/gui/boardsetup.cpp" line="317"/>
         <source>Both kings are in check</source>
         <translation>Beide Könige stehen im Schach</translation>
     </message>
@@ -109,97 +109,97 @@ b%2
         <translation>Stellung aufbauen</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="138"/>
+        <location filename="../src/gui/boardsetup.ui" line="213"/>
         <source>Clear</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="145"/>
+        <location filename="../src/gui/boardsetup.ui" line="220"/>
         <source>&amp;Reset</source>
         <translation>&amp;Zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="92"/>
+        <location filename="../src/gui/boardsetup.ui" line="98"/>
         <source>Side to move:</source>
         <translation>Am Zug:</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="366"/>
+        <location filename="../src/gui/boardsetup.ui" line="444"/>
         <source>FEN</source>
         <translation>FEN</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="102"/>
+        <location filename="../src/gui/boardsetup.ui" line="108"/>
         <source>Move:</source>
         <translation>Zug:</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="438"/>
+        <location filename="../src/gui/boardsetup.ui" line="516"/>
         <source>Copy Text</source>
         <translation>Text kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="461"/>
+        <location filename="../src/gui/boardsetup.ui" line="539"/>
         <source>&amp;Ok</source>
         <translation>&amp;OK</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="468"/>
+        <location filename="../src/gui/boardsetup.ui" line="546"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="257"/>
+        <location filename="../src/gui/boardsetup.cpp" line="319"/>
         <source>Side to move has opponent in check already</source>
         <translation>Seite am Zug gibt Gegner bereits Schach</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="259"/>
+        <location filename="../src/gui/boardsetup.cpp" line="321"/>
         <source>Black has too many pawns</source>
         <translation>Schwarz hat zu viele Bauern</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="261"/>
+        <location filename="../src/gui/boardsetup.cpp" line="323"/>
         <source>White has too many pawns</source>
         <translation>Weiß hat zu viele Bauern</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="263"/>
+        <location filename="../src/gui/boardsetup.cpp" line="325"/>
         <source>There are pawns on the first or eighth rank</source>
         <translation>Bauern stehen auf der ersten oder achten Reihe</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="265"/>
+        <location filename="../src/gui/boardsetup.cpp" line="327"/>
         <source>Too many kings</source>
         <translation>Zu viele Könige</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="267"/>
+        <location filename="../src/gui/boardsetup.cpp" line="329"/>
         <source>Too many black pieces</source>
         <translation>Zu viele schwarze Figuren</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="269"/>
+        <location filename="../src/gui/boardsetup.cpp" line="331"/>
         <source>Too many white pieces</source>
         <translation>Zu viele weiße Figuren</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="271"/>
+        <location filename="../src/gui/boardsetup.cpp" line="333"/>
         <source>Bad castling rights</source>
         <translation>Ungültige Rochade-Rechte</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="273"/>
+        <location filename="../src/gui/boardsetup.cpp" line="335"/>
         <source>En passant square is not correct</source>
         <translation>En passent-Feld nicht korrekt</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="275"/>
+        <location filename="../src/gui/boardsetup.cpp" line="337"/>
         <source>Unknown reason</source>
         <translation>Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="145"/>
+        <location filename="../src/gui/boardsetup.cpp" line="207"/>
         <source>Current position is not valid.
 
 %1.</source>
@@ -208,17 +208,17 @@ b%2
 %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="292"/>
+        <location filename="../src/gui/boardsetup.cpp" line="354"/>
         <source>Illegal position: %1</source>
         <translation>Ungültige Position: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="330"/>
+        <location filename="../src/gui/boardsetup.cpp" line="392"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
         <translation>In der Zwischenablage ist kein gültige FEN Position: &lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="331"/>
+        <location filename="../src/gui/boardsetup.cpp" line="393"/>
         <source>There is no text in clipboard.</source>
         <translation>Zwischenablage ist leer.</translation>
     </message>
@@ -228,52 +228,85 @@ b%2
         <translation>Brett</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="161"/>
+        <location filename="../src/gui/boardsetup.ui" line="239"/>
         <source>&amp;Advanced</source>
         <translation>&amp;Erweitert</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="219"/>
+        <location filename="../src/gui/boardsetup.ui" line="297"/>
         <source>En passant file:</source>
         <translation>En passant Linie:</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="167"/>
+        <location filename="../src/gui/boardsetup.ui" line="245"/>
         <source>Castling rights</source>
         <translation>Erlaubte Rochaden</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="173"/>
+        <location filename="../src/gui/boardsetup.ui" line="87"/>
+        <source>Tools</source>
+        <translation>Werkzeuge</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/boardsetup.ui" line="144"/>
+        <source>Flip board</source>
+        <translation>Brett drehen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/boardsetup.ui" line="147"/>
+        <location filename="../src/gui/boardsetup.ui" line="161"/>
+        <location filename="../src/gui/boardsetup.ui" line="175"/>
+        <location filename="../src/gui/boardsetup.ui" line="189"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/boardsetup.ui" line="158"/>
+        <source>Mirror left and right</source>
+        <translation>Links und rechts spiegeln</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/boardsetup.ui" line="172"/>
+        <source>Mirror top and bottom</source>
+        <translation>Oben und unten spiegeln</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/boardsetup.ui" line="186"/>
+        <source>Change colors for all pieces</source>
+        <translation>Farbwechsel der Steine</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/boardsetup.ui" line="251"/>
         <source>Black O-O</source>
         <translation>Schwarze O-O</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="180"/>
+        <location filename="../src/gui/boardsetup.ui" line="258"/>
         <source>White O-O-O</source>
         <translation>Weiße O-O-O</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="187"/>
+        <location filename="../src/gui/boardsetup.ui" line="265"/>
         <source>White O-O</source>
         <translation>Weiße O-O</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="194"/>
+        <location filename="../src/gui/boardsetup.ui" line="272"/>
         <source>Black O-O-O</source>
         <translation>Schwarze O-O-O</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="308"/>
+        <location filename="../src/gui/boardsetup.ui" line="386"/>
         <source>Halfmove clock:</source>
         <translation>Halbzug Zähler:</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="424"/>
+        <location filename="../src/gui/boardsetup.ui" line="502"/>
         <source>Paste FEN</source>
         <translation>Einfügen FEN</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.ui" line="431"/>
+        <location filename="../src/gui/boardsetup.ui" line="509"/>
         <source>Copy FEN</source>
         <translation>Kopiere FEN</translation>
     </message>

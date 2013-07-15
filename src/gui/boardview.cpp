@@ -516,6 +516,12 @@ void BoardView::setFlipped(bool flipped)
 	update();
 }
 
+void BoardView::flip()
+{
+    m_flipped = !m_flipped;
+    update();
+}
+
 bool BoardView::isFlipped() const
 {
 	return m_flipped;

@@ -78,6 +78,12 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
 	connect(ui.copyButton, SIGNAL(clicked()), SLOT(slotCopyFen()));
 	connect(ui.pasteButton, SIGNAL(clicked()), SLOT(slotPasteFen()));
     connect(ui.btCopyText, SIGNAL(clicked()), SLOT(slotCopyText()));
+    connect(ui.btFlipBoard, SIGNAL(clicked()), ui.boardView, SLOT(flip()));
+    ui.btFlipBoard->setCheckable(true);
+
+    connect(ui.btFlipVertical, SIGNAL(clicked()), SLOT(mirrorVertical()));
+    connect(ui.btFlipHorizontal, SIGNAL(clicked()), SLOT(mirrorHorizontal()));
+    connect(ui.btSwapColor, SIGNAL(clicked()), SLOT(swapColors()));
 
     ui.tabWidget->setCurrentIndex(0);
 }
@@ -91,6 +97,62 @@ Board BoardSetupDialog::board() const
 	return b;
 }
 
+void BoardSetupDialog::mirrorVertical()
+{
+    QString fen = board().toFen();
+    QString fenRows = fen.left(fen.indexOf(" "));
+    QStringList rows = fenRows.split("/");
+    std::reverse(rows.begin(),rows.end());
+    QString newFen = rows.join("/");
+    Board b(newFen);
+    b.setMoveNumber(board().moveNumber());
+    b.setHalfMoveClock(board().halfMoveClock());
+    setBoard(b);
+}
+
+void BoardSetupDialog::mirrorHorizontal()
+{
+    QString fen = board().toFen();
+    QString fenRows = fen.left(fen.indexOf(" "));
+    QStringList rows = fenRows.split("/");
+    for (QStringList::Iterator iter=rows.begin();iter!=rows.end();++iter)
+    {
+        std::reverse((*iter).begin(),(*iter).end());
+    }
+    QString newFen = rows.join("/");
+    Board b(newFen);
+    b.setMoveNumber(board().moveNumber());
+    b.setHalfMoveClock(board().halfMoveClock());
+    setBoard(b);
+}
+
+void BoardSetupDialog::swapColors()
+{
+    QString fen = board().toFen();
+    QString fenRows = fen.left(fen.indexOf(" "));
+    QStringList rows = fenRows.split("/");
+    for (QStringList::Iterator iter=rows.begin();iter!=rows.end();++iter)
+    {
+        QString& fenString = (*iter);
+        for (QString::Iterator pChar=fenString.begin(); pChar!=fenString.end();++pChar)
+        {
+            if (*pChar >= 'a' && *pChar <= 'z')
+            {
+                (*pChar) = (*pChar).toUpper();
+            }
+            else if (*pChar >= 'A' && *pChar <= 'Z')
+            {
+                (*pChar) = (*pChar).toLower();
+            }
+        }
+    }
+    QString newFen = rows.join("/");
+    Board b(newFen);
+    b.setMoveNumber(board().moveNumber());
+    b.setHalfMoveClock(board().halfMoveClock());
+    setBoard(b);
+}
+
 void BoardSetupDialog::setFlipped(bool flipped)
 {
 	ui.boardView->setFlipped(flipped);
@@ -98,24 +160,24 @@ void BoardSetupDialog::setFlipped(bool flipped)
 
 void BoardSetupDialog::setBoard(const Board& b)
 {
-	ui.boardView->setBoard(b);
-	ui.moveSpin->setValue(b.moveNumber());
-	ui.halfmoveSpin->setValue(b.halfMoveClock());
-	if (b.enPassantSquare() == NoEPSquare)
-		ui.epCombo->setCurrentIndex(0);
-	else if (b.toMove() == White && b.pieceAt(b.enPassantSquare() - 8) == BlackPawn &&
-			b.pieceAt(b.enPassantSquare()) == Empty && b.pieceAt(b.enPassantSquare() + 8) == Empty)
-		ui.epCombo->setCurrentIndex(b.enPassantSquare() % 8 + 1);
-	else if (b.toMove() == Black && b.pieceAt(b.enPassantSquare() + 8) == WhitePawn &&
-			b.pieceAt(b.enPassantSquare()) == Empty && b.pieceAt(b.enPassantSquare() - 8) == Empty)
-		ui.epCombo->setCurrentIndex(b.enPassantSquare() % 8 + 1);
-	else ui.epCombo->setCurrentIndex(0);
-	ui.wkCastleCheck->setChecked(b.castlingRights() & WhiteKingside);
-	ui.wqCastleCheck->setChecked(b.castlingRights() & WhiteQueenside);
-	ui.bkCastleCheck->setChecked(b.castlingRights() & BlackKingside);
-	ui.bqCastleCheck->setChecked(b.castlingRights() & BlackQueenside);
-	m_toMove = b.toMove();
-	showSideToMove();
+    ui.boardView->setBoard(b);
+    ui.moveSpin->setValue(b.moveNumber());
+    ui.halfmoveSpin->setValue(b.halfMoveClock());
+    if (b.enPassantSquare() == NoEPSquare)
+        ui.epCombo->setCurrentIndex(0);
+    else if (b.toMove() == White && b.pieceAt(b.enPassantSquare() - 8) == BlackPawn &&
+            b.pieceAt(b.enPassantSquare()) == Empty && b.pieceAt(b.enPassantSquare() + 8) == Empty)
+        ui.epCombo->setCurrentIndex(b.enPassantSquare() % 8 + 1);
+    else if (b.toMove() == Black && b.pieceAt(b.enPassantSquare() + 8) == WhitePawn &&
+            b.pieceAt(b.enPassantSquare()) == Empty && b.pieceAt(b.enPassantSquare() - 8) == Empty)
+        ui.epCombo->setCurrentIndex(b.enPassantSquare() % 8 + 1);
+    else ui.epCombo->setCurrentIndex(0);
+    ui.wkCastleCheck->setChecked(b.castlingRights() & WhiteKingside);
+    ui.wqCastleCheck->setChecked(b.castlingRights() & WhiteQueenside);
+    ui.bkCastleCheck->setChecked(b.castlingRights() & BlackKingside);
+    ui.bqCastleCheck->setChecked(b.castlingRights() & BlackQueenside);
+    m_toMove = b.toMove();
+    showSideToMove();
     setStatusMessage();
 }
 
