@@ -602,6 +602,7 @@ void Output::output(QTextStream& out, Filter& filter)
     for (int i = 0; i < filter.count(); ++i) {
         if (filter.database()->loadGame(filter.indexToGame(i), game))
         {
+            m_output.clear();
             QString outText = outputGame(&game,false);
             postProcessOutput(outText);
             out << outText;
@@ -640,6 +641,7 @@ void Output::output(QTextStream& out, Database& database)
     {
         if (database.loadGame(i, game))
         {
+            m_output.clear();
             QString outText = outputGame(&game,false);
             postProcessOutput(outText);
             out << outText;
