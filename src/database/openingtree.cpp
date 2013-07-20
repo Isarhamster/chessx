@@ -277,8 +277,21 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
 		return QVariant();
 	switch (index.column()) {
 	case 0: return QString("%1: %2").arg(index.row() + 1).arg(m_moves[index.row()].move);
-	case 1: return m_games == 0 ? "" : QString("%1: %2%").arg(m_moves[index.row()].count)
-                     .arg(m_moves[index.row()].count * 1000 / m_games / 10.0);
+    case 1:
+    {
+        if (m_games==0) return "";
+        int percentage = m_moves[index.row()].count * 1000 / m_games / 10.0;
+        QString approx;
+        if (percentage == 0)
+        {
+            percentage = 1;
+            approx = "<";
+        }
+        return QString("%1: %2%3%")
+                .arg(m_moves[index.row()].count)
+                .arg(approx)
+                .arg(percentage);
+    }
 	case 2: return QString("%1%").arg(m_moves[index.row()].percentage());
 	case 3: return m_moves[index.row()].rated >= MinAveRating ?
 					 m_moves[index.row()].averageRating() : QVariant();
