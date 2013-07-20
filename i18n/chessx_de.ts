@@ -2199,7 +2199,7 @@ Bitte Installation prüfen.</translation>
         <location filename="../src/database/openingtree.cpp" line="257"/>
         <location filename="../src/database/openingtree.cpp" line="263"/>
         <source>Count</source>
-        <translation>Zähler</translation>
+        <translation>Häufigkeit</translation>
     </message>
     <message>
         <location filename="../src/database/openingtree.cpp" line="257"/>
