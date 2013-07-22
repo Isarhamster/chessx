@@ -101,7 +101,7 @@ void OpeningTreeUpdater::run()
         m_filter->database()->loadGameMoves(i, g);
         m_filter->database()->unlock();
         int id = g.findPosition(m_board);
-        if (id != NO_MOVE)
+        if (id != NO_MOVE && m_bEnd ? g.atGameEnd(id) : true)
         {
             if (m_updateFilter)
             {
@@ -158,25 +158,27 @@ void OpeningTreeUpdater::cancel()
     m_break = true;
 }
 
-bool OpeningTreeUpdater::update(Filter& f, const Board& b, QList<MoveData>& m, int& g, bool updateFilter)
+bool OpeningTreeUpdater::updateFilter(Filter& f, const Board& b, QList<MoveData>& m, int& g, bool updateFilter, bool bEnd)
 {
     m_break = false;
     m_filter = &f;
     m_board = b;
     m_moves = &m;
     m_games = &g;
+    m_bEnd  = bEnd;
     m_updateFilter = updateFilter;
     // todo: if running wait for stop
     start();
     return true;
 }
 
-bool OpeningTree::update(Filter& f, const Board& b, bool updateFilter)
+bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool bEnd)
 {
     if (!oupd.isRunning())
     {
-        if (&f==m_filter && b==m_board)
+        if (&f==m_filter && b==m_board && m_bEnd==bEnd)
             return true;
+        m_bEnd = bEnd;
         m_board = b;
         m_filter = &f;
         m_updateFilter = updateFilter;
@@ -185,12 +187,13 @@ bool OpeningTree::update(Filter& f, const Board& b, bool updateFilter)
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd,SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
-        return oupd.update(f,b, m_moves, m_games, m_updateFilter);
+        return oupd.updateFilter(f,b, m_moves, m_games, m_updateFilter, m_bEnd);
     }
     else
     {
-        if (&f==m_filter && b==m_board)
+        if (&f==m_filter && b==m_board && m_bEnd==bEnd)
             return true;
+        m_bEnd = bEnd;
         m_board = b;
         m_filter = &f;
         m_updateFilter = updateFilter;
@@ -229,7 +232,7 @@ void OpeningTree::updateTerminated(Board*)
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd,SIGNAL(progress(int)),SIGNAL(progress(int)), Qt::UniqueConnection);
-        oupd.update(*m_filter,m_board, m_moves, m_games, m_updateFilter);
+        oupd.updateFilter(*m_filter,m_board, m_moves, m_games, m_updateFilter, m_bEnd);
     }
 }
 
@@ -257,11 +260,11 @@ OpeningTree::OpeningTree() : m_sortcolumn(1), m_order(Qt::DescendingOrder), m_fi
     m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year");
 }
 
-OpeningTree::OpeningTree(Filter & f, const Board & b, bool updateFilter) :
+OpeningTree::OpeningTree(Filter & f, const Board & b, bool updFilter) :
         m_sortcolumn(1), m_order(Qt::DescendingOrder), m_filter(0)
 {
     m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year");
-    update(f, b, updateFilter);
+    updateFilter(f, b, updFilter, false);
 }
 
 QVariant OpeningTree::headerData(int section, Qt::Orientation orientation, int role) const

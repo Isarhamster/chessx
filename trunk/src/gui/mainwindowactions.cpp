@@ -1364,7 +1364,7 @@ void MainWindow::slotSearchTree()
 {
     if (m_openingTreeWidget->isVisible() )
     {
-        m_openingTreeWidget->update(*databaseInfo()->filter(), m_boardView->board(), m_gameList->m_FilterActive);
+        m_openingTreeWidget->updateFilter(*databaseInfo()->filter(), m_boardView->board(), m_gameList->m_FilterActive, false);
 	}
 }
 
@@ -1372,13 +1372,18 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 {
     m_bGameChange = false;
     QString move = m_openingTreeWidget->move(index);
+    bool bEnd = (move == "[end]");
     Board b = m_openingTreeWidget->board();
-    Move m = b.parseMove(move);
 
-    b.doMove(m);
+    if (!bEnd)
+    {
+        Move m = b.parseMove(move);
+        b.doMove(m);
+    }
+
     if (m_openingTreeWidget->isVisible() )
     {
-        m_openingTreeWidget->update(*databaseInfo()->filter(), b, m_gameList->m_FilterActive);
+        m_openingTreeWidget->updateFilter(*databaseInfo()->filter(), b, m_gameList->m_FilterActive, bEnd);
     }
 }
 

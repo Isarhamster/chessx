@@ -56,10 +56,10 @@ Board OpeningTreeWidget::board() const
     return m_openingTree->board();
 }
 
-bool OpeningTreeWidget::update(Filter& f, const Board& b, bool updateFilter)
+bool OpeningTreeWidget::updateFilter(Filter& f, const Board& b, bool updateFilter, bool bEnd)
 {
     m_openingBoardView->setBoard(b);
-    return m_openingTree->update(f, b, updateFilter);
+    return m_openingTree->updateFilter(f, b, updateFilter, bEnd);
 }
 
 void OpeningTreeWidget::saveConfig()
