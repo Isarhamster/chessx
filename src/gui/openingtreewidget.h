@@ -28,7 +28,7 @@ public:
 
     QString move(QModelIndex index) const;
     Board board() const;
-    bool update(Filter& f, const Board& b, bool updateFilter);
+    bool updateFilter(Filter& f, const Board& b, bool updateFilter, bool bEnd);
 
 public slots:
     void cancel(bool bVisible);
