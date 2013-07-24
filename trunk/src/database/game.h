@@ -114,8 +114,9 @@ public :
 	/** @return nags for move at node @p moveId */
 	NagSet nags(MoveId moveId = CURRENT_MOVE) const;
 	/** @return next move in short algebraic notation, returns empty string if no such move */
-	QString moveToSan(MoveStringFlags flags = MoveOnly,
-              NextPreviousMove nextPrevious = NextMove, MoveId moveId = CURRENT_MOVE);
+    QString moveToSan(MoveStringFlags flags = MoveOnly,
+                      NextPreviousMove nextPrevious = NextMove, MoveId moveId = CURRENT_MOVE,
+                      QString* annotations = 0, NagSet* nagSet = 0);
     /** return comment associated with game */
     QString gameComment() const;
 
