@@ -53,6 +53,7 @@ public slots:
 signals:
 	void actionRequested(const EditAction& action);
     void queryActiveGame(const Game** game);
+    void signalMergeGame(int gameIndex);
 
 protected:
 	virtual void selectAnchor(const QString& href);
@@ -62,6 +63,13 @@ protected:
 	QAction* createNagAction(const Nag& nag);
 
     void setFontSize(int size);
+
+protected: // Drag+Drop
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dragLeaveEvent(QDragLeaveEvent *event);
+    void dropEvent(QDropEvent *event);
+    void mergeGame(int gameIndex);
 
 private:
 	QMap<QAction*, EditAction> m_actions;

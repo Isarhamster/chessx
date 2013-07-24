@@ -10,6 +10,7 @@
 #include "chessbrowser.h"
 #include "settings.h"
 #include "game.h"
+#include "GameMimeData.h"
 #include "databaseinfo.h"
 
 #include <QMenu>
@@ -26,6 +27,7 @@ ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), too
     int fontsize = AppSettings->getValue("/GameText/FontSize").toInt();
     setFontSize(fontsize);
 
+    setAcceptDrops(true);
 }
 
 void ChessBrowser::setSource(const QUrl&)
@@ -231,4 +233,40 @@ void ChessBrowser::slotDisplayTime(const QString& text, Color color)
             clock->display("");
         }
     }
+}
+
+void ChessBrowser::dragEnterEvent(QDragEnterEvent *event)
+{
+    const QMimeData *mimeData = event->mimeData();
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+
+    if (gameMimeData)
+        event->acceptProposedAction();
+}
+
+void ChessBrowser::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->acceptProposedAction();
+}
+
+void ChessBrowser::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    event->accept();
+}
+
+void ChessBrowser::dropEvent(QDropEvent *event)
+{
+    const QMimeData *mimeData = event->mimeData();
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    if (gameMimeData)
+    {
+        mergeGame(gameMimeData->m_index);
+    }
+
+    event->acceptProposedAction();
+}
+
+void ChessBrowser::mergeGame(int gameIndex)
+{
+    emit signalMergeGame(gameIndex);
 }

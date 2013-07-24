@@ -217,8 +217,9 @@ QString Output::writeDiagram(int n)
     return imageString;
 }
 
-void Output::writeMove(MoveToWrite moveToWrite)
+QString Output::writeMove(MoveToWrite moveToWrite)
 {
+    QString text;
 	QString mvno;
 	QString nagString;
     QString imageString;
@@ -261,30 +262,30 @@ void Output::writeMove(MoveToWrite moveToWrite)
         (m_currentVariationLevel == 0) &&
         (c==White))
     {
-		m_output += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
+        text += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
 	}
     if ((m_options.getOptionAsBool("ColumnStyle")) &&
         (m_currentVariationLevel == 0) &&
         (c==Black))
     {
-        m_output += m_startTagMap[MarkupColumnStyleMove];
+        text += m_startTagMap[MarkupColumnStyleMove];
     }
 
 	// Write precomment if any
-	if (!precommentString.isEmpty())
-		writeComment(precommentString, mvno, Precomment);
+    text += writeComment(precommentString, mvno, Precomment);
+
 	// *** Markup for the move
 	if (m_currentVariationLevel > 0) {
 		if (m_expandable[MarkupVariationMove]) {
-			m_output += m_startTagMap[MarkupVariationMove].arg(mvno);
+            text += m_startTagMap[MarkupVariationMove].arg(mvno);
 		} else {
-			m_output += m_startTagMap[MarkupVariationMove];
+            text += m_startTagMap[MarkupVariationMove];
 		}
 	} else {
 		if (m_expandable[MarkupMainLineMove]) {
-			m_output += m_startTagMap[MarkupMainLineMove].arg(mvno);
+            text += m_startTagMap[MarkupMainLineMove].arg(mvno);
 		} else {
-			m_output += m_startTagMap[MarkupMainLineMove];
+            text += m_startTagMap[MarkupMainLineMove];
 		}
 	}
 
@@ -293,9 +294,9 @@ void Output::writeMove(MoveToWrite moveToWrite)
 		c = oppositeColor(c);
 	}
 	if (c == White) {
-		m_output += QString::number(m_game->moveNumber(moveId)) + ". ";
+        text += QString::number(m_game->moveNumber(moveId)) + ". ";
 	} else if (m_dirtyBlack) {
-		m_output += QString::number(m_game->moveNumber(moveId)) + "... ";
+        text += QString::number(m_game->moveNumber(moveId)) + "... ";
 	}
 	m_dirtyBlack = false;
 
@@ -309,88 +310,86 @@ void Output::writeMove(MoveToWrite moveToWrite)
 	}
     QString mate = m_startTagMap[MarkupMate] + "#" + m_endTagMap[MarkupMate];
     san.replace("#", mate);
-    m_output += san;
+    text += san;
 
 	// *** End the markup for the move
 	if (m_currentVariationLevel > 0) {
-		m_output += m_endTagMap[MarkupVariationMove];
+        text += m_endTagMap[MarkupVariationMove];
 	} else {
-		m_output += m_endTagMap[MarkupMainLineMove];
+        text += m_endTagMap[MarkupMainLineMove];
 	}
 	// *** Write the nags if there are any
 	if (!nagString.isEmpty()) {
-		m_output += m_startTagMap[MarkupNag] + nagString + m_endTagMap[MarkupNag];
+        text += m_startTagMap[MarkupNag] + nagString + m_endTagMap[MarkupNag];
 	}
 
     if ((m_options.getOptionAsBool("ColumnStyle")) &&
         (m_currentVariationLevel == 0) &&
         (c==White))
     {
-        m_output += m_endTagMap[MarkupColumnStyleMove];
+        text += m_endTagMap[MarkupColumnStyleMove];
     }
 
     if ((m_options.getOptionAsBool("ColumnStyle")) &&
         (m_currentVariationLevel == 0) &&
         (c==Black))
     {
-        m_output += m_endTagMap[MarkupColumnStyleMove] + m_endTagMap[MarkupColumnStyleRow];
+        text += m_endTagMap[MarkupColumnStyleMove] + m_endTagMap[MarkupColumnStyleRow];
     }
 
-    m_output += imageString;
+    text += imageString;
     if (!imageString.isEmpty())
     {
         m_dirtyBlack = true;
     }
 
-	if (!commentString.isEmpty())
-    {
-        m_output += " ";
-		writeComment(commentString, mvno, Comment);
-    }
-    m_output += " ";
+    text += writeComment(commentString, mvno, Comment);
+    text += " ";
+    return text;
 }
 
-void Output::writeVariation(MoveId upToNode)
+QString Output::writeVariation(MoveId upToNode)
 {
+    QString text;
     while (!m_game->atLineEnd())
     {
         if (m_game->currentMove() == upToNode)
         {
-            m_output += "*** ";
+            text += "*** ";
             break;
         }
 		// *** Writes move in the current variation
-		writeMove();
+        text += writeMove();
 		if (m_game->variationCount()) {
 			QList <int> variations = m_game->variations();
 			for (int i = 0; i < variations.size(); ++i) {
 				m_currentVariationLevel++;
 				if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 1)) {
-					m_output += m_endTagMap[MarkupColumnStyleMainline];
+                    text += m_endTagMap[MarkupColumnStyleMainline];
 				}
 				if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
-					m_output += m_startTagMap[MarkupVariationIndent];
+                    text += m_startTagMap[MarkupVariationIndent];
 				} else {
-					m_output += m_startTagMap[MarkupVariationInline];
+                    text += m_startTagMap[MarkupVariationInline];
 				}
 
 				m_dirtyBlack = true;
 
 				// *** Enter variation i, and write the rest of the moves
 				m_game->moveToId(variations[i]);
-				writeMove(PreviousMove);
-                writeVariation(upToNode);
+                text += writeMove(PreviousMove);
+                text += writeVariation(upToNode);
 
 				// *** End the variation
 				//			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
 				if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
-					m_output += m_endTagMap[MarkupVariationIndent];
+                    text += m_endTagMap[MarkupVariationIndent];
 				} else {
-					m_output += m_endTagMap[MarkupVariationInline];
+                    text += m_endTagMap[MarkupVariationInline];
 				}
 				m_currentVariationLevel--;
 				if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
-					m_output += m_startTagMap[MarkupColumnStyleMainline];
+                    text += m_startTagMap[MarkupColumnStyleMainline];
 				}
 				m_dirtyBlack = true;
 			}
@@ -398,11 +397,12 @@ void Output::writeVariation(MoveId upToNode)
 		}
 		m_game->forward();
 	}
+    return text;
 }
 
-void Output::writeTag(const QString& tagName, const QString& tagValue)
+QString Output::writeTag(const QString& tagName, const QString& tagValue)
 {
-	m_output += m_startTagMap[MarkupHeaderLine] +
+    QString text = m_startTagMap[MarkupHeaderLine] +
 			 m_startTagMap[MarkupHeaderTagName] +
 			 tagName + m_endTagMap[MarkupHeaderTagName] +
 			 " " +
@@ -410,71 +410,82 @@ void Output::writeTag(const QString& tagName, const QString& tagValue)
 			 tagValue +
 			 m_endTagMap[MarkupHeaderTagValue] +
 			 m_endTagMap[MarkupHeaderLine];
+    return text;
 }
 
-void Output::writeComment(const QString& comment, const QString& mvno, CommentType type)
+QString Output::writeComment(const QString& comment, const QString& mvno, CommentType type)
 {
-	MarkupType markupIndent = type == Comment ? MarkupAnnotationIndent : MarkupPreAnnotationIndent;
-	MarkupType markupInline = type == Comment ? MarkupAnnotationInline : MarkupPreAnnotationInline;
-
+    QString text;
 	if (comment.isEmpty())
-		return;
+        return text;
+
+    MarkupType markupIndent = type == Comment ? MarkupAnnotationIndent : MarkupPreAnnotationIndent;
+    MarkupType markupInline = type == Comment ? MarkupAnnotationInline : MarkupPreAnnotationInline;
+
+    if (type == Comment)
+    {
+        text += " ";
+    }
 	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0))
-		m_output += m_endTagMap[MarkupColumnStyleMainline];
+        text += m_endTagMap[MarkupColumnStyleMainline];
 	if ((m_options.getOptionAsString("CommentIndent") == "Always")
 			|| ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline")
 				 && (m_currentVariationLevel == 0))) {
 		if (m_expandable[markupIndent]) {
-			m_output += m_startTagMap[markupIndent].arg(mvno) +
+            text += m_startTagMap[markupIndent].arg(mvno) +
 					 comment + m_endTagMap[markupIndent];
 		} else {
-			m_output += m_startTagMap[markupIndent] +
+            text += m_startTagMap[markupIndent] +
 					 comment + m_endTagMap[markupIndent];
 		}
 	} else {
 		if (m_expandable[markupInline]) {
-			m_output += m_startTagMap[markupInline].arg(mvno) +
+            text += m_startTagMap[markupInline].arg(mvno) +
 					 comment + m_endTagMap[markupInline];
 		} else {
-			m_output += m_startTagMap[markupInline] +
+            text += m_startTagMap[markupInline] +
 					 comment + m_endTagMap[markupInline];
 		}
 	}
 	if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
-		m_output += m_startTagMap[MarkupColumnStyleMainline];
+        text += m_startTagMap[MarkupColumnStyleMainline];
 	}
 	m_dirtyBlack = true;
+    return text;
 }
 
-void Output::writeGameComment(const QString& comment )
+QString Output::writeGameComment(const QString& comment)
 {
+    QString text;
     MarkupType markupIndent = MarkupPreAnnotationIndent;
     MarkupType markupInline = MarkupPreAnnotationInline;
 
     if (comment.isEmpty())
-        return;
+        return text;
     if (m_options.getOptionAsBool("ColumnStyle") )
-        m_output += m_endTagMap[MarkupColumnStyleMainline];
+        text += m_endTagMap[MarkupColumnStyleMainline];
     if ((m_options.getOptionAsString("CommentIndent") == "Always")
             || ((m_options.getOptionAsString("CommentIndent") == "OnlyMainline") )) {
 
-        m_output += m_startTagMap[markupIndent] +
+        text += m_startTagMap[markupIndent] +
                      comment + m_endTagMap[markupIndent];
     } else {
-            m_output += m_startTagMap[markupInline] +
+            text += m_startTagMap[markupInline] +
                      comment + m_endTagMap[markupInline];
     }
     if (m_options.getOptionAsBool("ColumnStyle") ) {
-        m_output += m_startTagMap[MarkupColumnStyleMainline];
+        text += m_startTagMap[MarkupColumnStyleMainline];
     }
+    return text;
 }
 
-void Output::writeAllTags()
+QString Output::writeAllTags()
 {
+    QString text;
 	QMap<QString, QString> tags = m_game->tags();
 	// write standard tags
     for (int i = 0; i < 7; ++i) {
-		writeTag(StandardTags[i], tags[StandardTags[i]]);
+        text += writeTag(StandardTags[i], tags[StandardTags[i]]);
 		tags.remove(StandardTags[i]);
 	}
 
@@ -485,13 +496,15 @@ void Output::writeAllTags()
 		// workaround for problems with IndexItem implementation
         if (!it.value().isEmpty() && it.value() != "?" && it.value() != PDInvalidDate.asString() && it.key() != "Length")
         {
-			writeTag(it.key(), it.value());
+            text += writeTag(it.key(), it.value());
         }
 	}
+    return text;
 }
 
-void Output::writeBasicTagsHTML()
+QString Output::writeBasicTagsHTML()
 {
+    QString text;
     QMap<QString, QString> tags = m_game->tags();
 
     QString eco = tags[TagNameECO].left(3);
@@ -503,7 +516,7 @@ void Output::writeBasicTagsHTML()
     QString whiteElo = tags[TagNameWhiteElo].length()>1 ? QString(" (%1)").arg(tags[TagNameWhiteElo]) : QString();
     QString blackElo = tags[TagNameBlackElo].length()>1 ? QString(" (%1)").arg(tags[TagNameBlackElo]) : QString();
 
-    m_output += m_startTagMap[MarkupHeaderLine] +
+    text += m_startTagMap[MarkupHeaderLine] +
             tags[TagNameWhite] + whiteElo + " - " + tags[TagNameBlack] + blackElo + eco +
             m_endTagMap[MarkupHeaderLine] + "\n";
 
@@ -512,61 +525,63 @@ void Output::writeBasicTagsHTML()
     QString round = tags[TagNameRound] != "?" ? QString(" (%1)").arg(tags[TagNameRound]) : QString();
 
     if (!(QString(event+place+round)).isEmpty())
-    m_output += m_startTagMap[MarkupHeaderLine] +
+    text += m_startTagMap[MarkupHeaderLine] +
             event +
             ((!event.isEmpty() && !place.isEmpty()) ? ", " : "") + place +
             round +
             m_endTagMap[MarkupHeaderLine] + "\n";
+    return text;
 }
 
 QString Output::output(Game* game, bool upToCurrentMove)
 {
-    m_output = m_header;
-    outputGame(game, upToCurrentMove);
-    m_output += m_footer;
-    postProcessOutput(m_output);
-    return m_output;
+    QString text = m_header;
+    text += outputGame(game, upToCurrentMove);
+    text += m_footer;
+    postProcessOutput(text);
+    return text;
 }
 
 QString Output::outputGame(Game* game, bool upToCurrentMove)
 {
+    QString text;
     m_game = game;
     int id = m_game->currentMove();
     int mainId = upToCurrentMove ? m_game->mainLineMove() : NO_MOVE;
     m_currentVariationLevel = 0;
 
     if (m_options.getOptionAsBool("ShowHeader")) {
-        m_output += m_startTagMap[MarkupHeaderBlock];
+        text += m_startTagMap[MarkupHeaderBlock];
         if (m_outputType == Html)
-            writeBasicTagsHTML();
+            text += writeBasicTagsHTML();
         else
-            writeAllTags();
-        m_output += m_endTagMap[MarkupHeaderBlock];
+            text += writeAllTags();
+        text += m_endTagMap[MarkupHeaderBlock];
     }
 
     m_game->moveToStart();
     m_dirtyBlack = m_game->board().toMove() == Black;
-    m_output += m_startTagMap[MarkupNotationBlock];
-    m_output += m_startTagMap[MarkupMainLine];
+    text += m_startTagMap[MarkupNotationBlock];
+    text += m_startTagMap[MarkupMainLine];
     if (m_options.getOptionAsBool("ColumnStyle")) {
-        m_output += m_startTagMap[MarkupColumnStyleMainline];
+        text += m_startTagMap[MarkupColumnStyleMainline];
     }
 
     if( !game->gameComment().isEmpty()){
-        writeGameComment(game->gameComment());
+        text += writeGameComment(game->gameComment());
     }
 
-    writeVariation(mainId);
+    text += writeVariation(mainId);
     if (m_options.getOptionAsBool("ColumnStyle")) {
-        m_output += m_endTagMap[MarkupColumnStyleMainline];
+        text += m_endTagMap[MarkupColumnStyleMainline];
     }
-    m_output += m_endTagMap[MarkupMainLine];
-    m_output += m_endTagMap[MarkupNotationBlock];
-    m_output += m_startTagMap[MarkupResult] + game->tag("Result") + m_endTagMap[MarkupResult];
+    text += m_endTagMap[MarkupMainLine];
+    text += m_endTagMap[MarkupNotationBlock];
+    text += m_startTagMap[MarkupResult] + game->tag("Result") + m_endTagMap[MarkupResult];
 
     m_game->moveToId(id);
 
-    return m_output;
+    return text;
 }
 
 void Output::postProcessOutput(QString& text) const
@@ -578,7 +593,7 @@ void Output::postProcessOutput(QString& text) const
     }
 
     // Chop it up, if TextWidth option is not equal to 0
-    int start = m_output.length();
+    int start = text.length();
     int textWidth = m_options.getOptionAsInt("TextWidth");
     if (textWidth) {
         int length = text.length() - start;
@@ -602,7 +617,6 @@ void Output::output(QTextStream& out, Filter& filter)
     for (int i = 0; i < filter.count(); ++i) {
         if (filter.database()->loadGame(filter.indexToGame(i), game))
         {
-            m_output.clear();
             QString outText = outputGame(&game,false);
             postProcessOutput(outText);
             out << outText;
@@ -641,7 +655,6 @@ void Output::output(QTextStream& out, Database& database)
     {
         if (database.loadGame(i, game))
         {
-            m_output.clear();
             QString outText = outputGame(&game,false);
             postProcessOutput(outText);
             out << outText;

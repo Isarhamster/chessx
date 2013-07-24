@@ -910,6 +910,16 @@ void MainWindow::slotGameModify(const EditAction& action)
 	slotGameChanged();
 }
 
+void MainWindow::slotMergeActiveGame(int gameIndex)
+{
+    Game g;
+    if (database()->loadGame(gameIndex, g))
+    {
+        game().mergeWithGame(g);
+        slotGameChanged();
+    }
+}
+
 void MainWindow::slotGetActiveGame(const Game** g)
 {
     *g = &game();

@@ -11,6 +11,7 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
+#include <QObject>
 #include "board.h"
 #include "movelist.h"
 #include "nag.h"
@@ -44,8 +45,10 @@ typedef int MoveId;
 
 */
 
-class Game
+class Game : public QObject
 {
+    Q_OBJECT
+
 public :
 	/**
 	    Flags indicating how a move string should be constructed
@@ -72,7 +75,7 @@ public :
 	Game();
 	Game(const Game& game);
 	Game& operator=(const Game& game);
-	~Game();
+    virtual ~Game();
 	// **** Querying game information ****
     /** @return current position */
 	const Board& board() const;
@@ -225,7 +228,9 @@ public :
 	/** Adds a move at the current position as a variation,
 	 * returns the move id of the added move */
 	MoveId addVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
-	/** Promotes the given variation to the main line, returns true if successful */
+    /** Merge Game @p g into this game */
+    void mergeWithGame(const Game& g);
+    /** Promotes the given variation to the main line, returns true if successful */
 	bool promoteVariation(MoveId variation);
 	/** Removes the given variation, returns true if successful */
 	bool removeVariation(MoveId variation);
@@ -286,6 +291,10 @@ public :
     void enumerateVariations(MoveId moveId, char a);
     void moveVariationUp(MoveId moveId);
     void moveVariationDown(MoveId moveId);
+
+signals:
+    void signalGameModified();
+
 private:
 
     QString specialAnnotation(QString& annotation, QString specialMark ) const; // [%csl  [%cal

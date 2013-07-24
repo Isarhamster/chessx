@@ -160,8 +160,6 @@ private:
 	QString m_newlineChar;
 	/** Pointer to the game being exported */
     Game * m_game;
-	/** The export result */
-	QString m_output;
 	/** Map containing the different types of outputs available, and a description of each */
     static QMap<OutputType, QString> m_outputMap;
 	/** Map containing the start markup tag for each markup type */
@@ -224,23 +222,21 @@ private:
 
 	/* Writing Methods */
     /** writes a comment associated with a game with no moves */
-    void writeGameComment(const QString& comment );
+    QString writeGameComment(const QString& comment );
     /** Writes a diagram */
     QString writeDiagram(int n);
 	/** Writes a single move including nag and annotation */
-	void writeMove(MoveToWrite moveToWrite = NextMove);
+    QString writeMove(MoveToWrite moveToWrite = NextMove);
 	/** Writes a variation, including sub variations */
-    void writeVariation(MoveId upToNode);
-	/** Writes a newline, and indent the following line */
-	void writeNewlineIndent();
+    QString writeVariation(MoveId upToNode);
 	/** Writes a game tag */
-	void writeTag(const QString& tagName, const QString& tagValue);
+    QString writeTag(const QString& tagName, const QString& tagValue);
 	/** Writes all game tags */
-	void writeAllTags();
+    QString writeAllTags();
     /** Writes basic Tags for HTML */
-    void writeBasicTagsHTML();
+    QString writeBasicTagsHTML();
 	/** Writes comment. @p mvno keeps a string representing move number (used for indentation. */
-	void writeComment(const QString& comment, const QString& mvno, CommentType type = Comment);
+    QString writeComment(const QString& comment, const QString& mvno, CommentType type = Comment);
 
 };
 
