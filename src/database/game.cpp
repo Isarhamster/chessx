@@ -115,15 +115,17 @@ void Game::mergeWithGame(const Game& g)
         backward();
         // merge othergame starting with otherMergeNode into variation starting from m_currentNode
         otherGame.moveToId(otherMergeNode);
-        QString san = otherGame.moveToSan(Nags);
+        QString ann;
+        NagSet nags;
+        QString san = otherGame.moveToSan(MoveOnly, NextMove, CURRENT_MOVE, &ann, &nags);
         otherGame.forward();
-        if (NO_MOVE != addVariation(san))
+        if (NO_MOVE != addVariation(san,ann,nags))
         {
             while (!otherGame.atGameEnd())
             {
-                QString san = otherGame.moveToSan(Nags);
+                san = otherGame.moveToSan(MoveOnly, NextMove, CURRENT_MOVE, &ann, &nags);
                 otherGame.forward();
-                if (NO_MOVE == addMove(san))
+                if (NO_MOVE == addMove(san,ann,nags))
                 {
                     break;
                 }
@@ -1283,7 +1285,8 @@ void Game::setResult(Result result)
     setModified(true);
 }
 
-QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, MoveId moveId)
+QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, MoveId moveId,
+                        QString* annots, NagSet* nagSet)
 {
 	MoveId node = nodeValid(moveId);
 	if (node != NO_MOVE && nextPrevious == NextMove)
@@ -1314,8 +1317,13 @@ QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, Mo
 	// Move and SAN
     san += m_currentBoard.moveToSan(move.move, flags & TranslatePiece);
 	if (flags & Nags)
+    {
         san += nags(node).toString(NagSet::Simple);
-		
+    }
+
+    if (nagSet) *nagSet = nags(node);
+    if (annots) *annots = annotation(node);
+
 	// Restore previous position
 	if (saveNode != NO_MOVE)
 		moveToId(saveNode);
