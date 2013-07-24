@@ -8,6 +8,8 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QUndoStack>
+
 #include "databaseinfo.h"
 #include "filter.h"
 #include "game.h"
@@ -21,6 +23,7 @@ DatabaseInfo::DatabaseInfo()
     m_filter = new Filter(m_database);
     m_bLoaded = true;
     m_utf8 = false;
+    m_undoStack = new QUndoStack(this);
     newGame();
 }
 
@@ -29,6 +32,7 @@ DatabaseInfo::DatabaseInfo(const QString& fname): m_filter(0), m_index(NewGame)
 	m_filename = fname;
     m_bLoaded = false;
     m_utf8 = false;
+    m_undoStack = new QUndoStack(this);
 	QFile file(fname);
     if (file.size() < 1024 * 1024 * AppSettings->getValue("/General/EditLimit").toInt())
         m_database = new MemoryDatabase;
@@ -86,6 +90,7 @@ void DatabaseInfo::close()
 	if (m_filter) delete m_filter;
     m_database = NULL;
 	m_filter = NULL;
+    m_undoStack->clear();
 }
 
 DatabaseInfo::~DatabaseInfo()
@@ -104,7 +109,8 @@ bool DatabaseInfo::loadGame(int index, bool reload)
 		return false;
 	if (!m_database->loadGame(index, m_game))
 		return false;
-	m_index = index;
+    m_undoStack->clear();
+    m_index = index;
     int n = m_filter->gamePosition(index)-1;
     if (n<0) n=0;
     m_game.moveToId(n);
@@ -114,6 +120,7 @@ bool DatabaseInfo::loadGame(int index, bool reload)
 
 void DatabaseInfo::newGame()
 {
+    m_undoStack->clear();
     m_game.clearTags();
 	m_game.clear();
     m_game.setModified(false);

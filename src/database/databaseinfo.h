@@ -16,6 +16,7 @@
 
 class Database;
 class Filter;
+class QUndoStack;
 
 /** @ingroup Database
 The DatabaseInfo class is a simple class to keep various database-related
@@ -70,6 +71,7 @@ signals:
     void LoadFinished(DatabaseInfo*);
 
 private:
+    QUndoStack* m_undoStack;
 	Database* m_database;
 	Filter* m_filter;
 	Game m_game;

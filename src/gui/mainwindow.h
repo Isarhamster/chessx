@@ -181,7 +181,9 @@ public slots:
 	void slotGameModify(const EditAction& action);
     /** Get a pointer or Null to the active game. */
     void slotGetActiveGame(const Game** game);
-	/** Update GameView content after game was change. Triggers also @ref slotMoveChanged . */
+    /** Merge the game with index @p gameIndex into the active game. */
+    void slotMergeActiveGame(int gameIndex);
+    /** Update GameView content after game was change. Triggers also @ref slotMoveChanged. */
 	void slotGameChanged();
 	/** Handle link click in Game View panel */
 	void slotGameViewLink(const QUrl& link);

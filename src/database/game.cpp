@@ -88,6 +88,57 @@ MoveId Game::addMove(const QString& sanMove, const QString& annotation, NagSet n
 	return NO_MOVE;
 }
 
+void Game::mergeWithGame(const Game& g)
+{
+    MoveId saveNode = m_currentNode;
+    Game otherGame = g;
+    MoveId trailNode = NO_MOVE;
+    MoveId otherMergeNode = NO_MOVE;
+    do
+    {
+        if (NO_MOVE == (otherMergeNode = otherGame.findPosition(board())))
+        {
+            if (trailNode != NO_MOVE)
+            {
+                otherMergeNode = trailNode;
+                break;
+            }
+        }
+        else
+        {
+            trailNode = otherMergeNode;
+        }
+    } while (forward());
+
+    if (otherMergeNode != NO_MOVE)
+    {
+        backward();
+        // merge othergame starting with otherMergeNode into variation starting from m_currentNode
+        otherGame.moveToId(otherMergeNode);
+        QString san = otherGame.moveToSan(Nags);
+        otherGame.forward();
+        if (NO_MOVE != addVariation(san))
+        {
+            while (!otherGame.atGameEnd())
+            {
+                QString san = otherGame.moveToSan(Nags);
+                otherGame.forward();
+                if (NO_MOVE == addMove(san))
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    // undo changes
+    if (saveNode != m_currentNode)
+    {
+        moveToId(saveNode);
+    }
+    compact();
+}
+
 bool Game::currentNodeHasVariation(Square from, Square to) const
 {
     if (m_currentNode == NO_MOVE) return false;
@@ -111,11 +162,10 @@ bool Game::currentNodeHasMove(Square from, Square  to) const
     {
         return true;
     }
-    int node;
-    node = m_moveNodes[m_currentNode].nextNode;
+    int node = m_moveNodes[m_currentNode].nextNode;
     if (node == NO_MOVE)
         return true;
-    Move m = m_moveNodes[node].move ;
+    Move m = m_moveNodes[node].move;
     if( m.from() == from && m.to() == to )
     {
         return (m_moveNodes[node].nextNode != NO_MOVE);
@@ -425,7 +475,7 @@ bool Game::atGameStart(MoveId moveId) const
 
 bool Game::atGameEnd(MoveId moveId) const
 {
-	return (atLineEnd(moveId) && isMainline(moveId));
+        return (atLineEnd(moveId) && isMainline(moveId));
 }
 
 bool Game::atLineEnd(MoveId moveId) const
@@ -1114,7 +1164,8 @@ int Game::forward(int count)
 		m_currentBoard.doMove(m_moveNodes[m_currentNode].move);
 	}
 
-    indicateAnnotationsOnBoard(m_currentNode);
+    if (moved)
+        indicateAnnotationsOnBoard(m_currentNode);
 
 	return moved;
 }
@@ -1128,7 +1179,8 @@ int Game::backward(int count)
         ++moved;
 	}
 
-    indicateAnnotationsOnBoard(m_currentNode);
+    if (moved)
+        indicateAnnotationsOnBoard(m_currentNode);
 
 	return moved;
 }
