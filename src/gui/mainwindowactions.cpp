@@ -1109,8 +1109,11 @@ void MainWindow::slotFilterChanged()
 
 void MainWindow::slotFilterLoad(int index)
 {
-	gameLoad(index);
-	activateWindow();
+    if (index != gameIndex())
+    {
+        gameLoad(index);
+        activateWindow();
+    }
 }
 
 void MainWindow::slotStatusMessage(const QString& msg)
@@ -1608,23 +1611,9 @@ void MainWindow::UpdateGameTitle()
     QString players = QString("<b><a href=\"tag:white\">%1</a></b> %2 - <b><a href=\"tag:black\">%3</a></b> %4")
               .arg(white).arg(whiteElo).arg(black).arg(blackElo);
     QString result = QString("<b>%1</b> &nbsp; %2").arg(game().tag("Result")).arg(eco);
-    QString site = game().tag(TagNameSite).left(30);
-    QString event = game().tag(TagNameEvent).left(30);
-    QString header = "<i>";
-    if (!site.isEmpty()) {
-        header.append(site);
-        if (game().tag("Round") != "?")
-            header.append(QString(" (%1)").arg(game().tag("Round")));
-        if (!event.isEmpty())
-            header.append(", ");
-    }
-    header.append(event);
-    if (!game().tag("Date").startsWith("?")) {
-        if (header.length() > 4)
-            header.append(", ");
-        header.append(game().tag(TagNameDate));
-    }
-    header.append("</i>");
+    QString event = game().eventInfo();
+
+    QString header = QString("<i>%1</i>").arg(event);
 
     QString title;
     if (!white.isEmpty() || !black.isEmpty())

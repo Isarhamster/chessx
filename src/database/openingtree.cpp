@@ -101,7 +101,7 @@ void OpeningTreeUpdater::run()
         m_filter->database()->loadGameMoves(i, g);
         m_filter->database()->unlock();
         int id = g.findPosition(m_board);
-        if (id != NO_MOVE && m_bEnd ? g.atGameEnd(id) : true)
+        if ((id != NO_MOVE) && ( m_bEnd ? g.atGameEnd(id) : true))
         {
             if (m_updateFilter)
             {
