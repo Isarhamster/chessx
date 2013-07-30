@@ -23,7 +23,9 @@
 
 typedef int MoveId;
 
+class SaveRestoreMove;
 /** @ingroup Core
+
    The Game class represents a chess game. This is a complete rewrite, with simpler
    API.  Moves and variations can be added and removed.
    Moves can have associated comments and nag values. Each variation can have a
@@ -119,6 +121,8 @@ public :
                       QString* annotations = 0, NagSet* nagSet = 0);
     /** return comment associated with game */
     QString gameComment() const;
+    /** Query event info and date information for display in game browser etc. */
+    QString eventInfo() const;
 
 	// **** node modification methods ****
 	/** Sets the comment associated with move at node @p moveId */
@@ -229,6 +233,14 @@ public :
 	/** Adds a move at the current position as a variation,
 	 * returns the move id of the added move */
 	MoveId addVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+    /** Merge current node of @p otherGame into this game */
+    bool mergeNode(Game &otherGame);
+    /** Merge @p otherGame starting from otherGames current position into this game as a new variation */
+    bool mergeAsVariation(Game &otherGame);
+    bool mergeVariations(Game &otherGame);
+    /** Find the point in the this game where @p otherGame fits in the next time.
+        @retval Node from where the merging shall start in other game */
+    MoveId findMergePoint(const Game &otherGame);
     /** Merge Game @p g into this game */
     void mergeWithGame(const Game& g);
     /** Promotes the given variation to the main line, returns true if successful */
@@ -267,7 +279,7 @@ public :
 
 	// Searching
 	/** Search game to see if given position exists, if it does return move id */
-    MoveId findPosition(const Board& position);
+    MoveId findPosition(const Board& position) const;
     /** @return true if the move @p from @p to is already main move or variation */
     bool currentNodeHasMove(Square from, Square to) const;
     /** @return true if the move @p from @p to is already in a variation */
@@ -358,8 +370,25 @@ private:
 
 	//eco data
 	static QMap<quint64, QString> m_ecoPositions;
+    friend class SaveRestoreMove;
 };
 
+class SaveRestoreMove
+{
+public:
+    SaveRestoreMove(Game& game)
+    {
+        m_saveGame = &game;
+        m_saveMoveValue = game.currentMove();
+    }
+    ~SaveRestoreMove()
+    {
+        m_saveGame->moveToId(m_saveMoveValue);
+    }
+private:
+    Game* m_saveGame;
+    MoveId m_saveMoveValue;
+};
 
 #endif	// __GAME_H__
 

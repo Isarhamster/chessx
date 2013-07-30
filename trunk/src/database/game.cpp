@@ -88,49 +88,142 @@ MoveId Game::addMove(const QString& sanMove, const QString& annotation, NagSet n
 	return NO_MOVE;
 }
 
-void Game::mergeWithGame(const Game& g)
+bool Game::mergeNode(Game& otherGame)
 {
-    MoveId saveNode = m_currentNode;
-    Game otherGame = g;
+    SaveRestoreMove saveThis(*this);
+    SaveRestoreMove saveOther(otherGame);
+
+    QString ann;
+    NagSet nags;
+    otherGame.forward();
+    QString san = otherGame.moveToSan(MoveOnly, PreviousMove, CURRENT_MOVE, &ann, &nags);
+
+    bool retVal =  (NO_MOVE != addMove(san,ann,nags));
+     return retVal;
+}
+
+bool Game::mergeVariations(Game& otherGame)
+{
+    QList<MoveId> variationList = otherGame.variations();
+    bool ok=true;
+    if (variationList.size())
+    {
+        int otherCurrent = otherGame.currentMove();
+        for (QList<MoveId>::iterator iter = variationList.begin(); iter != variationList.end(); ++iter)
+        {
+            otherGame.enterVariation(*iter);
+            if (!mergeAsVariation(otherGame))
+            {
+                ok = false;
+            }
+            otherGame.moveToId(otherCurrent);
+            if (!ok) break;
+        }
+    }
+    return ok;
+}
+
+bool Game::mergeAsVariation(Game& otherGame)
+{
+    SaveRestoreMove saveNode(*this);
+
+    QString ann;
+    NagSet nags;
+
+    QString san = otherGame.moveToSan(MoveOnly, PreviousMove, CURRENT_MOVE, &ann, &nags);
+
+    if (NO_MOVE != addVariation(san,ann,nags))
+    {
+        while (!otherGame.atLineEnd())
+        {
+            forward();
+            if (!mergeNode(otherGame))
+            {
+                return false;
+            }
+            mergeVariations(otherGame);
+            otherGame.forward();
+        }
+    }
+    else
+    {
+        return false;
+    }
+    return true;
+}
+
+MoveId Game::findMergePoint(const Game& otherGame)
+{
+    MoveId prevNode = NO_MOVE;
     MoveId trailNode = NO_MOVE;
     MoveId otherMergeNode = NO_MOVE;
+    bool found = false;
     do
     {
         if (NO_MOVE == (otherMergeNode = otherGame.findPosition(board())))
         {
             if (trailNode != NO_MOVE)
             {
+                found = true;
                 otherMergeNode = trailNode;
                 break;
             }
         }
         else
         {
+            prevNode = trailNode;
             trailNode = otherMergeNode;
         }
     } while (forward());
+
+    if (!found && atLineEnd())
+    {
+        // Both games are identical up to the end of this game
+        // Need to go one move back in the game to merge
+        otherMergeNode = prevNode;
+    }
+
+    if (otherMergeNode == NO_MOVE)
+    {
+        if (otherGame.m_moveNodes.size() > 0)
+        {
+            otherMergeNode = 0;
+        }
+    }
+
+    // otherMergeNode points to the move before the game diverges
+    // If the complete games needs to be merged, it points to node 0
+
+    return otherMergeNode;
+}
+
+void Game::mergeWithGame(const Game& g)
+{
+    MoveId saveNode = m_currentNode;
+    Game otherGame = g;
+
+    otherGame.moveToEnd();
+
+    // Set the game information on the last move so that it is merged into this game
+    QString white = otherGame.tag(TagNameWhite);
+    QString black = otherGame.tag(TagNameBlack);
+    QString event = otherGame.eventInfo();
+    QString shortDescription = QString("%1-%2 %3").arg(white).arg(black).arg(event);
+    otherGame.setAnnotation(shortDescription);
+
+    MoveId otherMergeNode = findMergePoint(otherGame);
+
+    // todo
 
     if (otherMergeNode != NO_MOVE)
     {
         backward();
         // merge othergame starting with otherMergeNode into variation starting from m_currentNode
         otherGame.moveToId(otherMergeNode);
-        QString ann;
-        NagSet nags;
-        QString san = otherGame.moveToSan(MoveOnly, NextMove, CURRENT_MOVE, &ann, &nags);
         otherGame.forward();
-        if (NO_MOVE != addVariation(san,ann,nags))
-        {
-            while (!otherGame.atGameEnd())
-            {
-                san = otherGame.moveToSan(MoveOnly, NextMove, CURRENT_MOVE, &ann, &nags);
-                otherGame.forward();
-                if (NO_MOVE == addMove(san,ann,nags))
-                {
-                    break;
-                }
-            }
-        }
+        mergeAsVariation(otherGame);
+        otherGame.moveToId(otherMergeNode);
+        mergeVariations(otherGame);
     }
 
     // undo changes
@@ -139,6 +232,27 @@ void Game::mergeWithGame(const Game& g)
         moveToId(saveNode);
     }
     compact();
+}
+
+QString Game::eventInfo() const
+{
+    QString result;
+    QString site = tag(TagNameSite).left(30).remove("?");
+    QString event = tag(TagNameEvent).left(30).remove("?");
+    if (!site.isEmpty()) {
+        result.append(site);
+        if (tag("Round") != "?")
+            result.append(QString(" (%1)").arg(tag("Round")));
+        if (!event.isEmpty())
+            result.append(", ");
+    }
+    result.append(event);
+    if (!tag("Date").startsWith("?")) {
+        if (result.length() > 4)
+            result.append(", ");
+        result.append(tag(TagNameDate).remove(".??"));
+    }
+    return result;
 }
 
 bool Game::currentNodeHasVariation(Square from, Square to) const
@@ -477,7 +591,7 @@ bool Game::atGameStart(MoveId moveId) const
 
 bool Game::atGameEnd(MoveId moveId) const
 {
-        return (atLineEnd(moveId) && isMainline(moveId));
+    return (atLineEnd(moveId) && isMainline(moveId));
 }
 
 bool Game::atLineEnd(MoveId moveId) const
@@ -513,7 +627,7 @@ bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
     specAnnot = specialAnnotation(annotation, "[%cal");
     if( position == Game::AfterMove || node == 0)
     {
-            setArrowAnnotation(specAnnot,node);
+        setArrowAnnotation(specAnnot,node);
     }
     else
     {
@@ -1379,24 +1493,22 @@ void Game::dumpAllMoveNodes()
     qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags;
 }
 
-int Game::findPosition(const Board& position)
+int Game::findPosition(const Board& position) const
 {
-	moveToStart();
+    MoveId current = 0;
+    Board currentBoard(m_startingBoard);
 
-	int current = m_currentNode;
-	Board currentBoard(m_currentBoard);
+    for (;;) {
+        if (currentBoard == position && currentBoard.positionIsSame(position))
+            return current;
 
-	for (;;) {
-		if (currentBoard == position && currentBoard.positionIsSame(position))
-			return current;
+        current = m_moveNodes[current].nextNode;
+        if (current == NO_MOVE || !position.canBeReachedFrom(currentBoard))
+            return NO_MOVE;
 
-		current = m_moveNodes[current].nextNode;
-		if (current == NO_MOVE || !position.canBeReachedFrom(currentBoard))
-			return NO_MOVE;
-
-		currentBoard.doMove(m_moveNodes[current].move);
-	}
-	return NO_MOVE;
+        currentBoard.doMove(m_moveNodes[current].move);
+    }
+    return NO_MOVE;
 }
 
 bool Game::loadEcoFile(const QString& ecoFile)
