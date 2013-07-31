@@ -323,7 +323,7 @@ bool Game::findNextMove(Square from, Square to, PieceType promotionPiece)
 }
 
 
-bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags)
+bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags, bool bReplace)
 {
 	int node;
 	node = m_moveNodes[m_currentNode].nextNode;
@@ -340,15 +340,28 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags)
 
 	//remove any following nodes after replaced move by disconnecting them from the tree
 	forward();
-	truncateVariation();
+    if (bReplace)
+    {
+        truncateVariation();
+    }
+    else
+    {
+        truncateVariationAfterNextIllegalPosition();
+
+    }
 	backward();
 
 	return true;
 }
 
-bool Game::replaceMove(const QString& sanMove, const QString& annotation, NagSet nags)
+bool Game::replaceMove(const QString& sanMove)
 {
-	return replaceMove(m_currentBoard.parseMove(sanMove), annotation, nags);
+    return replaceMove(m_currentBoard.parseMove(sanMove), QString(), NagSet(), true);
+}
+
+bool Game::insertMove(Move m)
+{
+    return replaceMove(m, annotation(), nags(), false);
 }
 
 MoveId Game::addVariation(const Move& move, const QString& annotation, NagSet nags)
@@ -444,6 +457,32 @@ bool Game::removeVariation(MoveId variation)
 
 	compact();
 	return true;
+}
+
+void Game::truncateVariationAfterNextIllegalPosition()
+{
+    SaveRestoreMove saveNode(*this);
+    QList<MoveId> variationList = variations();
+    for (QList<MoveId>::iterator iter = variationList.begin(); iter != variationList.end(); ++iter)
+    {
+        SaveRestoreMove saveNodeLoop(*this);
+        enterVariation(*iter);
+        truncateVariationAfterNextIllegalPosition();
+    }
+    QString san = moveToSan();
+    Game g = *this;
+    if (NO_MOVE == g.addMove(san))
+    {
+        int node = m_moveNodes[m_currentNode].nextNode;
+        removeNode(node);
+    }
+    else
+    {
+        if (forward())
+        {
+            truncateVariationAfterNextIllegalPosition();
+        }
+    }
 }
 
 void Game::truncateVariation(Position position)

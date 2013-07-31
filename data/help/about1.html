@@ -56,7 +56,9 @@
  or by pressing CTRL-right click if backtracking is assigned to the right mouse key.</p>
 
  <p>Usually, making a move will insert a new variation unless you are at the end of the game or a variation. If you do not
-want to create a new variation, press CTRL+SHIFT while moving, which replaces the current move by the new move.</p>
+want to create a new variation, press CTR while moving, which replaces the current move and all following moves by the new move.</p>
+<p>If you want to exchange a move without deleting subsequent moves, you can press CTRL+ALT while moving, this will exchange
+the move played with the new move and check the remaining game for illegal positions. The game is then truncated at these illegal positions.</p>
 
 <p>If you want ChessX to replay the game, select "Game->Auto Player". You can change the move rate in the Game Preferences.</p>
 
@@ -109,6 +111,15 @@ analyse a complete database, a loss of power will otherwise lose all results so 
 <h3>Generating content</h3>
 <p>You can copy/paste positions(FEN and images) and complete games(PGN) from/into the clipboard, export games in LATEX, HTML or PGN again.
 See the Edit menu and the File/Export Dialog.</p>
+
+<h3>Merging games</h3>
+<p>By dragging a game from the game list into the current notation, the dragged game will be merged into the current game at the
+first position after the current position, where both games deviate. The game will be merged with all annotations and variations.
+If nothing is merged, no suitable point for merging was found. This can happen, if</p>
+<ul>
+<li>no position could be found where both games where equal (after the current position!)
+<li>the remainder of the game to be merged in was already contained in the current game
+</ul>
 
 <h3>Customizing Listviews</h3>
 <p>All views can have their font-size set in the Preferences Dialog. In addtion, all list header support resizing,

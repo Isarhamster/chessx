@@ -18,7 +18,6 @@ QMap<quint64, QList<Square> > ecoGuessPositions;
 Board::Board()
 		: m_hashValue(0)
 {
-    m_squareAnnotation = "";
 }
 
 Board::Board(QString fen)
