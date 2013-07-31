@@ -598,7 +598,7 @@ void MainWindow::slotMoveChanged()
 
 	// Set board first
     QString fen = m_boardView->board().toFen();
-    m_boardView->setBoard(g.board(), m_currentFrom, m_currentTo);
+    m_boardView->setBoard(g.board(), m_currentFrom, m_currentTo, game().atLineEnd());
     m_currentFrom = InvalidSquare;
     m_currentTo = InvalidSquare;
 

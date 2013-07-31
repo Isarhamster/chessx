@@ -45,7 +45,7 @@ public:
 	*/
 	void setFlags(int flags);
 	/** Update and shows current position. */
-    void setBoard(const Board& value, int from = InvalidSquare, int to = InvalidSquare);
+    void setBoard(const Board& value, int from = InvalidSquare, int to = InvalidSquare, bool atLineEnd = true);
 	/** @return displayed position. */
 	Board board() const;
 	/** @return current theme */
@@ -158,6 +158,7 @@ private:
     int m_hiTo;
     int m_currentFrom;
     int m_currentTo;
+    bool m_atLineEnd;
 	int m_flags;
 	bool m_coordinates;
 	Piece m_dragged;

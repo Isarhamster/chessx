@@ -32,6 +32,7 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_hoverSquare(InvalidSquare),
     m_hiFrom(InvalidSquare), m_hiTo(InvalidSquare),
     m_currentFrom(InvalidSquare), m_currentTo(InvalidSquare),
+    m_atLineEnd(true),
     m_flags(flags),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false),m_wheelCurrentDelta(0),
     m_minDeltaWheel(0),m_moveListCurrent(0),m_showMoveIndicator(true),m_DbIndex(0)
@@ -60,13 +61,14 @@ void BoardView::setFlags(int flags)
 	m_flags = flags;
 }
 
-void BoardView::setBoard(const Board& value,int from, int to)
+void BoardView::setBoard(const Board& value,int from, int to, bool atLineEnd)
 {
     m_clickUsed = true;
 	Board oldboard = m_board;
 	m_board = value;
     m_currentFrom = from;
     m_currentTo = to;
+    m_atLineEnd = atLineEnd;
 	if (underMouse())
     {
 		updateGuess(m_hoverSquare);
@@ -336,7 +338,7 @@ void BoardView::nextGuess(Square s)
 void BoardView::mouseMoveEvent(QMouseEvent *event)
 {
     m_button = event->button() + event->modifiers();
-    if (event->modifiers() & Qt::ControlModifier)
+    if (!m_atLineEnd && (event->modifiers() & Qt::ControlModifier))
     {
         if (event->modifiers() & Qt::AltModifier)
         {
@@ -347,7 +349,7 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
             setCursor(QCursor(QPixmap(":/images/replace_move.png")));
         }
     }
-    else if (event->modifiers() & Qt::AltModifier)
+    else if (!m_atLineEnd && (event->modifiers() & Qt::AltModifier))
     {
         setCursor(QCursor(QPixmap(":/images/plus.png")));
     }
