@@ -338,7 +338,14 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
     m_button = event->button() + event->modifiers();
     if (event->modifiers() & Qt::ControlModifier)
     {
-        setCursor(QCursor(Qt::UpArrowCursor));
+        if (event->modifiers() & Qt::AltModifier)
+        {
+            setCursor(QCursor(Qt::UpArrowCursor));
+        }
+        else
+        {
+            setCursor(QCursor(Qt::CrossCursor));
+        }
     }
     else if (event->modifiers() & Qt::AltModifier)
     {

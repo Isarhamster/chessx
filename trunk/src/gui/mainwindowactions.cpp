@@ -498,7 +498,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
         // Use an existing move with the correct promotion piece type if it already exists
         if( game().findNextMove(from,to,promotionPiece))
         {
-            if (button & Qt::AltModifier)
+            if ((button & Qt::AltModifier) && (!(button & Qt::ControlModifier)))
             {
                 // The move exists but adding a variation was requested anyhow
                 // Take back the move and proceed as if the move does not yet exist
@@ -521,9 +521,14 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             {
                 if (button & Qt::ControlModifier)
                 {
-                    // TODO: Make a insertMove algorithm start from here
-                    // -> need to understand the moving stuff before!
-                    game().replaceMove(m);
+                    if (button & Qt::AltModifier)
+                    {
+                        game().insertMove(m);
+                    }
+                    else
+                    {
+                        game().replaceMove(m);
+                    }
                 }
                 else
                 {

@@ -24,6 +24,8 @@
 typedef int MoveId;
 
 class SaveRestoreMove;
+class SaveRestoreMoveCompact;
+
 /** @ingroup Core
 
    The Game class represents a chess game. This is a complete rewrite, with simpler
@@ -221,9 +223,11 @@ public :
 	/** Adds a move at the current position, returns the move id of the added move */
 	MoveId addMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Replace the move after the current position */
-    bool replaceMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
+    bool replaceMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet(), bool bReplace=true);
 	/** Replace the move after the current position */
-	bool replaceMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+    bool replaceMove(const QString& sanMove);
+    /** Insert the move after the current position */
+    bool insertMove(Move m);
 	/** Adds a move at the current position as a variation,
 	 * returns the move id of the added move */
 	MoveId addVariation(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
@@ -249,7 +253,9 @@ public :
 	bool removeVariation(MoveId variation);
 	/** Removes all variations and mainline moves after the current position,
 	* or before the current position if @p position == BeforeMove */
-	void truncateVariation(Position position = AfterMove);
+    void truncateVariation(Position position = AfterMove);
+    /** Find the next illegal position in all variations and mainline moves after the current position, and cut the game from there */
+    void truncateVariationAfterNextIllegalPosition();
 	/** Removes all tags and moves */
 	void clear();
 	/** Set the game start position */
@@ -371,6 +377,7 @@ private:
 	//eco data
 	static QMap<quint64, QString> m_ecoPositions;
     friend class SaveRestoreMove;
+    friend class SaveRestoreMoveCompact;
 };
 
 class SaveRestoreMove
@@ -389,6 +396,25 @@ private:
     Game* m_saveGame;
     MoveId m_saveMoveValue;
 };
+
+class SaveRestoreMoveCompact
+{
+public:
+    SaveRestoreMoveCompact(Game& game)
+    {
+        m_saveGame = &game;
+        m_saveMoveValue = game.currentMove();
+    }
+    ~SaveRestoreMoveCompact()
+    {
+        m_saveGame->moveToId(m_saveMoveValue);
+        m_saveGame->compact();
+    }
+private:
+    Game* m_saveGame;
+    MoveId m_saveMoveValue;
+};
+
 
 #endif	// __GAME_H__
 
