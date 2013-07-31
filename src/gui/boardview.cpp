@@ -340,20 +340,16 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
     {
         if (event->modifiers() & Qt::AltModifier)
         {
-            setCursor(QCursor(Qt::UpArrowCursor));
+            setCursor(QCursor(QPixmap(":/images/insert_move.png")));
         }
         else
         {
-            setCursor(QCursor(Qt::CrossCursor));
+            setCursor(QCursor(QPixmap(":/images/replace_move.png")));
         }
     }
     else if (event->modifiers() & Qt::AltModifier)
     {
-#if (QT_VERSION < QT_VERSION_CHECK(4, 7, 0))
-        setCursor(QCursor(Qt::OpenHandCursor));
-#else
-        setCursor(QCursor(Qt::DragCopyCursor));
-#endif
+        setCursor(QCursor(QPixmap(":/images/plus.png")));
     }
     else
     {
