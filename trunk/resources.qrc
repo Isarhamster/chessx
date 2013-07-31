@@ -111,5 +111,8 @@
         <file alias="images/flip-vertical.png">data/images/flip-vertical.png</file>
         <file alias="images/flip-horizontal.png">data/images/flip-horizontal.png</file>
         <file alias="images/swap-color.png">data/images/swap-color.png</file>
+        <file alias="images/replace_move.png">data/images/replace_move.png</file>
+        <file alias="images/insert_move.png">data/images/insert_move.png</file>
+        <file alias="images/plus.png">data/images/plus.png</file>
     </qresource>
 </RCC>
