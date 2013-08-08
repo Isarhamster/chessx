@@ -61,6 +61,12 @@ private slots:
 	void itemSelected(const QModelIndex& index);
     /** Request a context menu for the list members */
     void slotContextMenu(const QPoint& pos);
+    /** Request to merge all games from the database into the current game */
+    void slotMergeAllGames();
+    /** Request to merge the complete filter into the current game */
+    void slotMergeFilter();
+    /** Request to merge a game into the current game */
+    void slotMergeGame();
     /** Request a copy dialog for the game identified by m_cell */
     void slotCopyGame();
     /** Delete or undelete a game */
@@ -72,6 +78,9 @@ signals:
 	void selected(int);
 	void searchDone();
     void raiseRequest();
+    void requestMergeGame(int);
+    void requestMergeAllGames();
+    void requestMergeFilter();
     void requestCopyGame(int);
     void requestDeleteGame(int);
     void requestGameData(Game&);

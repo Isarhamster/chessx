@@ -99,7 +99,7 @@ bool Game::mergeNode(Game& otherGame)
     QString san = otherGame.moveToSan(MoveOnly, PreviousMove, CURRENT_MOVE, &ann, &nags);
 
     bool retVal =  (NO_MOVE != addMove(san,ann,nags));
-     return retVal;
+    return retVal;
 }
 
 bool Game::mergeVariations(Game& otherGame)
@@ -121,6 +121,35 @@ bool Game::mergeVariations(Game& otherGame)
         }
     }
     return ok;
+}
+
+bool Game::mergeAsMainline(Game& otherGame)
+{
+    SaveRestoreMove saveNode(*this);
+
+    QString ann;
+    NagSet nags;
+
+    QString san = otherGame.moveToSan(MoveOnly, PreviousMove, CURRENT_MOVE, &ann, &nags);
+
+    if (NO_MOVE != addMove(san,ann,nags))
+    {
+        while (!otherGame.atLineEnd())
+        {
+            forward();
+            if (!mergeNode(otherGame))
+            {
+                return false;
+            }
+            mergeVariations(otherGame);
+            otherGame.forward();
+        }
+    }
+    else
+    {
+        return false;
+    }
+    return true;
 }
 
 bool Game::mergeAsVariation(Game& otherGame)
@@ -221,7 +250,14 @@ void Game::mergeWithGame(const Game& g)
         // merge othergame starting with otherMergeNode into variation starting from m_currentNode
         otherGame.moveToId(otherMergeNode);
         otherGame.forward();
-        mergeAsVariation(otherGame);
+        if (atLineEnd())
+        {
+            mergeAsMainline(otherGame);
+        }
+        else
+        {
+            mergeAsVariation(otherGame);
+        }
         otherGame.moveToId(otherMergeNode);
         mergeVariations(otherGame);
     }

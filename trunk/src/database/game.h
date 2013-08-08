@@ -239,8 +239,11 @@ public :
 	MoveId addVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Merge current node of @p otherGame into this game */
     bool mergeNode(Game &otherGame);
+    /** Merge @p otherGame starting from otherGames current position into this game as a new mainline */
+    bool mergeAsMainline(Game &otherGame);
     /** Merge @p otherGame starting from otherGames current position into this game as a new variation */
     bool mergeAsVariation(Game &otherGame);
+    /** Merge @p otherGame variations starting from otherGames current position into this game as new variations */
     bool mergeVariations(Game &otherGame);
     /** Find the point in the this game where @p otherGame fits in the next time.
         @retval Node from where the merging shall start in other game */

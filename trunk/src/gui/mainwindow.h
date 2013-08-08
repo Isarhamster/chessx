@@ -183,6 +183,10 @@ public slots:
     void slotGetActiveGame(const Game** game);
     /** Merge the game with index @p gameIndex into the active game. */
     void slotMergeActiveGame(int gameIndex);
+    /** Merge all games from the database into the active game. */
+    void slotMergeAllGames();
+    /** Merge all games from the filter into the active game. */
+    void slotMergeFilter();
     /** Update GameView content after game was change. Triggers also @ref slotMoveChanged. */
 	void slotGameChanged();
 	/** Handle link click in Game View panel */

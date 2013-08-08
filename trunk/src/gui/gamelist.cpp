@@ -85,6 +85,10 @@ void GameList::slotContextMenu(const QPoint& pos)
     {
         QMenu menu(this);
         menu.addAction(tr("Copy games..."), this, SLOT(slotCopyGame()));
+        QMenu* mergeMenu = menu.addMenu(tr("Merge into current game"));
+        mergeMenu->addAction(tr("All Games"), this, SLOT(slotMergeAllGames()));
+        mergeMenu->addAction(tr("Filter"), this, SLOT(slotMergeFilter()));
+        mergeMenu->addAction(tr("Selected game"), this, SLOT(slotMergeGame()));
         menu.addSeparator();
         QAction* deleteAction = menu.addAction(tr("Delete game"), this, SLOT(slotDeleteGame()));
         deleteAction->setCheckable(true);
@@ -232,6 +236,21 @@ void GameList::updateFilter()
 void GameList::slotCopyGame()
 {
     emit requestCopyGame(m_model->filter()->indexToGame(m_index.row()));
+}
+
+void GameList::slotMergeAllGames()
+{
+    emit requestMergeAllGames();
+}
+
+void GameList::slotMergeFilter()
+{
+    emit requestMergeFilter();
+}
+
+void GameList::slotMergeGame()
+{
+    emit requestMergeGame(m_model->filter()->indexToGame(m_index.row()));
 }
 
 void GameList::slotDeleteGame()
