@@ -918,11 +918,44 @@ void MainWindow::slotGameModify(const EditAction& action)
 void MainWindow::slotMergeActiveGame(int gameIndex)
 {
     Game g;
-    if (database()->loadGame(gameIndex, g))
+    if (gameIndex != databaseInfo()->currentIndex())
     {
-        game().mergeWithGame(g);
-        slotGameChanged();
+        if (database()->loadGame(gameIndex, g))
+        {
+            game().mergeWithGame(g);
+            slotGameChanged();
+        }
     }
+}
+
+void MainWindow::slotMergeAllGames()
+{
+    Game g;
+    for (int i=0; i < database()->index()->count(); ++i)
+    {
+        if (i != databaseInfo()->currentIndex())
+        {
+            if (database()->loadGame(i, g))
+            {
+                game().mergeWithGame(g);
+            }
+        }
+    }
+    slotGameChanged();
+}
+
+void MainWindow::slotMergeFilter()
+{
+    Game g;
+    for (int i = 0; i < database()->count(); ++i)
+    {
+        if (databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
+        {
+            game().mergeWithGame(g);
+        }
+    }
+
+    slotGameChanged();
 }
 
 void MainWindow::slotGetActiveGame(const Game** g)

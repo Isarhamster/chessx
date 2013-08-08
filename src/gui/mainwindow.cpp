@@ -164,6 +164,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
 	connect(m_gameList, SIGNAL(searchDone()), SLOT(slotFilterChanged()));
     connect(m_gameList, SIGNAL(requestCopyGame(int)), SLOT(slotDatabaseCopySingle(int)));
+    connect(m_gameList, SIGNAL(requestMergeGame(int)), SLOT(slotMergeActiveGame(int)));
+    connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
+    connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
     connect(m_gameList, SIGNAL(requestDeleteGame(int)), SLOT(slotDatabaseDeleteGame(int)));
     connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
     connect(this, SIGNAL(reconfigure()), m_gameList, SLOT(slotReconfigure()));

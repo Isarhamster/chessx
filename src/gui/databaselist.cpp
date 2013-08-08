@@ -76,12 +76,6 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_OPEN), Qt::UserRole).toString() == "Open";
         menu.addAction(bIsOpen ? tr("Activate") : tr("Open"), this, SLOT(dbOpen()));
 
-        QAction* action = menu.addAction("UTF8", this, SLOT(dbToggleUTF8()));
-        action->setCheckable(true);
-        QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
-        bool bUtf8 = (utf8.compare("UTF8")==0);
-        action->setChecked(bUtf8);
-
         menu.addAction(tr("Close"), this, SLOT(dbClose()))->setEnabled(bIsOpen && bHasPath);
         menu.addSeparator();
         menu.addAction(tr("Add to favorites"), this, SLOT(dbAddToFavorites()))->setEnabled(bIsNotFavorite);
@@ -90,6 +84,13 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         menu.addSeparator();
         menu.addAction(tr("Show in Finder"), this, SLOT(slotShowInFinder()))->setEnabled(bHasPath);
 #endif
+        menu.addSeparator();
+        QAction* action = menu.addAction("UTF8", this, SLOT(dbToggleUTF8()));
+        action->setCheckable(true);
+        QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
+        bool bUtf8 = (utf8.compare("UTF8")==0);
+        action->setChecked(bUtf8);
+
         menu.exec(mapToGlobal(pos));
     }
 }
