@@ -14,7 +14,7 @@ RenameTagDialog::RenameTagDialog(QWidget *parent, QString ts, QString tagName, Q
     ui->setupUi(this);
 
     ui->editFrom->setText(m_ts);
-    ui->editTo->setText(QString());
+    ui->editTo->setText(m_ts);
 
     connect(ui->btClose, SIGNAL(clicked()), SLOT(accept()));
     connect(ui->btRename, SIGNAL(clicked()), SLOT(slotRename()));
