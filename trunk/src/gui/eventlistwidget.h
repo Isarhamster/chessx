@@ -44,6 +44,7 @@ public slots:
 
 protected slots:
     void selectEvent(const QString& player);
+    void eventSelected(const QString& player);
 
 private:
     EventInfo m_event;

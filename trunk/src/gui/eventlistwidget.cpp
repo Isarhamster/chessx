@@ -49,11 +49,11 @@ void EventListWidget::selectionChangedSlot()
     if (selection.count())
     {
         QString ts = selection[0].data().toString();
-        selectEvent(ts);
+        eventSelected(ts);
     }
     else
     {
-        selectEvent(QString());
+        eventSelected(QString());
     }
 }
 
@@ -77,7 +77,7 @@ void EventListWidget::slotSelectEvent(const QString& event)
     selectEvent(event);
 }
 
-void EventListWidget::selectEvent(const QString& event)
+void EventListWidget::eventSelected(const QString& event)
 {
     if (!event.isEmpty())
     {
@@ -90,6 +90,20 @@ void EventListWidget::selectEvent(const QString& event)
                 .arg(m_event.formattedRating())
                 .arg(m_event.formattedScore())
                 .arg(m_event.listOfPlayers()));
+    }
+    else
+    {
+        ui->filterDatabase->setEnabled(false);
+        ui->renameItem->setEnabled(false);
+        ui->detailText->setText(tr("<html><i>No event chosen.</i></html>"));
+    }
+}
+
+void EventListWidget::selectEvent(const QString& event)
+{
+    eventSelected(event);
+    if (!event.isEmpty())
+    {
         const QStringList& list = m_filterModel->stringList();
         int row = list.indexOf(event);
         if (row>=0)
@@ -101,12 +115,6 @@ void EventListWidget::selectEvent(const QString& event)
                 ui->tagList->scrollTo(index);
             }
         }
-    }
-    else
-    {
-        ui->filterDatabase->setEnabled(false);
-        ui->renameItem->setEnabled(false);
-        ui->detailText->setText(tr("<html><i>No event chosen.</i></html>"));
     }
 }
 

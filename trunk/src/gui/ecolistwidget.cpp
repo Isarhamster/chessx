@@ -28,8 +28,9 @@ ECOListWidget::ECOListWidget(QWidget *parent) :
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(selectionChangedSlot()));
 
-    ui->detailText->setOpenExternalLinks(false);
     ui->detailText->setOpenLinks(true);
+    ui->detailText->setOpenExternalLinks(false);
+
     connect(ui->detailText, SIGNAL(anchorClicked(QUrl)), SLOT(slotLinkClicked(QUrl)));
 
     slotReconfigure();
@@ -50,11 +51,11 @@ void ECOListWidget::selectionChangedSlot()
     if (selection.count())
     {
         QString ts = selection[0].data().toString();
-        selectECO(ts);
+        ecoSelected(ts);
     }
     else
     {
-        selectECO(QString());
+        ecoSelected(QString());
     }
 }
 
@@ -78,18 +79,33 @@ void ECOListWidget::slotSelectECO(const QString& eco)
     selectECO(eco);
 }
 
-void ECOListWidget::selectECO(const QString& eco)
+void ECOListWidget::ecoSelected(const QString& eco)
 {
     if (!eco.isEmpty())
     {
         m_eco.setCode(eco);
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
-        ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5")
+        ui->detailText->setHtml(QString("<html><body><h1>%1</h1><p>%2%3%4%5</body></html>")
                 .arg(m_eco.name()).arg(m_eco.formattedGameCount())
                 .arg(m_eco.formattedRating())
                 .arg(m_eco.formattedScore())
                 .arg(m_eco.listOfPlayers()));
+    }
+    else
+    {
+        ui->filterDatabase->setEnabled(false);
+        ui->renameItem->setEnabled(false);
+        ui->detailText->setText(tr("<html><i>No ECO code chosen.</i></html>"));
+    }
+
+}
+
+void ECOListWidget::selectECO(const QString& eco)
+{
+    ecoSelected(eco);
+    if (!eco.isEmpty())
+    {
         const QStringList& list = m_filterModel->stringList();
         int row = list.indexOf(eco);
         if (row>=0)
@@ -101,12 +117,6 @@ void ECOListWidget::selectECO(const QString& eco)
                 ui->tagList->scrollTo(index);
             }
         }
-    }
-    else
-    {
-        ui->filterDatabase->setEnabled(false);
-        ui->renameItem->setEnabled(false);
-        ui->detailText->setText(tr("<html><i>No ECO code chosen.</i></html>"));
     }
 }
 
