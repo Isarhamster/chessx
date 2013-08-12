@@ -49,11 +49,11 @@ void PlayerListWidget::selectionChangedSlot()
     if (selection.count())
     {
         QString ts = selection[0].data().toString();
-        selectPlayer(ts);
+        playerSelected(ts);
     }
     else
     {
-        selectPlayer(QString());
+        playerSelected(QString());
     }
 }
 
@@ -77,7 +77,7 @@ void PlayerListWidget::slotSelectPlayer(const QString& player)
     selectPlayer(player);
 }
 
-void PlayerListWidget::selectPlayer(const QString& player)
+void PlayerListWidget::playerSelected(const QString& player)
 {
     if (!player.isEmpty())
     {
@@ -91,6 +91,20 @@ void PlayerListWidget::selectPlayer(const QString& player)
                 .arg(m_player.formattedScore())
                 .arg(m_player.listOfOpenings())
                 );
+    }
+    else
+    {
+        ui->filterDatabase->setEnabled(false);
+        ui->renameItem->setEnabled(false);
+        ui->detailText->setText(tr("<html><i>No player chosen.</i></html>"));
+    }
+}
+
+void PlayerListWidget::selectPlayer(const QString& player)
+{
+    playerSelected(player);
+    if (!player.isEmpty())
+    {
         const QStringList& list = m_filterModel->stringList();
         int row = list.indexOf(player);
         if (row>=0)
@@ -102,12 +116,6 @@ void PlayerListWidget::selectPlayer(const QString& player)
                 ui->tagList->scrollTo(index);
             }
         }
-    }
-    else
-    {
-        ui->filterDatabase->setEnabled(false);
-        ui->renameItem->setEnabled(false);
-        ui->detailText->setText(tr("<html><i>No player chosen.</i></html>"));
     }
 }
 

@@ -41,6 +41,7 @@ public slots:
 
 protected slots:
     void selectECO(const QString& eco);
+    void ecoSelected(const QString& eco);
 
 private:
     EcoInfo m_eco;

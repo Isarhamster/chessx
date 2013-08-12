@@ -143,7 +143,8 @@ HEADERS += src/database/board.h \
     src/gui/renametagdialog.h \
     src/gui/openingtreewidget.h \
     src/gui/ecolistwidget.h \
-    src/database/ecoinfo.h
+    src/database/ecoinfo.h \
+    src/gui/TextBrowserEx.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \

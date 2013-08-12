@@ -74,7 +74,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QTextBrowser" name="detailText"/>
+      <widget class="TextBrowserEx" name="detailText"/>
      </item>
     </layout>
    </item>

@@ -42,6 +42,7 @@ public slots:
 
 protected slots:
     void selectPlayer(const QString& player);
+    void playerSelected(const QString& player);
 
 private:
     PlayerInfo m_player;
