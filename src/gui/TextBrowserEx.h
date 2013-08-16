@@ -15,7 +15,11 @@ class TextBrowserEx : public QTextBrowser
 public:
     explicit TextBrowserEx(QWidget* parent = 0) : QTextBrowser(parent) {}
 
-    void setSource(const QUrl& name) { if (name.scheme().isEmpty()) QTextBrowser::setSource(name); }
+    void setSource(const QUrl& name)
+    {
+        if (name.scheme().isEmpty())
+            QTextBrowser::setSource(name);
+    }
 };
 
 #endif // TEXTBROWSEREX_H

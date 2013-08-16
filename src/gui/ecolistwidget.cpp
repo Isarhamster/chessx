@@ -19,13 +19,12 @@ ECOListWidget::ECOListWidget(QWidget *parent) :
 
     setObjectName("ECOListWidget");
     connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findECO(const QString&)));
-    connect(ui->tagList, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedECO()));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedECO()));
     connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedECO()));
 
     selectECO(QString());
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
-    connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(selectionChangedSlot()));
 
     ui->detailText->setOpenLinks(true);
@@ -86,17 +85,21 @@ void ECOListWidget::ecoSelected(const QString& eco)
         m_eco.setCode(eco);
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
-        ui->detailText->setHtml(QString("<html><body><h1>%1</h1><p>%2%3%4%5</body></html>")
+        QString head = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>ECO List</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>";
+        QString text = QString("%1<body><h1>%2</h1><p>%3</p><p>%4%5</p>%6</body></html>")
+                .arg(head)
                 .arg(m_eco.name()).arg(m_eco.formattedGameCount())
                 .arg(m_eco.formattedRating())
                 .arg(m_eco.formattedScore())
-                .arg(m_eco.listOfPlayers()));
+                .arg(m_eco.listOfPlayers());
+        ui->detailText->setHtml(text);
+        qDebug() << text;
     }
     else
     {
         ui->filterDatabase->setEnabled(false);
         ui->renameItem->setEnabled(false);
-        ui->detailText->setText(tr("<html><i>No ECO code chosen.</i></html>"));
+        ui->detailText->setText(tr("<html><body><i>No ECO code chosen.</i></body></html>"));
     }
 
 }
@@ -117,15 +120,6 @@ void ECOListWidget::selectECO(const QString& eco)
                 ui->tagList->scrollTo(index);
             }
         }
-    }
-}
-
-void ECOListWidget::showSelectedECO()
-{
-    if (ui->tagList->currentIndex().isValid())
-    {
-        QString ts = ui->tagList->currentIndex().data().toString();
-        selectECO(ts);
     }
 }
 

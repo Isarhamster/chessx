@@ -33,9 +33,7 @@ signals:
 
 public slots:
     void findEvent(const QString& s);
-    void slotSelectEvent(const QString& player);
     void setDatabase(DatabaseInfo* dbInfo);
-    void showSelectedEvent();
     void filterSelectedEvent();
     void renameSelectedEvent();
     void slotReconfigure();

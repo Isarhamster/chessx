@@ -33,7 +33,6 @@ public slots:
     void findECO(const QString& s);
     void slotSelectECO(const QString& eco);
     void setDatabase(DatabaseInfo* dbInfo);
-    void showSelectedECO();
     void filterSelectedECO();
     void slotReconfigure();
     void selectionChangedSlot();

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>276</width>
+    <height>302</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,6 +80,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TextBrowserEx</class>
+   <extends>QTextBrowser</extends>
+   <header>textbrowserex.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
