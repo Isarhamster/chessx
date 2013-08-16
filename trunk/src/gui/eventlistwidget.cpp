@@ -18,14 +18,13 @@ EventListWidget::EventListWidget(QWidget *parent) :
 
     setObjectName("EventListWidget");
     connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findEvent(const QString&)));
-    connect(ui->tagList, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedEvent()));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedEvent()));
     connect(ui->renameItem, SIGNAL(clicked()), SLOT(renameSelectedEvent()));
     connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedEvent()));
 
     selectEvent(QString());
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
-    connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(selectionChangedSlot()));
 
     ui->detailText->setOpenLinks(false);
@@ -70,13 +69,6 @@ void EventListWidget::findEvent(const QString& s)
     }
 }
 
-void EventListWidget::slotSelectEvent(const QString& event)
-{
-    m_filterModel->setStringList(m_list);
-    ui->filterEdit->clear();
-    selectEvent(event);
-}
-
 void EventListWidget::eventSelected(const QString& event)
 {
     if (!event.isEmpty())
@@ -84,12 +76,16 @@ void EventListWidget::eventSelected(const QString& event)
         m_event.setName(event);
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
-        ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5%6")
+        QString head = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>Event List</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>";
+        QString text = QString("%1<body><h1>%2</h1>%3%4%5%6%7</body></html>")
+                .arg(head)
                 .arg(m_event.name()).arg(m_event.formattedGameCount())
                 .arg(m_event.formattedRange())
                 .arg(m_event.formattedRating())
                 .arg(m_event.formattedScore())
-                .arg(m_event.listOfPlayers()));
+                .arg(m_event.listOfPlayers());
+        ui->detailText->setHtml(text);
+        qDebug() << text;
     }
     else
     {
@@ -115,15 +111,6 @@ void EventListWidget::selectEvent(const QString& event)
                 ui->tagList->scrollTo(index);
             }
         }
-    }
-}
-
-void EventListWidget::showSelectedEvent()
-{
-    if (ui->tagList->currentIndex().isValid())
-    {
-        QString ts = ui->tagList->currentIndex().data().toString();
-        selectEvent(ts);
     }
 }
 

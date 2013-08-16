@@ -18,14 +18,13 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
 
     setObjectName("PlayerListWidget");
     connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findPlayers(const QString&)));
-    connect(ui->tagList, SIGNAL(clicked(const QModelIndex&)), SLOT(showSelectedPlayer()));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedPlayer()));
     connect(ui->renameItem, SIGNAL(clicked()), SLOT(renameSelectedPlayer()));
     connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedPlayer()));
 
     selectPlayer(QString());
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
-    connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(selectionChangedSlot()));
 
     ui->detailText->setOpenLinks(false);
@@ -84,13 +83,16 @@ void PlayerListWidget::playerSelected(const QString& player)
         m_player.setName(player);
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
-        ui->detailText->setText(QString("<h1>%1</h1><p>%2%3%4%5%6")
+        QString head = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>Player List</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>";
+        QString text = QString("%1<body><h1>%2</h1>%3%4%5%6%7</body></html>")
+                .arg(head)
                 .arg(m_player.name()).arg(m_player.formattedGameCount())
                 .arg(m_player.formattedRange())
                 .arg(m_player.formattedRating())
                 .arg(m_player.formattedScore())
-                .arg(m_player.listOfOpenings())
-                );
+                .arg(m_player.listOfOpenings());
+        ui->detailText->setHtml(text);
+        qDebug()<<text;
     }
     else
     {
@@ -116,15 +118,6 @@ void PlayerListWidget::selectPlayer(const QString& player)
                 ui->tagList->scrollTo(index);
             }
         }
-    }
-}
-
-void PlayerListWidget::showSelectedPlayer()
-{
-    if (ui->tagList->currentIndex().isValid())
-    {
-        QString ts = ui->tagList->currentIndex().data().toString();
-        selectPlayer(ts);
     }
 }
 

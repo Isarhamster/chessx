@@ -184,11 +184,11 @@ QString EventInfo::formattedRange() const
 QString EventInfo::listOfPlayers() const
 {
     QString playersList;
-    playersList.append(QCoreApplication::translate("EventInfo","<table><tr><th>Participants<th>Score"));
+    playersList.append(QCoreApplication::translate("EventInfo","<table><tr><th>Participants</th><th>Score</th></tr>"));
 
     for (PlayerInfoList::const_iterator it=m_players.begin(); it != m_players.end(); ++it)
     {
-        playersList += QString("<tr><td><a href='player:%1'>%2</a><td>%3/%4")
+        playersList += QString("<tr><td><a href='player:%1'>%2</a></td><td>%3/%4</td></tr>")
                 .arg((*it).first)
                 .arg((*it).first)
                 .arg((*it).second)

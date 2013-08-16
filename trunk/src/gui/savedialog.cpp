@@ -140,7 +140,7 @@ int SaveDialog::save(Database* database, Game& game)
 void SaveDialog::setLineEdit(QLineEdit* edit, Database* database, const QString &tagName)
 {
     QStringList words;
-    if ((tagName==TagNameWhite) or (tagName==TagNameBlack))
+    if ((tagName==TagNameWhite) || (tagName==TagNameBlack))
     {
         words = database->index()->playerNames();
     }
