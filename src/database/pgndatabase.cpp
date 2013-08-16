@@ -731,7 +731,21 @@ IndexBaseType PgnDatabase::skipJunk()
         fp = m_file->pos() - m_lineBuffer.size();
     }
 
-    m_currentLine = m_lineBuffer.simplified();
+    if (m_utf8)
+    {
+        QTextStream textStream(m_lineBuffer);
+        m_currentLine = textStream.readLine().simplified();
+    }
+    else
+    {
+        QTextStream textStream(m_lineBuffer);
+        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
+        if (textCodec)
+        {
+            textStream.setCodec(textCodec);
+        }
+        m_currentLine = textStream.readLine().simplified();
+    }
 
     if (m_inComment || !m_currentLine.startsWith("[")) {
         m_currentLine.replace("(", " ( ");
@@ -752,7 +766,22 @@ void PgnDatabase::skipTags()
 	//swallow trailing whitespace
     while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
         skipLine();
-    m_currentLine = m_lineBuffer.simplified();
+
+    if (m_utf8)
+    {
+        QTextStream textStream(m_lineBuffer);
+        m_currentLine = textStream.readLine().simplified();
+    }
+    else
+    {
+        QTextStream textStream(m_lineBuffer);
+        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
+        if (textCodec)
+        {
+            textStream.setCodec(textCodec);
+        }
+        m_currentLine = textStream.readLine().simplified();
+    }
 
     if (m_inComment || !m_currentLine.startsWith("[")) {
         m_currentLine.replace("(", " ( ");
@@ -799,6 +828,20 @@ void PgnDatabase::skipMoves()
     while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
         skipLine();
 
-    m_currentLine = m_lineBuffer.simplified();
+    if (m_utf8)
+    {
+        QTextStream textStream(m_lineBuffer);
+        m_currentLine = textStream.readLine().simplified();
+    }
+    else
+    {
+        QTextStream textStream(m_lineBuffer);
+        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
+        if (textCodec)
+        {
+            textStream.setCodec(textCodec);
+        }
+        m_currentLine = textStream.readLine().simplified();
+    }
 }
 
