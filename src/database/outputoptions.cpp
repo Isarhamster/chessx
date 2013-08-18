@@ -8,34 +8,61 @@
  ***************************************************************************/
 
 #include "outputoptions.h"
+#include "settings.h"
+
 #include <QRegExp>
 
 OutputOptions::OutputOptions()
 {
-	createDefaultOptions();
 }
-bool OutputOptions::createDefaultOptions()
+
+bool OutputOptions::createDefaultOptions(QString path)
 {
 	m_list.clear();
 	m_type.clear();
 	m_default.clear();
 	m_allow.clear();
-    createOption("ColumnStyle", Boolean, "", "false", tr("Notation in Column Style"));
-    createOption("SymbolicNag", Boolean, "", "false", tr("Show symbolic Nags"));
-    createOption("TextWidth", Integer, "0:200", "80", tr("Text width"));
-    createOption("VariationIndentLevel", Integer, "1:200", "4", tr("Indent variations from Level"));
-    createOption("VariationIndentSize", Integer, "1:10", "3", tr("Variation Indentation"));
-    createOption("CommentIndent", String, "Always|OnlyMainline|Never", "OnlyMainline", tr("Comment Indenation"));
 
-    createOption("MainLineMoveColor", Color, "", "black", tr("Main Line Color"));
-    createOption("VariationColor", Color, "", "blue", tr("Variation Color"));
-    createOption("CommentColor", Color, "", "green", tr("Comment Color"));
-    createOption("NagColor", Color, "", "red", tr("Nag Color"));
-    createOption("HeaderColor", Color, "", "blue", tr("Header Color"));
-    createOption("ShowHeader", Boolean, "", "true", tr("Show Header"));
+    if (path.isEmpty())
+    {
+        createOption("ColumnStyle", Boolean, "", "false", tr("Notation in Column Style"));
+        createOption("SymbolicNag", Boolean, "", "false", tr("Show symbolic Nags"));
+        createOption("TextWidth", Integer, "0:200", "80", tr("Text width"));
+        createOption("VariationIndentLevel", Integer, "1:200", "4", tr("Indent variations from Level"));
+        createOption("VariationIndentSize", Integer, "1:10", "3", tr("Variation Indentation"));
+        createOption("CommentIndent", String, "Always|OnlyMainline|Never", "OnlyMainline", tr("Comment Indenation"));
 
-    createOption("ShowDiagram", Boolean, "", "false", tr("Show Diagrams"));
-    createOption("DiagramSize", Integer, "0:500", "200", tr("Diagram Size"));
+        createOption("MainLineMoveColor", Color, "", "black", tr("Main Line Color"));
+        createOption("VariationColor", Color, "", "blue", tr("Variation Color"));
+        createOption("CommentColor", Color, "", "green", tr("Comment Color"));
+        createOption("NagColor", Color, "", "red", tr("Nag Color"));
+        createOption("HeaderColor", Color, "", "blue", tr("Header Color"));
+        createOption("ShowHeader", Boolean, "", "true", tr("Show Header"));
+
+        createOption("ShowDiagrams", Boolean, "", "false", tr("Show Diagrams"));
+        createOption("DiagramSize", Integer, "0:500", "200", tr("Diagram Size"));
+    }
+    else
+    {
+        AppSettings->beginGroup(path);
+        createOption("ColumnStyle", AppSettings->getValue("ColumnStyle").toBool() , tr("Notation in Column Style"));
+        createOption("SymbolicNag", AppSettings->getValue("SymbolicNag").toBool(), tr("Show symbolic Nags"));
+        createOption("TextWidth", "0:200", AppSettings->getValue("TextWidth").toInt(), tr("Text width"));
+        createOption("VariationIndentLevel", "1:200", AppSettings->getValue("VariationIndentLevel").toInt(), tr("Indent variations from Level"));
+        createOption("VariationIndentSize", "1:10", AppSettings->getValue("VariationIndentSize").toInt(), tr("Variation Indentation"));
+        createOption("CommentIndent", String, "Always|OnlyMainline|Never", AppSettings->getValue("CommentIndent").toString(), tr("Comment Indentation"));
+
+        createOption("MainLineMoveColor", AppSettings->getValue("MainLineMoveColor").toString(), tr("Main Line Color"));
+        createOption("VariationColor", AppSettings->getValue("VariationColor").toString(), tr("Variation Color"));
+        createOption("CommentColor", AppSettings->getValue("CommentColor").toString(), tr("Comment Color"));
+        createOption("NagColor", AppSettings->getValue("NagColor").toString(), tr("Nag Color"));
+        createOption("HeaderColor", AppSettings->getValue("HeaderColor").toString(), tr("Header Color"));
+        createOption("ShowHeader", AppSettings->getValue("ShowHeader").toBool(), tr("Show Header"));
+
+        createOption("ShowDiagrams", AppSettings->getValue("ShowDiagrams").toBool(), tr("Show Diagrams"));
+        createOption("DiagramSize", "0:500", AppSettings->getValue("DiagramSize").toInt(), tr("Diagram Size"));
+        AppSettings->endGroup();
+    }
 	return true;
 }
 
@@ -43,7 +70,23 @@ bool OutputOptions::createOption(const QString& optionName, const QString& optio
 				 const QString& defaultValue, const QString& description)
 {
 	return createOption(optionName, optionString2Type(optionType), allowValues, defaultValue, description);
+}
 
+bool OutputOptions::createOption(const QString& optionName, bool bValue, const QString& description)
+{
+    QString sValue = bValue ? "true" : "false";
+    return createOption(optionName, Boolean, "", sValue, description);
+}
+
+bool OutputOptions::createOption(const QString& optionName, const QString& allowValues, int iValue, const QString& description)
+{
+    QString sValue = QString().number(iValue);
+    return createOption(optionName, Integer, allowValues, sValue, description);
+}
+
+bool OutputOptions::createOption(const QString& optionName, const QString& color, const QString& description)
+{
+    return createOption(optionName, Color, "", color, description);
 }
 
 bool OutputOptions::createOption(const QString& optionName, OutputOptionType optionType, const QString& allowValues,
@@ -180,8 +223,6 @@ bool OutputOptions::validateValue(const QString& optionName, const QString& valu
 		/* Unknown type */
 		return false;
 	}
-
-	/* Error because method should have returned by now. */
 	return false;
 }
 
@@ -206,7 +247,6 @@ OutputOptions::OutputOptionType OutputOptions::optionString2Type(const QString& 
 		return Boolean;
 	} else if (optionTypeStr == "Color") {
 		return Color;
-	} else {
-		return String;
-	}
+    }
+    return String;
 }

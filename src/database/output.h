@@ -145,7 +145,6 @@ private:
 	QString m_templateFilename;
 
 	/* Internally used */
-	bool m_justBreaked;
 	/** Text to be written at the top of the output */
 	QString m_header;
 	/** Text to be written at the bottom of the output */

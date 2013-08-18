@@ -21,7 +21,17 @@ QMap<Output::OutputType, QString> Output::m_outputMap;
 Output::Output(OutputType output, const QString& pathToTemplateFile)
 {
 	m_outputType = output;
-	setTemplateFile(pathToTemplateFile);
+    switch (m_outputType)
+    {
+    case Html:           m_options.createDefaultOptions(""); break;
+    case Pgn:            m_options.createDefaultOptions(""); break;
+    case Latex:          m_options.createDefaultOptions(""); break;
+    case NotationWidget: m_options.createDefaultOptions("GameText"); break;
+    default:
+        Q_ASSERT(false);
+    }
+
+    setTemplateFile(pathToTemplateFile);
 	initialize();
 }
 
@@ -256,23 +266,39 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 		precommentString = m_game->annotation(moveId, Game::BeforeMove);
 	commentString = m_game->annotation(moveId);
 
+    // Write precomment if any
+    text += writeComment(precommentString, mvno, Precomment);
+
     Color c = m_game->board().toMove();
 
     if ((m_options.getOptionAsBool("ColumnStyle")) &&
         (m_currentVariationLevel == 0) &&
-        (c==White))
+        ((c==White) || m_dirtyBlack))
     {
         text += m_startTagMap[MarkupColumnStyleRow] + m_startTagMap[MarkupColumnStyleMove];
 	}
-    if ((m_options.getOptionAsBool("ColumnStyle")) &&
+    else if ((m_options.getOptionAsBool("ColumnStyle")) &&
         (m_currentVariationLevel == 0) &&
         (c==Black))
     {
         text += m_startTagMap[MarkupColumnStyleMove];
     }
 
-	// Write precomment if any
-    text += writeComment(precommentString, mvno, Precomment);
+    // *** Write the move number
+    if (moveToWrite == PreviousMove) {
+        c = oppositeColor(c);
+    }
+    if (c == White) {
+        text += QString::number(m_game->moveNumber(moveId)) + ". ";
+    } else if (m_dirtyBlack) {
+        text += QString::number(m_game->moveNumber(moveId)) + "... ";
+        if ((m_options.getOptionAsBool("ColumnStyle")) &&
+            (m_currentVariationLevel == 0))
+        {
+            text += m_endTagMap[MarkupColumnStyleMove] + m_startTagMap[MarkupColumnStyleMove];
+        }
+    }
+    m_dirtyBlack = false;
 
 	// *** Markup for the move
 	if (m_currentVariationLevel > 0) {
@@ -288,17 +314,6 @@ QString Output::writeMove(MoveToWrite moveToWrite)
             text += m_startTagMap[MarkupMainLineMove];
 		}
 	}
-
-    // *** Write the move number
-	if (moveToWrite == PreviousMove) {
-		c = oppositeColor(c);
-	}
-	if (c == White) {
-        text += QString::number(m_game->moveNumber(moveId)) + ". ";
-	} else if (m_dirtyBlack) {
-        text += QString::number(m_game->moveNumber(moveId)) + "... ";
-	}
-	m_dirtyBlack = false;
 
 	// *** Write the actual move
     QString san;
@@ -328,6 +343,12 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         (c==White))
     {
         text += m_endTagMap[MarkupColumnStyleMove];
+        m_game->forward();
+        if (m_game->atGameEnd())
+        {
+            text += m_endTagMap[MarkupColumnStyleRow];
+        }
+        m_game->backward();
     }
 
     if ((m_options.getOptionAsBool("ColumnStyle")) &&
@@ -362,38 +383,45 @@ QString Output::writeVariation(MoveId upToNode)
         text += writeMove();
 		if (m_game->variationCount()) {
 			QList <int> variations = m_game->variations();
-			for (int i = 0; i < variations.size(); ++i) {
-				m_currentVariationLevel++;
-				if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 1)) {
+            if (variations.size())
+            {
+                bool inMainline = m_game->isMainline();
+                if (m_options.getOptionAsBool("ColumnStyle") && inMainline)
+                {
                     text += m_endTagMap[MarkupColumnStyleMainline];
-				}
-				if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
-                    text += m_startTagMap[MarkupVariationIndent];
-				} else {
-                    text += m_startTagMap[MarkupVariationInline];
-				}
+                }
+                for (int i = 0; i < variations.size(); ++i)
+                {
+                    m_currentVariationLevel++;
+                    if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
+                        text += m_startTagMap[MarkupVariationIndent];
+                    } else {
+                        text += m_startTagMap[MarkupVariationInline];
+                    }
 
-				m_dirtyBlack = true;
+                    m_dirtyBlack = true;
 
-				// *** Enter variation i, and write the rest of the moves
-				m_game->moveToId(variations[i]);
-                text += writeMove(PreviousMove);
-                text += writeVariation(upToNode);
+                    // *** Enter variation i, and write the rest of the moves
+                    m_game->moveToId(variations[i]);
+                    text += writeMove(PreviousMove);
+                    text += writeVariation(upToNode);
 
-				// *** End the variation
-				//			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
-				if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
-                    text += m_endTagMap[MarkupVariationIndent];
-				} else {
-                    text += m_endTagMap[MarkupVariationInline];
+                    // *** End the variation
+                    //			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
+                    if (m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel")) {
+                        text += m_endTagMap[MarkupVariationIndent];
+                    } else {
+                        text += m_endTagMap[MarkupVariationInline];
+                    }
+                    m_currentVariationLevel--;
 				}
-				m_currentVariationLevel--;
-				if (m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0)) {
+                if (m_options.getOptionAsBool("ColumnStyle") && inMainline)
+                {
                     text += m_startTagMap[MarkupColumnStyleMainline];
-				}
-				m_dirtyBlack = true;
+                }
 			}
-			m_game->moveToId(m_game->parentMove());
+            m_dirtyBlack = true;
+            m_game->moveToId(m_game->parentMove());
 		}
 		m_game->forward();
 	}
@@ -726,6 +754,14 @@ void Output::append(const QString& filename, Game& game)
     if ((m_outputType == Html) || (m_outputType == NotationWidget))
     {
         out.setCodec(QTextCodec::codecForName("utf8"));
+    }
+    else
+    {
+        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
+        if (textCodec)
+        {
+            out.setCodec(textCodec);
+        }
     }
     out << output(&game);
     f.close();

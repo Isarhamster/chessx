@@ -25,13 +25,17 @@ class OutputOptions
 
 public :
 	enum OutputOptionType { Boolean, String, Integer, Color };
-	OutputOptions();
+    OutputOptions();
+    bool createDefaultOptions(QString path);
 
 	bool createOption(const QString& optionName, OutputOptionType optionType, const QString& allowValues,
 			  const QString& defaultValue, const QString& description);
-	bool createOption(const QString& optionName, const QString& optionType, const QString& allowValues,
+    bool createOption(const QString& optionName, const QString& optionType, const QString& allowValues,
 			  const QString& defaultValue, const QString& description);
-	bool createDefaultOptions();
+
+    bool createOption(const QString& optionName, bool bValue, const QString& description);
+    bool createOption(const QString& optionName, const QString& allowValues, int iValue, const QString& description);
+    bool createOption(const QString& optionName, const QString& color, const QString& description);
 
 	/* Setting values */
 	bool setOption(const QString& optionString);

@@ -362,6 +362,9 @@ void PreferencesDialog::restoreSettings()
     // Read Game List settings
     ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("/GameText/FontSize").toInt());
     ui.cbShowDiagrams->setChecked(AppSettings->getValue("/GameText/ShowDiagrams").toBool());
+    ui.cbColumnStyle->setChecked(AppSettings->getValue("/GameText/ColumnStyle").toBool());
+    ui.variationIndentLevel->setValue(AppSettings->getValue("/GameText/VariationIndentLevel").toInt());
+    ui.diagramSize->setValue(AppSettings->getValue("/GameText/DiagramSize").toInt());
     ui.pieceString->setText(AppSettings->getValue("/GameText/PieceString").toString());
     ui.spinBoxListFontSize->setValue(AppSettings->getValue("/General/ListFontSize").toInt());
     ui.verticalTabs->setChecked(AppSettings->getValue("/MainWindow/VerticalTabs").toBool());
@@ -405,6 +408,9 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/General/DefaultDataPath", ui.defaultDataBasePath->text());
     AppSettings->setValue("/GameText/FontSize", ui.gameTextFontSizeSpin->value());
     AppSettings->setValue("/GameText/ShowDiagrams", ui.cbShowDiagrams->isChecked());
+    AppSettings->setValue("/GameText/ColumnStyle", ui.cbColumnStyle->isChecked());
+    AppSettings->setValue("/GameText/VariationIndentLevel", ui.variationIndentLevel->value());
+    AppSettings->setValue("/GameText/DiagramSize", ui.diagramSize->value());
     AppSettings->setValue("/GameText/PieceString", ui.pieceString->text());
     AppSettings->setValue("/General/ListFontSize", ui.spinBoxListFontSize->value());
     AppSettings->setValue("/MainWindow/VerticalTabs", ui.verticalTabs->isChecked());
