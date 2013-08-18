@@ -93,7 +93,6 @@ void ECOListWidget::ecoSelected(const QString& eco)
                 .arg(m_eco.formattedScore())
                 .arg(m_eco.listOfPlayers());
         ui->detailText->setHtml(text);
-        qDebug() << text;
     }
     else
     {
@@ -155,5 +154,6 @@ void ECOListWidget::slotLinkClicked(const QUrl& url)
         QString eco = ui->tagList->currentIndex().data().toString();
         emit filterEcoPlayerRequest(url.scheme().contains("white") ? TagNameWhite:TagNameBlack,
                                     eco, url.path());
+        emit filterEcoPlayerRequest(url.path(), eco);
     }
 }

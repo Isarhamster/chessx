@@ -85,7 +85,6 @@ void EventListWidget::eventSelected(const QString& event)
                 .arg(m_event.formattedScore())
                 .arg(m_event.listOfPlayers());
         ui->detailText->setHtml(text);
-        qDebug() << text;
     }
     else
     {
