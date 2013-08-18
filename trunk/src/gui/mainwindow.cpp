@@ -63,11 +63,11 @@ MainWindow::MainWindow() : QMainWindow(),
     m_saveDialog(0),
     m_gameWindow(0),
     m_gameToolBar(0),
-    m_showPgnSource(false),
     m_autoPlayTimer(0),
     m_bGameChange(false),
     m_currentFrom(InvalidSquare),
-    m_currentTo(InvalidSquare)
+    m_currentTo(InvalidSquare),
+    m_output(0)
 {
 	setObjectName("MainWindow");
 
@@ -87,9 +87,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	/* Delete on close */
 	setAttribute(Qt::WA_DeleteOnClose);
-
-	/* Output */
-	m_output = new Output(Output::NotationWidget);
 
 	/* Board */
     m_boardSplitter = new QSplitter(Qt::Horizontal);
@@ -1174,10 +1171,7 @@ void MainWindow::setupActions()
 
 #ifdef QT_DEBUG
 	QMenu* debug = help->addMenu(tr("&Debug"));
-	QAction* source;
-    debug->addAction(source = createAction("Toggle game view format", 0));
-	source->setCheckable(true);
-	connect(source, SIGNAL(toggled(bool)), SLOT(slotGameViewToggle(bool)));
+    debug->addAction(createAction("Copy HTML", SLOT(slotGameViewSource())));
     debug->addAction(createAction("Dump Movenodes", SLOT(slotGameDumpMoveNodes())));
     debug->addAction(createAction("Make Screenshot", SLOT(slotScreenShot()), Qt::CTRL + Qt::Key_F12));
 #endif

@@ -193,8 +193,8 @@ public slots:
 	void slotGameViewLink(const QUrl& link);
 	/** Handle link click in Game View panel */
 	void slotGameViewLink(const QString& link);
-	/** Show/hide GameView source - useful for debugging. */
-	void slotGameViewToggle(bool source);
+    /** Get GameView source. */
+    void slotGameViewSource();
     /** Dump all node information to the console */
     void slotGameDumpMoveNodes();
     /** Create new empty game (to be appended to the database. */
@@ -455,7 +455,6 @@ private:
 	int m_currentDatabase;
 	QString m_eco;
 	QActionGroup* m_actions;
-	bool m_showPgnSource; // for debugging
 	QTime m_operationTime;
     /** Currently updated tree. May be NULL if no update in progress. */
 	QString m_nagText;
