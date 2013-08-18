@@ -294,6 +294,8 @@ void MainWindow::slotReconfigure()
     m_recentFiles.restore();
     updateMenuRecent();
     emit reconfigure(); 	// Re-emit for children
+    delete m_output;
+    m_output = new Output(Output::NotationWidget);
     UpdateGameText();
 }
 
@@ -301,10 +303,7 @@ void MainWindow::UpdateGameText()
 {
     if (m_gameView)
     {
-        if (m_showPgnSource)
-            m_gameView->setPlainText(m_output->output(&game()));
-        else
-            m_gameView->setText(m_output->output(&game(),m_training->isChecked()));
+        m_gameView->setText(m_output->output(&game(),m_training->isChecked()));
     }
 }
 
@@ -1025,10 +1024,10 @@ void MainWindow::slotGameViewLink(const QString& url)
 	slotGameViewLink(QUrl(url));
 }
 
-void MainWindow::slotGameViewToggle(bool toggled)
+void MainWindow::slotGameViewSource()
 {
-	m_showPgnSource = toggled;
-	slotGameChanged();
+    QString text = m_output->output(&game());
+    QApplication::clipboard()->setText(text);
 }
 
 void MainWindow::slotGameDumpMoveNodes()
