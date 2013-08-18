@@ -12,17 +12,6 @@
 #Name , Type  ,  Allow Values , Default  , Description
 MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 [OPTIONS]
-ColumnStyle=false
-SymbolicNag=true
-TextWidth=0
-CommentIndent=OnlyMainline
-MainLineMoveColor=#000000
-CommentColor=#008000
-VariationColor=#0000ff
-VariationIndentLevel=1
-NagColor=#C05050
-HeaderColor=#0000ff
-ShowHeader=false
 [OUTPUTHEADER]
 <!DOCTYPE HTML>
 <html>
@@ -42,6 +31,7 @@ ShowHeader=false
   td.mainline {padding-left: 10px; padding-right: 10px; color: @MainLineMoveColor@; width:50%}\n
   .diagram-indent {lfloat: right; margin-top: 8px;}\n
   .mainline {margin-left: 20px; color: @MainLineMoveColor@}\n
+  table,th,td {border: 0px;}\n
 </style>\n
 </head>\n
 <body>
@@ -52,7 +42,7 @@ ShowHeader=false
 MarkupHeaderBlock=,<br>\n
 MarkupNotationBlock=,
 MarkupResult=<b>,</b>
-MarkupDiagram=<div class="diagram-indent">,</div>
+MarkupDiagram=<br><br>,<br>
 MarkupMainLineMove=<a class="main" href="move:%1">,</a>
 MarkupVariationMove=<a class="var" href="move:%1">,</a>
 MarkupMainLine=,
@@ -61,7 +51,7 @@ MarkupVariationIndent=<p class="var">(,)</p>\n
 MarkupNag=<a class="nag">,</a>
 MarkupColumnStyleMove=<td class="mainline">,</td>\n
 MarkupColumnStyleRow=<tr class="mainline">,</tr>\n
-MarkupColumnStyleMainline=<table border=0>,</table>\n
+MarkupColumnStyleMainline=<table>,</table>\n
 MarkupAnnotationInline= <a class="comment" href="cmt:%1">,</a>\n
 MarkupAnnotationIndent=<p class="comment"><a class="comment" href="cmt:%1">,</a></p>
 MarkupPreAnnotationInline= <a class="comment" href="precmt:%1">,</a>\n

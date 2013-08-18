@@ -7,8 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include "settings.h"
 #include "boardtheme.h"
+#include "settings.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -138,7 +138,22 @@ QMap<QString, QVariant> Settings::initDefaultValues() const {
     map.insert("/General/autoCommitDB", false);
     map.insert("/General/language", "Default");
     map.insert("/GameText/FontSize",DEFAULT_FONTSIZE);
+
+    map.insert("/GameText/ColumnStyle",false);
+    map.insert("/GameText/SymbolicNag",true);
+    map.insert("/GameText/TextWidth",0);
+    map.insert("/GameText/VariationIndentLevel",1);
+    map.insert("/GameText/VariationIndentSize",3);
+    map.insert("/GameText/CommentIndent","OnlyMainline");
+    map.insert("/GameText/MainLineMoveColor","black");
+    map.insert("/GameText/VariationColor","blue");
+    map.insert("/GameText/CommentColor","green");
+    map.insert("/GameText/NagColor","red");
+    map.insert("/GameText/HeaderColor","blue");
+    map.insert("/GameText/ShowHeader",false);
     map.insert("/GameText/ShowDiagrams",true);
+    map.insert("/GameText/DiagramSize",200);
+
     map.insert("/GameText/PieceString"," KQRBN");
     map.insert("/MainWindow/GameToolBar", false);
     map.insert("/MainWindow/VerticalTabs", false);
