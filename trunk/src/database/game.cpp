@@ -14,14 +14,14 @@
 
 QMap<quint64, QString> Game::m_ecoPositions;
 
-Game::Game()
+Game::Game() : QObject()
 {
     clearTags();
     clear();
     setModified(false);
 }
 
-Game::Game(const Game& game)
+Game::Game(const Game& game) : QObject()
 {
     *this = game;
     setModified(false);

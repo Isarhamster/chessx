@@ -63,11 +63,11 @@ MainWindow::MainWindow() : QMainWindow(),
     m_saveDialog(0),
     m_gameWindow(0),
     m_gameToolBar(0),
+    m_output(0),
     m_autoPlayTimer(0),
     m_bGameChange(false),
     m_currentFrom(InvalidSquare),
-    m_currentTo(InvalidSquare),
-    m_output(0)
+    m_currentTo(InvalidSquare)
 {
 	setObjectName("MainWindow");
 
