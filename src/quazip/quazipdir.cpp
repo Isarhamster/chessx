@@ -126,7 +126,7 @@ bool QuaZipDir::cdUp()
     return cd("..");
 }
 
-uint QuaZipDir::count() const
+unsigned int QuaZipDir::count() const
 {
     return entryList().count();
 }

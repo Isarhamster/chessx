@@ -112,27 +112,27 @@ private:
 	static const quint64 BLACKTM = 1 << 26;
 
 	/** Set Pawn move of one forward */
-	void genOneForward(uint from, uint to);
+	void genOneForward(unsigned int from, unsigned int to);
 	/** Set two-squares forward move of Pawn */
-	void genTwoForward(uint from, uint to);
+	void genTwoForward(unsigned int from, unsigned int to);
 	/** Set pawn promotion move to given Piecetype */
-	void genPromote(uint from, uint to, uint type);
+	void genPromote(unsigned int from, unsigned int to, unsigned int type);
 	/** Set pawn capture and promotion, promote to piece type, capturing type */
-	void genCapturePromote(uint from, uint to, uint type, uint captured);
+	void genCapturePromote(unsigned int from, unsigned int to, unsigned int type, unsigned int captured);
 	/** Set pawn en passant capture of opponent pawn */
-	void genEnPassant(uint from, uint to);
+	void genEnPassant(unsigned int from, unsigned int to);
 	/** Set simple pawn move with capture of piece type */
-	void genPawnMove(uint from, uint to, uint captured);
+	void genPawnMove(unsigned int from, unsigned int to, unsigned int captured);
 	/** Set knight move, capturing piece type */
-	void genKnightMove(uint from, uint to, uint captured);
+	void genKnightMove(unsigned int from, unsigned int to, unsigned int captured);
 	/** Set bishop move, capturing piece type */
-	void genBishopMove(uint from, uint to, uint captured);
+	void genBishopMove(unsigned int from, unsigned int to, unsigned int captured);
 	/** Set rook move, capturing piece type */
-	void genRookMove(uint from, uint to, uint captured);
+	void genRookMove(unsigned int from, unsigned int to, unsigned int captured);
 	/** Set queen move, capturing piece type */
-	void genQueenMove(uint from, uint to, uint captured);
+	void genQueenMove(unsigned int from, unsigned int to, unsigned int captured);
 	/** Set king move, capturing piece type */
-	void genKingMove(uint from, uint to, uint captured);
+	void genKingMove(unsigned int from, unsigned int to, unsigned int captured);
 	/** Set castling short move for White with king and rook */
 	void genWhiteOO();
 	/** Set castling long move for White with king and rook */
@@ -150,7 +150,7 @@ private:
 	/** Mark this move as being made by the Black side */
 	void setBlack();
 	/** Return piece type of promoted piece (or 0 if none) */
-	uint promoted() const;
+	unsigned int promoted() const;
 	/** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) making move */
 	void setPieceType(const uchar p);
 	/** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) captured */
@@ -165,11 +165,11 @@ private:
 	void setMate();
 
 	/** Return pawn2forward, castle or piece type for doMove() and undoMove() */
-	uint action() const;
+	unsigned int action() const;
 	/** Return captured piece or En passant for doMove() and undoMove() */
-	uint removal() const;
+	unsigned int removal() const;
 	/** Return piece type of captured piece (or 0 if none) */
-	uint capturedType() const;
+	unsigned int capturedType() const;
 
 	// The move definition 'm' bitfield layout:
 	// 00000000 00000000 00000000 00111111 = from square     = bits 1-6
@@ -188,12 +188,12 @@ private:
 	// 00100000 00000000 00000000 00000000 = gives mate?     = bit  30  // NOT YET IMPLEMENTED
 	// 01000000 00000000 00000000 00000000 = gives check?    = bit  31  // NOT YET IMPLEMENTED
 	// 10000000 00000000 00000000 00000000 = legality status = bit  32
-	uint m;
+	unsigned int m;
 	// The undo definition 'u' bitfield layout:
 	// 00000000 11111111 = half move clock  = bits 1-8
 	// 00001111 00000000 = castling rights  = bits 8-12
 	// 11110000 00000000 = previous ep file = bits 13-16
-	ushort u;
+	unsigned short u;
 };
 
 // return true if a null move
@@ -215,7 +215,7 @@ inline bool Move::isNullMove() const
 
 inline void Move::setPromotionPiece(PieceType type)
 {
-	m &= ~(7 << 22); m |= ((uint) type & 7) << 22;
+	m &= ~(7 << 22); m |= ((unsigned int) type & 7) << 22;
 }
 
 inline Square Move::from() const
@@ -311,57 +311,57 @@ inline bool Move::isLegal() const
 	return m & LEGALITYBIT;
 }
 
-inline void Move::genOneForward(uint from, uint to)
+inline void Move::genOneForward(unsigned int from, unsigned int to)
 {
 	m = from | (to << 6) | (Pawn << 12);
 }
 
-inline void Move::genTwoForward(uint from, uint to)
+inline void Move::genTwoForward(unsigned int from, unsigned int to)
 {
 	m = from | (to << 6) | (Pawn << 12)   | (1 << 16);
 }
 
-inline void Move::genPromote(uint from, uint to, uint type)
+inline void Move::genPromote(unsigned int from, unsigned int to, unsigned int type)
 {
 	m = from  | (to << 6) | (Pawn << 12)   | (type << 22)  | (1 << 17);
 }
 
-inline void Move::genCapturePromote(uint from, uint to, uint type, uint captured)
+inline void Move::genCapturePromote(unsigned int from, unsigned int to, unsigned int type, unsigned int captured)
 {
 	m = from | (to << 6) | (Pawn << 12) | (captured << 18) | (type << 22) | (1 << 17);
 }
 
-inline void Move::genEnPassant(uint from, uint to)
+inline void Move::genEnPassant(unsigned int from, unsigned int to)
 {
 	m = from  | (to << 6) | (Pawn << 12) | (Pawn << 18) | (1 << 21);
 }
 
-inline void Move::genPawnMove(uint from, uint to, uint captured)
+inline void Move::genPawnMove(unsigned int from, unsigned int to, unsigned int captured)
 {
 	m = from  | (to << 6) | (Pawn << 12) | (captured << 18);
 }
 
-inline void Move::genKnightMove(uint from, uint to, uint captured)
+inline void Move::genKnightMove(unsigned int from, unsigned int to, unsigned int captured)
 {
 	m = from  | (to << 6) | (Knight << 12) | (captured << 18);
 }
 
-inline void Move::genBishopMove(uint from, uint to, uint captured)
+inline void Move::genBishopMove(unsigned int from, unsigned int to, unsigned int captured)
 {
 	m = from  | (to << 6) | (Bishop << 12) | (captured << 18);
 }
 
-inline void Move::genRookMove(uint from, uint to, uint captured)
+inline void Move::genRookMove(unsigned int from, unsigned int to, unsigned int captured)
 {
 	m = from  | (to << 6) | (Rook << 12)   | (captured << 18);
 }
 
-inline void Move::genQueenMove(uint from, uint to, uint captured)
+inline void Move::genQueenMove(unsigned int from, unsigned int to, unsigned int captured)
 {
 	m = from  | (to << 6) | (Queen << 12)  | (captured << 18);
 }
 
-inline void Move::genKingMove(uint from, uint to, uint captured)
+inline void Move::genKingMove(unsigned int from, unsigned int to, unsigned int captured)
 {
 	m = from  | (to << 6) | (King << 12)   | (captured << 18);
 }
@@ -401,12 +401,12 @@ inline void Move::setTo(Square to)
 	m = (m & (~(63 << 6))) | (to << 6); m &= ~LEGALITYBIT;
 }
 
-inline uint Move::action() const
+inline unsigned int Move::action() const
 {
 	return (m >> 12) & 63;
 }
 
-inline uint Move::removal() const
+inline unsigned int Move::removal() const
 {
 	return (m >> 18) & 15;
 }
@@ -416,12 +416,12 @@ inline void Move::setBlack()
 	m |= BLACKTM;
 }
 
-inline uint Move::promoted() const
+inline unsigned int Move::promoted() const
 {
 	return 7&(m >> 22);
 }
 
-inline uint Move::capturedType() const
+inline unsigned int Move::capturedType() const
 {
 	return  (m >> 18) & 7;
 }
@@ -483,7 +483,7 @@ inline bool Move::operator!=(const Color& color) const
 
 inline bool Move::operator==(const Piece& p) const
 {
-	return (uint) p == (((m&BLACKTM)&&((m>>12)&7))?((m>>12)&7)+6:((m>>12)&7));
+	return (unsigned int) p == (((m&BLACKTM)&&((m>>12)&7))?((m>>12)&7)+6:((m>>12)&7));
 }
 
 inline bool Move::operator!=(const Piece& p) const

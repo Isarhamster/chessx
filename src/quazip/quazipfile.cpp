@@ -454,7 +454,7 @@ qint64 QuaZipFile::readData(char *data, qint64 maxSize)
 qint64 QuaZipFile::writeData(const char* data, qint64 maxSize)
 {
   p->setZipError(ZIP_OK);
-  p->setZipError(zipWriteInFileInZip(p->zip->getZipFile(), data, (uint)maxSize));
+  p->setZipError(zipWriteInFileInZip(p->zip->getZipFile(), data, (unsigned int)maxSize));
   if(p->zipError!=ZIP_OK) return -1;
   else {
     p->writePos+=maxSize;

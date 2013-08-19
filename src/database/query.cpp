@@ -265,7 +265,7 @@ void Query::clear()
 	m_elementType.clear();
 }
 
-bool Query::isValidIndex(uint index) const
+bool Query::isValidIndex(unsigned int index) const
 {
 	if ((int)index > (int)(m_elementType.count() - 1))
 		return false;

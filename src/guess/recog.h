@@ -23,7 +23,7 @@ namespace Guess
 
 // Only positions with a total of 6 or fewer pieces (including kings
 // and pawns) are potentially recognizable.
-static const uint MAX_RECOGNIZED_PIECES = 6;
+static const unsigned int MAX_RECOGNIZED_PIECES = 6;
 
 // Recognition value conversion: a recognition score contains a
 //   regular score shifted left 4 bits to make room for a score flag.
@@ -52,7 +52,7 @@ class Recognizer
     static int   KRPKR (Position * pos);
 
   public:
-    static uint  MaxPieces (void) { return MAX_RECOGNIZED_PIECES; }
+    static unsigned int  MaxPieces (void) { return MAX_RECOGNIZED_PIECES; }
     static int   Recognize (Position * pos);
 };
 

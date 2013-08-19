@@ -20,12 +20,12 @@
 namespace Guess
 {
 
-const uint MAX_SQUARELIST = 65;  // 64 squares plus null square
+const unsigned int MAX_SQUARELIST = 65;  // 64 squares plus null square
 
 class SquareList {
 private:
 
-    uint ListSize;
+    unsigned int ListSize;
     squareT Squares [MAX_SQUARELIST];
 
 public:
@@ -36,14 +36,14 @@ public:
     inline void Init() { ListSize = 0; }
     inline void Clear() { ListSize = 0; }
     inline void Add(squareT sq) { Squares[ListSize] = sq; ListSize++; }
-    inline uint Size() { return ListSize; }
-    inline squareT Get (uint index);
+    inline unsigned int Size() { return ListSize; }
+    inline squareT Get (unsigned int index);
     inline bool Contains (squareT sq);
-    inline void Remove (uint index);
+    inline void Remove (unsigned int index);
 };
 
 inline squareT
-SquareList::Get (uint index)
+SquareList::Get (unsigned int index)
 {
     ASSERT (index < ListSize);
     return Squares[index];
@@ -52,14 +52,14 @@ SquareList::Get (uint index)
 inline bool
 SquareList::Contains (squareT sq)
 {
-    for (uint i=0; i < ListSize; i++) {
+    for (unsigned int i=0; i < ListSize; i++) {
         if (Squares[i] == sq) { return true; }
     }
     return false;
 }
 
 inline void
-SquareList::Remove (uint index)
+SquareList::Remove (unsigned int index)
 {
     ASSERT (index < ListSize);
     ListSize--;

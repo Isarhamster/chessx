@@ -35,8 +35,8 @@ static const int UNKNOWN = recogValue (SCORE_NONE, 0);
 int
 Recognizer::Recognize (Position * pos)
 {
-    uint npieces = pos->TotalMaterial();
-    byte * material = pos->GetMaterial();
+    unsigned int npieces = pos->TotalMaterial();
+    unsigned char * material = pos->GetMaterial();
 
     if (npieces > 6) { return UNKNOWN; }
 
@@ -123,7 +123,7 @@ Recognizer::Recognize (Position * pos)
 int
 Recognizer::KPK (Position * pos)
 {
-    byte * material = pos->GetMaterial();
+    unsigned char * material = pos->GetMaterial();
     squareT wk, bk, wp;
     colorT stm = pos->GetToMove();
 
@@ -164,8 +164,8 @@ Recognizer::KPK (Position * pos)
     }
 
     // Black king is clearly the closest king to the pawn: draw
-    uint wdist = square_Distance (wk, wp);
-    uint bdist = square_Distance (bk, wp);
+    unsigned int wdist = square_Distance (wk, wp);
+    unsigned int bdist = square_Distance (bk, wp);
     if (stm == WHITE) { bdist++; }
     // TODO: check if the "+ 2" below can safely be "+ 1".
     if (bdist + 2 < wdist) { return DRAW; }
@@ -213,7 +213,7 @@ Recognizer::KPK (Position * pos)
 int
 Recognizer::KBBK (Position * pos)
 {
-    byte * material = pos->GetMaterial();
+    unsigned char * material = pos->GetMaterial();
     squareT wk, bk, wb1, wb2;
     colorT stm = pos->GetToMove();
 
@@ -265,7 +265,7 @@ Recognizer::KBBK (Position * pos)
 int
 Recognizer::KBNK (Position * pos)
 {
-    byte * material = pos->GetMaterial();
+    unsigned char * material = pos->GetMaterial();
     pieceT * board = pos->GetBoard();
     squareT wk, bk, wb, wn;
     colorT stm = pos->GetToMove();
@@ -324,7 +324,7 @@ Recognizer::KBNK (Position * pos)
 int
 Recognizer::KBPK (Position * pos)
 {
-    byte * material = pos->GetMaterial();
+    unsigned char * material = pos->GetMaterial();
     squareT wk, bk;
     fyleT wrongFile = A_FYLE;  // Wrong-color bishop rook-pawn file.
     // Set up piece squares so that White has the bishop and pawn(s),
@@ -358,7 +358,7 @@ Recognizer::KBPK (Position * pos)
 int
 Recognizer::KRKB (Position * pos)
 {
-    byte * material = pos->GetMaterial();
+    unsigned char * material = pos->GetMaterial();
     squareT wk, bk, wr, bb;
     colorT stm = pos->GetToMove();
 
@@ -424,7 +424,7 @@ Recognizer::KRKB (Position * pos)
 int
 Recognizer::KRKN (Position * pos)
 {
-    byte * material = pos->GetMaterial();
+    unsigned char * material = pos->GetMaterial();
     squareT wk, bk, wr, bn;
     colorT stm = pos->GetToMove();
 
@@ -501,7 +501,7 @@ Recognizer::KRKN (Position * pos)
 int
 Recognizer::KMKP (Position * pos)
 {
-    byte * material = pos->GetMaterial();
+    unsigned char * material = pos->GetMaterial();
     squareT wk, bk, wm, bp;
     colorT stm = pos->GetToMove();
 
@@ -537,7 +537,7 @@ Recognizer::KMKP (Position * pos)
 int
 Recognizer::KQKP (Position * pos)
 {
-    byte * material = pos->GetMaterial();
+    unsigned char * material = pos->GetMaterial();
     squareT wk, bk, wq, bp;
     colorT stm = pos->GetToMove();
 
@@ -620,7 +620,7 @@ Recognizer::KQKP (Position * pos)
 int
 Recognizer::KRKP (Position * pos)
 {
-    byte * material = pos->GetMaterial();
+    unsigned char * material = pos->GetMaterial();
     squareT wk, bk, wr, bp;
     colorT stm = pos->GetToMove();
 
@@ -1040,7 +1040,7 @@ Recognizer::KRPKR (Position * pos)
     // XXX  INCOMPLETE  XXX
     return UNKNOWN;
 
-    byte * material = pos->GetMaterial();
+    unsigned char * material = pos->GetMaterial();
     pieceT * board = pos->GetBoard();
     squareT wk, bk, wr, wp, br;
     colorT stm = pos->GetToMove();
@@ -1102,7 +1102,7 @@ Recognizer::KRPKR (Position * pos)
         skRank = bkRank;  skFyle = bkFyle;  srRank = brRank;  srFyle = brFyle;
         ekRank = wkRank;  ekFyle = wkFyle;  erRank = wrRank;  erFyle = wrFyle;
     }
-    uint kingDist = square_Distance (wk, bk);
+    unsigned int kingDist = square_Distance (wk, bk);
 
     // No recognition if the king and rook of the side NOT to move share
     // a rank or file, since there may be a pin or skewer.

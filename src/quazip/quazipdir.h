@@ -72,7 +72,7 @@ public:
     /// Goes up.
     bool cdUp();
     /// Returns the number of entries in the directory.
-    uint count() const;
+    unsigned int count() const;
     /// Returns the current directory name.
     /**
       The name doesn't include the path.

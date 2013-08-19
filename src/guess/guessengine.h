@@ -35,18 +35,18 @@ typedef QTime QElapsedTimer;
 namespace Guess
 {
 
-const uint ENGINE_MAX_PLY =           40;  // Maximum search ply.
+const unsigned int ENGINE_MAX_PLY =           40;  // Maximum search ply.
 const int  ENGINE_MAX_HISTORY =   100000;  // Max accumulated history value.
 const int  ENGINE_HASH_SCORE = 100000000;  // To order hash moves first.
-const uint ENGINE_HASH_KB =           32;  // Default hash table size in KB.
-const uint ENGINE_PAWN_KB =            1;  // Default pawn table size in KB.
+const unsigned int ENGINE_HASH_KB =           32;  // Default hash table size in KB.
+const unsigned int ENGINE_PAWN_KB =            1;  // Default pawn table size in KB.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // principalVarT
 //   Stores the principal variation at one search Ply depth.
 //
 struct principalVarT {
-    uint length;
+    unsigned int length;
     simpleMoveT move [ENGINE_MAX_PLY];
 };
 
@@ -54,7 +54,7 @@ struct principalVarT {
 // scoreFlagT
 //  Types of transposition table score and endgame recognition score.
 //
-typedef byte scoreFlagT;
+typedef unsigned char scoreFlagT;
 const scoreFlagT
     SCORE_NONE  = 0,    // Not a useful score.
     SCORE_EXACT = 1,    // Exact score.
@@ -70,13 +70,13 @@ const scoreFlagT
 //   The best move is also stored, in a compact format to save space.
 //
 struct transTableEntryT {
-    uint    hash;              // Hash value.
-    uint    pawnhash;          // Pawn hash value, for extra safety check.
+    unsigned int    hash;              // Hash value.
+    unsigned int    pawnhash;          // Pawn hash value, for extra safety check.
     short   score;             // Evaluation score.
-    ushort  bestMove;          // Best move from/to/promote values.
-    byte    depth;             // Depth of evaulation.
-    byte    flags;             // Score type, side to move and castling flags.
-    byte    sequence;          // Sequence number, for detecting old entries.
+    unsigned short  bestMove;          // Best move from/to/promote values.
+    unsigned char    depth;             // Depth of evaulation.
+    unsigned char    flags;             // Score type, side to move and castling flags.
+    unsigned char    sequence;          // Sequence number, for detecting old entries.
     squareT enpassant;         // En passant target square.
 };
 
@@ -85,12 +85,12 @@ struct transTableEntryT {
 //   Pawn structure score hash table entry.
 //
 struct pawnTableEntryT {
-    uint  pawnhash;           // Pawn hash value for this pawn structure.
-    uint  sig;                // Safety check value, to avoid false hits.
+    unsigned int  pawnhash;           // Pawn hash value for this pawn structure.
+    unsigned int  sig;                // Safety check value, to avoid false hits.
     short score;              // Positional score for pawn structure.
     short wLongbShortScore;   // Pawn storm score for wk on abc, bk on abc.
     short wShortbLongScore;   // Pawn storm score for wk on fgh, bk on fgh.
-    byte  fyleHasPassers[2];  // One bit per file, indicating passed pawns.
+    unsigned char  fyleHasPassers[2];  // One bit per file, indicating passed pawns.
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,9 +100,9 @@ struct pawnTableEntryT {
 //   popped off when the move is unmade.
 //
 struct repeatT {
-    uint   hash;         // Position hash code.
-    uint   pawnhash;     // Position pawn-structure hash code.
-    uint   npieces;      // Total number of pieces in position.
+    unsigned int   hash;         // Position hash code.
+    unsigned int   pawnhash;     // Position pawn-structure hash code.
+    unsigned int   npieces;      // Total number of pieces in position.
     colorT stm;          // Side to move.
 };
 
@@ -115,7 +115,7 @@ class Engine {
 private:
     Position RootPos;       // Position at start of search.
     Position Pos;           // Current position in search.
-    uint     MaxDepth;      // Search depth limit.
+    unsigned int     MaxDepth;      // Search depth limit.
     int      SearchTime;    // Search time limit in milliseconds.
     int      MinSearchTime; // Minimum search time in milliseconds.
     int      MaxSearchTime; // Maximum search time in milliseconds.
@@ -125,30 +125,30 @@ private:
     bool     Pruning;       // If true, do futility pruning.
     FILE *   LogFile;       // Output is to stdout and to this file.
 
-    uint     QNodeCount;    // Nodes examined in quiescent search.
-    uint     NodeCount;     // Nodes examined in total.
+    unsigned int     QNodeCount;    // Nodes examined in quiescent search.
+    unsigned int     NodeCount;     // Nodes examined in total.
     QElapsedTimer    Elapsed;       // Timer for interrupting search.
     bool     IsOutOfTime;   // Becomes true when search is out of time.
-    uint     Ply;           // Current ply being examined.
+    unsigned int     Ply;           // Current ply being examined.
     bool     EasyMove;      // True if the search indicates one move is
                             //    far better than the others.
     bool     HardMove;      // True if failed low at root on current depth.
-    uint     InNullMove;    // If > 0, in null move search so no PV updates.
-    uint     RepStackSize;         // Repetition stack size.
+    unsigned int     InNullMove;    // If > 0, in null move search so no PV updates.
+    unsigned int     RepStackSize;         // Repetition stack size.
     repeatT  RepStack [1024];      // Repetition stack.
     bool     InCheck [ENGINE_MAX_PLY];   // In-check at each ply.
     principalVarT PV [ENGINE_MAX_PLY];   // Principal variation at each ply.
     simpleMoveT KillerMove [ENGINE_MAX_PLY][2];  // Two killer moves per ply.
     int History[16][64];    // Success history of piece-to-square moves.
-    byte     TranTableSequence;    // Transposition table sequence number.
-    uint     TranTableSize;        // Number of Transposition table entries.
+    unsigned char     TranTableSequence;    // Transposition table sequence number.
+    unsigned int     TranTableSize;        // Number of Transposition table entries.
     transTableEntryT * TranTable;  // Transposition table.
-    uint     PawnTableSize;        // Number of Pawn structure table entries.
+    unsigned int     PawnTableSize;        // Number of Pawn structure table entries.
     pawnTableEntryT * PawnTable;   // Pawn structure score hash table.
     bool (*CallbackFunction)(Engine *, void *);  // Periodic callback.
     void *   CallbackData;
     simpleMoveT * GameMoves [1024];
-    uint      NumGameMoves;
+    unsigned int      NumGameMoves;
 
 private:
     int PieceValue (pieceT piece);
@@ -162,8 +162,8 @@ private:
     inline void SetPVLength (void);
     inline void UpdatePV (simpleMoveT * sm);
     void Output (const char * format, ...);
-    void PrintPV (uint depth, int score) { PrintPV (depth, score, ""); }
-    void PrintPV (uint depth, int score, const char * annotation);
+    void PrintPV (unsigned int depth, int score) { PrintPV (depth, score, ""); }
+    void PrintPV (unsigned int depth, int score, const char * annotation);
     inline void PushRepeat (Position * pos);
     inline void PopRepeat (void);
     void StoreHash (int depth, scoreFlagT flag, int score,
@@ -215,15 +215,15 @@ public:
     }
     ~Engine()  { delete[] TranTable;  delete[] PawnTable; }
 
-    void SetSearchDepth (uint ply) {
+    void SetSearchDepth (unsigned int ply) {
         if (ply < 1) { ply = 1; }
         if (ply > ENGINE_MAX_PLY) { ply = ENGINE_MAX_PLY; }
         MaxDepth = ply;
     }
-    void SetSearchTime (uint ms) {
+    void SetSearchTime (unsigned int ms) {
         MinSearchTime = SearchTime = MaxSearchTime = ms;
     }
-    void SetSearchTime (uint min, uint ms, uint max) {
+    void SetSearchTime (unsigned int min, unsigned int ms, unsigned int max) {
         MinSearchTime = min;
         SearchTime = ms;
         MaxSearchTime = max;
@@ -235,10 +235,10 @@ public:
     bool InXBoardMode (void) { return XBoardMode; }
     void SetPruning (bool b) { Pruning = b; }
     void SetLogFile (FILE * fp) { LogFile = fp; }
-    void SetHashTableKilobytes (uint sizeKB);
-    void SetPawnTableKilobytes (uint sizeKB);
-    uint NumHashTableEntries (void) { return TranTableSize; }
-    uint NumPawnTableEntries (void) { return PawnTableSize; }
+    void SetHashTableKilobytes (unsigned int sizeKB);
+    void SetPawnTableKilobytes (unsigned int sizeKB);
+    unsigned int NumHashTableEntries (void) { return TranTableSize; }
+    unsigned int NumPawnTableEntries (void) { return PawnTableSize; }
     void ClearHashTable (void);
     void ClearPawnTable (void);
     void ClearHashTables (void) {
@@ -251,11 +251,11 @@ public:
         CallbackData = data;
     }
 
-    uint GetNodeCount (void) { return NodeCount; }
+    unsigned int GetNodeCount (void) { return NodeCount; }
 
     bool NoMatingMaterial (void);
     bool FiftyMoveDraw (void);
-    uint RepeatedPosition (void);
+    unsigned int RepeatedPosition (void);
 
     void SetPosition (Position * pos);
     Position * GetPosition (void) { return &RootPos; }
@@ -264,7 +264,7 @@ public:
     int Score (void);
     int ScoreMaterial (void);
     principalVarT * GetPV (void) { return &(PV[0]); }
-    uint PerfTest (uint depth);
+    unsigned int PerfTest (unsigned int depth);
 
     int Think (MoveList * mlist);
 };
@@ -288,7 +288,7 @@ Engine::UpdatePV (simpleMoveT * sm)
     // if (! Pos.IsLegalMove (sm)) { return; }
 
     PV[Ply].move[Ply] = *sm;
-    for (uint j = Ply + 1; j < PV[Ply + 1].length; j++) {
+    for (unsigned int j = Ply + 1; j < PV[Ply + 1].length; j++) {
         PV[Ply].move[j] = PV[Ply+1].move[j];
     }
     PV[Ply].length = PV[Ply+1].length;
@@ -310,7 +310,7 @@ Engine::UpdatePV (simpleMoveT * sm)
 inline void
 Engine::ClearKillerMoves (void)
 {
-    for (uint i=0; i < ENGINE_MAX_PLY; i++) {
+    for (unsigned int i=0; i < ENGINE_MAX_PLY; i++) {
         KillerMove[i][0].from = NULL_SQUARE;
         KillerMove[i][1].from = NULL_SQUARE;
     }

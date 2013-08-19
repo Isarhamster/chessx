@@ -23,7 +23,7 @@ namespace Guess
 //   Promotes a move to the front of the list, pushing
 //   all moves that were ahead of it down one place.
 void
-MoveList::MoveToFront (uint index)
+MoveList::MoveToFront (unsigned int index)
 {
     ASSERT (index < ListSize);
     if (index == 0) { return; }
@@ -39,7 +39,7 @@ MoveList::MoveToFront (uint index)
 //   Swaps the specified move with the move at the start of the list.
 //   All other moves remain in their original location.
 void
-MoveList::SwapWithFirst (uint index)
+MoveList::SwapWithFirst (unsigned int index)
 {
     ASSERT (index < ListSize);
     if (index == 0) { return; }
@@ -58,7 +58,7 @@ MoveList::SwapWithFirst (uint index)
 int
 MoveList::Find (simpleMoveT * sm)
 {
-    for (uint i=0; i < ListSize; ++i) {
+    for (unsigned int i=0; i < ListSize; ++i) {
         simpleMoveT * lsm = &(Moves[i]);
         if (sm->from == lsm->from  &&  sm->to == lsm->to
                 &&  sm->promote == lsm->promote) {
@@ -74,11 +74,11 @@ MoveList::Find (simpleMoveT * sm)
 //   Restricts the list to only contain only the two
 //   moves suggested by (from1,to1) and (from2,to2)
 //   Returns the new size of the list.
-uint
+unsigned int
 MoveList::SelectBySquares (squareT f1, squareT t1, squareT f2, squareT t2)
 {
-    uint index = 0;
-    for (uint i=0; i < ListSize; ++i) {
+    unsigned int index = 0;
+    for (unsigned int i=0; i < ListSize; ++i) {
         simpleMoveT * sm = &(Moves[i]);
 	if ((sm->from == f1 && sm->to == t1) || (sm->from == f2 && sm->to == t2)) {
 		if (i != index)
@@ -95,11 +95,11 @@ MoveList::SelectBySquares (squareT f1, squareT t1, squareT f2, squareT t2)
 //   Restricts the list to only contain moves which
 //   move a piece to or from the specified square.
 //   Returns the new size of the list.
-uint
+unsigned int
 MoveList::SelectBySquare (squareT sq)
 {
-    uint index = 0;
-    for (uint i=0; i < ListSize; i++) {
+    unsigned int index = 0;
+    for (unsigned int i=0; i < ListSize; i++) {
         simpleMoveT * sm = &(Moves[i]);
         if (sm->from != sq  &&  sm->to != sq) {
             // Skip this move, it does not match.
@@ -124,13 +124,13 @@ MoveList::SelectBySquare (squareT sq)
 //   The moves earlier in the list (at indices 0 to index-1) are
 //   ignored and are not moved.
 void
-MoveList::FindBest (uint index)
+MoveList::FindBest (unsigned int index)
 {
     ASSERT (index < ListSize);
-    uint bestIndex = index;
+    unsigned int bestIndex = index;
     int bestScore = Moves[index].score;
     // Search the rest of the list for a better-scoring move:
-    for (uint i = index + 1; i < ListSize; ++i) {
+    for (unsigned int i = index + 1; i < ListSize; ++i) {
         if (Moves[i].score > bestScore) {
             bestIndex = i;
             bestScore = Moves[i].score;
@@ -152,7 +152,7 @@ void
 MoveList::Sort (void)
 {
     // Do a simple selection sort, which works fine for small list sizes.
-    for (uint i=0; i < ListSize; ++i) {
+    for (unsigned int i=0; i < ListSize; ++i) {
         FindBest (i);
     }
 }
@@ -161,7 +161,7 @@ bool
 MoveList::IsSorted (void)
 {
     if (ListSize < 2) { return true; }
-    for (uint i = 0; i < ListSize - 1; ++i) {
+    for (unsigned int i = 0; i < ListSize - 1; ++i) {
         if (Moves[i].score < Moves[i+1].score) { return false; }
     }
     return true;

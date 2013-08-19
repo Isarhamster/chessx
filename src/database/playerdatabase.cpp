@@ -262,7 +262,7 @@ PlayerData PlayerDatabase::readPlayerData(const QString& playername)
 	return pd;
 }
 
-uint PlayerDatabase::count() const
+unsigned int PlayerDatabase::count() const
 {
 	return m_nplayers + m_npending_adds;
 }

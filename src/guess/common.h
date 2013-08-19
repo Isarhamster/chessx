@@ -76,7 +76,7 @@ inline int gzclose (gzFile fp) { return 0; }
 #define BIT_1(x)            ((x) &   2)
 #define BIT_0(x)            ((x) &   1)
 
-// Upper or lower 4 bits of a byte, in the range 0..15
+// Upper or lower 4 bits of a unsigned char, in the range 0..15
 
 #define UPPER_4_BITS(x)     (((x) & 240) >> 4)      // 240 is (15 * 16)
 #define LOWER_4_BITS(x)     ((x) &  15)
@@ -90,15 +90,6 @@ inline int gzclose (gzFile fp) { return 0; }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // TYPE DEFINITIONS
 
-//  General types
-
-typedef unsigned char           byte;           //  8 bit unsigned
-typedef unsigned short          ushort;         // 16 bit unsigned
-typedef unsigned int            uint;           // 32 bit unsigned
-typedef signed   int            sint;           // 32 bit signed
-typedef unsigned long           ulong;
-
-
 //  compareT: comparison type
 
 typedef signed int    compareT;
@@ -107,29 +98,29 @@ const compareT
 
 //  Chess Types
 
-typedef byte                    pieceT;      // e.g ROOK or WK
-typedef byte                    colorT;      // WHITE or BLACK
-typedef byte                    squareT;     // e.g. A3
-typedef byte                    directionT;  // e.g. UP_LEFT
-typedef byte                    rankT;       // Chess board rank
-typedef byte                    fyleT;       // Chess board file
-typedef byte                    leftDiagT;   // Up-left diagonals
-typedef byte                    rightDiagT;  // Up-right diagonals
+typedef unsigned char                    pieceT;      // e.g ROOK or WK
+typedef unsigned char                    colorT;      // WHITE or BLACK
+typedef unsigned char                    squareT;     // e.g. A3
+typedef unsigned char                    directionT;  // e.g. UP_LEFT
+typedef unsigned char                    rankT;       // Chess board rank
+typedef unsigned char                    fyleT;       // Chess board file
+typedef unsigned char                    leftDiagT;   // Up-left diagonals
+typedef unsigned char                    rightDiagT;  // Up-right diagonals
 
 // boardT: 64 squares plus two extra squares: one for storing the side
-//   to move as a byte and one for the string terminator, so boards can
+//   to move as a unsigned char and one for the string terminator, so boards can
 //   be compared using regular string functions:
 typedef pieceT                  boardT [66];
 
-typedef byte                    smallBoardT [32];
+typedef unsigned char                    smallBoardT [32];
                                     // A more densely packed board, 2 squares
-                                    // per byte.
+                                    // per unsigned char.
 
-typedef byte                    castleDirT;  // LEFT or RIGHT
+typedef unsigned char                    castleDirT;  // LEFT or RIGHT
 
 //  Other Small Types
 
-typedef ushort                  statusT;
+typedef unsigned short                  statusT;
 
 //  Fixed String Types
 
@@ -138,7 +129,7 @@ typedef char    sanStringT [ 10];   // SAN Move Notation
 //  File-related Types
 
 typedef char    fileNameT [512];
-typedef uint    fileLengthT;
+typedef unsigned int    fileLengthT;
 
 enum fileModeT {
     FMODE_None = 0,
@@ -149,46 +140,46 @@ enum fileModeT {
 
 //  Date type: see date.h and date.cpp
 
-typedef uint    dateT;
+typedef unsigned int    dateT;
 
 //  Game Information types
 
-typedef uint            gameNumberT;      // Used in Index class
-typedef ushort          eloT;
-typedef ushort          ecoT;
+typedef unsigned int            gameNumberT;      // Used in Index class
+typedef unsigned short          eloT;
+typedef unsigned short          ecoT;
 typedef char            ecoStringT [6];   /* "A00j1" */
 
 const ecoT ECO_None = 0;
 
 // Rating types:
 
-const byte RATING_Elo = 0;
-const byte RATING_Rating = 1;
-const byte RATING_Rapid = 2;
-const byte RATING_ICCF = 3;
-const byte RATING_USCF = 4;
-const byte RATING_DWZ = 5;
-const byte RATING_BCF = 6;
+const unsigned char RATING_Elo = 0;
+const unsigned char RATING_Rating = 1;
+const unsigned char RATING_Rapid = 2;
+const unsigned char RATING_ICCF = 3;
+const unsigned char RATING_USCF = 4;
+const unsigned char RATING_DWZ = 5;
+const unsigned char RATING_BCF = 6;
 
 extern const char * ratingTypeNames [17];   // Defined in game.cpp
 
 
 // NameBase types: see namebase.h and namebase.cpp
 
-typedef uint            idNumberT;
-typedef uint            nameT;
+typedef unsigned int            idNumberT;
+typedef unsigned int            nameT;
 
 // Result Type
 
-const uint NUM_RESULT_TYPES = 4;
-typedef byte    resultT;
+const unsigned int NUM_RESULT_TYPES = 4;
+typedef unsigned char    resultT;
 const resultT
     RESULT_None  = 0,
     RESULT_White = 1,
     RESULT_Black = 2,
     RESULT_Draw  = 3;
 
-const uint RESULT_SCORE[4] = { 1, 2, 0, 1 };
+const unsigned int RESULT_SCORE[4] = { 1, 2, 0, 1 };
 
 const char RESULT_CHAR [4]       = { '*',  '1',    '0',    '='       };
 const char RESULT_STR [4][4]     = { "*",  "1-0",  "0-1",  "=-="     };
@@ -200,7 +191,7 @@ const resultT RESULT_OPPOSITE [4] = {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // CHESS PIECES, COLORS AND THEIR MACROS
 
-const uint NUM_COLOR_TYPES = 2;
+const unsigned int NUM_COLOR_TYPES = 2;
 const colorT
     WHITE = 0,
     BLACK = 1,
@@ -241,7 +232,7 @@ const pieceT  BK =  9, BQ = 10, BR = 11, BB = 12, BN = 13, BP = 14;
 // Minor piece definitions, used for searching by material only:
 const pieceT  WM = 16, BM = 17;
 
-const uint MAX_PIECE_TYPES = 18;
+const unsigned int MAX_PIECE_TYPES = 18;
 
 
 // PIECE_CHAR[]: array of piece characters, capitals for White pieces.
@@ -433,7 +424,7 @@ square_FlipDiag (squareT sq)
     return square_Make (square_Rank(sq), square_Fyle(sq));
 }
 
-const uint
+const unsigned int
 rankFyleDist[64] = {
     0, 1, 2, 3, 4, 5, 6, 7,
     1, 0, 1, 2, 3, 4, 5, 6,
@@ -447,12 +438,12 @@ rankFyleDist[64] = {
 
 // square_Distance:
 //   Return the distance in king moves between two squares.
-  inline uint
+  inline unsigned int
 square_Distance (squareT from, squareT to)
 {
     ASSERT (from <= H8  &&  to <= H8);
-    uint rankd = rankFyleDist[(square_Rank(from) << 3) | square_Rank(to)];
-    uint fyled = rankFyleDist[(square_Fyle(from) << 3) | square_Fyle(to)];
+    unsigned int rankd = rankFyleDist[(square_Rank(from) << 3) | square_Rank(to)];
+    unsigned int fyled = rankFyleDist[(square_Fyle(from) << 3) | square_Fyle(to)];
     return (rankd > fyled) ? rankd : fyled;
 }
 
@@ -506,8 +497,8 @@ square_EdgeDistance (squareT sq)
 square_IsKnightHop (squareT from, squareT to)
 {
     ASSERT (from <= H8  &&  to <= H8);
-    uint rdist = rankFyleDist [(square_Rank(from) << 3) | square_Rank(to)];
-    uint fdist = rankFyleDist [(square_Fyle(from) << 3) | square_Fyle(to)];
+    unsigned int rdist = rankFyleDist [(square_Rank(from) << 3) | square_Rank(to)];
+    unsigned int fdist = rankFyleDist [(square_Fyle(from) << 3) | square_Fyle(to)];
     // It is a knight hop only if one distance is two squares and the
     // other is one square -- that is, only if their product equals two.
     return ((rdist * fdist) == 2);
@@ -691,7 +682,7 @@ BOARD_SQUARECOLOR[66] = {
   inline int
 board_Compare (const pieceT * b1, const pieceT * b2)
 {
-    for (uint i=0; i < 64; i++) {
+    for (unsigned int i=0; i < 64; i++) {
         if (*b1 < *b2) { return -1; }
         if (*b1 > *b2) { return 1; }
         b1++; b2++;
@@ -721,7 +712,7 @@ square_Adjacent (squareT from, squareT to)
 //   To ensure good bit distributions, we take three random values
 //   and mix the bits around.
 
-inline void srandom32(uint seed) {
+inline void srandom32(unsigned int seed) {
 #ifdef WIN32
     srand (seed);
 #else
@@ -729,7 +720,7 @@ inline void srandom32(uint seed) {
 #endif
 }
 
-inline uint random32()
+inline unsigned int random32()
 {
 #ifdef WIN32
     return rand() ^ (rand() << 16) ^ (rand() >> 16);

@@ -23,8 +23,8 @@ namespace Guess
 class SquareSet {
 private:
 
-    uint Bits_a1h4;
-    uint Bits_a5h8;
+    unsigned int Bits_a1h4;
+    unsigned int Bits_a5h8;
 
 public:
 

@@ -250,9 +250,9 @@ INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
 win32 {
     # Whereever zlib is installed on Windows
     # Strange enough, on Mac OS this is found automagically by Qt
-    DEFINES += ZLIB_WINAPI
-    LIBS += -lz
-    INCLUDEPATH += /Qt/Qt5.0.1/5.0.1/Src/3rdparty/zlib
+    # DEFINES += ZLIB_WINAPI
+    # LIBS += -lz
+    INCLUDEPATH += /Qt/5.1.0/msvc2012_64/include/QtZlib
 }
 
 UI_DIR = src/generated

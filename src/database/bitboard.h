@@ -42,7 +42,7 @@ public:
 	/** Remove all pieces and state from board */
 	void clear();
 	/** Set move number in game */
-	void setMoveNumber(uint moveNumber);
+	void setMoveNumber(unsigned int moveNumber);
 	/** Set initial chess game position on the board */
 	void setStandardPosition();
 	/** Set the given piece on the board at the given square */
@@ -77,11 +77,11 @@ public:
 	/** @return piece sitting at given square on the board */
 	Piece pieceAt(Square s) const;
 	/** @return number of ply since a pawn move or capture */
-	uint halfMoveClock() const;
+	unsigned int halfMoveClock() const;
 	/** Set number of ply since a pawn move or capture */
-	void setHalfMoveClock(uint i);
+	void setHalfMoveClock(unsigned int i);
 	/** @return the current move number in the game */
-	uint moveNumber() const;
+	unsigned int moveNumber() const;
 	/** @return color of side next to move */
 	Color toMove() const;
 	/** @return true if its possible for this position to follow target position */
@@ -125,16 +125,16 @@ private:
 	/** Return true if the side to move is stalemated */
 	bool isStalemate() const;
 	/** Test to see if given color has the right to castle on kingside */
-    bool canCastleShort(const uint color) const;
+    bool canCastleShort(const unsigned int color) const;
 	/** Test to see if given color has the right to castle on queenside */
-    bool canCastleLong(const uint color) const;
+    bool canCastleLong(const unsigned int color) const;
 	/** Test to see if given color has any castling rights remaining */
-    bool canCastle(const uint color) const;
+    bool canCastle(const unsigned int color) const;
 
 	/** Return true if making move would put oneself into check */
 	bool isIntoCheck(const Move& move) const;
 	/** Return true if the given square is attacked by the given color */
-	bool isAttackedBy(const uint color, const uint square) const;
+	bool isAttackedBy(const unsigned int color, const unsigned int square) const;
 
 	/** Return all squares attacked by a knight on given square */
 	quint64 knightAttacksFrom(const Square s) const;
@@ -157,11 +157,11 @@ private:
 	MoveList generateMoves() const;
 
 	/** Grant castling rights on the kingside to the given color */
-	void setCastleShort(uint color);
+	void setCastleShort(unsigned int color);
 	/** Grant castling rights on the queenside to the given color */
-	void setCastleLong(uint color);
+	void setCastleLong(unsigned int color);
 	/** Revoke all castling rights from the given color */
-	void destroyCastle(uint color);
+	void destroyCastle(unsigned int color);
 	/** Update the epSquare value based on a new epFile value */
 	void epFile2Square();
 
@@ -184,8 +184,8 @@ private:
 	uchar m_epFile;                // file of a possible ep capture
 	uchar m_epSquare;              // This is requested by hash routine enough that we keep it pre calculated
 	uchar m_castle;                // flags for castle legality  (these can be merged)
-	ushort m_halfMoves;            // Number of moves since last pawn move or capture
-	uint m_moveNumber;             // Move number in game (incremented after each black move)
+	unsigned short m_halfMoves;            // Number of moves since last pawn move or capture
+	unsigned int m_moveNumber;             // Move number in game (incremented after each black move)
     uchar m_pawnCount[2];          // Number of pawns for each side
     uchar m_pieceCount[2];         // Number of pieces INCLUDING pawns for each side
 };
@@ -198,7 +198,7 @@ extern quint64 bb_KingAttacks[64];
 extern quint64 bb_RankAttacks[64][64];
 extern quint64 bb_FileAttacks[64][64];
 
-const uint bb_ShiftR45[64] = {
+const unsigned int bb_ShiftR45[64] = {
 	1, 58, 51, 44, 37, 30, 23, 16,
 	9, 1, 58, 51, 44, 37, 30, 23,
 	17, 9, 1, 58, 51, 44, 37, 30,
@@ -209,7 +209,7 @@ const uint bb_ShiftR45[64] = {
 	57, 49, 41, 33, 25, 17, 9, 1
 };
 
-const uint bb_ShiftL45[64] = {
+const unsigned int bb_ShiftL45[64] = {
 	9, 17, 25, 33, 41, 49, 57, 1,
 	17, 25, 33, 41, 49, 57, 1, 10,
 	25, 33, 41, 49, 57, 1, 10, 19,
@@ -220,7 +220,7 @@ const uint bb_ShiftL45[64] = {
 	1, 10, 19, 28, 37, 46, 55, 64
 };
 
-inline bool BitBoard::isAttackedBy(const uint color, const uint square) const
+inline bool BitBoard::isAttackedBy(const unsigned int color, const unsigned int square) const
 {
 	if (bb_PawnAttacks[color^1][square] & (m_pawns | m_bishops) & m_occupied_co[color])
 		return 1;
@@ -235,17 +235,17 @@ inline bool BitBoard::isAttackedBy(const uint color, const uint square) const
 	return 0;
 };
 
-inline void BitBoard::setCastleShort(uint color)
+inline void BitBoard::setCastleShort(unsigned int color)
 {
 	m_castle |= 1 << color;
 }
 
-inline void BitBoard::setCastleLong(uint color)
+inline void BitBoard::setCastleLong(unsigned int color)
 {
 	m_castle |= 4 << color;
 }
 
-inline void BitBoard::destroyCastle(uint color)
+inline void BitBoard::destroyCastle(unsigned int color)
 {
 	m_castle &= ~(5 << color);
 }
@@ -284,17 +284,17 @@ inline void BitBoard::epFile2Square()
 	else	m_epSquare = NoEPSquare;
 }
 
-inline bool BitBoard::canCastle(const uint color) const
+inline bool BitBoard::canCastle(const unsigned int color) const
 {
     return m_castle & (5 << color);
 }
 
-inline bool BitBoard::canCastleShort(const uint color) const
+inline bool BitBoard::canCastleShort(const unsigned int color) const
 {
     return m_castle & (1 << color);
 }
 
-inline bool BitBoard::canCastleLong(const uint color)  const
+inline bool BitBoard::canCastleLong(const unsigned int color)  const
 {
     return m_castle&(4 << color);
 }
@@ -304,17 +304,17 @@ inline bool BitBoard::isCheck() const
 	return isAttackedBy(m_stm^1, m_ksq[m_stm]);
 }
 
-inline uint BitBoard::halfMoveClock() const
+inline unsigned int BitBoard::halfMoveClock() const
 {
 	return m_halfMoves;
 }
 
-inline void BitBoard::setHalfMoveClock(uint i)
+inline void BitBoard::setHalfMoveClock(unsigned int i)
 {
 	m_halfMoves = i;
 }
 
-inline uint BitBoard::moveNumber() const
+inline unsigned int BitBoard::moveNumber() const
 {
 	return m_moveNumber;
 }
@@ -350,7 +350,7 @@ inline void BitBoard::swapToMove()
 	m_stm ^= 1;
 }
 
-inline void BitBoard::setMoveNumber(uint moveNumber)
+inline void BitBoard::setMoveNumber(unsigned int moveNumber)
 {
 	m_moveNumber = moveNumber;
 }

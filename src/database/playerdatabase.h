@@ -57,7 +57,7 @@ public:
 	/**
 	number of players in the database
 	*/
-	uint count() const;
+	unsigned int count() const;
 	/**
 	add a new player
 	*/

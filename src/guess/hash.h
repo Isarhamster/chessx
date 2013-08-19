@@ -27,7 +27,7 @@ namespace Guess
 //      (b) every value differs from every other value by at least 10
 //          bits and at most 32-10=22 bits.
 //
-const uint
+const unsigned int
 goodHashValues [12 * 64] = {
     0x039B11BFu,0x4890D6A4u,0x37539B8Au,0xA7E3A104u,0x8B263019u,0xEB71AE0Bu,
     0x87099341u,0x32EF9CD4u,0x698B8BC1u,0x823FEACEu,0x8E607A5Au,0x7241E921u,
