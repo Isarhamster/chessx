@@ -58,7 +58,7 @@ const quint64 A6 = H5 << 1, B6 = A6 << 1, C6 = B6 << 1, D6 = C6 << 1, E6 = D6 <<
 const quint64 A7 = H6 << 1, B7 = A7 << 1, C7 = B7 << 1, D7 = C7 << 1, E7 = D7 << 1, F7 = E7 << 1, G7 = F7 << 1, H7 = G7 << 1;
 const quint64 A8 = H7 << 1, B8 = A8 << 1, C8 = B8 << 1, D8 = C8 << 1, E8 = D8 << 1, F8 = E8 << 1, G8 = F8 << 1, H8 = G8 << 1;
 
-const uint RotateL90[64] = {
+const unsigned int RotateL90[64] = {
     h1, h2, h3, h4, h5, h6, h7, h8,
     g1, g2, g3, g4, g5, g6, g7, g8,
     f1, f2, f3, f4, f5, f6, f7, f8,
@@ -69,7 +69,7 @@ const uint RotateL90[64] = {
     a1, a2, a3, a4, a5, a6, a7, a8,
 };
 
-const uint RotateR45[64] = {
+const unsigned int RotateR45[64] = {
     a1, b8, c7, d6, e5, f4, g3, h2,
     a2, b1, c8, d7, e6, f5, g4, h3,
     a3, b2, c1, d8, e7, f6, g5, h4,
@@ -80,7 +80,7 @@ const uint RotateR45[64] = {
     a8, b7, c6, d5, e4, f3, g2, h1
 };
 
-const uint RotateL45[64] = {
+const unsigned int RotateL45[64] = {
     a2, b3, c4, d5, e6, f7, g8, h1,
     a3, b4, c5, d6, e7, f8, g1, h2,
     a4, b5, c6, d7, e8, f1, g2, h3,
@@ -133,20 +133,20 @@ const quint64 fileNotGH   = ~(fileG | fileH);
 #define Rank(s)           ((s)>>3)
 
 // This C++ version is as fast as the assembly
-inline uint getFirstBitAndClear64(quint64& bb)
+inline unsigned int getFirstBitAndClear64(quint64& bb)
 {
     register quint64 x = bb & -(qint64)bb;
     bb ^= x;
 #ifdef __GNUG__
     return 63-__builtin_clzll(x);
 #elif _MSC_VER
-    register uint r =  0;
+    register unsigned long r =  0;
     _BitScanReverse(&r, x);
-    return r;
+    return r+1;
 #else
     // SBE - After a fair bit of testing, this is the fastest portable version
     // i could come up with, it's about twice as fast as shift-testing 64 times.
-    register uint r =  0;
+    register unsigned int r =  0;
     if (!(x & 0xffffffff)) { x >>= 32; r |= 32; }
     if (!(x & 0xffff)) { x >>= 16; r |= 16; }
     if (!(x & 0xff)) { x >>= 8; r |= 8; }
@@ -441,8 +441,8 @@ bool BitBoard::fromFen(const QString& fen)
 
 BoardStatus BitBoard::validate() const
 {
-    uint wk = 0, bk = 0, wp = 0, bp = 0, bo = 0, wo = 0;
-    for (uint i = 0; i < 64; ++i) {
+    unsigned int wk = 0, bk = 0, wp = 0, bp = 0, bo = 0, wo = 0;
+    for (unsigned int i = 0; i < 64; ++i) {
         Piece p = pieceAt(i);
         if (p == WhiteKing) {
             ++wk;
@@ -546,7 +546,7 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 {
     SaneString fen(qfen);
     int i;
-    uint s;
+    unsigned int s;
     char c = fen[0];
 
     memset(this, 0, sizeof(BitBoard));
@@ -755,7 +755,7 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 
 MoveList BitBoard::generateMoves() const
 {
-    register uint from, to;
+    register unsigned int from, to;
     quint64 moves, movers;
 
     MoveList p;
@@ -996,7 +996,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
     int fromRank = -1;
     uchar promotePiece = Empty;
     Move move;
-    uint type;
+    unsigned int type;
 
     // Castling
     if (c == 'o' || c == 'O' || c == '0') {
@@ -1130,17 +1130,17 @@ Move BitBoard::parseMove(const QString& algebraic) const
 
 bool BitBoard::doMove(const Move& m)
 {
-    register uint from = m.from();
-    register uint to = m.to();
-    register uint sntm = m_stm ^ 1; // side not to move
+    register unsigned int from = m.from();
+    register unsigned int to = m.to();
+    register unsigned int sntm = m_stm ^ 1; // side not to move
     register quint64 bb_from = SetBit(from);
     register quint64 bb_to = SetBit(to);
-    uint rook_from = 0, rook_to = 0;
+    unsigned int rook_from = 0, rook_to = 0;
 
     m_epFile = 0;
     m_halfMoves++;	// Number of moves since last capture or pawn move
 
-    uint action = m.action();
+    unsigned int action = m.action();
     switch (action) {
     case Pawn:
         m_halfMoves = 0;
@@ -1282,7 +1282,7 @@ bool BitBoard::doMove(const Move& m)
         --m_pawnCount[sntm];
         --m_pieceCount[sntm];
         m_halfMoves = 0;
-        uint epsq = to + (m_stm == White ? -8 : 8);  // annoying move, the capture is not on the 'to' square
+        unsigned int epsq = to + (m_stm == White ? -8 : 8);  // annoying move, the capture is not on the 'to' square
         m_piece[epsq] = Empty;
         m_pawns ^= SetBit(epsq);
         m_occupied_co[sntm] ^= SetBit(epsq);
@@ -1311,14 +1311,14 @@ bool BitBoard::doMove(const Move& m)
 
 void BitBoard::undoMove(const Move& m)
 {
-    register uint from = m.from();
-    register uint to = m.to();
-    register uint sntm = m_stm ^ 1; // side not to move
+    register unsigned int from = m.from();
+    register unsigned int to = m.to();
+    register unsigned int sntm = m_stm ^ 1; // side not to move
     register quint64 bb_from = SetBit(from);
     register quint64 bb_to = SetBit(to);
-    uint rook_from = 0, rook_to = 0; // =0 just to quiet compiler warnings
+    unsigned int rook_from = 0, rook_to = 0; // =0 just to quiet compiler warnings
 
-    uint action = m.action();
+    unsigned int action = m.action();
     switch (action) {
     case Pawn:
     case Move::TWOFORWARD:
@@ -1401,7 +1401,7 @@ void BitBoard::undoMove(const Move& m)
         break;
     }
 
-    uint replace = m.capturedType();
+    unsigned int replace = m.capturedType();
     switch (m.removal()) {  // Reverse captures
     case Empty:
         m_occupied_l90 ^= SetBitL90(to);     // extra cleanup needed for non-captures
@@ -1438,7 +1438,7 @@ void BitBoard::undoMove(const Move& m)
         ++m_pawnCount[m_stm];
         ++m_pieceCount[m_stm];
         replace = Empty;
-        uint epsq = to + (sntm == White ? -8 : 8);  // annoying move, the capture is not on the 'to' square
+        unsigned int epsq = to + (sntm == White ? -8 : 8);  // annoying move, the capture is not on the 'to' square
         m_piece[epsq] = Pawn;
         m_pawns ^= SetBit(epsq);
         m_occupied_co[m_stm] ^= SetBit(epsq);
@@ -1516,8 +1516,8 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
         if (m_stm == Black)
             move.setBlack();
         move.u = m_halfMoves;
-        move.u |= (((ushort) m_castle & 0xF) << 8);
-        move.u |= (((ushort) m_epFile & 0xF) << 12);
+        move.u |= (((unsigned short) m_castle & 0xF) << 8);
+        move.u |= (((unsigned short) m_epFile & 0xF) << 12);
 
         return move;
     }
@@ -1557,8 +1557,8 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
     if (m_stm == Black)
         move.setBlack();
     move.u = m_halfMoves;
-    move.u |= (((ushort) m_castle & 0xF) << 8);
-    move.u |= (((ushort) m_epFile & 0xF) << 12);
+    move.u |= (((unsigned short) m_castle & 0xF) << 8);
+    move.u |= (((unsigned short) m_epFile & 0xF) << 12);
     if( src != dest)
     {
         move.setLegalMove();

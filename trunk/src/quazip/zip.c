@@ -264,7 +264,7 @@ local int add_data_in_datablock(ll,buf,len)
 #ifndef NO_ADDFILEINEXISTINGZIP
 /* ===========================================================================
    Inputs a long in LSB order to the given file
-   nbByte == 1, 2 or 4 (byte, short or long)
+   nbByte == 1, 2 or 4 (unsigned char, short or long)
 */
 
 local int ziplocal_putValue OF((const zlib_filefunc_def* pzlib_filefunc_def,

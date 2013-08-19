@@ -31,13 +31,13 @@ namespace Guess
 //////////////////////////////////////////////////////////////////////
 //  Position:  Constants
 
-const byte  WQ_CASTLE = 1,    WK_CASTLE = 2,
+const unsigned char  WQ_CASTLE = 1,    WK_CASTLE = 2,
             BQ_CASTLE = 4,    BK_CASTLE = 8;
 
 // SANFlag: since checking if a move is check (to add the "+" to its
 //      SAN string) takes time, and checking for mate takes even
 //      longer, we specify whether we want this done with a flag.
-typedef byte      sanFlagT;
+typedef unsigned char      sanFlagT;
 const sanFlagT    SAN_NO_CHECKTEST   = 0,
                   SAN_CHECKTEST      = 1,
                   SAN_MATETEST       = 2;
@@ -45,7 +45,7 @@ const sanFlagT    SAN_NO_CHECKTEST   = 0,
 
 // Flags that Position::PrintFEN() recognises:
 //
-const uint
+const unsigned int
     FEN_COMPACT = 0,
     FEN_BOARD = 1,
     FEN_CASTLING_EP = 2,
@@ -54,7 +54,7 @@ const uint
 
 // Flags that Position::GenerateMoves() recognises:
 //
-typedef uint genMovesT;
+typedef unsigned int genMovesT;
 const genMovesT
     GEN_CAPTURES = 1,
     GEN_NON_CAPS = 2,
@@ -66,7 +66,7 @@ const genMovesT
 struct sanListT
 {
     bool        current;
-    ushort      num;
+    unsigned short      num;
     sanStringT  list [MAX_LEGAL_MOVES];
 };
 
@@ -83,17 +83,17 @@ private:
 
     pieceT          Board[66];      // the actual board + a color square
                                     // and a NULL square.
-    uint            Count[2];       // count of pieces & pawns each
-    byte            Material[16];   // count of each type of piece
-    byte            ListPos[64];    // ListPos stores the position in
+    unsigned int            Count[2];       // count of pieces & pawns each
+    unsigned char            Material[16];   // count of each type of piece
+    unsigned char            ListPos[64];    // ListPos stores the position in
                                         // List[][] for the piece on
                                         // square x.
     squareT         List[2][16];    // list of piece squares for each side
-    byte            NumOnRank[16][8];
-    byte            NumOnFyle[16][8];
-    byte            NumOnLeftDiag[16][16];  // Num Queens/Bishops
-    byte            NumOnRightDiag[16][16];
-    byte            NumOnSquareColor[16][2];
+    unsigned char            NumOnRank[16][8];
+    unsigned char            NumOnFyle[16][8];
+    unsigned char            NumOnLeftDiag[16][16];  // Num Queens/Bishops
+    unsigned char            NumOnRightDiag[16][16];
+    unsigned char            NumOnSquareColor[16][2];
 
     directionT      Pinned[16];     // For each List[ToMove][x], stores
                                         // whether piece is pinned to its
@@ -101,17 +101,17 @@ private:
 
     squareT         EPTarget;       // square pawns can EP capture to
     colorT          ToMove;
-    ushort          HalfMoveClock;  // Count of halfmoves since last capture
+    unsigned short          HalfMoveClock;  // Count of halfmoves since last capture
                                     // or pawn move.
-    ushort          PlyCounter;
-    byte            Castling;       // castling flags
+    unsigned short          PlyCounter;
+    unsigned char            Castling;       // castling flags
     bool            StrictCastling; // If false, allow castling after moving
                                         // the King or Rook.
 
-    uint            Hash;           // Hash value.
-    uint            PawnHash;       // Pawn structure hash value.
+    unsigned int            Hash;           // Hash value.
+    unsigned int            PawnHash;       // Pawn structure hash value.
 
-//    uint            NumChecks;      // Number of checks.
+//    unsigned int            NumChecks;      // Number of checks.
 //    SquareList      CheckSquares;   // Stores list of pieces checking the king.
 
     MoveList      * LegalMoves;     // list of legal moves
@@ -161,47 +161,47 @@ public:
     errorT      AddPiece (pieceT p, squareT sq);
 
     // Set and Get attributes -- one-liners
-    byte        PieceCount (pieceT p)    { return Material[p]; }
-    byte *      GetMaterial ()           { return Material; }
+    unsigned char        PieceCount (pieceT p)    { return Material[p]; }
+    unsigned char *      GetMaterial ()           { return Material; }
     void        SetEPTarget (squareT s)  { EPTarget = s; }
     squareT     GetEPTarget ()           { return EPTarget; }
     bool        GetEPFlag ()             { return (EPTarget != NS); }
     void        SetToMove (colorT c)     { ToMove = c; }
     colorT      GetToMove ()             { return ToMove; }
-    void        SetPlyCounter (ushort x) { PlyCounter = x; }
-    ushort      GetPlyCounter ()         { return PlyCounter; }
-    ushort      GetFullMoveCount ()      { return PlyCounter / 2 + 1; }
+    void        SetPlyCounter (unsigned short x) { PlyCounter = x; }
+    unsigned short      GetPlyCounter ()         { return PlyCounter; }
+    unsigned short      GetFullMoveCount ()      { return PlyCounter / 2 + 1; }
     sanListT *  GetSANStrings ()         { return SANStrings; }
     MoveList *  GetLegalMoves ()         { return LegalMoves; }
 
     // Methods to get the Board or piece lists -- used in game.cpp to
     // decode moves:
     squareT *   GetList (colorT c)    { return List[c]; }
-    uint        GetCount (colorT c)   { return Count[c]; }
-    uint        TotalMaterial ()      { return Count[WHITE] + Count[BLACK]; }
-    uint        NumNonPawns (colorT c) { 
+    unsigned int        GetCount (colorT c)   { return Count[c]; }
+    unsigned int        TotalMaterial ()      { return Count[WHITE] + Count[BLACK]; }
+    unsigned int        NumNonPawns (colorT c) {
         return Count[c] - Material[piece_Make(c,PAWN)];
     }
     bool        InPawnEnding () {
         return (NumNonPawns(WHITE) == 1  &&  NumNonPawns(BLACK) == 1);
     }
-    uint        MaterialValue (colorT c);
-    inline uint FyleCount (pieceT p, fyleT f) {
+    unsigned int        MaterialValue (colorT c);
+    inline unsigned int FyleCount (pieceT p, fyleT f) {
         return NumOnFyle[p][f];
     }
-    inline uint RankCount (pieceT p, rankT r) {
+    inline unsigned int RankCount (pieceT p, rankT r) {
         return NumOnRank[p][r];
     }
-    inline uint LeftDiagCount (pieceT p, leftDiagT diag) {
+    inline unsigned int LeftDiagCount (pieceT p, leftDiagT diag) {
         return NumOnLeftDiag[p][diag];
     }
-    inline uint RightDiagCount (pieceT p, rightDiagT diag) {
+    inline unsigned int RightDiagCount (pieceT p, rightDiagT diag) {
         return NumOnRightDiag[p][diag];
     }
-    inline uint SquareColorCount (pieceT p, colorT sqColor) {
+    inline unsigned int SquareColorCount (pieceT p, colorT sqColor) {
         return NumOnSquareColor[p][sqColor];
     }
-    uint        GetSquares (pieceT p, SquareList * sqlist);
+    unsigned int        GetSquares (pieceT p, SquareList * sqlist);
 
     pieceT *    GetBoard () {
         Board[COLOR_SQUARE] = COLOR_CHAR[ToMove];
@@ -217,8 +217,8 @@ public:
     inline void SetCastling (colorT c, castleDirT dir, bool flag);
     bool        GetCastling (colorT c, castleDirT dir);
     inline bool CastlingPossible () { return (Castling ? true : false); }
-    byte        GetCastlingFlags () { return Castling; }
-    void        SetCastlingFlags (byte b) { Castling = b; }
+    unsigned char        GetCastlingFlags () { return Castling; }
+    void        SetCastlingFlags (unsigned char b) { Castling = b; }
 
     void        SetStrictCastling (bool b) { StrictCastling = b; }
     bool        GetStrictCastling (void) { return StrictCastling; }
@@ -232,9 +232,9 @@ public:
     void        ClearSANStrings ();
 
     // Hashing
-    inline uint HashValue (void) { return Hash; }
-    inline uint PawnHashValue (void) { return PawnHash; }
-    uint        GetHPSig ();
+    inline unsigned int HashValue (void) { return Hash; }
+    inline unsigned int PawnHashValue (void) { return PawnHash; }
+    unsigned int GetHPSig();
 
     // Move generation and execution
     void        CalcPins();
@@ -255,18 +255,18 @@ public:
     errorT      MatchPawnMove (MoveList * mlist, fyleT fromFyle, squareT to, pieceT promote);
     errorT      MatchKingMove (MoveList * mlist, squareT target);
 
-    uint        CalcAttacks (colorT toMove, squareT kingSq, SquareList * squares);
-    uint        CalcNumChecks () {
+    unsigned int        CalcAttacks (colorT toMove, squareT kingSq, SquareList * squares);
+    unsigned int        CalcNumChecks () {
                     return CalcAttacks (1-ToMove, GetKingSquare(), NULL);
                 }
-    uint        CalcNumChecks (squareT kingSq) {
+    unsigned int        CalcNumChecks (squareT kingSq) {
                     return CalcAttacks (1-ToMove, kingSq, NULL);
                 }
-    uint        CalcNumChecks (squareT kingSq, SquareList * checkSquares) {
+    unsigned int        CalcNumChecks (squareT kingSq, SquareList * checkSquares) {
                     return CalcAttacks (1-ToMove, kingSq, checkSquares);
                 }
 
-    uint        Mobility (pieceT p, colorT color, squareT from);
+    unsigned int        Mobility (pieceT p, colorT color, squareT from);
     pieceT      SmallestDefender (colorT color, squareT target);
     bool        IsKingInCheck () { return (CalcNumChecks() > 0); }
     bool        IsKingInCheckDir (directionT dir);
@@ -294,16 +294,16 @@ public:
     void        DumpBoard (FILE * fp);
     void        DumpLists (FILE * fp);
     errorT      ReadFromLongStr (const char * str);
-    errorT      ReadFromCompactStr (const byte * str);
+    errorT      ReadFromCompactStr (const unsigned char * str);
     errorT      ReadFromFEN (const char * s);
     void        PrintCompactStr (char * cboard);
     void        PrintCompactStrFlipped (char * cboard);
-    byte        CompactStrFirstByte () {
+    unsigned char        CompactStrFirstByte () {
         return (Board[0] << 4) | Board[1];
     }
-    void        PrintFEN (char * str, uint flags);
+    void        PrintFEN (char * str, unsigned int flags);
     void        DumpLatexBoard (QString *dstr, bool flip = false);
-    void        DumpHtmlBoard (QString *dstr, uint style, const char * dir, bool flip = false);
+    void        DumpHtmlBoard (QString *dstr, unsigned int style, const char * dir, bool flip = false);
 
     // Copy, compare positions
     int         Compare (Position * p);
@@ -326,7 +326,7 @@ public:
 inline void
 Position::SetCastling (colorT c, castleDirT dir, bool flag)
 {
-    register byte b = (c==WHITE ? 1 : 4);
+    register unsigned char b = (c==WHITE ? 1 : 4);
     if (dir == KSIDE) b += b;
     // Now b = 1 or 2 (white flags), or 4 or 8 (black flags)
     if (flag) { Castling |= b; } else { Castling &= (255-b); }
@@ -340,7 +340,7 @@ Position::SetCastling (colorT c, castleDirT dir, bool flag)
 inline bool
 Position::GetCastling (colorT c, castleDirT dir)
 {
-    register byte b = (c==WHITE ? 1 : 4);
+    register unsigned char b = (c==WHITE ? 1 : 4);
     if (dir == KSIDE) b += b;
     // Now b == 1 or 2 (white flags), or 4 or 8 (black flags)
     if (Castling & b) { return true; } else { return false; }

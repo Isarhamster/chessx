@@ -253,7 +253,7 @@ strAppend (char * target, const char * extra)
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Extra versions of strAppend() for appending an int, a uint, or
+// Extra versions of strAppend() for appending an int, a unsigned int, or
 // up to four strings:
 
 char *
@@ -265,7 +265,7 @@ strAppend (char * target, int i)
 }
 
 char *
-strAppend (char * target, uint u)
+strAppend (char * target, unsigned int u)
 {
     char temp [20];
     sprintf (temp, "%u", u);
@@ -401,11 +401,11 @@ strDuplicate (const char * original)
 // strPrefix():
 //       Returns the length of the common prefix of two strings.
 //
-uint
+unsigned int
 strPrefix (const char * s1, const char * s2)
 {
     ASSERT (s1 != NULL  &&  s2 != NULL);
-    uint count = 0;
+    unsigned int count = 0;
     while (*s1 == *s2) {
         if (*s1 == 0) { // seen end of string, strings are identical
             return count;
@@ -428,7 +428,7 @@ strPrefix (const char * s1, const char * s2)
 //      The return value is the length copied: always 'width' if
 //      width is >= 0, or the length of original if 'width' is negative.
 //
-uint
+unsigned int
 strPad (char * target, const char * original, int width, char padding)
 {
     ASSERT (target != NULL  &&  original != NULL);
@@ -525,10 +525,10 @@ strTrimLeft (const char * target, const char * trimChars)
 //      Returns the number of characters trimmed.
 //      E.g., strTrimRight("abcyzyz", "yz") would leave the string
 //      as "abc" and return 4.
-uint
+unsigned int
 strTrimRight (char * target, const char * trimChars)
 {
-    uint trimCount = 0;
+    unsigned int trimCount = 0;
     char * s = target;
     char * lastNonTrim = NULL;
     while (*s) {
@@ -558,10 +558,10 @@ strTrimRight (char * target, const char * trimChars)
 //      Returns the number of characters trimmed.
 //      E.g., strTrimSuffix ("file.txt", '.') would leave the
 //      string as "file" and return 4.
-uint
+unsigned int
 strTrimSuffix (char * target, char suffixChar)
 {
-    uint trimCount = 0;
+    unsigned int trimCount = 0;
     char * lastSuffixPtr = NULL;
     char * s = target;
     while (*s) {
@@ -666,7 +666,7 @@ strTrimMarkup (char * str)
 //    surname, or only the surname and a maximum number
 //    of initials.
 void
-strTrimSurname (char * str, uint initials)
+strTrimSurname (char * str, unsigned int initials)
 {
     char * in = str;
     char * out = str;
@@ -730,7 +730,7 @@ strNextWord (const char * str)
 //      Returns the new string length, to save time if the caller
 //      wants to find the length of the modified string.
 //
-uint
+unsigned int
 strSingleSpace (char * str)
 {
     ASSERT (str);
@@ -738,7 +738,7 @@ strSingleSpace (char * str)
                             // of the string is removed.
     char * forward = str;
     char * back = str;
-    uint length = 0;
+    unsigned int length = 0;
 
     // Loop through the string compacting out unwanted whitespace:
 
@@ -859,7 +859,7 @@ strIsAlphaPrefix (const char * prefix, const char * longStr)
 bool
 strIsSurnameOnly (const char * name)
 {
-    uint capcount = 0;
+    unsigned int capcount = 0;
     const char * s = name;
     while (*s != 0) {
         char c = *s;
@@ -976,11 +976,11 @@ strGetInteger (const char * str)
 //    Extracts an unsigned base-10 value from a string.
 //    Defaults to zero (as strtoul does) for non-numeric strings.
 //
-uint
+unsigned int
 strGetUnsigned (const char * str)
 {
     unsigned long ulvalue = strtoul (str, NULL, 10);
-    return (uint) ulvalue;
+    return (unsigned int) ulvalue;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -988,9 +988,9 @@ strGetUnsigned (const char * str)
 //    Extracts the specified number of signed integers in a
 //    whitespace-separated string to an array.
 void
-strGetIntegers (const char * str, int * results, uint nResults)
+strGetIntegers (const char * str, int * results, unsigned int nResults)
 {
-    for (uint i=0; i < nResults; i++) {
+    for (unsigned int i=0; i < nResults; i++) {
         while (*str != 0  &&  isspace(*str)) { str++; }
         results[i] = strGetInteger (str);
         while (*str != 0  &&  !isspace(*str)) { str++; }
@@ -1002,9 +1002,9 @@ strGetIntegers (const char * str, int * results, uint nResults)
 //    Extracts the specified number of unsigned integers in a
 //    whitespace-separated string to an array.
 void
-strGetUnsigneds (const char * str, uint * results, uint nResults)
+strGetUnsigneds (const char * str, unsigned int * results, unsigned int nResults)
 {
-    for (uint i=0; i < nResults; i++) {
+    for (unsigned int i=0; i < nResults; i++) {
         while (*str != 0  &&  isspace(*str)) { str++; }
         results[i] = strGetUnsigned (str);
         while (*str != 0  &&  !isspace(*str)) { str++; }
@@ -1016,9 +1016,9 @@ strGetUnsigneds (const char * str, uint * results, uint nResults)
 //    Extracts the specified number of boolean values
 //    from a whitespace-separated string.
 void
-strGetBooleans (const char * str, bool * results, uint nResults)
+strGetBooleans (const char * str, bool * results, unsigned int nResults)
 {
-    for (uint i=0; i < nResults; i++) {
+    for (unsigned int i=0; i < nResults; i++) {
         while (*str != 0  &&  isspace(*str)) { str++; }
         results[i] = strGetBoolean (str);
         while (*str != 0  &&  !isspace(*str)) { str++; }
@@ -1148,7 +1148,7 @@ strUniqueExactMatch (const char * keyStr, const char ** strTable, bool exact)
 // fileSize():
 //    Computes the plain (uncompressed) size of the named file,
 //    using one of the other FileSize functions here.
-uint
+unsigned int
 fileSize (const char * name, const char * suffix)
 {
     fileNameT fname;
@@ -1165,14 +1165,14 @@ fileSize (const char * name, const char * suffix)
 // rawFileSize():
 //    Uses the stat() system call to get the size of the file.
 //    Returns 0 if any error occurs.
-uint
+unsigned int
 rawFileSize (const char * name)
 {
     struct stat statBuf;    // Defined in <sys/stat.h>
     if (stat (name, &statBuf) != 0) {
         return 0;
     }
-    return (uint) statBuf.st_size;
+    return (unsigned int) statBuf.st_size;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1180,7 +1180,7 @@ rawFileSize (const char * name)
 //    Returns the UNCOMPRESSED size of a .gz file.
 //    This is stored the final 4 bytes, in little endian format.
 //    Returns 0 if any error occurs.
-uint
+unsigned int
 gzipFileSize (const char * name)
 {
     FILE * fp;
@@ -1191,12 +1191,12 @@ gzipFileSize (const char * name)
         fclose (fp);
         return 0;
     }
-    // Read the 4-byte number in little-endian format:
-    uint size = 0;
-    uint b0 = (uint) getc(fp);
-    uint b1 = (uint) getc(fp);
-    uint b2 = (uint) getc(fp);
-    uint b3 = (uint) getc(fp);
+    // Read the 4-unsigned char number in little-endian format:
+    unsigned int size = 0;
+    unsigned int b0 = (unsigned int) getc(fp);
+    unsigned int b1 = (unsigned int) getc(fp);
+    unsigned int b2 = (unsigned int) getc(fp);
+    unsigned int b3 = (unsigned int) getc(fp);
     size = b0 | (b1 << 8) | (b2 << 16) | (b3 << 24);
     fclose (fp);
     return size;
@@ -1278,7 +1278,7 @@ fileExists (const char * name, const char * suffix)
 //      Lengths of zero bytes ARE allowed.
 
 errorT
-writeString (FILE * fp, char * str, uint length)
+writeString (FILE * fp, char * str, unsigned int length)
 {
     ASSERT (fp != NULL  &&  str != NULL);
     int result = 0;
@@ -1291,7 +1291,7 @@ writeString (FILE * fp, char * str, uint length)
 }
 
 errorT
-readString (FILE * fp, char * str, uint length)
+readString (FILE * fp, char * str, unsigned int length)
 {
     ASSERT (fp != NULL  &&  str != NULL);
     while (length > 0) {

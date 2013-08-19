@@ -268,7 +268,7 @@ isOutpost (const pieceT * board, squareT sq, colorT color)
     }
 
     // Now check each square for an enemy pawn:
-    for (uint i=0; i < squares.Size(); i++) {
+    for (unsigned int i=0; i < squares.Size(); i++) {
         if (board[squares.Get(i)] == enemyPawn) { return false; }
     }
     return true;
@@ -288,13 +288,13 @@ Engine::Score (void)
     return Score (-Infinity, Infinity);
 }
 
-static uint nScoreCalls = 0;
-static uint nScoreFull  = 0;
+static unsigned int nScoreCalls = 0;
+static unsigned int nScoreFull  = 0;
 
 inline int
 Engine::ScoreWhiteMaterial (void)
 {
-    byte * pieceCount = Pos.GetMaterial();
+    unsigned char * pieceCount = Pos.GetMaterial();
     return  pieceCount[WQ] * QueenValue   +  pieceCount[WR] * RookValue
          +  pieceCount[WB] * BishopValue  +  pieceCount[WN] * KnightValue
          +  pieceCount[WP] * PawnValue;
@@ -303,7 +303,7 @@ Engine::ScoreWhiteMaterial (void)
 inline int
 Engine::ScoreBlackMaterial (void)
 {
-    byte * pieceCount = Pos.GetMaterial();
+    unsigned char * pieceCount = Pos.GetMaterial();
     return  pieceCount[BQ] * QueenValue   +  pieceCount[BR] * RookValue
          +  pieceCount[BB] * BishopValue  +  pieceCount[BN] * KnightValue
          +  pieceCount[BP] * PawnValue;
@@ -328,7 +328,7 @@ int
 Engine::Score (int alpha, int beta)
 {
     colorT toMove = Pos.GetToMove();
-    const byte * pieceCount = Pos.GetMaterial();
+    const unsigned char * pieceCount = Pos.GetMaterial();
     const pieceT * board = Pos.GetBoard();
     int materialScore[2] = {0, 0};
     int allscore[2] = {0, 0};   // Scoring in all positions
@@ -356,10 +356,10 @@ Engine::Score (int alpha, int beta)
     // Look for a bad trade: minor piece for pawns; Q for R+Pawns; etc.
     // But only do this if both sides have pawns.
     if (pieceCount[WP] > 0  &&  pieceCount[BP] > 0) {
-        uint wminors = pieceCount[WB] + pieceCount[WN];
-        uint bminors = pieceCount[BB] + pieceCount[BN];
-        uint wmajors = pieceCount[WR] + (2 * pieceCount[WQ]);
-        uint bmajors = pieceCount[BR] + (2 * pieceCount[BQ]);
+        unsigned int wminors = pieceCount[WB] + pieceCount[WN];
+        unsigned int bminors = pieceCount[BB] + pieceCount[BN];
+        unsigned int wmajors = pieceCount[WR] + (2 * pieceCount[WQ]);
+        unsigned int bmajors = pieceCount[BR] + (2 * pieceCount[BQ]);
        if (wmajors == bmajors) {
             if (wminors < bminors) { allscore[WHITE] -= BadPieceTrade; }
             if (wminors > bminors) { allscore[BLACK] -= BadPieceTrade; }
@@ -460,19 +460,19 @@ Engine::Score (int alpha, int beta)
         colorT enemy = color_Flip(c);
         // squareT ownKing = Pos.GetKingSquare(c);
         squareT enemyKing = Pos.GetKingSquare(enemy);
-        uint npieces = Pos.GetCount(c);
+        unsigned int npieces = Pos.GetCount(c);
         squareT * sqlist = Pos.GetList(c);
         int mscore = 0;  // Middlegame score adjustments
         int escore = 0;  // Endgame score adjustments
         int ascore = 0;  // All-position adjustments (middle and endgame)
 
-        for (uint i = 0; i < npieces; i++) {
+        for (unsigned int i = 0; i < npieces; i++) {
             squareT sq = sqlist[i];
             pieceT p = board[sq];
             pieceT ptype = piece_Type(p);
             ASSERT (p != EMPTY  &&  piece_Color(p) == c);
             squareT bonusSq = (c == WHITE) ? square_FlipRank(sq) : sq;
-            uint rank = RANK_1 + RANK_8 - square_Rank(bonusSq);
+            unsigned int rank = RANK_1 + RANK_8 - square_Rank(bonusSq);
 
             // Piece-specific bonuses. The use of if-else instead of
             // a switch statement was observed to be faster since
@@ -498,7 +498,7 @@ Engine::Score (int alpha, int beta)
                     mscore += RookKingDist[square_Distance(sq, enemyKing)];
                 }
                 if (!inMiddlegame) {
-                    uint mobility = Pos.Mobility (ROOK, c, sq);
+                    unsigned int mobility = Pos.Mobility (ROOK, c, sq);
                     escore += RookEndgameMobility [mobility];
                 }
             } else if (ptype == KING) {
@@ -539,10 +539,10 @@ Engine::Score (int alpha, int beta)
                     // Penalty for knight in an endgame with enemy
                     // pawns on both wings.
                     pieceT enemyPawn = piece_Make (enemy, PAWN);
-                    uint qsidePawns = Pos.FyleCount(enemyPawn, A_FYLE)
+                    unsigned int qsidePawns = Pos.FyleCount(enemyPawn, A_FYLE)
                                     + Pos.FyleCount(enemyPawn, B_FYLE)
                                     + Pos.FyleCount(enemyPawn, C_FYLE);
-                    uint ksidePawns = Pos.FyleCount(enemyPawn, F_FYLE)
+                    unsigned int ksidePawns = Pos.FyleCount(enemyPawn, F_FYLE)
                                     + Pos.FyleCount(enemyPawn, G_FYLE)
                                     + Pos.FyleCount(enemyPawn, H_FYLE);
                     if (ksidePawns > 0  &&  qsidePawns > 0) {
@@ -561,7 +561,7 @@ Engine::Score (int alpha, int beta)
     }
 
     // Now reward rooks on open files or behind passed pawns:
-    byte passedPawnFyles =
+    unsigned char passedPawnFyles =
         pawnEntry.fyleHasPassers[WHITE] | pawnEntry.fyleHasPassers[BLACK];
     for (colorT color = WHITE; color <= BLACK; color++) {
         pieceT rook = piece_Make (color, ROOK);
@@ -573,10 +573,10 @@ Engine::Score (int alpha, int beta)
         int bonus = 0;
 
         for (fyleT fyle = A_FYLE; fyle <= H_FYLE; fyle++) {
-            uint nRooks = Pos.FyleCount (rook, fyle);
+            unsigned int nRooks = Pos.FyleCount (rook, fyle);
             if (nRooks == 0) { continue; }
             if (nRooks > 1) { bonus += DoubledRooks; }
-            uint passedPawnsOnFyle = passedPawnFyles & (1 << fyle);
+            unsigned int passedPawnsOnFyle = passedPawnFyles & (1 << fyle);
             if (passedPawnsOnFyle != 0) {
                 // Rook is on same file as a passed pawn.
                 // TODO: make bonus bigger when rook is *behind* the pawn.
@@ -610,7 +610,7 @@ Engine::Score (int alpha, int beta)
         // Bonus for pawn cover in front of a castled king. Actually we
         // also include bishops because they are important for defence.
         if (square_Rank(wk) == RANK_1  &&  wk != D1  &&  wk != E1) {
-            uint nCoverPawns = 0;
+            unsigned int nCoverPawns = 0;
             pieceT p = board[square_Move (wk, UP_LEFT)];
             if (p == WP  ||  p == WB) { nCoverPawns++; }
             p = board[square_Move (wk, UP)];
@@ -628,7 +628,7 @@ Engine::Score (int alpha, int beta)
             }
         }
         if (square_Rank(bk) == RANK_8  &&  bk != D8  &&  bk != E8) {
-            uint nCoverPawns = 0;
+            unsigned int nCoverPawns = 0;
             pieceT p = board[square_Move (bk, DOWN_LEFT)];
             if (p == BP  ||  p == BB) { nCoverPawns++; }
             p = board[square_Move (bk, DOWN)];
@@ -708,8 +708,8 @@ Engine::Score (int alpha, int beta)
     return finalScore;
 }
 
-static uint nPawnHashProbes = 0;
-static uint nPawnHashHits = 0;
+static unsigned int nPawnHashProbes = 0;
+static unsigned int nPawnHashHits = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::ScorePawnStructure
@@ -719,11 +719,11 @@ void
 Engine::ScorePawnStructure (pawnTableEntryT * pawnEntry)
 {
     nPawnHashProbes++;
-    uint pawnhash = Pos.PawnHashValue();
+    unsigned int pawnhash = Pos.PawnHashValue();
     // We only use 32-bit hash values, so without further safety checks
     // the rate of false hits in the pawn hash table could be high.
     // To reduce the chance of false hits, we compute an extra signature.
-    uint sig = (Pos.SquareColorCount(WP,WHITE) << 12)
+    unsigned int sig = (Pos.SquareColorCount(WP,WHITE) << 12)
              | (Pos.SquareColorCount(BP,BLACK) << 8)
              | (Pos.PieceCount(WP) << 4) | Pos.PieceCount(BP);
     pawnEntry->pawnhash = pawnhash;
@@ -737,7 +737,7 @@ Engine::ScorePawnStructure (pawnTableEntryT * pawnEntry)
 
     // Check for a pawn hash table hit, but not in pawn endings:
     if (!inPawnEndgame) {
-        uint hashSlot = pawnhash % PawnTableSize;
+        unsigned int hashSlot = pawnhash % PawnTableSize;
         hashEntry = &(PawnTable[hashSlot]);
         if (pawnhash == hashEntry->pawnhash  &&  sig == hashEntry->sig) {
             nPawnHashHits++;
@@ -750,13 +750,13 @@ Engine::ScorePawnStructure (pawnTableEntryT * pawnEntry)
     // each file. Indexes 1-8 are used while 0 and 9 are empty dummy files
     // added so that even the a and h files have two adjacent files, making
     // isolated/passed pawn calculation easier.
-    uint pawnFiles[2][10] = { {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    unsigned int pawnFiles[2][10] = { {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
     // firstRank stores the rank of the leading pawn on each file.
-    uint firstRank[2][10] = { {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    unsigned int firstRank[2][10] = { {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                               {0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
     // lastRank stores the rank of the rearmost pawn on each file.
-    uint lastRank[2][10]  = { {7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+    unsigned int lastRank[2][10]  = { {7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
                               {7, 7, 7, 7, 7, 7, 7, 7, 7, 7} };
 
     int pawnScore[2] = {0, 0};
@@ -771,18 +771,18 @@ Engine::ScorePawnStructure (pawnTableEntryT * pawnEntry)
 
     for (colorT c = WHITE; c <= BLACK; c++) {
         pieceT pawn = piece_Make (c, PAWN);
-        uint npawns = Pos.PieceCount(pawn);
+        unsigned int npawns = Pos.PieceCount(pawn);
         SquareList sqlist;
         Pos.GetSquares (pawn, &sqlist);
-        for (uint i = 0; i < npawns; i++) {
+        for (unsigned int i = 0; i < npawns; i++) {
             squareT sq = sqlist.Get(i);
             squareT wsq = (c == WHITE) ? sq : square_FlipRank(sq);
             squareT bonusSq = square_FlipRank(wsq);
             pawnScore[c] += PawnSquare[bonusSq];
             longVsShortScore[c] += PawnStorm[bonusSq];
             shortVsLongScore[c] += PawnStorm[square_FlipFyle(bonusSq)];
-            uint fyle = square_Fyle(wsq) + 1;
-            uint rank = square_Rank(wsq);
+            unsigned int fyle = square_Fyle(wsq) + 1;
+            unsigned int rank = square_Rank(wsq);
             if (rank > firstRank[c][fyle]) {
                 firstRank[c][fyle] = rank;
             }
@@ -792,16 +792,16 @@ Engine::ScorePawnStructure (pawnTableEntryT * pawnEntry)
         }
     }
 
-    byte fyleHasPassers[2] = {0, 0};
+    unsigned char fyleHasPassers[2] = {0, 0};
 
     for (colorT color = WHITE; color <= BLACK; color++) {
         if (Pos.PieceCount(piece_Make(color,PAWN)) == 0) { continue; }
         colorT enemy = color_Flip(color);
         
-        for (uint fyle=1; fyle <= 8; fyle++) {
-            uint pawnCount = pawnFiles[color][fyle];
+        for (unsigned int fyle=1; fyle <= 8; fyle++) {
+            unsigned int pawnCount = pawnFiles[color][fyle];
             if (pawnCount == 0) { continue; }
-            uint pawnRank = firstRank[color][fyle];
+            unsigned int pawnRank = firstRank[color][fyle];
 
             // Doubled pawn penalty:
             if (pawnCount > 1) {
@@ -865,8 +865,8 @@ Engine::ScorePawnStructure (pawnTableEntryT * pawnEntry)
                         pawnSq = square_FlipRank(pawnSq);
                         promoSq = square_FlipRank(promoSq);
                     }
-                    uint kingDist = square_Distance(kingSq, promoSq);
-                    uint pawnDist = square_Distance(pawnSq, promoSq);
+                    unsigned int kingDist = square_Distance(kingSq, promoSq);
+                    unsigned int pawnDist = square_Distance(pawnSq, promoSq);
                     if (color != Pos.GetToMove()) { pawnDist++; }
                     if (pawnDist < kingDist) {
                         bestRacingPawn[color] = pawnRank;
@@ -1002,12 +1002,12 @@ Engine::PopRepeat (void)
 bool
 Engine::NoMatingMaterial (void)
 {
-    uint npieces = Pos.TotalMaterial();
+    unsigned int npieces = Pos.TotalMaterial();
 
     // Check for K vs K, K+N vs K, and K+B vs K:
     if (npieces <= 2) { return true; }
     if (npieces == 3) {
-        byte * material = Pos.GetMaterial();
+        unsigned char * material = Pos.GetMaterial();
         if (material[WB] == 1  ||  material[WN] == 1) { return true; }
         if (material[BB] == 1  ||  material[BN] == 1) { return true; }
     }
@@ -1023,12 +1023,12 @@ Engine::FiftyMoveDraw (void)
 {
     if (RepStackSize < 100) { return false; }
 
-    uint pawnhash = Pos.PawnHashValue();
-    uint npieces = Pos.TotalMaterial();
+    unsigned int pawnhash = Pos.PawnHashValue();
+    unsigned int npieces = Pos.TotalMaterial();
 
     // Go back through the stack of hash values:
-    uint plycount = 0;
-    for (uint i = RepStackSize; i > 0; i--) {
+    unsigned int plycount = 0;
+    for (unsigned int i = RepStackSize; i > 0; i--) {
         repeatT * rep = &(RepStack[i-1]);
         // Stop at an irreversible move:
         if (npieces != rep->npieces) { break; }
@@ -1044,17 +1044,17 @@ Engine::FiftyMoveDraw (void)
 //   Returns the number if times the current position has been reached,
 //   with the same side to move, castling and en passant settings.
 //   The current occurrence is included in the returned count.
-uint
+unsigned int
 Engine::RepeatedPosition (void)
 {
-    uint hash = Pos.HashValue();
-    uint pawnhash = Pos.PawnHashValue();
-    uint npieces = Pos.TotalMaterial();
+    unsigned int hash = Pos.HashValue();
+    unsigned int pawnhash = Pos.PawnHashValue();
+    unsigned int npieces = Pos.TotalMaterial();
     colorT stm = Pos.GetToMove();
 
     // Go back through the stack of hash values detecting repetition:
-    uint ntimes = 1;
-    for (uint i = RepStackSize; i > 0; i--) {
+    unsigned int ntimes = 1;
+    for (unsigned int i = RepStackSize; i > 0; i--) {
         repeatT * rep = &(RepStack[i-1]);
         // Stop at an irreversible move:
         if (npieces != rep->npieces) { break; }
@@ -1069,10 +1069,10 @@ Engine::RepeatedPosition (void)
 // Engine::SetHashTableKilobytes
 //   Set the transposition table size in kilobytes.
 void
-Engine::SetHashTableKilobytes (uint size)
+Engine::SetHashTableKilobytes (unsigned int size)
 {
     // Compute the number of entries, which must be even:
-    uint bytes = size * 1024;
+    unsigned int bytes = size * 1024;
     TranTableSize = bytes / sizeof(transTableEntryT);
     if ((TranTableSize % 2) == 1) { TranTableSize--; }
     if (TranTable != NULL) { delete[] TranTable; }
@@ -1084,10 +1084,10 @@ Engine::SetHashTableKilobytes (uint size)
 // Engine::SetPawnTableKilobytes
 //   Set the pawn structure hash table size in kilobytes.
 void
-Engine::SetPawnTableKilobytes (uint size)
+Engine::SetPawnTableKilobytes (unsigned int size)
 {
     // Compute the number of entries:
-    uint bytes = size * 1024;
+    unsigned int bytes = size * 1024;
     PawnTableSize = bytes / sizeof(pawnTableEntryT);
     if (PawnTable != NULL) { delete[] PawnTable; }
     PawnTable = new pawnTableEntryT [PawnTableSize];
@@ -1100,7 +1100,7 @@ Engine::SetPawnTableKilobytes (uint size)
 void
 Engine::ClearHashTable (void)
 {
-    for (uint i = 0; i < TranTableSize; i++) {
+    for (unsigned int i = 0; i < TranTableSize; i++) {
         TranTable[i].flags = SCORE_NONE;
     }
 }
@@ -1112,7 +1112,7 @@ Engine::ClearHashTable (void)
 void
 Engine::ClearPawnTable (void)
 {
-    for (uint i = 0; i < PawnTableSize; i++) {
+    for (unsigned int i = 0; i < PawnTableSize; i++) {
         PawnTable[i].pawnhash = 0;
     }
 }
@@ -1122,7 +1122,7 @@ Engine::ClearPawnTable (void)
 //   Helpers for packing/extracting transposition table entry fields.
 
 inline void tte_SetFlags (transTableEntryT * tte, scoreFlagT sflag,
-                          colorT stm, byte castling, bool isOnlyMove)
+                          colorT stm, unsigned char castling, bool isOnlyMove)
 { tte->flags = (castling << 4) | (stm << 3) | (isOnlyMove ? 4 : 0) | sflag; }
 
 inline scoreFlagT tte_ScoreFlag (transTableEntryT * tte)
@@ -1131,7 +1131,7 @@ inline scoreFlagT tte_ScoreFlag (transTableEntryT * tte)
 inline colorT tte_SideToMove (transTableEntryT * tte)
 {  return ((tte->flags >> 3) & 1);  }
 
-inline byte tte_Castling (transTableEntryT * tte)
+inline unsigned char tte_Castling (transTableEntryT * tte)
 {  return (tte->flags >> 4);  }
 
 inline bool tte_IsOnlyMove (transTableEntryT * tte)
@@ -1140,7 +1140,7 @@ inline bool tte_IsOnlyMove (transTableEntryT * tte)
 inline void tte_SetBestMove (transTableEntryT * tte, simpleMoveT * bestMove)
 {
     ASSERT (bestMove->from <= H8  &&  bestMove->to <= H8);
-    ushort bm = bestMove->from;
+    unsigned short bm = bestMove->from;
     bm <<= 6; bm |= bestMove->to;
     bm <<= 4; bm |= bestMove->promote;
     tte->bestMove = bm;
@@ -1148,13 +1148,13 @@ inline void tte_SetBestMove (transTableEntryT * tte, simpleMoveT * bestMove)
 
 inline void tte_GetBestMove (transTableEntryT * tte, simpleMoveT * bestMove)
 {
-    ushort bm = tte->bestMove;
+    unsigned short bm = tte->bestMove;
     bestMove->promote = bm & 15; bm >>= 4;
     bestMove->to = bm & 63; bm >>= 6;
     bestMove->from = bm & 63;
 }
 
-static uint ProbeCounts[4] = {0};
+static unsigned int ProbeCounts[4] = {0};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::StoreHash
@@ -1166,8 +1166,8 @@ Engine::StoreHash (int depth, scoreFlagT ttFlag, int score,
     if (TranTableSize == 0) { return; }
     ASSERT (ttFlag <= SCORE_UPPER);
 
-    uint hash = Pos.HashValue();
-    uint pawnhash = Pos.PawnHashValue();
+    unsigned int hash = Pos.HashValue();
+    unsigned int pawnhash = Pos.PawnHashValue();
     colorT stm = Pos.GetToMove();
     if (stm == BLACK) { hash = ~hash; }
 
@@ -1175,7 +1175,7 @@ Engine::StoreHash (int depth, scoreFlagT ttFlag, int score,
     // but replace the previous entry for this position if it exists
     // and use an empty hash table entry if possible:
 
-    uint ttSlot = (hash % TranTableSize) & 0xFFFFFFFEU;
+    unsigned int ttSlot = (hash % TranTableSize) & 0xFFFFFFFEU;
     ASSERT (ttSlot < TranTableSize - 1);
     transTableEntryT * ttEntry1 = &(TranTable[ttSlot]);
     transTableEntryT * ttEntry2 = &(TranTable[ttSlot + 1]);
@@ -1261,18 +1261,18 @@ Engine::ProbeHash (int depth, int * score, simpleMoveT * bestMove, bool * isOnly
 
     if (TranTableSize == 0) { return SCORE_NONE; }
 
-    uint hash = Pos.HashValue();
+    unsigned int hash = Pos.HashValue();
     colorT stm = Pos.GetToMove();
     if (stm == BLACK) { hash = ~hash; }
 
     // Examine the corresponding pair of table entries:
-    uint ttSlot = (hash % TranTableSize) & 0xFFFFFFFEU;
+    unsigned int ttSlot = (hash % TranTableSize) & 0xFFFFFFFEU;
     ASSERT (ttSlot+1 < TranTableSize);
     transTableEntryT * ttEntry = &(TranTable[ttSlot]);
     if (ttEntry->hash != hash) { ttEntry++; }
     if (ttEntry->hash != hash) { return SCORE_NONE; }
     if (tte_ScoreFlag(ttEntry) == SCORE_NONE) { return SCORE_NONE; }
-    uint pawnhash = Pos.PawnHashValue();
+    unsigned int pawnhash = Pos.PawnHashValue();
     if (ttEntry->pawnhash != pawnhash) { return SCORE_NONE; }
     if (tte_SideToMove(ttEntry) != stm) { return SCORE_NONE; }
     if (tte_Castling(ttEntry) != Pos.GetCastlingFlags()) { return SCORE_NONE; }
@@ -1300,8 +1300,8 @@ Engine::ProbeHash (int depth, int * score, simpleMoveT * bestMove, bool * isOnly
     return tte_ScoreFlag(ttEntry);
 }
 
-static uint nFailHigh = 0;
-static uint nFailHighFirstMove = 0;
+static unsigned int nFailHigh = 0;
+static unsigned int nFailHighFirstMove = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::SetPosition
@@ -1311,7 +1311,7 @@ void
 Engine::SetPosition (Position * newpos)
 {
     // Delete old game moves:
-    for (uint i=0; i < NumGameMoves; i++) {
+    for (unsigned int i=0; i < NumGameMoves; i++) {
         delete GameMoves[i];
     }
     NumGameMoves = 0;
@@ -1375,7 +1375,7 @@ Engine::Think (MoveList * mlist)
 
     // Sort the root move list by quiescent evaluation to get a
     // reasonably good initial move order:
-    for (uint i=0; i < mlist->Size(); i++) {
+    for (unsigned int i=0; i < mlist->Size(); i++) {
         simpleMoveT * sm = mlist->Get(i);
         DoMove(sm);
         sm->score = -Quiesce (-Infinity, Infinity);
@@ -1397,7 +1397,7 @@ Engine::Think (MoveList * mlist)
 
     // Do iterative deepening starting at depth 1, until out of
     // time or the maximum depth is reached:
-    for (uint depth = 1; depth <= MaxDepth; depth++) {
+    for (unsigned int depth = 1; depth <= MaxDepth; depth++) {
         HardMove = false;
 
         // If we have searched at least a few ply, and there is less
@@ -1496,9 +1496,9 @@ Engine::SearchRoot (int depth, int alpha, int beta, MoveList * mlist)
     bool isOnlyMove = (mlist->Size() == 1);
     int bestScore = -Infinity - 1;
 
-    for (uint movenum=0; movenum < mlist->Size(); movenum++) {
+    for (unsigned int movenum=0; movenum < mlist->Size(); movenum++) {
         simpleMoveT * sm = mlist->Get(movenum);
-        uint oldNodeCount = NodeCount;
+        unsigned int oldNodeCount = NodeCount;
         // Make this move and search it:
         DoMove (sm);
         InCheck[Ply] = Pos.IsKingInCheck (sm);
@@ -1563,7 +1563,7 @@ Engine::Search (int depth, int alpha, int beta, bool tryNullMove)
     // Check for a drawn position (no mating material, repetition, etc):
     if (NoMatingMaterial()) { return 0; }
     if (FiftyMoveDraw()) { return 0; }
-    uint repeats = RepeatedPosition();
+    unsigned int repeats = RepeatedPosition();
     if (repeats >= 3  ||  (repeats == 2  &&  Ply > 2)) { return 0; }
 
     colorT toMove = Pos.GetToMove();
@@ -1692,7 +1692,7 @@ Engine::Search (int depth, int alpha, int beta, bool tryNullMove)
     int bestMoveIndex = -1;
 
     // Search each move:
-    for (uint movenum = 0; movenum < mlist.Size(); movenum++) {
+    for (unsigned int movenum = 0; movenum < mlist.Size(); movenum++) {
         // Find the highest-scoring remaining move:
         mlist.FindBest (movenum);
         simpleMoveT * sm = mlist.Get (movenum);
@@ -1883,7 +1883,7 @@ Engine::Quiesce (int alpha, int beta)
     // Generate and score the list of captures:
     MoveList mlist;
     Pos.GenerateMoves (&mlist, GEN_CAPTURES);
-    for (uint m=0; m < mlist.Size(); m++) {
+    for (unsigned int m=0; m < mlist.Size(); m++) {
         simpleMoveT * sm = mlist.Get(m);
         sm->score = SEE (sm->from, sm->to);
     }
@@ -1891,7 +1891,7 @@ Engine::Quiesce (int alpha, int beta)
     // Iterate through each quiescent move to find a beta cutoff or
     // improve the alpha score:
 
-    for (uint i = 0; i < mlist.Size(); i++) {
+    for (unsigned int i = 0; i < mlist.Size(); i++) {
         // Find the highest-scoring remaining move, make it and search:
         mlist.FindBest(i);
         simpleMoveT * sm = mlist.Get(i);
@@ -1972,7 +1972,7 @@ Engine::SEE (squareT from, squareT target)
     // Add attacking knights. Only bother searching for them if there
     // are any knights on the appropriate square color.
     colorT knightSquareColor = color_Flip(square_Color(target));
-    uint nEligibleKnights = Pos.SquareColorCount(WN, knightSquareColor)
+    unsigned int nEligibleKnights = Pos.SquareColorCount(WN, knightSquareColor)
                           + Pos.SquareColorCount(BN, knightSquareColor);
     if (nEligibleKnights > 0) {
         const squareT * nextKnightSq = knightAttacks[target];
@@ -2002,13 +2002,13 @@ Engine::SEE (squareT from, squareT target)
     fyleT fyle = square_Fyle(target);
     leftDiagT ul = square_LeftDiag(target);
     rightDiagT ur = square_RightDiag(target);
-    uint rankCount = Pos.RankCount(WQ,rank) + Pos.RankCount(BQ,rank)
+    unsigned int rankCount = Pos.RankCount(WQ,rank) + Pos.RankCount(BQ,rank)
                    + Pos.RankCount(WR,rank) + Pos.RankCount(BR,rank);
-    uint fyleCount = Pos.FyleCount(WQ,fyle) + Pos.FyleCount(BQ,fyle)
+    unsigned int fyleCount = Pos.FyleCount(WQ,fyle) + Pos.FyleCount(BQ,fyle)
                    + Pos.FyleCount(WR,fyle) + Pos.FyleCount(BR,fyle);
-    uint upLeftCount = Pos.LeftDiagCount(WQ,ul) + Pos.LeftDiagCount(BQ,ul)
+    unsigned int upLeftCount = Pos.LeftDiagCount(WQ,ul) + Pos.LeftDiagCount(BQ,ul)
                      + Pos.LeftDiagCount(WB,ul) + Pos.LeftDiagCount(BB,ul);
-    uint upRightCount = Pos.RightDiagCount(WQ,ur) + Pos.RightDiagCount(BQ,ur)
+    unsigned int upRightCount = Pos.RightDiagCount(WQ,ur) + Pos.RightDiagCount(BQ,ur)
                       + Pos.RightDiagCount(WB,ur) + Pos.RightDiagCount(BB,ur);
 
     // If the moving piece is a slider, it is worth removing it from the
@@ -2028,7 +2028,7 @@ Engine::SEE (squareT from, squareT target)
     }
 
     // Build the list of directions with potential sliding capturers:
-    uint nDirs = 0;
+    unsigned int nDirs = 0;
     directionT sliderDir[8];
     if (rankCount > 0) {
         sliderDir[nDirs++] = LEFT;
@@ -2049,12 +2049,12 @@ Engine::SEE (squareT from, squareT target)
 
     // Iterate over each direction, looking for an attacking slider:
 
-    for (uint dirIndex = 0; dirIndex < nDirs; dirIndex++) {
+    for (unsigned int dirIndex = 0; dirIndex < nDirs; dirIndex++) {
         directionT dir = sliderDir[dirIndex];
         squareT dest = target;
         squareT last = square_Last (target, dir);
         int delta = direction_Delta (dir);
-        uint distance = 0;
+        unsigned int distance = 0;
 
         while (dest != last) {
             dest += delta;
@@ -2109,7 +2109,7 @@ Engine::SEE (squareT from, squareT target)
 
     bool targetIsPromoSquare = (target <= H1  ||  target >= A8);
     int swaplist[32];
-    uint nswaps = 1;
+    unsigned int nswaps = 1;
     swaplist[0] = PieceValue (board[target]);
     int attackedVal = PieceValue (mover);
 
@@ -2125,16 +2125,16 @@ Engine::SEE (squareT from, squareT target)
         // Switch to the other side:
         stm = color_Flip(stm);
         SquareList * attackList = &(attackers[stm]);
-        uint attackCount = attackList->Size();
+        unsigned int attackCount = attackList->Size();
 
         // Has this side run out of pieces to capture with?
         if (attackCount == 0) { break; }
 
         // Find the best (lowest-valued) piece to capture with:
-        uint bestIndex = 0;
+        unsigned int bestIndex = 0;
         squareT attackSquare = attackList->Get(0);
         int attackValue = PieceValue(board[attackSquare]);
-        for (uint i = 1; i < attackCount; i++) {
+        for (unsigned int i = 1; i < attackCount; i++) {
             if (attackValue == PawnValue) { break; }
             squareT newSquare = attackList->Get(i);
             int newValue = PieceValue(board[newSquare]);
@@ -2187,7 +2187,7 @@ Engine::SEE (squareT from, squareT target)
     // side would stop because further exchanges would be useless:
     nswaps--;
     while (nswaps > 0) {
-        uint prev = nswaps - 1;
+        unsigned int prev = nswaps - 1;
         if (swaplist[nswaps] > -swaplist[prev]) {
             swaplist[prev] = -swaplist[nswaps];
         }
@@ -2211,7 +2211,7 @@ Engine::SEE (squareT from, squareT target)
 void
 Engine::ScoreMoves (MoveList * mlist)
 {
-    for (uint i = 0; i < mlist->Size(); i++) {
+    for (unsigned int i = 0; i < mlist->Size(); i++) {
         simpleMoveT * sm = mlist->Get(i);
         if (sm->capturedPiece != EMPTY  ||  sm->promote != EMPTY) {
             int see = SEE (sm->from, sm->to);
@@ -2250,10 +2250,10 @@ Engine::Output (const char * format, ...)
 // Engine::PrintPV
 //   Print the current depth, score and principal variation.
 void
-Engine::PrintPV (uint depth, int score, const char * note)
+Engine::PrintPV (unsigned int depth, int score, const char * note)
 {
     if (! PostInfo) { return; }
-    uint ms = Elapsed.elapsed();
+    unsigned int ms = Elapsed.elapsed();
     if (XBoardMode  &&  ms < 50  &&  Ply < 6) { return; }
 
     if (XBoardMode) {
@@ -2263,7 +2263,7 @@ Engine::PrintPV (uint depth, int score, const char * note)
     }
 
     principalVarT * pv = &(PV[0]);
-    uint i;
+    unsigned int i;
 
     if (Pos.GetToMove() == BLACK) {
         Output ("%u...", Pos.GetFullMoveCount());
@@ -2330,14 +2330,14 @@ Engine::OutOfTime ()
 // Engine::PerfTest
 //   Returns the number of leaf node moves when generating, making and
 //   unmaking every move to the specified depth from the current position.
-uint
-Engine::PerfTest (uint depth)
+unsigned int
+Engine::PerfTest (unsigned int depth)
 {
     if (depth <= 0) { return 1; }
     MoveList mlist;
     Pos.GenerateMoves (&mlist);
-    uint nmoves = 0;
-    for (uint i = 0; i < mlist.Size(); i++) {
+    unsigned int nmoves = 0;
+    for (unsigned int i = 0; i < mlist.Size(); i++) {
         simpleMoveT * sm = mlist.Get(i);
         Pos.DoSimpleMove (sm);
         nmoves += PerfTest (depth-1);

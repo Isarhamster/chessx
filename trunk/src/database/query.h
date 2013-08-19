@@ -83,7 +83,7 @@ private :
 	ElementTypeList m_elementType;
 
 	/** Test if index is valid */
-	bool isValidIndex(uint index) const;
+	bool isValidIndex(unsigned int index) const;
 	bool internalCheck();
 
 };

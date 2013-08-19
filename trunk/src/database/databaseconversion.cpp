@@ -77,7 +77,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
 				QString year = sl2[0];
 				QString ratings = sl2[1];//ratings for one year, separated by commas
 				QStringList sl3 = ratings.split(",");
-				for (uint i = 0;i < (uint)sl3.size();i++) {
+				for (unsigned int i = 0;i < (unsigned int)sl3.size();i++) {
 					if (sl3[i] != "?") {
 //              std::cout << "rating for " << name << ": " << year << ": " << i+1 << ": " << sl3[i] << "\n";
 						pdb.setElo(year.toInt(), i + 1, sl3[i].toInt());

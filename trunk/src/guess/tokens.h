@@ -23,7 +23,7 @@ namespace Guess
 // TOKENS used by PGN scanner
 //
 
-typedef uint tokenT;
+typedef unsigned int tokenT;
 
 #define MAX_TOKEN 58;
 
