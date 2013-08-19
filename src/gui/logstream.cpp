@@ -16,7 +16,11 @@ void
 #ifdef MSC_VER
 _cdecl
 #endif
+#if QT_VERSION < 0x050000
+SimpleLoggingHandler(QtMsgType type, const char *msg)
+#else
 SimpleLoggingHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+#endif
 {
     if (!bDoLog) return;
 
@@ -44,7 +48,11 @@ void startFileLog()
     QString currentPath = QDir::currentPath()+ "/chessx.log";
     logfile.open(currentPath.toLatin1().data(),ios::app);
     bDoLog = true;
+#if QT_VERSION < 0x050000
+    qInstallMsgHandler(SimpleLoggingHandler);
+#else
     qInstallMessageHandler(SimpleLoggingHandler);
+#endif
 #endif
 }
 
