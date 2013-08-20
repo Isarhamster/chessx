@@ -358,16 +358,26 @@ void PreferencesDialog::restoreSettings()
     QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
 #endif
     ui.defaultDataBasePath->setText(AppSettings->value("/General/DefaultDataPath", dataPath).toString());
-
-    // Read Game List settings
-    ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("/GameText/FontSize").toInt());
-    ui.cbShowDiagrams->setChecked(AppSettings->getValue("/GameText/ShowDiagrams").toBool());
-    ui.cbColumnStyle->setChecked(AppSettings->getValue("/GameText/ColumnStyle").toBool());
-    ui.variationIndentLevel->setValue(AppSettings->getValue("/GameText/VariationIndentLevel").toInt());
-    ui.diagramSize->setValue(AppSettings->getValue("/GameText/DiagramSize").toInt());
-    ui.pieceString->setText(AppSettings->getValue("/GameText/PieceString").toString());
     ui.spinBoxListFontSize->setValue(AppSettings->getValue("/General/ListFontSize").toInt());
     ui.verticalTabs->setChecked(AppSettings->getValue("/MainWindow/VerticalTabs").toBool());
+
+    // Read Game List settings
+    AppSettings->beginGroup("GameText");
+
+    ui.notationColors->clear();
+    restoreColorItem(ui.notationColors, tr("Main Line"), "MainLineMoveColor");
+    restoreColorItem(ui.notationColors, tr("Variations"), "VariationColor");
+    restoreColorItem(ui.notationColors, tr("Comments"), "CommentColor");
+    restoreColorItem(ui.notationColors, tr("Nags"), "NagColor");
+
+    ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("FontSize").toInt());
+    ui.cbShowDiagrams->setChecked(AppSettings->getValue("ShowDiagrams").toBool());
+    ui.cbColumnStyle->setChecked(AppSettings->getValue("ColumnStyle").toBool());
+    ui.variationIndentLevel->setValue(AppSettings->getValue("VariationIndentLevel").toInt());
+    ui.diagramSize->setValue(AppSettings->getValue("DiagramSize").toInt());
+    ui.pieceString->setText(AppSettings->getValue("PieceString").toString());
+
+    AppSettings->endGroup();
 }
 
 void PreferencesDialog::saveSettings()
@@ -406,14 +416,23 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/General/EditLimit", ui.limitSpin->value());
     AppSettings->setValue("/History/MaxEntries", ui.spinBoxRecentFiles->value());
     AppSettings->setValue("/General/DefaultDataPath", ui.defaultDataBasePath->text());
-    AppSettings->setValue("/GameText/FontSize", ui.gameTextFontSizeSpin->value());
-    AppSettings->setValue("/GameText/ShowDiagrams", ui.cbShowDiagrams->isChecked());
-    AppSettings->setValue("/GameText/ColumnStyle", ui.cbColumnStyle->isChecked());
-    AppSettings->setValue("/GameText/VariationIndentLevel", ui.variationIndentLevel->value());
-    AppSettings->setValue("/GameText/DiagramSize", ui.diagramSize->value());
-    AppSettings->setValue("/GameText/PieceString", ui.pieceString->text());
     AppSettings->setValue("/General/ListFontSize", ui.spinBoxListFontSize->value());
     AppSettings->setValue("/MainWindow/VerticalTabs", ui.verticalTabs->isChecked());
+
+    AppSettings->beginGroup("GameText");
+
+    AppSettings->setValue("FontSize", ui.gameTextFontSizeSpin->value());
+    AppSettings->setValue("ShowDiagrams", ui.cbShowDiagrams->isChecked());
+    AppSettings->setValue("ColumnStyle", ui.cbColumnStyle->isChecked());
+    AppSettings->setValue("VariationIndentLevel", ui.variationIndentLevel->value());
+    AppSettings->setValue("DiagramSize", ui.diagramSize->value());
+    AppSettings->setValue("PieceString", ui.pieceString->text());
+
+    QStringList colorNamesNotation;
+    colorNamesNotation << "MainLineMoveColor" << "VariationColor" << "CommentColor" << "NagColor";
+    saveColorList(ui.notationColors, colorNamesNotation);
+
+    AppSettings->endGroup();
 
     QDir().mkpath(ui.defaultDataBasePath->text());
 }
