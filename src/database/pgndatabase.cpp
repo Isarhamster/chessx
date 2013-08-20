@@ -231,10 +231,10 @@ bool PgnDatabase::parseFile()
 
     if (m_break) return false;
 
-    parseFileIntern();
+    bool ok = parseFileIntern();
 
     writeOffsetFile(m_filename);
-    return true;
+    return ok;
 }
 
 bool PgnDatabase::parseFileIntern()
@@ -307,8 +307,7 @@ bool PgnDatabase::openString(const QString& content)
     buffer->open(QIODevice::ReadOnly | QIODevice::Text);
     m_file = buffer;
     m_utf8 = false;
-    parseFile();
-    return true;
+    return parseFile();
 }
 
 QString PgnDatabase::filename() const

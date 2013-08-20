@@ -381,11 +381,11 @@ void MainWindow::slotEditVarRemove()
 	}
 }
 
-void MainWindow::slotEditPasteFEN()
+bool MainWindow::pasteFen(QString& msg, QString fen)
 {
     // Prepare Fen - clean up code like this:
     // [FEN "***"] to ***
-    QString fen = QApplication::clipboard()->text().simplified();
+
     if (fen.contains("\""))
     {
         int n1 = fen.indexOf('"');
@@ -399,38 +399,62 @@ void MainWindow::slotEditPasteFEN()
     // Another go at Fens copied from Wikis: [FEN]***[/FEN] is reduced to ***
     fen.remove(QRegExp("\\[[^\\]]*\\]"));
 
-	Board board;
-	if (!board.isValidFen(fen)) {
-		QString msg = fen.length() ?
-					tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
-					tr("There is no text in clipboard.");
-		MessageDialog::warning(msg);
-		return;
-	}
-	board.fromFen(fen);
-	if (board.validate() != Valid) {
-		MessageDialog::warning(tr("The clipboard contains FEN, but with illegal position. "
-						"You can only paste such positions in <b>Setup position</b> dialog."));
-		return;
-	}
-	game().setStartingBoard(board);
-	slotGameChanged();
+    Board board;
+    if (!board.isValidFen(fen)) {
+        msg = fen.length() ?
+                    tr("Text in clipboard does not represent valid FEN:<br><i>%1</i>").arg(fen) :
+                    tr("There is no text in clipboard.");
+        return false;
+    }
+    board.fromFen(fen);
+    if (board.validate() != Valid) {
+        msg = tr("The clipboard contains FEN, but with illegal position. "
+                 "You can only paste such positions in <b>Setup position</b> dialog.");
+        return false ;
+    }
+    game().setStartingBoard(board);
+    slotGameChanged();
+    return true;
 }
 
-void MainWindow::slotEditPastePGN()
+void MainWindow::slotEditPasteFEN()
+{
+    QString fen = QApplication::clipboard()->text().simplified();
+    QString msg;
+    if (!pasteFen(msg,fen))
+    {
+        MessageDialog::warning(msg);
+    }
+}
+
+bool MainWindow::slotEditPastePGN()
 {
     QString pgn = QApplication::clipboard()->text().trimmed();
     if (!pgn.isEmpty())
     {
         MemoryDatabase pgnDatabase;
-        pgnDatabase.openString(pgn);
-        Game g;
-        if (pgnDatabase.loadGame(0,g))
+        if (pgnDatabase.openString(pgn))
         {
-            slotGameNew();
-            game() = g;
-            slotGameChanged();
+            Game g;
+            if (pgnDatabase.loadGame(0,g))
+            {
+                slotGameNew();
+                game() = g;
+                slotGameChanged();
+                return true;
+            }
         }
+    }
+    return false;
+}
+
+void MainWindow::slotEditPaste()
+{
+    QString fen = QApplication::clipboard()->text().simplified();
+    QString dummy;
+    if (!pasteFen(dummy,fen))
+    {
+        slotEditPastePGN();
     }
 }
 

@@ -129,9 +129,9 @@ void MemoryDatabase::parseGame()
 
 bool MemoryDatabase::parseFile()
 {
-    parseFileIntern();
+    bool ok = parseFileIntern();
 	m_isModified = false;
-	return true;
+    return ok;
 }
 
 bool MemoryDatabase::clear()
