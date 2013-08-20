@@ -140,9 +140,29 @@ inline unsigned int getFirstBitAndClear64(quint64& bb)
 #ifdef __GNUG__
     return x ? (63-__builtin_clzll(x)) : 0;
 #elif _MSC_VER
-    register unsigned long r;
-    _BitScanReverse64(&r, x);
-    return x ? r : 0;
+#ifdef __x86_64__
+    if (x)
+    {
+        register unsigned long r;
+        _BitScanReverse64(&r, x);
+        return r;
+    }
+    return 0;
+#else
+    if (x)
+    {
+        register unsigned long r;
+        unsigned long y = (x >> 32);
+        if (y)
+        {
+            _BitScanReverse(&r, y);
+            return 32+r;
+        }
+        _BitScanReverse(&r, x);
+        return r;
+    }
+    return 0;
+#endif
 #else
     // SBE - After a fair bit of testing, this is the fastest portable version
     // i could come up with, it's about twice as fast as shift-testing 64 times.
