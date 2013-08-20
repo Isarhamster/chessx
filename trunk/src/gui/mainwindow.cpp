@@ -976,19 +976,15 @@ void MainWindow::setupActions()
                                        editToolBar, ":/images/setup_board.png");
 
     edit->addAction(setupBoard);
-	edit->addAction(createAction(tr("&Copy FEN"), SLOT(slotEditCopyFEN()),
-					  Qt::CTRL + Qt::SHIFT + Qt::Key_C));
-	edit->addAction(createAction(tr("&Paste FEN"), SLOT(slotEditPasteFEN()),
-					  Qt::CTRL + Qt::SHIFT + Qt::Key_V));
-    edit->addAction(createAction(tr("Copy &human FEN"), SLOT(slotEditCopyHumanFEN())));
-	edit->addSeparator();
-    edit->addAction(createAction(tr("&Copy PGN"), SLOT(slotEditCopyPGN()),
-                      Qt::CTRL + Qt::Key_C, editToolBar, ":/images/edit_copy.png"));
-    edit->addAction(createAction(tr("&Paste PGN"), SLOT(slotEditPastePGN()),
-                                 Qt::CTRL + Qt::Key_V, editToolBar, ":/images/edit_paste.png"));
     edit->addSeparator();
-    edit->addAction(createAction(tr("&Copy Image"), SLOT(slotEditCopyImage()),
+    edit->addAction(createAction(tr("Copy PGN"), SLOT(slotEditCopyPGN()), Qt::CTRL + Qt::Key_C, editToolBar, ":/images/edit_copy.png"));
+    edit->addAction(createAction(tr("Copy FEN"), SLOT(slotEditCopyFEN()), Qt::CTRL + Qt::SHIFT + Qt::Key_C));
+    edit->addAction(createAction(tr("Copy Position"), SLOT(slotEditCopyHumanFEN())));
+    edit->addAction(createAction(tr("Copy Image"), SLOT(slotEditCopyImage()),
                                  Qt::CTRL + Qt::ALT + Qt::Key_C, editToolBar, ":/images/camera.png"));
+    edit->addSeparator();
+    edit->addAction(createAction(tr("&Paste"), SLOT(slotEditPaste()),
+                                 Qt::CTRL + Qt::Key_V, editToolBar, ":/images/edit_paste.png"));
     edit->addSeparator();
     edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(), 0,
                       QString(), QString(), QAction::PreferencesRole));

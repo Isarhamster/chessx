@@ -125,12 +125,14 @@ public slots:
     /** Set position's human readable FEN to clipboard. */
     void slotEditCopyHumanFEN();
 	/** Set position using FEN from clipboard. */
-	void slotEditPasteFEN();
+    void slotEditPasteFEN();
     /** Set position's PGN to clipboard. */
     void slotEditCopyPGN();
     /** Set position using PGN from clipboard. */
-    void slotEditPastePGN();
-    /** Set position's Image to clipboard. */
+    bool slotEditPastePGN();
+    /** Set position using PGN from clipboard. */
+    void slotEditPaste();
+    /** Set game or position from clipboard */
     void slotEditCopyImage();
     /** Truncate moves to the end of the game. */
 	void slotEditTruncateEnd();
@@ -341,6 +343,7 @@ protected slots:
     void slotScreenShot();
 
 protected:
+    bool pasteFen(QString& errorText, QString fen);
     void copyGame(int target, int index);
     Database* getDatabaseByPath(QString path);
     DatabaseInfo* getDatabaseInfoByPath(QString path);
