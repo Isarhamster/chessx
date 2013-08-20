@@ -17,11 +17,12 @@ void
 _cdecl
 #endif
 #if QT_VERSION < 0x050000
-SimpleLoggingHandler(QtMsgType type, const char *msg)
+SimpleLoggingHandler(QtMsgType type, const char *txt)
 #else
-SimpleLoggingHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
+SimpleLoggingHandler(QtMsgType type, const QMessageLogContext &, const QString &txt)
 #endif
 {
+    QString msg = txt;
     if (!bDoLog) return;
 
     switch (type)
