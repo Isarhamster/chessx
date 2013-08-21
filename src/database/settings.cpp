@@ -57,24 +57,30 @@ void Settings::setLayout(const QWidget* w)
 
 QString Settings::dataPath()
 {
-    // TODO - alles Quark!
-	if (m_dataPath.isNull()) {
-		m_dataPath = qApp->applicationDirPath();
-		if (m_dataPath.endsWith("/games/bin")) {
-			m_dataPath.truncate(m_dataPath.length() - 10);
-			m_dataPath.append("/share/games/chessx");
-		} else if (m_dataPath.endsWith("/games")) {
-			m_dataPath.truncate(m_dataPath.length() - 6);
-			m_dataPath.append("/share/games/chessx");
-		} else {
-            if (m_dataPath.endsWith("/Contents/MacOS"))
-				//Changed from 33 to 15 to include the data directory in the application directory for MaxOSX
-				m_dataPath.truncate(m_dataPath.length() - 15);
-            else if (m_dataPath.endsWith("/bin"))
-				m_dataPath.truncate(m_dataPath.length() - 4);
-			m_dataPath.append("/data");
-		}
-	}
+    if (m_dataPath.isNull())
+    {
+#if defined(Q_OS_WIN)
+#if QT_VERSION < 0x050000
+    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+#else
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+#endif
+#endif
+
+#if defined(Q_OS_LINUX)
+#if QT_VERSION < 0x050000
+    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+#else
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+#endif
+#endif
+
+#if defined(Q_OS_MAC)
+        m_dataPath = qApp->applicationDirPath();
+#endif
+        m_dataPath.append("/data");
+    }
+
 	return m_dataPath;
 }
 
@@ -137,6 +143,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const {
     map.insert("/General/onlineVersionCheck", true);
     map.insert("/General/autoCommitDB", false);
     map.insert("/General/language", "Default");
+    map.insert("/General/BuiltinDbInstalled", false);
     map.insert("/GameText/FontSize",DEFAULT_FONTSIZE);
 
     map.insert("/GameText/ColumnStyle",false);
@@ -232,12 +239,25 @@ QStringList Settings::getBoardList() const
 
 QString Settings::getImagePath() const
 {
-    QString imgDir(AppSettings->dataPath() + "/data/images");
+    QString imgDir(AppSettings->dataPath() + "/images");
 
     if (!QFile::exists(imgDir))
         imgDir = QString(":/data/images");
 
     return imgDir;
+}
+
+QString Settings::getBuiltinDbPath() const
+{
+    QString dbDir(AppSettings->dataPath() + "/db");
+    qDebug() << dbDir;
+    return dbDir;
+}
+
+QStringList Settings::getBuiltinDatabases() const
+{
+    QStringList dbs = QDir(getBuiltinDbPath()).entryList(QStringList("*.pgn"));
+    return dbs;
 }
 
 QString Settings::getTranslationPath() const
