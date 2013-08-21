@@ -73,6 +73,9 @@ public:
     QString getBoardPath() const;
     QStringList getBoardList() const;
 
+    QString getBuiltinDbPath() const;
+    QStringList getBuiltinDatabases() const;
+
     QString getTranslationPath() const;
     QStringList getTranslations() const;
 private:

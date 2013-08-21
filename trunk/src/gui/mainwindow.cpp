@@ -343,6 +343,21 @@ MainWindow::MainWindow() : QMainWindow(),
 		if (QFile::exists(args[i]))
             openDatabaseUrl(args[i], false);
 
+    if (!AppSettings->getValue("/General/BuiltinDbInstalled").toBool())
+    {
+        QStringList builtinDb = AppSettings->getBuiltinDatabases();
+        AppSettings->setValue("/General/BuiltinDbInstalled", builtinDb.count() > 0);
+        for (int i = 0; i < builtinDb.count(); i++)
+        {
+            QString fileName = AppSettings->getBuiltinDbPath() + "/" + builtinDb[i];
+            if (QFile::exists(fileName))
+            {
+                openDatabaseFile(fileName, false);
+                setFavoriteDatabase(fileName);
+            }
+        }
+    }
+
 	qApp->installEventFilter(this);
 	/* Activate clipboard */
 	updateMenuDatabases();

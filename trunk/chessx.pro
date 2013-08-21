@@ -297,6 +297,9 @@ macx {
  ENGINE_DATA.files = data/engines-mac/uci/stockfish-23-64
  ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
  QMAKE_BUNDLE_DATA += ENGINE_DATA
+ DB_DATA.files = data/db/bundesliga2000.pgn
+ DB_DATA.path = Contents/MacOS/data/db
+ QMAKE_BUNDLE_DATA += DB_DATA
  QMAKE_INFO_PLIST = mac_osx/Info.plist
 }
 
