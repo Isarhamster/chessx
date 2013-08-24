@@ -234,8 +234,8 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 	QString nagString;
     QString imageString;
 	QString precommentString;
-	QString commentString;
-	MoveId moveId;
+
+    MoveId moveId;
 	if (moveToWrite == NextMove) {
 		moveId = m_game->nextMove();
 	} else {
@@ -263,8 +263,10 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 	}
 	// Read comments
 	if (m_game->canHaveStartAnnotation(moveId))
-		precommentString = m_game->annotation(moveId, Game::BeforeMove);
-	commentString = m_game->annotation(moveId);
+        precommentString = (m_outputType == Pgn) ? m_game->annotation(moveId, Game::BeforeMove) :
+            m_game->textAnnotation(moveId, Game::BeforeMove);
+
+    QString commentString = (m_outputType == Pgn) ? m_game->annotation(moveId) : m_game->textAnnotation(moveId);
 
     // Write precomment if any
     text += writeComment(precommentString, mvno, Precomment);
@@ -482,14 +484,16 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
     return text;
 }
 
-QString Output::writeGameComment(const QString& comment)
+QString Output::writeGameComment(QString comment)
 {
     QString text;
+    comment = comment.trimmed();
+    if (comment.isEmpty())
+        return text;
+
     MarkupType markupIndent = MarkupPreAnnotationIndent;
     MarkupType markupInline = MarkupPreAnnotationInline;
 
-    if (comment.isEmpty())
-        return text;
     if (m_options.getOptionAsBool("ColumnStyle") )
         text += m_endTagMap[MarkupColumnStyleMainline];
     if ((m_options.getOptionAsString("CommentIndent") == "Always")
@@ -595,9 +599,7 @@ QString Output::outputGame(Game* game, bool upToCurrentMove)
         text += m_startTagMap[MarkupColumnStyleMainline];
     }
 
-    if( !game->gameComment().isEmpty()){
-        text += writeGameComment(game->gameComment());
-    }
+    text += writeGameComment(game->gameComment());
 
     text += writeVariation(mainId);
     if (m_options.getOptionAsBool("ColumnStyle")) {
