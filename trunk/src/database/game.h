@@ -97,9 +97,10 @@ public :
 	Move move(MoveId moveId = CURRENT_MOVE) const;
 	/** @return current move id. */
 	MoveId currentMove() const;
-	/** @return comment at move at node @p moveId. */
+    /** @return comment at move at node @p moveId including visual hits for diagrams. */
 	QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
-    QString composeAnnotation(QString freeText, MoveId node) const;
+    /** @return comment at move at node @p moveId. */
+    QString textAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
     /** Show annotations on the board for the Nose @p moveId. */
     void indicateAnnotationsOnBoard(MoveId moveId);
     /** @return squareAnnotation at move at node @p moveId. */
@@ -305,13 +306,19 @@ public :
 	/* Debug */
 	/** Dump a move node using qDebug() */
     void dumpMoveNode(MoveId moveId = CURRENT_MOVE);
+    /** Dump annotatios for move @p moveId using qDebug() */
     void dumpAnnotations(MoveId moveId);
 	/** Repeatedly call dumpMoveNode for all nodes */
     void dumpAllMoveNodes();
+    /** Decide if moveVariationUp() can be executed */
     bool canMoveVariationUp(MoveId moveId) const;
+    /** Decide if moveVariationDown() can be executed */
     bool canMoveVariationDown(MoveId moveId) const;
+    /** Start all variations with an initial character comment */
     void enumerateVariations(MoveId moveId, char a);
+    /** Move the variation @p moveId of the curent node up in the list of variations */
     void moveVariationUp(MoveId moveId);
+    /** Move the variation @p moveId of the curent node down in the list of variations */
     void moveVariationDown(MoveId moveId);
 
 signals:
@@ -320,6 +327,7 @@ signals:
 private:
 
     QString specialAnnotation(QString& annotation, QString specialMark ) const; // [%csl  [%cal
+    QString composeAnnotation(QString freeText, MoveId node) const;
 
 	struct MoveNode {
 		Move move;

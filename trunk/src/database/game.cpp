@@ -582,7 +582,7 @@ QString Game::toHumanFen() const
 
 QString Game::gameComment() const
 {
-    return composeAnnotation(m_annotations[0],0);
+    return m_annotations.value(0,"");
 }
 
 void Game::setGameComment(const QString& gameComment)
@@ -980,7 +980,21 @@ QString Game::annotation(MoveId moveId, Position position) const
     else
     {
         if (node == 0)
-            return gameComment();
+            return composeAnnotation(m_annotations.value(0, ""),0);
+        else
+            return m_variationStartAnnotations.value(node, "");
+    }
+}
+
+QString Game::textAnnotation(MoveId moveId, Position position) const
+{
+    MoveId node = nodeValid(moveId);
+    if (position == AfterMove)
+        return m_annotations.value(node, "");
+    else
+    {
+        if (node == 0)
+            return m_annotations.value(0, "");
         else
             return m_variationStartAnnotations.value(node, "");
     }

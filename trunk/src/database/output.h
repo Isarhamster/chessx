@@ -221,7 +221,7 @@ private:
 
 	/* Writing Methods */
     /** writes a comment associated with a game with no moves */
-    QString writeGameComment(const QString& comment );
+    QString writeGameComment(QString comment );
     /** Writes a diagram */
     QString writeDiagram(int n);
 	/** Writes a single move including nag and annotation */
