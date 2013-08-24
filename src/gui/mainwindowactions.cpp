@@ -625,7 +625,7 @@ void MainWindow::slotMoveChanged()
     m_currentFrom = InvalidSquare;
     m_currentTo = InvalidSquare;
 
-    emit displayTime(g.timeAnnotation(), g.board().toMove());
+    emit displayTime(g.timeAnnotation(), oppositeColor(g.board().toMove()));
 
 	// Highlight current move
     m_gameView->showMove(m);
