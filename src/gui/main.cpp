@@ -23,10 +23,14 @@
 
 int main(int argc, char** argv)
 {
-	AppSettings = new Settings;
     QApplication app(argc, argv);
 
     app.setWindowIcon(QIcon(":/images/chessx.png"));
+
+    app.setApplicationName("chessx");
+    app.setOrganizationName("chessx");
+
+    AppSettings = new Settings;
 
 #ifdef Q_OS_MAC
     signal(SIGPIPE, SIG_IGN);
