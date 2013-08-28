@@ -24,6 +24,7 @@
 #include "game.h"
 #include "gamelist.h"
 #include "helpbrowser.h"
+#include "loadquery.h"
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "memorydatabase.h"
@@ -345,20 +346,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
     QStringList builtinDb = AppSettings->getBuiltinDatabases();
 
-    if (!AppSettings->getValue("/General/BuiltinDbInstalled").toBool())
-    {
-        for (int i = 0; i < builtinDb.count(); i++)
-        {
-            QString fileName = AppSettings->getBuiltinDbPath() + "/" + builtinDb[i];
-            if (QFile::exists(fileName))
-            {
-                setFavoriteDatabase(fileName);
-            }
-        }
-    }
-
-    AppSettings->setValue("/General/BuiltinDbInstalled", builtinDb.count() > 0);
-
 	qApp->installEventFilter(this);
 	/* Activate clipboard */
 	updateMenuDatabases();
@@ -656,7 +643,7 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
     if (QuerySaveGame())
     {
         QUrl url = QUrl::fromUserInput(fname);
-        if ((url.scheme()=="http") || (url.scheme()=="ftp"))
+        if ((url.scheme()=="http") || (url.scheme()=="https") || (url.scheme()=="ftp"))
         {
             DownloadManager* downloadManager = new DownloadManager(this);
             connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)));
@@ -778,7 +765,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
 void MainWindow::loadError(QUrl url)
 {
     QFileInfo fi = QFileInfo(url.toString());
-    slotStatusMessage(tr("Database %1 cannot be accessed at the moment.").arg(fi.fileName()));
+    slotStatusMessage(tr("Database %1 cannot be accessed at the moment (%2).").arg(fi.fileName()).arg(url.errorString()));
 }
 
 void MainWindow::loadReady(QUrl /*url*/, QString fileName)
@@ -1317,6 +1304,27 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
         }
     }
     reply->deleteLater();
+    StartCheckDatabase();
+}
+
+void MainWindow::StartCheckDatabase()
+{
+    if (m_databaseList->model()->rowCount() <= 1)
+    {
+        LoadQuery dlg;
+        if (dlg.exec() == QDialog::Accepted)
+        {
+            slotStatusMessage(tr("Start loading database..."));
+            if (dlg.largeDB())
+            {
+                openDatabaseUrl("http://chessx.sourceforge.net/db/bundesliga2000.pgn.zip", false);
+            }
+            else
+            {
+                openDatabaseUrl("http://chessx.sourceforge.net/db/SBL1213.pgn.zip", false);
+            }
+        }
+    }
 }
 
 void MainWindow::slotVersionFound(int major, int minor, int build)
@@ -1329,10 +1337,10 @@ void MainWindow::slotVersionFound(int major, int minor, int build)
     }
     else if (verInternet > verCurrent)
     {
-        statusBar()->showMessage(tr("A new version is available at chessx.sourceforge.net"));
+        slotStatusMessage(tr("A new version is available at chessx.sourceforge.net"));
     }
     else
     {
-        statusBar()->showMessage(tr("The current version is newer than the latest stable"));
+        slotStatusMessage(tr("The current version is newer than the latest stable"));
     }
 }

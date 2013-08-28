@@ -36,7 +36,8 @@ FORMS += \
     src/gui/engineoptiondialog.ui \
     src/gui/tagdetailwidget.ui \
     src/gui/renametagdialog.ui \
-    src/gui/openingtreewidget.ui
+    src/gui/openingtreewidget.ui \
+    src/gui/loadquery.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -144,7 +145,8 @@ HEADERS += src/database/board.h \
     src/gui/openingtreewidget.h \
     src/gui/ecolistwidget.h \
     src/database/ecoinfo.h \
-    src/gui/TextBrowserEx.h
+    src/gui/TextBrowserEx.h \
+    src/gui/loadquery.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -238,7 +240,8 @@ SOURCES += src/database/board.cpp \
     src/gui/renametagdialog.cpp \
     src/gui/openingtreewidget.cpp \
     src/gui/ecolistwidget.cpp \
-    src/database/ecoinfo.cpp
+    src/database/ecoinfo.cpp \
+    src/gui/loadquery.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
@@ -297,9 +300,6 @@ macx {
  ENGINE_DATA.files = data/engines-mac/uci/stockfish-23-64
  ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
  QMAKE_BUNDLE_DATA += ENGINE_DATA
- DB_DATA.files = data/db/bundesliga2000.pgn
- DB_DATA.path = Contents/MacOS/data/db
- QMAKE_BUNDLE_DATA += DB_DATA
  QMAKE_INFO_PLIST = mac_osx/Info.plist
 }
 
