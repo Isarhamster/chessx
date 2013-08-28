@@ -423,6 +423,8 @@ private:
     void UpdateGameText();
     /** Check if an update is available online */
     void StartCheckUpdate();
+    /** Check if download of database is an option */
+    void StartCheckDatabase();
 
 	/* Dialogs  */
 	GameList* m_gameList;
