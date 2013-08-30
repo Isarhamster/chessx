@@ -809,8 +809,8 @@ Bitte Installation prüfen.</translation>
     <name>LoadQuery</name>
     <message>
         <location filename="../src/gui/loadquery.ui" line="14"/>
-        <source>Dialog</source>
-        <translation>Dialog</translation>
+        <source>Load Database</source>
+        <translation>Datenbank laden</translation>
     </message>
     <message>
         <location filename="../src/gui/loadquery.ui" line="20"/>
