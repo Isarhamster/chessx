@@ -341,6 +341,8 @@ protected slots:
     void slotCloseBoardView(int n=-1);
     /** Make a screenshot and save it to file */
     void slotScreenShot();
+    /** Make a screenshot and save it to file */
+    void slotCompileECO();
 
 protected:
     bool pasteFen(QString& errorText, QString fen);

@@ -21,8 +21,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "myassert.h"
+#include <assert.h>
 #include "error.h"
+
+#ifndef ASSERT
+#define ASSERT(h) assert(h)
+#endif
 
 namespace Guess
 {
@@ -30,62 +34,10 @@ namespace Guess
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // CONSTANTS:
 
-typedef unsigned short versionT;
-
-// Version: div by 100 for major number, modulo 100 for minor number
-// so 109 = 1.9, 110 = 1.10, etc.
-
-const versionT SCID_VERSION = 300;     // Current file format version = 3.0
-const versionT SCID_OLDEST_VERSION = 300; // Oldest compatible format: 3.0
-
-const char SCID_VERSION_STRING[] = "3.6.12";     // Current Scid version
-const char SCID_VERSION_DATE[] = "April 2007";
-//const char SCID_WEBSITE[] = "http://scid.sourceforge.net/";
-const char SCID_WEBSITE[] = "http://prolinux.free.fr/scid/";
-
 const char TREEFILE_SUFFIX[] = ".stc";
 const char GZIP_SUFFIX[] = ".gz";
 const char ZIP_SUFFIX[] = ".zip";
 const char PGN_SUFFIX[] = ".pgn";
-
-
-// If the zlib compression library is NOT used, create dummy inline
-// functions to replace those used in zlib, which saves wrapping every
-// zlib function call with #ifndef conditions.
-
-#ifdef NO_ZLIB
-typedef void * gzFile;
-inline gzFile gzopen (const char * name, const char * mode) { return NULL; }
-inline int gzputc (gzFile fp, int c) { return c; }
-inline int gzgetc (gzFile fp) { return -1; }
-inline int gzread (gzFile fp, char * buffer, int length) { return 0; }
-inline int gzeof (gzFile fp) { return 1; }
-inline int gzseek (gzFile fp, int offset, int where) { return 0; }
-inline int gzclose (gzFile fp) { return 0; }
-#endif
-
-
-// Bit Manipulations
-
-#define BIT_7(x)            ((x) & 128)
-#define BIT_6(x)            ((x) &  64)
-#define BIT_5(x)            ((x) &  32)
-#define BIT_4(x)            ((x) &  16)
-#define BIT_3(x)            ((x) &   8)
-#define BIT_2(x)            ((x) &   4)
-#define BIT_1(x)            ((x) &   2)
-#define BIT_0(x)            ((x) &   1)
-
-// Upper or lower 4 bits of a unsigned char, in the range 0..15
-
-#define UPPER_4_BITS(x)     (((x) & 240) >> 4)      // 240 is (15 * 16)
-#define LOWER_4_BITS(x)     ((x) &  15)
-
-//  Upper or lower 12 bits of an integer, in the range 0..4095
-//
-#define UPPER_12_BITS(x)    (((x) & (4096 * 4095)) >> 12)
-#define LOWER_12_BITS(x)    ((x) &  4095)
-
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // TYPE DEFINITIONS
