@@ -51,7 +51,6 @@ namespace Guess
         engine->SetPosition(&pos);
         r.score = engine->Think(&mlist);
         simpleMoveT * sm = mlist.Get(0);
-        ASSERT (sq == sm->from  ||  sq == sm->to);
 
         r.from = sm->from;
         r.to = sm->to;

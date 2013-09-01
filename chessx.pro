@@ -84,7 +84,6 @@ HEADERS += src/database/board.h \
 	src/guess/hash.h \
 	src/guess/misc.h \
 	src/guess/movelist.h \
-	src/guess/myassert.h \
 	src/guess/position.h \
 	src/guess/recog.h \
 	src/guess/sqlist.h \
@@ -146,7 +145,8 @@ HEADERS += src/database/board.h \
     src/gui/ecolistwidget.h \
     src/database/ecoinfo.h \
     src/gui/TextBrowserEx.h \
-    src/gui/loadquery.h
+    src/gui/loadquery.h \
+    src/guess/compileeco.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -187,7 +187,6 @@ SOURCES += src/database/board.cpp \
 	src/guess/guess.cpp \
 	src/guess/misc.cpp \
 	src/guess/movelist.cpp \
-	src/guess/myassert.cpp \
 	src/guess/position.cpp \
 	src/guess/recog.cpp \
 	src/gui/mainwindow.cpp \
@@ -241,7 +240,8 @@ SOURCES += src/database/board.cpp \
     src/gui/openingtreewidget.cpp \
     src/gui/ecolistwidget.cpp \
     src/database/ecoinfo.cpp \
-    src/gui/loadquery.cpp
+    src/gui/loadquery.cpp \
+    src/guess/compileeco.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
@@ -270,13 +270,13 @@ CONFIG(debug, debug|release) {
 CONFIG(release, debug|release) {
     DESTDIR = "release"
     OBJECTS_DIR = "obj_rel"
-    DEFINES += QT_NO_DEBUG_OUTPUT
+    DEFINES += QT_NO_DEBUG_OUTPUT NDEBUG
 }
 
 static {
     DESTDIR = "static"
     OBJECTS_DIR = "obj_static"
-    DEFINES += QT_NO_DEBUG_OUTPUT
+    DEFINES += QT_NO_DEBUG_OUTPUT NDEBUG
 }
 
 !win32 {

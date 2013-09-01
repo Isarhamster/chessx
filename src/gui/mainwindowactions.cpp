@@ -13,6 +13,7 @@
 #include "boardview.h"
 #include "copydialog.h"
 #include "chessbrowser.h"
+#include "compileeco.h"
 #include "databaseinfo.h"
 #include "databaselist.h"
 #include "ecolistwidget.h"
@@ -1719,4 +1720,9 @@ void MainWindow::slotScreenShot()
     QString fileName = shotDir + "/shot-" + QDateTime::currentDateTime().toString() + ".png";
 
     pixmap.save(fileName);
+}
+
+void MainWindow::slotCompileECO()
+{
+    (void) compileAsciiEcoFile("chessx.eco.txt", "chessx.eco", "chessx.gtm");
 }

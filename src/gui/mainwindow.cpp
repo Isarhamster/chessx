@@ -1173,6 +1173,7 @@ void MainWindow::setupActions()
     debug->addAction(createAction("Copy HTML", SLOT(slotGameViewSource())));
     debug->addAction(createAction("Dump Movenodes", SLOT(slotGameDumpMoveNodes())));
     debug->addAction(createAction("Make Screenshot", SLOT(slotScreenShot()), Qt::CTRL + Qt::Key_F12));
+    debug->addAction(createAction("Compile ECO", SLOT(slotCompileECO())));
 #endif
 
     fileToolBar->addAction(helpAction);
