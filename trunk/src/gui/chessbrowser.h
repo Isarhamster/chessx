@@ -74,6 +74,7 @@ protected: // Drag+Drop
 private:
 	QMap<QAction*, EditAction> m_actions;
 
+    QAction* m_copyHtml;
 	QAction* m_startComment;
 	QAction* m_addComment;
 	QAction* m_removeVariation;
@@ -87,6 +88,7 @@ private:
     QAction* m_enumerateVariations1;
     QAction* m_enumerateVariations2;
 	QMenu* m_gameMenu;
+    QMenu* m_browserMenu;
 	QMenu* m_mainMenu;
 	int m_currentMove;
     int m_fontSize;

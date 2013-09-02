@@ -86,7 +86,9 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 {
 	if (setupGameMenu) {
 		m_gameMenu = new QMenu(this);
+        m_browserMenu = new QMenu(this);
 		connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
+        connect(m_browserMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 
         m_gameMenu->addAction((m_startComment = createAction(tr("Add start comment..."), EditAction::EditPrecomment)));
         m_gameMenu->addAction((m_addComment = createAction(tr("Add comment..."), EditAction::EditComment)));
@@ -133,6 +135,10 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
         m_gameMenu->addAction((m_removeNext = createAction(tr("Remove next moves"), EditAction::RemoveNextMoves)));
         m_gameMenu->addSeparator();
         m_gameMenu->addAction((m_addNullMove = createAction(tr("Insert threat"), EditAction::AddNullMove)));
+
+        // Non-move oriented actions
+        m_browserMenu->addAction((m_copyHtml = createAction(tr("Copy Html"), EditAction::CopyHtml)));
+        m_browserMenu->addAction((m_copyHtml = createAction(tr("Copy Text"), EditAction::CopyText)));
 	}
 
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
@@ -155,32 +161,36 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
     if (!game)
 		return;
 	QString link = anchorAt(pos);
-	if (link.isEmpty())
-		return;
+    if (!link.isEmpty())
+    {
+        m_currentMove = link.section(':', 1).toInt();
 
-	m_currentMove = link.section(':', 1).toInt();
+        bool isVariation = !game->isMainline(m_currentMove);
+        bool atLineStart = game->atLineStart(m_currentMove);
+        bool atGameStart = m_currentMove == 0 || game->atGameStart(m_currentMove - 1);
+        bool hasComment = !game->annotation(m_currentMove).isEmpty();
+        bool hasPrecomment = !game->annotation(m_currentMove, Game::BeforeMove).isEmpty();
+        bool hasNags = !game->nags().isEmpty();
+        bool atLineEnd = game->atLineEnd(m_currentMove);
 
-    bool isVariation = !game->isMainline(m_currentMove);
-    bool atLineStart = game->atLineStart(m_currentMove);
-    bool atGameStart = m_currentMove == 0 || game->atGameStart(m_currentMove - 1);
-    bool hasComment = !game->annotation(m_currentMove).isEmpty();
-    bool hasPrecomment = !game->annotation(m_currentMove, Game::BeforeMove).isEmpty();
-    bool hasNags = !game->nags().isEmpty();
-    bool atLineEnd = game->atLineEnd(m_currentMove);
-
-	m_startComment->setVisible(atLineStart && !hasPrecomment);
-	m_addComment->setVisible(!hasComment);
-    m_enumerateVariations1->setVisible(isVariation);
-    m_enumerateVariations2->setVisible(isVariation);
-	m_promoteVariation->setVisible(isVariation);
-	m_removeVariation->setVisible(isVariation);
-    m_VariationUp->setVisible(isVariation && game->canMoveVariationUp(m_currentMove));
-    m_VariationDown->setVisible(isVariation && game->canMoveVariationDown(m_currentMove));
-	m_removeNext->setVisible(!atLineEnd);
-	m_removePrevious->setVisible(!atGameStart);
-	m_removeNags->setVisible(hasNags);
-    m_addNullMove->setVisible(atLineEnd);
-	m_gameMenu->exec(mapToGlobal(pos));
+        m_startComment->setVisible(atLineStart && !hasPrecomment);
+        m_addComment->setVisible(!hasComment);
+        m_enumerateVariations1->setVisible(isVariation);
+        m_enumerateVariations2->setVisible(isVariation);
+        m_promoteVariation->setVisible(isVariation);
+        m_removeVariation->setVisible(isVariation);
+        m_VariationUp->setVisible(isVariation && game->canMoveVariationUp(m_currentMove));
+        m_VariationDown->setVisible(isVariation && game->canMoveVariationDown(m_currentMove));
+        m_removeNext->setVisible(!atLineEnd);
+        m_removePrevious->setVisible(!atGameStart);
+        m_removeNags->setVisible(hasNags);
+        m_addNullMove->setVisible(atLineEnd);
+        m_gameMenu->exec(mapToGlobal(pos));
+    }
+    else
+    {
+        m_browserMenu->exec(mapToGlobal(pos));
+    }
 }
 
 void ChessBrowser::setFontSize(int size)

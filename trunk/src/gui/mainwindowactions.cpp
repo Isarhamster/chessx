@@ -883,8 +883,12 @@ bool MainWindow::slotGameSave()
 
 void MainWindow::slotGameModify(const EditAction& action)
 {
-	game().moveToId(action.move());
-	slotMoveChanged();
+    if ((action.type() != EditAction::CopyHtml) &&
+        (action.type() != EditAction::CopyText))
+    {
+        game().moveToId(action.move());
+        slotMoveChanged();
+    }
 	switch (action.type()) {
 	case EditAction::RemoveNextMoves:
 		game().truncateVariation();
@@ -933,6 +937,12 @@ void MainWindow::slotGameModify(const EditAction& action)
     case EditAction::AddNullMove:
         game().addMove(m_boardView->board().nullMove());
         break;
+    case EditAction::CopyHtml:
+        QApplication::clipboard()->setText(m_gameView->toHtml());
+        return; // game is not changed
+    case EditAction::CopyText:
+        QApplication::clipboard()->setText(m_gameView->toPlainText());
+        return; // game is not changed
 	default:
 		break;
 	}
