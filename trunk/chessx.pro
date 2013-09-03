@@ -146,7 +146,8 @@ HEADERS += src/database/board.h \
     src/database/ecoinfo.h \
     src/gui/TextBrowserEx.h \
     src/gui/loadquery.h \
-    src/guess/compileeco.h
+    src/guess/compileeco.h \
+    src/database/pdbtest.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -241,7 +242,8 @@ SOURCES += src/database/board.cpp \
     src/gui/ecolistwidget.cpp \
     src/database/ecoinfo.cpp \
     src/gui/loadquery.cpp \
-    src/guess/compileeco.cpp
+    src/guess/compileeco.cpp \
+    src/database/pdbtest.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
