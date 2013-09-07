@@ -30,12 +30,12 @@ bool OutputOptions::createDefaultOptions(QString path)
         createOption("TextWidth", Integer, "0:200", "80", tr("Text width"));
         createOption("VariationIndentLevel", Integer, "1:200", "4", tr("Indent variations from Level"));
         createOption("VariationIndentSize", Integer, "1:10", "3", tr("Variation Indentation"));
-        createOption("CommentIndent", String, "Always|OnlyMainline|Never", "OnlyMainline", tr("Comment Indenation"));
+        createOption("CommentIndent", String, "Always|OnlyMainline|Never", "OnlyMainline", tr("Comment indentation"));
 
         createOption("MainLineMoveColor", Color, "", "black", tr("Main Line Color"));
         createOption("VariationColor", Color, "", "blue", tr("Variation Color"));
         createOption("CommentColor", Color, "", "green", tr("Comment Color"));
-        createOption("NagColor", Color, "", "red", tr("Nag Color"));
+        createOption("NagColor", Color, "", "red", tr("NAG Color"));
         createOption("HeaderColor", Color, "", "blue", tr("Header Color"));
         createOption("ShowHeader", Boolean, "", "true", tr("Show Header"));
 
@@ -55,7 +55,7 @@ bool OutputOptions::createDefaultOptions(QString path)
         createOption("MainLineMoveColor", AppSettings->getValue("MainLineMoveColor").toString(), tr("Main Line Color"));
         createOption("VariationColor", AppSettings->getValue("VariationColor").toString(), tr("Variation Color"));
         createOption("CommentColor", AppSettings->getValue("CommentColor").toString(), tr("Comment Color"));
-        createOption("NagColor", AppSettings->getValue("NagColor").toString(), tr("Nag Color"));
+        createOption("NagColor", AppSettings->getValue("NagColor").toString(), tr("NAG Color"));
         createOption("HeaderColor", AppSettings->getValue("HeaderColor").toString(), tr("Header Color"));
         createOption("ShowHeader", AppSettings->getValue("ShowHeader").toBool(), tr("Show Header"));
 

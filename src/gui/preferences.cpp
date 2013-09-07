@@ -368,7 +368,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.notationColors, tr("Main Line"), "MainLineMoveColor");
     restoreColorItem(ui.notationColors, tr("Variations"), "VariationColor");
     restoreColorItem(ui.notationColors, tr("Comments"), "CommentColor");
-    restoreColorItem(ui.notationColors, tr("Nags"), "NagColor");
+    restoreColorItem(ui.notationColors, tr("NAGs"), "NagColor");
 
     ui.gameTextFontSizeSpin->setValue(AppSettings->getValue("FontSize").toInt());
     ui.cbShowDiagrams->setChecked(AppSettings->getValue("ShowDiagrams").toBool());

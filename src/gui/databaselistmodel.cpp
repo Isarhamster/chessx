@@ -80,7 +80,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_NAME:
             {
                 QString s = m_databases.at(index.row()).m_name;
-                if (s.isEmpty()) return tr("ClipBoard");
+                if (s.isEmpty()) return tr("Clipboard");
                 return s;
             }
             case DBLV_SIZE:
@@ -132,7 +132,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 {
                     bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
                     bool bIsClipBoard = m_databases.at(index.row()).m_name.isEmpty();
-                    return QString(bIsFavorite ? tr("Favorite") : bIsClipBoard ? tr("ClipBoard") : "");
+                    return QString(bIsFavorite ? tr("Favorite") : bIsClipBoard ? tr("Clipboard") : "");
                 }
             case DBLV_PATH:
                 {
@@ -151,7 +151,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_NAME:
                 {
                     QString s = m_databases.at(index.row()).m_name;
-                    if (s.isEmpty()) return tr("ClipBoard");
+                    if (s.isEmpty()) return tr("Clipboard");
                     s[0] = s[0].toUpper();
                     return s;
                 }
@@ -186,7 +186,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 {
                     bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
                     bool bIsClipBoard = m_databases.at(index.row()).m_name.isEmpty();
-                    return QString(bIsFavorite ? "Favorite" : bIsClipBoard ? "ClipBoard" : "");
+                    return QString(bIsFavorite ? "Favorite" : bIsClipBoard ? "Clipboard" : "");
                 }
             case DBLV_PATH:
                 {
@@ -205,7 +205,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_NAME:
                 {
                     QString s = m_databases.at(index.row()).m_name;
-                    if (s.isEmpty()) return "ClipBoard";
+                    if (s.isEmpty()) return "Clipboard";
                     s[0] = s[0].toUpper();
                     return s;
                 }

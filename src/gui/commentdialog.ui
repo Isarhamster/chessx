@@ -54,14 +54,14 @@
      <item>
       <widget class="QRadioButton" name="egtTime">
        <property name="text">
-        <string>Elapsed Time</string>
+        <string>Elapsed time</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QRadioButton" name="clkTime">
        <property name="text">
-        <string>Clock Time</string>
+        <string>Clock time</string>
        </property>
        <property name="checked">
         <bool>true</bool>

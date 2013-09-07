@@ -424,13 +424,12 @@ Bitte Installation prüfen.</translation>
     </message>
     <message>
         <location filename="../src/gui/commentdialog.ui" line="57"/>
-        <source>Elapsed Time</source>
+        <source>Elapsed time</source>
         <translation>Abgelaufene Zeit</translation>
     </message>
     <message>
         <location filename="../src/gui/commentdialog.ui" line="64"/>
-        <source>Clock Time</source>
-        <translatorcomment>I assume &quot;elapsed time&quot; means time needed for last move, &quot;clock time&quot; time shown on chess clock for whole game. If this is not true, change translation</translatorcomment>
+        <source>Clock time</source>
         <translation>Restzeit</translation>
     </message>
     <message>
@@ -553,7 +552,7 @@ Bitte Installation prüfen.</translation>
         <location filename="../src/gui/databaselistmodel.cpp" line="83"/>
         <location filename="../src/gui/databaselistmodel.cpp" line="135"/>
         <location filename="../src/gui/databaselistmodel.cpp" line="154"/>
-        <source>ClipBoard</source>
+        <source>Clipboard</source>
         <translation>Zwischenablage</translation>
     </message>
     <message>
@@ -600,7 +599,7 @@ Bitte Installation prüfen.</translation>
     <message>
         <location filename="../src/database/ecoinfo.cpp" line="177"/>
         <source>Rating: &lt;b&gt;%1-%2&lt;/b&gt;</source>
-        <translation>Wertung: &lt;b&gt;%1&lt;/b&gt;</translation>
+        <translation>Wertung: &lt;b&gt;%1-%2&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/ecoinfo.cpp" line="191"/>
@@ -1006,6 +1005,22 @@ Shall I download a database?</source>
         <translation>Pfeil löschen</translation>
     </message>
     <message>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1235"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1269"/>
+        <source>Append game %1 to %2.</source>
+        <translation>Partie %1 an %2 anhängen.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1235"/>
+        <source>Clipboard</source>
+        <translation>Zwischenablage</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1288"/>
+        <source>Append games from %1 to %2.</source>
+        <translation>Partien aus %1 an %2 anhängen.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1693"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Neue Partie&lt;/b&gt;</translation>
@@ -1132,6 +1147,11 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="915"/>
         <source>File</source>
         <translation>Datei</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="919"/>
+        <source>Open in UTF8...</source>
+        <translation>Öffne UTF-8 kodierte Datei...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="932"/>
@@ -1266,18 +1286,8 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1337"/>
-        <source>Current version is latest stable</source>
-        <translation>Laufende Version ist aktuell</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1341"/>
         <source>A new version is available at chessx.sourceforge.net</source>
         <translation>Eine neue Version ist verfügnar unter chessx.sourceforge.net</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1345"/>
-        <source>The current version is newer than the latest stable</source>
-        <translation>Die laufende Version ist neuer als die aktuell veröffentlichte</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1077"/>
@@ -1463,11 +1473,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="790"/>
         <source>%1 opened</source>
         <translation>%1 geöffnet</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow.cpp" line="919"/>
-        <source>&amp;Open in UTF8...</source>
-        <translation>Öffne &amp;UTF-8 kodierte Datei...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="955"/>
@@ -1745,42 +1750,42 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="286"/>
-        <source>White has slight Advantage</source>
+        <source>White has slight advantage</source>
         <translation>Weiss hat einen kleinen Vorteil</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="287"/>
-        <source>Black has slight Advantage</source>
+        <source>Black has slight advantage</source>
         <translation>Schwarz hat einen kleinen Vorteil</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="288"/>
-        <source>White has moderate Advantage</source>
+        <source>White has moderate advantage</source>
         <translation>Weiss hat einen mässigen Vorteil</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="289"/>
-        <source>Black has moderate Advantage</source>
+        <source>Black has moderate advantage</source>
         <translation>Schwarz hat einen mässigen Vorteil</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="290"/>
-        <source>White has decisive Advantage</source>
+        <source>White has decisive advantage</source>
         <translation>Weiss hat entscheidenden Vorteil</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="291"/>
-        <source>Black has decisive Advantage</source>
+        <source>Black has decisive advantage</source>
         <translation>Schwarz hat entscheidenden Vorteil</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="292"/>
-        <source>White has crushing Advantage</source>
+        <source>White has crushing advantage</source>
         <translation>Weiss hat überwältigenden Vorteil</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="293"/>
-        <source>Black has crushing Advantage</source>
+        <source>Black has crushing advantage</source>
         <translation>Schwarz hat überwältigenden Vorteil</translation>
     </message>
     <message>
@@ -2179,7 +2184,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="412"/>
-        <source>With the Idea</source>
+        <source>With the idea</source>
         <translation>Mit der Idee</translation>
     </message>
     <message>
@@ -2329,8 +2334,14 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/database/outputoptions.cpp" line="33"/>
-        <source>Comment Indenation</source>
-        <translation>Kommentare einrücken</translation>
+        <source>Comment indentation</source>
+        <translation>Einrückung Kommentare</translation>
+    </message>
+    <message>
+        <location filename="../src/database/outputoptions.cpp" line="38"/>
+        <location filename="../src/database/outputoptions.cpp" line="58"/>
+        <source>NAG Color</source>
+        <translation>Farbe Auszeichnungen</translation>
     </message>
     <message>
         <location filename="../src/database/outputoptions.cpp" line="35"/>
@@ -2349,12 +2360,6 @@ Shall I download a database?</source>
         <location filename="../src/database/outputoptions.cpp" line="57"/>
         <source>Comment Color</source>
         <translation>Farbe Kommentare</translation>
-    </message>
-    <message>
-        <location filename="../src/database/outputoptions.cpp" line="38"/>
-        <location filename="../src/database/outputoptions.cpp" line="58"/>
-        <source>Nag Color</source>
-        <translation>Farbe Auszeichnungen</translation>
     </message>
     <message>
         <location filename="../src/database/outputoptions.cpp" line="39"/>
@@ -2517,7 +2522,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="371"/>
-        <source>Nags</source>
+        <source>NAGs</source>
         <translation>Auszeichnungen</translation>
     </message>
     <message>
@@ -2890,25 +2895,6 @@ Shall I download a database?</source>
     </message>
 </context>
 <context>
-    <name>QuaGzipFile</name>
-    <message>
-        <location filename="../src/quazip/quagzipfile.cpp" line="36"/>
-        <source>Opening gzip for both reading and writing is not supported</source>
-        <translatorcomment>Quazip-Fehlermeldung</translatorcomment>
-        <translation>gzip für Lesen und Schreiben Öffnen wird nicht unterstützt</translation>
-    </message>
-    <message>
-        <location filename="../src/quazip/quagzipfile.cpp" line="44"/>
-        <source>You can open a gzip either for reading or for writing. Which is it?</source>
-        <translation>Öffne gzip für Lesen oder Schreiben. Was nun?</translation>
-    </message>
-    <message>
-        <location filename="../src/quazip/quagzipfile.cpp" line="50"/>
-        <source>Could not gzopen() file</source>
-        <translation>Konnte gzip-Datei nicht öffnen</translation>
-    </message>
-</context>
-<context>
     <name>QuickSearchDialog</name>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="14"/>
@@ -3030,7 +3016,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/renametagdialog.ui" line="29"/>
-        <source>Rename all Occurrances ...</source>
+        <source>Rename all Occurrences ...</source>
         <translation>Alle Vorkommen ändern...</translation>
     </message>
     <message>
@@ -3187,7 +3173,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/savedialog.cpp" line="57"/>
-        <source>ClipBoard</source>
+        <source>Clipboard</source>
         <translation>Zwischenablage</translation>
     </message>
     <message>
