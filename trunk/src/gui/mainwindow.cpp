@@ -916,7 +916,7 @@ void MainWindow::setupActions()
     fileToolBar->setObjectName("FileToolBar");
     file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), QKeySequence(), fileToolBar, ":/images/new.png"));
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
-    file->addAction(createAction(tr("&Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
+    file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
 	QMenu* menuRecent = file->addMenu(tr("Open &recent..."));
 
 	for (int i = 0; i < MaxRecentFiles; ++i) {
@@ -1332,16 +1332,8 @@ void MainWindow::slotVersionFound(int major, int minor, int build)
 {
     int verInternet = major * 10000 + minor * 100 + build;
     int verCurrent = VERSION_MAJOR * 10000 + VERSION_MINOR * 100 + REVISION;
-    if (verInternet == verCurrent)
-    {
-        statusBar()->showMessage(tr("Current version is latest stable"));
-    }
-    else if (verInternet > verCurrent)
+    if (verInternet > verCurrent)
     {
         slotStatusMessage(tr("A new version is available at chessx.sourceforge.net"));
-    }
-    else
-    {
-        slotStatusMessage(tr("The current version is newer than the latest stable"));
     }
 }

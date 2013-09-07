@@ -283,14 +283,14 @@ void NagSet::InitNagStringListLong()
     tr("Equal") <<
     tr("Equal") <<
     tr("Unclear") <<
-    tr("White has slight Advantage") <<
-    tr("Black has slight Advantage") <<
-    tr("White has moderate Advantage") <<
-    tr("Black has moderate Advantage") <<
-    tr("White has decisive Advantage") <<
-    tr("Black has decisive Advantage") <<
-    tr("White has crushing Advantage") <<
-    tr("Black has crushing Advantage") <<
+    tr("White has slight advantage") <<
+    tr("Black has slight advantage") <<
+    tr("White has moderate advantage") <<
+    tr("Black has moderate advantage") <<
+    tr("White has decisive advantage") <<
+    tr("Black has decisive advantage") <<
+    tr("White has crushing advantage") <<
+    tr("Black has crushing advantage") <<
     tr("Zugzwang") <<
     tr("Zugzwang") <<
     tr("With slight space advantage") <<
@@ -409,7 +409,7 @@ void NagSet::InitNagStringListLong()
     tr("Moderate time control pressure") <<
     tr("Severe time control pressure") <<
     tr("Severe time control pressure") <<
-    tr("With the Idea") <<
+    tr("With the idea") <<
     tr("Aimed against") <<
     tr("Better was") <<
     tr("Worse was") <<

@@ -33,21 +33,19 @@ bool QuaGzipFilePrivate::open(FileId id, QIODevice::OpenMode mode,
     modeString[0] = modeString[1] = '\0';
     if ((mode & QIODevice::ReadOnly) != 0
             && (mode & QIODevice::WriteOnly) != 0) {
-        error = QuaGzipFile::trUtf8("Opening gzip for both reading"
-            " and writing is not supported");
+        error = "Opening zip for both reading and writing is not supported";
         return false;
     } else if ((mode & QIODevice::ReadOnly) != 0) {
         modeString[0] = 'r';
     } else if ((mode & QIODevice::WriteOnly) != 0) {
         modeString[0] = 'w';
     } else {
-        error = QuaGzipFile::trUtf8("You can open a gzip either for reading"
-            " or for writing. Which is it?");
+        error = "Opening a file requires a mode";
         return false;
     }
     gzd = open(id, modeString);
     if (gzd == NULL) {
-        error = QuaGzipFile::trUtf8("Could not gzopen() file");
+        error = "Could not open file";
         return false;
     }
     return true;

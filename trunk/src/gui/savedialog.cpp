@@ -54,7 +54,7 @@ int SaveDialog::save(Database* database, Game& game)
 {
     QString gameTitle;
     QString baseName = database->name();
-    if (baseName.isEmpty()) baseName = tr("ClipBoard");
+    if (baseName.isEmpty()) baseName = tr("Clipboard");
 
     if (game.tag(TagNameWhite).isEmpty() && game.tag(TagNameBlack).isEmpty())
     {

@@ -26,7 +26,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Rename all Occurrances ...</string>
+      <string>Rename all Occurrences ...</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>

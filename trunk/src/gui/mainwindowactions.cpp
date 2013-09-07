@@ -321,11 +321,11 @@ void MainWindow::slotToggleStayOnTop()
     bool visible = isVisible();
     if (AppSettings->getValue("/MainWindow/StayOnTop").toBool())
     {
-        setWindowFlags(flags | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
+        setWindowFlags(flags | Qt::WindowStaysOnTopHint);
     }
     else
     {
-        setWindowFlags(flags &~ (Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint));
+        setWindowFlags(flags ^ Qt::WindowStaysOnTopHint);
     }
     if (visible) show();
 #endif
@@ -1232,7 +1232,7 @@ void MainWindow::copyGame(int target, int index)
         {
             QString fileName = m_databases[target]->filePath();
             QString msg;
-            msg = QString("Append game %1 to %2.").arg(index+1).arg(fileName.isEmpty() ? "ClipBoard" : fileName);
+            msg = tr("Append game %1 to %2.").arg(index+1).arg(fileName.isEmpty() ? tr("Clipboard") : fileName);
             statusBar()->showMessage(msg);
 
             // The database is open and accessible
@@ -1266,7 +1266,7 @@ void MainWindow::copyGame(QString fileName, int index)
     if (database()->loadGame(index, g))
     {
         QString msg;
-        msg = QString("Append game %1 to %2.").arg(index+1).arg(fileName.isEmpty() ? "ClipBoard" : fileName);
+        msg = tr("Append game %1 to %2.").arg(index+1).arg(fileName.isEmpty() ? "Clipboard" : fileName);
         statusBar()->showMessage(msg);
 
         writer.append(fileName, g);
@@ -1285,7 +1285,7 @@ void MainWindow::copyDatabase(QString target, QString src)
         if (pDestDBInfo && pSrcDB && pDestDB && (pSrcDB != pDestDB))
         {
             QString msg;
-            msg = QString("Append games from %1 to %2.").arg(src).arg(target.isEmpty() ? "ClipBoard" : target);
+            msg = tr("Append games from %1 to %2.").arg(src).arg(target.isEmpty() ? "Clipboard" : target);
             statusBar()->showMessage(msg);
             for (int i = 0; i < pSrcDB->count(); ++i)
             {
