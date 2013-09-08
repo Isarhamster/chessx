@@ -291,6 +291,7 @@ void MainWindow::slotReconfigure()
     {
         setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AllowNestedDocks);
     }
+#ifdef Q_OS_WIN
     if (AppSettings->getValue("/MainWindow/StayOnTop").toBool())
     {
         SetWindowPos((HWND)winId(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
@@ -299,6 +300,7 @@ void MainWindow::slotReconfigure()
     {
         SetWindowPos((HWND)winId(), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     }
+#endif
     m_recentFiles.restore();
     updateMenuRecent();
     emit reconfigure(); 	// Re-emit for children
