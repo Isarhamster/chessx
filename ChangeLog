@@ -1,3 +1,34 @@
+September 2013: Version 1.0.0
+
+	- New feature: Create a Diagram Nag (201 like in SCID) from GUI
+	- New Feature: Draw Board Coordinates (see CR#1715710	Numbers and ...)
+	- New Feature: HTML Output with readable basic tags instead of PGN look
+	- New feature: Diagrams in HTML Export and Notation
+	- New feature: HTML Output with symbolic nags in HTML/UTF8
+	- New features: Navigation within siblings of variations with keyboard
+	- New feature: Enter or Exit Variation now moves within mainline
+	- New feature: Toolbar for commonly used actions
+	- New Feature: ECO based Opening Overview of the current database
+	- New Feature: MDI-Interface
+	- New feature: Opening tree has its own board view.
+	- New Feature: CR#3607996 Always on top feature
+	
+	- Bugfix: ChessBrowser does not indicate '?'-tags
+	- Bugfix: HTML-Output contained one HTML-Header for each game
+	- Bugfix: Sorting by size was not ideal
+	- Bugfix: CR#171 - Board Setup dialog: wrong board size
+	- Bugfix: Removing last arrow annotation leaves ugly comment
+	- Bugfix: Stay On Top accidentally active in OS which were Non-Windows-OS
+	- Bugfix: Concurrent loading of games (fix from James Coons)
+	- Bugfix: Game List was not updated after bulk copy of games
+	- Bugfix: Black ELo was only saved if a white ELO was given
+	- Bugfix: CR#3612157 tablebase
+	- Bugfix: Performance Boost for filtering with result-cache
+	- Bugfix: CR#3611434 Local vs global menu inconsistency
+	- Bugfix: Update Widgets after saving a database
+	- Bugfix: Created PGN was invalid due to invalid date format
+	- Bugfix: Opening new game did not clear selection on game list
+
 March 2013 Version 0.9.6
 
         - Bugfix / Feature removal: Filtering opening tree was somewhat active
