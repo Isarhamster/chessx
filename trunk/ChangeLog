@@ -1,5 +1,17 @@
 September 2013: Version 1.0.0
 
+	- New feature: Copy Text or HTML from Notation
+	- New feature: Offer to load a default database for first time users
+	- New feature: CR#10 Configurable Game View - customize appearance of notation
+	- New feature: Inserting moves (in addition to adding moves as variation
+	- New Feature: CR#86 Merge games with Drag&Drop
+	- New Feature: CR#46 Games whose position is [end] selectable 
+	- New Feature: CR#43 Frequency and score ~0% instead of 0% when not exactly 0
+	- New feature: Setup Dialog has new functions to mirror board or colors.
+	- New feature: Select Language from Preferences (requires restart)
+	- New feature: Online check for updates
+	- New Feature: Column date of last modification
+	- New Feature: Localized Piece Initials (see CR#3592733 Output / Input PGN
 	- New feature: Create a Diagram Nag (201 like in SCID) from GUI
 	- New Feature: Draw Board Coordinates (see CR#1715710	Numbers and ...)
 	- New Feature: HTML Output with readable basic tags instead of PGN look
