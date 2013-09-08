@@ -291,7 +291,14 @@ void MainWindow::slotReconfigure()
     {
         setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AllowNestedDocks);
     }
-    slotToggleStayOnTop();
+    if (AppSettings->getValue("/MainWindow/StayOnTop").toBool())
+    {
+        SetWindowPos((HWND)winId(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+    }
+    else
+    {
+        SetWindowPos((HWND)winId(), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+    }
     m_recentFiles.restore();
     updateMenuRecent();
     emit reconfigure(); 	// Re-emit for children
@@ -317,17 +324,15 @@ void MainWindow::slotToggleStayOnTop()
         AppSettings->setValue("/MainWindow/StayOnTop",stayOnTop->isChecked());
     }
 
-    Qt::WindowFlags flags = windowFlags();
-    bool visible = isVisible();
     if (AppSettings->getValue("/MainWindow/StayOnTop").toBool())
     {
-        setWindowFlags(flags | Qt::WindowStaysOnTopHint);
+        SetWindowPos((HWND)winId(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     }
     else
     {
-        setWindowFlags(flags ^ Qt::WindowStaysOnTopHint);
+        SetWindowPos((HWND)winId(), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     }
-    if (visible) show();
+    show();
 #endif
 }
 
