@@ -48,6 +48,9 @@
 #include <QProgressBar>
 #include <QStatusBar>
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 
 void MainWindow::slotFileNew()
 {
