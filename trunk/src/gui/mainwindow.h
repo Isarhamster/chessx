@@ -28,6 +28,7 @@ class ChessBrowser;
 class Database;
 class DatabaseInfo;
 class DatabaseList;
+class DownloadManager;
 class ECOListWidget;
 class EcoThread;
 class EditAction;
@@ -479,6 +480,7 @@ private:
     QAction* m_autoAnalysis;
     QUndoGroup m_undoGroup;
     QNetworkAccessManager* m_manager;
+    DownloadManager* downloadManager;
 };
 
 

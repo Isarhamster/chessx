@@ -21,6 +21,7 @@
 #include "enginelist.h"
 
 class QListWidgetItem;
+class DownloadManager;
 
 /** @ingroup GUI
 The PreferencesDialog class is a dialog for configuring ChessX.
@@ -62,6 +63,17 @@ public slots:
     void slotShowOptionDialog();
     /** User pressed a flag to change the piece string */
     void slotChangePieceString();
+    /** Start loading the language file selected in the combo-box */
+    void slotLoadLanguageFile();
+    /** Language File was loaded */
+    void slotLanguageFileLoaded(QUrl, QString);
+    /** Download dictionary was loaded */
+    void slotLanguagePageLoaded(QUrl url,QString name);
+    /** Download file was not possible */
+    void loadError(QUrl);
+    /** Download dictionary was not possible */
+    void loadDictError(QUrl);
+
 
 protected:
 	/** Overridden to save size */
@@ -70,6 +82,7 @@ protected:
     virtual void done(int);
 
 private:
+    DownloadManager* downloadManager;
 	Ui::PreferencesDialog ui;
 	void restoreSettings();
 	void saveSettings();

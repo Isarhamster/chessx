@@ -36,19 +36,21 @@ int main(int argc, char** argv)
     signal(SIGPIPE, SIG_IGN);
 #endif
 
-	QString shortLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(2));
-	QString fullLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(5));
+    QString shortSystemLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(2));
+    QString fullSystemLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(5));
 
 	// Language may have two forms: "pt_BR" or "pl"
     QString lang = QString("chessx_%1.qm").arg(AppSettings->getValue("/General/language").toString());
 
+    QDir().mkpath(AppSettings->dataPath() + "/lang/");
+
 	QTranslator translator;
-    if (translator.load(AppSettings->dataPath() + "/lang/" + lang) ||
-        translator.load(QString(":i18n/") + lang) ||
-        translator.load(AppSettings->dataPath() + "/lang/" + fullLang) ||
-        translator.load(QString(":i18n/") + fullLang) ||
-        translator.load(AppSettings->dataPath() + "/lang/" + shortLang) ||
-        translator.load(QString(":i18n/") + shortLang))
+    if (translator.load(QString(":i18n/") + lang) ||
+        translator.load(AppSettings->dataPath() + "/lang/" + lang) ||
+        translator.load(QString(":i18n/") + fullSystemLang) ||
+        translator.load(AppSettings->dataPath() + "/lang/" + fullSystemLang) ||
+        translator.load(QString(":i18n/") + shortSystemLang) ||
+        translator.load(AppSettings->dataPath() + "/lang/" + shortSystemLang) )
     {
         app.installTranslator(&translator);
     }

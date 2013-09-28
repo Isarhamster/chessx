@@ -344,21 +344,13 @@ MainWindow::MainWindow() : QMainWindow(),
 		if (QFile::exists(args[i]))
             openDatabaseUrl(args[i], false);
 
-    QStringList builtinDb = AppSettings->getBuiltinDatabases();
-
 	qApp->installEventFilter(this);
 	/* Activate clipboard */
 	updateMenuDatabases();
 	slotDatabaseChanged();
     emit signalGameIsEmpty(true);
 
-#if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
-#else
-    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
-#endif
-
-    QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
+    QString dir = AppSettings->commonDataPath();
     QDir().mkpath(dir+"/index");
 
 	/* Load ECO file */
@@ -367,6 +359,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(ecothread, SIGNAL(loaded(QObject*,bool)), this, SLOT(ecoLoaded(QObject*,bool)));
     ecothread->start();
     StartCheckUpdate();
+    downloadManager = new DownloadManager(this);
 }
 
 MainWindow::~MainWindow()
@@ -644,10 +637,9 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
     {
         QUrl url = QUrl::fromUserInput(fname);
         if ((url.scheme()=="http") || (url.scheme()=="https") || (url.scheme()=="ftp"))
-        {
-            DownloadManager* downloadManager = new DownloadManager(this);
+        {            
             connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)));
-            connect(downloadManager, SIGNAL(downloadFinished(QUrl,QString)), this, SLOT(loadReady(QUrl,QString)));
+            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(loadReady(QUrl,QString)));
             downloadManager->doDownload(url);
             return;
         }

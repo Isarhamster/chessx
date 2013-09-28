@@ -49,27 +49,31 @@
 #include <QNetworkReply>
 #include <QStringList>
 #include <QUrl>
+#include <QMap>
 
 class DownloadManager: public QObject
 {
     Q_OBJECT
     QNetworkAccessManager manager;
     QList<QNetworkReply *> currentDownloads;
+    QMap<QUrl,QString> destinationPaths;
 
 public:
     explicit DownloadManager(QObject *parent = 0);
     void doDownload(const QUrl &url);
+    void doDownloadToPath(const QUrl &url, const QString& path);
     QString saveFileName(const QUrl &url);
     bool saveToDisk(const QString &filename, QIODevice *data);
 
 public slots:
     void execute(QStringList args);
-    void downloadFinished(QNetworkReply *reply);
+    void downloadFinished();
 
 signals:
-    void downloadFinished(QUrl,QString);
+    void onDownloadFinished(QUrl,QString);
     void downloadError(QUrl);
     void downloadManagerIdle();
+
 };
 
 #endif // DOWNLOADMANAGER_H
