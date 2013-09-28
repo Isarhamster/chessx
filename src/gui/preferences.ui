@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -992,7 +992,7 @@
           <item>
            <widget class="QCheckBox" name="versionCheck">
             <property name="text">
-             <string>Check for updates at startup</string>
+             <string>Check for updates (at startup) and language packs</string>
             </property>
            </widget>
           </item>
@@ -1002,7 +1002,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_5">
          <property name="title">
-          <string>Options</string>
+          <string>Localization</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_9">
           <item>
@@ -1039,6 +1039,50 @@
             </property>
             <property name="text">
              <string>Changing the language requires restarting the application!</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <widget class="QLabel" name="label_19">
+              <property name="text">
+               <string>Load language file from Server:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbLangServer"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btLoadLang">
+              <property name="text">
+               <string>Load!</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelLoadStatus">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>

@@ -1727,13 +1727,7 @@ void MainWindow::slotScreenShot()
 {
     QPixmap pixmap = QPixmap::grabWindow(effectiveWinId());
 
-#if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
-#else
-    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
-#endif
-
-    QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
+    QString dir = AppSettings->commonDataPath();
     QString shotDir = dir + "/shots";
     QDir().mkpath(shotDir);
 

@@ -44,6 +44,8 @@ public:
     void setLayout(const QWidget* w);
 	/** @return directory where data are stored. */
     QString dataPath();
+    /** @return directory where common chess data are stored. */
+    QString commonDataPath();
 
     /** Write integer list to configuration file. Does it by converting it to QString */
     void setList(const QString& key, QList<int> list);
@@ -76,7 +78,7 @@ public:
     QString getBuiltinDbPath() const;
     QStringList getBuiltinDatabases() const;
 
-    QString getTranslationPath() const;
+    QStringList getTranslationPaths() const;
     QStringList getTranslations() const;
 private:
 

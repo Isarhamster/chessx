@@ -59,29 +59,28 @@ QString Settings::dataPath()
 {
     if (m_dataPath.isNull())
     {
-#if defined(Q_OS_WIN)
 #if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        m_dataPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 #else
-    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-#endif
+        m_dataPath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 #endif
 
-#if defined(Q_OS_LINUX)
-#if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-#else
-    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-#endif
-#endif
-
-#if defined(Q_OS_MAC)
-        m_dataPath = qApp->applicationDirPath();
-#endif
         m_dataPath.append("/data");
     }
 
 	return m_dataPath;
+}
+
+QString Settings::commonDataPath()
+{
+#if QT_VERSION < 0x050000
+    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+#else
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
+#endif
+
+    QString dir = value("/General/DefaultDataPath", dataPath).toString();
+    return dir;
 }
 
 void Settings::setList(const QString& key, QList<int> list)
@@ -247,33 +246,30 @@ QString Settings::getImagePath() const
     return imgDir;
 }
 
-QString Settings::getBuiltinDbPath() const
+QStringList Settings::getTranslationPaths() const
 {
-    QString dbDir(AppSettings->dataPath() + "/db");
-    qDebug() << dbDir;
-    return dbDir;
-}
+    QStringList list;
+    list.append(":i18n");
 
-QStringList Settings::getBuiltinDatabases() const
-{
-    QStringList dbs = QDir(getBuiltinDbPath()).entryList(QStringList("*.pgn"));
-    return dbs;
-}
+    QString langDir(AppSettings->dataPath() + "/lang");
 
-QString Settings::getTranslationPath() const
-{
-    QString themeDir(AppSettings->dataPath() + "/lang");
+    if (QFile::exists(langDir))
+        list.append(langDir);
 
-    if (!QFile::exists(themeDir))
-        themeDir = QString(":i18n");
-
-    return themeDir;
+    return list;
 }
 
 QStringList Settings::getTranslations() const
 {
-    QStringList translations = QDir(getTranslationPath()).entryList(QStringList("*.qm"));
-    return translations;
+    QStringList total;
+    QStringList langDirs = getTranslationPaths();
+    foreach (QString dir, langDirs)
+    {
+        QStringList translations = QDir(dir).entryList(QStringList("*.qm"));
+        total.append(translations);
+    }
+    total.removeDuplicates();
+    return total;
 }
 
 //////////////////////////////////////////////////////////////////////////////
