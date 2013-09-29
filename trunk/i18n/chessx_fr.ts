@@ -2498,7 +2498,7 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="729"/>
         <source>Font Sizes</source>
-        <translation>Tailles police</translation>
+        <translation>Tailles polices</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="737"/>
@@ -2523,12 +2523,12 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="805"/>
         <source>Column Style</source>
-        <translation>Style Colone</translation>
+        <translation>Style Colonne</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="814"/>
         <source>Keep variations inline from level</source>
-        <translation></translation>
+        <translation>Limiter les variantes au niveau </translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="835"/>
@@ -2549,7 +2549,7 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="872"/>
         <source> KQRBN - Mind the initial space!</source>
-        <translation> KQRBN - Garer l&apos;espace initial!</translation>
+        <translation> KQRBN - Garder l&apos;espace initial!</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="941"/>
@@ -2579,7 +2579,7 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="1050"/>
         <source>Load language file from Server:</source>
-        <translation></translation>
+        <translation>Télécharger la traduction</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1060"/>
@@ -2660,7 +2660,7 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="362"/>
         <source>&amp;Engines</source>
-        <translation>&amp;&amp;Moteurs</translation>
+        <translation>&amp;Moteurs</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="879"/>
@@ -2828,107 +2828,107 @@ Dois-je télécharger une base ?</translation>
         <translation>Xboard</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="88"/>
+        <location filename="../src/gui/preferences.cpp" line="92"/>
         <source>For updating translations online version checking needs to be enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Une vérification de version en ligne est nécéessaire pour la MAJ des traductions</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="117"/>
+        <location filename="../src/gui/preferences.cpp" line="121"/>
         <source>Select databases folder</source>
         <translation>Choisir le dossier des bases</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="129"/>
+        <location filename="../src/gui/preferences.cpp" line="133"/>
         <source>New Engine</source>
         <translation>Nouveau moteur</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="289"/>
+        <location filename="../src/gui/preferences.cpp" line="293"/>
         <source>Could not load server language file dictionary</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peut charger le dictionnaire de langue du serveur</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="294"/>
+        <location filename="../src/gui/preferences.cpp" line="298"/>
         <source>Could not load or install language pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne peut charger ou installer le pack de langue.</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="325"/>
+        <location filename="../src/gui/preferences.cpp" line="329"/>
         <source>No further translations online available!</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune autre traduction disponible en ligne</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="340"/>
+        <location filename="../src/gui/preferences.cpp" line="344"/>
         <source>Translation file loaded - select added language above!</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier de traduction chargé - Selectionez la langue ajoutée au dessus</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="356"/>
+        <location filename="../src/gui/preferences.cpp" line="360"/>
         <source>Clear all application settings?</source>
         <translation>Effacer tous les réglagles de l&apos;application?</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="356"/>
+        <location filename="../src/gui/preferences.cpp" line="360"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="398"/>
+        <location filename="../src/gui/preferences.cpp" line="402"/>
         <source>Light squares</source>
         <translation>Cases claires</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="399"/>
+        <location filename="../src/gui/preferences.cpp" line="403"/>
         <source>Dark squares</source>
         <translation>Cases foncées</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="400"/>
+        <location filename="../src/gui/preferences.cpp" line="404"/>
         <source>Highlighted squares</source>
         <translation>Cases en surbrillance</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="401"/>
+        <location filename="../src/gui/preferences.cpp" line="405"/>
         <source>Frame</source>
         <translation>Bordure</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="455"/>
+        <location filename="../src/gui/preferences.cpp" line="459"/>
         <source>Main Line</source>
         <translation>Ligne principale</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="456"/>
+        <location filename="../src/gui/preferences.cpp" line="460"/>
         <source>Variations</source>
         <translation>Variantes</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="457"/>
+        <location filename="../src/gui/preferences.cpp" line="461"/>
         <source>Comments</source>
         <translation>Commentaires</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="458"/>
+        <location filename="../src/gui/preferences.cpp" line="462"/>
         <source>NAGs</source>
         <translation>NAGs</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="108"/>
+        <location filename="../src/gui/preferences.cpp" line="112"/>
         <source>Select engine directory</source>
         <translation>Choisir le dossier du moteur</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="231"/>
+        <location filename="../src/gui/preferences.cpp" line="235"/>
         <source>Select engine executable</source>
         <translation>Choisir l&apos;exécutable du moteur</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="402"/>
+        <location filename="../src/gui/preferences.cpp" line="406"/>
         <source>Current move</source>
         <translation>Coup actuel</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="427"/>
+        <location filename="../src/gui/preferences.cpp" line="431"/>
         <source>[plain colors]</source>
         <translation>[couleurs simples]</translation>
     </message>
