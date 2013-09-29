@@ -80,7 +80,11 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
         downloadManager = new DownloadManager(this);
         connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadDictError(QUrl)));
         connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(slotLanguagePageLoaded(QUrl,QString)));
+#if QT_VERSION < 0x050000
+        QString path = QDesktopServices::storageLocation(QDesktopServices::TempLocation);
+#else
         QString path = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+#endif
         downloadManager->doDownloadToPath(url, path + "dict.txt");
     }
     else
