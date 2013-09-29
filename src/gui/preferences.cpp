@@ -288,12 +288,12 @@ void PreferencesDialog::slotLoadLanguageFile()
     }
 }
 
-void PreferencesDialog::loadDictError(QUrl url)
+void PreferencesDialog::loadDictError(QUrl /*url*/)
 {
     ui.labelLoadStatus->setText(tr("Could not load server language file dictionary"));
 }
 
-void PreferencesDialog::loadError(QUrl url)
+void PreferencesDialog::loadError(QUrl /*url*/)
 {
     ui.labelLoadStatus->setText(tr("Could not load or install language pack"));
 }
