@@ -7,9 +7,9 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#define VERSION_MAJOR   0
-#define VERSION_MINOR   9
-#define REVISION        7
+#define VERSION_MAJOR   1
+#define VERSION_MINOR   0
+#define REVISION        0
 
 #define XGLUE2(a,b) #a "," #b
 #define GLUE2(a,b)  XGLUE2(a,b)
@@ -20,4 +20,4 @@
 #define STR_VERSION     GLUE2(VERSION_MAJOR,VERSION_MINOR)
 #define STR_REVISION    GLUE4(VERSION_MAJOR,VERSION_MINOR,REVISION,0)
 
-#define COPYRIGHT "Copyright (C) 2012"
+#define COPYRIGHT "Copyright (C) 2013"

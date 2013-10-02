@@ -67,6 +67,9 @@ public:
     void setMap(const QString& key, const OptionValueList& map);
     void getMap(const QString& key, OptionValueList& map);
 
+    QString getUserDataPath() const;
+    QString getTempPath() const;
+
     QString getThemaPath() const;
     QStringList getThemeList() const;
 

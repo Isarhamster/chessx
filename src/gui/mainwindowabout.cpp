@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "mainwindow.h"
+#include "settings.h"
 #include "version.h"
 
 #include <QMessageBox>
@@ -26,8 +27,12 @@ void MainWindow::slotHelpAbout()
                         "<p>Additional coding: James Coons, Marius Roets, Sean Estabrooks, Rico Zenklusen, "
                         "Heinz Hopfgartner, William Hoggarth.</p>"
                         "<p>Homepage: <a href=\"http://chessx.sourceforge.net\">http://chessx.sourceforge.net</a><br>"
-                        "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">chessx-users@lists.sourceforge.net</a></p>")
-                        .arg(version),
+                        "Mailing list: <a href=\"mailto:chessx-users@lists.sourceforge.net\">chessx-users@lists.sourceforge.net</a><br>"
+                        "Temp Path: %2<br>"
+                        "AppData: %3<br></p>")
+                    .arg(version)
+                    .arg(AppSettings->getTempPath())
+                    .arg(AppSettings->dataPath()),
                 QMessageBox::Ok);
     dlg.setIconPixmap((QPixmap(":/images/chessx.png")));
     dlg.exec();

@@ -657,12 +657,7 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
     }
     else
     {
-#if QT_VERSION < 0x050000
-        QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
-#else
-        QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
-#endif
-
+        QString dataPath = AppSettings->getUserDataPath();
         QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
 
         fname = fi.canonicalFilePath();
