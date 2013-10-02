@@ -1,6 +1,10 @@
+This will install version 1.0.0 of ChessX.
+
+List of Changes:
+
 September 2013: Version 1.0.0
 
-        - New feature: Get translation files from server
+	- New feature: Get translation files from server
 	- New feature: Copy Text or HTML from Notation
 	- New feature: Offer to load a default database for first time users
 	- New feature: CR#10 Configurable Game View - customize appearance of notation
