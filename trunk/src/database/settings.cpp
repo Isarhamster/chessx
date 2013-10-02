@@ -272,6 +272,27 @@ QStringList Settings::getTranslations() const
     return total;
 }
 
+QString Settings::getUserDataPath() const
+{
+#if QT_VERSION < 0x050000
+    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+#else
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
+#endif
+    return dataPath;
+}
+
+QString Settings::getTempPath() const
+{
+#if QT_VERSION < 0x050000
+    QString path = QDesktopServices::storageLocation(QDesktopServices::TempLocation);
+#else
+    QString path = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+#endif
+    return path;
+}
+
+
 //////////////////////////////////////////////////////////////////////////////
 // The singleton instance pointer of our AppSettings
 //////////////////////////////////////////////////////////////////////////////

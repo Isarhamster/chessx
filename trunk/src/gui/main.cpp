@@ -25,6 +25,16 @@ int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
 
+#if defined(Q_OS_MAC)
+    QDir dir(QApplication::applicationDirPath());
+    dir.cdUp();
+    dir.cd("plugins");
+    QApplication::addLibraryPath(dir.absolutePath());
+    dir.cdUp();
+    dir.cd("Frameworks");
+    QApplication::addLibraryPath(dir.absolutePath());
+#endif
+
     app.setWindowIcon(QIcon(":/images/chessx.png"));
 
     app.setApplicationName("chessx");
