@@ -37,7 +37,8 @@ FORMS += \
     src/gui/tagdetailwidget.ui \
     src/gui/renametagdialog.ui \
     src/gui/openingtreewidget.ui \
-    src/gui/loadquery.ui
+    src/gui/loadquery.ui \
+    src/gui/aboutdlg.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -147,7 +148,8 @@ HEADERS += src/database/board.h \
     src/gui/TextBrowserEx.h \
     src/gui/loadquery.h \
     src/guess/compileeco.h \
-    src/database/pdbtest.h
+    src/database/pdbtest.h \
+    src/gui/aboutdlg.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -243,7 +245,8 @@ SOURCES += src/database/board.cpp \
     src/database/ecoinfo.cpp \
     src/gui/loadquery.cpp \
     src/guess/compileeco.cpp \
-    src/database/pdbtest.cpp
+    src/database/pdbtest.cpp \
+    src/gui/aboutdlg.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
