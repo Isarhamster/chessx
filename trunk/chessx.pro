@@ -299,7 +299,7 @@ macx {
  INSTALLATION_DATA.files = mac_osx/qt_menu.nib
  INSTALLATION_DATA.path = Contents/Resources/
  QMAKE_BUNDLE_DATA += INSTALLATION_DATA
- ENGINE_DATA.files = data/engines-mac/uci/stockfish-23-64
+ ENGINE_DATA.files = data/engines-mac/uci/stockfish-4-64
  ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
  QMAKE_BUNDLE_DATA += ENGINE_DATA
  QMAKE_INFO_PLIST = mac_osx/Info.plist
@@ -351,7 +351,8 @@ OTHER_FILES += \
     ChangeLog \
     COPYING \
     i18n/chessx_de.ts \
-    i18n/chessx_fr.ts
+    i18n/chessx_fr.ts \
+    ChangeLog.txt
 
 macx {
   OTHER_FILES += \
