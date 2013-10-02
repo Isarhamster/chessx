@@ -65,14 +65,10 @@ public slots:
     void slotChangePieceString();
     /** Start loading the language file selected in the combo-box */
     void slotLoadLanguageFile();
-    /** Language File was loaded */
-    void slotLanguageFileLoaded(QUrl, QString);
     /** Download dictionary was loaded */
-    void slotLanguagePageLoaded(QUrl url,QString name);
-    /** Download file was not possible */
-    void loadError(QUrl);
-    /** Download dictionary was not possible */
-    void loadDictError(QUrl);
+    void slotFileLoaded(QUrl url,QString name);
+    /** Download was not possible */
+    void loadFileError(QUrl);
 
 
 protected:

@@ -78,13 +78,9 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     {
         QUrl url = QUrl(QString("http://chessx.sourceforge.net/translations/dict.txt"));
         downloadManager = new DownloadManager(this);
-        connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadDictError(QUrl)));
-        connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(slotLanguagePageLoaded(QUrl,QString)));
-#if QT_VERSION < 0x050000
-        QString path = QDesktopServices::storageLocation(QDesktopServices::TempLocation);
-#else
-        QString path = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
-#endif
+        connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadFileError(QUrl)));
+        connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(slotFileLoaded(QUrl,QString)));
+        QString path = AppSettings->getTempPath();
         downloadManager->doDownloadToPath(url, path + "dict.txt");
     }
     else
@@ -282,66 +278,68 @@ void PreferencesDialog::slotLoadLanguageFile()
     if (!ui.cbLangServer->currentText().isEmpty())
     {
         QUrl url = QUrl(QString("http://chessx.sourceforge.net/translations/chessx_") + ui.cbLangServer->currentText() + ".qm");
-        connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)), Qt::UniqueConnection);
-        connect(downloadManager, SIGNAL(onDownloadFinished(QUrl,QString)), this, SLOT(slotLanguageFileLoaded(QUrl,QString)), Qt::UniqueConnection);
         downloadManager->doDownloadToPath(url, AppSettings->dataPath() + "/lang/chessx_" + ui.cbLangServer->currentText() + ".qm");
     }
 }
 
-void PreferencesDialog::loadDictError(QUrl /*url*/)
+void PreferencesDialog::loadFileError(QUrl url)
 {
-    ui.labelLoadStatus->setText(tr("Could not load server language file dictionary"));
-}
-
-void PreferencesDialog::loadError(QUrl /*url*/)
-{
-    ui.labelLoadStatus->setText(tr("Could not load or install language pack"));
-}
-
-void PreferencesDialog::slotLanguagePageLoaded(QUrl, QString name)
-{
-    QFile dictFile(name);
-    if (dictFile.open(QIODevice::ReadOnly))
+    if (url.toString().endsWith(".txt"))
     {
-        QTextStream textStream(&dictFile);
-        while (true)
-        {
-            QString line = textStream.readLine();
-            if (line.isNull())
-                break;
-            else
-            {
-                bool notFound = true;
-                for (int i=0; i<ui.cbLanguage->count();++i)
-                {
-                    if (ui.cbLanguage->itemText(i) == line)
-                    {
-                        notFound = false;
-                        break;
-                    }
-                }
-                if (notFound)
-                {
-                    ui.cbLangServer->addItem(line);
-                }
-                else
-                {
-                    ui.labelLoadStatus->setText(tr("No further translations online available!"));
-                }
-            }
-        }
-
-        ui.btLoadLang->setEnabled(ui.cbLangServer->count()>0);
-        ui.cbLangServer->setEnabled(ui.cbLangServer->count()>0);
+        ui.labelLoadStatus->setText(tr("Could not load server language file dictionary"));
+    }
+    else if (url.toString().endsWith(".qm"))
+    {
+        ui.labelLoadStatus->setText(tr("Could not load or install language pack"));
     }
 }
 
-void PreferencesDialog::slotLanguageFileLoaded(QUrl /*url*/, QString name)
+void PreferencesDialog::slotFileLoaded(QUrl, QString name)
 {
-    name.remove(QRegExp("[^_]*_"));
-    name.remove(".qm");
-    ui.cbLanguage->addItem(name);
-    ui.labelLoadStatus->setText(tr("Translation file loaded - select added language above!"));
+    if (name.endsWith(".qm"))
+    {
+        name.remove(QRegExp("[^_]*_"));
+        name.remove(".qm");
+        ui.cbLanguage->addItem(name);
+        ui.labelLoadStatus->setText(tr("Translation file loaded - select added language above!"));
+    }
+    else if (name.endsWith(".txt"))
+    {
+        QFile dictFile(name);
+        if (dictFile.open(QIODevice::ReadOnly))
+        {
+            QTextStream textStream(&dictFile);
+            while (true)
+            {
+                QString line = textStream.readLine();
+                if (line.isNull())
+                    break;
+                else
+                {
+                    bool notFound = true;
+                    for (int i=0; i<ui.cbLanguage->count();++i)
+                    {
+                        if (ui.cbLanguage->itemText(i) == line)
+                        {
+                            notFound = false;
+                            break;
+                        }
+                    }
+                    if (notFound)
+                    {
+                        ui.cbLangServer->addItem(line);
+                    }
+                    else
+                    {
+                        ui.labelLoadStatus->setText(tr("No further translations online available!"));
+                    }
+                }
+            }
+
+            ui.btLoadLang->setEnabled(ui.cbLangServer->count()>0);
+            ui.cbLangServer->setEnabled(ui.cbLangServer->count()>0);
+        }
+    }
 }
 
 int PreferencesDialog::exec()
@@ -443,11 +441,7 @@ void PreferencesDialog::restoreSettings()
     ui.limitSpin->setValue(AppSettings->getValue("/General/EditLimit").toInt());
     ui.spinBoxRecentFiles->setValue(AppSettings->getValue("/History/MaxEntries").toInt());
 
-#if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
-#else
-    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
-#endif
+    QString dataPath = AppSettings->getUserDataPath();
     ui.defaultDataBasePath->setText(AppSettings->value("/General/DefaultDataPath", dataPath).toString());
     ui.spinBoxListFontSize->setValue(AppSettings->getValue("/General/ListFontSize").toInt());
     ui.verticalTabs->setChecked(AppSettings->getValue("/MainWindow/VerticalTabs").toBool());
