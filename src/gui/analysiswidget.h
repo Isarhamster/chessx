@@ -24,62 +24,62 @@ class Board;
 
 class AnalysisWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	AnalysisWidget();
-	~AnalysisWidget();
+    AnalysisWidget();
+    ~AnalysisWidget();
 
     /** Get the main line */
     Analysis getMainLine() const;
 
 public slots:
-	/** Sets new position. If analysis is active, the current content will be cleared and
-	new analysis will be performed. */
-	void setPosition(const Board& board);
-	/** Called when configuration was changed (either on startup or from Preferences dialog. */
-	void slotReconfigure();
-	/** Start currently selected engine. */
-	void startEngine();
-	/** Stop any running  engine. */
-	void stopEngine();
+    /** Sets new position. If analysis is active, the current content will be cleared and
+    new analysis will be performed. */
+    void setPosition(const Board& board);
+    /** Called when configuration was changed (either on startup or from Preferences dialog. */
+    void slotReconfigure();
+    /** Start currently selected engine. */
+    void startEngine();
+    /** Stop any running  engine. */
+    void stopEngine();
     /** Stop game analysis when analysis dock is hidden. */
     void slotVisibilityChanged(bool);
-	/** Is any engine running. */
-	bool isEngineRunning() const;
+    /** Is any engine running. */
+    bool isEngineRunning() const;
 private slots:
-	/** Stop if analysis is no longer visible. */
-	void toggleAnalysis();
-	/** Displays given analysis received from an engine. */
-	void showAnalysis(const Analysis& analysis);
-	/** The engine is now ready, as requested */
-	void engineActivated();
+    /** Stop if analysis is no longer visible. */
+    void toggleAnalysis();
+    /** Displays given analysis received from an engine. */
+    void showAnalysis(const Analysis& analysis);
+    /** The engine is now ready, as requested */
+    void engineActivated();
     /** The engine is now deactivated */
     void engineDeactivated();
-	/** There was an error while running engine. */
+    /** There was an error while running engine. */
     void engineError(QProcess::ProcessError);
-	/** Add variation. */
-	void slotLinkClicked(const QUrl& link);
-	/** Number of visible lines was changed. */
-	void slotMpvChanged(int mpv);
-	/** Show tablebase move information. */
-	void showTablebaseMove(Move move, int score);
+    /** Add variation. */
+    void slotLinkClicked(const QUrl& link);
+    /** Number of visible lines was changed. */
+    void slotMpvChanged(int mpv);
+    /** Show tablebase move information. */
+    void showTablebaseMove(Move move, int score);
 
 signals:
-	void addVariation(const Analysis& analysis);
+    void addVariation(const Analysis& analysis);
     void addVariation(const QString& san);
 private:
-	/** Should analysis be running. */
-	bool isAnalysisEnabled() const;
-	/** Update analysis. */
-	void updateAnalysis();
+    /** Should analysis be running. */
+    bool isAnalysisEnabled() const;
+    /** Update analysis. */
+    void updateAnalysis();
 
-	QList<Analysis> m_analyses;
-	Ui::AnalysisWidget ui;
-	Engine* m_engine;
-	bool m_active;
-	Board m_board;
-	QString m_tablebaseEvaluation;
-	Tablebase* m_tablebase;
+    QList<Analysis> m_analyses;
+    Ui::AnalysisWidget ui;
+    Engine* m_engine;
+    bool m_active;
+    Board m_board;
+    QString m_tablebaseEvaluation;
+    Tablebase* m_tablebase;
 };
 
 #endif // __ANALYSIS_WIDGET_H__

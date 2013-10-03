@@ -30,18 +30,18 @@ class QActionGroup;
 
 class BoardSetupDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	/** Create ChessX Preferences dialog */
+    /** Create ChessX Preferences dialog */
     BoardSetupDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
-	/** Destroy the dialog */
-	virtual ~BoardSetupDialog();
-	/** Set current board */
-	void setBoard(const Board& b);
-	/** Set current board */
-	void setFlipped(bool flipped);
-	/** Return current board */
-	Board board() const;
+    /** Destroy the dialog */
+    virtual ~BoardSetupDialog();
+    /** Set current board */
+    void setBoard(const Board& b);
+    /** Set current board */
+    void setFlipped(bool flipped);
+    /** Return current board */
+    Board board() const;
 
 protected:
     /** Resize board upon showing it the first time */
@@ -71,40 +71,40 @@ signals:
     void signalClearBackground(Piece p);
 
 private slots:
-	/** If the position is legal, accept it and close the dialog. */
-	void slotAccept();
-	/** Clear board. */
-	void slotClear();
-	/** Restore standard position */
-	void slotReset();
-	/** Copy current position as FEN. */
-	void slotCopyFen();
+    /** If the position is legal, accept it and close the dialog. */
+    void slotAccept();
+    /** Clear board. */
+    void slotClear();
+    /** Restore standard position */
+    void slotReset();
+    /** Copy current position as FEN. */
+    void slotCopyFen();
     /** Copy current position as text. */
     void slotCopyText();
-	/** Paste FEN from clipboard as current position. */
-	void slotPasteFen();
-	/** Change current piece using wheel */
-	void slotChangePiece(int dir);
+    /** Paste FEN from clipboard as current position. */
+    void slotPasteFen();
+    /** Change current piece using wheel */
+    void slotChangePiece(int dir);
     /** A Drop operation was inidcated by the boardview */
     void slotDroppedPiece(Square s, Piece p);
-	/** Select square and insert piece */
-	void slotSelected(Square s, int button);
-	/** Manually adjust castling rights. */
-	void slotCastlingRights();
-	/** Manually adjust en passant square. */
-	void slotEnPassantSquare();
-	/** Adjust halfmove clock. */
-	void slotHalfmoveClock();
-	/** Adjust move number. */
-	void slotMoveNumber();
-	/** Move piece */
-	void slotMovePiece(Square from, Square to);
-	/** Copy piece */
-	void slotCopyPiece(Square from, Square to);
+    /** Select square and insert piece */
+    void slotSelected(Square s, int button);
+    /** Manually adjust castling rights. */
+    void slotCastlingRights();
+    /** Manually adjust en passant square. */
+    void slotEnPassantSquare();
+    /** Adjust halfmove clock. */
+    void slotHalfmoveClock();
+    /** Adjust move number. */
+    void slotMoveNumber();
+    /** Move piece */
+    void slotMovePiece(Square from, Square to);
+    /** Copy piece */
+    void slotCopyPiece(Square from, Square to);
     /** Remove piece */
     void slotInvalidMove(Square from);
-	/** Toggle side to move */
-	void slotToggleSide();
+    /** Toggle side to move */
+    void slotToggleSide();
 
 private:
     Ui::BoardSetupDialog ui;

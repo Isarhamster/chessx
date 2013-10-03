@@ -24,30 +24,42 @@ class QSvgRenderer;
 
 class QLed : public QWidget
 {
- Q_OBJECT
-        Q_ENUMS (ledColor)
-        Q_ENUMS (ledShape)
-        Q_PROPERTY(bool value READ value WRITE setValue);
-        Q_PROPERTY(ledColor onColor READ onColor WRITE setOnColor);
-        Q_PROPERTY(ledColor offColor READ offColor WRITE setOffColor);
-        Q_PROPERTY(ledShape shape READ shape WRITE setShape)     
+    Q_OBJECT
+    Q_ENUMS(ledColor)
+    Q_ENUMS(ledShape)
+    Q_PROPERTY(bool value READ value WRITE setValue);
+    Q_PROPERTY(ledColor onColor READ onColor WRITE setOnColor);
+    Q_PROPERTY(ledColor offColor READ offColor WRITE setOffColor);
+    Q_PROPERTY(ledShape shape READ shape WRITE setShape)
 
-public: 
+public:
     QLed(QWidget *parent = 0);
     virtual ~QLed();
-    bool value() const { return m_value; }
-    enum ledColor { Red=0,Green,Yellow,Grey,Orange,Blue,Black };
-    enum ledShape { Circle=0};
-    ledColor onColor() const { return m_onColor; }
-    ledColor offColor() const { return m_offColor; }
-    ledShape shape() const { return m_shape; }
-    
+    bool value() const
+    {
+        return m_value;
+    }
+    enum ledColor { Red = 0, Green, Yellow, Grey, Orange, Blue, Black };
+    enum ledShape { Circle = 0};
+    ledColor onColor() const
+    {
+        return m_onColor;
+    }
+    ledColor offColor() const
+    {
+        return m_offColor;
+    }
+    ledShape shape() const
+    {
+        return m_shape;
+    }
+
 public slots:
-	void setValue(bool);
+    void setValue(bool);
     void setOnColor(ledColor);
     void setOffColor(ledColor);
     void setShape(ledShape);
-	void toggleValue();
+    void toggleValue();
 
 protected:
     bool m_value;
@@ -59,7 +71,7 @@ protected:
     void paintEvent(QPaintEvent *event);
     void resizeEvent(QResizeEvent*);
 
- private:
+private:
     QSvgRenderer *renderer ;
 };
 

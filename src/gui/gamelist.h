@@ -29,22 +29,22 @@ user to click on list header and perform simple tag searches. */
 
 class GameList : public TableView
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	GameList(Filter* filter, QWidget* parent = 0);
+    GameList(Filter* filter, QWidget* parent = 0);
     ~GameList();
     bool m_FilterActive;
 
-	/** Set current database */
+    /** Set current database */
 public slots:
-	/** Change current filter/database */
-	void setFilter(Filter* filter);
-	/** Update filter (called after changing filter outside) */
-	void updateFilter();
-	/** Perform simple search */
-	void simpleSearch(int tag);
-	/** Select and show current game in the list */
-	void selectGame(int index);
+    /** Change current filter/database */
+    void setFilter(Filter* filter);
+    /** Update filter (called after changing filter outside) */
+    void updateFilter();
+    /** Perform simple search */
+    void simpleSearch(int tag);
+    /** Select and show current game in the list */
+    void selectGame(int index);
     /** Select and show current game in the list */
     void slotFilterListByPlayer(QString ns);
     /** Select and show current event in the list */
@@ -58,7 +58,7 @@ public slots:
 
 private slots:
     /** Re-emit the request to the receivers to perform some action */
-	void itemSelected(const QModelIndex& index);
+    void itemSelected(const QModelIndex& index);
     /** Request a context menu for the list members */
     void slotContextMenu(const QPoint& pos);
     /** Request to merge all games from the database into the current game */
@@ -75,8 +75,8 @@ private slots:
     void slotItemSelected(const QModelIndex&);
 
 signals:
-	void selected(int);
-	void searchDone();
+    void selected(int);
+    void searchDone();
     void raiseRequest();
     void requestMergeGame(int);
     void requestMergeAllGames();
@@ -90,7 +90,7 @@ protected: //Drag'n'Drop Support
     void startToDrag(const QModelIndex&);
 
 private:
-	FilterModel* m_model;
+    FilterModel* m_model;
     QModelIndex m_index;
 };
 

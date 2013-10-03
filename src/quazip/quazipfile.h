@@ -70,20 +70,21 @@ class QuaZipFilePrivate;
  * this class.
  *
  **/
-class QUAZIP_EXPORT QuaZipFile: public QIODevice {
-  friend class QuaZipFilePrivate;
-  Q_OBJECT
-  private:
+class QUAZIP_EXPORT QuaZipFile: public QIODevice
+{
+    friend class QuaZipFilePrivate;
+    Q_OBJECT
+private:
     QuaZipFilePrivate *p;
     // these are not supported nor implemented
     QuaZipFile(const QuaZipFile& that);
     QuaZipFile& operator=(const QuaZipFile& that);
-  protected:
+protected:
     /// Implementation of the QIODevice::readData().
     qint64 readData(char *data, qint64 maxSize);
     /// Implementation of the QIODevice::writeData().
     qint64 writeData(const char *data, qint64 maxSize);
-  public:
+public:
     /// Constructs a QuaZipFile instance.
     /** You should use setZipName() and setFileName() or setZip() before
      * trying to call open() on the constructed object.
@@ -106,7 +107,7 @@ class QUAZIP_EXPORT QuaZipFile: public QIODevice {
      * QuaZipFile constructed by this constructor can be used for read
      * only access. Use QuaZipFile(QuaZip*,QObject*) for writing.
      **/
-    QuaZipFile(const QString& zipName, QObject *parent =NULL);
+    QuaZipFile(const QString& zipName, QObject *parent = NULL);
     /// Constructs a QuaZipFile instance.
     /** \a parent argument specifies this object's parent object, \a
      * zipName specifies ZIP archive file name and \a fileName and \a cs
@@ -118,7 +119,7 @@ class QUAZIP_EXPORT QuaZipFile: public QIODevice {
      * \sa QuaZip::setCurrentFile()
      **/
     QuaZipFile(const QString& zipName, const QString& fileName,
-        QuaZip::CaseSensitivity cs =QuaZip::csDefault, QObject *parent =NULL);
+               QuaZip::CaseSensitivity cs = QuaZip::csDefault, QObject *parent = NULL);
     /// Constructs a QuaZipFile instance.
     /** \a parent argument specifies this object's parent object.
      *
@@ -168,7 +169,7 @@ class QUAZIP_EXPORT QuaZipFile: public QIODevice {
      * zip.close();
      * \endcode
      **/
-    QuaZipFile(QuaZip *zip, QObject *parent =NULL);
+    QuaZipFile(QuaZip *zip, QObject *parent = NULL);
     /// Destroys a QuaZipFile instance.
     /** Closes file if open, destructs internal QuaZip object (if it
      * exists and \em is internal, of course).
@@ -200,7 +201,7 @@ class QUAZIP_EXPORT QuaZipFile: public QIODevice {
      * Returns null string if there is no file name set yet. This is the
      * case when this QuaZipFile operates on the existing QuaZip object
      * (constructor QuaZipFile(QuaZip*,QObject*) or setZip() was used).
-     * 
+     *
      * \sa getActualFileName
      **/
     QString getFileName() const;
@@ -279,7 +280,7 @@ class QUAZIP_EXPORT QuaZipFile: public QIODevice {
      *
      * \sa QuaZip::setCurrentFile
      **/
-    void setFileName(const QString& fileName, QuaZip::CaseSensitivity cs =QuaZip::csDefault);
+    void setFileName(const QString& fileName, QuaZip::CaseSensitivity cs = QuaZip::csDefault);
     /// Opens a file for reading.
     /** Returns \c true on success, \c false otherwise.
      * Call getZipError() to get error code.
@@ -295,7 +296,9 @@ class QUAZIP_EXPORT QuaZipFile: public QIODevice {
      * it is NULL then this function behaves just like open(OpenMode).
      **/
     inline bool open(OpenMode mode, const char *password)
-    {return open(mode, NULL, NULL, false, password);}
+    {
+        return open(mode, NULL, NULL, false, password);
+    }
     /// Opens a file for reading.
     /** \overload
      * Argument \a password specifies a password to decrypt the file.
@@ -308,7 +311,7 @@ class QUAZIP_EXPORT QuaZipFile: public QIODevice {
      * \a method should not be \c NULL. \a level can be \c NULL if you
      * don't want to know the compression level.
      **/
-    bool open(OpenMode mode, int *method, int *level, bool raw, const char *password =NULL);
+    bool open(OpenMode mode, int *method, int *level, bool raw, const char *password = NULL);
     /// Opens a file for writing.
     /** \a info argument specifies information about file. It should at
      * least specify a correct file name. Also, it is a good idea to
@@ -338,9 +341,9 @@ class QUAZIP_EXPORT QuaZipFile: public QIODevice {
      * algorithms tuning. See deflateInit2() in zlib.
      **/
     bool open(OpenMode mode, const QuaZipNewInfo& info,
-        const char *password =NULL, quint32 crc =0,
-        int method =Z_DEFLATED, int level =Z_DEFAULT_COMPRESSION, bool raw =false,
-        int windowBits =-MAX_WBITS, int memLevel =DEF_MEM_LEVEL, int strategy =Z_DEFAULT_STRATEGY);
+              const char *password = NULL, quint32 crc = 0,
+              int method = Z_DEFLATED, int level = Z_DEFAULT_COMPRESSION, bool raw = false,
+              int windowBits = -MAX_WBITS, int memLevel = DEF_MEM_LEVEL, int strategy = Z_DEFAULT_STRATEGY);
     /// Returns \c true, but \ref quazipfile-sequential "beware"!
     virtual bool isSequential()const;
     /// Returns current position in the file.

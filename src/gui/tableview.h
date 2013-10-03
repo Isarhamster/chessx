@@ -19,14 +19,14 @@
 
 class TableView : public QTableView
 {
-Q_OBJECT
+    Q_OBJECT
 public:
-   TableView(QWidget *parent = 0);
-	~TableView();
+    TableView(QWidget *parent = 0);
+    ~TableView();
 public slots:
-	/** Store current configuration. */
-	void saveConfig();
-	/** Restore current configuration. */
+    /** Store current configuration. */
+    void saveConfig();
+    /** Restore current configuration. */
     virtual void slotReconfigure();
     /** Show context menu on header view */
     void ShowContextMenu(const QPoint&);

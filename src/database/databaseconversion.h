@@ -23,15 +23,15 @@ class DatabaseConversion
 {
 
 public:
-	/**
-	convert Scid ratings.ssp to player database
-	outFileName is filename without extension
-	inFileName is full path for ratings.ssp
-	pictureDir is directory where player pictures are -
-	format can be jpg, gif, or any format that QImage(file) will
-	understand
-	*/
-	static bool playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& pictureDir);
+    /**
+    convert Scid ratings.ssp to player database
+    outFileName is filename without extension
+    inFileName is full path for ratings.ssp
+    pictureDir is directory where player pictures are -
+    format can be jpg, gif, or any format that QImage(file) will
+    understand
+    */
+    static bool playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& pictureDir);
 
 };
 

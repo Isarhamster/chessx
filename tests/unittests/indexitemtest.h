@@ -27,15 +27,15 @@ Unit tests for the IndexItem class
 class IndexItemTest : public QObject
 {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void initTestCase();
-	void init();
-	void cleanup();
-	void cleanupTestCase();
+    void initTestCase();
+    void init();
+    void cleanup();
+    void cleanupTestCase();
 
-	void testIndexItemCompleteTest();
+    void testIndexItemCompleteTest();
 
 };
 

@@ -24,42 +24,42 @@ class OutputOptions
     Q_DECLARE_TR_FUNCTIONS(OutputOptions)
 
 public :
-	enum OutputOptionType { Boolean, String, Integer, Color };
+    enum OutputOptionType { Boolean, String, Integer, Color };
     OutputOptions();
     bool createDefaultOptions(QString path);
 
-	bool createOption(const QString& optionName, OutputOptionType optionType, const QString& allowValues,
-			  const QString& defaultValue, const QString& description);
+    bool createOption(const QString& optionName, OutputOptionType optionType, const QString& allowValues,
+                      const QString& defaultValue, const QString& description);
     bool createOption(const QString& optionName, const QString& optionType, const QString& allowValues,
-			  const QString& defaultValue, const QString& description);
+                      const QString& defaultValue, const QString& description);
 
     bool createOption(const QString& optionName, bool bValue, const QString& description);
     bool createOption(const QString& optionName, const QString& allowValues, int iValue, const QString& description);
     bool createOption(const QString& optionName, const QString& color, const QString& description);
 
-	/* Setting values */
-	bool setOption(const QString& optionString);
-	bool setOption(const QString& optionName, const QString& optionValue);
-	bool setOption(const QString& optionName, bool optionValue);
-	bool setOption(const QString& optionName, int optionValue);
+    /* Setting values */
+    bool setOption(const QString& optionString);
+    bool setOption(const QString& optionName, const QString& optionValue);
+    bool setOption(const QString& optionName, bool optionValue);
+    bool setOption(const QString& optionName, int optionValue);
 
-	/* Retrieving values */
+    /* Retrieving values */
     int getOptionAsInt(const QString& optionName) const;
     QString getOptionAsString(const QString& optionName) const;
-	bool getOptionAsBool(const QString& optionName);
-	QString getOptionDescription(const QString& optionName);
-	QStringList getOptionList();
+    bool getOptionAsBool(const QString& optionName);
+    QString getOptionDescription(const QString& optionName);
+    QStringList getOptionList();
 
 private :
 
-	QMap<QString, QString> m_list;
-	QMap<QString, OutputOptionType> m_type;
-	QMap<QString, QString> m_default;
-	QMap<QString, QString> m_allow;
-	QMap<QString, QString> m_description;
+    QMap<QString, QString> m_list;
+    QMap<QString, OutputOptionType> m_type;
+    QMap<QString, QString> m_default;
+    QMap<QString, QString> m_allow;
+    QMap<QString, QString> m_description;
 
-	bool validateValue(const QString& optionName, const QString& value);
-	OutputOptionType optionString2Type(const QString& optionTypeStr);
+    bool validateValue(const QString& optionName, const QString& value);
+    OutputOptionType optionString2Type(const QString& optionTypeStr);
 
 
 };

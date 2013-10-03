@@ -14,7 +14,7 @@ class DatabaseInfo;
 
 namespace Ui
 {
-    class TagDetailWidget;
+class TagDetailWidget;
 }
 
 class EventListWidget : public QWidget

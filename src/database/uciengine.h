@@ -22,45 +22,48 @@
 class UCIEngine : public Engine
 {
 public:
-	/** Constucts an engine with a given path/command, and log stream */
-	UCIEngine(const QString& name,
-		const QString& command,
-        bool bTestMode,
-		const QString& directory = QString(),
-		QTextStream* logStream = NULL);
+    /** Constucts an engine with a given path/command, and log stream */
+    UCIEngine(const QString& name,
+              const QString& command,
+              bool bTestMode,
+              const QString& directory = QString(),
+              QTextStream* logStream = NULL);
 
-	/** Analyses the the given position */
-	bool startAnalysis(const Board& board, int nv);
+    /** Analyses the the given position */
+    bool startAnalysis(const Board& board, int nv);
 
-	/** Stops any analysis */
-	void stopAnalysis();
+    /** Stops any analysis */
+    void stopAnalysis();
 
-	/** Update number of displayed lines. Restarts engine. */
-	virtual void setMpv(int mpv);
+    /** Update number of displayed lines. Restarts engine. */
+    virtual void setMpv(int mpv);
 
-    virtual bool providesMvp() { return true; }
+    virtual bool providesMvp()
+    {
+        return true;
+    }
 protected:
-	/** Performs any initialisation required by the engine protocol */
-	void protocolStart();
+    /** Performs any initialisation required by the engine protocol */
+    void protocolStart();
 
-	/** Performs any shutdown procedure required by the engine protocol */
-	void protocolEnd();
+    /** Performs any shutdown procedure required by the engine protocol */
+    void protocolEnd();
 
-	/** Processes messages from the chess engine */
-	void processMessage(const QString& message);
+    /** Processes messages from the chess engine */
+    void processMessage(const QString& message);
 
 private:
-	/** Parses analysis */
-	void parseAnalysis(const QString& message);
+    /** Parses analysis */
+    void parseAnalysis(const QString& message);
 
     /** Parse option string */
     void parseOptions(const QString &message);
 
-	Board m_board;
+    Board m_board;
 
-	QString m_position;
-	QString m_waitingOn;
-	bool m_quitAfterAnalysis;
+    QString m_position;
+    QString m_waitingOn;
+    bool m_quitAfterAnalysis;
 };
 
 #endif // __UCIENGINE_H__

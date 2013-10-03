@@ -29,19 +29,19 @@ class QLineEdit;
 The SaveDialog class is a simple dialog to edit and save game header. */
 class SaveDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
     static const int Discard = 2;
 
     SaveDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
-	virtual ~SaveDialog();
+    virtual ~SaveDialog();
     virtual int save(Database* database, Game& game);
     virtual void accept();
 protected slots:
     void discardChanges();
 private:
     void setLineEdit(QLineEdit* edit, Database* database, const QString& tagName);
-	Ui::SaveDialog ui;
+    Ui::SaveDialog ui;
 };
 
 

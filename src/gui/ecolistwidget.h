@@ -9,7 +9,8 @@
 #include <QStringListModel>
 #include "ecoinfo.h"
 
-namespace Ui {
+namespace Ui
+{
 class TagDetailWidget;
 }
 

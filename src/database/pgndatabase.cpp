@@ -1,6 +1,6 @@
 /***************************************************************************
  *   (C) 2005-2006 William Hoggarth <whoggarth@users.sourceforge.net>      *
- *   (C) 2006 Ejner Borgbjerg <ejner@users.sourceforge.net>                * 
+ *   (C) 2006 Ejner Borgbjerg <ejner@users.sourceforge.net>                *
  *   (C) 2007 Marius Roets <roets.marius@gmail.com>                        *
  *   (C) 2006-2009 Michal Rudolf <mrudolf@kdewebdev.org>                   *
  *                                                                         *
@@ -25,7 +25,7 @@ PgnDatabase::PgnDatabase(bool b64bit) :
     Database(),
     bUse64bit(b64bit)
 {
-	initialise();
+    initialise();
 }
 
 PgnDatabase::~PgnDatabase()
@@ -35,17 +35,19 @@ PgnDatabase::~PgnDatabase()
 
 bool PgnDatabase::open(const QString& filename, bool utf8)
 {
-	if (m_isOpen) {
-		return false;
-	}
+    if(m_isOpen)
+    {
+        return false;
+    }
     m_break = false;
-	m_filename = filename;
-    if (openFile(filename)) {
+    m_filename = filename;
+    if(openFile(filename))
+    {
         m_isOpen = true;
         m_utf8 = utf8;
-		return true;
-	}
-	return false;
+        return true;
+    }
+    return false;
 }
 
 void PgnDatabase::parseGame()
@@ -80,7 +82,7 @@ QString PgnDatabase::offsetFilename(const QString& filename) const
 
 bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFlag)
 {
-    if (!AppSettings->getValue("/General/useIndexFile").toBool())
+    if(!AppSettings->getValue("/General/useIndexFile").toBool())
     {
         return false;
     }
@@ -89,7 +91,7 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     m_gameOffsets64 = 0;
 
     QFile file(offsetFilename(filename));
-    if (!file.open(QIODevice::ReadOnly))
+    if(!file.open(QIODevice::ReadOnly))
     {
         return false;
     }
@@ -102,13 +104,13 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     in >> version;
     in >> magic;
 
-    if (!((version <= 1) && (magic == 0xce55)))
+    if(!((version <= 1) && (magic == 0xce55)))
     {
         return false;
     }
 
     int streamVersion = QDataStream::Qt_4_7;
-    if (version > 0)
+    if(version > 0)
     {
         in >> streamVersion;
     }
@@ -122,13 +124,13 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     in >> basefile;
     in >> lastModified;
 
-    if (basefile != fi.completeBaseName())
+    if(basefile != fi.completeBaseName())
     {
         return false;
     }
 
     QDateTime lastModifiedStored = fi.lastModified();
-    if (lastModified != lastModifiedStored)
+    if(lastModified != lastModifiedStored)
     {
         return false;
     }
@@ -137,15 +139,21 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
 
     emit progress(1);
 
-    if (bUse64bit)
+    if(bUse64bit)
     {
         m_gameOffsets64 = new qint64[m_allocated];
-        for (int i=0; i<m_allocated; ++i) in >> m_gameOffsets64[i];
+        for(int i = 0; i < m_allocated; ++i)
+        {
+            in >> m_gameOffsets64[i];
+        }
     }
     else
     {
         m_gameOffsets32 = new qint32[m_allocated];
-        for (int i=0; i<m_allocated; ++i) in >> m_gameOffsets32[i];
+        for(int i = 0; i < m_allocated; ++i)
+        {
+            in >> m_gameOffsets32[i];
+        }
     }
 
     emit progress(2);
@@ -156,7 +164,7 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
 
     unsigned short finalMagic;
     in >> finalMagic;
-    if (*breakFlag || (finalMagic != 0x55ec))
+    if(*breakFlag || (finalMagic != 0x55ec))
     {
         delete[] m_gameOffsets32;
         delete[] m_gameOffsets64;
@@ -172,13 +180,13 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
 
 bool PgnDatabase::writeOffsetFile(const QString& filename) const
 {
-    if (!AppSettings->getValue("/General/useIndexFile").toBool())
+    if(!AppSettings->getValue("/General/useIndexFile").toBool())
     {
         return false;
     }
 
     QFile file(offsetFilename(filename));
-    if (!file.open(QIODevice::WriteOnly))
+    if(!file.open(QIODevice::WriteOnly))
     {
         return false;
     }
@@ -201,13 +209,19 @@ bool PgnDatabase::writeOffsetFile(const QString& filename) const
 
     out << m_count;
 
-    if (bUse64bit)
+    if(bUse64bit)
     {
-        for (int i=0; i<m_count; ++i) out << m_gameOffsets64[i];
+        for(int i = 0; i < m_count; ++i)
+        {
+            out << m_gameOffsets64[i];
+        }
     }
     else
     {
-        for (int i=0; i<m_count; ++i) out << m_gameOffsets32[i];
+        for(int i = 0; i < m_count; ++i)
+        {
+            out << m_gameOffsets32[i];
+        }
     }
 
     out << magic;
@@ -222,14 +236,17 @@ bool PgnDatabase::writeOffsetFile(const QString& filename) const
 
 bool PgnDatabase::parseFile()
 {
-    if (readOffsetFile(m_filename, &m_break))
+    if(readOffsetFile(m_filename, &m_break))
     {
         m_count = m_allocated;
         emit progress(100);
         return true;
     }
 
-    if (m_break) return false;
+    if(m_break)
+    {
+        return false;
+    }
 
     bool ok = parseFileIntern();
 
@@ -243,33 +260,36 @@ bool PgnDatabase::parseFileIntern()
     qint64 size = m_file->size();
     int oldFp = -3;
 
-    qint64 countDiff = size/100;
+    qint64 countDiff = size / 100;
     qint64 nextDiff = countDiff;
     int percentDone = 0;
 
-    while (!m_file->atEnd())
+    while(!m_file->atEnd())
     {
-        if (m_break) return false;
+        if(m_break)
+        {
+            return false;
+        }
         IndexBaseType fp = skipJunk();
-        if (fp == oldFp)
+        if(fp == oldFp)
         {
             skipLine();
             fp = skipJunk();
         }
         oldFp = fp;
-        if (fp != -1)
+        if(fp != -1)
         {
-            if (!m_currentLine.isEmpty())
+            if(!m_currentLine.isEmpty())
             {
                 addOffset(fp);
                 parseTagsIntoIndex(); // This will parse the tags into memory
                 parseGame();
-                if (!m_file->atEnd())
+                if(!m_file->atEnd())
                 {
-                    if (fp > nextDiff)
+                    if(fp > nextDiff)
                     {
-                       nextDiff += countDiff;
-                       emit progress(++percentDone);
+                        nextDiff += countDiff;
+                        emit progress(++percentDone);
                     }
                 }
                 else
@@ -279,20 +299,21 @@ bool PgnDatabase::parseFileIntern()
             }
         }
     }
-	return true;
+    return true;
 }
 
 bool PgnDatabase::openFile(const QString& filename)
 {
-	//open file
+    //open file
     QFile* file = new QFile(filename);
-    if (!file->exists()) {
+    if(!file->exists())
+    {
         delete file;
-		return false;
-	}
+        return false;
+    }
     file->open(QIODevice::ReadOnly);
     m_file = file;
-	return true;
+    return true;
 }
 
 bool PgnDatabase::openString(const QString& content)
@@ -312,54 +333,64 @@ bool PgnDatabase::openString(const QString& content)
 
 QString PgnDatabase::filename() const
 {
-	return m_filename;
+    return m_filename;
 }
 
 void PgnDatabase::close()
 {
     //close the file, and delete objects
-    if (m_file) m_file->close();
-	delete m_file;
+    if(m_file)
+    {
+        m_file->close();
+    }
+    delete m_file;
     m_file = 0;
     delete[] m_gameOffsets64;
     delete[] m_gameOffsets32;
 
-	//reset member variables
-	initialise();
+    //reset member variables
+    initialise();
 }
 
 void PgnDatabase::loadGameMoves(int index, Game& game)
 {
-	if (!m_isOpen || index >= m_count)
-		return;
-	game.clear();
-	seekGame(index);
-	skipTags();
+    if(!m_isOpen || index >= m_count)
+    {
+        return;
+    }
+    game.clear();
+    seekGame(index);
+    skipTags();
     QString fen = m_index.tagValue(TagNameFEN, index); // was m_count -1
-	if (fen != "?")
-		game.setStartingBoard(fen);
-	parseMoves(&game);
+    if(fen != "?")
+    {
+        game.setStartingBoard(fen);
+    }
+    parseMoves(&game);
 }
 
 bool PgnDatabase::loadGame(int index, Game& game)
 {
-	if (!m_isOpen || index >= m_count) {
-		return false;
-	}
+    if(!m_isOpen || index >= m_count)
+    {
+        return false;
+    }
     lock();
-	//parse the game
+    //parse the game
     game.clear();
-	loadGameHeaders(index, game);
-	seekGame(index);
-	skipTags();
-    QString fen = m_index.tagValue(TagNameFEN, index ); // was m_count - 1
-	if (fen != "?")
-		game.setStartingBoard(fen);
+    loadGameHeaders(index, game);
+    seekGame(index);
+    skipTags();
+    QString fen = m_index.tagValue(TagNameFEN, index);  // was m_count - 1
+    if(fen != "?")
+    {
+        game.setStartingBoard(fen);
+    }
     parseMoves(&game);
     unlock();
 
     return m_variation != -1 || fen != "?";  // Not sure of all of the ramifications of this
-                                             // but it seeems to fix the problem with FENs
+    // but it seeems to fix the problem with FENs
 }
 
 void PgnDatabase::initialise()
@@ -368,10 +399,10 @@ void PgnDatabase::initialise()
     m_gameOffsets64 = 0;
     m_gameOffsets32 = 0;
     m_inComment = false;
-	m_isOpen = false;
-	m_filename = QString();
-	m_count = 0;
-	m_allocated = 0;
+    m_isOpen = false;
+    m_filename = QString();
+    m_count = 0;
+    m_allocated = 0;
 }
 
 
@@ -379,19 +410,19 @@ void PgnDatabase::initialise()
 void PgnDatabase::addOffset()
 {
     IndexBaseType fp = m_file->pos();
-	addOffset(fp);
+    addOffset(fp);
 }
 
 void PgnDatabase::readLine()
 {
-    if (m_file->atEnd())
+    if(m_file->atEnd())
     {
         m_lineBuffer.clear();
         m_currentLine.clear();
         return;
     }
-	m_lineBuffer = m_file->readLine();
-    if (m_utf8)
+    m_lineBuffer = m_file->readLine();
+    if(m_utf8)
     {
         QTextStream textStream(m_lineBuffer);
         m_currentLine = textStream.readLine().simplified();
@@ -400,14 +431,15 @@ void PgnDatabase::readLine()
     {
         QTextStream textStream(m_lineBuffer);
         QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if (textCodec)
+        if(textCodec)
         {
             textStream.setCodec(textCodec);
         }
         m_currentLine = textStream.readLine().simplified();
     }
 
-    if (m_inComment || !m_currentLine.startsWith("[")) {
+    if(m_inComment || !m_currentLine.startsWith("["))
+    {
         m_currentLine.replace("(", " ( ");
         m_currentLine.replace(")", " ) ");
         m_currentLine.replace("{", " { ");
@@ -424,79 +456,98 @@ inline void PgnDatabase::skipLine()
 void PgnDatabase::seekGame(int index)
 {
     IndexBaseType n = offset(index);
-    if (!m_file->seek(n))
+    if(!m_file->seek(n))
     {
         qDebug() << "Seeking offset " << n << " failed!";
     }
-	readLine();
+    readLine();
 }
 
 void PgnDatabase::parseTagsIntoIndex()
 {
     m_index.setTag("Length", "0", m_count - 1);
     m_index.setTag("Result", "*", m_count - 1);
-	while (m_currentLine.startsWith(QString("[")) && !m_file->atEnd()) {
-		int tagend = m_currentLine.indexOf(' ');
-		QString tag = m_currentLine.mid(1, tagend - 1);
-		int valuestart = m_currentLine.indexOf('\"', tagend + 1);
+    while(m_currentLine.startsWith(QString("[")) && !m_file->atEnd())
+    {
+        int tagend = m_currentLine.indexOf(' ');
+        QString tag = m_currentLine.mid(1, tagend - 1);
+        int valuestart = m_currentLine.indexOf('\"', tagend + 1);
         QString value = m_currentLine.mid(valuestart + 1);
-		bool hasNextTag = false;
+        bool hasNextTag = false;
 
-		while (!value.endsWith("]") && !m_file->atEnd()) {
-			readLine();
-            if (m_currentLine.isEmpty() || m_currentLine.startsWith("[")) {
-				hasNextTag = true;
-				break;
-			}
-			value += ' ' + m_currentLine;
-		}
-		int valueend = value.lastIndexOf('\"');
-		if (valueend != -1)
-			value.truncate(valueend);
-		if (value.contains("\\\""))
-			value.replace("\\\"", "\"");
-	
-		// quick fix for non-standard draw mark.
-		if (tag == "Result" && value == "1/2")
-			value = "1/2-1/2";
+        while(!value.endsWith("]") && !m_file->atEnd())
+        {
+            readLine();
+            if(m_currentLine.isEmpty() || m_currentLine.startsWith("["))
+            {
+                hasNextTag = true;
+                break;
+            }
+            value += ' ' + m_currentLine;
+        }
+        int valueend = value.lastIndexOf('\"');
+        if(valueend != -1)
+        {
+            value.truncate(valueend);
+        }
+        if(value.contains("\\\""))
+        {
+            value.replace("\\\"", "\"");
+        }
 
-		// update index
-		m_index.setTag(tag, value, m_count - 1);
+        // quick fix for non-standard draw mark.
+        if(tag == "Result" && value == "1/2")
+        {
+            value = "1/2-1/2";
+        }
 
-		if (!hasNextTag)
-			readLine();
-	}
+        // update index
+        m_index.setTag(tag, value, m_count - 1);
 
-	// skip trailing whitespace
-	while (m_currentLine.isEmpty() && !m_file->atEnd()) 
-		readLine();
+        if(!hasNextTag)
+        {
+            readLine();
+        }
+    }
+
+    // skip trailing whitespace
+    while(m_currentLine.isEmpty() && !m_file->atEnd())
+    {
+        readLine();
+    }
 }
 
 bool PgnDatabase::parseMoves(Game* game)
 {
     m_gameOver = false;
-	m_inComment = false;
-	m_comment.clear();
-	m_precomment.clear();
-	m_newVariation = false;
-	m_variation = 0;
+    m_inComment = false;
+    m_comment.clear();
+    m_precomment.clear();
+    m_newVariation = false;
+    m_variation = 0;
 
-	do {
-		if (m_inComment) {
-			parseComment(game);
-		} else {
-			parseLine(game);
-            if (m_variation == -1) {
+    do
+    {
+        if(m_inComment)
+        {
+            parseComment(game);
+        }
+        else
+        {
+            parseLine(game);
+            if(m_variation == -1)
+            {
                 return false;
-			}
-		}
-	} while (!m_gameOver && (!m_file->atEnd() || m_currentLine != ""));
+            }
+        }
+    }
+    while(!m_gameOver && (!m_file->atEnd() || m_currentLine != ""));
 
-    if( m_gameOver )
+    if(m_gameOver)
     {
         if(game->plyCount() == 0)
         {
-            if( !m_precomment.isEmpty())
+            if(!m_precomment.isEmpty())
             {
                 game->setAnnotation(m_precomment);
                 m_precomment.clear();
@@ -509,76 +560,98 @@ bool PgnDatabase::parseMoves(Game* game)
 void PgnDatabase::parseLine(Game* game)
 {
     QStringList list = m_currentLine.split(" ");
-	m_pos = 0;
+    m_pos = 0;
 
-    for (QStringList::Iterator it = list.begin(); it != list.end() && !m_inComment; ++it) {
-		if (*it != "") {
-			parseToken(game, *it);
-            if (m_variation == -1)
+    for(QStringList::Iterator it = list.begin(); it != list.end() && !m_inComment; ++it)
+    {
+        if(*it != "")
+        {
+            parseToken(game, *it);
+            if(m_variation == -1)
             {
-                if (!(m_currentLine.startsWith("[")))
+                if(!(m_currentLine.startsWith("[")))
                 {
-                   skipLine(); // illegal move in the buffer!
+                    skipLine(); // illegal move in the buffer!
                 }
-				return;
-			}
-		}
-		m_pos += (*it).length() + 1;
-	}
+                return;
+            }
+        }
+        m_pos += (*it).length() + 1;
+    }
 
-	if (!m_inComment) {
-		readLine();
-	}
+    if(!m_inComment)
+    {
+        readLine();
+    }
 }
 
 inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
 {
     //strip any move numbers
-    if (token.contains("..."))
+    if(token.contains("..."))
     {
         token = token.section("...", 1, 1);
     }
-    else if (token.contains('.'))
+    else if(token.contains('.'))
     {
         token = token.section('.',	1, 1);
     }
-    else if (token.indexOf(QRegExp("[1-9]"))==0)
+    else if(token.indexOf(QRegExp("[1-9]")) == 0)
     {
         token.clear();
     }
 
     //look for nags
     Nag nag = NullNag;
-    if (token.endsWith("!")) {
-        if (token.endsWith("!!")) {
+    if(token.endsWith("!"))
+    {
+        if(token.endsWith("!!"))
+        {
             nag = VeryGoodMove;
-        } else if (token.endsWith("!?")) {
+        }
+        else if(token.endsWith("!?"))
+        {
             nag = SpeculativeMove;
-        } else {
+        }
+        else
+        {
             nag = GoodMove;
         }
-    } else if (token.endsWith("?")) {
-        if (token.endsWith("??")) {
+    }
+    else if(token.endsWith("?"))
+    {
+        if(token.endsWith("??"))
+        {
             nag = VeryPoorMove;
-        } else if (token.endsWith("?!")) {
+        }
+        else if(token.endsWith("?!"))
+        {
             nag = QuestionableMove;
-        } else {
+        }
+        else
+        {
             nag = PoorMove;
         }
     }
 
-    if (!token.isEmpty()) {
-        if (m_newVariation) {
+    if(!token.isEmpty())
+    {
+        if(m_newVariation)
+        {
             game->backward();
             m_variation = game->addVariation(token, QString(), nag);
-            if (!m_precomment.isEmpty()) {
+            if(!m_precomment.isEmpty())
+            {
                 game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
                 m_precomment.clear();
             }
             m_newVariation = false;
-        } else {	// First move in the game
+        }
+        else  	// First move in the game
+        {
             m_variation = game->addMove(token, QString(), nag);
-            if (!m_precomment.isEmpty()) {
+            if(!m_precomment.isEmpty())
+            {
                 game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
                 m_precomment.clear();
             }
@@ -588,149 +661,177 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
 
 void PgnDatabase::parseToken(Game* game, const QString& token)
 {
-	switch (token.at(0).toLatin1()) {
-	case '(':
-		m_newVariation = true;
-		break;
-	case ')':
-		game->moveToId(game->parentMove());
-		game->forward();
-		m_newVariation = false;
-		m_variation = 0;
-		break;
-	case '{':
-		m_comment.clear();
-		m_precomment.clear();
-		m_inComment = true;
-		m_currentLine = m_currentLine.right((m_currentLine.length() - m_pos) - 1);
+    switch(token.at(0).toLatin1())
+    {
+    case '(':
+        m_newVariation = true;
         break;
-	case '$':
-		game->addNag((Nag)token.mid(1).toInt());
-		break;
-	case '!':
-		if (token == "!") {
-			game->addNag(GoodMove);
-		} else if (token == "!!") {
-			game->addNag(VeryGoodMove);
-		} else if (token == "!?") {
-			game->addNag(SpeculativeMove);
-		}
-		break;
-	case '?':
-		if (token == "?") {
-			game->addNag(PoorMove);
-		} else if (token == "??") {
-			game->addNag(VeryPoorMove);
-		} else if (token == "?!") {
-			game->addNag(QuestionableMove);
-		}
-		break;
-	case '+':
-		if (token == "+=") {
-			game->addNag(WhiteHasASlightAdvantage);
-		} else if (token == "+/-") {
-			game->addNag(WhiteHasAModerateAdvantage);
-		}
-		break;
-	case '=':
-		if (token == "=") {
-			game->addNag(DrawishPosition);
-		} else if (token == "=+") {
-			game->addNag(BlackHasASlightAdvantage);
-		}
-		break;
-	case '*':
-		game->setResult(ResultUnknown);
-		m_gameOver = true;
+    case ')':
+        game->moveToId(game->parentMove());
+        game->forward();
+        m_newVariation = false;
+        m_variation = 0;
         break;
-    // From here, cases may fall through into default!!
-	case '1':
-		if (token == "1-0") {
-			game->setResult(WhiteWin);
-			m_gameOver = true;
+    case '{':
+        m_comment.clear();
+        m_precomment.clear();
+        m_inComment = true;
+        m_currentLine = m_currentLine.right((m_currentLine.length() - m_pos) - 1);
+        break;
+    case '$':
+        game->addNag((Nag)token.mid(1).toInt());
+        break;
+    case '!':
+        if(token == "!")
+        {
+            game->addNag(GoodMove);
+        }
+        else if(token == "!!")
+        {
+            game->addNag(VeryGoodMove);
+        }
+        else if(token == "!?")
+        {
+            game->addNag(SpeculativeMove);
+        }
+        break;
+    case '?':
+        if(token == "?")
+        {
+            game->addNag(PoorMove);
+        }
+        else if(token == "??")
+        {
+            game->addNag(VeryPoorMove);
+        }
+        else if(token == "?!")
+        {
+            game->addNag(QuestionableMove);
+        }
+        break;
+    case '+':
+        if(token == "+=")
+        {
+            game->addNag(WhiteHasASlightAdvantage);
+        }
+        else if(token == "+/-")
+        {
+            game->addNag(WhiteHasAModerateAdvantage);
+        }
+        break;
+    case '=':
+        if(token == "=")
+        {
+            game->addNag(DrawishPosition);
+        }
+        else if(token == "=+")
+        {
+            game->addNag(BlackHasASlightAdvantage);
+        }
+        break;
+    case '*':
+        game->setResult(ResultUnknown);
+        m_gameOver = true;
+        break;
+        // From here, cases may fall through into default!!
+    case '1':
+        if(token == "1-0")
+        {
+            game->setResult(WhiteWin);
+            m_gameOver = true;
             break;
         }
-        else if (token == "1/2-1/2" || token == "1/2")
+        else if(token == "1/2-1/2" || token == "1/2")
         {
-			game->setResult(Draw);
-			m_gameOver = true;
+            game->setResult(Draw);
+            m_gameOver = true;
             break;
         }
 
-	case '0':
-        if (token == "0-1")
+    case '0':
+        if(token == "0-1")
         {
-			game->setResult(BlackWin);
-			m_gameOver = true;
-			break;
-		}
-
-	case '-':
-        if (token == "-/+")
-        {
-			game->addNag(BlackHasAModerateAdvantage);
+            game->setResult(BlackWin);
+            m_gameOver = true;
             break;
         }
-        else if (token == "--")
+
+    case '-':
+        if(token == "-/+")
+        {
+            game->addNag(BlackHasAModerateAdvantage);
+            break;
+        }
+        else if(token == "--")
         {
             // parse a null move!
-            parseDefaultToken(game,token);
+            parseDefaultToken(game, token);
             break;
         }
 
-	default:
-        parseDefaultToken(game,token);
+    default:
+        parseDefaultToken(game, token);
         break;
-	}
+    }
 }
 
 void PgnDatabase::parseComment(Game* game)
 {
-	int end = m_currentLine.indexOf('}');
+    int end = m_currentLine.indexOf('}');
 
-	if (end >= 0) {
-		m_comment.append(m_currentLine.left(end));
-		m_inComment = false;
-        if (m_newVariation || game->plyCount() == 0)
-			m_precomment = m_comment.trimmed();
-		else game->setAnnotation(m_comment.trimmed());
-		m_currentLine = m_currentLine.right((m_currentLine.length() - end) - 1);
-	} else {
-		m_comment.append(m_currentLine + ' ');
-		readLine();
-	}
+    if(end >= 0)
+    {
+        m_comment.append(m_currentLine.left(end));
+        m_inComment = false;
+        if(m_newVariation || game->plyCount() == 0)
+        {
+            m_precomment = m_comment.trimmed();
+        }
+        else
+        {
+            game->setAnnotation(m_comment.trimmed());
+        }
+        m_currentLine = m_currentLine.right((m_currentLine.length() - end) - 1);
+    }
+    else
+    {
+        m_comment.append(m_currentLine + ' ');
+        readLine();
+    }
 }
 
 inline bool onlyWhite(const QByteArray& b)
 {
-    for (int i = 0; i < b.length(); ++i)
-        if (!isspace(b[i]))
-			return false;
-	return true;
+    for(int i = 0; i < b.length(); ++i)
+        if(!isspace(b[i]))
+        {
+            return false;
+        }
+    return true;
 }
 
 IndexBaseType PgnDatabase::skipJunk()
 {
     IndexBaseType fp = -2;
-    if (m_file->atEnd())
+    if(m_file->atEnd())
     {
         fp = -1;
     }
 
-    while ((!m_lineBuffer.length()
-          || (m_lineBuffer[0] != '[' && m_lineBuffer[0] != '1'))
-          && !m_file->atEnd())
+    while((!m_lineBuffer.length()
+            || (m_lineBuffer[0] != '[' && m_lineBuffer[0] != '1'))
+            && !m_file->atEnd())
     {
         fp = m_file->pos();
         skipLine();
     }
 
-    if (fp == -2)
+    if(fp == -2)
     {
         fp = m_file->pos() - m_lineBuffer.size();
     }
 
-    if (m_utf8)
+    if(m_utf8)
     {
         QTextStream textStream(m_lineBuffer);
         m_currentLine = textStream.readLine().simplified();
@@ -739,14 +840,15 @@ IndexBaseType PgnDatabase::skipJunk()
     {
         QTextStream textStream(m_lineBuffer);
         QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if (textCodec)
+        if(textCodec)
         {
             textStream.setCodec(textCodec);
         }
         m_currentLine = textStream.readLine().simplified();
     }
 
-    if (m_inComment || !m_currentLine.startsWith("[")) {
+    if(m_inComment || !m_currentLine.startsWith("["))
+    {
         m_currentLine.replace("(", " ( ");
         m_currentLine.replace(")", " ) ");
         m_currentLine.replace("{", " { ");
@@ -759,14 +861,18 @@ IndexBaseType PgnDatabase::skipJunk()
 
 void PgnDatabase::skipTags()
 {
-	while (m_lineBuffer.length() && (m_lineBuffer[0] == '[') && !m_file->atEnd())
-		skipLine();
-
-	//swallow trailing whitespace
-    while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
+    while(m_lineBuffer.length() && (m_lineBuffer[0] == '[') && !m_file->atEnd())
+    {
         skipLine();
+    }
 
-    if (m_utf8)
+    //swallow trailing whitespace
+    while(onlyWhite(m_lineBuffer) && !m_file->atEnd())
+    {
+        skipLine();
+    }
+
+    if(m_utf8)
     {
         QTextStream textStream(m_lineBuffer);
         m_currentLine = textStream.readLine().simplified();
@@ -775,14 +881,15 @@ void PgnDatabase::skipTags()
     {
         QTextStream textStream(m_lineBuffer);
         QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if (textCodec)
+        if(textCodec)
         {
             textStream.setCodec(textCodec);
         }
         m_currentLine = textStream.readLine().simplified();
     }
 
-    if (m_inComment || !m_currentLine.startsWith("[")) {
+    if(m_inComment || !m_currentLine.startsWith("["))
+    {
         m_currentLine.replace("(", " ( ");
         m_currentLine.replace(")", " ) ");
         m_currentLine.replace("{", " { ");
@@ -794,15 +901,18 @@ void PgnDatabase::skipTags()
 void PgnDatabase::skipMoves()
 {
     QString tag = m_index.tagValue(TagNamePlyCount, m_count - 1);
-    if (tag=="?") tag.clear();
-    if (!tag.isEmpty())
+    if(tag == "?")
     {
-        while (!onlyWhite(m_lineBuffer) && !m_file->atEnd())
+        tag.clear();
+    }
+    if(!tag.isEmpty())
+    {
+        while(!onlyWhite(m_lineBuffer) && !m_file->atEnd())
         {
             skipLine();
         }
 
-        tag = QString::number((tag.toInt()+1)/2);
+        tag = QString::number((tag.toInt() + 1) / 2);
         m_index.setTag("Length", tag, m_count - 1);
     }
     else
@@ -811,7 +921,7 @@ void PgnDatabase::skipMoves()
 
         QString gameText = " ";
 
-        while (!onlyWhite(m_lineBuffer) && !m_file->atEnd())
+        while(!onlyWhite(m_lineBuffer) && !m_file->atEnd())
         {
             gameText += QString(m_lineBuffer) + " ";
             skipLine();
@@ -823,11 +933,13 @@ void PgnDatabase::skipMoves()
         m_index.setTag("Length", gameNumber.cap(1), m_count - 1);
     }
 
-	//swallow trailing whitespace
-    while (onlyWhite(m_lineBuffer) && !m_file->atEnd())
+    //swallow trailing whitespace
+    while(onlyWhite(m_lineBuffer) && !m_file->atEnd())
+    {
         skipLine();
+    }
 
-    if (m_utf8)
+    if(m_utf8)
     {
         QTextStream textStream(m_lineBuffer);
         m_currentLine = textStream.readLine().simplified();
@@ -836,7 +948,7 @@ void PgnDatabase::skipMoves()
     {
         QTextStream textStream(m_lineBuffer);
         QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if (textCodec)
+        if(textCodec)
         {
             textStream.setCodec(textCodec);
         }

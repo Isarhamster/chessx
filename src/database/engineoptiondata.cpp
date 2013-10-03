@@ -13,7 +13,7 @@ EngineOptionData* EngineOptionData::FindInList(QString name, QList<EngineOptionD
     QList<EngineOptionData>::iterator it = list.begin();
     while(it != list.end())
     {
-        if ((*it).m_name == name)
+        if((*it).m_name == name)
         {
             return &(*it);
         }

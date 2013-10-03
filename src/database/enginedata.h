@@ -15,18 +15,19 @@
 #include "engineoptiondata.h"
 
 /** The EngineData class contains configuration of a single engine. */
-class EngineData {
+class EngineData
+{
 public:
-	enum EngineProtocol {WinBoard, UCI};
-	/** Standard constructor. */
-	EngineData(const QString& newName = "");
-	QString name;
-	QString command;
-	QString options;
-	QString directory;
-	EngineProtocol protocol;
+    enum EngineProtocol {WinBoard, UCI};
+    /** Standard constructor. */
+    EngineData(const QString& newName = "");
+    QString name;
+    QString command;
+    QString options;
+    QString directory;
+    EngineProtocol protocol;
     OptionValueList m_optionValues;
-	static QString commandToName(const QString& command);
+    static QString commandToName(const QString& command);
 
 };
 

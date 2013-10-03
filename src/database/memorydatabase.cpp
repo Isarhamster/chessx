@@ -19,29 +19,31 @@ MemoryDatabase::MemoryDatabase() : PgnDatabase(false), m_isModified(false)
 
 MemoryDatabase::~MemoryDatabase()
 {
-	for (int i = 0; i < m_games.count(); ++i) {
-		delete m_games[i];
-	}
+    for(int i = 0; i < m_games.count(); ++i)
+    {
+        delete m_games[i];
+    }
 }
 
 bool MemoryDatabase::appendGame(const Game& game)
 {
-	// Add to index
-	QMap <QString, QString> tags = game.tags();
-	QMap <QString, QString>::const_iterator i = tags.constBegin();
+    // Add to index
+    QMap <QString, QString> tags = game.tags();
+    QMap <QString, QString>::const_iterator i = tags.constBegin();
     m_count = m_index.add();
-	while (i != tags.constEnd()) {
+    while(i != tags.constEnd())
+    {
         m_index.setTag(i.key(), i.value(), m_count);
-		++i;
-	}
-	// Upate game array
-	Game* newGame = new Game;
-	*newGame = game;
-	newGame->clearTags();
-	m_games.append(newGame);
+        ++i;
+    }
+    // Upate game array
+    Game* newGame = new Game;
+    *newGame = game;
+    newGame->clearTags();
+    m_games.append(newGame);
     ++m_count;
-	m_isModified = true;
-	return true;
+    m_isModified = true;
+    return true;
 }
 
 bool MemoryDatabase::remove(int gameId)
@@ -60,62 +62,70 @@ bool MemoryDatabase::undelete(int gameId)
 
 bool MemoryDatabase::replace(int index, Game& game)
 {
-	if (index >= m_count) {
-		return false;
-	}
-	// Update index
-	QMap <QString, QString> tags = game.tags();
-	QMap <QString, QString>::const_iterator i = tags.constBegin();
-	while (i != tags.constEnd()) {
-		m_index.setTag(i.key(), i.value(), index);
-		++i;
-	}
-	// Upate game array
-	*m_games[index] = game;
-	m_games[index]->clearTags();
-	m_isModified = true;
-	return true;
+    if(index >= m_count)
+    {
+        return false;
+    }
+    // Update index
+    QMap <QString, QString> tags = game.tags();
+    QMap <QString, QString>::const_iterator i = tags.constBegin();
+    while(i != tags.constEnd())
+    {
+        m_index.setTag(i.key(), i.value(), index);
+        ++i;
+    }
+    // Upate game array
+    *m_games[index] = game;
+    m_games[index]->clearTags();
+    m_isModified = true;
+    return true;
 }
 
 void MemoryDatabase::loadGameMoves(int index, Game& game)
 {
-	if (index >= m_count)
-		return;
-	game = *m_games[index];
+    if(index >= m_count)
+    {
+        return;
+    }
+    game = *m_games[index];
 }
 
 bool MemoryDatabase::loadGame(int index, Game& game)
 {
-    if (index<0 || index >= m_count || m_index.deleted(index))
+    if(index < 0 || index >= m_count || m_index.deleted(index))
     {
-		return false;
+        return false;
     }
     lock();
-	game = *m_games[index];
-	loadGameHeaders(index, game);
+    game = *m_games[index];
+    loadGameHeaders(index, game);
     unlock();
-	return true;
+    return true;
 }
 
 void MemoryDatabase::parseGame()
 {
     Game* game = new Game;
     QString fen = m_index.tagValue(TagNameFEN, m_count - 1);
-    if (fen != "?")
+    if(fen != "?")
+    {
         game->setStartingBoard(fen);
-    m_index.setValidFlag(m_count-1, parseMoves(game));
+    }
+    m_index.setValidFlag(m_count - 1, parseMoves(game));
     m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2), m_count - 1);
 
     QString eco = game->tag("ECO").left(3);
-    if (eco == "?")
-        eco.clear();
-
-    if (AppSettings->getValue("/General/automaticECO").toBool())
+    if(eco == "?")
     {
-        if (eco.isEmpty())
+        eco.clear();
+    }
+
+    if(AppSettings->getValue("/General/automaticECO").toBool())
+    {
+        if(eco.isEmpty())
         {
             eco = game->ecoClassify().left(3);
-            if (!eco.isEmpty())
+            if(!eco.isEmpty())
             {
                 game->setTag("ECO", eco);
                 m_index.setTag("ECO", eco, m_count - 1);
@@ -130,16 +140,17 @@ void MemoryDatabase::parseGame()
 bool MemoryDatabase::parseFile()
 {
     bool ok = parseFileIntern();
-	m_isModified = false;
+    m_isModified = false;
     return ok;
 }
 
 bool MemoryDatabase::clear()
 {
-	for (int i = 0; i < m_games.count(); ++i) {
-		delete m_games[i];
-	}
-	m_games.clear();
-	m_isModified = true;
-	return true;
+    for(int i = 0; i < m_games.count(); ++i)
+    {
+        delete m_games[i];
+    }
+    m_games.clear();
+    m_isModified = true;
+    return true;
 }

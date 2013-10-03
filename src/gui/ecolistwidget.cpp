@@ -24,7 +24,7 @@ ECOListWidget::ECOListWidget(QWidget *parent) :
 
     selectECO(QString());
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
-    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
             this, SLOT(selectionChangedSlot()));
 
     ui->detailText->setOpenLinks(true);
@@ -47,7 +47,7 @@ void ECOListWidget::slotReconfigure()
 void ECOListWidget::selectionChangedSlot()
 {
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
-    if (selection.count())
+    if(selection.count())
     {
         QString ts = selection[0].data().toString();
         ecoSelected(ts);
@@ -60,7 +60,7 @@ void ECOListWidget::selectionChangedSlot()
 
 void ECOListWidget::findECO(const QString& s)
 {
-    if (s.isEmpty())
+    if(s.isEmpty())
     {
         m_filterModel->setStringList(m_list);
     }
@@ -80,18 +80,18 @@ void ECOListWidget::slotSelectECO(const QString& eco)
 
 void ECOListWidget::ecoSelected(const QString& eco)
 {
-    if (!eco.isEmpty())
+    if(!eco.isEmpty())
     {
         m_eco.setCode(eco);
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
         QString head = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>ECO List</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>";
         QString text = QString("%1<body><h1>%2</h1><p>%3</p><p>%4%5</p>%6</body></html>")
-                .arg(head)
-                .arg(m_eco.name()).arg(m_eco.formattedGameCount())
-                .arg(m_eco.formattedRating())
-                .arg(m_eco.formattedScore())
-                .arg(m_eco.listOfPlayers());
+                       .arg(head)
+                       .arg(m_eco.name()).arg(m_eco.formattedGameCount())
+                       .arg(m_eco.formattedRating())
+                       .arg(m_eco.formattedScore())
+                       .arg(m_eco.listOfPlayers());
         ui->detailText->setHtml(text);
     }
     else
@@ -106,16 +106,16 @@ void ECOListWidget::ecoSelected(const QString& eco)
 void ECOListWidget::selectECO(const QString& eco)
 {
     ecoSelected(eco);
-    if (!eco.isEmpty())
+    if(!eco.isEmpty())
     {
         const QStringList& list = m_filterModel->stringList();
         int row = list.indexOf(eco);
-        if (row>=0)
+        if(row >= 0)
         {
-            QModelIndex index = m_filterModel->index( row, 0 );
-            if ( index.isValid() )
+            QModelIndex index = m_filterModel->index(row, 0);
+            if(index.isValid())
             {
-                ui->tagList->selectionModel()->select( index, QItemSelectionModel::ClearAndSelect );
+                ui->tagList->selectionModel()->select(index, QItemSelectionModel::ClearAndSelect);
                 ui->tagList->scrollTo(index);
             }
         }
@@ -125,7 +125,7 @@ void ECOListWidget::selectECO(const QString& eco)
 void ECOListWidget::filterSelectedECO()
 {
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
-    if (selection.count())
+    if(selection.count())
     {
         QString ts = selection[0].data().toString();
         emit filterRequest(ts);
@@ -138,7 +138,7 @@ void ECOListWidget::setDatabase(DatabaseInfo* dbInfo)
     ui->detailText->setText(tr("<html><i>No ECO code chosen.</i></html>"));
     m_eco.setDatabase(db);
     m_list.clear();
-    if (db && db->index())
+    if(db && db->index())
     {
         m_list = db->index()->tagValues(TagNameECO);
     }
@@ -149,10 +149,10 @@ void ECOListWidget::setDatabase(DatabaseInfo* dbInfo)
 
 void ECOListWidget::slotLinkClicked(const QUrl& url)
 {
-    if (url.scheme().startsWith("player"))
+    if(url.scheme().startsWith("player"))
     {
         QString eco = ui->tagList->currentIndex().data().toString();
-        emit filterEcoPlayerRequest(url.scheme().contains("white") ? TagNameWhite:TagNameBlack,
+        emit filterEcoPlayerRequest(url.scheme().contains("white") ? TagNameWhite : TagNameBlack,
                                     eco, url.path());
         emit filterEcoPlayerRequest(url.path(), eco);
     }

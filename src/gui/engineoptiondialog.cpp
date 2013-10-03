@@ -19,12 +19,12 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
 
     QString t = windowTitle();
     QString t1 = QString("%1 %2 (%3)").
-            arg(t).
-            arg(engineList[index].name).
-            arg(QString(engineList[index].protocol==EngineData::UCI ? "UCI" : "WinBoard"));
+                 arg(t).
+                 arg(engineList[index].name).
+                 arg(QString(engineList[index].protocol == EngineData::UCI ? "UCI" : "WinBoard"));
 
     setWindowTitle(t1);
-    if (engineList[index].protocol==EngineData::UCI)
+    if(engineList[index].protocol == EngineData::UCI)
     {
         ui->tableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
     }
@@ -61,7 +61,7 @@ void EngineOptionDialog::engineActivated()
 OptionValueList EngineOptionDialog::GetResults() const
 {
     return (m_engine ? m_engine->m_mapOptionValues :
-                       QMap<QString, QVariant>());
+            QMap<QString, QVariant>());
 }
 
 void EngineOptionDialog::optionReset()

@@ -14,11 +14,12 @@ mainwindow */
 
 class EcoThread : public QThread
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
     EcoThread() {};
-    void run() {
+    void run()
+    {
         bool ok = true;
         ok |= Game::loadEcoFile(":chessx.eco");
         ok |= Board::loadEcoFile(":chessx.gtm");

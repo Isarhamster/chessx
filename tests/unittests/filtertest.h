@@ -27,19 +27,19 @@ Unit tests for the Filter class
 class FilterTest : public QObject
 {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	PgnDatabase db;
+    PgnDatabase db;
 
 private slots:
-	void initTestCase();
-	void init();
-	void cleanup();
-	void cleanupTestCase();
+    void initTestCase();
+    void init();
+    void cleanup();
+    void cleanupTestCase();
 
-	void testFilter();
-	void testFilterOnStartPos();
+    void testFilter();
+    void testFilterOnStartPos();
 
 };
 

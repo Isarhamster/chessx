@@ -31,7 +31,7 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     m_openingBoardView = new BoardView(this, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     m_openingBoardView->setObjectName("OpeningBoardView");
     m_openingBoardView->setMinimumSize(200, 200);
-    ui->OpeningBoardWidget->addWidget(m_openingBoardView,1);
+    ui->OpeningBoardWidget->addWidget(m_openingBoardView, 1);
     m_openingBoardView->configure();
     m_openingBoardView->setEnabled(false);
 }

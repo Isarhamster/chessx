@@ -12,14 +12,15 @@
 
 class Engine;
 
-namespace Ui {
+namespace Ui
+{
 class EngineOptionDialog;
 }
 
 class EngineOptionDialog : public QDialog
 {
     Q_OBJECT
-    
+
 public:
     explicit EngineOptionDialog(QWidget *parent, EngineList& engineList, int index, Qt::WindowFlags f = 0);
     ~EngineOptionDialog();

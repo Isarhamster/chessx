@@ -27,25 +27,25 @@
 
 class PlayerDatabaseTest: public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	PlayerDatabase pdb, newDb;
-	QString db_name;
+    PlayerDatabase pdb, newDb;
+    QString db_name;
 
 private slots:
-	void initTestCase();
-	void init();
-	void cleanup();
-	void cleanupTestCase();
+    void initTestCase();
+    void init();
+    void cleanup();
+    void cleanupTestCase();
 
-	void testCreateDatabase();
-	void testOpenDatabase();
-	void testRemoveDatabase();
-	void testPlayerCount();
-	void testPlayerExists();
-	void testNonExistingPlayer();
-	void testCurrentPlayer();
-	void testDatabaseClose();
+    void testCreateDatabase();
+    void testOpenDatabase();
+    void testRemoveDatabase();
+    void testPlayerCount();
+    void testPlayerExists();
+    void testNonExistingPlayer();
+    void testCurrentPlayer();
+    void testDatabaseClose();
 };
 
 #endif

@@ -34,26 +34,26 @@ class Index : public QObject
     Q_OBJECT
 
 public:
-	static const int defaultIndexItemSize;
+    static const int defaultIndexItemSize;
 
-	Index();
-	~Index();
+    Index();
+    ~Index();
 
     /** Adds an empty indexitem */
-    GameId add ();
+    GameId add();
     int count() const;
 
-	// Storing tags //
-	//
-	/** Store the tag value for the given game, tag is given by name */
+    // Storing tags //
+    //
+    /** Store the tag value for the given game, tag is given by name */
     void setTag(const QString& tagName, const QString &value, int gameId);
 
-	// Retrieving tags //
-	//
+    // Retrieving tags //
+    //
     /** Restore all tags for gameId from Index into game object */
-	void loadGameHeaders(GameId id, Game& game);
+    void loadGameHeaders(GameId id, Game& game);
 
-	/** Get the tag value for given game */
+    /** Get the tag value for given game */
     QString tagValue(const QString&, GameId gameId) const;
     ValueIndex getValueIndex(const QString&) const;
     TagIndex getTagIndex(const QString& value) const;
@@ -74,18 +74,18 @@ public:
     QStringList playerNames() const;
 
     // Searching tags //
-	//
-	/** Return a bit array to indicate which games in index have tag with matching value */
+    //
+    /** Return a bit array to indicate which games in index have tag with matching value */
     QBitArray listContainingValue(const QString& tagName, const QString& value) const;
 
-	/** Returns a bit array to indicate which games in index have a tag value in given range */
+    /** Returns a bit array to indicate which games in index have a tag value in given range */
     QBitArray listInRange(const QString& tag, const QString& minValue, const QString& maxValue) const;
 
     /** Returns a bit array to indicate which games in index have a tag value which somewhat matches */
     QBitArray listPartialValue(const QString& tagName, const QString& value) const;
 
     // Utility //
-	//
+    //
 
     /** Write the index to disk, using m_filename */
     bool write(QDataStream& out) const;
@@ -114,10 +114,10 @@ signals:
     void progress(int);
 
 private:
-	/** Contains information which games are marked for deletion */
+    /** Contains information which games are marked for deletion */
     QList<bool> m_deletedGames;
-	/** Return a pointer to the index item for the given game id */
-	IndexItem* item(int gameId);
+    /** Return a pointer to the index item for the given game id */
+    IndexItem* item(int gameId);
 
     /** Map an Index to a tagName */
     QHash<TagIndex, QString> m_tagNames;

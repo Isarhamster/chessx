@@ -38,60 +38,69 @@
 class Board : public BitBoard
 {
 public:
-	/** Empty constructor. Creates empty board with no pieces. */
-	Board();
+    /** Empty constructor. Creates empty board with no pieces. */
+    Board();
 
     Board(QString);
 
-	/** Resets board, restoring startup position */
-	void setStandardPosition();
+    /** Resets board, restoring startup position */
+    void setStandardPosition();
 
-	/** Sets position from FEN, returns true if FEN was loaded */
-	bool fromFen(const QString& fen);
+    /** Sets position from FEN, returns true if FEN was loaded */
+    bool fromFen(const QString& fen);
 
-	/** Clear board of all pieces and other state */
-	void clear();
+    /** Clear board of all pieces and other state */
+    void clear();
 
-	/** Sets side to move - mostly useful when setting position */
-	void setToMove(Color c);
+    /** Sets side to move - mostly useful when setting position */
+    void setToMove(Color c);
 
-	/** Change side to move to opposite of current value */
-	void swapToMove() {setToMove(oppositeColor(toMove()));};
+    /** Change side to move to opposite of current value */
+    void swapToMove()
+    {
+        setToMove(oppositeColor(toMove()));
+    };
 
-	/** Sets a piece on the given square **/
-	void setAt(Square s, Piece p);
+    /** Sets a piece on the given square **/
+    void setAt(Square s, Piece p);
 
-	/** Remove a piece from a given square **/
-	void removeFrom(Square s);
+    /** Remove a piece from a given square **/
+    void removeFrom(Square s);
 
-	/** Make standard move. */
-	inline bool doMove(const Move& m) { return doIt(m, false); }
-	/** Undo standard move (no captures). */
-	inline void undoMove(const Move& m) { doIt(m, true); }
+    /** Make standard move. */
+    inline bool doMove(const Move& m)
+    {
+        return doIt(m, false);
+    }
+    /** Undo standard move (no captures). */
+    inline void undoMove(const Move& m)
+    {
+        doIt(m, true);
+    }
 
-	/** Return a suggested move associated with given square based on ECO data */
-    bool ecoMove(const Square square, int* from=0, int* to=0) const;
+    /** Return a suggested move associated with given square based on ECO data */
+    bool ecoMove(const Square square, int* from = 0, int* to = 0) const;
 
-	/** Load the guess-the-move ECO hash data which is used by ecoMove() method */
-	static bool loadEcoFile(const QString& ecoFile);
+    /** Load the guess-the-move ECO hash data which is used by ecoMove() method */
+    static bool loadEcoFile(const QString& ecoFile);
 
-	/** Return a hash based on current and a given square number */
-	quint64 getHashPlusSquare(const Square square) const;
+    /** Return a hash based on current and a given square number */
+    quint64 getHashPlusSquare(const Square square) const;
 
-	/** Return hash value associated with current board position */
-	quint64 getHashValue() const;
+    /** Return hash value associated with current board position */
+    quint64 getHashValue() const;
 
-	/** Compare one board to another for equality, based on hash values */
-	bool operator == (const Board& b) const
-	{
-		return m_hashValue == b.getHashValue();
-	}
+    /** Compare one board to another for equality, based on hash values */
+    bool operator == (const Board& b) const
+    {
+        return m_hashValue == b.getHashValue();
+    }
 
-	/** Compare one board to another for differences, based on hash values */
-	bool operator != (const Board& b) const
-	{
-		return m_hashValue != b.getHashValue();
-	}
+    /** Compare one board to another for differences, based on hash values */
+    bool operator != (const Board& b) const
+    {
+        return m_hashValue != b.getHashValue();
+    }
 
     /** Sets the squareAnnotation*/
     void setSquareAnnotation(QString squareAnnotation)
@@ -118,23 +127,23 @@ public:
     }
 
 private:
-	quint64 m_hashValue;
+    quint64 m_hashValue;
 
     QString m_squareAnnotation;
     QString m_arrowAnnotation;
 
-	/** Play (or undo) move on board and calculate hash value for new position */
-	bool doIt(const Move& m, bool undo);
-	/** recalculate hash completely */
-	void createHash();
-	/** Adjust hash value based on piece sitting on given square */
-	void hashPiece(Square s, Piece p);
-	/** Adjust hash value based on which side is to move */
-	void hashToMove();
-	/** Adjust hash value based on the current en passant square */
-	void hashEpSquare();
-	/** Adjust hash value based on the castling rights each side has */
-	void hashCastlingRights(CastlingRights oldCastlingRights);
+    /** Play (or undo) move on board and calculate hash value for new position */
+    bool doIt(const Move& m, bool undo);
+    /** recalculate hash completely */
+    void createHash();
+    /** Adjust hash value based on piece sitting on given square */
+    void hashPiece(Square s, Piece p);
+    /** Adjust hash value based on which side is to move */
+    void hashToMove();
+    /** Adjust hash value based on the current en passant square */
+    void hashEpSquare();
+    /** Adjust hash value based on the castling rights each side has */
+    void hashCastlingRights(CastlingRights oldCastlingRights);
 };
 
 extern const Board standardStartBoard;

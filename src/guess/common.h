@@ -46,7 +46,7 @@ const char PGN_SUFFIX[] = ".pgn";
 
 typedef signed int    compareT;
 const compareT
-    LESS_THAN = -1,   EQUAL_TO = 0,   GREATER_THAN = 1;
+LESS_THAN = -1,   EQUAL_TO = 0,   GREATER_THAN = 1;
 
 //  Chess Types
 
@@ -65,8 +65,8 @@ typedef unsigned char                    rightDiagT;  // Up-right diagonals
 typedef pieceT                  boardT [66];
 
 typedef unsigned char                    smallBoardT [32];
-                                    // A more densely packed board, 2 squares
-                                    // per unsigned char.
+// A more densely packed board, 2 squares
+// per unsigned char.
 
 typedef unsigned char                    castleDirT;  // LEFT or RIGHT
 
@@ -83,7 +83,8 @@ typedef char    sanStringT [ 10];   // SAN Move Notation
 typedef char    fileNameT [512];
 typedef unsigned int    fileLengthT;
 
-enum fileModeT {
+enum fileModeT
+{
     FMODE_None = 0,
     FMODE_ReadOnly,
     FMODE_WriteOnly,
@@ -126,17 +127,18 @@ typedef unsigned int            nameT;
 const unsigned int NUM_RESULT_TYPES = 4;
 typedef unsigned char    resultT;
 const resultT
-    RESULT_None  = 0,
-    RESULT_White = 1,
-    RESULT_Black = 2,
-    RESULT_Draw  = 3;
+RESULT_None  = 0,
+RESULT_White = 1,
+RESULT_Black = 2,
+RESULT_Draw  = 3;
 
 const unsigned int RESULT_SCORE[4] = { 1, 2, 0, 1 };
 
 const char RESULT_CHAR [4]       = { '*',  '1',    '0',    '='       };
 const char RESULT_STR [4][4]     = { "*",  "1-0",  "0-1",  "=-="     };
 const char RESULT_LONGSTR [4][8] = { "*",  "1-0",  "0-1",  "1/2-1/2" };
-const resultT RESULT_OPPOSITE [4] = {
+const resultT RESULT_OPPOSITE [4] =
+{
     RESULT_None, RESULT_Black, RESULT_White, RESULT_Draw
 };
 
@@ -145,17 +147,23 @@ const resultT RESULT_OPPOSITE [4] = {
 
 const unsigned int NUM_COLOR_TYPES = 2;
 const colorT
-    WHITE = 0,
-    BLACK = 1,
-    NOCOLOR = 2;
+WHITE = 0,
+BLACK = 1,
+NOCOLOR = 2;
 
 const char COLOR_CHAR [3] = {'W', 'B', '_' };
 
-  inline colorT
-color_Flip (colorT c) { return 1 - c; }
+inline colorT
+color_Flip(colorT c)
+{
+    return 1 - c;
+}
 
-  inline char
-color_Char(colorT c)  { return COLOR_CHAR[c]; }
+inline char
+color_Char(colorT c)
+{
+    return COLOR_CHAR[c];
+}
 
 const castleDirT  QSIDE = 0,  KSIDE = 1;
 
@@ -163,12 +171,12 @@ const castleDirT  QSIDE = 0,  KSIDE = 1;
 // PIECE TYPES (without color; same value as a white piece)
 
 const pieceT
-    KING = 1,
-    QUEEN = 2,
-    ROOK = 3,
-    BISHOP = 4,
-    KNIGHT = 5,
-    PAWN = 6;
+KING = 1,
+QUEEN = 2,
+ROOK = 3,
+BISHOP = 4,
+KNIGHT = 5,
+PAWN = 6;
 
 // PIECES:
 //   Note that color(x) == ((x & 0x8) >> 3)  and  type(x) == (x & 0x7)
@@ -193,7 +201,8 @@ const char PIECE_CHAR [] = "xKQRBNP.xkqrbnpxMm";
 
 // PIECE_FLIP[]: array of pieces, with colors reversed.
 
-const pieceT PIECE_FLIP [MAX_PIECE_TYPES] = {
+const pieceT PIECE_FLIP [MAX_PIECE_TYPES] =
+{
     END_OF_BOARD,
     BK, BQ, BR, BB, BN, BP,
     EMPTY, EMPTY,
@@ -201,7 +210,8 @@ const pieceT PIECE_FLIP [MAX_PIECE_TYPES] = {
     EMPTY, BM, WM
 };
 
-const bool PIECE_IS_SLIDER [8] = {
+const bool PIECE_IS_SLIDER [8] =
+{
     false,
     false, true, true, true, false, false,
     false,
@@ -209,7 +219,8 @@ const bool PIECE_IS_SLIDER [8] = {
 
 // PIECE_VALUE: Piece values, K=1000, Q=9, R=5, B=N=3, P=1
 
-const int PIECE_VALUE [MAX_PIECE_TYPES] = {
+const int PIECE_VALUE [MAX_PIECE_TYPES] =
+{
     0,
     100, 9, 5, 3, 3, 1,
     0, 0,
@@ -221,163 +232,234 @@ const int PIECE_VALUE [MAX_PIECE_TYPES] = {
 // INLINE FUNCTIONS for pieces
 //
 
-  inline colorT
-piece_Color(pieceT p)  { return (p == EMPTY) ? NOCOLOR : ((p & 8) >> 3); }
+inline colorT
+piece_Color(pieceT p)
+{
+    return (p == EMPTY) ? NOCOLOR : ((p & 8) >> 3);
+}
 
 // Slightly faster piece_Color when we are sure the piece is not empty:
-  inline colorT
-piece_Color_NotEmpty(pieceT p)  { return (p & 8) >> 3; }
+inline colorT
+piece_Color_NotEmpty(pieceT p)
+{
+    return (p & 8) >> 3;
+}
 
-  inline pieceT
-piece_Type(pieceT p)  { return (p & 7); }
+inline pieceT
+piece_Type(pieceT p)
+{
+    return (p & 7);
+}
 
-  inline pieceT
-piece_Make(colorT c, pieceT p)  { return ((c << 3) | (p & 7)); }
+inline pieceT
+piece_Make(colorT c, pieceT p)
+{
+    return ((c << 3) | (p & 7));
+}
 
-  inline bool
-piece_IsWhite(pieceT p)  { return (p>=WK && p<=WP); }
+inline bool
+piece_IsWhite(pieceT p)
+{
+    return (p >= WK && p <= WP);
+}
 
-  inline bool
-piece_IsBlack(pieceT p)  { return (p>=BK && p<=BP); }
+inline bool
+piece_IsBlack(pieceT p)
+{
+    return (p >= BK && p <= BP);
+}
 
-  inline bool
-piece_IsKing(pieceT p)  { return (piece_Type(p) == KING); }
+inline bool
+piece_IsKing(pieceT p)
+{
+    return (piece_Type(p) == KING);
+}
 
-  inline bool
-piece_IsQueen(pieceT p)  { return (piece_Type(p) == QUEEN); }
+inline bool
+piece_IsQueen(pieceT p)
+{
+    return (piece_Type(p) == QUEEN);
+}
 
-  inline bool
-piece_IsRook(pieceT p)  { return (piece_Type(p) == ROOK); }
+inline bool
+piece_IsRook(pieceT p)
+{
+    return (piece_Type(p) == ROOK);
+}
 
-  inline bool
-piece_IsBishop(pieceT p)  { return (piece_Type(p) == BISHOP); }
+inline bool
+piece_IsBishop(pieceT p)
+{
+    return (piece_Type(p) == BISHOP);
+}
 
-  inline bool
-piece_IsKnight(pieceT p)  { return (piece_Type(p) == KNIGHT); }
+inline bool
+piece_IsKnight(pieceT p)
+{
+    return (piece_Type(p) == KNIGHT);
+}
 
-  inline bool
-piece_IsPawn(pieceT p)  { return (piece_Type(p) == PAWN); }
+inline bool
+piece_IsPawn(pieceT p)
+{
+    return (piece_Type(p) == PAWN);
+}
 
-  inline bool
-piece_IsSlider(pieceT p) { return PIECE_IS_SLIDER[piece_Type(p)]; }
+inline bool
+piece_IsSlider(pieceT p)
+{
+    return PIECE_IS_SLIDER[piece_Type(p)];
+}
 
-  inline char
-piece_Char(pieceT p)  { return PIECE_CHAR[piece_Type(p)]; }
+inline char
+piece_Char(pieceT p)
+{
+    return PIECE_CHAR[piece_Type(p)];
+}
 
-  inline pieceT
+inline pieceT
 piece_FromChar(char x)
 {
-    switch (x) {
-    case 'K': return KING;
-    case 'Q': return QUEEN;
-    case 'R': return ROOK;
-    case 'N': return KNIGHT;
-    case 'B': return BISHOP;
-    default:  return EMPTY;
+    switch(x)
+    {
+    case 'K':
+        return KING;
+    case 'Q':
+        return QUEEN;
+    case 'R':
+        return ROOK;
+    case 'N':
+        return KNIGHT;
+    case 'B':
+        return BISHOP;
+    default:
+        return EMPTY;
     }
 }
 
 inline int
-piece_Value (pieceT p)  { return PIECE_VALUE[p]; }
+piece_Value(pieceT p)
+{
+    return PIECE_VALUE[p];
+}
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // SQUARES AND SQUARE MACROS
 
 const squareT
-    A1 = 0, B1 = 1, C1 = 2, D1 = 3, E1 = 4, F1 = 5, G1 = 6, H1 = 7,
-    A2 = 8, B2 = 9, C2 =10, D2 =11, E2 =12, F2 =13, G2 =14, H2 =15,
-    A3 =16, B3 =17, C3 =18, D3 =19, E3 =20, F3 =21, G3 =22, H3 =23,
-    A4 =24, B4 =25, C4 =26, D4 =27, E4 =28, F4 =29, G4 =30, H4 =31,
-    A5 =32, B5 =33, C5 =34, D5 =35, E5 =36, F5 =37, G5 =38, H5 =39,
-    A6 =40, B6 =41, C6 =42, D6 =43, E6 =44, F6 =45, G6 =46, H6 =47,
-    A7 =48, B7 =49, C7 =50, D7 =51, E7 =52, F7 =53, G7 =54, H7 =55,
-    A8 =56, B8 =57, C8 =58, D8 =59, E8 =60, F8 =61, G8 =62, H8 =63,
-    COLOR_SQUARE = 64,
-    NULL_SQUARE = 65, NS = 65;    // NS is abbreviation for NULL_SQUARE.
+A1 = 0, B1 = 1, C1 = 2, D1 = 3, E1 = 4, F1 = 5, G1 = 6, H1 = 7,
+A2 = 8, B2 = 9, C2 = 10, D2 = 11, E2 = 12, F2 = 13, G2 = 14, H2 = 15,
+A3 = 16, B3 = 17, C3 = 18, D3 = 19, E3 = 20, F3 = 21, G3 = 22, H3 = 23,
+A4 = 24, B4 = 25, C4 = 26, D4 = 27, E4 = 28, F4 = 29, G4 = 30, H4 = 31,
+A5 = 32, B5 = 33, C5 = 34, D5 = 35, E5 = 36, F5 = 37, G5 = 38, H5 = 39,
+A6 = 40, B6 = 41, C6 = 42, D6 = 43, E6 = 44, F6 = 45, G6 = 46, H6 = 47,
+A7 = 48, B7 = 49, C7 = 50, D7 = 51, E7 = 52, F7 = 53, G7 = 54, H7 = 55,
+A8 = 56, B8 = 57, C8 = 58, D8 = 59, E8 = 60, F8 = 61, G8 = 62, H8 = 63,
+COLOR_SQUARE = 64,
+NULL_SQUARE = 65, NS = 65;    // NS is abbreviation for NULL_SQUARE.
 
 const rankT
-    RANK_1 = 0, RANK_2 = 1, RANK_3 = 2, RANK_4 = 3, RANK_5 = 4, RANK_6 = 5,
-    RANK_7 = 6, RANK_8 = 7, NO_RANK = 64;
+RANK_1 = 0, RANK_2 = 1, RANK_3 = 2, RANK_4 = 3, RANK_5 = 4, RANK_6 = 5,
+RANK_7 = 6, RANK_8 = 7, NO_RANK = 64;
 
 const fyleT
-    // we use "fyle" instead of "file" to avoid confusion with disk files.
-    A_FYLE = 0, B_FYLE = 1, C_FYLE = 2, D_FYLE = 3, E_FYLE = 4, F_FYLE = 5,
-    G_FYLE = 6, H_FYLE = 7, NO_FYLE = 64;
+// we use "fyle" instead of "file" to avoid confusion with disk files.
+A_FYLE = 0, B_FYLE = 1, C_FYLE = 2, D_FYLE = 3, E_FYLE = 4, F_FYLE = 5,
+G_FYLE = 6, H_FYLE = 7, NO_FYLE = 64;
 
-  inline rankT
+inline rankT
 rank_FromChar(char c)
-{   if (c < '1'  ||  c > '8') { return NO_RANK; } else return (c - '1');  }
+{
+    if(c < '1'  ||  c > '8')
+    {
+        return NO_RANK;
+    }
+    else
+    {
+        return (c - '1');
+    }
+}
 
-  inline fyleT
+inline fyleT
 fyle_FromChar(char c)
-{   if (c < 'a'  ||  c > 'h') { return NO_FYLE; } else return (c - 'a');  }
+{
+    if(c < 'a'  ||  c > 'h')
+    {
+        return NO_FYLE;
+    }
+    else
+    {
+        return (c - 'a');
+    }
+}
 
-  inline squareT
+inline squareT
 square_Make(fyleT f, rankT r)
 {
-    ASSERT (f <= H_FYLE  &&  r <= RANK_8);
+    ASSERT(f <= H_FYLE  &&  r <= RANK_8);
     return ((r << 3) | f);
 }
 
-  inline fyleT
+inline fyleT
 square_Fyle(squareT sq)
 {
     return (sq & 0x7);
 }
 
-  inline rankT
+inline rankT
 square_Rank(squareT sq)
 {
     return ((sq >> 3) & 0x7);
 }
 
-  inline leftDiagT
-square_LeftDiag (squareT sq)
+inline leftDiagT
+square_LeftDiag(squareT sq)
 {
     return square_Rank(sq) + square_Fyle(sq);
 }
 
-  inline rightDiagT
-square_RightDiag (squareT sq)
+inline rightDiagT
+square_RightDiag(squareT sq)
 {
     return (7 + square_Rank(sq) - square_Fyle(sq));
 }
 
 // square_Color:
 //   Return WHITE for a light square, BLACK for a dark square.
-  inline colorT
-square_Color (squareT sq)
+inline colorT
+square_Color(squareT sq)
 {
     return 1 - (square_LeftDiag(sq) & 1);
 }
 
 // square_FlipFyle:
 //   Return the square with its file flipped: a1 <-> h1, b1 <-> g1, etc.
-  inline squareT
-square_FlipFyle (squareT sq)
+inline squareT
+square_FlipFyle(squareT sq)
 {
-    return square_Make (A_FYLE + H_FYLE - square_Fyle(sq), square_Rank(sq));
+    return square_Make(A_FYLE + H_FYLE - square_Fyle(sq), square_Rank(sq));
 }
 
 // square_FlipRank:
 //   Return the square with its rank flipped: a1 <-> a8, a2 <-> a7, etc.
-  inline squareT
-square_FlipRank (squareT sq)
+inline squareT
+square_FlipRank(squareT sq)
 {
-    return square_Make (square_Fyle(sq), RANK_1 + RANK_8 - square_Rank(sq));
+    return square_Make(square_Fyle(sq), RANK_1 + RANK_8 - square_Rank(sq));
 }
 
 // square_FlipDiag:
 //   Return the square flipped along the a1-h8 diagonal.
-  inline squareT
-square_FlipDiag (squareT sq)
+inline squareT
+square_FlipDiag(squareT sq)
 {
-    return square_Make (square_Rank(sq), square_Fyle(sq));
+    return square_Make(square_Rank(sq), square_Fyle(sq));
 }
 
 const unsigned int
-rankFyleDist[64] = {
+rankFyleDist[64] =
+{
     0, 1, 2, 3, 4, 5, 6, 7,
     1, 0, 1, 2, 3, 4, 5, 6,
     2, 1, 0, 1, 2, 3, 4, 5,
@@ -390,10 +472,10 @@ rankFyleDist[64] = {
 
 // square_Distance:
 //   Return the distance in king moves between two squares.
-  inline unsigned int
-square_Distance (squareT from, squareT to)
+inline unsigned int
+square_Distance(squareT from, squareT to)
 {
-    ASSERT (from <= H8  &&  to <= H8);
+    ASSERT(from <= H8  &&  to <= H8);
     unsigned int rankd = rankFyleDist[(square_Rank(from) << 3) | square_Rank(to)];
     unsigned int fyled = rankFyleDist[(square_Fyle(from) << 3) | square_Fyle(to)];
     return (rankd > fyled) ? rankd : fyled;
@@ -401,33 +483,43 @@ square_Distance (squareT from, squareT to)
 
 // square_NearestCorner:
 //   Return the corner (A1/H1/A8/H8) closest to the specified square.
-  inline squareT
-square_NearestCorner (squareT sq)
+inline squareT
+square_NearestCorner(squareT sq)
 {
-    if (square_Rank(sq) <= RANK_4) {
-        return (square_Fyle(sq) <= D_FYLE)? A1 : H1;
-    } else {
-        return (square_Fyle(sq) <= D_FYLE)? A8 : H8;
+    if(square_Rank(sq) <= RANK_4)
+    {
+        return (square_Fyle(sq) <= D_FYLE) ? A1 : H1;
+    }
+    else
+    {
+        return (square_Fyle(sq) <= D_FYLE) ? A8 : H8;
     }
 }
 
-  inline bool
-square_IsCornerSquare (squareT sq)
+inline bool
+square_IsCornerSquare(squareT sq)
 {
     return (sq == A1  ||  sq == H1  ||  sq == A8  ||  sq == H8);
 }
 
-  inline bool
-square_IsEdgeSquare (squareT sq)
+inline bool
+square_IsEdgeSquare(squareT sq)
 {
     rankT rank = square_Rank(sq);
-    if (rank == RANK_1  ||  rank == RANK_8) { return true; }
+    if(rank == RANK_1  ||  rank == RANK_8)
+    {
+        return true;
+    }
     fyleT fyle = square_Fyle(sq);
-    if (fyle == A_FYLE  ||  fyle == H_FYLE) { return true; }
+    if(fyle == A_FYLE  ||  fyle == H_FYLE)
+    {
+        return true;
+    }
     return false;
 }
 
-const int edgeDist[66] = {
+const int edgeDist[66] =
+{
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 0,
     0, 1, 2, 2, 2, 2, 1, 0,
@@ -439,16 +531,16 @@ const int edgeDist[66] = {
     -1, -1
 };
 
-  inline int
-square_EdgeDistance (squareT sq)
+inline int
+square_EdgeDistance(squareT sq)
 {
     return edgeDist[sq];
 }
 
-  inline bool
-square_IsKnightHop (squareT from, squareT to)
+inline bool
+square_IsKnightHop(squareT from, squareT to)
 {
-    ASSERT (from <= H8  &&  to <= H8);
+    ASSERT(from <= H8  &&  to <= H8);
     unsigned int rdist = rankFyleDist [(square_Rank(from) << 3) | square_Rank(to)];
     unsigned int fdist = rankFyleDist [(square_Fyle(from) << 3) | square_Fyle(to)];
     // It is a knight hop only if one distance is two squares and the
@@ -456,29 +548,38 @@ square_IsKnightHop (squareT from, squareT to)
     return ((rdist * fdist) == 2);
 }
 
-  inline char
-square_FyleChar (squareT sq)
+inline char
+square_FyleChar(squareT sq)
 {
     return square_Fyle(sq) + 'a';
 }
 
-  inline char
-square_RankChar (squareT sq)
+inline char
+square_RankChar(squareT sq)
 {
     return square_Rank(sq) + '1';
 }
 
-  inline void
-square_Print (squareT sq, char * str)
+inline void
+square_Print(squareT sq, char * str)
 {
-    if (sq <= H8) {
+    if(sq <= H8)
+    {
         str[0] = square_FyleChar(sq);
         str[1] = square_RankChar(sq);
         str[2] = 0;
-    } else if (sq == NULL_SQUARE) {
-        str[0] = 'N'; str[1] = 'S'; str[2] = 0;
-    } else {
-        str[0] = 'X'; str[1] = 'X'; str[2] = 0;
+    }
+    else if(sq == NULL_SQUARE)
+    {
+        str[0] = 'N';
+        str[1] = 'S';
+        str[2] = 0;
+    }
+    else
+    {
+        str[0] = 'X';
+        str[1] = 'X';
+        str[2] = 0;
     }
     return;
 }
@@ -488,17 +589,18 @@ square_Print (squareT sq, char * str)
 // DownLeft = 6, DownRight = 10
 
 const directionT
-    NULL_DIR = 0,
-    UP = 1,
-    DOWN = 2,
-    LEFT = 4,
-    RIGHT = 8,
-    UP_LEFT = (UP | LEFT),
-    UP_RIGHT = (UP | RIGHT),
-    DOWN_LEFT = (DOWN | LEFT),
-    DOWN_RIGHT = (DOWN | RIGHT);
+NULL_DIR = 0,
+UP = 1,
+DOWN = 2,
+LEFT = 4,
+RIGHT = 8,
+UP_LEFT = (UP | LEFT),
+UP_RIGHT = (UP | RIGHT),
+DOWN_LEFT = (DOWN | LEFT),
+DOWN_RIGHT = (DOWN | RIGHT);
 
-const directionT dirOpposite[11] = {
+const directionT dirOpposite[11] =
+{
     NULL_DIR,
     DOWN,       // opposite of UP (1)
     UP,         // opposite of DOWN (2)
@@ -513,16 +615,17 @@ const directionT dirOpposite[11] = {
 };
 
 // direction_Opposite(): return the opposite direction to d
-  inline directionT
-direction_Opposite (directionT d)
+inline directionT
+direction_Opposite(directionT d)
 {
     return dirOpposite[d];
 }
 
 // dirIsDiagonal[]: array listing the diagonal directions, for fast
 //      lookup of whether a direction is a diagonal.
-  const bool
-dirIsDiagonal [11] = {
+const bool
+dirIsDiagonal [11] =
+{
     false,   //  0 = NULL_DIR
     false,   //  1 = UP
     false,   //  2 = DOWN
@@ -536,8 +639,8 @@ dirIsDiagonal [11] = {
     true     // 10 = DOWN_RIGHT
 };
 
-  inline bool
-direction_IsDiagonal (directionT dir)
+inline bool
+direction_IsDiagonal(directionT dir)
 {
     return dirIsDiagonal[dir];
 }
@@ -545,23 +648,24 @@ direction_IsDiagonal (directionT dir)
 // dirDelta:
 //   Array giving the board delta of moving to the next square
 //   in that direction.
-  const int
-dirDelta[11] = {
+const int
+dirDelta[11] =
+{
     0,    // NULL_DIR
     8,    // UP
-   -8,    // DOWN
+    -8,    // DOWN
     0,    // Invalid
-   -1,    // LEFT
+    -1,    // LEFT
     7,    // UP_LEFT
-   -9,    // DOWN_LEFT
+    -9,    // DOWN_LEFT
     0,    // Invalid
     1,    // RIGHT
     9,    // UP_RIGHT
-   -7     // DOWN_RIGHT
+    -7     // DOWN_RIGHT
 };
 
-  inline int
-direction_Delta (directionT dir)
+inline int
+direction_Delta(directionT dir)
 {
     return dirDelta[dir];
 }
@@ -578,7 +682,7 @@ extern directionT  sqDir[66][66];
 
 // square_Move(): Return the new square resulting from moving in
 //      direction d from x.
-  inline squareT
+inline squareT
 square_Move(squareT sq, directionT dir)
 {
     return sqMove[sq][dir];
@@ -591,8 +695,8 @@ square_Move(squareT sq, directionT dir)
 //   a valid on-board square; the result will be the same as the
 //   input square if moving in the specified direction would end
 //   up off the board.
-  inline squareT
-square_Last (squareT sq, directionT dir)
+inline squareT
+square_Last(squareT sq, directionT dir)
 {
     return sqLast[sq][dir];
 }
@@ -600,7 +704,7 @@ square_Last (squareT sq, directionT dir)
 
 // The starting Board
 //
-  const boardT
+const boardT
 START_BOARD =
 {
     WR, WN, WB, WQ, WK, WB, WN, WR,    // A1--H1
@@ -618,8 +722,9 @@ START_BOARD =
 
 // Square colors for the standard chess board:
 //
-  const colorT
-BOARD_SQUARECOLOR[66] = {
+const colorT
+BOARD_SQUARECOLOR[66] =
+{
     BLACK, WHITE, BLACK, WHITE, BLACK, WHITE, BLACK, WHITE,  // a1-h1
     WHITE, BLACK, WHITE, BLACK, WHITE, BLACK, WHITE, BLACK,  // a2-h2
     BLACK, WHITE, BLACK, WHITE, BLACK, WHITE, BLACK, WHITE,  // a3-h3
@@ -631,13 +736,21 @@ BOARD_SQUARECOLOR[66] = {
     NOCOLOR, NOCOLOR  // Color square and Null square
 };
 
-  inline int
-board_Compare (const pieceT * b1, const pieceT * b2)
+inline int
+board_Compare(const pieceT * b1, const pieceT * b2)
 {
-    for (unsigned int i=0; i < 64; i++) {
-        if (*b1 < *b2) { return -1; }
-        if (*b1 > *b2) { return 1; }
-        b1++; b2++;
+    for(unsigned int i = 0; i < 64; i++)
+    {
+        if(*b1 < *b2)
+        {
+            return -1;
+        }
+        if(*b1 > *b2)
+        {
+            return 1;
+        }
+        b1++;
+        b2++;
     }
     return 0;
 }
@@ -645,18 +758,24 @@ board_Compare (const pieceT * b1, const pieceT * b2)
 // square_Adjacent: returns 1 if the two squares are adjacent. Note that
 //    diagonal adjacency is included: a1 and b2 are adjacent.
 //    Also note that a square is adjacent to itself.
-  inline bool
-square_Adjacent (squareT from, squareT to)
+inline bool
+square_Adjacent(squareT from, squareT to)
 {
-    ASSERT (from <= H8  &&  to <= H8);
+    ASSERT(from <= H8  &&  to <= H8);
     rankT fromRank = square_Rank(from);
     rankT toRank = square_Rank(to);
     int rdist = (int)fromRank - (int)toRank;
-    if (rdist < -1  ||  rdist > 1) { return false; }
+    if(rdist < -1  ||  rdist > 1)
+    {
+        return false;
+    }
     fyleT fromFyle = square_Fyle(from);
     fyleT toFyle = square_Fyle(to);
     int fdist = (int)fromFyle - (int)toFyle;
-    if (fdist < -1  ||  fdist > 1) { return false; }
+    if(fdist < -1  ||  fdist > 1)
+    {
+        return false;
+    }
     return true;
 }
 
@@ -664,11 +783,12 @@ square_Adjacent (squareT from, squareT to)
 //   To ensure good bit distributions, we take three random values
 //   and mix the bits around.
 
-inline void srandom32(unsigned int seed) {
+inline void srandom32(unsigned int seed)
+{
 #ifdef WIN32
-    srand (seed);
+    srand(seed);
 #else
-    srandom (seed);
+    srandom(seed);
 #endif
 }
 

@@ -23,13 +23,17 @@ namespace Guess
 //   Promotes a move to the front of the list, pushing
 //   all moves that were ahead of it down one place.
 void
-MoveList::MoveToFront (unsigned int index)
+MoveList::MoveToFront(unsigned int index)
 {
-    ASSERT (index < ListSize);
-    if (index == 0) { return; }
+    ASSERT(index < ListSize);
+    if(index == 0)
+    {
+        return;
+    }
     simpleMoveT smTemp = Moves[index];
-    for (int i = index; i > 0; i--) {
-        Moves[i] = Moves[i-1];
+    for(int i = index; i > 0; i--)
+    {
+        Moves[i] = Moves[i - 1];
     }
     Moves[0] = smTemp;
 }
@@ -39,10 +43,13 @@ MoveList::MoveToFront (unsigned int index)
 //   Swaps the specified move with the move at the start of the list.
 //   All other moves remain in their original location.
 void
-MoveList::SwapWithFirst (unsigned int index)
+MoveList::SwapWithFirst(unsigned int index)
 {
-    ASSERT (index < ListSize);
-    if (index == 0) { return; }
+    ASSERT(index < ListSize);
+    if(index == 0)
+    {
+        return;
+    }
     simpleMoveT smTemp = Moves[index];
     Moves[index] = Moves[0];
     Moves[0] = smTemp;
@@ -56,12 +63,14 @@ MoveList::SwapWithFirst (unsigned int index)
 //   move, if it is in the list. If the move is not found,
 //   the value -1 is returned.
 int
-MoveList::Find (simpleMoveT * sm)
+MoveList::Find(simpleMoveT * sm)
 {
-    for (unsigned int i=0; i < ListSize; ++i) {
+    for(unsigned int i = 0; i < ListSize; ++i)
+    {
         simpleMoveT * lsm = &(Moves[i]);
-        if (sm->from == lsm->from  &&  sm->to == lsm->to
-                &&  sm->promote == lsm->promote) {
+        if(sm->from == lsm->from  &&  sm->to == lsm->to
+                &&  sm->promote == lsm->promote)
+        {
             return (int) i;
         }
     }
@@ -75,16 +84,20 @@ MoveList::Find (simpleMoveT * sm)
 //   moves suggested by (from1,to1) and (from2,to2)
 //   Returns the new size of the list.
 unsigned int
-MoveList::SelectBySquares (squareT f1, squareT t1, squareT f2, squareT t2)
+MoveList::SelectBySquares(squareT f1, squareT t1, squareT f2, squareT t2)
 {
     unsigned int index = 0;
-    for (unsigned int i=0; i < ListSize; ++i) {
+    for(unsigned int i = 0; i < ListSize; ++i)
+    {
         simpleMoveT * sm = &(Moves[i]);
-	if ((sm->from == f1 && sm->to == t1) || (sm->from == f2 && sm->to == t2)) {
-		if (i != index)
-		    Moves[index] = *sm;
-		index++;
-	}
+        if((sm->from == f1 && sm->to == t1) || (sm->from == f2 && sm->to == t2))
+        {
+            if(i != index)
+            {
+                Moves[index] = *sm;
+            }
+            index++;
+        }
     }
     ListSize = index;
     return ListSize;
@@ -96,17 +109,20 @@ MoveList::SelectBySquares (squareT f1, squareT t1, squareT f2, squareT t2)
 //   move a piece to or from the specified square.
 //   Returns the new size of the list.
 unsigned int
-MoveList::SelectBySquare (squareT sq)
+MoveList::SelectBySquare(squareT sq)
 {
     unsigned int index = 0;
-    for (unsigned int i=0; i < ListSize; i++) {
+    for(unsigned int i = 0; i < ListSize; i++)
+    {
         simpleMoveT * sm = &(Moves[i]);
-        if (sm->from != sq  &&  sm->to != sq) {
+        if(sm->from != sq  &&  sm->to != sq)
+        {
             // Skip this move, it does not match.
             continue;
         }
         // Copy this move to an earlier index if necesary:
-        if (i != index) {
+        if(i != index)
+        {
             Moves[index] = *sm;
         }
         ++index;
@@ -124,20 +140,23 @@ MoveList::SelectBySquare (squareT sq)
 //   The moves earlier in the list (at indices 0 to index-1) are
 //   ignored and are not moved.
 void
-MoveList::FindBest (unsigned int index)
+MoveList::FindBest(unsigned int index)
 {
-    ASSERT (index < ListSize);
+    ASSERT(index < ListSize);
     unsigned int bestIndex = index;
     int bestScore = Moves[index].score;
     // Search the rest of the list for a better-scoring move:
-    for (unsigned int i = index + 1; i < ListSize; ++i) {
-        if (Moves[i].score > bestScore) {
+    for(unsigned int i = index + 1; i < ListSize; ++i)
+    {
+        if(Moves[i].score > bestScore)
+        {
             bestIndex = i;
             bestScore = Moves[i].score;
         }
     }
     // Swap if necessary:
-    if (index != bestIndex) {
+    if(index != bestIndex)
+    {
         simpleMoveT smTemp = Moves[index];
         Moves[index] = Moves[bestIndex];
         Moves[bestIndex] = smTemp;
@@ -149,20 +168,28 @@ MoveList::FindBest (unsigned int index)
 //   Sort the move list by the score field in descending order,
 //   with highest scores first.
 void
-MoveList::Sort (void)
+MoveList::Sort(void)
 {
     // Do a simple selection sort, which works fine for small list sizes.
-    for (unsigned int i=0; i < ListSize; ++i) {
-        FindBest (i);
+    for(unsigned int i = 0; i < ListSize; ++i)
+    {
+        FindBest(i);
     }
 }
 
 bool
-MoveList::IsSorted (void)
+MoveList::IsSorted(void)
 {
-    if (ListSize < 2) { return true; }
-    for (unsigned int i = 0; i < ListSize - 1; ++i) {
-        if (Moves[i].score < Moves[i+1].score) { return false; }
+    if(ListSize < 2)
+    {
+        return true;
+    }
+    for(unsigned int i = 0; i < ListSize - 1; ++i)
+    {
+        if(Moves[i].score < Moves[i + 1].score)
+        {
+            return false;
+        }
     }
     return true;
 }
@@ -173,49 +200,49 @@ MoveList::IsSorted (void)
 //    I/O for simpleMoveT structs.
 //
 errorT
-writeSimpleMove (FILE * fp, simpleMoveT * sm)
+writeSimpleMove(FILE * fp, simpleMoveT * sm)
 {
     errorT err;
-    writeOneByte (fp, sm->pieceNum);
-    writeOneByte (fp, sm->movingPiece);
+    writeOneByte(fp, sm->pieceNum);
+    writeOneByte(fp, sm->movingPiece);
 
-    writeOneByte (fp, sm->from);
-    writeOneByte (fp, sm->to);
+    writeOneByte(fp, sm->from);
+    writeOneByte(fp, sm->to);
 
-    writeOneByte (fp, sm->capturedNum);
-    writeOneByte (fp, sm->capturedPiece);
+    writeOneByte(fp, sm->capturedNum);
+    writeOneByte(fp, sm->capturedPiece);
 
-    writeOneByte (fp, sm->promote);
-    writeOneByte (fp, 0);     // Obsolete unused value
+    writeOneByte(fp, sm->promote);
+    writeOneByte(fp, 0);      // Obsolete unused value
 
-    writeOneByte (fp, sm->capturedSquare);
-    writeOneByte (fp, sm->castleFlags);
+    writeOneByte(fp, sm->capturedSquare);
+    writeOneByte(fp, sm->castleFlags);
 
-    writeOneByte (fp, sm->epSquare);
-    err = writeTwoBytes (fp, sm->oldHalfMoveClock);
+    writeOneByte(fp, sm->epSquare);
+    err = writeTwoBytes(fp, sm->oldHalfMoveClock);
     return err;
 }
 
 errorT
-readSimpleMove (FILE * fp, simpleMoveT * sm)
+readSimpleMove(FILE * fp, simpleMoveT * sm)
 {
-    sm->pieceNum = readOneByte (fp);
-    sm->movingPiece = readOneByte (fp);
+    sm->pieceNum = readOneByte(fp);
+    sm->movingPiece = readOneByte(fp);
 
-    sm->from = readOneByte (fp);
-    sm->to = readOneByte (fp);
+    sm->from = readOneByte(fp);
+    sm->to = readOneByte(fp);
 
-    sm->capturedNum = readOneByte (fp);
-    sm->capturedPiece = readOneByte (fp);
+    sm->capturedNum = readOneByte(fp);
+    sm->capturedPiece = readOneByte(fp);
 
-    sm->promote = readOneByte (fp);
-    readOneByte (fp);   // Obsolete unused value
+    sm->promote = readOneByte(fp);
+    readOneByte(fp);    // Obsolete unused value
 
-    sm->capturedSquare = readOneByte (fp);
-    sm->castleFlags = readOneByte (fp);
+    sm->capturedSquare = readOneByte(fp);
+    sm->castleFlags = readOneByte(fp);
 
-    sm->epSquare = readOneByte (fp);
-    sm->oldHalfMoveClock = readTwoBytes (fp);
+    sm->epSquare = readOneByte(fp);
+    sm->oldHalfMoveClock = readTwoBytes(fp);
     return OK;
 }
 

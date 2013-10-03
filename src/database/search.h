@@ -34,22 +34,22 @@ The Search class is an abstract base class that represents a search on one crite
 class Search
 {
 public:
-	enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch, NumberSearch};
-	/** Operator for joining filters */
-	enum Operator {NullOperator, Not, And, Or, Remove };
+    enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch, NumberSearch};
+    /** Operator for joining filters */
+    enum Operator {NullOperator, Not, And, Or, Remove };
 
-	/** Standard constructor. */
-	Search();
-	/** Cloning search object - probably obsolete */
-	virtual Search* clone() const = 0;
-	/** Standard destructor. */
-	virtual ~Search() = 0;
-	virtual Type type() const = 0;
-	virtual int matches(int index) = 0;
-	virtual void setDatabase(Database* database);
+    /** Standard constructor. */
+    Search();
+    /** Cloning search object - probably obsolete */
+    virtual Search* clone() const = 0;
+    /** Standard destructor. */
+    virtual ~Search() = 0;
+    virtual Type type() const = 0;
+    virtual int matches(int index) = 0;
+    virtual void setDatabase(Database* database);
 protected:
-	Database *m_database;
-	Game m_game;
+    Database *m_database;
+    Game m_game;
 
 };
 
@@ -58,11 +58,11 @@ The NullSearch class is empty search, doing nothing. */
 class NullSearch : public Search
 {
 public :
-	NullSearch();
-	virtual NullSearch* clone() const;
-	virtual ~NullSearch();
-	virtual Type type() const;
-	virtual int matches(int index);
+    NullSearch();
+    virtual NullSearch* clone() const;
+    virtual ~NullSearch();
+    virtual Type type() const;
+    virtual int matches(int index);
 };
 
 /** @ingroup Search
@@ -72,26 +72,26 @@ The PositionSearch class is a search that checks for given position.
 class PositionSearch : public Search
 {
 public:
-	/** Empty constructor. */
-	PositionSearch();
-	/** Standard constructor. */
-	PositionSearch(Database* db, const Board& position);
-	/** Object cloning - probably obsolete. */
-	virtual PositionSearch *clone() const;
-	/** Standard destructor. */
-	virtual ~PositionSearch();
-	/** Type - probably obsolete. */
-	virtual Search::Type type() const;
-	/** @return sought position. */
-	Board position() const;
-	/** Sets sought position. */
-	void setPosition(const Board & position);
-	/** Return moveId the move of  after which the game matches the search + 1. E.g. for standard game and chess start position 
-		1 is returned.
-	*/
-	virtual int matches(int index);
+    /** Empty constructor. */
+    PositionSearch();
+    /** Standard constructor. */
+    PositionSearch(Database* db, const Board& position);
+    /** Object cloning - probably obsolete. */
+    virtual PositionSearch *clone() const;
+    /** Standard destructor. */
+    virtual ~PositionSearch();
+    /** Type - probably obsolete. */
+    virtual Search::Type type() const;
+    /** @return sought position. */
+    Board position() const;
+    /** Sets sought position. */
+    void setPosition(const Board & position);
+    /** Return moveId the move of  after which the game matches the search + 1. E.g. for standard game and chess start position
+    	1 is returned.
+    */
+    virtual int matches(int index);
 private:
-	Board m_position;
+    Board m_position;
 };
 
 /** @ingroup Search
@@ -99,36 +99,36 @@ The EloSearch class is used for searching both white and black player Elo. */
 class EloSearch : public Search
 {
 public:
-	/** Standard constructor. */
-	EloSearch(Database* database, int minWhiteElo = 0, int maxWhiteElo = 4000,
-          int minBlackElo = 0, int maxBlackElo = 4000);
-	/** Cloning - probably obsolete. */
-	virtual EloSearch *clone() const;
-	/** Standard destructor. */
-	virtual ~EloSearch();
-	/** Type - probably obsolete. */
-	virtual Type type() const;
-	/** @return minimum Elo of white player. */
-	int minWhiteElo() const;
-	/** @return maximum Elo of white player. */
-	int maxWhiteElo() const;
-	/** @return minimum Elo of black player. */
-	int minBlackElo() const;
-	/** @return maximum Elo of black player. */
-	int maxBlackElo() const;
-	/** Set acceptable rating ranges. */
-	void setEloSearch(int minWhiteElo = 0, int maxWhiteElo = 4000, int minBlackElo =
-                  0, int maxBlackElo = 4000);
-	void initialize();
-	/** Return true if the game at index matches the search */
-	virtual int matches(int index);
+    /** Standard constructor. */
+    EloSearch(Database* database, int minWhiteElo = 0, int maxWhiteElo = 4000,
+              int minBlackElo = 0, int maxBlackElo = 4000);
+    /** Cloning - probably obsolete. */
+    virtual EloSearch *clone() const;
+    /** Standard destructor. */
+    virtual ~EloSearch();
+    /** Type - probably obsolete. */
+    virtual Type type() const;
+    /** @return minimum Elo of white player. */
+    int minWhiteElo() const;
+    /** @return maximum Elo of white player. */
+    int maxWhiteElo() const;
+    /** @return minimum Elo of black player. */
+    int minBlackElo() const;
+    /** @return maximum Elo of black player. */
+    int maxBlackElo() const;
+    /** Set acceptable rating ranges. */
+    void setEloSearch(int minWhiteElo = 0, int maxWhiteElo = 4000, int minBlackElo =
+                          0, int maxBlackElo = 4000);
+    void initialize();
+    /** Return true if the game at index matches the search */
+    virtual int matches(int index);
 
 private:
-	int m_minWhiteElo;
-	int m_maxWhiteElo;
-	int m_minBlackElo;
-	int m_maxBlackElo;
-	QBitArray m_matches;
+    int m_minWhiteElo;
+    int m_maxWhiteElo;
+    int m_minBlackElo;
+    int m_maxBlackElo;
+    QBitArray m_matches;
 };
 
 /** @ingroup Search
@@ -136,29 +136,29 @@ The DataSearch class defines a search based on a date range */
 class DateSearch : public Search
 {
 public:
-	/** Standard constructor. */
-	DateSearch();
-	/** Constructor for searching games in given time period. */
-	DateSearch(PartialDate minDate, PartialDate maxDate);
-	/** Object cloning - probably obsolete. */
-	virtual DateSearch *clone() const;
-	/** Standard destructor. */
-	~DateSearch();
-	/** Type - probably obsolete. */
-	Type type() const;
-	/** @return beginning of the acceptable period. */
-	PartialDate minDate() const;
-	/** @return end of the acceptable period. */
-	PartialDate maxDate() const;
-	/** Sets whole period. */
-	void setDateRange(PartialDate minDate, PartialDate maxDate);
-	/** Return true if the game at index matches the search */
-	virtual int matches(int index);
+    /** Standard constructor. */
+    DateSearch();
+    /** Constructor for searching games in given time period. */
+    DateSearch(PartialDate minDate, PartialDate maxDate);
+    /** Object cloning - probably obsolete. */
+    virtual DateSearch *clone() const;
+    /** Standard destructor. */
+    ~DateSearch();
+    /** Type - probably obsolete. */
+    Type type() const;
+    /** @return beginning of the acceptable period. */
+    PartialDate minDate() const;
+    /** @return end of the acceptable period. */
+    PartialDate maxDate() const;
+    /** Sets whole period. */
+    void setDateRange(PartialDate minDate, PartialDate maxDate);
+    /** Return true if the game at index matches the search */
+    virtual int matches(int index);
 
 private:
-	PartialDate m_minDate;
-	PartialDate m_maxDate;
-	QBitArray m_matches;
+    PartialDate m_minDate;
+    PartialDate m_maxDate;
+    QBitArray m_matches;
 };
 
 
@@ -171,37 +171,37 @@ Improved performance by creating a bit array of matching values */
 class TagSearch : public Search
 {
 public:
-	/** Simple constructor */
+    /** Simple constructor */
     TagSearch(Database* database, const QString& tag, const QString& value, bool partial = true);
     /** Range constructor */
     TagSearch(Database* database, const QString& tag, const QString& value, const QString& value2);
     /** Makes a deep copy of TagSearch object. Probably obsolete */
-	virtual TagSearch* clone() const;
-	/** Standard destructor. */
-	~TagSearch();
-	/** Type - probably obsolete. */
-	Search::Type type() const;
-	/** @return tag to be searched */
-	QString tag() const;
-	/** @return value to be matched. */
-	QString value() const;
+    virtual TagSearch* clone() const;
+    /** Standard destructor. */
+    ~TagSearch();
+    /** Type - probably obsolete. */
+    Search::Type type() const;
+    /** @return tag to be searched */
+    QString tag() const;
+    /** @return value to be matched. */
+    QString value() const;
     QString minValue() const;
     QString maxValue() const;
-	/** Set tag to be searched */
-	void setTag(const QString& tag);
-	/** Set value to be matched */
-	void setValue(const QString& value);
-	/** Return true if the game at index matches the search */
-	virtual int matches(int index);
-	/** initialize the search. Done automatically in constructor, or when values are changed */
+    /** Set tag to be searched */
+    void setTag(const QString& tag);
+    /** Set value to be matched */
+    void setValue(const QString& value);
+    /** Return true if the game at index matches the search */
+    virtual int matches(int index);
+    /** initialize the search. Done automatically in constructor, or when values are changed */
     void initialize();
     /** initialize the search. Done automatically in constructor, or when values are changed */
     void initializeRange();
 private:
-	QString m_tagName;
-	QString m_value;
+    QString m_tagName;
+    QString m_value;
     QString m_value2;
-	QBitArray m_matches;
+    QBitArray m_matches;
     bool m_bPartial;
 };
 
@@ -211,22 +211,22 @@ The NumberSearch class is used for game number search.  */
 class NumberSearch : public Search
 {
 public:
-	/** Simple constructor */
-	NumberSearch(Database* database, int start, int end);
-	/** Simple constructor. Supports "N1" or "N1-N2" format */
-	NumberSearch(Database* database, const QString& value);
-	/** Type - probably obsolete. */
-	Search::Type type() const;
-	/** Makes a deep copy of TagSearch object. Probably obsolete */
-	virtual NumberSearch* clone() const;
-	/** Set range to be selected */
-	void setRange(int start, int end);
-	/** Set range to be selected. Supports "N1" or "N1-N2" format. */
-	void setRange(const QString& value);
-	/** Return true if the game at index matches the search */
-	virtual int matches(int index);
+    /** Simple constructor */
+    NumberSearch(Database* database, int start, int end);
+    /** Simple constructor. Supports "N1" or "N1-N2" format */
+    NumberSearch(Database* database, const QString& value);
+    /** Type - probably obsolete. */
+    Search::Type type() const;
+    /** Makes a deep copy of TagSearch object. Probably obsolete */
+    virtual NumberSearch* clone() const;
+    /** Set range to be selected */
+    void setRange(int start, int end);
+    /** Set range to be selected. Supports "N1" or "N1-N2" format. */
+    void setRange(const QString& value);
+    /** Return true if the game at index matches the search */
+    virtual int matches(int index);
 private:
-	int m_start, m_end;
+    int m_start, m_end;
 };
 
 
@@ -243,18 +243,18 @@ private:
 class FilterSearch : public Search
 {
 public:
-	FilterSearch();
-	FilterSearch(Filter* filter);
-	virtual FilterSearch* clone() const;
-	virtual ~FilterSearch();
-	Type type() const;
+    FilterSearch();
+    FilterSearch(Filter* filter);
+    virtual FilterSearch* clone() const;
+    virtual ~FilterSearch();
+    Type type() const;
 
-	bool contains(int game) const;
-	Filter* filter() const;
-	void setFilter(Filter* filter);
-	virtual int matches(int game);
+    bool contains(int game) const;
+    Filter* filter() const;
+    void setFilter(Filter* filter);
+    virtual int matches(int game);
 private:
-	Filter *m_filter;
+    Filter *m_filter;
 };
 
 #endif // __SEARCH_H__

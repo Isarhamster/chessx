@@ -24,7 +24,7 @@ EventListWidget::EventListWidget(QWidget *parent) :
 
     selectEvent(QString());
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
-    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
             this, SLOT(selectionChangedSlot()));
 
     ui->detailText->setOpenLinks(false);
@@ -45,7 +45,7 @@ void EventListWidget::slotReconfigure()
 void EventListWidget::selectionChangedSlot()
 {
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
-    if (selection.count())
+    if(selection.count())
     {
         QString ts = selection[0].data().toString();
         eventSelected(ts);
@@ -58,7 +58,7 @@ void EventListWidget::selectionChangedSlot()
 
 void EventListWidget::findEvent(const QString& s)
 {
-    if (s.isEmpty())
+    if(s.isEmpty())
     {
         m_filterModel->setStringList(m_list);
     }
@@ -71,19 +71,19 @@ void EventListWidget::findEvent(const QString& s)
 
 void EventListWidget::eventSelected(const QString& event)
 {
-    if (!event.isEmpty())
+    if(!event.isEmpty())
     {
         m_event.setName(event);
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
         QString head = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>Event List</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>";
         QString text = QString("%1<body><h1>%2</h1>%3%4%5%6%7</body></html>")
-                .arg(head)
-                .arg(m_event.name()).arg(m_event.formattedGameCount())
-                .arg(m_event.formattedRange())
-                .arg(m_event.formattedRating())
-                .arg(m_event.formattedScore())
-                .arg(m_event.listOfPlayers());
+                       .arg(head)
+                       .arg(m_event.name()).arg(m_event.formattedGameCount())
+                       .arg(m_event.formattedRange())
+                       .arg(m_event.formattedRating())
+                       .arg(m_event.formattedScore())
+                       .arg(m_event.listOfPlayers());
         ui->detailText->setHtml(text);
     }
     else
@@ -97,16 +97,16 @@ void EventListWidget::eventSelected(const QString& event)
 void EventListWidget::selectEvent(const QString& event)
 {
     eventSelected(event);
-    if (!event.isEmpty())
+    if(!event.isEmpty())
     {
         const QStringList& list = m_filterModel->stringList();
         int row = list.indexOf(event);
-        if (row>=0)
+        if(row >= 0)
         {
-            QModelIndex index = m_filterModel->index( row, 0 );
-            if ( index.isValid() )
+            QModelIndex index = m_filterModel->index(row, 0);
+            if(index.isValid())
             {
-                ui->tagList->selectionModel()->select( index, QItemSelectionModel::ClearAndSelect );
+                ui->tagList->selectionModel()->select(index, QItemSelectionModel::ClearAndSelect);
                 ui->tagList->scrollTo(index);
             }
         }
@@ -116,7 +116,7 @@ void EventListWidget::selectEvent(const QString& event)
 void EventListWidget::filterSelectedEvent()
 {
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
-    if (selection.count())
+    if(selection.count())
     {
         QString ts = selection[0].data().toString();
         emit filterRequest(ts);
@@ -126,7 +126,7 @@ void EventListWidget::filterSelectedEvent()
 void EventListWidget::renameSelectedEvent()
 {
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
-    if (selection.count())
+    if(selection.count())
     {
         QString ts = selection[0].data().toString();
         emit renameRequest(ts);
@@ -139,7 +139,7 @@ void EventListWidget::setDatabase(DatabaseInfo* dbInfo)
     ui->detailText->setText(tr("<html><i>No event chosen.</i></html>"));
     m_event.setDatabase(db);
     m_list.clear();
-    if (db && db->index())
+    if(db && db->index())
     {
         m_list = db->index()->tagValues(TagNameEvent);
     }
@@ -150,7 +150,7 @@ void EventListWidget::setDatabase(DatabaseInfo* dbInfo)
 
 void EventListWidget::slotLinkClicked(const QUrl& url)
 {
-    if (url.scheme() == "player")
+    if(url.scheme() == "player")
     {
         QString event = ui->tagList->currentIndex().data().toString();
         emit filterEventPlayerRequest(url.path(), event);

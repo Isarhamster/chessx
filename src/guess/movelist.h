@@ -43,21 +43,21 @@ struct simpleMoveT
     pieceT   capturedPiece;
     pieceT   promote;
     squareT  capturedSquare; // ONLY different to "to" field if this capture
-                            //    is an en passant capture.
+    //    is an en passant capture.
     unsigned char     castleFlags;    // pre-move information
     squareT  epSquare;       // pre-move information
     unsigned short   oldHalfMoveClock;
     int      score;          // used for alpha/beta ordering.
 };
 
-inline bool isNullMove (simpleMoveT * sm)
+inline bool isNullMove(simpleMoveT * sm)
 {
     return (sm->from == sm->to  &&  sm->from != NULL_SQUARE
-              &&  piece_Type(sm->movingPiece) == KING);
+            &&  piece_Type(sm->movingPiece) == KING);
 }
 
-errorT writeSimpleMove (FILE * fp, simpleMoveT * sm);
-errorT readSimpleMove (FILE * fp, simpleMoveT * sm);
+errorT writeSimpleMove(FILE * fp, simpleMoveT * sm);
+errorT readSimpleMove(FILE * fp, simpleMoveT * sm);
 
 
 class MoveList
@@ -67,56 +67,66 @@ private:
     simpleMoveT Moves [MAX_LEGAL_MOVES];
 
 public:
-    MoveList() { ListSize = 0; }
+    MoveList()
+    {
+        ListSize = 0;
+    }
     ~MoveList() {}
 
-    inline unsigned int Size() { return ListSize; }
-    inline void Clear() { ListSize = 0; }
-    inline void Add (simpleMoveT * sm);
-    inline simpleMoveT * Add ();
-    inline simpleMoveT * Get (unsigned int index);
-    inline void Remove (unsigned int index);
+    inline unsigned int Size()
+    {
+        return ListSize;
+    }
+    inline void Clear()
+    {
+        ListSize = 0;
+    }
+    inline void Add(simpleMoveT * sm);
+    inline simpleMoveT * Add();
+    inline simpleMoveT * Get(unsigned int index);
+    inline void Remove(unsigned int index);
 
-    void MoveToFront (unsigned int index);
-    void SwapWithFirst (unsigned int index);
-    int  Find (simpleMoveT * sm);
-    void FindBest (unsigned int index);
-    void Sort (void);
-    bool IsSorted (void);
-    unsigned int SelectBySquare (squareT sq);
+    void MoveToFront(unsigned int index);
+    void SwapWithFirst(unsigned int index);
+    int  Find(simpleMoveT * sm);
+    void FindBest(unsigned int index);
+    void Sort(void);
+    bool IsSorted(void);
+    unsigned int SelectBySquare(squareT sq);
     unsigned int SelectBySquares(squareT f1, squareT t1, squareT f2, squareT t2);
 };
 
 inline void
-MoveList::Add (simpleMoveT * sm)
+MoveList::Add(simpleMoveT * sm)
 {
-    ASSERT (sm != NULL);
-    ASSERT (ListSize < MAX_LEGAL_MOVES);
+    ASSERT(sm != NULL);
+    ASSERT(ListSize < MAX_LEGAL_MOVES);
     Moves[ListSize++] = *sm;
 }
 
 inline simpleMoveT *
-MoveList::Add (void)
+MoveList::Add(void)
 {
-    ASSERT (ListSize < MAX_LEGAL_MOVES);
+    ASSERT(ListSize < MAX_LEGAL_MOVES);
     simpleMoveT * sm = &(Moves[ListSize]);
     ListSize++;
     return sm;
 }
 
 inline simpleMoveT *
-MoveList::Get (unsigned int index)
+MoveList::Get(unsigned int index)
 {
-    ASSERT (index < ListSize);
+    ASSERT(index < ListSize);
     return &(Moves[index]);
 }
 
 inline void
-MoveList::Remove (unsigned int index)
+MoveList::Remove(unsigned int index)
 {
-    ASSERT (index < ListSize);
+    ASSERT(index < ListSize);
     ListSize--;
-    if (index != ListSize) {
+    if(index != ListSize)
+    {
         Moves[index] = Moves[ListSize];
     }
 }

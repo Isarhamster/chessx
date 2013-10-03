@@ -18,12 +18,12 @@ OutputOptions::OutputOptions()
 
 bool OutputOptions::createDefaultOptions(QString path)
 {
-	m_list.clear();
-	m_type.clear();
-	m_default.clear();
-	m_allow.clear();
+    m_list.clear();
+    m_type.clear();
+    m_default.clear();
+    m_allow.clear();
 
-    if (path.isEmpty())
+    if(path.isEmpty())
     {
         createOption("ColumnStyle", Boolean, "", "false", tr("Notation in Column Style"));
         createOption("SymbolicNag", Boolean, "", "false", tr("Show symbolic Nags"));
@@ -63,13 +63,13 @@ bool OutputOptions::createDefaultOptions(QString path)
         createOption("DiagramSize", "0:500", AppSettings->getValue("DiagramSize").toInt(), tr("Diagram Size"));
         AppSettings->endGroup();
     }
-	return true;
+    return true;
 }
 
 bool OutputOptions::createOption(const QString& optionName, const QString& optionType, const QString& allowValues,
-				 const QString& defaultValue, const QString& description)
+                                 const QString& defaultValue, const QString& description)
 {
-	return createOption(optionName, optionString2Type(optionType), allowValues, defaultValue, description);
+    return createOption(optionName, optionString2Type(optionType), allowValues, defaultValue, description);
 }
 
 bool OutputOptions::createOption(const QString& optionName, bool bValue, const QString& description)
@@ -90,67 +90,76 @@ bool OutputOptions::createOption(const QString& optionName, const QString& color
 }
 
 bool OutputOptions::createOption(const QString& optionName, OutputOptionType optionType, const QString& allowValues,
-				 const QString& defaultValue, const QString& description)
+                                 const QString& defaultValue, const QString& description)
 {
-	m_list[optionName] = defaultValue;
-	m_type[optionName] = optionType;
-	m_allow[optionName] = allowValues;
-	m_default[optionName] = defaultValue;
-	m_description[optionName] = description;
+    m_list[optionName] = defaultValue;
+    m_type[optionName] = optionType;
+    m_allow[optionName] = allowValues;
+    m_default[optionName] = defaultValue;
+    m_description[optionName] = description;
 
-	if (!setOption(optionName, defaultValue)) {
-		m_list.remove(optionName);
-		m_type.remove(optionName);
-		m_allow.remove(optionName);
-		m_default.remove(optionName);
-		m_description.remove(optionName);
-		qWarning("Option '%s' could not be created", optionName.toLatin1().constData());
-		return false;
-	}
-	return true;
+    if(!setOption(optionName, defaultValue))
+    {
+        m_list.remove(optionName);
+        m_type.remove(optionName);
+        m_allow.remove(optionName);
+        m_default.remove(optionName);
+        m_description.remove(optionName);
+        qWarning("Option '%s' could not be created", optionName.toLatin1().constData());
+        return false;
+    }
+    return true;
 }
 
 bool OutputOptions::setOption(const QString& optionString)
 {
-	QStringList temp = optionString.split('=');
-	return setOption(temp[0], temp[1]);
+    QStringList temp = optionString.split('=');
+    return setOption(temp[0], temp[1]);
 }
 
 bool OutputOptions::setOption(const QString& optionName, const QString& optionValue)
 {
-	if (!validateValue(optionName, optionValue)) {
-		qWarning("Option '%s' could not be set", optionName.toLatin1().constData());
-		return false;
-	}
-	m_list[optionName] = optionValue;
-	return true;
+    if(!validateValue(optionName, optionValue))
+    {
+        qWarning("Option '%s' could not be set", optionName.toLatin1().constData());
+        return false;
+    }
+    m_list[optionName] = optionValue;
+    return true;
 }
 
 bool OutputOptions::setOption(const QString& optionName, bool optionValue)
 {
-	if (optionValue) {
-		return setOption(optionName, QString("true"));
-	} else {
-		return setOption(optionName, QString("false"));
-	}
+    if(optionValue)
+    {
+        return setOption(optionName, QString("true"));
+    }
+    else
+    {
+        return setOption(optionName, QString("false"));
+    }
 }
 
 bool OutputOptions::setOption(const QString& optionName, int optionValue)
 {
-	return setOption(optionName, QString::number(optionValue));
+    return setOption(optionName, QString::number(optionValue));
 }
 
 int OutputOptions::getOptionAsInt(const QString& optionName) const
 {
-    if (m_list.contains(optionName))
+    if(m_list.contains(optionName))
+    {
         return m_list.value(optionName).toInt();
+    }
     return 0;
 }
 
 QString OutputOptions::getOptionAsString(const QString& optionName) const
 {
-    if (m_list.contains(optionName))
+    if(m_list.contains(optionName))
+    {
         return m_list.value(optionName);
+    }
     return "";
 }
 
@@ -161,92 +170,114 @@ bool OutputOptions::getOptionAsBool(const QString& optionName)
 
 bool OutputOptions::validateValue(const QString& optionName, const QString& value)
 {
-	QStringList allowValues;
-	QStringList allowColors;
+    QStringList allowValues;
+    QStringList allowColors;
 
-	if (!m_list.contains(optionName)) {
-		// Option does not exist
-		return false;
-	}
+    if(!m_list.contains(optionName))
+    {
+        // Option does not exist
+        return false;
+    }
 
-	allowValues = m_allow[optionName].split('|');
-	switch (m_type[optionName]) {
-	case Integer:
-		/* If the allow string is empty, then any number is allowed */
-		if (m_allow[optionName].isEmpty()) {
-			return true;
-		}
-		/* See if value is in on of the ranges */
-		for (QStringList::iterator it = allowValues.begin(); it != allowValues.end(); ++it) {
-			if ((*it).indexOf(':') >= 0) {
-				QStringList limits = it->split(':');
-				int val = value.toInt();
-				int ulimit = limits[1].toInt();
-				int llimit = limits[0].toInt();
-				if ((val >= llimit) && (val <= ulimit)) {
-					return true;
-				}
-			}
-		}
-		if (allowValues.contains(value)) {
-			return true;
-		}
-		return false;
-	case String:
-		if (m_allow[optionName].isEmpty()) {
-			return true;
-		}
-		if (allowValues.contains(value)) {
-			return true;
-		}
-		return false;
-	case Boolean:
-		if ((value == "1") || (value == "0") || (value == "true") || (value == "false")) {
-			return true;
-		} else {
-			return false;
-		}
-	case Color:
-		allowColors.append("red");
-		allowColors.append("blue");
-		allowColors.append("black");
-		allowColors.append("white");
-		allowColors.append("green");
-		allowColors.append("purple");
-		if ((allowColors.contains(value)) || (value.contains(QRegExp("^#[0-9a-fA-F]{6}")))) {
-			return true;
-		} else {
-			return false;
-		}
-		break;
-	default :
-		/* Unknown type */
-		return false;
-	}
-	return false;
+    allowValues = m_allow[optionName].split('|');
+    switch(m_type[optionName])
+    {
+    case Integer:
+        /* If the allow string is empty, then any number is allowed */
+        if(m_allow[optionName].isEmpty())
+        {
+            return true;
+        }
+        /* See if value is in on of the ranges */
+        for(QStringList::iterator it = allowValues.begin(); it != allowValues.end(); ++it)
+        {
+            if((*it).indexOf(':') >= 0)
+            {
+                QStringList limits = it->split(':');
+                int val = value.toInt();
+                int ulimit = limits[1].toInt();
+                int llimit = limits[0].toInt();
+                if((val >= llimit) && (val <= ulimit))
+                {
+                    return true;
+                }
+            }
+        }
+        if(allowValues.contains(value))
+        {
+            return true;
+        }
+        return false;
+    case String:
+        if(m_allow[optionName].isEmpty())
+        {
+            return true;
+        }
+        if(allowValues.contains(value))
+        {
+            return true;
+        }
+        return false;
+    case Boolean:
+        if((value == "1") || (value == "0") || (value == "true") || (value == "false"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    case Color:
+        allowColors.append("red");
+        allowColors.append("blue");
+        allowColors.append("black");
+        allowColors.append("white");
+        allowColors.append("green");
+        allowColors.append("purple");
+        if((allowColors.contains(value)) || (value.contains(QRegExp("^#[0-9a-fA-F]{6}"))))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        break;
+    default :
+        /* Unknown type */
+        return false;
+    }
+    return false;
 }
 
 
 QString OutputOptions::getOptionDescription(const QString& optionName)
 {
-	return m_description[optionName];
+    return m_description[optionName];
 }
 
 QStringList OutputOptions::getOptionList()
 {
-	return m_list.keys();
+    return m_list.keys();
 }
 
 OutputOptions::OutputOptionType OutputOptions::optionString2Type(const QString& optionTypeStr)
 {
-	if (optionTypeStr == "String") {
-		return String;
-	} else if (optionTypeStr == "Integer") {
-		return Integer;
-	} else if (optionTypeStr == "Boolean") {
-		return Boolean;
-	} else if (optionTypeStr == "Color") {
-		return Color;
+    if(optionTypeStr == "String")
+    {
+        return String;
+    }
+    else if(optionTypeStr == "Integer")
+    {
+        return Integer;
+    }
+    else if(optionTypeStr == "Boolean")
+    {
+        return Boolean;
+    }
+    else if(optionTypeStr == "Color")
+    {
+        return Color;
     }
     return String;
 }

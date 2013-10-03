@@ -23,20 +23,20 @@ Unit tests for the DatabaseConversion class.
 #include "playerdatabase.h"
 #include "databaseconversion.h"
 
-void DatabaseConversionTest::init(){};
-void DatabaseConversionTest::cleanup(){};
+void DatabaseConversionTest::init() {};
+void DatabaseConversionTest::cleanup() {};
 
 void DatabaseConversionTest::initTestCase()
 {
-	db_name = "./data/small/players_converted";
-	source = "./data/small/ratings.ssp";
-	picture_dir = "./data/small/playerphotos";
+    db_name = "./data/small/players_converted";
+    source = "./data/small/ratings.ssp";
+    picture_dir = "./data/small/playerphotos";
 }
 
-void DatabaseConversionTest::cleanupTestCase(){}
+void DatabaseConversionTest::cleanupTestCase() {}
 
 void DatabaseConversionTest::testConvertDatabase()
 {
-	DatabaseConversion converter;
-	QVERIFY(converter.playerDatabaseFromScidRatings(source, db_name, picture_dir));
+    DatabaseConversion converter;
+    QVERIFY(converter.playerDatabaseFromScidRatings(source, db_name, picture_dir));
 }

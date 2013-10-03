@@ -18,13 +18,13 @@
 class EngineList : public QList<EngineData>
 {
 public:
-	/** Standard constructor. */
-	EngineList();
-	/** Restore configuration from INI file. */
-	void restore();
-	/** Store configuration in INI file. */
-	void save();
-	/** Retrieve list of engine names in current order. */
+    /** Standard constructor. */
+    EngineList();
+    /** Restore configuration from INI file. */
+    void restore();
+    /** Store configuration in INI file. */
+    void save();
+    /** Retrieve list of engine names in current order. */
     QStringList names() const;
 
 protected:

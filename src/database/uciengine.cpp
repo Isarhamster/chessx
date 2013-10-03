@@ -12,93 +12,102 @@
 #include "enginedata.h"
 
 UCIEngine::UCIEngine(const QString& name,
-			  const QString& command,
-              bool bTestMode,
-			  const QString& directory,
-              QTextStream* logStream) : Engine(name, command, bTestMode, directory, logStream)
+                     const QString& command,
+                     bool bTestMode,
+                     const QString& directory,
+                     QTextStream* logStream) : Engine(name, command, bTestMode, directory, logStream)
 {
-	m_quitAfterAnalysis = false;
-	m_invertBlack = true;
+    m_quitAfterAnalysis = false;
+    m_invertBlack = true;
 }
 
 bool UCIEngine::startAnalysis(const Board& board, int nv)
 {
-	m_mpv = nv;
-	if (!isActive()) {
-		return false;
-	}
+    m_mpv = nv;
+    if(!isActive())
+    {
+        return false;
+    }
 
-	if (m_board == board)
-		return true;
-	m_board = board;
+    if(m_board == board)
+    {
+        return true;
+    }
+    m_board = board;
 
-	m_position = board.toFen();
-	m_waitingOn = "ucinewgame";
-	send("stop");
-	send("ucinewgame");
-	send("isready");
-	setAnalyzing(true);
+    m_position = board.toFen();
+    m_waitingOn = "ucinewgame";
+    send("stop");
+    send("ucinewgame");
+    send("isready");
+    setAnalyzing(true);
 
-	return true;
+    return true;
 }
 
 void UCIEngine::stopAnalysis()
 {
-	if (isAnalyzing())
-		send("stop");
+    if(isAnalyzing())
+    {
+        send("stop");
+    }
 }
 
 void UCIEngine::setMpv(int mpv)
 {
-	m_mpv = mpv;
-	if (isAnalyzing()) {
-		send("stop");
-		send(QString("setoption name MultiPV value %1").arg(m_mpv));
-		send("go infinite");
-	}
+    m_mpv = mpv;
+    if(isAnalyzing())
+    {
+        send("stop");
+        send(QString("setoption name MultiPV value %1").arg(m_mpv));
+        send("go infinite");
+    }
 }
 
 
 void UCIEngine::protocolStart()
 {
-	//tell the engine we are using the uci protocol
-	send("uci");
+    //tell the engine we are using the uci protocol
+    send("uci");
 }
 
 void UCIEngine::protocolEnd()
 {
-	send("quit");
-	setActive(false);
-	m_board.clear();
+    send("quit");
+    setActive(false);
+    m_board.clear();
 }
 
 void UCIEngine::processMessage(const QString& message)
 {
-	if (message == "uciok") {
-		//once the engine is running wait for it to initialise
-		m_waitingOn = "uciok";
-		send("isready");
-	}
-
-    if (message == "readyok")
+    if(message == "uciok")
     {
-		if (m_waitingOn == "uciok") {
-			//engine is now initialised and ready to go
-			m_waitingOn = "";
-			setActive(true);
+        //once the engine is running wait for it to initialise
+        m_waitingOn = "uciok";
+        send("isready");
+    }
 
-            if (!m_bTestMode)
+    if(message == "readyok")
+    {
+        if(m_waitingOn == "uciok")
+        {
+            //engine is now initialised and ready to go
+            m_waitingOn = "";
+            setActive(true);
+
+            if(!m_bTestMode)
             {
                 OptionValueList::const_iterator i = m_mapOptionValues.constBegin();
-                while (i != m_mapOptionValues.constEnd()) {
+                while(i != m_mapOptionValues.constEnd())
+                {
                     QString key = i.key();
                     QVariant value = i.value();
-                    if (EngineOptionData* dataSpec = EngineOptionData::FindInList(key, m_options))
+                    if(EngineOptionData* dataSpec = EngineOptionData::FindInList(key, m_options))
                     {
-                        switch (dataSpec->m_type)
+                        switch(dataSpec->m_type)
                         {
                         case OPT_TYPE_BUTTON:
-                            if (value.toBool())
+                            if(value.toBool())
                             {
                                 send(QString("setoption name %1 value %2").arg(key));
                             }
@@ -107,7 +116,7 @@ void UCIEngine::processMessage(const QString& message)
                         case OPT_TYPE_SPIN:
                         case OPT_TYPE_STRING:
                         case OPT_TYPE_COMBO:
-                            if (dataSpec->m_defVal != value.toString() && !value.toString().isEmpty())
+                            if(dataSpec->m_defVal != value.toString() && !value.toString().isEmpty())
                             {
                                 send(QString("setoption name %1 value %2").arg(key).arg(value.toString()));
                             }
@@ -118,25 +127,26 @@ void UCIEngine::processMessage(const QString& message)
                 }
             }
 
-			send("setoption name UCI_AnalyseMode value true");
-		}
+            send("setoption name UCI_AnalyseMode value true");
+        }
 
-		if (m_waitingOn == "ucinewgame") {
-			//engine is now ready to analyse a new position
-			m_waitingOn = "";
-			send(QString("setoption name MultiPV value %1").arg(m_mpv));
-			send("position fen " + m_position);
-			send("go infinite");
-		}
-	}
+        if(m_waitingOn == "ucinewgame")
+        {
+            //engine is now ready to analyse a new position
+            m_waitingOn = "";
+            send(QString("setoption name MultiPV value %1").arg(m_mpv));
+            send("position fen " + m_position);
+            send("go infinite");
+        }
+    }
 
     QString command = message.section(' ', 0, 0);
 
-    if (command == "info" && isAnalyzing())
+    if(command == "info" && isAnalyzing())
     {
-		parseAnalysis(message);
-	}
-    else if (command == "option" && !isAnalyzing())
+        parseAnalysis(message);
+    }
+    else if(command == "option" && !isAnalyzing())
     {
         parseOptions(message);
     }
@@ -144,99 +154,128 @@ void UCIEngine::processMessage(const QString& message)
 
 void UCIEngine::parseAnalysis(const QString& message)
 {
-	// Sample: info score cp 20  depth 3 nodes 423 time 15 pv f1c4 g8f6 b1c3
-	Analysis analysis;
-		  bool multiPVFound, timeFound, nodesFound, depthFound, scoreFound, variationFound;
-		  multiPVFound = timeFound = nodesFound = depthFound = scoreFound = variationFound = false;
+    // Sample: info score cp 20  depth 3 nodes 423 time 15 pv f1c4 g8f6 b1c3
+    Analysis analysis;
+    bool multiPVFound, timeFound, nodesFound, depthFound, scoreFound, variationFound;
+    multiPVFound = timeFound = nodesFound = depthFound = scoreFound = variationFound = false;
 
-	QString info = message.section(' ', 1, -1, QString::SectionSkipEmpty);
-	int section = 0;
-	QString name;
-	bool ok;
+    QString info = message.section(' ', 1, -1, QString::SectionSkipEmpty);
+    int section = 0;
+    QString name;
+    bool ok;
 
-	//loop around the name value tuples
-	while (!info.section(' ', section, section + 1, QString::SectionSkipEmpty).isEmpty()) {
-		name = info.section(' ', section, section, QString::SectionSkipEmpty);
+    //loop around the name value tuples
+    while(!info.section(' ', section, section + 1, QString::SectionSkipEmpty).isEmpty())
+    {
+        name = info.section(' ', section, section, QString::SectionSkipEmpty);
 
-		if (name == "multipv") {
-			analysis.setNumpv(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toInt(&ok));
-			section += 2;
-			if (ok) {
-				multiPVFound = true;
-				continue;
-			}
-		}
+        if(name == "multipv")
+        {
+            analysis.setNumpv(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toInt(&ok));
+            section += 2;
+            if(ok)
+            {
+                multiPVFound = true;
+                continue;
+            }
+        }
 
-		if (name == "time") {
-			analysis.setTime(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toInt(&ok));
-			section += 2;
-			if (ok) {
-				timeFound = true;
-				continue;
-			}
-		}
+        if(name == "time")
+        {
+            analysis.setTime(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toInt(&ok));
+            section += 2;
+            if(ok)
+            {
+                timeFound = true;
+                continue;
+            }
+        }
 
-		if (name == "nodes") {
-			analysis.setNodes(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toLongLong(&ok));
-			section += 2;
-			if (ok) {
-				nodesFound = true;
-				continue;
-			}
-		}
+        if(name == "nodes")
+        {
+            analysis.setNodes(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toLongLong(&ok));
+            section += 2;
+            if(ok)
+            {
+                nodesFound = true;
+                continue;
+            }
+        }
 
-		if (name == "depth") {
-			analysis.setDepth(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toInt(&ok));
-			section += 2;
-			if (ok) {
-				depthFound = true;
-				continue;
-			}
-		}
+        if(name == "depth")
+        {
+            analysis.setDepth(info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty).toInt(&ok));
+            section += 2;
+            if(ok)
+            {
+                depthFound = true;
+                continue;
+            }
+        }
 
-		if (name == "score") {
-			QString type = info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty);
-			if (type == "cp" || type == "mate") {
-				int score = info.section(' ', section + 2, section + 2).toInt(&ok);
-				if (type == "mate")
-					analysis.setMovesToMate(abs(score));
-				else if (m_invertBlack && m_board.toMove() == Black)
-					analysis.setScore(-score);
-				else analysis.setScore(score);
-				section += 3;
-				if (ok) {
-					scoreFound = true;
-					continue;
-				}
-			}
-			else section += 3;
-		}
+        if(name == "score")
+        {
+            QString type = info.section(' ', section + 1, section + 1, QString::SectionSkipEmpty);
+            if(type == "cp" || type == "mate")
+            {
+                int score = info.section(' ', section + 2, section + 2).toInt(&ok);
+                if(type == "mate")
+                {
+                    analysis.setMovesToMate(abs(score));
+                }
+                else if(m_invertBlack && m_board.toMove() == Black)
+                {
+                    analysis.setScore(-score);
+                }
+                else
+                {
+                    analysis.setScore(score);
+                }
+                section += 3;
+                if(ok)
+                {
+                    scoreFound = true;
+                    continue;
+                }
+            }
+            else
+            {
+                section += 3;
+            }
+        }
 
-		if (name == "pv") {
-			Board board = m_board;
-			MoveList moves;
-			QString moveText;
-			section++;
-			while ((moveText = info.section(' ', section, section, QString::SectionSkipEmpty)) != "") {
-				Move move = board.parseMove(moveText);
-				if (!move.isLegal())
-					break;
-				board.doMove(move);
-				moves.append(move);
-				section++;
-			}
-			analysis.setVariation(moves);
-		}
+        if(name == "pv")
+        {
+            Board board = m_board;
+            MoveList moves;
+            QString moveText;
+            section++;
+            while((moveText = info.section(' ', section, section, QString::SectionSkipEmpty)) != "")
+            {
+                Move move = board.parseMove(moveText);
+                if(!move.isLegal())
+                {
+                    break;
+                }
+                board.doMove(move);
+                moves.append(move);
+                section++;
+            }
+            analysis.setVariation(moves);
+        }
 
-		//not understood, skip
-		section += 2;
-	}
+        //not understood, skip
+        section += 2;
+    }
 
-	if (timeFound && nodesFound && scoreFound && analysis.isValid()) {
-		if (!multiPVFound)
-			analysis.setNumpv(1);
-		sendAnalysis(analysis);
-	}
+    if(timeFound && nodesFound && scoreFound && analysis.isValid())
+    {
+        if(!multiPVFound)
+        {
+            analysis.setNumpv(1);
+        }
+        sendAnalysis(analysis);
+    }
 }
 
 void UCIEngine::parseOptions(const QString& message)
@@ -250,7 +289,8 @@ void UCIEngine::parseOptions(const QString& message)
                      EXPECT_MIN_VALUE,
                      EXPECT_MAX_VALUE,
                      EXPECT_VAR_TOKEN,
-                     EXPECT_VAR } phase;
+                     EXPECT_VAR
+                   } phase;
 
     phase = EXPECT_OPTION;
     QStringList list = message.split(QRegExp("\\W+"), QString::SkipEmptyParts);
@@ -263,49 +303,72 @@ void UCIEngine::parseOptions(const QString& message)
     OptionType optionType = OPT_TYPE_STRING;
     QString error;
     bool done = false;
-    foreach (QString token, list)
+    foreach(QString token, list)
     {
-        switch (phase)
+        switch(phase)
         {
         case EXPECT_OPTION:
-            if (token == "option")
+            if(token == "option")
+            {
                 phase = EXPECT_NAME;
+            }
             else
+            {
                 error = token;
+            }
             break;
         case EXPECT_NAME:
-            if (token == "name")
+            if(token == "name")
+            {
                 phase = EXPECT_TYPE;
+            }
             else
+            {
                 error = token;
+            }
             break;
         case EXPECT_TYPE:
-            if (token == "type")
+            if(token == "type")
+            {
                 phase = EXPECT_TYPE_TOKEN;
+            }
             else
+            {
                 nameVals << token;
+            }
             break;
         case EXPECT_TYPE_TOKEN:
-            if (token == "check")
+            if(token == "check")
+            {
                 optionType = OPT_TYPE_CHECK;
-            else if (token == "spin")
+            }
+            else if(token == "spin")
+            {
                 optionType = OPT_TYPE_SPIN;
-            else if (token == "combo")
+            }
+            else if(token == "combo")
+            {
                 optionType = OPT_TYPE_COMBO;
-            else if (token == "button")
+            }
+            else if(token == "button")
             {
                 optionType = OPT_TYPE_BUTTON;
                 done = true;
             }
-            else if (token == "string")
+            else if(token == "string")
+            {
                 optionType = OPT_TYPE_STRING;
-            else error = token;
+            }
+            else
+            {
+                error = token;
+            }
 
             phase = EXPECT_MIN_MAX_DEFAULT;
             break;
         case EXPECT_DEFAULT_VALUE:
             defVal = token;
-            switch (optionType)
+            switch(optionType)
             {
             case OPT_TYPE_SPIN:
                 phase = EXPECT_MIN_MAX_DEFAULT;
@@ -321,14 +384,22 @@ void UCIEngine::parseOptions(const QString& message)
             }
             break;
         case EXPECT_MIN_MAX_DEFAULT:
-            if (token == "default")
+            if(token == "default")
+            {
                 phase = EXPECT_DEFAULT_VALUE;
-            else if (token == "min")
+            }
+            else if(token == "min")
+            {
                 phase = EXPECT_MIN_VALUE;
-            else if (token == "max")
+            }
+            else if(token == "max")
+            {
                 phase = EXPECT_MAX_VALUE;
+            }
             else
+            {
                 done = true;
+            }
             break;
         case EXPECT_MIN_VALUE:
             minVal = token;
@@ -339,10 +410,14 @@ void UCIEngine::parseOptions(const QString& message)
             phase = EXPECT_MIN_MAX_DEFAULT;
             break;
         case EXPECT_VAR_TOKEN:
-            if (token == "var")
+            if(token == "var")
+            {
                 phase = EXPECT_VAR;
+            }
             else
+            {
                 done = true;
+            }
             break;
         case EXPECT_VAR:
             varVals << token;
@@ -353,12 +428,12 @@ void UCIEngine::parseOptions(const QString& message)
             return;
         }
 
-        if (done || !error.isEmpty())
+        if(done || !error.isEmpty())
         {
             break;
         }
     }
-    if (!error.isEmpty())
+    if(!error.isEmpty())
     {
         qDebug() << "Cannot parse Option string: '"
                  << message
@@ -367,7 +442,7 @@ void UCIEngine::parseOptions(const QString& message)
                  << "'!";
         return;
     }
-    if (done || (phase > EXPECT_DEFAULT_VALUE))
+    if(done || (phase > EXPECT_DEFAULT_VALUE))
     {
         QString name = nameVals.join(" ");
         EngineOptionData option;

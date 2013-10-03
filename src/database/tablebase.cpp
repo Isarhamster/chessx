@@ -35,8 +35,10 @@ void Shredder::abortLookup()
 void Shredder::getBestMove(QString fen)
 {
     abortLookup();
-    if (m_fen == fen)
+    if(m_fen == fen)
+    {
         return;
+    }
     m_fen = fen;
     QTimer::singleShot(100, this, SLOT(sendIt()));
 }
@@ -44,14 +46,16 @@ void Shredder::getBestMove(QString fen)
 void Shredder::sendIt()
 {
     QString prep(m_fen.simplified());
-	QString count(prep.left(prep.indexOf(" ")));
-	int white = count.count(QRegExp("[A-Z]"));
-	int black = count.count(QRegExp("[a-z]"));
-	if (white + black > 6 || black > 4 || white > 4 || black < 1 || white < 1)
-		return;
-	QChar toMove = (prep[prep.indexOf(QString(" "))+1].toLower());
+    QString count(prep.left(prep.indexOf(" ")));
+    int white = count.count(QRegExp("[A-Z]"));
+    int black = count.count(QRegExp("[a-z]"));
+    if(white + black > 6 || black > 4 || white > 4 || black < 1 || white < 1)
+    {
+        return;
+    }
+    QChar toMove = (prep[prep.indexOf(QString(" ")) + 1].toLower());
     QString requested = QString("/online/playshredder/fetch.php?action=egtb&hook=%1&fen=%2")
-            .arg(toMove).arg(m_fen);
+                        .arg(toMove).arg(m_fen);
 
     QUrl url(requested);
     url.setScheme("http");
@@ -67,19 +71,26 @@ void Shredder::httpDone(QNetworkReply *reply)
 {
     QUrl url = reply->url();
 
-    if (!reply->error())
+    if(!reply->error())
     {
-        if (url.toString() == m_requested)
+        if(url.toString() == m_requested)
         {
             m_requested.clear();
 
             QString ret(reply->readAll());
-            if (ret.indexOf("Not found") >= 0)
+            if(ret.indexOf("Not found") >= 0)
+            {
                 return;
+            }
 
-            if (ret[5] == 'w')
+            if(ret[5] == 'w')
+            {
                 ret.remove(QRegExp("NEXTCOLOR.*\\n"));
-            else	ret.remove(QRegExp(".*NEXTCOLOR\\n"));
+            }
+            else
+            {
+                ret.remove(QRegExp(".*NEXTCOLOR\\n"));
+            }
             ret.remove(0, ret.indexOf("\n") + 1);
             ret.remove(":");
             ret.remove("Win in ");
@@ -88,13 +99,17 @@ void Shredder::httpDone(QNetworkReply *reply)
             ret.replace("Lose in ", "-");
 
             QStringList fld(ret.left(ret.indexOf('\n')).split(' '));
-            if (fld.size() < 3)
+            if(fld.size() < 3)
+            {
                 return;
+            }
 
             Move move(fld[0].toInt(), fld[1].toInt());
             int score = fld[2].toInt();
-            if (fld.size() > 3) {
-                switch (score) {
+            if(fld.size() > 3)
+            {
+                switch(score)
+                {
                 case 8:
                     move.setPromoted(Queen);
                     break;

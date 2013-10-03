@@ -30,15 +30,15 @@ class QNetworkReply;
  */
 class Tablebase : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 signals:
-	/** Emitted when best move has been gathered from tablebase */
-	void bestMove(Move move, int score);
+    /** Emitted when best move has been gathered from tablebase */
+    void bestMove(Move move, int score);
 public slots:
-	/** Request best move from table base given FEN position */
-	virtual void getBestMove(QString fen) = 0;
-	/** Cancel the previous lookup */
-	virtual void abortLookup() = 0;
+    /** Request best move from table base given FEN position */
+    virtual void getBestMove(QString fen) = 0;
+    /** Cancel the previous lookup */
+    virtual void abortLookup() = 0;
 };
 
 
@@ -48,14 +48,14 @@ public slots:
  */
 class Shredder : public Tablebase
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	Shredder();
-	~Shredder();
+    Shredder();
+    ~Shredder();
 signals:
-	void bestMove(Move move, int score);
+    void bestMove(Move move, int score);
 public slots:
-	void getBestMove(QString fen);
+    void getBestMove(QString fen);
     void abortLookup();
 private slots:
     void httpDone(QNetworkReply *reply);

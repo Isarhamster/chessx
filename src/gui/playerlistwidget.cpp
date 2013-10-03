@@ -24,7 +24,7 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
 
     selectPlayer(QString());
     QItemSelectionModel* selectionModel = ui->tagList->selectionModel();
-    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+    connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
             this, SLOT(selectionChangedSlot()));
 
     ui->detailText->setOpenLinks(false);
@@ -45,7 +45,7 @@ void PlayerListWidget::slotReconfigure()
 void PlayerListWidget::selectionChangedSlot()
 {
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
-    if (selection.count())
+    if(selection.count())
     {
         QString ts = selection[0].data().toString();
         playerSelected(ts);
@@ -58,7 +58,7 @@ void PlayerListWidget::selectionChangedSlot()
 
 void PlayerListWidget::findPlayers(const QString& s)
 {
-    if (s.isEmpty())
+    if(s.isEmpty())
     {
         m_filterModel->setStringList(m_list);
     }
@@ -78,19 +78,19 @@ void PlayerListWidget::slotSelectPlayer(const QString& player)
 
 void PlayerListWidget::playerSelected(const QString& player)
 {
-    if (!player.isEmpty())
+    if(!player.isEmpty())
     {
         m_player.setName(player);
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
         QString head = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>Player List</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>";
         QString text = QString("%1<body><h1>%2</h1>%3%4%5%6%7</body></html>")
-                .arg(head)
-                .arg(m_player.name()).arg(m_player.formattedGameCount())
-                .arg(m_player.formattedRange())
-                .arg(m_player.formattedRating())
-                .arg(m_player.formattedScore())
-                .arg(m_player.listOfOpenings());
+                       .arg(head)
+                       .arg(m_player.name()).arg(m_player.formattedGameCount())
+                       .arg(m_player.formattedRange())
+                       .arg(m_player.formattedRating())
+                       .arg(m_player.formattedScore())
+                       .arg(m_player.listOfOpenings());
         ui->detailText->setHtml(text);
     }
     else
@@ -104,16 +104,16 @@ void PlayerListWidget::playerSelected(const QString& player)
 void PlayerListWidget::selectPlayer(const QString& player)
 {
     playerSelected(player);
-    if (!player.isEmpty())
+    if(!player.isEmpty())
     {
         const QStringList& list = m_filterModel->stringList();
         int row = list.indexOf(player);
-        if (row>=0)
+        if(row >= 0)
         {
-            QModelIndex index = m_filterModel->index( row, 0 );
-            if ( index.isValid() )
+            QModelIndex index = m_filterModel->index(row, 0);
+            if(index.isValid())
             {
-                ui->tagList->selectionModel()->select( index, QItemSelectionModel::ClearAndSelect );
+                ui->tagList->selectionModel()->select(index, QItemSelectionModel::ClearAndSelect);
                 ui->tagList->scrollTo(index);
             }
         }
@@ -123,7 +123,7 @@ void PlayerListWidget::selectPlayer(const QString& player)
 void PlayerListWidget::filterSelectedPlayer()
 {
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
-    if (selection.count())
+    if(selection.count())
     {
         QString ts = selection[0].data().toString();
         emit filterRequest(ts);
@@ -133,7 +133,7 @@ void PlayerListWidget::filterSelectedPlayer()
 void PlayerListWidget::renameSelectedPlayer()
 {
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
-    if (selection.count())
+    if(selection.count())
     {
         QString ts = selection[0].data().toString();
         emit renameRequest(ts);
@@ -146,7 +146,7 @@ void PlayerListWidget::setDatabase(DatabaseInfo* dbInfo)
     ui->detailText->setText(tr("<html><i>No player chosen.</i></html>"));
     m_player.setDatabase(db);
     m_list.clear();
-    if (db && db->index())
+    if(db && db->index())
     {
         m_list = db->index()->playerNames();
     }
@@ -157,7 +157,7 @@ void PlayerListWidget::setDatabase(DatabaseInfo* dbInfo)
 
 void PlayerListWidget::slotLinkClicked(const QUrl& url)
 {
-    if (url.scheme().startsWith("eco"))
+    if(url.scheme().startsWith("eco"))
     {
         QString player = ui->tagList->currentIndex().data().toString();
         QString tag = (url.scheme().contains("white")) ? TagNameWhite : TagNameBlack;

@@ -23,41 +23,54 @@ Settings::~Settings()
 
 bool Settings::layout(QWidget* w)
 {
-	if (!w || w->objectName().isEmpty())
-		return false;
-	beginGroup("Geometry");
-	QList<int> values;
-	bool valid = list(w->objectName(), values, 5);
-	if (valid) { // Enough values
-		w->resize(QSize(values[2], values[3]));
-		w->move(QPoint(values[0], values[1]));
-		if (qobject_cast<QMainWindow*>(w)) {
-			QByteArray docks = value("Docks", QByteArray()).toByteArray();
-			if (docks.count())
-				qobject_cast<QMainWindow*>(w)->restoreState(docks, 0);
-		} else if (values[4]) // restore non-main windows
-			w->show();
-	}
-	endGroup();
-	return valid;
+    if(!w || w->objectName().isEmpty())
+    {
+        return false;
+    }
+    beginGroup("Geometry");
+    QList<int> values;
+    bool valid = list(w->objectName(), values, 5);
+    if(valid)    // Enough values
+    {
+        w->resize(QSize(values[2], values[3]));
+        w->move(QPoint(values[0], values[1]));
+        if(qobject_cast<QMainWindow*>(w))
+        {
+            QByteArray docks = value("Docks", QByteArray()).toByteArray();
+            if(docks.count())
+            {
+                qobject_cast<QMainWindow*>(w)->restoreState(docks, 0);
+            }
+        }
+        else if(values[4])    // restore non-main windows
+        {
+            w->show();
+        }
+    }
+    endGroup();
+    return valid;
 }
 
 void Settings::setLayout(const QWidget* w)
 {
-	if (!w || w->objectName().isEmpty())
-		return;
-	beginGroup("Geometry");
-	QList<int> values;
-	values << w->x() << w->y() << w->width() << w->height() << w->isVisible();
-	setList(w->objectName(), values);
-	if (qobject_cast<const QMainWindow*>(w))
-		setValue("Docks", qobject_cast<const QMainWindow*>(w)->saveState(0));
-	endGroup();
+    if(!w || w->objectName().isEmpty())
+    {
+        return;
+    }
+    beginGroup("Geometry");
+    QList<int> values;
+    values << w->x() << w->y() << w->width() << w->height() << w->isVisible();
+    setList(w->objectName(), values);
+    if(qobject_cast<const QMainWindow*>(w))
+    {
+        setValue("Docks", qobject_cast<const QMainWindow*>(w)->saveState(0));
+    }
+    endGroup();
 }
 
 QString Settings::dataPath()
 {
-    if (m_dataPath.isNull())
+    if(m_dataPath.isNull())
     {
 #if QT_VERSION < 0x050000
         m_dataPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
@@ -68,7 +81,7 @@ QString Settings::dataPath()
         m_dataPath.append("/data");
     }
 
-	return m_dataPath;
+    return m_dataPath;
 }
 
 QString Settings::commonDataPath()
@@ -85,22 +98,24 @@ QString Settings::commonDataPath()
 
 void Settings::setList(const QString& key, QList<int> list)
 {
-	QList<QVariant> varlist;
-	int i;
-	foreach(i, list)
-        varlist.append(QVariant(i));
-	setValue(key, varlist);
+    QList<QVariant> varlist;
+    int i;
+    foreach(i, list)
+    varlist.append(QVariant(i));
+    setValue(key, varlist);
 }
 
 bool Settings::list(const QString &key, QList<int>& list, int items)
 {
-	QList<QVariant> varlist = value(key).toList();
-	if (items >= 0 && varlist.count() + list.count() != items)
-		return false;
-	QVariant v;
-	foreach(v, varlist)
-        list.append(v.toInt());
-	return true;
+    QList<QVariant> varlist = value(key).toList();
+    if(items >= 0 && varlist.count() + list.count() != items)
+    {
+        return false;
+    }
+    QVariant v;
+    foreach(v, varlist)
+    list.append(v.toInt());
+    return true;
 }
 
 void Settings::setByteArray(const QString& key, const QByteArray& arr)
@@ -132,7 +147,8 @@ void Settings::getMap(const QString& key, OptionValueList& map)
     delete stream;
 }
 
-QMap<QString, QVariant> Settings::initDefaultValues() const {
+QMap<QString, QVariant> Settings::initDefaultValues() const
+{
     QMap<QString, QVariant> map;
     map.insert("/General/EditLimit", 10);
     map.insert("/General/automaticECO", true);
@@ -143,24 +159,24 @@ QMap<QString, QVariant> Settings::initDefaultValues() const {
     map.insert("/General/autoCommitDB", false);
     map.insert("/General/language", "Default");
     map.insert("/General/BuiltinDbInstalled", false);
-    map.insert("/GameText/FontSize",DEFAULT_FONTSIZE);
+    map.insert("/GameText/FontSize", DEFAULT_FONTSIZE);
 
-    map.insert("/GameText/ColumnStyle",false);
-    map.insert("/GameText/SymbolicNag",true);
-    map.insert("/GameText/TextWidth",0);
-    map.insert("/GameText/VariationIndentLevel",1);
-    map.insert("/GameText/VariationIndentSize",3);
-    map.insert("/GameText/CommentIndent","OnlyMainline");
-    map.insert("/GameText/MainLineMoveColor","black");
-    map.insert("/GameText/VariationColor","blue");
-    map.insert("/GameText/CommentColor","green");
-    map.insert("/GameText/NagColor","red");
-    map.insert("/GameText/HeaderColor","blue");
-    map.insert("/GameText/ShowHeader",false);
-    map.insert("/GameText/ShowDiagrams",true);
-    map.insert("/GameText/DiagramSize",200);
+    map.insert("/GameText/ColumnStyle", false);
+    map.insert("/GameText/SymbolicNag", true);
+    map.insert("/GameText/TextWidth", 0);
+    map.insert("/GameText/VariationIndentLevel", 1);
+    map.insert("/GameText/VariationIndentSize", 3);
+    map.insert("/GameText/CommentIndent", "OnlyMainline");
+    map.insert("/GameText/MainLineMoveColor", "black");
+    map.insert("/GameText/VariationColor", "blue");
+    map.insert("/GameText/CommentColor", "green");
+    map.insert("/GameText/NagColor", "red");
+    map.insert("/GameText/HeaderColor", "blue");
+    map.insert("/GameText/ShowHeader", false);
+    map.insert("/GameText/ShowDiagrams", true);
+    map.insert("/GameText/DiagramSize", 200);
 
-    map.insert("/GameText/PieceString"," KQRBN");
+    map.insert("/GameText/PieceString", " KQRBN");
     map.insert("/MainWindow/GameToolBar", false);
     map.insert("/MainWindow/VerticalTabs", false);
     map.insert("/MainWindow/StayOnTop", false);
@@ -188,14 +204,14 @@ QMap<QString, QVariant> Settings::initDefaultValues() const {
 QVariant Settings::getValue(const QString &key) const
 {
     static QMap<QString, QVariant> defaultValues = initDefaultValues();
-    if (defaultValues.contains(key))
+    if(defaultValues.contains(key))
     {
         return value(key, defaultValues.value(key));
     }
     else
     {
         QString groupKey = QString("/") + group() + "/" + key;
-        if (defaultValues.contains(groupKey))
+        if(defaultValues.contains(groupKey))
         {
             return value(key, defaultValues.value(groupKey));
         }
@@ -208,8 +224,10 @@ QString Settings::getThemaPath() const
 {
     QString themeDir(AppSettings->dataPath() + "/themes");
 
-    if (!QFile::exists(themeDir))
+    if(!QFile::exists(themeDir))
+    {
         themeDir = QString(":/themes");
+    }
 
     return themeDir;
 }
@@ -224,8 +242,10 @@ QString Settings::getBoardPath() const
 {
     QString boardDir(AppSettings->dataPath() + "/themes/boards");
 
-    if (!QFile::exists(boardDir))
+    if(!QFile::exists(boardDir))
+    {
         boardDir = QString(":/themes/boards");
+    }
 
     return boardDir;
 }
@@ -240,8 +260,10 @@ QString Settings::getImagePath() const
 {
     QString imgDir(AppSettings->dataPath() + "/images");
 
-    if (!QFile::exists(imgDir))
+    if(!QFile::exists(imgDir))
+    {
         imgDir = QString(":/data/images");
+    }
 
     return imgDir;
 }
@@ -253,8 +275,10 @@ QStringList Settings::getTranslationPaths() const
 
     QString langDir(AppSettings->dataPath() + "/lang");
 
-    if (QFile::exists(langDir))
+    if(QFile::exists(langDir))
+    {
         list.append(langDir);
+    }
 
     return list;
 }
@@ -263,7 +287,7 @@ QStringList Settings::getTranslations() const
 {
     QStringList total;
     QStringList langDirs = getTranslationPaths();
-    foreach (QString dir, langDirs)
+    foreach(QString dir, langDirs)
     {
         QStringList translations = QDir(dir).entryList(QStringList("*.qm"));
         total.append(translations);

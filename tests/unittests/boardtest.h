@@ -25,13 +25,13 @@ Unit tests for the Board class.
 
 class BoardTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void testIsValidFEN();
-	void testCreateHash();
-	void testValidate();
-	void testReversableHash();
+    void testIsValidFEN();
+    void testCreateHash();
+    void testValidate();
+    void testReversableHash();
 };
 
 #endif
