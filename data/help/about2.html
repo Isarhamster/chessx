@@ -58,6 +58,29 @@ with the same basename.</p>
 On occasion, ChessX versions > 0.9.6 will not be able to read a version 0 format and will thus recreate the index file with the
 latest version. These occasions depend on the timezone when the file was created and the time it was read (summer/winter)
 and the version of the Qt libraries ChessX was compiled with.</p>
+
+<h3>About themes and file system</h3>
+<p>ChessX reads and writes files at different locations
+<ul>
+<li>Intermediate files arer put into the temp folder offered by the OS (see About Dialog for the exact path)
+<li>Themes are put into the program data directory assigned by the OS (see About Dialog again)
+<li>PGN databases are stored in a user defined folder (see Preferences Dialog)
+</ul>
+</p>
+<p>ChessX has builtin themes and languages, which can be extended by external themes.
+These themes need to be stored in defined subfolders of the program data directory.
+Starting from <i>ProgramDataPath/data/</i>
+<ul>
+<li>Translation files are stored in <i>lang/</i>
+<li>Theme files in <i>themes/...</i>
+<li>Output templates in <i>templates/</i>
+<li>Windows Engines in <i>engines/uci/</i> and <i>engines/winboard/</i>
+<li>Mac OS Engines in <i>engines-mac/uci/</i> and <i>engines-mac/winboard/</i>
+</ul>
+</p>
+<p>Board themes are put into <i>themes/boards</i> while simple piece sets are put into <i>themes/</i>.
+Outlined and shadowed piece sets are put into <i>themes/outline</i> and <i>themes/shadow</i> respectively.
+</p>
 </div>
 </div>
 
