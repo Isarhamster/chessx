@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2013 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #include "aboutdlg.h"
 #include "settings.h"
 #include "version.h"
@@ -14,7 +18,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
     refPath = AppSettings->getTempPath();
     ui->labelTempPath->setText(refPath);
     ui->labelCopyRightDate->setText(COPYRIGHT_DATE);
-    QString version = QString(STR_REVISION).replace(',','.');
+    QString version = QString(STR_REVISION).replace(',', '.');
     ui->labelVersion->setText(version);
 }
 

@@ -31,7 +31,7 @@ void IndexItem::set(TagIndex tagIndex, ValueIndex valueIndex)
 
 ValueIndex IndexItem::valueIndex(TagIndex tagIndex) const
 {
-    if (m_mapTagIndexToValueIndex.contains(tagIndex))
+    if(m_mapTagIndexToValueIndex.contains(tagIndex))
     {
         return m_mapTagIndexToValueIndex[tagIndex];
     }

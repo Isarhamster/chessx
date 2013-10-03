@@ -14,16 +14,20 @@ QStringList NagSet::g_nagStringListLong;
 
 void NagSet::addNag(Nag nag)
 {
-	if (contains(nag) || nag == NullNag || nag >= NagCount)
-		return;
-    if (nag >= MoveNagStart && nag <= MoveNagEnd && nag != ForcedMove && nag != SingularMove)
-		removeNagRange(MoveNagStart, MoveNagEnd);
+    if(contains(nag) || nag == NullNag || nag >= NagCount)
+    {
+        return;
+    }
+    if(nag >= MoveNagStart && nag <= MoveNagEnd && nag != ForcedMove && nag != SingularMove)
+    {
+        removeNagRange(MoveNagStart, MoveNagEnd);
+    }
 
-    if (conditionalRemoveNagRange(nag, EvaluationNagStart, EvaluationNagEnd))
+    if(conditionalRemoveNagRange(nag, EvaluationNagStart, EvaluationNagEnd))
     {
         removeNag(WhiteHasModerateCounterplay);
     }
-    if (conditionalRemoveNagRange(nag, WhiteHasModerateCounterplay, BlackHasModerateCounterplay))
+    if(conditionalRemoveNagRange(nag, WhiteHasModerateCounterplay, BlackHasModerateCounterplay))
     {
         removeNagRange(EvaluationNagStart, EvaluationNagEnd);
     }
@@ -37,7 +41,7 @@ void NagSet::addNag(Nag nag)
 
 bool NagSet::conditionalRemoveNagRange(Nag nag, Nag start, Nag end)
 {
-    if (nag >= start && nag <= end)
+    if(nag >= start && nag <= end)
     {
         removeNagRange(start, end);
         return true;
@@ -47,10 +51,16 @@ bool NagSet::conditionalRemoveNagRange(Nag nag, Nag start, Nag end)
 
 void NagSet::removeNag(Nag nag)
 {
-	if (nag == NullNag) return;
+    if(nag == NullNag)
+    {
+        return;
+    }
 
-	int index = indexOf(nag);
-	if (index != -1) remove(index);
+    int index = indexOf(nag);
+    if(index != -1)
+    {
+        remove(index);
+    }
 }
 
 bool NagSet::isMoveNag(Nag nag)
@@ -72,14 +82,14 @@ QString NagSet::toString(unsigned format) const
 {
     QString moveNags;
     QString evaluationNags;
-	QString otherNags;
+    QString otherNags;
 
-    for (int i = 0; i < count(); ++i)
+    for(int i = 0; i < count(); ++i)
     {
         QString strNag;
-        if (at(i)<NagCount)
+        if(at(i) < NagCount)
         {
-            switch (format)
+            switch(format)
             {
             case Simple:
                 strNag = nagToString(at(i));
@@ -93,38 +103,45 @@ QString NagSet::toString(unsigned format) const
             }
         }
 
-        if (isMoveNag(at(i)))
+        if(isMoveNag(at(i)))
+        {
             moveNags.append(strNag);
-        else if (isEvalNag(at(i)))
+        }
+        else if(isEvalNag(at(i)))
+        {
             evaluationNags.append(strNag);
+        }
         else
+        {
             otherNags.append(strNag);
-	}
+        }
+    }
 
     return moveNags + evaluationNags + otherNags;
 }
 
-static const QString g_nagStringList[NagCount] = {
-	"",
-	"!",
-	"?",
-	"!!",
-	"??",
-	"!?",
-	"?!",
-	QString::fromUtf8("□"),
-	QString::fromUtf8("□"),
-	"??",
-	"=",
-	"=",
-	"=",
+static const QString g_nagStringList[NagCount] =
+{
+    "",
+    "!",
+    "?",
+    "!!",
+    "??",
+    "!?",
+    "?!",
+    QString::fromUtf8("□"),
+    QString::fromUtf8("□"),
+    "??",
+    "=",
+    "=",
+    "=",
     QString::fromUtf8("∞"),
-	"+=",
-	"=+",
-	QString::fromUtf8("±"),
-	QString::fromUtf8("∓"),
-	"+-",
-	"-+",
+    "+=",
+    "=+",
+    QString::fromUtf8("±"),
+    QString::fromUtf8("∓"),
+    "+-",
+    "-+",
     "++--",
     "--++",
     QString::fromUtf8("⨀"), // Zugzwang
@@ -150,7 +167,7 @@ static const QString g_nagStringList[NagCount] = {
     "With insufficient compensation for material deficit",
     "With insufficient compensation for material deficit",
     QString::fromUtf8("∞="),
-	QString::fromUtf8("∞="),
+    QString::fromUtf8("∞="),
     "With more than adequate compensation for material deficit",
     "With more than adequate compensation for material deficit",
     "With slight center control advantage",
@@ -211,47 +228,47 @@ static const QString g_nagStringList[NagCount] = {
     "With poor piece coordination",
     "With good piece coordination",
     "With good piece coordination",
-	"White played the opening very poorly",
-	"Black played the opening very poorly",
-	"White played the opening poorly",
-	"Black played the opening poorly",
-	"White played the opening well",
-	"Black played the opening well",
-	"White played the opening very well",
-	"Black played the opening very well",
-	"White played the middlegame very poorly",
-	"Black played the middlegame very poorly",
-	"White played the middlegame poorly",
-	"Black played the middlegame poorly",
-	"White played the middlegame well",
-	"Black played the middlegame well",
-	"White played the middlegame very well",
-	"Black played the middlegame very well",
-	"White played the ending very poorly",
-	"Black played the ending very poorly",
-	"White played the ending poorly",
-	"Black played the ending poorly",
-	"White played the ending well",
-	"Black played the ending well",
-	"White played the ending very well",
-	"Black played the ending very well",
-	QString::fromUtf8("⇄"),
-	QString::fromUtf8("⇄"),
-	QString::fromUtf8("⇄"),
-	QString::fromUtf8("⇄"),
-	QString::fromUtf8("⇄"),
-	QString::fromUtf8("⇄"),
-	"Moderate time control pressure",
-	"Moderate time control pressure",
+    "White played the opening very poorly",
+    "Black played the opening very poorly",
+    "White played the opening poorly",
+    "Black played the opening poorly",
+    "White played the opening well",
+    "Black played the opening well",
+    "White played the opening very well",
+    "Black played the opening very well",
+    "White played the middlegame very poorly",
+    "Black played the middlegame very poorly",
+    "White played the middlegame poorly",
+    "Black played the middlegame poorly",
+    "White played the middlegame well",
+    "Black played the middlegame well",
+    "White played the middlegame very well",
+    "Black played the middlegame very well",
+    "White played the ending very poorly",
+    "Black played the ending very poorly",
+    "White played the ending poorly",
+    "Black played the ending poorly",
+    "White played the ending well",
+    "Black played the ending well",
+    "White played the ending very well",
+    "Black played the ending very well",
+    QString::fromUtf8("⇄"),
+    QString::fromUtf8("⇄"),
+    QString::fromUtf8("⇄"),
+    QString::fromUtf8("⇄"),
+    QString::fromUtf8("⇄"),
+    QString::fromUtf8("⇄"),
+    "Moderate time control pressure",
+    "Moderate time control pressure",
     QString::fromUtf8("⊕"), // "Severe time control pressure"
     QString::fromUtf8("⊕"), // "Severe time control pressure"
     QString::fromUtf8("△"),
     "Aimed against",
     QString::fromUtf8("⌓"), // "Better was"
     "<", // "Worse was"
-	"Equivalent was",
-	"RR",
-	"N",
+    "Equivalent was",
+    "RR",
+    "N",
     QString::fromUtf8("✕"), // "weak point"
     QString::fromUtf8("⊥"), // "endgame"
     QString::fromUtf8("⇔"), // "line"
@@ -260,179 +277,180 @@ static const QString g_nagStringList[NagCount] = {
     QString::fromUtf8("☍"), // "pair of bishops"
     QString::fromUtf8("❐"), // "bishops of opposite color"
     QString::fromUtf8("▞"), // "bishops of the same color"
-    0,0,0,0,0,0, // 160
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, //180
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, //200
+    0, 0, 0, 0, 0, 0, // 160
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //180
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //200
     "#"
 };
 
 void NagSet::InitNagStringListLong()
 {
     g_nagStringListLong <<
-    "" <<
-    tr("Good Move") <<
-    tr("Poor Move") <<
-    tr("Very good Move") <<
-    tr("Blunder") <<
-    tr("Speculative Move") <<
-    tr("Dubious Move") <<
-    tr("Only Move") <<
-    tr("Only Move") <<
-    tr("Blunder") <<
-    tr("Equal") <<
-    tr("Equal") <<
-    tr("Equal") <<
-    tr("Unclear") <<
-    tr("White has slight advantage") <<
-    tr("Black has slight advantage") <<
-    tr("White has moderate advantage") <<
-    tr("Black has moderate advantage") <<
-    tr("White has decisive advantage") <<
-    tr("Black has decisive advantage") <<
-    tr("White has crushing advantage") <<
-    tr("Black has crushing advantage") <<
-    tr("Zugzwang") <<
-    tr("Zugzwang") <<
-    tr("With slight space advantage") <<
-    tr("With slight space advantage") <<
-    tr("With moderate space advantage") <<
-    tr("With moderate space advantage") <<
-    tr("With decisive space advantage") <<
-    tr("With decisive space advantage") <<
-    tr("With slight development advantage") <<
-    tr("With slight development advantage") <<
-    tr("With moderate development advantage") <<
-    tr("With moderate development advantage") <<
-    tr("With decisive development advantage") <<
-    tr("With decisive development advantage") <<
-    tr("With initiative") <<
-    tr("With initiative") <<
-    tr("With lasting initiative") <<
-    tr("With lasting initiative") <<
-    tr("With attack") <<
-    tr("With attack") <<
-    tr("With insufficient compensation for material deficit") <<
-    tr("With insufficient compensation for material deficit") <<
-    tr("With compensation") <<
-    tr("With compensation") <<
-    tr("With more than adequate compensation for material deficit") <<
-    tr("With more than adequate compensation for material deficit") <<
-    tr("With slight center control advantage") <<
-    tr("With slight center control advantage") <<
-    tr("With moderate center control advantage") <<
-    tr("With moderate center control advantage") <<
-    tr("With decisive center control advantage") <<
-    tr("With decisive center control advantage") <<
-    tr("With slight kingside control advantage") <<
-    tr("With slight kingside control advantage") <<
-    tr("With moderate kingside control advantage") <<
-    tr("With moderate kingside control advantage") <<
-    tr("With decisive kingside control advantage") <<
-    tr("With decisive kingside control advantage") <<
-    tr("With slight queenside control advantage") <<
-    tr("With slight queenside control advantage") <<
-    tr("With moderate queenside control advantage") <<
-    tr("With moderate queenside control advantage") <<
-    tr("With decisive queenside control advantage") <<
-    tr("With decisive queenside control advantage") <<
-    tr("With vulnerable first rank") <<
-    tr("With vulnerable first rank") <<
-    tr("With well protected first rank") <<
-    tr("With well protected first rank") <<
-    tr("With poorly protected king") <<
-    tr("With poorly protected king") <<
-    tr("With well protected king") <<
-    tr("With well protected king") <<
-    tr("With poorly placed king") <<
-    tr("With poorly placed king") <<
-    tr("With well placed king") <<
-    tr("With well placed king") <<
-    tr("With very weak pawn structure") <<
-    tr("With very weak pawn structure") <<
-    tr("With moderately weak pawn structure") <<
-    tr("With moderately weak pawn structure") <<
-    tr("With moderately strong pawn structure") <<
-    tr("With moderately strong pawn structure") <<
-    tr("With very strong pawn structure") <<
-    tr("With very strong pawn structure") <<
-    tr("With poor knight placement") <<
-    tr("With poor knight placement") <<
-    tr("With good knight placement") <<
-    tr("With good knight placement") <<
-    tr("With poor bishop placement") <<
-    tr("With poor bishop placement") <<
-    tr("With good bishop placement") <<
-    tr("With good bishop placement") <<
-    tr("With poor rook placement") <<
-    tr("With poor rook placement") <<
-    tr("With good rook placement") <<
-    tr("With good rook placement") <<
-    tr("With poor queen placement") <<
-    tr("With poor queen placement") <<
-    tr("With good queen placement") <<
-    tr("With good queen placement") <<
-    tr("With poor piece coordination") <<
-    tr("With poor piece coordination") <<
-    tr("With good piece coordination") <<
-    tr("With good piece coordination") <<
-    tr("White played the opening very poorly") <<
-    tr("Black played the opening very poorly") <<
-    tr("White played the opening poorly") <<
-    tr("Black played the opening poorly") <<
-    tr("White played the opening well") <<
-    tr("Black played the opening well") <<
-    tr("White played the opening very well") <<
-    tr("Black played the opening very well") <<
-    tr("White played the middlegame very poorly") <<
-    tr("Black played the middlegame very poorly") <<
-    tr("White played the middlegame poorly") <<
-    tr("Black played the middlegame poorly") <<
-    tr("White played the middlegame well") <<
-    tr("Black played the middlegame well") <<
-    tr("White played the middlegame very well") <<
-    tr("Black played the middlegame very well") <<
-    tr("White played the ending very poorly") <<
-    tr("Black played the ending very poorly") <<
-    tr("White played the ending poorly") <<
-    tr("Black played the ending poorly") <<
-    tr("White played the ending well") <<
-    tr("Black played the ending well") <<
-    tr("White played the ending very well") <<
-    tr("Black played the ending very well") <<
-    tr("With counterplay") <<
-    tr("With counterplay") <<
-    tr("With counterplay") <<
-    tr("With counterplay") <<
-    tr("With counterplay") <<
-    tr("With counterplay") <<
-    tr("Moderate time control pressure") <<
-    tr("Moderate time control pressure") <<
-    tr("Severe time control pressure") <<
-    tr("Severe time control pressure") <<
-    tr("With the idea") <<
-    tr("Aimed against") <<
-    tr("Better was") <<
-    tr("Worse was") <<
-    tr("Equivalent was") <<
-    tr("RR") <<
-    tr("N") <<
-    tr("Weak point") <<
-    tr("Endgame") <<
-    tr("Line") <<
-    tr("Diagonal") <<
-    tr("Pair of bishops") <<
-    tr("Pair of bishops") <<
-    tr("Bishops of opposite color") <<
-    tr("Bishops of the same color") <<
-    "" <<"" <<"" <<"" <<"" <<"" << // 160
-    "" <<"" <<"" <<"" <<"" <<"" <<"" <<"" <<"" <<"" <<
-    "" <<"" <<"" <<"" <<"" <<"" <<"" <<"" <<"" <<"" << //180
-    "" <<"" <<"" <<"" <<"" <<"" <<"" <<"" <<"" <<"" <<
-    "" <<"" <<"" <<"" <<"" <<"" <<"" <<"" <<"" <<"" << //200
-    tr("Diagram");
+                        "" <<
+                        tr("Good Move") <<
+                        tr("Poor Move") <<
+                        tr("Very good Move") <<
+                        tr("Blunder") <<
+                        tr("Speculative Move") <<
+                        tr("Dubious Move") <<
+                        tr("Only Move") <<
+                        tr("Only Move") <<
+                        tr("Blunder") <<
+                        tr("Equal") <<
+                        tr("Equal") <<
+                        tr("Equal") <<
+                        tr("Unclear") <<
+                        tr("White has slight advantage") <<
+                        tr("Black has slight advantage") <<
+                        tr("White has moderate advantage") <<
+                        tr("Black has moderate advantage") <<
+                        tr("White has decisive advantage") <<
+                        tr("Black has decisive advantage") <<
+                        tr("White has crushing advantage") <<
+                        tr("Black has crushing advantage") <<
+                        tr("Zugzwang") <<
+                        tr("Zugzwang") <<
+                        tr("With slight space advantage") <<
+                        tr("With slight space advantage") <<
+                        tr("With moderate space advantage") <<
+                        tr("With moderate space advantage") <<
+                        tr("With decisive space advantage") <<
+                        tr("With decisive space advantage") <<
+                        tr("With slight development advantage") <<
+                        tr("With slight development advantage") <<
+                        tr("With moderate development advantage") <<
+                        tr("With moderate development advantage") <<
+                        tr("With decisive development advantage") <<
+                        tr("With decisive development advantage") <<
+                        tr("With initiative") <<
+                        tr("With initiative") <<
+                        tr("With lasting initiative") <<
+                        tr("With lasting initiative") <<
+                        tr("With attack") <<
+                        tr("With attack") <<
+                        tr("With insufficient compensation for material deficit") <<
+                        tr("With insufficient compensation for material deficit") <<
+                        tr("With compensation") <<
+                        tr("With compensation") <<
+                        tr("With more than adequate compensation for material deficit") <<
+                        tr("With more than adequate compensation for material deficit") <<
+                        tr("With slight center control advantage") <<
+                        tr("With slight center control advantage") <<
+                        tr("With moderate center control advantage") <<
+                        tr("With moderate center control advantage") <<
+                        tr("With decisive center control advantage") <<
+                        tr("With decisive center control advantage") <<
+                        tr("With slight kingside control advantage") <<
+                        tr("With slight kingside control advantage") <<
+                        tr("With moderate kingside control advantage") <<
+                        tr("With moderate kingside control advantage") <<
+                        tr("With decisive kingside control advantage") <<
+                        tr("With decisive kingside control advantage") <<
+                        tr("With slight queenside control advantage") <<
+                        tr("With slight queenside control advantage") <<
+                        tr("With moderate queenside control advantage") <<
+                        tr("With moderate queenside control advantage") <<
+                        tr("With decisive queenside control advantage") <<
+                        tr("With decisive queenside control advantage") <<
+                        tr("With vulnerable first rank") <<
+                        tr("With vulnerable first rank") <<
+                        tr("With well protected first rank") <<
+                        tr("With well protected first rank") <<
+                        tr("With poorly protected king") <<
+                        tr("With poorly protected king") <<
+                        tr("With well protected king") <<
+                        tr("With well protected king") <<
+                        tr("With poorly placed king") <<
+                        tr("With poorly placed king") <<
+                        tr("With well placed king") <<
+                        tr("With well placed king") <<
+                        tr("With very weak pawn structure") <<
+                        tr("With very weak pawn structure") <<
+                        tr("With moderately weak pawn structure") <<
+                        tr("With moderately weak pawn structure") <<
+                        tr("With moderately strong pawn structure") <<
+                        tr("With moderately strong pawn structure") <<
+                        tr("With very strong pawn structure") <<
+                        tr("With very strong pawn structure") <<
+                        tr("With poor knight placement") <<
+                        tr("With poor knight placement") <<
+                        tr("With good knight placement") <<
+                        tr("With good knight placement") <<
+                        tr("With poor bishop placement") <<
+                        tr("With poor bishop placement") <<
+                        tr("With good bishop placement") <<
+                        tr("With good bishop placement") <<
+                        tr("With poor rook placement") <<
+                        tr("With poor rook placement") <<
+                        tr("With good rook placement") <<
+                        tr("With good rook placement") <<
+                        tr("With poor queen placement") <<
+                        tr("With poor queen placement") <<
+                        tr("With good queen placement") <<
+                        tr("With good queen placement") <<
+                        tr("With poor piece coordination") <<
+                        tr("With poor piece coordination") <<
+                        tr("With good piece coordination") <<
+                        tr("With good piece coordination") <<
+                        tr("White played the opening very poorly") <<
+                        tr("Black played the opening very poorly") <<
+                        tr("White played the opening poorly") <<
+                        tr("Black played the opening poorly") <<
+                        tr("White played the opening well") <<
+                        tr("Black played the opening well") <<
+                        tr("White played the opening very well") <<
+                        tr("Black played the opening very well") <<
+                        tr("White played the middlegame very poorly") <<
+                        tr("Black played the middlegame very poorly") <<
+                        tr("White played the middlegame poorly") <<
+                        tr("Black played the middlegame poorly") <<
+                        tr("White played the middlegame well") <<
+                        tr("Black played the middlegame well") <<
+                        tr("White played the middlegame very well") <<
+                        tr("Black played the middlegame very well") <<
+                        tr("White played the ending very poorly") <<
+                        tr("Black played the ending very poorly") <<
+                        tr("White played the ending poorly") <<
+                        tr("Black played the ending poorly") <<
+                        tr("White played the ending well") <<
+                        tr("Black played the ending well") <<
+                        tr("White played the ending very well") <<
+                        tr("Black played the ending very well") <<
+                        tr("With counterplay") <<
+                        tr("With counterplay") <<
+                        tr("With counterplay") <<
+                        tr("With counterplay") <<
+                        tr("With counterplay") <<
+                        tr("With counterplay") <<
+                        tr("Moderate time control pressure") <<
+                        tr("Moderate time control pressure") <<
+                        tr("Severe time control pressure") <<
+                        tr("Severe time control pressure") <<
+                        tr("With the idea") <<
+                        tr("Aimed against") <<
+                        tr("Better was") <<
+                        tr("Worse was") <<
+                        tr("Equivalent was") <<
+                        tr("RR") <<
+                        tr("N") <<
+                        tr("Weak point") <<
+                        tr("Endgame") <<
+                        tr("Line") <<
+                        tr("Diagonal") <<
+                        tr("Pair of bishops") <<
+                        tr("Pair of bishops") <<
+                        tr("Bishops of opposite color") <<
+                        tr("Bishops of the same color") <<
+                        "" << "" << "" << "" << "" << "" << // 160
+                        "" << "" << "" << "" << "" << "" << "" << "" << "" << "" <<
+                        "" << "" << "" << "" << "" << "" << "" << "" << "" << "" << //180
+                        "" << "" << "" << "" << "" << "" << "" << "" << "" << "" <<
+                        "" << "" << "" << "" << "" << "" << "" << "" << "" << "" << //200
+                        tr("Diagram");
 }
 
-static const QString g_nagStringListHTML[NagCount] = {
+static const QString g_nagStringListHTML[NagCount] =
+{
     "",
     "!",
     "?",
@@ -588,15 +606,15 @@ static const QString g_nagStringListHTML[NagCount] = {
     QString::fromUtf8("☍"), // "pair of bishops"
     QString::fromUtf8("❐"), // "bishops of opposite color"
     QString::fromUtf8("▞"), // "bishops of the same color"
-    0,0,0,0,0,0, // 160
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, //180
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, //200
+    0, 0, 0, 0, 0, 0, // 160
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //180
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //200
     "" // Diagram is displayed graphically in HTML
 };
 
 const QString& NagSet::nagToString(Nag nag)
 {
-	return g_nagStringList[nag];
+    return g_nagStringList[nag];
 }
 
 const QString& NagSet::nagToStringHTML(Nag nag)
@@ -606,11 +624,11 @@ const QString& NagSet::nagToStringHTML(Nag nag)
 
 QString NagSet::nagToMenuString(Nag nag)
 {
-    if (NagSet::g_nagStringListLong.count() == 0)
+    if(NagSet::g_nagStringListLong.count() == 0)
     {
         InitNagStringListLong();
     }
-    if (g_nagStringList[nag].length() <= 2)
+    if(g_nagStringList[nag].length() <= 2)
     {
         return QString("%1 (%2)").arg(g_nagStringList[nag]).arg(g_nagStringListLong[nag]);
     }
@@ -622,26 +640,32 @@ QString NagSet::nagToMenuString(Nag nag)
 
 Nag NagSet::fromString(const QString &nag)
 {
-    for (int i = 1; i < NagCount; ++i)
-		if (g_nagStringList[i] == nag)
-			return Nag(i);
-	return NullNag;
+    for(int i = 1; i < NagCount; ++i)
+        if(g_nagStringList[i] == nag)
+        {
+            return Nag(i);
+        }
+    return NullNag;
 }
 
 int NagSet::prefixCount(const QString &nag)
 {
-	QSet<QString> matches;
-    for (int i = 1; i < NagCount; ++i)
-		if (g_nagStringList[i].startsWith(nag))
-			matches.insert(g_nagStringList[i]);
-	return matches.count();
+    QSet<QString> matches;
+    for(int i = 1; i < NagCount; ++i)
+        if(g_nagStringList[i].startsWith(nag))
+        {
+            matches.insert(g_nagStringList[i]);
+        }
+    return matches.count();
 
 }
 
 void NagSet::removeNagRange(Nag from, Nag to)
 {
-	for (int i = count() - 1; i >= 0; i--)
-		if (at(i) >= from && at(i) <= to)
-			remove(i);
+    for(int i = count() - 1; i >= 0; i--)
+        if(at(i) >= from && at(i) <= to)
+        {
+            remove(i);
+        }
 }
 

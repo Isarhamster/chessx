@@ -10,7 +10,8 @@
 #include <QAbstractItemModel>
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class OpeningTreeWidget;
 }
 
@@ -20,7 +21,7 @@ class OpeningTree;
 class OpeningTreeWidget : public QWidget
 {
     Q_OBJECT
-    
+
 public:
     explicit OpeningTreeWidget(QWidget *parent = 0);
     ~OpeningTreeWidget();

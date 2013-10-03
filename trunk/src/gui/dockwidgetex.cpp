@@ -16,10 +16,10 @@ DockWidgetEx::DockWidgetEx(QWidget *parent, Qt::WindowFlags flags) :
             this, SLOT(onVisibilityChanged(bool)));
 }
 
-void DockWidgetEx::showEvent ( QShowEvent * event )
+void DockWidgetEx::showEvent(QShowEvent * event)
 {
     QDockWidget::showEvent(event);
-    if (isVisible())
+    if(isVisible())
     {
         raise();
     }

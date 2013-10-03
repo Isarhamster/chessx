@@ -37,24 +37,27 @@
 class IndexItem
 {
 public:
-	IndexItem();
-	~IndexItem();
+    IndexItem();
+    ~IndexItem();
 
     /** Adds an index pair to the IndexItem */
     void set(TagIndex tagIndex, ValueIndex valueIndex);
-	/** returns value of index stored at 'offset' with given 'size' */
+    /** returns value of index stored at 'offset' with given 'size' */
     ValueIndex valueIndex(TagIndex tagIndex) const;
     bool hasTagIndex(TagIndex tagIndex) const;
 
     /** Write the data of the instance to a QDataStream */
     void write(QDataStream& out) const;
-	/** Reads the data of the instance from a QDataStream.
-	 * All data is cleared first. */
-	void read(QDataStream& in);
-    const QMap<TagIndex,ValueIndex>& getTagMapping() const {return m_mapTagIndexToValueIndex;}
+    /** Reads the data of the instance from a QDataStream.
+     * All data is cleared first. */
+    void read(QDataStream& in);
+    const QMap<TagIndex, ValueIndex>& getTagMapping() const
+    {
+        return m_mapTagIndexToValueIndex;
+    }
 
 private:
-    QMap<TagIndex,ValueIndex> m_mapTagIndexToValueIndex;
+    QMap<TagIndex, ValueIndex> m_mapTagIndexToValueIndex;
 };
 
 #endif	// __INDEXITEM_H__

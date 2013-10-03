@@ -41,8 +41,9 @@ namespace Guess
 //    }
 //
 
-  const squareT
-knightAttacks[66][9] = {
+const squareT
+knightAttacks[66][9] =
+{
     { /* A1 */  C2, B3, NS, NS, NS, NS, NS, NS, NS },
     { /* B1 */  D2, A3, C3, NS, NS, NS, NS, NS, NS },
     { /* C1 */  A2, E2, B3, D3, NS, NS, NS, NS, NS },
@@ -119,8 +120,9 @@ knightAttacks[66][9] = {
 //    always be a NULL_SQUARE terminating the list of moves for each
 //    square.  Castling moves are not included here.
 
-  const squareT
-kingAttacks[66][9] = {
+const squareT
+kingAttacks[66][9] =
+{
     { /* A1 */  B1, A2, B2, NS, NS, NS, NS, NS, NS },
     { /* B1 */  A1, C1, A2, B2, C2, NS, NS, NS, NS },
     { /* C1 */  B1, D1, B2, C2, D2, NS, NS, NS, NS },

@@ -22,7 +22,11 @@ class MoveList : public QVector<Move>
 {
 public:
     MoveList() : QVector<Move>() {}
-    inline Move& add() { push_back(Move()); return back(); }
+    inline Move& add()
+    {
+        push_back(Move());
+        return back();
+    }
 };
 
 #endif // __MOVELIST_H__

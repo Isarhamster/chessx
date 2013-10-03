@@ -27,16 +27,16 @@ Unit tests for the IndexItem class
 class StringTagValuesTest : public QObject
 {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void initTestCase();
-	void init();
-	void cleanup();
-	void cleanupTestCase();
+    void initTestCase();
+    void init();
+    void cleanup();
+    void cleanupTestCase();
 
-	void testStringTagValues();
-	void testInputOutput();
+    void testStringTagValues();
+    void testInputOutput();
 
 };
 

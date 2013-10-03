@@ -49,34 +49,34 @@ int main(int argc, char** argv)
     QString shortSystemLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(2));
     QString fullSystemLang = QString("chessx_%1.qm").arg(QLocale::system().name().left(5));
 
-	// Language may have two forms: "pt_BR" or "pl"
+    // Language may have two forms: "pt_BR" or "pl"
     QString lang = QString("chessx_%1.qm").arg(AppSettings->getValue("/General/language").toString());
 
     QDir().mkpath(AppSettings->dataPath() + "/lang/");
 
-	QTranslator translator;
-    if (translator.load(QString(":i18n/") + lang) ||
-        translator.load(AppSettings->dataPath() + "/lang/" + lang) ||
-        translator.load(QString(":i18n/") + fullSystemLang) ||
-        translator.load(AppSettings->dataPath() + "/lang/" + fullSystemLang) ||
-        translator.load(QString(":i18n/") + shortSystemLang) ||
-        translator.load(AppSettings->dataPath() + "/lang/" + shortSystemLang) )
+    QTranslator translator;
+    if(translator.load(QString(":i18n/") + lang) ||
+            translator.load(AppSettings->dataPath() + "/lang/" + lang) ||
+            translator.load(QString(":i18n/") + fullSystemLang) ||
+            translator.load(AppSettings->dataPath() + "/lang/" + fullSystemLang) ||
+            translator.load(QString(":i18n/") + shortSystemLang) ||
+            translator.load(AppSettings->dataPath() + "/lang/" + shortSystemLang))
     {
         app.installTranslator(&translator);
     }
 
-	MainWindow* mainWindow = new MainWindow;
+    MainWindow* mainWindow = new MainWindow;
 
-	mainWindow->show();
+    mainWindow->show();
 
-	// Destroy main window and close application
+    // Destroy main window and close application
     app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
 
     startFileLog();
     int result = app.exec();
     stopFileLog();
 
-	delete AppSettings;
-	return result;
+    delete AppSettings;
+    return result;
 }
 

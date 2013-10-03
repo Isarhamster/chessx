@@ -11,14 +11,14 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 QWidget *EngineOptionListDelegate::createEditor(QWidget *parent,
-                                    const QStyleOptionViewItem &option,
-                                    const QModelIndex &index) const
+        const QStyleOptionViewItem &option,
+        const QModelIndex &index) const
 
 {
     if(index.column() == 4)
     {
         QStringList varList = m_model->getSelections(index);
-        if (!varList.size())
+        if(!varList.size())
         {
             return QStyledItemDelegate::createEditor(parent, option, index);
         }
@@ -42,10 +42,10 @@ void EngineOptionListDelegate::commitAndCloseEditor()
 }
 
 void EngineOptionListDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
-                                const QModelIndex &index) const
+        const QModelIndex &index) const
 {
     QComboBox *comboBox = qobject_cast<QComboBox*>(editor);
-    if (comboBox && m_model->getSelections(index).size())
+    if(comboBox && m_model->getSelections(index).size())
     {
         int selectedItem = comboBox->findText(comboBox->currentText());
         model->setData(index, comboBox->itemText(selectedItem), Qt::EditRole);
@@ -57,10 +57,10 @@ void EngineOptionListDelegate::setModelData(QWidget *editor, QAbstractItemModel 
 }
 
 void EngineOptionListDelegate::setEditorData(QWidget *editor,
-                                 const QModelIndex &index) const
+        const QModelIndex &index) const
 {
     QComboBox *comboBox = qobject_cast<QComboBox*>(editor);
-    if (comboBox && m_model->getSelections(index).size())
+    if(comboBox && m_model->getSelections(index).size())
     {
         comboBox->clear();
         QStringList varList = m_model->getSelections(index);
@@ -69,9 +69,13 @@ void EngineOptionListDelegate::setEditorData(QWidget *editor,
         QString currentText = index.model()->data(index, Qt::DisplayRole).toString();
         int selectedItem = comboBox->findText(currentText);
         if(selectedItem == -1)
+        {
             comboBox->setEditText(index.model()->data(index, Qt::DisplayRole).toString());
+        }
         else
+        {
             comboBox->setCurrentIndex(selectedItem);
+        }
     }
     else
     {
@@ -95,7 +99,7 @@ EngineOptionList::EngineOptionList(QWidget *parent) :
 }
 
 void EngineOptionList::setDB(const QList<EngineOptionData>& options,
-           OptionValueList& mapOptionValues)
+                             OptionValueList& mapOptionValues)
 {
     m_model = new EngineOptionModel(this);
     m_model->m_pOptionDataList = &options;

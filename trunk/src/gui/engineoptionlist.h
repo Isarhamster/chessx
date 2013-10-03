@@ -24,7 +24,10 @@ public:
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
     void setModelData(QWidget *editor, QAbstractItemModel *model,
                       const QModelIndex &index) const;
-    void setModel(EngineOptionModel* model) { m_model = model; }
+    void setModel(EngineOptionModel* model)
+    {
+        m_model = model;
+    }
 private slots:
     void commitAndCloseEditor();
 protected:
@@ -38,7 +41,7 @@ public:
     explicit EngineOptionList(QWidget *parent = 0);
 
     void setDB(const QList<EngineOptionData>& options,
-          OptionValueList& mapOptionValues);
+               OptionValueList& mapOptionValues);
 
     void resetModel();
 

@@ -12,9 +12,9 @@ class ToolMainWindow : public QMainWindow
     Q_OBJECT
 public:
     explicit ToolMainWindow(QWidget *parent = 0);
-    
+
 signals:
-    
+
 public slots:
     void saveConfig();
     void slotReconfigure();

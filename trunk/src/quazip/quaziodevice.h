@@ -8,20 +8,21 @@
 
 class QuaZIODevicePrivate;
 
-class QUAZIP_EXPORT QuaZIODevice: public QIODevice {
-  Q_OBJECT
+class QUAZIP_EXPORT QuaZIODevice: public QIODevice
+{
+    Q_OBJECT
 public:
-  QuaZIODevice(QIODevice *io, QObject *parent = NULL);
-  ~QuaZIODevice();
-  virtual bool flush();
-  virtual bool open(QIODevice::OpenMode);
-  virtual void close();
-  QIODevice *getIoDevice() const;
-  virtual bool isSequential() const;
+    QuaZIODevice(QIODevice *io, QObject *parent = NULL);
+    ~QuaZIODevice();
+    virtual bool flush();
+    virtual bool open(QIODevice::OpenMode);
+    virtual void close();
+    QIODevice *getIoDevice() const;
+    virtual bool isSequential() const;
 protected:
-  virtual qint64 readData(char *data, qint64 maxSize);
-  virtual qint64 writeData(const char *data, qint64 maxSize);
+    virtual qint64 readData(char *data, qint64 maxSize);
+    virtual qint64 writeData(const char *data, qint64 maxSize);
 private:
-  QuaZIODevicePrivate *d;
+    QuaZIODevicePrivate *d;
 };
 #endif // QUAZIP_QUAZIODEVICE_H

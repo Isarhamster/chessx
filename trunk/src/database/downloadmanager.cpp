@@ -59,7 +59,7 @@ DownloadManager::DownloadManager(QObject *parent) :
 void DownloadManager::doDownload(const QUrl &url)
 {
     QString filename = saveFileName(url);
-    if (QFile::exists(filename))
+    if(QFile::exists(filename))
     {
         emit onDownloadFinished(url, filename);
         return;
@@ -70,7 +70,7 @@ void DownloadManager::doDownload(const QUrl &url)
 
 void DownloadManager::doDownloadToPath(const QUrl &url, const QString& filename)
 {
-    if (url.isEmpty() || !url.isValid())
+    if(url.isEmpty() || !url.isValid())
     {
         qDebug() << "Error: Invalid/Empty Url";
         emit downloadError(url);
@@ -83,7 +83,7 @@ void DownloadManager::doDownloadToPath(const QUrl &url, const QString& filename)
     connect(reply, SIGNAL(finished()),
             SLOT(downloadFinished()));
 
-    destinationPaths.insert(url,filename);
+    destinationPaths.insert(url, filename);
     currentDownloads.append(reply);
 }
 
@@ -96,8 +96,10 @@ QString DownloadManager::saveFileName(const QUrl &url)
 
     QString basename = QFileInfo(path).fileName();
 
-    if (basename.isEmpty())
+    if(basename.isEmpty())
+    {
         basename = "download.pgn";
+    }
 
     return dir + "/" + basename;
 }
@@ -105,7 +107,7 @@ QString DownloadManager::saveFileName(const QUrl &url)
 bool DownloadManager::saveToDisk(const QString &filename, QIODevice *data)
 {
     QFile file(filename);
-    if (!file.open(QIODevice::WriteOnly))
+    if(!file.open(QIODevice::WriteOnly))
     {
         return false;
     }
@@ -118,11 +120,13 @@ bool DownloadManager::saveToDisk(const QString &filename, QIODevice *data)
 
 void DownloadManager::execute(QStringList args)
 {
-    if (args.isEmpty()) {
+    if(args.isEmpty())
+    {
         return;
     }
 
-    foreach (QString arg, args) {
+    foreach(QString arg, args)
+    {
         QUrl url = QUrl::fromEncoded(arg.toLocal8Bit());
         doDownload(url);
     }
@@ -132,10 +136,10 @@ void DownloadManager::downloadFinished()
 {
     QNetworkReply* reply = (QNetworkReply*) sender();
 
-    if (reply)
+    if(reply)
     {
         QUrl url = reply->url();
-        if (reply->error())
+        if(reply->error())
         {
             qDebug() << "Network Error " << reply->errorString();
             emit downloadError(url);
@@ -143,7 +147,7 @@ void DownloadManager::downloadFinished()
         else
         {
             QString filename = destinationPaths.value(url);
-            if (saveToDisk(filename, reply))
+            if(saveToDisk(filename, reply))
             {
                 emit onDownloadFinished(url, filename);
             }
@@ -162,7 +166,7 @@ void DownloadManager::downloadFinished()
         qDebug() << "Sender is not a QNetworkReply derived implementation";
     }
 
-    if (currentDownloads.isEmpty())
+    if(currentDownloads.isEmpty())
     {
         emit downloadManagerIdle();
     }

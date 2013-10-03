@@ -26,7 +26,8 @@ class QuaZipDirPrivate;
 * Note that since ZIP uses '/' on all platforms, the '\' separator is
 * not supported.
 */
-class QUAZIP_EXPORT QuaZipDir {
+class QUAZIP_EXPORT QuaZipDir
+{
 private:
     QSharedDataPointer<QuaZipDirPrivate> d;
 public:
@@ -47,7 +48,10 @@ public:
       \return \c true if either this and \a that use different QuaZip
       instances or if they point to different directories.
       */
-    inline bool operator!=(const QuaZipDir &that) {return !operator==(that);}
+    inline bool operator!=(const QuaZipDir &that)
+    {
+        return !operator==(that);
+    }
     /// operator==
     /**
       \return \c true if both this and \a that use the same QuaZip
@@ -64,7 +68,7 @@ public:
       * path from the root of the archive. Otherwise, it is interpreted
       * as a path relative to the current directory as was set by the
       * previous cd() or the constructor.
-      * 
+      *
       * Note that the subsequent path() call will not return a path
       * starting with '/' in all cases.
       */
@@ -87,8 +91,8 @@ public:
       \param sort Sorting mode (not supported yet).
       */
     QList<QuaZipFileInfo> entryInfoList(const QStringList &nameFilters,
-        QDir::Filters filters = QDir::NoFilter,
-        QDir::SortFlags sort = QDir::NoSort) const;
+                                        QDir::Filters filters = QDir::NoFilter,
+                                        QDir::SortFlags sort = QDir::NoSort) const;
     /// Returns the list of the entries in the directory.
     /**
       \overload
@@ -96,15 +100,15 @@ public:
       The same as entryInfoList(QStringList(), filters, sort).
       */
     QList<QuaZipFileInfo> entryInfoList(QDir::Filters filters = QDir::NoFilter,
-        QDir::SortFlags sort = QDir::NoSort) const;
+                                        QDir::SortFlags sort = QDir::NoSort) const;
     /// Returns the list of the entry names in the directory.
     /**
       The same as entryInfoList(nameFilters, filters, sort), but only
       returns entry names.
       */
     QStringList entryList(const QStringList &nameFilters,
-        QDir::Filters filters = QDir::NoFilter,
-        QDir::SortFlags sort = QDir::NoSort) const;
+                          QDir::Filters filters = QDir::NoFilter,
+                          QDir::SortFlags sort = QDir::NoSort) const;
     /// Returns the list of the entry names in the directory.
     /**
       \overload
@@ -112,7 +116,7 @@ public:
       The same as entryList(QStringList(), filters, sort).
       */
     QStringList entryList(QDir::Filters filters = QDir::NoFilter,
-        QDir::SortFlags sort = QDir::NoSort) const;
+                          QDir::SortFlags sort = QDir::NoSort) const;
     /// Returns \c true if the entry with the specified name exists.
     /**
       The &quot;..&quot; is considered to exist if the current directory

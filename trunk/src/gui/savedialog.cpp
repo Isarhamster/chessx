@@ -25,12 +25,12 @@
 
 SaveDialog::SaveDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
-	ui.setupUi(this);
-	QButtonGroup* group = new QButtonGroup(this);
-	group->addButton(ui.result1Button);
-	group->addButton(ui.result5Button);
-	group->addButton(ui.result0Button);
-	group->addButton(ui.resultNoneButton);
+    ui.setupUi(this);
+    QButtonGroup* group = new QButtonGroup(this);
+    group->addButton(ui.result1Button);
+    group->addButton(ui.result5Button);
+    group->addButton(ui.result0Button);
+    group->addButton(ui.resultNoneButton);
     connect(ui.buttonDiscardChanges, SIGNAL(clicked()), SLOT(discardChanges()));
 }
 
@@ -40,32 +40,41 @@ SaveDialog::~SaveDialog()
 
 QString formatTagValue(const QString& s)
 {
-	return (s.trimmed().isEmpty()) ? "?" : s;
+    return (s.trimmed().isEmpty()) ? "?" : s;
 }
 
 QString formatTagDate(const QString& s)
 {
     return (s.trimmed().isEmpty()) ?
-                PDInvalidDate.asString() :
-                PartialDate().fromString(s).asString();
+           PDInvalidDate.asString() :
+           PartialDate().fromString(s).asString();
 }
 
 int SaveDialog::save(Database* database, Game& game)
 {
     QString gameTitle;
     QString baseName = database->name();
-    if (baseName.isEmpty()) baseName = tr("Clipboard");
+    if(baseName.isEmpty())
+    {
+        baseName = tr("Clipboard");
+    }
 
-    if (game.tag(TagNameWhite).isEmpty() && game.tag(TagNameBlack).isEmpty())
+    if(game.tag(TagNameWhite).isEmpty() && game.tag(TagNameBlack).isEmpty())
     {
         gameTitle = "Save game to ";
     }
     else
     {
         QString name1 = game.tag(TagNameWhite);
-        if (name1.isEmpty()) name1 = "?";
+        if(name1.isEmpty())
+        {
+            name1 = "?";
+        }
         QString name2 = game.tag(TagNameBlack);
-        if (name2.isEmpty()) name2 = "?";
+        if(name2.isEmpty())
+        {
+            name2 = "?";
+        }
 
         gameTitle = QString("Save game '%1 vs. %2' to ").arg(name1).arg(name2);
     }
@@ -85,16 +94,18 @@ int SaveDialog::save(Database* database, Game& game)
     ui.whiteTeamEdit->setText(game.tag(TagNameWhiteTeam));
     ui.blackTeamEdit->setText(game.tag(TagNameBlackTeam));
     QList<QAbstractButton*> buttons = ui.result1Button->group()->buttons();
-    for (int i = 0; i < buttons.count(); ++i)
-        if (buttons[i]->text() == game.tag(TagNameResult))
-			buttons[i]->setChecked(true);
-	// Completion
+    for(int i = 0; i < buttons.count(); ++i)
+        if(buttons[i]->text() == game.tag(TagNameResult))
+        {
+            buttons[i]->setChecked(true);
+        }
+    // Completion
     setLineEdit(ui.whiteEdit, database, TagNameWhite);
     setLineEdit(ui.blackEdit, database, TagNameBlack);
     setLineEdit(ui.siteEdit,  database, TagNameSite);
     setLineEdit(ui.eventEdit, database, TagNameEvent);
-	int result = QDialog::exec();
-    if (result == Accepted)
+    int result = QDialog::exec();
+    if(result == Accepted)
     {
         game.setTag(TagNameWhite, formatTagValue(ui.whiteEdit->text()));
         game.setTag(TagNameBlack, formatTagValue(ui.blackEdit->text()));
@@ -104,43 +115,56 @@ int SaveDialog::save(Database* database, Game& game)
         game.setTag(TagNameDate, formatTagDate(ui.dateEdit->text()));
         game.setTag(TagNameEventDate, formatTagDate(ui.eventDateEdit->text()));
         game.setTag(TagNameResult, ui.result1Button->group()->checkedButton()->text());
-		// Optional tag
-        if (ui.whiteEloEdit->text().toInt() || game.tag(TagNameWhiteElo).toInt())
+        // Optional tag
+        if(ui.whiteEloEdit->text().toInt() || game.tag(TagNameWhiteElo).toInt())
+        {
             game.setTag(TagNameWhiteElo, ui.whiteEloEdit->text());
-        if (ui.blackEloEdit->text().toInt() || game.tag(TagNameBlackElo).toInt())
+        }
+        if(ui.blackEloEdit->text().toInt() || game.tag(TagNameBlackElo).toInt())
+        {
             game.setTag(TagNameBlackElo, ui.blackEloEdit->text());
+        }
 
         QString t = ui.timeControl->text();
         QString format = "H:mm:ss";
-        if (!t.isEmpty()) game.setTag(TagNameTimeControl, t);
+        if(!t.isEmpty())
+        {
+            game.setTag(TagNameTimeControl, t);
+        }
 
         QTime tt = ui.whiteStartTime->time();
-        if (tt.secsTo(QTime(0,0))>0)
+        if(tt.secsTo(QTime(0, 0)) > 0)
         {
             t = tt.toString(format);
             game.setTag(TagNameWhiteClock, t);
         }
 
         tt = ui.blackStartTime->time();
-        if (tt.secsTo(QTime(0,0))>0)
+        if(tt.secsTo(QTime(0, 0)) > 0)
         {
             t = tt.toString(format);
             game.setTag(TagNameBlackClock, t);
         }
 
         t = ui.whiteTeamEdit->text();
-        if (!t.isEmpty()) game.setTag(TagNameWhiteTeam, t);
+        if(!t.isEmpty())
+        {
+            game.setTag(TagNameWhiteTeam, t);
+        }
 
         t = ui.blackTeamEdit->text();
-        if (!t.isEmpty()) game.setTag(TagNameBlackTeam, t);
-	}
-	return result;
+        if(!t.isEmpty())
+        {
+            game.setTag(TagNameBlackTeam, t);
+        }
+    }
+    return result;
 }
 
 void SaveDialog::setLineEdit(QLineEdit* edit, Database* database, const QString &tagName)
 {
     QStringList words;
-    if ((tagName==TagNameWhite) || (tagName==TagNameBlack))
+    if((tagName == TagNameWhite) || (tagName == TagNameBlack))
     {
         words = database->index()->playerNames();
     }
@@ -156,15 +180,15 @@ void SaveDialog::setLineEdit(QLineEdit* edit, Database* database, const QString 
 
 void SaveDialog::accept()
 {
-    if ((PartialDate().fromString(ui.dateEdit->text()).isValid()) &&
-        (PartialDate().fromString(ui.eventDateEdit->text()).isValid()))
+    if((PartialDate().fromString(ui.dateEdit->text()).isValid()) &&
+            (PartialDate().fromString(ui.eventDateEdit->text()).isValid()))
     {
         //  dates are formatted properly
         QDialog::accept();
     }
     else
     {
-        MessageDialog::error(tr("Dates are not properly formatted!","Invalid Data"));
+        MessageDialog::error(tr("Dates are not properly formatted!", "Invalid Data"));
     }
 }
 

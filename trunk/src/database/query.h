@@ -30,61 +30,61 @@ class Search;
 class Query
 {
 public :
-	Query();
-	~Query();
-	/** @return the operator at index, or NullOperator otherwise */
-	Search::Operator searchOperator(int index) const;
-	/** @return the search at index, or NULL pointer otherwise. Do not delete the result. */
-	Search* search(int index);
-	/** @return the number of elements in the list */
-	int count() const;
-	/** @return the number of operators in the list */
-	int countOperators() const;
-	/** @return the number of operands (search definitions) in the list */
-	int countOperands() const;
-	/** @returns true if the element at index is a operand (search definition), false otherwise */
-	bool isElementSearch(int index) const;
-	/** @returns true if the element at index is a operator , false otherwise */
-	bool isElementOperator(int index) const;
-	/** @return true if the current list is a valid expression, false otherwise
-	 * Question: What to do if there are too many operands */
-	bool isValid();
+    Query();
+    ~Query();
+    /** @return the operator at index, or NullOperator otherwise */
+    Search::Operator searchOperator(int index) const;
+    /** @return the search at index, or NULL pointer otherwise. Do not delete the result. */
+    Search* search(int index);
+    /** @return the number of elements in the list */
+    int count() const;
+    /** @return the number of operators in the list */
+    int countOperators() const;
+    /** @return the number of operands (search definitions) in the list */
+    int countOperands() const;
+    /** @returns true if the element at index is a operand (search definition), false otherwise */
+    bool isElementSearch(int index) const;
+    /** @returns true if the element at index is a operator , false otherwise */
+    bool isElementOperator(int index) const;
+    /** @return true if the current list is a valid expression, false otherwise
+     * Question: What to do if there are too many operands */
+    bool isValid();
 
-	/** query modification methods */
-	/** Add a new operator to the list */
-	void append(Search::Operator op);
-	/** Add a new operand (search definition) to the list */
-	void append(const Search& search);
-	/** Change element at index to operator op, return true if successful, false otherwise */
-	bool set(int index, Search::Operator op);
-	/** Change element at index to operand search, return true if successful, false otherwise */
-	bool set(int index, const Search& search);
-	/** Remove element at index from list, return true if successful, false otherwise */
-	bool remove(int index);
-	/** Clear the list of all elements */
-	void clear();
+    /** query modification methods */
+    /** Add a new operator to the list */
+    void append(Search::Operator op);
+    /** Add a new operand (search definition) to the list */
+    void append(const Search& search);
+    /** Change element at index to operator op, return true if successful, false otherwise */
+    bool set(int index, Search::Operator op);
+    /** Change element at index to operand search, return true if successful, false otherwise */
+    bool set(int index, const Search& search);
+    /** Remove element at index from list, return true if successful, false otherwise */
+    bool remove(int index);
+    /** Clear the list of all elements */
+    void clear();
 private :
-	enum ElementType {SearchElement, OperatorElement};
-	typedef QList<Search::Operator> OperatorList;
-	typedef QList<Search*> SearchList;
-	typedef QList<int> IntList;
-	typedef QList<ElementType> ElementTypeList;
+    enum ElementType {SearchElement, OperatorElement};
+    typedef QList<Search::Operator> OperatorList;
+    typedef QList<Search*> SearchList;
+    typedef QList<int> IntList;
+    typedef QList<ElementType> ElementTypeList;
 
-	/** List of the operators */
-	OperatorList m_operator;
-	/** List of the operands (search items) */
-	SearchList m_search;
-	/** Holds the conceptual list index for each operator in m_operator */
-	IntList m_operatorMap;
-	/** Holds the conceptual list index for each operand in m_search */
-	IntList m_searchMap;
-	/** Defines whether each item in the conceptual list is a operator (OperatorElement)
-	 * or operand (SearchElement) */
-	ElementTypeList m_elementType;
+    /** List of the operators */
+    OperatorList m_operator;
+    /** List of the operands (search items) */
+    SearchList m_search;
+    /** Holds the conceptual list index for each operator in m_operator */
+    IntList m_operatorMap;
+    /** Holds the conceptual list index for each operand in m_search */
+    IntList m_searchMap;
+    /** Defines whether each item in the conceptual list is a operator (OperatorElement)
+     * or operand (SearchElement) */
+    ElementTypeList m_elementType;
 
-	/** Test if index is valid */
-	bool isValidIndex(unsigned int index) const;
-	bool internalCheck();
+    /** Test if index is valid */
+    bool isValidIndex(unsigned int index) const;
+    bool internalCheck();
 
 };
 

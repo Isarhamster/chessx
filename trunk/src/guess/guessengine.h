@@ -45,7 +45,8 @@ const unsigned int ENGINE_PAWN_KB =            1;  // Default pawn table size in
 // principalVarT
 //   Stores the principal variation at one search Ply depth.
 //
-struct principalVarT {
+struct principalVarT
+{
     unsigned int length;
     simpleMoveT move [ENGINE_MAX_PLY];
 };
@@ -56,10 +57,10 @@ struct principalVarT {
 //
 typedef unsigned char scoreFlagT;
 const scoreFlagT
-    SCORE_NONE  = 0,    // Not a useful score.
-    SCORE_EXACT = 1,    // Exact score.
-    SCORE_LOWER = 2,    // Lower bound, real score could be higher.
-    SCORE_UPPER = 3;    // Upper bound, real score could be lower.
+SCORE_NONE  = 0,    // Not a useful score.
+SCORE_EXACT = 1,    // Exact score.
+SCORE_LOWER = 2,    // Lower bound, real score could be higher.
+SCORE_UPPER = 3;    // Upper bound, real score could be lower.
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // transTableEntryT
@@ -69,7 +70,8 @@ const scoreFlagT
 //   a false hit.
 //   The best move is also stored, in a compact format to save space.
 //
-struct transTableEntryT {
+struct transTableEntryT
+{
     unsigned int    hash;              // Hash value.
     unsigned int    pawnhash;          // Pawn hash value, for extra safety check.
     short   score;             // Evaluation score.
@@ -84,7 +86,8 @@ struct transTableEntryT {
 // pawnTableEntryT
 //   Pawn structure score hash table entry.
 //
-struct pawnTableEntryT {
+struct pawnTableEntryT
+{
     unsigned int  pawnhash;           // Pawn hash value for this pawn structure.
     unsigned int  sig;                // Safety check value, to avoid false hits.
     short score;              // Positional score for pawn structure.
@@ -99,7 +102,8 @@ struct pawnTableEntryT {
 //   An entry is pushed onto the stack when a move is made, and
 //   popped off when the move is unmade.
 //
-struct repeatT {
+struct repeatT
+{
     unsigned int   hash;         // Position hash code.
     unsigned int   pawnhash;     // Position pawn-structure hash code.
     unsigned int   npieces;      // Total number of pieces in position.
@@ -111,7 +115,8 @@ struct repeatT {
 // Engine
 //   Class representing a chess engine.
 //
-class Engine {
+class Engine
+{
 private:
     Position RootPos;       // Position at start of search.
     Position Pos;           // Current position in search.
@@ -131,7 +136,7 @@ private:
     bool     IsOutOfTime;   // Becomes true when search is out of time.
     unsigned int     Ply;           // Current ply being examined.
     bool     EasyMove;      // True if the search indicates one move is
-                            //    far better than the others.
+    //    far better than the others.
     bool     HardMove;      // True if failed low at root on current depth.
     unsigned int     InNullMove;    // If > 0, in null move search so no PV updates.
     unsigned int     RepStackSize;         // Repetition stack size.
@@ -151,46 +156,50 @@ private:
     unsigned int      NumGameMoves;
 
 private:
-    int PieceValue (pieceT piece);
-    int SearchRoot (int depth, int alpha, int beta, MoveList * mlist);
-    int Search (int depth, int alpha, int beta, bool tryNullMove);
-    int Quiesce (int alpha, int beta);
-    int SEE (squareT from, squareT to);
-    void ScoreMoves (MoveList * mlist);
-    inline void DoMove (simpleMoveT * sm);
-    inline void UndoMove (simpleMoveT * sm);
-    inline void SetPVLength (void);
-    inline void UpdatePV (simpleMoveT * sm);
-    void Output (const char * format, ...);
-    void PrintPV (unsigned int depth, int score) { PrintPV (depth, score, ""); }
-    void PrintPV (unsigned int depth, int score, const char * annotation);
-    inline void PushRepeat (Position * pos);
-    inline void PopRepeat (void);
-    void StoreHash (int depth, scoreFlagT flag, int score,
-                    simpleMoveT * bestmove, bool isOnlyMove);
-    scoreFlagT ProbeHash (int depth, int * score, simpleMoveT * bestMove, bool * isOnlyMove);
+    int PieceValue(pieceT piece);
+    int SearchRoot(int depth, int alpha, int beta, MoveList * mlist);
+    int Search(int depth, int alpha, int beta, bool tryNullMove);
+    int Quiesce(int alpha, int beta);
+    int SEE(squareT from, squareT to);
+    void ScoreMoves(MoveList * mlist);
+    inline void DoMove(simpleMoveT * sm);
+    inline void UndoMove(simpleMoveT * sm);
+    inline void SetPVLength(void);
+    inline void UpdatePV(simpleMoveT * sm);
+    void Output(const char * format, ...);
+    void PrintPV(unsigned int depth, int score)
+    {
+        PrintPV(depth, score, "");
+    }
+    void PrintPV(unsigned int depth, int score, const char * annotation);
+    inline void PushRepeat(Position * pos);
+    inline void PopRepeat(void);
+    void StoreHash(int depth, scoreFlagT flag, int score,
+                   simpleMoveT * bestmove, bool isOnlyMove);
+    scoreFlagT ProbeHash(int depth, int * score, simpleMoveT * bestMove, bool * isOnlyMove);
 
-    inline void ClearKillerMoves (void);
-    inline void AddKillerMove (simpleMoveT * sm);
-    inline bool IsKillerMove (simpleMoveT * sm);
+    inline void ClearKillerMoves(void);
+    inline void AddKillerMove(simpleMoveT * sm);
+    inline bool IsKillerMove(simpleMoveT * sm);
 
-    inline void ClearHistoryValues (void);
-    inline void HalveHistoryValues (void);
-    inline void IncHistoryValue (simpleMoveT * sm, int increment);
-    inline int GetHistoryValue (simpleMoveT * sm);
+    inline void ClearHistoryValues(void);
+    inline void HalveHistoryValues(void);
+    inline void IncHistoryValue(simpleMoveT * sm, int increment);
+    inline int GetHistoryValue(simpleMoveT * sm);
 
-    int Score (int alpha, int beta);
-    inline int ScoreWhiteMaterial (void);
-    inline int ScoreBlackMaterial (void);
-    void ScorePawnStructure (pawnTableEntryT * pawnEntry);
-    bool IsMatingScore (int score);
-    bool IsGettingMatedScore (int score);
+    int Score(int alpha, int beta);
+    inline int ScoreWhiteMaterial(void);
+    inline int ScoreBlackMaterial(void);
+    void ScorePawnStructure(pawnTableEntryT * pawnEntry);
+    bool IsMatingScore(int score);
+    bool IsGettingMatedScore(int score);
 
-    bool OutOfTime (void);
-    void AdjustTime (bool easyMove);
+    bool OutOfTime(void);
+    void AdjustTime(bool easyMove);
 
 public:
-    Engine()   {
+    Engine()
+    {
         MaxDepth = ENGINE_MAX_PLY;      // A large default search depth
         SearchTime = 1000;  // Default search time: 1000 ms = one second.
         MinSearchTime = MaxSearchTime = SearchTime;
@@ -205,75 +214,129 @@ public:
         TranTableSequence = 0;
         PawnTable = NULL;
         PawnTableSize = 0;
-        SetHashTableKilobytes (ENGINE_HASH_KB);
-        SetPawnTableKilobytes (ENGINE_PAWN_KB);
+        SetHashTableKilobytes(ENGINE_HASH_KB);
+        SetPawnTableKilobytes(ENGINE_PAWN_KB);
         CallbackFunction = NULL;
         NumGameMoves = 0;
         RootPos.StdStart();
         Pos.StdStart();
         PV[0].length = 0;
     }
-    ~Engine()  { delete[] TranTable;  delete[] PawnTable; }
+    ~Engine()
+    {
+        delete[] TranTable;
+        delete[] PawnTable;
+    }
 
-    void SetSearchDepth (unsigned int ply) {
-        if (ply < 1) { ply = 1; }
-        if (ply > ENGINE_MAX_PLY) { ply = ENGINE_MAX_PLY; }
+    void SetSearchDepth(unsigned int ply)
+    {
+        if(ply < 1)
+        {
+            ply = 1;
+        }
+        if(ply > ENGINE_MAX_PLY)
+        {
+            ply = ENGINE_MAX_PLY;
+        }
         MaxDepth = ply;
     }
-    void SetSearchTime (unsigned int ms) {
+    void SetSearchTime(unsigned int ms)
+    {
         MinSearchTime = SearchTime = MaxSearchTime = ms;
     }
-    void SetSearchTime (unsigned int min, unsigned int ms, unsigned int max) {
+    void SetSearchTime(unsigned int min, unsigned int ms, unsigned int max)
+    {
         MinSearchTime = min;
         SearchTime = ms;
         MaxSearchTime = max;
     }
-    void SetDebug (bool b) { Debug = b; }
-    void SetPostMode (bool b) { PostInfo = b; }
-    bool InPostMode (void) { return PostInfo; }
-    void SetXBoardMode (bool b) { XBoardMode = b; }
-    bool InXBoardMode (void) { return XBoardMode; }
-    void SetPruning (bool b) { Pruning = b; }
-    void SetLogFile (FILE * fp) { LogFile = fp; }
-    void SetHashTableKilobytes (unsigned int sizeKB);
-    void SetPawnTableKilobytes (unsigned int sizeKB);
-    unsigned int NumHashTableEntries (void) { return TranTableSize; }
-    unsigned int NumPawnTableEntries (void) { return PawnTableSize; }
-    void ClearHashTable (void);
-    void ClearPawnTable (void);
-    void ClearHashTables (void) {
+    void SetDebug(bool b)
+    {
+        Debug = b;
+    }
+    void SetPostMode(bool b)
+    {
+        PostInfo = b;
+    }
+    bool InPostMode(void)
+    {
+        return PostInfo;
+    }
+    void SetXBoardMode(bool b)
+    {
+        XBoardMode = b;
+    }
+    bool InXBoardMode(void)
+    {
+        return XBoardMode;
+    }
+    void SetPruning(bool b)
+    {
+        Pruning = b;
+    }
+    void SetLogFile(FILE * fp)
+    {
+        LogFile = fp;
+    }
+    void SetHashTableKilobytes(unsigned int sizeKB);
+    void SetPawnTableKilobytes(unsigned int sizeKB);
+    unsigned int NumHashTableEntries(void)
+    {
+        return TranTableSize;
+    }
+    unsigned int NumPawnTableEntries(void)
+    {
+        return PawnTableSize;
+    }
+    void ClearHashTable(void);
+    void ClearPawnTable(void);
+    void ClearHashTables(void)
+    {
         ClearHashTable();
         ClearPawnTable();
     }
 
-    void SetCallbackFunction (bool (*fn)(Engine *, void *), void * data) {
+    void SetCallbackFunction(bool (*fn)(Engine *, void *), void * data)
+    {
         CallbackFunction = fn;
         CallbackData = data;
     }
 
-    unsigned int GetNodeCount (void) { return NodeCount; }
+    unsigned int GetNodeCount(void)
+    {
+        return NodeCount;
+    }
 
-    bool NoMatingMaterial (void);
-    bool FiftyMoveDraw (void);
-    unsigned int RepeatedPosition (void);
+    bool NoMatingMaterial(void);
+    bool FiftyMoveDraw(void);
+    unsigned int RepeatedPosition(void);
 
-    void SetPosition (Position * pos);
-    Position * GetPosition (void) { return &RootPos; }
-    void PlayMove (simpleMoveT * move);
-    void RetractMove (void);
-    int Score (void);
-    int ScoreMaterial (void);
-    principalVarT * GetPV (void) { return &(PV[0]); }
-    unsigned int PerfTest (unsigned int depth);
+    void SetPosition(Position * pos);
+    Position * GetPosition(void)
+    {
+        return &RootPos;
+    }
+    void PlayMove(simpleMoveT * move);
+    void RetractMove(void);
+    int Score(void);
+    int ScoreMaterial(void);
+    principalVarT * GetPV(void)
+    {
+        return &(PV[0]);
+    }
+    unsigned int PerfTest(unsigned int depth);
 
-    int Think (MoveList * mlist);
+    int Think(MoveList * mlist);
 };
 
 
 inline void
-Engine::SetPVLength (void)
+Engine::SetPVLength(void)
 {
-    if (Ply < ENGINE_MAX_PLY - 1)  {PV[Ply].length = Ply; }
+    if(Ply < ENGINE_MAX_PLY - 1)
+    {
+        PV[Ply].length = Ply;
+    }
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -281,17 +344,24 @@ Engine::SetPVLength (void)
 //   Updates the principal variation at the current Ply to
 //   include the specified move.
 inline void
-Engine::UpdatePV (simpleMoveT * sm)
+Engine::UpdatePV(simpleMoveT * sm)
 {
-    if (Ply >= ENGINE_MAX_PLY - 1) { return; }
-    if (InNullMove > 0) { return; }
+    if(Ply >= ENGINE_MAX_PLY - 1)
+    {
+        return;
+    }
+    if(InNullMove > 0)
+    {
+        return;
+    }
     // if (! Pos.IsLegalMove (sm)) { return; }
 
     PV[Ply].move[Ply] = *sm;
-    for (unsigned int j = Ply + 1; j < PV[Ply + 1].length; j++) {
-        PV[Ply].move[j] = PV[Ply+1].move[j];
+    for(unsigned int j = Ply + 1; j < PV[Ply + 1].length; j++)
+    {
+        PV[Ply].move[j] = PV[Ply + 1].move[j];
     }
-    PV[Ply].length = PV[Ply+1].length;
+    PV[Ply].length = PV[Ply + 1].length;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -308,23 +378,31 @@ Engine::UpdatePV (simpleMoveT * sm)
 //   since they would otherwise be searched last after all noncaptures.
 
 inline void
-Engine::ClearKillerMoves (void)
+Engine::ClearKillerMoves(void)
 {
-    for (unsigned int i=0; i < ENGINE_MAX_PLY; i++) {
+    for(unsigned int i = 0; i < ENGINE_MAX_PLY; i++)
+    {
         KillerMove[i][0].from = NULL_SQUARE;
         KillerMove[i][1].from = NULL_SQUARE;
     }
 }
 
 inline void
-Engine::AddKillerMove (simpleMoveT * sm)
+Engine::AddKillerMove(simpleMoveT * sm)
 {
-    if (sm->capturedPiece != EMPTY  &&  sm->score >= 0) { return; }
-    if (sm->promote != EMPTY  &&  sm->score >= 0) { return; }
+    if(sm->capturedPiece != EMPTY  &&  sm->score >= 0)
+    {
+        return;
+    }
+    if(sm->promote != EMPTY  &&  sm->score >= 0)
+    {
+        return;
+    }
     simpleMoveT * killer0 = &(KillerMove[Ply][0]);
     simpleMoveT * killer1 = &(KillerMove[Ply][1]);
-    if (killer0->from == sm->from  &&  killer0->to == sm->to
-          &&  killer0->movingPiece == sm->movingPiece) {
+    if(killer0->from == sm->from  &&  killer0->to == sm->to
+            &&  killer0->movingPiece == sm->movingPiece)
+    {
         return;
     }
     *killer1 = *killer0;
@@ -332,17 +410,19 @@ Engine::AddKillerMove (simpleMoveT * sm)
 }
 
 inline bool
-Engine::IsKillerMove (simpleMoveT * sm)
+Engine::IsKillerMove(simpleMoveT * sm)
 {
     simpleMoveT * killer0 = &(KillerMove[Ply][0]);
-    if (killer0->from == sm->from  &&  killer0->to == sm->to
-          &&  killer0->movingPiece == sm->movingPiece) {
-        return true;        
+    if(killer0->from == sm->from  &&  killer0->to == sm->to
+            &&  killer0->movingPiece == sm->movingPiece)
+    {
+        return true;
     }
     simpleMoveT * killer1 = &(KillerMove[Ply][1]);
-    if (killer1->from == sm->from  &&  killer1->to == sm->to
-          &&  killer1->movingPiece == sm->movingPiece) {
-        return true;        
+    if(killer1->from == sm->from  &&  killer1->to == sm->to
+            &&  killer1->movingPiece == sm->movingPiece)
+    {
+        return true;
     }
     return false;
 }
@@ -355,48 +435,59 @@ Engine::IsKillerMove (simpleMoveT * sm)
 //   scores. It is used to order non-capture moves after killers.
 
 inline void
-Engine::ClearHistoryValues (void)
+Engine::ClearHistoryValues(void)
 {
-    for (pieceT p = WK; p <= BP; p++) {
-        for (squareT to = A1; to <= H8; to++) {
+    for(pieceT p = WK; p <= BP; p++)
+    {
+        for(squareT to = A1; to <= H8; to++)
+        {
             History[p][to] = 0;
         }
     }
 }
 
 inline void
-Engine::HalveHistoryValues (void)
+Engine::HalveHistoryValues(void)
 {
     // Output("# Halving history values\n");
-    for (pieceT p = WK; p <= BP; p++) {
-        for (squareT to = A1; to <= H8; to++) {
+    for(pieceT p = WK; p <= BP; p++)
+    {
+        for(squareT to = A1; to <= H8; to++)
+        {
             History[p][to] /= 2;
         }
     }
 }
 
 inline void
-Engine::IncHistoryValue (simpleMoveT * sm, int increment)
+Engine::IncHistoryValue(simpleMoveT * sm, int increment)
 {
-    if (sm->capturedPiece != EMPTY  &&  sm->score >= 0) { return; }
-    if (sm->promote != EMPTY  &&  sm->score >= 0) { return; }
+    if(sm->capturedPiece != EMPTY  &&  sm->score >= 0)
+    {
+        return;
+    }
+    if(sm->promote != EMPTY  &&  sm->score >= 0)
+    {
+        return;
+    }
     pieceT p = sm->movingPiece;
     squareT to = sm->to;
-    ASSERT (p <= BP  &&  to <= H8);
+    ASSERT(p <= BP  &&  to <= H8);
     History[p][to] += increment;
     // Halve all history values if this one gets too large, to avoid
     // non-capture moves getting searched before captures:
-    if (History[p][to] >= ENGINE_MAX_HISTORY) {
+    if(History[p][to] >= ENGINE_MAX_HISTORY)
+    {
         HalveHistoryValues();
     }
 }
 
 inline int
-Engine::GetHistoryValue (simpleMoveT * sm)
+Engine::GetHistoryValue(simpleMoveT * sm)
 {
     pieceT p = sm->movingPiece;
     squareT to = sm->to;
-    ASSERT (p <= BP  &&  to <= H8);
+    ASSERT(p <= BP  &&  to <= H8);
     return History[p][to];
 }
 

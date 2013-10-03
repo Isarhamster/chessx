@@ -13,7 +13,7 @@ BoardSetupToolButton::BoardSetupToolButton(QWidget *parent) :
 {
 }
 
-void BoardSetupToolButton::mousePressEvent ( QMouseEvent * e )
+void BoardSetupToolButton::mousePressEvent(QMouseEvent * e)
 {
     QLabel::mousePressEvent(e);
     emit signalClicked(m_piece);
@@ -21,33 +21,37 @@ void BoardSetupToolButton::mousePressEvent ( QMouseEvent * e )
     slotSetSelected();
 }
 
-void BoardSetupToolButton::mouseReleaseEvent ( QMouseEvent * e )
+void BoardSetupToolButton::mouseReleaseEvent(QMouseEvent * e)
 {
     QLabel::mouseReleaseEvent(e);
 }
 
 void BoardSetupToolButton::resizeEvent(QResizeEvent * e)
 {
-    int w = e->size().width()-4;
-    int h = e->size().height()-4;
+    int w = e->size().width() - 4;
+    int h = e->size().height() - 4;
     QPixmap p1;
-    if (m_pixmap.isNull())
+    if(m_pixmap.isNull())
     {
-        p1 = (style()->standardIcon(QStyle::SP_TrashIcon)).pixmap(w,h);
+        p1 = (style()->standardIcon(QStyle::SP_TrashIcon)).pixmap(w, h);
     }
     else
     {
-        p1 = m_pixmap.scaled(w,h,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+        p1 = m_pixmap.scaled(w, h, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
     setPixmap(p1);
 }
 
 void BoardSetupToolButton::slotClearBackground(Piece p)
 {
-    if (p==m_piece)
+    if(p == m_piece)
+    {
         slotSetSelected();
+    }
     else
+    {
         setStyleSheet("QLabel { background-color: lightgray }");
+    }
 }
 
 void BoardSetupToolButton::slotSetSelected()

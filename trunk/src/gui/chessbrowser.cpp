@@ -21,8 +21,8 @@
 ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), toolBar(0), m_gameMenu(NULL)
 {
     setObjectName("ChessBrowser");
-	setContextMenuPolicy(Qt::CustomContextMenu);
-	setupMenu(showGameMenu);
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    setupMenu(showGameMenu);
 
     int fontsize = AppSettings->getValue("/GameText/FontSize").toInt();
     setFontSize(fontsize);
@@ -36,34 +36,42 @@ void ChessBrowser::setSource(const QUrl&)
 
 void ChessBrowser::showMove(int id)
 {
-	if (id)
-		selectAnchor(QString("move:%1").arg(id));
-	else {	// First move
-		QTextCursor cursor = textCursor();
-		cursor.movePosition(QTextCursor::Start);
-		setTextCursor(cursor);
-	}
+    if(id)
+    {
+        selectAnchor(QString("move:%1").arg(id));
+    }
+    else  	// First move
+    {
+        QTextCursor cursor = textCursor();
+        cursor.movePosition(QTextCursor::Start);
+        setTextCursor(cursor);
+    }
 }
 
 void ChessBrowser::selectAnchor(const QString& href)
 {
-	for (QTextBlock block = document()->begin(); block != document()->end(); block = block.next()) {
-		QTextBlock::iterator it;
-		for (it = block.begin(); !it.atEnd(); ++it) {
-			QTextFragment fragment = it.fragment();
-			if (!fragment.isValid())
-				continue;
-			QTextCharFormat format = fragment.charFormat();
-			if (format.isAnchor() && format.anchorHref() == href) {
-				QTextCursor cursor(document());
-				cursor.setPosition(fragment.position());
-				cursor.setPosition(fragment.position() + fragment.length(), QTextCursor::KeepAnchor);
-				setTextCursor(cursor);
-				ensureCursorVisible();
-				return;
-			}
-		}
-	}
+    for(QTextBlock block = document()->begin(); block != document()->end(); block = block.next())
+    {
+        QTextBlock::iterator it;
+        for(it = block.begin(); !it.atEnd(); ++it)
+        {
+            QTextFragment fragment = it.fragment();
+            if(!fragment.isValid())
+            {
+                continue;
+            }
+            QTextCharFormat format = fragment.charFormat();
+            if(format.isAnchor() && format.anchorHref() == href)
+            {
+                QTextCursor cursor(document());
+                cursor.setPosition(fragment.position());
+                cursor.setPosition(fragment.position() + fragment.length(), QTextCursor::KeepAnchor);
+                setTextCursor(cursor);
+                ensureCursorVisible();
+                return;
+            }
+        }
+    }
 }
 
 void ChessBrowser::saveConfig()
@@ -76,7 +84,7 @@ void ChessBrowser::slotReconfigure()
     AppSettings->layout(this);
 
     int fontSizeSettingValue = AppSettings->getValue("/GameText/FontSize").toInt();
-    if( fontSizeSettingValue != m_fontSize )
+    if(fontSizeSettingValue != m_fontSize)
     {
         setFontSize(fontSizeSettingValue);
     }
@@ -84,48 +92,53 @@ void ChessBrowser::slotReconfigure()
 
 void ChessBrowser::setupMenu(bool setupGameMenu)
 {
-	if (setupGameMenu) {
-		m_gameMenu = new QMenu(this);
+    if(setupGameMenu)
+    {
+        m_gameMenu = new QMenu(this);
         m_browserMenu = new QMenu(this);
-		connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
+        connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
         connect(m_browserMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 
         m_gameMenu->addAction((m_startComment = createAction(tr("Add start comment..."), EditAction::EditPrecomment)));
         m_gameMenu->addAction((m_addComment = createAction(tr("Add comment..."), EditAction::EditComment)));
 
-		// Nag menus
-		QMenu* nagMoveMenu = m_gameMenu->addMenu(tr("Add move symbol"));
-        for (int n = MoveNagStart; n <= MoveNagEnd; ++n)
-			if (n != SingularMove)
-				nagMoveMenu->addAction(createNagAction(Nag(n)));
-		QMenu* nagPositionMenu = m_gameMenu->addMenu(tr("Add evaluation symbol"));
-		nagPositionMenu->addAction(createNagAction(DrawishPosition));
-        for (int n = UnclearPosition; n <= BlackHasADecisiveAdvantage; ++n)
-			nagPositionMenu->addAction(createNagAction(Nag(n)));
-		nagPositionMenu->addAction(createNagAction(Nag(WhiteHasSufficientCompensationForMaterialDeficit)));
-		QMenu* nagSpecialMenu = m_gameMenu->addMenu(tr("Add other symbol"));
+        // Nag menus
+        QMenu* nagMoveMenu = m_gameMenu->addMenu(tr("Add move symbol"));
+        for(int n = MoveNagStart; n <= MoveNagEnd; ++n)
+            if(n != SingularMove)
+            {
+                nagMoveMenu->addAction(createNagAction(Nag(n)));
+            }
+        QMenu* nagPositionMenu = m_gameMenu->addMenu(tr("Add evaluation symbol"));
+        nagPositionMenu->addAction(createNagAction(DrawishPosition));
+        for(int n = UnclearPosition; n <= BlackHasADecisiveAdvantage; ++n)
+        {
+            nagPositionMenu->addAction(createNagAction(Nag(n)));
+        }
+        nagPositionMenu->addAction(createNagAction(Nag(WhiteHasSufficientCompensationForMaterialDeficit)));
+        QMenu* nagSpecialMenu = m_gameMenu->addMenu(tr("Add other symbol"));
         QMenu* subMenu;
         nagSpecialMenu->addAction(createNagAction(NagDiagram));
         nagSpecialMenu->addAction(createNagAction(WhiteHasTheInitiative));
         nagSpecialMenu->addAction(createNagAction(WhiteHasTheAttack));
         nagSpecialMenu->addAction(createNagAction(WhiteHasModerateCounterplay));
-		nagSpecialMenu->addAction(createNagAction(WithTheIdea));
-		nagSpecialMenu->addAction(createNagAction(BetterMove));
-		nagSpecialMenu->addAction(createNagAction(Novelty));
+        nagSpecialMenu->addAction(createNagAction(WithTheIdea));
+        nagSpecialMenu->addAction(createNagAction(BetterMove));
+        nagSpecialMenu->addAction(createNagAction(Novelty));
         nagSpecialMenu->addAction(createNagAction(WhiteIsInZugzwang));
         nagSpecialMenu->addAction(createNagAction(WeakPoint));
-		nagSpecialMenu->addAction(createNagAction(EndGame));
+        nagSpecialMenu->addAction(createNagAction(EndGame));
         nagSpecialMenu->addAction(createNagAction(WhiteHasSevereTimeControlPressure));
         subMenu = nagSpecialMenu->addMenu(tr("Bishops"));
         subMenu->addAction(createNagAction(WhiteHasAPairOfBishops));
         subMenu->addAction(createNagAction(BishopsOfOppositeColor));
         subMenu->addAction(createNagAction(BishopsOfSameColor));
 
-		m_gameMenu->addAction(m_removeNags = createAction(tr("Remove symbols"), EditAction::ClearNags));
+        m_gameMenu->addAction(m_removeNags = createAction(tr("Remove symbols"), EditAction::ClearNags));
         m_gameMenu->addSeparator();
         m_gameMenu->addAction((m_enumerateVariations1 = createAction(tr("Enumerate Variations A) B) C)"), EditAction::EnumerateVariations1)));
         m_gameMenu->addAction((m_enumerateVariations2 = createAction(tr("Enumerate Variations a) b) c)"), EditAction::EnumerateVariations2)));
-		m_gameMenu->addSeparator();
+        m_gameMenu->addSeparator();
         m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to main line"), EditAction::PromoteVariation)));
         m_gameMenu->addAction((m_VariationUp = createAction(tr("Move variation up"), EditAction::VariationUp)));
         m_gameMenu->addAction((m_VariationDown = createAction(tr("Move variation down"), EditAction::VariationDown)));
@@ -139,29 +152,31 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
         // Non-move oriented actions
         m_browserMenu->addAction((m_copyHtml = createAction(tr("Copy Html"), EditAction::CopyHtml)));
         m_browserMenu->addAction((m_copyHtml = createAction(tr("Copy Text"), EditAction::CopyText)));
-	}
+    }
 
-	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
 
 }
 
 void ChessBrowser::slotContextMenu(const QPoint& pos)
 {
-	// Handle non-game browser
-    if (!m_gameMenu)
+    // Handle non-game browser
+    if(!m_gameMenu)
     {
-		m_mainMenu->exec(mapToGlobal(pos));
-		return;
-	}
+        m_mainMenu->exec(mapToGlobal(pos));
+        return;
+    }
 
     const Game* game = 0;
     emit queryActiveGame(&game);
 
-	// Handle game browser
-    if (!game)
-		return;
-	QString link = anchorAt(pos);
-    if (!link.isEmpty())
+    // Handle game browser
+    if(!game)
+    {
+        return;
+    }
+    QString link = anchorAt(pos);
+    if(!link.isEmpty())
     {
         m_currentMove = link.section(':', 1).toInt();
 
@@ -205,40 +220,41 @@ void ChessBrowser::setFontSize(int size)
 
 void ChessBrowser::slotAction(QAction* action)
 {
-	if (m_actions.contains(action)) {
-		EditAction editAction = m_actions[action];
-		editAction.setMove(m_currentMove);
-		emit actionRequested(editAction);
-	}
+    if(m_actions.contains(action))
+    {
+        EditAction editAction = m_actions[action];
+        editAction.setMove(m_currentMove);
+        emit actionRequested(editAction);
+    }
 }
 
 QAction* ChessBrowser::createAction(const QString& name, EditAction::Type type)
 {
-	QAction* action = new QAction(name, this);
-	m_actions[action] = EditAction(type);
-	return action;
+    QAction* action = new QAction(name, this);
+    m_actions[action] = EditAction(type);
+    return action;
 }
 
 QAction* ChessBrowser::createNagAction(const Nag& nag)
 {
     QAction* action = new QAction(NagSet::nagToMenuString(nag), this);
-	m_actions[action] = EditAction(EditAction::AddNag, nag);
-	return action;
+    m_actions[action] = EditAction(EditAction::AddNag, nag);
+    return action;
 }
 
 void ChessBrowser::slotDisplayTime(const QString& text, Color color)
 {
-    if (toolBar)
+    if(toolBar)
     {
         QString objectName = QString("Clock") + QString::number(color);
         QLCDNumber* clock = toolBar->findChild<QLCDNumber*>(objectName);
-        if (clock)
+        if(clock)
         {
             clock->display(text);
         }
-        objectName = QString("Clock") + QString::number(1-(int)color);
+        objectName = QString("Clock") + QString::number(1 - (int)color);
         clock = toolBar->findChild<QLCDNumber*>(objectName);
-        if (clock)
+        if(clock)
         {
             clock->display("");
         }
@@ -250,8 +266,10 @@ void ChessBrowser::dragEnterEvent(QDragEnterEvent *event)
     const QMimeData *mimeData = event->mimeData();
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
 
-    if (gameMimeData)
+    if(gameMimeData)
+    {
         event->acceptProposedAction();
+    }
 }
 
 void ChessBrowser::dragMoveEvent(QDragMoveEvent *event)
@@ -268,7 +286,7 @@ void ChessBrowser::dropEvent(QDropEvent *event)
 {
     const QMimeData *mimeData = event->mimeData();
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
-    if (gameMimeData)
+    if(gameMimeData)
     {
         mergeGame(gameMimeData->m_index);
     }

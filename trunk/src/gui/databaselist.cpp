@@ -33,8 +33,8 @@ DatabaseList::DatabaseList(QWidget *parent) :
     connect(this, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(slotDoubleClicked(const QModelIndex&)));
     connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
-    connect(m_filterModel, SIGNAL(rowsInserted(const QModelIndex &,int,int)), SLOT(rowsChanged (const QModelIndex &,int,int)));
-    connect(m_model, SIGNAL(OnSelectIndex(const QModelIndex &)), SLOT(slotCurrentIndexChanged (const QModelIndex &)));
+    connect(m_filterModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(rowsChanged(const QModelIndex &, int, int)));
+    connect(m_model, SIGNAL(OnSelectIndex(const QModelIndex &)), SLOT(slotCurrentIndexChanged(const QModelIndex &)));
 
     setAlternatingRowColors(true);
     setDragEnabled(true);
@@ -67,13 +67,13 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
 {
     m_cell = indexAt(pos);
     // Make sure the right click occured on a cell!
-    if (m_cell.isValid())
+    if(m_cell.isValid())
     {
         QMenu menu(this);
-        bool bIsFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::UserRole).toString() == "Favorite";
-        bool bIsNotFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_FAVORITE), Qt::UserRole).toString().isEmpty();
-        bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH), Qt::UserRole).toString().isEmpty();
-        bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_OPEN), Qt::UserRole).toString() == "Open";
+        bool bIsFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_FAVORITE), Qt::UserRole).toString() == "Favorite";
+        bool bIsNotFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_FAVORITE), Qt::UserRole).toString().isEmpty();
+        bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString().isEmpty();
+        bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_OPEN), Qt::UserRole).toString() == "Open";
         menu.addAction(bIsOpen ? tr("Activate") : tr("Open"), this, SLOT(dbOpen()));
 
         menu.addAction(tr("Close"), this, SLOT(dbClose()))->setEnabled(bIsOpen && bHasPath);
@@ -87,8 +87,8 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         menu.addSeparator();
         QAction* action = menu.addAction("UTF8", this, SLOT(dbToggleUTF8()));
         action->setCheckable(true);
-        QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
-        bool bUtf8 = (utf8.compare("UTF8")==0);
+        QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_UTF8)).toString();
+        bool bUtf8 = (utf8.compare("UTF8") == 0);
         action->setChecked(bUtf8);
 
         menu.exec(mapToGlobal(pos));
@@ -116,15 +116,15 @@ void DatabaseList::save() const
 
 void DatabaseList::slotDoubleClicked(const QModelIndex& index)
 {
-    QString ts = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
-    QString utf8 = m_filterModel->data(m_filterModel->index(index.row(),DBLV_UTF8)).toString();
-    bool bUtf8 = (utf8.compare("UTF8")==0);
-    emit requestOpenDatabase(ts,bUtf8);
+    QString ts = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+    QString utf8 = m_filterModel->data(m_filterModel->index(index.row(), DBLV_UTF8)).toString();
+    bool bUtf8 = (utf8.compare("UTF8") == 0);
+    emit requestOpenDatabase(ts, bUtf8);
 }
 
 void DatabaseList::itemSelected(const QModelIndex& index)
 {
-    if (index.column()==0)
+    if(index.column() == 0)
     {
         slotDoubleClicked(index);
     }
@@ -133,63 +133,67 @@ void DatabaseList::itemSelected(const QModelIndex& index)
 void DatabaseList::dbOpen()
 {
     Q_ASSERT(m_cell.isValid());
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
-    QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
-    bool bUtf8 = (utf8.compare("UTF8")==0);
-    emit requestOpenDatabase(ts,bUtf8);
+    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
+    QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_UTF8)).toString();
+    bool bUtf8 = (utf8.compare("UTF8") == 0);
+    emit requestOpenDatabase(ts, bUtf8);
 }
 
 void DatabaseList::dbToggleUTF8()
 {
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
-    QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_UTF8)).toString();
-    bool bUtf8 = (utf8.compare("UTF8")==0);
+    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
+    QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_UTF8)).toString();
+    bool bUtf8 = (utf8.compare("UTF8") == 0);
     setFileUtf8(ts, !bUtf8);
 }
 
 void DatabaseList::dbClose()
 {
     Q_ASSERT(m_cell.isValid());
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
+    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
     emit requestCloseDatabase(ts);
 }
 
 void DatabaseList::dbAddToFavorites()
 {
     Q_ASSERT(m_cell.isValid());
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
-    setFileFavorite(ts,true,0);
+    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
+    setFileFavorite(ts, true, 0);
 }
 
 void DatabaseList::dbRemoveFromFavorites()
 {
     Q_ASSERT(m_cell.isValid());
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
-    setFileFavorite(ts,false,0);
+    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
+    setFileFavorite(ts, false, 0);
 }
 
-void DatabaseList::rowsChanged(const QModelIndex &,int start,int end)
+void DatabaseList::rowsChanged(const QModelIndex &, int start, int end)
 {
-    for (int i= start; i<= end; ++i)
-         setRowHeight(i, 24);
+    for(int i = start; i <= end; ++i)
+    {
+        setRowHeight(i, 24);
+    }
 }
 
 void DatabaseList::slotShowInFinder()
 {
     Q_ASSERT(m_cell.isValid());
-    QString pathIn = m_filterModel->data(m_filterModel->index(m_cell.row(),DBLV_PATH)).toString();
+    QString pathIn = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
     // Mac, Windows support folder or file.
 #if defined(Q_OS_WIN)
     QString param;
-    if (!QFileInfo(pathIn).isDir())
+    if(!QFileInfo(pathIn).isDir())
+    {
         param = QLatin1String("/select,");
+    }
     param += QDir::toNativeSeparators(pathIn);
     QProcess::startDetached("explorer.exe", QStringList(param));
 #elif defined(Q_OS_MAC)
     QStringList scriptArgs;
     scriptArgs << QLatin1String("-e")
                << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
-                                     .arg(pathIn);
+               .arg(pathIn);
     QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
     scriptArgs.clear();
     scriptArgs << QLatin1String("-e")
@@ -205,7 +209,7 @@ int DatabaseList::getLastIndex(const QString& s) const
 
 void DatabaseList::addFileOpen(const QString& s, bool utf8)
 {
-    m_model->addFileOpen(s,utf8);
+    m_model->addFileOpen(s, utf8);
 }
 
 void DatabaseList::setFileFavorite(const QString& s, bool bFavorite, int index)
@@ -241,8 +245,10 @@ void DatabaseList::dragEnterEvent(QDragEnterEvent *event)
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
 
-    if (gameMimeData || dbMimeData || event->mimeData()->hasUrls())
+    if(gameMimeData || dbMimeData || event->mimeData()->hasUrls())
+    {
         event->acceptProposedAction();
+    }
 }
 
 void DatabaseList::dragMoveEvent(QDragMoveEvent *event)
@@ -262,23 +268,23 @@ void DatabaseList::dropEvent(QDropEvent *event)
     const QMimeData *mimeData = event->mimeData();
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
-    if (gameMimeData)
+    if(gameMimeData)
     {
         QModelIndex index = indexAt(event->pos());
         appendGameToDataBase(index, gameMimeData->m_index);
     }
-    else if (dbMimeData)
+    else if(dbMimeData)
     {
         appendDataBaseToDataBase(event->pos(), dbMimeData->m_path);
     }
-    else if (mimeData->hasUrls())
+    else if(mimeData->hasUrls())
     {
         QList<QUrl> urlList = mimeData->urls();
         foreach(QUrl url, urlList)
         {
             QString ts = url.toString();
 
-            if (m_lastModifier == Qt::AltModifier)
+            if(m_lastModifier == Qt::AltModifier)
             {
                 emit requestLinkDatabase(ts);
             }
@@ -295,9 +301,9 @@ void DatabaseList::dropEvent(QDropEvent *event)
 void DatabaseList::appendGameToDataBase(QModelIndex index, int gameIndex)
 {
     // Make sure the drop occured on a cell!
-    if (index.isValid())
+    if(index.isValid())
     {
-        QString path = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
+        QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
         emit requestAppendGame(path, gameIndex);
     }
 }
@@ -306,9 +312,9 @@ void DatabaseList::appendDataBaseToDataBase(QPoint pos, QString src)
 {
     QModelIndex index = indexAt(pos);
     // Make sure the drop occured on a cell!
-    if (index.isValid())
+    if(index.isValid())
     {
-        QString path = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
+        QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
         emit requestAppendDatabase(path, src);
     }
 }
@@ -316,7 +322,7 @@ void DatabaseList::appendDataBaseToDataBase(QPoint pos, QString src)
 void DatabaseList::startToDrag(const QModelIndex& index)
 {
     DbMimeData *mimeData = new DbMimeData;
-    mimeData->m_path = m_filterModel->data(m_filterModel->index(index.row(),DBLV_PATH)).toString();
+    mimeData->m_path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
 
     QPixmap pixmap = style()->standardPixmap(QStyle::SP_FileIcon);
 

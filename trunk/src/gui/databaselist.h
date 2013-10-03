@@ -61,7 +61,7 @@ private slots:
     void dbOpen();
     void dbToggleUTF8();
     void dbClose();
-    void rowsChanged(const QModelIndex &,int start,int end);
+    void rowsChanged(const QModelIndex &, int start, int end);
 
 private:
     DatabaseListModel* m_model;

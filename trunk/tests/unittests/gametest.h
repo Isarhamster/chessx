@@ -28,44 +28,44 @@ Unit tests for the Game class.
 class GameTest : public QObject
 {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void initTestCase();
-	void init();
-	void cleanup();
-	void cleanupTestCase();
+    void initTestCase();
+    void init();
+    void cleanup();
+    void cleanupTestCase();
 
-	void testEmptyGame();
-	void testAddMove_data();
-	void testAddMove();
-	void testAddVariation_data();
-	void testAddVariation();
-	void testDumpNodes();
-	void testAnnotation();
-	void testLineLimits_data();
-	void testLineLimits();
-	void testNavigation_data();
-	void testNavigation();
-	void testTags();
-	void testCounters();
-	void testVariationManipulation();
+    void testEmptyGame();
+    void testAddMove_data();
+    void testAddMove();
+    void testAddVariation_data();
+    void testAddVariation();
+    void testDumpNodes();
+    void testAnnotation();
+    void testLineLimits_data();
+    void testLineLimits();
+    void testNavigation_data();
+    void testNavigation();
+    void testTags();
+    void testCounters();
+    void testVariationManipulation();
 
-   void testTags_data();
-	//void testName();
-	//void testLoad();
-	//void testCopyGameIntoNewDB();
-	//void testRemoveGame();
-	//  void testExecuteSearch();
-	//  void testSave();
+    void testTags_data();
+    //void testName();
+    //void testLoad();
+    //void testCopyGameIntoNewDB();
+    //void testRemoveGame();
+    //  void testExecuteSearch();
+    //  void testSave();
 private:
-   Game *m_game;
+    Game *m_game;
 
 };
 
 #endif
 
-/*    
+/*
       * bool isMainline(MoveId moveId = CURRENT_MOVE);
       * int currentMoveId() const;
       * QString annotation(MoveId moveId = CURRENT_MOVE,AnnotationPosition position = AfterMove) const;

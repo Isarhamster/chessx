@@ -17,8 +17,8 @@
 
 CopyDialog::CopyDialog(QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
-	ui.setupUi(this);
-	connect(ui.databaseList, SIGNAL(itemDoubleClicked(QListWidgetItem *)), SLOT(accept()));
+    ui.setupUi(this);
+    connect(ui.databaseList, SIGNAL(itemDoubleClicked(QListWidgetItem *)), SLOT(accept()));
 }
 
 CopyDialog::~CopyDialog()
@@ -27,19 +27,19 @@ CopyDialog::~CopyDialog()
 
 void CopyDialog::setDatabases(const QStringList& databases)
 {
-	ui.databaseList->clear();
-	ui.databaseList->addItems(databases);
-	ui.databaseList->setCurrentRow(0);
+    ui.databaseList->clear();
+    ui.databaseList->addItems(databases);
+    ui.databaseList->setCurrentRow(0);
 }
 
 int CopyDialog::getDatabase() const
 {
-	return ui.databaseList->currentRow();
+    return ui.databaseList->currentRow();
 }
 
 void CopyDialog::setMode(SrcMode mode)
 {
-    switch (mode)
+    switch(mode)
     {
     case SingleGame:
         ui.singleButton->setChecked(true);
@@ -55,10 +55,17 @@ void CopyDialog::setMode(SrcMode mode)
 
 int CopyDialog::getMode() const
 {
-	if (ui.singleButton->isChecked())
-		return SingleGame;
-	else if (ui.filterButton->isChecked())
-		return Filter;
-	else return AllGames;
+    if(ui.singleButton->isChecked())
+    {
+        return SingleGame;
+    }
+    else if(ui.filterButton->isChecked())
+    {
+        return Filter;
+    }
+    else
+    {
+        return AllGames;
+    }
 }
 

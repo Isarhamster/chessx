@@ -23,24 +23,24 @@ for copied games.  */
 
 class CopyDialog : public QDialog
 {
-	Q_OBJECT
-	public:
-        enum SrcMode {SingleGame, Filter, AllGames};
-		/** Create ChessX Preferences dialog */
-        CopyDialog(QWidget* parent = 0,
-                   Qt::WindowFlags f = 0);
-		/** Destroy the dialog */
-		virtual ~CopyDialog();
-		/** Set current board */
-		void setDatabases(const QStringList& databases);
-		/** Get target database */
-		int getDatabase() const;
-		/** Get selected mode. */
-		int getMode() const;
-        /** Set the preferred mode. */
-        void setMode(SrcMode mode);
-	private:
-		Ui::CopyDialog ui;
+    Q_OBJECT
+public:
+    enum SrcMode {SingleGame, Filter, AllGames};
+    /** Create ChessX Preferences dialog */
+    CopyDialog(QWidget* parent = 0,
+               Qt::WindowFlags f = 0);
+    /** Destroy the dialog */
+    virtual ~CopyDialog();
+    /** Set current board */
+    void setDatabases(const QStringList& databases);
+    /** Get target database */
+    int getDatabase() const;
+    /** Get selected mode. */
+    int getMode() const;
+    /** Set the preferred mode. */
+    void setMode(SrcMode mode);
+private:
+    Ui::CopyDialog ui;
 };
 
 

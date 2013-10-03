@@ -17,8 +17,10 @@ public:
 
     void setSource(const QUrl& name)
     {
-        if (name.scheme().isEmpty())
+        if(name.scheme().isEmpty())
+        {
             QTextBrowser::setSource(name);
+        }
     }
 };
 

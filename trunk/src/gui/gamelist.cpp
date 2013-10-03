@@ -30,21 +30,21 @@
 
 GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 {
-	setObjectName("GameList");
-	setWindowTitle(tr("Game list"));
-	m_model = new FilterModel(filter, this);
-	setModel(m_model);
-	connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
-	connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
+    setObjectName("GameList");
+    setWindowTitle(tr("Game list"));
+    m_model = new FilterModel(filter, this);
+    setModel(m_model);
+    connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
+    connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
-    connect(selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+    connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
             this, SLOT(slotItemSelected(QModelIndex)));
 #if QT_VERSION < 0x050000
     horizontalHeader()->setClickable(true);
 #else
     horizontalHeader()->setSectionsClickable(true);
 #endif
-	connect(horizontalHeader(), SIGNAL(sectionClicked(int)), SLOT(simpleSearch(int)));
+    connect(horizontalHeader(), SIGNAL(sectionClicked(int)), SLOT(simpleSearch(int)));
 
     slotReconfigure();
 
@@ -66,7 +66,7 @@ void GameList::slotItemSelected(const QModelIndex& index)
 
 void GameList::itemSelected(const QModelIndex& index)
 {
-	emit selected(m_model->filter()->indexToGame(index.row()));
+    emit selected(m_model->filter()->indexToGame(index.row()));
 }
 
 void GameList::setFilter(Filter* filter)
@@ -81,7 +81,7 @@ void GameList::slotContextMenu(const QPoint& pos)
     m_index = cell;
     QModelIndexList selection = selectedIndexes();
     // Make sure the right click occured on a cell!
-    if (cell.isValid() && selection.contains(cell))
+    if(cell.isValid() && selection.contains(cell))
     {
         QMenu menu(this);
         menu.addAction(tr("Copy games..."), this, SLOT(slotCopyGame()));
@@ -104,21 +104,26 @@ void GameList::simpleSearch(int tagid)
     QuickSearchDialog dlg(this);
 
     dlg.setTag(tagid);
-	if (m_model->filter()->count() <= 1)
+    if(m_model->filter()->count() <= 1)
+    {
         dlg.setMode(1);
-    if (dlg.exec() != QDialog::Accepted)
-		return;
+    }
+    if(dlg.exec() != QDialog::Accepted)
+    {
+        return;
+    }
 
     QString tag = m_model->GetColumnTags().at(dlg.tag());
     QString value = dlg.value();
-	if (value.isEmpty())
+    if(value.isEmpty())
     {
-		m_model->filter()->setAll(1);
+        m_model->filter()->setAll(1);
     }
-    else if ((dlg.tag() == 0) || (dlg.tag() == 7) || (dlg.tag() == 11))
-    {	// filter by number
-		NumberSearch ns(m_model->filter()->database(), value);
-        if (dlg.mode())
+    else if((dlg.tag() == 0) || (dlg.tag() == 7) || (dlg.tag() == 11))
+    {
+        // filter by number
+        NumberSearch ns(m_model->filter()->database(), value);
+        if(dlg.mode())
         {
             m_model->filter()->executeSearch(ns, Search::Operator(dlg.mode()));
         }
@@ -126,15 +131,15 @@ void GameList::simpleSearch(int tagid)
         {
             m_model->filter()->executeSearch(ns);
         }
-	}
+    }
     else
     {
         QStringList list = value.split("-", QString::SkipEmptyParts);
-        if (list.size()>1)
+        if(list.size() > 1)
         {
             // Filter a range
-            TagSearch ts(m_model->filter()->database(), tag, list.at(0),list.at(1));
-            if (dlg.mode())
+            TagSearch ts(m_model->filter()->database(), tag, list.at(0), list.at(1));
+            if(dlg.mode())
             {
                 m_model->filter()->executeSearch(ts, Search::Operator(dlg.mode()));
             }
@@ -147,7 +152,7 @@ void GameList::simpleSearch(int tagid)
         {
             // Filter tag using partial values
             TagSearch ts(m_model->filter()->database(), tag, value);
-            if (dlg.mode())
+            if(dlg.mode())
             {
                 m_model->filter()->executeSearch(ts, Search::Operator(dlg.mode()));
             }
@@ -156,9 +161,9 @@ void GameList::simpleSearch(int tagid)
                 m_model->filter()->executeSearch(ts);
             }
         }
-	}
+    }
     updateFilter();
-	emit searchDone();
+    emit searchDone();
 }
 
 void GameList::slotFilterListByPlayer(QString s)
@@ -167,7 +172,7 @@ void GameList::slotFilterListByPlayer(QString s)
     TagSearch ts(m_model->filter()->database(),  TagNameWhite, s);
     TagSearch ts2(m_model->filter()->database(), TagNameBlack, s);
     m_model->filter()->executeSearch(ts);
-    m_model->filter()->executeSearch(ts2,Search::Or);
+    m_model->filter()->executeSearch(ts2, Search::Or);
     updateFilter();
     emit raiseRequest();
     emit searchDone();
@@ -179,7 +184,7 @@ void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString playe
     TagSearch ts(m_model->filter()->database(),  tag, player);
     TagSearch ts3(m_model->filter()->database(), TagNameECO,   eco);
     m_model->filter()->executeSearch(ts);
-    m_model->filter()->executeSearch(ts3,Search::And);
+    m_model->filter()->executeSearch(ts3, Search::And);
     updateFilter();
     emit raiseRequest();
     emit searchDone();
@@ -202,8 +207,8 @@ void GameList::slotFilterListByEventPlayer(QString player, QString event)
     TagSearch ts2(m_model->filter()->database(), TagNameBlack, player);
     TagSearch ts3(m_model->filter()->database(), TagNameEvent, event);
     m_model->filter()->executeSearch(ts);
-    m_model->filter()->executeSearch(ts2,Search::Or);
-    m_model->filter()->executeSearch(ts3,Search::And);
+    m_model->filter()->executeSearch(ts2, Search::Or);
+    m_model->filter()->executeSearch(ts3, Search::And);
     updateFilter();
     emit raiseRequest();
     emit searchDone();
@@ -221,11 +226,12 @@ void GameList::slotFilterListByEco(QString s)
 
 void GameList::selectGame(int index)
 {
-	int i = m_model->filter()->gameToIndex(index);
-	if (i != -1) {
-		setCurrentIndex(m_model->index(i, 0));
-		selectRow(i);
-	}
+    int i = m_model->filter()->gameToIndex(index);
+    if(i != -1)
+    {
+        setCurrentIndex(m_model->index(i, 0));
+        selectRow(i);
+    }
 }
 
 void GameList::updateFilter()

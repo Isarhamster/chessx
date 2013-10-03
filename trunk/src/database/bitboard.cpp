@@ -58,7 +58,8 @@ const quint64 A6 = H5 << 1, B6 = A6 << 1, C6 = B6 << 1, D6 = C6 << 1, E6 = D6 <<
 const quint64 A7 = H6 << 1, B7 = A7 << 1, C7 = B7 << 1, D7 = C7 << 1, E7 = D7 << 1, F7 = E7 << 1, G7 = F7 << 1, H7 = G7 << 1;
 const quint64 A8 = H7 << 1, B8 = A8 << 1, C8 = B8 << 1, D8 = C8 << 1, E8 = D8 << 1, F8 = E8 << 1, G8 = F8 << 1, H8 = G8 << 1;
 
-const unsigned int RotateL90[64] = {
+const unsigned int RotateL90[64] =
+{
     h1, h2, h3, h4, h5, h6, h7, h8,
     g1, g2, g3, g4, g5, g6, g7, g8,
     f1, f2, f3, f4, f5, f6, f7, f8,
@@ -69,7 +70,8 @@ const unsigned int RotateL90[64] = {
     a1, a2, a3, a4, a5, a6, a7, a8,
 };
 
-const unsigned int RotateR45[64] = {
+const unsigned int RotateR45[64] =
+{
     a1, b8, c7, d6, e5, f4, g3, h2,
     a2, b1, c8, d7, e6, f5, g4, h3,
     a3, b2, c1, d8, e7, f6, g5, h4,
@@ -80,7 +82,8 @@ const unsigned int RotateR45[64] = {
     a8, b7, c6, d5, e4, f3, g2, h1
 };
 
-const unsigned int RotateL45[64] = {
+const unsigned int RotateL45[64] =
+{
     a2, b3, c4, d5, e6, f7, g8, h1,
     a3, b4, c5, d6, e7, f8, g1, h2,
     a4, b5, c6, d7, e8, f1, g2, h3,
@@ -91,7 +94,8 @@ const unsigned int RotateL45[64] = {
     a1, b2, c3, d4, e5, f6, g7, h8
 };
 
-const uchar Castle[64] = {
+const uchar Castle[64] =
+{
     ~4, 255, 255, 255, ~5, 255, 255,  ~1,
     255, 255, 255, 255, 255, 255, 255, 255,
     255, 255, 255, 255, 255, 255, 255, 255,
@@ -138,10 +142,10 @@ inline unsigned int getFirstBitAndClear64(quint64& bb)
     register quint64 x = bb & -(qint64)bb;
     bb ^= x;
 #ifdef __GNUG__
-    return x ? (63-__builtin_clzll(x)) : 0;
+    return x ? (63 - __builtin_clzll(x)) : 0;
 #elif _MSC_VER
 #ifdef __x86_64__
-    if (x)
+    if(x)
     {
         register unsigned long r;
         _BitScanReverse64(&r, x);
@@ -149,14 +153,14 @@ inline unsigned int getFirstBitAndClear64(quint64& bb)
     }
     return 0;
 #else
-    if (x)
+    if(x)
     {
         register unsigned long r;
         unsigned long y = (x >> 32);
-        if (y)
+        if(y)
         {
             _BitScanReverse(&r, y);
-            return 32+r;
+            return 32 + r;
         }
         _BitScanReverse(&r, x);
         return r;
@@ -167,12 +171,35 @@ inline unsigned int getFirstBitAndClear64(quint64& bb)
     // SBE - After a fair bit of testing, this is the fastest portable version
     // i could come up with, it's about twice as fast as shift-testing 64 times.
     register unsigned int r =  0;
-    if (!(x & 0xffffffff)) { x >>= 32; r |= 32; }
-    if (!(x & 0xffff)) { x >>= 16; r |= 16; }
-    if (!(x & 0xff)) { x >>= 8; r |= 8; }
-    if (!(x & 0xf)) { x >>= 4; r |= 4; }
-    if (!(x & 0x3)) { x >>= 2; r |= 2; }
-    if (!(x & 0x1)) { r |= 1; }
+    if(!(x & 0xffffffff))
+    {
+        x >>= 32;
+        r |= 32;
+    }
+    if(!(x & 0xffff))
+    {
+        x >>= 16;
+        r |= 16;
+    }
+    if(!(x & 0xff))
+    {
+        x >>= 8;
+        r |= 8;
+    }
+    if(!(x & 0xf))
+    {
+        x >>= 4;
+        r |= 4;
+    }
+    if(!(x & 0x3))
+    {
+        x >>= 2;
+        r |= 2;
+    }
+    if(!(x & 0x1))
+    {
+        r |= 1;
+    }
     return r;
 #endif
 }
@@ -181,26 +208,32 @@ inline unsigned int getFirstBitAndClear64(quint64& bb)
 BitBoard::BitBoard()
 {
     memset(this, 0, sizeof(BitBoard));
-    if (!bitBoardInitRun)
+    if(!bitBoardInitRun)
+    {
         bitBoardInit();
+    }
     m_epSquare = NoEPSquare;
 }
 
 bool BitBoard::isCheckmate() const
 {
     MoveList moves(generateMoves());
-    for (int i = 0; i < moves.size(); ++i)
-        if (!isIntoCheck(moves[i]))
+    for(int i = 0; i < moves.size(); ++i)
+        if(!isIntoCheck(moves[i]))
+        {
             return false;
+        }
     return isCheck();
 }
 
 bool BitBoard::isStalemate() const
 {
     MoveList moves(generateMoves());
-    for (int i = 0; i < moves.size(); ++i)
-        if (!isIntoCheck(moves[i]))
+    for(int i = 0; i < moves.size(); ++i)
+        if(!isIntoCheck(moves[i]))
+        {
             return false;
+        }
     return !isCheck();
 }
 
@@ -208,33 +241,47 @@ void BitBoard::removeIllegal(const Move& move, quint64& b) const
 {
     quint64 mask = 1;
     Move m = move;
-    for (int sq = 0; sq < 64; ++sq) {
-        if (b & mask) {
+    for(int sq = 0; sq < 64; ++sq)
+    {
+        if(b & mask)
+        {
             m.setFrom(sq);
-            if (isIntoCheck(m))
+            if(isIntoCheck(m))
+            {
                 b &= ~mask;
+            }
         }
         mask <<= 1;
     }
 }
 
-inline QString sanPiece(int piece, bool translate=false)
+inline QString sanPiece(int piece, bool translate = false)
 {
-    if (!translate)
+    if(!translate)
+    {
         return QString(" KQRBN"[piece]);
+    }
 
     QString pieceString = AppSettings->getValue("/GameText/PieceString").toString();
-    if (pieceString.length() == 6)
-        return QString(pieceString.at(piece));
-
-    switch (piece)
+    if(pieceString.length() == 6)
     {
-        case 0: return " ";
-        case 1: return "&#x2654;";
-        case 2: return "&#x2655;";
-        case 3: return "&#x2656;";
-        case 4: return "&#x2657;";
-        case 5: return "&#x2658;";
+        return QString(pieceString.at(piece));
+    }
+
+    switch(piece)
+    {
+    case 0:
+        return " ";
+    case 1:
+        return "&#x2654;";
+    case 2:
+        return "&#x2655;";
+    case 3:
+        return "&#x2656;";
+    case 4:
+        return "&#x2657;";
+    case 5:
+        return "&#x2658;";
     }
 
     return " ";
@@ -247,22 +294,33 @@ QString BitBoard::moveToSan(const Move& move, bool translate) const
     int to = move.to();
     bool isPawn = m_piece[from] == Pawn;
 
-    if (move.isNullMove()) {
+    if(move.isNullMove())
+    {
         san = "--";
         return san;
     }
 
-    if (move.isCastling()) {
-        if (from < to)
+    if(move.isCastling())
+    {
+        if(from < to)
+        {
             san = "O-O";
-        else	san = "O-O-O";
-    } else {
-        if (!isPawn) {
+        }
+        else
+        {
+            san = "O-O-O";
+        }
+    }
+    else
+    {
+        if(!isPawn)
+        {
             san = sanPiece(m_piece[from], translate);
 
             // We may need disambiguation
             quint64 others = 0;
-            switch (m_piece[from]) {
+            switch(m_piece[from])
+            {
             case Knight:
                 others = m_knights & knightAttacksFrom(to);
                 break;
@@ -286,26 +344,43 @@ QString BitBoard::moveToSan(const Move& move, bool translate) const
             others &= m_occupied_co[m_stm];
             // Do not disambiguate with moves that put oneself in check.
             //    This is an expensive operation of dubious value, but people seem to want it
-            if (others)
+            if(others)
+            {
                 removeIllegal(move, others);
-            if (others) {
+            }
+            if(others)
+            {
                 bool row = false, column = false;
-                if (others & bb_rankMask[Rank(from)])
+                if(others & bb_rankMask[Rank(from)])
+                {
                     column = true;
-                if (others & bb_fileMask[File(from)])
+                }
+                if(others & bb_fileMask[File(from)])
+                {
                     row = true;
-                else	column = true;
-                if (column)
+                }
+                else
+                {
+                    column = true;
+                }
+                if(column)
+                {
                     san += 'a' + File(from);
-                if (row)
+                }
+                if(row)
+                {
                     san += '1' + Rank(from);
+                }
             }
         }
 
         //capture x
-        if (m_piece[to] || (move.isEnPassant())) {
-            if (isPawn)
+        if(m_piece[to] || (move.isEnPassant()))
+        {
+            if(isPawn)
+            {
                 san += 'a' + File(from);
+            }
             san += 'x';
         }
 
@@ -314,17 +389,24 @@ QString BitBoard::moveToSan(const Move& move, bool translate) const
         san += '1' + Rank(to);
     }
 
-    if (move.isPromotion()) {
+    if(move.isPromotion())
+    {
         san += '=';
         san += sanPiece(move.promoted(), translate);
     }
 
     BitBoard check(*this);
     check.doMove(move);
-    if (check.isCheck()) {
-        if (check.isCheckmate())
+    if(check.isCheck())
+    {
+        if(check.isCheckmate())
+        {
             san += '#';
-        else	san += '+';
+        }
+        else
+        {
+            san += '+';
+        }
     }
 
     return san;
@@ -356,22 +438,40 @@ bool BitBoard::isMovable(const Square from) const
 {
     Q_ASSERT(from < 64);
 
-    if (m_occupied_co[m_stm] & SetBit(from)) {
+    if(m_occupied_co[m_stm] & SetBit(from))
+    {
         quint64 squares = 0;
-        switch (m_piece[from]) {
-        case Pawn:	squares = pawnMovesFrom(from); break;
-        case Knight:	squares = knightAttacksFrom(from); break;
-        case Bishop:	squares = bishopAttacksFrom(from); break;
-        case Rook:	squares = rookAttacksFrom(from); break;
-        case Queen:	squares = queenAttacksFrom(from); break;
-        case King:	squares = kingAttacksFrom(m_ksq[m_stm]); break;
-        default: break;
+        switch(m_piece[from])
+        {
+        case Pawn:
+            squares = pawnMovesFrom(from);
+            break;
+        case Knight:
+            squares = knightAttacksFrom(from);
+            break;
+        case Bishop:
+            squares = bishopAttacksFrom(from);
+            break;
+        case Rook:
+            squares = rookAttacksFrom(from);
+            break;
+        case Queen:
+            squares = queenAttacksFrom(from);
+            break;
+        case King:
+            squares = kingAttacksFrom(m_ksq[m_stm]);
+            break;
+        default:
+            break;
         }
         squares &= ~m_occupied_co[m_stm];
-        while (squares) {
+        while(squares)
+        {
             Square to = getFirstBitAndClear64(squares);
-            if (prepareMove(from, to).isLegal())
+            if(prepareMove(from, to).isLegal())
+            {
                 return true;
+            }
         }
     }
     return false;
@@ -383,27 +483,47 @@ void BitBoard::setAt(const Square s, const Piece p)
     Q_ASSERT(isValidPiece(p) || p == Empty);
 
     quint64 bit = SetBit(s);
-    if (m_occupied & bit)
+    if(m_occupied & bit)
+    {
         removeAt(s);
+    }
 
     PieceType pt = pieceType(p);
-    if (pt == None)
+    if(pt == None)
+    {
         return;
+    }
 
     Color _color = pieceColor(p);
     ++m_pieceCount[_color];
-    switch (pt) {
-    case Pawn:	m_pawns   |= bit; ++m_pawnCount[_color]; break;
-    case Knight:	m_knights |= bit; break;
-    case Bishop:	m_bishops |= bit; break;
-    case Rook:	m_rooks   |= bit; break;
-    case Queen:	m_queens  |= bit; break;
-    case King:	if (m_kings & m_occupied_co[_color])
+    switch(pt)
+    {
+    case Pawn:
+        m_pawns   |= bit;
+        ++m_pawnCount[_color];
+        break;
+    case Knight:
+        m_knights |= bit;
+        break;
+    case Bishop:
+        m_bishops |= bit;
+        break;
+    case Rook:
+        m_rooks   |= bit;
+        break;
+    case Queen:
+        m_queens  |= bit;
+        break;
+    case King:
+        if(m_kings & m_occupied_co[_color])
+        {
             removeAt(m_ksq[_color]);
+        }
         m_kings   |= bit;
         m_ksq[_color] = s;
         break;
-    default: break; // ERROR
+    default:
+        break; // ERROR
     }
 
     m_piece[s] = pt;
@@ -419,24 +539,39 @@ void BitBoard::removeAt(const Square s)
     Q_ASSERT(s < 64);
 
     quint64 bit = SetBit(s);
-    if (!(m_occupied & bit))
+    if(!(m_occupied & bit))
+    {
         return;
+    }
 
     Color _color = m_occupied_co[White] & bit ? White : Black;
     --m_pieceCount[_color];
-    switch (m_piece[s]) {
-    case Pawn:	m_pawns   ^= bit; --m_pawnCount[_color]; break;
-    case Knight:	m_knights ^= bit; break;
-    case Bishop:	m_bishops ^= bit; break;
-    case Rook:	m_rooks   ^= bit;
+    switch(m_piece[s])
+    {
+    case Pawn:
+        m_pawns   ^= bit;
+        --m_pawnCount[_color];
+        break;
+    case Knight:
+        m_knights ^= bit;
+        break;
+    case Bishop:
+        m_bishops ^= bit;
+        break;
+    case Rook:
+        m_rooks   ^= bit;
         m_castle &= Castle[s];
         break;
-    case Queen:	m_queens  ^= bit; break;
-    case King:	m_kings   ^= bit;
+    case Queen:
+        m_queens  ^= bit;
+        break;
+    case King:
+        m_kings   ^= bit;
         m_ksq[_color] = InvalidSquare;
         destroyCastle(_color);
         break;
-    default: break; // ERROR
+    default:
+        break; // ERROR
     }
 
     m_piece[s] = Empty;
@@ -454,31 +589,55 @@ bool BitBoard::isValidFen(const QString& fen) const
 
 bool BitBoard::fromFen(const QString& fen)
 {
-    if (isValidFen(fen))
+    if(isValidFen(fen))
+    {
         return fromGoodFen(fen);
+    }
     return false;
 }
 
 BoardStatus BitBoard::validate() const
 {
     unsigned int wk = 0, bk = 0, wp = 0, bp = 0, bo = 0, wo = 0;
-    for (unsigned int i = 0; i < 64; ++i) {
+    for(unsigned int i = 0; i < 64; ++i)
+    {
         Piece p = pieceAt(i);
-        if (p == WhiteKing) {
+        if(p == WhiteKing)
+        {
             ++wk;
-        } else if (p == BlackKing) {
+        }
+        else if(p == BlackKing)
+        {
             ++bk;
-        } else if (p == WhitePawn) {
-            if (i <= h1 || i >= a8) // Pawns on 1st or 8th
+        }
+        else if(p == WhitePawn)
+        {
+            if(i <= h1 || i >= a8)  // Pawns on 1st or 8th
+            {
                 return PawnsOn18;
-            else	++wp;
-        } else if (p == BlackPawn) {
-            if (i <= h1 || i >= a8) // Pawns on 1st or 8th
+            }
+            else
+            {
+                ++wp;
+            }
+        }
+        else if(p == BlackPawn)
+        {
+            if(i <= h1 || i >= a8)  // Pawns on 1st or 8th
+            {
                 return PawnsOn18;
-            else	++bp;
-        } else if (isWhite(p)) {
+            }
+            else
+            {
+                ++bp;
+            }
+        }
+        else if(isWhite(p))
+        {
             ++wo;
-        } else if (isBlack(p)) {
+        }
+        else if(isBlack(p))
+        {
             ++bo;
         }
     }
@@ -489,46 +648,90 @@ BoardStatus BitBoard::validate() const
     Q_ASSERT(bp + bk + bo == m_pieceCount[Black]);
 
     // Exactly one king per side
-    if (wk == 0) return NoWhiteKing;
-    if (bk == 0) return NoBlackKing;
-    if (wk != 1 || bk != 1) return TooManyKings;
+    if(wk == 0)
+    {
+        return NoWhiteKing;
+    }
+    if(bk == 0)
+    {
+        return NoBlackKing;
+    }
+    if(wk != 1 || bk != 1)
+    {
+        return TooManyKings;
+    }
 
     // No more than 8 pawns per side
-    if (wp > 8) return TooManyWhitePawns;
-    if (bp > 8) return TooManyBlackPawns;
+    if(wp > 8)
+    {
+        return TooManyWhitePawns;
+    }
+    if(bp > 8)
+    {
+        return TooManyBlackPawns;
+    }
 
     // Maximum 16 pieces per side
-    if ((wk + wp + wo) > 16) return TooManyWhite;
-    if ((bk + bp + bo) > 16) return TooManyBlack;
+    if((wk + wp + wo) > 16)
+    {
+        return TooManyWhite;
+    }
+    if((bk + bp + bo) > 16)
+    {
+        return TooManyBlack;
+    }
 
     // Bad checks
     bool check =  isAttackedBy(m_stm ^ 1, m_ksq[m_stm]);
-    bool check2 = isAttackedBy(m_stm, m_ksq[m_stm^1]);
-    if (check && check2) return DoubleCheck;
-    if (check2) return OppositeCheck;
+    bool check2 = isAttackedBy(m_stm, m_ksq[m_stm ^ 1]);
+    if(check && check2)
+    {
+        return DoubleCheck;
+    }
+    if(check2)
+    {
+        return OppositeCheck;
+    }
 
     // Can't castle with missing rook
-    if (canCastleLong(White) && pieceAt(a1) != WhiteRook)
+    if(canCastleLong(White) && pieceAt(a1) != WhiteRook)
+    {
         return BadCastlingRights;
-    if (canCastleShort(White) && pieceAt(h1) != WhiteRook)
+    }
+    if(canCastleShort(White) && pieceAt(h1) != WhiteRook)
+    {
         return BadCastlingRights;
-    if (canCastleLong(Black) && pieceAt(a8) != BlackRook)
+    }
+    if(canCastleLong(Black) && pieceAt(a8) != BlackRook)
+    {
         return BadCastlingRights;
-    if (canCastleShort(Black) && pieceAt(h8) != BlackRook)
+    }
+    if(canCastleShort(Black) && pieceAt(h8) != BlackRook)
+    {
         return BadCastlingRights;
+    }
 
     // Can't castle if king has moved
-    if (canCastle(White) && pieceAt(e1) != WhiteKing)
+    if(canCastle(White) && pieceAt(e1) != WhiteKing)
+    {
         return BadCastlingRights;
-    if (canCastle(Black) && pieceAt(e8) != BlackKing)
+    }
+    if(canCastle(Black) && pieceAt(e8) != BlackKing)
+    {
         return BadCastlingRights;
+    }
 
     // Detect unreasonable ep square
-    if (m_epSquare != NoEPSquare) {
-        if (m_stm == White && (m_epSquare < a6 || m_epSquare > h6))
+    if(m_epSquare != NoEPSquare)
+    {
+        if(m_stm == White && (m_epSquare < a6 || m_epSquare > h6))
+        {
             return InvalidEnPassant;
-        if (m_stm == Black && (m_epSquare < a3 || m_epSquare > h3))
+        }
+        if(m_stm == Black && (m_epSquare < a3 || m_epSquare > h3))
+        {
             return InvalidEnPassant;
+        }
         // According to PGN standard, ep should be set even if no capture is possible
         /*
         if (m_occupied & SetBit(m_epSquare))
@@ -555,9 +758,12 @@ class SaneString : public QString
 {
 public:
     SaneString(const QString& q) : QString(q) {};
-    char operator[](const int index) const {
-        if (index < this->length())
+    char operator[](const int index) const
+    {
+        if(index < this->length())
+        {
             return QString::operator[](index).toLatin1();
+        }
         return 0;
     }
 };
@@ -576,17 +782,37 @@ bool BitBoard::fromGoodFen(const QString& qfen)
     // Piece position
     i = 0;
     s = 56;
-    while (c && c != ' ' && s <= 64) {
-        switch (c) {
-        case '/': s -= 16; break;
-        case '1': s += 1; break;
-        case '2': s += 2; break;
-        case '3': s += 3; break;
-        case '4': s += 4; break;
-        case '5': s += 5; break;
-        case '6': s += 6; break;
-        case '7': s += 7; break;
-        case '8': s += 8; break;
+    while(c && c != ' ' && s <= 64)
+    {
+        switch(c)
+        {
+        case '/':
+            s -= 16;
+            break;
+        case '1':
+            s += 1;
+            break;
+        case '2':
+            s += 2;
+            break;
+        case '3':
+            s += 3;
+            break;
+        case '4':
+            s += 4;
+            break;
+        case '5':
+            s += 5;
+            break;
+        case '6':
+            s += 6;
+            break;
+        case '7':
+            s += 7;
+            break;
+        case '8':
+            s += 8;
+            break;
         case 'p':
             m_piece[s] = Pawn;
             m_pawns |= SetBit(s);
@@ -680,13 +906,17 @@ bool BitBoard::fromGoodFen(const QString& qfen)
         }
         c = fen[++i];
     }
-    if (s != 8)
+    if(s != 8)
+    {
         return false;
+    }
 
     // Set remainder of bitboard data appropriately
     m_occupied = m_occupied_co[White] + m_occupied_co[Black];
-    for (int i = 0; i < 64; ++i) {
-        if (SetBit(i)&m_occupied) {
+    for(int i = 0; i < 64; ++i)
+    {
+        if(SetBit(i)&m_occupied)
+        {
             m_occupied_l90 |= SetBitL90(i);
             m_occupied_l45 |= SetBitL45(i);
             m_occupied_r45 |= SetBitR45(i);
@@ -695,49 +925,96 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 
     // Side to move
     c = fen[++i];
-    if (c == 'w') m_stm = White;
-    else if (c == 'b') m_stm = Black;
-    else if (c == 0) return true;
-    else return false;
+    if(c == 'w')
+    {
+        m_stm = White;
+    }
+    else if(c == 'b')
+    {
+        m_stm = Black;
+    }
+    else if(c == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
     c = fen[++i];
 
     // Castling Rights
     c = fen[++i];
-    if (c == 0) return true;
-    if (c != '-') {
-        while (c != ' ') {
-            switch (c)
+    if(c == 0)
+    {
+        return true;
+    }
+    if(c != '-')
+    {
+        while(c != ' ')
+        {
+            switch(c)
             {
-            case 'K': setCastleShort(White); break;
-            case 'Q': setCastleLong(White); break;
-            case 'k': setCastleShort(Black); break;
-            case 'q': setCastleLong(Black); break;
-            default:  return false;
+            case 'K':
+                setCastleShort(White);
+                break;
+            case 'Q':
+                setCastleLong(White);
+                break;
+            case 'k':
+                setCastleShort(Black);
+                break;
+            case 'q':
+                setCastleLong(Black);
+                break;
+            default:
+                return false;
             }
 
             c = fen[++i];
         }
-    } else	++i;  // Bypass space
+    }
+    else
+    {
+        ++i;    // Bypass space
+    }
 
     // EnPassant Square
     c = fen[++i];
-    if (c == 0) return true;
-    if (c != '-') {
+    if(c == 0)
+    {
+        return true;
+    }
+    if(c != '-')
+    {
         bool epgood = true;
-        if (c >= 'a' && c <= 'h')
+        if(c >= 'a' && c <= 'h')
+        {
             m_epFile = c - 'a' + 1;
-        else if (c >= 'A' && c <= 'H')
+        }
+        else if(c >= 'A' && c <= 'H')
+        {
             m_epFile = c - 'A' + 1;
-        else if (c < '0' || c > '9')
+        }
+        else if(c < '0' || c > '9')
+        {
             return false;
-        else epgood = false;
-        if (epgood)
+        }
+        else
+        {
+            epgood = false;
+        }
+        if(epgood)
         {
             c = fen[++i];
-            if (m_stm == White && c != '6')
+            if(m_stm == White && c != '6')
+            {
                 return false;
-            else if (m_stm == Black && c != '3')
+            }
+            else if(m_stm == Black && c != '3')
+            {
                 return false;
+            }
         }
     }
     epFile2Square();
@@ -745,26 +1022,38 @@ bool BitBoard::fromGoodFen(const QString& qfen)
 
     // Half move clock
     c = fen[++i];
-    if (c == 0)
+    if(c == 0)
+    {
         return true;
-    if (c < '0' || c > '9')
+    }
+    if(c < '0' || c > '9')
+    {
         return false;
+    }
     int j = i;
-    while (c >= '0' && c <= '9')
+    while(c >= '0' && c <= '9')
+    {
         c = fen[++i];
+    }
     m_halfMoves = fen.mid(j, i - j).toInt();
 
     // Move number
     c = fen[++i];
-    if (c == 0)
+    if(c == 0)
+    {
         return true;
-    if (c < '0' || c > '9')
+    }
+    if(c < '0' || c > '9')
+    {
         return false;
+    }
     m_moveNumber = fen.mid(i).toInt();
-    while (c >= '0' && c <= '9')
+    while(c >= '0' && c <= '9')
+    {
         c = fen[++i];
+    }
 
-    if( m_moveNumber <= 0)
+    if(m_moveNumber <= 0)
     {
         // Silently fix illegal movenumber
         m_moveNumber = 1;
@@ -780,27 +1069,35 @@ MoveList BitBoard::generateMoves() const
 
     MoveList p;
 
-    if (m_stm == White) {
+    if(m_stm == White)
+    {
 
         // castle moves
-        if (canCastle(White)) {
-            if (canCastleShort(White) && !((F1 | G1)&m_occupied))
-                if (!isAttackedBy(Black, e1) &&
+        if(canCastle(White))
+        {
+            if(canCastleShort(White) && !((F1 | G1)&m_occupied))
+                if(!isAttackedBy(Black, e1) &&
                         !isAttackedBy(Black, f1)
                         && !isAttackedBy(Black, g1))
+                {
                     p.add().genWhiteOO();
-            if (canCastleLong(White)  && !((B1 | C1 | D1)&m_occupied))
-                if (!isAttackedBy(Black, c1) &&
+                }
+            if(canCastleLong(White)  && !((B1 | C1 | D1)&m_occupied))
+                if(!isAttackedBy(Black, c1) &&
                         !isAttackedBy(Black, d1)
                         && !isAttackedBy(Black, e1))
+                {
                     p.add().genWhiteOOO();
+                }
         }
 
         // pawn en passant moves
         movers = m_pawns & m_occupied_co[White];
-        if (m_epSquare != NoEPSquare) {
+        if(m_epSquare != NoEPSquare)
+        {
             moves = bb_PawnAttacks[Black][m_epSquare] & movers;
-            while (moves) {
+            while(moves)
+            {
                 from = getFirstBitAndClear64(moves);
                 p.add().genEnPassant(from, m_epSquare);
             }
@@ -808,11 +1105,15 @@ MoveList BitBoard::generateMoves() const
 
         // pawn captures
         moves = ShiftUpRight(movers) & m_occupied_co[Black];
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
-            if (Rank(to) != 7) {
+            if(Rank(to) != 7)
+            {
                 p.add().genPawnMove(to - 9, to, m_piece[to]);
-            } else {
+            }
+            else
+            {
                 p.add().genCapturePromote(to - 9, to, Queen, m_piece[to]);
                 p.add().genCapturePromote(to - 9, to, Knight, m_piece[to]);
                 p.add().genCapturePromote(to - 9, to, Rook, m_piece[to]);
@@ -820,11 +1121,15 @@ MoveList BitBoard::generateMoves() const
             }
         }
         moves = ShiftUpLeft(movers) & m_occupied_co[Black];
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
-            if (Rank(to) != 7) {
+            if(Rank(to) != 7)
+            {
                 p.add().genPawnMove(to - 7, to, m_piece[to]);
-            } else {
+            }
+            else
+            {
                 p.add().genCapturePromote(to - 7, to, Queen, m_piece[to]);
                 p.add().genCapturePromote(to - 7, to, Knight, m_piece[to]);
                 p.add().genCapturePromote(to - 7, to, Rook, m_piece[to]);
@@ -835,11 +1140,15 @@ MoveList BitBoard::generateMoves() const
         // pawns 1 forward
         moves = ShiftUp(movers) & ~m_occupied;
         movers = moves;
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
-            if (Rank(to) != 7) {
+            if(Rank(to) != 7)
+            {
                 p.add().genOneForward(to - 8, to);
-            } else {
+            }
+            else
+            {
                 p.add().genPromote(to - 8, to, Queen);
                 p.add().genPromote(to - 8, to, Knight);
                 p.add().genPromote(to - 8, to, Rook);
@@ -848,32 +1157,42 @@ MoveList BitBoard::generateMoves() const
         }
         // pawns 2 forward
         moves = ShiftUp(movers) & rank4 & ~m_occupied;
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
             p.add().genTwoForward(to - 16, to);
         }
 
-    } else {
+    }
+    else
+    {
 
         // castle moves
-        if (canCastle(Black)) {
-            if (canCastleShort(Black) && !((F8 | G8)&m_occupied))
-                if (!isAttackedBy(White, e8) &&
+        if(canCastle(Black))
+        {
+            if(canCastleShort(Black) && !((F8 | G8)&m_occupied))
+                if(!isAttackedBy(White, e8) &&
                         !isAttackedBy(White, f8) &&
                         !isAttackedBy(White, g8))
+                {
                     p.add().genBlackOO();
-            if (canCastleLong(Black)  && !((B8 | C8 | D8)&m_occupied))
-                if (!isAttackedBy(White, e8) &&
+                }
+            if(canCastleLong(Black)  && !((B8 | C8 | D8)&m_occupied))
+                if(!isAttackedBy(White, e8) &&
                         !isAttackedBy(White, d8) &&
                         !isAttackedBy(White, c8))
+                {
                     p.add().genBlackOOO();
+                }
         }
 
         // pawn en passant moves
         movers = m_pawns & m_occupied_co[Black];
-        if (m_epSquare != NoEPSquare) {
+        if(m_epSquare != NoEPSquare)
+        {
             moves = bb_PawnAttacks[White][m_epSquare] & movers;
-            while (moves) {
+            while(moves)
+            {
                 from = getFirstBitAndClear64(moves);
                 p.add().genEnPassant(from, m_epSquare);
             }
@@ -881,11 +1200,15 @@ MoveList BitBoard::generateMoves() const
 
         // pawn captures
         moves = ShiftDownLeft(movers) & m_occupied_co[White];
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
-            if (Rank(to) != 0) {
+            if(Rank(to) != 0)
+            {
                 p.add().genPawnMove(to + 9, to, m_piece[to]);
-            } else {
+            }
+            else
+            {
                 p.add().genCapturePromote(to + 9, to, Queen, m_piece[to]);
                 p.add().genCapturePromote(to + 9, to, Knight, m_piece[to]);
                 p.add().genCapturePromote(to + 9, to, Rook, m_piece[to]);
@@ -893,11 +1216,15 @@ MoveList BitBoard::generateMoves() const
             }
         }
         moves = ShiftDownRight(movers) & m_occupied_co[White];
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
-            if (Rank(to) != 0) {
+            if(Rank(to) != 0)
+            {
                 p.add().genPawnMove(to + 7, to, m_piece[to]);
-            } else {
+            }
+            else
+            {
                 p.add().genCapturePromote(to + 7, to, Queen, m_piece[to]);
                 p.add().genCapturePromote(to + 7, to, Knight, m_piece[to]);
                 p.add().genCapturePromote(to + 7, to, Rook, m_piece[to]);
@@ -908,11 +1235,15 @@ MoveList BitBoard::generateMoves() const
         // pawns 1 forward
         moves = ShiftDown(movers) & ~m_occupied;
         movers = moves;
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
-            if (Rank(to) != 0) {
+            if(Rank(to) != 0)
+            {
                 p.add().genOneForward(to + 8, to);
-            } else {
+            }
+            else
+            {
                 p.add().genPromote(to + 8, to, Queen);
                 p.add().genPromote(to + 8, to, Knight);
                 p.add().genPromote(to + 8, to, Rook);
@@ -921,7 +1252,8 @@ MoveList BitBoard::generateMoves() const
         }
         // pawns 2 forward
         moves = ShiftDown(movers) & rank5 & ~m_occupied;
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
             p.add().genTwoForward(to + 16, to);
         }
@@ -929,50 +1261,61 @@ MoveList BitBoard::generateMoves() const
 
     // knight moves
     movers = m_knights & m_occupied_co[m_stm];
-    while (movers) {
+    while(movers)
+    {
         from = getFirstBitAndClear64(movers);
         moves = knightAttacksFrom(from) & ~m_occupied_co[m_stm];
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
             p.add().genKnightMove(from, to, m_piece[to]);
         }
     }
     // bishop moves
     movers = m_bishops & m_occupied_co[m_stm];
-    while (movers) {
+    while(movers)
+    {
         from = getFirstBitAndClear64(movers);
         moves = bishopAttacksFrom(from) & ~m_occupied_co[m_stm];
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
             p.add().genBishopMove(from, to, m_piece[to]);
         }
     }
     // rook moves
     movers = m_rooks & m_occupied_co[m_stm];
-    while (movers) {
+    while(movers)
+    {
         from = getFirstBitAndClear64(movers);
         moves = rookAttacksFrom(from) & ~m_occupied_co[m_stm];
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
             p.add().genRookMove(from, to, m_piece[to]);
         }
     }
     // queen moves
     movers = m_queens & m_occupied_co[m_stm];
-    while (movers) {
+    while(movers)
+    {
         from = getFirstBitAndClear64(movers);
         moves = queenAttacksFrom(from) & ~m_occupied_co[m_stm];
-        while (moves) {
+        while(moves)
+        {
             to = getFirstBitAndClear64(moves);
             p.add().genQueenMove(from, to, m_piece[to]);
         }
     }
     // king moves
     moves = kingAttacksFrom(m_ksq[m_stm]) & ~m_occupied_co[m_stm];
-    while (moves) {
+    while(moves)
+    {
         to = getFirstBitAndClear64(moves);
-        if (!isAttackedBy(m_stm ^ 1, to))
+        if(!isAttackedBy(m_stm ^ 1, to))
+        {
             p.add().genKingMove(m_ksq[m_stm], to, m_piece[to]);
+        }
     }
 
     return p;
@@ -986,8 +1329,14 @@ bool BitBoard::isIntoCheck(const Move& move) const
     return peek.isCheck();
 }
 
-inline bool isFile(const char c) {return c >= 'a' && c <= 'h';}
-inline bool isRank(const char c) {return c >= '1' && c <= '8';}
+inline bool isFile(const char c)
+{
+    return c >= 'a' && c <= 'h';
+}
+inline bool isRank(const char c)
+{
+    return c >= '1' && c <= '8';
+}
 
 // Create a null move
 // A Null Move is a move by a king to its own square
@@ -996,9 +1345,11 @@ inline bool isRank(const char c) {return c >= '1' && c <= '8';}
 Move BitBoard::nullMove() const
 {
     Square kingSquare = m_ksq[m_stm];
-    Move m = prepareMove( kingSquare, kingSquare);
-    if (m_stm == Black)
+    Move m = prepareMove(kingSquare, kingSquare);
+    if(m_stm == Black)
+    {
         m.setBlack();
+    }
 
     return m;
 }
@@ -1019,132 +1370,231 @@ Move BitBoard::parseMove(const QString& algebraic) const
     unsigned int type;
 
     // Castling
-    if (c == 'o' || c == 'O' || c == '0') {
-        if (strncmp(san, "o-o-o", 5) == 0 || strncmp(san, "O-O-O", 5) == 0 || strncmp(san, "0-0-0", 5)  == 0) {
-            if (m_stm == White)
+    if(c == 'o' || c == 'O' || c == '0')
+    {
+        if(strncmp(san, "o-o-o", 5) == 0 || strncmp(san, "O-O-O", 5) == 0 || strncmp(san, "0-0-0", 5)  == 0)
+        {
+            if(m_stm == White)
+            {
                 return prepareMove(e1, c1);
-            else	return prepareMove(e8, c8);
-        } else if (strncmp(san, "o-o", 3) == 0 || strncmp(san, "O-O", 3) == 0 || strncmp(san, "0-0", 3)  == 0) {
-            if (m_stm == White)
+            }
+            else
+            {
+                return prepareMove(e8, c8);
+            }
+        }
+        else if(strncmp(san, "o-o", 3) == 0 || strncmp(san, "O-O", 3) == 0 || strncmp(san, "0-0", 3)  == 0)
+        {
+            if(m_stm == White)
+            {
                 return prepareMove(e1, g1);
-            else	return prepareMove(e8, g8);
+            }
+            else
+            {
+                return prepareMove(e8, g8);
+            }
         }
         return move;
     }
 
     // Null Move
-    if (c == '-') {
-        if (strncmp(san, "--", 2) == 0) {
+    if(c == '-')
+    {
+        if(strncmp(san, "--", 2) == 0)
+        {
             return nullMove();
         }
     }
 
 
     // Piece
-    switch (c) {
-    case 'Q': type = Queen; c = *(s++); break;
-    case 'R': type = Rook; c = *(s++); break;
-    case 'B': type = Bishop; c = *(s++); break;
-    case 'N': type = Knight; c = *(s++); break;
-    case 'K': type = King; c = *(s++); break;
-    case 'P': c = *(s++); // Fall through
-    default: type = Pawn; break;
+    switch(c)
+    {
+    case 'Q':
+        type = Queen;
+        c = *(s++);
+        break;
+    case 'R':
+        type = Rook;
+        c = *(s++);
+        break;
+    case 'B':
+        type = Bishop;
+        c = *(s++);
+        break;
+    case 'N':
+        type = Knight;
+        c = *(s++);
+        break;
+    case 'K':
+        type = King;
+        c = *(s++);
+        break;
+    case 'P':
+        c = *(s++); // Fall through
+    default:
+        type = Pawn;
+        break;
     }
 
     // Check for disambiguation
-    if (isFile(c)) {
+    if(isFile(c))
+    {
         fromFile = c - 'a';
         c = *(s++);
-        if (isRank(c)) {
+        if(isRank(c))
+        {
             fromSquare = (c - '1') * 8 + fromFile;
             fromFile = -1;
             c = *(s++);
         }
-    } else if (isRank(c)) {
+    }
+    else if(isRank(c))
+    {
         fromRank = c - '1';
         c = *(s++);
     }
 
     // Capture indicator (or dash in the case of a LAN move)
-    if (c == 'x' || c == '-')
+    if(c == 'x' || c == '-')
+    {
         c = *(s++);
+    }
 
     // Destination square
-    if (isFile(c)) {
+    if(isFile(c))
+    {
         int f = c - 'a';
         c = *(s++);
-        if (!isRank(c))
+        if(!isRank(c))
+        {
             return move;
+        }
         toSquare = (c - '1') * 8 + f;
         c = *(s++);
-    } else {
+    }
+    else
+    {
         toSquare = fromSquare;
         fromSquare = -1;
     }
 
-    if (toSquare < 0)
+    if(toSquare < 0)
+    {
         return move;
+    }
 
-    if (type == Pawn) {
+    if(type == Pawn)
+    {
         // Promotion as in bxc8=Q or bxc8(Q)
-        if (c == '=' || c == '(')
+        if(c == '=' || c == '(')
+        {
             c = *(s++);
-        switch (toupper(c)) {
-        case 'Q': promotePiece = Queen; break;
-        case 'R': promotePiece = Rook; break;
-        case 'B': promotePiece = Bishop; break;
-        case 'N': promotePiece = Knight; break;
+        }
+        switch(toupper(c))
+        {
+        case 'Q':
+            promotePiece = Queen;
+            break;
+        case 'R':
+            promotePiece = Rook;
+            break;
+        case 'B':
+            promotePiece = Bishop;
+            break;
+        case 'N':
+            promotePiece = Knight;
+            break;
         default: ;//return move;
         }
-        if (fromSquare < 0) {
+        if(fromSquare < 0)
+        {
             int base = (m_stm == White ? -8 : 8);
-            if (fromFile < 0) {
+            if(fromFile < 0)
+            {
                 fromSquare = toSquare + base;
                 quint64 bit = SetBit(fromSquare);
-                if (!(m_occupied_co[m_stm] & bit))
+                if(!(m_occupied_co[m_stm] & bit))
+                {
                     fromSquare += base;
-            } else if (fromFile <= (int) File(toSquare))
+                }
+            }
+            else if(fromFile <= (int) File(toSquare))
+            {
                 fromSquare = toSquare + base - 1;
-            else	fromSquare = toSquare + base + 1;
+            }
+            else
+            {
+                fromSquare = toSquare + base + 1;
+            }
         }
         // This isn't a hugely efficient way to go from here
         move = prepareMove(fromSquare, toSquare);
-        if (move.isPromotion() && promotePiece)
+        if(move.isPromotion() && promotePiece)
+        {
             move.setPromoted(promotePiece);
+        }
         return move;
     }
 
-    if (fromSquare < 0) {
-        switch (type) {
-        case Queen: match = queenAttacksFrom(toSquare) & m_queens; break;
-        case Rook: match = rookAttacksFrom(toSquare) & m_rooks; break;
-        case Bishop: match = bishopAttacksFrom(toSquare) & m_bishops; break;
-        case Knight: match = knightAttacksFrom(toSquare) & m_knights; break;
-        case King: match = kingAttacksFrom(toSquare) & m_kings; break;
-        default:   return move;
+    if(fromSquare < 0)
+    {
+        switch(type)
+        {
+        case Queen:
+            match = queenAttacksFrom(toSquare) & m_queens;
+            break;
+        case Rook:
+            match = rookAttacksFrom(toSquare) & m_rooks;
+            break;
+        case Bishop:
+            match = bishopAttacksFrom(toSquare) & m_bishops;
+            break;
+        case Knight:
+            match = knightAttacksFrom(toSquare) & m_knights;
+            break;
+        case King:
+            match = kingAttacksFrom(toSquare) & m_kings;
+            break;
+        default:
+            return move;
         }
 
         match &= m_occupied_co[m_stm];
-        if (fromRank >= 0)
+        if(fromRank >= 0)
+        {
             match &= bb_rankMask[fromRank];
-        else if (fromFile >= 0)
+        }
+        else if(fromFile >= 0)
+        {
             match &= bb_fileMask[fromFile];
+        }
 
-        if (match)
+        if(match)
+        {
             fromSquare = getFirstBitAndClear64(match);
-        else	return move;
+        }
+        else
+        {
+            return move;
+        }
 
         // If not yet fully disambiguated, all but one move must be illegal
         //  Cycle through them, and pick the first legal move.
-        while (match) {
-            if (prepareMove(fromSquare, toSquare).isLegal())
+        while(match)
+        {
+            if(prepareMove(fromSquare, toSquare).isLegal())
+            {
                 break;
+            }
             fromSquare = getFirstBitAndClear64(match);
         }
     }
 
-    if (type != m_piece[fromSquare])
+    if(type != m_piece[fromSquare])
+    {
         return move;
+    }
     return prepareMove(fromSquare, toSquare);
 }
 
@@ -1161,7 +1611,8 @@ bool BitBoard::doMove(const Move& m)
     m_halfMoves++;	// Number of moves since last capture or pawn move
 
     unsigned int action = m.action();
-    switch (action) {
+    switch(action)
+    {
     case Pawn:
         m_halfMoves = 0;
         m_pawns ^= bb_from ^ bb_to;
@@ -1178,15 +1629,17 @@ bool BitBoard::doMove(const Move& m)
     case Rook:
         m_rooks ^= bb_from ^ bb_to;
         m_piece[to] = Rook;
-        if (canCastle(m_stm)) // a rook is moving, destroy castle flags if needed
-            m_castle &= Castle[from]; // question is if always doing the table is just faster?
+        if(canCastle(m_stm))  // a rook is moving, destroy castle flags if needed
+        {
+            m_castle &= Castle[from];    // question is if always doing the table is just faster?
+        }
         break;
     case Queen:
         m_queens ^= bb_from ^ bb_to;
         m_piece[to] = Queen;
         break;
     case King:
-        if (! m.isNullMove())
+        if(! m.isNullMove())
         {
             m_kings ^= bb_from ^ bb_to;
             m_ksq[m_stm] = to;
@@ -1199,7 +1652,8 @@ bool BitBoard::doMove(const Move& m)
         m_ksq[m_stm] = to;
         m_piece[to] = King;
         destroyCastle(m_stm);
-        switch (to) {
+        switch(to)
+        {
         case c1:
             rook_from = a1;
             rook_to = d1;
@@ -1236,7 +1690,8 @@ bool BitBoard::doMove(const Move& m)
         m_halfMoves = 0;
         m_pawns ^= bb_from;
         --m_pawnCount[m_stm];
-        switch (m.promoted()) {
+        switch(m.promoted())
+        {
         case Knight:
             m_knights ^= bb_to;
             m_piece[to] = Knight;
@@ -1259,7 +1714,8 @@ bool BitBoard::doMove(const Move& m)
         break;
     }
 
-    switch (m.removal()) {
+    switch(m.removal())
+    {
     case Empty:
         m_occupied_l90 ^= SetBitL90(to);     // extra cleanup needed for non-captures
         m_occupied_l45 ^= SetBitL45(to);
@@ -1289,8 +1745,10 @@ bool BitBoard::doMove(const Move& m)
         m_halfMoves = 0;
         m_rooks ^= bb_to;
         m_occupied_co[sntm] ^= bb_to;
-        if (canCastle(sntm))
+        if(canCastle(sntm))
+        {
             m_castle &= Castle[to];
+        }
         break;
     case Queen:
         --m_pieceCount[sntm];
@@ -1312,7 +1770,8 @@ bool BitBoard::doMove(const Move& m)
         break;
     }  // ...no I did not forget the king :)
 
-    if(!m.isNullMove()) {
+    if(!m.isNullMove())
+    {
         m_piece[from] = Empty;
         m_occupied_co[m_stm] ^= bb_from ^ bb_to;
         m_occupied_l90 ^= SetBitL90(from);
@@ -1321,8 +1780,10 @@ bool BitBoard::doMove(const Move& m)
         m_occupied = m_occupied_co[White] + m_occupied_co[Black];
     }
 
-    if (m_stm == Black)
+    if(m_stm == Black)
+    {
         ++m_moveNumber;
+    }
 
     m_stm ^= 1;	// toggle side to move
     epFile2Square();
@@ -1339,7 +1800,8 @@ void BitBoard::undoMove(const Move& m)
     unsigned int rook_from = 0, rook_to = 0; // =0 just to quiet compiler warnings
 
     unsigned int action = m.action();
-    switch (action) {
+    switch(action)
+    {
     case Pawn:
     case Move::TWOFORWARD:
         m_pawns ^= bb_from ^ bb_to;
@@ -1362,7 +1824,8 @@ void BitBoard::undoMove(const Move& m)
         m_piece[from] = Queen;
         break;
     case King:
-        if(!m.isNullMove()) {
+        if(!m.isNullMove())
+        {
             m_kings ^= bb_from ^ bb_to;
             m_ksq[sntm] = from;
             m_piece[from] = King;
@@ -1372,7 +1835,8 @@ void BitBoard::undoMove(const Move& m)
         m_kings ^= bb_from ^ bb_to;
         m_ksq[sntm] = from;
         m_piece[from] = King;
-        switch (to) {
+        switch(to)
+        {
         case c1:
             rook_from = a1;
             rook_to = d1;
@@ -1402,7 +1866,8 @@ void BitBoard::undoMove(const Move& m)
         m_pawns ^= bb_from;
         m_piece[from] = Pawn;
         ++m_pawnCount[sntm];
-        switch (m.promoted()) {
+        switch(m.promoted())
+        {
         case Knight:
             m_knights ^= bb_to;
             break;
@@ -1422,7 +1887,8 @@ void BitBoard::undoMove(const Move& m)
     }
 
     unsigned int replace = m.capturedType();
-    switch (m.removal()) {  // Reverse captures
+    switch(m.removal())     // Reverse captures
+    {
     case Empty:
         m_occupied_l90 ^= SetBitL90(to);     // extra cleanup needed for non-captures
         m_occupied_l45 ^= SetBitL45(to);
@@ -1468,7 +1934,8 @@ void BitBoard::undoMove(const Move& m)
         break;
     }  // ...no I did not forget the king :)
 
-    if(!m.isNullMove()) {
+    if(!m.isNullMove())
+    {
 
         m_piece[to] = replace;
         m_occupied_co[sntm] ^= bb_from ^ bb_to;
@@ -1480,8 +1947,10 @@ void BitBoard::undoMove(const Move& m)
 
     m_stm ^= 1;	// toggle side to move
 
-    if (m_stm == Black)
+    if(m_stm == Black)
+    {
         --m_moveNumber;
+    }
 
     m_halfMoves = m.u & 0xFF;
     m_castle = (m.u >> 8) & 0xF;
@@ -1492,11 +1961,18 @@ void BitBoard::undoMove(const Move& m)
 quint64 BitBoard::pawnMovesFrom(const Square s) const
 {
     quint64 targets = bb_PawnF1[m_stm][s] & ~m_occupied;
-    if (targets)
+    if(targets)
+    {
         targets |= bb_PawnF2[m_stm][s] & ~m_occupied;
-    if (m_epSquare == NoEPSquare)
-        targets |= bb_PawnAttacks[m_stm][s] & m_occupied_co[m_stm^1];
-    else	targets |= bb_PawnAttacks[m_stm][s] & (m_occupied_co[m_stm^1] | SetBit(m_epSquare));
+    }
+    if(m_epSquare == NoEPSquare)
+    {
+        targets |= bb_PawnAttacks[m_stm][s] & m_occupied_co[m_stm ^ 1];
+    }
+    else
+    {
+        targets |= bb_PawnAttacks[m_stm][s] & (m_occupied_co[m_stm ^ 1] | SetBit(m_epSquare));
+    }
     return targets;
 }
 
@@ -1512,15 +1988,17 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
 
     // Check for Illegal Move
     // first the source square must not be vacant
-    if (!(m_occupied_co[m_stm] & src))
+    if(!(m_occupied_co[m_stm] & src))
+    {
         return move;
+    }
 
     // Check for Illegal Move
     // If the destination square is a piece of the moving color
-    if (m_occupied_co[m_stm] & dest)
+    if(m_occupied_co[m_stm] & dest)
     {
         // If Not a null move
-        if( (src != dest) || p != King )
+        if((src != dest) || p != King)
         {
             // move is neither legal nor a null move
             return move;
@@ -1530,56 +2008,90 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
     move.setPieceType(p);
     uchar pCaptured = m_piece[to];
     move.setCaptureType(pCaptured);
-    if (pCaptured == King)
+    if(pCaptured == King)
     {
         // This test became necessary with Null-Moves
-        if (m_stm == Black)
+        if(m_stm == Black)
+        {
             move.setBlack();
+        }
         move.u = m_halfMoves;
         move.u |= (((unsigned short) m_castle & 0xF) << 8);
         move.u |= (((unsigned short) m_epFile & 0xF) << 12);
 
         return move;
     }
-    if (p == King) {
+    if(p == King)
+    {
         // if not a null Move
-        if( src != dest )
+        if(src != dest)
         {
-            if (!(kingAttacksFrom(to) & src) && !prepareCastle(move))
+            if(!(kingAttacksFrom(to) & src) && !prepareCastle(move))
+            {
                 return move;
+            }
         }
-    } else if (p == Pawn) {
-        if (!(pawnMovesFrom(from) & dest))
+    }
+    else if(p == Pawn)
+    {
+        if(!(pawnMovesFrom(from) & dest))
+        {
             return move;
-        else if (to == m_epSquare)
+        }
+        else if(to == m_epSquare)
+        {
             move.setEnPassant();
-        else if (dest & bb_PawnF2[m_stm][from])
+        }
+        else if(dest & bb_PawnF2[m_stm][from])
+        {
             move.setTwoForward();
-        else if (dest & bb_PromotionRank[m_stm])
+        }
+        else if(dest & bb_PromotionRank[m_stm])
+        {
             move.setPromoted(Queen);
-    } else {
+        }
+    }
+    else
+    {
         quint64 reach = 0;
-        if (p == Queen)		reach = queenAttacksFrom(to);
-        else if (p == Rook)	reach = rookAttacksFrom(to);
-        else if (p == Bishop)	reach = bishopAttacksFrom(to);
-        else if (p == Knight)	reach = knightAttacksFrom(to);
-        if (!(reach & src))
+        if(p == Queen)
+        {
+            reach = queenAttacksFrom(to);
+        }
+        else if(p == Rook)
+        {
+            reach = rookAttacksFrom(to);
+        }
+        else if(p == Bishop)
+        {
+            reach = bishopAttacksFrom(to);
+        }
+        else if(p == Knight)
+        {
+            reach = knightAttacksFrom(to);
+        }
+        if(!(reach & src))
+        {
             return move;
+        }
     }
 
     BitBoard peek(*this);
     peek.doMove(move);
     peek.swapToMove();
-    if (peek.isCheck()) { // Don't allow move into check even if its a null move
+    if(peek.isCheck())    // Don't allow move into check even if its a null move
+    {
         return move;
     }
 
-    if (m_stm == Black)
+    if(m_stm == Black)
+    {
         move.setBlack();
+    }
     move.u = m_halfMoves;
     move.u |= (((unsigned short) m_castle & 0xF) << 8);
     move.u |= (((unsigned short) m_epFile & 0xF) << 12);
-    if( src != dest)
+    if(src != dest)
     {
         move.setLegalMove();
     }
@@ -1588,29 +2100,38 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
 
 bool BitBoard::prepareCastle(Move& move) const
 {
-    if (!canCastle(m_stm))
+    if(!canCastle(m_stm))
+    {
         return false;
+    }
 
     Square to = move.to();
-    if (m_stm == White) {
-        if (to == g1 && canCastleShort(White) && !((F1 | G1)&m_occupied))
-            if (!isAttackedBy(Black, e1) && !isAttackedBy(Black, f1)) {
+    if(m_stm == White)
+    {
+        if(to == g1 && canCastleShort(White) && !((F1 | G1)&m_occupied))
+            if(!isAttackedBy(Black, e1) && !isAttackedBy(Black, f1))
+            {
                 move.genWhiteOO();
                 return true;
             }
-        if (to == c1 && canCastleLong(White) && !((B1 | C1 | D1)&m_occupied))
-            if (!isAttackedBy(Black, e1) && !isAttackedBy(Black, d1)) {
+        if(to == c1 && canCastleLong(White) && !((B1 | C1 | D1)&m_occupied))
+            if(!isAttackedBy(Black, e1) && !isAttackedBy(Black, d1))
+            {
                 move.genWhiteOOO();
                 return true;
             }
-    } else {
-        if (to == g8 && canCastleShort(Black) && !((F8 | G8)&m_occupied))
-            if (!isAttackedBy(White, e8) && !isAttackedBy(White, f8)) {
+    }
+    else
+    {
+        if(to == g8 && canCastleShort(Black) && !((F8 | G8)&m_occupied))
+            if(!isAttackedBy(White, e8) && !isAttackedBy(White, f8))
+            {
                 move.genBlackOO();
                 return true;
             }
-        if (to == c8 && canCastleLong(Black) && !((B8 | C8 | D8)&m_occupied))
-            if (!isAttackedBy(White, e8) && !isAttackedBy(White, d8)) {
+        if(to == c8 && canCastleLong(Black) && !((B8 | C8 | D8)&m_occupied))
+            if(!isAttackedBy(White, e8) && !isAttackedBy(White, d8))
+            {
                 move.genBlackOOO();
                 return true;
             }
@@ -1621,11 +2142,13 @@ bool BitBoard::prepareCastle(Move& move) const
 
 bool BitBoard::canBeReachedFrom(const BitBoard& target) const
 {
-    if (m_pieceCount[White] > target.m_pieceCount[White] ||
+    if(m_pieceCount[White] > target.m_pieceCount[White] ||
             m_pieceCount[Black] > target.m_pieceCount[Black] ||
             m_pawnCount[White] > target.m_pawnCount[White] ||
             m_pawnCount[Black] > target.m_pawnCount[Black])
+    {
         return false;
+    }
 
     return true;
 }
@@ -1634,10 +2157,16 @@ Piece BitBoard::pieceAt(Square s) const
 {
     Q_ASSERT(s < 64);
     quint64 bit = SetBit(s);
-    if (m_occupied & bit) {
-        if (m_occupied_co[White] & bit)
+    if(m_occupied & bit)
+    {
+        if(m_occupied_co[White] & bit)
+        {
             return Piece(m_piece[s]);
-        else	return Piece(m_piece[s] + 6);
+        }
+        else
+        {
+            return Piece(m_piece[s] + 6);
+        }
     }
     return Empty;
 }
@@ -1661,47 +2190,72 @@ QString BitBoard::toFen() const
     int empty = 0;
 
     //piece placement
-    for (int row = 7; row >= 0; row--) {
-        for (int col = 0; col < 8; ++col) {
+    for(int row = 7; row >= 0; row--)
+    {
+        for(int col = 0; col < 8; ++col)
+        {
             piece = pieceAt(8 * row + col);
-            if (piece != Empty) {
-                if (empty != 0) {
+            if(piece != Empty)
+            {
+                if(empty != 0)
+                {
                     fen += QString::number(empty);
                     empty = 0;
                 }
                 fen += pieceToChar(piece);
-            } else	empty++;
+            }
+            else
+            {
+                empty++;
+            }
         }
-        if (empty != 0) {
+        if(empty != 0)
+        {
             fen += QString::number(empty);
             empty = 0;
         }
-        if (row != 0)
+        if(row != 0)
+        {
             fen += '/';
+        }
     }
 
     //side to move
     fen += m_stm == White ? " w " : " b ";
 
     //castling rights
-    if (castlingRights() == NoRights)
+    if(castlingRights() == NoRights)
+    {
         fen += "- ";
-    else {
-        if (castlingRights() & WhiteKingside)
+    }
+    else
+    {
+        if(castlingRights() & WhiteKingside)
+        {
             fen += 'K';
-        if (castlingRights() & WhiteQueenside)
+        }
+        if(castlingRights() & WhiteQueenside)
+        {
             fen += 'Q';
-        if (castlingRights() & BlackKingside)
+        }
+        if(castlingRights() & BlackKingside)
+        {
             fen += 'k';
-        if (castlingRights() & BlackQueenside)
+        }
+        if(castlingRights() & BlackQueenside)
+        {
             fen += 'q';
+        }
         fen += ' ';
     }
 
     //en passant square
-    if (m_epSquare == NoEPSquare) {
+    if(m_epSquare == NoEPSquare)
+    {
         fen += "- ";
-    } else {
+    }
+    else
+    {
         fen += 'a' + (m_epSquare & 7);
         fen += '1' + ((m_epSquare & 56) >> 3);
         fen += ' ';
@@ -1711,51 +2265,59 @@ QString BitBoard::toFen() const
     fen += QString::number(halfMoveClock());
     fen += " ";
     // move number
-    fen += QString::number(m_moveNumber<=0 ? 1:m_moveNumber);
+    fen += QString::number(m_moveNumber <= 0 ? 1 : m_moveNumber);
 
     return fen;
 }
 
 QString BitBoard::toHumanFen() const
 {
-    QString fenFormat = QCoreApplication::translate("BitBoard","w%1\nb%2\n%3 to move.");
-    QMap<Piece,QStringList> charLists;
+    QString fenFormat = QCoreApplication::translate("BitBoard", "w%1\nb%2\n%3 to move.");
+    QMap<Piece, QStringList> charLists;
 
     //piece placement
-    for (int row = 7; row >= 0; row--) {
-        for (int col = 0; col < 8; ++col) {
+    for(int row = 7; row >= 0; row--)
+    {
+        for(int col = 0; col < 8; ++col)
+        {
             Piece piece = pieceAt(8 * row + col);
-            if (piece != Empty)
+            if(piece != Empty)
             {
-                charLists[piece].append(QString("%1%2").arg(QChar('a'+col)).arg(row+1));
+                charLists[piece].append(QString("%1%2").arg(QChar('a' + col)).arg(row + 1));
             }
         }
     }
 
     //side to move
-    QString toMove = (m_stm == White) ? QCoreApplication::translate("BitBoard","White") : QCoreApplication::translate("BitBoard","Black");
+    QString toMove = (m_stm == White) ? QCoreApplication::translate("BitBoard", "White") : QCoreApplication::translate("BitBoard", "Black");
 
     QString w, b;
-    for (Piece p=WhiteKing; p<=WhitePawn; ++p)
+    for(Piece p = WhiteKing; p <= WhitePawn; ++p)
     {
-        if (charLists.keys().contains(p))
+        if(charLists.keys().contains(p))
         {
-            if (!w.isEmpty()) w+=",";
+            if(!w.isEmpty())
+            {
+                w += ",";
+            }
             w.append(pieceToHumanChar(p));
             w.append(charLists[p].join(","));
         }
     }
-    for (Piece p=BlackKing; p!=Empty; ++p)
+    for(Piece p = BlackKing; p != Empty; ++p)
     {
-        if (charLists.keys().contains(p))
+        if(charLists.keys().contains(p))
         {
-            if (!b.isEmpty()) b+=",";
+            if(!b.isEmpty())
+            {
+                b += ",";
+            }
             b.append(pieceToHumanChar(p));
             b.append(charLists[p].join(","));
         }
     }
 
-    QString fen=fenFormat.arg(w).arg(b).arg(toMove);
+    QString fen = fenFormat.arg(w).arg(b).arg(toMove);
 
     return fen;
 }
@@ -1769,17 +2331,20 @@ void bitBoardInit()
 
     // Square masks
     mask = 1;
-    for (i = 0;i < 64;++i) {
+    for(i = 0; i < 64; ++i)
+    {
         bb_Mask[i] = mask << i;
     }
-    for (i = 0;i < 64;++i) {
+    for(i = 0; i < 64; ++i)
+    {
         bb_MaskL90[i] = SetBit(RotateL90[i]);
         bb_MaskL45[i] = SetBit(RotateL45[i]);
         bb_MaskR45[i] = SetBit(RotateR45[i]);
     }
 
     // Pawn moves and attacks
-    for (i = 0;i < 64;++i) {
+    for(i = 0; i < 64; ++i)
+    {
         mask = SetBit(i);
         bb_PawnAttacks[White][i]  = ShiftUpLeft(mask);
         bb_PawnAttacks[White][i] |= ShiftUpRight(mask);
@@ -1794,16 +2359,17 @@ void bitBoardInit()
         bb_PawnF2[Black][i]  = Shift2Down(mask) & rank5;
 
         bb_PawnALL[White][i] = bb_PawnAttacks[White][i] |
-                bb_PawnF1[White][i] |
-                bb_PawnF2[White][i];
+                               bb_PawnF1[White][i] |
+                               bb_PawnF2[White][i];
 
         bb_PawnALL[Black][i] = bb_PawnAttacks[Black][i] |
-                bb_PawnF1[Black][i] |
-                bb_PawnF2[Black][i];
+                               bb_PawnF1[Black][i] |
+                               bb_PawnF2[Black][i];
     }
 
     // Knight attacks
-    for (i = 0;i < 64;++i) {
+    for(i = 0; i < 64; ++i)
+    {
         mask = SetBit(i);
         bb_KnightAttacks[i]  = ShiftLeft(Shift2Up(mask));
         bb_KnightAttacks[i] |= ShiftRight(Shift2Up(mask));
@@ -1816,39 +2382,53 @@ void bitBoardInit()
     }
 
     // Diagonal attacks
-    for (int s = 0;s < 64;++s) {
-        for (int b = 0;b < 64;++b) {
+    for(int s = 0; s < 64; ++s)
+    {
+        for(int b = 0; b < 64; ++b)
+        {
             mask = 0;
             q = s;
-            while (File(q) > 0 && Rank(q) < 7) {
+            while(File(q) > 0 && Rank(q) < 7)
+            {
                 q += 7;
                 mask |= SetBit(q);
-                if (b&(SetBit(RotateL45[q]) >> bb_ShiftL45[s]))
+                if(b & (SetBit(RotateL45[q]) >> bb_ShiftL45[s]))
+                {
                     break;
+                }
             }
             q = s;
-            while (File(q) < 7 && Rank(q) > 0) {
+            while(File(q) < 7 && Rank(q) > 0)
+            {
                 q -= 7;
                 mask |= SetBit(q);
-                if (b&(SetBit(RotateL45[q]) >> bb_ShiftL45[s]))
+                if(b & (SetBit(RotateL45[q]) >> bb_ShiftL45[s]))
+                {
                     break;
+                }
             }
             bb_L45Attacks[s][b] = mask;
 
             mask = 0;
             q = s;
-            while (File(q) < 7 && Rank(q) < 7) {
+            while(File(q) < 7 && Rank(q) < 7)
+            {
                 q += 9;
                 mask |= SetBit(q);
-                if (b&(SetBit(RotateR45[q]) >> bb_ShiftR45[s]))
+                if(b & (SetBit(RotateR45[q]) >> bb_ShiftR45[s]))
+                {
                     break;
+                }
             }
             q = s;
-            while (File(q) > 0 && Rank(q) > 0) {
+            while(File(q) > 0 && Rank(q) > 0)
+            {
                 q -= 9;
                 mask |= SetBit(q);
-                if (b&(SetBit(RotateR45[q]) >> bb_ShiftR45[s]))
+                if(b & (SetBit(RotateR45[q]) >> bb_ShiftR45[s]))
+                {
                     break;
+                }
             }
             bb_R45Attacks[s][b] = mask;
         }
@@ -1858,45 +2438,60 @@ void bitBoardInit()
     memset(bb_RankAttacks, 0, sizeof(bb_RankAttacks));
     memset(bb_FileAttacks, 0, sizeof(bb_FileAttacks));
     int file, rank;
-    for (int sq = 0;sq < 64;++sq) {
-        for (int bitrow = 0;bitrow < 64;++bitrow) {
+    for(int sq = 0; sq < 64; ++sq)
+    {
+        for(int bitrow = 0; bitrow < 64; ++bitrow)
+        {
             file = File(sq);
             q = sq + 1;
-            while (++file < 8) {
+            while(++file < 8)
+            {
                 bb_RankAttacks[sq][bitrow] |= SetBit(q);
-                if ((1 << file)&(bitrow << 1))
+                if((1 << file) & (bitrow << 1))
+                {
                     break;
+                }
                 ++q;
             }
             file = File(sq);
             q = sq - 1;
-            while (--file >= 0) {
+            while(--file >= 0)
+            {
                 bb_RankAttacks[sq][bitrow] |= SetBit(q);
-                if ((1 << file)&(bitrow << 1))
+                if((1 << file) & (bitrow << 1))
+                {
                     break;
+                }
                 --q;
             }
             rank = Rank(sq);
             q = sq + 8;
-            while (++rank < 8) {
+            while(++rank < 8)
+            {
                 bb_FileAttacks[sq][bitrow] |= SetBit(q);
-                if ((1 << (7 - rank))&(bitrow << 1))
+                if((1 << (7 - rank)) & (bitrow << 1))
+                {
                     break;
+                }
                 q += 8;
             }
             rank = Rank(sq);
             q = sq - 8;
-            while (--rank >= 0) {
+            while(--rank >= 0)
+            {
                 bb_FileAttacks[sq][bitrow] |= SetBit(q);
-                if ((1 << (7 - rank))&(bitrow << 1))
+                if((1 << (7 - rank)) & (bitrow << 1))
+                {
                     break;
+                }
                 q -= 8;
             }
         }
     }
 
     // King:
-    for (i = 0;i < 64;++i) {
+    for(i = 0; i < 64; ++i)
+    {
         mask = SetBit(i);
         bb_KingAttacks[i]  = ShiftLeft(mask);
         bb_KingAttacks[i] |= ShiftRight(mask);
@@ -1911,7 +2506,8 @@ void bitBoardInit()
     // File and rank masks
     quint64 rseed = 0xFF00000000000000ULL;
     quint64 fseed = 0x8080808080808080ULL;
-    for (i = 7; i >= 0; --i) {
+    for(i = 7; i >= 0; --i)
+    {
         bb_rankMask[i] = rseed;
         rseed >>= 8;
         bb_fileMask[i] = fseed;

@@ -21,28 +21,28 @@ class QWidget;
  */
 
 #ifdef Q_OS_MAC
-    #define MIN_WHEEL_COUNT 120
-    #define DEFAULT_FONTSIZE 12
-    #define DEFAULT_LISTFONTSIZE 12
+#define MIN_WHEEL_COUNT 120
+#define DEFAULT_FONTSIZE 12
+#define DEFAULT_LISTFONTSIZE 12
 #else
-    #define MIN_WHEEL_COUNT 0
-    #define DEFAULT_FONTSIZE 11
-    #define DEFAULT_LISTFONTSIZE 11
+#define MIN_WHEEL_COUNT 0
+#define DEFAULT_FONTSIZE 11
+#define DEFAULT_LISTFONTSIZE 11
 #endif
 
 class Settings : public QSettings
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	enum {Show = 1} LayoutFlags;
-	Settings();
-	~Settings();
-	/** Restore widget's layout based on its name. Optionally show window if it is visible.
-	@return @p true if the state was restored. */
+    enum {Show = 1} LayoutFlags;
+    Settings();
+    ~Settings();
+    /** Restore widget's layout based on its name. Optionally show window if it is visible.
+    @return @p true if the state was restored. */
     bool layout(QWidget* w);
-	/** Write widget's layout with its name. */
+    /** Write widget's layout with its name. */
     void setLayout(const QWidget* w);
-	/** @return directory where data are stored. */
+    /** @return directory where data are stored. */
     QString dataPath();
     /** @return directory where common chess data are stored. */
     QString commonDataPath();
@@ -52,7 +52,7 @@ public:
     void setList(const QString& key, QList<QVariant> list);
 
     /** Appends values to the list. @return @p true if the list contains exact number of items.
-	If @p items is @p -1 , always return @p true. */
+    If @p items is @p -1 , always return @p true. */
     bool list(const QString& key, QList<int>& list, int items = -1);
     bool list(const QString& key, QList<QVariant>& list, int items = -1);
 
@@ -86,7 +86,7 @@ public:
 private:
 
     QMap<QString, QVariant> initDefaultValues() const;
-	QString m_dataPath;
+    QString m_dataPath;
 };
 
 extern Settings* AppSettings;

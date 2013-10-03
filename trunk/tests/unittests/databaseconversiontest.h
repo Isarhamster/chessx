@@ -27,21 +27,21 @@ Unit tests for the DatabaseConversion class.
 class DatabaseConversionTest : public QObject
 {
 
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void initTestCase();
-	void init();
-	void cleanup();
-	void cleanupTestCase();
+    void initTestCase();
+    void init();
+    void cleanup();
+    void cleanupTestCase();
 
-	void testConvertDatabase();
+    void testConvertDatabase();
 
 private:
 
-	QString db_name;
-	QString source;
-	QString picture_dir;
+    QString db_name;
+    QString source;
+    QString picture_dir;
 };
 
 #endif

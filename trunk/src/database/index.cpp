@@ -39,7 +39,7 @@ GameId Index::add()
 
 TagIndex Index::AddTagName(QString name)
 {
-    if (m_tagNameIndex.contains(name))
+    if(m_tagNameIndex.contains(name))
     {
         return m_tagNameIndex.value(name);
     }
@@ -51,7 +51,7 @@ TagIndex Index::AddTagName(QString name)
 
 ValueIndex Index::AddTagValue(QString name)
 {
-    if (m_tagValueIndex.contains(name))
+    if(m_tagValueIndex.contains(name))
     {
         return m_tagValueIndex[name];
     }
@@ -66,7 +66,7 @@ void Index::setTag(const QString& tagName, const QString& value, int gameId)
     TagIndex tagIndex = AddTagName(tagName);
     ValueIndex valueIndex = AddTagValue(value);
 
-    if (m_indexItems.count() <= gameId)
+    if(m_indexItems.count() <= gameId)
     {
         add();
     }
@@ -76,15 +76,19 @@ void Index::setTag(const QString& tagName, const QString& value, int gameId)
 
 void Index::setValidFlag(const int& gameId, bool value)
 {
-    m_validFlags[gameId]=value;
+    m_validFlags[gameId] = value;
 }
 
 bool Index::replaceTagValue(const QString& tagName, const QString& newValue, const QString& oldValue)
 {
-    if (!m_tagNameIndex.contains(tagName))
+    if(!m_tagNameIndex.contains(tagName))
+    {
         return false;
-    if (!m_tagValueIndex.contains(oldValue))
+    }
+    if(!m_tagValueIndex.contains(oldValue))
+    {
         return false;
+    }
 
     ValueIndex valueIndex = m_tagValueIndex[oldValue];
 
@@ -105,7 +109,7 @@ bool Index::write(QDataStream &out) const
     out << m_tagNames;
     out << m_tagValues;
     out << m_indexItems.count();
-    for (int i=0; i<m_indexItems.count();++i)
+    for(int i = 0; i < m_indexItems.count(); ++i)
     {
         m_indexItems[i]->write(out);
     }
@@ -124,19 +128,22 @@ bool Index::read(QDataStream &in, volatile bool *breakFlag)
     int itemCount;
     in >> itemCount;
 
-    int countDiff = itemCount/100;
+    int countDiff = itemCount / 100;
     int nextDiff = countDiff;
     int percentDone = 0;
 
-    for (int i=0; i<itemCount;++i)
+    for(int i = 0; i < itemCount; ++i)
     {
-        if (*breakFlag) return false;
+        if(*breakFlag)
+        {
+            return false;
+        }
         add();
         m_indexItems[i]->read(in);
-        if (i >= nextDiff)
+        if(i >= nextDiff)
         {
-           nextDiff += countDiff;
-           emit progress(++percentDone);
+            nextDiff += countDiff;
+            emit progress(++percentDone);
         }
     }
     in >> m_validFlags;
@@ -164,19 +171,25 @@ void Index::calculateCache(volatile bool* breakFlag)
 
 void Index::calculateReverseMaps(volatile bool* breakFlag)
 {
-    if (m_tagNameIndex.isEmpty())
+    if(m_tagNameIndex.isEmpty())
     {
-        foreach (TagIndex tagIndex, m_tagNames.keys())
+        foreach(TagIndex tagIndex, m_tagNames.keys())
         {
-            if (breakFlag && *breakFlag) return;
+            if(breakFlag && *breakFlag)
+            {
+                return;
+            }
             m_tagNameIndex.insert(m_tagNames.value(tagIndex), tagIndex);
         }
     }
-    if (m_tagValueIndex.isEmpty())
+    if(m_tagValueIndex.isEmpty())
     {
-        foreach (ValueIndex valueIndex, m_tagValues.keys())
+        foreach(ValueIndex valueIndex, m_tagValues.keys())
         {
-            if (breakFlag && *breakFlag) return;
+            if(breakFlag && *breakFlag)
+            {
+                return;
+            }
             m_tagValueIndex.insert(m_tagValues.value(valueIndex), valueIndex);
         }
     }
@@ -184,14 +197,17 @@ void Index::calculateReverseMaps(volatile bool* breakFlag)
 
 void Index::calculateTagMap(volatile bool *breakFlag)
 {
-    if (m_mapTagToIndexItems.isEmpty())
+    if(m_mapTagToIndexItems.isEmpty())
     {
-        foreach (TagIndex tagIndex, m_tagNames.keys())
+        foreach(TagIndex tagIndex, m_tagNames.keys())
         {
-            for (GameId gameId=0; gameId<(GameId)m_indexItems.size(); ++gameId)
+            for(GameId gameId = 0; gameId < (GameId)m_indexItems.size(); ++gameId)
             {
-                if (breakFlag && *breakFlag) return;
-                if (indexItemHasTag(tagIndex, gameId))
+                if(breakFlag && *breakFlag)
+                {
+                    return;
+                }
+                if(indexItemHasTag(tagIndex, gameId))
                 {
                     m_mapTagToIndexItems.insertMulti(tagIndex, gameId);
                 }
@@ -202,11 +218,11 @@ void Index::calculateTagMap(volatile bool *breakFlag)
 
 void Index::clear()
 {
-    for (int i = 0 ; i < m_indexItems.count() ; ++i)
+    for(int i = 0 ; i < m_indexItems.count() ; ++i)
     {
         delete m_indexItems[i];
-	}
-	m_indexItems.clear();
+    }
+    m_indexItems.clear();
     m_tagNames.clear();
     m_tagNameIndex.clear();
     m_tagValues.clear();
@@ -227,8 +243,9 @@ QBitArray Index::listContainingValue(const QString& tagName, const QString& valu
     ValueIndex valueIndex = m_tagValueIndex.value(value);
 
     QBitArray list(count(), false);
-    for (int i = 0; i < count(); ++i) {
-        list.setBit(i, m_indexItems[i]->valueIndex(tagIndex)==valueIndex);
+    for(int i = 0; i < count(); ++i)
+    {
+        list.setBit(i, m_indexItems[i]->valueIndex(tagIndex) == valueIndex);
     }
     return list;
 }
@@ -238,8 +255,9 @@ QBitArray Index::listInRange(const QString& tagName, const QString& minValue, co
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
 
     QBitArray list(count(), false);
-    for (int i = 0; i < count(); ++i) {
-        QString value = tagValue(tagIndex,i);
+    for(int i = 0; i < count(); ++i)
+    {
+        QString value = tagValue(tagIndex, i);
         list.setBit(i, (minValue < value) && (value < maxValue));
     }
     return list;
@@ -250,8 +268,9 @@ QBitArray Index::listPartialValue(const QString& tagName, const QString& value) 
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
 
     QBitArray list(count(), false);
-    for (int i = 0; i < count(); ++i) {
-        QString gameValue = tagValue(tagIndex,i);
+    for(int i = 0; i < count(); ++i)
+    {
+        QString gameValue = tagValue(tagIndex, i);
         list.setBit(i, gameValue.contains(value, Qt::CaseInsensitive));
     }
     return list;
@@ -298,8 +317,10 @@ inline ValueIndex Index::valueIndexFromIndex(TagIndex tagIndex, GameId gameId) c
 
 TagIndex Index::getTagIndex(const QString& value) const
 {
-    if (m_tagNameIndex.contains(value))
+    if(m_tagNameIndex.contains(value))
+    {
         return m_tagNameIndex.value(value);
+    }
     return TagNoIndex;
 }
 
@@ -310,13 +331,13 @@ ValueIndex Index::getValueIndex(const QString& value) const
 
 IndexItem* Index::item(int gameId)
 {
-	return m_indexItems[gameId];
+    return m_indexItems[gameId];
 }
 
 void Index::loadGameHeaders(GameId id, Game& game)
 {
     game.clearTags();
-    foreach (TagIndex tagIndex, m_indexItems[id]->getTagMapping().keys())
+    foreach(TagIndex tagIndex, m_indexItems[id]->getTagMapping().keys())
     {
         // qDebug() << "lGH>" << &game << " " << id << " " << tagName(tagIndex) << " " << tagValue(tagIndex, id);
         game.setTag(tagName(tagIndex), tagValue(tagIndex, id));
@@ -329,7 +350,7 @@ QStringList Index::playerNames() const
     QSet<ValueIndex> playerNameIndex;
 
     TagIndex tagIndex = getTagIndex(TagNameWhite);
-    if (tagIndex != TagNoIndex)
+    if(tagIndex != TagNoIndex)
     {
         foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
         {
@@ -338,7 +359,7 @@ QStringList Index::playerNames() const
     }
 
     tagIndex = getTagIndex(TagNameBlack);
-    if (tagIndex != TagNoIndex)
+    if(tagIndex != TagNoIndex)
     {
         foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
         {
@@ -360,7 +381,7 @@ QStringList Index::tagValues(const QString& tagName) const
     QSet<ValueIndex> tagNameIndex;
     TagIndex tagIndex = getTagIndex(tagName);
 
-    if (tagIndex != TagNoIndex)
+    if(tagIndex != TagNoIndex)
     {
         foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
         {
@@ -383,5 +404,5 @@ bool Index::deleted(const int& gameId) const
 
 void Index::setDeleted(int gameId, bool df)
 {
-    m_deletedGames[gameId]=df;
+    m_deletedGames[gameId] = df;
 }

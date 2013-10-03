@@ -56,7 +56,7 @@ class DownloadManager: public QObject
     Q_OBJECT
     QNetworkAccessManager manager;
     QList<QNetworkReply *> currentDownloads;
-    QMap<QUrl,QString> destinationPaths;
+    QMap<QUrl, QString> destinationPaths;
 
 public:
     explicit DownloadManager(QObject *parent = 0);
@@ -70,7 +70,7 @@ public slots:
     void downloadFinished();
 
 signals:
-    void onDownloadFinished(QUrl,QString);
+    void onDownloadFinished(QUrl, QString);
     void downloadError(QUrl);
     void downloadManagerIdle();
 

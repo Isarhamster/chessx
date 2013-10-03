@@ -24,7 +24,7 @@ Database::~Database()
 
 Index* Database::index()
 {
-	return &m_index;
+    return &m_index;
 }
 
 const Index* Database::index() const
@@ -34,7 +34,7 @@ const Index* Database::index() const
 
 QString Database::name() const
 {
-	QFileInfo fi(filename());
-	return fi.completeBaseName();
+    QFileInfo fi(filename());
+    return fi.completeBaseName();
 }
 

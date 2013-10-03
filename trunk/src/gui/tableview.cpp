@@ -13,27 +13,27 @@
 #include <QMenu>
 
 TableView::TableView(QWidget *parent)
-        : QTableView(parent)
+    : QTableView(parent)
 {
-	setShowGrid(false);
-	setSelectionBehavior(QAbstractItemView::SelectRows);
-	setSelectionMode(QAbstractItemView::SingleSelection);
-	setTextElideMode(Qt::ElideRight);
-	verticalHeader()->setDefaultSectionSize(fontMetrics().lineSpacing());
-	verticalHeader()->hide();
-	horizontalHeader()->setHighlightSections(false);
+    setShowGrid(false);
+    setSelectionBehavior(QAbstractItemView::SelectRows);
+    setSelectionMode(QAbstractItemView::SingleSelection);
+    setTextElideMode(Qt::ElideRight);
+    verticalHeader()->setDefaultSectionSize(fontMetrics().lineSpacing());
+    verticalHeader()->hide();
+    horizontalHeader()->setHighlightSections(false);
     horizontalHeader()->setStretchLastSection(true);
 #if QT_VERSION < 0x050000
     horizontalHeader()->setMovable(true);
 #else
     horizontalHeader()->setSectionsMovable(true);
 #endif
-	setTabKeyNavigation(false);
+    setTabKeyNavigation(false);
     setContextMenuPolicy(Qt::CustomContextMenu);
     horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(horizontalHeader(), SIGNAL(customContextMenuRequested(const QPoint&)),
-        this, SLOT(ShowContextMenu(const QPoint&)));
+            this, SLOT(ShowContextMenu(const QPoint&)));
 }
 
 TableView::~TableView()
@@ -42,23 +42,25 @@ TableView::~TableView()
 
 void TableView::saveConfig()
 {
-	AppSettings->setLayout(this);
-	AppSettings->beginGroup(objectName());
+    AppSettings->setLayout(this);
+    AppSettings->beginGroup(objectName());
     QByteArray visualIndex = horizontalHeader()->saveState();
     AppSettings->setByteArray("VisualIndex", visualIndex);
-	AppSettings->endGroup();
+    AppSettings->endGroup();
 }
 
 void TableView::slotReconfigure()
 {
     bool sortIndicator = horizontalHeader()->isSortIndicatorShown();
-	AppSettings->layout(this);
+    AppSettings->layout(this);
     QString objName = objectName();
     AppSettings->beginGroup(objName);
-	QList<int> sections;
-	if (AppSettings->list("Sections", sections, model()->columnCount()))
-        for (int i = 0; i < sections.count(); ++i)
-			setColumnWidth(i, sections[i]);
+    QList<int> sections;
+    if(AppSettings->list("Sections", sections, model()->columnCount()))
+        for(int i = 0; i < sections.count(); ++i)
+        {
+            setColumnWidth(i, sections[i]);
+        }
 
     QByteArray visualIndex = AppSettings->byteArray("VisualIndex");
     horizontalHeader()->restoreState(visualIndex);
@@ -81,20 +83,20 @@ void TableView::ShowContextMenu(const QPoint& pos)
     QAction* showAll = headerMenu.addAction(tr("Show all Columns"));
 
     QAction* selectedItem = headerMenu.exec(mapToGlobal(pos));
-    if (selectedItem == hide)
+    if(selectedItem == hide)
     {
         int column = columnAt(pos.x());
-        if (column > 0)
+        if(column > 0)
         {
             hideColumn(column);
         }
     }
-    else if (selectedItem == showAll)
+    else if(selectedItem == showAll)
     {
-        for (int i = 0; i < model()->columnCount(); ++i)
+        for(int i = 0; i < model()->columnCount(); ++i)
         {
             showColumn(i);
-            if (columnWidth(i) < 50)
+            if(columnWidth(i) < 50)
             {
                 setColumnWidth(i, 50); // Fix a bugfeature in Qt
             }

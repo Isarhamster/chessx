@@ -22,7 +22,8 @@ namespace Guess
 
 const unsigned int MAX_SQUARELIST = 65;  // 64 squares plus null square
 
-class SquareList {
+class SquareList
+{
 private:
 
     unsigned int ListSize;
@@ -30,40 +31,61 @@ private:
 
 public:
 
-    SquareList() { ListSize = 0; }
+    SquareList()
+    {
+        ListSize = 0;
+    }
     ~SquareList() {}
 
-    inline void Init() { ListSize = 0; }
-    inline void Clear() { ListSize = 0; }
-    inline void Add(squareT sq) { Squares[ListSize] = sq; ListSize++; }
-    inline unsigned int Size() { return ListSize; }
-    inline squareT Get (unsigned int index);
-    inline bool Contains (squareT sq);
-    inline void Remove (unsigned int index);
+    inline void Init()
+    {
+        ListSize = 0;
+    }
+    inline void Clear()
+    {
+        ListSize = 0;
+    }
+    inline void Add(squareT sq)
+    {
+        Squares[ListSize] = sq;
+        ListSize++;
+    }
+    inline unsigned int Size()
+    {
+        return ListSize;
+    }
+    inline squareT Get(unsigned int index);
+    inline bool Contains(squareT sq);
+    inline void Remove(unsigned int index);
 };
 
 inline squareT
-SquareList::Get (unsigned int index)
+SquareList::Get(unsigned int index)
 {
-    ASSERT (index < ListSize);
+    ASSERT(index < ListSize);
     return Squares[index];
 }
 
 inline bool
-SquareList::Contains (squareT sq)
+SquareList::Contains(squareT sq)
 {
-    for (unsigned int i=0; i < ListSize; i++) {
-        if (Squares[i] == sq) { return true; }
+    for(unsigned int i = 0; i < ListSize; i++)
+    {
+        if(Squares[i] == sq)
+        {
+            return true;
+        }
     }
     return false;
 }
 
 inline void
-SquareList::Remove (unsigned int index)
+SquareList::Remove(unsigned int index)
 {
-    ASSERT (index < ListSize);
+    ASSERT(index < ListSize);
     ListSize--;
-    if (index != ListSize) {
+    if(index != ListSize)
+    {
         Squares[index] = Squares[ListSize];
     }
 }

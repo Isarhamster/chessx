@@ -34,80 +34,131 @@
 */
 
 class Database : public QObject
-{    
-	Q_OBJECT
+{
+    Q_OBJECT
 
 public:
-	/** Standard constructor. */
-	Database();
+    /** Standard constructor. */
+    Database();
     volatile bool m_break;
-	/** Virtual destructor */
-	virtual ~Database();
+    /** Virtual destructor */
+    virtual ~Database();
 
     /** Query file format */
-    bool isUtf8() const { return m_utf8; }
+    bool isUtf8() const
+    {
+        return m_utf8;
+    }
     /** Set file format */
-    void setUtf8(bool utf8) { m_utf8 = utf8; }
+    void setUtf8(bool utf8)
+    {
+        m_utf8 = utf8;
+    }
 
     //Mutex operations
-    void lock() { mutex.lock(); }
-    void unlock() { mutex.unlock(); }
+    void lock()
+    {
+        mutex.lock();
+    }
+    void unlock()
+    {
+        mutex.unlock();
+    }
 
-	//database operations
-	/** Creates a database with the given filename */
-	virtual bool create(const QString&) { return false; }
-	/** Opens the given database */
+    //database operations
+    /** Creates a database with the given filename */
+    virtual bool create(const QString&)
+    {
+        return false;
+    }
+    /** Opens the given database */
     virtual bool open(const QString& filename, bool utf8) = 0;
     /** Opens the given database */
     virtual bool parseFile() = 0;
-	/** File-based database name */
-	virtual QString filename() const = 0;
-	/** File-based database name for displayng (no path and extension. */
-	virtual QString name() const;
-	/** Closes the database */
-	virtual void close() = 0;
-	/** Returns whether the database is read-only or not */
-	virtual bool isReadOnly() const {return true;}
-	/** Removes all games from the database, return true if successful */
-	virtual bool clear() { return false; }
+    /** File-based database name */
+    virtual QString filename() const = 0;
+    /** File-based database name for displayng (no path and extension. */
+    virtual QString name() const;
+    /** Closes the database */
+    virtual void close() = 0;
+    /** Returns whether the database is read-only or not */
+    virtual bool isReadOnly() const
+    {
+        return true;
+    }
+    /** Removes all games from the database, return true if successful */
+    virtual bool clear()
+    {
+        return false;
+    }
 
-	//game retrieval & storage
-	/** Loads a game from the given position, returns true if successful */
-	virtual bool loadGame(int index, Game& game) = 0;
-	/** Load all tags for GameId from index into game object */
-	virtual void loadGameHeaders(GameId id, Game& game) { m_index.loadGameHeaders(id, game); }
-	/** Loads only moves into a game from the given position */
-	virtual void loadGameMoves(int index, Game& game) = 0;
-	/** Saves a game at the given position, returns true if successful */
-	virtual bool replace(int , Game&) { return false; }
-	/** Adds a game to the database */
-    virtual bool appendGame(const Game&) { return false; }
-	/** Removes a game from the database */
-	virtual bool remove(int) { return false; };
+    //game retrieval & storage
+    /** Loads a game from the given position, returns true if successful */
+    virtual bool loadGame(int index, Game& game) = 0;
+    /** Load all tags for GameId from index into game object */
+    virtual void loadGameHeaders(GameId id, Game& game)
+    {
+        m_index.loadGameHeaders(id, game);
+    }
+    /** Loads only moves into a game from the given position */
+    virtual void loadGameMoves(int index, Game& game) = 0;
+    /** Saves a game at the given position, returns true if successful */
+    virtual bool replace(int , Game&)
+    {
+        return false;
+    }
+    /** Adds a game to the database */
+    virtual bool appendGame(const Game&)
+    {
+        return false;
+    }
+    /** Removes a game from the database */
+    virtual bool remove(int)
+    {
+        return false;
+    };
     /** Undelete a game from the database */
-    virtual bool undelete(int) { return false; };
-	/** Removes multiple games from the database as specified by the filter */
-	virtual bool remove(const Filter&) { return false; }
+    virtual bool undelete(int)
+    {
+        return false;
+    };
+    /** Removes multiple games from the database as specified by the filter */
+    virtual bool remove(const Filter&)
+    {
+        return false;
+    }
     /** @return pointer to the index of the database */
     Index *index();
     /** @return const pointer to the index of the database */
     const Index *index() const;
-	/** Returns the number of games in the database */
-    virtual int count() { return 0; }
-	/** @return true if the database has been modified. By default database is read-only. */
-	virtual bool isModified() const { return false; }
+    /** Returns the number of games in the database */
+    virtual int count()
+    {
+        return 0;
+    }
+    /** @return true if the database has been modified. By default database is read-only. */
+    virtual bool isModified() const
+    {
+        return false;
+    }
     /** Set / Reset the modification flag. */
     virtual void setModified(bool) { }
     /** Get the Valid Flag for a given game id from the index */
-    virtual bool getValidFlag(GameId id) const { return m_index.isValidFlag(id); }
+    virtual bool getValidFlag(GameId id) const
+    {
+        return m_index.isValidFlag(id);
+    }
     /** Get the Valid Flag for a given game id from the index */
-    virtual bool deleted(GameId id) const { return m_index.deleted(id); }
+    virtual bool deleted(GameId id) const
+    {
+        return m_index.deleted(id);
+    }
 signals:
-	/** Signal emitted when some progress is done. */
+    /** Signal emitted when some progress is done. */
     void progress(int);
 
 protected:
-	Index m_index;
+    Index m_index;
     bool m_utf8;
     QMutex mutex;
 };

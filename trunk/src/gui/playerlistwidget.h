@@ -9,7 +9,8 @@
 #include <QStringListModel>
 #include "playerinfo.h"
 
-namespace Ui {
+namespace Ui
+{
 class TagDetailWidget;
 }
 
@@ -18,7 +19,7 @@ class DatabaseInfo;
 class PlayerListWidget : public QWidget
 {
     Q_OBJECT
-    
+
 public:
     explicit PlayerListWidget(QWidget *parent = 0);
     ~PlayerListWidget();
