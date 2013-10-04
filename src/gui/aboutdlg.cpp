@@ -20,6 +20,11 @@ AboutDlg::AboutDlg(QWidget *parent) :
     ui->labelCopyRightDate->setText(COPYRIGHT_DATE);
     QString version = QString(STR_REVISION).replace(',', '.');
     ui->labelVersion->setText(version);
+
+    ui->labelTempPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+    ui->labelDataPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+    ui->labelHomepage->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    ui->labelMailingList->setTextInteractionFlags(Qt::TextBrowserInteraction);
 }
 
 AboutDlg::~AboutDlg()
