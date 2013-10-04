@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>488</width>
-    <height>759</height>
+    <width>517</width>
+    <height>810</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>About ChessX</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../resources.qrc">
+    <normaloff>:/images/chessx.png</normaloff>:/images/chessx.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -238,7 +242,8 @@ William Hoggarth</string>
        <property name="text">
         <string notr="true">Jens Nissen
 Joachim Katzer
-Olivier Roset</string>
+Olivier Roset
+Bruno Rizzuti</string>
        </property>
       </widget>
      </item>
@@ -316,7 +321,7 @@ Olivier Roset</string>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="label_22">
+       <widget class="QLabel" name="labelHomepage">
         <property name="frameShape">
          <enum>QFrame::Panel</enum>
         </property>
@@ -339,7 +344,7 @@ Olivier Roset</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLabel" name="label_24">
+       <widget class="QLabel" name="labelMailingList">
         <property name="frameShape">
          <enum>QFrame::Panel</enum>
         </property>
