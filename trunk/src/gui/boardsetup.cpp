@@ -24,7 +24,7 @@
 #include <QPixmap>
 
 BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f),
-    m_wheelCurrentDelta(0), m_selectedPiece(Empty)
+    m_wheelCurrentDelta(0), m_selectedPiece(Empty),inDrag(false)
 {
     setObjectName("BoardSetupDialog");
     ui.setupUi(this);
@@ -483,6 +483,10 @@ void BoardSetupDialog::slotMoveNumber()
 
 void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
 {
+    if (inDrag)
+    {
+        return;
+    }
     BoardSetupToolButton *child = qobject_cast<BoardSetupToolButton*>(w);
     if(!child)
     {
@@ -502,7 +506,9 @@ void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
     pDrag->setPixmap(pixmap);
     pDrag->setHotSpot(hotSpot);
 
+    inDrag = true;
     pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+    inDrag = false;
 }
 
 void BoardSetupDialog::labelClicked(Piece p)
