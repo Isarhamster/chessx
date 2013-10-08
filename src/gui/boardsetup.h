@@ -113,6 +113,7 @@ private:
     int m_wheelCurrentDelta;
     int m_minDeltaWheel;
     Piece m_selectedPiece;
+    bool inDrag;
 };
 
 
