@@ -255,11 +255,16 @@ inline QString Move::toAlgebraic() const
     {
         return QString("?");
     }
-    QString alg(4, ' ');
-    alg[0] = QChar('a' + from() % 8);
-    alg[1] = QChar('1' + from() / 8);
-    alg[2] = QChar('a' + to() % 8);
-    alg[3] = QChar('1' + to() / 8);
+    QString alg;
+    alg += QChar('a' + from() % 8);
+    alg += QChar('1' + from() / 8);
+    alg += QChar('a' + to() % 8);
+    alg += QChar('1' + to() / 8);
+    if (isPromotion())
+    {
+        alg += QChar('=');
+        alg += "XKQRBNPKQRBNP"[promotedPiece()];
+    }
     return alg;
 }
 
