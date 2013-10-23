@@ -9,84 +9,84 @@
         <translation>Über ChessX</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="39"/>
+        <location filename="../src/gui/aboutdlg.ui" line="43"/>
         <source>&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
 Free Chess Database </source>
         <translation>&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
 Freie Schachdatenbank</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="61"/>
+        <location filename="../src/gui/aboutdlg.ui" line="65"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="68"/>
+        <location filename="../src/gui/aboutdlg.ui" line="72"/>
         <source>Copyright</source>
         <translation>Copyright</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="75"/>
+        <location filename="../src/gui/aboutdlg.ui" line="79"/>
         <source>License</source>
         <translation>Lizenz</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="121"/>
+        <location filename="../src/gui/aboutdlg.ui" line="125"/>
         <source>Maintainer</source>
         <translation>Projektleitung</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="141"/>
+        <location filename="../src/gui/aboutdlg.ui" line="145"/>
         <source>Further Maintainers</source>
         <translation>Weitere Projektleiter</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="161"/>
+        <location filename="../src/gui/aboutdlg.ui" line="165"/>
         <source>Testing</source>
         <translation>Tester</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="181"/>
+        <location filename="../src/gui/aboutdlg.ui" line="185"/>
         <source>Coders</source>
         <translation>Programmierung</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="201"/>
+        <location filename="../src/gui/aboutdlg.ui" line="205"/>
         <source>Further Code</source>
         <translation>Weitere Programmierer</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="226"/>
+        <location filename="../src/gui/aboutdlg.ui" line="230"/>
         <source>Translations</source>
         <translation>Übersetzungen</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="250"/>
+        <location filename="../src/gui/aboutdlg.ui" line="255"/>
         <source>Path Information</source>
         <translation>Pfade</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="259"/>
+        <location filename="../src/gui/aboutdlg.ui" line="264"/>
         <source>Path for temporary files</source>
         <translation>Pfad zu Temporärdateien</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="282"/>
+        <location filename="../src/gui/aboutdlg.ui" line="287"/>
         <source>Program data path</source>
         <translation>Pfad zu Programmdaten</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="308"/>
+        <location filename="../src/gui/aboutdlg.ui" line="313"/>
         <source>Contact</source>
         <translation>Kontakt</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="314"/>
+        <location filename="../src/gui/aboutdlg.ui" line="319"/>
         <source>Homepage</source>
         <translation>Homepage</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdlg.ui" line="337"/>
+        <location filename="../src/gui/aboutdlg.ui" line="342"/>
         <source>Mailing List</source>
         <translation>Mail Liste</translation>
     </message>
@@ -1442,7 +1442,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1025"/>
         <source>&amp;Paste</source>
-        <translation>Einfügen PGN/FEN</translation>
+        <translation>Einfügen &amp;PGN/FEN</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1049"/>
@@ -1714,11 +1714,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1181"/>
         <source>&amp;Copy games...</source>
         <translation>Partien &amp;kopieren...</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="615"/>
-        <source></source>
-        <translation></translation>
     </message>
 </context>
 <context>
