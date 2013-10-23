@@ -55,14 +55,17 @@ int main(int argc, char** argv)
     QDir().mkpath(AppSettings->dataPath() + "/lang/");
 
     QTranslator translator;
-    if(translator.load(QString(":i18n/") + lang) ||
-            translator.load(AppSettings->dataPath() + "/lang/" + lang) ||
-            translator.load(QString(":i18n/") + fullSystemLang) ||
-            translator.load(AppSettings->dataPath() + "/lang/" + fullSystemLang) ||
-            translator.load(QString(":i18n/") + shortSystemLang) ||
-            translator.load(AppSettings->dataPath() + "/lang/" + shortSystemLang))
+    if (lang != "chessx_en.qm")
     {
-        app.installTranslator(&translator);
+        if(translator.load(QString(":/i18n/") + lang) ||
+                translator.load(AppSettings->dataPath() + "/lang/" + lang) ||
+                translator.load(QString(":/i18n/") + fullSystemLang) ||
+                translator.load(AppSettings->dataPath() + "/lang/" + fullSystemLang) ||
+                translator.load(QString(":/i18n/") + shortSystemLang) ||
+                translator.load(AppSettings->dataPath() + "/lang/" + shortSystemLang))
+        {
+            app.installTranslator(&translator);
+        }
     }
 
     MainWindow* mainWindow = new MainWindow;

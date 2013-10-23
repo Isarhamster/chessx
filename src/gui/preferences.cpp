@@ -443,6 +443,7 @@ void PreferencesDialog::restoreSettings()
 
     QStringList translations = AppSettings->getTranslations();
     ui.cbLanguage->addItem("Default");
+    ui.cbLanguage->addItem("en");
     QStringListIterator it1(translations);
     while(it1.hasNext())
     {
