@@ -1320,9 +1320,7 @@ void MainWindow::StartCheckUpdate()
                 SLOT(slotHttpDone(QNetworkReply*)));
         connect(this, SIGNAL(signalVersionFound(int, int, int)),
                 SLOT(slotVersionFound(int, int, int)));
-        QUrl url("/projects/chessx/");
-        url.setScheme("http");
-        url.setHost("sourceforge.net");
+        QUrl url = QUrl(QString("http://chessx.sourceforge.net/versions/current.txt"));
         QNetworkRequest request(url);
         m_manager->get(request);
     }
@@ -1335,7 +1333,7 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
     if(!reply->error())
     {
         QString answer(reply->readAll());
-        QRegExp rx("/chessx/(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)/");
+        QRegExp rx("(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)");
         if(answer.indexOf(rx) > -1)
         {
             int major = rx.capturedTexts().at(1).toInt();
