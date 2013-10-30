@@ -145,7 +145,7 @@ HEADERS += src/database/board.h \
     src/gui/openingtreewidget.h \
     src/gui/ecolistwidget.h \
     src/database/ecoinfo.h \
-    src/gui/TextBrowserEx.h \
+    src/gui/textbrowserex.h \
     src/gui/loadquery.h \
     src/guess/compileeco.h \
     src/database/pdbtest.h \
