@@ -115,7 +115,7 @@ Free Chess Database </string>
         <enum>QFrame::Sunken</enum>
        </property>
        <property name="text">
-        <string notr="true">GNU Public License 2 - GPLv2</string>
+        <string notr="true">GNU General Public License 2 - GPLv2</string>
        </property>
       </widget>
      </item>
