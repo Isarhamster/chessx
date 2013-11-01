@@ -258,7 +258,7 @@ void Output::readTemplateFile(const QString& path)
                 }
                 else
                 {
-                    qWarning("Unkown Markup Tag found in file %s line %d. Ignoring : %s", path.toLatin1().constData(), i,  line.toLatin1().constData());
+                    qWarning("Unknown Markup Tag found in file %s line %d. Ignoring : %s", path.toLatin1().constData(), i,  line.toLatin1().constData());
                 }
             }
             break;
