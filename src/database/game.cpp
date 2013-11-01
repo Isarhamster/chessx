@@ -639,7 +639,10 @@ void Game::removeVariations()
 {
     for(int i = 0; i < m_moveNodes.size(); ++i)
     {
-        m_moveNodes[i].variations.clear();
+        while (!m_moveNodes[i].variations.empty())
+        {
+            removeVariation(m_moveNodes[i].variations.at(0));
+        }
     }
     compact();
     setModified(true);
@@ -1604,6 +1607,12 @@ void Game::removeNode(MoveId moveId)
     if(node != NO_MOVE)
     {
         setModified(true);
+        m_variationStartAnnotations.remove(node);
+        m_annotations.remove(node);
+        m_squareAnnotations.remove(node);
+        m_arrowAnnotations.remove(node);
+        m_clkAnnotations.remove(node);
+        m_egtAnnotations.remove(node);
 
         if(variationCount(node))
         {
@@ -1756,7 +1765,7 @@ QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, Mo
     return san;
 }
 
-void Game::dumpMoveNode(MoveId moveId)
+void Game::dumpMoveNode(MoveId moveId) const
 {
     if(moveId == CURRENT_MOVE)
     {
@@ -1765,18 +1774,18 @@ void Game::dumpMoveNode(MoveId moveId)
     if(moveId != NO_MOVE)
     {
         qDebug() << "Move Id : " << moveId;
-        qDebug() << "   Next node   : " << m_moveNodes[moveId].nextNode;
-        qDebug() << "   Prev node   : " << m_moveNodes[moveId].previousNode;
-        qDebug() << "   Parent node : " << m_moveNodes[moveId].parentNode;
-        qDebug() << "   Nags        : " << m_moveNodes[moveId].nags.toString(NagSet::Simple);
-        qDebug() << "   Deleted     : " << m_moveNodes[moveId].removed;
-        qDebug() << "   # Variations: " << m_moveNodes[moveId].variations.size();
-        qDebug() << "   Variations  : " << m_moveNodes[moveId].variations;
-        qDebug() << "   Move        : " << moveToSan(FullDetail, PreviousMove, moveId);
+        qDebug() << "   Next node   : " << m_moveNodes.at(moveId).nextNode;
+        qDebug() << "   Prev node   : " << m_moveNodes.at(moveId).previousNode;
+        qDebug() << "   Parent node : " << m_moveNodes.at(moveId).parentNode;
+        qDebug() << "   Nags        : " << m_moveNodes.at(moveId).nags.toString(NagSet::Simple);
+        qDebug() << "   Deleted     : " << m_moveNodes.at(moveId).removed;
+        qDebug() << "   # Variations: " << m_moveNodes.at(moveId).variations.size();
+        qDebug() << "   Variations  : " << m_moveNodes.at(moveId).variations;
+        qDebug() << "   Move        : " << m_moveNodes.at(moveId).move.toAlgebraic();
     }
 }
 
-void Game::dumpAnnotations(MoveId moveId)
+void Game::dumpAnnotations(MoveId moveId) const
 {
     if(moveId == CURRENT_MOVE)
     {
@@ -1785,17 +1794,17 @@ void Game::dumpAnnotations(MoveId moveId)
     if(moveId != NO_MOVE)
     {
         qDebug() << "   Annotations : ";
-        qDebug() << "   Text        : " << m_annotations[moveId];
-        qDebug() << "   Square      : " << m_squareAnnotations[moveId];
-        qDebug() << "   Arrow       : " << m_arrowAnnotations[moveId];
-        qDebug() << "   CLK         : " << m_clkAnnotations[moveId];
-        qDebug() << "   EGT         : " << m_egtAnnotations[moveId];
-        qDebug() << "   Start       : " << m_variationStartAnnotations[moveId];
+        qDebug() << "   Text        : " << m_annotations.value(moveId);
+        qDebug() << "   Square      : " << m_squareAnnotations.value(moveId);
+        qDebug() << "   Arrow       : " << m_arrowAnnotations.value(moveId);
+        qDebug() << "   CLK         : " << m_clkAnnotations.value(moveId);
+        qDebug() << "   EGT         : " << m_egtAnnotations.value(moveId);
+        qDebug() << "   Start       : " << m_variationStartAnnotations.value(moveId);
     }
 }
 
 
-void Game::dumpAllMoveNodes()
+void Game::dumpAllMoveNodes() const
 {
     qDebug() << endl;
     qDebug() << "Current Node: " << m_currentNode;
