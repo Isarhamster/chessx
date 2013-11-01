@@ -308,11 +308,11 @@ public :
 
     /* Debug */
     /** Dump a move node using qDebug() */
-    void dumpMoveNode(MoveId moveId = CURRENT_MOVE);
+    void dumpMoveNode(MoveId moveId = CURRENT_MOVE) const;
     /** Dump annotatios for move @p moveId using qDebug() */
-    void dumpAnnotations(MoveId moveId);
+    void dumpAnnotations(MoveId moveId) const;
     /** Repeatedly call dumpMoveNode for all nodes */
-    void dumpAllMoveNodes();
+    void dumpAllMoveNodes() const;
     /** Decide if moveVariationUp() can be executed */
     bool canMoveVariationUp(MoveId moveId) const;
     /** Decide if moveVariationDown() can be executed */
