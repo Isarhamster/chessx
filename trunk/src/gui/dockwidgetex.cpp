@@ -3,6 +3,7 @@
 ****************************************************************************/
 
 #include "dockwidgetex.h"
+#include <QAction>
 
 DockWidgetEx::DockWidgetEx(const QString &title, QWidget *parent, Qt::WindowFlags flags) :
     QDockWidget(title, parent, flags)
@@ -19,7 +20,7 @@ DockWidgetEx::DockWidgetEx(QWidget *parent, Qt::WindowFlags flags) :
 void DockWidgetEx::showEvent(QShowEvent * event)
 {
     QDockWidget::showEvent(event);
-    if(isVisible())
+    if(isVisible() && qobject_cast<QAction*>(sender()))
     {
         raise();
     }
