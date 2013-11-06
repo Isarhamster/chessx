@@ -78,6 +78,8 @@ public:
     /** Check if move is completely legal in the context it was created */
     bool isLegal() const;
 
+    Color color() const;
+
     /** Return true if this move was made by given color */
     bool operator==(const Color& color) const;
     /** Return true if this move was NOT made by given color */
@@ -321,6 +323,11 @@ inline bool Move::isEnPassant() const
 inline bool Move::isLegal() const
 {
     return m & LEGALITYBIT;
+}
+
+inline Color Move::color() const
+{
+    return ((m & BLACKTM) ? Black : White);
 }
 
 inline void Move::genOneForward(unsigned int from, unsigned int to)
