@@ -30,6 +30,7 @@
 #include "pgndatabase.h"
 #include "playerlistwidget.h"
 #include "preferences.h"
+#include "promotiondialog.h"
 #include "renametagdialog.h"
 #include "savedialog.h"
 #include "settings.h"
@@ -542,12 +543,8 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
         PieceType promotionPiece = None;
         if(m.isPromotion())
         {
-            bool ok;
-            QStringList moves;
-            moves << tr("Queen") << tr("Rook") << tr("Bishop") << tr("Knight");
-            int index = moves.indexOf(QInputDialog::getItem(0, tr("Promotion"), tr("Promote to:"),
-                                      moves, 0, false, &ok));
-            if(!ok)
+            int index = PromotionDialog(0,m.color()).getIndex();
+            if(index<0)
             {
                 return;
             }
