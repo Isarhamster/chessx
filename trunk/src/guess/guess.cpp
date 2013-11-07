@@ -17,12 +17,12 @@ Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
 
     pos.GenerateMoves(&mlist);
     mlist.SelectBySquare(sq);
-    if(mlist.Size() == 0)
+    if(mlist.size() == 0)
     {
         return r;
     }
 
-    if(mlist.Size() > 1)
+    if(mlist.size() > 1)
     {
         Engine * engine = new Engine();
         engine->SetSearchTime(thinkTime);
@@ -31,11 +31,11 @@ Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
         delete engine;
     }
 
-    simpleMoveT * sm = mlist.Get(0);
-    ASSERT(sq == sm->from  ||  sq == sm->to);
+    const simpleMoveT& sm = mlist.at(0);
+    ASSERT(sq == sm.from  ||  sq == sm.to);
 
-    r.from = sm->from;
-    r.to = sm->to;
+    r.from = sm.from;
+    r.to = sm.to;
     r.error = 0;
     return r;
 }
@@ -76,7 +76,7 @@ int pickBest(const char* fen, int from1, int to1, int from2, int to2, int ms)
     pos.GenerateMoves(&mlist);
 
     mlist.SelectBySquares(from1, to1, from2, to2);
-    if(mlist.Size() == 2)
+    if(mlist.size() == 2)
     {
         Engine * engine = new Engine();
         engine->SetSearchTime(ms);    // Do a "ms" millisecond search

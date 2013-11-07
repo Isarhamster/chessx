@@ -285,7 +285,7 @@ bool BoardView::showGuess(Square s)
         m_hoverSquare = s;
         removeGuess();
         m_moveListCurrent = 0;
-        m_moveList.Clear();
+        m_moveList.clear();
 #ifdef USE_ECO_GUESS
         if(m_board.ecoMove(s, &m_hifrom, &m_hito))
         {
@@ -330,13 +330,13 @@ void BoardView::nextGuess(Square s)
 {
     if(!showGuess(s))
     {
-        if(m_moveList.Size() && m_moveListCurrent < m_moveList.Size())
+        if(m_moveList.size() && m_moveListCurrent < m_moveList.size())
         {
             Guess::simpleMoveT * sold = m_moveList.Get(m_moveListCurrent);
             update(squareRect(sold->from));
             update(squareRect(sold->to));
 
-            if(m_moveListCurrent < m_moveList.Size() - 1)
+            if(m_moveListCurrent < m_moveList.size() - 1)
             {
                 ++m_moveListCurrent;
             }

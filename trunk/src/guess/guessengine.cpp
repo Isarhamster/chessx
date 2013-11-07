@@ -1799,21 +1799,21 @@ Engine::Think(MoveList * mlist)
     ClearHistoryValues();
 
     // If no legal move list was specified, generate and search all moves:
-    if(mlist == NULL || !mlist->Size())
+    if(mlist == NULL || !mlist->size())
     {
         Pos.GenerateMoves();
         mlist = Pos.GetLegalMoves();
     }
 
     // No legal moves? Return 0 for stalemate, -Infinity for checkmate.
-    if(mlist->Size() == 0)
+    if(mlist->size() == 0)
     {
         return (Pos.IsKingInCheck() ? -Infinity : 0);
     }
 
     // Sort the root move list by quiescent evaluation to get a
     // reasonably good initial move order:
-    for(unsigned int i = 0; i < mlist->Size(); i++)
+    for(unsigned int i = 0; i < mlist->size(); i++)
     {
         simpleMoveT * sm = mlist->Get(i);
         DoMove(sm);
@@ -1824,7 +1824,7 @@ Engine::Think(MoveList * mlist)
 
     // Check for an easy move, one that scores more than two pawns
     // better than any alternative:
-    if(mlist->Size() > 1)
+    if(mlist->size() > 1)
     {
         int margin = mlist->Get(0)->score - mlist->Get(1)->score;
         if(margin > (2 * PawnValue))
@@ -1953,15 +1953,15 @@ Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
 
     // No legal moves to search? Just return an equal score for
     // stalemate or -Infinity for checkmate.
-    if(mlist->Size() == 0)
+    if(mlist->size() == 0)
     {
         return (Pos.IsKingInCheck() ? -Infinity : 0);
     }
 
-    bool isOnlyMove = (mlist->Size() == 1);
+    bool isOnlyMove = (mlist->size() == 1);
     int bestScore = -Infinity - 1;
 
-    for(unsigned int movenum = 0; movenum < mlist->Size(); movenum++)
+    for(unsigned int movenum = 0; movenum < mlist->size(); movenum++)
     {
         simpleMoveT * sm = mlist->Get(movenum);
         unsigned int oldNodeCount = NodeCount;
@@ -2212,7 +2212,7 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
     {
         gotHashMove = true;
         // For now, we only add the hash move to the move list.
-        mlist.Add(&hashmove);
+        mlist.append(hashmove);
         mlist.Get(0)->score = ENGINE_HASH_SCORE;
     }
     else
@@ -2221,7 +2221,7 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
         gotHashMove = false;
         Pos.GenerateMoves(&mlist, EMPTY, GEN_ALL_MOVES, InCheck[Ply]);
         ScoreMoves(&mlist);
-        isOnlyMove = (mlist.Size() == 1);
+        isOnlyMove = (mlist.size() == 1);
     }
 
     // If there is only one legal move, extend the search:
@@ -2235,7 +2235,7 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
     int bestMoveIndex = -1;
 
     // Search each move:
-    for(unsigned int movenum = 0; movenum < mlist.Size(); movenum++)
+    for(unsigned int movenum = 0; movenum < mlist.size(); movenum++)
     {
         // Find the highest-scoring remaining move:
         mlist.FindBest(movenum);
@@ -2364,7 +2364,7 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
         // the start of the list so it does not get searched again.
         if(movenum == 0  &&  gotHashMove  &&  !isOnlyMove)
         {
-            mlist.Clear();
+            mlist.clear();
             Pos.GenerateMoves(&mlist, EMPTY, GEN_ALL_MOVES, InCheck[Ply]);
             ScoreMoves(&mlist);
             int hashIndex = mlist.Find(&hashmove);
@@ -2381,7 +2381,7 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
         }
     }
 
-    if(mlist.Size() == 0)
+    if(mlist.size() == 0)
     {
         // No legal moves? Must be checkmate or stalemate:
         return (InCheck[Ply] ? (-Infinity + Ply) : 0);
@@ -2492,7 +2492,7 @@ Engine::Quiesce(int alpha, int beta)
     // Generate and score the list of captures:
     MoveList mlist;
     Pos.GenerateMoves(&mlist, GEN_CAPTURES);
-    for(unsigned int m = 0; m < mlist.Size(); m++)
+    for(unsigned int m = 0; m < mlist.size(); m++)
     {
         simpleMoveT * sm = mlist.Get(m);
         sm->score = SEE(sm->from, sm->to);
@@ -2501,7 +2501,7 @@ Engine::Quiesce(int alpha, int beta)
     // Iterate through each quiescent move to find a beta cutoff or
     // improve the alpha score:
 
-    for(unsigned int i = 0; i < mlist.Size(); i++)
+    for(unsigned int i = 0; i < mlist.size(); i++)
     {
         // Find the highest-scoring remaining move, make it and search:
         mlist.FindBest(i);
@@ -2948,7 +2948,7 @@ Engine::SEE(squareT from, squareT target)
 void
 Engine::ScoreMoves(MoveList * mlist)
 {
-    for(unsigned int i = 0; i < mlist->Size(); i++)
+    for(unsigned int i = 0; i < mlist->size(); i++)
     {
         simpleMoveT * sm = mlist->Get(i);
         if(sm->capturedPiece != EMPTY  ||  sm->promote != EMPTY)
@@ -3115,7 +3115,7 @@ Engine::PerfTest(unsigned int depth)
     MoveList mlist;
     Pos.GenerateMoves(&mlist);
     unsigned int nmoves = 0;
-    for(unsigned int i = 0; i < mlist.Size(); i++)
+    for(unsigned int i = 0; i < mlist.size(); i++)
     {
         simpleMoveT * sm = mlist.Get(i);
         Pos.DoSimpleMove(sm);
