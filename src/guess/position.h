@@ -67,7 +67,7 @@ struct sanListT
 {
     bool        current;
     unsigned short      num;
-    sanStringT  list [MAX_LEGAL_MOVES];
+    sanStringT  list [256];
 };
 
 
@@ -515,7 +515,7 @@ Position::ClearLegalMoves()
     {
         AllocLegalMoves();
     }
-    LegalMoves->Clear();
+    LegalMoves->clear();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

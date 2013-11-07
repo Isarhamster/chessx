@@ -316,17 +316,18 @@ inline void
 Position::AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceT promo)
 {
     ASSERT(mlist != NULL);
-    simpleMoveT * sm = mlist->Add();
+    simpleMoveT sm;
 
     // We do NOT set the pre-move castling/ep flags, or the captured
     // piece info, here since that is ONLY needed if the move is
     // going to be executed with DoSimpleMove() and then undone.
 
-    sm->from = from;
-    sm->to = to;
-    sm->promote = promo;
-    sm->movingPiece = Board[from];
-    sm->capturedPiece = Board[to];
+    sm.from = from;
+    sm.to = to;
+    sm.promote = promo;
+    sm.movingPiece = Board[from];
+    sm.capturedPiece = Board[to];
+    mlist->append(sm);
 }
 
 
@@ -1107,7 +1108,7 @@ Position::GenerateMoves(MoveList * mlist, pieceT pieceType,
         ClearLegalMoves();
         mlist = LegalMoves;
     }
-    mlist->Clear();
+    mlist->clear();
 
     // Compute which pieces of the side to move are pinned to the king:
     CalcPins();
@@ -1390,7 +1391,7 @@ Position::MatchLegalMove(MoveList * mlist, pieceT mask, squareT target)
         ClearLegalMoves();
         mlist = LegalMoves;
     }
-    mlist->Clear();
+    mlist->clear();
 
     unsigned int count = 0;
     unsigned int total = Material[piece_Make(ToMove, mask)];
@@ -1528,7 +1529,7 @@ Position::MatchLegalMove(MoveList * mlist, pieceT mask, squareT target)
 errorT
 Position::MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceT promote)
 {
-    mlist->Clear();
+    mlist->clear();
 
     signed int diff = (int)square_Fyle(to) - (int)fromFyle;
     if(diff < -1  ||  diff > 1)
@@ -1697,7 +1698,7 @@ Position::MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceT pro
 errorT
 Position::MatchKingMove(MoveList * mlist, squareT target)
 {
-    mlist->Clear();
+    mlist->clear();
     squareT kingSq = GetKingSquare(ToMove);
     signed int diff = (int)target - (int) kingSq;
 
@@ -1819,7 +1820,7 @@ Position::GenCheckEvasions(MoveList * mlist, pieceT mask, genMovesT genType,
 
     bool genNonCaptures = ((genType & GEN_NON_CAPS) != 0);
     bool capturesOnly = !genNonCaptures;
-    mlist->Clear();
+    mlist->clear();
 
     squareT king = GetKingSquare(ToMove);
 
@@ -2421,7 +2422,7 @@ Position::IsKingInMate(void)
     CalcPins();
     MoveList mlist;
     GenCheckEvasions(&mlist, EMPTY, GEN_ALL_MOVES, &checkSquares);
-    if(mlist.Size() == 0)
+    if(mlist.size() == 0)
     {
         return true;
     }
@@ -2993,7 +2994,7 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
             MoveList mlist;
             MatchLegalMove(&mlist, p, to);
 
-            for(unsigned int i = 0; i < mlist.Size(); i++)
+            for(unsigned int i = 0; i < mlist.size(); i++)
             {
                 simpleMoveT * m2 = mlist.Get(i);
                 squareT from2 = m2->from;
@@ -3043,7 +3044,7 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
             {
                 MoveList mlist;
                 GenerateMoves(&mlist);
-                if(mlist.Size() == 0)
+                if(mlist.size() == 0)
                 {
                     ch = '#';
                 }
@@ -3101,7 +3102,7 @@ Position::ReadCoordMove(simpleMoveT * m, const char * str, bool reverse)
 
     GenerateMoves();
 
-    for(unsigned int i = 0; i < LegalMoves->Size(); i++)
+    for(unsigned int i = 0; i < LegalMoves->size(); i++)
     {
         simpleMoveT * sm = LegalMoves->Get(i);
         if(sm->promote == promo)
@@ -3140,7 +3141,7 @@ Position::ReadMove(simpleMoveT * m, const char * str, tokenT token)
     fyleT frFyle, toFyle;
 
     MoveList mlist;
-    mlist.Clear();
+    mlist.clear();
 
     // Check for a null move:
     if(token == TOKEN_Move_Null)
@@ -3325,7 +3326,7 @@ Position::ReadMove(simpleMoveT * m, const char * str, tokenT token)
 
     unsigned int i;
     unsigned int matchCount = 0;
-    for(i = 0; i < mlist.Size(); i++)
+    for(i = 0; i < mlist.size(); i++)
     {
         // We need to check: (a) that to-square matches, and
         //    (b), that from-square matches any ambiguity indicator.
@@ -3544,11 +3545,11 @@ Position::CalcSANStrings(sanFlagT flag)
 
     MoveList mlist;
     GenerateMoves(&mlist);
-    for(unsigned short i = 0; i < mlist.Size(); ++i)
+    for(unsigned short i = 0; i < mlist.size(); ++i)
     {
         MakeSANString(mlist.Get(i), SANStrings->list[i], flag);
     }
-    SANStrings->num = mlist.Size();
+    SANStrings->num = mlist.size();
     SANStrings->current = true;
 }
 
