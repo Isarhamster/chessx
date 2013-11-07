@@ -47,6 +47,7 @@ const unsigned int ENGINE_PAWN_KB =            1;  // Default pawn table size in
 //
 struct principalVarT
 {
+    principalVarT():length(0) {}
     unsigned int length;
     simpleMoveT move [ENGINE_MAX_PLY];
 };
@@ -343,26 +344,7 @@ Engine::SetPVLength(void)
 // Engine::UpdatePV
 //   Updates the principal variation at the current Ply to
 //   include the specified move.
-inline void
-Engine::UpdatePV(simpleMoveT * sm)
-{
-    if(Ply >= ENGINE_MAX_PLY - 1)
-    {
-        return;
-    }
-    if(InNullMove > 0)
-    {
-        return;
-    }
-    // if (! Pos.IsLegalMove (sm)) { return; }
-
-    PV[Ply].move[Ply] = *sm;
-    for(unsigned int j = Ply + 1; j < PV[Ply + 1].length; j++)
-    {
-        PV[Ply].move[j] = PV[Ply + 1].move[j];
-    }
-    PV[Ply].length = PV[Ply + 1].length;
-}
+void UpdatePV(simpleMoveT * sm);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Killer moves:
