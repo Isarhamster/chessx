@@ -16,8 +16,7 @@
 #include "guessengine.h"
 #include "recog.h"
 
-namespace Guess
-{
+using namespace Guess;
 
 // The Engine class implements the Scid built-in chess engine.
 // See guessengine.h for details.
@@ -3126,9 +3125,22 @@ Engine::PerfTest(unsigned int depth)
     return nmoves;
 }
 
-} // End namespace Guess
+void Engine::UpdatePV(simpleMoveT * sm)
+{
+    if(Ply >= ENGINE_MAX_PLY - 1)
+    {
+        return;
+    }
+    if(InNullMove > 0)
+    {
+        return;
+    }
 
-//////////////////////////////////////////////////////////////////////
-//  EOF: engine.cpp
-//////////////////////////////////////////////////////////////////////
+    PV[Ply].move[Ply] = *sm;
+    for(unsigned int j = Ply + 1; j < PV[Ply + 1].length; j++)
+    {
+        PV[Ply].move[j] = PV[Ply + 1].move[j];
+    }
+    PV[Ply].length = PV[Ply + 1].length;
+}
 
