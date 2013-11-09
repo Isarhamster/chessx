@@ -86,9 +86,11 @@ void ECOListWidget::ecoSelected(const QString& eco)
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
         QString head = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>ECO List</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>";
-        QString text = QString("%1<body><h1>%2</h1><p>%3</p><p>%4%5</p>%6</body></html>")
+        QString text = QString("%1<body><h1><a href='eco:%2'>%3</a></h1><p>%4</p><p>%5%6</p>%7</body></html>")
                        .arg(head)
-                       .arg(m_eco.name()).arg(m_eco.formattedGameCount())
+                       .arg(m_eco.name())
+                       .arg(m_eco.name())
+                       .arg(m_eco.formattedGameCount())
                        .arg(m_eco.formattedRating())
                        .arg(m_eco.formattedScore())
                        .arg(m_eco.listOfPlayers());
@@ -155,5 +157,10 @@ void ECOListWidget::slotLinkClicked(const QUrl& url)
         emit filterEcoPlayerRequest(url.scheme().contains("white") ? TagNameWhite : TagNameBlack,
                                     eco, url.path());
         emit filterEcoPlayerRequest(url.path(), eco);
+    }
+    else if(url.scheme().startsWith("eco"))
+    {
+        QString eco = ui->tagList->currentIndex().data().toString();
+        emit filterRequest(eco);
     }
 }
