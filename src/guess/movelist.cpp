@@ -15,8 +15,7 @@
 #include "movelist.h"
 #include "misc.h"
 
-namespace Guess
-{
+using namespace Guess;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // MoveList::MoveToFront
@@ -69,7 +68,7 @@ MoveList::Find(const simpleMoveT * sm) const
 unsigned int
 MoveList::SelectBySquares(squareT f1, squareT t1, squareT f2, squareT t2)
 {
-    for(unsigned int i = 0; i < size(); )
+    for (int i = 0; i < size(); )
     {
         const simpleMoveT& sm = at(i);
         if((sm.from == f1 && sm.to == t1) || (sm.from == f2 && sm.to == t2))
@@ -92,7 +91,7 @@ MoveList::SelectBySquares(squareT f1, squareT t1, squareT f2, squareT t2)
 unsigned int
 MoveList::SelectBySquare(squareT sq)
 {
-    for(unsigned int i = 0; i < size(); )
+    for(int i = 0; i < size(); )
     {
         const simpleMoveT& sm = at(i);
         if(sm.from != sq  &&  sm.to != sq)
@@ -121,7 +120,7 @@ MoveList::FindBest(unsigned int index)
     unsigned int bestIndex = index;
     int bestScore = at(index).score;
     // Search the rest of the list for a better-scoring move:
-    for(unsigned int i = index + 1; i < size(); ++i)
+    for(int i = index + 1; i < size(); ++i)
     {
         if(at(i).score > bestScore)
         {
@@ -143,11 +142,7 @@ MoveList::FindBest(unsigned int index)
 void
 MoveList::Sort(void)
 {
-    // Do a simple selection sort, which works fine for small list sizes.
-    for(unsigned int i = 0; i < size(); ++i)
-    {
-        FindBest(i);
-    }
+    qSort(begin(),end(), qGreater<simpleMoveT>());
 }
 
 bool
@@ -157,7 +152,7 @@ MoveList::IsSorted() const
     {
         return true;
     }
-    for(unsigned int i = 0; i < size() - 1; ++i)
+    for(int i = 0; i < size() - 1; ++i)
     {
         if(at(i).score < at(i+1).score)
         {
@@ -166,8 +161,6 @@ MoveList::IsSorted() const
     }
     return true;
 }
-
-} // End namespace Guess
 
 //////////////////////////////////////////////////////////////////////
 //  EOF: movelist.cpp
