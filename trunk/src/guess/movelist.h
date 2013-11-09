@@ -43,6 +43,11 @@ struct simpleMoveT
     squareT  epSquare;       // pre-move information
     unsigned short   oldHalfMoveClock;
     int      score;          // used for alpha/beta ordering.
+
+    bool operator < (const simpleMoveT& rhs) const
+    {
+        return score < rhs.score;
+    }
 };
 
 inline bool isNullMove(simpleMoveT * sm)
