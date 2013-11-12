@@ -103,7 +103,7 @@ void BoardSetupDialog::mirrorVertical()
     QString fen = board().toFen();
     QString fenRows = fen.left(fen.indexOf(" "));
     QStringList rows = fenRows.split("/");
-    std::reverse(rows.begin(), rows.end());
+    QAlgorithmsPrivate::qReverse(rows.begin(), rows.end());
     QString newFen = rows.join("/");
     Board b(newFen);
     b.setMoveNumber(board().moveNumber());
@@ -118,7 +118,7 @@ void BoardSetupDialog::mirrorHorizontal()
     QStringList rows = fenRows.split("/");
     for(QStringList::Iterator iter = rows.begin(); iter != rows.end(); ++iter)
     {
-        std::reverse((*iter).begin(), (*iter).end());
+        QAlgorithmsPrivate::qReverse((*iter).begin(), (*iter).end());
     }
     QString newFen = rows.join("/");
     Board b(newFen);
