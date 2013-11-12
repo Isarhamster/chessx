@@ -57,10 +57,13 @@
 #include <QSizePolicy>
 #include <QSplitter>
 #include <QStatusBar>
+#include <QTabBar>
 #include <QTimer>
 #include <QToolBar>
 
 MainWindow::MainWindow() : QMainWindow(),
+    m_tabDragIndex(-1),
+    m_pDragTabBar(0),
     m_saveDialog(0),
     m_gameWindow(0),
     m_gameToolBar(0),
@@ -76,6 +79,10 @@ MainWindow::MainWindow() : QMainWindow(),
     m_autoPlayTimer->setInterval(3000);
     m_autoPlayTimer->setSingleShot(true);
     connect(m_autoPlayTimer, SIGNAL(timeout()), this, SLOT(slotAutoPlayTimeout()));
+
+    m_dragTimer = new QTimer(this);
+    m_dragTimer->setSingleShot(true);
+    connect(m_dragTimer, SIGNAL(timeout()), this, SLOT(slotAutoSwitchTab()));
 
     /* Create clipboard database */
     m_databases.append(new DatabaseInfo);
@@ -249,6 +256,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_databaseList->addFileOpen(QString(), false);
     m_databaseList->setFileCurrent(QString());
     restoreRecentFiles();
+    connect(m_databaseList, SIGNAL(raiseRequest()), dbListDock, SLOT(raise()));
 
     /* Recent files */
     m_recentFiles.restore();
@@ -353,6 +361,8 @@ MainWindow::MainWindow() : QMainWindow(),
     updateMenuDatabases();
     slotDatabaseChanged();
     emit signalGameIsEmpty(true);
+
+    setAcceptDrops(true);
 
     QString dir = AppSettings->commonDataPath();
     QDir().mkpath(dir + "/index");
@@ -1373,5 +1383,67 @@ void MainWindow::slotVersionFound(int major, int minor, int build)
     if(verInternet > verCurrent)
     {
         slotStatusMessage(tr("A new version is available at chessx.sourceforge.net"));
+    }
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    const QMimeData *mimeData = event->mimeData();
+    if(mimeData->hasUrls())
+    {
+        event->acceptProposedAction();
+    }
+}
+
+void MainWindow::dragMoveEvent(QDragMoveEvent *event)
+{
+    QTabBar* pTabBar = qobject_cast<QTabBar*>(childAt(event->pos()));
+    if (pTabBar == NULL || pTabBar->parent() != this)
+    {
+        event->ignore();
+        return;
+    }
+
+    QPoint globalPos = mapToGlobal(event->pos());
+    QPoint widgetPos = pTabBar->mapFromGlobal(globalPos);
+
+    int tabIndex = pTabBar->tabAt(widgetPos);
+    if (tabIndex != m_tabDragIndex && pTabBar != m_pDragTabBar)
+    {
+        m_dragTimer->stop();
+        m_tabDragIndex = tabIndex;
+        m_pDragTabBar = pTabBar;
+        m_dragTimer->start(500);
+    }
+    if (tabIndex == -1)
+    {
+        event->ignore();
+    }
+    else
+    {
+        event->acceptProposedAction();
+    }
+}
+
+void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    m_dragTimer->stop();
+    event->accept();
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    m_dragTimer->stop();
+    event->ignore();
+}
+
+void MainWindow::slotAutoSwitchTab()
+{
+    if (m_pDragTabBar && m_tabDragIndex != -1)
+    {
+        m_dragTimer->stop();
+        m_pDragTabBar->setCurrentIndex(m_tabDragIndex);
+        m_pDragTabBar = 0;
+        m_tabDragIndex = -1;
     }
 }
