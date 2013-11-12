@@ -33,6 +33,7 @@ public slots:
 
 signals:
     void selected(int);
+    void raiseRequest();
     void requestOpenDatabase(QString s, bool utf8);
     void requestCloseDatabase(QString s);
     void requestLinkDatabase(QString s);

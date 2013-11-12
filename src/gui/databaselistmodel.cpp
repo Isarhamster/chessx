@@ -351,6 +351,7 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite, int in
             e.m_lastGameIndex = index;
             QModelIndex m = createIndex(m_databases.indexOf(e), DBLV_FAVORITE, (void*)  0);
             emit QAbstractItemModel::dataChanged(m, m);
+            emit OnSelectIndex(m);
         }
         return;
     }
@@ -358,6 +359,8 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite, int in
     d.m_isFavorite = bFavorite;
     d.m_lastGameIndex = index;
     addEntry(d, s);
+    QModelIndex m = createIndex(rowCount()-1, DBLV_FAVORITE, (void*)  0);
+    emit OnSelectIndex(m);
 }
 
 void DatabaseListModel::setFileClose(const QString& s, int lastIndex)

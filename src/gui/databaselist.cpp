@@ -61,6 +61,7 @@ void DatabaseList::slotCurrentIndexChanged(const QModelIndex& source)
 {
     QModelIndex i = m_filterModel->mapFromSource(source);
     selectRow(i.row());
+    showRow(i.row());
 }
 
 void DatabaseList::slotContextMenu(const QPoint& pos)
@@ -215,6 +216,10 @@ void DatabaseList::addFileOpen(const QString& s, bool utf8)
 void DatabaseList::setFileFavorite(const QString& s, bool bFavorite, int index)
 {
     m_model->addFavoriteFile(s, bFavorite, index);
+    if (bFavorite)
+    {
+        emit raiseRequest();
+    }
 }
 
 void DatabaseList::setFileUtf8(const QString& s, bool utf8)
@@ -284,7 +289,7 @@ void DatabaseList::dropEvent(QDropEvent *event)
         {
             QString ts = url.toString();
 
-            if(m_lastModifier == Qt::AltModifier)
+            if(m_lastModifier & Qt::MetaModifier)
             {
                 emit requestLinkDatabase(ts);
             }
