@@ -109,7 +109,7 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
         return false;
     }
 
-    int streamVersion = QDataStream::Qt_4_7;
+    int streamVersion = QDataStream::Qt_4_6;
     if(version > 0)
     {
         in >> streamVersion;
