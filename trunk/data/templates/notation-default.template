@@ -19,16 +19,16 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
 <title>ChessX Output</title>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=utf-8">
 <style type="text/css">
-  p      {margin-top: 0; margin-bottom: 0}\n
-  p.var  {margin-left: 20px}\n
-  p.comment  {margin-left: 20px}\n
+  p             {margin-top: 0; margin-bottom: 0}\n
+  p.var         {margin-left: 20px}\n
+  p.comment     {margin-left: 20px}\n
   p.precomment  {margin-left: 0}\n
-  a      {font-family:'Arial Unicode MS',Menlo; text-decoration: none}\n
-  a.main {color: @MainLineMoveColor@; font-weight: 600}\n
-  a.var  {color: @VariationColor@}\n
-  a.comment  {color: @CommentColor@}\n
-  a.nag  {color: @NagColor@}\n
-  td.mainline {padding-left: 10px; padding-right: 10px; color: @MainLineMoveColor@; width:50%}\n
+  a             {text-decoration: none}\n
+  a.main        {font-family:"@FontBrowserMove@";color: @MainLineMoveColor@; font-weight: 600}\n
+  a.var         {font-family:"@FontBrowserMove@";color: @VariationColor@}\n
+  a.comment     {color: @CommentColor@}\n
+  a.nag         {color: @NagColor@}\n
+  td.mainline   {padding-left: 10px; padding-right: 10px; color: @MainLineMoveColor@; width:50%}\n
   .diagram-indent {lfloat: right; margin-top: 8px;}\n
   .mainline {margin-left: 20px; color: @MainLineMoveColor@}\n
   table,th,td {border: 0px;}\n

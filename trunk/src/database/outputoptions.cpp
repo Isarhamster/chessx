@@ -41,6 +41,8 @@ bool OutputOptions::createDefaultOptions(QString path)
 
         createOption("ShowDiagrams", Boolean, "", "false", tr("Show Diagrams"));
         createOption("DiagramSize", Integer, "0:500", "200", tr("Diagram Size"));
+        createOption("FontBrowserText", String, "'Arial Unicode MS',Menlo", "'Arial Unicode MS',Menlo", tr("Font for text"));
+        createOption("FontBrowserMove", String, "'Arial Unicode MS',Menlo", "'Arial Unicode MS',Menlo", tr("Font for moves"));
     }
     else
     {
@@ -61,6 +63,8 @@ bool OutputOptions::createDefaultOptions(QString path)
 
         createOption("ShowDiagrams", AppSettings->getValue("ShowDiagrams").toBool(), tr("Show Diagrams"));
         createOption("DiagramSize", "0:500", AppSettings->getValue("DiagramSize").toInt(), tr("Diagram Size"));
+        createOption("FontBrowserText", String, AppSettings->getValue("FontBrowserText").toString(), AppSettings->getValue("FontBrowserText").toString(), tr("Font for text"));
+        createOption("FontBrowserMove", String, AppSettings->getValue("FontBrowserMove").toString(), AppSettings->getValue("FontBrowserMove").toString(), tr("Font for moves"));
         AppSettings->endGroup();
     }
     return true;

@@ -175,6 +175,8 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/GameText/ShowHeader", false);
     map.insert("/GameText/ShowDiagrams", true);
     map.insert("/GameText/DiagramSize", 200);
+    map.insert("/GameText/FontBrowserText", "'Arial Unicode MS',Menlo");
+    map.insert("/GameText/FontBrowserMove", "'Arial Unicode MS',Menlo");
 
     map.insert("/GameText/PieceString", " KQRBN");
     map.insert("/MainWindow/GameToolBar", false);

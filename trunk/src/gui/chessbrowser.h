@@ -62,7 +62,7 @@ protected:
     QAction* createAction(const QString& name, EditAction::Type type);
     QAction* createNagAction(const Nag& nag);
 
-    void setFontSize(int size);
+    void configureFont();
 
 protected: // Drag+Drop
     void dragEnterEvent(QDragEnterEvent *event);
@@ -91,8 +91,6 @@ private:
     QMenu* m_browserMenu;
     QMenu* m_mainMenu;
     int m_currentMove;
-    int m_fontSize;
-
 };
 
 #endif
