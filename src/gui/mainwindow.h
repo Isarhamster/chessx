@@ -359,6 +359,8 @@ protected slots:
     void slotScreenShot();
     /** Make a screenshot and save it to file */
     void slotCompileECO();
+    /** Support dragging things to non-top tabs */
+    void slotAutoSwitchTab();
 
 protected:
     bool pasteFen(QString& errorText, QString fen);
@@ -366,6 +368,15 @@ protected:
     Database* getDatabaseByPath(QString path);
     DatabaseInfo* getDatabaseInfoByPath(QString path);
     void activateBoardView(int n);
+
+protected:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dragLeaveEvent(QDragLeaveEvent *event);
+    void dropEvent(QDropEvent *event);
+    int m_tabDragIndex;
+    QTabBar* m_pDragTabBar;
+    QTimer* m_dragTimer;
 
 signals:
     /** Re-read configuration. */
