@@ -97,6 +97,9 @@ private:
 signals:
     /** Signal emitted when changes are applied. */
     void reconfigure();
+private slots:
+    void slotBtMoveFontClicked();
+    void slotBtTextFontClicked();
 };
 
 

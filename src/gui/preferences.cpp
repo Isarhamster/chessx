@@ -24,6 +24,7 @@
 #include <QCheckBox>
 #include <QColorDialog>
 #include <QComboBox>
+#include <QFontDialog>
 #include <QListWidget>
 #include <QPainter>
 #include <QDir>
@@ -496,6 +497,9 @@ void PreferencesDialog::restoreSettings()
     ui.diagramSize->setValue(AppSettings->getValue("DiagramSize").toInt());
     ui.pieceString->setText(AppSettings->getValue("PieceString").toString());
 
+    ui.fontText->setText(AppSettings->getValue("FontBrowserText").toString());
+    ui.fontMove->setText(AppSettings->getValue("FontBrowserMove").toString());
+
     AppSettings->endGroup();
 }
 
@@ -552,6 +556,9 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("DiagramSize", ui.diagramSize->value());
     AppSettings->setValue("PieceString", ui.pieceString->text());
 
+    AppSettings->setValue("FontBrowserText", ui.fontText->text());
+    AppSettings->setValue("FontBrowserMove", ui.fontMove->text());
+
     QStringList colorNamesNotation;
     colorNamesNotation << "MainLineMoveColor" << "VariationColor" << "CommentColor" << "NagColor";
     saveColorList(ui.notationColors, colorNamesNotation);
@@ -584,5 +591,29 @@ void PreferencesDialog::saveColorList(ColorList* list, const QStringList& cfgnam
     for(int i = 0; i < list->count(); ++i)
     {
         AppSettings->setValue(cfgnames[i], list->color(i));
+    }
+}
+
+void PreferencesDialog::slotBtMoveFontClicked()
+{
+    bool ok;
+    QFont currentFont = QFont(ui.fontMove->text());
+    QFont font = QFontDialog::getFont(&ok, currentFont, this);
+    if (ok)
+    {
+        QString fontFamily = font.family();
+        ui.fontMove->setText(fontFamily);
+    }
+}
+
+void PreferencesDialog::slotBtTextFontClicked()
+{
+    bool ok;
+    QFont currentFont = QFont(ui.fontText->text());
+    QFont font = QFontDialog::getFont(&ok, currentFont, this);
+    if (ok)
+    {
+        QString fontFamily = font.family();
+        ui.fontText->setText(fontFamily);
     }
 }
