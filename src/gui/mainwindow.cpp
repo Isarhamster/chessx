@@ -1343,20 +1343,23 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
 {
     QUrl url = reply->url();
 
-    if(!reply->error())
+    if (url.toString().endsWith("current.txt"))
     {
-        QString answer(reply->readAll());
-        QRegExp rx("(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)");
-        if(answer.indexOf(rx) > -1)
+        if(!reply->error())
         {
-            int major = rx.capturedTexts().at(1).toInt();
-            int minor = rx.capturedTexts().at(2).toInt();
-            int build = rx.capturedTexts().at(3).toInt();
-            emit signalVersionFound(major, minor, build);
+            QString answer(reply->readAll());
+            QRegExp rx("(\\d\\d?)\\.(\\d\\d?)\\.(\\d\\d?)");
+            if(answer.indexOf(rx) > -1)
+            {
+                int major = rx.capturedTexts().at(1).toInt();
+                int minor = rx.capturedTexts().at(2).toInt();
+                int build = rx.capturedTexts().at(3).toInt();
+                emit signalVersionFound(major, minor, build);
+            }
         }
+        reply->deleteLater();
+        StartCheckDatabase();
     }
-    reply->deleteLater();
-    StartCheckDatabase();
 }
 
 void MainWindow::StartCheckDatabase()
