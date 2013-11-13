@@ -46,7 +46,7 @@ MarkupDiagram=<br><br>,<br>
 MarkupMainLineMove=<a class="main" href="move:%1">,</a>
 MarkupVariationMove=<a class="var" href="move:%1">,</a>
 MarkupMainLine=,
-MarkupVariationInline=<span class="var">(,)</span>
+MarkupVariationInline=<span class="var">(,)&nbsp;</span>
 MarkupVariationIndent=<p class="var">(,)</p>\n
 MarkupNag=<a class="nag">,</a>
 MarkupColumnStyleMove=<td class="mainline">,</td>\n

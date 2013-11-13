@@ -546,6 +546,7 @@ QString Output::writeVariation(MoveId upToNode)
         }
         m_game->forward();
     }
+    text.replace(")&nbsp;</span>)",")</span>)");
     return text;
 }
 
