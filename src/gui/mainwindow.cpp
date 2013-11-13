@@ -45,6 +45,7 @@
 
 #include <time.h>
 
+#include <QApplication>
 #include <QFileDialog>
 #include <QLabel>
 #include <QLCDNumber>
@@ -1332,6 +1333,8 @@ void MainWindow::StartCheckUpdate()
                 SLOT(slotVersionFound(int, int, int)));
         QUrl url = QUrl(QString("http://chessx.sourceforge.net/versions/current.txt"));
         QNetworkRequest request(url);
+        QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
+        request.setRawHeader("User-Agent",userAgent);
         m_manager->get(request);
     }
 }

@@ -7,12 +7,12 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+#include "tablebase.h"
+#include "version.h"
 
+#include <QApplication>
 #include <QObject>
 #include <QUrl>
-
-#include "tablebase.h"
-
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -64,6 +64,8 @@ void Shredder::sendIt()
     m_requested = url.toString();
 
     QNetworkRequest request(url);
+    QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
+    request.setRawHeader("User-Agent",userAgent);
     manager.get(request);
 }
 

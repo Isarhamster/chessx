@@ -40,7 +40,9 @@
 
 #include "downloadmanager.h"
 #include "settings.h"
+#include "version.h"
 
+#include <QApplication>
 #include <QDesktopServices>
 #include <QFile>
 #include <QFileInfo>
@@ -78,6 +80,8 @@ void DownloadManager::doDownloadToPath(const QUrl &url, const QString& filename)
     }
 
     QNetworkRequest request(url);
+    QByteArray userAgent = QString(QCoreApplication::applicationName() + "/" + STR_VERSION_NET).toLatin1();
+    request.setRawHeader("User-Agent",userAgent);
     QNetworkReply *reply = manager.get(request);
 
     connect(reply, SIGNAL(finished()),
