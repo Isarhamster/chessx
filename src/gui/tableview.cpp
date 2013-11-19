@@ -80,6 +80,7 @@ void TableView::ShowContextMenu(const QPoint& pos)
     QMenu headerMenu;
     QAction* hide = headerMenu.addAction(tr("Hide Column"));
     headerMenu.addSeparator();
+    QAction* resizeAll = headerMenu.addAction(tr("Resize visible Columns"));
     QAction* showAll = headerMenu.addAction(tr("Show all Columns"));
 
     QAction* selectedItem = headerMenu.exec(mapToGlobal(pos));
@@ -96,11 +97,11 @@ void TableView::ShowContextMenu(const QPoint& pos)
         for(int i = 0; i < model()->columnCount(); ++i)
         {
             showColumn(i);
-            if(columnWidth(i) < 50)
-            {
-                setColumnWidth(i, 50); // Fix a bugfeature in Qt
-            }
         }
+    }
+    else if (selectedItem == resizeAll)
+    {
+        resizeColumnsToContents();
     }
 }
 
