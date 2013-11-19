@@ -1888,7 +1888,7 @@ void Game::compact()
             GAME_UPDATE_MOVEID(vars[j]);
         }
         vars.removeAll(NO_MOVE);
-#undef  GAME_UPDATE_LINK
+#undef GAME_UPDATE_MOVEID
     }
 
     m_moveNodes.clear();
@@ -1899,7 +1899,7 @@ void Game::compact()
 QString Game::ecoClassify()
 {
     //move to end of main line
-    MoveId currentNode = m_currentNode;
+    SaveRestoreMove saveThis(*this);
     moveToEnd();
 
     //search backwards for the first eco position
@@ -1908,11 +1908,9 @@ QString Game::ecoClassify()
         quint64 key = m_currentBoard.getHashValue();
         if(m_ecoPositions.contains(key))
         {
-            moveToId(currentNode);
             return m_ecoPositions[key];
         }
     }
-    moveToId(currentNode);
 
     return QString();
 }
@@ -1942,7 +1940,6 @@ QString Game::specialAnnotation(QString& annotation, QString specialMark) const 
     // If we found a chessbase special annotation
     if(specialAnnotationStart >= 0)
     {
-
         int specialAnnotationDataStart = specialAnnotationStart + specialMark.length() + 1; //+ 1 for space after specialMark
         int specialAnnotationEnd = annotation.indexOf(']', specialAnnotationDataStart);
 
