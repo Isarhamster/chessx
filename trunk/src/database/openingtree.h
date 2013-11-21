@@ -45,15 +45,15 @@ class OpeningTreeUpdater : public QThread
 public:
     void run();
     void cancel();
-    bool updateFilter(Filter& f, const Board& b, QList<MoveData>&, int&, bool updateFilter, bool bEnd);
+    bool updateFilter(Filter& f, const Board& b, int&, bool updateFilter, bool bEnd);
 
 signals:
+    void MoveUpdate(Board*, QList<MoveData>*);
     void UpdateFinished(Board*);
     void UpdateTerminated(Board*);
     void progress(int);
 
 private:
-    QList<MoveData>* m_moves;
     int* m_games;
 
     bool    m_break;
@@ -78,8 +78,6 @@ public:
     the filter to contain only game matching position @p b .
     @return true if the update was not cancelled.*/
     bool updateFilter(Filter& f, const Board& b, bool updateFilter, bool bEnd);
-    /** Debug string */
-    QString debug();
     /** Returns the number of moves in the Opening Tree */
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     /** Returns the number of columns of the Opening Tree */
@@ -93,6 +91,8 @@ public:
     virtual void sort(int column, Qt::SortOrder order);
     /** Support sorting. */
     virtual void sort();
+    /** Do the sorting under a lock */
+    void doSort(int column, Qt::SortOrder order);
     /** Move leading to given entry. */
     QString move(const QModelIndex& index) const;
     /** Current Board */
@@ -104,6 +104,7 @@ public slots:
 protected slots:
     void updateFinished(Board*);
     void updateTerminated(Board*);
+    void moveUpdated(Board* b, QList<MoveData>* moveList);
 signals:
     void progress(int);
     void openingTreeUpdated();
@@ -111,6 +112,7 @@ signals:
 private:
     bool m_bRequestPending;
     QList<MoveData> m_moves;
+    mutable QReadWriteLock m_moveLock;
     int m_games;
     QStringList m_names;
     int m_sortcolumn;

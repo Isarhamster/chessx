@@ -100,6 +100,9 @@ void OpeningTreeUpdater::run()
     Game g;
     QMap<Move, MoveData> moves;
     int games = 0;
+    QTime updateTime = QTime::currentTime().addSecs(1);
+    emit progress(0);
+    emit MoveUpdate(&m_board, new QList<MoveData>);
     for(int i = 0; i < m_filter->size(); ++i)
     {
         m_filter->database()->lock();
@@ -134,9 +137,21 @@ void OpeningTreeUpdater::run()
                 m_filter->set(i, 0);
             }
         }
-        if(i * 100 / m_filter->size() > (i - 1) * 100 / m_filter->size())
+
+        if (updateTime<=QTime::currentTime())
         {
+            updateTime = QTime::currentTime().addSecs(3);
             emit progress(i * 100 / m_filter->size());
+            if(!m_break)
+            {
+                *m_games = games;
+                QList<MoveData>* moveList = new QList<MoveData>();
+                for(QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
+                {
+                    moveList->append(it.value());
+                }
+                emit MoveUpdate(&m_board, moveList);
+            }
         }
         if(m_break)
         {
@@ -144,14 +159,14 @@ void OpeningTreeUpdater::run()
         }
     }
     *m_games = games;
-    m_moves->clear();
     if(!m_break)
     {
+        QList<MoveData>* moveList = new QList<MoveData>();
         for(QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
         {
-            m_moves->append(it.value());
+            moveList->append(it.value());
         }
-        qSort(m_moves->begin(), m_moves->end());
+        emit MoveUpdate(&m_board, moveList);
         emit UpdateFinished(&m_board);
     }
     else
@@ -165,12 +180,11 @@ void OpeningTreeUpdater::cancel()
     m_break = true;
 }
 
-bool OpeningTreeUpdater::updateFilter(Filter& f, const Board& b, QList<MoveData>& m, int& g, bool updateFilter, bool bEnd)
+bool OpeningTreeUpdater::updateFilter(Filter& f, const Board& b, int& g, bool updateFilter, bool bEnd)
 {
     m_break = false;
     m_filter = &f;
     m_board = b;
-    m_moves = &m;
     m_games = &g;
     m_bEnd  = bEnd;
     m_updateFilter = updateFilter;
@@ -194,9 +208,10 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>*)), this, SLOT(moveUpdated(Board*,QList<MoveData>*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
-        return oupd.updateFilter(f, b, m_moves, m_games, m_updateFilter, m_bEnd);
+        return oupd.updateFilter(f, b, m_games, m_updateFilter, m_bEnd);
     }
     else
     {
@@ -226,12 +241,26 @@ void OpeningTree::cancel(bool bVisible)
 
 void OpeningTree::updateFinished(Board* b)
 {
-    sort();
     emit openingTreeUpdated();
     if(m_bRequestPending)
     {
         updateTerminated(b);
     }
+}
+
+void OpeningTree::moveUpdated(Board* b, QList<MoveData>* moveList)
+{
+    if (*b == m_board)
+    {
+        {
+            QWriteLocker m(&m_moveLock);
+            m_moves = *moveList;
+            doSort(m_sortcolumn, m_order);
+        }
+        beginResetModel();
+        endResetModel();
+    }
+    delete moveList;
 }
 
 void OpeningTree::updateTerminated(Board*)
@@ -241,23 +270,16 @@ void OpeningTree::updateTerminated(Board*)
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>*)), this, SLOT(moveUpdated(Board*,QList<MoveData>*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
-        oupd.updateFilter(*m_filter, m_board, m_moves, m_games, m_updateFilter, m_bEnd);
+        oupd.updateFilter(*m_filter, m_board, m_games, m_updateFilter, m_bEnd);
     }
-}
-
-QString OpeningTree::debug()
-{
-    QString s;
-    for(int i = 0; i < m_moves.count(); ++i)
-        s.append(QString("%1. %2\t%3 games\t%4%\n")
-                 .arg(i + 1).arg(m_moves[i].move).arg(m_moves[i].count).arg(m_moves[i].percentage()));
-    return s;
 }
 
 int OpeningTree::rowCount(const QModelIndex& parent) const
 {
+    QReadLocker m(&m_moveLock);
     return parent.isValid() ? 0 : m_moves.count();
 }
 
@@ -292,6 +314,8 @@ QVariant OpeningTree::headerData(int section, Qt::Orientation orientation, int r
 
 QVariant OpeningTree::data(const QModelIndex& index, int role) const
 {
+    QReadLocker m(&m_moveLock);
+
     if(role != Qt::DisplayRole || !index.isValid() || index.row() >= m_moves.count())
     {
         return QVariant();
@@ -332,7 +356,7 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
     }
 }
 
-void OpeningTree::sort(int column, Qt::SortOrder order)
+void OpeningTree::doSort(int column, Qt::SortOrder order)
 {
     m_sortcolumn = column;
     m_order = order;
@@ -355,10 +379,20 @@ void OpeningTree::sort(int column, Qt::SortOrder order)
         break;
     };
     if(order == Qt::DescendingOrder)
+    {
         for(int i = 0; i < m_moves.count() / 2; ++i)
         {
             qSwap(m_moves[i], m_moves[m_moves.count() - i - 1]);
         }
+    }
+}
+
+void OpeningTree::sort(int column, Qt::SortOrder order)
+{
+    {
+        QReadLocker m(&m_moveLock);
+        doSort(column, order);
+    }
     beginResetModel();
     endResetModel();
 }
@@ -370,6 +404,7 @@ void OpeningTree::sort()
 
 QString OpeningTree::move(const QModelIndex& index) const
 {
+    QReadLocker m(&m_moveLock);
     return index.isValid() ? m_moves[index.row()].move : QString();
 }
 
