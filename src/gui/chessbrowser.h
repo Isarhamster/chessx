@@ -75,7 +75,9 @@ private:
     QMap<QAction*, EditAction> m_actions;
 
     QAction* m_copyHtml;
+    QAction* m_copyText;
     QAction* m_startComment;
+    QAction* m_startComment2;
     QAction* m_addComment;
     QAction* m_removeVariation;
     QAction* m_promoteVariation;
@@ -84,6 +86,7 @@ private:
     QAction* m_removePrevious;
     QAction* m_removeNext;
     QAction* m_addNullMove;
+    QAction* m_addNullMove2;
     QAction* m_removeNags;
     QAction* m_enumerateVariations1;
     QAction* m_enumerateVariations2;
