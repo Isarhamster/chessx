@@ -396,6 +396,7 @@ signals:
     void signalMoveHasNextMove(bool);
     void signalMoveHasParent(bool);
     void signalGameIsEmpty(bool);
+    void signalGameAtLineStart(bool);
 
     void signalCurrentDBisReadWrite(bool);
     void signalCurrentDBcanBeClosed(bool);

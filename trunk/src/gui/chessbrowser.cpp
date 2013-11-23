@@ -99,10 +99,12 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
         // Nag menus
         QMenu* nagMoveMenu = m_gameMenu->addMenu(tr("Add move symbol"));
         for(int n = MoveNagStart; n <= MoveNagEnd; ++n)
+        {
             if(n != SingularMove)
             {
                 nagMoveMenu->addAction(createNagAction(Nag(n)));
             }
+        }
         QMenu* nagPositionMenu = m_gameMenu->addMenu(tr("Add evaluation symbol"));
         nagPositionMenu->addAction(createNagAction(DrawishPosition));
         for(int n = UnclearPosition; n <= BlackHasADecisiveAdvantage; ++n)
@@ -144,16 +146,20 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
         m_gameMenu->addAction((m_addNullMove = createAction(tr("Insert threat"), EditAction::AddNullMove)));
 
         // Non-move oriented actions
+        m_browserMenu->addAction((m_startComment2 = createAction(tr("Add start comment..."), EditAction::EditPrecomment)));
+        m_browserMenu->addAction((m_addNullMove2 = createAction(tr("Insert threat"), EditAction::AddNullMove)));
         m_browserMenu->addAction((m_copyHtml = createAction(tr("Copy Html"), EditAction::CopyHtml)));
-        m_browserMenu->addAction((m_copyHtml = createAction(tr("Copy Text"), EditAction::CopyText)));
+        m_browserMenu->addAction((m_copyText = createAction(tr("Copy Text"), EditAction::CopyText)));
     }
 
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
-
 }
 
 void ChessBrowser::slotContextMenu(const QPoint& pos)
 {
+    const Game* game = 0;
+    emit queryActiveGame(&game);
+
     // Handle non-game browser
     if(!m_gameMenu)
     {
@@ -161,14 +167,12 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
         return;
     }
 
-    const Game* game = 0;
-    emit queryActiveGame(&game);
-
     // Handle game browser
     if(!game)
     {
         return;
     }
+
     QString link = anchorAt(pos);
     if(!link.isEmpty())
     {
@@ -193,11 +197,22 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
         m_removeNext->setVisible(!atLineEnd);
         m_removePrevious->setVisible(!atGameStart);
         m_removeNags->setVisible(hasNags);
-        m_addNullMove->setVisible(atLineEnd);
+        m_addNullMove->setVisible(true);
+
         m_gameMenu->exec(mapToGlobal(pos));
     }
     else
     {
+        int numMove = 0;
+        int numComment = 0;
+        game->moveCount(&numMove, &numComment);
+        bool gameIsEmpty = ((numMove+numComment) == 0);
+
+        m_startComment2->setVisible(gameIsEmpty);
+        m_addNullMove2->setVisible(gameIsEmpty);
+        m_copyHtml->setVisible(!gameIsEmpty);
+        m_copyText->setVisible(!gameIsEmpty);
+
         m_browserMenu->exec(mapToGlobal(pos));
     }
 }

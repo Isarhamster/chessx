@@ -912,7 +912,14 @@ bool MainWindow::gameEditComment(Output::CommentType type)
     }
     else
     {
-        game().setAnnotation(dlg.text());
+        if (moves > 0)
+        {
+            game().setAnnotation(dlg.text());
+        }
+        else
+        {
+            game().setGameComment(dlg.text());
+        }
     }
     return true;
 }
@@ -997,10 +1004,15 @@ void MainWindow::setupActions()
     QMenu* edit = menuBar()->addMenu(tr("&Edit"));
     QToolBar* editToolBar = addToolBar(tr("Edit"));
     editToolBar->setObjectName("EditToolBar");
-    edit->addAction(createAction(tr("Comment"), SLOT(slotEditComment()),
-                                 Qt::CTRL + Qt::Key_A, editToolBar, ":/images/edit_after.png"));
-    edit->addAction(createAction(tr("Comment Before"), SLOT(slotEditCommentBefore()),
-                                 Qt::CTRL + Qt::ALT + Qt::Key_A));
+
+    QAction* commentAfter = createAction(tr("Comment"), SLOT(slotEditComment()),
+                                         Qt::CTRL + Qt::Key_A, editToolBar, ":/images/edit_after.png");
+    connect(this, SIGNAL(signalGameIsEmpty(bool)), commentAfter, SLOT(setDisabled(bool)));
+    edit->addAction(commentAfter);
+    QAction* commentBefore = createAction(tr("Comment Before"), SLOT(slotEditCommentBefore()),
+                                          Qt::CTRL + Qt::ALT + Qt::Key_A);
+    connect(this, SIGNAL(signalGameAtLineStart(bool)), commentBefore, SLOT(setEnabled(bool)));
+    edit->addAction(commentBefore);
 
     QMenu* editVariation = edit->addMenu(tr("Variation"));
 

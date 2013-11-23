@@ -680,6 +680,7 @@ void MainWindow::slotMoveChanged()
     emit signalMoveHasParent(!game().isMainline());
     emit signalVariationHasSibling(game().variationHasSiblings(m));
     emit signalGameIsEmpty(false);
+    emit signalGameAtLineStart(game().atLineStart());
 }
 
 void MainWindow::slotBoardMoveWheel(int wheel)
@@ -1000,7 +1001,14 @@ void MainWindow::slotGameModify(const EditAction& action)
         game().clearNags(action.move());
         break;
     case EditAction::AddNullMove:
-        game().addMove(m_boardView->board().nullMove());
+        if (game().atLineEnd())
+        {
+            game().addMove(m_boardView->board().nullMove());
+        }
+        else
+        {
+            game().addVariation(m_boardView->board().nullMove());
+        }
         break;
     case EditAction::CopyHtml:
         QApplication::clipboard()->setText(m_gameView->toHtml());

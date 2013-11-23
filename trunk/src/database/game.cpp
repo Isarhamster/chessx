@@ -1205,15 +1205,19 @@ MoveId Game::nodeValid(MoveId moveId) const
 
 void Game::moveCount(int* moves, int* comments, int* nags) const
 {
-    *moves = *comments = *nags = 0;
+    *moves = *comments = 0;
+    if (nags) *nags = 0;
 
     int node = 1;
     while(nodeValid(node) != NO_MOVE)
     {
         *moves += 1;
-        if(m_moveNodes[node].nags.count() != 0)
+        if (nags)
         {
-            *nags += 1;
+            if(m_moveNodes[node].nags.count() != 0)
+            {
+                *nags += 1;
+            }
         }
         node = m_moveNodes[node].nextNode;
     }
