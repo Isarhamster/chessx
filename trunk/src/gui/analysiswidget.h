@@ -63,10 +63,13 @@ private slots:
     void slotMpvChanged(int mpv);
     /** Show tablebase move information. */
     void showTablebaseMove(Move move, int score);
+    /** The pin button was pressed or released */
+    void slotPinChanged(bool);
 
 signals:
     void addVariation(const Analysis& analysis);
     void addVariation(const QString& san);
+    void requestBoard();
 private:
     /** Should analysis be running. */
     bool isAnalysisEnabled() const;
@@ -76,8 +79,8 @@ private:
     QList<Analysis> m_analyses;
     Ui::AnalysisWidget ui;
     Engine* m_engine;
-    bool m_active;
     Board m_board;
+    Board m_NextBoard;
     QString m_tablebaseEvaluation;
     Tablebase* m_tablebase;
 };
