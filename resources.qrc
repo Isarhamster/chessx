@@ -112,5 +112,6 @@
         <file alias="images/replace_move.png">data/images/replace_move.png</file>
         <file alias="images/insert_move.png">data/images/insert_move.png</file>
         <file alias="images/plus.png">data/images/plus.png</file>
+        <file alias="images/pin.ico">data/images/pin.ico</file>
     </qresource>
 </RCC>

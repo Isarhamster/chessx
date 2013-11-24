@@ -23,6 +23,7 @@ AnalysisWidget::AnalysisWidget()
     connect(ui.variationText, SIGNAL(anchorClicked(QUrl)),
             SLOT(slotLinkClicked(QUrl)));
     connect(ui.vpcount, SIGNAL(valueChanged(int)), SLOT(slotMpvChanged(int)));
+    connect(ui.btPin, SIGNAL(clicked(bool)), SLOT(slotPinChanged(bool)));
     ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 
     m_tablebase = new Shredder;
@@ -123,6 +124,17 @@ void AnalysisWidget::toggleAnalysis()
     }
 }
 
+void AnalysisWidget::slotPinChanged(bool pinned)
+{
+    if (!pinned && isAnalysisEnabled())
+    {
+        if (m_board != m_NextBoard)
+        {
+            setPosition(m_NextBoard);
+        }
+    }
+}
+
 void AnalysisWidget::slotReconfigure()
 {
     QString oldEngineName = ui.engineList->currentText();
@@ -175,9 +187,15 @@ void AnalysisWidget::showAnalysis(const Analysis& analysis)
 
 void AnalysisWidget::setPosition(const Board& board)
 {
+    if (ui.btPin->isChecked())
+    {
+        m_NextBoard = board;
+        return;
+    }
     if(m_board != board)
     {
         m_board = board;
+        m_NextBoard = board;
         m_analyses.clear();
         m_tablebase->abortLookup();
         m_tablebaseEvaluation.clear();
@@ -199,6 +217,10 @@ void AnalysisWidget::setPosition(const Board& board)
 
 void AnalysisWidget::slotLinkClicked(const QUrl& url)
 {
+    if (m_NextBoard != m_board)
+    {
+        return; // Pinned and user moved somewhere else
+    }
     int mpv = url.toString().toInt() - 1;
     if(mpv >= 0 && mpv < m_analyses.count())
     {
@@ -272,8 +294,15 @@ void AnalysisWidget::showTablebaseMove(Move move, int score)
 void AnalysisWidget::updateAnalysis()
 {
     QString text;
+    if (ui.btPin->isChecked())
+    {
+        int moveNr = m_board.moveNumber();
+        text = tr("Analysis pinned to move %1").arg(moveNr) + "<br>";
+    }
     foreach(Analysis a, m_analyses)
-    text.append(a.toString(m_board) + "<br>");
+    {
+        text.append(a.toString(m_board) + "<br>");
+    }
     if(!m_tablebaseEvaluation.isEmpty())
     {
         text.append(tr("<a href=\"0\" title=\"Click to add move to game\">[+]</a> <b>Tablebase:</b> ") + m_tablebaseEvaluation);
