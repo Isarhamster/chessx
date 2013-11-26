@@ -91,15 +91,15 @@ public:
     quint64 getHashValue() const;
 
     /** Compare one board to another for equality, based on hash values */
-    bool operator == (const Board& b) const
+    inline bool operator == (const Board& b) const
     {
         return m_hashValue == b.getHashValue();
     }
 
     /** Compare one board to another for differences, based on hash values */
-    bool operator != (const Board& b) const
+    inline bool operator != (const Board& b) const
     {
-        return m_hashValue != b.getHashValue();
+        return !(*this == b);
     }
 
     /** Sets the squareAnnotation*/
