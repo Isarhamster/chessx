@@ -90,7 +90,7 @@ bool Board::doIt(const Move& m, bool undo)
         {
             BitBoard::doMove(m);
         }
-
+        hashToMove();
         return true;
     }
 
