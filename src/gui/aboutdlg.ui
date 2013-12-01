@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>517</width>
-    <height>810</height>
+    <height>837</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -301,6 +301,26 @@ Bruno Rizzuti</string>
         </property>
         <property name="openExternalLinks">
          <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Path to settings</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="labelSettingsPath">
+        <property name="frameShape">
+         <enum>QFrame::Panel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="text">
+         <string>sss</string>
         </property>
        </widget>
       </item>
