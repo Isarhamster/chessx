@@ -1376,7 +1376,7 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
 
 void MainWindow::StartCheckDatabase()
 {
-    if(m_databaseList->model()->rowCount() <= 1)
+    if ((m_recentFiles.count() == 0) && !AppSettings->getValue("/General/BuiltinDbInstalled").toBool())
     {
         LoadQuery dlg;
         if(dlg.exec() == QDialog::Accepted)
@@ -1391,6 +1391,7 @@ void MainWindow::StartCheckDatabase()
                 openDatabaseUrl("http://chessx.sourceforge.net/db/SBL1213.pgn.zip", false);
             }
         }
+        AppSettings->setValue("/General/BuiltinDbInstalled", QVariant(true));
     }
 }
 
