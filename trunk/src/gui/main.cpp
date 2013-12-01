@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 
     app.setApplicationName("chessx");
     app.setOrganizationName("chessx");
+    app.setOrganizationDomain("chessx.sourceforge.net");
 
     AppSettings = new Settings;
 
