@@ -358,7 +358,14 @@ OTHER_FILES += \
     COPYING \
     i18n/chessx_de.ts \
     i18n/chessx_fr.ts \
-    ChangeLog.txt
+    ChangeLog.txt \
+    data/help/about.css \
+    data/help/about3.html \
+    data/help/about0.html \
+    data/help/about4.html \
+    data/help/about5.html \
+    data/help/about1.html \
+    data/help/about2.html
 
 macx {
   OTHER_FILES += \
