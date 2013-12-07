@@ -66,6 +66,7 @@ public:
 
 signals:
     void OnSelectIndex(const QModelIndex&);
+    void NoFileFavorite();
 
 public slots:
     void addFileOpen(const QString& s, bool utf8);
@@ -92,6 +93,8 @@ public:
     virtual QVariant headerData(int section, Qt::Orientation orientation,
                                 int role = Qt::DisplayRole) const;
 protected:
+    void checkFileFavorite();
+
     DatabaseListEntry* FindEntry(QString s);
     QStringList m_columnNames;
     QList<DatabaseListEntry> m_databases;

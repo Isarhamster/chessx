@@ -44,6 +44,8 @@ void TableView::saveConfig()
 {
     AppSettings->setLayout(this);
     AppSettings->beginGroup(objectName());
+    int n = model()->columnCount();
+    AppSettings->setValue("ColumnCount", n);
     QByteArray visualIndex = horizontalHeader()->saveState();
     AppSettings->setByteArray("VisualIndex", visualIndex);
     AppSettings->endGroup();
@@ -54,18 +56,26 @@ void TableView::slotReconfigure()
     bool sortIndicator = horizontalHeader()->isSortIndicatorShown();
     AppSettings->layout(this);
     QString objName = objectName();
+
     AppSettings->beginGroup(objName);
-    QList<int> sections;
-    if(AppSettings->list("Sections", sections, model()->columnCount()))
-        for(int i = 0; i < sections.count(); ++i)
+
+    int n = model()->columnCount();
+    int nRestore = AppSettings->getValue("ColumnCount").toInt();
+    if (n==nRestore)
+    {
+        QByteArray visualIndex = AppSettings->byteArray("VisualIndex");
+        horizontalHeader()->restoreState(visualIndex);
+    }
+    else
+    {
+        for(int i = 0; i < model()->columnCount(); ++i)
         {
-            setColumnWidth(i, sections[i]);
+            showColumn(i);
         }
-
-    QByteArray visualIndex = AppSettings->byteArray("VisualIndex");
-    horizontalHeader()->restoreState(visualIndex);
-
+        resizeColumnsToContents();
+    }
     AppSettings->endGroup();
+
     int fontSize = AppSettings->getValue("/General/ListFontSize").toInt();
     QFont f = font();
     f.setPointSize(fontSize);
