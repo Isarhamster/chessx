@@ -150,6 +150,7 @@ void Settings::getMap(const QString& key, OptionValueList& map)
 QMap<QString, QVariant> Settings::initDefaultValues() const
 {
     QMap<QString, QVariant> map;
+    map.insert("ColumnCount", -1);
     map.insert("/General/EditLimit", 10);
     map.insert("/General/automaticECO", true);
     map.insert("/General/useIndexFile", true);
