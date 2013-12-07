@@ -337,7 +337,7 @@ MainWindow::MainWindow() : QMainWindow(),
     statusBar()->addPermanentWidget(m_statusFilter);
     statusBar()->setFixedHeight(statusBar()->height());
     statusBar()->setSizeGripEnabled(true);
-    m_progressBar = new QProgressBar;
+    m_progressBar = new QProgressBar(this);
 
     /* Reconfigure. */
     slotReconfigure();
