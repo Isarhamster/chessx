@@ -71,9 +71,7 @@ class OpeningTree : public QAbstractTableModel
     Q_OBJECT
 public:
     /** Empty constructor. */
-    OpeningTree();
-    /** Initialized constructor, performing automatic ee */
-    OpeningTree(Filter& f, const Board& b, bool updateFilter);
+    OpeningTree(QObject* parent);
     /** Calculate opening tree from given position, using given filter. It sets
     the filter to contain only game matching position @p b .
     @return true if the update was not cancelled.*/
@@ -109,10 +107,11 @@ signals:
     void progress(int);
     void openingTreeUpdated();
     void openingTreeUpdateStarted();
+protected:
+    QPixmap paintPercentage(int percentage) const;
 private:
     bool m_bRequestPending;
     QList<MoveData> m_moves;
-    mutable QReadWriteLock m_moveLock;
     int m_games;
     QStringList m_names;
     int m_sortcolumn;
