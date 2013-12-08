@@ -42,20 +42,20 @@ bool MemoryDatabase::appendGame(const Game& game)
     newGame->clearTags();
     m_games.append(newGame);
     ++m_count;
-    m_isModified = true;
+    setModified(true);
     return true;
 }
 
 bool MemoryDatabase::remove(int gameId)
 {
-    m_isModified = true;
+    setModified(true);
     m_index.setDeleted(gameId, true);
     return true;
 }
 
 bool MemoryDatabase::undelete(int gameId)
 {
-    m_isModified = true;
+    setModified(true);
     m_index.setDeleted(gameId, false);
     return true;
 }
@@ -77,7 +77,7 @@ bool MemoryDatabase::replace(int index, Game& game)
     // Upate game array
     *m_games[index] = game;
     m_games[index]->clearTags();
-    m_isModified = true;
+    setModified(true);
     return true;
 }
 
@@ -129,7 +129,7 @@ void MemoryDatabase::parseGame()
             {
                 game->setTag("ECO", eco);
                 m_index.setTag("ECO", eco, m_count - 1);
-                m_isModified = true;
+                setModified(true);
             }
         }
     }
@@ -140,7 +140,7 @@ void MemoryDatabase::parseGame()
 bool MemoryDatabase::parseFile()
 {
     bool ok = parseFileIntern();
-    m_isModified = false;
+    setModified(false); // Undoes changes which stem from ECO parsing, is this expected or unexpected?
     return ok;
 }
 
@@ -151,6 +151,6 @@ bool MemoryDatabase::clear()
         delete m_games[i];
     }
     m_games.clear();
-    m_isModified = true;
+    setModified(true);
     return true;
 }

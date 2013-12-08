@@ -135,7 +135,7 @@ bool MainWindow::QuerySaveDatabase()
     {
         if(m_currentDatabase && qobject_cast<MemoryDatabase*>(database()))
         {
-            if(database()->isModified())
+            if(databaseInfo()->isValid() && database()->isModified())
             {
                 int result = MessageDialog::yesNoCancel(tr("The current database is modified!")
                                                         + '\n' + tr("Save it?"));

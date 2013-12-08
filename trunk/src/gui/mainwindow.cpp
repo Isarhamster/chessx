@@ -337,7 +337,7 @@ MainWindow::MainWindow() : QMainWindow(),
     statusBar()->addPermanentWidget(m_statusFilter);
     statusBar()->setFixedHeight(statusBar()->height());
     statusBar()->setSizeGripEnabled(true);
-    m_progressBar = new QProgressBar(this);
+    m_progressBar = new QProgressBar();
 
     /* Reconfigure. */
     slotReconfigure();
@@ -388,6 +388,7 @@ MainWindow::~MainWindow()
     qDeleteAll(m_databases.begin(), m_databases.end());
     delete m_saveDialog;
     delete m_output;
+    delete m_progressBar;
     m_boardViews.clear(); // Widgets are deleted by Qt
 }
 
@@ -1255,10 +1256,12 @@ bool MainWindow::confirmQuit()
         }
     }
     for(int i = 1; i < m_databases.size(); i++)
-        if(m_databases[i]->database()->isModified())
+    {
+        if(m_databases[i]->isValid() && m_databases[i]->database()->isModified())
         {
             modified += m_databases[i]->database()->name() + '\n';
         }
+    }
     if(!modified.isEmpty())
     {
         int response = MessageDialog::yesNoCancel(tr("Following databases are modified:")
