@@ -468,7 +468,7 @@ private:
     QSplitter* m_boardSplitter;
     ChessBrowser* m_gameView;
     OpeningTreeWidget* m_openingTreeWidget;
-    QProgressBar* m_progressBar;
+    QPointer<QProgressBar> m_progressBar;
     ToolMainWindow* m_gameWindow;
     QToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
