@@ -490,7 +490,11 @@ QString Output::writeVariation(MoveId upToNode)
     {
         if(m_game->currentMove() == upToNode)
         {
-            text += "*** ";
+            if(m_options.getOptionAsBool("ColumnStyle"))
+            {
+                text += m_endTagMap[MarkupColumnStyleMainline];
+            }
+            text += "***&nbsp;";
             break;
         }
         // *** Writes move in the current variation
