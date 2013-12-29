@@ -7,6 +7,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "actiondialog.h"
 #include "analysiswidget.h"
 #include "board.h"
 #include "boardsetup.h"
@@ -1158,7 +1159,7 @@ void MainWindow::slotGameViewLink(const QString& url)
 
 void MainWindow::slotGameViewSource()
 {
-    QString text = m_output->output(&game());
+    QString text = m_output->output(&game(), m_training->isChecked());
     QApplication::clipboard()->setText(text);
 }
 
@@ -1857,4 +1858,10 @@ void MainWindow::slotScreenShot()
 void MainWindow::slotCompileECO()
 {
     (void) compileAsciiEcoFile("chessx.eco.txt", "chessx.eco", "chessx.gtm");
+}
+
+void MainWindow::slotEditActions()
+{
+    ActionDialog actionsDialog(this);
+    actionsDialog.exec();
 }

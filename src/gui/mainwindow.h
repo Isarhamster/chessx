@@ -12,6 +12,7 @@
 
 #include "common.h"
 #include "historylist.h"
+#include "kbaction.h"
 #include "move.h"
 #include "output.h"
 
@@ -160,7 +161,7 @@ public slots:
     {
         gameMoveBy(-1);
     }
-    /** Go to first move of the game */
+    /** Go to last move of the game */
     void slotGameMoveLast()
     {
         gameMoveBy(999);
@@ -361,6 +362,8 @@ protected slots:
     void slotCompileECO();
     /** Support dragging things to non-top tabs */
     void slotAutoSwitchTab();
+    /** Edit Accelerators */
+    void slotEditActions();
 
 protected:
     bool pasteFen(QString& errorText, QString fen);
@@ -418,7 +421,10 @@ private slots:
 
 private:
     /** Create single menu action. */
-    QAction* createAction(const QString& name, const char* slot, const QKeySequence& key = QKeySequence(),
+    QAction* createAction(const char* name, const char* slot, const QKeySequence& key = QKeySequence(),
+                          QToolBar* pToolBar = 0, QString image = QString(), const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole, QObject *parent=0);
+    /** Create single menu action. */
+    QAction* createAction(QObject *parent, const char *name, const char* slot, const QKeySequence& key = QKeySequence(),
                           QToolBar* pToolBar = 0, QString image = QString(), const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole);
     /** Create all the menus and actions */
     void setupActions();
@@ -489,7 +495,6 @@ private:
     QList<QAction*> m_databaseActions;
     int m_currentDatabase;
     QString m_eco;
-    QActionGroup* m_actions;
     QTime m_operationTime;
     /** Currently updated tree. May be NULL if no update in progress. */
     QString m_nagText;

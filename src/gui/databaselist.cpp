@@ -70,7 +70,7 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
     // Make sure the right click occured on a cell!
     if(m_cell.isValid())
     {
-        QMenu menu(this);
+        QMenu menu("Database List",this);
         bool bIsFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_FAVORITE), Qt::UserRole).toString() == "Favorite";
         bool bIsNotFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_FAVORITE), Qt::UserRole).toString().isEmpty();
         bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString().isEmpty();
