@@ -22,8 +22,6 @@
 #include "common.h"
 
 class QMenu;
-class QAction;
-class QActionGroup;
 
 /**  @ingroup GUI
   The BoardSetupDialog class represents a dialog for setting up a position.  */

@@ -83,7 +83,7 @@ void GameList::slotContextMenu(const QPoint& pos)
     // Make sure the right click occured on a cell!
     if(cell.isValid() && selection.contains(cell))
     {
-        QMenu menu(this);
+        QMenu menu(tr("Game list"), this);
         menu.addAction(tr("Copy games..."), this, SLOT(slotCopyGame()));
         QMenu* mergeMenu = menu.addMenu(tr("Merge into current game"));
         mergeMenu->addAction(tr("All Games"), this, SLOT(slotMergeAllGames()));

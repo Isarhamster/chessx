@@ -39,7 +39,8 @@ FORMS += \
     src/gui/openingtreewidget.ui \
     src/gui/loadquery.ui \
     src/gui/aboutdlg.ui \
-    src/gui/promotiondialog.ui
+    src/gui/promotiondialog.ui \
+    src/gui/actiondialog.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -151,7 +152,9 @@ HEADERS += src/database/board.h \
     src/guess/compileeco.h \
     src/database/pdbtest.h \
     src/gui/aboutdlg.h \
-    src/gui/promotiondialog.h
+    src/gui/promotiondialog.h \
+    src/gui/actiondialog.h \
+    src/gui/kbaction.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -249,7 +252,9 @@ SOURCES += src/database/board.cpp \
     src/guess/compileeco.cpp \
     src/database/pdbtest.cpp \
     src/gui/aboutdlg.cpp \
-    src/gui/promotiondialog.cpp
+    src/gui/promotiondialog.cpp \
+    src/gui/actiondialog.cpp \
+    src/gui/kbaction.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
