@@ -1073,7 +1073,7 @@ void MainWindow::setupActions()
     m_menuView->addSeparator();
 
 #if defined(Q_OS_WIN)
-    QAction* stayOnTop = createAction(tr("Stay on Top"), SLOT(slotToggleStayOnTop()));
+    QAction* stayOnTop = createAction(QT_TR_NOOP("Stay on Top"), SLOT(slotToggleStayOnTop()));
     stayOnTop->setCheckable(true);
     stayOnTop->setChecked(AppSettings->getValue("/MainWindow/StayOnTop").toBool());
     m_menuView->addAction(stayOnTop);
