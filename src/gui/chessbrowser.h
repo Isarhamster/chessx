@@ -77,7 +77,8 @@ private:
     QAction* m_copyHtml;
     QAction* m_copyText;
     QAction* m_startComment;
-    QAction* m_startComment2;
+    QAction* m_gameComment;
+    QAction* m_gameComment2;
     QAction* m_addComment;
     QAction* m_removeVariation;
     QAction* m_promoteVariation;

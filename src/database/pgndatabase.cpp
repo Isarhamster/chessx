@@ -399,7 +399,7 @@ void PgnDatabase::initialise()
     m_gameOffsets64 = 0;
     m_gameOffsets32 = 0;
     m_inComment = false;
-    m_isOpen = false;
+    m_inPreComment = false;
     m_filename = QString();
     m_count = 0;
     m_allocated = 0;
@@ -521,6 +521,7 @@ bool PgnDatabase::parseMoves(Game* game)
 {
     m_gameOver = false;
     m_inComment = false;
+    m_inPreComment = false;
     m_comment.clear();
     m_precomment.clear();
     m_newVariation = false;
@@ -551,6 +552,7 @@ bool PgnDatabase::parseMoves(Game* game)
             {
                 game->setAnnotation(m_precomment);
                 m_precomment.clear();
+                m_inPreComment = false;
             }
         }
     }
@@ -644,6 +646,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
             {
                 game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
                 m_precomment.clear();
+                m_inPreComment = false;
             }
             m_newVariation = false;
         }
@@ -654,6 +657,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
             {
                 game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
                 m_precomment.clear();
+                m_inPreComment = false;
             }
         }
     }
@@ -674,7 +678,6 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
         break;
     case '{':
         m_comment.clear();
-        m_precomment.clear();
         m_inComment = true;
         m_currentLine = m_currentLine.right((m_currentLine.length() - m_pos) - 1);
         break;
@@ -785,7 +788,13 @@ void PgnDatabase::parseComment(Game* game)
         m_inComment = false;
         if(m_newVariation || game->plyCount() == 0)
         {
+            if (game->plyCount()==0 && m_inPreComment)
+            {
+                game->setGameComment(m_precomment);
+                m_inPreComment = false;
+            }
             m_precomment = m_comment.trimmed();
+            m_inPreComment = true;
         }
         else
         {

@@ -989,6 +989,13 @@ void MainWindow::slotGameModify(const EditAction& action)
             return;
         }
         break;
+    case EditAction::EditGameComment:
+        game().moveToId(0);
+        if(!gameEditComment(Output::Comment))
+        {
+            return;
+        }
+        break;
     case EditAction::EditComment:
         if(!gameEditComment(Output::Comment))
         {

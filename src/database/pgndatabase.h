@@ -120,6 +120,7 @@ private:
     int m_pos;
     bool m_gameOver;
     bool m_inComment;
+    bool m_inPreComment;
     QString m_comment;
     QString m_precomment;
     bool m_newVariation;
