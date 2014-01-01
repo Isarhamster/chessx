@@ -219,8 +219,7 @@ QVariant Settings::getValue(const QString &key) const
             return value(key, defaultValues.value(groupKey));
         }
     }
-    Q_ASSERT(false);
-    return QVariant();
+    return value(key);
 }
 
 QString Settings::getThemaPath() const

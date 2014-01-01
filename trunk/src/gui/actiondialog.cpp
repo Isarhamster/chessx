@@ -133,14 +133,13 @@ void ActionDialog::validateAction(int row, int column)
                 QString currentAccel = ui->actionsTable->item(i,column)->text();
                 if (currentAccel == accelText)
                 {
+                    // Duplicate item, restore old text
                     item->setText(oldAccelText);
                     return;
                 }
             }
         }
     }
-    // todo: test valid accel pattern
-    // if invalid, oldAccelText contains previous action text
 }
 
 void ActionDialog::resetKeys()
