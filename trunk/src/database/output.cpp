@@ -578,10 +578,6 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
     MarkupType markupIndent = type == Comment ? MarkupAnnotationIndent : MarkupPreAnnotationIndent;
     MarkupType markupInline = type == Comment ? MarkupAnnotationInline : MarkupPreAnnotationInline;
 
-    if(type == Comment)
-    {
-        text += " ";
-    }
     if(m_options.getOptionAsBool("ColumnStyle") && (m_currentVariationLevel == 0))
     {
         text += m_endTagMap[MarkupColumnStyleMainline];

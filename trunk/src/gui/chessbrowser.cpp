@@ -94,6 +94,7 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
         connect(m_browserMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 
         m_gameMenu->addAction((m_startComment = createAction(tr("Add start comment..."), EditAction::EditPrecomment)));
+        m_gameMenu->addAction((m_gameComment = createAction(tr("Add game comment..."), EditAction::EditGameComment)));
         m_gameMenu->addAction((m_addComment = createAction(tr("Add comment..."), EditAction::EditComment)));
 
         // Nag menus
@@ -146,7 +147,7 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
         m_gameMenu->addAction((m_addNullMove = createAction(tr("Insert threat"), EditAction::AddNullMove)));
 
         // Non-move oriented actions
-        m_browserMenu->addAction((m_startComment2 = createAction(tr("Add start comment..."), EditAction::EditPrecomment)));
+        m_browserMenu->addAction((m_gameComment2 = createAction(tr("Add game comment..."), EditAction::EditGameComment)));
         m_browserMenu->addAction((m_addNullMove2 = createAction(tr("Insert threat"), EditAction::AddNullMove)));
         m_browserMenu->addAction((m_copyHtml = createAction(tr("Copy Html"), EditAction::CopyHtml)));
         m_browserMenu->addAction((m_copyText = createAction(tr("Copy Text"), EditAction::CopyText)));
@@ -173,6 +174,11 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
         return;
     }
 
+    int numMove = 0;
+    int numComment = 0;
+    game->moveCount(&numMove, &numComment);
+    bool gameIsEmpty = ((numMove+numComment) == 0);
+
     QString link = anchorAt(pos);
     if(!link.isEmpty())
     {
@@ -186,7 +192,8 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
         bool hasNags = !game->nags().isEmpty();
         bool atLineEnd = game->atLineEnd(m_currentMove);
 
-        m_startComment->setVisible(atLineStart && !hasPrecomment);
+        m_startComment->setVisible(atLineStart && !hasPrecomment && !gameIsEmpty);
+        m_gameComment->setVisible(gameIsEmpty && !hasComment);
         m_addComment->setVisible(!hasComment);
         m_enumerateVariations1->setVisible(isVariation);
         m_enumerateVariations2->setVisible(isVariation);
@@ -203,12 +210,9 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
     }
     else
     {
-        int numMove = 0;
-        int numComment = 0;
-        game->moveCount(&numMove, &numComment);
-        bool gameIsEmpty = ((numMove+numComment) == 0);
+        bool hasGameComment = !game->annotation(0).isEmpty();
 
-        m_startComment2->setVisible(gameIsEmpty);
+        m_gameComment2->setVisible(gameIsEmpty && !hasGameComment);
         m_addNullMove2->setVisible(gameIsEmpty);
         m_copyHtml->setVisible(!gameIsEmpty);
         m_copyText->setVisible(!gameIsEmpty);

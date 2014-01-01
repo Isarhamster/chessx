@@ -478,94 +478,99 @@ Bitte Installation prüfen.</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="96"/>
-        <location filename="../src/gui/chessbrowser.cpp" line="149"/>
         <source>Add start comment...</source>
-        <translation>Anfangskommentar hinzufügen...</translation>
+        <translation>Kommentar vor Variante hinzufügen...</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="97"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="150"/>
+        <source>Add game comment...</source>
+        <translation>Partiekommentar hinzufügen...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/chessbrowser.cpp" line="98"/>
         <source>Add comment...</source>
         <translation>Kommentar hinzufügen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="100"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="101"/>
         <source>Add move symbol</source>
         <translation>Zugbewertung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="108"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="109"/>
         <source>Add evaluation symbol</source>
         <translation>Stellungsbewertung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="115"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="116"/>
         <source>Add other symbol</source>
         <translation>Andere Auszeichnung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="128"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="129"/>
         <source>Bishops</source>
         <translatorcomment>Submenu for 3 NAGs: pair of bishops, bishops of sam/oppositie color</translatorcomment>
         <translation>Läufer</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="133"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="134"/>
         <source>Remove symbols</source>
         <translation>Auszeichnungen entfernen</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="135"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="136"/>
         <source>Enumerate Variations A) B) C)</source>
         <translation>Aufzählung A) B) C)</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="136"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="137"/>
         <source>Enumerate Variations a) b) c)</source>
         <translation>Aufzählung a) b) c)</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="138"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="139"/>
         <source>Promote to main line</source>
         <translation>Zur Hauptvariante machen</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="139"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="140"/>
         <source>Move variation up</source>
         <translation>Variante nach oben</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="140"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="141"/>
         <source>Move variation down</source>
         <translation>Variante nach unten</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="142"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="143"/>
         <source>Remove variation</source>
         <translation>Variante löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="143"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="144"/>
         <source>Remove previous moves</source>
         <translation>Vorhergehende Züge löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="144"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="145"/>
         <source>Remove next moves</source>
         <translation>Restliche Züge löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="146"/>
-        <location filename="../src/gui/chessbrowser.cpp" line="150"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="147"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="151"/>
         <source>Insert threat</source>
         <translation>Drohung einfügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="151"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="152"/>
         <source>Copy Html</source>
         <translation>Kopieren in HTML Format</translation>
     </message>
     <message>
-        <location filename="../src/gui/chessbrowser.cpp" line="152"/>
+        <location filename="../src/gui/chessbrowser.cpp" line="153"/>
         <source>Copy Text</source>
         <translation>Text kopieren</translation>
     </message>
@@ -1131,50 +1136,50 @@ Shall I download a database?</source>
         <translation>Pfeil löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1339"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1373"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1346"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1380"/>
         <source>Append game %1 to %2.</source>
         <translation>Partie %1 an %2 anhängen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1339"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1346"/>
         <source>Clipboard</source>
         <translation>Zwischenablage</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1392"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1399"/>
         <source>Append games from %1 to %2.</source>
         <translation>Partien aus %1 an %2 anhängen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1817"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1824"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Neue Partie&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1216"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1223"/>
         <source>Analysis Pane 1 is not running an engine for automatic analysis.</source>
         <translation>Analyse 1 ist nicht aktiv für Autoanalyse.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1486"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1755"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1493"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1762"/>
         <source>%1 - ChessX</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1514"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1521"/>
         <source>Search ended</source>
         <translation>Suche beendet</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1519"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1559"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1526"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1566"/>
         <source>Updating tree...</source>
         <translation>Aktualisiere Baum...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1549"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1556"/>
         <source>Tree updated.</source>
         <translation>Baum aktualisiert.</translation>
     </message>
@@ -1371,7 +1376,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1127"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1216"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1223"/>
         <source>Auto Analysis</source>
         <translation>Autoanalyse</translation>
     </message>
@@ -1608,7 +1613,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1025"/>
         <source>Comment Before</source>
-        <translation>Kommentar vor dem Zug</translation>
+        <translation>Kommentar vor Variante</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1064"/>
@@ -1726,12 +1731,12 @@ Shall I download a database?</source>
         <translation>Zwischenablage enthält FEN, aber eine ungültige Position. Sie können solche Positionen im &lt;b&gt;Einrichtungsdialog&lt;/b&gt; eingeben.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1432"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1439"/>
         <source>You need at least two open databases to copy games</source>
         <translation>Mindestens zwei offene Datenbanken benötigt um Partien zu kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1440"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1447"/>
         <source>%1. %2 (%3 games)</source>
         <translation>%1. %2 (%3 Partien)</translation>
     </message>

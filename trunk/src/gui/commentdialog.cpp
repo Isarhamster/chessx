@@ -28,11 +28,11 @@ QString CommentDialog::text() const
         }
     }
     QString s1 = ui.textEdit->toPlainText().trimmed();
-    if(!s1.isEmpty())
+    if(!s.isEmpty() && !s1.isEmpty())
     {
         s.append(" ");
-        s.append(s1);
     }
+    s.append(s1);
     return s;
 }
 

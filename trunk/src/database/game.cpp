@@ -823,13 +823,20 @@ bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
     }
     else if(canHaveStartAnnotation(node))  	// Pre-move comment
     {
-        if(annotation.isEmpty())
+        if (node == 0)
         {
-            m_variationStartAnnotations.remove(node);
+            setGameComment(annotation);
         }
         else
         {
-            m_variationStartAnnotations[node] = annotation;
+            if(annotation.isEmpty() && (node > 1)) // Do not remove empty comment
+            {
+                m_variationStartAnnotations.remove(node);
+            }
+            else
+            {
+                m_variationStartAnnotations[node] = annotation;
+            }
         }
     }
     return true;
@@ -1797,13 +1804,13 @@ void Game::dumpAnnotations(MoveId moveId) const
     }
     if(moveId != NO_MOVE)
     {
-        qDebug() << "   Annotations : ";
-        qDebug() << "   Text        : " << m_annotations.value(moveId);
-        qDebug() << "   Square      : " << m_squareAnnotations.value(moveId);
-        qDebug() << "   Arrow       : " << m_arrowAnnotations.value(moveId);
-        qDebug() << "   CLK         : " << m_clkAnnotations.value(moveId);
-        qDebug() << "   EGT         : " << m_egtAnnotations.value(moveId);
-        qDebug() << "   Start       : " << m_variationStartAnnotations.value(moveId);
+        qDebug() << "   Annotations";
+        qDebug() << "     Text        : " << m_annotations.value(moveId);
+        qDebug() << "     Square      : " << m_squareAnnotations.value(moveId);
+        qDebug() << "     Arrow       : " << m_arrowAnnotations.value(moveId);
+        qDebug() << "     CLK         : " << m_clkAnnotations.value(moveId);
+        qDebug() << "     EGT         : " << m_egtAnnotations.value(moveId);
+        qDebug() << "     Start       : " << m_variationStartAnnotations.value(moveId);
     }
 }
 
