@@ -942,19 +942,25 @@ QAction* MainWindow::createAction(QObject* parent, const char* name, const char*
 QAction* MainWindow::createAction(const char *name, const char* slot, const QKeySequence& key, QToolBar* pToolBar, QString image,
                                   const QString& tip, QAction::MenuRole menuRole, QObject* parent)
 {
+    return createAction(name, slot, key, pToolBar, QIcon(image), tip, menuRole, parent);
+}
+
+QAction* MainWindow::createAction(const char *name, const char* slot, const QKeySequence& key, QToolBar* pToolBar, QIcon icon,
+                                  const QString& tip, QAction::MenuRole menuRole, QObject* parent)
+{
     KbAction* action;
     if (!parent)
     {
         parent = this;
     }
 
-    if(image.isEmpty())
+    if(icon.isNull())
     {
         action = new KbAction(name, parent, key);
     }
     else
     {
-        action = new KbAction(QIcon(image), name, parent, key);
+        action = new KbAction(icon, name, parent, key);
     }
 
     if(!tip.isEmpty())
@@ -1066,8 +1072,6 @@ void MainWindow::setupActions()
 
     /* View menu */
     m_menuView = menuBar()->addMenu(tr("&View"));
-    QToolBar* viewToolBar = addToolBar(tr("View"));
-    viewToolBar->setObjectName("ViewToolBar");
 
     QMenu* toolbars = m_menuView->addMenu(tr("Toolbars"));
     m_menuView->addSeparator();
@@ -1083,9 +1087,9 @@ void MainWindow::setupActions()
 #endif
 
     m_menuView->addAction(createAction(QT_TR_NOOP("New board"), SLOT(slotCreateBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_N,
-                                       viewToolBar, ":/images/new_board.png"));
+                                       0, style()->standardIcon(QStyle::SP_FileIcon)));
     m_menuView->addAction(createAction(QT_TR_NOOP("Close current board"), SLOT(slotCloseBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_W,
-                                       viewToolBar, ":/images/close_board.png"));
+                                       0, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
     m_menuView->addSeparator();
 
     /* Game menu */
@@ -1253,7 +1257,6 @@ void MainWindow::setupActions()
     fileToolBar->addAction(helpAction);
     toolbars->addAction(fileToolBar->toggleViewAction());
     toolbars->addAction(editToolBar->toggleViewAction());
-    toolbars->addAction(viewToolBar->toggleViewAction());
     toolbars->addAction(dbToolBar->toggleViewAction());
     toolbars->addAction(gameToolBar->toggleViewAction());
     toolbars->addAction(searchToolBar->toggleViewAction());
