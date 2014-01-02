@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<mime-info xmlns="http://freedesktop.org/standards/shared-mime-info">
-  <mime-type type="application/x-chess-pgn">
-    <comment>PGN Database</comment>
-    <glob pattern="*.pgn" />
-  </mime-type>
-</mime-info>

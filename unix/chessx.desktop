@@ -2,9 +2,14 @@
 Type=Application
 Name=ChessX
 Comment=Free chess database
+Comment=Chess database
+Comment[de]=Schachdatenbank
 GenericName=Chess Game
+GenericName[de]=Schachspiel
 Icon=chessx
 Exec=chessx
 Terminal=false
 Categories=Game;BoardGame;
 MimeType=application/x-chess-pgn;
+Keywords=PGN;FEN;Database
+Keywords[de]=PGN;FEN;Datenbank
