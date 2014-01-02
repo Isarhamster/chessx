@@ -316,20 +316,6 @@ macx {
  QMAKE_INFO_PLIST = mac_osx/Info.plist
 }
 
-unix:!macx {
- target.path = /usr/local/bin/chessx
- pixmaps.path = /usr/share/pixmaps
- pixmaps.files = data/images/chessx.png
- desktop.path = /usr/share/applications
- desktop.files = chessx.desktop
- desktop.extra += xdg-mime install --mode system chessx-x-chess-pgn.xml &&
- desktop.extra += xdg-mime default chessx.desktop application/x-chess-pgn &&
- desktop.extra += xdg-icon-resource install --context mimetypes --size 32 ./data/images/chessx-32.png application-x-chess-pgn &&
- desktop.extra += xdg-icon-resource install --context mimetypes --size 64 ./data/images/chessx-64.png application-x-chess-pgn &&
- desktop.extra += xdg-icon-resource install --context mimetypes --size 128 ./data/images/chessx.png application-x-chess-pgn
- INSTALLS += target desktop pixmaps
-}
-
 RESOURCES = resources.qrc
 
 TRANSLATIONS = i18n/chessx_de.ts \
