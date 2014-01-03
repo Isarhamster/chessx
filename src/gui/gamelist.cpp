@@ -135,7 +135,7 @@ void GameList::simpleSearch(int tagid)
     else
     {
         QStringList list = value.split("-", QString::SkipEmptyParts);
-        if(list.size() > 1)
+        if ((list.size() > 1) && (dlg.tag() != 9))
         {
             // Filter a range
             TagSearch ts(m_model->filter()->database(), tag, list.at(0), list.at(1));
