@@ -76,7 +76,7 @@ void EventListWidget::eventSelected(const QString& event)
         m_event.setName(event);
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
-        QString head = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>Event List</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>";
+        QString head = QString("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>%1</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>").arg(event);
         QString text = QString("%1<body><h1><a href='event:%2'>%3</a></h1>%4%5%6%7%8</body></html>")
                        .arg(head)
                        .arg(m_event.name())
@@ -154,12 +154,11 @@ void EventListWidget::slotLinkClicked(const QUrl& url)
 {
     if(url.scheme() == "player")
     {
-        QString event = ui->tagList->currentIndex().data().toString();
-        emit filterEventPlayerRequest(url.path(), event);
+        emit filterEventPlayerRequest(url.path(), ui->detailText->documentTitle());
     }
     else if (url.scheme() == "event")
     {
         QString event = ui->tagList->currentIndex().data().toString();
-        emit filterRequest(event);
+        emit filterRequest(url.path());
     }
 }
