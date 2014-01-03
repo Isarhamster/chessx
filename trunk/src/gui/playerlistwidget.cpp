@@ -83,7 +83,7 @@ void PlayerListWidget::playerSelected(const QString& player)
         m_player.setName(player);
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
-        QString head = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>Player List</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>";
+        QString head = QString("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>%1</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>").arg(player);
         QString text = QString("%1<body><h1><a href='player:%2'>%3</a></h1>%4%5%6%7%8</body></html>")
                        .arg(head)
                        .arg(m_player.name())
@@ -161,13 +161,11 @@ void PlayerListWidget::slotLinkClicked(const QUrl& url)
 {
     if(url.scheme().startsWith("eco"))
     {
-        QString player = ui->tagList->currentIndex().data().toString();
         QString tag = (url.scheme().contains("white")) ? TagNameWhite : TagNameBlack;
-        emit filterEcoPlayerRequest(tag, url.path(), player);
+        emit filterEcoPlayerRequest(tag, url.path(), ui->detailText->documentTitle());
     }
     else if(url.scheme().startsWith("player"))
     {
-        QString player = ui->tagList->currentIndex().data().toString();
-        emit filterRequest(player);
+        emit filterRequest(url.path());
     }
 }
