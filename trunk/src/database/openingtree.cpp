@@ -109,36 +109,39 @@ void OpeningTreeUpdater::run()
     emit MoveUpdate(&m_board, new QList<MoveData>);
     for(int i = 0; i < m_filter->size(); ++i)
     {
-        m_filter->database()->lock();
-        m_filter->database()->loadGameMoves(i, g);
-        m_filter->database()->unlock();
-        int id = g.findPosition(m_board);
-        if((id != NO_MOVE) && (m_bEnd ? g.atGameEnd(id) : true))
+        if (m_sourceIsDatabase || m_filter->contains(i))
         {
-            if(m_updateFilter)
-            {
-                m_filter->set(i, id + 1); // not zero means success, but id could be 0.
-            }
             m_filter->database()->lock();
-            m_filter->database()->loadGameHeaders(i, g);
+            m_filter->database()->loadGameMoves(i, g);
             m_filter->database()->unlock();
-            g.moveToId(id);
-            if(g.atGameEnd())
+            int id = g.findPosition(m_board);
+            if((id != NO_MOVE) && (m_bEnd ? g.atGameEnd(id) : true))
             {
-                moves[Move()].addGame(g, m_board.toMove(), MoveData::GameEnd);
+                if(m_updateFilter)
+                {
+                    m_filter->set(i, id + 1); // not zero means success, but id could be 0.
+                }
+                m_filter->database()->lock();
+                m_filter->database()->loadGameHeaders(i, g);
+                m_filter->database()->unlock();
+                g.moveToId(id);
+                if(g.atGameEnd())
+                {
+                    moves[Move()].addGame(g, m_board.toMove(), MoveData::GameEnd);
+                }
+                else
+                {
+                    g.forward();
+                    moves[g.move()].addGame(g, m_board.toMove());
+                }
+                ++games;
             }
             else
             {
-                g.forward();
-                moves[g.move()].addGame(g, m_board.toMove());
-            }
-            ++games;
-        }
-        else
-        {
-            if(m_updateFilter)
-            {
-                m_filter->set(i, 0);
+                if(m_updateFilter)
+                {
+                    m_filter->set(i, 0);
+                }
             }
         }
 
@@ -184,7 +187,7 @@ void OpeningTreeUpdater::cancel()
     m_break = true;
 }
 
-bool OpeningTreeUpdater::updateFilter(Filter& f, const Board& b, int& g, bool updateFilter, bool bEnd)
+bool OpeningTreeUpdater::updateFilter(Filter& f, const Board& b, int& g, bool updateFilter, bool sourceIsDatabase, bool bEnd)
 {
     m_break = false;
     m_filter = &f;
@@ -192,12 +195,13 @@ bool OpeningTreeUpdater::updateFilter(Filter& f, const Board& b, int& g, bool up
     m_games = &g;
     m_bEnd  = bEnd;
     m_updateFilter = updateFilter;
+    m_sourceIsDatabase = sourceIsDatabase;
     // todo: if running wait for stop
     start();
     return true;
 }
 
-bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool bEnd)
+bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsDatabase, bool bEnd)
 {
     if(!oupd.isRunning())
     {
@@ -209,13 +213,14 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
         m_board = b;
         m_filter = &f;
         m_updateFilter = updateFilter;
+        m_sourceIsDatabase = sourceIsDatabase;
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>*)), this, SLOT(moveUpdated(Board*,QList<MoveData>*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
-        return oupd.updateFilter(f, b, m_games, m_updateFilter, m_bEnd);
+        return oupd.updateFilter(f, b, m_games, m_updateFilter, m_sourceIsDatabase, m_bEnd);
     }
     else
     {
@@ -227,6 +232,7 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
         m_board = b;
         m_filter = &f;
         m_updateFilter = updateFilter;
+        m_sourceIsDatabase = sourceIsDatabase;
         m_bRequestPending = true;
         oupd.cancel();
         return false;
@@ -276,7 +282,7 @@ void OpeningTree::updateTerminated(Board*)
         connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>*)), this, SLOT(moveUpdated(Board*,QList<MoveData>*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
-        oupd.updateFilter(*m_filter, m_board, m_games, m_updateFilter, m_bEnd);
+        oupd.updateFilter(*m_filter, m_board, m_games, m_updateFilter, m_sourceIsDatabase, m_bEnd);
     }
 }
 
@@ -394,6 +400,7 @@ void OpeningTree::doSort(int column, Qt::SortOrder order)
 {
     m_sortcolumn = column;
     m_order = order;
+
     switch(column)
     {
     case 0:
@@ -412,6 +419,7 @@ void OpeningTree::doSort(int column, Qt::SortOrder order)
         qSort(m_moves.begin(), m_moves.end(), compareYear);
         break;
     };
+
     if(order == Qt::DescendingOrder)
     {
         for(int i = 0; i < m_moves.count() / 2; ++i)

@@ -187,20 +187,24 @@ int Filter::nextGame(int current) const
         return -1;
     }
     for(int i = qBound(-1, current, size()) + 1; i < size(); ++i)
+    {
         if(contains(i))
         {
             return i;
         }
+    }
     return -1;
 }
 
 void Filter::resize(int newsize, bool includeNew)
 {
     for(int i = newsize; i < size(); ++i)   // Decrease count by number of removed games
+    {
         if(contains(i))
         {
             m_count--;
         }
+    }
     int oldsize = size();
     m_vector->resize(newsize);
     // Set new (uninitialized games) to 'includeNew' value.

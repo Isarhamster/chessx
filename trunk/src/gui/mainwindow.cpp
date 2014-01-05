@@ -29,7 +29,6 @@
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "memorydatabase.h"
-#include "openingtree.h"
 #include "openingtreewidget.h"
 #include "output.h"
 #include "pgndatabase.h"
@@ -71,7 +70,6 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameToolBar(0),
     m_output(0),
     m_autoPlayTimer(0),
-    m_bGameChange(false),
     m_currentFrom(InvalidSquare),
     m_currentTo(InvalidSquare)
 {
@@ -272,6 +270,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(openingDock->toggleViewAction());
     connect(openingDock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
     connect(openingDock, SIGNAL(visibilityChanged(bool)), m_openingTreeWidget, SLOT(cancel(bool)));
+    connect(m_openingTreeWidget, SIGNAL(signalTreeUpdated()), this, SLOT(slotTreeUpdate()));
+    connect(this, SIGNAL(reconfigure()), m_openingTreeWidget, SLOT(slotReconfigure()));
     openingDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
     openingDock->hide();
 
@@ -325,11 +325,7 @@ MainWindow::MainWindow() : QMainWindow(),
     {
         resize(800, 600);
     }
-    AppSettings->beginGroup("/MainWindow/");
-    m_boardSplitter->restoreState(AppSettings->value("BoardSplit").toByteArray());
-    m_gameList->m_FilterActive = AppSettings->getValue("FilterFollowsGame").toBool();
-    AppSettings->endGroup();
-    m_toggleFilter->setChecked(m_gameList->m_FilterActive);
+    m_boardSplitter->restoreState(AppSettings->value("/MainWindow/BoardSplit").toByteArray());
 
     /* Status */
     m_statusFilter = new QLabel();
@@ -439,7 +435,6 @@ void MainWindow::closeEvent(QCloseEvent* e)
         AppSettings->setLayout(this);
         AppSettings->beginGroup("/MainWindow/");
         AppSettings->setValue("BoardSplit", m_boardSplitter->saveState());
-        AppSettings->setValue("FilterFollowsGame", m_gameList->m_FilterActive);
         AppSettings->setValue("GameToolBar", m_gameToolBar->isVisible());
         AppSettings->endGroup();
     }
@@ -1202,10 +1197,6 @@ void MainWindow::setupActions()
     search->addAction(actionFindBoard);
 
     search->addSeparator();
-    m_toggleFilter = createAction(QT_TR_NOOP("&Enable filter"), SLOT(slotToggleFilter()), Qt::CTRL + Qt::ALT + Qt::Key_F, searchToolBar, ":/images/filter.png");
-    m_toggleFilter->setCheckable(true);
-    connect(this, SIGNAL(signalCurrentDBhasGames(bool)), m_toggleFilter, SLOT(setEnabled(bool)));
-    search->addAction(m_toggleFilter);
 
     QAction* filterReset = createAction(QT_TR_NOOP("&Reset filter"), SLOT(slotSearchReset()),     Qt::CTRL + Qt::Key_F, searchToolBar, ":/images/filter_reset.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), filterReset, SLOT(setEnabled(bool)));

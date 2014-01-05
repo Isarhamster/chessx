@@ -45,7 +45,7 @@ class OpeningTreeUpdater : public QThread
 public:
     void run();
     void cancel();
-    bool updateFilter(Filter& f, const Board& b, int&, bool updateFilter, bool bEnd);
+    bool updateFilter(Filter& f, const Board& b, int&, bool updateFilter, bool sourceIsDatabase, bool bEnd);
 
 signals:
     void MoveUpdate(Board*, QList<MoveData>*);
@@ -60,6 +60,7 @@ private:
     Board   m_board;
     Filter* m_filter;
     bool m_updateFilter;
+    bool m_sourceIsDatabase;
     bool m_bEnd;
 };
 
@@ -75,7 +76,7 @@ public:
     /** Calculate opening tree from given position, using given filter. It sets
     the filter to contain only game matching position @p b .
     @return true if the update was not cancelled.*/
-    bool updateFilter(Filter& f, const Board& b, bool updateFilter, bool bEnd);
+    bool updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsDatabase, bool bEnd);
     /** Returns the number of moves in the Opening Tree */
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     /** Returns the number of columns of the Opening Tree */
@@ -119,6 +120,7 @@ private:
     Board m_board;
     Filter* m_filter;
     bool m_updateFilter;
+    bool m_sourceIsDatabase;
     bool m_bEnd;
 };
 

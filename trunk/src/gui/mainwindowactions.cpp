@@ -684,6 +684,14 @@ void MainWindow::slotMoveChanged()
     emit signalGameAtLineStart(game().atLineStart());
 }
 
+void MainWindow::slotSearchTree()
+{
+    if(m_openingTreeWidget->isVisible())
+    {
+        m_openingTreeWidget->updateFilter(*databaseInfo()->filter(), m_boardView->board(), false);
+    }
+}
+
 void MainWindow::slotBoardMoveWheel(int wheel)
 {
     if(wheel & Qt::AltModifier)
@@ -1540,43 +1548,14 @@ void MainWindow::slotSearchReset()
     slotFilterChanged();
 }
 
-void MainWindow::slotToggleFilter()
-{
-    m_gameList->m_FilterActive = m_toggleFilter->isChecked();
-    m_gameList->updateFilter();
-}
-
 void MainWindow::slotTreeUpdate()
 {
-    if(m_gameList->m_FilterActive)
-    {
-        m_gameList->updateFilter();
-        slotFilterChanged();
-    }
-    finishOperation(tr("Tree updated."));
-    if(m_bGameChange)
-    {
-        slotGameLoadFirst();
-        m_bGameChange = false;
-    }
-}
-
-void MainWindow::slotTreeUpdateStarted()
-{
-    startOperation(tr("Updating tree..."));
-}
-
-void MainWindow::slotSearchTree()
-{
-    if(m_openingTreeWidget->isVisible())
-    {
-        m_openingTreeWidget->updateFilter(*databaseInfo()->filter(), m_boardView->board(), m_gameList->m_FilterActive, false);
-    }
+    m_gameList->updateFilter();
+    slotFilterChanged();
 }
 
 void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 {
-    m_bGameChange = false;
     QString move = m_openingTreeWidget->move(index);
     bool bEnd = (move == "[end]");
     Board b = m_openingTreeWidget->board();
@@ -1589,7 +1568,7 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 
     if(m_openingTreeWidget->isVisible())
     {
-        m_openingTreeWidget->updateFilter(*databaseInfo()->filter(), b, m_gameList->m_FilterActive, bEnd);
+        m_openingTreeWidget->updateFilter(*databaseInfo()->filter(), b, bEnd);
     }
 }
 

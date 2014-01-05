@@ -275,14 +275,10 @@ public slots:
     void slotSearchReset();
     /** Training mode */
     void slotToggleTraining();
-    /** Toggle filter */
-    void slotToggleFilter();
     /** Reverse current filter */
     void slotSearchReverse();
     /** Make an Update of the game list after the opening tree was updated */
     void slotTreeUpdate();
-    /** Indicate start of tree update */
-    void slotTreeUpdateStarted();
     /** Show opening tree */
     void slotSearchTree();
     /** Move @p index was selected in Opening Tree. */
@@ -502,8 +498,6 @@ private:
     /** Currently updated tree. May be NULL if no update in progress. */
     QString m_nagText;
     QTimer* m_autoPlayTimer;
-    QAction* m_toggleFilter;
-    bool m_bGameChange;
     int m_currentFrom;
     int m_currentTo;
     AnalysisWidget* m_mainAnalysis;

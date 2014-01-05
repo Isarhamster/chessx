@@ -33,7 +33,6 @@ class GameList : public TableView
 public:
     GameList(Filter* filter, QWidget* parent = 0);
     ~GameList();
-    bool m_FilterActive;
 
     /** Set current database */
 public slots:
