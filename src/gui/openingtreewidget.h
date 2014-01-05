@@ -29,7 +29,7 @@ public:
 
     QString move(QModelIndex index) const;
     Board board() const;
-    bool updateFilter(Filter& f, const Board& b, bool updateFilter, bool bEnd);
+    bool updateFilter(Filter& f, const Board& b, bool bEnd);
 
 public slots:
     void cancel(bool bVisible);
@@ -38,6 +38,16 @@ public slots:
     /** Restore current configuration. */
     void slotReconfigure();
 
+protected slots:
+    /** Indicate end of tree update */
+    void slotTreeUpdate();
+    /** Show progress bar for open file. */
+    void slotOperationProgress(int value);
+    /** Indicate start of tree update */
+    void slotTreeUpdateStarted();
+
+signals:
+    void signalTreeUpdated();
 
 private:
     Ui::OpeningTreeWidget *ui;

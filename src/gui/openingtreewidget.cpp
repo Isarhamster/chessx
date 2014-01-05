@@ -23,10 +23,10 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     ui->OpeningTreeView->setModel(m_openingTree);
     ui->OpeningTreeView->sortByColumn(1, Qt::DescendingOrder);
     connect(ui->OpeningTreeView, SIGNAL(clicked(const QModelIndex&)), parent, SLOT(slotSearchTreeMove(const QModelIndex&)));
-    connect(m_openingTree, SIGNAL(progress(int)), parent, SLOT(slotOperationProgress(int)));
-    connect(m_openingTree, SIGNAL(openingTreeUpdated()), parent, SLOT(slotTreeUpdate()));
-    connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), parent, SLOT(slotTreeUpdateStarted()));
-    connect(parent, SIGNAL(reconfigure()), SLOT(slotReconfigure()));
+    connect(m_openingTree, SIGNAL(progress(int)), this, SLOT(slotOperationProgress(int)));
+    connect(m_openingTree, SIGNAL(openingTreeUpdated()), this, SLOT(slotTreeUpdate()));
+    connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), this, SLOT(slotTreeUpdateStarted()));
+
 
     m_openingBoardView = new BoardView(this, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     m_openingBoardView->setObjectName("OpeningBoardView");
@@ -56,10 +56,10 @@ Board OpeningTreeWidget::board() const
     return m_openingTree->board();
 }
 
-bool OpeningTreeWidget::updateFilter(Filter& f, const Board& b, bool updateFilter, bool bEnd)
+bool OpeningTreeWidget::updateFilter(Filter& f, const Board& b, bool bEnd)
 {
     m_openingBoardView->setBoard(b);
-    return m_openingTree->updateFilter(f, b, updateFilter, bEnd);
+    return m_openingTree->updateFilter(f, b, ui->filterGames->isChecked(), ui->sourceSelector->currentIndex()==0, bEnd);
 }
 
 void OpeningTreeWidget::saveConfig()
@@ -75,5 +75,21 @@ void OpeningTreeWidget::slotReconfigure()
     ui->OpeningTreeView->slotReconfigure();
 }
 
+void OpeningTreeWidget::slotOperationProgress(int value)
+{
+    ui->progress->setValue(value);
+}
 
+void OpeningTreeWidget::slotTreeUpdate()
+{
+    ui->progress->setValue(100);
+    if (ui->filterGames->isChecked())
+    {
+        emit signalTreeUpdated();
+    }
+}
 
+void OpeningTreeWidget::slotTreeUpdateStarted()
+{
+    ui->progress->setValue(0);
+}
