@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>543</width>
-    <height>588</height>
+    <height>595</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -89,7 +89,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -792,7 +792,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_1">
          <property name="title">
-          <string>Game Text Fonts</string>
+          <string>Fonts for notation</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
@@ -800,7 +800,7 @@
             <item>
              <widget class="QLabel" name="labelFontText">
               <property name="text">
-               <string>Text Font</string>
+               <string>Texts</string>
               </property>
               <property name="buddy">
                <cstring>fontText</cstring>
@@ -812,7 +812,7 @@
               <item>
                <widget class="QLineEdit" name="fontText">
                 <property name="placeholderText">
-                 <string>Use System Font</string>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -839,7 +839,7 @@
                <number>0</number>
               </property>
               <property name="text">
-               <string>Move Font</string>
+               <string>Moves</string>
               </property>
               <property name="buddy">
                <cstring>fontMove</cstring>
@@ -1221,7 +1221,7 @@
             <item>
              <widget class="QLabel" name="labelListFontSize">
               <property name="text">
-               <string>List Font Size</string>
+               <string>Font Size</string>
               </property>
              </widget>
             </item>
@@ -1242,6 +1242,9 @@
           </item>
          </layout>
         </widget>
+       </item>
+       <item>
+        <widget class="QColumnView" name="columnView"/>
        </item>
        <item>
         <spacer name="verticalSpacer_3">
