@@ -88,8 +88,8 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 {
     if(setupGameMenu)
     {
-        m_gameMenu = new QMenu(tr("Notation"),this);
-        m_browserMenu = new QMenu(tr("Notation Area"),this);
+        m_gameMenu = new QMenu("Notation",this);
+        m_browserMenu = new QMenu("Notation Area",this);
         connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
         connect(m_browserMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
 
