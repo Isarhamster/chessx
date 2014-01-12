@@ -1851,3 +1851,12 @@ void MainWindow::slotEditActions()
     ActionDialog actionsDialog(this);
     actionsDialog.exec();
 }
+
+void MainWindow::slotMoveIntervalChanged(int interval)
+{
+    AppSettings->setValue("/Board/AutoPlayerInterval", interval);
+    if(m_autoPlayTimer->interval() != interval)
+    {
+        m_autoPlayTimer->setInterval(interval);
+    }
+}

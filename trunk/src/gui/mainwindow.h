@@ -42,6 +42,7 @@ class QLabel;
 class QNetworkAccessManager;
 class QNetworkReply;
 class QProgressBar;
+class QSlider;
 class QSplitter;
 class QTimer;
 class QToolBar;
@@ -360,6 +361,8 @@ protected slots:
     void slotAutoSwitchTab();
     /** Edit Accelerators */
     void slotEditActions();
+    /** Value for Move Interval is changed */
+    void slotMoveIntervalChanged(int);
 
 protected:
     bool pasteFen(QString& errorText, QString fen);
@@ -474,6 +477,7 @@ private:
     ChessBrowser* m_gameView;
     OpeningTreeWidget* m_openingTreeWidget;
     QPointer<QProgressBar> m_progressBar;
+    QPointer<QSlider> m_sliderSpeed;
     ToolMainWindow* m_gameWindow;
     QToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
