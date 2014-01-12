@@ -421,7 +421,6 @@ void PreferencesDialog::restoreSettings()
     ui.guessMoveCheck->setChecked(AppSettings->getValue("guessMove").toBool());
     ui.guessNextMove->setChecked(AppSettings->getValue("nextGuess").toBool());
     ui.minWheelCount->setValue(AppSettings->getValue("minWheelCount").toInt());
-    ui.autoPlayInterval->setValue(AppSettings->getValue("AutoPlayerInterval").toInt());
     ui.cbSaveAndContinue->setChecked(AppSettings->getValue("AutoSaveAndContinue").toBool());
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     ui.pieceEffect->setCurrentIndex(AppSettings->getValue("pieceEffect").toInt());
@@ -520,7 +519,6 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("guessMove", QVariant(ui.guessMoveCheck->isChecked()));
     AppSettings->setValue("nextGuess", QVariant(ui.guessNextMove->isChecked()));
     AppSettings->setValue("minWheelCount", ui.minWheelCount->value());
-    AppSettings->setValue("AutoPlayerInterval", ui.autoPlayInterval->value());
     AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());
     AppSettings->setValue("pieceEffect", ui.pieceEffect->currentIndex());
     AppSettings->setValue("AutoSaveAndContinue", QVariant(ui.cbSaveAndContinue->isChecked()));

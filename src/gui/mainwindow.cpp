@@ -329,7 +329,19 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Status */
     m_statusFilter = new QLabel();
-    statusBar()->addPermanentWidget(m_statusFilter);
+    statusBar()->addPermanentWidget(m_statusFilter,2);
+
+    m_sliderSpeed = new QSlider(this);
+    m_sliderSpeed->setOrientation(Qt::Horizontal);
+    m_sliderSpeed->setMinimum(1000);
+    m_sliderSpeed->setMaximum(10000);
+    m_sliderSpeed->setValue(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
+    m_sliderSpeed->setTickInterval(2500);
+    m_sliderSpeed->setTickPosition(QSlider::TicksBothSides);
+    m_sliderSpeed->setMaximumWidth(300);
+    connect(m_sliderSpeed, SIGNAL(valueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
+    statusBar()->addPermanentWidget(new QLabel(tr("Move Interval:"), this));
+    statusBar()->addPermanentWidget(m_sliderSpeed);
     statusBar()->setFixedHeight(statusBar()->height());
     statusBar()->setSizeGripEnabled(true);
     m_progressBar = new QProgressBar();
