@@ -82,6 +82,8 @@ protected:
     QString databaseName(int index = -1) const;
     /** @return active database structure */
     const DatabaseInfo* databaseInfo() const;
+    /** @return database structure */
+    DatabaseInfo* databaseInfo(QString name);
     /** @return active game */
     Game& game();
     const Game& game() const;
@@ -98,8 +100,6 @@ protected:
     bool gameMoveBy(int change);
     /** Update recent files menu */
     void updateMenuRecent();
-    /** Update recent files menu */
-    void updateMenuDatabases();
     /** Save Game dialog (created when used first) */
     SaveDialog* saveDialog();
 public slots:
@@ -325,6 +325,8 @@ public slots:
     void slotRenameRequest(QString tag, QString newValue, QString oldValue);
 
 protected slots:
+    /** Update recent files menu */
+    void updateMenuDatabases();
     /** Receiver for a failed loading of a database */
     void loadError(QUrl url);
     /** Receiver for a successful loading of a database */
@@ -370,6 +372,7 @@ protected:
     Database* getDatabaseByPath(QString path);
     DatabaseInfo* getDatabaseInfoByPath(QString path);
     void activateBoardView(int n);
+    void updateOpeningTree(const Board& b, bool atEnd);
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
@@ -411,12 +414,15 @@ signals:
 
     void databaseModified();
 
+    void signalDatabaseOpenClose();
+
 private slots:
     /** Cleanup after ECO file loaded. */
     void ecoLoaded(QObject*, bool);
     void slotDatabaseModified();
     void slotHttpDone(QNetworkReply *reply);
     void slotVersionFound(int major, int minor, int build);
+    void slotUpdateOpeningTreeWidget();
 
 private:
     /** Create single menu action. */

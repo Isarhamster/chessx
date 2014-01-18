@@ -271,9 +271,11 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(openingDock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
     connect(openingDock, SIGNAL(visibilityChanged(bool)), m_openingTreeWidget, SLOT(cancel(bool)));
     connect(m_openingTreeWidget, SIGNAL(signalTreeUpdated()), this, SLOT(slotTreeUpdate()));
+    connect(m_openingTreeWidget, SIGNAL(signalSourceChanged()), this, SLOT(slotSearchTree()));
     connect(this, SIGNAL(reconfigure()), m_openingTreeWidget, SLOT(slotReconfigure()));
     openingDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
     openingDock->hide();
+    connect(this, SIGNAL(signalDatabaseOpenClose()), this, SLOT(slotUpdateOpeningTreeWidget()));
 
     /* Analysis Dock */
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
@@ -351,6 +353,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Very late as this will update other widgets */
     connect(this, SIGNAL(databaseModified()), SLOT(slotDatabaseModified()));
+    connect(this, SIGNAL(signalDatabaseOpenClose()), this, SLOT(updateMenuDatabases()));
     CreateBoardView();
 
     /* Display main window */
@@ -832,7 +835,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
     m_recentFiles.append(fname);
 
     updateMenuRecent();
-    updateMenuDatabases();
+    emit signalDatabaseOpenClose();
     slotDatabaseChanged();
 }
 
@@ -1132,6 +1135,9 @@ void MainWindow::setupActions()
     m_training->setCheckable(true);
     gameMenu->addAction(m_training);
 
+    QAction* flip = createAction(QT_TR_NOOP("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B, gameToolBar, ":/images/flip_board.png");
+    flip->setCheckable(true);
+
     m_autoPlay = createAction(QT_TR_NOOP("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_R, gameToolBar, ":/images/replay.png");
     m_autoPlay->setCheckable(true);
     gameMenu->addAction(m_autoPlay);
@@ -1141,8 +1147,6 @@ void MainWindow::setupActions()
 
     gameMenu->addSeparator();
 
-    QAction* flip = createAction(QT_TR_NOOP("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B);
-    flip->setCheckable(true);
     gameMenu->addAction(flip);
 
     /* Game->Go to submenu */
