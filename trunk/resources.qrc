@@ -113,5 +113,6 @@
         <file alias="images/insert_move.png">data/images/insert_move.png</file>
         <file alias="images/plus.png">data/images/plus.png</file>
         <file alias="images/pin.ico">data/images/pin.ico</file>
+        <file alias="images/flip_board.png">data/images/flip_board.png</file>
     </qresource>
 </RCC>
