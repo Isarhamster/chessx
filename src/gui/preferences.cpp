@@ -569,11 +569,13 @@ void PreferencesDialog::saveSettings()
 bool PreferencesDialog::selectInCombo(QComboBox* combo, const QString& text)
 {
     for(int i = 0; i < combo->count(); ++i)
+    {
         if(combo->itemText(i) == text)
         {
             combo->setCurrentIndex(i);
             return true;
         }
+    }
     combo->setCurrentIndex(combo->count() - 1);
     return false;
 }
