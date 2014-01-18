@@ -30,6 +30,8 @@ public:
     QString move(QModelIndex index) const;
     Board board() const;
     bool updateFilter(Filter& f, const Board& b, bool bEnd);
+    int getFilterIndex(QString& name) const;
+    void updateFilterIndex(QStringList);
 
 public slots:
     void cancel(bool bVisible);
@@ -45,9 +47,12 @@ protected slots:
     void slotOperationProgress(int value);
     /** Indicate start of tree update */
     void slotTreeUpdateStarted();
+    /** The source for the tree has changed */
+    void slotSourceChanged();
 
 signals:
     void signalTreeUpdated();
+    void signalSourceChanged();
 
 private:
     Ui::OpeningTreeWidget *ui;

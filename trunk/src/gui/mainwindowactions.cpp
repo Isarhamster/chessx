@@ -203,7 +203,7 @@ void MainWindow::slotFileClose()
                 m_boardView->setDbIndex(m_currentDatabase);
                 UpdateBoardInformation();
                 m_databaseList->setFileCurrent(QString());
-                updateMenuDatabases();
+                emit signalDatabaseOpenClose();
                 slotDatabaseChanged();
             }
         }
@@ -240,7 +240,7 @@ void MainWindow::slotFileCloseIndex(int n)
                 // hack as we have just moved the index by one
                 m_currentDatabase--;
             }
-            updateMenuDatabases();
+            emit signalDatabaseOpenClose();
         }
     }
 }
@@ -686,10 +686,7 @@ void MainWindow::slotMoveChanged()
 
 void MainWindow::slotSearchTree()
 {
-    if(m_openingTreeWidget->isVisible())
-    {
-        m_openingTreeWidget->updateFilter(*databaseInfo()->filter(), m_boardView->board(), false);
-    }
+    updateOpeningTree(m_boardView->board(), false);
 }
 
 void MainWindow::slotBoardMoveWheel(int wheel)
@@ -1566,9 +1563,28 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
         b.doMove(m);
     }
 
+    updateOpeningTree(b, bEnd);
+}
+
+void MainWindow::updateOpeningTree(const Board& b, bool atEnd)
+{
     if(m_openingTreeWidget->isVisible())
     {
-        m_openingTreeWidget->updateFilter(*databaseInfo()->filter(), b, bEnd);
+        QString name;
+        DatabaseInfo* dbInfo;
+        int index = m_openingTreeWidget->getFilterIndex(name);
+        if (index > 1)
+        {
+            dbInfo = m_databases[index-1];
+        }
+        else
+        {
+            dbInfo = databaseInfo();
+        }
+        if (dbInfo->isValid())
+        {
+            m_openingTreeWidget->updateFilter(*dbInfo->filter(), b, atEnd);
+        }
     }
 }
 
@@ -1860,3 +1876,14 @@ void MainWindow::slotMoveIntervalChanged(int interval)
         m_autoPlayTimer->setInterval(interval);
     }
 }
+
+void MainWindow::slotUpdateOpeningTreeWidget()
+{
+    QStringList files; // List of all open files excluding ClipBoard
+    for(int i = 1; i < m_databases.count(); i++)
+    {
+        files << m_databases[i]->database()->name();
+    }
+    m_openingTreeWidget->updateFilterIndex(files);
+}
+

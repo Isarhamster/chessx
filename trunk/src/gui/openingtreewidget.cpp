@@ -18,15 +18,17 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     ui->setupUi(this);
 
     m_openingTree = new OpeningTree(this);
+    
     ui->OpeningTreeView->setObjectName("OpeningTree");
     ui->OpeningTreeView->setSortingEnabled(true);
     ui->OpeningTreeView->setModel(m_openingTree);
     ui->OpeningTreeView->sortByColumn(1, Qt::DescendingOrder);
+
     connect(ui->OpeningTreeView, SIGNAL(clicked(const QModelIndex&)), parent, SLOT(slotSearchTreeMove(const QModelIndex&)));
     connect(m_openingTree, SIGNAL(progress(int)), this, SLOT(slotOperationProgress(int)));
     connect(m_openingTree, SIGNAL(openingTreeUpdated()), this, SLOT(slotTreeUpdate()));
     connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), this, SLOT(slotTreeUpdateStarted()));
-
+    connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged()));
 
     m_openingBoardView = new BoardView(this, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     m_openingBoardView->setObjectName("OpeningBoardView");
@@ -59,7 +61,7 @@ Board OpeningTreeWidget::board() const
 bool OpeningTreeWidget::updateFilter(Filter& f, const Board& b, bool bEnd)
 {
     m_openingBoardView->setBoard(b);
-    return m_openingTree->updateFilter(f, b, ui->filterGames->isChecked(), ui->sourceSelector->currentIndex()==0, bEnd);
+    return m_openingTree->updateFilter(f, b, ui->filterGames->isChecked(), ui->sourceSelector->currentIndex()==1, bEnd);
 }
 
 void OpeningTreeWidget::saveConfig()
@@ -92,4 +94,30 @@ void OpeningTreeWidget::slotTreeUpdate()
 void OpeningTreeWidget::slotTreeUpdateStarted()
 {
     ui->progress->setValue(0);
+}
+
+int OpeningTreeWidget::getFilterIndex(QString& name) const
+{
+    name = ui->sourceSelector->currentText();
+    return ui->sourceSelector->currentIndex();
+}
+
+void OpeningTreeWidget::updateFilterIndex(QStringList files)
+{
+    ui->sourceSelector->clear();
+    QStringList allFiles;
+    allFiles << tr("Database") << tr("Filter") << files;
+    ui->sourceSelector->insertItems(0, allFiles);
+}
+
+void OpeningTreeWidget::slotSourceChanged()
+{
+    m_openingTree->cancel(true);
+    bool enableFilter = (ui->sourceSelector->currentIndex()<=1);
+    if (!enableFilter)
+    {
+        ui->filterGames->setChecked(false);
+    }
+    ui->filterGames->setEnabled(enableFilter);
+    emit signalSourceChanged();
 }
