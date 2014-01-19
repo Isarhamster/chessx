@@ -276,6 +276,8 @@ public slots:
     void slotSearchReset();
     /** Training mode */
     void slotToggleTraining();
+    /** Training mode - auto responder */
+    void slotToggleAutoRespond();
     /** Reverse current filter */
     void slotSearchReverse();
     /** Make an Update of the game list after the opening tree was updated */
@@ -515,6 +517,7 @@ private:
     Square m_annotationSquare;
     Square m_annotationSquareFrom;
     QAction* m_training;
+    QAction* m_autoRespond;
     QAction* m_autoPlay;
     QAction* m_autoAnalysis;
     QUndoGroup m_undoGroup;
