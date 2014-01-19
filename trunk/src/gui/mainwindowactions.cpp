@@ -1787,9 +1787,16 @@ void MainWindow::UpdateGameTitle()
         eco.clear();
     }
 
+    QString actualEco = game().ecoClassify();
     if(eco.isEmpty())
     {
-        eco = game().ecoClassify().left(3);
+        eco = actualEco.left(3);
+    }
+    QString opName = actualEco.section(" ",1);
+    QString opening;
+    if (!opName.isEmpty())
+    {
+        opening = " (" + opName + ")";
     }
 
     QString whiteElo = game().tag(TagNameWhiteElo);
@@ -1804,7 +1811,7 @@ void MainWindow::UpdateGameTitle()
     }
     QString players = QString("<b><a href=\"tag:white\">%1</a></b> %2 - <b><a href=\"tag:black\">%3</a></b> %4")
                       .arg(white).arg(whiteElo).arg(black).arg(blackElo);
-    QString result = QString("<b>%1</b> &nbsp; %2").arg(game().tag("Result")).arg(eco);
+    QString result = QString("<b>%1</b> &nbsp; %2%3").arg(game().tag("Result")).arg(eco).arg(opening);
     QString event = game().eventInfo();
 
     QString header = QString("<i>%1</i>").arg(event);
@@ -1859,7 +1866,11 @@ void MainWindow::slotScreenShot()
 
 void MainWindow::slotCompileECO()
 {
-    (void) compileAsciiEcoFile("chessx.eco.txt", "chessx.eco", "chessx.gtm");
+    QString filepath = QFileDialog::getOpenFileName(0, "Compile ECO", QDir::currentPath(), "ECO Text File (*.txt);;All Files(*.*)");
+    if (!filepath.isEmpty())
+    {
+        (void) compileAsciiEcoFile(filepath, "chessx.eco", "chessx.gtm");
+    }
 }
 
 void MainWindow::slotEditActions()
