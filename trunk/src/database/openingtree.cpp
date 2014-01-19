@@ -109,7 +109,7 @@ void OpeningTreeUpdater::run()
     emit MoveUpdate(&m_board, new QList<MoveData>);
     for(int i = 0; i < m_filter->size(); ++i)
     {
-        if (m_sourceIsDatabase || m_filter->contains(i))
+        if (m_sourceIsFilter || m_filter->contains(i))
         {
             m_filter->database()->lock();
             m_filter->database()->loadGameMoves(i, g);
@@ -187,7 +187,7 @@ void OpeningTreeUpdater::cancel()
     m_break = true;
 }
 
-bool OpeningTreeUpdater::updateFilter(Filter& f, const Board& b, int& g, bool updateFilter, bool sourceIsDatabase, bool bEnd)
+bool OpeningTreeUpdater::updateFilter(Filter& f, const Board& b, int& g, bool updateFilter, bool sourceIsFilter, bool bEnd)
 {
     m_break = false;
     m_filter = &f;
@@ -195,13 +195,13 @@ bool OpeningTreeUpdater::updateFilter(Filter& f, const Board& b, int& g, bool up
     m_games = &g;
     m_bEnd  = bEnd;
     m_updateFilter = updateFilter;
-    m_sourceIsDatabase = sourceIsDatabase;
+    m_sourceIsFilter = sourceIsFilter;
     // todo: if running wait for stop
     start();
     return true;
 }
 
-bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsDatabase, bool bEnd)
+bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsFilter, bool bEnd)
 {
     if(!oupd.isRunning())
     {
@@ -213,7 +213,7 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
         m_board = b;
         m_filter = &f;
         m_updateFilter = updateFilter;
-        m_sourceIsDatabase = sourceIsDatabase;
+        m_sourceIsDatabase = sourceIsFilter;
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
@@ -232,7 +232,7 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
         m_board = b;
         m_filter = &f;
         m_updateFilter = updateFilter;
-        m_sourceIsDatabase = sourceIsDatabase;
+        m_sourceIsDatabase = sourceIsFilter;
         m_bRequestPending = true;
         oupd.cancel();
         return false;
