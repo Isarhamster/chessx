@@ -564,6 +564,10 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             }
             else
             {
+                if (!game().atLineEnd() && m_autoRespond->isChecked())
+                {
+                    game().forward();
+                }
                 slotGameChanged();
                 return;
             }
@@ -1218,6 +1222,10 @@ void MainWindow::slotGameRemoveVariations()
 void MainWindow::slotToggleTraining()
 {
     slotGameChanged();
+}
+
+void MainWindow::slotToggleAutoRespond()
+{
 }
 
 void MainWindow::slotToggleAutoAnalysis()

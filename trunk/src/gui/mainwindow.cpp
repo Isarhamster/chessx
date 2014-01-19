@@ -1135,6 +1135,10 @@ void MainWindow::setupActions()
     m_training->setCheckable(true);
     gameMenu->addAction(m_training);
 
+    m_autoRespond = createAction(QT_TR_NOOP("Auto Respond"), SLOT(slotToggleAutoRespond()));
+    m_autoRespond->setCheckable(true);
+    gameMenu->addAction(m_autoRespond);
+
     QAction* flip = createAction(QT_TR_NOOP("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B, gameToolBar, ":/images/flip_board.png");
     flip->setCheckable(true);
 
