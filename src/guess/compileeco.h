@@ -3,6 +3,6 @@
 
 #include <QString>
 
-bool compileAsciiEcoFile(const QString& filenameIn, const QString& filenameOut, const QString& gtmFile);
+bool compileAsciiEcoFile(const QString& filenameIn, QString filenameOut, QString gtmFile);
 
 #endif

@@ -8,6 +8,7 @@
 
 // Parsed data containers
 static QMap<quint64, QString> ecoPositions;
+static QMap<quint64, QString> ecoNames;
 static QMap<quint64, QList<Square> > gtmPositions;
 
 // Number of milliseconds to spend deciding which of two possible moves
@@ -74,6 +75,7 @@ void updateFinalGuess(const Board& board, int target, const Move& move)
 bool parseAsciiEcoData(const QString& ecoFile)
 {
     ecoPositions.clear();
+    ecoNames.clear();
 
     QFile file(ecoFile);
     if(!file.open(QIODevice::ReadOnly))
@@ -161,14 +163,17 @@ bool parseAsciiEcoData(const QString& ecoFile)
     return true;
 }
 
-// "chessx.eco.txt" -> "chessx.eco", "chessx.gtm"
-bool compileAsciiEcoFile(const QString& filenameIn, const QString& filenameOut, const QString& gtmFile)
+// "chessx.eco.txt" -> "chessx.eco", "chessx.gtm", "chessx.txt"
+bool compileAsciiEcoFile(const QString& filenameIn, QString filenameOut, QString gtmFile)
 {
     // Read in the ECO data
     if(!parseAsciiEcoData(filenameIn))
     {
         return false;
     }
+
+    filenameOut = QFileInfo(filenameIn).absolutePath()+"/"+filenameOut;
+    gtmFile = QFileInfo(filenameIn).absolutePath()+"/"+gtmFile;
 
     // Write out the main ECO file
     QFile file(filenameOut);
