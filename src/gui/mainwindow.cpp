@@ -102,7 +102,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_tabWidget->setObjectName("BoardView");
     m_tabWidget->setTabsClosable(true);
     QToolButton* button = new QToolButton();
-    button->setIcon(style()->standardIcon(QStyle::SP_FileIcon));
+    button->setIcon(QIcon(":/images/new_board.png"));
     m_tabWidget->setCornerWidget(button);
     connect(button, SIGNAL(clicked()), SLOT(slotCreateBoardView()));
     connect(m_tabWidget, SIGNAL(tabCloseRequested(int)), SLOT(slotCloseBoardView(int)));
@@ -1097,7 +1097,7 @@ void MainWindow::setupActions()
 #endif
 
     m_menuView->addAction(createAction(QT_TR_NOOP("New board"), SLOT(slotCreateBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_N,
-                                       0, style()->standardIcon(QStyle::SP_FileIcon)));
+                                       0, QIcon(":/images/new_board.png")));
     m_menuView->addAction(createAction(QT_TR_NOOP("Close current board"), SLOT(slotCloseBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_W,
                                        0, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
     m_menuView->addSeparator();
