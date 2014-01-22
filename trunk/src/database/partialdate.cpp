@@ -109,9 +109,9 @@ QString PartialDate::asString() const
         return "????.??.??";
     }
     QString s = QString("%1.%2.%3")
-                .arg(m_year, 4)
-                .arg(m_month, 2)
-                .arg(m_day, 2);
+            .arg(m_year, 4)
+            .arg(numberToString(m_month))
+            .arg(numberToString(m_day));
     return s;
 }
 
@@ -124,7 +124,7 @@ QString PartialDate::asShortString(int part) const
     QString s;
     if(part & Year)
     {
-        s = numberToString(m_year, 4);
+        s = numberToString(m_year);
     }
     if(!m_month)
     {
@@ -157,9 +157,9 @@ QString PartialDate::numberToString(int d, QChar fill) const
 {
     if(!d)
     {
-        return QString(fill) + fill;
+        return "??";
     }
-    return d < 10 ? fill + QString::number(d) : QString::number(d);
+    return d < 10 ? QString(fill) + QString::number(d) : QString::number(d);
 }
 
 bool operator==(const PartialDate& d1, const PartialDate& d2)
