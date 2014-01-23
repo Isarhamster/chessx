@@ -1813,7 +1813,7 @@ Engine::Think(MoveList * mlist)
 
     // Sort the root move list by quiescent evaluation to get a
     // reasonably good initial move order:
-    for(unsigned int i = 0; i < mlist->size(); i++)
+    for(unsigned int i = 0; (int) i < mlist->size(); i++)
     {
         simpleMoveT * sm = mlist->Get(i);
         DoMove(sm);
@@ -1961,7 +1961,7 @@ Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
     bool isOnlyMove = (mlist->size() == 1);
     int bestScore = -Infinity - 1;
 
-    for(unsigned int movenum = 0; movenum < mlist->size(); movenum++)
+    for(unsigned int movenum = 0; (int) movenum < mlist->size(); movenum++)
     {
         simpleMoveT * sm = mlist->Get(movenum);
         unsigned int oldNodeCount = NodeCount;
@@ -2235,7 +2235,7 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
     int bestMoveIndex = -1;
 
     // Search each move:
-    for(unsigned int movenum = 0; movenum < mlist.size(); movenum++)
+    for(unsigned int movenum = 0; (int) movenum < mlist.size(); movenum++)
     {
         // Find the highest-scoring remaining move:
         mlist.FindBest(movenum);
@@ -2492,7 +2492,7 @@ Engine::Quiesce(int alpha, int beta)
     // Generate and score the list of captures:
     MoveList mlist;
     Pos.GenerateMoves(&mlist, GEN_CAPTURES);
-    for(unsigned int m = 0; m < mlist.size(); m++)
+    for(unsigned int m = 0; (int) m < mlist.size(); m++)
     {
         simpleMoveT * sm = mlist.Get(m);
         sm->score = SEE(sm->from, sm->to);
@@ -2501,7 +2501,7 @@ Engine::Quiesce(int alpha, int beta)
     // Iterate through each quiescent move to find a beta cutoff or
     // improve the alpha score:
 
-    for(unsigned int i = 0; i < mlist.size(); i++)
+    for(unsigned int i = 0; (int) i < mlist.size(); i++)
     {
         // Find the highest-scoring remaining move, make it and search:
         mlist.FindBest(i);
@@ -2948,7 +2948,7 @@ Engine::SEE(squareT from, squareT target)
 void
 Engine::ScoreMoves(MoveList * mlist)
 {
-    for(unsigned int i = 0; i < mlist->size(); i++)
+    for(unsigned int i = 0; (int) i < mlist->size(); i++)
     {
         simpleMoveT * sm = mlist->Get(i);
         if(sm->capturedPiece != EMPTY  ||  sm->promote != EMPTY)
@@ -3115,7 +3115,7 @@ Engine::PerfTest(unsigned int depth)
     MoveList mlist;
     Pos.GenerateMoves(&mlist);
     unsigned int nmoves = 0;
-    for(unsigned int i = 0; i < mlist.size(); i++)
+    for(unsigned int i = 0; (int) i < mlist.size(); i++)
     {
         simpleMoveT * sm = mlist.Get(i);
         Pos.DoSimpleMove(sm);
