@@ -330,13 +330,13 @@ void BoardView::nextGuess(Square s)
 {
     if(!showGuess(s))
     {
-        if(m_moveList.size() && m_moveListCurrent < m_moveList.size())
+        if(m_moveList.size() && (int) m_moveListCurrent < m_moveList.size())
         {
             Guess::simpleMoveT * sold = m_moveList.Get(m_moveListCurrent);
             update(squareRect(sold->from));
             update(squareRect(sold->to));
 
-            if(m_moveListCurrent < m_moveList.size() - 1)
+            if((int)m_moveListCurrent < m_moveList.size() - 1)
             {
                 ++m_moveListCurrent;
             }

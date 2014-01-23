@@ -2994,7 +2994,7 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
             MoveList mlist;
             MatchLegalMove(&mlist, p, to);
 
-            for(unsigned int i = 0; i < mlist.size(); i++)
+            for(unsigned int i = 0; (int) i < mlist.size(); i++)
             {
                 simpleMoveT * m2 = mlist.Get(i);
                 squareT from2 = m2->from;
@@ -3102,7 +3102,7 @@ Position::ReadCoordMove(simpleMoveT * m, const char * str, bool reverse)
 
     GenerateMoves();
 
-    for(unsigned int i = 0; i < LegalMoves->size(); i++)
+    for(unsigned int i = 0; (int) i < LegalMoves->size(); i++)
     {
         simpleMoveT * sm = LegalMoves->Get(i);
         if(sm->promote == promo)
@@ -3326,7 +3326,7 @@ Position::ReadMove(simpleMoveT * m, const char * str, tokenT token)
 
     unsigned int i;
     unsigned int matchCount = 0;
-    for(i = 0; i < mlist.size(); i++)
+    for(i = 0; (int) i < mlist.size(); i++)
     {
         // We need to check: (a) that to-square matches, and
         //    (b), that from-square matches any ambiguity indicator.
