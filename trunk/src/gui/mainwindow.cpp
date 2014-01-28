@@ -41,6 +41,7 @@
 #include "tablebase.h"
 #include "tableview.h"
 #include "toolmainwindow.h"
+#include "translatingslider.h"
 #include "version.h"
 
 #include <time.h>
@@ -333,15 +334,20 @@ MainWindow::MainWindow() : QMainWindow(),
     m_statusFilter = new QLabel();
     statusBar()->addPermanentWidget(m_statusFilter,2);
 
-    m_sliderSpeed = new QSlider(this);
+
+    m_sliderSpeed = new TranslatingSlider(this);
+    m_sliderSpeed->setMultiplier(1000);
     m_sliderSpeed->setOrientation(Qt::Horizontal);
-    m_sliderSpeed->setMinimum(1000);
-    m_sliderSpeed->setMaximum(10000);
-    m_sliderSpeed->setValue(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
-    m_sliderSpeed->setTickInterval(2500);
+    m_sliderSpeed->setMinimum(0);
+    m_sliderSpeed->setMaximum(10);
+    m_sliderSpeed->setTranslatedValue(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
+    m_sliderSpeed->setTickInterval(1);
     m_sliderSpeed->setTickPosition(QSlider::TicksBothSides);
     m_sliderSpeed->setMaximumWidth(300);
-    connect(m_sliderSpeed, SIGNAL(valueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
+    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
+    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), m_mainAnalysis, SLOT(setMoveTime(int)));
+    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), analysis, SLOT(setMoveTime(int)));
+
     statusBar()->addPermanentWidget(new QLabel(tr("Move Interval:"), this));
     statusBar()->addPermanentWidget(m_sliderSpeed);
     statusBar()->setFixedHeight(statusBar()->height());

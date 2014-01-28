@@ -49,6 +49,7 @@ class QToolBar;
 class SaveDialog;
 class TableView;
 class ToolMainWindow;
+class TranslatingSlider;
 
 /**
 @defgroup GUI GUI - User interface components
@@ -485,7 +486,7 @@ private:
     ChessBrowser* m_gameView;
     OpeningTreeWidget* m_openingTreeWidget;
     QPointer<QProgressBar> m_progressBar;
-    QPointer<QSlider> m_sliderSpeed;
+    QPointer<TranslatingSlider> m_sliderSpeed;
     ToolMainWindow* m_gameWindow;
     QToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
