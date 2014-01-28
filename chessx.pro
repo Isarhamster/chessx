@@ -154,7 +154,8 @@ HEADERS += src/database/board.h \
     src/gui/aboutdlg.h \
     src/gui/promotiondialog.h \
     src/gui/actiondialog.h \
-    src/gui/kbaction.h
+    src/gui/kbaction.h \
+    src/gui/translatingslider.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -254,7 +255,8 @@ SOURCES += src/database/board.cpp \
     src/gui/aboutdlg.cpp \
     src/gui/promotiondialog.cpp \
     src/gui/actiondialog.cpp \
-    src/gui/kbaction.cpp
+    src/gui/kbaction.cpp \
+    src/gui/translatingslider.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
