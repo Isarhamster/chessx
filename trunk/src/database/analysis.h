@@ -61,12 +61,16 @@ public:
     QString toString(const Board& board) const;
     /** Assignment operator */
     Analysis& operator=(const Analysis& rhs);
+    void setBestMove(bool bestMove);
+    bool bestMove() const;
+
 private:
     int m_numpv;
     int m_msec;
     int m_mateIn;
     int m_depth;
     int m_score;
+    bool m_bestMove;
     quint64 m_nodes;
     MoveList m_variation;
 };

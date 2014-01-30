@@ -21,9 +21,10 @@ UCIEngine::UCIEngine(const QString& name,
     m_invertBlack = true;
 }
 
-bool UCIEngine::startAnalysis(const Board& board, int nv)
+bool UCIEngine::startAnalysis(const Board& board, int nv, int mt)
 {
     m_mpv = nv;
+    m_moveTime = mt;
     if(!isActive())
     {
         return false;
@@ -55,15 +56,30 @@ void UCIEngine::stopAnalysis()
 
 void UCIEngine::setMpv(int mpv)
 {
-    m_mpv = mpv;
+    Engine::setMpv(mpv);
     if(isAnalyzing())
     {
         send("stop");
         send(QString("setoption name MultiPV value %1").arg(m_mpv));
-        send("go infinite");
+        if (!m_moveTime)
+            send("go infinite");
+        else
+            send(QString("go movetime %1").arg(m_moveTime));
     }
 }
 
+void UCIEngine::setMoveTime(int mt)
+{
+    Engine::setMoveTime(mt);
+    if(isAnalyzing())
+    {
+        send("stop");
+        if (!m_moveTime)
+            send("go infinite");
+        else
+            send(QString("go movetime %1").arg(m_moveTime));
+    }
+}
 
 void UCIEngine::protocolStart()
 {
@@ -136,7 +152,10 @@ void UCIEngine::processMessage(const QString& message)
             m_waitingOn = "";
             send(QString("setoption name MultiPV value %1").arg(m_mpv));
             send("position fen " + m_position);
-            send("go infinite");
+            if (!m_moveTime)
+                send("go infinite");
+            else
+                send(QString("go movetime %1").arg(m_moveTime));
         }
     }
 
@@ -146,9 +165,29 @@ void UCIEngine::processMessage(const QString& message)
     {
         parseAnalysis(message);
     }
+    else if(command == "bestmove" && isAnalyzing())
+    {
+        parseBestMove(message);
+    }
     else if(command == "option" && !isAnalyzing())
     {
         parseOptions(message);
+    }
+}
+
+void UCIEngine::parseBestMove(const QString& message)
+{
+    QString bestMove = message.section(' ', 1, 1, QString::SectionSkipEmpty);
+
+    if (!bestMove.isEmpty())
+    {
+        Analysis analysis;
+        Move move = m_board.parseMove(bestMove);
+        MoveList moves;
+        moves.append(move);
+        analysis.setVariation(moves);
+        analysis.setBestMove(true);
+        sendAnalysis(analysis);
     }
 }
 

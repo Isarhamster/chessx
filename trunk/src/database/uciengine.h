@@ -30,13 +30,14 @@ public:
               QTextStream* logStream = NULL);
 
     /** Analyses the the given position */
-    bool startAnalysis(const Board& board, int nv);
+    bool startAnalysis(const Board& board, int nv, int mt);
 
     /** Stops any analysis */
     void stopAnalysis();
 
     /** Update number of displayed lines. Restarts engine. */
     virtual void setMpv(int mpv);
+    virtual void setMoveTime(int mt);
 
     virtual bool providesMvp()
     {
@@ -55,6 +56,7 @@ protected:
 private:
     /** Parses analysis */
     void parseAnalysis(const QString& message);
+    void parseBestMove(const QString& message);
 
     /** Parse option string */
     void parseOptions(const QString &message);

@@ -15,7 +15,8 @@
 #include "messagedialog.h"
 
 AnalysisWidget::AnalysisWidget()
-    : m_engine(0)
+    : m_engine(0),
+      m_moveTime(0)
 {
     ui.setupUi(this);
     connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
@@ -60,6 +61,7 @@ void AnalysisWidget::startEngine()
         connect(m_engine, SIGNAL(deactivated()), SLOT(engineDeactivated()));
         connect(m_engine, SIGNAL(analysisUpdated(const Analysis&)),
                 SLOT(showAnalysis(const Analysis&)));
+        m_engine->setMoveTime(m_moveTime);
         m_engine->activate();
         QString key = QString("/") + objectName() + "/Engine";
         AppSettings->setValue(key, ui.engineList->itemText(index));
@@ -95,7 +97,7 @@ void AnalysisWidget::engineActivated()
     ui.analyzeButton->setChecked(true);
     ui.analyzeButton->setText(tr("Stop"));
     m_analyses.clear();
-    m_engine->startAnalysis(m_board, ui.vpcount->value());
+    m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime);
 }
 
 void AnalysisWidget::engineError(QProcess::ProcessError e)
@@ -170,7 +172,16 @@ void AnalysisWidget::slotReconfigure()
 void AnalysisWidget::showAnalysis(const Analysis& analysis)
 {
     int mpv = analysis.mpv() - 1;
-    if(mpv < 0 || mpv > m_analyses.count() || mpv >= ui.vpcount->value())
+    bool bestMove = analysis.bestMove();
+    if (bestMove)
+    {
+        if (m_analyses.count() && m_analyses.last().bestMove())
+        {
+            m_analyses.removeLast();
+        }
+        m_analyses.append(analysis);
+    }
+    else if(mpv < 0 || mpv > m_analyses.count() || mpv >= ui.vpcount->value())
     {
         return;
     }
@@ -183,6 +194,10 @@ void AnalysisWidget::showAnalysis(const Analysis& analysis)
         m_analyses[mpv] = analysis;
     }
     updateAnalysis();
+    if (bestMove)
+    {
+        emit receivedBestMove();
+    }
 }
 
 void AnalysisWidget::setPosition(const Board& board)
@@ -210,7 +225,7 @@ void AnalysisWidget::setPosition(const Board& board)
         updateAnalysis();
         if(m_engine && m_engine->isActive())
         {
-            m_engine->startAnalysis(m_board, ui.vpcount->value());
+            m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime);
         }
     }
 }
@@ -237,6 +252,15 @@ void AnalysisWidget::slotLinkClicked(const QUrl& url)
         {
             emit addVariation(m_analyses[mpv].variation().at(0).toAlgebraic());
         }
+    }
+}
+
+void AnalysisWidget::setMoveTime(int mt)
+{
+    m_moveTime = mt;
+    if(isEngineRunning())
+    {
+        m_engine->setMoveTime(mt);
     }
 }
 
@@ -286,8 +310,7 @@ void AnalysisWidget::showTablebaseMove(Move move, int score)
     {
         move1.setPromoted(pieceType(move.promotedPiece()));
     }
-    m_tablebaseEvaluation = QString("%1 - %2")
-                            .arg(m_board.moveToFullSan(move1)).arg(result);
+    m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1)).arg(result);
     updateAnalysis();
 }
 
@@ -319,3 +342,9 @@ Analysis AnalysisWidget::getMainLine() const
     }
     return a;
 }
+
+bool AnalysisWidget::hasMainLine() const
+{
+    return (!m_analyses.isEmpty());
+}
+

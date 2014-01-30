@@ -214,6 +214,11 @@ void Engine::setMpv(int mpv)
     m_mpv = mpv;
 }
 
+void Engine::setMoveTime(int mt)
+{
+    m_moveTime = mt;
+}
+
 void Engine::pollProcess()
 {
     QString message;

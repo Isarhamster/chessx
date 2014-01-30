@@ -70,14 +70,13 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameWindow(0),
     m_gameToolBar(0),
     m_output(0),
-    m_autoPlayTimer(0),
     m_currentFrom(InvalidSquare),
     m_currentTo(InvalidSquare)
 {
     setObjectName("MainWindow");
 
     m_autoPlayTimer = new QTimer(this);
-    m_autoPlayTimer->setInterval(3000);
+    m_autoPlayTimer->setInterval(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
     m_autoPlayTimer->setSingleShot(true);
     connect(m_autoPlayTimer, SIGNAL(timeout()), this, SLOT(slotAutoPlayTimeout()));
 
@@ -347,6 +346,10 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), m_mainAnalysis, SLOT(setMoveTime(int)));
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), analysis, SLOT(setMoveTime(int)));
+    connect(m_mainAnalysis, SIGNAL(receivedBestMove()), this, SLOT(slotEngineTimeout()));
+
+    m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
+    analysis->setMoveTime(m_sliderSpeed->translatedValue());
 
     statusBar()->addPermanentWidget(new QLabel(tr("Move Interval:"), this));
     statusBar()->addPermanentWidget(m_sliderSpeed);
@@ -368,10 +371,12 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Load files from command line */
     QStringList args = qApp->arguments();
     for(int i = 1; i < args.count(); i++)
+    {
         if(QFile::exists(args[i]))
         {
             openDatabaseUrl(args[i], false);
         }
+    }
 
     qApp->installEventFilter(this);
     /* Activate clipboard */
@@ -396,6 +401,7 @@ MainWindow::MainWindow() : QMainWindow(),
 MainWindow::~MainWindow()
 {
     m_autoPlayTimer->stop();
+    m_dragTimer->stop();
     m_openingTreeWidget->cancel(false);
     foreach(DatabaseInfo * database, m_databases)
     {
