@@ -19,6 +19,8 @@ public:
     int offset() const;
     void setOffset(int offset);
 
+    int translatedValue() const;
+
 signals:
     void translatedValueChanged(int);
 
