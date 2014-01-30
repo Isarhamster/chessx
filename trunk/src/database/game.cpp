@@ -1792,7 +1792,10 @@ void Game::dumpMoveNode(MoveId moveId) const
         qDebug() << "   Deleted     : " << m_moveNodes.at(moveId).removed;
         qDebug() << "   # Variations: " << m_moveNodes.at(moveId).variations.size();
         qDebug() << "   Variations  : " << m_moveNodes.at(moveId).variations;
-        qDebug() << "   Move        : " << m_moveNodes.at(moveId).move.toAlgebraic();
+        qDebug() << "   Move        : " << m_moveNodes.at(moveId).move.toAlgebraic()
+                 << " (" << m_moveNodes.at(moveId).move.rawMove()
+                 << ", " << m_moveNodes.at(moveId).move.rawUndo()
+                 << ")";
     }
 }
 

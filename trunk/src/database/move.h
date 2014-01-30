@@ -33,6 +33,12 @@ public:
     /** Default constructor, creates an empty (illegal) move */
     Move();
 
+    Move(const Move& move)
+    {
+        m = move.m;
+        u = move.u;
+    }
+
     /** Move entry constructor, untested (illegal) move with only from, and to squares set */
     Move(const Square from, const Square to);
 
@@ -90,10 +96,23 @@ public:
     bool operator!=(const Piece& p) const;
 
 
+    Move& operator=(const Move& move)
+    {
+        if (this != &move)
+        {
+            m = move.m;
+            u = move.u;
+        }
+        return *this;
+    }
+
     /** Moves are considered the same, only if they match exactly */
     friend bool operator==(const Move& m1, const Move& m2);
     /** Required for keeping moves in some map-like structures */
     friend bool operator<(const Move& m1, const Move& m2);
+
+    unsigned int rawMove() const { return m; }
+    unsigned short rawUndo() const { return u; }
 
     friend class BitBoard;
 private:

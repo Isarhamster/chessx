@@ -1432,6 +1432,8 @@ Move BitBoard::parseMove(const QString& algebraic) const
         break;
     case 'P':
         c = *(s++); // Fall through
+        type = Pawn;
+        break;
     default:
         type = Pawn;
         break;
