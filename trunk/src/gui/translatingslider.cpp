@@ -40,3 +40,8 @@ void TranslatingSlider::setTranslatedValue(int value)
 {
     setValue((value-m_offset)/m_multiplier);
 }
+
+int TranslatingSlider::translatedValue() const
+{
+    return (value()*m_multiplier + m_offset);
+}
