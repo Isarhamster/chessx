@@ -31,6 +31,7 @@ public:
 
     /** Get the main line */
     Analysis getMainLine() const;
+    bool hasMainLine() const;
 
 public slots:
     /** Sets new position. If analysis is active, the current content will be cleared and
@@ -46,6 +47,9 @@ public slots:
     void slotVisibilityChanged(bool);
     /** Is any engine running. */
     bool isEngineRunning() const;
+    /** Change the movetime of the engine */
+    void setMoveTime(int mt);
+
 private slots:
     /** Stop if analysis is no longer visible. */
     void toggleAnalysis();
@@ -70,6 +74,8 @@ signals:
     void addVariation(const Analysis& analysis);
     void addVariation(const QString& san);
     void requestBoard();
+    void receivedBestMove();
+
 private:
     /** Should analysis be running. */
     bool isAnalysisEnabled() const;
@@ -83,6 +89,7 @@ private:
     Board m_NextBoard;
     QString m_tablebaseEvaluation;
     Tablebase* m_tablebase;
+    int m_moveTime;
 };
 
 #endif // __ANALYSIS_WIDGET_H__

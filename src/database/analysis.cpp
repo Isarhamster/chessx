@@ -25,6 +25,7 @@ Analysis& Analysis::operator=(const Analysis& rhs)
         m_mateIn    = rhs.m_mateIn;
         m_nodes     = rhs.m_nodes;
         m_numpv     = rhs.m_numpv;
+        m_bestMove  = rhs.m_bestMove;
         m_variation = rhs.m_variation;
     }
     return *this;
@@ -35,6 +36,7 @@ void Analysis::clear()
     m_score = m_msec = m_depth = m_mateIn = 0;
     m_nodes = 0;
     m_numpv = 1;
+    m_bestMove = false;
     m_variation.clear();
 }
 
@@ -105,6 +107,16 @@ void Analysis::setVariation(const MoveList& variation)
     m_variation = variation;
 }
 
+void Analysis::setBestMove(bool bestMove)
+{
+    m_bestMove = bestMove;
+}
+
+bool Analysis::bestMove() const
+{
+    return m_bestMove;
+}
+
 bool Analysis::isMate() const
 {
     return m_mateIn != 0;
@@ -124,6 +136,7 @@ QString Analysis::toString(const Board& board) const
 {
     Board testBoard = board;
     QString out;
+
     if(isMate())
     {
         QString color = testBoard.toMove() == White ? "000080" : "800000";
@@ -131,13 +144,16 @@ QString Analysis::toString(const Board& board) const
         out = QString("<font color=\"#%1\"><b>%2 %3</b></font> ")
               .arg(color).arg(text).arg(movesToMate());
     }
-    else if(score() > 0)
+    else if (!bestMove())
     {
-        out = QString("<font color=\"#000080\"><b>+%1</b></font> ").arg(score() / 100.0, 0, 'f', 2);
-    }
-    else
-    {
-        out = QString("<font color=\"#800000\"><b>%1</b></font> ").arg(score() / 100.0, 0, 'f', 2);
+        if(score() > 0)
+        {
+            out = QString("<font color=\"#000080\"><b>+%1</b></font> ").arg(score() / 100.0, 0, 'f', 2);
+        }
+        else
+        {
+            out = QString("<font color=\"#800000\"><b>%1</b></font> ").arg(score() / 100.0, 0, 'f', 2);
+        }
     }
 
     int moveNo = testBoard.moveNumber();
@@ -159,12 +175,23 @@ QString Analysis::toString(const Board& board) const
         white = !white;
     }
     out += " <a href=\"" + QString::number(-m_numpv) + "\" title=\"Click to add move to game\">[+]</a> ";
-    out += " <a href=\"" + QString::number(m_numpv) + "\" title=\"Click to add variation to game\">[*]</a> ";
+    if (!bestMove())
+    {
+        out += " <a href=\"" + QString::number(m_numpv) + "\" title=\"Click to add variation to game\">[*]</a> ";
+    }
     out += moveText;
-    QTime t(0, 0, 0, 0);
-    t = t.addMSecs(time());
-    QString elapsed = t.toString("h:mm:ss");
-    out += tr(" (depth %1, %2)").arg(depth()).arg(elapsed);
+
+    if (!bestMove())
+    {
+        QTime t(0, 0, 0, 0);
+        t = t.addMSecs(time());
+        QString elapsed = t.toString("h:mm:ss");
+        out += tr(" (depth %1, %2)").arg(depth()).arg(elapsed);
+    }
+    else
+    {
+        out += tr(" (suggested move)");
+    }
 
     return out;
 }

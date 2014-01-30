@@ -34,7 +34,7 @@ public:
              QTextStream* logStream = NULL);
 
     /** Analyses the the given position */
-    bool startAnalysis(const Board& board, int nv);
+    bool startAnalysis(const Board& board, int nv, int mt);
 
     /** Stops any analysis */
     void stopAnalysis();
@@ -61,6 +61,7 @@ private:
 
     /** Parses analysis */
     void parseAnalysis(const QString& message);
+    void parseBestMove(const QString& message);
 
     /** Instruct version 1 engine to stop pondering */
     void v1TurnOffPondering();

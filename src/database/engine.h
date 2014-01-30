@@ -62,7 +62,7 @@ public:
     bool isActive();
 
     /** Analyzes the given position */
-    virtual bool startAnalysis(const Board& board, int nv = 1) = 0;
+    virtual bool startAnalysis(const Board& board, int nv, int mt) = 0;
 
     /** Stops any analysis */
     virtual void stopAnalysis() = 0;
@@ -77,6 +77,8 @@ public:
 
     /** Set number of lines. */
     virtual void setMpv(int mpv);
+    /** Set new move time */
+    virtual void setMoveTime(int mt);
 
     virtual bool providesMvp()
     {
@@ -126,6 +128,7 @@ protected:
 
     bool m_invertBlack;
     int m_mpv;
+    int m_moveTime;
     bool m_bTestMode;
 
 private slots:

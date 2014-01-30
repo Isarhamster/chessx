@@ -237,6 +237,8 @@ public slots:
     void slotToggleAutoAnalysis();
     /** Auto Play Timeout - make next move! */
     void slotAutoPlayTimeout();
+    /** Auto Play Timeout - make next move! */
+    void slotEngineTimeout();
     /** Filter was changed - update status bar information */
     void slotFilterChanged();
     /** Load given game (triggered from Game List) */

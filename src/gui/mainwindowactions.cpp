@@ -1186,8 +1186,12 @@ void MainWindow::slotGameDumpMoveNodes()
 
 void MainWindow::slotGameAddVariation(const Analysis& analysis)
 {
-    game().addVariation(analysis.variation(),
-                        QString::number(analysis.score() / 100.0, 'f', 2));
+    QString score;
+    if (!analysis.bestMove())
+    {
+        score = QString::number(analysis.score() / 100.0, 'f', 2);
+    }
+    game().addVariation(analysis.variation(), score);
     slotGameChanged();
 }
 
@@ -1261,9 +1265,9 @@ void MainWindow::slotToggleAutoPlayer()
     }
 }
 
-void MainWindow::slotAutoPlayTimeout()
+void MainWindow::slotEngineTimeout()
 {
-    if(m_autoAnalysis->isChecked() && m_mainAnalysis->isEngineRunning() && (m_AutoInsertLastBoard != m_boardView->board()))
+    if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != m_boardView->board()))
     {
         Analysis a = m_mainAnalysis->getMainLine();
         if(!a.variation().isEmpty())
@@ -1278,7 +1282,12 @@ void MainWindow::slotAutoPlayTimeout()
             }
         }
         m_AutoInsertLastBoard = m_boardView->board();
+        slotAutoPlayTimeout();
     }
+}
+
+void MainWindow::slotAutoPlayTimeout()
+{
     if(game().atGameEnd() && AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
     {
         saveGame();
@@ -1288,7 +1297,10 @@ void MainWindow::slotAutoPlayTimeout()
     {
         slotGameMoveNext();
     }
-    m_autoPlayTimer->start();
+    if (m_autoPlay->isChecked())
+    {
+        m_autoPlayTimer->start();
+    }
 }
 
 void MainWindow::slotFilterChanged()

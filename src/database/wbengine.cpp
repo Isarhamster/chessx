@@ -21,9 +21,11 @@ WBEngine::WBEngine(const QString& name,
     m_invertBlack = true;
 }
 
-bool WBEngine::startAnalysis(const Board& board, int nv)
+bool WBEngine::startAnalysis(const Board& board, int nv, int mt)
 {
+    Engine::setMoveTime(mt);
     m_mpv = nv;
+
     if(isActive() && m_board == board)
     {
         return true;
@@ -34,7 +36,15 @@ bool WBEngine::startAnalysis(const Board& board, int nv)
     {
         send("setboard " + board.toFen());
         send("post");
-        send("analyze");
+        if (mt > 0)
+        {
+            send (QString("st %1").arg(m_moveTime/1000));
+            send ("go");
+        }
+        else
+        {
+            send("analyze");
+        }
         setAnalyzing(true);
         return true;
     }
@@ -89,6 +99,10 @@ void WBEngine::processMessage(const QString& message)
     if(command == "feature")
     {
         feature(trim);
+    }
+    else if(command == "move")
+    {
+        parseBestMove(trim);
     }
     else if(isAnalyzing())
     {
@@ -186,6 +200,22 @@ void WBEngine::featureTimeout()
     {
         v1TurnOffPondering();
         setActive(true);
+    }
+}
+
+void WBEngine::parseBestMove(const QString& message)
+{
+    QString bestMove = message.section(' ', 1, 1, QString::SectionSkipEmpty);
+
+    if (!bestMove.isEmpty())
+    {
+        Analysis analysis;
+        Move move = m_board.parseMove(bestMove);
+        MoveList moves;
+        moves.append(move);
+        analysis.setVariation(moves);
+        analysis.setBestMove(true);
+        sendAnalysis(analysis);
     }
 }
 
