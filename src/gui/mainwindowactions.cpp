@@ -1908,6 +1908,18 @@ void MainWindow::slotMoveIntervalChanged(int interval)
     }
 }
 
+void MainWindow::slotSetSliderText(int interval)
+{
+    if (!interval)
+    {
+        m_sliderText->setText(QString("0s/")+tr("Infinite"));
+    }
+    else
+    {
+        m_sliderText->setText(QString::number(interval)+"s");
+    }
+}
+
 void MainWindow::slotUpdateOpeningTreeWidget()
 {
     QStringList files; // List of all open files excluding ClipBoard

@@ -370,6 +370,8 @@ protected slots:
     void slotEditActions();
     /** Value for Move Interval is changed */
     void slotMoveIntervalChanged(int);
+    /** Value for Move Interval Slider is changed */
+    void slotSetSliderText(int);
 
 protected:
     bool pasteFen(QString& errorText, QString fen);
@@ -489,6 +491,7 @@ private:
     OpeningTreeWidget* m_openingTreeWidget;
     QPointer<QProgressBar> m_progressBar;
     QPointer<TranslatingSlider> m_sliderSpeed;
+    QLabel* m_sliderText;
     ToolMainWindow* m_gameWindow;
     QToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
