@@ -353,6 +353,12 @@ MainWindow::MainWindow() : QMainWindow(),
 
     statusBar()->addPermanentWidget(new QLabel(tr("Move Interval:"), this));
     statusBar()->addPermanentWidget(m_sliderSpeed);
+    m_sliderText = new QLabel(this);
+    m_sliderText->setFixedWidth(100);
+    statusBar()->addPermanentWidget(m_sliderText);
+    connect(m_sliderSpeed, SIGNAL(valueChanged(int)), this, SLOT(slotSetSliderText(int)));
+    slotSetSliderText(m_sliderSpeed->value());
+
     statusBar()->setFixedHeight(statusBar()->height());
     statusBar()->setSizeGripEnabled(true);
     m_progressBar = new QProgressBar();
