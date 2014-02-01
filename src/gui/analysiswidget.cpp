@@ -196,7 +196,7 @@ void AnalysisWidget::showAnalysis(const Analysis& analysis)
     updateAnalysis();
     if (bestMove)
     {
-        emit receivedBestMove();
+        emit receivedBestMove(analysis);
     }
 }
 

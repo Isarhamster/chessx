@@ -238,7 +238,7 @@ public slots:
     /** Auto Play Timeout - make next move! */
     void slotAutoPlayTimeout();
     /** Auto Play Timeout - make next move! */
-    void slotEngineTimeout();
+    void slotEngineTimeout(const Analysis& analysis);
     /** Filter was changed - update status bar information */
     void slotFilterChanged();
     /** Load given game (triggered from Game List) */
@@ -529,6 +529,7 @@ private:
     QUndoGroup m_undoGroup;
     QNetworkAccessManager* m_manager;
     DownloadManager* downloadManager;
+    bool m_machineHasToMove;
 };
 
 

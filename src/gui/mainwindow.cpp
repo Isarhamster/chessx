@@ -71,7 +71,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameToolBar(0),
     m_output(0),
     m_currentFrom(InvalidSquare),
-    m_currentTo(InvalidSquare)
+    m_currentTo(InvalidSquare),
+    m_machineHasToMove(false)
 {
     setObjectName("MainWindow");
 
@@ -346,7 +347,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), m_mainAnalysis, SLOT(setMoveTime(int)));
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), analysis, SLOT(setMoveTime(int)));
-    connect(m_mainAnalysis, SIGNAL(receivedBestMove()), this, SLOT(slotEngineTimeout()));
+    connect(m_mainAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
 
     m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
     analysis->setMoveTime(m_sliderSpeed->translatedValue());
