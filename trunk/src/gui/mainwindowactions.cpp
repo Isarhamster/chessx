@@ -567,6 +567,9 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                 if (!game().atLineEnd() && m_autoRespond->isChecked())
                 {
                     game().forward();
+                    Move m = game().move();
+                    m_currentFrom = m.from();
+                    m_currentTo = m.to();
                 }
                 slotGameChanged();
                 return;
@@ -599,6 +602,12 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                 game().forward();
             }
         }
+
+        if (m_autoRespond->isChecked() && !m_machineHasToMove)
+        {
+            m_machineHasToMove = true;
+        }
+
         slotGameChanged();
     }
 }
@@ -1230,6 +1239,7 @@ void MainWindow::slotToggleTraining()
 
 void MainWindow::slotToggleAutoRespond()
 {
+    m_machineHasToMove = false;
 }
 
 void MainWindow::slotToggleAutoAnalysis()
@@ -1265,7 +1275,7 @@ void MainWindow::slotToggleAutoPlayer()
     }
 }
 
-void MainWindow::slotEngineTimeout()
+void MainWindow::slotEngineTimeout(const Analysis& analysis)
 {
     if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != m_boardView->board()))
     {
@@ -1283,6 +1293,21 @@ void MainWindow::slotEngineTimeout()
         }
         m_AutoInsertLastBoard = m_boardView->board();
         slotAutoPlayTimeout();
+    }
+    else if (game().atLineEnd() && m_autoRespond->isChecked())
+    {
+        if (m_machineHasToMove)
+        {
+            if(!analysis.variation().isEmpty() && analysis.bestMove())
+            {
+                Move m = analysis.variation().first();
+                m_currentFrom = m.from();
+                m_currentTo = m.to();
+                game().addMove(m);
+                m_machineHasToMove = false;
+                slotGameChanged();
+            }
+        }
     }
 }
 

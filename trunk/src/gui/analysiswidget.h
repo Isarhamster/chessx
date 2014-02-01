@@ -74,7 +74,7 @@ signals:
     void addVariation(const Analysis& analysis);
     void addVariation(const QString& san);
     void requestBoard();
-    void receivedBestMove();
+    void receivedBestMove(const Analysis& analysis);
 
 private:
     /** Should analysis be running. */
