@@ -68,18 +68,23 @@ public:
     {
         return m_columnNames;
     }
+
+    virtual void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
 private:
     /** A pointer to filter on which the model opperates */
     Filter* m_filter;
     /** The column names of the model */
     QStringList m_columnNames;
-    /** Map of coulmuns and database tags */
+    /** Map of columns and database tags */
     QStringList m_columnTags;
     /** A pointer to a game object, to hold the retrieved information
      * about the game */
     Game* m_game;
+    Game* m_game2;
     /** Current game index - used for caching */
     mutable int m_gameIndex;
+    mutable int m_gameIndex2;
+    mutable Game* m_lastGame;
 };
 
 #endif	// __FilterModelBase_H__

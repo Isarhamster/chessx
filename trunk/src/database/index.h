@@ -52,6 +52,7 @@ public:
     //
     /** Restore all tags for gameId from Index into game object */
     void loadGameHeaders(GameId id, Game& game);
+    void loadGameHeader(GameId id, Game& game, const QString& tag);
 
     /** Get the tag value for given game */
     QString tagValue(const QString&, GameId gameId) const;
