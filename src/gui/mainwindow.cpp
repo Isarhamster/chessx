@@ -1154,7 +1154,7 @@ void MainWindow::setupActions()
     m_training->setCheckable(true);
     gameMenu->addAction(m_training);
 
-    m_autoRespond = createAction(QT_TR_NOOP("Auto Respond"), SLOT(slotToggleAutoRespond()));
+    m_autoRespond = createAction(QT_TR_NOOP("Auto Respond"), SLOT(slotToggleAutoRespond()), Qt::META + Qt::SHIFT + Qt::Key_R);
     m_autoRespond->setCheckable(true);
     gameMenu->addAction(m_autoRespond);
 

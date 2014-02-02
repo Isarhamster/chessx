@@ -100,6 +100,10 @@ public:
     {
         m_index.loadGameHeaders(id, game);
     }
+    virtual void loadGameHeader(GameId id, Game& game, const QString& tag)
+    {
+        m_index.loadGameHeader(id, game, tag);
+    }
     /** Loads only moves into a game from the given position */
     virtual void loadGameMoves(int index, Game& game) = 0;
     /** Saves a game at the given position, returns true if successful */

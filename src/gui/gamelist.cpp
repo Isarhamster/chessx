@@ -32,7 +32,10 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 {
     setObjectName("GameList");
     setWindowTitle(tr("Game list"));
+    //QSortFilterProxyModel* sortModel = new QSortFilterProxyModel(this);
     m_model = new FilterModel(filter, this);
+    //sortModel->setSourceModel(m_model);
+    //setModel(sortModel);
     setModel(m_model);
     connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
     connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
@@ -101,6 +104,11 @@ void GameList::slotContextMenu(const QPoint& pos)
 
 void GameList::simpleSearch(int tagid)
 {
+    //if (QApplication::queryKeyboardModifiers() & Qt::ShiftModifier)
+    //{
+    //    sortByColumn(tagid);
+    //    return;
+    //}
     QuickSearchDialog dlg(this);
 
     dlg.setTag(tagid);

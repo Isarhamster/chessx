@@ -344,6 +344,12 @@ void Index::loadGameHeaders(GameId id, Game& game)
     }
 }
 
+void Index::loadGameHeader(GameId id, Game& game, const QString &tag)
+{
+    TagIndex tagIndex = getTagIndex(tag);
+    game.setTag(tagName(tagIndex), tagValue(tagIndex, id));
+}
+
 QStringList Index::playerNames() const
 {
     QStringList allPlayerNames;

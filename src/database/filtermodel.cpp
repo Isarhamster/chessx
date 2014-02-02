@@ -14,7 +14,7 @@
 #include <QtGui>
 
 FilterModel::FilterModel(Filter* filter, QObject* parent)
-    : QAbstractItemModel(parent), m_filter(filter), m_gameIndex(-1)
+    : QAbstractItemModel(parent), m_filter(filter), m_gameIndex(-1), m_gameIndex2(-1),m_lastGame(0)
 {
     m_columnNames << tr("Nr")
                   << tr("White")
@@ -42,12 +42,15 @@ FilterModel::FilterModel(Filter* filter, QObject* parent)
                  << TagNameECO
                  << "Length";
 
-    m_game = new Game;
+    m_game  = new Game;
+    m_game2 = new Game;
 }
 
 FilterModel::~FilterModel()
 {
     delete m_game;
+    delete m_game2;
+    m_lastGame = 0;
 }
 
 int FilterModel::rowCount(const QModelIndex& index) const
@@ -69,32 +72,46 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
     if(index.isValid() && index.row() < m_filter->count())
     {
         int i = m_filter->indexToGame(index.row());
+        if(role == Qt::DisplayRole)
+        {
+            if(index.column() == 0)
+            {
+                return i + 1;
+            }
+        }
         if(i != -1)
         {
-            if(i != m_gameIndex)
+            if ((i != m_gameIndex) && (i!=m_gameIndex2))
             {
-// rico: it would perhaps be better to read here only header information that is
-// currently used and not the whole header information.
-                m_filter->database()->lock();
-                m_filter->database()->loadGameHeaders(i, *m_game);
-                m_filter->database()->unlock();
-                m_gameIndex = i;
-            }
-            if(role == Qt::DisplayRole)
-            {
-                if(index.column() == 0)
+                if (m_lastGame != m_game2)
                 {
-                    return i + 1;
+                    m_lastGame = m_game2;
+                    m_gameIndex2 = i;
                 }
                 else
                 {
-                    QString tag = m_game->tag(m_columnTags.at(index.column()));
-                    if(tag == "?")
-                    {
-                        tag.clear();
-                    }
-                    return tag;
+                    m_lastGame = m_game;
+                    m_gameIndex = i;
                 }
+                m_lastGame->clearTags();
+            }
+            else if (i == m_gameIndex)
+            {
+                m_lastGame = m_game;
+            }
+            else if (i == m_gameIndex2)
+            {
+                m_lastGame = m_game2;
+            }
+            if(role == Qt::DisplayRole)
+            {
+                m_filter->database()->loadGameHeader(i, *m_lastGame, m_columnTags.at(index.column()));
+                QString tag = m_lastGame->tag(m_columnTags.at(index.column()));
+                if(tag == "?")
+                {
+                    tag.clear();
+                }
+                return tag;
             }
             else if(role == Qt::FontRole)
             {
@@ -165,6 +182,7 @@ void FilterModel::setFilter(Filter* filter)
     beginResetModel();
     m_filter = filter;
     m_gameIndex = -1;
+    m_gameIndex2 = -1;
     endResetModel();
 }
 
@@ -173,5 +191,8 @@ Filter* FilterModel::filter()
     return m_filter;
 }
 
+void FilterModel::sort(int column, Qt::SortOrder order)
+{
 
+}
 
