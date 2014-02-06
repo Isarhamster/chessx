@@ -95,7 +95,7 @@ void ChessBrowser::setupMenu(bool setupGameMenu)
 
         m_gameMenu->addAction((m_startComment = createAction(tr("Add start comment..."), EditAction::EditPrecomment)));
         m_gameMenu->addAction((m_gameComment = createAction(tr("Add game comment..."), EditAction::EditGameComment)));
-        m_gameMenu->addAction((m_addComment = createAction(tr("Add comment..."), EditAction::EditComment)));
+        m_gameMenu->addAction((m_addComment = createAction(tr("Comment..."), EditAction::EditComment)));
 
         // Nag menus
         QMenu* nagMoveMenu = m_gameMenu->addMenu(tr("Add move symbol"));
@@ -194,7 +194,7 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
 
         m_startComment->setVisible(atLineStart && !hasPrecomment && !gameIsEmpty);
         m_gameComment->setVisible(gameIsEmpty && !hasComment);
-        m_addComment->setVisible(!hasComment);
+        m_addComment->setVisible(true);
         m_enumerateVariations1->setVisible(isVariation);
         m_enumerateVariations2->setVisible(isVariation);
         m_promoteVariation->setVisible(isVariation);
