@@ -20,6 +20,7 @@
 #include "ecolistwidget.h"
 #include "ecothread.h"
 #include "eventlistwidget.h"
+#include "exclusiveactiongroup.h"
 #include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"
@@ -457,6 +458,8 @@ void MainWindow::closeEvent(QCloseEvent* e)
 {
     if(confirmQuit())
     {
+        m_openingTreeWidget->cancel(false);
+
         m_recentFiles.save();
         m_databaseList->save();
 
@@ -1150,24 +1153,36 @@ void MainWindow::setupActions()
 
     gameMenu->addSeparator();
 
-    m_training = createAction(QT_TR_NOOP("Training"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::Key_R);
-    m_training->setCheckable(true);
-    gameMenu->addAction(m_training);
-
-    m_autoRespond = createAction(QT_TR_NOOP("Auto Respond"), SLOT(slotToggleAutoRespond()), Qt::META + Qt::SHIFT + Qt::Key_R);
-    m_autoRespond->setCheckable(true);
-    gameMenu->addAction(m_autoRespond);
-
     QAction* flip = createAction(QT_TR_NOOP("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B, gameToolBar, ":/images/flip_board.png");
     flip->setCheckable(true);
+    gameToolBar->addSeparator();
+
+    ExclusiveActionGroup* autoGroup = new ExclusiveActionGroup(this);
+    ExclusiveActionGroup* autoGroup2 = new ExclusiveActionGroup(this);
+
+    m_training = createAction(QT_TR_NOOP("Training"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::Key_R, gameToolBar, ":/images/training.png");
+    m_training->setCheckable(true);
+    autoGroup2->addAction(m_training);
+    gameMenu->addAction(m_training);
+
+    m_autoRespond = createAction(QT_TR_NOOP("Auto Respond"), SLOT(slotToggleAutoRespond()), Qt::META + Qt::SHIFT + Qt::Key_R, gameToolBar, ":/images/respond.png");
+    gameMenu->addAction(m_autoRespond);
+    autoGroup->addAction(m_autoRespond);
+    m_autoRespond->setCheckable(true);
 
     m_autoPlay = createAction(QT_TR_NOOP("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_R, gameToolBar, ":/images/replay.png");
-    m_autoPlay->setCheckable(true);
     gameMenu->addAction(m_autoPlay);
-    m_autoAnalysis = createAction(QT_TR_NOOP("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::CTRL + Qt::ALT + Qt::Key_R);
-    m_autoAnalysis->setCheckable(true);
-    gameMenu->addAction(m_autoAnalysis);
+    autoGroup->addAction(m_autoPlay);
+    autoGroup2->addAction(m_autoPlay);
+    m_autoPlay->setCheckable(true);
 
+    m_autoAnalysis = createAction(QT_TR_NOOP("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::CTRL + Qt::ALT + Qt::Key_R, gameToolBar, ":/images/annotate.png");
+    gameMenu->addAction(m_autoAnalysis);
+    autoGroup->addAction(m_autoAnalysis);
+    autoGroup2->addAction(m_autoAnalysis);
+    m_autoAnalysis->setCheckable(true);
+
+    gameToolBar->addSeparator();
     gameMenu->addSeparator();
 
     gameMenu->addAction(flip);

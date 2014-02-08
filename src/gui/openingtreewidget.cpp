@@ -104,10 +104,22 @@ int OpeningTreeWidget::getFilterIndex(QString& name) const
 
 void OpeningTreeWidget::updateFilterIndex(QStringList files)
 {
+    disconnect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged()));
+    QString current = ui->sourceSelector->currentText();
     ui->sourceSelector->clear();
     QStringList allFiles;
     allFiles << tr("Database") << tr("Filter") << files;
     ui->sourceSelector->insertItems(0, allFiles);
+    if (allFiles.contains(current))
+    {
+        ui->sourceSelector->setCurrentText(current);
+    }
+    else
+    {
+        ui->sourceSelector->setCurrentIndex(0);
+        slotSourceChanged();
+    }
+    connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged()));
 }
 
 void OpeningTreeWidget::slotSourceChanged()

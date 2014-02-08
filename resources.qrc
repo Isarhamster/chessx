@@ -114,5 +114,8 @@
         <file alias="images/plus.png">data/images/plus.png</file>
         <file alias="images/pin.ico">data/images/pin.ico</file>
         <file alias="images/flip_board.png">data/images/flip_board.png</file>
+        <file alias="images/respond.png">data/images/respond.png</file>
+        <file alias="images/annotate.png">data/images/annotate.png</file>
+        <file alias="images/training.png">data/images/training.png</file>
     </qresource>
 </RCC>

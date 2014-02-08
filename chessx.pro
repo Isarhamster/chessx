@@ -155,7 +155,8 @@ HEADERS += src/database/board.h \
     src/gui/promotiondialog.h \
     src/gui/actiondialog.h \
     src/gui/kbaction.h \
-    src/gui/translatingslider.h
+    src/gui/translatingslider.h \
+    src/gui/exclusiveactiongroup.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -256,7 +257,8 @@ SOURCES += src/database/board.cpp \
     src/gui/promotiondialog.cpp \
     src/gui/actiondialog.cpp \
     src/gui/kbaction.cpp \
-    src/gui/translatingslider.cpp
+    src/gui/translatingslider.cpp \
+    src/gui/exclusiveactiongroup.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
