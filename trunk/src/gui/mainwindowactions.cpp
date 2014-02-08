@@ -1244,7 +1244,6 @@ void MainWindow::slotToggleAutoRespond()
 
 void MainWindow::slotToggleAutoAnalysis()
 {
-    slotToggleAutoPlayer();
     if(m_autoAnalysis->isChecked() && !m_mainAnalysis->isEngineRunning())
     {
         MessageDialog::information(tr("Analysis Pane 1 is not running an engine for automatic analysis."), tr("Auto Analysis"));
@@ -1258,9 +1257,6 @@ void MainWindow::slotToggleAutoPlayer()
     {
         if(autoPlayAction->isChecked())
         {
-            QAction* otherAction = (autoPlayAction == m_autoPlay) ?
-                                   m_autoAnalysis : m_autoPlay;
-            otherAction->setChecked(false);
             int interval = AppSettings->getValue("/Board/AutoPlayerInterval").toInt();
             if(m_autoPlayTimer->interval() != interval)
             {
