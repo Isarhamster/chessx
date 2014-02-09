@@ -271,7 +271,7 @@ MainWindow::MainWindow() : QMainWindow(),
     addDockWidget(Qt::RightDockWidgetArea, openingDock);
     m_menuView->addAction(openingDock->toggleViewAction());
     connect(openingDock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
-    connect(openingDock, SIGNAL(visibilityChanged(bool)), m_openingTreeWidget, SLOT(cancel(bool)));
+    connect(openingDock, SIGNAL(visibilityChanged(bool)), m_openingTreeWidget, SLOT(cancel()));
     connect(m_openingTreeWidget, SIGNAL(signalTreeUpdated()), this, SLOT(slotTreeUpdate()));
     connect(m_openingTreeWidget, SIGNAL(signalSourceChanged()), this, SLOT(slotSearchTree()));
     connect(this, SIGNAL(reconfigure()), m_openingTreeWidget, SLOT(slotReconfigure()));
@@ -410,7 +410,7 @@ MainWindow::~MainWindow()
 {
     m_autoPlayTimer->stop();
     m_dragTimer->stop();
-    m_openingTreeWidget->cancel(false);
+    m_openingTreeWidget->cancel();
     foreach(DatabaseInfo * database, m_databases)
     {
         database->close();
@@ -458,7 +458,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
 {
     if(confirmQuit())
     {
-        m_openingTreeWidget->cancel(false);
+        m_openingTreeWidget->cancel();
 
         m_recentFiles.save();
         m_databaseList->save();

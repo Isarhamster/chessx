@@ -99,7 +99,7 @@ public:
 
 public slots:
     /** Cancel a running update */
-    void cancel(bool);
+    void cancel();
 protected slots:
     void updateFinished(Board*);
     void updateTerminated(Board*);
