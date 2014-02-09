@@ -1081,115 +1081,115 @@ Shall I download a database?</source>
         <translation>%1 gespeichert</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="441"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="447"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
         <translation>In der Zwischenablage ist keine gültige FEN Position: &lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="442"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="448"/>
         <source>There is no text in clipboard.</source>
         <translation>Zwischenablage ist leer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="625"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="631"/>
         <source>Red Square</source>
         <translation>Rotes Feld</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="626"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="632"/>
         <source>Yellow Square</source>
         <translation>Gelbes Feld</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="627"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="633"/>
         <source>Green Square</source>
         <translation>Grünes Feld</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="628"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="634"/>
         <source>Remove Color</source>
         <translation>Lösche Farbe</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="630"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="636"/>
         <source>Red Arrow to here</source>
         <translation>Roter Pfeil hierher</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="631"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="637"/>
         <source>Yellow Arrow to here</source>
         <translation>Gelber Pfeil hierher</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="632"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="638"/>
         <source>Green Arrow to here</source>
         <translation>Grüner Pfeil hierher</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="633"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="639"/>
         <source>Remove Arrow to here</source>
         <translation>Pfeil löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1393"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1427"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1398"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1432"/>
         <source>Append game %1 to %2.</source>
         <translation>Partie %1 an %2 anhängen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1393"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1398"/>
         <source>Clipboard</source>
         <translation>Zwischenablage</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1446"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1451"/>
         <source>Append games from %1 to %2.</source>
         <translation>Partien aus %1 an %2 anhängen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1868"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1873"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Neue Partie&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1937"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1942"/>
         <source>Infinite</source>
         <translation>Unendlich</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1250"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1255"/>
         <source>Analysis Pane 1 is not running an engine for automatic analysis.</source>
         <translation>Analyse 1 ist nicht aktiv für Autoanalyse.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1540"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1799"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1545"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1804"/>
         <source>%1 - ChessX</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1568"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1573"/>
         <source>Search ended</source>
         <translation>Suche beendet</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1573"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1578"/>
         <source>Updating tree...</source>
         <translation>Aktualisiere Baum...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="881"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="887"/>
         <source>Load Game</source>
         <translation>Partie laden</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="881"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="887"/>
         <source>Game number:</source>
         <translation>Partienummer:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="891"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="938"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="897"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="944"/>
         <source>This database is read only.</source>
         <translation>Diese Datenbank ist schreibgeschützt.</translation>
     </message>
@@ -1359,7 +1359,7 @@ Shall I download a database?</source>
         <translation>&amp;Zufällig</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1160"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1163"/>
         <source>Training</source>
         <translation>Training</translation>
     </message>
@@ -1374,78 +1374,73 @@ Shall I download a database?</source>
         <translation>Vorspielen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1178"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1250"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1179"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1255"/>
         <source>Auto Analysis</source>
         <translation>Autoanalyse</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1189"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1191"/>
         <source>&amp;Go to</source>
         <translation>&amp;Springe zu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1190"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1192"/>
         <source>&amp;Start</source>
         <translation>&amp;Anfang</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1191"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1193"/>
         <source>Go to first move</source>
         <translation>Zum Partieanfang springen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1195"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1197"/>
         <source>&amp;End</source>
         <translation>&amp;Ende</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1196"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1198"/>
         <source>Go to last move</source>
         <translation>Zum Partieende springen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1204"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1206"/>
         <source>&amp;Next move</source>
         <translation>&amp;Nächster Zug</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1284"/>
-        <source>Customize Keyboard</source>
-        <translation>Tastatur anpassen</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1449"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1451"/>
         <source>Start loading database...</source>
         <translation>Datenbank laden gestartet...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1469"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1471"/>
         <source>A new version is available at chessx.sourceforge.net</source>
         <translation>Eine neue Version ist verfügnar unter chessx.sourceforge.net</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1200"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1202"/>
         <source>&amp;Previous move</source>
         <translation>&amp;Vorheriger Zug</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1208"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1210"/>
         <source>5 moves &amp;forward</source>
         <translation>5 Züge &amp;vorwärts</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1212"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1214"/>
         <source>5 moves &amp;backward</source>
         <translation>5 Züge &amp;zurück</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1216"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1218"/>
         <source>Enter Variation</source>
         <translation>In Variante hineingehen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1228"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1230"/>
         <source>Back to main line</source>
         <translation>Zurück zur Hauptvariante</translation>
     </message>
@@ -1500,62 +1495,67 @@ Shall I download a database?</source>
         <translation>Aktuelles Brett schliessen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1234"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1236"/>
         <source>Refactor</source>
         <translation>Entferne</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1235"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1237"/>
         <source>Uncomment</source>
         <translation>Alle Kommentare</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1236"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1238"/>
         <source>Remove Variations</source>
         <translation>Alle Varianten</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1239"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1241"/>
         <source>Fi&amp;nd</source>
         <translation>&amp;Suchen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1243"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1245"/>
         <source>Find &amp;tag</source>
         <translation>Suche &amp;Partiedaten</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1247"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1249"/>
         <source>Find &amp;position</source>
         <translation>Suche &amp;Stellung</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1253"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1255"/>
         <source>&amp;Reset filter</source>
         <translation>&amp;Filter zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1257"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1259"/>
         <source>&amp;Reverse filter</source>
         <translation>&amp;Filter umkehren</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1272"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1274"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1329"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1286"/>
+        <source>Customize Keyboard...</source>
+        <translation>Tastatur anpassen...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1331"/>
         <source>Following databases are modified:</source>
         <translation>Geänderte Datanbanken:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1330"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1332"/>
         <source>Save them?</source>
         <translation>Alle Datenbanken sichern?</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1363"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1365"/>
         <source> (%1 s.)</source>
         <translation></translation>
     </message>
@@ -1620,22 +1620,22 @@ Shall I download a database?</source>
         <translation>&amp;Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1220"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1222"/>
         <source>Previous Variation</source>
         <translation>Vorhergehende Variante</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1224"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1226"/>
         <source>Next Variation</source>
         <translation>Nächste Variante</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1240"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1242"/>
         <source>Search</source>
         <translation>Suchen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1262"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1264"/>
         <source>&amp;Database</source>
         <translation>&amp;Datenbank</translation>
     </message>
@@ -1645,17 +1645,17 @@ Shall I download a database?</source>
         <translation>&amp;Brett drehen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1269"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1271"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1286"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1288"/>
         <source>&amp;Report a bug...</source>
         <translation>&amp;Fehler melden...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1290"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1292"/>
         <source>&amp;About ChessX</source>
         <translation>&amp;Über ChessX</translation>
     </message>
@@ -1716,17 +1716,17 @@ Shall I download a database?</source>
         <translation>Neue Datenbank</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="448"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="454"/>
         <source>The clipboard contains FEN, but with illegal position. You can only paste such positions in &lt;b&gt;Setup position&lt;/b&gt; dialog.</source>
         <translation>Zwischenablage enthält FEN, aber eine ungültige Position. Sie können solche Positionen im &lt;b&gt;Einrichtungsdialog&lt;/b&gt; eingeben.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1486"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1491"/>
         <source>You need at least two open databases to copy games</source>
         <translation>Mindestens zwei offene Datenbanken benötigt um Partien zu kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1494"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1499"/>
         <source>%1. %2 (%3 games)</source>
         <translation>%1. %2 (%3 Partien)</translation>
     </message>
@@ -1741,12 +1741,12 @@ Shall I download a database?</source>
         <translation>&amp;Letzte öffnen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1263"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1265"/>
         <source>&amp;Switch to</source>
         <translation>&amp;Wechseln zu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1264"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1266"/>
         <source>&amp;Copy games...</source>
         <translation>Partien &amp;kopieren...</translation>
     </message>
@@ -2421,13 +2421,13 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/openingtreewidget.ui" line="73"/>
-        <location filename="../src/gui/openingtreewidget.cpp" line="109"/>
+        <location filename="../src/gui/openingtreewidget.cpp" line="111"/>
         <source>Database</source>
         <translation>Datenbank</translation>
     </message>
     <message>
         <location filename="../src/gui/openingtreewidget.ui" line="78"/>
-        <location filename="../src/gui/openingtreewidget.cpp" line="109"/>
+        <location filename="../src/gui/openingtreewidget.cpp" line="111"/>
         <source>Filter</source>
         <translation>Filter</translation>
     </message>

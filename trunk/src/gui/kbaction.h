@@ -12,8 +12,8 @@ class KbAction : public QAction
     Q_OBJECT
 
 public:
-    KbAction(const char* text, QObject* parent, const QKeySequence& key);
-    KbAction(const QIcon &icon, const char* text, QObject* parent, const QKeySequence& key);
+    KbAction(QString text, QObject* parent, const QKeySequence& key);
+    KbAction(const QIcon &icon, QString text, QObject* parent, const QKeySequence& key);
 
     QString getKey() const;
 
@@ -30,7 +30,7 @@ private:
     QKeySequence m_resetKey;
     QIcon m_resetIcon;
 
-    void installShortcut(const char* text, const QKeySequence& key);
+    void installShortcut(QString text, const QKeySequence& key);
 };
 
 #endif // KBACTION_H
