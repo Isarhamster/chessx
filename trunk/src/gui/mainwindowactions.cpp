@@ -181,11 +181,14 @@ void MainWindow::slotFileClose()
         {
             if(QuerySaveDatabase())
             {
-                m_openingTreeWidget->cancel(false);
-                m_databaseList->setFileClose(databaseInfo()->filePath(), databaseInfo()->currentIndex());
-                databaseInfo()->close();
-                delete databaseInfo();
+                DatabaseInfo* aboutToClose = databaseInfo();
+                m_openingTreeWidget->cancel();
+                m_databaseList->setFileClose(aboutToClose->filePath(), aboutToClose->currentIndex());
                 m_databases.removeAt(m_currentDatabase);
+
+                aboutToClose->close();
+                emit signalDatabaseOpenClose();
+                delete aboutToClose;
 
                 for(int i = 0; i < m_boardViews.count(); ++i)
                 {
@@ -203,7 +206,6 @@ void MainWindow::slotFileClose()
                 m_boardView->setDbIndex(m_currentDatabase);
                 UpdateBoardInformation();
                 m_databaseList->setFileCurrent(QString());
-                emit signalDatabaseOpenClose();
                 slotDatabaseChanged();
             }
         }
@@ -220,10 +222,14 @@ void MainWindow::slotFileCloseIndex(int n)
     {
         if(m_databases[n]->IsLoaded())
         {
+            m_openingTreeWidget->cancel();
+
             m_databaseList->setFileClose(m_databases[n]->filePath(), m_databases[n]->currentIndex());
             m_databases[n]->close();
+
             delete m_databases[n];
             m_databases.removeAt(n);
+
             for(int i = 0; i < m_boardViews.count(); ++i)
             {
                 if(m_boardViews.at(i)->dbIndex() == n)
@@ -1554,7 +1560,7 @@ void MainWindow::slotSearchTag()
 void MainWindow::slotSearchBoard()
 {
     PositionSearch ps(databaseInfo()->filter()->database(), m_boardView->board());
-    m_openingTreeWidget->cancel(false);
+    m_openingTreeWidget->cancel();
     slotBoardSearchStarted();
     databaseInfo()->filter()->executeSearch(ps);
     slotBoardSearchUpdate();

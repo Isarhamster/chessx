@@ -239,13 +239,13 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
     }
 }
 
-void OpeningTree::cancel(bool bVisible)
+void OpeningTree::cancel()
 {
-    if(!bVisible && oupd.isRunning())
+    if(oupd.isRunning())
     {
         m_bRequestPending = false;
         oupd.cancel();
-        oupd.wait(200);
+        oupd.wait(10000);
     }
 }
 

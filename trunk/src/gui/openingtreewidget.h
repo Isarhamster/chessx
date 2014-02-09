@@ -34,7 +34,7 @@ public:
     void updateFilterIndex(QStringList);
 
 public slots:
-    void cancel(bool bVisible);
+    void cancel();
     /** Store current configuration. */
     void saveConfig();
     /** Restore current configuration. */

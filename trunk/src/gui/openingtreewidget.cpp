@@ -43,9 +43,9 @@ OpeningTreeWidget::~OpeningTreeWidget()
     delete ui;
 }
 
-void OpeningTreeWidget::cancel(bool bVisible)
+void OpeningTreeWidget::cancel()
 {
-    m_openingTree->cancel(bVisible);
+    m_openingTree->cancel();
 }
 
 QString OpeningTreeWidget::move(QModelIndex index) const
@@ -117,14 +117,14 @@ void OpeningTreeWidget::updateFilterIndex(QStringList files)
     else
     {
         ui->sourceSelector->setCurrentIndex(0);
-        slotSourceChanged();
+        ui->filterGames->setEnabled(true);
     }
     connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged()));
 }
 
 void OpeningTreeWidget::slotSourceChanged()
 {
-    m_openingTree->cancel(true);
+    m_openingTree->cancel();
     bool enableFilter = (ui->sourceSelector->currentIndex()<=1);
     if (!enableFilter)
     {
