@@ -118,6 +118,30 @@ If nothing is merged, no suitable point for merging was found. This can happen, 
 <li>the remainder of the game to be merged in was already contained in the current game
 </ul>
 
+<h3>Filtering Games</h3>
+<p>The list of games can be filtered either by the opening tree or by clicking the list header. Several searches can be combined or inverted.
+Further occurrences of the current board position in the current database can be found via the Find / Find Position menu.</p>
+
+<h3>Playing out games</h3>
+<p>You can play out a game after the final position by activating Auto Respond mode.
+and activating the engine in Analysis Pane 1. Whenever you make a move the engine will start to analyse the
+position for the time defined by the slider at the bottom right of the status bar. If the allotted time is over, the
+engine will make the best move found so far.</p>
+
+<h3>Using Books in engines</h>
+<p>UCI engines may support books. Just set the OwnBook option to true, set the name of the "Book File" option and restart the engine.
+The engine will answer immediately with a book move when playing out games (see above), depending on "Best Book Move" option this may or
+may not be the best move from the book.</p>
+
+<h3>Training Mode</h3>
+<p>Selecting Game/Training starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game
+so you can make any move in a position. If the move is the right one (the one that was played or a existing variation) then the move is executed
+and the game is moved one step forward.
+The game notation is updated and variations on that move become visible. Ideal for use with a tactics database.</p>
+<p>If you have no idea what to move, you can get hints by hovering with the mouse over your pieces. Perhaps, the right move pops up!
+See the chapter on Making Moves and the associated preferences to enable move guesses.</p>
+<p>You can combine training with Auto Respond mode, in this case, ChessX will make the next move automatically whenever you make a correct move.</p>
+
 <h3>Customizing Listviews</h3>
 <p>All views can have their font-size set in the Preferences Dialog. In addtion, all list header support resizing,
 moving and hiding of columns. Columns are hidden / shown by right-clicking the list header element. All changes are persistent.</p>
@@ -129,18 +153,10 @@ in the Appearance tab of the Preferences. You can also change to a symblic repre
 OS supplies the character sets used. That is the case with Mac OS X and Windows 7, untested with Linux. The PGN remains unchanged,
 it is defined with KQRBN.</p>
 
-<h3>Filtering Games</h3>
-<p>The list of games can be filtered either by the opening tree or by clicking the list header. Several searches can be combined or inverted.
-Further occurrences of the current board position in the current database can be found via the Find / Find Position menu.</p>
-
-<h3>Training Mode</h3>
-<p>Selecting Game/Training starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game
-so you can make any move in a position. If the move is the right one (the one that was played or a existing variation) then the move is executed
-and the game is moved one step forward.
-The game notation is updated and variations on that move become visible. Ideal for use with a tactics database.</p>
-<p>If you have no idea what to move, you can get hints by hovering with the mouse over your pieces. Perhaps, the right move pops up!
-See the chapter on Making Moves and the associated preferences to enable move guesses.</p>
-
+<h3>Customizing Keyboard shortcuts</h3>
+<p>Keyboard shortcuts are customized with the corresponding dialog from the Help menu.
+Please be careful, there is no checking for syntax errors or invalid entries, yet.</p>
+<p>Note that the customization is associated with a language selection.</p>
 </div>
 </div>
 
