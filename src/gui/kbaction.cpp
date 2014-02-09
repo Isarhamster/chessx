@@ -10,22 +10,22 @@
 static QStringList s_allKeys;
 #endif
 
-KbAction::KbAction(const char* text, QObject* parent, const QKeySequence &key)
-: QAction(tr(text),parent),
+KbAction::KbAction(QString text, QObject* parent, const QKeySequence &key)
+: QAction(text,parent),
   m_resetKey(key)
 {
     installShortcut(text, key);
 }
 
-KbAction::KbAction(const QIcon &icon, const char* text, QObject* parent, const QKeySequence &key)
-: QAction(icon,tr(text),parent),
+KbAction::KbAction(const QIcon &icon, QString text, QObject* parent, const QKeySequence &key)
+: QAction(icon,text,parent),
   m_resetKey(key),
   m_resetIcon(icon)
 {
     installShortcut(text, key);
 }
 
-void KbAction::installShortcut(const char *text, const QKeySequence &key)
+void KbAction::installShortcut(QString text, const QKeySequence &key)
 {
     m_storageKey = text;
     m_storageKey.remove('&');

@@ -433,13 +433,13 @@ private slots:
 
 private:
     /** Create single menu action. */
-    QAction* createAction(const char* name, const char* slot, const QKeySequence& key = QKeySequence(),
+    QAction* createAction(QString name, const char* slot, const QKeySequence& key = QKeySequence(),
                           QToolBar* pToolBar = 0, QString image = QString(), const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole, QObject *parent=0);
     /** Create single menu action. */
-    QAction* createAction(QObject *parent, const char *name, const char* slot, const QKeySequence& key = QKeySequence(),
+    QAction* createAction(QObject *parent, QString name, const char* slot, const QKeySequence& key = QKeySequence(),
                           QToolBar* pToolBar = 0, QString image = QString(), const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole);
     /** Create single menu action. */
-    QAction* createAction(const char *name, const char* slot, const QKeySequence& key,
+    QAction* createAction(QString name, const char* slot, const QKeySequence& key,
                           QToolBar* pToolBar, QIcon icon = QIcon(), const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole, QObject *parent=0);
     /** Create all the menus and actions */
     void setupActions();
