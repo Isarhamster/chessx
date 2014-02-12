@@ -400,6 +400,7 @@ void PgnDatabase::initialise()
     m_gameOffsets32 = 0;
     m_inComment = false;
     m_inPreComment = false;
+    m_isOpen = false;
     m_filename = QString();
     m_count = 0;
     m_allocated = 0;
