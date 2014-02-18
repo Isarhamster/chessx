@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+*   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
 #ifndef TRANSLATINGSLIDER_H
