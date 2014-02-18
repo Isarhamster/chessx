@@ -112,7 +112,8 @@ void OpeningTreeWidget::updateFilterIndex(QStringList files)
     ui->sourceSelector->insertItems(0, allFiles);
     if (allFiles.contains(current))
     {
-        ui->sourceSelector->setCurrentText(current);
+        int index = ui->sourceSelector->findText(current);
+        ui->sourceSelector->setCurrentIndex(index);
     }
     else
     {
