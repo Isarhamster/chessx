@@ -89,6 +89,10 @@ signals:
     void wheelScrolled(int dir);
     /** Indicate that a piece was dropped to the board */
     void pieceDropped(Square to, Piece p);
+
+    void moveStarted();
+    void moveFinished();
+
 protected:
     /** Redraws whole board if necessary. */
     virtual void paintEvent(QPaintEvent*);

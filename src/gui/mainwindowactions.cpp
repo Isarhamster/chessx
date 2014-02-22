@@ -540,6 +540,15 @@ void MainWindow::slotHelpBug()
     QDesktopServices::openUrl(QUrl("http://sourceforge.net/tracker/?group_id=163833&atid=829300"));
 }
 
+void MainWindow::slotMoveStarted()
+{
+    m_bInDrag = true;
+}
+
+void MainWindow::slotMoveFinished()
+{
+    m_bInDrag = false;
+}
 
 void MainWindow::slotBoardMove(Square from, Square to, int button)
 {
@@ -570,13 +579,21 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             }
             else
             {
-                if (!game().atLineEnd() && m_autoRespond->isChecked())
+                if (m_autoRespond->isChecked())
                 {
-                    game().forward();
-                    Move m = game().move();
-                    m_currentFrom = m.from();
-                    m_currentTo = m.to();
+                    if (!game().atLineEnd())
+                    {
+                        game().forward();
+                        Move m = game().move();
+                        m_currentFrom = m.from();
+                        m_currentTo = m.to();
+                    }
+                    else
+                    {
+                        m_machineHasToMove = true;
+                    }
                 }
+
                 slotGameChanged();
                 return;
             }
@@ -711,6 +728,7 @@ void MainWindow::slotSearchTree()
 void MainWindow::slotBoardMoveWheel(int wheel)
 {
     if(wheel & Qt::AltModifier)
+    {
         if(wheel & BoardView::WheelDown)
         {
             slotGameMoveLast();
@@ -719,7 +737,9 @@ void MainWindow::slotBoardMoveWheel(int wheel)
         {
             slotGameMoveFirst();
         }
+    }
     else if(wheel & Qt::ControlModifier)
+    {
         if(wheel & BoardView::WheelDown)
         {
             slotGameMoveNextN();
@@ -728,6 +748,7 @@ void MainWindow::slotBoardMoveWheel(int wheel)
         {
             slotGameMovePreviousN();
         }
+    }
     else if(wheel & BoardView::WheelDown)
     {
         slotGameMoveNext();
@@ -1279,35 +1300,41 @@ void MainWindow::slotToggleAutoPlayer()
 
 void MainWindow::slotEngineTimeout(const Analysis& analysis)
 {
-    if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != m_boardView->board()))
+    if (!m_bInDrag)
     {
-        Analysis a = m_mainAnalysis->getMainLine();
-        if(!a.variation().isEmpty())
+        if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != m_boardView->board()))
         {
-            Move m = a.variation().first();
-            if(!game().currentNodeHasMove(m.from(), m.to()))
+            Analysis a = m_mainAnalysis->getMainLine();
+            if(!a.variation().isEmpty())
             {
-                if(!game().isEcoPosition())
+                Move m = a.variation().first();
+                if(!game().currentNodeHasMove(m.from(), m.to()))
                 {
-                    slotGameAddVariation(a);
+                    if(!game().isEcoPosition())
+                    {
+                        slotGameAddVariation(a);
+                    }
                 }
             }
+            m_AutoInsertLastBoard = m_boardView->board();
+            slotAutoPlayTimeout();
         }
-        m_AutoInsertLastBoard = m_boardView->board();
-        slotAutoPlayTimeout();
-    }
-    else if (game().atLineEnd() && m_autoRespond->isChecked())
-    {
-        if (m_machineHasToMove)
+        else if (game().atLineEnd() && m_autoRespond->isChecked())
         {
-            if(!analysis.variation().isEmpty() && analysis.bestMove())
+            if (m_machineHasToMove)
             {
-                Move m = analysis.variation().first();
-                m_currentFrom = m.from();
-                m_currentTo = m.to();
-                game().addMove(m);
-                m_machineHasToMove = false;
-                slotGameChanged();
+                if(!analysis.variation().isEmpty() && analysis.bestMove())
+                {
+                    Move m = analysis.variation().first();
+                    if (m.isLegal())
+                    {
+                        m_currentFrom = m.from();
+                        m_currentTo = m.to();
+                        game().addMove(m);
+                        slotGameChanged();
+                    }
+                    m_machineHasToMove = false;
+                }
             }
         }
     }
@@ -1781,6 +1808,8 @@ void MainWindow::activateBoardView(int n)
         lastView->disconnect(SIGNAL(moveMade(Square, Square, int)));
         lastView->disconnect(SIGNAL(clicked(Square, int, QPoint, Square)));
         lastView->disconnect(SIGNAL(wheelScrolled(int)));
+        lastView->disconnect(SIGNAL(moveStarted()));
+        lastView->disconnect(SIGNAL(moveFinished()));
     }
 
     BoardView* boardView = m_boardViews.at(n);
@@ -1791,6 +1820,8 @@ void MainWindow::activateBoardView(int n)
     connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
     connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
     connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
+    connect(boardView, SIGNAL(moveStarted()), SLOT(slotMoveStarted()));
+    connect(boardView, SIGNAL(moveFinished()), SLOT(slotMoveFinished()));
 
     m_boardView = boardView;
 }
