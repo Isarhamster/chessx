@@ -274,6 +274,7 @@ Square BoardView::squareAt(const QPoint& p) const
 void BoardView::mousePressEvent(QMouseEvent* event)
 {
     m_dragStart = event->pos();
+    emit moveStarted();
 }
 
 bool BoardView::showGuess(Square s)
@@ -449,6 +450,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
             emit invalidMove(from);
         }
         m_dragged = Empty;
+        emit moveFinished();
         return;
     }
     else
@@ -459,6 +461,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
             {
                 emit clicked(s, button, mapToGlobal(event->pos()), InvalidSquare);
             }
+            emit moveFinished();
             return;
         }
     }
@@ -524,6 +527,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
+    emit moveFinished();
 }
 
 void BoardView::wheelEvent(QWheelEvent* e)

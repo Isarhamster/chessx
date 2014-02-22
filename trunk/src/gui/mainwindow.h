@@ -291,6 +291,10 @@ public slots:
     void slotSearchTreeMove(const QModelIndex& index);
     /** Made given move on the board */
     void slotBoardMove(Square from, Square to, int button);
+    /** Move started - use together with moveFinished to avoid automatic moves during user interaction */
+    void slotMoveStarted();
+    /** Move finished - use together with moveStarted to avoid automatic moves during user interaction */
+    void slotMoveFinished();
     /** Board square was clicked */
     void slotBoardClick(Square square, int button, QPoint pos, Square from);
     /** Browse current game by mouse wheel */
@@ -530,6 +534,7 @@ private:
     QNetworkAccessManager* m_manager;
     DownloadManager* downloadManager;
     bool m_machineHasToMove;
+    bool m_bInDrag;
 };
 
 
