@@ -612,7 +612,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
         {
             nag = VeryGoodMove;
         }
-        else if(token.endsWith("!?"))
+        else if(token.endsWith("?!"))
         {
             nag = SpeculativeMove;
         }
@@ -620,6 +620,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
         {
             nag = GoodMove;
         }
+        token = token.section('!',	0, 0);
     }
     else if(token.endsWith("?"))
     {
@@ -627,7 +628,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
         {
             nag = VeryPoorMove;
         }
-        else if(token.endsWith("?!"))
+        else if(token.endsWith("!?"))
         {
             nag = QuestionableMove;
         }
@@ -635,6 +636,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
         {
             nag = PoorMove;
         }
+        token = token.section('?',	0, 0);
     }
 
     if(!token.isEmpty())
@@ -666,6 +668,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
 
 void PgnDatabase::parseToken(Game* game, const QString& token)
 {
+    // qDebug() << "Parsing Token:" << token << ":";
     switch(token.at(0).toLatin1())
     {
     case '(':
