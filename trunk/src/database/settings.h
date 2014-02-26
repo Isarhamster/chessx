@@ -44,6 +44,8 @@ public:
     void setLayout(const QWidget* w);
     /** @return directory where data are stored. */
     QString dataPath();
+    /** @return directory where fixed data are stored. */
+    QString programDataPath();
     /** @return directory where common chess data are stored. */
     QString commonDataPath();
 

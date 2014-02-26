@@ -84,6 +84,13 @@ QString Settings::dataPath()
     return m_dataPath;
 }
 
+QString Settings::programDataPath()
+{
+    QString programDataPath = QCoreApplication::applicationDirPath();
+    programDataPath.append("/data");
+    return programDataPath;
+}
+
 QString Settings::commonDataPath()
 {
 #if QT_VERSION < 0x050000
