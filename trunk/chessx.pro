@@ -317,6 +317,9 @@ macx {
  ENGINE_DATA.files = data/engines-mac/uci/stockfish-4-64
  ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
  QMAKE_BUNDLE_DATA += ENGINE_DATA
+ BOOK_DATA.files = data/engines-mac/uci/book.bin
+ BOOK_DATA.path = Contents/MacOS/data/engines-mac/uci
+ QMAKE_BUNDLE_DATA += BOOK_DATA
  QMAKE_INFO_PLIST = mac_osx/Info.plist
 }
 
@@ -366,7 +369,8 @@ macx {
   OTHER_FILES += \
     mac_osx/Info.plist \
     mac_osx/qt_menu.nib \
-    data/engines-mac/uci/stockfish-23-64
+    data/engines-mac/uci/stockfish-4-64 \
+    data/engines-mac/uci/book.bin
 }
 
 win32 {
