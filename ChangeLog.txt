@@ -1,6 +1,60 @@
-This will install version 1.0.0 of ChessX.
+This will install version 1.1.0 of ChessX.
 
 List of Changes:
+
+February 2014: Version 1.1.0
+
+        - New feature: Traning with Toolbar Icon
+        - New feature: Play out game against engine
+        - New feature: Limit time that engines may use for analysis
+        - New feature: Auto Responder for training openings etc.
+        - New feature: Show name of opening in addition to ECO-Code
+        - New feature: Use any open database as source for Opening Tree
+        - New feature: Opening Tree with Filter as Source
+        - New feature: Splitter in Detail Views
+        - New Feature: CR#6 Configurable shortcuts
+        - New feature: Visual indicator for results
+        - New feature: Show location of AppSettings in About Dlg
+        - New feature: CR#108 Lock engine to current position
+        - New feature: Null moves at unusual positions
+        - New feauture: Incremental Opening Tree
+        - New feature: Adjust columns in list views
+        - New feature: Tabs switch if something is dragged to them (CR#112)
+        - New feature: Hilite new favorite item
+        - New feature: Select font for ChessBrowser from Preferences
+        - New feature: Additional link targets in info widgets
+        - New feature: PromotionDialog as suggested in CR#113 Pieces in promotion dialog
+        - New feature: Added possibility to force loading english lang in German and French
+
+        - Bugfix: #193 wrong nag $1-$6
+        - Bugfix: #191 Cannot edit an annotation-only comment
+        - Bugfix: Time malformed
+        - Bugfix: #189 Missing PNG for new board button
+        - Bugfix: Searching for result 1-0 was not possible
+        - Bugfix: Filtering if filter widget was changed from another widget
+        - Bugfix: CR#105 few remarks - issue 1 - coherence with icons
+        - Bugfix: CR#187 comments before first move are not read
+        - Bugfix: HTML-Output in some special cases wrong
+        - Bugfix: Worked around potential leak with smart pointer
+        - Bugfix: Issue closing chessx while loading a database
+        - Bugfix: Some columns won't display their content if the local setup is old enough
+        - Bugfix: #180 - part 3 (user is asked several times to load database)
+        - Bugfix: Nullmove issue
+        - Bugfix: #180: Load Order of DLLs (did not start on Windows)
+        - Bugfix: Better output of end of variations
+        - Bugfix: Workaround for Apache Issue: #183 Download of PGN databases fails because of blocked user-agent
+        - Bugfix: Guessengine crashes when accessing uninitialized memory
+        - Bugfix: CR#182 Minimize - restore = tab switch bug
+        - Bugfix: CR#181 typos
+        - Bugfix: CR#178 Deleting a variation does not clear the annotation
+        - Bugfix: Unterverwandlung inkorrekt
+
+        - Fixed: textbrowserex.h case sensitivity (did not compile on Linux)
+        - Fixed: a static leak (thanks to Albert for mentioning this)
+        - Fixed: portability issue #185 Build error in enginelist.cpp for kFreeBSD
+
+        - Changed: Flip Icon consistent with main GUI
+        - Changed: Slider 'Move Interval' moved from Preferences to StatusBar
 
 September 2013: Version 1.0.0
 
