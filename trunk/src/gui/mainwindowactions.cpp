@@ -1332,8 +1332,8 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         m_currentTo = m.to();
                         game().addMove(m);
                         slotGameChanged();
+                        m_machineHasToMove = false;
                     }
-                    m_machineHasToMove = false;
                 }
             }
         }
