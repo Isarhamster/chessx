@@ -213,7 +213,7 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
         m_board = b;
         m_filter = &f;
         m_updateFilter = updateFilter;
-        m_sourceIsDatabase = sourceIsFilter;
+        m_sourceIsDatabase = !sourceIsFilter;
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
@@ -232,7 +232,7 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
         m_board = b;
         m_filter = &f;
         m_updateFilter = updateFilter;
-        m_sourceIsDatabase = sourceIsFilter;
+        m_sourceIsDatabase = !sourceIsFilter;
         m_bRequestPending = true;
         oupd.cancel();
         return false;
