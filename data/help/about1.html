@@ -30,32 +30,31 @@
 
 <div id="content">
 <h2><a name="Handbuch">ChessX Manual</a></h2>
+<h3>Opening a database</h3>
+<p>You can open a database either from the File menu or drag a file from Explorer / Finder into the Databases view.</p>
+<p>You can make a database stay permanently in the database list by turning it into a "Favorite" (right-click the file).
+A database is reopened from there by clicking the asterisk or again by the context menu.</p>
+<p>You can also drag files from yor Internet Browser into the ChessX Database List, they are downloaded into
+the configured default path (see the Preferences-Advanced-Default Data Path entry). If they are compressed (zip),
+the archive is stored at the Default Data Path and its content is extracted. Again, if there is something like PGN inside,
+the files are opened afterwards.</p>
 
- <h3>Opening a database</h3>
- <p>You can open a database either from the File menu or drag a file from Explorer / Finder into the Databases view.</p>
- <p>You can make a database stay permanently in the database list by turning it into a "Favorite" (right-click the file).
- A database is reopened from there by clicking the asterisk or again by the context menu.</p>
- <p>You can also drag files from yor Internet Browser into the ChessX Database List, they are downloaded into
- the configured default path (see the Preferences-Advanced-Default Data Path entry). If they are compressed (zip),
- the archive is stored at the Default Data Path and its content is extracted. Again, if there is something like PGN inside,
- the files are opened afterwards.</p>
+<h3>Making moves</h3>
+<p>A move is done by gabbing a piece and dragging it
+to another square.</p>
+<p>Depending on your settings in the board preferences,
+you can either
+<ul>
+<li>Click on a piece and a target square (if move guesses are deactivated)
+<li>Click on a piece and accepting the move quess (in case of deactivated next guess on right click)
+<li>Right Click on a piece and then again until the correct target square is high-lighted, then press the
+left mouse button to make the move (in case right click is used for next guess).
+</ul>
+</p>
+<p>Going back a move can be done by a right-click (in case the right click is not configured for backtracking a move)
+or by pressing CTRL-right click if backtracking is assigned to the right mouse key.</p>
 
- <h3>Making moves</h3>
- <p>A move is done by gabbing a piece and dragging it
- to another square.</p>
- <p>Depending on your settings in the board preferences,
- you can either
- <ul>
-  <li>Click on a piece and a target square (if move guesses are deactivated)
-  <li>Click on a piece and accepting the move quess (in case of deactivated next guess on right click)
-  <li>Right Click on a piece and then again until the correct target square is high-lighted, then press the
-  left mouse button to make the move (in case right click is used for next guess).
- </ul>
- </p>
- <p>Going back a move can be done by a right-click (in case the right click is not configured for backtracking a move)
- or by pressing CTRL-right click if backtracking is assigned to the right mouse key.</p>
-
- <p>Usually, making a move will insert a new variation unless you are at the end of the game or a variation. If you do not
+<p>Usually, making a move will insert a new variation unless you are at the end of the game or a variation. If you do not
 want to create a new variation, press CTR while moving, which replaces the current move and all following moves by the new move.</p>
 <p>If you want to exchange a move without deleting subsequent moves, you can press CTRL+ALT while moving, this will exchange
 the move played with the new move and check the remaining game for illegal positions. The game is then truncated at these illegal positions.</p>
