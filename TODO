@@ -9,22 +9,10 @@ TODO for 0.5 (Next release, technical)
 
 
 TODO for 1.0 (Stable PGN-based version)
-* Toolbar
-	- graphics
-	- configuration
 * GameView
 	- display custom tags in GameView
 	- make GameView tags configurable (color, font)
 	- make tags clickable
-* BoardView
-	- optional coordinates
-* Searches
-	- simple header search
-* Game editing
-	- adding/modifying NAGs
-	- modifying comments
-	- detecting & handling modified game
-
 
 TODO for 1.5 (Extended PGN-based version)
 * File browser
@@ -35,21 +23,7 @@ TODO for 1.5 (Extended PGN-based version)
 	- board search (+variants)
 	- material search
 * BoardView
-	- optional last move highlight
 	- move animation
-* Engines
-	- display MultiPV
-	- configuring engines
-	- autoconfiguring engines
-* MainWindow
-	- configurable key shortcuts
-
-
-
-
-
-
-
 
 TODO for 2.0 (Stable Native-based version)
 * Native database format
