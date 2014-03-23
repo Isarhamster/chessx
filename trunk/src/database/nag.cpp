@@ -144,8 +144,8 @@ static const QString g_nagStringList[NagCount] =
     "-+",
     "++--",
     "--++",
-    QString::fromUtf8("⨀"), // Zugzwang
-    QString::fromUtf8("⨀"), // Zugzwang
+    "\u2299", // Zugzwang
+    "\u2299", // Zugzwang
     "With slight space advantage",
     "With slight space advantage",
     "With moderate space advantage",
@@ -154,10 +154,10 @@ static const QString g_nagStringList[NagCount] =
     "With decisive space advantage",
     "With slight development advantage",
     "With slight development advantage",
-    QString::fromUtf8("⟳"), // "With moderate development advantage"
-    QString::fromUtf8("⟳"), // "With moderate development advantage"
-    "With decisive development advantage",
-    "With decisive development advantage",
+    "\u21bb", // "With moderate development advantage"
+    "\u21bb", // "With moderate development advantage"
+    "\u21bb", // "With decisive development advantage"
+    "\u21bb", // "With decisive development advantage"
     QString::fromUtf8("→"), // "With initiative"
     QString::fromUtf8("→"), // "With initiative"
     "With lasting initiative",
@@ -166,8 +166,8 @@ static const QString g_nagStringList[NagCount] =
     QString::fromUtf8("↑"), // "With attack"
     "With insufficient compensation for material deficit",
     "With insufficient compensation for material deficit",
-    QString::fromUtf8("∞="),
-    QString::fromUtf8("∞="),
+    "\u224c",
+    "\u224c",
     "With more than adequate compensation for material deficit",
     "With more than adequate compensation for material deficit",
     "With slight center control advantage",
@@ -264,19 +264,19 @@ static const QString g_nagStringList[NagCount] =
     QString::fromUtf8("⊕"), // "Severe time control pressure"
     QString::fromUtf8("△"),
     "Aimed against",
-    QString::fromUtf8("⌓"), // "Better was"
+    "\u2265", // "Better was"
     "<", // "Worse was"
     "Equivalent was",
     "RR",
     "N",
-    QString::fromUtf8("✕"), // "weak point"
+    "x", // "weak point"
     QString::fromUtf8("⊥"), // "endgame"
     QString::fromUtf8("⇔"), // "line"
-    QString::fromUtf8("⇗"), // "diagonal",
-    QString::fromUtf8("☍"), // "pair of bishops"
-    QString::fromUtf8("☍"), // "pair of bishops"
-    QString::fromUtf8("❐"), // "bishops of opposite color"
-    QString::fromUtf8("▞"), // "bishops of the same color"
+    "\u21d7", // "diagonal",
+    "\u29c9", // "pair of bishops"
+    "\u29c9", // "pair of bishops"
+    "\u25E8", // "bishops of opposite color"
+    "\u259E", // "bishops of the same color"
     0, 0, 0, 0, 0, 0, // 160
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //180
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //200
@@ -473,8 +473,8 @@ static const QString g_nagStringListHTML[NagCount] =
     "-+",
     "++--",
     "--++",
-    "&Theta;", // Zugzwang
-    "&Theta;", // Zugzwang
+    "\u2299", // Zugzwang
+    "\u2299", // Zugzwang
     "With slight space advantage",
     "With slight space advantage",
     "With moderate space advantage",
@@ -483,10 +483,10 @@ static const QString g_nagStringListHTML[NagCount] =
     "With decisive space advantage",
     "With slight development advantage",
     "With slight development advantage",
-    QString::fromUtf8("⟳"), // "With moderate development advantage"
-    QString::fromUtf8("⟳"), // "With moderate development advantage"
-    "With decisive development advantage",
-    "With decisive development advantage",
+    "\u21bb", // "With moderate development advantage"
+    "\u21bb", // "With moderate development advantage"
+    "\u21bb", // "With decisive development advantage"
+    "\u21bb", // "With decisive development advantage"
     "&rarr;", // "With initiative"
     "&rarr;", // "With initiative"
     "With lasting initiative",
@@ -495,8 +495,8 @@ static const QString g_nagStringListHTML[NagCount] =
     "&uarr;", // "With attack"
     "With insufficient compensation for material deficit",
     "With insufficient compensation for material deficit",
-    "&prop;=",
-    "&prop;=",
+    "\u224c",
+    "\u224c",
     "With more than adequate compensation for material deficit",
     "With more than adequate compensation for material deficit",
     "With slight center control advantage",
@@ -593,7 +593,7 @@ static const QString g_nagStringListHTML[NagCount] =
     "&oplus;", // "Severe time control pressure"
     "&Delta;",
     "Aimed against",
-    ">", // "Better was"
+    "\u2265", // "Better was"
     "<", // "Worse was"
     "Equivalent was",
     "RR",
@@ -601,11 +601,11 @@ static const QString g_nagStringListHTML[NagCount] =
     "x", // "weak point"
     QString::fromUtf8("⊥"), // "endgame"
     "&hArr;", // "line"
-    QString::fromUtf8("⇗"), // "diagonal",
-    QString::fromUtf8("☍"), // "pair of bishops"
-    QString::fromUtf8("☍"), // "pair of bishops"
-    QString::fromUtf8("❐"), // "bishops of opposite color"
-    QString::fromUtf8("▞"), // "bishops of the same color"
+    "\u21d7", // "diagonal",
+    "\u29c9", // "pair of bishops"
+    "\u29c9", // "pair of bishops"
+    "\u25E8", // "bishops of opposite color"
+    "\u259E", // "bishops of the same color"
     0, 0, 0, 0, 0, 0, // 160
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //180
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //200
@@ -641,10 +641,12 @@ QString NagSet::nagToMenuString(Nag nag)
 Nag NagSet::fromString(const QString &nag)
 {
     for(int i = 1; i < NagCount; ++i)
+    {
         if(g_nagStringList[i] == nag)
         {
             return Nag(i);
         }
+    }
     return NullNag;
 }
 
@@ -652,10 +654,12 @@ int NagSet::prefixCount(const QString &nag)
 {
     QSet<QString> matches;
     for(int i = 1; i < NagCount; ++i)
+    {
         if(g_nagStringList[i].startsWith(nag))
         {
             matches.insert(g_nagStringList[i]);
         }
+    }
     return matches.count();
 
 }
