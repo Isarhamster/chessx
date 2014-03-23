@@ -178,9 +178,9 @@ typedef enum
     Line,
     Diagonal,
     WhiteHasAPairOfBishops,
+    BishopNagStart = WhiteHasAPairOfBishops,
     BlackHasAPairOfBishops,
     BishopsOfOppositeColor,
-    BishopNagStart = BishopsOfOppositeColor,
     BishopsOfSameColor,
     BishopNagEnd = BishopsOfSameColor,
     NagDiagram = 201, // SCID compatibility
