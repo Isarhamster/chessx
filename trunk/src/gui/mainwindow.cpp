@@ -1019,9 +1019,9 @@ void MainWindow::setupActions()
     QMenu* file = menuBar()->addMenu(tr("&File"));
     QToolBar* fileToolBar = addToolBar(tr("File"));
     fileToolBar->setObjectName("FileToolBar");
-    file->addAction(createAction(/*QT_TR_NOOP*/tr("&New database..."), SLOT(slotFileNew()), QKeySequence(), fileToolBar, ":/images/new.png"));
-    file->addAction(createAction(/*QT_TR_NOOP*/tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
-    file->addAction(createAction(/*QT_TR_NOOP*/tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
+    file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), QKeySequence(), fileToolBar, ":/images/new.png"));
+    file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
+    file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
     QMenu* menuRecent = file->addMenu(tr("Open &recent..."));
 
     for(int i = 0; i < MaxRecentFiles; ++i)
@@ -1034,73 +1034,76 @@ void MainWindow::setupActions()
     }
     file->addSeparator();
 
-    QAction* commitAction = createAction(/*QT_TR_NOOP*/tr("&Save"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S, fileToolBar, ":/images/save.png");
+    QAction* commitAction = createAction(tr("&Save"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S, fileToolBar, ":/images/save.png");
     commitAction->setToolTip(tr("Commit Database to disk"));
     connect(this, SIGNAL(signalCurrentDBisReadWrite(bool)), commitAction, SLOT(setEnabled(bool)));
     file->addAction(commitAction);
 
     QMenu* exportMenu = file->addMenu(tr("&Export..."));
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), exportMenu, SLOT(setEnabled(bool)));
-    exportMenu->addAction(createAction(exportMenu,/*QT_TR_NOOP*/tr("Current Game"), SLOT(slotFileExportGame())));
-    exportMenu->addAction(createAction(exportMenu,/*QT_TR_NOOP*/tr("&Games in filter"), SLOT(slotFileExportFilter())));
-    exportMenu->addAction(createAction(exportMenu,/*QT_TR_NOOP*/tr("&All games"), SLOT(slotFileExportAll())));
+    exportMenu->addAction(createAction(exportMenu,tr("Current Game"), SLOT(slotFileExportGame())));
+    exportMenu->addAction(createAction(exportMenu,tr("&Games in filter"), SLOT(slotFileExportFilter())));
+    exportMenu->addAction(createAction(exportMenu,tr("&All games"), SLOT(slotFileExportAll())));
+
+    QAction* saveImage = createAction(tr("Export Image"), SLOT(slotExportImage()));
+    file->addAction(saveImage);
     file->addSeparator();
 
-    QAction* closeFileAction = createAction(/*QT_TR_NOOP*/tr("&Close"), SLOT(slotFileClose()), QKeySequence::Close, fileToolBar, ":/images/folder.png");
+    QAction* closeFileAction = createAction(tr("&Close"), SLOT(slotFileClose()), QKeySequence::Close, fileToolBar, ":/images/folder.png");
     connect(this, SIGNAL(signalCurrentDBcanBeClosed(bool)), closeFileAction, SLOT(setEnabled(bool)));
     file->addAction(closeFileAction);
 
-    file->addAction(createAction(/*QT_TR_NOOP*/tr("&Quit"), SLOT(slotFileQuit()), QKeySequence(), 0, QString(), QString(), QAction::QuitRole));
+    file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), QKeySequence(), 0, QString(), QString(), QAction::QuitRole));
 
     /* Edit menu */
     QMenu* edit = menuBar()->addMenu(tr("&Edit"));
     QToolBar* editToolBar = addToolBar(tr("Edit"));
     editToolBar->setObjectName("EditToolBar");
 
-    QAction* commentAfter = createAction(/*QT_TR_NOOP*/tr("Comment"), SLOT(slotEditComment()),
+    QAction* commentAfter = createAction(tr("Comment"), SLOT(slotEditComment()),
                                          Qt::CTRL + Qt::Key_A, editToolBar, ":/images/edit_after.png");
     connect(this, SIGNAL(signalGameIsEmpty(bool)), commentAfter, SLOT(setDisabled(bool)));
     edit->addAction(commentAfter);
-    QAction* commentBefore = createAction(/*QT_TR_NOOP*/tr("Comment Before"), SLOT(slotEditCommentBefore()),
+    QAction* commentBefore = createAction(tr("Comment Before"), SLOT(slotEditCommentBefore()),
                                           Qt::CTRL + Qt::ALT + Qt::Key_A);
     connect(this, SIGNAL(signalGameAtLineStart(bool)), commentBefore, SLOT(setEnabled(bool)));
     edit->addAction(commentBefore);
 
     QMenu* editVariation = edit->addMenu(tr("Variation"));
 
-    QAction* promoteAction = createAction(editVariation, /*QT_TR_NOOP*/tr("Promote"), SLOT(slotEditVarPromote()), Qt::CTRL + Qt::Key_J, editToolBar, ":/images/format_indent_less.png");
+    QAction* promoteAction = createAction(editVariation, tr("Promote"), SLOT(slotEditVarPromote()), Qt::CTRL + Qt::Key_J, editToolBar, ":/images/format_indent_less.png");
     promoteAction->setToolTip(tr("Promote Variation"));
     connect(this, SIGNAL(signalMoveHasParent(bool)), promoteAction, SLOT(setEnabled(bool)));
     editVariation->addAction(promoteAction);
 
-    QAction* removeVariationAction = createAction(editVariation, /*QT_TR_NOOP*/tr("Remove"), SLOT(slotEditVarRemove()),
+    QAction* removeVariationAction = createAction(editVariation, tr("Remove"), SLOT(slotEditVarRemove()),
                                      Qt::CTRL + Qt::Key_Delete, editToolBar, ":/images/edit_cut.png");
     removeVariationAction->setToolTip(tr("Remove Variation"));
     connect(this, SIGNAL(signalMoveHasParent(bool)), removeVariationAction, SLOT(setEnabled(bool)));
     editVariation->addAction(removeVariationAction);
 
     QMenu* editremove = edit->addMenu(tr("&Remove"));
-    editremove->addAction(createAction(editremove, /*QT_TR_NOOP*/tr("Moves from the beginning"),
+    editremove->addAction(createAction(editremove, tr("Moves from the beginning"),
                                        SLOT(slotEditTruncateStart()), QKeySequence()));
-    editremove->addAction(createAction(editremove, /*QT_TR_NOOP*/tr("Moves to the end"), SLOT(slotEditTruncateEnd()),
+    editremove->addAction(createAction(editremove, tr("Moves to the end"), SLOT(slotEditTruncateEnd()),
                                        Qt::SHIFT + Qt::Key_Delete));
     edit->addSeparator();
-    QAction* setupBoard = createAction(/*QT_TR_NOOP*/tr("Setup &position..."),
+    QAction* setupBoard = createAction(tr("Setup &position..."),
                                        SLOT(slotEditBoard()), Qt::SHIFT + Qt::CTRL + Qt::Key_E,
                                        editToolBar, ":/images/setup_board.png");
 
     edit->addAction(setupBoard);
     edit->addSeparator();
-    edit->addAction(createAction(/*QT_TR_NOOP*/tr("Copy PGN"), SLOT(slotEditCopyPGN()), Qt::CTRL + Qt::Key_C, editToolBar, ":/images/edit_copy.png"));
-    edit->addAction(createAction(/*QT_TR_NOOP*/tr("Copy FEN"), SLOT(slotEditCopyFEN()), Qt::CTRL + Qt::SHIFT + Qt::Key_C));
-    edit->addAction(createAction(/*QT_TR_NOOP*/tr("Copy Position"), SLOT(slotEditCopyHumanFEN())));
-    edit->addAction(createAction(/*QT_TR_NOOP*/tr("Copy Image"), SLOT(slotEditCopyImage()),
+    edit->addAction(createAction(tr("Copy PGN"), SLOT(slotEditCopyPGN()), Qt::CTRL + Qt::Key_C, editToolBar, ":/images/edit_copy.png"));
+    edit->addAction(createAction(tr("Copy FEN"), SLOT(slotEditCopyFEN()), Qt::CTRL + Qt::SHIFT + Qt::Key_C));
+    edit->addAction(createAction(tr("Copy Position"), SLOT(slotEditCopyHumanFEN())));
+    edit->addAction(createAction(tr("Copy Image"), SLOT(slotEditCopyImage()),
                                  Qt::CTRL + Qt::ALT + Qt::Key_C, editToolBar, ":/images/camera.png"));
     edit->addSeparator();
-    edit->addAction(createAction(/*QT_TR_NOOP*/tr("&Paste"), SLOT(slotEditPaste()),
+    edit->addAction(createAction(tr("&Paste"), SLOT(slotEditPaste()),
                                  Qt::CTRL + Qt::Key_V, editToolBar, ":/images/edit_paste.png"));
     edit->addSeparator();
-    edit->addAction(createAction(/*QT_TR_NOOP*/tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(), 0,
+    edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(), 0,
                                  QString(), QString(), QAction::PreferencesRole));
 
     /* View menu */
@@ -1110,7 +1113,7 @@ void MainWindow::setupActions()
     m_menuView->addSeparator();
 
 #if defined(Q_OS_WIN)
-    QAction* stayOnTop = createAction(/*QT_TR_NOOP*/tr("Stay on Top"), SLOT(slotToggleStayOnTop()));
+    QAction* stayOnTop = createAction(tr("Stay on Top"), SLOT(slotToggleStayOnTop()));
     stayOnTop->setCheckable(true);
     stayOnTop->setChecked(AppSettings->getValue("/MainWindow/StayOnTop").toBool());
     m_menuView->addAction(stayOnTop);
@@ -1119,9 +1122,9 @@ void MainWindow::setupActions()
     AppSettings->setValue("/MainWindow/StayOnTop", false);
 #endif
 
-    m_menuView->addAction(createAction(/*QT_TR_NOOP*/tr("New board"), SLOT(slotCreateBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_N,
+    m_menuView->addAction(createAction(tr("New board"), SLOT(slotCreateBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_N,
                                        0, QIcon(":/images/new_board.png")));
-    m_menuView->addAction(createAction(/*QT_TR_NOOP*/tr("Close current board"), SLOT(slotCloseBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_W,
+    m_menuView->addAction(createAction(tr("Close current board"), SLOT(slotCloseBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_W,
                                        0, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
     m_menuView->addSeparator();
 
@@ -1132,7 +1135,7 @@ void MainWindow::setupActions()
     QToolBar* dbToolBar = addToolBar(tr("Database"));
     dbToolBar->setObjectName("DbToolBarMain");
 
-    QAction* newAction = createAction(/*QT_TR_NOOP*/tr("&New"), SLOT(slotGameNew()), QKeySequence::New,
+    QAction* newAction = createAction(tr("&New"), SLOT(slotGameNew()), QKeySequence::New,
                                       dbToolBar, ":/images/new_game.png");
     gameMenu->addAction(newAction);
     connect(this, SIGNAL(signalGameIsEmpty(bool)), newAction, SLOT(setDisabled(bool)));
@@ -1140,44 +1143,44 @@ void MainWindow::setupActions()
     QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
 
     /* Game->Load submenu */
-    QAction * nextAction = createAction(/*QT_TR_NOOP*/tr("&Next"), SLOT(slotGameLoadNext()), Qt::CTRL + Qt::SHIFT + Qt::Key_Down,
+    QAction * nextAction = createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::CTRL + Qt::SHIFT + Qt::Key_Down,
                                         dbToolBar, ":/images/game_down.png");
     connect(this, SIGNAL(signalLastGameLoaded(bool)), nextAction, SLOT(setDisabled(bool)));
     loadMenu->addAction(nextAction);
-    QAction * prevAction = createAction(/*QT_TR_NOOP*/tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up,
+    QAction * prevAction = createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up,
                                         dbToolBar, ":/images/game_up.png");
     connect(this, SIGNAL(signalFirstGameLoaded(bool)), prevAction, SLOT(setDisabled(bool)));
     loadMenu->addAction(prevAction);
-    loadMenu->addAction(createAction(/*QT_TR_NOOP*/tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
-    loadMenu->addAction(createAction(/*QT_TR_NOOP*/tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
-    gameMenu->addAction(createAction(/*QT_TR_NOOP*/tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
+    loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
+    loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
+    gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
 
     gameMenu->addSeparator();
 
-    QAction* flip = createAction(/*QT_TR_NOOP*/tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B, gameToolBar, ":/images/flip_board.png");
+    QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B, gameToolBar, ":/images/flip_board.png");
     flip->setCheckable(true);
     gameToolBar->addSeparator();
 
     ExclusiveActionGroup* autoGroup = new ExclusiveActionGroup(this);
     ExclusiveActionGroup* autoGroup2 = new ExclusiveActionGroup(this);
 
-    m_training = createAction(/*QT_TR_NOOP*/tr("Training"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::Key_R, gameToolBar, ":/images/training.png");
+    m_training = createAction(tr("Training"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::Key_R, gameToolBar, ":/images/training.png");
     m_training->setCheckable(true);
     autoGroup2->addAction(m_training);
     gameMenu->addAction(m_training);
 
-    m_autoRespond = createAction(/*QT_TR_NOOP*/tr("Auto Respond"), SLOT(slotToggleAutoRespond()), Qt::META + Qt::SHIFT + Qt::Key_R, gameToolBar, ":/images/respond.png");
+    m_autoRespond = createAction(tr("Auto Respond"), SLOT(slotToggleAutoRespond()), Qt::META + Qt::SHIFT + Qt::Key_R, gameToolBar, ":/images/respond.png");
     gameMenu->addAction(m_autoRespond);
     autoGroup->addAction(m_autoRespond);
     m_autoRespond->setCheckable(true);
 
-    m_autoPlay = createAction(/*QT_TR_NOOP*/tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_R, gameToolBar, ":/images/replay.png");
+    m_autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_R, gameToolBar, ":/images/replay.png");
     gameMenu->addAction(m_autoPlay);
     autoGroup->addAction(m_autoPlay);
     autoGroup2->addAction(m_autoPlay);
     m_autoPlay->setCheckable(true);
 
-    m_autoAnalysis = createAction(/*QT_TR_NOOP*/tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::CTRL + Qt::ALT + Qt::Key_R, gameToolBar, ":/images/annotate.png");
+    m_autoAnalysis = createAction(tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::CTRL + Qt::ALT + Qt::Key_R, gameToolBar, ":/images/annotate.png");
     gameMenu->addAction(m_autoAnalysis);
     autoGroup->addAction(m_autoAnalysis);
     autoGroup2->addAction(m_autoAnalysis);
@@ -1190,81 +1193,81 @@ void MainWindow::setupActions()
 
     /* Game->Go to submenu */
     QMenu* goMenu = gameMenu->addMenu(tr("&Go to"));
-    QAction* gotoFirstMove = createAction(goMenu, /*QT_TR_NOOP*/tr("&Start"), SLOT(slotGameMoveFirst()), Qt::Key_Home, gameToolBar, ":/images/first.png");
+    QAction* gotoFirstMove = createAction(goMenu, tr("&Start"), SLOT(slotGameMoveFirst()), Qt::Key_Home, gameToolBar, ":/images/first.png");
     gotoFirstMove->setToolTip(tr("Go to first move"));
     connect(this, SIGNAL(signalMoveHasPreviousMove(bool)), gotoFirstMove, SLOT(setEnabled(bool)));
     goMenu->addAction(gotoFirstMove);
 
-    QAction* gotoLastMove = createAction(goMenu, /*QT_TR_NOOP*/tr("&End"), SLOT(slotGameMoveLast()), Qt::Key_End, gameToolBar, ":/images/last.png");
+    QAction* gotoLastMove = createAction(goMenu, tr("&End"), SLOT(slotGameMoveLast()), Qt::Key_End, gameToolBar, ":/images/last.png");
     gotoLastMove->setToolTip(tr("Go to last move"));
     connect(this, SIGNAL(signalMoveHasNextMove(bool)), gotoLastMove, SLOT(setEnabled(bool)));
     goMenu->addAction(gotoLastMove);
 
-    QAction* actionPrevMove = createAction(goMenu, /*QT_TR_NOOP*/tr("&Previous move"), SLOT(slotGameMovePrevious()), Qt::Key_Left, gameToolBar, ":/images/prev.png");
+    QAction* actionPrevMove = createAction(goMenu, tr("&Previous move"), SLOT(slotGameMovePrevious()), Qt::Key_Left, gameToolBar, ":/images/prev.png");
     connect(this, SIGNAL(signalMoveHasPreviousMove(bool)), actionPrevMove, SLOT(setEnabled(bool)));
     goMenu->addAction(actionPrevMove);
 
-    QAction* actionNextMove = createAction(goMenu, /*QT_TR_NOOP*/tr("&Next move"), SLOT(slotGameMoveNext()), Qt::Key_Right, gameToolBar, ":/images/next.png");
+    QAction* actionNextMove = createAction(goMenu, tr("&Next move"), SLOT(slotGameMoveNext()), Qt::Key_Right, gameToolBar, ":/images/next.png");
     connect(this, SIGNAL(signalMoveHasNextMove(bool)), actionNextMove, SLOT(setEnabled(bool)));
     goMenu->addAction(actionNextMove);
 
-    QAction* fiveMovesForward = createAction(goMenu, /*QT_TR_NOOP*/tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down);
+    QAction* fiveMovesForward = createAction(goMenu, tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down);
     connect(this, SIGNAL(signalMoveHasNextMove(bool)), fiveMovesForward, SLOT(setEnabled(bool)));
     goMenu->addAction(fiveMovesForward);
 
-    QAction* fiveMovesPrev = createAction(goMenu, /*QT_TR_NOOP*/tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up);
+    QAction* fiveMovesPrev = createAction(goMenu, tr("5 moves &backward"), SLOT(slotGameMovePreviousN()), Qt::Key_Up);
     connect(this, SIGNAL(signalMoveHasPreviousMove(bool)), fiveMovesPrev, SLOT(setEnabled(bool)));
     goMenu->addAction(fiveMovesPrev);
 
-    QAction* enterVariation = createAction(goMenu, /*QT_TR_NOOP*/tr("Enter Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right, gameToolBar, ":/images/go_in.png");
+    QAction* enterVariation = createAction(goMenu, tr("Enter Variation"), SLOT(slotGameVarEnter()), Qt::CTRL + Qt::Key_Right, gameToolBar, ":/images/go_in.png");
     connect(this, SIGNAL(signalMoveHasVariation(bool)), enterVariation, SLOT(setEnabled(bool)));
     goMenu->addAction(enterVariation);
 
-    QAction* prevVariation = createAction(goMenu, /*QT_TR_NOOP*/tr("Previous Variation"), SLOT(slotGameVarUp()), Qt::CTRL + Qt::Key_Up, gameToolBar, ":/images/go_up.png");
+    QAction* prevVariation = createAction(goMenu, tr("Previous Variation"), SLOT(slotGameVarUp()), Qt::CTRL + Qt::Key_Up, gameToolBar, ":/images/go_up.png");
     connect(this, SIGNAL(signalVariationHasSibling(bool)), prevVariation, SLOT(setEnabled(bool)));
     goMenu->addAction(prevVariation);
 
-    QAction* nextVariation = createAction(goMenu, /*QT_TR_NOOP*/tr("Next Variation"), SLOT(slotGameVarDown()), Qt::CTRL + Qt::Key_Down, gameToolBar, ":/images/go_down.png");
+    QAction* nextVariation = createAction(goMenu, tr("Next Variation"), SLOT(slotGameVarDown()), Qt::CTRL + Qt::Key_Down, gameToolBar, ":/images/go_down.png");
     connect(this, SIGNAL(signalVariationHasSibling(bool)), nextVariation, SLOT(setEnabled(bool)));
     goMenu->addAction(nextVariation);
 
-    QAction* backToMainLine = createAction(goMenu, /*QT_TR_NOOP*/tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL + Qt::Key_Left, gameToolBar, ":/images/go_out.png");
+    QAction* backToMainLine = createAction(goMenu, tr("Back to main line"), SLOT(slotGameVarExit()), Qt::CTRL + Qt::Key_Left, gameToolBar, ":/images/go_out.png");
     connect(this, SIGNAL(signalMoveHasParent(bool)), backToMainLine, SLOT(setEnabled(bool)));
     goMenu->addAction(backToMainLine);
 
     gameMenu->addSeparator();
 
     QMenu* refactorMenu = gameMenu->addMenu(tr("Refactor"));
-    refactorMenu->addAction(createAction(refactorMenu, /*QT_TR_NOOP*/tr("Uncomment"), SLOT(slotGameUncomment())));
-    refactorMenu->addAction(createAction(refactorMenu, /*QT_TR_NOOP*/tr("Remove Variations"), SLOT(slotGameRemoveVariations())));
+    refactorMenu->addAction(createAction(refactorMenu, tr("Uncomment"), SLOT(slotGameUncomment())));
+    refactorMenu->addAction(createAction(refactorMenu, tr("Remove Variations"), SLOT(slotGameRemoveVariations())));
 
     /* Search menu */
     QMenu* search = menuBar()->addMenu(tr("Fi&nd"));
     QToolBar* searchToolBar = addToolBar(tr("Search"));
     searchToolBar->setObjectName("SearchToolBar");
 
-    QAction* actionFindTag = createAction(/*QT_TR_NOOP*/tr("Find &tag"), SLOT(slotSearchTag()), Qt::CTRL + Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png");
+    QAction* actionFindTag = createAction(tr("Find &tag"), SLOT(slotSearchTag()), Qt::CTRL + Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), actionFindTag, SLOT(setEnabled(bool)));
     search->addAction(actionFindTag);
 
-    QAction* actionFindBoard = createAction(/*QT_TR_NOOP*/tr("Find &position"), SLOT(slotSearchBoard()), Qt::CTRL + Qt::SHIFT + Qt::Key_B, searchToolBar, ":/images/find_pos.png");
+    QAction* actionFindBoard = createAction(tr("Find &position"), SLOT(slotSearchBoard()), Qt::CTRL + Qt::SHIFT + Qt::Key_B, searchToolBar, ":/images/find_pos.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), actionFindBoard, SLOT(setEnabled(bool)));
     search->addAction(actionFindBoard);
 
     search->addSeparator();
 
-    QAction* filterReset = createAction(/*QT_TR_NOOP*/tr("&Reset filter"), SLOT(slotSearchReset()),     Qt::CTRL + Qt::Key_F, searchToolBar, ":/images/filter_reset.png");
+    QAction* filterReset = createAction(tr("&Reset filter"), SLOT(slotSearchReset()),     Qt::CTRL + Qt::Key_F, searchToolBar, ":/images/filter_reset.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), filterReset, SLOT(setEnabled(bool)));
     search->addAction(filterReset);
 
-    QAction* reverseFilter = createAction(/*QT_TR_NOOP*/tr("&Reverse filter"), SLOT(slotSearchReverse()), Qt::CTRL + Qt::SHIFT + Qt::Key_F, searchToolBar, ":/images/filter_rev.png");
+    QAction* reverseFilter = createAction(tr("&Reverse filter"), SLOT(slotSearchReverse()), Qt::CTRL + Qt::SHIFT + Qt::Key_F, searchToolBar, ":/images/filter_rev.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), reverseFilter, SLOT(setEnabled(bool)));
     search->addAction(reverseFilter);
 
     /* Database menu */
     QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
     m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
-    menuDatabase->addAction(createAction(/*QT_TR_NOOP*/tr("&Copy games..."), SLOT(slotDatabaseCopy()),
+    menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()),
                                          Qt::Key_F5));
 
     /* Help menu */
@@ -1284,13 +1287,13 @@ void MainWindow::setupActions()
     help->addAction(helpAction);
     pHelpDock->hide();
 
-    help->addAction(createAction(/*QT_TR_NOOP*/tr("Customize Keyboard..."), SLOT(slotEditActions())));
+    help->addAction(createAction(tr("Customize Keyboard..."), SLOT(slotEditActions())));
     help->addSeparator();
-    QAction* reportBugAction = createAction(/*QT_TR_NOOP*/tr("&Report a bug..."), SLOT(slotHelpBug()));
+    QAction* reportBugAction = createAction(tr("&Report a bug..."), SLOT(slotHelpBug()));
     reportBugAction->setIcon(QIcon(":/images/bug.png"));
     help->addAction(reportBugAction);
     help->addSeparator();
-    help->addAction(createAction(/*QT_TR_NOOP*/tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), 0, QString(), QString(), QAction::AboutRole));
+    help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), 0, QString(), QString(), QAction::AboutRole));
 
 #ifdef QT_DEBUG
     QMenu* debug = help->addMenu("Debug");

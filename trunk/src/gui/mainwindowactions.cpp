@@ -535,6 +535,20 @@ void MainWindow::slotEditCopyImage()
     QApplication::clipboard()->setImage(image);
 }
 
+void MainWindow::slotExportImage()
+{
+    QString file = QFileDialog::getSaveFileName(this, tr("Export Image"),
+                   AppSettings->value("/General/databasePath").toString(),
+                   tr("Images (*.png *.jpg *.jpeg *.bmp)"));
+    if(!file.isEmpty())
+    {
+        QPixmap pixmap(m_boardView->size());
+        pixmap.fill(Qt::transparent);
+        m_boardView->render(&pixmap);
+        pixmap.save(file);
+    }
+}
+
 void MainWindow::slotHelpBug()
 {
     QDesktopServices::openUrl(QUrl("http://sourceforge.net/tracker/?group_id=163833&atid=829300"));
