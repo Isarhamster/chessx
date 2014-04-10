@@ -332,6 +332,8 @@ public slots:
     void slotRenamePlayer(QString ts);
     /** Pass a tag changing request from rename dialog to database */
     void slotRenameRequest(QString tag, QString newValue, QString oldValue);
+    /** Export an image to a file */
+    void slotExportImage();
 
 protected slots:
     /** Update recent files menu */
