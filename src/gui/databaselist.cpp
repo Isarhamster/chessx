@@ -4,9 +4,12 @@
 
 #include "databaselist.h"
 #include "databaselistmodel.h"
+#include "dlgsavebook.h"
 #include "GameMimeData.h"
 #include "settings.h"
+#include "messagedialog.h"
 
+#include <QFileInfo>
 #include <QHeaderView>
 #include <QSortFilterProxyModel>
 #include <QMenu>
@@ -84,7 +87,14 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
 #if defined(Q_OS_WIN) || defined(Q_OS_MAC)
         menu.addSeparator();
         menu.addAction(tr("Show in Finder"), this, SLOT(slotShowInFinder()))->setEnabled(bHasPath);
+        menu.addAction(tr("Make a Polyglot book..."), this, SLOT(slotMakeBook()))->setEnabled(bHasPath);
 #endif
+        QFileInfo fi(AppSettings->value("Tools/Path1").toString());
+        QString extTool1 = fi.baseName();
+        if (!extTool1.isEmpty())
+        {
+            menu.addAction(extTool1, this, SLOT(slotExtTool1()));
+        }
         menu.addSeparator();
         QAction* action = menu.addAction("UTF8", this, SLOT(dbToggleUTF8()));
         action->setCheckable(true);
@@ -177,14 +187,76 @@ void DatabaseList::rowsChanged(const QModelIndex &, int start, int end)
     }
 }
 
-void DatabaseList::slotShowInFinder()
+void DatabaseList::slotMakeBook()
 {
     Q_ASSERT(m_cell.isValid());
     QString pathIn = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
+    DlgSaveBook dlg(pathIn);
+    connect(&dlg, SIGNAL(bookWritten(QString)), SLOT(slotShowInFinder(QString)));
+    dlg.exec();
+}
+
+void DatabaseList::extToolReadOutput()
+{
+    while(m_extToolProcess && m_extToolProcess->canReadLine())
+    {
+        QString message = m_extToolProcess->readLine().simplified();
+        errText.append(message);
+        errText.append("\n");
+    }
+}
+
+void DatabaseList::slotExtTool1()
+{
+    errText.clear();
+    Q_ASSERT(m_cell.isValid());
+    QString pathIn = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
+    QString extTool1 = AppSettings->value("Tools/Path1").toString();
+    QFileInfo fiExtTool(extTool1);
+    QFileInfo fiPathIn(pathIn);
+    m_extToolProcess = new QProcess(this);
+    if(fiExtTool.exists() && fiPathIn.exists() && m_extToolProcess)
+    {
+        m_extToolProcess->setReadChannel(QProcess::StandardError);
+        m_extToolProcess->setWorkingDirectory(fiPathIn.absolutePath());
+        connect(m_extToolProcess, SIGNAL(readyReadStandardOutput()), SLOT(extToolReadOutput()));
+        QStringList options;
+
+        options << fiExtTool.absoluteFilePath();
+        QString parameter = AppSettings->value("Tools/CommandLine1").toString();
+        parameter.replace("$(InputPath)",fiPathIn.absoluteFilePath());
+        parameter.replace("$(InputFile)",fiPathIn.fileName());
+        parameter.replace("$(InputDir)",fiPathIn.absolutePath());
+        parameter.replace("$(InputName)",fiPathIn.baseName());
+
+        options << parameter;
+        QString command = options.join(' ');
+        m_extToolProcess->start(command);
+        if (!m_extToolProcess->waitForFinished())
+        {
+            MessageDialog::warning(fiExtTool.baseName() + ": " + m_extToolProcess->errorString());
+        }
+        else
+        {
+            extToolReadOutput();
+            if (!errText.isEmpty())
+            {
+                MessageDialog::warning(fiExtTool.baseName() + ": " +errText);
+            }
+        }
+    }
+    else
+    {
+        MessageDialog::warning(fiExtTool.baseName() + tr(": File not found"));
+    }
+}
+
+void DatabaseList::slotShowInFinder(QString path)
+{
     // Mac, Windows support folder or file.
 #if defined(Q_OS_WIN)
     QString param;
-    if(!QFileInfo(pathIn).isDir())
+    if(!QFileInfo(path).isDir())
     {
         param = QLatin1String("/select,");
     }
@@ -194,13 +266,20 @@ void DatabaseList::slotShowInFinder()
     QStringList scriptArgs;
     scriptArgs << QLatin1String("-e")
                << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
-               .arg(pathIn);
+               .arg(path);
     QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
     scriptArgs.clear();
     scriptArgs << QLatin1String("-e")
                << QLatin1String("tell application \"Finder\" to activate");
     QProcess::execute("/usr/bin/osascript", scriptArgs);
 #endif
+}
+
+void DatabaseList::slotShowInFinder()
+{
+    Q_ASSERT(m_cell.isValid());
+    QString pathIn = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
+    slotShowInFinder(pathIn);
 }
 
 int DatabaseList::getLastIndex(const QString& s) const

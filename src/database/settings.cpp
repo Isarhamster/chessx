@@ -91,6 +91,32 @@ QString Settings::programDataPath()
     return programDataPath;
 }
 
+QString Settings::uciPath()
+{
+#ifdef Q_OS_WIN
+    QString path(AppSettings->programDataPath());
+    return (path + "/engines/uci");
+#endif
+#ifdef Q_OS_MAC
+    QString path(AppSettings->programDataPath());
+    return (path + "/engines-mac/uci");
+#endif
+    return "";
+}
+
+QString Settings::winboardPath()
+{
+#ifdef Q_OS_WIN
+    QString path(AppSettings->programDataPath());
+    return (path + "/engines/winboard");
+#endif
+#ifdef Q_OS_MAC
+    QString path(AppSettings->programDataPath());
+    return (path + "/engines-mac/winboard");
+#endif
+    return "";
+}
+
 QString Settings::commonDataPath()
 {
 #if QT_VERSION < 0x050000
@@ -208,6 +234,9 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/currentMoveColor", QColor(Qt::blue));
     map.insert("/Board/AutoPlayerInterval", 3000);
     map.insert("/Board/AutoSaveAndContinue", false);
+
+    map.insert("/Tools/Path1", "");
+    map.insert("/Tools/CommandLine1", "");
     return map;
 }
 

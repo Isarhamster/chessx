@@ -44,8 +44,12 @@ public:
     void setLayout(const QWidget* w);
     /** @return directory where data are stored. */
     QString dataPath();
-    /** @return directory where fixed data are stored. */
+    /** @return directory where executable sub programs are stored. */
     QString programDataPath();
+    /** @return directory where preinstalled uci engines are stored. */
+    QString uciPath();
+    /** @return directory where preinstalled winboard engines are stored. */
+    QString winboardPath();
     /** @return directory where common chess data are stored. */
     QString commonDataPath();
 
