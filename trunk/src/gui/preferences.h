@@ -57,6 +57,8 @@ public slots:
     void slotSelectEngineCommand();
     /** user wants file dialog to select directory in which engine will run */
     void slotSelectEngineDirectory();
+    /** user wants file dialog to select path of an external exe */
+    void slotSelectToolPath();
     /** user wants file dialog to select directory in which DataBases will be stored */
     void slotSelectDataBasePath();
     /** user wants option dialog to select parameters which will be sent at startup of engine */

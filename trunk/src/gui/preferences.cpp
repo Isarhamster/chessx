@@ -67,6 +67,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     connect(ui.tbSymbolic, SIGNAL(clicked()), SLOT(slotChangePieceString()));
 
     connect(ui.btLoadLang, SIGNAL(clicked()), SLOT(slotLoadLanguageFile()));
+    connect(ui.btExtToolPath, SIGNAL(clicked(bool)), SLOT(slotSelectToolPath()));
     restoreSettings();
 
     // Start off with no Engine selected
@@ -112,6 +113,16 @@ void PreferencesDialog::slotSelectEngineDirectory()
     if(QDir(dir).exists())
     {
         ui.engineDirectory->setText(dir);
+    }
+}
+
+void PreferencesDialog::slotSelectToolPath()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select external executable"),
+                                                    ui.extToolPath->text());
+    if(QFileInfo(fileName).exists())
+    {
+        ui.extToolPath->setText(fileName);
     }
 }
 
@@ -500,6 +511,11 @@ void PreferencesDialog::restoreSettings()
     ui.fontMove->setText(AppSettings->getValue("FontBrowserMove").toString());
 
     AppSettings->endGroup();
+
+    AppSettings->beginGroup("Tools");
+    ui.extToolPath->setText(AppSettings->getValue("Path1").toString());
+    ui.extToolParameters->setText(AppSettings->getValue("CommandLine1").toString());
+    AppSettings->endGroup();
 }
 
 void PreferencesDialog::saveSettings()
@@ -561,6 +577,11 @@ void PreferencesDialog::saveSettings()
     colorNamesNotation << "MainLineMoveColor" << "VariationColor" << "CommentColor" << "NagColor";
     saveColorList(ui.notationColors, colorNamesNotation);
 
+    AppSettings->endGroup();
+
+    AppSettings->beginGroup("Tools");
+    AppSettings->setValue("Path1", ui.extToolPath->text());
+    AppSettings->setValue("CommandLine1", ui.extToolParameters->text());
     AppSettings->endGroup();
 
     QDir().mkpath(ui.defaultDataBasePath->text());

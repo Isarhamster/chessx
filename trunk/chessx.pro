@@ -40,7 +40,8 @@ FORMS += \
     src/gui/loadquery.ui \
     src/gui/aboutdlg.ui \
     src/gui/promotiondialog.ui \
-    src/gui/actiondialog.ui
+    src/gui/actiondialog.ui \
+    src/gui/dlgsavebook.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -156,7 +157,8 @@ HEADERS += src/database/board.h \
     src/gui/actiondialog.h \
     src/gui/kbaction.h \
     src/gui/translatingslider.h \
-    src/gui/exclusiveactiongroup.h
+    src/gui/exclusiveactiongroup.h \
+    src/gui/dlgsavebook.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -258,7 +260,8 @@ SOURCES += src/database/board.cpp \
     src/gui/actiondialog.cpp \
     src/gui/kbaction.cpp \
     src/gui/translatingslider.cpp \
-    src/gui/exclusiveactiongroup.cpp
+    src/gui/exclusiveactiongroup.cpp \
+    src/gui/dlgsavebook.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
