@@ -39,6 +39,8 @@ public:
     int getMode() const;
     /** Set the preferred mode. */
     void setMode(SrcMode mode);
+    /** Set the current games title. */
+    void setCurrentGame(QString title);
 private:
     Ui::CopyDialog ui;
 };

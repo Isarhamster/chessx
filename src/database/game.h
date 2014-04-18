@@ -132,6 +132,8 @@ public :
 
     // **** node modification methods ****
     /** Sets the comment associated with move at node @p moveId */
+    bool dbSetAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
+    /** Sets the comment associated with move at node @p moveId */
     bool setAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
 
     /** Sets the squareAnnotation associated with move at node @p moveId */
@@ -182,10 +184,6 @@ public :
     int variationCount(MoveId moveId = CURRENT_MOVE) const;
     /** @return true if the referenced variation has siblings */
     bool variationHasSiblings(MoveId variation) const;
-    /** @return true if the game has been modified */
-    bool isModified() const;
-    /** Clear/set game's @p modified flag. */
-    void setModified(bool set);
     /** @return moveId of the top main line */
     MoveId mainLineMove() const;
     /** @return moveId of the previous move */
@@ -223,7 +221,11 @@ public :
 
     // ***** game modification methods *****
     /** Adds a move at the current position, returns the move id of the added move */
+    MoveId dbAddMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
+    /** Adds a move at the current position, returns the move id of the added move */
     MoveId addMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
+    /** Adds a move at the current position, returns the move id of the added move */
+    MoveId dbAddMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Adds a move at the current position, returns the move id of the added move */
     MoveId addMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Replace the move after the current position */
@@ -241,6 +243,15 @@ public :
     /** Adds a move at the current position as a variation,
      * returns the move id of the added move */
     MoveId addVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+    /** Adds a move at the current position as a variation,
+     * returns the move id of the added move */
+    MoveId dbAddVariation(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
+    /** Adds a move at the current position as a variation,
+     * returns the move id of the added move */
+    MoveId dbAddVariation(const MoveList& moveList, const QString& annotation = QString());
+    /** Adds a move at the current position as a variation,
+     * returns the move id of the added move */
+    MoveId dbAddVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Merge current node of @p otherGame into this game */
     bool mergeNode(Game &otherGame);
     /** Merge @p otherGame starting from otherGames current position into this game as a new mainline */
@@ -325,7 +336,7 @@ public :
     void moveVariationDown(MoveId moveId);
 
 signals:
-    void signalGameModified();
+    void signalGameModified(bool,Game,QString);
 
 private:
 
@@ -365,8 +376,6 @@ private:
     Board m_currentBoard;
     /** Keeps the start ply of the game, 0 for standard starting position */
     int m_startPly;
-    /** Flag indicating if the game has been modified */
-    bool m_isModified;
     /** Start annotations for each variation */
     QMap <MoveId, QString> m_variationStartAnnotations;
     /** Annotations for move nodes */

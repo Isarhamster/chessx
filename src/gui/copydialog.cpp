@@ -53,6 +53,11 @@ void CopyDialog::setMode(SrcMode mode)
     }
 }
 
+void CopyDialog::setCurrentGame(QString title)
+{
+    ui.singleButton->setText(ui.singleButton->text()+" (" + title + ")");
+}
+
 int CopyDialog::getMode() const
 {
     if(ui.singleButton->isChecked())

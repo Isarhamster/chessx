@@ -954,7 +954,7 @@ void MainWindow::saveGame()
         m_gameList->updateFilter();
         slotFilterChanged();
         slotGameChanged();
-        game().setModified(false);
+        // databaseInfo().setModified(false);
 
         if(AppSettings->getValue("/General/autoCommitDB").toBool())
         {
@@ -977,7 +977,7 @@ bool MainWindow::slotGameSave()
     if(database()->isReadOnly())
     {
         MessageDialog::error(tr("This database is read only."));
-        game().setModified(false); // Do not notify more than once
+        databaseInfo()->setModified(false, Game(), ""); // Do not notify more than once
         return true;
     }
 
@@ -988,7 +988,7 @@ bool MainWindow::slotGameSave()
     }
     else if(n == SaveDialog::Discard)
     {
-        game().setModified(false); // Do not notify more than once
+        databaseInfo()->setModified(false, Game(), ""); // Do not notify more than once
     }
 
     emit databaseModified();
@@ -1402,6 +1402,16 @@ void MainWindow::slotOperationProgress(int progress)
     m_progressBar->setValue(progress);
 }
 
+void MainWindow::slotDbRestoreState(const Game& game)
+{
+    DatabaseInfo* pDb = qobject_cast<DatabaseInfo*>(sender());
+    if (pDb)
+    {
+        pDb->currentGame() = game;
+        slotGameChanged();
+    }
+}
+
 void MainWindow::slotDatabaseChange()
 {
     QAction* action = qobject_cast<QAction*>(sender());
@@ -1525,14 +1535,29 @@ void MainWindow::copyDatabase(QString target, QString src)
     }
 }
 
-void MainWindow::slotDatabaseCopy(int preselect)
+void MainWindow::slotDatabaseCopy(int preselect, int index)
 {
     if(m_databases.count() < 2)
     {
         MessageDialog::error(tr("You need at least two open databases to copy games"));
         return;
     }
+    Game g;
+    QString players;
+    if (index == -1)
+    {
+        players = game().tag(TagNameWhite)+"-"+game().tag(TagNameBlack);
+    }
+    else if(databaseInfo()->filter()->contains(index) && database()->loadGame(index, g))
+    {
+        players = g.tag(TagNameWhite)+"-"+g.tag(TagNameBlack);
+    }
+    else
+    {
+        return;
+    }
     CopyDialog dlg(this);
+    dlg.setCurrentGame(players);
     dlg.setMode((CopyDialog::SrcMode)preselect);
     QStringList db;
     for(int i = 0; i < m_databases.count(); ++i)
@@ -1549,11 +1574,18 @@ void MainWindow::slotDatabaseCopy(int preselect)
     {
         target++;
     }
-    Game g;
+
     switch(dlg.getMode())
     {
     case CopyDialog::SingleGame:
-        m_databases[target]->database()->appendGame(game());
+        if (index == -1)
+        {
+            m_databases[target]->database()->appendGame(game());
+        }
+        else
+        {
+            m_databases[target]->database()->appendGame(g);
+        }
         break;
     case CopyDialog::Filter:
         for(int i = 0; i < database()->count(); ++i)
@@ -1577,18 +1609,28 @@ void MainWindow::slotDatabaseCopy(int preselect)
 
 void MainWindow::slotDatabaseCopySingle(int n)
 {
-    slotDatabaseCopy(0);
+    slotDatabaseCopy(0, n);
 }
 
 void MainWindow::slotDatabaseChanged()
 {
+    m_undoGroup.setActiveStack(databaseInfo()->undoStack());
     database()->index()->calculateCache();
     setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
     m_gameList->setFilter(databaseInfo()->filter());
     slotFilterChanged();
-    QString fname = databaseInfo()->filePath();
-    int lastGameIndex = m_databaseList->getLastIndex(fname);
-    gameLoad(gameIndex() >= 0 ? gameIndex() : lastGameIndex, true, true);
+
+    if (gameIndex() < 0)
+    {
+        QString fname = databaseInfo()->filePath();
+        int lastGameIndex = m_databaseList->getLastIndex(fname);
+        gameLoad(lastGameIndex, true, true);
+    }
+    else
+    {
+        slotGameChanged();
+    }
+
     emit databaseChanged(databaseInfo());
     emit databaseModified();
 }
@@ -1885,10 +1927,9 @@ void MainWindow::UpdateGameTitle()
         eco = actualEco.left(3);
     }
     QString opName = actualEco.section(" ",1);
-    QString opening;
     if (!opName.isEmpty())
     {
-        opening = " (" + opName + ")";
+        eco.append(" (" + opName + ")");
     }
 
     QString whiteElo = game().tag(TagNameWhiteElo);
@@ -1903,10 +1944,9 @@ void MainWindow::UpdateGameTitle()
     }
     QString players = QString("<b><a href=\"tag:white\">%1</a></b> %2 - <b><a href=\"tag:black\">%3</a></b> %4")
                       .arg(white).arg(whiteElo).arg(black).arg(blackElo);
-    QString result = QString("<b>%1</b> &nbsp; %2%3").arg(game().tag("Result")).arg(eco).arg(opening);
-    QString event = game().eventInfo();
+    QString result = QString("<b>%1</b> &nbsp;").arg(game().tag("Result"));
 
-    QString header = QString("<i>%1</i>").arg(event);
+    QString event = QString("<i>%1</i>").arg(game().eventInfo());
 
     QString title;
     if(!white.isEmpty() || !black.isEmpty())
@@ -1917,13 +1957,21 @@ void MainWindow::UpdateGameTitle()
     {
         title.append(tr("<b>New game</b>"));
     }
-    if(game().result() != ResultUnknown || !eco.isEmpty())
+    if(game().result() != ResultUnknown)
     {
         title.append(QString(", ") + result);
     }
-    if(header.length() > 8)
+    if(eco.length() <= 3)
     {
-        title.append(QString("<br>") + header);
+        title.append(QString(" ") + eco);
+    }
+    if(event.length() > 8)
+    {
+        title.append(QString("<br>") + event);
+    }
+    if(eco.length() > 3)
+    {
+        title.append(QString("<br>") + eco);
     }
     m_gameTitle->setText(QString("<qt>%1</qt>").arg(title));
 }

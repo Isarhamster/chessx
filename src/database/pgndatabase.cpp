@@ -644,10 +644,10 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
         if(m_newVariation)
         {
             game->backward();
-            m_variation = game->addVariation(token, QString(), nag);
+            m_variation = game->dbAddVariation(token, QString(), nag);
             if(!m_precomment.isEmpty())
             {
-                game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
+                game->dbSetAnnotation(m_precomment, m_variation, Game::BeforeMove);
                 m_precomment.clear();
                 m_inPreComment = false;
             }
@@ -655,10 +655,10 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
         }
         else  	// First move in the game
         {
-            m_variation = game->addMove(token, QString(), nag);
+            m_variation = game->dbAddMove(token, QString(), nag);
             if(!m_precomment.isEmpty())
             {
-                game->setAnnotation(m_precomment, m_variation, Game::BeforeMove);
+                game->dbSetAnnotation(m_precomment, m_variation, Game::BeforeMove);
                 m_precomment.clear();
                 m_inPreComment = false;
             }
