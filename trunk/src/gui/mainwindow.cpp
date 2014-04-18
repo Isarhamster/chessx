@@ -88,7 +88,9 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_dragTimer, SIGNAL(timeout()), this, SLOT(slotAutoSwitchTab()));
 
     /* Create clipboard database */
-    m_databases.append(new DatabaseInfo);
+    DatabaseInfo* pClipDB = new DatabaseInfo(&m_undoGroup);
+    connect(pClipDB,SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
+    m_databases.append(pClipDB);
     m_currentDatabase = 0;
 
     /* Actions */
@@ -701,19 +703,16 @@ void MainWindow::openDatabase(QString fname)
 
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
-    if(QuerySaveGame())
+    QUrl url = QUrl::fromUserInput(fname);
+    if((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp"))
     {
-        QUrl url = QUrl::fromUserInput(fname);
-        if((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp"))
-        {
-            connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)));
-            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)));
-            downloadManager->doDownload(url);
-            return;
-        }
-
-        openDatabaseArchive(url.toLocalFile(), utf8);
+        connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)));
+        connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)));
+        downloadManager->doDownload(url);
+        return;
     }
+
+    openDatabaseArchive(url.toLocalFile(), utf8);
 }
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
@@ -801,12 +800,13 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     }
 
     // Create database, connect progress bar and open file
-    DatabaseInfo* db = new DatabaseInfo(fname);
+    DatabaseInfo* db = new DatabaseInfo(&m_undoGroup,fname);
     QString basefile = fi.completeBaseName();
 
     startOperation(tr("Opening %1...").arg(basefile));
     connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
     connect(db, SIGNAL(LoadFinished(DatabaseInfo*)), this, SLOT(slotDataBaseLoaded(DatabaseInfo*)));
+    connect(db,SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
     if(!db->open(utf8))
     {
         slotDataBaseLoaded(db);
@@ -1059,6 +1059,15 @@ void MainWindow::setupActions()
     QMenu* edit = menuBar()->addMenu(tr("&Edit"));
     QToolBar* editToolBar = addToolBar(tr("Edit"));
     editToolBar->setObjectName("EditToolBar");
+
+    QAction *undoAction = m_undoGroup.createUndoAction(this, tr("Undo"));
+    QAction *redoAction = m_undoGroup.createRedoAction(this, tr("Redo"));
+    undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
+    redoAction->setShortcut(Qt::CTRL + Qt::Key_Y);
+
+    edit->addAction(undoAction);
+    edit->addAction(redoAction);
+    edit->addSeparator();
 
     QAction* commentAfter = createAction(tr("Comment"), SLOT(slotEditComment()),
                                          Qt::CTRL + Qt::Key_A, editToolBar, ":/images/edit_after.png");
@@ -1378,7 +1387,7 @@ void MainWindow::cancelOperation(const QString& msg)
 
 bool MainWindow::QuerySaveGame()
 {
-    if(game().isModified() && !database()->isReadOnly())
+    if(databaseInfo()->modified() && !database()->isReadOnly())
     {
         return slotGameSave();
     }

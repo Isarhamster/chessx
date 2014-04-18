@@ -17,22 +17,26 @@
 #include "memorydatabase.h"
 #include "settings.h"
 
-DatabaseInfo::DatabaseInfo()
+DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup)
 {
     m_database = new MemoryDatabase;
     m_filter = new Filter(m_database);
     m_bLoaded = true;
     m_utf8 = false;
-    m_undoStack = new QUndoStack(this);
+    m_undoStack = new QUndoStack((QObject*)undoGroup);
     newGame();
+    connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
+    connect(&m_game, SIGNAL(signalGameModified(bool,Game,QString)),SLOT(setModified(bool,Game,QString)));
 }
 
-DatabaseInfo::DatabaseInfo(const QString& fname): m_filter(0), m_index(NewGame)
+DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filter(0), m_index(NewGame)
 {
     m_filename = fname;
     m_bLoaded = false;
     m_utf8 = false;
-    m_undoStack = new QUndoStack(this);
+    m_undoStack = new QUndoStack((QObject*)undoGroup);
+    connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
+    connect(&m_game, SIGNAL(signalGameModified(bool,Game,QString)),SLOT(setModified(bool,Game,QString)));
     QFile file(fname);
     if(file.size() < 1024 * 1024 * AppSettings->getValue("/General/EditLimit").toInt())
     {
@@ -128,7 +132,6 @@ bool DatabaseInfo::loadGame(int index, bool reload)
     {
         return false;
     }
-    m_undoStack->clear();
     m_index = index;
     int n = m_filter->gamePosition(index) - 1;
     if(n < 0)
@@ -136,8 +139,45 @@ bool DatabaseInfo::loadGame(int index, bool reload)
         n = 0;
     }
     m_game.moveToId(n);
-    m_game.setModified(false);
+    m_undoStack->clear();
+    setModified(false, Game(), "");
     return true;
+}
+
+void DatabaseInfo::dbCleanChanged(bool bClean)
+{
+    m_modified = !bClean;
+}
+
+bool DatabaseInfo::modified() const
+{
+    return m_modified;
+}
+
+void DatabaseInfo::setModified(bool modified, const Game& g, QString action)
+{
+    if (modified)
+    {
+        if (!action.isEmpty())
+        {
+            m_undoStack->push(new GameUndoCommand(this, g, m_game, action));
+        }
+    }
+    else
+    {
+        m_undoStack->clear();
+    }
+    m_modified = modified;
+}
+
+QUndoStack *DatabaseInfo::undoStack() const
+{
+    return m_undoStack;
+}
+
+void DatabaseInfo::restoreState(const Game& game)
+{
+    emit signalRestoreState(game);
 }
 
 void DatabaseInfo::newGame()
@@ -145,7 +185,7 @@ void DatabaseInfo::newGame()
     m_undoStack->clear();
     m_game.clearTags();
     m_game.clear();
-    m_game.setModified(false);
+    setModified(false, Game(), "");
     m_index = NewGame;
 }
 
@@ -178,7 +218,8 @@ bool DatabaseInfo::saveGame()
     {
         if(m_database->replace(m_index, m_game))
         {
-            m_game.setModified(false);
+            setModified(false, Game(), "");
+            m_undoStack->setClean();
             return true;
         }
     }
@@ -190,7 +231,8 @@ bool DatabaseInfo::saveGame()
         {
             database()->index()->setTag("ECO", eco, m_index);
         }
-        m_game.setModified(false);
+        setModified(false, Game(), "");
+        m_undoStack->setClean();
         return true;
     }
     return false;

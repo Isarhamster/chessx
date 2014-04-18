@@ -11,7 +11,6 @@
 #include "settings.h"
 #include "game.h"
 #include "GameMimeData.h"
-#include "databaseinfo.h"
 
 #include <QMenu>
 #include <QLCDNumber>

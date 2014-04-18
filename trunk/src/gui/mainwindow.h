@@ -309,7 +309,7 @@ public slots:
     /** Change database. */
     void slotDatabaseChange();
     /** Copy games between databases. */
-    void slotDatabaseCopy(int preselect = 1);
+    void slotDatabaseCopy(int preselect = 1, int index = -1);
     /** Copy games between databases. */
     void slotDatabaseCopySingle(int n);
     /** Database was changed - change informations. */
@@ -320,6 +320,8 @@ public slots:
     void slotDatabaseDeleteFilter();
     /** Slot that updates internal info upon loading a complete db */
     void slotDataBaseLoaded(DatabaseInfo* db);
+    /** Restore game state from a undo or redo operation */
+    void slotDbRestoreState(const Game&);
     /** Fill up the current game (drag request from game list) */
     void slotGetGameData(Game& g);
     /** Copy game from other database by drag'n'drop */

@@ -13,14 +13,19 @@
 #include "game.h"
 
 #include <QString>
+#include <QObject>
+#include <QUndoCommand>
+
 
 class Database;
 class Filter;
 class QUndoStack;
+class QUndoGroup;
 
 /** @ingroup Database
 The DatabaseInfo class is a simple class to keep various database-related
 information together. */
+
 
 class DatabaseInfo: public QThread
 {
@@ -29,9 +34,9 @@ public:
     void run();
     enum {NewGame = -1};
     /** Create information for clipboard database */
-    DatabaseInfo();
+    DatabaseInfo(QUndoGroup *undoGroup);
     /** Create information for file database */
-    DatabaseInfo(const QString& filename);
+    DatabaseInfo(QUndoGroup *undoGroup, const QString& filename);
     /** Close database and free memory */
     ~DatabaseInfo();
     /** Open database. */
@@ -91,11 +96,22 @@ public:
         return m_utf8;
     }
 
+    bool modified() const;
+
+    void restoreState(const Game& game);
+
+    QUndoStack *undoStack() const;
+
 protected:
     void doLoadFile(QString filename);
 
 signals:
     void LoadFinished(DatabaseInfo*);
+    void signalRestoreState(const Game &game);
+
+public slots:
+    void dbCleanChanged(bool);
+    void setModified(bool modfied, const Game &g, QString action);
 
 private:
     QUndoStack* m_undoStack;
@@ -106,6 +122,28 @@ private:
     int m_index;
     bool m_bLoaded;
     bool m_utf8;
+    bool m_modified;
+};
+
+class GameUndoCommand : public QUndoCommand
+{
+public:
+    GameUndoCommand(QObject* parent, const Game& from, Game& to, QString action) :
+        QUndoCommand(action),
+        m_dbInfo((DatabaseInfo*)parent),
+        m_fromGame(from),
+        m_toGame(to),
+        m_bInConstructor(true)
+        {
+        }
+
+    QPointer<DatabaseInfo> m_dbInfo;
+    Game m_fromGame;
+    Game m_toGame;
+    bool m_bInConstructor;
+
+    virtual void undo() { m_dbInfo->restoreState(m_fromGame); }
+    virtual void redo() { if (m_bInConstructor) m_bInConstructor=false; else m_dbInfo->restoreState(m_toGame); }
 };
 
 #endif
