@@ -117,5 +117,7 @@
         <file alias="images/respond.png">data/images/respond.png</file>
         <file alias="images/annotate.png">data/images/annotate.png</file>
         <file alias="images/training.png">data/images/training.png</file>
+        <file alias="images/redo.png">data/images/redo_yellow.png</file>
+        <file alias="images/undo.png">data/images/undo_yellow.png</file>
     </qresource>
 </RCC>
