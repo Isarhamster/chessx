@@ -764,7 +764,7 @@ void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
     p.setPen(pen);
     p.setBrush(brush);
 
-    p.setOpacity(.20);
+    p.setOpacity(.35);
 
     int coord =  m_coordinates ? CoordinateSize : 0;
     p.drawRect(coord + pos.x(), pos.y(), m_theme.size().width(), m_theme.size().height());
@@ -870,24 +870,24 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
     arrowPts[2].setY(py2);
 
     QPoint pos3(px1, py1);
-    QPoint pos4(px2, py2);
+    QPoint pos4(px2- ((adjust * dX) / arrowLength), py2- ((adjust * dY) / arrowLength));
 
     p.save();
+    p.setRenderHint(QPainter::SmoothPixmapTransform);
+
+    color.setAlpha(176);
     QPen pen(color);
-    int penWidth = std::max(1, (int)(headWidth / 8));
+    int penWidth = std::max(2, (int)(headWidth / 3));
     pen.setWidth(penWidth);
     p.setPen(pen);
-
     p.drawLine(pos3, pos4);
-
-    // For now only draw part of the arrowhead
-    //p.drawLine(arrowPts[2],arrowPts[1]);
-    //p.drawLine(arrowPts[2],arrowPts[3]);
 
     QBrush brush(color);
     p.setBrush(brush);
-
+    pen.setWidth(2);
+    p.setPen(pen);
     p.drawPolygon(arrowPts, 4);
+
     p.restore();
 }
 
