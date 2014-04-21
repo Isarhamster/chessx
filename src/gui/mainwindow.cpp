@@ -337,7 +337,12 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Status */
     m_statusFilter = new QLabel();
     statusBar()->addPermanentWidget(m_statusFilter,2);
+    m_statusFilter->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
+    QLabel* enterLabel = new QLabel();
+    statusBar()->addPermanentWidget(enterLabel,1);
+    connect(this, SIGNAL(enterText(QString)), enterLabel, SLOT(setText(QString)));
+    enterLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
     m_sliderSpeed = new TranslatingSlider(this);
     m_sliderSpeed->setMultiplier(1000);
@@ -486,20 +491,33 @@ void MainWindow::closeEvent(QCloseEvent* e)
 
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
-    if((e->key() == Qt::Key_Escape) || (e->key() == Qt::Key_Backspace))
+    evaluateSanNag(e);
+    emit enterText(m_nagText);
+}
+
+void MainWindow::evaluateSanNag(QKeyEvent *e)
+{
+    if(e->key() == Qt::Key_Escape)
     {
         m_nagText.clear();
         return;
     }
 
-    if(game().atGameStart())
+    if ((e->key() == Qt::Key_Backspace) && m_nagText.count())
     {
+        m_nagText = m_nagText.left(m_nagText.count()-1);
         return;
     }
 
     if(e->key() == Qt::Key_Delete)
     {
+        if(game().atGameStart())
+        {
+            m_nagText.clear();
+            return;
+        }
         game().clearNags();
+        m_nagText.clear();
         slotGameChanged();
         return;
     }
@@ -509,20 +527,48 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
         return;
     }
 
-    bool enterPressed = (e->key() == Qt::Key_X || (e->key() == Qt::Key_Enter) || (e->key() == Qt::Key_Return));
+    bool enterPressed = ((e->key() == Qt::Key_Enter) || (e->key() == Qt::Key_Return));
 
-    if(!enterPressed)
+    if(enterPressed)
+    {
+        // Try to figure out a SAN
+        int matches = NagSet::prefixCount(m_nagText);
+        if(matches == 1)
+        {
+            game().addNag(NagSet::fromString(m_nagText));
+            m_nagText.clear();
+            slotGameChanged();
+            return;
+        }
+        slotGameAddVariation(m_nagText);
+        m_nagText.clear();
+        return;
+    }
+    else
     {
         m_nagText.append(e->text());
     }
-    int matches = NagSet::prefixCount(m_nagText);
-    if(matches == 0)
+
+    if (m_nagText == "N")
     {
-        m_nagText.clear();
+        return;
     }
-    else if(matches == 1 || enterPressed)
+
+    if (m_nagText == "n")
     {
+        m_nagText = "N";
+    }
+
+    int matches = NagSet::prefixCount(m_nagText);
+    if(matches == 1 || enterPressed)
+    {
+        if(game().atGameStart())
+        {
+            m_nagText.clear();
+            return;
+        }
         game().addNag(NagSet::fromString(m_nagText));
+        m_nagText.clear();
         slotGameChanged();
     }
 }
