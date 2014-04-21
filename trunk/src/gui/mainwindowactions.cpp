@@ -1907,10 +1907,6 @@ void MainWindow::slotCloseBoardView(int n)
         m_boardViews.removeAt(n);
         m_tabWidget->removeTab(n);
     }
-    for(int i = 0; i < m_boardViews.count(); ++i)
-    {
-        m_tabWidget->setTabText(i, QString("%1").arg(i + 1));
-    }
 }
 
 void MainWindow::UpdateGameTitle()
@@ -1991,6 +1987,12 @@ void MainWindow::UpdateBoardInformation()
     }
     name += "</div>";
     m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), name);
+    QString tabName = databaseName();
+    if (tabName.length() > 11)
+    {
+        tabName = tabName.left(8)+"...";
+    }
+    m_tabWidget->setTabText(m_tabWidget->currentIndex(), tabName);
 }
 
 void MainWindow::slotScreenShot()
