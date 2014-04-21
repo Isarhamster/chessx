@@ -182,6 +182,12 @@ void Settings::getMap(const QString& key, OptionValueList& map)
 
 QMap<QString, QVariant> Settings::initDefaultValues() const
 {
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+    bool externPolyglot = false;
+#else
+    bool externPolyglot = true;
+#endif
+
     QMap<QString, QVariant> map;
     map.insert("ColumnCount", -1);
     map.insert("/General/EditLimit", 10);
@@ -217,10 +223,12 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/MainWindow/VerticalTabs", false);
     map.insert("/MainWindow/StayOnTop", false);
     map.insert("/MainWindow/FilterFollowsGame", false);
+    map.insert("/MainWindow/ShowMenuIcons", true);
     map.insert("/History/MaxEntries", 4);
     map.insert("/Board/showFrame", true);
     map.insert("/Board/showCoordinates", true);
     map.insert("/Board/showCurrentMove", true);
+    map.insert("/Board/showMoveIndicator", 0);
     map.insert("/Board/guessMove", true);
     map.insert("/Board/nextGuess", false);
     map.insert("/Board/minWheelCount", MIN_WHEEL_COUNT);
@@ -234,7 +242,8 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/currentMoveColor", QColor(Qt::blue));
     map.insert("/Board/AutoPlayerInterval", 3000);
     map.insert("/Board/AutoSaveAndContinue", false);
-
+    map.insert("/Tools/ExtPolyglot", externPolyglot);
+    map.insert("/Tools/PathPolyglot", "");
     map.insert("/Tools/Path1", "");
     map.insert("/Tools/CommandLine1", "");
     return map;

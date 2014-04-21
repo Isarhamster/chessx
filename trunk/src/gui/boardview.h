@@ -35,6 +35,7 @@ class BoardView : public QWidget
     Q_OBJECT
 public:
     enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
+    enum {Automatic = 0, Always = 1, Never = 2};
     enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4};
     /** Create board widget. */
     BoardView(QWidget* parent = 0, int flags = 0);
@@ -175,6 +176,7 @@ private:
     Guess::MoveList m_moveList;
     unsigned int m_moveListCurrent;
     bool m_showMoveIndicator;
+    int m_showMoveIndicatorMode;
     int m_DbIndex;
 };
 

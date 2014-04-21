@@ -25,6 +25,7 @@
 using namespace Qt;
 
 const int CoordinateSize = 16;
+const int MoveIndicatorSize = 12;
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_flipped(false), m_showFrame(false), m_showCurrentMove(true),
@@ -150,7 +151,7 @@ void BoardView::drawDraggedPieces(QPaintEvent* /*event*/)
 
 void BoardView::drawMoveIndicator(QPaintEvent* event)
 {
-    if(m_showMoveIndicator)
+    if(m_showMoveIndicator && m_showMoveIndicatorMode!=Never)
     {
         QPainter p(this);
         // Draw side to move indicator
@@ -245,7 +246,8 @@ void BoardView::resizeBoard(QSize sz)
 {
     // subtract move indicator from width
     int coord = m_coordinates ? CoordinateSize : 0;
-    int xsize = (sz.width() - 1 - coord) / 8;
+    int moveIndicator = (m_showMoveIndicatorMode==Always) ? MoveIndicatorSize:0;
+    int xsize = (sz.width() - 1 - coord - moveIndicator) / 8;
     int ysize = (sz.height() - 1 - coord) / 8;
     int size = std::min(xsize, ysize);
     m_theme.setSize(QSize(size, size));
@@ -566,6 +568,7 @@ void BoardView::configure()
     m_showCurrentMove = AppSettings->getValue("showCurrentMove").toBool();
     m_guessMove = AppSettings->getValue("guessMove").toBool();
     m_minDeltaWheel = AppSettings->getValue("minWheelCount").toInt();
+    m_showMoveIndicatorMode = AppSettings->getValue("showMoveIndicator").toInt();
     AppSettings->endGroup();
     m_theme.configure();
     m_theme.setEnabled(isEnabled());

@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -954,6 +954,46 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_12">
           <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QLabel" name="labelShowMoveIndicator">
+              <property name="text">
+               <string>Show move indicator</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbShowIndicator">
+              <item>
+               <property name="text">
+                <string>Automatic</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Always</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Never</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="iconsVisible">
+            <property name="text">
+             <string>Icons visible in menus</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="verticalTabs">
             <property name="text">
              <string>Use vertical Tabs</string>
@@ -1121,7 +1161,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
+        <widget class="QGroupBox" name="groupAppExternal">
          <property name="title">
           <string>External Tools</string>
          </property>
@@ -1176,6 +1216,36 @@
          <zorder>btExtToolPath</zorder>
          <zorder>lbExtToolParamter</zorder>
          <zorder>extToolParameters</zorder>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupAppPolyglot">
+         <property name="title">
+          <string>Polyglot application</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4" columnstretch="0,0,0">
+          <item row="0" column="2">
+           <widget class="QToolButton" name="btPolyglotPath">
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="polyglotPath">
+            <property name="placeholderText">
+             <string>Path to Polyglot application</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="btPolyglotExternal">
+            <property name="text">
+             <string>External Tool</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
