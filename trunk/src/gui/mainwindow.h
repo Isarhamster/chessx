@@ -75,6 +75,8 @@ protected:
     void closeEvent(QCloseEvent* e);
     /** Filter key events. */
     void keyPressEvent(QKeyEvent *e);
+    /** Filter key events. */
+    void evaluateSanNag(QKeyEvent *e);
     /** @return active database */
     Database* database();
     /** @return active database structure */
@@ -430,6 +432,8 @@ signals:
     void databaseModified();
 
     void signalDatabaseOpenClose();
+
+    void enterText(QString);
 
 private slots:
     /** Cleanup after ECO file loaded. */

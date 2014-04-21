@@ -1406,7 +1406,6 @@ Move BitBoard::parseMove(const QString& algebraic) const
         }
     }
 
-
     // Piece
     switch(c)
     {
@@ -1507,7 +1506,8 @@ Move BitBoard::parseMove(const QString& algebraic) const
         case 'N':
             promotePiece = Knight;
             break;
-        default: ;//return move;
+        default:
+            break; //return move;
         }
         if(fromSquare < 0)
         {
