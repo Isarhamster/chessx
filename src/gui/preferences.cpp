@@ -68,6 +68,8 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 
     connect(ui.btLoadLang, SIGNAL(clicked()), SLOT(slotLoadLanguageFile()));
     connect(ui.btExtToolPath, SIGNAL(clicked(bool)), SLOT(slotSelectToolPath()));
+    connect(ui.btPolyglotExternal, SIGNAL(clicked(bool)), SLOT(slotEnableExternalPolyglotPath(bool)));
+    connect(ui.btPolyglotPath, SIGNAL(clicked(bool)), SLOT(slotSelectPolyglotPath()));
     restoreSettings();
 
     // Start off with no Engine selected
@@ -123,6 +125,22 @@ void PreferencesDialog::slotSelectToolPath()
     if(QFileInfo(fileName).exists())
     {
         ui.extToolPath->setText(fileName);
+    }
+}
+
+void PreferencesDialog::slotEnableExternalPolyglotPath(bool checked)
+{
+    ui.polyglotPath->setEnabled(checked);
+    ui.btPolyglotPath->setEnabled(checked);
+}
+
+void PreferencesDialog::slotSelectPolyglotPath()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select polyglot application"),
+                                                    ui.polyglotPath->text());
+    if(QFileInfo(fileName).exists())
+    {
+        ui.polyglotPath->setText(fileName);
     }
 }
 
@@ -429,6 +447,7 @@ void PreferencesDialog::restoreSettings()
     ui.boardFrameCheck->setChecked(AppSettings->getValue("showFrame").toBool());
     ui.boardShowCoordinates->setChecked(AppSettings->getValue("showCoordinates").toBool());
     ui.hilightCurrentMove->setChecked(AppSettings->getValue("showCurrentMove").toBool());
+    ui.cbShowIndicator->setCurrentIndex(AppSettings->getValue("showMoveIndicator").toInt());
     ui.guessMoveCheck->setChecked(AppSettings->getValue("guessMove").toBool());
     ui.guessNextMove->setChecked(AppSettings->getValue("nextGuess").toBool());
     ui.minWheelCount->setValue(AppSettings->getValue("minWheelCount").toInt());
@@ -490,7 +509,7 @@ void PreferencesDialog::restoreSettings()
     ui.defaultDataBasePath->setText(AppSettings->value("/General/DefaultDataPath", dataPath).toString());
     ui.spinBoxListFontSize->setValue(AppSettings->getValue("/General/ListFontSize").toInt());
     ui.verticalTabs->setChecked(AppSettings->getValue("/MainWindow/VerticalTabs").toBool());
-
+    ui.iconsVisible->setChecked(AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool());
     // Read Game List settings
     AppSettings->beginGroup("GameText");
 
@@ -515,6 +534,8 @@ void PreferencesDialog::restoreSettings()
     AppSettings->beginGroup("Tools");
     ui.extToolPath->setText(AppSettings->getValue("Path1").toString());
     ui.extToolParameters->setText(AppSettings->getValue("CommandLine1").toString());
+    ui.polyglotPath->setText(AppSettings->getValue("PathPolyglot").toString());
+    ui.btPolyglotExternal->setChecked(AppSettings->getValue("ExtPolyglot").toBool());
     AppSettings->endGroup();
 }
 
@@ -532,6 +553,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("showFrame", QVariant(ui.boardFrameCheck->isChecked()));
     AppSettings->setValue("showCoordinates", QVariant(ui.boardShowCoordinates->isChecked()));
     AppSettings->setValue("showCurrentMove", QVariant(ui.hilightCurrentMove->isChecked()));
+    AppSettings->setValue("showMoveIndicator", QVariant(ui.cbShowIndicator->currentIndex()));
     AppSettings->setValue("guessMove", QVariant(ui.guessMoveCheck->isChecked()));
     AppSettings->setValue("nextGuess", QVariant(ui.guessNextMove->isChecked()));
     AppSettings->setValue("minWheelCount", ui.minWheelCount->value());
@@ -560,6 +582,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/General/DefaultDataPath", ui.defaultDataBasePath->text());
     AppSettings->setValue("/General/ListFontSize", ui.spinBoxListFontSize->value());
     AppSettings->setValue("/MainWindow/VerticalTabs", ui.verticalTabs->isChecked());
+    AppSettings->setValue("/MainWindow/ShowMenuIcons", ui.iconsVisible->isChecked());
 
     AppSettings->beginGroup("GameText");
 
@@ -580,6 +603,8 @@ void PreferencesDialog::saveSettings()
     AppSettings->endGroup();
 
     AppSettings->beginGroup("Tools");
+    AppSettings->setValue("ExtPolyglot", ui.btPolyglotExternal->isChecked());
+    AppSettings->setValue("PathPolyglot", ui.polyglotPath->text());
     AppSettings->setValue("Path1", ui.extToolPath->text());
     AppSettings->setValue("CommandLine1", ui.extToolParameters->text());
     AppSettings->endGroup();
@@ -636,5 +661,15 @@ void PreferencesDialog::slotBtTextFontClicked()
     {
         QString fontFamily = font.family();
         ui.fontText->setText(fontFamily);
+    }
+}
+
+void PreferencesDialog::setupIconInMenus(QObject* pObject)
+{
+    QList<QAction*> actions = pObject->findChildren<QAction*>();
+    bool showIcons = AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool();
+    foreach (QAction* action, actions)
+    {
+        action->setIconVisibleInMenu(showIcons);
     }
 }

@@ -116,6 +116,28 @@ engine will make the best move found so far.</p>
 The engine will answer immediately with a book move when playing out games (see above), depending on "Best Book Move" option this may or
 may not be the best move from the book.</p>
 
+<h3>Creating your own book</h3>
+<p>You can create your own book by selecting a PGN database (right click with the mouse) and select "Make polyglot book". Polyglot
+is an external tool which is included in chessx. It is licensed under GNU GPL Version 2.0. See <a href="http://wbec-ridderkerk.nl/html/details1/PolyGlot.html">Home of Polyglot</a>
+for code and details.</p>
+<p>ChessX will query the following parameters and pass them for creating a book:</p>
+<ul>
+<li>"max-ply"
+How many plies (half moves) to read for each game.  E.g. if set to
+"20", only the first 10 full moves of each game will be scanned.
+<li>"min-game"
+How many times must a move be played to be kept in the book.  In other
+words, moves that were played too rarely will be left out.  If you
+scan full games "2" seems a minimum, but if you selected lines
+manually "1" will make sense.
+<li>"uniform"
+By default, a probability is calculated by PolyGlot for each move
+depending on how popular it is (how often it was playing in the
+provided PGN file) and how much it "scored".  This option bypasses the
+default mechanism and affects equal probability to all moves.  This
+allows more variety of play.
+</ul>
+
 <h3>Generating content</h3>
 <p>You can copy/paste positions(FEN and images) and complete games(PGN) from/into the clipboard, export games in LATEX, HTML or PGN again.
 See the Edit menu and the File/Export Dialog.</p>
