@@ -135,6 +135,13 @@ void AnalysisWidget::slotPinChanged(bool pinned)
             setPosition(m_NextBoard);
         }
     }
+    else
+    {
+        if(isEngineRunning())
+        {
+            m_engine->setMoveTime(0);
+        }
+    }
 }
 
 void AnalysisWidget::slotReconfigure()
@@ -258,7 +265,7 @@ void AnalysisWidget::slotLinkClicked(const QUrl& url)
 void AnalysisWidget::setMoveTime(int mt)
 {
     m_moveTime = mt;
-    if(isEngineRunning())
+    if(isEngineRunning() && !ui.btPin->isChecked())
     {
         m_engine->setMoveTime(mt);
     }
