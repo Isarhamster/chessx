@@ -24,6 +24,7 @@
 int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
+    app.setAttribute(Qt::AA_DontShowIconsInMenus);  // Icons are *no longer shown* in menus
 
 #if defined(Q_OS_MAC)
     QDir dir(QApplication::applicationDirPath());

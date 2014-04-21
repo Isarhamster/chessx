@@ -87,13 +87,25 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
 #if defined(Q_OS_WIN) || defined(Q_OS_MAC)
         menu.addSeparator();
         menu.addAction(tr("Show in Finder"), this, SLOT(slotShowInFinder()))->setEnabled(bHasPath);
-        menu.addAction(tr("Make a Polyglot book..."), this, SLOT(slotMakeBook()))->setEnabled(bHasPath);
 #endif
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+        bool hasInternalPolyglot = !AppSettings->getValue("Tools/ExtPolyglot").toBool();
+#else
+        bool hasInternalPolyglot = false;
+#endif
+        bool hasExternalPolyglot = AppSettings->getValue("Tools/ExtPolyglot").toBool();
+        if (hasExternalPolyglot)
+        {
+            hasExternalPolyglot = QFileInfo(AppSettings->getValue("Tools/PathPolyglot").toString()).exists();
+        }
+        bool enablePolyglot = bHasPath && (hasExternalPolyglot||hasInternalPolyglot);
+        menu.addAction(tr("Make a Polyglot book..."), this, SLOT(slotMakeBook()))->setEnabled(enablePolyglot);
+
         QFileInfo fi(AppSettings->value("Tools/Path1").toString());
         QString extTool1 = fi.baseName();
         if (!extTool1.isEmpty())
         {
-            menu.addAction(extTool1, this, SLOT(slotExtTool1()));
+            menu.addAction(extTool1, this, SLOT(slotExtTool1()))->setEnabled(bHasPath && fi.exists());
         }
         menu.addSeparator();
         QAction* action = menu.addAction("UTF8", this, SLOT(dbToggleUTF8()));

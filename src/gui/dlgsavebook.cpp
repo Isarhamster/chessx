@@ -22,6 +22,7 @@ DlgSaveBook::DlgSaveBook(QString path, QWidget *parent) :
 
   ui->setupUi(this);
 
+  ui->inputFile->setText(fi.fileName());
   ui->outputPath->setText(m_OutputPath);
 }
 
@@ -33,9 +34,25 @@ DlgSaveBook::~DlgSaveBook()
 void DlgSaveBook::accept()
 {
     QString exe = "./polyglot";
-#ifdef Q_OS_WIN
-    exe.append(".exe");
+
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+    bool hasInternalPolyglot = !AppSettings->getValue("Tools/ExtPolyglot").toBool();
+#else
+    bool hasInternalPolyglot = false;
 #endif
+
+    if (hasInternalPolyglot)
+    {
+#ifdef Q_OS_WIN
+        exe.append(".exe");
+#endif
+    }
+    else
+    {
+        exe = QFileInfo(AppSettings->getValue("Tools/PathPolyglot").toString()).absoluteFilePath();
+    }
+    exe.remove('\"');
+
     QFileInfo fi(m_InputPath);
     m_process = new QProcess(this);
     if(fi.exists() && m_process)
@@ -45,7 +62,7 @@ void DlgSaveBook::accept()
         m_process->setReadChannel(QProcess::StandardError);
         connect(m_process, SIGNAL(readyReadStandardOutput()), SLOT(readOutput()));
         QStringList options;
-        options << exe;
+        options << "\"" + exe + "\"";
         options << "make-book";
         options << "-min-game";
         options << ui->minGame->cleanText();
