@@ -242,7 +242,7 @@ void DatabaseList::slotExtTool1()
         parameter.replace("$(InputName)",fiPathIn.baseName());
 
         options << parameter;
-        QString command = options.join(' ');
+        QString command = options.join(" ");
         m_extToolProcess->start(command);
         if (!m_extToolProcess->waitForFinished())
         {
