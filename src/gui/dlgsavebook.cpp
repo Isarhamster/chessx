@@ -72,7 +72,7 @@ void DlgSaveBook::accept()
         options << "\"" + m_InputPath + "\"";
         options << "-bin";
         options << "\"" + m_OutputPath + "\"";
-        QString command = options.join(' ');
+        QString command = options.join(" ");
         m_process->start(command);
         if (!m_process->waitForFinished())
         {
