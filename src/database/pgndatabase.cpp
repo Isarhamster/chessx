@@ -351,6 +351,7 @@ void PgnDatabase::close()
 
 void PgnDatabase::loadGameMoves(int index, Game& game)
 {
+    QMutexLocker m(&m_mutex);
     if(!m_file || index >= m_count)
     {
         return;
@@ -372,7 +373,7 @@ bool PgnDatabase::loadGame(int index, Game& game)
     {
         return false;
     }
-    lock();
+    QMutexLocker m(&m_mutex);
     //parse the game
     game.clear();
     loadGameHeaders(index, game);
@@ -384,7 +385,6 @@ bool PgnDatabase::loadGame(int index, Game& game)
         game.setStartingBoard(fen);
     }
     parseMoves(&game);
-    unlock();
 
     return m_variation != -1 || fen != "?";  // Not sure of all of the ramifications of this
     // but it seeems to fix the problem with FENs

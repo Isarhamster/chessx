@@ -32,18 +32,6 @@ void Database::setUtf8(bool utf8)
     m_utf8 = utf8;
 }
 
-void Database::lock()
-{
-    mutex.lock();
-}
-
-void Database::unlock()
-{
-    mutex.unlock();
-}
-
-
-
 Index* Database::index()
 {
     return &m_index;
@@ -90,12 +78,12 @@ bool Database::loadGame(int index, Game &game)
     return false;
 }
 
-void Database::loadGameHeaders(GameId id, Game &game)
+void Database::loadGameHeaders(GameId id, Game &game) const
 {
     m_index.loadGameHeaders(id, game);
 }
 
-void Database::loadGameHeader(GameId id, Game &game, const QString &tag)
+void Database::loadGameHeader(GameId id, Game &game, const QString &tag) const
 {
     m_index.loadGameHeader(id, game, tag);
 }
