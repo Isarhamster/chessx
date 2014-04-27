@@ -35,17 +35,15 @@ PgnDatabase::~PgnDatabase()
 
 bool PgnDatabase::open(const QString& filename, bool utf8)
 {
-    if(m_isOpen)
+    if(!m_file)
     {
-        return false;
-    }
-    m_break = false;
-    m_filename = filename;
-    if(openFile(filename))
-    {
-        m_isOpen = true;
-        m_utf8 = utf8;
-        return true;
+        m_break = false;
+        m_filename = filename;
+        if(openFile(filename))
+        {
+            m_utf8 = utf8;
+            return true;
+        }
     }
     return false;
 }
@@ -321,7 +319,6 @@ bool PgnDatabase::openString(const QString& content)
     //open file
     initialise();
     m_filename = "Internal.pgn";
-    m_isOpen = true;
     QByteArray byteArray;
     byteArray.append(content.toLatin1());
     QBuffer* buffer = new QBuffer(&byteArray);
@@ -354,7 +351,7 @@ void PgnDatabase::close()
 
 void PgnDatabase::loadGameMoves(int index, Game& game)
 {
-    if(!m_isOpen || index >= m_count)
+    if(!m_file || index >= m_count)
     {
         return;
     }
@@ -371,7 +368,7 @@ void PgnDatabase::loadGameMoves(int index, Game& game)
 
 bool PgnDatabase::loadGame(int index, Game& game)
 {
-    if(!m_isOpen || index >= m_count)
+    if(!m_file || index >= m_count)
     {
         return false;
     }
@@ -400,7 +397,6 @@ void PgnDatabase::initialise()
     m_gameOffsets32 = 0;
     m_inComment = false;
     m_inPreComment = false;
-    m_isOpen = false;
     m_filename = QString();
     m_count = 0;
     m_allocated = 0;

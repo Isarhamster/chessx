@@ -45,118 +45,61 @@ public:
     virtual ~Database();
 
     /** Query file format */
-    bool isUtf8() const
-    {
-        return m_utf8;
-    }
+    bool isUtf8() const;
     /** Set file format */
-    void setUtf8(bool utf8)
-    {
-        m_utf8 = utf8;
-    }
+    void setUtf8(bool utf8);
 
     //Mutex operations
-    void lock()
-    {
-        mutex.lock();
-    }
-    void unlock()
-    {
-        mutex.unlock();
-    }
+    void lock();
+    void unlock();
 
     //database operations
-    /** Creates a database with the given filename */
-    virtual bool create(const QString&)
-    {
-        return false;
-    }
+
     /** Opens the given database */
     virtual bool open(const QString& filename, bool utf8) = 0;
-    /** Opens the given database */
+    /** Parse the database */
     virtual bool parseFile() = 0;
     /** File-based database name */
     virtual QString filename() const = 0;
-    /** File-based database name for displayng (no path and extension. */
-    virtual QString name() const;
-    /** Closes the database */
-    virtual void close() = 0;
+
     /** Returns whether the database is read-only or not */
-    virtual bool isReadOnly() const
-    {
-        return true;
-    }
-    /** Removes all games from the database, return true if successful */
-    virtual bool clear()
-    {
-        return false;
-    }
+    virtual bool isReadOnly() const;
+    /** File-based database name for display (no path and extension) */
+    virtual QString name() const;
 
     //game retrieval & storage
-    /** Loads a game from the given position, returns true if successful */
-    virtual bool loadGame(int index, Game& game) = 0;
+    /** Loads a game at @p index, returns true if successful */
+    virtual bool loadGame(int index, Game& game);
     /** Load all tags for GameId from index into game object */
-    virtual void loadGameHeaders(GameId id, Game& game)
-    {
-        m_index.loadGameHeaders(id, game);
-    }
-    virtual void loadGameHeader(GameId id, Game& game, const QString& tag)
-    {
-        m_index.loadGameHeader(id, game, tag);
-    }
+    virtual void loadGameHeaders(GameId id, Game& game);
+    virtual void loadGameHeader(GameId id, Game& game, const QString& tag);
     /** Loads only moves into a game from the given position */
     virtual void loadGameMoves(int index, Game& game) = 0;
     /** Saves a game at the given position, returns true if successful */
-    virtual bool replace(int , Game&)
-    {
-        return false;
-    }
+    virtual bool replace(int , Game&);
     /** Adds a game to the database */
-    virtual bool appendGame(const Game&)
-    {
-        return false;
-    }
+    virtual bool appendGame(const Game&);
     /** Removes a game from the database */
-    virtual bool remove(int)
-    {
-        return false;
-    };
+    virtual bool remove(int);
     /** Undelete a game from the database */
-    virtual bool undelete(int)
-    {
-        return false;
-    };
+    virtual bool undelete(int);
     /** Removes multiple games from the database as specified by the filter */
-    virtual bool remove(const Filter&)
-    {
-        return false;
-    }
+    virtual bool remove(const Filter&);
     /** @return pointer to the index of the database */
     Index *index();
     /** @return const pointer to the index of the database */
     const Index *index() const;
     /** Returns the number of games in the database */
-    virtual int count()
-    {
-        return 0;
-    }
+    virtual int count();
     /** @return true if the database has been modified. By default database is read-only. */
-    virtual bool isModified() const
-    {
-        return false;
-    }
+    virtual bool isModified() const;
     /** Set / Reset the modification flag. */
     virtual void setModified(bool) { }
     /** Get the Valid Flag for a given game id from the index */
-    virtual bool getValidFlag(GameId id) const
-    {
-        return m_index.isValidFlag(id);
-    }
+    virtual bool getValidFlag(GameId id) const;
     /** Get the Valid Flag for a given game id from the index */
-    virtual bool deleted(GameId id) const
-    {
-        return m_index.deleted(id);
-    }
+    virtual bool deleted(GameId id) const;
+
 signals:
     /** Signal emitted when some progress is done. */
     void progress(int);

@@ -22,6 +22,28 @@ Database::~Database()
 {
 }
 
+bool Database::isUtf8() const
+{
+    return m_utf8;
+}
+
+void Database::setUtf8(bool utf8)
+{
+    m_utf8 = utf8;
+}
+
+void Database::lock()
+{
+    mutex.lock();
+}
+
+void Database::unlock()
+{
+    mutex.unlock();
+}
+
+
+
 Index* Database::index()
 {
     return &m_index;
@@ -32,9 +54,74 @@ const Index* Database::index() const
     return &m_index;
 }
 
+int Database::count()
+{
+    return 0;
+}
+
+bool Database::isModified() const
+{
+    return false;
+}
+
+bool Database::getValidFlag(GameId id) const
+{
+    return m_index.isValidFlag(id);
+}
+
+bool Database::deleted(GameId id) const
+{
+    return m_index.deleted(id);
+}
+
 QString Database::name() const
 {
     QFileInfo fi(filename());
     return fi.completeBaseName();
+}
+
+bool Database::isReadOnly() const
+{
+    return true;
+}
+
+bool Database::loadGame(int index, Game &game)
+{
+    return false;
+}
+
+void Database::loadGameHeaders(GameId id, Game &game)
+{
+    m_index.loadGameHeaders(id, game);
+}
+
+void Database::loadGameHeader(GameId id, Game &game, const QString &tag)
+{
+    m_index.loadGameHeader(id, game, tag);
+}
+
+bool Database::replace(int, Game &)
+{
+    return false;
+}
+
+bool Database::appendGame(const Game &)
+{
+    return false;
+}
+
+bool Database::undelete(int)
+{
+    return false;
+}
+
+bool Database::remove(const Filter &)
+{
+    return false;
+}
+
+bool Database::remove(int)
+{
+    return false;
 }
 
