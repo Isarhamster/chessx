@@ -190,6 +190,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
 
     QMap<QString, QVariant> map;
     map.insert("ColumnCount", -1);
+
     map.insert("/General/EditLimit", 10);
     map.insert("/General/automaticECO", true);
     map.insert("/General/useIndexFile", true);
@@ -217,14 +218,16 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/GameText/DiagramSize", 200);
     map.insert("/GameText/FontBrowserText", "'Arial Unicode MS',Menlo");
     map.insert("/GameText/FontBrowserMove", "'Arial Unicode MS',Menlo");
-
     map.insert("/GameText/PieceString", " KQRBN");
+
     map.insert("/MainWindow/GameToolBar", false);
     map.insert("/MainWindow/VerticalTabs", false);
     map.insert("/MainWindow/StayOnTop", false);
     map.insert("/MainWindow/FilterFollowsGame", false);
     map.insert("/MainWindow/ShowMenuIcons", true);
+
     map.insert("/History/MaxEntries", 4);
+
     map.insert("/Board/showFrame", true);
     map.insert("/Board/showCoordinates", true);
     map.insert("/Board/showCurrentMove", true);

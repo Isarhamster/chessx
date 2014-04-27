@@ -716,20 +716,20 @@ QString Output::writeBasicTagsHTML()
 QString Output::output(Game* game, bool upToCurrentMove)
 {
     QString text = m_header;
-    text += outputGame(game, upToCurrentMove);
+    text += outputTags(game);
+
+    QString gameText = outputGame(game, upToCurrentMove);
+    postProcessOutput(gameText);
+
     text += m_footer;
-    postProcessOutput(text);
+
     return text;
 }
 
-QString Output::outputGame(Game* game, bool upToCurrentMove)
+QString Output::outputTags(Game* game)
 {
     QString text;
     m_game = game;
-    int id = m_game->currentMove();
-    int mainId = upToCurrentMove ? m_game->mainLineMove() : NO_MOVE;
-    m_currentVariationLevel = 0;
-
     if(m_options.getOptionAsBool("ShowHeader"))
     {
         text += m_startTagMap[MarkupHeaderBlock];
@@ -743,6 +743,16 @@ QString Output::outputGame(Game* game, bool upToCurrentMove)
         }
         text += m_endTagMap[MarkupHeaderBlock];
     }
+    return text;
+}
+
+QString Output::outputGame(Game* game, bool upToCurrentMove)
+{
+    QString text;
+    m_game = game;
+    int id = m_game->currentMove();
+    int mainId = upToCurrentMove ? m_game->mainLineMove() : NO_MOVE;
+    m_currentVariationLevel = 0;
 
     m_game->moveToStart();
     m_dirtyBlack = m_game->board().toMove() == Black;
@@ -779,7 +789,7 @@ void Output::postProcessOutput(QString& text) const
     }
 
     // Chop it up, if TextWidth option is not equal to 0
-    int start = text.length();
+    int start = 0;
     int textWidth = m_options.getOptionAsInt("TextWidth");
     if(textWidth)
     {
@@ -809,6 +819,9 @@ void Output::output(QTextStream& out, Filter& filter)
     {
         if(filter.database()->loadGame(filter.indexToGame(i), game))
         {
+            QString tagText = outputTags(&game);
+            out << tagText;
+
             QString outText = outputGame(&game, false);
             postProcessOutput(outText);
             out << outText;
@@ -847,6 +860,9 @@ void Output::output(QTextStream& out, Database& database)
     {
         if(database.loadGame(i, game))
         {
+            QString tagText = outputTags(&game);
+            out << tagText;
+
             QString outText = outputGame(&game, false);
             postProcessOutput(outText);
             out << outText;

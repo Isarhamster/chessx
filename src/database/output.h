@@ -142,6 +142,8 @@ public:
 signals:
     /** Operation progress. */
     void progress(int);
+protected:
+    QString outputTags(Game *game);
 private:
     /* User definable settings */
     OutputOptions m_options;
