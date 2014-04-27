@@ -116,6 +116,10 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_PATH:
                 return m_databases.at(index.row()).m_path;
             case DBLV_UTF8:
+                if (m_databases.at(index.row()).m_name.endsWith("bin"))
+                {
+                    return "Polyglot";
+                }
                 return m_databases.at(index.row()).m_utf8 ? "UTF8" : "ANSI";
             default:
                 break;
@@ -155,6 +159,10 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             }
             case DBLV_UTF8:
             {
+                if (m_databases.at(index.row()).m_name.endsWith("bin"))
+                {
+                    return "Polyglot";
+                }
                 return m_databases.at(index.row()).m_utf8 ? "UTF8" : "ANSI";
             }
             case DBLV_NAME:
@@ -212,6 +220,10 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             }
             case DBLV_UTF8:
             {
+                if (m_databases.at(index.row()).m_name.endsWith("bin"))
+                {
+                    return "Polyglot";
+                }
                 return m_databases.at(index.row()).m_utf8 ? "UTF8" : "ANSI";
             }
             case DBLV_NAME:
