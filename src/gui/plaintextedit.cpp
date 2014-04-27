@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Copyright (C) 2010 by Michal Rudolf <mrudolf@kdewebdev.org>           *
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
 #include "plaintextedit.h"

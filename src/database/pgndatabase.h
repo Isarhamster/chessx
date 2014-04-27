@@ -51,10 +51,7 @@ public:
     // Open a PGN Data File from a string
     bool openString(const QString& content);
 
-    virtual int count()
-    {
-        return m_count;
-    }
+    virtual quint64 count() const;
 
 protected:
     //parsing methods
