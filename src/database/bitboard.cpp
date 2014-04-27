@@ -751,6 +751,28 @@ BoardStatus BitBoard::validate() const
     return Valid;
 }
 
+bool BitBoard::canTakeEnPassant() const
+{
+    if(m_stm == Black)
+    {
+        quint64 movers = m_pawns & m_occupied_co[Black];
+        if(m_epSquare != NoEPSquare)
+        {
+            quint64 moves = bb_PawnAttacks[White][m_epSquare] & movers;
+            return (moves != 0);
+        }
+    }
+    else
+    {
+        quint64 movers = m_pawns & m_occupied_co[White];
+        if(m_epSquare != NoEPSquare)
+        {
+            quint64 moves = bb_PawnAttacks[Black][m_epSquare] & movers;
+            return (moves != 0);
+        }
+    }
+    return 0;
+}
 
 // Why QString throws asserts for access past end of string and
 // refuses to return a real c++ char type is beyond me...

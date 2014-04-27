@@ -1,38 +1,10 @@
+/****************************************************************************
+*   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #include "openingtreethread.h"
 #include "database.h"
-
-MoveData::MoveData()
-{
-    count = 0;
-    for(int  r = ResultUnknown; r <= BlackWin; ++r)
-    {
-        result[r] = 0;
-    }
-    year = rating = 0;
-    dated = rated = 0;
-
-}
-
-void MoveData::addGame(Game& g, Color c, MoveType movetype)
-{
-    if(!count)
-        move = (movetype == StandardMove) ? g.moveToSan(Game::MoveOnly, Game::PreviousMove)
-               : qApp->translate("MoveData", "[end]");
-    ++count;
-    result[g.result()]++;
-    unsigned elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
-    if(elo >= 1000)
-    {
-        rating += elo;
-        ++rated;
-    }
-    unsigned y = g.tag("Date").section(".", 0, 0).toInt();
-    if(y > 1000)
-    {
-        year += y;
-        ++dated;
-    }
-}
+#include "polyglotdatabase.h"
 
 double MoveData::percentage() const
 {
@@ -40,6 +12,15 @@ double MoveData::percentage() const
     return c * 500 / count / 10.0;
 }
 
+bool MoveData::hasPercent() const
+{
+    int n = 0;
+    for (int i=0; i<4; ++i)
+    {
+        n += result[i];
+    }
+    return (n>0);
+}
 int MoveData::averageRating() const
 {
     return rated ? rating / rated : 0;
@@ -52,7 +33,7 @@ int MoveData::averageYear() const
 
 bool operator<(const MoveData& m1, const MoveData& m2)
 {
-    return m1.count < m2.count || (m1.count == m2.count && m1.move < m2.move);
+    return m1.count < m2.count || (m1.count == m2.count && m1.san < m2.san);
 }
 
 void OpeningTreeThread::run()
@@ -63,7 +44,34 @@ void OpeningTreeThread::run()
     QTime updateTime = QTime::currentTime().addSecs(1);
     emit progress(0);
     emit MoveUpdate(&m_board, new QList<MoveData>);
-    for(int i = 0; i < m_filter->size(); ++i)
+    int n = m_filter->size();
+    if (PolyglotDatabase* pgdb = qobject_cast<PolyglotDatabase*>(m_filter->database()))
+    {
+        n = pgdb->positionCount();
+        quint64 key = pgdb->getHashFromBoard(m_board);
+        pgdb->reset();
+
+        for (int i=0; i<n; ++i)
+        {
+            MoveData m;
+            if (pgdb->findMove(key,m))
+            {
+                Board b = m_board;
+                Move move = b.parseMove(m.san);
+                m.san = b.moveToSan(move);
+                moves[move] = m; // Dummy entry, just to get a map key!
+                games += m.count;
+            }
+
+            ProgressUpdate(moves, updateTime, games, i, n);
+
+            if(m_break)
+            {
+                break;
+            }
+        }
+    }
+    else for(int i = 0; i < n; ++i)
     {
         if (m_sourceIsDatabase || m_filter->contains(i))
         {
@@ -97,21 +105,8 @@ void OpeningTreeThread::run()
             }
         }
 
-        if (updateTime<=QTime::currentTime())
-        {
-            updateTime = QTime::currentTime().addSecs(3);
-            emit progress(i * 100 / m_filter->size());
-            if(!m_break)
-            {
-                *m_games = games;
-                QList<MoveData>* moveList = new QList<MoveData>();
-                for(QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
-                {
-                    moveList->append(it.value());
-                }
-                emit MoveUpdate(&m_board, moveList);
-            }
-        }
+        ProgressUpdate(moves, updateTime, games, i, n);
+
         if(m_break)
         {
             break;
@@ -151,4 +146,23 @@ bool OpeningTreeThread::updateFilter(Filter& f, const Board& b, int& g, bool upd
     // todo: if running wait for stop
     start();
     return true;
+}
+
+void OpeningTreeThread::ProgressUpdate(QMap<Move, MoveData> &moves, QTime& updateTime, int games, int i, int n)
+{
+    if (updateTime<=QTime::currentTime())
+    {
+        updateTime = QTime::currentTime().addSecs(3);
+        emit progress(i * 100 / n);
+        if(!m_break)
+        {
+            *m_games = games;
+            QList<MoveData>* moveList = new QList<MoveData>();
+            for(QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
+            {
+                moveList->append(it.value());
+            }
+            emit MoveUpdate(&m_board, moveList);
+        }
+    }
 }

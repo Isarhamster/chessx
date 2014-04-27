@@ -158,7 +158,10 @@ HEADERS += src/database/board.h \
     src/gui/kbaction.h \
     src/gui/translatingslider.h \
     src/gui/exclusiveactiongroup.h \
-    src/gui/dlgsavebook.h
+    src/gui/dlgsavebook.h \
+    src/database/polyglotdatabase.h \
+    src/database/openingtreethread.h \
+    src/database/movedata.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -261,7 +264,10 @@ SOURCES += src/database/board.cpp \
     src/gui/kbaction.cpp \
     src/gui/translatingslider.cpp \
     src/gui/exclusiveactiongroup.cpp \
-    src/gui/dlgsavebook.cpp
+    src/gui/dlgsavebook.cpp \
+    src/database/polyglotdatabase.cpp \
+    src/database/openingtreethread.cpp \
+    src/database/movedata.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
