@@ -328,6 +328,11 @@ bool PgnDatabase::openString(const QString& content)
     return parseFile();
 }
 
+quint64 PgnDatabase::count() const
+{
+    return m_count;
+}
+
 QString PgnDatabase::filename() const
 {
     return m_filename;
