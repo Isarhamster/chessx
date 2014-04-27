@@ -11,6 +11,7 @@
 #include "database.h"
 #include "openingtree.h"
 #include "settings.h"
+#include "movedata.h"
 
 #include <QIcon>
 #include <QImage>
@@ -22,25 +23,25 @@ const unsigned MinAveRating = 5;
 
 bool compareMove(const MoveData& m1, const MoveData& m2)
 {
-    return m1.move < m2.move;
+    return m1.san < m2.san;
 }
 
 bool compareScore(const MoveData& m1, const MoveData& m2)
 {
     return m1.percentage() < m2.percentage() ||
-           (m1.percentage() == m2.percentage() && m1.move < m2.move);
+           (m1.percentage() == m2.percentage() && m1.san < m2.san);
 }
 
 bool compareRating(const MoveData& m1, const MoveData& m2)
 {
     return m1.averageRating() < m2.averageRating() ||
-           (m1.averageRating() == m2.averageRating() && m1.move < m2.move);
+           (m1.averageRating() == m2.averageRating() && m1.san < m2.san);
 }
 
 bool compareYear(const MoveData& m1, const MoveData& m2)
 {
     return m1.averageYear() < m2.averageYear() ||
-           (m1.averageYear() == m2.averageYear() && m1.move < m2.move);
+           (m1.averageYear() == m2.averageYear() && m1.san < m2.san);
 }
 
 OpeningTreeThread oupd;
@@ -194,7 +195,7 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
             switch(index.column())
             {
             case 0:
-                return QString("%1: %2").arg(index.row() + 1).arg(m_moves[index.row()].move);
+                return QString("%1: %2").arg(index.row() + 1).arg(m_moves[index.row()].san);
             case 1:
             {
                 if(m_games == 0)
@@ -214,7 +215,9 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
                        .arg(percentage);
             }
             case 2:
-                return QString("%1%").arg(m_moves[index.row()].percentage());
+                if (m_moves[index.row()].hasPercent())
+                    return QString("%1%").arg(m_moves[index.row()].percentage());
+                break;
             case 3:
                 return m_moves[index.row()].rated >= MinAveRating ?
                        m_moves[index.row()].averageRating() : QVariant();
@@ -229,7 +232,7 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
         }
         case Qt::DecorationRole:
         {
-            if (index.column() == 2)
+            if ((index.column() == 2) && m_moves[index.row()].hasPercent())
             {
                 return paintPercentage(m_moves[index.row()].percentage());
             }
@@ -287,7 +290,7 @@ void OpeningTree::sort()
 
 QString OpeningTree::move(const QModelIndex& index) const
 {
-    return index.isValid() ? m_moves[index.row()].move : QString();
+    return index.isValid() ? m_moves[index.row()].san : QString();
 }
 
 Board OpeningTree::board() const

@@ -1,31 +1,13 @@
+/****************************************************************************
+*   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #ifndef OPENINGTREETHREAD_H
 #define OPENINGTREETHREAD_H
 
 #include "filter.h"
 #include "game.h"
-
-class MoveData
-{
-public:
-    enum MoveType {StandardMove, GameEnd};
-    MoveData();
-    void addGame(Game& g, Color c, MoveType movetype = StandardMove);
-    double percentage() const;
-    int averageRating() const;
-    int averageYear() const;
-    QString move;
-    unsigned count;
-    unsigned result[4];
-    long rating;
-    unsigned rated;
-    long year;
-    unsigned dated;
-    friend bool operator<(const MoveData& m1, const MoveData& m2);
-    friend bool compareMove(const MoveData& m1, const MoveData& m2);
-    friend bool compareScore(const MoveData& m1, const MoveData& m2);
-    friend bool compareRating(const MoveData& m1, const MoveData& m2);
-    friend bool compareYear(const MoveData& m1, const MoveData& m2);
-};
+#include "movedata.h"
 
 class OpeningTreeThread : public QThread
 {
@@ -41,6 +23,8 @@ signals:
     void UpdateTerminated(Board*);
     void progress(int);
 
+protected:
+    void ProgressUpdate(QMap<Move, MoveData>& moves, QTime &updateTime, int games, int i, int n);
 private:
     int* m_games;
 

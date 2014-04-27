@@ -87,14 +87,12 @@ public:
     {
         return m_filename;
     }
-    bool IsLoaded() const
-    {
-        return m_bLoaded;
-    }
-    bool IsUtf8() const
-    {
-        return m_utf8;
-    }
+
+    bool IsLoaded() const;
+    bool IsUtf8() const;
+
+    bool IsPGN() const;
+    bool IsPolyglotBook() const;
 
     bool modified() const;
 

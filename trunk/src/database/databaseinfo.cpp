@@ -13,8 +13,9 @@
 #include "databaseinfo.h"
 #include "filter.h"
 #include "game.h"
-#include "pgndatabase.h"
 #include "memorydatabase.h"
+#include "pgndatabase.h"
+#include "polyglotdatabase.h"
 #include "settings.h"
 
 DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup)
@@ -38,7 +39,11 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
     connect(&m_game, SIGNAL(signalGameModified(bool,Game,QString)),SLOT(setModified(bool,Game,QString)));
     QFile file(fname);
-    if(file.size() < 1024 * 1024 * AppSettings->getValue("/General/EditLimit").toInt())
+    if (IsPolyglotBook())
+    {
+        m_database = new PolyglotDatabase;
+    }
+    else if(file.size() < 1024 * 1024 * AppSettings->getValue("/General/EditLimit").toInt())
     {
         m_database = new MemoryDatabase;
     }
@@ -245,5 +250,31 @@ void DatabaseInfo::resetFilter()
         m_filter->resize(m_database->count());
         m_filter->setAll(1);
     }
+}
+
+bool DatabaseInfo::IsLoaded() const
+{
+    return m_bLoaded;
+}
+
+bool DatabaseInfo::IsUtf8() const
+{
+    return m_utf8;
+}
+
+bool DatabaseInfo::IsPGN() const
+{
+    if (m_filename.isEmpty())
+    {
+        return true;
+    }
+    QFileInfo fi(m_filename);
+    return (fi.suffix() == "pgn");
+}
+
+bool DatabaseInfo::IsPolyglotBook() const
+{
+    QFileInfo fi(m_filename);
+    return (fi.suffix() == "bin");
 }
 

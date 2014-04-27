@@ -42,7 +42,7 @@ const Index* Database::index() const
     return &m_index;
 }
 
-int Database::count()
+quint64 Database::count() const
 {
     return 0;
 }

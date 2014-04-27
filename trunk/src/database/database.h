@@ -86,7 +86,7 @@ public:
     /** @return const pointer to the index of the database */
     const Index *index() const;
     /** Returns the number of games in the database */
-    virtual int count();
+    virtual quint64 count() const;
     /** @return true if the database has been modified. By default database is read-only. */
     virtual bool isModified() const;
     /** Set / Reset the modification flag. */

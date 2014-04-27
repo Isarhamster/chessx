@@ -117,6 +117,7 @@ public:
     /** Return square where En passant capture may occur, or "NoEPSquare" */
     Square enPassantSquare() const;
 
+    bool canTakeEnPassant() const;
 private:
     /** Return true if side to move is in check */
     bool isCheck() const;
