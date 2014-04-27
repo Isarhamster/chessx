@@ -40,7 +40,7 @@ public:
     /** File-based database name */
     virtual QString filename() const;
     /** Closes the database */
-    virtual void close();
+    void close();
 
     //game retrieval & storage
     /** Loads a game from the given position, returns true if successful */
@@ -95,7 +95,6 @@ protected:
     void addOffset();
 
     QIODevice* m_file;
-    bool m_isOpen;
     QString m_currentLine;
 
 private:
