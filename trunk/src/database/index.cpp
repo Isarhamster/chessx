@@ -334,7 +334,7 @@ IndexItem* Index::item(int gameId)
     return m_indexItems[gameId];
 }
 
-void Index::loadGameHeaders(GameId id, Game& game)
+void Index::loadGameHeaders(GameId id, Game& game) const
 {
     game.clearTags();
     foreach(TagIndex tagIndex, m_indexItems[id]->getTagMapping().keys())
@@ -344,7 +344,7 @@ void Index::loadGameHeaders(GameId id, Game& game)
     }
 }
 
-void Index::loadGameHeader(GameId id, Game& game, const QString &tag)
+void Index::loadGameHeader(GameId id, Game& game, const QString &tag) const
 {
     TagIndex tagIndex = getTagIndex(tag);
     game.setTag(tagName(tagIndex), tagValue(tagIndex, id));

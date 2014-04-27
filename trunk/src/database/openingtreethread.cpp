@@ -67,9 +67,7 @@ void OpeningTreeThread::run()
     {
         if (m_sourceIsDatabase || m_filter->contains(i))
         {
-            m_filter->database()->lock();
             m_filter->database()->loadGameMoves(i, g);
-            m_filter->database()->unlock();
             int id = g.findPosition(m_board);
             if((id != NO_MOVE) && (m_bEnd ? g.atGameEnd(id) : true))
             {
@@ -77,9 +75,7 @@ void OpeningTreeThread::run()
                 {
                     m_filter->set(i, id + 1); // not zero means success, but id could be 0.
                 }
-                m_filter->database()->lock();
                 m_filter->database()->loadGameHeaders(i, g);
-                m_filter->database()->unlock();
                 g.moveToId(id);
                 if(g.atGameEnd())
                 {

@@ -208,9 +208,7 @@ void DateSearch::setDateRange(PartialDate minDate, PartialDate maxDate)
 
 int DateSearch::matches(int index)
 {
-    m_database->lock();
     m_database->loadGameHeaders(index, m_game);
-    m_database->unlock();
     PartialDate date(m_game.tag("Date"));
 
     return (date >= m_minDate && date <= m_maxDate);

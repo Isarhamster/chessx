@@ -49,10 +49,6 @@ public:
     /** Set file format */
     void setUtf8(bool utf8);
 
-    //Mutex operations
-    void lock();
-    void unlock();
-
     //database operations
 
     /** Opens the given database */
@@ -71,8 +67,8 @@ public:
     /** Loads a game at @p index, returns true if successful */
     virtual bool loadGame(int index, Game& game);
     /** Load all tags for GameId from index into game object */
-    virtual void loadGameHeaders(GameId id, Game& game);
-    virtual void loadGameHeader(GameId id, Game& game, const QString& tag);
+    virtual void loadGameHeaders(GameId id, Game& game) const;
+    virtual void loadGameHeader(GameId id, Game& game, const QString& tag) const;
     /** Loads only moves into a game from the given position */
     virtual void loadGameMoves(int index, Game& game) = 0;
     /** Saves a game at the given position, returns true if successful */
@@ -107,7 +103,7 @@ signals:
 protected:
     Index m_index;
     bool m_utf8;
-    QMutex mutex;
+    QMutex m_mutex;
 };
 
 #endif

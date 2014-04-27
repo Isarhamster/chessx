@@ -96,10 +96,10 @@ bool MemoryDatabase::loadGame(int index, Game& game)
     {
         return false;
     }
-    lock();
+
     game = *m_games[index];
     loadGameHeaders(index, game);
-    unlock();
+
     return true;
 }
 
