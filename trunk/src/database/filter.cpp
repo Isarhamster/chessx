@@ -27,7 +27,7 @@ Filter::Filter(const Filter& filter)
 {
     m_vector = new QVector<int>(filter.intVector());
     m_count = filter.m_count;
-    m_cache.first = m_cache.second = 0;
+    m_cache = filter.m_cache;
     m_gamesSearched = 0;
     m_searchTime = 0;
 }
@@ -142,6 +142,7 @@ int Filter::indexToGame(int index)
     if(index < m_count)
     {
         if(index < m_count / 2)
+        {
             for(int i = 0; i < size(); ++i)
             {
                 index -= contains(i);
@@ -151,7 +152,9 @@ int Filter::indexToGame(int index)
                     return i;
                 }
             }
+        }
         else
+        {
             for(int i = size() - 1 ; i >= 0; i--)
             {
                 index += contains(i);
@@ -161,6 +164,7 @@ int Filter::indexToGame(int index)
                     return i;
                 }
             }
+        }
     }
     m_cache.second = -1;
     return -1;
