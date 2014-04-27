@@ -143,14 +143,3 @@ bool MemoryDatabase::parseFile()
     setModified(false); // Undoes changes which stem from ECO parsing, is this expected or unexpected?
     return ok;
 }
-
-bool MemoryDatabase::clear()
-{
-    for(int i = 0; i < m_games.count(); ++i)
-    {
-        delete m_games[i];
-    }
-    m_games.clear();
-    setModified(true);
-    return true;
-}
