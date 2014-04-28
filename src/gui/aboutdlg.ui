@@ -320,7 +320,7 @@ Bruno Rizzuti</string>
          <enum>QFrame::Sunken</enum>
         </property>
         <property name="text">
-         <string>sss</string>
+         <string notr="true">sss</string>
         </property>
        </widget>
       </item>
