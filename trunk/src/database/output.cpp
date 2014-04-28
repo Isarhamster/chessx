@@ -716,12 +716,17 @@ QString Output::writeBasicTagsHTML()
 QString Output::output(Game* game, bool upToCurrentMove)
 {
     QString text = m_header;
+    postProcessOutput(text);
+
     text += outputTags(game);
 
     QString gameText = outputGame(game, upToCurrentMove);
     postProcessOutput(gameText);
+    text += gameText;
 
-    text += m_footer;
+    QString footer = m_footer;
+    postProcessOutput(footer);
+    text += footer;
 
     return text;
 }
