@@ -119,5 +119,6 @@
         <file alias="images/training.png">data/images/training.png</file>
         <file alias="images/redo.png">data/images/redo_yellow.png</file>
         <file alias="images/undo.png">data/images/undo_yellow.png</file>
+        <file alias="i18n/chessx_da.qm">i18n/chessx_da.qm</file>
     </qresource>
 </RCC>

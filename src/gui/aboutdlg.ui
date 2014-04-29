@@ -50,6 +50,9 @@ Free Chess Database </string>
    </item>
    <item>
     <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::FieldsStayAtSizeHint</enum>
+     </property>
      <property name="verticalSpacing">
       <number>-1</number>
      </property>
@@ -66,20 +69,6 @@ Free Chess Database </string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_1">
-       <property name="text">
-        <string>Copyright</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>License</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QLabel" name="labelVersion">
        <property name="frameShape">
@@ -93,6 +82,13 @@ Free Chess Database </string>
        </property>
       </widget>
      </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelCopyright">
+       <property name="text">
+        <string>Copyright</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="1">
       <widget class="QLabel" name="labelCopyRightDate">
        <property name="frameShape">
@@ -103,6 +99,13 @@ Free Chess Database </string>
        </property>
        <property name="text">
         <string notr="true">ccc</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>License</string>
        </property>
       </widget>
      </item>
@@ -120,7 +123,7 @@ Free Chess Database </string>
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="labelMaintainer">
        <property name="text">
         <string>Maintainer</string>
        </property>
@@ -160,7 +163,7 @@ Free Chess Database </string>
       </widget>
      </item>
      <item row="5" column="0">
-      <widget class="QLabel" name="label_10">
+      <widget class="QLabel" name="labelTest">
        <property name="text">
         <string>Testing</string>
        </property>
@@ -200,51 +203,56 @@ Free Chess Database </string>
       </widget>
      </item>
      <item row="7" column="0">
-      <widget class="QLabel" name="label_14">
-       <property name="text">
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="title">
         <string>Further Code</string>
        </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
-      <widget class="QLabel" name="label_15">
-       <property name="frameShape">
-        <enum>QFrame::Panel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <property name="text">
-        <string notr="true">James Coons
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="lbCode">
+          <property name="frameShape">
+           <enum>QFrame::Panel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="text">
+           <string notr="true">James Coons
 Marius Roets
 Sean Estabrooks
 Rico Zenklusen
 Heinz Hopfgartner
 William Hoggarth</string>
-       </property>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
-     <item row="8" column="0">
-      <widget class="QLabel" name="label_16">
-       <property name="text">
+     <item row="7" column="1">
+      <widget class="QGroupBox" name="groupTranslate">
+       <property name="title">
         <string>Translations</string>
        </property>
-      </widget>
-     </item>
-     <item row="8" column="1">
-      <widget class="QLabel" name="label_17">
-       <property name="frameShape">
-        <enum>QFrame::Panel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
-       </property>
-       <property name="text">
-        <string notr="true">Jens Nissen
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="lbTranslate">
+          <property name="frameShape">
+           <enum>QFrame::Panel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="text">
+           <string notr="true">Byrial Jensen
+Bruno Rizzuti
+Jens Nissen
 Joachim Katzer
-Olivier Roset
-Bruno Rizzuti</string>
-       </property>
+Olivier Roset</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>

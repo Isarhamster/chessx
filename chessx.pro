@@ -335,7 +335,8 @@ macx {
 RESOURCES = resources.qrc
 
 TRANSLATIONS = i18n/chessx_de.ts \
-        i18n/chessx_fr.ts
+        i18n/chessx_fr.ts \
+        i18n/chessx_da.ts
 #        i18n/chessx_it.ts \
 #        i18n/chessx_pl.ts
 #	i18n/chessx_nl.ts \
@@ -365,6 +366,7 @@ OTHER_FILES += \
     COPYING \
     i18n/chessx_de.ts \
     i18n/chessx_fr.ts \
+    i18n/chessx_da.ts \
     ChangeLog.txt \
     data/help/about.css \
     data/help/about3.html \
