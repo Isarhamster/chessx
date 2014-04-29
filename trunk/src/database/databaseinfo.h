@@ -73,7 +73,7 @@ public:
         return m_index;
     }
     /** Load game @p index */
-    bool loadGame(int index, bool reload = 0);
+    bool loadGame(int index);
     /** Starts new game, giving it @p index equal to the number of games in the database */
     void newGame();
     /** Saves game, replacing current one or adding new. If @ref currentIndex() is
@@ -95,10 +95,12 @@ public:
     bool IsPolyglotBook() const;
 
     bool modified() const;
+    bool gameNeedsSaving() const;
 
     void restoreState(const Game& game);
 
     QUndoStack *undoStack() const;
+
 
 protected:
     void doLoadFile(QString filename);
@@ -120,7 +122,7 @@ private:
     int m_index;
     bool m_bLoaded;
     bool m_utf8;
-    bool m_modified;
+    bool m_gameModified;
 };
 
 class GameUndoCommand : public QUndoCommand

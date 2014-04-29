@@ -641,27 +641,18 @@ int MainWindow::gameIndex() const
     return databaseInfo()->currentIndex();
 }
 
-void MainWindow::gameLoad(int index, bool force, bool reload)
+void MainWindow::gameLoad(int index)
 {
     if(QuerySaveGame())
     {
-        if(databaseInfo()->loadGame(index, reload))
+        if(databaseInfo()->loadGame(index))
         {
             m_gameList->selectGame(index);
             emit signalGameIsEmpty(true);
+            slotGameChanged();
+            emit signalFirstGameLoaded(databaseInfo()->filter()->previousGame(index) == -1);
+            emit signalLastGameLoaded(databaseInfo()->filter()->nextGame(index) == -1);
         }
-        else if(!force)
-        {
-            return;
-        }
-        else
-        {
-            databaseInfo()->newGame();
-            m_gameList->clearSelection();
-        }
-        slotGameChanged();
-        emit signalFirstGameLoaded(databaseInfo()->filter()->previousGame(index) == -1);
-        emit signalLastGameLoaded(databaseInfo()->filter()->nextGame(index) == -1);
     }
 }
 
@@ -905,6 +896,10 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
 
     updateMenuRecent();
     emit signalDatabaseOpenClose();
+
+    int lastGameIndex = m_databaseList->getLastIndex(fname);
+    gameLoad(lastGameIndex);
+
     slotDatabaseChanged();
 }
 
@@ -1377,9 +1372,9 @@ void MainWindow::setupActions()
 bool MainWindow::confirmQuit()
 {
     QString modified;
-    if(m_currentDatabase)
+    for(int i = 1; i < m_databases.size(); i++)
     {
-        if(!QuerySaveGame())
+        if (!QuerySaveGame(m_databases[i]))
         {
             return false;
         }
@@ -1437,11 +1432,32 @@ void MainWindow::cancelOperation(const QString& msg)
     statusBar()->removeWidget(m_progressBar);
 }
 
-bool MainWindow::QuerySaveGame()
+bool MainWindow::QuerySaveGame(DatabaseInfo *dbInfo)
 {
-    if(databaseInfo()->modified() && !database()->isReadOnly())
+    bool shouldNotify = false;
+    if (!dbInfo)
     {
-        return slotGameSave();
+        shouldNotify = true;
+        dbInfo = databaseInfo();
+    }
+    if(dbInfo->gameNeedsSaving())
+    {
+        int n = saveDialog()->save(dbInfo->database(), dbInfo->currentGame());
+        if(n == QDialog::Accepted)
+        {
+            saveGame(dbInfo);
+        }
+        else if(n == SaveDialog::Discard)
+        {
+            dbInfo->setModified(false, Game(), ""); // Do not notify more than once
+        }
+
+        if (shouldNotify)
+        {
+            emit databaseModified();
+        }
+
+        return (n != QDialog::Rejected);
     }
     return true;
 }

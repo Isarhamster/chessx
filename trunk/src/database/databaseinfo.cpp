@@ -115,7 +115,7 @@ DatabaseInfo::~DatabaseInfo()
 {
 }
 
-bool DatabaseInfo::loadGame(int index, bool reload)
+bool DatabaseInfo::loadGame(int index)
 {
     if(!m_bLoaded)
     {
@@ -125,11 +125,7 @@ bool DatabaseInfo::loadGame(int index, bool reload)
     {
         return false;
     }
-    if(!reload && m_index == index)
-    {
-        return true;
-    }
-    if(!m_database || index < 0 || index >= m_database->count())
+    if(!m_database || index < 0 || index >= (int)m_database->count())
     {
         return false;
     }
@@ -151,12 +147,17 @@ bool DatabaseInfo::loadGame(int index, bool reload)
 
 void DatabaseInfo::dbCleanChanged(bool bClean)
 {
-    m_modified = !bClean;
+    m_gameModified = !bClean;
 }
 
 bool DatabaseInfo::modified() const
 {
-    return m_modified;
+    return m_gameModified;
+}
+
+bool DatabaseInfo::gameNeedsSaving() const
+{
+    return (isValid() && m_gameModified && !m_database->isReadOnly());
 }
 
 void DatabaseInfo::setModified(bool modified, const Game& g, QString action)
@@ -172,7 +173,7 @@ void DatabaseInfo::setModified(bool modified, const Game& g, QString action)
     {
         m_undoStack->clear();
     }
-    m_modified = modified;
+    m_gameModified = modified;
 }
 
 QUndoStack *DatabaseInfo::undoStack() const
