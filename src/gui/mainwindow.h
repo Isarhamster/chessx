@@ -98,7 +98,7 @@ protected:
     QString exportFileName(int& format);
     /** Load game @p index. If @p force is false, does nothing for incorrect @p index .
     With @p force set, creates empty game. */
-    void gameLoad(int index, bool force = false, bool reload = 0);
+    void gameLoad(int index);
     /** Make given number of moves in current game */
     bool gameMoveBy(int change);
     /** Update recent files menu */
@@ -467,13 +467,13 @@ private:
     void restoreRecentFiles();
     /** Query User and save game if game was modified
         @return true if the next action shall be performed */
-    bool QuerySaveGame();
+    bool QuerySaveGame(DatabaseInfo* dbInfo = 0);
     /** Save game without query */
-    void saveGame();
+    void saveGame(DatabaseInfo *dbInfo);
     /** Load next game without query */
     void loadNextGame();
     /** Save Database without query or progress bar */
-    void saveDatabase();
+    void saveDatabase(DatabaseInfo *dbInfo);
     /** Save Database with query */
     bool QuerySaveDatabase();
     /** Create a new unassociated boardview */
