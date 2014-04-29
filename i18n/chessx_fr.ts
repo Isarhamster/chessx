@@ -81,10 +81,6 @@ Gestionnaires de parties d&apos;échecs open source</translation>
         <translation>Chemin vers les paramètres</translation>
     </message>
     <message>
-        <source>sss</source>
-        <translation type="obsolete">sss</translation>
-    </message>
-    <message>
         <location filename="../src/gui/aboutdlg.ui" line="341"/>
         <source>Contact</source>
         <translation>Contacts</translation>
@@ -664,7 +660,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="102"/>
         <source>Make a Polyglot book...</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un polyglot livre d&apos;ouvertures...</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="262"/>
@@ -729,58 +725,54 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/dlgsavebook.ui" line="14"/>
         <source>Build Polyglot Book</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un polyglot livre d&apos;ouvertures</translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.ui" line="20"/>
         <source>Input File</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier</translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.ui" line="42"/>
         <source>Polyglot Book Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres passés à polyglot</translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.ui" line="50"/>
         <source>Max Ply</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de demi-coups </translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.ui" line="80"/>
         <source>Min Game</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de parties</translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.ui" line="92"/>
         <source>Uniform Probabilities</source>
-        <translation type="unfinished"></translation>
+        <translation>Probabilités uniformes </translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.ui" line="102"/>
         <source>Output Path</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.ui" line="111"/>
         <source>Enter the complete target path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
+        <translation>Chemin de livre</translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.cpp" line="79"/>
         <location filename="../src/gui/dlgsavebook.cpp" line="94"/>
         <location filename="../src/gui/dlgsavebook.cpp" line="100"/>
         <source>Polyglot Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de polyglot</translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.cpp" line="92"/>
         <source>Unknown Error</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.cpp" line="100"/>
@@ -1018,7 +1010,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/database/game.cpp" line="430"/>
         <source>Replace move</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplacer coup</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="449"/>
@@ -1040,7 +1032,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/database/game.cpp" line="653"/>
         <source>Truncate variation</source>
-        <translation type="unfinished"></translation>
+        <translation>Tronquer variante</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="697"/>
@@ -1055,38 +1047,38 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/database/game.cpp" line="809"/>
         <source>Set annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Note</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="966"/>
         <source>Colorize square</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur de case</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="1013"/>
         <source>Paint arrow</source>
-        <translation type="unfinished"></translation>
+        <translation>Flèche</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="1223"/>
         <source>Add nag</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter NAG</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="1236"/>
         <source>Set nags</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter NAGs</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="1373"/>
         <location filename="../src/database/game.cpp" line="1408"/>
         <source>Move variation</source>
-        <translation type="unfinished"></translation>
+        <translation>Remonter la variante</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="1762"/>
         <source>Set result</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter résultat</translation>
     </message>
 </context>
 <context>
@@ -1304,7 +1296,7 @@ Dois-je télécharger une base ?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1094"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="542"/>
         <source>Export Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter image</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1098"/>
@@ -1329,12 +1321,12 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1109"/>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1110"/>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Rétablir</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1124"/>
@@ -1784,7 +1776,7 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="88"/>
         <source>PGN databases (*.pgn);;Polyglot books (*.bin)</source>
-        <translation type="unfinished"></translation>
+        <translation>Base de données PGN (*.pgn);;Livres d&apos;ouvertures (*.bin)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="141"/>
@@ -1821,7 +1813,7 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="544"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp)</source>
-        <translation type="unfinished"></translation>
+        <translation>Images (*.png *.jpg *.jpeg *.bmp)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="664"/>
@@ -2916,42 +2908,42 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="1166"/>
         <source>External Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Programme externe</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1172"/>
         <source>Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1182"/>
         <source>Path</source>
-        <translation type="unfinished">Chemin</translation>
+        <translation>Chemin</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1202"/>
         <source>Path and filename of external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Chemin d&apos;un programme externe</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1209"/>
         <source>Command line, also $(InputPath), $(InputFile)</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres de ligne de commande</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1224"/>
         <source>Polyglot application</source>
-        <translation type="unfinished"></translation>
+        <translation>Polyglot</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1237"/>
         <source>Path to Polyglot application</source>
-        <translation type="unfinished"></translation>
+        <translation>Chemin d&apos;application</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1244"/>
         <source>External Tool</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1301"/>
@@ -3185,32 +3177,32 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="953"/>
         <source>Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Application</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="961"/>
         <source>Show move indicator</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="969"/>
         <source>Automatic</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatique</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="974"/>
         <source>Always</source>
-        <translation type="unfinished"></translation>
+        <translation>Toujours</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="979"/>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Jamais</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="989"/>
         <source>Icons visible in menus</source>
-        <translation type="unfinished"></translation>
+        <translation>Icônes visibles dans les menus</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1059"/>
@@ -3280,12 +3272,12 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/preferences.cpp" line="123"/>
         <source>Select external executable</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir l&apos;exécutable externe</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="139"/>
         <source>Select polyglot application</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir le chemin pour polyglot</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="418"/>
@@ -3695,10 +3687,6 @@ Dois-je télécharger une base ?</translation>
 </context>
 <context>
     <name>TagDetailWidget</name>
-    <message>
-        <source>Form</source>
-        <translation type="obsolete">Formulaire</translation>
-    </message>
     <message>
         <location filename="../src/gui/tagdetailwidget.ui" line="35"/>
         <source>Filter:</source>
