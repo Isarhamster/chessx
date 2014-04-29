@@ -140,9 +140,8 @@ QString Analysis::toString(const Board& board) const
     if(isMate())
     {
         QString color = testBoard.toMove() == White ? "000080" : "800000";
-        QString text = "Mate in";
-        out = QString("<font color=\"#%1\"><b>%2 %3</b></font> ")
-              .arg(color).arg(text).arg(movesToMate());
+        QString text = QString(tr("Mate in %1").arg(movesToMate()));
+        out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color).arg(text);
     }
     else if (!bestMove())
     {
