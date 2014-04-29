@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de">
+<TS version="2.0" language="de">
 <context>
     <name>AboutDlg</name>
     <message>
@@ -754,18 +754,6 @@ Bitte Installation prüfen.</translation>
         <translation>Kompletter Pfad für Ausgabedatei</translation>
     </message>
     <message>
-        <source>Both</source>
-        <translation type="obsolete">Beide</translation>
-    </message>
-    <message>
-        <source>Only White</source>
-        <translation type="obsolete">Nur Weiß</translation>
-    </message>
-    <message>
-        <source>Only Black</source>
-        <translation type="obsolete">Nur Schwarz</translation>
-    </message>
-    <message>
         <location filename="../src/gui/dlgsavebook.ui" line="92"/>
         <source>Uniform Probabilities</source>
         <translation>Gleichverteilte Wahrscheinlichkeiten</translation>
@@ -774,10 +762,6 @@ Bitte Installation prüfen.</translation>
         <location filename="../src/gui/dlgsavebook.ui" line="102"/>
         <source>Output Path</source>
         <translation>Ausgabedatei</translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.cpp" line="79"/>
@@ -3698,10 +3682,6 @@ Shall I download a database?</source>
 </context>
 <context>
     <name>TagDetailWidget</name>
-    <message>
-        <source>Form</source>
-        <translation type="obsolete">Formular</translation>
-    </message>
     <message>
         <location filename="../src/gui/tagdetailwidget.ui" line="35"/>
         <source>Filter:</source>
