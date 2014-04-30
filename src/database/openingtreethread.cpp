@@ -57,9 +57,20 @@ void OpeningTreeThread::run()
             if (pgdb->findMove(key,m))
             {
                 Board b = m_board;
+                if (b.pieceAt(e1)==WhiteKing)
+                {
+                    if (m.san=="e1a1") m.san = "e1c1";
+                    else if (m.san=="e1h1") m.san = "e1g1";
+                }
+                else if (b.pieceAt(e8)==BlackKing)
+                {
+                    if (m.san=="e8a8") m.san = "e8c8";
+                    else if (m.san=="e8h8") m.san = "e8g8";
+                }
+
                 Move move = b.parseMove(m.san);
                 m.san = b.moveToSan(move);
-                moves[move] = m; // Dummy entry, just to get a map key!
+                moves[move] = m;
                 games += m.count;
             }
 
