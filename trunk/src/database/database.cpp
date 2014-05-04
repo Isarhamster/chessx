@@ -73,7 +73,7 @@ bool Database::isReadOnly() const
     return true;
 }
 
-bool Database::loadGame(int index, Game &game)
+bool Database::loadGame(int /*index*/, Game& /*game*/)
 {
     return false;
 }

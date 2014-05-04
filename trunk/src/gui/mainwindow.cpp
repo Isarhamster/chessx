@@ -256,6 +256,8 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_databaseList, SIGNAL(requestAppendDatabase(QString, QString)),
             this, SLOT(copyDatabase(QString, QString)));
     connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));
+    connect(m_databaseList, SIGNAL(requestMakeBook(QString)),
+            this, SLOT(slotMakeBook(QString)));
     m_databaseList->addFileOpen(QString(), false);
     m_databaseList->setFileCurrent(QString());
     restoreRecentFiles();

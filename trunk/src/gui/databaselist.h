@@ -39,6 +39,7 @@ signals:
     void requestLinkDatabase(QString s);
     void requestAppendGame(QString path, int index);
     void requestAppendDatabase(QString dest, QString src);
+    void requestMakeBook(QString s);
 
 protected: //Drag'n'Drop Support
     void startToDrag(const QModelIndex&);
@@ -58,7 +59,6 @@ private slots:
     void slotContextMenu(const QPoint& pos);
     void dbAddToFavorites();
     void dbRemoveFromFavorites();
-    void slotShowInFinder(QString path);
     void slotShowInFinder();
     void slotMakeBook();
     void slotExtTool1();

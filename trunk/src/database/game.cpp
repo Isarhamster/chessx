@@ -363,6 +363,11 @@ bool Game::currentNodeHasMove(Square from, Square  to) const
     return false;
 }
 
+bool Game::findNextMove(Move m)
+{
+    return findNextMove(m.from(),m.to(),m.isPromotion() ? pieceType(m.promotedPiece()) : None);
+}
+
 // does the next main move or one of the variations go from square from to square to
 // if so make it on the board
 bool Game::findNextMove(Square from, Square to, PieceType promotionPiece)
@@ -733,21 +738,41 @@ bool Game::isMainline(MoveId moveId) const
 
 Result Game::result() const
 {
-    if(m_tags["Result"] == "1-0")
+    if(m_tags[TagNameResult] == "1-0")
     {
         return WhiteWin;
     }
-    else if(m_tags["Result"] == "1/2-1/2")
+    else if(m_tags[TagNameResult] == "1/2-1/2")
     {
         return Draw;
     }
-    else if(m_tags["Result"] == "0-1")
+    else if(m_tags[TagNameResult] == "0-1")
     {
         return BlackWin;
     }
     else
     {
         return ResultUnknown;
+    }
+}
+
+int Game::resultAsInt() const
+{
+    if(m_tags[TagNameResult] == "1-0")
+    {
+        return +1;
+    }
+    else if(m_tags[TagNameResult] == "1/2-1/2")
+    {
+        return 0;
+    }
+    else if(m_tags[TagNameResult] == "0-1")
+    {
+        return -1;
+    }
+    else
+    {
+        return 0;
     }
 }
 
@@ -807,7 +832,9 @@ bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
     if (dbSetAnnotation(annotation, moveId, position))
     {
         emit signalGameModified(true, state, tr("Set annotation"));
+        return true;
     }
+    return false;
 }
 
 bool Game::dbSetAnnotation(QString annotation, MoveId moveId, Position position)

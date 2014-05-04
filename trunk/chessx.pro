@@ -161,7 +161,9 @@ HEADERS += src/database/board.h \
     src/gui/dlgsavebook.h \
     src/database/polyglotdatabase.h \
     src/database/openingtreethread.h \
-    src/database/movedata.h
+    src/database/movedata.h \
+    src/database/polyglotwriter.h \
+    src/gui/shellhelper.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -267,7 +269,9 @@ SOURCES += src/database/board.cpp \
     src/gui/dlgsavebook.cpp \
     src/database/polyglotdatabase.cpp \
     src/database/openingtreethread.cpp \
-    src/database/movedata.cpp
+    src/database/movedata.cpp \
+    src/database/polyglotwriter.cpp \
+    src/gui/shellhelper.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
@@ -364,9 +368,6 @@ OTHER_FILES += \
     data/templates/html-default.template \
     ChangeLog \
     COPYING \
-    i18n/chessx_de.ts \
-    i18n/chessx_fr.ts \
-    i18n/chessx_da.ts \
     ChangeLog.txt \
     data/help/about.css \
     data/help/about3.html \

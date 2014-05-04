@@ -80,6 +80,7 @@ void DatabaseInfo::run()
 
 bool DatabaseInfo::open(bool utf8)
 {
+    m_gameModified = false;
     m_bLoaded = false;
     m_utf8 = utf8;
     start();
@@ -220,7 +221,7 @@ bool DatabaseInfo::saveGame()
         }
     }
 
-    if(m_index < m_database->count() && m_index >= 0)
+    if(m_index < (int)m_database->count() && m_index >= 0)
     {
         if(m_database->replace(m_index, m_game))
         {

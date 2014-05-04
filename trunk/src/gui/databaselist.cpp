@@ -4,10 +4,10 @@
 
 #include "databaselist.h"
 #include "databaselistmodel.h"
-#include "dlgsavebook.h"
 #include "GameMimeData.h"
-#include "settings.h"
 #include "messagedialog.h"
+#include "settings.h"
+#include "shellhelper.h"
 
 #include <QFileInfo>
 #include <QHeaderView>
@@ -78,6 +78,7 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         bool bIsNotFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_FAVORITE), Qt::UserRole).toString().isEmpty();
         bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString().isEmpty();
         bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_OPEN), Qt::UserRole).toString() == "Open";
+        bool bIsBook = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString().endsWith("bin");
         menu.addAction(bIsOpen ? tr("Activate") : tr("Open"), this, SLOT(dbOpen()));
 
         menu.addAction(tr("Close"), this, SLOT(dbClose()))->setEnabled(bIsOpen && bHasPath);
@@ -88,17 +89,7 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         menu.addSeparator();
         menu.addAction(tr("Show in Finder"), this, SLOT(slotShowInFinder()))->setEnabled(bHasPath);
 #endif
-#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
-        bool hasInternalPolyglot = !AppSettings->getValue("Tools/ExtPolyglot").toBool();
-#else
-        bool hasInternalPolyglot = false;
-#endif
-        bool hasExternalPolyglot = AppSettings->getValue("Tools/ExtPolyglot").toBool();
-        if (hasExternalPolyglot)
-        {
-            hasExternalPolyglot = QFileInfo(AppSettings->getValue("Tools/PathPolyglot").toString()).exists();
-        }
-        bool enablePolyglot = bHasPath && (hasExternalPolyglot||hasInternalPolyglot);
+        bool enablePolyglot = bIsOpen && !bIsBook;
         menu.addAction(tr("Make a Polyglot book..."), this, SLOT(slotMakeBook()))->setEnabled(enablePolyglot);
 
         QFileInfo fi(AppSettings->value("Tools/Path1").toString());
@@ -203,9 +194,7 @@ void DatabaseList::slotMakeBook()
 {
     Q_ASSERT(m_cell.isValid());
     QString pathIn = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
-    DlgSaveBook dlg(pathIn);
-    connect(&dlg, SIGNAL(bookWritten(QString)), SLOT(slotShowInFinder(QString)));
-    dlg.exec();
+    emit requestMakeBook(pathIn);
 }
 
 void DatabaseList::extToolReadOutput()
@@ -263,35 +252,11 @@ void DatabaseList::slotExtTool1()
     }
 }
 
-void DatabaseList::slotShowInFinder(QString path)
-{
-    // Mac, Windows support folder or file.
-#if defined(Q_OS_WIN)
-    QString param;
-    if(!QFileInfo(path).isDir())
-    {
-        param = QLatin1String("/select,");
-    }
-    param += QDir::toNativeSeparators(pathIn);
-    QProcess::startDetached("explorer.exe", QStringList(param));
-#elif defined(Q_OS_MAC)
-    QStringList scriptArgs;
-    scriptArgs << QLatin1String("-e")
-               << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
-               .arg(path);
-    QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
-    scriptArgs.clear();
-    scriptArgs << QLatin1String("-e")
-               << QLatin1String("tell application \"Finder\" to activate");
-    QProcess::execute("/usr/bin/osascript", scriptArgs);
-#endif
-}
-
 void DatabaseList::slotShowInFinder()
 {
     Q_ASSERT(m_cell.isValid());
     QString pathIn = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
-    slotShowInFinder(pathIn);
+    ShellHelper::showInFinder(pathIn);
 }
 
 int DatabaseList::getLastIndex(const QString& s) const

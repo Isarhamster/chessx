@@ -68,8 +68,6 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 
     connect(ui.btLoadLang, SIGNAL(clicked()), SLOT(slotLoadLanguageFile()));
     connect(ui.btExtToolPath, SIGNAL(clicked(bool)), SLOT(slotSelectToolPath()));
-    connect(ui.btPolyglotExternal, SIGNAL(clicked(bool)), SLOT(slotEnableExternalPolyglotPath(bool)));
-    connect(ui.btPolyglotPath, SIGNAL(clicked(bool)), SLOT(slotSelectPolyglotPath()));
     restoreSettings();
 
     // Start off with no Engine selected
@@ -125,22 +123,6 @@ void PreferencesDialog::slotSelectToolPath()
     if(QFileInfo(fileName).exists())
     {
         ui.extToolPath->setText(fileName);
-    }
-}
-
-void PreferencesDialog::slotEnableExternalPolyglotPath(bool checked)
-{
-    ui.polyglotPath->setEnabled(checked);
-    ui.btPolyglotPath->setEnabled(checked);
-}
-
-void PreferencesDialog::slotSelectPolyglotPath()
-{
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Select polyglot application"),
-                                                    ui.polyglotPath->text());
-    if(QFileInfo(fileName).exists())
-    {
-        ui.polyglotPath->setText(fileName);
     }
 }
 
@@ -534,8 +516,6 @@ void PreferencesDialog::restoreSettings()
     AppSettings->beginGroup("Tools");
     ui.extToolPath->setText(AppSettings->getValue("Path1").toString());
     ui.extToolParameters->setText(AppSettings->getValue("CommandLine1").toString());
-    ui.polyglotPath->setText(AppSettings->getValue("PathPolyglot").toString());
-    ui.btPolyglotExternal->setChecked(AppSettings->getValue("ExtPolyglot").toBool());
     AppSettings->endGroup();
 }
 
@@ -603,8 +583,6 @@ void PreferencesDialog::saveSettings()
     AppSettings->endGroup();
 
     AppSettings->beginGroup("Tools");
-    AppSettings->setValue("ExtPolyglot", ui.btPolyglotExternal->isChecked());
-    AppSettings->setValue("PathPolyglot", ui.polyglotPath->text());
     AppSettings->setValue("Path1", ui.extToolPath->text());
     AppSettings->setValue("CommandLine1", ui.extToolParameters->text());
     AppSettings->endGroup();

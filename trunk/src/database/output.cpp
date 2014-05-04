@@ -861,7 +861,7 @@ void Output::output(QTextStream& out, Database& database)
 
     int percentDone = 0;
     Game game;
-    for(int i = 0; i < database.count(); ++i)
+    for(int i = 0; i < (int)database.count(); ++i)
     {
         if(database.loadGame(i, game))
         {

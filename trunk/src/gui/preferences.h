@@ -63,10 +63,6 @@ public slots:
     void slotSelectToolPath();
     /** user wants file dialog to select directory in which DataBases will be stored */
     void slotSelectDataBasePath();
-    /** Enable browsing / setting of polyglot application */
-    void slotEnableExternalPolyglotPath(bool checked);
-    /** Start a file dialog for the polyglot application */
-    void slotSelectPolyglotPath();
     /** user wants option dialog to select parameters which will be sent at startup of engine */
     void slotShowOptionDialog();
     /** User pressed a flag to change the piece string */

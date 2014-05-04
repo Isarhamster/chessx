@@ -107,9 +107,6 @@ public:
     /** Return true if given FEN can be parsed */
     bool isValidFen(const QString& fen) const;
 
-    /** Return true if fastbits option was compiled in */
-    static const bool fastbitsOption;
-
     /** Set castling rights. */
     void setCastlingRights(CastlingRights cr);
     /** Return the internal castling rights data (used by hash function) */

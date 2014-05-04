@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>370</width>
-    <height>290</height>
+    <height>339</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -111,7 +111,7 @@
          <string>Enter the complete target path</string>
         </property>
         <property name="readOnly">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>

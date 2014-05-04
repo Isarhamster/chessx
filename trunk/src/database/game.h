@@ -212,6 +212,7 @@ public :
     int backward(int count = 1);
     /** Moves forward if the next move matches (from,to,promotionPiece) */
     bool findNextMove(Square from, Square to, PieceType promotionPiece = None);
+    bool findNextMove(Move m);
 
     /** Enters the variation that corresponds to moveId. moveId must be a MoveId that
         corresponds to a subvariation of the current position. Compared to moveToId
@@ -335,6 +336,7 @@ public :
     /** Move the variation @p moveId of the curent node down in the list of variations */
     void moveVariationDown(MoveId moveId);
 
+    int resultAsInt() const;
 signals:
     void signalGameModified(bool,Game,QString);
 
