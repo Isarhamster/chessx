@@ -191,7 +191,7 @@ Filter* FilterModel::filter()
     return m_filter;
 }
 
-void FilterModel::sort(int column, Qt::SortOrder order)
+void FilterModel::sort(int /*column*/, Qt::SortOrder /*order*/)
 {
 
 }

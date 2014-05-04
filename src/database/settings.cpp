@@ -182,12 +182,6 @@ void Settings::getMap(const QString& key, OptionValueList& map)
 
 QMap<QString, QVariant> Settings::initDefaultValues() const
 {
-#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
-    bool externPolyglot = false;
-#else
-    bool externPolyglot = true;
-#endif
-
     QMap<QString, QVariant> map;
     map.insert("ColumnCount", -1);
 
@@ -245,8 +239,6 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/currentMoveColor", QColor(Qt::blue));
     map.insert("/Board/AutoPlayerInterval", 3000);
     map.insert("/Board/AutoSaveAndContinue", false);
-    map.insert("/Tools/ExtPolyglot", externPolyglot);
-    map.insert("/Tools/PathPolyglot", "");
     map.insert("/Tools/Path1", "");
     map.insert("/Tools/CommandLine1", "");
     return map;

@@ -87,7 +87,7 @@ void PlayerInfo::update()
     // Clean previous statistics
     reset();
 
-    for(int i = 0; i < m_database->count(); ++i)
+    for(int i = 0; i < (int)m_database->count(); ++i)
     {
         Color c;
         if(index->valueIndexFromTag(TagNameWhite, i) == player)

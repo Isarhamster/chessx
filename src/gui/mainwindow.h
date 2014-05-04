@@ -338,6 +338,12 @@ public slots:
     void slotRenameRequest(QString tag, QString newValue, QString oldValue);
     /** Export an image to a file */
     void slotExportImage();
+    /** Build a polyglot from the database @p s */
+    void slotMakeBook(QString s);
+    /** Show a path in finder */
+    void slotShowInFinder(QString path);
+    /** Show a path in finder */
+    void slotBookBuildError(QString path);
 
 protected slots:
     /** Update recent files menu */

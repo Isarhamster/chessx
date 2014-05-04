@@ -116,10 +116,19 @@ engine will make the best move found so far.</p>
 The engine will answer immediately with a book move when playing out games (see above), depending on "Best Book Move" option this may or
 may not be the best move from the book.</p>
 
-<h3>Creating your own book</h3>
-<p>You can create your own book by selecting a PGN database (right click with the mouse) and select "Make polyglot book". Polyglot
-is an external tool which is included in chessx. It is licensed under GNU GPL Version 2.0. See <a href="http://wbec-ridderkerk.nl/html/details1/PolyGlot.html">Home of Polyglot</a>
+<h3>Using Books in ChessX</h3>
+<p>Polyglot is a book standard supported by ChessX. It is licensed under GNU GPL Version 2.0.
+See <a href="http://wbec-ridderkerk.nl/html/details1/PolyGlot.html">Home of Polyglot</a>
 for code and details.</p>
+<p>ChessX displays books like any other database in the Opening Tree Browser. Drag a polyglot book (which must have the suffix ".bin")
+to the Database List or open the book via menu. Once it is open, it becomes available as any other open database
+in the combo box "Source" beneath the opening tree.</p>
+<p>One note: Polyglot books can be difficult to interpret: they are made for engines, as they give a hint on moves,
+the engine should play. Moves which did not succeed at all are usually not part of polyglot books.</p>
+<p>So do not learn openings from polyglot books - important moves might be missing!</p>
+
+<h3>Creating your own book</h3>
+<p>You can create your own book by selecting a open PGN database (right click with the mouse) and select "Make polyglot book".</p>
 <p>ChessX will query the following parameters and pass them for creating a book:</p>
 <ul>
 <li>"max-ply"
@@ -162,6 +171,8 @@ each move alternative. The database is updated continuously, the progress bar gi
 <p>The result of the position search can be filtered into the list of games. This filter can again be used as input for the
 search in the opening tree. Especially on large databases this can speed up further searches (but will of course miss other move orders
 into the same position).</p>
+<p>Usually, clicking onto one of the moves in opening tree will only update the small overview in the opening tree widget.
+Pressing Shift while clicking onto a move will add the move to the current game (if the position permits)</p>
 
 <h3>Training Mode</h3>
 <p>Selecting Game/Training starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game

@@ -18,6 +18,7 @@
 #include "databaseinfo.h"
 #include "databaselist.h"
 #include "ecolistwidget.h"
+#include "dlgsavebook.h"
 #include "editaction.h"
 #include "eventlistwidget.h"
 #include "filtermodel.h"
@@ -30,10 +31,12 @@
 #include "output.h"
 #include "pgndatabase.h"
 #include "playerlistwidget.h"
+#include "polyglotwriter.h"
 #include "preferences.h"
 #include "promotiondialog.h"
 #include "renametagdialog.h"
 #include "savedialog.h"
+#include "shellhelper.h"
 #include "settings.h"
 #include "tablebase.h"
 #include "tableview.h"
@@ -1115,7 +1118,7 @@ void MainWindow::slotMergeAllGames()
 void MainWindow::slotMergeFilter()
 {
     Game g;
-    for(int i = 0; i < database()->count(); ++i)
+    for(int i = 0; i < (int)database()->count(); ++i)
     {
         if(databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
         {
@@ -1372,7 +1375,7 @@ void MainWindow::slotFilterChanged()
         m_gameList->selectGame(gameIndex());
     }
     int count = databaseInfo()->filter()->count();
-    QString f = count == database()->count() ? tr("all") : QString::number(count);
+    QString f = count == (int)database()->count() ? tr("all") : QString::number(count);
     m_statusFilter->setText(QString(" %1: %2/%3 ").arg(databaseName())
                             .arg(f).arg(database()->count()));
 }
@@ -1495,7 +1498,7 @@ void MainWindow::copyDatabase(QString target, QString src)
             QString msg;
             msg = tr("Append games from %1 to %2.").arg(src).arg(target.isEmpty() ? "Clipboard" : target);
             statusBar()->showMessage(msg);
-            for(int i = 0; i < pSrcDB->count(); ++i)
+            for(int i = 0; i < (int)pSrcDB->count(); ++i)
             {
                 Game g;
                 if(pSrcDB->loadGame(i, g))
@@ -1582,18 +1585,22 @@ void MainWindow::slotDatabaseCopy(int preselect, int index)
         }
         break;
     case CopyDialog::Filter:
-        for(int i = 0; i < database()->count(); ++i)
+        for(int i = 0; i < (int)database()->count(); ++i)
+        {
             if(databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
             {
                 m_databases[target]->database()->appendGame(g);
             }
+        }
         break;
     case CopyDialog::AllGames:
-        for(int i = 0; i < database()->count(); ++i)
+        for(int i = 0; i < (int)database()->count(); ++i)
+        {
             if(database()->loadGame(i, g))
             {
                 m_databases[target]->database()->appendGame(g);
             }
+        }
         break;
     default:
         ;
@@ -1666,6 +1673,9 @@ void MainWindow::slotTreeUpdate()
 
 void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 {
+    Qt::KeyboardModifiers modifiers = QApplication::keyboardModifiers();
+    bool addMove = (modifiers & Qt::ShiftModifier);
+
     QString move = m_openingTreeWidget->move(index);
     bool bEnd = (move == "[end]");
     Board b = m_openingTreeWidget->board();
@@ -1673,6 +1683,22 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
     if(!bEnd)
     {
         Move m = b.parseMove(move);
+        if (addMove && b==game().board())
+        {
+            if (!game().findNextMove(m))
+            {
+                if(game().atLineEnd())
+                {
+                    game().addMove(m);
+                }
+                else
+                {
+                    game().addVariation(m);
+                    game().forward();
+                }
+            }
+            slotGameChanged();
+        }
         b.doMove(m);
     }
 
@@ -2030,8 +2056,46 @@ void MainWindow::slotUpdateOpeningTreeWidget()
     QStringList files; // List of all open files excluding ClipBoard
     for(int i = 1; i < m_databases.count(); i++)
     {
-        files << m_databases[i]->database()->name();
+        QString displayName = m_databases[i]->database()->name();
+        if (m_databases[i]->IsPolyglotBook())
+        {
+            displayName += " (Polyglot)";
+        }
+        files << displayName;
     }
     m_openingTreeWidget->updateFilterIndex(files);
 }
 
+void MainWindow::slotMakeBook(QString pathIn)
+{
+    for(int i = 0; i < m_databases.count(); i++)
+    {
+        if(m_databases[i]->database()->filename() == pathIn)
+        {
+            DlgSaveBook dlg(pathIn);
+            connect(&dlg, SIGNAL(bookWritten(QString)), SLOT(slotShowInFinder(QString)));
+            if (dlg.exec() == QDialog::Accepted)
+            {
+                QString out;
+                int maxPly, minGame;
+                bool uniform;
+                dlg.getBookParameters(out, maxPly, minGame, uniform);
+                PolyglotWriter* polyglotWriter = new PolyglotWriter();
+                connect(polyglotWriter, SIGNAL(bookBuildError(QString)), SLOT(slotBookBuildError(QString)));
+                connect(polyglotWriter, SIGNAL(bookBuildFinished(QString)), SLOT(slotShowInFinder(QString)));
+                polyglotWriter->writeBookForDatabase(m_databases[i]->database(), out, maxPly, minGame, uniform);
+            }
+            return;
+        }
+    }
+}
+
+void MainWindow::slotShowInFinder(QString path)
+{
+    ShellHelper::showInFinder(path);
+}
+
+void MainWindow::slotBookBuildError(QString /*path*/)
+{
+    MessageDialog::warning(tr("Could not build book"), tr("Polyglot Error"));
+}
