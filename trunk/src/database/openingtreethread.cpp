@@ -62,7 +62,7 @@ void OpeningTreeThread::run()
                     if (m.san=="e1a1") m.san = "e1c1";
                     else if (m.san=="e1h1") m.san = "e1g1";
                 }
-                else if (b.pieceAt(e8)==BlackKing)
+                if (b.pieceAt(e8)==BlackKing)
                 {
                     if (m.san=="e8a8") m.san = "e8c8";
                     else if (m.san=="e8h8") m.san = "e8g8";
