@@ -52,7 +52,7 @@ public:
     /** @return the ply at which the game in the filter is. Zero if game is not in filter */
     int gamePosition(int game) const;
     /** @return number of games in the filter. */
-    int count() const;
+    inline int count() const { return m_count; }
     /** @return the size of the filter. */
     int size() const;
     /** @return next game in the filter or @p -1 if there is none. */

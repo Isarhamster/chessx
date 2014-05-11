@@ -94,11 +94,6 @@ int Filter::gamePosition(int game) const
     return m_vector->at(game);
 }
 
-int Filter::count() const
-{
-    return m_count;
-}
-
 int Filter::size() const
 {
     return m_vector->size();
