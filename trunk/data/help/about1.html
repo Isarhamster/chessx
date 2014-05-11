@@ -91,19 +91,8 @@ Stockfish is an open source engine (see <a href="http://stockfishchess.org">Home
 The source code for Stockfish is also located on the homepage. Note that Stockfish is licensed under <a href="about3.html">GPLv3</a></p>
 <p>You can fine-tune engines with the protocol options dialog (works for UCI only, Winboard is seldom used and due to the clumsy specification
 hard to implement for GUI developers.</p>
-
-<h3>Automatically annotating games</h3>
-<p>Start an engine in the Analysis 1 window and select menu "Game->Auto Analysis". ChessX will start to move through the
-current game, analysing each position for some time. After the alotted time is over, the best move will be inserted as variation into the game
-text. Then ChessX will continue with the next move.</p>
-<p>There are a couple of options which have an influence on the behaviuor:</p>
-<ul>
-<li>Preferences->Game->Auto-Play-Interval determines the time, ChessX will us for each position
-<li>Preferences->Game->Automatically save and continue with next game: This allows analysing a complete database, select this option, start Engine 1,
-open the first game from the database and select move 1.
-<li>Preferences->Database->Commit Database after saving Game: Recommended, commits your results to the harddisk after each game, especially if you
-analyse a complete database, a loss of power will otherwise lose all results so far.
-</ul>
+<p>You can change the move rate with the slider in the bottom right corner of the status bar. Draw the slider to the very left for infinite analysis or
+to the right to make the engine analyse from 1 to 10 secondes per move.</p>
 
 <h3>Playing out games</h3>
 <p>You can play out a game after the final position by activating Auto Respond mode.
@@ -114,7 +103,20 @@ engine will make the best move found so far.</p>
 <h3>Using Books in engines</h3>
 <p>UCI engines may support books. Just set the OwnBook option to true, set the name of the "Book File" option and restart the engine.
 The engine will answer immediately with a book move when playing out games (see above), depending on "Best Book Move" option this may or
-may not be the best move from the book.</p>
+may not be the best move from the book. In infinite analysis, the engine won't use information from opening books.</p>
+
+<h3>Automatically annotating games</h3>
+<p>Start an engine in the Analysis 1 window and select menu "Game->Auto Analysis". ChessX will start to move through the
+current game, analysing each position for some time. After the alotted time is over, the best move will be inserted as variation into the game
+text. Then ChessX will continue with the next move.</p>
+<p>There are a couple of options which have an influence on the behaviuor:</p>
+<ul>
+<li>The slider in the status bar will determine, how long the engine will ponder on each position
+<li>Preferences->Game->Automatically save and continue with next game: This allows analysing a complete database, select this option, start Engine 1,
+open the first game from the database and select move 1.
+<li>Preferences->Database->Commit Database after saving Game: Recommended, commits your results to the harddisk after each game, especially if you
+analyse a complete database, a loss of power will otherwise lose all results so far.
+</ul>
 
 <h3>Using Books in ChessX</h3>
 <p>Polyglot is a book standard supported by ChessX. It is licensed under GNU GPL Version 2.0.
