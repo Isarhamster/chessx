@@ -56,28 +56,34 @@ void UCIEngine::stopAnalysis()
 
 void UCIEngine::setMpv(int mpv)
 {
-    Engine::setMpv(mpv);
-    if(isAnalyzing())
+    if (m_mpv != mpv)
     {
-        send("stop");
-        send(QString("setoption name MultiPV value %1").arg(m_mpv));
-        if (!m_moveTime)
-            send("go infinite");
-        else
-            send(QString("go movetime %1").arg(m_moveTime));
+        Engine::setMpv(mpv);
+        if(isAnalyzing())
+        {
+            send("stop");
+            send(QString("setoption name MultiPV value %1").arg(m_mpv));
+            if (!m_moveTime)
+                send("go infinite");
+            else
+                send(QString("go movetime %1").arg(m_moveTime));
+        }
     }
 }
 
 void UCIEngine::setMoveTime(int mt)
 {
-    Engine::setMoveTime(mt);
-    if(isAnalyzing())
+    if (m_moveTime != mt)
     {
-        send("stop");
-        if (!m_moveTime)
-            send("go infinite");
-        else
-            send(QString("go movetime %1").arg(m_moveTime));
+        Engine::setMoveTime(mt);
+        if(isAnalyzing())
+        {
+            send("stop");
+            if (!m_moveTime)
+                send("go infinite");
+            else
+                send(QString("go movetime %1").arg(m_moveTime));
+        }
     }
 }
 
