@@ -69,7 +69,7 @@ MoveId Game::dbAddMove(const Move& move, const QString& annotation, NagSet nags)
     m_currentNode = m_moveNodes.size() - 1;
     if(!annotation.isEmpty())
     {
-        setAnnotation(annotation);
+        dbSetAnnotation(annotation);
     }
     m_moveNodes[previousNode].nextNode = m_currentNode;
     m_currentBoard.doMove(move);
@@ -92,6 +92,7 @@ MoveId Game::dbAddMove(const QString& sanMove, const QString& annotation, NagSet
     {
         return dbAddMove(move, annotation, nags);
     }
+    // qDebug() << sanMove << " : " << move.toAlgebraicDebug() << " is illegal in position " << board().toHumanFen() << " / " << board().toFen();
     return NO_MOVE;
 }
 
@@ -261,7 +262,7 @@ void Game::mergeWithGame(const Game& g)
     QString black = otherGame.tag(TagNameBlack);
     QString event = otherGame.eventInfo();
     QString shortDescription = QString("%1-%2 %3").arg(white).arg(black).arg(event);
-    otherGame.setAnnotation(shortDescription);
+    otherGame.dbSetAnnotation(shortDescription);
 
     MoveId otherMergeNode = findMergePoint(otherGame);
 
@@ -418,7 +419,7 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags,
     //replace node data with new move
     m_moveNodes[node].move = move;
     m_moveNodes[node].nags = nags;
-    setAnnotation(annotation, node);
+    dbSetAnnotation(annotation, node);
 
     //remove any following nodes after replaced move by disconnecting them from the tree
     forward();
@@ -515,7 +516,7 @@ MoveId Game::dbAddVariation(const MoveList& moveList, const QString& annotation)
     }
     if(!annotation.isEmpty())
     {
-        setAnnotation(annotation);
+        dbSetAnnotation(annotation);
     }
     moveToId(currentPosition);
     return varStart;
@@ -1446,14 +1447,19 @@ void Game::enumerateVariations(MoveId moveId, char a)
     MoveId node = nodeValid(moveId);
     if(node != NO_MOVE)
     {
+        Game state = *this;
         MoveId parentNode = m_moveNodes[node].parentNode;
         QList <MoveId>& v = m_moveNodes[parentNode].variations;
-        for(int i = 0; i < v.size(); ++i)
+        if (v.size())
         {
-            QString oldAnnotation = annotation(v[i], Game::BeforeMove);
-            oldAnnotation.remove(QRegExp("^.\\)"));
-            QString s = QString("%1) %2").arg(QChar(a + i)).arg(oldAnnotation).trimmed();
-            setAnnotation(s, v[i], Game::BeforeMove);
+            for(int i = 0; i < v.size(); ++i)
+            {
+                QString oldAnnotation = annotation(v[i], Game::BeforeMove);
+                oldAnnotation.remove(QRegExp("^.\\)"));
+                QString s = QString("%1) %2").arg(QChar(a + i)).arg(oldAnnotation).trimmed();
+                dbSetAnnotation(s, v[i], Game::BeforeMove);
+            }
+            emit signalGameModified(true, state, tr("Enumerate variations"));
         }
     }
 }

@@ -108,6 +108,7 @@ protected:
 signals:
     void LoadFinished(DatabaseInfo*);
     void signalRestoreState(const Game &game);
+    void signalGameModified();
 
 public slots:
     void dbCleanChanged(bool);
