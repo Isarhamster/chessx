@@ -399,18 +399,12 @@ void MainWindow::slotEditCopyPGN()
 
 void MainWindow::slotEditComment()
 {
-    if(gameEditComment(Output::Comment))
-    {
-        slotGameChanged();
-    }
+    gameEditComment(Output::Comment);
 }
 
 void MainWindow::slotEditCommentBefore()
 {
-    if(gameEditComment(Output::Precomment))
-    {
-        slotGameChanged();
-    }
+    gameEditComment(Output::Precomment);
 }
 
 void MainWindow::slotEditVarPromote()
@@ -418,7 +412,6 @@ void MainWindow::slotEditVarPromote()
     if(!game().isMainline())
     {
         game().promoteVariation(game().currentMove());
-        slotGameChanged();
     }
 }
 
@@ -427,7 +420,6 @@ void MainWindow::slotEditVarRemove()
     if(!game().isMainline())
     {
         game().removeVariation(game().variationNumber());
-        slotGameChanged();
     }
 }
 
@@ -465,7 +457,6 @@ bool MainWindow::pasteFen(QString& msg, QString fen)
         return false ;
     }
     game().setStartingBoard(board);
-    slotGameChanged();
     return true;
 }
 
@@ -510,16 +501,31 @@ void MainWindow::slotEditPaste()
     }
 }
 
+void MainWindow::slotEditMergePGN()
+{
+    QString pgn = QApplication::clipboard()->text().trimmed();
+    if(!pgn.isEmpty())
+    {
+        MemoryDatabase pgnDatabase;
+        if(pgnDatabase.openString(pgn))
+        {
+            Game g;
+            if(pgnDatabase.loadGame(0, g))
+            {
+                game().mergeWithGame(g);
+            }
+        }
+    }
+}
+
 void MainWindow::slotEditTruncateEnd()
 {
     game().truncateVariation(Game::AfterMove);
-    slotGameChanged();
 }
 
 void MainWindow::slotEditTruncateStart()
 {
     game().truncateVariation(Game::BeforeMove);
-    slotGameChanged();
 }
 
 void MainWindow::slotEditBoard()
@@ -530,7 +536,6 @@ void MainWindow::slotEditBoard()
     if(dlg.exec() == QDialog::Accepted)
     {
         game().setStartingBoard(dlg.board());
-        slotGameChanged();
     }
 }
 
@@ -617,7 +622,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                     }
                 }
 
-                slotGameChanged();
+                slotMoveChanged(); // todo ???
                 return;
             }
         }
@@ -654,7 +659,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             m_machineHasToMove = true;
         }
 
-        slotGameChanged();
+        slotMoveChanged(); // todo ???
     }
 }
 
@@ -875,40 +880,27 @@ void MainWindow::slotGameVarExit()
 void MainWindow::slotGameLoadFirst()
 {
     gameLoad(databaseInfo()->filter()->indexToGame(0));
-    m_gameList->setFocus();
 }
 
 void MainWindow::slotGameLoadLast()
 {
     gameLoad(databaseInfo()->filter()->indexToGame(databaseInfo()->filter()->count() - 1));
-    m_gameList->setFocus();
 }
 
 void MainWindow::slotGameLoadPrevious()
 {
-    if(QuerySaveGame())
-    {
-        int game = m_gameList->currentIndex().row();
-        game = databaseInfo()->filter()->indexToGame(game);
-        game = databaseInfo()->filter()->previousGame(game);
-        if(game != -1)
-        {
-            gameLoad(game);
-            m_gameList->setFocus();
-        }
-    }
+    int index = m_gameList->currentIndex().row();
+    int game = databaseInfo()->filter()->indexToGame(index);
+    game = databaseInfo()->filter()->previousGame(game);
+    gameLoad(game);
 }
 
 void MainWindow::loadNextGame()
 {
-    int game = m_gameList->currentIndex().row();
-    game = databaseInfo()->filter()->indexToGame(game);
+    int index = m_gameList->currentIndex().row();
+    int game = databaseInfo()->filter()->indexToGame(index);
     game = databaseInfo()->filter()->nextGame(game);
-    if(game != -1)
-    {
-        gameLoad(game);
-        m_gameList->setFocus();
-    }
+    gameLoad(game);
 }
 
 void MainWindow::slotGameLoadNext()
@@ -922,7 +914,6 @@ void MainWindow::slotGameLoadRandom()
     {
         int random = rand() % databaseInfo()->filter()->count();
         gameLoad(databaseInfo()->filter()->indexToGame(random));
-        m_gameList->setFocus();
     }
 }
 
@@ -931,7 +922,6 @@ void MainWindow::slotGameLoadChosen()
     int index = QInputDialog::getInt(this, tr("Load Game"), tr("Game number:"), gameIndex() + 1,
                                      1, database()->count());
     gameLoad(index - 1);
-    m_gameList->setFocus();
 }
 
 void MainWindow::slotGameNew()
@@ -946,10 +936,10 @@ void MainWindow::slotGameNew()
         {
             databaseInfo()->newGame();
             m_gameList->clearSelection();
-            slotGameChanged();
             emit signalFirstGameLoaded(true);
             emit signalLastGameLoaded(true);
             emit signalGameIsEmpty(true); // repair effect of slotGameChanged
+            m_gameList->setFocus();
         }
     }
 }
@@ -963,7 +953,6 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
         m_gameList->updateFilter();
         slotFilterChanged();
         slotGameChanged();
-        // databaseInfo().setModified(false);
 
         if(AppSettings->getValue("/General/autoCommitDB").toBool())
         {
@@ -996,7 +985,7 @@ bool MainWindow::slotGameSave()
 void MainWindow::slotGameModify(const EditAction& action)
 {
     if((action.type() != EditAction::CopyHtml) &&
-            (action.type() != EditAction::CopyText))
+       (action.type() != EditAction::CopyText))
     {
         game().moveToId(action.move());
         slotMoveChanged();
@@ -1040,23 +1029,14 @@ void MainWindow::slotGameModify(const EditAction& action)
         break;
     }
     case EditAction::EditPrecomment:
-        if(!gameEditComment(Output::Precomment))
-        {
-            return;
-        }
+        gameEditComment(Output::Precomment);
         break;
     case EditAction::EditGameComment:
         game().moveToId(0);
-        if(!gameEditComment(Output::Comment))
-        {
-            return;
-        }
+        gameEditComment(Output::Comment);
         break;
     case EditAction::EditComment:
-        if(!gameEditComment(Output::Comment))
-        {
-            return;
-        }
+        gameEditComment(Output::Comment);
         break;
     case EditAction::AddNag:
         game().addNag(Nag(action.data().toInt()), action.move());
@@ -1076,14 +1056,13 @@ void MainWindow::slotGameModify(const EditAction& action)
         break;
     case EditAction::CopyHtml:
         QApplication::clipboard()->setText(m_gameView->toHtml());
-        return; // game is not changed
+        break;
     case EditAction::CopyText:
         QApplication::clipboard()->setText(m_gameView->toPlainText());
-        return; // game is not changed
+        break;
     default:
         break;
     }
-    slotGameChanged();
 }
 
 void MainWindow::slotMergeActiveGame(int gameIndex)
@@ -1094,7 +1073,6 @@ void MainWindow::slotMergeActiveGame(int gameIndex)
         if(database()->loadGame(gameIndex, g))
         {
             game().mergeWithGame(g);
-            slotGameChanged();
         }
     }
 }
@@ -1112,7 +1090,6 @@ void MainWindow::slotMergeAllGames()
             }
         }
     }
-    slotGameChanged();
 }
 
 void MainWindow::slotMergeFilter()
@@ -1125,8 +1102,6 @@ void MainWindow::slotMergeFilter()
             game().mergeWithGame(g);
         }
     }
-
-    slotGameChanged();
 }
 
 void MainWindow::slotGetActiveGame(const Game** g)
@@ -1183,10 +1158,7 @@ void MainWindow::slotGameViewLink(const QUrl& url)
             slotMoveChanged();
         }
         Output::CommentType type = url.scheme() == "cmt" ? Output::Comment : Output::Precomment;
-        if(gameEditComment(type))
-        {
-            slotGameChanged();
-        }
+        gameEditComment(type);
     }
     else if(url.scheme() == "egtb")
     {
@@ -1199,7 +1171,7 @@ void MainWindow::slotGameViewLink(const QUrl& url)
             game().addMove(url.path());
         }
         game().forward();
-        slotGameChanged();
+        slotMoveChanged();
     }
     else if(url.scheme() == "tag")
     {
@@ -1239,7 +1211,6 @@ void MainWindow::slotGameAddVariation(const Analysis& analysis)
         score = QString::number(analysis.score() / 100.0, 'f', 2);
     }
     game().addVariation(analysis.variation(), score);
-    slotGameChanged();
 }
 
 void MainWindow::slotGameAddVariation(const QString& san)
@@ -1255,19 +1226,16 @@ void MainWindow::slotGameAddVariation(const QString& san)
     {
         game().addVariation(s);
     }
-    slotGameChanged();
 }
 
 void MainWindow::slotGameUncomment()
 {
     game().removeComments();
-    slotGameChanged();
 }
 
 void MainWindow::slotGameRemoveVariations()
 {
     game().removeVariations();
-    slotGameChanged();
 }
 
 void MainWindow::slotToggleTraining()
@@ -1385,7 +1353,6 @@ void MainWindow::slotFilterLoad(int index)
     if(index != gameIndex())
     {
         gameLoad(index);
-        activateWindow();
     }
 }
 

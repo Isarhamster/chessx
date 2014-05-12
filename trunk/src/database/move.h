@@ -60,6 +60,8 @@ public:
     Square castlingRookFrom() const;
     /** Convert to algebraic notation (e2e4, g8f6 etc.) */
     QString toAlgebraic() const;
+    QString dumpAlgebraic() const;
+    QString toAlgebraicDebug() const;
 
     /** Get the piece type moving -- note, returns Pawn, QUEEN, etc.. not colorized */
     Piece pieceMoved() const;
@@ -270,12 +272,8 @@ inline Square Move::castlingRookTo() const
     return (from() + to()) / 2;
 }
 
-inline QString Move::toAlgebraic() const
+inline QString Move::dumpAlgebraic() const
 {
-    if(!isLegal())
-    {
-        return QString("?");
-    }
     QString alg;
     alg += QChar('a' + from() % 8);
     alg += QChar('1' + from() / 8);
@@ -286,6 +284,26 @@ inline QString Move::toAlgebraic() const
         alg += QChar('=');
         alg += "XKQRBNPKQRBNP"[promotedPiece()];
     }
+    return alg;
+}
+
+inline QString Move::toAlgebraic() const
+{
+    if(!isLegal())
+    {
+        return QString("?");
+    }
+    return dumpAlgebraic();
+}
+
+inline QString Move::toAlgebraicDebug() const
+{
+    QString alg;
+    if(!isLegal())
+    {
+        alg = "?";
+    }
+    alg += dumpAlgebraic();
     return alg;
 }
 

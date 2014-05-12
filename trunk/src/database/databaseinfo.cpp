@@ -175,6 +175,7 @@ void DatabaseInfo::setModified(bool modified, const Game& g, QString action)
         m_undoStack->clear();
     }
     m_gameModified = modified;
+    emit signalGameModified();
 }
 
 QUndoStack *DatabaseInfo::undoStack() const
@@ -192,8 +193,8 @@ void DatabaseInfo::newGame()
     m_undoStack->clear();
     m_game.clearTags();
     m_game.clear();
-    setModified(false, Game(), "");
     m_index = NewGame;
+    setModified(false, Game(), "");
 }
 
 bool DatabaseInfo::saveGame()

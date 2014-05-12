@@ -552,7 +552,7 @@ bool PgnDatabase::parseMoves(Game* game)
         {
             if(!m_precomment.isEmpty())
             {
-                game->setAnnotation(m_precomment);
+                game->dbSetAnnotation(m_precomment);
                 m_precomment.clear();
                 m_inPreComment = false;
             }
@@ -795,7 +795,7 @@ void PgnDatabase::parseComment(Game* game)
         {
             if (game->plyCount()==0 && m_inPreComment)
             {
-                game->setGameComment(m_precomment);
+                game->dbSetAnnotation(m_precomment, 0);
                 m_inPreComment = false;
             }
             m_precomment = m_comment.trimmed();
@@ -803,7 +803,7 @@ void PgnDatabase::parseComment(Game* game)
         }
         else
         {
-            game->setAnnotation(m_comment.trimmed());
+            game->dbSetAnnotation(m_comment.trimmed());
         }
         m_currentLine = m_currentLine.right((m_currentLine.length() - end) - 1);
     }

@@ -90,6 +90,7 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Create clipboard database */
     DatabaseInfo* pClipDB = new DatabaseInfo(&m_undoGroup);
     connect(pClipDB,SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
+    connect(pClipDB,SIGNAL(signalGameModified()), SLOT(slotGameChanged()));
     m_databases.append(pClipDB);
     m_currentDatabase = 0;
 
@@ -520,7 +521,6 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         }
         game().clearNags();
         m_nagText.clear();
-        slotGameChanged();
         return;
     }
 
@@ -539,7 +539,6 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         {
             game().addNag(NagSet::fromString(m_nagText));
             m_nagText.clear();
-            slotGameChanged();
             return;
         }
         slotGameAddVariation(m_nagText);
@@ -571,7 +570,6 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         }
         game().addNag(NagSet::fromString(m_nagText));
         m_nagText.clear();
-        slotGameChanged();
     }
 }
 
@@ -645,6 +643,7 @@ int MainWindow::gameIndex() const
 
 void MainWindow::gameLoad(int index)
 {
+    if (index < 0) return;
     if(QuerySaveGame())
     {
         if(databaseInfo()->loadGame(index))
@@ -654,6 +653,7 @@ void MainWindow::gameLoad(int index)
             slotGameChanged();
             emit signalFirstGameLoaded(databaseInfo()->filter()->previousGame(index) == -1);
             emit signalLastGameLoaded(databaseInfo()->filter()->nextGame(index) == -1);
+            m_gameList->setFocus();
         }
     }
 }
@@ -845,7 +845,8 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     startOperation(tr("Opening %1...").arg(basefile));
     connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
     connect(db, SIGNAL(LoadFinished(DatabaseInfo*)), this, SLOT(slotDataBaseLoaded(DatabaseInfo*)));
-    connect(db,SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
+    connect(db, SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
+    connect(db, SIGNAL(signalGameModified()), SLOT(slotGameChanged()));
     if(!db->open(utf8))
     {
         slotDataBaseLoaded(db);
@@ -1158,7 +1159,9 @@ void MainWindow::setupActions()
     edit->addAction(createAction(tr("Copy Image"), SLOT(slotEditCopyImage()),
                                  Qt::CTRL + Qt::ALT + Qt::Key_C, editToolBar, ":/images/camera.png"));
     edit->addSeparator();
-    edit->addAction(createAction(tr("&Paste"), SLOT(slotEditPaste()),
+    edit->addAction(createAction(tr("&Paste into new game"), SLOT(slotEditPaste()),
+                                 Qt::CTRL + Qt::SHIFT + Qt::Key_V));
+    edit->addAction(createAction(tr("&Paste"), SLOT(slotEditMergePGN()),
                                  Qt::CTRL + Qt::Key_V, editToolBar, ":/images/edit_paste.png"));
     edit->addSeparator();
     edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(), 0,

@@ -344,7 +344,8 @@ public slots:
     void slotShowInFinder(QString path);
     /** Show a path in finder */
     void slotBookBuildError(QString path);
-
+    /** Merge the clipboard into the current game */
+    void slotEditMergePGN();
 protected slots:
     /** Update recent files menu */
     void updateMenuDatabases();
