@@ -413,6 +413,7 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags,
     if(node == NO_MOVE)
     {
         dbAddMove(move, annotation, nags);
+        emit signalGameModified(true,state,tr("Add move"));
         return true;
     }
 
@@ -1558,6 +1559,8 @@ void Game::indicateAnnotationsOnBoard(MoveId moveId)
 
     annotation = arrowAnnotation(moveId);
     m_currentBoard.setArrowAnnotation(annotation);
+
+    emit signalMoveChanged();
 }
 
 void Game::moveToStart()
@@ -1605,27 +1608,6 @@ void Game::moveToId(MoveId moveId)
     }
 
     indicateAnnotationsOnBoard(moveId);
-}
-
-int Game::moveToPly(int ply)
-{
-    if(ply == 0)
-    {
-        moveToStart();
-        return 0;
-    }
-
-    int currentPly = this->ply();
-    int diff = ply - currentPly;
-
-    if(diff > 0)
-    {
-        return currentPly + forward(diff);
-    }
-    else
-    {
-        return currentPly - backward(-diff);
-    }
 }
 
 Move Game::move(MoveId moveId) const

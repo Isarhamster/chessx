@@ -289,7 +289,7 @@ QString Output::writeDiagram(int n)
         boardView.setMinimumSize(n, n);
         boardView.setEnabled(false);
         boardView.configure();
-        Game g = *m_game;
+        Game g = m_game;
         g.forward(1);
         boardView.setBoard(g.board());
         boardView.resize(n, n);
@@ -326,19 +326,19 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     MoveId moveId;
     if(moveToWrite == NextMove)
     {
-        moveId = m_game->nextMove();
+        moveId = m_game.nextMove();
     }
     else
     {
-        moveId = m_game->currentMove();
+        moveId = m_game.currentMove();
     }
     mvno = QString::number(moveId);
-    if(m_game->nags(moveId).count() > 0)
+    if(m_game.nags(moveId).count() > 0)
     {
         if(m_options.getOptionAsBool("SymbolicNag"))
         {
-            nagString += m_game->nags(moveId).toString(m_outputType == Html ? NagSet::HTML : NagSet::Simple);
-            if((m_outputType == Html || m_outputType == NotationWidget) && (m_game->nags(moveId).contains(NagDiagram)))
+            nagString += m_game.nags(moveId).toString(m_outputType == Html ? NagSet::HTML : NagSet::Simple);
+            if((m_outputType == Html || m_outputType == NotationWidget) && (m_game.nags(moveId).contains(NagDiagram)))
             {
                 int n = m_options.getOptionAsInt("DiagramSize");
                 if(n)
@@ -349,21 +349,21 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         }
         else
         {
-            nagString += m_game->nags(moveId).toString(NagSet::PGN);
+            nagString += m_game.nags(moveId).toString(NagSet::PGN);
         }
 
     }
     // Read comments
-    if(m_game->canHaveStartAnnotation(moveId))
-        precommentString = (m_outputType == Pgn) ? m_game->annotation(moveId, Game::BeforeMove) :
-                           m_game->textAnnotation(moveId, Game::BeforeMove);
+    if(m_game.canHaveStartAnnotation(moveId))
+        precommentString = (m_outputType == Pgn) ? m_game.annotation(moveId, Game::BeforeMove) :
+                           m_game.textAnnotation(moveId, Game::BeforeMove);
 
-    QString commentString = (m_outputType == Pgn) ? m_game->annotation(moveId) : m_game->textAnnotation(moveId);
+    QString commentString = (m_outputType == Pgn) ? m_game.annotation(moveId) : m_game.textAnnotation(moveId);
 
     // Write precomment if any
     text += writeComment(precommentString, mvno, Precomment);
 
-    Color c = m_game->board().toMove();
+    Color c = m_game.board().toMove();
 
     if((m_options.getOptionAsBool("ColumnStyle")) &&
             (m_currentVariationLevel == 0) &&
@@ -385,11 +385,11 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     }
     if(c == White)
     {
-        text += QString::number(m_game->moveNumber(moveId)) + ". ";
+        text += QString::number(m_game.moveNumber(moveId)) + ". ";
     }
     else if(m_dirtyBlack)
     {
-        text += QString::number(m_game->moveNumber(moveId)) + "... ";
+        text += QString::number(m_game.moveNumber(moveId)) + "... ";
         if((m_options.getOptionAsBool("ColumnStyle")) &&
                 (m_currentVariationLevel == 0))
         {
@@ -427,11 +427,11 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     Game::MoveStringFlags flags = (m_outputType == NotationWidget) ? Game::TranslatePiece : Game::MoveOnly;
     if(moveToWrite == NextMove)
     {
-        san = m_game->moveToSan(flags);
+        san = m_game.moveToSan(flags);
     }
     else
     {
-        san = m_game->moveToSan((Game::MoveStringFlags)(flags | Game::MoveOnly), Game::PreviousMove);
+        san = m_game.moveToSan((Game::MoveStringFlags)(flags | Game::MoveOnly), Game::PreviousMove);
     }
     QString mate = m_startTagMap[MarkupMate] + "#" + m_endTagMap[MarkupMate];
     san.replace("#", mate);
@@ -457,12 +457,12 @@ QString Output::writeMove(MoveToWrite moveToWrite)
             (c == White))
     {
         text += m_endTagMap[MarkupColumnStyleMove];
-        m_game->forward();
-        if(m_game->atGameEnd())
+        m_game.forward();
+        if(m_game.atGameEnd())
         {
             text += m_endTagMap[MarkupColumnStyleRow];
         }
-        m_game->backward();
+        m_game.backward();
     }
 
     if((m_options.getOptionAsBool("ColumnStyle")) &&
@@ -486,9 +486,9 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 QString Output::writeVariation(MoveId upToNode)
 {
     QString text;
-    while(!m_game->atLineEnd())
+    while(!m_game.atLineEnd())
     {
-        if(m_game->currentMove() == upToNode)
+        if(m_game.currentMove() == upToNode)
         {
             if(m_options.getOptionAsBool("ColumnStyle"))
             {
@@ -499,12 +499,12 @@ QString Output::writeVariation(MoveId upToNode)
         }
         // *** Writes move in the current variation
         text += writeMove();
-        if(m_game->variationCount())
+        if(m_game.variationCount())
         {
-            QList <int> variations = m_game->variations();
+            QList <int> variations = m_game.variations();
             if(variations.size())
             {
-                bool inMainline = m_game->isMainline();
+                bool inMainline = m_game.isMainline();
                 if(m_options.getOptionAsBool("ColumnStyle") && inMainline)
                 {
                     text += m_endTagMap[MarkupColumnStyleMainline];
@@ -524,7 +524,7 @@ QString Output::writeVariation(MoveId upToNode)
                     m_dirtyBlack = true;
 
                     // *** Enter variation i, and write the rest of the moves
-                    m_game->moveToId(variations[i]);
+                    m_game.moveToId(variations[i]);
                     text += writeMove(PreviousMove);
                     text += writeVariation(upToNode);
 
@@ -546,9 +546,9 @@ QString Output::writeVariation(MoveId upToNode)
                 }
             }
             m_dirtyBlack = true;
-            m_game->moveToId(m_game->parentMove());
+            m_game.moveToId(m_game.parentMove());
         }
-        m_game->forward();
+        m_game.forward();
     }
     text.replace(")&nbsp;</span>)",")</span>)");
     return text;
@@ -656,7 +656,7 @@ QString Output::writeGameComment(QString comment)
 QString Output::writeAllTags()
 {
     QString text;
-    QMap<QString, QString> tags = m_game->tags();
+    QMap<QString, QString> tags = m_game.tags();
     // write standard tags
     for(int i = 0; i < 7; ++i)
     {
@@ -681,7 +681,7 @@ QString Output::writeAllTags()
 QString Output::writeBasicTagsHTML()
 {
     QString text;
-    QMap<QString, QString> tags = m_game->tags();
+    QMap<QString, QString> tags = m_game.tags();
 
     QString eco = tags[TagNameECO].left(3);
     if(eco == "?")
@@ -734,7 +734,7 @@ QString Output::output(Game* game, bool upToCurrentMove)
 QString Output::outputTags(Game* game)
 {
     QString text;
-    m_game = game;
+    m_game = *game;
     if(m_options.getOptionAsBool("ShowHeader"))
     {
         text += m_startTagMap[MarkupHeaderBlock];
@@ -751,16 +751,16 @@ QString Output::outputTags(Game* game)
     return text;
 }
 
-QString Output::outputGame(Game* game, bool upToCurrentMove)
+QString Output::outputGame(const Game* g, bool upToCurrentMove)
 {
     QString text;
-    m_game = game;
-    int id = m_game->currentMove();
-    int mainId = upToCurrentMove ? m_game->mainLineMove() : NO_MOVE;
+    m_game = *g;
+    int id = m_game.currentMove();
+    int mainId = upToCurrentMove ? m_game.mainLineMove() : NO_MOVE;
     m_currentVariationLevel = 0;
 
-    m_game->moveToStart();
-    m_dirtyBlack = m_game->board().toMove() == Black;
+    m_game.moveToStart();
+    m_dirtyBlack = m_game.board().toMove() == Black;
     text += m_startTagMap[MarkupNotationBlock];
     text += m_startTagMap[MarkupMainLine];
     if(m_options.getOptionAsBool("ColumnStyle"))
@@ -768,7 +768,7 @@ QString Output::outputGame(Game* game, bool upToCurrentMove)
         text += m_startTagMap[MarkupColumnStyleMainline];
     }
 
-    text += writeGameComment(game->gameComment());
+    text += writeGameComment(m_game.gameComment());
 
     text += writeVariation(mainId);
     if(m_options.getOptionAsBool("ColumnStyle"))
@@ -777,9 +777,9 @@ QString Output::outputGame(Game* game, bool upToCurrentMove)
     }
     text += m_endTagMap[MarkupMainLine];
     text += m_endTagMap[MarkupNotationBlock];
-    text += m_startTagMap[MarkupResult] + game->tag("Result") + m_endTagMap[MarkupResult];
+    text += m_startTagMap[MarkupResult] + m_game.tag("Result") + m_endTagMap[MarkupResult];
 
-    m_game->moveToId(id);
+    m_game.moveToId(id);
 
     return text;
 }
