@@ -164,7 +164,7 @@ private:
     /** Character/string used for newline */
     QString m_newlineChar;
     /** Pointer to the game being exported */
-    Game * m_game;
+    Game m_game;
     /** Map containing the different types of outputs available, and a description of each */
     static QMap<OutputType, QString> m_outputMap;
     /** Map containing the start markup tag for each markup type */
@@ -221,7 +221,7 @@ private:
     void output(QTextStream& out, Database& database);
 
     /** Output of a single game - requires postProcessing */
-    QString outputGame(Game* game, bool upToCurrentMove);
+    QString outputGame(const Game *g, bool upToCurrentMove);
     /** postProcessing of a game output or a dataBase output */
     void postProcessOutput(QString& text) const;
 

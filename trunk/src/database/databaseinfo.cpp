@@ -28,6 +28,7 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup)
     newGame();
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
     connect(&m_game, SIGNAL(signalGameModified(bool,Game,QString)),SLOT(setModified(bool,Game,QString)));
+    connect(&m_game, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
 }
 
 DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filter(0), m_index(NewGame)
@@ -38,6 +39,7 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     m_undoStack = new QUndoStack((QObject*)undoGroup);
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
     connect(&m_game, SIGNAL(signalGameModified(bool,Game,QString)),SLOT(setModified(bool,Game,QString)));
+    connect(&m_game, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     QFile file(fname);
     if (IsPolyglotBook())
     {
@@ -159,6 +161,11 @@ bool DatabaseInfo::modified() const
 bool DatabaseInfo::gameNeedsSaving() const
 {
     return (isValid() && m_gameModified && !m_database->isReadOnly());
+}
+
+void DatabaseInfo::slotMoveChanged()
+{
+    emit signalMoveChanged();
 }
 
 void DatabaseInfo::setModified(bool modified, const Game& g, QString action)

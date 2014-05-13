@@ -109,10 +109,12 @@ signals:
     void LoadFinished(DatabaseInfo*);
     void signalRestoreState(const Game &game);
     void signalGameModified();
+    void signalMoveChanged();
 
 public slots:
     void dbCleanChanged(bool);
     void setModified(bool modfied, const Game &g, QString action);
+    void slotMoveChanged();
 
 private:
     QUndoStack* m_undoStack;

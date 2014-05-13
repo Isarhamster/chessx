@@ -621,8 +621,6 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                         m_machineHasToMove = true;
                     }
                 }
-
-                slotMoveChanged(); // todo ???
                 return;
             }
         }
@@ -658,8 +656,6 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
         {
             m_machineHasToMove = true;
         }
-
-        slotMoveChanged(); // todo ???
     }
 }
 
@@ -706,7 +702,6 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
                     {
                         game().truncateVariation();
                     }
-                    slotGameChanged();
                 }
             }
             else
@@ -718,6 +713,15 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
 }
 
 void MainWindow::slotMoveChanged()
+{
+    if(m_training->isChecked())
+    {
+        UpdateGameText();
+    }
+    moveChanged();
+}
+
+void MainWindow::moveChanged()
 {
     const Game& g = game();
     MoveId m = g.currentMove();
@@ -792,14 +796,6 @@ void MainWindow::slotGameVarEnter()
     if(game().variationCount(game().currentMove()))
     {
         game().moveToId(game().variations().first());
-        if(m_training->isChecked())
-        {
-            slotGameChanged();
-        }
-        else
-        {
-            slotMoveChanged();
-        }
     }
     else
     {
@@ -823,7 +819,6 @@ void MainWindow::slotGameVarUp()
             game().moveToId(game().variations().at(n));
         }
     }
-    slotMoveChanged();
 }
 
 void MainWindow::slotGameVarDown()
@@ -850,7 +845,6 @@ void MainWindow::slotGameVarDown()
             }
         }
     }
-    slotMoveChanged();
 }
 
 void MainWindow::slotGameVarExit()
@@ -862,14 +856,6 @@ void MainWindow::slotGameVarExit()
             game().backward();
         }
         game().backward();
-        if(m_training->isChecked())
-        {
-            slotGameChanged();
-        }
-        else
-        {
-            slotMoveChanged();
-        }
     }
     else
     {
@@ -988,7 +974,6 @@ void MainWindow::slotGameModify(const EditAction& action)
        (action.type() != EditAction::CopyText))
     {
         game().moveToId(action.move());
-        slotMoveChanged();
     }
     switch(action.type())
     {
@@ -1113,7 +1098,7 @@ void MainWindow::slotGameChanged()
 {
     UpdateGameText();
     UpdateGameTitle();
-    slotMoveChanged();
+    moveChanged();
     UpdateBoardInformation();
 }
 
@@ -1137,26 +1122,10 @@ void MainWindow::slotGameViewLink(const QUrl& url)
         {
             game().moveToId(url.path().toInt());
         }
-        if(m_training->isChecked())
-        {
-            slotGameChanged();
-        }
-        else
-        {
-            slotMoveChanged();
-        }
     }
     else if(url.scheme() == "precmt" || url.scheme() == "cmt")
     {
         game().moveToId(url.path().toInt());
-        if(m_training->isChecked())
-        {
-            slotGameChanged();
-        }
-        else
-        {
-            slotMoveChanged();
-        }
         Output::CommentType type = url.scheme() == "cmt" ? Output::Comment : Output::Precomment;
         gameEditComment(type);
     }
@@ -1171,7 +1140,6 @@ void MainWindow::slotGameViewLink(const QUrl& url)
             game().addMove(url.path());
         }
         game().forward();
-        slotMoveChanged();
     }
     else if(url.scheme() == "tag")
     {

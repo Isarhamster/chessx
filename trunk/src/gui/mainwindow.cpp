@@ -91,6 +91,7 @@ MainWindow::MainWindow() : QMainWindow(),
     DatabaseInfo* pClipDB = new DatabaseInfo(&m_undoGroup);
     connect(pClipDB,SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
     connect(pClipDB,SIGNAL(signalGameModified()), SLOT(slotGameChanged()));
+    connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     m_databases.append(pClipDB);
     m_currentDatabase = 0;
 
@@ -662,14 +663,6 @@ bool MainWindow::gameMoveBy(int change)
 {
     if(game().moveByPly(change))
     {
-        if(m_training->isChecked())
-        {
-            slotGameChanged();
-        }
-        else
-        {
-            slotMoveChanged();
-        }
         m_gameView->setFocus();
         return true;
     }
@@ -847,6 +840,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     connect(db, SIGNAL(LoadFinished(DatabaseInfo*)), this, SLOT(slotDataBaseLoaded(DatabaseInfo*)));
     connect(db, SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
     connect(db, SIGNAL(signalGameModified()), SLOT(slotGameChanged()));
+    connect(db, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     if(!db->open(utf8))
     {
         slotDataBaseLoaded(db);

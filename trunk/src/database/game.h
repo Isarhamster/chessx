@@ -204,8 +204,6 @@ public :
     int moveByPly(int diff);
     /** Moves to the position corresponding to the given move id */
     void moveToId(MoveId moveId);
-    /** Moves to the given ply */
-    int moveToPly(int ply);
     /** Move forward the given number of moves, returns actual number of moves made */
     int forward(int count = 1);
     /** Move back the given number of moves, returns actual number of moves undone */
@@ -339,6 +337,7 @@ public :
     int resultAsInt() const;
 signals:
     void signalGameModified(bool,Game,QString);
+    void signalMoveChanged();
 
 private:
 
