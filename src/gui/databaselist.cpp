@@ -394,7 +394,7 @@ void DatabaseList::startToDrag(const QModelIndex& index)
     pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
 }
 
-void DatabaseList::startDrag(Qt::DropActions supportedActions)
+void DatabaseList::startDrag(Qt::DropActions /*supportedActions*/)
 {
     startToDrag(currentIndex());
 }
