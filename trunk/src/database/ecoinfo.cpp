@@ -104,7 +104,7 @@ void EcoInfo::update()
     // Clean previous statistics
     reset();
 
-    for(int i = 0; i < m_database->count(); ++i)
+    for(int i = 0; i < (int) m_database->count(); ++i)
     {
         if(index->valueIndexFromTag(TagNameECO, i) != eco)
         {
