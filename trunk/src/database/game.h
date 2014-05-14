@@ -309,7 +309,7 @@ public :
     bool currentNodeHasVariation(Square from, Square to) const;
 
     /** @return ECO code for the game */
-    QString ecoClassify();
+    QString ecoClassify() const;
     /** @return true if current pos is in the ECO list */
     bool isEcoPosition() const;
 

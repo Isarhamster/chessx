@@ -1976,16 +1976,16 @@ void Game::compact()
     m_currentNode = oldIdNewIdMapping[m_currentNode];
 }
 
-QString Game::ecoClassify()
+QString Game::ecoClassify() const
 {
     //move to end of main line
-    SaveRestoreMove saveThis(*this);
-    moveToEnd();
+    Game g = *this;
+    g.moveToEnd();
 
     //search backwards for the first eco position
-    while(backward())
+    while(g.backward())
     {
-        quint64 key = m_currentBoard.getHashValue();
+        quint64 key = g.board().getHashValue();
         if(m_ecoPositions.contains(key))
         {
             return m_ecoPositions[key];
