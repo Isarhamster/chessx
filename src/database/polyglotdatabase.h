@@ -20,8 +20,8 @@ typedef struct _book_entry
 {
    quint64 key;
    quint16 move;
-   quint16 n;
-   quint16 sum;
+   quint32 n;
+   quint32 sum;
    quint16 colour;
    _book_entry()
    {
@@ -42,7 +42,7 @@ typedef struct _book_entry
        {
            return true;
        }
-       else if (k2.sum > sum) // highest score first - do not resprect uniform probs here
+       else if (k2.sum > sum) // highest score first - do not respect uniform probs here
        {
            return false;
        }
