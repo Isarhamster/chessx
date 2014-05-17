@@ -570,7 +570,7 @@ int PolyglotDatabase::entry_score(const book_entry& entry)
 
 bool PolyglotDatabase::keep_entry(const book_entry&  entry)
 {
-    if (entry.n < m_minGame)     return false;
+    if (entry.n < m_minGame)    return false;
     if (entry.sum == 0)         return false;
     return true;
 }
@@ -582,7 +582,7 @@ void PolyglotDatabase::halve_stats(quint64 key)
         if ((*i).key == key)
         {
             (*i).n = ((*i).n + 1) / 2;
-            (*i).sum = ((*i).n + 1) / 2;
+            (*i).sum = ((*i).sum + 1) / 2;
         }
     }
 }
