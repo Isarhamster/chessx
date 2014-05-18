@@ -121,7 +121,7 @@ private:
     quint64 m_count;
     Book m_book;
     bool m_uniform;
-    int m_minGame;
+    quint32 m_minGame;
     int m_maxPly;
 };
 
