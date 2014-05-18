@@ -1529,6 +1529,13 @@ Move BitBoard::parseMove(const QString& algebraic) const
             promotePiece = Knight;
             break;
         default:
+            {
+                int lastRank = (m_stm == White ? 7 : 0);
+                if (lastRank == Rank(toSquare))
+                {
+                    return move;
+                }
+            }
             break; //return move;
         }
         if(fromSquare < 0)

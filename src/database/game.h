@@ -276,9 +276,9 @@ public :
     /** Removes all tags and moves */
     void clear();
     /** Set the game start position */
-    void setStartingBoard(const Board& startingBoard);
+    void dbSetStartingBoard(const Board& startingBoard);
     /** Set the game start position from FEN. */
-    void setStartingBoard(const QString& fen);
+    void dbSetStartingBoard(const QString& fen);
     /** set comment associated with game */
     void setGameComment(const QString& gameComment);
     /** Remove all variations */
@@ -335,6 +335,7 @@ public :
     void moveVariationDown(MoveId moveId);
 
     int resultAsInt() const;
+    void setStartingBoard(const Board &startingBoard);
 signals:
     void signalGameModified(bool,Game,QString);
     void signalMoveChanged();
