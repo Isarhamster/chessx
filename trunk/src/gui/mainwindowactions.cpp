@@ -1181,19 +1181,21 @@ void MainWindow::slotGameAddVariation(const Analysis& analysis)
     game().addVariation(analysis.variation(), score);
 }
 
-void MainWindow::slotGameAddVariation(const QString& san)
+bool MainWindow::slotGameAddVariation(const QString& san)
 {
+    bool added = false;
     QString s = san;
     s = s.remove(QRegExp("-.*"));
     s = s.remove(QRegExp("[0-9]*\\."));
     if(game().atLineEnd())
     {
-        game().addMove(s);
+        added = game().addMove(s) != NO_MOVE;
     }
     else
     {
-        game().addVariation(s);
+        added = game().addVariation(s) != NO_MOVE;
     }
+    return added;
 }
 
 void MainWindow::slotGameUncomment()
@@ -1573,7 +1575,7 @@ void MainWindow::slotSearchBoard()
     databaseInfo()->filter()->executeSearch(ps);
 }
 
-void MainWindow::slotBoardSearchUpdate(int progress)
+void MainWindow::slotBoardSearchUpdate(int /*progress*/)
 {
     m_gameList->updateFilter();
     m_gameList->raiseRequest();

@@ -444,15 +444,18 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
     else
     {
-        if((obj == this) && (event->type() == QEvent::KeyPress))
+        if(event->type() == QEvent::KeyPress)
         {
             QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
             if(keyEvent && (keyEvent->key() == Qt::Key_Escape ||
                             keyEvent->key() == Qt::Key_Return ||
                             keyEvent->key() == Qt::Key_Enter))
             {
-                keyPressEvent(keyEvent);
-                return true;
+                if (obj == this || obj == m_boardView || obj == m_gameView)
+                {
+                    keyPressEvent(keyEvent);
+                    return true;
+                }
             }
         }
         // standard event processing
@@ -516,12 +519,10 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
 
     if(e->key() == Qt::Key_Delete)
     {
-        if(game().atGameStart())
+        if(!game().atGameStart())
         {
-            m_nagText.clear();
-            return;
+            game().clearNags();
         }
-        game().clearNags();
         m_nagText.clear();
         return;
     }
@@ -550,10 +551,16 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
     else
     {
         m_nagText.append(e->text());
+        if (slotGameAddVariation(m_nagText))
+        {
+            m_nagText.clear();
+            return;
+        }
     }
 
     if (m_nagText == "N")
     {
+        // Not a novelty but a Knight
         return;
     }
 

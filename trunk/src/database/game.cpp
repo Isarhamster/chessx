@@ -453,7 +453,10 @@ MoveId Game::addVariation(const Move& move, const QString& annotation, NagSet na
 {
     Game state = *this;
     MoveId retVal = dbAddVariation(move, annotation, nags);
-    emit signalGameModified(true, state, tr("Add Variation"));
+    if (retVal != NO_MOVE)
+    {
+        emit signalGameModified(true, state, tr("Add Variation"));
+    }
     return retVal;
 }
 
@@ -461,7 +464,10 @@ MoveId Game::addVariation(const MoveList& moveList, const QString& annotation)
 {
     Game state = *this;
     MoveId retVal = dbAddVariation(moveList, annotation);
-    emit signalGameModified(true, state, tr("Add Variation"));
+    if (retVal != NO_MOVE)
+    {
+        emit signalGameModified(true, state, tr("Add Variation"));
+    }
     return retVal;
 }
 
@@ -469,7 +475,10 @@ MoveId Game::addVariation(const QString& sanMove, const QString& annotation, Nag
 {
     Game state = *this;
     MoveId retVal = dbAddVariation(sanMove, annotation, nags);
-    emit signalGameModified(true, state, tr("Add Variation"));
+    if (retVal != NO_MOVE)
+    {
+        emit signalGameModified(true, state, tr("Add Variation"));
+    }
     return retVal;
 }
 
@@ -1754,10 +1763,17 @@ void Game::removeTag(const QString& tag)
 
 void Game::setStartingBoard(const Board& startingBoard)
 {
-    setStartingBoard(startingBoard.toFen());
+    Game state = *this;
+    dbSetStartingBoard(startingBoard.toFen());
+    emit signalGameModified(true, state, tr("Set starting board"));
 }
 
-void Game::setStartingBoard(const QString& fen)
+void Game::dbSetStartingBoard(const Board& startingBoard)
+{
+    dbSetStartingBoard(startingBoard.toFen());
+}
+
+void Game::dbSetStartingBoard(const QString& fen)
 {
     clear();
     m_startingBoard.fromFen(fen);

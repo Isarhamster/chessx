@@ -228,7 +228,7 @@ public slots:
     /** Add variation to current position. */
     void slotGameAddVariation(const Analysis& analysis);
     /** Add variation to current position. */
-    void slotGameAddVariation(const QString& san);
+    bool slotGameAddVariation(const QString& san);
     /** Remove all comments. */
     void slotGameUncomment();
     /** Remove all variations */
