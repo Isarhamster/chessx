@@ -14,6 +14,7 @@
 
 #include <QBitArray>
 #include <QPair>
+#include <QThread>
 
 #include "common.h"
 #include "search.h"
@@ -28,9 +29,13 @@ class Database;
    but it is not automatically resized when database size changes.
 */
 
-class Filter
+class Filter : public QThread
 {
+    Q_OBJECT
 public:
+    void run();
+    void cancel();
+
     /** Possible operations on filter. */
     enum Operator {And, Or, Xor, Minus};
     /** Construct filter of given size. Add all games to the filter. */
@@ -74,10 +79,10 @@ public:
     void join(const Filter& filter, Operator op);
     /** Executes search 'search' on database m_database,
        and sets this filter to contain the results. */
-    void executeSearch(Search& search);
+    void executeSearch(Search *search);
     /** Executes search 'search' on database m_database,
        and modifies this filter with the results. */
-    void executeSearch(Search& search, Search::Operator searchOperator);
+    void executeSearch(Search *search, Search::Operator searchOperator);
     /** Executes query 'query' on database m_database,
         and sets this filter to contain the results. */
     void executeQuery(Query& query);
@@ -86,6 +91,10 @@ public:
     int gamesSearched() const;
     /** Returns the time taken for the previous search in milliseconds  */
     int searchTime() const;
+
+signals:
+    void searchProgress(int);
+    void searchFinished();
 
 protected:
 
@@ -100,6 +109,10 @@ protected:
     /* Search statistics variables */
     int m_gamesSearched;
     int m_searchTime;
+
+    Search* currentSearch;
+    Search::Operator currentSearchOperator;
+    volatile bool m_break;
 
 };
 

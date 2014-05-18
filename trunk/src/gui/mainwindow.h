@@ -276,7 +276,8 @@ public slots:
     /** Receives the signal of a search board operation started */
     void slotBoardSearchStarted();
     /** Receives the signal of a search board operation end */
-    void slotBoardSearchUpdate();
+    void slotBoardSearchUpdate(int progress);
+    void slotBoardSearchFinished();
     /** Reset current filter */
     void slotSearchReset();
     /** Training mode */
