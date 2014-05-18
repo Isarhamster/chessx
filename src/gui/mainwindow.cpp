@@ -1153,9 +1153,9 @@ void MainWindow::setupActions()
     edit->addAction(createAction(tr("Copy Image"), SLOT(slotEditCopyImage()),
                                  Qt::CTRL + Qt::ALT + Qt::Key_C, editToolBar, ":/images/camera.png"));
     edit->addSeparator();
-    edit->addAction(createAction(tr("&Paste into new game"), SLOT(slotEditPaste()),
+    edit->addAction(createAction(tr("Paste into new game"), SLOT(slotEditPaste()),
                                  Qt::CTRL + Qt::SHIFT + Qt::Key_V));
-    edit->addAction(createAction(tr("&Paste"), SLOT(slotEditMergePGN()),
+    edit->addAction(createAction(tr("Paste"), SLOT(slotEditMergePGN()),
                                  Qt::CTRL + Qt::Key_V, editToolBar, ":/images/edit_paste.png"));
     edit->addSeparator();
     edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(), 0,
@@ -1253,11 +1253,6 @@ void MainWindow::setupActions()
     connect(this, SIGNAL(signalMoveHasPreviousMove(bool)), gotoFirstMove, SLOT(setEnabled(bool)));
     goMenu->addAction(gotoFirstMove);
 
-    QAction* gotoLastMove = createAction(goMenu, tr("&End"), SLOT(slotGameMoveLast()), Qt::Key_End, gameToolBar, ":/images/last.png");
-    gotoLastMove->setToolTip(tr("Go to last move"));
-    connect(this, SIGNAL(signalMoveHasNextMove(bool)), gotoLastMove, SLOT(setEnabled(bool)));
-    goMenu->addAction(gotoLastMove);
-
     QAction* actionPrevMove = createAction(goMenu, tr("&Previous move"), SLOT(slotGameMovePrevious()), Qt::Key_Left, gameToolBar, ":/images/prev.png");
     connect(this, SIGNAL(signalMoveHasPreviousMove(bool)), actionPrevMove, SLOT(setEnabled(bool)));
     goMenu->addAction(actionPrevMove);
@@ -1265,6 +1260,11 @@ void MainWindow::setupActions()
     QAction* actionNextMove = createAction(goMenu, tr("&Next move"), SLOT(slotGameMoveNext()), Qt::Key_Right, gameToolBar, ":/images/next.png");
     connect(this, SIGNAL(signalMoveHasNextMove(bool)), actionNextMove, SLOT(setEnabled(bool)));
     goMenu->addAction(actionNextMove);
+
+    QAction* gotoLastMove = createAction(goMenu, tr("&End"), SLOT(slotGameMoveLast()), Qt::Key_End, gameToolBar, ":/images/last.png");
+    gotoLastMove->setToolTip(tr("Go to last move"));
+    connect(this, SIGNAL(signalMoveHasNextMove(bool)), gotoLastMove, SLOT(setEnabled(bool)));
+    goMenu->addAction(gotoLastMove);
 
     QAction* fiveMovesForward = createAction(goMenu, tr("5 moves &forward"), SLOT(slotGameMoveNextN()), Qt::Key_Down);
     connect(this, SIGNAL(signalMoveHasNextMove(bool)), fiveMovesForward, SLOT(setEnabled(bool)));
