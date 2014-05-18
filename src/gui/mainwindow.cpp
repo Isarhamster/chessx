@@ -92,6 +92,8 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(pClipDB,SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
     connect(pClipDB,SIGNAL(signalGameModified()), SLOT(slotGameChanged()));
     connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
+    connect(pClipDB,SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)));
+    connect(pClipDB,SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()));
     m_databases.append(pClipDB);
     m_currentDatabase = 0;
 
@@ -172,7 +174,6 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameList = new GameList(databaseInfo()->filter(), gameListDock);
     m_gameList->setMinimumSize(150, 100);
     connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
-    connect(m_gameList, SIGNAL(searchDone()), SLOT(slotFilterChanged()));
     connect(m_gameList, SIGNAL(requestCopyGame(int)), SLOT(slotDatabaseCopySingle(int)));
     connect(m_gameList, SIGNAL(requestMergeGame(int)), SLOT(slotMergeActiveGame(int)));
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
@@ -841,6 +842,8 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     connect(db, SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
     connect(db, SIGNAL(signalGameModified()), SLOT(slotGameChanged()));
     connect(db, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
+    connect(db, SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)));
+    connect(db, SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()));
     if(!db->open(utf8))
     {
         slotDataBaseLoaded(db);
@@ -1301,11 +1304,11 @@ void MainWindow::setupActions()
     QToolBar* searchToolBar = addToolBar(tr("Search"));
     searchToolBar->setObjectName("SearchToolBar");
 
-    QAction* actionFindTag = createAction(tr("Find &tag"), SLOT(slotSearchTag()), Qt::CTRL + Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png");
+    QAction* actionFindTag = createAction(tr("Find tag..."), SLOT(slotSearchTag()), Qt::CTRL + Qt::SHIFT + Qt::Key_T, searchToolBar, ":/images/find_tag.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), actionFindTag, SLOT(setEnabled(bool)));
     search->addAction(actionFindTag);
 
-    QAction* actionFindBoard = createAction(tr("Find &position"), SLOT(slotSearchBoard()), Qt::CTRL + Qt::SHIFT + Qt::Key_B, searchToolBar, ":/images/find_pos.png");
+    QAction* actionFindBoard = createAction(tr("Find position"), SLOT(slotSearchBoard()), Qt::CTRL + Qt::SHIFT + Qt::Key_B, searchToolBar, ":/images/find_pos.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), actionFindBoard, SLOT(setEnabled(bool)));
     search->addAction(actionFindBoard);
 

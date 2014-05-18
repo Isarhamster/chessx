@@ -22,6 +22,8 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup)
 {
     m_database = new MemoryDatabase;
     m_filter = new Filter(m_database);
+    connect(m_filter, SIGNAL(searchProgress(int)), SIGNAL(searchProgress(int)));
+    connect(m_filter, SIGNAL(searchFinished()), SIGNAL(searchFinished()));
     m_bLoaded = true;
     m_utf8 = false;
     m_undoStack = new QUndoStack((QObject*)undoGroup);
@@ -61,6 +63,7 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
 
 void DatabaseInfo::doLoadFile(QString filename)
 {
+    if (m_filter) m_filter->cancel();
     if(!m_database->open(filename, m_utf8))
     {
         emit LoadFinished(this);
@@ -69,6 +72,8 @@ void DatabaseInfo::doLoadFile(QString filename)
     m_database->parseFile();
     delete m_filter;
     m_filter = new Filter(m_database);
+    connect(m_filter, SIGNAL(searchProgress(int)), SIGNAL(searchProgress(int)));
+    connect(m_filter, SIGNAL(searchFinished()), SIGNAL(searchFinished()));
     m_bLoaded = true;
     emit LoadFinished(this);
 }
@@ -91,6 +96,10 @@ bool DatabaseInfo::open(bool utf8)
 
 void DatabaseInfo::close()
 {
+    if (m_filter)
+    {
+        m_filter->cancel();
+    }
     m_bLoaded = false;
     m_database->m_break = true;
     if(isRunning())
@@ -252,6 +261,7 @@ void DatabaseInfo::resetFilter()
 {
     if(m_filter)
     {
+        m_filter->cancel();
         m_filter->resize(m_database->count());
         m_filter->setAll(1);
     }

@@ -13,7 +13,10 @@
 #include "filter.h"
 #include <QtDebug>
 
-Filter::Filter(Database* database)
+
+static NullSearch nullSearch;
+
+Filter::Filter(Database* database) : QThread()
 {
     m_database = database;
     m_count = m_database->count();
@@ -21,15 +24,17 @@ Filter::Filter(Database* database)
     m_cache.first = m_cache.second = -1;
     m_gamesSearched = 0;
     m_searchTime = 0;
+    currentSearch = &nullSearch;
 }
 
-Filter::Filter(const Filter& filter)
+Filter::Filter(const Filter& filter) : QThread()
 {
     m_vector = new QVector<int>(filter.intVector());
     m_count = filter.m_count;
     m_cache = filter.m_cache;
     m_gamesSearched = 0;
     m_searchTime = 0;
+    currentSearch = &nullSearch;
 }
 
 Filter& Filter::operator=(const Filter & filter)
@@ -48,6 +53,7 @@ Filter& Filter::operator=(const Filter & filter)
 
 Filter::~Filter()
 {
+    cancel();
     delete m_vector;
 }
 
@@ -75,6 +81,7 @@ void Filter::set(int game, int value)
 
 void Filter::setAll(int value)
 {
+    cancel();
     m_vector->fill(value);
     m_count = value ? size() : 0;
     m_cache.first = m_cache.second = -1;
@@ -258,26 +265,73 @@ QVector<int> Filter::intVector() const
     return *m_vector;
 }
 
-void Filter::executeSearch(Search& search)
+void Filter::run()
 {
-    for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
+    switch (currentSearchOperator)
     {
-        set(searchIndex, search.matches(searchIndex));
+    case Search::NullOperator:
+        for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
+        {
+            if (m_break) break;
+            set(searchIndex, currentSearch->matches(searchIndex));
+            if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
+        }
+        break;
+    case Search::And:
+        for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
+        {
+            if (m_break) break;
+            if (contains(searchIndex))
+            {
+                set(searchIndex, currentSearch->matches(searchIndex));
+            }
+            if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
+        }
+        break;
+    case Search::Or:
+        for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
+        {
+            if (m_break) break;
+            if (!contains(searchIndex))
+            {
+                set(searchIndex, currentSearch->matches(searchIndex));
+            }
+            if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
+        }
+        break;
+    default:
+        break;
+    }
+    delete currentSearch;
+    emit searchProgress(100);
+    emit searchFinished();
+}
+
+void Filter::cancel()
+{
+    if (isRunning())
+    {
+        m_break = true;
+        wait();
     }
 }
-void Filter::executeSearch(Search& search, Search::Operator searchOperator)
+
+void Filter::executeSearch(Search* search)
 {
-    for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
-    {
-        if((searchOperator == Search::And) && contains(searchIndex))
-        {
-            set(searchIndex, search.matches(searchIndex));
-        }
-        if((searchOperator == Search::Or) && !contains(searchIndex))
-        {
-            set(searchIndex, search.matches(searchIndex));
-        }
-    }
+    cancel();
+    m_break = false;
+    currentSearch = search;
+    currentSearchOperator = Search::NullOperator;
+    start();
+}
+
+void Filter::executeSearch(Search* search, Search::Operator searchOperator)
+{
+    cancel();
+    m_break = false;
+    currentSearch = search;
+    currentSearchOperator = searchOperator;
+    start();
 }
 
 void Filter::executeQuery(Query& query)

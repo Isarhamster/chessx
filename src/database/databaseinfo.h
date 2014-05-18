@@ -110,6 +110,9 @@ signals:
     void signalRestoreState(const Game &game);
     void signalGameModified();
     void signalMoveChanged();
+    void searchProgress(int);
+    void searchFinished();
+
 
 public slots:
     void dbCleanChanged(bool);

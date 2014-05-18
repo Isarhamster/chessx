@@ -1567,17 +1567,21 @@ void MainWindow::slotSearchTag()
 
 void MainWindow::slotSearchBoard()
 {
-    PositionSearch ps(databaseInfo()->filter()->database(), m_boardView->board());
+    Search* ps = new PositionSearch (databaseInfo()->filter()->database(), m_boardView->board());
     m_openingTreeWidget->cancel();
     slotBoardSearchStarted();
     databaseInfo()->filter()->executeSearch(ps);
-    slotBoardSearchUpdate();
 }
 
-void MainWindow::slotBoardSearchUpdate()
+void MainWindow::slotBoardSearchUpdate(int progress)
 {
     m_gameList->updateFilter();
+    m_gameList->raiseRequest();
     slotFilterChanged();
+}
+
+void MainWindow::slotBoardSearchFinished()
+{
     finishOperation(tr("Search ended"));
 }
 

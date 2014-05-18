@@ -75,7 +75,6 @@ private slots:
 
 signals:
     void selected(int);
-    void searchDone();
     void raiseRequest();
     void requestMergeGame(int);
     void requestMergeAllGames();

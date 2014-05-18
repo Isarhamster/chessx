@@ -130,7 +130,7 @@ void GameList::simpleSearch(int tagid)
     else if((dlg.tag() == 0) || (dlg.tag() == 7) || (dlg.tag() == 11))
     {
         // filter by number
-        NumberSearch ns(m_model->filter()->database(), value);
+        Search* ns = new NumberSearch(m_model->filter()->database(), value);
         if(dlg.mode())
         {
             m_model->filter()->executeSearch(ns, Search::Operator(dlg.mode()));
@@ -146,7 +146,7 @@ void GameList::simpleSearch(int tagid)
         if ((list.size() > 1) && (dlg.tag() != 9))
         {
             // Filter a range
-            TagSearch ts(m_model->filter()->database(), tag, list.at(0), list.at(1));
+            Search* ts = new TagSearch(m_model->filter()->database(), tag, list.at(0), list.at(1));
             if(dlg.mode())
             {
                 m_model->filter()->executeSearch(ts, Search::Operator(dlg.mode()));
@@ -159,7 +159,7 @@ void GameList::simpleSearch(int tagid)
         else
         {
             // Filter tag using partial values
-            TagSearch ts(m_model->filter()->database(), tag, value);
+            Search* ts = new TagSearch(m_model->filter()->database(), tag, value);
             if(dlg.mode())
             {
                 m_model->filter()->executeSearch(ts, Search::Operator(dlg.mode()));
@@ -170,66 +170,49 @@ void GameList::simpleSearch(int tagid)
             }
         }
     }
-    updateFilter();
-    emit searchDone();
 }
 
 void GameList::slotFilterListByPlayer(QString s)
 {
     m_model->filter()->setAll(1);
-    TagSearch ts(m_model->filter()->database(),  TagNameWhite, s);
-    TagSearch ts2(m_model->filter()->database(), TagNameBlack, s);
+    Search* ts = new TagSearch(m_model->filter()->database(),  TagNameWhite, s);
+    Search* ts2 = new TagSearch(m_model->filter()->database(), TagNameBlack, s);
     m_model->filter()->executeSearch(ts);
     m_model->filter()->executeSearch(ts2, Search::Or);
-    updateFilter();
-    emit raiseRequest();
-    emit searchDone();
 }
 
 void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString player)
 {
     m_model->filter()->setAll(1);
-    TagSearch ts(m_model->filter()->database(),  tag, player);
-    TagSearch ts3(m_model->filter()->database(), TagNameECO,   eco);
+    Search* ts = new TagSearch(m_model->filter()->database(),  tag, player);
+    Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameECO,   eco);
     m_model->filter()->executeSearch(ts);
     m_model->filter()->executeSearch(ts3, Search::And);
-    updateFilter();
-    emit raiseRequest();
-    emit searchDone();
 }
 
 void GameList::slotFilterListByEvent(QString s)
 {
     m_model->filter()->setAll(1);
-    TagSearch ts(m_model->filter()->database(), "Event", s);
+    Search* ts = new TagSearch(m_model->filter()->database(), "Event", s);
     m_model->filter()->executeSearch(ts);
-    updateFilter();
-    emit raiseRequest();
-    emit searchDone();
 }
 
 void GameList::slotFilterListByEventPlayer(QString player, QString event)
 {
     m_model->filter()->setAll(1);
-    TagSearch ts(m_model->filter()->database(),  TagNameWhite, player);
-    TagSearch ts2(m_model->filter()->database(), TagNameBlack, player);
-    TagSearch ts3(m_model->filter()->database(), TagNameEvent, event);
+    Search* ts = new TagSearch(m_model->filter()->database(),  TagNameWhite, player);
+    Search* ts2 = new TagSearch(m_model->filter()->database(), TagNameBlack, player);
+    Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameEvent, event);
     m_model->filter()->executeSearch(ts);
     m_model->filter()->executeSearch(ts2, Search::Or);
     m_model->filter()->executeSearch(ts3, Search::And);
-    updateFilter();
-    emit raiseRequest();
-    emit searchDone();
 }
 
 void GameList::slotFilterListByEco(QString s)
 {
     m_model->filter()->setAll(1);
-    TagSearch ts(m_model->filter()->database(), "ECO", s);
+    Search* ts = new TagSearch(m_model->filter()->database(), "ECO", s);
     m_model->filter()->executeSearch(ts);
-    updateFilter();
-    emit raiseRequest();
-    emit searchDone();
 }
 
 void GameList::selectGame(int index)
