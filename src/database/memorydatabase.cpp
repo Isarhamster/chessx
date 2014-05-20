@@ -129,7 +129,6 @@ void MemoryDatabase::parseGame()
             {
                 game->setTag("ECO", eco);
                 m_index.setTag("ECO", eco, m_count - 1);
-                setModified(true);
             }
         }
     }

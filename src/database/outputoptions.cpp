@@ -167,9 +167,10 @@ QString OutputOptions::getOptionAsString(const QString& optionName) const
     return "";
 }
 
-bool OutputOptions::getOptionAsBool(const QString& optionName)
+bool OutputOptions::getOptionAsBool(const QString& optionName) const
 {
-    return ((m_list[optionName] == "true") || (m_list[optionName] == "1"));
+    QString value = m_list.value(optionName);
+    return ((value == "true") || (value == "1"));
 }
 
 bool OutputOptions::validateValue(const QString& optionName, const QString& value)
@@ -255,17 +256,17 @@ bool OutputOptions::validateValue(const QString& optionName, const QString& valu
 }
 
 
-QString OutputOptions::getOptionDescription(const QString& optionName)
+QString OutputOptions::getOptionDescription(const QString& optionName) const
 {
-    return m_description[optionName];
+    return m_description.value(optionName);
 }
 
-QStringList OutputOptions::getOptionList()
+QStringList OutputOptions::getOptionList() const
 {
     return m_list.keys();
 }
 
-OutputOptions::OutputOptionType OutputOptions::optionString2Type(const QString& optionTypeStr)
+OutputOptions::OutputOptionType OutputOptions::optionString2Type(const QString& optionTypeStr) const
 {
     if(optionTypeStr == "String")
     {

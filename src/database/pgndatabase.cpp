@@ -407,8 +407,6 @@ void PgnDatabase::initialise()
     m_allocated = 0;
 }
 
-
-
 void PgnDatabase::addOffset()
 {
     IndexBaseType fp = m_file->pos();
