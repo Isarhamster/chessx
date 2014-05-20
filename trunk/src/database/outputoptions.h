@@ -46,9 +46,9 @@ public :
     /* Retrieving values */
     int getOptionAsInt(const QString& optionName) const;
     QString getOptionAsString(const QString& optionName) const;
-    bool getOptionAsBool(const QString& optionName);
-    QString getOptionDescription(const QString& optionName);
-    QStringList getOptionList();
+    bool getOptionAsBool(const QString& optionName) const;
+    QString getOptionDescription(const QString& optionName) const;
+    QStringList getOptionList() const;
 
 private :
 
@@ -59,7 +59,7 @@ private :
     QMap<QString, QString> m_description;
 
     bool validateValue(const QString& optionName, const QString& value);
-    OutputOptionType optionString2Type(const QString& optionTypeStr);
+    OutputOptionType optionString2Type(const QString& optionTypeStr) const;
 
 
 };

@@ -280,7 +280,7 @@ QMap<Output::OutputType, QString>& Output::getFormats()
     return m_outputMap;
 }
 
-QString Output::writeDiagram(int n)
+QString Output::writeDiagram(int n) const
 {
     QString imageString;
     if((m_outputType == NotationWidget) && (AppSettings->getValue("/GameText/ShowDiagrams").toBool()))
@@ -554,7 +554,7 @@ QString Output::writeVariation(MoveId upToNode)
     return text;
 }
 
-QString Output::writeTag(const QString& tagName, const QString& tagValue)
+QString Output::writeTag(const QString& tagName, const QString& tagValue) const
 {
     QString text = m_startTagMap[MarkupHeaderLine] +
                    m_startTagMap[MarkupHeaderTagName] +
@@ -618,7 +618,7 @@ QString Output::writeComment(const QString& comment, const QString& mvno, Commen
     return text;
 }
 
-QString Output::writeGameComment(QString comment)
+QString Output::writeGameComment(QString comment) const
 {
     QString text;
     comment = comment.trimmed();
@@ -653,7 +653,7 @@ QString Output::writeGameComment(QString comment)
     return text;
 }
 
-QString Output::writeAllTags()
+QString Output::writeAllTags() const
 {
     QString text;
     QMap<QString, QString> tags = m_game.tags();
@@ -678,7 +678,7 @@ QString Output::writeAllTags()
     return text;
 }
 
-QString Output::writeBasicTagsHTML()
+QString Output::writeBasicTagsHTML() const
 {
     QString text;
     QMap<QString, QString> tags = m_game.tags();
