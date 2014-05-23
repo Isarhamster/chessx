@@ -1153,6 +1153,14 @@ void MainWindow::slotGameViewLink(const QUrl& url)
             m_playerList->slotSelectPlayer(game().tag(TagNameBlack));
         }
     }
+    else if (url.scheme().startsWith("eco"))
+    {
+        m_ecoList->slotSelectECO(url.path());
+    }
+    else if (url.scheme().startsWith("event"))
+    {
+        m_eventList->slotSelectEvent(url.path());
+    }
 }
 
 void MainWindow::slotGameViewLink(const QString& url)
@@ -1578,7 +1586,6 @@ void MainWindow::slotSearchBoard()
 void MainWindow::slotBoardSearchUpdate(int /*progress*/)
 {
     m_gameList->updateFilter();
-    m_gameList->raiseRequest();
     slotFilterChanged();
 }
 
@@ -1872,6 +1879,8 @@ void MainWindow::UpdateGameTitle()
     {
         eco = actualEco.left(3);
     }
+    eco = QString("<a href='eco:%1'>%2</a>").arg(eco).arg(eco);
+
     QString opName = actualEco.section(" ",1);
     if (!opName.isEmpty())
     {
@@ -1892,8 +1901,8 @@ void MainWindow::UpdateGameTitle()
                       .arg(white).arg(whiteElo).arg(black).arg(blackElo);
     QString result = QString("<b>%1</b> &nbsp;").arg(game().tag("Result"));
 
-    QString event = QString("<i>%1</i>").arg(game().eventInfo());
-
+    QString eventInfo = game().eventInfo();
+    QString event = QString("<a href='event:%1'>%2</a>").arg(game().tag(TagNameEvent)).arg(eventInfo);
     QString title;
     if(!white.isEmpty() || !black.isEmpty())
     {
