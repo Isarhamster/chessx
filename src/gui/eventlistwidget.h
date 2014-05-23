@@ -32,16 +32,17 @@ signals:
     void raiseRequest();
 
 public slots:
-    void findEvent(const QString& s);
+    void selectEvent(const QString& player);
     void setDatabase(DatabaseInfo* dbInfo);
+    void slotSelectEvent(const QString &event);
+
+protected slots:
+    void findEvent(const QString& s);
     void filterSelectedEvent();
     void renameSelectedEvent();
     void slotReconfigure();
     void selectionChangedSlot();
     void slotLinkClicked(const QUrl& url);
-
-protected slots:
-    void selectEvent(const QString& player);
     void eventSelected(const QString& player);
 
 private:

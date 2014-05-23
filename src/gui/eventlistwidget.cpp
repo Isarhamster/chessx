@@ -96,6 +96,13 @@ void EventListWidget::eventSelected(const QString& event)
     }
 }
 
+void EventListWidget::slotSelectEvent(const QString& event)
+{
+    m_filterModel->setStringList(m_list);
+    ui->filterEdit->clear();
+    selectEvent(event);
+}
+
 void EventListWidget::selectEvent(const QString& event)
 {
     eventSelected(event);

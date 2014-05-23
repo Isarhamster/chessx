@@ -31,16 +31,16 @@ signals:
     void raiseRequest();
 
 public slots:
-    void findECO(const QString& s);
     void slotSelectECO(const QString& eco);
+    void selectECO(const QString& eco);
+
+protected slots:
+    void findECO(const QString& s);
     void setDatabase(DatabaseInfo* dbInfo);
     void filterSelectedECO();
     void slotReconfigure();
     void selectionChangedSlot();
     void slotLinkClicked(const QUrl& url);
-
-protected slots:
-    void selectECO(const QString& eco);
     void ecoSelected(const QString& eco);
 
 private:
