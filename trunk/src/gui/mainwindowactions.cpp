@@ -1747,49 +1747,41 @@ bool MainWindow::slotGameMoveNext()
 void MainWindow::slotNoColorSquare()
 {
     game().appendSquareAnnotation(m_annotationSquare, 0);
-    slotGameChanged();
 }
 
 void MainWindow::slotGreenSquare()
 {
     game().appendSquareAnnotation(m_annotationSquare, 'G');
-    slotGameChanged();
 }
 
 void MainWindow::slotYellowSquare()
 {
     game().appendSquareAnnotation(m_annotationSquare, 'Y');
-    slotGameChanged();
 }
 
 void MainWindow::slotRedSquare()
 {
     game().appendSquareAnnotation(m_annotationSquare, 'R');
-    slotGameChanged();
 }
 
 void MainWindow::slotNoArrowHere()
 {
     game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, 0);
-    slotGameChanged();
 }
 
 void MainWindow::slotGreenArrowHere()
 {
     game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, 'G');
-    slotGameChanged();
 }
 
 void MainWindow::slotYellowArrowHere()
 {
     game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, 'Y');
-    slotGameChanged();
 }
 
 void MainWindow::slotRedArrowHere()
 {
     game().appendArrowAnnotation(m_annotationSquare, m_annotationSquareFrom, 'R');
-    slotGameChanged();
 }
 
 BoardView* MainWindow::CreateBoardView()

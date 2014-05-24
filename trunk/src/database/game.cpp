@@ -1001,6 +1001,7 @@ bool Game::appendSquareAnnotation(Square s, QChar colorCode)
         }
     }
     setSquareAnnotation(newAnnot);
+    indicateAnnotationsOnBoard(currentMove());
     emit signalGameModified(true, state, tr("Colorize square"));
     return true;
 }
@@ -1048,8 +1049,8 @@ bool Game::appendArrowAnnotation(Square dest, Square src, QChar colorCode)
         }
     }
     setArrowAnnotation(newAnnot);
+    indicateAnnotationsOnBoard(currentMove());
     emit signalGameModified(true, state, tr("Paint arrow"));
-
     return true;
 }
 
