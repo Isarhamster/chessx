@@ -501,7 +501,7 @@ QString Output::writeVariation(MoveId upToNode)
         text += writeMove();
         if(m_game.variationCount())
         {
-            QList <int> variations = m_game.variations();
+            QList<MoveId> variations = m_game.variations();
             if(variations.size())
             {
                 bool inMainline = m_game.isMainline();

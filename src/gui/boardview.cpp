@@ -65,7 +65,6 @@ void BoardView::setFlags(int flags)
 void BoardView::setBoard(const Board& value, int from, int to, bool atLineEnd)
 {
     m_clickUsed = true;
-    Board oldboard = m_board;
     m_board = value;
     m_currentFrom = from;
     m_currentTo = to;
