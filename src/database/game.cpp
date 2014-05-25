@@ -2073,6 +2073,19 @@ bool Game::isEcoPosition() const
     return (m_ecoPositions.contains(key));
 }
 
+QString Game::findEcoName(QString eco)
+{
+    foreach(QString actualEco, m_ecoPositions.values())
+    {
+        if (actualEco.startsWith(eco))
+        {
+            QString opName = actualEco.section(" ",1);
+            return opName;
+        }
+    }
+    return QString();
+}
+
 void Game::reparentVariation(MoveId variation, MoveId parent)
 {
     if(variation != NO_MOVE)

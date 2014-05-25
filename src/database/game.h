@@ -315,6 +315,7 @@ public :
 
     /** Method that loads a file containing ECO classifications for use by the ecoClassify method. Returns true if successful */
     static bool loadEcoFile(const QString& ecoFile);
+    static QString findEcoName(QString eco);
 
     /* Debug */
     /** Dump a move node using qDebug() */
