@@ -109,7 +109,7 @@ public:
     }
 
     /** Gets the square annotation*/
-    QString squareAnnotation()
+    QString squareAnnotation() const
     {
         return m_squareAnnotation;
     }
@@ -121,7 +121,7 @@ public:
     }
 
     /** Gets the square annotation*/
-    QString arrowAnnotation()
+    QString arrowAnnotation() const
     {
         return m_arrowAnnotation;
     }

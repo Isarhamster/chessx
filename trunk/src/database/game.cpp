@@ -81,6 +81,7 @@ MoveId Game::addMove(const Move& move, const QString& annotation, NagSet nags)
 {
     Game state = *this;
     dbAddMove(move,annotation,nags);
+    indicateAnnotationsOnBoard(m_currentNode);
     emit signalGameModified(true,state,tr("Add move"));
     return m_currentNode;
 }
@@ -1960,7 +1961,8 @@ void Game::compact()
 {
     int oldSize = m_moveNodes.size();
     QList <MoveNode> moveNodes;
-    QVector <int> oldIdNewIdMapping(oldSize, NO_MOVE);
+    QVector<MoveId> oldIdNewIdMapping(oldSize, NO_MOVE);
+    QList<MoveId> removedNodes;
 
     for(int i = 0; i < oldSize; ++i)
     {
@@ -1969,6 +1971,20 @@ void Game::compact()
             oldIdNewIdMapping[i] = moveNodes.size();
             moveNodes.append(m_moveNodes[i]);
         }
+        else
+        {
+            removedNodes.push_back(MoveId(i));
+        }
+    }
+
+    foreach(MoveId m, removedNodes)
+    {
+        m_variationStartAnnotations.remove(m);
+        m_annotations.remove(m);
+        m_squareAnnotations.remove(m);
+        m_arrowAnnotations.remove(m);
+        m_clkAnnotations.remove(m);
+        m_egtAnnotations.remove(m);
     }
 
     // update nodes links to other nodes in shrinked list (prev, next, variations)

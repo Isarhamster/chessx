@@ -25,8 +25,6 @@
  * for each game in the current database. This enables fast access to
  * game header information.
  *
- * @todo
- * pack() and unpack() needs to be implemented
  */
 
 class Index : public QObject
