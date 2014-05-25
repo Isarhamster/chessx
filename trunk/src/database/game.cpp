@@ -64,7 +64,7 @@ MoveId Game::dbAddMove(const Move& move, const QString& annotation, NagSet nags)
     node.parentNode = m_moveNodes[m_currentNode].parentNode;
     node.move = move;
     node.nags = nags;
-    node.ply = ply() + 1;
+    node.SetPly(ply() + 1);
     m_moveNodes.append(node);
     m_currentNode = m_moveNodes.size() - 1;
     if(!annotation.isEmpty())
@@ -431,7 +431,7 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags,
     else
     {
         truncateVariationAfterNextIllegalPosition();
-
+        compact();
     }
     backward();
     emit signalGameModified(true,state,tr("Replace move"));
@@ -643,7 +643,7 @@ void Game::truncateVariation(Position position)
         MoveId current = m_currentNode;
         MoveNode firstNode;
         firstNode.nextNode = m_currentNode;
-        firstNode.ply = m_moveNodes[m_currentNode].ply - 1;
+        firstNode.SetPly(m_moveNodes[m_currentNode].Ply() - 1);
         // Keep variation if truncating main line
         if(m_moveNodes[m_moveNodes[m_currentNode].previousNode].nextNode == m_currentNode)
         {
@@ -1301,7 +1301,7 @@ MoveId Game::nodeValid(MoveId moveId) const
     }
     if((moveId >= 0) && (moveId < m_moveNodes.size()))
     {
-        if(m_moveNodes[moveId].removed)
+        if(m_moveNodes[moveId].Removed())
         {
             return NO_MOVE;
         }
@@ -1344,7 +1344,7 @@ int Game::ply(MoveId moveId) const
     MoveId node = nodeValid(moveId);
     if(node != NO_MOVE)
     {
-        return m_moveNodes[node].ply;
+        return m_moveNodes[node].Ply();
     }
     return 0;
 }
@@ -1872,7 +1872,7 @@ void Game::dumpMoveNode(MoveId moveId) const
         qDebug() << "   Prev node   : " << m_moveNodes.at(moveId).previousNode;
         qDebug() << "   Parent node : " << m_moveNodes.at(moveId).parentNode;
         qDebug() << "   Nags        : " << m_moveNodes.at(moveId).nags.toString(NagSet::Simple);
-        qDebug() << "   Deleted     : " << m_moveNodes.at(moveId).removed;
+        qDebug() << "   Deleted     : " << m_moveNodes.at(moveId).Removed();
         qDebug() << "   # Variations: " << m_moveNodes.at(moveId).variations.size();
         qDebug() << "   Variations  : " << m_moveNodes.at(moveId).variations;
         qDebug() << "   Move        : " << m_moveNodes.at(moveId).move.toAlgebraic()
@@ -1915,7 +1915,7 @@ void Game::dumpAllMoveNodes() const
     qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags;
 }
 
-int Game::findPosition(const Board& position) const
+MoveId Game::findPosition(const Board& position) const
 {
     MoveId current = 0;
     Board currentBoard(m_startingBoard);
@@ -1964,7 +1964,7 @@ void Game::compact()
 
     for(int i = 0; i < oldSize; ++i)
     {
-        if(!m_moveNodes[i].removed)
+        if(!m_moveNodes[i].Removed())
         {
             oldIdNewIdMapping[i] = moveNodes.size();
             moveNodes.append(m_moveNodes[i]);

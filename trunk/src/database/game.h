@@ -21,7 +21,7 @@
 #define CURRENT_VARIATION -3
 #define COMPILED_ECO_FILE_ID ((quint32)0xCD5CBD02U)
 
-typedef int MoveId;
+typedef short MoveId;
 
 class SaveRestoreMove;
 class SaveRestoreMoveCompact;
@@ -347,37 +347,38 @@ private:
 
     struct MoveNode
     {
-        Move move;
-        NagSet nags;
         MoveId previousNode;
         MoveId nextNode;
         MoveId parentNode;
-        bool removed;
-        int ply;
-        QList <MoveId> variations;
+        short m_ply;
+        Move move;
+        NagSet nags;
+        QList<MoveId> variations;
         void remove()
         {
             parentNode = previousNode = nextNode = NO_MOVE;
-            removed = true;
+            m_ply |= 0x8000;
         }
         MoveNode()
         {
             parentNode = nextNode = previousNode = NO_MOVE;
-            removed = false;
-            ply = 0;
+            m_ply = 0;
         }
+        void SetPly(short ply) { Q_ASSERT(m_ply<0x7FFF); m_ply = ply; }
+        short Ply() const { return m_ply & 0x7FFF; }
+        bool Removed() const { return (m_ply & 0x8000); }
     };
 
     /** List of nodes */
     QList <MoveNode> m_moveNodes;
     /** Keeps the current node in the game */
     MoveId m_currentNode;
+    /** Keeps the start ply of the game, 0 for standard starting position */
+    short m_startPly;
     /** Keeps the start position of the game */
     Board m_startingBoard;
     /** Keeps the current position of the game */
     Board m_currentBoard;
-    /** Keeps the start ply of the game, 0 for standard starting position */
-    int m_startPly;
     /** Start annotations for each variation */
     QMap <MoveId, QString> m_variationStartAnnotations;
     /** Annotations for move nodes */
