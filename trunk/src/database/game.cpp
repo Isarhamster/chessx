@@ -1960,11 +1960,11 @@ bool Game::loadEcoFile(const QString& ecoFile)
 void Game::compact()
 {
     int oldSize = m_moveNodes.size();
-    QList <MoveNode> moveNodes;
-    QVector<MoveId> oldIdNewIdMapping(oldSize, NO_MOVE);
+    QList<MoveNode> moveNodes;
+    QMap<MoveId,MoveId> oldIdNewIdMapping;
     QList<MoveId> removedNodes;
 
-    for(int i = 0; i < oldSize; ++i)
+    for(MoveId i = 0; i < oldSize; ++i)
     {
         if(!m_moveNodes[i].Removed())
         {
@@ -1973,7 +1973,7 @@ void Game::compact()
         }
         else
         {
-            removedNodes.push_back(MoveId(i));
+            removedNodes.push_back(i);
         }
     }
 
@@ -1987,8 +1987,33 @@ void Game::compact()
         m_egtAnnotations.remove(m);
     }
 
+    AnnotationMap variationStartAnnotations;
+    AnnotationMap annotations;
+    AnnotationMap squareAnnotations;
+    AnnotationMap arrowAnnotations;
+    AnnotationMap clkAnnotations;
+    AnnotationMap egtAnnotations;
+
+    foreach(MoveId key, oldIdNewIdMapping.keys())
+    {
+        MoveId n = oldIdNewIdMapping.value(key);
+#define GAME_UPDATE_ANNOT(t,x) \
+        if (x.contains(key)) \
+        {\
+            QString s = x.value(key);\
+            t[n] = s;\
+        }
+
+        GAME_UPDATE_ANNOT(variationStartAnnotations, m_variationStartAnnotations);
+        GAME_UPDATE_ANNOT(annotations, m_annotations);
+        GAME_UPDATE_ANNOT(squareAnnotations, m_squareAnnotations);
+        GAME_UPDATE_ANNOT(arrowAnnotations, m_arrowAnnotations);
+        GAME_UPDATE_ANNOT(clkAnnotations, m_clkAnnotations);
+        GAME_UPDATE_ANNOT(egtAnnotations, m_egtAnnotations);
+    }
+
     // update nodes links to other nodes in shrinked list (prev, next, variations)
-    for(int i = 0, newSize = moveNodes.size(); i < newSize; ++i)
+    for(MoveId i = 0, newSize = moveNodes.size(); i < newSize; ++i)
     {
         MoveNode& node = moveNodes[i];
 #define GAME_UPDATE_MOVEID(aMoveId) if (aMoveId != NO_MOVE) aMoveId = oldIdNewIdMapping[aMoveId]
@@ -2003,6 +2028,20 @@ void Game::compact()
         vars.removeAll(NO_MOVE);
 #undef GAME_UPDATE_MOVEID
     }
+
+    m_variationStartAnnotations.clear();
+    m_annotations.clear();
+    m_squareAnnotations.clear();
+    m_arrowAnnotations.clear();
+    m_clkAnnotations.clear();
+    m_egtAnnotations.clear();
+
+    m_variationStartAnnotations = variationStartAnnotations;
+    m_annotations               = annotations;
+    m_squareAnnotations         = squareAnnotations;
+    m_arrowAnnotations          = arrowAnnotations;
+    m_clkAnnotations            = clkAnnotations;
+    m_egtAnnotations            = egtAnnotations;
 
     m_moveNodes.clear();
     m_moveNodes = moveNodes;

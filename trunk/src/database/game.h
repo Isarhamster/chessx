@@ -381,25 +381,28 @@ private:
     Board m_startingBoard;
     /** Keeps the current position of the game */
     Board m_currentBoard;
+
+    typedef QMap<MoveId, QString> AnnotationMap;
+
     /** Start annotations for each variation */
-    QMap <MoveId, QString> m_variationStartAnnotations;
+    AnnotationMap m_variationStartAnnotations;
     /** Annotations for move nodes */
-    QMap <MoveId, QString> m_annotations;
+    AnnotationMap m_annotations;
 
     /** SquareAnnotations for move nodes */
-    QMap <MoveId, QString> m_squareAnnotations;
+    AnnotationMap m_squareAnnotations;
 
     /** ArrowAnnotations for move nodes */
-    QMap <MoveId, QString> m_arrowAnnotations;
+    AnnotationMap m_arrowAnnotations;
 
     /** Map keeping pgn tags of the game */
     QMap<QString, QString> m_tags;
 
     /** Remaining Time Annotations for move nodes */
-    QMap <MoveId, QString> m_clkAnnotations;
+    AnnotationMap m_clkAnnotations;
 
     /** Elapsed Time Annotations for move nodes */
-    QMap <MoveId, QString> m_egtAnnotations;
+    AnnotationMap m_egtAnnotations;
 
     // **** memory  management methods ****
     /** Remove all removed nodes */
