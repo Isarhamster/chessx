@@ -345,6 +345,7 @@ private:
     QString specialAnnotation(QString& annotation, QString specialMark) const;  // [%csl  [%cal
     QString composeAnnotation(QString freeText, MoveId node) const;
 
+#pragma pack(push,2)
     struct MoveNode
     {
         MoveId previousNode;
@@ -368,6 +369,7 @@ private:
         short Ply() const { return m_ply & 0x7FFF; }
         bool Removed() const { return (m_ply & 0x8000); }
     };
+#pragma pack(pop)
 
     /** List of nodes */
     QList <MoveNode> m_moveNodes;
