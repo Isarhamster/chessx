@@ -26,6 +26,12 @@ Index::Index()
 
 Index::~Index()
 {
+    while (m_indexItems.count())
+    {
+        IndexItem* item = m_indexItems.first();
+        delete item;
+        m_indexItems.pop_front();
+    }
 }
 
 GameId Index::add()
