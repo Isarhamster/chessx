@@ -110,14 +110,10 @@ void DatabaseInfo::close()
             terminate();
         }
     }
-    if(m_database)
-    {
-        delete m_database;
-    }
-    if(m_filter)
-    {
-        delete m_filter;
-    }
+
+    delete m_database;
+    delete m_filter;
+
     m_database = NULL;
     m_filter = NULL;
     m_undoStack->clear();

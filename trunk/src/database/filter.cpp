@@ -116,20 +116,24 @@ int Filter::gameToIndex(int index)
     {
         int count = 0;
         for(int i = 0; i < index; ++i)
+        {
             if(contains(i))
             {
                 ++count;
             }
+        }
         return count;
     }
     else
     {
         int count = m_count - 1;
         for(int i = size() - 1 ; i > index; i--)
+        {
             if(contains(i))
             {
                 count--;
             }
+        }
         return count;
     }
 }
@@ -179,10 +183,12 @@ int Filter::previousGame(int current) const
         return -1;
     }
     for(int i = qBound(-1, current, size()) - 1; i >= 0; i--)
+    {
         if(contains(i))
         {
             return i;
         }
+    }
     return -1;
 }
 
