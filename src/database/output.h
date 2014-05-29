@@ -59,6 +59,7 @@ public:
         MarkupMainLine,
         MarkupVariationMove,
         MarkupVariationInline,
+        MarkupVariationResume,
         MarkupVariationIndent,
         MarkupNag,
         MarkupAnnotationInline,
@@ -233,7 +234,9 @@ private:
     /** Writes a single move including nag and annotation */
     QString writeMove(MoveToWrite moveToWrite = NextMove);
     /** Writes a variation, including sub variations */
-    QString writeVariation(MoveId upToNode);
+    QString writeMainLine(MoveId upToNode);
+    /** Writes a variation, including sub variations */
+    QString writeVariation();
     /** Writes a game tag */
     QString writeTag(const QString& tagName, const QString& tagValue) const;
     /** Writes all game tags */

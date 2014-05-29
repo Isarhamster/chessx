@@ -176,6 +176,10 @@ void Output::readTemplateFile(const QString& path)
                 {
                     setMarkupTag(MarkupVariationInline, tags[0], tags[1]);
                 }
+                else if(name == "MarkupVariationResume")
+                {
+                    setMarkupTag(MarkupVariationResume, tags[0], tags[1]);
+                }
                 else if(name == "MarkupVariationIndent")
                 {
                     setMarkupTag(MarkupVariationIndent, tags[0], tags[1]);
@@ -479,68 +483,47 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     }
 
     text += writeComment(commentString, mvno, Comment);
-    text += " ";
+    if (m_game.hasNextMove())
+    {
+        text += " ";
+    }
     return text;
 }
 
-QString Output::writeVariation(MoveId upToNode)
+QString Output::writeMainLine(MoveId upToNode)
 {
     QString text;
     while(!m_game.atLineEnd())
     {
+        // Training mode: abort main line with current node
         if(m_game.currentMove() == upToNode)
         {
             if(m_options.getOptionAsBool("ColumnStyle"))
             {
                 text += m_endTagMap[MarkupColumnStyleMainline];
             }
-            text += "***&nbsp;";
+            text += "***";
             break;
         }
-        // *** Writes move in the current variation
+        // *** Write moves in the main line
         text += writeMove();
+        bool hasNext = m_game.hasNextMove();
         if(m_game.variationCount())
         {
             QList<MoveId> variations = m_game.variations();
             if(variations.size())
             {
-                bool inMainline = m_game.isMainline();
-                if(m_options.getOptionAsBool("ColumnStyle") && inMainline)
+                if(m_options.getOptionAsBool("ColumnStyle"))
                 {
                     text += m_endTagMap[MarkupColumnStyleMainline];
                 }
                 for(int i = 0; i < variations.size(); ++i)
                 {
-                    m_currentVariationLevel++;
-                    if(m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel"))
-                    {
-                        text += m_startTagMap[MarkupVariationIndent];
-                    }
-                    else
-                    {
-                        text += m_startTagMap[MarkupVariationInline];
-                    }
-
-                    m_dirtyBlack = true;
-
                     // *** Enter variation i, and write the rest of the moves
                     m_game.moveToId(variations[i]);
-                    text += writeMove(PreviousMove);
-                    text += writeVariation(upToNode);
-
-                    // *** End the variation
-                    //			m_output.replace ( QRegExp ("\\s+$"), "" ); // We don't want any spaces before the )
-                    if(m_currentVariationLevel <= m_options.getOptionAsInt("VariationIndentLevel"))
-                    {
-                        text += m_endTagMap[MarkupVariationIndent];
-                    }
-                    else
-                    {
-                        text += m_endTagMap[MarkupVariationInline];
-                    }
-                    m_currentVariationLevel--;
+                    text += writeVariation();
                 }
-                if(m_options.getOptionAsBool("ColumnStyle") && inMainline)
+                if(hasNext && m_options.getOptionAsBool("ColumnStyle"))
                 {
                     text += m_startTagMap[MarkupColumnStyleMainline];
                 }
@@ -550,7 +533,57 @@ QString Output::writeVariation(MoveId upToNode)
         }
         m_game.forward();
     }
-    text.replace(")&nbsp;</span>)",")</span>)");
+
+    return text;
+}
+
+QString Output::writeVariation()
+{
+    QString text;
+    m_currentVariationLevel++;
+    bool indent = (m_currentVariationLevel < m_options.getOptionAsInt("VariationIndentLevel"));
+    bool willStartIndent = (m_currentVariationLevel+1 == m_options.getOptionAsInt("VariationIndentLevel"));
+
+    if (indent) text += m_startTagMap[MarkupVariationResume];
+    text += m_startTagMap[indent ? MarkupVariationIndent : MarkupVariationInline];
+    m_dirtyBlack = true;
+
+    text += writeMove(PreviousMove);
+
+    bool mustAddStart = false;
+
+    while(!m_game.atLineEnd())
+    {
+        if (mustAddStart)
+        {
+            mustAddStart = false;
+            if (indent) text += m_startTagMap[MarkupVariationResume];
+        }
+        // *** Writes move in the current variation
+        text += writeMove();
+        if(m_game.variationCount())
+        {
+            if (indent && !willStartIndent) text += m_endTagMap[MarkupVariationResume];
+            QList<MoveId> variations = m_game.variations();
+            if(variations.size())
+            {
+                for(int i = 0; i < variations.size(); ++i)
+                {
+                    // *** Enter variation i, and write the rest of the moves
+                    m_game.moveToId(variations[i]);
+                    text += writeVariation();
+                }
+                mustAddStart = true;
+            }
+            m_dirtyBlack = true;
+            m_game.moveToId(m_game.parentMove());
+        }
+        m_game.forward();
+    }
+
+    text += m_endTagMap[indent ? MarkupVariationIndent : MarkupVariationInline];
+
+    m_currentVariationLevel--;
     return text;
 }
 
@@ -770,7 +803,7 @@ QString Output::outputGame(const Game* g, bool upToCurrentMove)
 
     text += writeGameComment(m_game.gameComment());
 
-    text += writeVariation(mainId);
+    text += writeMainLine(mainId);
     if(m_options.getOptionAsBool("ColumnStyle"))
     {
         text += m_endTagMap[MarkupColumnStyleMainline];
