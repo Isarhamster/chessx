@@ -40,10 +40,6 @@ public:
     enum Operator {And, Or, Xor, Minus};
     /** Construct filter of given size. Add all games to the filter. */
     Filter(Database* database);
-    /** Construct filter from another filter. */
-    Filter(const Filter& filter);
-    /** Assignment operator. */
-    Filter& operator=(const Filter& filter);
     /** Destructor. */
     ~Filter();
     /** @return a pointer to the database on which the filter is. */

@@ -13,9 +13,6 @@
 #include "filter.h"
 #include <QtDebug>
 
-
-static NullSearch nullSearch;
-
 Filter::Filter(Database* database) : QThread()
 {
     m_database = database;
@@ -24,36 +21,13 @@ Filter::Filter(Database* database) : QThread()
     m_cache.first = m_cache.second = -1;
     m_gamesSearched = 0;
     m_searchTime = 0;
-    currentSearch = &nullSearch;
-}
-
-Filter::Filter(const Filter& filter) : QThread()
-{
-    m_vector = new QVector<int>(filter.intVector());
-    m_count = filter.m_count;
-    m_cache = filter.m_cache;
-    m_gamesSearched = 0;
-    m_searchTime = 0;
-    currentSearch = &nullSearch;
-}
-
-Filter& Filter::operator=(const Filter & filter)
-{
-    if(this != &filter)
-    {
-        delete m_vector;
-        m_vector = new QVector<int>(filter.intVector());
-        m_count = filter.count();
-        m_cache = filter.m_cache;
-        m_gamesSearched = 0;
-        m_searchTime = 0;
-    }
-    return *this;
+    currentSearch = 0;
 }
 
 Filter::~Filter()
 {
     cancel();
+    delete currentSearch;
     delete m_vector;
 }
 
@@ -309,6 +283,7 @@ void Filter::run()
         break;
     }
     delete currentSearch;
+    currentSearch = 0;
     emit searchProgress(100);
     emit searchFinished();
 }
