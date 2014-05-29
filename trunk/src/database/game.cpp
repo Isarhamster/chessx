@@ -365,6 +365,12 @@ bool Game::currentNodeHasMove(Square from, Square  to) const
     return false;
 }
 
+bool Game::hasNextMove() const
+{
+    MoveId node = m_moveNodes[m_currentNode].nextNode;
+    return (node != NO_MOVE);
+}
+
 bool Game::findNextMove(Move m)
 {
     return findNextMove(m.from(),m.to(),m.isPromotion() ? pieceType(m.promotedPiece()) : None);
@@ -374,7 +380,7 @@ bool Game::findNextMove(Move m)
 // if so make it on the board
 bool Game::findNextMove(Square from, Square to, PieceType promotionPiece)
 {
-    int node;
+    MoveId node;
     node = m_moveNodes[m_currentNode].nextNode;
     if(node != NO_MOVE)
     {

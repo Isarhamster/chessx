@@ -211,6 +211,7 @@ public :
     /** Moves forward if the next move matches (from,to,promotionPiece) */
     bool findNextMove(Square from, Square to, PieceType promotionPiece = None);
     bool findNextMove(Move m);
+    bool hasNextMove() const;
 
     /** Enters the variation that corresponds to moveId. moveId must be a MoveId that
         corresponds to a subvariation of the current position. Compared to moveToId

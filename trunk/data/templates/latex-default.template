@@ -43,6 +43,7 @@ MarkupMainLineMove=,
 MarkupVariationMove=,
 MarkupMainLine=,
 MarkupVariationInline=\begin{variation},\end{variation}
+MarkupVariationResume=,
 MarkupVariationIndent=\begin{variation},\end{variation}
 MarkupNag=,
 MarkupColumnStyleMove=,
