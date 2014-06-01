@@ -63,6 +63,11 @@ public:
     void setDbIndex(int);
     /** Get a reference to the database to which the current view is associated */
     int dbIndex() const;
+    /** Get the move indicator width */
+    int moveIndicatorWidth() const;
+
+    bool vAlignTop() const;
+    void setVAlignTop(bool vAlignTop);
 
 public slots:
 
@@ -153,6 +158,7 @@ private:
 
     Board m_board;
     BoardTheme m_theme;
+    QPoint m_translate;
     bool m_flipped;
     bool m_showFrame;
     bool m_showCurrentMove;
@@ -176,6 +182,7 @@ private:
     Guess::MoveList m_moveList;
     unsigned int m_moveListCurrent;
     bool m_showMoveIndicator;
+    bool m_vAlignTop;
     int m_showMoveIndicatorMode;
     int m_DbIndex;
 };

@@ -38,7 +38,6 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     {
         BoardSetupToolButton* button = new BoardSetupToolButton(this);
         button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        //button->setAlignment(Qt::AlignJustify|Qt::AlignVCenter);
         button->setMinimumSize(QSize(10, 10));
         button->m_piece = (Piece)piece;
         if(piece == Empty)
