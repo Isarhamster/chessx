@@ -31,6 +31,7 @@ signals:
 
 protected slots:
     void accept();
+    void reject();
 
 private slots:
     void saveOldActionText(int row, int column);

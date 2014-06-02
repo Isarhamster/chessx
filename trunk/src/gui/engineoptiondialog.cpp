@@ -38,6 +38,13 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
 
     connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
     connect(ui->resetButton, SIGNAL(clicked()), SLOT(optionReset()));
+
+    QTimer::singleShot(0, this, SLOT(restoreLayout()));
+}
+
+void EngineOptionDialog::restoreLayout()
+{
+    AppSettings->layout(this);
 }
 
 EngineOptionDialog::~EngineOptionDialog()
@@ -50,7 +57,14 @@ EngineOptionDialog::~EngineOptionDialog()
 
 void EngineOptionDialog::accept()
 {
+    AppSettings->setLayout(this);
     QDialog::accept();
+}
+
+void EngineOptionDialog::reject()
+{
+    AppSettings->setLayout(this);
+    QDialog::reject();
 }
 
 void EngineOptionDialog::engineActivated()
@@ -69,3 +83,5 @@ void EngineOptionDialog::optionReset()
     m_engine->m_mapOptionValues.clear();
     ui->tableView->resetModel();
 }
+
+

@@ -19,6 +19,8 @@ ActionDialog::ActionDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
+    AppSettings->layout(this);
+
     resetList();
 
     connect(ui->btReset, SIGNAL(clicked()),
@@ -88,6 +90,12 @@ QString ActionDialog::normalizedText(const QAction* action) const
     return text;
 }
 
+void ActionDialog::reject()
+{
+    AppSettings->setLayout(this);
+    QDialog::reject();
+}
+
 void ActionDialog::accept()
 {
     QList<KbAction*> actions = parent()->findChildren<KbAction*>();
@@ -111,6 +119,7 @@ void ActionDialog::accept()
         }
     }
     AppSettings->endGroup();
+    AppSettings->setLayout(this);
     QDialog::accept();
 }
 
