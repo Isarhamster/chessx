@@ -41,6 +41,9 @@ public:
 public slots:
     /** Execute dialog, save options on exit */
     int exec();
+protected slots:
+    void reject();
+    void accept();
 private:
     Ui::QuickSearchDialog ui;
 };

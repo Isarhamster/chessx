@@ -14,11 +14,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "savedialog.h"
-#include "game.h"
 #include "database.h"
-#include "partialdate.h"
+#include "game.h"
 #include "messagedialog.h"
+#include "partialdate.h"
+#include "savedialog.h"
+#include "settings.h"
 
 #include <QLineEdit>
 #include <QCompleter>
@@ -32,6 +33,12 @@ SaveDialog::SaveDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
     group->addButton(ui.result0Button);
     group->addButton(ui.resultNoneButton);
     connect(ui.buttonDiscardChanges, SIGNAL(clicked()), SLOT(discardChanges()));
+    QTimer::singleShot(0, this, SLOT(restoreLayout()));
+}
+
+void SaveDialog::restoreLayout()
+{
+    AppSettings->layout(this);
 }
 
 SaveDialog::~SaveDialog()
@@ -180,6 +187,7 @@ void SaveDialog::setLineEdit(QLineEdit* edit, Database* database, const QString 
 
 void SaveDialog::accept()
 {
+    AppSettings->setLayout(this);
     if((PartialDate().fromString(ui.dateEdit->text()).isValid()) &&
             (PartialDate().fromString(ui.eventDateEdit->text()).isValid()))
     {
@@ -194,5 +202,12 @@ void SaveDialog::accept()
 
 void SaveDialog::discardChanges()
 {
+    AppSettings->setLayout(this);
     done(Discard);
+}
+
+void SaveDialog::reject()
+{
+    AppSettings->setLayout(this);
+    QDialog::reject();
 }

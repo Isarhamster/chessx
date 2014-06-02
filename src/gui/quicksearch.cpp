@@ -16,6 +16,7 @@
 
 #include "quicksearch.h"
 #include "search.h"
+#include "settings.h"
 
 #include <QComboBox>
 #include <QLineEdit>
@@ -30,10 +31,13 @@ QuickSearchDialog::QuickSearchDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     ui.modeCombo->addItem(tr("Find in current filter"), Search::And);
     ui.modeCombo->addItem(tr("Search whole database"), Search::NullOperator);
     ui.modeCombo->addItem(tr("Add to current filter"), Search::Or);
+
+    AppSettings->layout(this);
 }
 
 QuickSearchDialog::~QuickSearchDialog()
-{}
+{
+}
 
 void QuickSearchDialog::setTag(int tag)
 {
@@ -70,3 +74,14 @@ void QuickSearchDialog::setMode(int index)
     ui.modeCombo->setCurrentIndex(index);
 }
 
+void QuickSearchDialog::accept()
+{
+    AppSettings->setLayout(this);
+    QDialog::accept();
+}
+
+void QuickSearchDialog::reject()
+{
+    AppSettings->setLayout(this);
+    QDialog::reject();
+}

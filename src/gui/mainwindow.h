@@ -103,8 +103,6 @@ protected:
     bool gameMoveBy(int change);
     /** Update recent files menu */
     void updateMenuRecent();
-    /** Save Game dialog (created when used first) */
-    SaveDialog* saveDialog();
 public slots:
     /** Open database */
     void openDatabase(QString fname);
@@ -504,7 +502,6 @@ private:
     ECOListWidget* m_ecoList;
     EventListWidget* m_eventList;
     DatabaseList* m_databaseList;
-    SaveDialog* m_saveDialog;
     /* Main gui parts */
     BoardView* m_boardView;
     QSplitter* m_boardSplitter;

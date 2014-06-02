@@ -432,7 +432,7 @@ Olivier Roset</string>
  <connections>
   <connection>
    <sender>buttonBox</sender>
-   <signal>accepted()</signal>
+   <signal>rejected()</signal>
    <receiver>AboutDlg</receiver>
    <slot>accept()</slot>
    <hints>
@@ -448,17 +448,17 @@ Olivier Roset</string>
   </connection>
   <connection>
    <sender>buttonBox</sender>
-   <signal>rejected()</signal>
+   <signal>accepted()</signal>
    <receiver>AboutDlg</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>382</x>
+     <y>790</y>
     </hint>
     <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
+     <x>258</x>
+     <y>418</y>
     </hint>
    </hints>
   </connection>

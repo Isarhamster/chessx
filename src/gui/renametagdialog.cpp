@@ -3,6 +3,8 @@
 ****************************************************************************/
 
 #include "renametagdialog.h"
+#include "settings.h"
+
 #include "ui_renametagdialog.h"
 
 RenameTagDialog::RenameTagDialog(QWidget *parent, QString ts, QString tagName, Qt::WindowFlags f) :
@@ -18,6 +20,7 @@ RenameTagDialog::RenameTagDialog(QWidget *parent, QString ts, QString tagName, Q
 
     connect(ui->btClose, SIGNAL(clicked()), SLOT(accept()));
     connect(ui->btRename, SIGNAL(clicked()), SLOT(slotRename()));
+    AppSettings->layout(this);
 }
 
 RenameTagDialog::~RenameTagDialog()
@@ -28,5 +31,18 @@ RenameTagDialog::~RenameTagDialog()
 void RenameTagDialog::slotRename()
 {
     emit renameRequest(m_tagName, ui->editTo->text(), m_ts);
+    AppSettings->setLayout(this);
     close();
+}
+
+void RenameTagDialog::accept()
+{
+    AppSettings->setLayout(this);
+    QDialog::accept();
+}
+
+void RenameTagDialog::reject()
+{
+    AppSettings->setLayout(this);
+    QDialog::reject();
 }

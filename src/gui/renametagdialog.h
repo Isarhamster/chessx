@@ -27,6 +27,8 @@ protected slots:
     /** Start renaming a tag */
     void slotRename();
 
+    void accept();
+    void reject();
 private:
     Ui::RenameTagDialog *ui;
     QString m_ts;

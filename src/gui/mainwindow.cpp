@@ -67,7 +67,6 @@
 MainWindow::MainWindow() : QMainWindow(),
     m_tabDragIndex(-1),
     m_pDragTabBar(0),
-    m_saveDialog(0),
     m_gameWindow(0),
     m_gameToolBar(0),
     m_output(0),
@@ -429,7 +428,6 @@ MainWindow::~MainWindow()
         database->close();
     }
     qDeleteAll(m_databases.begin(), m_databases.end());
-    delete m_saveDialog;
     delete m_output;
     delete m_progressBar;
     m_boardViews.clear(); // Widgets are deleted by Qt
@@ -1005,15 +1003,6 @@ bool MainWindow::gameEditComment(Output::CommentType type)
     return true;
 }
 
-SaveDialog* MainWindow::saveDialog()
-{
-    if(!m_saveDialog)
-    {
-        m_saveDialog = new SaveDialog(this);
-    }
-    return m_saveDialog;
-}
-
 QAction* MainWindow::createAction(QObject* parent, QString name, const char* slot, const QKeySequence& key, QToolBar* pToolBar, QString image,
                                   const QString& tip, QAction::MenuRole menuRole)
 {
@@ -1451,7 +1440,8 @@ bool MainWindow::QuerySaveGame(DatabaseInfo *dbInfo)
     }
     if(dbInfo->gameNeedsSaving())
     {
-        int n = saveDialog()->save(dbInfo->database(), dbInfo->currentGame());
+        SaveDialog dlg;
+        int n = dlg.save(dbInfo->database(), dbInfo->currentGame());
         if(n == QDialog::Accepted)
         {
             saveGame(dbInfo);

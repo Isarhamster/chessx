@@ -68,9 +68,13 @@ signals:
     /** Request to clear the background of a piece label */
     void signalClearBackground(Piece p);
 
+protected slots:
+    void restoreLayout();
 private slots:
     /** If the position is legal, accept it and close the dialog. */
-    void slotAccept();
+    void accept();
+    /** Dialog closed otherwise */
+    void reject();
     /** Clear board. */
     void slotClear();
     /** Restore standard position */

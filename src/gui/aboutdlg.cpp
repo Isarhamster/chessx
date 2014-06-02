@@ -33,9 +33,28 @@ AboutDlg::AboutDlg(QWidget *parent) :
     ui->labelSettingsPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     ui->labelHomepage->setTextInteractionFlags(Qt::TextBrowserInteraction);
     ui->labelMailingList->setTextInteractionFlags(Qt::TextBrowserInteraction);
+
+    QTimer::singleShot(0, this, SLOT(restoreLayout()));
+}
+
+void AboutDlg::restoreLayout()
+{
+    AppSettings->layout(this);
 }
 
 AboutDlg::~AboutDlg()
 {
     delete ui;
+}
+
+void AboutDlg::accept()
+{
+    AppSettings->setLayout(this);
+    QDialog::accept();
+}
+
+void AboutDlg::reject()
+{
+    AppSettings->setLayout(this);
+    QDialog::reject();
 }
