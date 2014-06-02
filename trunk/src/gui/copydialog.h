@@ -41,6 +41,11 @@ public:
     void setMode(SrcMode mode);
     /** Set the current games title. */
     void setCurrentGame(QString title);
+
+protected slots:
+  void accept();
+  void reject();
+
 private:
     Ui::CopyDialog ui;
 };

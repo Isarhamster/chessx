@@ -24,11 +24,12 @@ public:
 signals:
   void bookWritten(QString);
 
-protected:
+protected slots:
   void accept();
+  void reject();
 
-public slots:
-
+protected slots:
+  void restoreLayout();
 private:
   QString m_InputPath;
   QString m_OutputPath;

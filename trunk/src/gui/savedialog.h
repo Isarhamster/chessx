@@ -36,9 +36,12 @@ public:
     SaveDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
     virtual ~SaveDialog();
     virtual int save(Database* database, Game& game);
-    virtual void accept();
+
 protected slots:
     void discardChanges();
+    void restoreLayout();
+    void accept();
+    void reject();
 private:
     void setLineEdit(QLineEdit* edit, Database* database, const QString& tagName);
     Ui::SaveDialog ui;

@@ -20,6 +20,11 @@ public:
     explicit AboutDlg(QWidget *parent = 0);
     ~AboutDlg();
 
+protected slots:
+    void restoreLayout();
+    void accept();
+    void reject();
+
 private:
     Ui::AboutDlg *ui;
 };

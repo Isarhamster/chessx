@@ -30,6 +30,12 @@ DlgSaveBook::DlgSaveBook(QString path, QWidget *parent) :
   }
 
   ui->outputPath->setText(m_OutputPath);
+  QTimer::singleShot(0, this, SLOT(restoreLayout()));
+}
+
+void DlgSaveBook::restoreLayout()
+{
+  AppSettings->layout(this);
 }
 
 DlgSaveBook::~DlgSaveBook()
@@ -47,5 +53,12 @@ void DlgSaveBook::getBookParameters(QString &out, int &maxPly, int &minGame, boo
 
 void DlgSaveBook::accept()
 {
+    AppSettings->setLayout(this);
     QDialog::accept();
+}
+
+void DlgSaveBook::reject()
+{
+    AppSettings->setLayout(this);
+    QDialog::reject();
 }

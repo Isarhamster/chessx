@@ -57,7 +57,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
 
     emit signalClearBackground(Empty);
 
-    connect(ui.okButton, SIGNAL(clicked()), SLOT(slotAccept()));
+    connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
     connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
     connect(ui.clearButton, SIGNAL(clicked()), SLOT(slotClear()));
     connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
@@ -86,6 +86,13 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     connect(ui.btSwapColor, SIGNAL(clicked()), SLOT(swapColors()));
 
     ui.tabWidget->setCurrentIndex(0);
+
+    QTimer::singleShot(0, this, SLOT(restoreLayout()));
+}
+
+void BoardSetupDialog::restoreLayout()
+{
+    AppSettings->layout(this);
 }
 
 BoardSetupDialog::~BoardSetupDialog()
@@ -203,22 +210,30 @@ void BoardSetupDialog::slotReset()
     setBoard(b);
 }
 
-void BoardSetupDialog::slotAccept()
+void BoardSetupDialog::accept()
 {
     // Need to make sure the board is updated with move number set by user
     Board b(ui.boardView->board());
     b.setMoveNumber(ui.moveSpin->value());
     ui.boardView->setBoard(b);
 
+    AppSettings->setLayout(this);
+
     QString reason = boardStatusMessage();
     if(reason.isEmpty())
     {
-        accept();
+        QDialog::accept();
     }
     else
     {
         MessageDialog::error(tr("Current position is not valid.\n\n%1.").arg(reason));
     }
+}
+
+void BoardSetupDialog::reject()
+{
+    AppSettings->setLayout(this);
+    QDialog::reject();
 }
 
 void BoardSetupDialog::slotClear()

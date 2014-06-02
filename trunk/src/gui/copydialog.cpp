@@ -13,12 +13,14 @@
  ***************************************************************************/
 
 #include "copydialog.h"
+#include "settings.h"
 
 
 CopyDialog::CopyDialog(QWidget * parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
     ui.setupUi(this);
     connect(ui.databaseList, SIGNAL(itemDoubleClicked(QListWidgetItem *)), SLOT(accept()));
+    AppSettings->layout(this);
 }
 
 CopyDialog::~CopyDialog()
@@ -74,3 +76,14 @@ int CopyDialog::getMode() const
     }
 }
 
+void CopyDialog::accept()
+{
+    AppSettings->setLayout(this);
+    QDialog::accept();
+}
+
+void CopyDialog::reject()
+{
+    AppSettings->setLayout(this);
+    QDialog::reject();
+}
