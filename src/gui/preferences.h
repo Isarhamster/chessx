@@ -77,8 +77,6 @@ public slots:
 
 protected:
     /** Overridden to save size */
-    virtual void closeEvent(QCloseEvent* e);
-    /** Overridden to save size */
     virtual void done(int);
 
 private:
@@ -101,6 +99,11 @@ private:
 signals:
     /** Signal emitted when changes are applied. */
     void reconfigure();
+
+protected slots:
+    /** Call restoration of layout from Settings storage */
+    void restoreLayout();
+
 private slots:
     void slotBtMoveFontClicked();
     void slotBtTextFontClicked();

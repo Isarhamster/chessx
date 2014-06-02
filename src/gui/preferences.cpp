@@ -89,6 +89,12 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     {
         ui.labelLoadStatus->setText(tr("For updating translations online version checking needs to be enabled."));
     }
+    QTimer::singleShot(0, this, SLOT(restoreLayout()));
+}
+
+void PreferencesDialog::restoreLayout()
+{
+    AppSettings->layout(this);
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -97,12 +103,9 @@ PreferencesDialog::~PreferencesDialog()
 
 void PreferencesDialog::done(int r)
 {
+    AppSettings->setLayout(this);
     QDialog::done(r);
     close();
-}
-void PreferencesDialog::closeEvent(QCloseEvent*)
-{
-    AppSettings->setLayout(this);
 }
 
 void PreferencesDialog::slotSelectEngineDirectory()
@@ -400,6 +403,7 @@ void PreferencesDialog::slotReset()
     if(MessageDialog::yesNo(tr("Clear all application settings?"), tr("Warning")))
     {
         AppSettings->clear();
+        AppSettings->setLayout(this);
         restoreSettings();
         emit reconfigure();
     }
@@ -413,9 +417,6 @@ void PreferencesDialog::slotApply()
 
 void PreferencesDialog::restoreSettings()
 {
-    // Restore size
-    AppSettings->layout(this);
-
     // Read Board settings
     AppSettings->beginGroup("/General/");
     ui.tablebaseCheck->setChecked(AppSettings->getValue("onlineTablebases").toBool());

@@ -25,11 +25,15 @@ public:
     explicit EngineOptionDialog(QWidget *parent, EngineList& engineList, int index, Qt::WindowFlags f = 0);
     ~EngineOptionDialog();
     OptionValueList GetResults() const;
+
 public slots:
     void accept();
+    void reject();
+
 protected slots:
     void engineActivated();
     void optionReset();
+    void restoreLayout();
 
 private:
     Ui::EngineOptionDialog *ui;

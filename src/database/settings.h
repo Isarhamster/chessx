@@ -37,11 +37,13 @@ public:
     enum {Show = 1} LayoutFlags;
     Settings();
     ~Settings();
+public slots:
     /** Restore widget's layout based on its name. Optionally show window if it is visible.
     @return @p true if the state was restored. */
     bool layout(QWidget* w);
     /** Write widget's layout with its name. */
     void setLayout(const QWidget* w);
+public:
     /** @return directory where data are stored. */
     QString dataPath();
     /** @return directory where executable sub programs are stored. */

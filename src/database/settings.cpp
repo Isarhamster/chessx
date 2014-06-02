@@ -134,7 +134,9 @@ void Settings::setList(const QString& key, QList<int> list)
     QList<QVariant> varlist;
     int i;
     foreach(i, list)
-    varlist.append(QVariant(i));
+    {
+        varlist.append(QVariant(i));
+    }
     setValue(key, varlist);
 }
 
@@ -147,7 +149,9 @@ bool Settings::list(const QString &key, QList<int>& list, int items)
     }
     QVariant v;
     foreach(v, varlist)
-    list.append(v.toInt());
+    {
+        list.append(v.toInt());
+    }
     return true;
 }
 
