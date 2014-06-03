@@ -13,6 +13,9 @@
 #include "wbengine.h"
 #include "uciengine.h"
 
+//#define DEBUG_ENGINE
+#undef DEBUG_ENGINE
+
 /*** Engine ***/
 
 Engine::Engine(const QString& name,
@@ -159,7 +162,9 @@ bool Engine::isAnalyzing()
 
 void Engine::send(const QString& message)
 {
-    // qDebug() << "<-- " << message << endl;
+#ifdef DEBUG_ENGINE
+    qDebug() << "<-- " << message << endl;
+#endif
 
     QString out(message);
     out.append('\n');
@@ -226,7 +231,9 @@ void Engine::pollProcess()
     while(m_process && m_process->canReadLine())
     {
         message = m_process->readLine().simplified();
-        // qDebug() << "--> " << message << endl;
+#ifdef DEBUG_ENGINE
+        qDebug() << "--> " << message << endl;
+#endif
         processMessage(message);
     }
 }

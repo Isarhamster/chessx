@@ -1456,7 +1456,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
         type = Pawn;
         break;
     default:
-        type = Pawn;
+        type = Empty;
         break;
     }
 
@@ -1507,6 +1507,21 @@ Move BitBoard::parseMove(const QString& algebraic) const
         return move;
     }
 
+    if (type == Empty)
+    {
+        // either a pawn or a piece, is determined by source location
+        if (fromSquare < 0)
+            type = Pawn;
+        else
+        {
+            type = m_piece[fromSquare];
+            if (type == Empty)
+            {
+                return move; // There is no piece here
+            }
+        }
+    }
+
     if(type == Pawn)
     {
         // Promotion as in bxc8=Q or bxc8(Q)
@@ -1536,7 +1551,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
                     return move;
                 }
             }
-            break; //return move;
+            break;
         }
         if(fromSquare < 0)
         {
