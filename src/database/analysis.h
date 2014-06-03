@@ -64,6 +64,7 @@ public:
     void setBestMove(bool bestMove);
     bool bestMove() const;
 
+    bool isAlreadyMate() const;
 private:
     int m_numpv;
     int m_msec;

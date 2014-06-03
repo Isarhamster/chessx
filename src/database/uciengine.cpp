@@ -189,11 +189,14 @@ void UCIEngine::parseBestMove(const QString& message)
     {
         Analysis analysis;
         Move move = m_board.parseMove(bestMove);
-        MoveList moves;
-        moves.append(move);
-        analysis.setVariation(moves);
-        analysis.setBestMove(true);
-        sendAnalysis(analysis);
+        if (move.isLegal())
+        {
+            MoveList moves;
+            moves.append(move);
+            analysis.setVariation(moves);
+            analysis.setBestMove(true);
+            sendAnalysis(analysis);
+        }
     }
 }
 
@@ -266,7 +269,7 @@ void UCIEngine::parseAnalysis(const QString& message)
                 int score = info.section(' ', section + 2, section + 2).toInt(&ok);
                 if(type == "mate")
                 {
-                    analysis.setMovesToMate(abs(score));
+                    analysis.setMovesToMate(score);
                 }
                 else if(m_invertBlack && m_board.toMove() == Black)
                 {
@@ -313,7 +316,7 @@ void UCIEngine::parseAnalysis(const QString& message)
         section += 2;
     }
 
-    if(timeFound && nodesFound && scoreFound && analysis.isValid())
+    if ((timeFound && nodesFound && scoreFound && analysis.isValid()) || analysis.isAlreadyMate())
     {
         if(!multiPVFound)
         {

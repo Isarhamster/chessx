@@ -33,7 +33,8 @@ Analysis& Analysis::operator=(const Analysis& rhs)
 
 void Analysis::clear()
 {
-    m_score = m_msec = m_depth = m_mateIn = 0;
+    m_mateIn = 99999;
+    m_score = m_msec = m_depth = 0;
     m_nodes = 0;
     m_numpv = 1;
     m_bestMove = false;
@@ -43,7 +44,7 @@ void Analysis::clear()
 
 bool Analysis::isValid() const
 {
-    return !m_variation.isEmpty() && m_depth > 0 && m_msec > 0;
+    return isAlreadyMate() || (!m_variation.isEmpty() && m_depth > 0 && m_msec > 0);
 }
 
 int Analysis::mpv() const
@@ -119,7 +120,12 @@ bool Analysis::bestMove() const
 
 bool Analysis::isMate() const
 {
-    return m_mateIn != 0;
+    return m_mateIn < 99999;
+}
+
+bool Analysis::isAlreadyMate() const
+{
+    return m_mateIn == 0;
 }
 
 int Analysis::movesToMate() const
@@ -137,10 +143,19 @@ QString Analysis::toString(const Board& board) const
     Board testBoard = board;
     QString out;
 
-    if(isMate())
+    if (isAlreadyMate())
     {
-        QString color = testBoard.toMove() == White ? "000080" : "800000";
-        QString text = QString(tr("Mate in %1").arg(movesToMate()));
+        QString color = testBoard.toMove() == Black ? "000080" : "800000";
+        QString text = tr("Mate");
+        out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color).arg(text);
+    }
+    else if(isMate())
+    {
+        int score = movesToMate();
+        bool whiteToMove = testBoard.toMove() == White;
+
+        QString color = ((whiteToMove && (score>0)) || (!whiteToMove && (score<0))) ? "000080" : "800000";
+        QString text = QString(tr("Mate in %1").arg(abs(score)));
         out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color).arg(text);
     }
     else if (!bestMove())
