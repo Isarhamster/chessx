@@ -308,7 +308,7 @@ void Filter::executeSearch(Search* search)
 
 void Filter::executeSearch(Search* search, Search::Operator searchOperator)
 {
-    cancel();
+    wait();
     m_break = false;
     currentSearch = search;
     currentSearchOperator = searchOperator;
