@@ -1304,7 +1304,7 @@ void MainWindow::setupActions()
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), actionFindTag, SLOT(setEnabled(bool)));
     search->addAction(actionFindTag);
 
-    QAction* actionFindBoard = createAction(tr("Find position"), SLOT(slotSearchBoard()), Qt::CTRL + Qt::SHIFT + Qt::Key_B, searchToolBar, ":/images/find_pos.png");
+    QAction* actionFindBoard = createAction(tr("Find position..."), SLOT(slotSearchBoard()), Qt::CTRL + Qt::SHIFT + Qt::Key_B, searchToolBar, ":/images/find_pos.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), actionFindBoard, SLOT(setEnabled(bool)));
     search->addAction(actionFindBoard);
 
