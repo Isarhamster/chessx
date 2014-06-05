@@ -10,6 +10,7 @@
 #include "actiondialog.h"
 #include "analysiswidget.h"
 #include "board.h"
+#include "boardsearchdialog.h"
 #include "boardsetup.h"
 #include "boardview.h"
 #include "copydialog.h"
@@ -1577,10 +1578,22 @@ void MainWindow::slotSearchTag()
 
 void MainWindow::slotSearchBoard()
 {
-    Search* ps = new PositionSearch (databaseInfo()->filter()->database(), m_boardView->board());
-    m_openingTreeWidget->cancel();
-    slotBoardSearchStarted();
-    databaseInfo()->filter()->executeSearch(ps);
+    BoardSearchDialog dlg;
+    dlg.setBoard(m_boardView->board());
+    if (dlg.exec() == QDialog::Accepted)
+    {
+        Search* ps = new PositionSearch (databaseInfo()->filter()->database(), m_boardView->board());
+        m_openingTreeWidget->cancel();
+        slotBoardSearchStarted();
+        if(dlg.mode())
+        {
+            databaseInfo()->filter()->executeSearch(ps, Search::Operator(dlg.mode()));
+        }
+        else
+        {
+            databaseInfo()->filter()->executeSearch(ps);
+        }
+    }
 }
 
 void MainWindow::slotBoardSearchUpdate(int /*progress*/)

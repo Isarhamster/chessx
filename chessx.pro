@@ -41,7 +41,8 @@ FORMS += \
     src/gui/aboutdlg.ui \
     src/gui/promotiondialog.ui \
     src/gui/actiondialog.ui \
-    src/gui/dlgsavebook.ui
+    src/gui/dlgsavebook.ui \
+    src/gui/boardsearchdialog.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -163,7 +164,8 @@ HEADERS += src/database/board.h \
     src/database/openingtreethread.h \
     src/database/movedata.h \
     src/database/polyglotwriter.h \
-    src/gui/shellhelper.h
+    src/gui/shellhelper.h \
+    src/gui/boardsearchdialog.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -271,7 +273,8 @@ SOURCES += src/database/board.cpp \
     src/database/openingtreethread.cpp \
     src/database/movedata.cpp \
     src/database/polyglotwriter.cpp \
-    src/gui/shellhelper.cpp
+    src/gui/shellhelper.cpp \
+    src/gui/boardsearchdialog.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
