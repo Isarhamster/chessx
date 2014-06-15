@@ -115,13 +115,13 @@ public:
     Square enPassantSquare() const;
 
     bool canTakeEnPassant() const;
-private:
-    /** Return true if side to move is in check */
-    bool isCheck() const;
     /** Return true if the side to move is in checkmate */
     bool isCheckmate() const;
     /** Return true if the side to move is stalemated */
     bool isStalemate() const;
+private:
+    /** Return true if side to move is in check */
+    bool isCheck() const; 
     /** Test to see if given color has the right to castle on kingside */
     bool canCastleShort(const unsigned int color) const;
     /** Test to see if given color has the right to castle on queenside */
