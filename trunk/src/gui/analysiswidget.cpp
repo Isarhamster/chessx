@@ -221,11 +221,15 @@ void AnalysisWidget::setPosition(const Board& board)
         m_analyses.clear();
         m_tablebase->abortLookup();
         m_tablebaseEvaluation.clear();
+
         if(AppSettings->getValue("/General/onlineTablebases").toBool())
         {
-            if(objectName() == "Analysis")
+            if (!(m_board.isStalemate() || m_board.isCheckmate()))
             {
-                m_tablebase->getBestMove(m_board.toFen());
+                if(objectName() == "Analysis")
+                {
+                    m_tablebase->getBestMove(m_board.toFen());
+                }
             }
         }
 
