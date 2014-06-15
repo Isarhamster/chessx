@@ -34,7 +34,7 @@ protected:
     EngineOptionModel* m_model;
 };
 
-class EngineOptionList : public QTableView
+class EngineOptionList : public TableView
 {
     Q_OBJECT
 public:
