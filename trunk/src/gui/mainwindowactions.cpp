@@ -1308,6 +1308,14 @@ void MainWindow::slotAutoPlayTimeout()
     else
     {
         slotGameMoveNext();
+        if (AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
+        {
+            if (m_boardView->board().isCheckmate() || m_boardView->board().isStalemate())
+            {
+                saveGame(databaseInfo());
+                loadNextGame();
+            }
+        }
     }
     if (m_autoPlay->isChecked())
     {

@@ -212,7 +212,10 @@ void WBEngine::parseBestMove(const QString& message)
         Analysis analysis;
         Move move = m_board.parseMove(bestMove);
         MoveList moves;
-        moves.append(move);
+        if (move.isLegal())
+        {
+            moves.append(move);
+        }
         analysis.setVariation(moves);
         analysis.setBestMove(true);
         sendAnalysis(analysis);
