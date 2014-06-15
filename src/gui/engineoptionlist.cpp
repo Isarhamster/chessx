@@ -88,7 +88,7 @@ void EngineOptionListDelegate::setEditorData(QWidget *editor,
 //////////////////////////////////////////////////////////////////////////////////////
 
 EngineOptionList::EngineOptionList(QWidget *parent) :
-    QTableView(parent),
+    TableView(parent),
     m_model(0)
 {
     setObjectName("EngineOptionList");
@@ -109,6 +109,8 @@ void EngineOptionList::setDB(const QList<EngineOptionData>& options,
     EngineOptionListDelegate* delegate = new EngineOptionListDelegate();
     delegate->setModel(m_model);
     setItemDelegate(delegate);
+
+    slotReconfigure();
 }
 
 void EngineOptionList::resetModel()

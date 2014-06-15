@@ -57,12 +57,14 @@ EngineOptionDialog::~EngineOptionDialog()
 
 void EngineOptionDialog::accept()
 {
+    ui->tableView->saveConfig();
     AppSettings->setLayout(this);
     QDialog::accept();
 }
 
 void EngineOptionDialog::reject()
 {
+    ui->tableView->saveConfig();
     AppSettings->setLayout(this);
     QDialog::reject();
 }

@@ -1310,7 +1310,7 @@ void MainWindow::setupActions()
 
     search->addSeparator();
 
-    QAction* filterReset = createAction(tr("&Reset filter"), SLOT(slotSearchReset()),     Qt::CTRL + Qt::Key_F, searchToolBar, ":/images/filter_reset.png");
+    QAction* filterReset = createAction(tr("&Reset filter"), SLOT(slotSearchReset()), Qt::CTRL + Qt::Key_F, searchToolBar, ":/images/filter_reset.png");
     connect(this, SIGNAL(signalCurrentDBhasGames(bool)), filterReset, SLOT(setEnabled(bool)));
     search->addAction(filterReset);
 
