@@ -189,14 +189,14 @@ void UCIEngine::parseBestMove(const QString& message)
     {
         Analysis analysis;
         Move move = m_board.parseMove(bestMove);
+        MoveList moves;
         if (move.isLegal())
         {
-            MoveList moves;
             moves.append(move);
-            analysis.setVariation(moves);
-            analysis.setBestMove(true);
-            sendAnalysis(analysis);
         }
+        analysis.setVariation(moves);
+        analysis.setBestMove(true);
+        sendAnalysis(analysis);
     }
 }
 
