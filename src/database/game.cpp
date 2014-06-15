@@ -128,7 +128,7 @@ bool Game::mergeVariations(Game& otherGame)
     bool ok = true;
     if(variationList.size())
     {
-        int otherCurrent = otherGame.currentMove();
+        MoveId otherCurrent = otherGame.currentMove();
         for(QList<MoveId>::iterator iter = variationList.begin(); iter != variationList.end(); ++iter)
         {
             otherGame.enterVariation(*iter);
@@ -352,17 +352,13 @@ bool Game::currentNodeHasMove(Square from, Square  to) const
     {
         return true;
     }
-    int node = m_moveNodes[m_currentNode].nextNode;
+    MoveId node = m_moveNodes[m_currentNode].nextNode;
     if(node == NO_MOVE)
     {
         return true;
     }
     Move m = m_moveNodes[node].move;
-    if(m.from() == from && m.to() == to)
-    {
-        return (m_moveNodes[node].nextNode != NO_MOVE);
-    }
-    return false;
+    return (m.from() == from && m.to() == to);
 }
 
 bool Game::hasNextMove() const
@@ -413,7 +409,7 @@ bool Game::findNextMove(Square from, Square to, PieceType promotionPiece)
 
 bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags, bool bReplace)
 {
-    int node;
+    MoveId node;
     Game state = *this;
 
     node = m_moveNodes[m_currentNode].nextNode;
@@ -620,7 +616,7 @@ void Game::truncateVariationAfterNextIllegalPosition()
     Game g = *this;
     if(NO_MOVE == g.dbAddMove(san))
     {
-        int node = m_moveNodes[m_currentNode].nextNode;
+        MoveId node = m_moveNodes[m_currentNode].nextNode;
         removeNode(node);
     }
     else
@@ -637,7 +633,7 @@ void Game::truncateVariation(Position position)
     Game state = *this;
     if(position == AfterMove)
     {
-        int node = m_moveNodes[m_currentNode].nextNode;
+        MoveId node = m_moveNodes[m_currentNode].nextNode;
         removeNode(node);
     }
     else if(position == BeforeMove && m_currentNode != 0)
@@ -1322,7 +1318,7 @@ void Game::moveCount(int* moves, int* comments, int* nags) const
     *moves = *comments = 0;
     if (nags) *nags = 0;
 
-    int node = 1;
+    MoveId node = 1;
     while(nodeValid(node) != NO_MOVE)
     {
         *moves += 1;
@@ -1373,7 +1369,7 @@ int Game::moveNumber(MoveId moveId) const
 int Game::plyCount() const
 {
     int count = 0;
-    int node = 0;
+    MoveId node = 0;
 
     while(node != NO_MOVE)
     {
@@ -1608,7 +1604,7 @@ void Game::moveToId(MoveId moveId)
     }
 
     //jump to node, travelling back to start adding the moves to the stack
-    int node = moveId;
+    MoveId node = moveId;
     QStack < Move > moveStack;
     while(node)
     {
@@ -1919,7 +1915,7 @@ void Game::dumpAllMoveNodes() const
     }
     int moves, comments, nags;
     moveCount(&moves, &comments, &nags);
-    qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags;
+    qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags << endl;
 }
 
 MoveId Game::findPosition(const Board& position) const
