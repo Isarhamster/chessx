@@ -160,12 +160,12 @@ Freie Schachdatenbank</translation>
         <translation>Fehler (%1) beim Ausführen des Programms &lt;b&gt;%2&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="304"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="308"/>
         <source>Draw</source>
         <translation>Remis</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="308"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="312"/>
         <source>White wins in %n moves</source>
         <translation>
             <numerusform>Weiß gewinnt in %n Zug</numerusform>
@@ -173,7 +173,7 @@ Freie Schachdatenbank</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="312"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="316"/>
         <source>Black wins in %n moves</source>
         <translation>
             <numerusform>Schwarz gewinnt in %n Zug</numerusform>
@@ -181,12 +181,12 @@ Freie Schachdatenbank</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="330"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="334"/>
         <source>Analysis pinned to move %1</source>
         <translation>Analyse auf Zug %1 fixiert</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="338"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="342"/>
         <source>&lt;a href=&quot;0&quot; title=&quot;Click to add move to game&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt; </source>
         <translation>&lt;a href=&quot;0&quot; title=&quot;Zug in Text einfügen&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt; </translation>
     </message>
@@ -247,29 +247,34 @@ b%2
         <translation>Stellungssuche</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsearchdialog.ui" line="65"/>
+        <location filename="../src/gui/boardsearchdialog.ui" line="75"/>
         <source>&amp;Find</source>
         <translation>&amp;Suchen</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsearchdialog.ui" line="75"/>
+        <location filename="../src/gui/boardsearchdialog.ui" line="85"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsearchdialog.cpp" line="18"/>
+        <location filename="../src/gui/boardsearchdialog.cpp" line="19"/>
         <source>Find in current filter</source>
         <translation>In aktuellem Filter finden</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsearchdialog.cpp" line="19"/>
+        <location filename="../src/gui/boardsearchdialog.cpp" line="20"/>
         <source>Search whole database</source>
         <translation>Durchsuche ganze Datenbank</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsearchdialog.cpp" line="20"/>
+        <location filename="../src/gui/boardsearchdialog.cpp" line="21"/>
         <source>Add to current filter</source>
         <translation>Zu aktuellem Filter hinzufügen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/boardsearchdialog.cpp" line="22"/>
+        <source>Remove from current filter</source>
+        <translation>Aus aktuellem Filter löschen</translation>
     </message>
 </context>
 <context>
@@ -1043,7 +1048,7 @@ Bitte Installation prüfen.</translation>
     <name>Game</name>
     <message>
         <location filename="../src/database/game.cpp" line="85"/>
-        <location filename="../src/database/game.cpp" line="423"/>
+        <location filename="../src/database/game.cpp" line="419"/>
         <source>Add move</source>
         <translation>Zug hinzufügen</translation>
     </message>
@@ -1053,85 +1058,85 @@ Bitte Installation prüfen.</translation>
         <translation>Partien verschmelzen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="444"/>
+        <location filename="../src/database/game.cpp" line="440"/>
         <source>Replace move</source>
         <translation>Zug ersetzen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="465"/>
-        <location filename="../src/database/game.cpp" line="476"/>
-        <location filename="../src/database/game.cpp" line="487"/>
+        <location filename="../src/database/game.cpp" line="461"/>
+        <location filename="../src/database/game.cpp" line="472"/>
+        <location filename="../src/database/game.cpp" line="483"/>
         <source>Add Variation</source>
         <translation>Variante hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="585"/>
+        <location filename="../src/database/game.cpp" line="581"/>
         <source>Promote Variation</source>
         <translation>Variante aufwerten</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="605"/>
+        <location filename="../src/database/game.cpp" line="601"/>
         <source>Remove variation</source>
         <translation>Variante löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="676"/>
+        <location filename="../src/database/game.cpp" line="672"/>
         <source>Truncate variation</source>
         <translation>Variante beschneiden</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="720"/>
+        <location filename="../src/database/game.cpp" line="716"/>
         <source>Remove variations</source>
         <translation>Varianten löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="737"/>
+        <location filename="../src/database/game.cpp" line="733"/>
         <source>Remove comments</source>
         <translation>Kommentare löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="852"/>
+        <location filename="../src/database/game.cpp" line="848"/>
         <source>Set annotation</source>
         <translation>Kommentar ändern</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1012"/>
+        <location filename="../src/database/game.cpp" line="1008"/>
         <source>Colorize square</source>
         <translation>Felder einfärben</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1060"/>
+        <location filename="../src/database/game.cpp" line="1056"/>
         <source>Paint arrow</source>
         <translation>Pfeil einzeichnen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1269"/>
+        <location filename="../src/database/game.cpp" line="1265"/>
         <source>Add nag</source>
         <translation>Auszeichnung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1282"/>
+        <location filename="../src/database/game.cpp" line="1278"/>
         <source>Set nags</source>
         <translation>Auszeichnung setzen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1419"/>
-        <location filename="../src/database/game.cpp" line="1454"/>
+        <location filename="../src/database/game.cpp" line="1415"/>
+        <location filename="../src/database/game.cpp" line="1450"/>
         <source>Move variation</source>
         <translation>Variante verschieben</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1480"/>
+        <location filename="../src/database/game.cpp" line="1476"/>
         <source>Enumerate variations</source>
         <translation>Aufzählung in Varianten</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1776"/>
+        <location filename="../src/database/game.cpp" line="1772"/>
         <source>Set starting board</source>
         <translation>Partiestellung eingeben</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1801"/>
+        <location filename="../src/database/game.cpp" line="1797"/>
         <source>Set result</source>
         <translation>Ergebnis setzen</translation>
     </message>
@@ -1345,43 +1350,49 @@ Shall I download a database?</source>
         <translation>Pfeil löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1325"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1308"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1323"/>
+        <source>Engine %1</source>
+        <translation>Engine %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1345"/>
         <source>all</source>
         <translation>alle</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1392"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1426"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1412"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1446"/>
         <source>Append game %1 to %2.</source>
         <translation>Partie %1 an %2 anhängen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1392"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1412"/>
         <source>Clipboard</source>
         <translation>Zwischenablage</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1445"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1465"/>
         <source>Append games from %1 to %2.</source>
         <translation>Partien aus %1 an %2 anhängen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1918"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1939"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Neue Partie&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2001"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2022"/>
         <source>Infinite</source>
         <translation>Unendlich</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2055"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2076"/>
         <source>Could not build book</source>
         <translation>Konnte kein Buch erstellen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2055"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2076"/>
         <source>Polyglot Error</source>
         <translation>Polyglot Fehler</translation>
     </message>
@@ -1391,18 +1402,18 @@ Shall I download a database?</source>
         <translation>Analyse 1 ist nicht aktiv für Autoanalyse.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1566"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1853"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1586"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1874"/>
         <source>%1 - ChessX</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1607"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1628"/>
         <source>Search ended</source>
         <translation>Suche beendet</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1612"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1633"/>
         <source>Updating tree...</source>
         <translation>Aktualisiere Baum...</translation>
     </message>
@@ -1991,12 +2002,12 @@ Shall I download a database?</source>
         <translation>Zwischenablage enthält FEN, aber eine ungültige Position. Sie können solche Positionen im &lt;b&gt;Einrichtungsdialog&lt;/b&gt; eingeben.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1485"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1505"/>
         <source>You need at least two open databases to copy games</source>
         <translation>Mindestens zwei offene Datenbanken benötigt um Partien zu kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1508"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1528"/>
         <source>%1. %2 (%3 games)</source>
         <translation>%1. %2 (%3 Partien)</translation>
     </message>
@@ -3470,62 +3481,62 @@ Shall I download a database?</source>
         <translation>Partiedaten Suche</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="26"/>
+        <location filename="../src/gui/quicksearch.ui" line="29"/>
         <source>White</source>
         <translation>Weiß</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="36"/>
+        <location filename="../src/gui/quicksearch.ui" line="39"/>
         <source>Black</source>
         <translation>Schwarz</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="46"/>
+        <location filename="../src/gui/quicksearch.ui" line="49"/>
         <source>Event</source>
         <translation>Turnier</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="51"/>
+        <location filename="../src/gui/quicksearch.ui" line="54"/>
         <source>Site</source>
         <translation>Ort</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="56"/>
+        <location filename="../src/gui/quicksearch.ui" line="59"/>
         <source>Round</source>
         <translation>Runde</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="61"/>
+        <location filename="../src/gui/quicksearch.ui" line="64"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="66"/>
+        <location filename="../src/gui/quicksearch.ui" line="69"/>
         <source>Result</source>
         <translation>Ergebnis</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="71"/>
+        <location filename="../src/gui/quicksearch.ui" line="74"/>
         <source>ECO</source>
         <translation>ECO</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="76"/>
+        <location filename="../src/gui/quicksearch.ui" line="79"/>
         <source>Number of Moves</source>
         <translation>Anzahl von Zügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="94"/>
+        <location filename="../src/gui/quicksearch.ui" line="121"/>
         <source>Value or Range like 2000-2300</source>
         <translation>Wert oder Wertebereich, wie z.B. 2000-2300</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="119"/>
+        <location filename="../src/gui/quicksearch.ui" line="102"/>
         <source>&amp;Find</source>
         <translation>&amp;Suchen</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="129"/>
+        <location filename="../src/gui/quicksearch.ui" line="112"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
     </message>
@@ -3545,12 +3556,17 @@ Shall I download a database?</source>
         <translation>Zu aktuellem Filter hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="138"/>
+        <location filename="../src/gui/quicksearch.cpp" line="34"/>
+        <source>Remove from current filter</source>
+        <translation>Aus aktuellem Filter löschen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/quicksearch.ui" line="128"/>
         <source>&amp;Value:</source>
         <translation>&amp;Wert:</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="84"/>
+        <location filename="../src/gui/quicksearch.ui" line="138"/>
         <source>&amp;Tag:</source>
         <translation>&amp;Element:</translation>
     </message>
@@ -3560,17 +3576,17 @@ Shall I download a database?</source>
         <translation>&amp;Modus:</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="31"/>
+        <location filename="../src/gui/quicksearch.ui" line="34"/>
         <source>White Elo</source>
         <translation>ELO Weiß</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="21"/>
+        <location filename="../src/gui/quicksearch.ui" line="24"/>
         <source>Game Number</source>
         <translation>Partienummer</translation>
     </message>
     <message>
-        <location filename="../src/gui/quicksearch.ui" line="41"/>
+        <location filename="../src/gui/quicksearch.ui" line="44"/>
         <source>Black Elo</source>
         <translation>ELO Schwarz</translation>
     </message>
