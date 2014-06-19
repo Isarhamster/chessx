@@ -33,6 +33,8 @@ public:
     Analysis getMainLine() const;
     bool hasMainLine() const;
 
+    QString displayName() const;
+
 public slots:
     /** Sets new position. If analysis is active, the current content will be cleared and
     new analysis will be performed. */

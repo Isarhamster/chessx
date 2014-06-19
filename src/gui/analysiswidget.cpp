@@ -359,3 +359,8 @@ bool AnalysisWidget::hasMainLine() const
     return (!m_analyses.isEmpty());
 }
 
+QString AnalysisWidget::displayName() const
+{
+   return ui.engineList->currentText();
+}
+
