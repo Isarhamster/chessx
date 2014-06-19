@@ -1300,8 +1300,14 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
 
 void MainWindow::slotAutoPlayTimeout()
 {
+    MoveId moveId = game().currentMove();
     if(game().atGameEnd() && AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
     {
+        if(m_autoAnalysis->isChecked())
+        {
+            QString engineAnnotation =tr("Engine %1").arg(m_mainAnalysis->displayName());
+            game().dbSetAnnotation(engineAnnotation, moveId);
+        }
         saveGame(databaseInfo());
         loadNextGame();
     }
@@ -1312,6 +1318,11 @@ void MainWindow::slotAutoPlayTimeout()
         {
             if (m_boardView->board().isCheckmate() || m_boardView->board().isStalemate())
             {
+                if(m_autoAnalysis->isChecked())
+                {
+                    QString engineAnnotation =tr("Engine %1").arg(m_mainAnalysis->displayName());
+                    game().dbSetAnnotation(engineAnnotation);
+                }
                 saveGame(databaseInfo());
                 loadNextGame();
             }
@@ -1328,6 +1339,7 @@ void MainWindow::slotFilterChanged()
     if(gameIndex() >= 0)
     {
         m_gameList->selectGame(gameIndex());
+        m_gameList->setFocus();
     }
     int count = databaseInfo()->filter()->count();
     QString f = count == (int)database()->count() ? tr("all") : QString::number(count);
@@ -1608,6 +1620,7 @@ void MainWindow::slotBoardSearchUpdate(int /*progress*/)
 {
     m_gameList->updateFilter();
     slotFilterChanged();
+    m_gameList->repaint(); // workaround issue with Qt
 }
 
 void MainWindow::slotBoardSearchFinished()
