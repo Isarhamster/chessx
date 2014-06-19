@@ -1,0 +1,25 @@
+BACKDIR=`pwd`
+cd .. && echo "Changed to Root Directory"
+pwd
+
+rm INSTALL
+rm -r mac_osx
+rm setup*.iss
+rm -r tests
+rm -r tools
+rm -r win32
+rm -r win64
+rm data/players.cpm
+rm data/players.cpd
+rm data/chessx.eco
+rm data/chessx.gtm
+rm -r data/engines
+rm -r data/engines-mac
+
+cd .. && echo "Changed to containing Directory"
+rm *.tgz
+CNAME=`ls`
+tar -czf "${CNAME}.tgz" --exclude ".svn" --exclude "make_tarball" --exclude ".DS_Store" ./${CNAME}
+
+cd $BACKDIR && echo "Changed Directory"
+echo "Ready"
