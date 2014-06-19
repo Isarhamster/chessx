@@ -221,25 +221,6 @@ void Filter::reverse()
 
 }
 
-const bool ops[4][2][2] = { { {0, 0}, {0, 1}} /* And */, {{0, 1}, {1, 1}} /* Or */,
-    {{0, 1}, {1, 0}} /* Xor */, {{0, 0}, {1, 0}} /* Minus */
-};
-
-
-void Filter::join(const Filter& filter, Operator op)
-{
-    if(filter.size() != size())
-    {
-        return;
-    }
-    m_count = 0;
-    for(int i = 0; i < size(); ++i)
-    {
-        (*m_vector)[i] = ops[op][contains(i)][filter.contains(i)];
-        m_count += contains(i);
-    }
-}
-
 QVector<int> Filter::intVector() const
 {
     return *m_vector;
@@ -275,6 +256,17 @@ void Filter::run()
             if (!contains(searchIndex))
             {
                 set(searchIndex, currentSearch->matches(searchIndex));
+            }
+            if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
+        }
+        break;
+    case Search::Remove:
+        for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
+        {
+            if (m_break) break;
+            if (contains(searchIndex))
+            {
+                set(searchIndex, !currentSearch->matches(searchIndex));
             }
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
