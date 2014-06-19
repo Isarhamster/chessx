@@ -70,9 +70,6 @@ public:
     void resize(int newsize, bool includeNew = 0);
     /** Reverse the filter (complement set). */
     void reverse();
-    /** Join filter with another filter, using one of possible operators @p op .
-    Does nothing if filters have different sizes. */
-    void join(const Filter& filter, Operator op);
     /** Executes search 'search' on database m_database,
        and sets this filter to contain the results. */
     void executeSearch(Search *search);

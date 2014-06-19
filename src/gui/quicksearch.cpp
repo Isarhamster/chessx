@@ -31,6 +31,7 @@ QuickSearchDialog::QuickSearchDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     ui.modeCombo->addItem(tr("Find in current filter"), Search::And);
     ui.modeCombo->addItem(tr("Search whole database"), Search::NullOperator);
     ui.modeCombo->addItem(tr("Add to current filter"), Search::Or);
+    ui.modeCombo->addItem(tr("Remove from current filter"), Search::Remove);
 
     AppSettings->layout(this);
 }

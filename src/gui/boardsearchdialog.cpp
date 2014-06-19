@@ -10,14 +10,16 @@ BoardSearchDialog::BoardSearchDialog(QWidget *parent) :
     ui->setupUi(this);
 
     ui->boardView->configure();
-    ui->boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove | BoardView::AllowCopyPiece);
+    ui->boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     ui->boardView->showMoveIndicator(false);
+    ui->boardView->setEnabled(false);
 
     connect(ui->okButton, SIGNAL(clicked()), SLOT(accept()));
     connect(ui->cancelButton, SIGNAL(clicked()), SLOT(reject()));
     ui->modeCombo->addItem(tr("Find in current filter"), Search::And);
     ui->modeCombo->addItem(tr("Search whole database"), Search::NullOperator);
     ui->modeCombo->addItem(tr("Add to current filter"), Search::Or);
+    ui->modeCombo->addItem(tr("Remove from current filter"), Search::Remove);
 
     QTimer::singleShot(0, this, SLOT(restoreLayout()));
 }
