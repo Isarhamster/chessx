@@ -87,7 +87,6 @@ void Analysis::setDepth(int depth)
     m_depth = depth;
 }
 
-
 quint64 Analysis::nodes() const
 {
     return m_nodes;
@@ -188,12 +187,15 @@ QString Analysis::toString(const Board& board) const
         testBoard.doMove(move);
         white = !white;
     }
-    out += " <a href=\"" + QString::number(-m_numpv) + "\" title=\"Click to add move to game\">[+]</a> ";
-    if (!bestMove())
+    if (!moveText.isEmpty())
     {
-        out += " <a href=\"" + QString::number(m_numpv) + "\" title=\"Click to add variation to game\">[*]</a> ";
+        out += " <a href=\"" + QString::number(-m_numpv) + "\" title=\"Click to add move to game\">[+]</a> ";
+        if (!bestMove())
+        {
+            out += " <a href=\"" + QString::number(m_numpv) + "\" title=\"Click to add variation to game\">[*]</a> ";
+        }
+        out += moveText;
     }
-    out += moveText;
 
     if (!bestMove())
     {
@@ -204,7 +206,10 @@ QString Analysis::toString(const Board& board) const
     }
     else
     {
-        out += tr(" (suggested move)");
+        if (!out.isEmpty())
+        {
+            out += tr(" (suggested move)");
+        }
     }
 
     return out;
