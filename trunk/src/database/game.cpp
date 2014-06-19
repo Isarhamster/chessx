@@ -1342,6 +1342,15 @@ void Game::moveCount(int* moves, int* comments, int* nags) const
     }
 }
 
+bool Game::isEmpty() const
+{
+    int moves;
+    int comments;
+    moveCount(&moves, &comments);
+    bool gameIsEmpty = ((moves+comments) == 0);
+    return gameIsEmpty;
+}
+
 int Game::ply(MoveId moveId) const
 {
     MoveId node = nodeValid(moveId);

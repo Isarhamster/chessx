@@ -173,10 +173,7 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
         return;
     }
 
-    int numMove = 0;
-    int numComment = 0;
-    game->moveCount(&numMove, &numComment);
-    bool gameIsEmpty = ((numMove+numComment) == 0);
+    bool gameIsEmpty = game->isEmpty();
 
     QString link = anchorAt(pos);
     if(!link.isEmpty())

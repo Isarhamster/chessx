@@ -504,6 +504,15 @@ void MainWindow::slotEditPaste()
 
 void MainWindow::slotEditMergePGN()
 {
+    if (game().isEmpty())
+    {
+        QString fen = QApplication::clipboard()->text().simplified();
+        QString dummy;
+        if(pasteFen(dummy, fen))
+        {
+            return;
+        }
+    }
     QString pgn = QApplication::clipboard()->text().trimmed();
     if(!pgn.isEmpty())
     {
