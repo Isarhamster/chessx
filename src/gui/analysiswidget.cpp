@@ -261,7 +261,10 @@ void AnalysisWidget::slotLinkClicked(const QUrl& url)
         mpv = (-mpv) - 2;
         if(mpv < m_analyses.count())
         {
-            emit addVariation(m_analyses[mpv].variation().at(0).toAlgebraic());
+            if (m_analyses[mpv].variation().size())
+            {
+                emit addVariation(m_analyses[mpv].variation().at(0).toAlgebraic());
+            }
         }
     }
 }
@@ -335,7 +338,8 @@ void AnalysisWidget::updateAnalysis()
     }
     foreach(Analysis a, m_analyses)
     {
-        text.append(a.toString(m_board) + "<br>");
+        QString s = a.toString(m_board);
+        if (!s.isEmpty()) text.append(s + "<br>");
     }
     if(!m_tablebaseEvaluation.isEmpty())
     {
