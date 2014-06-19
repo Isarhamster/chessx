@@ -582,6 +582,7 @@ QString Output::writeVariation()
     }
 
     text += m_endTagMap[indent ? MarkupVariationIndent : MarkupVariationInline];
+    if (indent) text += m_endTagMap[MarkupVariationResume];
 
     m_currentVariationLevel--;
     return text;
