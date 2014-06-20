@@ -292,6 +292,15 @@ void UCIEngine::parseAnalysis(const QString& message)
             }
         }
 
+        if (name == "upperbound" || name =="lowerbound")
+        {
+            if  (scoreFound && analysis.movesToMate() == 0)
+            {
+                // Work around bug in Stockfish
+                ok = false;
+            }
+        }
+
         if(name == "pv")
         {
             Board board = m_board;
@@ -316,7 +325,8 @@ void UCIEngine::parseAnalysis(const QString& message)
         section += 2;
     }
 
-    if ((timeFound && nodesFound && scoreFound && analysis.isValid()) || analysis.isAlreadyMate())
+    if ((timeFound && nodesFound && scoreFound && analysis.isValid()) ||
+        (analysis.isAlreadyMate() && depthFound && analysis.depth() == 0))
     {
         if(!multiPVFound)
         {
