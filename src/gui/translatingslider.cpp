@@ -21,6 +21,7 @@ void TranslatingSlider::setMultiplier(int multiplier)
 {
     m_multiplier = multiplier;
 }
+
 int TranslatingSlider::offset() const
 {
     return m_offset;
