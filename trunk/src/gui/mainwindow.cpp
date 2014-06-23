@@ -137,6 +137,7 @@ MainWindow::MainWindow() : QMainWindow(),
         annotatedTime->setObjectName(QString("Clock") + QString::number(i));
         m_gameToolBar->addWidget(annotatedTime);
         annotatedTime->setDigitCount(7);
+        annotatedTime->setSegmentStyle(QLCDNumber::Flat);
         annotatedTime->display("1:00:00");
         if(i == 0)
         {
