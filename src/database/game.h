@@ -113,6 +113,8 @@ public :
     /** @return annotation at move at node @p moveId. */
     QString egtAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return annotation at move at node @p moveId. */
+    QString emtAnnotation(MoveId moveId = CURRENT_MOVE) const;
+    /** @return annotation at move at node @p moveId. */
     QString clkAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return time annotation (either egt or clock) at move at node @p moveId. */
     QString timeAnnotation(MoveId moveId = CURRENT_MOVE) const;
@@ -147,11 +149,6 @@ public :
 
     /** Sets the arrowAnnotation associated with move at node @p moveId */
     bool setArrowAnnotation(QString arrowAnnotation, MoveId moveId = CURRENT_MOVE);
-
-    /** Sets the annotation associated with move at node @p moveId */
-    bool setEgtAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE);
-    /** Sets the annotation associated with move at node @p moveId */
-    bool setClkAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE);
 
     /** Adds a nag to move at node @p moveId */
     bool addNag(Nag nag, MoveId moveId = CURRENT_MOVE);
@@ -401,12 +398,6 @@ private:
 
     /** Map keeping pgn tags of the game */
     QMap<QString, QString> m_tags;
-
-    /** Remaining Time Annotations for move nodes */
-    AnnotationMap m_clkAnnotations;
-
-    /** Elapsed Time Annotations for move nodes */
-    AnnotationMap m_egtAnnotations;
 
     // **** memory  management methods ****
     /** Remove all removed nodes */

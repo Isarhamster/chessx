@@ -11,6 +11,8 @@ class CommentDialog : public QDialog
 {
     Q_OBJECT
 public:
+    enum TimeMode { Egt, Emt, Clk};
+
     CommentDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
     void setText(QString text);
     QString text() const;
@@ -21,7 +23,7 @@ protected slots:
 
 private:
     Ui::CommentDialog ui;
-    static bool lastTimeWasEgt;
+    static enum TimeMode lastTimeMode;
 };
 
 #endif // COMMENTDIALOG_H

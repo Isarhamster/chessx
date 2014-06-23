@@ -38,9 +38,6 @@ Game& Game::operator=(const Game & game)
         m_annotations = game.m_annotations;
         m_squareAnnotations = game.m_squareAnnotations;
         m_arrowAnnotations = game.m_arrowAnnotations;
-        m_clkAnnotations = game.m_clkAnnotations;
-        m_egtAnnotations = game.m_egtAnnotations;
-
         m_currentNode = game.m_currentNode;
         m_startPly = game.m_startPly;
         m_currentBoard = game.m_currentBoard;
@@ -723,8 +720,6 @@ void Game::removeComments()
     m_annotations.clear();
     m_squareAnnotations.clear();
     m_arrowAnnotations.clear();
-    m_clkAnnotations.clear();
-    m_egtAnnotations.clear();
     for(int i = 0; i < m_moveNodes.size(); ++i)
     {
         m_moveNodes[i].nags.clear();
@@ -879,30 +874,9 @@ bool Game::dbSetAnnotation(QString annotation, MoveId moveId, Position position)
         setArrowAnnotation(specAnnot, m_moveNodes[node].previousNode);
     }
 
-    specAnnot = specialAnnotation(annotation, "[%egt");
-    if(position == Game::AfterMove || node == 0)
-    {
-        setEgtAnnotation(specAnnot, node);
-    }
-    else
-    {
-        setEgtAnnotation(specAnnot, m_moveNodes[node].previousNode);
-    }
-
-    specAnnot = specialAnnotation(annotation, "[%clk");
-    if(position == Game::AfterMove || node == 0)
-    {
-        setClkAnnotation(specAnnot, node);
-    }
-    else
-    {
-        setClkAnnotation(specAnnot, m_moveNodes[node].previousNode);
-    }
-
     annotation.remove(QRegExp("\\[%csl[^\\]]*\\]"));
     annotation.remove(QRegExp("\\[%cal[^\\]]*\\]"));
-    annotation.remove(QRegExp("\\[%clk[^\\]]*\\]"));
-    annotation.remove(QRegExp("\\[%egt[^\\]]*\\]"));
+
     int moves;
     int comments;
     int nags;
@@ -1108,25 +1082,6 @@ QString Game::arrowAnnotation(MoveId moveId) const
     return m_arrowAnnotations[node].simplified();
 }
 
-bool Game::setEgtAnnotation(QString annotation, MoveId moveId)
-{
-    MoveId node = nodeValid(moveId);
-    if(node == NO_MOVE)
-    {
-        return false;
-    }
-
-    if(annotation.isEmpty())
-    {
-        m_egtAnnotations.remove(node);
-    }
-    else
-    {
-        m_egtAnnotations[node] = annotation;
-    }
-    return true;
-}
-
 QString Game::egtAnnotation(MoveId moveId) const
 {
     MoveId node = nodeValid(moveId);
@@ -1135,41 +1090,59 @@ QString Game::egtAnnotation(MoveId moveId) const
         return "";
     }
 
-    QString annotation = m_egtAnnotations[node];
+    QString annotation = m_annotations[node];
     if(annotation.isNull())
     {
         return "";
     }
-    return m_egtAnnotations[node];
+
+    QRegExp egt("\\[%egt\\s*(\\d:\\d\\d:\\d\\d)\\]");
+    int pos = egt.indexIn(annotation);
+    if(pos >= 0)
+    {
+        return egt.cap(1);
+    }
+
+    return "";
 }
+
+QString Game::emtAnnotation(MoveId moveId) const
+{
+    MoveId node = nodeValid(moveId);
+    if(node == NO_MOVE)
+    {
+        return "";
+    }
+
+    QString annotation = m_annotations[node];
+    if(annotation.isNull())
+    {
+        return "";
+    }
+
+    QRegExp emt("\\[%emt\\s*(\\d:\\d\\d:\\d\\d)\\]");
+    int pos = emt.indexIn(annotation);
+    if(pos >= 0)
+    {
+        return emt.cap(1);
+    }
+
+    return "";
+}
+
 
 QString Game::timeAnnotation(MoveId moveId) const
 {
     QString s = clkAnnotation(moveId);
     if(s.isEmpty())
     {
-        return egtAnnotation(moveId);
+        s = egtAnnotation(moveId);
+    }
+    if (s.isEmpty())
+    {
+        s = emtAnnotation(moveId);
     }
     return s;
-}
-
-bool Game::setClkAnnotation(QString annotation, MoveId moveId)
-{
-    MoveId node = nodeValid(moveId);
-    if(node == NO_MOVE)
-    {
-        return false;
-    }
-
-    if(annotation.isEmpty())
-    {
-        m_clkAnnotations.remove(node);
-    }
-    else
-    {
-        m_clkAnnotations[node] = annotation;
-    }
-    return true;
 }
 
 QString Game::clkAnnotation(MoveId moveId) const
@@ -1180,12 +1153,20 @@ QString Game::clkAnnotation(MoveId moveId) const
         return "";
     }
 
-    QString annotation = m_clkAnnotations[node];
+    QString annotation = m_annotations[node];
     if(annotation.isNull())
     {
         return "";
     }
-    return m_clkAnnotations[node];
+
+    QRegExp clk("\\[%clk\\s*(\\d:\\d\\d:\\d\\d)\\]");
+    int pos = clk.indexIn(annotation);
+    if(pos >= 0)
+    {
+        return clk.cap(1);
+    }
+
+    return "";
 }
 
 QString Game::composeAnnotation(QString freeText, MoveId node) const
@@ -1197,14 +1178,6 @@ QString Game::composeAnnotation(QString freeText, MoveId node) const
     if(!m_arrowAnnotations[node].isEmpty())
     {
         freeText.append(QString("[%cal %1]").arg(m_arrowAnnotations[node]));
-    }
-    if(!m_clkAnnotations[node].isEmpty())
-    {
-        freeText.append(QString("[%clk %1]").arg(m_clkAnnotations[node]));
-    }
-    if(!m_egtAnnotations[node].isEmpty())
-    {
-        freeText.append(QString("[%egt %1]").arg(m_egtAnnotations[node]));
     }
     return freeText;
 }
@@ -1231,22 +1204,30 @@ QString Game::annotation(MoveId moveId, Position position) const
 
 QString Game::textAnnotation(MoveId moveId, Position position) const
 {
+    QString s;
     MoveId node = nodeValid(moveId);
     if(position == AfterMove)
     {
-        return m_annotations.value(node, "");
+        s = m_annotations.value(node, "");
     }
     else
     {
         if(node == 0)
         {
-            return m_annotations.value(0, "");
+            s = m_annotations.value(0, "");
         }
         else
         {
-            return m_variationStartAnnotations.value(node, "");
+            s = m_variationStartAnnotations.value(node, "");
         }
     }
+    QRegExp emt("\\[%emt\\s*(\\d:\\d\\d:\\d\\d)\\]");
+    s.remove(emt);
+    QRegExp egt("\\[%egt\\s*(\\d:\\d\\d:\\d\\d)\\]");
+    s.remove(egt);
+    QRegExp clk("\\[%clk\\s*(\\d:\\d\\d:\\d\\d)\\]");
+    s.remove(clk);
+    return s;
 }
 
 bool Game::canHaveStartAnnotation(MoveId moveId) const
@@ -1711,8 +1692,6 @@ void Game::removeNode(MoveId moveId)
         m_annotations.remove(node);
         m_squareAnnotations.remove(node);
         m_arrowAnnotations.remove(node);
-        m_clkAnnotations.remove(node);
-        m_egtAnnotations.remove(node);
 
         if(variationCount(node))
         {
@@ -1737,8 +1716,6 @@ void Game::clear()
     m_annotations.clear();
     m_squareAnnotations.clear();
     m_arrowAnnotations.clear();
-    m_clkAnnotations.clear();
-    m_egtAnnotations.clear();
 
     m_startPly = 0;
     m_currentNode = 0;
@@ -1906,8 +1883,6 @@ void Game::dumpAnnotations(MoveId moveId) const
         qDebug() << "     Text        : " << m_annotations.value(moveId);
         qDebug() << "     Square      : " << m_squareAnnotations.value(moveId);
         qDebug() << "     Arrow       : " << m_arrowAnnotations.value(moveId);
-        qDebug() << "     CLK         : " << m_clkAnnotations.value(moveId);
-        qDebug() << "     EGT         : " << m_egtAnnotations.value(moveId);
         qDebug() << "     Start       : " << m_variationStartAnnotations.value(moveId);
     }
 }
@@ -1994,16 +1969,12 @@ void Game::compact()
         m_annotations.remove(m);
         m_squareAnnotations.remove(m);
         m_arrowAnnotations.remove(m);
-        m_clkAnnotations.remove(m);
-        m_egtAnnotations.remove(m);
     }
 
     AnnotationMap variationStartAnnotations;
     AnnotationMap annotations;
     AnnotationMap squareAnnotations;
     AnnotationMap arrowAnnotations;
-    AnnotationMap clkAnnotations;
-    AnnotationMap egtAnnotations;
 
     foreach(MoveId key, oldIdNewIdMapping.keys())
     {
@@ -2019,8 +1990,6 @@ void Game::compact()
         GAME_UPDATE_ANNOT(annotations, m_annotations);
         GAME_UPDATE_ANNOT(squareAnnotations, m_squareAnnotations);
         GAME_UPDATE_ANNOT(arrowAnnotations, m_arrowAnnotations);
-        GAME_UPDATE_ANNOT(clkAnnotations, m_clkAnnotations);
-        GAME_UPDATE_ANNOT(egtAnnotations, m_egtAnnotations);
     }
 
     // update nodes links to other nodes in shrinked list (prev, next, variations)
@@ -2044,15 +2013,11 @@ void Game::compact()
     m_annotations.clear();
     m_squareAnnotations.clear();
     m_arrowAnnotations.clear();
-    m_clkAnnotations.clear();
-    m_egtAnnotations.clear();
 
     m_variationStartAnnotations = variationStartAnnotations;
     m_annotations               = annotations;
     m_squareAnnotations         = squareAnnotations;
     m_arrowAnnotations          = arrowAnnotations;
-    m_clkAnnotations            = clkAnnotations;
-    m_egtAnnotations            = egtAnnotations;
 
     m_moveNodes.clear();
     m_moveNodes = moveNodes;

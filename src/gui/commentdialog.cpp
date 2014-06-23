@@ -5,7 +5,7 @@
 
 #include "commentdialog.h"
 
-bool CommentDialog::lastTimeWasEgt = false;
+CommentDialog::TimeMode CommentDialog::lastTimeMode = CommentDialog::Egt;
 
 CommentDialog::CommentDialog(QWidget* parent, Qt::WindowFlags f) :
     QDialog(parent, f)
@@ -20,11 +20,16 @@ QString CommentDialog::text() const
     QString s;
     if(ui.timeEdit->time() != QTime(0, 0, 0))
     {
-        QString format = ui.egtTime->isChecked() ? "[%egt H:mm:ss]" : "[%clk H:mm:ss]";
-        s = ui.timeEdit->time().toString(format);
-        if(!s.isEmpty())
+        QString s2 = "[%emt %1]";
+        if (ui.egtTime->isChecked()) s2 = "[%egt %1]";
+        else if (ui.clkTime->isChecked()) s2 = "[%clk %1]";
+        QString t = ui.timeEdit->time().toString("H:mm:ss");
+        if(!t.isEmpty())
         {
-            lastTimeWasEgt = ui.egtTime->isChecked();
+            s = s2.arg(t);
+            if (ui.egtTime->isChecked()) lastTimeMode = Egt;
+            else if (ui.clkTime->isChecked()) lastTimeMode = Clk;
+            else if (ui.emtTime->isChecked()) lastTimeMode = Emt;
         }
     }
     QString s1 = ui.textEdit->toPlainText().trimmed();
@@ -40,33 +45,46 @@ void CommentDialog::setText(QString text)
 {
     QRegExp egt("\\[%egt\\s*(\\d:\\d\\d:\\d\\d)\\]");
     QRegExp clk("\\[%clk\\s*(\\d:\\d\\d:\\d\\d)\\]");
+    QRegExp emt("\\[%emt\\s*(\\d:\\d\\d:\\d\\d)\\]");
     int pos = egt.indexIn(text);
     if(pos >= 0)
     {
         ui.egtTime->setChecked(true);
         QString segt = egt.cap(1);
         text = text.remove(egt);
-        ui.timeEdit->setTime(QTime::fromString(segt, "H:mm:ss"));
-        lastTimeWasEgt = true;
+        ui.timeEdit->setTime(QTime::fromString(segt.trimmed(), "H:mm:ss"));
+        lastTimeMode = Egt;
     }
     else
     {
-        int pos = clk.indexIn(text);
+        pos = clk.indexIn(text);
         if(pos >= 0)
         {
             ui.clkTime->setChecked(true);
             QString sclk = clk.cap(1);
             text = text.remove(clk);
-            ui.timeEdit->setTime(QTime::fromString(sclk, "H:mm:ss"));
-            lastTimeWasEgt = false;
+            ui.timeEdit->setTime(QTime::fromString(sclk.trimmed(), "H:mm:ss"));
+            lastTimeMode = Clk;
         }
         else
         {
-            if(lastTimeWasEgt)
+            pos = emt.indexIn(text);
+            if(pos >= 0)
             {
-                // Setup GUI with the last value we had in this dialog
-                // That may be a bad guess, as this could come from a different game
-                ui.egtTime->setChecked(true);
+                ui.emtTime->setChecked(true);
+                QString semt = emt.cap(1);
+                text = text.remove(emt);
+                ui.timeEdit->setTime(QTime::fromString(semt.trimmed(), "H:mm:ss"));
+                lastTimeMode = Emt;
+            }
+            else
+            {
+                switch(lastTimeMode)
+                {
+                case Egt: ui.egtTime->setChecked(true); break;
+                case Clk: ui.clkTime->setChecked(true); break;
+                case Emt: ui.emtTime->setChecked(true); break;
+                }
             }
         }
     }
