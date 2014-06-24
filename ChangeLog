@@ -1,249 +1,290 @@
+June 2014: Version 1.2.0
+
+- New Feature: Use polyglot books in Opening Tree
+- New Feature: Build polyglot books from Databaselist
+- New Feature: Enter games via keyboard
+- New Feature: Undo and Redo of game editing actions
+- New Feature: Support for external tools
+- New Feature: Paste variation from clipboard into game
+- New Feature: Danish Translation (thanks to Byrial Jensen)
+- New Feature: Allow removing found items from filter
+
+- New feature: Show title of game in Copy Game Dialog
+- New feature: Opening names in ECO Widget
+- New feature: Make position searches more comfortable
+- New feature: CR#206 Remember settings for more windows.
+- New feature: CR#203 Center the board inside its container
+- New feature: CR#118 Gameview: Make tags clickable
+- New feature: Auto analysis writes engine's name into final annotation
+- New feature: Asynchronous Searching
+- New feature: Allow several unsaved games at the same time (one per db)
+- New feature: Allow disabling menu icons
+- New feature: Allow constant move indicator
+- New feature: #117 Export screenshot to file
+
+- Changed: Pinned games have infinite analysis depth
+- Changed: Dialogs remember sizes and screen positions
+- Changed: CR#127 New navigation buttons order.
+- Changed: board tabs carry name of db instead of numbers
+- Changed: Auto analysis won't add move at end of game
+- Changed: Assignment of CTRL+C key to direct pasting of PGN
+- Changed: #121 Thicker, more visible arrows and colored squares
+- Changed: Show game title now in three lines
+- Changed: Copy of a game via context menu copies selected game
+
+- Bugfix: Nags with bishops now exclusive
+- Bugfix: CR#205 line does not resume from the same indentation.
+- Bugfix: CR#204 Database is not released from memory upon closing
+- Bugfix: Annotations were not handled correctly when compacting database
+- Bugfix: Analysis/"Mate in" has inconsistent color
+- Bugfix: EGT Time annotation broken
+
 February 2014: Version 1.1.0
 
-        - New feature: Traning with Toolbar Icon
-        - New feature: Play out game against engine
-        - New feature: Limit time that engines may use for analysis
-        - New feature: Auto Responder for training openings etc.
-        - New feature: Show name of opening in addition to ECO-Code
-        - New feature: Use any open database as source for Opening Tree
-        - New feature: Opening Tree with Filter as Source
-        - New feature: Splitter in Detail Views
-        - New Feature: CR#6 Configurable shortcuts
-        - New feature: Visual indicator for results
-        - New feature: Show location of AppSettings in About Dlg
-        - New feature: CR#108 Lock engine to current position
-        - New feature: Null moves at unusual positions
-        - New feauture: Incremental Opening Tree
-        - New feature: Adjust columns in list views
-        - New feature: Tabs switch if something is dragged to them (CR#112)
-        - New feature: Hilite new favorite item
-        - New feature: Select font for ChessBrowser from Preferences
-        - New feature: Additional link targets in info widgets
-        - New feature: PromotionDialog as suggested in CR#113 Pieces in promotion dialog
-        - New feature: Added possibility to force loading english lang in German and French
+- New feature: Traning with Toolbar Icon
+- New feature: Play out game against engine
+- New feature: Limit time that engines may use for analysis
+- New feature: Auto Responder for training openings etc.
+- New feature: Show name of opening in addition to ECO-Code
+- New feature: Use any open database as source for Opening Tree
+- New feature: Opening Tree with Filter as Source
+- New feature: Splitter in Detail Views
+- New Feature: CR#6 Configurable shortcuts
+- New feature: Visual indicator for results
+- New feature: Show location of AppSettings in About Dlg
+- New feature: CR#108 Lock engine to current position
+- New feature: Null moves at unusual positions
+- New feature: Incremental Opening Tree
+- New feature: Adjust columns in list views
+- New feature: Tabs switch if something is dragged to them (CR#112)
+- New feature: Hilite new favorite item
+- New feature: Select font for ChessBrowser from Preferences
+- New feature: Additional link targets in info widgets
+- New feature: PromotionDialog as suggested in CR#113 Pieces in promotion dialog
+- New feature: Added possibility to force loading english lang in German and French
 
-        - Bugfix: #193 wrong nag $1-$6
-        - Bugfix: #191 Cannot edit an annotation-only comment
-        - Bugfix: Time malformed
-        - Bugfix: #189 Missing PNG for new board button
-        - Bugfix: Searching for result 1-0 was not possible
-        - Bugfix: Filtering if filter widget was changed from another widget
-        - Bugfix: CR#105 few remarks - issue 1 - coherence with icons
-        - Bugfix: CR#187 comments before first move are not read
-        - Bugfix: HTML-Output in some special cases wrong
-        - Bugfix: Worked around potential leak with smart pointer
-        - Bugfix: Issue closing chessx while loading a database
-        - Bugfix: Some columns won't display their content if the local setup is old enough
-        - Bugfix: #180 - part 3 (user is asked several times to load database)
-        - Bugfix: Nullmove issue
-        - Bugfix: #180: Load Order of DLLs (did not start on Windows)
-        - Bugfix: Better output of end of variations
-        - Bugfix: Workaround for Apache Issue: #183 Download of PGN databases fails because of blocked user-agent
-        - Bugfix: Guessengine crashes when accessing uninitialized memory
-        - Bugfix: CR#182 Minimize - restore = tab switch bug
-        - Bugfix: CR#181 typos
-        - Bugfix: CR#178 Deleting a variation does not clear the annotation
-        - Bugfix: Unterverwandlung inkorrekt
+- Bugfix: #193 wrong nag $1-$6
+- Bugfix: #191 Cannot edit an annotation-only comment
+- Bugfix: Time malformed
+- Bugfix: #189 Missing PNG for new board button
+- Bugfix: Searching for result 1-0 was not possible
+- Bugfix: Filtering if filter widget was changed from another widget
+- Bugfix: CR#105 few remarks - issue 1 - coherence with icons
+- Bugfix: CR#187 comments before first move are not read
+- Bugfix: HTML-Output in some special cases wrong
+- Bugfix: Worked around potential leak with smart pointer
+- Bugfix: Issue closing chessx while loading a database
+- Bugfix: Some columns won't display their content if the local setup is old enough
+- Bugfix: #180 - part 3 (user is asked several times to load database)
+- Bugfix: Nullmove issue
+- Bugfix: #180: Load Order of DLLs (did not start on Windows)
+- Bugfix: Better output of end of variations
+- Bugfix: Workaround for Apache Issue: #183 Download of PGN databases fails because of blocked user-agent
+- Bugfix: Guessengine crashes when accessing uninitialized memory
+- Bugfix: CR#182 Minimize - restore = tab switch bug
+- Bugfix: CR#181 typos
+- Bugfix: CR#178 Deleting a variation does not clear the annotation
+- Bugfix: Unterverwandlung inkorrekt
 
-        - Fixed: textbrowserex.h case sensitivity (did not compile on Linux)
-        - Fixed: a static leak (thanks to Albert for mentioning this)
-        - Fixed: portability issue #185 Build error in enginelist.cpp for kFreeBSD
+- Fixed: textbrowserex.h case sensitivity (did not compile on Linux)
+- Fixed: a static leak (thanks to Albert for mentioning this)
+- Fixed: portability issue #185 Build error in enginelist.cpp for kFreeBSD
 
-        - Changed: Flip Icon consistent with main GUI
-        - Changed: Slider 'Move Interval' moved from Preferences to StatusBar
+- Changed: Flip Icon consistent with main GUI
+- Changed: Slider 'Move Interval' moved from Preferences to StatusBar
 
 
 September 2013: Version 1.0.0
 
-        - New feature: Get translation files from server
-	- New feature: Copy Text or HTML from Notation
-	- New feature: Offer to load a default database for first time users
-	- New feature: CR#10 Configurable Game View - customize appearance of notation
-	- New feature: Inserting moves (in addition to adding moves as variation
-	- New Feature: CR#86 Merge games with Drag&Drop
-	- New Feature: CR#46 Games whose position is [end] selectable 
-	- New Feature: CR#43 Frequency and score ~0% instead of 0% when not exactly 0
-	- New feature: Setup Dialog has new functions to mirror board or colors.
-	- New feature: Select Language from Preferences (requires restart)
-	- New feature: Online check for updates
-	- New Feature: Column date of last modification
-	- New Feature: Localized Piece Initials (see CR#3592733 Output / Input PGN
-	- New feature: Create a Diagram Nag (201 like in SCID) from GUI
-	- New Feature: Draw Board Coordinates (see CR#1715710	Numbers and ...)
-	- New Feature: HTML Output with readable basic tags instead of PGN look
-	- New feature: Diagrams in HTML Export and Notation
-	- New feature: HTML Output with symbolic nags in HTML/UTF8
-	- New features: Navigation within siblings of variations with keyboard
-	- New feature: Enter or Exit Variation now moves within mainline
-	- New feature: Toolbar for commonly used actions
-	- New Feature: ECO based Opening Overview of the current database
-	- New Feature: MDI-Interface
-	- New feature: Opening tree has its own board view.
-	- New Feature: CR#3607996 Always on top feature
-	
-	- Bugfix: ChessBrowser does not indicate '?'-tags
-	- Bugfix: HTML-Output contained one HTML-Header for each game
-	- Bugfix: Sorting by size was not ideal
-	- Bugfix: CR#171 - Board Setup dialog: wrong board size
-	- Bugfix: Removing last arrow annotation leaves ugly comment
-	- Bugfix: Stay On Top accidentally active in OS which were Non-Windows-OS
-	- Bugfix: Concurrent loading of games (fix from James Coons)
-	- Bugfix: Game List was not updated after bulk copy of games
-	- Bugfix: Black ELo was only saved if a white ELO was given
-	- Bugfix: CR#3612157 tablebase
-	- Bugfix: Performance Boost for filtering with result-cache
-	- Bugfix: CR#3611434 Local vs global menu inconsistency
-	- Bugfix: Update Widgets after saving a database
-	- Bugfix: Created PGN was invalid due to invalid date format
-	- Bugfix: Opening new game did not clear selection on game list
+- New feature: Get translation files from server
+- New feature: Copy Text or HTML from Notation
+- New feature: Offer to load a default database for first time users
+- New feature: CR#10 Configurable Game View - customize appearance of notation
+- New feature: Inserting moves (in addition to adding moves as variation
+- New Feature: CR#86 Merge games with Drag&Drop
+- New Feature: CR#46 Games whose position is [end] selectable
+- New Feature: CR#43 Frequency and score ~0% instead of 0% when not exactly 0
+- New feature: Setup Dialog has new functions to mirror board or colors.
+- New feature: Select Language from Preferences (requires restart)
+- New feature: Online check for updates
+- New Feature: Column date of last modification
+- New Feature: Localized Piece Initials (see CR#3592733 Output / Input PGN
+- New feature: Create a Diagram Nag (201 like in SCID) from GUI
+- New Feature: Draw Board Coordinates (see CR#1715710	Numbers and ...)
+- New Feature: HTML Output with readable basic tags instead of PGN look
+- New feature: Diagrams in HTML Export and Notation
+- New feature: HTML Output with symbolic nags in HTML/UTF8
+- New features: Navigation within siblings of variations with keyboard
+- New feature: Enter or Exit Variation now moves within mainline
+- New feature: Toolbar for commonly used actions
+- New Feature: ECO based Opening Overview of the current database
+- New Feature: MDI-Interface
+- New feature: Opening tree has its own board view.
+- New Feature: CR#3607996 Always on top feature
+
+- Bugfix: ChessBrowser does not indicate '?'-tags
+- Bugfix: HTML-Output contained one HTML-Header for each game
+- Bugfix: Sorting by size was not ideal
+- Bugfix: CR#171 - Board Setup dialog: wrong board size
+- Bugfix: Removing last arrow annotation leaves ugly comment
+- Bugfix: Stay On Top accidentally active in OS which were Non-Windows-OS
+- Bugfix: Concurrent loading of games (fix from James Coons)
+- Bugfix: Game List was not updated after bulk copy of games
+- Bugfix: Black ELo was only saved if a white ELO was given
+- Bugfix: CR#3612157 tablebase
+- Bugfix: Performance Boost for filtering with result-cache
+- Bugfix: CR#3611434 Local vs global menu inconsistency
+- Bugfix: Update Widgets after saving a database
+- Bugfix: Created PGN was invalid due to invalid date format
+- Bugfix: Opening new game did not clear selection on game list
 
 March 2013 Version 0.9.6
 
-        - Bugfix / Feature removal: Filtering opening tree was somewhat active
+- Bugfix / Feature removal: Filtering opening tree was somewhat active
 
-        - Bugfix: (thx to James!) Promoting into different pieces cannot start
-        - Bugfix: Before closing a database ask to save a new or modified game
-        - Bugfix: CR#3596577 - Game modifications lost when changing a game
-        - Bugfix: Ctrl+Drag in BoardSetup-Dialog loses a button
-        - Bugfix: DatabaseList view shows Linked local files with annoying scheme
-        - Bugfix: Drawing board when resizing off by 1
-        - Bugfix: Enable Escape-Key for Dialogs
-        - Bugfix: Flickering with OpeningTree open
-        - Bugfix: New Game did not clear the tags from the last game
-        - Bugfix: Openening ECO files missed some checks
-        - Bugfix: Opening ZIP or URL from Commandline or event loop was missing
-        - Bugfix: Parsing half move count in FEN (Francis Monkman)
-        - Bugfix: Removing a variation removed the wrong variation
-        - Bugfix: Saving a database did not reset the modified flag resulting in
-        - Bugfix: Selected wrong game when deleting games from Database 
-        
-        - New Feature: Accept FENs which do not have a valid EnPassant Encoding
-        - New Feature: AutoPlayer
-        - New Feature: Continuous Blunder Checking
-        - New Feature: Drag Drop complete db onto other db
-        - New Feature: Player List with linked ECO filtering
-        - New Feature: PlayerList gives hints on openings played
-        - New Feature: Sorting the list of databases with header click
-        - New Feature: Support Team Tags when saving games
-        - New feature: Accept FEN with invalid movenumber (James Coons suggestion)
-        - New feature: Reload last game at open of database
-        - New feature: Mass changing tags in database (Events, Player Names)
-        - New feature: Shift+Rightclick on Boardview allows editing of colored
-        - New feature: Training mode
-        - New feature: Numbering variations
-        - New feature: Refactor complete game (uncomment / remove all variations)
-        - New feature: Saving a game can now be either cancelled (the new option)
-        - New feature: Edit square colors like in chessbase with Shift+Right-
-        - New feature: Delete games from a database
-        - New feature: Auto Analysis with Engine 1 of one or more games
-        - New feature: Clear cache between database changes
-        - New feature: Reorder variations - CR#3558001
-        - New feature: Force adding a move as variation by pressing ALT while
-        - New feature: Copy Fen in human readable form - CR#3580030
-        - New feature: DatabaseList double click opens file
-	- New feature: Highlight last move done when scrolling through a game
+- Bugfix: (thx to James!) Promoting into different pieces cannot start
+- Bugfix: Before closing a database ask to save a new or modified game
+- Bugfix: CR#3596577 - Game modifications lost when changing a game
+- Bugfix: Ctrl+Drag in BoardSetup-Dialog loses a button
+- Bugfix: DatabaseList view shows Linked local files with annoying scheme
+- Bugfix: Drawing board when resizing off by 1
+- Bugfix: Enable Escape-Key for Dialogs
+- Bugfix: Flickering with OpeningTree open
+- Bugfix: New Game did not clear the tags from the last game
+- Bugfix: Openening ECO files missed some checks
+- Bugfix: Opening ZIP or URL from Commandline or event loop was missing
+- Bugfix: Parsing half move count in FEN (Francis Monkman)
+- Bugfix: Removing a variation removed the wrong variation
+- Bugfix: Saving a database did not reset the modified flag resulting in
+- Bugfix: Selected wrong game when deleting games from Database
+
+- New Feature: Accept FENs which do not have a valid EnPassant Encoding
+- New Feature: AutoPlayer
+- New Feature: Continuous Blunder Checking
+- New Feature: Drag Drop complete db onto other db
+- New Feature: Player List with linked ECO filtering
+- New Feature: PlayerList gives hints on openings played
+- New Feature: Sorting the list of databases with header click
+- New Feature: Support Team Tags when saving games
+- New feature: Accept FEN with invalid movenumber (James Coons suggestion)
+- New feature: Reload last game at open of database
+- New feature: Mass changing tags in database (Events, Player Names)
+- New feature: Shift+Rightclick on Boardview allows editing of colored
+- New feature: Training mode
+- New feature: Numbering variations
+- New feature: Refactor complete game (uncomment / remove all variations)
+- New feature: Saving a game can now be either cancelled (the new option)
+- New feature: Edit square colors like in chessbase with Shift+Right-
+- New feature: Delete games from a database
+- New feature: Auto Analysis with Engine 1 of one or more games
+- New feature: Clear cache between database changes
+- New feature: Reorder variations - CR#3558001
+- New feature: Force adding a move as variation by pressing ALT while
+- New feature: Copy Fen in human readable form - CR#3580030
+- New feature: DatabaseList double click opens file
+- New feature: Highlight last move done when scrolling through a game
 
 December 2012 Version 0.9.4
 
-        - Bugfix: Writing of files automatically made use of UTF8 instead of ANSI
-        - Bugfix: Crash at loading PolyGlot 1.4
-        - Bugfix: Comment at start of empty game
-        - Bugfix: Databases larger than 4G
-        - Bugfix: Databases with UNIX-LF
-        - Bugfix: Some nags were not properly accessible from keyboard
-        - Bugfix: No keyboard nags for first white move
+- Bugfix: Writing of files automatically made use of UTF8 instead of ANSI
+- Bugfix: Crash at loading PolyGlot 1.4
+- Bugfix: Comment at start of empty game
+- Bugfix: Databases larger than 4G
+- Bugfix: Databases with UNIX-LF
+- Bugfix: Some nags were not properly accessible from keyboard
+- Bugfix: No keyboard nags for first white move
 
-        - New Feature: Time Editor for elapsed game time
-        - New Feature: CR#3580029 Add only first move from engine analysis
-        - New feature: Close database from the database list with context menu
-        - New feature: Toggle UTF8 flag in database list
-        - New feature: Open compressed archives (from HTTP or local file)
-        - New feature: Open a database from a URL (HTTP)
-        - New Feature: Clear Nags from keyboard with <Del>
-        - New Feature: Create Index File thus accelerating re-loading of large PGN enormously
-        - New Feature: Searching of ranges, e.g. ELO "2000-2300"
-        - New Feature: Automatic classification with ECO of unclassified / new games
+- New Feature: Time Editor for elapsed game time
+- New Feature: CR#3580029 Add only first move from engine analysis
+- New feature: Close database from the database list with context menu
+- New feature: Toggle UTF8 flag in database list
+- New feature: Open compressed archives (from HTTP or local file)
+- New feature: Open a database from a URL (HTTP)
+- New Feature: Clear Nags from keyboard with <Del>
+- New Feature: Create Index File thus accelerating re-loading of large PGN enormously
+- New Feature: Searching of ranges, e.g. ELO "2000-2300"
+- New Feature: Automatic classification with ECO of unclassified / new games
 
 November 2012 Version 0.9.2
-	- Bugfix: Support engines which send multiple spaces
-	- Bugfix: Close Database while updateing opening tree
-	- Bugfix: Filtering for number of moves fails if an empty game is in the database
-	- Bugfix: Not well behaving Xboard engines crash ChessX 
-	- Bugfix: Search of Board crashes when started together with OpeninTree Update
-	- Bugfix: Press CTRL+drag to irritate the guessMove implementation
+- Bugfix: Support engines which send multiple spaces
+- Bugfix: Close Database while updateing opening tree
+- Bugfix: Filtering for number of moves fails if an empty game is in the database
+- Bugfix: Not well behaving Xboard engines crash ChessX
+- Bugfix: Search of Board crashes when started together with OpeninTree Update
+- Bugfix: Press CTRL+drag to irritate the guessMove implementation
 
-	- New Feature: Move Indicator adjusts itself in size (James Coons)
-	- New Feature: Common Font Size for all widgets except game view
-	- New Feature: Separate handling of UTF8 files
-	- New feature: List views can be customized (right click title line)
-	- New feature: UCI Option Parser
-	- New Feature: CTRL+drag, CTRL-Shift-Drag replaces or inserts a move
-	- New Feature: F1 starts Help View and some help contents are already there
-	- New Feature: Games with errors insided are marked red in game list
-	- New feature: Added Stockfish as internal Engine in case no engine is configured
+- New Feature: Move Indicator adjusts itself in size (James Coons)
+- New Feature: Common Font Size for all widgets except game view
+- New Feature: Separate handling of UTF8 files
+- New feature: List views can be customized (right click title line)
+- New feature: UCI Option Parser
+- New Feature: CTRL+drag, CTRL-Shift-Drag replaces or inserts a move
+- New Feature: F1 starts Help View and some help contents are already there
+- New Feature: Games with errors insided are marked red in game list
+- New feature: Added Stockfish as internal Engine in case no engine is configured
 
-	- New board themes Brazilwood and Maple
-	- New Icons
+- New board themes Brazilwood and Maple
+- New Icons
 
-	- Usability: Filterflag only influences gamelist
+- Usability: Filterflag only influences gamelist
 
 September 2012 Version 0.9
 
-	* New Features
-	- Player List as Dock Window
-	- New Database List
-	- Drag and Drop of games
-	- Drag and Drop of Databases
-	- Second analysis window
-	- Locate Databases on harddisk in Explorer/Finder
-	- Multi-Threading Support for opening DB and updating Opening Tree
-	- Copy / Paste of PGN
-	- Create Images of Boards
-	- New Board Styles
-	- All Resources internal
-	- Parsing PGN to draw arrows on board (cf. chessbase)
-	- Parsing PGN to color Squares (cf. chessbase)
-	- Parse / Insert Zero Moves to document / analyze threats
-	- Drag'n'Drop Support setting up a board
-	- Relaxed FEN handling for easier pasting of FENs
-	- Version Resource in Windows
-	- Icon Resource in Windows
-	- UTF8 Support
+* New Features
+- Player List as Dock Window
+- New Database List
+- Drag and Drop of games
+- Drag and Drop of Databases
+- Second analysis window
+- Locate Databases on harddisk in Explorer/Finder
+- Multi-Threading Support for opening DB and updating Opening Tree
+- Copy / Paste of PGN
+- Create Images of Boards
+- New Board Styles
+- All Resources internal
+- Parsing PGN to draw arrows on board (cf. chessbase)
+- Parsing PGN to color Squares (cf. chessbase)
+- Parse / Insert Zero Moves to document / analyze threats
+- Drag'n'Drop Support setting up a board
+- Relaxed FEN handling for easier pasting of FENs
+- Version Resource in Windows
+- Icon Resource in Windows
+- UTF8 Support
 
 
-	* bugfixes in Parser
-	- Fixed some strange PGN parsing issues - especially issues like the one described in #3396532
-	* bugfixes in GUI
-	- It is not possible to add a variation from Analysis to a game text if standing at end of a variation
-	- Bugfixes starting up engines
-	- Disabled MultiPV on XBoard engines
-	- Added elapsed time for analysis lines
+* bugfixes in Parser
+- Fixed some strange PGN parsing issues - especially issues like the one described in #3396532
+* bugfixes in GUI
+- It is not possible to add a variation from Analysis to a game text if standing at end of a variation
+- Bugfixes starting up engines
+- Disabled MultiPV on XBoard engines
+- Added elapsed time for analysis lines
 
-	* issues closed:
+* issues closed:
 
-	- CR#2984375	Saving Clipboard fails silently
-	- CR#3043278	Problem with LaTeX output
-	- CR#3135871	No control performed on input date
-	- CR#3135871	No control performed on input date
-	- CR#2872974	Remove->Previous moves should be smarter
-	- CR#3542101	Changing and saving a file does not update the game list view
-	- CR#2881228 Crash on File->Close (or Quit) with OpeningTree updating
-	- CR#3297478 Crash on move gxh2+
-	- CR#2823746 Crash when trying to analyze with non-existing New Engine
-	- CR#2881228 Crash on File->Close (or Quit) with OpeningTree updating
-	- CR#3170534 Crash if start of engine fails (0.8)
-	- CR#3179203 Do not crash trying to show a special NAG; this should solve bug .
-	- CR#2824024 Confusion between slash and backslash in file paths
-	- CR#1773747 "Change guessed move on right click". The feature can be configured, as currently we have "take back a move" om mouse right click (if configured, CTRL+right-mouse will move back instead)
-	- CR#1651405 "Comments in UTF-8 are broken"
-	- CR#1715720
-	- CR#1984912 Names in GameList vs QuickTagSearch
-	- CR#3043278 Problem with LaTeX output
-	- CR#3396532 errors reading multi line pgn formats
-	- CR#2955889.
+- CR#2984375	Saving Clipboard fails silently
+- CR#3043278	Problem with LaTeX output
+- CR#3135871	No control performed on input date
+- CR#3135871	No control performed on input date
+- CR#2872974	Remove->Previous moves should be smarter
+- CR#3542101	Changing and saving a file does not update the game list view
+- CR#2881228 Crash on File->Close (or Quit) with OpeningTree updating
+- CR#3297478 Crash on move gxh2+
+- CR#2823746 Crash when trying to analyze with non-existing New Engine
+- CR#2881228 Crash on File->Close (or Quit) with OpeningTree updating
+- CR#3170534 Crash if start of engine fails (0.8)
+- CR#3179203 Do not crash trying to show a special NAG; this should solve bug .
+- CR#2824024 Confusion between slash and backslash in file paths
+- CR#1773747 "Change guessed move on right click". The feature can be configured, as currently we have "take back a move" om mouse right click (if configured, CTRL+right-mouse will move back instead)
+- CR#1651405 "Comments in UTF-8 are broken"
+- CR#1715720
+- CR#1984912 Names in GameList vs QuickTagSearch
+- CR#3043278 Problem with LaTeX output
+- CR#3396532 errors reading multi line pgn formats
+- CR#2955889.
 
-	* Building 
-	- Separate Debug/Release/Static folders
+* Building
+- Separate Debug/Release/Static folders
 
 November 20120 Version 0.8
 

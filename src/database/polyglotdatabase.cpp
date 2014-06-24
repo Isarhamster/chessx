@@ -628,8 +628,7 @@ void PolyglotDatabase::update_entry(book_entry& entry, int result)
 
 void PolyglotDatabase::book_sort()
 {
-    //qSort(m_book);
-    std::sort(m_book.begin(),m_book.end(),key_compare());
+    qSort(m_book.begin(),m_book.end(),key_compare());
 }
 
 void PolyglotDatabase::book_filter()
