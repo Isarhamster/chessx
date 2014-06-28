@@ -49,7 +49,7 @@ void ECOListWidget::selectionChangedSlot()
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
     if(selection.count())
     {
-        QString ts = selection[0].data().toString();
+        QString ts = selection[0].data().toString().section(" ",0,0);
         ecoSelected(ts);
     }
     else
@@ -66,7 +66,7 @@ void ECOListWidget::findECO(const QString& s)
     }
     else
     {
-        QStringList newList = m_list.filter(s, Qt::CaseInsensitive);
+        QStringList newList = m_list.filter(QRegExp(s, Qt::CaseInsensitive));
         m_filterModel->setStringList(newList);
     }
 }
@@ -132,7 +132,7 @@ void ECOListWidget::filterSelectedECO()
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
     if(selection.count())
     {
-        QString ts = selection[0].data().toString();
+        QString ts = selection[0].data().toString().section(" ",0,0);
         emit filterRequest(ts);
     }
 }
@@ -148,6 +148,14 @@ void ECOListWidget::setDatabase(DatabaseInfo* dbInfo)
         m_list = db->index()->tagValues(TagNameECO);
     }
     m_list.sort();
+    QStringList::Iterator iter = m_list.begin();
+    while (iter != m_list.end())
+    {
+        QString eco = *iter;
+        *iter = eco + " " + Game::findEcoName(eco);
+        ++iter;
+    }
+
     m_filterModel->setStringList(m_list);
     m_filterModel->sort(0);
 }
