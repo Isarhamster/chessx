@@ -306,6 +306,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(analysisDock->toggleViewAction());
     analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F2);
     analysisDock->hide();
+    connect(this, SIGNAL(signalGameLoaded()), analysis, SLOT(slotUciNewGame()));
 
     m_mainAnalysis = analysis;
 
@@ -328,6 +329,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(analysisDock2->toggleViewAction());
     analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F3);
     analysisDock2->hide();
+    connect(this, SIGNAL(signalGameLoaded()), analysis, SLOT(slotUciNewGame()));
 
     /* Randomize */
     srand(time(0));
@@ -662,6 +664,7 @@ void MainWindow::gameLoad(int index)
             emit signalFirstGameLoaded(databaseInfo()->filter()->previousGame(index) == -1);
             emit signalLastGameLoaded(databaseInfo()->filter()->nextGame(index) == -1);
             m_gameList->setFocus();
+            emit signalGameLoaded();
         }
     }
 }

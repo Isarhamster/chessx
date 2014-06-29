@@ -51,6 +51,8 @@ public slots:
     bool isEngineRunning() const;
     /** Change the movetime of the engine */
     void setMoveTime(int mt);
+    /** Must send ucinewgame next time */
+    void slotUciNewGame();
 
 private slots:
     /** Stop if analysis is no longer visible. */
@@ -92,6 +94,7 @@ private:
     QString m_tablebaseEvaluation;
     Tablebase* m_tablebase;
     int m_moveTime;
+    bool m_bUciNewGame;
 };
 
 #endif // __ANALYSIS_WIDGET_H__

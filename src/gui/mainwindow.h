@@ -433,6 +433,7 @@ signals:
 
     void signalFirstGameLoaded(bool);
     void signalLastGameLoaded(bool);
+    void signalGameLoaded();
 
     void signalVersionFound(int, int, int);
 

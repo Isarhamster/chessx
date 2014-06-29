@@ -16,7 +16,8 @@
 
 AnalysisWidget::AnalysisWidget()
     : m_engine(0),
-      m_moveTime(0)
+      m_moveTime(0),
+      m_bUciNewGame(true)
 {
     ui.setupUi(this);
     connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
@@ -97,7 +98,7 @@ void AnalysisWidget::engineActivated()
     ui.analyzeButton->setChecked(true);
     ui.analyzeButton->setText(tr("Stop"));
     m_analyses.clear();
-    m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime);
+    m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, true);
 }
 
 void AnalysisWidget::engineError(QProcess::ProcessError e)
@@ -236,7 +237,8 @@ void AnalysisWidget::setPosition(const Board& board)
         updateAnalysis();
         if(m_engine && m_engine->isActive())
         {
-            m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime);
+            m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, m_bUciNewGame);
+            m_bUciNewGame = false;
         }
     }
 }
@@ -368,3 +370,7 @@ QString AnalysisWidget::displayName() const
    return ui.engineList->currentText();
 }
 
+void AnalysisWidget::slotUciNewGame()
+{
+    m_bUciNewGame = true;
+}

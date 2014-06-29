@@ -21,6 +21,7 @@ June 2014: Version 1.2.0
 - New feature: Allow disabling menu icons
 - New feature: Allow constant move indicator
 - New feature: #117 Export screenshot to file
+- New feature: Filter in ECO widgets support regular expression
 
 - Changed: Pinned games have infinite analysis depth
 - Changed: Dialogs remember sizes and screen positions
@@ -31,6 +32,7 @@ June 2014: Version 1.2.0
 - Changed: #121 Thicker, more visible arrows and colored squares
 - Changed: Show game title now in three lines
 - Changed: Copy of a game via context menu copies selected game
+- Changed: ECO Widget shows names of openings
 
 - Bugfix: Nags with bishops now exclusive
 - Bugfix: CR#205 line does not resume from the same indentation.
@@ -38,6 +40,7 @@ June 2014: Version 1.2.0
 - Bugfix: Annotations were not handled correctly when compacting database
 - Bugfix: Analysis/"Mate in" has inconsistent color
 - Bugfix: EGT Time annotation broken
+- Bugfix: Do not send ucinewgame after making a move
 
 February 2014: Version 1.1.0
 
