@@ -62,7 +62,7 @@ public:
     bool isActive();
 
     /** Analyzes the given position */
-    virtual bool startAnalysis(const Board& board, int nv, int mt) = 0;
+    virtual bool startAnalysis(const Board& board, int nv, int mt, bool bNewGame) = 0;
 
     /** Stops any analysis */
     virtual void stopAnalysis() = 0;

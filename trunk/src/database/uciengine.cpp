@@ -21,7 +21,7 @@ UCIEngine::UCIEngine(const QString& name,
     m_invertBlack = true;
 }
 
-bool UCIEngine::startAnalysis(const Board& board, int nv, int mt)
+bool UCIEngine::startAnalysis(const Board& board, int nv, int mt, bool bNewGame)
 {
     m_mpv = nv;
     m_moveTime = mt;
@@ -37,10 +37,17 @@ bool UCIEngine::startAnalysis(const Board& board, int nv, int mt)
     m_board = board;
 
     m_position = board.toFen();
-    m_waitingOn = "ucinewgame";
     send("stop");
-    send("ucinewgame");
-    send("isready");
+    if (bNewGame)
+    {
+        m_waitingOn = "ucinewgame";
+        send("ucinewgame");
+        send("isready");
+    }
+    else
+    {
+        setPosition();
+    }
     setAnalyzing(true);
 
     return true;
@@ -100,6 +107,17 @@ void UCIEngine::protocolEnd()
     m_board.clear();
 }
 
+void UCIEngine::setPosition()
+{
+    m_waitingOn = "";
+    send(QString("setoption name MultiPV value %1").arg(m_mpv));
+    send("position fen " + m_position);
+    if (!m_moveTime)
+        send("go infinite");
+    else
+        send(QString("go movetime %1").arg(m_moveTime));
+}
+
 void UCIEngine::processMessage(const QString& message)
 {
     if(message == "uciok")
@@ -155,13 +173,7 @@ void UCIEngine::processMessage(const QString& message)
         if(m_waitingOn == "ucinewgame")
         {
             //engine is now ready to analyse a new position
-            m_waitingOn = "";
-            send(QString("setoption name MultiPV value %1").arg(m_mpv));
-            send("position fen " + m_position);
-            if (!m_moveTime)
-                send("go infinite");
-            else
-                send(QString("go movetime %1").arg(m_moveTime));
+            setPosition();
         }
     }
 

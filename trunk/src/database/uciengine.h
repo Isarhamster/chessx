@@ -30,7 +30,7 @@ public:
               QTextStream* logStream = NULL);
 
     /** Analyses the the given position */
-    bool startAnalysis(const Board& board, int nv, int mt);
+    bool startAnalysis(const Board& board, int nv, int mt, bool bNewGame);
 
     /** Stops any analysis */
     void stopAnalysis();
@@ -43,6 +43,7 @@ public:
     {
         return true;
     }
+    void setPosition();
 protected:
     /** Performs any initialisation required by the engine protocol */
     void protocolStart();
