@@ -120,5 +120,6 @@
         <file alias="images/redo.png">data/images/redo_yellow.png</file>
         <file alias="images/undo.png">data/images/undo_yellow.png</file>
         <file alias="i18n/chessx_da.qm">i18n/chessx_da.qm</file>
+        <file alias="help/about1a.html">data/help/about1a.html</file>
     </qresource>
 </RCC>
