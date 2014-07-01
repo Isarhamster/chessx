@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="it_IT">
+<TS version="2.0" language="it_IT">
 <context>
     <name>AboutDlg</name>
     <message>
@@ -120,7 +120,7 @@ Free Chess Database </source>
     <message>
         <location filename="../src/gui/actiondialog.ui" line="58"/>
         <source>Reset</source>
-        <translation type="unfinished">Resetta</translation>
+        <translation>Resetta</translation>
     </message>
 </context>
 <context>
@@ -160,14 +160,6 @@ Free Chess Database </source>
         <translation>Stop</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation type="obsolete">Errore</translation>
-    </message>
-    <message>
-        <source>There was an error running engine &lt;b&gt;%1&lt;/b&gt;.</source>
-        <translation type="obsolete">Si è verificato un errore nel motore di analisi&lt;&gt;%1&lt;/b&gt;.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/analysiswidget.cpp" line="106"/>
         <source>There was an error (%1) running engine &lt;b&gt;%2&lt;/b&gt;.</source>
         <translation>Si è verificato un errore (%1) durante l&apos;esecuzione del motore &lt;b&gt;%2&lt;/b&gt;.</translation>
@@ -204,10 +196,6 @@ Free Chess Database </source>
         <translation>&lt;a href=&quot;0&quot; title=&quot;clicca per aggiungere una mossa alla partita&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt; </translation>
     </message>
     <message>
-        <source>&lt;b&gt;Tablebase:&lt;/b&gt; </source>
-        <translation type="obsolete">Tablebase</translation>
-    </message>
-    <message>
         <location filename="../src/gui/analysiswidget.ui" line="20"/>
         <source>Analysis</source>
         <translation>Analisi</translation>
@@ -225,7 +213,7 @@ Free Chess Database </source>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="66"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -255,32 +243,32 @@ b%2
     <message>
         <location filename="../src/gui/boardsearchdialog.ui" line="14"/>
         <source>Search Board</source>
-        <translation type="unfinished"></translation>
+        <translation>Trova scacchiera</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsearchdialog.ui" line="75"/>
         <source>&amp;Find</source>
-        <translation type="unfinished">&amp;Trova</translation>
+        <translation>&amp;Trova</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsearchdialog.ui" line="85"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cancel</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsearchdialog.cpp" line="19"/>
         <source>Find in current filter</source>
-        <translation type="unfinished">Trova nel filtro corrente</translation>
+        <translation>Trova nel filtro corrente</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsearchdialog.cpp" line="20"/>
         <source>Search whole database</source>
-        <translation type="unfinished">Trova nell&apos;intero database</translation>
+        <translation>Trova nell&apos;intero database</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsearchdialog.cpp" line="21"/>
         <source>Add to current filter</source>
-        <translation type="unfinished">Aggiungi al filtro attuale</translation>
+        <translation>Aggiungi al filtro attuale</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsearchdialog.cpp" line="22"/>
@@ -290,10 +278,6 @@ b%2
 </context>
 <context>
     <name>BoardSetupDialog</name>
-    <message>
-        <source>Invalid position</source>
-        <translation type="obsolete">Posizione non valida</translation>
-    </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="229"/>
         <source>Current position is not valid.
@@ -367,10 +351,6 @@ b%2
         <location filename="../src/gui/boardsetup.cpp" line="380"/>
         <source>Unknown reason</source>
         <translation>Motivo non noto</translation>
-    </message>
-    <message>
-        <source>FEN: %1</source>
-        <translation type="obsolete">FEN: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="397"/>
@@ -486,42 +466,6 @@ b%2
         <translation>Nero O-O-O</translation>
     </message>
     <message>
-        <source>-</source>
-        <translation type="obsolete">-</translation>
-    </message>
-    <message>
-        <source>a</source>
-        <translation type="obsolete">a</translation>
-    </message>
-    <message>
-        <source>b</source>
-        <translation type="obsolete">b</translation>
-    </message>
-    <message>
-        <source>c</source>
-        <translation type="obsolete">c</translation>
-    </message>
-    <message>
-        <source>d</source>
-        <translation type="obsolete">d</translation>
-    </message>
-    <message>
-        <source>e</source>
-        <translation type="obsolete">e</translation>
-    </message>
-    <message>
-        <source>f</source>
-        <translation type="obsolete">f</translation>
-    </message>
-    <message>
-        <source>g</source>
-        <translation type="obsolete">g</translation>
-    </message>
-    <message>
-        <source>h</source>
-        <translation type="obsolete">h</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardsetup.ui" line="386"/>
         <source>Halfmove clock:</source>
         <translation>Indice delle semimosse:</translation>
@@ -560,10 +504,6 @@ b%2
 <context>
     <name>BoardTheme</name>
     <message>
-        <source>Error</source>
-        <translation type="obsolete">Errore</translation>
-    </message>
-    <message>
         <location filename="../src/gui/boardtheme.cpp" line="163"/>
         <source>Cannot find piece data.
 Please check your installation.</source>
@@ -577,10 +517,6 @@ Controllare l&apos;installazione.</translation>
         <location filename="../src/gui/chessbrowser.cpp" line="95"/>
         <source>Add start comment...</source>
         <translation>Aggiungi commento iniziale...</translation>
-    </message>
-    <message>
-        <source>Add comment...</source>
-        <translation type="vanished">Aggiungi commento...</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="96"/>
@@ -672,11 +608,7 @@ Controllare l&apos;installazione.</translation>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="152"/>
         <source>Copy Text</source>
-        <translation type="unfinished">Copia testo</translation>
-    </message>
-    <message>
-        <source>Small font</source>
-        <translation type="obsolete">Caratteri piccoli</translation>
+        <translation>Copia testo</translation>
     </message>
 </context>
 <context>
@@ -705,14 +637,6 @@ Controllare l&apos;installazione.</translation>
         <location filename="../src/gui/commentdialog.ui" line="80"/>
         <source>Move</source>
         <translation>Mossa</translation>
-    </message>
-    <message>
-        <source>Elapsed Time</source>
-        <translation type="vanished">Tempo Trascorso</translation>
-    </message>
-    <message>
-        <source>Clock Time</source>
-        <translation type="vanished">Tempo sull&apos;orologio</translation>
     </message>
     <message>
         <location filename="../src/gui/commentdialog.ui" line="103"/>
@@ -849,10 +773,6 @@ Controllare l&apos;installazione.</translation>
         <translation>Appunti</translation>
     </message>
     <message>
-        <source>ClipBoard</source>
-        <translation type="vanished">Appunti</translation>
-    </message>
-    <message>
         <location filename="../src/gui/databaselistmodel.cpp" line="158"/>
         <source>Closed</source>
         <translation>Chiuso</translation>
@@ -903,7 +823,7 @@ Controllare l&apos;installazione.</translation>
     <message>
         <location filename="../src/gui/dlgsavebook.cpp" line="27"/>
         <source>Clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Appunti</translation>
     </message>
 </context>
 <context>
@@ -1260,10 +1180,6 @@ Controllare l&apos;installazione.</translation>
 <context>
     <name>LoadQuery</name>
     <message>
-        <source>Dialog</source>
-        <translation type="vanished">Dialogo</translation>
-    </message>
-    <message>
         <location filename="../src/gui/loadquery.ui" line="14"/>
         <source>Load Database</source>
         <translation type="unfinished"></translation>
@@ -1314,10 +1230,6 @@ Devo caricare un database?</translation>
         <translation>Albero delle aperture</translation>
     </message>
     <message>
-        <source>Analysis</source>
-        <translation type="obsolete">Analisi</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="416"/>
         <source>Loading ECO file...</source>
         <translation>Caricamento del file ECO...</translation>
@@ -1331,10 +1243,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="610"/>
         <source>[Clipboard]</source>
         <translation>[Appunti]</translation>
-    </message>
-    <message>
-        <source>Database %1 is already opened.</source>
-        <translation type="obsolete">Il database %1 è già aperto.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="848"/>
@@ -1395,10 +1303,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1064"/>
         <source>&amp;Open...</source>
         <translation>&amp;Apri...</translation>
-    </message>
-    <message>
-        <source>&amp;Open in UTF8...</source>
-        <translation type="vanished">&amp;Apri in UTF8...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1066"/>
@@ -1579,25 +1483,9 @@ Devo caricare un database?</translation>
         <translation>Inizia a caricare il database...</translation>
     </message>
     <message>
-        <source>Current version is latest stable</source>
-        <translation type="vanished">La versione corrente è la più recente tra quelle stabili</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1555"/>
         <source>A new version is available at chessx.sourceforge.net</source>
         <translation>Una nuova versione è disponibile all&apos;indirizzo chessx.sourceforge.net</translation>
-    </message>
-    <message>
-        <source>The current version is newer than the latest stable</source>
-        <translation type="vanished">La versione corrente è più aggiornata della più recente stabile</translation>
-    </message>
-    <message>
-        <source>&amp;Copy FEN</source>
-        <translation type="obsolete">&amp;Copia FEN</translation>
-    </message>
-    <message>
-        <source>&amp;Paste FEN</source>
-        <translation type="obsolete">&amp;Incolla FEN</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1164"/>
@@ -1615,10 +1503,6 @@ Devo caricare un database?</translation>
         <translation>&amp;Inverti scacchiera</translation>
     </message>
     <message>
-        <source>&amp;Player information...</source>
-        <translation type="obsolete">&amp;Informazioni sul giocatore...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1190"/>
         <source>&amp;Game</source>
         <translation>&amp;Partita</translation>
@@ -1627,14 +1511,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1201"/>
         <source>&amp;Load</source>
         <translation>&amp;Carica</translation>
-    </message>
-    <message>
-        <source>&amp;First</source>
-        <translation type="obsolete">&amp;Primo</translation>
-    </message>
-    <message>
-        <source>&amp;Last</source>
-        <translation type="obsolete">&amp;Ultimo</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1204"/>
@@ -1757,14 +1633,6 @@ Devo caricare un database?</translation>
         <translation>Copia immagine</translation>
     </message>
     <message>
-        <source>&amp;Paste</source>
-        <translation type="vanished">&amp;Incolla</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="vanished">Visualizza</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1170"/>
         <source>Toolbars</source>
         <translation>Strumenti</translation>
@@ -1861,10 +1729,6 @@ Devo caricare un database?</translation>
         <translation>&amp;Salva...</translation>
     </message>
     <message>
-        <source>&amp;Analyze</source>
-        <translation type="obsolete">&amp;Analizza</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1303"/>
         <source>Fi&amp;nd</source>
         <translation>&amp;Trova</translation>
@@ -1873,18 +1737,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1304"/>
         <source>Search</source>
         <translation>Trova</translation>
-    </message>
-    <message>
-        <source>Find &amp;tag</source>
-        <translation type="vanished">Trova &amp;etichetta</translation>
-    </message>
-    <message>
-        <source>Find &amp;position</source>
-        <translation type="vanished">Trova &amp;posizione</translation>
-    </message>
-    <message>
-        <source>&amp;Enable filter</source>
-        <translation type="vanished">&amp;Abilita filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1317"/>
@@ -1932,10 +1784,6 @@ Devo caricare un database?</translation>
         <translation>&amp;Informazioni su ChessX</translation>
     </message>
     <message>
-        <source>&amp;Debug</source>
-        <translation type="vanished">&amp;Debug</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1393"/>
         <source>Following databases are modified:</source>
         <translation>I seguenti database sono modificati:</translation>
@@ -1949,22 +1797,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1427"/>
         <source> (%1 s.)</source>
         <translation> (%1 s.)</translation>
-    </message>
-    <message>
-        <source>Compiled with &apos;fastbits&apos; option&lt;br&gt;</source>
-        <translation type="obsolete">Compilato con l&apos;opzione &apos;fastbits&apos;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <source>About ChessX</source>
-        <translation type="vanished">Informazioni su ChessX</translation>
-    </message>
-    <message>
-        <source>&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Free chess database Version %1&lt;/p&gt;</source>
-        <translation type="vanished">&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Database scacchistico gratuito Versione %1&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Free chess database available under GPLv2.&lt;br&gt;Version %1&lt;br&gt;%2Copyright 2005-2010 ChessX developers&lt;p&gt;Current developer and maintainer: &lt;a href=&quot;mailto:mrudolf@kdewebdev.org&quot;&gt;Michal Rudolf&lt;/a&gt;&lt;p&gt;Testing, usability and website: Bruno Rizzuti&lt;p&gt;Additional coding: Marius Roets, Sean Estabrooks, Rico Zenklusen, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;p&gt;Homepage: &lt;a href=&quot;http://chessx.sf.net&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Mailing list: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</source>
-        <translation type="obsolete">&lt;h1&gt;ChessX&lt;/h1&gt;&lt;p&gt;Database scacchistico gratuito disponibile sotto la licenza GPLv2.&lt;br&gt;Version %1&lt;br&gt;%2Copyright 2005-2010 degli sviluppatori di ChessX&lt;p&gt;Sviluppatore e manutentore attuale: &lt;a href=&quot;mailto:mrudolf@kdewebdev.org&quot;&gt;Michal Rudolf&lt;/a&gt;&lt;p&gt;Test, usabilità e sito web: Bruno Rizzuti&lt;p&gt;Programmazione aggiuntiva: Marius Roets, Sean Estabrooks, Rico Zenklusen, Ejner Borgbjerg, Heinz Hopfgartner, William Hoggarth.&lt;p&gt;Homepage: &lt;a href=&quot;http://chessx.sf.net\&quot;&gt;http://chessx.sf.net&lt;/a&gt;&lt;br&gt;Mailing list: &lt;a href=&quot;mailto:chessx-users@lists.sourceforge.net&quot;&gt;chessx-users@lists.sourceforge.net</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="63"/>
@@ -2040,30 +1872,6 @@ Devo caricare un database?</translation>
         <source>The clipboard contains FEN, but with illegal position. You can only paste such positions in &lt;b&gt;Setup position&lt;/b&gt; dialog.</source>
         <translatorcomment>non sono sicuro della traduzione di &quot;dialog&quot;</translatorcomment>
         <translation>Gli appunti contengono un FEN, ma con posizione illegale. Puoi solo copiare questa posizione nella finestra &lt;b&gt;Setta posizione&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <source>Queen</source>
-        <translation type="vanished">Donna</translation>
-    </message>
-    <message>
-        <source>Rook</source>
-        <translation type="vanished">Torre</translation>
-    </message>
-    <message>
-        <source>Bishop</source>
-        <translation type="vanished">Alfiere</translation>
-    </message>
-    <message>
-        <source>Knight</source>
-        <translation type="vanished">Cavallo</translation>
-    </message>
-    <message>
-        <source>Promotion</source>
-        <translation type="vanished">Promozione</translation>
-    </message>
-    <message>
-        <source>Promote to:</source>
-        <translation type="vanished">Promuovi a:</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="566"/>
@@ -2174,27 +1982,9 @@ Devo caricare un database?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Tree updated.</source>
-        <translation type="vanished">Albero aggiornato.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1948"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Nuova partita&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;&lt;a href=&quot;tag:white&quot;&gt;%1&lt;/a&gt;&lt;/b&gt; %2 - &lt;b&gt;&lt;a href=&quot;tag:black&quot;&gt;%3&lt;/a&gt;&lt;/b&gt; %4</source>
-        <translatorcomment>non capisco qui cosa intende</translatorcomment>
-        <translation type="obsolete">&lt;b&gt;&lt;a href=\&quot;tag:white\&quot;&gt;%1&lt;/a&gt;&lt;/b&gt; %2 - &lt;b&gt;&lt;a href=\&quot;tag:black\&quot;&gt;%3&lt;/a&gt;&lt;/b&gt; %4</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; &amp;nbsp; %2</source>
-        <translatorcomment>non capisco qui cosa c&apos;è da tradurre</translatorcomment>
-        <translation type="obsolete">&lt;b&gt;%1&lt;/b&gt; &amp;nbsp; %2</translation>
-    </message>
-    <message>
-        <source> %1: %2/%3 </source>
-        <translation type="obsolete"> %1: %2/%3 </translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1514"/>
@@ -2221,10 +2011,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/mainwindowactions.cpp" line="1642"/>
         <source>Updating tree...</source>
         <translation>Aggiornamento albero...</translation>
-    </message>
-    <message>
-        <source>Tree updated</source>
-        <translation type="obsolete">Albero aggiornato</translation>
     </message>
 </context>
 <context>
@@ -2335,38 +2121,6 @@ Devo caricare un database?</translation>
         <location filename="../src/database/nag.cpp" line="302"/>
         <source>Unclear</source>
         <translation>Poco chiaro</translation>
-    </message>
-    <message>
-        <source>White has slight Advantage</source>
-        <translation type="vanished">Il Bianco ha un leggero vantaggio</translation>
-    </message>
-    <message>
-        <source>Black has slight Advantage</source>
-        <translation type="vanished">Il Nero ha un leggero vantaggio</translation>
-    </message>
-    <message>
-        <source>White has moderate Advantage</source>
-        <translation type="vanished">Il Bianco ha un vantaggio moderato</translation>
-    </message>
-    <message>
-        <source>Black has moderate Advantage</source>
-        <translation type="vanished">Il Nero ha un vantaggio moderato</translation>
-    </message>
-    <message>
-        <source>White has decisive Advantage</source>
-        <translation type="vanished">Il Bianco ha un vantaggio decisivo</translation>
-    </message>
-    <message>
-        <source>Black has decisive Advantage</source>
-        <translation type="vanished">Il Nero ha un vantaggio decisivo</translation>
-    </message>
-    <message>
-        <source>White has crushing Advantage</source>
-        <translation type="vanished">Il Bianco ha un vantaggio schiacciante</translation>
-    </message>
-    <message>
-        <source>Black has crushing Advantage</source>
-        <translation type="vanished">Il Nero ha un vantaggio schiacciante</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="303"/>
@@ -2812,10 +2566,6 @@ Devo caricare un database?</translation>
         <translation>Con l&apos;idea</translation>
     </message>
     <message>
-        <source>With the Idea</source>
-        <translation type="vanished">Con l&apos;idea</translation>
-    </message>
-    <message>
         <location filename="../src/database/nag.cpp" line="430"/>
         <source>Aimed against</source>
         <translatorcomment>Non-literal translation.</translatorcomment>
@@ -3020,11 +2770,6 @@ Devo caricare un database?</translation>
         <translation>Colore del commento</translation>
     </message>
     <message>
-        <source>Nag Color</source>
-        <translatorcomment>Should not it be NAG instead of Nag?</translatorcomment>
-        <translation type="vanished">Colore del NAG</translation>
-    </message>
-    <message>
         <location filename="../src/database/outputoptions.cpp" line="39"/>
         <location filename="../src/database/outputoptions.cpp" line="61"/>
         <source>Header Color</source>
@@ -3064,43 +2809,6 @@ Devo caricare un database?</translation>
         <location filename="../src/database/outputoptions.cpp" line="55"/>
         <source>Comment Indentation</source>
         <translation>Indentazione del commento</translation>
-    </message>
-</context>
-<context>
-    <name>PlayerDialog</name>
-    <message>
-        <source>&lt;html&gt;&lt;i&gt;No player chosen.&lt;/i&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;html&gt;&lt;i&gt;Nessun giocatore scelto.&lt;/i&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>Player Information</source>
-        <translatorcomment>o forse al singolare, informazioni sui giocatori?</translatorcomment>
-        <translation type="obsolete">Informazioni sui giocatori</translation>
-    </message>
-    <message>
-        <source>&amp;Players</source>
-        <translation type="obsolete">&amp;Giocatori</translation>
-    </message>
-    <message>
-        <source>&amp;Find:</source>
-        <translation type="obsolete">&amp;Trova:</translation>
-    </message>
-    <message>
-        <source>&amp;Show player</source>
-        <translation type="obsolete">&amp;Mostra giocatore</translation>
-    </message>
-    <message>
-        <source>&amp;Update list</source>
-        <translation type="obsolete">&amp;Aggiorna la lista</translation>
-    </message>
-    <message>
-        <source>&amp;Information</source>
-        <translatorcomment>o al singolare?</translatorcomment>
-        <translation type="obsolete">&amp;Informazioni</translation>
-    </message>
-    <message>
-        <source>&amp;Update player</source>
-        <translation type="obsolete">&amp;Aggiorna giocatore</translation>
     </message>
 </context>
 <context>
@@ -3258,10 +2966,6 @@ Devo caricare un database?</translation>
         <translation>NAGs</translation>
     </message>
     <message>
-        <source>Nags</source>
-        <translation type="vanished">Nags</translation>
-    </message>
-    <message>
         <location filename="../src/gui/preferences.cpp" line="114"/>
         <source>Select engine directory</source>
         <translation>Seleziona cartella per il motore d&apos;analisi</translation>
@@ -3327,18 +3031,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/preferences.ui" line="836"/>
         <source>Appearance</source>
         <translation>Aspetto</translation>
-    </message>
-    <message>
-        <source>Font Sizes</source>
-        <translation type="vanished">Dimensioni dei caratteri</translation>
-    </message>
-    <message>
-        <source>Game Text:</source>
-        <translation type="vanished">Testo della partita:</translation>
-    </message>
-    <message>
-        <source>Lists</source>
-        <translation type="vanished">Liste</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="279"/>
@@ -3452,10 +3144,6 @@ Devo caricare un database?</translation>
         <translation>Internet</translation>
     </message>
     <message>
-        <source>Check for updates at startup</source>
-        <translation type="vanished">Controlla aggiornamenti all&apos;avvio</translation>
-    </message>
-    <message>
         <location filename="../src/gui/preferences.ui" line="1084"/>
         <source>Language</source>
         <translation>Linguaggio</translation>
@@ -3488,7 +3176,7 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="1131"/>
         <source>Load!</source>
-        <translation type="unfinished"></translation>
+        <translation>Carica!</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1166"/>
@@ -3503,7 +3191,7 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="1182"/>
         <source>Path</source>
-        <translation type="unfinished">Percorso</translation>
+        <translation>Percorso</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1202"/>
@@ -3588,14 +3276,6 @@ Devo caricare un database?</translation>
         <translation>&amp;Motori d&apos;analisi</translation>
     </message>
     <message>
-        <source>WinBoard</source>
-        <translation type="obsolete">WinBoard</translation>
-    </message>
-    <message>
-        <source>UCI</source>
-        <translation type="obsolete">UCI</translation>
-    </message>
-    <message>
         <location filename="../src/gui/preferences.ui" line="366"/>
         <location filename="../src/gui/preferences.ui" line="377"/>
         <location filename="../src/gui/preferences.ui" line="388"/>
@@ -3667,10 +3347,6 @@ Devo caricare un database?</translation>
         <translation>Auto-gioco</translation>
     </message>
     <message>
-        <source>Auto-Play Interval</source>
-        <translation type="vanished">Intervallo di autogioco</translation>
-    </message>
-    <message>
         <location filename="../src/gui/preferences.ui" line="269"/>
         <source>Automatically save game and continue with next</source>
         <translation>Salva automaticamente la partita e continua con la successiva</translation>
@@ -3733,10 +3409,6 @@ Devo caricare un database?</translation>
         <translation>Alza</translation>
     </message>
     <message>
-        <source>&amp;Advanced</source>
-        <translation type="obsolete">&amp;Avanzate</translation>
-    </message>
-    <message>
         <location filename="../src/gui/preferences.ui" line="1059"/>
         <source>Use online tablebase servers</source>
         <translation>Usa server per le tablebase online</translation>
@@ -3781,21 +3453,6 @@ Devo caricare un database?</translation>
     </message>
 </context>
 <context>
-    <name>QuaGzipFile</name>
-    <message>
-        <source>Opening gzip for both reading and writing is not supported</source>
-        <translation type="vanished">Apertura di un file gzip sia per lettura e sia per scrittura non supportata</translation>
-    </message>
-    <message>
-        <source>You can open a gzip either for reading or for writing. Which is it?</source>
-        <translation type="vanished">Puoi aprire un file gzip o per lettura o per scrittura. Quale preferisci?</translation>
-    </message>
-    <message>
-        <source>Could not gzopen() file</source>
-        <translation type="vanished">Impossibile effettuare gzopen() del file</translation>
-    </message>
-</context>
-<context>
     <name>QuickSearchDialog</name>
     <message>
         <location filename="../src/gui/quicksearch.cpp" line="31"/>
@@ -3822,10 +3479,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/quicksearch.ui" line="14"/>
         <source>Quick Tag Search</source>
         <translation>Ricerca rapida Tag</translation>
-    </message>
-    <message>
-        <source>Game number</source>
-        <translation type="obsolete">Numero partita</translation>
     </message>
     <message>
         <location filename="../src/gui/quicksearch.ui" line="24"/>
@@ -3888,10 +3541,6 @@ Devo caricare un database?</translation>
         <translation>Numero di mosse</translation>
     </message>
     <message>
-        <source>Length</source>
-        <translation type="obsolete">Lunghezza</translation>
-    </message>
-    <message>
         <location filename="../src/gui/quicksearch.ui" line="102"/>
         <source>&amp;Find</source>
         <translation>&amp;Trova</translation>
@@ -3929,10 +3578,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/renametagdialog.ui" line="17"/>
         <source>Rename Tags in Database</source>
         <translation>Rinomina etichette nel database</translation>
-    </message>
-    <message>
-        <source>Rename all Occurrances ...</source>
-        <translation type="vanished">Rinomina tutte le occorrenze...</translation>
     </message>
     <message>
         <location filename="../src/gui/renametagdialog.ui" line="29"/>
@@ -4004,23 +3649,6 @@ Devo caricare un database?</translation>
         <location filename="../src/gui/savedialog.ui" line="109"/>
         <source>&amp;White:</source>
         <translation>&amp;Bianco:</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Player name in &lt;span style=&quot; font-weight:600;&quot;&gt;surname, name&lt;/span&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt; &lt;/span&gt;format. Some examples:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Kasparov, Garry&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Tal, Mikhail N&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Granda Zuniga, Julio E&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translatorcomment>non so se va tradotto</translatorcomment>
-        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1\&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-&quot;p, li { white-space: pre-wrap; }
-&quot;&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;&quot;
-&quot;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\&quot;&gt;Player name in &lt;span style=&quot; font-weight:600;&quot;&gt;surname, name&lt;/span&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt; &lt;/span&gt;format. Some examples:&lt;/p&gt;
-&quot;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\&quot;&gt;&lt;span style=&quot; font-style:italic;\&quot;&gt;Kasparov, Garry&lt;/span&gt;&lt;/p&gt;
-&quot;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;\&quot;&gt;Tal, Mikhail N&lt;/p&gt;
-&quot;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic;&quot;&gt;Granda Zuniga, Julio E&lt;p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/savedialog.ui" line="139"/>
@@ -4111,26 +3739,6 @@ p, li { white-space: pre-wrap; }
         <translation>Risultato:</translation>
     </message>
     <message>
-        <source>1-0</source>
-        <translation type="obsolete">1-0</translation>
-    </message>
-    <message>
-        <source>1/2-1/2</source>
-        <translation type="obsolete">1/2-1/2</translation>
-    </message>
-    <message>
-        <source>0-1</source>
-        <translation type="obsolete">0-1</translation>
-    </message>
-    <message>
-        <source>*</source>
-        <translation type="obsolete">*</translation>
-    </message>
-    <message>
-        <source>ClipBoard</source>
-        <translation type="vanished">Appunti</translation>
-    </message>
-    <message>
         <location filename="../src/gui/savedialog.cpp" line="66"/>
         <source>Clipboard</source>
         <translation>Appunti</translation>
@@ -4145,10 +3753,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>TableView</name>
-    <message>
-        <source>Small font</source>
-        <translation type="obsolete">Caratteri piccoli</translation>
-    </message>
     <message>
         <location filename="../src/gui/tableview.cpp" line="91"/>
         <source>Hide Column</source>
@@ -4167,15 +3771,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>TagDetailWidget</name>
-    <message>
-        <source>Form</source>
-        <translatorcomment>Not sure how to translate this.</translatorcomment>
-        <translation type="vanished">Form</translation>
-    </message>
-    <message>
-        <source>&amp;Filter:</source>
-        <translation type="vanished">&amp;Filtro:</translation>
-    </message>
     <message>
         <location filename="../src/gui/tagdetailwidget.ui" line="35"/>
         <source>Filter:</source>
@@ -4196,29 +3791,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/gui/tagdetailwidget.ui" line="73"/>
         <source>Rename</source>
         <translation>Rinomina</translation>
-    </message>
-</context>
-<context>
-    <name>TipOfDayDialog</name>
-    <message>
-        <source>Tip of the day</source>
-        <translation type="obsolete">Suggerimento del giorno</translation>
-    </message>
-    <message>
-        <source>Show tip on startup</source>
-        <translation type="obsolete">Mostra suggerimento all&apos;avvio</translation>
-    </message>
-    <message>
-        <source>&amp;Previous</source>
-        <translation type="obsolete">&amp;Precedente</translation>
-    </message>
-    <message>
-        <source>&amp;Next</source>
-        <translation type="obsolete">&amp;Successivo</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="obsolete">&amp;Chiudi</translation>
     </message>
 </context>
 </TS>

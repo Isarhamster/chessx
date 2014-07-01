@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de">
+<TS version="2.0" language="de">
 <context>
     <name>AboutDlg</name>
     <message>
@@ -641,14 +641,6 @@ Bitte Installation prüfen.</translation>
         <translation>Zug</translation>
     </message>
     <message>
-        <source>Elapsed time</source>
-        <translation type="vanished">Abgelaufene Zeit</translation>
-    </message>
-    <message>
-        <source>Clock time</source>
-        <translation type="vanished">Restzeit</translation>
-    </message>
-    <message>
         <location filename="../src/gui/commentdialog.ui" line="103"/>
         <source>H:mm:ss</source>
         <translation></translation>
@@ -828,18 +820,6 @@ Bitte Installation prüfen.</translation>
         <location filename="../src/gui/dlgsavebook.ui" line="102"/>
         <source>Output Path</source>
         <translation>Ausgabedatei</translation>
-    </message>
-    <message>
-        <source>Polyglot Error</source>
-        <translation type="obsolete">Polyglot Fehler</translation>
-    </message>
-    <message>
-        <source>Unknown Error</source>
-        <translation type="obsolete">Unbekannter Fehler</translation>
-    </message>
-    <message>
-        <source>File not found</source>
-        <translation type="obsolete">Datei nicht gefunden</translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.cpp" line="27"/>
@@ -1583,10 +1563,6 @@ Shall I download a database?</source>
         <translation>Variante entfernen</translation>
     </message>
     <message>
-        <source>&amp;Paste into new game</source>
-        <translation type="obsolete">Ablage in neue Partie einsetzen</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1170"/>
         <source>Toolbars</source>
         <translation>Toolbars</translation>
@@ -1758,10 +1734,6 @@ Shall I download a database?</source>
         <translation>Kopiere Bild</translation>
     </message>
     <message>
-        <source>&amp;Paste</source>
-        <translation type="obsolete">Einfügen &amp;PGN/FEN</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1183"/>
         <source>New board</source>
         <translation>Neues Brett</translation>
@@ -1790,14 +1762,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1303"/>
         <source>Fi&amp;nd</source>
         <translation>&amp;Suchen</translation>
-    </message>
-    <message>
-        <source>Find &amp;tag</source>
-        <translation type="obsolete">Suche &amp;Partiedaten</translation>
-    </message>
-    <message>
-        <source>Find &amp;position</source>
-        <translation type="obsolete">Suche &amp;Stellung</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1317"/>
@@ -1923,10 +1887,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindow.cpp" line="1307"/>
         <source>Find tag...</source>
         <translation>Suche Partie...</translation>
-    </message>
-    <message>
-        <source>Find position</source>
-        <translation type="vanished">Suche Stellung</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1326"/>
@@ -2964,10 +2924,6 @@ Shall I download a database?</source>
         <translation>Externes Programm auswählen</translation>
     </message>
     <message>
-        <source>Select polyglot application</source>
-        <translation type="obsolete">Polyglot Programm auswählen</translation>
-    </message>
-    <message>
         <location filename="../src/gui/preferences.cpp" line="403"/>
         <source>Clear all application settings?</source>
         <translation>Alle Einstellungen zurücksetzen?</translation>
@@ -3264,18 +3220,6 @@ Shall I download a database?</source>
         <location filename="../src/gui/preferences.ui" line="1209"/>
         <source>Command line, also $(InputPath), $(InputFile)</source>
         <translation>Kommandozeile, z.B. mit $(InputPath), $(InputFile)</translation>
-    </message>
-    <message>
-        <source>Polyglot application</source>
-        <translation type="obsolete">Polyglot Applikation</translation>
-    </message>
-    <message>
-        <source>Path to Polyglot application</source>
-        <translation type="obsolete">Pfad des Polyglot Programms</translation>
-    </message>
-    <message>
-        <source>External Tool</source>
-        <translation type="obsolete">Externes Tool</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1281"/>

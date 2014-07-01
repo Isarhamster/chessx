@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="da">
+<TS version="2.0" language="da">
 <context>
     <name>AboutDlg</name>
     <message>
@@ -640,14 +640,6 @@ Tjek venligst din installation.</translation>
         <translation>Træk</translation>
     </message>
     <message>
-        <source>Elapsed time</source>
-        <translation type="vanished">Brugt tid</translation>
-    </message>
-    <message>
-        <source>Clock time</source>
-        <translation type="vanished">Urvisning</translation>
-    </message>
-    <message>
         <location filename="../src/gui/commentdialog.ui" line="103"/>
         <source>H:mm:ss</source>
         <translation>H:mm:ss</translation>
@@ -827,18 +819,6 @@ Tjek venligst din installation.</translation>
         <location filename="../src/gui/dlgsavebook.ui" line="111"/>
         <source>Enter the complete target path</source>
         <translation>Angiv den fulde målsti</translation>
-    </message>
-    <message>
-        <source>Polyglot Error</source>
-        <translation type="obsolete">Polyglot-fejl</translation>
-    </message>
-    <message>
-        <source>Unknown Error</source>
-        <translation type="obsolete">Ukendt fejl</translation>
-    </message>
-    <message>
-        <source>File not found</source>
-        <translation type="obsolete">Filen blev ikke fundet</translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.cpp" line="27"/>
@@ -1536,14 +1516,6 @@ Skal jeg downloade en database?</translation>
         <translation>Find stilling...</translation>
     </message>
     <message>
-        <source>Find position</source>
-        <translation type="vanished">Find stilling</translation>
-    </message>
-    <message>
-        <source>&amp;Paste</source>
-        <translation type="obsolete">&amp;Indsæt</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1164"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Indstillinger ...</translation>
@@ -1748,14 +1720,6 @@ Skal jeg downloade en database?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1304"/>
         <source>Search</source>
         <translation>Søg</translation>
-    </message>
-    <message>
-        <source>Find &amp;tag</source>
-        <translation type="obsolete">Find &amp;tag</translation>
-    </message>
-    <message>
-        <source>Find &amp;position</source>
-        <translation type="obsolete">Find &amp;stilling</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1317"/>
@@ -3307,18 +3271,6 @@ Skal jeg downloade en database?</translation>
         <translation>Kommandolinje, der kan bruges $(InputPath) og $(InputFile)</translation>
     </message>
     <message>
-        <source>Polyglot application</source>
-        <translation type="obsolete">Polyglot-program</translation>
-    </message>
-    <message>
-        <source>Path to Polyglot application</source>
-        <translation type="obsolete">Sti til Polyglot-program</translation>
-    </message>
-    <message>
-        <source>External Tool</source>
-        <translation type="obsolete">Eksternt værktøj</translation>
-    </message>
-    <message>
         <location filename="../src/gui/preferences.ui" line="1271"/>
         <source>&amp;Ok</source>
         <translation>&amp;O.k.</translation>
@@ -3357,10 +3309,6 @@ Skal jeg downloade en database?</translation>
         <location filename="../src/gui/preferences.cpp" line="124"/>
         <source>Select external executable</source>
         <translation>Vælg ekstern kørbar programfil</translation>
-    </message>
-    <message>
-        <source>Select polyglot application</source>
-        <translation type="obsolete">Vælg Polyglot-program</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="135"/>
