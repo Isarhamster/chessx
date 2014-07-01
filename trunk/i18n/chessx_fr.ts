@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr_FR">
+<TS version="2.0" language="fr_FR">
 <context>
     <name>AboutDlg</name>
     <message>
@@ -640,14 +640,6 @@ Merci de vérifier votre installation.</translation>
         <translation>Coup</translation>
     </message>
     <message>
-        <source>Elapsed time</source>
-        <translation type="vanished">Temps écoulé</translation>
-    </message>
-    <message>
-        <source>Clock time</source>
-        <translation type="vanished">Heure de l&apos;horloge</translation>
-    </message>
-    <message>
         <location filename="../src/gui/commentdialog.ui" line="103"/>
         <source>H:mm:ss</source>
         <translation>H:mm:ss</translation>
@@ -827,14 +819,6 @@ Merci de vérifier votre installation.</translation>
         <location filename="../src/gui/dlgsavebook.ui" line="111"/>
         <source>Enter the complete target path</source>
         <translation>Chemin de livre</translation>
-    </message>
-    <message>
-        <source>Polyglot Error</source>
-        <translation type="obsolete">Erreur de polyglot</translation>
-    </message>
-    <message>
-        <source>File not found</source>
-        <translation type="obsolete">Fichier introuvable</translation>
     </message>
     <message>
         <location filename="../src/gui/dlgsavebook.cpp" line="27"/>
@@ -1488,10 +1472,6 @@ Dois-je télécharger une base ?</translation>
         <translation>Trouver la position...</translation>
     </message>
     <message>
-        <source>Find position</source>
-        <translation type="vanished">Trouver la position</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1535"/>
         <source>Start loading database...</source>
         <translation>Début du chargement de la base...</translation>
@@ -1637,10 +1617,6 @@ Dois-je télécharger une base ?</translation>
         <translation>Copier image</translation>
     </message>
     <message>
-        <source>&amp;Paste</source>
-        <translation type="obsolete">&amp;Coller</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1170"/>
         <source>Toolbars</source>
         <translation>Barres d&apos;outils</translation>
@@ -1755,14 +1731,6 @@ Dois-je télécharger une base ?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1304"/>
         <source>Search</source>
         <translation>Chercher</translation>
-    </message>
-    <message>
-        <source>Find &amp;tag</source>
-        <translation type="obsolete">Rechercher un &amp;critère</translation>
-    </message>
-    <message>
-        <source>Find &amp;position</source>
-        <translation type="obsolete">Trouver la &amp;position</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1317"/>
@@ -3046,14 +3014,6 @@ Dois-je télécharger une base ?</translation>
         <translation>Paramètres de ligne de commande</translation>
     </message>
     <message>
-        <source>Polyglot application</source>
-        <translation type="obsolete">Polyglot</translation>
-    </message>
-    <message>
-        <source>Path to Polyglot application</source>
-        <translation type="obsolete">Chemin d&apos;application</translation>
-    </message>
-    <message>
         <location filename="../src/gui/preferences.ui" line="1271"/>
         <source>&amp;Ok</source>
         <translation>&amp;Valider</translation>
@@ -3380,10 +3340,6 @@ Dois-je télécharger une base ?</translation>
         <location filename="../src/gui/preferences.cpp" line="124"/>
         <source>Select external executable</source>
         <translation>Choisir l&apos;exécutable externe</translation>
-    </message>
-    <message>
-        <source>Select polyglot application</source>
-        <translation type="obsolete">Choisir le chemin pour polyglot</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="403"/>
