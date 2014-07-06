@@ -343,13 +343,17 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Status */
     m_statusFilter = new QLabel();
-    statusBar()->addPermanentWidget(m_statusFilter,2);
+    statusBar()->addPermanentWidget(m_statusFilter,1);
     m_statusFilter->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
-    QLabel* enterLabel = new QLabel();
-    statusBar()->addPermanentWidget(enterLabel,1);
-    connect(this, SIGNAL(enterText(QString)), enterLabel, SLOT(setText(QString)));
-    enterLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    m_statusApp = new QLabel();
+    statusBar()->addPermanentWidget(m_statusApp,1);
+    m_statusApp->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+
+    QLabel* statusLabel = new QLabel();
+    statusBar()->addPermanentWidget(statusLabel,1);
+    connect(this, SIGNAL(enterText(QString)), statusLabel, SLOT(setText(QString)));
+    statusLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
     m_sliderSpeed = new TranslatingSlider(this);
     m_sliderSpeed->setMultiplier(1000);
@@ -1415,7 +1419,7 @@ bool MainWindow::confirmQuit()
 void MainWindow::startOperation(const QString& msg)
 {
     m_operationTime.start();
-    statusBar()->showMessage(msg);
+    slotStatusMessage(msg);
     m_progressBar->setMaximumHeight(m_statusFilter->height() - 3);
     statusBar()->insertPermanentWidget(0, m_progressBar);
     m_progressBar->setValue(0);
@@ -1424,13 +1428,13 @@ void MainWindow::startOperation(const QString& msg)
 
 void MainWindow::finishOperation(const QString& msg)
 {
-    statusBar()->showMessage(msg + tr(" (%1 s.)").arg(m_operationTime.elapsed() / 100 / 10.0));
+    slotStatusMessage(msg + tr(" (%1 s.)").arg(m_operationTime.elapsed() / 100 / 10.0));
     statusBar()->removeWidget(m_progressBar);
 }
 
 void MainWindow::cancelOperation(const QString& msg)
 {
-    statusBar()->showMessage(msg);
+    slotStatusMessage(msg);
     statusBar()->removeWidget(m_progressBar);
 }
 

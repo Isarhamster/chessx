@@ -32,6 +32,7 @@ public:
     bool updateFilter(Filter& f, const Board& b, bool bEnd);
     int getFilterIndex(QString& name) const;
     void updateFilterIndex(QStringList);
+    bool shouldAddMove() const;
 
 public slots:
     void cancel();

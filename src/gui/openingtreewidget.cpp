@@ -124,6 +124,11 @@ void OpeningTreeWidget::updateFilterIndex(QStringList files)
     connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged()));
 }
 
+bool OpeningTreeWidget::shouldAddMove() const
+{
+    return ui->makeMove->isChecked();
+}
+
 void OpeningTreeWidget::slotSourceChanged()
 {
     m_openingTree->cancel();
