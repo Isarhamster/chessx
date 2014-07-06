@@ -517,6 +517,7 @@ private:
     QList<BoardView*> m_boardViews;
     /* Status */
     QLabel* m_statusFilter;
+    QLabel* m_statusApp;
     QLabel* m_gameTitle;
     /* Menus */
     QMenu* m_menuDatabases;

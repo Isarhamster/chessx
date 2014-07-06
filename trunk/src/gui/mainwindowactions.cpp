@@ -1366,7 +1366,7 @@ void MainWindow::slotFilterLoad(int index)
 
 void MainWindow::slotStatusMessage(const QString& msg)
 {
-    statusBar()->showMessage(msg);
+    m_statusApp->setText(msg);
 }
 
 void MainWindow::slotOperationProgress(int progress)
@@ -1419,7 +1419,7 @@ void MainWindow::copyGame(int target, int index)
             QString fileName = m_databases[target]->filePath();
             QString msg;
             msg = tr("Append game %1 to %2.").arg(index + 1).arg(fileName.isEmpty() ? tr("Clipboard") : fileName);
-            statusBar()->showMessage(msg);
+            slotStatusMessage(msg);
 
             // The database is open and accessible
             m_databases[target]->database()->appendGame(g);
@@ -1453,7 +1453,7 @@ void MainWindow::copyGame(QString fileName, int index)
     {
         QString msg;
         msg = tr("Append game %1 to %2.").arg(index + 1).arg(fileName.isEmpty() ? "Clipboard" : fileName);
-        statusBar()->showMessage(msg);
+        slotStatusMessage(msg);
 
         writer.append(fileName, g);
         m_databaseList->update(fileName);
@@ -1472,7 +1472,7 @@ void MainWindow::copyDatabase(QString target, QString src)
         {
             QString msg;
             msg = tr("Append games from %1 to %2.").arg(src).arg(target.isEmpty() ? "Clipboard" : target);
-            statusBar()->showMessage(msg);
+            slotStatusMessage(msg);
             for(int i = 0; i < (int)pSrcDB->count(); ++i)
             {
                 Game g;
@@ -1665,7 +1665,7 @@ void MainWindow::slotTreeUpdate()
 void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 {
     Qt::KeyboardModifiers modifiers = QApplication::keyboardModifiers();
-    bool addMove = (modifiers & Qt::ShiftModifier);
+    bool addMove = m_openingTreeWidget->shouldAddMove() || (modifiers & Qt::ShiftModifier);
 
     QString move = m_openingTreeWidget->move(index);
     bool bEnd = (move == "[end]");

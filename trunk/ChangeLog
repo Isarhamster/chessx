@@ -22,6 +22,7 @@ June 2014: Version 1.2.0
 - New feature: Allow constant move indicator
 - New feature: #117 Export screenshot to file
 - New feature: Filter in ECO widgets support regular expression
+- New feature: Checkbox in opening tree to add moves to game too
 
 - Changed: Pinned games have infinite analysis depth
 - Changed: Dialogs remember sizes and screen positions
