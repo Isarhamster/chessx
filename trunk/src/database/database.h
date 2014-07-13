@@ -65,20 +65,20 @@ public:
 
     //game retrieval & storage
     /** Loads a game at @p index, returns true if successful */
-    virtual bool loadGame(int index, Game& game);
+    virtual bool loadGame(GameId gameId, Game& game);
     /** Load all tags for GameId from index into game object */
-    virtual void loadGameHeaders(GameId id, Game& game) const;
-    virtual void loadGameHeader(GameId id, Game& game, const QString& tag) const;
+    virtual void loadGameHeaders(GameId gameId, Game& game) const;
+    virtual void loadGameHeader(GameId gameId, Game& game, const QString& tag) const;
     /** Loads only moves into a game from the given position */
-    virtual void loadGameMoves(int index, Game& game) = 0;
+    virtual void loadGameMoves(GameId index, Game& game) = 0;
     /** Saves a game at the given position, returns true if successful */
-    virtual bool replace(int , Game&);
+    virtual bool replace(GameId , Game&);
     /** Adds a game to the database */
     virtual bool appendGame(const Game&);
     /** Removes a game from the database */
-    virtual bool remove(int);
+    virtual bool remove(GameId);
     /** Undelete a game from the database */
-    virtual bool undelete(int);
+    virtual bool undelete(GameId);
     /** Removes multiple games from the database as specified by the filter */
     virtual bool remove(const Filter&);
     /** @return pointer to the index of the database */
@@ -87,14 +87,14 @@ public:
     const Index *index() const;
     /** Returns the number of games in the database */
     virtual quint64 count() const;
-    /** @return true if the database has been modified. By default database is read-only. */
+    /** @return true if the database has been modified. */
     virtual bool isModified() const;
     /** Set / Reset the modification flag. */
     virtual void setModified(bool) { }
     /** Get the Valid Flag for a given game id from the index */
-    virtual bool getValidFlag(GameId id) const;
+    virtual bool getValidFlag(GameId gameId) const;
     /** Get the Valid Flag for a given game id from the index */
-    virtual bool deleted(GameId id) const;
+    virtual bool deleted(GameId gameId) const;
 
 signals:
     /** Signal emitted when some progress is done. */

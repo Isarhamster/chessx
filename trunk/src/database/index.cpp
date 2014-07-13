@@ -36,7 +36,7 @@ Index::~Index()
 
 GameId Index::add()
 {
-    int gameId = m_indexItems.count();
+    GameId gameId = m_indexItems.count();
     m_indexItems.append(new IndexItem);
     m_deletedGames.append(false);
     m_validFlags.append(true);
@@ -49,7 +49,7 @@ TagIndex Index::AddTagName(QString name)
     {
         return m_tagNameIndex.value(name);
     }
-    int n = m_tagNameIndex.size();
+    TagIndex n = m_tagNameIndex.size();
     m_tagNameIndex[name] = n;
     m_tagNames[n] = name;
     return n;
@@ -61,18 +61,18 @@ ValueIndex Index::AddTagValue(QString name)
     {
         return m_tagValueIndex[name];
     }
-    int n = m_tagValueIndex.size();
+    ValueIndex n = m_tagValueIndex.size();
     m_tagValueIndex[name] = n;
     m_tagValues[n] = name;
     return n;
 }
 
-void Index::setTag(const QString& tagName, const QString& value, int gameId)
+void Index::setTag(const QString& tagName, const QString& value, GameId gameId)
 {
     TagIndex tagIndex = AddTagName(tagName);
     ValueIndex valueIndex = AddTagValue(value);
 
-    if(m_indexItems.count() <= gameId)
+    if(m_indexItems.count() <= (int)gameId)
     {
         add();
     }
@@ -80,7 +80,7 @@ void Index::setTag(const QString& tagName, const QString& value, int gameId)
     m_mapTagToIndexItems.insertMulti(tagIndex, gameId);
 }
 
-void Index::setValidFlag(const int& gameId, bool value)
+void Index::setValidFlag(GameId gameId, bool value)
 {
     m_validFlags[gameId] = value;
 }
@@ -105,7 +105,7 @@ bool Index::replaceTagValue(const QString& tagName, const QString& newValue, con
     return true;
 }
 
-bool Index::isValidFlag(const int& gameId) const
+bool Index::isValidFlag(GameId gameId) const
 {
     return m_validFlags[gameId];
 }
@@ -282,7 +282,7 @@ QBitArray Index::listPartialValue(const QString& tagName, const QString& value) 
     return list;
 }
 
-QString Index::tagValue(TagIndex tagIndex, int gameId) const
+QString Index::tagValue(TagIndex tagIndex, GameId gameId) const
 {
     ValueIndex valueIndex = m_indexItems[gameId]->valueIndex(tagIndex);
 
@@ -335,7 +335,7 @@ ValueIndex Index::getValueIndex(const QString& value) const
     return m_tagValueIndex.value(value);
 }
 
-IndexItem* Index::item(int gameId)
+IndexItem* Index::item(GameId gameId)
 {
     return m_indexItems[gameId];
 }
@@ -364,7 +364,7 @@ QStringList Index::playerNames() const
     TagIndex tagIndex = getTagIndex(TagNameWhite);
     if(tagIndex != TagNoIndex)
     {
-        foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
+        foreach(GameId gameId, m_mapTagToIndexItems.values(tagIndex))
         {
             playerNameIndex.insert(m_indexItems[gameId]->valueIndex(tagIndex));
         }
@@ -373,7 +373,7 @@ QStringList Index::playerNames() const
     tagIndex = getTagIndex(TagNameBlack);
     if(tagIndex != TagNoIndex)
     {
-        foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
+        foreach(GameId gameId, m_mapTagToIndexItems.values(tagIndex))
         {
             playerNameIndex.insert(m_indexItems[gameId]->valueIndex(tagIndex));
         }
@@ -395,7 +395,7 @@ QStringList Index::tagValues(const QString& tagName) const
 
     if(tagIndex != TagNoIndex)
     {
-        foreach(int gameId, m_mapTagToIndexItems.values(tagIndex))
+        foreach(GameId gameId, m_mapTagToIndexItems.values(tagIndex))
         {
             tagNameIndex.insert(m_indexItems[gameId]->valueIndex(tagIndex));
         }
@@ -409,12 +409,12 @@ QStringList Index::tagValues(const QString& tagName) const
     return allTagNames;
 }
 
-bool Index::deleted(const int& gameId) const
+bool Index::deleted(GameId gameId) const
 {
     return m_deletedGames[gameId];
 }
 
-void Index::setDeleted(int gameId, bool df)
+void Index::setDeleted(GameId gameId, bool df)
 {
     m_deletedGames[gameId] = df;
 }

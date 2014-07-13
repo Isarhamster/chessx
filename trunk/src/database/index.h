@@ -44,7 +44,7 @@ public:
     // Storing tags //
     //
     /** Store the tag value for the given game, tag is given by name */
-    void setTag(const QString& tagName, const QString &value, int gameId);
+    void setTag(const QString& tagName, const QString &value, GameId gameId);
 
     // Retrieving tags //
     //
@@ -62,10 +62,10 @@ public:
     QString tagValueName(ValueIndex getValueIndex) const;
     QStringList tagValues(const QString& tagName) const;
     /** Set the valid flag accordingly */
-    void setValidFlag(const int& gameId, bool value);
+    void setValidFlag(GameId gameId, bool value);
 
     /** Get the valid flag accordingly */
-    bool isValidFlag(const int& gameId) const;
+    bool isValidFlag(GameId gameId) const;
 
     /** Set the valid flag accordingly */
     bool replaceTagValue(const QString& tagName, const QString& newValue, const QString& oldValue);
@@ -105,9 +105,9 @@ public:
     void clear();
 
     /** Read delete flag */
-    bool deleted(const int& gameId) const;
+    bool deleted(GameId gameId) const;
     /** Set delete flag */
-    void setDeleted(int gameId, bool df);
+    void setDeleted(GameId gameId, bool df);
 
 signals:
     void progress(int);
@@ -116,7 +116,7 @@ private:
     /** Contains information which games are marked for deletion */
     QList<bool> m_deletedGames;
     /** Return a pointer to the index item for the given game id */
-    IndexItem* item(int gameId);
+    IndexItem* item(GameId gameId);
 
     /** Map an Index to a tagName */
     QHash<TagIndex, QString> m_tagNames;
@@ -134,7 +134,7 @@ private:
     QList<bool> m_validFlags;
     QMultiHash<TagIndex, int> m_mapTagToIndexItems;
 
-    QString tagValue(TagIndex tagIndex, int gameId) const;
+    QString tagValue(TagIndex tagIndex, GameId gameId) const;
     QString tagName(TagIndex tagIndex) const;
 
 };

@@ -83,7 +83,7 @@ quint64 PolyglotDatabase::positionCount() const
     return m_count;
 }
 
-void PolyglotDatabase::loadGameMoves(int, Game &)
+void PolyglotDatabase::loadGameMoves(GameId, Game &)
 {
 
 }

@@ -354,17 +354,17 @@ void PgnDatabase::close()
     initialise();
 }
 
-void PgnDatabase::loadGameMoves(int index, Game& game)
+void PgnDatabase::loadGameMoves(GameId gameId, Game& game)
 {
     QMutexLocker m(&m_mutex);
-    if(!m_file || index >= m_count)
+    if(!m_file || gameId >= m_count)
     {
         return;
     }
     game.clear();
-    seekGame(index);
+    seekGame(gameId);
     skipTags();
-    QString fen = m_index.tagValue(TagNameFEN, index); // was m_count -1
+    QString fen = m_index.tagValue(TagNameFEN, gameId); // was m_count -1
     if(fen != "?")
     {
         game.dbSetStartingBoard(fen);
@@ -372,19 +372,19 @@ void PgnDatabase::loadGameMoves(int index, Game& game)
     parseMoves(&game);
 }
 
-bool PgnDatabase::loadGame(int index, Game& game)
+bool PgnDatabase::loadGame(GameId gameId, Game& game)
 {
-    if(!m_file || index >= m_count)
+    if(!m_file || gameId >= m_count)
     {
         return false;
     }
     QMutexLocker m(&m_mutex);
     //parse the game
     game.clear();
-    loadGameHeaders(index, game);
-    seekGame(index);
+    loadGameHeaders(gameId, game);
+    seekGame(gameId);
     skipTags();
-    QString fen = m_index.tagValue(TagNameFEN, index);  // was m_count - 1
+    QString fen = m_index.tagValue(TagNameFEN, gameId);  // was m_count - 1
     if(fen != "?")
     {
         game.dbSetStartingBoard(fen);
@@ -453,9 +453,9 @@ inline void PgnDatabase::skipLine()
     m_lineBuffer = m_file->readLine();
 }
 
-void PgnDatabase::seekGame(int index)
+void PgnDatabase::seekGame(GameId gameId)
 {
-    IndexBaseType n = offset(index);
+    IndexBaseType n = offset(gameId);
     if(!m_file->seek(n))
     {
         qDebug() << "Seeking offset " << n << " failed!";

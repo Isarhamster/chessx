@@ -49,7 +49,7 @@ Search::Type NullSearch::type() const
     return Search::NullSearch;
 }
 
-int NullSearch::matches(int)
+int NullSearch::matches(GameId)
 {
     return false;
 }
@@ -90,7 +90,7 @@ void PositionSearch::setPosition(const Board& position)
     m_position = position;
 }
 
-int PositionSearch::matches(int index)
+int PositionSearch::matches(GameId index)
 {
     m_database->loadGameMoves(index, m_game);
     return (m_game.findPosition(m_position) != NO_MOVE);
@@ -156,7 +156,7 @@ int EloSearch::minBlackElo() const
     return m_minBlackElo;
 }
 
-int EloSearch::matches(int index)
+int EloSearch::matches(GameId index)
 {
     return m_matches[index];
 }
@@ -206,7 +206,7 @@ void DateSearch::setDateRange(PartialDate minDate, PartialDate maxDate)
     m_maxDate = maxDate;
 }
 
-int DateSearch::matches(int index)
+int DateSearch::matches(GameId index)
 {
     m_database->loadGameHeaders(index, m_game);
     PartialDate date(m_game.tag("Date"));
@@ -298,14 +298,14 @@ void TagSearch::setValue(const QString& value)
     initialize();
 }
 
-int TagSearch::matches(int index)
+int TagSearch::matches(GameId index)
 {
     return m_matches[index];
 }
 
 /* Number class
  * ***************/
-NumberSearch::NumberSearch(Database* database, int start, int end)
+NumberSearch::NumberSearch(Database* database, GameId start, GameId end)
 {
     m_database = database;
     setRange(start, end);
@@ -327,7 +327,7 @@ Search::Type NumberSearch::type() const
     return Search::NumberSearch;
 }
 
-void NumberSearch::setRange(int start, int end)
+void NumberSearch::setRange(GameId start, GameId end)
 {
     m_start = start - 1;
     m_end = end - 1;
@@ -345,13 +345,9 @@ void NumberSearch::setRange(const QString& range)
     {
         m_start = m_end = range.toInt() - 1;
     }
-    if(m_end < 0)
-    {
-        m_end = m_database->count();
-    }
 }
 
-int NumberSearch::matches(int index)
+int NumberSearch::matches(GameId index)
 {
     return index >= m_start && index <= m_end;
 }
@@ -375,7 +371,7 @@ Search::Type FilterSearch::type() const
 {
     return Search::FilterSearch;
 }
-bool FilterSearch::contains(int game) const
+bool FilterSearch::contains(GameId game) const
 {
     return m_filter->contains(game);
 }
@@ -387,7 +383,7 @@ void FilterSearch::setFilter(Filter* filter)
 {
     m_filter = filter;
 }
-int FilterSearch::matches(int index)
+int FilterSearch::matches(GameId index)
 {
     return m_filter->contains(index);
 }

@@ -52,14 +52,14 @@ bool Database::isModified() const
     return false;
 }
 
-bool Database::getValidFlag(GameId id) const
+bool Database::getValidFlag(GameId gameId) const
 {
-    return m_index.isValidFlag(id);
+    return m_index.isValidFlag(gameId);
 }
 
-bool Database::deleted(GameId id) const
+bool Database::deleted(GameId gameId) const
 {
-    return m_index.deleted(id);
+    return m_index.deleted(gameId);
 }
 
 QString Database::name() const
@@ -73,22 +73,22 @@ bool Database::isReadOnly() const
     return true;
 }
 
-bool Database::loadGame(int /*index*/, Game& /*game*/)
+bool Database::loadGame(GameId /*gameId*/, Game& /*game*/)
 {
     return false;
 }
 
-void Database::loadGameHeaders(GameId id, Game &game) const
+void Database::loadGameHeaders(GameId gameId, Game &game) const
 {
-    m_index.loadGameHeaders(id, game);
+    m_index.loadGameHeaders(gameId, game);
 }
 
-void Database::loadGameHeader(GameId id, Game &game, const QString &tag) const
+void Database::loadGameHeader(GameId gameId, Game &game, const QString &tag) const
 {
-    m_index.loadGameHeader(id, game, tag);
+    m_index.loadGameHeader(gameId, game, tag);
 }
 
-bool Database::replace(int, Game &)
+bool Database::replace(GameId, Game &)
 {
     return false;
 }
@@ -98,7 +98,7 @@ bool Database::appendGame(const Game &)
     return false;
 }
 
-bool Database::undelete(int)
+bool Database::undelete(GameId)
 {
     return false;
 }
@@ -108,7 +108,7 @@ bool Database::remove(const Filter &)
     return false;
 }
 
-bool Database::remove(int)
+bool Database::remove(GameId)
 {
     return false;
 }

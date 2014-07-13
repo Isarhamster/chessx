@@ -77,7 +77,7 @@ public:
     quint64 positionCount() const;
 
     /** Loads only moves into a game from the given position */
-    virtual void loadGameMoves(int index, Game& game);
+    virtual void loadGameMoves(GameId index, Game& game);
     quint64 getHashFromBoard(Board b) const;
 
     /** Open a book data File */
