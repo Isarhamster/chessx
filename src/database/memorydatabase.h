@@ -35,33 +35,24 @@ public:
     /** Destructor */
     ~MemoryDatabase();
     /** Returns whether the database is read-only or not */
-    virtual bool isReadOnly() const
-    {
-        return false;
-    }
+    virtual bool isReadOnly() const;
     /** @return whether the database was modified. */
-    virtual bool isModified() const
-    {
-        return m_isModified;
-    }
+    virtual bool isModified() const;
     /** @return whether the database was modified. */
-    void setModified(bool b)
-    {
-        m_isModified = b;
-    }
+    void setModified(bool b);
     /** Adds a game to the database */
     bool appendGame(const Game& game);
     /** Removes a game from the database */
-    bool remove(int gameId);
+    bool remove(GameId gameId);
     /** Undo the deletion of a game */
-    bool undelete(int gameId);
+    bool undelete(GameId gameId);
     /** Saves a game at the given position, returns true if successful */
-    bool replace(int index, Game& game);
+    bool replace(GameId gameId, Game& game);
 
     /** Loads a game from the given position, returns true if successful */
-    bool loadGame(int index, Game& game);
+    bool loadGame(GameId gameId, Game& game);
     /** Loads only moves into a game from the given position */
-    void loadGameMoves(int index, Game& game);
+    void loadGameMoves(GameId gameId, Game& game);
 
 protected:
     virtual void parseGame();

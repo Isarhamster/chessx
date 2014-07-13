@@ -45,7 +45,7 @@ public:
     /** Standard destructor. */
     virtual ~Search() = 0;
     virtual Type type() const = 0;
-    virtual int matches(int index) = 0;
+    virtual int matches(GameId index) = 0;
     virtual void setDatabase(Database* database);
 protected:
     Database *m_database;
@@ -62,7 +62,7 @@ public :
     virtual NullSearch* clone() const;
     virtual ~NullSearch();
     virtual Type type() const;
-    virtual int matches(int index);
+    virtual int matches(GameId index);
 };
 
 /** @ingroup Search
@@ -89,7 +89,7 @@ public:
     /** Return moveId the move of  after which the game matches the search + 1. E.g. for standard game and chess start position
     	1 is returned.
     */
-    virtual int matches(int index);
+    virtual int matches(GameId index);
 private:
     Board m_position;
 };
@@ -121,7 +121,7 @@ public:
                           0, int maxBlackElo = 4000);
     void initialize();
     /** Return true if the game at index matches the search */
-    virtual int matches(int index);
+    virtual int matches(GameId index);
 
 private:
     int m_minWhiteElo;
@@ -153,7 +153,7 @@ public:
     /** Sets whole period. */
     void setDateRange(PartialDate minDate, PartialDate maxDate);
     /** Return true if the game at index matches the search */
-    virtual int matches(int index);
+    virtual int matches(GameId index);
 
 private:
     PartialDate m_minDate;
@@ -192,7 +192,7 @@ public:
     /** Set value to be matched */
     void setValue(const QString& value);
     /** Return true if the game at index matches the search */
-    virtual int matches(int index);
+    virtual int matches(GameId index);
     /** initialize the search. Done automatically in constructor, or when values are changed */
     void initialize();
     /** initialize the search. Done automatically in constructor, or when values are changed */
@@ -212,7 +212,7 @@ class NumberSearch : public Search
 {
 public:
     /** Simple constructor */
-    NumberSearch(Database* database, int start, int end);
+    NumberSearch(Database* database, GameId start, GameId end);
     /** Simple constructor. Supports "N1" or "N1-N2" format */
     NumberSearch(Database* database, const QString& value);
     /** Type - probably obsolete. */
@@ -220,13 +220,13 @@ public:
     /** Makes a deep copy of TagSearch object. Probably obsolete */
     virtual NumberSearch* clone() const;
     /** Set range to be selected */
-    void setRange(int start, int end);
+    void setRange(GameId start, GameId end);
     /** Set range to be selected. Supports "N1" or "N1-N2" format. */
     void setRange(const QString& value);
     /** Return true if the game at index matches the search */
-    virtual int matches(int index);
+    virtual int matches(GameId index);
 private:
-    int m_start, m_end;
+    GameId m_start, m_end;
 };
 
 
@@ -249,10 +249,10 @@ public:
     virtual ~FilterSearch();
     Type type() const;
 
-    bool contains(int game) const;
+    bool contains(GameId game) const;
     Filter* filter() const;
     void setFilter(Filter* filter);
-    virtual int matches(int game);
+    virtual int matches(GameId game);
 private:
     Filter *m_filter;
 };

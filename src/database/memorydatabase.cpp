@@ -25,6 +25,21 @@ MemoryDatabase::~MemoryDatabase()
     }
 }
 
+bool MemoryDatabase::isReadOnly() const
+{
+    return false;
+}
+
+bool MemoryDatabase::isModified() const
+{
+    return m_isModified;
+}
+
+void MemoryDatabase::setModified(bool b)
+{
+    m_isModified = b;
+}
+
 bool MemoryDatabase::appendGame(const Game& game)
 {
     // Add to index
@@ -46,23 +61,23 @@ bool MemoryDatabase::appendGame(const Game& game)
     return true;
 }
 
-bool MemoryDatabase::remove(int gameId)
+bool MemoryDatabase::remove(GameId gameId)
 {
     setModified(true);
     m_index.setDeleted(gameId, true);
     return true;
 }
 
-bool MemoryDatabase::undelete(int gameId)
+bool MemoryDatabase::undelete(GameId gameId)
 {
     setModified(true);
     m_index.setDeleted(gameId, false);
     return true;
 }
 
-bool MemoryDatabase::replace(int index, Game& game)
+bool MemoryDatabase::replace(GameId gameId, Game& game)
 {
-    if(index >= m_count)
+    if(gameId >= m_count)
     {
         return false;
     }
@@ -71,34 +86,34 @@ bool MemoryDatabase::replace(int index, Game& game)
     QMap <QString, QString>::const_iterator i = tags.constBegin();
     while(i != tags.constEnd())
     {
-        m_index.setTag(i.key(), i.value(), index);
+        m_index.setTag(i.key(), i.value(), gameId);
         ++i;
     }
     // Upate game array
-    *m_games[index] = game;
-    m_games[index]->clearTags();
+    *m_games[gameId] = game;
+    m_games[gameId]->clearTags();
     setModified(true);
     return true;
 }
 
-void MemoryDatabase::loadGameMoves(int index, Game& game)
+void MemoryDatabase::loadGameMoves(GameId gameId, Game& game)
 {
-    if(index >= m_count)
+    if(gameId >= m_count)
     {
         return;
     }
-    game = *m_games[index];
+    game = *m_games[gameId];
 }
 
-bool MemoryDatabase::loadGame(int index, Game& game)
+bool MemoryDatabase::loadGame(GameId gameId, Game& game)
 {
-    if(index < 0 || index >= m_count || m_index.deleted(index))
+    if(gameId >= m_count || m_index.deleted(gameId))
     {
         return false;
     }
 
-    game = *m_games[index];
-    loadGameHeaders(index, game);
+    game = *m_games[gameId];
+    loadGameHeaders(gameId, game);
 
     return true;
 }

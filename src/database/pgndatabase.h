@@ -44,9 +44,9 @@ public:
 
     //game retrieval & storage
     /** Loads a game from the given position, returns true if successful */
-    bool loadGame(int index, Game& game);
+    bool loadGame(GameId gameId, Game& game);
     /** Loads only moves into a game from the given position */
-    void loadGameMoves(int index, Game& game);
+    void loadGameMoves(GameId gameId, Game& game);
 
     // Open a PGN Data File from a string
     bool openString(const QString& content);
@@ -87,8 +87,9 @@ protected:
     // Open a PGN data File
     bool openFile(const QString& filename);
 
+    IndexBaseType m_count; // Should actually be a GameId - but cannot be changed due to serialization issues
+
     /** Adds the current file position as a new offset */
-    IndexBaseType m_count;
     void addOffset();
 
     QIODevice* m_file;
@@ -104,7 +105,7 @@ private:
     /** Skips the next line of text from the PGN file */
     void skipLine();
     /** Moves the file position to the start of the given game */
-    void seekGame(int index);
+    void seekGame(GameId gameId);
 
 
     //file variables
@@ -133,15 +134,15 @@ private:
 
     //offset methods
     /** Returns the file offset for the given game */
-    inline IndexBaseType offset(int index)
+    inline IndexBaseType offset(GameId gameId)
     {
         if(bUse64bit)
         {
-            return m_gameOffsets64[index];
+            return m_gameOffsets64[gameId];
         }
         else
         {
-            return m_gameOffsets32[index];
+            return m_gameOffsets32[gameId];
         }
     }
 
