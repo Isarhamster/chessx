@@ -613,7 +613,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
         }
         else if(token.endsWith("?!"))
         {
-            nag = SpeculativeMove;
+            nag = QuestionableMove;
         }
         else
         {
@@ -629,7 +629,7 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
         }
         else if(token.endsWith("!?"))
         {
-            nag = QuestionableMove;
+            nag = SpeculativeMove;
         }
         else
         {
