@@ -21,7 +21,7 @@ WBEngine::WBEngine(const QString& name,
     m_invertBlack = true;
 }
 
-bool WBEngine::startAnalysis(const Board& board, int nv, int mt, bool bNewGame)
+bool WBEngine::startAnalysis(const Board& board, int nv, int mt, bool /*bNewGame*/)
 {
     Engine::setMoveTime(mt);
     m_mpv = nv;
