@@ -373,7 +373,7 @@ OTHER_FILES += \
     COPYING \
     ChangeLog.txt \
     data/help/about.css \
-    data/help/about3.abouthtml \
+    data/help/about3.html \
     data/help/about0.html \
     data/help/about4.html \
     data/help/about5.html \
@@ -383,7 +383,8 @@ OTHER_FILES += \
     setup7-64.iss \
     setup7-32.iss \
     setupXP.iss \
-    data/help/about1a.html
+    data/help/about1a.html \
+    data/help/about6.html
 
 macx {
   OTHER_FILES += \
