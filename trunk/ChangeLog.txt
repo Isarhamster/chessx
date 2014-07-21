@@ -1,4 +1,4 @@
-This will install version 1.1.0 of ChessX.
+This will install version 1.2.0 of ChessX.
 
 List of Changes:
 - New Feature: Use polyglot books in Opening Tree
