@@ -31,10 +31,6 @@ void KbAction::installShortcut(QString text, const QKeySequence &key)
     m_storageKey.remove('&');
     if(!key.isEmpty())
     {
-#ifdef _DEBUG
-        _ASSERTE(!s_allKeys.contains(m_storageKey));
-        s_allKeys.add(m_storageKey);
-#endif
         setShortcut(key);
     }
 }

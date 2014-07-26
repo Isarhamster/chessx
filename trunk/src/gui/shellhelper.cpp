@@ -18,7 +18,7 @@ void ShellHelper::showInFinder(QString path)
     {
         param = QLatin1String("/select,");
     }
-    param += QDir::toNativeSeparators(pathIn);
+    param += QDir::toNativeSeparators(path);
     QProcess::startDetached("explorer.exe", QStringList(param));
 #elif defined(Q_OS_MAC)
     QStringList scriptArgs;
