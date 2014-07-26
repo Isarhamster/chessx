@@ -27,13 +27,13 @@
 SaveDialog::SaveDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
     ui.setupUi(this);
+    restoreLayout();
     QButtonGroup* group = new QButtonGroup(this);
     group->addButton(ui.result1Button);
     group->addButton(ui.result5Button);
     group->addButton(ui.result0Button);
     group->addButton(ui.resultNoneButton);
     connect(ui.buttonDiscardChanges, SIGNAL(clicked()), SLOT(discardChanges()));
-    QTimer::singleShot(0, this, SLOT(restoreLayout()));
 }
 
 void SaveDialog::restoreLayout()

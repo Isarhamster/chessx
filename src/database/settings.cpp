@@ -32,10 +32,10 @@ bool Settings::layout(QWidget* w)
     bool valid = list(w->objectName(), values, 5);
     if(valid)    // Enough values
     {
+        w->resize(values[2], values[3]);
+        w->move(values[0], values[1]);
         if(qobject_cast<QMainWindow*>(w))
         {
-            w->resize(values[2], values[3]);
-            w->move(values[0], values[1]);
             QByteArray docks = value("Docks", QByteArray()).toByteArray();
             if(docks.count())
             {
@@ -44,10 +44,6 @@ bool Settings::layout(QWidget* w)
         }
         else
         {
-            // restore non-main windows
-            w->setGeometry(values[0]+w->geometry().x()-w->pos().x(),
-                           values[1]+w->geometry().y()-w->pos().y(),
-                    values[2], values[3]);
             if(values[4])
             {
                 w->show();

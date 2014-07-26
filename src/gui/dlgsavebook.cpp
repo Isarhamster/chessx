@@ -14,6 +14,7 @@ DlgSaveBook::DlgSaveBook(QString path, QWidget *parent) :
   ui(new Ui::DlgSaveBook)
 {
   ui->setupUi(this);
+  restoreLayout();
 
   if (!path.isEmpty())
   {
@@ -30,7 +31,6 @@ DlgSaveBook::DlgSaveBook(QString path, QWidget *parent) :
   }
 
   ui->outputPath->setText(m_OutputPath);
-  QTimer::singleShot(0, this, SLOT(restoreLayout()));
 }
 
 void DlgSaveBook::restoreLayout()

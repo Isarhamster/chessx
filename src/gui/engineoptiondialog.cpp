@@ -10,9 +10,8 @@
 
 EngineOptionDialog::EngineOptionDialog(QWidget *parent,
                                        EngineList& engineList,
-                                       int index,
-                                       Qt::WindowFlags f) :
-    QDialog(parent, f),
+                                       int index) :
+    QDialog(parent),
     ui(new Ui::EngineOptionDialog)
 {
     ui->setupUi(this);
@@ -24,6 +23,7 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
                  arg(QString(engineList[index].protocol == EngineData::UCI ? "UCI" : "WinBoard"));
 
     setWindowTitle(t1);
+    restoreLayout();
     if(engineList[index].protocol == EngineData::UCI)
     {
         ui->tableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
@@ -38,8 +38,6 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
 
     connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
     connect(ui->resetButton, SIGNAL(clicked()), SLOT(optionReset()));
-
-    QTimer::singleShot(0, this, SLOT(restoreLayout()));
 }
 
 void EngineOptionDialog::restoreLayout()

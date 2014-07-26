@@ -28,6 +28,8 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
 {
     setObjectName("BoardSetupDialog");
     ui.setupUi(this);
+    restoreLayout();
+
     ui.boardView->configure();
     ui.boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove | BoardView::AllowCopyPiece);
     ui.boardView->showMoveIndicator(false);
@@ -86,8 +88,6 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     connect(ui.btSwapColor, SIGNAL(clicked()), SLOT(swapColors()));
 
     ui.tabWidget->setCurrentIndex(0);
-
-    QTimer::singleShot(0, this, SLOT(restoreLayout()));
 }
 
 void BoardSetupDialog::restoreLayout()

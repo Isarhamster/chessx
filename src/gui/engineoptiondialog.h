@@ -22,7 +22,7 @@ class EngineOptionDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit EngineOptionDialog(QWidget *parent, EngineList& engineList, int index, Qt::WindowFlags f = 0);
+    explicit EngineOptionDialog(QWidget *parent, EngineList& engineList, int index);
     ~EngineOptionDialog();
     OptionValueList GetResults() const;
 
