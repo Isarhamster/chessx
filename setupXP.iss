@@ -36,9 +36,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "..\build-chessx-Desktop_Qt_5_1_0_MinGW_32bit-Release\release\chessx.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build-chessx-Desktop_Qt_5_1_0_MinGW_32bit-Release\release\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\build-chessx-Desktop_Qt_5_1_0_MinGW_32bit-Release\release\chessx.exe.local"; DestDir: "{app}"; Flags: ignoreversion 
+Source: "..\build-chessx-MinGW_32bit-Release\release\chessx.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\build-chessx-MinGW_32bit-Release\release\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\build-chessx-MinGW_32bit-Release\release\chessx.exe.local"; DestDir: "{app}"; Flags: ignoreversion 
 Source: ".\COPYING"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ChangeLog"; DestDir: "{app}"
 Source: ".\data\engines\*.exe"; DestDir: "{app}\data\engines\"; Flags: ignoreversion recursesubdirs createallsubdirs
