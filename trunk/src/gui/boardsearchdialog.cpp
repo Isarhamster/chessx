@@ -8,6 +8,7 @@ BoardSearchDialog::BoardSearchDialog(QWidget *parent) :
     ui(new Ui::BoardSearchDialog)
 {
     ui->setupUi(this);
+    restoreLayout();
 
     ui->boardView->configure();
     ui->boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
@@ -20,8 +21,6 @@ BoardSearchDialog::BoardSearchDialog(QWidget *parent) :
     ui->modeCombo->addItem(tr("Search whole database"), Search::NullOperator);
     ui->modeCombo->addItem(tr("Add to current filter"), Search::Or);
     ui->modeCombo->addItem(tr("Remove from current filter"), Search::Remove);
-
-    QTimer::singleShot(0, this, SLOT(restoreLayout()));
 }
 
 void BoardSearchDialog::restoreLayout()

@@ -278,7 +278,7 @@ void PreferencesDialog::slotShowOptionDialog()
 {
     int index = ui.engineList->currentIndex().row();
     updateEngineData(index);
-    EngineOptionDialog dlg(0, engineList, index);
+    EngineOptionDialog dlg(this, engineList, index);
     if(dlg.exec() == QDialog::Accepted)
     {
         engineList[index].m_optionValues = dlg.GetResults();

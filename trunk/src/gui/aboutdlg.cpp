@@ -13,6 +13,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
     ui(new Ui::AboutDlg)
 {
     ui->setupUi(this);
+    restoreLayout();
 
     QString refPath = AppSettings->dataPath();
     ui->labelDataPath->setText(refPath);
@@ -33,8 +34,6 @@ AboutDlg::AboutDlg(QWidget *parent) :
     ui->labelSettingsPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     ui->labelHomepage->setTextInteractionFlags(Qt::TextBrowserInteraction);
     ui->labelMailingList->setTextInteractionFlags(Qt::TextBrowserInteraction);
-
-    QTimer::singleShot(0, this, SLOT(restoreLayout()));
 }
 
 void AboutDlg::restoreLayout()
