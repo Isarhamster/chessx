@@ -32,8 +32,9 @@ bool Settings::layout(QWidget* w)
     bool valid = list(w->objectName(), values, 5);
     if(valid)    // Enough values
     {
-        w->resize(QSize(values[2], values[3]));
-        w->move(QPoint(values[0], values[1]));
+        w->setGeometry(values[0]+w->geometry().x()-w->pos().x(),
+                       values[1]+w->geometry().y()-w->pos().y(),
+                values[2], values[3]);
         if(qobject_cast<QMainWindow*>(w))
         {
             QByteArray docks = value("Docks", QByteArray()).toByteArray();
