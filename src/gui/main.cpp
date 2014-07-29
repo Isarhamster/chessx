@@ -86,7 +86,7 @@ prevHook = _CrtSetReportHook(customReportHook);
 // _CrtSetBreakAlloc(157); // Use this line to break at the nth memory allocation
 #endif
 
-QApplication app(argc, argv);
+    QApplication app(argc, argv);
     app.setAttribute(Qt::AA_DontShowIconsInMenus);  // Icons are *no longer shown* in menus
 
 #if defined(Q_OS_MAC)
