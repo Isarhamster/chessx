@@ -79,6 +79,13 @@ public :
         NextMove,
         PreviousMove
     };
+
+    static const QRegExp egt;
+    static const QRegExp clk;
+    static const QRegExp emt;
+    static const QRegExp csl;
+    static const QRegExp cal;
+
     Game();
     Game(const Game& game);
     Game& operator=(const Game& game);
@@ -111,11 +118,7 @@ public :
     /** @return arrowAnnotation at move at node @p moveId. */
     QString arrowAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return annotation at move at node @p moveId. */
-    QString egtAnnotation(MoveId moveId = CURRENT_MOVE) const;
-    /** @return annotation at move at node @p moveId. */
-    QString emtAnnotation(MoveId moveId = CURRENT_MOVE) const;
-    /** @return annotation at move at node @p moveId. */
-    QString clkAnnotation(MoveId moveId = CURRENT_MOVE) const;
+    QString specAnnotation(const QRegExp &r, MoveId moveId = CURRENT_MOVE) const;
     /** @return time annotation (either egt or clock) at move at node @p moveId. */
     QString timeAnnotation(MoveId moveId = CURRENT_MOVE) const;
 
@@ -343,9 +346,6 @@ signals:
 
 private:
 
-    QString specialAnnotation(QString& annotation, QString specialMark) const;  // [%csl  [%cal
-    QString composeAnnotation(QString freeText, MoveId node) const;
-
 #pragma pack(push,2)
     struct MoveNode
     {
@@ -389,12 +389,6 @@ private:
     AnnotationMap m_variationStartAnnotations;
     /** Annotations for move nodes */
     AnnotationMap m_annotations;
-
-    /** SquareAnnotations for move nodes */
-    AnnotationMap m_squareAnnotations;
-
-    /** ArrowAnnotations for move nodes */
-    AnnotationMap m_arrowAnnotations;
 
     /** Map keeping pgn tags of the game */
     QMap<QString, QString> m_tags;

@@ -12,6 +12,12 @@
 #include <QFile>
 #include "game.h"
 
+const QRegExp Game::emt("\\[%emt\\s*(\\d:\\d\\d:\\d\\d)\\]");
+const QRegExp Game::clk("\\[%clk\\s*(\\d:\\d\\d:\\d\\d)\\]");
+const QRegExp Game::egt("\\[%egt\\s*(\\d:\\d\\d:\\d\\d)\\]");
+const QRegExp Game::csl("\\[%csl\\s*([^\\]]*)\\]");
+const QRegExp Game::cal("\\[%cal\\s*([^\\]]*)\\]");
+
 QMap<quint64, QString> Game::m_ecoPositions;
 
 Game::Game() : QObject()
@@ -36,8 +42,6 @@ Game& Game::operator=(const Game & game)
         m_startingBoard = game.m_startingBoard;
         m_variationStartAnnotations = game.m_variationStartAnnotations;
         m_annotations = game.m_annotations;
-        m_squareAnnotations = game.m_squareAnnotations;
-        m_arrowAnnotations = game.m_arrowAnnotations;
         m_currentNode = game.m_currentNode;
         m_startPly = game.m_startPly;
         m_currentBoard = game.m_currentBoard;
@@ -718,8 +722,6 @@ void Game::removeComments()
     Game state = *this;
     m_variationStartAnnotations.clear();
     m_annotations.clear();
-    m_squareAnnotations.clear();
-    m_arrowAnnotations.clear();
     for(int i = 0; i < m_moveNodes.size(); ++i)
     {
         m_moveNodes[i].nags.clear();
@@ -840,6 +842,7 @@ bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
     Game state = *this;
     if (dbSetAnnotation(annotation, moveId, position))
     {
+        indicateAnnotationsOnBoard(currentMove());
         emit signalGameModified(true, state, tr("Set annotation"));
         return true;
     }
@@ -853,29 +856,6 @@ bool Game::dbSetAnnotation(QString annotation, MoveId moveId, Position position)
     {
         return false;
     }
-
-    QString specAnnot = specialAnnotation(annotation, "[%csl");
-    if(position == Game::AfterMove || node == 0)
-    {
-        setSquareAnnotation(specAnnot, node);
-    }
-    else
-    {
-        setSquareAnnotation(specAnnot, m_moveNodes[node].previousNode);
-    }
-
-    specAnnot = specialAnnotation(annotation, "[%cal");
-    if(position == Game::AfterMove || node == 0)
-    {
-        setArrowAnnotation(specAnnot, node);
-    }
-    else
-    {
-        setArrowAnnotation(specAnnot, m_moveNodes[node].previousNode);
-    }
-
-    annotation.remove(QRegExp("\\[%csl[^\\]]*\\]"));
-    annotation.remove(QRegExp("\\[%cal[^\\]]*\\]"));
 
     int moves;
     int comments;
@@ -922,14 +902,14 @@ bool Game::setSquareAnnotation(QString squareAnnotation, MoveId moveId)
         return false;
     }
 
-    if(squareAnnotation.isEmpty())
+    QString s = annotation(moveId);
+    s.remove(csl);
+
+    if(!squareAnnotation.isEmpty())
     {
-        m_squareAnnotations.remove(node);
+        s.append(QString("[%csl %1]").arg(squareAnnotation));
     }
-    else
-    {
-        m_squareAnnotations[node] = squareAnnotation;
-    }
+    dbSetAnnotation(s, moveId);
     return true;
 }
 
@@ -977,7 +957,7 @@ bool Game::appendSquareAnnotation(Square s, QChar colorCode)
             newAnnot.truncate(newAnnot.length() - 1);
         }
     }
-    setSquareAnnotation(newAnnot);
+    setSquareAnnotation(newAnnot.trimmed());
     indicateAnnotationsOnBoard(currentMove());
     emit signalGameModified(true, state, tr("Colorize square"));
     return true;
@@ -1033,18 +1013,8 @@ bool Game::appendArrowAnnotation(Square dest, Square src, QChar colorCode)
 
 QString Game::squareAnnotation(MoveId moveId) const
 {
-    MoveId node = nodeValid(moveId);
-    if(node == NO_MOVE)
-    {
-        return "";
-    }
-
-    QString annotation = m_squareAnnotations[node];
-    if(annotation.isNull())
-    {
-        return "";
-    }
-    return m_squareAnnotations[node].simplified();
+    QString s = specAnnotation(csl, moveId);
+    return s;
 }
 
 bool Game::setArrowAnnotation(QString arrowAnnotation, MoveId moveId)
@@ -1055,97 +1025,24 @@ bool Game::setArrowAnnotation(QString arrowAnnotation, MoveId moveId)
         return false;
     }
 
-    if(arrowAnnotation.isEmpty())
+    QString s = annotation(moveId);
+    s.remove(cal);
+
+    if(!arrowAnnotation.isEmpty())
     {
-        m_arrowAnnotations.remove(node);
+        s.append(QString("[%cal %1]").arg(arrowAnnotation));
     }
-    else
-    {
-        m_arrowAnnotations[node] = arrowAnnotation;
-    }
+    dbSetAnnotation(s, moveId);
     return true;
 }
 
 QString Game::arrowAnnotation(MoveId moveId) const
 {
-    MoveId node = nodeValid(moveId);
-    if(node == NO_MOVE)
-    {
-        return "";
-    }
-
-    QString annotation = m_arrowAnnotations[node];
-    if(annotation.isNull())
-    {
-        return "";
-    }
-    return m_arrowAnnotations[node].simplified();
-}
-
-QString Game::egtAnnotation(MoveId moveId) const
-{
-    MoveId node = nodeValid(moveId);
-    if(node == NO_MOVE)
-    {
-        return "";
-    }
-
-    QString annotation = m_annotations[node];
-    if(annotation.isNull())
-    {
-        return "";
-    }
-
-    QRegExp egt("\\[%egt\\s*(\\d:\\d\\d:\\d\\d)\\]");
-    int pos = egt.indexIn(annotation);
-    if(pos >= 0)
-    {
-        return egt.cap(1);
-    }
-
-    return "";
-}
-
-QString Game::emtAnnotation(MoveId moveId) const
-{
-    MoveId node = nodeValid(moveId);
-    if(node == NO_MOVE)
-    {
-        return "";
-    }
-
-    QString annotation = m_annotations[node];
-    if(annotation.isNull())
-    {
-        return "";
-    }
-
-    QRegExp emt("\\[%emt\\s*(\\d:\\d\\d:\\d\\d)\\]");
-    int pos = emt.indexIn(annotation);
-    if(pos >= 0)
-    {
-        return emt.cap(1);
-    }
-
-    return "";
-}
-
-
-QString Game::timeAnnotation(MoveId moveId) const
-{
-    QString s = clkAnnotation(moveId);
-    if(s.isEmpty())
-    {
-        s = egtAnnotation(moveId);
-    }
-    if (s.isEmpty())
-    {
-        s = emtAnnotation(moveId);
-    }
+    QString s = specAnnotation(cal, moveId);
     return s;
 }
 
-QString Game::clkAnnotation(MoveId moveId) const
+QString Game::specAnnotation(const QRegExp& r, MoveId moveId) const
 {
     MoveId node = nodeValid(moveId);
     if(node == NO_MOVE)
@@ -1159,46 +1056,40 @@ QString Game::clkAnnotation(MoveId moveId) const
         return "";
     }
 
-    QRegExp clk("\\[%clk\\s*(\\d:\\d\\d:\\d\\d)\\]");
-    int pos = clk.indexIn(annotation);
+    int pos = r.indexIn(annotation);
     if(pos >= 0)
     {
-        return clk.cap(1);
+        return r.cap(1);
     }
 
     return "";
 }
 
-QString Game::composeAnnotation(QString freeText, MoveId node) const
+QString Game::timeAnnotation(MoveId moveId) const
 {
-    if(!m_squareAnnotations[node].isEmpty())
+    QString s = specAnnotation(clk, moveId);
+    if(s.isEmpty())
     {
-        freeText.append(QString("[%csl %1]").arg(m_squareAnnotations[node]));
+        s = specAnnotation(egt, moveId);
     }
-    if(!m_arrowAnnotations[node].isEmpty())
+    if (s.isEmpty())
     {
-        freeText.append(QString("[%cal %1]").arg(m_arrowAnnotations[node]));
+        s = specAnnotation(emt, moveId);
     }
-    return freeText;
+    return s;
 }
 
 QString Game::annotation(MoveId moveId, Position position) const
 {
     MoveId node = nodeValid(moveId);
-    if(position == AfterMove)
+
+    if ((position == AfterMove) || (node == 0))
     {
-        return composeAnnotation(m_annotations.value(node, ""), node);
+        return m_annotations.value(node, "");
     }
     else
     {
-        if(node == 0)
-        {
-            return composeAnnotation(m_annotations.value(0, ""), 0);
-        }
-        else
-        {
-            return m_variationStartAnnotations.value(node, "");
-        }
+        return m_variationStartAnnotations.value(node, "");
     }
 }
 
@@ -1206,27 +1097,22 @@ QString Game::textAnnotation(MoveId moveId, Position position) const
 {
     QString s;
     MoveId node = nodeValid(moveId);
-    if(position == AfterMove)
+
+    if ((position == AfterMove) || (node == 0))
     {
         s = m_annotations.value(node, "");
     }
     else
     {
-        if(node == 0)
-        {
-            s = m_annotations.value(0, "");
-        }
-        else
-        {
-            s = m_variationStartAnnotations.value(node, "");
-        }
+        s = m_variationStartAnnotations.value(node, "");
     }
-    QRegExp emt("\\[%emt\\s*(\\d:\\d\\d:\\d\\d)\\]");
+
     s.remove(emt);
-    QRegExp egt("\\[%egt\\s*(\\d:\\d\\d:\\d\\d)\\]");
     s.remove(egt);
-    QRegExp clk("\\[%clk\\s*(\\d:\\d\\d:\\d\\d)\\]");
     s.remove(clk);
+    s.remove(csl);
+    s.remove(cal);
+
     return s;
 }
 
@@ -1593,21 +1479,24 @@ void Game::moveToId(MoveId moveId)
         return;
     }
 
-    //jump to node, travelling back to start adding the moves to the stack
-    MoveId node = moveId;
-    QStack < Move > moveStack;
-    while(node)
+    if (m_currentNode != moveId)
     {
-        moveStack.push(m_moveNodes[node].move);
-        node = m_moveNodes[node].previousNode;
-    }
+        //jump to node, travelling back to start adding the moves to the stack
+        MoveId node = moveId;
+        QStack < Move > moveStack;
+        while(node)
+        {
+            moveStack.push(m_moveNodes[node].move);
+            node = m_moveNodes[node].previousNode;
+        }
 
-    //reset the board, then make the moves on the stack to create the correct position
-    m_currentNode = moveId;
-    m_currentBoard = m_startingBoard;
-    while(!moveStack.isEmpty())
-    {
-        m_currentBoard.doMove(moveStack.pop());
+        //reset the board, then make the moves on the stack to create the correct position
+        m_currentNode = moveId;
+        m_currentBoard = m_startingBoard;
+        while(!moveStack.isEmpty())
+        {
+            m_currentBoard.doMove(moveStack.pop());
+        }
     }
 
     indicateAnnotationsOnBoard(moveId);
@@ -1690,8 +1579,6 @@ void Game::removeNode(MoveId moveId)
     {
         m_variationStartAnnotations.remove(node);
         m_annotations.remove(node);
-        m_squareAnnotations.remove(node);
-        m_arrowAnnotations.remove(node);
 
         if(variationCount(node))
         {
@@ -1714,8 +1601,6 @@ void Game::clear()
     m_moveNodes.clear();
     m_variationStartAnnotations.clear();
     m_annotations.clear();
-    m_squareAnnotations.clear();
-    m_arrowAnnotations.clear();
 
     m_startPly = 0;
     m_currentNode = 0;
@@ -1881,8 +1766,6 @@ void Game::dumpAnnotations(MoveId moveId) const
     {
         qDebug() << "   Annotations";
         qDebug() << "     Text        : " << m_annotations.value(moveId);
-        qDebug() << "     Square      : " << m_squareAnnotations.value(moveId);
-        qDebug() << "     Arrow       : " << m_arrowAnnotations.value(moveId);
         qDebug() << "     Start       : " << m_variationStartAnnotations.value(moveId);
     }
 }
@@ -1967,14 +1850,10 @@ void Game::compact()
     {
         m_variationStartAnnotations.remove(m);
         m_annotations.remove(m);
-        m_squareAnnotations.remove(m);
-        m_arrowAnnotations.remove(m);
     }
 
     AnnotationMap variationStartAnnotations;
     AnnotationMap annotations;
-    AnnotationMap squareAnnotations;
-    AnnotationMap arrowAnnotations;
 
     foreach(MoveId key, oldIdNewIdMapping.keys())
     {
@@ -1988,8 +1867,6 @@ void Game::compact()
 
         GAME_UPDATE_ANNOT(variationStartAnnotations, m_variationStartAnnotations);
         GAME_UPDATE_ANNOT(annotations, m_annotations);
-        GAME_UPDATE_ANNOT(squareAnnotations, m_squareAnnotations);
-        GAME_UPDATE_ANNOT(arrowAnnotations, m_arrowAnnotations);
     }
 
     // update nodes links to other nodes in shrinked list (prev, next, variations)
@@ -2011,13 +1888,9 @@ void Game::compact()
 
     m_variationStartAnnotations.clear();
     m_annotations.clear();
-    m_squareAnnotations.clear();
-    m_arrowAnnotations.clear();
 
     m_variationStartAnnotations = variationStartAnnotations;
     m_annotations               = annotations;
-    m_squareAnnotations         = squareAnnotations;
-    m_arrowAnnotations          = arrowAnnotations;
 
     m_moveNodes.clear();
     m_moveNodes = moveNodes;
@@ -2071,25 +1944,6 @@ void Game::reparentVariation(MoveId variation, MoveId parent)
             m_moveNodes[node].parentNode = parent;
         }
     }
-}
-
-QString Game::specialAnnotation(QString& annotation, QString specialMark) const  // [%csl  [%cal
-{
-    QString result = "";
-    int specialAnnotationStart = annotation.indexOf(specialMark);
-    // If we found a chessbase special annotation
-    if(specialAnnotationStart >= 0)
-    {
-        int specialAnnotationDataStart = specialAnnotationStart + specialMark.length() + 1; //+ 1 for space after specialMark
-        int specialAnnotationEnd = annotation.indexOf(']', specialAnnotationDataStart);
-
-        if(specialAnnotationEnd > specialAnnotationDataStart)
-        {
-            result = annotation.mid(specialAnnotationDataStart, specialAnnotationEnd - specialAnnotationDataStart);
-            annotation.remove(QRegExp(QString("\\") + specialMark + "[\\]]*\\]"));
-        };
-    }
-    return result;
 }
 
 
