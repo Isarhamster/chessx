@@ -456,7 +456,6 @@ QString PolyglotDatabase::move_to_string(quint16 move) const
 int PolyglotDatabase::find_key(quint64 key, entry_t *entry)
 {
     entry_t test_entry;
-    // qDebug() << key << endl;
     while(!entry_from_file(&test_entry))
     {
         if (key==test_entry.key)
@@ -536,19 +535,13 @@ bool PolyglotDatabase::openForWriting(const QString &filename, int maxPly, int m
 
 void PolyglotDatabase::book_make(Database &db, volatile bool& breakFlag)
 {
-    qDebug() << "Adding Databse" << endl;
     if (!breakFlag) add_database(db);
-    qDebug() << "Overflow Correction" << endl;
+    if (!breakFlag) spool_map();
     if (!breakFlag) overflow_correction();
-    qDebug() << "Filter" << endl;
     if (!breakFlag) book_filter();
-    qDebug() << "Sort" << endl;
     if (!breakFlag) book_sort();
-    qDebug() << "Save" << endl;
     if (!breakFlag) book_save();
-    qDebug() << "Close" << endl;
     close();
-    qDebug() << "Done" << endl;
 }
 
 // ---------------------------------------------------------
@@ -587,6 +580,16 @@ void PolyglotDatabase::halve_stats(quint64 key)
     }
 }
 
+void PolyglotDatabase::spool_map()
+{
+    foreach(book_key k, m_bookDictionary.keys())
+    {
+        book_entry b(k, m_bookDictionary.value(k));
+        m_book.append(b);
+    }
+    m_bookDictionary.clear();
+}
+
 void PolyglotDatabase::overflow_correction()
 {
     for (Book::iterator i=m_book.begin(); i!=m_book.end();++i)
@@ -613,17 +616,16 @@ book_entry* PolyglotDatabase::find_entry(const book_entry& entry)
 
 void PolyglotDatabase::update_entry(book_entry& entry, int result)
 {
-    if (book_entry* b = find_entry(entry))
-    {
-        b->n++;
-        b->sum += result + 1;
-    }
-    else
-    {
-        entry.n = 1;
-        entry.sum = result + 1;
-        m_book.append(entry);
-    }
+    book_key key;
+    key.key = entry.key;
+    key.move = entry.move;
+
+    book_value b = m_bookDictionary.value(key);
+
+    b.n++;
+    b.sum += result + 1;
+
+    m_bookDictionary[key] = b;
 }
 
 void PolyglotDatabase::book_sort()
@@ -732,11 +734,9 @@ void PolyglotDatabase::add_game(Game& g, int result)
 
             // Get a move in ChessX format
             entry.key = getHashFromBoard(g.board());
-            // qDebug() << entry.key << endl;
 
             g.forward();
             Move m = g.move();
-            // qDebug() << m.from() << "-" << m.to() << endl;
 
             // convert into polyglot move format
             if (!get_move_entry(m,entry))

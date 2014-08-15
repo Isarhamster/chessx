@@ -16,20 +16,59 @@ typedef struct
     quint32 learn;
 } entry_t;
 
+typedef struct _book_key
+{
+    inline bool operator<(const _book_key& k2)const
+    {
+        Q_ASSERT(this!=&k2);
+        if (key > k2.key)
+        {
+            return false;
+        }
+        else if (key < k2.key)
+        {
+            return true;
+        }
+        else if (k2.move > move)
+        {
+            return false;
+        }
+        else if (k2.move < move)
+        {
+            return true;
+        }
+        return false;
+    }
+    quint64 key;
+    quint16 move;
+} book_key;
+
+typedef struct _book_value
+{
+    _book_value() : n(0),sum(0) {}
+    quint32 n;
+    quint32 sum;
+} book_value;
+
 typedef struct _book_entry
 {
    quint64 key;
    quint16 move;
    quint32 n;
    quint32 sum;
-   quint16 colour;
    _book_entry()
    {
        key=0;
        move=0;
        n=0;
        sum=0;
-       colour=0;
+   }
+   _book_entry(book_key k, book_value v)
+   {
+       key=k.key;
+       move=k.move;
+       n=v.n;
+       sum=v.sum;
    }
    inline bool operator<(const _book_entry& k2)const
    {
@@ -55,6 +94,7 @@ typedef struct _book_entry
 } book_entry;
 
 typedef QList<book_entry> Book;
+typedef QMap<book_key,book_value> BookMap;
 
 class PolyglotDatabase : public Database
 {
@@ -105,6 +145,7 @@ protected:
     bool keep_entry(const book_entry &entry);
     void halve_stats(quint64 key);
     void book_sort();
+    void spool_map();
     void overflow_correction();
     void update_entry(book_entry &entry, int result);
     book_entry *find_entry(const book_entry &entry);
@@ -120,6 +161,7 @@ private:
     QIODevice* m_file;
     quint64 m_count;
     Book m_book;
+    BookMap m_bookDictionary;
     bool m_uniform;
     quint32 m_minGame;
     int m_maxPly;
