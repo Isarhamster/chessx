@@ -55,6 +55,12 @@ Game::~Game()
 {
 }
 
+void Game::copyFromGame(const Game& g)
+{
+    *this = g;
+    emit signalGameModified(true,*this,"");
+}
+
 MoveId Game::dbAddMove(const Move& move, const QString& annotation, NagSet nags)
 {
     MoveNode node;
@@ -1636,11 +1642,11 @@ void Game::removeTag(const QString& tag)
     m_tags.remove(tag);
 }
 
-void Game::setStartingBoard(const Board& startingBoard)
+void Game::setStartingBoard(const Board& startingBoard, QString text)
 {
     Game state = *this;
     dbSetStartingBoard(startingBoard.toFen());
-    emit signalGameModified(true, state, tr("Set starting board"));
+    emit signalGameModified(true, state, text);
 }
 
 void Game::dbSetStartingBoard(const Board& startingBoard)

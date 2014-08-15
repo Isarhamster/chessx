@@ -391,7 +391,7 @@ protected slots:
 
 protected:
     void moveChanged();
-    bool pasteFen(QString& errorText, QString fen);
+    bool pasteFen(QString& errorText, QString fen, bool newGame=false);
     void copyGame(int target, int index);
     Database* getDatabaseByPath(QString path);
     DatabaseInfo* getDatabaseInfoByPath(QString path);
