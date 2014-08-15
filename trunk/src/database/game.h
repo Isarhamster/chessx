@@ -337,9 +337,11 @@ public :
     void moveVariationUp(MoveId moveId);
     /** Move the variation @p moveId of the curent node down in the list of variations */
     void moveVariationDown(MoveId moveId);
+    /** Copy in a game and set it as modified (different from operator=) */
+    void copyFromGame(const Game& g);
 
     int resultAsInt() const;
-    void setStartingBoard(const Board &startingBoard);
+    void setStartingBoard(const Board &startingBoard, QString text);
 signals:
     void signalGameModified(bool,Game,QString);
     void signalMoveChanged();

@@ -424,7 +424,7 @@ void MainWindow::slotEditVarRemove()
     }
 }
 
-bool MainWindow::pasteFen(QString& msg, QString fen)
+bool MainWindow::pasteFen(QString& msg, QString fen, bool newGame)
 {
     // Prepare Fen - clean up code like this:
     // [FEN "***"] to ***
@@ -457,7 +457,11 @@ bool MainWindow::pasteFen(QString& msg, QString fen)
                  "You can only paste such positions in <b>Setup position</b> dialog.");
         return false ;
     }
-    game().setStartingBoard(board);
+    if (newGame)
+    {
+        slotGameNew();
+    }
+    game().setStartingBoard(board,"");
     return true;
 }
 
@@ -483,8 +487,7 @@ bool MainWindow::slotEditPastePGN()
             if(pgnDatabase.loadGame(0, g))
             {
                 slotGameNew();
-                game() = g;
-                slotGameChanged();
+                game().copyFromGame(g);
                 return true;
             }
         }
@@ -496,7 +499,7 @@ void MainWindow::slotEditPaste()
 {
     QString fen = QApplication::clipboard()->text().simplified();
     QString dummy;
-    if(!pasteFen(dummy, fen))
+    if(!pasteFen(dummy, fen, true))
     {
         slotEditPastePGN();
     }
@@ -545,7 +548,7 @@ void MainWindow::slotEditBoard()
     dlg.setFlipped(m_boardView->isFlipped());
     if(dlg.exec() == QDialog::Accepted)
     {
-        game().setStartingBoard(dlg.board());
+        game().setStartingBoard(dlg.board(),tr("Set starting board"));
     }
 }
 

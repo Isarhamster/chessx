@@ -116,7 +116,7 @@ signals:
 
 public slots:
     void dbCleanChanged(bool);
-    void setModified(bool modfied, const Game &g, QString action);
+    void setModified(bool modfied, const Game &g, QString action="");
 
 private:
     QUndoStack* m_undoStack;
