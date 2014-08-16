@@ -269,6 +269,7 @@ public :
     void mergeWithGame(const Game& g);
     /** Promotes the given variation to the main line, returns true if successful */
     bool promoteVariation(MoveId variation);
+    void dbPromoteVariation(MoveId variation);
     /** Removes the given variation, returns true if successful */
     bool removeVariation(MoveId variation);
     /** Removes all variations and mainline moves after the current position,

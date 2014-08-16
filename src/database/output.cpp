@@ -336,6 +336,7 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     {
         moveId = m_game.currentMove();
     }
+
     mvno = QString::number(moveId);
     if(m_game.nags(moveId).count() > 0)
     {
