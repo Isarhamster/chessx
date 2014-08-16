@@ -46,6 +46,9 @@ void CopyDialog::setMode(SrcMode mode)
     case SingleGame:
         ui.singleButton->setChecked(true);
         break;
+    case Selection:
+        ui.selectedButton->setChecked(true);
+        break;
     case Filter:
         ui.filterButton->setChecked(true);
         break;
@@ -65,6 +68,10 @@ int CopyDialog::getMode() const
     if(ui.singleButton->isChecked())
     {
         return SingleGame;
+    }
+    else if(ui.selectedButton->isChecked())
+    {
+        return Selection;
     }
     else if(ui.filterButton->isChecked())
     {

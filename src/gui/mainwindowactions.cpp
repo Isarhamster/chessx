@@ -1063,6 +1063,26 @@ void MainWindow::slotGameModify(const EditAction& action)
     }
 }
 
+void MainWindow::slotMergeActiveGame(QList<int> gameIndexList)
+{
+    if (gameIndexList.size())
+    {
+        Game state = game();
+        foreach(int gameIndex, gameIndexList)
+        {
+            if(gameIndex != databaseInfo()->currentIndex())
+            {
+                Game g;
+                if(database()->loadGame(gameIndex, g))
+                {
+                    game().dbMergeWithGame(g);
+                }
+            }
+        }
+        databaseInfo()->setModified(true,state,tr("Merge selected games"));
+    }
+}
+
 void MainWindow::slotMergeActiveGame(int gameIndex)
 {
     Game g;
@@ -1510,7 +1530,7 @@ void MainWindow::copyDatabase(QString target, QString src)
     }
 }
 
-void MainWindow::slotDatabaseCopy(int preselect, int index)
+void MainWindow::slotDatabaseCopy(int preselect, QList<int> gameIndexList)
 {
     if(m_databases.count() < 2)
     {
@@ -1519,6 +1539,11 @@ void MainWindow::slotDatabaseCopy(int preselect, int index)
     }
     Game g;
     QString players;
+    int index = -1;
+    if (gameIndexList.size())
+    {
+        index = gameIndexList.at(0);
+    }
     if (index == -1)
     {
         players = game().tag(TagNameWhite)+"-"+game().tag(TagNameBlack);
@@ -1562,6 +1587,15 @@ void MainWindow::slotDatabaseCopy(int preselect, int index)
             m_databases[target]->database()->appendGame(g);
         }
         break;
+    case CopyDialog::Selection:
+        foreach (int i, gameIndexList)
+        {
+            if(database()->loadGame(i, g))
+            {
+                m_databases[target]->database()->appendGame(g);
+            }
+        }
+        break;
     case CopyDialog::Filter:
         for(int i = 0; i < (int)database()->count(); ++i)
         {
@@ -1586,9 +1620,9 @@ void MainWindow::slotDatabaseCopy(int preselect, int index)
     m_databases[target]->filter()->resize(m_databases[target]->database()->count(), true);
 }
 
-void MainWindow::slotDatabaseCopySingle(int n)
+void MainWindow::slotDatabaseCopySingle(QList<int> gameIndexList)
 {
-    slotDatabaseCopy(0, n);
+    slotDatabaseCopy(0, gameIndexList);
 }
 
 void MainWindow::slotDatabaseChanged()
@@ -1721,15 +1755,18 @@ void MainWindow::updateOpeningTree(const Board& b, bool atEnd)
     }
 }
 
-void MainWindow::slotDatabaseDeleteGame(int n)
+void MainWindow::slotDatabaseDeleteGame(QList<int> gameIndexList)
 {
-    if(database()->deleted(n))
+    foreach(int n, gameIndexList)
     {
-        database()->undelete(n);
-    }
-    else
-    {
-        database()->remove(n);
+        if(database()->deleted(n))
+        {
+            database()->undelete(n);
+        }
+        else
+        {
+            database()->remove(n);
+        }
     }
     m_gameList->updateFilter();
 }

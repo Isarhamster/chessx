@@ -257,9 +257,8 @@ MoveId Game::findMergePoint(const Game& otherGame)
     return otherMergeNode;
 }
 
-void Game::mergeWithGame(const Game& g)
+void Game::dbMergeWithGame(const Game& g)
 {
-    Game state = *this;
     MoveId saveNode = m_currentNode;
     Game otherGame = g;
 
@@ -273,8 +272,6 @@ void Game::mergeWithGame(const Game& g)
     otherGame.dbSetAnnotation(shortDescription);
 
     MoveId otherMergeNode = findMergePoint(otherGame);
-
-    // todo
 
     if(otherMergeNode != NO_MOVE)
     {
@@ -300,7 +297,12 @@ void Game::mergeWithGame(const Game& g)
         moveToId(saveNode);
     }
     compact();
+}
 
+void Game::mergeWithGame(const Game& g)
+{
+    Game state = *this;
+    dbMergeWithGame(g);
     emit signalGameModified(true,state,tr("Merge game"));
 }
 

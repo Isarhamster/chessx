@@ -30,6 +30,7 @@
 
 GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 {
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
     setObjectName("GameList");
     setWindowTitle(tr("Game list"));
     //QSortFilterProxyModel* sortModel = new QSortFilterProxyModel(this);
@@ -91,7 +92,7 @@ void GameList::slotContextMenu(const QPoint& pos)
         QMenu* mergeMenu = menu.addMenu(tr("Merge into current game"));
         mergeMenu->addAction(tr("All Games"), this, SLOT(slotMergeAllGames()));
         mergeMenu->addAction(tr("Filter"), this, SLOT(slotMergeFilter()));
-        mergeMenu->addAction(tr("Selected game"), this, SLOT(slotMergeGame()));
+        mergeMenu->addAction(tr("Selected games"), this, SLOT(slotMergeGame()));
         menu.addSeparator();
         QAction* deleteAction = menu.addAction(tr("Delete game"), this, SLOT(slotDeleteGame()));
         deleteAction->setCheckable(true);
@@ -233,7 +234,13 @@ void GameList::updateFilter()
 
 void GameList::slotCopyGame()
 {
-    emit requestCopyGame(m_model->filter()->indexToGame(m_index.row()));
+    QList<int> gameIndexList;
+    foreach(QModelIndex index, selectionModel()->selectedRows())
+    {
+        gameIndexList.append(m_model->filter()->indexToGame(index.row()));
+    }
+
+    emit requestCopyGame(gameIndexList);
 }
 
 void GameList::slotMergeAllGames()
@@ -248,12 +255,24 @@ void GameList::slotMergeFilter()
 
 void GameList::slotMergeGame()
 {
-    emit requestMergeGame(m_model->filter()->indexToGame(m_index.row()));
+    QList<int> gameIndexList;
+    foreach(QModelIndex index, selectionModel()->selectedRows())
+    {
+        gameIndexList.append(m_model->filter()->indexToGame(index.row()));
+    }
+
+    emit requestMergeGame(gameIndexList);
 }
 
 void GameList::slotDeleteGame()
 {
-    emit requestDeleteGame(m_model->filter()->indexToGame(m_index.row()));
+    QList<int> gameIndexList;
+    foreach(QModelIndex index, selectionModel()->selectedRows())
+    {
+        gameIndexList.append(m_model->filter()->indexToGame(index.row()));
+    }
+
+    emit requestDeleteGame(gameIndexList);
 }
 
 void GameList::startToDrag(const QModelIndex& index)

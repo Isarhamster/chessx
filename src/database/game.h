@@ -267,6 +267,7 @@ public :
     MoveId findMergePoint(const Game &otherGame);
     /** Merge Game @p g into this game */
     void mergeWithGame(const Game& g);
+    void dbMergeWithGame(const Game& g);
     /** Promotes the given variation to the main line, returns true if successful */
     bool promoteVariation(MoveId variation);
     void dbPromoteVariation(MoveId variation);
