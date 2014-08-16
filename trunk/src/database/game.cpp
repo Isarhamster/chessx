@@ -559,13 +559,8 @@ MoveId Game::dbAddVariation(const QString& sanMove, const QString& annotation, N
     return (m_moveNodes.size() - 1);
 }
 
-bool Game::promoteVariation(MoveId variation)
+void Game::dbPromoteVariation(MoveId variation)
 {
-    if(isMainline(variation))
-    {
-        return false;
-    }
-    Game state = *this;
     MoveId currentNode = m_currentNode;	// Save current move
 
     // Find first move of the variation
@@ -585,6 +580,16 @@ bool Game::promoteVariation(MoveId variation)
     qSwap(m_moveNodes[parent].nextNode, m_moveNodes[parent].variations[index]);
 
     moveToId(currentNode);	// Restore current move
+}
+
+bool Game::promoteVariation(MoveId variation)
+{
+    if(isMainline(variation))
+    {
+        return false;
+    }
+    Game state = *this;
+    dbPromoteVariation(variation);
     emit signalGameModified(true, state, tr("Promote Variation"));
     return true;
 }
@@ -641,6 +646,13 @@ void Game::truncateVariation(Position position)
     if(position == AfterMove)
     {
         MoveId node = m_moveNodes[m_currentNode].nextNode;
+        if (isMainline(node))
+        {
+            foreach(MoveId var, m_moveNodes[m_currentNode].variations)
+            {
+                removeNode(var);
+            }
+        }
         removeNode(node);
     }
     else if(position == BeforeMove && m_currentNode != 0)
@@ -1594,9 +1606,11 @@ void Game::removeNode(MoveId moveId)
             }
         }
         removeNode(m_moveNodes[node].nextNode);
-        if(!atLineStart(node))
+        MoveId prevNode = m_moveNodes[node].previousNode;
+
+        if(!m_moveNodes[prevNode].variations.contains(node))
         {
-            m_moveNodes[m_moveNodes[node].previousNode].nextNode = NO_MOVE;
+            m_moveNodes[prevNode].nextNode = NO_MOVE;
         }
         m_moveNodes[node].remove();
     }
@@ -1789,6 +1803,7 @@ void Game::dumpAllMoveNodes() const
     int moves, comments, nags;
     moveCount(&moves, &comments, &nags);
     qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags << endl;
+    qDebug() << "----------------------------------" << endl;
 }
 
 MoveId Game::findPosition(const Board& position) const
@@ -1889,6 +1904,7 @@ void Game::compact()
             GAME_UPDATE_MOVEID(vars[j]);
         }
         vars.removeAll(NO_MOVE);
+        vars.removeAll(0);
 #undef GAME_UPDATE_MOVEID
     }
 
