@@ -332,7 +332,7 @@ void DatabaseList::dropEvent(QDropEvent *event)
     if(gameMimeData)
     {
         QModelIndex index = indexAt(event->pos());
-        appendGameToDataBase(index, gameMimeData->m_index);
+        appendGameToDataBase(index, gameMimeData->m_indexList);
     }
     else if(dbMimeData)
     {
@@ -359,13 +359,16 @@ void DatabaseList::dropEvent(QDropEvent *event)
     event->acceptProposedAction();
 }
 
-void DatabaseList::appendGameToDataBase(QModelIndex index, int gameIndex)
+void DatabaseList::appendGameToDataBase(QModelIndex index, QList<int> gameIndexList)
 {
     // Make sure the drop occured on a cell!
     if(index.isValid())
     {
-        QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
-        emit requestAppendGame(path, gameIndex);
+        foreach(int gameIndex, gameIndexList)
+        {
+            QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+            emit requestAppendGame(path, gameIndex);
+        }
     }
 }
 

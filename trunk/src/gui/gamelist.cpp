@@ -278,7 +278,10 @@ void GameList::slotDeleteGame()
 void GameList::startToDrag(const QModelIndex& index)
 {
     GameMimeData *mimeData = new GameMimeData;
-    mimeData->m_index = m_model->filter()->indexToGame(index.row());
+    foreach(QModelIndex index, selectionModel()->selectedRows())
+    {
+        mimeData->m_indexList.append(m_model->filter()->indexToGame(index.row()));
+    }
     QPixmap pixmap = style()->standardPixmap(QStyle::SP_FileIcon);
 
     QDrag* pDrag = new QDrag(this);
