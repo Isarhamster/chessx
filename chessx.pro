@@ -384,7 +384,8 @@ OTHER_FILES += \
     setup7-32.iss \
     setupXP.iss \
     data/help/about1a.html \
-    data/help/about6.html
+    data/help/about6.html \
+    unix/chessx.desktop
 
 macx {
   OTHER_FILES += \
