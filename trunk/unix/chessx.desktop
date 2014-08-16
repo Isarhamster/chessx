@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=ChessX
-Name[de]=Chessx
-Name[fr]=Chessx
+Name[de]=ChessX
+Name[fr]=ChessX
 Comment=Chess database
 Comment[de]=Schachdatenbank
 Comment[fr]=Base de données d'échecs
@@ -9,7 +9,7 @@ GenericName=Chess Game
 GenericName[de]=Schachspiel
 GenericName[fr]=Jeu d'échecs
 Icon=chessx
-Exec=chessx
+Exec=chessx %f
 Terminal=false
 Type=Application
 Categories=Game;BoardGame;
