@@ -76,11 +76,11 @@ private slots:
 signals:
     void selected(int);
     void raiseRequest();
-    void requestMergeGame(int);
+    void requestMergeGame(QList<int>);
     void requestMergeAllGames();
     void requestMergeFilter();
-    void requestCopyGame(int);
-    void requestDeleteGame(int);
+    void requestCopyGame(QList<int>);
+    void requestDeleteGame(QList<int>);
     void requestGameData(Game&);
 
 protected: //Drag'n'Drop Support

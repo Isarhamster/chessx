@@ -174,11 +174,11 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameList = new GameList(databaseInfo()->filter(), gameListDock);
     m_gameList->setMinimumSize(150, 100);
     connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
-    connect(m_gameList, SIGNAL(requestCopyGame(int)), SLOT(slotDatabaseCopySingle(int)));
-    connect(m_gameList, SIGNAL(requestMergeGame(int)), SLOT(slotMergeActiveGame(int)));
+    connect(m_gameList, SIGNAL(requestCopyGame(QList<int>)), SLOT(slotDatabaseCopySingle(QList<int>)));
+    connect(m_gameList, SIGNAL(requestMergeGame(QList<int>)), SLOT(slotMergeActiveGame(QList<int>)));
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
     connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
-    connect(m_gameList, SIGNAL(requestDeleteGame(int)), SLOT(slotDatabaseDeleteGame(int)));
+    connect(m_gameList, SIGNAL(requestDeleteGame(QList<int>)), SLOT(slotDatabaseDeleteGame(QList<int>)));
     connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
     connect(this, SIGNAL(reconfigure()), m_gameList, SLOT(slotReconfigure()));
     gameListDock->setWidget(m_gameList);
@@ -359,10 +359,10 @@ MainWindow::MainWindow() : QMainWindow(),
     m_sliderSpeed->setMultiplier(1000);
     m_sliderSpeed->setOrientation(Qt::Horizontal);
     m_sliderSpeed->setMinimum(0);
-    m_sliderSpeed->setMaximum(10);
+    m_sliderSpeed->setMaximum(20);
     m_sliderSpeed->setTranslatedValue(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
     m_sliderSpeed->setTickInterval(1);
-    m_sliderSpeed->setTickPosition(QSlider::TicksBothSides);
+    m_sliderSpeed->setTickPosition(QSlider::NoTicks);
     m_sliderSpeed->setMaximumWidth(300);
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), m_mainAnalysis, SLOT(setMoveTime(int)));
@@ -1329,8 +1329,7 @@ void MainWindow::setupActions()
     /* Database menu */
     QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
     m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
-    menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()),
-                                         Qt::Key_F5));
+    menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()), Qt::Key_F5));
 
     /* Help menu */
     menuBar()->addSeparator();

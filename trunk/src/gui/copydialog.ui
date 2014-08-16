@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>CopyDialog</class>
- <widget class="QDialog" name="CopyDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="CopyDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,48 +10,43 @@
     <height>342</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Copy Games</string>
   </property>
-  <layout class="QGridLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
-    <number>6</number>
-   </property>
-   <item row="0" column="0" >
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="title" >
+  <layout class="QGridLayout">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
       <string>Copy:</string>
      </property>
-     <layout class="QVBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
-      </property>
-      <property name="spacing" >
-       <number>6</number>
-      </property>
+     <layout class="QVBoxLayout">
       <item>
-       <widget class="QRadioButton" name="singleButton" >
-        <property name="text" >
+       <widget class="QRadioButton" name="singleButton">
+        <property name="text">
          <string>&amp;Current game</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="filterButton" >
-        <property name="text" >
+       <widget class="QRadioButton" name="selectedButton">
+        <property name="text">
+         <string>Selected Games</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="filterButton">
+        <property name="text">
          <string>Games in &amp;filter</string>
         </property>
-        <property name="checked" >
+        <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="allButton" >
-        <property name="text" >
+       <widget class="QRadioButton" name="allButton">
+        <property name="text">
          <string>&amp;All games</string>
         </property>
        </widget>
@@ -58,26 +54,26 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0" >
-    <widget class="QLabel" name="label" >
-     <property name="text" >
+   <item row="1" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
       <string>&amp;To:</string>
      </property>
-     <property name="buddy" >
+     <property name="buddy">
       <cstring>databaseList</cstring>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" >
-    <widget class="QListWidget" name="databaseList" />
+   <item row="2" column="0">
+    <widget class="QListWidget" name="databaseList"/>
    </item>
-   <item row="3" column="0" >
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="orientation" >
+   <item row="3" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="standardButtons" >
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
@@ -98,11 +94,11 @@
    <receiver>CopyDialog</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>248</x>
      <y>254</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>157</x>
      <y>274</y>
     </hint>
@@ -114,11 +110,11 @@
    <receiver>CopyDialog</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>316</x>
      <y>260</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
     </hint>

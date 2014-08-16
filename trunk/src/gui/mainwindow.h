@@ -203,6 +203,7 @@ public slots:
     /** Get a pointer or Null to the active game. */
     void slotGetActiveGame(const Game** game);
     /** Merge the game with index @p gameIndex into the active game. */
+    void slotMergeActiveGame(QList<int> gameIndexList);
     void slotMergeActiveGame(int gameIndex);
     /** Merge all games from the database into the active game. */
     void slotMergeAllGames();
@@ -310,13 +311,13 @@ public slots:
     /** Change database. */
     void slotDatabaseChange();
     /** Copy games between databases. */
-    void slotDatabaseCopy(int preselect = 1, int index = -1);
+    void slotDatabaseCopy(int preselect = 1, QList<int> gameIndexList = QList<int>());
     /** Copy games between databases. */
-    void slotDatabaseCopySingle(int n);
+    void slotDatabaseCopySingle(QList<int> listGames);
     /** Database was changed - change informations. */
     void slotDatabaseChanged();
     /** Delete current game. */
-    void slotDatabaseDeleteGame(int n);
+    void slotDatabaseDeleteGame(QList<int> gameIndexList);
     /** Delete all game in filter. */
     void slotDatabaseDeleteFilter();
     /** Slot that updates internal info upon loading a complete db */
