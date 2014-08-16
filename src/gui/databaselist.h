@@ -51,7 +51,7 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
 
-    void appendGameToDataBase(QModelIndex index, int gameIndex);
+    void appendGameToDataBase(QModelIndex index, QList<int> gameIndexList);
     void appendDataBaseToDataBase(QPoint pos, QString src);
 
 private slots:

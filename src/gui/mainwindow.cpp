@@ -24,6 +24,7 @@
 #include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"
+#include "GameMimeData.h"
 #include "helpbrowser.h"
 #include "kbaction.h"
 #include "loadquery.h"
@@ -1562,7 +1563,9 @@ void MainWindow::slotVersionFound(int major, int minor, int build)
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     const QMimeData *mimeData = event->mimeData();
-    if(mimeData->hasUrls())
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+    if(mimeData->hasUrls() || gameMimeData || dbMimeData)
     {
         event->acceptProposedAction();
     }
