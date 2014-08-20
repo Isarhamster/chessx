@@ -35,7 +35,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="boardTab">
       <property name="sizePolicy">
@@ -412,7 +412,7 @@
             <number>0</number>
            </property>
            <property name="maximum">
-            <number>99</number>
+            <number>999</number>
            </property>
            <property name="value">
             <number>0</number>
