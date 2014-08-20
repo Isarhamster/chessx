@@ -22,7 +22,6 @@
 #include "dlgsavebook.h"
 #include "editaction.h"
 #include "eventlistwidget.h"
-#include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"
 #include "mainwindow.h"

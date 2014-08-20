@@ -262,22 +262,18 @@ public :
     bool mergeAsVariation(Game &otherGame);
     /** Merge @p otherGame variations starting from otherGames current position into this game as new variations */
     bool mergeVariations(Game &otherGame);
-    /** Find the point in the this game where @p otherGame fits in the next time.
-        @retval Node from where the merging shall start in other game */
-    MoveId findMergePoint(const Game &otherGame);
+
     /** Merge Game @p g into this game */
     void mergeWithGame(const Game& g);
+    /** Merge Game @p g into this game */
     void dbMergeWithGame(const Game& g);
     /** Promotes the given variation to the main line, returns true if successful */
     bool promoteVariation(MoveId variation);
-    void dbPromoteVariation(MoveId variation);
     /** Removes the given variation, returns true if successful */
     bool removeVariation(MoveId variation);
     /** Removes all variations and mainline moves after the current position,
     * or before the current position if @p position == BeforeMove */
     void truncateVariation(Position position = AfterMove);
-    /** Find the next illegal position in all variations and mainline moves after the current position, and cut the game from there */
-    void truncateVariationAfterNextIllegalPosition();
     /** Removes all tags and moves */
     void clear();
     /** Set the game start position */
@@ -344,6 +340,16 @@ public :
 
     int resultAsInt() const;
     void setStartingBoard(const Board &startingBoard, QString text);
+
+protected:
+    /** Find the point in the this game where @p otherGame fits in the next time.
+        @retval Node from where the merging shall start in other game */
+    MoveId findMergePoint(const Game &otherGame);
+    /** Promotes the given variation to the main line */
+    void dbPromoteVariation(MoveId variation);
+    /** Find the next illegal position in all variations and mainline moves after the current position, and cut the game from there */
+    void truncateVariationAfterNextIllegalPosition();
+
 signals:
     void signalGameModified(bool,Game,QString);
     void signalMoveChanged();

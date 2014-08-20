@@ -21,7 +21,6 @@
 #include "ecothread.h"
 #include "eventlistwidget.h"
 #include "exclusiveactiongroup.h"
-#include "filtermodel.h"
 #include "game.h"
 #include "gamelist.h"
 #include "GameMimeData.h"
