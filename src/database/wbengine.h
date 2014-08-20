@@ -11,9 +11,9 @@
 #ifndef __WBENGINE_H__
 #define __WBENGINE_H__
 
-#include <QEvent>
 #include <QString>
-#include <QTextStream>
+
+class QTextStream;
 
 #include "engine.h"
 

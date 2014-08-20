@@ -13,7 +13,6 @@
 
 #include <QNetworkAccessManager>
 
-#include "common.h"
 #include "move.h"
 
 class QNetworkReply;

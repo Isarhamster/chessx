@@ -9,7 +9,6 @@
 
 #include <QtCore>
 #include <QTableView>
-#include <QTreeView>
 
 /**
 	The TableView class is a specialized version of QTableView with automatic

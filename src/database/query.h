@@ -11,7 +11,6 @@
 
 #ifndef __QUERY_H__
 #define __QUERY_H__
-class Search;
 
 #include "search.h"
 #include <QList>

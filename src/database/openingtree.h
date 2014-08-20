@@ -10,11 +10,11 @@
 #ifndef __OPENINGTREE_H__
 #define __OPENINGTREE_H__
 
+#include "movedata.h"
+
 #include <QAbstractTableModel>
 
-#include "filter.h"
-#include "game.h"
-#include "openingtreethread.h"
+class Filter;
 
 /** @ingroup Search
 The OpeningTree class is a class to calculate opening tree for given position. */

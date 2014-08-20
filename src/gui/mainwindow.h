@@ -12,8 +12,6 @@
 
 #include "common.h"
 #include "historylist.h"
-#include "kbaction.h"
-#include "move.h"
 #include "output.h"
 
 #include <QtGui>
