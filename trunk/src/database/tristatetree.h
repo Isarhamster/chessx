@@ -11,7 +11,6 @@
 #ifndef __TRISTATETREE_H__
 #define __TRISTATETREE_H__
 
-#include "search.h"
 #include "query.h"
 
 /** @ingroup Search

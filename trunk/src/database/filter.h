@@ -17,8 +17,6 @@
 #include <QThread>
 
 #include "common.h"
-#include "search.h"
-#include "query.h"
 #include "tristatetree.h"
 
 class Database;

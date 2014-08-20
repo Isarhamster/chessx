@@ -20,7 +20,6 @@
 #include "bitboard.h"
 
 #include <QString>
-#include <QStack>
 
 #define COMPILED_GUESS_FILE_ID ((quint32)0xCD5CBD03U)
 

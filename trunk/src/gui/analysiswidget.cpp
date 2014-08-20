@@ -13,6 +13,7 @@
 #include "analysiswidget.h"
 #include "enginelist.h"
 #include "messagedialog.h"
+#include "tablebase.h"
 
 AnalysisWidget::AnalysisWidget()
     : m_engine(0),

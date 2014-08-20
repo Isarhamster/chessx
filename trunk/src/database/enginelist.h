@@ -13,7 +13,6 @@
 #include <QtCore>
 #include "enginedata.h"
 
-
 /** The EngineList class contains configuration of all installed engines. */
 class EngineList : public QList<EngineData>
 {

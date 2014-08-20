@@ -12,7 +12,6 @@
 
 #include "engine.h"
 #include "ui_analysiswidget.h"
-#include "tablebase.h"
 #include <QtGui>
 
 /** @ingroup GUI
@@ -21,6 +20,7 @@
 
 class Analysis;
 class Board;
+class Tablebase;
 
 class AnalysisWidget : public QWidget
 {

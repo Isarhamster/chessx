@@ -12,7 +12,8 @@
 #define __UCIENGINE_H__
 
 #include <QString>
-#include <QTextStream>
+
+class QTextStream;
 
 #include "engine.h"
 

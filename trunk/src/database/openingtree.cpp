@@ -12,6 +12,7 @@
 #include "openingtree.h"
 #include "settings.h"
 #include "movedata.h"
+#include "openingtreethread.h"
 
 #include <QIcon>
 #include <QImage>

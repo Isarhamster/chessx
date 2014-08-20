@@ -11,15 +11,13 @@
 #ifndef __DATABASE_H__
 #define __DATABASE_H__
 
-#include <QString>
-#include <QTextStream>
-
 #include "filter.h"
 #include "game.h"
-#include "search.h"
-#include "query.h"
 #include "index.h"
-#include "QMutex"
+
+#include <QMutex>
+#include <QString>
+#include <QTextStream>
 
 /** @defgroup Database Database - classes to manipulate chess game files*/
 
@@ -27,10 +25,6 @@
    The Database class is abstract, providing a common interface for all
    database types. There are methods for the loading and saving of games,
    and for performing searches and queries.
-
-   @todo
-   Add name() to get just the database name
-   Add isReadOnly()
 */
 
 class Database : public QObject
@@ -72,7 +66,7 @@ public:
     /** Loads only moves into a game from the given position */
     virtual void loadGameMoves(GameId index, Game& game) = 0;
     /** Saves a game at the given position, returns true if successful */
-    virtual bool replace(GameId , Game&);
+    virtual bool replace(GameId, Game&);
     /** Adds a game to the database */
     virtual bool appendGame(const Game&);
     /** Removes a game from the database */

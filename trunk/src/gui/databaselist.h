@@ -6,7 +6,6 @@
 #define DATABASELIST_H
 
 #include "tableview.h"
-#include "game.h"
 
 class QSortFilterProxyModel;
 class DatabaseListModel;

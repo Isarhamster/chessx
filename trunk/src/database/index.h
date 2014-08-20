@@ -17,7 +17,6 @@
 #include <QObject>
 
 #include "indexitem.h"
-#include "search.h"
 #include "game.h"
 
 /** @ingroup Database
