@@ -8,8 +8,12 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include "database.h"
 #include "filtermodel.h"
+
+#include "common.h"
+#include "database.h"
+#include "filter.h"
+#include "game.h"
 
 #include <QtGui>
 
@@ -190,9 +194,3 @@ Filter* FilterModel::filter()
 {
     return m_filter;
 }
-
-void FilterModel::sort(int /*column*/, Qt::SortOrder /*order*/)
-{
-
-}
-

@@ -33,11 +33,13 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setObjectName("GameList");
     setWindowTitle(tr("Game list"));
-    //QSortFilterProxyModel* sortModel = new QSortFilterProxyModel(this);
     m_model = new FilterModel(filter, this);
-    //sortModel->setSourceModel(m_model);
-    //setModel(sortModel);
-    setModel(m_model);
+
+    sortModel = new GameListSortModel(this);
+    sortModel->setSourceModel(m_model);
+    sortModel->setDynamicSortFilter(false);
+    setModel(sortModel);
+
     connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
     connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
@@ -52,29 +54,53 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 
     slotReconfigure();
 
-    setSortingEnabled(false);
+    horizontalHeader()->setSortIndicatorShown(true);
+    setSortingEnabled(true);
+
     setDragEnabled(true);
 }
 
 
 GameList::~GameList()
 {
+    delete sortModel;
     delete m_model;
 }
 
 void GameList::slotItemSelected(const QModelIndex& index)
 {
-    m_index = index;
     scrollTo(index, EnsureVisible);
 }
 
 void GameList::itemSelected(const QModelIndex& index)
 {
-    emit selected(m_model->filter()->indexToGame(index.row()));
+    if (selectedIndexes().size() == 1)
+    {
+        emit selected(m_model->filter()->indexToGame(index.row()));
+    }
 }
 
 void GameList::setFilter(Filter* filter)
 {
+    if (filter->count() > 4096)
+    {
+        setSortingEnabled(false);
+        setModel(m_model);
+        delete sortModel;
+        sortModel = 0;
+    }
+    else
+    {
+        if (!sortModel)
+        {
+            sortModel = new GameListSortModel(this);
+            sortModel->setSourceModel(m_model);
+            sortModel->setDynamicSortFilter(false);
+        }
+        setSortingEnabled(true);
+        setModel(sortModel);
+    }
+
     m_model->setFilter(filter);
     emit raiseRequest();
 }
@@ -82,7 +108,6 @@ void GameList::setFilter(Filter* filter)
 void GameList::slotContextMenu(const QPoint& pos)
 {
     QModelIndex cell = indexAt(pos);
-    m_index = cell;
     QModelIndexList selection = selectedIndexes();
     // Make sure the right click occured on a cell!
     if(cell.isValid() && selection.contains(cell))
@@ -105,11 +130,13 @@ void GameList::slotContextMenu(const QPoint& pos)
 
 void GameList::simpleSearch(int tagid)
 {
-    //if (QApplication::queryKeyboardModifiers() & Qt::ShiftModifier)
-    //{
-    //    sortByColumn(tagid);
-    //    return;
-    //}
+
+    if (QApplication::queryKeyboardModifiers() == Qt::NoModifier)
+    {
+        sortByColumn(tagid);
+        return;
+    }
+
     QuickSearchDialog dlg(this);
 
     dlg.setTag(tagid);
@@ -275,7 +302,7 @@ void GameList::slotDeleteGame()
     emit requestDeleteGame(gameIndexList);
 }
 
-void GameList::startToDrag(const QModelIndex& index)
+void GameList::startDrag(Qt::DropActions /*supportedActions*/)
 {
     GameMimeData *mimeData = new GameMimeData;
     foreach(QModelIndex index, selectionModel()->selectedRows())
@@ -287,12 +314,6 @@ void GameList::startToDrag(const QModelIndex& index)
     QDrag* pDrag = new QDrag(this);
     pDrag->setMimeData(mimeData);
     pDrag->setPixmap(pixmap);
-    // pDrag->setHotSpot(hotSpot);
 
     pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
-}
-
-void GameList::startDrag(Qt::DropActions /*supportedActions*/)
-{
-    startToDrag(m_index);
 }

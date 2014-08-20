@@ -12,11 +12,10 @@
 #define __FILTERMODEL_H__
 
 #include <QAbstractItemModel>
-#include <QSortFilterProxyModel>
 #include <QStringList>
 
-#include "filter.h"
-#include "game.h"
+class Filter;
+class Game;
 
 /** @ingroup Database
   The FilterModel class is an interface to Database used with Qt
@@ -69,7 +68,6 @@ public:
         return m_columnNames;
     }
 
-    virtual void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
 private:
     /** A pointer to filter on which the model opperates */
     Filter* m_filter;
