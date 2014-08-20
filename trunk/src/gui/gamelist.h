@@ -20,12 +20,20 @@
 #include "tableview.h"
 #include "game.h"
 
+#include <QSortFilterProxyModel>
+
 class Filter;
 class FilterModel;
 
 /** @ingroup GUI
 The GameList class displays list of the games in current filter. It allows
 user to click on list header and perform simple tag searches. */
+
+class GameListSortModel : public QSortFilterProxyModel
+{
+public:
+    explicit GameListSortModel(QObject *parent = 0) : QSortFilterProxyModel(parent) {}
+};
 
 class GameList : public TableView
 {
@@ -85,11 +93,10 @@ signals:
 
 protected: //Drag'n'Drop Support
     void startDrag(Qt::DropActions supportedActions);
-    void startToDrag(const QModelIndex&);
 
 private:
     FilterModel* m_model;
-    QModelIndex m_index;
+    GameListSortModel* sortModel;
 };
 
 #endif
