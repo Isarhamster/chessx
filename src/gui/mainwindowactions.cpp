@@ -1614,6 +1614,18 @@ void MainWindow::slotDatabaseCopy(int preselect, QList<int> gameIndexList)
     m_databases[target]->filter()->resize(m_databases[target]->database()->count(), true);
 }
 
+void MainWindow::slotDatabaseClearClipboard()
+{
+    ((MemoryDatabase*)(m_databases[0]->database()))->clear();
+    m_databases[0]->filter()->resize(0, false);
+
+    if (!m_currentDatabase)
+    {
+        emit databaseChanged(databaseInfo());
+        emit databaseModified();
+    }
+}
+
 void MainWindow::slotDatabaseCopySingle(QList<int> gameIndexList)
 {
     slotDatabaseCopy(0, gameIndexList);
