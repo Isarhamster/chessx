@@ -24,7 +24,7 @@
 #include <QPixmap>
 
 BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f),
-    m_wheelCurrentDelta(0), m_selectedPiece(Empty),inDrag(false)
+    m_wheelCurrentDelta(0), m_selectedPiece(Empty), inDrag(false)
 {
     setObjectName("BoardSetupDialog");
     ui.setupUi(this);
