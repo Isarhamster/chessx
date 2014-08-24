@@ -310,6 +310,8 @@ public slots:
     void slotDatabaseChange();
     /** Copy games between databases. */
     void slotDatabaseCopy(int preselect = 1, QList<int> gameIndexList = QList<int>());
+    /** Clear the clipboard database */
+    void slotDatabaseClearClipboard();
     /** Copy games between databases. */
     void slotDatabaseCopySingle(QList<int> listGames);
     /** Database was changed - change informations. */

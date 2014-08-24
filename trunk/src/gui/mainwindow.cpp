@@ -1205,13 +1205,13 @@ void MainWindow::setupActions()
     QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
 
     /* Game->Load submenu */
+    QAction * prevAction = createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::Key_F3,
+                                        dbToolBar, ":/images/game_up.png");
     QAction * nextAction = createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::Key_F4,
                                         dbToolBar, ":/images/game_down.png");
     connect(m_gameList, SIGNAL(signalLastGameLoaded(bool)), nextAction, SLOT(setDisabled(bool)));
-    loadMenu->addAction(nextAction);
-    QAction * prevAction = createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::Key_F3,
-                                        dbToolBar, ":/images/game_up.png");
     connect(m_gameList, SIGNAL(signalFirstGameLoaded(bool)), prevAction, SLOT(setDisabled(bool)));
+    loadMenu->addAction(nextAction);
     loadMenu->addAction(prevAction);
     loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
     loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
@@ -1330,6 +1330,8 @@ void MainWindow::setupActions()
     QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
     m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
     menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()), Qt::Key_F5));
+    menuDatabase->addSeparator();
+    menuDatabase->addAction(createAction(tr("Clear clipboard"), SLOT(slotDatabaseClearClipboard())));
 
     /* Help menu */
     menuBar()->addSeparator();
