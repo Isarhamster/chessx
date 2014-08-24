@@ -96,6 +96,11 @@ MainWindow::MainWindow() : QMainWindow(),
     m_databases.append(pClipDB);
     m_currentDatabase = 0;
 
+    /* Game List */
+    DockWidgetEx* gameListDock = new DockWidgetEx(tr("Game List"), this);
+    gameListDock->setObjectName("GameList");
+    m_gameList = new GameList(databaseInfo()->filter(), gameListDock);
+
     /* Actions */
     setupActions();
 
@@ -169,9 +174,6 @@ MainWindow::MainWindow() : QMainWindow(),
     gameTextDock->setTitleBarWidget(m_gameTitle);
 
     /* Game List */
-    DockWidgetEx* gameListDock = new DockWidgetEx(tr("Game List"), this);
-    gameListDock->setObjectName("GameList");
-    m_gameList = new GameList(databaseInfo()->filter(), gameListDock);
     m_gameList->setMinimumSize(150, 100);
     connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
     connect(m_gameList, SIGNAL(requestCopyGame(QList<int>)), SLOT(slotDatabaseCopySingle(QList<int>)));
@@ -665,8 +667,6 @@ void MainWindow::gameLoad(int index)
             m_gameList->selectGame(index);
             emit signalGameIsEmpty(true);
             slotGameChanged();
-            emit signalFirstGameLoaded(databaseInfo()->filter()->previousGame(index) == -1);
-            emit signalLastGameLoaded(databaseInfo()->filter()->nextGame(index) == -1);
             m_gameList->setFocus();
             emit signalGameLoaded();
         }
@@ -1205,13 +1205,13 @@ void MainWindow::setupActions()
     QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
 
     /* Game->Load submenu */
-    QAction * nextAction = createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::CTRL + Qt::SHIFT + Qt::Key_Down,
+    QAction * nextAction = createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::Key_F4,
                                         dbToolBar, ":/images/game_down.png");
-    connect(this, SIGNAL(signalLastGameLoaded(bool)), nextAction, SLOT(setDisabled(bool)));
+    connect(m_gameList, SIGNAL(signalLastGameLoaded(bool)), nextAction, SLOT(setDisabled(bool)));
     loadMenu->addAction(nextAction);
-    QAction * prevAction = createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::CTRL + Qt::SHIFT + Qt::Key_Up,
+    QAction * prevAction = createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::Key_F3,
                                         dbToolBar, ":/images/game_up.png");
-    connect(this, SIGNAL(signalFirstGameLoaded(bool)), prevAction, SLOT(setDisabled(bool)));
+    connect(m_gameList, SIGNAL(signalFirstGameLoaded(bool)), prevAction, SLOT(setDisabled(bool)));
     loadMenu->addAction(prevAction);
     loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
     loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));

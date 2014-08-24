@@ -205,11 +205,14 @@ void MainWindow::slotFileClose()
                     }
                 }
 
-                m_currentDatabase = 0; // Switch to clipboard is always safe
-                m_boardView->setDbIndex(m_currentDatabase);
-                UpdateBoardInformation();
-                m_databaseList->setFileCurrent(QString());
-                slotDatabaseChanged();
+                if (m_currentDatabase != 0)
+                {
+                    m_currentDatabase = 0; // Switch to clipboard is always safe
+                    m_boardView->setDbIndex(m_currentDatabase);
+                    UpdateBoardInformation();
+                    m_databaseList->setFileCurrent(QString());
+                    slotDatabaseChanged();
+                }
             }
         }
     }
@@ -887,18 +890,12 @@ void MainWindow::slotGameLoadLast()
 
 void MainWindow::slotGameLoadPrevious()
 {
-    int index = m_gameList->currentIndex().row();
-    int game = databaseInfo()->filter()->indexToGame(index);
-    game = databaseInfo()->filter()->previousGame(game);
-    gameLoad(game);
+    m_gameList->selectPreviousGame();
 }
 
 void MainWindow::loadNextGame()
 {
-    int index = m_gameList->currentIndex().row();
-    int game = databaseInfo()->filter()->indexToGame(index);
-    game = databaseInfo()->filter()->nextGame(game);
-    gameLoad(game);
+    m_gameList->selectNextGame();
 }
 
 void MainWindow::slotGameLoadNext()
@@ -933,9 +930,7 @@ void MainWindow::slotGameNew()
         if(QuerySaveGame())
         {
             databaseInfo()->newGame();
-            m_gameList->clearSelection();
-            emit signalFirstGameLoaded(true);
-            emit signalLastGameLoaded(true);
+            m_gameList->removeSelection();
             emit signalGameIsEmpty(true); // repair effect of slotGameChanged
             m_gameList->setFocus();
         }

@@ -42,6 +42,7 @@ public:
     GameList(Filter* filter, QWidget* parent = 0);
     ~GameList();
 
+    void removeSelection();
     /** Set current database */
 public slots:
     /** Change current filter/database */
@@ -62,6 +63,10 @@ public slots:
     void slotFilterListByEventPlayer(QString player, QString event);
     /** Select and show current player and ECO in the list */
     void slotFilterListByEcoPlayer(QString tag, QString eco, QString player);
+    /** Select the next game from the list */
+    void selectNextGame();
+    /** Select the previous game from the list */
+    void selectPreviousGame();
 
 private slots:
     /** Re-emit the request to the receivers to perform some action */
@@ -90,9 +95,14 @@ signals:
     void requestCopyGame(QList<int>);
     void requestDeleteGame(QList<int>);
     void requestGameData(Game&);
+    void signalFirstGameLoaded(bool);
+    void signalLastGameLoaded(bool);
 
 protected: //Drag'n'Drop Support
     void startDrag(Qt::DropActions supportedActions);
+    QModelIndex GetSourceIndex(const QModelIndex& index) const;
+    QModelIndex NewSortIndex(int row) const;
+    QModelIndex GetSortModelIndex(const QModelIndex& index) const;
 
 private:
     FilterModel* m_model;
