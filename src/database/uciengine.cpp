@@ -363,7 +363,7 @@ void UCIEngine::parseOptions(const QString& message)
                    } phase;
 
     phase = EXPECT_OPTION;
-    QStringList list = message.split(QRegExp("\\W+"), QString::SkipEmptyParts);
+    QStringList list = message.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     QStringList nameVals;
     QString defVal;
