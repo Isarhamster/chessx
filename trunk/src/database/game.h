@@ -91,6 +91,12 @@ public :
     Game& operator=(const Game& game);
     virtual ~Game();
     // **** Querying game information ****
+    /** compare tags */
+    int compareTags(const Game& game) const;
+    /** compare moves */
+    int compareMoves(const Game& game) const;
+    /** compare games */
+    int compare(const Game& game) const;
     /** @return current position */
     const Board& board() const;
     /** @return current position in FEN */

@@ -1970,4 +1970,33 @@ void Game::reparentVariation(MoveId variation, MoveId parent)
     }
 }
 
+int Game::compareTags(const Game& game) const
+{
+    if (m_tags.count() < game.m_tags.count())
+    {
+        return -1;
+    }
+    if (m_tags.count() > game.m_tags.count())
+    {
+        return +1;
+    }
+    return (m_tags == game.m_tags);
+}
+
+int Game::compareMoves(const Game& game) const
+{
+    // todo
+    return 0;
+}
+
+int Game::compare(const Game& game) const
+{
+    int retVal = compareTags(game);
+    if (retVal == 0)
+    {
+        retVal = compareMoves(game);
+    }
+    return retVal;
+}
+
 

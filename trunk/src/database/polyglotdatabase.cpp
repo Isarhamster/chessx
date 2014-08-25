@@ -472,6 +472,10 @@ int PolyglotDatabase::find_key(quint64 key, entry_t *entry)
     return -1;
 }
 
+// ---------------------------------------------------------
+// Book parser - public interface
+// ---------------------------------------------------------
+
 bool PolyglotDatabase::findMove(quint64 key, MoveData& m)
 {
     entry_t entry;
@@ -514,6 +518,10 @@ void PolyglotDatabase::book_save()
     }
 }
 
+// ---------------------------------------------------------
+// Book building - public interface
+// ---------------------------------------------------------
+
 bool PolyglotDatabase::openForWriting(const QString &filename, int maxPly, int minGame, bool uniform)
 {
     if(m_file)
@@ -528,10 +536,6 @@ bool PolyglotDatabase::openForWriting(const QString &filename, int maxPly, int m
     m_utf8 = false;
     return openFile(filename, false);
 }
-
-// ---------------------------------------------------------
-// Book building - public interface
-// ---------------------------------------------------------
 
 void PolyglotDatabase::book_make(Database &db, volatile bool& breakFlag)
 {

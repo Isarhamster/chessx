@@ -165,7 +165,9 @@ HEADERS += src/database/board.h \
     src/database/movedata.h \
     src/database/polyglotwriter.h \
     src/gui/shellhelper.h \
-    src/gui/boardsearchdialog.h
+    src/gui/boardsearchdialog.h \
+    src/database/ctgdatabase.h \
+    src/database/ctgbookwriter.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -274,7 +276,9 @@ SOURCES += src/database/board.cpp \
     src/database/movedata.cpp \
     src/database/polyglotwriter.cpp \
     src/gui/shellhelper.cpp \
-    src/gui/boardsearchdialog.cpp
+    src/gui/boardsearchdialog.cpp \
+    src/database/ctgdatabase.cpp \
+    src/database/ctgbookwriter.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
