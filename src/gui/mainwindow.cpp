@@ -361,11 +361,11 @@ MainWindow::MainWindow() : QMainWindow(),
     m_sliderSpeed->setMultiplier(1000);
     m_sliderSpeed->setOrientation(Qt::Horizontal);
     m_sliderSpeed->setMinimum(0);
-    m_sliderSpeed->setMaximum(20);
+    m_sliderSpeed->setMaximum(60);
     m_sliderSpeed->setTranslatedValue(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
     m_sliderSpeed->setTickInterval(1);
     m_sliderSpeed->setTickPosition(QSlider::NoTicks);
-    m_sliderSpeed->setMaximumWidth(300);
+    m_sliderSpeed->setMaximumWidth(400);
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), m_mainAnalysis, SLOT(setMoveTime(int)));
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), analysis, SLOT(setMoveTime(int)));
