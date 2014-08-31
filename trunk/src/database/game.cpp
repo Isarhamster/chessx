@@ -1983,7 +1983,7 @@ int Game::compareTags(const Game& game) const
     return (m_tags == game.m_tags);
 }
 
-int Game::compareMoves(const Game& game) const
+int Game::compareMoves(const Game& /*game*/) const
 {
     // todo
     return 0;
