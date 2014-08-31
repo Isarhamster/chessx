@@ -202,6 +202,7 @@ void AnalysisWidget::showAnalysis(const Analysis& analysis)
     {
         m_analyses[mpv] = analysis;
     }
+    updateComplexity();
     updateAnalysis();
     if (bestMove)
     {
@@ -234,7 +235,7 @@ void AnalysisWidget::setPosition(const Board& board)
                 }
             }
         }
-
+        m_lastDepthAdded = 0;
         updateAnalysis();
         if(m_engine && m_engine->isActive())
         {
@@ -328,6 +329,7 @@ void AnalysisWidget::showTablebaseMove(Move move, int score)
         move1.setPromoted(pieceType(move.promotedPiece()));
     }
     m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1)).arg(result);
+    m_lastDepthAdded = 0;
     updateAnalysis();
 }
 
@@ -348,7 +350,64 @@ void AnalysisWidget::updateAnalysis()
     {
         text.append(tr("<a href=\"0\" title=\"Click to add move to game\">[+]</a> <b>Tablebase:</b> ") + m_tablebaseEvaluation);
     }
+    if (m_lastDepthAdded == 17)
+    {
+        text.append(tr("<br><b>Complexity:</b> %1/%2<br>").arg(m_complexity).arg(m_complexity2));
+    }
+    else if (m_lastDepthAdded >= 12)
+    {
+        text.append(tr("<br><b>Complexity:</b> %1<br>").arg(m_complexity));
+    }
     ui.variationText->setText(text);
+}
+
+void AnalysisWidget::updateComplexity()
+{
+    if (m_analyses[0].variation().size())
+    {
+        Move bestMove = m_analyses[0].variation().first();
+        if (m_analyses[0].depth() == 2)
+        {
+            m_lastBestMove = bestMove;
+            m_complexity = 0.0;
+            m_lastDepthAdded = 2;
+        }
+        if (m_analyses.size() >= 2)
+        {
+            if ((m_lastDepthAdded+1 == m_analyses[0].depth()) && !m_analyses[0].isMate())
+            {
+                if (m_analyses[0].depth() <= 12)
+                {
+                    m_lastDepthAdded = m_analyses[0].depth();
+                    if (m_lastBestMove != bestMove)
+                    {
+                        if (abs(m_analyses[0].score()) < 200)
+                        {
+                            m_lastBestMove = bestMove;
+                            m_complexity += fabs(double(m_analyses[0].score()-m_analyses[1].score()))/100.0;
+                        }
+                    }
+                    m_complexity2 = m_complexity;
+                }
+                else if ((m_analyses[0].depth() > 12) && (m_analyses[0].depth() <= 17))
+                {
+                    m_lastDepthAdded = m_analyses[0].depth();
+                    if (m_lastBestMove != bestMove)
+                    {
+                        if (abs(m_analyses[0].score()) < 200)
+                        {
+                            m_lastBestMove = bestMove;
+                            m_complexity2 += fabs(double(m_analyses[0].score()-m_analyses[1].score()))/100.0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        m_lastDepthAdded = 0;
+    }
 }
 
 Analysis AnalysisWidget::getMainLine() const

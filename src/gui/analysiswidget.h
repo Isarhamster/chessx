@@ -85,6 +85,8 @@ private:
     bool isAnalysisEnabled() const;
     /** Update analysis. */
     void updateAnalysis();
+    /** Update complexity. */
+    void updateComplexity();
 
     QList<Analysis> m_analyses;
     Ui::AnalysisWidget ui;
@@ -95,6 +97,12 @@ private:
     Tablebase* m_tablebase;
     int m_moveTime;
     bool m_bUciNewGame;
+
+    double m_complexity;
+    double m_complexity2;
+    Move m_lastBestMove;
+    int m_lastDepthAdded;
+
 };
 
 #endif // __ANALYSIS_WIDGET_H__
