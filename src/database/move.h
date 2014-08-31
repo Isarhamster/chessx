@@ -110,6 +110,7 @@ public:
 
     /** Moves are considered the same, only if they match exactly */
     friend bool operator==(const Move& m1, const Move& m2);
+    friend bool operator!=(const Move& m1, const Move& m2);
     /** Required for keeping moves in some map-like structures */
     friend bool operator<(const Move& m1, const Move& m2);
 
@@ -526,6 +527,11 @@ inline void Move::setMate()
 inline bool operator==(const Move& m1, const Move& m2)
 {
     return m1.m == m2.m;
+}
+
+inline bool operator!=(const Move& m1, const Move& m2)
+{
+    return !(m1==m2);
 }
 
 inline bool operator<(const Move& m1, const Move& m2)
