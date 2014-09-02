@@ -145,6 +145,12 @@ private:
     /** Catch mouse events */
     bool eventFilter(QObject *obj, QEvent *ev);
 
+    void drawArrow(int square1, int square2, QColor color);
+    void drawHiliteSquare(QPoint pos, BoardTheme::ColorRole role);
+
+    QPoint posFromSquare(int square) const;
+
+    void drawHiliting(QPaintEvent* event);
     void drawSquares(QPaintEvent* event);
     void drawPieces(QPaintEvent* event);
     void drawMoveIndicator(QPaintEvent* event);
@@ -161,7 +167,7 @@ private:
     QPoint m_translate;
     bool m_flipped;
     bool m_showFrame;
-    bool m_showCurrentMove;
+    int m_showCurrentMove;
     bool m_guessMove;
     int m_selectedSquare;
     int m_hoverSquare;
