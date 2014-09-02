@@ -429,7 +429,7 @@ void PreferencesDialog::restoreSettings()
     AppSettings->beginGroup("/Board/");
     ui.boardFrameCheck->setChecked(AppSettings->getValue("showFrame").toBool());
     ui.boardShowCoordinates->setChecked(AppSettings->getValue("showCoordinates").toBool());
-    ui.hilightCurrentMove->setChecked(AppSettings->getValue("showCurrentMove").toBool());
+    ui.hilightCurrentMove->setCurrentIndex(AppSettings->getValue("showCurrentMove").toInt());
     ui.cbShowIndicator->setCurrentIndex(AppSettings->getValue("showMoveIndicator").toInt());
     ui.guessMoveCheck->setChecked(AppSettings->getValue("guessMove").toBool());
     ui.guessNextMove->setChecked(AppSettings->getValue("nextGuess").toBool());
@@ -533,7 +533,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->beginGroup("/Board/");
     AppSettings->setValue("showFrame", QVariant(ui.boardFrameCheck->isChecked()));
     AppSettings->setValue("showCoordinates", QVariant(ui.boardShowCoordinates->isChecked()));
-    AppSettings->setValue("showCurrentMove", QVariant(ui.hilightCurrentMove->isChecked()));
+    AppSettings->setValue("showCurrentMove", QVariant(ui.hilightCurrentMove->currentIndex()));
     AppSettings->setValue("showMoveIndicator", QVariant(ui.cbShowIndicator->currentIndex()));
     AppSettings->setValue("guessMove", QVariant(ui.guessMoveCheck->isChecked()));
     AppSettings->setValue("nextGuess", QVariant(ui.guessNextMove->isChecked()));

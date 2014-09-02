@@ -231,7 +231,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
 
     map.insert("/Board/showFrame", true);
     map.insert("/Board/showCoordinates", true);
-    map.insert("/Board/showCurrentMove", true);
+    map.insert("/Board/showCurrentMove", 2);
     map.insert("/Board/showMoveIndicator", 0);
     map.insert("/Board/guessMove", true);
     map.insert("/Board/nextGuess", false);

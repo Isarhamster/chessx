@@ -28,7 +28,7 @@ const int CoordinateSize = 16;
 const int MoveIndicatorSize = 12;
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
-    m_flipped(false), m_showFrame(false), m_showCurrentMove(true),
+    m_flipped(false), m_showFrame(false), m_showCurrentMove(2),
     m_guessMove(false), m_selectedSquare(InvalidSquare),
     m_hoverSquare(InvalidSquare),
     m_hiFrom(InvalidSquare), m_hiTo(InvalidSquare),
@@ -176,6 +176,70 @@ void BoardView::drawMoveIndicator(QPaintEvent* event)
     }
 }
 
+void BoardView::drawHiliteSquare(QPoint pos, BoardTheme::ColorRole role)
+{
+    QPainter p(this);
+    p.translate(m_translate);
+
+    QPen pen;
+    pen.setColor(m_theme.color(role));
+    pen.setWidth(2);
+    pen.setJoinStyle(Qt::MiterJoin);
+    p.setPen(pen);
+    p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
+               m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
+}
+
+QPoint BoardView::posFromSquare(int square) const
+{
+    int coord =  m_coordinates ? CoordinateSize : 0;
+    int x = isFlipped() ? 7 - square % 8 : square % 8;
+    int y = isFlipped() ? square / 8 : 7 - square / 8;
+    QPoint pos(coord + x * m_theme.size().width(), y * m_theme.size().height());
+    return pos;
+}
+
+void BoardView::drawHiliting(QPaintEvent* event)
+{
+    QPainter p(this);
+    p.translate(m_translate);
+
+    for(Square square = 0; square < 64; square++)
+    {
+        QRect rect = squareRect(square);
+        if(!event->region().intersects(rect))
+        {
+            continue;
+        }
+
+        QPoint pos = posFromSquare(square);
+
+        if(m_showCurrentMove==1)
+        {
+            if(square == m_currentFrom || square == m_currentTo)
+            {
+                drawHiliteSquare(pos, BoardTheme::CurrentMove);
+            }
+        }
+
+        if(square == m_selectedSquare || square == m_hiFrom || square == m_hiTo)
+        {
+            drawHiliteSquare(pos, BoardTheme::Highlight);
+        }
+    }
+
+    if(m_showCurrentMove==2)
+    {
+        QRect rect1 = squareRect(m_currentFrom);
+        QRect rect2 = squareRect(m_currentTo);
+        QRect u = rect1.united(rect2);
+        if(event->region().intersects(u))
+        {
+            drawArrow(m_currentFrom, m_currentTo, m_theme.color(BoardTheme::CurrentMove));
+        }
+    }
+}
+
 void BoardView::drawPieces(QPaintEvent* event)
 {
     QPainter p(this);
@@ -188,37 +252,10 @@ void BoardView::drawPieces(QPaintEvent* event)
         {
             continue;
         }
-        int coord =  m_coordinates ? CoordinateSize : 0;
-        int x = isFlipped() ? 7 - square % 8 : square % 8;
-        int y = isFlipped() ? square / 8 : 7 - square / 8;
-        QPoint pos(coord + x * m_theme.size().width(), y * m_theme.size().height());
+
+        QPoint pos = posFromSquare(square);
 
         p.drawPixmap(pos, m_theme.piece(m_board.pieceAt(square)));
-
-        if(m_showCurrentMove)
-        {
-            if(square == m_currentFrom || square == m_currentTo)
-            {
-                QPen pen;
-                pen.setColor(m_theme.color(BoardTheme::CurrentMove));
-                pen.setWidth(2);
-                pen.setJoinStyle(Qt::MiterJoin);
-                p.setPen(pen);
-                p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
-                           m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
-            }
-        }
-
-        if(square == m_selectedSquare || square == m_hiFrom || square == m_hiTo)
-        {
-            QPen pen;
-            pen.setColor(m_theme.color(BoardTheme::Highlight));
-            pen.setWidth(2);
-            pen.setJoinStyle(Qt::MiterJoin);
-            p.setPen(pen);
-            p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
-                       m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
-        }
 
         if(m_showFrame)
         {
@@ -234,6 +271,7 @@ void BoardView::paintEvent(QPaintEvent* event)
     drawCoordinates(event);
     drawSquareAnnotations(event);
     drawPieces(event);
+    drawHiliting(event);
     drawMoveIndicator(event);
     drawArrowAnnotations(event);
     drawDraggedPieces(event);
@@ -592,7 +630,7 @@ void BoardView::configure()
     AppSettings->beginGroup("/Board/");
     m_showFrame = AppSettings->getValue("showFrame").toBool();
     m_coordinates = AppSettings->getValue("showCoordinates").toBool();
-    m_showCurrentMove = AppSettings->getValue("showCurrentMove").toBool();
+    m_showCurrentMove = AppSettings->getValue("showCurrentMove").toInt();
     m_guessMove = AppSettings->getValue("guessMove").toBool();
     m_minDeltaWheel = AppSettings->getValue("minWheelCount").toInt();
     m_showMoveIndicatorMode = AppSettings->getValue("showMoveIndicator").toInt();
@@ -805,40 +843,11 @@ void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
 
 }
 
-void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
+void BoardView::drawArrow(int square1, int square2, QColor color)
 {
     QPainter p(this);
     p.translate(m_translate);
 
-    static const QString letters = "abcdefgh";
-    static const QString numbers = "12345678";
-
-    QString trimmed = annotation.simplified();
-
-    QChar colorChar = trimmed[0];
-    QChar fileChar1 = trimmed[1];
-    QChar rankChar1 = trimmed[2];
-    QChar fileChar2 = trimmed[3];
-    QChar rankChar2 = trimmed[4];
-    int file1 = letters.indexOf(fileChar1);
-    int rank1 = numbers.indexOf(rankChar1);
-    int file2 = letters.indexOf(fileChar2);
-    int rank2 = numbers.indexOf(rankChar2);
-
-    if(file1 < 0 || file2 < 0 || rank1 < 0 || rank2 < 0)
-    {
-        return;
-    }
-    int square1 = rank1 * 8 + file1;
-    int square2 = rank2 * 8 + file2;
-
-    QRect rect1 = squareRect(square1);
-    QRect rect2 = squareRect(square2);
-    QRect u = rect1.united(rect2);
-    if(!event->region().intersects(u))
-    {
-        return;
-    }
     int x1 = isFlipped() ? 7 - square1 % 8 : square1 % 8;
     int y1 = isFlipped() ? square1 / 8 : 7 - square1 / 8;
     int x2 = isFlipped() ? 7 - square2 % 8 : square2 % 8;
@@ -848,20 +857,6 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
     int coord =  m_coordinates ? CoordinateSize : 0;
     QPoint pos1(coord + (x1 * w) + (w / 2), (y1 * h) + (h / 2));
     QPoint pos2(coord + (x2 * w) + (w / 2), (y2 * h) + (h / 2));
-
-    QColor color = Qt::red;
-    if(colorChar == 'Y')
-    {
-        color = Qt::yellow;
-    }
-    else if(colorChar == 'G')
-    {
-        color = Qt::green;
-    }
-    else if(colorChar == 'B')
-    {
-        color = Qt::blue;
-    }
 
     // Now to Draw Arrow Head
     qreal headWidth = m_theme.size().width() / 4;
@@ -923,6 +918,56 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
 
     p.restore();
 }
+
+void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
+{
+    static const QString letters = "abcdefgh";
+    static const QString numbers = "12345678";
+
+    QString trimmed = annotation.simplified();
+
+    QChar colorChar = trimmed[0];
+    QChar fileChar1 = trimmed[1];
+    QChar rankChar1 = trimmed[2];
+    QChar fileChar2 = trimmed[3];
+    QChar rankChar2 = trimmed[4];
+    int file1 = letters.indexOf(fileChar1);
+    int rank1 = numbers.indexOf(rankChar1);
+    int file2 = letters.indexOf(fileChar2);
+    int rank2 = numbers.indexOf(rankChar2);
+
+    if(file1 < 0 || file2 < 0 || rank1 < 0 || rank2 < 0)
+    {
+        return;
+    }
+    int square1 = rank1 * 8 + file1;
+    int square2 = rank2 * 8 + file2;
+
+    QRect rect1 = squareRect(square1);
+    QRect rect2 = squareRect(square2);
+    QRect u = rect1.united(rect2);
+    if(!event->region().intersects(u))
+    {
+        return;
+    }
+
+    QColor color = Qt::red;
+    if(colorChar == 'Y')
+    {
+        color = Qt::yellow;
+    }
+    else if(colorChar == 'G')
+    {
+        color = Qt::green;
+    }
+    else if(colorChar == 'B')
+    {
+        color = Qt::blue;
+    }
+
+    drawArrow(square1, square2, color);
+}
+
 bool BoardView::vAlignTop() const
 {
     return m_vAlignTop;
