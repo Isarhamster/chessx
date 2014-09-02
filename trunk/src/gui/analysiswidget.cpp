@@ -372,7 +372,7 @@ void AnalysisWidget::updateComplexity()
             m_complexity = 0.0;
             m_lastDepthAdded = 2;
         }
-        if (m_analyses.size() >= 2)
+        if ((m_analyses.size() >= 2) && !m_analyses[1].bestMove())
         {
             if ((m_lastDepthAdded+1 == m_analyses[0].depth()) && !m_analyses[0].isMate())
             {
