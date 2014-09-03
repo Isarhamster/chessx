@@ -18,6 +18,8 @@
 
 /*** Engine ***/
 
+bool Engine::s_allowEngineOutput = true;
+
 Engine::Engine(const QString& name,
                const QString& command,
                bool bTestMode,
@@ -163,7 +165,10 @@ bool Engine::isAnalyzing()
 void Engine::send(const QString& message)
 {
 #ifdef DEBUG_ENGINE
-    qDebug() << "<-- " << message << endl;
+    if (s_allowEngineOutput)
+    {
+        qDebug() << "<-- " << message << endl;
+    }
 #endif
 
     QString out(message);
@@ -211,7 +216,10 @@ void Engine::setAnalyzing(bool analyzing)
 
 void Engine::sendAnalysis(const Analysis& analysis)
 {
-    emit analysisUpdated(analysis);
+    if (s_allowEngineOutput)
+    {
+        emit analysisUpdated(analysis);
+    }
 }
 
 void Engine::setMpv(int mpv)
@@ -232,7 +240,10 @@ void Engine::pollProcess()
     {
         message = m_process->readLine().simplified();
 #ifdef DEBUG_ENGINE
-        qDebug() << "--> " << message << endl;
+        if (s_allowEngineOutput)
+        {
+            qDebug() << "--> " << message << endl;
+        }
 #endif
         processMessage(message);
     }
@@ -243,6 +254,11 @@ void Engine::processError(QProcess::ProcessError errMsg)
     setActive(false);
     m_process = 0;
     emit error(errMsg);
+}
+
+void Engine::setAllowEngineOutput(bool allow)
+{
+    s_allowEngineOutput = allow;
 }
 
 void Engine::processExited()
