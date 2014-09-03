@@ -29,7 +29,7 @@ AnalysisWidget::AnalysisWidget()
     connect(ui.btPin, SIGNAL(clicked(bool)), SLOT(slotPinChanged(bool)));
     ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 
-    m_tablebase = new Shredder;
+    m_tablebase = new OnlineTablebase;
     connect(m_tablebase, SIGNAL(bestMove(Move, int)), this, SLOT(showTablebaseMove(Move, int)));
 }
 

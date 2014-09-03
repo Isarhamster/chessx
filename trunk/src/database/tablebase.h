@@ -38,6 +38,11 @@ public slots:
     virtual void getBestMove(QString fen) = 0;
     /** Cancel the previous lookup */
     virtual void abortLookup() = 0;
+
+public:
+    static void setAllowEngineOutput(bool allow);
+protected:
+    static bool s_allowEngineOutput;
 };
 
 
@@ -45,12 +50,12 @@ public slots:
  * Implement Tablebase access to ShredderChess.com 6 piece tablebases.
  *
  */
-class Shredder : public Tablebase
+class OnlineTablebase : public Tablebase
 {
     Q_OBJECT
 public:
-    Shredder();
-    ~Shredder();
+    OnlineTablebase();
+    ~OnlineTablebase();
 signals:
     void bestMove(Move move, int score);
 public slots:
