@@ -157,6 +157,11 @@ private:
     QTextStream* m_processStream;
     bool m_active;
     bool m_analyzing;
+
+public:
+    static void setAllowEngineOutput(bool allow);
+protected:
+    static bool s_allowEngineOutput;
 };
 
 #endif // __ENGINE_H__
