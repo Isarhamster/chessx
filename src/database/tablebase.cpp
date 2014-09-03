@@ -18,21 +18,28 @@
 #include <QNetworkReply>
 #include <QTimer>
 
-Shredder::Shredder()
+bool Tablebase::s_allowEngineOutput = true;
+
+void Tablebase::setAllowEngineOutput(bool allow)
+{
+    s_allowEngineOutput = allow;
+}
+
+OnlineTablebase::OnlineTablebase()
 {
     connect(&manager, SIGNAL(finished(QNetworkReply*)),
             SLOT(httpDone(QNetworkReply*)));
 }
 
-Shredder::~Shredder()
+OnlineTablebase::~OnlineTablebase()
 {
 }
 
-void Shredder::abortLookup()
+void OnlineTablebase::abortLookup()
 {
 }
 
-void Shredder::getBestMove(QString fen)
+void OnlineTablebase::getBestMove(QString fen)
 {
     abortLookup();
     if(m_fen == fen)
@@ -43,7 +50,7 @@ void Shredder::getBestMove(QString fen)
     QTimer::singleShot(100, this, SLOT(sendIt()));
 }
 
-void Shredder::sendIt()
+void OnlineTablebase::sendIt()
 {
     QString prep(m_fen.simplified());
     QString count(prep.left(prep.indexOf(" ")));
@@ -69,7 +76,7 @@ void Shredder::sendIt()
     manager.get(request);
 }
 
-void Shredder::httpDone(QNetworkReply *reply)
+void OnlineTablebase::httpDone(QNetworkReply *reply)
 {
     QUrl url = reply->url();
 
@@ -129,7 +136,10 @@ void Shredder::httpDone(QNetworkReply *reply)
                 }
                 score = fld[3].toInt();
             }
-            emit bestMove(move, score);
+            if (s_allowEngineOutput)
+            {
+                emit bestMove(move, score);
+            }
         }
     }
     reply->deleteLater();
