@@ -4,11 +4,19 @@
 
 namespace Guess
 {
+
+static bool s_guessAllowed = true;
+
 Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
 {
     Result r;
     r.error = -1;
     r.score = 0;
+
+    if (!s_guessAllowed)
+    {
+        return r;
+    }
 
     squareT sq = square;
 
@@ -43,6 +51,14 @@ Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
 Result evalPos(const char* fen, int thinkTime)
 {
     Result r;
+
+    if (!s_guessAllowed)
+    {
+        r.error = -1;
+        r.score = 0;
+        return r;
+    }
+
     MoveList mlist;
 
     Position pos;
@@ -69,6 +85,8 @@ Result evalPos(const char* fen, int thinkTime)
 //  -1 is returned on error
 int pickBest(const char* fen, int from1, int to1, int from2, int to2, int ms)
 {
+    if (!s_guessAllowed) return -1;
+
     Position pos;
     pos.ReadFromFEN(fen);
 
@@ -95,5 +113,11 @@ int pickBest(const char* fen, int from1, int to1, int from2, int to2, int ms)
     }
     return -1;
 }
+
+void setGuessAllowed(bool allow)
+{
+    s_guessAllowed = allow;
+}
+
 }
 
