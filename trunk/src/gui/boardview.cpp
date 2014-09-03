@@ -354,23 +354,14 @@ bool BoardView::showGuess(Square s)
         removeGuess();
         m_moveListCurrent = 0;
         m_moveList.clear();
-#ifdef USE_ECO_GUESS
-        if(m_board.ecoMove(s, &m_hifrom, &m_hito))
+
+        Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), (int) s, m_moveList);
+        if(!sm.error)
         {
-            update(squareRect(m_hifrom));
-            update(squareRect(m_hito));
-        }
-        else
-#endif
-        {
-            Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), (int) s, m_moveList);
-            if(!sm.error)
-            {
-                m_hiFrom = sm.from;
-                m_hiTo = sm.to;
-                update(squareRect(m_hiFrom));
-                update(squareRect(m_hiTo));
-            }
+            m_hiFrom = sm.from;
+            m_hiTo = sm.to;
+            update(squareRect(m_hiFrom));
+            update(squareRect(m_hiTo));
         }
         return true;
     }
