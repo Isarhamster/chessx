@@ -2130,3 +2130,12 @@ void MainWindow::slotBookBuildError(QString /*path*/)
 {
     MessageDialog::warning(tr("Could not build book"), tr("Polyglot Error"));
 }
+
+void MainWindow::enterGameMode(bool gameMode)
+{
+    Guess::setGuessAllowed(!gameMode);
+    Engine::setAllowEngineOutput(!gameMode);
+    Tablebase::setAllowEngineOutput(!gameMode);
+    // TODO: Hide Analysis widgets
+    // TODO: ?
+}

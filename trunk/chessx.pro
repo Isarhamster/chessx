@@ -167,7 +167,9 @@ HEADERS += src/database/board.h \
     src/gui/shellhelper.h \
     src/gui/boardsearchdialog.h \
     src/database/ctgdatabase.h \
-    src/database/ctgbookwriter.h
+    src/database/ctgbookwriter.h \
+    src/database/telnetclient.h \
+    src/database/ficsclient.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -278,7 +280,9 @@ SOURCES += src/database/board.cpp \
     src/gui/shellhelper.cpp \
     src/gui/boardsearchdialog.cpp \
     src/database/ctgdatabase.cpp \
-    src/database/ctgbookwriter.cpp
+    src/database/ctgbookwriter.cpp \
+    src/database/telnetclient.cpp \
+    src/database/ficsclient.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

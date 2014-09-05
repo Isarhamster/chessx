@@ -102,6 +102,8 @@ protected:
     /** Update recent files menu */
     void updateMenuRecent();
 public slots:
+    /** Enter gaming mode */
+    void enterGameMode(bool gameMode);
     /** Open database */
     void openDatabase(QString fname);
     /** Open database from URL*/
