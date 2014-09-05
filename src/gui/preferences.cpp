@@ -518,6 +518,11 @@ void PreferencesDialog::restoreSettings()
     ui.extToolPath->setText(AppSettings->getValue("Path1").toString());
     ui.extToolParameters->setText(AppSettings->getValue("CommandLine1").toString());
     AppSettings->endGroup();
+
+    AppSettings->beginGroup("FICS");
+    ui.userName->setText(AppSettings->getValue("userName").toString());
+    ui.passWord->setText(AppSettings->getValue("passWord").toString());
+    AppSettings->endGroup();
 }
 
 void PreferencesDialog::saveSettings()
@@ -586,6 +591,11 @@ void PreferencesDialog::saveSettings()
     AppSettings->beginGroup("Tools");
     AppSettings->setValue("Path1", ui.extToolPath->text());
     AppSettings->setValue("CommandLine1", ui.extToolParameters->text());
+    AppSettings->endGroup();
+
+    AppSettings->beginGroup("FICS");
+    AppSettings->setValue("userName", ui.userName->text());
+    AppSettings->setValue("passWord", ui.passWord->text());
     AppSettings->endGroup();
 
     QDir().mkpath(ui.defaultDataBasePath->text());

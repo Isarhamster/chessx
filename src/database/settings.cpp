@@ -229,6 +229,9 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
 
     map.insert("/History/MaxEntries", 4);
 
+    map.insert("/FICS/userName", "guest");
+    map.insert("/FICS/passWord", "");
+
     map.insert("/Board/showFrame", true);
     map.insert("/Board/showCoordinates", true);
     map.insert("/Board/showCurrentMove", 2);
