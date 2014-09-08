@@ -32,6 +32,7 @@ class ECOListWidget;
 class EcoThread;
 class EditAction;
 class EventListWidget;
+class FicsClient;
 class Game;
 class GameList;
 class OpeningTreeWidget;
@@ -101,8 +102,13 @@ protected:
     bool gameMoveBy(int change);
     /** Update recent files menu */
     void updateMenuRecent();
+    /** Get current mode */
+    bool gameMode() const;
+    /** Set current Mode */
+    void setGameMode(bool gameMode);
 public slots:
     /** Enter gaming mode */
+    void slotToggleGameMode();
     void enterGameMode(bool gameMode);
     /** Open database */
     void openDatabase(QString fname);
@@ -152,32 +158,17 @@ public slots:
     void slotHelpBug();
     void slotConfigureFlip();
     /** Go to first move of the game */
-    void slotGameMoveFirst()
-    {
-        gameMoveBy(-999);
-    }
+    void slotGameMoveFirst();
     /** Go to next move of the game */
     bool slotGameMoveNext();
     /** Go to previous move of the game */
-    void slotGameMovePrevious()
-    {
-        gameMoveBy(-1);
-    }
+    void slotGameMovePrevious();
     /** Go to last move of the game */
-    void slotGameMoveLast()
-    {
-        gameMoveBy(999);
-    }
+    void slotGameMoveLast();
     /** Go N moves forward in the game. For now fixed at @p 10 */
-    void slotGameMoveNextN()
-    {
-        gameMoveBy(10);
-    }
+    void slotGameMoveNextN();
     /** Go N moves backward in the game. For now fixed at @p 10 */
-    void slotGameMovePreviousN()
-    {
-        gameMoveBy(-10);
-    }
+    void slotGameMovePreviousN();
     /** Load first game */
     void slotGameLoadFirst();
     /** Load next game */
@@ -543,6 +534,7 @@ private:
     Board m_AutoInsertLastBoard;
     Square m_annotationSquare;
     Square m_annotationSquareFrom;
+    QAction* m_match;
     QAction* m_training;
     QAction* m_autoRespond;
     QAction* m_autoPlay;
@@ -552,6 +544,8 @@ private:
     DownloadManager* downloadManager;
     bool m_machineHasToMove;
     bool m_bInDrag;
+    bool m_gameMode;
+    FicsClient* m_ficsClient;
 };
 
 

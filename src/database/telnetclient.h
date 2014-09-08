@@ -17,19 +17,29 @@ public:
     virtual ~TelnetClient();
 
     void connectHost(const QString& host, int port, QString name, QString passwd);
-    void send(const QString& s);
+    void send(QString s);
+
+    void exitSession();
 
 signals:
-    void messageReceived(const QString&);
     void disconnected();
 
 public slots:
     void SlotReadData();
 
-protected:
-    QTcpSocket* m_socket;
+protected: //methods
+    virtual void startSession() = 0;
+    virtual void sendAccept() = 0;
+    virtual void sendHistory() = 0;
+    virtual void sendPlayRequest(int gameId) = 0;
+    virtual void sendCommand(QString s) = 0;
+
+protected: //callback
+    virtual void OnSessionStarted()=0;
+    virtual void OnReceiveTelnetMessage(QString)=0;
 
 private:
+    QTcpSocket* m_socket;
     QString m_name;
     QString m_passwd;
     int     m_state;

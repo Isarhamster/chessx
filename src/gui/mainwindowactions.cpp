@@ -18,10 +18,11 @@
 #include "compileeco.h"
 #include "databaseinfo.h"
 #include "databaselist.h"
-#include "ecolistwidget.h"
 #include "dlgsavebook.h"
+#include "ecolistwidget.h"
 #include "editaction.h"
 #include "eventlistwidget.h"
+#include "ficsclient.h"
 #include "game.h"
 #include "gamelist.h"
 #include "mainwindow.h"
@@ -758,13 +759,13 @@ void MainWindow::moveChanged()
     // Clear  entries
     m_nagText.clear();
 
-    emit signalMoveHasNextMove(!game().atLineEnd());
-    emit signalMoveHasPreviousMove(!game().atGameStart());
-    emit signalMoveHasVariation(game().variationCount() > 0);
-    emit signalMoveHasParent(!game().isMainline());
-    emit signalVariationHasSibling(game().variationHasSiblings(m));
+    emit signalMoveHasNextMove(!gameMode() && !game().atLineEnd());
+    emit signalMoveHasPreviousMove(!gameMode() && !game().atGameStart());
+    emit signalMoveHasVariation(!gameMode() && game().variationCount() > 0);
+    emit signalMoveHasParent(!gameMode() && !game().isMainline());
+    emit signalVariationHasSibling(!gameMode() && game().variationHasSiblings(m));
     emit signalGameIsEmpty(false);
-    emit signalGameAtLineStart(game().atLineStart());
+    emit signalGameAtLineStart(!gameMode() && game().atLineStart());
 }
 
 void MainWindow::slotSearchTree()
@@ -1131,6 +1132,10 @@ void MainWindow::slotGameChanged()
 
 void MainWindow::slotGameViewLink(const QUrl& url)
 {
+    if (gameMode())
+    {
+        return;
+    }
     if(url.scheme() == "move")
     {
         if(url.path() == "prev")
@@ -1701,8 +1706,11 @@ void MainWindow::slotSearchReset()
 
 void MainWindow::slotTreeUpdate()
 {
-    m_gameList->updateFilter();
-    slotFilterChanged();
+    if (!gameMode())
+    {
+        m_gameList->updateFilter();
+        slotFilterChanged();
+    }
 }
 
 void MainWindow::slotSearchTreeMove(const QModelIndex& index)
@@ -1741,7 +1749,7 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
 
 void MainWindow::updateOpeningTree(const Board& b, bool atEnd)
 {
-    if(m_openingTreeWidget->isVisible())
+    if(!gameMode() && m_openingTreeWidget->isVisible())
     {
         QString name;
         DatabaseInfo* dbInfo;
@@ -2131,11 +2139,27 @@ void MainWindow::slotBookBuildError(QString /*path*/)
     MessageDialog::warning(tr("Could not build book"), tr("Polyglot Error"));
 }
 
+void MainWindow::slotToggleGameMode()
+{
+    enterGameMode(m_match->isChecked());
+}
+
 void MainWindow::enterGameMode(bool gameMode)
 {
     Guess::setGuessAllowed(!gameMode);
     Engine::setAllowEngineOutput(!gameMode);
     Tablebase::setAllowEngineOutput(!gameMode);
-    // TODO: Hide Analysis widgets
-    // TODO: ?
+    if (gameMode)
+    {
+        m_openingTreeWidget->cancel();
+    }
+    setGameMode(gameMode);
+    if (gameMode)
+    {
+        m_ficsClient->startSession();
+    }
+    else
+    {
+        m_ficsClient->exitSession();
+    }
 }
