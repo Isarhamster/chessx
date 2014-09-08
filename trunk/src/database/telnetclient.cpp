@@ -7,6 +7,9 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 
+#define DEBUG_TELNET
+//#undef DEBUG_TELNET
+
 TelnetClient::TelnetClient(QObject *parent)
     : QObject(parent)
 {
@@ -27,9 +30,14 @@ TelnetClient::~TelnetClient()
 
 void TelnetClient::SlotReadData()
 {
-    QString data;
     QByteArray bytes = m_socket->readAll();
-    data = QString::fromLatin1(bytes);
+    QString data = QString::fromLatin1(bytes);
+#ifdef DEBUG_TELNET
+    qDebug() << "<--" << data;
+#endif
+
+    data.remove(QChar(0x07)); // bell
+
     switch (m_state)
     {
         case 0:
@@ -38,7 +46,6 @@ void TelnetClient::SlotReadData()
             if (data.contains(reLogin))
             {
                 ++m_state;
-                if (m_passwd.isEmpty()) ++m_state;
                 send(m_name);
             }
             break;
@@ -51,28 +58,41 @@ void TelnetClient::SlotReadData()
                 ++m_state;
                 send(m_passwd);
             }
+            else
+            {
+                QRegExp reEnter = QRegExp("Press return");
+                if (data.contains(reEnter))
+                {
+                    ++m_state;
+                    send("\n");
+                }
+            }
             break;
         }
         case 2:
         {
-            QRegExp reLoggedIn = QRegExp("Starting FICS session");
+            QRegExp reLoggedIn = QRegExp("[Ss]ession");
             if (data.contains(reLoggedIn))
             {
                 ++m_state;
-                emit messageReceived(data);
+                OnSessionStarted();
             }
             break;
         }
         default:
-        emit messageReceived(data);
+        OnReceiveTelnetMessage(data);
         break;
     }
 }
 
-void TelnetClient::send(const QString& s)
+void TelnetClient::send(QString s)
 {
     if (m_socket->state() == QAbstractSocket::ConnectedState)
     {
+#ifdef DEBUG_TELNET
+    qDebug() << "-->" << s;
+#endif
+        s.append("\n");
         m_socket->write(s.toLatin1());
         m_socket->flush();
     }
@@ -82,8 +102,22 @@ void TelnetClient::connectHost(const QString &host, int port, QString name, QStr
 {
     if (m_socket->state() == QAbstractSocket::UnconnectedState)
     {
+#ifdef DEBUG_TELNET
+    qDebug() << "connecting...";
+#endif
         m_name = name;
         m_passwd = passwd;
         m_socket->connectToHost(host, port);
+    }
+}
+
+void TelnetClient::exitSession()
+{
+    if (m_socket->state() == QAbstractSocket::ConnectedState)
+    {
+#ifdef DEBUG_TELNET
+    qDebug() << "closing...";
+#endif
+        m_socket->close();
     }
 }

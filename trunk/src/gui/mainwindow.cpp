@@ -21,6 +21,7 @@
 #include "ecothread.h"
 #include "eventlistwidget.h"
 #include "exclusiveactiongroup.h"
+#include "ficsclient.h"
 #include "game.h"
 #include "gamelist.h"
 #include "GameMimeData.h"
@@ -73,10 +74,12 @@ MainWindow::MainWindow() : QMainWindow(),
     m_currentFrom(InvalidSquare),
     m_currentTo(InvalidSquare),
     m_machineHasToMove(false),
-    m_bInDrag(false)
+    m_bInDrag(false),
+    m_gameMode(false)
 {
     setObjectName("MainWindow");
 
+    m_ficsClient = new FicsClient(this);
     m_autoPlayTimer = new QTimer(this);
     m_autoPlayTimer->setInterval(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
     m_autoPlayTimer->setSingleShot(true);
@@ -275,7 +278,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Opening Tree */
     DockWidgetEx* openingDock = new DockWidgetEx(tr("Opening Tree"), this);
-    openingDock->setObjectName("OpeningTreeDock");
+    openingDock->setObjectName("    Dock");
     m_openingTreeWidget = new OpeningTreeWidget(this);
     openingDock->setWidget(m_openingTreeWidget);
     addDockWidget(Qt::RightDockWidgetArea, openingDock);
@@ -675,7 +678,7 @@ void MainWindow::gameLoad(int index)
 
 bool MainWindow::gameMoveBy(int change)
 {
-    if(game().moveByPly(change))
+    if(!gameMode() && game().moveByPly(change))
     {
         m_gameView->setFocus();
         return true;
@@ -740,6 +743,31 @@ void MainWindow::setFavoriteDatabase(QString fname)
     {
         m_databaseList->setFileFavorite(url.toLocalFile(), true, 0);
     }
+}
+
+void MainWindow::slotGameMoveFirst()
+{
+    gameMoveBy(-999);
+}
+
+void MainWindow::slotGameMovePrevious()
+{
+    gameMoveBy(-1);
+}
+
+void MainWindow::slotGameMoveLast()
+{
+    gameMoveBy(999);
+}
+
+void MainWindow::slotGameMoveNextN()
+{
+    gameMoveBy(10);
+}
+
+void MainWindow::slotGameMovePreviousN()
+{
+    gameMoveBy(-10);
 }
 
 void MainWindow::openDatabase(QString fname)
@@ -1226,6 +1254,14 @@ void MainWindow::setupActions()
     ExclusiveActionGroup* autoGroup = new ExclusiveActionGroup(this);
     ExclusiveActionGroup* autoGroup2 = new ExclusiveActionGroup(this);
 
+    m_match = createAction(tr("Match"), SLOT(slotToggleGameMode()), Qt::CTRL + Qt::Key_M, gameToolBar, ":/images/black_chess.png");
+    m_match->setCheckable(true);
+    autoGroup2->addAction(m_match);
+    autoGroup->addAction(m_match);
+    gameMenu->addAction(m_match );
+    gameMenu->addSeparator();
+    connect(m_match, SIGNAL(changed()), SLOT(slotToggleGameMode()));
+
     m_training = createAction(tr("Training"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::Key_R, gameToolBar, ":/images/training.png");
     m_training->setCheckable(true);
     autoGroup2->addAction(m_training);
@@ -1623,4 +1659,14 @@ void MainWindow::slotAutoSwitchTab()
         m_pDragTabBar = 0;
         m_tabDragIndex = -1;
     }
+}
+
+bool MainWindow::gameMode() const
+{
+    return m_gameMode;
+}
+
+void MainWindow::setGameMode(bool gameMode)
+{
+    m_gameMode = gameMode;
 }

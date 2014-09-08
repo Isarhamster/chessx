@@ -123,5 +123,6 @@
         <file alias="help/about1a.html">data/help/about1a.html</file>
         <file alias="i18n/chessx_it.qm">i18n/chessx_it.qm</file>
         <file alias="help/about6.html">data/help/about6.html</file>
+        <file alias="images/black_chess.png">data/images/black_chess.png</file>
     </qresource>
 </RCC>

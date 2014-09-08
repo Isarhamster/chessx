@@ -10,7 +10,19 @@
 class FicsClient : public TelnetClient
 {
 public:
-    FicsClient();
+    FicsClient(QObject* parent);
+
+    virtual void startSession();
+    virtual void sendAccept();
+    virtual void sendHistory();
+    virtual void sendPlayRequest(int gameId);
+    virtual void sendCommand(QString s);
+
+protected:
+    void sendFicsCommand(QString s);
+    virtual void OnSessionStarted();
+    virtual void OnReceiveTelnetMessage(QString);
+
 };
 
 #endif // FICSCLIENT_H
