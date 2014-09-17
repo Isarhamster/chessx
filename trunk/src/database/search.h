@@ -175,6 +175,8 @@ public:
     TagSearch(Database* database, const QString& tag, const QString& value, bool partial = true);
     /** Range constructor */
     TagSearch(Database* database, const QString& tag, const QString& value, const QString& value2);
+    /** Range constructor */
+    TagSearch(Database *database, const QString &tag, int value, int value2);
     /** Makes a deep copy of TagSearch object. Probably obsolete */
     virtual TagSearch* clone() const;
     /** Standard destructor. */
@@ -195,8 +197,7 @@ public:
     virtual int matches(GameId index);
     /** initialize the search. Done automatically in constructor, or when values are changed */
     void initialize();
-    /** initialize the search. Done automatically in constructor, or when values are changed */
-    void initializeRange();
+
 private:
     QString m_tagName;
     QString m_value;

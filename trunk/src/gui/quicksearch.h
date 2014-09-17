@@ -29,6 +29,8 @@ public:
     virtual ~QuickSearchDialog();
     /** Set default tag */
     void setTag(int tag);
+    /** Fill the tag combo box */
+    void addTag(QString tag);
     /** @return current tag */
     int tag() const;
     /** Set default mode */

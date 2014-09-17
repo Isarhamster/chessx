@@ -18,68 +18,7 @@
     <widget class="QComboBox" name="modeCombo"/>
    </item>
    <item row="0" column="1">
-    <widget class="QComboBox" name="tagCombo">
-     <item>
-      <property name="text">
-       <string>Game Number</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>White</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>White Elo</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Black</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Black Elo</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Event</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Site</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Round</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Date</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Result</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>ECO</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Number of Moves</string>
-      </property>
-     </item>
-    </widget>
+    <widget class="QComboBox" name="tagCombo"/>
    </item>
    <item row="3" column="0" colspan="2">
     <layout class="QHBoxLayout">

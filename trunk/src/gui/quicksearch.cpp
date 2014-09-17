@@ -45,6 +45,11 @@ void QuickSearchDialog::setTag(int tag)
     ui.tagCombo->setCurrentIndex(tag);
 }
 
+void QuickSearchDialog::addTag(QString tag)
+{
+    ui.tagCombo->addItem(tag);
+}
+
 int QuickSearchDialog::tag() const
 {
     return ui.tagCombo->currentIndex();
