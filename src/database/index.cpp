@@ -264,7 +264,20 @@ QBitArray Index::listInRange(const QString& tagName, const QString& minValue, co
     for(int i = 0; i < count(); ++i)
     {
         QString value = tagValue(tagIndex, i);
-        list.setBit(i, (minValue < value) && (value < maxValue));
+        list.setBit(i, (minValue <= value) && (value <= maxValue));
+    }
+    return list;
+}
+
+QBitArray Index::listInRange(const QString &tagName, int minValue, int maxValue) const
+{
+    TagIndex tagIndex = m_tagNameIndex.value(tagName);
+
+    QBitArray list(count(), false);
+    for(int i = 0; i < count(); ++i)
+    {
+        int value = tagValue(tagIndex, i).toInt();
+        list.setBit(i, (minValue <= value) && (value <= maxValue));
     }
     return list;
 }

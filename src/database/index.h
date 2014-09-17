@@ -79,6 +79,9 @@ public:
     /** Returns a bit array to indicate which games in index have a tag value in given range */
     QBitArray listInRange(const QString& tag, const QString& minValue, const QString& maxValue) const;
 
+    /** Returns a bit array to indicate which games in index have a tag value in given range */
+    QBitArray listInRange(const QString& tag, int minValue, int maxValue) const;
+
     /** Returns a bit array to indicate which games in index have a tag value which somewhat matches */
     QBitArray listPartialValue(const QString& tagName, const QString& value) const;
 

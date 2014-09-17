@@ -193,6 +193,11 @@ void GameList::simpleSearch(int tagid)
     }
 
     QuickSearchDialog dlg(this);
+    for (int section = 0; section < m_model->columnCount(); ++section)
+    {
+        QString tag = m_model->headerData(section, Qt::Horizontal).toString();
+        dlg.addTag(tag);
+    }
 
     dlg.setTag(tagid);
     if(m_model->filter()->count() <= 1)
@@ -210,7 +215,7 @@ void GameList::simpleSearch(int tagid)
     {
         m_model->filter()->setAll(1);
     }
-    else if((dlg.tag() == 0) || (dlg.tag() == 7) || (dlg.tag() == 11))
+    else if(dlg.tag() == 0)
     {
         // filter by number
         Search* ns = new NumberSearch(m_model->filter()->database(), value);
@@ -229,7 +234,9 @@ void GameList::simpleSearch(int tagid)
         if ((list.size() > 1) && (dlg.tag() != 9))
         {
             // Filter a range
-            Search* ts = new TagSearch(m_model->filter()->database(), tag, list.at(0), list.at(1));
+            Search* ts = (dlg.tag() == 11) ?
+                    new TagSearch(m_model->filter()->database(), tag, list.at(0).toInt(), list.at(1).toInt()) :
+                    new TagSearch(m_model->filter()->database(), tag, list.at(0), list.at(1));
             if(dlg.mode())
             {
                 m_model->filter()->executeSearch(ts, Search::Operator(dlg.mode()));

@@ -116,10 +116,8 @@ EloSearch::~EloSearch()
 
 void EloSearch::initialize()
 {
-    m_matches = m_database->index()->listInRange(TagNameWhiteElo, QString::number(m_minWhiteElo),
-                QString::number(m_maxWhiteElo));
-    m_matches &= m_database->index()->listInRange(TagNameBlackElo, QString::number(m_minBlackElo),
-                 QString::number(m_maxBlackElo));
+    m_matches = m_database->index()->listInRange(TagNameWhiteElo, m_minWhiteElo, m_maxWhiteElo);
+    m_matches &= m_database->index()->listInRange(TagNameBlackElo, m_minBlackElo, m_maxBlackElo);
 }
 
 void EloSearch::setEloSearch(int minWhiteElo, int maxWhiteElo, int minBlackElo, int maxBlackElo)
@@ -232,7 +230,17 @@ TagSearch::TagSearch(Database* database, const QString& tag, const QString& valu
     m_value = value;
     m_value2 = value2;
     m_bPartial = false;
-    initializeRange();
+    m_matches = m_database->index()->listInRange(m_tagName, m_value, m_value2);
+}
+
+TagSearch::TagSearch(Database* database, const QString& tag, int value, int value2)
+{
+    m_database = database;
+    m_tagName = tag;
+    m_value = QString::number(value);
+    m_value2 = QString::number(value2);
+    m_bPartial = false;
+    m_matches = m_database->index()->listInRange(m_tagName, value, value2);
 }
 
 void TagSearch::initialize()
@@ -245,11 +253,6 @@ void TagSearch::initialize()
     {
         m_matches = m_database->index()->listContainingValue(m_tagName, m_value);
     }
-}
-
-void TagSearch::initializeRange()
-{
-    m_matches = m_database->index()->listInRange(m_tagName, m_value, m_value2);
 }
 
 TagSearch* TagSearch::clone() const
