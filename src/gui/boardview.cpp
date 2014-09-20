@@ -69,6 +69,7 @@ void BoardView::setBoard(const Board& value, int from, int to, bool atLineEnd)
     m_currentFrom = from;
     m_currentTo = to;
     m_atLineEnd = atLineEnd;
+    m_hiFrom = m_hiTo = InvalidSquare;
     if(underMouse())
     {
         updateGuess(m_hoverSquare);
