@@ -33,6 +33,8 @@ protected: //methods
     virtual void sendHistory() = 0;
     virtual void sendPlayRequest(int gameId) = 0;
     virtual void sendCommand(QString s) = 0;
+    virtual void sendObserve(int gameId) = 0;
+    virtual void sendUnobserve(int gameId) = 0;
 
 protected: //callback
     virtual void OnSessionStarted()=0;
@@ -43,6 +45,7 @@ private:
     QString m_name;
     QString m_passwd;
     int     m_state;
+    QString m_remainder;
 
 };
 

@@ -2,7 +2,7 @@
 *   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
-#include "TelnetClient.h"
+#include "telnetclient.h"
 
 #include <QTcpSocket>
 #include <QHostAddress>
@@ -30,58 +30,91 @@ TelnetClient::~TelnetClient()
 
 void TelnetClient::SlotReadData()
 {
-    QByteArray bytes = m_socket->readAll();
-    QString data = QString::fromLatin1(bytes);
-#ifdef DEBUG_TELNET
-    qDebug() << "<--" << data;
-#endif
-
-    data.remove(QChar(0x07)); // bell
-
-    switch (m_state)
+    while(m_socket->bytesAvailable())
     {
-        case 0:
+        QByteArray bytes = m_socket->readAll();
+
+        QString data = m_remainder;
+        m_remainder.clear();
+        data.append(QString::fromLatin1(bytes));
+
+        bool sendXON = data.contains(0x13);
+        data.remove(0x13);
+
+        bool hasNetData = false;
+
+    #ifdef DEBUG_TELNET
+        qDebug() << "<--" << data;
+    #endif
+
+        switch (m_state)
         {
-            QRegExp reLogin  = QRegExp("[Ll]ogin:");
-            if (data.contains(reLogin))
+            case 0:
             {
-                ++m_state;
-                send(m_name);
-            }
-            break;
-        }
-        case 1:
-        {
-            QRegExp rePasswd = QRegExp("[Pp]assword:");
-            if (data.contains(rePasswd))
-            {
-                ++m_state;
-                send(m_passwd);
-            }
-            else
-            {
-                QRegExp reEnter = QRegExp("Press return");
-                if (data.contains(reEnter))
+                QRegExp reLogin  = QRegExp("[Ll]ogin:");
+                if (data.contains(reLogin))
                 {
                     ++m_state;
-                    send("\n");
+                    send(m_name);
                 }
+                break;
             }
-            break;
-        }
-        case 2:
-        {
-            QRegExp reLoggedIn = QRegExp("[Ss]ession");
-            if (data.contains(reLoggedIn))
+            case 1:
             {
-                ++m_state;
-                OnSessionStarted();
+                QRegExp rePasswd = QRegExp("[Pp]assword:");
+                if (data.contains(rePasswd))
+                {
+                    ++m_state;
+                    send(m_passwd);
+                }
+                else
+                {
+                    QRegExp reEnter = QRegExp("Press return");
+                    if (data.contains(reEnter))
+                    {
+                        ++m_state;
+                        send("\n");
+                    }
+                }
+                break;
             }
+            case 2:
+            {
+                QRegExp reLoggedIn = QRegExp("[Ss]ession");
+                if (data.contains(reLoggedIn))
+                {
+                    ++m_state;
+                    OnSessionStarted();
+                }
+                break;
+            }
+            default:
+                bool endsWithCR = data.endsWith("\n");
+                QStringList lines = data.split("\n", QString::SkipEmptyParts);
+                if (lines.count() && !endsWithCR)
+                {
+                    hasNetData = true;
+                    m_remainder = lines.back();
+                    lines.pop_back();
+                }
+                foreach (QString line, lines)
+                {
+                    OnReceiveTelnetMessage(line);
+                }
             break;
         }
-        default:
-        OnReceiveTelnetMessage(data);
-        break;
+
+        if (sendXON)
+        {
+            send(QString("%1").arg(QChar(0x11)));
+        }
+        else
+        {
+            if (hasNetData)
+            {
+                send("\n");
+            }
+        }
     }
 }
 
