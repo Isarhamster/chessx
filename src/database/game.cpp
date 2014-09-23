@@ -1145,7 +1145,7 @@ bool Game::canHaveStartAnnotation(MoveId moveId) const
 bool Game::addNag(Nag nag, MoveId moveId)
 {
     MoveId node = nodeValid(moveId);
-    if(node != NO_MOVE)
+    if ((node != NO_MOVE) && (nag != NullNag))
     {
         Game state = *this;
         m_moveNodes[node].nags.addNag(nag);
