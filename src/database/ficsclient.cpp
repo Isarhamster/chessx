@@ -38,8 +38,26 @@ void FicsClient::sendCommand(QString s)
     sendFicsCommand(s);
 }
 
+void FicsClient::sendObserve(int gameId)
+{
+    QString cmd = QString("observe %1").arg(gameId);
+    sendFicsCommand(cmd);
+}
+
+void FicsClient::sendUnobserve(int gameId)
+{
+    QString cmd = QString("unobserve %1").arg(gameId);
+    sendFicsCommand(cmd);
+}
+
 void FicsClient::sendFicsCommand(QString s)
 {
+    send(s);
+}
+
+void FicsClient::sendFicsCommandWithId(QString s, int id)
+{
+    s.prepend(QString("%1 ").arg(id));
     send(s);
 }
 
@@ -56,9 +74,25 @@ void FicsClient::OnSessionStarted()
     sendFicsCommand("- channel 2");
     sendFicsCommand("- channel 50");
     sendFicsCommand("iset block 1");
+    sendFicsCommandWithId("history",1);
+    sendFicsCommandWithId("games",2);
 }
 
 void FicsClient::OnReceiveTelnetMessage(QString s)
 {
+    if (s.startsWith(StartReply))
+    {
+        switch (s[3].toLatin1())
+        {
+        case BLKCMD_HISTORY:
+            s.remove(5);
+            emit addNewHistoryEntry(s);
+            break;
 
+        case BLKCMD_GAMES:
+            s.remove(5);
+            emit addNewGameEntry(s);
+            break;
+        }
+    }
 }
