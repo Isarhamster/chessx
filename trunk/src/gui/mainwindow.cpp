@@ -548,9 +548,12 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
     {
         // Try to figure out a SAN
         int matches = NagSet::prefixCount(m_nagText);
-        if(matches == 1)
+        if(matches >= 1) // enter forces the current nag
         {
-            game().addNag(NagSet::fromString(m_nagText));
+            if(!game().atGameStart())
+            {
+                game().addNag(NagSet::fromString(m_nagText));
+            }
             m_nagText.clear();
             return;
         }
@@ -580,14 +583,12 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
     }
 
     int matches = NagSet::prefixCount(m_nagText);
-    if(matches == 1 || enterPressed)
+    if(matches == 1)
     {
-        if(game().atGameStart())
+        if(!game().atGameStart())
         {
-            m_nagText.clear();
-            return;
+            game().addNag(NagSet::fromString(m_nagText));
         }
-        game().addNag(NagSet::fromString(m_nagText));
         m_nagText.clear();
     }
 }
