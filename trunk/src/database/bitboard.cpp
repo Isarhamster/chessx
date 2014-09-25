@@ -2024,8 +2024,10 @@ quint64 BitBoard::pawnMovesFrom(const Square s) const
 
 Move BitBoard::prepareMove(const Square& from, const Square& to) const
 {
-    Q_ASSERT(from < 64);
-    Q_ASSERT(to < 64);
+    if ((from >= 64) || (to >= 64))
+    {
+        return Move();
+    }
 
     quint64 src = SetBit(from);
     quint64 dest = SetBit(to);

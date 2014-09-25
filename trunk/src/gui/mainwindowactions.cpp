@@ -1221,12 +1221,9 @@ void MainWindow::slotGameAddVariation(const Analysis& analysis)
     game().addVariation(analysis.variation(), score);
 }
 
-bool MainWindow::slotGameAddVariation(const QString& san)
+bool MainWindow::addVariation(const QString& s)
 {
     bool added = false;
-    QString s = san;
-    s = s.remove(QRegExp("-.*"));
-    s = s.remove(QRegExp("[0-9]*\\."));
     if(game().atLineEnd())
     {
         added = game().addMove(s) != NO_MOVE;
@@ -1236,6 +1233,14 @@ bool MainWindow::slotGameAddVariation(const QString& san)
         added = game().addVariation(s) != NO_MOVE;
     }
     return added;
+}
+
+bool MainWindow::slotGameAddVariation(const QString& san)
+{
+    QString s = san;
+    s = s.remove(QRegExp("-.*"));
+    s = s.remove(QRegExp("[0-9]*\\."));   
+    return addVariation(s);
 }
 
 void MainWindow::slotGameUncomment()
