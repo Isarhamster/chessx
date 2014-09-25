@@ -557,14 +557,14 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
             m_nagText.clear();
             return;
         }
-        slotGameAddVariation(m_nagText);
+        addVariation(m_nagText);
         m_nagText.clear();
         return;
     }
     else
     {
         m_nagText.append(e->text());
-        if (slotGameAddVariation(m_nagText))
+        if (addVariation(m_nagText))
         {
             m_nagText.clear();
             return;
@@ -587,7 +587,10 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
     {
         if(!game().atGameStart())
         {
-            game().addNag(NagSet::fromString(m_nagText));
+            if (!game().addNag(NagSet::fromString(m_nagText)))
+            {
+                return; // Could be start of NAG or a start of a move (R<->RR)
+            }
         }
         m_nagText.clear();
     }

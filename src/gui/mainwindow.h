@@ -106,6 +106,8 @@ protected:
     bool gameMode() const;
     /** Set current Mode */
     void setGameMode(bool gameMode);
+    /** Add a variation from keyboard */
+    bool addVariation(const QString& s);
 public slots:
     /** Enter gaming mode */
     void slotToggleGameMode();
