@@ -11,6 +11,8 @@ rm -r win32
 rm -r win64
 rm -r data/engines
 rm -r data/engines-mac
+rm src/resource.h
+rm src/chessx.rc
 
 cd .. && echo "Changed to containing Directory"
 rm *.tgz
