@@ -32,8 +32,15 @@ bool Settings::layout(QWidget* w)
     bool valid = list(w->objectName(), values, 5);
     if(valid)    // Enough values
     {
-        w->resize(values[2], values[3]);
-        w->move(values[0], values[1]);
+        int x = values[0];
+        x &= ~0xC0000000;
+        if (values[0] & 0x80000000)      w->setWindowState(Qt::WindowMaximized);
+        else if (values[0] & 0x40000000) w->setWindowState(Qt::WindowFullScreen);
+        else
+        {
+            w->resize(values[2], values[3]);
+            w->move(x, values[1]);
+        }
         if(qobject_cast<QMainWindow*>(w))
         {
             QByteArray docks = value("Docks", QByteArray()).toByteArray();
@@ -62,7 +69,10 @@ void Settings::setLayout(const QWidget* w)
     }
     beginGroup("Geometry");
     QList<int> values;
-    values << w->x() << w->y() << w->width() << w->height() << w->isVisible();
+    int x = w->x();
+    if (w->isFullScreen())     x |= 0x40000000;
+    else if (w->isMaximized()) x |= 0x80000000;
+    values << x << w->y() << w->width() << w->height() << w->isVisible();
     setList(w->objectName(), values);
     if(qobject_cast<const QMainWindow*>(w))
     {
