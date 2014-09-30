@@ -42,6 +42,7 @@
 #include "settings.h"
 #include "tablebase.h"
 #include "tableview.h"
+#include "tagdialog.h"
 #include "toolmainwindow.h"
 #include "translatingslider.h"
 #include "version.h"
@@ -65,6 +66,8 @@
 #include <QTimer>
 #include <QToolBar>
 
+#undef FICS_SUPPORT
+
 MainWindow::MainWindow() : QMainWindow(),
     m_tabDragIndex(-1),
     m_pDragTabBar(0),
@@ -79,7 +82,9 @@ MainWindow::MainWindow() : QMainWindow(),
 {
     setObjectName("MainWindow");
 
+#ifdef FICS_SUPPORT
     m_ficsClient = new FicsClient(this);
+#endif
     m_autoPlayTimer = new QTimer(this);
     m_autoPlayTimer->setInterval(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
     m_autoPlayTimer->setSingleShot(true);
@@ -1247,7 +1252,8 @@ void MainWindow::setupActions()
     loadMenu->addAction(prevAction);
     loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
     loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
-    gameMenu->addAction(createAction(tr("&Save...."), SLOT(slotGameSave()), QKeySequence::Save));
+    gameMenu->addAction(createAction(tr("&Save..."), SLOT(slotGameSave()), QKeySequence::Save));
+    gameMenu->addAction(createAction(tr("Edit tags..."), SLOT(slotGameEditTags())));
 
     gameMenu->addSeparator();
 

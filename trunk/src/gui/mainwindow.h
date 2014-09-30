@@ -217,6 +217,8 @@ public slots:
     /** Save game, replacing old one if it is edited, appending if it is new
         @return false if the saving was cancelled, true if changes are to be saved or discarded. */
     bool slotGameSave();
+    /** Start a dialog which edits the games tags */
+    void slotGameEditTags();
     /** Add variation to current position. */
     void slotGameAddVariation(const Analysis& analysis);
     /** Add variation to current position. */
