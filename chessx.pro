@@ -42,7 +42,8 @@ FORMS += \
     src/gui/promotiondialog.ui \
     src/gui/actiondialog.ui \
     src/gui/dlgsavebook.ui \
-    src/gui/boardsearchdialog.ui
+    src/gui/boardsearchdialog.ui \
+    src/gui/tagdialog.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -169,7 +170,8 @@ HEADERS += src/database/board.h \
     src/database/ctgdatabase.h \
     src/database/ctgbookwriter.h \
     src/database/telnetclient.h \
-    src/database/ficsclient.h
+    src/database/ficsclient.h \
+    src/gui/tagdialog.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -282,7 +284,8 @@ SOURCES += src/database/board.cpp \
     src/database/ctgdatabase.cpp \
     src/database/ctgbookwriter.cpp \
     src/database/telnetclient.cpp \
-    src/database/ficsclient.cpp
+    src/database/ficsclient.cpp \
+    src/gui/tagdialog.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

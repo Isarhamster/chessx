@@ -41,6 +41,7 @@
 #include "settings.h"
 #include "tablebase.h"
 #include "tableview.h"
+#include "tagdialog.h"
 #include "version.h"
 
 #include <time.h>
@@ -974,6 +975,15 @@ bool MainWindow::slotGameSave()
     }
 
     return QuerySaveGame();
+}
+
+void MainWindow::slotGameEditTags()
+{
+    TagDialog dlg;
+    if (dlg.editTags(database()->index(), game(),databaseInfo()->currentIndex()))
+    {
+        databaseInfo()->saveGame();
+    }
 }
 
 void MainWindow::slotGameModify(const EditAction& action)
@@ -2159,6 +2169,7 @@ void MainWindow::enterGameMode(bool gameMode)
         m_openingTreeWidget->cancel();
     }
     setGameMode(gameMode);
+#ifdef FICS_SUPPORT
     if (gameMode)
     {
         m_ficsClient->startSession();
@@ -2167,4 +2178,5 @@ void MainWindow::enterGameMode(bool gameMode)
     {
         m_ficsClient->exitSession();
     }
+#endif
 }
