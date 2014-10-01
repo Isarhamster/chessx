@@ -80,6 +80,19 @@ void Index::setTag(const QString& tagName, const QString& value, GameId gameId)
     m_mapTagToIndexItems.insertMulti(tagIndex, gameId);
 }
 
+void Index::removeTag(const QString& tagName, GameId gameId)
+{
+    if(m_tagNameIndex.contains(tagName))
+    {
+        TagIndex tagIndex = m_tagNameIndex.value(tagName);
+        if((int)gameId < m_indexItems.count())
+        {
+            m_indexItems[gameId]->remove(tagIndex);
+            m_mapTagToIndexItems.remove(tagIndex, gameId);
+        }
+    }
+}
+
 void Index::setValidFlag(GameId gameId, bool value)
 {
     m_validFlags[gameId] = value;

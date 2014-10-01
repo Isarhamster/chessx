@@ -153,6 +153,8 @@ const char* const TagNameTimeControl = "TimeControl";
 
 const char* const StandardTags[7] = {"Event", "Site", "Date", "Round", "White", "Black", "Result"};
 
+bool isStandardTag(QString tag);
+
 typedef quint32 TagIndex;
 typedef quint32 ValueIndex;
 typedef quint32 GameId;

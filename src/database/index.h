@@ -110,7 +110,8 @@ public:
     bool deleted(GameId gameId) const;
     /** Set delete flag */
     void setDeleted(GameId gameId, bool df);
-
+    /* Remove a tag from the index  do not care for the value */
+    void removeTag(const QString &tagName, GameId gameId);
 signals:
     void progress(int);
 

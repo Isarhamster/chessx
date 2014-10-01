@@ -42,6 +42,9 @@ public:
 
     /** Adds an index pair to the IndexItem */
     void set(TagIndex tagIndex, ValueIndex valueIndex);
+    /** Remove an index */
+    void remove(TagIndex tagIndex);
+
     /** returns value of index stored at 'offset' with given 'size' */
     ValueIndex valueIndex(TagIndex tagIndex) const;
     bool hasTagIndex(TagIndex tagIndex) const;
