@@ -44,3 +44,15 @@ QString resultString(Result result)
         return "*";
     }
 }
+
+bool isStandardTag(QString tag)
+{
+    for(int i = 0; i < 7; ++i)
+    {
+        if (tag.compare(StandardTags[i])==0)
+        {
+            return true;
+        }
+    }
+    return false;
+}

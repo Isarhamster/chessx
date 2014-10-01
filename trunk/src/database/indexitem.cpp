@@ -29,6 +29,11 @@ void IndexItem::set(TagIndex tagIndex, ValueIndex valueIndex)
     m_mapTagIndexToValueIndex[tagIndex] = valueIndex;
 }
 
+void IndexItem::remove(TagIndex tagIndex)
+{
+    m_mapTagIndexToValueIndex.remove(tagIndex);
+}
+
 ValueIndex IndexItem::valueIndex(TagIndex tagIndex) const
 {
     if(m_mapTagIndexToValueIndex.contains(tagIndex))
