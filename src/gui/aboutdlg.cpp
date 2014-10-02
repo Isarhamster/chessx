@@ -24,6 +24,29 @@ AboutDlg::AboutDlg(QWidget *parent) :
     ui->labelCopyRightDate->setText(COPYRIGHT_DATE);
 
     QString version = QString(STR_REVISION).replace(',', '.');
+#ifdef Q_OS_UNIX
+    version += " UNIX";
+#endif
+#ifdef Q_OS_DARWIN
+    version += " MAC";
+#endif
+#ifdef Q_OS_WIN
+    version += " WIN";
+#endif
+#ifdef QT_POINTER_SIZE
+    version.append(QString::number(8*QT_POINTER_SIZE));
+#endif
+#ifdef Q_CC_GNU
+    version += " GNU";
+#endif
+#if _MSC_VER && !__INTEL_COMPILER
+    version.append(QString(" MSVC%1").arg(_MSC_VER/100-6));
+#endif
+#ifdef QT_VERSION_STR
+    version += " Qt";
+    version += QT_VERSION_STR;
+#endif
+
     ui->labelVersion->setText(version);
 
     QString settingsPath = AppSettings->fileName();
