@@ -404,28 +404,14 @@ public:
     errorT      ReadLine(const char * s);
 
     // Board I/O
-    void        MakeLongStr(char * str);
     void        DumpBoard(FILE * fp);
     void        DumpLists(FILE * fp);
-    errorT      ReadFromLongStr(const char * str);
     errorT      ReadFromCompactStr(const unsigned char * str);
     errorT      ReadFromFEN(const char * s);
-    void        PrintCompactStr(char * cboard);
-    void        PrintCompactStrFlipped(char * cboard);
-    unsigned char        CompactStrFirstByte()
-    {
-        return (Board[0] << 4) | Board[1];
-    }
-    void        PrintFEN(char * str, unsigned int flags);
-    void        DumpLatexBoard(QString *dstr, bool flip = false);
-    void        DumpHtmlBoard(QString *dstr, unsigned int style, const char * dir, bool flip = false);
 
     // Copy, compare positions
-    int         Compare(Position * p);
     void        CopyFrom(Position * src);
 
-    // Set up a random position:
-    errorT      Random(const char * material);
 };
 
 

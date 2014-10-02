@@ -1,3 +1,31 @@
+October 2014: Version 1.2.2
+
+- Bugfix: Entering a rook move or 0-0 did not work via keyboard
+- Bugfix: Plycount wrong saving a game from the non-current database
+- Bugfix: Crash saving a database upon closing chessx if database was not current DB
+- Bugfix: Enter-Key did not terminate entering a nag
+- Bugfix: Occasionally random move would get highlighted
+- Bugfix: Searching for Rounds and Moves did not work
+- Bugfix: Searching for ranges did not include limits
+- Bugfix: UCI Options containing a '.' were parsed incorrectly
+- Bugfix: Entering half-ply count was limited to 99 moves (thx to Niklas)
+- Bugfix: Retracing a game would fail at move one
+- Bugfix: Retracing a game beyond a move with variations would leave invisible variations
+- Bugfix: Pasting PGN into new game did not set modified flag
+- Bugfix: Pasting FEN into new game did not create new game
+- Bugfix: Changes to square and arrow annotations in annotation dialog are not painted immediately
+
+- New feature: CR#141 Edit game details
+- New feature: CR#140 Remember maximize state (and full-screen state)
+- New feature: Arrow as current move hint
+- New feature: Menu entry to clear clipboard database
+- New feature: Sorting of game list by clicking header (for databases<=4K)
+- New feature: Multi-Selection in the game list
+
+- Enhanced: Speed up polyglot book building
+
+- Changed: F3/F4 now load previous / next game
+
 July 2014: Version 1.2.0
 
 - New Feature: Use polyglot books in Opening Tree
