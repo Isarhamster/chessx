@@ -86,7 +86,6 @@ bool TagDialog::editTags(Index* index, Game& game, GameId id)
         firstCol->setFlags(firstCol->flags() & ~Qt::ItemIsEditable);
         if (!isStandardTag(key))
         {
-            firstCol->setToolTip(tr("Uncheck to remove tag from game upon saving."));
             firstCol->setCheckState(Qt::Checked);
         }
         QTableWidgetItem* secondCol = new QTableWidgetItem(text);

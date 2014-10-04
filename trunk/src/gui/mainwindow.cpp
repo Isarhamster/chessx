@@ -35,11 +35,11 @@
 #include "output.h"
 #include "pgndatabase.h"
 #include "playerlistwidget.h"
-#include "preferences.h"
 #include "quazip.h"
 #include "quazipfile.h"
 #include "savedialog.h"
 #include "settings.h"
+#include "style.h"
 #include "tablebase.h"
 #include "tableview.h"
 #include "tagdialog.h"
@@ -85,6 +85,7 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifdef FICS_SUPPORT
     m_ficsClient = new FicsClient(this);
 #endif
+
     m_autoPlayTimer = new QTimer(this);
     m_autoPlayTimer->setInterval(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
     m_autoPlayTimer->setSingleShot(true);
@@ -1495,7 +1496,7 @@ bool MainWindow::QuerySaveGame(DatabaseInfo *dbInfo)
     }
     if(dbInfo->gameNeedsSaving())
     {
-        SaveDialog dlg;
+        SaveDialog dlg(this);
         int n = dlg.save(dbInfo->database(), dbInfo->currentGame());
         if(n == QDialog::Accepted)
         {
@@ -1580,7 +1581,7 @@ void MainWindow::StartCheckDatabase()
 {
     if ((m_recentFiles.count() == 0) && !AppSettings->getValue("/General/BuiltinDbInstalled").toBool())
     {
-        LoadQuery dlg;
+        LoadQuery dlg(this);
         if(dlg.exec() == QDialog::Accepted)
         {
             slotStatusMessage(tr("Start loading database..."));

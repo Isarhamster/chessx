@@ -36,7 +36,6 @@
 #include "preferences.h"
 #include "promotiondialog.h"
 #include "renametagdialog.h"
-#include "savedialog.h"
 #include "shellhelper.h"
 #include "settings.h"
 #include "tablebase.h"
@@ -979,7 +978,7 @@ bool MainWindow::slotGameSave()
 
 void MainWindow::slotGameEditTags()
 {
-    TagDialog dlg;
+    TagDialog dlg(this);
     if (dlg.editTags(database()->index(), game(),databaseInfo()->currentIndex()))
     {
         databaseInfo()->saveGame();
@@ -1670,7 +1669,7 @@ void MainWindow::slotSearchTag()
 
 void MainWindow::slotSearchBoard()
 {
-    BoardSearchDialog dlg;
+    BoardSearchDialog dlg(this);
     dlg.setBoard(m_boardView->board());
     if (dlg.exec() == QDialog::Accepted)
     {

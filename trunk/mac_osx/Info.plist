@@ -24,7 +24,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleGetInfoString</key>
-        <string>chessx for Mac OS 10.6</string>
+        <string>ChessX for Mac OS 10.9</string>
 	<key>CFBundleSignature</key>
 	<string>@TYPEINFO@</string>
 	<key>CFBundleExecutable</key>
@@ -32,10 +32,10 @@
 	<key>CFBundleIdentifier</key>
 	<string>net.sourceforge.chessx</string>
 	<key>CFBundleVersion</key>
-        <string>1.2.0</string>
+        <string>1.2.2</string>
 	<key>CFBundleShortVersionString</key>
-        <string>1.2.0</string>
+        <string>1.2.2</string>
 	<key>NSHumanReadableCopyright</key>
-        <string>(C) 2005-2013 ChessX developers</string>
+        <string>(C) 2005-2014 ChessX developers</string>
 </dict>
 </plist>

@@ -28,7 +28,7 @@ public slots:
     /** Restore current configuration. */
     virtual void slotReconfigure();
     /** Show context menu on header view */
-    void ShowContextMenu(const QPoint&);
+    virtual void ShowContextMenu(const QPoint&);
 };
 
 #endif

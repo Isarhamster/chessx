@@ -41,10 +41,8 @@ the archive is stored at the Default Data Path and its content is extracted. Aga
 the files are opened afterwards.</p>
 
 <h3>Making moves</h3>
-<p>A move is done by gabbing a piece and dragging it
-to another square.</p>
-<p>Depending on your settings in the board preferences,
-you can either
+<p>A move is done by gabbing a piece and dragging it to another square.</p>
+<p>Depending on your settings in the board preferences, you can either
 <ul>
 <li>Click on a piece and a target square (if move guesses are deactivated)
 <li>Click on a piece and accepting the move quess (in case of deactivated next guess on right click)
@@ -62,6 +60,16 @@ the move played with the new move and check the remaining game for illegal posit
 
 <p>If you want ChessX to replay the game, select "Game->Auto Player". You can change the move rate with the slider in the bottom right corner
 of the status bar.</p>
+
+<h3>Entering moves with the keyboard</h3>
+
+<p>If the focus is somewhere on the board or the notation, you can enter moves simply by starting to type.
+A label in the status bar will indicate, what you have typed. Whenever ChessX recognizes a complete move, the move
+is executed and the buffer is cleared.</p>
+<p>You can enter anything that looks like (PGN-) notation, make sure, your move us unambiguos. For example,
+typing "e4" in the starting position is fine, whereas a subsequent "e2" could either be Be2,Ne2,Ke2,Qe2 - or f1e2...
+</p>
+<p>By pressing [Enter] you can force ChessX to accept an entry or discard it, if ChessX cannot make anything reasonable of your entry.</p>
 
 <h3>Annotating moves</h3>
 <p>Move annotations can be done by activating the context menu in the games text browser or by simply pressing the corresponding key sequence,
@@ -162,10 +170,15 @@ If nothing is merged, no suitable point for merging was found. This can happen, 
 <li>no position could be found where both games where equal (after the current position!)
 <li>the remainder of the game to be merged in was already contained in the current game
 </ul>
+<p>You can select multiple games and merge them at once.</p>
 
-<h3>Filtering Games</h3>
-<p>The list of games can be filtered either by the opening tree or by clicking the list header. Several searches can be combined or inverted.
-Further occurrences of the current board position in the current database can be found via the Find / Find Position menu.</p>
+<h3>Sorting and filtering games</h3>
+<p>The list of games can be filtered either by the opening tree, the Player or Event widget or from the context menu in the list header.
+Several searches can be combined or inverted.
+Further occurrences of the current board position in the current database can be found via
+the Find / Find Position menu.</p>
+<p>Clicking on the header sorts the list. This feature is disabled for larger databases (>4K of games)
+as it will take far too long to sort the list.</p>
 
 <h3>Filter Databases into an opening tree</h3>
 <p>The opening tree takes the current board position and matches it with each game in the selected database.
@@ -185,6 +198,10 @@ The game notation is updated and variations on that move become visible. Ideal f
 <p>If you have no idea what to move, you can get hints by hovering with the mouse over your pieces. Perhaps, the right move pops up!
 See the chapter on Making Moves and the associated preferences to enable move guesses.</p>
 <p>You can combine training with Auto Respond mode, in this case, ChessX will make the next move automatically whenever you make a correct move.</p>
+
+<h3>Playing matches</h3>
+<p>The match button makes sure, that ChessX does not give away hints on the position. This effectively disables
+engine output, tablebase output, moving back or forward in a game etc.</p>
 
 </div>
 </div>

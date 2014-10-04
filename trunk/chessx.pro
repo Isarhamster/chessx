@@ -171,7 +171,8 @@ HEADERS += src/database/board.h \
     src/database/ctgbookwriter.h \
     src/database/telnetclient.h \
     src/database/ficsclient.h \
-    src/gui/tagdialog.h
+    src/gui/tagdialog.h \
+    src/gui/style.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -285,7 +286,8 @@ SOURCES += src/database/board.cpp \
     src/database/ctgbookwriter.cpp \
     src/database/telnetclient.cpp \
     src/database/ficsclient.cpp \
-    src/gui/tagdialog.cpp
+    src/gui/tagdialog.cpp \
+    src/gui/style.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
