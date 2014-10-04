@@ -25,7 +25,9 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
     QString version = QString(STR_REVISION).replace(',', '.');
 #ifdef Q_OS_UNIX
+#ifndef Q_OS_MAC
     version += " UNIX";
+#endif
 #endif
 #ifdef Q_OS_DARWIN
     version += " MAC";

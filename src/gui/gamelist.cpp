@@ -50,7 +50,6 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 #else
     horizontalHeader()->setSectionsClickable(true);
 #endif
-    connect(horizontalHeader(), SIGNAL(sectionClicked(int)), SLOT(simpleSearch(int)));
 
     slotReconfigure();
 
@@ -65,6 +64,42 @@ GameList::~GameList()
 {
     delete sortModel;
     delete m_model;
+}
+
+void GameList::ShowContextMenu(const QPoint& pos)
+{
+    QMenu headerMenu;
+    QAction* filterTag = headerMenu.addAction(tr("Find tag..."));
+    headerMenu.addSeparator();
+    QAction* hide = headerMenu.addAction(tr("Hide Column"));
+    headerMenu.addSeparator();
+    QAction* resizeAll = headerMenu.addAction(tr("Resize visible Columns"));
+    QAction* showAll = headerMenu.addAction(tr("Show all Columns"));
+
+    QAction* selectedItem = headerMenu.exec(mapToGlobal(pos));
+    int column = columnAt(pos.x());
+    if (selectedItem == filterTag)
+    {
+        simpleSearch(column);
+    }
+    else if(selectedItem == hide)
+    {
+        if(column > 0)
+        {
+            hideColumn(column);
+        }
+    }
+    else if(selectedItem == showAll)
+    {
+        for(int i = 0; i < model()->columnCount(); ++i)
+        {
+            showColumn(i);
+        }
+    }
+    else if (selectedItem == resizeAll)
+    {
+        resizeColumnsToContents();
+    }
 }
 
 void GameList::removeSelection()
@@ -186,12 +221,6 @@ void GameList::slotContextMenu(const QPoint& pos)
 
 void GameList::simpleSearch(int tagid)
 {
-    if (QApplication::queryKeyboardModifiers() == Qt::NoModifier)
-    {
-        sortByColumn(tagid);
-        return;
-    }
-
     QuickSearchDialog dlg(this);
     for (int section = 0; section < m_model->columnCount(); ++section)
     {

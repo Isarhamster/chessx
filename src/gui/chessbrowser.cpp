@@ -16,7 +16,6 @@
 #include <QLCDNumber>
 #include <QToolBar>
 
-
 ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), toolBar(0), m_gameMenu(NULL)
 {
     setObjectName("ChessBrowser");

@@ -124,5 +124,9 @@
         <file alias="i18n/chessx_it.qm">i18n/chessx_it.qm</file>
         <file alias="help/about6.html">data/help/about6.html</file>
         <file alias="images/black_chess.png">data/images/black_chess.png</file>
+        <file alias="styles/orange.css">data/styles/orange.css</file>
+        <file alias="styles/checkbox.png">data/styles/checkbox.png</file>
+        <file alias="styles/down_arrow.png">data/styles/down_arrow.png</file>
+        <file alias="styles/handle.png">data/styles/handle.png</file>
     </qresource>
 </RCC>

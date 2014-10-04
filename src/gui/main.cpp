@@ -107,6 +107,8 @@ prevHook = _CrtSetReportHook(customReportHook);
 
     AppSettings = new Settings;
 
+    // app.setStyle("plastique");
+
 #ifdef Q_OS_MAC
     signal(SIGPIPE, SIG_IGN);
 #endif

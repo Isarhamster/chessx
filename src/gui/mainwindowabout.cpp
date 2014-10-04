@@ -12,7 +12,7 @@
 
 void MainWindow::slotHelpAbout()
 {
-    AboutDlg dlg;
+    AboutDlg dlg(this);
     dlg.exec();
 }
 
