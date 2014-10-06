@@ -44,17 +44,19 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     ui.engineProtocolWinBoard->setText(tr("XBoard"));
 #endif
 
-    connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
-    connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
-    connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
-    connect(ui.applyButton, SIGNAL(clicked()), SLOT(slotApply()));
+    QPushButton *addEngineButton = ui.buttonBoxEngines->addButton(tr("Add..."), QDialogButtonBox::ActionRole);
+    QPushButton *deleteEngineButton = ui.buttonBoxEngines->addButton(tr("Remove"), QDialogButtonBox::ActionRole);
+    QPushButton *engineUpButton = ui.buttonBoxEngines->addButton(tr("Up"), QDialogButtonBox::ActionRole);
+    QPushButton *engineDownButton = ui.buttonBoxEngines->addButton(tr("Down"), QDialogButtonBox::ActionRole);
+
+    connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));
     connect(ui.engineList, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
             SLOT(slotSelectEngine(QListWidgetItem*, QListWidgetItem*)));
     connect(ui.engineName, SIGNAL(textChanged(const QString&)), SLOT(slotEngineNameChange(const QString&)));
-    connect(ui.addEngineButton, SIGNAL(clicked(bool)), SLOT(slotAddEngine()));
-    connect(ui.deleteEngineButton, SIGNAL(clicked(bool)), SLOT(slotDeleteEngine()));
-    connect(ui.engineUpButton, SIGNAL(clicked(bool)), SLOT(slotEngineUp()));
-    connect(ui.engineDownButton, SIGNAL(clicked(bool)), SLOT(slotEngineDown()));
+    connect(addEngineButton, SIGNAL(clicked(bool)), SLOT(slotAddEngine()));
+    connect(deleteEngineButton, SIGNAL(clicked(bool)), SLOT(slotDeleteEngine()));
+    connect(engineUpButton, SIGNAL(clicked(bool)), SLOT(slotEngineUp()));
+    connect(engineDownButton, SIGNAL(clicked(bool)), SLOT(slotEngineDown()));
     connect(ui.directoryButton, SIGNAL(clicked(bool)), SLOT(slotSelectEngineDirectory()));
     connect(ui.commandButton, SIGNAL(clicked(bool)), SLOT(slotSelectEngineCommand()));
     connect(ui.browsePathButton, SIGNAL(clicked(bool)), SLOT(slotSelectDataBasePath()));
@@ -660,5 +662,27 @@ void PreferencesDialog::setupIconInMenus(QObject* pObject)
     foreach (QAction* action, actions)
     {
         action->setIconVisibleInMenu(showIcons);
+    }
+}
+
+void PreferencesDialog::buttonClicked(QAbstractButton* button)
+{
+    QDialogButtonBox::StandardButton sb = ui.buttonBox->standardButton(button);
+    switch(sb)
+    {
+    case QDialogButtonBox::Ok:
+        accept();
+        break;
+    case QDialogButtonBox::Apply:
+        slotApply();
+        break;
+    case QDialogButtonBox::Reset:
+        slotReset();
+        break;
+    case QDialogButtonBox::Cancel:
+        reject();
+        break;
+    default:
+        break;
     }
 }

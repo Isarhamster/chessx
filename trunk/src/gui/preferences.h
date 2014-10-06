@@ -104,6 +104,7 @@ protected slots:
     /** Call restoration of layout from Settings storage */
     void restoreLayout();
 
+    void buttonClicked(QAbstractButton *button);
 private slots:
     void slotBtMoveFontClicked();
     void slotBtTextFontClicked();

@@ -74,7 +74,7 @@ QWidget:disabled
 
 QAbstractItemView
 {
-b ackground-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #4d4d4d, stop: 0.1 #646464, stop: 1 #5d5d5d);
+  background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #4d4d4d, stop: 0.1 #646464, stop: 1 #5d5d5d);
 }
 
 QWidget:focus
@@ -100,8 +100,9 @@ QPushButton
   border-style: solid;
   border-radius: 6;
   padding: 3px;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 15px;
+  padding-right: 15px;
+  min-width: 4em;
 }
 
 QPushButton:pressed

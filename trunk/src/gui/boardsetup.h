@@ -110,6 +110,8 @@ private slots:
 
 private:
     Ui::BoardSetupDialog ui;
+    QPushButton *copyButton;
+    QPushButton *btCopyText;
 
     Color m_toMove;
     int m_wheelCurrentDelta;

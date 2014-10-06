@@ -1,13 +1,21 @@
+/****************************************************************************
+*   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #include "boardsearchdialog.h"
 #include "ui_boardsearchdialog.h"
 #include "search.h"
 #include "settings.h"
+
+#include <QPushButton>
 
 BoardSearchDialog::BoardSearchDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::BoardSearchDialog)
 {
     ui->setupUi(this);
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Find"));
+
     restoreLayout();
 
     ui->boardView->configure();
@@ -15,8 +23,6 @@ BoardSearchDialog::BoardSearchDialog(QWidget *parent) :
     ui->boardView->showMoveIndicator(false);
     ui->boardView->setEnabled(false);
 
-    connect(ui->okButton, SIGNAL(clicked()), SLOT(accept()));
-    connect(ui->cancelButton, SIGNAL(clicked()), SLOT(reject()));
     ui->modeCombo->addItem(tr("Find in current filter"), Search::And);
     ui->modeCombo->addItem(tr("Search whole database"), Search::NullOperator);
     ui->modeCombo->addItem(tr("Add to current filter"), Search::Or);
