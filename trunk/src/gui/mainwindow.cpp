@@ -82,6 +82,8 @@ MainWindow::MainWindow() : QMainWindow(),
 {
     setObjectName("MainWindow");
 
+    // Style::setStyle(this);
+
 #ifdef FICS_SUPPORT
     m_ficsClient = new FicsClient(this);
 #endif
@@ -1399,7 +1401,8 @@ void MainWindow::setupActions()
 
     help->addAction(createAction(tr("Customize Keyboard..."), SLOT(slotEditActions())));
     help->addSeparator();
-    QAction* reportBugAction = createAction(tr("&Report a bug..."), SLOT(slotHelpBug()));
+    help->addAction(createAction(tr("Load Sample Database"), SLOT(QueryLoadDatabase())));
+    QAction* reportBugAction = createAction(tr("Report a bug..."), SLOT(slotHelpBug()));
     reportBugAction->setIcon(QIcon(":/images/bug.png"));
     help->addAction(reportBugAction);
     help->addSeparator();
@@ -1577,24 +1580,29 @@ void MainWindow::slotHttpDone(QNetworkReply *reply)
     }
 }
 
+void MainWindow::QueryLoadDatabase()
+{
+    LoadQuery dlg(this);
+    if(dlg.exec() == QDialog::Accepted)
+    {
+        slotStatusMessage(tr("Start loading database..."));
+        if(dlg.largeDB())
+        {
+            openDatabaseUrl("http://chessx.sourceforge.net/db/bundesliga2000.pgn.zip", false);
+        }
+        else
+        {
+            openDatabaseUrl("http://chessx.sourceforge.net/db/SBL1213.pgn.zip", false);
+        }
+    }
+    AppSettings->setValue("/General/BuiltinDbInstalled", QVariant(true));
+}
+
 void MainWindow::StartCheckDatabase()
 {
     if ((m_recentFiles.count() == 0) && !AppSettings->getValue("/General/BuiltinDbInstalled").toBool())
     {
-        LoadQuery dlg(this);
-        if(dlg.exec() == QDialog::Accepted)
-        {
-            slotStatusMessage(tr("Start loading database..."));
-            if(dlg.largeDB())
-            {
-                openDatabaseUrl("http://chessx.sourceforge.net/db/bundesliga2000.pgn.zip", false);
-            }
-            else
-            {
-                openDatabaseUrl("http://chessx.sourceforge.net/db/SBL1213.pgn.zip", false);
-            }
-        }
-        AppSettings->setValue("/General/BuiltinDbInstalled", QVariant(true));
+        QueryLoadDatabase();
     }
 }
 
