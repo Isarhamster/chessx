@@ -20,18 +20,19 @@
 
 #include <QComboBox>
 #include <QLineEdit>
-
+#include <QPushButton>
 
 QuickSearchDialog::QuickSearchDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
     ui.setupUi(this);
 
-    connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
-    connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
     ui.modeCombo->addItem(tr("Find in current filter"), Search::And);
     ui.modeCombo->addItem(tr("Search whole database"), Search::NullOperator);
     ui.modeCombo->addItem(tr("Add to current filter"), Search::Or);
     ui.modeCombo->addItem(tr("Remove from current filter"), Search::Remove);
+
+    ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Find"));
+    connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));
 
     AppSettings->layout(this);
 }
@@ -90,4 +91,20 @@ void QuickSearchDialog::reject()
 {
     AppSettings->setLayout(this);
     QDialog::reject();
+}
+
+void QuickSearchDialog::buttonClicked(QAbstractButton* button)
+{
+    QDialogButtonBox::StandardButton sb = ui.buttonBox->standardButton(button);
+    switch(sb)
+    {
+    case QDialogButtonBox::Ok:
+        accept();
+        break;
+    case QDialogButtonBox::Cancel:
+        reject();
+        break;
+    default:
+        break;
+    }
 }

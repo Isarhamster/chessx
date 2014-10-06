@@ -46,6 +46,7 @@ public slots:
 protected slots:
     void reject();
     void accept();
+    void buttonClicked(QAbstractButton *button);
 private:
     Ui::QuickSearchDialog ui;
 };

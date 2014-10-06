@@ -22,12 +22,18 @@
 
 #include <QtGui>
 #include <QPixmap>
+#include <QPushButton>
 
 BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f),
     m_wheelCurrentDelta(0), m_selectedPiece(Empty), inDrag(false)
 {
     setObjectName("BoardSetupDialog");
     ui.setupUi(this);
+
+    QPushButton *pasteButton = ui.buttonBox->addButton(tr("Paste FEN"), QDialogButtonBox::ActionRole);
+    copyButton = ui.buttonBox->addButton(tr("Copy FEN"), QDialogButtonBox::ApplyRole);
+    btCopyText = ui.buttonBox->addButton(tr("Copy Text"), QDialogButtonBox::ApplyRole);
+
     restoreLayout();
 
     ui.boardView->configure();
@@ -59,10 +65,10 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
 
     emit signalClearBackground(Empty);
 
-    connect(ui.okButton, SIGNAL(clicked()), SLOT(accept()));
-    connect(ui.cancelButton, SIGNAL(clicked()), SLOT(reject()));
-    connect(ui.clearButton, SIGNAL(clicked()), SLOT(slotClear()));
-    connect(ui.resetButton, SIGNAL(clicked()), SLOT(slotReset()));
+    ui.buttonBoxTools->button(QDialogButtonBox::RestoreDefaults)->setText(tr("Clear"));
+    connect(ui.buttonBoxTools->button(QDialogButtonBox::RestoreDefaults), SIGNAL(clicked()), SLOT(slotClear()));
+    connect(ui.buttonBoxTools->button(QDialogButtonBox::Reset), SIGNAL(clicked()), SLOT(slotReset()));
+
     connect(ui.boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotSelected(Square, int)));
     connect(ui.boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotMovePiece(Square, Square)));
     connect(ui.boardView, SIGNAL(copyPiece(Square, Square)), SLOT(slotCopyPiece(Square, Square)));
@@ -77,11 +83,12 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     connect(ui.epCombo, SIGNAL(currentIndexChanged(int)), SLOT(slotEnPassantSquare()));
     connect(ui.halfmoveSpin, SIGNAL(valueChanged(int)), SLOT(slotHalfmoveClock()));
     connect(ui.moveSpin, SIGNAL(valueChanged(int)), SLOT(slotMoveNumber()));
-    connect(ui.copyButton, SIGNAL(clicked()), SLOT(slotCopyFen()));
-    connect(ui.pasteButton, SIGNAL(clicked()), SLOT(slotPasteFen()));
-    connect(ui.btCopyText, SIGNAL(clicked()), SLOT(slotCopyText()));
     connect(ui.btFlipBoard, SIGNAL(clicked()), ui.boardView, SLOT(flip()));
     ui.btFlipBoard->setCheckable(true);
+
+    connect(copyButton, SIGNAL(clicked()), SLOT(slotCopyFen()));
+    connect(pasteButton, SIGNAL(clicked()), SLOT(slotPasteFen()));
+    connect(btCopyText, SIGNAL(clicked()), SLOT(slotCopyText()));
 
     connect(ui.btFlipVertical, SIGNAL(clicked()), SLOT(mirrorVertical()));
     connect(ui.btFlipHorizontal, SIGNAL(clicked()), SLOT(mirrorHorizontal()));
@@ -384,9 +391,9 @@ QString BoardSetupDialog::boardStatusMessage() const
 void BoardSetupDialog::setStatusMessage()
 {
     QString reason = boardStatusMessage();
-    ui.okButton->setEnabled(reason.isEmpty());
-    ui.copyButton->setEnabled(reason.isEmpty());
-    ui.btCopyText->setEnabled(reason.isEmpty());
+    ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(reason.isEmpty());
+    copyButton->setEnabled(reason.isEmpty());
+    btCopyText->setEnabled(reason.isEmpty());
     if(reason.isEmpty())
     {
         ui.fenLabel->setText(ui.boardView->board().toFen());

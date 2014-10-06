@@ -7,6 +7,8 @@
 
 #include "ui_renametagdialog.h"
 
+#include <QPushButton>
+
 RenameTagDialog::RenameTagDialog(QWidget *parent, QString ts, QString tagName, Qt::WindowFlags f) :
     QDialog(parent, f),
     ui(new Ui::RenameTagDialog),
@@ -17,9 +19,8 @@ RenameTagDialog::RenameTagDialog(QWidget *parent, QString ts, QString tagName, Q
 
     ui->editFrom->setText(m_ts);
     ui->editTo->setText(m_ts);
-
-    connect(ui->btClose, SIGNAL(clicked()), SLOT(accept()));
-    connect(ui->btRename, SIGNAL(clicked()), SLOT(slotRename()));
+    ui->buttonBox->button(QDialogButtonBox::Apply)->setText(tr("Rename"));
+    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));
     AppSettings->layout(this);
 }
 
@@ -45,4 +46,20 @@ void RenameTagDialog::reject()
 {
     AppSettings->setLayout(this);
     QDialog::reject();
+}
+
+void RenameTagDialog::buttonClicked(QAbstractButton* button)
+{
+    QDialogButtonBox::StandardButton sb = ui->buttonBox->standardButton(button);
+    switch(sb)
+    {
+    case QDialogButtonBox::Close:
+        accept();
+        break;
+    case QDialogButtonBox::Apply:
+        slotRename();
+        break;
+    default:
+        break;
+    }
 }

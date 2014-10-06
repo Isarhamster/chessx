@@ -42,6 +42,7 @@ protected slots:
     void restoreLayout();
     void accept();
     void reject();
+    void buttonClicked(QAbstractButton*);
 private:
     void setLineEdit(QLineEdit* edit, Database* database, const QString& tagName);
     Ui::SaveDialog ui;

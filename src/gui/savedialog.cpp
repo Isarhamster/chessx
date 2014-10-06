@@ -33,7 +33,7 @@ SaveDialog::SaveDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
     group->addButton(ui.result5Button);
     group->addButton(ui.result0Button);
     group->addButton(ui.resultNoneButton);
-    connect(ui.buttonDiscardChanges, SIGNAL(clicked()), SLOT(discardChanges()));
+    connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));
 }
 
 void SaveDialog::restoreLayout()
@@ -210,4 +210,23 @@ void SaveDialog::reject()
 {
     AppSettings->setLayout(this);
     QDialog::reject();
+}
+
+void SaveDialog::buttonClicked(QAbstractButton* button)
+{
+    QDialogButtonBox::StandardButton sb = ui.buttonBox->standardButton(button);
+    switch(sb)
+    {
+    case QDialogButtonBox::Ok:
+        accept();
+        break;
+    case QDialogButtonBox::Cancel:
+        reject();
+        break;
+    case QDialogButtonBox::Discard:
+        discardChanges();
+        break;
+    default:
+        break;
+    }
 }

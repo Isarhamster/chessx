@@ -1,4 +1,8 @@
 #ifndef LOADQUERY_H
+/****************************************************************************
+*   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #define LOADQUERY_H
 
 #include <QDialog>
@@ -16,6 +20,9 @@ public:
     {
         return ui->btLargeDatabase->isChecked();
     }
+
+protected slots:
+    void buttonClicked(QAbstractButton *button);
 
 private:
     Ui::LoadQuery *ui;

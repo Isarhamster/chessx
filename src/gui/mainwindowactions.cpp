@@ -1801,14 +1801,14 @@ void MainWindow::slotDatabaseDeleteGame(QList<int> gameIndexList)
 
 void MainWindow::slotRenameEvent(QString ts)
 {
-    RenameTagDialog dlg(0, ts, TagNameEvent);
+    RenameTagDialog dlg(this, ts, TagNameEvent);
     connect(&dlg, SIGNAL(renameRequest(QString, QString, QString)), SLOT(slotRenameRequest(QString, QString, QString)));
     dlg.exec();
 }
 
 void MainWindow::slotRenamePlayer(QString ts)
 {
-    RenameTagDialog dlg(0, ts, TagNameWhite);
+    RenameTagDialog dlg(this, ts, TagNameWhite);
     connect(&dlg, SIGNAL(renameRequest(QString, QString, QString)), SLOT(slotRenameRequest(QString, QString, QString)));
     dlg.exec();
 }

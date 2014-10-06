@@ -7,6 +7,8 @@
 
 #include <QDialog>
 
+class QAbstractButton;
+
 namespace Ui
 {
 class RenameTagDialog;
@@ -29,6 +31,8 @@ protected slots:
 
     void accept();
     void reject();
+    void buttonClicked(QAbstractButton *button);
+
 private:
     Ui::RenameTagDialog *ui;
     QString m_ts;

@@ -1,3 +1,7 @@
+/****************************************************************************
+*   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
+
 #ifndef BOARDSEARCHDIALOG_H
 #define BOARDSEARCHDIALOG_H
 

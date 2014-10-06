@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>639</width>
+    <width>768</width>
     <height>507</height>
    </rect>
   </property>
@@ -88,7 +88,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <layout class="QHBoxLayout" name="hLayout1" stretch="0,0,0,0,0,0,0,0,0,0,0,0">
+           <layout class="QHBoxLayout" name="hLayout1" stretch="0,0,0,0,0,0,0,0,0,0,0">
             <property name="sizeConstraint">
              <enum>QLayout::SetDefaultConstraint</enum>
             </property>
@@ -208,16 +208,9 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="clearButton">
-              <property name="text">
-               <string>Clear</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="resetButton">
-              <property name="text">
-               <string>&amp;Reset</string>
+             <widget class="QDialogButtonBox" name="buttonBoxTools">
+              <property name="standardButtons">
+               <set>QDialogButtonBox::Reset|QDialogButtonBox::RestoreDefaults</set>
               </property>
              </widget>
             </item>
@@ -497,53 +490,9 @@
    <item>
     <layout class="QHBoxLayout">
      <item>
-      <widget class="QPushButton" name="pasteButton">
-       <property name="text">
-        <string>Paste FEN</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="copyButton">
-       <property name="text">
-        <string>Copy FEN</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btCopyText">
-       <property name="text">
-        <string>Copy Text</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="okButton">
-       <property name="text">
-        <string>&amp;Ok</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton">
-       <property name="text">
-        <string>&amp;Cancel</string>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
@@ -565,11 +514,42 @@
   <tabstop>wqCastleCheck</tabstop>
   <tabstop>bqCastleCheck</tabstop>
   <tabstop>moveSpin</tabstop>
-  <tabstop>okButton</tabstop>
-  <tabstop>cancelButton</tabstop>
  </tabstops>
  <resources>
   <include location="../../resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>BoardSetupDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>530</x>
+     <y>478</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>BoardSetupDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>530</x>
+     <y>478</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -11,6 +11,7 @@
 #include "enginelist.h"
 
 class Engine;
+class QAbstractButton;
 
 namespace Ui
 {
@@ -35,6 +36,7 @@ protected slots:
     void optionReset();
     void restoreLayout();
 
+    void buttonClicked(QAbstractButton *button);
 private:
     Ui::EngineOptionDialog *ui;
     Engine* m_engine;

@@ -5,6 +5,7 @@
 #include <QtCore>
 #include <QAction>
 #include <QMenu>
+#include <QPushButton>
 #include <QTableWidget>
 #include <QTableWidgetItem>
 
@@ -23,7 +24,7 @@ ActionDialog::ActionDialog(QWidget *parent)
 
     resetList();
 
-    connect(ui->btReset, SIGNAL(clicked()),
+    connect(ui->buttonBox->button(QDialogButtonBox::Reset), SIGNAL(clicked()),
             this, SLOT(resetKeys()));
     connect(ui->actionsTable, SIGNAL(cellActivated(int,int)),
             this, SLOT(saveOldActionText(int, int)));

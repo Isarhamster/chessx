@@ -2,11 +2,13 @@
 *   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
-#include <QtCore>
 #include "engineoptiondialog.h"
 #include "ui_engineoptiondialog.h"
 #include "engine.h"
 #include "settings.h"
+
+#include <QtCore>
+#include <QPushButton>
 
 EngineOptionDialog::EngineOptionDialog(QWidget *parent,
                                        EngineList& engineList,
@@ -15,6 +17,7 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
     ui(new Ui::EngineOptionDialog)
 {
     ui->setupUi(this);
+    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));
 
     QString t = windowTitle();
     QString t1 = QString("%1 %2 (%3)").
@@ -30,14 +33,13 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
     }
     else
     {
-        ui->resetButton->setEnabled(false);
+        ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(false);
     }
     m_index = index;
     m_engine = Engine::newEngine(engineList, index, true);
     m_engine->activate();
 
     connect(m_engine, SIGNAL(activated()), SLOT(engineActivated()));
-    connect(ui->resetButton, SIGNAL(clicked()), SLOT(optionReset()));
 }
 
 void EngineOptionDialog::restoreLayout()
@@ -84,4 +86,21 @@ void EngineOptionDialog::optionReset()
     ui->tableView->resetModel();
 }
 
-
+void EngineOptionDialog::buttonClicked(QAbstractButton* button)
+{
+    QDialogButtonBox::StandardButton sb = ui->buttonBox->standardButton(button);
+    switch(sb)
+    {
+    case QDialogButtonBox::Ok:
+        accept();
+        break;
+    case QDialogButtonBox::Cancel:
+        reject();
+        break;
+    case QDialogButtonBox::Reset:
+        optionReset();
+        break;
+    default:
+        break;
+    }
+}
