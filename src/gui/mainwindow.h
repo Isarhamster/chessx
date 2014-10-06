@@ -386,6 +386,8 @@ protected slots:
     void slotMoveIntervalChanged(int);
     /** Value for Move Interval Slider is changed */
     void slotSetSliderText(int);
+    /** Query for a database to load */
+    void QueryLoadDatabase();
 
 protected:
     void moveChanged();
