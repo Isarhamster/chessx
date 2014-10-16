@@ -4,8 +4,9 @@
 
 #include "telnetclient.h"
 
-#include <QTcpSocket>
 #include <QHostAddress>
+#include <QRegExp>
+#include <QTcpSocket>
 
 #define DEBUG_TELNET
 //#undef DEBUG_TELNET
