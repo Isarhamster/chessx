@@ -6,6 +6,7 @@
 
 #include <QHostAddress>
 #include <QRegExp>
+#include <QStringList>
 #include <QTcpSocket>
 
 #define DEBUG_TELNET
@@ -52,7 +53,7 @@ void TelnetClient::SlotReadData()
         {
             case 0:
             {
-                QRegExp reLogin  = QRegExp("[Ll]ogin:");
+                QRegExp reLogin("[Ll]ogin:");
                 if (data.contains(reLogin))
                 {
                     ++m_state;
@@ -62,7 +63,7 @@ void TelnetClient::SlotReadData()
             }
             case 1:
             {
-                QRegExp rePasswd = QRegExp("[Pp]assword:");
+                QRegExp rePasswd("[Pp]assword:");
                 if (data.contains(rePasswd))
                 {
                     ++m_state;
@@ -70,7 +71,7 @@ void TelnetClient::SlotReadData()
                 }
                 else
                 {
-                    QRegExp reEnter = QRegExp("Press return");
+                    QRegExp reEnter("Press return");
                     if (data.contains(reEnter))
                     {
                         ++m_state;
@@ -81,7 +82,7 @@ void TelnetClient::SlotReadData()
             }
             case 2:
             {
-                QRegExp reLoggedIn = QRegExp("[Ss]ession");
+                QRegExp reLoggedIn("[Ss]ession");
                 if (data.contains(reLoggedIn))
                 {
                     ++m_state;
