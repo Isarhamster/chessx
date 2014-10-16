@@ -6,6 +6,7 @@
 #define TELNETCLIENT_H
 
 #include <QObject>
+#include <QString>
 
 class QTcpSocket;
 
