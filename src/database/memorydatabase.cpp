@@ -47,6 +47,7 @@ bool MemoryDatabase::isModified() const
 void MemoryDatabase::setModified(bool b)
 {
     m_isModified = b;
+    emit dirtyChanged(m_isModified);
 }
 
 bool MemoryDatabase::appendGame(const Game& game)

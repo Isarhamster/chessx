@@ -93,6 +93,7 @@ public:
 signals:
     /** Signal emitted when some progress is done. */
     void progress(int);
+    void dirtyChanged(bool);
 
 protected:
     Index m_index;

@@ -88,6 +88,11 @@ MainWindow::MainWindow() : QMainWindow(),
     m_ficsClient = new FicsClient(this);
 #endif
 
+    m_messageTimer = new QTimer(this);
+    m_messageTimer->setInterval(5000);
+    m_messageTimer->setSingleShot(true);
+    connect(m_messageTimer, SIGNAL(timeout()), this, SLOT(slotStatusMessage()));
+
     m_autoPlayTimer = new QTimer(this);
     m_autoPlayTimer->setInterval(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
     m_autoPlayTimer->setSingleShot(true);
@@ -100,10 +105,11 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Create clipboard database */
     DatabaseInfo* pClipDB = new DatabaseInfo(&m_undoGroup);
     connect(pClipDB,SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
-    connect(pClipDB,SIGNAL(signalGameModified()), SLOT(slotGameChanged()));
+    connect(pClipDB,SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged()));
     connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(pClipDB,SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)), Qt::QueuedConnection);
     connect(pClipDB,SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()), Qt::QueuedConnection);
+    connect(pClipDB,SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
     m_databases.append(pClipDB);
     m_currentDatabase = 0;
 
@@ -125,12 +131,9 @@ MainWindow::MainWindow() : QMainWindow(),
     m_tabWidget = new QTabWidget(this);
     m_tabWidget->setObjectName("BoardView");
     m_tabWidget->setTabsClosable(true);
-    QToolButton* button = new QToolButton();
-    button->setIcon(QIcon(":/images/new_board.png"));
-    m_tabWidget->setCornerWidget(button);
-    connect(button, SIGNAL(clicked()), SLOT(slotCreateBoardView()));
+    m_tabWidget->setElideMode(Qt::ElideMiddle);
     connect(m_tabWidget, SIGNAL(tabCloseRequested(int)), SLOT(slotCloseBoardView(int)));
-    connect(m_tabWidget, SIGNAL(currentChanged(int)), SLOT(slotActivateBoardView(int)));
+    connect(m_tabWidget, SIGNAL(tabBarClicked(int)), SLOT(slotActivateBoardView(int)));
     /* Board layout */
     m_boardSplitter->addWidget(m_tabWidget);
 
@@ -443,8 +446,11 @@ MainWindow::~MainWindow()
     m_autoPlayTimer->stop();
     m_dragTimer->stop();
     m_openingTreeWidget->cancel();
+
     foreach(DatabaseInfo * database, m_databases)
     {
+        // Avoid any GUI action if a database is closed
+        disconnect(database,SIGNAL(signalGameModified(bool)), this, SLOT(slotGameChanged()));
         database->close();
     }
     qDeleteAll(m_databases.begin(), m_databases.end());
@@ -625,7 +631,7 @@ QString MainWindow::databaseName(int index) const
     {
         index = m_currentDatabase;
     }
-    QString name = m_databases[index]->database()->name();
+    QString name = m_databases[index]->database() ? m_databases[index]->database()->name() : "";
     if(name.isEmpty())
     {
         return tr("[Clipboard]");
@@ -681,6 +687,7 @@ void MainWindow::gameLoad(int index)
         {
             m_gameList->selectGame(index);
             emit signalGameIsEmpty(true);
+            UpdateBoardInformation();
             slotGameChanged();
             m_gameList->setFocus();
             emit signalGameLoaded();
@@ -871,11 +878,16 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
         {
             if(m_databases[i]->isValid())
             {
-                m_currentDatabase = i;
-                m_boardView->setDbIndex(m_currentDatabase);
-                UpdateBoardInformation();
-                m_databaseList->setFileCurrent(fname);
-                slotDatabaseChanged();
+                if (!m_databases[i]->IsBook())
+                {
+                    if (i != m_currentDatabase)
+                    {
+                        m_currentDatabase = i;
+                        m_databaseList->setFileCurrent(fname);
+                        slotDatabaseChanged();
+                    }
+                    activateBoardViewForDbIndex(m_databases[m_currentDatabase]);
+                }
             }
             else
             {
@@ -893,10 +905,11 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
     connect(db, SIGNAL(LoadFinished(DatabaseInfo*)), this, SLOT(slotDataBaseLoaded(DatabaseInfo*)));
     connect(db, SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
-    connect(db, SIGNAL(signalGameModified()), SLOT(slotGameChanged()));
+    connect(db, SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged()));
     connect(db, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(db, SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)), Qt::QueuedConnection);
     connect(db, SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()), Qt::QueuedConnection);
+    connect(db, SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
     if(!db->open(utf8))
     {
         slotDataBaseLoaded(db);
@@ -904,7 +917,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     else
     {
         m_databases.append(db);
-    }
+    }    
 }
 
 void MainWindow::loadError(QUrl url)
@@ -939,9 +952,11 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
     {
         if(m_databases[i]->database()->filename() == fname)
         {
-            m_currentDatabase = i;
-            m_boardView->setDbIndex(m_currentDatabase);
-            UpdateBoardInformation();
+            if (!m_databases[i]->IsBook())
+            {
+                m_currentDatabase = i;
+                CreateBoardView();
+            }
         }
     }
     m_databaseList->setFileCurrent(fname);
@@ -1224,8 +1239,6 @@ void MainWindow::setupActions()
     AppSettings->setValue("/MainWindow/StayOnTop", false);
 #endif
 
-    m_menuView->addAction(createAction(tr("New board"), SLOT(slotCreateBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_N,
-                                       0, QIcon(":/images/new_board.png")));
     m_menuView->addAction(createAction(tr("Close current board"), SLOT(slotCloseBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_W,
                                        0, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
     m_menuView->addSeparator();
@@ -1255,7 +1268,10 @@ void MainWindow::setupActions()
     loadMenu->addAction(prevAction);
     loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
     loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
-    gameMenu->addAction(createAction(tr("&Save..."), SLOT(slotGameSave()), QKeySequence::Save));
+    QAction* saveAction = createAction(tr("&Save..."), SLOT(slotGameSave()), QKeySequence::Save);
+    connect(this, SIGNAL(signalGameModified(bool)), saveAction, SLOT(setEnabled(bool)));
+    gameMenu->addAction(saveAction);
+
     gameMenu->addAction(createAction(tr("Edit tags..."), SLOT(slotGameEditTags())));
 
     gameMenu->addSeparator();

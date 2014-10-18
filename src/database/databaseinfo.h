@@ -80,6 +80,8 @@ public:
     in the database, game will be replaced, else if will be appended at the end. */
     bool saveGame();
 
+    void replaceGame(const Game& game);
+
     /** Resizes the filter to the number of games in the database and puts
          *  all games in the filter.*/
     void resetFilter();
@@ -93,6 +95,7 @@ public:
 
     bool IsPGN() const;
     bool IsPolyglotBook() const;
+    bool IsBook() const;
 
     bool modified() const;
     bool gameNeedsSaving() const;
@@ -108,7 +111,7 @@ protected:
 signals:
     void LoadFinished(DatabaseInfo*);
     void signalRestoreState(const Game &game);
-    void signalGameModified();
+    void signalGameModified(bool gameNeedsSaving);
     void signalMoveChanged();
     void searchProgress(int);
     void searchFinished();
@@ -116,7 +119,7 @@ signals:
 
 public slots:
     void dbCleanChanged(bool);
-    void setModified(bool modfied, const Game &g, QString action="");
+    void setModified(bool modfied, const Game &g, QString action);
 
 private:
     QUndoStack* m_undoStack;
@@ -127,7 +130,6 @@ private:
     int m_index;
     bool m_bLoaded;
     bool m_utf8;
-    bool m_gameModified;
 };
 
 class GameUndoCommand : public QUndoCommand
