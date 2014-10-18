@@ -87,7 +87,6 @@ void DatabaseInfo::run()
 
 bool DatabaseInfo::open(bool utf8)
 {
-    m_gameModified = false;
     m_bLoaded = false;
     m_utf8 = utf8;
     start();
@@ -155,34 +154,31 @@ bool DatabaseInfo::loadGame(int index)
 
 void DatabaseInfo::dbCleanChanged(bool bClean)
 {
-    m_gameModified = !bClean;
+    emit signalGameModified(!bClean);
 }
 
 bool DatabaseInfo::modified() const
 {
-    return m_gameModified;
+    return !m_undoStack->isClean();
 }
 
 bool DatabaseInfo::gameNeedsSaving() const
 {
-    return (isValid() && m_gameModified && !m_database->isReadOnly());
+    return (isValid() && modified() && !m_database->isReadOnly());
 }
 
 void DatabaseInfo::setModified(bool modified, const Game& g, QString action)
 {
     if (modified)
     {
-        if (!action.isEmpty())
-        {
-            m_undoStack->push(new GameUndoCommand(this, g, m_game, action));
-        }
+        Q_ASSERT(!action.isEmpty());
+        m_undoStack->push(new GameUndoCommand(this, g, m_game, action));
     }
     else
     {
         m_undoStack->clear();
     }
-    m_gameModified = modified;
-    emit signalGameModified();
+    emit signalGameModified(!m_undoStack->isClean());
 }
 
 QUndoStack *DatabaseInfo::undoStack() const
@@ -253,6 +249,11 @@ bool DatabaseInfo::saveGame()
     return false;
 }
 
+void DatabaseInfo::replaceGame(const Game &game)
+{
+    currentGame() = game;
+}
+
 void DatabaseInfo::resetFilter()
 {
     if(m_filter)
@@ -289,3 +290,8 @@ bool DatabaseInfo::IsPolyglotBook() const
     return (fi.suffix() == "bin");
 }
 
+bool DatabaseInfo::IsBook() const
+{
+    // Add here if more book formats come in
+    return IsPolyglotBook();
+}

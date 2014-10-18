@@ -300,7 +300,7 @@ public slots:
     updates GameInfo and highlight current move in GameView. */
     void slotMoveChanged();
     /** Show temporary message. */
-    void slotStatusMessage(const QString& msg);
+    void slotStatusMessage(const QString& msg = QString());
     /** Show progress bar for open file. */
     void slotOperationProgress(int progress);
     /** Change database. */
@@ -368,8 +368,6 @@ protected slots:
     void slotRedArrowHere();
     /** Set the Stay On Top Property */
     void slotToggleStayOnTop();
-    /** Create a new, empty Board document */
-    void slotCreateBoardView();
     /** Activate an existing board document */
     void slotActivateBoardView(int);
     /** Activate an existing board document */
@@ -395,7 +393,6 @@ protected:
     void copyGame(int target, int index);
     Database* getDatabaseByPath(QString path);
     DatabaseInfo* getDatabaseInfoByPath(QString path);
-    void activateBoardView(int n);
     void updateOpeningTree(const Board& b, bool atEnd);
 
 protected:
@@ -407,6 +404,10 @@ protected:
     QTabBar* m_pDragTabBar;
     QTimer* m_dragTimer;
 
+    void activateBoardView(int n);
+    void activateBoardViewForDbIndex(void *dbIndex);
+    void closeBoardViewForDbIndex(void *dbIndex);
+    int findBoardView(void *dbIndex) const;
 signals:
     /** Re-read configuration. */
     void reconfigure();
@@ -426,6 +427,8 @@ signals:
     void signalMoveHasParent(bool);
     void signalGameIsEmpty(bool);
     void signalGameAtLineStart(bool);
+
+    void signalGameModified(bool gameNeedsSaving);
 
     void signalCurrentDBisReadWrite(bool);
     void signalCurrentDBcanBeClosed(bool);
@@ -534,6 +537,7 @@ private:
     /** Currently updated tree. May be NULL if no update in progress. */
     QString m_nagText;
     QTimer* m_autoPlayTimer;
+    QTimer* m_messageTimer;
     int m_currentFrom;
     int m_currentTo;
     AnalysisWidget* m_mainAnalysis;

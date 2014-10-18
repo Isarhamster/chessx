@@ -185,6 +185,8 @@ void MainWindow::slotFileClose()
         {
             if(QuerySaveDatabase())
             {
+                closeBoardViewForDbIndex(databaseInfo());
+
                 DatabaseInfo* aboutToClose = databaseInfo();
                 m_openingTreeWidget->cancel();
                 m_databaseList->setFileClose(aboutToClose->filePath(), aboutToClose->currentIndex());
@@ -194,23 +196,10 @@ void MainWindow::slotFileClose()
                 emit signalDatabaseOpenClose();
                 delete aboutToClose;
 
-                for(int i = 0; i < m_boardViews.count(); ++i)
-                {
-                    if(m_boardViews.at(i)->dbIndex() == m_currentDatabase)
-                    {
-                        m_boardViews.at(i)->setDbIndex(0);
-                    }
-                    else if(m_boardViews.at(i)->dbIndex() > m_currentDatabase)
-                    {
-                        m_boardViews.at(i)->setDbIndex(m_boardViews.at(i)->dbIndex() - 1);
-                    }
-                }
-
                 if (m_currentDatabase != 0)
                 {
                     m_currentDatabase = 0; // Switch to clipboard is always safe
-                    m_boardView->setDbIndex(m_currentDatabase);
-                    UpdateBoardInformation();
+                    activateBoardViewForDbIndex(databaseInfo());
                     m_databaseList->setFileCurrent(QString());
                     slotDatabaseChanged();
                 }
@@ -233,6 +222,9 @@ void MainWindow::slotFileCloseIndex(int n)
             {
                 return;
             }
+
+            closeBoardViewForDbIndex(m_databases[n]);
+
             m_openingTreeWidget->cancel();
 
             m_databaseList->setFileClose(m_databases[n]->filePath(), m_databases[n]->currentIndex());
@@ -241,17 +233,6 @@ void MainWindow::slotFileCloseIndex(int n)
             delete m_databases[n];
             m_databases.removeAt(n);
 
-            for(int i = 0; i < m_boardViews.count(); ++i)
-            {
-                if(m_boardViews.at(i)->dbIndex() == n)
-                {
-                    m_boardViews.at(i)->setDbIndex(0);
-                }
-                else if(m_boardViews.at(i)->dbIndex() > n)
-                {
-                    m_boardViews.at(i)->setDbIndex(m_boardViews.at(i)->dbIndex() - 1);
-                }
-            }
             if(m_currentDatabase > n)
             {
                 // hack as we have just moved the index by one
@@ -947,6 +928,7 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
         m_gameList->updateFilter();
         slotFilterChanged();
         slotGameChanged();
+        UpdateBoardInformation();
 
         if(AppSettings->getValue("/General/autoCommitDB").toBool())
         {
@@ -959,9 +941,10 @@ void MainWindow::slotDatabaseModified()
 {
     m_gameList->updateFilter();
     slotFilterChanged();
-    emit signalCurrentDBisReadWrite((m_currentDatabase > 0) && !databaseInfo()->database()->isReadOnly());
+    emit signalCurrentDBisReadWrite((m_currentDatabase > 0) && !databaseInfo()->database()->isReadOnly() && databaseInfo()->database()->isModified());
     emit signalCurrentDBcanBeClosed(m_currentDatabase > 0);
     emit signalCurrentDBhasGames(database()->index()->count() > 0);
+    emit signalGameModified(databaseInfo()->modified());
 }
 
 bool MainWindow::slotGameSave()
@@ -1136,7 +1119,6 @@ void MainWindow::slotGameChanged()
     UpdateGameText();
     UpdateGameTitle();
     moveChanged();
-    UpdateBoardInformation();
 }
 
 void MainWindow::slotGameViewLink(const QUrl& url)
@@ -1403,6 +1385,11 @@ void MainWindow::slotFilterLoad(int index)
 void MainWindow::slotStatusMessage(const QString& msg)
 {
     m_statusApp->setText(msg);
+    if (!msg.isEmpty())
+    {
+        m_messageTimer->stop();
+        m_messageTimer->start();
+    }
 }
 
 void MainWindow::slotOperationProgress(int progress)
@@ -1415,29 +1402,32 @@ void MainWindow::slotDbRestoreState(const Game& game)
     DatabaseInfo* pDb = qobject_cast<DatabaseInfo*>(sender());
     if (pDb)
     {
-        pDb->currentGame() = game;
-        slotGameChanged();
+        pDb->replaceGame(game);
     }
 }
 
 void MainWindow::slotDatabaseChange()
 {
     QAction* action = qobject_cast<QAction*>(sender());
-    if(action && m_currentDatabase != action->data().toInt())
+    if (action)
     {
-        m_currentDatabase = action->data().toInt();
-        m_boardView->setDbIndex(m_currentDatabase);
-        m_databaseList->setFileCurrent(databaseInfo()->filePath());
-        slotDatabaseChanged();
-        if(database()->isReadOnly())
+        int n = action->data().toInt();
+        if (m_currentDatabase != n && !m_databases[n]->IsBook())
         {
-            for(int i = 0; i < m_databases.count(); ++i)
+            m_currentDatabase = action->data().toInt();
+            activateBoardViewForDbIndex(m_databases[m_currentDatabase]);
+            m_databaseList->setFileCurrent(databaseInfo()->filePath());
+            slotDatabaseChanged();
+            if(database()->isReadOnly())
             {
-                if(i != m_currentDatabase)
+                for(int i = 0; i < m_databases.count(); ++i)
                 {
-                    if(m_databases[i]->isValid() && m_databases[i]->database()->isReadOnly())
+                    if(i != m_currentDatabase)
                     {
-                        m_databases[i]->database()->index()->clearCache();
+                        if(m_databases[i]->isValid() && m_databases[i]->database()->isReadOnly())
+                        {
+                            m_databases[i]->database()->index()->clearCache();
+                        }
                     }
                 }
             }
@@ -1507,7 +1497,7 @@ void MainWindow::copyDatabase(QString target, QString src)
         if(pDestDBInfo && pSrcDB && pDestDB && (pSrcDB != pDestDB))
         {
             QString msg;
-            msg = tr("Append games from %1 to %2.").arg(src).arg(target.isEmpty() ? "Clipboard" : target);
+            msg = tr("Append games from %1 to %2.").arg(pSrcDB->name()).arg(target.isEmpty() ? "Clipboard" : pDestDB->name());
             slotStatusMessage(msg);
             for(int i = 0; i < (int)pSrcDB->count(); ++i)
             {
@@ -1519,13 +1509,19 @@ void MainWindow::copyDatabase(QString target, QString src)
             }
             pDestDBInfo->filter()->resize(pDestDB->count(), true);
         }
-        else if(!pSrcDB && !pDestDB)
+        else if(!pSrcDB && !pDestDB && (src != target))
         {
             QFile fSrc(src);
             QFile fDest(target);
+
             if(fSrc.open(QIODevice::ReadOnly) &&
                     fDest.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
             {
+                QFileInfo fiSrc(fSrc);
+                QFileInfo fiDest(fDest);
+                QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(fiDest.fileName());
+                slotStatusMessage(msg);
+
                 while(!fSrc.atEnd())
                 {
                     QByteArray line = fSrc.readLine();
@@ -1660,6 +1656,7 @@ void MainWindow::slotDatabaseChanged()
     slotGameChanged();
     emit databaseChanged(databaseInfo());
     emit databaseModified();
+    emit signalGameModified(databaseInfo()->modified());
 }
 
 void MainWindow::slotSearchTag()
@@ -1833,6 +1830,7 @@ void MainWindow::slotRenameRequest(QString tag, QString newValue, QString oldVal
         m_eventList->setDatabase(databaseInfo());
         m_playerList->setDatabase(databaseInfo());
         slotGameChanged();
+        UpdateBoardInformation();
     }
 }
 
@@ -1897,22 +1895,59 @@ void MainWindow::slotRedArrowHere()
 
 BoardView* MainWindow::CreateBoardView()
 {
-    BoardView* boardView = new BoardView(m_tabWidget);
-    boardView->setMinimumSize(200, 200);
-    boardView->configure();
-    boardView->setBoard(standardStartBoard);
-    boardView->setDbIndex(m_currentDatabase);
+    if (!databaseInfo()->IsBook())
+    {
+        BoardView* boardView = new BoardView(m_tabWidget);
 
-    m_boardViews.push_back(boardView);
-    m_tabWidget->addTab(boardView, QString("%1").arg(m_boardViews.count()));
-    m_tabWidget->setCurrentIndex(m_boardViews.count() - 1);
+        boardView->setMinimumSize(200, 200);
+        boardView->configure();
+        boardView->setBoard(standardStartBoard);
+        boardView->setDbIndex(m_databases[m_currentDatabase]);
 
-    return boardView;
+        m_boardViews.push_back(boardView);
+        m_tabWidget->addTab(boardView, QString("%1").arg(m_boardViews.count()));
+        m_tabWidget->setCurrentIndex(m_boardViews.count() - 1);
+
+        UpdateBoardInformation();
+
+        m_boardView = boardView;
+        return boardView;
+    }
+    return 0;
 }
 
-void MainWindow::slotCreateBoardView()
+void MainWindow::activateBoardViewForDbIndex(void* dbIndex)
 {
-    CreateBoardView();
+    int index = findBoardView(dbIndex);
+    if (index >= 0)
+    {
+        activateBoardView(index);
+    }
+    else
+    {
+        CreateBoardView();
+    }
+}
+
+void MainWindow::closeBoardViewForDbIndex(void* dbIndex)
+{
+    int index = findBoardView(dbIndex);
+    if (index >= 0)
+    {
+        slotCloseBoardView(index);
+    }
+}
+
+int MainWindow::findBoardView(void* dbIndex) const
+{
+    for(int i = 0; i < m_boardViews.count(); ++i)
+    {
+        if(m_boardViews.at(i)->dbIndex() == dbIndex)
+        {
+            return i;
+        }
+    }
+    return -1;
 }
 
 void MainWindow::activateBoardView(int n)
@@ -1930,8 +1965,6 @@ void MainWindow::activateBoardView(int n)
 
     BoardView* boardView = m_boardViews.at(n);
 
-    m_currentDatabase = boardView->dbIndex();
-
     connect(this, SIGNAL(reconfigure()), boardView, SLOT(configure()));
     connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
     connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
@@ -1940,11 +1973,26 @@ void MainWindow::activateBoardView(int n)
     connect(boardView, SIGNAL(moveFinished()), SLOT(slotMoveFinished()));
 
     m_boardView = boardView;
+    m_tabWidget->setCurrentIndex(n);
 }
 
 void MainWindow::slotActivateBoardView(int n)
 {
     activateBoardView(n);
+
+    BoardView* boardView = m_boardViews.at(n);
+    void* db = boardView->dbIndex();
+    for (int i=0; i<m_databases.size(); ++i)
+    {
+        if (m_databases[i]==db)
+        {
+            m_currentDatabase = i;
+            break;
+        }
+    }
+    Q_ASSERT(!databaseInfo()->IsBook());
+
+    emit signalGameModified(databaseInfo()->modified());
     slotGameChanged();
     m_databaseList->setFileCurrent(databaseInfo()->filePath());
     database()->index()->calculateCache();
@@ -2036,23 +2084,23 @@ void MainWindow::UpdateGameTitle()
 
 void MainWindow::UpdateBoardInformation()
 {
-    QString name = "<div align='center'><p>" + databaseName() + "</p>";
-    QString nameWhite = game().tag(TagNameWhite);
-    QString nameBlack = game().tag(TagNameBlack);
-    if(!(nameWhite.isEmpty() && nameBlack.isEmpty()))
+    if (!databaseInfo()->IsBook())
     {
-        name += "<p align='center'><font color='midnightblue'>" +
-                nameWhite  + "-" +
-                nameBlack + "</font></p>";
+        QString name = "<div align='center'><p>" + databaseName() + "</p>";
+        QString nameWhite = game().tag(TagNameWhite);
+        QString nameBlack = game().tag(TagNameBlack);
+        if(!(nameWhite.isEmpty() && nameBlack.isEmpty()))
+        {
+            name += "<p align='center'><font color='midnightblue'>" +
+                    nameWhite  + "-" +
+                    nameBlack + "</font></p>";
+        }
+        name += "</div>";
+        m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), name);
+
+        QString tabName = databaseName();
+        m_tabWidget->setTabText(m_tabWidget->currentIndex(), tabName);
     }
-    name += "</div>";
-    m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), name);
-    QString tabName = databaseName();
-    if (tabName.length() > 11)
-    {
-        tabName = tabName.left(8)+"...";
-    }
-    m_tabWidget->setTabText(m_tabWidget->currentIndex(), tabName);
 }
 
 void MainWindow::slotScreenShot()
