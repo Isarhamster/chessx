@@ -410,6 +410,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Display main window */
     show();
+    downloadManager = new DownloadManager(this);
 
     /* Load files from command line */
     QStringList args = qApp->arguments();
@@ -417,7 +418,7 @@ MainWindow::MainWindow() : QMainWindow(),
     {
         if(QFile::exists(args[i]))
         {
-            openDatabaseUrl(args[i], false);
+            openDatabaseArchive(args[i], false);
         }
     }
 
@@ -438,7 +439,6 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(ecothread, SIGNAL(loaded(QObject*, bool)), this, SLOT(ecoLoaded(QObject*, bool)));
     ecothread->start();
     StartCheckUpdate();
-    downloadManager = new DownloadManager(this);
 }
 
 MainWindow::~MainWindow()
@@ -796,8 +796,10 @@ void MainWindow::openDatabase(QString fname)
 
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
+    QFileInfo fi(fname);
     QUrl url = QUrl::fromUserInput(fname);
-    if((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp"))
+    if (url.isValid() && !url.isRelative() &&
+        ((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp")))
     {
         connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)));
         connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)));
