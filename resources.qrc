@@ -128,5 +128,6 @@
         <file alias="styles/checkbox.png">data/styles/checkbox.png</file>
         <file alias="styles/down_arrow.png">data/styles/down_arrow.png</file>
         <file alias="styles/handle.png">data/styles/handle.png</file>
+        <file alias="i18n/chessx_es.qm">i18n/chessx_es.qm</file>
     </qresource>
 </RCC>
