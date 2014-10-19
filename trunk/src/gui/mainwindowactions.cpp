@@ -1904,6 +1904,13 @@ BoardView* MainWindow::CreateBoardView()
         boardView->setBoard(standardStartBoard);
         boardView->setDbIndex(m_databases[m_currentDatabase]);
 
+        connect(this, SIGNAL(reconfigure()), boardView, SLOT(configure()));
+        connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
+        connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
+        connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
+        connect(boardView, SIGNAL(moveStarted()), SLOT(slotMoveStarted()));
+        connect(boardView, SIGNAL(moveFinished()), SLOT(slotMoveFinished()));
+
         m_boardViews.push_back(boardView);
         m_tabWidget->addTab(boardView, QString("%1").arg(m_boardViews.count()));
         m_tabWidget->setCurrentIndex(m_boardViews.count() - 1);
@@ -1952,26 +1959,7 @@ int MainWindow::findBoardView(void* dbIndex) const
 
 void MainWindow::activateBoardView(int n)
 {
-    if(m_tabWidget->currentIndex() >= 0)
-    {
-        BoardView* lastView = m_boardViews.at(m_tabWidget->currentIndex());
-        disconnect(SIGNAL(reconfigure()), lastView);
-        lastView->disconnect(SIGNAL(moveMade(Square, Square, int)));
-        lastView->disconnect(SIGNAL(clicked(Square, int, QPoint, Square)));
-        lastView->disconnect(SIGNAL(wheelScrolled(int)));
-        lastView->disconnect(SIGNAL(moveStarted()));
-        lastView->disconnect(SIGNAL(moveFinished()));
-    }
-
     BoardView* boardView = m_boardViews.at(n);
-
-    connect(this, SIGNAL(reconfigure()), boardView, SLOT(configure()));
-    connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
-    connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
-    connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
-    connect(boardView, SIGNAL(moveStarted()), SLOT(slotMoveStarted()));
-    connect(boardView, SIGNAL(moveFinished()), SLOT(slotMoveFinished()));
-
     m_boardView = boardView;
     m_tabWidget->setCurrentIndex(n);
 }
