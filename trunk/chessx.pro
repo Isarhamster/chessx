@@ -18,11 +18,12 @@ DEFINES += QT_NO_CAST_TO_ASCII
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 macx {
+  QMAKE_MAC_SDK = macosx10.9
 	QMAKE_CXXFLAGS += -fvisibility=hidden
-        QMAKE_LFLAGS_RELEASE -= -O2
-        QMAKE_LFLAGS_RELEASE += -m64 -O3
-        QMAKE_CXXFLAGS_RELEASE -= -O2
-        QMAKE_CXXFLAGS_RELEASE *= -m64 -O3
+  QMAKE_LFLAGS_RELEASE -= -O2
+  QMAKE_LFLAGS_RELEASE += -m64 -O3
+  QMAKE_CXXFLAGS_RELEASE -= -O2
+  QMAKE_CXXFLAGS_RELEASE *= -m64 -O3
 }
 
 FORMS += \
@@ -43,7 +44,8 @@ FORMS += \
     src/gui/actiondialog.ui \
     src/gui/dlgsavebook.ui \
     src/gui/boardsearchdialog.ui \
-    src/gui/tagdialog.ui
+    src/gui/tagdialog.ui \
+    src/gui/recipientaddressdialog.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -172,7 +174,8 @@ HEADERS += src/database/board.h \
     src/database/telnetclient.h \
     src/database/ficsclient.h \
     src/gui/tagdialog.h \
-    src/gui/style.h
+    src/gui/style.h \
+    src/gui/recipientaddressdialog.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -287,7 +290,8 @@ SOURCES += src/database/board.cpp \
     src/database/telnetclient.cpp \
     src/database/ficsclient.cpp \
     src/gui/tagdialog.cpp \
-    src/gui/style.cpp
+    src/gui/style.cpp \
+    src/gui/recipientaddressdialog.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

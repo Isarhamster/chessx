@@ -150,6 +150,8 @@ public slots:
     void slotEditTruncateEnd();
     /** Truncate moves from the beginning of the game. */
     void slotEditTruncateStart();
+    /** Mail position's PGN. */
+    void slotSendMail();
     /**  */
     void slotReconfigure();
     /**  */

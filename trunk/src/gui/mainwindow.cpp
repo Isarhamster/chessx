@@ -431,7 +431,7 @@ MainWindow::MainWindow() : QMainWindow(),
     setAcceptDrops(true);
 
     QString dir = AppSettings->commonDataPath();
-    QDir().mkpath(dir + "/index");
+    QDir().mkpath(dir + QDir::separator() + "index");
 
     /* Load ECO file */
     slotStatusMessage(tr("Loading ECO file..."));
@@ -836,7 +836,7 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
                 for(bool more = zip.goToFirstFile(); more; more = zip.goToNextFile())
                 {
                     file.open(QIODevice::ReadOnly);
-                    QString outName = dir + "/" + file.getActualFileName();
+                    QString outName = dir + QDir::separator() + file.getActualFileName();
                     QDir pathOut;
                     outName = pathOut.absoluteFilePath(outName);
                     if(!QFile::exists(outName))
@@ -1149,6 +1149,8 @@ void MainWindow::setupActions()
 
     QAction* saveImage = createAction(tr("Export Image"), SLOT(slotExportImage()));
     file->addAction(saveImage);
+    file->addAction(createAction(tr("Mail PGN..."), SLOT(slotSendMail()), QKeySequence(), fileToolBar, ":/images/edit_mail.png"));
+
     file->addSeparator();
 
     QAction* closeFileAction = createAction(tr("&Close"), SLOT(slotFileClose()), QKeySequence::Close, fileToolBar, ":/images/folder.png");
