@@ -49,7 +49,7 @@ SimpleLoggingHandler(QtMsgType type, const QMessageLogContext &, const QString &
 void startFileLog()
 {
 #ifdef _DEBUG
-    QString currentPath = QDir::currentPath() + "/chessx.log";
+    QString currentPath = QDir::currentPath() + QDir::separator() + "chessx.log";
     logfile.open(currentPath.toLatin1().data(), ios::app);
     bDoLog = true;
 #if QT_VERSION < 0x050000

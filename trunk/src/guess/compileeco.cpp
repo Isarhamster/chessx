@@ -172,8 +172,8 @@ bool compileAsciiEcoFile(const QString& filenameIn, QString filenameOut, QString
         return false;
     }
 
-    filenameOut = QFileInfo(filenameIn).absolutePath()+"/"+filenameOut;
-    gtmFile = QFileInfo(filenameIn).absolutePath()+"/"+gtmFile;
+    filenameOut = QFileInfo(filenameIn).absolutePath() + QDir::separator() + filenameOut;
+    gtmFile = QFileInfo(filenameIn).absolutePath() + QDir::separator() + gtmFile;
 
     // Write out the main ECO file
     QFile file(filenameOut);

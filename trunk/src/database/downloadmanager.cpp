@@ -105,7 +105,7 @@ QString DownloadManager::saveFileName(const QUrl &url)
         basename = "download.pgn";
     }
 
-    return dir + "/" + basename;
+    return dir + QDir::separator() + basename;
 }
 
 bool DownloadManager::saveToDisk(const QString &filename, QIODevice *data)
