@@ -85,7 +85,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
         connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadFileError(QUrl)));
         connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(slotFileLoaded(QUrl, QString)));
         QString path = AppSettings->getTempPath();
-        downloadManager->doDownloadToPath(url, path + "dict.txt");
+        downloadManager->doDownloadToPath(url, path + QDir::separator() + "dict.txt");
     }
     else
     {
@@ -322,7 +322,7 @@ void PreferencesDialog::slotLoadLanguageFile()
     if(!ui.cbLangServer->currentText().isEmpty())
     {
         QUrl url = QUrl(QString("http://chessx.sourceforge.net/translations/chessx_") + ui.cbLangServer->currentText() + ".qm");
-        downloadManager->doDownloadToPath(url, AppSettings->dataPath() + "/lang/chessx_" + ui.cbLangServer->currentText() + ".qm");
+        downloadManager->doDownloadToPath(url, AppSettings->dataPath() + QDir::separator() + "lang" + QDir::separator() + "chessx_" + ui.cbLangServer->currentText() + ".qm");
     }
 }
 
