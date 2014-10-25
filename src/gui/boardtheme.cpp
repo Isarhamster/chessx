@@ -239,7 +239,7 @@ QString BoardTheme::themeDirectory() const
 
 QString BoardTheme::boardDirectory() const
 {
-    QString path = AppSettings->dataPath() + "/themes/boards";
+    QString path = AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + "boards";
     if(QFile::exists(path))
     {
         return path;

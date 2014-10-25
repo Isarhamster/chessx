@@ -91,7 +91,8 @@ QString Settings::dataPath()
         m_dataPath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 #endif
 
-        m_dataPath.append("/data");
+        m_dataPath.append(QDir::separator());
+        m_dataPath.append("data");
     }
 
     return m_dataPath;
@@ -100,7 +101,8 @@ QString Settings::dataPath()
 QString Settings::programDataPath()
 {
     QString programDataPath = QCoreApplication::applicationDirPath();
-    programDataPath.append("/data");
+    programDataPath.append(QDir::separator());
+    programDataPath.append("data");
     return programDataPath;
 }
 
@@ -108,11 +110,11 @@ QString Settings::uciPath()
 {
 #ifdef Q_OS_WIN
     QString path(AppSettings->programDataPath());
-    return (path + "/engines/uci");
+    return (path + QDir::separator() + "engines" + QDir::separator() + "uci");
 #endif
 #ifdef Q_OS_MAC
     QString path(AppSettings->programDataPath());
-    return (path + "/engines-mac/uci");
+    return (path + QDir::separator() + "engines-mac" + QDir::separator() + "uci");
 #endif
     return "";
 }
@@ -121,11 +123,11 @@ QString Settings::winboardPath()
 {
 #ifdef Q_OS_WIN
     QString path(AppSettings->programDataPath());
-    return (path + "/engines/winboard");
+    return (path + QDir::separator() + "engines" + QDir::separator() + "winboard");
 #endif
 #ifdef Q_OS_MAC
     QString path(AppSettings->programDataPath());
-    return (path + "/engines-mac/winboard");
+    return (path + QDir::separator() + "engines-mac" + QDir::separator() + "winboard");
 #endif
     return "";
 }
@@ -302,7 +304,7 @@ QStringList Settings::getThemeList() const
 
 QString Settings::getBoardPath() const
 {
-    QString boardDir(AppSettings->dataPath() + "/themes/boards");
+    QString boardDir(AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + "boards");
 
     if(!QFile::exists(boardDir))
     {
@@ -320,7 +322,7 @@ QStringList Settings::getBoardList() const
 
 QString Settings::getImagePath() const
 {
-    QString imgDir(AppSettings->dataPath() + "/images");
+    QString imgDir(AppSettings->dataPath() + QDir::separator() + "images");
 
     if(!QFile::exists(imgDir))
     {
@@ -335,7 +337,7 @@ QStringList Settings::getTranslationPaths() const
     QStringList list;
     list.append(":i18n");
 
-    QString langDir(AppSettings->dataPath() + "/lang");
+    QString langDir(AppSettings->dataPath() + QDir::separator() + "lang");
 
     if(QFile::exists(langDir))
     {

@@ -124,12 +124,14 @@ prevHook = _CrtSetReportHook(customReportHook);
     QTranslator translator;
     if (lang != "chessx_en.qm")
     {
+        QString filePath = AppSettings->dataPath() + QDir::separator() + "lang" + QDir::separator();
+
         if(translator.load(QString(":/i18n/") + lang) ||
-                translator.load(AppSettings->dataPath() + "/lang/" + lang) ||
+                translator.load(filePath + lang) ||
                 translator.load(QString(":/i18n/") + fullSystemLang) ||
-                translator.load(AppSettings->dataPath() + "/lang/" + fullSystemLang) ||
+                translator.load(filePath + fullSystemLang) ||
                 translator.load(QString(":/i18n/") + shortSystemLang) ||
-                translator.load(AppSettings->dataPath() + "/lang/" + shortSystemLang))
+                translator.load(filePath + shortSystemLang))
         {
             app.installTranslator(&translator);
         }

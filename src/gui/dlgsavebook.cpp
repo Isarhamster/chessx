@@ -20,14 +20,14 @@ DlgSaveBook::DlgSaveBook(QString path, QWidget *parent) :
   {
       QFileInfo fi(m_InputPath);
       QString in = fi.absoluteFilePath();
-      m_OutputPath = fi.absoluteDir().absolutePath()+"/"+fi.baseName()+".bin";
+      m_OutputPath = fi.absoluteDir().absolutePath() + QDir::separator() + fi.baseName()+".bin";
       ui->inputFile->setText(fi.fileName());
   }
   else
   {
       ui->inputFile->setText(tr("Clipboard"));
       QString dir = AppSettings->value("/General/DefaultDataPath").toString();
-      m_OutputPath = dir + "/Clipboard.bin";
+      m_OutputPath = dir + QDir::separator() + "Clipboard.bin";
   }
 
   ui->outputPath->setText(m_OutputPath);

@@ -127,7 +127,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
                     QStringList sl4 = pictures.at(i).split(".");
                     if(sl4[0].compare(nameAlias) == 0)
                     {
-                        QImage* img = new QImage(dir.path() + "/" + (pictures.at(i)));
+                        QImage* img = new QImage(dir.path() + QDir::separator() + (pictures.at(i)));
                         pdb.setPhoto(*img);
                         numberOfPictures++;
                         pictures.removeAt(i);
@@ -166,7 +166,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
                 QStringList sl4 = pictures.at(i).split(".");
                 if(sl4[0].compare(name) == 0)
                 {
-                    QImage* img = new QImage(dir.path() + "/" + pictures.at(i));
+                    QImage* img = new QImage(dir.path() + QDir::separator() + pictures.at(i));
                     pdb.setPhoto(*img);
                     numberOfPictures++;
                     pictures.removeAt(i);

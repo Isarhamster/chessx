@@ -28,7 +28,7 @@ void EngineList::restoreEmptyFromPath(QString path, EngineData::EngineProtocol p
         QString key = QString::number(i);
         QString name = engines[i];
         EngineData data(name);
-        data.command = path + "/" + name;
+        data.command = path + QDir::separator() + name;
         data.directory = path;
         data.protocol = protocol;
         append(data);
