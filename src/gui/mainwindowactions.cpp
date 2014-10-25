@@ -35,6 +35,7 @@
 #include "polyglotwriter.h"
 #include "preferences.h"
 #include "promotiondialog.h"
+#include "recipientaddressdialog.h"
 #include "renametagdialog.h"
 #include "shellhelper.h"
 #include "settings.h"
@@ -47,6 +48,7 @@
 
 #include <QtGui>
 #include <QAction>
+#include <QDesktopServices>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMenu>
@@ -381,6 +383,24 @@ void MainWindow::slotEditCopyPGN()
     QApplication::clipboard()->setText(pgn);
 }
 
+void MainWindow::slotSendMail()
+{
+    Game curgame = game();
+    Output output(Output::Pgn);
+    QString pgn = output.output(&curgame);
+
+    RecipientAddressDialog recAdDialog(this);
+    if (recAdDialog.exec() == QDialog::Accepted)
+    {
+        const QString white = curgame.tag(TagNameWhite);
+        const QString black = curgame.tag(TagNameBlack);
+
+        QString recipient = recAdDialog.getEmail();
+        QString mailTo("mailto:%1?subject=Game %2-%3&body=%4");
+        QUrl url = mailTo.arg(recipient).arg(white).arg(black).arg(pgn);
+        QDesktopServices::openUrl(url);
+    }
+}
 
 void MainWindow::slotEditComment()
 {
@@ -2096,10 +2116,10 @@ void MainWindow::slotScreenShot()
     QPixmap pixmap = QPixmap::grabWindow(effectiveWinId());
 
     QString dir = AppSettings->commonDataPath();
-    QString shotDir = dir + "/shots";
+    QString shotDir = dir + QDir::separator() + "shots";
     QDir().mkpath(shotDir);
 
-    QString fileName = shotDir + "/shot-" + QDateTime::currentDateTime().toString() + ".png";
+    QString fileName = shotDir + QDir::separator() + "shot-" + QDateTime::currentDateTime().toString() + ".png";
 
     pixmap.save(fileName);
 }
