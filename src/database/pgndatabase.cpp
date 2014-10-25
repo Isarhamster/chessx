@@ -13,7 +13,6 @@
 #include <QDir>
 #include <QStringList>
 #include <QtDebug>
-#include <QDesktopServices>
 
 #include "board.h"
 #include "nag.h"
@@ -68,14 +67,9 @@ QString PgnDatabase::offsetFilename(const QString& filename) const
     QFileInfo fi = QFileInfo(filename);
     QString basefile = fi.completeBaseName();
     basefile.append(".cxi");
-#if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
-#else
-    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
-#endif
-    QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
-    QString indexPath = dir + "/index";
-    return(indexPath + "/" + basefile);
+    QString dir = AppSettings->commonDataPath();
+    QString indexPath = dir + QDir::separator() + "index";
+    return(indexPath + QDir::separator() + basefile);
 }
 
 bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFlag)

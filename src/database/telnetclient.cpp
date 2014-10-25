@@ -12,6 +12,10 @@
 #define DEBUG_TELNET
 //#undef DEBUG_TELNET
 
+#ifdef DEBUG_TELNET
+#    include <QDebug>
+#endif
+
 TelnetClient::TelnetClient(QObject *parent)
     : QObject(parent)
 {

@@ -133,9 +133,9 @@ QString Settings::winboardPath()
 QString Settings::commonDataPath()
 {
 #if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + "chessdata";
 #else
-    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QDir::separator() + "chessdata";
 #endif
 
     QString dir = value("/General/DefaultDataPath", dataPath).toString();
@@ -284,7 +284,7 @@ QVariant Settings::getValue(const QString &key) const
 
 QString Settings::getThemaPath() const
 {
-    QString themeDir(AppSettings->dataPath() + "/themes");
+    QString themeDir(AppSettings->dataPath() + QDir::separator() + "themes");
 
     if(!QFile::exists(themeDir))
     {
@@ -361,9 +361,9 @@ QStringList Settings::getTranslations() const
 QString Settings::getUserDataPath() const
 {
 #if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/chessdata";
+    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + "chessdata";
 #else
-    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/chessdata";
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QDir::separator() + "chessdata";
 #endif
     return dataPath;
 }
