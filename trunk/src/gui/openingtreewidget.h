@@ -52,12 +52,13 @@ protected slots:
     void slotSourceChanged();
 
 signals:
-    void signalTreeUpdated();
+    void signalTreeUpdated(bool);
     void signalSourceChanged();
 
 private:
     Ui::OpeningTreeWidget *ui;
     BoardView* m_openingBoardView;
+    QStringList m_filePaths;
 };
 
 #endif // OPENINGTREEWIDGET_H

@@ -296,7 +296,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(openingDock->toggleViewAction());
     connect(openingDock->toggleViewAction(), SIGNAL(triggered()), SLOT(slotSearchTree()));
     connect(openingDock, SIGNAL(visibilityChanged(bool)), m_openingTreeWidget, SLOT(cancel()));
-    connect(m_openingTreeWidget, SIGNAL(signalTreeUpdated()), this, SLOT(slotTreeUpdate()));
+    connect(m_openingTreeWidget, SIGNAL(signalTreeUpdated(bool)), this, SLOT(slotTreeUpdate(bool)));
     connect(m_openingTreeWidget, SIGNAL(signalSourceChanged()), this, SLOT(slotSearchTree()));
     connect(this, SIGNAL(reconfigure()), m_openingTreeWidget, SLOT(slotReconfigure()));
     openingDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);

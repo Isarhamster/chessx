@@ -8,6 +8,7 @@
 #include <QModelIndex>
 
 #include "boardview.h"
+#include "databaseinfo.h"
 #include "openingtree.h"
 #include "settings.h"
 
@@ -88,7 +89,8 @@ void OpeningTreeWidget::slotTreeUpdate()
     ui->progress->setValue(100);
     if (ui->filterGames->isChecked())
     {
-        emit signalTreeUpdated();
+        bool dbIsFilterSource = (ui->sourceSelector->currentIndex()<=1);
+        emit signalTreeUpdated(dbIsFilterSource);
     }
 }
 
@@ -99,17 +101,35 @@ void OpeningTreeWidget::slotTreeUpdateStarted()
 
 int OpeningTreeWidget::getFilterIndex(QString& name) const
 {
-    name = ui->sourceSelector->currentText();
-    return ui->sourceSelector->currentIndex();
+    int index = ui->sourceSelector->currentIndex();
+    if (index>1)
+        name = m_filePaths[ui->sourceSelector->currentIndex()-2];
+    else
+        name = ui->sourceSelector->currentText();
+    return index;
 }
 
 void OpeningTreeWidget::updateFilterIndex(QStringList files)
 {
+    m_filePaths.clear();
+    m_filePaths = files;
     disconnect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged()));
     QString current = ui->sourceSelector->currentText();
     ui->sourceSelector->clear();
+    QStringList baseNames;
+    foreach(QString filename, files)
+    {
+        QFileInfo fi(filename);
+        QString baseName = fi.baseName();
+        if (DatabaseInfo::IsBook(filename))
+        {
+            baseName += tr(" (Book)");
+        }
+        baseNames.append(baseName);
+    }
+
     QStringList allFiles;
-    allFiles << tr("Database") << tr("Filter") << files;
+    allFiles << tr("Database") << tr("Filter") << baseNames;
     ui->sourceSelector->insertItems(0, allFiles);
     if (allFiles.contains(current))
     {
@@ -119,7 +139,6 @@ void OpeningTreeWidget::updateFilterIndex(QStringList files)
     else
     {
         ui->sourceSelector->setCurrentIndex(0);
-        ui->filterGames->setEnabled(true);
     }
     connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged()));
 }
@@ -132,11 +151,5 @@ bool OpeningTreeWidget::shouldAddMove() const
 void OpeningTreeWidget::slotSourceChanged()
 {
     m_openingTree->cancel();
-    bool enableFilter = (ui->sourceSelector->currentIndex()<=1);
-    if (!enableFilter)
-    {
-        ui->filterGames->setChecked(false);
-    }
-    ui->filterGames->setEnabled(enableFilter);
     emit signalSourceChanged();
 }
