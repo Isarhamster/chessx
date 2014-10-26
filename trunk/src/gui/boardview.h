@@ -60,9 +60,9 @@ public:
     /** Set Move Indicator property */
     void showMoveIndicator(bool visible);
     /** Set a reference to the database to which the current view is associated */
-    void setDbIndex(void *);
+    void setDbIndex(QObject *);
     /** Get a reference to the database to which the current view is associated */
-    void *dbIndex() const;
+    QObject *dbIndex() const;
     /** Get the move indicator width */
     int moveIndicatorWidth() const;
 
@@ -190,7 +190,7 @@ private:
     bool m_showMoveIndicator;
     bool m_vAlignTop;
     int m_showMoveIndicatorMode;
-    void* m_DbIndex;
+    QPointer<QObject> m_DbIndex;
 };
 
 class BoardViewMimeData : public QMimeData
