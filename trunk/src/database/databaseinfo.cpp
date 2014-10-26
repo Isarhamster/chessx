@@ -256,6 +256,7 @@ bool DatabaseInfo::saveGame()
 void DatabaseInfo::replaceGame(const Game &game)
 {
     currentGame() = game;
+    emit signalGameModified(!m_undoStack->isClean());
 }
 
 void DatabaseInfo::resetFilter()
