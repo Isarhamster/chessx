@@ -981,12 +981,12 @@ void BoardView::setDisabled(bool disabled)
     QWidget::setDisabled(disabled);
 }
 
-void BoardView::setDbIndex(void* dbIndex)
+void BoardView::setDbIndex(QObject* dbIndex)
 {
     m_DbIndex = dbIndex;
 }
 
-void* BoardView::dbIndex() const
+QObject* BoardView::dbIndex() const
 {
     return m_DbIndex;
 }
