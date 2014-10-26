@@ -97,6 +97,9 @@ public:
     bool IsPolyglotBook() const;
     bool IsBook() const;
 
+    static bool IsPolyglotBook(QString name);
+    static bool IsBook(QString name);
+
     bool modified() const;
     bool gameNeedsSaving() const;
 

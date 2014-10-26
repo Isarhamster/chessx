@@ -1735,12 +1735,22 @@ void MainWindow::slotSearchReset()
     slotFilterChanged();
 }
 
-void MainWindow::slotTreeUpdate()
+void MainWindow::slotTreeUpdate(bool dbIsFilterSource)
 {
     if (!gameMode())
     {
-        m_gameList->updateFilter();
-        slotFilterChanged();
+        if (dbIsFilterSource)
+        {
+            m_gameList->updateFilter();
+            slotFilterChanged();
+        }
+        else
+        {
+            Search* ps = new PositionSearch (databaseInfo()->filter()->database(), m_openingTreeWidget->board());
+            m_openingTreeWidget->cancel();
+            slotBoardSearchStarted();
+            databaseInfo()->filter()->executeSearch(ps);
+        }
     }
 }
 
@@ -1787,13 +1797,13 @@ void MainWindow::updateOpeningTree(const Board& b, bool atEnd)
         int index = m_openingTreeWidget->getFilterIndex(name);
         if (index > 1)
         {
-            dbInfo = m_databases[index-1];
+            dbInfo = getDatabaseInfoByPath(name);
         }
         else
         {
             dbInfo = databaseInfo();
         }
-        if (dbInfo->isValid())
+        if (dbInfo && dbInfo->isValid())
         {
             m_openingTreeWidget->updateFilter(*dbInfo->filter(), b, atEnd);
         }
@@ -2165,11 +2175,7 @@ void MainWindow::slotUpdateOpeningTreeWidget()
     QStringList files; // List of all open files excluding ClipBoard
     for(int i = 1; i < m_databases.count(); i++)
     {
-        QString displayName = m_databases[i]->database()->name();
-        if (m_databases[i]->IsPolyglotBook())
-        {
-            displayName += " (Polyglot)";
-        }
+        QString displayName = m_databases[i]->filePath();
         files << displayName;
     }
     m_openingTreeWidget->updateFilterIndex(files);

@@ -283,7 +283,7 @@ public slots:
     /** Reverse current filter */
     void slotSearchReverse();
     /** Make an Update of the game list after the opening tree was updated */
-    void slotTreeUpdate();
+    void slotTreeUpdate(bool dbIsFilterSource);
     /** Show opening tree */
     void slotSearchTree();
     /** Move @p index was selected in Opening Tree. */

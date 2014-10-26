@@ -236,7 +236,11 @@ bool DatabaseInfo::saveGame()
     }
     else if(m_index == NewGame && m_database->appendGame(m_game))
     {
-        m_filter->resize(m_database->count(), 1);
+        if (m_filter)
+        {
+            m_filter->cancel();
+            m_filter->resize(m_database->count(), 1);
+        }
         m_index = m_database->count() - 1;
         if(!eco.isEmpty())
         {
@@ -286,12 +290,22 @@ bool DatabaseInfo::IsPGN() const
 
 bool DatabaseInfo::IsPolyglotBook() const
 {
-    QFileInfo fi(m_filename);
-    return (fi.suffix() == "bin");
+    return IsPolyglotBook(m_filename);
 }
 
 bool DatabaseInfo::IsBook() const
 {
+    return IsBook(m_filename);
+}
+
+bool DatabaseInfo::IsPolyglotBook(QString s)
+{
+    QFileInfo fi(s);
+    return (fi.suffix() == "bin");
+}
+
+bool DatabaseInfo::IsBook(QString s)
+{
     // Add here if more book formats come in
-    return IsPolyglotBook();
+    return IsPolyglotBook(s);
 }
