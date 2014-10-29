@@ -78,7 +78,7 @@ public:
     QString getUserDataPath() const;
     QString getTempPath() const;
 
-    QString getThemaPath() const;
+    QString getThemePath() const;
     QStringList getThemeList() const;
 
     QString getImagePath() const;

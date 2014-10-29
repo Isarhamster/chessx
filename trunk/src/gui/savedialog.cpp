@@ -111,6 +111,7 @@ int SaveDialog::save(Database* database, Game& game)
     setLineEdit(ui.blackEdit, database, TagNameBlack);
     setLineEdit(ui.siteEdit,  database, TagNameSite);
     setLineEdit(ui.eventEdit, database, TagNameEvent);
+
     int result = QDialog::exec();
     if(result == Accepted)
     {
