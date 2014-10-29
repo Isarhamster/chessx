@@ -11,6 +11,7 @@
 #include "settings.h"
 
 #include <QtCore>
+#include <QDialog>
 #include <QtGui>
 #include <QWidget>
 #include <QMainWindow>
@@ -53,6 +54,8 @@ bool Settings::layout(QWidget* w)
         {
             if(values[4])
             {
+                QDialog* d = qobject_cast<QDialog*>(w);
+                if (d) d->setModal(true);
                 w->show();
             }
         }
@@ -284,7 +287,7 @@ QVariant Settings::getValue(const QString &key) const
     return value(key);
 }
 
-QString Settings::getThemaPath() const
+QString Settings::getThemePath() const
 {
     QString themeDir(AppSettings->dataPath() + QDir::separator() + "themes");
 
@@ -298,7 +301,7 @@ QString Settings::getThemaPath() const
 
 QStringList Settings::getThemeList() const
 {
-    QStringList themes = QDir(getThemaPath()).entryList(QStringList("*.png"));
+    QStringList themes = QDir(getThemePath()).entryList(QStringList("*.png"));
     return themes;
 }
 
