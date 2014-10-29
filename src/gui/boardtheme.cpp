@@ -74,7 +74,9 @@ bool BoardTheme::loadPieces(const QString& pieces, int effect)
     {
         effectPath = "shadow";
     }
-    QString themePath = QString("%1/%2/%3.png").arg(themeDirectory()).arg(effectPath).arg(pieces);
+
+    QString themePath = pieces.startsWith(":") ? pieces :
+       QString("%1/%2/%3.png").arg(AppSettings->getThemePath()).arg(effectPath).arg(pieces);
 
     QPixmap big;
     if(!big.load(themePath) || big.width() < 160)
@@ -122,7 +124,8 @@ bool BoardTheme::loadBoard(const QString& board)
         updateSquares();
         return true;
     }
-    QString themePath = QString("%1/%2.png").arg(boardDirectory()).arg(board);
+    QString themePath = QString("%1/%2.png").arg(AppSettings->getBoardPath()).arg(board);
+
     QPixmap big;
     if(!big.load(themePath))
     {
@@ -158,7 +161,7 @@ void BoardTheme::configure()
 
     if(!loadPieces(pieceTheme, pieceEffect) &&
             !loadPieces(pieceTheme, Plain) &&
-            !loadPieces("merida", Plain))
+            !loadPieces(":/themes/merida", Plain))
     {
         MessageDialog::error(tr("Cannot find piece data.\nPlease check your installation."));
     }
@@ -221,32 +224,6 @@ void BoardTheme::updateSquares()
     {
         m_square[0] =  m_originalSquare[0].copy(rect());
         m_square[1] =  m_originalSquare[1].copy(rect());
-    }
-}
-
-QString BoardTheme::themeDirectory() const
-{
-    QString path = AppSettings->dataPath() + "/themes";
-    if(QFile::exists(path))
-    {
-        return path;
-    }
-    else
-    {
-        return QString(":/themes");
-    }
-}
-
-QString BoardTheme::boardDirectory() const
-{
-    QString path = AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + "boards";
-    if(QFile::exists(path))
-    {
-        return path;
-    }
-    else
-    {
-        return QString(":/themes/boards");
     }
 }
 

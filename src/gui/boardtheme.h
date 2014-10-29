@@ -63,10 +63,6 @@ public:
     QString boardThemeName() const;
     /** Returns name of piece theme. It is just file without a path and extension. */
     QString pieceThemeName() const;
-    /** Returns theme directory */
-    QString themeDirectory() const;
-    /** Returns board directory */
-    QString boardDirectory() const;
     /** Sets current size for pixmaps. Resizes all pixmaps. */
     void setSize(const QSize& size);
     /** Returns current size of pixmaps. */
