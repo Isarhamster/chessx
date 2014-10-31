@@ -131,5 +131,6 @@
         <file alias="i18n/chessx_es.qm">i18n/chessx_es.qm</file>
         <file alias="images/edit_mail.png">data/images/edit_mail.png</file>
         <file alias="themes/boards/lanta.png">data/themes/boards/lanta.png</file>
+        <file alias="i18n/chessx_ro.qm">i18n/chessx_ro.qm</file>
     </qresource>
 </RCC>
