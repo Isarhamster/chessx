@@ -69,6 +69,7 @@ void TagDialog::validateTag(int /*row*/, int column)
             ui->labelInfo->setVisible(false);
         }
     }
+    ui->tagTable->resizeColumnsToContents();
 }
 
 bool TagDialog::editTags(Index* index, Game& game, GameId id)
@@ -94,8 +95,9 @@ bool TagDialog::editTags(Index* index, Game& game, GameId id)
         ui->tagTable->setItem(row, 1, secondCol);
         ++row;
     }
-    ui->tagTable->resizeColumnsToContents();
+
     ui->tagTable->setSortingEnabled(true);
+    ui->tagTable->resizeColumnsToContents();
 
     connect(ui->tagTable, SIGNAL(cellActivated(int,int)),
             this, SLOT(saveOldTagText(int, int)));
