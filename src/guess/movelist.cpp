@@ -145,23 +145,6 @@ MoveList::Sort(void)
     qSort(begin(),end(), qGreater<simpleMoveT>());
 }
 
-bool
-MoveList::IsSorted() const
-{
-    if(size() < 2)
-    {
-        return true;
-    }
-    for(int i = 0; i < size() - 1; ++i)
-    {
-        if(at(i).score < at(i+1).score)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
 //////////////////////////////////////////////////////////////////////
 //  EOF: movelist.cpp
 //////////////////////////////////////////////////////////////////////

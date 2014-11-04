@@ -28,6 +28,14 @@
 namespace Guess
 {
 
+static const int Infinity    = 32000;
+static const int KingValue   = 10000;
+static const int QueenValue  =   900;
+static const int RookValue   =   500;
+static const int BishopValue =   300;
+static const int KnightValue =   300;
+static const int PawnValue   =   100;
+
 //////////////////////////////////////////////////////////////////////
 //  Position:  Constants
 
@@ -175,11 +183,11 @@ public:
     {
         return Material[p];
     }
-    unsigned char *      GetMaterial()
+    unsigned char* GetMaterial()
     {
         return Material;
     }
-    void        SetEPTarget(squareT s)
+    void SetEPTarget(squareT s)
     {
         EPTarget = s;
     }
@@ -218,6 +226,30 @@ public:
     MoveList *  GetLegalMoves()
     {
         return LegalMoves;
+    }
+    inline int
+    ScoreWhiteMaterial(void)
+    {
+        unsigned char * pieceCount = GetMaterial();
+        return  pieceCount[WQ] * QueenValue   +  pieceCount[WR] * RookValue
+                +  pieceCount[WB] * BishopValue  +  pieceCount[WN] * KnightValue
+                +  pieceCount[WP] * PawnValue;
+    }
+
+    inline int
+    ScoreBlackMaterial(void)
+    {
+        unsigned char * pieceCount = GetMaterial();
+        return  pieceCount[BQ] * QueenValue   +  pieceCount[BR] * RookValue
+                +  pieceCount[BB] * BishopValue  +  pieceCount[BN] * KnightValue
+                +  pieceCount[BP] * PawnValue;
+    }
+
+    inline int
+    ScoreMaterial(void)
+    {
+        int score = ScoreWhiteMaterial() - ScoreBlackMaterial();
+        return (GetToMove() == WHITE) ? score : -score;
     }
 
     // Methods to get the Board or piece lists -- used in game.cpp to

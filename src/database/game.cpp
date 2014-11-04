@@ -1940,6 +1940,17 @@ QString Game::ecoClassify() const
     return QString();
 }
 
+void Game::scoreMaterial(QList<int>& scores) const
+{
+    Game g = *this;
+    g.moveToStart();
+    while(g.forward())
+    {
+        int score = g.board().ScoreMaterial();
+        scores.append(score);
+    }
+}
+
 bool Game::isEcoPosition() const
 {
     quint64 key = m_currentBoard.getHashValue();

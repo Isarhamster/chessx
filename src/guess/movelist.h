@@ -73,7 +73,6 @@ public:
     int  Find(const simpleMoveT * sm) const;
     void FindBest(unsigned int index);
     void Sort(void);
-    bool IsSorted() const;
     unsigned int SelectBySquare(squareT sq);
     unsigned int SelectBySquares(squareT f1, squareT t1, squareT f2, squareT t2);
 };
