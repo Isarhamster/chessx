@@ -12,6 +12,7 @@
 
 #include <QFile>
 #include "board.h"
+#include "guess.h"
 
 QMap<quint64, QList<Square> > ecoGuessPositions;
 
@@ -76,6 +77,11 @@ void Board::setToMove(Color c)
         hashToMove();
     }
     BitBoard::setToMove(c);
+}
+
+void Board::swapToMove()
+{
+    setToMove(oppositeColor(toMove()));
 }
 
 bool Board::doIt(const Move& m, bool undo)
@@ -257,6 +263,32 @@ quint64 Board::getHashPlusSquare(const Square square) const
 quint64 Board::getHashValue() const
 {
     return m_hashValue;
+}
+
+void Board::setSquareAnnotation(QString squareAnnotation)
+{
+    m_squareAnnotation = squareAnnotation;
+}
+
+QString Board::squareAnnotation() const
+{
+    return m_squareAnnotation;
+}
+
+void Board::setArrowAnnotation(QString arrowAnnotation)
+{
+    m_arrowAnnotation = arrowAnnotation;
+}
+
+QString Board::arrowAnnotation() const
+{
+    return m_arrowAnnotation;
+}
+
+int Board::ScoreMaterial() const
+{
+    QString fen = toFen();
+    return Guess::scorePosFromFen(fen.toLatin1());
 }
 
 Board getStandardStartBoard()

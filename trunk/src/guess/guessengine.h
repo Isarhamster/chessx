@@ -189,8 +189,6 @@ private:
     inline int GetHistoryValue(simpleMoveT * sm);
 
     int Score(int alpha, int beta);
-    inline int ScoreWhiteMaterial(void);
-    inline int ScoreBlackMaterial(void);
     void ScorePawnStructure(pawnTableEntryT * pawnEntry);
     bool IsMatingScore(int score);
     bool IsGettingMatedScore(int score);
@@ -320,7 +318,6 @@ public:
     void PlayMove(simpleMoveT * move);
     void RetractMove(void);
     int Score(void);
-    int ScoreMaterial(void);
     principalVarT * GetPV(void)
     {
         return &(PV[0]);

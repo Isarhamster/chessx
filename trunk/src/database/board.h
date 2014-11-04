@@ -55,10 +55,7 @@ public:
     void setToMove(Color c);
 
     /** Change side to move to opposite of current value */
-    void swapToMove()
-    {
-        setToMove(oppositeColor(toMove()));
-    };
+    void swapToMove();
 
     /** Sets a piece on the given square **/
     void setAt(Square s, Piece p);
@@ -102,28 +99,18 @@ public:
     }
 
     /** Sets the squareAnnotation*/
-    void setSquareAnnotation(QString squareAnnotation)
-    {
-        m_squareAnnotation = squareAnnotation;
-    }
+    void setSquareAnnotation(QString squareAnnotation);
 
     /** Gets the square annotation*/
-    QString squareAnnotation() const
-    {
-        return m_squareAnnotation;
-    }
+    QString squareAnnotation() const;
 
     /** Sets the arrowAnnotation*/
-    void setArrowAnnotation(QString arrowAnnotation)
-    {
-        m_arrowAnnotation = arrowAnnotation;
-    }
+    void setArrowAnnotation(QString arrowAnnotation);
 
     /** Gets the square annotation*/
-    QString arrowAnnotation() const
-    {
-        return m_arrowAnnotation;
-    }
+    QString arrowAnnotation() const;
+
+    int ScoreMaterial() const;
 
 private:
     quint64 m_hashValue;

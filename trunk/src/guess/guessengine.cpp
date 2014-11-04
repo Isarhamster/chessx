@@ -24,13 +24,6 @@ using namespace Guess;
 
 // Evaluation constants:
 
-static const int Infinity    = 32000;
-static const int KingValue   = 10000;
-static const int QueenValue  =   900;
-static const int RookValue   =   500;
-static const int BishopValue =   300;
-static const int KnightValue =   300;
-static const int PawnValue   =   100;
 
 // EndgameValue, MiddlegameValue:
 //   If the combined material score of pieces on both sides (excluding
@@ -333,30 +326,6 @@ Engine::Score(void)
 static unsigned int nScoreCalls = 0;
 static unsigned int nScoreFull  = 0;
 
-inline int
-Engine::ScoreWhiteMaterial(void)
-{
-    unsigned char * pieceCount = Pos.GetMaterial();
-    return  pieceCount[WQ] * QueenValue   +  pieceCount[WR] * RookValue
-            +  pieceCount[WB] * BishopValue  +  pieceCount[WN] * KnightValue
-            +  pieceCount[WP] * PawnValue;
-}
-
-inline int
-Engine::ScoreBlackMaterial(void)
-{
-    unsigned char * pieceCount = Pos.GetMaterial();
-    return  pieceCount[BQ] * QueenValue   +  pieceCount[BR] * RookValue
-            +  pieceCount[BB] * BishopValue  +  pieceCount[BN] * KnightValue
-            +  pieceCount[BP] * PawnValue;
-}
-
-int
-Engine::ScoreMaterial(void)
-{
-    int score = ScoreWhiteMaterial() - ScoreBlackMaterial();
-    return (Pos.GetToMove() == WHITE) ? score : -score;
-}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::Score
@@ -384,8 +353,8 @@ Engine::Score(int alpha, int beta)
     nNonPawns[BLACK] = Pos.NumNonPawns(BLACK);
 
     // First compute material scores:
-    allscore[WHITE] = materialScore[WHITE] = ScoreWhiteMaterial();
-    allscore[BLACK] = materialScore[BLACK] = ScoreBlackMaterial();
+    allscore[WHITE] = materialScore[WHITE] = Pos.ScoreWhiteMaterial();
+    allscore[BLACK] = materialScore[BLACK] = Pos.ScoreBlackMaterial();
 
     int pieceMaterial = (materialScore[WHITE] - pieceCount[WP] * PawnValue)
                         + (materialScore[BLACK] - pieceCount[BP] * PawnValue);
@@ -2284,7 +2253,7 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
                 &&  !InCheck[Ply]  &&  !IsMatingScore(alpha)  &&  !isOnlyMove
                 &&  Pos.NumNonPawns(WHITE) > 1  &&  Pos.NumNonPawns(BLACK) > 1)
         {
-            int mscore = -ScoreMaterial();
+            int mscore = -Pos.ScoreMaterial();
             bool futile = false;
             if(depth == 1)
             {

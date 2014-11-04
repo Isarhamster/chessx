@@ -315,6 +315,9 @@ public :
     /** @return true if the move @p from @p to is already in a variation */
     bool currentNodeHasVariation(Square from, Square to) const;
 
+    /** Evaluate a list of scores for the complete game (mainline only) */
+    void scoreMaterial(QList<int>& scores) const;
+
     /** @return ECO code for the game */
     QString ecoClassify() const;
     /** @return true if current pos is in the ECO list */

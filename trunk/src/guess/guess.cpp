@@ -7,6 +7,13 @@ namespace Guess
 
 static bool s_guessAllowed = true;
 
+int scorePosFromFen(const char *fen)
+{
+    Position pos;
+    pos.ReadFromFEN(fen);
+    return pos.ScoreMaterial();
+}
+
 Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
 {
     Result r;
@@ -118,6 +125,8 @@ void setGuessAllowed(bool allow)
 {
     s_guessAllowed = allow;
 }
+
+
 
 }
 
