@@ -301,6 +301,8 @@ public slots:
     /** Update GUI after current move was changed. Update BoardView to current board,
     updates GameInfo and highlight current move in GameView. */
     void slotMoveChanged();
+    /** Move to a given move (@p ply) */
+    void slotGameMoveToPly(int ply);
     /** Show temporary message. */
     void slotStatusMessage(const QString& msg = QString());
     /** Show progress bar for open file. */
@@ -410,6 +412,7 @@ protected:
     void activateBoardViewForDbIndex(void *dbIndex);
     void closeBoardViewForDbIndex(void *dbIndex);
     int findBoardView(void *dbIndex) const;
+    void UpdateMaterial();
 signals:
     /** Re-read configuration. */
     void reconfigure();

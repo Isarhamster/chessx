@@ -149,7 +149,13 @@ bool DatabaseInfo::loadGame(int index)
     m_game.moveToId(n);
     m_undoStack->clear();
     setModified(false, Game(), "");
+
     return true;
+}
+
+void DatabaseInfo::updateMaterial()
+{
+    m_game.scoreMaterial(m_material);
 }
 
 void DatabaseInfo::dbCleanChanged(bool bClean)
@@ -178,12 +184,18 @@ void DatabaseInfo::setModified(bool modified, const Game& g, QString action)
     {
         m_undoStack->clear();
     }
+    updateMaterial();
     emit signalGameModified(!m_undoStack->isClean());
 }
 
 QUndoStack *DatabaseInfo::undoStack() const
 {
     return m_undoStack;
+}
+
+const QList<double>& DatabaseInfo::material() const
+{
+    return m_material;
 }
 
 void DatabaseInfo::restoreState(const Game& game)
@@ -256,6 +268,7 @@ bool DatabaseInfo::saveGame()
 void DatabaseInfo::replaceGame(const Game &game)
 {
     currentGame() = game;
+    updateMaterial();
     emit signalGameModified(!m_undoStack->isClean());
 }
 

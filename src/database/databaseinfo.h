@@ -82,6 +82,8 @@ public:
 
     void replaceGame(const Game& game);
 
+    void updateMaterial();
+
     /** Resizes the filter to the number of games in the database and puts
          *  all games in the filter.*/
     void resetFilter();
@@ -107,6 +109,9 @@ public:
 
     QUndoStack *undoStack() const;
 
+    QList<double> m_material;
+
+    const QList<double> &material() const;
 
 protected:
     void doLoadFile(QString filename);

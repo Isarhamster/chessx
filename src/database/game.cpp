@@ -1940,10 +1940,13 @@ QString Game::ecoClassify() const
     return QString();
 }
 
-void Game::scoreMaterial(QList<int>& scores) const
+void Game::scoreMaterial(QList<double>& scores) const
 {
     Game g = *this;
     g.moveToStart();
+    scores.clear();
+    int score = g.board().ScoreMaterial();
+    scores.append(score);
     while(g.forward())
     {
         int score = g.board().ScoreMaterial();

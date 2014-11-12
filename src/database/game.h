@@ -316,7 +316,7 @@ public :
     bool currentNodeHasVariation(Square from, Square to) const;
 
     /** Evaluate a list of scores for the complete game (mainline only) */
-    void scoreMaterial(QList<int>& scores) const;
+    void scoreMaterial(QList<double> &scores) const;
 
     /** @return ECO code for the game */
     QString ecoClassify() const;

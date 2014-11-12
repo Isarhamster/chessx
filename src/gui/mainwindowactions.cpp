@@ -340,6 +340,14 @@ void MainWindow::UpdateGameText()
     }
 }
 
+void MainWindow::UpdateMaterial()
+{
+    if(m_gameView && databaseInfo())
+    {
+        m_gameView->slotDisplayMaterial(databaseInfo()->material());
+    }
+}
+
 void MainWindow::slotToggleStayOnTop()
 {
 #ifdef Q_OS_WIN
@@ -753,6 +761,10 @@ void MainWindow::moveChanged()
 
     // Highlight current move
     m_gameView->showMove(m);
+    if (g.isMainline())
+    {
+        m_gameView->slotDisplayPly(g.ply());
+    }
 
     slotSearchTree();
     emit boardChange(g.board());
@@ -988,6 +1000,15 @@ void MainWindow::slotGameEditTags()
     }
 }
 
+void MainWindow::slotGameMoveToPly(int ply)
+{
+    if (!gameMode())
+    {
+        game().moveToStart();
+        game().moveByPly(ply);
+    }
+}
+
 void MainWindow::slotGameModify(const EditAction& action)
 {
     if((action.type() != EditAction::CopyHtml) &&
@@ -1136,6 +1157,7 @@ void MainWindow::slotGetActiveGame(const Game** g)
 
 void MainWindow::slotGameChanged()
 {
+    UpdateMaterial();
     UpdateGameText();
     UpdateGameTitle();
     moveChanged();

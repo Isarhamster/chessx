@@ -10,6 +10,7 @@
 #include "analysiswidget.h"
 #include "boardsetup.h"
 #include "boardview.h"
+#include "chartwidget.h"
 #include "chessbrowser.h"
 #include "commentdialog.h"
 #include "copydialog.h"
@@ -160,9 +161,11 @@ MainWindow::MainWindow() : QMainWindow(),
         annotatedTime->display("1:00:00");
         if(i == 0)
         {
-            QWidget* spacer = new QWidget();
-            spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-            m_gameToolBar->addWidget(spacer);
+            ChartWidget* chartWidget = new ChartWidget(m_gameToolBar);
+            chartWidget->setObjectName("ChartWidget");
+            chartWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            connect(chartWidget, SIGNAL(halfMoveRequested(int)), this, SLOT(slotGameMoveToPly(int)));
+            m_gameToolBar->addWidget(chartWidget);
         }
     }
 

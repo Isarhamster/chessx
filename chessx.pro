@@ -175,7 +175,8 @@ HEADERS += src/database/board.h \
     src/database/ficsclient.h \
     src/gui/tagdialog.h \
     src/gui/style.h \
-    src/gui/recipientaddressdialog.h
+    src/gui/recipientaddressdialog.h \
+    src/gui/chartwidget.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -291,7 +292,8 @@ SOURCES += src/database/board.cpp \
     src/database/ficsclient.cpp \
     src/gui/tagdialog.cpp \
     src/gui/style.cpp \
-    src/gui/recipientaddressdialog.cpp
+    src/gui/recipientaddressdialog.cpp \
+    src/gui/chartwidget.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
