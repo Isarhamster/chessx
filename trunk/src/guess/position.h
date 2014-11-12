@@ -249,7 +249,7 @@ public:
     ScoreMaterial(void)
     {
         int score = ScoreWhiteMaterial() - ScoreBlackMaterial();
-        return (GetToMove() == WHITE) ? score : -score;
+        return score;
     }
 
     // Methods to get the Board or piece lists -- used in game.cpp to

@@ -7,6 +7,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "chartwidget.h"
 #include "chessbrowser.h"
 #include "settings.h"
 #include "game.h"
@@ -269,6 +270,32 @@ void ChessBrowser::slotDisplayTime(const QString& text, Color color)
         if(clock)
         {
             clock->display("");
+        }
+    }
+}
+
+void ChessBrowser::slotDisplayMaterial(const QList<double>& material)
+{
+    if(toolBar)
+    {
+        QString objectName = QString("ChartWidget");
+        ChartWidget* chartWidget = toolBar->findChild<ChartWidget*>(objectName);
+        if (chartWidget)
+        {
+            chartWidget->setValues(material);
+        }
+    }
+}
+
+void ChessBrowser::slotDisplayPly(int ply)
+{
+    if(toolBar)
+    {
+        QString objectName = QString("ChartWidget");
+        ChartWidget* chartWidget = toolBar->findChild<ChartWidget*>(objectName);
+        if (chartWidget)
+        {
+            chartWidget->setPly(ply);
         }
     }
 }
