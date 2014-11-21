@@ -219,6 +219,9 @@ public slots:
     /** Save game, replacing old one if it is edited, appending if it is new
         @return false if the saving was cancelled, true if changes are to be saved or discarded. */
     bool slotGameSave();
+    /** Save game, replacing old one if it is edited, appending if it is new
+        @return false if the saving was cancelled, true if changes are to be saved or discarded. */
+    void slotGameSaveOnly();
     /** Start a dialog which edits the games tags */
     void slotGameEditTags();
     /** Add variation to current position. */
@@ -482,6 +485,8 @@ private:
     /** Query User and save game if game was modified
         @return true if the next action shall be performed */
     bool QuerySaveGame(DatabaseInfo* dbInfo = 0);
+    /** Save game without query into current database */
+    void SimpleSaveGame();
     /** Save game without query */
     void saveGame(DatabaseInfo *dbInfo);
     /** Load next game without query */
