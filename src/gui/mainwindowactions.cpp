@@ -991,6 +991,19 @@ bool MainWindow::slotGameSave()
     return QuerySaveGame();
 }
 
+void MainWindow::slotGameSaveOnly()
+{
+    if(database()->isReadOnly())
+    {
+        MessageDialog::error(tr("This database is read only."));
+        databaseInfo()->setModified(false, Game(), ""); // Do not notify more than once
+    }
+    else
+    {
+        SimpleSaveGame();
+    }
+}
+
 void MainWindow::slotGameEditTags()
 {
     TagDialog dlg(this);

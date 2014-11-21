@@ -1278,6 +1278,9 @@ void MainWindow::setupActions()
     QAction* saveAction = createAction(tr("&Save..."), SLOT(slotGameSave()), QKeySequence::Save);
     connect(this, SIGNAL(signalGameModified(bool)), saveAction, SLOT(setEnabled(bool)));
     gameMenu->addAction(saveAction);
+    QAction* saveOnlyAction = createAction(tr("Save only"), SLOT(slotGameSaveOnly()));
+    connect(this, SIGNAL(signalGameModified(bool)), saveOnlyAction, SLOT(setEnabled(bool)));
+    gameMenu->addAction(saveOnlyAction);
 
     gameMenu->addAction(createAction(tr("Edit tags..."), SLOT(slotGameEditTags())));
 
@@ -1541,6 +1544,15 @@ bool MainWindow::QuerySaveGame(DatabaseInfo *dbInfo)
         return (n != QDialog::Rejected);
     }
     return true;
+}
+
+void MainWindow::SimpleSaveGame()
+{
+    DatabaseInfo *dbInfo = databaseInfo();
+    if(dbInfo && dbInfo->gameNeedsSaving())
+    {
+        saveGame(dbInfo);
+    }
 }
 
 void MainWindow::restoreRecentFiles()
