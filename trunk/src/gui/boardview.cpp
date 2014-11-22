@@ -450,17 +450,17 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
         return;
     }
 
-    if(event->modifiers() & Qt::ShiftModifier)
-    {
-        return;
-    }
-
     if(m_dragged != Empty)
     {
         QRect old = QRect(m_dragPoint, m_theme.size());
         m_dragPoint = event->pos() - m_theme.pieceCenter();
         update(old);
         update(QRect(m_dragPoint, m_theme.size()));
+        return;
+    }
+
+    if(event->modifiers() & Qt::ShiftModifier)
+    {
         return;
     }
 
@@ -518,8 +518,10 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         {
             if(s != InvalidSquare)
             {
-                emit clicked(s, button, mapToGlobal(event->pos()), InvalidSquare);
+                Square from = squareAt(m_dragStart);
+                emit clicked(s, button, mapToGlobal(event->pos()), from);
             }
+            m_dragged = Empty;
             emit moveFinished();
             return;
         }
