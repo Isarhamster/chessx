@@ -554,6 +554,7 @@ private:
     Board m_AutoInsertLastBoard;
     Square m_annotationSquare;
     Square m_annotationSquareFrom;
+    QChar m_lastColor;
     QAction* m_match;
     QAction* m_training;
     QAction* m_autoRespond;

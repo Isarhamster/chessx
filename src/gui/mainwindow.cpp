@@ -77,6 +77,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_output(0),
     m_currentFrom(InvalidSquare),
     m_currentTo(InvalidSquare),
+    m_lastColor('G'),
     m_machineHasToMove(false),
     m_bInDrag(false),
     m_gameMode(false)
