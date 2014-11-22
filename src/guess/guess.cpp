@@ -30,6 +30,8 @@ Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
     Position pos;
     pos.ReadFromFEN(fen);
 
+    if (!pos.IsLegal()) return r;
+
     pos.GenerateMoves(&mlist);
     mlist.SelectBySquare(sq);
     if(mlist.size() == 0)
