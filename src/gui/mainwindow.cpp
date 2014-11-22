@@ -1277,7 +1277,6 @@ void MainWindow::setupActions()
     loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
     loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
     QAction* saveAction = createAction(tr("&Save..."), SLOT(slotGameSave()), QKeySequence::Save);
-    connect(this, SIGNAL(signalGameModified(bool)), saveAction, SLOT(setEnabled(bool)));
     gameMenu->addAction(saveAction);
     QAction* saveOnlyAction = createAction(tr("Save only"), SLOT(slotGameSaveOnly()));
     connect(this, SIGNAL(signalGameModified(bool)), saveOnlyAction, SLOT(setEnabled(bool)));
