@@ -2078,6 +2078,7 @@ void MainWindow::slotActivateBoardView(int n)
     setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
     m_gameList->setFilter(databaseInfo()->filter());
     slotFilterChanged();
+    m_undoGroup.setActiveStack(databaseInfo()->undoStack());
     emit databaseChanged(databaseInfo());
 }
 
