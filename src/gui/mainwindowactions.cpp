@@ -640,6 +640,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                         Move m = game().move();
                         m_currentFrom = m.from();
                         m_currentTo = m.to();
+                        moveChanged(); // The move's currents where set after forward(), thus repair effects
                     }
                     else
                     {
@@ -1301,7 +1302,7 @@ void MainWindow::slotGameRemoveVariations()
 
 void MainWindow::slotToggleTraining()
 {
-    slotGameChanged();
+    UpdateGameText();
 }
 
 void MainWindow::slotToggleAutoRespond()
@@ -1371,7 +1372,6 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         m_currentFrom = m.from();
                         m_currentTo = m.to();
                         game().addMove(m);
-                        slotGameChanged();
                         m_machineHasToMove = false;
                     }
                 }
@@ -1815,7 +1815,6 @@ void MainWindow::slotSearchTreeMove(const QModelIndex& index)
                     game().forward();
                 }
             }
-            slotGameChanged();
         }
         b.doMove(m);
     }
