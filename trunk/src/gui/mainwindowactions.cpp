@@ -185,7 +185,23 @@ void MainWindow::slotFileClose()
         // Don't remove Clipboard
         if(databaseInfo()->IsLoaded())
         {
-            if(QuerySaveDatabase())
+            if (database()->name() == "FICS")
+            {
+                m_ficsClient->exitSession();
+                closeBoardViewForDbIndex(databaseInfo());
+
+                m_databaseList->setFileClose("FICS", 0);
+                emit signalDatabaseOpenClose();
+
+                if (m_currentDatabase != 0)
+                {
+                    m_currentDatabase = 0; // Switch to clipboard is always safe
+                    activateBoardViewForDbIndex(databaseInfo());
+                    m_databaseList->setFileCurrent("Clipboard");
+                    slotDatabaseChanged();
+                }
+            }
+            else if(QuerySaveDatabase())
             {
                 closeBoardViewForDbIndex(databaseInfo());
 
@@ -202,7 +218,7 @@ void MainWindow::slotFileClose()
                 {
                     m_currentDatabase = 0; // Switch to clipboard is always safe
                     activateBoardViewForDbIndex(databaseInfo());
-                    m_databaseList->setFileCurrent(QString());
+                    m_databaseList->setFileCurrent("Clipboard");
                     slotDatabaseChanged();
                 }
             }
@@ -220,6 +236,15 @@ void MainWindow::slotFileCloseIndex(int n)
     {
         if(m_databases[n]->IsLoaded())
         {
+            if (database()->name() == "FICS")
+            {
+                m_ficsClient->exitSession();
+                closeBoardViewForDbIndex(m_databases[n]);
+                m_databaseList->setFileClose("FICS", 0);
+                emit signalDatabaseOpenClose();
+                return;
+            }
+
             if (!QuerySaveGame(m_databases[n]))
             {
                 return;
@@ -561,6 +586,29 @@ void MainWindow::slotEditBoard()
     if(dlg.exec() == QDialog::Accepted)
     {
         game().setStartingBoard(dlg.board(),tr("Set starting board"));
+    }
+}
+
+void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
+{
+    ActivateDatabase("FICS");
+    if ((cmd == FicsClient::BLKCMD_EXAMINE) ||
+       (cmd == FicsClient::BLKCMD_OBSERVE))
+    {
+        Board b;
+        if (b.from64Char(s))
+        {
+            QStringList l = s.split(' ');
+            QString nameWhite = l[C64_NAME_WHITE];
+            QString nameBlack = l[C64_NAME_BLACK];
+            game().setTag(TagNameWhite, nameWhite);
+            game().setTag(TagNameBlack, nameBlack);
+            game().setStartingBoard(b,tr("Set starting board"));
+        }
+    }
+    else
+    {
+        game().addMoveFrom64Char(s);
     }
 }
 
@@ -1442,7 +1490,7 @@ void MainWindow::slotFilterChanged()
         m_gameList->selectGame(gameIndex());
         m_gameList->setFocus();
     }
-    int count = databaseInfo()->filter()->count();
+    int count = databaseInfo()->filter() ? databaseInfo()->filter()->count() : 0;
     QString f = count == (int)database()->count() ? tr("all") : QString::number(count);
     m_statusFilter->setText(QString(" %1: %2/%3 ").arg(databaseName())
                             .arg(f).arg(database()->count()));
@@ -1516,9 +1564,9 @@ void MainWindow::copyGame(int target, int index)
         Game g;
         if(database()->loadGame(index, g))
         {
-            QString fileName = m_databases[target]->filePath();
+            QString fileName = m_databases[target]->database()->name();
             QString msg;
-            msg = tr("Append game %1 to %2.").arg(index + 1).arg(fileName.isEmpty() ? tr("Clipboard") : fileName);
+            msg = tr("Append game %1 to %2.").arg(index + 1).arg(fileName);
             slotStatusMessage(msg);
 
             // The database is open and accessible
@@ -1552,7 +1600,7 @@ void MainWindow::copyGame(QString fileName, int index)
     if(database()->loadGame(index, g))
     {
         QString msg;
-        msg = tr("Append game %1 to %2.").arg(index + 1).arg(fileName.isEmpty() ? "Clipboard" : fileName);
+        msg = tr("Append game %1 to %2.").arg(index + 1).arg(fileName);
         slotStatusMessage(msg);
 
         writer.append(fileName, g);
@@ -1571,7 +1619,7 @@ void MainWindow::copyDatabase(QString target, QString src)
         if(pDestDBInfo && pSrcDB && pDestDB && (pSrcDB != pDestDB))
         {
             QString msg;
-            msg = tr("Append games from %1 to %2.").arg(pSrcDB->name()).arg(target.isEmpty() ? "Clipboard" : pDestDB->name());
+            msg = tr("Append games from %1 to %2.").arg(pSrcDB->name()).arg(pDestDB->name());
             slotStatusMessage(msg);
             for(int i = 0; i < (int)pSrcDB->count(); ++i)
             {
@@ -2235,7 +2283,7 @@ void MainWindow::slotSetSliderText(int interval)
 void MainWindow::slotUpdateOpeningTreeWidget()
 {
     QStringList files; // List of all open files excluding ClipBoard
-    for(int i = 1; i < m_databases.count(); i++)
+    for(int i = 2; i < m_databases.count(); i++)
     {
         QString displayName = m_databases[i]->filePath();
         files << displayName;
@@ -2292,14 +2340,4 @@ void MainWindow::enterGameMode(bool gameMode)
         m_openingTreeWidget->cancel();
     }
     setGameMode(gameMode);
-#ifdef FICS_SUPPORT
-    if (gameMode)
-    {
-        m_ficsClient->startSession();
-    }
-    else
-    {
-        m_ficsClient->exitSession();
-    }
-#endif
 }

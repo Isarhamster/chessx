@@ -33,6 +33,7 @@ class EcoThread;
 class EditAction;
 class EventListWidget;
 class FicsClient;
+class FicsConsole;
 class Game;
 class GameList;
 class OpeningTreeWidget;
@@ -350,6 +351,8 @@ public slots:
     void slotBookBuildError(QString path);
     /** Merge the clipboard into the current game */
     void slotEditMergePGN();
+    /** Handle a new board from a FICS request */
+    void HandleFicsBoardRequest(int, QString);
 protected slots:
     /** Update recent files menu */
     void updateMenuDatabases();
@@ -416,6 +419,7 @@ protected:
     void closeBoardViewForDbIndex(void *dbIndex);
     int findBoardView(void *dbIndex) const;
     void UpdateMaterial();
+    bool ActivateDatabase(QString fname);
 signals:
     /** Re-read configuration. */
     void reconfigure();
@@ -567,6 +571,7 @@ private:
     bool m_bInDrag;
     bool m_gameMode;
     FicsClient* m_ficsClient;
+    FicsConsole* m_ficsConsole;
 };
 
 

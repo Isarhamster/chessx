@@ -27,15 +27,11 @@ signals:
 
 public slots:
     void SlotReadData();
+    void SlotDisconnected();
 
 protected: //methods
     virtual void startSession() = 0;
-    virtual void sendAccept() = 0;
-    virtual void sendHistory() = 0;
-    virtual void sendPlayRequest(int gameId) = 0;
     virtual void sendCommand(QString s) = 0;
-    virtual void sendObserve(int gameId) = 0;
-    virtual void sendUnobserve(int gameId) = 0;
 
 protected: //callback
     virtual void OnSessionStarted()=0;

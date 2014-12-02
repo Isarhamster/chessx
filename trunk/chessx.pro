@@ -45,7 +45,8 @@ FORMS += \
     src/gui/dlgsavebook.ui \
     src/gui/boardsearchdialog.ui \
     src/gui/tagdialog.ui \
-    src/gui/recipientaddressdialog.ui
+    src/gui/recipientaddressdialog.ui \
+    src/gui/ficsconsole.ui
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -176,7 +177,10 @@ HEADERS += src/database/board.h \
     src/gui/tagdialog.h \
     src/gui/style.h \
     src/gui/recipientaddressdialog.h \
-    src/gui/chartwidget.h
+    src/gui/chartwidget.h \
+    src/gui/ficsconsole.h \
+    src/database/clipboarddatabase.h \
+    src/database/ficsdatabase.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -293,7 +297,10 @@ SOURCES += src/database/board.cpp \
     src/gui/tagdialog.cpp \
     src/gui/style.cpp \
     src/gui/recipientaddressdialog.cpp \
-    src/gui/chartwidget.cpp
+    src/gui/chartwidget.cpp \
+    src/gui/ficsconsole.cpp \
+    src/database/clipboarddatabase.cpp \
+    src/database/ficsdatabase.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

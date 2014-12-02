@@ -6,7 +6,8 @@
 #include "settings.h"
 
 FicsClient::FicsClient(QObject *parent):
-    TelnetClient(parent)
+    TelnetClient(parent),
+    m_cmd(BLKCMD_NULL)
 {
 }
 
@@ -15,44 +16,17 @@ void FicsClient::startSession()
     QString account = AppSettings->getValue("/FICS/userName").toString();
     QString passwd = AppSettings->getValue("/FICS/passWord").toString();
     connectHost("freechess.org", 5000, account, passwd);
-}
-
-void FicsClient::sendAccept()
-{
-    sendFicsCommand("accept");
-}
-
-void FicsClient::sendHistory()
-{
-    sendFicsCommand("history");
-}
-
-void FicsClient::sendPlayRequest(int gameId)
-{
-    QString cmd = QString("play %1").arg(gameId);
-    sendFicsCommand(cmd);
+    m_cmd = BLKCMD_NULL;
 }
 
 void FicsClient::sendCommand(QString s)
 {
-    sendFicsCommand(s);
-}
-
-void FicsClient::sendObserve(int gameId)
-{
-    QString cmd = QString("observe %1").arg(gameId);
-    sendFicsCommand(cmd);
-}
-
-void FicsClient::sendUnobserve(int gameId)
-{
-    QString cmd = QString("unobserve %1").arg(gameId);
-    sendFicsCommand(cmd);
+    sendFicsCommand(s+"\r");
 }
 
 void FicsClient::sendFicsCommand(QString s)
 {
-    send(s);
+    sendFicsCommandWithId(s,99);
 }
 
 void FicsClient::sendFicsCommandWithId(QString s, int id)
@@ -63,36 +37,56 @@ void FicsClient::sendFicsCommandWithId(QString s, int id)
 
 void FicsClient::OnSessionStarted()
 {
-    sendFicsCommand("set seek 0");
-    sendFicsCommand("set style 12");
-    sendFicsCommand("set shout 0");
-    sendFicsCommand("set cshout 0");
-    sendFicsCommand("set gin 0");
-    sendFicsCommand("set pin 0");
-    sendFicsCommand("set mailmess 1");
-    sendFicsCommand("- channel 1");
-    sendFicsCommand("- channel 2");
-    sendFicsCommand("- channel 50");
-    sendFicsCommand("iset block 1");
-    sendFicsCommandWithId("history",1);
-    sendFicsCommandWithId("games",2);
+    send("set seek 0");
+    send("set style 12");
+    send("set shout 0");
+    send("set cshout 0");
+    send("set gin 0");
+    send("set pin 0");
+    send("set mailmess 1");
+    send("- channel 1");
+    send("- channel 2");
+    send("- channel 50");
+    send("iset block 1");
+    emit receivedMessage(0,"Connected to FICS");
 }
 
 void FicsClient::OnReceiveTelnetMessage(QString s)
 {
-    if (s.startsWith(StartReply))
-    {
-        switch (s[3].toLatin1())
-        {
-        case BLKCMD_HISTORY:
-            s.remove(5);
-            emit addNewHistoryEntry(s);
-            break;
+    int start = s.indexOf(StartReply);
+    int end = s.indexOf(EndReply);
 
-        case BLKCMD_GAMES:
-            s.remove(5);
-            emit addNewGameEntry(s);
-            break;
+    if (end>=0)
+    {
+        s.remove(EndReply);
+    }
+
+    if (start>=0)
+    {
+        s.remove(StartReply);
+        QStringList l = s.split(Separator);
+        m_cmd = l[1].toInt();
+        emit commandStarted(m_cmd);
+    }
+    else
+    {
+        if (!s.isEmpty())
+        {
+            if (s.startsWith("<12>"))
+            {
+                s.remove("<12>");
+                emit receivedBoard(m_cmd, s.trimmed());
+            }
+            else if(m_cmd != BLKCMD_NULL)
+            {
+                emit receivedMessage(m_cmd,s);
+            }
         }
+    }
+
+    if (end >= 0)
+    {
+        emit commandDone(m_cmd);
+        m_cmd = BLKCMD_NULL;
     }
 }

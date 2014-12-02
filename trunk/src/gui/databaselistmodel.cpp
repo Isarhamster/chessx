@@ -86,10 +86,6 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_NAME:
             {
                 QString s = m_databases.at(index.row()).m_name;
-                if(s.isEmpty())
-                {
-                    return tr("Clipboard");
-                }
                 return s;
             }
             case DBLV_SIZE:
@@ -144,8 +140,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_FAVORITE:
             {
                 bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
-                bool bIsClipBoard = m_databases.at(index.row()).m_name.isEmpty();
-                return QString(bIsFavorite ? tr("Favorite") : bIsClipBoard ? tr("Clipboard") : "");
+                return QString(bIsFavorite ? tr("Favorite") : "");
             }
             case DBLV_PATH:
             {
@@ -168,10 +163,6 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_NAME:
             {
                 QString s = m_databases.at(index.row()).m_name;
-                if(s.isEmpty())
-                {
-                    return tr("Clipboard");
-                }
                 s[0] = s[0].toUpper();
                 return s;
             }
@@ -205,8 +196,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_FAVORITE:
             {
                 bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
-                bool bIsClipBoard = m_databases.at(index.row()).m_name.isEmpty();
-                return QString(bIsFavorite ? "Favorite" : bIsClipBoard ? "Clipboard" : "");
+                return QString(bIsFavorite ? "Favorite" : "");
             }
             case DBLV_PATH:
             {
@@ -229,10 +219,6 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_NAME:
             {
                 QString s = m_databases.at(index.row()).m_name;
-                if(s.isEmpty())
-                {
-                    return "Clipboard";
-                }
                 s[0] = s[0].toUpper();
                 return s;
             }
