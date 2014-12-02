@@ -236,7 +236,7 @@ void MainWindow::slotFileCloseIndex(int n)
     {
         if(m_databases[n]->IsLoaded())
         {
-            if (database()->name() == "FICS")
+            if (m_databases[n]->database()->name() == "FICS")
             {
                 m_ficsClient->exitSession();
                 closeBoardViewForDbIndex(m_databases[n]);
