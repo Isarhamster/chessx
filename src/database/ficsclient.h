@@ -215,16 +215,13 @@ public:
     };
 
     virtual void startSession();
-    virtual void sendAccept();
-    virtual void sendHistory();
-    virtual void sendPlayRequest(int gameId);
     virtual void sendCommand(QString s);
-    virtual void sendObserve(int gameId);
-    virtual void sendUnobserve(int gameId);
 
 signals:
-    void addNewGameEntry(QString s);
-    void addNewHistoryEntry(QString s);
+    void receivedMessage(int cmd, QString s);
+    void receivedBoard(int cmd, QString s);
+    void commandStarted(int cmd);
+    void commandDone(int cmd);
 
 protected:
     void sendFicsCommand(QString s);
@@ -232,6 +229,7 @@ protected:
     virtual void OnSessionStarted();
     virtual void OnReceiveTelnetMessage(QString);
 
+    int m_cmd;
 };
 
 #endif // FICSCLIENT_H

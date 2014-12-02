@@ -34,7 +34,7 @@ public:
     void run();
     enum {NewGame = -1};
     /** Create information for clipboard database */
-    DatabaseInfo(QUndoGroup *undoGroup);
+    DatabaseInfo(QUndoGroup *undoGroup, Database* db);
     /** Create information for file database */
     DatabaseInfo(QUndoGroup *undoGroup, const QString& filename);
     /** Close database and free memory */

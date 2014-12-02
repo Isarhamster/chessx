@@ -18,9 +18,10 @@
 #include "polyglotdatabase.h"
 #include "settings.h"
 
-DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup)
+DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, Database *db)
 {
-    m_database = new MemoryDatabase;
+    m_database = db;
+    m_filename = db->name();
     m_filter = new Filter(m_database);
     connect(m_filter, SIGNAL(searchProgress(int)), SIGNAL(searchProgress(int)));
     connect(m_filter, SIGNAL(searchFinished()), SIGNAL(searchFinished()));
@@ -141,7 +142,7 @@ bool DatabaseInfo::loadGame(int index)
         return false;
     }
     m_index = index;
-    int n = m_filter->gamePosition(index) - 1;
+    int n = m_filter ? m_filter->gamePosition(index) - 1 : 0;
     if(n < 0)
     {
         n = 0;
@@ -299,7 +300,7 @@ bool DatabaseInfo::IsPGN() const
         return true;
     }
     QFileInfo fi(m_filename);
-    return (fi.suffix() == "pgn");
+    return (fi.suffix().toLower() == "pgn");
 }
 
 bool DatabaseInfo::IsPolyglotBook() const
@@ -315,7 +316,7 @@ bool DatabaseInfo::IsBook() const
 bool DatabaseInfo::IsPolyglotBook(QString s)
 {
     QFileInfo fi(s);
-    return (fi.suffix() == "bin");
+    return (fi.suffix().toLower() == "bin");
 }
 
 bool DatabaseInfo::IsBook(QString s)
