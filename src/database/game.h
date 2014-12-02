@@ -103,8 +103,6 @@ public :
     QString toFen() const;
     /** @return current position in human readable FEN */
     QString toHumanFen() const;
-    /** @return whether the current position is in the mainline */
-    bool isMainline(MoveId moveId = CURRENT_MOVE) const;
     /** @return start position of game */
     Board startingBoard() const;
     /** @return game result */
@@ -169,6 +167,8 @@ public :
     // **** tree information methods *****
     /** @return number of siblings of current node */
     int numberOfSiblings(MoveId moveId = CURRENT_MOVE) const;
+    /** @return whether the current position is in the mainline */
+    bool isMainline(MoveId moveId = CURRENT_MOVE) const;
     /** @return whether the game is currently at the start position */
     bool atLineStart(MoveId moveId = CURRENT_MOVE) const;
     bool atGameStart(MoveId moveId = CURRENT_MOVE) const;
@@ -236,6 +236,8 @@ public :
     MoveId dbAddMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Adds a move at the current position, returns the move id of the added move */
     MoveId addMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+    /** Adds a move at the current position, returns the move id of the added move */
+    MoveId addMoveFrom64Char(const QString& qcharboard);
     /** Replace the move after the current position */
     bool replaceMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet(), bool bReplace = true);
     /** Replace the move after the current position */

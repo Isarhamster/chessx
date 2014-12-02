@@ -12,9 +12,9 @@
 #include <QFile>
 #include "game.h"
 
-const QRegExp Game::emt("\\[%emt\\s*(\\d:\\d\\d:\\d\\d)\\]");
-const QRegExp Game::clk("\\[%clk\\s*(\\d:\\d\\d:\\d\\d)\\]");
-const QRegExp Game::egt("\\[%egt\\s*(\\d:\\d\\d:\\d\\d)\\]");
+const QRegExp Game::emt("\\[%emt\\s*(\\d:\\d\\d?:\\d\\d)\\]");
+const QRegExp Game::clk("\\[%clk\\s*(\\d:\\d\\d?:\\d\\d)\\]");
+const QRegExp Game::egt("\\[%egt\\s*(\\d:\\d\\d?:\\d\\d)\\]");
 const QRegExp Game::csl("\\[%csl\\s*([^\\]]*)\\]");
 const QRegExp Game::cal("\\[%cal\\s*([^\\]]*)\\]");
 
@@ -113,6 +113,28 @@ MoveId Game::addMove(const QString& sanMove, const QString& annotation, NagSet n
         return addMove(move, annotation, nags);
     }
     return NO_MOVE;
+}
+
+MoveId Game::addMoveFrom64Char(const QString &qcharboard)
+{
+    QStringList l = qcharboard.split(' ');
+    if (l.size() < 30) return NO_MOVE;
+    QString s=l[C64_LAST_MOVE];
+    s.remove(QRegExp("./"));
+    QString t = l[C64_ELAPSED_TIME_LAST_MOVE];
+    t.remove("(");
+    t.remove(")");
+    QStringList tl = t.split(':');
+    if (tl.size()>=2)
+    {
+        QString emt = QString("[%emt 0:%1:%2]").arg(tl[0],-2,'0').arg(tl[1],-2,'0');
+        return addMove(s,emt);
+    }
+    else
+    {
+        return addMove(s);
+    }
+
 }
 
 bool Game::mergeNode(Game& otherGame)
