@@ -828,19 +828,17 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
             connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)));
             connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)));
             downloadManager->doDownload(url);
-            return;
+        }
+        else
+        {
+            openDatabaseArchive(url.toLocalFile(), utf8);
         }
     }
-
     else if (fname == "FICS")
     {
         m_ficsClient->startSession();
         m_databaseList->addFileOpen("FICS", false);
         ActivateDatabase("FICS");
-    }
-    else
-    {
-        openDatabaseArchive(url.toLocalFile(), utf8);
     }
 }
 
