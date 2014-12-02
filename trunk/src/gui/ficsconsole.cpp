@@ -31,6 +31,12 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     connect(ui->listGames, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(HandleObserveRequest(QListWidgetItem*)));
     connect(ui->listHistory, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(HandleExamineRequest(QListWidgetItem*)));
     connect(ui->listPlayers, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(HandleHistoryRequest(QListWidgetItem*)));
+
+#ifndef FICS_DEBUG
+    ui->line->setVisible(false);
+    ui->textOut->setEnabled(false);
+    ui->textOut->setVisible(false);
+#endif
 }
 
 FicsConsole::~FicsConsole()
