@@ -172,25 +172,28 @@ void GameList::selectNextGame()
 void GameList::setFilter(Filter* filter)
 {
     setSortingEnabled(false);
-    if (filter->count() > 4096)
+    if (filter)
     {
-        setModel(m_model);
-        delete sortModel;
-        sortModel = 0;
-    }
-    else
-    {
-        if (!sortModel)
+        if (filter->count() > 4096)
         {
-            sortModel = new GameListSortModel(this);
-            sortModel->setSourceModel(m_model);
-            sortModel->setDynamicSortFilter(false);
+            setModel(m_model);
+            delete sortModel;
+            sortModel = 0;
         }
-        setModel(sortModel);
-    }
+        else
+        {
+            if (!sortModel)
+            {
+                sortModel = new GameListSortModel(this);
+                sortModel->setSourceModel(m_model);
+                sortModel->setDynamicSortFilter(false);
+            }
+            setModel(sortModel);
+        }
 
-    m_model->setFilter(filter);
-    setSortingEnabled(!!sortModel);
+        m_model->setFilter(filter);
+        setSortingEnabled(!!sortModel);
+    }
     emit raiseRequest();
 }
 
