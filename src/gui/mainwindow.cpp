@@ -375,6 +375,9 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Randomize */
     srand(time(0));
 
+    /* Append the FICS console to the view menu */
+    m_menuView->addAction(ficsConsoleDock->toggleViewAction());
+
     /* Restoring layouts */
     if(!AppSettings->layout(this))
     {
