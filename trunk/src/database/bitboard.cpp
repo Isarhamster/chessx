@@ -2582,3 +2582,57 @@ QString BitBoard::moveToFullSan(const Move &move) const
     QString dots = toMove() == White ? "." : "...";
     return QString("%1%2%3").arg(m_moveNumber).arg(dots).arg(moveToSan(move));
 }
+
+//a charboard is a 64 length board that looks something like this:
+//-----B----p------p---k-pq---N---r-----P-------P--P----K---Q-----
+//dashes: empty space
+bool BitBoard::from64Char(const QString& qcharboard)
+{
+    QStringList l = qcharboard.split(' ');
+    if (l.size() < 30) return false;
+    int n = 7;
+    for (int i=C64_ROW8; i<=C64_ROW1; ++i,--n)
+    {
+        QString s = l[i];
+        for (int j=7;j>=0;--j)
+        {
+            QChar c = s[j];
+            Square sq = n*8+j;
+            switch (c.toLatin1())
+            {
+            case 'p': setAt(sq, BlackPawn);    break;
+            case 'n': setAt(sq, BlackKnight);  break;
+            case 'b': setAt(sq, BlackBishop);  break;
+            case 'r': setAt(sq, BlackRook);    break;
+            case 'q': setAt(sq, BlackQueen);   break;
+            case 'k': setAt(sq, BlackKing);    break;
+
+            case 'P': setAt(sq, WhitePawn);    break;
+            case 'N': setAt(sq, WhiteKnight);  break;
+            case 'B': setAt(sq, WhiteBishop);  break;
+            case 'R': setAt(sq, WhiteRook);    break;
+            case 'Q': setAt(sq, WhiteQueen);   break;
+            case 'K': setAt(sq, WhiteKing);    break;
+            default: removeAt(sq); break;
+            }
+        }
+    }
+
+    if (l[C64_COLOR_TO_MOVE]=="W")
+    {
+        setToMove(White);
+    }
+    else if (l[C64_COLOR_TO_MOVE]=="B")
+    {
+        setToMove(Black);
+    }
+
+    if (l[C64_CASTLE_W_00].toInt()) setCastleShort(White);
+    if (l[C64_CASTLE_W_000].toInt()) setCastleLong(White);
+    if (l[C64_CASTLE_B_00].toInt()) setCastleShort(Black);
+    if (l[C64_CASTLE_B_000].toInt()) setCastleLong(Black);
+
+    setMoveNumber(l[C64_NEXT_MOVE_NUMBER].toInt());
+
+    return true;
+}

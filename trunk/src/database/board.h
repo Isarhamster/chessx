@@ -48,6 +48,9 @@ public:
     /** Sets position from FEN, returns true if FEN was loaded */
     bool fromFen(const QString& fen);
 
+    /** From a FICS representation of a board */
+    bool from64Char(const QString &qcharboard);
+
     /** Clear board of all pieces and other state */
     void clear();
 

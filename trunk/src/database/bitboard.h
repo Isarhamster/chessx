@@ -57,6 +57,8 @@ public:
     bool fromFen(const QString& fen);
     /** Set En Passant Square */
     void setEnPassantSquare(const Square s);
+    /** From a FICS representation of a board */
+    bool from64Char(const QString &qcharboard);
     /** Remove En Passant privilege */
     void clearEnPassantSquare();
 
@@ -186,6 +188,40 @@ private:
     unsigned int m_moveNumber;             // Move number in game (incremented after each black move)
     uchar m_pawnCount[2];          // Number of pawns for each side
     uchar m_pieceCount[2];         // Number of pieces INCLUDING pawns for each side
+};
+
+enum Char64Position
+{
+    C64_ROW8,
+    C64_ROW7,
+    C64_ROW6,
+    C64_ROW5,
+    C64_ROW4,
+    C64_ROW3,
+    C64_ROW2,
+    C64_ROW1,
+    C64_COLOR_TO_MOVE,
+    C64_COL_DOUBLE_PAWN_PUSH,
+    C64_CASTLE_W_00,
+    C64_CASTLE_W_000,
+    C64_CASTLE_B_00,
+    C64_CASTLE_B_000,
+    C64_PLY_50_MOVE,
+    C64_NUM_GAME,
+    C64_NAME_WHITE,
+    C64_NAME_BLACK,
+    C64_GAME_RELATION,
+    C64_INITIAL_TIME_S,
+    C64_INCREMENT_S,
+    C64_MATERIAL_WHITE,
+    C64_MATERIAL_BLACK,
+    C64_REMAINDER_TIME_WHITE,
+    C64_REMAINDER_TIME_BLACK,
+    C64_NEXT_MOVE_NUMBER,
+    C64_LAST_MOVE,
+    C64_ELAPSED_TIME_LAST_MOVE,
+    C64_PP_LAST_MOVE,
+    C64_FLIP_BOARD
 };
 
 extern quint64 bb_PawnAttacks[2][64];

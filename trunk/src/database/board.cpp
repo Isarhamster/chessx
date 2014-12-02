@@ -57,6 +57,17 @@ bool Board::fromFen(const QString& fen)
     return false;
 }
 
+bool Board::from64Char(const QString& qcharboard)
+{
+    if (BitBoard::from64Char(qcharboard))
+    {
+        createHash();
+        m_squareAnnotation = "";
+        return true;
+    }
+    return false;
+}
+
 void Board::setAt(Square s, Piece p)
 {
     hashPiece(s, pieceAt(s));
