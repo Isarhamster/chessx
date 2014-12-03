@@ -10,6 +10,8 @@
 
 class FicsDatabase : public MemoryDatabase
 {
+    Q_OBJECT
+
 public:
     FicsDatabase();
 
