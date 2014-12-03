@@ -201,7 +201,7 @@ void FicsConsole::CommandDone(int cmd)
 
 void FicsConsole::Disconnected()
 {
-    ui->textIn->appendPlainText("Disconnected");
+    ui->textIn->appendPlainText(tr("Disconnected"));
     ui->tabWidget->setCurrentIndex(0);
 }
 

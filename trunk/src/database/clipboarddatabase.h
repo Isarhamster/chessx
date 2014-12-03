@@ -9,6 +9,8 @@
 
 class ClipboardDatabase : public MemoryDatabase
 {
+    Q_OBJECT
+
 public:
     ClipboardDatabase();
 

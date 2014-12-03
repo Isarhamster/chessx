@@ -48,7 +48,7 @@ void FicsClient::OnSessionStarted()
     send("- channel 2");
     send("- channel 50");
     send("iset block 1");
-    emit receivedMessage(0,"Connected to FICS");
+    emit receivedMessage(0,tr("Connected to FICS"));
 }
 
 void FicsClient::OnReceiveTelnetMessage(QString s)
