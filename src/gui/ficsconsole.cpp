@@ -140,7 +140,6 @@ void FicsConsole::CommandStarted(int cmd)
         ui->listGames->clear();
         break;
     case FicsClient::BLKCMD_WHO:
-        ui->listPlayers->clear();
         m_transportList.clear();
         break;
     }
@@ -160,6 +159,8 @@ void FicsConsole::CommandDone(int cmd)
         break;
     case FicsClient::BLKCMD_WHO:
         {
+            ui->listPlayers->clear();
+
             QRegExp sep("(\\s+|\\^|~|:|#|\\.)");
             QStringList list;
             QStringList ulist;
@@ -221,7 +222,7 @@ void FicsConsole::SlotTabChanged(int tab)
         }
         break;
     case 2:
-        m_ficsClient->sendCommand("games");
+        m_ficsClient->sendCommand("games /blus");
         break;
     case 3:
         m_ficsClient->sendCommand("who");
@@ -237,19 +238,30 @@ void FicsConsole::PrintMessage(int blockCmd,QString s)
         switch (blockCmd)
         {
         case FicsClient::BLKCMD_HISTORY:
-            ui->listHistory->addItem(s);
+            {
+                QRegExp typeOfGame("\\[([^\\]]+)\\]");
+                int pos = typeOfGame.indexIn(s);
+                if(pos >= 0)
+                {
+                    QString segt = typeOfGame.cap(1).trimmed();
+                    if (segt.startsWith('b') || segt.startsWith('l') || segt.startsWith('s') || segt.startsWith('u'))
+                    {
+                        ui->listHistory->addItem(s);
+                    }
+                }
+            }
             break;
         case FicsClient::BLKCMD_GAMES:
             ui->listGames->addItem(s);
             break;
         case FicsClient::BLKCMD_WHO:
-        {
-            if (!s.contains("players displayed"))
             {
-                m_transportList.append(s);
+                if (!s.contains("players displayed"))
+                {
+                    m_transportList.append(s);
+                }
+                break;
             }
-            break;
-        }
         default:
             ui->textIn->appendPlainText(s);
             ui->tabWidget->setCurrentIndex(0);
