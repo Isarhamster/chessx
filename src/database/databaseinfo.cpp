@@ -238,6 +238,19 @@ bool DatabaseInfo::saveGame()
         }
     }
 
+    for(int i = 0; i < 7; ++i)
+    {
+        QString tag = StandardTags[i];
+        if (!m_game.hasTag(tag))
+        {
+            m_game.setTag(tag,QString());
+            if(m_index >= 0)
+            {
+                database()->index()->setTag(tag, QString(), m_index);
+            }
+        }
+    }
+
     if(m_index < (int)m_database->count() && m_index >= 0)
     {
         if(m_database->replace(m_index, m_game))

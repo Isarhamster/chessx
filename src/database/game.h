@@ -304,6 +304,8 @@ public :
     const QMap<QString, QString> &tags() const;
     /** Sets the value of the given tag */
     void setTag(const QString& tag, const QString& value);
+    /** Query existance of tag */
+    bool hasTag(const QString& tag) const;
     /** Removes a tag */
     void removeTag(const QString& tag);
     /** Set the game result */

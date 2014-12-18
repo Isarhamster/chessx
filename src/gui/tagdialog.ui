@@ -50,6 +50,17 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
+      <widget class="QToolButton" name="btAddTag">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/images/plus.png</normaloff>:/images/plus.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLabel" name="labelInfo">
        <property name="text">
         <string>Deleting %1 tags</string>
@@ -83,7 +94,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>
@@ -117,5 +130,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btAddTag</sender>
+   <signal>clicked()</signal>
+   <receiver>TagDialog</receiver>
+   <slot>slotAddTag()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>25</x>
+     <y>266</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>slotAddTag()</slot>
+ </slots>
 </ui>
