@@ -27,6 +27,7 @@ public:
 protected slots:
     void accept();
     void reject();
+    void slotAddTag();
 
 private slots:
     void saveOldTagText(int row, int column);

@@ -498,7 +498,7 @@ bool MainWindow::pasteFen(QString& msg, QString fen, bool newGame)
     {
         slotGameNew();
     }
-    game().setStartingBoard(board,"");
+    game().setStartingBoard(board,"Set starting board");
     return true;
 }
 
@@ -1074,10 +1074,13 @@ void MainWindow::slotGameSaveOnly()
 
 void MainWindow::slotGameEditTags()
 {
-    TagDialog dlg(this);
-    if (dlg.editTags(database()->index(), game(),databaseInfo()->currentIndex()))
+    if (databaseInfo()->currentIndex()>=0)
     {
-        databaseInfo()->saveGame();
+        TagDialog dlg(this);
+        if (dlg.editTags(database()->index(), game(),databaseInfo()->currentIndex()))
+        {
+            databaseInfo()->saveGame();
+        }
     }
 }
 

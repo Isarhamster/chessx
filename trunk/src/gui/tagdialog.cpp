@@ -41,6 +41,21 @@ void TagDialog::saveOldTagText(int row, int column)
     oldTagText = ui->tagTable->item(row, column)->text();
 }
 
+void TagDialog::slotAddTag()
+{
+    int row = ui->tagTable->rowCount();
+    ui->tagTable->insertRow(row);
+
+    QTableWidgetItem* firstCol = new QTableWidgetItem(tr("Edit tag..."));
+    firstCol->setFlags(firstCol->flags() | Qt::ItemIsEditable);
+    firstCol->setCheckState(Qt::Checked);
+
+    QTableWidgetItem* secondCol = new QTableWidgetItem(tr("Enter value..."));
+    secondCol->setFlags(secondCol->flags() | Qt::ItemIsEditable);
+    ui->tagTable->setItem(row, 0, firstCol);
+    ui->tagTable->setItem(row, 1, secondCol);
+}
+
 void TagDialog::validateTag(int /*row*/, int column)
 {
     if (column == 0)
@@ -125,7 +140,7 @@ bool TagDialog::editTags(Index* index, Game& game, GameId id)
                 game.removeTag(tag);
                 index->removeTag(tag,id);
             }
-            else
+            else if (!tag.endsWith("..."))
             {
                 QString value = ui->tagTable->item(i, 1)->text();
                 game.setTag(tag,value);
