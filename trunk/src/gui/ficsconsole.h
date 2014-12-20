@@ -14,6 +14,16 @@ class FicsConsole;
 }
 class FicsClient;
 
+enum
+{
+    TabMessage,
+    TabHistory,
+    TabGames,
+    TabRelay,
+    TabPuzzle,
+    TabPlayers
+};
+
 class FicsConsole : public QWidget
 {
     Q_OBJECT
@@ -22,7 +32,9 @@ public:
     explicit FicsConsole(QWidget *parent = 0, FicsClient *ficsClient=0);
     ~FicsConsole();
 
+public slots:
     void Terminate();
+    void SendMove(QString m);
 
 protected slots:
     void SendCommand();
@@ -30,12 +42,14 @@ protected slots:
     void HandleBoard(int cmd, QString s);
     void HandleObserveRequest(QListWidgetItem*);
     void HandleExamineRequest(QListWidgetItem*);
+    void HandleRelayRequest(QListWidgetItem*);
+    void HandleTacticsRequest(QListWidgetItem*);
     void CommandStarted(int cmd);
     void CommandDone(int cmd);
     void Disconnected();
     void SlotTabChanged(int tab);
-
     void HandleHistoryRequest(QListWidgetItem *item);
+
 signals:
     void ReceivedBoard(int cmd, QString s);
 

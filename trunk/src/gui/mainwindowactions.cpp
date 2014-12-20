@@ -23,6 +23,7 @@
 #include "editaction.h"
 #include "eventlistwidget.h"
 #include "ficsclient.h"
+#include "ficsconsole.h"
 #include "game.h"
 #include "gamelist.h"
 #include "mainwindow.h"
@@ -704,6 +705,10 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             if(game().atLineEnd())
             {
                 game().addMove(m);
+                if (database()->name() == "FICS")
+                {
+                    m_ficsConsole->SendMove(m.toAlgebraic());
+                }
             }
             else
             {
