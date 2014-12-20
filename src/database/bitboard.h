@@ -221,7 +221,9 @@ enum Char64Position
     C64_LAST_MOVE,
     C64_ELAPSED_TIME_LAST_MOVE,
     C64_PP_LAST_MOVE,
-    C64_FLIP_BOARD
+    C64_FLIP_BOARD,
+    C64_CLOCK_RUNNING,
+    C64_LAG
 };
 
 extern quint64 bb_PawnAttacks[2][64];

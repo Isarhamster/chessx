@@ -44,9 +44,7 @@ void FicsClient::OnSessionStarted()
     send("set gin 0");
     send("set pin 0");
     send("set mailmess 1");
-    send("- channel 1");
-    send("- channel 2");
-    send("- channel 50");
+    send("set chanoff 1");
     send("iset block 1");
     emit receivedMessage(0,tr("Connected to FICS"));
 }
@@ -80,6 +78,15 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
             else if(m_cmd != BLKCMD_NULL)
             {
                 emit receivedMessage(m_cmd,s);
+            }
+            else
+            {
+                // TODO - open issue how to correctly route this stuff
+                if (s.startsWith(":"))
+                {
+                    s.remove(0,1);
+                    emit receivedMessage(BLKCMD_XTELL,s);
+                }
             }
         }
     }

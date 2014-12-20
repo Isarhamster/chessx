@@ -4,6 +4,7 @@
 
 #include "ficsconsole.h"
 #include "ficsclient.h"
+#include "settings.h"
 
 #include "ui_ficsconsole.h"
 
@@ -30,6 +31,8 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
 
     connect(ui->listGames, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(HandleObserveRequest(QListWidgetItem*)));
     connect(ui->listHistory, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(HandleExamineRequest(QListWidgetItem*)));
+    connect(ui->listRelay, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(HandleRelayRequest(QListWidgetItem*)));
+    connect(ui->listPuzzle, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(HandleTacticsRequest(QListWidgetItem*)));
     connect(ui->listPlayers, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(HandleHistoryRequest(QListWidgetItem*)));
 
 #ifndef FICS_DEBUG
@@ -91,9 +94,40 @@ void FicsConsole::HandleExamineRequest(QListWidgetItem* item)
     int n = s.section(':',0,0).toInt();
     if (n)
     {
+        if (m_lastHistoryPlayer.isEmpty())
+        {
+            m_lastHistoryPlayer = AppSettings->getValue("/FICS/userName").toString();
+        }
         QString request = "examine " + m_lastHistoryPlayer + " " + QString::number(n);
         m_ficsClient->sendCommand(request);
     }
+}
+
+void FicsConsole::HandleRelayRequest(QListWidgetItem* item)
+{
+    if (!m_ficsClient) return;
+
+    m_ficsClient->sendCommand("unexamine");
+    m_ficsClient->sendCommand("unobserve");
+    QString s = item->text();
+    int n = s.section(' ',0,0).toInt();
+    if (n)
+    {
+        QString request = "observe " + QString::number(n);
+        m_ficsClient->sendCommand(request);
+    }
+}
+
+void FicsConsole::HandleTacticsRequest(QListWidgetItem* item)
+{
+    if (!m_ficsClient) return;
+
+    m_ficsClient->sendCommand("unexamine");
+    m_ficsClient->sendCommand("unobserve");
+    QString s = item->text();
+    QString cmd = s.remove(' ').toLower();
+    QString request = "tell puzzlebot " + cmd;
+    m_ficsClient->sendCommand(request);
 }
 
 void FicsConsole::HandleHistoryRequest(QListWidgetItem* item)
@@ -109,6 +143,11 @@ void FicsConsole::HandleHistoryRequest(QListWidgetItem* item)
         QString request = "history " + player;
         m_ficsClient->sendCommand(request);
     }
+}
+
+void FicsConsole::SendMove(QString m)
+{
+    m_ficsClient->sendCommand(m);
 }
 
 void FicsConsole::HandleObserveRequest(QListWidgetItem* item)
@@ -212,19 +251,26 @@ void FicsConsole::SlotTabChanged(int tab)
 
     switch (tab)
     {
-    case 0:
+    case TabMessage:
         break;
-    case 1:
+    case TabHistory:
         if (m_lastHistoryPlayer.isEmpty())
         {
             // Query own games unless something else is already displayed
             m_ficsClient->sendCommand("history");
         }
         break;
-    case 2:
+    case TabGames:
         m_ficsClient->sendCommand("games /blus");
         break;
-    case 3:
+    case TabRelay:
+        ui->listRelay->clear();
+        ui->listRelay->addItem(tr("Retrieving relayed games..."));
+        m_ficsClient->sendCommand("xtell relay listgames");
+        break;
+    case TabPlayers:
+        ui->listPlayers->clear();
+        ui->listPlayers->addItem(tr("Reading list of players..."));
         m_ficsClient->sendCommand("who");
         break;
     }
@@ -253,6 +299,9 @@ void FicsConsole::PrintMessage(int blockCmd,QString s)
             break;
         case FicsClient::BLKCMD_GAMES:
             ui->listGames->addItem(s);
+            break;
+        case FicsClient::BLKCMD_XTELL:
+            ui->listRelay->addItem(s);
             break;
         case FicsClient::BLKCMD_WHO:
             {
