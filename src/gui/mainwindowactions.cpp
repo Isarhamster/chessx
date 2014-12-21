@@ -594,7 +594,8 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
 {
     ActivateDatabase("FICS");
     if ((cmd == FicsClient::BLKCMD_EXAMINE) ||
-       (cmd == FicsClient::BLKCMD_OBSERVE))
+       (cmd == FicsClient::BLKCMD_OBSERVE) ||
+       (game().addMoveFrom64Char(s) == NO_MOVE))
     {
         Board b;
         if (b.from64Char(s))
@@ -606,10 +607,6 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
             game().setTag(TagNameBlack, nameBlack);
             game().setStartingBoard(b,tr("Set starting board"));
         }
-    }
-    else
-    {
-        game().addMoveFrom64Char(s);
     }
 }
 
