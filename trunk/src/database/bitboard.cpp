@@ -1391,6 +1391,9 @@ Move BitBoard::parseMove(const QString& algebraic) const
     Move move;
     unsigned int type;
 
+    if (algebraic=="none")
+        return move;
+
     // Castling
     if(c == 'o' || c == 'O' || c == '0')
     {

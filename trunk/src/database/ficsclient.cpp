@@ -70,6 +70,7 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
     {
         if (!s.isEmpty())
         {
+//            qDebug() << s;
             if (s.startsWith("<12>"))
             {
                 s.remove("<12>");
@@ -86,6 +87,11 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
                 {
                     s.remove(0,1);
                     emit receivedMessage(BLKCMD_XTELL,s);
+                }
+                else if (s.contains("kibitzes"))
+                {
+                    s.remove(QRegExp("[^:]*:"));
+                    emit receivedMessage(BLKCMD_TELL,s);
                 }
             }
         }
