@@ -54,6 +54,8 @@ public:
     QString winboardPath();
     /** @return directory where common chess data are stored. */
     QString commonDataPath();
+    /** @return directory where preinstalled timeseal is stored. */
+    QString timesealFilePath();
 
     /** Write integer list to configuration file. Does it by converting it to QString */
     void setList(const QString& key, QList<int> list);
