@@ -56,3 +56,24 @@ bool isStandardTag(QString tag)
     }
     return false;
 }
+
+
+Result ResultFromString(QString res)
+{
+    if(res.startsWith("1/2"))
+    {
+        return Draw;
+    }
+    else if(res.startsWith('1'))
+    {
+        return WhiteWin;
+    }
+    else if(res.startsWith('0'))
+    {
+        return BlackWin;
+    }
+    else
+    {
+        return ResultUnknown;
+    }
+}
