@@ -25,6 +25,12 @@
      <property name="columnCount">
       <number>2</number>
      </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderStretchLastSection">
+      <bool>false</bool>
+     </attribute>
      <column>
       <property name="text">
        <string>Menu Item</string>
