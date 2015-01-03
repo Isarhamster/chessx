@@ -81,7 +81,12 @@ void ChartWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if (width())
     {
+#if QT_VERSION < 0x050000
+        QPointF p = event->posF();
+#else
         QPointF p = event->localPos();
+#endif
+
         double x = 0.5 + (p.x() * (m_values.count()) / width());
         emit halfMoveRequested((int)x);
     }
