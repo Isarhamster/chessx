@@ -112,6 +112,8 @@ protected:
 public slots:
     /** Enter gaming mode */
     void slotToggleGameMode();
+    /** Flip the board view */
+    void slotFlipView(bool);
     void enterGameMode(bool gameMode);
     /** Open database */
     void openDatabase(QString fname);
@@ -353,6 +355,10 @@ public slots:
     void slotEditMergePGN();
     /** Handle a new board from a FICS request */
     void HandleFicsBoardRequest(int, QString);
+    /** Enter a result from a fics game */
+    void HandleFicsResultRequest(QString s);
+    /** Enter a result from a fics game */
+    void HandleFicsNewGameRequest();
 protected slots:
     /** Update recent files menu */
     void updateMenuDatabases();
@@ -396,6 +402,10 @@ protected slots:
     void slotSetSliderText(int);
     /** Query for a database to load */
     void QueryLoadDatabase();
+    /** Handle a disconnection from fics */
+    void FicsDisconnected();
+    /** Handle event that a FICS session was opened */
+    void FicsConnected();
 
 protected:
     void moveChanged();
@@ -420,6 +430,8 @@ protected:
     int findBoardView(void *dbIndex) const;
     void UpdateMaterial();
     bool ActivateDatabase(QString fname);
+    bool addRemoteMoveFrom64Char(QString s);
+    void newGame();
 signals:
     /** Re-read configuration. */
     void reconfigure();
@@ -439,6 +451,8 @@ signals:
     void signalMoveHasParent(bool);
     void signalGameIsEmpty(bool);
     void signalGameAtLineStart(bool);
+
+    void signalGameModeChanged(bool);
 
     void signalGameModified(bool gameNeedsSaving);
 
@@ -572,6 +586,8 @@ private:
     bool m_gameMode;
     FicsClient* m_ficsClient;
     FicsConsole* m_ficsConsole;
+    QActionGroup* m_gameModeGroup;
+
 };
 
 
