@@ -61,7 +61,6 @@ private slots:
     void slotShowInFinder();
     void slotMakeBook();
     void slotExtTool1();
-    void extToolReadOutput();
     void dbOpen();
     void dbToggleUTF8();
     void dbClose();
@@ -72,8 +71,6 @@ private:
     QSortFilterProxyModel* m_filterModel;
     QModelIndex m_cell;
     Qt::KeyboardModifiers m_lastModifier;
-    QString errText;
-    QProcess* m_extToolProcess;
 };
 
 #endif // DATABASELIST_H

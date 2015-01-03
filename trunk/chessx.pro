@@ -1,7 +1,7 @@
 # Main application
 DEFINES +=
 CONFIG += uic warn_on
-QT += xml network svg
+QT += xml network svg multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4) {
    QT += printsupport
@@ -180,7 +180,8 @@ HEADERS += src/database/board.h \
     src/gui/chartwidget.h \
     src/gui/ficsconsole.h \
     src/database/clipboarddatabase.h \
-    src/database/ficsdatabase.h
+    src/database/ficsdatabase.h \
+    src/gui/exttool.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -300,7 +301,8 @@ SOURCES += src/database/board.cpp \
     src/gui/chartwidget.cpp \
     src/gui/ficsconsole.cpp \
     src/database/clipboarddatabase.cpp \
-    src/database/ficsdatabase.cpp
+    src/database/ficsdatabase.cpp \
+    src/gui/exttool.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
@@ -362,6 +364,9 @@ macx {
  BOOK_DATA.files = data/engines-mac/uci/book.bin
  BOOK_DATA.path = Contents/MacOS/data/engines-mac/uci
  QMAKE_BUNDLE_DATA += BOOK_DATA
+ TIMESEAL_DATA.files = data/timeseal/mac/timeseal
+ TIMESEAL_DATA.path = Contents/MacOS/data/timeseal/mac
+ QMAKE_BUNDLE_DATA += TIMESEAL_DATA
  QMAKE_INFO_PLIST = mac_osx/Info.plist
 }
 
