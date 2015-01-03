@@ -135,6 +135,19 @@ QString Settings::winboardPath()
     return "";
 }
 
+QString Settings::timesealFilePath()
+{
+#ifdef Q_OS_WIN
+    QString path(AppSettings->programDataPath());
+    return (path + QDir::separator() + "timeseal" + QDir::separator() + "windows" + QDir::separator() + "timeseal.exe");
+#endif
+#ifdef Q_OS_MAC
+    QString path(AppSettings->programDataPath());
+    return (path + QDir::separator() + "timeseal" + QDir::separator() + "mac" + QDir::separator() + "timeseal");
+#endif
+    return "";
+}
+
 QString Settings::commonDataPath()
 {
 #if QT_VERSION < 0x050000
@@ -244,6 +257,8 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
 
     map.insert("/History/MaxEntries", 4);
 
+    map.insert("/FICS/useTimeseal", true);
+    map.insert("/FICS/guestLogin", false);
     map.insert("/FICS/userName", "guest");
     map.insert("/FICS/passWord", "");
 
@@ -264,6 +279,9 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/currentMoveColor", QColor(Qt::blue));
     map.insert("/Board/AutoPlayerInterval", 3000);
     map.insert("/Board/AutoSaveAndContinue", false);
+
+    map.insert("/Sound/Move", true);
+
     map.insert("/Tools/Path1", "");
     map.insert("/Tools/CommandLine1", "");
     return map;

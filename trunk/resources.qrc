@@ -132,5 +132,12 @@
         <file alias="images/edit_mail.png">data/images/edit_mail.png</file>
         <file alias="themes/boards/lanta.png">data/themes/boards/lanta.png</file>
         <file alias="i18n/chessx_ro.qm">i18n/chessx_ro.qm</file>
+        <file alias="sounds/ding1.wav">data/sounds/ding1.wav</file>
+        <file alias="sounds/woodthunk.wav">data/sounds/woodthunk.wav</file>
+        <file alias="sounds/move.wav">data/sounds/move.wav</file>
+        <file alias="images/accept.png">data/images/accept.png</file>
+        <file alias="images/decline.png">data/images/decline.png</file>
+        <file alias="images/draw.png">data/images/draw.png</file>
+        <file alias="images/hint.png">data/images/hint.png</file>
     </qresource>
 </RCC>

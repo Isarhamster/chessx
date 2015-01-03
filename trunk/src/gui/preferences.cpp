@@ -70,6 +70,10 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 
     connect(ui.btLoadLang, SIGNAL(clicked()), SLOT(slotLoadLanguageFile()));
     connect(ui.btExtToolPath, SIGNAL(clicked(bool)), SLOT(slotSelectToolPath()));
+
+    connect (ui.guestLogin, SIGNAL(toggled(bool)), ui.passWord, SLOT(setDisabled(bool)));
+    connect (ui.guestLogin, SIGNAL(toggled(bool)), ui.userName, SLOT(setDisabled(bool)));
+
     restoreSettings();
 
     // Start off with no Engine selected
@@ -524,6 +528,12 @@ void PreferencesDialog::restoreSettings()
     AppSettings->beginGroup("FICS");
     ui.userName->setText(AppSettings->getValue("userName").toString());
     ui.passWord->setText(AppSettings->getValue("passWord").toString());
+    ui.guestLogin->setChecked(AppSettings->getValue("guestLogin").toBool());
+    ui.btUseTimeseal->setChecked(AppSettings->getValue("useTimeseal").toBool());
+    AppSettings->endGroup();
+
+    AppSettings->beginGroup("Sound");
+    ui.cbSoundOn->setChecked(AppSettings->getValue("Move").toBool());
     AppSettings->endGroup();
 }
 
@@ -598,6 +608,12 @@ void PreferencesDialog::saveSettings()
     AppSettings->beginGroup("FICS");
     AppSettings->setValue("userName", ui.userName->text());
     AppSettings->setValue("passWord", ui.passWord->text());
+    AppSettings->setValue("guestLogin", ui.guestLogin->isChecked());
+    AppSettings->setValue("useTimeseal", ui.btUseTimeseal->isChecked());
+    AppSettings->endGroup();
+
+    AppSettings->beginGroup("Sound");
+    AppSettings->setValue("Move", ui.cbSoundOn->isChecked());
     AppSettings->endGroup();
 
     QDir().mkpath(ui.defaultDataBasePath->text());

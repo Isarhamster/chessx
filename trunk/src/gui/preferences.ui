@@ -23,43 +23,23 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
        <string>&amp;Board</string>
       </attribute>
       <layout class="QGridLayout">
-       <item row="8" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>150</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_7">
+       <item row="3" column="0" colspan="2">
+        <widget class="QLabel" name="label">
          <property name="text">
-          <string>Highlight current move:</string>
+          <string>&amp;Colors:</string>
          </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QComboBox" name="boardThemeCombo">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="buddy">
+          <cstring>boardColorsList</cstring>
          </property>
         </widget>
        </item>
@@ -161,6 +141,32 @@
          </layout>
         </widget>
        </item>
+       <item row="3" column="2">
+        <widget class="ColorList" name="boardColorsList"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Highlight current move:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>150</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="pieceThemeLabel">
          <property name="text">
@@ -171,10 +177,13 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="2">
-        <widget class="QCheckBox" name="boardFrameCheck">
+       <item row="1" column="0">
+        <widget class="QLabel" name="boardThemeLabel">
          <property name="text">
-          <string>&amp;Draw frame between squares</string>
+          <string>Board &amp;style:</string>
+         </property>
+         <property name="buddy">
+          <cstring>boardThemeCombo</cstring>
          </property>
         </widget>
        </item>
@@ -217,6 +226,30 @@
          </item>
         </layout>
        </item>
+       <item row="1" column="2">
+        <widget class="QComboBox" name="boardThemeCombo">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QCheckBox" name="boardFrameCheck">
+         <property name="text">
+          <string>&amp;Draw frame between squares</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QCheckBox" name="boardShowCoordinates">
+         <property name="text">
+          <string>Draw Coordinates</string>
+         </property>
+        </widget>
+       </item>
        <item row="2" column="2">
         <widget class="QComboBox" name="hilightCurrentMove">
          <item>
@@ -234,39 +267,6 @@
            <string>Arrow</string>
           </property>
          </item>
-        </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="QCheckBox" name="boardShowCoordinates">
-         <property name="text">
-          <string>Draw Coordinates</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="ColorList" name="boardColorsList"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="boardThemeLabel">
-         <property name="text">
-          <string>Board &amp;style:</string>
-         </property>
-         <property name="buddy">
-          <cstring>boardThemeCombo</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>&amp;Colors:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="buddy">
-          <cstring>boardColorsList</cstring>
-         </property>
         </widget>
        </item>
       </layout>
@@ -1035,36 +1035,10 @@
        <string notr="true">FICS</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
-          <string notr="true">freechess.org</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_5">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Login</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Password</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="userName"/>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="passWord"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0">
+       <property name="verticalSpacing">
+        <number>24</number>
+       </property>
+       <item row="3" column="0">
         <spacer name="verticalSpacer_5">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -1076,6 +1050,49 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="guestLogin">
+         <property name="text">
+          <string>Log in as guest</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string notr="true">Credentials</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Login</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Password</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="userName"/>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="passWord"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="btUseTimeseal">
+         <property name="text">
+          <string>Try to use Timeseal</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -1253,6 +1270,22 @@
          <zorder>btExtToolPath</zorder>
          <zorder>lbExtToolParamter</zorder>
          <zorder>extToolParameters</zorder>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>Sound</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QCheckBox" name="cbSoundOn">
+            <property name="text">
+             <string>Indicate opponent's move</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
