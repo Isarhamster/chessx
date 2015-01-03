@@ -51,27 +51,6 @@ void EventInfo::setName(const QString& event)
     update();
 }
 
-
-int EventInfo::toResult(const QString& res) const
-{
-    if(res.startsWith("1/2"))
-    {
-        return Draw;
-    }
-    else if(res.startsWith('1'))
-    {
-        return WhiteWin;
-    }
-    else if(res.startsWith('0'))
-    {
-        return BlackWin;
-    }
-    else
-    {
-        return ResultUnknown;
-    }
-}
-
 float EventInfo::toPoints(const QString& res) const
 {
     if(res.startsWith("1/2"))
@@ -127,7 +106,7 @@ void EventInfo::update()
             continue;
         }
         QString result = index->tagValue(TagNameResult, i);
-        int res = toResult(result);
+        int res = ResultFromString(result);
         QString whitePlayer = index->tagValue(TagNameWhite, i);
         QString blackPlayer = index->tagValue(TagNameBlack, i);
         // The following works as QHash initializes a default-constructed value to 0

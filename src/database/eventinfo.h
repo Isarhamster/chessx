@@ -57,7 +57,6 @@ private:
 
     /** Format score statistics for single color. */
     QString formattedScore(const int results[4], int count) const;
-    int toResult(const QString& res) const;
     float toPoints(const QString& res) const;
 
     int m_result[4];
