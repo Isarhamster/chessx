@@ -119,22 +119,40 @@ MoveId Game::addMoveFrom64Char(const QString &qcharboard)
 {
     QStringList l = qcharboard.split(' ');
     if (l.size() < 30) return NO_MOVE;
-    QString s=l[C64_LAST_MOVE];
-    s.remove(QRegExp("./"));
+    int relation = l[C64_GAME_RELATION].toInt();
+    QString s=l[C64_PP_LAST_MOVE];
+    s.remove('+');
+    s.remove('#');
+
     QString t = l[C64_ELAPSED_TIME_LAST_MOVE];
     t.remove("(");
     t.remove(")");
     QStringList tl = t.split(':');
+    QString emt;
     if (tl.size()>=2)
     {
-        QString emt = QString("[%emt 0:%1:%2]").arg(tl[0],-2,'0').arg(tl[1],-2,'0');
-        return addMove(s,emt);
+        emt = QString("[%emt 0:%1:%2]").arg(tl[0],-2,'0').arg(tl[1],-2,'0');
+    }
+
+    if (relation == -1)
+    {
+        if (s=="none")
+        {
+            return NO_MOVE;
+        }
+        else
+        {
+            if (!emt.isEmpty())
+            {
+                setAnnotation(emt);
+            }
+            return CURRENT_MOVE;
+        }
     }
     else
     {
-        return addMove(s);
+        return addMove(s,emt);
     }
-
 }
 
 bool Game::mergeNode(Game& otherGame)
