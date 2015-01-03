@@ -13,6 +13,9 @@ namespace Ui {
 class FicsConsole;
 }
 class FicsClient;
+class QButtonGroup;
+class QTimer;
+class QTableWidgetItem;
 
 enum
 {
@@ -21,7 +24,8 @@ enum
     TabGames,
     TabRelay,
     TabPuzzle,
-    TabPlayers
+    TabPlayers,
+    TabSeeks
 };
 
 class FicsConsole : public QWidget
@@ -35,29 +39,56 @@ public:
 public slots:
     void Terminate();
     void SendMove(QString m);
+    void SlotGameModeChanged(bool);
 
 protected slots:
     void SendCommand();
-    void PrintMessage(int, QString s);
+    void HandleMessage(int, QString s);
     void HandleBoard(int cmd, QString s);
     void HandleObserveRequest(QListWidgetItem*);
     void HandleExamineRequest(QListWidgetItem*);
     void HandleRelayRequest(QListWidgetItem*);
     void HandleTacticsRequest(QListWidgetItem*);
     void CommandStarted(int cmd);
-    void CommandDone(int cmd);
     void Disconnected();
+    void SlotTabClicked(int tab);
     void SlotTabChanged(int tab);
-    void HandleHistoryRequest(QListWidgetItem *item);
+    void HandleHistoryRequest(QTableWidgetItem *item);
+    void HandleSeekRequest(QListWidgetItem* item);
+    void SlotSeekTimeChanged(int);
+
+    void SlotCountDownGameTime();
+
+    void SlotSendAccept();
+    void SlotSendDraw();
+    void SlotSendDecline();
+    void SlotSendAbort();
+    void SlotSendResign();
+    void SlotSendHint();
+    void SlotSendUnexamine();
+    void SlotSendSeek();
 
 signals:
     void ReceivedBoard(int cmd, QString s);
+    void RequestNewGame();
+    void RequestGameMode(bool);
+    void SignalGameResult(QString);
+    void SignalPlayerIsBlack(bool);
 
+protected:
+    QString FormatTime(QString s) const;
+    void SetPlayerListItemsFromLine(QString s);
 private:
     Ui::FicsConsole *ui;
     QPointer<FicsClient> m_ficsClient;
     QString m_lastHistoryPlayer;
     QStringList m_transportList;
+    QButtonGroup* btgSeek;
+    bool gameMode;
+    bool puzzleMode;
+    QTimer* m_countDownTimer;
+    bool m_bWhiteToMove;
+    int m_prevTab;
 };
 
 #endif // FICSCONSOLE_H

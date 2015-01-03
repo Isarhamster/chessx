@@ -55,6 +55,7 @@
 #include <QMenu>
 #include <QPixmap>
 #include <QProgressBar>
+#include <QSound>
 #include <QStatusBar>
 
 #ifdef Q_OS_WIN
@@ -397,7 +398,7 @@ void MainWindow::slotToggleStayOnTop()
 
 void MainWindow::slotConfigureFlip()
 {
-    m_boardView->setFlipped(!m_boardView->isFlipped());
+    m_boardView->flip();
 }
 
 void MainWindow::slotEditCopyFEN()
@@ -590,12 +591,60 @@ void MainWindow::slotEditBoard()
     }
 }
 
+bool MainWindow::addRemoteMoveFrom64Char(QString s)
+{
+    MoveId mId = game().addMoveFrom64Char(s);
+    if (mId != NO_MOVE) // move is illegal
+    {
+        if (mId != CURRENT_MOVE) // my own move
+        {
+            Move m = game().move(mId);
+            m_currentFrom = m.from();
+            m_currentTo = m.to();
+            moveChanged();
+            if (AppSettings->getValue("/Sound/Move").toBool())
+            {
+                QSound::play(":/sounds/move.wav");
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+void MainWindow::HandleFicsNewGameRequest()
+{
+    ActivateDatabase("FICS");
+    SimpleSaveGame();
+}
+
+void MainWindow::HandleFicsResultRequest(QString s)
+{
+    s = s.remove(QRegExp("\\{[^\\}]*\\}")).trimmed();
+    ActivateDatabase("FICS");
+    game().setResult(ResultFromString(s));
+}
+
+void MainWindow::FicsConnected()
+{
+    ActivateDatabase("FICS");
+    m_ficsConsole->setEnabled(true);
+    m_ficsConsole->show();
+}
+
+void MainWindow::FicsDisconnected()
+{
+    m_ficsConsole->setEnabled(false);
+    slotFileCloseIndex(1);
+}
+
 void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
 {
     ActivateDatabase("FICS");
+
     if ((cmd == FicsClient::BLKCMD_EXAMINE) ||
-       (cmd == FicsClient::BLKCMD_OBSERVE) ||
-       (game().addMoveFrom64Char(s) == NO_MOVE))
+       (!addRemoteMoveFrom64Char(s)) ||
+       (cmd == FicsClient::BLKCMD_OBSERVE))
     {
         Board b;
         if (b.from64Char(s))
@@ -605,7 +654,14 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
             QString nameBlack = l[C64_NAME_BLACK];
             game().setTag(TagNameWhite, nameWhite);
             game().setTag(TagNameBlack, nameBlack);
-            game().setStartingBoard(b,tr("Set starting board"));
+            if (game().board() != b)
+            {
+                game().setStartingBoard(b,tr("Set starting board"));
+                if (AppSettings->getValue("/Sound/Move").toBool())
+                {
+                    QSound::play(":/sounds/ding1.wav");
+                }
+            }
         }
     }
 }
@@ -687,6 +743,10 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                         m_currentFrom = m.from();
                         m_currentTo = m.to();
                         moveChanged(); // The move's currents where set after forward(), thus repair effects
+                        if (AppSettings->getValue("/Sound/Move").toBool())
+                        {
+                            QSound::play(":/sounds/move.wav");
+                        }
                     }
                     else
                     {
@@ -1003,6 +1063,14 @@ void MainWindow::slotGameLoadChosen()
     gameLoad(index - 1);
 }
 
+void MainWindow::newGame()
+{
+    databaseInfo()->newGame();
+    m_gameList->removeSelection();
+    emit signalGameIsEmpty(true); // repair effect of slotGameChanged
+    m_gameList->setFocus();
+}
+
 void MainWindow::slotGameNew()
 {
     if(database()->isReadOnly())
@@ -1013,10 +1081,7 @@ void MainWindow::slotGameNew()
     {
         if(QuerySaveGame())
         {
-            databaseInfo()->newGame();
-            m_gameList->removeSelection();
-            emit signalGameIsEmpty(true); // repair effect of slotGameChanged
-            m_gameList->setFocus();
+           newGame();
         }
     }
 }
@@ -1071,6 +1136,7 @@ void MainWindow::slotGameSaveOnly()
     else
     {
         SimpleSaveGame();
+        newGame();
     }
 }
 
@@ -1445,6 +1511,10 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         m_currentTo = m.to();
                         game().addMove(m);
                         m_machineHasToMove = false;
+                        if (AppSettings->getValue("/Sound/Move").toBool())
+                        {
+                            QSound::play(":/sounds/move.wav");
+                        }
                     }
                 }
             }
@@ -2335,6 +2405,11 @@ void MainWindow::slotToggleGameMode()
     enterGameMode(m_match->isChecked());
 }
 
+void MainWindow::slotFlipView(bool flip)
+{
+    m_boardView->setFlipped(flip);
+}
+
 void MainWindow::enterGameMode(bool gameMode)
 {
     Guess::setGuessAllowed(!gameMode);
@@ -2345,4 +2420,5 @@ void MainWindow::enterGameMode(bool gameMode)
         m_openingTreeWidget->cancel();
     }
     setGameMode(gameMode);
+    m_ficsConsole->SlotGameModeChanged(gameMode);
 }

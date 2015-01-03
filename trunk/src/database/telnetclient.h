@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QString>
 
+class QProcess;
 class QTcpSocket;
 
 class TelnetClient : public QObject
@@ -22,20 +23,31 @@ public:
 
     void exitSession();
 
+    QString getGuestName() const;
+
+    bool InternalTelnet() const;
+
 signals:
     void disconnected();
 
-public slots:
+protected slots:
     void SlotReadData();
     void SlotDisconnected();
+    void SlotReadTimesealData();
+    void SlotTimesealError();
+
+protected:
+    bool StartTimeseal(const QString &host, int port, QString name, QString passwd);
+    void StartSocket(const QString &host, int port, QString name, QString passwd);
+    void DispatchReadData(QByteArray bytes);
 
 protected: //methods
     virtual void startSession() = 0;
     virtual void sendCommand(QString s) = 0;
 
 protected: //callback
-    virtual void OnSessionStarted()=0;
-    virtual void OnReceiveTelnetMessage(QString)=0;
+    virtual void OnSessionStarted(QString) = 0;
+    virtual void OnReceiveTelnetMessage(QString) = 0;
 
 private:
     QTcpSocket* m_socket;
@@ -43,6 +55,11 @@ private:
     QString m_passwd;
     int     m_state;
     QString m_remainder;
+    QString guestName;
+
+    QProcess* m_extToolProcess;
+    
+    bool m_bInternalTelnet;
 
 };
 

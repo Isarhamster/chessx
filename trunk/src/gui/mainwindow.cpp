@@ -86,7 +86,6 @@ MainWindow::MainWindow() : QMainWindow(),
     setObjectName("MainWindow");
 
     // Style::setStyle(this);
-
     m_messageTimer = new QTimer(this);
     m_messageTimer->setInterval(5000);
     m_messageTimer->setSingleShot(true);
@@ -129,6 +128,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameList = new GameList(databaseInfo()->filter(), gameListDock);
 
     /* Actions */
+    m_gameModeGroup = new QActionGroup(this);
+    connect(this, SIGNAL(signalGameModeChanged(bool)), m_gameModeGroup, SLOT(setDisabled(bool)));
     setupActions();
 
     /* Delete on close */
@@ -155,6 +156,13 @@ MainWindow::MainWindow() : QMainWindow(),
     ficsConsoleDock->setWidget(m_ficsConsole);
     addDockWidget(Qt::RightDockWidgetArea, ficsConsoleDock);
     connect(m_ficsConsole, SIGNAL(ReceivedBoard(int,QString)), this, SLOT(HandleFicsBoardRequest(int,QString)));
+    connect(m_ficsConsole, SIGNAL(SignalGameResult(QString)), this, SLOT(HandleFicsResultRequest(QString)));
+    connect(m_ficsConsole, SIGNAL(RequestNewGame()), this, SLOT(HandleFicsNewGameRequest()));
+    connect(m_ficsConsole, SIGNAL(RequestGameMode(bool)), this, SLOT(enterGameMode(bool)));
+    connect(m_ficsConsole, SIGNAL(SignalPlayerIsBlack(bool)), this, SLOT(slotFlipView(bool)));
+    connect(m_ficsClient, SIGNAL(disconnected()), SLOT(FicsDisconnected()), Qt::QueuedConnection);
+    connect(m_ficsClient, SIGNAL(connected()), SLOT(FicsConnected()), Qt::QueuedConnection);
+    m_ficsConsole->setEnabled(false);
 
     /* Game view */
     DockWidgetEx* gameTextDock = new DockWidgetEx(tr("Game Text"), this);
@@ -1768,4 +1776,5 @@ bool MainWindow::gameMode() const
 void MainWindow::setGameMode(bool gameMode)
 {
     m_gameMode = gameMode;
+    emit signalGameModeChanged(m_gameMode);
 }

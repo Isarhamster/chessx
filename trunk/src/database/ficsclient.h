@@ -211,7 +211,12 @@ public:
         BLKCMD_ERROR_REMOVED = 517,
         BLKCMD_ERROR_NOTPLAYING = 518,
         BLKCMD_ERROR_NOSEQUENCE = 519,
-        BLKCMD_ERROR_LENGTH = 520
+        BLKCMD_ERROR_LENGTH = 520,
+
+        BLKCMD_INTERNAL_MATCH_START = 1000,
+        BLKCMD_INTERNAL_MATCH_END = 1001,
+        BLKCMD_INTERNAL_PUZZLEBOT = 1002,
+        BLKCMD_INTERNAL_OTHER = 1003
     };
 
     virtual void startSession();
@@ -221,15 +226,16 @@ signals:
     void receivedMessage(int cmd, QString s);
     void receivedBoard(int cmd, QString s);
     void commandStarted(int cmd);
-    void commandDone(int cmd);
+    void connected();
 
 protected:
     void sendFicsCommand(QString s);
     void sendFicsCommandWithId(QString s, int id);
-    virtual void OnSessionStarted();
+    virtual void OnSessionStarted(QString);
     virtual void OnReceiveTelnetMessage(QString);
 
     int m_cmd;
+    void ProcessUnblockedMessage(QString s);
 };
 
 #endif // FICSCLIENT_H
