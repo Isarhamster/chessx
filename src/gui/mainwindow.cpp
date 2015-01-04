@@ -159,6 +159,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_ficsConsole, SIGNAL(SignalGameResult(QString)), this, SLOT(HandleFicsResultRequest(QString)));
     connect(m_ficsConsole, SIGNAL(RequestNewGame()), this, SLOT(HandleFicsNewGameRequest()));
     connect(m_ficsConsole, SIGNAL(RequestGameMode(bool)), this, SLOT(enterGameMode(bool)));
+    connect(m_ficsConsole, SIGNAL(RequestRemoveLastMove()), this, SLOT(HandleFicsRequestRemoveMove()));
     connect(m_ficsConsole, SIGNAL(SignalPlayerIsBlack(bool)), this, SLOT(slotFlipView(bool)));
     connect(m_ficsClient, SIGNAL(disconnected()), SLOT(FicsDisconnected()), Qt::QueuedConnection);
     connect(m_ficsClient, SIGNAL(connected()), SLOT(FicsConnected()), Qt::QueuedConnection);

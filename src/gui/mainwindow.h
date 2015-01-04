@@ -406,7 +406,7 @@ protected slots:
     void FicsDisconnected();
     /** Handle event that a FICS session was opened */
     void FicsConnected();
-
+    void HandleFicsRequestRemoveMove();
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);

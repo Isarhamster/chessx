@@ -584,6 +584,10 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     SlotSendUnexamine();
                 }
             }
+            else if (s.contains("puzzlebot backs up 1 move"))
+            {
+                emit RequestRemoveLastMove();
+            }
             if (!s.contains("tell puzzlebot"))
             {
                 puzzleMode = true;
