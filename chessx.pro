@@ -1,11 +1,12 @@
 # Main application
 DEFINES +=
 CONFIG += uic warn_on
-QT += xml network svg multimedia
+QT += xml network svg
 
 greaterThan(QT_MAJOR_VERSION, 4) {
    QT += printsupport
    QT += widgets
+   QT += multimedia
 }
 
 static { # Everything below takes effect with CONFIG += static
