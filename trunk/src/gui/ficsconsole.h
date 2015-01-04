@@ -72,6 +72,7 @@ signals:
     void ReceivedBoard(int cmd, QString s);
     void RequestNewGame();
     void RequestGameMode(bool);
+    void RequestRemoveLastMove();
     void SignalGameResult(QString);
     void SignalPlayerIsBlack(bool);
 

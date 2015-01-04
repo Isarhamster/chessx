@@ -151,7 +151,8 @@ MoveId Game::addMoveFrom64Char(const QString &qcharboard)
     }
     else
     {
-        return addMove(s,emt);
+        MoveId moveId = addMove(s,emt);
+        return moveId;
     }
 }
 
@@ -1635,7 +1636,7 @@ void Game::enterVariation(const MoveId& moveId)
 void Game::removeNode(MoveId moveId)
 {
     MoveId node = nodeValid(moveId);
-    if(node != NO_MOVE)
+    if(node > ROOT_NODE)
     {
         m_variationStartAnnotations.remove(node);
         m_annotations.remove(node);

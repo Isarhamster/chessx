@@ -16,6 +16,7 @@
 #include "movelist.h"
 #include "nag.h"
 
+#define ROOT_NODE 0
 #define NO_MOVE -1
 #define CURRENT_MOVE -2
 #define CURRENT_VARIATION -3
@@ -354,6 +355,9 @@ public :
     int resultAsInt() const;
     void setStartingBoard(const Board &startingBoard, QString text);
 
+    /** Removes the node at @p moveId */
+    void removeNode(MoveId moveId = CURRENT_MOVE);
+
 protected:
     /** Find the point in the this game where @p otherGame fits in the next time.
         @retval Node from where the merging shall start in other game */
@@ -419,8 +423,6 @@ private:
     // **** memory  management methods ****
     /** Remove all removed nodes */
     void compact();
-    /** Removes the node at @p moveId */
-    void removeNode(MoveId moveId = CURRENT_MOVE);
 
     /** Checks if a moveId is valid, returns the moveId if it is, 0 if not */
     MoveId nodeValid(MoveId moveId = CURRENT_MOVE) const;

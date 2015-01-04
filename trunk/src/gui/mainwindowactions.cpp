@@ -625,6 +625,14 @@ void MainWindow::HandleFicsResultRequest(QString s)
     game().setResult(ResultFromString(s));
 }
 
+void MainWindow::HandleFicsRequestRemoveMove()
+{
+    ActivateDatabase("FICS");
+    MoveId n = game().currentMove();
+    game().backward();
+    game().removeNode(n);
+}
+
 void MainWindow::FicsConnected()
 {
     ActivateDatabase("FICS");
