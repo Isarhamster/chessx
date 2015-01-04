@@ -597,7 +597,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/database/clipboarddatabase.cpp" line="13"/>
         <source>Clipboard</source>
-        <translation type="unfinished">Presse-papiers</translation>
+        <translation>Presse-papiers</translation>
     </message>
 </context>
 <context>
@@ -967,7 +967,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/exttool.cpp" line="75"/>
         <source>: File not found</source>
-        <translation type="unfinished">: Fichier introuvable</translation>
+        <translation>: Fichier introuvable</translation>
     </message>
 </context>
 <context>
@@ -983,7 +983,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Formulaire</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="27"/>
@@ -1003,7 +1003,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="121"/>
         <source>Games</source>
-        <translation type="unfinished"></translation>
+        <translation>Parties</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="127"/>

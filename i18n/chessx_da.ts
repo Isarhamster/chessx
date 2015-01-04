@@ -597,7 +597,7 @@ Tjek venligst din installation.</translation>
     <message>
         <location filename="../src/database/clipboarddatabase.cpp" line="13"/>
         <source>Clipboard</source>
-        <translation type="unfinished">Udklipsholder</translation>
+        <translation>Udklipsholder</translation>
     </message>
 </context>
 <context>
@@ -967,7 +967,7 @@ Tjek venligst din installation.</translation>
     <message>
         <location filename="../src/gui/exttool.cpp" line="75"/>
         <source>: File not found</source>
-        <translation type="unfinished">: Filen blev ikke fundet</translation>
+        <translation>: Filen blev ikke fundet</translation>
     </message>
 </context>
 <context>
@@ -983,7 +983,7 @@ Tjek venligst din installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="27"/>
@@ -1003,7 +1003,7 @@ Tjek venligst din installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="121"/>
         <source>Games</source>
-        <translation type="unfinished"></translation>
+        <translation>Partier</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="127"/>
@@ -1054,7 +1054,7 @@ Tjek venligst din installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="250"/>
         <source>Rating</source>
-        <translation type="unfinished">Rating</translation>
+        <translation>Rating</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="255"/>
@@ -1069,7 +1069,7 @@ Tjek venligst din installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="270"/>
         <source>Time Control</source>
-        <translation type="unfinished">Tidskontrol</translation>
+        <translation>Tidskontrol</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="282"/>
@@ -1129,7 +1129,7 @@ Tjek venligst din installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="61"/>
         <source>Draw</source>
-        <translation type="unfinished">Remis</translation>
+        <translation>Remis</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="67"/>

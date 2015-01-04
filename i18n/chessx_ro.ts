@@ -622,7 +622,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/database/clipboarddatabase.cpp" line="13"/>
         <source>Clipboard</source>
-        <translation type="unfinished">Clipboard</translation>
+        <translation>Clipboard</translation>
     </message>
 </context>
 <context>
