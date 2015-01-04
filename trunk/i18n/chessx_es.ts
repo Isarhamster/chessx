@@ -597,7 +597,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/database/clipboarddatabase.cpp" line="13"/>
         <source>Clipboard</source>
-        <translation type="unfinished">Portapapeles</translation>
+        <translation>Portapapeles</translation>
     </message>
 </context>
 <context>
@@ -967,7 +967,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/exttool.cpp" line="75"/>
         <source>: File not found</source>
-        <translation type="unfinished">: Archivo no encontrado</translation>
+        <translation>: Archivo no encontrado</translation>
     </message>
 </context>
 <context>

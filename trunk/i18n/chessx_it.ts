@@ -599,7 +599,7 @@ Controllare l&apos;installazione.</translation>
     <message>
         <location filename="../src/database/clipboarddatabase.cpp" line="13"/>
         <source>Clipboard</source>
-        <translation type="unfinished">Appunti</translation>
+        <translation>Appunti</translation>
     </message>
 </context>
 <context>
@@ -971,7 +971,7 @@ Controllare l&apos;installazione.</translation>
     <message>
         <location filename="../src/gui/exttool.cpp" line="75"/>
         <source>: File not found</source>
-        <translation type="unfinished">: File non trovato</translation>
+        <translation>: File non trovato</translation>
     </message>
 </context>
 <context>
