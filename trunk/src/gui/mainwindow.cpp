@@ -317,6 +317,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     restoreRecentFiles();
     connect(m_databaseList, SIGNAL(raiseRequest()), dbListDock, SLOT(raise()));
+    connect(this, SIGNAL(signalGameModeChanged(bool)), m_databaseList, SLOT(setDisabled(bool)));
 
     /* Recent files */
     m_recentFiles.restore();
@@ -338,6 +339,7 @@ MainWindow::MainWindow() : QMainWindow(),
     openingDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
     openingDock->hide();
     connect(this, SIGNAL(signalDatabaseOpenClose()), this, SLOT(slotUpdateOpeningTreeWidget()));
+    connect(this, SIGNAL(signalGameModeChanged(bool)), m_openingTreeWidget, SLOT(setDisabled(bool)));
 
     /* Analysis Dock */
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
@@ -359,6 +361,7 @@ MainWindow::MainWindow() : QMainWindow(),
     analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F2);
     analysisDock->hide();
     connect(this, SIGNAL(signalGameLoaded()), analysis, SLOT(slotUciNewGame()));
+    connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setDisabled(bool)));
 
     m_mainAnalysis = analysis;
 
@@ -382,6 +385,7 @@ MainWindow::MainWindow() : QMainWindow(),
     analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F3);
     analysisDock2->hide();
     connect(this, SIGNAL(signalGameLoaded()), analysis, SLOT(slotUciNewGame()));
+    connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setDisabled(bool)));
 
     /* Randomize */
     srand(time(0));
@@ -1196,7 +1200,7 @@ void MainWindow::setupActions()
     }
     file->addSeparator();
 
-    QAction* commitAction = createAction(tr("&Save"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S, fileToolBar, ":/images/save.png");
+    QAction* commitAction = createAction(tr("Save Database"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S, fileToolBar, ":/images/save.png");
     commitAction->setToolTip(tr("Commit Database to disk"));
     connect(this, SIGNAL(signalCurrentDBisReadWrite(bool)), commitAction, SLOT(setEnabled(bool)));
     file->addAction(commitAction);
