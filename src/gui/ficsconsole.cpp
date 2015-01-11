@@ -222,7 +222,6 @@ void FicsConsole::SendMove(QString m)
 {
     if (gameMode || puzzleMode)
     {
-        puzzleMode = true;
         m_ficsClient->sendCommand(m);
         if (gameMode)
         {
@@ -512,10 +511,14 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     ui->listRelay->addItem(s);
                     ui->listRelay->scrollToBottom();
                 }
-                else
+                else if (s.startsWith("There are"))
                 {
                     ui->listRelay->addItem(s);
                     ui->listRelay->scrollToBottom();
+                }
+                else if (s.contains("tell relay next"))
+                {
+                    m_ficsClient->sendCommand("xtell relay next");
                 }
             }
             break;
@@ -593,6 +596,14 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 puzzleMode = true;
             }
             break;
+        case FicsClient::BLKCMD_FORWARD:
+            if (!s.contains("goes"))
+            {
+                ui->textIn->appendPlainText(s);
+                ui->tabWidget->setCurrentIndex(TabMessage);
+            }
+            break;
+        case FicsClient::BLKCMD_BACKWARD:
         case FicsClient::BLKCMD_MEXAMINE:
         case FicsClient::BLKCMD_GAME_MOVE:
         case FicsClient::BLKCMD_TELL:

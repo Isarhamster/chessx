@@ -132,7 +132,7 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
         }
     }
 
-    ProcessUnblockedMessage(s);
+    ProcessUnblockedMessage(s.trimmed());
 
     if (end >= 0)
     {
