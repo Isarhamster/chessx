@@ -295,7 +295,7 @@ void NagSet::InitNagStringListLong()
                         tr("Dubious Move") <<
                         tr("Only Move") <<
                         tr("Only Move") <<
-                        tr("Blunder") <<
+                        tr("Worst Move") <<
                         tr("Equal") <<
                         tr("Equal") <<
                         tr("Equal") <<
