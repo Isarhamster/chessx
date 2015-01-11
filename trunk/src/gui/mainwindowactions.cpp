@@ -2410,7 +2410,7 @@ void MainWindow::slotBookBuildError(QString /*path*/)
 
 void MainWindow::slotToggleGameMode()
 {
-    enterGameMode(m_match->isChecked());
+    enterGameMode(qobject_cast<QAction*>(sender())->isChecked());
 }
 
 void MainWindow::slotFlipView(bool flip)
