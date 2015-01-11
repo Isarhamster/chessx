@@ -50,6 +50,9 @@ class SaveRestoreMoveCompact;
 
 */
 
+typedef QHash<QString, QString> TagMap;
+typedef QHashIterator<QString, QString> TagMapIterator;
+
 class Game : public QObject
 {
     Q_OBJECT
@@ -302,7 +305,7 @@ public :
     /** @return value of the given tag */
     QString tag(const QString& tag) const;
     /** @return a map of all tags in the game */
-    const QMap<QString, QString> &tags() const;
+    const TagMap &tags() const;
     /** Sets the value of the given tag */
     void setTag(const QString& tag, const QString& value);
     /** Query existance of tag */
@@ -418,7 +421,7 @@ private:
     AnnotationMap m_annotations;
 
     /** Map keeping pgn tags of the game */
-    QMap<QString, QString> m_tags;
+    TagMap m_tags;
 
     // **** memory  management methods ****
     /** Remove all removed nodes */

@@ -1689,7 +1689,7 @@ bool Game::hasTag(const QString& tag) const
     return m_tags.contains(tag);
 }
 
-const QMap<QString, QString>& Game::tags() const
+const TagMap& Game::tags() const
 {
     return m_tags;
 }

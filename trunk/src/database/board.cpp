@@ -11,10 +11,11 @@
  ***************************************************************************/
 
 #include <QFile>
+#include <QHash>
 #include "board.h"
 #include "guess.h"
 
-QMap<quint64, QList<Square> > ecoGuessPositions;
+QHash<quint64, QList<Square> > ecoGuessPositions;
 
 Board::Board()
     : m_hashValue(0)
