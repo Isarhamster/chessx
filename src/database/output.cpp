@@ -691,7 +691,7 @@ QString Output::writeGameComment(QString comment) const
 QString Output::writeAllTags() const
 {
     QString text;
-    QMap<QString, QString> tags = m_game.tags();
+    TagMap tags = m_game.tags();
     // write standard tags
     for(int i = 0; i < 7; ++i)
     {
@@ -700,7 +700,7 @@ QString Output::writeAllTags() const
     }
 
     // write other tags written in ascii order, as suggested by standard
-    QMapIterator<QString, QString> it(tags);
+    TagMapIterator it(tags);
     while(it.hasNext())
     {
         it.next();
@@ -716,7 +716,7 @@ QString Output::writeAllTags() const
 QString Output::writeBasicTagsHTML() const
 {
     QString text;
-    QMap<QString, QString> tags = m_game.tags();
+    TagMap tags = m_game.tags();
 
     QString eco = tags[TagNameECO].left(3);
     if(eco == "?")

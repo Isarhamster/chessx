@@ -89,7 +89,7 @@ void TagDialog::validateTag(int /*row*/, int column)
 
 bool TagDialog::editTags(Index* index, Game& game, GameId id)
 {
-    const QMap<QString, QString>& tags = game.tags();
+    const TagMap& tags = game.tags();
     int row = 0;
     foreach(QString key, tags.keys())
     {

@@ -53,8 +53,8 @@ void MemoryDatabase::setModified(bool b)
 bool MemoryDatabase::appendGame(const Game& game)
 {
     // Add to index
-    QMap <QString, QString> tags = game.tags();
-    QMap <QString, QString>::const_iterator i = tags.constBegin();
+    TagMap tags = game.tags();
+    TagMap::const_iterator i = tags.constBegin();
     m_count = m_index.add();
     while(i != tags.constEnd())
     {
@@ -92,8 +92,8 @@ bool MemoryDatabase::replace(GameId gameId, Game& game)
         return false;
     }
     // Update index
-    QMap <QString, QString> tags = game.tags();
-    QMap <QString, QString>::const_iterator i = tags.constBegin();
+    TagMap tags = game.tags();
+    TagMap::const_iterator i = tags.constBegin();
     while(i != tags.constEnd())
     {
         m_index.setTag(i.key(), i.value(), gameId);
