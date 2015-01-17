@@ -15,7 +15,7 @@
 #include "common.h"
 #include <QList>
 #include <QDataStream>
-
+#include <QHash>
 
 
 /** @ingroup Database
@@ -33,6 +33,8 @@
  using notation: tag name + tag value for others.
  When this is fixed, Output::writeAllTags() should be adjusted.
 */
+
+typedef QHash<TagIndex, ValueIndex> MapTagToValue;
 
 class IndexItem
 {
@@ -54,13 +56,13 @@ public:
     /** Reads the data of the instance from a QDataStream.
      * All data is cleared first. */
     void read(QDataStream& in);
-    const QMap<TagIndex, ValueIndex>& getTagMapping() const
+    const MapTagToValue& getTagMapping() const
     {
         return m_mapTagIndexToValueIndex;
     }
 
 private:
-    QMap<TagIndex, ValueIndex> m_mapTagIndexToValueIndex;
+    MapTagToValue m_mapTagIndexToValueIndex;
 };
 
 #endif	// __INDEXITEM_H__
