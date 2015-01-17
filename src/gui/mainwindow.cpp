@@ -1614,6 +1614,7 @@ void MainWindow::SimpleSaveGame()
     if(dbInfo && dbInfo->gameNeedsSaving())
     {
         saveGame(dbInfo);
+        emit databaseModified();
     }
 }
 
