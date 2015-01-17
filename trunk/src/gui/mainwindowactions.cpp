@@ -1144,18 +1144,19 @@ void MainWindow::slotGameSaveOnly()
     else
     {
         SimpleSaveGame();
-        newGame();
     }
 }
 
 void MainWindow::slotGameEditTags()
 {
-    if (databaseInfo()->currentIndex()>=0)
+    DatabaseInfo* dbInfo = databaseInfo();
+    if (dbInfo->currentIndex()>=0)
     {
         TagDialog dlg(this);
-        if (dlg.editTags(database()->index(), game(),databaseInfo()->currentIndex()))
+        if (dlg.editTags(database()->index(), game(),dbInfo->currentIndex()))
         {
-            databaseInfo()->saveGame();
+            saveGame(dbInfo);
+            emit databaseModified();
         }
     }
 }
