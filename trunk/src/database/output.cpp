@@ -699,15 +699,17 @@ QString Output::writeAllTags() const
         tags.remove(StandardTags[i]);
     }
 
+    QList<QString> keys = tags.keys();
+    qSort(keys);
+
     // write other tags written in ascii order, as suggested by standard
-    TagMapIterator it(tags);
-    while(it.hasNext())
+    foreach(QString key,keys)
     {
-        it.next();
+        QString value = tags.value(key);
         // workaround for problems with IndexItem implementation
-        if(!it.value().isEmpty() && it.value() != "?" && it.value() != PDInvalidDate.asString() && it.key() != "Length")
+        if(!value.isEmpty() && value != "?" && value != PDInvalidDate.asString() && key != "Length")
         {
-            text += writeTag(it.key(), it.value());
+            text += writeTag(key, value);
         }
     }
     return text;
