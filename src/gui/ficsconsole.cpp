@@ -21,6 +21,8 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     m_bWhiteToMove(true),
     m_prevTab(TabMessage)
 {
+    setObjectName("FicsConsole");
+
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(TabMessage);
 
