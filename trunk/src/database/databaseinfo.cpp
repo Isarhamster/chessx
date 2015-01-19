@@ -116,6 +116,7 @@ void DatabaseInfo::close()
 
     m_database = NULL;
     m_filter = NULL;
+    disconnect(m_undoStack, SIGNAL(cleanChanged(bool)));
     m_undoStack->clear();
 }
 
