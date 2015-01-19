@@ -13,7 +13,7 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
 {
     setObjectName("PlayerListWidget");
     ui->setupUi(this);
-    m_filterModel = new QStringListModel(this);
+    m_filterModel = new QStringListModel(ui->tagList);
     ui->tagList->setModel(m_filterModel);
 
     setObjectName("PlayerListWidget");

@@ -13,7 +13,7 @@ EventListWidget::EventListWidget(QWidget *parent) :
 {
     setObjectName("EventListWidget");
     ui->setupUi(this);
-    m_filterModel = new QStringListModel(this);
+    m_filterModel = new QStringListModel(ui->tagList);
     ui->tagList->setModel(m_filterModel);
 
     setObjectName("EventListWidget");

@@ -18,7 +18,7 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_openingTree = new OpeningTree(this);
+    m_openingTree = new OpeningTree(ui->OpeningTreeView);
     
     ui->OpeningTreeView->setObjectName("OpeningTree");
     ui->OpeningTreeView->setSortingEnabled(true);
