@@ -13,7 +13,7 @@ ECOListWidget::ECOListWidget(QWidget *parent) :
 {
     setObjectName("ECOListWidget");
     ui->setupUi(this);
-    m_filterModel = new QStringListModel(this);
+    m_filterModel = new QStringListModel(ui->tagList);
     ui->tagList->setModel(m_filterModel);
     ui->renameItem->setVisible(false);
 
