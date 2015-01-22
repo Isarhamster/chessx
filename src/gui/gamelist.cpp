@@ -33,9 +33,9 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setObjectName("GameList");
     setWindowTitle(tr("Game list"));
-    m_model = new FilterModel(filter, this);
+    m_model = new FilterModel(filter);
 
-    sortModel = new GameListSortModel(this);
+    sortModel = new GameListSortModel(0);
     sortModel->setSourceModel(m_model);
     sortModel->setDynamicSortFilter(false);
     setModel(sortModel);
@@ -62,6 +62,7 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 
 GameList::~GameList()
 {
+    setModel(0);
     delete sortModel;
     delete m_model;
 }
@@ -172,26 +173,31 @@ void GameList::selectNextGame()
 void GameList::setFilter(Filter* filter)
 {
     setSortingEnabled(false);
+    horizontalHeader()->setSortIndicatorShown(false);
+
+    setModel(0);
+
+    delete m_model;
+
+    delete sortModel;
+    sortModel = 0;
+
     if (filter)
     {
+        m_model = new FilterModel(filter);
         if (filter->count() > 4096)
         {
             setModel(m_model);
-            delete sortModel;
-            sortModel = 0;
         }
         else
         {
-            if (!sortModel)
-            {
-                sortModel = new GameListSortModel(this);
-                sortModel->setSourceModel(m_model);
-                sortModel->setDynamicSortFilter(false);
-            }
+            sortModel = new GameListSortModel(0);
+            sortModel->setSourceModel(m_model);
+            sortModel->setDynamicSortFilter(false);
             setModel(sortModel);
         }
 
-        m_model->setFilter(filter);
+        horizontalHeader()->setSortIndicatorShown(!!sortModel);
         setSortingEnabled(!!sortModel);
     }
     emit raiseRequest();
