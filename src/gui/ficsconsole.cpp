@@ -93,9 +93,10 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     button->setText(tr("Cancel"));
     button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     ui->btBoxPuzzle->addButton(button, QDialogButtonBox::ActionRole);
-    connect(button, SIGNAL(clicked()), this, SLOT(SlotSendUnexamine()));
+    connect(button, SIGNAL(clicked()), SLOT(SlotSendUnexamine()));
 
-    connect(ui->btSeek, SIGNAL(clicked()), this, SLOT(SlotSendSeek()));
+    connect(ui->btSeek, SIGNAL(clicked()), SLOT(SlotSendSeek()));
+    connect(ui->btSay, SIGNAL(clicked()), SLOT(SlotSayMessage()));
 
 #ifndef FICS_DEBUG
     ui->line->setVisible(false);
@@ -324,7 +325,15 @@ void FicsConsole::SlotSendSeek()
     m_ficsClient->sendCommand(QString("seek %1 %2 %3")
             .arg(ui->seekTime->value())
             .arg(ui->seekIncrement->value())
-            .arg(ui->cbRated->currentText()));
+                              .arg(ui->cbRated->currentText()));
+}
+
+void FicsConsole::SlotSayMessage()
+{
+    QString msg = ui->sayMessage->text();
+    m_ficsClient->sendCommand(QString("say %1").arg(msg));
+    ui->sayMessage->clear();
+    ui->textIn->appendHtml(QString("<i>%1</i>").arg(msg));
 }
 
 void FicsConsole::SlotGameModeChanged(bool newMode)
@@ -566,6 +575,11 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 ui->textIn->appendPlainText(s);
                 emit SignalGameResult(s);
             }
+            break;
+        case FicsClient::BLKCMD_SAY:
+            s.remove(QRegExp("[^:]*:"));
+            ui->textIn->appendHtml(QString("<b>%1<b>").arg(s));
+            ui->tabWidget->setCurrentIndex(TabMessage);
             break;
         case FicsClient::BLKCMD_NULL:
             ui->textIn->appendPlainText(s);
