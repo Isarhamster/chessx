@@ -443,13 +443,13 @@ MainWindow::MainWindow() : QMainWindow(),
     statusBar()->setSizeGripEnabled(true);
     m_progressBar = new QProgressBar();
 
-    /* Reconfigure. */
-    slotReconfigure();
-
     /* Very late as this will update other widgets */
     connect(this, SIGNAL(databaseModified()), SLOT(slotDatabaseModified()));
     connect(this, SIGNAL(signalDatabaseOpenClose()), this, SLOT(updateMenuDatabases()));
     CreateBoardView();
+
+    /* Setup the dimensions of all widgets and the main board */
+    slotReconfigure();
 
     /* Display main window */
     show();
@@ -1356,7 +1356,7 @@ void MainWindow::setupActions()
 
     QAction* match = createAction(tr("Match"), SLOT(slotToggleGameMode()), Qt::CTRL + Qt::Key_M, gameToolBar, ":/images/black_chess.png");
     match->setCheckable(true);
-    m_gameModeGroup->addAction(match);
+
     autoGroup2->addAction(match);
     autoGroup->addAction(match);
     gameMenu->addAction(match);
