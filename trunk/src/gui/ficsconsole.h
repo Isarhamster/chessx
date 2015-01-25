@@ -67,6 +67,7 @@ protected slots:
     void SlotSendHint();
     void SlotSendUnexamine();
     void SlotSendSeek();
+    void SlotSayMessage();
 
 signals:
     void ReceivedBoard(int cmd, QString s);

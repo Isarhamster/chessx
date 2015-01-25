@@ -185,6 +185,10 @@ void FicsClient::ProcessUnblockedMessage(QString s)
                 emit receivedMessage(BLKCMD_INTERNAL_MATCH_END,s);
             }
         }
+        else if (s.contains("tells you") || s.contains("says:"))
+        {
+            emit receivedMessage(BLKCMD_SAY,s);
+        }
         else if (m_cmd != BLKCMD_NULL)
         {
             emit receivedMessage(m_cmd,s);
