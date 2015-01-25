@@ -861,7 +861,7 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
             }
         }
     }
-    else if (button & Qt::LeftButton)
+    else if ((button & Qt::LeftButton) && (button & Qt::ShiftModifier))
     {
         bool twoSquares = (s != from && from != InvalidSquare);
         if (twoSquares)
@@ -1702,9 +1702,6 @@ void MainWindow::copyDatabase(QString target, QString src)
 
         if(pDestDBInfo && pSrcDB && pDestDB && (pSrcDB != pDestDB))
         {
-            QString msg;
-            msg = tr("Append games from %1 to %2.").arg(pSrcDB->name()).arg(pDestDB->name());
-            slotStatusMessage(msg);
             for(int i = 0; i < (int)pSrcDB->count(); ++i)
             {
                 Game g;
@@ -1713,6 +1710,9 @@ void MainWindow::copyDatabase(QString target, QString src)
                     pDestDB->appendGame(g);
                 }
             }
+            QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name()).arg(pDestDB->name());
+            slotStatusMessage(msg);
+
             pDestDBInfo->filter()->resize(pDestDB->count(), true);
         }
         else if(!pSrcDB && !pDestDB && (src != target))
@@ -2427,6 +2427,11 @@ void MainWindow::enterGameMode(bool gameMode)
     if (gameMode)
     {
         m_openingTreeWidget->cancel();
+        m_boardView->setFlags(m_boardView->flags() | BoardView::IgnoreSideToMove);
+    }
+    else
+    {
+        m_boardView->setFlags(m_boardView->flags() & ~BoardView::IgnoreSideToMove);
     }
     setGameMode(gameMode);
     m_ficsConsole->SlotGameModeChanged(gameMode);
