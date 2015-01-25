@@ -45,6 +45,7 @@ public:
     * @p IgnoreSideToMove - allow dragging all pieces (useful for setting up a position)
     */
     void setFlags(int flags);
+    int flags() const;
     /** Update and shows current position. */
     void setBoard(const Board& value, int from = InvalidSquare, int to = InvalidSquare, bool atLineEnd = true);
     /** @return displayed position. */
