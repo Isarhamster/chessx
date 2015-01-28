@@ -341,7 +341,7 @@ void MainWindow::slotReconfigure()
     {
         setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowTabbedDocks | QMainWindow::AllowNestedDocks);
     }
-#ifdef Q_OS_WIN
+#ifdef Q_OS_WINXX
     if(AppSettings->getValue("/MainWindow/StayOnTop").toBool())
     {
         SetWindowPos((HWND)winId(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
@@ -377,7 +377,7 @@ void MainWindow::UpdateMaterial()
 
 void MainWindow::slotToggleStayOnTop()
 {
-#ifdef Q_OS_WIN
+#ifdef Q_OS_WINXX
     QAction* stayOnTop = (QAction*) sender();
     if(stayOnTop)
     {
