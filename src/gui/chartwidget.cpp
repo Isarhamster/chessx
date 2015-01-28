@@ -100,6 +100,7 @@ void ChartWidget::updatePly()
 
 void ChartWidget::updatePolygon()
 {
+    setUpdatesEnabled(false);
     m_polygon.clear();
     if (m_values.count()>1)
     {
@@ -120,5 +121,6 @@ void ChartWidget::updatePolygon()
             ++i;
         }
     }
+    setUpdatesEnabled(true);
 }
 
