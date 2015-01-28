@@ -216,8 +216,14 @@ void TelnetClient::send(QString s)
         if (m_socket->state() == QAbstractSocket::ConnectedState)
         {
             s.append("\n");
-            m_socket->write(s.toLatin1());
-            m_socket->flush();
+            if (m_socket->write(s.toLatin1()) < 0)
+            {
+                exitSession();
+            }
+            else
+            {
+                m_socket->flush();
+            }
         }
     }
     else
@@ -226,8 +232,14 @@ void TelnetClient::send(QString s)
         {
             s.append("\n");
             QByteArray b = s.toLatin1();
-            m_extToolProcess->write(b);
-            m_extToolProcess->waitForBytesWritten(1000);
+            if (m_extToolProcess->write(b) < 0)
+            {
+                exitSession();
+            }
+            else
+            {
+                m_extToolProcess->waitForBytesWritten(1000);
+            }
         }
         else
         {
