@@ -118,10 +118,6 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
         {
             m_cmd = BLKCMD_INTERNAL_OTHER;
         }
-        else if (s.contains(QRegExp("^[\\s]* says:"))) // opponent tells
-        {
-            m_cmd = BLKCMD_INTERNAL_OTHER;
-        }
         else if (s.contains("offers you a draw"))
         {
             m_cmd = BLKCMD_INTERNAL_OTHER;
@@ -185,7 +181,7 @@ void FicsClient::ProcessUnblockedMessage(QString s)
                 emit receivedMessage(BLKCMD_INTERNAL_MATCH_END,s);
             }
         }
-        else if (s.contains("tells you") || s.contains("says:"))
+        else if ((s.contains("tells you") || s.contains("says:")) && !s.contains("ROBOadmin"))
         {
             emit receivedMessage(BLKCMD_SAY,s);
         }

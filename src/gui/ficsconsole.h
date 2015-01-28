@@ -68,6 +68,7 @@ protected slots:
     void SlotSendUnexamine();
     void SlotSendSeek();
     void SlotSayMessage();
+    void SlotAddNoPlay();
 
 signals:
     void ReceivedBoard(int cmd, QString s);
@@ -84,7 +85,6 @@ private:
     Ui::FicsConsole *ui;
     QPointer<FicsClient> m_ficsClient;
     QString m_lastHistoryPlayer;
-    QStringList m_transportList;
     QButtonGroup* btgSeek;
     bool gameMode;
     bool puzzleMode;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>560</width>
-    <height>344</height>
+    <width>671</width>
+    <height>387</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="tabMessages">
       <attribute name="title">
@@ -296,105 +296,154 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_8">
        <item>
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Time Control</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="topMargin">
-           <number>6</number>
-          </property>
-          <property name="bottomMargin">
-           <number>6</number>
-          </property>
-          <item>
-           <widget class="QRadioButton" name="btLightning">
-            <property name="text">
-             <string>Lightning</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="btBlitz">
-            <property name="minimumSize">
-             <size>
-              <width>19</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Blitz</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="btStandard">
-            <property name="text">
-             <string>Standard</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QListWidget" name="listSeeks"/>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_3">
-         <property name="title">
-          <string>Offer a game</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Minutes</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSpinBox" name="seekTime"/>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Increment</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSpinBox" name="seekIncrement"/>
-          </item>
-          <item>
-           <widget class="QComboBox" name="cbRated">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QGroupBox" name="groupBoxSeek">
+           <property name="title">
+            <string>Seeks</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_14">
             <item>
-             <property name="text">
-              <string>rated</string>
-             </property>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="title">
+               <string>Time Control</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <property name="topMargin">
+                <number>6</number>
+               </property>
+               <property name="bottomMargin">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QRadioButton" name="btLightning">
+                 <property name="text">
+                  <string>Lightning</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="btBlitz">
+                 <property name="minimumSize">
+                  <size>
+                   <width>19</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Blitz</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="btStandard">
+                 <property name="text">
+                  <string>Standard</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
             </item>
             <item>
-             <property name="text">
-              <string>unrated</string>
-             </property>
+             <widget class="QListWidget" name="listSeeks"/>
             </item>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="btSeek">
-            <property name="text">
-             <string>Seek</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+            <item>
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>Offer a game</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>Minutes</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="seekTime"/>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_2">
+                 <property name="text">
+                  <string>Increment</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="seekIncrement"/>
+               </item>
+               <item>
+                <widget class="QComboBox" name="cbRated">
+                 <item>
+                  <property name="text">
+                   <string>rated</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>unrated</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="btSeek">
+                 <property name="text">
+                  <string>Seek</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_5">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>No play list</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_13">
+            <item>
+             <widget class="QListWidget" name="listNoPlay"/>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_8">
+              <item>
+               <widget class="QLineEdit" name="editNoPlay"/>
+              </item>
+              <item>
+               <widget class="QToolButton" name="btAddNoPlay">
+                <property name="text">
+                 <string>...</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../resources.qrc">
+                  <normaloff>:/images/plus.png</normaloff>:/images/plus.png</iconset>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>

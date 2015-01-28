@@ -96,7 +96,12 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     connect(button, SIGNAL(clicked()), SLOT(SlotSendUnexamine()));
 
     connect(ui->btSeek, SIGNAL(clicked()), SLOT(SlotSendSeek()));
+
+    connect(ui->sayMessage, SIGNAL(returnPressed()), SLOT(SlotSayMessage()));
     connect(ui->btSay, SIGNAL(clicked()), SLOT(SlotSayMessage()));
+
+    connect(ui->btAddNoPlay, SIGNAL(clicked()), SLOT(SlotAddNoPlay()));
+    connect(ui->editNoPlay, SIGNAL(returnPressed()), SLOT(SlotAddNoPlay()));
 
 #ifndef FICS_DEBUG
     ui->line->setVisible(false);
@@ -336,6 +341,15 @@ void FicsConsole::SlotSayMessage()
     ui->textIn->appendHtml(QString("<i>%1</i>").arg(msg));
 }
 
+void FicsConsole::SlotAddNoPlay()
+{
+    QString msg = ui->editNoPlay->text();
+    m_ficsClient->sendCommand(QString("+noplay %1").arg(msg));
+    ui->editNoPlay->clear();
+    ui->listNoPlay->clear();
+    m_ficsClient->sendCommand("=noplay");
+}
+
 void FicsConsole::SlotGameModeChanged(bool newMode)
 {
     gameMode = newMode;
@@ -414,6 +428,14 @@ void FicsConsole::Disconnected()
 {
     ui->textIn->appendPlainText(tr("Disconnected"));
     ui->tabWidget->setCurrentIndex(TabMessage);
+    m_lastHistoryPlayer.clear();
+    ui->listNoPlay->clear();
+    ui->listSeeks->clear();
+    ui->listGames->clear();
+    ui->listPlayers->clear();
+    ui->listPuzzlebotMessages->clear();
+    gameMode = false;
+    puzzleMode = false;
 }
 
 void FicsConsole::SlotTabChanged(int tab)
@@ -463,6 +485,10 @@ void FicsConsole::SlotTabClicked(int tab)
     case TabSeeks:
         ui->listSeeks->clear();
         m_ficsClient->sendCommand("set seek 1");
+        if (ui->listNoPlay->count()==0)
+        {
+            m_ficsClient->sendCommand("=noplay");
+        }
         break;
     }
 }
@@ -574,6 +600,16 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 emit RequestGameMode(gameMode);
                 ui->textIn->appendPlainText(s);
                 emit SignalGameResult(s);
+            }
+            break;
+        case FicsClient::BLKCMD_SHOWLIST:
+            if (!s.contains("--"))
+            {
+                QStringList l = s.split(" ", QString::SkipEmptyParts);
+                foreach(QString name, l)
+                {
+                    ui->listNoPlay->addItem(name);
+                }
             }
             break;
         case FicsClient::BLKCMD_SAY:
