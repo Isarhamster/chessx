@@ -165,9 +165,12 @@ void GameList::selectPreviousGame()
 void GameList::selectNextGame()
 {
     QModelIndex sortIndex = currentIndex();
-    int row = std::min(m_model->filter()->count(), sortIndex.row()+1);
-    QModelIndex sourceIndex = GetSourceIndex(NewSortIndex(row));
-    emit selected(m_model->filter()->indexToGame(sourceIndex.row()));
+    int row = sortIndex.row();
+    if ((r>=0) && (row + 1 < m_model->filter()->count()))
+    {
+        QModelIndex sourceIndex = GetSourceIndex(NewSortIndex(row+1));
+        emit selected(m_model->filter()->indexToGame(sourceIndex.row()));
+    }
 }
 
 void GameList::setFilter(Filter* filter)
