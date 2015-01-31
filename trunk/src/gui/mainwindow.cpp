@@ -858,6 +858,10 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
         m_databaseList->addFileOpen("FICS", false);
         ActivateDatabase("FICS");
     }
+    else if (fname == "Clipboard")
+    {
+        ActivateDatabase("Clipboard");
+    }
 }
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
