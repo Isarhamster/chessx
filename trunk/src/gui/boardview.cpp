@@ -259,6 +259,15 @@ void BoardView::drawPieces(QPaintEvent* event)
             continue;
         }
 
+        if(m_dragged != Empty)
+        {
+            Square from = squareAt(m_dragStart);
+            if (from == square)
+            {
+                continue;
+            }
+        }
+
         QPoint pos = posFromSquare(square);
 
         p.drawPixmap(pos, m_theme.piece(m_board.pieceAt(square)));
