@@ -166,7 +166,7 @@ void GameList::selectNextGame()
 {
     QModelIndex sortIndex = currentIndex();
     int row = sortIndex.row();
-    if ((r>=0) && (row + 1 < m_model->filter()->count()))
+    if ((row>=0) && (row + 1 < m_model->filter()->count()))
     {
         QModelIndex sourceIndex = GetSourceIndex(NewSortIndex(row+1));
         emit selected(m_model->filter()->indexToGame(sourceIndex.row()));
