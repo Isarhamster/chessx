@@ -28,26 +28,27 @@ macx {
 }
 
 FORMS += \
-	src/gui/preferences.ui \
-	src/gui/boardsetup.ui \
-	src/gui/quicksearch.ui \
-	src/gui/savedialog.ui \
-	src/gui/analysiswidget.ui \
-	src/gui/copydialog.ui \
-	src/gui/commentdialog.ui \
+    src/dialogs/savedialog.ui \
+    src/dialogs/copydialog.ui \
+    src/dialogs/renametagdialog.ui \
+    src/dialogs/aboutdlg.ui \
+    src/dialogs/promotiondialog.ui \
+    src/dialogs/actiondialog.ui \
+    src/dialogs/dlgsavebook.ui \
+    src/dialogs/boardsearchdialog.ui \
+    src/dialogs/recipientaddressdialog.ui \
+    src/dialogs/commentdialog.ui \
+    src/gui/tagdialog.ui \
     src/gui/engineoptiondialog.ui \
+    src/gui/preferences.ui \
+    src/gui/boardsetup.ui \
+    src/gui/quicksearch.ui \
+    src/gui/analysiswidget.ui \
     src/gui/tagdetailwidget.ui \
-    src/gui/renametagdialog.ui \
     src/gui/openingtreewidget.ui \
     src/gui/loadquery.ui \
-    src/gui/aboutdlg.ui \
-    src/gui/promotiondialog.ui \
-    src/gui/actiondialog.ui \
-    src/gui/dlgsavebook.ui \
-    src/gui/boardsearchdialog.ui \
-    src/gui/tagdialog.ui \
-    src/gui/recipientaddressdialog.ui \
     src/gui/ficsconsole.ui
+
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
@@ -106,16 +107,13 @@ HEADERS += src/database/board.h \
 	src/gui/boardtheme.h \
 	src/gui/boardsetup.h \
 	src/gui/colorlist.h \
-	src/gui/savedialog.h \
 	src/gui/gamelist.h \
 	src/gui/chessbrowser.h \
 	src/gui/ecothread.h \
 	src/gui/quicksearch.h \
 	src/gui/analysiswidget.h \
 	src/gui/tableview.h \
-	src/gui/copydialog.h \
 	src/gui/messagedialog.h \
-	src/gui/commentdialog.h \
 	src/gui/plaintextedit.h \
     src/gui/databaselist.h \
     src/gui/databaselistmodel.h \
@@ -150,7 +148,6 @@ HEADERS += src/database/board.h \
     src/gui/qled.h \
     src/gui/eventlistwidget.h \
     src/database/eventinfo.h \
-    src/gui/renametagdialog.h \
     src/gui/openingtreewidget.h \
     src/gui/ecolistwidget.h \
     src/database/ecoinfo.h \
@@ -158,31 +155,35 @@ HEADERS += src/database/board.h \
     src/gui/loadquery.h \
     src/guess/compileeco.h \
     src/database/pdbtest.h \
-    src/gui/aboutdlg.h \
-    src/gui/promotiondialog.h \
-    src/gui/actiondialog.h \
     src/gui/kbaction.h \
     src/gui/translatingslider.h \
     src/gui/exclusiveactiongroup.h \
-    src/gui/dlgsavebook.h \
     src/database/polyglotdatabase.h \
     src/database/openingtreethread.h \
     src/database/movedata.h \
     src/database/polyglotwriter.h \
     src/gui/shellhelper.h \
-    src/gui/boardsearchdialog.h \
     src/database/ctgdatabase.h \
     src/database/ctgbookwriter.h \
     src/database/telnetclient.h \
     src/database/ficsclient.h \
     src/gui/tagdialog.h \
     src/gui/style.h \
-    src/gui/recipientaddressdialog.h \
     src/gui/chartwidget.h \
     src/gui/ficsconsole.h \
     src/database/clipboarddatabase.h \
     src/database/ficsdatabase.h \
-    src/gui/exttool.h
+    src/gui/exttool.h \
+    src/dialogs/aboutdlg.h \
+    src/dialogs/actiondialog.h \
+    src/dialogs/boardsearchdialog.h \
+    src/dialogs/commentdialog.h \
+    src/dialogs/copydialog.h \
+    src/dialogs/dlgsavebook.h \
+    src/dialogs/promotiondialog.h \
+    src/dialogs/recipientaddressdialog.h \
+    src/dialogs/renametagdialog.h \
+    src/dialogs/savedialog.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -233,16 +234,13 @@ SOURCES += src/database/board.cpp \
 	src/gui/boardview.cpp \
 	src/gui/boardtheme.cpp \
 	src/gui/boardsetup.cpp \
-	src/gui/savedialog.cpp \
 	src/gui/gamelist.cpp \
 	src/gui/quicksearch.cpp \
 	src/gui/chessbrowser.cpp \
 	src/gui/analysiswidget.cpp \
 	src/gui/main.cpp \
 	src/gui/tableview.cpp \
-	src/gui/copydialog.cpp \
 	src/gui/messagedialog.cpp \
-	src/gui/commentdialog.cpp \
 	src/gui/plaintextedit.cpp \
     src/gui/databaselist.cpp \
     src/gui/databaselistmodel.cpp \
@@ -272,43 +270,47 @@ SOURCES += src/database/board.cpp \
     src/gui/qled.cpp \
     src/gui/eventlistwidget.cpp \
     src/database/eventinfo.cpp \
-    src/gui/renametagdialog.cpp \
     src/gui/openingtreewidget.cpp \
     src/gui/ecolistwidget.cpp \
     src/database/ecoinfo.cpp \
     src/gui/loadquery.cpp \
     src/guess/compileeco.cpp \
     src/database/pdbtest.cpp \
-    src/gui/aboutdlg.cpp \
-    src/gui/promotiondialog.cpp \
-    src/gui/actiondialog.cpp \
     src/gui/kbaction.cpp \
     src/gui/translatingslider.cpp \
     src/gui/exclusiveactiongroup.cpp \
-    src/gui/dlgsavebook.cpp \
     src/database/polyglotdatabase.cpp \
     src/database/openingtreethread.cpp \
     src/database/movedata.cpp \
     src/database/polyglotwriter.cpp \
     src/gui/shellhelper.cpp \
-    src/gui/boardsearchdialog.cpp \
     src/database/ctgdatabase.cpp \
     src/database/ctgbookwriter.cpp \
     src/database/telnetclient.cpp \
     src/database/ficsclient.cpp \
     src/gui/tagdialog.cpp \
     src/gui/style.cpp \
-    src/gui/recipientaddressdialog.cpp \
     src/gui/chartwidget.cpp \
     src/gui/ficsconsole.cpp \
     src/database/clipboarddatabase.cpp \
     src/database/ficsdatabase.cpp \
-    src/gui/exttool.cpp
+    src/gui/exttool.cpp \
+    src/dialogs/aboutdlg.cpp \
+    src/dialogs/actiondialog.cpp \
+    src/dialogs/boardsearchdialog.cpp \
+    src/dialogs/commentdialog.cpp \
+    src/dialogs/copydialog.cpp \
+    src/dialogs/dlgsavebook.cpp \
+    src/dialogs/promotiondialog.cpp \
+    src/dialogs/recipientaddressdialog.cpp \
+    src/dialogs/renametagdialog.cpp \
+    src/dialogs/savedialog.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
 INCLUDEPATH += src/guess
 INCLUDEPATH += src/gui
+INCLUDEPATH += src/dialogs
 INCLUDEPATH += src/quazip
 INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
 
