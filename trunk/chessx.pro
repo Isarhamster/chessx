@@ -424,7 +424,8 @@ macx {
     mac_osx/Info.plist \
     mac_osx/qt_menu.nib \
     data/engines-mac/uci/stockfish-5-64 \
-    data/engines-mac/uci/book.bin
+    data/engines-mac/uci/book.bin \
+    data/timeseal/mac/timeseal
 }
 
 win32 {
@@ -432,5 +433,12 @@ win32 {
     src/chessx.rc \
     src/chessx.ico
 }
+
+DISTFILES += \
+    INSTALL \
+    TODO \
+    Doxyfile \
+    License.txt \
+    README.developers
 
 

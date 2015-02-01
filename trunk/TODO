@@ -1,22 +1,13 @@
 TODO for 0.5 (Next release, technical)
-* Cleanup MessageBoxes (use text instead of Yes/No)
-* Cleanup QFileDialogs (add default suffix etc.)
-* Improve header search speed
-* Add progress for open/search
-* Add header search dialog
-* Clean up themes (separate pieces and board)
 * Clean up DatabaseInfo class
-
 
 TODO for 1.0 (Stable PGN-based version)
 * GameView
 	- display custom tags in GameView
 	- make GameView tags configurable (color, font)
-	- make tags clickable
 
 TODO for 1.5 (Extended PGN-based version)
 * File browser
-	- display file info
 	- recursively find database files
 * Searches
 	- enhanced header search
