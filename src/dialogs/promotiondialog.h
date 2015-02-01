@@ -24,10 +24,7 @@ public:
 
 protected slots:
     void setIndex();
-
-protected:
-    void showEvent(QShowEvent *);
-    void resizeEvent(QResizeEvent *);
+    void moveDialog();
 
 private:
     Ui::PromotionDialog *ui;

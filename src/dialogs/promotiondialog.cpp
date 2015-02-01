@@ -7,6 +7,8 @@
 #include "promotiondialog.h"
 #include "ui_promotiondialog.h"
 
+#include <QTimer>
+
 PromotionDialog::PromotionDialog(QWidget *parent, Color color) :
     QDialog(parent),
     ui(new Ui::PromotionDialog),
@@ -15,6 +17,10 @@ PromotionDialog::PromotionDialog(QWidget *parent, Color color) :
     BoardView view;
     view.configure();
     ui->setupUi(this);
+
+    m_pos = mapFromGlobal(QCursor::pos());
+    moveDialog();
+
     int offset = color==White ? 0 : (BlackKing-WhiteKing);
     ui->btQueen->setIcon(view.theme().piece(Piece(WhiteQueen+offset)));
     ui->btRook->setIcon(view.theme().piece(Piece(WhiteRook+offset)));
@@ -27,21 +33,14 @@ PromotionDialog::~PromotionDialog()
     delete ui;
 }
 
-void PromotionDialog::showEvent(QShowEvent* e)
-{
-    QDialog::showEvent(e);
-}
-
-void PromotionDialog::resizeEvent(QResizeEvent *)
+void PromotionDialog::moveDialog()
 {
     move(m_pos);
 }
-
 
 int PromotionDialog::getIndex()
 {
-    m_pos = mapFromGlobal(QCursor::pos());
-    move(m_pos);
+    QTimer::singleShot(1, this, SLOT(moveDialog()));
     exec();
     return m_index;
 }
