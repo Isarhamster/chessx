@@ -38,7 +38,6 @@ FORMS += \
     src/dialogs/boardsearchdialog.ui \
     src/dialogs/recipientaddressdialog.ui \
     src/dialogs/commentdialog.ui \
-    src/gui/tagdialog.ui \
     src/gui/engineoptiondialog.ui \
     src/gui/preferences.ui \
     src/gui/boardsetup.ui \
@@ -47,7 +46,8 @@ FORMS += \
     src/gui/tagdetailwidget.ui \
     src/gui/openingtreewidget.ui \
     src/gui/loadquery.ui \
-    src/gui/ficsconsole.ui
+    src/gui/ficsconsole.ui \
+    src/dialogs/tagdialog.ui
 
 
 HEADERS += src/database/board.h \
@@ -167,7 +167,6 @@ HEADERS += src/database/board.h \
     src/database/ctgbookwriter.h \
     src/database/telnetclient.h \
     src/database/ficsclient.h \
-    src/gui/tagdialog.h \
     src/gui/style.h \
     src/gui/chartwidget.h \
     src/gui/ficsconsole.h \
@@ -183,7 +182,8 @@ HEADERS += src/database/board.h \
     src/dialogs/promotiondialog.h \
     src/dialogs/recipientaddressdialog.h \
     src/dialogs/renametagdialog.h \
-    src/dialogs/savedialog.h
+    src/dialogs/savedialog.h \
+    src/dialogs/tagdialog.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -288,7 +288,6 @@ SOURCES += src/database/board.cpp \
     src/database/ctgbookwriter.cpp \
     src/database/telnetclient.cpp \
     src/database/ficsclient.cpp \
-    src/gui/tagdialog.cpp \
     src/gui/style.cpp \
     src/gui/chartwidget.cpp \
     src/gui/ficsconsole.cpp \
@@ -304,7 +303,8 @@ SOURCES += src/database/board.cpp \
     src/dialogs/promotiondialog.cpp \
     src/dialogs/recipientaddressdialog.cpp \
     src/dialogs/renametagdialog.cpp \
-    src/dialogs/savedialog.cpp
+    src/dialogs/savedialog.cpp \
+    src/dialogs/tagdialog.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

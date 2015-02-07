@@ -4041,33 +4041,33 @@ Shall I download a database?</source>
 <context>
     <name>TagDialog</name>
     <message>
-        <location filename="../src/gui/tagdialog.ui" line="14"/>
+        <location filename="../src/dialogs/tagdialog.ui" line="14"/>
         <source>Edit Tags</source>
         <translation>Editar etiquetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdialog.ui" line="30"/>
+        <location filename="../src/dialogs/tagdialog.ui" line="30"/>
         <source>Tag</source>
         <translation>Etiqueta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdialog.ui" line="38"/>
+        <location filename="../src/dialogs/tagdialog.ui" line="38"/>
         <source>Value</source>
         <translation>Valor</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdialog.ui" line="66"/>
-        <location filename="../src/gui/tagdialog.cpp" line="78"/>
+        <location filename="../src/dialogs/tagdialog.ui" line="66"/>
+        <location filename="../src/dialogs/tagdialog.cpp" line="78"/>
         <source>Deleting %1 tags</source>
         <translation>Eliminando %1 etiquetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdialog.cpp" line="49"/>
+        <location filename="../src/dialogs/tagdialog.cpp" line="49"/>
         <source>Edit tag...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdialog.cpp" line="53"/>
+        <location filename="../src/dialogs/tagdialog.cpp" line="53"/>
         <source>Enter value...</source>
         <translation type="unfinished"></translation>
     </message>

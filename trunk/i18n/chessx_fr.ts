@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>AboutDlg</name>
     <message>
@@ -715,7 +715,7 @@ Merci de vérifier votre installation.</translation>
     </message>
     <message>
         <source>: File not found</source>
-        <translation>: Fichier introuvable</translation>
+        <translation type="vanished">: Fichier introuvable</translation>
     </message>
 </context>
 <context>
@@ -759,7 +759,7 @@ Merci de vérifier votre installation.</translation>
     </message>
     <message>
         <source>Clipboard</source>
-        <translation>Presse-papiers</translation>
+        <translation type="vanished">Presse-papiers</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselistmodel.cpp" line="153"/>
@@ -1469,7 +1469,7 @@ Dois-je télécharger une base ?</translation>
     </message>
     <message>
         <source>[Clipboard]</source>
-        <translation>[Presse-papier]</translation>
+        <translation type="vanished">[Presse-papier]</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="974"/>
@@ -1543,7 +1543,7 @@ Dois-je télécharger une base ?</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Enregistrer</translation>
+        <translation type="vanished">&amp;Enregistrer</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1208"/>
@@ -2225,7 +2225,7 @@ Dois-je télécharger une base ?</translation>
     </message>
     <message>
         <source>Clipboard</source>
-        <translation>Presse-papiers</translation>
+        <translation type="vanished">Presse-papiers</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1713"/>
@@ -2281,35 +2281,35 @@ Dois-je télécharger une base ?</translation>
     </message>
     <message>
         <source>Please configure your email preferences first.</source>
-        <translation>S&apos;il vous plaît, paramétrez les EMail paramètre.</translation>
+        <translation type="vanished">S&apos;il vous plaît, paramétrez les EMail paramètre.</translation>
     </message>
     <message>
         <source>Hello</source>
-        <translation>Bonjour</translation>
+        <translation type="vanished">Bonjour</translation>
     </message>
     <message>
         <source>the attachment provides new game data.</source>
-        <translation>the attachment provides new game data.</translation>
+        <translation type="vanished">the attachment provides new game data.</translation>
     </message>
     <message>
         <source>You can open the file with ChessX.</source>
-        <translation>You can open the file with ChessX.</translation>
+        <translation type="vanished">You can open the file with ChessX.</translation>
     </message>
     <message>
         <source>Edit game tags</source>
-        <translation>Données de jeu</translation>
+        <translation type="vanished">Données de jeu</translation>
     </message>
     <message>
         <source>EMail error</source>
-        <translation>EMail erreur</translation>
+        <translation type="vanished">EMail erreur</translation>
     </message>
     <message>
         <source>EMail sent to</source>
-        <translation>EMail transmettre à</translation>
+        <translation type="vanished">EMail transmettre à</translation>
     </message>
     <message>
         <source>EMail sent</source>
-        <translation>EMail transmettre</translation>
+        <translation type="vanished">EMail transmettre</translation>
     </message>
 </context>
 <context>
@@ -3744,11 +3744,11 @@ Dois-je télécharger une base ?</translation>
     </message>
     <message>
         <source>TLS encryption</source>
-        <translation>TLS codage</translation>
+        <translation type="vanished">TLS codage</translation>
     </message>
     <message>
         <source>Sender address</source>
-        <translation>Adresse expéditeur</translation>
+        <translation type="vanished">Adresse expéditeur</translation>
     </message>
 </context>
 <context>
@@ -3996,7 +3996,7 @@ Dois-je télécharger une base ?</translation>
     </message>
     <message>
         <source>Clipboard</source>
-        <translation>Presse-papiers</translation>
+        <translation type="vanished">Presse-papiers</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.cpp" line="196"/>
@@ -4049,33 +4049,33 @@ Dois-je télécharger une base ?</translation>
 <context>
     <name>TagDialog</name>
     <message>
-        <location filename="../src/gui/tagdialog.ui" line="14"/>
+        <location filename="../src/dialogs/tagdialog.ui" line="14"/>
         <source>Edit Tags</source>
         <translation>Données de jeu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdialog.ui" line="30"/>
+        <location filename="../src/dialogs/tagdialog.ui" line="30"/>
         <source>Tag</source>
         <translation>Critère</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdialog.ui" line="38"/>
+        <location filename="../src/dialogs/tagdialog.ui" line="38"/>
         <source>Value</source>
         <translation>Valeur</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdialog.ui" line="66"/>
-        <location filename="../src/gui/tagdialog.cpp" line="78"/>
+        <location filename="../src/dialogs/tagdialog.ui" line="66"/>
+        <location filename="../src/dialogs/tagdialog.cpp" line="78"/>
         <source>Deleting %1 tags</source>
         <translation>Supprimez %1 lignes</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdialog.cpp" line="49"/>
+        <location filename="../src/dialogs/tagdialog.cpp" line="49"/>
         <source>Edit tag...</source>
         <translation>Editer tag...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdialog.cpp" line="53"/>
+        <location filename="../src/dialogs/tagdialog.cpp" line="53"/>
         <source>Enter value...</source>
         <translation>Entrer valeur...</translation>
     </message>
