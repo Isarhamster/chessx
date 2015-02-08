@@ -39,15 +39,15 @@ FORMS += \
     src/dialogs/recipientaddressdialog.ui \
     src/dialogs/commentdialog.ui \
     src/gui/engineoptiondialog.ui \
-    src/gui/preferences.ui \
     src/gui/boardsetup.ui \
-    src/gui/quicksearch.ui \
     src/gui/analysiswidget.ui \
     src/gui/tagdetailwidget.ui \
     src/gui/openingtreewidget.ui \
     src/gui/loadquery.ui \
     src/gui/ficsconsole.ui \
-    src/dialogs/tagdialog.ui
+    src/dialogs/tagdialog.ui \
+    src/dialogs/preferences.ui \
+    src/dialogs/quicksearch.ui
 
 
 HEADERS += src/database/board.h \
@@ -102,7 +102,6 @@ HEADERS += src/database/board.h \
 	src/guess/sqset.h \
 	src/guess/tokens.h \
 	src/gui/mainwindow.h \
-	src/gui/preferences.h \
 	src/gui/boardview.h \
 	src/gui/boardtheme.h \
 	src/gui/boardsetup.h \
@@ -110,7 +109,6 @@ HEADERS += src/database/board.h \
 	src/gui/gamelist.h \
 	src/gui/chessbrowser.h \
 	src/gui/ecothread.h \
-	src/gui/quicksearch.h \
 	src/gui/analysiswidget.h \
 	src/gui/tableview.h \
 	src/gui/messagedialog.h \
@@ -183,7 +181,9 @@ HEADERS += src/database/board.h \
     src/dialogs/recipientaddressdialog.h \
     src/dialogs/renametagdialog.h \
     src/dialogs/savedialog.h \
-    src/dialogs/tagdialog.h
+    src/dialogs/tagdialog.h \
+    src/dialogs/preferences.h \
+    src/dialogs/quicksearch.h
 
 SOURCES += src/database/board.cpp \
 	src/database/common.cpp \
@@ -230,12 +230,10 @@ SOURCES += src/database/board.cpp \
 	src/gui/mainwindowactions.cpp \
 	src/gui/mainwindowabout.cpp \
 	src/gui/colorlist.cpp \
-	src/gui/preferences.cpp \
 	src/gui/boardview.cpp \
 	src/gui/boardtheme.cpp \
 	src/gui/boardsetup.cpp \
 	src/gui/gamelist.cpp \
-	src/gui/quicksearch.cpp \
 	src/gui/chessbrowser.cpp \
 	src/gui/analysiswidget.cpp \
 	src/gui/main.cpp \
@@ -304,7 +302,9 @@ SOURCES += src/database/board.cpp \
     src/dialogs/recipientaddressdialog.cpp \
     src/dialogs/renametagdialog.cpp \
     src/dialogs/savedialog.cpp \
-    src/dialogs/tagdialog.cpp
+    src/dialogs/tagdialog.cpp \
+    src/dialogs/preferences.cpp \
+    src/dialogs/quicksearch.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
