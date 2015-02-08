@@ -1492,6 +1492,8 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
     {
         if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != m_boardView->board()))
         {
+            m_AutoInsertLastBoard = m_boardView->board();
+
             Analysis a = m_mainAnalysis->getMainLine();
             if(!a.variation().isEmpty())
             {
@@ -1503,8 +1505,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         slotGameAddVariation(a);
                     }
                 }
-            }
-            m_AutoInsertLastBoard = m_boardView->board();
+            }            
             slotAutoPlayTimeout();
         }
         else if (game().atLineEnd() && m_autoRespond->isChecked())

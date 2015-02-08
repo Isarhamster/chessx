@@ -318,7 +318,7 @@ void Game::dbMergeWithGame(const Game& g)
     {
         backward();
         // merge othergame starting with otherMergeNode into variation starting from m_currentNode
-        otherGame.moveToId(otherMergeNode);
+        otherGame.dbMoveToId(otherMergeNode);
         otherGame.forward();
         if(atLineEnd())
         {
@@ -328,14 +328,14 @@ void Game::dbMergeWithGame(const Game& g)
         {
             mergeAsVariation(otherGame);
         }
-        otherGame.moveToId(otherMergeNode);
+        otherGame.dbMoveToId(otherMergeNode);
         mergeVariations(otherGame);
     }
 
     // undo changes
     if(saveNode != m_currentNode)
     {
-        moveToId(saveNode);
+        dbMoveToId(saveNode);
     }
     compact();
 }
@@ -447,7 +447,7 @@ bool Game::findNextMove(Square from, Square to, PieceType promotionPiece)
                 if(m.from() == from && m.to() == to &&
                         ((promotionPiece == None) || ((m.isPromotion() && (pieceType(m.promotedPiece()) == promotionPiece)))))
                 {
-                    moveToId(*i);
+                    dbMoveToId(*i);
                     return true;
                 }
             }
@@ -571,7 +571,7 @@ MoveId Game::dbAddVariation(const MoveList& moveList, const QString& annotation)
     {
         varStart = dbAddMove(moveList.first());
     }
-    moveToId(varStart);
+    dbMoveToId(varStart);
     for(int i = start; i < moveList.count(); ++i)
     {
         dbAddMove(moveList[i]);
@@ -581,7 +581,7 @@ MoveId Game::dbAddVariation(const MoveList& moveList, const QString& annotation)
     {
         dbSetAnnotation(annotation);
     }
-    moveToId(currentPosition);
+    dbMoveToId(currentPosition);
     return varStart;
 }
 
@@ -647,7 +647,7 @@ bool Game::removeVariation(MoveId variation)
     Game state = *this;
     MoveId parentNode = m_moveNodes[variation].parentNode;
     removeNode(variation);
-    moveToId(parentNode);
+    dbMoveToId(parentNode);
 
     QList<MoveId> &vars = m_moveNodes[m_currentNode].variations;
     vars.removeAt(vars.indexOf(variation));
@@ -728,7 +728,7 @@ void Game::truncateVariation(Position position)
             m_tags[TagNameFEN] = m_startingBoard.toFen();
             m_tags[TagNameSetUp] = "1";
         }
-        moveToId(current);
+        dbMoveToId(current);
     }
     compact();
     emit signalGameModified(true, state, tr("Truncate variation"));
@@ -1533,11 +1533,11 @@ int Game::moveByPly(int diff)
     }
 }
 
-void Game::moveToId(MoveId moveId)
+bool Game::dbMoveToId(MoveId moveId)
 {
     if(nodeValid(moveId) == NO_MOVE)
     {
-        return;
+        return false;
     }
 
     if (m_currentNode != moveId)
@@ -1560,7 +1560,15 @@ void Game::moveToId(MoveId moveId)
         }
     }
 
-    indicateAnnotationsOnBoard(moveId);
+    return true;
+}
+
+void Game::moveToId(MoveId moveId)
+{
+    if (dbMoveToId(moveId))
+    {
+        indicateAnnotationsOnBoard(moveId);
+    }
 }
 
 Move Game::move(MoveId moveId) const

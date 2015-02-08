@@ -95,7 +95,7 @@ void OpeningTreeThread::run()
                     m_filter->set(i, id + 1); // not zero means success, but id could be 0.
                 }
                 m_filter->database()->loadGameHeaders(i, g);
-                g.moveToId(id);
+                g.dbMoveToId(id);
                 if(g.atGameEnd())
                 {
                     moves[Move()].addGame(g, m_board.toMove(), MoveData::GameEnd);
