@@ -668,7 +668,7 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
         m_newVariation = true;
         break;
     case ')':
-        game->moveToId(game->parentMove());
+        game->dbMoveToId(game->parentMove());
         game->forward();
         m_newVariation = false;
         m_variation = 0;

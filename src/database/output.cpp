@@ -521,7 +521,7 @@ QString Output::writeMainLine(MoveId upToNode)
                 for(int i = 0; i < variations.size(); ++i)
                 {
                     // *** Enter variation i, and write the rest of the moves
-                    m_game.moveToId(variations[i]);
+                    m_game.dbMoveToId(variations[i]);
                     text += writeVariation();
                 }
                 if(hasNext && m_options.getOptionAsBool("ColumnStyle"))
@@ -530,7 +530,7 @@ QString Output::writeMainLine(MoveId upToNode)
                 }
             }
             m_dirtyBlack = true;
-            m_game.moveToId(m_game.parentMove());
+            m_game.dbMoveToId(m_game.parentMove());
         }
         m_game.forward();
     }
@@ -571,13 +571,13 @@ QString Output::writeVariation()
                 for(int i = 0; i < variations.size(); ++i)
                 {
                     // *** Enter variation i, and write the rest of the moves
-                    m_game.moveToId(variations[i]);
+                    m_game.dbMoveToId(variations[i]);
                     text += writeVariation();
                 }
                 mustAddStart = true;
             }
             m_dirtyBlack = true;
-            m_game.moveToId(m_game.parentMove());
+            m_game.dbMoveToId(m_game.parentMove());
         }
         m_game.forward();
     }
@@ -816,7 +816,7 @@ QString Output::outputGame(const Game* g, bool upToCurrentMove)
     text += m_endTagMap[MarkupNotationBlock];
     text += m_startTagMap[MarkupResult] + m_game.tag("Result") + m_endTagMap[MarkupResult];
 
-    m_game.moveToId(id);
+    m_game.dbMoveToId(id);
 
     return text;
 }
