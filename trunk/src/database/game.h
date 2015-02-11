@@ -449,7 +449,7 @@ public:
     }
     ~SaveRestoreMove()
     {
-        m_saveGame->moveToId(m_saveMoveValue);
+        m_saveGame->dbMoveToId(m_saveMoveValue);
     }
 private:
     Game* m_saveGame;
@@ -466,7 +466,7 @@ public:
     }
     ~SaveRestoreMoveCompact()
     {
-        m_saveGame->moveToId(m_saveMoveValue);
+        m_saveGame->dbMoveToId(m_saveMoveValue);
         m_saveGame->compact();
     }
 private:

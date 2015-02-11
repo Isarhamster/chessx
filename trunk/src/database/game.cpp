@@ -184,7 +184,7 @@ bool Game::mergeVariations(Game& otherGame)
             {
                 ok = false;
             }
-            otherGame.moveToId(otherCurrent);
+            otherGame.dbMoveToId(otherCurrent);
             if(!ok)
             {
                 break;
@@ -604,7 +604,7 @@ MoveId Game::dbAddVariation(const QString& sanMove, const QString& annotation, N
 
 void Game::dbPromoteVariation(MoveId variation)
 {
-    MoveId currentNode = m_currentNode;	// Save current move
+    SaveRestoreMove saveNode(*this);
 
     // Find first move of the variation
     while(!atLineStart(variation))
@@ -621,8 +621,6 @@ void Game::dbPromoteVariation(MoveId variation)
     // Swap main line and the variation
     int index = m_moveNodes[parent].variations.indexOf(variation);
     qSwap(m_moveNodes[parent].nextNode, m_moveNodes[parent].variations[index]);
-
-    moveToId(currentNode);	// Restore current move
 }
 
 bool Game::promoteVariation(MoveId variation)
@@ -705,7 +703,7 @@ void Game::truncateVariation(Position position)
             backward();
             forward();
         }
-        MoveId current = m_currentNode;
+        SaveRestoreMove saveNode(*this);
         MoveNode firstNode;
         firstNode.nextNode = m_currentNode;
         firstNode.SetPly(m_moveNodes[m_currentNode].Ply() - 1);
@@ -728,7 +726,6 @@ void Game::truncateVariation(Position position)
             m_tags[TagNameFEN] = m_startingBoard.toFen();
             m_tags[TagNameSetUp] = "1";
         }
-        dbMoveToId(current);
     }
     compact();
     emit signalGameModified(true, state, tr("Truncate variation"));
@@ -1586,13 +1583,15 @@ void Game::moveToEnd()
     // Move out of variations to mainline
     while(m_moveNodes[m_currentNode].parentNode != NO_MOVE)
     {
-        moveToId(m_moveNodes[m_currentNode].parentNode);
+        dbMoveToId(m_moveNodes[m_currentNode].parentNode);
     }
     // Now move forward to the end of the game
     while(m_moveNodes[m_currentNode].nextNode != NO_MOVE)
     {
         forward(1);
     }
+
+    indicateAnnotationsOnBoard(m_currentNode);
 }
 
 int Game::forward(int count)
@@ -1770,7 +1769,7 @@ QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, Mo
     if(boardNode != m_currentNode)
     {
         saveNode = m_currentNode;
-        moveToId(boardNode);
+        dbMoveToId(boardNode);
     }
 
     // Move number
@@ -1803,7 +1802,7 @@ QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, Mo
     // Restore previous position
     if(saveNode != NO_MOVE)
     {
-        moveToId(saveNode);
+        dbMoveToId(saveNode);
     }
 
     return san;
