@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="it_IT">
+<TS version="2.0" language="it_IT">
 <context>
     <name>AboutDlg</name>
     <message>
@@ -717,7 +717,7 @@ Controllare l&apos;installazione.</translation>
     </message>
     <message>
         <source>: File not found</source>
-        <translation type="vanished">: File non trovato</translation>
+        <translation>: File non trovato</translation>
     </message>
 </context>
 <context>
@@ -762,7 +762,7 @@ Controllare l&apos;installazione.</translation>
     </message>
     <message>
         <source>Clipboard</source>
-        <translation type="vanished">Appunti</translation>
+        <translation>Appunti</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselistmodel.cpp" line="153"/>
@@ -979,7 +979,7 @@ Controllare l&apos;installazione.</translation>
     <message>
         <location filename="../src/database/ficsclient.cpp" line="60"/>
         <source>Connected to FICS as %1 using %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Connesso a FICS come %1 utilizzando %2</translation>
     </message>
 </context>
 <context>
@@ -992,12 +992,12 @@ Controllare l&apos;installazione.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="27"/>
         <source>Messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Messaggi</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="44"/>
         <source>Say to opponent</source>
-        <translation type="unfinished"></translation>
+        <translation>Dici all&apos;avversario</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="55"/>
@@ -1008,184 +1008,190 @@ Controllare l&apos;installazione.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="135"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation>Cronologia</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="141"/>
         <source>Double click to examine game</source>
-        <translation type="unfinished"></translation>
+        <translation>Doppio click per esaminare la partita</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="152"/>
         <source>Games</source>
-        <translation type="unfinished"></translation>
+        <translation>Partite</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="158"/>
         <location filename="../src/gui/ficsconsole.ui" line="175"/>
         <source>Double click to follow game</source>
-        <translation type="unfinished"></translation>
+        <translation>Doppio click per seguire la partita</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="169"/>
         <source>Relay</source>
-        <translation type="unfinished"></translation>
+        <translation>Trasmissione</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="186"/>
         <source>Puzzle</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>The word in English is sufficiently well known and used in Italian.</translatorcomment>
+        <translation>Puzzle</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="194"/>
         <source>Double click to get a puzzle</source>
-        <translation type="unfinished"></translation>
+        <translation>Doppio click per avere un puzzle</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="201"/>
         <source>Get Mate</source>
-        <translation type="unfinished"></translation>
+        <translation>Ottieni Matto</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="206"/>
         <source>Get Study</source>
-        <translation type="unfinished"></translation>
+        <translation>Ottieni Studio</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="211"/>
         <source>Get Tactics</source>
-        <translation type="unfinished"></translation>
+        <translation>Ottieni Tattica</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="243"/>
         <source>Messages from Puzzlebot</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Hard to translate Puzzlebot with a single word.</translatorcomment>
+        <translation>Messaggio dal programma bot del puzzle</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="256"/>
         <source>Players</source>
-        <translation type="unfinished">Giocatori</translation>
+        <translation>Giocatori</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="281"/>
         <source>Rating</source>
-        <translation type="unfinished">Punteggio</translation>
+        <translation>Punteggio</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="286"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Utente</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="295"/>
         <location filename="../src/gui/ficsconsole.ui" line="303"/>
         <source>Seeks</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>This is not really clear without context.</translatorcomment>
+        <translation>Cerca</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="309"/>
         <source>Time Control</source>
-        <translation type="unfinished">Controllo del tempo</translation>
+        <translation>Controllo del tempo</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="321"/>
         <source>Lightning</source>
-        <translation type="unfinished"></translation>
+        <translation>Lampo</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="337"/>
         <source>Blitz</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Same in Italian as in English.</translatorcomment>
+        <translation>Blitz</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="347"/>
         <source>Standard</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Same in Italian as in English.</translatorcomment>
+        <translation>Standard</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="360"/>
         <source>Offer a game</source>
-        <translation type="unfinished"></translation>
+        <translation>Proponi una partita</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="366"/>
         <source>Minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>Minuti</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="376"/>
         <source>Increment</source>
-        <translation type="unfinished"></translation>
+        <translation>Incremento</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="387"/>
         <source>rated</source>
-        <translation type="unfinished"></translation>
+        <translation>con punteggio</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="392"/>
         <source>unrated</source>
-        <translation type="unfinished"></translation>
+        <translation>senza punteggio</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="400"/>
         <source>Seek</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="419"/>
         <source>No play list</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>I am not sure which play list it refers to.</translatorcomment>
+        <translation>Nessuna lista di gioco</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="462"/>
         <source>Enter command here</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci comando qui</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="57"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Accetta</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="63"/>
         <source>Draw</source>
-        <translation type="unfinished">Patta</translation>
+        <translation>Patta</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="69"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Rifiuta</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="75"/>
         <source>Abort</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="81"/>
         <source>Resign</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbandona</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="87"/>
         <source>Hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Suggerimento</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="93"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="429"/>
         <source>Disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>Disconnesso</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="477"/>
         <source>Retrieving relayed games...</source>
-        <translation type="unfinished"></translation>
+        <translation>Recupero partite trasmesse...</translation>
     </message>
 </context>
 <context>
@@ -1467,7 +1473,7 @@ Devo caricare un database?</translation>
     </message>
     <message>
         <source>[Clipboard]</source>
-        <translation type="vanished">[Appunti]</translation>
+        <translation>[Appunti]</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="974"/>
@@ -1536,7 +1542,7 @@ Devo caricare un database?</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="vanished">&amp;Salva</translation>
+        <translation>&amp;Salva</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1208"/>
@@ -1573,7 +1579,8 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1220"/>
         <source>Mail PGN...</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Translated as &quot;Send PGN by mail&quot;.</translatorcomment>
+        <translation>Invia PGN via mail...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1224"/>
@@ -1734,7 +1741,7 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1496"/>
         <source>Load Sample Database</source>
-        <translation>Carica database di esempio...</translation>
+        <translation>Carica database campione</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1497"/>
@@ -1829,7 +1836,7 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="155"/>
         <source>FICS Console</source>
-        <translation type="unfinished"></translation>
+        <translation>Console FICS</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="239"/>
@@ -1884,7 +1891,7 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1207"/>
         <source>Save Database</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva Database</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1284"/>
@@ -2229,7 +2236,7 @@ Devo caricare un database?</translation>
     </message>
     <message>
         <source>Clipboard</source>
-        <translation type="vanished">Appunti</translation>
+        <translation>Appunti</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1713"/>
@@ -2285,35 +2292,35 @@ Devo caricare un database?</translation>
     </message>
     <message>
         <source>Please configure your email preferences first.</source>
-        <translation type="vanished">Per favore impostare EMail impostazione.</translation>
+        <translation>Per favore impostare EMail impostazione.</translation>
     </message>
     <message>
         <source>Hello</source>
-        <translation type="vanished">Buon giorno</translation>
+        <translation>Buon giorno</translation>
     </message>
     <message>
         <source>the attachment provides new game data.</source>
-        <translation type="vanished">the attachment provides new game data.</translation>
+        <translation>the attachment provides new game data.</translation>
     </message>
     <message>
         <source>You can open the file with ChessX.</source>
-        <translation type="vanished">You can open the file with ChessX.</translation>
+        <translation>You can open the file with ChessX.</translation>
     </message>
     <message>
         <source>Edit game tags</source>
-        <translation type="vanished">Modifica etichetta partita</translation>
+        <translation>Modifica etichetta partita</translation>
     </message>
     <message>
         <source>EMail error</source>
-        <translation type="vanished">EMail errore</translation>
+        <translation>EMail errore</translation>
     </message>
     <message>
         <source>EMail sent to</source>
-        <translation type="vanished">EMail inviare a</translation>
+        <translation>EMail inviare a</translation>
     </message>
     <message>
         <source>EMail sent</source>
-        <translation type="vanished">EMail inviare</translation>
+        <translation>EMail inviare</translation>
     </message>
 </context>
 <context>
@@ -2415,7 +2422,7 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/database/nag.cpp" line="298"/>
         <source>Worst Move</source>
-        <translation type="unfinished"></translation>
+        <translation>Mossa peggiore</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="299"/>
@@ -3021,7 +3028,7 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/gui/openingtreewidget.cpp" line="126"/>
         <source> (Book)</source>
-        <translation type="unfinished"></translation>
+        <translation> (Libro)</translation>
     </message>
 </context>
 <context>
@@ -3231,7 +3238,7 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/gui/preferences.cpp" line="384"/>
         <source>No further translations online available!</source>
-        <translation>Nessuna ulteriore traduzione online disponibile.</translation>
+        <translation>Nessuna ulteriore traduzione online disponibile!</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="409"/>
@@ -3445,12 +3452,12 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="1278"/>
         <source>Sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Suono</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1284"/>
         <source>Indicate opponent&apos;s move</source>
-        <translation type="unfinished"></translation>
+        <translation>Indica mossa dell&apos;avversario</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="257"/>
@@ -3496,7 +3503,8 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="1057"/>
         <source>Log in as guest</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Guest is ok in Italian.</translatorcomment>
+        <translation>Accedi come guest</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1070"/>
@@ -3506,7 +3514,8 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/gui/preferences.ui" line="1093"/>
         <source>Try to use Timeseal</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Teamseal was not translated.</translatorcomment>
+        <translation>Prova a usare Timeseal</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.ui" line="1120"/>
@@ -3760,11 +3769,11 @@ Devo caricare un database?</translation>
     </message>
     <message>
         <source>TLS encryption</source>
-        <translation type="vanished">TLS cifratura</translation>
+        <translation>TLS cifratura</translation>
     </message>
     <message>
         <source>Sender address</source>
-        <translation type="vanished">Indirrizo del mittente</translation>
+        <translation>Indirrizo del mittente</translation>
     </message>
 </context>
 <context>
@@ -3855,17 +3864,17 @@ Devo caricare un database?</translation>
     <message>
         <location filename="../src/dialogs/recipientaddressdialog.ui" line="14"/>
         <source>Recipient Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Indirizzo del ricevente</translation>
     </message>
     <message>
         <location filename="../src/dialogs/recipientaddressdialog.ui" line="20"/>
         <source>Mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Mail</translation>
     </message>
     <message>
         <location filename="../src/dialogs/recipientaddressdialog.cpp" line="52"/>
         <source>This is no valid email address.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questo non è un indirizzo mail valido.</translation>
     </message>
 </context>
 <context>
@@ -4016,7 +4025,7 @@ Devo caricare un database?</translation>
     </message>
     <message>
         <source>Clipboard</source>
-        <translation type="vanished">Appunti</translation>
+        <translation>Appunti</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.cpp" line="196"/>
@@ -4071,35 +4080,35 @@ Devo caricare un database?</translation>
 <context>
     <name>TagDialog</name>
     <message>
-        <location filename="../src/dialogs/tagdialog.ui" line="14"/>
+        <location filename="../src/gui/tagdialog.ui" line="14"/>
         <source>Edit Tags</source>
         <translation>Modifica etichetta</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tagdialog.ui" line="30"/>
+        <location filename="../src/gui/tagdialog.ui" line="30"/>
         <source>Tag</source>
         <translation>Etichetta</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tagdialog.ui" line="38"/>
+        <location filename="../src/gui/tagdialog.ui" line="38"/>
         <source>Value</source>
         <translation>Valore</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tagdialog.ui" line="66"/>
-        <location filename="../src/dialogs/tagdialog.cpp" line="78"/>
+        <location filename="../src/gui/tagdialog.ui" line="66"/>
+        <location filename="../src/gui/tagdialog.cpp" line="78"/>
         <source>Deleting %1 tags</source>
         <translation>Eliminazione %1 tag</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tagdialog.cpp" line="49"/>
+        <location filename="../src/gui/tagdialog.cpp" line="49"/>
         <source>Edit tag...</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifica etichetta...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tagdialog.cpp" line="53"/>
+        <location filename="../src/gui/tagdialog.cpp" line="53"/>
         <source>Enter value...</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci valore...</translation>
     </message>
 </context>
 </TS>
