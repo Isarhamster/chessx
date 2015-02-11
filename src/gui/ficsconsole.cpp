@@ -432,7 +432,7 @@ void FicsConsole::Disconnected()
     ui->listNoPlay->clear();
     ui->listSeeks->clear();
     ui->listGames->clear();
-    ui->listPlayers->clear();
+    ui->listPlayers->clearContents();
     ui->listPuzzlebotMessages->clear();
     gameMode = false;
     puzzleMode = false;
