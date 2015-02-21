@@ -854,13 +854,21 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
     }
     else if (fname == "FICS")
     {
-        m_ficsClient->startSession();
-        m_databaseList->addFileOpen("FICS", false);
-        ActivateDatabase("FICS");
+        openFICS();
     }
     else if (fname == "Clipboard")
     {
         ActivateDatabase("Clipboard");
+    }
+}
+
+void MainWindow::openFICS()
+{
+    if (!m_ficsClient->sessionStarted())
+    {
+        m_ficsClient->startSession();
+        m_databaseList->addFileOpen("FICS", false);
+        ActivateDatabase("FICS");
     }
 }
 
@@ -1192,6 +1200,7 @@ void MainWindow::setupActions()
     file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), QKeySequence(), fileToolBar, ":/images/new.png"));
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
+    file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence()));
     QMenu* menuRecent = file->addMenu(tr("Open &recent..."));
 
     for(int i = 0; i < MaxRecentFiles; ++i)

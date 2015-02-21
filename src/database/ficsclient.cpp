@@ -168,7 +168,7 @@ void FicsClient::ProcessUnblockedMessage(QString s)
         }
         else if (s.contains("seeking"))
         {
-            emit receivedMessage(BLKCMD_SOUGHT,s);
+            emit receivedMessage(BLKCMD_SEEK,s);
         }
         else if (s.startsWith('{'))
         {   // Handle start of game where opponent is accepting

@@ -241,6 +241,7 @@ void FicsConsole::SendMove(QString m)
 void FicsConsole::SlotSeekTimeChanged(int)
 {
     ui->listSeeks->clear();
+    m_ficsClient->sendCommand("sought");
 }
 
 QString FicsConsole::FormatTime(QString s) const
@@ -327,10 +328,15 @@ void FicsConsole::SlotSendUnexamine()
 
 void FicsConsole::SlotSendSeek()
 {
-    m_ficsClient->sendCommand(QString("seek %1 %2 %3")
-            .arg(ui->seekTime->value())
-            .arg(ui->seekIncrement->value())
-                              .arg(ui->cbRated->currentText()));
+    int t = ui->seekTime->value();
+    int inc = ui->seekIncrement->value();
+    if (t || inc)
+    {
+        m_ficsClient->sendCommand(QString("seek %1 %2 %3")
+            .arg(t)
+            .arg(inc)
+            .arg(ui->cbRated->currentIndex() ? "unrated" : "rated"));
+    }
 }
 
 void FicsConsole::SlotSayMessage()
@@ -484,6 +490,7 @@ void FicsConsole::SlotTabClicked(int tab)
         break;
     case TabSeeks:
         ui->listSeeks->clear();
+        m_ficsClient->sendCommand("sought");
         m_ficsClient->sendCommand("set seek 1");
         if (ui->listNoPlay->count()==0)
         {
@@ -564,13 +571,35 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 SetPlayerListItemsFromLine(s);
                 break;
             }
-        case FicsClient::BLKCMD_SOUGHT:
+        case FicsClient::BLKCMD_SEEK:
             {
                 QString seek = btgSeek->checkedButton()->objectName().remove(0,2).toLower();
                 if (s.contains(seek))
                 {
                     ui->listSeeks->addItem(s);
                     ui->listSeeks->scrollToBottom();
+                }
+            }
+            break;
+        case FicsClient::BLKCMD_SOUGHT:
+            {
+                QStringList l = s.split(" ",QString::SkipEmptyParts);
+                if (l.size() >= 8)
+                {
+                    QString sought = btgSeek->checkedButton()->objectName().remove(0,2).toLower();
+                    if (l[6].contains(sought))
+                    {
+                        QString spec;
+                        for (int i=5;i<l.size();++i)
+                        {
+                            spec.append(l[i]);
+                            spec.append(" ");
+                        }
+                        QString seek = QString("%1 (%2) sought %3 %4 %5(\"play %6\" to respond)").
+                                     arg(l[2]).arg(l[1]).arg(l[3]).arg(l[4]).arg(spec).arg(l[0]);
+                        ui->listSeeks->addItem(seek);
+                        ui->listSeeks->scrollToBottom();
+                    }
                 }
             }
             break;
