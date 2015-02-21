@@ -7,6 +7,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QByteArray>
 
 class QProcess;
 class QTcpSocket;
@@ -27,6 +28,7 @@ public:
 
     bool InternalTelnet() const;
 
+    bool sessionStarted() const;
 signals:
     void disconnected();
 

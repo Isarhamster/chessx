@@ -256,6 +256,11 @@ void TelnetClient::connectHost(const QString &host, int port, QString name, QStr
     }
 }
 
+bool TelnetClient::sessionStarted() const
+{
+    return (m_state > 0);
+}
+
 void TelnetClient::exitSession()
 {
     if (m_socket->state() != QAbstractSocket::UnconnectedState)
