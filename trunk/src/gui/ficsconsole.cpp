@@ -53,6 +53,16 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     connect(ui->listPlayers, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this, SLOT(HandleHistoryRequest(QTableWidgetItem*)));
     connect(ui->listSeeks, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(HandleSeekRequest(QListWidgetItem*)));
 
+    QListWidgetItem* item = new QListWidgetItem(tr("Get Mate"));
+    item->setData(Qt::UserRole, "gm");
+    ui->listPuzzle->addItem(item);
+    item = new QListWidgetItem(tr("Get Study"));
+    item->setData(Qt::UserRole, "gs");
+    ui->listPuzzle->addItem(item);
+    item = new QListWidgetItem(tr("Get Tactics"));
+    item->setData(Qt::UserRole, "gt");
+    ui->listPuzzle->addItem(item);
+
     QToolButton* button = new QToolButton(this);
     button->setText(tr("Accept"));
     button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -189,8 +199,9 @@ void FicsConsole::HandleTacticsRequest(QListWidgetItem* item)
 
     m_ficsClient->sendCommand("unexamine");
     m_ficsClient->sendCommand("unobserve");
-    QString s = item->text();
-    QString cmd = s.remove(' ').toLower();
+
+    QString cmd = item->data(Qt::UserRole).toString();
+
     QString request = "tell puzzlebot " + cmd;
     ui->listPuzzlebotMessages->clear();
     ui->listPuzzlebotMessages->addItem("Requesting puzzle...");

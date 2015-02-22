@@ -868,8 +868,8 @@ void MainWindow::openFICS()
     {
         m_ficsClient->startSession();
         m_databaseList->addFileOpen("FICS", false);
-        ActivateDatabase("FICS");
     }
+    ActivateDatabase("FICS");
 }
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
@@ -1214,7 +1214,9 @@ void MainWindow::setupActions()
     file->addSeparator();
 
     QAction* commitAction = createAction(tr("Save Database"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S, fileToolBar, ":/images/save.png");
+#ifndef QT_NO_TOOLTIP
     commitAction->setToolTip(tr("Commit Database to disk"));
+#endif // QT_NO_TOOLTIP
     connect(this, SIGNAL(signalCurrentDBisReadWrite(bool)), commitAction, SLOT(setEnabled(bool)));
     file->addAction(commitAction);
 
@@ -1268,13 +1270,17 @@ void MainWindow::setupActions()
     QMenu* editVariation = edit->addMenu(tr("Variation"));
 
     QAction* promoteAction = createAction(editVariation, tr("Promote"), SLOT(slotEditVarPromote()), Qt::CTRL + Qt::Key_J, editToolBar, ":/images/format_indent_less.png");
+#ifndef QT_NO_TOOLTIP
     promoteAction->setToolTip(tr("Promote Variation"));
+#endif // QT_NO_TOOLTIP
     connect(this, SIGNAL(signalMoveHasParent(bool)), promoteAction, SLOT(setEnabled(bool)));
     editVariation->addAction(promoteAction);
 
     QAction* removeVariationAction = createAction(editVariation, tr("Remove"), SLOT(slotEditVarRemove()),
                                      Qt::CTRL + Qt::Key_Delete, editToolBar, ":/images/edit_cut.png");
+#ifndef QT_NO_TOOLTIP
     removeVariationAction->setToolTip(tr("Remove Variation"));
+#endif // QT_NO_TOOLTIP
     connect(this, SIGNAL(signalMoveHasParent(bool)), removeVariationAction, SLOT(setEnabled(bool)));
     editVariation->addAction(removeVariationAction);
 
@@ -1406,7 +1412,9 @@ void MainWindow::setupActions()
     /* Game->Go to submenu */
     QMenu* goMenu = gameMenu->addMenu(tr("&Go to"));
     QAction* gotoFirstMove = createAction(goMenu, tr("&Start"), SLOT(slotGameMoveFirst()), Qt::Key_Home, gameToolBar, ":/images/first.png");
+#ifndef QT_NO_TOOLTIP
     gotoFirstMove->setToolTip(tr("Go to first move"));
+#endif // QT_NO_TOOLTIP
     connect(this, SIGNAL(signalMoveHasPreviousMove(bool)), gotoFirstMove, SLOT(setEnabled(bool)));
     goMenu->addAction(gotoFirstMove);
 
@@ -1419,7 +1427,9 @@ void MainWindow::setupActions()
     goMenu->addAction(actionNextMove);
 
     QAction* gotoLastMove = createAction(goMenu, tr("&End"), SLOT(slotGameMoveLast()), Qt::Key_End, gameToolBar, ":/images/last.png");
+#ifndef QT_NO_TOOLTIP
     gotoLastMove->setToolTip(tr("Go to last move"));
+#endif // QT_NO_TOOLTIP
     connect(this, SIGNAL(signalMoveHasNextMove(bool)), gotoLastMove, SLOT(setEnabled(bool)));
     goMenu->addAction(gotoLastMove);
 
