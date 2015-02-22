@@ -1,3 +1,27 @@
+February 2015: Version 1.3.0
+- New Feature: Play games on FICS with telnet or timeseal
+- New Feature: Boards now 1:1 with open databases
+- New Feature: Remove found items from filter
+
+- New feature: Allow editing arbitrary tags
+- New feature: Draw annotations whith Shit+Left-Click with last color used
+- New feature: Saving w/o dialog
+- New feature: Material profile
+- New feature: New board "lanta"
+- New feature: Allow filtering of non-active DB from OpeningTree
+- New feature: Send PGN by mail
+- New feature: load project databases from Help menu
+
+- Bugfix: Autoanalysis runs over remaining game after adding variation
+- Bugfix: Annotation menu seems to contain duplicate entry
+- Bugfix: Do not limit num pv in analysis
+- Bugfix: Pressing Shift while dragging piece creates illegal baord view
+- Bugfix: Guess generation crashes when given an illegal position
+- Bugfix: In auto responder mode, arrows where painted too late
+- Bugfix: Dialogs non-modal
+- Bugfix: Loading translations failed
+- Bugfix: Open file with relative path from commandline
+
 October 2014: Version 1.2.2
 
 - Bugfix: Entering a rook move or 0-0 did not work via keyboard
