@@ -223,6 +223,8 @@ void GameList::slotContextMenu(const QPoint& pos)
         QAction* deleteAction = menu.addAction(tr("Delete game"), this, SLOT(slotDeleteGame()));
         deleteAction->setCheckable(true);
         deleteAction->setEnabled(!m_model->filter()->database()->isReadOnly());
+        menu.addSeparator();
+        menu.addAction(tr("Hide game"), this, SLOT(slotHideGame()));
 
         QModelIndex index = GetSourceIndex(cell);
         int n = m_model->filter()->indexToGame(index.row());
@@ -413,6 +415,18 @@ void GameList::slotDeleteGame()
     }
 
     emit requestDeleteGame(gameIndexList);
+}
+
+void GameList::slotHideGame()
+{
+    QList<int> gameIndexList;
+    foreach(QModelIndex index, selectionModel()->selectedRows())
+    {
+        QModelIndex m = GetSourceIndex(index);
+        int game = m_model->filter()->indexToGame(m.row());
+        m_model->filter()->set(game, 0);
+    }
+    updateFilter();
 }
 
 void GameList::startDrag(Qt::DropActions /*supportedActions*/)

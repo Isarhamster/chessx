@@ -84,6 +84,8 @@ private slots:
     void slotCopyGame();
     /** Delete or undelete a game */
     void slotDeleteGame();
+    /** Remove a game from a filter */
+    void slotHideGame();
     /** React to a change in selected item */
     void slotItemSelected(const QModelIndex&);
 
