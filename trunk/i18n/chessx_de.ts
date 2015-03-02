@@ -1419,7 +1419,7 @@ Bitte Installation prüfen.</translation>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="227"/>
         <source>Hide game</source>
-        <translation>Partie verstecken</translation>
+        <translation>Partie ausblenden</translation>
     </message>
 </context>
 <context>
