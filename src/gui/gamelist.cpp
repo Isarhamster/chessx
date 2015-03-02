@@ -420,12 +420,19 @@ void GameList::slotDeleteGame()
 void GameList::slotHideGame()
 {
     QList<int> gameIndexList;
+    QList<int> games;
     foreach(QModelIndex index, selectionModel()->selectedRows())
     {
         QModelIndex m = GetSourceIndex(index);
         int game = m_model->filter()->indexToGame(m.row());
+        games.push_front(game);
+    }
+
+    foreach( int game, games )
+    {
         m_model->filter()->set(game, 0);
     }
+
     updateFilter();
 }
 
