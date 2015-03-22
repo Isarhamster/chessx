@@ -1915,7 +1915,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1401"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1464"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1468"/>
         <source>Auto Analysis</source>
         <translation>Analiză automată</translation>
     </message>
@@ -2227,86 +2227,86 @@ Shall I download a database?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="818"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="822"/>
         <source>Red Square</source>
         <translation>Câmp Roşu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="819"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="823"/>
         <source>Yellow Square</source>
         <translation>Câmp Galben</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="820"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="824"/>
         <source>Green Square</source>
         <translation>Câmp Verde</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="822"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="826"/>
         <source>Remove Color</source>
         <translation>Îndepărtează Culoarea</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="826"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="830"/>
         <source>Red Arrow to here</source>
         <translation>Săgeată Roşie până aici</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="827"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="831"/>
         <source>Yellow Arrow to here</source>
         <translation>Săgeată Galbenă până aici</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="828"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="832"/>
         <source>Green Arrow to here</source>
         <translation>Săgeată Verde până aici</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="830"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="834"/>
         <source>Remove Arrow to here</source>
         <translation>Îndepărtează săgeata care indică aici</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1069"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1073"/>
         <source>Load Game</source>
         <translation>Încarcă partida</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1069"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1073"/>
         <source>Game number:</source>
         <translation>Partida numărul:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1086"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1129"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1141"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1090"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1133"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1145"/>
         <source>This database is read only.</source>
         <translation>Baza de date se poate doar citi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1271"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1275"/>
         <source>Merge selected games</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1464"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1468"/>
         <source>Analysis Pane 1 is not running an engine for automatic analysis.</source>
         <translation>În panoul 1 de analiză nu rulează un motor pentru analiză automată.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1542"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1557"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1546"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1561"/>
         <source>Engine %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1579"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1583"/>
         <source>all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1654"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1688"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1658"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1692"/>
         <source>Append game %1 to %2.</source>
         <translation>Ataşează partida %1 la %2.</translation>
     </message>
@@ -2315,55 +2315,55 @@ Shall I download a database?</source>
         <translation type="vanished">Clipboard</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1714"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1729"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1718"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1733"/>
         <source>Append games from %1 to %2.</source>
         <translatorcomment>Adaugă partidele de la %1 la %2.</translatorcomment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1753"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1757"/>
         <source>You need at least two open databases to copy games</source>
         <translation>Aveţi nevoie de cel puţin două baze de date deschise pentru a copia partide</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1781"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1785"/>
         <source>%1. %2 (%3 games)</source>
         <translation>%1. %2 (%3 partide)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1860"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2211"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1864"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2215"/>
         <source>%1 - ChessX</source>
         <translation>%1 - ChessX</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1903"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1907"/>
         <source>Search ended</source>
         <translation>Căutarea finalizată</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1908"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1912"/>
         <source>Updating tree...</source>
         <translation>Actualizează arborele...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2277"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2281"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Joc nou&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2360"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2364"/>
         <source>Infinite</source>
         <translation>Infinit</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2410"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2414"/>
         <source>Could not build book</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2410"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2414"/>
         <source>Polyglot Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3337,67 +3337,67 @@ Shall I download a database?</source>
         <translation>Partidă</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="282"/>
+        <location filename="../src/dialogs/preferences.ui" line="465"/>
         <source>Autoplayer</source>
         <translation>Jucător automat</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="288"/>
+        <location filename="../src/dialogs/preferences.ui" line="471"/>
         <source>Automatically save game and continue with next</source>
         <translation>Salvează automat jocul şi continuă</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="482"/>
+        <location filename="../src/dialogs/preferences.ui" line="498"/>
         <source>&amp;Engines</source>
         <translation>&amp;Motoare de joc</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="533"/>
+        <location filename="../src/dialogs/preferences.ui" line="549"/>
         <source>Path to executable</source>
         <translation>Calea către executabil</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="546"/>
+        <location filename="../src/dialogs/preferences.ui" line="562"/>
         <source>Path where engine is started - usually place of books</source>
         <translation>Directorul unde motorul de joc se iniţializează-de obicei locaţia cărţilor</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="553"/>
+        <location filename="../src/dialogs/preferences.ui" line="569"/>
         <source>Directory:</source>
         <translation>Director:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="569"/>
+        <location filename="../src/dialogs/preferences.ui" line="585"/>
         <source>Protocol:</source>
         <translation>Protocol:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="576"/>
+        <location filename="../src/dialogs/preferences.ui" line="592"/>
         <source>Name:</source>
         <translation>Nume:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="586"/>
+        <location filename="../src/dialogs/preferences.ui" line="602"/>
         <source>Options:</source>
         <translation>Opţiuni:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="609"/>
+        <location filename="../src/dialogs/preferences.ui" line="625"/>
         <source>Command:</source>
         <translation>Comandă:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="619"/>
+        <location filename="../src/dialogs/preferences.ui" line="635"/>
         <source>Command Line Options</source>
         <translation>Opţiuni linie de comandă</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="639"/>
+        <location filename="../src/dialogs/preferences.ui" line="655"/>
         <source>Options</source>
         <translation>Opţiuni</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="675"/>
+        <location filename="../src/dialogs/preferences.ui" line="691"/>
         <source>Arbitrary name to identify engine </source>
         <translation>Nume arbitrar pentru identificarea motorului de joc</translation>
     </message>
@@ -3422,94 +3422,94 @@ Shall I download a database?</source>
         <translation>Sus</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="693"/>
+        <location filename="../src/dialogs/preferences.ui" line="709"/>
         <source>Database</source>
         <translation>Baza de date</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="699"/>
+        <location filename="../src/dialogs/preferences.ui" line="715"/>
         <source>Automatic classification with ECO Codes</source>
         <translation>Clasificare automată cu ajutorul codurilor ECO</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="706"/>
+        <location filename="../src/dialogs/preferences.ui" line="722"/>
         <source>Build index file</source>
         <translation>Constituire fişier index</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="713"/>
+        <location filename="../src/dialogs/preferences.ui" line="729"/>
         <source>Commit Database after saving Game</source>
         <translation>Scrie baza de date după salvarea partidei</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="792"/>
+        <location filename="../src/dialogs/preferences.ui" line="808"/>
         <source> MB</source>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="782"/>
+        <location filename="../src/dialogs/preferences.ui" line="798"/>
         <source>&amp;Edit PGN files smaller than:</source>
         <translation>&amp;Editează fişiere PNG mai mici decât:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="772"/>
+        <location filename="../src/dialogs/preferences.ui" line="788"/>
         <source>Number of recent files:</source>
         <translation>Numărul fişierelor recente:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="752"/>
+        <location filename="../src/dialogs/preferences.ui" line="768"/>
         <source>Default Database Path:</source>
         <translation>Calea prestabilită către baza de date:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="730"/>
+        <location filename="../src/dialogs/preferences.ui" line="746"/>
         <source>Default path for storing files</source>
         <translation>Calea prestabilită pentru salvarea fişierelor</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="824"/>
+        <location filename="../src/dialogs/preferences.ui" line="840"/>
         <source>Appearance</source>
         <translation>Vedere</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="830"/>
+        <location filename="../src/dialogs/preferences.ui" line="846"/>
         <source>Fonts for notation</source>
         <translation>Fonturi pentru notaţie</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="838"/>
+        <location filename="../src/dialogs/preferences.ui" line="854"/>
         <source>Texts</source>
         <translation>Texte</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="385"/>
-        <location filename="../src/dialogs/preferences.ui" line="396"/>
-        <location filename="../src/dialogs/preferences.ui" line="407"/>
-        <location filename="../src/dialogs/preferences.ui" line="418"/>
-        <location filename="../src/dialogs/preferences.ui" line="857"/>
-        <location filename="../src/dialogs/preferences.ui" line="896"/>
-        <location filename="../src/dialogs/preferences.ui" line="1246"/>
+        <location filename="../src/dialogs/preferences.ui" line="369"/>
+        <location filename="../src/dialogs/preferences.ui" line="380"/>
+        <location filename="../src/dialogs/preferences.ui" line="391"/>
+        <location filename="../src/dialogs/preferences.ui" line="402"/>
+        <location filename="../src/dialogs/preferences.ui" line="873"/>
+        <location filename="../src/dialogs/preferences.ui" line="912"/>
+        <location filename="../src/dialogs/preferences.ui" line="1262"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="877"/>
+        <location filename="../src/dialogs/preferences.ui" line="893"/>
         <source>Moves</source>
         <translation>Mutări</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="889"/>
+        <location filename="../src/dialogs/preferences.ui" line="905"/>
         <source>Font with Chess Symbols (Unicode)</source>
         <translation>Font cu simboluri de şah (Unicod)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="913"/>
-        <location filename="../src/dialogs/preferences.ui" line="996"/>
+        <location filename="../src/dialogs/preferences.ui" line="929"/>
+        <location filename="../src/dialogs/preferences.ui" line="1012"/>
         <source>Font Size</source>
         <translation>Mărime Font</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="298"/>
+        <location filename="../src/dialogs/preferences.ui" line="282"/>
         <source>Game Text</source>
         <translation>Text Partidă</translation>
     </message>
@@ -3520,7 +3520,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="257"/>
-        <location filename="../src/dialogs/preferences.ui" line="967"/>
+        <location filename="../src/dialogs/preferences.ui" line="983"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3530,175 +3530,185 @@ Shall I download a database?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="304"/>
+        <location filename="../src/dialogs/preferences.ui" line="288"/>
         <source>Show Diagrams</source>
         <translation>Arată Diagramele</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="311"/>
+        <location filename="../src/dialogs/preferences.ui" line="295"/>
         <source>Column Style</source>
         <translation>Stil Coloană</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="320"/>
+        <location filename="../src/dialogs/preferences.ui" line="304"/>
         <source>Keep variations inline from level</source>
         <translation>Limitază variantele la nivelul</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="341"/>
+        <location filename="../src/dialogs/preferences.ui" line="325"/>
         <source>Diagram Size</source>
         <translation>Mărimea Diagramei</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="359"/>
+        <location filename="../src/dialogs/preferences.ui" line="343"/>
         <source>Pieces</source>
         <translation>Piese</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="372"/>
+        <location filename="../src/dialogs/preferences.ui" line="356"/>
         <source>Put the initials of the pieces here, mind the initial space.</source>
         <translatorcomment>de văzut</translatorcomment>
         <translation>Pune iniţialele pieselor aici, păstrează spaţiul iniţial.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="378"/>
+        <location filename="../src/dialogs/preferences.ui" line="362"/>
         <source> KQRBN - Mind the initial space!</source>
         <translatorcomment>de văzut</translatorcomment>
         <translation> KQRBN - Păstrează spaţiul iniţial!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="447"/>
+        <location filename="../src/dialogs/preferences.ui" line="431"/>
         <source>Colors:</source>
         <translation>Culori:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="941"/>
-        <source>Application</source>
+        <location filename="../src/dialogs/preferences.ui" line="481"/>
+        <source>Automatic Promotion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="949"/>
-        <source>Show move indicator</source>
+        <location filename="../src/dialogs/preferences.ui" line="487"/>
+        <source>Always queen a pawn</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="957"/>
+        <source>Application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="965"/>
+        <source>Show move indicator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="973"/>
         <source>Automatic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="962"/>
+        <location filename="../src/dialogs/preferences.ui" line="978"/>
         <source>Always</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="977"/>
+        <location filename="../src/dialogs/preferences.ui" line="993"/>
         <source>Icons visible in menus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1057"/>
+        <location filename="../src/dialogs/preferences.ui" line="1073"/>
         <source>Log in as guest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1070"/>
+        <location filename="../src/dialogs/preferences.ui" line="1086"/>
         <source>Login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1077"/>
+        <location filename="../src/dialogs/preferences.ui" line="1093"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1093"/>
+        <location filename="../src/dialogs/preferences.ui" line="1109"/>
         <source>Try to use Timeseal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1101"/>
+        <location filename="../src/dialogs/preferences.ui" line="1117"/>
         <source>App</source>
         <translation>App</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1107"/>
+        <location filename="../src/dialogs/preferences.ui" line="1123"/>
         <source>Internet</source>
         <translation>Internet</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1113"/>
+        <location filename="../src/dialogs/preferences.ui" line="1129"/>
         <source>Use online tablebase servers</source>
         <translatorcomment>de văzut</translatorcomment>
         <translation>Utilizează serverele onlinel pentru tablebase</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1120"/>
+        <location filename="../src/dialogs/preferences.ui" line="1136"/>
         <source>Check for updates (at startup) and language packs</source>
         <translation>Verifică update-urile (la startup) şi pachetele de limbi străine</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1130"/>
+        <location filename="../src/dialogs/preferences.ui" line="1146"/>
         <source>Localization</source>
         <translation>Localizare</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1138"/>
+        <location filename="../src/dialogs/preferences.ui" line="1154"/>
         <source>Language</source>
         <translation>Limbă</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1166"/>
+        <location filename="../src/dialogs/preferences.ui" line="1182"/>
         <source>Changing the language requires restarting the application!</source>
         <translation>Schimbarea limbii necesită repornirea aplicaţiei!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1175"/>
+        <location filename="../src/dialogs/preferences.ui" line="1191"/>
         <source>Load language file from Server:</source>
         <translation>Încarca fişierul de limbaj de pe Server:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1185"/>
+        <location filename="../src/dialogs/preferences.ui" line="1201"/>
         <source>Load!</source>
         <translation>Încarcă!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1220"/>
+        <location filename="../src/dialogs/preferences.ui" line="1236"/>
         <source>External Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1226"/>
+        <location filename="../src/dialogs/preferences.ui" line="1242"/>
         <source>Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1236"/>
+        <location filename="../src/dialogs/preferences.ui" line="1252"/>
         <source>Path</source>
         <translation>Cale</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1256"/>
+        <location filename="../src/dialogs/preferences.ui" line="1272"/>
         <source>Path and filename of external program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1263"/>
+        <location filename="../src/dialogs/preferences.ui" line="1279"/>
         <source>Command line, also $(InputPath), $(InputFile)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1278"/>
+        <location filename="../src/dialogs/preferences.ui" line="1294"/>
         <source>Sound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1284"/>
+        <location filename="../src/dialogs/preferences.ui" line="1300"/>
         <source>Indicate opponent&apos;s move</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="987"/>
+        <location filename="../src/dialogs/preferences.ui" line="1003"/>
         <source>Use vertical Tabs</source>
         <translation>Utilizează taburi verticale</translation>
     </message>
@@ -3768,53 +3778,53 @@ Shall I download a database?</source>
         <translation>Avertisment</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="449"/>
+        <location filename="../src/dialogs/preferences.cpp" line="451"/>
         <source>Light squares</source>
         <translation>Câmpuri albe</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="450"/>
+        <location filename="../src/dialogs/preferences.cpp" line="452"/>
         <source>Dark squares</source>
         <translation>Câmpuri negre</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="451"/>
+        <location filename="../src/dialogs/preferences.cpp" line="453"/>
         <source>Highlighted squares</source>
         <translation>Câmpuri evidenţiate</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="262"/>
-        <location filename="../src/dialogs/preferences.cpp" line="452"/>
+        <location filename="../src/dialogs/preferences.cpp" line="454"/>
         <source>Frame</source>
         <translation>Margini</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="453"/>
+        <location filename="../src/dialogs/preferences.cpp" line="455"/>
         <source>Current move</source>
         <translation>Mutarea curentă</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="482"/>
+        <location filename="../src/dialogs/preferences.cpp" line="484"/>
         <source>[plain colors]</source>
         <translation>[culori simple]</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="506"/>
+        <location filename="../src/dialogs/preferences.cpp" line="508"/>
         <source>Main Line</source>
         <translation>Linie Principală</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="507"/>
+        <location filename="../src/dialogs/preferences.cpp" line="509"/>
         <source>Variations</source>
         <translation>Variante</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="508"/>
+        <location filename="../src/dialogs/preferences.cpp" line="510"/>
         <source>Comments</source>
         <translation>Comentarii</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="509"/>
+        <location filename="../src/dialogs/preferences.cpp" line="511"/>
         <source>NAGs</source>
         <translation>NAG-uri</translation>
     </message>
