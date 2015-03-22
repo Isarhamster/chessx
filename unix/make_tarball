@@ -11,6 +11,7 @@ rm -r win32
 rm -r win64
 rm -r data/engines
 rm -r data/engines-mac
+rm -r data/timeseal
 rm src/resource.h
 rm src/chessx.rc
 
