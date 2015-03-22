@@ -722,10 +722,14 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
         PieceType promotionPiece = None;
         if(m.isPromotion())
         {
-            int index = PromotionDialog(0,m.color()).getIndex();
-            if(index<0)
+            int index = 0;
+            if (!AppSettings->getValue("/Board/AutoPromoteToQueen").toBool())
             {
-                return;
+                index = PromotionDialog(0,m.color()).getIndex();
+                if(index<0)
+                {
+                    return;
+                }
             }
             promotionPiece = PieceType(Queen + index);
             m.setPromotionPiece(promotionPiece);

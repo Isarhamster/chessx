@@ -441,6 +441,8 @@ void PreferencesDialog::restoreSettings()
     ui.guessNextMove->setChecked(AppSettings->getValue("nextGuess").toBool());
     ui.minWheelCount->setValue(AppSettings->getValue("minWheelCount").toInt());
     ui.cbSaveAndContinue->setChecked(AppSettings->getValue("AutoSaveAndContinue").toBool());
+    ui.cbPromoteToQueen->setChecked(AppSettings->getValue("AutoPromoteToQueen").toBool());
+
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     ui.pieceEffect->setCurrentIndex(AppSettings->getValue("pieceEffect").toInt());
     QString boardTheme = AppSettings->getValue("boardTheme").toString();
@@ -558,6 +560,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());
     AppSettings->setValue("pieceEffect", ui.pieceEffect->currentIndex());
     AppSettings->setValue("AutoSaveAndContinue", QVariant(ui.cbSaveAndContinue->isChecked()));
+    AppSettings->setValue("AutoPromoteToQueen", QVariant(ui.cbPromoteToQueen->isChecked()));
     if(ui.boardThemeCombo->currentIndex() != ui.boardThemeCombo->count() - 1)
     {
         AppSettings->setValue("boardTheme", ui.boardThemeCombo->currentText());
