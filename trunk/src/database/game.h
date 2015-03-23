@@ -286,6 +286,7 @@ public :
     bool removeVariation(MoveId variation);
     /** Removes all variations and mainline moves after the current position,
     * or before the current position if @p position == BeforeMove */
+    void dbTruncateVariation(Position position = AfterMove);
     void truncateVariation(Position position = AfterMove);
     /** Removes all tags and moves */
     void clear();

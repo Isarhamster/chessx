@@ -628,9 +628,8 @@ void MainWindow::HandleFicsResultRequest(QString s)
 void MainWindow::HandleFicsRequestRemoveMove()
 {
     ActivateDatabase("FICS");
-    MoveId n = game().currentMove();
     game().backward();
-    game().removeNode(n);
+    game().dbTruncateVariation();
 }
 
 void MainWindow::FicsConnected()
@@ -649,7 +648,6 @@ void MainWindow::FicsDisconnected()
 void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
 {
     ActivateDatabase("FICS");
-
     if ((cmd == FicsClient::BLKCMD_EXAMINE) ||
        (!addRemoteMoveFrom64Char(s)) ||
        (cmd == FicsClient::BLKCMD_OBSERVE))

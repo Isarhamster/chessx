@@ -226,6 +226,16 @@ enum Char64Position
     C64_LAG
 };
 
+enum Char64Relation
+{
+    C64_REL_ISOLATED = -3,           // isolated position, such as for "ref 3" or the "sposition" command
+    C64_REL_OBSERVING_EXAMINE = -2,  // I am observing game being examined
+    C64_REL_PLAY_OPPONENT_MOVE = -1, // I am playing, it is my opponent's move
+    C64_REL_OBSERVING_PLAY = 0,      // I am observing a game being played
+    C64_REL_PLAY_MY_MOVE = 1,        // I am playing and it is my move
+    C64_REL_EXAMINE = 2              // I am the examiner of this game
+};
+
 extern quint64 bb_PawnAttacks[2][64];
 extern quint64 bb_KnightAttacks[64];
 extern quint64 bb_R45Attacks[64][64];
