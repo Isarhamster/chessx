@@ -119,7 +119,7 @@ MoveId Game::addMoveFrom64Char(const QString &qcharboard)
 {
     QStringList l = qcharboard.split(' ');
     if (l.size() < 30) return NO_MOVE;
-    int relation = l[C64_GAME_RELATION].toInt();
+    Char64Relation relation = (Char64Relation) l[C64_GAME_RELATION].toInt();
     QString s=l[C64_PP_LAST_MOVE];
     s.remove('+');
     s.remove('#');
@@ -134,7 +134,7 @@ MoveId Game::addMoveFrom64Char(const QString &qcharboard)
         emt = QString("[%emt 0:%1:%2]").arg(tl[0],-2,'0').arg(tl[1],-2,'0');
     }
 
-    if (relation == -1)
+    if (relation == C64_REL_PLAY_OPPONENT_MOVE)
     {
         if (s=="none")
         {
@@ -151,8 +151,16 @@ MoveId Game::addMoveFrom64Char(const QString &qcharboard)
     }
     else
     {
-        MoveId moveId = addMove(s,emt);
-        return moveId;
+        Color thisMoveColor = (l[C64_COLOR_TO_MOVE]=="W") ? Black : White;
+        if (thisMoveColor == board().toMove())
+        {
+            MoveId moveId = addMove(s,emt);
+            return moveId;
+        }
+        else
+        {
+            return NO_MOVE;
+        }
     }
 }
 
@@ -681,9 +689,8 @@ void Game::truncateVariationAfterNextIllegalPosition()
     }
 }
 
-void Game::truncateVariation(Position position)
+void Game::dbTruncateVariation(Position position)
 {
-    Game state = *this;
     if(position == AfterMove)
     {
         MoveId node = m_moveNodes[m_currentNode].nextNode;
@@ -728,6 +735,12 @@ void Game::truncateVariation(Position position)
         }
     }
     compact();
+}
+
+void Game::truncateVariation(Position position)
+{
+    Game state = *this;
+    dbTruncateVariation(position);
     emit signalGameModified(true, state, tr("Truncate variation"));
 }
 
