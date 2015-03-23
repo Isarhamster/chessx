@@ -15,11 +15,11 @@
 
 static bool sortEcoFrequencyLt(const EcoFrequencyItem& a1, const EcoFrequencyItem& a2)
 {
-    if(a1.second == a2.second)
+    if(a1.second.count == a2.second.count)
     {
         return (a1.first < a2.first);
     }
-    return a1.second > a2.second;
+    return a1.second.count > a2.second.count;
 }
 
 PlayerInfo::PlayerInfo()
@@ -78,7 +78,7 @@ int PlayerInfo::toResult(const QString& res) const
 
 void PlayerInfo::update()
 {
-    QHash<QString, unsigned> openings[2];
+    QHash<QString, EcoFrequencyInfo> openings[2];
     const Index* index = m_database->index();
 
     // Determine matching tag values
@@ -120,7 +120,8 @@ void PlayerInfo::update()
         QString eco = index->tagValue(TagNameECO, i).left(3);
         if(eco.length() == 3)
         {
-            openings[c][eco]++;
+            openings[c][eco].count++;
+            openings[c][eco].result[res]++;
         }
     }
 
@@ -129,8 +130,8 @@ void PlayerInfo::update()
         foreach(QString s, openings[i].keys())
         {
             m_eco[i].append(EcoFrequencyItem(s, openings[i].value(s)));
-            qSort(m_eco[i].begin(), m_eco[i].end(), sortEcoFrequencyLt);
         }
+        qSort(m_eco[i].begin(), m_eco[i].end(), sortEcoFrequencyLt);
     }
 
     qSwap(m_result[Black][WhiteWin], m_result[Black][BlackWin]);
@@ -145,7 +146,8 @@ QString PlayerInfo::formattedScore(const int result[4], int count) const
     }
     QString score = "<b>";
     QChar scoresign[4] = {'*', '+', '=', '-'};
-    for(int i = WhiteWin; i <= BlackWin; ++i)
+    score += QString("%1%2").arg(scoresign[WhiteWin]).arg(result[WhiteWin]);
+    for(int i = Draw; i <= BlackWin; ++i)
     {
         score += QString(" &nbsp;%1%2").arg(scoresign[i]).arg(result[i]);
     }
@@ -239,11 +241,22 @@ QString PlayerInfo::listOfOpenings() const
     {
         for(EcoFrequency::const_iterator it = m_eco[i].begin(); it != m_eco[i].end(); ++it)
         {
-            openingsList[i] += QString("<li><a href='eco-%1:%2'>%3</a>: %4")
+            QString score;
+            int count = (*it).second.count;
+            int resultUnknown = (*it).second.result[ResultUnknown];
+            int cResult = (*it).second.result[i == 0 ? WhiteWin : BlackWin];
+            int dResult = (*it).second.result[Draw];
+            if(count - resultUnknown)
+            {
+                score = QString(" (%1%)").arg((100.0 * cResult + 50.0 * dResult) / (count - resultUnknown), 1, 'f', 1);
+            }
+
+            openingsList[i] += QString("<li><a href='eco-%1:%2'>%3</a>: %4%5")
                                .arg(i == 0 ? "white" : "black")
                                .arg((*it).first)
                                .arg((*it).first)
-                               .arg((*it).second);
+                               .arg(count)
+                               .arg(score);
         }
     }
     QString s = openingsList.at(0);

@@ -18,7 +18,18 @@
 #include <QPair>
 
 class Database;
-typedef QPair<QString, unsigned int> EcoFrequencyItem;
+struct EcoFrequencyInfo
+{
+    unsigned int count;
+    int result[4];
+    EcoFrequencyInfo()
+    {
+        count = 0;
+        memset(result, 0, sizeof(result));
+    }
+};
+
+typedef QPair<QString, EcoFrequencyInfo> EcoFrequencyItem;
 typedef QList<EcoFrequencyItem> EcoFrequency;
 
 class PlayerInfo
