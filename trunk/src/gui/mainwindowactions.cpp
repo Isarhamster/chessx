@@ -616,6 +616,7 @@ void MainWindow::HandleFicsNewGameRequest()
 {
     ActivateDatabase("FICS");
     SimpleSaveGame();
+    newGame();
 }
 
 void MainWindow::HandleFicsResultRequest(QString s)
