@@ -615,8 +615,13 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
 void MainWindow::HandleFicsNewGameRequest()
 {
     ActivateDatabase("FICS");
-    SimpleSaveGame();
     newGame();
+}
+
+void MainWindow::HandleFicsSaveGameRequest()
+{
+    ActivateDatabase("FICS");
+    SimpleSaveGame();
 }
 
 void MainWindow::HandleFicsResultRequest(QString s)
@@ -624,6 +629,12 @@ void MainWindow::HandleFicsResultRequest(QString s)
     s = s.remove(QRegExp("\\{[^\\}]*\\}")).trimmed();
     ActivateDatabase("FICS");
     game().setResult(ResultFromString(s));
+}
+
+void MainWindow::HandleFicsAddTagRequest(QString tag,QString value)
+{
+    ActivateDatabase("FICS");
+    game().setTag(tag, value);
 }
 
 void MainWindow::HandleFicsRequestRemoveMove()

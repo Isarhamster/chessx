@@ -357,8 +357,12 @@ public slots:
     void HandleFicsBoardRequest(int, QString);
     /** Enter a result from a fics game */
     void HandleFicsResultRequest(QString s);
-    /** Enter a result from a fics game */
+    /** EStart a new game from FICS */
     void HandleFicsNewGameRequest();
+    /** Save the current game from FICS */
+    void HandleFicsSaveGameRequest();
+    /** Add a tags value to a game from FICS */
+    void HandleFicsAddTagRequest(QString tag,QString value);
 protected slots:
     /** Update recent files menu */
     void updateMenuDatabases();

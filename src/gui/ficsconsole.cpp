@@ -2,6 +2,7 @@
 *   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
+#include "common.h"
 #include "ficsconsole.h"
 #include "ficsclient.h"
 #include "settings.h"
@@ -206,6 +207,7 @@ void FicsConsole::HandleTacticsRequest(QListWidgetItem* item)
     ui->listPuzzlebotMessages->clear();
     ui->listPuzzlebotMessages->addItem("Requesting puzzle...");
     puzzleMode = true;
+    emit RequestNewGame();
     m_ficsClient->sendCommand(request);
 }
 
@@ -640,6 +642,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 emit RequestGameMode(gameMode);
                 ui->textIn->appendPlainText(s);
                 emit SignalGameResult(s);
+                emit RequestSaveGame();
             }
             break;
         case FicsClient::BLKCMD_SHOWLIST:
@@ -675,8 +678,20 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 }
                 if (s.contains("solved"))
                 {
+                    emit RequestSaveGame();
                     puzzleMode = false;
                     SlotSendUnexamine();
+                }
+                else
+                {
+                    if (s.contains("problem number"))
+                    {
+                        QString event = s;
+                        event.remove("This is ");
+                        event.remove('[');
+                        event.remove(']');
+                        emit RequestAddTag(TagNameEvent, event);
+                    }
                 }
             }
             else if (s.contains("puzzlebot backs up 1 move"))

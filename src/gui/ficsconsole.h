@@ -73,8 +73,10 @@ protected slots:
 signals:
     void ReceivedBoard(int cmd, QString s);
     void RequestNewGame();
+    void RequestSaveGame();
     void RequestGameMode(bool);
     void RequestRemoveLastMove();
+    void RequestAddTag(QString tag, QString value);
     void SignalGameResult(QString);
     void SignalPlayerIsBlack(bool);
 
