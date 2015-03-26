@@ -70,6 +70,8 @@ protected slots:
     void SlotSayMessage();
     void SlotAddNoPlay();
 
+    void SlotContextMenu(const QPoint&);
+
 signals:
     void ReceivedBoard(int cmd, QString s);
     void RequestNewGame();
@@ -79,6 +81,7 @@ signals:
     void RequestAddTag(QString tag, QString value);
     void SignalGameResult(QString);
     void SignalPlayerIsBlack(bool);
+    void RequestCloseFICS();
 
 protected:
     QString FormatTime(QString s) const;

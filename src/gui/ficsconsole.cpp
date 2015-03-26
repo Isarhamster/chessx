@@ -10,6 +10,7 @@
 #include "ui_ficsconsole.h"
 
 #include <QButtonGroup>
+#include <QMenu>
 #include <QToolButton>
 #include <QString>
 
@@ -32,6 +33,9 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     m_countDownTimer->setSingleShot(true);
     connect(m_countDownTimer, SIGNAL(timeout()), SLOT(SlotCountDownGameTime()));
 
+    ui->tabWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(ui->tabWidget, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(SlotContextMenu(const QPoint&)));
     connect(ui->tabWidget, SIGNAL(tabBarClicked(int)), SLOT(SlotTabClicked(int)));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), SLOT(SlotTabChanged(int)));
 
@@ -367,6 +371,21 @@ void FicsConsole::SlotAddNoPlay()
     ui->editNoPlay->clear();
     ui->listNoPlay->clear();
     m_ficsClient->sendCommand("=noplay");
+}
+
+void FicsConsole::SlotContextMenu(const QPoint &pos)
+{
+    if (!gameMode)
+    {
+        QMenu headerMenu;
+        QAction* closeFics = headerMenu.addAction(tr("Disconnect"));
+
+        QAction* selectedItem = headerMenu.exec(mapToGlobal(pos));
+        if (selectedItem == closeFics)
+        {
+            emit RequestCloseFICS();
+        }
+    }
 }
 
 void FicsConsole::SlotGameModeChanged(bool newMode)

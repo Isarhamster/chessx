@@ -139,5 +139,6 @@
         <file alias="images/decline.png">data/images/decline.png</file>
         <file alias="images/draw.png">data/images/draw.png</file>
         <file alias="images/hint.png">data/images/hint.png</file>
+        <file alias="sounds/fanfare.wav">data/sounds/fanfare_x.wav</file>
     </qresource>
 </RCC>

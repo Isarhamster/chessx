@@ -621,7 +621,17 @@ void MainWindow::HandleFicsNewGameRequest()
 void MainWindow::HandleFicsSaveGameRequest()
 {
     ActivateDatabase("FICS");
+    if (AppSettings->getValue("/Sound/Move").toBool())
+    {
+        QSound::play(":/sounds/fanfare.wav");
+    }
     SimpleSaveGame();
+}
+
+void MainWindow::HandleFicsCloseRequest()
+{
+    ActivateDatabase("FICS");
+    slotFileClose();
 }
 
 void MainWindow::HandleFicsResultRequest(QString s)

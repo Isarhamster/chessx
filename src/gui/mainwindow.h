@@ -363,6 +363,8 @@ public slots:
     void HandleFicsSaveGameRequest();
     /** Add a tags value to a game from FICS */
     void HandleFicsAddTagRequest(QString tag,QString value);
+    /** Close FICS upon request from the console */
+    void HandleFicsCloseRequest();
 protected slots:
     /** Update recent files menu */
     void updateMenuDatabases();
