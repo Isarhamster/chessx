@@ -171,6 +171,7 @@ void FicsConsole::HandleExamineRequest(QListWidgetItem* item)
     m_ficsClient->sendCommand("unexamine");
     m_ficsClient->sendCommand("unobserve");
     QString s = item->text();
+
     int n = s.section(':',0,0).toInt();
     if (n)
     {
@@ -227,6 +228,9 @@ void FicsConsole::HandleHistoryRequest(QTableWidgetItem* item)
         m_lastHistoryPlayer = player;
         QString request = "history " + player;
         m_ficsClient->sendCommand(request);
+
+        QString request2 = "finger " + player;
+        m_ficsClient->sendCommand(request2);
     }
 }
 
@@ -416,6 +420,10 @@ void FicsConsole::CommandStarted(int cmd)
         ui->listHistory->clear();
         ui->tabWidget->setCurrentIndex(TabHistory);
         break;
+    case FicsClient::BLKCMD_FINGER:
+        ui->listFinger->clear();
+        ui->tabWidget->setCurrentIndex(TabHistory);
+        break;
     case FicsClient::BLKCMD_GAMES:
         ui->listGames->clear();
         break;
@@ -571,6 +579,11 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                         ui->listHistory->scrollToBottom();
                     }
                 }
+            }
+            break;
+        case FicsClient::BLKCMD_FINGER:
+            {
+                ui->listFinger->addItem(s);
             }
             break;
         case FicsClient::BLKCMD_GAMES:
