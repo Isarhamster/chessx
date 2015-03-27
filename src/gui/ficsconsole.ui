@@ -20,7 +20,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabMessages">
       <attribute name="title">
@@ -158,13 +158,38 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QListWidget" name="listHistory">
-         <property name="toolTip">
-          <string>Double click to examine game</string>
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>History</string>
          </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
+         <layout class="QVBoxLayout" name="verticalLayout_16">
+          <item>
+           <widget class="QListWidget" name="listHistory">
+            <property name="toolTip">
+             <string>Double click to examine game</string>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="title">
+          <string>Finger</string>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_15">
+          <item>
+           <widget class="QListWidget" name="listFinger">
+            <property name="selectionMode">
+             <enum>QAbstractItemView::NoSelection</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -267,6 +292,12 @@
         <widget class="QTableWidget" name="listPlayers">
          <property name="alternatingRowColors">
           <bool>true</bool>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
          </property>
          <property name="showGrid">
           <bool>false</bool>
