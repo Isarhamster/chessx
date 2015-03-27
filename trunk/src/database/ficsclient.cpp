@@ -104,7 +104,10 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
         {
            QString d = regCmd.cap(1);
            m_cmd = d.toInt();
+
            qDebug() << "Command started " << m_cmd;
+
+           emit commandStarted(m_cmd);
            s = regCmd.cap(2);
         }
         else if (s.startsWith("fics%"))
