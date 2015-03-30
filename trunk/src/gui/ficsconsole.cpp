@@ -379,15 +379,25 @@ void FicsConsole::SlotAddNoPlay()
 
 void FicsConsole::SlotContextMenu(const QPoint &pos)
 {
-    if (!gameMode)
+    QWidget* w = ui->tabWidget->childAt(pos);
+    QListView* v = 0;
+    if (w)
     {
-        QMenu headerMenu;
-        QAction* closeFics = headerMenu.addAction(tr("Disconnect"));
+        v = qobject_cast<QListView*>(w->parentWidget());
+    }
 
-        QAction* selectedItem = headerMenu.exec(mapToGlobal(pos));
-        if (selectedItem == closeFics)
+    if (!v)
+    {
+        if (!gameMode)
         {
-            emit RequestCloseFICS();
+            QMenu headerMenu;
+            QAction* closeFics = headerMenu.addAction(tr("Disconnect"));
+
+            QAction* selectedItem = headerMenu.exec(mapToGlobal(pos));
+            if (selectedItem == closeFics)
+            {
+                emit RequestCloseFICS();
+            }
         }
     }
 }
