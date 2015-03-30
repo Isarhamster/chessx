@@ -1373,7 +1373,7 @@ void MainWindow::setupActions()
     connect(m_ficsConsole, SIGNAL(SignalPlayerIsBlack(bool)), flip, SLOT(setChecked(bool)));
     gameToolBar->addSeparator();
 
-    ExclusiveActionGroup* autoGroup = new ExclusiveActionGroup(this);
+    autoGroup = new ExclusiveActionGroup(this);
     ExclusiveActionGroup* autoGroup2 = new ExclusiveActionGroup(this);
 
     QAction* match = createAction(tr("Match"), SLOT(slotToggleGameMode()), Qt::CTRL + Qt::Key_M, gameToolBar, ":/images/black_chess.png");

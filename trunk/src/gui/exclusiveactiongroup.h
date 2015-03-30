@@ -18,6 +18,8 @@ public:
 
     QAction * addAction ( QAction * action );
 
+    const QAction * checkedAction() const;
+
 signals:
 
 protected slots:

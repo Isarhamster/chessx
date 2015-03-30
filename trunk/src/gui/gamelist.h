@@ -64,7 +64,7 @@ public slots:
     /** Select and show current player and ECO in the list */
     void slotFilterListByEcoPlayer(QString tag, QString eco, QString player);
     /** Select the next game from the list */
-    void selectNextGame();
+    bool selectNextGame();
     /** Select the previous game from the list */
     void selectPreviousGame();
     /** Show the context menu */

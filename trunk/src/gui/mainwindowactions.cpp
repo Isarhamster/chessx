@@ -22,6 +22,7 @@
 #include "ecolistwidget.h"
 #include "editaction.h"
 #include "eventlistwidget.h"
+#include "exclusiveactiongroup.h"
 #include "ficsclient.h"
 #include "ficsconsole.h"
 #include "game.h"
@@ -1069,9 +1070,9 @@ void MainWindow::slotGameLoadPrevious()
     m_gameList->selectPreviousGame();
 }
 
-void MainWindow::loadNextGame()
+bool MainWindow::loadNextGame()
 {
-    m_gameList->selectNextGame();
+    return (m_gameList->selectNextGame());
 }
 
 void MainWindow::slotGameLoadNext()
@@ -1092,7 +1093,10 @@ void MainWindow::slotGameLoadChosen()
 {
     int index = QInputDialog::getInt(this, tr("Load Game"), tr("Game number:"), gameIndex() + 1,
                                      1, database()->count());
-    gameLoad(index - 1);
+    if (index != gameIndex() + 1)
+    {
+        gameLoad(index - 1);
+    }
 }
 
 void MainWindow::newGame()
@@ -1270,6 +1274,12 @@ void MainWindow::slotGameModify(const EditAction& action)
         break;
     case EditAction::CopyText:
         QApplication::clipboard()->setText(m_gameView->toPlainText());
+        break;
+    case EditAction::Uncomment:
+        slotGameUncomment();
+        break;
+    case EditAction::RemoveVariations:
+        slotGameRemoveVariations();
         break;
     default:
         break;
@@ -1483,9 +1493,32 @@ void MainWindow::slotToggleAutoRespond()
 
 void MainWindow::slotToggleAutoAnalysis()
 {
-    if(m_autoAnalysis->isChecked() && !m_mainAnalysis->isEngineRunning())
+    if(m_autoAnalysis->isChecked())
     {
-        MessageDialog::information(tr("Analysis Pane 1 is not running an engine for automatic analysis."), tr("Auto Analysis"));
+        if(!m_mainAnalysis->isEngineConfigured())
+        {
+            MessageDialog::information(tr("Analysis Pane 1 is not running an engine for automatic analysis."), tr("Auto Analysis"));
+        }
+        else
+        {
+            if (game().atGameStart()) // Prevent surprising inactivity
+            {
+                if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
+                {
+                    game().moveToEnd();
+                }
+            }
+            m_mainAnalysis->unPin();
+            m_mainAnalysis->setPosition(game().board());
+            m_mainAnalysis->startEngine();
+        }
+    }
+    else
+    {
+        if (!autoGroup->checkedAction())
+        {
+            m_mainAnalysis->stopEngine();
+        }
     }
 }
 
@@ -1558,37 +1591,70 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
 
 void MainWindow::slotAutoPlayTimeout()
 {
-    MoveId moveId = game().currentMove();
-    if(game().atGameEnd() && AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
+    bool done = false;
+    if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
     {
-        if(m_autoAnalysis->isChecked())
-        {
-            QString engineAnnotation =tr("Engine %1").arg(m_mainAnalysis->displayName());
-            game().dbSetAnnotation(engineAnnotation, moveId);
-        }
-        saveGame(databaseInfo());
-        loadNextGame();
+        done = game().atGameStart();
     }
     else
     {
-        slotGameMoveNext();
-        if (AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
+        done = game().atGameEnd();
+    }
+
+    if(done)
+    {
+        AutoMoveAtEndOfGame();
+    }
+    else
+    {
+        done = false;
+        if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
         {
-            if (m_boardView->board().isCheckmate() || m_boardView->board().isStalemate())
-            {
-                if(m_autoAnalysis->isChecked())
-                {
-                    QString engineAnnotation =tr("Engine %1").arg(m_mainAnalysis->displayName());
-                    game().dbSetAnnotation(engineAnnotation);
-                }
-                saveGame(databaseInfo());
-                loadNextGame();
-            }
+            slotGameMovePrevious();
+        }
+        else
+        {
+            slotGameMoveNext();
+        }
+        if (m_boardView->board().isCheckmate() || m_boardView->board().isStalemate())
+        {
+            AutoMoveAtEndOfGame();
         }
     }
     if (m_autoPlay->isChecked())
     {
         m_autoPlayTimer->start();
+    }
+}
+
+void MainWindow::AutoMoveAtEndOfGame()
+{
+    if(m_autoAnalysis->isChecked())
+    {
+        QString engineAnnotation = tr("Engine %1").arg(m_mainAnalysis->displayName());
+        game().dbSetAnnotation(engineAnnotation, game().lastMove());
+
+        if (AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
+        {
+            saveGame(databaseInfo());
+            if (loadNextGame())
+            {
+                if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
+                {
+                    game().moveToEnd();
+                }
+            }
+            else
+            {
+                // All games finished
+                m_autoAnalysis->setChecked(false);
+            }
+        }
+        else
+        {
+            // Game finished
+            m_autoAnalysis->setChecked(false);
+        }
     }
 }
 

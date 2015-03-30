@@ -1483,6 +1483,16 @@ MoveId Game::currentMove() const
     return m_currentNode;
 }
 
+MoveId Game::lastMove() const
+{
+    MoveId moveId = 0;
+    while((m_moveNodes[moveId].nextNode != NO_MOVE))
+    {
+        moveId = m_moveNodes[moveId].nextNode;
+    }
+    return moveId;
+}
+
 const QList<MoveId>& Game::variations() const
 {
     return m_moveNodes[m_currentNode].variations;
@@ -1599,12 +1609,10 @@ void Game::moveToEnd()
         dbMoveToId(m_moveNodes[m_currentNode].parentNode);
     }
     // Now move forward to the end of the game
-    while(m_moveNodes[m_currentNode].nextNode != NO_MOVE)
+    if (!forward(999))
     {
-        forward(1);
+        indicateAnnotationsOnBoard(m_currentNode);
     }
-
-    indicateAnnotationsOnBoard(m_currentNode);
 }
 
 int Game::forward(int count)
