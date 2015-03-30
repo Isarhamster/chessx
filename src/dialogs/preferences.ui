@@ -472,6 +472,13 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QCheckBox" name="cbBackwardAnalysis">
+            <property name="text">
+             <string>Auto Analysis backwards</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>

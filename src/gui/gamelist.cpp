@@ -162,7 +162,7 @@ void GameList::selectPreviousGame()
     emit selected(m_model->filter()->indexToGame(sourceIndex.row()));
 }
 
-void GameList::selectNextGame()
+bool GameList::selectNextGame()
 {
     QModelIndex sortIndex = currentIndex();
     int row = sortIndex.row();
@@ -170,7 +170,9 @@ void GameList::selectNextGame()
     {
         QModelIndex sourceIndex = GetSourceIndex(NewSortIndex(row+1));
         emit selected(m_model->filter()->indexToGame(sourceIndex.row()));
+        return true;
     }
+    return false;
 }
 
 void GameList::setFilter(Filter* filter)

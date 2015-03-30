@@ -31,3 +31,15 @@ void ExclusiveActionGroup::slotActionToggled ( bool checked )
         }
     }
 }
+
+const QAction* ExclusiveActionGroup::checkedAction() const
+{
+    foreach(const QAction* a, actions)
+    {
+        if (a->isChecked())
+        {
+            return a;
+        }
+    }
+    return 0;
+}

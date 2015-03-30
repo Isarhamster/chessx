@@ -32,6 +32,7 @@ class ECOListWidget;
 class EcoThread;
 class EditAction;
 class EventListWidget;
+class ExclusiveActionGroup;
 class FicsClient;
 class FicsConsole;
 class Game;
@@ -439,6 +440,7 @@ protected:
     bool ActivateDatabase(QString fname);
     bool addRemoteMoveFrom64Char(QString s);
     void newGame();
+    void AutoMoveAtEndOfGame();
 signals:
     /** Re-read configuration. */
     void reconfigure();
@@ -515,7 +517,7 @@ private:
     /** Save game without query */
     void saveGame(DatabaseInfo *dbInfo);
     /** Load next game without query */
-    void loadNextGame();
+    bool loadNextGame();
     /** Save Database without query or progress bar */
     void saveDatabase(DatabaseInfo *dbInfo);
     /** Save Database with query */
@@ -580,6 +582,7 @@ private:
     Square m_annotationSquare;
     Square m_annotationSquareFrom;
     QChar m_lastColor;
+    ExclusiveActionGroup* autoGroup;
     QAction* m_training;
     QAction* m_autoRespond;
     QAction* m_autoPlay;
