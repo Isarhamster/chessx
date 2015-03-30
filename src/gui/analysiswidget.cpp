@@ -94,6 +94,12 @@ bool AnalysisWidget::isEngineRunning() const
     return m_engine && ui.analyzeButton->isChecked();
 }
 
+bool AnalysisWidget::isEngineConfigured() const
+{
+    int index = ui.engineList->currentIndex();
+    return (index != -1);
+}
+
 void AnalysisWidget::engineActivated()
 {
     ui.analyzeButton->setChecked(true);
@@ -427,7 +433,15 @@ bool AnalysisWidget::hasMainLine() const
 
 QString AnalysisWidget::displayName() const
 {
-   return ui.engineList->currentText();
+    return ui.engineList->currentText();
+}
+
+void AnalysisWidget::unPin()
+{
+    if (ui.btPin->isChecked())
+    {
+        ui.btPin->setChecked(false);
+    }
 }
 
 void AnalysisWidget::slotUciNewGame()

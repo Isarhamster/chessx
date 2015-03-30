@@ -31,9 +31,16 @@ public:
 
     /** Get the main line */
     Analysis getMainLine() const;
+    /** Analysis has a main line */
     bool hasMainLine() const;
-
+    /** Get the name of this widget */
     QString displayName() const;
+    /** Unpin the analyis (if pinned) */
+    void unPin();
+    /** Is any engine running. */
+    bool isEngineRunning() const;
+    /** Is any engine configured. */
+    bool isEngineConfigured() const;
 
 public slots:
     /** Sets new position. If analysis is active, the current content will be cleared and
@@ -47,8 +54,6 @@ public slots:
     void stopEngine();
     /** Stop game analysis when analysis dock is hidden. */
     void slotVisibilityChanged(bool);
-    /** Is any engine running. */
-    bool isEngineRunning() const;
     /** Change the movetime of the engine */
     void setMoveTime(int mt);
     /** Must send ucinewgame next time */
