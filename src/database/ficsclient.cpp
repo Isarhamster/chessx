@@ -116,19 +116,6 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
             s = s.trimmed();
             m_cmd = BLKCMD_NULL;
         }
-
-        if (s.startsWith("Challenge:"))
-        {
-            m_cmd = BLKCMD_INTERNAL_OTHER;
-        }
-        else if (s.contains("offers you a draw"))
-        {
-            m_cmd = BLKCMD_INTERNAL_OTHER;
-        }
-        else if (s.contains("would like to abort the game"))
-        {
-            m_cmd = BLKCMD_INTERNAL_OTHER;
-        }
     }
 
     ProcessUnblockedMessage(s.trimmed());
@@ -173,20 +160,13 @@ void FicsClient::ProcessUnblockedMessage(QString s)
         {
             emit receivedMessage(BLKCMD_SEEK,s);
         }
-        else if (s.startsWith('{'))
-        {   // Handle start of game where opponent is accepting
-            if (s.contains("Creating"))
-            {
-                emit receivedMessage(BLKCMD_INTERNAL_MATCH_START,s);
-            }
-            else
-            {
-                emit receivedMessage(BLKCMD_INTERNAL_MATCH_END,s);
-            }
-        }
         else if ((s.contains("tells you") || s.contains("says:")) && !s.contains("ROBOadmin"))
         {
             emit receivedMessage(BLKCMD_SAY,s);
+        }
+        else if (s.startsWith("Challenge:") || s.contains("offers you a draw") || s.contains("would like to abort the game"))
+        {
+            emit receivedMessage(BLKCMD_INTERNAL_OTHER,s);
         }
         else if (m_cmd != BLKCMD_NULL)
         {
