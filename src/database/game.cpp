@@ -2034,6 +2034,19 @@ bool Game::isEcoPosition() const
     return (m_ecoPositions.contains(key));
 }
 
+QString Game::findEcoNameDetailed(QString eco)
+{
+    foreach(QString actualEco, m_ecoPositions.values())
+    {
+        if (actualEco.startsWith(eco))
+        {
+            QString opName = actualEco.section(" ",1);
+            return opName;
+        }
+    }
+    return QString();
+}
+
 QString Game::findEcoName(QString eco)
 {
     foreach(QString actualEco, m_ecoPositions.values())
@@ -2041,6 +2054,10 @@ QString Game::findEcoName(QString eco)
         if (actualEco.startsWith(eco))
         {
             QString opName = actualEco.section(" ",1);
+            if (opName.contains(':'))
+            {
+                opName = opName.section(":",0,0);
+            }
             return opName;
         }
     }
