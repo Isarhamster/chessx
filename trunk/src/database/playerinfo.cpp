@@ -76,9 +76,15 @@ int PlayerInfo::toResult(const QString& res) const
     }
 }
 
+static bool sortIntGt(const int& a1, const int& a2)
+{
+    return a1>a2;
+}
+
 void PlayerInfo::update()
 {
     QHash<QString, EcoFrequencyInfo> openings[2];
+    QHash<QString, int> openingsX[2];
     const Index* index = m_database->index();
 
     // Determine matching tag values
@@ -123,6 +129,11 @@ void PlayerInfo::update()
             openings[c][eco].count++;
             openings[c][eco].result[res]++;
         }
+        QString ecoX = index->tagValue(TagNameECO, i).left(4);
+        if(ecoX.length() >= 3)
+        {
+            openingsX[c][ecoX]++;
+        }
     }
 
     for(int i = 0; i < 2; ++i)
@@ -132,6 +143,30 @@ void PlayerInfo::update()
             m_eco[i].append(EcoFrequencyItem(s, openings[i].value(s)));
         }
         qSort(m_eco[i].begin(), m_eco[i].end(), sortEcoFrequencyLt);
+    }
+
+    for(int i = 0; i < 2; ++i)
+    {
+        OpeningCountMap openingMap;
+        foreach(QString s, openingsX[i].keys())
+        {
+            QString opening = Game::findEcoName(s);
+            openingMap[opening] = openingMap.value(opening) + 1;
+        }
+
+        QSet<int> valset = openingMap.values().toSet();
+        QList<int> vals = valset.toList();
+        qSort( vals.begin(), vals.end(), sortIntGt );
+
+        foreach( int val, vals )
+        {
+            QList<QString> keys = openingMap.keys( val );
+            qSort( keys );
+            foreach(QString key, keys)
+            {
+                m_opening[i].append(OpeningCountItem(key,val));
+            }
+        }
     }
 
     qSwap(m_result[Black][WhiteWin], m_result[Black][BlackWin]);
@@ -187,6 +222,7 @@ void PlayerInfo::reset()
         }
         m_count[c] = 0;
         m_eco[c].clear();
+        m_opening[c].clear();
     }
     m_rating[0] = 99999;
     m_rating[1] = 0;
@@ -234,11 +270,25 @@ QString PlayerInfo::formattedRange() const
 QString PlayerInfo::listOfOpenings() const
 {
     QStringList openingsList;
-    openingsList.append(QCoreApplication::translate("PlayerInfo", "<p>White Openings:</p><ul>"));
-    openingsList.append(QCoreApplication::translate("PlayerInfo", "</ul><p>Black Openings:</p><ul>"));
+    openingsList.append(QCoreApplication::translate("PlayerInfo", "<p><a href='player:%1#%2'>White Openings:</a></p>").arg(m_name).arg(TagNameWhite));
+    openingsList.append(QCoreApplication::translate("PlayerInfo", "<p><a href='player:%1#%2'>Black Openings:</a></p>").arg(m_name).arg(TagNameBlack));
+    openingsList.append("");
 
     for(int i = 0; i < 2; ++i)
     {
+        QStringList l;
+        for(OpeningCountList::const_iterator it = m_opening[i].begin(); it != m_opening[i].end(); ++it)
+        {
+            if (((*it).second)==1) break; // leave out things played only once
+            if (((*it).second)*25<m_count[i]) break; // leave out things played rarely
+            l.append(QString("%1 (%2)").arg((*it).first).arg((*it).second));
+        }
+        openingsList[i] += l.join(", ");
+    }
+
+    for(int i = 0; i < 2; ++i)
+    {
+        openingsList[i].append("<ul>");
         for(EcoFrequency::const_iterator it = m_eco[i].begin(); it != m_eco[i].end(); ++it)
         {
             QString score;
@@ -259,8 +309,7 @@ QString PlayerInfo::listOfOpenings() const
                                .arg(score);
         }
     }
-    QString s = openingsList.at(0);
-    s = s.append(openingsList.at(1));
-    s = s.append("</ul>");
+
+    QString s = openingsList.join("</ul>");
     return s;
 }

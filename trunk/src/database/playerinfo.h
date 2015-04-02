@@ -31,6 +31,9 @@ struct EcoFrequencyInfo
 
 typedef QPair<QString, EcoFrequencyInfo> EcoFrequencyItem;
 typedef QList<EcoFrequencyItem> EcoFrequency;
+typedef QPair<QString, int> OpeningCountItem;
+typedef QHash<QString, int> OpeningCountMap;
+typedef QList<OpeningCountItem> OpeningCountList;
 
 class PlayerInfo
 {
@@ -76,6 +79,8 @@ private:
     int m_rating[2];
     EcoFrequency m_eco[2];
     PartialDate m_date[2];
+    OpeningCountList m_opening[2];
+
 };
 
 #endif
