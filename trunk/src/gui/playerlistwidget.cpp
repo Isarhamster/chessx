@@ -166,6 +166,6 @@ void PlayerListWidget::slotLinkClicked(const QUrl& url)
     }
     else if(url.scheme().startsWith("player"))
     {
-        emit filterRequest(url.path());
+        emit filterRequest(url.path()+"#"+url.fragment());
     }
 }
