@@ -309,11 +309,22 @@ void GameList::simpleSearch(int tagid)
 
 void GameList::slotFilterListByPlayer(QString s)
 {
+    QUrl url(s);
+    QString fragment = url.fragment();
     m_model->filter()->setAll(1);
-    Search* ts = new TagSearch(m_model->filter()->database(),  TagNameWhite, s);
-    Search* ts2 = new TagSearch(m_model->filter()->database(), TagNameBlack, s);
-    m_model->filter()->executeSearch(ts);
-    m_model->filter()->executeSearch(ts2, Search::Or);
+
+    if (fragment.isEmpty())
+    {
+        Search* ts = new TagSearch(m_model->filter()->database(),  TagNameWhite, url.path());
+        Search* ts2 = new TagSearch(m_model->filter()->database(), TagNameBlack, url.path());
+        m_model->filter()->executeSearch(ts);
+        m_model->filter()->executeSearch(ts2, Search::Or);
+    }
+    else
+    {
+        Search* ts = new TagSearch(m_model->filter()->database(),  fragment, url.path());
+        m_model->filter()->executeSearch(ts);
+    }
 }
 
 void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString player)
