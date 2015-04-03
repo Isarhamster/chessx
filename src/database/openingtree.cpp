@@ -115,12 +115,18 @@ void OpeningTree::moveUpdated(Board* b, QList<MoveData>* moveList)
     {
         beginResetModel();
         {
-            m_moves = *moveList;
+            if (moveList)
+            {
+                m_moves = *moveList;
+            }
+            else
+            {
+                m_moves.clear();
+            }
             doSort(m_sortcolumn, m_order);
         }
         endResetModel();
     }
-    delete moveList;
 }
 
 void OpeningTree::updateTerminated(Board*)

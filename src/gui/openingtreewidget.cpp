@@ -6,6 +6,7 @@
 #include "ui_openingtreewidget.h"
 
 #include <QModelIndex>
+#include <QPushButton>
 #include <QUndoGroup>
 #include <QUndoStack>
 
@@ -26,15 +27,18 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     ui->setupUi(this);
 
     m_openingTree = new OpeningTree(ui->OpeningTreeView);
-    m_UndoStack = new QUndoStack(this);
-    m_UndoStack->setUndoLimit(10);
 
     QUndoGroup* undoGroup = new QUndoGroup(this);
+    m_UndoStack = new QUndoStack(undoGroup);
+    m_UndoStack->setUndoLimit(10);
     undoGroup->addStack(m_UndoStack);
 
     QAction* undoAction = undoGroup->createUndoAction(this);
     undoAction->setIcon(QIcon(":/images/undo.png"));
-    ui->gbProgress->addAction(undoAction);
+
+    QPushButton* button = new QPushButton(this);
+    button->addAction(undoAction);
+    ui->gbProgress->layout()->addWidget(button);
     
     ui->OpeningTreeView->setObjectName("OpeningTree");
     ui->OpeningTreeView->setSortingEnabled(true);
