@@ -6,7 +6,7 @@
 #include "ui_openingtreewidget.h"
 
 #include <QModelIndex>
-#include <QPushButton>
+#include <QToolButton>
 #include <QUndoGroup>
 #include <QUndoStack>
 
@@ -34,10 +34,13 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     undoGroup->addStack(m_UndoStack);
 
     QAction* undoAction = undoGroup->createUndoAction(this);
-    undoAction->setIcon(QIcon(":/images/undo.png"));
 
-    QPushButton* button = new QPushButton(this);
+    QToolButton* button = new QToolButton(this);
     button->addAction(undoAction);
+    button->setIcon(QIcon(":/images/undo.png"));
+    button->setToolTip(tr("Undo"));
+    button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+
     ui->gbProgress->layout()->addWidget(button);
     
     ui->OpeningTreeView->setObjectName("OpeningTree");
@@ -82,13 +85,13 @@ Board OpeningTreeWidget::board() const
 
 bool OpeningTreeWidget::updateFilter(Filter& f, const Board& b, bool bEnd)
 {
-    m_openingBoardView->setBoard(b);
     m_UndoStack->push(new BoardUndoCommand(this,&f,b,bEnd,""));
     return doSetBoard(f, b, bEnd);
 }
 
 bool OpeningTreeWidget::doSetBoard(Filter& f, const Board& b, bool bEnd)
 {
+    m_openingBoardView->setBoard(b);
     return m_openingTree->updateFilter(f, b, ui->filterGames->isChecked(), ui->sourceSelector->currentIndex()==1, bEnd);
 }
 
