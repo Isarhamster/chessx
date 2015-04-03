@@ -63,6 +63,11 @@
 #include <windows.h>
 #endif
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 void MainWindow::slotFileNew()
 {
     QString file = QFileDialog::getSaveFileName(this, tr("New database"),

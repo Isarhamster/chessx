@@ -5,6 +5,11 @@
 
 #include "commentdialog.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 CommentDialog::TimeMode CommentDialog::lastTimeMode = CommentDialog::Egt;
 
 CommentDialog::CommentDialog(QWidget* parent, Qt::WindowFlags f) :

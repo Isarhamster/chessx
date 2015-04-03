@@ -14,6 +14,10 @@ http://doc.trolltech.com/4.0/qdatastream.html
 */
 #include "playerdatabase.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
 
 static quint32 Magic = (quint32)0xB0D0A0D0; // 'magic' number
 static quint32 Version = (quint32)100; // file format version

@@ -14,6 +14,11 @@
 #include <QToolButton>
 #include <QString>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     QWidget(parent),
     ui(new Ui::FicsConsole),

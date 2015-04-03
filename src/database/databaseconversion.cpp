@@ -14,6 +14,11 @@
 #include <QTextStream>
 #include "databaseconversion.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName, const QString& outFileName, const QString& pictureDir)
 {
 // was tested and works with ratings.ssp from january 2004

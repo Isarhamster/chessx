@@ -16,10 +16,17 @@
 #include "error.h"
 #include "misc.h"
 
+#include <QtCore>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>     // For isspace() function.
 #include <sys/stat.h>  // Needed for fileSize() function.
+
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
 
 namespace Guess
 {

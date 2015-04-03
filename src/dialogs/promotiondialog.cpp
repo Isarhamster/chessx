@@ -9,6 +9,11 @@
 
 #include <QTimer>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 PromotionDialog::PromotionDialog(QWidget *parent, Color color) :
     QDialog(parent),
     ui(new Ui::PromotionDialog),

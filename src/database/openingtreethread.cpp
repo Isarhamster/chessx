@@ -6,6 +6,11 @@
 #include "database.h"
 #include "polyglotdatabase.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 double MoveData::percentage() const
 {
     unsigned c = result[ResultUnknown] + 2 * result[WhiteWin] + result[Draw];

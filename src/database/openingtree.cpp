@@ -19,6 +19,11 @@
 #include <QPainter>
 #include <QtCore>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 const unsigned MinAveYear = 1;
 const unsigned MinAveRating = 5;
 
