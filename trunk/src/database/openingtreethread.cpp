@@ -48,7 +48,7 @@ void OpeningTreeThread::run()
     int games = 0;
     QTime updateTime = QTime::currentTime().addSecs(1);
     emit progress(0);
-    emit MoveUpdate(&m_board, new QList<MoveData>);
+    emit MoveUpdate(&m_board, 0);
     int n = m_filter->size();
     if (PolyglotDatabase* pgdb = qobject_cast<PolyglotDatabase*>(m_filter->database()))
     {
@@ -131,12 +131,12 @@ void OpeningTreeThread::run()
     *m_games = games;
     if(!m_break)
     {
-        QList<MoveData>* moveList = new QList<MoveData>();
+        QList<MoveData> moveList;
         for(QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
         {
-            moveList->append(it.value());
+            moveList.append(it.value());
         }
-        emit MoveUpdate(&m_board, moveList);
+        emit MoveUpdate(&m_board, &moveList);
         emit UpdateFinished(&m_board);
     }
     else
@@ -173,12 +173,12 @@ void OpeningTreeThread::ProgressUpdate(QMap<Move, MoveData> &moves, QTime& updat
         if(!m_break)
         {
             *m_games = games;
-            QList<MoveData>* moveList = new QList<MoveData>();
+            QList<MoveData> moveList;
             for(QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
             {
-                moveList->append(it.value());
+                moveList.append(it.value());
             }
-            emit MoveUpdate(&m_board, moveList);
+            emit MoveUpdate(&m_board, &moveList);
         }
     }
 }
