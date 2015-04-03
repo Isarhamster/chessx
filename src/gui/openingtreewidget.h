@@ -32,8 +32,8 @@ public:
 
     QString move(QModelIndex index) const;
     Board board() const;
-    bool updateFilter(Filter& f, const Board& b, bool bEnd);
-    bool doSetBoard(Filter& f, const Board& b, bool bEnd);
+    void updateFilter(Filter& f, const Board& b, bool bEnd);
+    void doSetBoard(Filter& f, const Board& b, bool bEnd);
     int getFilterIndex(QString& name) const;
     void updateFilterIndex(QStringList);
     bool shouldAddMove() const;
@@ -77,12 +77,12 @@ public:
         }
 
     QPointer<OpeningTreeWidget> m_openingTree;
-    Filter* m_filter;
+    QPointer<Filter> m_filter;
     Board m_board;
     bool m_bEnd;
 
-    virtual void undo() { m_openingTree->doSetBoard(*m_filter, m_board, m_bEnd); }
-    virtual void redo() { m_openingTree->doSetBoard(*m_filter, m_board, m_bEnd); }
+    virtual void undo() { if (m_filter && m_openingTree) m_openingTree->doSetBoard(*m_filter, m_board, m_bEnd); }
+    virtual void redo() { }
 };
 
 #endif // OPENINGTREEWIDGET_H

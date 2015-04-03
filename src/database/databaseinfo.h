@@ -15,7 +15,7 @@
 #include <QString>
 #include <QObject>
 #include <QUndoCommand>
-
+#include <QPointer>
 
 class Database;
 class Filter;
@@ -54,10 +54,7 @@ public:
         return m_database;
     }
     /** @return current filter */
-    Filter* filter()
-    {
-        return m_filter;
-    }
+    Filter* filter();
     /** @return current game  */
     Game& currentGame()
     {
@@ -132,7 +129,7 @@ public slots:
 private:
     QUndoStack* m_undoStack;
     Database* m_database;
-    Filter* m_filter;
+    QPointer<Filter> m_filter;
     Game m_game;
     QString m_filename;
     int m_index;

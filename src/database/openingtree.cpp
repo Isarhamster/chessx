@@ -54,7 +54,7 @@ OpeningTreeThread oupd;
 
 bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsFilter, bool bEnd)
 {
-    if(!oupd.isRunning())
+    if(f && !oupd.isRunning())
     {
         if(&f == m_filter && b == m_board && m_bEnd == bEnd)
         {
@@ -68,7 +68,7 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
-        connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>*)), this, SLOT(moveUpdated(Board*,QList<MoveData>*)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>)), this, SLOT(moveUpdated(Board*,QList<MoveData>)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
         return oupd.updateFilter(f, b, m_games, m_updateFilter, m_sourceIsDatabase, m_bEnd);
@@ -109,20 +109,13 @@ void OpeningTree::updateFinished(Board* b)
     }
 }
 
-void OpeningTree::moveUpdated(Board* b, QList<MoveData>* moveList)
+void OpeningTree::moveUpdated(Board* b, QList<MoveData> moveList)
 {
     if (*b == m_board)
     {
         beginResetModel();
         {
-            if (moveList)
-            {
-                m_moves = *moveList;
-            }
-            else
-            {
-                m_moves.clear();
-            }
+            m_moves = moveList;
             doSort(m_sortcolumn, m_order);
         }
         endResetModel();
@@ -136,7 +129,7 @@ void OpeningTree::updateTerminated(Board*)
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
-        connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>*)), this, SLOT(moveUpdated(Board*,QList<MoveData>*)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>)), this, SLOT(moveUpdated(Board*,QList<MoveData>)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
         oupd.updateFilter(*m_filter, m_board, m_games, m_updateFilter, m_sourceIsDatabase, m_bEnd);
@@ -191,6 +184,16 @@ QPixmap OpeningTree::paintPercentage(int percentage) const
     p.drawRect(blackRect);
     p.end();
     return QPixmap().fromImage(rowImg);
+}
+
+bool OpeningTree::bEnd() const
+{
+    return m_bEnd;
+}
+
+Filter *OpeningTree::filter() const
+{
+    return m_filter;
 }
 
 QVariant OpeningTree::data(const QModelIndex& index, int role) const

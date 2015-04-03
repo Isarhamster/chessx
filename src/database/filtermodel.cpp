@@ -68,7 +68,7 @@ int FilterModel::rowCount(const QModelIndex& index) const
     {
         return 0;
     }
-    return m_filter->count();
+    return m_filter ? m_filter->count() : 0;
 }
 
 int FilterModel::columnCount(const QModelIndex&) const

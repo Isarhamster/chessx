@@ -13,6 +13,7 @@
 #include "movedata.h"
 
 #include <QAbstractTableModel>
+#include <QPointer>
 
 class Filter;
 
@@ -49,13 +50,16 @@ public:
     /** Current Board */
     Board board() const;
 
+    Filter *filter() const;
+    bool bEnd() const;
+
 public slots:
     /** Cancel a running update */
     void cancel();
 protected slots:
     void updateFinished(Board*);
     void updateTerminated(Board*);
-    void moveUpdated(Board* b, QList<MoveData>* moveList);
+    void moveUpdated(Board* b, QList<MoveData> moveList);
 signals:
     void progress(int);
     void openingTreeUpdated();
@@ -70,7 +74,7 @@ private:
     int m_sortcolumn;
     Qt::SortOrder m_order;
     Board m_board;
-    Filter* m_filter;
+    QPointer<Filter> m_filter;
     bool m_updateFilter;
     bool m_sourceIsDatabase;
     bool m_bEnd;

@@ -109,6 +109,17 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QToolButton" name="btUndo">
+              <property name="text">
+               <string>Undo</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../resources.qrc">
+                <normaloff>:/images/undo.png</normaloff>:/images/undo.png</iconset>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>
@@ -137,6 +148,8 @@
    <header>tableview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
