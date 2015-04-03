@@ -13,6 +13,7 @@
 
 #include <QAbstractItemModel>
 #include <QStringList>
+#include <QPointer>
 
 class Filter;
 class Game;
@@ -70,7 +71,7 @@ public:
 
 private:
     /** A pointer to filter on which the model opperates */
-    Filter* m_filter;
+    QPointer<Filter> m_filter;
     /** The column names of the model */
     QStringList m_columnNames;
     /** Map of columns and database tags */

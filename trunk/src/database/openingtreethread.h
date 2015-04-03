@@ -9,6 +9,8 @@
 #include "game.h"
 #include "movedata.h"
 
+#include <QPointer>
+
 class OpeningTreeThread : public QThread
 {
     Q_OBJECT
@@ -18,7 +20,7 @@ public:
     bool updateFilter(Filter& f, const Board& b, int&, bool updateFilter, bool sourceIsDatabase, bool bEnd);
 
 signals:
-    void MoveUpdate(Board*, QList<MoveData>*);
+    void MoveUpdate(Board*, QList<MoveData>);
     void UpdateFinished(Board*);
     void UpdateTerminated(Board*);
     void progress(int);
@@ -30,7 +32,7 @@ private:
 
     bool    m_break;
     Board   m_board;
-    Filter* m_filter;
+    QPointer<Filter> m_filter;
     bool m_updateFilter;
     bool m_sourceIsDatabase;
     bool m_bEnd;

@@ -129,6 +129,11 @@ DatabaseInfo::~DatabaseInfo()
 {
 }
 
+Filter *DatabaseInfo::filter()
+{
+    return m_filter;
+}
+
 bool DatabaseInfo::loadGame(int index)
 {
     if(!m_bLoaded)

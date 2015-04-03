@@ -18,6 +18,7 @@ class Filter;
 #include "game.h"
 #include "partialdate.h"
 #include <QBitArray>
+#include <QPointer>
 
 /**
  * @defgroup Search Search - different ways to lookup games
@@ -255,7 +256,7 @@ public:
     void setFilter(Filter* filter);
     virtual int matches(GameId game);
 private:
-    Filter *m_filter;
+    QPointer<Filter> m_filter;
 };
 
 #endif // __SEARCH_H__

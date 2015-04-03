@@ -26,23 +26,20 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    qRegisterMetaType<QList<MoveData> >("QList<MoveData>");
+
     m_openingTree = new OpeningTree(ui->OpeningTreeView);
 
     QUndoGroup* undoGroup = new QUndoGroup(this);
     m_UndoStack = new QUndoStack(undoGroup);
     m_UndoStack->setUndoLimit(10);
     undoGroup->addStack(m_UndoStack);
+    undoGroup->setActiveStack(m_UndoStack);
 
-    QAction* undoAction = undoGroup->createUndoAction(this);
+    connect(ui->btUndo, SIGNAL(clicked()), undoGroup, SLOT(undo()));
+    connect(undoGroup, SIGNAL(canUndoChanged(bool)), ui->btUndo, SLOT(setEnabled(bool)));
+    ui->btUndo->setEnabled(false);
 
-    QToolButton* button = new QToolButton(this);
-    button->addAction(undoAction);
-    button->setIcon(QIcon(":/images/undo.png"));
-    button->setToolTip(tr("Undo"));
-    button->setToolButtonStyle(Qt::ToolButtonIconOnly);
-
-    ui->gbProgress->layout()->addWidget(button);
-    
     ui->OpeningTreeView->setObjectName("OpeningTree");
     ui->OpeningTreeView->setSortingEnabled(true);
     ui->OpeningTreeView->setModel(m_openingTree);
@@ -83,16 +80,19 @@ Board OpeningTreeWidget::board() const
     return m_openingTree->board();
 }
 
-bool OpeningTreeWidget::updateFilter(Filter& f, const Board& b, bool bEnd)
+void OpeningTreeWidget::updateFilter(Filter& f, const Board& b, bool bEnd)
 {
-    m_UndoStack->push(new BoardUndoCommand(this,&f,b,bEnd,""));
-    return doSetBoard(f, b, bEnd);
+    if (m_openingTree->board() != b)
+    {
+        m_UndoStack->push(new BoardUndoCommand(this,&f,m_openingTree->board(),m_openingTree->bEnd(),""));
+    }
+    doSetBoard(f,b,bEnd);
 }
 
-bool OpeningTreeWidget::doSetBoard(Filter& f, const Board& b, bool bEnd)
+void OpeningTreeWidget::doSetBoard(Filter& f, const Board& b, bool bEnd)
 {
     m_openingBoardView->setBoard(b);
-    return m_openingTree->updateFilter(f, b, ui->filterGames->isChecked(), ui->sourceSelector->currentIndex()==1, bEnd);
+    m_openingTree->updateFilter(f, b, ui->filterGames->isChecked(), ui->sourceSelector->currentIndex()==1, bEnd);
 }
 
 void OpeningTreeWidget::saveConfig()
