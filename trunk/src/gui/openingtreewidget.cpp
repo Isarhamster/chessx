@@ -6,11 +6,18 @@
 #include "ui_openingtreewidget.h"
 
 #include <QModelIndex>
+#include <QUndoGroup>
+#include <QUndoStack>
 
 #include "boardview.h"
 #include "databaseinfo.h"
 #include "openingtree.h"
 #include "settings.h"
+
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
 
 OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     QWidget(parent),
@@ -19,6 +26,15 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     ui->setupUi(this);
 
     m_openingTree = new OpeningTree(ui->OpeningTreeView);
+    m_UndoStack = new QUndoStack(this);
+    m_UndoStack->setUndoLimit(10);
+
+    QUndoGroup* undoGroup = new QUndoGroup(this);
+    undoGroup->addStack(m_UndoStack);
+
+    QAction* undoAction = undoGroup->createUndoAction(this);
+    undoAction->setIcon(QIcon(":/images/undo.png"));
+    ui->gbProgress->addAction(undoAction);
     
     ui->OpeningTreeView->setObjectName("OpeningTree");
     ui->OpeningTreeView->setSortingEnabled(true);
@@ -63,6 +79,12 @@ Board OpeningTreeWidget::board() const
 bool OpeningTreeWidget::updateFilter(Filter& f, const Board& b, bool bEnd)
 {
     m_openingBoardView->setBoard(b);
+    m_UndoStack->push(new BoardUndoCommand(this,&f,b,bEnd,""));
+    return doSetBoard(f, b, bEnd);
+}
+
+bool OpeningTreeWidget::doSetBoard(Filter& f, const Board& b, bool bEnd)
+{
     return m_openingTree->updateFilter(f, b, ui->filterGames->isChecked(), ui->sourceSelector->currentIndex()==1, bEnd);
 }
 
@@ -150,6 +172,7 @@ bool OpeningTreeWidget::shouldAddMove() const
 
 void OpeningTreeWidget::slotSourceChanged()
 {
+    m_UndoStack->clear();
     m_openingTree->cancel();
     emit signalSourceChanged();
 }

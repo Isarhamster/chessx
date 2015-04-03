@@ -10,6 +10,11 @@
 static QStringList s_allKeys;
 #endif
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 KbAction::KbAction(QString text, QObject* parent, const QKeySequence &key)
 : QAction(text,parent),
   m_resetKey(key)

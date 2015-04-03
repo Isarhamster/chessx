@@ -13,6 +13,11 @@
 #include <QtDebug>
 #include "database.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 Database::Database() : m_break(false)
 {
     connect(&m_index, SIGNAL(progress(int)), this, SIGNAL(progress(int)));

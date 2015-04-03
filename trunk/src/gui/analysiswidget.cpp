@@ -15,6 +15,11 @@
 #include "messagedialog.h"
 #include "tablebase.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 AnalysisWidget::AnalysisWidget()
     : m_engine(0),
       m_moveTime(0),

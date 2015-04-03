@@ -15,6 +15,11 @@
 #include "board.h"
 #include "guess.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 QHash<quint64, QList<Square> > ecoGuessPositions;
 
 Board::Board()

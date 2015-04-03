@@ -4,6 +4,11 @@
 
 #include "translatingslider.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 TranslatingSlider::TranslatingSlider(QWidget *parent) :
     QSlider(parent),
     m_offset(0),

@@ -10,6 +10,11 @@
 #include "partialdate.h"
 #include <QRegExp>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 PartialDate::PartialDate(int y, int m, int d) :
     m_year(y),
     m_month(m),

@@ -12,6 +12,11 @@
 #include <QFile>
 #include "game.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 const QRegExp Game::emt("\\[%emt\\s*(\\d:\\d\\d?:\\d\\d)\\]");
 const QRegExp Game::clk("\\[%clk\\s*(\\d:\\d\\d?:\\d\\d)\\]");
 const QRegExp Game::egt("\\[%egt\\s*(\\d:\\d\\d?:\\d\\d)\\]");

@@ -18,6 +18,11 @@
 
 #include <QtCore>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 // Global data that is initialized early on and only read afterward
 quint64 bb_PawnAttacks[2][64];
 quint64 bb_PawnF1[2][64];

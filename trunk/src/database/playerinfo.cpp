@@ -13,6 +13,11 @@
 #include "playerinfo.h"
 #include "database.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 static bool sortEcoFrequencyLt(const EcoFrequencyItem& a1, const EcoFrequencyItem& a2)
 {
     if(a1.second.count == a2.second.count)

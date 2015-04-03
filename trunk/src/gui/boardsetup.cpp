@@ -24,6 +24,11 @@
 #include <QPixmap>
 #include <QPushButton>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f),
     m_wheelCurrentDelta(0), m_selectedPiece(Empty), inDrag(false)
 {

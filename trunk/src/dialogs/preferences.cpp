@@ -34,6 +34,11 @@
 #include <QDesktopServices>
 #include <QTextStream>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 int PreferencesDialog::s_lastIndex = 0;
 
 PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)

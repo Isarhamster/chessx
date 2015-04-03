@@ -23,6 +23,11 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 static unsigned int hashVal [16][64];
 static unsigned int stdStartHash = 0;
 static unsigned int stdStartPawnHash = 0;

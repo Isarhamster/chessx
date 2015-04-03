@@ -16,6 +16,11 @@
 #include "output.h"
 #include "settings.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 QMap<Output::OutputType, QString> Output::m_outputMap;
 
 Output::Output(OutputType output, const QString& pathToTemplateFile)

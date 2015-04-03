@@ -8,6 +8,11 @@
 #include "eventinfo.h"
 #include "database.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 static bool sortPlayersLt(const PlayerInfoListItem& a1, const PlayerInfoListItem& a2)
 {
     if(a1.second == a2.second)

@@ -24,7 +24,13 @@
 // Necessary includes and defines for memory leak detection:
 #ifdef _MSC_VER
 #define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
 #include <crtdbg.h>
+#endif // _MSC_VER
+
+#ifdef _MSC_VER
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
 #endif // _MSC_VER
 
 

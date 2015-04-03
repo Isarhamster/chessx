@@ -18,6 +18,11 @@
 #include <QNetworkReply>
 #include <QTimer>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 bool Tablebase::s_allowEngineOutput = true;
 
 void Tablebase::setAllowEngineOutput(bool allow)

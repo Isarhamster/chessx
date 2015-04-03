@@ -17,6 +17,11 @@
 #include <QLCDNumber>
 #include <QToolBar>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), toolBar(0), m_gameMenu(NULL)
 {
     setObjectName("ChessBrowser");

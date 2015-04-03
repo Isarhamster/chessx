@@ -16,6 +16,11 @@
 //#define DEBUG_ENGINE
 #undef DEBUG_ENGINE
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 /*** Engine ***/
 
 bool Engine::s_allowEngineOutput = true;
