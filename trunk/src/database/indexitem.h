@@ -23,15 +23,7 @@
  It contains essential game header information that is kept in
  memory for fast access. It is used in conjunction with the Tags
  class. For most items it stores the id that refers to the relevant
- tag item in the Tags instance. Where convenient, the actual value is
- stored instead of the id.
-
- @todo
- Index items seem to be implemented in an inefficient way, as all the tags
- appearing in database are stored for each game. The correct way will be
- to store only basic tags (let's say 7 standard tags, ratings and EventDate),
- using notation: tag name + tag value for others.
- When this is fixed, Output::writeAllTags() should be adjusted.
+ tag item in the Tags instance.
 */
 
 typedef QHash<TagIndex, ValueIndex> MapTagToValue;
@@ -44,22 +36,24 @@ public:
 
     /** Adds an index pair to the IndexItem */
     void set(TagIndex tagIndex, ValueIndex valueIndex);
+
     /** Remove an index */
     void remove(TagIndex tagIndex);
 
-    /** returns value of index stored at 'offset' with given 'size' */
+    /** @ret ValueIndex of a @p tagIndex */
     ValueIndex valueIndex(TagIndex tagIndex) const;
+
+    /** @ret true iff the IndexItem has a value for @p tagIndex */
     bool hasTagIndex(TagIndex tagIndex) const;
 
     /** Write the data of the instance to a QDataStream */
     void write(QDataStream& out) const;
-    /** Reads the data of the instance from a QDataStream.
-     * All data is cleared first. */
+
+    /** Reads the data of the instance from a QDataStream, existing data is cleared first. */
     void read(QDataStream& in);
-    const MapTagToValue& getTagMapping() const
-    {
-        return m_mapTagIndexToValueIndex;
-    }
+
+    /** Get access to the internal Mapping for tagIndexes to value indexes */
+    const MapTagToValue& getTagMapping() const;
 
 private:
     MapTagToValue m_mapTagIndexToValueIndex;
