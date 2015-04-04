@@ -75,7 +75,7 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
     }
     else
     {
-        if(&f == m_filter && b == m_board && m_bEnd == bEnd)
+        if(f && &f == m_filter && b == m_board && m_bEnd == bEnd)
         {
             return true;
         }
