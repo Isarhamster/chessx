@@ -54,7 +54,7 @@ OpeningTreeThread oupd;
 
 bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsFilter, bool bEnd)
 {
-    if(f && !oupd.isRunning())
+    if(!oupd.isRunning())
     {
         if(&f == m_filter && b == m_board && m_bEnd == bEnd)
         {
@@ -75,7 +75,7 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
     }
     else
     {
-        if(f && &f == m_filter && b == m_board && m_bEnd == bEnd)
+        if(&f == m_filter && b == m_board && m_bEnd == bEnd)
         {
             return true;
         }

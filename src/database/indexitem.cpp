@@ -9,10 +9,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include <QtDebug>
-
+#include <QtCore>
 #include "indexitem.h"
-#include "index.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -60,5 +58,10 @@ void IndexItem::write(QDataStream& out) const
 void IndexItem::read(QDataStream& in)
 {
     in >> m_mapTagIndexToValueIndex;
+}
+
+const MapTagToValue &IndexItem::getTagMapping() const
+{
+    return m_mapTagIndexToValueIndex;
 }
 
