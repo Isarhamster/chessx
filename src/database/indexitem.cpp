@@ -50,6 +50,11 @@ bool IndexItem::hasTagIndex(TagIndex tagIndex) const
     return (m_mapTagIndexToValueIndex.contains(tagIndex));
 }
 
+const QList<TagIndex> IndexItem::getTagIndices() const
+{
+    return m_mapTagIndexToValueIndex.keys();
+}
+
 void IndexItem::write(QDataStream& out) const
 {
     out << m_mapTagIndexToValueIndex;
@@ -60,8 +65,7 @@ void IndexItem::read(QDataStream& in)
     in >> m_mapTagIndexToValueIndex;
 }
 
-const MapTagToValue &IndexItem::getTagMapping() const
+bool IndexItem::isEqual(const IndexItem &rhs) const
 {
-    return m_mapTagIndexToValueIndex;
+    return (m_mapTagIndexToValueIndex == rhs.m_mapTagIndexToValueIndex);
 }
-

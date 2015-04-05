@@ -46,14 +46,16 @@ public:
     /** @ret true iff the IndexItem has a value for @p tagIndex */
     bool hasTagIndex(TagIndex tagIndex) const;
 
+    const QList<TagIndex> getTagIndices() const;
+
     /** Write the data of the instance to a QDataStream */
     void write(QDataStream& out) const;
 
     /** Reads the data of the instance from a QDataStream, existing data is cleared first. */
     void read(QDataStream& in);
 
-    /** Get access to the internal Mapping for tagIndexes to value indexes */
-    const MapTagToValue& getTagMapping() const;
+    /** Compare two tag index items */
+    bool isEqual(const IndexItem& rhs) const;
 
 private:
     MapTagToValue m_mapTagIndexToValueIndex;

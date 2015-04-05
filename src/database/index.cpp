@@ -43,8 +43,6 @@ GameId Index::add()
 {
     GameId gameId = m_indexItems.count();
     m_indexItems.append(new IndexItem);
-    m_deletedGames.append(false);
-    m_validFlags.append(true);
     return gameId;
 }
 
@@ -100,7 +98,14 @@ void Index::removeTag(const QString& tagName, GameId gameId)
 
 void Index::setValidFlag(GameId gameId, bool value)
 {
-    m_validFlags[gameId] = value;
+    if (!value)
+    {
+        m_validFlags.insert(gameId);
+    }
+    else
+    {
+        m_validFlags.remove(gameId);
+    }
 }
 
 bool Index::replaceTagValue(const QString& tagName, const QString& newValue, const QString& oldValue)
@@ -125,7 +130,7 @@ bool Index::replaceTagValue(const QString& tagName, const QString& newValue, con
 
 bool Index::isValidFlag(GameId gameId) const
 {
-    return m_validFlags[gameId];
+    return !m_validFlags.contains(gameId);
 }
 
 bool Index::write(QDataStream &out) const
@@ -145,7 +150,7 @@ bool Index::write(QDataStream &out) const
     return true;
 }
 
-bool Index::read(QDataStream &in, volatile bool *breakFlag)
+bool Index::read(QDataStream &in, volatile bool *breakFlag, short version)
 {
     in >> m_tagNames;
     in >> m_tagValues;
@@ -170,8 +175,19 @@ bool Index::read(QDataStream &in, volatile bool *breakFlag)
             emit progress(++percentDone);
         }
     }
-    in >> m_validFlags;
-
+    if (version < 2)
+    {
+        QList<bool> validFlags;
+        in >> validFlags;
+        for (int i=0; i<validFlags.size(); ++i)
+        {
+            setValidFlag(i, validFlags[i]);
+        }
+    }
+    else
+    {
+        in >> m_validFlags;
+    }
     bool extension;
     in >> extension;
 
@@ -374,7 +390,7 @@ IndexItem* Index::item(GameId gameId)
 void Index::loadGameHeaders(GameId id, Game& game) const
 {
     game.clearTags();
-    foreach(TagIndex tagIndex, m_indexItems[id]->getTagMapping().keys())
+    foreach(TagIndex tagIndex, m_indexItems[id]->getTagIndices())
     {
         // qDebug() << "lGH>" << &game << " " << id << " " << tagName(tagIndex) << " " << tagValue(tagIndex, id);
         game.setTag(tagName(tagIndex), tagValue(tagIndex, id));
@@ -442,10 +458,17 @@ QStringList Index::tagValues(const QString& tagName) const
 
 bool Index::deleted(GameId gameId) const
 {
-    return m_deletedGames[gameId];
+    return m_deletedGames.contains(gameId);
 }
 
 void Index::setDeleted(GameId gameId, bool df)
 {
-    m_deletedGames[gameId] = df;
+    if (df)
+    {
+        m_deletedGames.insert(gameId);
+    }
+    else
+    {
+        m_deletedGames.remove(gameId);
+    }
 }
