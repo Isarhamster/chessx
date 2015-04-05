@@ -198,7 +198,7 @@ void SaveDialog::accept()
     }
     else
     {
-        MessageDialog::error(tr("Dates are not properly formatted!", "Invalid Data"));
+        MessageDialog::error(tr("Dates are not properly formatted!"), tr("Invalid Data"));
     }
 }
 
