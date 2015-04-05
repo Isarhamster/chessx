@@ -57,9 +57,9 @@ void PgnDatabase::parseGame()
     skipMoves();
 }
 
-bool PgnDatabase::readIndexFile(QDataStream &in, volatile bool* breakFlag)
+bool PgnDatabase::readIndexFile(QDataStream &in, volatile bool* breakFlag, short version)
 {
-    return (index()->read(in, breakFlag));
+    return (index()->read(in, breakFlag, version));
 }
 
 bool PgnDatabase::writeIndexFile(QDataStream& out) const
@@ -77,7 +77,7 @@ QString PgnDatabase::offsetFilename(const QString& filename) const
     return(indexPath + QDir::separator() + basefile);
 }
 
-bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFlag)
+bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFlag, bool& bUpdate)
 {
     if(!AppSettings->getValue("/General/useIndexFile").toBool())
     {
@@ -157,7 +157,8 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
 
     in >> magic;
 
-    readIndexFile(in, breakFlag);
+    readIndexFile(in, breakFlag, version);
+    bUpdate = (version < 2);
 
     unsigned short finalMagic;
     in >> finalMagic;
@@ -190,7 +191,7 @@ bool PgnDatabase::writeOffsetFile(const QString& filename) const
 
     QDataStream out(&file);
 
-    short version = 1;
+    short version = 2;
     unsigned short magic = 0xce55;
     int streamVersion = out.version();
 
@@ -233,9 +234,15 @@ bool PgnDatabase::writeOffsetFile(const QString& filename) const
 
 bool PgnDatabase::parseFile()
 {
-    if(readOffsetFile(m_filename, &m_break))
+    bool bUpdate = false;
+    if(readOffsetFile(m_filename, &m_break, bUpdate))
     {
         m_count = m_allocated;
+        emit progress(99);
+        if (bUpdate)
+        {
+            writeOffsetFile(m_filename);
+        }
         emit progress(100);
         return true;
     }

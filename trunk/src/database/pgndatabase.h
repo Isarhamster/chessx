@@ -78,10 +78,10 @@ protected:
     bool parseFileIntern();
     virtual void parseGame();
 
-    bool readIndexFile(QDataStream& in, volatile  bool *breakFlag);
+    bool readIndexFile(QDataStream& in, volatile  bool *breakFlag, short version);
     bool writeIndexFile(QDataStream& out) const;
     QString offsetFilename(const QString& filename) const;
-    bool readOffsetFile(const QString&, volatile bool *breakFlag);
+    bool readOffsetFile(const QString&, volatile bool *breakFlag, bool &bUpdate);
     bool writeOffsetFile(const QString&) const;
 
     // Open a PGN data File

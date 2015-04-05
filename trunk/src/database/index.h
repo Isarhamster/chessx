@@ -31,13 +31,13 @@ class Index : public QObject
     Q_OBJECT
 
 public:
-    static const int defaultIndexItemSize;
-
     Index();
     ~Index();
 
     /** Adds an empty indexitem */
     GameId add();
+
+    /** @ret number of index items in the Index */
     int count() const;
 
     // Storing tags //
@@ -45,31 +45,39 @@ public:
     /** Store the tag value for the given game, tag is given by name */
     void setTag(const QString& tagName, const QString &value, GameId gameId);
 
+    /** Set the valid flag accordingly */
+    bool replaceTagValue(const QString& tagName, const QString& newValue, const QString& oldValue);
+
     // Retrieving tags //
     //
-    /** Restore all tags for gameId from Index into game object */
+    /** Restore all tags for game @p id from Index into @p game object */
     void loadGameHeaders(GameId id, Game& game) const;
+
+    /** Restore the value for @p tag for game @p id from Index into @p game object */
     void loadGameHeader(GameId id, Game& game, const QString& tag) const;
 
-    /** Get the tag value for given game */
-    QString tagValue(const QString&, GameId gameId) const;
+    /** Get the tag @p tagName for given game index @p gameId */
+    QString tagValue(const QString& tagName, GameId gameId) const;
+
+    /** @ret the value index number of a @p value  */
     ValueIndex getValueIndex(const QString&) const;
-    TagIndex getTagIndex(const QString& value) const;
+
+    /** @ret the value index number of a tags name @p value for a given game */
     ValueIndex valueIndexFromTag(const QString& tagName, GameId gameId) const;
-    ValueIndex valueIndexFromIndex(TagIndex tagIndex, GameId gameId) const;
-    bool indexItemHasTag(TagIndex tagIndex, GameId gameId) const;
-    QString tagValueName(ValueIndex getValueIndex) const;
+
+    /** Get the list of tagValues for a given @p tagName */
     QStringList tagValues(const QString& tagName) const;
+
+    /** Get the list of players (optimized query, as it reads white and black names w/o duplicates) */
+    QStringList playerNames() const;
+
+    // Validity of a game information
+    //
     /** Set the valid flag accordingly */
     void setValidFlag(GameId gameId, bool value);
 
     /** Get the valid flag accordingly */
     bool isValidFlag(GameId gameId) const;
-
-    /** Set the valid flag accordingly */
-    bool replaceTagValue(const QString& tagName, const QString& newValue, const QString& oldValue);
-
-    QStringList playerNames() const;
 
     // Searching tags //
     //
@@ -92,15 +100,18 @@ public:
     bool write(QDataStream& out) const;
 
     /** Read the index from disk, using m_filename */
-    bool read(QDataStream& in, volatile bool *breakFlag);
+    bool read(QDataStream& in, volatile bool *breakFlag, short version);
 
     /** Clear all cached values */
     void clearCache();
+
     /** Build the tag caches */
     void calculateCache(volatile bool* breakFlag = 0);
 
     /** Calculate missing data from the index file import */
     void calculateTagMap(volatile bool *breakFlag);
+
+    /** Calculate missing data from the index file import */
     void calculateReverseMaps(volatile bool *breakFlag);
 
     /** Clears the index, and frees all associated memory */
@@ -108,9 +119,11 @@ public:
 
     /** Read delete flag */
     bool deleted(GameId gameId) const;
+
     /** Set delete flag */
     void setDeleted(GameId gameId, bool df);
-    /** Remove a tag from the index  do not care for the value */
+
+    /** Remove a tag from the index, do not care for the value */
     void removeTag(const QString &tagName, GameId gameId);
 
 signals:
@@ -118,29 +131,51 @@ signals:
 
 private:
     /** Contains information which games are marked for deletion */
-    QList<bool> m_deletedGames;
+    QSet<GameId> m_deletedGames;
+
     /** Return a pointer to the index item for the given game id */
     IndexItem* item(GameId gameId);
 
-    /** Map an Index to a tagName */
+    /** Map a tags index to a tagName */
     QHash<TagIndex, QString> m_tagNames;
+    /** Map a tagName to an associated index */
     QHash<QString, TagIndex> m_tagNameIndex;
+    /** Add a tag name to the index */
     TagIndex AddTagName(QString);
 
     /** Map an Index to a tagValue */
     QHash<ValueIndex, QString> m_tagValues;
+    /** Map a Value to its associated index value */
     QHash<QString, ValueIndex> m_tagValueIndex;
+    /** Add a tag value to the index */
     ValueIndex AddTagValue(QString);
 
+    /** Hold the list of index items (=holds all game header information) */
     QList<IndexItem*> m_indexItems;
 
-    /** Contains information which games are marked for deletion */
-    QList<bool> m_validFlags;
+    /** Contains information which games are marked as valid */
+    QSet<GameId> m_validFlags;
+
+    /** Map tags to index items (which game has a specific header information) */
     QMultiHash<TagIndex, int> m_mapTagToIndexItems;
 
+    /** Query the value of a tag given the tags index for a specific game */
     QString tagValue(TagIndex tagIndex, GameId gameId) const;
+
+    /** Query the value of a tag given the tags index */
     QString tagName(TagIndex tagIndex) const;
 
+    /** @ret the tag index number of a @p value  */
+    TagIndex getTagIndex(const QString& value) const;
+
+    /** Get the name of a @p valueIndex */
+    QString tagValueName(ValueIndex valueIndex) const;
+
+    /** @ret the value index number of a tags index @p value for a given game */
+    ValueIndex valueIndexFromIndex(TagIndex tagIndex, GameId gameId) const;
+
+    /** @ret true if a game @p gameId has a given tag index */
+    bool indexItemHasTag(TagIndex tagIndex, GameId gameId) const;
 };
 
 #endif   // __INDEX_H__
