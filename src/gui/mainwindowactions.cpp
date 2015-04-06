@@ -731,6 +731,11 @@ void MainWindow::slotHelpBug()
 
 void MainWindow::slotMoveStarted()
 {
+    if ((database()->name() == "FICS") && gameMode())
+    {
+        m_ficsConsole->SendStoredMove(InvalidSquare,InvalidSquare);
+        m_boardView->setStoredMove(InvalidSquare,InvalidSquare);
+    }
     m_bInDrag = true;
 }
 
@@ -829,6 +834,15 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
         if (m_autoRespond->isChecked() && !m_machineHasToMove)
         {
             m_machineHasToMove = true;
+        }
+    }
+    else
+    {
+        // Move is not legal, but could become legal, so store as premove and try later
+        if ((database()->name() == "FICS") && gameMode())
+        {
+            m_ficsConsole->SendStoredMove(from,to);
+            m_boardView->setStoredMove(from,to);
         }
     }
 }

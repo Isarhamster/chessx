@@ -38,6 +38,7 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_hoverSquare(InvalidSquare),
     m_hiFrom(InvalidSquare), m_hiTo(InvalidSquare),
     m_currentFrom(InvalidSquare), m_currentTo(InvalidSquare),
+    m_storedFrom(InvalidSquare), m_storedTo(InvalidSquare),
     m_atLineEnd(true),
     m_flags(flags),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false), m_wheelCurrentDelta(0),
@@ -78,12 +79,21 @@ void BoardView::setBoard(const Board& value, int from, int to, bool atLineEnd)
     m_board = value;
     m_currentFrom = from;
     m_currentTo = to;
+    m_storedFrom = InvalidSquare;
+    m_storedTo = InvalidSquare;
     m_atLineEnd = atLineEnd;
     m_hiFrom = m_hiTo = InvalidSquare;
     if(underMouse())
     {
         updateGuess(m_hoverSquare);
     }
+    update();
+}
+
+void BoardView::setStoredMove(int from, int to)
+{
+    m_storedFrom = from;
+    m_storedTo = to;
     update();
 }
 
@@ -224,6 +234,11 @@ void BoardView::drawHiliting(QPaintEvent* event)
         }
 
         QPoint pos = posFromSquare(square);
+
+        if(square == m_storedFrom || square == m_storedTo)
+        {
+            drawHiliteSquare(pos, BoardTheme::StoredMove);
+        }
 
         if(m_showCurrentMove==1)
         {

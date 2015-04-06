@@ -296,7 +296,7 @@ public slots:
     /** Move @p index was selected in Opening Tree. */
     void slotSearchTreeMove(const QModelIndex& index);
     /** Made given move on the board */
-    void slotBoardMove(Square from, Square to, int button);
+    void slotBoardMove(Square from, Square to, int button=0);
     /** Move started - use together with moveFinished to avoid automatic moves during user interaction */
     void slotMoveStarted();
     /** Move finished - use together with moveStarted to avoid automatic moves during user interaction */
