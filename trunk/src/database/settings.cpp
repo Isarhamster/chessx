@@ -282,6 +282,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/highlightColor", QColor(Qt::yellow));
     map.insert("/Board/frameColor", QColor(Qt::black));
     map.insert("/Board/currentMoveColor", QColor(Qt::blue));
+    map.insert("/Board/storedMoveColor", QColor(Qt::magenta));
     map.insert("/Board/AutoPlayerInterval", 3000);
     map.insert("/Board/AutoSaveAndContinue", false);
     map.insert("/Board/BackwardAnalysis", false);

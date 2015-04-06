@@ -167,6 +167,12 @@ void FicsConsole::HandleBoard(int cmd, QString s)
     {
         m_ficsClient->sendCommand("forward");
     }
+    if (gameMode && m_from != InvalidSquare && m_to != InvalidSquare)
+    {
+        emit RequestStoredMove(m_from,m_to);
+        m_from = InvalidSquare;
+        m_to = InvalidSquare;
+    }
 }
 
 void FicsConsole::HandleExamineRequest(QListWidgetItem* item)
@@ -262,6 +268,12 @@ void FicsConsole::SendMove(QString m)
             m_ficsClient->sendCommand("time");
         }
     }
+}
+
+void FicsConsole::SendStoredMove(Square from, Square to)
+{
+   m_from = from;
+   m_to = to;
 }
 
 void FicsConsole::SlotSeekTimeChanged(int)
@@ -669,6 +681,8 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 ui->timeWhite->setText(QString());
                 ui->timeBlack->setText(QString());
                 m_bWhiteToMove = false;
+                m_from = InvalidSquare;
+                m_to = InvalidSquare;
                 emit RequestNewGame();
                 emit RequestGameMode(gameMode);
                 ui->textIn->appendPlainText(s);

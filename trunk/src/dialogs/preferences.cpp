@@ -459,6 +459,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.boardColorsList, tr("Highlighted squares"), "highlightColor");
     restoreColorItem(ui.boardColorsList, tr("Frame"), "frameColor");
     restoreColorItem(ui.boardColorsList, tr("Current move"), "currentMoveColor");
+    restoreColorItem(ui.boardColorsList, tr("Stored move"), "storedMoveColor");
     AppSettings->endGroup();
 
     QStringList themes = AppSettings->getThemeList();
@@ -577,7 +578,7 @@ void PreferencesDialog::saveSettings()
         AppSettings->setValue("boardTheme", QString());
     }
     QStringList colorNames;
-    colorNames << "lightColor" << "darkColor" << "highlightColor" << "frameColor" << "currentMoveColor";
+    colorNames << "lightColor" << "darkColor" << "highlightColor" << "frameColor" << "currentMoveColor" << "storedMoveColor";
     saveColorList(ui.boardColorsList, colorNames);
     AppSettings->endGroup();
 

@@ -82,6 +82,8 @@ public slots:
     void setEnabled(bool enabled);
     /** Disable / Enable Board for move entry. */
     void setDisabled(bool disabled);
+    /** Show FICS premove */
+    void setStoredMove(int from, int to);
 
 signals:
     /** User clicked source and destination squares */
@@ -176,6 +178,8 @@ private:
     int m_hiTo;
     int m_currentFrom;
     int m_currentTo;
+    int m_storedFrom;
+    int m_storedTo;
     bool m_atLineEnd;
     int m_flags;
     bool m_coordinates;
