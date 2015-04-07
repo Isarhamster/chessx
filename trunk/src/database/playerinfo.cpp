@@ -12,6 +12,7 @@
 
 #include "playerinfo.h"
 #include "database.h"
+#include "tags.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -275,8 +276,8 @@ QString PlayerInfo::formattedRange() const
 QString PlayerInfo::listOfOpenings() const
 {
     QStringList openingsList;
-    openingsList.append(QCoreApplication::translate("PlayerInfo", "<p><a href='player:%1#%2'>White Openings:</a></p>").arg(m_name).arg(TagNameWhite));
-    openingsList.append(QCoreApplication::translate("PlayerInfo", "<p><a href='player:%1#%2'>Black Openings:</a></p>").arg(m_name).arg(TagNameBlack));
+    openingsList.append(QString("<p><a href='player:%1#%2'>%3:</a></p>").arg(m_name).arg(TagNameWhite).arg(tr("White Openings")));
+    openingsList.append(QString("<p><a href='player:%1#%2'>%3:</a></p>").arg(m_name).arg(TagNameBlack).arg(tr("Black Openings")));
     openingsList.append("");
 
     for(int i = 0; i < 2; ++i)

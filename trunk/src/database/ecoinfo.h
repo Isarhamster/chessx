@@ -1,8 +1,6 @@
 #ifndef ECOINFO_H
 #define ECOINFO_H
 
-#include "common.h"
-
 #include <QtCore>
 #include <QString>
 #include <QList>

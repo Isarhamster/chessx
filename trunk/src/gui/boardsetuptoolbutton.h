@@ -5,7 +5,7 @@
 #ifndef BOARDSETUPTOOLBUTTON_H
 #define BOARDSETUPTOOLBUTTON_H
 
-#include "common.h"
+#include "piece.h"
 
 #include <QLabel>
 #include <QPixmap>

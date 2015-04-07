@@ -7,7 +7,6 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include "common.h"
 #include "database.h"
 #include "openingtree.h"
 #include "settings.h"

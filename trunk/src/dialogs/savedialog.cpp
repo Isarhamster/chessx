@@ -20,6 +20,7 @@
 #include "partialdate.h"
 #include "savedialog.h"
 #include "settings.h"
+#include "tags.h"
 
 #include <QLineEdit>
 #include <QCompleter>

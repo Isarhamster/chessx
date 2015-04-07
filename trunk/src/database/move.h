@@ -11,7 +11,10 @@
 #ifndef __MOVE_H__
 #define __MOVE_H__
 
-#include "common.h"
+#include "piece.h"
+#include "square.h"
+
+#include <QString>
 
 class BitBoard;
 
@@ -45,7 +48,7 @@ public:
     /** Set promotion piece.  Default promotion is to Queen, use this to change piece afterward */
     void setPromotionPiece(PieceType type);
     /** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) pawn promoted to */
-    void setPromoted(const uchar p);
+    void setPromoted(PieceType p);
 
     // Query
     /** return Square piece sits on after move */
@@ -176,9 +179,9 @@ private:
     /** Return piece type of promoted piece (or 0 if none) */
     unsigned int promoted() const;
     /** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) making move */
-    void setPieceType(const uchar p);
+    void setPieceType(unsigned char p);
     /** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) captured */
-    void setCaptureType(const uchar p);
+    void setCaptureType(unsigned char p);
     /** Mark this move as an initial pawn move of 2 squares */
     void setTwoForward();
     /** Mark this move capturing a pawn en passant */
@@ -320,7 +323,7 @@ inline Piece Move::pieceMoved() const
 
 inline Piece Move::capturedPiece() const
 {
-    uchar p = (m >> 18) & 7;
+    unsigned char p = (m >> 18) & 7;
     if(p == 0)
     {
         return Piece(0);
@@ -485,13 +488,13 @@ inline unsigned int Move::capturedType() const
     return (m >> 18) & 7;
 }
 
-inline void Move::setPieceType(const uchar p)
+inline void Move::setPieceType(unsigned char p)
 {
     m &= PTCLEAR ;
     m |= (7 & p) << 12;
 }
 
-inline void Move::setCaptureType(const uchar p)
+inline void Move::setCaptureType(unsigned char p)
 {
     m &= CAPCLEAR ;
     m |= (7 & p) << 18;
@@ -508,7 +511,7 @@ inline void Move::setEnPassant()
     setCaptureType(Pawn);
 }
 
-inline void Move::setPromoted(const uchar p)
+inline void Move::setPromoted(PieceType p)
 {
     m &= PROCLEAR ;
     m |= PROMOTEBIT | ((7 & p) << 22);

@@ -17,7 +17,6 @@
 #ifndef __BOARDVIEW_H__
 #define __BOARDVIEW_H__
 
-#include "common.h"
 #include "board.h"
 #include "boardtheme.h"
 #include "guess.h"

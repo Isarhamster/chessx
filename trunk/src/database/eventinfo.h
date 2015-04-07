@@ -5,7 +5,6 @@
 #ifndef EVENTINFO_H
 #define EVENTINFO_H
 
-#include "common.h"
 #include "partialdate.h"
 
 #include <QtCore>

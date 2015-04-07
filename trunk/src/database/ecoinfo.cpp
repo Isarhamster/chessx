@@ -7,6 +7,7 @@
 
 #include "ecoinfo.h"
 #include "database.h"
+#include "tags.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -238,7 +239,7 @@ QString EcoInfo::listOfPlayers() const
 //        playersList.append(tr("<a href=\"#ListBlack\">Go to Black Players Score</a>"));
 //    }
 
-    playersList.append(tr("<table><tr><th>White Player</th><th>Score</th></tr>"));
+    playersList.append(QString("<table><tr><th>%1</th><th>%2</th></tr>").arg(tr("White Player")).arg(tr("Score")));
 
     for(PlayerInfoList::const_iterator it = m_playersWhite.begin(); it != m_playersWhite.end(); ++it)
     {
@@ -251,7 +252,7 @@ QString EcoInfo::listOfPlayers() const
 
     playersList = playersList.append("</table>");
 
-    playersList.append(tr("<a name='ListBlack'></a><table><tr><th>Black Player</th><th>Score</th></tr>"));
+    playersList.append(QString("<a name='ListBlack'></a><table><tr><th>%1</th><th>%2</th></tr>").arg(tr("Black Player")).arg(tr("Score")));
 
     for(PlayerInfoList::const_iterator it = m_playersBlack.begin(); it != m_playersBlack.end(); ++it)
     {

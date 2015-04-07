@@ -19,7 +19,7 @@
 
 #include <QtGui>
 
-#include "common.h"
+#include "piece.h"
 
 /** @ingroup GUI
 	The BoardTheme class contains set of pixmaps and options to

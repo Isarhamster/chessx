@@ -6,6 +6,7 @@
 #include "game.h"
 #include "settings.h"
 #include "tagdialog.h"
+#include "tags.h"
 #include "ui_tagdialog.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)

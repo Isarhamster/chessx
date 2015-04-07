@@ -22,6 +22,7 @@
 #include "quicksearch.h"
 #include "search.h"
 #include "settings.h"
+#include "tags.h"
 
 #include <QDrag>
 #include <QHeaderView>

@@ -5,7 +5,7 @@
 #ifndef PROMOTIONDIALOG_H
 #define PROMOTIONDIALOG_H
 
-#include "common.h"
+#include "piece.h"
 #include <QDialog>
 
 namespace Ui {
@@ -24,12 +24,10 @@ public:
 
 protected slots:
     void setIndex();
-    void moveDialog();
 
 private:
     Ui::PromotionDialog *ui;
     int m_index;
-    QPoint m_pos;
 };
 
 #endif // PROMOTIONDIALOG_H

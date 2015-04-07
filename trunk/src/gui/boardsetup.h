@@ -19,7 +19,6 @@
 
 #include "ui_boardsetup.h"
 #include "board.h"
-#include "common.h"
 
 class QMenu;
 

@@ -5,7 +5,7 @@
 #ifndef FICSCONSOLE_H
 #define FICSCONSOLE_H
 
-#include "common.h"
+#include "square.h"
 
 #include <QPointer>
 #include <QWidget>

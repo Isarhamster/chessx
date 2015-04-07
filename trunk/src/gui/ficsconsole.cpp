@@ -2,10 +2,10 @@
 *   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
-#include "common.h"
 #include "ficsconsole.h"
 #include "ficsclient.h"
 #include "settings.h"
+#include "tags.h"
 
 #include "ui_ficsconsole.h"
 

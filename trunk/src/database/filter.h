@@ -16,7 +16,6 @@
 #include <QPair>
 #include <QThread>
 
-#include "common.h"
 #include "tristatetree.h"
 
 class Database;

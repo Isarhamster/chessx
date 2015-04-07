@@ -44,6 +44,7 @@
 #include "tablebase.h"
 #include "tableview.h"
 #include "tagdialog.h"
+#include "tags.h"
 #include "version.h"
 
 #include <time.h>

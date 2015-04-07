@@ -10,6 +10,8 @@
  ***************************************************************************/
 
 #include "movelist.h"
+#include "piece.h"
+#include "square.h"
 
 #ifndef __BITBOARD_H__
 #define __BITBOARD_H__
@@ -20,6 +22,16 @@ enum BoardStatus
     OppositeCheck, TooManyBlackPawns, TooManyWhitePawns,
     PawnsOn18, TooManyKings, TooManyWhite, TooManyBlack,
     BadCastlingRights, InvalidEnPassant, MultiCheck
+};
+
+typedef uchar CastlingRights;
+enum
+{
+    NoRights = 0,
+    WhiteKingside = 1, BlackKingside = 2,
+    WhiteQueenside = 4, BlackQueenside = 8,
+    WhiteBothSides = 5, BlackBothSides = 10,
+    AllRights = 15
 };
 
 /** @ingroup Core
@@ -178,16 +190,16 @@ private:
     quint64 m_occupied_r45;       // the opposite odd transformation, just as messy
 
     // Extra state data
-    uchar m_piece[64];             // type of piece on this square
-    uchar m_stm;                   // side to move
-    uchar m_ksq[2];                // square of the m_kings
-    uchar m_epFile;                // file of a possible ep capture
-    uchar m_epSquare;              // This is requested by hash routine enough that we keep it pre calculated
-    uchar m_castle;                // flags for castle legality  (these can be merged)
+    unsigned char m_piece[64];             // type of piece on this square
+    unsigned char m_stm;                   // side to move
+    unsigned char m_ksq[2];                // square of the m_kings
+    unsigned char m_epFile;                // file of a possible ep capture
+    unsigned char m_epSquare;              // This is requested by hash routine enough that we keep it pre calculated
+    unsigned char m_castle;                // flags for castle legality  (these can be merged)
     unsigned short m_halfMoves;            // Number of moves since last pawn move or capture
     unsigned int m_moveNumber;             // Move number in game (incremented after each black move)
-    uchar m_pawnCount[2];          // Number of pawns for each side
-    uchar m_pieceCount[2];         // Number of pieces INCLUDING pawns for each side
+    unsigned char m_pawnCount[2];          // Number of pawns for each side
+    unsigned char m_pieceCount[2];         // Number of pieces INCLUDING pawns for each side
 };
 
 enum Char64Position
