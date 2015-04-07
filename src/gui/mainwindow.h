@@ -10,7 +10,6 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
-#include "common.h"
 #include "historylist.h"
 #include "output.h"
 

@@ -10,10 +10,10 @@
 
 #include "filtermodel.h"
 
-#include "common.h"
 #include "database.h"
 #include "filter.h"
 #include "game.h"
+#include "tags.h"
 
 #include <QtGui>
 

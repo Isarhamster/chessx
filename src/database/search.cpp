@@ -9,10 +9,12 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include <QtCore>
+
 #include "search.h"
 #include "database.h"
 #include "filter.h"
-#include <QtDebug>
+#include "tags.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )

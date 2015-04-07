@@ -359,11 +359,11 @@ void AnalysisWidget::updateAnalysis()
     }
     if(!m_tablebaseEvaluation.isEmpty())
     {
-        text.append(tr("<a href=\"0\" title=\"Click to add move to game\">[+]</a> <b>Tablebase:</b> ") + m_tablebaseEvaluation);
+        text.append(QString("<a href=\"0\" title=\"%1\">[+]</a> <b>%2:</b> ").arg(tr("Click to add move to game")).arg(tr("Tablebase")) + m_tablebaseEvaluation);
     }
     if (m_lastDepthAdded == 17)
     {
-        text.append(tr("<br><b>Complexity:</b> %1/%2<br>").arg(m_complexity).arg(m_complexity2));
+        text.append(QString("<br><b>%1:</b> %2/%3<br>").arg(tr("Complexity")).arg(m_complexity).arg(m_complexity2));
     }
     else if (m_lastDepthAdded >= 12)
     {

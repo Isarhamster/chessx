@@ -54,7 +54,6 @@ FORMS += \
 
 HEADERS += src/database/board.h \
 	src/database/move.h \
-	src/database/common.h \
 	src/database/game.h \
 	src/database/partialdate.h \
 	src/database/playerdatabase.h \
@@ -185,10 +184,13 @@ HEADERS += src/database/board.h \
     src/dialogs/savedialog.h \
     src/dialogs/tagdialog.h \
     src/dialogs/preferences.h \
-    src/dialogs/quicksearch.h
+    src/dialogs/quicksearch.h \
+    src/database/tags.h \
+    src/database/piece.h \
+    src/database/square.h \
+    src/database/result.h
 
 SOURCES += src/database/board.cpp \
-	src/database/common.cpp \
 	src/database/game.cpp \
 	src/database/databaseconversion.cpp \
 	src/database/partialdate.cpp \
@@ -306,7 +308,10 @@ SOURCES += src/database/board.cpp \
     src/dialogs/savedialog.cpp \
     src/dialogs/tagdialog.cpp \
     src/dialogs/preferences.cpp \
-    src/dialogs/quicksearch.cpp
+    src/dialogs/quicksearch.cpp \
+    src/database/tags.cpp \
+    src/database/piece.cpp \
+    src/database/result.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

@@ -11,6 +11,7 @@
 #include <QtDebug>
 #include <QFile>
 #include "game.h"
+#include "tags.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )

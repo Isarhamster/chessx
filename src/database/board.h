@@ -15,7 +15,6 @@
 
 #include "move.h"
 #include "movelist.h"
-#include "common.h"
 #include "rand64.h"
 #include "bitboard.h"
 

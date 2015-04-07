@@ -99,7 +99,7 @@ const unsigned int RotateL45[64] =
     a1, b2, c3, d4, e5, f6, g7, h8
 };
 
-const uchar Castle[64] =
+const unsigned char Castle[64] =
 {
     ~4, 255, 255, 255, ~5, 255, 255,  ~1,
     255, 255, 255, 255, 255, 255, 255, 255,
@@ -1392,7 +1392,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
     int toSquare = -1;
     int fromFile = -1;
     int fromRank = -1;
-    uchar promotePiece = Empty;
+    PieceType promotePiece = None;
     Move move;
     unsigned int type;
 
@@ -2040,7 +2040,7 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
     quint64 src = SetBit(from);
     quint64 dest = SetBit(to);
     Move move(from, to);
-    uchar p = m_piece[from];
+    unsigned char p = m_piece[from];
 
     // Check for Illegal Move
     // first the source square must not be vacant
@@ -2062,7 +2062,7 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
     }
 
     move.setPieceType(p);
-    uchar pCaptured = m_piece[to];
+    unsigned char pCaptured = m_piece[to];
     move.setCaptureType(pCaptured);
     if(pCaptured == King)
     {

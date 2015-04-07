@@ -12,7 +12,6 @@
 #ifndef __INDEXITEM_H__
 #define __INDEXITEM_H__
 
-#include "common.h"
 #include <QList>
 #include <QDataStream>
 #include <QHash>
@@ -25,6 +24,11 @@
  class. For most items it stores the id that refers to the relevant
  tag item in the Tags instance.
 */
+
+typedef quint32 TagIndex;
+typedef quint32 ValueIndex;
+
+#define TagNoIndex 0xFFFFFFFF
 
 typedef QHash<TagIndex, ValueIndex> MapTagToValue;
 

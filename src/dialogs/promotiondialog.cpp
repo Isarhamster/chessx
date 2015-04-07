@@ -23,8 +23,8 @@ PromotionDialog::PromotionDialog(QWidget *parent, Color color) :
     view.configure();
     ui->setupUi(this);
 
-    m_pos = mapFromGlobal(QCursor::pos());
-    moveDialog();
+    QPoint pos = mapFromGlobal(QCursor::pos());
+    move(pos);
 
     int offset = color==White ? 0 : (BlackKing-WhiteKing);
     ui->btQueen->setIcon(view.theme().piece(Piece(WhiteQueen+offset)));
@@ -36,11 +36,6 @@ PromotionDialog::PromotionDialog(QWidget *parent, Color color) :
 PromotionDialog::~PromotionDialog()
 {
     delete ui;
-}
-
-void PromotionDialog::moveDialog()
-{
-    move(m_pos);
 }
 
 int PromotionDialog::getIndex()

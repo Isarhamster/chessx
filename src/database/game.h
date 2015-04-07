@@ -15,6 +15,7 @@
 #include "board.h"
 #include "movelist.h"
 #include "nag.h"
+#include "result.h"
 
 #define ROOT_NODE 0
 #define NO_MOVE -1
@@ -52,6 +53,8 @@ class SaveRestoreMoveCompact;
 
 typedef QHash<QString, QString> TagMap;
 typedef QHashIterator<QString, QString> TagMapIterator;
+
+typedef quint32 GameId;
 
 class Game : public QObject
 {

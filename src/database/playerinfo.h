@@ -10,9 +10,10 @@
 #ifndef PLAYERINFO_H
 #define PLAYERINFO_H
 
-#include "common.h"
 #include "partialdate.h"
+#include "piece.h"
 
+#include <QtCore>
 #include <QString>
 #include <QList>
 #include <QPair>
@@ -37,6 +38,7 @@ typedef QList<OpeningCountItem> OpeningCountList;
 
 class PlayerInfo
 {
+    Q_DECLARE_TR_FUNCTIONS(PlayerInfo)
 public:
     /** Standard constructor. Does nothing. */
     PlayerInfo();
