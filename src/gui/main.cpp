@@ -95,8 +95,17 @@ prevHook = _CrtSetReportHook(customReportHook);
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_DontShowIconsInMenus);  // Icons are *no longer shown* in menus
 
-#if defined(Q_OS_MAC)
     QDir dir(QApplication::applicationDirPath());
+    QStringList l;
+    l<<dir.absolutePath();
+    QApplication::setLibraryPaths(l);
+
+#ifdef Q_OS_WIN
+    dir.cd("platforms");
+    QApplication::addLibraryPath(dir.absolutePath());
+#endif
+
+#ifdef Q_OS_MAC
     dir.cdUp();
     dir.cd("plugins");
     QApplication::addLibraryPath(dir.absolutePath());
