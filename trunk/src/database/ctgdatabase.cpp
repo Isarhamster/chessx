@@ -106,7 +106,7 @@ void CtgDatabase::close()
 // Book parser - public interface
 // ---------------------------------------------------------
 
-bool CtgDatabase::findMove(quint64 key, MoveData& m)
+bool CtgDatabase::findMove(quint64 /*key*/, MoveData& /*m*/)
 {
     // todo
     return false;
@@ -116,7 +116,7 @@ bool CtgDatabase::findMove(quint64 key, MoveData& m)
 // Book building - public interface
 // ---------------------------------------------------------
 
-bool CtgDatabase::openForWriting(const QString &filename, int maxPly, int minGame, bool uniform)
+bool CtgDatabase::openForWriting(const QString &filename, int /*maxPly*/, int /*minGame*/, bool /*uniform*/)
 {
     if(m_file)
     {
@@ -128,7 +128,7 @@ bool CtgDatabase::openForWriting(const QString &filename, int maxPly, int minGam
     return openFile(filename, false);
 }
 
-void CtgDatabase::book_make(Database &db, volatile bool& breakFlag)
+void CtgDatabase::book_make(Database& /*db*/, volatile bool& /*breakFlag*/)
 {
     // todo
 }
