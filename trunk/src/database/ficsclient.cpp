@@ -138,6 +138,7 @@ void FicsClient::ProcessUnblockedMessage(QString s)
         if (s.startsWith("<12>"))
         {
             s.remove("<12>");
+            // qDebug() << s;
             emit receivedBoard(m_cmd, s.trimmed());
         }
         else if (s.startsWith('{'))
@@ -169,7 +170,7 @@ void FicsClient::ProcessUnblockedMessage(QString s)
         {
             emit receivedMessage(BLKCMD_SAY,s);
         }
-        else if (s.startsWith("Challenge:") || s.contains("offers you a draw") || s.contains("would like to abort the game"))
+        else if (s.startsWith("Challenge:") || s.startsWith("Challenge from") || s.contains("offers you a draw") || s.contains("would like to abort the game"))
         {
             emit receivedMessage(BLKCMD_INTERNAL_OTHER,s);
         }
