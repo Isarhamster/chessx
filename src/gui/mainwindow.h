@@ -590,7 +590,6 @@ private:
     QNetworkAccessManager* m_manager;
     DownloadManager* downloadManager;
     bool m_machineHasToMove;
-    bool m_bInDrag;
     bool m_gameMode;
     FicsClient* m_ficsClient;
     FicsConsole* m_ficsConsole;
