@@ -214,6 +214,7 @@ void FicsConsole::HandleExamineRequest(QListWidgetItem* item)
     int n = s.section(':',0,0).toInt();
     if (n)
     {
+        emit RequestNewGame();
         if (m_lastHistoryPlayer.isEmpty())
         {
             m_lastHistoryPlayer = AppSettings->getValue("/FICS/userName").toString();
@@ -233,6 +234,7 @@ void FicsConsole::HandleRelayRequest(QListWidgetItem* item)
     int n = s.section(' ',0,0).toInt();
     if (n)
     {
+        emit RequestNewGame();
         QString request = "observe " + QString::number(n);
         m_ficsClient->sendCommand(request);
     }
@@ -458,6 +460,7 @@ void FicsConsole::HandleObserveRequest(QListWidgetItem* item)
     int n = s.section(' ',0,0).toInt(); // The observer id is right at the start of the string
     if (n)
     {
+        emit RequestNewGame();
         QString request = "observe " + QString::number(n);
         m_ficsClient->sendCommand(request);
     }
@@ -593,7 +596,6 @@ void FicsConsole::SlotTabClicked(int tab)
 
 void FicsConsole::HandleMessage(int blockCmd,QString s)
 {
-    s = s.trimmed();
     if (!s.isEmpty())
     {
         // qDebug() << "Cmd " << blockCmd << ": " << s;
