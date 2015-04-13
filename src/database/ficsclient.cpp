@@ -98,11 +98,11 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
         if (s.startsWith("fics%"))
         {
             s.remove("fics%");
-            s = s.trimmed();
         }
     }
     else
     {
+        s.remove(EndReply);
         QRegExp regCmd("fics%[^9]*99([\\d]*)(.*)");
 
         if (regCmd.indexIn(s) >= 0)
@@ -118,12 +118,11 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
         else if (s.startsWith("fics%"))
         {
             s.remove(0,5);
-            s = s.trimmed();
             m_cmd = BLKCMD_NULL;
         }
     }
 
-    ProcessUnblockedMessage(s.trimmed());
+    ProcessUnblockedMessage(s.normalized(QString::NormalizationForm_D).trimmed());
 
     if (end >= 0)
     {
