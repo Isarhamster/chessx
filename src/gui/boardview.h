@@ -59,6 +59,8 @@ public:
     void nextGuess(Square s);
     /** Set Move Indicator property */
     void showMoveIndicator(bool visible);
+    /** Set Move Indicator property */
+    void showCoordinates(bool visible);
     /** Set a reference to the database to which the current view is associated */
     void setDbIndex(QObject *);
     /** Get a reference to the database to which the current view is associated */
@@ -68,6 +70,9 @@ public:
 
     bool vAlignTop() const;
     void setVAlignTop(bool vAlignTop);
+
+    Piece dragged() const;
+    void setDragged(const Piece &dragged);
 
 public slots:
 

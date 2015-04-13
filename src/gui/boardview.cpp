@@ -112,6 +112,11 @@ void BoardView::showMoveIndicator(bool visible)
     m_showMoveIndicator = visible;
 }
 
+void BoardView::showCoordinates(bool visible)
+{
+    m_coordinates = visible;
+}
+
 void BoardView::drawSquares(QPaintEvent* event)
 {
     QPainter p(this);
@@ -376,6 +381,7 @@ Square BoardView::squareAt(const QPoint& p) const
 void BoardView::mousePressEvent(QMouseEvent* event)
 {
     m_dragStart = event->pos();
+    setStoredMove(InvalidSquare,InvalidSquare);
     emit moveStarted();
 }
 
@@ -622,6 +628,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
+    m_dragged = Empty;
     emit moveFinished();
 }
 
@@ -994,6 +1001,16 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
     }
 
     drawArrow(square1, square2, color);
+}
+
+Piece BoardView::dragged() const
+{
+    return m_dragged;
+}
+
+void BoardView::setDragged(const Piece &dragged)
+{
+    m_dragged = dragged;
 }
 
 bool BoardView::vAlignTop() const
