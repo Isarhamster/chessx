@@ -6,6 +6,7 @@
 #define FICSCONSOLE_H
 
 #include "square.h"
+#include "board.h"
 
 #include <QPointer>
 #include <QWidget>
@@ -100,6 +101,7 @@ private:
     bool puzzleMode;
     QTimer* m_countDownTimer;
     bool m_bWhiteToMove;
+    Char64Relation m_lastRelation;
     int m_prevTab;
     Square m_from;
     Square m_to;
