@@ -657,8 +657,10 @@ void MainWindow::HandleFicsAddTagRequest(QString tag,QString value)
 void MainWindow::HandleFicsRequestRemoveMove()
 {
     ActivateDatabase("FICS");
-    game().backward();
-    game().dbTruncateVariation();
+    if (game().backward())
+    {
+        game().dbTruncateVariation();
+    }
 }
 
 void MainWindow::FicsConnected()
@@ -681,6 +683,7 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
        (!addRemoteMoveFrom64Char(s)) ||
        (cmd == FicsClient::BLKCMD_OBSERVE))
     {
+        // Finally set a new starting board
         Board b;
         if (b.from64Char(s))
         {
@@ -735,14 +738,11 @@ void MainWindow::slotMoveStarted()
     if ((database()->name() == "FICS") && gameMode())
     {
         m_ficsConsole->SendStoredMove(InvalidSquare,InvalidSquare);
-        m_boardView->setStoredMove(InvalidSquare,InvalidSquare);
     }
-    m_bInDrag = true;
 }
 
 void MainWindow::slotMoveFinished()
 {
-    m_bInDrag = false;
 }
 
 void MainWindow::slotBoardMove(Square from, Square to, int button)
@@ -1565,7 +1565,7 @@ void MainWindow::slotToggleAutoPlayer()
 
 void MainWindow::slotEngineTimeout(const Analysis& analysis)
 {
-    if (!m_bInDrag)
+    if (m_boardView->dragged() == Empty)
     {
         if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != m_boardView->board()))
         {
@@ -2532,6 +2532,7 @@ void MainWindow::slotFlipView(bool flip)
 
 void MainWindow::enterGameMode(bool gameMode)
 {
+    m_boardView->setDragged(Empty);
     Guess::setGuessAllowed(!gameMode);
     Engine::setAllowEngineOutput(!gameMode);
     Tablebase::setAllowEngineOutput(!gameMode);

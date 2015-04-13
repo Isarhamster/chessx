@@ -85,7 +85,6 @@ MainWindow::MainWindow() : QMainWindow(),
     m_currentTo(InvalidSquare),
     m_lastColor('G'),
     m_machineHasToMove(false),
-    m_bInDrag(false),
     m_gameMode(false)
 {
     setObjectName("MainWindow");
@@ -624,7 +623,14 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
             m_nagText.clear();
             return;
         }
-        addVariation(m_nagText);
+        if (addVariation(m_nagText))
+        {
+            if (database()->name() == "FICS")
+            {
+                Move m = game().move();
+                m_ficsConsole->SendMove(m.toAlgebraic());
+            }
+        }
         m_nagText.clear();
         return;
     }
@@ -633,6 +639,11 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         m_nagText.append(e->text());
         if (addVariation(m_nagText))
         {
+            if (database()->name() == "FICS")
+            {
+                Move m = game().move();
+                m_ficsConsole->SendMove(m.toAlgebraic());
+            }
             m_nagText.clear();
             return;
         }
