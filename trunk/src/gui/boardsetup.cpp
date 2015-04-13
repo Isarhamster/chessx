@@ -44,6 +44,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     ui.boardView->configure();
     ui.boardView->setFlags(BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove | BoardView::AllowCopyPiece);
     ui.boardView->showMoveIndicator(false);
+    ui.boardView->showCoordinates(true);
 
     m_minDeltaWheel = AppSettings->getValue("/Board/minWheelCount").toInt();
 
