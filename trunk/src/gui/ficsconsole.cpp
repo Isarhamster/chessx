@@ -2,6 +2,7 @@
 *   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
+#include "board.h"
 #include "ficsconsole.h"
 #include "ficsclient.h"
 #include "settings.h"
@@ -160,19 +161,46 @@ void FicsConsole::SendCommand()
 
 void FicsConsole::HandleBoard(int cmd, QString s)
 {
-    m_bWhiteToMove = !m_bWhiteToMove;
+    QStringList l = s.split(' ');
+    m_bWhiteToMove = (l[C64_COLOR_TO_MOVE]=="W");
 
-    emit ReceivedBoard(cmd, s);
+    bool handleBoard = true;
+    if (gameMode)
+    {
+        Char64Relation relation = (Char64Relation) l[C64_GAME_RELATION].toInt();
+        if (m_lastRelation == relation)
+        {
+            handleBoard = false;
+        }
+        else
+        {
+            m_lastRelation = relation;
+        }
+    }
+
+    if (handleBoard)
+    {
+        emit ReceivedBoard(cmd, s);
+    }
+
     if (cmd == FicsClient::BLKCMD_EXAMINE || cmd == FicsClient::BLKCMD_FORWARD)
     {
         m_ficsClient->sendCommand("forward");
     }
-    if (gameMode && m_from != InvalidSquare && m_to != InvalidSquare)
+    if (handleBoard && gameMode && m_from != InvalidSquare && m_to != InvalidSquare)
     {
         emit RequestStoredMove(m_from,m_to);
         m_from = InvalidSquare;
         m_to = InvalidSquare;
     }
+    QString timeWhite = l[C64_REMAINDER_TIME_WHITE];
+    QString timeBlack = l[C64_REMAINDER_TIME_BLACK];
+    QTime tw(0,0,0,0);
+    tw = tw.addSecs(timeWhite.toInt());
+    QTime tb(0,0,0,0);
+    tb = tb.addSecs(timeBlack.toInt());
+    ui->timeWhite->setText(tw.toString("h:mm:ss"));
+    ui->timeBlack->setText(tb.toString("h:mm:ss"));
 }
 
 void FicsConsole::HandleExamineRequest(QListWidgetItem* item)
@@ -263,10 +291,6 @@ void FicsConsole::SendMove(QString m)
     if (gameMode || puzzleMode)
     {
         m_ficsClient->sendCommand(m);
-        if (gameMode)
-        {
-            m_ficsClient->sendCommand("time");
-        }
     }
 }
 
@@ -572,25 +596,43 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
     s = s.trimmed();
     if (!s.isEmpty())
     {
-        qDebug() << "Cmd " << blockCmd << ": " << s;
+        // qDebug() << "Cmd " << blockCmd << ": " << s;
         switch (blockCmd)
         {
         case FicsClient::BLKCMD_TIME:
             {
-                m_countDownTimer->stop();
-                QRegExp wReg("White Clock :([^\\.]*)");
-                if (wReg.indexIn(s) >= 0)
+                if (s.startsWith("Game"))
                 {
-                    QString w = wReg.cap(1).trimmed();
-                    ui->timeWhite->setText(w);
+                    QStringList l = s.split(" ",QString::SkipEmptyParts);
+                    if (l.size()>=6)
+                    {
+                        QString nameWhite = l[2];
+                        QString nameBlack = l[4];
+                        emit RequestAddTag(TagNameWhite, nameWhite);
+                        emit RequestAddTag(TagNameBlack, nameBlack);
+                        int ratingWhite = l[3].remove("(").remove(")").toInt();
+                        int ratingBlack = l[5].remove("(").remove(")").toInt();
+                        if (ratingWhite) emit RequestAddTag(TagNameWhiteElo, QString::number(ratingWhite));
+                        if (ratingBlack) emit RequestAddTag(TagNameBlackElo, QString::number(ratingBlack));
+                    }
                 }
-                QRegExp bReg("Black Clock :([^\\.]*)");
-                if (bReg.indexIn(s) >= 0)
+                else
                 {
-                    QString b = bReg.cap(1).trimmed();
-                    ui->timeBlack->setText(b);
+                    m_countDownTimer->stop();
+                    QRegExp wReg("White Clock :([^\\.]*)");
+                    if (wReg.indexIn(s) >= 0)
+                    {
+                        QString w = wReg.cap(1).trimmed();
+                        ui->timeWhite->setText(w);
+                    }
+                    QRegExp bReg("Black Clock :([^\\.]*)");
+                    if (bReg.indexIn(s) >= 0)
+                    {
+                        QString b = bReg.cap(1).trimmed();
+                        ui->timeBlack->setText(b);
+                    }
+                    m_countDownTimer->start();
                 }
-                m_countDownTimer->start();
                 break;
             }
         case FicsClient::BLKCMD_HISTORY:
@@ -678,9 +720,10 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_INTERNAL_MATCH_START:
             {
                 gameMode = true;
+                m_lastRelation = C64_REL_ISOLATED; // Anything invalid in this context
                 ui->timeWhite->setText(QString());
                 ui->timeBlack->setText(QString());
-                m_bWhiteToMove = false;
+                m_bWhiteToMove = true;
                 m_from = InvalidSquare;
                 m_to = InvalidSquare;
                 emit RequestNewGame();
@@ -694,6 +737,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     bool bPlayerIsBlack = w != m_ficsClient->getGuestName();
                     emit SignalPlayerIsBlack(bPlayerIsBlack);
                 }
+                m_ficsClient->sendCommand("time");
             }
             break;
         case FicsClient::BLKCMD_INTERNAL_MATCH_END:
