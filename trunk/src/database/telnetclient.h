@@ -29,6 +29,8 @@ public:
     bool InternalTelnet() const;
 
     bool sessionStarted() const;
+    bool loggedInAsGuest() const;
+
 signals:
     void disconnected();
 
@@ -56,6 +58,7 @@ private:
     QString m_name;
     QString m_passwd;
     int     m_state;
+    bool    m_loggedInAsGuest;
     QString m_remainder;
     QString guestName;
 

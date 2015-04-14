@@ -22,6 +22,7 @@ TelnetClient::TelnetClient(QObject *parent)
 {
     m_state = 0;
     m_bInternalTelnet = true;
+    m_loggedInAsGuest = false;
 
     m_socket = new QTcpSocket(this);
     m_socket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
@@ -74,6 +75,7 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
             {
                 guestName = m_name;
                 ++m_state;
+                m_loggedInAsGuest = false;
                 send(m_passwd);
             }
             else
@@ -88,6 +90,7 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
                         guestName = reGuestName.cap(1);
                     }
                     ++m_state;
+                    m_loggedInAsGuest = true;
                     send("\n");
                 }
             }
@@ -131,6 +134,11 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
     {
         send(QString("%1").arg(QChar(0x11)));
     }
+}
+
+bool TelnetClient::loggedInAsGuest() const
+{
+    return m_loggedInAsGuest;
 }
 
 bool TelnetClient::InternalTelnet() const
