@@ -217,14 +217,6 @@ Gestionnaires de parties d&apos;échecs open source</translation>
         <translation>Complexité </translation>
     </message>
     <message>
-        <source>&lt;a href=&quot;0&quot; title=&quot;Click to add move to game&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt; </source>
-        <translation type="vanished">&lt;a href=&quot;0&quot; title=&quot;Cliquez pour ajouter un coup&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt; </translation>
-    </message>
-    <message>
-        <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1/%2&lt;br&gt;</source>
-        <translation type="vanished">&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1/%2&lt;br&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/analysiswidget.cpp" line="370"/>
         <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1&lt;br&gt;</source>
         <translation>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1&lt;br&gt;</translation>
@@ -741,10 +733,6 @@ Merci de vérifier votre installation.</translation>
         <source>Make a Polyglot book...</source>
         <translation>Créer un polyglot livre d&apos;ouvertures...</translation>
     </message>
-    <message>
-        <source>: File not found</source>
-        <translation type="vanished">: Fichier introuvable</translation>
-    </message>
 </context>
 <context>
     <name>DatabaseListModel</name>
@@ -784,10 +772,6 @@ Merci de vérifier votre installation.</translation>
         <location filename="../src/gui/databaselistmodel.cpp" line="19"/>
         <source>Date</source>
         <translation>Date</translation>
-    </message>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Presse-papiers</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselistmodel.cpp" line="158"/>
@@ -898,14 +882,6 @@ Merci de vérifier votre installation.</translation>
         <location filename="../src/database/ecoinfo.cpp" line="255"/>
         <source>Black Player</source>
         <translation>Joueur Noirs</translation>
-    </message>
-    <message>
-        <source>&lt;table&gt;&lt;tr&gt;&lt;th&gt;White Player&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;table&gt;&lt;tr&gt;&lt;th&gt;Joueur Blancs&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;a name=&apos;ListBlack&apos;&gt;&lt;/a&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Black Player&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</source>
-        <translation type="vanished">&lt;a name=&apos;ListBlack&apos;&gt;&lt;/a&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Joueur Noirs&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1166,10 +1142,6 @@ Merci de vérifier votre installation.</translation>
         <location filename="../src/gui/ficsconsole.ui" line="387"/>
         <source>Standard</source>
         <translation>Standard</translation>
-    </message>
-    <message>
-        <source>Offer a game</source>
-        <translation type="vanished">Proposer une partie</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="412"/>
@@ -1545,10 +1517,6 @@ Dois-je télécharger une base ?</translation>
         <translation>ECO chargé.</translation>
     </message>
     <message>
-        <source>[Clipboard]</source>
-        <translation type="vanished">[Presse-papier]</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="1002"/>
         <source>Opening %1...</source>
         <translation>Ouverture de %1...</translation>
@@ -1617,10 +1585,6 @@ Dois-je télécharger une base ?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1224"/>
         <source>Open &amp;recent...</source>
         <translation>Fichiers &amp;récents...</translation>
-    </message>
-    <message>
-        <source>&amp;Save</source>
-        <translation type="vanished">&amp;Enregistrer</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1238"/>
@@ -2305,10 +2269,6 @@ Dois-je télécharger une base ?</translation>
         <translation>Ajouter partie %1 à %2.</translation>
     </message>
     <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Presse-papiers</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1824"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="1839"/>
         <source>Append games from %1 to %2.</source>
@@ -2359,38 +2319,6 @@ Dois-je télécharger une base ?</translation>
         <location filename="../src/gui/mainwindowactions.cpp" line="2018"/>
         <source>Updating tree...</source>
         <translation>Mise à jour de l&apos;arbre...</translation>
-    </message>
-    <message>
-        <source>Please configure your email preferences first.</source>
-        <translation type="vanished">S&apos;il vous plaît, paramétrez les EMail paramètre.</translation>
-    </message>
-    <message>
-        <source>Hello</source>
-        <translation type="vanished">Bonjour</translation>
-    </message>
-    <message>
-        <source>the attachment provides new game data.</source>
-        <translation type="vanished">the attachment provides new game data.</translation>
-    </message>
-    <message>
-        <source>You can open the file with ChessX.</source>
-        <translation type="vanished">You can open the file with ChessX.</translation>
-    </message>
-    <message>
-        <source>Edit game tags</source>
-        <translation type="vanished">Données de jeu</translation>
-    </message>
-    <message>
-        <source>EMail error</source>
-        <translation type="vanished">EMail erreur</translation>
-    </message>
-    <message>
-        <source>EMail sent to</source>
-        <translation type="vanished">EMail transmettre à</translation>
-    </message>
-    <message>
-        <source>EMail sent</source>
-        <translation type="vanished">EMail transmettre</translation>
     </message>
 </context>
 <context>
@@ -3250,22 +3178,6 @@ Dois-je télécharger une base ?</translation>
         <source>Black Openings</source>
         <translation>Ouvertures noirs</translation>
     </message>
-    <message>
-        <source>&lt;p&gt;&lt;a href=&apos;player:%1#%2&apos;&gt;White Openings:&lt;/a&gt;&lt;/p&gt;</source>
-        <translation type="vanished">&lt;p&gt;&lt;a href=&apos;player:%1#%2&apos;&gt;Ouvertures blancs:&lt;/a&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;&lt;a href=&apos;player:%1#%2&apos;&gt;Black Openings:&lt;/a&gt;&lt;/p&gt;</source>
-        <translation type="vanished">&lt;p&gt;&lt;a href=&apos;player:%1#%2&apos;&gt;Ouvertures noirs:&lt;/a&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;White Openings:&lt;/p&gt;&lt;ul&gt;</source>
-        <translation type="vanished">&lt;p&gt;Ouvertures blancs:&lt;/p&gt;&lt;ul&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;/ul&gt;&lt;p&gt;Black Openings:&lt;/p&gt;&lt;ul&gt;</source>
-        <translation type="vanished">&lt;/ul&gt;&lt;p&gt;Ouvertures noirs:&lt;/p&gt;&lt;ul&gt;</translation>
-    </message>
 </context>
 <context>
     <name>PlayerListWidget</name>
@@ -3864,14 +3776,6 @@ Dois-je télécharger une base ?</translation>
         <source>[plain colors]</source>
         <translation>[couleurs simples]</translation>
     </message>
-    <message>
-        <source>TLS encryption</source>
-        <translation type="vanished">TLS codage</translation>
-    </message>
-    <message>
-        <source>Sender address</source>
-        <translation type="vanished">Adresse expéditeur</translation>
-    </message>
 </context>
 <context>
     <name>PromotionDialog</name>
@@ -4115,15 +4019,6 @@ Dois-je télécharger une base ?</translation>
         <location filename="../src/dialogs/savedialog.ui" line="378"/>
         <source>Result:</source>
         <translation>Résultat :</translation>
-    </message>
-    <message>
-        <source>Clipboard</source>
-        <translation type="vanished">Presse-papiers</translation>
-    </message>
-    <message>
-        <source>Dates are not properly formatted!</source>
-        <comment>Invalid Data</comment>
-        <translation type="vanished">Les dates n&apos;ont pas le bon format!</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.cpp" line="202"/>
