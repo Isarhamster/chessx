@@ -119,7 +119,6 @@
         <file alias="images/training.png">data/images/training.png</file>
         <file alias="images/redo.png">data/images/redo_yellow.png</file>
         <file alias="images/undo.png">data/images/undo_yellow.png</file>
-        <file alias="i18n/chessx_da.qm">i18n/chessx_da.qm</file>
         <file alias="help/about1a.html">data/help/about1a.html</file>
         <file alias="i18n/chessx_it.qm">i18n/chessx_it.qm</file>
         <file alias="help/about6.html">data/help/about6.html</file>
@@ -128,10 +127,8 @@
         <file alias="styles/checkbox.png">data/styles/checkbox.png</file>
         <file alias="styles/down_arrow.png">data/styles/down_arrow.png</file>
         <file alias="styles/handle.png">data/styles/handle.png</file>
-        <file alias="i18n/chessx_es.qm">i18n/chessx_es.qm</file>
         <file alias="images/edit_mail.png">data/images/edit_mail.png</file>
         <file alias="themes/boards/lanta.png">data/themes/boards/lanta.png</file>
-        <file alias="i18n/chessx_ro.qm">i18n/chessx_ro.qm</file>
         <file alias="sounds/ding1.wav">data/sounds/ding1.wav</file>
         <file alias="sounds/woodthunk.wav">data/sounds/woodthunk.wav</file>
         <file alias="sounds/move.wav">data/sounds/move.wav</file>
