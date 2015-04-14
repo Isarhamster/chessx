@@ -394,12 +394,20 @@ void FicsConsole::SlotSendSeek()
 {
     int t = ui->seekTime->value();
     int inc = ui->seekIncrement->value();
-    if (t || inc)
+    int from = ui->eloMin->value();
+    int to = ui->eloMax->value();
+    if ((t || inc) && (from<=to))
     {
-        m_ficsClient->sendCommand(QString("seek %1 %2 %3")
-            .arg(t)
-            .arg(inc)
-            .arg(ui->cbRated->currentIndex() ? "unrated" : "rated"));
+        QString s = QString("seek %1 %2 %3 %4-%5 ")
+                .arg(t)
+                .arg(inc)
+                .arg(ui->cbRated->currentIndex() ? "unrated" : "rated")
+                .arg(from)
+                .arg(to);
+        QListWidgetItem* item = new QListWidgetItem(s);
+        item->setTextColor(Qt::gray);
+        ui->listSeeks->addItem(item);
+        m_ficsClient->sendCommand(s);
     }
 }
 
@@ -766,6 +774,18 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             s.remove(QRegExp("[^:]*:"));
             ui->textIn->appendHtml(QString("<b>%1<b>").arg(s));
             ui->tabWidget->setCurrentIndex(TabMessage);
+            break;
+        case FicsClient::BLKCMD_INTERNAL_SESSION_STARTED:
+            ui->textIn->appendPlainText(s);
+            if (m_ficsClient->loggedInAsGuest())
+            {
+                ui->cbRated->setCurrentIndex(1);
+                ui->cbRated->setEnabled(false);
+            }
+            else
+            {
+                ui->cbRated->setEnabled(true);
+            }
             break;
         case FicsClient::BLKCMD_NULL:
             ui->textIn->appendPlainText(s);

@@ -62,7 +62,7 @@ void FicsClient::OnSessionStarted(QString guestName)
     send("set kibitz 1");
     send("iset block 1");
     QString connection = InternalTelnet() ? "Telnet" : "Timeseal";
-    emit receivedMessage(0,tr("Connected to FICS as %1 using %2")
+    emit receivedMessage(BLKCMD_INTERNAL_SESSION_STARTED,tr("Connected to FICS as %1 using %2")
                          .arg(guestName)
                          .arg(connection));
     emit connected();
@@ -89,8 +89,6 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
             QStringList l = s.split(Separator);
             m_cmd = l[1].toInt();
 
-            qDebug() << "Command started " << m_cmd;
-
             emit commandStarted(m_cmd);
             s = l[2];
         }
@@ -109,8 +107,6 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
         {
            QString d = regCmd.cap(1);
            m_cmd = d.toInt();
-
-           qDebug() << "Command started " << m_cmd;
 
            emit commandStarted(m_cmd);
            s = regCmd.cap(2);

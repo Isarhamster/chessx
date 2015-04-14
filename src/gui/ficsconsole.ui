@@ -20,7 +20,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="tabMessages">
       <attribute name="title">
@@ -28,9 +28,9 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,1">
+        <layout class="QHBoxLayout" name="layout_message_1" stretch="2,1">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_12">
+          <layout class="QVBoxLayout" name="layout_message_11">
            <item>
             <widget class="QPlainTextEdit" name="textIn">
              <property name="readOnly">
@@ -45,7 +45,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_11">
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <layout class="QHBoxLayout" name="layout_message_111">
                 <item>
                  <widget class="QLineEdit" name="sayMessage"/>
                 </item>
@@ -68,7 +68,7 @@
           </layout>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_10">
+          <layout class="QVBoxLayout" name="layout_message_12">
            <item>
             <widget class="QDialogButtonBox" name="btBoxMessage">
              <property name="orientation">
@@ -87,7 +87,7 @@
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <layout class="QHBoxLayout" name="layout_message_121">
              <item>
               <widget class="QLabel" name="label_3">
                <property name="text">
@@ -117,7 +117,7 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <layout class="QHBoxLayout" name="layout_message_122">
              <item>
               <widget class="QLabel" name="label_4">
                <property name="text">
@@ -234,7 +234,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <layout class="QHBoxLayout" name="layout_puzzle">
          <item>
           <widget class="QListWidget" name="listPuzzle">
            <property name="toolTip">
@@ -342,105 +342,172 @@
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_14">
             <item>
-             <widget class="QGroupBox" name="groupBox">
-              <property name="title">
-               <string>Time Control</string>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_2">
-               <property name="topMargin">
-                <number>6</number>
-               </property>
-               <property name="bottomMargin">
-                <number>6</number>
-               </property>
-               <item>
-                <widget class="QRadioButton" name="btLightning">
-                 <property name="text">
-                  <string>Lightning</string>
+             <layout class="QHBoxLayout" name="layout_seek_1">
+              <item>
+               <widget class="QGroupBox" name="groupBox">
+                <property name="title">
+                 <string/>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_18">
+                 <property name="topMargin">
+                  <number>6</number>
                  </property>
-                 <property name="checked">
-                  <bool>true</bool>
+                 <property name="bottomMargin">
+                  <number>6</number>
                  </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="btBlitz">
-                 <property name="minimumSize">
-                  <size>
-                   <width>19</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Blitz</string>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="btStandard">
-                 <property name="text">
-                  <string>Standard</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QListWidget" name="listSeeks"/>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox_3">
-              <property name="title">
-               <string>Propose a game</string>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
-               <item>
-                <widget class="QLabel" name="label">
-                 <property name="text">
-                  <string>Minutes</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSpinBox" name="seekTime"/>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_2">
-                 <property name="text">
-                  <string>Increment</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSpinBox" name="seekIncrement"/>
-               </item>
-               <item>
-                <widget class="QComboBox" name="cbRated">
                  <item>
-                  <property name="text">
-                   <string>rated</string>
-                  </property>
+                  <widget class="QRadioButton" name="btLightning">
+                   <property name="text">
+                    <string>Lightning</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <property name="text">
-                   <string>unrated</string>
-                  </property>
+                  <widget class="QRadioButton" name="btBlitz">
+                   <property name="minimumSize">
+                    <size>
+                     <width>19</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Blitz</string>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
                  </item>
-                </widget>
-               </item>
-               <item>
-                <widget class="QToolButton" name="btSeek">
-                 <property name="text">
-                  <string>Seek</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
+                 <item>
+                  <widget class="QRadioButton" name="btStandard">
+                   <property name="text">
+                    <string>Standard</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QListWidget" name="listSeeks"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="layout_seek_2">
+              <item>
+               <widget class="QGroupBox" name="groupBox_8">
+                <property name="title">
+                 <string>Time Control</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_17">
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_11">
+                   <item>
+                    <widget class="QLabel" name="label">
+                     <property name="text">
+                      <string>Minutes</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSpinBox" name="seekTime">
+                     <property name="value">
+                      <number>1</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_12">
+                   <item>
+                    <widget class="QLabel" name="label_2">
+                     <property name="text">
+                      <string>Increment</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSpinBox" name="seekIncrement"/>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox_9">
+                <property name="title">
+                 <string>Elo</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_19">
+                 <item>
+                  <widget class="QSpinBox" name="eloMin">
+                   <property name="maximum">
+                    <number>9000</number>
+                   </property>
+                   <property name="singleStep">
+                    <number>100</number>
+                   </property>
+                   <property name="value">
+                    <number>0</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="eloMax">
+                   <property name="showGroupSeparator" stdset="0">
+                    <bool>false</bool>
+                   </property>
+                   <property name="maximum">
+                    <number>9000</number>
+                   </property>
+                   <property name="singleStep">
+                    <number>100</number>
+                   </property>
+                   <property name="value">
+                    <number>9000</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox_3">
+                <property name="title">
+                 <string>Propose a game</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_20">
+                 <item>
+                  <widget class="QComboBox" name="cbRated">
+                   <item>
+                    <property name="text">
+                     <string>rated</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>unrated</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QToolButton" name="btSeek">
+                   <property name="text">
+                    <string>Seek</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -461,7 +528,7 @@
              <widget class="QListWidget" name="listNoPlay"/>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_8">
+             <layout class="QHBoxLayout" name="layout_noplay">
               <item>
                <widget class="QLineEdit" name="editNoPlay"/>
               </item>
