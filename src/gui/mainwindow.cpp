@@ -527,7 +527,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                             keyEvent->key() == Qt::Key_Return ||
                             keyEvent->key() == Qt::Key_Enter))
             {
-                if (obj == this || obj == m_boardView || obj == m_gameView)
+                if (obj == this || obj == m_boardView || obj == m_gameView || obj == m_mainAnalysis)
                 {
                     keyPressEvent(keyEvent);
                     return true;
