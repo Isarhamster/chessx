@@ -7,16 +7,20 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
+
 #include "tablebase.h"
 #include "version.h"
 
 #include <QApplication>
-#include <QObject>
-#include <QUrl>
+#include <QByteArray>
 #include <QNetworkAccessManager>
-#include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QObject>
+#include <QRegExp>
+#include <QStringList>
 #include <QTimer>
+#include <QUrl>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )

@@ -12,6 +12,7 @@
 #define __TABLEBASE_H__
 
 #include <QNetworkAccessManager>
+#include <QString>
 
 #include "move.h"
 
