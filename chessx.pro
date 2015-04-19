@@ -6,9 +6,14 @@ QT += network svg
 greaterThan(QT_MAJOR_VERSION, 4) {
    QT += printsupport
    QT += widgets
-   QT += multimedia
    QT -= multimediawidgets
    QT -= xml
+   # Comment out sound for Ubuntu with Qt5 if multimedia is not available (default in Ubuntu)
+   CONFIG += sound
+}
+
+sound {
+   QT += multimedia
 }
 
 static { # Everything below takes effect with CONFIG += static

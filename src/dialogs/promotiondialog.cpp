@@ -40,7 +40,6 @@ PromotionDialog::~PromotionDialog()
 
 int PromotionDialog::getIndex()
 {
-    QTimer::singleShot(1, this, SLOT(moveDialog()));
     exec();
     return m_index;
 }
