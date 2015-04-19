@@ -57,7 +57,9 @@
 #include <QMenu>
 #include <QPixmap>
 #include <QProgressBar>
+#ifdef USE_SOUND
 #include <QSound>
+#endif
 #include <QStatusBar>
 
 #ifdef Q_OS_WIN
@@ -611,7 +613,9 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
             moveChanged();
             if (AppSettings->getValue("/Sound/Move").toBool())
             {
+#ifdef USE_SOUND
                 QSound::play(":/sounds/move.wav");
+#endif
             }
         }
         return true;
@@ -630,7 +634,9 @@ void MainWindow::HandleFicsSaveGameRequest()
     ActivateDatabase("FICS");
     if (AppSettings->getValue("/Sound/Move").toBool())
     {
+#ifdef USE_SOUND
         QSound::play(":/sounds/fanfare.wav");
+#endif
     }
     SimpleSaveGame();
 }
@@ -697,7 +703,9 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
                 game().setStartingBoard(b,tr("Set starting board"));
                 if (AppSettings->getValue("/Sound/Move").toBool())
                 {
+#ifdef USE_SOUND
                     QSound::play(":/sounds/ding1.wav");
+#endif
                 }
             }
         }
@@ -789,7 +797,9 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                         moveChanged(); // The move's currents where set after forward(), thus repair effects
                         if (AppSettings->getValue("/Sound/Move").toBool())
                         {
+#ifdef USE_SOUND
                             QSound::play(":/sounds/move.wav");
+#endif
                         }
                     }
                     else
@@ -1600,7 +1610,9 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         m_machineHasToMove = false;
                         if (AppSettings->getValue("/Sound/Move").toBool())
                         {
+#ifdef USE_SOUND
                             QSound::play(":/sounds/move.wav");
+#endif
                         }
                     }
                 }

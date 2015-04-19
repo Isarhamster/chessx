@@ -542,7 +542,12 @@ void PreferencesDialog::restoreSettings()
     AppSettings->endGroup();
 
     AppSettings->beginGroup("Sound");
+#ifdef USE_SOUND
     ui.cbSoundOn->setChecked(AppSettings->getValue("Move").toBool());
+#else
+    ui.cbSoundOn->setChecked(false);
+    ui.cbSoundOn->setEnabled(false);
+#endif
     AppSettings->endGroup();
 }
 
