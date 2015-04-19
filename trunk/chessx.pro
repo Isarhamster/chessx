@@ -13,6 +13,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 }
 
 sound {
+   DEFINES += USE_SOUND
    QT += multimedia
 }
 
