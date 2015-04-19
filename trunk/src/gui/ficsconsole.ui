@@ -16,11 +16,14 @@
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabMessages">
       <attribute name="title">
@@ -165,6 +168,9 @@
          <layout class="QVBoxLayout" name="verticalLayout_16">
           <item>
            <widget class="QListWidget" name="listHistory">
+            <property name="contextMenuPolicy">
+             <enum>Qt::CustomContextMenu</enum>
+            </property>
             <property name="toolTip">
              <string>Double click to examine game</string>
             </property>
@@ -201,6 +207,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QListWidget" name="listGames">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <property name="toolTip">
           <string>Double click to follow game</string>
          </property>
@@ -218,6 +227,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
         <widget class="QListWidget" name="listRelay">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <property name="toolTip">
           <string>Double click to follow game</string>
          </property>
@@ -237,6 +249,9 @@
         <layout class="QHBoxLayout" name="layout_puzzle">
          <item>
           <widget class="QListWidget" name="listPuzzle">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
            <property name="toolTip">
             <string>Double click to get a puzzle</string>
            </property>
@@ -290,6 +305,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
         <widget class="QTableWidget" name="listPlayers">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <property name="alternatingRowColors">
           <bool>true</bool>
          </property>
@@ -392,7 +410,11 @@
                </widget>
               </item>
               <item>
-               <widget class="QListWidget" name="listSeeks"/>
+               <widget class="QListWidget" name="listSeeks">
+                <property name="contextMenuPolicy">
+                 <enum>Qt::CustomContextMenu</enum>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>

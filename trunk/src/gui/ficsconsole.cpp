@@ -64,6 +64,13 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     connect(ui->listPlayers, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this, SLOT(HandleHistoryRequest(QTableWidgetItem*)));
     connect(ui->listSeeks, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(HandleSeekRequest(QListWidgetItem*)));
 
+    connect(ui->listGames, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleObserveRequest(const QPoint&)));
+    connect(ui->listHistory, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleExamineRequest(const QPoint&)));
+    connect(ui->listRelay, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleRelayRequest(const QPoint&)));
+    connect(ui->listPuzzle, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleTacticsRequest(const QPoint&)));
+    connect(ui->listPlayers, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleHistoryRequest(const QPoint&)));
+    connect(ui->listSeeks, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(CMHandleSeekRequest(const QPoint&)));
+
     QListWidgetItem* item = new QListWidgetItem(tr("Get Mate"));
     item->setData(Qt::UserRole, "gm");
     ui->listPuzzle->addItem(item);
@@ -284,6 +291,8 @@ void FicsConsole::HandleSeekRequest(QListWidgetItem* item)
     if (play.indexIn(s) >= 0)
     {
         QString seek = play.cap(1);
+        m_ficsClient->sendCommand("unexamine");
+        m_ficsClient->sendCommand("unobserve");
         m_ficsClient->sendCommand(seek);
     }
 }
@@ -851,6 +860,85 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             ui->textIn->appendPlainText(s);
             ui->tabWidget->setCurrentIndex(TabMessage);
             break;
+        }
+    }
+}
+
+void FicsConsole::CMHandleObserveRequest(const QPoint& pos)
+{
+    QMenu menu;
+    menu.addAction(tr("Observe"));
+    if (menu.exec(ui->listGames->mapToGlobal(pos)))
+    {
+        QListWidgetItem* item = ui->listGames->itemAt(pos);
+        if (item)
+        {
+            HandleObserveRequest(item);
+        }
+    }
+}
+void FicsConsole::CMHandleExamineRequest(const QPoint& pos)
+{
+    QMenu menu;
+    menu.addAction(tr("Examine"));
+    if (menu.exec(ui->listHistory->mapToGlobal(pos)))
+    {
+        QListWidgetItem* item = ui->listHistory->itemAt(pos);
+        if (item)
+        {
+            HandleExamineRequest(item);
+        }
+    }
+}
+void FicsConsole::CMHandleRelayRequest(const QPoint& pos)
+{
+    QMenu menu;
+    menu.addAction(tr("Relay"));
+    if (menu.exec(ui->listRelay->mapToGlobal(pos)))
+    {
+        QListWidgetItem* item = ui->listRelay->itemAt(pos);
+        if (item)
+        {
+            HandleRelayRequest(item);
+        }
+    }
+}
+void FicsConsole::CMHandleTacticsRequest(const QPoint& pos)
+{
+    QMenu menu;
+    menu.addAction(tr("Puzzle"));
+    if (menu.exec(ui->listPuzzle->mapToGlobal(pos)))
+    {
+        QListWidgetItem* item = ui->listPuzzle->itemAt(pos);
+        if (item)
+        {
+            HandleTacticsRequest(item);
+        }
+    }
+}
+void FicsConsole::CMHandleHistoryRequest(const QPoint& pos)
+{
+    QMenu menu;
+    menu.addAction(tr("History"));
+    if (menu.exec(ui->listPlayers->mapToGlobal(pos)))
+    {
+        QTableWidgetItem* item = ui->listPlayers->itemAt(pos);
+        if (item)
+        {
+            HandleHistoryRequest(item);
+        }
+    }
+}
+void FicsConsole::CMHandleSeekRequest(const QPoint& pos)
+{
+    QMenu menu;
+    menu.addAction(tr("Accept"));
+    if (menu.exec(ui->listSeeks->mapToGlobal(pos)))
+    {
+        QListWidgetItem* item = ui->listSeeks->itemAt(pos);
+        if (item)
+        {
+            HandleSeekRequest(item);
         }
     }
 }
