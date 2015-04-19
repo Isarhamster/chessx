@@ -83,6 +83,9 @@ void FicsClient::OnReceiveTelnetMessage(QString s)
             s.remove(EndReply);
         }
 
+        s.remove(PoseStart);
+        s.remove(PoseEnd);
+
         if (start>=0)
         {
             s.remove(StartReply);
