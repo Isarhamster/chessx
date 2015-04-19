@@ -49,16 +49,24 @@ protected slots:
     void SendCommand();
     void HandleMessage(int, QString s);
     void HandleBoard(int cmd, QString s);
+
     void HandleObserveRequest(QListWidgetItem*);
     void HandleExamineRequest(QListWidgetItem*);
     void HandleRelayRequest(QListWidgetItem*);
     void HandleTacticsRequest(QListWidgetItem*);
+    void HandleHistoryRequest(QTableWidgetItem *item);
+    void HandleSeekRequest(QListWidgetItem* item);
+    void CMHandleObserveRequest(const QPoint&);
+    void CMHandleExamineRequest(const QPoint&);
+    void CMHandleRelayRequest(const QPoint&);
+    void CMHandleTacticsRequest(const QPoint&);
+    void CMHandleHistoryRequest(const QPoint&);
+    void CMHandleSeekRequest(const QPoint&);
+
     void CommandStarted(int cmd);
     void Disconnected();
     void SlotTabClicked(int tab);
     void SlotTabChanged(int tab);
-    void HandleHistoryRequest(QTableWidgetItem *item);
-    void HandleSeekRequest(QListWidgetItem* item);
     void SlotSeekTimeChanged(int);
 
     void SlotCountDownGameTime();
