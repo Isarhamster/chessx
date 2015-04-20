@@ -743,7 +743,7 @@ void MainWindow::slotHelpBug()
 
 void MainWindow::slotMoveStarted()
 {
-    if ((database()->name() == "FICS") && gameMode())
+    if (premoveAllowed())
     {
         m_ficsConsole->SendStoredMove(InvalidSquare,InvalidSquare);
     }
@@ -757,6 +757,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
 {
     const Board& board = game().board();
     Move m(board.prepareMove(from, to));
+
     if(m.isLegal())
     {
         PieceType promotionPiece = None;
@@ -850,7 +851,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
     else
     {
         // Move is not legal, but could become legal, so store as premove and try later
-        if ((database()->name() == "FICS") && gameMode())
+        if (premoveAllowed())
         {
             m_ficsConsole->SendStoredMove(from,to);
             m_boardView->setStoredMove(from,to);
@@ -2559,4 +2560,9 @@ void MainWindow::enterGameMode(bool gameMode)
     }
     setGameMode(gameMode);
     m_ficsConsole->SlotGameModeChanged(gameMode);
+}
+
+bool MainWindow::premoveAllowed() const
+{
+    return (gameMode() && (database()->name() == "FICS"));
 }
