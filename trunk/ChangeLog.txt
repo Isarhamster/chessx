@@ -5,6 +5,14 @@ List of Changes:
 - New Feature: Boards now 1:1 with open databases
 - New Feature: Remove found items from filter
 
+- New feature: #137 Extend Opening tree (Back button)
+- New feature: Undo last move in Opening Tree
+- New feature: Player Info filters games also for specific color
+- New feature: Player Info shows regularly played openings
+- New feature: Automatic analysis backward from end of game
+- New feature: Refactoring from context menu of game text
+- New feature: PlayerInfo with performance per eco code
+- New feature: Hide selected game from game list
 - New feature: Allow editing arbitrary tags
 - New feature: Draw annotations whith Shit+Left-Click with last color used
 - New feature: Saving w/o dialog
