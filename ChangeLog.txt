@@ -5,6 +5,8 @@ List of Changes:
 - New Feature: Boards now 1:1 with open databases
 - New Feature: Remove found items from filter
 
+- New feature: Flip board to side to move while loading game in training
+- New feature: Setup Board Dialog with Coordinates
 - New feature: #137 Extend Opening tree (Back button)
 - New feature: Undo last move in Opening Tree
 - New feature: Player Info filters games also for specific color
