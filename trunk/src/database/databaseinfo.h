@@ -53,6 +53,10 @@ public:
     {
         return m_database;
     }
+    const Database* database() const
+    {
+        return m_database;
+    }
     /** @return current filter */
     Filter* filter();
     /** @return current game  */

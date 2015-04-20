@@ -79,6 +79,8 @@ protected:
     void evaluateSanNag(QKeyEvent *e);
     /** @return active database */
     Database* database();
+    /** @return active database */
+    const Database* database() const;
     /** @return active database structure */
     DatabaseInfo* databaseInfo();
     /** @return database name of database @p index (or active, if no parameter). */
@@ -105,6 +107,8 @@ protected:
     void updateMenuRecent();
     /** Get current mode */
     bool gameMode() const;
+    /** Is premoving available */
+    bool premoveAllowed() const;
     /** Set current Mode */
     void setGameMode(bool gameMode);
     /** Add a variation from keyboard */

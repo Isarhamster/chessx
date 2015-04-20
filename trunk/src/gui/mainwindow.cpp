@@ -689,6 +689,11 @@ Database* MainWindow::database()
     return databaseInfo()->database();
 }
 
+const Database* MainWindow::database() const
+{
+    return databaseInfo()->database();
+}
+
 QString MainWindow::databaseName(int index) const
 {
     if(index < 0)
