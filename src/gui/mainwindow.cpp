@@ -751,6 +751,10 @@ void MainWindow::gameLoad(int index)
             slotGameChanged();
             m_gameList->setFocus();
             emit signalGameLoaded();
+            if(m_training->isChecked())
+            {
+                m_boardView->setFlipped((game().board().toMove() == Black));
+            }
         }
     }
 }
