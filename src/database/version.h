@@ -8,8 +8,8 @@
  ***************************************************************************/
 
 #define VERSION_MAJOR   1
-#define VERSION_MINOR   2
-#define REVISION        3
+#define VERSION_MINOR   3
+#define REVISION        0
 
 #define XGLUE2(a,b) #a "," #b
 #define GLUE2(a,b)  XGLUE2(a,b)
@@ -25,5 +25,5 @@
 
 #define STR_VERSION_NET GLUEDOT3(VERSION_MAJOR,VERSION_MINOR,REVISION)
 
-#define COPYRIGHT_DATE "(C) 2014"
-#define COPYRIGHT "Copyright(C) 2014"
+#define COPYRIGHT_DATE "(C) 2015"
+#define COPYRIGHT "Copyright(C) 2015"
