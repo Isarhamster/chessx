@@ -2,11 +2,12 @@ mac_osx
 setup*.iss
 tests
 tools
-data/engines
-data/engines-mac
-data/timeseal
-src/resource.h
-src/chessx.rc
+engines
+engines-mac
+timeseal
+resource.h
+chessx.rc
 .svn
 make_tarball
 .DS_Store
+Packages
