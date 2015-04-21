@@ -1,0 +1,16 @@
+#!/bin/sh
+pwd
+rm -rf chessx.app.original
+rm -rf chessx.modified.app
+cp -r chessx.app chessx.app-original
+/Users/ni/Documents/Projects/chessx/mac_osx/fix_paths.sh
+/Users/ni/Qt-5-4-0/5.4/clang_64/bin/macdeployqt chessx.app -verbose=2
+rm -f chessx-installer.mpkg
+/usr/local/bin/packagesbuild -v /Users/ni/Documents/Projects/chessx/Packages/ChessX.pkgproj
+rm -rf dmg
+mkdir dmg    
+mv  /Users/ni/Documents/Projects/chessx/chessx-installer.mpkg dmg/
+rm -f chessx-1.3.0.dmg
+hdiutil create chessx-1.3.0.dmg -volname chessx -fs HFS+ -srcfolder dmg
+mv chessx.app chessx.modified.app
+mv chessx.app-original chessx.app
