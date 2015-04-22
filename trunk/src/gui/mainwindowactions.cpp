@@ -1997,10 +1997,26 @@ void MainWindow::slotSearchTag()
 void MainWindow::slotSearchBoard()
 {
     BoardSearchDialog dlg(this);
-    dlg.setBoard(m_boardView->board());
+    QList<Board> boardList;
+    boardList.append(m_boardView->board());
+
+    for(int i = 0; i < m_boardViews.count(); ++i)
+    {
+        if(i != m_tabWidget->currentIndex())
+        {
+            const Board& b = m_boardViews.at(i)->board();
+            if (b != Game().startingBoard())
+            {
+                boardList.append(b);
+            }
+        }
+    }
+
+    dlg.setBoardList(boardList);
+
     if (dlg.exec() == QDialog::Accepted)
     {
-        Search* ps = new PositionSearch (databaseInfo()->filter()->database(), m_boardView->board());
+        Search* ps = new PositionSearch (databaseInfo()->filter()->database(), boardList.at(dlg.boardIndex()));
         m_openingTreeWidget->cancel();
         slotBoardSearchStarted();
         if(dlg.mode())

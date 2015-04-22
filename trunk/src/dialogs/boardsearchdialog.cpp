@@ -32,16 +32,40 @@ BoardSearchDialog::BoardSearchDialog(QWidget *parent) :
     ui->modeCombo->addItem(tr("Search whole database"), Search::NullOperator);
     ui->modeCombo->addItem(tr("Add to current filter"), Search::Or);
     ui->modeCombo->addItem(tr("Remove from current filter"), Search::Remove);
-}
 
-void BoardSearchDialog::restoreLayout()
-{
-    AppSettings->layout(this);
+    connect(ui->btLeft, SIGNAL(clicked()), SLOT(showPrevBoard()));
+    connect(ui->btRight, SIGNAL(clicked()), SLOT(showNextBoard()));
+
+    m_currentBoardIndex = 0;
 }
 
 BoardSearchDialog::~BoardSearchDialog()
 {
     delete ui;
+}
+void BoardSearchDialog::restoreLayout()
+{
+    AppSettings->layout(this);
+}
+
+void BoardSearchDialog::showPrevBoard()
+{
+    m_currentBoardIndex--;
+    if (m_currentBoardIndex < 0)
+    {
+        m_currentBoardIndex = m_boardList.size() - 1;
+    }
+    setCurrentBoard();
+}
+
+void BoardSearchDialog::showNextBoard()
+{
+    m_currentBoardIndex++;
+    if (m_currentBoardIndex >= m_boardList.size())
+    {
+        m_currentBoardIndex = 0;
+    }
+    setCurrentBoard();
 }
 
 int BoardSearchDialog::mode() const
@@ -65,7 +89,22 @@ void BoardSearchDialog::reject()
     QDialog::reject();
 }
 
-void BoardSearchDialog::setBoard(const Board& b)
+void BoardSearchDialog::setCurrentBoard()
 {
+    const Board& b = m_boardList.at(m_currentBoardIndex);
     ui->boardView->setBoard(b);
+}
+
+void BoardSearchDialog::setBoardList(QList<Board> list)
+{
+    m_boardList = list;
+    ui->boardView->setBoard(list.at(0));
+    m_currentBoardIndex = 0;
+    ui->btLeft->setEnabled(m_boardList.size()>1);
+    ui->btRight->setEnabled(m_boardList.size()>1);
+}
+
+int BoardSearchDialog::boardIndex() const
+{
+    return m_currentBoardIndex;
 }
