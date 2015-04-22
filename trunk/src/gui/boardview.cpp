@@ -34,9 +34,10 @@ const int MoveIndicatorSize = 12;
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_flipped(false), m_showFrame(false), m_showCurrentMove(2),
-    m_guessMove(false), m_selectedSquare(InvalidSquare),
+    m_guessMove(false), m_showThreat(false), m_selectedSquare(InvalidSquare),
     m_hoverSquare(InvalidSquare),
     m_hiFrom(InvalidSquare), m_hiTo(InvalidSquare),
+    m_threatFrom(InvalidSquare), m_threatTo(InvalidSquare),
     m_currentFrom(InvalidSquare), m_currentTo(InvalidSquare),
     m_storedFrom(InvalidSquare), m_storedTo(InvalidSquare),
     m_atLineEnd(true),
@@ -87,6 +88,7 @@ void BoardView::setBoard(const Board& value, int from, int to, bool atLineEnd)
     {
         updateGuess(m_hoverSquare);
     }
+    showThreat();
     update();
 }
 
@@ -259,7 +261,7 @@ void BoardView::drawHiliting(QPaintEvent* event)
         }
     }
 
-    if(m_showCurrentMove==2)
+    if ((m_showCurrentMove==2) && m_currentFrom != InvalidSquare && m_currentTo != InvalidSquare)
     {
         QRect rect1 = squareRect(m_currentFrom);
         QRect rect2 = squareRect(m_currentTo);
@@ -267,6 +269,17 @@ void BoardView::drawHiliting(QPaintEvent* event)
         if(event->region().intersects(u))
         {
             drawArrow(m_currentFrom, m_currentTo, m_theme.color(BoardTheme::CurrentMove));
+        }
+    }
+
+    if (m_threatFrom != InvalidSquare && m_threatTo != InvalidSquare)
+    {
+        QRect rect1 = squareRect(m_threatFrom);
+        QRect rect2 = squareRect(m_threatTo);
+        QRect u = rect1.united(rect2);
+        if(event->region().intersects(u))
+        {
+            drawArrow(m_threatFrom, m_threatTo, m_theme.color(BoardTheme::Threat));
         }
     }
 }
@@ -414,6 +427,33 @@ void BoardView::updateGuess(Square s)
     // Invalidate any currently displayed guess to allow new guess to show
     m_hoverSquare = InvalidSquare;
     showGuess(s);
+}
+
+bool BoardView::showThreat()
+{
+    removeThreat();
+    if(m_showThreat && !(m_flags & SuppressGuessMove) && Guess::guessAllowed())
+    {
+        Board b = board();
+        b.swapToMove();
+        b.setEnPassantSquare(InvalidSquare);
+        Guess::MoveList moveList;
+        Guess::Result sm = Guess::guessMove(qPrintable(b.toFen()), (int) InvalidSquare, moveList, 100);
+        if(!sm.error)
+        {
+            m_threatFrom = sm.from;
+            m_threatTo = sm.to;
+        }
+
+        return true;
+    }
+    return false;
+}
+
+void BoardView::removeThreat()
+{
+    m_threatFrom = InvalidSquare;
+    m_threatTo = InvalidSquare;
 }
 
 void BoardView::removeGuess()
@@ -667,6 +707,7 @@ void BoardView::configure()
     m_coordinates = AppSettings->getValue("showCoordinates").toBool();
     m_showCurrentMove = AppSettings->getValue("showCurrentMove").toInt();
     m_guessMove = AppSettings->getValue("guessMove").toBool();
+    m_showThreat = AppSettings->getValue("showThreat").toBool();
     m_minDeltaWheel = AppSettings->getValue("minWheelCount").toInt();
     m_showMoveIndicatorMode = AppSettings->getValue("showMoveIndicator").toInt();
     AppSettings->endGroup();

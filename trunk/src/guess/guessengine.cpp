@@ -1841,10 +1841,7 @@ Engine::Think(MoveList * mlist)
         }
 
         int score = SearchRoot(depth, alpha, beta, mlist);
-        if(OutOfTime())
-        {
-            break;
-        }
+
         if(score >= beta)
         {
             // Aspiration window fail-high:
@@ -1863,10 +1860,7 @@ Engine::Think(MoveList * mlist)
             beta = score + 1;
             score = SearchRoot(depth, alpha, beta, mlist);
         }
-        if(OutOfTime())
-        {
-            break;
-        }
+
         // If the 2nd search failed, try again with an infinite window.
         // This is rare, but can happen with hashing/null-move effects.
         if(score < alpha  ||  score > beta)
@@ -1878,25 +1872,22 @@ Engine::Think(MoveList * mlist)
             score = SearchRoot(depth, alpha, beta, mlist);
         }
 
-        if(OutOfTime())
-        {
-            break;
-        }
         bestScore = score;
         PrintPV(depth, bestScore, ">>>");
 
         // Stop if checkmate has been found, but not too soon:
-        if(depth >= 5  &&  IsMatingScore(bestScore))
+        if(IsMatingScore(bestScore))
         {
             break;
         }
 
-        // Make sure the first move in the list remains there by
-        // giving it a huge node count for its move ordering score:
-        mlist->Get(0)->score = 1 << 30;
-
         // Sort the move list based on node counts from this iteration:
         mlist->Sort();
+
+        if(OutOfTime())
+        {
+            break;
+        }
     }
 
     // Statistics for debugging:
@@ -1935,7 +1926,7 @@ Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
     bool isOnlyMove = (mlist->size() == 1);
     int bestScore = -Infinity - 1;
 
-    for(unsigned int movenum = 0; (int) movenum < mlist->size(); movenum++)
+    for(unsigned int movenum = 0; (int) movenum < mlist->size(); ++movenum)
     {
         simpleMoveT * sm = mlist->Get(movenum);
         unsigned int oldNodeCount = NodeCount;
@@ -1986,9 +1977,9 @@ Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
             UpdatePV(sm);
             PrintPV(depth, bestScore);
             StoreHash(depth, SCORE_EXACT, score, sm, isOnlyMove);
-            mlist->MoveToFront(movenum);
             if(movenum > 0)
             {
+                mlist->MoveToFront(movenum);
                 EasyMove = false;
             }
         }
