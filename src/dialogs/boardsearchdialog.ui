@@ -22,14 +22,59 @@
     </layout>
    </item>
    <item>
-    <widget class="QComboBox" name="modeCombo">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QToolButton" name="btLeft">
+       <property name="toolTip">
+        <string>Previous</string>
+       </property>
+       <property name="text">
+        <string>Previous</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/images/prev.png</normaloff>:/images/prev.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="btRight">
+       <property name="toolTip">
+        <string>Next</string>
+       </property>
+       <property name="text">
+        <string>Next</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../resources.qrc">
+         <normaloff>:/images/next.png</normaloff>:/images/next.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QComboBox" name="modeCombo">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -71,7 +116,9 @@
    <header>boardview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

@@ -21,13 +21,22 @@ public:
     ~BoardSearchDialog();
 
     int mode() const;
-    void setBoard(const Board &b);
+    void setBoardList(QList<Board>);
+    int boardIndex() const;
 protected slots:
     void reject();
     void accept();
     void restoreLayout();
+
+    void showPrevBoard();
+    void showNextBoard();
+
+protected:
+    void setCurrentBoard();
 private:
     Ui::BoardSearchDialog *ui;
+    QList<Board> m_boardList;
+    int m_currentBoardIndex;
 };
 
 #endif // BOARDSEARCHDIALOG_H
