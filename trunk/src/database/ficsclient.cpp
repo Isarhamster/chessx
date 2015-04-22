@@ -49,6 +49,7 @@ void FicsClient::sendFicsCommandWithId(QString s, int id)
 
 void FicsClient::OnSessionStarted(QString guestName)
 {
+    send("set prompt");
     send("set seek 0");
     send("set style 12");
     send("set shout 0");
@@ -60,6 +61,8 @@ void FicsClient::OnSessionStarted(QString guestName)
     send("set width 240");
     send("set autoflag 1");
     send("set kibitz 1");
+    send("set notakeback 1");
+    send("set bell off");
     send("iset block 1");
     QString connection = InternalTelnet() ? "Telnet" : "Timeseal";
     emit receivedMessage(BLKCMD_INTERNAL_SESSION_STARTED,tr("Connected to FICS as %1 using %2")
