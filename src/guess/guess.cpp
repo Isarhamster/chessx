@@ -22,8 +22,6 @@ int scorePosFromFen(const char *fen)
 Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
 {
     Result r;
-    r.error = -1;
-    r.score = 0;
 
     if (!s_guessAllowed)
     {
@@ -38,7 +36,7 @@ Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
     if (!pos.IsLegal()) return r;
 
     pos.GenerateMoves(&mlist);
-    mlist.SelectBySquare(sq);
+    if (sq != 255) mlist.SelectBySquare(sq);
     if(mlist.size() == 0)
     {
         return r;
@@ -46,15 +44,14 @@ Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
 
     if(mlist.size() > 1)
     {
-        Engine * engine = new Engine();
-        engine->SetSearchTime(thinkTime);
-        engine->SetPosition(&pos);
-        r.score = engine->Think(&mlist);
-        delete engine;
+        Engine engine;
+        engine.SetSearchTime(thinkTime);
+        engine.SetPosition(&pos);
+        r.score = engine.Think(&mlist);
     }
 
     const simpleMoveT& sm = mlist.at(0);
-    ASSERT(sq == sm.from  ||  sq == sm.to);
+    ASSERT(sq == 255 || sq == sm.from || sq == sm.to);
 
     r.from = sm.from;
     r.to = sm.to;
@@ -68,8 +65,6 @@ Result evalPos(const char* fen, int thinkTime)
 
     if (!s_guessAllowed)
     {
-        r.error = -1;
-        r.score = 0;
         return r;
     }
 
@@ -77,19 +72,17 @@ Result evalPos(const char* fen, int thinkTime)
 
     Position pos;
     pos.ReadFromFEN(fen);
-    r.whiteMove = (pos.GetToMove() == WHITE);
 
-    Engine * engine = new Engine();
-    engine->SetSearchTime(thinkTime);
-    engine->SetPosition(&pos);
-    r.score = engine->Think(&mlist);
+    Engine engine;
+    engine.SetSearchTime(thinkTime);
+    engine.SetPosition(&pos);
+    r.score = engine.Think(&mlist);
     simpleMoveT * sm = mlist.Get(0);
 
     r.from = sm->from;
     r.to = sm->to;
     r.error = 0;
 
-    delete engine;
     return r;
 }
 
@@ -110,11 +103,11 @@ int pickBest(const char* fen, int from1, int to1, int from2, int to2, int ms)
     mlist.SelectBySquares(from1, to1, from2, to2);
     if(mlist.size() == 2)
     {
-        Engine * engine = new Engine();
-        engine->SetSearchTime(ms);    // Do a "ms" millisecond search
-        engine->SetPosition(&pos);
-        engine->Think(&mlist);
-        delete engine;
+        Engine engine;
+        engine.SetSearchTime(ms);    // Do a "ms" millisecond search
+        engine.SetPosition(&pos);
+        engine.Think(&mlist);
+
         simpleMoveT * sm = mlist.Get(0);
         if(sm->from == from1 && sm->to == to1)
         {
@@ -133,7 +126,10 @@ void setGuessAllowed(bool allow)
     s_guessAllowed = allow;
 }
 
-
+bool guessAllowed()
+{
+    return s_guessAllowed;
+}
 
 }
 

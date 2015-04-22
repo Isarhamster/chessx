@@ -145,10 +145,14 @@ private:
     bool canDrag(Square s) const;
     /** Highlights the from and to squares of a guessed move. */
     bool showGuess(Square s);
+    /** Highlights the from and to squares of a threat. */
+    bool showThreat();
     /** Recalculate guess when board is changed */
     void updateGuess(Square s);
     /** Remove the guessed move highlight from the board. */
     void removeGuess();
+    /** Remove the threat highlighting */
+    void removeThreat();
     /** Catch mouse events */
     bool eventFilter(QObject *obj, QEvent *ev);
 
@@ -176,10 +180,13 @@ private:
     bool m_showFrame;
     int m_showCurrentMove;
     bool m_guessMove;
+    bool m_showThreat;
     int m_selectedSquare;
     int m_hoverSquare;
     int m_hiFrom;
     int m_hiTo;
+    int m_threatFrom;
+    int m_threatTo;
     int m_currentFrom;
     int m_currentTo;
     int m_storedFrom;
