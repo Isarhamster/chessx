@@ -50,10 +50,15 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     setSizePolicy(policy);
     setMouseTracking(true);
     installEventFilter(this);
+
+    connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result, Board)),
+            this, SLOT(showThreat(Guess::Result,Board)), Qt::QueuedConnection);
 }
 
 BoardView::~BoardView()
-{}
+{
+    m_threatGuess.cancel();
+}
 
 bool BoardView::eventFilter(QObject *obj, QEvent *ev)
 {
@@ -88,7 +93,7 @@ void BoardView::setBoard(const Board& value, int from, int to, bool atLineEnd)
     {
         updateGuess(m_hoverSquare);
     }
-    showThreat();
+    updateThreat();
     update();
 }
 
@@ -429,25 +434,34 @@ void BoardView::updateGuess(Square s)
     showGuess(s);
 }
 
-bool BoardView::showThreat()
+void BoardView::updateThreat()
 {
     removeThreat();
     if(m_showThreat && !(m_flags & SuppressGuessMove) && Guess::guessAllowed())
     {
-        Board b = board();
-        b.swapToMove();
-        b.setEnPassantSquare(InvalidSquare);
-        Guess::MoveList moveList;
-        Guess::Result sm = Guess::guessMove(qPrintable(b.toFen()), (int) InvalidSquare, moveList, 100);
+        if (board() != Board::standardStartBoard)
+        {
+            m_threatGuess.guessMove(board());
+        }
+    }
+}
+
+void BoardView::showThreat(Guess::Result sm, Board b)
+{
+    if (board() == b)
+    {
         if(!sm.error)
         {
             m_threatFrom = sm.from;
             m_threatTo = sm.to;
+            update();
         }
-
-        return true;
     }
-    return false;
+    else
+    {
+        removeThreat();
+        m_threatGuess.guessMove(board());
+    }
 }
 
 void BoardView::removeThreat()

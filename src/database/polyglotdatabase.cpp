@@ -734,7 +734,7 @@ bool PolyglotDatabase::get_move_entry(Move m, book_entry& entry) const
 void PolyglotDatabase::add_game(Game& g, int result)
 {
     int ply = 0;
-    if (standardStartBoard == g.startingBoard())
+    if (Board::standardStartBoard == g.startingBoard())
     {
         g.moveToStart();
         while (ply < m_maxPly && !g.atLineEnd())

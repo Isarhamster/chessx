@@ -41,6 +41,8 @@ public:
 
     Board(QString);
 
+    static const Board standardStartBoard;
+
     /** Resets board, restoring startup position */
     void setStandardPosition();
 
@@ -115,6 +117,8 @@ public:
     int ScoreMaterial() const;
 
 private:
+    static Board getStandardStartBoard();
+
     quint64 m_hashValue;
 
     QString m_squareAnnotation;
@@ -134,6 +138,6 @@ private:
     void hashCastlingRights(CastlingRights oldCastlingRights);
 };
 
-extern const Board standardStartBoard;
+
 #endif
 

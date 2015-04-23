@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPalette>
+#include <cmath>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -112,7 +113,7 @@ void ChartWidget::updatePolygon()
         double max = 0;
         foreach(double d, m_values)
         {
-            double absd = abs(d);
+            double absd = std::abs(d);
             if (absd > max) max = absd;
         }
 
