@@ -194,7 +194,8 @@ HEADERS += src/database/board.h \
     src/database/tags.h \
     src/database/piece.h \
     src/database/square.h \
-    src/database/result.h
+    src/database/result.h \
+    src/database/threadedguess.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -317,7 +318,8 @@ SOURCES += src/database/board.cpp \
     src/dialogs/quicksearch.cpp \
     src/database/tags.cpp \
     src/database/piece.cpp \
-    src/database/result.cpp
+    src/database/result.cpp \
+    src/database/threadedguess.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

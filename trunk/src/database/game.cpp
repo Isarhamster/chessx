@@ -734,7 +734,7 @@ void Game::dbTruncateVariation(Position position)
         m_moveNodes[m_currentNode].previousNode = 0;
         backward();
         m_startingBoard = m_currentBoard;
-        if(m_startingBoard != standardStartBoard)
+        if(m_startingBoard != Board::standardStartBoard)
         {
             m_tags[TagNameFEN] = m_startingBoard.toFen();
             m_tags[TagNameSetUp] = "1";
@@ -1754,7 +1754,7 @@ void Game::dbSetStartingBoard(const QString& fen)
 {
     clear();
     m_startingBoard.fromFen(fen);
-    if(m_startingBoard != standardStartBoard)
+    if(m_startingBoard != Board::standardStartBoard)
     {
         m_tags[TagNameFEN] = fen;
         m_tags[TagNameSetUp] = "1";

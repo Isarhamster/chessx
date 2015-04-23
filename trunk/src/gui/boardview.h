@@ -20,6 +20,7 @@
 #include "board.h"
 #include "boardtheme.h"
 #include "guess.h"
+#include "threadedguess.h"
 
 #include <QWidget>
 
@@ -126,6 +127,8 @@ protected: //Drag'n'Drop Support
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
 
+protected slots:
+    void showThreat(Guess::Result sm, Board b);
 private:
     /** Resizes pieces for new board size. */
     void resizeBoard(QSize size);
@@ -146,7 +149,7 @@ private:
     /** Highlights the from and to squares of a guessed move. */
     bool showGuess(Square s);
     /** Highlights the from and to squares of a threat. */
-    bool showThreat();
+    void updateThreat();
     /** Recalculate guess when board is changed */
     void updateGuess(Square s);
     /** Remove the guessed move highlight from the board. */
@@ -207,6 +210,7 @@ private:
     bool m_vAlignTop;
     int m_showMoveIndicatorMode;
     QPointer<QObject> m_DbIndex;
+    ThreadedGuess m_threatGuess;
 };
 
 class BoardViewMimeData : public QMimeData

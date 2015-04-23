@@ -23,6 +23,8 @@
 
 QHash<quint64, QList<Square> > ecoGuessPositions;
 
+const Board Board::standardStartBoard = getStandardStartBoard();
+
 Board::Board()
     : m_hashValue(0)
 {
@@ -92,9 +94,9 @@ void Board::setToMove(Color c)
 {
     if(toMove() != c)
     {
+        BitBoard::setToMove(c);
         hashToMove();
     }
-    BitBoard::setToMove(c);
 }
 
 void Board::swapToMove()
@@ -309,11 +311,9 @@ int Board::ScoreMaterial() const
     return Guess::scorePosFromFen(fen.toLatin1());
 }
 
-Board getStandardStartBoard()
+Board Board::getStandardStartBoard()
 {
     Board b;
     b.setStandardPosition();
     return b;
 }
-
-const Board standardStartBoard = getStandardStartBoard();

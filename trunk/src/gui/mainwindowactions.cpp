@@ -2005,7 +2005,7 @@ void MainWindow::slotSearchBoard()
         if(i != m_tabWidget->currentIndex())
         {
             const Board& b = m_boardViews.at(i)->board();
-            if (b != Game().startingBoard())
+            if (b != Board::standardStartBoard)
             {
                 boardList.append(b);
             }
@@ -2264,7 +2264,7 @@ BoardView* MainWindow::CreateBoardView()
 
         boardView->setMinimumSize(200, 200);
         boardView->configure();
-        boardView->setBoard(standardStartBoard);
+        boardView->setBoard(Board::standardStartBoard);
         boardView->setDbIndex(m_databases[m_currentDatabase]);
 
         connect(this, SIGNAL(reconfigure()), boardView, SLOT(configure()));
