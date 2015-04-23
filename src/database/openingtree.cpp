@@ -59,6 +59,10 @@ bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, boo
         {
             return true;
         }
+        if (!sourceIsFilter)
+        {
+            f.setAll(0);
+        }
         m_bEnd = bEnd;
         m_board = b;
         m_filter = &f;
