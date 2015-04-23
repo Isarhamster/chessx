@@ -82,6 +82,8 @@ Board OpeningTreeWidget::board() const
 
 void OpeningTreeWidget::updateFilter(Filter& f, const Board& b, bool bEnd)
 {
+    if (ui->btPin->isChecked()) return;
+
     if (m_openingTree->board() != b)
     {
         m_UndoStack->push(new BoardUndoCommand(this,&f,m_openingTree->board(),m_openingTree->bEnd(),""));
