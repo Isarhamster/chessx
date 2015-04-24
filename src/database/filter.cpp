@@ -297,6 +297,7 @@ void Filter::cancel()
 void Filter::executeSearch(Search* search)
 {
     cancel();
+    setAll(0);
     m_break = false;
     currentSearch = search;
     currentSearchOperator = Search::NullOperator;
@@ -305,6 +306,12 @@ void Filter::executeSearch(Search* search)
 
 void Filter::executeSearch(Search* search, Search::Operator searchOperator)
 {
+    if (searchOperator==Search::NullOperator)
+    {
+        executeSearch(search);
+        return;
+    }
+
     wait();
     m_break = false;
     currentSearch = search;

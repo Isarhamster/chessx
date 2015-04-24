@@ -2019,14 +2019,7 @@ void MainWindow::slotSearchBoard()
         Search* ps = new PositionSearch (databaseInfo()->filter()->database(), boardList.at(dlg.boardIndex()));
         m_openingTreeWidget->cancel();
         slotBoardSearchStarted();
-        if(dlg.mode())
-        {
-            databaseInfo()->filter()->executeSearch(ps, Search::Operator(dlg.mode()));
-        }
-        else
-        {
-            databaseInfo()->filter()->executeSearch(ps);
-        }
+        databaseInfo()->filter()->executeSearch(ps, Search::Operator(dlg.mode()));
     }
 }
 
