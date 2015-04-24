@@ -270,14 +270,7 @@ void GameList::simpleSearch(int tagid)
     {
         // filter by number
         Search* ns = new NumberSearch(m_model->filter()->database(), value);
-        if(dlg.mode())
-        {
-            m_model->filter()->executeSearch(ns, Search::Operator(dlg.mode()));
-        }
-        else
-        {
-            m_model->filter()->executeSearch(ns);
-        }
+        m_model->filter()->executeSearch(ns, Search::Operator(dlg.mode()));
     }
     else
     {
@@ -301,14 +294,7 @@ void GameList::simpleSearch(int tagid)
         {
             // Filter tag using partial values
             Search* ts = new TagSearch(m_model->filter()->database(), tag, value);
-            if(dlg.mode())
-            {
-                m_model->filter()->executeSearch(ts, Search::Operator(dlg.mode()));
-            }
-            else
-            {
-                m_model->filter()->executeSearch(ts);
-            }
+            m_model->filter()->executeSearch(ts, Search::Operator(dlg.mode()));
         }
     }
 }
