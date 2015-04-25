@@ -16,7 +16,7 @@
 DatabaseListModel::DatabaseListModel(QObject *parent) :
     QAbstractItemModel(parent)
 {
-    m_columnNames << tr("Favorite") << tr("Name") << tr("Size") << tr("Open") << tr("Path") << tr("Format") << tr("Date");
+    m_columnNames << tr("Favorite") << tr("Name") << tr("Size") << tr("Open") << tr("Path") << tr("Format") << tr("Date") << tr("Read");
 }
 
 QModelIndex DatabaseListModel::index(int row, int column, const QModelIndex &parent) const
@@ -91,6 +91,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_NAME:
             {
                 QString s = m_databases.at(index.row()).m_name;
+                if (s.endsWith(".pgn")) s.remove(".pgn");
                 return s;
             }
             case DBLV_SIZE:
@@ -111,6 +112,11 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             {
                 QFileInfo f(m_databases.at(index.row()).m_path);
                 return f.lastModified().date();
+            }
+            case DBLV_DATE_READ:
+            {
+                QFileInfo f(m_databases.at(index.row()).m_path);
+                return f.lastRead().date();
             }
             case DBLV_OPEN:
                 return QVariant();
@@ -176,6 +182,11 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 QFileInfo f(m_databases.at(index.row()).m_path);
                 return f.lastModified();
             }
+            case DBLV_DATE_READ:
+            {
+                QFileInfo f(m_databases.at(index.row()).m_path);
+                return f.lastRead();
+            }
             case DBLV_SIZE:
             {
                 QStringList sizes;
@@ -231,6 +242,11 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             {
                 QFileInfo f(m_databases.at(index.row()).m_path);
                 return f.lastModified();
+            }
+            case DBLV_DATE_READ:
+            {
+                QFileInfo f(m_databases.at(index.row()).m_path);
+                return f.lastRead();
             }
             case DBLV_SIZE:
             {
