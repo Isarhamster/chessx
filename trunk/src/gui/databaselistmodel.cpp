@@ -75,7 +75,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 }
                 else
                 {
-                    return QVariant();
+                    return QPixmap(":/folder_closed.png");
                 }
             }
             default:
