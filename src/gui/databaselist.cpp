@@ -143,7 +143,7 @@ void DatabaseList::slotDoubleClicked(const QModelIndex& index)
 
 void DatabaseList::itemSelected(const QModelIndex& index)
 {
-    if(index.column() == 0)
+    if(index.column() == 0 || index.column() == DBLV_OPEN)
     {
         slotDoubleClicked(index);
     }
