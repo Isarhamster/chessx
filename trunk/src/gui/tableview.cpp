@@ -73,10 +73,11 @@ void TableView::slotReconfigure()
     }
     else
     {
-        for(int i = 0; i < model()->columnCount(); ++i)
+        for(int i = 0; i < n; ++i)
         {
             showColumn(i);
         }
+        AppSettings->setValue("ColumnCount", n);
         resizeColumnsToContents();
     }
     AppSettings->endGroup();

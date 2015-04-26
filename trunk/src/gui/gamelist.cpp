@@ -186,6 +186,8 @@ void GameList::setFilter(Filter* filter)
     setSortingEnabled(false);
     horizontalHeader()->setSortIndicatorShown(false);
 
+    QByteArray state = horizontalHeader()->saveState();
+
     setModel(0);
 
     delete m_model;
@@ -207,10 +209,16 @@ void GameList::setFilter(Filter* filter)
             sortModel->setDynamicSortFilter(false);
             setModel(sortModel);
         }
+    }
 
+    horizontalHeader()->restoreState(state);
+
+    if (filter)
+    {
         horizontalHeader()->setSortIndicatorShown(!!sortModel);
         setSortingEnabled(!!sortModel);
     }
+
     emit raiseRequest();
 }
 
