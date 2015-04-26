@@ -138,5 +138,7 @@
         <file alias="images/hint.png">data/images/hint.png</file>
         <file alias="sounds/fanfare.wav">data/sounds/fanfare_x.wav</file>
         <file alias="folder_closed.png">data/images/folder_closed.png</file>
+        <file alias="computer.png">data/images/computer.png</file>
+        <file alias="rating.png">data/images/rating.png</file>
     </qresource>
 </RCC>

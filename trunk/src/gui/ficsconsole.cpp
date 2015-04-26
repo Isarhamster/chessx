@@ -709,6 +709,14 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 QString seek = btgSeek->checkedButton()->objectName().remove(0,2).toLower();
                 if (s.contains(seek))
                 {
+                    if (ui->disableComputer->isChecked())
+                    {
+                        if (s.contains("(C)")) break;
+                    }
+                    if (ui->ratedOnly->isChecked())
+                    {
+                        if (s.contains("unrated")) break;
+                    }
                     ui->listSeeks->addItem(s);
                     ui->listSeeks->scrollToBottom();
                 }
@@ -722,6 +730,14 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     QString sought = btgSeek->checkedButton()->objectName().remove(0,2).toLower();
                     if (l[6].contains(sought))
                     {
+                        if (ui->disableComputer->isChecked())
+                        {
+                            if (l[2].contains("(C)")) break;
+                        }
+                        if (ui->ratedOnly->isChecked())
+                        {
+                            if (l[5].contains("unrated")) break;
+                        }
                         QString spec;
                         for (int i=5;i<l.size();++i)
                         {
