@@ -96,9 +96,14 @@ prevHook = _CrtSetReportHook(customReportHook);
     app.setAttribute(Qt::AA_DontShowIconsInMenus);  // Icons are *no longer shown* in menus
 
     QDir dir(QApplication::applicationDirPath());
+
+#ifdef QT_DEBUG
+    QApplication::addLibraryPath(dir.absolutePath());
+#else
     QStringList l;
     l<<dir.absolutePath();
     QApplication::setLibraryPaths(l);
+#endif
 
 #ifdef Q_OS_WIN
     dir.cd("platforms");
@@ -122,7 +127,7 @@ prevHook = _CrtSetReportHook(customReportHook);
 
     AppSettings = new Settings;
 
-    // app.setStyle("plastique");
+    app.setStyle("plastique");
 
 #ifdef Q_OS_MAC
     signal(SIGPIPE, SIG_IGN);
