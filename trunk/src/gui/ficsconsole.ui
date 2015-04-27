@@ -426,7 +426,7 @@
                  </property>
                  <property name="icon">
                   <iconset resource="../../resources.qrc">
-                   <normaloff>:/rating.png</normaloff>:/rating.png</iconset>
+                   <normaloff>:/images/rating.png</normaloff>:/images/rating.png</iconset>
                  </property>
                  <property name="checkable">
                   <bool>true</bool>
@@ -443,7 +443,7 @@
                  </property>
                  <property name="icon">
                   <iconset resource="../../resources.qrc">
-                   <normaloff>:/computer.png</normaloff>:/computer.png</iconset>
+                   <normaloff>:/images/computer.png</normaloff>:/images/computer.png</iconset>
                  </property>
                  <property name="checkable">
                   <bool>true</bool>
