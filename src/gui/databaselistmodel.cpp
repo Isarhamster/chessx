@@ -63,7 +63,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_FAVORITE:
             {
                 bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
-                return QPixmap(bIsFavorite ? ":/folder_favorite.png" : ":/folder_grey.png");
+                return QPixmap(bIsFavorite ? ":/images/folder_favorite.png" : ":/images/folder_grey.png");
             }
             case DBLV_OPEN:
             {
@@ -71,11 +71,11 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 bool bIsCurrent = m_databases.at(index.row()).m_isCurrent;
                 if(bIsOpen)
                 {
-                    return QPixmap(bIsCurrent ? ":/folder_new.png" : ":/fileopen.png");
+                    return QPixmap(bIsCurrent ? ":/images/folder_new.png" : ":/images/fileopen.png");
                 }
                 else
                 {
-                    return QPixmap(":/folder_closed.png");
+                    return QPixmap(":/images/folder_closed.png");
                 }
             }
             default:
