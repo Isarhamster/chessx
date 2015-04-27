@@ -55,7 +55,8 @@ FORMS += \
     src/gui/ficsconsole.ui \
     src/dialogs/tagdialog.ui \
     src/dialogs/preferences.ui \
-    src/dialogs/quicksearch.ui
+    src/dialogs/quicksearch.ui \
+    src/gui/gamewindow.ui
 
 
 HEADERS += src/database/board.h \
@@ -195,7 +196,8 @@ HEADERS += src/database/board.h \
     src/database/piece.h \
     src/database/square.h \
     src/database/result.h \
-    src/database/threadedguess.h
+    src/database/threadedguess.h \
+    src/gui/gamewindow.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -319,7 +321,8 @@ SOURCES += src/database/board.cpp \
     src/database/tags.cpp \
     src/database/piece.cpp \
     src/database/result.cpp \
-    src/database/threadedguess.cpp
+    src/database/threadedguess.cpp \
+    src/gui/gamewindow.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

@@ -36,6 +36,7 @@ class FicsClient;
 class FicsConsole;
 class Game;
 class GameList;
+class GameWindow;
 class OpeningTreeWidget;
 class PlayerListWidget;
 class QLabel;
@@ -552,7 +553,7 @@ private:
     QPointer<QProgressBar> m_progressBar;
     QPointer<TranslatingSlider> m_sliderSpeed;
     QLabel* m_sliderText;
-    ToolMainWindow* m_gameWindow;
+    GameWindow* m_gameWindow;
     QToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
     QList<BoardView*> m_boardViews;

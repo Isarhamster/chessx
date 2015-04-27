@@ -75,7 +75,8 @@ bool NagSet::isMoveNag(Nag nag)
 
 bool NagSet::isEvalNag(Nag nag)
 {
-    return (nag >= EvaluationNagStart && nag <= EvaluationNagEnd);
+    return ((nag >= EvaluationNagStart && nag <= EvaluationNagEnd) ||
+           (nag >= WhiteHasSlightCounterplay && nag <= BlackHasDecisiveCounterplay));
 }
 
 bool NagSet::isOtherNag(Nag nag)

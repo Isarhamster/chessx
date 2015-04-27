@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GameWindow</class>
+ <widget class="QMainWindow" name="GameWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="handleWidth">
+       <number>4</number>
+      </property>
+      <widget class="ChessBrowser" name="chessBrowser"/>
+      <widget class="QToolBox" name="toolBox">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="boxPageMove">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>191</width>
+          <height>474</height>
+         </rect>
+        </property>
+        <attribute name="label">
+         <string>Move</string>
+        </attribute>
+        <layout class="QFormLayout" name="formLayout_6"/>
+       </widget>
+       <widget class="QWidget" name="boxPageEval">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>191</width>
+          <height>474</height>
+         </rect>
+        </property>
+        <attribute name="label">
+         <string>Evaluation</string>
+        </attribute>
+        <layout class="QFormLayout" name="formLayout_5"/>
+       </widget>
+       <widget class="QWidget" name="boxPageOther">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>191</width>
+          <height>474</height>
+         </rect>
+        </property>
+        <attribute name="label">
+         <string>Other</string>
+        </attribute>
+        <layout class="QFormLayout" name="formLayout_4"/>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ChessBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>chessbrowser.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
