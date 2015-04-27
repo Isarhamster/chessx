@@ -22,11 +22,11 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-ChessBrowser::ChessBrowser(QWidget *p, bool showGameMenu) : QTextBrowser(p), toolBar(0), m_gameMenu(NULL)
+ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), toolBar(0), m_gameMenu(NULL), m_currentMove(CURRENT_MOVE)
 {
     setObjectName("ChessBrowser");
     setContextMenuPolicy(Qt::CustomContextMenu);
-    setupMenu(showGameMenu);
+    setupMenu();
 
     configureFont();
 
@@ -88,78 +88,76 @@ void ChessBrowser::slotReconfigure()
     configureFont();
 }
 
-void ChessBrowser::setupMenu(bool setupGameMenu)
+void ChessBrowser::setupMenu()
 {
-    if(setupGameMenu)
+    m_gameMenu = new QMenu("Notation",this);
+    m_browserMenu = new QMenu("Notation Area",this);
+    connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
+    connect(m_browserMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
+
+    m_gameMenu->addAction((m_startComment = createAction(tr("Add start comment..."), EditAction::EditPrecomment)));
+    m_gameMenu->addAction((m_gameComment = createAction(tr("Add game comment..."), EditAction::EditGameComment)));
+    m_gameMenu->addAction((m_addComment = createAction(tr("Comment..."), EditAction::EditComment)));
+
+    // Nag menus
+    QMenu* nagMoveMenu = m_gameMenu->addMenu(tr("Add move symbol"));
+    for(int n = MoveNagStart; n <= MoveNagEnd; ++n)
     {
-        m_gameMenu = new QMenu("Notation",this);
-        m_browserMenu = new QMenu("Notation Area",this);
-        connect(m_gameMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
-        connect(m_browserMenu, SIGNAL(triggered(QAction*)), SLOT(slotAction(QAction*)));
-
-        m_gameMenu->addAction((m_startComment = createAction(tr("Add start comment..."), EditAction::EditPrecomment)));
-        m_gameMenu->addAction((m_gameComment = createAction(tr("Add game comment..."), EditAction::EditGameComment)));
-        m_gameMenu->addAction((m_addComment = createAction(tr("Comment..."), EditAction::EditComment)));
-
-        // Nag menus
-        QMenu* nagMoveMenu = m_gameMenu->addMenu(tr("Add move symbol"));
-        for(int n = MoveNagStart; n <= MoveNagEnd; ++n)
+        if(n != SingularMove)
         {
-            if(n != SingularMove)
-            {
-                nagMoveMenu->addAction(createNagAction(Nag(n)));
-            }
+            nagMoveMenu->addAction(createNagAction(Nag(n)));
         }
-        QMenu* nagPositionMenu = m_gameMenu->addMenu(tr("Add evaluation symbol"));
-        nagPositionMenu->addAction(createNagAction(DrawishPosition));
-        for(int n = UnclearPosition; n <= BlackHasADecisiveAdvantage; ++n)
-        {
-            nagPositionMenu->addAction(createNagAction(Nag(n)));
-        }
-        nagPositionMenu->addAction(createNagAction(Nag(WhiteHasSufficientCompensationForMaterialDeficit)));
-        QMenu* nagSpecialMenu = m_gameMenu->addMenu(tr("Add other symbol"));
-        QMenu* subMenu;
-        nagSpecialMenu->addAction(createNagAction(NagDiagram));
-        nagSpecialMenu->addAction(createNagAction(WhiteHasTheInitiative));
-        nagSpecialMenu->addAction(createNagAction(WhiteHasTheAttack));
-        nagSpecialMenu->addAction(createNagAction(WhiteHasModerateCounterplay));
-        nagSpecialMenu->addAction(createNagAction(WithTheIdea));
-        nagSpecialMenu->addAction(createNagAction(BetterMove));
-        nagSpecialMenu->addAction(createNagAction(Novelty));
-        nagSpecialMenu->addAction(createNagAction(WhiteIsInZugzwang));
-        nagSpecialMenu->addAction(createNagAction(WeakPoint));
-        nagSpecialMenu->addAction(createNagAction(EndGame));
-        nagSpecialMenu->addAction(createNagAction(WhiteHasSevereTimeControlPressure));
-        subMenu = nagSpecialMenu->addMenu(tr("Bishops"));
-        subMenu->addAction(createNagAction(WhiteHasAPairOfBishops));
-        subMenu->addAction(createNagAction(BishopsOfOppositeColor));
-        subMenu->addAction(createNagAction(BishopsOfSameColor));
-
-        m_gameMenu->addAction(m_removeNags = createAction(tr("Remove symbols"), EditAction::ClearNags));
-        m_gameMenu->addSeparator();
-        m_gameMenu->addAction((m_enumerateVariations1 = createAction(tr("Enumerate Variations A) B) C)"), EditAction::EnumerateVariations1)));
-        m_gameMenu->addAction((m_enumerateVariations2 = createAction(tr("Enumerate Variations a) b) c)"), EditAction::EnumerateVariations2)));
-        m_gameMenu->addSeparator();
-        m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to main line"), EditAction::PromoteVariation)));
-        m_gameMenu->addAction((m_VariationUp = createAction(tr("Move variation up"), EditAction::VariationUp)));
-        m_gameMenu->addAction((m_VariationDown = createAction(tr("Move variation down"), EditAction::VariationDown)));
-        m_gameMenu->addSeparator();
-        m_gameMenu->addAction((m_removeVariation = createAction(tr("Remove variation"), EditAction::RemoveVariation)));
-        m_gameMenu->addAction((m_removePrevious = createAction(tr("Remove previous moves"), EditAction::RemovePreviousMoves)));
-        m_gameMenu->addAction((m_removeNext = createAction(tr("Remove next moves"), EditAction::RemoveNextMoves)));
-        m_gameMenu->addSeparator();
-        m_gameMenu->addAction((m_addNullMove = createAction(tr("Insert threat"), EditAction::AddNullMove)));
-
-        // Non-move oriented actions
-        m_browserMenu->addAction((m_gameComment2 = createAction(tr("Add game comment..."), EditAction::EditGameComment)));
-        m_browserMenu->addAction((m_addNullMove2 = createAction(tr("Insert threat"), EditAction::AddNullMove)));
-        m_browserMenu->addAction((m_copyHtml = createAction(tr("Copy Html"), EditAction::CopyHtml)));
-        m_browserMenu->addAction((m_copyText = createAction(tr("Copy Text"), EditAction::CopyText)));
-        m_browserMenu->addSeparator();
-        QMenu* refactorMenu = m_browserMenu->addMenu(tr("Refactor"));
-        refactorMenu->addAction((m_uncomment = createAction(tr("Uncomment"), EditAction::Uncomment)));
-        refactorMenu->addAction((m_remove = createAction(tr("Remove Variations"), EditAction::RemoveVariations)));
     }
+    QMenu* nagPositionMenu = m_gameMenu->addMenu(tr("Add evaluation symbol"));
+    nagPositionMenu->addAction(createNagAction(DrawishPosition));
+    for(int n = UnclearPosition; n <= BlackHasADecisiveAdvantage; ++n)
+    {
+        nagPositionMenu->addAction(createNagAction(Nag(n)));
+    }
+    nagPositionMenu->addAction(createNagAction(Nag(WhiteHasSufficientCompensationForMaterialDeficit)));
+    nagPositionMenu->addAction(createNagAction(WhiteHasTheInitiative));
+    nagPositionMenu->addAction(createNagAction(WhiteHasTheAttack));
+    nagPositionMenu->addAction(createNagAction(WhiteHasModerateCounterplay));
+
+    QMenu* nagSpecialMenu = m_gameMenu->addMenu(tr("Add other symbol"));
+    QMenu* subMenu;
+    nagSpecialMenu->addAction(createNagAction(NagDiagram));
+    nagSpecialMenu->addAction(createNagAction(WithTheIdea));
+    nagSpecialMenu->addAction(createNagAction(BetterMove));
+    nagSpecialMenu->addAction(createNagAction(Novelty));
+    nagSpecialMenu->addAction(createNagAction(WhiteIsInZugzwang));
+    nagSpecialMenu->addAction(createNagAction(WeakPoint));
+    nagSpecialMenu->addAction(createNagAction(EndGame));
+    nagSpecialMenu->addAction(createNagAction(WhiteHasSevereTimeControlPressure));
+    subMenu = nagSpecialMenu->addMenu(tr("Bishops"));
+    subMenu->addAction(createNagAction(WhiteHasAPairOfBishops));
+    subMenu->addAction(createNagAction(BishopsOfOppositeColor));
+    subMenu->addAction(createNagAction(BishopsOfSameColor));
+
+    m_gameMenu->addAction(m_removeNags = createAction(tr("Remove symbols"), EditAction::ClearNags));
+    m_gameMenu->addSeparator();
+    m_gameMenu->addAction((m_enumerateVariations1 = createAction(tr("Enumerate Variations A) B) C)"), EditAction::EnumerateVariations1)));
+    m_gameMenu->addAction((m_enumerateVariations2 = createAction(tr("Enumerate Variations a) b) c)"), EditAction::EnumerateVariations2)));
+    m_gameMenu->addSeparator();
+    m_gameMenu->addAction((m_promoteVariation = createAction(tr("Promote to main line"), EditAction::PromoteVariation)));
+    m_gameMenu->addAction((m_VariationUp = createAction(tr("Move variation up"), EditAction::VariationUp)));
+    m_gameMenu->addAction((m_VariationDown = createAction(tr("Move variation down"), EditAction::VariationDown)));
+    m_gameMenu->addSeparator();
+    m_gameMenu->addAction((m_removeVariation = createAction(tr("Remove variation"), EditAction::RemoveVariation)));
+    m_gameMenu->addAction((m_removePrevious = createAction(tr("Remove previous moves"), EditAction::RemovePreviousMoves)));
+    m_gameMenu->addAction((m_removeNext = createAction(tr("Remove next moves"), EditAction::RemoveNextMoves)));
+    m_gameMenu->addSeparator();
+    m_gameMenu->addAction((m_addNullMove = createAction(tr("Insert threat"), EditAction::AddNullMove)));
+
+    // Non-move oriented actions
+    m_browserMenu->addAction((m_gameComment2 = createAction(tr("Add game comment..."), EditAction::EditGameComment)));
+    m_browserMenu->addAction((m_addNullMove2 = createAction(tr("Insert threat"), EditAction::AddNullMove)));
+    m_browserMenu->addAction((m_copyHtml = createAction(tr("Copy Html"), EditAction::CopyHtml)));
+    m_browserMenu->addAction((m_copyText = createAction(tr("Copy Text"), EditAction::CopyText)));
+    m_browserMenu->addSeparator();
+    QMenu* refactorMenu = m_browserMenu->addMenu(tr("Refactor"));
+    refactorMenu->addAction((m_uncomment = createAction(tr("Uncomment"), EditAction::Uncomment)));
+    refactorMenu->addAction((m_remove = createAction(tr("Remove Variations"), EditAction::RemoveVariations)));
 
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
 }
@@ -212,6 +210,7 @@ void ChessBrowser::slotContextMenu(const QPoint& pos)
         m_addNullMove->setVisible(true);
 
         m_gameMenu->exec(mapToGlobal(pos));
+        m_currentMove = CURRENT_MOVE;
     }
     else
     {
@@ -262,7 +261,7 @@ QAction* ChessBrowser::createAction(const QString& name, EditAction::Type type)
 QAction* ChessBrowser::createNagAction(const Nag& nag)
 {
     QAction* action = new QAction(NagSet::nagToMenuString(nag), this);
-    m_actions[action] = EditAction(EditAction::AddNag, nag);
+    m_actions[action] = EditAction(EditAction::AddNag, (int)nag);
     return action;
 }
 

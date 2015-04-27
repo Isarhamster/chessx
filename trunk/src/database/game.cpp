@@ -1263,7 +1263,7 @@ void Game::moveCount(int* moves, int* comments, int* nags) const
     if (nags) *nags = 0;
 
     MoveId node = 1;
-    while(nodeValid(node) != NO_MOVE)
+    while((node = nodeValid(node)) != NO_MOVE)
     {
         *moves += 1;
         if (nags)
@@ -1561,7 +1561,8 @@ int Game::moveByPly(int diff)
 
 bool Game::dbMoveToId(MoveId moveId)
 {
-    if(nodeValid(moveId) == NO_MOVE)
+    moveId = nodeValid(moveId);
+    if(moveId == NO_MOVE)
     {
         return false;
     }

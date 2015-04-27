@@ -32,9 +32,11 @@ class ChessBrowser : public QTextBrowser
 {
     Q_OBJECT
 public:
-    /** Constructs new instance with parent @p parent. If @p showGameMenu is false, game menu is never shown. */
-    ChessBrowser(QWidget* p, bool showGameMenu = false);
+    /** Constructs new instance with parent @p parent. */
+    ChessBrowser(QWidget* p);
     QToolBar* toolBar;
+    QMap<QAction*, EditAction> m_actions;
+
 public slots:
     /** Store current configuration. */
     void saveConfig();
@@ -61,7 +63,7 @@ signals:
 protected:
     virtual void selectAnchor(const QString& href);
     virtual void setSource(const QUrl& url);
-    void setupMenu(bool setupGameMenu);
+    void setupMenu();
     QAction* createAction(const QString& name, EditAction::Type type);
     QAction* createNagAction(const Nag& nag);
 
@@ -75,7 +77,6 @@ protected: // Drag+Drop
     void mergeGame(int gameIndex);
 
 private:
-    QMap<QAction*, EditAction> m_actions;
 
     QAction* m_copyHtml;
     QAction* m_copyText;

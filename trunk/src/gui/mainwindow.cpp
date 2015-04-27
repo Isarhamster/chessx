@@ -29,6 +29,7 @@
 #include "game.h"
 #include "gamelist.h"
 #include "GameMimeData.h"
+#include "gamewindow.h"
 #include "helpbrowser.h"
 #include "kbaction.h"
 #include "loadquery.h"
@@ -180,8 +181,7 @@ MainWindow::MainWindow() : QMainWindow(),
     gameTextDock->setObjectName("GameTextDock");
     gameTextDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
-    m_gameWindow = new ToolMainWindow(gameTextDock);
-    m_gameWindow->setObjectName("GameWindow");
+    m_gameWindow = new GameWindow(gameTextDock);
     connect(this, SIGNAL(reconfigure()), m_gameWindow, SLOT(slotReconfigure()));
 
     m_gameToolBar = new QToolBar(tr("Game Time"), m_gameWindow);
@@ -208,11 +208,8 @@ MainWindow::MainWindow() : QMainWindow(),
 
     m_menuView->addAction(m_gameToolBar->toggleViewAction());
     m_gameToolBar->setVisible(AppSettings->getValue("/MainWindow/GameToolBar").toBool());
-    m_gameView = new ChessBrowser(m_gameWindow, true);
+    m_gameView = m_gameWindow->browser();
     m_gameView->toolBar = m_gameToolBar;
-    m_gameView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    m_gameView->setMinimumSize(200, 200);
     m_gameView->slotReconfigure();
     connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
     connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
@@ -220,7 +217,6 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameView, SIGNAL(signalMergeGame(int)), this, SLOT(slotMergeActiveGame(int)));
     connect(this, SIGNAL(displayTime(const QString&, Color)), m_gameView, SLOT(slotDisplayTime(const QString&, Color)));
     gameTextDock->setWidget(m_gameWindow);
-    m_gameWindow->setCentralWidget(m_gameView);
     connect(this, SIGNAL(reconfigure()), m_gameView, SLOT(slotReconfigure()));
     addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
     m_gameTitle = new QLabel;
