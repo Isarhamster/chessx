@@ -822,6 +822,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 ui->timeBlack->setText(QString());
 
                 s.remove(QRegExp("puzzlebot[^:]*kibitzes:"));
+                s = s.trimmed();
                 if (!s.contains("tell puzzlebot"))
                 {
                     ui->listPuzzlebotMessages->addItem(s.trimmed());
@@ -843,6 +844,14 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                         event.remove('[');
                         event.remove(']');
                         emit RequestAddTag(TagNameEvent, event);
+                    }
+                    else if (s.startsWith("Black moves"))
+                    {
+                        emit SignalPlayerIsBlack(true);
+                    }
+                    else if (s.startsWith("White moves"))
+                    {
+                        emit SignalPlayerIsBlack(false);
                     }
                 }
             }
