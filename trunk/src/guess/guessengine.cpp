@@ -328,10 +328,6 @@ Engine::Score(void)
     return Score(-Infinity, Infinity);
 }
 
-static unsigned int nScoreCalls = 0;
-static unsigned int nScoreFull  = 0;
-
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::Score
 //   Returns a score in centipawns for the current engine position,
@@ -351,8 +347,6 @@ Engine::Score(int alpha, int beta)
     int endscore[2] = {0, 0};   // Scoring in endgames
     int midscore[2] = {0, 0};   // Scoring in middlegames
     int nNonPawns[2] = {0, 0};  // Non-pawns on each side, including kings
-
-    nScoreCalls++;
 
     nNonPawns[WHITE] = Pos.NumNonPawns(WHITE);
     nNonPawns[BLACK] = Pos.NumNonPawns(BLACK);
@@ -537,8 +531,6 @@ Engine::Score(int alpha, int beta)
     {
         return fastScore;
     }
-
-    nScoreFull++;
 
     // Now refine the score with piece-square bonuses:
 
@@ -936,9 +928,6 @@ Engine::Score(int alpha, int beta)
     return finalScore;
 }
 
-static unsigned int nPawnHashProbes = 0;
-static unsigned int nPawnHashHits = 0;
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::ScorePawnStructure
 //   Fill in the provided pawnTableEntryT structure with pawn structure
@@ -946,7 +935,6 @@ static unsigned int nPawnHashHits = 0;
 void
 Engine::ScorePawnStructure(pawnTableEntryT * pawnEntry)
 {
-    nPawnHashProbes++;
     unsigned int pawnhash = Pos.PawnHashValue();
     // We only use 32-bit hash values, so without further safety checks
     // the rate of false hits in the pawn hash table could be high.
@@ -970,7 +958,6 @@ Engine::ScorePawnStructure(pawnTableEntryT * pawnEntry)
         hashEntry = &(PawnTable[hashSlot]);
         if(pawnhash == hashEntry->pawnhash  &&  sig == hashEntry->sig)
         {
-            nPawnHashHits++;
             *pawnEntry = *hashEntry;
             return;
         }
@@ -1485,8 +1472,6 @@ inline void tte_GetBestMove(transTableEntryT * tte, simpleMoveT * bestMove)
     bestMove->from = bm & 63;
 }
 
-static unsigned int ProbeCounts[4] = {0};
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::StoreHash
 //   Store the score for the current position in the transposition table.
@@ -1705,9 +1690,6 @@ Engine::ProbeHash(int depth, int * score, simpleMoveT * bestMove, bool * isOnlyM
     }
     return tte_ScoreFlag(ttEntry);
 }
-
-static unsigned int nFailHigh = 0;
-static unsigned int nFailHighFirstMove = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::SetPosition
@@ -2072,7 +2054,6 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
     simpleMoveT hashmove;
     bool isOnlyMove;
     scoreFlagT hashflag = ProbeHash(depth, &hashscore, &hashmove, &isOnlyMove);
-    ProbeCounts[hashflag]++;
 
     switch(hashflag)
     {
@@ -2302,12 +2283,6 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
             IncHistoryValue(sm, depth * depth);
             AddKillerMove(sm);
             StoreHash(depth, SCORE_LOWER, score, sm, isOnlyMove);
-            // Fail-high-first-move stats:
-            nFailHigh++;
-            if(movenum == 0)
-            {
-                nFailHighFirstMove++;
-            }
             return beta;
         }
 

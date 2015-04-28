@@ -49,12 +49,12 @@ void
 scid_Init()
 {
     // Check that we only call this once:
-    static int numCalls = 0;
-    if(numCalls > 0)
+    static bool init = false;
+    if(init)
     {
         return;
     }
-    numCalls++;
+    init = true;
 
     // Initialise the sqDir[][] array of directions between every pair
     // of squares.

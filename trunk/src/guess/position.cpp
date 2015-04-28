@@ -498,6 +498,7 @@ Position::GenKingMoves(MoveList * mlist, genMovesT genType, bool castling)
     pieceT king = piece_Make(ToMove, KING);
     bool genNonCaptures = ((genType & GEN_NON_CAPS) != 0);
 
+    if (Board[kingSq] != king) return; // TODO - happens - why?
     ASSERT(Board[kingSq] == king);
 
     destPtr = kingAttacks[kingSq];

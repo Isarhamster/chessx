@@ -2278,7 +2278,7 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="882"/>
         <source>Red Arrow to here</source>
-        <translation>Flèche verte ici</translation>
+        <translation>Flèche rouge ici</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="883"/>
@@ -2293,7 +2293,7 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="886"/>
         <source>Remove Arrow to here</source>
-        <translation>Supprimer Flèche ici</translation>
+        <translation>Supprimer flèche ici</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1125"/>
