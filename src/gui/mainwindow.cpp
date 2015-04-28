@@ -1251,7 +1251,7 @@ void MainWindow::setupActions()
     exportMenu->addAction(createAction(exportMenu,tr("&Games in filter"), SLOT(slotFileExportFilter())));
     exportMenu->addAction(createAction(exportMenu,tr("&All games"), SLOT(slotFileExportAll())));
 
-    QAction* saveImage = createAction(tr("Export Image"), SLOT(slotExportImage()));
+    QAction* saveImage = createAction(tr("Export Image..."), SLOT(slotExportImage()));
     file->addAction(saveImage);
     file->addAction(createAction(tr("Mail PGN..."), SLOT(slotSendMail()), QKeySequence(), fileToolBar, ":/images/edit_mail.png"));
 
