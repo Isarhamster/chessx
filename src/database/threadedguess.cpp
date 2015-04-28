@@ -42,7 +42,7 @@ void ThreadedGuess::run()
 {
     Board b = m_board;
     b.swapToMove();
-    b.setEnPassantSquare(InvalidSquare);
+    b.clearEnPassantSquare();
     Guess::MoveList moveList;
     Guess::Result sm = Guess::guessMove(qPrintable(b.toFen()),
                                         (int) InvalidSquare,
