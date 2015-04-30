@@ -17,11 +17,19 @@ GameWindow::GameWindow(QWidget *parent) :
     setObjectName("GameWindow");
 
     setupToolBox();
+
+    connect(ui->listVariations, SIGNAL(clicked(QModelIndex)),
+            this, SLOT(variationClicked(QModelIndex)));
 }
 
 GameWindow::~GameWindow()
 {
     delete ui;
+}
+
+void GameWindow::variationClicked(QModelIndex index)
+{
+    emit enterVariation(index.row());
 }
 
 void GameWindow::setupToolBox()
@@ -45,6 +53,14 @@ void GameWindow::setupToolBox()
     {
         setupNagInToolBox((Nag)nag, tbActions[(Nag)nag]);
     }
+
+    setupSpacers();
+
+    ui->browserSplitter->setStretchFactor(0,3);
+    ui->browserSplitter->setStretchFactor(1,1);
+
+    ui->toolBoxSplitter->setStretchFactor(0,1);
+    ui->toolBoxSplitter->setStretchFactor(1,3);
 }
 
 void GameWindow::setupNagInToolBox(Nag nag, QAction* action)
@@ -61,9 +77,31 @@ void GameWindow::setupNagInToolBox(Nag nag, QAction* action)
     }
 }
 
+void GameWindow::setupSpacers()
+{
+    for (int i=0; i<ui->toolBox->count();++i)
+    {
+        QWidget* boxPage = ui->toolBox->widget(i);
+        QGridLayout* layout = qobject_cast<QGridLayout*>(boxPage->layout());
+        int rows = layout->rowCount();
+        QSpacerItem* verticalSpacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        layout->addItem(verticalSpacer,rows,0);
+    }
+}
+
 ChessBrowser *GameWindow::browser()
 {
     return ui->chessBrowser;
+}
+
+void GameWindow::showVariations(QList<MoveId> list)
+{
+    QStringList variationTexts = browser()->getAnchors(list);
+    ui->listVariations->clear();
+    foreach(QString s, variationTexts)
+    {
+        ui->listVariations->addItem(s);
+    }
 }
 
 void GameWindow::addActionAtPage(int page, QAction* action)
@@ -73,5 +111,16 @@ void GameWindow::addActionAtPage(int page, QAction* action)
     toolButton->setDefaultAction(action);
     toolButton->setFixedSize(QSize(32,32));
     toolButton->setStyleSheet("QToolButton { font-size: 12pt; }");
-    boxPage->layout()->addWidget(toolButton);
+    QGridLayout* layout = qobject_cast<QGridLayout*>(boxPage->layout());
+
+    int rows = layout->rowCount();
+    int widgets = layout->count();
+    if (widgets % 2)
+    {
+        layout->addWidget(toolButton,rows-1,1);
+    }
+    else
+    {
+        layout->addWidget(toolButton,rows,0);
+    }
 }

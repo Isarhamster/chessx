@@ -419,6 +419,7 @@ protected slots:
     void FicsConnected();
     void HandleFicsRequestRemoveMove();
     void openFICS();
+    void slotGameVarEnter(int index);
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);

@@ -183,7 +183,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     m_gameWindow = new GameWindow(gameTextDock);
     connect(this, SIGNAL(reconfigure()), m_gameWindow, SLOT(slotReconfigure()));
-
+    connect(m_gameWindow, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
     m_gameToolBar = new QToolBar(tr("Game Time"), m_gameWindow);
     m_gameToolBar->setObjectName("GameToolBar");
     m_gameToolBar->setMovable(false);

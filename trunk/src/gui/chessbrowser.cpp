@@ -77,6 +77,48 @@ void ChessBrowser::selectAnchor(const QString& href)
     }
 }
 
+QStringList ChessBrowser::getAnchors(QList<MoveId> list)
+{
+    QStringList hrefs;
+    foreach (MoveId id, list)
+    {
+        if(id)
+        {
+            hrefs.push_back(QString("move:%1").arg(id));
+        }
+    }
+    return getAnchors(hrefs);
+}
+
+QStringList ChessBrowser::getAnchors(QStringList hrefs)
+{
+    QStringList result;
+    if (hrefs.isEmpty()) return result;
+
+    for(QTextBlock block = document()->begin(); block != document()->end(); block = block.next())
+    {
+        QTextBlock::iterator it;
+        for(it = block.begin(); !it.atEnd(); ++it)
+        {
+            QTextFragment fragment = it.fragment();
+            if(!fragment.isValid())
+            {
+                continue;
+            }
+            QTextCharFormat format = fragment.charFormat();
+            if(format.isAnchor() && hrefs.contains(format.anchorHref()))
+            {
+                result.push_back(fragment.text());
+                if (result.size() == hrefs.size())
+                {
+                    break;
+                }
+            }
+        }
+    }
+    return result;
+}
+
 void ChessBrowser::saveConfig()
 {
     AppSettings->setLayout(this);

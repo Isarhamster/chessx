@@ -5,6 +5,7 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
+#include "game.h"
 #include "nag.h"
 #include "toolmainwindow.h"
 
@@ -23,6 +24,15 @@ public:
     ~GameWindow();
 
     ChessBrowser* browser();
+    void showVariations(QList<MoveId>);
+
+signals:
+    void enterVariation(int index);
+
+protected:
+    void setupSpacers();
+protected slots:
+    void variationClicked(QModelIndex index);
 
 private:
     Ui::GameWindow *ui;
