@@ -37,6 +37,7 @@ public:
     QToolBar* toolBar;
     QMap<QAction*, EditAction> m_actions;
 
+    QStringList getAnchors(QList<MoveId> list);
 public slots:
     /** Store current configuration. */
     void saveConfig();
@@ -76,6 +77,7 @@ protected: // Drag+Drop
     void dropEvent(QDropEvent *event);
     void mergeGame(int gameIndex);
 
+    QStringList getAnchors(QStringList hrefs);
 private:
 
     QAction* m_copyHtml;

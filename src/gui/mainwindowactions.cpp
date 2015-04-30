@@ -27,6 +27,7 @@
 #include "ficsconsole.h"
 #include "game.h"
 #include "gamelist.h"
+#include "gamewindow.h"
 #include "mainwindow.h"
 #include "messagedialog.h"
 #include "memorydatabase.h"
@@ -960,6 +961,13 @@ void MainWindow::moveChanged()
         m_gameView->slotDisplayPly(g.ply());
     }
 
+    QList<MoveId> listVariations = g.variations();
+    if (listVariations.size() && !game().atLineEnd())
+    {
+        listVariations.push_front(game().nextMove());
+    }
+    m_gameWindow->showVariations(listVariations);
+
     slotSearchTree();
     emit boardChange(g.board());
 
@@ -1011,6 +1019,18 @@ void MainWindow::slotBoardMoveWheel(int wheel)
     else
     {
         slotGameMovePrevious();
+    }
+}
+
+void MainWindow::slotGameVarEnter(int index)
+{
+    if(index)
+    {
+        game().moveToId(game().variations().at(index-1));
+    }
+    else
+    {
+        slotGameMoveNext();
     }
 }
 

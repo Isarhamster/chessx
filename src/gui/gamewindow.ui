@@ -14,9 +14,9 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QSplitter" name="splitter">
+     <widget class="QSplitter" name="browserSplitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -24,52 +24,95 @@
        <number>4</number>
       </property>
       <widget class="ChessBrowser" name="chessBrowser"/>
-      <widget class="QToolBox" name="toolBox">
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
-       <widget class="QWidget" name="boxPageMove">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>191</width>
-          <height>474</height>
-         </rect>
+      <widget class="QWidget" name="widget" native="true">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="leftMargin">
+         <number>0</number>
         </property>
-        <attribute name="label">
-         <string>Move</string>
-        </attribute>
-        <layout class="QFormLayout" name="formLayout_6"/>
-       </widget>
-       <widget class="QWidget" name="boxPageEval">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>191</width>
-          <height>474</height>
-         </rect>
+        <property name="topMargin">
+         <number>0</number>
         </property>
-        <attribute name="label">
-         <string>Evaluation</string>
-        </attribute>
-        <layout class="QFormLayout" name="formLayout_5"/>
-       </widget>
-       <widget class="QWidget" name="boxPageOther">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>191</width>
-          <height>474</height>
-         </rect>
+        <property name="rightMargin">
+         <number>0</number>
         </property>
-        <attribute name="label">
-         <string>Other</string>
-        </attribute>
-        <layout class="QFormLayout" name="formLayout_4"/>
-       </widget>
+        <item>
+         <widget class="QSplitter" name="toolBoxSplitter">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="handleWidth">
+           <number>4</number>
+          </property>
+          <widget class="QListWidget" name="listVariations">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
+          </widget>
+          <widget class="QToolBox" name="toolBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="boxPageMove">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>386</width>
+              <height>168</height>
+             </rect>
+            </property>
+            <attribute name="label">
+             <string>Move</string>
+            </attribute>
+            <layout class="QGridLayout" name="layoutPageMove"/>
+           </widget>
+           <widget class="QWidget" name="boxPageEval">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>386</width>
+              <height>168</height>
+             </rect>
+            </property>
+            <attribute name="label">
+             <string>Evaluation</string>
+            </attribute>
+            <layout class="QGridLayout" name="layoutPageEval"/>
+           </widget>
+           <widget class="QWidget" name="boxPageOther">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>386</width>
+              <height>168</height>
+             </rect>
+            </property>
+            <attribute name="label">
+             <string>Other</string>
+            </attribute>
+            <layout class="QGridLayout" name="layoutPageOther"/>
+           </widget>
+          </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
