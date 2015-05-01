@@ -36,7 +36,7 @@ signals:
     void requestOpenDatabase(QString s, bool utf8);
     void requestCloseDatabase(QString s);
     void requestLinkDatabase(QString s);
-    void requestAppendGame(QString path, int index);
+    void requestAppendGames(QString path, QList<int> indexes);
     void requestAppendDatabase(QString dest, QString src);
     void requestMakeBook(QString s);
 
