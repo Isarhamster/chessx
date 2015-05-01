@@ -323,11 +323,8 @@ void DatabaseList::appendGameToDataBase(QModelIndex index, QList<int> gameIndexL
     // Make sure the drop occured on a cell!
     if(index.isValid())
     {
-        foreach(int gameIndex, gameIndexList)
-        {
-            QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
-            emit requestAppendGame(path, gameIndex);
-        }
+        QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+        emit requestAppendGames(path, gameIndexList);
     }
 }
 

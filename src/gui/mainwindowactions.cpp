@@ -1807,7 +1807,7 @@ void MainWindow::copyGame(int target, int index)
     }
 }
 
-void MainWindow::copyGame(QString fileName, int index)
+void MainWindow::copyGames(QString fileName, QList<int> indexes)
 {
     for(int i = 0; i < m_databases.count(); ++i)
     {
@@ -1815,8 +1815,13 @@ void MainWindow::copyGame(QString fileName, int index)
         {
             if(m_databases[i]->isValid())
             {
-                copyGame(i, index);
+                foreach (int index, indexes)
+                {
+                    copyGame(i, index);
+                }
                 m_databases[i]->filter()->resize(m_databases[i]->database()->count(), true);
+                QString msg = tr("Appended %1 games to %2.").arg(indexes.count()).arg(fileName);
+                slotStatusMessage(msg);
             }
             return;
         }
@@ -1825,15 +1830,23 @@ void MainWindow::copyGame(QString fileName, int index)
     // The database is closed
     Output writer(Output::Pgn);
     Game g;
-    if(database()->loadGame(index, g))
+    bool success = true;
+    foreach (int index, indexes)
     {
-        QString msg;
-        msg = tr("Append game %1 to %2.").arg(index + 1).arg(fileName);
-        slotStatusMessage(msg);
+        if(database()->loadGame(index, g))
+        {
+            QString msg;
+            msg = tr("Append game %1 to %2.").arg(index + 1).arg(fileName);
+            slotStatusMessage(msg);
 
-        writer.append(fileName, g);
-        m_databaseList->update(fileName);
+            success = writer.append(fileName, g);
+            m_databaseList->update(fileName);
+            if (!success) break;
+        }
     }
+    QString msg = success ? tr("Appended %1 games to %2.").arg(indexes.count()).arg(fileName) :
+                            tr("Error appending games to %1").arg(fileName);
+    slotStatusMessage(msg);
 }
 
 void MainWindow::copyDatabase(QString target, QString src)

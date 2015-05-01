@@ -130,7 +130,7 @@ public:
     void output(const QString& filename, Database& database);
 
     /** Append output to a closed file */
-    void append(const QString& filename, Game& game);
+    bool append(const QString& filename, Game& game);
 
     /** User definable settings.
      * Sets the filename of the file that contains the template that will be used

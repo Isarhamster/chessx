@@ -979,12 +979,12 @@ void Output::output(const QString& filename, Database& database)
     f.close();
 }
 
-void Output::append(const QString& filename, Game& game)
+bool Output::append(const QString& filename, Game& game)
 {
     QFile f(filename);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
     {
-        return;
+        return false;
     }
     QTextStream out(&f);
     if((m_outputType == Html) || (m_outputType == NotationWidget))
@@ -999,8 +999,10 @@ void Output::append(const QString& filename, Game& game)
             out.setCodec(textCodec);
         }
     }
+    out << endl;
     out << output(&game);
     f.close();
+    return true;
 }
 
 void Output::setTemplateFile(QString filename)

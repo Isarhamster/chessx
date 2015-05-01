@@ -339,7 +339,7 @@ public slots:
     /** Fill up the current game (drag request from game list) */
     void slotGetGameData(Game& g);
     /** Copy game from other database by drag'n'drop */
-    void copyGame(QString fileName, int index);
+    void copyGames(QString fileName, QList<int> indexes);
     /** Copy all games from other database by drag'n'drop */
     void copyDatabase(QString target, QString src);
     /** Request renaming a event in the current database */

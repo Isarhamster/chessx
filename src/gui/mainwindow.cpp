@@ -306,8 +306,8 @@ MainWindow::MainWindow() : QMainWindow(),
             this, SLOT(slotFileCloseName(QString)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
-    connect(m_databaseList, SIGNAL(requestAppendGame(QString, int)),
-            this, SLOT(copyGame(QString, int)));
+    connect(m_databaseList, SIGNAL(requestAppendGames(QString, QList<int>)),
+            this, SLOT(copyGames(QString, QList<int>)));
     connect(m_databaseList, SIGNAL(requestAppendDatabase(QString, QString)),
             this, SLOT(copyDatabase(QString, QString)));
     connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));
