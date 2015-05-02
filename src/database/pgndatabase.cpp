@@ -102,7 +102,7 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     in >> version;
     in >> magic;
 
-    if(!((version <= 1) && (magic == 0xce55)))
+    if(!((version <= 2) && (magic == 0xce55)))
     {
         return false;
     }
