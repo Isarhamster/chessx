@@ -210,7 +210,6 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameToolBar->setVisible(AppSettings->getValue("/MainWindow/GameToolBar").toBool());
     m_gameView = m_gameWindow->browser();
     m_gameView->toolBar = m_gameToolBar;
-    m_gameView->slotReconfigure();
     connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
     connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
     connect(m_gameView, SIGNAL(queryActiveGame(const Game**)), this, SLOT(slotGetActiveGame(const Game**)));

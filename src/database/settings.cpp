@@ -15,6 +15,8 @@
 #include <QtGui>
 #include <QWidget>
 #include <QMainWindow>
+#include <QSplitter>
+#include <QLayout>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -47,21 +49,35 @@ bool Settings::layout(QWidget* w)
             w->resize(values[2], values[3]);
             w->move(x, values[1]);
         }
-        if(qobject_cast<QMainWindow*>(w))
+
+        QSplitter* s = qobject_cast<QSplitter*>(w);
+        if (s)
         {
-            QByteArray docks = value("Docks", QByteArray()).toByteArray();
-            if(docks.count())
+            QByteArray splits = value("Splitter", QByteArray()).toByteArray();
+            if (splits.size())
             {
-                qobject_cast<QMainWindow*>(w)->restoreState(docks, 0);
+                s->restoreState(splits);
             }
         }
         else
         {
-            if(values[4])
+            QMainWindow* m = qobject_cast<QMainWindow*>(w);
+            if(m)
             {
-                QDialog* d = qobject_cast<QDialog*>(w);
-                if (d) d->setModal(true);
-                w->show();
+                QByteArray docks = value("Docks", QByteArray()).toByteArray();
+                if(docks.count())
+                {
+                    m->restoreState(docks, 0);
+                }
+            }
+            else
+            {
+                if(values[4])
+                {
+                    QDialog* d = qobject_cast<QDialog*>(w);
+                    if (d) d->setModal(true);
+                    w->show();
+                }
             }
         }
     }
@@ -82,10 +98,17 @@ void Settings::setLayout(const QWidget* w)
     else if (w->isMaximized()) x |= 0x80000000;
     values << x << w->y() << w->width() << w->height() << w->isVisible();
     setList(w->objectName(), values);
-    if(qobject_cast<const QMainWindow*>(w))
+    const QMainWindow* m = qobject_cast<const QMainWindow*>(w);
+    if (m)
     {
-        setValue("Docks", qobject_cast<const QMainWindow*>(w)->saveState(0));
+        setValue("Docks", m->saveState(0));
     }
+    const QSplitter* s = qobject_cast<const QSplitter*>(w);
+    if (s)
+    {
+        setValue("Splitter", s->saveState());
+    }
+
     endGroup();
 }
 

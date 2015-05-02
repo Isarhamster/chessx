@@ -24,7 +24,7 @@
        <number>4</number>
       </property>
       <widget class="ChessBrowser" name="chessBrowser"/>
-      <widget class="QWidget" name="widget" native="true">
+      <widget class="QWidget" name="boxWidget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="leftMargin">
          <number>0</number>
