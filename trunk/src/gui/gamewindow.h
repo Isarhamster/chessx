@@ -28,12 +28,14 @@ public:
 
 signals:
     void enterVariation(int index);
+public slots:
+    void saveConfig();
+    void slotReconfigure();
 
 protected:
     void setupSpacers();
 protected slots:
     void variationClicked(QModelIndex index);
-
 private:
     Ui::GameWindow *ui;
     void setupToolBox();

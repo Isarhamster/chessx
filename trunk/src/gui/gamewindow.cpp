@@ -6,6 +6,7 @@
 #include "ui_gamewindow.h"
 #include "editaction.h"
 #include "nag.h"
+#include "settings.h"
 
 #include <QToolButton>
 
@@ -25,6 +26,18 @@ GameWindow::GameWindow(QWidget *parent) :
 GameWindow::~GameWindow()
 {
     delete ui;
+}
+
+void GameWindow::saveConfig()
+{
+    AppSettings->setLayout(this);
+    AppSettings->setLayout(ui->browserSplitter);
+}
+
+void GameWindow::slotReconfigure()
+{
+    AppSettings->layout(this);
+    AppSettings->layout(ui->browserSplitter);
 }
 
 void GameWindow::variationClicked(QModelIndex index)
