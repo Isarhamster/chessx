@@ -1,4 +1,23 @@
-February 2015: Version 1.3.0
+May 2015: Version 1.3.2
+
+- New feature: Variation indicator in toolbox
+- New feature: FICS - Toggle board at beginning of puzzle
+- New feature: Toolbox for adding Nags (e.g. on WhiteBoards)
+- New feature: FICS - Filter computers and unrated users
+- New feature: Show date of last access to a database
+- New feature: Pin Opening Tree at a position
+- New feature: Clear filter before starting search from opening tree
+- New feature: Select board for searching position from open boards
+- New feature: Show threat after making move
+
+- Bugfix: Index file usage broken
+- Bugfix: Missing newline copying games into a closed file
+- Bugfix: Better status message when copying multiple games
+- Bugfix: Gamelist header configuration does not persist
+- Bugfix: Windows Installation does not show Pin Icon
+
+April 2015: Version 1.3.0
+
 - New Feature: Play games on FICS with telnet or timeseal
 - New Feature: Boards now 1:1 with open databases
 - New Feature: Remove found items from filter
