@@ -1178,7 +1178,7 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
     if(!dbInfo->database()->isReadOnly())
     {
         dbInfo->saveGame();
-        dbInfo->database()->index()->setTag("Length", QString::number((dbInfo->currentGame().plyCount() + 1) / 2), dbInfo->currentIndex());
+        dbInfo->database()->index()->setTag(TagNameLength, QString::number((dbInfo->currentGame().plyCount() + 1) / 2), dbInfo->currentIndex());
         m_gameList->updateFilter();
         slotFilterChanged();
         slotGameChanged();
@@ -2428,7 +2428,7 @@ void MainWindow::UpdateGameTitle()
     }
     QString players = QString("<b><a href=\"tag:white\">%1</a></b> %2 - <b><a href=\"tag:black\">%3</a></b> %4")
                       .arg(white).arg(whiteElo).arg(black).arg(blackElo);
-    QString result = QString("<b>%1</b> &nbsp;").arg(game().tag("Result"));
+    QString result = QString("<b>%1</b> &nbsp;").arg(game().tag(TagNameResult));
 
     QString eventInfo = game().eventInfo();
     QString event = QString("<a href='event:%1'>%2</a>").arg(game().tag(TagNameEvent)).arg(eventInfo);

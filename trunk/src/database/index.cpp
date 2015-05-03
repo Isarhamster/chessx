@@ -176,7 +176,7 @@ bool Index::read(QDataStream &in, volatile bool *breakFlag, short version)
             emit progress(++percentDone);
         }
     }
-    if (version < 2)
+    if (version <= VERSION_INDEX_1_2)
     {
         QList<bool> validFlags;
         in >> validFlags;

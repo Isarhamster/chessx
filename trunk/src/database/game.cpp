@@ -1767,7 +1767,7 @@ void Game::dbSetStartingBoard(const QString& fen)
 void Game::setResult(Result result)
 {
     Game state = *this;
-    m_tags["Result"] = resultString(result);
+    m_tags[TagNameResult] = resultString(result);
     emit signalGameModified(true, state, tr("Set result"));
 }
 

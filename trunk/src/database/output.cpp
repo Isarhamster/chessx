@@ -713,7 +713,7 @@ QString Output::writeAllTags() const
     {
         QString value = tags.value(key);
         // workaround for problems with IndexItem implementation
-        if(!value.isEmpty() && value != "?" && value != PDInvalidDate.asString() && key != "Length")
+        if(!value.isEmpty() && value != "?" && value != PDInvalidDate.asString() && key != TagNameLength)
         {
             text += writeTag(key, value);
         }
@@ -820,7 +820,7 @@ QString Output::outputGame(const Game* g, bool upToCurrentMove)
     }
     text += m_endTagMap[MarkupMainLine];
     text += m_endTagMap[MarkupNotationBlock];
-    text += m_startTagMap[MarkupResult] + m_game.tag("Result") + m_endTagMap[MarkupResult];
+    text += m_startTagMap[MarkupResult] + m_game.tag(TagNameResult) + m_endTagMap[MarkupResult];
 
     m_game.dbMoveToId(id);
 

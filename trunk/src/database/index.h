@@ -19,6 +19,12 @@
 #include "indexitem.h"
 #include "game.h"
 
+#define VERSION_INDEX_1_2 1
+#define VERSION_INDEX_1_3 2
+#define VERSION_INDEX_CURRENT VERSION_INDEX_1_3
+
+#define INDEX_FILE_MAGIC 0xce55
+
 /** @ingroup Database
  * The Index class holds a list of IndexItem instances, typically one
  * for each game in the current database. This enables fast access to
