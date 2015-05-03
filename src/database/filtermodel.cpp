@@ -49,7 +49,7 @@ FilterModel::FilterModel(Filter* filter, QObject* parent)
                  << TagNameDate
                  << TagNameResult
                  << TagNameECO
-                 << "Length";
+                 << TagNameLength;
 
     m_game  = new Game;
     m_game2 = new Game;

@@ -27,6 +27,7 @@ const char* const TagNameBlackElo    = "BlackElo";
 const char* const TagNameWhiteTeam   = "WhiteTeam";
 const char* const TagNameBlackTeam   = "BlackTeam";
 const char* const TagNameTimeControl = "TimeControl";
+const char* const TagNameLength      = "Length";
 
 const char* const StandardTags[7] = {"Event", "Site", "Date", "Round", "White", "Black", "Result"};
 

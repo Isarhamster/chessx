@@ -242,10 +242,10 @@ bool DatabaseInfo::saveGame()
         eco = m_game.ecoClassify().left(3);
         if(!eco.isEmpty())
         {
-            m_game.setTag("ECO", eco);
+            m_game.setTag(TagNameECO, eco);
             if(m_index >= 0)
             {
-                database()->index()->setTag("ECO", eco, m_index);
+                database()->index()->setTag(TagNameECO, eco, m_index);
             }
         }
     }
@@ -282,7 +282,7 @@ bool DatabaseInfo::saveGame()
         m_index = m_database->count() - 1;
         if(!eco.isEmpty())
         {
-            database()->index()->setTag("ECO", eco, m_index);
+            database()->index()->setTag(TagNameECO, eco, m_index);
         }
         setModified(false, Game(), "");
         m_undoStack->setClean();

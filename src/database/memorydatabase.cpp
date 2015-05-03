@@ -143,9 +143,9 @@ void MemoryDatabase::parseGame()
         game->dbSetStartingBoard(fen);
     }
     m_index.setValidFlag(m_count - 1, parseMoves(game));
-    m_index.setTag("Length", QString::number((game->plyCount() + 1) / 2), m_count - 1);
+    m_index.setTag(TagNameLength, QString::number((game->plyCount() + 1) / 2), m_count - 1);
 
-    QString eco = game->tag("ECO").left(3);
+    QString eco = game->tag(TagNameECO).left(3);
     if(eco == "?")
     {
         eco.clear();
@@ -158,8 +158,8 @@ void MemoryDatabase::parseGame()
             eco = game->ecoClassify().left(3);
             if(!eco.isEmpty())
             {
-                game->setTag("ECO", eco);
-                m_index.setTag("ECO", eco, m_count - 1);
+                game->setTag(TagNameECO, eco);
+                m_index.setTag(TagNameECO, eco, m_count - 1);
             }
         }
     }

@@ -102,10 +102,8 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     in >> version;
     in >> magic;
 
-    if(!((version <= 2) && (magic == 0xce55)))
-    {
-        return false;
-    }
+    if (magic != INDEX_FILE_MAGIC) return false;
+    if (version > VERSION_INDEX_CURRENT) return false;
 
     int streamVersion = QDataStream::Qt_4_6;
     if(version > 0)
@@ -159,7 +157,7 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     in >> magic;
 
     readIndexFile(in, breakFlag, version);
-    bUpdate = (version < 2);
+    bUpdate = (version < VERSION_INDEX_CURRENT);
 
     unsigned short finalMagic;
     in >> finalMagic;
@@ -192,8 +190,8 @@ bool PgnDatabase::writeOffsetFile(const QString& filename) const
 
     QDataStream out(&file);
 
-    short version = 2;
-    unsigned short magic = 0xce55;
+    short version = VERSION_INDEX_CURRENT;
+    unsigned short magic = INDEX_FILE_MAGIC;
     int streamVersion = out.version();
 
     out << version;
@@ -472,8 +470,8 @@ void PgnDatabase::seekGame(GameId gameId)
 
 void PgnDatabase::parseTagsIntoIndex()
 {
-    m_index.setTag("Length", "0", m_count - 1);
-    m_index.setTag("Result", "*", m_count - 1);
+    m_index.setTag(TagNameLength, "0", m_count - 1);
+    m_index.setTag(TagNameResult, "*", m_count - 1);
     while(m_currentLine.startsWith(QString("[")) && !m_file->atEnd())
     {
         int tagend = m_currentLine.indexOf(' ');
@@ -503,7 +501,7 @@ void PgnDatabase::parseTagsIntoIndex()
         }
 
         // quick fix for non-standard draw mark.
-        if(tag == "Result" && value == "1/2")
+        if(tag == TagNameResult && value == "1/2")
         {
             value = "1/2-1/2";
         }
@@ -932,7 +930,7 @@ void PgnDatabase::skipMoves()
         }
 
         tag = QString::number((tag.toInt() + 1) / 2);
-        m_index.setTag("Length", tag, m_count - 1);
+        m_index.setTag(TagNameLength, tag, m_count - 1);
     }
     else
     {
@@ -949,7 +947,7 @@ void PgnDatabase::skipMoves()
         gameText = gameText.remove(QRegExp("\\([^\\(\\)]*\\)"));
 
         gameNumber.lastIndexIn(gameText);
-        m_index.setTag("Length", gameNumber.cap(1), m_count - 1);
+        m_index.setTag(TagNameLength, gameNumber.cap(1), m_count - 1);
     }
 
     //swallow trailing whitespace
