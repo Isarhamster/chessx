@@ -832,7 +832,7 @@ Bitte Installation prüfen.</translation>
     <message>
         <location filename="../src/dialogs/dlgsavebook.ui" line="121"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/dialogs/dlgsavebook.ui" line="92"/>
@@ -852,12 +852,12 @@ Bitte Installation prüfen.</translation>
     <message>
         <location filename="../src/dialogs/dlgsavebook.cpp" line="76"/>
         <source>New book</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Buch</translation>
     </message>
     <message>
         <location filename="../src/dialogs/dlgsavebook.cpp" line="78"/>
         <source>Polyglot Book (*.bin)</source>
-        <translation type="unfinished"></translation>
+        <translation>Polyglot Buch (*.bin)</translation>
     </message>
 </context>
 <context>
