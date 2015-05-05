@@ -845,7 +845,7 @@ Controllare l&apos;installazione.</translation>
     <message>
         <location filename="../src/dialogs/dlgsavebook.ui" line="121"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/dlgsavebook.cpp" line="34"/>
@@ -855,12 +855,12 @@ Controllare l&apos;installazione.</translation>
     <message>
         <location filename="../src/dialogs/dlgsavebook.cpp" line="76"/>
         <source>New book</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuovo libro</translation>
     </message>
     <message>
         <location filename="../src/dialogs/dlgsavebook.cpp" line="78"/>
         <source>Polyglot Book (*.bin)</source>
-        <translation type="unfinished"></translation>
+        <translation>Libro Polyglot (*.bin)</translation>
     </message>
 </context>
 <context>
