@@ -6,6 +6,7 @@
 #define __ECOTHREAD_H__
 
 #include <QThread>
+#include "ecopositions.h"
 #include "game.h"
 
 /** @ingroup GUI
@@ -21,7 +22,7 @@ public:
     void run()
     {
         bool ok = true;
-        ok |= Game::loadEcoFile(":chessx.eco");
+        ok |= EcoPositions::loadEcoFile(":chessx.eco");
         ok |= Board::loadEcoFile(":chessx.gtm");
         emit loaded(this, ok);
     };

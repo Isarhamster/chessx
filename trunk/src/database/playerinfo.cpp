@@ -10,8 +10,9 @@
 #include <QCoreApplication>
 #include <QHash>
 
-#include "playerinfo.h"
+#include "ecopositions.h"
 #include "database.h"
+#include "playerinfo.h"
 #include "tags.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -156,7 +157,7 @@ void PlayerInfo::update()
         OpeningCountMap openingMap;
         foreach(QString s, openingsX[i].keys())
         {
-            QString opening = Game::findEcoName(s);
+            QString opening = EcoPositions::findEcoName(s);
             openingMap[opening] = openingMap.value(opening) + 1;
         }
 
