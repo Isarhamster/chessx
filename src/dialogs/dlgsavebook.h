@@ -27,6 +27,7 @@ signals:
 protected slots:
   void accept();
   void reject();
+  void slotSelectTargetPath();
 
 protected slots:
   void restoreLayout();

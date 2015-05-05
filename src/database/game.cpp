@@ -12,6 +12,7 @@
 #include <QFile>
 #include "game.h"
 #include "tags.h"
+#include "ecopositions.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -23,8 +24,6 @@ const QRegExp Game::clk("\\[%clk\\s*(\\d:\\d\\d?:\\d\\d)\\]");
 const QRegExp Game::egt("\\[%egt\\s*(\\d:\\d\\d?:\\d\\d)\\]");
 const QRegExp Game::csl("\\[%csl\\s*([^\\]]*)\\]");
 const QRegExp Game::cal("\\[%cal\\s*([^\\]]*)\\]");
-
-QMap<quint64, QString> Game::m_ecoPositions;
 
 Game::Game() : QObject()
 {
@@ -1912,24 +1911,6 @@ MoveId Game::findPosition(const Board& position) const
     return NO_MOVE;
 }
 
-bool Game::loadEcoFile(const QString& ecoFile)
-{
-    QFile file(ecoFile);
-    if(file.open(QIODevice::ReadOnly))
-    {
-        QDataStream sin(&file);
-        quint32 id;
-        sin >> id;
-        if(id == COMPILED_ECO_FILE_ID)
-        {
-            sin >> m_ecoPositions;
-            return true;
-        }
-        return false;
-    }
-    return false;
-}
-
 void Game::compact()
 {
     int oldSize = m_moveNodes.size();
@@ -2011,14 +1992,20 @@ QString Game::ecoClassify() const
     //search backwards for the first eco position
     while(g.backward())
     {
-        quint64 key = g.board().getHashValue();
-        if(m_ecoPositions.contains(key))
+        QString eco;
+        if (EcoPositions::isEcoPosition(g.board(),eco))
         {
-            return m_ecoPositions[key];
+            return eco;
         }
     }
 
     return QString();
+}
+
+bool Game::isEcoPosition() const
+{
+    QString dummy;
+    return (EcoPositions::isEcoPosition(board(),dummy));
 }
 
 void Game::scoreMaterial(QList<double>& scores) const
@@ -2033,42 +2020,6 @@ void Game::scoreMaterial(QList<double>& scores) const
         int score = g.board().ScoreMaterial();
         scores.append(score);
     }
-}
-
-bool Game::isEcoPosition() const
-{
-    quint64 key = m_currentBoard.getHashValue();
-    return (m_ecoPositions.contains(key));
-}
-
-QString Game::findEcoNameDetailed(QString eco)
-{
-    foreach(QString actualEco, m_ecoPositions.values())
-    {
-        if (actualEco.startsWith(eco))
-        {
-            QString opName = actualEco.section(" ",1);
-            return opName;
-        }
-    }
-    return QString();
-}
-
-QString Game::findEcoName(QString eco)
-{
-    foreach(QString actualEco, m_ecoPositions.values())
-    {
-        if (actualEco.startsWith(eco))
-        {
-            QString opName = actualEco.section(" ",1);
-            if (opName.contains(':'))
-            {
-                opName = opName.section(":",0,0);
-            }
-            return opName;
-        }
-    }
-    return QString();
 }
 
 void Game::reparentVariation(MoveId variation, MoveId parent)

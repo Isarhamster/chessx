@@ -7,6 +7,7 @@
 #include "settings.h"
 
 #include <QFileInfo>
+#include <QFileDialog>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -36,6 +37,8 @@ DlgSaveBook::DlgSaveBook(QString path, QWidget *parent) :
   }
 
   ui->outputPath->setText(m_OutputPath);
+
+  connect(ui->btBrowseTarget, SIGNAL(clicked(bool)), SLOT(slotSelectTargetPath()));
 }
 
 void DlgSaveBook::restoreLayout()
@@ -66,4 +69,20 @@ void DlgSaveBook::reject()
 {
     AppSettings->setLayout(this);
     QDialog::reject();
+}
+
+void DlgSaveBook::slotSelectTargetPath()
+{
+    QString file = QFileDialog::getSaveFileName(this, tr("New book"),
+                   AppSettings->value("/General/databasePath").toString(),
+                   tr("Polyglot Book (*.bin)"));
+    if(file.isEmpty())
+    {
+        return;
+    }
+    if(!file.endsWith(".bin"))
+    {
+        file += ".bin";
+    }
+    ui->outputPath->setText(file);
 }

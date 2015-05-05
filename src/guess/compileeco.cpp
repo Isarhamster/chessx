@@ -1,9 +1,15 @@
-#include "guess.h"
-#include "common.h"
-#include "board.h"
-#include "game.h"
+/****************************************************************************
+*   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
+****************************************************************************/
 
+#include "guess.h"
+#include "board.h"
+#include "ecopositions.h"
+
+#include <QDebug>
+#include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QList>
 
 #if defined(_MSC_VER) && defined(_DEBUG)

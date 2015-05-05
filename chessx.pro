@@ -197,7 +197,8 @@ HEADERS += src/database/board.h \
     src/database/square.h \
     src/database/result.h \
     src/database/threadedguess.h \
-    src/gui/gamewindow.h
+    src/gui/gamewindow.h \
+    src/database/ecopositions.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -322,7 +323,8 @@ SOURCES += src/database/board.cpp \
     src/database/piece.cpp \
     src/database/result.cpp \
     src/database/threadedguess.cpp \
-    src/gui/gamewindow.cpp
+    src/gui/gamewindow.cpp \
+    src/database/ecopositions.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

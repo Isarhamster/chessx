@@ -21,7 +21,6 @@
 #define NO_MOVE -1
 #define CURRENT_MOVE -2
 #define CURRENT_VARIATION -3
-#define COMPILED_ECO_FILE_ID ((quint32)0xCD5CBD02U)
 
 typedef short MoveId;
 
@@ -336,11 +335,6 @@ public :
     /** @return true if current pos is in the ECO list */
     bool isEcoPosition() const;
 
-    /** Method that loads a file containing ECO classifications for use by the ecoClassify method. Returns true if successful */
-    static bool loadEcoFile(const QString& ecoFile);
-    static QString findEcoNameDetailed(QString eco);
-    static QString findEcoName(QString eco);
-
     /* Debug */
     /** Dump a move node using qDebug() */
     void dumpMoveNode(MoveId moveId = CURRENT_MOVE) const;
@@ -439,8 +433,6 @@ private:
     /** Change parent of each move of a variation. */
     void reparentVariation(MoveId variation, MoveId parent);
 
-    //eco data
-    static QMap<quint64, QString> m_ecoPositions;
     friend class SaveRestoreMove;
     friend class SaveRestoreMoveCompact;
 };
