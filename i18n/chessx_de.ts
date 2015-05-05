@@ -830,6 +830,11 @@ Bitte Installation prüfen.</translation>
         <translation>Kompletter Pfad für Ausgabedatei</translation>
     </message>
     <message>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="121"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/dialogs/dlgsavebook.ui" line="92"/>
         <source>Uniform Probabilities</source>
         <translation>Gleichverteilte Wahrscheinlichkeiten</translation>
@@ -840,20 +845,30 @@ Bitte Installation prüfen.</translation>
         <translation>Ausgabedatei</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dlgsavebook.cpp" line="33"/>
+        <location filename="../src/dialogs/dlgsavebook.cpp" line="34"/>
         <source>Clipboard</source>
         <translation>Zwischenablage</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/dlgsavebook.cpp" line="76"/>
+        <source>New book</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/dlgsavebook.cpp" line="78"/>
+        <source>Polyglot Book (*.bin)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ECOListWidget</name>
     <message>
-        <location filename="../src/gui/ecolistwidget.cpp" line="112"/>
+        <location filename="../src/gui/ecolistwidget.cpp" line="113"/>
         <source>&lt;html&gt;&lt;body&gt;&lt;i&gt;No ECO code chosen.&lt;/i&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;&lt;i&gt;Kein ECO Code ausgewählt.&lt;/i&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/ecolistwidget.cpp" line="149"/>
+        <location filename="../src/gui/ecolistwidget.cpp" line="150"/>
         <source>&lt;html&gt;&lt;i&gt;No ECO code chosen.&lt;/i&gt;&lt;/html&gt;</source>
         <translation>Kein ECO Code ausgewählt</translation>
     </message>
@@ -1338,91 +1353,91 @@ Bitte Installation prüfen.</translation>
 <context>
     <name>Game</name>
     <message>
-        <location filename="../src/database/game.cpp" line="98"/>
-        <location filename="../src/database/game.cpp" line="483"/>
+        <location filename="../src/database/game.cpp" line="97"/>
+        <location filename="../src/database/game.cpp" line="482"/>
         <source>Add move</source>
         <translation>Zug hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="361"/>
+        <location filename="../src/database/game.cpp" line="360"/>
         <source>Merge game</source>
         <translation>Partien verschmelzen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="504"/>
+        <location filename="../src/database/game.cpp" line="503"/>
         <source>Replace move</source>
         <translation>Zug ersetzen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="525"/>
-        <location filename="../src/database/game.cpp" line="536"/>
-        <location filename="../src/database/game.cpp" line="547"/>
+        <location filename="../src/database/game.cpp" line="524"/>
+        <location filename="../src/database/game.cpp" line="535"/>
+        <location filename="../src/database/game.cpp" line="546"/>
         <source>Add Variation</source>
         <translation>Variante hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="648"/>
+        <location filename="../src/database/game.cpp" line="647"/>
         <source>Promote Variation</source>
         <translation>Variante aufwerten</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="668"/>
+        <location filename="../src/database/game.cpp" line="667"/>
         <source>Remove variation</source>
         <translation>Variante löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="750"/>
+        <location filename="../src/database/game.cpp" line="749"/>
         <source>Truncate variation</source>
         <translation>Variante beschneiden</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="794"/>
+        <location filename="../src/database/game.cpp" line="793"/>
         <source>Remove variations</source>
         <translation>Varianten löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="807"/>
+        <location filename="../src/database/game.cpp" line="806"/>
         <source>Remove comments</source>
         <translation>Kommentare löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="923"/>
+        <location filename="../src/database/game.cpp" line="922"/>
         <source>Set annotation</source>
         <translation>Kommentar ändern</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1039"/>
+        <location filename="../src/database/game.cpp" line="1038"/>
         <source>Colorize square</source>
         <translation>Felder einfärben</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1087"/>
+        <location filename="../src/database/game.cpp" line="1086"/>
         <source>Paint arrow</source>
         <translation>Pfeil einzeichnen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1209"/>
+        <location filename="../src/database/game.cpp" line="1208"/>
         <source>Add nag</source>
         <translation>Auszeichnung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1222"/>
+        <location filename="../src/database/game.cpp" line="1221"/>
         <source>Set nags</source>
         <translation>Auszeichnung setzen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1368"/>
-        <location filename="../src/database/game.cpp" line="1403"/>
+        <location filename="../src/database/game.cpp" line="1367"/>
+        <location filename="../src/database/game.cpp" line="1402"/>
         <source>Move variation</source>
         <translation>Variante verschieben</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1429"/>
+        <location filename="../src/database/game.cpp" line="1428"/>
         <source>Enumerate variations</source>
         <translation>Aufzählung in Varianten</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1771"/>
+        <location filename="../src/database/game.cpp" line="1770"/>
         <source>Set result</source>
         <translation>Ergebnis setzen</translation>
     </message>
@@ -3219,47 +3234,47 @@ Shall I download a database?</source>
 <context>
     <name>PlayerInfo</name>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="186"/>
+        <location filename="../src/database/playerinfo.cpp" line="187"/>
         <source>&lt;i&gt;no games&lt;/i&gt;</source>
         <translation>&lt;i&gt;Keine Spiele&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="215"/>
+        <location filename="../src/database/playerinfo.cpp" line="216"/>
         <source>Total: %1&lt;br&gt;White: %2&lt;br&gt;Black: %3&lt;br&gt;</source>
         <translation>Summe: %1&lt;br&gt;Weiß: %2&lt;br&gt;Schwarz: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="241"/>
+        <location filename="../src/database/playerinfo.cpp" line="242"/>
         <source>Games in database &lt;i&gt;%1&lt;/i&gt;: &lt;b&gt;%2&lt;/b&gt;&lt;br&gt;</source>
         <translation>Spiele in der Datenbank &lt;i&gt;%1&lt;/i&gt;: &lt;b&gt;%2&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="253"/>
+        <location filename="../src/database/playerinfo.cpp" line="254"/>
         <source>Rating: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="256"/>
+        <location filename="../src/database/playerinfo.cpp" line="257"/>
         <source>Rating: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="264"/>
+        <location filename="../src/database/playerinfo.cpp" line="265"/>
         <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
         <translation>Datum: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="272"/>
+        <location filename="../src/database/playerinfo.cpp" line="273"/>
         <source>Date: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</source>
         <translation>Datum: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="279"/>
+        <location filename="../src/database/playerinfo.cpp" line="280"/>
         <source>White Openings</source>
         <translation>Eröffnungen mit Weiß</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="280"/>
+        <location filename="../src/database/playerinfo.cpp" line="281"/>
         <source>Black Openings</source>
         <translation>Eröffnungen mit Schwarz</translation>
     </message>

@@ -9,7 +9,7 @@
 
 #define VERSION_MAJOR   1
 #define VERSION_MINOR   3
-#define REVISION        1
+#define REVISION        2
 
 #define XGLUE2(a,b) #a "," #b
 #define GLUE2(a,b)  XGLUE2(a,b)
