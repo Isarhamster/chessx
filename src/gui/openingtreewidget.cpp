@@ -5,6 +5,7 @@
 #include "openingtreewidget.h"
 #include "ui_openingtreewidget.h"
 
+#include <QMetaType>
 #include <QModelIndex>
 #include <QToolButton>
 #include <QUndoGroup>
