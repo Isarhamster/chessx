@@ -32,6 +32,22 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
   .diagram-indent {lfloat: right; margin-top: 8px;}\n
   .mainline {margin-left: 20px; color: @MainLineMoveColor@}\n
   table,th,td {border: 0px;}\n
+  ol.ebene1 {\n
+          counter-reset: listenpunkt_ebene1;\n
+          list-style-type: none;\n
+        }\n
+        ol.ebene1 li::before {\n
+          content: counter(listenpunkt_ebene1) ". ";\n
+          counter-increment: listenpunkt_ebene1;\n
+        }\n
+        ol.ebene2 {\n
+          counter-reset:listenpunkt_ebene2;\n
+          list-style-type:none;\n
+        }\n
+        ol.ebene2 li::before {\n
+          content: counter(listenpunkt_ebene1) counter(listenpunkt_ebene2,lower-alpha) ". ";\n
+          counter-increment:listenpunkt_ebene2;\n
+        }\n
 </style>\n
 </head>\n
 <body>

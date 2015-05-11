@@ -137,5 +137,25 @@
         <file alias="themes/shadow/leipzig.png">data/themes/shadow/leipzig.png</file>
         <file alias="themes/shadow/merida.png">data/themes/shadow/merida.png</file>
         <file alias="themes/spatial.png">data/themes/spatial.png</file>
+        <file alias="textedit/editcopy.png">data/images/textedit/editcopy.png</file>
+        <file alias="textedit/editcut.png">data/images/textedit/editcut.png</file>
+        <file alias="textedit/editpaste.png">data/images/textedit/editpaste.png</file>
+        <file alias="textedit/editredo.png">data/images/textedit/editredo.png</file>
+        <file alias="textedit/editundo.png">data/images/textedit/editundo.png</file>
+        <file alias="textedit/exportpdf.png">data/images/textedit/exportpdf.png</file>
+        <file alias="textedit/filenew.png">data/images/textedit/filenew.png</file>
+        <file alias="textedit/fileopen.png">data/images/textedit/fileopen.png</file>
+        <file alias="textedit/fileprint.png">data/images/textedit/fileprint.png</file>
+        <file alias="textedit/filesave.png">data/images/textedit/filesave.png</file>
+        <file alias="textedit/textbold.png">data/images/textedit/textbold.png</file>
+        <file alias="textedit/textcenter.png">data/images/textedit/textcenter.png</file>
+        <file alias="textedit/textitalic.png">data/images/textedit/textitalic.png</file>
+        <file alias="textedit/textjustify.png">data/images/textedit/textjustify.png</file>
+        <file alias="textedit/textleft.png">data/images/textedit/textleft.png</file>
+        <file alias="textedit/textright.png">data/images/textedit/textright.png</file>
+        <file alias="textedit/textunder.png">data/images/textedit/textunder.png</file>
+        <file alias="textedit/zoomin.png">data/images/textedit/zoomin.png</file>
+        <file alias="textedit/zoomout.png">data/images/textedit/zoomout.png</file>
+        <file alias="textedit/editresize.png">data/images/textedit/editresize.png</file>
     </qresource>
 </RCC>
