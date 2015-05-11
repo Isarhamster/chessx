@@ -713,7 +713,7 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
     }
 }
 
-/** Set position's PGN to clipboard. */
+/** Set position's image to clipboard. */
 void MainWindow::slotEditCopyImage()
 {
     QPixmap pixmap(m_boardView->size());
@@ -2056,10 +2056,11 @@ void MainWindow::slotSearchBoard()
     }
 }
 
-void MainWindow::slotBoardSearchUpdate(int /*progress*/)
+void MainWindow::slotBoardSearchUpdate(int progress)
 {
     m_gameList->updateFilter();
     slotFilterChanged();
+    slotOperationProgress(progress);
     m_gameList->repaint(); // workaround issue with Qt
 }
 
@@ -2070,7 +2071,7 @@ void MainWindow::slotBoardSearchFinished()
 
 void MainWindow::slotBoardSearchStarted()
 {
-    startOperation(tr("Updating tree..."));
+    startOperation(tr("Searching..."));
 }
 
 void MainWindow::slotSearchReverse()
