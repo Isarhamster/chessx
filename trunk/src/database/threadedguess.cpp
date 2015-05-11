@@ -5,6 +5,8 @@
 #include "threadedguess.h"
 #include "guess.h"
 
+#include <QMetaType>
+
 ThreadedGuess::ThreadedGuess()
 {
     m_dontGuess = false;
