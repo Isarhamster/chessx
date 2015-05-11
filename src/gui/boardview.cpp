@@ -234,9 +234,6 @@ QPoint BoardView::posFromSquare(int square) const
 
 void BoardView::drawHiliting(QPaintEvent* event)
 {
-    QPainter p(this);
-    p.translate(m_translate);
-
     for(Square square = 0; square < 64; square++)
     {
         QRect rect = squareRect(square);
