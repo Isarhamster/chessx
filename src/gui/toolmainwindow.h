@@ -16,8 +16,8 @@ public:
 signals:
 
 public slots:
-    void saveConfig();
-    void slotReconfigure();
+    virtual void saveConfig();
+    virtual void slotReconfigure();
 };
 
 #endif // TOOLMAINWINDOW_H

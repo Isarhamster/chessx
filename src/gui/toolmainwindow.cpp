@@ -19,10 +19,10 @@ ToolMainWindow::ToolMainWindow(QWidget *parent) :
 
 void ToolMainWindow::saveConfig()
 {
-    // saving subwindows does not work anymore as of Qt 4.4
+    AppSettings->setLayout(this);
 }
 
 void ToolMainWindow::slotReconfigure()
 {
-    // restoring subwindows does not work anymore as of Qt 4.4
+    AppSettings->layout(this);
 }
