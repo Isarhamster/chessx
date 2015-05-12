@@ -35,6 +35,10 @@ bool Settings::layout(QWidget* w)
     {
         return false;
     }
+    if (w->objectName() != "MainWindow")
+    {
+        beginGroup(w->objectName());
+    }
     beginGroup("Geometry");
     QList<int> values;
     bool valid = list(w->objectName(), values, 5);
@@ -82,6 +86,10 @@ bool Settings::layout(QWidget* w)
         }
     }
     endGroup();
+    if (w->objectName() != "MainWindow")
+    {
+        endGroup();
+    }
     return valid;
 }
 
@@ -90,6 +98,10 @@ void Settings::setLayout(const QWidget* w)
     if(!w || w->objectName().isEmpty())
     {
         return;
+    }
+    if (w->objectName() != "MainWindow")
+    {
+        beginGroup(w->objectName());
     }
     beginGroup("Geometry");
     QList<int> values;
@@ -101,7 +113,8 @@ void Settings::setLayout(const QWidget* w)
     const QMainWindow* m = qobject_cast<const QMainWindow*>(w);
     if (m)
     {
-        setValue("Docks", m->saveState(0));
+        QByteArray docks = m->saveState(0);
+        setValue("Docks", docks);
     }
     const QSplitter* s = qobject_cast<const QSplitter*>(w);
     if (s)
@@ -110,6 +123,10 @@ void Settings::setLayout(const QWidget* w)
     }
 
     endGroup();
+    if (w->objectName() != "MainWindow")
+    {
+        endGroup();
+    }
 }
 
 QString Settings::dataPath()
