@@ -30,44 +30,24 @@
        <string>&amp;Board</string>
       </attribute>
       <layout class="QGridLayout">
-       <item row="0" column="2">
-        <layout class="QHBoxLayout">
+       <item row="3" column="2">
+        <widget class="QComboBox" name="hilightCurrentMove">
          <item>
-          <widget class="QComboBox" name="pieceThemeCombo">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
+          <property name="text">
+           <string>Never</string>
+          </property>
          </item>
          <item>
-          <widget class="QComboBox" name="pieceEffect">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <item>
-            <property name="text">
-             <string>plain</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>outline</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>outline+shadow</string>
-            </property>
-           </item>
-          </widget>
+          <property name="text">
+           <string>Frame</string>
+          </property>
          </item>
-        </layout>
+         <item>
+          <property name="text">
+           <string>Arrow</string>
+          </property>
+         </item>
+        </widget>
        </item>
        <item row="12" column="0" colspan="3">
         <widget class="QGroupBox" name="groupBox">
@@ -167,20 +147,56 @@
          </layout>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="pieceThemeLabel">
-         <property name="text">
-          <string>&amp;Chess set:</string>
-         </property>
-         <property name="buddy">
-          <cstring>pieceThemeCombo</cstring>
-         </property>
-        </widget>
+       <item row="0" column="2">
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QComboBox" name="pieceThemeCombo">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="pieceEffect">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <item>
+            <property name="text">
+             <string>plain</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>outline</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>outline+shadow</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="6" column="2">
         <widget class="QCheckBox" name="boardShowCoordinates">
          <property name="text">
           <string>Draw Coordinates</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QCheckBox" name="btShowThreat">
+         <property name="text">
+          <string>Show threat</string>
          </property>
         </widget>
        </item>
@@ -193,6 +209,39 @@
           <cstring>boardThemeCombo</cstring>
          </property>
         </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QComboBox" name="boardThemeCombo">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>&amp;Colors:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="buddy">
+          <cstring>boardColorsList</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QCheckBox" name="boardFrameCheck">
+         <property name="text">
+          <string>&amp;Draw frame between squares</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="ColorList" name="boardColorsList"/>
        </item>
        <item row="9" column="0">
         <spacer>
@@ -210,6 +259,16 @@
          </property>
         </spacer>
        </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="pieceThemeLabel">
+         <property name="text">
+          <string>&amp;Chess set:</string>
+         </property>
+         <property name="buddy">
+          <cstring>pieceThemeCombo</cstring>
+         </property>
+        </widget>
+       </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_7">
          <property name="text">
@@ -217,62 +276,10 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QComboBox" name="boardThemeCombo">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="QCheckBox" name="boardFrameCheck">
+       <item row="7" column="2">
+        <widget class="QCheckBox" name="boardColorCopy">
          <property name="text">
-          <string>&amp;Draw frame between squares</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QComboBox" name="hilightCurrentMove">
-         <item>
-          <property name="text">
-           <string>Never</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Frame</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Arrow</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>&amp;Colors:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="buddy">
-          <cstring>boardColorsList</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="ColorList" name="boardColorsList"/>
-       </item>
-       <item row="4" column="2">
-        <widget class="QCheckBox" name="btShowThreat">
-         <property name="text">
-          <string>Show threat</string>
+          <string>Colored copies</string>
          </property>
         </widget>
        </item>
