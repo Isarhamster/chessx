@@ -63,7 +63,7 @@ Game::~Game()
 void Game::copyFromGame(const Game& g)
 {
     *this = g;
-    emit signalGameModified(true,*this,"");
+    emit signalGameModified(true,*this,tr("Copy game"));
 }
 
 MoveId Game::dbAddMove(const Move& move, const QString& annotation, NagSet nags)
@@ -521,7 +521,7 @@ MoveId Game::addVariation(const Move& move, const QString& annotation, NagSet na
     MoveId retVal = dbAddVariation(move, annotation, nags);
     if (retVal != NO_MOVE)
     {
-        emit signalGameModified(true, state, tr("Add Variation"));
+        emit signalGameModified(true, state, tr("Add variation"));
     }
     return retVal;
 }
@@ -532,7 +532,7 @@ MoveId Game::addVariation(const MoveList& moveList, const QString& annotation)
     MoveId retVal = dbAddVariation(moveList, annotation);
     if (retVal != NO_MOVE)
     {
-        emit signalGameModified(true, state, tr("Add Variation"));
+        emit signalGameModified(true, state, tr("Add variation"));
     }
     return retVal;
 }
@@ -543,7 +543,7 @@ MoveId Game::addVariation(const QString& sanMove, const QString& annotation, Nag
     MoveId retVal = dbAddVariation(sanMove, annotation, nags);
     if (retVal != NO_MOVE)
     {
-        emit signalGameModified(true, state, tr("Add Variation"));
+        emit signalGameModified(true, state, tr("Add variation"));
     }
     return retVal;
 }
@@ -644,7 +644,7 @@ bool Game::promoteVariation(MoveId variation)
     }
     Game state = *this;
     dbPromoteVariation(variation);
-    emit signalGameModified(true, state, tr("Promote Variation"));
+    emit signalGameModified(true, state, tr("Promote variation"));
     return true;
 }
 
