@@ -1112,6 +1112,7 @@ void BoardView::renderImage(QImage &image) const
     BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     boardView.setMinimumSize(size());
     boardView.setEnabled(isEnabled() && AppSettings->value("/Board/colorCopy").toBool());
+    boardView.setFlipped(isFlipped());
     boardView.configure();
     boardView.showMoveIndicator(showMoveIndicator());
     boardView.showCoordinates(showCoordinates());
