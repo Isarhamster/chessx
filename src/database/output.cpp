@@ -295,23 +295,13 @@ QString Output::writeDiagram(int n) const
     QString imageString;
     if((m_outputType == NotationWidget) && (AppSettings->getValue("/GameText/ShowDiagrams").toBool()))
     {
-        BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
-        boardView.setMinimumSize(n, n);
-        boardView.setEnabled(false);
-        boardView.configure();
+        QImage image;
+
         Game g = m_game;
         g.forward(1);
-        boardView.setBoard(g.board());
-        boardView.resize(n, n);
-        QPalette Pal(boardView.palette());
-        // set black background
-        Pal.setColor(QPalette::Background, Qt::transparent);
-        boardView.setAutoFillBackground(true);
-        boardView.setPalette(Pal);
-        QPixmap pixmap(n, n);
-        pixmap.fill();
-        boardView.render(&pixmap);
-        QImage image = pixmap.toImage();
+
+        BoardView::renderImageForBoard(g.board(), image, QSize(n,n));
+
         QByteArray byteArray;
         QBuffer buffer(&byteArray);
         image.save(&buffer, "PNG"); // writes the image in PNG format inside the buffer

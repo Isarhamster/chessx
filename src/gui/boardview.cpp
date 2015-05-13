@@ -119,9 +119,19 @@ void BoardView::showMoveIndicator(bool visible)
     m_showMoveIndicator = visible;
 }
 
+bool BoardView::showMoveIndicator() const
+{
+    return m_showMoveIndicator;
+}
+
 void BoardView::showCoordinates(bool visible)
 {
     m_coordinates = visible;
+}
+
+bool BoardView::showCoordinates() const
+{
+    return m_coordinates;
 }
 
 void BoardView::drawSquares(QPaintEvent* event)
@@ -1065,6 +1075,7 @@ void BoardView::setDragged(const Piece &dragged)
     m_dragged = dragged;
 }
 
+
 bool BoardView::vAlignTop() const
 {
     return m_vAlignTop;
@@ -1094,4 +1105,35 @@ void BoardView::setDbIndex(QObject* dbIndex)
 QObject* BoardView::dbIndex() const
 {
     return m_DbIndex;
+}
+
+void BoardView::renderImage(QImage &image) const
+{
+    BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
+    boardView.setMinimumSize(size());
+    boardView.setEnabled(isEnabled());
+    boardView.configure();
+    boardView.showMoveIndicator(showMoveIndicator());
+    boardView.showCoordinates(showCoordinates());
+    boardView.setBoard(board());
+    boardView.resize(size());
+
+    QPalette Pal(palette());
+    Pal.setColor(QPalette::Background, Qt::transparent);
+    boardView.setAutoFillBackground(true);
+    boardView.setPalette(Pal);
+    QPixmap pixmap(size());
+    pixmap.fill();
+    boardView.render(&pixmap);
+    image = pixmap.toImage();
+}
+
+void BoardView::renderImageForBoard(const Board &b, QImage &image, QSize size)
+{
+    BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
+    boardView.setBoard(b);
+    boardView.setMinimumSize(size);
+    boardView.resize(size);
+    boardView.setEnabled(false);
+    boardView.renderImage(image);
 }
