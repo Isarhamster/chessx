@@ -179,18 +179,6 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_ficsConsole, SIGNAL(RequestStoredMove(Square, Square)), SLOT(slotBoardMove(Square, Square)));
     m_ficsConsole->setEnabled(false);
 
-    /* Text Editor */
-    QMenu* menuScratchPad = menuBar()->addMenu(tr("Scratch Pad"));
-    DockWidgetEx* textEditDock = new DockWidgetEx(tr("Scratch Pad"), this);
-    textEditDock->setObjectName("ScratchpadDock");
-    m_scratchPad = new TextEdit(textEditDock,menuScratchPad);
-    textEditDock->setWidget(m_scratchPad);
-    addDockWidget(Qt::RightDockWidgetArea, textEditDock);
-    m_menuView->addAction(textEditDock->toggleViewAction());
-    textEditDock->hide();
-    connect(m_scratchPad, SIGNAL(requestBoardImage(QImage&)), this, SLOT(slotCreateBoardImage(QImage&)));
-    connect(this, SIGNAL(reconfigure()), m_scratchPad, SLOT(slotReconfigure()));
-
     /* Game view */
     DockWidgetEx* gameTextDock = new DockWidgetEx(tr("Game Text"), this);
     gameTextDock->setObjectName("GameTextDock");
@@ -1532,6 +1520,19 @@ void MainWindow::setupActions()
     menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()), Qt::Key_F5));
     menuDatabase->addSeparator();
     menuDatabase->addAction(createAction(tr("Clear clipboard"), SLOT(slotDatabaseClearClipboard())));
+
+    /* Scratchpad */
+    QMenu* menuScratchPad = menuBar()->addMenu(tr("Scratch Pad"));
+    /* Text Editor */
+    DockWidgetEx* textEditDock = new DockWidgetEx(tr("Scratch Pad"), this);
+    textEditDock->setObjectName("ScratchpadDock");
+    m_scratchPad = new TextEdit(textEditDock,menuScratchPad);
+    textEditDock->setWidget(m_scratchPad);
+    addDockWidget(Qt::RightDockWidgetArea, textEditDock);
+    m_menuView->addAction(textEditDock->toggleViewAction());
+    textEditDock->hide();
+    connect(m_scratchPad, SIGNAL(requestBoardImage(QImage&)), this, SLOT(slotCreateBoardImage(QImage&)));
+    connect(this, SIGNAL(reconfigure()), m_scratchPad, SLOT(slotReconfigure()));
 
     /* Help menu */
     menuBar()->addSeparator();

@@ -71,6 +71,7 @@ public:
 protected:
     virtual bool canInsertFromMimeData(const QMimeData *source) const;
     virtual void insertFromMimeData(const QMimeData *source);
+    bool eventFilter(QObject *obj, QEvent *event);
 private:
     void dropTextFile(const QUrl &url);
     void dropImage(const QUrl &url, const QImage &image);
