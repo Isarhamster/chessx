@@ -300,8 +300,6 @@ void WBEngine::parseAnalysis(const QString& message)
             Move move = board.parseMove(sanMove);
             if(!move.isLegal())
             {
-//				qWarning("! move: |%s|", sanMove.toLatin1().constData());
-//				qWarning("Variation parsing failed");
                 break;
             }
             board.doMove(move);
