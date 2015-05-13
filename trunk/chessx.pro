@@ -6,8 +6,8 @@ QT += network svg
 greaterThan(QT_MAJOR_VERSION, 4) {
    QT += printsupport
    QT += widgets
+   QT += xml
    QT -= multimediawidgets
-   QT -= xml
    # Comment out sound for Ubuntu with Qt5 if multimedia is not available (default in Ubuntu)
    CONFIG += sound
 }
@@ -198,7 +198,14 @@ HEADERS += src/database/board.h \
     src/database/result.h \
     src/database/threadedguess.h \
     src/gui/gamewindow.h \
-    src/database/ecopositions.h
+    src/database/ecopositions.h \
+    src/gui/textedit.h \
+    src/gui/ooo/converter.h \
+    src/gui/ooo/document.h \
+    src/gui/ooo/formatproperty.h \
+    src/gui/ooo/styleinformation.h \
+    src/gui/ooo/styleparser.h \
+    src/gui/ooo/kzip.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -324,7 +331,14 @@ SOURCES += src/database/board.cpp \
     src/database/result.cpp \
     src/database/threadedguess.cpp \
     src/gui/gamewindow.cpp \
-    src/database/ecopositions.cpp
+    src/database/ecopositions.cpp \
+    src/gui/textedit.cpp \
+    src/gui/ooo/converter.cpp \
+    src/gui/ooo/document.cpp \
+    src/gui/ooo/formatproperty.cpp \
+    src/gui/ooo/styleinformation.cpp \
+    src/gui/ooo/styleparser.cpp \
+    src/gui/ooo/kzip.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

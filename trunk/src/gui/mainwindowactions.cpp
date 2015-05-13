@@ -580,6 +580,11 @@ void MainWindow::slotEditMergePGN()
     }
 }
 
+void MainWindow::slotCreateBoardImage(QImage &image)
+{
+    m_boardView->renderImage(image);
+}
+
 void MainWindow::slotEditTruncateEnd()
 {
     game().truncateVariation(Game::AfterMove);
@@ -716,10 +721,8 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
 /** Set position's image to clipboard. */
 void MainWindow::slotEditCopyImage()
 {
-    QPixmap pixmap(m_boardView->size());
-    pixmap.fill(Qt::transparent);
-    m_boardView->render(&pixmap);
-    QImage image = pixmap.toImage();
+    QImage image;
+    slotCreateBoardImage(image);
     QApplication::clipboard()->setImage(image);
 }
 

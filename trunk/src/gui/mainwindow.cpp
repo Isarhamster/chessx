@@ -48,6 +48,7 @@
 #include "tablebase.h"
 #include "tableview.h"
 #include "tagdialog.h"
+#include "textedit.h"
 #include "toolmainwindow.h"
 #include "translatingslider.h"
 #include "version.h"
@@ -82,11 +83,13 @@ MainWindow::MainWindow() : QMainWindow(),
     m_gameWindow(0),
     m_gameToolBar(0),
     m_output(0),
+    m_operationFlag(0),
     m_currentFrom(InvalidSquare),
     m_currentTo(InvalidSquare),
     m_lastColor('G'),
     m_machineHasToMove(false),
-    m_gameMode(false)
+    m_gameMode(false),
+    m_scratchPad(0)
 {
     setObjectName("MainWindow");
 
@@ -175,6 +178,18 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_ficsClient, SIGNAL(connected()), SLOT(FicsConnected()), Qt::QueuedConnection);
     connect(m_ficsConsole, SIGNAL(RequestStoredMove(Square, Square)), SLOT(slotBoardMove(Square, Square)));
     m_ficsConsole->setEnabled(false);
+
+    /* Text Editor */
+    QMenu* menuScratchPad = menuBar()->addMenu(tr("Scratch Pad"));
+    DockWidgetEx* textEditDock = new DockWidgetEx(tr("Scratch Pad"), this);
+    textEditDock->setObjectName("ScratchpadDock");
+    m_scratchPad = new TextEdit(textEditDock,menuScratchPad);
+    textEditDock->setWidget(m_scratchPad);
+    addDockWidget(Qt::RightDockWidgetArea, textEditDock);
+    m_menuView->addAction(textEditDock->toggleViewAction());
+    textEditDock->hide();
+    connect(m_scratchPad, SIGNAL(requestBoardImage(QImage&)), this, SLOT(slotCreateBoardImage(QImage&)));
+    connect(this, SIGNAL(reconfigure()), m_scratchPad, SLOT(slotReconfigure()));
 
     /* Game view */
     DockWidgetEx* gameTextDock = new DockWidgetEx(tr("Game Text"), this);
@@ -554,6 +569,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
         m_databaseList->saveConfig();
         m_openingTreeWidget->saveConfig();
         m_gameWindow->saveConfig();
+        m_scratchPad->saveConfig();
         m_gameView->saveConfig();
 
         AppSettings->setLayout(this);
@@ -1564,6 +1580,10 @@ void MainWindow::setupActions()
 bool MainWindow::confirmQuit()
 {
     QString modified;
+
+    if (!m_scratchPad->saveDocument())
+        return false;
+
     for(int i = 2; i < m_databases.size(); i++)
     {
         if (!QuerySaveGame(m_databases[i]))
@@ -1604,24 +1624,40 @@ bool MainWindow::confirmQuit()
 
 void MainWindow::startOperation(const QString& msg)
 {
-    m_operationTime.start();
+    m_operationFlag++;
     slotStatusMessage(msg);
-    m_progressBar->setMaximumHeight(m_statusFilter->height() - 3);
-    statusBar()->insertPermanentWidget(0, m_progressBar);
-    m_progressBar->setValue(0);
-    m_progressBar->show();
+    if (m_operationFlag==1)
+    {
+        m_operationTime.start();
+        m_progressBar->setMaximumHeight(m_statusFilter->height() - 3);
+        statusBar()->insertPermanentWidget(0, m_progressBar);
+        m_progressBar->setValue(0);
+        m_progressBar->show();
+    }
 }
 
 void MainWindow::finishOperation(const QString& msg)
 {
-    slotStatusMessage(msg + tr(" (%1 s.)").arg(m_operationTime.elapsed() / 100 / 10.0));
-    statusBar()->removeWidget(m_progressBar);
+    m_operationFlag--;
+    if (m_operationFlag == 0)
+    {
+        slotStatusMessage(msg + tr(" (%1 s.)").arg(m_operationTime.elapsed() / 100 / 10.0));
+        statusBar()->removeWidget(m_progressBar);
+    }
+    else
+    {
+        slotStatusMessage(msg);
+    }
 }
 
 void MainWindow::cancelOperation(const QString& msg)
 {
+    m_operationFlag--;
     slotStatusMessage(msg);
-    statusBar()->removeWidget(m_progressBar);
+    if (m_operationFlag == 0)
+    {
+        statusBar()->removeWidget(m_progressBar);
+    }
 }
 
 bool MainWindow::QuerySaveGame(DatabaseInfo *dbInfo)
