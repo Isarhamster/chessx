@@ -60,8 +60,10 @@ public:
     void nextGuess(Square s);
     /** Set Move Indicator property */
     void showMoveIndicator(bool visible);
+    bool showMoveIndicator() const;
     /** Set Move Indicator property */
     void showCoordinates(bool visible);
+    bool showCoordinates() const;
     /** Set a reference to the database to which the current view is associated */
     void setDbIndex(QObject *);
     /** Get a reference to the database to which the current view is associated */
@@ -74,6 +76,9 @@ public:
 
     Piece dragged() const;
     void setDragged(const Piece &dragged);
+
+    void renderImage(QImage& image) const;
+    static void renderImageForBoard(const Board& b, QImage& image, QSize size);
 
 public slots:
 
