@@ -782,6 +782,21 @@ void TextEdit::imageResize()
 
 PasteTextEdit::PasteTextEdit(QWidget *parent) : QTextEdit(parent), m_imageCounter(0)
 {
+    installEventFilter(this);
+}
+
+bool PasteTextEdit::eventFilter(QObject *obj, QEvent *event)
+{
+    if(event->type() == QEvent::Shortcut)
+    {
+        if (obj != this)
+        {
+            return true;
+        }
+    }
+
+    // standard event processing
+    return QObject::eventFilter(obj, event);
 }
 
 bool PasteTextEdit::canInsertUsingMimeData(const QMimeData *source) const
