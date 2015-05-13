@@ -309,6 +309,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
 
     map.insert("/Board/showFrame", true);
     map.insert("/Board/showCoordinates", true);
+    map.insert("/Board/colorCopy", false);
     map.insert("/Board/showCurrentMove", 2);
     map.insert("/Board/showMoveIndicator", 0);
     map.insert("/Board/guessMove", true);
