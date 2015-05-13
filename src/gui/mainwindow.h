@@ -45,6 +45,7 @@ class QNetworkReply;
 class QProgressBar;
 class QSlider;
 class QSplitter;
+class TextEdit;
 class QTimer;
 class QToolBar;
 class SaveDialog;
@@ -358,6 +359,8 @@ public slots:
     void slotBookBuildError(QString path);
     /** Merge the clipboard into the current game */
     void slotEditMergePGN();
+    /** Create a QImage from the current Board position */
+    void slotCreateBoardImage(QImage&);
     /** Handle a new board from a FICS request */
     void HandleFicsBoardRequest(int, QString);
     /** Enter a result from a fics game */
@@ -576,6 +579,7 @@ private:
     int m_currentDatabase;
     QString m_eco;
     QTime m_operationTime;
+    int m_operationFlag;
     /** Currently updated tree. May be NULL if no update in progress. */
     QString m_nagText;
     QTimer* m_autoPlayTimer;
@@ -600,8 +604,8 @@ private:
     FicsClient* m_ficsClient;
     FicsConsole* m_ficsConsole;
     QActionGroup* m_gameModeGroup;
+    TextEdit* m_scratchPad;
 
 };
-
 
 #endif
