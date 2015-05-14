@@ -99,13 +99,14 @@ void ParagraphFormatProperty::setLeftMargin( const qreal margin )
 TextFormatProperty::TextFormatProperty()
     : m_StyleInformation( 0 ), m_HasFontSize( false ),
       m_FontWeight( -1 ), m_FontStyle( -1 ), m_TextPosition( 0 ),
-      m_Color(Qt::black), m_BackgroundColor(Qt::transparent)
+      m_Color(Qt::black), m_BackgroundColor(Qt::transparent), m_underline(false)
 {
 }
 
 TextFormatProperty::TextFormatProperty( const StyleInformation *information )
     : m_StyleInformation( information ), m_HasFontSize( false ),
-      m_FontWeight( -1 ), m_FontStyle( -1 ), m_TextPosition( 0 )
+      m_FontWeight( -1 ), m_FontStyle( -1 ), m_TextPosition( 0 ),
+      m_Color(Qt::black), m_BackgroundColor(Qt::transparent), m_underline(false)
 {
 }
 
@@ -141,6 +142,9 @@ void TextFormatProperty::apply( QTextCharFormat *format ) const
 
     if ( m_BackgroundColor.isValid() )
         format->setBackground( m_BackgroundColor );
+
+    if ( m_underline )
+        format->setUnderlineStyle(QTextCharFormat::SingleUnderline);
 
     // TODO: get FontFormatProperty and apply it
     // TODO: how to set the base line?!?
@@ -180,6 +184,11 @@ void TextFormatProperty::setColor( const QColor &color )
 void TextFormatProperty::setBackgroundColor( const QColor &color )
 {
     m_BackgroundColor = color;
+}
+
+void TextFormatProperty::setUnderline( bool underline )
+{
+    m_underline = underline;
 }
 
 StyleFormatProperty::StyleFormatProperty()

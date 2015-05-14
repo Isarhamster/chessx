@@ -107,6 +107,7 @@ class TextFormatProperty
     void setTextPosition( int position );
     void setColor( const QColor &color );
     void setBackgroundColor( const QColor &color );
+    void setUnderline(bool underline);
 
   private:
     const StyleInformation *m_StyleInformation;
@@ -118,6 +119,7 @@ class TextFormatProperty
     int m_TextPosition;
     QColor m_Color;
     QColor m_BackgroundColor;
+    bool m_underline;
 };
 
 class PageFormatProperty

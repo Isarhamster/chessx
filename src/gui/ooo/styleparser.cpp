@@ -363,6 +363,11 @@ TextFormatProperty StyleParser::parseTextProperty( QDomElement &parent )
     property.setBackgroundColor( QColor( colorText ) );
   }
 
+  const QString underlineType = parent.attribute( "text-underline-style" );
+  if ( !underlineType.isEmpty() && underlineType != QLatin1String( "none" ) ) {
+    property.setUnderline( true );
+  }
+
   return property;
 }
 
