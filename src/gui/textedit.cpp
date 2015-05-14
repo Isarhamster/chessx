@@ -402,10 +402,6 @@ bool TextEdit::load(const QString &f)
     {
         OOO::Converter *doc_odt = new OOO::Converter();
         QTextDocument *doc = doc_odt->convert(f);
-        // Fix bug in Qt
-        QTextCursor cursor = QTextCursor(doc->findBlockByLineNumber(0));
-        cursor.select(QTextCursor::BlockUnderCursor);
-        cursor.deleteChar();
 
         // Set Document
         textEdit->setDocument(doc);
@@ -425,7 +421,6 @@ bool TextEdit::load(const QString &f)
             textEdit->setPlainText(str);
         }
     }
-
     setCurrentFileName(f);
     return true;
 }
@@ -467,6 +462,7 @@ void TextEdit::fileNew()
     if (saveDocument())
     {
         textEdit->clear();
+        textEdit->setStyleSheet("background-color:white");
         setCurrentFileName(QString());
     }
 }
@@ -575,6 +571,7 @@ void TextEdit::textBold()
 {
     QTextCharFormat fmt;
     fmt.setFontWeight(actionTextBold->isChecked() ? QFont::Bold : QFont::Normal);
+    fmt.setBackground(Qt::white);
     mergeFormatOnWordOrSelection(fmt);
 }
 
@@ -582,6 +579,7 @@ void TextEdit::textUnderline()
 {
     QTextCharFormat fmt;
     fmt.setFontUnderline(actionTextUnderline->isChecked());
+    fmt.setBackground(Qt::white);
     mergeFormatOnWordOrSelection(fmt);
 }
 
@@ -589,6 +587,7 @@ void TextEdit::textItalic()
 {
     QTextCharFormat fmt;
     fmt.setFontItalic(actionTextItalic->isChecked());
+    fmt.setBackground(Qt::white);
     mergeFormatOnWordOrSelection(fmt);
 }
 
@@ -596,6 +595,7 @@ void TextEdit::textFamily(const QString &f)
 {
     QTextCharFormat fmt;
     fmt.setFontFamily(f);
+    fmt.setBackground(Qt::white);
     mergeFormatOnWordOrSelection(fmt);
 }
 
@@ -606,6 +606,7 @@ void TextEdit::textSize(const QString &p)
     {
         QTextCharFormat fmt;
         fmt.setFontPointSize(pointSize);
+        fmt.setBackground(Qt::white);
         mergeFormatOnWordOrSelection(fmt);
     }
 }
@@ -616,7 +617,7 @@ void TextEdit::textStyle(int styleIndex)
 
     if (styleIndex != 0)
     {
-        QTextListFormat::Style style = QTextListFormat::ListDisc;
+        QTextListFormat::Style style = QTextListFormat::ListStyleUndefined;
 
         switch (styleIndex) {
             default:
@@ -668,10 +669,10 @@ void TextEdit::textStyle(int styleIndex)
     }
     else
     {
-        // ####
+        // TODO: The list style cannot be removed at the moment
         QTextBlockFormat bfmt;
         bfmt.setObjectIndex(-1);
-        cursor.mergeBlockFormat(bfmt);
+        cursor.setBlockFormat(bfmt);
     }
 }
 
@@ -682,6 +683,7 @@ void TextEdit::textColor()
         return;
     QTextCharFormat fmt;
     fmt.setForeground(col);
+    fmt.setBackground(Qt::white);
     mergeFormatOnWordOrSelection(fmt);
     colorChanged(col);
 }
@@ -730,6 +732,7 @@ void TextEdit::mergeFormatOnWordOrSelection(const QTextCharFormat &format)
     QTextCursor cursor = textEdit->textCursor();
     if (!cursor.hasSelection())
         cursor.select(QTextCursor::WordUnderCursor);
+
     cursor.mergeCharFormat(format);
     textEdit->mergeCurrentCharFormat(format);
 }
@@ -849,7 +852,6 @@ void PasteTextEdit::dropImage(const QUrl& url, const QImage& image)
     if (!image.isNull())
     {
         document()->addResource(QTextDocument::ImageResource, url, image);
-
         QTextImageFormat imageFormat;
         imageFormat.setWidth( image.width() );
         imageFormat.setHeight( image.height() );
