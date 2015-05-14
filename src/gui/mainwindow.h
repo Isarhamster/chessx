@@ -360,7 +360,7 @@ public slots:
     /** Merge the clipboard into the current game */
     void slotEditMergePGN();
     /** Create a QImage from the current Board position */
-    void slotCreateBoardImage(QImage&);
+    void slotCreateBoardImage(QImage&, double scaling);
     /** Handle a new board from a FICS request */
     void HandleFicsBoardRequest(int, QString);
     /** Enter a result from a fics game */

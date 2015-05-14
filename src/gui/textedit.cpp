@@ -712,7 +712,8 @@ void TextEdit::cursorPositionChanged()
 void TextEdit::pickBoard()
 {
     QImage image;
-    emit requestBoardImage(image);
+    double scaling = ((double) imageSize->value())/100.0;
+    emit requestBoardImage(image, scaling);
     textEdit->insertImage(image);
 }
 

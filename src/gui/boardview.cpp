@@ -1107,23 +1107,24 @@ QObject* BoardView::dbIndex() const
     return m_DbIndex;
 }
 
-void BoardView::renderImage(QImage &image) const
+void BoardView::renderImage(QImage &image, double scaling) const
 {
     BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
-    boardView.setMinimumSize(size());
+    QSize s = size()*scaling;
+    boardView.setMinimumSize(s);
     boardView.setEnabled(isEnabled() && AppSettings->value("/Board/colorCopy").toBool());
     boardView.setFlipped(isFlipped());
     boardView.configure();
     boardView.showMoveIndicator(showMoveIndicator());
     boardView.showCoordinates(showCoordinates());
     boardView.setBoard(board());
-    boardView.resize(size());
+    boardView.resize(s);
 
     QPalette Pal(palette());
     Pal.setColor(QPalette::Background, Qt::transparent);
     boardView.setAutoFillBackground(true);
     boardView.setPalette(Pal);
-    QPixmap pixmap(size());
+    QPixmap pixmap(s);
     pixmap.fill();
     boardView.render(&pixmap);
     image = pixmap.toImage();
@@ -1136,5 +1137,5 @@ void BoardView::renderImageForBoard(const Board &b, QImage &image, QSize size)
     boardView.setMinimumSize(size);
     boardView.resize(size);
     boardView.setEnabled(false);
-    boardView.renderImage(image);
+    boardView.renderImage(image, 1.0);
 }

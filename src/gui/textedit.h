@@ -100,7 +100,7 @@ private:
     void setCurrentFileName(const QString &fileName);
 
 signals:
-    void requestBoardImage(QImage& image);
+    void requestBoardImage(QImage& image, double scaling);
 
 private slots:
     void fileNew();
