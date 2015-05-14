@@ -44,11 +44,11 @@ namespace OOO {
         bool convertFrame(const QDomElement &element);
         bool convertAnnotation(QTextCursor *cursor, const QDomElement &element);
        
-        QTextDocument *mTextDocument;
-        QTextCursor *mCursor;
-        QMap<QString, QByteArray> imageLIST;
+        QTextDocument *m_TextDocument;
+        QTextCursor *m_Cursor;
 
-        StyleInformation *mStyleInformation;
+        StyleInformation *m_StyleInformation;
+        bool firstTime;
     };
 }
 

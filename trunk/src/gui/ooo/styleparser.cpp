@@ -29,16 +29,17 @@ StyleParser::StyleParser( const Document *document, const QDomDocument &domDocum
 
 bool StyleParser::parse()
 {
+  int foundStyles = 0;
   if ( !parseContentFile() )
-    return false;
+    foundStyles++;
 
   if ( !parseStyleFile() )
-    return false;
+    foundStyles++;
 
   if ( !parseMetaFile() )
-    return false;
+    foundStyles++;
 
-  return true;
+  return (foundStyles>0);
 }
 
 bool StyleParser::parseContentFile()

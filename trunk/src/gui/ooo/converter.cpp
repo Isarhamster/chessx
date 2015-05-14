@@ -51,19 +51,27 @@ QTextCharFormat Style::textFormat() const {
     return mTextFormat;
 }
 
-Converter::Converter()
-: mTextDocument(0), mCursor(0),
-mStyleInformation(0) {
+Converter::Converter() :
+    m_TextDocument(0),
+    m_Cursor(0),
+    m_StyleInformation(0)
+{
 }
 
-QTextDocument* Converter::convert(const QString &fileName) {
+Converter::~Converter()
+{
+}
+
+QTextDocument* Converter::convert(const QString &fileName)
+{
+    firstTime = true;
     Document oooDocument(fileName);
-    if (!oooDocument.open()) {
-        //// emit error(oooDocument.lastErrorString(), -1);
+    if (!oooDocument.open())
+    {
         return 0;
     }
-    mTextDocument = new QTextDocument;
-    mCursor = new QTextCursor(mTextDocument);
+    m_TextDocument = new QTextDocument;
+    m_Cursor = new QTextCursor(m_TextDocument);
 
     /**
      * Create the dom of the content
@@ -74,25 +82,11 @@ QTextDocument* Converter::convert(const QString &fileName) {
     source.setData(oooDocument.content());
     QString errorMsg;
     QDomDocument document;
-    if (!document.setContent(&source, &reader, &errorMsg)) {
-        setError(QString("Invalid XML document: %1").arg(errorMsg), -1);
-        delete mCursor;
-        return mTextDocument;
-    }
-
-    mStyleInformation = new StyleInformation();
-
-    if (oooDocument.styles().size() > 0) {
-        StyleParser styleParser(&oooDocument, document, mStyleInformation);
-        if (!styleParser.parse()) {
-            setError("Unable to read style information", -1);
-            delete mCursor;
-            return 0;
-        }
-    }
-    if (oooDocument.content().size() == 0)
+    if (!document.setContent(&source, &reader, &errorMsg))
     {
-        setError("Empty document", -1);
+        setError(QString("Invalid XML document: %1").arg(errorMsg), -1);
+        delete m_Cursor;
+        return m_TextDocument;
     }
 
     /**
@@ -100,34 +94,47 @@ QTextDocument* Converter::convert(const QString &fileName) {
      * parsing the content.
      */
 
+    m_StyleInformation = new StyleInformation();
 
+    if (oooDocument.content().size() == 0)
+    {
+        setError("Empty document", -1);
+    }
+
+    StyleParser styleParser(&oooDocument, document, m_StyleInformation);
+    if (!styleParser.parse())
+    {
+        setError("Unable to read style information", -1);
+        delete m_Cursor;
+        return 0;
+    }
 
     /**
-     * Add all images of the document to resource framework
-     */
+    * Add all images of the document to resource framework
+    */
 
-    imageLIST = oooDocument.images();
+    QMap<QString, QByteArray> imageLIST = oooDocument.images();
     QMapIterator<QString, QByteArray> it(imageLIST);
     while (it.hasNext())
     {
         it.next();
-        mTextDocument->addResource(QTextDocument::ImageResource, QUrl(it.key()), QImage::fromData(it.value()));
+        m_TextDocument->addResource(QTextDocument::ImageResource, QUrl(it.key()), QImage::fromData(it.value()));
     }
 
     /**
      * Set the correct page size
      */
 
-    const QString masterLayout = mStyleInformation->masterPageName();
+    const QString masterLayout = m_StyleInformation->masterPageName();
 
-    if (mStyleInformation->pagePropertyExists(masterLayout))
+    if (m_StyleInformation->pagePropertyExists(masterLayout))
     {
         const int DPX = 231; /// im.logicalDpiX(); // 231
         const int DPY = 231; // im.logicalDpiY(); // 231
         const int A4Width = MM_TO_POINT(210); /// A4 210 x297 mm
         const int A4Height = MM_TO_POINT(297);
 
-        const PageFormatProperty property = mStyleInformation->pageProperty(masterLayout);
+        const PageFormatProperty property = m_StyleInformation->pageProperty(masterLayout);
         int pageWidth = qRound(property.width() / 72.0 * DPX);
         if (pageWidth < 1) {
             pageWidth = A4Width;
@@ -136,12 +143,12 @@ QTextDocument* Converter::convert(const QString &fileName) {
         if (pageHeight < 1) {
             pageHeight = A4Height;
         }
-        mTextDocument->setPageSize(QSize(pageWidth, pageHeight));
+        m_TextDocument->setPageSize(QSize(pageWidth, pageHeight));
 
         QTextFrameFormat frameFormat;
         frameFormat.setMargin(qRound(property.margin()));
 
-        QTextFrame *rootFrame = mTextDocument->rootFrame();
+        QTextFrame *rootFrame = m_TextDocument->rootFrame();
         rootFrame->setFrameFormat(frameFormat);
     }
 
@@ -151,11 +158,14 @@ QTextDocument* Converter::convert(const QString &fileName) {
     const QDomElement documentElement = document.documentElement();
 
     QDomElement element = documentElement.firstChildElement();
-    while (!element.isNull()) {
-        if (element.tagName() == QLatin1String("body")) {
-            if (!convertBody(element)) {
+    while (!element.isNull())
+    {
+        if (element.tagName() == QLatin1String("body"))
+        {
+            if (!convertBody(element))
+            {
                 setError("Unable to convert document content", -1);
-                delete mCursor;
+                delete m_Cursor;
                 return 0;
             }
         }
@@ -163,7 +173,7 @@ QTextDocument* Converter::convert(const QString &fileName) {
         element = element.nextSiblingElement();
     }
 
-    return mTextDocument;
+    return m_TextDocument;
 }
 
 void Converter::setError(QString msg, int /*vars*/)
@@ -174,7 +184,8 @@ void Converter::setError(QString msg, int /*vars*/)
 bool Converter::convertBody(const QDomElement &element)
 {
     QDomElement child = element.firstChildElement();
-    while (!child.isNull()) {
+    while (!child.isNull())
+    {
         if (child.tagName() == QLatin1String("text"))
         {
             if (!convertText(child))
@@ -192,19 +203,27 @@ bool Converter::convertBody(const QDomElement &element)
 bool Converter::convertText(const QDomElement &element)
 {
     QDomElement child = element.firstChildElement();
-    while (!child.isNull()) {
-        if (child.tagName() == QLatin1String("p")) {
-            mCursor->insertBlock();
-            if (!convertParagraph(mCursor, child))
+    while (!child.isNull())
+    {
+        if (child.tagName() == QLatin1String("p"))
+        {
+            //m_Cursor->insertBlock();
+            if (!convertParagraph(m_Cursor, child))
                 return false;
-        } else if (child.tagName() == QLatin1String("h")) {
-            mCursor->insertBlock();
-            if (!convertHeader(mCursor, child))
+        }
+        else if (child.tagName() == QLatin1String("h"))
+        {
+            //m_Cursor->insertBlock();
+            if (!convertHeader(m_Cursor, child))
                 return false;
-        } else if (child.tagName() == QLatin1String("list")) {
-            if (!convertList(mCursor, child))
+        }
+        else if (child.tagName() == QLatin1String("list"))
+        {
+            if (!convertList(m_Cursor, child))
                 return false;
-        } else if (child.tagName() == QLatin1String("table")) {
+        }
+        else if (child.tagName() == QLatin1String("table"))
+        {
             if (!convertTable(child))
                 return false;
         }
@@ -218,7 +237,7 @@ bool Converter::convertText(const QDomElement &element)
 bool Converter::convertHeader(QTextCursor *cursor, const QDomElement &element)
 {
     const QString styleName = element.attribute("style-name");
-    const StyleFormatProperty property = mStyleInformation->styleProperty(styleName);
+    const StyleFormatProperty property = m_StyleInformation->styleProperty(styleName);
 
     QTextBlockFormat blockFormat;
     QTextCharFormat textFormat;
@@ -228,14 +247,19 @@ bool Converter::convertHeader(QTextCursor *cursor, const QDomElement &element)
     cursor->setBlockFormat(blockFormat);
 
     QDomNode child = element.firstChild();
-    while (!child.isNull()) {
-        if (child.isElement()) {
+    while (!child.isNull())
+    {
+        if (child.isElement())
+        {
             const QDomElement childElement = child.toElement();
-            if (childElement.tagName() == QLatin1String("span")) {
+            if (childElement.tagName() == QLatin1String("span"))
+            {
                 if (!convertSpan(cursor, childElement, textFormat))
                     return false;
             }
-        } else if (child.isText()) {
+        }
+        else if (child.isText())
+        {
             const QDomText childText = child.toText();
             if (!convertTextNode(cursor, childText, textFormat))
                 return false;
@@ -244,15 +268,13 @@ bool Converter::convertHeader(QTextCursor *cursor, const QDomElement &element)
         child = child.nextSibling();
     }
 
-    //// emit addTitle(element.attribute("outline-level", 0).toInt(), element.text(), cursor->block());
-
     return true;
 }
 
 bool Converter::convertParagraph(QTextCursor *cursor, const QDomElement &element, const QTextBlockFormat &parentFormat, bool merge)
 {
     const QString styleName = element.attribute("style-name");
-    const StyleFormatProperty property = mStyleInformation->styleProperty(styleName);
+    const StyleFormatProperty property = m_StyleInformation->styleProperty(styleName);
 
     QTextBlockFormat blockFormat(parentFormat);
     QTextCharFormat textFormat;
@@ -264,38 +286,63 @@ bool Converter::convertParagraph(QTextCursor *cursor, const QDomElement &element
     else
         cursor->setBlockFormat(blockFormat);
 
+    if (!firstTime)
+    {
+       cursor->insertBlock();
+    }
+
+    firstTime = false;
+
     QDomNode child = element.firstChild();
-    while (!child.isNull()) {
-        if (child.isElement()) {
-            const QDomElement childElement = child.toElement();
-            if (childElement.tagName() == QLatin1String("span")) {
-                if (!convertSpan(cursor, childElement, textFormat))
-                    return false;
-            } else if (childElement.tagName() == QLatin1String("tab")) {
-                mCursor->insertText("    ");
-            } else if (childElement.tagName() == QLatin1String("s")) {
-                QString spaces;
-                spaces.fill(' ', childElement.attribute("c").toInt());
-                mCursor->insertText(spaces);
-            } else if (childElement.tagName() == QLatin1String("frame")) {
-                const int xpos = cursor->position();
-                mCursor->setPosition(xpos, QTextCursor::MoveAnchor);
-                if (!convertFrame(childElement))
-                    return false;
-            } else if (childElement.tagName() == QLatin1String("a")) {
-                if (!convertLink(cursor, childElement, textFormat))
-                    return false;
-            } else if (childElement.tagName() == QLatin1String("annotation")) {
-                if (!convertAnnotation(cursor, childElement))
+    if (!child.isNull())
+    {
+        while (!child.isNull())
+        {
+            if (child.isElement())
+            {
+                const QDomElement childElement = child.toElement();
+                if (childElement.tagName() == QLatin1String("span"))
+                {
+                    if (!convertSpan(cursor, childElement, textFormat))
+                        return false;
+                }
+                else if (childElement.tagName() == QLatin1String("tab"))
+                {
+                    m_Cursor->insertText("\t");
+                }
+                else if (childElement.tagName() == QLatin1String("s"))
+                {
+                    QString spaces;
+                    spaces.fill(' ', childElement.attribute("c").toInt());
+                    m_Cursor->insertText(spaces);
+                }
+                else if (childElement.tagName() == QLatin1String("frame"))
+                {
+                    const int xpos = cursor->position();
+                    m_Cursor->setPosition(xpos, QTextCursor::MoveAnchor);
+                    if (!convertFrame(childElement))
+                        return false;
+                }
+                else if (childElement.tagName() == QLatin1String("a"))
+                {
+                    if (!convertLink(cursor, childElement, textFormat))
+                        return false;
+                }
+                else if (childElement.tagName() == QLatin1String("annotation"))
+                {
+                    if (!convertAnnotation(cursor, childElement))
+                        return false;
+                }
+            }
+            else if (child.isText())
+            {
+                const QDomText childText = child.toText();
+                if (!convertTextNode(cursor, childText, textFormat))
                     return false;
             }
-        } else if (child.isText()) {
-            const QDomText childText = child.toText();
-            if (!convertTextNode(cursor, childText, textFormat))
-                return false;
-        }
 
-        child = child.nextSibling();
+            child = child.nextSibling();
+        }
     }
 
     return true;
@@ -303,40 +350,61 @@ bool Converter::convertParagraph(QTextCursor *cursor, const QDomElement &element
 
 bool Converter::convertTextNode(QTextCursor *cursor, const QDomText &element, const QTextCharFormat &format)
 {
-    cursor->insertText(element.data(), format);
+    QString text = element.data();
+    if (text.startsWith("\n"))
+    {
+        text = text.trimmed();
+        if (!text.isEmpty())
+            cursor->insertText(text, format);
+    }
+    else
+    {
+        cursor->insertText(text, format);
+    }
+
     return true;
 }
 
 bool Converter::convertSpan(QTextCursor *cursor, const QDomElement &element, const QTextCharFormat &format)
 {
     const QString styleName = element.attribute("style-name");
-    const StyleFormatProperty property = mStyleInformation->styleProperty(styleName);
+    const StyleFormatProperty property = m_StyleInformation->styleProperty(styleName);
 
     QTextCharFormat textFormat(format);
     property.applyText(&textFormat);
 
     QDomNode child = element.firstChild();
-    while (!child.isNull()) {
+    while (!child.isNull())
+    {
         //// search <text:s/> 
-        if (child.isText()) {
+        if (child.isText())
+        {
             const QDomText childText = child.toText();
             if (!convertTextNode(cursor, childText, textFormat))
                 return false;
-        } else if (child.isElement()) {
+        }
+        else if (child.isElement())
+        {
             const QDomElement childElement = child.toElement();
-            if (childElement.tagName() == QLatin1String("tab")) {
-                cursor->insertText("    ");
-            } else if (childElement.tagName() == QLatin1String("s")) {
+            if (childElement.tagName() == QLatin1String("tab"))
+            {
+                cursor->insertText("\t");
+            }
+            else if (childElement.tagName() == QLatin1String("s"))
+            {
                 QString spaces;
                 spaces.fill(' ', childElement.attribute("c").toInt());
                 cursor->insertText(spaces);
-            } else if (childElement.tagName() == QLatin1String("frame")) {
-                const int xpos = cursor->position();
-                mCursor->setPosition(xpos, QTextCursor::MoveAnchor);
-                if (!convertFrame(childElement))
-                    return false;
             }
-
+            else if (childElement.tagName() == QLatin1String("frame"))
+            {
+                const int xpos = cursor->position();
+                m_Cursor->setPosition(xpos, QTextCursor::MoveAnchor);
+                if (!convertFrame(childElement))
+                {
+                    return false;
+                }
+            }
         }
         child = child.nextSibling();
     }
@@ -347,11 +415,12 @@ bool Converter::convertSpan(QTextCursor *cursor, const QDomElement &element, con
 bool Converter::convertList(QTextCursor *cursor, const QDomElement &element)
 {
     const QString styleName = element.attribute("style-name");
-    const ListFormatProperty property = mStyleInformation->listProperty(styleName);
+    const ListFormatProperty property = m_StyleInformation->listProperty(styleName);
 
     QTextListFormat format;
 
-    if (cursor->currentList()) { // we are in a nested list
+    if (cursor->currentList())
+    { // we are in a nested list
         format = cursor->currentList()->format();
         format.setIndent(format.indent() + 1);
     }
@@ -361,34 +430,39 @@ bool Converter::convertList(QTextCursor *cursor, const QDomElement &element)
     QTextList *list = cursor->insertList(format);
 
     QDomElement itemChild = element.firstChildElement();
-    int loop = 0;
-    while (!itemChild.isNull()) {
-        if (itemChild.tagName() == QLatin1String("list-item")) {
-            loop++;
 
+    while (!itemChild.isNull())
+    {
+        if (itemChild.tagName() == QLatin1String("list-item"))
+        {
             QDomElement childElement = itemChild.firstChildElement();
-            while (!childElement.isNull()) {
-
+            while (!childElement.isNull())
+            {
                 QTextBlock prevBlock;
 
-                if (childElement.tagName() == QLatin1String("p")) {
-                    if (loop > 1)
-                        cursor->insertBlock();
-
+                if (childElement.tagName() == QLatin1String("p"))
+                {
                     prevBlock = cursor->block();
 
                     if (!convertParagraph(cursor, childElement, QTextBlockFormat(), true))
+                    {
                         return false;
-
-                } else if (childElement.tagName() == QLatin1String("list")) {
+                    }
+                }
+                else if (childElement.tagName() == QLatin1String("list"))
+                {
                     prevBlock = cursor->block();
 
                     if (!convertList(cursor, childElement))
+                    {
                         return false;
+                    }
                 }
 
                 if (prevBlock.isValid())
+                {
                     list->add(prevBlock);
+                }
 
                 childElement = childElement.nextSiblingElement();
             }
@@ -400,8 +474,10 @@ bool Converter::convertList(QTextCursor *cursor, const QDomElement &element)
     return true;
 }
 
-static void enqueueNodeList(QQueue<QDomNode> &queue, const QDomNodeList &list) {
-    for (int i = 0; i < list.count(); ++i) {
+static void enqueueNodeList(QQueue<QDomNode> &queue, const QDomNodeList &list)
+{
+    for (int i = 0; i < list.count(); ++i)
+    {
         queue.enqueue(list.at(i));
     }
 }
@@ -417,25 +493,31 @@ bool Converter::convertTable(const QDomElement &element)
 
     QQueue<QDomNode> nodeQueue;
     enqueueNodeList(nodeQueue, element.childNodes());
-    while (!nodeQueue.isEmpty()) {
+    while (!nodeQueue.isEmpty())
+    {
         QDomElement el = nodeQueue.dequeue().toElement();
         if (el.isNull())
             continue;
 
-        if (el.tagName() == QLatin1String("table-row")) {
+        if (el.tagName() == QLatin1String("table-row"))
+        {
             rowCounter++;
 
             int counter = 0;
             QDomElement columnElement = el.firstChildElement();
-            while (!columnElement.isNull()) {
-                if (columnElement.tagName() == QLatin1String("table-cell")) {
+            while (!columnElement.isNull())
+            {
+                if (columnElement.tagName() == QLatin1String("table-cell"))
+                {
                     counter++;
                 }
                 columnElement = columnElement.nextSiblingElement();
             }
 
             columnCounter = qMax(columnCounter, counter);
-        } else if (el.tagName() == QLatin1String("table-header-rows")) {
+        }
+        else if (el.tagName() == QLatin1String("table-header-rows"))
+        {
             enqueueNodeList(nodeQueue, el.childNodes());
         }
     }
@@ -443,8 +525,8 @@ bool Converter::convertTable(const QDomElement &element)
     /**
      * Create table
      */
-    QTextTable *table = mCursor->insertTable(rowCounter, columnCounter);
-    mCursor->movePosition(QTextCursor::End);
+    QTextTable *table = m_Cursor->insertTable(rowCounter, columnCounter);
+    m_Cursor->movePosition(QTextCursor::End);
 
     /**
      * Fill table
@@ -455,25 +537,30 @@ bool Converter::convertTable(const QDomElement &element)
     QTextTableFormat tableFormat;
 
     rowCounter = 0;
-    while (!nodeQueue.isEmpty()) {
+    while (!nodeQueue.isEmpty())
+    {
         QDomElement el = nodeQueue.dequeue().toElement();
         if (el.isNull())
             continue;
 
-        if (el.tagName() == QLatin1String("table-row")) {
-
+        if (el.tagName() == QLatin1String("table-row"))
+        {
             int columnCounter = 0;
             QDomElement columnElement = el.firstChildElement();
-            while (!columnElement.isNull()) {
-                if (columnElement.tagName() == QLatin1String("table-cell")) {
-                    const StyleFormatProperty property = mStyleInformation->styleProperty(columnElement.attribute("style-name"));
+            while (!columnElement.isNull())
+            {
+                if (columnElement.tagName() == QLatin1String("table-cell"))
+                {
+                    const StyleFormatProperty property = m_StyleInformation->styleProperty(columnElement.attribute("style-name"));
 
                     QTextBlockFormat format;
                     property.applyTableCell(&format);
 
                     QDomElement paragraphElement = columnElement.firstChildElement();
-                    while (!paragraphElement.isNull()) {
-                        if (paragraphElement.tagName() == QLatin1String("p")) {
+                    while (!paragraphElement.isNull())
+                    {
+                        if (paragraphElement.tagName() == QLatin1String("p"))
+                        {
                             QTextTableCell cell = table->cellAt(rowCounter, columnCounter);
                             // Insert a frame into the cell and work on that, so we can handle
                             // different parts of the cell having different block formatting
@@ -486,11 +573,14 @@ bool Converter::convertTable(const QDomElement &element)
 
                             if (!convertParagraph(&frameCursor, paragraphElement, format))
                                 return false;
-                        } else if (paragraphElement.tagName() == QLatin1String("list")) {
+                        }
+                        else if (paragraphElement.tagName() == QLatin1String("list"))
+                        {
                             QTextTableCell cell = table->cellAt(rowCounter, columnCounter);
                             // insert a list into the cell
                             QTextCursor cellCursor = cell.lastCursorPosition();
-                            if (!convertList(&cellCursor, paragraphElement)) {
+                            if (!convertList(&cellCursor, paragraphElement))
+                            {
                                 return false;
                             }
                         }
@@ -503,11 +593,14 @@ bool Converter::convertTable(const QDomElement &element)
             }
 
             rowCounter++;
-        } else if (el.tagName() == QLatin1String("table-column")) {
-            const StyleFormatProperty property = mStyleInformation->styleProperty(el.attribute("style-name"));
+        }
+        else if (el.tagName() == QLatin1String("table-column"))
+        {
+            const StyleFormatProperty property = m_StyleInformation->styleProperty(el.attribute("style-name"));
             const QString tableColumnNumColumnsRepeated = el.attribute("number-columns-repeated", "1");
             int numColumnsToApplyTo = tableColumnNumColumnsRepeated.toInt();
-            for (int i = 0; i < numColumnsToApplyTo; ++i) {
+            for (int i = 0; i < numColumnsToApplyTo; ++i)
+            {
                 property.applyTableColumn(&tableFormat);
             }
         }
@@ -523,20 +616,23 @@ bool Converter::convertFrame(const QDomElement &element)
     QDomElement child = element.firstChildElement();
     QDomElement suchild = element.lastChildElement("title");
     /// svg:title alt && title 
-    while (!child.isNull()) {
-        if (child.tagName() == QLatin1String("image")) {
+    while (!child.isNull())
+    {
+        if (child.tagName() == QLatin1String("image"))
+        {
             const QString href = child.attribute("href");
             const QString xname = element.attribute("name");
             QString alttitle = QString("Name:%1 - Ref:%2").arg(xname).arg(href);
-            if (suchild.tagName() == QLatin1String("title")) {
+            if (suchild.tagName() == QLatin1String("title"))
+            {
                 alttitle.append(QString(" - Title:%1").arg(suchild.text()));
             }
             QTextImageFormat format;
             format.setToolTip(alttitle);
-            format.setWidth(StyleParser::convertUnit(element.attribute("width")));
-            format.setHeight(StyleParser::convertUnit(element.attribute("height")));
+            format.setWidth(4.0/3.0*StyleParser::convertUnit(element.attribute("width")));
+            format.setHeight(4.0/3.0*StyleParser::convertUnit(element.attribute("height")));
             format.setName(href);
-            mCursor->insertImage(format);
+            m_Cursor->insertImage(format);
         }
 
         child = child.nextSiblingElement();
@@ -545,18 +641,24 @@ bool Converter::convertFrame(const QDomElement &element)
     return true;
 }
 
-bool Converter::convertLink(QTextCursor *cursor, const QDomElement &element, const QTextCharFormat &format) {
+bool Converter::convertLink(QTextCursor *cursor, const QDomElement &element, const QTextCharFormat &format)
+{
     int startPosition = cursor->position();
 
     QDomNode child = element.firstChild();
-    while (!child.isNull()) {
-        if (child.isElement()) {
+    while (!child.isNull())
+    {
+        if (child.isElement())
+        {
             const QDomElement childElement = child.toElement();
-            if (childElement.tagName() == QLatin1String("span")) {
+            if (childElement.tagName() == QLatin1String("span"))
+            {
                 if (!convertSpan(cursor, childElement, format))
                     return false;
             }
-        } else if (child.isText()) {
+        }
+        else if (child.isText())
+        {
             const QDomText childText = child.toText();
             if (!convertTextNode(cursor, childText, format))
                 return false;
@@ -574,7 +676,8 @@ bool Converter::convertLink(QTextCursor *cursor, const QDomElement &element, con
     return true;
 }
 
-bool Converter::convertAnnotation(QTextCursor *cursor, const QDomElement &element) {
+bool Converter::convertAnnotation(QTextCursor *cursor, const QDomElement &element)
+{
     QStringList contents;
     QString creator;
     QDateTime dateTime;
@@ -583,11 +686,16 @@ bool Converter::convertAnnotation(QTextCursor *cursor, const QDomElement &elemen
 
     QDomElement child = element.firstChildElement();
     while (!child.isNull()) {
-        if (child.tagName() == QLatin1String("creator")) {
+        if (child.tagName() == QLatin1String("creator"))
+        {
             creator = child.text();
-        } else if (child.tagName() == QLatin1String("date")) {
+        }
+        else if (child.tagName() == QLatin1String("date"))
+        {
             dateTime = QDateTime::fromString(child.text(), Qt::ISODate);
-        } else if (child.tagName() == QLatin1String("p")) {
+        }
+        else if (child.tagName() == QLatin1String("p"))
+        {
             contents.append(child.text());
         }
 
@@ -605,13 +713,8 @@ bool Converter::convertAnnotation(QTextCursor *cursor, const QDomElement &elemen
     annotation->style().setOpacity(0.5);
      * */
 
-
     return true;
 }
-
-Converter::~Converter() {
-}
-
 
 
 
