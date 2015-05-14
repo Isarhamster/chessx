@@ -580,9 +580,9 @@ void MainWindow::slotEditMergePGN()
     }
 }
 
-void MainWindow::slotCreateBoardImage(QImage &image)
+void MainWindow::slotCreateBoardImage(QImage &image, double scaling)
 {
-    m_boardView->renderImage(image);
+    m_boardView->renderImage(image,scaling);
 }
 
 void MainWindow::slotEditTruncateEnd()
@@ -722,7 +722,7 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
 void MainWindow::slotEditCopyImage()
 {
     QImage image;
-    slotCreateBoardImage(image);
+    slotCreateBoardImage(image, 1.0);
     QApplication::clipboard()->setImage(image);
 }
 

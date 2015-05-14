@@ -77,7 +77,7 @@ public:
     Piece dragged() const;
     void setDragged(const Piece &dragged);
 
-    void renderImage(QImage& image) const;
+    void renderImage(QImage& image, double scaling) const;
     static void renderImageForBoard(const Board& b, QImage& image, QSize size);
 
 public slots:

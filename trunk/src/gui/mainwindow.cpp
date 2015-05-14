@@ -1531,7 +1531,7 @@ void MainWindow::setupActions()
     addDockWidget(Qt::RightDockWidgetArea, textEditDock);
     m_menuView->addAction(textEditDock->toggleViewAction());
     textEditDock->hide();
-    connect(m_scratchPad, SIGNAL(requestBoardImage(QImage&)), this, SLOT(slotCreateBoardImage(QImage&)));
+    connect(m_scratchPad, SIGNAL(requestBoardImage(QImage&,double)), this, SLOT(slotCreateBoardImage(QImage&,double)));
     connect(this, SIGNAL(reconfigure()), m_scratchPad, SLOT(slotReconfigure()));
 
     /* Help menu */
