@@ -333,17 +333,21 @@ TextFormatProperty StyleParser::parseTextProperty( QDomElement &parent )
     property.setFontSize( qRound( convertUnit( fontSize ) ) );
 
   static QMap<QString, QFont::Weight> weightMap;
-  if ( weightMap.isEmpty() ) {
+  if ( weightMap.isEmpty() )
+  {
     weightMap.insert( "normal", QFont::Normal );
     weightMap.insert( "bold", QFont::Bold );
   }
 
   const QString fontWeight = parent.attribute( "font-weight" );
   if ( !fontWeight.isEmpty() )
+  {
     property.setFontWeight( weightMap[ fontWeight ] );
+  }
 
   static QMap<QString, QFont::Style> fontStyleMap;
-  if ( fontStyleMap.isEmpty() ) {
+  if ( fontStyleMap.isEmpty() )
+  {
     fontStyleMap.insert( "normal", QFont::StyleNormal );
     fontStyleMap.insert( "italic", QFont::StyleItalic );
     fontStyleMap.insert( "oblique", QFont::StyleOblique );
@@ -351,20 +355,25 @@ TextFormatProperty StyleParser::parseTextProperty( QDomElement &parent )
 
   const QString fontStyle = parent.attribute( "font-style" );
   if ( !fontStyle.isEmpty() )
+  {
     property.setFontStyle( fontStyleMap.value( fontStyle, QFont::StyleNormal ) );
+  }
 
   const QColor color( parent.attribute( "color" ) );
-  if ( color.isValid() ) {
+  if ( color.isValid() )
+  {
     property.setColor( color );
   }
 
   const QString colorText = parent.attribute( "background-color" );
-  if ( !colorText.isEmpty() && colorText != QLatin1String( "transparent" ) ) {
+  if ( !colorText.isEmpty() && colorText != QLatin1String( "transparent" ) )
+  {
     property.setBackgroundColor( QColor( colorText ) );
   }
 
   const QString underlineType = parent.attribute( "text-underline-style" );
-  if ( !underlineType.isEmpty() && underlineType != QLatin1String( "none" ) ) {
+  if ( !underlineType.isEmpty() && underlineType != QLatin1String( "none" ) )
+  {
     property.setUnderline( true );
   }
 

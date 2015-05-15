@@ -95,20 +95,6 @@ TextEdit::TextEdit(QWidget *parent, QMenu *menu)
     colorChanged(textEdit->textColor());
     alignmentChanged(textEdit->alignment());
 
-    connect(textEdit->document(), SIGNAL(modificationChanged(bool)),
-            actionSave, SLOT(setEnabled(bool)));
-    connect(textEdit->document(), SIGNAL(modificationChanged(bool)),
-            this, SLOT(setWindowModified(bool)));
-    connect(textEdit->document(), SIGNAL(undoAvailable(bool)),
-            actionUndo, SLOT(setEnabled(bool)));
-    connect(textEdit->document(), SIGNAL(redoAvailable(bool)),
-            actionRedo, SLOT(setEnabled(bool)));
-
-    setWindowModified(textEdit->document()->isModified());
-    actionSave->setEnabled(textEdit->document()->isModified());
-    actionUndo->setEnabled(textEdit->document()->isUndoAvailable());
-    actionRedo->setEnabled(textEdit->document()->isRedoAvailable());
-
     connect(actionUndo, SIGNAL(triggered()), textEdit, SLOT(undo()));
     connect(actionRedo, SIGNAL(triggered()), textEdit, SLOT(redo()));
 
@@ -128,7 +114,27 @@ TextEdit::TextEdit(QWidget *parent, QMenu *menu)
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardDataChanged()));
 #endif
 
+    textEdit->setUndoRedoEnabled(true);
     fileNew();
+}
+
+void TextEdit::setupDocumentActions()
+{
+    connect(textEdit->document(), SIGNAL(modificationChanged(bool)),
+            actionSave, SLOT(setEnabled(bool)), Qt::UniqueConnection);
+    connect(textEdit->document(), SIGNAL(modificationChanged(bool)),
+            this, SLOT(setWindowModified(bool)), Qt::UniqueConnection);
+    connect(textEdit->document(), SIGNAL(undoAvailable(bool)),
+            actionUndo, SLOT(setEnabled(bool)), Qt::UniqueConnection);
+    connect(textEdit->document(), SIGNAL(redoAvailable(bool)),
+            actionRedo, SLOT(setEnabled(bool)), Qt::UniqueConnection);
+
+    textEdit->document()->clearUndoRedoStacks();
+
+    setWindowModified(textEdit->document()->isModified());
+    actionSave->setEnabled(textEdit->document()->isModified());
+    actionUndo->setEnabled(textEdit->document()->isUndoAvailable());
+    actionRedo->setEnabled(textEdit->document()->isRedoAvailable());
 }
 
 void TextEdit::setupFileActions(QMenu* xmenu)
@@ -462,8 +468,8 @@ void TextEdit::fileNew()
     if (saveDocument())
     {
         textEdit->clear();
-        textEdit->setStyleSheet("background-color:white");
         setCurrentFileName(QString());
+        setupDocumentActions();
     }
 }
 
@@ -474,6 +480,7 @@ void TextEdit::fileOpen()
     if (!fn.isEmpty())
     {
         load(fn);
+        setupDocumentActions();
     }
 }
 
@@ -662,7 +669,7 @@ void TextEdit::textStyle(int styleIndex)
         }
 
         listFmt.setStyle(style);
-
+        listFmt.setBackground(Qt::white);
         cursor.createList(listFmt);
 
         cursor.endEditBlock();
@@ -672,6 +679,7 @@ void TextEdit::textStyle(int styleIndex)
         // TODO: The list style cannot be removed at the moment
         QTextBlockFormat bfmt;
         bfmt.setObjectIndex(-1);
+        bfmt.setBackground(Qt::white);
         cursor.setBlockFormat(bfmt);
     }
 }
