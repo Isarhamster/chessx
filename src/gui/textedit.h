@@ -129,6 +129,7 @@ private slots:
     void imageResize();
     void pickBoard();
 
+    void setupDocumentActions();
 private:
     void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
     void fontChanged(const QFont &f);
