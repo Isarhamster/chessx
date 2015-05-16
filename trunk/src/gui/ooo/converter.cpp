@@ -207,13 +207,11 @@ bool Converter::convertText(const QDomElement &element)
     {
         if (child.tagName() == QLatin1String("p"))
         {
-            //m_Cursor->insertBlock();
             if (!convertParagraph(m_Cursor, child))
                 return false;
         }
         else if (child.tagName() == QLatin1String("h"))
         {
-            //m_Cursor->insertBlock();
             if (!convertHeader(m_Cursor, child))
                 return false;
         }
@@ -281,15 +279,15 @@ bool Converter::convertParagraph(QTextCursor *cursor, const QDomElement &element
     property.applyBlock(&blockFormat);
     property.applyText(&textFormat);
 
-    if (merge)
-        cursor->mergeBlockFormat(blockFormat);
-    else
-        cursor->setBlockFormat(blockFormat);
-
     if (!firstTime)
     {
        cursor->insertBlock();
     }
+
+    if (merge)
+        cursor->mergeBlockFormat(blockFormat);
+    else
+        cursor->setBlockFormat(blockFormat);
 
     firstTime = false;
 
@@ -419,15 +417,19 @@ bool Converter::convertList(QTextCursor *cursor, const QDomElement &element)
 
     QTextListFormat format;
 
+    QTextList *list = 0;
     if (cursor->currentList())
-    { // we are in a nested list
+    {
         format = cursor->currentList()->format();
-        format.setIndent(format.indent() + 1);
     }
+    property.apply(&format);
 
-    property.apply(&format, 0);
+    if (!firstTime)
+        list = cursor->insertList(format);
+    else
+        list = cursor->createList(format);
 
-    QTextList *list = cursor->insertList(format);
+    firstTime = true;
 
     QDomElement itemChild = element.firstChildElement();
 
@@ -438,39 +440,29 @@ bool Converter::convertList(QTextCursor *cursor, const QDomElement &element)
             QDomElement childElement = itemChild.firstChildElement();
             while (!childElement.isNull())
             {
-                QTextBlock prevBlock;
-
                 if (childElement.tagName() == QLatin1String("p"))
                 {
-                    prevBlock = cursor->block();
-
                     if (!convertParagraph(cursor, childElement, QTextBlockFormat(), true))
                     {
                         return false;
                     }
+                    list->add(cursor->block());
                 }
                 else if (childElement.tagName() == QLatin1String("list"))
                 {
-                    prevBlock = cursor->block();
-
                     if (!convertList(cursor, childElement))
                     {
                         return false;
                     }
-                }
-
-                if (prevBlock.isValid())
-                {
-                    list->add(prevBlock);
+                    list->add(cursor->block());
                 }
 
                 childElement = childElement.nextSiblingElement();
             }
-        }
-
+        }        
         itemChild = itemChild.nextSiblingElement();
     }
-
+    firstTime = false;
     return true;
 }
 
@@ -526,6 +518,7 @@ bool Converter::convertTable(const QDomElement &element)
      * Create table
      */
     QTextTable *table = m_Cursor->insertTable(rowCounter, columnCounter);
+    firstTime=false;
     m_Cursor->movePosition(QTextCursor::End);
 
     /**
