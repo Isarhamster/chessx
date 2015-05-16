@@ -506,8 +506,8 @@ void PreferencesDialog::restoreSettings()
     ui.limitSpin->setValue(AppSettings->getValue("/General/EditLimit").toInt());
     ui.spinBoxRecentFiles->setValue(AppSettings->getValue("/History/MaxEntries").toInt());
 
-    QString dataPath = AppSettings->getUserDataPath();
-    ui.defaultDataBasePath->setText(AppSettings->value("/General/DefaultDataPath", dataPath).toString());
+    QString dir = AppSettings->commonDataPath();
+    ui.defaultDataBasePath->setText(dir);
     ui.spinBoxListFontSize->setValue(AppSettings->getValue("/General/ListFontSize").toInt());
     ui.verticalTabs->setChecked(AppSettings->getValue("/MainWindow/VerticalTabs").toBool());
     ui.iconsVisible->setChecked(AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool());

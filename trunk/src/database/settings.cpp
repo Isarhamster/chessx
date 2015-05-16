@@ -200,9 +200,22 @@ QString Settings::commonDataPath()
 #else
     QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QDir::separator() + "chessdata";
 #endif
-
     QString dir = value("/General/DefaultDataPath", dataPath).toString();
     return dir;
+}
+
+QString Settings::indexPath() const
+{
+    QString dir = AppSettings->commonDataPath();
+    QString path = dir + QDir::separator() + "index";
+    return path;
+}
+
+QString Settings::shotsPath() const
+{
+    QString dir = AppSettings->commonDataPath();
+    QString path = dir + QDir::separator() + "shots";
+    return path;
 }
 
 void Settings::setList(const QString& key, QList<int> list)
@@ -430,16 +443,6 @@ QStringList Settings::getTranslations() const
     }
     total.removeDuplicates();
     return total;
-}
-
-QString Settings::getUserDataPath() const
-{
-#if QT_VERSION < 0x050000
-    QString dataPath = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + "chessdata";
-#else
-    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QDir::separator() + "chessdata";
-#endif
-    return dataPath;
 }
 
 QString Settings::getTempPath() const

@@ -2489,8 +2489,7 @@ void MainWindow::slotScreenShot()
 {
     QPixmap pixmap = QPixmap::grabWindow(effectiveWinId());
 
-    QString dir = AppSettings->commonDataPath();
-    QString shotDir = dir + QDir::separator() + "shots";
+    QString shotDir = AppSettings->shotsPath();
     QDir().mkpath(shotDir);
 
     QString fileName = shotDir + QDir::separator() + "shot-" + QDateTime::currentDateTime().toString() + ".png";

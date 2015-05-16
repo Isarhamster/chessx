@@ -77,7 +77,6 @@ public:
     void setMap(const QString& key, const OptionValueList& map);
     void getMap(const QString& key, OptionValueList& map);
 
-    QString getUserDataPath() const;
     QString getTempPath() const;
 
     QString getThemePath() const;
@@ -93,6 +92,8 @@ public:
 
     QStringList getTranslationPaths() const;
     QStringList getTranslations() const;
+    QString indexPath() const;
+    QString shotsPath() const;
 private:
 
     QMap<QString, QVariant> initDefaultValues() const;

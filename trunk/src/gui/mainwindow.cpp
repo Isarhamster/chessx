@@ -479,8 +479,8 @@ MainWindow::MainWindow() : QMainWindow(),
 
     setAcceptDrops(true);
 
-    QString dir = AppSettings->commonDataPath();
-    QDir().mkpath(dir + QDir::separator() + "index");
+    QString dir = AppSettings->indexPath();
+    QDir().mkpath(dir);
 
     /* Load ECO file */
     slotStatusMessage(tr("Loading ECO file..."));
@@ -909,8 +909,7 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
     }
     else
     {
-        QString dataPath = AppSettings->getUserDataPath();
-        QString dir = AppSettings->value("/General/DefaultDataPath", dataPath).toString();
+        QString dir = AppSettings->commonDataPath();
 
         fname = fi.canonicalFilePath();
 
