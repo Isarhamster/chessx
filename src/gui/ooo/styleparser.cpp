@@ -204,10 +204,13 @@ bool StyleParser::parseAutomaticStyles( QDomElement &parent )
 {
   QDomElement element = parent.firstChildElement();
   while ( !element.isNull() ) {
-    if ( element.tagName() == QLatin1String( "style" ) ) {
+    if ( element.tagName() == QLatin1String( "style" ) )
+    {
       const StyleFormatProperty property = parseStyleProperty( element );
       m_StyleInformation->addStyleProperty( element.attribute( "name" ), property );
-    } else if ( element.tagName() == QLatin1String( "page-layout" ) ) {
+    }
+    else if ( element.tagName() == QLatin1String( "page-layout" ) )
+    {
       QDomElement child = element.firstChildElement();
       while ( !child.isNull() ) {
         if ( child.tagName() == QLatin1String( "page-layout-properties" ) ) {
@@ -217,14 +220,20 @@ bool StyleParser::parseAutomaticStyles( QDomElement &parent )
 
         child = child.nextSiblingElement();
       }
-    } else if ( element.tagName() == QLatin1String( "list-style" ) ) {
+    }
+    else if ( element.tagName() == QLatin1String( "list-style" ) )
+    {
       const ListFormatProperty property = parseListProperty( element );
       m_StyleInformation->addListProperty( element.attribute( "name" ), property );
-    } else if ( element.tagName() == QLatin1String( "default-style" ) ) {
+    }
+    else if ( element.tagName() == QLatin1String( "default-style" ) )
+    {
       StyleFormatProperty property = parseStyleProperty( element );
       property.setDefaultStyle( true );
       m_StyleInformation->addStyleProperty( element.attribute( "family" ), property );
-    } else {
+    }
+    else
+    {
       qDebug( "unknown tag %s", qPrintable( element.tagName() ) );
     }
 
@@ -249,20 +258,30 @@ StyleFormatProperty StyleParser::parseStyleProperty( QDomElement &parent )
   }
 
   QDomElement element = parent.firstChildElement();
-  while ( !element.isNull() ) {
-    if ( element.tagName() == QLatin1String( "paragraph-properties" ) ) {
+  while ( !element.isNull() )
+  {
+    if ( element.tagName() == QLatin1String( "paragraph-properties" ) )
+    {
       const ParagraphFormatProperty paragraphProperty = parseParagraphProperty( element );
       property.setParagraphFormat( paragraphProperty );
-    } else if ( element.tagName() == QLatin1String( "text-properties" ) ) {
+    }
+    else if ( element.tagName() == QLatin1String( "text-properties" ) )
+    {
       const TextFormatProperty textProperty = parseTextProperty( element );
       property.setTextFormat( textProperty );
-    } else if ( element.tagName() == QLatin1String( "table-column-properties" ) ) {
+    }
+    else if ( element.tagName() == QLatin1String( "table-column-properties" ) )
+    {
       const TableColumnFormatProperty tableColumnProperty = parseTableColumnProperty( element );
       property.setTableColumnFormat( tableColumnProperty );
-    } else if ( element.tagName() == QLatin1String( "table-cell-properties" ) ) {
+    }
+    else if ( element.tagName() == QLatin1String( "table-cell-properties" ) )
+    {
       const TableCellFormatProperty tableCellProperty = parseTableCellProperty( element );
       property.setTableCellFormat( tableCellProperty );
-    } else {
+    }
+    else
+    {
       qDebug( "unknown tag %s", qPrintable( element.tagName() ) );
     }
 
@@ -398,17 +417,38 @@ ListFormatProperty StyleParser::parseListProperty( QDomElement &parent )
 {
   ListFormatProperty property;
 
+  static QMap<QString, QTextListFormat::Style> map;
+  if ( map.isEmpty() )
+  {
+    map.insert( "●", QTextListFormat::ListDisc );
+    map.insert( "○", QTextListFormat::ListCircle );
+    map.insert( "□", QTextListFormat::ListSquare );
+    map.insert( "1", QTextListFormat::ListDecimal );
+    map.insert( "a", QTextListFormat::ListLowerAlpha );
+    map.insert( "A", QTextListFormat::ListUpperAlpha );
+    map.insert( "i", QTextListFormat::ListLowerRoman );
+    map.insert( "I", QTextListFormat::ListUpperRoman );
+  }
+
   QDomElement element = parent.firstChildElement();
   if ( element.tagName() == QLatin1String( "list-level-style-number" ) )
-    property = ListFormatProperty( ListFormatProperty::Number );
-  else
-    property = ListFormatProperty( ListFormatProperty::Bullet );
+  {
+    property.setType( map[ element.attribute( "num-format" ) ] );
+  }
+  else if (element.tagName() == QLatin1String( "list-level-style-bullet" ) )
+  {
+    property.setType( map[ element.attribute( "bullet-char" ) ] );
+  }
 
-  while ( !element.isNull() ) {
-    if ( element.tagName() == QLatin1String( "list-level-style-number" ) ) {
+  while ( !element.isNull() )
+  {
+    if ( element.tagName() == QLatin1String( "list-level-style-number" ) )
+    {
       int level = element.attribute( "level" ).toInt();
       property.addItem( level, 0.0 );
-    } else if ( element.tagName() == QLatin1String( "list-level-style-bullet" ) ) {
+    }
+    else if ( element.tagName() == QLatin1String( "list-level-style-bullet" ) )
+    {
       int level = element.attribute( "level" ).toInt();
       property.addItem( level, convertUnit( element.attribute( "space-before" ) ) );
     }

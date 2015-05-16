@@ -17,83 +17,84 @@
 using namespace OOO;
 
 FontFormatProperty::FontFormatProperty()
-    : mFamily( "Nimbus Sans L" )
+    : m_Family( "Nimbus Sans L" )
 {
 }
 
 void FontFormatProperty::apply( QTextFormat *format ) const
 {
-    format->setProperty( QTextFormat::FontFamily, mFamily );
+    format->setProperty( QTextFormat::FontFamily, m_Family );
 }
 
 
 void FontFormatProperty::setFamily( const QString &name )
 {
-    mFamily = name;
+    m_Family = name;
 }
 
 ParagraphFormatProperty::ParagraphFormatProperty()
-    : mPageNumber( 0 ), mWritingMode( LRTB ), mAlignment( Qt::AlignLeft ),
-      mHasAlignment( false ),
-      mHasLeftMargin( false ), mLeftMargin(0.0)
+    : m_PageNumber( 0 ), m_WritingMode( LRTB ), m_Alignment( Qt::AlignLeft ),
+      m_HasAlignment( false ), m_BackgroundColor(Qt::transparent),
+      m_HasLeftMargin( false ), m_LeftMargin(0.0)
 {
 }
 
 void ParagraphFormatProperty::apply( QTextFormat *format ) const
 {
-    if ( mWritingMode == LRTB || mWritingMode == TBLR || mWritingMode == LR || mWritingMode == TB )
+    if ( m_WritingMode == LRTB || m_WritingMode == TBLR || m_WritingMode == LR || m_WritingMode == TB )
         format->setLayoutDirection( Qt::LeftToRight );
     else
         format->setLayoutDirection( Qt::RightToLeft );
 
-    if ( mHasAlignment )
+    if ( m_HasAlignment )
     {
-        static_cast<QTextBlockFormat*>( format )->setAlignment( mAlignment );
+        static_cast<QTextBlockFormat*>( format )->setAlignment( m_Alignment );
     }
 
     format->setProperty( QTextFormat::FrameWidth, 595 );
 
-    if ( mHasLeftMargin )
+    if ( m_HasLeftMargin )
     {
-        static_cast<QTextBlockFormat*>( format )->setLeftMargin( mLeftMargin );
+        static_cast<QTextBlockFormat*>( format )->setLeftMargin( m_LeftMargin );
     }
 
-    if ( mBackgroundColor.isValid() )
+    if ( m_BackgroundColor.isValid() )
     {
-        format->setBackground( mBackgroundColor );
+        format->setBackground( m_BackgroundColor );
     }
 }
 
 void ParagraphFormatProperty::setPageNumber( int number )
 {
-    mPageNumber = number;
+    m_PageNumber = number;
 }
 
 void ParagraphFormatProperty::setWritingMode( WritingMode mode )
 {
-    mWritingMode = mode;
+    m_WritingMode = mode;
 }
 
 bool ParagraphFormatProperty::writingModeIsRightToLeft() const
 {
-    return ( ( mWritingMode == RLTB ) || ( mWritingMode == TBRL ) || ( mWritingMode == RL ) );
+    return ( ( m_WritingMode == RLTB ) || ( m_WritingMode == TBRL ) || ( m_WritingMode == RL ) );
 }
 
 void ParagraphFormatProperty::setTextAlignment( Qt::Alignment alignment )
 {
-    mHasAlignment = true;
-    mAlignment = alignment;
+    m_HasAlignment = true;
+    m_Alignment = alignment;
 }
 
 void ParagraphFormatProperty::setBackgroundColor( const QColor &color )
 {
-    mBackgroundColor = color;
+    m_BackgroundColor = color;
+    if (!m_BackgroundColor.isValid())  m_BackgroundColor = Qt::transparent;
 }
 
 void ParagraphFormatProperty::setLeftMargin( const qreal margin )
 {
-    mHasLeftMargin = true;
-    mLeftMargin = margin;
+    m_HasLeftMargin = true;
+    m_LeftMargin = margin;
 }
 
 TextFormatProperty::TextFormatProperty()
@@ -184,6 +185,7 @@ void TextFormatProperty::setColor( const QColor &color )
 void TextFormatProperty::setBackgroundColor( const QColor &color )
 {
     m_BackgroundColor = color;
+    if (!m_BackgroundColor.isValid())  m_BackgroundColor = Qt::transparent;
 }
 
 void TextFormatProperty::setUnderline( bool underline )
@@ -378,26 +380,20 @@ double PageFormatProperty::margin() const
 }
 
 ListFormatProperty::ListFormatProperty()
-    : m_Type( Number )
+    : m_Type( QTextListFormat::ListDisc ), m_BackgroundColor(Qt::transparent)
 {
     m_Indents.resize( 10 );
 }
 
-ListFormatProperty::ListFormatProperty( Type type )
-    : m_Type( type )
+void ListFormatProperty::setType( QTextListFormat::Style type )
 {
-    m_Indents.resize( 10 );
+    m_Type = type;
 }
 
-void ListFormatProperty::apply( QTextListFormat *format, int level ) const
+void ListFormatProperty::apply( QTextListFormat *format ) const
 {
-    if ( m_Type == Number )
-        format->setStyle( QTextListFormat::ListDecimal );
-    else {
-        format->setStyle( QTextListFormat::ListDisc );
-        if ( level > 0 && level < 10 )
-            format->setIndent( qRound( m_Indents[ level ] ) );
-    }
+    format->setStyle( m_Type );
+    format->setBackground(m_BackgroundColor);
 }
 
 void ListFormatProperty::addItem( int level, double indent )
@@ -431,7 +427,7 @@ void TableColumnFormatProperty::setWidth( double width )
 }
 
 TableCellFormatProperty::TableCellFormatProperty()
-    : m_Padding( 0 ), m_HasAlignment( false )
+    : m_Padding( 0 ), m_HasAlignment( false ), m_BackgroundColor(Qt::transparent)
 {
 }
 
@@ -447,6 +443,7 @@ void TableCellFormatProperty::apply( QTextBlockFormat *format ) const
 void TableCellFormatProperty::setBackgroundColor( const QColor &color )
 {
     m_BackgroundColor = color;
+    if (!m_BackgroundColor.isValid())  m_BackgroundColor = Qt::transparent;
 }
 
 void TableCellFormatProperty::setPadding( double padding )

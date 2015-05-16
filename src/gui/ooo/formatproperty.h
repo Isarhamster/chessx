@@ -13,6 +13,7 @@
 
 #include <QVector>
 #include <QColor>
+#include <QTextListFormat>
 
 #define USETODONEXT Q_UNUSED
 
@@ -35,7 +36,6 @@
 class QTextBlockFormat;
 class QTextCharFormat;
 class QTextFormat;
-class QTextListFormat;
 class QTextTableFormat;
 
 namespace OOO {
@@ -52,7 +52,7 @@ class FontFormatProperty
     void setFamily( const QString &name );
 
   private:
-    QString mFamily;
+    QString m_Family;
 };
 
 class ParagraphFormatProperty
@@ -83,13 +83,13 @@ class ParagraphFormatProperty
     bool writingModeIsRightToLeft() const;
 
   private:
-    int mPageNumber;
-    WritingMode mWritingMode;
-    Qt::Alignment mAlignment;
-    bool mHasAlignment;
-    QColor mBackgroundColor;
-    bool mHasLeftMargin;
-    qreal mLeftMargin;
+    int m_PageNumber;
+    WritingMode m_WritingMode;
+    Qt::Alignment m_Alignment;
+    bool m_HasAlignment;
+    QColor m_BackgroundColor;
+    bool m_HasLeftMargin;
+    qreal m_LeftMargin;
 };
 
 class TextFormatProperty
@@ -177,15 +177,16 @@ class ListFormatProperty
     };
 
     ListFormatProperty();
-    ListFormatProperty( Type type );
 
-    void apply( QTextListFormat *format, int level ) const;
+    void apply(QTextListFormat *format) const;
 
     void addItem( int level, double indent = 0 );
+    void setType(QTextListFormat::Style type);
 
   private:
-    Type m_Type;
+    QTextListFormat::Style m_Type;
     QVector<double> m_Indents;
+    QColor m_BackgroundColor;
 };
 
 class TableColumnFormatProperty
@@ -214,10 +215,11 @@ class TableCellFormatProperty
     void setAlignment( Qt::Alignment alignment );
 
   private:
-    QColor m_BackgroundColor;
     double m_Padding;
     Qt::Alignment m_Alignment;
     bool m_HasAlignment;
+    QColor m_BackgroundColor;
+
 };
 
 class StyleFormatProperty
