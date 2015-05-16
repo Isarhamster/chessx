@@ -63,6 +63,7 @@
 #include <QPrintPreviewDialog>
 #endif
 
+#include "settings.h"
 #include "textedit.h"
 #include "ooo/converter.h"
 
@@ -475,8 +476,11 @@ void TextEdit::fileNew()
 
 void TextEdit::fileOpen()
 {
+    QString dir = AppSettings->commonDataPath();
+    QDir().mkpath(dir);
+
     QString fn = QFileDialog::getOpenFileName(this, tr("Open File..."),
-                                              QString(), tr("ODF files (*.odt);;HTML-Files (*.htm *.html);;All Files (*)"));
+                                              dir, tr("ODF files (*.odt);;HTML-Files (*.htm *.html);;All Files (*)"));
     if (!fn.isEmpty())
     {
         load(fn);
@@ -660,9 +664,12 @@ void TextEdit::textStyle(int styleIndex)
 
         QTextListFormat listFmt;
 
-        if (cursor.currentList()) {
+        if (cursor.currentList())
+        {
             listFmt = cursor.currentList()->format();
-        } else {
+        }
+        else
+        {
             listFmt.setIndent(blockFmt.indent() + 1);
             blockFmt.setIndent(0);
             cursor.setBlockFormat(blockFmt);

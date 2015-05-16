@@ -73,8 +73,7 @@ QString PgnDatabase::offsetFilename(const QString& filename) const
     QFileInfo fi = QFileInfo(filename);
     QString basefile = fi.completeBaseName();
     basefile.append(".cxi");
-    QString dir = AppSettings->commonDataPath();
-    QString indexPath = dir + QDir::separator() + "index";
+    QString indexPath = AppSettings->indexPath();
     return(indexPath + QDir::separator() + basefile);
 }
 
