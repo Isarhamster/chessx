@@ -96,6 +96,7 @@ public:
     bool IsLoaded() const;
     bool IsUtf8() const;
 
+    bool IsFicsDB() const;
     bool IsPGN() const;
     bool IsPolyglotBook() const;
     bool IsBook() const;
@@ -114,6 +115,7 @@ public:
 
     const QList<double> &material() const;
 
+    static QString ficsPath();
 protected:
     void doLoadFile(QString filename);
 

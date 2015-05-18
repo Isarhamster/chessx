@@ -119,17 +119,6 @@ MainWindow::MainWindow() : QMainWindow(),
     m_databases.append(pClipDB);
     m_currentDatabase = 0;
 
-    /* Create FICS database */
-    FicsDatabase* pDB = new FicsDatabase;
-    pDB->open(QString(),false);
-    DatabaseInfo* pFicsDB = new DatabaseInfo(&m_undoGroup, pDB);
-    pFicsDB->loadGame(0);
-
-    connect(pFicsDB,SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged()));
-    connect(pFicsDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
-    connect(pFicsDB,SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
-    m_databases.append(pFicsDB);
-
     /* Game List */
     DockWidgetEx* gameListDock = new DockWidgetEx(tr("Game List"), this);
     gameListDock->setObjectName("GameList");
@@ -317,13 +306,14 @@ MainWindow::MainWindow() : QMainWindow(),
             this, SLOT(slotMakeBook(QString)));
 
     m_databaseList->addFileOpen(pClipDB->database()->name(), false);
-    m_databaseList->addFileOpen(pFicsDB->database()->name(), false);
-    m_databaseList->setFileClose(pFicsDB->database()->name(), 0);
     m_databaseList->setFileCurrent(pClipDB->database()->name());
 
     restoreRecentFiles();
     connect(m_databaseList, SIGNAL(raiseRequest()), dbListDock, SLOT(raise()));
     connect(this, SIGNAL(signalGameModeChanged(bool)), m_databaseList, SLOT(setDisabled(bool)));
+
+    /* Create FICS database */
+    setFavoriteDatabase(ficsPath());
 
     /* Recent files */
     m_recentFiles.restore();
@@ -332,7 +322,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Opening Tree */
     DockWidgetEx* openingDock = new DockWidgetEx(tr("Opening Tree"), this);
-    openingDock->setObjectName("    Dock");
+    openingDock->setObjectName("OpeningTreeDock");
     m_openingTreeWidget = new OpeningTreeWidget(this);
     openingDock->setWidget(m_openingTreeWidget);
     addDockWidget(Qt::RightDockWidgetArea, openingDock);
@@ -624,7 +614,7 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         }
         if (addVariation(m_nagText))
         {
-            if (database()->name() == "FICS")
+            if (qobject_cast<FicsDatabase*>(database()))
             {
                 Move m = game().move();
                 m_ficsConsole->SendMove(m.toAlgebraic());
@@ -638,7 +628,7 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         m_nagText.append(e->text());
         if (addVariation(m_nagText))
         {
-            if (database()->name() == "FICS")
+            if (qobject_cast<FicsDatabase*>(database()))
             {
                 Move m = game().move();
                 m_ficsConsole->SendMove(m.toAlgebraic());
@@ -862,6 +852,11 @@ void MainWindow::openDatabase(QString fname)
     openDatabaseUrl(fname, false);
 }
 
+QString MainWindow::ficsPath() const
+{
+    return DatabaseInfo::ficsPath();
+}
+
 void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 {
     QFileInfo fi(fname);
@@ -880,10 +875,6 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
             openDatabaseArchive(url.toLocalFile(), utf8);
         }
     }
-    else if (fname == "FICS")
-    {
-        openFICS();
-    }
     else if (fname == "Clipboard")
     {
         ActivateDatabase("Clipboard");
@@ -892,12 +883,7 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
 
 void MainWindow::openFICS()
 {
-    if (!m_ficsClient->sessionStarted())
-    {
-        m_ficsClient->startSession();
-        m_databaseList->addFileOpen("FICS", false);
-    }
-    ActivateDatabase("FICS");
+    openDatabaseFile(ficsPath(), false);
 }
 
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
@@ -957,6 +943,11 @@ void MainWindow::openDatabaseArchive(QString fname, bool utf8)
     }
 }
 
+bool MainWindow::ActivateFICSDatabase()
+{
+    return ActivateDatabase(ficsPath());
+}
+
 bool MainWindow::ActivateDatabase(QString fname)
 {
     /* Check if the database is open */
@@ -990,6 +981,15 @@ bool MainWindow::ActivateDatabase(QString fname)
 void MainWindow::openDatabaseFile(QString fname, bool utf8)
 {
     QFileInfo fi = QFileInfo(fname);
+    QString s = ficsPath();
+    if (fname == s)
+    {
+        // Just touch FICS File to make sure it exists
+        QFile f(s);
+        f.open(QFile::ReadWrite);
+        f.close();
+    }
+
     fname = fi.canonicalFilePath();
     if (fname.isEmpty())
     {
@@ -1022,7 +1022,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     else
     {
         m_databases.append(db);
-    }    
+    }
 }
 
 void MainWindow::loadError(QUrl url)
@@ -1062,6 +1062,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
                 m_currentDatabase = i;
                 CreateBoardView();
             }
+            break;
         }
     }
     m_databaseList->setFileCurrent(fname);
@@ -1074,6 +1075,14 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
     gameLoad(lastGameIndex);
 
     slotDatabaseChanged();
+
+    if (qobject_cast<FicsDatabase*>(db->database()))
+    {
+        if (!m_ficsClient->sessionStarted())
+        {
+            m_ficsClient->startSession();
+        }
+    }
 }
 
 QString MainWindow::exportFileName(int& format)
@@ -1584,14 +1593,14 @@ bool MainWindow::confirmQuit()
     if (!m_scratchPad->saveDocument())
         return false;
 
-    for(int i = 2; i < m_databases.size(); i++)
+    for(int i = 1; i < m_databases.size(); i++)
     {
         if (!QuerySaveGame(m_databases[i]))
         {
             return false;
         }
     }
-    for(int i = 2; i < m_databases.size(); i++)
+    for(int i = 1; i < m_databases.size(); i++)
     {
         if(m_databases[i]->isValid() && m_databases[i]->database()->isModified())
         {
@@ -1609,13 +1618,13 @@ bool MainWindow::confirmQuit()
         if(response == MessageDialog::Yes)
         {
             Output output(Output::Pgn);
-            for(int i = 2; i < m_databases.size(); i++)
+            for(int i = 1; i < m_databases.size(); i++)
                 if(m_databases[i]->database()->isModified())
                     output.output(m_databases[i]->database()->filename(),
                                   *(m_databases[i]->database()));
         }
     }
-    for(int i = 2; i < m_databases.size(); i++)
+    for(int i = 1; i < m_databases.size(); i++)
     {
         slotFileCloseIndex(i);
     }
