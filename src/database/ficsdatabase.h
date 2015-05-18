@@ -16,7 +16,6 @@ public:
     FicsDatabase();
 
     virtual QString name() const;
-    virtual QString filename() const;
 };
 
 #endif // FICSDATABASE_H

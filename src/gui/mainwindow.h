@@ -449,6 +449,8 @@ protected:
     bool addRemoteMoveFrom64Char(QString s);
     void newGame();
     void AutoMoveAtEndOfGame();
+    QString ficsPath() const;
+    bool ActivateFICSDatabase();
 signals:
     /** Re-read configuration. */
     void reconfigure();

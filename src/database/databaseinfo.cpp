@@ -11,6 +11,7 @@
 #include <QUndoStack>
 
 #include "databaseinfo.h"
+#include "ficsdatabase.h"
 #include "filter.h"
 #include "game.h"
 #include "memorydatabase.h"
@@ -50,7 +51,11 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     connect(&m_game, SIGNAL(signalGameModified(bool,Game,QString)),SLOT(setModified(bool,Game,QString)));
     connect(&m_game, SIGNAL(signalMoveChanged()), SIGNAL(signalMoveChanged()));
     QFile file(fname);
-    if (IsPolyglotBook())
+    if (IsFicsDB())
+    {
+        m_database = new FicsDatabase;
+    }
+    else if (IsPolyglotBook())
     {
         m_database = new PolyglotDatabase;
     }
@@ -318,6 +323,12 @@ bool DatabaseInfo::IsUtf8() const
     return m_utf8;
 }
 
+QString DatabaseInfo::ficsPath()
+{
+    QString dir = AppSettings->commonDataPath();
+    return (dir + QDir::separator() + "FICS.pgn");
+}
+
 bool DatabaseInfo::IsPGN() const
 {
     if (m_filename.isEmpty())
@@ -326,6 +337,11 @@ bool DatabaseInfo::IsPGN() const
     }
     QFileInfo fi(m_filename);
     return (fi.suffix().toLower() == "pgn");
+}
+
+bool DatabaseInfo::IsFicsDB() const
+{
+    return (m_filename == ficsPath());
 }
 
 bool DatabaseInfo::IsPolyglotBook() const

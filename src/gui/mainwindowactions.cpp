@@ -25,6 +25,7 @@
 #include "exclusiveactiongroup.h"
 #include "ficsclient.h"
 #include "ficsconsole.h"
+#include "ficsdatabase.h"
 #include "game.h"
 #include "gamelist.h"
 #include "gamewindow.h"
@@ -142,11 +143,14 @@ void MainWindow::saveDatabase(DatabaseInfo* dbInfo)
 {
     if(!dbInfo->database()->isReadOnly() && dbInfo->database()->isModified())
     {
+        startOperation(tr("Saving %1...").arg(dbInfo->database()->name()));
         Output output(Output::Pgn);
-        output.output(dbInfo->database()->filename(), *dbInfo->database());
+        connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
+        output.output(dbInfo->database()->filename(), *database());
+        finishOperation(tr("%1 saved").arg(dbInfo->database()->name()));
     }
-    emit databaseChanged(dbInfo);
 }
+
 
 bool MainWindow::QuerySaveDatabase()
 {
@@ -160,11 +164,7 @@ bool MainWindow::QuerySaveDatabase()
                                                         + '\n' + tr("Save it?"));
                 if(MessageDialog::Yes == result)
                 {
-                    startOperation(tr("Saving %1...").arg(database()->name()));
-                    Output output(Output::Pgn);
-                    connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
-                    output.output(database()->filename(), *database());
-                    finishOperation(tr("%1 saved").arg(database()->name()));
+                    saveDatabase(databaseInfo());
                     return true;
                 }
                 return result != MessageDialog::Cancel;
@@ -178,15 +178,13 @@ bool MainWindow::QuerySaveDatabase()
 void MainWindow::slotFileSave()
 {
     if(database()->isReadOnly())
+    {
         MessageDialog::warning(tr("<html>The database <i>%1</i> is read-only and cannot be saved.</html>")
                                .arg(database()->name()));
+    }
     else if(m_currentDatabase && qobject_cast<MemoryDatabase*>(database()))
     {
-        startOperation(tr("Saving %1...").arg(database()->name()));
-        Output output(Output::Pgn);
-        connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
-        output.output(database()->filename(), *database());
-        finishOperation(tr("%1 saved").arg(database()->name()));
+        saveDatabase(databaseInfo());
     }
 }
 
@@ -197,31 +195,21 @@ void MainWindow::slotFileClose()
         // Don't remove Clipboard
         if(databaseInfo()->IsLoaded())
         {
-            if (database()->name() == "FICS")
+            if(QuerySaveDatabase())
             {
-                m_ficsClient->exitSession();
-                closeBoardViewForDbIndex(databaseInfo());
-
-                m_databaseList->setFileClose("FICS", 0);
-                emit signalDatabaseOpenClose();
-
-                if (m_currentDatabase != 0)
+                bool ficsDB = (qobject_cast<FicsDatabase*>(database()));
+                if (ficsDB)
                 {
-                    m_currentDatabase = 0; // Switch to clipboard is always safe
-                    activateBoardViewForDbIndex(databaseInfo());
-                    m_databaseList->setFileCurrent("Clipboard");
-                    slotDatabaseChanged();
+                    m_ficsClient->exitSession();
                 }
-            }
-            else if(QuerySaveDatabase())
-            {
+
                 closeBoardViewForDbIndex(databaseInfo());
 
                 DatabaseInfo* aboutToClose = databaseInfo();
                 m_openingTreeWidget->cancel();
                 m_databaseList->setFileClose(aboutToClose->filePath(), aboutToClose->currentIndex());
-                m_databases.removeAt(m_currentDatabase);
 
+                m_databases.removeAt(m_currentDatabase);
                 aboutToClose->close();
                 emit signalDatabaseOpenClose();
                 delete aboutToClose;
@@ -248,18 +236,15 @@ void MainWindow::slotFileCloseIndex(int n)
     {
         if(m_databases[n]->IsLoaded())
         {
-            if (m_databases[n]->database()->name() == "FICS")
-            {
-                m_ficsClient->exitSession();
-                closeBoardViewForDbIndex(m_databases[n]);
-                m_databaseList->setFileClose("FICS", 0);
-                emit signalDatabaseOpenClose();
-                return;
-            }
-
             if (!QuerySaveGame(m_databases[n]))
             {
                 return;
+            }
+
+            bool ficsDB = (qobject_cast<FicsDatabase*>(m_databases[n]->database()));
+            if (ficsDB)
+            {
+                m_ficsClient->exitSession();
             }
 
             closeBoardViewForDbIndex(m_databases[n]);
@@ -267,6 +252,7 @@ void MainWindow::slotFileCloseIndex(int n)
             m_openingTreeWidget->cancel();
 
             m_databaseList->setFileClose(m_databases[n]->filePath(), m_databases[n]->currentIndex());
+
             m_databases[n]->close();
 
             delete m_databases[n];
@@ -277,6 +263,7 @@ void MainWindow::slotFileCloseIndex(int n)
                 // hack as we have just moved the index by one
                 m_currentDatabase--;
             }
+
             emit signalDatabaseOpenClose();
         }
     }
@@ -631,13 +618,13 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
 
 void MainWindow::HandleFicsNewGameRequest()
 {
-    ActivateDatabase("FICS");
+    ActivateFICSDatabase();
     newGame();
 }
 
 void MainWindow::HandleFicsSaveGameRequest()
 {
-    ActivateDatabase("FICS");
+    ActivateFICSDatabase();
     if (AppSettings->getValue("/Sound/Move").toBool())
     {
 #ifdef USE_SOUND
@@ -649,26 +636,26 @@ void MainWindow::HandleFicsSaveGameRequest()
 
 void MainWindow::HandleFicsCloseRequest()
 {
-    ActivateDatabase("FICS");
+    ActivateFICSDatabase();
     slotFileClose();
 }
 
 void MainWindow::HandleFicsResultRequest(QString s)
 {
     s = s.remove(QRegExp("\\{[^\\}]*\\}")).trimmed();
-    ActivateDatabase("FICS");
+    ActivateFICSDatabase();
     game().setResult(ResultFromString(s));
 }
 
 void MainWindow::HandleFicsAddTagRequest(QString tag,QString value)
 {
-    ActivateDatabase("FICS");
+    ActivateFICSDatabase();
     game().setTag(tag, value);
 }
 
 void MainWindow::HandleFicsRequestRemoveMove()
 {
-    ActivateDatabase("FICS");
+    ActivateFICSDatabase();
     if (game().backward())
     {
         game().dbTruncateVariation();
@@ -677,7 +664,7 @@ void MainWindow::HandleFicsRequestRemoveMove()
 
 void MainWindow::FicsConnected()
 {
-    ActivateDatabase("FICS");
+    ActivateFICSDatabase();
     m_ficsConsole->setEnabled(true);
     m_ficsConsole->show();
 }
@@ -685,12 +672,12 @@ void MainWindow::FicsConnected()
 void MainWindow::FicsDisconnected()
 {
     m_ficsConsole->setEnabled(false);
-    slotFileCloseIndex(1);
+    slotFileCloseName(ficsPath());
 }
 
 void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
 {
-    ActivateDatabase("FICS");
+    ActivateFICSDatabase();
     if ((cmd == FicsClient::BLKCMD_EXAMINE) ||
        (!addRemoteMoveFrom64Char(s)) ||
        (cmd == FicsClient::BLKCMD_OBSERVE))
@@ -821,7 +808,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             if(game().atLineEnd())
             {
                 game().addMove(m);
-                if (database()->name() == "FICS")
+                if (qobject_cast<FicsDatabase*>(database()))
                 {
                     m_ficsConsole->SendMove(m.toAlgebraic());
                 }
@@ -1190,6 +1177,7 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
         if(AppSettings->getValue("/General/autoCommitDB").toBool())
         {
             saveDatabase(dbInfo);
+            emit databaseChanged(dbInfo);
         }
     }
 }
@@ -2536,7 +2524,7 @@ void MainWindow::slotSetSliderText(int interval)
 void MainWindow::slotUpdateOpeningTreeWidget()
 {
     QStringList files; // List of all open files excluding ClipBoard
-    for(int i = 2; i < m_databases.count(); i++)
+    for(int i = 1; i < m_databases.count(); i++)
     {
         QString displayName = m_databases[i]->filePath();
         files << displayName;
@@ -2609,5 +2597,5 @@ void MainWindow::enterGameMode(bool gameMode)
 
 bool MainWindow::premoveAllowed() const
 {
-    return (gameMode() && (database()->name() == "FICS"));
+    return (gameMode() && (qobject_cast<const FicsDatabase*>(database())));
 }

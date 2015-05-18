@@ -19,7 +19,3 @@ QString FicsDatabase::name() const
     return "FICS";
 }
 
-QString FicsDatabase::filename() const
-{
-    return "FICS";
-}

@@ -3,6 +3,7 @@
 ****************************************************************************/
 
 #include "aboutdlg.h"
+#include "databaseinfo.h"
 #include "settings.h"
 #include "version.h"
 
@@ -25,6 +26,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
     refPath = AppSettings->getTempPath();
     ui->labelTempPath->setText(refPath);
+    ui->labelFicsPath->setText(DatabaseInfo::ficsPath());
 
     ui->labelCopyRightDate->setText(COPYRIGHT_DATE);
 
@@ -59,6 +61,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
     QString settingsPath = AppSettings->fileName();
     ui->labelSettingsPath->setText(settingsPath);
 
+    ui->labelFicsPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     ui->labelTempPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     ui->labelDataPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     ui->labelSettingsPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
