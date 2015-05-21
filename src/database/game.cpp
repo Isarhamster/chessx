@@ -27,12 +27,16 @@ const QRegExp Game::cal("\\[%cal\\s*([^\\]]*)\\]");
 
 Game::Game() : QObject()
 {
+    mountRefCount = 0;
+    m_currentBoard = 0;
     clearTags();
     clear();
 }
 
 Game::Game(const Game& game) : QObject()
 {
+    mountRefCount = 0;
+    m_currentBoard = 0;
     *this = game;
 }
 
@@ -47,17 +51,49 @@ Game& Game::operator=(const Game & game)
         m_startingBoard = game.m_startingBoard;
         m_variationStartAnnotations = game.m_variationStartAnnotations;
         m_annotations = game.m_annotations;
-        m_currentNode = game.m_currentNode;
         m_startPly = game.m_startPly;
-        m_currentBoard = game.m_currentBoard;
-
         m_moveNodes = game.m_moveNodes;
+        m_currentNode = game.m_currentNode;
+        if (m_currentBoard && game.m_currentBoard)
+        {
+            *m_currentBoard = *game.m_currentBoard;
+        }
     }
     return *this;
 }
 
 Game::~Game()
 {
+    if (mountRefCount)
+    {
+        delete m_currentBoard;
+        m_currentBoard = 0;
+        qDebug() << "force unhook:" << mountRefCount;
+    }
+}
+
+void Game::mountBoard()
+{
+    ++mountRefCount;
+    if (mountRefCount == 1)
+    {
+        m_currentBoard = new Board;
+        qDebug() << "hooked";
+    }
+}
+
+void Game::unmountBoard()
+{
+    if (mountRefCount > 0)
+    {
+        --mountRefCount;
+        if (mountRefCount == 0)
+        {
+            delete m_currentBoard;
+            m_currentBoard = 0;
+            qDebug() << "unhooked";
+        }
+    }
 }
 
 void Game::copyFromGame(const Game& g)
@@ -84,7 +120,7 @@ MoveId Game::dbAddMove(const Move& move, const QString& annotation, NagSet nags)
         dbSetAnnotation(annotation);
     }
     m_moveNodes[previousNode].nextNode = m_currentNode;
-    m_currentBoard.doMove(move);
+    m_currentBoard->doMove(move);
 
     return m_currentNode;
 }
@@ -100,7 +136,7 @@ MoveId Game::addMove(const Move& move, const QString& annotation, NagSet nags)
 
 MoveId Game::dbAddMove(const QString& sanMove, const QString& annotation, NagSet nags)
 {
-    Move move = m_currentBoard.parseMove(sanMove);
+    Move move = m_currentBoard->parseMove(sanMove);
     if(move.isLegal() || move.isNullMove())
     {
         return dbAddMove(move, annotation, nags);
@@ -112,7 +148,7 @@ MoveId Game::dbAddMove(const QString& sanMove, const QString& annotation, NagSet
 
 MoveId Game::addMove(const QString& sanMove, const QString& annotation, NagSet nags)
 {
-    Move move = m_currentBoard.parseMove(sanMove);
+    Move move = m_currentBoard->parseMove(sanMove);
     if(move.isLegal() || move.isNullMove())
     {
         return addMove(move, annotation, nags);
@@ -315,6 +351,7 @@ void Game::dbMergeWithGame(const Game& g)
 {
     MoveId saveNode = m_currentNode;
     Game otherGame = g;
+    otherGame.mountBoard();
 
     otherGame.moveToEnd();
 
@@ -507,7 +544,7 @@ bool Game::replaceMove(const Move& move, const QString& annotation, NagSet nags,
 
 bool Game::replaceMove(const QString& sanMove)
 {
-    return replaceMove(m_currentBoard.parseMove(sanMove), QString(), NagSet(), true);
+    return replaceMove(m_currentBoard->parseMove(sanMove), QString(), NagSet(), true);
 }
 
 bool Game::insertMove(Move m)
@@ -680,6 +717,7 @@ void Game::truncateVariationAfterNextIllegalPosition()
     }
     QString san = moveToSan();
     Game g = *this;
+    g.mountBoard();
     if(NO_MOVE == g.dbAddMove(san))
     {
         MoveId node = m_moveNodes[m_currentNode].nextNode;
@@ -732,7 +770,7 @@ void Game::dbTruncateVariation(Position position)
         m_moveNodes[0] = firstNode;
         m_moveNodes[m_currentNode].previousNode = 0;
         backward();
-        m_startingBoard = m_currentBoard;
+        m_startingBoard = *m_currentBoard;
         if(m_startingBoard != Board::standardStartBoard)
         {
             m_tags[TagNameFEN] = m_startingBoard.toFen();
@@ -751,7 +789,7 @@ void Game::truncateVariation(Position position)
 
 const Board& Game::board() const
 {
-    return m_currentBoard;
+    return *m_currentBoard;
 }
 
 Board Game::startingBoard() const
@@ -761,12 +799,12 @@ Board Game::startingBoard() const
 
 QString Game::toFen() const
 {
-    return m_currentBoard.toFen();
+    return m_currentBoard->toFen();
 }
 
 QString Game::toHumanFen() const
 {
-    return m_currentBoard.toHumanFen();
+    return m_currentBoard->toHumanFen();
 }
 
 QString Game::gameComment() const
@@ -1198,13 +1236,24 @@ bool Game::canHaveStartAnnotation(MoveId moveId) const
     return atLineStart(moveId) || atGameStart(m_moveNodes[node].previousNode);
 }
 
+bool Game::dbAddNag(Nag nag, MoveId moveId)
+{
+    MoveId node = nodeValid(moveId);
+    if ((node != NO_MOVE) && (nag != NullNag))
+    {
+        m_moveNodes[node].nags.addNag(nag);
+        return true;
+    }
+    return false;
+}
+
 bool Game::addNag(Nag nag, MoveId moveId)
 {
     MoveId node = nodeValid(moveId);
     if ((node != NO_MOVE) && (nag != NullNag))
     {
         Game state = *this;
-        m_moveNodes[node].nags.addNag(nag);
+        dbAddNag(nag,moveId);
         emit signalGameModified(true, state, tr("Add nag"));
         return true;
     }
@@ -1530,10 +1579,10 @@ bool Game::variationHasSiblings(MoveId variation) const
 void Game::indicateAnnotationsOnBoard(MoveId moveId)
 {
     QString annotation = squareAnnotation(moveId);
-    m_currentBoard.setSquareAnnotation(annotation);
+    m_currentBoard->setSquareAnnotation(annotation);
 
     annotation = arrowAnnotation(moveId);
-    m_currentBoard.setArrowAnnotation(annotation);
+    m_currentBoard->setArrowAnnotation(annotation);
 
     emit signalMoveChanged();
 }
@@ -1541,7 +1590,7 @@ void Game::indicateAnnotationsOnBoard(MoveId moveId)
 void Game::moveToStart()
 {
     m_currentNode = 0;
-    m_currentBoard = m_startingBoard;
+    *m_currentBoard = m_startingBoard;
 
     indicateAnnotationsOnBoard(m_currentNode);
 }
@@ -1579,10 +1628,10 @@ bool Game::dbMoveToId(MoveId moveId)
 
         //reset the board, then make the moves on the stack to create the correct position
         m_currentNode = moveId;
-        m_currentBoard = m_startingBoard;
+        *m_currentBoard = m_startingBoard;
         while(!moveStack.isEmpty())
         {
-            m_currentBoard.doMove(moveStack.pop());
+            m_currentBoard->doMove(moveStack.pop());
         }
     }
 
@@ -1629,7 +1678,7 @@ int Game::forward(int count)
         m_currentNode = m_moveNodes[m_currentNode].nextNode;
         ++moved;
 
-        m_currentBoard.doMove(m_moveNodes[m_currentNode].move);
+        m_currentBoard->doMove(m_moveNodes[m_currentNode].move);
     }
 
     if(moved)
@@ -1645,7 +1694,7 @@ int Game::backward(int count)
     int moved = 0;
     while((m_moveNodes[m_currentNode].previousNode >= 0) && (moved < count))
     {
-        m_currentBoard.undoMove(m_moveNodes[m_currentNode].move);
+        m_currentBoard->undoMove(m_moveNodes[m_currentNode].move);
         m_currentNode = m_moveNodes[m_currentNode].previousNode;
         ++moved;
     }
@@ -1661,7 +1710,7 @@ int Game::backward(int count)
 void Game::enterVariation(const MoveId& moveId)
 {
     Q_ASSERT(variations().contains(moveId));
-    m_currentBoard.doMove(m_moveNodes[moveId].move);
+    m_currentBoard->doMove(m_moveNodes[moveId].move);
     m_currentNode = moveId;
 
     indicateAnnotationsOnBoard(m_currentNode);
@@ -1703,7 +1752,10 @@ void Game::clear()
     m_currentNode = 0;
 
     m_startingBoard.setStandardPosition();
-    m_currentBoard = m_startingBoard;
+    if (m_currentBoard)
+    {
+        *m_currentBoard = m_startingBoard;
+    }
 
     m_moveNodes.append(MoveNode());
 }
@@ -1745,11 +1797,6 @@ void Game::setStartingBoard(const Board& startingBoard, QString text)
     emit signalGameModified(true, state, text);
 }
 
-void Game::dbSetStartingBoard(const Board& startingBoard)
-{
-    dbSetStartingBoard(startingBoard.toFen());
-}
-
 void Game::dbSetStartingBoard(const QString& fen)
 {
     clear();
@@ -1759,14 +1806,19 @@ void Game::dbSetStartingBoard(const QString& fen)
         m_tags[TagNameFEN] = fen;
         m_tags[TagNameSetUp] = "1";
     }
-    m_currentBoard = m_startingBoard;
+    *m_currentBoard = m_startingBoard;
     m_startPly = (m_startingBoard.moveNumber() - 1) * 2 + (m_startingBoard.toMove() == Black);
+}
+
+void Game::dbSetResult(Result result)
+{
+    m_tags[TagNameResult] = resultString(result);
 }
 
 void Game::setResult(Result result)
 {
     Game state = *this;
-    m_tags[TagNameResult] = resultString(result);
+    dbSetResult(result);
     emit signalGameModified(true, state, tr("Set result"));
 }
 
@@ -1801,17 +1853,17 @@ QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, Mo
 
     // Move number
     QString san;
-    if(m_currentBoard.toMove() == Black && flags & BlackNumbers)
+    if(m_currentBoard->toMove() == Black && flags & BlackNumbers)
     {
         san += QString::number(moveNumber(node)) + "... ";
     }
-    else if(m_currentBoard.toMove() == White && flags & WhiteNumbers)
+    else if(m_currentBoard->toMove() == White && flags & WhiteNumbers)
     {
         san += QString::number(moveNumber(node)) + ". ";
     }
 
     // Move and SAN
-    san += m_currentBoard.moveToSan(move.move, flags & TranslatePiece);
+    san += m_currentBoard->moveToSan(move.move, flags & TranslatePiece);
     if(flags & Nags)
     {
         san += nags(node).toString(NagSet::Simple);
@@ -1987,6 +2039,7 @@ QString Game::ecoClassify() const
 {
     //move to end of main line
     Game g = *this;
+    g.mountBoard();
     g.moveToEnd();
 
     //search backwards for the first eco position
@@ -2011,6 +2064,7 @@ bool Game::isEcoPosition() const
 void Game::scoreMaterial(QList<double>& scores) const
 {
     Game g = *this;
+    g.mountBoard();
     g.moveToStart();
     scores.clear();
     int score = g.board().ScoreMaterial();

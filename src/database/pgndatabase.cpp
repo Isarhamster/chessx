@@ -369,11 +369,13 @@ void PgnDatabase::loadGameMoves(GameId gameId, Game& game)
     seekGame(gameId);
     skipTags();
     QString fen = m_index.tagValue(TagNameFEN, gameId); // was m_count -1
+    game.mountBoard();
     if(fen != "?")
     {
         game.dbSetStartingBoard(fen);
     }
     parseMoves(&game);
+    game.unmountBoard();
 }
 
 bool PgnDatabase::loadGame(GameId gameId, Game& game)
@@ -389,11 +391,14 @@ bool PgnDatabase::loadGame(GameId gameId, Game& game)
     seekGame(gameId);
     skipTags();
     QString fen = m_index.tagValue(TagNameFEN, gameId);  // was m_count - 1
+    game.mountBoard();
     if(fen != "?")
     {
         game.dbSetStartingBoard(fen);
     }
+
     parseMoves(&game);
+    game.unmountBoard();
 
     return m_variation != -1 || fen != "?";  // Not sure of all of the ramifications of this
     // but it seeems to fix the problem with FENs
@@ -689,54 +694,54 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
         m_currentLine = m_currentLine.right((m_currentLine.length() - m_pos) - 1);
         break;
     case '$':
-        game->addNag((Nag)token.mid(1).toInt());
+        game->dbAddNag((Nag)token.mid(1).toInt());
         break;
     case '!':
         if(token == "!")
         {
-            game->addNag(GoodMove);
+            game->dbAddNag(GoodMove);
         }
         else if(token == "!!")
         {
-            game->addNag(VeryGoodMove);
+            game->dbAddNag(VeryGoodMove);
         }
         else if(token == "!?")
         {
-            game->addNag(SpeculativeMove);
+            game->dbAddNag(SpeculativeMove);
         }
         break;
     case '?':
         if(token == "?")
         {
-            game->addNag(PoorMove);
+            game->dbAddNag(PoorMove);
         }
         else if(token == "??")
         {
-            game->addNag(VeryPoorMove);
+            game->dbAddNag(VeryPoorMove);
         }
         else if(token == "?!")
         {
-            game->addNag(QuestionableMove);
+            game->dbAddNag(QuestionableMove);
         }
         break;
     case '+':
         if(token == "+=")
         {
-            game->addNag(WhiteHasASlightAdvantage);
+            game->dbAddNag(WhiteHasASlightAdvantage);
         }
         else if(token == "+/-")
         {
-            game->addNag(WhiteHasAModerateAdvantage);
+            game->dbAddNag(WhiteHasAModerateAdvantage);
         }
         break;
     case '=':
         if(token == "=")
         {
-            game->addNag(DrawishPosition);
+            game->dbAddNag(DrawishPosition);
         }
         else if(token == "=+")
         {
-            game->addNag(BlackHasASlightAdvantage);
+            game->dbAddNag(BlackHasASlightAdvantage);
         }
         break;
     case '*':
@@ -747,13 +752,13 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
     case '1':
         if(token == "1-0")
         {
-            game->setResult(WhiteWin);
+            game->dbSetResult(WhiteWin);
             m_gameOver = true;
             break;
         }
         else if(token == "1/2-1/2" || token == "1/2")
         {
-            game->setResult(Draw);
+            game->dbSetResult(Draw);
             m_gameOver = true;
             break;
         }
@@ -761,7 +766,7 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
     case '0':
         if(token == "0-1")
         {
-            game->setResult(BlackWin);
+            game->dbSetResult(BlackWin);
             m_gameOver = true;
             break;
         }
@@ -769,7 +774,7 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
     case '-':
         if(token == "-/+")
         {
-            game->addNag(BlackHasAModerateAdvantage);
+            game->dbAddNag(BlackHasAModerateAdvantage);
             break;
         }
         else if(token == "--")

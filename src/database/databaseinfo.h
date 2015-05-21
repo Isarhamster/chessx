@@ -83,6 +83,9 @@ public:
 
     void replaceGame(const Game& game);
 
+    void mountBoard();
+    void unmountBoard();
+
     void updateMaterial();
 
     /** Resizes the filter to the number of games in the database and puts

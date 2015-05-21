@@ -113,11 +113,11 @@ public:
     /** Create the output for the given game
      * @return A string containing the game in the specified format
      * @param game A pointer to the game object being output */
-    QString output(Game* game, bool upToCurrentMove = false);
+    QString output(const Game* game, bool upToCurrentMove = false);
     /** Create the output for the given game
      * @param filename The filename that the output will be written to.
      * @param filter A Game object. Exported, using the output(Game* game) method */
-    void output(const QString& filename, Game& game);
+    void output(const QString& filename, const Game& game);
     /** Create the output for the given filter
      * @param filename The filename that the output will be written to.
      * @param filter A Filter object. All games in the filter will be output, one
@@ -144,7 +144,7 @@ signals:
     /** Operation progress. */
     void progress(int);
 protected:
-    QString outputTags(Game *game);
+    QString outputTags(const Game *game);
 private:
     /* User definable settings */
     OutputOptions m_options;
