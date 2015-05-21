@@ -384,7 +384,7 @@ void GameList::updateFilter()
     }
 }
 
-void GameList::slotCopyGame()
+QList<int> GameList::selectedGames()
 {
     QList<int> gameIndexList;
     foreach(QModelIndex index, selectionModel()->selectedRows())
@@ -392,7 +392,12 @@ void GameList::slotCopyGame()
         QModelIndex m = GetSourceIndex(index);
         gameIndexList.append(m_model->filter()->indexToGame(m.row()));
     }
+    return gameIndexList;
+}
 
+void GameList::slotCopyGame()
+{
+    QList<int> gameIndexList = selectedGames();
     emit requestCopyGame(gameIndexList);
 }
 
