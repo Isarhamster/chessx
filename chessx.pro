@@ -471,6 +471,7 @@ DISTFILES += \
     Doxyfile \
     License.txt \
     README.developers \
-    unix/make_tarball
+    unix/make_tarball \
+    mac_osx/svnlist
 
 
