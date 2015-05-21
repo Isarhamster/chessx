@@ -36,14 +36,13 @@ void ChartWidget::setValues(const QList<double>& values)
         m_values<<d;
     }
     updatePolygon();
-    repaint();
 }
 
 void ChartWidget::setPly(int ply)
 {
     m_ply = ply;
     updatePly();
-    repaint();
+    update();
 }
 
 void ChartWidget::paintEvent(QPaintEvent*)

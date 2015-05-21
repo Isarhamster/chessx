@@ -35,6 +35,7 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, Database *db)
     m_bLoaded = true;
     m_utf8 = false;
     m_undoStack = new QUndoStack((QObject*)undoGroup);
+    mountBoard();
     newGame();
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
     connect(&m_game, SIGNAL(signalGameModified(bool,Game,QString)),SLOT(setModified(bool,Game,QString)));
@@ -50,6 +51,7 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     connect(m_undoStack, SIGNAL(cleanChanged(bool)), SLOT(dbCleanChanged(bool)));
     connect(&m_game, SIGNAL(signalGameModified(bool,Game,QString)),SLOT(setModified(bool,Game,QString)));
     connect(&m_game, SIGNAL(signalMoveChanged()), SIGNAL(signalMoveChanged()));
+    mountBoard();
     QFile file(fname);
     if (IsFicsDB())
     {
@@ -133,6 +135,7 @@ void DatabaseInfo::close()
 
 DatabaseInfo::~DatabaseInfo()
 {
+    unmountBoard();
 }
 
 Filter *DatabaseInfo::filter()
@@ -154,6 +157,10 @@ bool DatabaseInfo::loadGame(int index)
     {
         return false;
     }
+
+    unmountBoard();
+    mountBoard();
+
     if(!m_database->loadGame(index, m_game))
     {
         return false;
@@ -298,9 +305,19 @@ bool DatabaseInfo::saveGame()
 
 void DatabaseInfo::replaceGame(const Game &game)
 {
-    currentGame() = game;
+    m_game = game;
     updateMaterial();
     emit signalGameModified(!m_undoStack->isClean());
+}
+
+void DatabaseInfo::mountBoard()
+{
+    m_game.mountBoard();
+}
+
+void DatabaseInfo::unmountBoard()
+{
+    m_game.unmountBoard();
 }
 
 void DatabaseInfo::resetFilter()

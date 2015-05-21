@@ -26,6 +26,7 @@ QMap<Output::OutputType, QString> Output::m_outputMap;
 
 Output::Output(OutputType output, const QString& pathToTemplateFile)
 {
+    m_game.mountBoard();
     m_outputType = output;
     switch(m_outputType)
     {
@@ -297,7 +298,9 @@ QString Output::writeDiagram(int n) const
     {
         QImage image;
 
-        Game g = m_game;
+        Game g;
+        g.mountBoard();
+        g = m_game;
         g.forward(1);
 
         BoardView::renderImageForBoard(g.board(), image, QSize(n,n));
@@ -746,7 +749,7 @@ QString Output::writeBasicTagsHTML() const
     return text;
 }
 
-QString Output::output(Game* game, bool upToCurrentMove)
+QString Output::output(const Game* game, bool upToCurrentMove)
 {
     QString text = m_header;
     postProcessOutput(text);
@@ -764,7 +767,7 @@ QString Output::output(Game* game, bool upToCurrentMove)
     return text;
 }
 
-QString Output::outputTags(Game* game)
+QString Output::outputTags(const Game* game)
 {
     QString text;
     m_game = *game;
@@ -849,6 +852,7 @@ void Output::output(QTextStream& out, Filter& filter)
 {
     int percentDone = 0;
     Game game;
+    game.mountBoard();
     QString header = m_header;
     postProcessOutput(header);
     out << header;
@@ -894,6 +898,7 @@ void Output::output(QTextStream& out, Database& database)
 
     int percentDone = 0;
     Game game;
+    game.mountBoard();
     for(int i = 0; i < (int)database.count(); ++i)
     {
         if(database.loadGame(i, game))
@@ -921,7 +926,7 @@ void Output::output(QTextStream& out, Database& database)
     database.setModified(false);
 }
 
-void Output::output(const QString& filename, Game& game)
+void Output::output(const QString& filename, const Game& game)
 {
     QFile f(filename);
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text))

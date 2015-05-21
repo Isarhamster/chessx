@@ -43,7 +43,6 @@ bool operator<(const MoveData& m1, const MoveData& m2)
 
 void OpeningTreeThread::run()
 {
-    Game g;
     QMap<Move, MoveData> moves;
     int games = 0;
     QTime updateTime = QTime::currentTime().addSecs(1);
@@ -88,45 +87,50 @@ void OpeningTreeThread::run()
             }
         }
     }
-    else for(int i = 0; i < n; ++i)
+    else
     {
-        if (m_sourceIsDatabase || m_filter->contains(i))
+        Game g;
+        g.mountBoard();
+        for(int i = 0; i < n; ++i)
         {
-            m_filter->database()->loadGameMoves(i, g);
-            int id = g.findPosition(m_board);
-            if((id != NO_MOVE) && (m_bEnd ? g.atGameEnd(id) : true))
+            if (m_sourceIsDatabase || m_filter->contains(i))
             {
-                if(m_updateFilter)
+                m_filter->database()->loadGameMoves(i, g);
+                int id = g.findPosition(m_board);
+                if((id != NO_MOVE) && (m_bEnd ? g.atGameEnd(id) : true))
                 {
-                    m_filter->set(i, id + 1); // not zero means success, but id could be 0.
-                }
-                m_filter->database()->loadGameHeaders(i, g);
-                g.dbMoveToId(id);
-                if(g.atGameEnd())
-                {
-                    moves[Move()].addGame(g, m_board.toMove(), MoveData::GameEnd);
+                    if(m_updateFilter)
+                    {
+                        m_filter->set(i, id + 1); // not zero means success, but id could be 0.
+                    }
+                    m_filter->database()->loadGameHeaders(i, g);
+                    g.dbMoveToId(id);
+                    if(g.atGameEnd())
+                    {
+                        moves[Move()].addGame(g, m_board.toMove(), MoveData::GameEnd);
+                    }
+                    else
+                    {
+                        g.forward();
+                        moves[g.move()].addGame(g, m_board.toMove());
+                    }
+                    ++games;
                 }
                 else
                 {
-                    g.forward();
-                    moves[g.move()].addGame(g, m_board.toMove());
+                    if(m_updateFilter)
+                    {
+                        m_filter->set(i, 0);
+                    }
                 }
-                ++games;
             }
-            else
+
+            ProgressUpdate(moves, updateTime, games, i, n);
+
+            if(m_break)
             {
-                if(m_updateFilter)
-                {
-                    m_filter->set(i, 0);
-                }
+                break;
             }
-        }
-
-        ProgressUpdate(moves, updateTime, games, i, n);
-
-        if(m_break)
-        {
-            break;
         }
     }
     *m_games = games;

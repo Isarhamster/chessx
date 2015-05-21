@@ -322,7 +322,7 @@ public slots:
     /** Change database. */
     void slotDatabaseChange();
     /** Copy games between databases. */
-    void slotDatabaseCopy(int preselect = 1, QList<int> gameIndexList = QList<int>());
+    void slotDatabaseCopy(int preselect = 1);
     /** Clear the clipboard database */
     void slotDatabaseClearClipboard();
     /** Copy games between databases. */
@@ -430,6 +430,7 @@ protected:
     Database* getDatabaseByPath(QString path);
     DatabaseInfo* getDatabaseInfoByPath(QString path);
     void updateOpeningTree(const Board& b, bool atEnd);
+    void copyFromDatabase(int preselect = 1, QList<int> gameIndexList = QList<int>());
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);

@@ -742,7 +742,6 @@ void MainWindow::gameLoad(int index)
             m_gameList->selectGame(index);
             emit signalGameIsEmpty(true);
             UpdateBoardInformation();
-            slotGameChanged();
             m_gameList->setFocus();
             emit signalGameLoaded();
             if(m_training->isChecked())

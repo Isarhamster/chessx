@@ -96,6 +96,11 @@ public :
     Game(const Game& game);
     Game& operator=(const Game& game);
     virtual ~Game();
+
+    void mountBoard();
+    void unmountBoard();
+    int mountRefCount;
+
     // **** Querying game information ****
     /** compare tags */
     int compareTags(const Game& game) const;
@@ -164,6 +169,7 @@ public :
     bool setArrowAnnotation(QString arrowAnnotation, MoveId moveId = CURRENT_MOVE);
 
     /** Adds a nag to move at node @p moveId */
+    bool dbAddNag(Nag nag, MoveId moveId = CURRENT_MOVE);
     bool addNag(Nag nag, MoveId moveId = CURRENT_MOVE);
     /** Sets nags for move at node @p moveId */
     bool setNags(NagSet nags, MoveId moveId = CURRENT_MOVE);
@@ -292,8 +298,6 @@ public :
     void truncateVariation(Position position = AfterMove);
     /** Removes all tags and moves */
     void clear();
-    /** Set the game start position */
-    void dbSetStartingBoard(const Board& startingBoard);
     /** Set the game start position from FEN. */
     void dbSetStartingBoard(const QString& fen);
     /** set comment associated with game */
@@ -317,6 +321,7 @@ public :
     /** Removes a tag */
     void removeTag(const QString& tag);
     /** Set the game result */
+    void dbSetResult(Result result);
     void setResult(Result result);
 
     // Searching
@@ -362,7 +367,8 @@ public :
     void removeNode(MoveId moveId = CURRENT_MOVE);
 
     MoveId lastMove() const;
-protected:
+
+ protected:
     /** Find the point in the this game where @p otherGame fits in the next time.
         @retval Node from where the merging shall start in other game */
     MoveId findMergePoint(const Game &otherGame);
@@ -412,7 +418,7 @@ private:
     /** Keeps the start position of the game */
     Board m_startingBoard;
     /** Keeps the current position of the game */
-    Board m_currentBoard;
+    Board* m_currentBoard;
 
     typedef QMap<MoveId, QString> AnnotationMap;
 
