@@ -8,7 +8,7 @@
 #include "database.h"
 #include "movedata.h"
 
-typedef struct
+typedef struct _entry_t
 {
     quint64 key;
     quint16 move;
