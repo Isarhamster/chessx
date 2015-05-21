@@ -44,6 +44,7 @@ public:
 
     void removeSelection();
     /** Set current database */
+    QList<int> selectedGames();
 public slots:
     /** Change current filter/database */
     void setFilter(Filter* filter);

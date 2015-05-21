@@ -288,7 +288,7 @@ void MainWindow::slotFileExportGame()
     if(!filename.isEmpty())
     {
         Output output((Output::OutputType)format);
-        output.output(filename, databaseInfo()->currentGame());
+        output.output(filename, game());
     }
 }
 
@@ -1893,7 +1893,13 @@ void MainWindow::copyDatabase(QString target, QString src)
     }
 }
 
-void MainWindow::slotDatabaseCopy(int preselect, QList<int> gameIndexList)
+void MainWindow::slotDatabaseCopy(int preselect)
+{
+    QList<int> gameIndexList = m_gameList->selectedGames();
+    copyFromDatabase(preselect, gameIndexList);
+}
+
+void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
 {
     if(m_databases.count() < 2)
     {
@@ -1997,7 +2003,7 @@ void MainWindow::slotDatabaseClearClipboard()
 
 void MainWindow::slotDatabaseCopySingle(QList<int> gameIndexList)
 {
-    slotDatabaseCopy(0, gameIndexList);
+    copyFromDatabase(0, gameIndexList);
 }
 
 void MainWindow::slotDatabaseChanged()
