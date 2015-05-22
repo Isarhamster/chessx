@@ -1619,7 +1619,7 @@ bool Game::dbMoveToId(MoveId moveId)
     {
         //jump to node, travelling back to start adding the moves to the stack
         MoveId node = moveId;
-        QStack < Move > moveStack;
+        QStack<Move> moveStack;
         while(node)
         {
             moveStack.push(m_moveNodes[node].move);

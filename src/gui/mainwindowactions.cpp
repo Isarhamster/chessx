@@ -799,6 +799,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                         m_machineHasToMove = true;
                     }
                 }
+                slotGameChanged();
                 return;
             }
         }
@@ -937,7 +938,6 @@ void MainWindow::moveChanged()
     MoveId m = g.currentMove();
 
     // Set board first
-    QString fen = m_boardView->board().toFen();
     m_boardView->setBoard(g.board(), m_currentFrom, m_currentTo, game().atLineEnd());
     m_currentFrom = InvalidSquare;
     m_currentTo = InvalidSquare;
@@ -975,7 +975,7 @@ void MainWindow::moveChanged()
 
 void MainWindow::slotSearchTree()
 {
-    updateOpeningTree(m_boardView->board(), false);
+    updateOpeningTree(game().board(), false);
 }
 
 void MainWindow::slotBoardMoveWheel(int wheel)
@@ -1304,11 +1304,11 @@ void MainWindow::slotGameModify(const EditAction& action)
     case EditAction::AddNullMove:
         if (game().atLineEnd())
         {
-            game().addMove(m_boardView->board().nullMove());
+            game().addMove(game().board().nullMove());
         }
         else
         {
-            game().addVariation(m_boardView->board().nullMove());
+            game().addVariation(game().board().nullMove());
         }
         break;
     case EditAction::CopyHtml:
@@ -1591,7 +1591,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
     {
         if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != m_boardView->board()))
         {
-            m_AutoInsertLastBoard = m_boardView->board();
+            m_AutoInsertLastBoard = game().board();
 
             Analysis a = m_mainAnalysis->getMainLine();
             if(!a.variation().isEmpty())
@@ -1636,7 +1636,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
 void MainWindow::slotAutoPlayTimeout()
 {
     bool done = false;
-    if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
+    if (m_autoAnalysis->isChecked() && AppSettings->getValue("/Board/BackwardAnalysis").toBool())
     {
         done = game().atGameStart();
     }
@@ -1652,7 +1652,7 @@ void MainWindow::slotAutoPlayTimeout()
     else
     {
         done = false;
-        if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
+        if (m_autoAnalysis->isChecked() && AppSettings->getValue("/Board/BackwardAnalysis").toBool())
         {
             slotGameMovePrevious();
         }
@@ -1660,7 +1660,7 @@ void MainWindow::slotAutoPlayTimeout()
         {
             slotGameMoveNext();
         }
-        if (m_boardView->board().isCheckmate() || m_boardView->board().isStalemate())
+        if (game().board().isCheckmate() || game().board().isStalemate())
         {
             AutoMoveAtEndOfGame();
         }
@@ -2028,7 +2028,7 @@ void MainWindow::slotSearchBoard()
 {
     BoardSearchDialog dlg(this);
     QList<Board> boardList;
-    boardList.append(m_boardView->board());
+    boardList.append(game().board());
 
     for(int i = 0; i < m_boardViews.count(); ++i)
     {
