@@ -478,6 +478,26 @@ private:
     MoveId m_saveMoveValue;
 };
 
+class MountBoard
+{
+public:
+    MountBoard(Game& game)
+    {
+        m_saveGame = &game;
+        game.mountBoard();
+    }
+    MountBoard(Game* game)
+    {
+        m_saveGame = game;
+        game->mountBoard();
+    }
+    ~MountBoard()
+    {
+        m_saveGame->unmountBoard();
+    }
+private:
+    Game* m_saveGame;
+};
 
 #endif	// __GAME_H__
 

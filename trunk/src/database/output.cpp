@@ -50,6 +50,11 @@ Output::Output(OutputType output, const QString& pathToTemplateFile)
     initialize();
 }
 
+Output::~Output()
+{
+    m_game.unmountBoard();
+}
+
 void Output::initialize()
 {
     if(m_outputType == Pgn)
@@ -299,7 +304,7 @@ QString Output::writeDiagram(int n) const
         QImage image;
 
         Game g;
-        g.mountBoard();
+        MountBoard mb(g);
         g = m_game;
         g.forward(1);
 
@@ -852,7 +857,7 @@ void Output::output(QTextStream& out, Filter& filter)
 {
     int percentDone = 0;
     Game game;
-    game.mountBoard();
+    MountBoard mb(game);
     QString header = m_header;
     postProcessOutput(header);
     out << header;
@@ -898,7 +903,7 @@ void Output::output(QTextStream& out, Database& database)
 
     int percentDone = 0;
     Game game;
-    game.mountBoard();
+    MountBoard mb(game);
     for(int i = 0; i < (int)database.count(); ++i)
     {
         if(database.loadGame(i, game))
