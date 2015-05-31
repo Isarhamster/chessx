@@ -109,6 +109,7 @@ public:
      *        the template for the output to be generated
      * @see Output::OutputType */
     Output(OutputType output, const QString& pathToTemplateFile = "");
+    ~Output();
 
     /** Create the output for the given game
      * @return A string containing the game in the specified format

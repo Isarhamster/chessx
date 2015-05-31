@@ -369,13 +369,12 @@ void PgnDatabase::loadGameMoves(GameId gameId, Game& game)
     seekGame(gameId);
     skipTags();
     QString fen = m_index.tagValue(TagNameFEN, gameId); // was m_count -1
-    game.mountBoard();
+    MountBoard mb(game);
     if(fen != "?")
     {
         game.dbSetStartingBoard(fen);
     }
     parseMoves(&game);
-    game.unmountBoard();
 }
 
 bool PgnDatabase::loadGame(GameId gameId, Game& game)
@@ -391,14 +390,13 @@ bool PgnDatabase::loadGame(GameId gameId, Game& game)
     seekGame(gameId);
     skipTags();
     QString fen = m_index.tagValue(TagNameFEN, gameId);  // was m_count - 1
-    game.mountBoard();
+    MountBoard mb(game);
     if(fen != "?")
     {
         game.dbSetStartingBoard(fen);
     }
 
     parseMoves(&game);
-    game.unmountBoard();
 
     return m_variation != -1 || fen != "?";  // Not sure of all of the ramifications of this
     // but it seeems to fix the problem with FENs

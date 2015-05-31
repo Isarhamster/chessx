@@ -137,7 +137,7 @@ bool MemoryDatabase::loadGame(GameId gameId, Game& game)
 void MemoryDatabase::parseGame()
 {
     Game* game = new Game;
-    game->mountBoard();
+    MountBoard mb(game);
 
     QString fen = m_index.tagValue(TagNameFEN, m_count - 1);
     if(fen != "?")
@@ -165,8 +165,6 @@ void MemoryDatabase::parseGame()
             }
         }
     }
-
-    game->unmountBoard();
 
     m_games.append(game);
 }
