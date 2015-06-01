@@ -63,13 +63,12 @@ public:
     {
         return m_columnTags;
     }
-    /** Get the column names. */
-    const QStringList GetColumnNames()
-    {
-        return m_columnNames;
-    }
 
+    void updateColumns();
 private:
+    void addColumns(QStringList tags);
+    void setupColumns();
+
     /** A pointer to filter on which the model opperates */
     QPointer<Filter> m_filter;
     /** The column names of the model */

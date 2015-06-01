@@ -73,6 +73,12 @@ GameList::~GameList()
     delete m_model;
 }
 
+void GameList::slotReconfigure()
+{
+    updateFilter();
+    TableView::slotReconfigure();
+}
+
 void GameList::ShowContextMenu(const QPoint& pos)
 {
     QMenu headerMenu;

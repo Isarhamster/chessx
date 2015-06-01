@@ -532,6 +532,8 @@ void PreferencesDialog::restoreSettings()
 
     AppSettings->endGroup();
 
+    ui.additionalTags->setText(AppSettings->getValue("/GameList/AdditionalTags").toString());
+
     AppSettings->beginGroup("Tools");
     ui.extToolPath->setText(AppSettings->getValue("Path1").toString());
     ui.extToolParameters->setText(AppSettings->getValue("CommandLine1").toString());
@@ -620,6 +622,8 @@ void PreferencesDialog::saveSettings()
     saveColorList(ui.notationColors, colorNamesNotation);
 
     AppSettings->endGroup();
+
+    AppSettings->setValue("/GameList/AdditionalTags", ui.additionalTags->text());
 
     AppSettings->beginGroup("Tools");
     AppSettings->setValue("Path1", ui.extToolPath->text());

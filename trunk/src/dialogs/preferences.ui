@@ -23,14 +23,53 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
        <string>&amp;Board</string>
       </attribute>
       <layout class="QGridLayout">
-       <item row="3" column="2">
+       <item row="0" column="2">
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QComboBox" name="pieceThemeCombo">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="pieceEffect">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <item>
+            <property name="text">
+             <string>plain</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>outline</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>outline+shadow</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="2">
         <widget class="QComboBox" name="hilightCurrentMove">
          <item>
           <property name="text">
@@ -49,7 +88,41 @@
          </item>
         </widget>
        </item>
-       <item row="12" column="0" colspan="3">
+       <item row="1" column="2">
+        <widget class="QComboBox" name="boardThemeCombo">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="2">
+        <widget class="QCheckBox" name="boardColorCopy">
+         <property name="text">
+          <string>Colored copies</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="pieceThemeLabel">
+         <property name="text">
+          <string>&amp;Chess set:</string>
+         </property>
+         <property name="buddy">
+          <cstring>pieceThemeCombo</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QCheckBox" name="btShowThreat">
+         <property name="text">
+          <string>Show threat</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="0" colspan="3">
         <widget class="QGroupBox" name="groupBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -147,59 +220,6 @@
          </layout>
         </widget>
        </item>
-       <item row="0" column="2">
-        <layout class="QHBoxLayout">
-         <item>
-          <widget class="QComboBox" name="pieceThemeCombo">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="pieceEffect">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <item>
-            <property name="text">
-             <string>plain</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>outline</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>outline+shadow</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="6" column="2">
-        <widget class="QCheckBox" name="boardShowCoordinates">
-         <property name="text">
-          <string>Draw Coordinates</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QCheckBox" name="btShowThreat">
-         <property name="text">
-          <string>Show threat</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="boardThemeLabel">
          <property name="text">
@@ -207,16 +227,6 @@
          </property>
          <property name="buddy">
           <cstring>boardThemeCombo</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QComboBox" name="boardThemeCombo">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
          </property>
         </widget>
        </item>
@@ -233,17 +243,44 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="2">
+       <item row="2" column="2">
+        <widget class="ColorList" name="boardColorsList"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="labelShowMoveIndicator">
+         <property name="text">
+          <string>Show move indicator</string>
+         </property>
+         <property name="buddy">
+          <cstring>cbShowIndicator</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2">
+        <widget class="QCheckBox" name="boardShowCoordinates">
+         <property name="text">
+          <string>Draw Coordinates</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Highlight current move:</string>
+         </property>
+         <property name="buddy">
+          <cstring>hilightCurrentMove</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
         <widget class="QCheckBox" name="boardFrameCheck">
          <property name="text">
           <string>&amp;Draw frame between squares</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="2">
-        <widget class="ColorList" name="boardColorsList"/>
-       </item>
-       <item row="9" column="0">
+       <item row="10" column="0">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -259,28 +296,23 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="pieceThemeLabel">
-         <property name="text">
-          <string>&amp;Chess set:</string>
-         </property>
-         <property name="buddy">
-          <cstring>pieceThemeCombo</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Highlight current move:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="2">
-        <widget class="QCheckBox" name="boardColorCopy">
-         <property name="text">
-          <string>Colored copies</string>
-         </property>
+       <item row="3" column="2">
+        <widget class="QComboBox" name="cbShowIndicator">
+         <item>
+          <property name="text">
+           <string>Automatic</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Always</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Never</string>
+          </property>
+         </item>
         </widget>
        </item>
       </layout>
@@ -979,36 +1011,6 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_12">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QLabel" name="labelShowMoveIndicator">
-              <property name="text">
-               <string>Show move indicator</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="cbShowIndicator">
-              <item>
-               <property name="text">
-                <string>Automatic</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Always</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Never</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
            <widget class="QCheckBox" name="iconsVisible">
             <property name="text">
              <string>Icons visible in menus</string>
@@ -1048,6 +1050,25 @@
              </widget>
             </item>
            </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_9">
+         <property name="title">
+          <string>Additional PGN tags</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_13">
+          <item>
+           <widget class="QLineEdit" name="additionalTags">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="placeholderText">
+             <string>Additional tags, separate with blanks</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
