@@ -58,6 +58,10 @@ Game& Game::operator=(const Game & game)
         {
             *m_currentBoard = *game.m_currentBoard;
         }
+        else if (m_currentBoard)
+        {
+            *m_currentBoard = m_startingBoard;
+        }
     }
     return *this;
 }

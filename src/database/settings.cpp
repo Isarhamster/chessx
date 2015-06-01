@@ -307,6 +307,8 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/GameText/FontBrowserMove", "'Arial Unicode MS',Menlo");
     map.insert("/GameText/PieceString", " KQRBN");
 
+    map.insert("/GameList/AdditionalTags", "");
+
     map.insert("/MainWindow/GameToolBar", false);
     map.insert("/MainWindow/VerticalTabs", false);
     map.insert("/MainWindow/StayOnTop", false);

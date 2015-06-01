@@ -70,6 +70,7 @@ public slots:
     void selectPreviousGame();
     /** Show the context menu */
     virtual void ShowContextMenu(const QPoint& pos);
+    void slotReconfigure();
 private slots:
     /** Re-emit the request to the receivers to perform some action */
     void itemSelected(const QModelIndex& index);

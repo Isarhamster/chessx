@@ -13,6 +13,7 @@
 #include "database.h"
 #include "filter.h"
 #include "game.h"
+#include "settings.h"
 #include "tags.h"
 
 #include <QtGui>
@@ -25,6 +26,38 @@
 FilterModel::FilterModel(Filter* filter, QObject* parent)
     : QAbstractItemModel(parent), m_filter(filter), m_gameIndex(-1), m_gameIndex2(-1),m_lastGame(0)
 {
+    setupColumns();
+
+    m_game  = new Game;
+    m_game2 = new Game;
+}
+
+FilterModel::~FilterModel()
+{
+    delete m_game;
+    delete m_game2;
+    m_lastGame = 0;
+}
+
+int FilterModel::rowCount(const QModelIndex& index) const
+{
+    if(index.isValid())
+    {
+        return 0;
+    }
+    return m_filter ? m_filter->count() : 0;
+}
+
+int FilterModel::columnCount(const QModelIndex&) const
+{
+    return m_columnNames.count();
+}
+
+void FilterModel::addColumns(QStringList tags)
+{
+    m_columnNames.clear();
+    m_columnTags.clear();
+
     m_columnNames << tr("Nr")
                   << tr("White")
                   << tr("White Elo")
@@ -51,29 +84,22 @@ FilterModel::FilterModel(Filter* filter, QObject* parent)
                  << TagNameECO
                  << TagNameLength;
 
-    m_game  = new Game;
-    m_game2 = new Game;
+    m_columnNames << tags;
+    m_columnTags << tags;
 }
 
-FilterModel::~FilterModel()
+void FilterModel::setupColumns()
 {
-    delete m_game;
-    delete m_game2;
-    m_lastGame = 0;
+    QString addTags = AppSettings->getValue("/GameList/AdditionalTags").toString();
+    QStringList tags = addTags.split(QRegExp("[^a-zA-Z]"), QString::SkipEmptyParts);
+    addColumns(tags);
 }
 
-int FilterModel::rowCount(const QModelIndex& index) const
+void FilterModel::updateColumns()
 {
-    if(index.isValid())
-    {
-        return 0;
-    }
-    return m_filter ? m_filter->count() : 0;
-}
-
-int FilterModel::columnCount(const QModelIndex&) const
-{
-    return m_columnNames.count();
+    beginResetModel();
+    setupColumns();
+    endResetModel();
 }
 
 QVariant FilterModel::data(const QModelIndex &index, int role) const
