@@ -176,9 +176,11 @@ QString EcoInfo::formattedScore(const int result[4], int count) const
     {
         score += QString(" &nbsp;*%1").arg(result[ResultUnknown]);
     }
-    if(count - result[ResultUnknown])
-        score += QString(" &nbsp;(%1%)").arg((100.0 * result[WhiteWin] + 50.0 * result[Draw]) / (count - result[ResultUnknown]),
-                                             1, 'f', 1);
+    int n = count - result[ResultUnknown];
+    if(n)
+    {
+        score += QString(" &nbsp;(%1%)").arg((100.0 * result[WhiteWin] + 50.0 * result[Draw]) / (n), 1, 'f', 1);
+    }
     score += "</b>";
     return score;
 }
@@ -186,8 +188,7 @@ QString EcoInfo::formattedScore(const int result[4], int count) const
 
 QString EcoInfo::formattedScore() const
 {
-    return tr("Total: %1")
-           .arg(formattedScore(m_result, m_count));
+    return tr("Total: %1").arg(formattedScore(m_result, m_count));
 }
 
 void EcoInfo::reset()
