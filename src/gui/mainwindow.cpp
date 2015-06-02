@@ -339,49 +339,19 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Analysis Dock */
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
-    analysisDock->setObjectName("AnalysisDock1");
-    AnalysisWidget* analysis = new AnalysisWidget;
-    analysis->setObjectName("Analysis");
-    analysisDock->setWidget(analysis);
-    addDockWidget(Qt::RightDockWidgetArea, analysisDock);
-    connect(analysis, SIGNAL(addVariation(Analysis)),
-            SLOT(slotGameAddVariation(Analysis)));
-    connect(analysis, SIGNAL(addVariation(QString)),
-            SLOT(slotGameAddVariation(QString)));
-    connect(this, SIGNAL(boardChange(const Board&)), analysis, SLOT(setPosition(const Board&)));
-    connect(this, SIGNAL(reconfigure()), analysis, SLOT(slotReconfigure()));
-    // Make sure engine is disabled if dock is hidden
-    connect(analysisDock, SIGNAL(visibilityChanged(bool)),
-            analysis, SLOT(slotVisibilityChanged(bool)));
-    m_menuView->addAction(analysisDock->toggleViewAction());
+    analysisDock->setObjectName("AnalysisDock1");   
     analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F2);
-    analysisDock->hide();
-    connect(this, SIGNAL(signalGameLoaded()), analysis, SLOT(slotUciNewGame()));
-    connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setDisabled(bool)));
-
-    m_mainAnalysis = analysis;
+    m_mainAnalysis = new AnalysisWidget;
+    m_mainAnalysis->setObjectName("Analysis");
+    setupAnalysisWidget(analysisDock, m_mainAnalysis);
 
     /* Analysis Dock 2 */
     DockWidgetEx* analysisDock2 = new DockWidgetEx(tr("Analysis 2"), this);
     analysisDock2->setObjectName("AnalysisDock2");
-    analysis = new AnalysisWidget;
-    analysis->setObjectName("Analysis2");
-    analysisDock2->setWidget(analysis);
-    addDockWidget(Qt::RightDockWidgetArea, analysisDock2);
-    connect(analysis, SIGNAL(addVariation(Analysis)),
-            SLOT(slotGameAddVariation(Analysis)));
-    connect(analysis, SIGNAL(addVariation(QString)),
-            SLOT(slotGameAddVariation(QString)));
-    connect(this, SIGNAL(boardChange(const Board&)), analysis, SLOT(setPosition(const Board&)));
-    connect(this, SIGNAL(reconfigure()), analysis, SLOT(slotReconfigure()));
-    // Make sure engine is disabled if dock is hidden
-    connect(analysisDock2, SIGNAL(visibilityChanged(bool)),
-            analysis, SLOT(slotVisibilityChanged(bool)));
-    m_menuView->addAction(analysisDock2->toggleViewAction());
     analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F3);
-    analysisDock2->hide();
-    connect(this, SIGNAL(signalGameLoaded()), analysis, SLOT(slotUciNewGame()));
-    connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setDisabled(bool)));
+    m_secondaryAnalysis = new AnalysisWidget;
+    m_secondaryAnalysis->setObjectName("Analysis2");
+    setupAnalysisWidget(analysisDock2, m_secondaryAnalysis);
 
     /* Randomize */
     srand(time(0));
@@ -421,11 +391,11 @@ MainWindow::MainWindow() : QMainWindow(),
     m_sliderSpeed->setMaximumWidth(400);
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), m_mainAnalysis, SLOT(setMoveTime(int)));
-    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), analysis, SLOT(setMoveTime(int)));
+    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), m_secondaryAnalysis, SLOT(setMoveTime(int)));
     connect(m_mainAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
 
     m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
-    analysis->setMoveTime(m_sliderSpeed->translatedValue());
+    m_secondaryAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
 
     statusBar()->addPermanentWidget(new QLabel(tr("Move Interval:"), this));
     statusBar()->addPermanentWidget(m_sliderSpeed);
@@ -480,6 +450,25 @@ MainWindow::MainWindow() : QMainWindow(),
     StartCheckUpdate();
 }
 
+void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget* analysis)
+{
+    analysisDock->setWidget(analysis);
+    addDockWidget(Qt::RightDockWidgetArea, analysisDock);
+    connect(analysis, SIGNAL(addVariation(Analysis)),
+            SLOT(slotGameAddVariation(Analysis)));
+    connect(analysis, SIGNAL(addVariation(QString)),
+            SLOT(slotGameAddVariation(QString)));
+    connect(this, SIGNAL(boardChange(const Board&)), analysis, SLOT(setPosition(const Board&)));
+    connect(this, SIGNAL(reconfigure()), analysis, SLOT(slotReconfigure()));
+    // Make sure engine is disabled if dock is hidden
+    connect(analysisDock, SIGNAL(visibilityChanged(bool)),
+            analysis, SLOT(slotVisibilityChanged(bool)));
+    m_menuView->addAction(analysisDock->toggleViewAction());
+    analysisDock->hide();
+    connect(this, SIGNAL(signalGameLoaded()), analysis, SLOT(slotUciNewGame()));
+    connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setDisabled(bool)));
+}
+
 MainWindow::~MainWindow()
 {
     m_autoPlayTimer->stop();
@@ -515,7 +504,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                             keyEvent->key() == Qt::Key_Return ||
                             keyEvent->key() == Qt::Key_Enter))
             {
-                if (obj == this || obj == m_boardView || obj == m_gameView || obj == m_mainAnalysis)
+                if (obj == this || obj == m_boardView || obj == m_gameView || obj == m_mainAnalysis || obj == m_secondaryAnalysis)
                 {
                     keyPressEvent(keyEvent);
                     return true;

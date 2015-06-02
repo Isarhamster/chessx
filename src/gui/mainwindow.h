@@ -26,6 +26,7 @@ class ChessBrowser;
 class Database;
 class DatabaseInfo;
 class DatabaseList;
+class DockWidgetEx;
 class DownloadManager;
 class ECOListWidget;
 class EcoThread;
@@ -452,6 +453,7 @@ protected:
     void AutoMoveAtEndOfGame();
     QString ficsPath() const;
     bool ActivateFICSDatabase();
+    void setupAnalysisWidget(DockWidgetEx *analysisDock, AnalysisWidget *analysis);
 signals:
     /** Re-read configuration. */
     void reconfigure();
@@ -590,6 +592,7 @@ private:
     int m_currentFrom;
     int m_currentTo;
     AnalysisWidget* m_mainAnalysis;
+    AnalysisWidget* m_secondaryAnalysis;
     Board m_AutoInsertLastBoard;
     Square m_annotationSquare;
     Square m_annotationSquareFrom;
