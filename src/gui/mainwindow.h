@@ -455,6 +455,7 @@ protected:
     QString ficsPath() const;
     bool ActivateFICSDatabase();
     void setupAnalysisWidget(DockWidgetEx *analysisDock, AnalysisWidget *analysis);
+    void playSound(QString s);
 signals:
     /** Re-read configuration. */
     void reconfigure();
