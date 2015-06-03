@@ -59,9 +59,6 @@
 #include <QMenu>
 #include <QPixmap>
 #include <QProgressBar>
-#ifdef USE_SOUND
-#include <QSound>
-#endif
 #include <QStatusBar>
 
 #ifdef Q_OS_WIN
@@ -604,12 +601,7 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
             m_currentFrom = m.from();
             m_currentTo = m.to();
             moveChanged();
-            if (AppSettings->getValue("/Sound/Move").toBool())
-            {
-#ifdef USE_SOUND
-                QSound::play(":/sounds/move.wav");
-#endif
-            }
+            playSound(":/sounds/move.wav");
         }
         return true;
     }
@@ -625,12 +617,7 @@ void MainWindow::HandleFicsNewGameRequest()
 void MainWindow::HandleFicsSaveGameRequest()
 {
     ActivateFICSDatabase();
-    if (AppSettings->getValue("/Sound/Move").toBool())
-    {
-#ifdef USE_SOUND
-        QSound::play(":/sounds/fanfare.wav");
-#endif
-    }
+    playSound(":/sounds/fanfare.wav");
     SimpleSaveGame();
 }
 
@@ -694,12 +681,7 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
             if (game().board() != b)
             {
                 game().setStartingBoard(b,tr("Set starting board"));
-                if (AppSettings->getValue("/Sound/Move").toBool())
-                {
-#ifdef USE_SOUND
-                    QSound::play(":/sounds/ding1.wav");
-#endif
-                }
+                playSound(":/sounds/ding1.wav");
             }
         }
     }
@@ -787,12 +769,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                         m_currentFrom = m.from();
                         m_currentTo = m.to();
                         moveChanged(); // The move's currents where set after forward(), thus repair effects
-                        if (AppSettings->getValue("/Sound/Move").toBool())
-                        {
-#ifdef USE_SOUND
-                            QSound::play(":/sounds/move.wav");
-#endif
-                        }
+                        playSound(":/sounds/move.wav");
                     }
                     else
                     {
@@ -1652,12 +1629,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         m_currentTo = m.to();
                         game().addMove(m);
                         m_machineHasToMove = false;
-                        if (AppSettings->getValue("/Sound/Move").toBool())
-                        {
-#ifdef USE_SOUND
-                            QSound::play(":/sounds/move.wav");
-#endif
-                        }
+                        playSound(":/sounds/move.wav");
                     }
                 }
             }
@@ -1681,11 +1653,15 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                     m_currentFrom = m.from();
                     m_currentTo = m.to();
                     game().addMove(m);
-                    if (AppSettings->getValue("/Sound/Move").toBool())
+                    if (game().board().isStalemate() || game().board().isCheckmate())
                     {
-#ifdef USE_SOUND
-                        QSound::play(":/sounds/move.wav");
-#endif
+                        playSound(":/sounds/fanfare.wav");
+                        // The game is terminated immediately
+                        m_engineMatch->trigger();
+                    }
+                    else
+                    {
+                        playSound(":/sounds/move.wav");
                     }
                 }
             }

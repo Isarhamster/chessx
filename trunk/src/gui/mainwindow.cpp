@@ -66,6 +66,9 @@
 #include <QNetworkReply>
 #include <QProgressBar>
 #include <QSizePolicy>
+#ifdef USE_SOUND
+#include <QSound>
+#endif
 #include <QSplitter>
 #include <QStatusBar>
 #include <QTabBar>
@@ -1874,4 +1877,14 @@ void MainWindow::setGameMode(bool gameMode)
 {
     m_gameMode = gameMode;
     emit signalGameModeChanged(m_gameMode);
+}
+
+void MainWindow::playSound(QString s)
+{
+#ifdef USE_SOUND
+    if (AppSettings->getValue("/Sound/Move").toBool())
+    {
+        QSound::play(s);
+    }
+#endif
 }
