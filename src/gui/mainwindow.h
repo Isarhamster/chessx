@@ -424,6 +424,7 @@ protected slots:
     void HandleFicsRequestRemoveMove();
     void openFICS();
     void slotGameVarEnter(int index);
+    void slotToggleEngineMatch();
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);
@@ -602,6 +603,7 @@ private:
     QAction* m_autoRespond;
     QAction* m_autoPlay;
     QAction* m_autoAnalysis;
+    QAction* m_engineMatch;
     QUndoGroup m_undoGroup;
     QNetworkAccessManager* m_manager;
     DownloadManager* downloadManager;

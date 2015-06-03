@@ -42,6 +42,9 @@ public:
     /** Is any engine configured. */
     bool isEngineConfigured() const;
 
+    bool onHold() const;
+    void setOnHold(bool onHold);
+
 public slots:
     /** Sets new position. If analysis is active, the current content will be cleared and
     new analysis will be performed. */
@@ -107,6 +110,7 @@ private:
     double m_complexity2;
     Move m_lastBestMove;
     int m_lastDepthAdded;
+    bool m_onHold;
 
 };
 

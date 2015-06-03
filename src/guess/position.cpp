@@ -2439,6 +2439,7 @@ Position::IsKingInMate(void)
 // Position::IsLegal()
 //   Verifies the position as being legal.
 //   Returns false for any of the following:
+//     - if a king is missing;
 //     - if the two kings are adjacent;
 //     - if there are any pawns on the 1st/8th rank;
 //     - if the side to move is already checking the enemy king.
@@ -2447,6 +2448,11 @@ Position::IsLegal(void)
 {
     squareT stmKing = GetKingSquare();
     squareT enemyKing = GetEnemyKingSquare();
+    if (!(stmKing <= H8  && enemyKing <= H8))
+    {
+        printf("Kings mssing\n");
+        return false;
+    }
     if(square_Adjacent(stmKing, enemyKing))
     {
         printf("Kings adjacent\n");
