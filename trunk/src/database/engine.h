@@ -160,6 +160,7 @@ private:
 
 public:
     static void setAllowEngineOutput(bool allow);
+
 protected:
     static bool s_allowEngineOutput;
 };

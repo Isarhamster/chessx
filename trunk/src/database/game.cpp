@@ -72,7 +72,6 @@ Game::~Game()
     {
         delete m_currentBoard;
         m_currentBoard = 0;
-        qDebug() << "force unhook:" << mountRefCount;
     }
 }
 
@@ -82,7 +81,6 @@ void Game::mountBoard()
     if (mountRefCount == 1)
     {
         m_currentBoard = new Board;
-        qDebug() << "hooked";
     }
 }
 
@@ -95,7 +93,6 @@ void Game::unmountBoard()
         {
             delete m_currentBoard;
             m_currentBoard = 0;
-            qDebug() << "unhooked";
         }
     }
 }
@@ -133,7 +130,7 @@ MoveId Game::addMove(const Move& move, const QString& annotation, NagSet nags)
 {
     Game state = *this;
     dbAddMove(move,annotation,nags);
-    indicateAnnotationsOnBoard(m_currentNode);
+    dbIndicateAnnotationsOnBoard(m_currentNode);
     emit signalGameModified(true,state,tr("Add move"));
     return m_currentNode;
 }
@@ -399,6 +396,28 @@ void Game::mergeWithGame(const Game& g)
     Game state = *this;
     dbMergeWithGame(g);
     emit signalGameModified(true,state,tr("Merge game"));
+}
+
+bool Game::positionRepetition(const Board& b)
+{
+    int repCount = 1;
+    while(backward())
+    {
+        if (board() == b)
+        {
+            repCount++;
+            if (repCount >= 3) break;
+        }
+    }
+    return repCount >= 3;
+}
+
+bool Game::positionRepetition3(const Board& b) const
+{
+    Game g;
+    MountBoard m(g);
+    g = *this;
+    return g.positionRepetition(b);
 }
 
 QString Game::eventInfo() const
@@ -960,7 +979,7 @@ bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
     Game state = *this;
     if (dbSetAnnotation(annotation, moveId, position))
     {
-        indicateAnnotationsOnBoard(currentMove());
+        dbIndicateAnnotationsOnBoard(currentMove());
         emit signalGameModified(true, state, tr("Set annotation"));
         return true;
     }
@@ -1076,7 +1095,7 @@ bool Game::appendSquareAnnotation(Square s, QChar colorCode)
         }
     }
     setSquareAnnotation(newAnnot.trimmed());
-    indicateAnnotationsOnBoard(currentMove());
+    dbIndicateAnnotationsOnBoard(currentMove());
     emit signalGameModified(true, state, tr("Colorize square"));
     return true;
 }
@@ -1124,7 +1143,7 @@ bool Game::appendArrowAnnotation(Square dest, Square src, QChar colorCode)
         }
     }
     setArrowAnnotation(newAnnot);
-    indicateAnnotationsOnBoard(currentMove());
+    dbIndicateAnnotationsOnBoard(currentMove());
     emit signalGameModified(true, state, tr("Paint arrow"));
     return true;
 }
@@ -1580,14 +1599,18 @@ bool Game::variationHasSiblings(MoveId variation) const
     return (variationCount(parent) > 1);
 }
 
-void Game::indicateAnnotationsOnBoard(MoveId moveId)
+void Game::dbIndicateAnnotationsOnBoard(MoveId moveId)
 {
     QString annotation = squareAnnotation(moveId);
     m_currentBoard->setSquareAnnotation(annotation);
 
     annotation = arrowAnnotation(moveId);
     m_currentBoard->setArrowAnnotation(annotation);
+}
 
+void Game::indicateAnnotationsOnBoard(MoveId moveId)
+{
+    dbIndicateAnnotationsOnBoard(moveId);
     emit signalMoveChanged();
 }
 

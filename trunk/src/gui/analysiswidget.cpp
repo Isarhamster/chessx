@@ -23,7 +23,8 @@
 AnalysisWidget::AnalysisWidget()
     : m_engine(0),
       m_moveTime(0),
-      m_bUciNewGame(true)
+      m_bUciNewGame(true),
+      m_onHold(false)
 {
     ui.setupUi(this);
     connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
@@ -48,6 +49,7 @@ void AnalysisWidget::startEngine()
 {
     int index = ui.engineList->currentIndex();
     stopEngine();
+    m_onHold = false;
     if(index != -1)
     {
         if(parentWidget() && !parentWidget()->isVisible())
@@ -248,7 +250,7 @@ void AnalysisWidget::setPosition(const Board& board)
         }
         m_lastDepthAdded = 0;
         updateAnalysis();
-        if(m_engine && m_engine->isActive())
+        if(m_engine && m_engine->isActive() && !onHold())
         {
             m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, m_bUciNewGame);
             m_bUciNewGame = false;
@@ -452,4 +454,18 @@ void AnalysisWidget::unPin()
 void AnalysisWidget::slotUciNewGame()
 {
     m_bUciNewGame = true;
+}
+
+bool AnalysisWidget::onHold() const
+{
+    return m_onHold;
+}
+
+void AnalysisWidget::setOnHold(bool onHold)
+{
+    m_onHold = onHold;
+    if (!onHold && (!m_engine || !m_engine->isActive()))
+    {
+        startEngine();
+    }
 }

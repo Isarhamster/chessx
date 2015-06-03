@@ -1564,6 +1564,38 @@ void MainWindow::slotToggleAutoAnalysis()
     }
 }
 
+void MainWindow::slotToggleEngineMatch()
+{
+    if(m_engineMatch->isChecked())
+    {
+        if(!m_mainAnalysis->isEngineConfigured())
+        {
+            MessageDialog::information(tr("Analysis Pane 1 is not running an engine for automatic analysis."), tr("Engine Match"));
+        }
+        else if(!m_secondaryAnalysis->isEngineConfigured())
+        {
+            MessageDialog::information(tr("Analysis Pane 2 is not running an engine for automatic analysis."), tr("Engine Match"));
+        }
+        else
+        {
+            m_mainAnalysis->unPin();
+            m_mainAnalysis->setPosition(game().board());
+            m_secondaryAnalysis->unPin();
+            m_secondaryAnalysis->setOnHold(true);
+            m_secondaryAnalysis->setPosition(game().board());
+            m_mainAnalysis->startEngine();
+        }
+    }
+    else
+    {
+        if (!autoGroup->checkedAction())
+        {
+            m_mainAnalysis->stopEngine();
+            m_secondaryAnalysis->stopEngine();
+        }
+    }
+}
+
 void MainWindow::slotToggleAutoPlayer()
 {
     QAction* autoPlayAction = (QAction*) sender();
@@ -1587,9 +1619,9 @@ void MainWindow::slotToggleAutoPlayer()
 
 void MainWindow::slotEngineTimeout(const Analysis& analysis)
 {
-    if (m_boardView->dragged() == Empty)
+    if (m_boardView->dragged() == Empty) // Do not interfer with moving a piece
     {
-        if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != m_boardView->board()))
+        if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != game().board()))
         {
             m_AutoInsertLastBoard = game().board();
 
@@ -1629,6 +1661,44 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                     }
                 }
             }
+        }
+        else if (game().atLineEnd() && m_engineMatch->isChecked() && (m_AutoInsertLastBoard != game().board()))
+        {
+            m_AutoInsertLastBoard = game().board();
+            if (game().positionRepetition3(game().board()) || game().board().halfMoveClock() > 101)
+            {
+                // Game is drawn by repetition or 50 move rule
+                m_engineMatch->trigger();
+            }
+            else if(!analysis.variation().isEmpty() && analysis.bestMove())
+            {
+                Move m = analysis.variation().first();
+                if (m.isLegal())
+                {
+                    m_mainAnalysis->setOnHold(sender()==m_mainAnalysis);
+                    m_secondaryAnalysis->setOnHold(sender()==m_secondaryAnalysis);
+
+                    m_currentFrom = m.from();
+                    m_currentTo = m.to();
+                    game().addMove(m);
+                    if (AppSettings->getValue("/Sound/Move").toBool())
+                    {
+#ifdef USE_SOUND
+                        QSound::play(":/sounds/move.wav");
+#endif
+                    }
+                }
+            }
+            else
+            {
+                // Engines did not send something useful - could be drawn or something else
+                m_engineMatch->trigger();
+            }
+        }
+        else if (m_engineMatch->isChecked())
+        {
+            // Engines did not make progress or user intervention
+            m_engineMatch->trigger();
         }
     }
 }

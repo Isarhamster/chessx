@@ -368,7 +368,8 @@ public :
 
     MoveId lastMove() const;
 
- protected:
+    bool positionRepetition3(const Board &board) const;
+protected:
     /** Find the point in the this game where @p otherGame fits in the next time.
         @retval Node from where the merging shall start in other game */
     MoveId findMergePoint(const Game &otherGame);
@@ -377,6 +378,8 @@ public :
     /** Find the next illegal position in all variations and mainline moves after the current position, and cut the game from there */
     void truncateVariationAfterNextIllegalPosition();
 
+    void dbIndicateAnnotationsOnBoard(MoveId moveId);
+    bool positionRepetition(const Board &board);
 signals:
     void signalGameModified(bool,Game,QString);
     void signalMoveChanged();

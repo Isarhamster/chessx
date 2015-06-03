@@ -90,7 +90,7 @@ void OpeningTreeThread::run()
     else
     {
         Game g;
-        g.mountBoard();
+        MountBoard m(g);
         for(int i = 0; i < n; ++i)
         {
             if (m_sourceIsDatabase || m_filter->contains(i))
