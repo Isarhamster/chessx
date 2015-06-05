@@ -41,7 +41,7 @@ Board::Board(QString fen)
 void Board::clear()
 {
     BitBoard::clear();
-    createHash();
+    m_hashValue = 0;
     m_squareAnnotation = "";
 }
 
