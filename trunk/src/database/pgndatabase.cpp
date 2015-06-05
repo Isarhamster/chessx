@@ -369,7 +369,6 @@ void PgnDatabase::loadGameMoves(GameId gameId, Game& game)
     seekGame(gameId);
     skipTags();
     QString fen = m_index.tagValue(TagNameFEN, gameId); // was m_count -1
-    MountBoard mb(game);
     if(fen != "?")
     {
         game.dbSetStartingBoard(fen);
@@ -390,7 +389,6 @@ bool PgnDatabase::loadGame(GameId gameId, Game& game)
     seekGame(gameId);
     skipTags();
     QString fen = m_index.tagValue(TagNameFEN, gameId);  // was m_count - 1
-    MountBoard mb(game);
     if(fen != "?")
     {
         game.dbSetStartingBoard(fen);
@@ -743,7 +741,7 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
         }
         break;
     case '*':
-        game->setResult(ResultUnknown);
+        game->dbSetResult(ResultUnknown);
         m_gameOver = true;
         break;
         // From here, cases may fall through into default!!

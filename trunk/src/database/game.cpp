@@ -29,6 +29,7 @@ Game::Game() : QObject()
 {
     mountRefCount = 0;
     m_currentBoard = 0;
+    mountBoard();
     clearTags();
     clear();
 }
@@ -37,6 +38,7 @@ Game::Game(const Game& game) : QObject()
 {
     mountRefCount = 0;
     m_currentBoard = 0;
+    mountBoard();
     *this = game;
 }
 
@@ -47,8 +49,8 @@ Game& Game::operator=(const Game & game)
         clearTags();
         clear();
         //assign non pointer variables
-        m_tags = game.m_tags;
         m_startingBoard = game.m_startingBoard;
+        m_tags = game.m_tags;
         m_variationStartAnnotations = game.m_variationStartAnnotations;
         m_annotations = game.m_annotations;
         m_startPly = game.m_startPly;
@@ -60,7 +62,16 @@ Game& Game::operator=(const Game & game)
         }
         else if (m_currentBoard)
         {
-            *m_currentBoard = m_startingBoard;
+            if (m_currentNode != NO_MOVE)
+            {
+                int n = m_currentNode;
+                m_currentNode = NO_MOVE;
+                moveToId(n);
+            }
+            else
+            {
+                moveToStart();
+            }
         }
     }
     return *this;
@@ -352,8 +363,6 @@ void Game::dbMergeWithGame(const Game& g)
 {
     MoveId saveNode = m_currentNode;
     Game otherGame = g;
-    otherGame.mountBoard();
-
     otherGame.moveToEnd();
 
     // Set the game information on the last move so that it is merged into this game
@@ -414,9 +423,7 @@ bool Game::positionRepetition(const Board& b)
 
 bool Game::positionRepetition3(const Board& b) const
 {
-    Game g;
-    MountBoard m(g);
-    g = *this;
+    Game g = *this;
     return g.positionRepetition(b);
 }
 
@@ -478,7 +485,7 @@ bool Game::currentNodeHasMove(Square from, Square  to) const
     MoveId node = m_moveNodes[m_currentNode].nextNode;
     if(node == NO_MOVE)
     {
-        return true;
+        return false;
     }
     Move m = m_moveNodes[node].move;
     return (m.from() == from && m.to() == to);
@@ -740,7 +747,7 @@ void Game::truncateVariationAfterNextIllegalPosition()
     }
     QString san = moveToSan();
     Game g = *this;
-    g.mountBoard();
+
     if(NO_MOVE == g.dbAddMove(san))
     {
         MoveId node = m_moveNodes[m_currentNode].nextNode;
@@ -1776,12 +1783,16 @@ void Game::clear()
     m_annotations.clear();
 
     m_startPly = 0;
-    m_currentNode = 0;
 
     m_startingBoard.setStandardPosition();
     if (m_currentBoard)
     {
+        m_currentNode = 0;
         *m_currentBoard = m_startingBoard;
+    }
+    else
+    {
+        m_currentNode = NO_MOVE;
     }
 
     m_moveNodes.append(MoveNode());
@@ -1833,7 +1844,10 @@ void Game::dbSetStartingBoard(const QString& fen)
         m_tags[TagNameFEN] = fen;
         m_tags[TagNameSetUp] = "1";
     }
-    *m_currentBoard = m_startingBoard;
+    if (m_currentBoard)
+    {
+        *m_currentBoard = m_startingBoard;
+    }
     m_startPly = (m_startingBoard.moveNumber() - 1) * 2 + (m_startingBoard.toMove() == Black);
 }
 
@@ -2066,7 +2080,6 @@ QString Game::ecoClassify() const
 {
     //move to end of main line
     Game g = *this;
-    g.mountBoard();
     g.moveToEnd();
 
     //search backwards for the first eco position
@@ -2091,7 +2104,6 @@ bool Game::isEcoPosition() const
 void Game::scoreMaterial(QList<double>& scores) const
 {
     Game g = *this;
-    g.mountBoard();
     g.moveToStart();
     scores.clear();
     int score = g.board().ScoreMaterial();

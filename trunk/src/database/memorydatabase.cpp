@@ -72,6 +72,7 @@ bool MemoryDatabase::appendGame(const Game& game)
     *newGame = game;
     newGame->clearTags();
     m_games.append(newGame);
+    m_games.last()->unmountBoard();
     ++m_count;
     setModified(true);
     return true;
@@ -108,6 +109,7 @@ bool MemoryDatabase::replace(GameId gameId, Game& game)
     // Upate game array
     *m_games[gameId] = game;
     m_games[gameId]->clearTags();
+    m_games[gameId]->unmountBoard();
     setModified(true);
     return true;
 }
@@ -137,7 +139,6 @@ bool MemoryDatabase::loadGame(GameId gameId, Game& game)
 void MemoryDatabase::parseGame()
 {
     Game* game = new Game;
-    MountBoard mb(game);
 
     QString fen = m_index.tagValue(TagNameFEN, m_count - 1);
     if(fen != "?")
@@ -167,6 +168,7 @@ void MemoryDatabase::parseGame()
     }
 
     m_games.append(game);
+    m_games.last()->unmountBoard();
 }
 
 bool MemoryDatabase::parseFile()
