@@ -1456,6 +1456,8 @@ void MainWindow::slotGameViewSource()
 void MainWindow::slotGameDumpMoveNodes()
 {
     game().dumpAllMoveNodes();
+    qDebug() << m_boardView->board().toFen();
+    qDebug() << game().board().toFen();
 }
 
 void MainWindow::slotGameAddVariation(const Analysis& analysis)
@@ -1514,6 +1516,7 @@ void MainWindow::slotToggleAutoAnalysis()
 {
     if(m_autoAnalysis->isChecked())
     {
+        m_AutoInsertLastBoard.clear();
         if(!m_mainAnalysis->isEngineConfigured())
         {
             MessageDialog::information(tr("Analysis Pane 1 is not running an engine for automatic analysis."), tr("Auto Analysis"));
@@ -1545,6 +1548,7 @@ void MainWindow::slotToggleEngineMatch()
 {
     if(m_engineMatch->isChecked())
     {
+        m_AutoInsertLastBoard.clear();
         if(!m_mainAnalysis->isEngineConfigured())
         {
             MessageDialog::information(tr("Analysis Pane 1 is not running an engine for automatic analysis."), tr("Engine Match"));
@@ -1556,11 +1560,16 @@ void MainWindow::slotToggleEngineMatch()
         else
         {
             m_mainAnalysis->unPin();
+            m_mainAnalysis->setOnHold(true);
             m_mainAnalysis->setPosition(game().board());
             m_secondaryAnalysis->unPin();
             m_secondaryAnalysis->setOnHold(true);
             m_secondaryAnalysis->setPosition(game().board());
-            m_mainAnalysis->startEngine();
+
+            if (game().board().toMove() == White)
+                m_mainAnalysis->startEngine();
+            else
+                m_secondaryAnalysis->startEngine();
         }
     }
     else
