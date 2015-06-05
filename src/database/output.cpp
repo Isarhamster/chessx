@@ -26,7 +26,6 @@ QMap<Output::OutputType, QString> Output::m_outputMap;
 
 Output::Output(OutputType output, const QString& pathToTemplateFile)
 {
-    m_game.mountBoard();
     m_outputType = output;
     switch(m_outputType)
     {
@@ -52,7 +51,6 @@ Output::Output(OutputType output, const QString& pathToTemplateFile)
 
 Output::~Output()
 {
-    m_game.unmountBoard();
 }
 
 void Output::initialize()
@@ -303,9 +301,7 @@ QString Output::writeDiagram(int n) const
     {
         QImage image;
 
-        Game g;
-        MountBoard mb(g);
-        g = m_game;
+        Game g = m_game;
         g.forward(1);
 
         BoardView::renderImageForBoard(g.board(), image, QSize(n,n));
@@ -498,21 +494,26 @@ QString Output::writeMove(MoveToWrite moveToWrite)
 QString Output::writeMainLine(MoveId upToNode)
 {
     QString text;
-    while(!m_game.atLineEnd())
+    do
     {
-        // Training mode: abort main line with current node
-        if(m_game.currentMove() == upToNode)
+        bool hasNext = false;
+        if (!m_game.atLineEnd())
         {
-            if(m_options.getOptionAsBool("ColumnStyle"))
+            // Training mode: abort main line with current node
+            if(m_game.currentMove() == upToNode)
             {
-                text += m_endTagMap[MarkupColumnStyleMainline];
+                if(m_options.getOptionAsBool("ColumnStyle"))
+                {
+                    text += m_endTagMap[MarkupColumnStyleMainline];
+                }
+                text += "***";
+                break;
             }
-            text += "***";
-            break;
+            // *** Write moves in the main line
+            text += writeMove();
+            hasNext = m_game.hasNextMove();
         }
-        // *** Write moves in the main line
-        text += writeMove();
-        bool hasNext = m_game.hasNextMove();
+
         if(m_game.variationCount())
         {
             QList<MoveId> variations = m_game.variations();
@@ -537,7 +538,7 @@ QString Output::writeMainLine(MoveId upToNode)
             m_game.dbMoveToId(m_game.parentMove());
         }
         m_game.forward();
-    }
+    } while(!m_game.atLineEnd());
 
     return text;
 }
@@ -857,7 +858,6 @@ void Output::output(QTextStream& out, Filter& filter)
 {
     int percentDone = 0;
     Game game;
-    MountBoard mb(game);
     QString header = m_header;
     postProcessOutput(header);
     out << header;
@@ -903,7 +903,6 @@ void Output::output(QTextStream& out, Database& database)
 
     int percentDone = 0;
     Game game;
-    MountBoard mb(game);
     for(int i = 0; i < (int)database.count(); ++i)
     {
         if(database.loadGame(i, game))

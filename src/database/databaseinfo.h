@@ -83,9 +83,6 @@ public:
 
     void replaceGame(const Game& game);
 
-    void mountBoard();
-    void unmountBoard();
-
     void updateMaterial();
 
     /** Resizes the filter to the number of games in the database and puts
@@ -149,7 +146,7 @@ private:
 class GameUndoCommand : public QUndoCommand
 {
 public:
-    GameUndoCommand(QObject* parent, const Game& from, Game& to, QString action) :
+    GameUndoCommand(QObject* parent, const Game& from, const Game& to, QString action) :
         QUndoCommand(action),
         m_dbInfo((DatabaseInfo*)parent),
         m_fromGame(from),

@@ -769,7 +769,6 @@ void PolyglotDatabase::add_database(Database& db)
     for(int i = 0; i < (int)db.count(); ++i)
     {
         Game game;
-        MountBoard mb(game);
         if(db.loadGame(i, game))
         {
             add_game(game, game.resultAsInt());
