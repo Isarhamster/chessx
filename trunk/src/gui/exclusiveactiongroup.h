@@ -20,6 +20,8 @@ public:
 
     const QAction * checkedAction() const;
 
+    void untrigger();
+
 signals:
 
 protected slots:

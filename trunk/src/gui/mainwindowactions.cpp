@@ -194,6 +194,8 @@ void MainWindow::slotFileClose()
         {
             if(QuerySaveDatabase())
             {
+                autoGroup->untrigger();
+
                 bool ficsDB = (qobject_cast<FicsDatabase*>(database()));
                 if (ficsDB)
                 {
@@ -1810,6 +1812,7 @@ void MainWindow::slotDatabaseChange()
         int n = action->data().toInt();
         if (m_currentDatabase != n && !m_databases[n]->IsBook())
         {
+            autoGroup->untrigger();
             m_currentDatabase = action->data().toInt();
             activateBoardViewForDbIndex(m_databases[m_currentDatabase]);
             m_databaseList->setFileCurrent(databaseInfo()->filePath());
@@ -2046,8 +2049,14 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
 
 void MainWindow::slotDatabaseClearClipboard()
 {
+    if (!m_currentDatabase)
+    {
+        autoGroup->untrigger();
+    }
+
     ((MemoryDatabase*)(m_databases[0]->database()))->clear();
     m_databases[0]->filter()->resize(0, false);
+    m_databases[0]->newGame();
 
     if (!m_currentDatabase)
     {

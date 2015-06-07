@@ -48,3 +48,15 @@ const QAction* ExclusiveActionGroup::checkedAction() const
     }
     return 0;
 }
+
+void ExclusiveActionGroup::untrigger()
+{
+    foreach(QAction* a, actions)
+    {
+        if (a->isChecked())
+        {
+            a->trigger();
+            break;
+        }
+    }
+}
