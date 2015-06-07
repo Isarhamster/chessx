@@ -951,6 +951,7 @@ bool MainWindow::ActivateDatabase(QString fname)
             {
                 if (!m_databases[i]->IsBook())
                 {
+                    autoGroup->untrigger();
                     if (i != m_currentDatabase)
                     {
                         m_currentDatabase = i;
@@ -1051,6 +1052,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
         {
             if (!m_databases[i]->IsBook())
             {
+                autoGroup->untrigger();
                 m_currentDatabase = i;
                 CreateBoardView();
             }

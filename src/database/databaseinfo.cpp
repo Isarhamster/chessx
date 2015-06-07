@@ -249,7 +249,7 @@ bool DatabaseInfo::saveGame()
         if(!eco.isEmpty())
         {
             m_game.setTag(TagNameECO, eco);
-            if(m_index >= 0)
+            if (m_index >= 0)
             {
                 database()->index()->setTag(TagNameECO, eco, m_index);
             }
@@ -262,7 +262,7 @@ bool DatabaseInfo::saveGame()
         if (!m_game.hasTag(tag))
         {
             m_game.setTag(tag,QString());
-            if(m_index >= 0)
+            if (m_index >= 0)
             {
                 database()->index()->setTag(tag, QString(), m_index);
             }
