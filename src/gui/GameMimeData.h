@@ -20,9 +20,6 @@ public:
 class DbMimeData : public QMimeData
 {
     Q_OBJECT
-
-public:
-    QString m_path;
 };
 
 #endif // GAMEMIMEDATA_H

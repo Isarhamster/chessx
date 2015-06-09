@@ -15,14 +15,17 @@
  ***************************************************************************/
 
 #include "database.h"
+#include "filter.h"
 #include "filtermodel.h"
-#include "game.h"
 #include "gamelist.h"
 #include "GameMimeData.h"
 #include "quicksearch.h"
 #include "search.h"
 #include "settings.h"
 #include "tags.h"
+
+#include "game.h"
+#include "output.h"
 
 #include <QDrag>
 #include <QHeaderView>
@@ -466,8 +469,32 @@ void GameList::startDrag(Qt::DropActions /*supportedActions*/)
     foreach(QModelIndex index, selectionModel()->selectedRows())
     {
         QModelIndex m = GetSourceIndex(index);
-        mimeData->m_indexList.append(m_model->filter()->indexToGame(m.row()));
+        int row = m.row();
+        int gameIndex = m_model->filter()->indexToGame(row);
+        mimeData->m_indexList.append(gameIndex);
     }
+
+    if (mimeData->m_indexList.count() < 100) // Avoid excessive size of clipboard
+    {
+        QString text;
+
+        foreach(int gameIndex, mimeData->m_indexList)
+        {
+            Game g;
+            if(m_model->filter()->database()->loadGame(gameIndex, g))
+            {
+                Output textWriter(Output::Pgn);
+                QString pgn = textWriter.output(&g);
+                if (!text.isEmpty())
+                {
+                    text.append("\n");
+                }
+                text.append(pgn);
+            }
+        }
+        mimeData->setText(text);
+    }
+
     QPixmap pixmap = style()->standardPixmap(QStyle::SP_FileIcon);
 
     QDrag* pDrag = new QDrag(this);
