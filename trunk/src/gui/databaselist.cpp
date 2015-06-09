@@ -293,9 +293,10 @@ void DatabaseList::dropEvent(QDropEvent *event)
         QModelIndex index = indexAt(event->pos());
         appendGameToDataBase(index, gameMimeData->m_indexList);
     }
-    else if(dbMimeData)
+    else if(dbMimeData && mimeData->hasUrls())
     {
-        appendDataBaseToDataBase(event->pos(), dbMimeData->m_path);
+        QString s = mimeData->urls().first().toString();
+        appendDataBaseToDataBase(event->pos(), s);
     }
     else if(mimeData->hasUrls())
     {
@@ -342,7 +343,11 @@ void DatabaseList::appendDataBaseToDataBase(QPoint pos, QString src)
 void DatabaseList::startToDrag(const QModelIndex& index)
 {
     DbMimeData *mimeData = new DbMimeData;
-    mimeData->m_path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+
+    QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+    QList<QUrl> urlList;
+    urlList << QUrl(s);
+    mimeData->setUrls(urlList);
 
     QPixmap pixmap = style()->standardPixmap(QStyle::SP_FileIcon);
 
