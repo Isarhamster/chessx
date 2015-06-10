@@ -342,7 +342,9 @@ bool DatabaseInfo::IsPGN() const
 
 bool DatabaseInfo::IsFicsDB() const
 {
-    return (m_filename == ficsPath());
+    QFileInfo fi(m_filename);
+    QFileInfo fi2(ficsPath());
+    return (fi.absoluteFilePath() == fi2.absoluteFilePath());
 }
 
 bool DatabaseInfo::IsPolyglotBook() const
