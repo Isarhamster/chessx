@@ -104,6 +104,10 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
                 ++m_state;
                 OnSessionStarted(guestName);
             }
+            else if (data.contains("Invalid"))
+            {
+                exitSession();
+            }
             break;
         }
         default:
