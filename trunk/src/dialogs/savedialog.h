@@ -19,7 +19,6 @@
 #define __SAVEDIALOG_H__
 
 #include "ui_savedialog.h"
-#include "common.h"
 
 class Database;
 class Game;

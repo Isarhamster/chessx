@@ -3,7 +3,6 @@
 ****************************************************************************/
 
 #include "boardview.h"
-#include "common.h"
 #include "promotiondialog.h"
 #include "ui_promotiondialog.h"
 
