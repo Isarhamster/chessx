@@ -10,6 +10,7 @@
 
 
 #include <iostream>
+#include <QDir>
 #include <QStringList>
 #include <QTextStream>
 #include "databaseconversion.h"
