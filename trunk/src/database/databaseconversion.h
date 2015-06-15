@@ -17,7 +17,6 @@ into ChessX format.
 #define __DATABASECONVERSION_H__
 
 #include "playerdatabase.h"
-#include <QDir>
 
 class DatabaseConversion
 {
