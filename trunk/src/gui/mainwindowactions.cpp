@@ -1506,6 +1506,11 @@ void MainWindow::slotGameRemoveVariations()
 
 void MainWindow::slotToggleTraining()
 {
+    if (AppSettings->getValue("/Board/noHints").toBool())
+    {
+        QAction* match = qobject_cast<QAction*>(sender());
+        enterGameMode(match->isChecked());
+    }
     UpdateGameText();
 }
 

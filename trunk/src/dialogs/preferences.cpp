@@ -450,6 +450,7 @@ void PreferencesDialog::restoreSettings()
     ui.cbBackwardAnalysis->setChecked(AppSettings->getValue("BackwardAnalysis").toBool());
     ui.cbPromoteToQueen->setChecked(AppSettings->getValue("AutoPromoteToQueen").toBool());
     ui.btShowThreat->setChecked(AppSettings->getValue("showThreat").toBool());
+    ui.btNoHints->setChecked(AppSettings->getValue("noHints").toBool());
 
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     ui.pieceEffect->setCurrentIndex(AppSettings->getValue("pieceEffect").toInt());
@@ -574,6 +575,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("showMoveIndicator", QVariant(ui.cbShowIndicator->currentIndex()));
     AppSettings->setValue("guessMove", QVariant(ui.guessMoveCheck->isChecked()));
     AppSettings->setValue("showThreat", QVariant(ui.btShowThreat->isChecked()));
+    AppSettings->setValue("noHints", QVariant(ui.btNoHints->isChecked()));
     AppSettings->setValue("nextGuess", QVariant(ui.guessNextMove->isChecked()));
     AppSettings->setValue("minWheelCount", ui.minWheelCount->value());
     AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());

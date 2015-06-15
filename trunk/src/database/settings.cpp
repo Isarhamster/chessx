@@ -329,6 +329,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/showMoveIndicator", 0);
     map.insert("/Board/guessMove", true);
     map.insert("/Board/showThreat", true);
+    map.insert("/Board/noHints", false);
     map.insert("/Board/nextGuess", false);
     map.insert("/Board/minWheelCount", MIN_WHEEL_COUNT);
     map.insert("/Board/pieceTheme", "merida");
