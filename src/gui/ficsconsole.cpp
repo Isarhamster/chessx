@@ -172,7 +172,7 @@ void FicsConsole::HandleBoard(int cmd, QString s)
     m_bWhiteToMove = (l[C64_COLOR_TO_MOVE]=="W");
 
     bool handleBoard = true;
-    if (gameMode)
+    if (gameMode && !puzzleMode)
     {
         Char64Relation relation = (Char64Relation) l[C64_GAME_RELATION].toInt();
         if (m_lastRelation == relation)
@@ -214,7 +214,7 @@ void FicsConsole::HandleExamineRequest(QListWidgetItem* item)
 {
     if (!m_ficsClient) return;
 
-    m_ficsClient->sendCommand("unexamine");
+    SlotSendUnexamine();
     m_ficsClient->sendCommand("unobserve");
     QString s = item->text();
 
@@ -234,8 +234,7 @@ void FicsConsole::HandleExamineRequest(QListWidgetItem* item)
 void FicsConsole::HandleRelayRequest(QListWidgetItem* item)
 {
     if (!m_ficsClient) return;
-
-    m_ficsClient->sendCommand("unexamine");
+    SlotSendUnexamine();
     m_ficsClient->sendCommand("unobserve");
     QString s = item->text();
     int n = s.section(' ',0,0).toInt();
@@ -250,8 +249,7 @@ void FicsConsole::HandleRelayRequest(QListWidgetItem* item)
 void FicsConsole::HandleTacticsRequest(QListWidgetItem* item)
 {
     if (!m_ficsClient) return;
-
-    m_ficsClient->sendCommand("unexamine");
+    SlotSendUnexamine();
     m_ficsClient->sendCommand("unobserve");
 
     QString cmd = item->data(Qt::UserRole).toString();
@@ -261,6 +259,10 @@ void FicsConsole::HandleTacticsRequest(QListWidgetItem* item)
     ui->listPuzzlebotMessages->addItem("Requesting puzzle...");
     puzzleMode = true;
     emit RequestNewGame();
+    if (AppSettings->getValue("/Board/noHints").toBool())
+    {
+        emit RequestGameMode(true);
+    }
     m_ficsClient->sendCommand(request);
 }
 
@@ -291,7 +293,7 @@ void FicsConsole::HandleSeekRequest(QListWidgetItem* item)
     if (play.indexIn(s) >= 0)
     {
         QString seek = play.cap(1);
-        m_ficsClient->sendCommand("unexamine");
+        SlotSendUnexamine();
         m_ficsClient->sendCommand("unobserve");
         m_ficsClient->sendCommand(seek);
     }
@@ -396,6 +398,10 @@ void FicsConsole::SlotSendHint()
 
 void FicsConsole::SlotSendUnexamine()
 {
+    if (gameMode)
+    {
+        emit RequestGameMode(false);
+    }
     m_ficsClient->sendCommand("unexamine");
 }
 
@@ -470,8 +476,7 @@ void FicsConsole::SlotGameModeChanged(bool newMode)
 void FicsConsole::HandleObserveRequest(QListWidgetItem* item)
 {
     if (!m_ficsClient) return;
-
-    m_ficsClient->sendCommand("unexamine");
+    SlotSendUnexamine();
     m_ficsClient->sendCommand("unobserve");
     QString s = item->text();
     int n = s.section(' ',0,0).toInt(); // The observer id is right at the start of the string
@@ -832,6 +837,10 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 if (s.contains("solved"))
                 {
                     emit RequestSaveGame();
+                    if (gameMode)
+                    {
+                        emit RequestGameMode(false);
+                    }
                     puzzleMode = false;
                     SlotSendUnexamine();
                 }
