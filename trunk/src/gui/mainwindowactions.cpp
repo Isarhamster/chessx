@@ -1636,7 +1636,13 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
         {
             if (m_machineHasToMove)
             {
-                if(!analysis.variation().isEmpty() && analysis.bestMove())
+                if (game().positionRepetition3(game().board()) || game().board().halfMoveClock() > 101)
+                {
+                    playSound(":/sounds/fanfare.wav");
+                    // Game is drawn by repetition or 50 move rule
+                    m_autoRespond->trigger();
+                }
+                else if(!analysis.variation().isEmpty() && analysis.bestMove())
                 {
                     Move m = analysis.variation().first();
                     if (m.isLegal())
@@ -1655,6 +1661,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             m_AutoInsertLastBoard = game().board();
             if (game().positionRepetition3(game().board()) || game().board().halfMoveClock() > 101)
             {
+                playSound(":/sounds/fanfare.wav");
                 // Game is drawn by repetition or 50 move rule
                 m_engineMatch->trigger();
             }
@@ -1683,12 +1690,14 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             }
             else
             {
+                playSound(":/sounds/fanfare.wav");
                 // Engines did not send something useful - could be drawn or something else
                 m_engineMatch->trigger();
             }
         }
         else if (m_engineMatch->isChecked())
         {
+            playSound(":/sounds/fanfare.wav");
             // Engines did not make progress or user intervention
             m_engineMatch->trigger();
         }
