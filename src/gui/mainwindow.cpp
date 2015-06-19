@@ -146,7 +146,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_tabWidget = new QTabWidget(this);
     m_tabWidget->setObjectName("BoardView");
     m_tabWidget->setTabsClosable(true);
-    m_tabWidget->setElideMode(Qt::ElideMiddle);
+    m_tabWidget->setElideMode(Qt::ElideNone);
+    m_tabWidget->setUsesScrollButtons(true);
     connect(m_tabWidget, SIGNAL(tabCloseRequested(int)), SLOT(slotCloseBoardView(int)));
     connect(m_tabWidget, SIGNAL(tabBarClicked(int)), SLOT(slotActivateBoardView(int)));
     /* Board layout */
