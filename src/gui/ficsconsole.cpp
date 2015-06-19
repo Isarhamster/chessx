@@ -834,7 +834,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     ui->listPuzzlebotMessages->scrollToBottom();
                     ui->tabWidget->setCurrentIndex(TabPuzzle);
                 }
-                if (s.contains("solved"))
+                if (s.contains("solved") && !s.contains("almost"))
                 {
                     emit RequestSaveGame();
                     if (gameMode)
