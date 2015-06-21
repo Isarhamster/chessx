@@ -69,7 +69,7 @@ void AnalysisWidget::startEngine()
         connect(m_engine, SIGNAL(error(QProcess::ProcessError)), SLOT(engineError(QProcess::ProcessError)));
         connect(m_engine, SIGNAL(deactivated()), SLOT(engineDeactivated()));
         connect(m_engine, SIGNAL(analysisUpdated(const Analysis&)),
-                SLOT(showAnalysis(const Analysis&)));
+                SLOT(showAnalysis(Analysis)));
         m_engine->setMoveTime(m_moveTime);
         m_engine->activate();
         QString key = QString("/") + objectName() + "/Engine";
@@ -172,7 +172,7 @@ void AnalysisWidget::slotReconfigure()
     enginesList.restore();
     QStringList names = enginesList.names();
     ui.engineList->clear();
-    ui.engineList->insertItems(0,	names);
+    ui.engineList->insertItems(0, names);
     int index = names.indexOf(oldEngineName);
     if(index != -1)
     {
@@ -191,8 +191,9 @@ void AnalysisWidget::slotReconfigure()
     ui.variationText->setFont(f);
 }
 
-void AnalysisWidget::showAnalysis(const Analysis& analysis)
+void AnalysisWidget::showAnalysis(Analysis analysis)
 {
+    int elapsed = m_lastEngineStart.elapsed();
     int mpv = analysis.mpv() - 1;
     bool bestMove = analysis.bestMove();
     if (bestMove)
@@ -219,6 +220,7 @@ void AnalysisWidget::showAnalysis(const Analysis& analysis)
     updateAnalysis();
     if (bestMove)
     {
+        analysis.setElapsedTimeMS(elapsed);
         emit receivedBestMove(analysis);
     }
 }
@@ -244,6 +246,7 @@ void AnalysisWidget::setPosition(const Board& board)
             {
                 if(objectName() == "Analysis")
                 {
+                    m_tbBoard = m_board;
                     m_tablebase->getBestMove(m_board.toFen());
                 }
             }
@@ -253,6 +256,7 @@ void AnalysisWidget::setPosition(const Board& board)
         if(m_engine && m_engine->isActive() && !onHold())
         {
             m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, m_bUciNewGame);
+            m_lastEngineStart.start();
             m_bUciNewGame = false;
         }
     }
@@ -322,28 +326,31 @@ bool AnalysisWidget::isAnalysisEnabled() const
 
 void AnalysisWidget::showTablebaseMove(Move move, int score)
 {
-    QString result;
-    if(score == 0)
+    if (m_tbBoard == m_board)
     {
-        result = tr("Draw");
-    }
-    else if((score < 0) == (m_board.toMove() == Black))
-    {
-        result = tr("White wins in %n moves", "", qAbs(score));
-    }
-    else
-    {
-        result = tr("Black wins in %n moves", "", qAbs(score));
-    }
+        QString result;
+        if(score == 0)
+        {
+            result = tr("Draw");
+        }
+        else if((score < 0) == (m_board.toMove() == Black))
+        {
+            result = tr("White wins in %n moves", "", qAbs(score));
+        }
+        else
+        {
+            result = tr("Black wins in %n moves", "", qAbs(score));
+        }
 
-    Move move1 = m_board.prepareMove(move.from(), move.to());
-    if(move.isPromotion())
-    {
-        move1.setPromoted(pieceType(move.promotedPiece()));
+        Move move1 = m_board.prepareMove(move.from(), move.to());
+        if(move.isPromotion())
+        {
+            move1.setPromoted(pieceType(move.promotedPiece()));
+        }
+        m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1)).arg(result);
+        m_lastDepthAdded = 0;
+        updateAnalysis();
     }
-    m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1)).arg(result);
-    m_lastDepthAdded = 0;
-    updateAnalysis();
 }
 
 void AnalysisWidget::updateAnalysis()
@@ -468,4 +475,9 @@ void AnalysisWidget::setOnHold(bool onHold)
     {
         startEngine();
     }
+}
+
+QString AnalysisWidget::engineName() const
+{
+    return ui.engineList->currentText();
 }

@@ -45,6 +45,8 @@ public:
     bool onHold() const;
     void setOnHold(bool onHold);
 
+    QString engineName() const;
+
 public slots:
     /** Sets new position. If analysis is active, the current content will be cleared and
     new analysis will be performed. */
@@ -66,7 +68,7 @@ private slots:
     /** Stop if analysis is no longer visible. */
     void toggleAnalysis();
     /** Displays given analysis received from an engine. */
-    void showAnalysis(const Analysis& analysis);
+    void showAnalysis(Analysis analysis);
     /** The engine is now ready, as requested */
     void engineActivated();
     /** The engine is now deactivated */
@@ -103,6 +105,7 @@ private:
     Board m_NextBoard;
     QString m_tablebaseEvaluation;
     Tablebase* m_tablebase;
+    Board m_tbBoard;
     int m_moveTime;
     bool m_bUciNewGame;
 
@@ -111,6 +114,8 @@ private:
     Move m_lastBestMove;
     int m_lastDepthAdded;
     bool m_onHold;
+
+    QTime m_lastEngineStart;
 
 };
 
