@@ -62,8 +62,13 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             {
             case DBLV_FAVORITE:
             {
-                bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
-                return QPixmap(bIsFavorite ? ":/images/folder_favorite.png" : ":/images/folder_grey.png");
+                int stars = m_databases.at(index.row()).m_stars;
+                switch (stars)
+                {
+                case 0: return QPixmap(":/images/folder_grey.png");
+                case 1: return QPixmap(":/images/folder_favorite.png");
+                case 2: return QPixmap(":/images/folder_favorite2.png");
+                }
             }
             case DBLV_OPEN:
             {
@@ -150,7 +155,7 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             {
             case DBLV_FAVORITE:
             {
-                bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
+                bool bIsFavorite = m_databases.at(index.row()).isFavorite();
                 return QString(bIsFavorite ? tr("Favorite") : "");
             }
             case DBLV_PATH:
@@ -211,8 +216,8 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             {
             case DBLV_FAVORITE:
             {
-                bool bIsFavorite = m_databases.at(index.row()).m_isFavorite;
-                return QString(bIsFavorite ? "Favorite" : "");
+                int stars = m_databases.at(index.row()).m_stars;
+                return QString::number(stars);
             }
             case DBLV_PATH:
             {
@@ -364,9 +369,9 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite, int in
     if(i.findNext(d))
     {
         DatabaseListEntry& e = i.previous();
-        if(e.m_isFavorite != bFavorite)
+        if(e.isFavorite() != bFavorite)
         {
-            e.m_isFavorite = bFavorite;
+            e.setIsFavorite(bFavorite);
             e.m_lastGameIndex = index;
             QModelIndex m = createIndex(m_databases.indexOf(e), DBLV_FAVORITE, (void*)  0);
             emit QAbstractItemModel::dataChanged(m, m);
@@ -375,11 +380,24 @@ void DatabaseListModel::addFavoriteFile(const QString& s, bool bFavorite, int in
         return;
     }
 
-    d.m_isFavorite = bFavorite;
+    d.setIsFavorite(bFavorite);
     d.m_lastGameIndex = index;
     addEntry(d, s);
     QModelIndex m = createIndex(rowCount()-1, DBLV_FAVORITE, (void*)  0);
     emit OnSelectIndex(m);
+}
+
+void DatabaseListModel::setStars(const QString &s, int stars)
+{
+    if(DatabaseListEntry* e = FindEntry(s))
+    {
+        if(e->m_stars != stars)
+        {
+            e->m_stars = stars;
+            QModelIndex m = createIndex(m_databases.indexOf(*e), DBLV_FAVORITE, (void*) 0);
+            emit QAbstractItemModel::dataChanged(m, m);
+        }
+    }
 }
 
 void DatabaseListModel::setFileClose(const QString& s, int lastIndex)
@@ -447,7 +465,7 @@ void DatabaseListModel::toStringList(QStringList& list)
 {
     for(int i = 1; i < m_databases.count(); ++i)
     {
-        if(m_databases[i].m_isFavorite)
+        if(m_databases[i].isFavorite())
         {
             list.append(m_databases[i].m_path);
         }
@@ -458,16 +476,13 @@ void DatabaseListModel::toAttrStringList(QStringList& list) const
 {
     for(int i = 1; i < m_databases.count(); ++i)
     {
-        if(m_databases[i].m_isFavorite)
+        if(m_databases[i].isFavorite())
         {
-            if(m_databases[i].m_utf8)
-            {
-                list.append("utf8");
-            }
-            else
-            {
-                list.append("ansi");
-            }
+            QString s;
+            s = (m_databases[i].m_utf8) ? "utf8" : "ansi";
+            s.append("+stars");
+            s.append(QString::number(m_databases[i].m_stars));
+            list.append(s);
         }
     }
 }
@@ -476,9 +491,23 @@ void DatabaseListModel::toIndexList(QList<QVariant>& list) const
 {
     for(int i = 1; i < m_databases.count(); ++i)
     {
-        if(m_databases[i].m_isFavorite)
+        if(m_databases[i].isFavorite())
         {
             list.append(QVariant(m_databases[i].m_lastGameIndex));
         }
     }
+}
+
+//////////////////////////////////////////////////////
+/// \brief DatabaseListEntry::setIsFavorite
+/// \param isFavorite
+
+void DatabaseListEntry::setIsFavorite(bool isFavorite)
+{
+    m_stars = isFavorite ? 1 : 0;
+}
+
+bool DatabaseListEntry::isFavorite() const
+{
+    return (m_stars > 0);
 }

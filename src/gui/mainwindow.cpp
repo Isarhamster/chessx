@@ -45,7 +45,6 @@
 #include "savedialog.h"
 #include "settings.h"
 #include "style.h"
-#include "tablebase.h"
 #include "tableview.h"
 #include "tagdialog.h"
 #include "textedit.h"
@@ -1728,6 +1727,12 @@ void MainWindow::restoreRecentFiles()
         m_databaseList->setFileFavorite(s, true, *it1++);
         bool bUtf8 = (attribute.contains("utf8"));
         m_databaseList->setFileUtf8(s, bUtf8);
+        QRegExp regExp("stars([0-9])");
+        if (regExp.indexIn(attribute) >= 0)
+        {
+           QString d = regExp.cap(1);
+           m_databaseList->setStars(s, d.toInt());
+        }
     }
 }
 

@@ -20,20 +20,24 @@ class DatabaseListEntry
 public:
     DatabaseListEntry()
     {
-        m_isFavorite    = false;
         m_isCurrent     = false;
         m_utf8          = false;
         m_state         = EDBL_CLOSE;
+        m_stars         = 0;
         m_lastGameIndex = 0;
     }
 
     QString m_name;
     QString m_path;
-    bool    m_isFavorite;
+
     bool    m_isCurrent;
     bool    m_utf8;
     int     m_lastGameIndex;
+    int     m_stars;
     DatabaseListEntryState m_state;
+
+    bool isFavorite() const;
+    void setIsFavorite(bool isFavorite);
 };
 
 inline bool operator==(DatabaseListEntry const& lhs, DatabaseListEntry const& rhs)
@@ -72,6 +76,7 @@ signals:
 public slots:
     void addFileOpen(const QString& s, bool utf8);
     void addFavoriteFile(const QString& s, bool bFavorite, int index);
+    void setStars(const QString& s, int stars);
     void setFileUtf8(const QString&, bool);
     void setFileClose(const QString& s, int lastIndex);
     void setFileCurrent(const QString& s);

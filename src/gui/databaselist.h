@@ -23,6 +23,7 @@ public:
 public slots:
     void addFileOpen(const QString& s, bool utf8);
     void setFileFavorite(const QString& s, bool bFavorite, int index);
+    void setStars(const QString& s, int stars);
     void setFileUtf8(const QString&, bool);
     void setFileClose(const QString& s, int lastIndex);
     void setFileCurrent(const QString& s);
@@ -57,6 +58,7 @@ private slots:
     void itemSelected(const QModelIndex& index);
     void slotContextMenu(const QPoint& pos);
     void dbAddToFavorites();
+    void dbKeepFile();
     void dbRemoveFromFavorites();
     void slotShowInFinder();
     void slotMakeBook();
