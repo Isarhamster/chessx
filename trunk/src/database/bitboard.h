@@ -102,6 +102,8 @@ public:
     bool canBeReachedFrom(const BitBoard& target) const;
     /** @return true if position is same, but don't consider Move # in determination */
     bool positionIsSame(const BitBoard& target) const;
+    /** @return true if neither side can win the game */
+    bool insufficientMaterial() const;
 
     // Query other formats
     //

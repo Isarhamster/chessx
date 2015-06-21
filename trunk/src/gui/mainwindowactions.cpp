@@ -1573,6 +1573,16 @@ void MainWindow::slotToggleEngineMatch()
             m_secondaryAnalysis->setOnHold(true);
             m_secondaryAnalysis->setPosition(game().board());
 
+            if (game().tag(TagNameWhite).isEmpty() &&
+                game().tag(TagNameBlack).isEmpty())
+            {
+                QString engine1 = m_mainAnalysis->engineName();
+                QString engine2 = m_secondaryAnalysis->engineName();
+
+                game().setTag(TagNameWhite, engine1);
+                game().setTag(TagNameBlack, engine2);
+            }
+
             if (game().board().toMove() == White)
                 m_mainAnalysis->startEngine();
             else
@@ -1636,7 +1646,9 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
         {
             if (m_machineHasToMove)
             {
-                if (game().positionRepetition3(game().board()) || game().board().halfMoveClock() > 101)
+                if (game().board().insufficientMaterial() ||
+                    game().positionRepetition3(game().board()) ||
+                    game().board().halfMoveClock() > 101)
                 {
                     playSound(":/sounds/fanfare.wav");
                     // Game is drawn by repetition or 50 move rule
@@ -1659,11 +1671,17 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
         else if (game().atLineEnd() && m_engineMatch->isChecked() && (m_AutoInsertLastBoard != game().board()))
         {
             m_AutoInsertLastBoard = game().board();
-            if (game().positionRepetition3(game().board()) || game().board().halfMoveClock() > 101)
+            if (game().board().insufficientMaterial() ||
+                game().positionRepetition3(game().board()) ||
+                game().board().halfMoveClock() > 101)
             {
                 playSound(":/sounds/fanfare.wav");
                 // Game is drawn by repetition or 50 move rule
                 m_engineMatch->trigger();
+                if (game().isMainline())
+                {
+                    game().setResult(Draw);
+                }
             }
             else if(!analysis.variation().isEmpty() && analysis.bestMove())
             {
@@ -1676,11 +1694,27 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                     m_currentFrom = m.from();
                     m_currentTo = m.to();
                     game().addMove(m);
-                    if (game().board().isStalemate() || game().board().isCheckmate())
+                    if (game().board().isStalemate() ||
+                        game().board().isCheckmate())
                     {
                         playSound(":/sounds/fanfare.wav");
                         // The game is terminated immediately
                         m_engineMatch->trigger();
+                        if (game().isMainline())
+                        {
+                            if (game().board().isStalemate())
+                            {
+                                game().setResult(Draw);
+                            }
+                            else if (game().board().toMove()==Black)
+                            {
+                                game().setResult(WhiteWin);
+                            }
+                            else
+                            {
+                                game().setResult(BlackWin);
+                            }
+                        }
                     }
                     else
                     {
@@ -1731,7 +1765,8 @@ void MainWindow::slotAutoPlayTimeout()
         {
             slotGameMoveNext();
         }
-        if (game().board().isCheckmate() || game().board().isStalemate())
+        if (game().board().isCheckmate() ||
+            game().board().isStalemate())
         {
             AutoMoveAtEndOfGame();
         }

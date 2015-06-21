@@ -2209,6 +2209,36 @@ bool BitBoard::canBeReachedFrom(const BitBoard& target) const
     return true;
 }
 
+bool BitBoard::insufficientMaterial() const
+{
+    if (m_pawnCount[White]==0 && m_pawnCount[Black]==0)
+    {
+        if ((m_pieceCount[White] <= 2) && (m_pieceCount[Black] <= 2))
+        {
+            // now test for KB-K KN-K and KB-KB where the bishops have same color
+            if (m_queens || m_rooks)
+            {
+                return false;
+            }
+            if (m_pieceCount[White]+m_pieceCount[Black] == 3)
+            {
+                return true;
+            }
+            if (m_knights)
+            {
+                return false;
+            }
+            // Finally KB-KB
+            quint64 n  = m_bishops;
+            quint64 n1 = getFirstBitAndClear64(n);
+            quint64 n2 = getFirstBitAndClear64(n);
+            int sum = n1+n2;
+            return (sum & 1);
+        }
+    }
+    return false;
+}
+
 Piece BitBoard::pieceAt(Square s) const
 {
     Q_ASSERT(s < 64);

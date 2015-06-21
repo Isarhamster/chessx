@@ -427,6 +427,11 @@ bool Game::positionRepetition3(const Board& b) const
     return g.positionRepetition(b);
 }
 
+bool Game::insufficientMaterial(const Board& b) const
+{
+    return b.insufficientMaterial();
+}
+
 QString Game::eventInfo() const
 {
     QString result;
