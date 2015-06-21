@@ -11,6 +11,7 @@
 #define ANALYSIS_H
 
 #include <QtCore>
+#include <QTime>
 #include "movelist.h"
 
 class Board;
@@ -65,6 +66,10 @@ public:
     bool bestMove() const;
 
     bool isAlreadyMate() const;
+
+    int elapsedTimeMS() const;
+    void setElapsedTimeMS(int elapsedTimeMS);
+
 private:
     int m_numpv;
     int m_msec;
@@ -74,6 +79,7 @@ private:
     bool m_bestMove;
     quint64 m_nodes;
     MoveList m_variation;
+    int m_elapsedTimeMS;
 };
 
 #endif // ANALYSIS_H

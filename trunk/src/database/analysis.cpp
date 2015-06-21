@@ -32,6 +32,7 @@ Analysis& Analysis::operator=(const Analysis& rhs)
         m_numpv     = rhs.m_numpv;
         m_bestMove  = rhs.m_bestMove;
         m_variation = rhs.m_variation;
+        m_elapsedTimeMS = rhs.m_elapsedTimeMS;
     }
     return *this;
 }
@@ -42,6 +43,7 @@ void Analysis::clear()
     m_score = m_msec = m_depth = 0;
     m_nodes = 0;
     m_numpv = 1;
+    m_elapsedTimeMS = 0;
     m_bestMove = false;
     m_variation.clear();
 }
@@ -130,6 +132,16 @@ bool Analysis::isMate() const
 bool Analysis::isAlreadyMate() const
 {
     return m_mateIn == 0;
+}
+
+int Analysis::elapsedTimeMS() const
+{
+    return m_elapsedTimeMS;
+}
+
+void Analysis::setElapsedTimeMS(int elapsedTimeMS)
+{
+    m_elapsedTimeMS = elapsedTimeMS;
 }
 
 int Analysis::movesToMate() const
