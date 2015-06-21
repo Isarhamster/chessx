@@ -158,5 +158,6 @@
         <file alias="textedit/zoomout.png">data/images/textedit/zoomout.png</file>
         <file alias="textedit/editresize.png">data/images/textedit/editresize.png</file>
         <file alias="images/chip.png">data/images/chip.png</file>
+        <file alias="images/folder_favorite2.png">data/images/folder_favorite2.png</file>
     </qresource>
 </RCC>
