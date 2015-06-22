@@ -792,6 +792,19 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                 {
                     m_ficsConsole->SendMove(m.toAlgebraic());
                 }
+                else
+                {
+                    if (m_autoRespond->isChecked())
+                    {
+                        if (game().board().isStalemate() ||
+                            game().board().isCheckmate())
+                        {
+                            playSound(":/sounds/fanfare.wav");
+                            m_autoRespond->trigger();
+                            setResultForCurrentPosition();
+                        }
+                    }
+                }
             }
             else
             {
@@ -1620,6 +1633,45 @@ void MainWindow::slotToggleAutoPlayer()
     }
 }
 
+void MainWindow::setResultForCurrentPosition()
+{
+    if (game().isMainline())
+    {
+        if (!game().board().isCheckmate())
+        {
+            game().setResult(Draw);
+        }
+        else if (game().board().toMove()==Black)
+        {
+            game().setResult(WhiteWin);
+        }
+        else
+        {
+            game().setResult(BlackWin);
+        }
+    }
+}
+
+bool MainWindow::doEngineMove(Move m)
+{
+    m_currentFrom = m.from();
+    m_currentTo = m.to();
+    game().addMove(m);
+    if (game().board().isStalemate() ||
+        game().board().isCheckmate())
+    {
+        playSound(":/sounds/fanfare.wav");
+        // The game is terminated immediately
+        setResultForCurrentPosition();
+        return false;
+    }
+    else
+    {
+        playSound(":/sounds/move.wav");
+    }
+    return true;
+}
+
 void MainWindow::slotEngineTimeout(const Analysis& analysis)
 {
     if (m_boardView->dragged() == Empty) // Do not interfer with moving a piece
@@ -1659,11 +1711,11 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                     Move m = analysis.variation().first();
                     if (m.isLegal())
                     {
-                        m_currentFrom = m.from();
-                        m_currentTo = m.to();
-                        game().addMove(m);
                         m_machineHasToMove = false;
-                        playSound(":/sounds/move.wav");
+                        if (!doEngineMove(m))
+                        {
+                            m_autoRespond->trigger();
+                        }
                     }
                 }
             }
@@ -1690,35 +1742,9 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 {
                     m_mainAnalysis->setOnHold(sender()==m_mainAnalysis);
                     m_secondaryAnalysis->setOnHold(sender()==m_secondaryAnalysis);
-
-                    m_currentFrom = m.from();
-                    m_currentTo = m.to();
-                    game().addMove(m);
-                    if (game().board().isStalemate() ||
-                        game().board().isCheckmate())
+                    if (!doEngineMove(m))
                     {
-                        playSound(":/sounds/fanfare.wav");
-                        // The game is terminated immediately
                         m_engineMatch->trigger();
-                        if (game().isMainline())
-                        {
-                            if (game().board().isStalemate())
-                            {
-                                game().setResult(Draw);
-                            }
-                            else if (game().board().toMove()==Black)
-                            {
-                                game().setResult(WhiteWin);
-                            }
-                            else
-                            {
-                                game().setResult(BlackWin);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        playSound(":/sounds/move.wav");
                     }
                 }
             }
@@ -1734,6 +1760,12 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             playSound(":/sounds/fanfare.wav");
             // Engines did not make progress or user intervention
             m_engineMatch->trigger();
+        }
+        else if (m_autoRespond->isChecked())
+        {
+            playSound(":/sounds/fanfare.wav");
+            // Engines did not make progress or user intervention
+            m_autoRespond->trigger();
         }
     }
 }

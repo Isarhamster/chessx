@@ -549,6 +549,10 @@ private:
     void StartCheckUpdate();
     /** Check if download of database is an option */
     void StartCheckDatabase();
+    /** Make an engine move, @return true if game can continue */
+    bool doEngineMove(Move m);
+    /** Set the game result for a final position */
+    void setResultForCurrentPosition();
 
     /* Dialogs  */
     GameList* m_gameList;
@@ -614,7 +618,6 @@ private:
     FicsConsole* m_ficsConsole;
     QActionGroup* m_gameModeGroup;
     TextEdit* m_scratchPad;
-
 };
 
 #endif
