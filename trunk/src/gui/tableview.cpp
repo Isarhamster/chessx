@@ -18,7 +18,9 @@
 #endif // _MSC_VER
 
 TableView::TableView(QWidget *parent)
-    : QTableView(parent)
+    : QTableView(parent),
+    m_alignDecoration(Qt::AlignCenter),
+    m_posDecoration(QStyleOptionViewItem::Left)
 {
     setShowGrid(false);
     setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -43,6 +45,34 @@ TableView::TableView(QWidget *parent)
 
 TableView::~TableView()
 {
+}
+
+QStyleOptionViewItem TableView::viewOptions() const
+{
+    QStyleOptionViewItem option = QTableView::viewOptions();
+    option.decorationAlignment = m_alignDecoration;
+    option.decorationPosition = m_posDecoration;
+    return option;
+}
+
+QStyleOptionViewItem::Position TableView::posDecoration() const
+{
+    return m_posDecoration;
+}
+
+void TableView::setPosDecoration(const QStyleOptionViewItem::Position &posDecoration)
+{
+    m_posDecoration = posDecoration;
+}
+
+Qt::Alignment TableView::alignDecoration() const
+{
+    return m_alignDecoration;
+}
+
+void TableView::setAlignDecoration(const Qt::Alignment &alignDecoration)
+{
+    m_alignDecoration = alignDecoration;
 }
 
 void TableView::saveConfig()
