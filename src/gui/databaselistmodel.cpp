@@ -66,8 +66,9 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 switch (stars)
                 {
                 case 0: return QPixmap(":/images/folder_grey.png");
-                case 1: return QPixmap(":/images/folder_favorite.png");
+                case 1: return QPixmap(":/images/folder_favorite1.png");
                 case 2: return QPixmap(":/images/folder_favorite2.png");
+                case 3: return QPixmap(":/images/folder_favorite3.png");
                 }
             }
             case DBLV_OPEN:

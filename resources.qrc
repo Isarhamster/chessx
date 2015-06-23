@@ -56,7 +56,7 @@
         <file alias="images/flip-horizontal.png">data/images/flip-horizontal.png</file>
         <file alias="images/flip-vertical.png">data/images/flip-vertical.png</file>
         <file alias="images/folder_closed.png">data/images/folder_closed.png</file>
-        <file alias="images/folder_favorite.png">data/images/folder_favorite.png</file>
+        <file alias="images/folder_favorite1.png">data/images/folder_favorite.png</file>
         <file alias="images/folder_grey.png">data/images/folder_grey.png</file>
         <file alias="images/folder_new.png">data/images/folder_new.png</file>
         <file alias="images/folder_open.png">data/images/folder_open.png</file>
@@ -159,5 +159,6 @@
         <file alias="textedit/editresize.png">data/images/textedit/editresize.png</file>
         <file alias="images/chip.png">data/images/chip.png</file>
         <file alias="images/folder_favorite2.png">data/images/folder_favorite2.png</file>
+        <file alias="images/folder_favorite3.png">data/images/folder_favorite3.png</file>
     </qresource>
 </RCC>

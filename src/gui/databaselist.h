@@ -57,7 +57,8 @@ protected:
 private slots:
     void itemSelected(const QModelIndex& index);
     void slotContextMenu(const QPoint& pos);
-    void dbAddToFavorites();
+    void dbAddToFavorites2();
+    void dbAddToFavorites3();
     void dbKeepFile();
     void dbRemoveFromFavorites();
     void slotShowInFinder();

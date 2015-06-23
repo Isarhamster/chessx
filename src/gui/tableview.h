@@ -22,6 +22,13 @@ class TableView : public QTableView
 public:
     TableView(QWidget *parent = 0);
     ~TableView();
+
+    Qt::Alignment alignDecoration() const;
+    void setAlignDecoration(const Qt::Alignment &alignDecoration);
+
+    QStyleOptionViewItem::Position posDecoration() const;
+    void setPosDecoration(const QStyleOptionViewItem::Position &posDecoration);
+
 public slots:
     /** Store current configuration. */
     void saveConfig();
@@ -29,6 +36,11 @@ public slots:
     virtual void slotReconfigure();
     /** Show context menu on header view */
     virtual void ShowContextMenu(const QPoint&);
+protected:
+    QStyleOptionViewItem viewOptions() const;
+private:
+    Qt::Alignment m_alignDecoration;
+    QStyleOptionViewItem::Position m_posDecoration;
 };
 
 #endif

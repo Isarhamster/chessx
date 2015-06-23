@@ -25,7 +25,7 @@ DatabaseList::DatabaseList(QWidget *parent) :
 {
     setObjectName("DatabaseList");
     setWindowTitle(tr("Databases"));
-
+     setPosDecoration(QStyleOptionViewItem::Top);
     m_model = new DatabaseListModel(this);
 
     m_filterModel = new QSortFilterProxyModel(this);
@@ -79,7 +79,8 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
     if(m_cell.isValid())
     {
         QMenu menu("Database List",this);
-        bool bIsFavorite = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_FAVORITE), Qt::UserRole).toString().toInt() > 0;
+        int stars = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_FAVORITE), Qt::UserRole).toString().toInt();
+        bool bIsFavorite = stars > 0;
         bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString().isEmpty();
         bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_OPEN), Qt::UserRole).toString() == "Open";
         bool bIsBook = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString().endsWith("bin");
@@ -87,8 +88,9 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
 
         menu.addAction(tr("Close"), this, SLOT(dbClose()))->setEnabled(bIsOpen && bHasPath);
         menu.addSeparator();
-        menu.addAction(tr("Keep file"), this, SLOT(dbKeepFile()));
-        menu.addAction(tr("Add to favorites"), this, SLOT(dbAddToFavorites()));
+        menu.addAction(tr("Keep file"), this, SLOT(dbKeepFile()))->setEnabled(stars != 1);
+        menu.addAction(tr("Two star favorite"), this, SLOT(dbAddToFavorites2()))->setEnabled(stars != 2);
+        menu.addAction(tr("Three star favorite"), this, SLOT(dbAddToFavorites3()))->setEnabled(stars != 3);
         menu.addAction(tr("Remove from Favorites"), this, SLOT(dbRemoveFromFavorites()))->setEnabled(bIsFavorite);
 #if defined(Q_OS_WIN) || defined(Q_OS_MAC)
         menu.addSeparator();
@@ -181,13 +183,22 @@ void DatabaseList::dbKeepFile()
     setStars(ts,1);
 }
 
-void DatabaseList::dbAddToFavorites()
+void DatabaseList::dbAddToFavorites2()
 {
     Q_ASSERT(m_cell.isValid());
     QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
     setFileFavorite(ts, true, 0);
     setStars(ts,2);
 }
+
+void DatabaseList::dbAddToFavorites3()
+{
+    Q_ASSERT(m_cell.isValid());
+    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
+    setFileFavorite(ts, true, 0);
+    setStars(ts,3);
+}
+
 void DatabaseList::dbRemoveFromFavorites()
 {
     Q_ASSERT(m_cell.isValid());
