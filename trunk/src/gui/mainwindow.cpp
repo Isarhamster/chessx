@@ -404,7 +404,8 @@ MainWindow::MainWindow() : QMainWindow(),
     statusBar()->addPermanentWidget(new QLabel(tr("Move Interval:"), this));
     statusBar()->addPermanentWidget(m_sliderSpeed);
     m_sliderText = new QLabel(this);
-    m_sliderText->setFixedWidth(100);
+    slotSetSliderText(0);
+    m_sliderText->setFixedWidth(m_sliderText->sizeHint().width());
     statusBar()->addPermanentWidget(m_sliderText);
     connect(m_sliderSpeed, SIGNAL(valueChanged(int)), this, SLOT(slotSetSliderText(int)));
     slotSetSliderText(m_sliderSpeed->value());
