@@ -383,51 +383,7 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         text += m_startTagMap[MarkupColumnStyleMove];
     }
 
-    // *** Write the move number
-    if(moveToWrite == PreviousMove)
-    {
-        c = oppositeColor(c);
-    }
-    if(c == White)
-    {
-        text += QString::number(m_game.moveNumber(moveId)) + ". ";
-    }
-    else if(m_dirtyBlack)
-    {
-        text += QString::number(m_game.moveNumber(moveId)) + "... ";
-        if((m_options.getOptionAsBool("ColumnStyle")) &&
-                (m_currentVariationLevel == 0))
-        {
-            text += m_endTagMap[MarkupColumnStyleMove] + m_startTagMap[MarkupColumnStyleMove];
-        }
-    }
-    m_dirtyBlack = false;
-
-    // *** Markup for the move
-    if(m_currentVariationLevel > 0)
-    {
-        if(m_expandable[MarkupVariationMove])
-        {
-            text += m_startTagMap[MarkupVariationMove].arg(mvno);
-        }
-        else
-        {
-            text += m_startTagMap[MarkupVariationMove];
-        }
-    }
-    else
-    {
-        if(m_expandable[MarkupMainLineMove])
-        {
-            text += m_startTagMap[MarkupMainLineMove].arg(mvno);
-        }
-        else
-        {
-            text += m_startTagMap[MarkupMainLineMove];
-        }
-    }
-
-    // *** Write the actual move
+    // *** Determine actual san
     QString san;
     Game::MoveStringFlags flags = (m_outputType == NotationWidget) ? Game::TranslatePiece : Game::MoveOnly;
     if(moveToWrite == NextMove)
@@ -438,23 +394,72 @@ QString Output::writeMove(MoveToWrite moveToWrite)
     {
         san = m_game.moveToSan((Game::MoveStringFlags)(flags | Game::MoveOnly), Game::PreviousMove);
     }
-    QString mate = m_startTagMap[MarkupMate] + "#" + m_endTagMap[MarkupMate];
-    san.replace("#", mate);
-    text += san;
 
-    // *** End the markup for the move
-    if(m_currentVariationLevel > 0)
+    if (!san.isEmpty())
     {
-        text += m_endTagMap[MarkupVariationMove];
-    }
-    else
-    {
-        text += m_endTagMap[MarkupMainLineMove];
-    }
-    // *** Write the nags if there are any
-    if(!nagString.isEmpty())
-    {
-        text += m_startTagMap[MarkupNag] + nagString + m_endTagMap[MarkupNag];
+        // *** Write the move number
+        if(moveToWrite == PreviousMove)
+        {
+            c = oppositeColor(c);
+        }
+        if(c == White)
+        {
+            text += QString::number(m_game.moveNumber(moveId)) + ". ";
+        }
+        else if(m_dirtyBlack)
+        {
+            text += QString::number(m_game.moveNumber(moveId)) + "... ";
+            if((m_options.getOptionAsBool("ColumnStyle")) &&
+                    (m_currentVariationLevel == 0))
+            {
+                text += m_endTagMap[MarkupColumnStyleMove] + m_startTagMap[MarkupColumnStyleMove];
+            }
+        }
+        m_dirtyBlack = false;
+
+        // *** Markup for the move
+        if(m_currentVariationLevel > 0)
+        {
+            if(m_expandable[MarkupVariationMove])
+            {
+                text += m_startTagMap[MarkupVariationMove].arg(mvno);
+            }
+            else
+            {
+                text += m_startTagMap[MarkupVariationMove];
+            }
+        }
+        else
+        {
+            if(m_expandable[MarkupMainLineMove])
+            {
+                text += m_startTagMap[MarkupMainLineMove].arg(mvno);
+            }
+            else
+            {
+                text += m_startTagMap[MarkupMainLineMove];
+            }
+        }
+
+        // *** Write the actual move
+        QString mate = m_startTagMap[MarkupMate] + "#" + m_endTagMap[MarkupMate];
+        san.replace("#", mate);
+        text += san;
+
+        // *** End the markup for the move
+        if(m_currentVariationLevel > 0)
+        {
+            text += m_endTagMap[MarkupVariationMove];
+        }
+        else
+        {
+            text += m_endTagMap[MarkupMainLineMove];
+        }
+        // *** Write the nags if there are any
+        if(!nagString.isEmpty())
+        {
+            text += m_startTagMap[MarkupNag] + nagString + m_endTagMap[MarkupNag];
+        }
     }
 
     if((m_options.getOptionAsBool("ColumnStyle")) &&
