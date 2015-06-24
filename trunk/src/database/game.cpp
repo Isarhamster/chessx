@@ -641,11 +641,7 @@ MoveId Game::dbAddVariation(const MoveList& moveList, const QString& annotation)
     MoveId currentPosition = currentMove();
     MoveId varStart;
     int start = 1;
-    if(!atLineEnd())
-    {
-        varStart = dbAddVariation(moveList.first());
-    }
-    else if(!atGameStart())
+    if(atLineEnd() && !!atGameStart())
     {
         Move oldMove = move();
         backward();
@@ -654,8 +650,9 @@ MoveId Game::dbAddVariation(const MoveList& moveList, const QString& annotation)
     }
     else
     {
-        varStart = dbAddMove(moveList.first());
+        varStart = dbAddVariation(moveList.first());
     }
+
     dbMoveToId(varStart);
     for(int i = start; i < moveList.count(); ++i)
     {
