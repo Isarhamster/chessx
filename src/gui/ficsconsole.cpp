@@ -836,11 +836,13 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 }
                 if (s.contains("solved") && !s.contains("almost"))
                 {
+                    emit SignalGameResult("*");
                     emit RequestSaveGame();
                     if (gameMode)
                     {
                         emit RequestGameMode(false);
                     }
+
                     puzzleMode = false;
                     SlotSendUnexamine();
                 }
