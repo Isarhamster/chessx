@@ -415,6 +415,8 @@ protected slots:
     void slotMoveIntervalChanged(int);
     /** Value for Move Interval Slider is changed */
     void slotSetSliderText(int);
+    /** Start the mach parameter dialog */
+    void slotMatchParameterDlg();
     /** Query for a database to load */
     void QueryLoadDatabase();
     /** Handle a disconnection from fics */
@@ -618,6 +620,7 @@ private:
     FicsConsole* m_ficsConsole;
     QActionGroup* m_gameModeGroup;
     TextEdit* m_scratchPad;
+    QTime m_userMatchTime;
 };
 
 #endif

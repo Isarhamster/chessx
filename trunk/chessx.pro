@@ -56,7 +56,8 @@ FORMS += \
     src/dialogs/tagdialog.ui \
     src/dialogs/preferences.ui \
     src/dialogs/quicksearch.ui \
-    src/gui/gamewindow.ui
+    src/gui/gamewindow.ui \
+    src/dialogs/matchparameterdlg.ui
 
 
 HEADERS += src/database/board.h \
@@ -205,7 +206,9 @@ HEADERS += src/database/board.h \
     src/gui/ooo/formatproperty.h \
     src/gui/ooo/styleinformation.h \
     src/gui/ooo/styleparser.h \
-    src/gui/ooo/kzip.h
+    src/gui/ooo/kzip.h \
+    src/database/engineparameter.h \
+    src/dialogs/matchparameterdlg.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -338,7 +341,8 @@ SOURCES += src/database/board.cpp \
     src/gui/ooo/formatproperty.cpp \
     src/gui/ooo/styleinformation.cpp \
     src/gui/ooo/styleparser.cpp \
-    src/gui/ooo/kzip.cpp
+    src/gui/ooo/kzip.cpp \
+    src/dialogs/matchparameterdlg.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

@@ -30,6 +30,7 @@
 #include "gamelist.h"
 #include "gamewindow.h"
 #include "mainwindow.h"
+#include "matchparameterdlg.h"
 #include "messagedialog.h"
 #include "memorydatabase.h"
 #include "openingtreewidget.h"
@@ -1705,6 +1706,10 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                     playSound(":/sounds/fanfare.wav");
                     // Game is drawn by repetition or 50 move rule
                     m_autoRespond->trigger();
+                    if (game().isMainline())
+                    {
+                        game().setResult(Draw);
+                    }
                 }
                 else if(!analysis.variation().isEmpty() && analysis.bestMove())
                 {
@@ -2669,6 +2674,15 @@ void MainWindow::slotSetSliderText(int interval)
     else
     {
         m_sliderText->setText(QString::number(interval)+"s");
+    }
+}
+
+void MainWindow::slotMatchParameterDlg()
+{
+    static EngineParameter par;
+    if (MatchParameterDlg::getParameters(par))
+    {
+        // todo
     }
 }
 
