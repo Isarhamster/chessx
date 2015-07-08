@@ -38,6 +38,7 @@ class FicsConsole : public QWidget
 public:
     explicit FicsConsole(QWidget *parent = 0, FicsClient *ficsClient=0);
     ~FicsConsole();
+    bool canUsePremove() const;
 
 public slots:
     void Terminate();
