@@ -370,6 +370,7 @@ public :
 
     bool positionRepetition3(const Board &board) const;
     bool insufficientMaterial(const Board &b) const;
+
 protected:
     /** Find the point in the this game where @p otherGame fits in the next time.
         @retval Node from where the merging shall start in other game */

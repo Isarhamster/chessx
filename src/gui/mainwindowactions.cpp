@@ -48,6 +48,7 @@
 #include "tableview.h"
 #include "tagdialog.h"
 #include "tags.h"
+#include "translatingslider.h"
 #include "version.h"
 
 #include <time.h>
@@ -556,12 +557,18 @@ void MainWindow::slotEditMergePGN()
     if(!pgn.isEmpty())
     {
         MemoryDatabase pgnDatabase;
-        if(pgnDatabase.openString(pgn))
+        if (pgn.trimmed().startsWith("[")) // looks like something containing tags
         {
-            Game g;
-            if(pgnDatabase.loadGame(0, g))
+            if(pgnDatabase.openString(pgn))
             {
-                game().mergeWithGame(g);
+                Game g;
+                for (quint64 i=0; i<pgnDatabase.count();++i) // pasted text might contain multiple games
+                {
+                    if(pgnDatabase.loadGame(i, g))
+                    {
+                        game().mergeWithGame(g);
+                    }
+                }
             }
         }
     }
@@ -776,6 +783,13 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                     }
                     else
                     {
+                        if (!m_elapsedUserTimeValid && !m_mainAnalysis->isEngineRunning())
+                        {
+                            m_mainAnalysis->unPin();
+                            m_mainAnalysis->setMoveTime(m_matchParameter);
+                            m_mainAnalysis->startEngine();
+                        }
+
                         m_machineHasToMove = true;
                     }
                 }
@@ -788,7 +802,46 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
         {
             if(game().atLineEnd())
             {
-                game().addMove(m);
+                QString annot;
+                if (m_autoRespond->isChecked())
+                {
+                    int t = m_elapsedUserTimeValid ? m_elapsedUserTime.elapsed() : 0;
+                    t = t - m_matchParameter.ms_bonus;
+                    if (t<0) t = 0;
+                    m_matchTime[game().board().toMove()] = m_matchTime[game().board().toMove()].addMSecs(t);
+
+                    EngineParameter par = m_matchParameter;
+                    par.ms_white = m_matchParameter.ms_totalTime - m_matchTime[White].msecsSinceStartOfDay();
+                    par.ms_black = m_matchParameter.ms_totalTime - m_matchTime[Black].msecsSinceStartOfDay();
+
+                    m_mainAnalysis->unPin();
+                    m_mainAnalysis->setMoveTime(par);
+
+                    if (!m_elapsedUserTimeValid && !m_mainAnalysis->isEngineRunning())
+                    {
+                        m_mainAnalysis->startEngine();
+                    }
+
+                    if (m_matchTime[game().board().toMove()].msecsSinceStartOfDay() > (int) m_matchParameter.ms_totalTime)
+                    {
+                        playSound(":/sounds/fanfare.wav");
+                        // Game is drawn by repetition or 50 move rule
+                        m_autoRespond->trigger();
+                        if (game().isMainline())
+                        {
+                            setResultAgainstColorToMove();
+                        }
+                    }
+                    else if (par.annotateEgt && par.tm != EngineParameter::TIME_GONG)
+                    {
+                        QString egt = "[%egt %1]";
+                        QTime t(0,0);
+                        t = t.addMSecs(game().board().toMove()==White ? par.ms_white : par.ms_black);
+                        annot = egt.arg(t.toString("H:mm:ss"));
+                    }
+                }
+
+                game().addMove(m, annot);
                 if (qobject_cast<FicsDatabase*>(database()))
                 {
                     m_ficsConsole->SendMove(m.toAlgebraic());
@@ -1531,12 +1584,20 @@ void MainWindow::slotToggleTraining()
 void MainWindow::slotToggleAutoRespond()
 {
     m_machineHasToMove = false;
+    if (m_autoRespond->isChecked())
+    {
+        m_matchParameter.reset();
+    }
+    m_matchTime[0] = QTime(0,0);
+    m_matchTime[1] = QTime(0,0);
+    m_elapsedUserTimeValid = false;
 }
 
 void MainWindow::slotToggleAutoAnalysis()
 {
     if(m_autoAnalysis->isChecked())
     {
+        m_mainAnalysis->setMoveTime(m_sliderSpeed->value());
         m_AutoInsertLastBoard.clear();
         if(!m_mainAnalysis->isEngineConfigured())
         {
@@ -1580,12 +1641,17 @@ void MainWindow::slotToggleEngineMatch()
         }
         else
         {
+            m_matchParameter.reset();
+
             m_mainAnalysis->unPin();
             m_mainAnalysis->setOnHold(true);
             m_mainAnalysis->setPosition(game().board());
+            m_mainAnalysis->setMoveTime(m_matchParameter);
+
             m_secondaryAnalysis->unPin();
             m_secondaryAnalysis->setOnHold(true);
             m_secondaryAnalysis->setPosition(game().board());
+            m_secondaryAnalysis->setMoveTime(m_matchParameter);
 
             if (game().tag(TagNameWhite).isEmpty() &&
                 game().tag(TagNameBlack).isEmpty())
@@ -1596,6 +1662,9 @@ void MainWindow::slotToggleEngineMatch()
                 game().setTag(TagNameWhite, engine1);
                 game().setTag(TagNameBlack, engine2);
             }
+
+            m_matchTime[0] = QTime(0,0);
+            m_matchTime[1] = QTime(0,0);
 
             if (game().board().toMove() == White)
                 m_mainAnalysis->startEngine();
@@ -1625,6 +1694,7 @@ void MainWindow::slotToggleAutoPlayer()
             {
                 m_autoPlayTimer->setInterval(interval);
             }
+            m_mainAnalysis->setMoveTime(interval);
             m_autoPlayTimer->start();
         }
         else
@@ -1642,7 +1712,18 @@ void MainWindow::setResultForCurrentPosition()
         {
             game().setResult(Draw);
         }
-        else if (game().board().toMove()==Black)
+        else
+        {
+            setResultAgainstColorToMove();
+        }
+    }
+}
+
+void MainWindow::setResultAgainstColorToMove()
+{
+    if (game().isMainline())
+    {
+        if (game().board().toMove()==Black)
         {
             game().setResult(WhiteWin);
         }
@@ -1653,11 +1734,21 @@ void MainWindow::setResultForCurrentPosition()
     }
 }
 
-bool MainWindow::doEngineMove(Move m)
+bool MainWindow::doEngineMove(Move m, EngineParameter e)
 {
     m_currentFrom = m.from();
     m_currentTo = m.to();
-    game().addMove(m);
+
+    QString annot;
+    if (e.annotateEgt && e.tm != EngineParameter::TIME_GONG)
+    {
+        QString egt = "[%egt %1]";
+        QTime t(0,0);
+        t = t.addMSecs(game().board().toMove()==White ? e.ms_white : e.ms_black);
+        annot = egt.arg(t.toString("H:mm:ss"));
+    }
+
+    game().addMove(m,annot);
     if (game().board().isStalemate() ||
         game().board().isCheckmate())
     {
@@ -1699,7 +1790,20 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
         {
             if (m_machineHasToMove)
             {
-                if (game().board().insufficientMaterial() ||
+                QTime t = m_matchTime[game().board().toMove()];
+                m_matchTime[game().board().toMove()] = t.addMSecs(analysis.elapsedTimeMS());
+
+                if (m_matchTime[game().board().toMove()].msecsSinceStartOfDay() > (int) m_matchParameter.ms_totalTime)
+                {
+                    playSound(":/sounds/fanfare.wav");
+                    // Game is drawn by repetition or 50 move rule
+                    m_autoRespond->trigger();
+                    if (game().isMainline())
+                    {
+                        setResultAgainstColorToMove();
+                    }
+                }
+                else if (game().board().insufficientMaterial() ||
                     game().positionRepetition3(game().board()) ||
                     game().board().halfMoveClock() > 101)
                 {
@@ -1717,9 +1821,18 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                     if (m.isLegal())
                     {
                         m_machineHasToMove = false;
-                        if (!doEngineMove(m))
+                        EngineParameter par = m_matchParameter;
+                        par.ms_white = m_matchParameter.ms_totalTime - m_matchTime[White].msecsSinceStartOfDay();
+                        par.ms_black = m_matchParameter.ms_totalTime - m_matchTime[Black].msecsSinceStartOfDay();
+                        m_mainAnalysis->setMoveTime(par);
+                        if (!doEngineMove(m, par)) // todo
                         {
                             m_autoRespond->trigger();
+                        }
+                        else
+                        {
+                            m_elapsedUserTime.start();
+                            m_elapsedUserTimeValid = true;
                         }
                     }
                 }
@@ -1728,7 +1841,21 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
         else if (game().atLineEnd() && m_engineMatch->isChecked() && (m_AutoInsertLastBoard != game().board()))
         {
             m_AutoInsertLastBoard = game().board();
-            if (game().board().insufficientMaterial() ||
+
+            QTime t = m_matchTime[game().board().toMove()];
+            m_matchTime[game().board().toMove()] = t.addMSecs(analysis.elapsedTimeMS());
+
+            if (m_matchTime[game().board().toMove()].msecsSinceStartOfDay() > (int) m_matchParameter.ms_totalTime)
+            {
+                playSound(":/sounds/fanfare.wav");
+                // Game is drawn by repetition or 50 move rule
+                m_engineMatch->trigger();
+                if (game().isMainline())
+                {
+                    setResultAgainstColorToMove();
+                }
+            }
+            else if (game().board().insufficientMaterial() ||
                 game().positionRepetition3(game().board()) ||
                 game().board().halfMoveClock() > 101)
             {
@@ -1745,9 +1872,14 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 Move m = analysis.variation().first();
                 if (m.isLegal())
                 {
+                    EngineParameter par = m_matchParameter;
+                    par.ms_white = m_matchParameter.ms_totalTime - m_matchTime[White].msecsSinceStartOfDay();
+                    par.ms_black = m_matchParameter.ms_totalTime - m_matchTime[Black].msecsSinceStartOfDay();
+                    m_mainAnalysis->setMoveTime(par);
+                    m_secondaryAnalysis->setMoveTime(par);
                     m_mainAnalysis->setOnHold(sender()==m_mainAnalysis);
                     m_secondaryAnalysis->setOnHold(sender()==m_secondaryAnalysis);
-                    if (!doEngineMove(m))
+                    if (!doEngineMove(m,par))
                     {
                         m_engineMatch->trigger();
                     }
@@ -2663,27 +2795,21 @@ void MainWindow::slotMoveIntervalChanged(int interval)
     {
         m_autoPlayTimer->setInterval(interval);
     }
+
+    if(m_autoAnalysis->isChecked())
+    {
+        m_mainAnalysis->setMoveTime(interval);
+    }
 }
 
 void MainWindow::slotSetSliderText(int interval)
 {
-    if (!interval)
-    {
-        m_sliderText->setText(QString("0s/")+tr("Infinite"));
-    }
-    else
-    {
-        m_sliderText->setText(QString::number(interval)+"s");
-    }
+    m_sliderText->setText(QString::number(interval)+"s");
 }
 
 void MainWindow::slotMatchParameterDlg()
 {
-    static EngineParameter par;
-    if (MatchParameterDlg::getParameters(par))
-    {
-        // todo
-    }
+    MatchParameterDlg::getParameters(m_matchParameter);
 }
 
 void MainWindow::slotUpdateOpeningTreeWidget()
@@ -2762,5 +2888,5 @@ void MainWindow::enterGameMode(bool gameMode)
 
 bool MainWindow::premoveAllowed() const
 {
-    return (gameMode() && (qobject_cast<const FicsDatabase*>(database())));
+    return (gameMode() && m_ficsConsole->canUsePremove() && qobject_cast<const FicsDatabase*>(database()));
 }

@@ -60,7 +60,9 @@ public slots:
     /** Stop game analysis when analysis dock is hidden. */
     void slotVisibilityChanged(bool);
     /** Change the movetime of the engine */
-    void setMoveTime(int mt);
+    void setMoveTime(EngineParameter mt);
+    /** Change the movetime of the engine */
+    void setMoveTime(int);
     /** Must send ucinewgame next time */
     void slotUciNewGame();
 
@@ -106,7 +108,7 @@ private:
     QString m_tablebaseEvaluation;
     Tablebase* m_tablebase;
     Board m_tbBoard;
-    int m_moveTime;
+    EngineParameter m_moveTime;
     bool m_bUciNewGame;
 
     double m_complexity;

@@ -12,6 +12,7 @@
 
 #include "historylist.h"
 #include "output.h"
+#include "engineparameter.h"
 
 #include <QtGui>
 #include <QAction>
@@ -552,9 +553,11 @@ private:
     /** Check if download of database is an option */
     void StartCheckDatabase();
     /** Make an engine move, @return true if game can continue */
-    bool doEngineMove(Move m);
+    bool doEngineMove(Move m, EngineParameter e);
     /** Set the game result for a final position */
     void setResultForCurrentPosition();
+    /** Set the game result for a final position */
+    void setResultAgainstColorToMove();
 
     /* Dialogs  */
     GameList* m_gameList;
@@ -620,7 +623,10 @@ private:
     FicsConsole* m_ficsConsole;
     QActionGroup* m_gameModeGroup;
     TextEdit* m_scratchPad;
-    QTime m_userMatchTime;
+    QTime m_matchTime[2];
+    QTime m_elapsedUserTime;
+    bool m_elapsedUserTimeValid;
+    EngineParameter m_matchParameter;
 };
 
 #endif

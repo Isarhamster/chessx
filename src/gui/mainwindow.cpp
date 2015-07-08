@@ -393,22 +393,34 @@ MainWindow::MainWindow() : QMainWindow(),
     m_sliderSpeed->setTickPosition(QSlider::NoTicks);
     m_sliderSpeed->setMaximumWidth(400);
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
-    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), m_mainAnalysis, SLOT(setMoveTime(int)));
-    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), m_secondaryAnalysis, SLOT(setMoveTime(int)));
+
     connect(m_mainAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
     connect(m_secondaryAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
 
-    m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
-    m_secondaryAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
+    m_matchParameter.tm           = (EngineParameter::TimeModus) AppSettings->getValue("/Match/Mode").toBool();
+    m_matchParameter.ms_totalTime = AppSettings->getValue("/Match/TotalTime").toInt();
+    m_matchParameter.ms_bonus     = AppSettings->getValue("/Match/UserBonus").toInt();
+    m_matchParameter.movesToDo    = AppSettings->getValue("/Match/MoveCount").toInt();
+    m_matchParameter.annotateEgt  = AppSettings->getValue("/Match/AnnotateEgt").toBool();
+
+    m_matchParameter.reset();
+    m_mainAnalysis->setMoveTime(m_matchParameter);
+    m_secondaryAnalysis->setMoveTime(m_matchParameter);
 
     statusBar()->addPermanentWidget(new QLabel(tr("Move Interval:"), this));
     statusBar()->addPermanentWidget(m_sliderSpeed);
     m_sliderText = new QLabel(this);
     slotSetSliderText(0);
     m_sliderText->setFixedWidth(m_sliderText->sizeHint().width());
+
     statusBar()->addPermanentWidget(m_sliderText);
     connect(m_sliderSpeed, SIGNAL(valueChanged(int)), this, SLOT(slotSetSliderText(int)));
     slotSetSliderText(m_sliderSpeed->value());
+
+    QToolButton* matchParameterButton = new QToolButton(this);
+    matchParameterButton->setIcon(QPixmap(":/images/match.png"));
+    connect(matchParameterButton, SIGNAL(clicked()), this, SLOT(slotMatchParameterDlg()));
+    statusBar()->addPermanentWidget(matchParameterButton);
 
     statusBar()->setFixedHeight(statusBar()->height());
     statusBar()->setSizeGripEnabled(true);
@@ -1231,7 +1243,7 @@ void MainWindow::setupActions()
     file->addAction(createAction(tr("&New database..."), SLOT(slotFileNew()), QKeySequence(), fileToolBar, ":/images/new.png"));
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
-    file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence()));
+    file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics.png"));
     QMenu* menuRecent = file->addMenu(tr("Open &recent..."));
 
     for(int i = 0; i < MaxRecentFiles; ++i)

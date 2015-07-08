@@ -22,6 +22,7 @@
 #include "enginelist.h"
 
 #include "engineoptiondata.h"
+#include "engineparameter.h"
 
 /**
  * @defgroup Feature Feature - assorted feature classes of ChessX
@@ -62,7 +63,7 @@ public:
     bool isActive();
 
     /** Analyzes the given position */
-    virtual bool startAnalysis(const Board& board, int nv, int mt, bool bNewGame) = 0;
+    virtual bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame) = 0;
 
     /** Stops any analysis */
     virtual void stopAnalysis() = 0;
@@ -78,7 +79,7 @@ public:
     /** Set number of lines. */
     virtual void setMpv(int mpv);
     /** Set new move time */
-    virtual void setMoveTime(int mt);
+    virtual void setMoveTime(const EngineParameter &mt);
 
     virtual bool providesMvp()
     {
@@ -128,7 +129,7 @@ protected:
 
     bool m_invertBlack;
     int m_mpv;
-    int m_moveTime;
+    EngineParameter m_moveTime;
     bool m_bTestMode;
 
 private slots:

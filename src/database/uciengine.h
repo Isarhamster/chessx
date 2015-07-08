@@ -31,14 +31,14 @@ public:
               QTextStream* logStream = NULL);
 
     /** Analyses the the given position */
-    bool startAnalysis(const Board& board, int nv, int mt, bool bNewGame);
+    bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame);
 
     /** Stops any analysis */
     void stopAnalysis();
 
     /** Update number of displayed lines. Restarts engine. */
     virtual void setMpv(int mpv);
-    virtual void setMoveTime(int mt);
+    virtual void setMoveTime(const EngineParameter &mt);
 
     virtual bool providesMvp()
     {
@@ -62,6 +62,8 @@ private:
 
     /** Parse option string */
     void parseOptions(const QString &message);
+    /** Send go command according to currently set timespec */
+    void go();
 
     Board m_board;
 
