@@ -15,7 +15,7 @@ public:
         ms_white     = white;
         ms_black     = black;
         movesToDo    = moves;
-        gameOver     = false;
+        annotateEgt  = true;
     }
 
     EngineParameter(int mt=0)
@@ -24,8 +24,14 @@ public:
         ms_totalTime = mt;
         ms_white     = mt;
         ms_black     = mt;
-        movesToDo    = 1;
-        gameOver     = false;
+        movesToDo    = 999;
+        annotateEgt  = true;
+    }
+
+    void reset()
+    {
+        ms_white     = ms_totalTime;
+        ms_black     = ms_totalTime;
     }
 
     typedef enum
@@ -39,8 +45,9 @@ public:
     unsigned int ms_totalTime;
     unsigned int ms_white;  ///< SUDDEN_DEATH only
     unsigned int ms_black;  ///< SUDDEN_DEATH only
-    int movesToDo; ///< SUDDEN_DEATH only
-    bool gameOver;
+    int movesToDo;          ///< SUDDEN_DEATH only
+    bool annotateEgt;
+    unsigned int ms_bonus;
 };
 
 #endif // ENGINEPARAMETER_H

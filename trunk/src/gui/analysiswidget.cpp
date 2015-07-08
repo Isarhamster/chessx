@@ -113,6 +113,7 @@ void AnalysisWidget::engineActivated()
     ui.analyzeButton->setText(tr("Stop"));
     m_analyses.clear();
     m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, true);
+    m_lastEngineStart.start();
 }
 
 void AnalysisWidget::engineError(QProcess::ProcessError e)
@@ -290,7 +291,7 @@ void AnalysisWidget::slotLinkClicked(const QUrl& url)
     }
 }
 
-void AnalysisWidget::setMoveTime(int mt)
+void AnalysisWidget::setMoveTime(EngineParameter mt)
 {
     m_moveTime = mt;
     if(isEngineRunning() && !ui.btPin->isChecked())
@@ -298,6 +299,12 @@ void AnalysisWidget::setMoveTime(int mt)
         m_engine->setMoveTime(mt);
     }
 }
+
+void AnalysisWidget::setMoveTime(int n)
+{
+    setMoveTime((EngineParameter) n);
+}
+
 
 void AnalysisWidget::slotMpvChanged(int mpv)
 {

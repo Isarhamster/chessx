@@ -26,10 +26,10 @@ UCIEngine::UCIEngine(const QString& name,
     m_invertBlack = true;
 }
 
-bool UCIEngine::startAnalysis(const Board& board, int nv, int mt, bool bNewGame)
+bool UCIEngine::startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame)
 {
+    Engine::setMoveTime(mt);
     m_mpv = nv;
-    m_moveTime = mt;
     if(!isActive())
     {
         return false;
@@ -75,26 +75,20 @@ void UCIEngine::setMpv(int mpv)
         {
             send("stop");
             send(QString("setoption name MultiPV value %1").arg(m_mpv));
-            if (!m_moveTime)
-                send("go infinite");
-            else
-                send(QString("go movetime %1").arg(m_moveTime));
+            go();
         }
     }
 }
 
-void UCIEngine::setMoveTime(int mt)
+void UCIEngine::setMoveTime(const EngineParameter &mt)
 {
-    if (m_moveTime != mt)
+    if (m_moveTime.ms_totalTime != mt.ms_totalTime)
     {
         Engine::setMoveTime(mt);
         if(isAnalyzing())
         {
             send("stop");
-            if (!m_moveTime)
-                send("go infinite");
-            else
-                send(QString("go movetime %1").arg(m_moveTime));
+            go();
         }
     }
 }
@@ -112,15 +106,30 @@ void UCIEngine::protocolEnd()
     m_board.clear();
 }
 
+void UCIEngine::go()
+{
+    if (m_moveTime.tm == EngineParameter::TIME_GONG)
+    {
+        if (!m_moveTime.ms_totalTime)
+            send("go infinite");
+        else
+            send(QString("go movetime %1").arg(m_moveTime.ms_totalTime));
+    }
+    else if (m_moveTime.tm == EngineParameter::TIME_SUDDEN_DEATH)
+    {
+        send(QString("go wtime %1 btime %2 winc 0 binc 0 movestogo %3")
+             .arg(m_moveTime.ms_white)
+             .arg(m_moveTime.ms_black)
+             .arg(m_moveTime.movesToDo));
+    }
+}
+
 void UCIEngine::setPosition()
 {
     m_waitingOn = "";
     send(QString("setoption name MultiPV value %1").arg(m_mpv));
     send("position fen " + m_position);
-    if (!m_moveTime)
-        send("go infinite");
-    else
-        send(QString("go movetime %1").arg(m_moveTime));
+    go();
 }
 
 void UCIEngine::processMessage(const QString& message)

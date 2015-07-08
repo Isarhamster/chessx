@@ -143,6 +143,11 @@ FicsConsole::~FicsConsole()
     delete ui;
 }
 
+bool FicsConsole::canUsePremove() const
+{
+    return (gameMode && !puzzleMode);
+}
+
 void FicsConsole::Terminate()
 {
     if (m_ficsClient)
