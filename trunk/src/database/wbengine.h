@@ -34,7 +34,7 @@ public:
              QTextStream* logStream = NULL);
 
     /** Analyses the the given position */
-    bool startAnalysis(const Board& board, int nv, int mt, bool bNewGame);
+    bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame);
 
     /** Stops any analysis */
     void stopAnalysis();
@@ -62,14 +62,18 @@ private:
     /** Parses analysis */
     void parseAnalysis(const QString& message);
     void parseBestMove(const QString& message);
+    void parseEndOfGame(const QString &command, const QString &message);
 
     /** Instruct version 1 engine to stop pondering */
     void v1TurnOffPondering();
+    void go();
 
     Board m_board;
 
     bool m_analyze;
     bool m_setboard;
+    bool m_bHasSentAnalyze;
+
 };
 
 #endif // __WBENGINE_H__

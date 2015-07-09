@@ -224,6 +224,10 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
         analysis.setElapsedTimeMS(elapsed);
         emit receivedBestMove(analysis);
     }
+    else if (analysis.getEndOfGame())
+    {
+        emit receivedBestMove(analysis);
+    }
 }
 
 void AnalysisWidget::setPosition(const Board& board)
