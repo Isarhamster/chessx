@@ -23,10 +23,39 @@ WBEngine::WBEngine(const QString& name,
 {
     m_analyze = false;
     m_setboard = false;		// We do not support version 1 xboard protocol, so this _must_ be set true by feature discovery
+    m_bHasSentAnalyze = false;
     m_invertBlack = true;
 }
 
-bool WBEngine::startAnalysis(const Board& board, int nv, int mt, bool /*bNewGame*/)
+void WBEngine::go()
+{
+    send("post");
+    if (m_moveTime.tm == EngineParameter::TIME_GONG)
+    {
+        if (m_moveTime.ms_totalTime > 0)
+        {
+            send (QString("st %1").arg(m_moveTime.ms_totalTime/1000));
+            send ("go");
+            m_bHasSentAnalyze = false;
+        }
+        else
+        {
+            send("analyze");
+            m_bHasSentAnalyze = true;
+        }
+    }
+    else if (m_moveTime.tm == EngineParameter::TIME_SUDDEN_DEATH)
+    {
+        QTime t(0,0);
+        t = t.addMSecs(m_board.toMove()==White ? m_moveTime.ms_white : m_moveTime.ms_black);
+        int mps = m_moveTime.movesToDo == 999 ? 0 : m_moveTime.movesToDo;
+        send (QString("level %1 %2 0").arg(mps).arg(t.toString("HH:mm:ss")));
+        send ("go");
+        m_bHasSentAnalyze = false;
+    }
+}
+
+bool WBEngine::startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool /*bNewGame*/)
 {
     Engine::setMoveTime(mt);
     m_mpv = nv;
@@ -40,16 +69,7 @@ bool WBEngine::startAnalysis(const Board& board, int nv, int mt, bool /*bNewGame
     if(m_analyze && isActive() && m_setboard)
     {
         send("setboard " + board.toFen());
-        send("post");
-        if (mt > 0)
-        {
-            send (QString("st %1").arg(m_moveTime/1000));
-            send ("go");
-        }
-        else
-        {
-            send("analyze");
-        }
+        go();
         setAnalyzing(true);
         return true;
     }
@@ -60,7 +80,7 @@ void WBEngine::stopAnalysis()
 {
     if(isAnalyzing())
     {
-        send("exit");
+        if (m_bHasSentAnalyze) send("exit");
         setAnalyzing(false);
     }
 }
@@ -108,6 +128,10 @@ void WBEngine::processMessage(const QString& message)
     else if(command == "move")
     {
         parseBestMove(trim);
+    }
+    else if ((command == "resign") || (command == "result") || (command == "1-0") || (command == "0-1") || (command == "1/2-1/2"))
+    {
+        parseEndOfGame(command, trim);
     }
     else if(isAnalyzing())
     {
@@ -164,8 +188,8 @@ void WBEngine::feature(const QString& command)
         }
         else if(feature == "done")
         {
-            featureDone((bool)value.toInt());
             send("accepted " + feature);
+            featureDone((bool)value.toInt());
         }
         else
         {
@@ -225,6 +249,29 @@ void WBEngine::parseBestMove(const QString& message)
         analysis.setBestMove(true);
         sendAnalysis(analysis);
     }
+}
+
+void WBEngine::parseEndOfGame(const QString& command, const QString& message)
+{
+    Analysis analysis;
+    analysis.setEndOfGame(true);
+    if (command == "1-0" || message.contains("1-0"))
+    {
+        analysis.setScore(999);
+    }
+    else if (command == "0-1" || message.contains("0-1"))
+    {
+        analysis.setScore(-999);
+    }
+    else if (command == "1/2-1/2")
+    {
+       analysis.setScore(0);
+    }
+    else if (message.isEmpty())
+    {
+        analysis.setScore(m_board.toMove() == White ? 999 : -999);
+    }
+    sendAnalysis(analysis);
 }
 
 void WBEngine::parseAnalysis(const QString& message)

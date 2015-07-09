@@ -70,6 +70,9 @@ public:
     int elapsedTimeMS() const;
     void setElapsedTimeMS(int elapsedTimeMS);
 
+    bool getEndOfGame() const;
+    void setEndOfGame(bool value);
+
 private:
     int m_numpv;
     int m_msec;
@@ -77,6 +80,7 @@ private:
     int m_depth;
     int m_score;
     bool m_bestMove;
+    bool m_endOfGame;
     quint64 m_nodes;
     MoveList m_variation;
     int m_elapsedTimeMS;

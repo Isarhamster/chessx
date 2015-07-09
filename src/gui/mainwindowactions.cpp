@@ -1796,7 +1796,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 if (m_matchTime[game().board().toMove()].msecsSinceStartOfDay() > (int) m_matchParameter.ms_totalTime)
                 {
                     playSound(":/sounds/fanfare.wav");
-                    // Game is drawn by repetition or 50 move rule
+                    // Game is terminated by end of time
                     m_autoRespond->trigger();
                     if (game().isMainline())
                     {
@@ -1815,6 +1815,20 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         game().setResult(Draw);
                     }
                 }
+                else if(analysis.getEndOfGame())
+                {
+                    if (analysis.score() == 0.0)
+                    {
+                        game().setResult(Draw);
+                    }
+                    else
+                    {
+                        setResultAgainstColorToMove();
+                    }
+                    playSound(":/sounds/fanfare.wav");
+                    // Game is terminated by engine
+                    m_autoRespond->trigger();
+                }
                 else if(!analysis.variation().isEmpty() && analysis.bestMove())
                 {
                     Move m = analysis.variation().first();
@@ -1825,7 +1839,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         par.ms_white = m_matchParameter.ms_totalTime - m_matchTime[White].msecsSinceStartOfDay();
                         par.ms_black = m_matchParameter.ms_totalTime - m_matchTime[Black].msecsSinceStartOfDay();
                         m_mainAnalysis->setMoveTime(par);
-                        if (!doEngineMove(m, par)) // todo
+                        if (!doEngineMove(m, par))
                         {
                             m_autoRespond->trigger();
                         }
@@ -1848,7 +1862,8 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             if (m_matchTime[game().board().toMove()].msecsSinceStartOfDay() > (int) m_matchParameter.ms_totalTime)
             {
                 playSound(":/sounds/fanfare.wav");
-                // Game is drawn by repetition or 50 move rule
+                // Game is terminated by end of time
+
                 m_engineMatch->trigger();
                 if (game().isMainline())
                 {
@@ -1866,6 +1881,20 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 {
                     game().setResult(Draw);
                 }
+            }
+            else if(analysis.getEndOfGame())
+            {
+                if (analysis.score() == 0.0)
+                {
+                    game().setResult(Draw);
+                }
+                else
+                {
+                    setResultAgainstColorToMove();
+                }
+                playSound(":/sounds/fanfare.wav");
+                // Game is terminated by engine
+                m_engineMatch->trigger();
             }
             else if(!analysis.variation().isEmpty() && analysis.bestMove())
             {

@@ -31,6 +31,7 @@ Analysis& Analysis::operator=(const Analysis& rhs)
         m_nodes     = rhs.m_nodes;
         m_numpv     = rhs.m_numpv;
         m_bestMove  = rhs.m_bestMove;
+        m_endOfGame = rhs.m_endOfGame;
         m_variation = rhs.m_variation;
         m_elapsedTimeMS = rhs.m_elapsedTimeMS;
     }
@@ -45,6 +46,7 @@ void Analysis::clear()
     m_numpv = 1;
     m_elapsedTimeMS = 0;
     m_bestMove = false;
+    m_endOfGame = false;
     m_variation.clear();
 }
 
@@ -144,6 +146,16 @@ void Analysis::setElapsedTimeMS(int elapsedTimeMS)
     m_elapsedTimeMS = elapsedTimeMS;
 }
 
+bool Analysis::getEndOfGame() const
+{
+    return m_endOfGame;
+}
+
+void Analysis::setEndOfGame(bool value)
+{
+    m_endOfGame = value;
+}
+
 int Analysis::movesToMate() const
 {
     return m_mateIn;
@@ -159,7 +171,13 @@ QString Analysis::toString(const Board& board) const
     Board testBoard = board;
     QString out;
 
-    if (isAlreadyMate())
+    if (getEndOfGame())
+    {
+        QString color = testBoard.toMove() == Black ? "000080" : "800000";
+        QString text = tr("Resigns");
+        out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color).arg(text);
+    }
+    else if (isAlreadyMate())
     {
         QString color = testBoard.toMove() == Black ? "000080" : "800000";
         QString text = tr("Mate");
