@@ -117,10 +117,9 @@ void UCIEngine::go()
     }
     else if (m_moveTime.tm == EngineParameter::TIME_SUDDEN_DEATH)
     {
-        send(QString("go wtime %1 btime %2 winc 0 binc 0 movestogo %3")
+        send(QString("go wtime %1 btime %2 winc 0 binc 0")
              .arg(m_moveTime.ms_white)
-             .arg(m_moveTime.ms_black)
-             .arg(m_moveTime.movesToDo));
+             .arg(m_moveTime.ms_black));
     }
 }
 

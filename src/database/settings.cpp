@@ -350,7 +350,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Match/Mode", 0);
     map.insert("/Match/TotalTime", 3000);
     map.insert("/Match/UserBonus", 1000);
-    map.insert("/Match/MoveCount", 999);
+    map.insert("/Match/MoveCount", 0);
     map.insert("/Match/AnnotateEgt", true);
 
     map.insert("/Sound/Move", true);
