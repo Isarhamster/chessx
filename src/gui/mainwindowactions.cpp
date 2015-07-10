@@ -822,7 +822,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                         m_mainAnalysis->startEngine();
                     }
 
-                    if (m_matchTime[game().board().toMove()].msecsSinceStartOfDay() > (int) m_matchParameter.ms_totalTime)
+                    if (par.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()].msecsSinceStartOfDay() > (int) m_matchParameter.ms_totalTime)
                     {
                         playSound(":/sounds/fanfare.wav");
                         // Game is drawn by repetition or 50 move rule
@@ -1793,7 +1793,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 QTime t = m_matchTime[game().board().toMove()];
                 m_matchTime[game().board().toMove()] = t.addMSecs(analysis.elapsedTimeMS());
 
-                if (m_matchTime[game().board().toMove()].msecsSinceStartOfDay() > (int) m_matchParameter.ms_totalTime)
+                if (m_matchParameter.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()].msecsSinceStartOfDay() > (int) m_matchParameter.ms_totalTime)
                 {
                     playSound(":/sounds/fanfare.wav");
                     // Game is terminated by end of time
@@ -1859,7 +1859,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             QTime t = m_matchTime[game().board().toMove()];
             m_matchTime[game().board().toMove()] = t.addMSecs(analysis.elapsedTimeMS());
 
-            if (m_matchTime[game().board().toMove()].msecsSinceStartOfDay() > (int) m_matchParameter.ms_totalTime)
+            if (m_matchParameter.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()].msecsSinceStartOfDay() > (int) m_matchParameter.ms_totalTime)
             {
                 playSound(":/sounds/fanfare.wav");
                 // Game is terminated by end of time
