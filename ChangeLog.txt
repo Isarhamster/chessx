@@ -1,6 +1,39 @@
-This will install version 1.3.2 of ChessX.
+This will install version 1.3.4 of ChessX.
 
-List of Changes:
+August 2015: Version 1.3.4
+- New Feature: Game matches with sudden death timing
+- New Feature: Let two engines play out a game (engine match)
+- New Feature: #104 Display arbitrary tags in game list
+- New Feature: Scratchpad
+
+- New feature: Show time annotation also for previous move (if available)
+- New feature: Accept resignations from winboard engines
+- New feature: FICS start button
+- New feature: Assign rating to databases
+- New feature: Test 50 moves/position repetition when playing out games
+- New feature: No hints during training or puzzling
+- New feature: Drag/drop PGN-Files/Text to other applications
+- New feature: CR#152
+- New feature: Make images flipped if mainboard is flipped
+- New feature: B/W images of board
+
+- Bugfix: Do not indicate premove in FICS puzzle mode
+- Bugfix: Output would occasionally write orphaned x... to HTML
+- Bugfix: Size of slider text (thx to Byrial Jensen)
+- Bugfix: Tablebase results would sometimes not fit to actual board
+- Bugfix: FICS text "puzzle almost solved" ends puzzle mode
+- Bugfix: Handle invalid password upon connecting to FICS
+- Bugfix: Terminate auto analysis upon changing of database
+- Bugfix: Doing moves while not at end of game broken
+- Bugfix: Autoplayer did not work together with backward analysis enabled
+- Bugfix: Chartwidget repaints occasionally fail
+- Bugfix: Copy games from main menu did not work for selections
+- Bugfix: Pasting into new game asserts
+- Bugfix: Progress not indicated for searching operations
+- Bugfix: Rendering board would occasionally draw offset twice
+- Bugfix: Qt4 compatibility
+
+May 2015: Version 1.3.2
 
 - New feature: Variation indicator in toolbox
 - New feature: FICS - Toggle board at beginning of puzzle

@@ -103,9 +103,9 @@ hard to implement for GUI developers.</p>
 <p>You can change the move rate with the slider in the bottom right corner of the status bar. Draw the slider to the very left for infinite analysis or
 to the right to make the engine analyse from 1 to 10 secondes per move.</p>
 
-<h3>Playing out games</h3>
+<h3>Playing (out) games against an engine</h3>
 <p>You can play out a game after the final position by activating Auto Respond mode.
-and activating the engine in Analysis Pane 1. Whenever you make a move the engine will start to analyse the
+Whenever you make a move the engine in pane 1 will start to analyse the
 position for the time defined by the slider at the bottom right of the status bar. If the allotted time is over, the
 engine will make the best move found so far.</p>
 
@@ -128,9 +128,7 @@ analyse a complete database, a loss of power will otherwise lose all results so 
 </ul>
 
 <h3>Using Books in ChessX</h3>
-<p>Polyglot is a book standard supported by ChessX. It is licensed under GNU GPL Version 2.0.
-See <a href="http://wbec-ridderkerk.nl/html/details1/PolyGlot.html">Home of Polyglot</a>
-for code and details.</p>
+<p>Polyglot is a book standard supported by ChessX. The orginal code was licensed under GNU GPL Version 2.0.</p>
 <p>ChessX displays books like any other database in the Opening Tree Browser. Drag a polyglot book (which must have the suffix ".bin")
 to the Database List or open the book via menu. Once it is open, it becomes available as any other open database
 in the combo box "Source" beneath the opening tree.</p>
@@ -202,6 +200,13 @@ See the chapter on Making Moves and the associated preferences to enable move gu
 <h3>Playing matches</h3>
 <p>The match button makes sure, that ChessX does not give away hints on the position. This effectively disables
 engine output, tablebase output, moving back or forward in a game etc.</p>
+
+<h3>Matches between engines</h3>
+<p>With "Game/Engine Match" you can arrange a match between two engines. Analysis pane 1 will play the white pieces, pane 2 with the black pieces.
+Starting an engine match brings up the match parameter dialog.
+If activated, the elapsed game time is annotated. You can play with Gong (each move will be made within a fixed time) or sudden death, where
+each engine gets a fixed amount of time for the whole game. ChessX will supervise the time and also adjudicate a draw in case of a three-fold repetition,
+insufficient material or the 50 move rule.</p>
 
 <h3>Online Chess</h3>
 <p>ChessX supports online access to games played or stored on the free internet chess server.</p>
