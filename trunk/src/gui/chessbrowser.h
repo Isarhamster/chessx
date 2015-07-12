@@ -51,7 +51,7 @@ public slots:
     /** Show menu */
     void slotContextMenu(const QPoint& pos);
     /** Show the time in the String for the player with @p color */
-    void slotDisplayTime(const QString& text, Color color);
+    void slotDisplayTime(const QString& text, Color color, const QString &otherText);
     /** Show the material */
     void slotDisplayMaterial(const QList<double>& material);
     void slotDisplayPly(int ply);

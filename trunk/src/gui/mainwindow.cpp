@@ -209,7 +209,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
     connect(m_gameView, SIGNAL(queryActiveGame(const Game**)), this, SLOT(slotGetActiveGame(const Game**)));
     connect(m_gameView, SIGNAL(signalMergeGame(int)), this, SLOT(slotMergeActiveGame(int)));
-    connect(this, SIGNAL(displayTime(const QString&, Color)), m_gameView, SLOT(slotDisplayTime(const QString&, Color)));
+    connect(this, SIGNAL(displayTime(const QString&, Color, const QString&)), m_gameView, SLOT(slotDisplayTime(const QString&, Color, const QString&)));
     gameTextDock->setWidget(m_gameWindow);
     connect(this, SIGNAL(reconfigure()), m_gameView, SLOT(slotReconfigure()));
     addDockWidget(Qt::RightDockWidgetArea, gameTextDock);
@@ -417,10 +417,10 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_sliderSpeed, SIGNAL(valueChanged(int)), this, SLOT(slotSetSliderText(int)));
     slotSetSliderText(m_sliderSpeed->value());
 
-    QToolButton* matchParameterButton = new QToolButton(this);
-    matchParameterButton->setIcon(QPixmap(":/images/match.png"));
-    connect(matchParameterButton, SIGNAL(clicked()), this, SLOT(slotMatchParameterDlg()));
-    statusBar()->addPermanentWidget(matchParameterButton);
+//    QToolButton* matchParameterButton = new QToolButton(this);
+//    matchParameterButton->setIcon(QPixmap(":/images/match.png"));
+//    connect(matchParameterButton, SIGNAL(clicked()), this, SLOT(slotMatchParameterDlg()));
+//    statusBar()->addPermanentWidget(matchParameterButton);
 
     statusBar()->setFixedHeight(statusBar()->height());
     statusBar()->setSizeGripEnabled(true);

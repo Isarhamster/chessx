@@ -307,7 +307,7 @@ QAction* ChessBrowser::createNagAction(const Nag& nag)
     return action;
 }
 
-void ChessBrowser::slotDisplayTime(const QString& text, Color color)
+void ChessBrowser::slotDisplayTime(const QString& text, Color color, const QString& otherText)
 {
     if(toolBar)
     {
@@ -321,7 +321,7 @@ void ChessBrowser::slotDisplayTime(const QString& text, Color color)
         clock = toolBar->findChild<QLCDNumber*>(objectName);
         if(clock)
         {
-            clock->display("");
+            clock->display(otherText);
         }
     }
 }

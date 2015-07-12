@@ -989,7 +989,7 @@ void MainWindow::moveChanged()
     m_currentFrom = InvalidSquare;
     m_currentTo = InvalidSquare;
 
-    emit displayTime(g.timeAnnotation(), oppositeColor(g.board().toMove()));
+    emit displayTime(g.timeAnnotation(m, Game::BeforeMove), g.board().toMove(), g.timeAnnotation(m, Game::AfterMove));
 
     // Highlight current move
     m_gameView->showMove(m);
@@ -1591,6 +1591,11 @@ void MainWindow::slotToggleAutoRespond()
     m_machineHasToMove = false;
     if (m_autoRespond->isChecked())
     {
+        if (!MatchParameterDlg::getParameters(m_matchParameter))
+        {
+            m_autoRespond->setChecked(false);
+            return;
+        }
         m_matchParameter.reset();
     }
     else
@@ -1641,6 +1646,11 @@ void MainWindow::slotToggleEngineMatch()
     Guess::setGuessAllowed(!m_engineMatch->isChecked());
     if(m_engineMatch->isChecked())
     {
+        if (!MatchParameterDlg::getParameters(m_matchParameter))
+        {
+            m_engineMatch->setChecked(false);
+            return;
+        }
         m_AutoInsertLastBoard.clear();
         if(!m_mainAnalysis->isEngineConfigured())
         {
@@ -2855,11 +2865,6 @@ void MainWindow::slotSetSliderText(int interval)
     {
         m_sliderText->setText(QString::number(interval)+"s");
     }
-}
-
-void MainWindow::slotMatchParameterDlg()
-{
-    MatchParameterDlg::getParameters(m_matchParameter);
 }
 
 void MainWindow::slotUpdateOpeningTreeWidget()
