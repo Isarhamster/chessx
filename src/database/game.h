@@ -135,7 +135,7 @@ public :
     /** @return annotation at move at node @p moveId. */
     QString specAnnotation(const QRegExp &r, MoveId moveId = CURRENT_MOVE) const;
     /** @return time annotation (either egt or clock) at move at node @p moveId. */
-    QString timeAnnotation(MoveId moveId = CURRENT_MOVE) const;
+    QString timeAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
 
     /** @return @p true if a move can have annotation before the move. */
     bool canHaveStartAnnotation(MoveId moveId = CURRENT_MOVE) const;

@@ -1211,8 +1211,18 @@ QString Game::specAnnotation(const QRegExp& r, MoveId moveId) const
     return "";
 }
 
-QString Game::timeAnnotation(MoveId moveId) const
+QString Game::timeAnnotation(MoveId moveId, Position position) const
 {
+    if (position == BeforeMove)
+    {
+        MoveId node = nodeValid(moveId);
+        if (node>ROOT_NODE)
+        {
+            moveId = m_moveNodes.at(node).previousNode;
+        }
+        else return "";
+    }
+
     QString s = specAnnotation(clk, moveId);
     if(s.isEmpty())
     {

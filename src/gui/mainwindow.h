@@ -416,8 +416,6 @@ protected slots:
     void slotMoveIntervalChanged(int);
     /** Value for Move Interval Slider is changed */
     void slotSetSliderText(int);
-    /** Start the mach parameter dialog */
-    void slotMatchParameterDlg();
     /** Query for a database to load */
     void QueryLoadDatabase();
     /** Handle a disconnection from fics */
@@ -469,7 +467,7 @@ signals:
     /** Emitted upon finishing a file download */
     void LoadFinished(DatabaseInfo*);
     /** Emitted upon a update for the elapsed / clock time */
-    void displayTime(const QString&, Color);
+    void displayTime(const QString&, Color, const QString&);
 
     void signalMoveHasVariation(bool);
     void signalVariationHasSibling(bool);
