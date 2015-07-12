@@ -13,8 +13,8 @@
 #include "wbengine.h"
 #include "uciengine.h"
 
-#define DEBUG_ENGINE
-//#undef DEBUG_ENGINE
+//#define DEBUG_ENGINE
+#undef DEBUG_ENGINE
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
