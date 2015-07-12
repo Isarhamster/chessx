@@ -404,8 +404,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_matchParameter.annotateEgt  = AppSettings->getValue("/Match/AnnotateEgt").toBool();
 
     m_matchParameter.reset();
-    m_mainAnalysis->setMoveTime(m_matchParameter);
-    m_secondaryAnalysis->setMoveTime(m_matchParameter);
+    m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
+    m_secondaryAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
 
     statusBar()->addPermanentWidget(new QLabel(tr("Move Interval:"), this));
     statusBar()->addPermanentWidget(m_sliderSpeed);

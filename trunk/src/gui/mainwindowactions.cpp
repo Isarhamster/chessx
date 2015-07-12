@@ -785,6 +785,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                     {
                         if (!m_elapsedUserTimeValid && !m_mainAnalysis->isEngineRunning())
                         {
+                            m_secondaryAnalysis->stopEngine(); // Avoid interference of second engine
                             m_mainAnalysis->unPin();
                             m_mainAnalysis->setMoveTime(m_matchParameter);
                             m_mainAnalysis->startEngine();
@@ -1583,10 +1584,19 @@ void MainWindow::slotToggleTraining()
 
 void MainWindow::slotToggleAutoRespond()
 {
+    if (AppSettings->getValue("/Board/noHints").toBool())
+    {
+        Guess::setGuessAllowed(!m_autoRespond->isChecked());
+    }
     m_machineHasToMove = false;
     if (m_autoRespond->isChecked())
     {
         m_matchParameter.reset();
+    }
+    else
+    {
+        // Reset to value from slider
+        m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
     }
     m_matchTime[0] = QTime(0,0);
     m_matchTime[1] = QTime(0,0);
@@ -1597,7 +1607,7 @@ void MainWindow::slotToggleAutoAnalysis()
 {
     if(m_autoAnalysis->isChecked())
     {
-        m_mainAnalysis->setMoveTime(m_sliderSpeed->value());
+        m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
         m_AutoInsertLastBoard.clear();
         if(!m_mainAnalysis->isEngineConfigured())
         {
@@ -1628,6 +1638,7 @@ void MainWindow::slotToggleAutoAnalysis()
 
 void MainWindow::slotToggleEngineMatch()
 {
+    Guess::setGuessAllowed(!m_engineMatch->isChecked());
     if(m_engineMatch->isChecked())
     {
         m_AutoInsertLastBoard.clear();
@@ -1679,6 +1690,8 @@ void MainWindow::slotToggleEngineMatch()
             m_mainAnalysis->stopEngine();
             m_secondaryAnalysis->stopEngine();
         }
+        m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
+        m_secondaryAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
     }
 }
 
@@ -2825,15 +2838,23 @@ void MainWindow::slotMoveIntervalChanged(int interval)
         m_autoPlayTimer->setInterval(interval);
     }
 
-    if(m_autoAnalysis->isChecked())
+    if (!m_autoRespond->isChecked() && !m_engineMatch->isChecked())
     {
         m_mainAnalysis->setMoveTime(interval);
+        m_secondaryAnalysis->setMoveTime(interval);
     }
 }
 
 void MainWindow::slotSetSliderText(int interval)
 {
-    m_sliderText->setText(QString::number(interval)+"s");
+    if (!interval)
+    {
+        m_sliderText->setText(QString("0s/")+tr("Infinite"));
+    }
+    else
+    {
+        m_sliderText->setText(QString::number(interval)+"s");
+    }
 }
 
 void MainWindow::slotMatchParameterDlg()
