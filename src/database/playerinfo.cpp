@@ -158,7 +158,7 @@ void PlayerInfo::update()
         foreach(QString s, openingsX[i].keys())
         {
             QString opening = EcoPositions::findEcoName(s);
-            openingMap[opening] = openingMap.value(opening) + 1;
+            openingMap[opening] = openingMap.value(opening) + openingsX[i][s];
         }
 
         QSet<int> valset = openingMap.values().toSet();
