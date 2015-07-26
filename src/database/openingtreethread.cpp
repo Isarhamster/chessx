@@ -89,11 +89,11 @@ void OpeningTreeThread::run()
     }
     else
     {
-        Game g;
         for(int i = 0; i < n; ++i)
         {
             if (m_sourceIsDatabase || m_filter->contains(i))
             {
+                Game g;
                 m_filter->database()->loadGameMoves(i, g);
                 int id = g.findPosition(m_board);
                 if((id != NO_MOVE) && (m_bEnd ? g.atGameEnd(id) : true))
