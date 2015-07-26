@@ -42,10 +42,10 @@ static QMap<quint64, QList<Square> > gtmPositions;
 // then use the Scid internal chess engine to decide which is the "best"
 // move to display to the user.
 //
-void updateFinalGuess(const Board& board, int target, const Move& move)
+void updateFinalGuess(const Board& board, Square target, const Move& move)
 {
-    int from = move.from();
-    int to = move.to();
+    Square from = move.from();
+    Square to = move.to();
 
     QList<Square> data;
     data << from << to;
