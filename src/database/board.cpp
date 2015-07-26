@@ -15,6 +15,7 @@
 #include <QHash>
 #include "board.h"
 #include "guess.h"
+#include "square.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -147,11 +148,11 @@ bool Board::doIt(const Move& m, bool undo)
     {
         if(m == White)
         {
-            hashPiece(m.to() - 8, m.capturedPiece());
+            hashPiece(Square(m.to() - 8), m.capturedPiece());
         }
         else
         {
-            hashPiece(m.to() + 8, m.capturedPiece());
+            hashPiece(Square(m.to() + 8), m.capturedPiece());
         }
     }
     else if(m.capturedPiece())
@@ -230,9 +231,9 @@ void Board::hashEpSquare()
 void Board::createHash()
 {
     m_hashValue = 0;
-    for(int i = 0; i < MAX_SQUARES; ++i)
+    for(Square square = a1; square < NumSquares; ++square)
     {
-        hashPiece(i, pieceAt(i));
+        hashPiece(square, pieceAt(square));
     }
     if(toMove() == Black)
     {
