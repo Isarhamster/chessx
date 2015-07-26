@@ -399,6 +399,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
     m_matchParameter.tm           = (EngineParameter::TimeModus) AppSettings->getValue("/Match/Mode").toBool();
     m_matchParameter.ms_totalTime = AppSettings->getValue("/Match/TotalTime").toInt();
+    m_matchParameter.ms_increment = AppSettings->getValue("/Match/Increment").toInt();
     m_matchParameter.ms_bonus     = AppSettings->getValue("/Match/UserBonus").toInt();
     m_matchParameter.movesToDo    = AppSettings->getValue("/Match/MoveCount").toInt();
     m_matchParameter.annotateEgt  = AppSettings->getValue("/Match/AnnotateEgt").toBool();
@@ -632,7 +633,7 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
     else
     {
         m_nagText.append(e->text());
-        if (addVariation(m_nagText))
+        if (!(m_nagText.length()==3 && m_nagText.contains("-")) && addVariation(m_nagText))
         {
             if (qobject_cast<FicsDatabase*>(database()))
             {
