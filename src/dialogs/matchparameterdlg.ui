@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>291</width>
-    <height>209</height>
+    <width>294</width>
+    <height>257</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,6 +56,23 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="labelInc">
+          <property name="text">
+           <string>Increment</string>
+          </property>
+          <property name="buddy">
+           <cstring>timeInc</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="timeInc"/>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLabel" name="labelBonus">
@@ -63,16 +80,12 @@
            <string>User Bonus</string>
           </property>
           <property name="buddy">
-           <cstring>labelBonus</cstring>
+           <cstring>timeBonus</cstring>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QTimeEdit" name="timeBonus">
-          <property name="displayFormat">
-           <string>mm:ss</string>
-          </property>
-         </widget>
+         <widget class="QSpinBox" name="timeBonus"/>
         </item>
        </layout>
       </item>
