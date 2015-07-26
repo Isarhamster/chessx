@@ -79,7 +79,7 @@ int BoardView::flags() const
     return m_flags;
 }
 
-void BoardView::setBoard(const Board& value, int from, int to, bool atLineEnd)
+void BoardView::setBoard(const Board& value, Square from, Square to, bool atLineEnd)
 {
     m_clickUsed = true;
     m_board = value;
@@ -97,7 +97,7 @@ void BoardView::setBoard(const Board& value, int from, int to, bool atLineEnd)
     update();
 }
 
-void BoardView::setStoredMove(int from, int to)
+void BoardView::setStoredMove(Square from, Square to)
 {
     m_storedFrom = from;
     m_storedTo = to;
@@ -138,7 +138,7 @@ void BoardView::drawSquares(QPaintEvent* event)
 {
     QPainter p(this);
     p.translate(m_translate);
-    for(Square square = 0; square < 64; square++)
+    for (Square square=a1; square<NumSquares; ++square)
     {
         QRect rect = squareRect(square);
         if(!event->region().intersects(rect))
@@ -160,23 +160,23 @@ void BoardView::drawCoordinates(QPaintEvent* event)
         QPainter p(this);
         p.save();
         p.setPen(m_theme.color(BoardTheme::Frame));
-        for(Square square = 0; square < 8; square++)
+        for(int i = 0; i<8; ++i)
         {
-            QRect rect = coordinateRectVertical(square);
+            QRect rect = coordinateRectVertical(i);
             if(!event->region().intersects(rect))
             {
                 continue;
             }
-            p.drawText(rect, Qt::AlignCenter, QString("%1").arg(square + 1));
+            p.drawText(rect, Qt::AlignCenter, QString("%1").arg(i + 1));
         }
-        for(Square square = 0; square < 8; square++)
+        for(int i = 0; i<8; ++i)
         {
-            QRect rect = coordinateRectHorizontal(square);
+            QRect rect = coordinateRectHorizontal(i);
             if(!event->region().intersects(rect))
             {
                 continue;
             }
-            p.drawText(rect, Qt::AlignCenter, QString("%1").arg(QChar('a' + square)));
+            p.drawText(rect, Qt::AlignCenter, QString("%1").arg(QChar('a' + i)));
         }
         p.restore();
     }
@@ -244,7 +244,7 @@ QPoint BoardView::posFromSquare(int square) const
 
 void BoardView::drawHiliting(QPaintEvent* event)
 {
-    for(Square square = 0; square < 64; square++)
+    for (Square square=a1; square<NumSquares; ++square)
     {
         QRect rect = squareRect(square);
         if(!event->region().intersects(rect))
@@ -301,7 +301,7 @@ void BoardView::drawPieces(QPaintEvent* event)
     QPainter p(this);
     p.translate(m_translate);
 
-    for(Square square = 0; square < 64; square++)
+    for (Square square=a1; square<NumSquares; ++square)
     {
         QRect rect = squareRect(square);
         if(!event->region().intersects(rect))
@@ -400,7 +400,7 @@ Square BoardView::squareAt(const QPoint& p) const
     }
     x /= width;
     y /= height;
-    return isFlipped() ? (8 * y + 7 - x) : (8 * (7 - y) + x);
+    return Square(isFlipped() ? (8 * y + 7 - x) : (8 * (7 - y) + x));
 }
 
 void BoardView::mousePressEvent(QMouseEvent* event)
@@ -424,8 +424,8 @@ bool BoardView::showGuess(Square s)
         Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), (int) s, m_moveList);
         if(!sm.error)
         {
-            m_hiFrom = sm.from;
-            m_hiTo = sm.to;
+            m_hiFrom = Square(sm.from);
+            m_hiTo = Square(sm.to);
             update(squareRect(m_hiFrom));
             update(squareRect(m_hiTo));
         }
@@ -459,8 +459,8 @@ void BoardView::showThreat(Guess::Result sm, Board b)
     {
         if(!sm.error)
         {
-            m_threatFrom = sm.from;
-            m_threatTo = sm.to;
+            m_threatFrom = Square(sm.from);
+            m_threatTo = Square(sm.to);
             update();
         }
     }
@@ -494,8 +494,8 @@ void BoardView::nextGuess(Square s)
         if(m_moveList.size() && (int) m_moveListCurrent < m_moveList.size())
         {
             Guess::simpleMoveT * sold = m_moveList.Get(m_moveListCurrent);
-            update(squareRect(sold->from));
-            update(squareRect(sold->to));
+            update(squareRect(Square(sold->from)));
+            update(squareRect(Square(sold->to)));
 
             if((int)m_moveListCurrent < m_moveList.size() - 1)
             {
@@ -507,8 +507,8 @@ void BoardView::nextGuess(Square s)
             }
 
             Guess::simpleMoveT * sm = m_moveList.Get(m_moveListCurrent);
-            m_hiFrom = sm->from;
-            m_hiTo = sm->to;
+            m_hiFrom = Square(sm->from);
+            m_hiTo = Square(sm->to);
             update(squareRect(m_hiFrom));
             update(squareRect(m_hiTo));
         }
@@ -779,18 +779,18 @@ QRect BoardView::squareRect(Square square)
                  m_theme.size());
 }
 
-QRect BoardView::coordinateRectVertical(Square square)
+QRect BoardView::coordinateRectVertical(int n)
 {
     Q_ASSERT(m_coordinates);
-    int x = isFlipped() ? square % 8 : 7 - square % 8;
+    int x = isFlipped() ? n % 8 : 7 - n % 8;
     return QRect(QPoint(0, x * m_theme.size().height() + (m_theme.size().height() - CoordinateSize) / 2) + m_translate,
                  QSize(CoordinateSize, CoordinateSize));
 }
 
-QRect BoardView::coordinateRectHorizontal(Square square)
+QRect BoardView::coordinateRectHorizontal(int n)
 {
     Q_ASSERT(m_coordinates);
-    int y = isFlipped() ? 7 - square % 8 : square % 8;
+    int y = isFlipped() ? 7 - n % 8 : n % 8;
     return QRect(QPoint(CoordinateSize + (y * (m_theme.size().width())) + (m_theme.size().width() - CoordinateSize) / 2,
                         8 * m_theme.size().height()) + m_translate,
                  QSize(CoordinateSize, CoordinateSize));
@@ -846,7 +846,10 @@ void BoardView::dropEvent(QDropEvent *event)
     if(mimeData)
     {
         Square s = squareAt(event->pos());
-        emit pieceDropped(s, mimeData->m_piece);
+        if (s != InvalidSquare)
+        {
+            emit pieceDropped(s, mimeData->m_piece);
+        }
         event->acceptProposedAction();
     }
 }
@@ -899,7 +902,7 @@ void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
     QString ranks = "12345678";
     int file = files.indexOf(fileChar);
     int rank = ranks.indexOf(rankChar);
-    int square = rank * 8 + file;
+    Square square = SquareFromRankAndFile(rank, file);
 
     QRect rect = squareRect(square);
     if(!event->region().intersects(rect))
@@ -1037,8 +1040,8 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
     {
         return;
     }
-    int square1 = rank1 * 8 + file1;
-    int square2 = rank2 * 8 + file2;
+    Square square1 = SquareFromRankAndFile(rank1, file1);
+    Square square2 = SquareFromRankAndFile(rank2, file2);
 
     QRect rect1 = squareRect(square1);
     QRect rect2 = squareRect(square2);

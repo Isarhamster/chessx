@@ -47,7 +47,7 @@ public:
     void setFlags(int flags);
     int flags() const;
     /** Update and shows current position. */
-    void setBoard(const Board& value, int from = InvalidSquare, int to = InvalidSquare, bool atLineEnd = true);
+    void setBoard(const Board& value, Square from = InvalidSquare, Square to = InvalidSquare, bool atLineEnd = true);
     /** @return displayed position. */
     Board board() const;
     /** @return current theme */
@@ -93,7 +93,7 @@ public slots:
     /** Disable / Enable Board for move entry. */
     void setDisabled(bool disabled);
     /** Show FICS premove */
-    void setStoredMove(int from, int to);
+    void setStoredMove(Square from, Square to);
 
 signals:
     /** User clicked source and destination squares */
@@ -140,9 +140,9 @@ private:
     /** Calculate size and position of square */
     QRect squareRect(Square s);
     /** Calculate size and position of a coordinate indicator in vertical direction */
-    QRect coordinateRectVertical(Square square);
+    QRect coordinateRectVertical(int n);
     /** Calculate size and position of a coordinate indicator in horizontal direction */
-    QRect coordinateRectHorizontal(Square square);
+    QRect coordinateRectHorizontal(int n);
     /** @return square at given position */
     Square squareAt(const QPoint& p) const;
     /** Selects given square. Previously selected square is unselected automatically. */
@@ -189,16 +189,16 @@ private:
     int m_showCurrentMove;
     bool m_guessMove;
     bool m_showThreat;
-    int m_selectedSquare;
-    int m_hoverSquare;
-    int m_hiFrom;
-    int m_hiTo;
-    int m_threatFrom;
-    int m_threatTo;
-    int m_currentFrom;
-    int m_currentTo;
-    int m_storedFrom;
-    int m_storedTo;
+    Square m_selectedSquare;
+    Square m_hoverSquare;
+    Square m_hiFrom;
+    Square m_hiTo;
+    Square m_threatFrom;
+    Square m_threatTo;
+    Square m_currentFrom;
+    Square m_currentTo;
+    Square m_storedFrom;
+    Square m_storedTo;
     bool m_atLineEnd;
     int m_flags;
     bool m_coordinates;
