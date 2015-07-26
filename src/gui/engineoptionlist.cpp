@@ -111,7 +111,7 @@ void EngineOptionList::setDB(const QList<EngineOptionData>& options,
     m_model->m_pValueMap = &mapOptionValues;
 
     setModel(m_model);
-    EngineOptionListDelegate* delegate = new EngineOptionListDelegate();
+    EngineOptionListDelegate* delegate = new EngineOptionListDelegate(this);
     delegate->setModel(m_model);
     setItemDelegate(delegate);
 
