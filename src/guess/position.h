@@ -459,7 +459,7 @@ public:
 inline void
 Position::SetCastling(colorT c, castleDirT dir, bool flag)
 {
-    register unsigned char b = (c == WHITE ? 1 : 4);
+    unsigned char b = (c == WHITE ? 1 : 4);
     if(dir == KSIDE)
     {
         b += b;
@@ -483,7 +483,7 @@ Position::SetCastling(colorT c, castleDirT dir, bool flag)
 inline bool
 Position::GetCastling(colorT c, castleDirT dir)
 {
-    register unsigned char b = (c == WHITE ? 1 : 4);
+    unsigned char b = (c == WHITE ? 1 : 4);
     if(dir == KSIDE)
     {
         b += b;
