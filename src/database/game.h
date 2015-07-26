@@ -299,7 +299,7 @@ public :
     /** Removes all tags and moves */
     void clear();
     /** Set the game start position from FEN. */
-    void dbSetStartingBoard(const QString& fen);
+    void dbSetStartingBoard(const QString& fen, bool chess960 = false);
     /** set comment associated with game */
     void setGameComment(const QString& gameComment);
     /** Remove all variations */
@@ -323,6 +323,10 @@ public :
     /** Set the game result */
     void dbSetResult(Result result);
     void setResult(Result result);
+
+    void dbSetChess960(bool b);
+    bool isChess960() const;
+    void setChess960(bool);
 
     // Searching
     /** Search game to see if given position exists, if it does return move id */
@@ -361,7 +365,7 @@ public :
     void copyFromGame(const Game& g);
 
     int resultAsInt() const;
-    void setStartingBoard(const Board &startingBoard, QString text);
+    void setStartingBoard(const Board &startingBoard, QString text, bool chess960 = false);
 
     /** Removes the node at @p moveId */
     void removeNode(MoveId moveId = CURRENT_MOVE);
@@ -370,6 +374,7 @@ public :
 
     bool positionRepetition3(const Board &board) const;
     bool insufficientMaterial(const Board &b) const;
+
 
 protected:
     /** Find the point in the this game where @p otherGame fits in the next time.

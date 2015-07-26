@@ -79,7 +79,7 @@ public:
     /** parse SAN or LAN representation of move, and return proper Move() object */
     Move parseMove(const QString& algebraic) const;
     /** Return a proper Move() object given only a from-to move specification */
-    Move prepareMove(const Square& from, const Square& to) const;
+    Move prepareMove(const Square& from, const Square& to, bool forceCastle=false) const;
 
     // Return a nullMove -- King to the same square
     Move nullMove() const;
@@ -135,9 +135,18 @@ public:
     bool isCheckmate() const;
     /** Return true if the side to move is stalemated */
     bool isStalemate() const;
+
+    /** Return 1 if Chess960 is selected, 0 otherwise */
+    bool chess960() const;
+    /** Set to 1 if Chess960 is selected, 0 otherwise */
+    void setChess960(bool chess960);
+
 private:
+    Square FirstRook(Piece p, Square from, Square to) const;
+    /** Test if a king is on a certain row to test castling rights */
+    bool KingOnRow(Piece p, Square start, Square stop) const;
     /** Return true if side to move is in check */
-    bool isCheck() const; 
+    bool isCheck() const;
     /** Test to see if given color has the right to castle on kingside */
     bool canCastleShort(const unsigned int color) const;
     /** Test to see if given color has the right to castle on queenside */
@@ -148,7 +157,8 @@ private:
     /** Return true if making move would put oneself into check */
     bool isIntoCheck(const Move& move) const;
     /** Return true if the given square is attacked by the given color */
-    bool isAttackedBy(const unsigned int color, const unsigned int square) const;
+    bool isAttackedBy(const unsigned int color, Square square) const;
+    bool isAttackedBy(const unsigned int color, Square start, Square stop) const;
 
     /** Return all squares attacked by a knight on given square */
     quint64 knightAttacksFrom(const Square s) const;
@@ -166,7 +176,9 @@ private:
     /** Remove impossible moves from given bitboard to aid disambiguation */
     void removeIllegal(const Move& move, quint64& b) const;
     /** Update move with castling details, return false if no castle is possible */
-    bool prepareCastle(Move& move) const;
+    bool prepareCastle(Move& move, bool forceCastle) const;
+    /** Update move with castling details for Chess960, return false if no castle is possible */
+    bool prepareCastle960(Move &move, bool forceCastle) const;
     /** Generate all possible moves in a given position */
     MoveList generateMoves() const;
 
@@ -176,15 +188,19 @@ private:
     void setCastleLong(unsigned int color);
     /** Revoke all castling rights from the given color */
     void destroyCastle(unsigned int color);
+    /** Revoke castling rights from the given color */
+    void destroyCastleInDirection(unsigned int color, Square s);
     /** Update the epSquare value based on a new epFile value */
     void epFile2Square();
 
     /** Setup board according to FEN string */
     bool fromGoodFen(const QString& fen);
+    /** Get the rook with index from castling rook storage */
+    Square CastlingRook(int index) const;
 
 
     // Actual Bit-board data
-    quint64 m_pawns, m_knights, m_bishops, m_rooks, m_queens, m_kings;
+    quint64 m_pawns, m_knights, m_bishops, m_rooks, m_castlingRooks, m_queens, m_kings;
     quint64 m_occupied_co[2];     // Square mask of those occupied by each color
     quint64 m_occupied;           // Square is empty or holds a piece
     quint64 m_occupied_l90;       // rotated counter clockwise 90 deg
@@ -194,7 +210,7 @@ private:
     // Extra state data
     unsigned char m_piece[64];             // type of piece on this square
     unsigned char m_stm;                   // side to move
-    unsigned char m_ksq[2];                // square of the m_kings
+    Square        m_ksq[2];                // square of the m_kings
     unsigned char m_epFile;                // file of a possible ep capture
     unsigned char m_epSquare;              // This is requested by hash routine enough that we keep it pre calculated
     unsigned char m_castle;                // flags for castle legality  (these can be merged)
@@ -202,6 +218,8 @@ private:
     unsigned int m_moveNumber;             // Move number in game (incremented after each black move)
     unsigned char m_pawnCount[2];          // Number of pawns for each side
     unsigned char m_pieceCount[2];         // Number of pieces INCLUDING pawns for each side
+    unsigned char m_chess960;              // 0 = standard, 1 = Chess960
+
 };
 
 enum Char64Position
@@ -282,7 +300,7 @@ const unsigned int bb_ShiftL45[64] =
     1, 10, 19, 28, 37, 46, 55, 64
 };
 
-inline bool BitBoard::isAttackedBy(const unsigned int color, const unsigned int square) const
+inline bool BitBoard::isAttackedBy(const unsigned int color, Square square) const
 {
     if(bb_PawnAttacks[color ^ 1][square] & (m_pawns | m_bishops) & m_occupied_co[color])
     {
@@ -307,6 +325,20 @@ inline bool BitBoard::isAttackedBy(const unsigned int color, const unsigned int 
     return 0;
 };
 
+inline bool BitBoard::isAttackedBy(const unsigned int color, Square start, Square stop) const
+{
+    Square square = start;
+
+    while(square!=stop)
+    {
+        bool underAttack = isAttackedBy(color, square);
+        if (underAttack) return true;
+        if (square!=stop) square += (start<=stop) ? 1:-1;
+    }
+
+    return isAttackedBy(color, stop);
+};
+
 inline void BitBoard::setCastleShort(unsigned int color)
 {
     m_castle |= 1 << color;
@@ -320,6 +352,24 @@ inline void BitBoard::setCastleLong(unsigned int color)
 inline void BitBoard::destroyCastle(unsigned int color)
 {
     m_castle &= ~(5 << color);
+}
+
+inline void BitBoard::destroyCastleInDirection(unsigned int color, Square s)
+{
+    for (int i = 0; i<4; ++i)
+    {
+        if (CastlingRook(i) == s)
+        {
+            switch(i)
+            {
+            case 0: if (color == 0) m_castle &= (unsigned char) ~4; break;
+            case 1: if (color == 0) m_castle &= (unsigned char) ~1; break;
+            case 2: if (color == 1) m_castle &= (unsigned char) ~8; break;
+            case 3: if (color == 1) m_castle &= (unsigned char) ~2; break;
+            }
+            break;
+        }
+    }
 }
 
 inline quint64 BitBoard::knightAttacksFrom(const Square s) const
@@ -403,7 +453,7 @@ inline Color BitBoard::toMove() const
 
 inline Square BitBoard::enPassantSquare() const
 {
-    return m_epSquare;
+    return Square(m_epSquare);
 }
 
 inline CastlingRights BitBoard::castlingRights() const

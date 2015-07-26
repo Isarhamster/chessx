@@ -75,6 +75,7 @@ public:
 
     /** Check whether a given move is a null move ( an illegal move by the king to its own square ) often used as a placeholder in ebooks */
     bool isNullMove() const;
+    Move& setNullMove();
 
     /** Check whether move is special (promotion, castling, en passant */
     bool isSpecial() const;
@@ -190,6 +191,9 @@ private:
     void setCheck();
     /** Mark this move as giving checkmate */
     void setMate();
+    /** Add castling bit in addition to other flags */
+    void SetCastlingBit();
+
 
     /** Return pawn2forward, castle or piece type for doMove() and undoMove() */
     unsigned int action() const;
@@ -224,22 +228,17 @@ private:
 };
 
 // return true if a null move
-// that is moving a king to its same square
-// while it is not legal it is often used
-// to annotate ideas
+// null move is coded as a2a2 which is better than a king move
 inline bool Move::isNullMove() const
 {
+    return (to() == a2 && from() == a2);
+}
 
-    if(from() == to())
-    {
-        Piece p = pieceMoved();
-        PieceType pt = pieceType(p);
-        if(pt == King)
-        {
-            return true;
-        }
-    }
-    return false;
+inline Move& Move::setNullMove()
+{
+    m = a2 | (a2 << 6);
+    u = 0;
+    return *this;
 }
 
 inline void Move::setPromotionPiece(PieceType type)
@@ -250,12 +249,12 @@ inline void Move::setPromotionPiece(PieceType type)
 
 inline Square Move::from() const
 {
-    return m & 63;
+    return Square(m & 63);
 }
 
 inline Square Move::to() const
 {
-    return (m >> 6) & 63;
+    return Square((m >> 6) & 63);
 }
 
 inline Move::Move()
@@ -268,12 +267,12 @@ inline Move::Move(const Square from, const Square to)
 
 inline Square Move::castlingRookFrom() const
 {
-    return (to() % 8 == 2) ? to() - 2 : to() + 1;
+    return Square((to() % 8 == 2) ? to() - 2 : to() + 1);
 }
 
 inline Square Move::castlingRookTo() const
 {
-    return (from() + to()) / 2;
+    return Square((from() + to()) / 2);
 }
 
 inline QString Move::dumpAlgebraic() const
@@ -313,7 +312,7 @@ inline QString Move::toAlgebraicDebug() const
 
 inline Square Move::enPassantSquare() const
 {
-    return from() > 31 ? to() - 8 : to() + 8;
+    return Square(from() > 31 ? to() - 8 : to() + 8);
 }
 
 inline Piece Move::pieceMoved() const
@@ -428,22 +427,27 @@ inline void Move::genKingMove(unsigned int from, unsigned int to, unsigned int c
 
 inline void Move::genWhiteOO()
 {
-    m = 4 | (6 << 6) | (King << 12)  | (1 << 15);
+    m = 4 | (6 << 6) | (King << 12) | CASTLINGBIT;
 }
 
 inline void Move::genWhiteOOO()
 {
-    m = 4 | (2 << 6) | (King << 12)  | (1 << 15);
+    m = 4 | (2 << 6) | (King << 12) | CASTLINGBIT;
 }
 
 inline void Move::genBlackOO()
 {
-    m = 60 | (62 << 6) | (King << 12)  | (1 << 15);
+    m = 60 | (62 << 6) | (King << 12) | CASTLINGBIT;
 }
 
 inline void Move::genBlackOOO()
 {
-    m = 60 | (58 << 6) | (King << 12)  | (1 << 15);
+    m = 60 | (58 << 6) | (King << 12) | CASTLINGBIT;
+}
+
+inline void Move::SetCastlingBit()
+{
+    m |= CASTLINGBIT;
 }
 
 inline void Move::setLegalMove()

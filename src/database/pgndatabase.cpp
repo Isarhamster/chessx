@@ -368,10 +368,12 @@ void PgnDatabase::loadGameMoves(GameId gameId, Game& game)
     game.clear();
     seekGame(gameId);
     skipTags();
-    QString fen = m_index.tagValue(TagNameFEN, gameId); // was m_count -1
+    QString fen = m_index.tagValue(TagNameFEN, gameId);
+    QString variant = m_index.tagValue(TagNameVariant, gameId).toLower();
+    bool chess960 = (variant.startsWith("fischer") || variant.endsWith("960"));
     if(fen != "?")
     {
-        game.dbSetStartingBoard(fen);
+        game.dbSetStartingBoard(fen, chess960);
     }
     parseMoves(&game);
 }
@@ -388,10 +390,12 @@ bool PgnDatabase::loadGame(GameId gameId, Game& game)
     loadGameHeaders(gameId, game);
     seekGame(gameId);
     skipTags();
-    QString fen = m_index.tagValue(TagNameFEN, gameId);  // was m_count - 1
+    QString fen = m_index.tagValue(TagNameFEN, gameId);
+    QString variant = m_index.tagValue(TagNameVariant, gameId).toLower();
+    bool chess960 = (variant.startsWith("fischer") || variant.endsWith("960"));
     if(fen != "?")
     {
-        game.dbSetStartingBoard(fen);
+        game.dbSetStartingBoard(fen, chess960);
     }
 
     parseMoves(&game);
@@ -566,8 +570,7 @@ bool PgnDatabase::parseMoves(Game* game)
 
 void PgnDatabase::parseLine(Game* game)
 {
-    QStringList list = m_currentLine.split(" ");
-    m_pos = 0;
+    QStringList list = m_currentLine.split(" ", QString::SkipEmptyParts);
 
     for(QStringList::Iterator it = list.begin(); it != list.end() && !m_inComment; ++it)
     {
@@ -583,7 +586,6 @@ void PgnDatabase::parseLine(Game* game)
                 return;
             }
         }
-        m_pos += (*it).length() + 1;
     }
 
     if(!m_inComment)
@@ -687,7 +689,7 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
     case '{':
         m_comment.clear();
         m_inComment = true;
-        m_currentLine = m_currentLine.right((m_currentLine.length() - m_pos) - 1);
+        m_currentLine = m_currentLine.mid(m_currentLine.indexOf("{") + 1); // Implicit assumption that there is no other '{' in the line
         break;
     case '$':
         game->dbAddNag((Nag)token.mid(1).toInt());

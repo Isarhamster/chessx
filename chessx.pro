@@ -10,11 +10,17 @@ greaterThan(QT_MAJOR_VERSION, 4) {
    QT -= multimediawidgets
    # Comment out sound for Ubuntu with Qt5 if multimedia is not available (default in Ubuntu)
    CONFIG += sound
+   # Comment out c++11 for all non-C++11 compilers, Qt5 is required in addition
+   CONFIG += c++11
 }
 
 sound {
    DEFINES += USE_SOUND
    QT += multimedia
+}
+
+c++11 {
+   DEFINES += USE_C11
 }
 
 static { # Everything below takes effect with CONFIG += static
@@ -28,7 +34,7 @@ DEFINES *= QT_USE_QSTRINGBUILDER
 
 macx {
   QMAKE_MAC_SDK = macosx10.9
-	QMAKE_CXXFLAGS += -fvisibility=hidden
+  QMAKE_CXXFLAGS += -fvisibility=hidden
   QMAKE_LFLAGS_RELEASE -= -O2
   QMAKE_LFLAGS_RELEASE += -m64 -O3
   QMAKE_CXXFLAGS_RELEASE -= -O2

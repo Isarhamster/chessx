@@ -87,6 +87,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     connect(ui.bkCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
     connect(ui.bqCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
     connect(ui.epCombo, SIGNAL(currentIndexChanged(int)), SLOT(slotEnPassantSquare()));
+    connect(ui.btCheck960, SIGNAL(stateChanged(int)), SLOT(slotChess960()));
     connect(ui.halfmoveSpin, SIGNAL(valueChanged(int)), SLOT(slotHalfmoveClock()));
     connect(ui.moveSpin, SIGNAL(valueChanged(int)), SLOT(slotMoveNumber()));
     connect(ui.btFlipBoard, SIGNAL(clicked()), ui.boardView, SLOT(flip()));
@@ -206,6 +207,7 @@ void BoardSetupDialog::setBoard(const Board& b)
     ui.bkCastleCheck->setChecked(b.castlingRights() & BlackKingside);
     ui.bqCastleCheck->setChecked(b.castlingRights() & BlackQueenside);
     m_toMove = b.toMove();
+    ui.btCheck960->setChecked(b.chess960());
     showSideToMove();
     setStatusMessage();
 }
@@ -459,19 +461,21 @@ void BoardSetupDialog::slotCastlingRights()
 {
     Board b(board());
     CastlingRights cr = 0;
-    if(ui.wkCastleCheck->isChecked())  // && b.pieceAt(4) == WhiteKing && b.pieceAt(7) == WhiteRook)
+    // Do not test rook positions to allow for Chess960 setups
+
+    if(ui.wkCastleCheck->isChecked())
     {
         cr += WhiteKingside;
     }
-    if(ui.wqCastleCheck->isChecked())  // && b.pieceAt(4) == WhiteKing && b.pieceAt(0) == WhiteRook)
+    if(ui.wqCastleCheck->isChecked())
     {
         cr += WhiteQueenside;
     }
-    if(ui.bkCastleCheck->isChecked())  // && b.pieceAt(60) == BlackKing && b.pieceAt(63) == BlackRook)
+    if(ui.bkCastleCheck->isChecked())
     {
         cr += BlackKingside;
     }
-    if(ui.bqCastleCheck->isChecked())  // && b.pieceAt(60) == BlackKing && b.pieceAt(56) == BlackRook)
+    if(ui.bqCastleCheck->isChecked())
     {
         cr += BlackQueenside;
     }
@@ -488,9 +492,16 @@ void BoardSetupDialog::slotEnPassantSquare()
     }
     else
     {
-        int shift = b.toMove() == White ? 39 : 15;
+        Square shift = (b.toMove() == White) ? h5 : h2;
         b.setEnPassantSquare(shift + ui.epCombo->currentIndex());
     }
+    setBoard(b);
+}
+
+void BoardSetupDialog::slotChess960()
+{
+    Board b(board());
+    b.setChess960(ui.btCheck960->isChecked());
     setBoard(b);
 }
 
