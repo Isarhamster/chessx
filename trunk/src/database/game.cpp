@@ -19,6 +19,19 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
+
+static const char strSquareNames[64][3] =
+{
+    "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
+    "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2",
+    "a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3",
+    "a4", "b4", "c4", "d4", "e4", "f4", "g4", "h4",
+    "a5", "b5", "c5", "d5", "e5", "f5", "g5", "h5",
+    "a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6",
+    "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
+    "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"
+};
+
 const QRegExp Game::emt("\\[%emt\\s*(\\d:\\d\\d?:\\d\\d)\\]");
 const QRegExp Game::clk("\\[%clk\\s*(\\d:\\d\\d?:\\d\\d)\\]");
 const QRegExp Game::egt("\\[%egt\\s*(\\d:\\d\\d?:\\d\\d)\\]");
@@ -1840,17 +1853,19 @@ void Game::removeTag(const QString& tag)
     m_tags.remove(tag);
 }
 
-void Game::setStartingBoard(const Board& startingBoard, QString text)
+void Game::setStartingBoard(const Board& startingBoard, QString text, bool chess960)
 {
     Game state = *this;
-    dbSetStartingBoard(startingBoard.toFen());
+    dbSetStartingBoard(startingBoard.toFen(), chess960);
     emit signalGameModified(true, state, text);
 }
 
-void Game::dbSetStartingBoard(const QString& fen)
+void Game::dbSetStartingBoard(const QString& fen, bool chess960)
 {
     clear();
     m_startingBoard.fromFen(fen);
+    m_startingBoard.setChess960(chess960);
+    setChess960(chess960);
     if(m_startingBoard != Board::standardStartBoard)
     {
         m_tags[TagNameFEN] = fen;
@@ -1873,6 +1888,31 @@ void Game::setResult(Result result)
     Game state = *this;
     dbSetResult(result);
     emit signalGameModified(true, state, tr("Set result"));
+}
+
+bool Game::isChess960() const
+{
+    QString s = m_tags[TagNameVariant].toLower();
+    return (s.startsWith("fischer") || s.endsWith("960"));
+}
+
+void Game::dbSetChess960(bool b)
+{
+    if (b)
+    {
+        m_tags[TagNameVariant] = "Fischerandom";
+    }
+    else
+    {
+        removeTag(TagNameVariant);
+    }
+}
+
+void Game::setChess960(bool b)
+{
+    Game state = *this;
+    dbSetChess960(b);
+    emit signalGameModified(true, state, tr("Set variant"));
 }
 
 QString Game::moveToSan(MoveStringFlags flags, NextPreviousMove nextPrevious, MoveId moveId,
@@ -1990,7 +2030,7 @@ void Game::dumpAllMoveNodes() const
     int moves, comments, nags;
     moveCount(&moves, &comments, &nags);
     qDebug() << "Moves: " << moves << " Comments: " << comments << " Nags: " << nags << endl;
-    qDebug() << "----------------------------------" << endl;
+    qDebug() << "----------------------------------" << endl;    
 }
 
 MoveId Game::findPosition(const Board& position) const
@@ -2092,6 +2132,13 @@ QString Game::ecoClassify() const
 {
     //move to end of main line
     Game g = *this;
+    if (g.startingBoard() != Board::standardStartBoard)
+    {
+        if (g.isChess960())
+        {
+            return QString();
+        }
+    }
     g.moveToEnd();
 
     //search backwards for the first eco position

@@ -141,9 +141,11 @@ void MemoryDatabase::parseGame()
     Game* game = new Game;
 
     QString fen = m_index.tagValue(TagNameFEN, m_count - 1);
+    QString variant = m_index.tagValue(TagNameVariant, m_count - 1).toLower();
+    bool chess960 = (variant.startsWith("fischer") || variant.endsWith("960"));
     if(fen != "?")
     {
-        game->dbSetStartingBoard(fen);
+        game->dbSetStartingBoard(fen, chess960);
     }
     m_index.setValidFlag(m_count - 1, parseMoves(game));
     m_index.setTag(TagNameLength, QString::number((game->plyCount() + 1) / 2), m_count - 1);

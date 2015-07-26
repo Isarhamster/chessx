@@ -94,6 +94,8 @@ private slots:
     void slotCastlingRights();
     /** Manually adjust en passant square. */
     void slotEnPassantSquare();
+    /** Select Chess960. */
+    void slotChess960();
     /** Adjust halfmove clock. */
     void slotHalfmoveClock();
     /** Adjust move number. */

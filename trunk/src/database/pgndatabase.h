@@ -114,7 +114,6 @@ private:
 
     //parsing variables
 
-    int m_pos;
     bool m_gameOver;
     bool m_inComment;
     bool m_inPreComment;
