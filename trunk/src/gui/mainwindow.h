@@ -598,8 +598,8 @@ private:
     QString m_nagText;
     QTimer* m_autoPlayTimer;
     QTimer* m_messageTimer;
-    int m_currentFrom;
-    int m_currentTo;
+    Square m_currentFrom;
+    Square m_currentTo;
     AnalysisWidget* m_mainAnalysis;
     AnalysisWidget* m_secondaryAnalysis;
     Board m_AutoInsertLastBoard;
@@ -621,7 +621,7 @@ private:
     FicsConsole* m_ficsConsole;
     QActionGroup* m_gameModeGroup;
     TextEdit* m_scratchPad;
-    QTime m_matchTime[2];
+    int m_matchTime[2];
     QTime m_elapsedUserTime;
     bool m_elapsedUserTimeValid;
     EngineParameter m_matchParameter;
