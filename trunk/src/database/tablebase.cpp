@@ -122,7 +122,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                 return;
             }
 
-            Move move(fld[0].toInt(), fld[1].toInt());
+            Move move(Square(fld[0].toInt()), Square(fld[1].toInt()));
             int score = fld[2].toInt();
             if(fld.size() > 3)
             {

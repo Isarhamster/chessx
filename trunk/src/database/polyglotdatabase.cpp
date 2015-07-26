@@ -395,7 +395,7 @@ quint64 PolyglotDatabase::getHashFromBoard(Board b) const
     {
         for(int col = 0; col < 8; ++col)
         {
-            Piece piece = b.pieceAt(8 * row + col);
+            Piece piece = b.pieceAt(SquareFromRankAndFile(row,col));
             if(piece != Empty)
             {
                 key^=RandomPiece[64*pieceToPolyglot[piece]+8*row+col];
