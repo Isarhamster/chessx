@@ -77,13 +77,16 @@ void TableView::setAlignDecoration(const Qt::Alignment &alignDecoration)
 
 void TableView::saveConfig()
 {
-    AppSettings->setLayout(this);
-    AppSettings->beginGroup(objectName());
-    int n = model()->columnCount();
-    AppSettings->setValue("ColumnCount", n);
-    QByteArray visualIndex = horizontalHeader()->saveState();
-    AppSettings->setByteArray("VisualIndex", visualIndex);
-    AppSettings->endGroup();
+    if (model())
+    {
+        AppSettings->setLayout(this);
+        AppSettings->beginGroup(objectName());
+        int n = model()->columnCount();
+        AppSettings->setValue("ColumnCount", n);
+        QByteArray visualIndex = horizontalHeader()->saveState();
+        AppSettings->setByteArray("VisualIndex", visualIndex);
+        AppSettings->endGroup();
+    }
 }
 
 void TableView::slotReconfigure()

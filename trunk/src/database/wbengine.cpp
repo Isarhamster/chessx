@@ -48,7 +48,7 @@ void WBEngine::go()
     {
         QTime t(0,0);
         t = t.addMSecs(m_board.toMove()==White ? m_moveTime.ms_white : m_moveTime.ms_black);
-        send (QString("level 0 %2 0").arg(t.toString("HH:mm:ss")));
+        send (QString("level 0 %1 %2").arg(t.toString("HH:mm:ss")).arg(m_moveTime.ms_increment/1000));
         send ("go");
         m_bHasSentAnalyze = false;
     }

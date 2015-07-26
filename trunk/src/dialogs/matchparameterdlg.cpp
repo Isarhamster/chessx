@@ -28,14 +28,16 @@ bool MatchParameterDlg::getParameters(EngineParameter& par)
     MatchParameterDlg dlg;
 
     dlg.ui->baseTime->setTime(QTime::fromMSecsSinceStartOfDay(par.ms_totalTime));
-    dlg.ui->timeBonus->setTime(QTime::fromMSecsSinceStartOfDay(par.ms_bonus));
+    dlg.ui->timeBonus->setValue(par.ms_bonus/1000);
+    dlg.ui->timeInc->setValue(par.ms_increment/1000);
     dlg.ui->cbMode->setCurrentIndex(par.tm);
     dlg.ui->annotateEgt->setChecked(par.tm);
 
     if (dlg.exec())
     {
         par.ms_totalTime = -dlg.ui->baseTime->time().msecsTo(QTime(0,0));
-        par.ms_bonus     = -dlg.ui->timeBonus->time().msecsTo(QTime(0,0));
+        par.ms_bonus     = 1000*dlg.ui->timeBonus->value();
+        par.ms_increment = 1000*dlg.ui->timeInc->value();
         par.tm           = (EngineParameter::TimeModus) dlg.ui->cbMode->currentIndex();
         par.ms_white     = par.ms_totalTime;
         par.ms_black     = par.ms_totalTime;
@@ -45,6 +47,7 @@ bool MatchParameterDlg::getParameters(EngineParameter& par)
         AppSettings->setValue("Mode", (int) par.tm);
         AppSettings->setValue("TotalTime",par.ms_totalTime);
         AppSettings->setValue("UserBonus",par.ms_bonus);
+        AppSettings->setValue("Increment",par.ms_increment);
         AppSettings->setValue("AnnotateEgt",par.annotateEgt);
         AppSettings->endGroup();
 

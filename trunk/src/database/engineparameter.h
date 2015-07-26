@@ -12,6 +12,8 @@ public:
     {
         tm           = TIME_SUDDEN_DEATH;
         ms_totalTime = mt;
+        ms_increment = 0;
+        ms_bonus     = 1000;
         ms_white     = white;
         ms_black     = black;
         movesToDo    = moves;
@@ -22,6 +24,8 @@ public:
     {
         tm           = TIME_GONG;
         ms_totalTime = mt;
+        ms_increment = 0;
+        ms_bonus     = 1000;
         ms_white     = mt;
         ms_black     = mt;
         movesToDo    = 999;
@@ -42,12 +46,13 @@ public:
     TimeModus tm;
 
     /// per move in GONG, total in SUDDEN_DEATH
-    unsigned int ms_totalTime;
+    int ms_totalTime;
     unsigned int ms_white;  ///< SUDDEN_DEATH only
     unsigned int ms_black;  ///< SUDDEN_DEATH only
     int movesToDo;          ///< SUDDEN_DEATH only
     bool annotateEgt;
     unsigned int ms_bonus;
+    unsigned int ms_increment;
 };
 
 #endif // ENGINEPARAMETER_H
