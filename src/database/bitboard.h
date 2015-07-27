@@ -140,7 +140,10 @@ public:
     bool chess960() const;
     /** Set to 1 if Chess960 is selected, 0 otherwise */
     void setChess960(bool chess960);
-
+    /** Setup board according to position number */
+    void fromChess960pos(int value);
+    /** Get the position number from the current position */
+    int chess960Pos() const;
 private:
     Square FirstRook(Piece p, Square from, Square to) const;
     /** Test if a king is on a certain row to test castling rights */
@@ -194,7 +197,7 @@ private:
     void epFile2Square();
 
     /** Setup board according to FEN string */
-    bool fromGoodFen(const QString& fen);
+    bool fromGoodFen(const QString& fen, bool chess960=false);
     /** Get the rook with index from castling rook storage */
     Square CastlingRook(int index) const;
 

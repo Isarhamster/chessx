@@ -101,7 +101,13 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     connect(ui.btFlipHorizontal, SIGNAL(clicked()), SLOT(mirrorHorizontal()));
     connect(ui.btSwapColor, SIGNAL(clicked()), SLOT(swapColors()));
 
-    ui.tabWidget->setCurrentIndex(0);
+    connect(ui.chess960pos, SIGNAL(valueChanged(int)), SLOT(chess960posChanged(int)));
+    connect(ui.randomChess960, SIGNAL(clicked()), SLOT(chess960randomPos()));
+
+    ui.chess960pos->setEnabled(ui.btCheck960->isChecked());
+    ui.randomChess960->setEnabled(ui.btCheck960->isChecked());
+
+    ui.tabWidget_2->setCurrentIndex(0);
 }
 
 void BoardSetupDialog::restoreLayout()
@@ -116,6 +122,19 @@ Board BoardSetupDialog::board() const
 {
     Board b = ui.boardView->board();
     return b;
+}
+
+void BoardSetupDialog::chess960posChanged(int value)
+{
+    Board b;
+    b.fromChess960pos(value);
+    setBoard(b);
+}
+
+void BoardSetupDialog::chess960randomPos()
+{
+    int randomPos = rand() % 960;
+    ui.chess960pos->setValue(randomPos);
 }
 
 void BoardSetupDialog::mirrorVertical()
@@ -208,6 +227,13 @@ void BoardSetupDialog::setBoard(const Board& b)
     ui.bqCastleCheck->setChecked(b.castlingRights() & BlackQueenside);
     m_toMove = b.toMove();
     ui.btCheck960->setChecked(b.chess960());
+
+    if (b.chess960())
+    {
+        int ccPos = b.chess960Pos();
+        ui.chess960pos->setValue(ccPos);
+    }
+
     showSideToMove();
     setStatusMessage();
 }
@@ -503,6 +529,8 @@ void BoardSetupDialog::slotChess960()
     Board b(board());
     b.setChess960(ui.btCheck960->isChecked());
     setBoard(b);
+    ui.chess960pos->setEnabled(ui.btCheck960->isChecked());
+    ui.randomChess960->setEnabled(ui.btCheck960->isChecked());
 }
 
 void BoardSetupDialog::slotHalfmoveClock()
