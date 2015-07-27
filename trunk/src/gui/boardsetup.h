@@ -69,6 +69,8 @@ signals:
 
 protected slots:
     void restoreLayout();
+    void chess960posChanged(int value);
+    void chess960randomPos();
 private slots:
     /** If the position is legal, accept it and close the dialog. */
     void accept();

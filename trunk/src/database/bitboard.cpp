@@ -840,7 +840,7 @@ public:
     }
 };
 
-bool BitBoard::fromGoodFen(const QString& qfen)
+bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
 {
     SaneString fen(qfen);
     int i;
@@ -848,6 +848,7 @@ bool BitBoard::fromGoodFen(const QString& qfen)
     char c = fen[0];
 
     memset(this, 0, sizeof(BitBoard));
+    setChess960(chess960);
     m_moveNumber = 1;
     m_epSquare = NoEPSquare;
 
@@ -1148,6 +1149,79 @@ bool BitBoard::fromGoodFen(const QString& qfen)
     }
 
     return true;
+}
+
+void BitBoard::fromChess960pos(int i)
+{
+    if (i<0 || i>959)
+    {
+        setStandardPosition();
+        return;
+    }
+
+#define scanc(x)	{while (f[c] != 0) c++; while (n>0) if (f[++c] == 0) n--;f[c] = x;}
+
+    int n, c, knights[10][2] = {{0,0},{0,1},{0,2},{0,3},{1,0},{1,1},{1,2},{2,0},{2,1},{3,0}};
+    char f[9];
+    memset(&f[0],0,sizeof(f));
+
+    n = i % 4; i /= 4; f[n*2+1]='b';
+    n = i % 4; i /= 4; f[n*2]='b';
+    n = i % 6; i /= 6; c = 0; scanc('q');
+    n = knights[i][0]; c=0; scanc('n');
+    n = knights[i][1]; scanc('n');
+    c=0; scanc('r'); c=0; scanc('k'); c=0; scanc('r');
+
+    QString fen(f);
+    QString qfen = QString("%1/pppppppp/8/8/8/8/PPPPPPPP/%2 w KQkq - 0 1")
+            .arg(fen).arg(fen.toUpper());
+
+    fromGoodFen(qfen, true);
+}
+
+int BitBoard::chess960Pos() const
+{
+    int ccPos = 0;
+    quint64 x = (m_bishops & (2+8+32+128));
+    ccPos += (getFirstBitAndClear64(x)-1)/2;
+    x = m_bishops & (1+4+16+64);
+    ccPos += getFirstBitAndClear64(x)*2;
+    int q = 0;
+    bool qf = false;
+    int n0 = 0;
+    int n1 = 0;
+    bool n0f = false;
+    bool n1f = false;
+    int n0s[] = { 0,4,7,9 };
+    for (Square square=a1; square<=h1; ++square)
+    {
+        if (pieceAt(square) == WhiteQueen)
+        {
+            qf = true;
+        }
+        else if ((pieceAt(square) == WhiteRook) || (pieceAt(square) == WhiteKing))
+        {
+            if (!qf) { ++q; };
+            if (!n0f) { ++n0; } else { if (!n1f) ++n1; }
+        }
+        else if (pieceAt(square) == WhiteKnight)
+        {
+            if (!qf) { ++q; };
+            if (!n0f) { n0f = true; } else { n1f = true; }
+        }
+    }
+
+    if ((n0<4) && n1f && qf)
+    {
+        ccPos += q*16;
+        int krn = n0s[n0]+n1;
+        ccPos += krn*96;
+        return ccPos;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 bool BitBoard::chess960() const
@@ -1832,6 +1906,8 @@ bool BitBoard::doMove(const Move& m)
                 rook_from = h8;
                 rook_to = f8;
                 break;
+            default:
+                return false;
             }
         }
         else
@@ -1854,6 +1930,8 @@ bool BitBoard::doMove(const Move& m)
                 rook_from = CastlingRook(3);
                 rook_to = f8;
                 break;
+            default:
+                return false;
             }
         }
         if (bb_from != bb_to)
@@ -2084,6 +2162,8 @@ void BitBoard::undoMove(const Move& m)
                 rook_from = h8;
                 rook_to = f8;
                 break;
+            default:
+                return;
             }
         }
         else
@@ -2106,6 +2186,8 @@ void BitBoard::undoMove(const Move& m)
                 rook_from = CastlingRook(3);
                 rook_to = f8;
                 break;
+            default:
+                return;
             }
         }
         if (rook_from == to) cleanupFrom = false;
