@@ -2464,32 +2464,40 @@ bool BitBoard::prepareCastle(Move& move, bool forceCastle) const
     if(m_stm == White)
     {
         if(to == g1 && canCastleShort(White) && !((F1 | G1)&m_occupied))
+        {
             if(!isAttackedBy(Black, e1) && !isAttackedBy(Black, f1))
             {
                 move.genWhiteOO();
                 return true;
             }
-        if(to == c1 && canCastleLong(White) && !((B1 | C1 | D1)&m_occupied))
+        }
+        else if(to == c1 && canCastleLong(White) && !((B1 | C1 | D1)&m_occupied))
+        {
             if(!isAttackedBy(Black, e1) && !isAttackedBy(Black, d1))
             {
                 move.genWhiteOOO();
                 return true;
             }
+        }
     }
     else
     {
         if(to == g8 && canCastleShort(Black) && !((F8 | G8)&m_occupied))
+        {
             if(!isAttackedBy(White, e8) && !isAttackedBy(White, f8))
             {
                 move.genBlackOO();
                 return true;
             }
-        if(to == c8 && canCastleLong(Black) && !((B8 | C8 | D8)&m_occupied))
+        }
+        else if(to == c8 && canCastleLong(Black) && !((B8 | C8 | D8)&m_occupied))
+        {
             if(!isAttackedBy(White, e8) && !isAttackedBy(White, d8))
             {
                 move.genBlackOOO();
                 return true;
             }
+        }
     }
 
     return false;
