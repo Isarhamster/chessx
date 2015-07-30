@@ -182,6 +182,8 @@ private:
     bool prepareCastle(Move& move, bool forceCastle) const;
     /** Update move with castling details for Chess960, return false if no castle is possible */
     bool prepareCastle960(Move &move, bool forceCastle) const;
+    /** Test that nothing is inbetween the castling pieces */
+    bool isFreeForCastling960(Square from, Square to, Square rook_from, Square rook_to) const;
     /** Generate all possible moves in a given position */
     MoveList generateMoves() const;
 
