@@ -763,12 +763,12 @@ BoardStatus BitBoard::validate() const
         // Can't castle if king in not between the rooks
         if(canCastle(White))
         {
-            bool ok = KingOnRow(WhiteKing,a1,h1);
+            bool ok = isKingOnRow(WhiteKing,a1,h1);
             if (!ok) return BadCastlingRights;
         }
         if(canCastle(Black))
         {
-            bool ok = KingOnRow(BlackKing,a8,h8);
+            bool ok = isKingOnRow(BlackKing,a8,h8);
             if (!ok) return BadCastlingRights;
         }
     }
@@ -792,7 +792,7 @@ BoardStatus BitBoard::validate() const
     return Valid;
 }
 
-bool BitBoard::KingOnRow(Piece p, Square start, Square stop) const
+bool BitBoard::isKingOnRow(Piece p, Square start, Square stop) const
 {
     for (Square square=start; square<=stop; ++square)
     {
@@ -2074,21 +2074,6 @@ bool BitBoard::doMove(const Move& m)
     m_stm ^= 1;	// toggle side to move
     epFile2Square();
     return true;
-}
-
-Square BitBoard::FirstRook(Piece p, Square from, Square to) const
-{
-    unsigned int i = from;
-    do
-    {
-        Square square = Square(i);
-        if (pieceAt(square) == p) return square;
-        i += (int)from<=(int)to ? 1:-1;
-    } while (i!=(unsigned int)to);
-
-    if (pieceAt(to) == p) return to;
-
-    return InvalidSquare;
 }
 
 void BitBoard::undoMove(const Move& m)

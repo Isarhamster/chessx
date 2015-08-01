@@ -35,7 +35,7 @@ Here are some examples:
 3. Format your code with TABs. We advocate using astyle
 (http://astyle.sourceforge.net) to indent your code. To use astyle, put
 
-suffix=none style=linux mode=c force-indent=tab=8 one-line=keep-blocks unpad=paren pad=oper
+suffix=none style=linux mode=c force-indent=tab=4 one-line=keep-blocks unpad=paren pad=oper
 
 in ~/.astylerc. Then you can indent your code using:
 astyle <file1> <file2> ...
