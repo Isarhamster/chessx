@@ -22,7 +22,14 @@ You may check your Qt version by running:
 If you erroneously tried to build with Qt3, be sure to recreate
 makefiles using:
   qmake -recursive
-  
+
+If your compiler does not support C++11, comment out CONFIG += c++11, see file chessx.pro
+If your Qt libraries are compiled w/o Multimedia, comment out CONFIG += sound, see file chessx.pro
+Depending on your installed libraries, you may have to experiment with
+# DEFINES += ZLIB_WINAPI
+# LIBS += -lz
+# INCLUDEPATH += <path to qt>/QtZlib
+
 4. Debugging
 
 If you want to help debugging ChessX, rebuild with debug option enabled:

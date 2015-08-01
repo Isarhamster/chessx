@@ -145,9 +145,8 @@ public:
     /** Get the position number from the current position */
     int chess960Pos() const;
 private:
-    Square FirstRook(Piece p, Square from, Square to) const;
     /** Test if a king is on a certain row to test castling rights */
-    bool KingOnRow(Piece p, Square start, Square stop) const;
+    bool isKingOnRow(Piece p, Square start, Square stop) const;
     /** Return true if side to move is in check */
     bool isCheck() const;
     /** Test to see if given color has the right to castle on kingside */
