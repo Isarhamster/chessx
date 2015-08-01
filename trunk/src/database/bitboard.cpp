@@ -157,9 +157,9 @@ inline Square getFirstBitAndClear64(quint64& bb)
     {
         unsigned long r;
         _BitScanReverse64(&r, x);
-        return r;
+        return Square(r);
     }
-    return 0;
+    return a1;
 #else
     if(x)
     {
@@ -168,12 +168,12 @@ inline Square getFirstBitAndClear64(quint64& bb)
         if(y)
         {
             _BitScanReverse(&r, y);
-            return 32 + r;
+            return Square(32 + r);
         }
         _BitScanReverse(&r, x);
-        return r;
+        return Square(r);
     }
-    return 0;
+    return a1;
 #endif
 #else
     // SBE - After a fair bit of testing, this is the fastest portable version
@@ -208,7 +208,7 @@ inline Square getFirstBitAndClear64(quint64& bb)
     {
         r |= 1;
     }
-    return r;
+    return Square(r);
 #endif
 }
 
