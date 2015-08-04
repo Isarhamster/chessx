@@ -162,5 +162,6 @@
         <file alias="images/folder_favorite3.png">data/images/folder_favorite3.png</file>
         <file alias="images/match.png">data/images/match.png</file>
         <file alias="images/fics.png">data/images/fics.png</file>
+        <file alias="images/query_move.png">data/images/query_move.png</file>
     </qresource>
 </RCC>

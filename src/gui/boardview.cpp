@@ -518,7 +518,11 @@ void BoardView::nextGuess(Square s)
 void BoardView::mouseMoveEvent(QMouseEvent *event)
 {
     m_button = event->button() + event->modifiers();
-    if(!m_atLineEnd && (event->modifiers() & Qt::ControlModifier))
+    if (event->modifiers() & Qt::MetaModifier)
+    {
+        setCursor(QCursor(QPixmap(":/images/query_move.png")));
+    }
+    else if(!m_atLineEnd && (event->modifiers() & Qt::ControlModifier))
     {
         if(event->modifiers() & Qt::AltModifier)
         {

@@ -747,7 +747,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
         if(m.isPromotion())
         {
             int index = 0;
-            if (!AppSettings->getValue("/Board/AutoPromoteToQueen").toBool())
+            if ((button & Qt::MetaModifier) || !AppSettings->getValue("/Board/AutoPromoteToQueen").toBool())
             {
                 index = PromotionDialog(0,m.color()).getIndex();
                 if(index<0)
