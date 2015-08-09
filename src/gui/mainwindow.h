@@ -123,6 +123,7 @@ public slots:
     /** Flip the board view */
     void slotFlipView(bool);
     void enterGameMode(bool gameMode);
+    void enterNoHintMode(bool gameMode);
     /** Open database */
     void openDatabase(QString fname);
     /** Open database from URL*/
@@ -556,6 +557,7 @@ private:
     void setResultForCurrentPosition();
     /** Set the game result for a final position */
     void setResultAgainstColorToMove();
+    bool autoRespondActive() const;
 
     /* Dialogs  */
     GameList* m_gameList;
@@ -625,6 +627,7 @@ private:
     QTime m_elapsedUserTime;
     bool m_elapsedUserTimeValid;
     EngineParameter m_matchParameter;
+    bool m_bTrainigAutoRespond;
 };
 
 #endif

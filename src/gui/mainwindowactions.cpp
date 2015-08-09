@@ -770,7 +770,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             }
             else
             {
-                if (m_autoRespond->isChecked())
+                if (autoRespondActive())
                 {
                     if (!game().atLineEnd())
                     {
@@ -799,7 +799,15 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             }
         }
 
-        if(!m_training->isChecked())
+        if(m_training->isChecked())
+        {
+            if (game().atLineEnd())
+            {
+                playSound(":/sounds/fanfare.wav");
+                m_training->trigger();
+            }
+        }
+        else
         {
             if(game().atLineEnd())
             {
@@ -1573,12 +1581,27 @@ void MainWindow::slotGameRemoveVariations()
     game().removeVariations();
 }
 
+bool MainWindow::autoRespondActive() const
+{
+    return (m_autoRespond->isChecked() ||
+            (m_training->isChecked() && m_bTrainigAutoRespond));
+}
+
 void MainWindow::slotToggleTraining()
 {
+    QAction* action = qobject_cast<QAction*>(sender());
     if (AppSettings->getValue("/Board/noHints").toBool())
+    {    
+        enterNoHintMode(action->isChecked());
+    }
+    if (action->isChecked())
     {
-        QAction* match = qobject_cast<QAction*>(sender());
-        enterGameMode(match->isChecked());
+        QMenu* menu = new QMenu(this);
+        QAction *autoRespond = new QAction(tr("Automatic responses"), this);
+        QAction *noAutoRespond = new QAction(tr("Play both sides"), this);
+        menu->addAction(autoRespond);
+        menu->addAction(noAutoRespond);
+        m_bTrainigAutoRespond = (autoRespond == menu->exec(QCursor::pos()));
     }
     UpdateGameText();
 }
@@ -2927,12 +2950,17 @@ void MainWindow::slotFlipView(bool flip)
     m_boardView->setFlipped(flip);
 }
 
-void MainWindow::enterGameMode(bool gameMode)
+void MainWindow::enterNoHintMode(bool gameMode)
 {
-    m_boardView->setDragged(Empty);
     Guess::setGuessAllowed(!gameMode);
     Engine::setAllowEngineOutput(!gameMode);
     Tablebase::setAllowEngineOutput(!gameMode);
+}
+
+void MainWindow::enterGameMode(bool gameMode)
+{
+    m_boardView->setDragged(Empty);
+    enterNoHintMode(gameMode);
     if (gameMode)
     {
         m_openingTreeWidget->cancel();
