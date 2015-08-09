@@ -6,6 +6,7 @@
 #include "board.h"
 #include "ecopositions.h"
 
+#include <QDataStream>
 #include <QDebug>
 #include <QDir>
 #include <QFile>
