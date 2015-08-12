@@ -163,5 +163,6 @@
         <file alias="images/match.png">data/images/match.png</file>
         <file alias="images/fics.png">data/images/fics.png</file>
         <file alias="images/query_move.png">data/images/query_move.png</file>
+        <file alias="images/list_add.png">data/images/list_add.png</file>
     </qresource>
 </RCC>
