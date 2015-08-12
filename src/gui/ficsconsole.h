@@ -101,6 +101,7 @@ signals:
 protected:
     QString FormatTime(QString s) const;
     void SetPlayerListItemsFromLine(QString s);
+    void TestTockFor10s(QString s);
 private:
     Ui::FicsConsole *ui;
     QPointer<FicsClient> m_ficsClient;
@@ -111,6 +112,9 @@ private:
     QTimer* m_countDownTimer;
     bool m_bWhiteToMove;
     Char64Relation m_lastRelation;
+    bool m_bPlayerIsBlack;
+    bool m_bTockDone;
+    bool m_bFirstTime;
     int m_prevTab;
     Square m_from;
     Square m_to;
