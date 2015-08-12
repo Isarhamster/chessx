@@ -14,6 +14,7 @@
 #include <QMenu>
 #include <QToolButton>
 #include <QString>
+#include <QSound>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -361,14 +362,45 @@ void FicsConsole::SlotCountDownGameTime()
         {
             QString w = ui->timeWhite->text();
             ui->timeWhite->setText(FormatTime(w));
+            if (!m_bPlayerIsBlack)
+            {
+                TestTockFor10s(w);
+            }
         }
         else
         {
             QString b = ui->timeBlack->text();
             ui->timeBlack->setText(FormatTime(b));
+            if (m_bPlayerIsBlack)
+            {
+                TestTockFor10s(b);
+            }
         }
         m_countDownTimer->start();
     }
+}
+
+void FicsConsole::TestTockFor10s(QString s)
+{
+#ifdef USE_SOUND
+    if (m_bTockDone)
+    {
+        return;
+    }
+    QTime t = QTime::fromString(s,"h:m:ss");
+    if (t.msecsSinceStartOfDay()<10000)
+    {
+        if (!m_bFirstTime && AppSettings->getValue("/Sound/Move").toBool())
+        {
+            QSound::play(":/sounds/woodthunk.wav");
+            m_bTockDone = true;
+        }
+    }
+    else
+    {
+        m_bFirstTime = false;
+    }
+#endif
 }
 
 void FicsConsole::SlotSendAccept()
@@ -779,8 +811,10 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 if (l.length() > 2)
                 {
                     QString w = l[2].remove('(');
-                    bool bPlayerIsBlack = w != m_ficsClient->getGuestName();
-                    emit SignalPlayerIsBlack(bPlayerIsBlack);
+                    m_bPlayerIsBlack = w != m_ficsClient->getGuestName();
+                    m_bFirstTime = true;
+                    m_bTockDone = false;
+                    emit SignalPlayerIsBlack(m_bPlayerIsBlack);
                 }
                 m_ficsClient->sendCommand("time");
             }
