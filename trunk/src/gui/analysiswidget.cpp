@@ -9,11 +9,17 @@
 
 #include "settings.h"
 #include "analysis.h"
-#include "board.h"
 #include "analysiswidget.h"
+#include "board.h"
+#include "databaseinfo.h"
 #include "enginelist.h"
 #include "messagedialog.h"
+#include "move.h"
+#include "movedata.h"
 #include "tablebase.h"
+#include "polyglotdatabase.h"
+
+#include <QMutexLocker>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -24,10 +30,13 @@ AnalysisWidget::AnalysisWidget()
     : m_engine(0),
       m_moveTime(0),
       m_bUciNewGame(true),
-      m_onHold(false)
+      m_onHold(false),
+      m_pgdb(0),
+      m_gameMode(false)
 {
     ui.setupUi(this);
     connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
+    connect(ui.bookList, SIGNAL(activated(int)), SLOT(bookActivated(int)));
     connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(toggleAnalysis()));
     connect(ui.variationText, SIGNAL(anchorClicked(QUrl)),
             SLOT(slotLinkClicked(QUrl)));
@@ -47,6 +56,8 @@ AnalysisWidget::~AnalysisWidget()
 
 void AnalysisWidget::startEngine()
 {
+    updateBookMoves();
+
     int index = ui.engineList->currentIndex();
     stopEngine();
     m_onHold = false;
@@ -112,8 +123,13 @@ void AnalysisWidget::engineActivated()
     ui.analyzeButton->setChecked(true);
     ui.analyzeButton->setText(tr("Stop"));
     m_analyses.clear();
-    m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, true);
-    m_lastEngineStart.start();
+    updateBookMoves(); // Delay this to here so that engine process is up
+    if (!sendBookMove())
+    {
+        m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, true);
+        m_lastEngineStart.start();
+        m_bUciNewGame = false;
+    }
 }
 
 void AnalysisWidget::engineError(QProcess::ProcessError e)
@@ -140,6 +156,12 @@ void AnalysisWidget::toggleAnalysis()
     {
         startEngine();
     }
+}
+
+void AnalysisWidget::bookActivated(int index)
+{
+    emit signalSourceChanged(ui.bookList->itemData(index).toString());
+    updateBookMoves();
 }
 
 void AnalysisWidget::slotPinChanged(bool pinned)
@@ -190,6 +212,34 @@ void AnalysisWidget::slotReconfigure()
     f.setPointSize(fontSize);
     setFont(f);
     ui.variationText->setFont(f);
+}
+
+void AnalysisWidget::slotUpdateBooks(QStringList files)
+{
+    QString current = ui.bookList->currentText();
+    ui.bookList->clear();
+    ui.bookList->addItem("-",QVariant(QString()));
+    foreach(QString filename, files)
+    {
+        QFileInfo fi(filename);
+        QString baseName = fi.baseName();
+        if (DatabaseInfo::IsBook(filename))
+        {
+            ui.bookList->addItem(baseName,QVariant(filename));
+        }
+    }
+    int index = ui.bookList->findText(current);
+    if (index < 0) index = 0;
+    ui.bookList->setCurrentIndex(index);
+}
+
+void AnalysisWidget::setGameMode(bool gameMode)
+{
+    m_gameMode = gameMode;
+    if (!m_gameMode)
+    {
+        updateBookMoves();
+    }
 }
 
 void AnalysisWidget::showAnalysis(Analysis analysis)
@@ -245,6 +295,8 @@ void AnalysisWidget::setPosition(const Board& board)
         m_tablebase->abortLookup();
         m_tablebaseEvaluation.clear();
 
+        updateBookMoves();
+
         if(AppSettings->getValue("/General/onlineTablebases").toBool())
         {
             if (!(m_board.isStalemate() || m_board.isCheckmate()))
@@ -256,14 +308,40 @@ void AnalysisWidget::setPosition(const Board& board)
                 }
             }
         }
+
         m_lastDepthAdded = 0;
         updateAnalysis();
-        if(m_engine && m_engine->isActive() && !onHold())
+        if (m_engine && m_engine->isActive() && !onHold() && !sendBookMove())
         {
             m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, m_bUciNewGame);
             m_lastEngineStart.start();
             m_bUciNewGame = false;
         }
+    }
+}
+
+bool AnalysisWidget::sendBookMove()
+{
+    if (moveList.count() && m_moveTime.allowBook)
+    {
+        QTimer::singleShot(500, this, SLOT(sendBookMoveTimeout()));
+        return true;
+    }
+    return false;
+}
+
+void AnalysisWidget::sendBookMoveTimeout()
+{
+    if (moveList.count() && m_moveTime.allowBook)
+    {
+        Analysis analysis;
+        analysis.setElapsedTimeMS(0);
+        MoveList moves;
+        moves.append(moveList.first().move);
+        analysis.setVariation(moves);
+        analysis.setBestMove(true);
+        analysis.setBookMove(true);
+        emit receivedBestMove(analysis);
     }
 }
 
@@ -389,6 +467,17 @@ void AnalysisWidget::updateAnalysis()
     {
         text.append(tr("<br><b>Complexity:</b> %1<br>").arg(m_complexity));
     }
+
+    if (moveList.count())
+    {
+        QString bookLine = tr("<i>Book:</i>");
+        foreach (MoveData move, moveList)
+        {
+            bookLine.append(" ");
+            bookLine.append(move.san);
+        }
+        text.append(bookLine);
+    }
     ui.variationText->setText(text);
 }
 
@@ -491,4 +580,72 @@ void AnalysisWidget::setOnHold(bool onHold)
 QString AnalysisWidget::engineName() const
 {
     return ui.engineList->currentText();
+}
+
+void AnalysisWidget::updateBookFile(PolyglotDatabase* pgdb)
+{
+    m_pgdb = pgdb;
+}
+
+void AnalysisWidget::updateBookMoves()
+{
+    QMap<Move, MoveData> moves;
+    games = 0;
+
+    if (m_pgdb && !m_gameMode)
+    {
+        QMutexLocker m(&m_pgdb->mutex());
+        int n = m_pgdb->positionCount();
+        quint64 key = m_pgdb->getHashFromBoard(m_board);
+        m_pgdb->reset();
+        bool bFound = false;
+        bool bDone = false;
+        for (int i=0; i<n; ++i)
+        {
+            MoveData m;
+            if (m_pgdb->findMove(key,m))
+            {
+                bFound = true;
+                if (m_board.pieceAt(e1)==WhiteKing)
+                {
+                    if (m.san=="e1a1") m.san = "e1c1";
+                    else if (m.san=="e1h1") m.san = "e1g1";
+                }
+                if (m_board.pieceAt(e8)==BlackKing)
+                {
+                    if (m.san=="e8a8") m.san = "e8c8";
+                    else if (m.san=="e8h8") m.san = "e8g8";
+                }
+
+                Move move = m_board.parseMove(m.san);
+                m.san = m_board.moveToSan(move);
+                m.move = move;
+                moves[move] = m;
+                games += m.count;
+            }
+            else
+            {
+                bDone = bFound;
+            }
+
+            if(bDone)
+            {
+                break;
+            }
+        }
+    }
+
+    moveList.clear();
+    for(QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
+    {
+        moveList.append(it.value());
+    }
+
+    qSort(moveList);
+
+    QList<MoveData>::iterator begin = moveList.begin();
+    QList<MoveData>::iterator end = moveList.end();
+    --end;
+    while (begin < end)
+        qSwap(*begin++, *end--);
 }

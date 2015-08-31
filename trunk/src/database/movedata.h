@@ -6,6 +6,7 @@
 #define MOVEDATA_H
 
 #include "game.h"
+#include "move.h"
 
 class MoveData
 {
@@ -23,6 +24,7 @@ public:
     unsigned rated;
     long year;
     unsigned dated;
+    Move move;
     friend bool operator<(const MoveData& m1, const MoveData& m2);
     friend bool compareMove(const MoveData& m1, const MoveData& m2);
     friend bool compareScore(const MoveData& m1, const MoveData& m2);
@@ -30,5 +32,11 @@ public:
     friend bool compareYear(const MoveData& m1, const MoveData& m2);
     bool hasPercent() const;
 };
+
+bool operator<(const MoveData& m1, const MoveData& m2);
+bool compareMove(const MoveData& m1, const MoveData& m2);
+bool compareScore(const MoveData& m1, const MoveData& m2);
+bool compareRating(const MoveData& m1, const MoveData& m2);
+bool compareYear(const MoveData& m1, const MoveData& m2);
 
 #endif // MOVEDATA_H

@@ -26,29 +26,6 @@
 const unsigned MinAveYear = 1;
 const unsigned MinAveRating = 5;
 
-bool compareMove(const MoveData& m1, const MoveData& m2)
-{
-    return m1.san < m2.san;
-}
-
-bool compareScore(const MoveData& m1, const MoveData& m2)
-{
-    return m1.percentage() < m2.percentage() ||
-           (m1.percentage() == m2.percentage() && m1.san < m2.san);
-}
-
-bool compareRating(const MoveData& m1, const MoveData& m2)
-{
-    return m1.averageRating() < m2.averageRating() ||
-           (m1.averageRating() == m2.averageRating() && m1.san < m2.san);
-}
-
-bool compareYear(const MoveData& m1, const MoveData& m2)
-{
-    return m1.averageYear() < m2.averageYear() ||
-           (m1.averageYear() == m2.averageYear() && m1.san < m2.san);
-}
-
 OpeningTreeThread oupd;
 
 bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsFilter, bool bEnd)

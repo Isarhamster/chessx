@@ -31,7 +31,8 @@ bool MatchParameterDlg::getParameters(EngineParameter& par)
     dlg.ui->timeBonus->setValue(par.ms_bonus/1000);
     dlg.ui->timeInc->setValue(par.ms_increment/1000);
     dlg.ui->cbMode->setCurrentIndex(par.tm);
-    dlg.ui->annotateEgt->setChecked(par.tm);
+    dlg.ui->annotateEgt->setChecked(par.annotateEgt);
+    dlg.ui->cbAllowBook->setChecked(par.allowBook);
 
     if (dlg.exec())
     {
@@ -42,6 +43,7 @@ bool MatchParameterDlg::getParameters(EngineParameter& par)
         par.ms_white     = par.ms_totalTime;
         par.ms_black     = par.ms_totalTime;
         par.annotateEgt  = dlg.ui->annotateEgt->isChecked();
+        par.allowBook    = dlg.ui->cbAllowBook->isChecked();
 
         AppSettings->beginGroup("/Match/");
         AppSettings->setValue("Mode", (int) par.tm);
@@ -49,6 +51,7 @@ bool MatchParameterDlg::getParameters(EngineParameter& par)
         AppSettings->setValue("UserBonus",par.ms_bonus);
         AppSettings->setValue("Increment",par.ms_increment);
         AppSettings->setValue("AnnotateEgt",par.annotateEgt);
+        AppSettings->setValue("AllowBook",par.allowBook);
         AppSettings->endGroup();
 
         return true;

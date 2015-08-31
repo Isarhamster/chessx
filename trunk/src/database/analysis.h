@@ -73,6 +73,9 @@ public:
     bool getEndOfGame() const;
     void setEndOfGame(bool value);
 
+    bool getBookMove() const;
+    void setBookMove(bool bookMove);
+
 private:
     int m_numpv;
     int m_msec;
@@ -81,6 +84,7 @@ private:
     int m_score;
     bool m_bestMove;
     bool m_endOfGame;
+    bool m_bookMove;
     quint64 m_nodes;
     MoveList m_variation;
     int m_elapsedTimeMS;

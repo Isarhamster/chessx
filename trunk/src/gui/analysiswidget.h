@@ -11,6 +11,7 @@
 #define __ANALYSIS_WIDGET_H__
 
 #include "engine.h"
+#include "movedata.h"
 #include "ui_analysiswidget.h"
 #include <QtGui>
 
@@ -21,6 +22,7 @@
 class Analysis;
 class Board;
 class Tablebase;
+class PolyglotDatabase;
 
 class AnalysisWidget : public QWidget
 {
@@ -46,6 +48,7 @@ public:
     void setOnHold(bool onHold);
 
     QString engineName() const;
+    void updateBookFile(PolyglotDatabase*);
 
 public slots:
     /** Sets new position. If analysis is active, the current content will be cleared and
@@ -65,6 +68,10 @@ public slots:
     void setMoveTime(int);
     /** Must send ucinewgame next time */
     void slotUciNewGame();
+    /** Called when the list of databases changes */
+    void slotUpdateBooks(QStringList);
+    /** Called upon entering or leaving game mode */
+    void setGameMode(bool);
 
 private slots:
     /** Stop if analysis is no longer visible. */
@@ -91,7 +98,11 @@ signals:
     void addVariation(const QString& san);
     void requestBoard();
     void receivedBestMove(const Analysis& analysis);
+    void signalSourceChanged(QString);
 
+protected slots:
+    void bookActivated(int);
+    void sendBookMoveTimeout();
 private:
     /** Should analysis be running. */
     bool isAnalysisEnabled() const;
@@ -99,6 +110,8 @@ private:
     void updateAnalysis();
     /** Update complexity. */
     void updateComplexity();
+    void updateBookMoves();
+    bool sendBookMove();
 
     QList<Analysis> m_analyses;
     Ui::AnalysisWidget ui;
@@ -118,6 +131,11 @@ private:
     bool m_onHold;
 
     QTime m_lastEngineStart;
+    PolyglotDatabase* m_pgdb;
+    QList<MoveData> moveList;
+    int games;
+
+    bool m_gameMode;
 
 };
 

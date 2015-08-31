@@ -40,3 +40,57 @@ MoveData::MoveData()
     year = rating = 0;
     dated = rated = 0;
 }
+
+double MoveData::percentage() const
+{
+    unsigned c = result[ResultUnknown] + 2 * result[WhiteWin] + result[Draw];
+    return c * 500 / count / 10.0;
+}
+
+bool MoveData::hasPercent() const
+{
+    int n = 0;
+    for (int i=0; i<4; ++i)
+    {
+        n += result[i];
+    }
+    return (n>0);
+}
+
+int MoveData::averageRating() const
+{
+    return rated ? rating / rated : 0;
+}
+
+int MoveData::averageYear() const
+{
+    return dated ? year / dated : 0;
+}
+
+bool operator<(const MoveData& m1, const MoveData& m2)
+{
+    return m1.count < m2.count || (m1.count == m2.count && m1.san < m2.san);
+}
+
+bool compareMove(const MoveData& m1, const MoveData& m2)
+{
+    return m1.san < m2.san;
+}
+
+bool compareScore(const MoveData& m1, const MoveData& m2)
+{
+    return m1.percentage() < m2.percentage() ||
+           (m1.percentage() == m2.percentage() && m1.san < m2.san);
+}
+
+bool compareRating(const MoveData& m1, const MoveData& m2)
+{
+    return m1.averageRating() < m2.averageRating() ||
+           (m1.averageRating() == m2.averageRating() && m1.san < m2.san);
+}
+
+bool compareYear(const MoveData& m1, const MoveData& m2)
+{
+    return m1.averageYear() < m2.averageYear() ||
+           (m1.averageYear() == m2.averageYear() && m1.san < m2.san);
+}

@@ -427,6 +427,8 @@ protected slots:
     void openFICS();
     void slotGameVarEnter(int index);
     void slotToggleEngineMatch();
+    void slotUpdateOpeningBook(QString name);
+    void slotRestartAnalysis();
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);
@@ -493,6 +495,7 @@ signals:
     void databaseModified();
 
     void signalDatabaseOpenClose();
+    void signalUpdateDatabaseList(QStringList);
 
     void enterText(QString);
 
@@ -604,6 +607,9 @@ private:
     Square m_currentTo;
     AnalysisWidget* m_mainAnalysis;
     AnalysisWidget* m_secondaryAnalysis;
+    bool m_bMainAnalyisIsNextEngine;
+    Move m_MoveForMatch;
+    EngineParameter m_EngineParameterForMatch;
     Board m_AutoInsertLastBoard;
     Square m_annotationSquare;
     Square m_annotationSquareFrom;

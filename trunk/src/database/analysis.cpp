@@ -33,6 +33,7 @@ Analysis& Analysis::operator=(const Analysis& rhs)
         m_bestMove  = rhs.m_bestMove;
         m_endOfGame = rhs.m_endOfGame;
         m_variation = rhs.m_variation;
+        m_bookMove  = rhs.m_bookMove;
         m_elapsedTimeMS = rhs.m_elapsedTimeMS;
     }
     return *this;
@@ -46,6 +47,7 @@ void Analysis::clear()
     m_numpv = 1;
     m_elapsedTimeMS = 0;
     m_bestMove = false;
+    m_bookMove = false;
     m_endOfGame = false;
     m_variation.clear();
 }
@@ -155,6 +157,16 @@ void Analysis::setEndOfGame(bool value)
 {
     m_endOfGame = value;
 }
+bool Analysis::getBookMove() const
+{
+    return m_bookMove;
+}
+
+void Analysis::setBookMove(bool bookMove)
+{
+    m_bookMove = bookMove;
+}
+
 
 int Analysis::movesToMate() const
 {
