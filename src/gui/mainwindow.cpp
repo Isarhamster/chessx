@@ -334,11 +334,13 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(openingDock, SIGNAL(visibilityChanged(bool)), m_openingTreeWidget, SLOT(cancel()));
     connect(m_openingTreeWidget, SIGNAL(signalTreeUpdated(bool)), this, SLOT(slotTreeUpdate(bool)));
     connect(m_openingTreeWidget, SIGNAL(signalSourceChanged()), this, SLOT(slotSearchTree()));
+
     connect(this, SIGNAL(reconfigure()), m_openingTreeWidget, SLOT(slotReconfigure()));
     openingDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);
     openingDock->hide();
     connect(this, SIGNAL(signalDatabaseOpenClose()), this, SLOT(slotUpdateOpeningTreeWidget()));
     connect(this, SIGNAL(signalGameModeChanged(bool)), m_openingTreeWidget, SLOT(setDisabled(bool)));
+    connect(this, SIGNAL(signalUpdateDatabaseList(QStringList)), m_openingTreeWidget, SLOT(updateFilterIndex(QStringList)));
 
     /* Analysis Dock */
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
@@ -485,6 +487,9 @@ void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget*
     analysisDock->hide();
     connect(this, SIGNAL(signalGameLoaded()), analysis, SLOT(slotUciNewGame()));
     connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setDisabled(bool)));
+    connect(this, SIGNAL(signalUpdateDatabaseList(QStringList)), analysis, SLOT(slotUpdateBooks(QStringList)));
+    connect(analysis, SIGNAL(signalSourceChanged(QString)), this, SLOT(slotUpdateOpeningBook(QString)));
+    connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setGameMode(bool)));
 }
 
 MainWindow::~MainWindow()

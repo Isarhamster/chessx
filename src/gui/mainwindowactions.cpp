@@ -1957,12 +1957,10 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                     par.ms_black = m_matchParameter.ms_totalTime - m_matchTime[Black];
                     m_mainAnalysis->setMoveTime(par);
                     m_secondaryAnalysis->setMoveTime(par);
-                    m_mainAnalysis->setOnHold(sender()==m_mainAnalysis);
-                    m_secondaryAnalysis->setOnHold(sender()==m_secondaryAnalysis);
-                    if (!doEngineMove(m,par))
-                    {
-                        m_engineMatch->trigger();
-                    }
+                    m_bMainAnalyisIsNextEngine = (sender()==m_mainAnalysis);
+                    m_MoveForMatch = m;
+                    m_EngineParameterForMatch = par;
+                    QTimer::singleShot(0, this, SLOT(slotRestartAnalysis()));
                 }
             }
             else
@@ -1984,6 +1982,16 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             // Engines did not make progress or user intervention
             m_autoRespond->trigger();
         }
+    }
+}
+
+void MainWindow::slotRestartAnalysis()
+{
+    m_mainAnalysis->setOnHold(m_bMainAnalyisIsNextEngine);
+    m_secondaryAnalysis->setOnHold(!m_bMainAnalyisIsNextEngine);
+    if (!doEngineMove(m_MoveForMatch,m_EngineParameterForMatch))
+    {
+        m_engineMatch->trigger();
     }
 }
 
@@ -2521,6 +2529,17 @@ void MainWindow::updateOpeningTree(const Board& b, bool atEnd)
     }
 }
 
+void MainWindow::slotUpdateOpeningBook(QString name)
+{
+    AnalysisWidget* analysis = qobject_cast<AnalysisWidget*>(sender());
+    if (analysis)
+    {
+        DatabaseInfo* dbInfo = getDatabaseInfoByPath(name);
+        PolyglotDatabase* pgdb = dbInfo ? qobject_cast<PolyglotDatabase*>(dbInfo->database()) : 0;
+        analysis->updateBookFile(pgdb);
+    }
+}
+
 void MainWindow::slotDatabaseDeleteGame(QList<int> gameIndexList)
 {
     foreach(int n, gameIndexList)
@@ -2903,7 +2922,7 @@ void MainWindow::slotUpdateOpeningTreeWidget()
         QString displayName = m_databases[i]->filePath();
         files << displayName;
     }
-    m_openingTreeWidget->updateFilterIndex(files);
+    emit signalUpdateDatabaseList(files);
 }
 
 void MainWindow::slotMakeBook(QString pathIn)

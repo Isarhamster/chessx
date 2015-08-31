@@ -35,7 +35,6 @@ public:
     void updateFilter(Filter& f, const Board& b, bool bEnd);
     void doSetBoard(Filter& f, const Board& b, bool bEnd);
     int getFilterIndex(QString& name) const;
-    void updateFilterIndex(QStringList);
     bool shouldAddMove() const;
 
 public slots:
@@ -44,6 +43,8 @@ public slots:
     void saveConfig();
     /** Restore current configuration. */
     void slotReconfigure();
+    /** Update the list of databases */
+    void updateFilterIndex(QStringList);
 
 protected slots:
     /** Indicate end of tree update */

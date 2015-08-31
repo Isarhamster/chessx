@@ -553,6 +553,11 @@ void PolyglotDatabase::book_make(Database &db, volatile bool& breakFlag)
     close();
 }
 
+QMutex &PolyglotDatabase::mutex()
+{
+    return m_mutex;
+}
+
 // ---------------------------------------------------------
 // Book building
 // ---------------------------------------------------------

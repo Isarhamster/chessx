@@ -5,6 +5,8 @@
 #ifndef POLYGLOTDATABASE_H
 #define POLYGLOTDATABASE_H
 
+#include <QMutex>
+
 #include "database.h"
 #include "movedata.h"
 
@@ -129,6 +131,7 @@ public:
     /** Start a search for a new key */
     void reset();
     void book_make(Database& db, volatile bool& breakFlag);
+    QMutex& mutex();
 signals:
 
 public slots:
@@ -165,6 +168,7 @@ private:
     bool m_uniform;
     quint32 m_minGame;
     int m_maxPly;
+    QMutex m_mutex;
 };
 
 #endif // POLYGLOTDATABASE_H

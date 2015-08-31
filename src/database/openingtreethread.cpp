@@ -2,8 +2,11 @@
 *   Copyright (C) 2014 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
-#include "openingtreethread.h"
+#include <QMutex>
+#include <QMutexLocker>
+
 #include "database.h"
+#include "openingtreethread.h"
 #include "polyglotdatabase.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -11,77 +14,53 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-double MoveData::percentage() const
-{
-    unsigned c = result[ResultUnknown] + 2 * result[WhiteWin] + result[Draw];
-    return c * 500 / count / 10.0;
-}
-
-bool MoveData::hasPercent() const
-{
-    int n = 0;
-    for (int i=0; i<4; ++i)
-    {
-        n += result[i];
-    }
-    return (n>0);
-}
-int MoveData::averageRating() const
-{
-    return rated ? rating / rated : 0;
-}
-
-int MoveData::averageYear() const
-{
-    return dated ? year / dated : 0;
-}
-
-bool operator<(const MoveData& m1, const MoveData& m2)
-{
-    return m1.count < m2.count || (m1.count == m2.count && m1.san < m2.san);
-}
-
 void OpeningTreeThread::run()
 {
     QMap<Move, MoveData> moves;
     int games = 0;
     QTime updateTime = QTime::currentTime().addSecs(1);
     emit progress(0);
-    QList<MoveData> moveList;
-    emit MoveUpdate(&m_board, moveList);
+    QList<MoveData> emptyMoveList;
+    emit MoveUpdate(&m_board, emptyMoveList);
     int n = m_filter ? m_filter->size() : 0;
     if (PolyglotDatabase* pgdb = qobject_cast<PolyglotDatabase*>(m_filter->database()))
     {
         n = pgdb->positionCount();
         quint64 key = pgdb->getHashFromBoard(m_board);
+        QMutexLocker m(&pgdb->mutex());
         pgdb->reset();
-
+        bool bFound = false;
+        bool bDone = false;
         for (int i=0; i<n; ++i)
         {
             MoveData m;
             if (pgdb->findMove(key,m))
             {
-                Board b = m_board;
-                if (b.pieceAt(e1)==WhiteKing)
+                bFound = true;
+                if (m_board.pieceAt(e1)==WhiteKing)
                 {
                     if (m.san=="e1a1") m.san = "e1c1";
                     else if (m.san=="e1h1") m.san = "e1g1";
                 }
-                if (b.pieceAt(e8)==BlackKing)
+                if (m_board.pieceAt(e8)==BlackKing)
                 {
                     if (m.san=="e8a8") m.san = "e8c8";
                     else if (m.san=="e8h8") m.san = "e8g8";
                 }
 
-                Move move = b.parseMove(m.san);
-                m.san = b.moveToSan(move);
+                Move move = m_board.parseMove(m.san);
+                m.san = m_board.moveToSan(move);
                 moves[move] = m;
                 games += m.count;
             }
+            else
+            {
+                bDone = bFound;
+            }
 
-            ProgressUpdate(moves, updateTime, games, i, n);
+            ProgressUpdate(moves, updateTime, games, bDone ? n : i, n);
 
-            if(m_break)
+            if(m_break || bDone)
             {
                 break;
             }
