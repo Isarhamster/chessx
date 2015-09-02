@@ -337,7 +337,26 @@ void AnalysisWidget::sendBookMoveTimeout()
         Analysis analysis;
         analysis.setElapsedTimeMS(0);
         MoveList moves;
-        moves.append(moveList.first().move);
+        int index = 0;
+        if (m_moveTime.bookMove == 1)
+        {
+            index = rand() % moveList.count();
+        }
+        else if (m_moveTime.bookMove == 2)
+        {
+            index = moveList.count() - 1;
+            int randomPos = rand() % games;
+            for (int i=0; i<moveList.count();++i)
+            {
+                randomPos -= moveList.at(i).count;
+                if (randomPos<0)
+                {
+                    index = i;
+                    break;
+                }
+            }
+        }
+        moves.append(moveList.at(index).move);
         analysis.setVariation(moves);
         analysis.setBestMove(true);
         analysis.setBookMove(true);

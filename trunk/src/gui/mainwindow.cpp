@@ -405,6 +405,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_matchParameter.ms_bonus     = AppSettings->getValue("/Match/UserBonus").toInt();
     m_matchParameter.movesToDo    = AppSettings->getValue("/Match/MoveCount").toInt();
     m_matchParameter.annotateEgt  = AppSettings->getValue("/Match/AnnotateEgt").toBool();
+    m_matchParameter.allowBook    = AppSettings->getValue("/Match/AllowBook").toBool();
+    m_matchParameter.bookMove     = AppSettings->getValue("/Match/BookMove").toBool();
 
     m_matchParameter.reset();
     m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());

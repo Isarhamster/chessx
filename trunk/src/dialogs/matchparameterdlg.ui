@@ -103,6 +103,25 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QComboBox" name="cbBookMove">
+        <item>
+         <property name="text">
+          <string>Best move</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Random selection</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Weighted selection</string>
+         </property>
+        </item>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -149,6 +168,22 @@
     <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbAllowBook</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cbBookMove</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>172</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>198</y>
     </hint>
    </hints>
   </connection>
