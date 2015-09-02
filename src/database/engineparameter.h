@@ -19,6 +19,7 @@ public:
         movesToDo    = moves;
         annotateEgt  = true;
         allowBook    = false;
+        bookMove     = 0;
     }
 
     EngineParameter(int mt=0)
@@ -32,6 +33,7 @@ public:
         movesToDo    = 999;
         annotateEgt  = true;
         allowBook    = false;
+        bookMove     = 0;
     }
 
     void reset()
@@ -56,6 +58,7 @@ public:
     unsigned int ms_bonus;
     unsigned int ms_increment;
     bool allowBook;
+    int bookMove;
 };
 
 #endif // ENGINEPARAMETER_H
