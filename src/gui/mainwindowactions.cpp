@@ -1856,7 +1856,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 }
                 else if (game().board().insufficientMaterial() ||
                     game().positionRepetition3(game().board()) ||
-                    game().board().halfMoveClock() > 101)
+                    game().board().halfMoveClock() > 99)
                 {
                     playSound(":/sounds/fanfare.wav");
                     // Game is drawn by repetition or 50 move rule
@@ -1923,7 +1923,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             }
             else if (game().board().insufficientMaterial() ||
                 game().positionRepetition3(game().board()) ||
-                game().board().halfMoveClock() > 101)
+                game().board().halfMoveClock() > 99)
             {
                 playSound(":/sounds/fanfare.wav");
                 // Game is drawn by repetition or 50 move rule
