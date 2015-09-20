@@ -86,6 +86,7 @@ protected slots:
     void SlotContextMenu(const QPoint&);
 
 signals:
+    void raiseRequest();
     void ReceivedBoard(int cmd, QString s);
     void RequestNewGame();
     void RequestSaveGame();

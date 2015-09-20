@@ -2154,7 +2154,7 @@ void MainWindow::copyGame(int target, int index)
 
             // The database is open and accessible
             m_databases[target]->database()->appendGame(g);
-            if(index == m_currentDatabase)
+            if(target == m_currentDatabase)
             {
                 emit databaseModified();
             }

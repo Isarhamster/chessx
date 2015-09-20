@@ -845,6 +845,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             ui->tabWidget->setCurrentIndex(TabMessage);
             break;
         case FicsClient::BLKCMD_INTERNAL_SESSION_STARTED:
+            emit raiseRequest();
             ui->textIn->appendPlainText(s);
             if (m_ficsClient->loggedInAsGuest())
             {
