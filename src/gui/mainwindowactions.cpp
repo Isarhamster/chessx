@@ -2159,11 +2159,11 @@ void MainWindow::copyGames(QString fileName, QList<int> indexes)
         {
             if(m_databases[i]->isValid())
             {
+                m_databases[i]->filter()->resize(m_databases[i]->database()->count() + indexes.count(), true);
                 foreach (int index, indexes)
                 {
                     copyGame(i, index);
                 }
-                m_databases[i]->filter()->resize(m_databases[i]->database()->count(), true);
                 QString msg = tr("Appended %1 games to %2.").arg(indexes.count()).arg(fileName);
                 slotStatusMessage(msg);
             }
