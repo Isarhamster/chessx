@@ -26,8 +26,9 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-AnalysisWidget::AnalysisWidget()
-    : m_engine(0),
+AnalysisWidget::AnalysisWidget(QWidget *parent)
+    : QWidget(parent),
+      m_engine(0),
       m_moveTime(0),
       m_bUciNewGame(true),
       m_onHold(false),

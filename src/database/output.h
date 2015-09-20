@@ -18,12 +18,6 @@
 
 #include <QtCore>
 
-const QString TEMPLATE_DIR = "templates";
-const QString DEFAULT_HTML_TEMPLATE = "html-default.template";
-const QString DEFAULT_NOTATION_TEMPLATE = "notation-default.template";
-const QString DEFAULT_LATEX_TEMPLATE = "latex-default.template";
-const QString DEFAULT_PGN_TEMPLATE = "pgn-default.template";
-
 /** @ingroup Core
 The Output class converts game to various formats.
 Usage:

@@ -16,6 +16,7 @@
 #include <QPointer>
 
 class Filter;
+class OpeningTreeThread;
 
 /** @ingroup Search
 The OpeningTree class is a class to calculate opening tree for given position. */
@@ -26,6 +27,7 @@ class OpeningTree : public QAbstractTableModel
 public:
     /** Empty constructor. */
     OpeningTree(QObject* parent);
+    ~OpeningTree();
     /** Calculate opening tree from given position, using given filter. It sets
     the filter to contain only game matching position @p b .
     @return true if the update was not cancelled.*/
@@ -78,6 +80,8 @@ private:
     bool m_updateFilter;
     bool m_sourceIsDatabase;
     bool m_bEnd;
+
+    OpeningTreeThread& oupd;
 };
 
 #endif

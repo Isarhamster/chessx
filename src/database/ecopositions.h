@@ -14,12 +14,13 @@
 struct EcoPositions
 {
 public:
-    static QMap<quint64, QString> m_ecoPositions;
+    static QMap<quint64, QString>* m_ecoPositions;
 
     /** Method that loads a file containing ECO classifications for use by the ecoClassify method. Returns true if successful */
     static bool loadEcoFile(const QString& ecoFile);
     static QString findEcoNameDetailed(QString eco);
     static QString findEcoName(QString eco);
+    static void terminateEco();
 
     static bool isEcoPosition(const Board &b, QString &eco);
 };

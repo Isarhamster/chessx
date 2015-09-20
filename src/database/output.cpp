@@ -17,6 +17,12 @@
 #include "settings.h"
 #include "tags.h"
 
+const char* TEMPLATE_DIR = "templates";
+const char* DEFAULT_HTML_TEMPLATE = "html-default.template";
+const char* DEFAULT_NOTATION_TEMPLATE = "notation-default.template";
+const char* DEFAULT_LATEX_TEMPLATE = "latex-default.template";
+const char* DEFAULT_PGN_TEMPLATE = "pgn-default.template";
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -1039,7 +1045,7 @@ void Output::setTemplateFile(QString filename)
         m_templateFilename = dataPath + "/" + TEMPLATE_DIR + "/" + filename;
         if(!QFile::exists(m_templateFilename))
         {
-            m_templateFilename = ":/" + TEMPLATE_DIR + "/" + filename;
+            m_templateFilename = QString(":/") + TEMPLATE_DIR + "/" + filename;
         }
     }
     else

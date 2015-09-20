@@ -2052,13 +2052,13 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
     // Probe the hash table:
     int hashscore = alpha;
     simpleMoveT hashmove;
-    bool isOnlyMove;
+    bool isOnlyMove = false; // todo: what is correct here?
     scoreFlagT hashflag = ProbeHash(depth, &hashscore, &hashmove, &isOnlyMove);
 
     switch(hashflag)
     {
     case SCORE_NONE:
-        break;
+        break; // todo - is this correct?
     case SCORE_LOWER:
         if(hashscore >= beta)
         {

@@ -801,7 +801,12 @@ void TextEdit::imageResize()
 
 PasteTextEdit::PasteTextEdit(QWidget *parent) : QTextEdit(parent), m_imageCounter(0)
 {
-    installEventFilter(this);
+  installEventFilter(this);
+}
+
+PasteTextEdit::~PasteTextEdit()
+{
+  removeEventFilter(this);
 }
 
 bool PasteTextEdit::eventFilter(QObject *obj, QEvent *event)
