@@ -1661,7 +1661,7 @@ bool MainWindow::confirmQuit()
     return true;
 }
 
-void MainWindow::switchToClipboard()
+void MainWindow::SwitchToClipboard()
 {
     if (!m_currentDatabase->isClipboard())
     {

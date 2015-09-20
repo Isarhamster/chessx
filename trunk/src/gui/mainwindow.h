@@ -117,6 +117,8 @@ protected:
     void setGameMode(bool gameMode);
     /** Add a variation from keyboard */
     bool addVariation(const QString& s);
+    /** Switch to clipboard database */
+    void SwitchToClipboard();
 public slots:
     /** Enter gaming mode */
     void slotToggleGameMode();
