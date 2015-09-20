@@ -42,6 +42,7 @@ TelnetClient::~TelnetClient()
         m_socket->close();
     }
     delete m_socket;
+    delete m_extToolProcess;
 }
 
 void TelnetClient::DispatchReadData(QByteArray bytes)

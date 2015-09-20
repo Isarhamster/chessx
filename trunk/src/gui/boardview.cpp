@@ -57,6 +57,7 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
 
 BoardView::~BoardView()
 {
+    removeEventFilter(this);
     m_threatGuess.cancel();
 }
 

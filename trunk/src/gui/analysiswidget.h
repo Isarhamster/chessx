@@ -28,7 +28,7 @@ class AnalysisWidget : public QWidget
 {
     Q_OBJECT
 public:
-    AnalysisWidget();
+    AnalysisWidget(QWidget* parent);
     ~AnalysisWidget();
 
     /** Get the main line */

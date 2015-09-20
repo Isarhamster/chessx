@@ -346,7 +346,7 @@ MainWindow::MainWindow() : QMainWindow(),
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
     analysisDock->setObjectName("AnalysisDock1");   
     analysisDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F2);
-    m_mainAnalysis = new AnalysisWidget;
+    m_mainAnalysis = new AnalysisWidget(this);
     m_mainAnalysis->setObjectName("Analysis");
     setupAnalysisWidget(analysisDock, m_mainAnalysis);
 
@@ -354,7 +354,7 @@ MainWindow::MainWindow() : QMainWindow(),
     DockWidgetEx* analysisDock2 = new DockWidgetEx(tr("Analysis 2"), this);
     analysisDock2->setObjectName("AnalysisDock2");
     analysisDock2->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_F3);
-    m_secondaryAnalysis = new AnalysisWidget;
+    m_secondaryAnalysis = new AnalysisWidget(this);
     m_secondaryAnalysis->setObjectName("Analysis2");
     setupAnalysisWidget(analysisDock2, m_secondaryAnalysis);
 
@@ -421,11 +421,6 @@ MainWindow::MainWindow() : QMainWindow(),
     statusBar()->addPermanentWidget(m_sliderText);
     connect(m_sliderSpeed, SIGNAL(valueChanged(int)), this, SLOT(slotSetSliderText(int)));
     slotSetSliderText(m_sliderSpeed->value());
-
-//    QToolButton* matchParameterButton = new QToolButton(this);
-//    matchParameterButton->setIcon(QPixmap(":/images/match.png"));
-//    connect(matchParameterButton, SIGNAL(clicked()), this, SLOT(slotMatchParameterDlg()));
-//    statusBar()->addPermanentWidget(matchParameterButton);
 
     statusBar()->setFixedHeight(statusBar()->height());
     statusBar()->setSizeGripEnabled(true);
@@ -510,7 +505,10 @@ MainWindow::~MainWindow()
     qDeleteAll(m_databases.begin(), m_databases.end());
     delete m_output;
     delete m_progressBar;
+    delete m_gameList;
     m_boardViews.clear(); // Widgets are deleted by Qt
+
+    EcoPositions::terminateEco();
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)

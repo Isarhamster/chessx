@@ -62,7 +62,7 @@ class PasteTextEdit : public QTextEdit
     Q_OBJECT
 public:
     explicit PasteTextEdit(QWidget *parent = 0);
-
+    ~PasteTextEdit();
     bool canInsertUsingMimeData(const QMimeData *source) const;
     void insertUsingMimeData(const QMimeData *source);
     void resizeImage(QPair<double, double> factor);

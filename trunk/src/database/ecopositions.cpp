@@ -6,10 +6,12 @@
 #include <QDataStream>
 #include <QFile>
 
-QMap<quint64, QString> EcoPositions::m_ecoPositions;
+QMap<quint64, QString>* EcoPositions::m_ecoPositions = 0;
 
 bool EcoPositions::loadEcoFile(const QString& ecoFile)
 {
+    m_ecoPositions = new QMap<quint64, QString>();
+
     QFile file(ecoFile);
     if(file.open(QIODevice::ReadOnly))
     {
@@ -18,7 +20,7 @@ bool EcoPositions::loadEcoFile(const QString& ecoFile)
         sin >> id;
         if(id == COMPILED_ECO_FILE_ID)
         {
-            sin >> m_ecoPositions;
+            sin >> *m_ecoPositions;
             return true;
         }
         return false;
@@ -28,7 +30,7 @@ bool EcoPositions::loadEcoFile(const QString& ecoFile)
 
 QString EcoPositions::findEcoNameDetailed(QString eco)
 {
-    foreach(QString actualEco, m_ecoPositions.values())
+    foreach(QString actualEco, m_ecoPositions->values())
     {
         if (actualEco.startsWith(eco))
         {
@@ -41,7 +43,7 @@ QString EcoPositions::findEcoNameDetailed(QString eco)
 
 QString EcoPositions::findEcoName(QString eco)
 {
-    foreach(QString actualEco, m_ecoPositions.values())
+    foreach(QString actualEco, m_ecoPositions->values())
     {
         if (actualEco.startsWith(eco))
         {
@@ -56,12 +58,17 @@ QString EcoPositions::findEcoName(QString eco)
     return QString();
 }
 
+void EcoPositions::terminateEco()
+{
+  delete m_ecoPositions;
+}
+
 bool EcoPositions::isEcoPosition(const Board& b, QString& eco)
 {
     quint64 key = b.getHashValue();
-    if(m_ecoPositions.contains(key))
+    if(m_ecoPositions->contains(key))
     {
-        eco = m_ecoPositions[key];
+        eco = m_ecoPositions->value(key);
         return true;
     }
     return false;

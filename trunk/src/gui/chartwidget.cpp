@@ -16,7 +16,9 @@
 #endif // _MSC_VER
 
 ChartWidget::ChartWidget(QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent),
+    m_ply(0),
+    m_plyIndicator(0)
 {
     setAutoFillBackground(true);
     setUpdatesEnabled(true);

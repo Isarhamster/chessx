@@ -26,8 +26,6 @@
 const unsigned MinAveYear = 1;
 const unsigned MinAveRating = 5;
 
-OpeningTreeThread oupd;
-
 bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsFilter, bool bEnd)
 {
     if(!oupd.isRunning())
@@ -127,9 +125,15 @@ OpeningTree::OpeningTree(QObject* parent) :
     QAbstractTableModel(parent),
     m_sortcolumn(1),
     m_order(Qt::DescendingOrder),
-    m_filter(0)
+    m_filter(0),
+    oupd(*new OpeningTreeThread)
 {
     m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year");
+}
+
+OpeningTree::~OpeningTree()
+{
+    delete &oupd;
 }
 
 QVariant OpeningTree::headerData(int section, Qt::Orientation orientation, int role) const
