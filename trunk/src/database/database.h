@@ -90,6 +90,7 @@ public:
     /** Get the Valid Flag for a given game id from the index */
     virtual bool deleted(GameId gameId) const;
 
+    virtual bool IsClipboard() const { return false; }
 signals:
     /** Signal emitted when some progress is done. */
     void progress(int);

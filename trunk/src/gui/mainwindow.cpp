@@ -119,7 +119,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(pClipDB,SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()), Qt::QueuedConnection);
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
     m_databases.append(pClipDB);
-    m_currentDatabase = 0;
+    m_currentDatabase = pClipDB;
 
     /* Game List */
     DockWidgetEx* gameListDock = new DockWidgetEx(tr("Game List"), this);
@@ -678,12 +678,12 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
 
 DatabaseInfo* MainWindow::databaseInfo()
 {
-    return m_databases[m_currentDatabase];
+    return m_currentDatabase;
 }
 
 const DatabaseInfo* MainWindow::databaseInfo() const
 {
-    return m_databases[m_currentDatabase];
+    return m_currentDatabase;
 }
 
 Database* MainWindow::database()
@@ -698,11 +698,16 @@ const Database* MainWindow::database() const
 
 QString MainWindow::databaseName(int index) const
 {
+    DatabaseInfo* pDbInfo;
     if(index < 0)
     {
-        index = m_currentDatabase;
+        pDbInfo = m_currentDatabase;
     }
-    QString name = m_databases[index]->database() ? m_databases[index]->database()->name() : "";
+    else
+    {
+        pDbInfo = m_databases[index];
+    }
+    QString name = pDbInfo->database() ? pDbInfo->database()->name() : "";
     return name;
 }
 
@@ -804,7 +809,7 @@ void MainWindow::updateMenuDatabases()
         if(m_databases[i]->isValid())
         {
             m_databaseActions[i]->setVisible(true);
-            m_databaseActions[i]->setData(i);
+            m_databaseActions[i]->setData(QVariant::fromValue(m_databases[i]));
             m_databaseActions[i]->setText(QString("&%1: %2").arg(i).arg(databaseName(i)));
             if(n < 10)
             {
@@ -972,13 +977,13 @@ bool MainWindow::ActivateDatabase(QString fname)
                 if (!m_databases[i]->IsBook())
                 {
                     autoGroup->untrigger();
-                    if (i != m_currentDatabase)
+                    if (m_databases[i] != m_currentDatabase)
                     {
-                        m_currentDatabase = i;
+                        m_currentDatabase = m_databases[i];
                         m_databaseList->setFileCurrent(fname);
                         slotDatabaseChanged();
                     }
-                    activateBoardViewForDbIndex(m_databases[m_currentDatabase]);
+                    activateBoardViewForDbIndex(m_currentDatabase);
                 }
             }
             else
@@ -1073,7 +1078,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
             if (!m_databases[i]->IsBook())
             {
                 autoGroup->untrigger();
-                m_currentDatabase = i;
+                m_currentDatabase = m_databases[i];
                 CreateBoardView();
             }
             break;
@@ -1643,12 +1648,28 @@ bool MainWindow::confirmQuit()
                     output.output(m_databases[i]->database()->filename(),
                                   *(m_databases[i]->database()));
         }
+        else
+        {
+            SwitchToClipboard();
+        }
     }
-    for(int i = 1; i < m_databases.size(); i++)
+
+    for(int i = m_databases.size() - 1; i; --i)
     {
         slotFileCloseIndex(i);
     }
     return true;
+}
+
+void MainWindow::switchToClipboard()
+{
+    if (!m_currentDatabase->isClipboard())
+    {
+        m_currentDatabase = m_databases[0]; // Switch to clipboard is always safe
+        activateBoardViewForDbIndex(databaseInfo());
+        m_databaseList->setFileCurrent("Clipboard");
+        slotDatabaseChanged();
+    }
 }
 
 void MainWindow::startOperation(const QString& msg)

@@ -155,7 +155,7 @@ bool MainWindow::QuerySaveDatabase()
 {
     if(QuerySaveGame())
     {
-        if(m_currentDatabase && qobject_cast<MemoryDatabase*>(database()))
+        if(!m_currentDatabase->isClipboard() && qobject_cast<MemoryDatabase*>(database()))
         {
             if(databaseInfo()->isValid() && database()->isModified())
             {
@@ -181,7 +181,7 @@ void MainWindow::slotFileSave()
         MessageDialog::warning(tr("<html>The database <i>%1</i> is read-only and cannot be saved.</html>")
                                .arg(database()->name()));
     }
-    else if(m_currentDatabase && qobject_cast<MemoryDatabase*>(database()))
+    else if(!m_currentDatabase->isClipboard() && qobject_cast<MemoryDatabase*>(database()))
     {
         saveDatabase(databaseInfo());
     }
@@ -189,7 +189,7 @@ void MainWindow::slotFileSave()
 
 void MainWindow::slotFileClose()
 {
-    if(m_currentDatabase)
+    if(!m_currentDatabase->isClipboard())
     {
         // Don't remove Clipboard
         if(databaseInfo()->IsLoaded())
@@ -210,18 +210,12 @@ void MainWindow::slotFileClose()
                 m_openingTreeWidget->cancel();
                 m_databaseList->setFileClose(aboutToClose->filePath(), aboutToClose->currentIndex());
 
-                m_databases.removeAt(m_currentDatabase);
+                m_databases.removeAt(m_databases.indexOf(m_currentDatabase));
                 aboutToClose->close();
                 emit signalDatabaseOpenClose();
                 delete aboutToClose;
 
-                if (m_currentDatabase != 0)
-                {
-                    m_currentDatabase = 0; // Switch to clipboard is always safe
-                    activateBoardViewForDbIndex(databaseInfo());
-                    m_databaseList->setFileCurrent("Clipboard");
-                    slotDatabaseChanged();
-                }
+                SwitchToClipboard();
             }
         }
     }
@@ -229,7 +223,7 @@ void MainWindow::slotFileClose()
 
 void MainWindow::slotFileCloseIndex(int n)
 {
-    if(m_currentDatabase == n)
+    if(m_currentDatabase == m_databases[n])
     {
         slotFileClose();
     }
@@ -258,12 +252,6 @@ void MainWindow::slotFileCloseIndex(int n)
 
             delete m_databases[n];
             m_databases.removeAt(n);
-
-            if(m_currentDatabase > n)
-            {
-                // hack as we have just moved the index by one
-                m_currentDatabase--;
-            }
 
             emit signalDatabaseOpenClose();
         }
@@ -1242,8 +1230,8 @@ void MainWindow::slotDatabaseModified()
 {
     m_gameList->updateFilter();
     slotFilterChanged();
-    emit signalCurrentDBisReadWrite((m_currentDatabase > 0) && !databaseInfo()->database()->isReadOnly() && databaseInfo()->database()->isModified());
-    emit signalCurrentDBcanBeClosed(m_currentDatabase > 0);
+    emit signalCurrentDBisReadWrite((!m_currentDatabase->isClipboard()) && !databaseInfo()->database()->isReadOnly() && databaseInfo()->database()->isModified());
+    emit signalCurrentDBcanBeClosed(!m_currentDatabase->isClipboard());
     emit signalCurrentDBhasGames(database()->index()->count() > 0);
     emit signalGameModified(databaseInfo()->modified());
 }
@@ -2116,18 +2104,18 @@ void MainWindow::slotDatabaseChange()
     if (action)
     {
         int n = action->data().toInt();
-        if (m_currentDatabase != n && !m_databases[n]->IsBook())
+        if (m_currentDatabase != m_databases[n] && !m_databases[n]->IsBook())
         {
             autoGroup->untrigger();
-            m_currentDatabase = action->data().toInt();
-            activateBoardViewForDbIndex(m_databases[m_currentDatabase]);
+            m_currentDatabase = action->data().value<DatabaseInfo*>();
+            activateBoardViewForDbIndex(m_currentDatabase);
             m_databaseList->setFileCurrent(databaseInfo()->filePath());
             slotDatabaseChanged();
             if(database()->isReadOnly())
             {
                 for(int i = 0; i < m_databases.count(); ++i)
                 {
-                    if(i != m_currentDatabase)
+                    if(m_databases[i] != m_currentDatabase)
                     {
                         if(m_databases[i]->isValid() && m_databases[i]->database()->isReadOnly())
                         {
@@ -2142,19 +2130,20 @@ void MainWindow::slotDatabaseChange()
 
 void MainWindow::copyGame(int target, int index)
 {
-    if(m_databases[target]->isValid())
+    DatabaseInfo* pTargetDB = m_databases[target];
+    if(pTargetDB->isValid())
     {
         Game g;
         if(database()->loadGame(index, g))
         {
-            QString fileName = m_databases[target]->database()->name();
+            QString fileName = pTargetDB->database()->name();
             QString msg;
             msg = tr("Append game %1 to %2.").arg(index + 1).arg(fileName);
             slotStatusMessage(msg);
 
             // The database is open and accessible
-            m_databases[target]->database()->appendGame(g);
-            if(target == m_currentDatabase)
+            pTargetDB->database()->appendGame(g);
+            if(pTargetDB == m_currentDatabase)
             {
                 emit databaseModified();
             }
@@ -2294,7 +2283,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
     dlg.setMode((CopyDialog::SrcMode)preselect);
     QStringList db;
     for(int i = 0; i < m_databases.count(); ++i)
-        if(i != m_currentDatabase)
+        if(m_databases[i] != m_currentDatabase)
             db.append(tr("%1. %2 (%3 games)").arg(i).arg(databaseName(i))
                       .arg(m_databases[i]->database()->count()));
     dlg.setDatabases(db);
@@ -2303,9 +2292,9 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
         return;
     }
     int target = dlg.getDatabase();
-    if(target >= m_currentDatabase)
+    if(target >= m_databases.indexOf(m_currentDatabase))
     {
-        target++;
+        ++target;
     }
 
     switch(dlg.getMode())
@@ -2355,7 +2344,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
 
 void MainWindow::slotDatabaseClearClipboard()
 {
-    if (!m_currentDatabase)
+    if (!m_currentDatabase->isClipboard())
     {
         autoGroup->untrigger();
     }
@@ -2364,7 +2353,7 @@ void MainWindow::slotDatabaseClearClipboard()
     m_databases[0]->filter()->resize(0, false);
     m_databases[0]->newGame();
 
-    if (!m_currentDatabase)
+    if (!m_currentDatabase->isClipboard())
     {
         emit databaseChanged(databaseInfo());
         emit databaseModified();
@@ -2670,7 +2659,7 @@ BoardView* MainWindow::CreateBoardView()
         boardView->setMinimumSize(200, 200);
         boardView->configure();
         boardView->setBoard(Board::standardStartBoard);
-        boardView->setDbIndex(m_databases[m_currentDatabase]);
+        boardView->setDbIndex(m_currentDatabase);
 
         connect(this, SIGNAL(reconfigure()), boardView, SLOT(configure()));
         connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
@@ -2737,15 +2726,8 @@ void MainWindow::slotActivateBoardView(int n)
     activateBoardView(n);
 
     BoardView* boardView = m_boardViews.at(n);
-    void* db = boardView->dbIndex();
-    for (int i=0; i<m_databases.size(); ++i)
-    {
-        if (m_databases[i]==db)
-        {
-            m_currentDatabase = i;
-            break;
-        }
-    }
+    m_currentDatabase = qobject_cast<DatabaseInfo*>(boardView->dbIndex());
+
     Q_ASSERT(!databaseInfo()->IsBook());
 
     emit signalGameModified(databaseInfo()->modified());

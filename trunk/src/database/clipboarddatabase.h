@@ -16,6 +16,8 @@ public:
 
     virtual QString name() const;
     virtual QString filename() const;
+
+    virtual bool IsClipboard() const { return true; }
 };
 
 #endif // CLIPBOARDDATABASE_H
