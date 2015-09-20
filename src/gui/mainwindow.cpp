@@ -157,6 +157,7 @@ MainWindow::MainWindow() : QMainWindow(),
     ficsConsoleDock->setMinimumSize(150, 100);
     ficsConsoleDock->setWidget(m_ficsConsole);
     addDockWidget(Qt::RightDockWidgetArea, ficsConsoleDock);
+    connect(m_ficsConsole, SIGNAL(raiseRequest()), ficsConsoleDock, SLOT(raise()));
     connect(m_ficsConsole, SIGNAL(ReceivedBoard(int,QString)), this, SLOT(HandleFicsBoardRequest(int,QString)));
     connect(m_ficsConsole, SIGNAL(SignalGameResult(QString)), this, SLOT(HandleFicsResultRequest(QString)));
     connect(m_ficsConsole, SIGNAL(RequestNewGame()), this, SLOT(HandleFicsNewGameRequest()));
