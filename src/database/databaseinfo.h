@@ -116,6 +116,9 @@ public:
     const QList<double> &material() const;
 
     static QString ficsPath();
+
+    bool isClipboard() const;
+
 protected:
     void doLoadFile(QString filename);
 

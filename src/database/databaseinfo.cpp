@@ -330,6 +330,11 @@ QString DatabaseInfo::ficsPath()
     return (dir + QDir::separator() + "FICS.pgn");
 }
 
+bool DatabaseInfo::isClipboard() const
+{
+    return database() && database()->IsClipboard();
+}
+
 bool DatabaseInfo::IsPGN() const
 {
     if (m_filename.isEmpty())

@@ -595,7 +595,7 @@ private:
     QList<DatabaseInfo*> m_databases;
     QList<QAction*> m_recentFileActions;
     QList<QAction*> m_databaseActions;
-    int m_currentDatabase;
+    DatabaseInfo* m_currentDatabase;
     QString m_eco;
     QTime m_operationTime;
     int m_operationFlag;
