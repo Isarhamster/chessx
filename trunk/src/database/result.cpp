@@ -39,6 +39,18 @@ Result ResultFromString(QString res)
     {
         return BlackWin;
     }
+    else if(res.endsWith("1/2"))
+    {
+        return Draw;
+    }
+    else if(res.endsWith("0-1"))
+    {
+        return BlackWin;
+    }
+    else if(res.endsWith("1-0"))
+    {
+        return WhiteWin;
+    }
     else
     {
         return ResultUnknown;

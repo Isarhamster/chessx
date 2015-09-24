@@ -222,6 +222,8 @@ void FicsConsole::HandleExamineRequest(QListWidgetItem* item)
 
     SlotSendUnexamine();
     m_ficsClient->sendCommand("unobserve");
+    puzzleMode = false;
+
     QString s = item->text();
 
     int n = s.section(':',0,0).toInt();
@@ -242,6 +244,8 @@ void FicsConsole::HandleRelayRequest(QListWidgetItem* item)
     if (!m_ficsClient) return;
     SlotSendUnexamine();
     m_ficsClient->sendCommand("unobserve");
+    puzzleMode = false;
+
     QString s = item->text();
     int n = s.section(' ',0,0).toInt();
     if (n)
@@ -515,6 +519,8 @@ void FicsConsole::HandleObserveRequest(QListWidgetItem* item)
     if (!m_ficsClient) return;
     SlotSendUnexamine();
     m_ficsClient->sendCommand("unobserve");
+    puzzleMode = false;
+
     QString s = item->text();
     int n = s.section(' ',0,0).toInt(); // The observer id is right at the start of the string
     if (n)
@@ -829,6 +835,12 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 emit RequestSaveGame();
             }
             break;
+        case FicsClient::BLKCMD_INTERNAL_GAME_END:
+        {
+            ui->textIn->appendPlainText(s);
+            emit SignalGameResult(s);
+            emit RequestSaveGame();
+        }
         case FicsClient::BLKCMD_SHOWLIST:
             if (!s.contains("--"))
             {

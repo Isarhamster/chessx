@@ -171,9 +171,13 @@ void FicsClient::ProcessUnblockedMessage(QString s)
         {
             emit receivedMessage(BLKCMD_SAY,s);
         }
-        else if (s.startsWith("Challenge:") || s.startsWith("Challenge from") || s.contains("offers you a draw") || s.contains("would like to abort the game"))
+        else if (s.startsWith("Creating:") || s.startsWith("Challenge:") || s.startsWith("Challenge from") || s.contains("offers you a draw") || s.contains("would like to abort the game"))
         {
             emit receivedMessage(BLKCMD_INTERNAL_OTHER,s);
+        }
+        else if (s.startsWith("Game") && (s.endsWith("0-1") || s.endsWith("1-0") || s.endsWith("1/2-1/2")))
+        {
+            emit receivedMessage(BLKCMD_INTERNAL_GAME_END,s);
         }
         else if (m_cmd != BLKCMD_NULL)
         {
