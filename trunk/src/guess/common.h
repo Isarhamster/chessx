@@ -24,6 +24,8 @@
 #include <assert.h>
 #include "error.h"
 
+#include <QtCore>
+
 #ifndef ASSERT
 #define ASSERT(h) assert(h)
 #endif
@@ -785,7 +787,7 @@ square_Adjacent(squareT from, squareT to)
 
 inline void srandom32(unsigned int seed)
 {
-#ifdef WIN32
+#ifdef Q_OS_WIN
     srand(seed);
 #else
     srandom(seed);
@@ -794,7 +796,7 @@ inline void srandom32(unsigned int seed)
 
 inline unsigned int random32()
 {
-#ifdef WIN32
+#ifdef Q_OS_WIN
     return rand() ^ (rand() << 16) ^ (rand() >> 16);
 #else
     return random() ^ (random() << 16) ^ (random() >> 16);

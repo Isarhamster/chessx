@@ -1663,7 +1663,7 @@ bool MainWindow::confirmQuit()
 
 void MainWindow::SwitchToClipboard()
 {
-    if (!m_currentDatabase->isClipboard())
+    if (!m_currentDatabase || !m_currentDatabase->isClipboard())
     {
         m_currentDatabase = m_databases[0]; // Switch to clipboard is always safe
         activateBoardViewForDbIndex(databaseInfo());
