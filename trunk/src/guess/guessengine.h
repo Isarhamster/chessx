@@ -73,6 +73,7 @@ SCORE_UPPER = 3;    // Upper bound, real score could be lower.
 //
 struct transTableEntryT
 {
+    transTableEntryT():hash(0), pawnhash(0), score(0) {}
     unsigned int    hash;              // Hash value.
     unsigned int    pawnhash;          // Pawn hash value, for extra safety check.
     short   score;             // Evaluation score.
