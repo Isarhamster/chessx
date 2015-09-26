@@ -10,6 +10,7 @@
 
 #include <QtCore>
 #include <QFileInfo>
+#include <QMutexLocker>
 #include "memorydatabase.h"
 #include "settings.h"
 #include "tags.h"
@@ -58,6 +59,7 @@ void MemoryDatabase::setModified(bool b)
 
 bool MemoryDatabase::appendGame(const Game& game)
 {
+    QMutexLocker m(&m_mutex);
     // Add to index
     TagMap tags = game.tags();
     TagMap::const_iterator i = tags.constBegin();
@@ -71,8 +73,8 @@ bool MemoryDatabase::appendGame(const Game& game)
     Game* newGame = new Game;
     *newGame = game;
     newGame->clearTags();
+    newGame->unmountBoard();
     m_games.append(newGame);
-    m_games.last()->unmountBoard();
     ++m_count;
     setModified(true);
     return true;
@@ -80,6 +82,7 @@ bool MemoryDatabase::appendGame(const Game& game)
 
 bool MemoryDatabase::remove(GameId gameId)
 {
+    QMutexLocker m(&m_mutex);
     setModified(true);
     m_index.setDeleted(gameId, true);
     return true;
@@ -87,6 +90,7 @@ bool MemoryDatabase::remove(GameId gameId)
 
 bool MemoryDatabase::undelete(GameId gameId)
 {
+    QMutexLocker m(&m_mutex);
     setModified(true);
     m_index.setDeleted(gameId, false);
     return true;
@@ -94,6 +98,7 @@ bool MemoryDatabase::undelete(GameId gameId)
 
 bool MemoryDatabase::replace(GameId gameId, Game& game)
 {
+    QMutexLocker m(&m_mutex);
     if(gameId >= m_count)
     {
         return false;
@@ -116,6 +121,7 @@ bool MemoryDatabase::replace(GameId gameId, Game& game)
 
 void MemoryDatabase::loadGameMoves(GameId gameId, Game& game)
 {
+    QMutexLocker m(&m_mutex);
     if(gameId >= m_count)
     {
         return;
@@ -125,6 +131,7 @@ void MemoryDatabase::loadGameMoves(GameId gameId, Game& game)
 
 bool MemoryDatabase::loadGame(GameId gameId, Game& game)
 {
+    QMutexLocker m(&m_mutex);
     if(gameId >= m_count || m_index.deleted(gameId))
     {
         return false;
@@ -138,6 +145,7 @@ bool MemoryDatabase::loadGame(GameId gameId, Game& game)
 
 void MemoryDatabase::parseGame()
 {
+    QMutexLocker m(&m_mutex);
     Game* game = new Game;
 
     QString fen = m_index.tagValue(TagNameFEN, m_count - 1);
@@ -169,8 +177,8 @@ void MemoryDatabase::parseGame()
         }
     }
 
+    game->unmountBoard();
     m_games.append(game);
-    m_games.last()->unmountBoard();
 }
 
 bool MemoryDatabase::parseFile()
