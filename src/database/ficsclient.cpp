@@ -145,7 +145,7 @@ void FicsClient::ProcessUnblockedMessage(QString s)
         else if (s.startsWith('{'))
         {
             // Filter out stuff like abort / resign / draw / play
-            if (s.contains("Creating"))
+            if (s.contains("Creating") || s.contains("Continuing"))
             {
                 emit receivedMessage(BLKCMD_INTERNAL_MATCH_START,s);
             }
