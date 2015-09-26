@@ -290,6 +290,8 @@ bool DatabaseInfo::saveGame()
         {
             database()->index()->setTag(TagNameECO, eco, m_index);
         }
+        database()->index()->setTag(TagNameLength, QString::number((m_game.plyCount() + 1) / 2), m_index);
+
         setModified(false, Game(), "");
         m_undoStack->setClean();
         return true;
