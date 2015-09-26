@@ -11,6 +11,7 @@
 #ifndef __MEMORYDATABASE_H__
 #define __MEMORYDATABASE_H__
 
+#include <QMutex>
 #include <QVector>
 #include "pgndatabase.h"
 
@@ -63,6 +64,7 @@ private:
     QVector <Game*> m_games;
     bool parseFile();
     bool m_isModified;
+    QMutex m_mutex;
 };
 
 #endif	// __MEMORYDATABASE_H__
