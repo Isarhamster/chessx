@@ -13,9 +13,9 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "common.h"
+#include "misc.h"
 #include "position.h"
 #include "attacks.h"
-#include "misc.h"
 #include "sqlist.h"
 #include "sqset.h"
 #include "hash.h"
@@ -3086,7 +3086,7 @@ Position::ReadCoordMove(simpleMoveT * m, const char * str, bool reverse)
     squareT from, to;
     pieceT promo = EMPTY;
 
-    unsigned int slen = strLength(str);
+    unsigned int slen = strlen(str);
     if(slen == 5)
     {
         promo = piece_FromChar(toupper(str[4]));
