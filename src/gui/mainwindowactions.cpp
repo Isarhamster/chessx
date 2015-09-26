@@ -1212,17 +1212,18 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
 {
     if(!dbInfo->database()->isReadOnly())
     {
-        dbInfo->saveGame();
-        dbInfo->database()->index()->setTag(TagNameLength, QString::number((dbInfo->currentGame().plyCount() + 1) / 2), dbInfo->currentIndex());
-        m_gameList->updateFilter();
-        slotFilterChanged();
-        slotGameChanged();
-        UpdateBoardInformation();
-
-        if(AppSettings->getValue("/General/autoCommitDB").toBool())
+        if (dbInfo->saveGame())
         {
-            saveDatabase(dbInfo);
-            emit databaseChanged(dbInfo);
+            m_gameList->updateFilter();
+            slotFilterChanged();
+            slotGameChanged();
+            UpdateBoardInformation();
+
+            if(AppSettings->getValue("/General/autoCommitDB").toBool())
+            {
+                saveDatabase(dbInfo);
+                emit databaseChanged(dbInfo);
+            }
         }
     }
 }

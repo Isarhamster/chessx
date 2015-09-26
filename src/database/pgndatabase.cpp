@@ -13,6 +13,7 @@
 #include <QDir>
 #include <QStringList>
 #include <QtDebug>
+#include <QMutexLocker>
 
 #include "board.h"
 #include "nag.h"
