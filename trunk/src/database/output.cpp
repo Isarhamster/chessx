@@ -343,6 +343,8 @@ QString Output::writeMove(MoveToWrite moveToWrite)
         moveId = m_game.currentMove();
     }
 
+    if (moveId <= ROOT_NODE)  return text; // ?
+
     mvno = QString::number(moveId);
     if(m_game.nags(moveId).count() > 0)
     {

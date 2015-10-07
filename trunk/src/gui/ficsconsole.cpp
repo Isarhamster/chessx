@@ -217,6 +217,7 @@ void FicsConsole::HandleBoard(int cmd, QString s)
 }
 
 void FicsConsole::HandleExamineRequest(QListWidgetItem* item)
+
 {
     if (!m_ficsClient) return;
 
@@ -840,6 +841,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             ui->textIn->appendPlainText(s);
             emit SignalGameResult(s);
             emit RequestSaveGame();
+            break;
         }
         case FicsClient::BLKCMD_SHOWLIST:
             if (!s.contains("--"))

@@ -219,7 +219,7 @@ public slots:
     /** Merge all games from the filter into the active game. */
     void slotMergeFilter();
     /** Update GameView content after game was change. Triggers also @ref slotMoveChanged. */
-    void slotGameChanged();
+    void slotGameChanged(bool bModified);
     /** Handle link click in Game View panel */
     void slotGameViewLink(const QUrl& link);
     /** Handle link click in Game View panel */
