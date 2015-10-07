@@ -113,7 +113,7 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Create clipboard database */
     DatabaseInfo* pClipDB = new DatabaseInfo(&m_undoGroup, new ClipboardDatabase);
     connect(pClipDB,SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
-    connect(pClipDB,SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged()));
+    connect(pClipDB,SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(pClipDB,SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)), Qt::QueuedConnection);
     connect(pClipDB,SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()), Qt::QueuedConnection);
@@ -500,7 +500,7 @@ MainWindow::~MainWindow()
     foreach(DatabaseInfo * database, m_databases)
     {
         // Avoid any GUI action if a database is closed
-        disconnect(database,SIGNAL(signalGameModified(bool)), this, SLOT(slotGameChanged()));
+        disconnect(database,SIGNAL(signalGameModified(bool)), this, SLOT(slotGameChanged(bool)));
         database->close();
     }
     qDeleteAll(m_databases.begin(), m_databases.end());
@@ -1028,7 +1028,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
     connect(db, SIGNAL(LoadFinished(DatabaseInfo*)), this, SLOT(slotDataBaseLoaded(DatabaseInfo*)));
     connect(db, SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
-    connect(db, SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged()));
+    connect(db, SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(db, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
     connect(db, SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)), Qt::QueuedConnection);
     connect(db, SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()), Qt::QueuedConnection);

@@ -783,7 +783,7 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
                         m_machineHasToMove = true;
                     }
                 }
-                slotGameChanged();
+                slotGameChanged(true);
                 return;
             }
         }
@@ -1216,7 +1216,7 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
         {
             m_gameList->updateFilter();
             slotFilterChanged();
-            slotGameChanged();
+            slotGameChanged(true);
             UpdateBoardInformation();
 
             if(AppSettings->getValue("/General/autoCommitDB").toBool())
@@ -1438,7 +1438,7 @@ void MainWindow::slotGetActiveGame(const Game** g)
     *g = &game();
 }
 
-void MainWindow::slotGameChanged()
+void MainWindow::slotGameChanged(bool /*bModified*/)
 {
     UpdateMaterial();
     UpdateGameText();
@@ -2374,7 +2374,7 @@ void MainWindow::slotDatabaseChanged()
     setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
     m_gameList->setFilter(databaseInfo()->filter());
     slotFilterChanged();
-    slotGameChanged();
+    slotGameChanged(true);
     emit databaseChanged(databaseInfo());
     emit databaseModified();
     emit signalGameModified(databaseInfo()->modified());
@@ -2580,7 +2580,7 @@ void MainWindow::slotRenameRequest(QString tag, QString newValue, QString oldVal
         }
         m_eventList->setDatabase(databaseInfo());
         m_playerList->setDatabase(databaseInfo());
-        slotGameChanged();
+        slotGameChanged(true);
         UpdateBoardInformation();
     }
 }
@@ -2733,7 +2733,7 @@ void MainWindow::slotActivateBoardView(int n)
     Q_ASSERT(!databaseInfo()->IsBook());
 
     emit signalGameModified(databaseInfo()->modified());
-    slotGameChanged();
+    slotGameChanged(true);
     m_databaseList->setFileCurrent(databaseInfo()->filePath());
     database()->index()->calculateCache();
     setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
