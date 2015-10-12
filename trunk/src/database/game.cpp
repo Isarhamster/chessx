@@ -65,7 +65,9 @@ Game& Game::operator=(const Game & game)
         m_startingBoard = game.m_startingBoard;
         m_tags = game.m_tags;
         m_variationStartAnnotations = game.m_variationStartAnnotations;
+        m_variationStartAnnotations.detach();
         m_annotations = game.m_annotations;
+        m_annotations.detach();
         m_startPly = game.m_startPly;
         m_moveNodes = game.m_moveNodes;
         m_currentNode = game.m_currentNode;
