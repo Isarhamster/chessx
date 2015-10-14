@@ -170,6 +170,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_ficsClient, SIGNAL(disconnected()), SLOT(FicsDisconnected()), Qt::QueuedConnection);
     connect(m_ficsClient, SIGNAL(connected()), SLOT(FicsConnected()), Qt::QueuedConnection);
     connect(m_ficsConsole, SIGNAL(RequestStoredMove(Square, Square)), SLOT(slotBoardMove(Square, Square)));
+    connect(this, SIGNAL(reconfigure()), m_ficsConsole, SLOT(slotReconfigure()));
     m_ficsConsole->setEnabled(false);
 
     /* Game view */
@@ -562,6 +563,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
         m_gameWindow->saveConfig();
         m_scratchPad->saveConfig();
         m_gameView->saveConfig();
+        m_ficsConsole->saveConfig();
 
         AppSettings->setLayout(this);
         AppSettings->beginGroup("/MainWindow/");

@@ -40,12 +40,14 @@ public:
     ~FicsConsole();
     bool canUsePremove() const;
 
+    void saveConfig();
 public slots:
     void Terminate();
     void SendMove(QString m);
     void SendStoredMove(Square from, Square to);
     void SlotGameModeChanged(bool);
 
+    void slotReconfigure();
 protected slots:
     void SendCommand();
     void HandleMessage(int, QString s);

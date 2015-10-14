@@ -1032,3 +1032,15 @@ void FicsConsole::CMHandleSeekRequest(const QPoint& pos)
         }
     }
 }
+
+void FicsConsole::saveConfig()
+{
+    AppSettings->setValue("/FicsConsole/NoPlaySplit", ui->noPlaySplitter->saveState());
+    AppSettings->setValue("/FicsConsole/SeekSplit", ui->seekSplitter->saveState());
+}
+
+void FicsConsole::slotReconfigure()
+{
+    ui->noPlaySplitter->restoreState(AppSettings->value("/FicsConsole/NoPlaySplit").toByteArray());
+    ui->seekSplitter->restoreState(AppSettings->value("/FicsConsole/SeekSplit").toByteArray());
+}
