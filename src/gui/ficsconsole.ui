@@ -352,7 +352,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_8">
        <item>
-        <widget class="QSplitter" name="splitter">
+        <widget class="QSplitter" name="noPlaySplitter">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -367,7 +367,7 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_2">
              <item>
-              <widget class="QSplitter" name="splitter_2">
+              <widget class="QSplitter" name="seekSplitter">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
