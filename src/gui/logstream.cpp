@@ -44,6 +44,9 @@ SimpleLoggingHandler(QtMsgType type, const QMessageLogContext &, const QString &
     case QtWarningMsg:
         logfile << QTime::currentTime().toString().toLatin1().data() << " Warning: "  << msg.toLatin1().data() << endl;
         break;
+    case QtInfoMsg:
+        logfile << QTime::currentTime().toString().toLatin1().data() << " Information: " << msg.toLatin1().data() << endl;
+        break;
     case QtFatalMsg:
         logfile << QTime::currentTime().toString().toLatin1().data() <<  " Fatal: "   << msg.toLatin1().data() << endl;
         break;
