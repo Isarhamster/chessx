@@ -1525,8 +1525,12 @@ void MainWindow::slotGameViewSource()
 void MainWindow::slotGameDumpMoveNodes()
 {
     game().dumpAllMoveNodes();
-    qDebug() << m_boardView->board().toFen();
-    qDebug() << game().board().toFen();
+}
+
+void MainWindow::slotGameDumpBoard()
+{
+    qDebug() << "View: " << m_boardView->board().toFen() << "//" << m_boardView->board().getHashValue();
+    qDebug() << "Board:" << game().board().toFen() << "//" << game().board().getHashValue();
 }
 
 void MainWindow::slotGameAddVariation(const Analysis& analysis)
