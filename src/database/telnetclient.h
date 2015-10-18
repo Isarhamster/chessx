@@ -36,11 +36,12 @@ signals:
 
 protected slots:
     void SlotReadData();
-    void SlotDisconnected();
+    void SlotSocketDisconnected();
     void SlotReadTimesealData();
     void SlotTimesealError();
 
 protected:
+    void closeSession();
     bool StartTimeseal(const QString &host, int port, QString name, QString passwd);
     void StartSocket(const QString &host, int port, QString name, QString passwd);
     void DispatchReadData(QByteArray bytes);

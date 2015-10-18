@@ -218,7 +218,7 @@ public:
         BLKCMD_INTERNAL_PUZZLEBOT = 1002,
         BLKCMD_INTERNAL_OTHER = 1003,
         BLKCMD_INTERNAL_SESSION_STARTED = 1004,
-        BLKCMD_INTERNAL_GAME_END = 1005
+        BLKCMD_INTERNAL_GAME_END = 1005,
     };
 
     virtual void startSession();

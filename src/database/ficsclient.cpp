@@ -179,6 +179,10 @@ void FicsClient::ProcessUnblockedMessage(QString s)
         {
             emit receivedMessage(BLKCMD_INTERNAL_GAME_END,s);
         }
+        else if (s.contains("Auto-logout"))
+        {
+            closeSession();
+        }
         else if (m_cmd != BLKCMD_NULL)
         {
             emit receivedMessage(m_cmd,s);
