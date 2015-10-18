@@ -27,7 +27,7 @@ TelnetClient::TelnetClient(QObject *parent)
     m_socket = new QTcpSocket(this);
     m_socket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     connect(m_socket, SIGNAL(readyRead()), this, SLOT(SlotReadData()));
-    connect(m_socket, SIGNAL(disconnected()), this, SLOT(SlotDisconnected()));
+    connect(m_socket, SIGNAL(disconnected()), this, SLOT(SlotSocketDisconnected()));
 
     m_extToolProcess = new QProcess(this);
     connect(m_extToolProcess, SIGNAL(readyRead()), SLOT(SlotReadTimesealData()));
@@ -160,7 +160,13 @@ void TelnetClient::SlotReadData()
     }
 }
 
-void TelnetClient::SlotDisconnected()
+void TelnetClient::closeSession()
+{
+    exitSession();
+    emit disconnected();
+}
+
+void TelnetClient::SlotSocketDisconnected()
 {
     m_socket->close();
     emit disconnected();

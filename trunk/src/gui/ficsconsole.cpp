@@ -888,7 +888,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     ui->listPuzzlebotMessages->scrollToBottom();
                     ui->tabWidget->setCurrentIndex(TabPuzzle);
                 }
-                if (s.contains("solved") && !s.contains("almost"))
+                if (s.contains("Timeout reached") || (s.contains("solved") && !s.contains("almost")))
                 {
                     emit SignalGameResult("*");
                     emit RequestSaveGame();
