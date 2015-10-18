@@ -109,6 +109,8 @@ bool Board::doIt(const Move& m, bool undo)
 {
     if(m.isNullMove())
     {
+        hashEpSquare();
+        hashToMove();
         if(undo)
         {
             BitBoard::undoMove(m);
@@ -117,6 +119,7 @@ bool Board::doIt(const Move& m, bool undo)
         {
             BitBoard::doMove(m);
         }
+        hashEpSquare();
         hashToMove();
         return true;
     }

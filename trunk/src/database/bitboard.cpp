@@ -442,6 +442,19 @@ void BitBoard::setEnPassantSquare(const Square s)
     m_epFile = File(s);
 }
 
+void BitBoard::setEnPassantFile(int f)
+{
+    if ((f>=0) && (f<=7))
+    {
+        m_epFile = f+1;
+        epFile2Square();
+    }
+    else
+    {
+        clearEnPassantSquare();
+    }
+}
+
 bool BitBoard::isMovable(const Square from) const
 {
     Q_ASSERT(from < 64);
@@ -3069,6 +3082,9 @@ bool BitBoard::from64Char(const QString& qcharboard)
     {
         setToMove(Black);
     }
+
+    int ep = l[C64_COL_DOUBLE_PAWN_PUSH].toInt();
+    setEnPassantFile(ep);
 
     if (l[C64_CASTLE_W_00].toInt()) setCastleShort(White);
     if (l[C64_CASTLE_W_000].toInt()) setCastleLong(White);
