@@ -228,6 +228,8 @@ public slots:
     void slotGameViewSource();
     /** Dump all node information to the console */
     void slotGameDumpMoveNodes();
+    /** Dump board information to the console */
+    void slotGameDumpBoard();
     /** Create new empty game (to be appended to the database. */
     void slotGameNew();
     /** Save game, replacing old one if it is edited, appending if it is new
