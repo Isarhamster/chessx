@@ -69,6 +69,8 @@ public:
     bool fromFen(const QString& fen);
     /** Set En Passant Square */
     void setEnPassantSquare(const Square s);
+    /** Set En Passant in a file */
+    void setEnPassantFile(int f);
     /** From a FICS representation of a board */
     bool from64Char(const QString &qcharboard);
     /** Remove En Passant privilege */
