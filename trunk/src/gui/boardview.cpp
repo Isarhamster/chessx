@@ -310,6 +310,14 @@ void BoardView::drawPieces(QPaintEvent* event)
             continue;
         }
 
+        QPoint pos = posFromSquare(square);
+
+        if(m_showFrame)
+        {
+            p.setPen(m_theme.color(BoardTheme::Frame));
+            p.drawRect(QRect(pos, m_theme.size()));
+        }
+
         if(m_dragged != Empty)
         {
             Square from = squareAt(m_dragStart);
@@ -319,15 +327,8 @@ void BoardView::drawPieces(QPaintEvent* event)
             }
         }
 
-        QPoint pos = posFromSquare(square);
 
         p.drawPixmap(pos, m_theme.piece(m_board.pieceAt(square)));
-
-        if(m_showFrame)
-        {
-            p.setPen(m_theme.color(BoardTheme::Frame));
-            p.drawRect(QRect(pos, m_theme.size()));
-        }
     }
 }
 
