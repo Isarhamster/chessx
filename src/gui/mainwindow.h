@@ -583,7 +583,6 @@ private:
     GameWindow* m_gameWindow;
     QToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
-    QList<BoardView*> m_boardViews;
     /* Status */
     QLabel* m_statusFilter;
     QLabel* m_statusApp;

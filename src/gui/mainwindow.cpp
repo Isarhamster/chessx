@@ -508,7 +508,6 @@ MainWindow::~MainWindow()
     delete m_output;
     delete m_progressBar;
     delete m_gameList;
-    m_boardViews.clear(); // Widgets are deleted by Qt
 
     EcoPositions::terminateEco();
 }
