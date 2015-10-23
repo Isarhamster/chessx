@@ -327,7 +327,6 @@ void BoardView::drawPieces(QPaintEvent* event)
             }
         }
 
-
         p.drawPixmap(pos, m_theme.piece(m_board.pieceAt(square)));
     }
 }

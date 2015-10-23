@@ -2395,11 +2395,12 @@ void MainWindow::slotSearchBoard()
     QList<Board> boardList;
     boardList.append(game().board());
 
-    for(int i = 0; i < m_boardViews.count(); ++i)
+    for(int i = 0; i < m_tabWidget->count(); ++i)
     {
         if(i != m_tabWidget->currentIndex())
         {
-            const Board& b = m_boardViews.at(i)->board();
+            BoardView* boardView = qobject_cast<BoardView*>(m_tabWidget->widget(i));
+            const Board& b = boardView->board();
             if (b != Board::standardStartBoard)
             {
                 boardList.append(b);
@@ -2674,9 +2675,8 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardView, SIGNAL(moveStarted()), SLOT(slotMoveStarted()));
         connect(boardView, SIGNAL(moveFinished()), SLOT(slotMoveFinished()));
 
-        m_boardViews.push_back(boardView);
-        m_tabWidget->addTab(boardView, QString("%1").arg(m_boardViews.count()));
-        m_tabWidget->setCurrentIndex(m_boardViews.count() - 1);
+        m_tabWidget->addTab(boardView, databaseName());
+        m_tabWidget->setCurrentWidget(boardView);
 
         UpdateBoardInformation();
 
@@ -2704,15 +2704,16 @@ void MainWindow::closeBoardViewForDbIndex(void* dbIndex)
     int index = findBoardView(dbIndex);
     if (index >= 0)
     {
-        slotCloseBoardView(index);
+        m_tabWidget->removeTab(index);
     }
 }
 
 int MainWindow::findBoardView(void* dbIndex) const
 {
-    for(int i = 0; i < m_boardViews.count(); ++i)
+    for(int i = 0; i < m_tabWidget->count(); ++i)
     {
-        if(m_boardViews.at(i)->dbIndex() == dbIndex)
+        BoardView* boardView = qobject_cast<BoardView*>(m_tabWidget->widget(i));
+        if(boardView->dbIndex() == dbIndex)
         {
             return i;
         }
@@ -2722,7 +2723,7 @@ int MainWindow::findBoardView(void* dbIndex) const
 
 void MainWindow::activateBoardView(int n)
 {
-    BoardView* boardView = m_boardViews.at(n);
+    BoardView* boardView = qobject_cast<BoardView*>(m_tabWidget->widget(n));
     m_boardView = boardView;
     m_tabWidget->setCurrentIndex(n);
 }
@@ -2731,7 +2732,7 @@ void MainWindow::slotActivateBoardView(int n)
 {
     activateBoardView(n);
 
-    BoardView* boardView = m_boardViews.at(n);
+    BoardView* boardView = qobject_cast<BoardView*>(m_tabWidget->widget(n));
     m_currentDatabase = qobject_cast<DatabaseInfo*>(boardView->dbIndex());
 
     Q_ASSERT(!databaseInfo()->IsBook());
@@ -2753,9 +2754,9 @@ void MainWindow::slotCloseBoardView(int n)
     {
         n = m_tabWidget->currentIndex();
     }
-    if(m_boardViews.count() > 1)
+
+    if(m_tabWidget->count() > 1)
     {
-        m_boardViews.removeAt(n);
         m_tabWidget->removeTab(n);
     }
 }
@@ -2842,9 +2843,6 @@ void MainWindow::UpdateBoardInformation()
         }
         name += "</div>";
         m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), name);
-
-        QString tabName = databaseName();
-        m_tabWidget->setTabText(m_tabWidget->currentIndex(), tabName);
     }
 }
 
