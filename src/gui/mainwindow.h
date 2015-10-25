@@ -408,7 +408,7 @@ protected slots:
     /** Activate an existing board document */
     void slotActivateBoardView(int);
     /** Activate an existing board document */
-    void slotCloseBoardView(int n = -1);
+    void slotCloseTabWidget(int n = -1);
     /** Make a screenshot and save it to file */
     void slotScreenShot();
     /** Make a screenshot and save it to file */

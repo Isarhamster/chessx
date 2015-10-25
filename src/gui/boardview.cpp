@@ -45,7 +45,7 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false), m_wheelCurrentDelta(0),
     m_minDeltaWheel(0), m_moveListCurrent(0), m_showMoveIndicator(true), m_vAlignTop(false), m_DbIndex(0)
 {
-    QSizePolicy policy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    QSizePolicy policy = sizePolicy();
     policy.setHeightForWidth(true);
     setSizePolicy(policy);
     setMouseTracking(true);
@@ -59,6 +59,16 @@ BoardView::~BoardView()
 {
     removeEventFilter(this);
     m_threatGuess.cancel();
+}
+
+int BoardView::heightForWidth(int width) const
+{
+    int coord = m_coordinates ? CoordinateSize : 0;
+    int moveIndicator = (m_showMoveIndicatorMode==Always) ? MoveIndicatorSize:0;
+    int xsize = (width - 1 - coord - moveIndicator) / 8;
+
+    int square = moveIndicatorWidth(width, xsize);
+    return (width - square);
 }
 
 bool BoardView::eventFilter(QObject *obj, QEvent *ev)
@@ -201,7 +211,7 @@ void BoardView::drawMoveIndicator(QPaintEvent* event)
         // Draw side to move indicator
         int coord =  m_coordinates ? CoordinateSize : 0;
         bool white = m_board.toMove() == White;
-        int square = moveIndicatorWidth();
+        int square = moveIndicatorWidth(width(), m_theme.size().width());
         if(square)
         {
             int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
@@ -354,7 +364,7 @@ void BoardView::resizeBoard(QSize sz)
     m_theme.setSize(QSize(size, size));
 
     // calculate the translation vector to center the widget inside its parent
-    int square = moveIndicatorWidth();
+    int square = moveIndicatorWidth(width(), m_theme.size().width());
 
     QSize widgetSize(size * 8 + 1 + coord + square, size * 8 + 1 + coord);
     QPoint widgetCenter(widgetSize.width() / 2, widgetSize.height() / 2);
@@ -367,13 +377,21 @@ void BoardView::resizeEvent(QResizeEvent* e)
     resizeBoard(e->size());
 }
 
-int BoardView::moveIndicatorWidth() const
+QSize BoardView::sizeHint() const
+{
+    int w = geometry().width();
+    int h = heightForWidth(w);
+    qDebug() << QSize(w,h);
+    return QSize(w,h);
+}
+
+int BoardView::moveIndicatorWidth(int width, int themeWidth) const
 {
     if(m_showMoveIndicator && m_showMoveIndicatorMode!=Never)
     {
         int coord = m_coordinates ? CoordinateSize : 0;
-        int square = width() - coord - 8 * m_theme.size().width() - 4;
-        int maxsquare = m_theme.size().width() / 2;
+        int square = width - coord - 8 * themeWidth - 4;
+        int maxsquare = themeWidth / 2;
         if (square > maxsquare)
         {
             square = maxsquare;
@@ -415,20 +433,23 @@ bool BoardView::showGuess(Square s)
 {
     // Don't want to constantly recalculate guess, so remember which square
     // the mouse is hovering over, and only show new guess when it changes
-    if(m_guessMove && s != m_hoverSquare && !(m_flags & SuppressGuessMove))
+    if(m_guessMove && s != InvalidSquare && s != m_hoverSquare && !(m_flags & SuppressGuessMove))
     {
         m_hoverSquare = s;
         removeGuess();
         m_moveListCurrent = 0;
         m_moveList.clear();
 
-        Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), (int) s, m_moveList);
-        if(!sm.error)
+        if (s != InvalidSquare)
         {
-            m_hiFrom = Square(sm.from);
-            m_hiTo = Square(sm.to);
-            update(squareRect(m_hiFrom));
-            update(squareRect(m_hiTo));
+            Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), (int) s, m_moveList);
+            if(!sm.error)
+            {
+                m_hiFrom = Square(sm.from);
+                m_hiTo = Square(sm.to);
+                update(squareRect(m_hiFrom));
+                update(squareRect(m_hiTo));
+            }
         }
         return true;
     }
@@ -819,11 +840,6 @@ bool BoardView::canDrag(Square s) const
     {
         return m_board.isMovable(s);
     }
-}
-
-int BoardView::heightForWidth(int width) const
-{
-    return width;
 }
 
 void BoardView::dragEnterEvent(QDragEnterEvent *event)

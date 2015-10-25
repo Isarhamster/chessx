@@ -13,6 +13,8 @@
 #include "boardsearchdialog.h"
 #include "boardsetup.h"
 #include "boardview.h"
+// #include "boardviewex.h"
+typedef BoardView BoardViewEx;
 #include "copydialog.h"
 #include "chessbrowser.h"
 #include "compileeco.h"
@@ -2661,7 +2663,8 @@ BoardView* MainWindow::CreateBoardView()
 {
     if (!databaseInfo()->IsBook())
     {
-        BoardView* boardView = new BoardView(m_tabWidget);
+        BoardViewEx* boardViewEx = new BoardViewEx(m_tabWidget);
+        BoardView* boardView = boardViewEx->boardView();
 
         boardView->setMinimumSize(200, 200);
         boardView->configure();
@@ -2677,7 +2680,10 @@ BoardView* MainWindow::CreateBoardView()
 
         m_tabWidget->addTab(boardView, databaseName());
         m_tabWidget->setCurrentWidget(boardView);
-
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        boardView->setSizePolicy(sizePolicy);
         UpdateBoardInformation();
 
         m_boardView = boardView;
@@ -2712,7 +2718,7 @@ int MainWindow::findBoardView(void* dbIndex) const
 {
     for(int i = 0; i < m_tabWidget->count(); ++i)
     {
-        BoardView* boardView = qobject_cast<BoardView*>(m_tabWidget->widget(i));
+        BoardViewEx* boardView = qobject_cast<BoardViewEx*>(m_tabWidget->widget(i));
         if(boardView->dbIndex() == dbIndex)
         {
             return i;
@@ -2723,8 +2729,8 @@ int MainWindow::findBoardView(void* dbIndex) const
 
 void MainWindow::activateBoardView(int n)
 {
-    BoardView* boardView = qobject_cast<BoardView*>(m_tabWidget->widget(n));
-    m_boardView = boardView;
+    BoardViewEx* boardView = qobject_cast<BoardViewEx*>(m_tabWidget->widget(n));
+    m_boardView = boardView->boardView();
     m_tabWidget->setCurrentIndex(n);
 }
 
@@ -2732,7 +2738,7 @@ void MainWindow::slotActivateBoardView(int n)
 {
     activateBoardView(n);
 
-    BoardView* boardView = qobject_cast<BoardView*>(m_tabWidget->widget(n));
+    BoardViewEx* boardView = qobject_cast<BoardViewEx*>(m_tabWidget->widget(n));
     m_currentDatabase = qobject_cast<DatabaseInfo*>(boardView->dbIndex());
 
     Q_ASSERT(!databaseInfo()->IsBook());
@@ -2748,7 +2754,7 @@ void MainWindow::slotActivateBoardView(int n)
     emit databaseChanged(databaseInfo());
 }
 
-void MainWindow::slotCloseBoardView(int n)
+void MainWindow::slotCloseTabWidget(int n)
 {
     if(n < 0)
     {

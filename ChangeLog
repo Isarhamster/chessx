@@ -6,6 +6,9 @@ August 2015: Version 1.3.4
 - New Feature: #104 Display arbitrary tags in game list
 - New Feature: Scratchpad
 
+- New feature: GUI provides book moves for engine games
+- New feature: Plock 10s before end of FICS game
+- New feature: Select Promotion Dialog with Meta-Modifier
 - New feature: Show time annotation also for previous move (if available)
 - New feature: Accept resignations from winboard engines
 - New feature: FICS start button
@@ -13,10 +16,16 @@ August 2015: Version 1.3.4
 - New feature: Test 50 moves/position repetition when playing out games
 - New feature: No hints during training or puzzling
 - New feature: Drag/drop PGN-Files/Text to other applications
-- New feature: CR#152
 - New feature: Make images flipped if mainboard is flipped
 - New feature: B/W images of board
 
+- Bugfix: Undo move in FICS puzzle mode
+- Bugfix: FICS timeout handling
+- Bugfix: Openingthread crashes at end of FICS game
+- Bugfix: Fics matches were not continued
+- Bugfix: Copied games occasionally did not show up in game list immediately
+- Bugfix: Closing databases at shutdwon if saving was neglected was wrong / duplicated queries for saving
+- Bugfix: Copying games to active database occasionally forgot to update GUI
 - Bugfix: Opening Tree might crash
 - Bugfix: Player Opening Statistics wrong
 - Bugfix: Do not indicate premove in FICS puzzle mode

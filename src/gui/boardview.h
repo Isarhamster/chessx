@@ -44,6 +44,7 @@ public:
     /** Set flags for board. Flags include:
     * @p IgnoreSideToMove - allow dragging all pieces (useful for setting up a position)
     */
+    BoardView* boardView() { return this; }
     void setFlags(int flags);
     int flags() const;
     /** Update and shows current position. */
@@ -69,7 +70,7 @@ public:
     /** Get a reference to the database to which the current view is associated */
     QObject *dbIndex() const;
     /** Get the move indicator width */
-    int moveIndicatorWidth() const;
+    int moveIndicatorWidth(int width, int themeWidth) const;
 
     bool vAlignTop() const;
     void setVAlignTop(bool vAlignTop);
@@ -79,6 +80,8 @@ public:
 
     void renderImage(QImage& image, double scaling) const;
     static void renderImageForBoard(const Board& b, QImage& image, QSize size);
+
+    virtual QSize sizeHint() const;
 
 public slots:
 
