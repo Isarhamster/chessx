@@ -143,11 +143,11 @@ MainWindow::MainWindow() : QMainWindow(),
     m_boardSplitter->setChildrenCollapsible(false);
     setCentralWidget(m_boardSplitter);
     m_tabWidget = new QTabWidget(this);
-    m_tabWidget->setObjectName("BoardView");
+    m_tabWidget->setObjectName("TabWidget");
     m_tabWidget->setTabsClosable(true);
     m_tabWidget->setElideMode(Qt::ElideNone);
     m_tabWidget->setUsesScrollButtons(true);
-    connect(m_tabWidget, SIGNAL(tabCloseRequested(int)), SLOT(slotCloseBoardView(int)));
+    connect(m_tabWidget, SIGNAL(tabCloseRequested(int)), SLOT(slotCloseTabWidget(int)));
     connect(m_tabWidget, SIGNAL(tabBarClicked(int)), SLOT(slotActivateBoardView(int)));
     /* Board layout */
     m_boardSplitter->addWidget(m_tabWidget);
@@ -1382,7 +1382,7 @@ void MainWindow::setupActions()
     AppSettings->setValue("/MainWindow/StayOnTop", false);
 #endif
 
-    m_menuView->addAction(createAction(tr("Close current board"), SLOT(slotCloseBoardView()), Qt::CTRL + Qt::SHIFT + Qt::Key_W,
+    m_menuView->addAction(createAction(tr("Close current board"), SLOT(slotCloseTabWidget()), Qt::CTRL + Qt::SHIFT + Qt::Key_W,
                                        0, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
     m_menuView->addSeparator();
 
