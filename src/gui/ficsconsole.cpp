@@ -830,10 +830,10 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             {
                 gameMode = false;
                 m_countDownTimer->stop();
-                emit RequestGameMode(gameMode);
                 ui->textIn->appendPlainText(s);
                 emit SignalGameResult(s);
                 emit RequestSaveGame();
+                emit RequestGameMode(gameMode);
             }
             break;
         case FicsClient::BLKCMD_INTERNAL_GAME_END:

@@ -13,7 +13,7 @@
 #include "boardsearchdialog.h"
 #include "boardsetup.h"
 #include "boardview.h"
-// #include "boardviewex.h"
+//#include "boardviewex.h"
 typedef BoardView BoardViewEx;
 #include "copydialog.h"
 #include "chessbrowser.h"
@@ -2680,6 +2680,7 @@ BoardView* MainWindow::CreateBoardView()
 
         m_tabWidget->addTab(boardView, databaseName());
         m_tabWidget->setCurrentWidget(boardView);
+//        m_tabWidget->setMouseTracking(true);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
