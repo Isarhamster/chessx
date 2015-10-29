@@ -381,7 +381,6 @@ QSize BoardView::sizeHint() const
 {
     int w = geometry().width();
     int h = heightForWidth(w);
-    qDebug() << QSize(w,h);
     return QSize(w,h);
 }
 
