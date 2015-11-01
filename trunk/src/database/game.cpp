@@ -70,6 +70,7 @@ Game& Game::operator=(const Game & game)
         m_annotations.detach();
         m_startPly = game.m_startPly;
         m_moveNodes = game.m_moveNodes;
+        m_moveNodes.detach();
         m_currentNode = game.m_currentNode;
         if (m_currentBoard && game.m_currentBoard)
         {

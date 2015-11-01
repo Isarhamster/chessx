@@ -5,6 +5,7 @@
 #include "board.h"
 #include "ficsconsole.h"
 #include "ficsclient.h"
+#include "partialdate.h"
 #include "settings.h"
 #include "tags.h"
 
@@ -131,6 +132,9 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
 
     connect(ui->btAddNoPlay, SIGNAL(clicked()), SLOT(SlotAddNoPlay()));
     connect(ui->editNoPlay, SIGNAL(returnPressed()), SLOT(SlotAddNoPlay()));
+    connect(ui->editNoPlay, SIGNAL(textChanged(QString)), SLOT(SlotNoPlayChanged(QString)));
+
+    ui->btAddNoPlay->setDisabled(ui->editNoPlay->text().isEmpty());
 
 #ifndef FICS_DEBUG
     ui->line->setVisible(false);
@@ -485,6 +489,11 @@ void FicsConsole::SlotAddNoPlay()
     m_ficsClient->sendCommand("=noplay");
 }
 
+void FicsConsole::SlotNoPlayChanged(const QString& s)
+{
+    ui->btAddNoPlay->setDisabled(s.isEmpty());
+}
+
 void FicsConsole::SlotContextMenu(const QPoint &pos)
 {
     QWidget* w = ui->tabWidget->childAt(pos);
@@ -678,6 +687,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                         QString nameBlack = l[4];
                         emit RequestAddTag(TagNameWhite, nameWhite);
                         emit RequestAddTag(TagNameBlack, nameBlack);
+                        emit RequestAddTag(TagNameDate, PartialDate::today().asString());
                         int ratingWhite = l[3].remove("(").remove(")").toInt();
                         int ratingBlack = l[5].remove("(").remove(")").toInt();
                         if (ratingWhite) emit RequestAddTag(TagNameWhiteElo, QString::number(ratingWhite));

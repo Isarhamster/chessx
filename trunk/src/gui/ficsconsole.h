@@ -84,6 +84,7 @@ protected slots:
     void SlotSendSeek();
     void SlotSayMessage();
     void SlotAddNoPlay();
+    void SlotNoPlayChanged(const QString &s);
 
     void SlotContextMenu(const QPoint&);
 
