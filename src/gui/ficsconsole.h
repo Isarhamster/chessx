@@ -19,6 +19,7 @@ class FicsClient;
 class QButtonGroup;
 class QTimer;
 class QTableWidgetItem;
+class SimpleLabel;
 
 enum
 {
@@ -105,7 +106,9 @@ signals:
 protected:
     QString FormatTime(QString s) const;
     void SetPlayerListItemsFromLine(QString s);
-    void TestTockFor10s(QString s);
+    bool TestTockFor10s(QString s);
+    bool TestColor(QString s, int seconds) const;
+    void TestTimeWarning(SimpleLabel *label, bool playerToMove);
 private:
     Ui::FicsConsole *ui;
     QPointer<FicsClient> m_ficsClient;
@@ -122,6 +125,7 @@ private:
     int m_prevTab;
     Square m_from;
     Square m_to;
+
 };
 
 #endif // FICSCONSOLE_H

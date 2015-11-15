@@ -23,7 +23,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabMessages">
       <attribute name="title">
@@ -99,7 +99,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="timeWhite">
+              <widget class="SimpleLabel" name="timeWhite">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -129,7 +129,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="timeBlack">
+              <widget class="SimpleLabel" name="timeBlack">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -632,6 +632,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SimpleLabel</class>
+   <extends>QLabel</extends>
+   <header>simplelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../resources.qrc"/>
  </resources>

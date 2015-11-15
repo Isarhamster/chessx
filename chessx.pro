@@ -216,7 +216,8 @@ HEADERS += src/database/board.h \
     src/gui/ooo/kzip.h \
     src/database/engineparameter.h \
     src/dialogs/matchparameterdlg.h \
-    src/gui/boardviewex.h
+    src/gui/boardviewex.h \
+    src/gui/simplelabel.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -351,7 +352,8 @@ SOURCES += src/database/board.cpp \
     src/gui/ooo/styleparser.cpp \
     src/gui/ooo/kzip.cpp \
     src/dialogs/matchparameterdlg.cpp \
-    src/gui/boardviewex.cpp
+    src/gui/boardviewex.cpp \
+    src/gui/simplelabel.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
