@@ -363,38 +363,46 @@ QString FicsConsole::FormatTime(QString s) const
     return result;
 }
 
+void FicsConsole::TestTimeWarning(SimpleLabel* label, bool playerToMove)
+{
+    QString s = label->text();
+    label->setText(FormatTime(s));
+    if (playerToMove)
+    {
+        TestTockFor10s(s);
+    }
+    if (TestColor(s,10))
+    {
+       label->setBackgroundColor(Qt::yellow);
+    }
+    else
+    {
+        label->resetBackgroundColor();
+    }
+}
+
 void FicsConsole::SlotCountDownGameTime()
 {
     if (gameMode)
     {
         if (m_bWhiteToMove)
         {
-            QString w = ui->timeWhite->text();
-            ui->timeWhite->setText(FormatTime(w));
-            if (!m_bPlayerIsBlack)
-            {
-                TestTockFor10s(w);
-            }
+            TestTimeWarning(ui->timeWhite, !m_bPlayerIsBlack);
         }
         else
         {
-            QString b = ui->timeBlack->text();
-            ui->timeBlack->setText(FormatTime(b));
-            if (m_bPlayerIsBlack)
-            {
-                TestTockFor10s(b);
-            }
+            TestTimeWarning(ui->timeBlack, m_bPlayerIsBlack);
         }
         m_countDownTimer->start();
     }
 }
 
-void FicsConsole::TestTockFor10s(QString s)
+bool FicsConsole::TestTockFor10s(QString s)
 {
 #ifdef USE_SOUND
     if (m_bTockDone)
     {
-        return;
+        return true;
     }
     QTime t = QTime::fromString(s,"h:m:ss");
     if (t.msecsSinceStartOfDay()<10000)
@@ -404,12 +412,24 @@ void FicsConsole::TestTockFor10s(QString s)
             QSound::play(":/sounds/woodthunk.wav");
             m_bTockDone = true;
         }
+        return m_bTockDone;
     }
     else
     {
         m_bFirstTime = false;
+        return false;
     }
 #endif
+}
+
+bool FicsConsole::TestColor(QString s, int seconds) const
+{
+    QTime t = QTime::fromString(s,"h:m:ss");
+    if (t.msecsSinceStartOfDay()<seconds*1000)
+    {
+        return true;
+    }
+    return false;
 }
 
 void FicsConsole::SlotSendAccept()
@@ -900,6 +920,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 }
                 if (s.contains("Timeout reached") || (s.contains("solved") && !s.contains("almost")))
                 {
+                    emit RequestAddTag(TagNameDate, PartialDate::today().asString());
                     emit SignalGameResult("*");
                     emit RequestSaveGame();
                     if (gameMode)
