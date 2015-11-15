@@ -731,11 +731,15 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
 {
     const Board& board = game().board();
     Move m(board.prepareMove(from, to));
+    doBoardMove(m, button, from, to);
+}
 
+void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to)
+{
     if(m.isLegal())
     {
         PieceType promotionPiece = None;
-        if(m.isPromotion())
+        if(m.isPromotion() && !(button & 0x80000000))
         {
             int index = 0;
             if ((button & Qt::MetaModifier) || !AppSettings->getValue("/Board/AutoPromoteToQueen").toBool())
@@ -748,6 +752,10 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
             }
             promotionPiece = PieceType(Queen + index);
             m.setPromotionPiece(promotionPiece);
+        }
+        else if (m.isPromotion())
+        {
+            promotionPiece = pieceType(m.promotedPiece());
         }
 
         // Use an existing move with the correct promotion piece type if it already exists
@@ -1548,13 +1556,11 @@ void MainWindow::slotGameAddVariation(const Analysis& analysis)
 bool MainWindow::addVariation(const QString& s)
 {
     bool added = false;
-    if(game().atLineEnd())
+    Move m = game().board().parseMove(s);
+    if(m.isLegal() || m.isNullMove())
     {
-        added = game().addMove(s) != NO_MOVE;
-    }
-    else
-    {
-        added = game().addVariation(s) != NO_MOVE;
+        added = true;
+        doBoardMove(m, 0x80000000, m.from(), m.to());
     }
     return added;
 }

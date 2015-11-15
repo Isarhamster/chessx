@@ -464,6 +464,7 @@ protected:
     bool ActivateFICSDatabase();
     void setupAnalysisWidget(DockWidgetEx *analysisDock, AnalysisWidget *analysis);
     void playSound(QString s);
+    void doBoardMove(Move m, unsigned int button, Square from, Square to);
 signals:
     /** Re-read configuration. */
     void reconfigure();
