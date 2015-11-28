@@ -83,6 +83,7 @@ public:
 
     virtual QSize sizeHint() const;
 
+    void getStoredMove(Square &from, Square &to);
 public slots:
 
     /** Flips/unflips board. */

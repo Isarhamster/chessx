@@ -169,7 +169,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_ficsConsole, SIGNAL(SignalPlayerIsBlack(bool)), this, SLOT(slotFlipView(bool)));
     connect(m_ficsClient, SIGNAL(disconnected()), SLOT(FicsDisconnected()), Qt::QueuedConnection);
     connect(m_ficsClient, SIGNAL(connected()), SLOT(FicsConnected()), Qt::QueuedConnection);
-    connect(m_ficsConsole, SIGNAL(RequestStoredMove(Square, Square)), SLOT(slotBoardMove(Square, Square)));
+    connect(m_ficsConsole, SIGNAL(RequestStoredMove()), SLOT(slotBoardStoredMove()));
     connect(this, SIGNAL(reconfigure()), m_ficsConsole, SLOT(slotReconfigure()));
     m_ficsConsole->setEnabled(false);
 
