@@ -96,8 +96,6 @@ void BoardView::setBoard(const Board& value, Square from, Square to, bool atLine
     m_board = value;
     m_currentFrom = from;
     m_currentTo = to;
-    m_storedFrom = InvalidSquare;
-    m_storedTo = InvalidSquare;
     m_atLineEnd = atLineEnd;
     m_hiFrom = m_hiTo = InvalidSquare;
     if(underMouse())
@@ -112,6 +110,15 @@ void BoardView::setStoredMove(Square from, Square to)
 {
     m_storedFrom = from;
     m_storedTo = to;
+    update();
+}
+
+void BoardView::getStoredMove(Square& from, Square& to)
+{
+    from = m_storedFrom;
+    to = m_storedTo;
+    m_storedFrom = InvalidSquare;
+    m_storedTo = InvalidSquare;
     update();
 }
 

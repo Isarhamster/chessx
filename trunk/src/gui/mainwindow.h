@@ -309,10 +309,6 @@ public slots:
     void slotSearchTreeMove(const QModelIndex& index);
     /** Made given move on the board */
     void slotBoardMove(Square from, Square to, int button=0);
-    /** Move started - use together with moveFinished to avoid automatic moves during user interaction */
-    void slotMoveStarted();
-    /** Move finished - use together with moveStarted to avoid automatic moves during user interaction */
-    void slotMoveFinished();
     /** Board square was clicked */
     void slotBoardClick(Square square, int button, QPoint pos, Square from);
     /** Browse current game by mouse wheel */
@@ -433,6 +429,7 @@ protected slots:
     void slotToggleEngineMatch();
     void slotUpdateOpeningBook(QString name);
     void slotRestartAnalysis();
+    void slotBoardStoredMove();
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);

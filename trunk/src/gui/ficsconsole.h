@@ -45,7 +45,6 @@ public:
 public slots:
     void Terminate();
     void SendMove(QString m);
-    void SendStoredMove(Square from, Square to);
     void SlotGameModeChanged(bool);
 
     void slotReconfigure();
@@ -100,8 +99,7 @@ signals:
     void SignalGameResult(QString);
     void SignalPlayerIsBlack(bool);
     void RequestCloseFICS();
-    /** User clicked source and destination squares */
-    void RequestStoredMove(Square from, Square to);
+    void RequestStoredMove();
 
 protected:
     QString FormatTime(QString s) const;
@@ -123,9 +121,6 @@ private:
     bool m_bTockDone;
     bool m_bFirstTime;
     int m_prevTab;
-    Square m_from;
-    Square m_to;
-
 };
 
 #endif // FICSCONSOLE_H

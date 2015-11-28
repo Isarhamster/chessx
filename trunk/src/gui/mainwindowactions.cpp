@@ -715,16 +715,16 @@ void MainWindow::slotHelpBug()
     QDesktopServices::openUrl(QUrl("http://sourceforge.net/tracker/?group_id=163833&atid=829300"));
 }
 
-void MainWindow::slotMoveStarted()
+void MainWindow::slotBoardStoredMove()
 {
-    if (premoveAllowed())
+    const Board& board = game().board();
+    Square from, to;
+    m_boardView->getStoredMove(from,to);
+    if (from != InvalidSquare && to != InvalidSquare)
     {
-        m_ficsConsole->SendStoredMove(InvalidSquare,InvalidSquare);
+        Move m(board.prepareMove(from, to));
+        doBoardMove(m, 0, from, to);
     }
-}
-
-void MainWindow::slotMoveFinished()
-{
 }
 
 void MainWindow::slotBoardMove(Square from, Square to, int button)
@@ -900,7 +900,6 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
         // Move is not legal, but could become legal, so store as premove and try later
         if (premoveAllowed())
         {
-            m_ficsConsole->SendStoredMove(from,to);
             m_boardView->setStoredMove(from,to);
         }
     }
@@ -1197,6 +1196,7 @@ void MainWindow::slotGameLoadChosen()
 
 void MainWindow::newGame()
 {
+    m_boardView->setStoredMove(InvalidSquare, InvalidSquare);
     databaseInfo()->newGame();
     m_gameList->removeSelection();
     emit signalGameIsEmpty(true); // repair effect of slotGameChanged
@@ -1626,13 +1626,16 @@ void MainWindow::slotToggleAutoRespond()
         m_matchParameter.reset();
         m_mainAnalysis->setMoveTime(m_matchParameter);
         m_machineHasToMove = true;
+        m_boardView->setFlags(m_boardView->flags() | BoardView::IgnoreSideToMove);
     }
     else
     {
         m_mainAnalysis->stopEngine();
         // Reset to value from slider
         m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
+        m_boardView->setFlags(m_boardView->flags() & ~BoardView::IgnoreSideToMove);
     }
+
     m_matchTime[0] = 0;
     m_matchTime[1] = 0;
     m_elapsedUserTimeValid = false;
@@ -1900,6 +1903,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         {
                             m_elapsedUserTime.start();
                             m_elapsedUserTimeValid = true;
+                            slotBoardStoredMove();
                         }
                     }
                 }
@@ -2681,8 +2685,6 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
         connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
         connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
-        connect(boardView, SIGNAL(moveStarted()), SLOT(slotMoveStarted()));
-        connect(boardView, SIGNAL(moveFinished()), SLOT(slotMoveFinished()));
 
         m_tabWidget->addTab(boardView, databaseName());
         m_tabWidget->setCurrentWidget(boardView);
@@ -2994,5 +2996,6 @@ void MainWindow::enterGameMode(bool gameMode)
 
 bool MainWindow::premoveAllowed() const
 {
-    return (gameMode() && m_ficsConsole->canUsePremove() && qobject_cast<const FicsDatabase*>(database()));
+    return ((gameMode() && m_ficsConsole->canUsePremove() && qobject_cast<const FicsDatabase*>(database()))
+            || m_autoRespond->isChecked());
 }
