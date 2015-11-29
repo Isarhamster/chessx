@@ -20,9 +20,11 @@ public:
     explicit MatchParameterDlg(QWidget *parent = 0);
     ~MatchParameterDlg();
 
-    static bool getParameters(EngineParameter &par);
+    static bool getParametersForEngineGame(EngineParameter &par);
+    static bool getParametersForEngineMatch(EngineParameter &par);
 
 private:
+    static bool getParameters(EngineParameter &par, bool engineMatch);
     Ui::MatchParameterDlg *ui;
 };
 

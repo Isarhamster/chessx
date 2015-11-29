@@ -20,6 +20,7 @@ public:
         annotateEgt  = true;
         allowBook    = false;
         bookMove     = 0;
+        engineStarts = false;
     }
 
     EngineParameter(int mt=0)
@@ -34,6 +35,7 @@ public:
         annotateEgt  = true;
         allowBook    = false;
         bookMove     = 0;
+        engineStarts = false;
     }
 
     void reset()
@@ -59,6 +61,7 @@ public:
     unsigned int ms_increment;
     bool allowBook;
     int bookMove;
+    bool engineStarts;
 };
 
 #endif // ENGINEPARAMETER_H

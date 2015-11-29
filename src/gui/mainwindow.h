@@ -563,6 +563,7 @@ private:
     /** Set the game result for a final position */
     void setResultAgainstColorToMove();
     bool autoRespondActive() const;
+    void triggerBoardMove();
 
     /* Dialogs  */
     GameList* m_gameList;
