@@ -409,6 +409,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_matchParameter.annotateEgt  = AppSettings->getValue("/Match/AnnotateEgt").toBool();
     m_matchParameter.allowBook    = AppSettings->getValue("/Match/AllowBook").toBool();
     m_matchParameter.bookMove     = AppSettings->getValue("/Match/BookMove").toBool();
+    m_matchParameter.engineStarts = AppSettings->getValue("/Match/EngineStarts").toBool();
 
     m_matchParameter.reset();
     m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());

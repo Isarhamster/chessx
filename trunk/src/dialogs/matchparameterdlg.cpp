@@ -23,7 +23,17 @@ MatchParameterDlg::~MatchParameterDlg()
     delete ui;
 }
 
-bool MatchParameterDlg::getParameters(EngineParameter& par)
+bool MatchParameterDlg::getParametersForEngineGame(EngineParameter &par)
+{
+    return getParameters(par, false);
+}
+
+bool MatchParameterDlg::getParametersForEngineMatch(EngineParameter &par)
+{
+    return getParameters(par, true);
+}
+
+bool MatchParameterDlg::getParameters(EngineParameter& par, bool engineMatch)
 {
     MatchParameterDlg dlg;
 
@@ -35,6 +45,7 @@ bool MatchParameterDlg::getParameters(EngineParameter& par)
     dlg.ui->cbAllowBook->setChecked(par.allowBook);
     dlg.ui->cbBookMove->setCurrentIndex(par.bookMove);
     dlg.ui->cbBookMove->setEnabled(par.allowBook);
+    dlg.ui->cbEngineStarts->setVisible(!engineMatch);
 
     if (dlg.exec())
     {
@@ -47,6 +58,7 @@ bool MatchParameterDlg::getParameters(EngineParameter& par)
         par.annotateEgt  = dlg.ui->annotateEgt->isChecked();
         par.allowBook    = dlg.ui->cbAllowBook->isChecked();
         par.bookMove     = dlg.ui->cbBookMove->currentIndex();
+        par.engineStarts = dlg.ui->cbEngineStarts->isChecked();
 
         AppSettings->beginGroup("/Match/");
         AppSettings->setValue("Mode", (int) par.tm);
@@ -56,6 +68,7 @@ bool MatchParameterDlg::getParameters(EngineParameter& par)
         AppSettings->setValue("AnnotateEgt",par.annotateEgt);
         AppSettings->setValue("AllowBook",par.allowBook);
         AppSettings->setValue("BookMove",par.bookMove);
+        AppSettings->setValue("EngineStarts",par.engineStarts);
         AppSettings->endGroup();
 
         return true;

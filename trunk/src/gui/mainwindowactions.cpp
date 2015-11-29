@@ -727,6 +727,31 @@ void MainWindow::slotBoardStoredMove()
     }
 }
 
+void MainWindow::triggerBoardMove()
+{
+    if (!game().atLineEnd())
+    {
+        game().forward();
+        Move m = game().move();
+        m_currentFrom = m.from();
+        m_currentTo = m.to();
+        moveChanged(); // The move's currents where set after forward(), thus repair effects
+        playSound(":/sounds/move.wav");
+    }
+    else
+    {
+        if (!m_elapsedUserTimeValid && !m_mainAnalysis->isEngineRunning())
+        {
+            m_secondaryAnalysis->stopEngine(); // Avoid interference of second engine
+            m_mainAnalysis->unPin();
+            m_mainAnalysis->setMoveTime(m_matchParameter);
+            m_mainAnalysis->startEngine();
+        }
+
+        m_machineHasToMove = true;
+    }
+}
+
 void MainWindow::slotBoardMove(Square from, Square to, int button)
 {
     const Board& board = game().board();
@@ -771,27 +796,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
             {
                 if (autoRespondActive())
                 {
-                    if (!game().atLineEnd())
-                    {
-                        game().forward();
-                        Move m = game().move();
-                        m_currentFrom = m.from();
-                        m_currentTo = m.to();
-                        moveChanged(); // The move's currents where set after forward(), thus repair effects
-                        playSound(":/sounds/move.wav");
-                    }
-                    else
-                    {
-                        if (!m_elapsedUserTimeValid && !m_mainAnalysis->isEngineRunning())
-                        {
-                            m_secondaryAnalysis->stopEngine(); // Avoid interference of second engine
-                            m_mainAnalysis->unPin();
-                            m_mainAnalysis->setMoveTime(m_matchParameter);
-                            m_mainAnalysis->startEngine();
-                        }
-
-                        m_machineHasToMove = true;
-                    }
+                    triggerBoardMove();
                 }
                 slotGameChanged(true);
                 return;
@@ -1617,7 +1622,7 @@ void MainWindow::slotToggleAutoRespond()
 
     if (m_autoRespond->isChecked())
     {
-        if (!MatchParameterDlg::getParameters(m_matchParameter))
+        if (!MatchParameterDlg::getParametersForEngineGame(m_matchParameter))
         {
             m_autoRespond->setChecked(false);
             return;
@@ -1627,6 +1632,12 @@ void MainWindow::slotToggleAutoRespond()
         m_mainAnalysis->setMoveTime(m_matchParameter);
         m_machineHasToMove = true;
         m_boardView->setFlags(m_boardView->flags() | BoardView::IgnoreSideToMove);
+        if (m_matchParameter.engineStarts)
+        {
+            m_boardView->setFlipped(game().board().toMove() == White);
+            triggerBoardMove();
+            slotGameChanged(true);
+        }
     }
     else
     {
@@ -1679,7 +1690,7 @@ void MainWindow::slotToggleEngineMatch()
     Guess::setGuessAllowed(!m_engineMatch->isChecked());
     if(m_engineMatch->isChecked())
     {
-        if (!MatchParameterDlg::getParameters(m_matchParameter))
+        if (!MatchParameterDlg::getParametersForEngineMatch(m_matchParameter))
         {
             m_engineMatch->setChecked(false);
             return;
@@ -1822,8 +1833,9 @@ bool MainWindow::doEngineMove(Move m, EngineParameter e)
 
 void MainWindow::slotEngineTimeout(const Analysis& analysis)
 {
-    if (m_boardView->dragged() == Empty) // Do not interfer with moving a piece
+    if (m_boardView->dragged() == Empty || m_autoRespond->isChecked()) // Do not interfer with moving a piece, unless it might be a premove
     {
+        // todo - if premove, make it possible to change the board "underneath" the piece that is moved
         if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != game().board()))
         {
             m_AutoInsertLastBoard = game().board();

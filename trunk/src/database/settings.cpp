@@ -355,6 +355,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Match/AnnotateEgt", true);
     map.insert("/Match/AllowBook", false);
     map.insert("/Match/BookMove", 0);
+    map.insert("/Match/EngineStarts", false);
 
     map.insert("/Sound/Move", true);
 
