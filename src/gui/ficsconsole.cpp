@@ -12,9 +12,12 @@
 #include "ui_ficsconsole.h"
 
 #include <QButtonGroup>
+#include <QCompleter>
 #include <QMenu>
 #include <QToolButton>
 #include <QString>
+#include <QStringList>
+#include <QStringListModel>
 #include <QSound>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -135,6 +138,12 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     connect(ui->editNoPlay, SIGNAL(textChanged(QString)), SLOT(SlotNoPlayChanged(QString)));
 
     ui->btAddNoPlay->setDisabled(ui->editNoPlay->text().isEmpty());
+
+    QStringList words;
+    words << "Thanks for the game";
+    QCompleter* completer = new QCompleter(words, this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->sayMessage->setCompleter(completer);
 
 #ifndef FICS_DEBUG
     ui->line->setVisible(false);
@@ -471,16 +480,16 @@ void FicsConsole::SlotSendSeek()
     int to = ui->eloMax->value();
     if ((t || inc) && (from<=to))
     {
-        QString s = QString("seek %1 %2 %3 %4-%5 ")
+        QString seek = QString("seek %1 %2 %3 %4-%5 ")
                 .arg(t)
                 .arg(inc)
                 .arg(ui->cbRated->currentIndex() ? "unrated" : "rated")
                 .arg(from)
                 .arg(to);
-        QListWidgetItem* item = new QListWidgetItem(s);
+        QListWidgetItem* item = new QListWidgetItem(seek);
         item->setTextColor(Qt::gray);
         ui->listSeeks->addItem(item);
-        m_ficsClient->sendCommand(s);
+        m_ficsClient->sendCommand(seek);
     }
 }
 
@@ -490,6 +499,20 @@ void FicsConsole::SlotSayMessage()
     m_ficsClient->sendCommand(QString("say %1").arg(msg));
     ui->sayMessage->clear();
     ui->textIn->appendHtml(QString("<i>%1</i>").arg(msg));
+    UpdateSayCompleter(msg);
+}
+
+void FicsConsole::UpdateSayCompleter(QString msg)
+{
+    QCompleter* completer = ui->sayMessage->completer();
+    QStringListModel* model = qobject_cast<QStringListModel*>(completer->model());
+    QStringList words = model->stringList();
+    if (!words.contains(msg))
+    {
+        words.append(msg);
+        model->setStringList(words);
+        ui->sayMessage->setCompleter(completer);
+    }
 }
 
 void FicsConsole::SlotAddNoPlay()
@@ -826,6 +849,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_INTERNAL_MATCH_START:
             {
                 gameMode = true;
+                m_ficsClient->sendCommand("time");
                 m_lastRelation = C64_REL_ISOLATED; // Anything invalid in this context
                 ui->timeWhite->setText(QString());
                 ui->timeBlack->setText(QString());
@@ -843,7 +867,6 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     m_bTockDone = false;
                     emit SignalPlayerIsBlack(m_bPlayerIsBlack);
                 }
-                m_ficsClient->sendCommand("time");
             }
             break;
         case FicsClient::BLKCMD_INTERNAL_MATCH_END:
