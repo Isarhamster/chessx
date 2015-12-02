@@ -107,6 +107,7 @@ protected:
     bool TestTockFor10s(QString s);
     bool TestColor(QString s, int seconds) const;
     void TestTimeWarning(SimpleLabel *label, bool playerToMove);
+    void UpdateSayCompleter(QString msg);
 private:
     Ui::FicsConsole *ui;
     QPointer<FicsClient> m_ficsClient;
@@ -121,6 +122,7 @@ private:
     bool m_bTockDone;
     bool m_bFirstTime;
     int m_prevTab;
+
 };
 
 #endif // FICSCONSOLE_H
