@@ -66,8 +66,9 @@ pressing the Meta-Key while dragging the pawn to the eigth row.</p>
 In this case, a keyboard is needed: Either enter "0-0" and press Enter or enter 0-0-0
 to castle long.</p>
 
-<p>If you want ChessX to replay the game, select "Game->Auto Player". You can change the move rate with the slider in the bottom right corner
-of the status bar.</p>
+<h3>Let ChessX replay the game</h3>
+<p><img src=":/images/replay.png" width="42" align="left">If you want ChessX to replay the game, select "Game->Auto Player".
+You can change the move rate with the slider in the bottom right corner of the status bar.</p>
 
 <h3>Entering moves with the keyboard</h3>
 
@@ -112,15 +113,10 @@ hard to implement for GUI developers.</p>
 to the right to make the engine analyse from 1 to 10 secondes per move.</p>
 
 <h3>Playing (out) games against an engine</h3>
-<p>You can play out a game after the final position by activating Auto Respond mode.
+<p><img src=":/images/respond.png" width="42" align="left">You can play out a game after the final position by activating Auto Respond mode.
 Whenever you make a move the engine in pane 1 will start to analyse the
 position for the time defined by the slider at the bottom right of the status bar. If the allotted time is over, the
 engine will make the best move found so far.</p>
-
-<h3>Using Books in engines</h3>
-<p>UCI engines may support books. Just set the OwnBook option to true, set the name of the "Book File" option and restart the engine.
-The engine will answer immediately with a book move when playing out games (see above), depending on "Best Book Move" option this may or
-may not be the best move from the book. In infinite analysis, the engine won't use information from opening books.</p>
 
 <h3>Automatically annotating games</h3>
 <p>Start an engine in the Analysis 1 window and select menu "Game->Auto Analysis". ChessX will start to move through the
@@ -134,6 +130,11 @@ open the first game from the database and select move 1.
 <li>Preferences->Database->Commit Database after saving Game: Recommended, commits your results to the harddisk after each game, especially if you
 analyse a complete database, a loss of power will otherwise lose all results so far.
 </ul>
+
+<h3>Using Books in engines</h3>
+<p>UCI engines may support books. Just set the OwnBook option to true, set the name of the "Book File" option and restart the engine.
+The engine will answer immediately with a book move when playing out games (see above), depending on "Best Book Move" option this may or
+may not be the best move from the book. In infinite analysis, the engine won't use information from opening books.</p>
 
 <h3>Using Books in ChessX</h3>
 <p>Polyglot is a book standard supported by ChessX. The orginal code was licensed under GNU GPL Version 2.0.</p>
@@ -197,7 +198,7 @@ into the same position).</p>
 Pressing Shift while clicking onto a move will add the move to the current game (if the position permits)</p>
 
 <h3>Training Mode</h3>
-<p>Selecting Game/Training starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game
+<p><img src=":/images/training.png" width="42" align="left">Selecting Game/Training starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game
 so you can make any move in a position. If the move is the right one (the one that was played or a existing variation) then the move is executed
 and the game is moved one step forward.
 The game notation is updated and variations on that move become visible. Ideal for use with a tactics database.</p>
@@ -206,11 +207,11 @@ See the chapter on Making Moves and the associated preferences to enable move gu
 <p>You can combine training with Auto Respond mode, in this case, ChessX will make the next move automatically whenever you make a correct move.</p>
 
 <h3>Playing matches</h3>
-<p>The match button makes sure, that ChessX does not give away hints on the position. This effectively disables
-engine output, tablebase output, moving back or forward in a game etc.</p>
+<p><img src=":/images/black_chess.png" width="42" align="left">The match button makes sure, that ChessX does not give away hints on the position. This effectively disables
+engine output, tablebase output, moving back or forward in a game, changing databases etc.</p>
 
 <h3>Matches between engines</h3>
-<p>With "Game/Engine Match" you can arrange a match between two engines. Analysis pane 1 will play the white pieces, pane 2 with the black pieces.
+<p><img src=":/images/chip.png" width="42" align="left">With "Game/Engine Match" you can arrange a match between two engines. Analysis pane 1 will play the white pieces, pane 2 with the black pieces.
 Starting an engine match brings up the match parameter dialog.
 If activated, the elapsed game time is annotated. You can play with Gong (each move will be made within a fixed time) or sudden death, where
 each engine gets a fixed amount of time for the whole game. ChessX will supervise the time and also adjudicate a draw in case of a three-fold repetition,
