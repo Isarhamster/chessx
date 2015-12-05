@@ -23,11 +23,6 @@ Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
 {
     Result r;
 
-    if (!s_guessAllowed)
-    {
-        return r;
-    }
-
     squareT sq = square;
 
     Position pos;
@@ -44,6 +39,10 @@ Result guessMove(const char* fen, int square, MoveList& mlist, int thinkTime)
 
     if(mlist.size() > 1)
     {
+        if (!s_guessAllowed)
+        {
+            return r;
+        }
         Engine engine;
         engine.SetSearchTime(thinkTime);
         engine.SetPosition(&pos);
