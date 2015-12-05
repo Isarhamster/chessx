@@ -49,6 +49,9 @@
      </item>
      <item>
       <widget class="QSpinBox" name="vpcount">
+       <property name="toolTip">
+        <string>Number of parallel lines</string>
+       </property>
        <property name="minimum">
         <number>1</number>
        </property>
@@ -82,10 +85,17 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>Select an engine</string>
+       </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="bookList"/>
+      <widget class="QComboBox" name="bookList">
+       <property name="toolTip">
+        <string>Select a GUI book</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="analyzeButton">

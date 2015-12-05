@@ -644,6 +644,10 @@ void FicsConsole::Disconnected()
     ui->listGames->clear();
     ui->listPlayers->clearContents();
     ui->listPuzzlebotMessages->clear();
+    if (gameMode)
+    {
+        emit RequestGameMode(false);
+    }
     gameMode = false;
     puzzleMode = false;
 }
