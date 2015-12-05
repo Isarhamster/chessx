@@ -36,6 +36,7 @@ bool MatchParameterDlg::getParametersForEngineMatch(EngineParameter &par)
 bool MatchParameterDlg::getParameters(EngineParameter& par, bool engineMatch)
 {
     MatchParameterDlg dlg;
+    dlg.setObjectName(engineMatch ? "EngineMatchParameterDlg" : "EngineGameParameterDlg");
 
     dlg.ui->baseTime->setTime(QTime::fromMSecsSinceStartOfDay(par.ms_totalTime));
     dlg.ui->timeBonus->setValue(par.ms_bonus/1000);
@@ -46,6 +47,8 @@ bool MatchParameterDlg::getParameters(EngineParameter& par, bool engineMatch)
     dlg.ui->cbBookMove->setCurrentIndex(par.bookMove);
     dlg.ui->cbBookMove->setEnabled(par.allowBook);
     dlg.ui->cbEngineStarts->setVisible(!engineMatch);
+    dlg.ui->timeBonus->setVisible(!engineMatch);
+    dlg.ui->labelBonus->setVisible(!engineMatch);
 
     if (dlg.exec())
     {
