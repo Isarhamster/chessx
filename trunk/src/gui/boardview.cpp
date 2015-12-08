@@ -40,6 +40,7 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_threatFrom(InvalidSquare), m_threatTo(InvalidSquare),
     m_currentFrom(InvalidSquare), m_currentTo(InvalidSquare),
     m_storedFrom(InvalidSquare), m_storedTo(InvalidSquare),
+    m_dragStartSquare(InvalidSquare),
     m_atLineEnd(true),
     m_flags(flags),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false), m_wheelCurrentDelta(0),
@@ -337,8 +338,8 @@ void BoardView::drawPieces(QPaintEvent* event)
 
         if(m_dragged != Empty)
         {
-            Square from = squareAt(m_dragStart);
-            if (from == square)
+            // Do not paint piece that is dragged
+            if (m_dragStartSquare == square)
             {
                 continue;
             }
@@ -432,7 +433,6 @@ void BoardView::mousePressEvent(QMouseEvent* event)
 {
     m_dragStart = event->pos();
     setStoredMove(InvalidSquare,InvalidSquare);
-    emit moveStarted();
 }
 
 bool BoardView::showGuess(Square s)
@@ -609,10 +609,16 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
     {
         return;
     }
+
+    startToDrag(event, s);
+}
+
+void BoardView::startToDrag(QMouseEvent *event, Square s)
+{
     removeGuess();
     m_dragged = m_board.pieceAt(s);
     m_dragPoint = event->pos() - m_theme.pieceCenter();
-    m_board.removeFrom(s);
+    m_dragStartSquare = s;
     update(squareRect(s));
     update(QRect(m_dragPoint, m_theme.size()));
     unselectSquare();
@@ -642,7 +648,6 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
             emit invalidMove(from);
         }
         m_dragged = Empty;
-        emit moveFinished();
         return;
     }
     else
@@ -655,7 +660,6 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
                 emit clicked(s, button, mapToGlobal(event->pos()), from);
             }
             m_dragged = Empty;
-            emit moveFinished();
             return;
         }
     }
@@ -663,7 +667,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
     if(m_dragged != Empty)
     {
         Square from = squareAt(m_dragStart);
-        m_board.setAt(from, m_dragged);
+        m_dragStartSquare = InvalidSquare;
         QRect oldr = QRect(m_dragPoint, m_theme.size());
         m_dragged = Empty;
         update(squareRect(from));
@@ -722,7 +726,6 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         }
     }
     m_dragged = Empty;
-    emit moveFinished();
 }
 
 void BoardView::wheelEvent(QWheelEvent* e)

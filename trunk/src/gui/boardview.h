@@ -113,9 +113,6 @@ signals:
     /** Indicate that a piece was dropped to the board */
     void pieceDropped(Square to, Piece p);
 
-    void moveStarted();
-    void moveFinished();
-
 protected:
     /** Redraws whole board if necessary. */
     virtual void paintEvent(QPaintEvent*);
@@ -185,6 +182,8 @@ private:
     void drawArrowAnnotations(QPaintEvent* event);
     void drawArrowAnnotation(QPaintEvent* event, QString annotation);
 
+    void startToDrag(QMouseEvent *event, Square s);
+
     Board m_board;
     BoardTheme m_theme;
     QPoint m_translate;
@@ -203,6 +202,7 @@ private:
     Square m_currentTo;
     Square m_storedFrom;
     Square m_storedTo;
+    Square m_dragStartSquare;
     bool m_atLineEnd;
     int m_flags;
     bool m_coordinates;
