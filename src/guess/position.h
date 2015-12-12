@@ -112,18 +112,13 @@ private:
     // or pawn move.
     unsigned short          PlyCounter;
     unsigned char            Castling;       // castling flags
-    bool            StrictCastling; // If false, allow castling after moving
-    // the King or Rook.
+    bool            Chess960Castling;
 
     unsigned int            Hash;           // Hash value.
     unsigned int            PawnHash;       // Pawn structure hash value.
 
-//    unsigned int            NumChecks;      // Number of checks.
-//    SquareList      CheckSquares;   // Stores list of pieces checking the king.
-
     MoveList      * LegalMoves;     // list of legal moves
     sanListT      * SANStrings;     // SAN list of legal move strs
-
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  Position:  Private Functions
@@ -144,6 +139,7 @@ private:
 
     void  AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceT promo);
     void  GenCastling(MoveList * mlist);
+    void  GenCastling960(MoveList * mlist);
     void  GenKingMoves(MoveList * mlist, genMovesT genType, bool castling);
     void  AddPromotions(MoveList * mlist, squareT from, squareT dest);
     bool  IsValidEnPassant(squareT from, squareT to);
@@ -332,15 +328,6 @@ public:
         Castling = b;
     }
 
-    void        SetStrictCastling(bool b)
-    {
-        StrictCastling = b;
-    }
-    bool        GetStrictCastling(void)
-    {
-        return StrictCastling;
-    }
-
     // Allocating memory  -- maybe these should be private??
     void        AllocLegalMoves();
     void        AllocSANStrings();
@@ -427,8 +414,6 @@ public:
     errorT      RelocatePiece(squareT fromSq, squareT toSq);
 
     void        MakeSANString(simpleMoveT * sm, char * s, sanFlagT flag);
-    void        CalcSANStrings(sanFlagT flag);
-
     errorT      ReadCoordMove(simpleMoveT * m, const char * s, bool reverse);
     errorT      ReadMove(simpleMoveT * m, const char * s, tokenT t);
     errorT      ParseMove(simpleMoveT * sm, const char * s);
@@ -443,6 +428,8 @@ public:
     // Copy, compare positions
     void        CopyFrom(Position * src);
 
+    bool getChess960Castling() const;
+    void setChess960Castling(bool value);
 };
 
 

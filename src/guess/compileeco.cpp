@@ -63,6 +63,7 @@ void updateFinalGuess(const Board& board, Square target, const Move& move)
         }
         int ret = Guess::pickBest(
                       qPrintable(board.toFen()),
+                      false, /* chess960 not supported */
                       from, to, ofrom, oto,
                       CALCULATE_MS);
         if(ret == 0)

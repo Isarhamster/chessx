@@ -38,6 +38,16 @@ static unsigned int stdStartPawnHash = 0;
 
 using namespace Guess;
 
+bool Position::getChess960Castling() const
+{
+    return Chess960Castling;
+}
+
+void Position::setChess960Castling(bool value)
+{
+    Chess960Castling = value;
+}
+
 inline void
 Position::AddHash(pieceT p, squareT sq)
 {
@@ -417,18 +427,18 @@ Position::GenKnightMoves(MoveList * mlist, colorT c, squareT fromSq,
 void
 Position::GenCastling(MoveList * mlist)
 {
+    if (Chess960Castling)
+    {
+        GenCastling960(mlist);
+    }
     ASSERT(! IsKingInCheck());
     squareT from = GetKingSquare(ToMove);
-    if(from != (ToMove == WHITE ? E1 : E8))
-    {
-        return;
-    }
     squareT enemyKingSq = GetEnemyKingSquare();
     squareT target, skip, rookSq;
     pieceT rookPiece;
 
     // Queenside Castling:
-    if(!StrictCastling  ||  GetCastling(ToMove, QSIDE))
+    if(GetCastling(ToMove, QSIDE))
     {
         if(ToMove == WHITE)
         {
@@ -444,6 +454,7 @@ Position::GenCastling(MoveList * mlist)
             rookSq = A8;
             rookPiece = BR;
         }
+
         if(Board[target] == EMPTY  &&  Board[skip] == EMPTY
                 &&  Board[rookSq] == rookPiece
                 &&  Board[target - 1] == EMPTY // B1 or B8 must be empty too!
@@ -456,7 +467,74 @@ Position::GenCastling(MoveList * mlist)
     }
 
     // Kingside Castling:
-    if(!StrictCastling  ||  GetCastling(ToMove, KSIDE))
+    if(GetCastling(ToMove, KSIDE))
+    {
+        if(ToMove == WHITE)
+        {
+            target = G1;
+            skip = F1;
+            rookSq = H1;
+            rookPiece = WR;
+        }
+        else
+        {
+            target = G8;
+            skip = F8;
+            rookSq = H8;
+            rookPiece = BR;
+        }
+        if(Board[target] == EMPTY  &&  Board[skip] == EMPTY
+                &&  Board[rookSq] == rookPiece
+                &&  CalcNumChecks(target) == 0
+                &&  CalcNumChecks(skip) == 0
+                &&  ! square_Adjacent(target, enemyKingSq))
+        {
+            AddLegalMove(mlist, from, target, EMPTY);
+        }
+    }
+}
+
+void
+Position::GenCastling960(MoveList * mlist)
+{
+    // todo - this method needs to be fixed!
+    ASSERT(! IsKingInCheck());
+    squareT from = GetKingSquare(ToMove);
+    squareT enemyKingSq = GetEnemyKingSquare();
+    squareT target, skip, rookSq;
+    pieceT rookPiece;
+
+    // Queenside Castling:
+    if(GetCastling(ToMove, QSIDE))
+    {
+        if(ToMove == WHITE)
+        {
+            target = C1;
+            skip = D1;
+            rookSq = A1;
+            rookPiece = WR;
+        }
+        else
+        {
+            target = C8;
+            skip = D8;
+            rookSq = A8;
+            rookPiece = BR;
+        }
+
+        if(Board[target] == EMPTY  &&  Board[skip] == EMPTY
+                &&  Board[rookSq] == rookPiece
+                &&  Board[target - 1] == EMPTY // B1 or B8 must be empty too!
+                &&  CalcNumChecks(target) == 0
+                &&  CalcNumChecks(skip) == 0
+                &&  ! square_Adjacent(target, enemyKingSq))
+        {
+            AddLegalMove(mlist, from, target, EMPTY);
+        }
+    }
+
+    // Kingside Castling:
+    if(GetCastling(ToMove, KSIDE))
     {
         if(ToMove == WHITE)
         {
@@ -498,7 +576,8 @@ Position::GenKingMoves(MoveList * mlist, genMovesT genType, bool castling)
     pieceT king = piece_Make(ToMove, KING);
     bool genNonCaptures = ((genType & GEN_NON_CAPS) != 0);
 
-    if (Board[kingSq] != king) return; // TODO - happens - why?
+    if (Board[kingSq] != king)
+        return; // TODO - happens - why?
     ASSERT(Board[kingSq] == king);
 
     destPtr = kingAttacks[kingSq];
@@ -798,7 +877,6 @@ Position::Init(void)
     Board [NULL_SQUARE] = END_OF_BOARD;
     LegalMoves = NULL;
     SANStrings = NULL;
-    StrictCastling = true;
 
     // Make sure all tables used for move generation, hashing,
     // square tests, etc have been computed:
@@ -1733,7 +1811,7 @@ Position::MatchKingMove(MoveList * mlist, squareT target)
         {
             return ERROR_InvalidMove;
         }
-        if(StrictCastling  &&  ! GetCastling(ToMove, KSIDE))
+        if(!GetCastling(ToMove, KSIDE))
         {
             return ERROR_InvalidMove;
         }
@@ -1758,7 +1836,7 @@ Position::MatchKingMove(MoveList * mlist, squareT target)
         {
             return ERROR_InvalidMove;
         }
-        if(StrictCastling  &&  ! GetCastling(ToMove, QSIDE))
+        if(!GetCastling(ToMove, QSIDE))
         {
             return ERROR_InvalidMove;
         }
@@ -2927,7 +3005,13 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
     squareT to   = m->to;
     char * c     = s;
 
-    if(p == PAWN)
+    if(isNullMove(m))
+    {
+        //*c++ = 'n'; *c++ = 'u'; *c++ = 'l'; *c++ = 'l';
+        *c++ = '-';
+        *c++ = '-';
+    }
+    else if(p == PAWN)
     {
         if(square_Fyle(from) != square_Fyle(to))     // pawn capture
         {
@@ -2941,17 +3025,10 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
             *c++ = '=';
             *c++ = piece_Char(m->promote);
         }
-
     }
     else if(p == KING)
     {
-        if(isNullMove(m))
-        {
-            //*c++ = 'n'; *c++ = 'u'; *c++ = 'l'; *c++ = 'l';
-            *c++ = '-';
-            *c++ = '-';
-        }
-        else if((square_Fyle(from) == E_FYLE) && (square_Fyle(to) == G_FYLE))
+        if((square_Fyle(from) == E_FYLE) && (square_Fyle(to) == G_FYLE))
         {
             *c++ = 'O';
             *c++ = '-';
@@ -3540,31 +3617,6 @@ Position::ReadLine(const char * line)
         DoSimpleMove(&sm);
     }
 }
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Position::CalcSANStrings():
-//      Calculate the SAN string for each move in the legal moves list.
-//
-void
-Position::CalcSANStrings(sanFlagT flag)
-{
-    if(SANStrings == NULL)
-    {
-        AllocSANStrings();
-    }
-    //if (SANStrings->current) return;
-
-    MoveList mlist;
-    GenerateMoves(&mlist);
-    for(unsigned short i = 0; i < mlist.size(); ++i)
-    {
-        MakeSANString(mlist.Get(i), SANStrings->list[i], flag);
-    }
-    SANStrings->num = mlist.size();
-    SANStrings->current = true;
-}
-
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Position::DumpBoard():

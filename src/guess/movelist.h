@@ -52,8 +52,8 @@ struct simpleMoveT
 
 inline bool isNullMove(simpleMoveT * sm)
 {
-    return (sm->from == sm->to  &&  sm->from != NULL_SQUARE
-            &&  piece_Type(sm->movingPiece) == KING);
+    // Must be consistent with BitBoard::isNullMove
+    return (sm->from == sm->to && sm->from == A2);
 }
 
 errorT writeSimpleMove(FILE * fp, simpleMoveT * sm);

@@ -81,7 +81,7 @@ public:
     /** parse SAN or LAN representation of move, and return proper Move() object */
     Move parseMove(const QString& algebraic) const;
     /** Return a proper Move() object given only a from-to move specification */
-    Move prepareMove(const Square& from, const Square& to, bool forceCastle=false) const;
+    Move prepareMove(const Square& from, const Square& to, bool doNotAllowCastling=false) const;
 
     // Return a nullMove -- King to the same square
     Move nullMove() const;
@@ -180,9 +180,9 @@ private:
     /** Remove impossible moves from given bitboard to aid disambiguation */
     void removeIllegal(const Move& move, quint64& b) const;
     /** Update move with castling details, return false if no castle is possible */
-    bool prepareCastle(Move& move, bool forceCastle) const;
+    bool prepareCastle(Move& move) const;
     /** Update move with castling details for Chess960, return false if no castle is possible */
-    bool prepareCastle960(Move &move, bool forceCastle) const;
+    bool prepareCastle960(Move &move) const;
     /** Test that nothing is inbetween the castling pieces */
     bool isFreeForCastling960(Square from, Square to, Square rook_from, Square rook_to) const;
     /** Generate all possible moves in a given position */
