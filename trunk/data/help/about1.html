@@ -62,9 +62,11 @@ the move played with the new move and check the remaining game for illegal posit
 This can be disabled in the Preferences. If you have enabled automatic promotion, you can still force the promotion dialog to appear bei
 pressing the Meta-Key while dragging the pawn to the eigth row.</p>
 
-<p>While entering a Chess 960 game, castling may pose some difficulties with the mouse and ChessX might not accept a castling.
-In this case, a keyboard is needed: Either enter "0-0" and press Enter or enter 0-0-0
-to castle long.</p>
+<p>While entering a Chess 960 game, castling is performed by dragging the king to g1/g8 or c1/c8 respectively.
+This will work even if the king is already on its destination square.
+If you want to move the king without castling to one of these squares and castling would be possible, too, you need to press
+the Command-Modifier while moving the king, this will create a king move instead of castling. You could also use
+the keyboard to disambiguate the move.</p>
 
 <h3>Let ChessX replay the game</h3>
 <p><img src=":/images/replay.png" width="42" align="left">If you want ChessX to replay the game, select "Game->Auto Player".
@@ -119,7 +121,7 @@ position for the time defined by the slider at the bottom right of the status ba
 engine will make the best move found so far.</p>
 
 <h3>Automatically annotating games</h3>
-<p>Start an engine in the Analysis 1 window and select menu "Game->Auto Analysis". ChessX will start to move through the
+<p><img src=":/images/annotate.png" width="42" align="left">Start an engine in the Analysis 1 window and select menu "Game->Auto Analysis". ChessX will start to move through the
 current game, analysing each position for some time. After the alotted time is over, the best move will be inserted as variation into the game
 text. Then ChessX will continue with the next move.</p>
 <p>There are a couple of options which have an influence on the behaviuor:</p>
@@ -135,6 +137,16 @@ analyse a complete database, a loss of power will otherwise lose all results so 
 <p>UCI engines may support books. Just set the OwnBook option to true, set the name of the "Book File" option and restart the engine.
 The engine will answer immediately with a book move when playing out games (see above), depending on "Best Book Move" option this may or
 may not be the best move from the book. In infinite analysis, the engine won't use information from opening books.</p>
+<p>If your engine does not support books (e.g. Stockfish does not support it anymore), the GUI can act as a
+frontend for the engine: Open a book as described below and select it from the book-selector in the Analysis pane.
+If you start a engine match or a game against an engine, you can use the option "Allow use of books" and select
+an algorithm, how the GUI shall select moves if several moves are available for a given position.
+<ul>
+<li>Best move will always take the preferred move
+<li>Random selection will choose one move at random with equal probability
+<li>Weighted selection will make a random selection but prefers better moves
+</ul>
+</p>
 
 <h3>Using Books in ChessX</h3>
 <p>Polyglot is a book standard supported by ChessX. The orginal code was licensed under GNU GPL Version 2.0.</p>

@@ -231,6 +231,7 @@ private:
 // null move is coded as a2a2 which is better than a king move
 inline bool Move::isNullMove() const
 {
+    // Must be consistent with Guess::movelist::isNullMove
     return (to() == a2 && from() == a2);
 }
 

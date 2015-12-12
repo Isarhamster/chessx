@@ -755,7 +755,7 @@ void MainWindow::triggerBoardMove()
 void MainWindow::slotBoardMove(Square from, Square to, int button)
 {
     const Board& board = game().board();
-    Move m(board.prepareMove(from, to));
+    Move m(board.prepareMove(from, to, (button & Qt::ControlModifier)));
     doBoardMove(m, button, from, to);
 }
 
