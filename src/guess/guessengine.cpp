@@ -235,9 +235,15 @@ pieceValues [8] =
 };
 
 inline int
-Engine::PieceValue(pieceT piece)
+Engine::PieceValue(pieceT piece) const
 {
     return pieceValues[piece_Type(piece)];
+};
+
+inline int
+Engine::PieceValue(pieceC piece) const
+{
+    return pieceValues[piece];
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -569,8 +575,9 @@ Engine::Score(int alpha, int beta)
         {
             squareT sq = sqlist[i];
             pieceT p = board[sq];
-            pieceT ptype = piece_Type(p);
-            ASSERT(p != EMPTY  &&  piece_Color(p) == c);
+            pieceC ptype = piece_Type(p);
+            ASSERT (p != EMPTY  &&  piece_Color(p) == c);
+
             squareT bonusSq = (c == WHITE) ? square_FlipRank(sq) : sq;
             unsigned int rank = RANK_1 + RANK_8 - square_Rank(bonusSq);
 
@@ -1175,41 +1182,6 @@ Engine::IsGettingMatedScore(int score)
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Engine::PlayMove
-//   Play the specified move, not in a search.
-void
-Engine::PlayMove(simpleMoveT * sm)
-{
-    PushRepeat(&RootPos);
-    RootPos.DoSimpleMove(sm);
-    Pos.DoSimpleMove(sm);
-    simpleMoveT * newMove = new simpleMoveT;
-    *newMove = *sm;
-    GameMoves[NumGameMoves] = newMove;
-    NumGameMoves++;
-    // Change the transposition table sequence number:
-    TranTableSequence++;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Engine::RetractMove
-//    Take back a move played in the game.
-void
-Engine::RetractMove(void)
-{
-    if(NumGameMoves == 0)
-    {
-        return;
-    }
-    PopRepeat();
-    NumGameMoves--;
-    RootPos.UndoSimpleMove(GameMoves[NumGameMoves]);
-    Pos.UndoSimpleMove(GameMoves[NumGameMoves]);
-    delete GameMoves[NumGameMoves];
-    TranTableSequence--;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::DoMove
 //   Make the specified move in a search.
 inline void
@@ -1465,11 +1437,11 @@ inline void tte_SetBestMove(transTableEntryT * tte, simpleMoveT * bestMove)
 inline void tte_GetBestMove(transTableEntryT * tte, simpleMoveT * bestMove)
 {
     unsigned short bm = tte->bestMove;
-    bestMove->promote = bm & 15;
+    bestMove->promote = piece_Type(pieceT(bm & 15));
     bm >>= 4;
-    bestMove->to = bm & 63;
+    bestMove->to = squareT(bm & 63);
     bm >>= 6;
-    bestMove->from = bm & 63;
+    bestMove->from = squareT(bm & 63);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2446,10 +2418,10 @@ Engine::Quiesce(int alpha, int beta)
         // Find the highest-scoring remaining move, make it and search:
         mlist.FindBest(i);
         simpleMoveT * sm = mlist.Get(i);
-        pieceT promote = piece_Type(sm->promote);
+        pieceC promote = sm->promote;
 
         // Skip underpromotions:
-        if(promote != EMPTY  &&  promote != QUEEN)
+        if(promote != C_EMPTY  &&  promote != QUEEN)
         {
             continue;
         }
@@ -2497,8 +2469,8 @@ Engine::SEE(squareT from, squareT target)
 {
     const pieceT * board = Pos.GetBoard();
     SquareList attackers[2];
-    pieceT mover = piece_Type(board[from]);
-    ASSERT(mover != EMPTY);
+    pieceC mover = piece_Type(board[from]);
+    ASSERT(mover != C_EMPTY);
     colorT stm = piece_Color_NotEmpty(board[from]);
 
 #define SEE_ADD(c,sq) attackers[(c)].Add(sq)
@@ -2677,7 +2649,7 @@ Engine::SEE(squareT from, squareT target)
             {
                 continue;
             }
-            pieceT ptype = piece_Type(p);
+            pieceC ptype = piece_Type(p);
             if(ptype == PAWN)
             {
                 // Look through this pawn if it was also a capturer.
@@ -2804,7 +2776,7 @@ Engine::SEE(squareT from, squareT target)
                 bestIndex = i;
             }
         }
-        pieceT attackPiece = piece_Type(board[attackSquare]);
+        pieceC attackPiece = piece_Type(board[attackSquare]);
 
         // Update the swap list:
         swaplist[nswaps] = -swaplist[nswaps - 1] + attackedVal;
@@ -2838,7 +2810,7 @@ Engine::SEE(squareT from, squareT target)
                 {
                     continue;
                 }
-                pieceT pt = piece_Type(p);
+                pieceC pt = piece_Type(p);
                 if(! piece_IsSlider(pt))
                 {
                     break;
@@ -2891,7 +2863,7 @@ Engine::ScoreMoves(MoveList * mlist)
     for(unsigned int i = 0; (int) i < mlist->size(); i++)
     {
         simpleMoveT * sm = mlist->Get(i);
-        if(sm->capturedPiece != EMPTY  ||  sm->promote != EMPTY)
+        if(sm->capturedPiece != EMPTY  ||  sm->promote != C_EMPTY)
         {
             int see = SEE(sm->from, sm->to);
             if(see >= 0)

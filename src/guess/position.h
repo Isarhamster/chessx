@@ -113,6 +113,7 @@ private:
     unsigned short          PlyCounter;
     unsigned char            Castling;       // castling flags
     bool            Chess960Castling;
+    quint64 CastlingRooks;
 
     unsigned int            Hash;           // Hash value.
     unsigned int            PawnHash;       // Pawn structure hash value.
@@ -129,7 +130,7 @@ private:
     inline void AddToBoard(pieceT p, squareT sq);
     inline void RemoveFromBoard(pieceT p, squareT sq);
 
-    void  CalcPinsDir(directionT dir, pieceT attacker);
+    void  CalcPinsDir(directionT dir, pieceC attacker);
 
     void  GenSliderMoves(MoveList * mlist, colorT c, squareT sq,
                          directionT dir, SquareSet * sqset,
@@ -137,7 +138,7 @@ private:
     void  GenKnightMoves(MoveList * mlist, colorT c, squareT sq,
                          SquareSet * sqset, bool capturesOnly);
 
-    void  AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceT promo);
+    void  AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceC promotion = C_EMPTY, bool castle = false);
     void  GenCastling(MoveList * mlist);
     void  GenCastling960(MoveList * mlist);
     void  GenKingMoves(MoveList * mlist, genMovesT genType, bool castling);
@@ -149,6 +150,9 @@ private:
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  Position:  Public Functions
+    bool isFreeForCastling960(squareT from, squareT to, squareT rook_from, squareT rook_to, squareT enemyKingSq) const;
+    pieceT pieceAt(squareT square) const;
+    squareT CastlingRook(int index) const;
 public:
 
     Position()
@@ -174,9 +178,13 @@ public:
     errorT      AddPiece(pieceT p, squareT sq);
 
     // Set and Get attributes -- one-liners
-    unsigned char        PieceCount(pieceT p)
+    unsigned char PieceCount(pieceT p) const
     {
         return Material[p];
+    }
+    const unsigned char* GetMaterial() const
+    {
+        return Material;
     }
     unsigned char* GetMaterial()
     {
@@ -186,11 +194,11 @@ public:
     {
         EPTarget = s;
     }
-    squareT     GetEPTarget()
+    squareT     GetEPTarget() const
     {
         return EPTarget;
     }
-    bool        GetEPFlag()
+    bool        GetEPFlag() const
     {
         return (EPTarget != NS);
     }
@@ -198,7 +206,7 @@ public:
     {
         ToMove = c;
     }
-    colorT      GetToMove()
+    colorT      GetToMove() const
     {
         return ToMove;
     }
@@ -206,42 +214,42 @@ public:
     {
         PlyCounter = x;
     }
-    unsigned short      GetPlyCounter()
+    unsigned short      GetPlyCounter() const
     {
         return PlyCounter;
     }
-    unsigned short      GetFullMoveCount()
+    unsigned short      GetFullMoveCount() const
     {
         return PlyCounter / 2 + 1;
     }
-    sanListT *  GetSANStrings()
+    sanListT *  GetSANStrings() const
     {
         return SANStrings;
     }
-    MoveList *  GetLegalMoves()
+    MoveList *  GetLegalMoves() const
     {
         return LegalMoves;
     }
     inline int
-    ScoreWhiteMaterial(void)
+    ScoreWhiteMaterial(void)  const
     {
-        unsigned char * pieceCount = GetMaterial();
+        const unsigned char * pieceCount = GetMaterial();
         return  pieceCount[WQ] * QueenValue   +  pieceCount[WR] * RookValue
                 +  pieceCount[WB] * BishopValue  +  pieceCount[WN] * KnightValue
                 +  pieceCount[WP] * PawnValue;
     }
 
     inline int
-    ScoreBlackMaterial(void)
+    ScoreBlackMaterial(void)  const
     {
-        unsigned char * pieceCount = GetMaterial();
+        const unsigned char * pieceCount = GetMaterial();
         return  pieceCount[BQ] * QueenValue   +  pieceCount[BR] * RookValue
                 +  pieceCount[BB] * BishopValue  +  pieceCount[BN] * KnightValue
                 +  pieceCount[BP] * PawnValue;
     }
 
     inline int
-    ScoreMaterial(void)
+    ScoreMaterial(void) const
     {
         int score = ScoreWhiteMaterial() - ScoreBlackMaterial();
         return score;
@@ -249,61 +257,61 @@ public:
 
     // Methods to get the Board or piece lists -- used in game.cpp to
     // decode moves:
-    squareT *   GetList(colorT c)
+    squareT* GetList(colorT c)
     {
         return List[c];
     }
-    unsigned int        GetCount(colorT c)
+    unsigned int GetCount(colorT c)  const
     {
         return Count[c];
     }
-    unsigned int        TotalMaterial()
+    unsigned int        TotalMaterial()  const
     {
         return Count[WHITE] + Count[BLACK];
     }
-    unsigned int        NumNonPawns(colorT c)
+    unsigned int        NumNonPawns(colorT c)  const
     {
         return Count[c] - Material[piece_Make(c, PAWN)];
     }
-    bool        InPawnEnding()
+    bool        InPawnEnding() const
     {
         return (NumNonPawns(WHITE) == 1  &&  NumNonPawns(BLACK) == 1);
     }
     unsigned int        MaterialValue(colorT c);
-    inline unsigned int FyleCount(pieceT p, fyleT f)
+    inline unsigned int FyleCount(pieceT p, fyleT f) const
     {
         return NumOnFyle[p][f];
     }
-    inline unsigned int RankCount(pieceT p, rankT r)
+    inline unsigned int RankCount(pieceT p, rankT r) const
     {
         return NumOnRank[p][r];
     }
-    inline unsigned int LeftDiagCount(pieceT p, leftDiagT diag)
+    inline unsigned int LeftDiagCount(pieceT p, leftDiagT diag) const
     {
         return NumOnLeftDiag[p][diag];
     }
-    inline unsigned int RightDiagCount(pieceT p, rightDiagT diag)
+    inline unsigned int RightDiagCount(pieceT p, rightDiagT diag) const
     {
         return NumOnRightDiag[p][diag];
     }
-    inline unsigned int SquareColorCount(pieceT p, colorT sqColor)
+    inline unsigned int SquareColorCount(pieceT p, colorT sqColor) const
     {
         return NumOnSquareColor[p][sqColor];
     }
     unsigned int        GetSquares(pieceT p, SquareList * sqlist);
 
-    pieceT *    GetBoard()
+    pieceT* GetBoard()
     {
-        Board[COLOR_SQUARE] = COLOR_CHAR[ToMove];
+        Board[COLOR_SQUARE] = pieceT(COLOR_CHAR[ToMove]);
         return Board;
     }
 
     // Other one-line methods
-    squareT     GetKingSquare(colorT c)
+    squareT     GetKingSquare(colorT c) const
     {
         return List[c][0];
     }
-    squareT     GetKingSquare()
+    squareT     GetKingSquare() const
     {
         return List[ToMove][0];
     }
@@ -377,16 +385,16 @@ public:
     bool  IsLegalMove(simpleMoveT * sm);
 
     void        GenCheckEvasions(MoveList * mlist, pieceT mask, genMovesT genType, SquareList * checkSquares);
-    void        MatchLegalMove(MoveList * mlist, pieceT mask, squareT target);
-    errorT      MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceT promote);
+    void        MatchLegalMove(MoveList * mlist, pieceC mask, squareT target);
+    errorT      MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceC promote);
     errorT      MatchKingMove(MoveList * mlist, squareT target);
 
-    unsigned int        CalcAttacks(colorT toMove, squareT kingSq, SquareList * squares);
-    unsigned int        CalcNumChecks()
+    unsigned int        CalcAttacks(colorT toMove, squareT kingSq, SquareList * squares) const;
+    unsigned int CalcNumChecks() const
     {
         return CalcAttacks(1 - ToMove, GetKingSquare(), NULL);
     }
-    unsigned int        CalcNumChecks(squareT kingSq)
+    unsigned int CalcNumChecks(squareT kingSq) const
     {
         return CalcAttacks(1 - ToMove, kingSq, NULL);
     }
@@ -395,8 +403,8 @@ public:
         return CalcAttacks(1 - ToMove, kingSq, checkSquares);
     }
 
-    unsigned int        Mobility(pieceT p, colorT color, squareT from);
-    pieceT      SmallestDefender(colorT color, squareT target);
+    unsigned int        Mobility(pieceC p, colorT color, squareT from);
+    pieceC SmallestDefender(colorT color, squareT target) const;
     bool        IsKingInCheck()
     {
         return (CalcNumChecks() > 0);
@@ -414,22 +422,17 @@ public:
     errorT      RelocatePiece(squareT fromSq, squareT toSq);
 
     void        MakeSANString(simpleMoveT * sm, char * s, sanFlagT flag);
-    errorT      ReadCoordMove(simpleMoveT * m, const char * s, bool reverse);
-    errorT      ReadMove(simpleMoveT * m, const char * s, tokenT t);
-    errorT      ParseMove(simpleMoveT * sm, const char * s);
-    errorT      ReadLine(const char * s);
 
     // Board I/O
     void        DumpBoard(FILE * fp);
     void        DumpLists(FILE * fp);
-    errorT      ReadFromCompactStr(const unsigned char * str);
     errorT      ReadFromFEN(const char * s);
 
     // Copy, compare positions
     void        CopyFrom(Position * src);
 
     bool getChess960Castling() const;
-    void setChess960Castling(bool value);
+    void setChess960Castling(bool value, quint64 castlingRooks);
 };
 
 

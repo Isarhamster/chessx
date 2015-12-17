@@ -446,7 +446,7 @@ bool BoardView::showGuess(Square s)
 
         if (s != InvalidSquare)
         {
-            Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), m_board.chess960(), (int) s, m_moveList);
+            Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), m_board.chess960(), m_board.castlingRooks(), (Guess::squareT)s, m_moveList);
             if(!sm.error)
             {
                 m_hiFrom = Square(sm.from);
@@ -684,8 +684,8 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
             }
             else
             {
-                emit moveMade(from, s, button);
                 updateGuess(s);
+                emit moveMade(from, s, button);
             }
         }
         else

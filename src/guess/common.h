@@ -52,9 +52,66 @@ LESS_THAN = -1,   EQUAL_TO = 0,   GREATER_THAN = 1;
 
 //  Chess Types
 
-typedef unsigned char                    pieceT;      // e.g ROOK or WK
+// PIECES:
+//   Note that color(x) == ((x & 0x8) >> 3)  and  type(x) == (x & 0x7)
+//   EMPTY is deliberately nonzero, and END_OF_BOARD is zero, so that
+//   a board can be used as a regular 0-terminated string, provided
+//   that board[NULL_SQUARE] == END_OF_BOARD, as it always should be.
+
+enum PieceNames
+#ifdef USE_C11
+: unsigned char
+#endif
+{
+    END_OF_BOARD = 0,
+    WK =  1, WQ =  2, WR =  3, WB =  4, WN =  5, WP =  6,
+    EMPTY = 7,
+    BK =  9, BQ = 10, BR = 11, BB = 12, BN = 13, BP = 14,
+    WM = 16, BM = 17, MAX_PIECE_TYPES
+};
+
+#ifdef USE_C11
+typedef enum PieceNames pieceT;
+// Pre-Increment
+inline pieceT& operator++(pieceT& w)
+{
+    if(w < BM)
+    {
+        return w = pieceT(w + 1);
+    }
+    else
+    {
+        return w = BM;
+    }
+}
+#else
+typedef unsigned char pieceT;
+#endif
+
+
+// PIECE TYPES (without color; same value as a white piece)
+
+enum PieceClass
+#ifdef USE_C11
+: unsigned char
+#endif
+{
+    KING = 1,
+    QUEEN = 2,
+    ROOK = 3,
+    BISHOP = 4,
+    KNIGHT = 5,
+    PAWN = 6,
+    C_EMPTY = 7
+};
+
+#ifdef USE_C11
+typedef enum PieceClass pieceC;
+#else
+typedef unsigned char pieceC;
+#endif
+
 typedef unsigned char                    colorT;      // WHITE or BLACK
-typedef unsigned char                    squareT;     // e.g. A3
 typedef unsigned char                    directionT;  // e.g. UP_LEFT
 typedef unsigned char                    rankT;       // Chess board rank
 typedef unsigned char                    fyleT;       // Chess board file
@@ -106,19 +163,6 @@ typedef char            ecoStringT [6];   /* "A00j1" */
 
 const ecoT ECO_None = 0;
 
-// Rating types:
-
-const unsigned char RATING_Elo = 0;
-const unsigned char RATING_Rating = 1;
-const unsigned char RATING_Rapid = 2;
-const unsigned char RATING_ICCF = 3;
-const unsigned char RATING_USCF = 4;
-const unsigned char RATING_DWZ = 5;
-const unsigned char RATING_BCF = 6;
-
-extern const char * ratingTypeNames [17];   // Defined in game.cpp
-
-
 // NameBase types: see namebase.h and namebase.cpp
 
 typedef unsigned int            idNumberT;
@@ -168,34 +212,6 @@ color_Char(colorT c)
 }
 
 const castleDirT  QSIDE = 0,  KSIDE = 1;
-
-
-// PIECE TYPES (without color; same value as a white piece)
-
-const pieceT
-KING = 1,
-QUEEN = 2,
-ROOK = 3,
-BISHOP = 4,
-KNIGHT = 5,
-PAWN = 6;
-
-// PIECES:
-//   Note that color(x) == ((x & 0x8) >> 3)  and  type(x) == (x & 0x7)
-//   EMPTY is deliberately nonzero, and END_OF_BOARD is zero, so that
-//   a board can be used as a regular 0-terminated string, provided
-//   that board[NULL_SQUARE] == END_OF_BOARD, as it always should be.
-
-const pieceT  EMPTY = 7;
-const pieceT  END_OF_BOARD = 0;
-const pieceT  WK =  1, WQ =  2, WR =  3, WB =  4, WN =  5, WP =  6;
-const pieceT  BK =  9, BQ = 10, BR = 11, BB = 12, BN = 13, BP = 14;
-
-// Minor piece definitions, used for searching by material only:
-const pieceT  WM = 16, BM = 17;
-
-const unsigned int MAX_PIECE_TYPES = 18;
-
 
 // PIECE_CHAR[]: array of piece characters, capitals for White pieces.
 
@@ -247,16 +263,16 @@ piece_Color_NotEmpty(pieceT p)
     return (p & 8) >> 3;
 }
 
-inline pieceT
+inline pieceC
 piece_Type(pieceT p)
 {
-    return (p & 7);
+    return (pieceC)(p & 7);
 }
 
 inline pieceT
-piece_Make(colorT c, pieceT p)
+piece_Make(colorT c, pieceC p)
 {
-    return ((c << 3) | (p & 7));
+    return (pieceT)((c << 3) | (p & 7));
 }
 
 inline bool
@@ -313,30 +329,16 @@ piece_IsSlider(pieceT p)
     return PIECE_IS_SLIDER[piece_Type(p)];
 }
 
-inline char
-piece_Char(pieceT p)
+inline bool
+piece_IsSlider(pieceC p)
 {
-    return PIECE_CHAR[piece_Type(p)];
+    return PIECE_IS_SLIDER[p];
 }
 
-inline pieceT
-piece_FromChar(char x)
+inline char
+piece_Char(pieceC pt)
 {
-    switch(x)
-    {
-    case 'K':
-        return KING;
-    case 'Q':
-        return QUEEN;
-    case 'R':
-        return ROOK;
-    case 'N':
-        return KNIGHT;
-    case 'B':
-        return BISHOP;
-    default:
-        return EMPTY;
-    }
+    return PIECE_CHAR[pt];
 }
 
 inline int
@@ -364,8 +366,90 @@ enum SquareNames
     A8, B8, C8, D8, E8, F8, G8, H8,
     COLOR_SQUARE,
     NULL_SQUARE,
-    NS = NULL_SQUARE // NS is abbreviation for NULL_SQUARE.
+    NS = NULL_SQUARE, // NS is abbreviation for NULL_SQUARE.
+    INVALID_SQUARE = 255
 };
+
+#ifdef USE_C11
+typedef enum SquareNames squareT;
+#else
+typedef unsigned char squareT;
+#endif
+
+#ifdef USE_C11
+
+inline squareT operator+(squareT square, int offset)
+{
+    return squareT((unsigned char)square+offset);
+}
+
+inline squareT operator-(squareT square, int offset)
+{
+    return squareT((unsigned char)square-offset);
+}
+
+inline squareT& operator+=(squareT& square,int offset)
+{
+    square = squareT((unsigned char)square + offset);
+    return square;
+}
+
+// Pre-Increment
+inline squareT& operator++(squareT& w)
+{
+    if(w < H8)
+    {
+        return w = squareT(w + 1);
+    }
+    else
+    {
+        return w = INVALID_SQUARE;
+    }
+}
+
+// Pre-Decrement
+inline squareT& operator--(squareT& w)
+{
+    if(w > A1)
+    {
+        return w = squareT(w - 1);
+    }
+    else
+    {
+        return w = INVALID_SQUARE;
+    }
+}
+
+// Post-Increment
+inline squareT operator++(squareT& w, int)
+{
+    squareT square = w;
+    ++w;
+    return square;
+}
+
+// Post-Decrement
+inline squareT operator--(squareT& w, int)
+{
+    squareT square = w;
+    --w;
+    return square;
+}
+inline QDataStream& operator<<(QDataStream& s, squareT square)
+{
+    s << quint32(square);
+    return s;
+}
+
+inline QDataStream& operator>>(QDataStream& s, squareT& square)
+{
+    quint32 tmp;
+    s >> tmp;
+    square = squareT(tmp);
+    return s;
+}
+
+#endif // USE_C11
 
 const rankT
 RANK_1 = 0, RANK_2 = 1, RANK_3 = 2, RANK_4 = 3, RANK_5 = 4, RANK_6 = 5,
@@ -406,7 +490,7 @@ inline squareT
 square_Make(fyleT f, rankT r)
 {
     ASSERT(f <= H_FYLE  &&  r <= RANK_8);
-    return ((r << 3) | f);
+    return squareT((r << 3) | f);
 }
 
 inline fyleT

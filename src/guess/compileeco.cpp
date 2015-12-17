@@ -64,7 +64,8 @@ void updateFinalGuess(const Board& board, Square target, const Move& move)
         int ret = Guess::pickBest(
                       qPrintable(board.toFen()),
                       false, /* chess960 not supported */
-                      from, to, ofrom, oto,
+                      BitBoard::standardCastlingRooks(),
+                      (Guess::squareT)from, (Guess::squareT)to, (Guess::squareT)ofrom, (Guess::squareT)oto,
                       CALCULATE_MS);
         if(ret == 0)
         {
