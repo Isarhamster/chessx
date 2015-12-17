@@ -146,6 +146,9 @@ public:
     void fromChess960pos(int value);
     /** Get the position number from the current position */
     int chess960Pos() const;
+    quint64 castlingRooks() const;
+    static quint64 standardCastlingRooks();
+
 private:
     /** Test if a king is on a certain row to test castling rights */
     bool isKingOnRow(Piece p, Square start, Square stop) const;

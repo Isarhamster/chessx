@@ -217,7 +217,8 @@ HEADERS += src/database/board.h \
     src/database/engineparameter.h \
     src/dialogs/matchparameterdlg.h \
     src/gui/boardviewex.h \
-    src/gui/simplelabel.h
+    src/gui/simplelabel.h \
+    src/database/bitfind.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \

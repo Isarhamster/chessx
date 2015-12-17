@@ -12,6 +12,7 @@
 #include "bitboard.h"
 #include "settings.h"
 #include "square.h"
+#include "bitfind.h"
 
 #ifdef _MSC_VER
 #include <intrin.h>
@@ -143,74 +144,6 @@ const quint64 fileNotGH   = ~(fileG | fileH);
 #define SetBit(s)         (bb_Mask[s])
 #define File(s)           ((s)&7)
 #define Rank(s)           ((s)>>3)
-
-// This C++ version is as fast as the assembly
-inline Square getFirstBitAndClear64(quint64& bb)
-{
-    quint64 x = bb & -(qint64)bb;
-    bb ^= x;
-#ifdef __GNUG__
-    return Square(x ? (63 - __builtin_clzll(x)) : 0);
-#elif _MSC_VER
-#ifdef __x86_64__
-    if(x)
-    {
-        unsigned long r;
-        _BitScanReverse64(&r, x);
-        return Square(r);
-    }
-    return a1;
-#else
-    if(x)
-    {
-        unsigned long r;
-        unsigned long y = (x >> 32);
-        if(y)
-        {
-            _BitScanReverse(&r, y);
-            return Square(32 + r);
-        }
-        _BitScanReverse(&r, x);
-        return Square(r);
-    }
-    return a1;
-#endif
-#else
-    // SBE - After a fair bit of testing, this is the fastest portable version
-    // i could come up with, it's about twice as fast as shift-testing 64 times.
-    unsigned int r =  0;
-    if(!(x & 0xffffffff))
-    {
-        x >>= 32;
-        r |= 32;
-    }
-    if(!(x & 0xffff))
-    {
-        x >>= 16;
-        r |= 16;
-    }
-    if(!(x & 0xff))
-    {
-        x >>= 8;
-        r |= 8;
-    }
-    if(!(x & 0xf))
-    {
-        x >>= 4;
-        r |= 4;
-    }
-    if(!(x & 0x3))
-    {
-        x >>= 2;
-        r |= 2;
-    }
-    if(!(x & 0x1))
-    {
-        r |= 1;
-    }
-    return Square(r);
-#endif
-}
 
 /** Initialize a new bitboard, and ensure global data has been initialized */
 BitBoard::BitBoard()
@@ -498,7 +431,7 @@ bool BitBoard::isMovable(const Square from) const
         squares &= ~m_occupied_co[m_stm];
         while(squares)
         {
-            Square to = getFirstBitAndClear64(squares);
+            Square to = getFirstBitAndClear64<Square>(squares);
             if(prepareMove(from, to).isLegal())
             {
                 return true;
@@ -1008,7 +941,7 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
     }
 
     // Set remainder of bitboard data appropriately
-    m_castlingRooks = m_rooks; // Keep a copy of the original rook positions for castling rights
+    m_castlingRooks = m_rooks; // Keep a copy of the original rook positions for castling rights - todo: if a rook is missing, this will cause trouble
     m_occupied = m_occupied_co[White] + m_occupied_co[Black];
     for(int i = 0; i < 64; ++i)
     {
@@ -1206,9 +1139,9 @@ int BitBoard::chess960Pos() const
 {
     int ccPos = 0;
     quint64 x = (m_bishops & (2+8+32+128));
-    ccPos += (getFirstBitAndClear64(x)-1)/2;
+    ccPos += (getFirstBitAndClear64<Square>(x)-1)/2;
     x = m_bishops & (1+4+16+64);
-    ccPos += getFirstBitAndClear64(x)*2;
+    ccPos += getFirstBitAndClear64<Square>(x)*2;
     int q = 0;
     bool qf = false;
     int n0 = 0;
@@ -1295,7 +1228,7 @@ MoveList BitBoard::generateMoves() const
             moves = bb_PawnAttacks[Black][m_epSquare] & movers;
             while(moves)
             {
-                from = getFirstBitAndClear64(moves);
+                from = getFirstBitAndClear64<Square>(moves);
                 p.add().genEnPassant(from, m_epSquare);
             }
         }
@@ -1304,7 +1237,7 @@ MoveList BitBoard::generateMoves() const
         moves = ShiftUpRight(movers) & m_occupied_co[Black];
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 7)
             {
                 p.add().genPawnMove(to - 9, to, m_piece[to]);
@@ -1320,7 +1253,7 @@ MoveList BitBoard::generateMoves() const
         moves = ShiftUpLeft(movers) & m_occupied_co[Black];
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 7)
             {
                 p.add().genPawnMove(to - 7, to, m_piece[to]);
@@ -1339,7 +1272,7 @@ MoveList BitBoard::generateMoves() const
         movers = moves;
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 7)
             {
                 p.add().genOneForward(to - 8, to);
@@ -1356,7 +1289,7 @@ MoveList BitBoard::generateMoves() const
         moves = ShiftUp(movers) & rank4 & ~m_occupied;
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             p.add().genTwoForward(to - 16, to);
         }
 
@@ -1389,7 +1322,7 @@ MoveList BitBoard::generateMoves() const
             moves = bb_PawnAttacks[White][m_epSquare] & movers;
             while(moves)
             {
-                from = getFirstBitAndClear64(moves);
+                from = getFirstBitAndClear64<Square>(moves);
                 p.add().genEnPassant(from, m_epSquare);
             }
         }
@@ -1398,7 +1331,7 @@ MoveList BitBoard::generateMoves() const
         moves = ShiftDownLeft(movers) & m_occupied_co[White];
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 0)
             {
                 p.add().genPawnMove(to + 9, to, m_piece[to]);
@@ -1414,7 +1347,7 @@ MoveList BitBoard::generateMoves() const
         moves = ShiftDownRight(movers) & m_occupied_co[White];
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 0)
             {
                 p.add().genPawnMove(to + 7, to, m_piece[to]);
@@ -1433,7 +1366,7 @@ MoveList BitBoard::generateMoves() const
         movers = moves;
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             if(Rank(to) != 0)
             {
                 p.add().genOneForward(to + 8, to);
@@ -1450,7 +1383,7 @@ MoveList BitBoard::generateMoves() const
         moves = ShiftDown(movers) & rank5 & ~m_occupied;
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             p.add().genTwoForward(to + 16, to);
         }
     }
@@ -1459,11 +1392,11 @@ MoveList BitBoard::generateMoves() const
     movers = m_knights & m_occupied_co[m_stm];
     while(movers)
     {
-        from = getFirstBitAndClear64(movers);
+        from = getFirstBitAndClear64<Square>(movers);
         moves = knightAttacksFrom(from) & ~m_occupied_co[m_stm];
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             p.add().genKnightMove(from, to, m_piece[to]);
         }
     }
@@ -1471,11 +1404,11 @@ MoveList BitBoard::generateMoves() const
     movers = m_bishops & m_occupied_co[m_stm];
     while(movers)
     {
-        from = getFirstBitAndClear64(movers);
+        from = getFirstBitAndClear64<Square>(movers);
         moves = bishopAttacksFrom(from) & ~m_occupied_co[m_stm];
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             p.add().genBishopMove(from, to, m_piece[to]);
         }
     }
@@ -1483,11 +1416,11 @@ MoveList BitBoard::generateMoves() const
     movers = m_rooks & m_occupied_co[m_stm];
     while(movers)
     {
-        from = getFirstBitAndClear64(movers);
+        from = getFirstBitAndClear64<Square>(movers);
         moves = rookAttacksFrom(from) & ~m_occupied_co[m_stm];
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             p.add().genRookMove(from, to, m_piece[to]);
         }
     }
@@ -1495,11 +1428,11 @@ MoveList BitBoard::generateMoves() const
     movers = m_queens & m_occupied_co[m_stm];
     while(movers)
     {
-        from = getFirstBitAndClear64(movers);
+        from = getFirstBitAndClear64<Square>(movers);
         moves = queenAttacksFrom(from) & ~m_occupied_co[m_stm];
         while(moves)
         {
-            to = getFirstBitAndClear64(moves);
+            to = getFirstBitAndClear64<Square>(moves);
             p.add().genQueenMove(from, to, m_piece[to]);
         }
     }
@@ -1507,7 +1440,7 @@ MoveList BitBoard::generateMoves() const
     moves = kingAttacksFrom(m_ksq[m_stm]) & ~m_occupied_co[m_stm];
     while(moves)
     {
-        to = getFirstBitAndClear64(moves);
+        to = getFirstBitAndClear64<Square>(moves);
         if(!isAttackedBy(m_stm ^ 1, to))
         {
             p.add().genKingMove(m_ksq[m_stm], to, m_piece[to]);
@@ -1790,7 +1723,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
 
         if(match)
         {
-            fromSquare = getFirstBitAndClear64(match);
+            fromSquare = getFirstBitAndClear64<Square>(match);
         }
         else
         {
@@ -1805,7 +1738,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
             {
                 break;
             }
-            fromSquare = getFirstBitAndClear64(match);
+            fromSquare = getFirstBitAndClear64<Square>(match);
         }
     }
 
@@ -2276,9 +2209,19 @@ Square BitBoard::CastlingRook(int index) const
     Square x = InvalidSquare;
     for (int i=0; i<=index; ++i)
     {
-        x = getFirstBitAndClear64(cr);
+        x = getFirstBitAndClear64<Square>(cr);
     }
     return x;
+}
+
+quint64 BitBoard::castlingRooks() const
+{
+    return m_castlingRooks;
+}
+
+quint64 BitBoard::standardCastlingRooks()
+{
+    return (A1 | H1 | A8 | H8);
 }
 
 quint64 BitBoard::pawnMovesFrom(const Square s) const
@@ -2325,10 +2268,26 @@ Move BitBoard::prepareMove(const Square& from, const Square& to, bool doNotAllow
 
         // Check for Illegal Move
         // If the destination square is a piece of the moving color
-        if(m_occupied_co[m_stm] & dest && !chess960())
+        if(m_occupied_co[m_stm] & dest)
         {
-            // Illegal move
-            return move;
+            if (!chess960())
+            {
+                // Illegal move
+                return move;
+            }
+            else
+            {
+                if ((p!=King) || (m_piece[to] != Rook))
+                {
+                    // Can't be a castling move
+                    return move;
+                }
+                if (!(m_occupied_co[m_stm] & dest & ((m_stm==White) ? C1|G1 : C8|G8)))
+                {
+                    // Make sure we jump on a castling target
+                    return move;
+                }
+            }
         }
 
         move.setPieceType(p);
@@ -2615,8 +2574,8 @@ bool BitBoard::insufficientMaterial() const
             }
             // Finally KB-KB
             quint64 n  = m_bishops;
-            quint64 n1 = getFirstBitAndClear64(n);
-            quint64 n2 = getFirstBitAndClear64(n);
+            quint64 n1 = getFirstBitAndClear64<Square>(n);
+            quint64 n2 = getFirstBitAndClear64<Square>(n);
             int sum = n1+n2;
             return (sum & 1);
         }

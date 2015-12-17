@@ -36,13 +36,14 @@ struct simpleMoveT
     squareT  to;
     unsigned char     capturedNum;
     pieceT   capturedPiece;
-    pieceT   promote;
+    pieceC   promote;
     squareT  capturedSquare; // ONLY different to "to" field if this capture
     //    is an en passant capture.
     unsigned char     castleFlags;    // pre-move information
     squareT  epSquare;       // pre-move information
     unsigned short   oldHalfMoveClock;
     int      score;          // used for alpha/beta ordering.
+    bool     moveCastles;    // this is a castling move - needed in Chess960
 
     bool operator < (const simpleMoveT& rhs) const
     {

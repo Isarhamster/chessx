@@ -19,6 +19,7 @@
 #include "sqlist.h"
 #include "sqset.h"
 #include "hash.h"
+#include "bitfind.h"
 
 #include <stdio.h>
 #include <ctype.h>
@@ -43,9 +44,10 @@ bool Position::getChess960Castling() const
     return Chess960Castling;
 }
 
-void Position::setChess960Castling(bool value)
+void Position::setChess960Castling(bool value, quint64 castlingRooks)
 {
     Chess960Castling = value;
+    CastlingRooks = castlingRooks;
 }
 
 inline void
@@ -269,7 +271,7 @@ Position::AssertPos()
 //      the position of the king to move.
 //
 inline void
-Position::CalcPinsDir(directionT dir, pieceT attacker)
+Position::CalcPinsDir(directionT dir, pieceC attacker)
 {
     // Two pieces can pin along any path. A queen is always one,
     // the other is a bishop or rook. To save calculating it here, the
@@ -310,7 +312,7 @@ Position::CalcPinsDir(directionT dir, pieceT attacker)
             if(friendly != NULL_SQUARE)
             {
                 // Potential pin:
-                pieceT ptype = piece_Type(p);
+                pieceC ptype = piece_Type(p);
                 if(ptype == QUEEN  ||  ptype == attacker)
                 {
                     Pinned[ListPos[friendly]] = dir;
@@ -328,7 +330,7 @@ Position::CalcPinsDir(directionT dir, pieceT attacker)
 //      Add a legal move to the move list.
 //
 inline void
-Position::AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceT promo)
+Position::AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceC promotion, bool castle)
 {
     ASSERT(mlist != NULL);
     simpleMoveT sm;
@@ -339,9 +341,11 @@ Position::AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceT promo)
 
     sm.from = from;
     sm.to = to;
-    sm.promote = promo;
+    sm.promote = promotion;
     sm.movingPiece = Board[from];
     sm.capturedPiece = Board[to];
+    sm.moveCastles = castle;
+
     mlist->append(sm);
 }
 
@@ -369,7 +373,7 @@ Position::GenSliderMoves(MoveList * mlist, colorT color, squareT fromSq,
             {
                 if(sqset == NULL  ||  sqset->Contains(dest))
                 {
-                    AddLegalMove(mlist, fromSq, dest, EMPTY);
+                    AddLegalMove(mlist, fromSq, dest);
                 }
             }
             continue;
@@ -379,7 +383,7 @@ Position::GenSliderMoves(MoveList * mlist, colorT color, squareT fromSq,
         {
             if(sqset == NULL  ||  sqset->Contains(dest))
             {
-                AddLegalMove(mlist, fromSq, dest, EMPTY);
+                AddLegalMove(mlist, fromSq, dest);
             }
         }
         break;
@@ -412,7 +416,7 @@ Position::GenKnightMoves(MoveList * mlist, colorT c, squareT fromSq,
         {
             if(sqset == NULL  ||  sqset->Contains(dest))
             {
-                AddLegalMove(mlist, fromSq, dest, EMPTY);
+                AddLegalMove(mlist, fromSq, dest);
             }
         }
     }
@@ -430,6 +434,7 @@ Position::GenCastling(MoveList * mlist)
     if (Chess960Castling)
     {
         GenCastling960(mlist);
+        return;
     }
     ASSERT(! IsKingInCheck());
     squareT from = GetKingSquare(ToMove);
@@ -462,7 +467,7 @@ Position::GenCastling(MoveList * mlist)
                 &&  CalcNumChecks(skip) == 0
                 &&  ! square_Adjacent(target, enemyKingSq))
         {
-            AddLegalMove(mlist, from, target, EMPTY);
+            AddLegalMove(mlist, from, target, C_EMPTY, true);
         }
     }
 
@@ -489,9 +494,68 @@ Position::GenCastling(MoveList * mlist)
                 &&  CalcNumChecks(skip) == 0
                 &&  ! square_Adjacent(target, enemyKingSq))
         {
-            AddLegalMove(mlist, from, target, EMPTY);
+            AddLegalMove(mlist, from, target, C_EMPTY, true);
         }
     }
+}
+
+pieceT Position::pieceAt(squareT square) const
+{
+    return (Board[square]);
+}
+
+squareT Position::CastlingRook(int index) const
+{
+    quint64 cr = CastlingRooks;
+    squareT x = NULL_SQUARE;
+    for (int i=0; i<=index; ++i)
+    {
+        x = getFirstBitAndClear64<squareT>(cr);
+    }
+    return x;
+}
+
+bool Position::isFreeForCastling960(squareT from, squareT to, squareT rook_from, squareT rook_to, squareT enemyKingSq) const
+{
+    squareT square = from;
+
+    while(square!=to)
+    {
+        if (square_Adjacent(square, enemyKingSq)) return false;
+
+        if ((square != from) && (square != rook_from))
+        {
+            if (pieceAt(square) != EMPTY) return false;
+            if (CalcNumChecks(square) != 0) return false;
+        }
+        if (square!=to) square += (from<=to) ? 1:-1;
+    }
+
+    if ((to != from) && (to != rook_from))
+    {
+        pieceT p = pieceAt(to);
+        if (p != EMPTY) return false;
+        if (CalcNumChecks(to) != 0) return false;
+    }
+
+    square = rook_from;
+
+    while(square!=rook_to)
+    {
+        if ((square != rook_from) && (square != from))
+        {
+            if (pieceAt(square) != EMPTY) return false;
+        }
+        if (square!=rook_to) square += (rook_from<=rook_to) ? 1:-1;
+    }
+
+    if ((rook_from != rook_to) && (rook_to != from))
+    {
+        pieceT p = pieceAt(rook_to);
+        if (p != EMPTY) return false;
+    }
+
+    return true; // Both ways, king and rook to target are free except for king/rook themselves
 }
 
 void
@@ -501,8 +565,7 @@ Position::GenCastling960(MoveList * mlist)
     ASSERT(! IsKingInCheck());
     squareT from = GetKingSquare(ToMove);
     squareT enemyKingSq = GetEnemyKingSquare();
-    squareT target, skip, rookSq;
-    pieceT rookPiece;
+    squareT target, rookSq, rookTarget;
 
     // Queenside Castling:
     if(GetCastling(ToMove, QSIDE))
@@ -510,53 +573,38 @@ Position::GenCastling960(MoveList * mlist)
         if(ToMove == WHITE)
         {
             target = C1;
-            skip = D1;
-            rookSq = A1;
-            rookPiece = WR;
+            rookSq = CastlingRook(0);
+            rookTarget = D1;
         }
         else
         {
             target = C8;
-            skip = D8;
-            rookSq = A8;
-            rookPiece = BR;
+            rookSq = CastlingRook(2);
+            rookTarget = D8;
         }
-
-        if(Board[target] == EMPTY  &&  Board[skip] == EMPTY
-                &&  Board[rookSq] == rookPiece
-                &&  Board[target - 1] == EMPTY // B1 or B8 must be empty too!
-                &&  CalcNumChecks(target) == 0
-                &&  CalcNumChecks(skip) == 0
-                &&  ! square_Adjacent(target, enemyKingSq))
+        if (isFreeForCastling960(from, target, rookSq, rookTarget, enemyKingSq))
         {
-            AddLegalMove(mlist, from, target, EMPTY);
+           AddLegalMove(mlist, from, target, C_EMPTY, true);
         }
     }
 
-    // Kingside Castling:
     if(GetCastling(ToMove, KSIDE))
     {
         if(ToMove == WHITE)
         {
             target = G1;
-            skip = F1;
-            rookSq = H1;
-            rookPiece = WR;
+            rookSq = CastlingRook(1);
+            rookTarget = F1;
         }
         else
         {
             target = G8;
-            skip = F8;
-            rookSq = H8;
-            rookPiece = BR;
+            rookSq = CastlingRook(3);
+            rookTarget = F8;
         }
-        if(Board[target] == EMPTY  &&  Board[skip] == EMPTY
-                &&  Board[rookSq] == rookPiece
-                &&  CalcNumChecks(target) == 0
-                &&  CalcNumChecks(skip) == 0
-                &&  ! square_Adjacent(target, enemyKingSq))
+        if (isFreeForCastling960(from, target, rookSq, rookTarget, enemyKingSq))
         {
-            AddLegalMove(mlist, from, target, EMPTY);
+           AddLegalMove(mlist, from, target, C_EMPTY, true);
         }
     }
 }
@@ -613,12 +661,12 @@ Position::GenKingMoves(MoveList * mlist, genMovesT genType, bool castling)
         }
         if(addThisMove)
         {
-            AddLegalMove(mlist, kingSq, destSq, EMPTY);
+            AddLegalMove(mlist, kingSq, destSq);
         }
         destPtr++;
     }
     // Now generate castling moves, if possible:
-    if(genNonCaptures  &&  castling)
+    if(genNonCaptures && castling)
     {
         GenCastling(mlist);
     }
@@ -713,7 +761,7 @@ Position::GenPawnMoves(MoveList * mlist, squareT from,
             }
             else
             {
-                AddLegalMove(mlist, from, dest, EMPTY);
+                AddLegalMove(mlist, from, dest);
             }
         }
         if(square_Rank(from) == secondRank  &&  Board[dest] == EMPTY)
@@ -721,7 +769,7 @@ Position::GenPawnMoves(MoveList * mlist, squareT from,
             dest = square_Move(dest, forward);
             if(Board[dest] == EMPTY  && (sqset == NULL || sqset->Contains(dest)))
             {
-                AddLegalMove(mlist, from, dest, EMPTY);
+                AddLegalMove(mlist, from, dest);
             }
         }
     }
@@ -745,7 +793,7 @@ Position::GenPawnMoves(MoveList * mlist, squareT from,
             }
             else
             {
-                AddLegalMove(mlist, from, dest, EMPTY);
+                AddLegalMove(mlist, from, dest);
             }
         }
     }
@@ -761,7 +809,7 @@ Position::GenPawnMoves(MoveList * mlist, squareT from,
             }
             else
             {
-                AddLegalMove(mlist, from, dest, EMPTY);
+                AddLegalMove(mlist, from, dest);
             }
         }
     }
@@ -987,7 +1035,7 @@ Position::StdStart(void)
     List[BLACK][7] = H8;
     ListPos[H8] = 7;
 
-    for(unsigned int i = 0; i < 8; i++)
+    for(squareT i = squareT(0); i < 8; i++)
     {
         AddToBoard(WP, A2 + i);
         List[WHITE][i + 8] = A2 + i;
@@ -1139,7 +1187,7 @@ Position::GenPieceMoves(MoveList * mlist, squareT fromSq,
 {
     colorT c = ToMove;
     pieceT p = Board[fromSq];
-    pieceT ptype = piece_Type(p);
+    pieceC ptype = piece_Type(p);
     ASSERT(p != EMPTY  &&  ptype != KING  &&  ptype != PAWN);
 
     if(ptype == KNIGHT)
@@ -1222,7 +1270,7 @@ Position::GenerateMoves(MoveList * mlist, pieceT pieceType,
     {
         squareT sq = List[ToMove][x];
         pieceT p = Board[sq];
-        pieceT ptype = piece_Type(p);
+        pieceC ptype = piece_Type(p);
         if(!(mask & (1 << ptype)))
         {
             continue;
@@ -1310,13 +1358,13 @@ Position::IsLegalMove(simpleMoveT * sm)
     {
         return false;
     }
-    mover = piece_Type(mover);
-    if(sm->promote != EMPTY  &&  mover != PAWN)
+    pieceC cmover = piece_Type(mover);
+    if(sm->promote != C_EMPTY && cmover != PAWN)
     {
         return false;
     }
 
-    if(mover == PAWN)
+    if(cmover == PAWN)
     {
         rankT rfrom = square_Rank(from);
         rankT rto = square_Rank(to);
@@ -1373,7 +1421,7 @@ Position::IsLegalMove(simpleMoveT * sm)
         // Check the promotion piece:
         if(rto == RANK_8)
         {
-            pieceT p = sm->promote;
+            pieceC p = sm->promote;
             if(p != QUEEN  &&  p != ROOK  &&  p != BISHOP  &&  p != KNIGHT)
             {
                 return false;
@@ -1381,14 +1429,14 @@ Position::IsLegalMove(simpleMoveT * sm)
         }
         else
         {
-            if(sm->promote != EMPTY)
+            if(sm->promote != C_EMPTY)
             {
                 return false;
             }
         }
 
     }
-    else if(piece_IsSlider(mover))
+    else if(piece_IsSlider(cmover))
     {
         // Make sure the direction is valid:
         directionT dir = sqDir[from][to];
@@ -1396,11 +1444,11 @@ Position::IsLegalMove(simpleMoveT * sm)
         {
             return false;
         }
-        if(mover == ROOK  &&  direction_IsDiagonal(dir))
+        if(cmover == ROOK  &&  direction_IsDiagonal(dir))
         {
             return false;
         }
-        if(mover == BISHOP  &&  !direction_IsDiagonal(dir))
+        if(cmover == BISHOP  &&  !direction_IsDiagonal(dir))
         {
             return false;
         }
@@ -1417,7 +1465,7 @@ Position::IsLegalMove(simpleMoveT * sm)
         }
 
     }
-    else if(mover == KNIGHT)
+    else if(cmover == KNIGHT)
     {
         if(! square_IsKnightHop(from, to))
         {
@@ -1425,7 +1473,7 @@ Position::IsLegalMove(simpleMoveT * sm)
         }
 
     }
-    else /* (mover == KING) */
+    else /* (cmover == KING) */
     {
         colorT enemy = color_Flip(ToMove);
         if(square_Adjacent(to, GetKingSquare(enemy)))
@@ -1446,7 +1494,7 @@ Position::IsLegalMove(simpleMoveT * sm)
     }
 
     // The move looks good, but does it leave the king in check?
-    squareT kingSq = (mover == KING) ? to : GetKingSquare(ToMove);
+    squareT kingSq = (cmover == KING) ? to : GetKingSquare(ToMove);
     colorT enemy = color_Flip(ToMove);
     DoSimpleMove(sm);
     unsigned int nchecks = CalcAttacks(enemy, kingSq, NULL);
@@ -1463,7 +1511,7 @@ Position::IsLegalMove(simpleMoveT * sm)
 //      MatchKingMove() and MatchPawnMove().
 //
 void
-Position::MatchLegalMove(MoveList * mlist, pieceT mask, squareT target)
+Position::MatchLegalMove(MoveList * mlist, pieceC mask, squareT target)
 {
     unsigned int x;
 
@@ -1480,7 +1528,8 @@ Position::MatchLegalMove(MoveList * mlist, pieceT mask, squareT target)
     unsigned int count = 0;
     unsigned int total = Material[piece_Make(ToMove, mask)];
 
-    pieceT p, pt, captured;
+    pieceT p, captured;
+    pieceC pt;
     squareT kingSq = GetKingSquare(ToMove);
     directionT dir;
 
@@ -1596,7 +1645,7 @@ Position::MatchLegalMove(MoveList * mlist, pieceT mask, squareT target)
                 Board[target] = captured;
                 if(tryMove == 1)
                 {
-                    AddLegalMove(mlist, *sqPtr, target, EMPTY);
+                    AddLegalMove(mlist, *sqPtr, target);
                 }
             }
         }
@@ -1611,7 +1660,7 @@ Position::MatchLegalMove(MoveList * mlist, pieceT mask, squareT target)
 //      if there is one.
 //
 errorT
-Position::MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceT promote)
+Position::MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceC promote)
 {
     mlist->clear();
 
@@ -1670,7 +1719,7 @@ Position::MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceT pro
     }
     else
     {
-        if(promote != EMPTY)
+        if(promote != C_EMPTY)
         {
             return ERROR_InvalidMove;
         }
@@ -1826,7 +1875,7 @@ Position::MatchKingMove(MoveList * mlist, squareT target)
         {
             return ERROR_InvalidMove;
         }
-        AddLegalMove(mlist, kingSq, target, EMPTY);
+        AddLegalMove(mlist, kingSq, target);
         return OK;
     }
 
@@ -1848,7 +1897,7 @@ Position::MatchKingMove(MoveList * mlist, squareT target)
         {
             return ERROR_InvalidMove;
         }
-        AddLegalMove(mlist, kingSq, target, EMPTY);
+        AddLegalMove(mlist, kingSq, target);
         return OK;
     }
     pieceT captured = Board[target];
@@ -1881,7 +1930,7 @@ Position::MatchKingMove(MoveList * mlist, squareT target)
     Board[kingSq] = piece_Make(ToMove, KING);
     if(legal == 1)
     {
-        AddLegalMove(mlist, kingSq, target, EMPTY);
+        AddLegalMove(mlist, kingSq, target);
         return OK;
     }
     return ERROR_InvalidMove;
@@ -1999,7 +2048,7 @@ Position::GenCheckEvasions(MoveList * mlist, pieceT mask, genMovesT genType,
 //      Material[]) and detect whether they leave the king in check,
 //      without having to update other information.
 unsigned int
-Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares)
+Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares) const
 {
     // If squares is NULL, caller doesn't want a list of the squares of
     // attacking pieces. To avoid comparing fromSquares with NULL every time
@@ -2284,14 +2333,14 @@ Position::IsKingInCheck(simpleMoveT * sm)
     }
 
     squareT kingSq = GetKingSquare(ToMove);
-    pieceT p = piece_Type(sm->movingPiece);
-    if(sm->promote != EMPTY)
+    pieceC pt = piece_Type(sm->movingPiece);
+    if(sm->promote != C_EMPTY)
     {
-        p = piece_Type(sm->promote);
+        pt = sm->promote;
     }
 
     // No optimization of the last move was castling:
-    if(p == KING  &&  square_Fyle(sm->from) == E_FYLE)
+    if(pt == KING  &&  square_Fyle(sm->from) == E_FYLE)
     {
         fyleT toFyle = square_Fyle(sm->to);
         if(toFyle == C_FYLE  ||  toFyle == G_FYLE)
@@ -2300,7 +2349,7 @@ Position::IsKingInCheck(simpleMoveT * sm)
         }
     }
     // No optimization for en passant capture:
-    if(p == PAWN  &&  piece_Type(sm->capturedPiece) == PAWN)
+    if(pt == PAWN  &&  piece_Type(sm->capturedPiece) == PAWN)
     {
         rankT fromRank = square_Rank(sm->from);
         rankT capturedRank = square_Rank(sm->capturedSquare);
@@ -2310,7 +2359,7 @@ Position::IsKingInCheck(simpleMoveT * sm)
         }
     }
 
-    if(p == PAWN)
+    if(pt == PAWN)
     {
         if(ToMove == WHITE)
         {
@@ -2345,14 +2394,14 @@ Position::IsKingInCheck(simpleMoveT * sm)
             }
         }
     }
-    else if(p == KNIGHT)
+    else if(pt == KNIGHT)
     {
         if(square_IsKnightHop(kingSq, sm->to))
         {
             return true;
         }
     }
-    else if(p == KING)
+    else if(pt == KING)
     {
         // A king cannot directly check its adversary.
     }
@@ -2382,7 +2431,7 @@ Position::IsKingInCheck(simpleMoveT * sm)
 //    Returns the number of squares a rook or bishop of the specified
 //    color would attack from the specified square.
 unsigned int
-Position::Mobility(pieceT p, colorT color, squareT from)
+Position::Mobility(pieceC p, colorT color, squareT from)
 {
     ASSERT(p == ROOK  ||  p == BISHOP);
     unsigned int mobility = 0;
@@ -2428,8 +2477,8 @@ Position::Mobility(pieceT p, colorT color, squareT from)
 //    Bishop, Rook, Queen then King. If the specified square is
 //    undefended, EMPTY is returned.
 //
-pieceT
-Position::SmallestDefender(colorT color, squareT target)
+pieceC
+Position::SmallestDefender(colorT color, squareT target) const
 {
     SquareList defenderSquares;
     pieceT defenders [16];
@@ -2438,7 +2487,7 @@ Position::SmallestDefender(colorT color, squareT target)
     // If the square is undefended, just return EMPTY:
     if(numDefenders == 0)
     {
-        return EMPTY;
+        return C_EMPTY;
     }
 
     unsigned int i;
@@ -2606,7 +2655,7 @@ Position::DoSimpleMove(simpleMoveT * sm)
     squareT from = sm->from;
     squareT to = sm->to;
     pieceT p = Board[from];
-    pieceT ptype = piece_Type(p);
+    pieceC ptype = piece_Type(p);
     colorT enemy = color_Flip(ToMove);
     ASSERT(p != EMPTY);
 
@@ -2647,7 +2696,7 @@ Position::DoSimpleMove(simpleMoveT * sm)
 
     // handle captures:
 
-    if(sm->capturedPiece != EMPTY)
+    if(!sm->moveCastles && sm->capturedPiece != EMPTY)
     {
         ASSERT(piece_Type(sm->capturedPiece) != KING);
         sm->capturedNum = ListPos[sm->capturedSquare];
@@ -2662,7 +2711,7 @@ Position::DoSimpleMove(simpleMoveT * sm)
 
     // handle promotion:
 
-    if(sm->promote != EMPTY)
+    if(sm->promote != C_EMPTY)
     {
         ASSERT(p == piece_Make(ToMove, PAWN));
         Material[p]--;
@@ -2672,33 +2721,41 @@ Position::DoSimpleMove(simpleMoveT * sm)
         AddToBoard(p, from);
     }
 
-    // now make the move:
-    List[ToMove][sm->pieceNum] = to;
-    ListPos[to] = sm->pieceNum;
-    RemoveFromBoard(p, from);
-    AddToBoard(p, to);
-
     // handle Castling:
 
-    if(ptype == KING  &&  square_Fyle(from) == E_FYLE  &&
-            (square_Fyle(to) == C_FYLE  ||  square_Fyle(to) == G_FYLE))
+    if(sm->moveCastles)
     {
+        ASSERT(ptype == KING);
         squareT rookfrom, rookto;
         pieceT rook = piece_Make(ToMove, ROOK);
         if(square_Fyle(to) == C_FYLE)
         {
-            rookfrom = to - 2;
+            int n = (ToMove==WHITE) ? 0:2;
+            rookfrom = CastlingRook(n);
             rookto = to + 1;
         }
         else
         {
-            rookfrom = to + 1;
+            int n = (ToMove==WHITE) ? 1:3;
+            rookfrom = CastlingRook(n);
             rookto = to - 1;
         }
         ListPos[rookto] = ListPos[rookfrom];
         List[ToMove][ListPos[rookto]] = rookto;
+        List[ToMove][sm->pieceNum] = to;
+        ListPos[to] = sm->pieceNum;
+        RemoveFromBoard(p, from);
         RemoveFromBoard(rook, rookfrom);
+        AddToBoard(p, to);
         AddToBoard(rook, rookto);
+    }
+    else
+    {
+        // now make the move:
+        List[ToMove][sm->pieceNum] = to;
+        ListPos[to] = sm->pieceNum;
+        RemoveFromBoard(p, from);
+        AddToBoard(p, to);
     }
 
     // Handle clearing of castling flags:
@@ -2713,38 +2770,38 @@ Position::DoSimpleMove(simpleMoveT * sm)
         // See if a rook moved or was captured:
         if(ToMove == WHITE)
         {
-            if(from == A1)
+            if(from == CastlingRook(0))
             {
                 SetCastling(WHITE, QSIDE, false);
             }
-            if(from == H1)
+            else if(from == CastlingRook(1))
             {
                 SetCastling(WHITE, KSIDE, false);
             }
-            if(to == A8)
+            if(to == CastlingRook(2))
             {
                 SetCastling(BLACK, QSIDE, false);
             }
-            if(to == H8)
+            else if(to == CastlingRook(3))
             {
                 SetCastling(BLACK, KSIDE, false);
             }
         }
         else
         {
-            if(from == A8)
+            if(from == CastlingRook(2))
             {
                 SetCastling(BLACK, QSIDE, false);
             }
-            if(from == H8)
+            else if(from == CastlingRook(3))
             {
                 SetCastling(BLACK, KSIDE, false);
             }
-            if(to == A1)
+            if(to == CastlingRook(0))
             {
                 SetCastling(WHITE, QSIDE, false);
             }
-            if(to == H1)
+            if(to == CastlingRook(1))
             {
                 SetCastling(WHITE, KSIDE, false);
             }
@@ -2817,7 +2874,7 @@ Position::UndoSimpleMove(simpleMoveT * m)
     // value of the "to" field. The only time these two fields are
     // different is for an en passant move.
 
-    if(m->capturedPiece != EMPTY)
+    if(!m->moveCastles && m->capturedPiece != EMPTY)
     {
         colorT c = color_Flip(ToMove);
         ListPos[List[c][m->capturedNum]] = Count[c];
@@ -2830,7 +2887,7 @@ Position::UndoSimpleMove(simpleMoveT * m)
 
     // handle promotion:
 
-    if(m->promote != EMPTY)
+    if(m->promote != C_EMPTY)
     {
         Material[p]--;
         RemoveFromBoard(p, to);
@@ -2840,38 +2897,42 @@ Position::UndoSimpleMove(simpleMoveT * m)
     }
 
     // now make the move:
-
-    List[ToMove][m->pieceNum] = from;
-    ListPos[from] = m->pieceNum;
-    RemoveFromBoard(p, to);
-    AddToBoard(p, from);
-    if(m->capturedPiece != EMPTY)
-    {
-        AddToBoard(m->capturedPiece, m->capturedSquare);
-    }
-
-    // handle Castling:
-
-    if((piece_Type(p) == KING) && square_Fyle(from) == E_FYLE
-            && (square_Fyle(to) == C_FYLE || square_Fyle(to) == G_FYLE))
+    if(m->moveCastles)
     {
         squareT rookfrom, rookto;
         pieceT rook = (ToMove == WHITE ? WR : BR);
         if(square_Fyle(to) == C_FYLE)
         {
-            rookfrom = to - 2;
+            rookfrom = CastlingRook(ToMove==WHITE ? 0:2);
             rookto = to + 1;
         }
         else
         {
-            rookfrom = to + 1;
+            rookfrom = CastlingRook(ToMove==WHITE ? 1:3);
             rookto = to - 1;
         }
         ListPos[rookfrom] = ListPos[rookto];
         List[ToMove][ListPos[rookto]] = rookfrom;
+        List[ToMove][m->pieceNum] = from;
+        ListPos[from] = m->pieceNum;
+
         RemoveFromBoard(rook, rookto);
+        RemoveFromBoard(p, to);
         AddToBoard(rook, rookfrom);
+        AddToBoard(p, from);
     }
+    else
+    {
+        List[ToMove][m->pieceNum] = from;
+        ListPos[from] = m->pieceNum;
+        RemoveFromBoard(p, to);
+        AddToBoard(p, from);
+        if(m->capturedPiece != EMPTY)
+        {
+            AddToBoard(m->capturedPiece, m->capturedSquare);
+        }
+    }
+
 
 #ifdef ASSERTIONS
     if(AssertPos() != OK)
@@ -2909,7 +2970,7 @@ Position::RelocatePiece(squareT fromSq, squareT toSq)
     }
 
     pieceT piece = Board[fromSq];
-    pieceT ptype = piece_Type(piece);
+    pieceC ptype = piece_Type(piece);
     colorT pcolor = piece_Color(piece);
 
     // Must be relocating a nonempty piece to an empty square:
@@ -3000,7 +3061,7 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
 
     // Make sure m->pieceNum is updated:
     m->pieceNum = ListPos[m->from];
-    pieceT  p    = piece_Type(Board[List[ToMove][m->pieceNum]]);
+    pieceC  pt    = piece_Type(Board[List[ToMove][m->pieceNum]]);
     squareT from = List[ToMove][m->pieceNum];
     squareT to   = m->to;
     char * c     = s;
@@ -3011,7 +3072,7 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
         *c++ = '-';
         *c++ = '-';
     }
-    else if(p == PAWN)
+    else if(pt == PAWN)
     {
         if(square_Fyle(from) != square_Fyle(to))     // pawn capture
         {
@@ -3026,7 +3087,7 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
             *c++ = piece_Char(m->promote);
         }
     }
-    else if(p == KING)
+    else if(pt == KING)
     {
         if((square_Fyle(from) == E_FYLE) && (square_Fyle(to) == G_FYLE))
         {
@@ -3056,7 +3117,7 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
     }
     else        // Queen/Rook/Bishop/Knight
     {
-        *c++ = piece_Char(p);
+        *c++ = piece_Char(pt);
 
         // We only need to calculate legal moves to disambiguate if there
         // are more than one of this type of piece.
@@ -3081,14 +3142,14 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
             f = square_FyleChar(from);
             r = square_RankChar(from);
             MoveList mlist;
-            MatchLegalMove(&mlist, p, to);
+            MatchLegalMove(&mlist, pt, to);
 
             for(unsigned int i = 0; (int) i < mlist.size(); i++)
             {
                 simpleMoveT * m2 = mlist.Get(i);
                 squareT from2 = m2->from;
-                pieceT p2 = piece_Type(Board[from2]);
-                if((to == m2->to) && (from != from2) && (p2 == p))
+                pieceC p2 = piece_Type(Board[from2]);
+                if((to == m2->to) && (from != from2) && (p2 == pt))
                 {
                     /* we have an ambiguity */
                     f2 = square_FyleChar(from2);
@@ -3145,479 +3206,6 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
     *c = 0;
 }
 
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Position::ReadCoordMove():
-//      Given a non-promotion move in coordinate notation,
-//      e.g. "e2e4" or "g1f3", generates the legal move it represents.
-//      Returns: OK or ERROR_InvalidMove.
-//      If "reverse" is true, coordinates in reverse order are acceptable,
-//      e.g. "f3g1" for 1.Nf3.
-//
-errorT
-Position::ReadCoordMove(simpleMoveT * m, const char * str, bool reverse)
-{
-    ASSERT(m != NULL  &&  str != NULL);
-    fyleT fromFyle, toFyle;
-    rankT fromRank, toRank;
-    squareT from, to;
-    pieceT promo = EMPTY;
-
-    unsigned int slen = strlen(str);
-    if(slen == 5)
-    {
-        promo = piece_FromChar(toupper(str[4]));
-    }
-    else if(slen != 4)
-    {
-        return ERROR_InvalidMove;
-    }
-
-    fromFyle = fyle_FromChar(str[0]);
-    fromRank = rank_FromChar(str[1]);
-    from = square_Make(fromFyle, fromRank);
-    if(from == NS)
-    {
-        return ERROR_InvalidMove;
-    }
-
-    toFyle = fyle_FromChar(str[2]);
-    toRank = rank_FromChar(str[3]);
-    to = square_Make(toFyle, toRank);
-    if(to == NS)
-    {
-        return ERROR_InvalidMove;
-    }
-
-    GenerateMoves();
-
-    for(unsigned int i = 0; (int) i < LegalMoves->size(); i++)
-    {
-        simpleMoveT * sm = LegalMoves->Get(i);
-        if(sm->promote == promo)
-        {
-            if(sm->from == from  &&  sm->to == to)
-            {
-                *m = *sm;
-                return OK;
-            }
-            if(reverse  &&  sm->to == from  &&  sm->from == to)
-            {
-                *m = *sm;
-                return OK;
-            }
-        }
-    }
-    return ERROR_InvalidMove;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Position::ReadMove():
-//      Given a move in (possibly sloppy) PGN notation,
-//      generates the legal move it corresponds to.
-//      Returns: OK or ERROR_InvalidMove.
-//
-errorT
-Position::ReadMove(simpleMoveT * m, const char * str, tokenT token)
-{
-    ASSERT(m != NULL  &&  str != NULL);
-    const char * s = str;
-    char mStr [255];
-    pieceT p;
-    squareT from = NS;
-    squareT to = NS;
-    rankT frRank, toRank;
-    fyleT frFyle, toFyle;
-
-    MoveList mlist;
-    mlist.clear();
-
-    // Check for a null move:
-    if(token == TOKEN_Move_Null)
-    {
-        m->pieceNum = 0;
-        m->from = GetKingSquare(ToMove);
-        m->to = m->from;
-        m->movingPiece = Board[m->from];
-        m->promote = EMPTY;
-        return OK;
-    }
-
-    // Strip out 'x', '-', etc leaving just pieces, files and ranks:
-    char * s2 = mStr;
-    unsigned int slen = 0;
-    while(!isspace(*s)  &&  *s != '\0')
-    {
-        if((isalpha(*s)  && (*s != 'x'))  ||  isdigit(*s)  ||  *s == '=')
-        {
-            *s2 = *s;
-            s2++;
-            slen++;
-        }
-        s++;
-    }
-    *s2 = '\0';
-    s = mStr;
-
-    // Pawn moves:
-    if(token == TOKEN_Move_Pawn  ||  token == TOKEN_Move_Promote)
-    {
-        pieceT promo = EMPTY;
-        if(token == TOKEN_Move_Promote)
-        {
-            // Last char must be Q/R/B/N.
-            // Accept the move even if it is of the form "a8Q" not "a8=Q":
-            // if (s[slen-2] != '=') { return ERROR_InvalidMove; }
-            promo = piece_FromChar(toupper(s[slen - 1]));
-            if(promo != QUEEN  &&  promo != ROOK  &&  promo != KNIGHT
-                    && promo != BISHOP)
-            {
-                return ERROR_InvalidMove;
-            }
-            slen--;
-            if(s[slen - 1] == '=')
-            {
-                slen--;
-            }
-        }
-        else
-        {
-            // Check if it is a coordinates-style move, in which case it
-            // could be any piece:
-            if(slen >= 4  &&
-                    islower(s[0])  &&  isdigit(s[1])  &&
-                    islower(s[slen - 2])  &&  isdigit(s[slen - 1]))
-            {
-                return ReadCoordMove(m, str, false);
-            }
-        }
-        // First char MUST be a fyle:
-        if(*s < 'a'  ||  *s > 'h')
-        {
-            return ERROR_InvalidMove;
-        }
-        frFyle = fyle_FromChar(s[0]);
-
-        // Check for the compact form of capture with no rank,
-        // e.g. "ed" or "de=Q":
-        if(slen == 2  && (s[1] >= 'a'  &&  s[1] <= 'h'))
-        {
-            toFyle = fyle_FromChar(s[1]);
-            // Check each rank in turn, looking for the capture:
-            for(rankT r = RANK_1; r <= RANK_8; ++r)
-            {
-                to = square_Make(toFyle, r);
-                if(MatchPawnMove(&mlist, frFyle, to, promo) == OK)
-                {
-                    *m = *(mlist.Get(0));
-                    return OK;
-                }
-            }
-            // It is NOT a valid capture with no rank:
-            return ERROR_InvalidMove;
-        }
-
-        toFyle = fyle_FromChar(s[slen - 2]);
-        toRank = rank_FromChar(s[slen - 1]);
-        to = square_Make(toFyle, toRank);
-        if(to == NS)
-        {
-            return ERROR_InvalidMove;
-        }
-
-        if(MatchPawnMove(&mlist, frFyle, to, promo) != OK)
-        {
-            return ERROR_InvalidMove;
-        }
-        else
-        {
-            *m = *(mlist.Get(0));
-            return OK;
-        }
-    }
-
-    // Here we handle piece moves, including castling
-    if(token != TOKEN_Move_Piece)     // Must be castling move
-    {
-        ASSERT(token == TOKEN_Move_Castle_King  ||  token == TOKEN_Move_Castle_Queen);
-        from = (ToMove == WHITE ? E1 : E8);
-        if(GetKingSquare(ToMove) != from)
-        {
-            return ERROR_InvalidMove;
-        }
-        to = (token == TOKEN_Move_Castle_King ? (from + 2) : (from - 2));
-        if(MatchKingMove(&mlist, to) != OK)
-        {
-            return ERROR_InvalidMove;
-        }
-        else
-        {
-            *m = *(mlist.Get(0));
-            return OK;
-        }
-    }
-
-    // If we reach here, it is a (non-castling, non-pawn) piece move.
-
-    ASSERT(token == TOKEN_Move_Piece);
-    p = piece_FromChar(*s);
-    if(p == EMPTY)
-    {
-        return ERROR_InvalidMove;
-    }
-    if(slen < 3  ||  slen > 5)
-    {
-        return ERROR_InvalidMove;
-    }
-    toRank = rank_FromChar(s[slen - 1]);
-    toFyle = fyle_FromChar(s[slen - 2]);
-    to = square_Make(toFyle, toRank);
-    if(to == NS)
-    {
-        return ERROR_InvalidMove;
-    }
-    frRank = NO_RANK;
-    frFyle = NO_FYLE;
-    if(slen > 3)
-    {
-        // There is some ambiguity information in the input string.
-
-        for(unsigned int i = 1; i < slen - 2; ++i) // For each extra char:
-        {
-            if(isdigit(s[i]))
-            {
-                frRank = rank_FromChar(s[i]);
-            }
-            else if(s[i] >= 'a'  &&  s[i] <= 'h')
-            {
-                frFyle = fyle_FromChar(s[i]);
-            }
-        }
-    }
-
-    // Calculate the matching legal move(s):
-    if(p == KING)
-    {
-        if(MatchKingMove(&mlist, to) != OK)
-        {
-            return ERROR_InvalidMove;
-        }
-        else
-        {
-            *m = *(mlist.Get(0));
-            return OK;
-        }
-    }
-    else      // A Queen/Rook/Bishop/Knight move
-    {
-        MatchLegalMove(&mlist, p, to);
-    }
-
-    unsigned int i;
-    unsigned int matchCount = 0;
-    for(i = 0; (int) i < mlist.size(); i++)
-    {
-        // We need to check: (a) that to-square matches, and
-        //    (b), that from-square matches any ambiguity indicator.
-
-        simpleMoveT * thisMove = mlist.Get(i);
-        if(to == thisMove->to
-                && (frFyle == NO_FYLE || frFyle == square_Fyle(thisMove->from))
-                && (frRank == NO_RANK || frRank == square_Rank(thisMove->from)))
-        {
-            // We have a match!!
-            *m = *thisMove;
-            matchCount++;
-        }
-    }
-    if(matchCount == 1)
-    {
-        return OK;
-    }
-    // No match, or too many (ambiguous) moves match:
-    return ERROR_InvalidMove;
-}
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Position::ParseMove():
-//      Parse a single move from SAN-style notation.
-//
-errorT
-Position::ParseMove(simpleMoveT * sm, const char * line)
-{
-    const char * s;
-    char * s2;
-    char mStr [255];
-    unsigned int length = 0;
-    tokenT token = TOKEN_Invalid;
-    errorT err = OK;
-
-    s = line;
-    ASSERT(line != NULL);
-
-    // First, strip the move string down to its raw form with no
-    // 'x' (capture symbols), etc:
-
-    while(*s != 0  &&  !isalpha(*s))
-    {
-        ++s;
-    }
-    if(*s == '\0')
-    {
-        return ERROR_InvalidMove;
-    }
-    s2 = mStr;
-    length = 0;
-    while(!isspace(*s)  &&  *s != '\0')
-    {
-        if((isalpha(*s)  && (*s != 'x'))  ||  isdigit(*s)  ||  *s == '=')
-        {
-            *s2 = *s;
-            s2++;
-            length++;
-            if(length >= 10)
-            {
-                return ERROR_InvalidMove;
-            }
-        }
-        s++;
-    }
-    if(length == 0 ||  length > 10)
-    {
-        return ERROR_InvalidMove;
-    }
-    *s2 = '\0';
-    if(mStr[0] == 'O')
-    {
-        if(mStr[1] == 'O'  &&  mStr[2] == 'O' && mStr[3] == 0)
-        {
-            token = TOKEN_Move_Castle_Queen;
-        }
-        else if(mStr[1] == 'O'  &&  mStr[2] == 0)
-        {
-            token = TOKEN_Move_Castle_King;
-        }
-        else
-        {
-            return ERROR_InvalidMove;
-        }
-    }
-    else if(mStr[0] == 'K'  ||  mStr[0] == 'Q'  ||  mStr[0] == 'R'  ||
-            mStr[0] == 'B'  ||  mStr[0] == 'N'  ||  mStr[0] == 'r'  ||
-            mStr[0] == 'k'  ||  mStr[0] == 'q'  ||  mStr[0] == 'n')
-    {
-        mStr[0] = toupper(mStr[0]);
-        token = TOKEN_Move_Piece;
-    }
-    else if(mStr[0] >= 'a'  &&  mStr[0] <= 'h')
-    {
-        token = TOKEN_Move_Pawn;
-        if(!isdigit(mStr[length - 1]))
-        {
-            token = TOKEN_Move_Promote;
-        }
-    }
-    else
-    {
-        return ERROR_InvalidMove;
-    }
-    err = ReadMove(sm, mStr, token);
-    // If not successful, and the move started with a lower case letter,
-    // try treating it as a piece move instead. This only affects Bishop
-    // moves where a lower-case 'b' is used instead of 'B'.
-    if(err != OK  &&  token == TOKEN_Move_Pawn)
-    {
-        mStr[0] = toupper(mStr[0]);
-        token = TOKEN_Move_Piece;
-        err = ReadMove(sm, mStr, token);
-    }
-    if(err != OK)
-    {
-        return ERROR_InvalidMove;
-    }
-    return err;
-}
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Position::ReadLine():
-//      Parse a sequence of moves separated by whitespace and
-//      move numbers, e.g. "1.e4 e5 2.Nf3" or "e4 e5 Nf3".
-//
-errorT
-Position::ReadLine(const char * line)
-{
-    const char * s = line;
-    char mStr[255];
-    char * s2;
-    unsigned int length = 0;
-    simpleMoveT sm;
-    tokenT token = TOKEN_Invalid;
-    errorT err;
-
-    while(1)
-    {
-        while(*s != 0  &&  !isalpha(*s))
-        {
-            s++;
-        }
-        if(*s == '\0')
-        {
-            return OK;
-        }
-        s2 = mStr;
-        length = 0;
-        while(!isspace(*s)  &&  *s != '\0')
-        {
-            if(isalpha(*s)  ||  isdigit(*s)  ||  *s == '=')
-            {
-                *s2 = *s;
-                s2++;
-                length++;
-            }
-            s++;
-        }
-        *s2 = '\0';
-        if(*mStr == 'O')
-        {
-            if(mStr[1] == 'O'  &&  mStr[2] == 'O' && mStr[3] == 0)
-            {
-                token = TOKEN_Move_Castle_Queen;
-            }
-            else if(mStr[1] == 'O'  &&  mStr[2] == 0)
-            {
-                token = TOKEN_Move_Castle_King;
-            }
-        }
-        else if(*mStr == 'K'  ||  *mStr == 'Q'  ||  *mStr == 'R'  ||
-                *mStr == 'B'  ||  *mStr == 'N'  ||  *mStr == 'r'  ||
-                *mStr == 'k'  ||  *mStr == 'q'  ||  *mStr == 'n')
-        {
-            *mStr = toupper(*mStr);
-            token = TOKEN_Move_Piece;
-        }
-        else if(*mStr >= 'a'  &&  *mStr <= 'h')
-        {
-            token = TOKEN_Move_Pawn;
-            if(!isdigit(mStr[length - 1]))
-            {
-                token = TOKEN_Move_Promote;
-            }
-        }
-        else
-        {
-            return ERROR_InvalidMove;
-        }
-        err = ReadMove(&sm, mStr, token);
-        if(err != OK)
-        {
-            return err;
-        }
-        DoSimpleMove(&sm);
-    }
-}
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Position::DumpBoard():
 //      Dump the board to an open file.
@@ -3632,7 +3220,7 @@ Position::DumpBoard(FILE * fp)
         fputs("   ", fp);
         for(int j = 0; j < 8; ++j)
         {
-            s = (i * 8) + j;
+            s = squareT((i * 8) + j);
             putc(PIECE_CHAR[Board[s]], fp);
             putc(' ', fp);
         }
@@ -3663,53 +3251,6 @@ Position::DumpLists(FILE * fp)
         putc('\n', fp);
     }
 }
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Position::ReadFromCompactStr():
-//    Sets the position from the provided Null-terminated 33-unsigned char
-//    compact string.
-//    The first 32 bytes contain the square valued, 4 bits per value,
-//    for the square order A1, B1, ...., G8, H8.
-//    The next unsigned char contains the side to move, 1 for White or 2 for Black.
-//    The final two bytes contain castling and en passant rights.
-//    To ensure no bytes within the staring are zero-valued (so it
-//    can be used as a regular null-terminated string), the value 1
-//    is added to the color, castling and en passant fields.
-errorT
-Position::ReadFromCompactStr(const unsigned char * str)
-{
-    Clear();
-    for(unsigned int i = 0; i < 32; ++i)
-    {
-        pieceT p = str[i] >> 4;
-        if(p != EMPTY)
-        {
-            if(AddPiece(p, i * 2) != OK)
-            {
-                return ERROR_Corrupt;
-            }
-        }
-        p = str[i] & 15;
-        if(p != EMPTY)
-        {
-            if(AddPiece(p, i * 2 + 1) != OK)
-            {
-                return ERROR_Corrupt;
-            }
-        }
-    }
-    colorT toMove = str[32] - 1;
-    if(toMove != WHITE  &&  toMove != BLACK)
-    {
-        return ERROR_Corrupt;
-    }
-    ToMove = toMove;
-    Castling = str[33] - 1;
-    EPTarget = str[34] - 1;
-    return OK;
-}
-
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Position::ReadFromFEN():
@@ -3968,7 +3509,7 @@ Position::ReadFromFEN(const char * str)
 void
 Position::CopyFrom(Position * src)
 {
-    for(pieceT p = A1; p <= NS; ++p)
+    for(squareT p = A1; p <= NS; ++p)
     {
         Board[p] = src->Board[p];
     };
@@ -4004,6 +3545,8 @@ Position::CopyFrom(Position * src)
     Castling = src->Castling;
     Hash = src->Hash;
     PawnHash = src->PawnHash;
+    Chess960Castling = src->Chess960Castling;
+    CastlingRooks = src->CastlingRooks;
     return;
 }
 
@@ -4027,22 +3570,6 @@ Position::GetSquares(pieceT piece, SquareList * sqlist)
         }
     }
     return Material[piece];
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Position::Random
-//    Given a string such as "KRPKR" or "KRP-kr", sets up a
-//    random position with that material configuration.
-inline squareT
-randomSquare(void)
-{
-    return random32() % 64;
-}
-
-inline squareT
-randomPawnSquare(void)
-{
-    return (random32() % 48) + A2;
 }
 
 //////////////////////////////////////////////////////////////////////

@@ -158,7 +158,8 @@ private:
     unsigned int      NumGameMoves;
 
 private:
-    int PieceValue(pieceT piece);
+    int PieceValue(pieceT piece) const;
+    int PieceValue(pieceC piece) const;
     int SearchRoot(int depth, int alpha, int beta, MoveList * mlist);
     int Search(int depth, int alpha, int beta, bool tryNullMove);
     int Quiesce(int alpha, int beta);
@@ -316,8 +317,7 @@ public:
     {
         return &RootPos;
     }
-    void PlayMove(simpleMoveT * move);
-    void RetractMove(void);
+
     int Score(void);
     principalVarT * GetPV(void)
     {
@@ -374,7 +374,7 @@ Engine::AddKillerMove(simpleMoveT * sm)
     {
         return;
     }
-    if(sm->promote != EMPTY  &&  sm->score >= 0)
+    if(sm->promote != C_EMPTY  &&  sm->score >= 0)
     {
         return;
     }
@@ -417,9 +417,9 @@ Engine::IsKillerMove(simpleMoveT * sm)
 inline void
 Engine::ClearHistoryValues(void)
 {
-    for(pieceT p = WK; p <= BP; p++)
+    for(pieceT p = WK; p <= BP; ++p)
     {
-        for(squareT to = A1; to <= H8; to++)
+        for(squareT to = A1; to <= H8; ++to)
         {
             History[p][to] = 0;
         }
@@ -430,9 +430,9 @@ inline void
 Engine::HalveHistoryValues(void)
 {
     // Output("# Halving history values\n");
-    for(pieceT p = WK; p <= BP; p++)
+    for(pieceT p = WK; p <= BP; ++p)
     {
-        for(squareT to = A1; to <= H8; to++)
+        for(squareT to = A1; to <= H8; ++to)
         {
             History[p][to] /= 2;
         }
@@ -446,7 +446,7 @@ Engine::IncHistoryValue(simpleMoveT * sm, int increment)
     {
         return;
     }
-    if(sm->promote != EMPTY  &&  sm->score >= 0)
+    if(sm->promote != C_EMPTY  &&  sm->score >= 0)
     {
         return;
     }
