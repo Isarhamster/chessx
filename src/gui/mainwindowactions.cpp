@@ -2085,9 +2085,11 @@ void MainWindow::AutoMoveAtEndOfGame()
 
 void MainWindow::slotFilterChanged()
 {
-    if(gameIndex() >= 0)
+    int n = gameIndex();
+    m_gameList->selectGame(n);
+
+    if(n >= 0)
     {
-        m_gameList->selectGame(gameIndex());
         m_gameList->setFocus();
     }
     int count = databaseInfo()->filter() ? databaseInfo()->filter()->count() : 0;

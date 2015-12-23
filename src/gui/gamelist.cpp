@@ -372,15 +372,23 @@ void GameList::slotFilterListByEco(QString s)
 
 void GameList::selectGame(int index)
 {
-    int i = m_model->filter()->gameToIndex(index);
-    if(i != -1)
+    if (index >= 0)
     {
-        QModelIndex filterModelIndex = m_model->index(i, 0);
-        QModelIndex sortModelIndex = GetSortModelIndex(filterModelIndex);
-        setCurrentIndex(sortModelIndex);
-        selectRow(sortModelIndex.row());
-        emit signalFirstGameLoaded(sortModelIndex.row()==0);
-        emit signalLastGameLoaded(sortModelIndex.row()+1 == m_model->filter()->count());
+        int i = m_model->filter()->gameToIndex(index);
+        if(i != -1)
+        {
+            QModelIndex filterModelIndex = m_model->index(i, 0);
+            QModelIndex sortModelIndex = GetSortModelIndex(filterModelIndex);
+            setCurrentIndex(sortModelIndex);
+            selectRow(sortModelIndex.row());
+            emit signalFirstGameLoaded(sortModelIndex.row()==0);
+            emit signalLastGameLoaded(sortModelIndex.row()+1 == m_model->filter()->count());
+        }
+    }
+    else
+    {
+        emit signalFirstGameLoaded(true);
+        emit signalLastGameLoaded(true);
     }
 }
 
