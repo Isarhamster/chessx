@@ -149,6 +149,7 @@ public:
     quint64 castlingRooks() const;
     static quint64 standardCastlingRooks();
 
+    void setCastlingRooks();
 private:
     /** Test if a king is on a certain row to test castling rights */
     bool isKingOnRow(Piece p, Square start, Square stop) const;
@@ -206,6 +207,7 @@ private:
     bool fromGoodFen(const QString& fen, bool chess960=false);
     /** Get the rook with index from castling rook storage */
     Square CastlingRook(int index) const;
+    bool HasRookForCastling(int index) const;
 
 
     // Actual Bit-board data

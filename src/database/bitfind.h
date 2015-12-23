@@ -13,7 +13,7 @@ T getFirstBitAndClear64(quint64& bb)
     quint64 x = bb & -(qint64)bb;
     bb ^= x;
 #ifdef __GNUG__
-    return T(x ? (63 - __builtin_clzll(x)) : 0);
+    return T(x ? (63 - __builtin_clzll(x)) : 0xFF);
 #elif _MSC_VER
 #ifdef __x86_64__
     if(x)
@@ -22,7 +22,7 @@ T getFirstBitAndClear64(quint64& bb)
         _BitScanReverse64(&r, x);
         return T(r);
     }
-    return a1;
+    return 0xFF;
 #else
     if(x)
     {
@@ -36,12 +36,13 @@ T getFirstBitAndClear64(quint64& bb)
         _BitScanReverse(&r, x);
         return T(r);
     }
-    return a1;
+    return 0xFF;
 #endif
 #else
     // SBE - After a fair bit of testing, this is the fastest portable version
     // i could come up with, it's about twice as fast as shift-testing 64 times.
-    unsigned int r =  0;
+    unsigned int r = 0;
+    if (!x) return 0xFF;
     if(!(x & 0xffffffff))
     {
         x >>= 32;

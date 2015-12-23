@@ -558,14 +558,14 @@ void BitBoard::removeAt(const Square s)
 
 bool BitBoard::isValidFen(const QString& fen) const
 {
-    return BitBoard().fromGoodFen(fen);
+    return BitBoard().fromGoodFen(fen, chess960());
 }
 
 bool BitBoard::fromFen(const QString& fen)
 {
     if(isValidFen(fen))
     {
-        return fromGoodFen(fen);
+        return fromGoodFen(fen, chess960());
     }
     return false;
 }
@@ -699,33 +699,31 @@ BoardStatus BitBoard::validate() const
     }
     else
     {
-        if(canCastleLong(White) && (CastlingRook(0) > h1 || CastlingRook(1) > h1))
+        // Can't castle if king is not on row 1 / 8
+        if(canCastle(White) && !(SetBit(m_ksq[White]) & 0x00000000000000FFuLL))
         {
             return BadCastlingRights;
         }
-        if(canCastleShort(White) && (CastlingRook(0) > h1 || CastlingRook(1) > h1))
-        {
-            return BadCastlingRights;
-        }
-        if(canCastleLong(Black) && (CastlingRook(2) < a8 || CastlingRook(3) < a8))
-        {
-            return BadCastlingRights;
-        }
-        if(canCastleShort(Black) && (CastlingRook(2) < a8 || CastlingRook(3) < a8))
+        if(canCastle(Black) && !(SetBit(m_ksq[Black]) & 0xFF00000000000000uLL))
         {
             return BadCastlingRights;
         }
 
-        // Can't castle if king is not between the rooks
-        if(canCastle(White))
+        if(canCastleLong(White) && !HasRookForCastling(0))
         {
-            bool ok = isKingOnRow(WhiteKing,a1,h1);
-            if (!ok) return BadCastlingRights;
+            return BadCastlingRights;
         }
-        if(canCastle(Black))
+        if(canCastleShort(White) && !HasRookForCastling(1))
         {
-            bool ok = isKingOnRow(BlackKing,a8,h8);
-            if (!ok) return BadCastlingRights;
+            return BadCastlingRights;
+        }
+        if(canCastleLong(Black) && !HasRookForCastling(2))
+        {
+            return BadCastlingRights;
+        }
+        if(canCastleShort(Black) && !HasRookForCastling(3))
+        {
+            return BadCastlingRights;
         }
     }
 
@@ -941,7 +939,6 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
     }
 
     // Set remainder of bitboard data appropriately
-    m_castlingRooks = m_rooks; // Keep a copy of the original rook positions for castling rights - todo: if a rook is missing, this will cause trouble
     m_occupied = m_occupied_co[White] + m_occupied_co[Black];
     for(int i = 0; i < 64; ++i)
     {
@@ -979,7 +976,7 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
     {
         return true;
     }
-    int chess960cc = 0;
+
     if(c != '-')
     {
         while(c != ' ')
@@ -999,11 +996,34 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
                 setCastleLong(Black);
                 break;
             default:
-                if ((c>='a' && c<='h') || (c>='A' && c<='H'))
                 {
-                    ++chess960cc;
+                    if (c>='a' && c<='h')
+                    {
+                        if (c<m_ksq[Black])
+                        {
+                            setCastleLong(Black);
+                        }
+                        else if (c>m_ksq[Black])
+                        {
+                            setCastleShort(Black);
+                        }
+                    }
+                    else if (c>='A' && c<='H')
+                    {
+                        if (c<m_ksq[White])
+                        {
+                            setCastleLong(White);
+                        }
+                        else if (c>m_ksq[White])
+                        {
+                            setCastleShort(White);
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else return false;
                 break;
             }
 
@@ -1015,15 +1035,8 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
         ++i;    // Bypass space
     }
 
-    if (chess960cc)
-    {
-        if (chess960cc != 4) return false;
-        setChess960(true);
-        setCastleShort(White);
-        setCastleShort(Black);
-        setCastleLong(White);
-        setCastleLong(Black);
-    }
+    setCastlingRooks();
+
     // EnPassant Square
     c = fen[++i];
     if(c == 0)
@@ -1107,8 +1120,68 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
     return true;
 }
 
+void BitBoard::setCastlingRooks()
+{
+    if (chess960())
+    {
+        m_castlingRooks = m_rooks; // Keep a copy of the original rook positions for castling rights
+    }
+    else
+    {
+        m_castlingRooks = BitBoard::standardCastlingRooks();
+        return;
+    }
+
+    Color canCastleColor = NoColor;
+    if (canCastle(White))
+    {
+        canCastleColor = White;
+    }
+    else if (canCastle(Black))
+    {
+        canCastleColor = Black;
+    }
+    if (canCastleColor == NoColor)
+    {
+        m_castlingRooks = BitBoard::standardCastlingRooks();
+        return;
+    }
+
+    Square FixSquares[2][2] = {{ a1, h1 }, {a8, h8 }};
+    Square StartSquares[2][2] = {{ a1, m_ksq[White] }, {a8, m_ksq[Black] }};
+    Square StopSquares[2][2] = {{ m_ksq[White], h1}, {m_ksq[Black], h8 }};
+    for (int i=White; i<=Black; ++i)
+    {
+        for (int section=0;section<2;++section)
+        {
+            Square x = CastlingRook(2*i+section);
+            while (x!=InvalidSquare && x<StartSquares[i][section])
+            {
+                m_castlingRooks &= ~(SetBit(x));
+                x = CastlingRook(2*i+section);
+            }
+            if (x!=InvalidSquare)
+            {
+               Square y = CastlingRook(2*i+section+1);
+               while (y!=InvalidSquare && y<StopSquares[i][section])
+               {
+                   m_castlingRooks &= ~(SetBit(y));
+                   y = CastlingRook(2*i+section+1);
+               }
+
+               if (x>StopSquares[i][section])
+               {
+                   m_castlingRooks |= SetBit(FixSquares[i][section]);
+               }
+            }
+        }
+    }
+}
+
 void BitBoard::fromChess960pos(int i)
 {
+    setChess960(true);
+
     if (i<0 || i>959)
     {
         setStandardPosition();
@@ -1138,6 +1211,23 @@ void BitBoard::fromChess960pos(int i)
 int BitBoard::chess960Pos() const
 {
     int ccPos = 0;
+
+    if (m_occupied & 0x0000FFFFFFFF0000uLL)
+    {
+        return -1;
+    }
+
+    if (((m_pawns & m_occupied_co[White]) != 0x000000000000FF00uLL) ||
+        ((m_pawns & m_occupied_co[Black]) != 0x00FF000000000000uLL))
+    {
+        return -1;
+    }
+
+    if ((m_pieceCount[White] != 16) || (m_pieceCount[Black] != 16))
+    {
+        return -1;
+    }
+
     quint64 x = (m_bishops & (2+8+32+128));
     ccPos += (getFirstBitAndClear64<Square>(x)-1)/2;
     x = m_bishops & (1+4+16+64);
@@ -2203,6 +2293,17 @@ void BitBoard::undoMove(const Move& m)
     epFile2Square();
 }
 
+bool BitBoard::HasRookForCastling(int index) const
+{
+    quint64 cr = m_castlingRooks;
+    Square x = InvalidSquare;
+    for (int i=0; i<=index; ++i)
+    {
+        x = getFirstBitAndClear64<Square>(cr);
+    }
+    return (m_rooks & SetBit(x));
+}
+
 Square BitBoard::CastlingRook(int index) const
 {
     quint64 cr = m_castlingRooks;
@@ -2277,7 +2378,7 @@ Move BitBoard::prepareMove(const Square& from, const Square& to, bool doNotAllow
             }
             else
             {
-                if ((p!=King) || (m_piece[to] != Rook))
+                if ((p!=King) || ((m_piece[to] != Rook) && (m_piece[to] != King)))
                 {
                     // Can't be a castling move
                     return move;
@@ -3017,7 +3118,7 @@ bool BitBoard::from64Char(const QString& qcharboard)
     if (l[C64_CASTLE_B_00].toInt()) setCastleShort(Black);
     if (l[C64_CASTLE_B_000].toInt()) setCastleLong(Black);
 
-    m_castlingRooks = m_rooks;
+    setCastlingRooks();
 
     setMoveNumber(l[C64_NEXT_MOVE_NUMBER].toInt());
 

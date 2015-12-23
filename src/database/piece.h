@@ -22,7 +22,7 @@ Piece operator++(Piece& w, int);
 
 enum PieceType { None, King, Queen, Rook, Bishop, Knight, Pawn };
 
-enum Color {White, Black};
+enum Color {White, Black, NoColor};
 
 /** Return opposite color */
 inline Color oppositeColor(Color c)
