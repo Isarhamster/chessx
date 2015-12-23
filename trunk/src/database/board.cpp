@@ -110,7 +110,6 @@ bool Board::doIt(const Move& m, bool undo)
     if(m.isNullMove())
     {
         hashEpSquare();
-        hashToMove();
         if(undo)
         {
             BitBoard::undoMove(m);

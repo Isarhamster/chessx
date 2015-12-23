@@ -126,9 +126,12 @@ Board BoardSetupDialog::board() const
 
 void BoardSetupDialog::chess960posChanged(int value)
 {
-    Board b;
-    b.fromChess960pos(value);
-    setBoard(b);
+    if (value >= 0)
+    {
+        Board b;
+        b.fromChess960pos(value);
+        setBoard(b);
+    }
 }
 
 void BoardSetupDialog::chess960randomPos()
@@ -506,6 +509,7 @@ void BoardSetupDialog::slotCastlingRights()
         cr += BlackQueenside;
     }
     b.setCastlingRights(cr);
+    b.setCastlingRooks();
     setBoard(b);
 }
 
