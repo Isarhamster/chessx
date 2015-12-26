@@ -31,7 +31,7 @@
 
 <div id="content">
 <h2><a name="Handbuch">ChessX Manual</a></h2>
-<h3>Opening a database</h3>
+<h3><a name="Open"></a>Opening a database</h3>
 <p>You can open a database either from the File menu or drag a file from Explorer / Finder into the Databases view.</p>
 <p>You can make a database stay permanently in the database list by turning it into a "Favorite" (right-click the file).
 A database is reopened from there by clicking the asterisk or again by the context menu.</p>
@@ -40,7 +40,7 @@ the configured default path (see the Preferences-Advanced-Default Data Path entr
 the archive is stored at the Default Data Path and its content is extracted. Again, if there is something like PGN inside,
 the files are opened afterwards.</p>
 
-<h3>Making moves</h3>
+<h3><a name="Move"></a>Making moves</h3>
 <p>A move is done by grabbing a piece and dragging it to another square.</p>
 <p>Depending on your settings in the board preferences, you can either
 <ul>
@@ -68,11 +68,11 @@ If you want to move the king without castling to one of these squares and castli
 the Command-Modifier while moving the king, this will create a king move instead of castling. You could also use
 the keyboard to disambiguate the move.</p>
 
-<h3>Let ChessX replay the game</h3>
-<p><img src=":/images/replay.png" width="42" align="left">If you want ChessX to replay the game, select "Game->Auto Player".
+<h3><a name="Replay"></a>Let ChessX replay the game</h3>
+<p><a href="button:replay"><img src=":/images/replay.png" width="42" align="left"></a>If you want ChessX to replay the game, select "Game->Auto Player".
 You can change the move rate with the slider in the bottom right corner of the status bar.</p>
 
-<h3>Entering moves with the keyboard</h3>
+<h3><a name="Enter"></a>Entering moves with the keyboard</h3>
 
 <p>If the focus is somewhere on the board or the notation, you can enter moves simply by starting to type.
 A label in the status bar will indicate, what you have typed. Whenever ChessX recognizes a complete move, the move
@@ -82,14 +82,14 @@ typing "e4" in the starting position is fine, whereas a subsequent "e2" could ei
 </p>
 <p>By pressing [Enter] you can force ChessX to accept an entry or discard it, if ChessX cannot make anything reasonable of your entry.</p>
 
-<h3>Annotating moves</h3>
+<h3><a name="Annotate"></a>Annotating moves</h3>
 <p>Move annotations can be done by activating the context menu in the games text browser or by simply pressing the corresponding key sequence,
 e.g. '!?','!!','??','!x','?x','=','+-','-+' and so on, where 'x' is used in case the first character is ambiguous, 'x' can be the
 Return/Enter-Key or literally the small letter 'x'.</p>
 <p>You can make special annotations like drawing an arrow or coloring squares by pressing Shift+Right-Mouse-Clicking (either select a single square
 or make a drawing gesture for drawing an arrow).</p>
 
-<h3>Saving games</h3>
+<h3><a name="Save"></a>Saving games</h3>
 <p>Saving games is slightly confusing! A game needs to be saved into the database (Press CTRL+S, Menu Game/Save). From there,
 the whole database needs to be saved to disk by pressing CTRL+Shift+S / Menu File/Save. This is somewhat inconvenient but on the other hand prevents
 you from mistakenly overwriting games or files.</p>
@@ -99,11 +99,11 @@ after Saving Game" from the Database Pane in the Preferences Dialog.</p>
 lost upon closing ChessX! So you need to open at least one other database for writing and transfer anything from the Clipboard
 into this database by either dragging the games to that database or using "Copy Games" from the Database menu.</p>
 
-<h3>Switching databases</h3>
+<h3><a name="Switch"></a>Switching databases</h3>
 <p>Switching between open databases can be achieved by either the Database menu, pressing CTRL+Shift+Number 0 .. 9 or right-clicking
 into the database list. The currently selected database is highlighted there!</p>
 
-<h3>Analysing games</h3>
+<h3><a name="Analyse"></a>Analysing games</h3>
 <p>There are two analysis windows where two different engines can be configured to analyse the current board position.</p>
 <p>Engines must be configured before in the Preferences Dialog. A default engine (Stockfish) comes with this installation
 and will be configured as first engine, if no other entries exist.
@@ -114,13 +114,13 @@ hard to implement for GUI developers.</p>
 <p>You can change the move rate with the slider in the bottom right corner of the status bar. Draw the slider to the very left for infinite analysis or
 to the right to make the engine analyse from 1 to 10 secondes per move.</p>
 
-<h3>Playing (out) games against an engine</h3>
+<h3><a name="Game"></a>Playing (out) games against an engine</h3>
 <p><img src=":/images/respond.png" width="42" align="left">You can play out a game after the final position by activating Auto Respond mode.
 Whenever you make a move the engine in pane 1 will start to analyse the
 position for the time defined by the slider at the bottom right of the status bar. If the allotted time is over, the
 engine will make the best move found so far.</p>
 
-<h3>Automatically annotating games</h3>
+<h3><a name="Auto-Annotate"></a>Automatically annotating games</h3>
 <p><img src=":/images/annotate.png" width="42" align="left">Start an engine in the Analysis 1 window and select menu "Game->Auto Analysis". ChessX will start to move through the
 current game, analysing each position for some time. After the alotted time is over, the best move will be inserted as variation into the game
 text. Then ChessX will continue with the next move.</p>
@@ -133,7 +133,7 @@ open the first game from the database and select move 1.
 analyse a complete database, a loss of power will otherwise lose all results so far.
 </ul>
 
-<h3>Using Books in engines</h3>
+<h3><a name="Engine-Books"></a>Using Books in engines</h3>
 <p>UCI engines may support books. Just set the OwnBook option to true, set the name of the "Book File" option and restart the engine.
 The engine will answer immediately with a book move when playing out games (see above), depending on "Best Book Move" option this may or
 may not be the best move from the book. In infinite analysis, the engine won't use information from opening books.</p>
@@ -148,7 +148,7 @@ an algorithm, how the GUI shall select moves if several moves are available for 
 </ul>
 </p>
 
-<h3>Using Books in ChessX</h3>
+<h3><a name="Books"></a>Using Books in ChessX</h3>
 <p>Polyglot is a book standard supported by ChessX. The orginal code was licensed under GNU GPL Version 2.0.</p>
 <p>ChessX displays books like any other database in the Opening Tree Browser. Drag a polyglot book (which must have the suffix ".bin")
 to the Database List or open the book via menu. Once it is open, it becomes available as any other open database
@@ -157,7 +157,7 @@ in the combo box "Source" beneath the opening tree.</p>
 the engine should play. Moves which did not succeed at all are usually not part of polyglot books.</p>
 <p>So do not learn openings from polyglot books - important moves might be missing!</p>
 
-<h3>Creating your own book</h3>
+<h3><a name="Create-Book"></a>Creating your own book</h3>
 <p>You can create your own book by selecting a open PGN database (right click with the mouse) and select "Make polyglot book".</p>
 <p>ChessX will query the following parameters and pass them for creating a book:</p>
 <ul>
@@ -177,11 +177,11 @@ default mechanism and affects equal probability to all moves.  This
 allows more variety of play.
 </ul>
 
-<h3>Generating content</h3>
+<h3><a name="Content"></a>Generating content</h3>
 <p>You can copy/paste positions(FEN and images) and complete games(PGN) from/into the clipboard, export games in LATEX, HTML or PGN again.
 See the Edit menu and the File/Export Dialog.</p>
 
-<h3>Merging games</h3>
+<h3><a name="Merge"></a>Merging games</h3>
 <p>By dragging a game from the game list into the current notation, the dragged game will be merged into the current game at the
 first position after the current position, where both games deviate. The game will be merged with all annotations and variations.
 If nothing is merged, no suitable point for merging was found. This can happen, if</p>
@@ -191,7 +191,7 @@ If nothing is merged, no suitable point for merging was found. This can happen, 
 </ul>
 <p>You can select multiple games and merge them at once.</p>
 
-<h3>Sorting and filtering games</h3>
+<h3><a name="Sort"></a>Sorting and filtering games</h3>
 <p>The list of games can be filtered either by the opening tree, the Player or Event widget or from the context menu in the list header.
 Several searches can be combined or inverted.
 Further occurrences of the current board position in the current database can be found via
@@ -199,7 +199,7 @@ the Find / Find Position menu.</p>
 <p>Clicking on the header sorts the list. This feature is disabled for larger databases (>4K of games)
 as it will take far too long to sort the list.</p>
 
-<h3>Filter Databases into an opening tree</h3>
+<h3><a name="Filter"></a>Filter Databases into an opening tree</h3>
 <p>The opening tree takes the current board position and matches it with each game in the selected database.
 The moves found in the database are listed with the number of occurrences and the score that was achieved with
 each move alternative. The database is updated continuously, the progress bar gives a hint how far the database is analysed.</p>
@@ -209,7 +209,7 @@ into the same position).</p>
 <p>Usually, clicking onto one of the moves in opening tree will only update the small overview in the opening tree widget.
 Pressing Shift while clicking onto a move will add the move to the current game (if the position permits)</p>
 
-<h3>Training Mode</h3>
+<h3><a name="Training"></a>Training Mode</h3>
 <p><img src=":/images/training.png" width="42" align="left">Selecting Game/Training starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game
 so you can make any move in a position. If the move is the right one (the one that was played or a existing variation) then the move is executed
 and the game is moved one step forward.
@@ -218,18 +218,18 @@ The game notation is updated and variations on that move become visible. Ideal f
 See the chapter on Making Moves and the associated preferences to enable move guesses.</p>
 <p>You can combine training with Auto Respond mode, in this case, ChessX will make the next move automatically whenever you make a correct move.</p>
 
-<h3>Playing matches</h3>
+<h3><a name="Match"></a>Playing matches</h3>
 <p><img src=":/images/black_chess.png" width="42" align="left">The match button makes sure, that ChessX does not give away hints on the position. This effectively disables
 engine output, tablebase output, moving back or forward in a game, changing databases etc.</p>
 
-<h3>Matches between engines</h3>
+<h3><a name="Engine-Match"></a>Matches between engines</h3>
 <p><img src=":/images/chip.png" width="42" align="left">With "Game/Engine Match" you can arrange a match between two engines. Analysis pane 1 will play the white pieces, pane 2 with the black pieces.
 Starting an engine match brings up the match parameter dialog.
 If activated, the elapsed game time is annotated. You can play with Gong (each move will be made within a fixed time) or sudden death, where
 each engine gets a fixed amount of time for the whole game. ChessX will supervise the time and also adjudicate a draw in case of a three-fold repetition,
 insufficient material or the 50 move rule.</p>
 
-<h3>Online Chess</h3>
+<h3><a name="FICS"></a>Online Chess</h3>
 <p>ChessX supports online access to games played or stored on the free internet chess server.</p>
 <p>If you have a FICS account, you can enter the credentials in the Preferences, otherwise, ChessX will login as guest.</p>
 <p>ChessX connects to FICS upon opening the virtual database FICS. A successful connection is indicated in the message pane of the FICS console.</p>
@@ -245,12 +245,12 @@ dropping it somewhere, the premove piece and its target square a indicated. An a
 or by selecting a new premove.</p>
 <p>Chess variants are not supported in Online mode</p>
 
-<h3>Chess Variants</h3>
+<h3><a name="Variants"></a>Chess Variants</h3>
 
 <p>ChessX supports Chess 960 games (also call Fisherandom).</p>
 <p>You can start a Chess960 game by setting up the board manually. The setup dialog allows entering the
 position identifier or chossing a random identifier.</p>
-
+<p>See <a href="#Move">the chapter on moving</a> for issues related with castling.</p>
 </div>
 </div>
 

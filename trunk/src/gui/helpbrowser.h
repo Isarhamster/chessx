@@ -13,10 +13,14 @@ class HelpBrowser : public QTextBrowser
 public:
     explicit HelpBrowser(QWidget *parent = 0);
 
+    void SetStartPage();
 signals:
+    void linkTargets(const QStringList& texts, const QStringList& links);
 
 public slots:
 
+private slots:
+    void slotSourceChanged(const QUrl &url);
 };
 
 #endif // HELPBROWSER_H

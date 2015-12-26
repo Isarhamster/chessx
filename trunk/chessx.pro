@@ -64,7 +64,8 @@ FORMS += \
     src/dialogs/quicksearch.ui \
     src/gui/gamewindow.ui \
     src/dialogs/matchparameterdlg.ui \
-    src/gui/boardviewex.ui
+    src/gui/boardviewex.ui \
+    src/gui/helpbrowsershell.ui
 
 
 HEADERS += src/database/board.h \
@@ -218,7 +219,8 @@ HEADERS += src/database/board.h \
     src/dialogs/matchparameterdlg.h \
     src/gui/boardviewex.h \
     src/gui/simplelabel.h \
-    src/database/bitfind.h
+    src/database/bitfind.h \
+    src/gui/helpbrowsershell.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -354,7 +356,8 @@ SOURCES += src/database/board.cpp \
     src/gui/ooo/kzip.cpp \
     src/dialogs/matchparameterdlg.cpp \
     src/gui/boardviewex.cpp \
-    src/gui/simplelabel.cpp
+    src/gui/simplelabel.cpp \
+    src/gui/helpbrowsershell.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

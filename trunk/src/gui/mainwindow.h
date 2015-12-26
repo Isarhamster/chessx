@@ -430,6 +430,7 @@ protected slots:
     void slotUpdateOpeningBook(QString name);
     void slotRestartAnalysis();
     void slotBoardStoredMove();
+
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);
