@@ -2137,7 +2137,7 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
     {
         // No hash table move, so generate and score all the moves now.
         gotHashMove = false;
-        Pos.GenerateMoves(&mlist, EMPTY, GEN_ALL_MOVES, InCheck[Ply]);
+        Pos.GenerateMoves(&mlist, C_EMPTY, GEN_ALL_MOVES, InCheck[Ply]);
         ScoreMoves(&mlist);
         isOnlyMove = (mlist.size() == 1);
     }
@@ -2277,7 +2277,7 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
         if(movenum == 0  &&  gotHashMove  &&  !isOnlyMove)
         {
             mlist.clear();
-            Pos.GenerateMoves(&mlist, EMPTY, GEN_ALL_MOVES, InCheck[Ply]);
+            Pos.GenerateMoves(&mlist, C_EMPTY, GEN_ALL_MOVES, InCheck[Ply]);
             ScoreMoves(&mlist);
             int hashIndex = mlist.Find(&hashmove);
             if(hashIndex >= 0)

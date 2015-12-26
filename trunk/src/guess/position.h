@@ -361,30 +361,30 @@ public:
                               SquareSet * sqset, bool capturesOnly);
 
     // Generate all legal moves:
-    void  GenerateMoves(MoveList * mlist, pieceT mask, genMovesT genType, bool maybeInCheck);
+    void  GenerateMoves(MoveList * mlist, pieceC mask, genMovesT genType, bool maybeInCheck);
     void  GenerateMoves()
     {
-        GenerateMoves(NULL, EMPTY, GEN_ALL_MOVES, true);
+        GenerateMoves(NULL, C_EMPTY, GEN_ALL_MOVES, true);
     }
     void  GenerateMoves(MoveList * mlist)
     {
-        GenerateMoves(mlist, EMPTY, GEN_ALL_MOVES, true);
+        GenerateMoves(mlist, C_EMPTY, GEN_ALL_MOVES, true);
     }
-    void  GenerateMoves(MoveList * mlist, pieceT mask)
+    void  GenerateMoves(MoveList * mlist, pieceC mask)
     {
         GenerateMoves(mlist, mask, GEN_ALL_MOVES, true);
     }
     void  GenerateMoves(MoveList * mlist, genMovesT genType)
     {
-        GenerateMoves(mlist, EMPTY, genType, true);
+        GenerateMoves(mlist, C_EMPTY, genType, true);
     }
     void  GenerateCaptures(MoveList * mlist)
     {
-        GenerateMoves(mlist, EMPTY, GEN_CAPTURES, true);
+        GenerateMoves(mlist, C_EMPTY, GEN_CAPTURES, true);
     }
     bool  IsLegalMove(simpleMoveT * sm);
 
-    void        GenCheckEvasions(MoveList * mlist, pieceT mask, genMovesT genType, SquareList * checkSquares);
+    void        GenCheckEvasions(MoveList * mlist, pieceC mask, genMovesT genType, SquareList * checkSquares);
     void        MatchLegalMove(MoveList * mlist, pieceC mask, squareT target);
     errorT      MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceC promote);
     errorT      MatchKingMove(MoveList * mlist, squareT target);

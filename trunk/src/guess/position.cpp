@@ -1217,14 +1217,13 @@ Position::GenPieceMoves(MoveList * mlist, squareT fromSq,
 //    If the specified pieceType is not EMPTY, then only legal
 //    moves for that type of piece are generated.
 void
-Position::GenerateMoves(MoveList * mlist, pieceT pieceType,
+Position::GenerateMoves(MoveList * mlist, pieceC pieceType,
                         genMovesT genType, bool maybeInCheck)
 {
-    bool genNonCaptures = ((genType & GEN_NON_CAPS) != 0);
-    bool capturesOnly = !genNonCaptures;
+    bool capturesOnly = ((genType & GEN_NON_CAPS) == 0);
 
-    unsigned int mask = 0;
-    if(pieceType != EMPTY)
+    unsigned int mask;
+    if(pieceType != C_EMPTY)
     {
         mask = 1 << pieceType;
     }
@@ -1712,7 +1711,7 @@ Position::MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceC pro
 
     if(toRank == promoteRank)
     {
-        if(promote == EMPTY)
+        if(promote == C_EMPTY)
         {
             return ERROR_InvalidMove;
         }
@@ -1943,7 +1942,7 @@ Position::MatchKingMove(MoveList * mlist, squareT target)
 //      King is in check.
 //
 void
-Position::GenCheckEvasions(MoveList * mlist, pieceT mask, genMovesT genType,
+Position::GenCheckEvasions(MoveList * mlist, pieceC mask, genMovesT genType,
                            SquareList * checkSquares)
 {
     unsigned int numChecks = checkSquares->Size();
@@ -1951,8 +1950,8 @@ Position::GenCheckEvasions(MoveList * mlist, pieceT mask, genMovesT genType,
     // Assert that king IS actually in check:
     ASSERT(numChecks > 0);
 
-    bool genNonCaptures = ((genType & GEN_NON_CAPS) != 0);
-    bool capturesOnly = !genNonCaptures;
+    bool capturesOnly = ((genType & GEN_NON_CAPS) == 0);
+
     mlist->clear();
 
     squareT king = GetKingSquare(ToMove);
@@ -1997,7 +1996,7 @@ Position::GenCheckEvasions(MoveList * mlist, pieceT mask, genMovesT genType,
             {
                 continue;
             }
-            if(mask == EMPTY  ||  mask == piece_Type(p2piece))
+            if(mask == C_EMPTY  ||  mask == piece_Type(p2piece))
             {
                 if(piece_Type(p2piece) == PAWN)
                 {
@@ -2027,7 +2026,7 @@ Position::GenCheckEvasions(MoveList * mlist, pieceT mask, genMovesT genType,
     }
 
     // Now king moves -- just compute them normally:
-    if(mask == EMPTY  ||  mask == KING)
+    if(mask == C_EMPTY  ||  mask == KING)
     {
         GenKingMoves(mlist, genType, false);
     }
@@ -2554,7 +2553,7 @@ Position::IsKingInMate(void)
     }
     CalcPins();
     MoveList mlist;
-    GenCheckEvasions(&mlist, EMPTY, GEN_ALL_MOVES, &checkSquares);
+    GenCheckEvasions(&mlist, C_EMPTY, GEN_ALL_MOVES, &checkSquares);
     if(mlist.size() == 0)
     {
         return true;
