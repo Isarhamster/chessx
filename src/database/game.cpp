@@ -78,16 +78,7 @@ Game& Game::operator=(const Game & game)
         }
         else if (m_currentBoard)
         {
-            if (m_currentNode != NO_MOVE)
-            {
-                int n = m_currentNode;
-                m_currentNode = NO_MOVE;
-                moveToId(n);
-            }
-            else
-            {
-                moveToStart();
-            }
+            moveToStart();
         }
     }
     return *this;

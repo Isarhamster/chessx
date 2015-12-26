@@ -31,6 +31,7 @@
 #include "GameMimeData.h"
 #include "gamewindow.h"
 #include "helpbrowser.h"
+#include "helpbrowsershell.h"
 #include "kbaction.h"
 #include "loadquery.h"
 #include "mainwindow.h"
@@ -1576,8 +1577,7 @@ void MainWindow::setupActions()
     /* Help Window */
     DockWidgetEx* pHelpDock = new DockWidgetEx(tr("Help"), this);
     pHelpDock->setObjectName("Help");
-    HelpBrowser* pHelpBrowser = new HelpBrowser(this);
-    pHelpBrowser->setMinimumSize(150, 100);
+    HelpBrowserShell* pHelpBrowser = new HelpBrowserShell(this);
     pHelpDock->setWidget(pHelpBrowser);
     addDockWidget(Qt::RightDockWidgetArea, pHelpDock);
     QAction* helpAction = pHelpDock->toggleViewAction();

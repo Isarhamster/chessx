@@ -3013,3 +3013,4 @@ bool MainWindow::premoveAllowed() const
     return ((gameMode() && m_ficsConsole->canUsePremove() && qobject_cast<const FicsDatabase*>(database()))
             || m_autoRespond->isChecked());
 }
+
