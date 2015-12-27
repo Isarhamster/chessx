@@ -13,7 +13,7 @@ T getFirstBitAndClear64(quint64& bb)
     quint64 x = bb & -(qint64)bb;
     bb ^= x;
 #ifdef __GNUG__
-    return T(x ? (63 - __builtin_clzll(x)) : 0xFF);
+    return T(x ? (63 - __builtin_clzll(x)) : (T)0xFF);
 #elif _MSC_VER
 #ifdef __x86_64__
     if(x)
@@ -22,7 +22,7 @@ T getFirstBitAndClear64(quint64& bb)
         _BitScanReverse64(&r, x);
         return T(r);
     }
-    return 0xFF;
+    return (T)0xFF;
 #else
     if(x)
     {
@@ -36,7 +36,7 @@ T getFirstBitAndClear64(quint64& bb)
         _BitScanReverse(&r, x);
         return T(r);
     }
-    return 0xFF;
+    return (T)0xFF;
 #endif
 #else
     // SBE - After a fair bit of testing, this is the fastest portable version

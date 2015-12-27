@@ -1363,6 +1363,11 @@ Position::IsLegalMove(simpleMoveT * sm)
         return false;
     }
 
+    if(sm->moveCastles && cmover != KING)
+    {
+        return false;
+    }
+
     if(cmover == PAWN)
     {
         rankT rfrom = square_Rank(from);
@@ -1479,7 +1484,7 @@ Position::IsLegalMove(simpleMoveT * sm)
         {
             return false;
         }
-        if(! square_Adjacent(from, to))
+        if(sm->moveCastles)
         {
             // The move must be castling, or illegal.
             if(IsKingInCheck())

@@ -1580,6 +1580,7 @@ Engine::ProbeHash(int depth, int * score, simpleMoveT * bestMove, bool * isOnlyM
     // Clear the best move:
     if(bestMove != NULL)
     {
+        bestMove->moveCastles = false;
         bestMove->from = bestMove->to = NULL_SQUARE;
     }
 
