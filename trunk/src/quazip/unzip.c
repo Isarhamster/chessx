@@ -87,7 +87,10 @@ woven in by Terry Thorsen 1/2003.
 #define SIZEZIPLOCALHEADER (0x1e)
 
 
-
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
 
 const char unz_copyright[] =
    " unzip 1.01 Copyright 1998-2004 Gilles Vollant - http://www.winimage.com/zLibDll";

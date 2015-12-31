@@ -33,6 +33,11 @@
 #include <QIODevice>
 #include <QByteArray>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 //! Local header size (excluding signature, excluding variable length fields)
 #define UNZIP_LOCAL_HEADER_SIZE 26
 //! Central Directory file entry size (excluding signature, excluding variable length fields)

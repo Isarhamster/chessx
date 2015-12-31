@@ -25,6 +25,11 @@
 #include <QDebug>
 #include <QDateTime>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 using namespace OOO;
 
 class Style {
