@@ -26,6 +26,11 @@ quazip/(un)zip.h files for details, basically it's zlib license.
 
 #include "quazip.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 /// All the internal stuff for the QuaZip class.
 /**
   \internal

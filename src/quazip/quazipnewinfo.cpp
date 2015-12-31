@@ -25,6 +25,10 @@ quazip/(un)zip.h files for details, basically it's zlib license.
 
 #include "quazipnewinfo.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
 
 QuaZipNewInfo::QuaZipNewInfo(const QString& name):
     name(name), dateTime(QDateTime::currentDateTime()), internalAttr(0), externalAttr(0)

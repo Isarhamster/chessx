@@ -4,6 +4,11 @@
 
 #include "simplelabel.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 SimpleLabel::SimpleLabel(QWidget *parent, Qt::WindowFlags f)
     :QLabel(parent,f)
 {

@@ -2,6 +2,11 @@
 
 #include "zlib.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 QuaCrc32::QuaCrc32()
 {
     reset();
