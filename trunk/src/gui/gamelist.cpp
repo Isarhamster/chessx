@@ -19,10 +19,11 @@
 #include "filtermodel.h"
 #include "gamelist.h"
 #include "GameMimeData.h"
+#include "numbersearch.h"
 #include "quicksearch.h"
-#include "search.h"
 #include "settings.h"
 #include "tags.h"
+#include "tagsearch.h"
 
 #include "game.h"
 #include "output.h"
@@ -240,6 +241,7 @@ void GameList::slotContextMenu(const QPoint& pos)
     {
         QMenu menu(tr("Game list"), this);
         menu.addAction(tr("Copy games..."), this, SLOT(slotCopyGame()));
+        menu.addAction(tr("Filter twins"), this, SLOT(slotFindDuplicate()));
         QMenu* mergeMenu = menu.addMenu(tr("Merge into current game"));
         mergeMenu->addAction(tr("All Games"), this, SLOT(slotMergeAllGames()));
         mergeMenu->addAction(tr("Filter"), this, SLOT(slotMergeFilter()));
@@ -287,7 +289,7 @@ void GameList::simpleSearch(int tagid)
     {
         // filter by number
         Search* ns = new NumberSearch(m_model->filter()->database(), value);
-        m_model->filter()->executeSearch(ns, Search::Operator(dlg.mode()));
+        m_model->filter()->executeSearch(ns, Filter::Operator(dlg.mode()));
     }
     else
     {
@@ -300,7 +302,7 @@ void GameList::simpleSearch(int tagid)
                     new TagSearch(m_model->filter()->database(), tag, list.at(0), list.at(1));
             if(dlg.mode())
             {
-                m_model->filter()->executeSearch(ts, Search::Operator(dlg.mode()));
+                m_model->filter()->executeSearch(ts, Filter::Operator(dlg.mode()));
             }
             else
             {
@@ -311,7 +313,7 @@ void GameList::simpleSearch(int tagid)
         {
             // Filter tag using partial values
             Search* ts = new TagSearch(m_model->filter()->database(), tag, value);
-            m_model->filter()->executeSearch(ts, Search::Operator(dlg.mode()));
+            m_model->filter()->executeSearch(ts, Filter::Operator(dlg.mode()));
         }
     }
 }
@@ -327,7 +329,7 @@ void GameList::slotFilterListByPlayer(QString s)
         Search* ts = new TagSearch(m_model->filter()->database(),  TagNameWhite, url.path());
         Search* ts2 = new TagSearch(m_model->filter()->database(), TagNameBlack, url.path());
         m_model->filter()->executeSearch(ts);
-        m_model->filter()->executeSearch(ts2, Search::Or);
+        m_model->filter()->executeSearch(ts2, Filter::Or);
     }
     else
     {
@@ -342,7 +344,7 @@ void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString playe
     Search* ts = new TagSearch(m_model->filter()->database(),  tag, player);
     Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameECO,   eco);
     m_model->filter()->executeSearch(ts);
-    m_model->filter()->executeSearch(ts3, Search::And);
+    m_model->filter()->executeSearch(ts3, Filter::And);
 }
 
 void GameList::slotFilterListByEvent(QString s)
@@ -359,8 +361,8 @@ void GameList::slotFilterListByEventPlayer(QString player, QString event)
     Search* ts2 = new TagSearch(m_model->filter()->database(), TagNameBlack, player);
     Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameEvent, event);
     m_model->filter()->executeSearch(ts);
-    m_model->filter()->executeSearch(ts2, Search::Or);
-    m_model->filter()->executeSearch(ts3, Search::And);
+    m_model->filter()->executeSearch(ts2, Filter::Or);
+    m_model->filter()->executeSearch(ts3, Filter::And);
 }
 
 void GameList::slotFilterListByEco(QString s)
@@ -416,6 +418,12 @@ void GameList::slotCopyGame()
 {
     QList<int> gameIndexList = selectedGames();
     emit requestCopyGame(gameIndexList);
+}
+
+void GameList::slotFindDuplicate()
+{
+    QList<int> gameIndexList = selectedGames();
+    emit requestFindDuplicates(gameIndexList);
 }
 
 void GameList::slotMergeAllGames()

@@ -11,6 +11,9 @@
 
 #include "database.h"
 #include "filter.h"
+#include "filtersearch.h"
+#include "query.h"
+#include "tristatetree.h"
 #include <QtDebug>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -233,9 +236,11 @@ QVector<int> Filter::intVector() const
 
 void Filter::run()
 {
+    connect(currentSearch, SIGNAL(prepareUpdate(int)), this, SIGNAL(searchProgress(int)));
+    currentSearch->Prepare(m_break);
     switch (currentSearchOperator)
     {
-    case Search::NullOperator:
+    case Filter::NullOperator:
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
@@ -243,7 +248,7 @@ void Filter::run()
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
         break;
-    case Search::And:
+    case Filter::And:
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
@@ -254,7 +259,7 @@ void Filter::run()
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
         break;
-    case Search::Or:
+    case Filter::Or:
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
@@ -265,7 +270,7 @@ void Filter::run()
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
         break;
-    case Search::Remove:
+    case Filter::Remove:
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
@@ -300,13 +305,13 @@ void Filter::executeSearch(Search* search)
     setAll(0);
     m_break = false;
     currentSearch = search;
-    currentSearchOperator = Search::NullOperator;
+    currentSearchOperator = Filter::NullOperator;
     start();
 }
 
-void Filter::executeSearch(Search* search, Search::Operator searchOperator)
+void Filter::executeSearch(Search* search, Filter::Operator searchOperator)
 {
-    if (searchOperator==Search::NullOperator)
+    if (searchOperator==Filter::NullOperator)
     {
         executeSearch(search);
         return;
@@ -319,9 +324,9 @@ void Filter::executeSearch(Search* search, Search::Operator searchOperator)
     start();
 }
 
-void Filter::executeQuery(Query& query)
+void Filter::executeQuery(Query* query)
 {
-    QVector <QPair <FilterSearch, int> > filterSearches;
+    QVector <QPair <FilterSearch*, int> > filterSearches;
     QVector <QPair <Search*, int> > searches;
     int filterSearchCount = 0;
     int searchCount = 0;
@@ -330,22 +335,22 @@ void Filter::executeQuery(Query& query)
     t.start();
     m_gamesSearched = 0;
 
-    m_triStateTree = TriStateTree(query);
+    TriStateTree triStateTree = TriStateTree(*query);
 
     /* Make a list of all searches, filter searches separately */
     int leafNode = 0;
-    for(int element = 0; element < query.count(); ++element)
+    for(int element = 0; element < query->count(); ++element)
     {
-        if(query.isElementSearch(element))
+        if(query->isElementSearch(element))
         {
-            if(query.search(element)->type() == Search::FilterSearch)
+            Search* el = query->search(element);
+            if(qobject_cast<FilterSearch*>(el))
             {
-                filterSearches.append(QPair < FilterSearch,
-                                      int > (*static_cast < const FilterSearch * >(query.search(element)), leafNode));
+                filterSearches.append(QPair<FilterSearch*, int> (qobject_cast<FilterSearch*>(el), leafNode));
             }
             else
             {
-                searches.append(QPair < Search*, int >(query.search(element), leafNode));
+                searches.append(QPair<Search*, int>(el, leafNode));
             }
 
             ++leafNode;
@@ -358,7 +363,7 @@ void Filter::executeQuery(Query& query)
      * Don't worry, a search won't be performed unless necessary */
     for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
     {
-        m_triStateTree.clear();
+        triStateTree.clear();
 
         /* Add filter searches to tree. This could solve the tree in certain cases
          * making it unecessary to call searchGame() */
@@ -366,8 +371,8 @@ void Filter::executeQuery(Query& query)
         {
             for(int search = 0; search < filterSearchCount; ++search)
             {
-                if(m_triStateTree.setState(filterSearches.at(search).second,
-                                           filterSearches.at(search).first.contains(searchIndex)))
+                if(triStateTree.setState(filterSearches.at(search).second,
+                                           filterSearches.at(search).first->contains(searchIndex)))
                 {
                     /* This means the tree evaluated to true */
                     break;
@@ -375,11 +380,11 @@ void Filter::executeQuery(Query& query)
             }
             /* So if the filter(s) wasn't enough to solve the tree,
              * lets see what we can find in the game */
-            if(m_triStateTree.state() == TriStateTree::Unknown)
+            if(triStateTree.state() == TriStateTree::Unknown)
             {
                 for(int search = 0; search < searchCount; ++search)
                 {
-                    if(m_triStateTree.setState(searches.at(search).second,
+                    if(triStateTree.setState(searches.at(search).second,
                                                searches.at(search).first->matches(searchIndex)))
                     {
                         break;
@@ -394,7 +399,7 @@ void Filter::executeQuery(Query& query)
              * there is no way the tree could have been solved, so just check the game */
             for(int search = 0; search < searchCount; ++search)
             {
-                if(m_triStateTree.setState(searches.at(search).second,
+                if(triStateTree.setState(searches.at(search).second,
                                            searches.at(search).first->matches(searchIndex)))
                 {
                     break;
@@ -404,7 +409,7 @@ void Filter::executeQuery(Query& query)
         }
 
         /* Update the filter with the result of the tree */
-        set(searchIndex, m_triStateTree.state() == TriStateTree::True);
+        set(searchIndex, triStateTree.state() == TriStateTree::True);
     }
     m_searchTime = t.elapsed();
 

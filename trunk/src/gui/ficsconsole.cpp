@@ -884,12 +884,12 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             }
             break;
         case FicsClient::BLKCMD_INTERNAL_GAME_END:
-        {
-            ui->textIn->appendPlainText(s);
-            emit SignalGameResult(s);
-            emit RequestSaveGame();
-            break;
-        }
+            {
+                ui->textIn->appendPlainText(s);
+                emit SignalGameResult(s);
+                emit RequestSaveGame();
+                break;
+            }
         case FicsClient::BLKCMD_SHOWLIST:
             if (!s.contains("--"))
             {

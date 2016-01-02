@@ -257,7 +257,7 @@ public slots:
     /** Auto Play Timeout - make next move! */
     void slotEngineTimeout(const Analysis& analysis);
     /** Filter was changed - update status bar information */
-    void slotFilterChanged();
+    void slotFilterChanged(bool selectGame=true);
     /** Load given game (triggered from Game List) */
     void slotFilterLoad(int index);
     /** Creates an empty chessxdatabase*/
@@ -326,10 +326,16 @@ public slots:
     void slotDatabaseChange();
     /** Copy games between databases. */
     void slotDatabaseCopy(int preselect = 1);
+    /** Filter out duplicate games from a complete database. */
+    void slotDatabaseFilterDuplicateGames();
+    /** Filter out games with duoplicate headers from a complete database. */
+    void slotDatabaseFilterDuplicateTags();
     /** Clear the clipboard database */
     void slotDatabaseClearClipboard();
     /** Copy games between databases. */
     void slotDatabaseCopySingle(QList<int> listGames);
+    /** Set the list into the filter and add all duplicates */
+    void slotDatabaseFindDuplicates(QList<int> listGames);
     /** Database was changed - change informations. */
     void slotDatabaseChanged();
     /** Delete current game. */
@@ -563,8 +569,12 @@ private:
     void setResultForCurrentPosition();
     /** Set the game result for a final position */
     void setResultAgainstColorToMove();
+    /** true if a automatic response mode is active */
     bool autoRespondActive() const;
+    /** Trigger the next move in auto-responding modes */
     void triggerBoardMove();
+    /** Filter Duplicates in the current database */
+    void filterDuplicates(int mode);
 
     /* Dialogs  */
     GameList* m_gameList;

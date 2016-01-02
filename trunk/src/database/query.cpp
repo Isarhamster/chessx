@@ -30,11 +30,11 @@ Query::~Query()
     clear();
 }
 
-Search::Operator Query::searchOperator(int index) const
+Filter::Operator Query::searchOperator(int index) const
 {
     if(!isValidIndex(index))
     {
-        return Search::NullOperator;
+        return Filter::NullOperator;
     }
     int i = m_operatorMap.indexOf(index);
     if(i >= 0)
@@ -43,7 +43,7 @@ Search::Operator Query::searchOperator(int index) const
     }
     else
     {
-        return Search::NullOperator;
+        return Filter::NullOperator;
     }
 }
 
@@ -120,7 +120,7 @@ bool Query::isValid()
     }
     // Check if there are enough operands for the operators
     int operandCount = 0;
-    Search::Operator op;
+    Filter::Operator op;
     ElementTypeList::iterator elementIter;
     for(elementIter = m_elementType.begin(), i = 0; elementIter != m_elementType.end(); ++elementIter, ++i)
     {
@@ -133,9 +133,9 @@ bool Query::isValid()
             op = searchOperator(i);
             switch(op)
             {
-            case Search::And :
-            case Search::Or :
-            case Search::Remove :
+            case Filter::And :
+            case Filter::Or :
+            case Filter::Remove :
                 // These operators need 2 operands, and leaves one answer on the stack
                 if(operandCount < 2)
                 {
@@ -143,14 +143,14 @@ bool Query::isValid()
                 }
                 --operandCount;
                 break;
-            case Search::Not :
+            case Filter::Not :
                 //Not needs one operand, and it leaves one answer on the stack
                 if(operandCount < 1)
                 {
                     return false;
                 }
                 break;
-            case Search::NullOperator :
+            case Filter::NullOperator :
                 // Not sure if this is valid or not
                 break;
             default :
@@ -171,21 +171,21 @@ bool Query::isValid()
     return true;
 }
 
-void Query::append(Search::Operator op)
+void Query::append(Filter::Operator op)
 {
     m_operator.append(op);
     m_operatorMap.append(m_elementType.count());
     m_elementType.append(OperatorElement);
 }
 
-void Query::append(const Search& search)
+void Query::append(Search* search)
 {
-    m_search.append(search.clone());
+    m_search.append(search);
     m_searchMap.append(m_elementType.count());
     m_elementType.append(SearchElement);
 }
 
-bool Query::set(int index, Search::Operator op)
+bool Query::set(int index, Filter::Operator op)
 {
     if(!isValidIndex(index))
     {
@@ -222,7 +222,7 @@ bool Query::set(int index, Search::Operator op)
     }
 }
 
-bool Query::set(int index, const Search& search)
+bool Query::set(int index, Search* search)
 {
     if(!isValidIndex(index))
     {
@@ -232,7 +232,7 @@ bool Query::set(int index, const Search& search)
     if(subindex >= 0)
     {
         delete m_search.at(subindex);
-        m_search.replace(subindex, search.clone());
+        m_search.replace(subindex, search);
         return true;
     }
     else
@@ -244,7 +244,7 @@ bool Query::set(int index, const Search& search)
             // and add a search at that position
             m_operatorMap.removeAt(m_operatorMap.at(subindex));
             m_operator.removeAt(m_operator.at(subindex));
-            m_search.append(search.clone());
+            m_search.append(search);
             m_searchMap.append(index);
             m_elementType[index] = SearchElement;
             return true;
@@ -343,56 +343,5 @@ bool Query::isValidIndex(unsigned int index) const
 
 bool Query::internalCheck()
 {
-    int i;
-    Search::Operator op;
-    Search *s = NULL;
-    ElementTypeList::iterator elementIter;
-
-    if(count() != (countOperands() + countOperators()))
-    {
-        return false;
-    }
-
-    for(elementIter = m_elementType.begin(), i = 0; elementIter != m_elementType.end(); ++elementIter, ++i)
-    {
-        switch(*elementIter)
-        {
-        case SearchElement :
-            s = search(i);
-            if(s == NULL)
-            {
-                return false;
-            }
-            switch(s->type())
-            {
-            case Search::NullSearch :
-            case Search::PositionSearch :
-            case Search::EloSearch :
-                break;
-            default :
-                // undefined search
-                return false;
-            }
-            break;
-        case OperatorElement :
-            op = searchOperator(i);
-            switch(op)
-            {
-            case Search::And :
-            case Search::Or :
-            case Search::Remove :
-            case Search::Not :
-            case Search::NullOperator :
-                break;
-            default :
-                // Undefined operator
-                return false;
-            }
-            break;
-        default :
-            // Undefined element
-            return false;
-        }
-    }
-    return true;
+    return (count() == (countOperands() + countOperators()));
 }

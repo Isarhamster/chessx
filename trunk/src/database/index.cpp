@@ -383,9 +383,25 @@ ValueIndex Index::getValueIndex(const QString& value) const
     return m_tagValueIndex.value(value);
 }
 
+const IndexItem* Index::item(GameId gameId) const
+{
+    return m_indexItems[gameId];
+}
+
 IndexItem* Index::item(GameId gameId)
 {
     return m_indexItems[gameId];
+}
+
+unsigned int Index::hashIndexItem(GameId gameId) const
+{
+    // return m_indexItems[gameId]->hash();
+    return valueIndexFromTag(TagNameWhite, gameId);
+}
+
+bool Index::isIndexItemEqual(GameId i, GameId j) const
+{
+    return (item(i)->isEqual(*item(j)));
 }
 
 void Index::loadGameHeaders(GameId id, Game& game) const

@@ -13,6 +13,7 @@
 
 #include <QObject>
 #include "board.h"
+#include "gameid.h"
 #include "movelist.h"
 #include "nag.h"
 #include "result.h"
@@ -52,8 +53,6 @@ class SaveRestoreMoveCompact;
 
 typedef QHash<QString, QString> TagMap;
 typedef QHashIterator<QString, QString> TagMapIterator;
-
-typedef quint32 GameId;
 
 class Game : public QObject
 {
@@ -102,12 +101,10 @@ public :
     int mountRefCount;
 
     // **** Querying game information ****
-    /** compare tags */
-    int compareTags(const Game& game) const;
-    /** compare moves */
-    int compareMoves(const Game& game) const;
-    /** compare games */
-    int compare(const Game& game) const;
+    /** compare game moves and annotations */
+    int isEqual(const Game& game) const;
+    /** compare game moves and annotations */
+    int isBetterOrEqual(const Game& game) const;
     /** @return current position */
     const Board& board() const;
     /** @return current position in FEN */
@@ -416,6 +413,13 @@ private:
         void SetPly(short ply) { Q_ASSERT(m_ply<0x7FFF); m_ply = ply; }
         short Ply() const { return m_ply & 0x7FFF; }
         bool Removed() const { return (m_ply & 0x8000); }
+        inline bool operator==(const struct MoveNode& c) const
+        {
+            return (move == c.move &&
+                    variations == c.variations &&
+                    nags == c.nags &&
+                    m_ply == c.m_ply);
+        }
     };
 #pragma pack(pop)
 
