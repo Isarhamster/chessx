@@ -220,7 +220,15 @@ HEADERS += src/database/board.h \
     src/gui/boardviewex.h \
     src/gui/simplelabel.h \
     src/database/bitfind.h \
-    src/gui/helpbrowsershell.h
+    src/gui/helpbrowsershell.h \
+    src/database/gameid.h \
+    src/database/positionsearch.h \
+    src/database/duplicatesearch.h \
+    src/database/elosearch.h \
+    src/database/datesearch.h \
+    src/database/tagsearch.h \
+    src/database/filtersearch.h \
+    src/database/numbersearch.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -357,7 +365,14 @@ SOURCES += src/database/board.cpp \
     src/dialogs/matchparameterdlg.cpp \
     src/gui/boardviewex.cpp \
     src/gui/simplelabel.cpp \
-    src/gui/helpbrowsershell.cpp
+    src/gui/helpbrowsershell.cpp \
+    src/database/positionsearch.cpp \
+    src/database/duplicatesearch.cpp \
+    src/database/elosearch.cpp \
+    src/database/datesearch.cpp \
+    src/database/tagsearch.cpp \
+    src/database/filtersearch.cpp \
+    src/database/numbersearch.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

@@ -2179,33 +2179,16 @@ void Game::reparentVariation(MoveId variation, MoveId parent)
     }
 }
 
-int Game::compareTags(const Game& game) const
+int Game::isEqual(const Game& game) const
 {
-    if (m_tags.count() < game.m_tags.count())
-    {
-        return -1;
-    }
-    if (m_tags.count() > game.m_tags.count())
-    {
-        return +1;
-    }
-    return (m_tags == game.m_tags);
+    return ((m_moveNodes == game.m_moveNodes) &&
+            (m_annotations == game.m_annotations) &&
+            (m_variationStartAnnotations == game.m_variationStartAnnotations));
 }
 
-int Game::compareMoves(const Game& /*game*/) const
+int Game::isBetterOrEqual(const Game& game) const
 {
-    // todo
-    return 0;
+    return ((m_moveNodes.count() >= game.m_moveNodes.count()) &&
+            (m_annotations.count() >= game.m_annotations.count()) &&
+            (m_variationStartAnnotations.count() >= game.m_variationStartAnnotations.count()));
 }
-
-int Game::compare(const Game& game) const
-{
-    int retVal = compareTags(game);
-    if (retVal == 0)
-    {
-        retVal = compareMoves(game);
-    }
-    return retVal;
-}
-
-

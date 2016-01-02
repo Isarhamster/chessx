@@ -15,7 +15,7 @@
  ***************************************************************************/
 
 #include "quicksearch.h"
-#include "search.h"
+#include "filter.h"
 #include "settings.h"
 
 #include <QComboBox>
@@ -31,10 +31,10 @@ QuickSearchDialog::QuickSearchDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 {
     ui.setupUi(this);
 
-    ui.modeCombo->addItem(tr("Find in current filter"), Search::And);
-    ui.modeCombo->addItem(tr("Search whole database"), Search::NullOperator);
-    ui.modeCombo->addItem(tr("Add to current filter"), Search::Or);
-    ui.modeCombo->addItem(tr("Remove from current filter"), Search::Remove);
+    ui.modeCombo->addItem(tr("Find in current filter"), Filter::And);
+    ui.modeCombo->addItem(tr("Search whole database"), Filter::NullOperator);
+    ui.modeCombo->addItem(tr("Add to current filter"), Filter::Or);
+    ui.modeCombo->addItem(tr("Remove from current filter"), Filter::Remove);
 
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Find"));
     connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));

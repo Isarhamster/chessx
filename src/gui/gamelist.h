@@ -82,8 +82,10 @@ private slots:
     void slotMergeFilter();
     /** Request to merge a game into the current game */
     void slotMergeGame();
-    /** Request a copy dialog for the game identified by m_cell */
+    /** Request a copy dialog for the games selected */
     void slotCopyGame();
+    /** Request finding duplicates for the games selected */
+    void slotFindDuplicate();
     /** Delete or undelete a game */
     void slotDeleteGame();
     /** Remove a game from a filter */
@@ -98,6 +100,7 @@ signals:
     void requestMergeAllGames();
     void requestMergeFilter();
     void requestCopyGame(QList<int>);
+    void requestFindDuplicates(QList<int>);
     void requestDeleteGame(QList<int>);
     void requestGameData(Game&);
     void signalFirstGameLoaded(bool);

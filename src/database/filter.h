@@ -16,9 +16,9 @@
 #include <QPair>
 #include <QThread>
 
-#include "tristatetree.h"
-
+class Search;
 class Database;
+class Query;
 
 /** @ingroup Database
    The Filter class represents a set of games. It is always associated with
@@ -30,11 +30,12 @@ class Filter : public QThread
 {
     Q_OBJECT
 public:
+    /** Operator for joining filters */
+    enum Operator {NullOperator, Not, And, Or, Remove };
+
     void run();
     void cancel();
 
-    /** Possible operations on filter. */
-    enum Operator {And, Or, Xor, Minus};
     /** Construct filter of given size. Add all games to the filter. */
     Filter(Database* database);
     /** Destructor. */
@@ -72,10 +73,10 @@ public:
     void executeSearch(Search *search);
     /** Executes search 'search' on database m_database,
        and modifies this filter with the results. */
-    void executeSearch(Search *search, Search::Operator searchOperator);
+    void executeSearch(Search *search, Filter::Operator searchOperator);
     /** Executes query 'query' on database m_database,
         and sets this filter to contain the results. */
-    void executeQuery(Query& query);
+    void executeQuery(Query *query);
 
     /** Returns the number of games searched during the previous search */
     int gamesSearched() const;
@@ -94,14 +95,13 @@ protected:
     QVector<int>* m_vector;
     QPair<int, int> m_cache;
     Database* m_database;
-    TriStateTree m_triStateTree;
 
     /* Search statistics variables */
     int m_gamesSearched;
     int m_searchTime;
 
     Search* currentSearch;
-    Search::Operator currentSearchOperator;
+    Operator currentSearchOperator;
     volatile bool m_break;
 
 };

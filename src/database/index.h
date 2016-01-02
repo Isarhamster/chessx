@@ -132,6 +132,12 @@ public:
     /** Remove a tag from the index, do not care for the value */
     void removeTag(const QString &tagName, GameId gameId);
 
+    /** Calculate hash for a game header */
+    unsigned int hashIndexItem(GameId gameId) const;
+
+    /** Calculate hash for a game header */
+    bool isIndexItemEqual(GameId i, GameId j) const;
+
 signals:
     void progress(int);
 
@@ -140,6 +146,7 @@ private:
     QSet<GameId> m_deletedGames;
 
     /** Return a pointer to the index item for the given game id */
+    const IndexItem* item(GameId gameId) const;
     IndexItem* item(GameId gameId);
 
     /** Map a tags index to a tagName */

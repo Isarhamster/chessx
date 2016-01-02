@@ -12,7 +12,7 @@
 #ifndef __QUERY_H__
 #define __QUERY_H__
 
-#include "search.h"
+#include "filter.h"
 #include <QList>
 
 /** @ingroup Search
@@ -32,7 +32,7 @@ public :
     Query();
     ~Query();
     /** @return the operator at index, or NullOperator otherwise */
-    Search::Operator searchOperator(int index) const;
+    Filter::Operator searchOperator(int index) const;
     /** @return the search at index, or NULL pointer otherwise. Do not delete the result. */
     Search* search(int index);
     /** @return the number of elements in the list */
@@ -51,20 +51,20 @@ public :
 
     /** query modification methods */
     /** Add a new operator to the list */
-    void append(Search::Operator op);
+    void append(Filter::Operator op);
     /** Add a new operand (search definition) to the list */
-    void append(const Search& search);
+    void append(Search *search);
     /** Change element at index to operator op, return true if successful, false otherwise */
-    bool set(int index, Search::Operator op);
+    bool set(int index, Filter::Operator op);
     /** Change element at index to operand search, return true if successful, false otherwise */
-    bool set(int index, const Search& search);
+    bool set(int index, Search *search);
     /** Remove element at index from list, return true if successful, false otherwise */
     bool remove(int index);
     /** Clear the list of all elements */
     void clear();
 private :
     enum ElementType {SearchElement, OperatorElement};
-    typedef QList<Search::Operator> OperatorList;
+    typedef QList<Filter::Operator> OperatorList;
     typedef QList<Search*> SearchList;
     typedef QList<int> IntList;
     typedef QList<ElementType> ElementTypeList;

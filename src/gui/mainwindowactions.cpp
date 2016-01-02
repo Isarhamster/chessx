@@ -21,6 +21,7 @@ typedef BoardView BoardViewEx;
 #include "databaseinfo.h"
 #include "databaselist.h"
 #include "dlgsavebook.h"
+#include "duplicatesearch.h"
 #include "ecolistwidget.h"
 #include "editaction.h"
 #include "eventlistwidget.h"
@@ -40,6 +41,7 @@ typedef BoardView BoardViewEx;
 #include "pgndatabase.h"
 #include "playerlistwidget.h"
 #include "polyglotwriter.h"
+#include "positionsearch.h"
 #include "preferences.h"
 #include "promotiondialog.h"
 #include "recipientaddressdialog.h"
@@ -2083,10 +2085,10 @@ void MainWindow::AutoMoveAtEndOfGame()
     }
 }
 
-void MainWindow::slotFilterChanged()
+void MainWindow::slotFilterChanged(bool selectGame)
 {
     int n = gameIndex();
-    m_gameList->selectGame(n);
+    if (selectGame) m_gameList->selectGame(n);
 
     if(n >= 0)
     {
@@ -2119,6 +2121,7 @@ void MainWindow::slotStatusMessage(const QString& msg)
 void MainWindow::slotOperationProgress(int progress)
 {
     m_progressBar->setValue(progress);
+    m_progressBar->repaint();
 }
 
 void MainWindow::slotDbRestoreState(const Game& game)
@@ -2284,6 +2287,35 @@ void MainWindow::slotDatabaseCopy(int preselect)
     copyFromDatabase(preselect, gameIndexList);
 }
 
+void MainWindow::filterDuplicates(int mode)
+{
+    Filter::Operator oper = Filter::NullOperator;
+    if (mode == DuplicateSearch::DS_Both_All)
+    {
+        oper = Filter::Or;
+    }
+    if (mode == DuplicateSearch::DS_Tags && !databaseInfo()->filter()->database()->isReadOnly())
+    {
+        mode = DuplicateSearch::DS_Tags_BestGame;
+    }
+    Search* ds = (mode != DuplicateSearch::DS_Both_All) ?
+            new DuplicateSearch (databaseInfo()->filter()->database(), DuplicateSearch::DSMode(mode)) :
+            new DuplicateSearch (databaseInfo()->filter(), DuplicateSearch::DSMode(mode));
+    m_openingTreeWidget->cancel();
+    slotBoardSearchStarted();
+    databaseInfo()->filter()->executeSearch(ds, oper);
+}
+
+void MainWindow::slotDatabaseFilterDuplicateGames()
+{
+    filterDuplicates(DuplicateSearch::DS_Both);
+}
+
+void MainWindow::slotDatabaseFilterDuplicateTags()
+{
+    filterDuplicates(DuplicateSearch::DS_Tags);
+}
+
 void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
 {
     if(m_databases.count() < 2)
@@ -2397,6 +2429,16 @@ void MainWindow::slotDatabaseCopySingle(QList<int> gameIndexList)
     copyFromDatabase(0, gameIndexList);
 }
 
+void MainWindow::slotDatabaseFindDuplicates(QList<int> gameIndexList)
+{
+    databaseInfo()->filter()->setAll(0);
+    foreach(int i, gameIndexList)
+    {
+        databaseInfo()->filter()->set(i,1);
+    }
+    filterDuplicates(DuplicateSearch::DS_Both_All);
+}
+
 void MainWindow::slotDatabaseChanged()
 {
     m_undoGroup.setActiveStack(databaseInfo()->undoStack());
@@ -2441,20 +2483,21 @@ void MainWindow::slotSearchBoard()
         Search* ps = new PositionSearch (databaseInfo()->filter()->database(), boardList.at(dlg.boardIndex()));
         m_openingTreeWidget->cancel();
         slotBoardSearchStarted();
-        databaseInfo()->filter()->executeSearch(ps, Search::Operator(dlg.mode()));
+        databaseInfo()->filter()->executeSearch(ps, Filter::Operator(dlg.mode()));
     }
 }
 
 void MainWindow::slotBoardSearchUpdate(int progress)
 {
     m_gameList->updateFilter();
-    slotFilterChanged();
+    slotFilterChanged(false);
     slotOperationProgress(progress);
     m_gameList->repaint(); // workaround issue with Qt
 }
 
 void MainWindow::slotBoardSearchFinished()
 {
+    slotFilterChanged();
     finishOperation(tr("Search ended"));
 }
 

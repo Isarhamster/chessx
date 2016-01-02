@@ -16,6 +16,7 @@
 #include "output.h"
 #include "settings.h"
 #include "tags.h"
+#include "partialdate.h"
 
 const char* TEMPLATE_DIR = "templates";
 const char* DEFAULT_HTML_TEMPLATE = "html-default.template";
