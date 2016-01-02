@@ -209,6 +209,16 @@ into the same position).</p>
 <p>Usually, clicking onto one of the moves in opening tree will only update the small overview in the opening tree widget.
 Pressing Shift while clicking onto a move will add the move to the current game (if the position permits)</p>
 
+<h3><a name="Duplicate games"></a>Filter duplicate games</h3>
+<p>Filtering duplicate games searches for exact matching, all further copies of a game within the
+database a put into the filter, the original game is not included into the filter. Thus all the
+copies in the filter can be marked for deletion.</p>
+<p>Filter for duplicate headers searches for identical tags. The games shown in the filter are
+games that have a brother game, that is not included in the list and in addition, the invisible
+brother has at least as many moves and comments as the games in the list.</p>
+<p>The context menu in the game list has a context menu entry "Filter twins" which for all selected
+games searches the whole database for exact duplicates. Both twins will appear in the filter list afterwards.</p>
+
 <h3><a name="Training"></a>Training Mode</h3>
 <p><img src=":/images/training.png" width="42" align="left">Selecting Game/Training starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game
 so you can make any move in a position. If the move is the right one (the one that was played or a existing variation) then the move is executed
