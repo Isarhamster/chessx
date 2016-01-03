@@ -61,8 +61,6 @@ public:
     /** Compare two tag index items */
     bool isEqual(const IndexItem& rhs) const;
 
-    unsigned int hash() const;
-
 private:
     MapTagToValue m_mapTagIndexToValueIndex;
 };
