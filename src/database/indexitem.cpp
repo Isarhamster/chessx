@@ -69,13 +69,3 @@ bool IndexItem::isEqual(const IndexItem &rhs) const
 {
     return (m_mapTagIndexToValueIndex == rhs.m_mapTagIndexToValueIndex);
 }
-
-unsigned int IndexItem::hash() const
-{
-    QList<TagIndex> k = m_mapTagIndexToValueIndex.keys();
-    QList<ValueIndex> l = m_mapTagIndexToValueIndex.values();
-
-    unsigned int x1 = qHashRangeCommutative(k.begin(),k.end(), 0x1357);
-    unsigned int x2 = qHashRangeCommutative(l.begin(), l.end(), 0x2468);
-    return qHash(x1,x2);
-}
