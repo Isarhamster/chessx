@@ -1894,7 +1894,7 @@ void Game::dbSetChess960(bool b)
 {
     if (b)
     {
-        m_tags[TagNameVariant] = "Fischerandom";
+        m_tags[TagNameVariant] = "Chess960";
     }
     else
     {

@@ -56,6 +56,8 @@ public:
     QString commonDataPath();
     /** @return directory where preinstalled timeseal is stored. */
     QString timesealFilePath();
+    /** @return directory where logging is sent to */
+    QString logPath();
 
     /** Write integer list to configuration file. Does it by converting it to QString */
     void setList(const QString& key, QList<int> list);

@@ -24,6 +24,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#define ASSERTIONS
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -343,7 +345,7 @@ Position::AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceC promot
     sm.to = to;
     sm.promote = promotion;
     sm.movingPiece = Board[from];
-    sm.capturedPiece = Board[to];
+    sm.capturedPiece = castle ? EMPTY : Board[to];
     sm.moveCastles = castle;
 
     mlist->append(sm);
@@ -535,8 +537,9 @@ bool Position::isFreeForCastling960(squareT from, squareT to, squareT rook_from,
     {
         pieceT p = pieceAt(to);
         if (p != EMPTY) return false;
-        if (CalcNumChecks(to) != 0) return false;
     }
+
+    if (CalcNumChecks(to) != 0) return false;
 
     square = rook_from;
 
@@ -2744,14 +2747,27 @@ Position::DoSimpleMove(simpleMoveT * sm)
             rookfrom = CastlingRook(n);
             rookto = to - 1;
         }
-        ListPos[rookto] = ListPos[rookfrom];
-        List[ToMove][ListPos[rookto]] = rookto;
-        List[ToMove][sm->pieceNum] = to;
-        ListPos[to] = sm->pieceNum;
-        RemoveFromBoard(p, from);
-        RemoveFromBoard(rook, rookfrom);
-        AddToBoard(p, to);
-        AddToBoard(rook, rookto);
+        if (rookfrom != rookto)
+        {
+            ListPos[rookto] = ListPos[rookfrom];
+            List[ToMove][ListPos[rookto]] = rookto;
+            RemoveFromBoard(rook, rookfrom);
+            if (rookto == from)
+            {
+                RemoveFromBoard(p, from);
+            }
+            AddToBoard(rook, rookto);
+        }
+        if (to != from)
+        {
+            List[ToMove][sm->pieceNum] = to;
+            ListPos[to] = sm->pieceNum;
+            if (rookto != from)
+            {
+                RemoveFromBoard(p, from);
+            }
+            AddToBoard(p, to);
+        }
     }
     else
     {
@@ -2762,6 +2778,7 @@ Position::DoSimpleMove(simpleMoveT * sm)
         AddToBoard(p, to);
     }
 
+    EPTarget = NULL_SQUARE;
     // Handle clearing of castling flags:
 
     if(Castling)
@@ -2772,7 +2789,7 @@ Position::DoSimpleMove(simpleMoveT * sm)
             SetCastling(ToMove, KSIDE, false);
         }
         // See if a rook moved or was captured:
-        if(ToMove == WHITE)
+        else if(ToMove == WHITE)
         {
             if(from == CastlingRook(0))
             {
@@ -2811,12 +2828,11 @@ Position::DoSimpleMove(simpleMoveT * sm)
             }
         }
     }
-
-    // Set the EPTarget square, if a pawn advanced two squares and an
-    // enemy pawn is on a square where en passant may be possible.
-    EPTarget = NULL_SQUARE;
-    if(ptype == PAWN)
+    else if(ptype == PAWN)
     {
+        // Set the EPTarget square, if a pawn advanced two squares and an
+        // enemy pawn is on a square where en passant may be possible.
+
         rankT fromRank = square_Rank(from);
         rankT toRank = square_Rank(to);
         if(fromRank == RANK_2  &&  toRank == RANK_4
@@ -2915,15 +2931,27 @@ Position::UndoSimpleMove(simpleMoveT * m)
             rookfrom = CastlingRook(ToMove==WHITE ? 1:3);
             rookto = to - 1;
         }
-        ListPos[rookfrom] = ListPos[rookto];
-        List[ToMove][ListPos[rookto]] = rookfrom;
-        List[ToMove][m->pieceNum] = from;
-        ListPos[from] = m->pieceNum;
-
-        RemoveFromBoard(rook, rookto);
-        RemoveFromBoard(p, to);
-        AddToBoard(rook, rookfrom);
-        AddToBoard(p, from);
+        if (rookfrom != rookto)
+        {
+            ListPos[rookfrom] = ListPos[rookto];
+            List[ToMove][ListPos[rookto]] = rookfrom;
+            RemoveFromBoard(rook, rookto);
+            if (rookfrom == to)
+            {
+                RemoveFromBoard(p, to);
+            }
+            AddToBoard(rook, rookfrom);
+        }
+        if (to != from)
+        {
+            List[ToMove][m->pieceNum] = from;
+            ListPos[from] = m->pieceNum;
+            if (rookfrom != to)
+            {
+                RemoveFromBoard(p, to);
+            }
+            AddToBoard(p, from);
+        }
     }
     else
     {

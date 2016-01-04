@@ -28,7 +28,7 @@ public:
               const QString& command,
               bool bTestMode,
               const QString& directory = QString(),
-              QTextStream* logStream = NULL);
+              bool log=false);
 
     /** Analyses the the given position */
     bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame);

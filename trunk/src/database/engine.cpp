@@ -13,8 +13,8 @@
 #include "wbengine.h"
 #include "uciengine.h"
 
-//#define DEBUG_ENGINE
-#undef DEBUG_ENGINE
+#define DEBUG_ENGINE
+//#undef DEBUG_ENGINE
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -29,11 +29,20 @@ Engine::Engine(const QString& name,
                const QString& command,
                bool bTestMode,
                const QString& directory,
-               QTextStream* logStream)
+               bool log)
 {
     m_name = name;
     m_command = command;
     m_bTestMode = bTestMode;
+    QTextStream* logStream = 0;
+    if (log)
+    {
+        m_logFile.setFileName(AppSettings->logPath()+name+".log");
+        if (m_logFile.open(QIODevice::WriteOnly))
+        {
+            logStream = new QTextStream(&m_logFile);
+        }
+    }
     m_logStream = logStream;
     m_process = 0;
     m_active = false;
@@ -54,6 +63,7 @@ Engine* Engine::newEngine(EngineList& engineList, int index, bool bTestMode)
     QString command   = engineList[index].command;
     QString options   = engineList[index].options;
     QString directory = engineList[index].directory;
+    bool logging      = engineList[index].logging;
     EngineData::EngineProtocol protocol = engineList[index].protocol;
 
     if(command.contains(' '))
@@ -64,11 +74,11 @@ Engine* Engine::newEngine(EngineList& engineList, int index, bool bTestMode)
 
     if(protocol == EngineData::WinBoard)
     {
-        engine = new WBEngine(name, exe, bTestMode, directory);
+        engine = new WBEngine(name, exe, bTestMode, directory, logging);
     }
     else
     {
-        engine = new UCIEngine(name, exe, bTestMode, directory);
+        engine = new UCIEngine(name, exe, bTestMode, directory, logging);
     }
 
     engine->m_mapOptionValues = engineList[index].m_optionValues;
@@ -86,6 +96,7 @@ Engine* Engine::newEngine(int index, bool bTestMode)
     QString options = AppSettings->value(key + "/Options").toString();
     QString directory = AppSettings->value(key + "/Directory").toString();
     QString protocol = AppSettings->value(key + "/Protocol").toString();
+    bool log = AppSettings->value(key + "/Logging").toBool();
 
     if(command.contains(' '))
     {
@@ -95,11 +106,11 @@ Engine* Engine::newEngine(int index, bool bTestMode)
 
     if(protocol == "WinBoard")
     {
-        engine = new WBEngine(name, exe, bTestMode, directory);
+        engine = new WBEngine(name, exe, bTestMode, directory, log);
     }
     else
     {
-        engine = new UCIEngine(name, exe, bTestMode, directory);
+        engine = new UCIEngine(name, exe, bTestMode, directory, log);
     }
 
     AppSettings->getMap(key + "/OptionValues", engine->m_mapOptionValues);
@@ -114,12 +125,10 @@ Engine::~Engine()
     {
         m_process = 0;
     }
-}
-
-
-void Engine::setLogStream(QTextStream* logStream)
-{
-    m_logStream = logStream;
+    if (m_logStream)
+    {
+        delete m_logStream;
+    }
 }
 
 void Engine::activate()
@@ -169,12 +178,10 @@ bool Engine::isAnalyzing()
 
 void Engine::send(const QString& message)
 {
-#ifdef DEBUG_ENGINE
-    if (s_allowEngineOutput)
+    if (s_allowEngineOutput && m_logStream)
     {
-        qDebug() << "<-- " << message << endl;
+        *m_logStream << "<-- " << message << endl;
     }
-#endif
 
     QString out(message);
     out.append('\n');
@@ -244,12 +251,10 @@ void Engine::pollProcess()
     while(m_process && m_process->canReadLine())
     {
         message = m_process->readLine().simplified();
-#ifdef DEBUG_ENGINE
-        if (s_allowEngineOutput)
+        if (s_allowEngineOutput && m_logStream)
         {
-            qDebug() << "--> " << message << endl;
+            *m_logStream << "--> " << message << endl;
         }
-#endif
         processMessage(message);
     }
 }

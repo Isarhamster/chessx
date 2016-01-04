@@ -23,7 +23,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -597,6 +597,129 @@
           </sizepolicy>
          </property>
          <layout class="QGridLayout">
+          <item row="4" column="3">
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Options:</string>
+            </property>
+            <property name="buddy">
+             <cstring>engineOptions</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" colspan="5">
+           <widget class="QLineEdit" name="engineName">
+            <property name="placeholderText">
+             <string>Arbitrary name to identify engine </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QToolButton" name="commandButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string notr="true">...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" colspan="5">
+           <widget class="QLineEdit" name="engineOptions">
+            <property name="placeholderText">
+             <string>Command Line Options</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="5">
+           <widget class="QToolButton" name="engineOptionMore">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Options</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QRadioButton" name="engineProtocolWinBoard">
+            <property name="text">
+             <string notr="true">WinBoard</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Name:</string>
+            </property>
+            <property name="buddy">
+             <cstring>engineName</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Command:</string>
+            </property>
+            <property name="buddy">
+             <cstring>engineCommand</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Directory:</string>
+            </property>
+            <property name="buddy">
+             <cstring>engineDirectory</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="5">
+           <widget class="QToolButton" name="directoryButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="text">
+             <string notr="true">...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QRadioButton" name="engineProtocolUCI">
+            <property name="text">
+             <string notr="true">UCI</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="1" colspan="3">
            <widget class="QLineEdit" name="engineCommand">
             <property name="minimumSize">
@@ -623,16 +746,6 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Directory:</string>
-            </property>
-            <property name="buddy">
-             <cstring>engineDirectory</cstring>
-            </property>
-           </widget>
-          </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_4">
             <property name="sizePolicy">
@@ -646,116 +759,10 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Name:</string>
-            </property>
-            <property name="buddy">
-             <cstring>engineName</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>Options:</string>
-            </property>
-            <property name="buddy">
-             <cstring>engineOptions</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QToolButton" name="commandButton">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string notr="true">...</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Command:</string>
-            </property>
-            <property name="buddy">
-             <cstring>engineCommand</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1" colspan="4">
-           <widget class="QLineEdit" name="engineOptions">
-            <property name="placeholderText">
-             <string>Command Line Options</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="2">
-           <widget class="QRadioButton" name="engineProtocolWinBoard">
-            <property name="text">
-             <string notr="true">WinBoard</string>
-            </property>
-           </widget>
-          </item>
           <item row="4" column="4">
-           <widget class="QToolButton" name="engineOptionMore">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
+           <widget class="QCheckBox" name="logging">
             <property name="text">
-             <string>Options</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="4">
-           <widget class="QToolButton" name="directoryButton">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text">
-             <string notr="true">...</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="3">
-           <spacer>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="1" colspan="4">
-           <widget class="QLineEdit" name="engineName">
-            <property name="placeholderText">
-             <string>Arbitrary name to identify engine </string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QRadioButton" name="engineProtocolUCI">
-            <property name="text">
-             <string notr="true">UCI</string>
+             <string>Log</string>
             </property>
            </widget>
           </item>

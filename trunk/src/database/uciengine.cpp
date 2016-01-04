@@ -20,7 +20,7 @@ UCIEngine::UCIEngine(const QString& name,
                      const QString& command,
                      bool bTestMode,
                      const QString& directory,
-                     QTextStream* logStream) : Engine(name, command, bTestMode, directory, logStream)
+                     bool log) : Engine(name, command, bTestMode, directory, log)
 {
     m_quitAfterAnalysis = false;
     m_invertBlack = true;

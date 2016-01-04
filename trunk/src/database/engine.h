@@ -45,13 +45,10 @@ public:
            const QString& command,
            bool  bTestMode,
            const QString& directory = QString(),
-           QTextStream* logStream = NULL);
+           bool log=false);
 
     /** Virtual destructor */
     virtual ~Engine();
-
-    /** Set the stream that the debug output goes to */
-    void setLogStream(QTextStream* logStream = NULL);
 
     /** Launch and initialize engine, fire activated() signal when done*/
     void activate();
@@ -154,6 +151,7 @@ private:
     QString	m_command;
     QString	m_directory;
     QTextStream* m_logStream;
+    QFile m_logFile;
     QProcess* m_process;
     QTextStream* m_processStream;
     bool m_active;

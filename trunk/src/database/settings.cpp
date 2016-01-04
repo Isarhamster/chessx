@@ -146,6 +146,13 @@ QString Settings::dataPath()
     return m_dataPath;
 }
 
+QString Settings::logPath()
+{
+    QString logPath = AppSettings->dataPath() + "/log/";
+    QDir().mkpath(logPath);
+    return logPath;
+}
+
 QString Settings::programDataPath()
 {
     QString programDataPath = QCoreApplication::applicationDirPath();
