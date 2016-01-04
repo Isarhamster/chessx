@@ -5,6 +5,8 @@
 #ifndef ENGINEPARAMETER_H
 #define ENGINEPARAMETER_H
 
+#include <QString>
+
 class EngineParameter
 {
 public:
@@ -36,6 +38,14 @@ public:
         allowBook    = false;
         bookMove     = 0;
         engineStarts = false;
+    }
+
+    QString timeAsString() const
+    {
+        if (tm == TIME_GONG)
+            return QString("%1s").arg(ms_totalTime/1000);
+        else
+            return QString("%1s/%2:0:%3").arg(movesToDo).arg(ms_totalTime/1000).arg(ms_increment);
     }
 
     void reset()

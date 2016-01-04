@@ -1728,6 +1728,8 @@ void MainWindow::slotToggleEngineMatch()
 
                 game().setTag(TagNameWhite, engine1);
                 game().setTag(TagNameBlack, engine2);
+                game().setTag(TagNameDate, PartialDate::today().asString());
+                game().setTag(TagNameTimeControl, m_matchParameter.timeAsString());
             }
 
             m_matchTime[0] = 0;

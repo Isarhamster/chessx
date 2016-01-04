@@ -2388,6 +2388,7 @@ Move BitBoard::prepareMove(const Square& from, const Square& to, bool doNotAllow
                     // Make sure we jump on a castling target
                     return move;
                 }
+                doNotAllowCastling = false; // Fix the special case that king moves to rook
             }
         }
 

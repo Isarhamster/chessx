@@ -31,7 +31,7 @@ public:
              const QString& command,
              bool bTestMode,
              const QString& directory,
-             QTextStream* logStream = NULL);
+             bool log);
 
     /** Analyses the the given position */
     bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame);

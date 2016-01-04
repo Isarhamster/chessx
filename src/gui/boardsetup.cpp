@@ -535,6 +535,7 @@ void BoardSetupDialog::slotChess960()
     setBoard(b);
     ui.chess960pos->setEnabled(ui.btCheck960->isChecked());
     ui.randomChess960->setEnabled(ui.btCheck960->isChecked());
+    slotCastlingRights();
 }
 
 void BoardSetupDialog::slotHalfmoveClock()

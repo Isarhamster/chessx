@@ -25,6 +25,7 @@ public:
     QString command;
     QString options;
     QString directory;
+    bool    logging;
     EngineProtocol protocol;
     OptionValueList m_optionValues;
     static QString commandToName(const QString& command);
