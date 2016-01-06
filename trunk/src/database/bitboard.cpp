@@ -1600,7 +1600,8 @@ Move BitBoard::parseMove(const QString& algebraic) const
             if(strncmp(san, "o-o-o", 5) == 0 || strncmp(san, "O-O-O", 5) == 0 || strncmp(san, "0-0-0", 5)  == 0)
             {
                 Square k = m_chess960 ? m_ksq[m_stm] : ((m_stm == White) ? e1 : e8);
-                return prepareMove(k, m_stm == White ? c1 : c8);
+                Square to = m_chess960 ? CastlingRook(2*(int)m_stm) : ((m_stm == White) ? c1 : c8);
+                return prepareMove(k, to);
             }
         }
         else if (strlen(san)>=3)
@@ -1608,7 +1609,8 @@ Move BitBoard::parseMove(const QString& algebraic) const
             if(strncmp(san, "o-o", 3) == 0 || strncmp(san, "O-O", 3) == 0 || strncmp(san, "0-0", 3)  == 0)
             {
                 Square k = m_chess960 ? m_ksq[m_stm] : ((m_stm == White) ? e1 : e8);
-                return prepareMove(k, m_stm == White ? g1 : g8);
+                Square to = m_chess960 ? CastlingRook(1+2*(int)m_stm) : ((m_stm == White) ? g1 : g8);
+                return prepareMove(k, to);
             }
         }
         return move;

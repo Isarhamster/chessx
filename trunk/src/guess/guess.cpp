@@ -56,7 +56,7 @@ Result guessMove(const char* fen, bool chess960, quint64 castlingRooks, squareT 
     ASSERT(sq >= COLOR_SQUARE || sq == sm.from || sq == sm.to);
 
     r.from = sm.from;
-    r.to = sm.to;
+    r.to = sm.visualTo();
     r.error = 0;
     return r;
 }
@@ -83,7 +83,7 @@ Result evalPos(const char* fen, bool chess960, quint64 castlingRooks, int thinkT
     simpleMoveT * sm = mlist.Get(0);
 
     r.from = sm->from;
-    r.to = sm->to;
+    r.to = sm->visualTo();
     r.error = 0;
 
     return r;
