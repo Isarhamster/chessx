@@ -46,7 +46,7 @@ struct simpleMoveT
     int      score;          // used for alpha/beta ordering.
     bool     moveCastles;    // this is a castling move - needed in Chess960
 
-    squareT  visualTo()
+    squareT  visualTo() const
     {
         if (!moveCastles) return to;
         return m_visualTo;
