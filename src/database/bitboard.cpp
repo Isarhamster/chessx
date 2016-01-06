@@ -1824,7 +1824,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
         //  Cycle through them, and pick the first legal move.
         while(match)
         {
-            if(prepareMove(fromSquare, toSquare, chess960()).isLegal())
+            if(prepareMove(fromSquare, toSquare).isLegal())
             {
                 break;
             }
@@ -1836,7 +1836,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
     {
         return move;
     }
-    return prepareMove(fromSquare, toSquare, chess960());
+    return prepareMove(fromSquare, toSquare);
 }
 
 bool BitBoard::doMove(const Move& m)
@@ -2315,6 +2315,32 @@ Square BitBoard::CastlingRook(int index) const
     return x;
 }
 
+int BitBoard::CastlingRookIndex(Square rook) const
+{
+    quint64 cr = m_castlingRooks;
+    Square x = InvalidSquare;
+    for (int i=0; i<=3; ++i)
+    {
+        x = getFirstBitAndClear64<Square>(cr);
+        if (x == rook) return i;
+    }
+    return -1;
+}
+
+Square BitBoard::CastlingKingTarget(int rookIndex) const
+{
+    if ((rookIndex<0) || (rookIndex>3)) return InvalidSquare;
+    static const Square kingTargets[] = { c1,g1,c8,g8 };
+    return kingTargets[rookIndex];
+}
+
+Square BitBoard::CastlingRookTarget(int rookIndex) const
+{
+    if ((rookIndex<0) || (rookIndex>3)) return InvalidSquare;
+    static const Square rookTargets[] = { d1,f1,d8,f8 };
+    return rookTargets[rookIndex];
+}
+
 quint64 BitBoard::castlingRooks() const
 {
     return m_castlingRooks;
@@ -2343,7 +2369,7 @@ quint64 BitBoard::pawnMovesFrom(const Square s) const
     return targets;
 }
 
-Move BitBoard::prepareMove(const Square& from, const Square& to, bool doNotAllowCastling) const
+Move BitBoard::prepareMove(const Square& from, const Square& to) const
 {
     if ((from >= 64) || (to >= 64))
     {
@@ -2378,17 +2404,12 @@ Move BitBoard::prepareMove(const Square& from, const Square& to, bool doNotAllow
             }
             else
             {
-                if ((p!=King) || ((m_piece[to] != Rook) && (m_piece[to] != King)))
+                if ((p!=King) || (m_piece[to] != Rook))
                 {
-                    // Can't be a castling move
+                    // Can't be a chess960 castling move
                     return move;
                 }
-                if (!(m_occupied_co[m_stm] & dest & ((m_stm==White) ? C1|G1 : C8|G8)))
-                {
-                    // Make sure we jump on a castling target
-                    return move;
-                }
-                doNotAllowCastling = false; // Fix the special case that king moves to rook
+                move.SetCastlingBit();
             }
         }
 
@@ -2398,9 +2419,9 @@ Move BitBoard::prepareMove(const Square& from, const Square& to, bool doNotAllow
 
         if(p == King)
         {
-            if (doNotAllowCastling)
+            if (move.isCastling())
             {
-                if (!(kingAttacksFrom(to) & src))
+                if (!prepareCastle(move))
                 {
                     return move;
                 }
@@ -2483,6 +2504,10 @@ bool BitBoard::prepareCastle(Move& move) const
 
     if (chess960())
     {
+        if (!move.isCastling())
+        {
+            return false;
+        }
         return prepareCastle960(move);
     }
 
@@ -2570,70 +2595,42 @@ bool BitBoard::isFreeForCastling960(Square from, Square to, Square rook_from, Sq
 
 bool BitBoard::prepareCastle960(Move& move) const
 {
-    if(!canCastle(m_stm))
-    {
-        return false;
-    }
+    int n = CastlingRookIndex(move.to());
+    if (n<0) return false; // No castling rook on target square (even though there is a rook)
 
-    if (true)
+    Square to = CastlingKingTarget(n);
+    Square rook_to = CastlingRookTarget(n);
+    Square from = move.from();
+    Square rook_from = move.to();
+
+    if(m_stm == White)
     {
-        Square to = move.to();
-        Square from = move.from();
-        if(m_stm == White)
+        if((to == g1 && canCastleShort(White)) ||
+           (to == c1 && canCastleLong(White)))
         {
-            if(to == g1 && canCastleShort(White))
+            if (isFreeForCastling960(from, to, rook_from, rook_to))
             {
-                Square rook_from = CastlingRook(1);
-                if (isFreeForCastling960(from, to, rook_from, f1))
+                if(!isAttackedBy(Black, from, to))
                 {
-                    if(!isAttackedBy(Black, from, to))
-                    {
-                        move.genKingMove(from, to, false);
-                        move.SetCastlingBit();
-                        return true;
-                    }
-                }
-            }
-            else if(to == c1 && canCastleLong(White))
-            {
-                Square rook_from = CastlingRook(0);
-                if (isFreeForCastling960(from, to, rook_from, d1))
-                {
-                    if(!isAttackedBy(Black, from, to))
-                    {
-                       move.genKingMove(from, to, false);
-                       move.SetCastlingBit();
-                       return true;
-                    }
+                    move.genKingMove(from, to, false);
+                    move.SetCastlingBit();
+                    return true;
                 }
             }
         }
-        else
+    }
+    else
+    {
+        if((to == g8 && canCastleShort(Black)) ||
+           (to == c8 && canCastleLong(Black)))
         {
-            if(to == g8 && canCastleShort(Black))
+            if (isFreeForCastling960(from, to, rook_from, rook_to))
             {
-                Square rook_from = CastlingRook(3);
-                if (isFreeForCastling960(from, to, rook_from, f8))
+                if(!isAttackedBy(White, from, to))
                 {
-                    if(!isAttackedBy(White, from, to))
-                    {
-                       move.genKingMove(from, to, false);
-                       move.SetCastlingBit();
-                       return true;
-                    }
-                }
-            }
-            else if(to == c8 && canCastleLong(Black))
-            {
-                Square rook_from = CastlingRook(2);
-                if (isFreeForCastling960(from, to, rook_from, d8))
-                {
-                    if(!isAttackedBy(White, from, to))
-                    {
-                       move.genKingMove(from, to, false);
-                       move.SetCastlingBit();
-                       return true;
-                    }
+                   move.genKingMove(from, to, false);
+                   move.SetCastlingBit();
+                   return true;
                 }
             }
         }

@@ -41,7 +41,7 @@ Source: "..\build-chessx-MinGW_32bit-Release\release\*.dll"; DestDir: "{app}"; F
 Source: "..\build-chessx-MinGW_32bit-Release\release\chessx.exe.local"; DestDir: "{app}"; Flags: ignoreversion 
 Source: ".\COPYING"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ChangeLog"; DestDir: "{app}"
-Source: ".\data\engines\stockfish-6-32.exe"; DestDir: "{app}\data\engines\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\data\engines\stockfish-7-32bit.exe"; DestDir: "{app}\data\engines\"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\data\timeseal\windows\*.exe"; DestDir: "{app}\data\timeseal\windows\"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]

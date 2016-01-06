@@ -757,7 +757,7 @@ void MainWindow::triggerBoardMove()
 void MainWindow::slotBoardMove(Square from, Square to, int button)
 {
     const Board& board = game().board();
-    Move m(board.prepareMove(from, to, (button & Qt::ControlModifier)));
+    Move m(board.prepareMove(from, to));
     doBoardMove(m, button, from, to);
 }
 
@@ -2833,6 +2833,8 @@ void MainWindow::slotCloseTabWidget(int n)
     {
         m_tabWidget->removeTab(n);
     }
+
+    slotActivateBoardView(m_tabWidget->currentIndex());
 }
 
 void MainWindow::UpdateGameTitle()

@@ -524,7 +524,7 @@ void BoardView::nextGuess(Square s)
         {
             Guess::simpleMoveT * sold = m_moveList.Get(m_moveListCurrent);
             update(squareRect(Square(sold->from)));
-            update(squareRect(Square(sold->to)));
+            update(squareRect(Square(sold->visualTo())));
 
             if((int)m_moveListCurrent < m_moveList.size() - 1)
             {
@@ -537,7 +537,7 @@ void BoardView::nextGuess(Square s)
 
             Guess::simpleMoveT * sm = m_moveList.Get(m_moveListCurrent);
             m_hiFrom = Square(sm->from);
-            m_hiTo = Square(sm->to);
+            m_hiTo = Square(sm->visualTo());
             update(squareRect(m_hiFrom));
             update(squareRect(m_hiTo));
         }

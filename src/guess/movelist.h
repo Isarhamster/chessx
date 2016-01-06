@@ -34,6 +34,7 @@ struct simpleMoveT
     pieceT   movingPiece;
     squareT  from;
     squareT  to;
+    squareT  m_visualTo;
     unsigned char     capturedNum;
     pieceT   capturedPiece;
     pieceC   promote;
@@ -44,6 +45,12 @@ struct simpleMoveT
     unsigned short   oldHalfMoveClock;
     int      score;          // used for alpha/beta ordering.
     bool     moveCastles;    // this is a castling move - needed in Chess960
+
+    squareT  visualTo()
+    {
+        if (!moveCastles) return to;
+        return m_visualTo;
+    }
 
     bool operator < (const simpleMoveT& rhs) const
     {

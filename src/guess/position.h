@@ -153,6 +153,7 @@ private:
     bool isFreeForCastling960(squareT from, squareT to, squareT rook_from, squareT rook_to, squareT enemyKingSq) const;
     pieceT pieceAt(squareT square) const;
     squareT CastlingRook(int index) const;
+    squareT CastlingRook(squareT rook) const;
 public:
 
     Position()

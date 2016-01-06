@@ -429,7 +429,7 @@ macx {
  INSTALLATION_DATA.files = mac_osx/qt_menu.nib
  INSTALLATION_DATA.path = Contents/Resources/
  QMAKE_BUNDLE_DATA += INSTALLATION_DATA
- ENGINE_DATA.files = data/engines-mac/uci/stockfish-6-64
+ ENGINE_DATA.files = data/engines-mac/uci/stockfish-7-64
  ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
  QMAKE_BUNDLE_DATA += ENGINE_DATA
  BOOK_DATA.files = data/engines-mac/uci/book.bin
@@ -494,7 +494,7 @@ macx {
   OTHER_FILES += \
     mac_osx/Info.plist \
     mac_osx/qt_menu.nib \
-    data/engines-mac/uci/stockfish-6-64 \
+    data/engines-mac/uci/stockfish-7-64 \
     data/engines-mac/uci/book.bin \
     data/timeseal/mac/timeseal
 }

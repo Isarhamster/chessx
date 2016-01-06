@@ -81,7 +81,7 @@ public:
     /** parse SAN or LAN representation of move, and return proper Move() object */
     Move parseMove(const QString& algebraic) const;
     /** Return a proper Move() object given only a from-to move specification */
-    Move prepareMove(const Square& from, const Square& to, bool doNotAllowCastling=false) const;
+    Move prepareMove(const Square& from, const Square& to) const;
 
     // Return a nullMove -- King to the same square
     Move nullMove() const;
@@ -150,6 +150,7 @@ public:
     static quint64 standardCastlingRooks();
 
     void setCastlingRooks();
+    int CastlingRookIndex(Square rook) const;
 private:
     /** Test if a king is on a certain row to test castling rights */
     bool isKingOnRow(Piece p, Square start, Square stop) const;
@@ -208,7 +209,8 @@ private:
     /** Get the rook with index from castling rook storage */
     Square CastlingRook(int index) const;
     bool HasRookForCastling(int index) const;
-
+    Square CastlingKingTarget(int rookIndex) const;
+    Square CastlingRookTarget(int rookIndex) const;
 
     // Actual Bit-board data
     quint64 m_pawns, m_knights, m_bishops, m_rooks, m_castlingRooks, m_queens, m_kings;
