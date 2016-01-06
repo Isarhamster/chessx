@@ -150,7 +150,7 @@ void OpeningTreeWidget::updateFilterIndex(QStringList files)
 {
     m_filePaths.clear();
     m_filePaths = files;
-    disconnect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged()));
+    disconnect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged(int)));
     QString current = ui->sourceSelector->currentText();
     ui->sourceSelector->clear();
     QStringList baseNames;
@@ -189,6 +189,9 @@ void OpeningTreeWidget::slotSourceChanged(int index)
 {
     m_UndoStack->clear();
     m_openingTree->cancel();
-    ui->filterGames->setEnabled(index<=1);
+    if (index >= 0)
+    {
+        ui->filterGames->setEnabled(index<=1);
+    }
     emit signalSourceChanged();
 }
