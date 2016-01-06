@@ -1036,7 +1036,10 @@ void MainWindow::moveChanged()
 
 void MainWindow::slotSearchTree()
 {
-    updateOpeningTree(game().board(), false);
+    if (databaseInfo()->isValid())
+    {
+        updateOpeningTree(game().board(), false);
+    }
 }
 
 void MainWindow::slotBoardMoveWheel(int wheel)
