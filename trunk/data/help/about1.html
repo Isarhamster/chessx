@@ -62,11 +62,8 @@ the move played with the new move and check the remaining game for illegal posit
 This can be disabled in the Preferences. If you have enabled automatic promotion, you can still force the promotion dialog to appear bei
 pressing the Meta-Key while dragging the pawn to the eigth row.</p>
 
-<p>While entering a Chess 960 game, castling is performed by dragging the king to g1/g8 or c1/c8 respectively.
-This will work even if the king is already on its destination square.
-If you want to move the king without castling to one of these squares and castling would be possible, too, you need to press
-the Command-Modifier while moving the king, this will create a king move instead of castling. You could also use
-the keyboard to disambiguate the move.</p>
+<p>Castling is performed by moving the king to its destination square. See <a href="#Variants">Chess Variants</a>
+on castling in Chess960.</p>
 
 <h3><a name="Replay"></a>Let ChessX replay the game</h3>
 <p><a href="button:replay"><img src=":/images/replay.png" width="42" align="left"></a>If you want ChessX to replay the game, select "Game->Auto Player".
@@ -113,6 +110,9 @@ The source code for Stockfish is also located on the homepage. Note that Stockfi
 hard to implement for GUI developers.</p>
 <p>You can change the move rate with the slider in the bottom right corner of the status bar. Draw the slider to the very left for infinite analysis or
 to the right to make the engine analyse from 1 to 10 secondes per move.</p>
+<p>A hint for engine developers: You can log the communication from/to the engine with the "Log" checkbox in the engine settings.
+Logging will be sent to a file 'name.log' where name is the "given" name in the engine settings. Logging directory is the Program data
+path + /log. What the program data path resolves to can be found in the About box.</p>
 
 <h3><a name="Game"></a>Playing (out) games against an engine</h3>
 <p><img src=":/images/respond.png" width="42" align="left">You can play out a game after the final position by activating Auto Respond mode.
@@ -260,10 +260,10 @@ or by selecting a new premove.</p>
 <p>ChessX supports Chess 960 games (also call Fisherandom).</p>
 <p>You can start a Chess960 game by setting up the board manually. The setup dialog allows entering the
 position identifier or chossing a random identifier.</p>
-<p>See <a href="#Move">the chapter on moving</a> for issues related with castling.</p>
-</div>
-</div>
+<p>While entering a Chess 960 game, castling is performed by dragging the king onto the castling rook.
+This will work even if the king is already on its destination square.</p>
 
+</div>
+</div>
 </body>
-
 </html>

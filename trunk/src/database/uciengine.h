@@ -68,6 +68,7 @@ private:
     Board m_board;
 
     QString m_position;
+    bool m_chess960;
     QString m_waitingOn;
     bool m_quitAfterAnalysis;
 };

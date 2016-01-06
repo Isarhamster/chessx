@@ -42,6 +42,8 @@ bool UCIEngine::startAnalysis(const Board& board, int nv, const EngineParameter 
     m_board = board;
 
     m_position = board.toFen();
+    m_chess960 = board.chess960();
+
     send("stop");
     if (bNewGame)
     {
@@ -110,6 +112,10 @@ void UCIEngine::go()
 {
     if (m_moveTime.tm == EngineParameter::TIME_GONG)
     {
+        if (m_mapOptionValues.contains("UCI_AnalyseMode"))
+        {
+            send(QString("setoption name UCI_AnalyseMode value %1").arg(m_moveTime.ms_totalTime==0? "true":"false"));
+        }
         if (!m_moveTime.ms_totalTime)
             send("go infinite");
         else
@@ -129,6 +135,11 @@ void UCIEngine::setPosition()
 {
     m_waitingOn = "";
     send(QString("setoption name MultiPV value %1").arg(m_mpv));
+    if(m_mapOptionValues.contains("UCI_Chess960"))
+    {
+        send(QString("setoption name UCI_Chess960 value %1").arg(m_chess960 ? "true":"false"));
+    }
+
     send("position fen " + m_position);
     go();
 }
@@ -181,8 +192,6 @@ void UCIEngine::processMessage(const QString& message)
                     ++i;
                 }
             }
-
-            send("setoption name UCI_AnalyseMode value true");
         }
 
         if(m_waitingOn == "ucinewgame")

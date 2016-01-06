@@ -347,7 +347,10 @@ Position::AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceC promot
     sm.movingPiece = Board[from];
     sm.capturedPiece = castle ? EMPTY : Board[to];
     sm.moveCastles = castle;
-
+    if (sm.moveCastles)
+    {
+        sm.m_visualTo = CastlingRook(to);
+    }
     mlist->append(sm);
 }
 
@@ -515,6 +518,21 @@ squareT Position::CastlingRook(int index) const
         x = getFirstBitAndClear64<squareT>(cr);
     }
     return x;
+}
+
+squareT Position::CastlingRook(squareT target) const
+{
+    int n = 0;
+    switch (target)
+    {
+    case C1: n = 0; break;
+    case G1: n = 1; break;
+    case C8: n = 2; break;
+    case G8: n = 3; break;
+    default: return INVALID_SQUARE;
+    }
+
+    return CastlingRook(n);
 }
 
 bool Position::isFreeForCastling960(squareT from, squareT to, squareT rook_from, squareT rook_to, squareT enemyKingSq) const

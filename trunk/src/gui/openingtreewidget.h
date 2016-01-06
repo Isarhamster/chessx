@@ -54,11 +54,14 @@ protected slots:
     /** Indicate start of tree update */
     void slotTreeUpdateStarted();
     /** The source for the tree has changed */
-    void slotSourceChanged();
+    void slotSourceChanged(int);
 
 signals:
     void signalTreeUpdated(bool);
     void signalSourceChanged();
+
+protected:
+    bool filterGames() const;
 
 private:
     Ui::OpeningTreeWidget *ui;

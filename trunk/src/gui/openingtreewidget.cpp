@@ -50,7 +50,7 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     connect(m_openingTree, SIGNAL(progress(int)), this, SLOT(slotOperationProgress(int)));
     connect(m_openingTree, SIGNAL(openingTreeUpdated()), this, SLOT(slotTreeUpdate()));
     connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), this, SLOT(slotTreeUpdateStarted()));
-    connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged()));
+    connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged(int)));
 
     m_openingBoardView = new BoardView(this, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     m_openingBoardView->setObjectName("OpeningBoardView");
@@ -92,10 +92,15 @@ void OpeningTreeWidget::updateFilter(Filter& f, const Board& b, bool bEnd)
     doSetBoard(f,b,bEnd);
 }
 
+bool OpeningTreeWidget::filterGames() const
+{
+    return ui->filterGames->isEnabled() && ui->filterGames->isChecked();
+}
+
 void OpeningTreeWidget::doSetBoard(Filter& f, const Board& b, bool bEnd)
 {
     m_openingBoardView->setBoard(b);
-    m_openingTree->updateFilter(f, b, ui->filterGames->isChecked(), ui->sourceSelector->currentIndex()==1, bEnd);
+    m_openingTree->updateFilter(f, b, filterGames(), ui->sourceSelector->currentIndex()==1, bEnd);
 }
 
 void OpeningTreeWidget::saveConfig()
@@ -119,7 +124,7 @@ void OpeningTreeWidget::slotOperationProgress(int value)
 void OpeningTreeWidget::slotTreeUpdate()
 {
     ui->progress->setValue(100);
-    if (ui->filterGames->isChecked())
+    if (filterGames())
     {
         bool dbIsFilterSource = (ui->sourceSelector->currentIndex()<=1);
         emit signalTreeUpdated(dbIsFilterSource);
@@ -172,7 +177,7 @@ void OpeningTreeWidget::updateFilterIndex(QStringList files)
     {
         ui->sourceSelector->setCurrentIndex(0);
     }
-    connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged()));
+    connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged(int)));
 }
 
 bool OpeningTreeWidget::shouldAddMove() const
@@ -180,9 +185,10 @@ bool OpeningTreeWidget::shouldAddMove() const
     return ui->makeMove->isChecked();
 }
 
-void OpeningTreeWidget::slotSourceChanged()
+void OpeningTreeWidget::slotSourceChanged(int index)
 {
     m_UndoStack->clear();
     m_openingTree->cancel();
+    ui->filterGames->setEnabled(index<=1);
     emit signalSourceChanged();
 }
