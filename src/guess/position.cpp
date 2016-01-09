@@ -546,17 +546,16 @@ bool Position::isFreeForCastling960(squareT from, squareT to, squareT rook_from,
         if ((square != from) && (square != rook_from))
         {
             if (pieceAt(square) != EMPTY) return false;
-            if (CalcNumChecks(square) != 0) return false;
         }
+        if (CalcNumChecks(square) != 0) return false;
         if (square!=to) square += (from<=to) ? 1:-1;
     }
 
+    if (square_Adjacent(to, enemyKingSq)) return false;
     if ((to != from) && (to != rook_from))
     {
-        pieceT p = pieceAt(to);
-        if (p != EMPTY) return false;
+        if (pieceAt(to) != EMPTY) return false;
     }
-
     if (CalcNumChecks(to) != 0) return false;
 
     square = rook_from;
@@ -572,8 +571,7 @@ bool Position::isFreeForCastling960(squareT from, squareT to, squareT rook_from,
 
     if ((rook_from != rook_to) && (rook_to != from))
     {
-        pieceT p = pieceAt(rook_to);
-        if (p != EMPTY) return false;
+        if (pieceAt(rook_to) != EMPTY) return false;
     }
 
     return true; // Both ways, king and rook to target are free except for king/rook themselves
@@ -653,7 +651,6 @@ Position::GenKingMoves(MoveList * mlist, genMovesT genType, bool castling)
     while(*destPtr != NULL_SQUARE)
     {
         // Try this move and see if it legal:
-
         squareT destSq = *destPtr;
         bool addThisMove = false;
 
@@ -684,7 +681,7 @@ Position::GenKingMoves(MoveList * mlist, genMovesT genType, bool castling)
         {
             AddLegalMove(mlist, kingSq, destSq);
         }
-        destPtr++;
+        ++destPtr;
     }
     // Now generate castling moves, if possible:
     if(genNonCaptures && castling)
@@ -2365,7 +2362,7 @@ Position::IsKingInCheck(simpleMoveT * sm)
     }
 
     // No optimization of the last move was castling:
-    if(pt == KING  &&  square_Fyle(sm->from) == E_FYLE)
+    if(pt == KING && sm->moveCastles)
     {
         fyleT toFyle = square_Fyle(sm->to);
         if(toFyle == C_FYLE  ||  toFyle == G_FYLE)
@@ -3139,13 +3136,13 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
     }
     else if(pt == KING)
     {
-        if((square_Fyle(from) == E_FYLE) && (square_Fyle(to) == G_FYLE))
+        if(m->moveCastles && (square_Fyle(to) == G_FYLE))
         {
             *c++ = 'O';
             *c++ = '-';
             *c++ = 'O';
         }
-        else if((square_Fyle(from) == E_FYLE) && (square_Fyle(to) == C_FYLE))
+        else if(m->moveCastles && (square_Fyle(to) == C_FYLE))
         {
             *c++ = 'O';
             *c++ = '-';
