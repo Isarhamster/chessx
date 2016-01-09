@@ -349,7 +349,7 @@ Position::AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceC promot
     sm.moveCastles = castle;
     if (sm.moveCastles)
     {
-        sm.m_visualTo = CastlingRook(to);
+        sm.m_visualTo = Chess960Castling ? CastlingRook(to) : to;
     }
     mlist->append(sm);
 }
