@@ -23,10 +23,6 @@ class BitBoard;
    and don't make much sense when considered without a Board.
    However, you can create a move with only a source and destination square,
    Such moves are considered "illegal", but can be convenient when dealing with move entry.
-
-	@todo Clean or merge setPromotionPiece() and setPromoted() functions. When setting move from scratch
-	(e. g. in @ref Shredder class), setPromotionPiece() fails probably because isPromotion() returns
-	@p false .
 */
 
 class Move
@@ -45,8 +41,6 @@ public:
     /** Move entry constructor, untested (illegal) move with only from, and to squares set */
     Move(const Square from, const Square to);
 
-    /** Set promotion piece.  Default promotion is to Queen, use this to change piece afterward */
-    void setPromotionPiece(PieceType type);
     /** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) pawn promoted to */
     void setPromoted(PieceType p);
 
@@ -240,12 +234,6 @@ inline Move& Move::setNullMove()
     m = a2 | (a2 << 6);
     u = 0;
     return *this;
-}
-
-inline void Move::setPromotionPiece(PieceType type)
-{
-    m &= ~(7 << 22);
-    m |= ((unsigned int) type & 7) << 22;
 }
 
 inline Square Move::from() const

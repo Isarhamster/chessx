@@ -28,8 +28,6 @@ db.loadGame(0,game);
 Output o(Output::Html,"/usr/local/data/template-file.template");
 o.output(&game);
 @endcode
-@todo
-Should output all tags, not just the most important ones.
 */
 
 class Output : public QObject
