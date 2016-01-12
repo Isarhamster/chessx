@@ -28,7 +28,7 @@ void PositionSearch::setPosition(const Board& position)
     m_position = position;
 }
 
-int PositionSearch::matches(GameId index)
+int PositionSearch::matches(GameId index) const
 {
     Game g;
     m_database->loadGameMoves(index, g);

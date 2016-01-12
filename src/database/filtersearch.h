@@ -27,7 +27,7 @@ public:
     bool contains(GameId game) const;
     Filter* filter() const;
     void setFilter(Filter* filter);
-    virtual int matches(GameId game);
+    virtual int matches(GameId game) const;
 private:
     QPointer<Filter> m_filter;
 };

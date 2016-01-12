@@ -82,7 +82,7 @@ void TagSearch::setValue(const QString& value)
     initialize();
 }
 
-int TagSearch::matches(GameId index)
+int TagSearch::matches(GameId index) const
 {
-    return m_matches[index];
+    return m_matches.at(index);
 }

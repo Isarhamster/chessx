@@ -26,7 +26,7 @@ public:
     /** Sets whole period. */
     void setDateRange(PartialDate minDate, PartialDate maxDate);
     /** Return true if the game at index matches the search */
-    virtual int matches(GameId index);
+    virtual int matches(GameId index) const;
 
 private:
     PartialDate m_minDate;

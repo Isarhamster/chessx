@@ -35,7 +35,7 @@ void FilterSearch::setFilter(Filter* filter)
     m_filter = filter;
 }
 
-int FilterSearch::matches(GameId index)
+int FilterSearch::matches(GameId index) const
 {
     return m_filter->contains(index);
 }

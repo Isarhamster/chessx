@@ -23,10 +23,6 @@ class Database;
 
 /** @ingroup Search
 The Search class is a base class that represents a search on a database with one criteria.
-@todo
-- Cloning may be obsolete
-- Type may be replaced by dynamic typecasting.
-- matches should be const
 */
 class Search : public QObject
 {
@@ -40,7 +36,7 @@ public:
     /** Standard destructor. */
     virtual ~Search();
     virtual void Prepare(volatile bool&) {};
-    virtual int matches(GameId index) = 0;
+    virtual int matches(GameId index) const = 0;
 signals:
     void prepareUpdate(int);
 protected:
@@ -55,7 +51,7 @@ class NullSearch : public Search
 
 public :
     NullSearch();
-    virtual int matches(GameId index);
+    virtual int matches(GameId index) const;
 };
 
 

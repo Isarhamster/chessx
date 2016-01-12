@@ -54,7 +54,7 @@ int EloSearch::minBlackElo() const
     return m_minBlackElo;
 }
 
-int EloSearch::matches(GameId index)
+int EloSearch::matches(GameId index) const
 {
-    return m_matches[index];
+    return m_matches.at(index);
 }

@@ -36,7 +36,7 @@ public:
     /** Set value to be matched */
     void setValue(const QString& value);
     /** Return true if the game at index matches the search */
-    virtual int matches(GameId index);
+    virtual int matches(GameId index) const;
     /** initialize the search. Done automatically in constructor, or when values are changed */
     void initialize();
 

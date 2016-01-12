@@ -31,7 +31,7 @@ public:
                           0, int maxBlackElo = 4000);
     void initialize();
     /** Return true if the game at index matches the search */
-    virtual int matches(GameId index);
+    virtual int matches(GameId index) const;
 
 private:
     int m_minWhiteElo;
