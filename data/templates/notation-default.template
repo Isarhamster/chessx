@@ -24,7 +24,7 @@ MainLineFontWeight,String,Bold|Normal,Bold,The weight of the font
   p.comment     {margin-left: 20px}\n
   p.precomment  {margin-left: 0}\n
   a             {text-decoration: none}\n
-  a.main        {font-family:"@FontBrowserMove@";color: @MainLineMoveColor@; font-weight: 600}\n
+  a.main        {font-family:"@FontBrowserMove@";color: @MainLineMoveColor@; font-weight: bold}\n
   a.var         {font-family:"@FontBrowserMove@";color: @VariationColor@}\n
   a.comment     {color: @CommentColor@}\n
   a.nag         {color: @NagColor@}\n

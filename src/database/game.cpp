@@ -848,7 +848,7 @@ QString Game::toHumanFen() const
 
 QString Game::gameComment() const
 {
-    return m_annotations.value(0);
+    return m_annotations.value(0, QString(""));
 }
 
 void Game::setGameComment(const QString& gameComment)
@@ -1200,13 +1200,13 @@ QString Game::specAnnotation(const QRegExp& r, MoveId moveId) const
     MoveId node = nodeValid(moveId);
     if(node == NO_MOVE)
     {
-        return "";
+        return QString("");
     }
 
     QString annotation = m_annotations[node];
     if(annotation.isNull())
     {
-        return "";
+        return QString("");
     }
 
     int pos = r.indexIn(annotation);
@@ -1248,11 +1248,11 @@ QString Game::annotation(MoveId moveId, Position position) const
 
     if ((position == AfterMove) || (node == 0))
     {
-        return m_annotations.value(node);
+        return m_annotations.value(node,QString(""));
     }
     else
     {
-        return m_variationStartAnnotations.value(node);
+        return m_variationStartAnnotations.value(node,QString(""));
     }
 }
 
@@ -1263,11 +1263,11 @@ QString Game::textAnnotation(MoveId moveId, Position position) const
 
     if ((position == AfterMove) || (node == 0))
     {
-        s = m_annotations.value(node);
+        s = m_annotations.value(node,QString(""));
     }
     else
     {
-        s = m_variationStartAnnotations.value(node);
+        s = m_variationStartAnnotations.value(node,QString(""));
     }
 
     s.remove(emt);
@@ -2116,6 +2116,9 @@ void Game::compact()
 
     m_variationStartAnnotations = variationStartAnnotations;
     m_annotations               = annotations;
+
+    m_variationStartAnnotations.detach();
+    m_annotations.detach();
 
     m_moveNodes.clear();
     m_moveNodes = moveNodes;
