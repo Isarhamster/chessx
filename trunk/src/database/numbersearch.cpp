@@ -41,7 +41,7 @@ void NumberSearch::setRange(const QString& range)
     }
 }
 
-int NumberSearch::matches(GameId index)
+int NumberSearch::matches(GameId index) const
 {
     return index >= m_start && index <= m_end;
 }

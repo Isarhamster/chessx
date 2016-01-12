@@ -36,7 +36,7 @@ NullSearch::NullSearch():Search(0)
 {
 }
 
-int NullSearch::matches(GameId)
+int NullSearch::matches(GameId) const
 {
     return false;
 }

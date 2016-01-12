@@ -137,8 +137,8 @@ void DuplicateSearch::Prepare(volatile bool &breakFlag)
     }
 }
 
-int DuplicateSearch::matches(GameId index)
+int DuplicateSearch::matches(GameId index) const
 {
-    return m_matches[index];
+    return m_matches.at(index);
 }
 

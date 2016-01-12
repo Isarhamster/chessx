@@ -30,7 +30,7 @@ public:
     DuplicateSearch(Database* db=0, DSMode mode=DS_Both);
     DuplicateSearch(Filter *filter=0, DSMode mode=DS_Both_All);
     /** Return true if the game at index matches the search */
-    virtual int matches(GameId index);
+    virtual int matches(GameId index) const;
 
     virtual void Prepare(volatile bool& breakFlag);
     void PrepareFilter(volatile bool& breakFlag);

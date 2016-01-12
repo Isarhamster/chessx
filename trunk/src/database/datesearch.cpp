@@ -43,7 +43,7 @@ void DateSearch::setDateRange(PartialDate minDate, PartialDate maxDate)
     m_maxDate = maxDate;
 }
 
-int DateSearch::matches(GameId index)
+int DateSearch::matches(GameId index) const
 {
     Game g;
     m_database->loadGameHeaders(index, g);

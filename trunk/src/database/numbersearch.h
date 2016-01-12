@@ -24,7 +24,7 @@ public:
     /** Set range to be selected. Supports "N1" or "N1-N2" format. */
     void setRange(const QString& value);
     /** Return true if the game at index matches the search */
-    virtual int matches(GameId index);
+    virtual int matches(GameId index) const;
 private:
     GameId m_start, m_end;
 };

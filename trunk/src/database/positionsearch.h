@@ -26,7 +26,7 @@ public:
     /** Return moveId the move of  after which the game matches the search + 1. E.g. for standard game and chess start position
         1 is returned.
     */
-    virtual int matches(GameId index);
+    virtual int matches(GameId index) const;
 private:
     Board m_position;
 };
