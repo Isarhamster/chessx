@@ -66,3 +66,4 @@ MarkupPreAnnotationIndent=<div class="comment-indent">,</div>\n
 MarkupHeaderLine=<span class="headerline">,</span><br>\n
 MarkupHeaderTagName=,
 MarkupHeaderTagValue=","
+MarkupMate=,
