@@ -211,6 +211,7 @@ private:
     bool HasRookForCastling(int index) const;
     Square CastlingKingTarget(int rookIndex) const;
     Square CastlingRookTarget(int rookIndex) const;
+    void fixCastlingRooks(bool);
 
     // Actual Bit-board data
     quint64 m_pawns, m_knights, m_bishops, m_rooks, m_castlingRooks, m_queens, m_kings;

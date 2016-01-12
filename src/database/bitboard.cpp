@@ -977,6 +977,8 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
         return true;
     }
 
+    m_castlingRooks = 0;
+
     if(c != '-')
     {
         while(c != ' ')
@@ -999,23 +1001,33 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
                 {
                     if (c>='a' && c<='h')
                     {
-                        if (c<m_ksq[Black])
+                        Square x = SquareFromRankAndFile(7,c-'a');
+                        if (x<m_ksq[Black])
                         {
+                            setChess960(true);
+                            m_castlingRooks |= SetBit(x);
                             setCastleLong(Black);
                         }
-                        else if (c>m_ksq[Black])
+                        else if (x>m_ksq[Black])
                         {
+                            setChess960(true);
+                            m_castlingRooks |= SetBit(x);
                             setCastleShort(Black);
                         }
                     }
                     else if (c>='A' && c<='H')
                     {
-                        if (c<m_ksq[White])
+                        Square x = SquareFromRankAndFile(0,c-'A');
+                        if (x<m_ksq[White])
                         {
+                            setChess960(true);
+                            m_castlingRooks |= SetBit(x);
                             setCastleLong(White);
                         }
-                        else if (c>m_ksq[White])
+                        else if (x>m_ksq[White])
                         {
+                            setChess960(true);
+                            m_castlingRooks |= SetBit(x);
                             setCastleShort(White);
                         }
                     }
@@ -1035,7 +1047,14 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
         ++i;    // Bypass space
     }
 
-    setCastlingRooks();
+    if (!m_castlingRooks)
+    {
+        setCastlingRooks();
+    }
+    else
+    {
+        fixCastlingRooks(true);
+    }
 
     // EnPassant Square
     c = fen[++i];
@@ -1147,33 +1166,48 @@ void BitBoard::setCastlingRooks()
         return;
     }
 
-    Square FixSquares[2][2] = {{ a1, h1 }, {a8, h8 }};
-    Square StartSquares[2][2] = {{ a1, m_ksq[White] }, {a8, m_ksq[Black] }};
-    Square StopSquares[2][2] = {{ m_ksq[White], h1}, {m_ksq[Black], h8 }};
-    for (int i=White; i<=Black; ++i)
-    {
-        for (int section=0;section<2;++section)
-        {
-            Square x = CastlingRook(2*i+section);
-            while (x!=InvalidSquare && x<StartSquares[i][section])
-            {
-                m_castlingRooks &= ~(SetBit(x));
-                x = CastlingRook(2*i+section);
-            }
-            if (x!=InvalidSquare)
-            {
-               Square y = CastlingRook(2*i+section+1);
-               while (y!=InvalidSquare && y<StopSquares[i][section])
-               {
-                   m_castlingRooks &= ~(SetBit(y));
-                   y = CastlingRook(2*i+section+1);
-               }
+    fixCastlingRooks(false);
+}
 
-               if (x>StopSquares[i][section])
-               {
-                   m_castlingRooks |= SetBit(FixSquares[i][section]);
-               }
+void BitBoard::fixCastlingRooks(bool onlyMissingSections)
+{
+    Square Sections[4][2] = { { a1, m_ksq[White] },
+                              { h1, m_ksq[White] },
+                              { a8, m_ksq[Black] },
+                              { h8, m_ksq[Black] }};
+
+    for (int section=0; section<4; ++section)
+    {
+        Square start = Sections[section][0];
+        Square stop = Sections[section][1];
+        Square iter = start;
+        do
+        {
+            quint64 x = SetBit(iter);
+            if (m_castlingRooks & x)
+            {
+                break;
             }
+            iter += (start<stop) ? +1 : -1;
+        } while (iter != stop);
+
+        if (iter == stop)
+        {
+            // No bit set in section, fix this with arbitrary square
+            m_castlingRooks |= SetBit(start);
+        }
+        else if (!onlyMissingSections)
+        {
+            // One bit is set, clear all others
+            do
+            {
+                quint64 x = SetBit(iter);
+                iter += (start<stop) ? +1 : -1;
+                if (m_castlingRooks & x)
+                {
+                    m_castlingRooks &= ~x;
+                }
+            } while (iter != stop);
         }
     }
 }
