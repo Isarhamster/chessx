@@ -778,7 +778,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                 }
             }
             promotionPiece = PieceType(Queen + index);
-            m.setPromotionPiece(promotionPiece);
+            m.setPromoted(promotionPiece);
         }
         else if (m.isPromotion())
         {
