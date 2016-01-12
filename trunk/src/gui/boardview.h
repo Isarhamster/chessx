@@ -140,6 +140,7 @@ private:
     void resizeBoard(QSize size);
     /** Calculate size and position of square */
     QRect squareRect(Square s);
+    QRect squareRectNoTranslate(Square s);
     /** Calculate size and position of a coordinate indicator in vertical direction */
     QRect coordinateRectVertical(int n);
     /** Calculate size and position of a coordinate indicator in horizontal direction */
