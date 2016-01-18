@@ -64,6 +64,7 @@ Game& Game::operator=(const Game & game)
         //assign non pointer variables
         m_startingBoard = game.m_startingBoard;
         m_tags = game.m_tags;
+        m_tags.detach();
         m_variationStartAnnotations = game.m_variationStartAnnotations;
         m_variationStartAnnotations.detach();
         m_annotations = game.m_annotations;
