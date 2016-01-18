@@ -1201,8 +1201,9 @@ void BitBoard::fixCastlingRooks(bool onlyMissingSections)
             // One bit is set, clear all others
             do
             {
-                quint64 x = SetBit(iter);
                 iter += (start<stop) ? +1 : -1;
+                quint64 x = SetBit(iter);
+
                 if (m_castlingRooks & x)
                 {
                     m_castlingRooks &= ~x;
