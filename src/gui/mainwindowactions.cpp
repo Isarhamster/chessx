@@ -1464,7 +1464,6 @@ void MainWindow::slotGameChanged(bool /*bModified*/)
     UpdateGameText();
     UpdateGameTitle();
     moveChanged();
-    emit raiseGameTextRequest();
 }
 
 void MainWindow::slotGameViewLink(const QUrl& url)

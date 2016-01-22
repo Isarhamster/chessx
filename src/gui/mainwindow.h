@@ -507,7 +507,6 @@ signals:
     void signalUpdateDatabaseList(QStringList);
 
     void enterText(QString);
-    void raiseGameTextRequest();
 
 private slots:
     /** Cleanup after ECO file loaded. */
