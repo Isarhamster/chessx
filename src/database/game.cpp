@@ -85,6 +85,20 @@ Game& Game::operator=(const Game & game)
     return *this;
 }
 
+Game& Game::clone(const Game & game)
+{
+    if(this != &game)
+    {
+        mountBoard();
+        *this = game;
+        m_tags.detach();
+        m_variationStartAnnotations.detach();
+        m_annotations.detach();
+        m_moveNodes.detach();
+    }
+    return *this;
+}
+
 Game::~Game()
 {
     if (mountRefCount)
