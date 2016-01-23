@@ -403,19 +403,19 @@ quint64 PolyglotDatabase::getHashFromBoard(Board b) const
         }
     }
 
-    if(b.castlingRights() & WhiteKingside)
+    if(b.canCastleShort(White))
     {
         key ^= RandomCastle[0];
     }
-    if(b.castlingRights() & WhiteQueenside)
+    if(b.canCastleLong(White))
     {
         key ^= RandomCastle[1];
     }
-    if(b.castlingRights() & BlackKingside)
+    if(b.canCastleShort(Black))
     {
         key ^= RandomCastle[2];
     }
-    if(b.castlingRights() & BlackQueenside)
+    if(b.canCastleLong(Black))
     {
         key ^= RandomCastle[3];
     }

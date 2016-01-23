@@ -82,12 +82,14 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     connect(ui.boardView, SIGNAL(wheelScrolled(int)), SLOT(slotChangePiece(int)));
     connect(ui.boardView, SIGNAL(pieceDropped(Square, Piece)), SLOT(slotDroppedPiece(Square, Piece)));
     connect(ui.toMoveButton, SIGNAL(clicked()), SLOT(slotToggleSide()));
-    connect(ui.wkCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
-    connect(ui.wqCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
-    connect(ui.bkCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
-    connect(ui.bqCastleCheck, SIGNAL(stateChanged(int)), SLOT(slotCastlingRights()));
+    connect(ui.wkCastleCheck, SIGNAL(clicked(bool)), SLOT(slotCastlingRights()));
+    connect(ui.wqCastleCheck, SIGNAL(clicked(bool)), SLOT(slotCastlingRights()));
+    connect(ui.bkCastleCheck, SIGNAL(clicked(bool)), SLOT(slotCastlingRights()));
+    connect(ui.bqCastleCheck, SIGNAL(clicked(bool)), SLOT(slotCastlingRights()));
+    connect(ui.castleFile00, SIGNAL(activated(int)), SLOT(slotCastlingRights()));
+    connect(ui.castleFile000, SIGNAL(activated(int)), SLOT(slotCastlingRights()));
     connect(ui.epCombo, SIGNAL(currentIndexChanged(int)), SLOT(slotEnPassantSquare()));
-    connect(ui.btCheck960, SIGNAL(stateChanged(int)), SLOT(slotChess960()));
+    connect(ui.btCheck960, SIGNAL(clicked(bool)), SLOT(slotChess960()));
     connect(ui.halfmoveSpin, SIGNAL(valueChanged(int)), SLOT(slotHalfmoveClock()));
     connect(ui.moveSpin, SIGNAL(valueChanged(int)), SLOT(slotMoveNumber()));
     connect(ui.btFlipBoard, SIGNAL(clicked()), ui.boardView, SLOT(flip()));
@@ -224,10 +226,10 @@ void BoardSetupDialog::setBoard(const Board& b)
     {
         ui.epCombo->setCurrentIndex(0);
     }
-    ui.wkCastleCheck->setChecked(b.castlingRights() & WhiteKingside);
-    ui.wqCastleCheck->setChecked(b.castlingRights() & WhiteQueenside);
-    ui.bkCastleCheck->setChecked(b.castlingRights() & BlackKingside);
-    ui.bqCastleCheck->setChecked(b.castlingRights() & BlackQueenside);
+    ui.wkCastleCheck->setChecked(b.canCastleShort(White));
+    ui.wqCastleCheck->setChecked(b.canCastleLong(White));
+    ui.bkCastleCheck->setChecked(b.canCastleShort(Black));
+    ui.bqCastleCheck->setChecked(b.canCastleLong(Black));
     m_toMove = b.toMove();
     ui.btCheck960->setChecked(b.chess960());
 
@@ -235,6 +237,65 @@ void BoardSetupDialog::setBoard(const Board& b)
     {
         int ccPos = b.chess960Pos();
         ui.chess960pos->setValue(ccPos);
+    }
+
+    ui.castleFile00->setEnabled(b.hasAmbiguousCastlingRooks() &&
+                                (b.canCastleShort(White) || b.canCastleShort(Black)));
+    ui.castleFile000->setEnabled(b.hasAmbiguousCastlingRooks() &&
+                                 (b.canCastleLong(White) || b.canCastleLong(Black)));
+
+    char index00 = 0;
+    if(b.canCastleShort(White))
+    {
+        index00 = 'a'+File(b.CastlingRook(1));
+    }
+    else if(b.canCastleShort(Black))
+    {
+        index00 = 'a'+File(b.CastlingRook(3));
+    }
+    char index000 = 0;
+    if(b.canCastleLong(White))
+    {
+        index000 = 'a'+File(b.CastlingRook(0));
+    }
+    else if(b.canCastleLong(Black))
+    {
+        index000 = 'a'+File(b.CastlingRook(2));
+    }
+
+    ui.castleFile00->clear();
+    ui.castleFile000->clear();
+    if (b.chess960())
+    {
+        for (char i='a';i<='f';++i)
+        {
+            if (b.HasRookOnFileForCastling(i-'a', true))
+            {
+                ui.castleFile000->addItem(QString(i));
+            }
+        }
+        if (!ui.castleFile000->count()) ui.castleFile000->setEnabled(false);
+        for (char i='c';i<='h';++i)
+        {
+            if (b.HasRookOnFileForCastling(i-'a', false))
+            {
+                ui.castleFile00->addItem(QString(i));
+            }
+        }
+        if (!ui.castleFile00->count()) ui.castleFile00->setEnabled(false);
+        if (index00 && ui.castleFile00->findText(QString(index00)))
+        {
+            ui.castleFile00->setCurrentText(QString(index00));
+        }
+        if (index000 && ui.castleFile000->findText(QString(index000)))
+        {
+            ui.castleFile000->setCurrentText(QString(index000));
+        }
+    }
+    else
+    {
+        ui.castleFile00->addItem("h");
+        ui.castleFile000->addItem("a");
     }
 
     showSideToMove();
@@ -252,6 +313,7 @@ void BoardSetupDialog::slotReset()
     Board b;
     b.setStandardPosition();
     setBoard(b);
+    slotCastlingRights();
 }
 
 void BoardSetupDialog::accept()
@@ -286,6 +348,7 @@ void BoardSetupDialog::slotClear()
     b.setAt(e1, WhiteKing);
     b.setAt(e8, BlackKing);
     setBoard(b);
+    slotCastlingRights();
 }
 
 void BoardSetupDialog::slotSelected(Square square, int button)
@@ -309,6 +372,7 @@ void BoardSetupDialog::slotSelected(Square square, int button)
     }
     board.setAt(square, piece);
     setBoard(board);
+    slotCastlingRights();
 }
 
 void BoardSetupDialog::showSideToMove()
@@ -350,6 +414,7 @@ void BoardSetupDialog::slotDroppedPiece(Square s, Piece p)
     Board b = ui.boardView->board();
     b.setAt(s, p);
     setBoard(b);
+    slotCastlingRights();
 }
 
 void BoardSetupDialog::slotMovePiece(Square from, Square to)
@@ -359,6 +424,7 @@ void BoardSetupDialog::slotMovePiece(Square from, Square to)
     b.removeFrom(from);
     b.setAt(to, p);
     setBoard(b);
+    slotCastlingRights();
 }
 
 void BoardSetupDialog::slotCopyPiece(Square from, Square to)
@@ -367,6 +433,7 @@ void BoardSetupDialog::slotCopyPiece(Square from, Square to)
     Piece p = b.pieceAt(from);
     b.setAt(to, p);
     setBoard(b);
+    slotCastlingRights();
 }
 
 void BoardSetupDialog::slotInvalidMove(Square from)
@@ -482,8 +549,34 @@ void BoardSetupDialog::slotPasteFen()
     }
     else
     {
+        if (b.canCastleShort(White))
+        {
+            ui.castleFile00->setCurrentText(QString('a'+File(b.CastlingRook(1))));
+        }
+        else if (b.canCastleShort(Black))
+        {
+            ui.castleFile00->setCurrentText(QString('a'+File(b.CastlingRook(3))));
+        }
+        if (b.canCastleLong(White))
+        {
+            ui.castleFile000->setCurrentText(QString('a'+File(b.CastlingRook(0))));
+        }
+        else if (b.canCastleLong(Black))
+        {
+            ui.castleFile000->setCurrentText(QString('a'+File(b.CastlingRook(2))));
+        }
         setBoard(b);
     }
+}
+
+char BoardSetupDialog::castlingFile00() const
+{
+    return ui.castleFile00->currentText().isEmpty()? 0:ui.castleFile00->currentText().at(0).toLatin1();
+}
+
+char BoardSetupDialog::castlingFile000() const
+{
+    return ui.castleFile000->currentText().isEmpty()? 0:ui.castleFile000->currentText().at(0).toLatin1();
 }
 
 void BoardSetupDialog::slotCastlingRights()
@@ -509,7 +602,7 @@ void BoardSetupDialog::slotCastlingRights()
         cr += BlackQueenside;
     }
     b.setCastlingRights(cr);
-    b.setCastlingRooks();
+    b.setCastlingRooks(castlingFile000(),castlingFile00());
     setBoard(b);
 }
 

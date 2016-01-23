@@ -149,17 +149,22 @@ public:
     quint64 castlingRooks() const;
     static quint64 standardCastlingRooks();
 
-    void setCastlingRooks();
+    void setCastlingRooks(char file000=0, char file00=0);
     int CastlingRookIndex(Square rook) const;
+    bool HasRookOnFileForCastling(unsigned char file, bool castle000) const;
+
+    bool hasAmbiguousCastlingRooks(char file000 = 0, char file00 = 0) const;
+    /** Test to see if given color has the right to castle on kingside */
+    bool canCastleShort(const unsigned int color) const;
+    /** Test to see if given color has the right to castle on queenside */
+    bool canCastleLong(const unsigned int color) const;
+    /** Get the castling rook to the given index into m_castlingRook */
+    Square CastlingRook(int index) const;
 private:
     /** Test if a king is on a certain row to test castling rights */
     bool isKingOnRow(Piece p, Square start, Square stop) const;
     /** Return true if side to move is in check */
     bool isCheck() const;
-    /** Test to see if given color has the right to castle on kingside */
-    bool canCastleShort(const unsigned int color) const;
-    /** Test to see if given color has the right to castle on queenside */
-    bool canCastleLong(const unsigned int color) const;
     /** Test to see if given color has any castling rights remaining */
     bool canCastle(const unsigned int color) const;
 
@@ -207,11 +212,10 @@ private:
     /** Setup board according to FEN string */
     bool fromGoodFen(const QString& fen, bool chess960=false);
     /** Get the rook with index from castling rook storage */
-    Square CastlingRook(int index) const;
     bool HasRookForCastling(int index) const;
     Square CastlingKingTarget(int rookIndex) const;
     Square CastlingRookTarget(int rookIndex) const;
-    void fixCastlingRooks(bool);
+    void fixCastlingRooks(bool, char file000=0, char file00=0);
 
     // Actual Bit-board data
     quint64 m_pawns, m_knights, m_bishops, m_rooks, m_castlingRooks, m_queens, m_kings;
