@@ -32,6 +32,9 @@ typedef enum SquareNames Square;
 typedef unsigned char Square;
 #endif
 
+#define File(s)           ((s)&7)
+#define Rank(s)           ((s)>>3)
+
 inline Square SquareFromRankAndFile(unsigned char rank, unsigned char file)
 {
     return Square(rank*8+file);

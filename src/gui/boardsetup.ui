@@ -68,9 +68,9 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
-     <widget class="QWidget" name="tab_3">
+     <widget class="QWidget" name="tabTools">
       <attribute name="title">
        <string>Tools</string>
       </attribute>
@@ -206,11 +206,18 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_4">
+     <widget class="QWidget" name="tabCastling">
       <attribute name="title">
        <string>Castling</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="wqCastleCheck">
+         <property name="text">
+          <string>White O-O-O</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="0">
         <widget class="QCheckBox" name="wkCastleCheck">
          <property name="text">
@@ -225,13 +232,6 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="wqCastleCheck">
-         <property name="text">
-          <string>White O-O-O</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="1">
         <widget class="QCheckBox" name="bqCastleCheck">
          <property name="text">
@@ -239,9 +239,15 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="2">
+        <widget class="QComboBox" name="castleFile000"/>
+       </item>
+       <item row="0" column="2">
+        <widget class="QComboBox" name="castleFile00"/>
+       </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tabAdvanced">
       <attribute name="title">
        <string>Advanced</string>
       </attribute>
@@ -393,7 +399,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="tabChess960">
       <attribute name="title">
        <string>Chess 960</string>
       </attribute>

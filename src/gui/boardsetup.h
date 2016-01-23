@@ -54,6 +54,8 @@ protected:
     /** Sets status message for the board (either fen or error message). */
     void setStatusMessage();
 
+    char castlingFile00() const;
+    char castlingFile000() const;
 public slots:
     /** Start a drag operation */
     void startDrag(QWidget* w, QMouseEvent* event);

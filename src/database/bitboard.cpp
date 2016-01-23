@@ -140,8 +140,7 @@ const quint64 fileNotGH   = ~(fileG | fileH);
 #define ShiftDownLeft(b)  (((b)>>9)&fileNotH)
 #define ShiftDownRight(b) (((b)>>7)&fileNotA)
 #define SetBit(s)         (bb_Mask[s])
-#define File(s)           ((s)&7)
-#define Rank(s)           ((s)>>3)
+
 
 /** Initialize a new bitboard, and ensure global data has been initialized */
 BitBoard::BitBoard()
@@ -723,6 +722,29 @@ BoardStatus BitBoard::validate() const
         {
             return BadCastlingRights;
         }
+
+        if (canCastle(White) && canCastle(Black))
+        {
+            if (File(m_ksq[White]) != File(m_ksq[Black]))
+            {
+                return BadCastlingRights;
+            }
+        }
+
+        if (canCastleShort(White) && canCastleShort(Black))
+        {
+            if (File(CastlingRook(1)) != File(CastlingRook(3)))
+            {
+                return BadCastlingRights;
+            }
+        }
+        if (canCastleLong(White) && canCastleLong(Black))
+        {
+            if (File(CastlingRook(0)) != File(CastlingRook(2)))
+            {
+                return BadCastlingRights;
+            }
+        }
     }
 
     // Detect unreasonable ep square
@@ -1137,7 +1159,7 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
     return true;
 }
 
-void BitBoard::setCastlingRooks()
+void BitBoard::setCastlingRooks(char file000, char file00)
 {
     if (chess960())
     {
@@ -1164,15 +1186,23 @@ void BitBoard::setCastlingRooks()
         return;
     }
 
-    fixCastlingRooks(false);
+    fixCastlingRooks(false, file000, file00);
 }
 
-void BitBoard::fixCastlingRooks(bool onlyMissingSections)
+void BitBoard::fixCastlingRooks(bool onlyMissingSections, char file000, char file00)
 {
     Square Sections[4][2] = { { a1, m_ksq[White] },
                               { h1, m_ksq[White] },
                               { a8, m_ksq[Black] },
                               { h8, m_ksq[Black] }};
+
+    Square filesForSection[4] =
+    {
+        file000 ? SquareFromRankAndFile(0,file000-'a') : InvalidSquare,
+        file00 ? SquareFromRankAndFile(0,file00-'a') : InvalidSquare,
+        file000 ? SquareFromRankAndFile(7,file000-'a') : InvalidSquare,
+        file00 ? SquareFromRankAndFile(7,file00-'a') : InvalidSquare
+    };
 
     for (int section=0; section<4; ++section)
     {
@@ -1184,7 +1214,21 @@ void BitBoard::fixCastlingRooks(bool onlyMissingSections)
             quint64 x = SetBit(iter);
             if (m_castlingRooks & x)
             {
-                break;
+                if (filesForSection[section] != InvalidSquare)
+                {
+                    if (iter != filesForSection[section])
+                    {
+                        m_castlingRooks &= ~x;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
             }
             iter += (start<stop) ? +1 : -1;
         } while (iter != stop);
@@ -1209,6 +1253,67 @@ void BitBoard::fixCastlingRooks(bool onlyMissingSections)
             } while (iter != stop);
         }
     }
+}
+
+bool BitBoard::hasAmbiguousCastlingRooks(char file000, char file00) const
+{
+    if (!chess960()) return false;
+
+    Square Sections[4][2] = { { a1, m_ksq[White] },
+                              { h1, m_ksq[White] },
+                              { a8, m_ksq[Black] },
+                              { h8, m_ksq[Black] }};
+
+    bool testRequired[4] =
+    {
+        canCastleLong(White),
+        canCastleShort(White),
+        canCastleLong(Black),
+        canCastleShort(Black)
+    };
+
+    Square filesForSection[4] =
+    {
+        file000 ? SquareFromRankAndFile(0,file000-'a') : InvalidSquare,
+        file00 ? SquareFromRankAndFile(0,file00-'a') : InvalidSquare,
+        file000 ? SquareFromRankAndFile(7,file000-'a') : InvalidSquare,
+        file00 ? SquareFromRankAndFile(7,file00-'a') : InvalidSquare
+    };
+
+    for (int section=0; section<4; ++section)
+    {
+        if (!testRequired[section]) continue;
+        bool found = false;
+        Square start = Sections[section][0];
+        Square stop = Sections[section][1];
+        Square iter = start;
+        do
+        {
+            quint64 x = SetBit(iter);
+            if (m_rooks & x)
+            {
+                if (filesForSection[section] != InvalidSquare )
+                {
+                    if (iter != filesForSection[section])
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        // Outer rook is allowed rook -> unambiguous
+                        break;
+                    }
+                }
+                else
+                {
+                    if (found) return true;
+                    found = true;
+                }
+            }
+            iter += (start<stop) ? +1 : -1;
+        } while (iter != stop);
+    }
+    return false;
 }
 
 void BitBoard::fromChess960pos(int i)
@@ -2362,6 +2467,22 @@ int BitBoard::CastlingRookIndex(Square rook) const
     return -1;
 }
 
+bool BitBoard::HasRookOnFileForCastling(unsigned char file, bool castle000) const
+{
+    if (castle000)
+    {
+        if (file > File(m_ksq[White]) && (file > File(m_ksq[Black]))) return false;
+    }
+    else
+    {
+        if (file < File(m_ksq[White]) && (file < File(m_ksq[Black]))) return false;
+    }
+    Square w = SquareFromRankAndFile(0,file);
+    Square b = SquareFromRankAndFile(7,file);
+    quint64 x = SetBit(w) | SetBit(b);
+    return (m_rooks & x);
+}
+
 Square BitBoard::CastlingKingTarget(int rookIndex) const
 {
     if ((rookIndex<0) || (rookIndex>3)) return InvalidSquare;
@@ -2794,21 +2915,61 @@ QString BitBoard::toFen() const
     }
     else
     {
-        if(castlingRights() & WhiteKingside)
+        char s00 = 0;
+        char s000 = 0;
+        if (canCastleShort(White))
         {
-            fen += 'K';
+            s00 = 'a'+File(CastlingRook(1));
         }
-        if(castlingRights() & WhiteQueenside)
+        else if (canCastleShort(Black))
         {
-            fen += 'Q';
+            s00 = 'a'+File(CastlingRook(3));
         }
-        if(castlingRights() & BlackKingside)
+        if (canCastleLong(White))
         {
-            fen += 'k';
+            s000 = 'a'+File(CastlingRook(0));
         }
-        if(castlingRights() & BlackQueenside)
+        else if (canCastleLong(Black))
         {
-            fen += 'q';
+            s000 = 'a'+File(CastlingRook(2));
+        }
+        if (!hasAmbiguousCastlingRooks(s000, s00))
+        {
+            if(castlingRights() & WhiteKingside)
+            {
+                fen += 'K';
+            }
+            if(castlingRights() & WhiteQueenside)
+            {
+                fen += 'Q';
+            }
+            if(castlingRights() & BlackKingside)
+            {
+                fen += 'k';
+            }
+            if(castlingRights() & BlackQueenside)
+            {
+                fen += 'q';
+            }
+        }
+        else
+        {
+            if(castlingRights() & WhiteKingside)
+            {
+                fen += 'A'+File(CastlingRook(1));
+            }
+            if(castlingRights() & WhiteQueenside)
+            {
+                fen += 'A'+File(CastlingRook(0));
+            }
+            if(castlingRights() & BlackKingside)
+            {
+                fen += 'a'+File(CastlingRook(3));
+            }
+            if(castlingRights() & BlackQueenside)
+            {
+                fen += 'a'+File(CastlingRook(2));
+            }
         }
         fen += ' ';
     }
