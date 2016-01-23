@@ -4,6 +4,7 @@
 
 #include "shellhelper.h"
 #include <QtCore>
+#include <QDesktopServices>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -35,5 +36,8 @@ void ShellHelper::showInFinder(QString path)
     scriptArgs << QLatin1String("-e")
                << QLatin1String("tell application \"Finder\" to activate");
     QProcess::execute("/usr/bin/osascript", scriptArgs);
+#else
+    // At least try to open the folder.
+    QDesktopServices::openUrl(QUrl::fromLocalFile(QFileInfo(path).absolutePath()));
 #endif
 }
