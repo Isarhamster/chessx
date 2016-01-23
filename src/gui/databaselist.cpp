@@ -92,10 +92,9 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         menu.addAction(tr("Two star favorite"), this, SLOT(dbAddToFavorites2()))->setEnabled(stars != 2);
         menu.addAction(tr("Three star favorite"), this, SLOT(dbAddToFavorites3()))->setEnabled(stars != 3);
         menu.addAction(tr("Remove from Favorites"), this, SLOT(dbRemoveFromFavorites()))->setEnabled(bIsFavorite);
-#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
         menu.addSeparator();
         menu.addAction(tr("Show in Finder"), this, SLOT(slotShowInFinder()))->setEnabled(bHasPath);
-#endif
+
         bool enablePolyglot = bIsOpen && !bIsBook;
         menu.addAction(tr("Make a Polyglot book..."), this, SLOT(slotMakeBook()))->setEnabled(enablePolyglot);
 
