@@ -1123,16 +1123,24 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
     {
         return true;
     }
-    if(c < '0' || c > '9')
+    if (c=='-')
     {
-        return false;
+        m_halfMoves = 0; // Workaround for some lazy generators
+        c = fen[++i]; // Eat ws
     }
-    int j = i;
-    while(c >= '0' && c <= '9')
+    else
     {
-        c = fen[++i];
+        if(c < '0' || c > '9')
+        {
+            return false;
+        }
+        int j = i;
+        while(c >= '0' && c <= '9')
+        {
+            c = fen[++i];
+        }
+        m_halfMoves = fen.mid(j, i - j).toInt();
     }
-    m_halfMoves = fen.mid(j, i - j).toInt();
 
     // Move number
     c = fen[++i];
@@ -1140,20 +1148,27 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
     {
         return true;
     }
-    if(c < '0' || c > '9')
+    if (c=='-')
     {
-        return false;
+        m_moveNumber=1; // Workaround for some lazy generators
     }
-    m_moveNumber = fen.mid(i).toInt();
-    while(c >= '0' && c <= '9')
+    else
     {
-        c = fen[++i];
-    }
+        if(c < '0' || c > '9')
+        {
+            return false;
+        }
+        m_moveNumber = fen.mid(i).toInt();
+        while(c >= '0' && c <= '9')
+        {
+            c = fen[++i];
+        }
 
-    if(m_moveNumber <= 0)
-    {
-        // Silently fix illegal movenumber
-        m_moveNumber = 1;
+        if(m_moveNumber <= 0)
+        {
+            // Silently fix illegal movenumber
+            m_moveNumber = 1;
+        }
     }
 
     return true;
