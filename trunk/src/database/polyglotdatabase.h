@@ -131,7 +131,7 @@ public:
     /** Start a search for a new key */
     void reset();
     void book_make(Database& db, volatile bool& breakFlag);
-    QMutex& mutex();
+
 signals:
 
 public slots:

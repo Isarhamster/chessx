@@ -27,7 +27,7 @@ void OpeningTreeThread::run()
     {
         n = pgdb->positionCount();
         quint64 key = pgdb->getHashFromBoard(m_board);
-        QMutexLocker m(&pgdb->mutex());
+        QMutexLocker m(pgdb->mutex());
         pgdb->reset();
         bool bFound = false;
         bool bDone = false;

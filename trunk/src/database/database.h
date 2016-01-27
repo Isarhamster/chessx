@@ -43,6 +43,7 @@ public:
     /** Set file format */
     void setUtf8(bool utf8);
 
+    QMutex* mutex() { return &m_mutex; }
     //database operations
 
     /** Opens the given database */

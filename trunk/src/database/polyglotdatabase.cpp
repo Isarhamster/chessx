@@ -544,6 +544,7 @@ bool PolyglotDatabase::openForWriting(const QString &filename, int maxPly, int m
 
 void PolyglotDatabase::book_make(Database &db, volatile bool& breakFlag)
 {
+    QMutexLocker m(mutex());
     if (!breakFlag) add_database(db);
     if (!breakFlag) spool_map();
     if (!breakFlag) overflow_correction();
@@ -551,11 +552,6 @@ void PolyglotDatabase::book_make(Database &db, volatile bool& breakFlag)
     if (!breakFlag) book_sort();
     if (!breakFlag) book_save();
     close();
-}
-
-QMutex &PolyglotDatabase::mutex()
-{
-    return m_mutex;
 }
 
 // ---------------------------------------------------------
