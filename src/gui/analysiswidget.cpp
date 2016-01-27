@@ -614,7 +614,7 @@ void AnalysisWidget::updateBookMoves()
 
     if (m_pgdb && !m_gameMode)
     {
-        QMutexLocker m(&m_pgdb->mutex());
+        QMutexLocker m(m_pgdb->mutex());
         int n = m_pgdb->positionCount();
         quint64 key = m_pgdb->getHashFromBoard(m_board);
         m_pgdb->reset();

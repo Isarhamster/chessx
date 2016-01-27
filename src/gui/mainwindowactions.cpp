@@ -146,6 +146,7 @@ void MainWindow::saveDatabase(DatabaseInfo* dbInfo)
 {
     if(!dbInfo->database()->isReadOnly() && dbInfo->database()->isModified())
     {
+        QMutexLocker m(dbInfo->database()->mutex());
         startOperation(tr("Saving %1...").arg(dbInfo->database()->name()));
         Output output(Output::Pgn);
         connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));

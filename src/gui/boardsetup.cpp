@@ -106,9 +106,6 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     connect(ui.chess960pos, SIGNAL(valueChanged(int)), SLOT(chess960posChanged(int)));
     connect(ui.randomChess960, SIGNAL(clicked()), SLOT(chess960randomPos()));
 
-    ui.chess960pos->setEnabled(ui.btCheck960->isChecked());
-    ui.randomChess960->setEnabled(ui.btCheck960->isChecked());
-
     ui.tabWidget_2->setCurrentIndex(0);
 }
 
@@ -231,7 +228,10 @@ void BoardSetupDialog::setBoard(const Board& b)
     ui.bkCastleCheck->setChecked(b.canCastleShort(Black));
     ui.bqCastleCheck->setChecked(b.canCastleLong(Black));
     m_toMove = b.toMove();
+
     ui.btCheck960->setChecked(b.chess960());
+    ui.chess960pos->setEnabled(b.chess960());
+    ui.randomChess960->setEnabled(b.chess960());
 
     if (b.chess960())
     {
@@ -626,8 +626,6 @@ void BoardSetupDialog::slotChess960()
     Board b(board());
     b.setChess960(ui.btCheck960->isChecked());
     setBoard(b);
-    ui.chess960pos->setEnabled(ui.btCheck960->isChecked());
-    ui.randomChess960->setEnabled(ui.btCheck960->isChecked());
     slotCastlingRights();
 }
 
