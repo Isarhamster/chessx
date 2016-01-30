@@ -571,12 +571,12 @@ void BoardSetupDialog::slotPasteFen()
 
 char BoardSetupDialog::castlingFile00() const
 {
-    return ui.castleFile00->currentText().isEmpty()? 0:ui.castleFile00->currentText().at(0).toLatin1();
+    return ui.castleFile00->isEnabled() ? ui.castleFile00->currentText().at(0).toLatin1() : 0;
 }
 
 char BoardSetupDialog::castlingFile000() const
 {
-    return ui.castleFile000->currentText().isEmpty()? 0:ui.castleFile000->currentText().at(0).toLatin1();
+    return ui.castleFile000->isEnabled() ? ui.castleFile000->currentText().at(0).toLatin1() : 0;
 }
 
 void BoardSetupDialog::slotCastlingRights()
