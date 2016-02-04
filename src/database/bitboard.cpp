@@ -2568,20 +2568,12 @@ Move BitBoard::prepareMove(const Square& from, const Square& to) const
         // If the destination square is a piece of the moving color
         if(m_occupied_co[m_stm] & dest)
         {
-            if (!chess960())
+            if ((p!=King) || (m_piece[to] != Rook))
             {
-                // Illegal move
+                // Can't be castling move
                 return move;
             }
-            else
-            {
-                if ((p!=King) || (m_piece[to] != Rook))
-                {
-                    // Can't be a chess960 castling move
-                    return move;
-                }
-                move.SetCastlingBit();
-            }
+            move.SetCastlingBit();
         }
 
         move.setPieceType(p);
@@ -2685,7 +2677,7 @@ bool BitBoard::prepareCastle(Move& move) const
     Square to = move.to();
     if(m_stm == White)
     {
-        if(to == g1 && canCastleShort(White) && !((F1 | G1)&m_occupied))
+        if((((to == h1) && (H1&m_occupied)) || (to == g1)) && canCastleShort(White) && !((F1 | G1)&m_occupied))
         {
             if(!isAttackedBy(Black, e1) && !isAttackedBy(Black, f1))
             {
@@ -2693,7 +2685,7 @@ bool BitBoard::prepareCastle(Move& move) const
                 return true;
             }
         }
-        else if(to == c1 && canCastleLong(White) && !((B1 | C1 | D1)&m_occupied))
+        else if((((to == a1) && (A1&m_occupied)) || (to == c1)) && canCastleLong(White) && !((B1 | C1 | D1)&m_occupied))
         {
             if(!isAttackedBy(Black, e1) && !isAttackedBy(Black, d1))
             {
@@ -2704,7 +2696,7 @@ bool BitBoard::prepareCastle(Move& move) const
     }
     else
     {
-        if(to == g8 && canCastleShort(Black) && !((F8 | G8)&m_occupied))
+        if((((to == h8) && (H8&m_occupied)) || to == g8) && canCastleShort(Black) && !((F8 | G8)&m_occupied))
         {
             if(!isAttackedBy(White, e8) && !isAttackedBy(White, f8))
             {
@@ -2712,7 +2704,7 @@ bool BitBoard::prepareCastle(Move& move) const
                 return true;
             }
         }
-        else if(to == c8 && canCastleLong(Black) && !((B8 | C8 | D8)&m_occupied))
+        else if((((to == a8) && (A8&m_occupied)) ||to == c8) && canCastleLong(Black) && !((B8 | C8 | D8)&m_occupied))
         {
             if(!isAttackedBy(White, e8) && !isAttackedBy(White, d8))
             {
