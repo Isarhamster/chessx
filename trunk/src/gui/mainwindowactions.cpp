@@ -758,13 +758,16 @@ void MainWindow::triggerBoardMove()
 void MainWindow::slotBoardMove(Square from, Square to, int button)
 {
     const Board& board = game().board();
-    Move m(board.prepareMove(from, to));
-    doBoardMove(m, button, from, to);
+    if (!Move(from,to).isNullMove()) // do not accept null-move via mouse
+    {
+        Move m(board.prepareMove(from, to));
+        doBoardMove(m, button, from, to);
+    }
 }
 
 void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to)
 {
-    if(m.isLegal())
+    if(m.isLegal() || m.isNullMove())
     {
         PieceType promotionPiece = None;
         if(m.isPromotion() && !(button & 0x80000000))
@@ -1568,7 +1571,7 @@ bool MainWindow::addVariation(const QString& s)
 {
     bool added = false;
     Move m = game().board().parseMove(s);
-    if(m.isLegal() || m.isNullMove())
+    if(m.isLegal() || (!gameMode() && m.isNullMove()))
     {
         added = true;
         doBoardMove(m, 0x80000000, m.from(), m.to());
@@ -2808,22 +2811,25 @@ void MainWindow::activateBoardView(int n)
 
 void MainWindow::slotActivateBoardView(int n)
 {
-    activateBoardView(n);
+    if (m_tabWidget->isTabEnabled(n))
+    {
+        activateBoardView(n);
 
-    BoardViewEx* boardView = qobject_cast<BoardViewEx*>(m_tabWidget->widget(n));
-    m_currentDatabase = qobject_cast<DatabaseInfo*>(boardView->dbIndex());
+        BoardViewEx* boardView = qobject_cast<BoardViewEx*>(m_tabWidget->widget(n));
+        m_currentDatabase = qobject_cast<DatabaseInfo*>(boardView->dbIndex());
 
-    Q_ASSERT(!databaseInfo()->IsBook());
+        Q_ASSERT(!databaseInfo()->IsBook());
 
-    emit signalGameModified(databaseInfo()->modified());
-    slotGameChanged(true);
-    m_databaseList->setFileCurrent(databaseInfo()->filePath());
-    database()->index()->calculateCache();
-    setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
-    m_gameList->setFilter(databaseInfo()->filter());
-    slotFilterChanged();
-    m_undoGroup.setActiveStack(databaseInfo()->undoStack());
-    emit databaseChanged(databaseInfo());
+        emit signalGameModified(databaseInfo()->modified());
+        slotGameChanged(true);
+        m_databaseList->setFileCurrent(databaseInfo()->filePath());
+        database()->index()->calculateCache();
+        setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
+        m_gameList->setFilter(databaseInfo()->filter());
+        slotFilterChanged();
+        m_undoGroup.setActiveStack(databaseInfo()->undoStack());
+        emit databaseChanged(databaseInfo());
+    }
 }
 
 void MainWindow::slotCloseTabWidget(int n)
@@ -3054,6 +3060,16 @@ void MainWindow::enterGameMode(bool gameMode)
     else
     {
         m_boardView->setFlags(m_boardView->flags() & ~BoardView::IgnoreSideToMove);
+    }
+
+    databaseInfo()->undoStack()->setActive(!gameMode);
+    int currentTab = m_tabWidget->currentIndex();
+    for (int i=0; i<m_tabWidget->count();++i)
+    {
+        if (i != currentTab)
+        {
+            m_tabWidget->setTabEnabled(i, !gameMode);
+        }
     }
     setGameMode(gameMode);
     m_ficsConsole->SlotGameModeChanged(gameMode);
