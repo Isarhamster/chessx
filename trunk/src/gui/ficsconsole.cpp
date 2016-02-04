@@ -281,6 +281,7 @@ void FicsConsole::HandleTacticsRequest(QListWidgetItem* item)
     ui->listPuzzlebotMessages->addItem("Requesting puzzle...");
     puzzleMode = true;
     emit RequestNewGame();
+    emit RequestAddTag(TagNameDate, PartialDate::today().asString());
     if (AppSettings->getValue("/Board/noHints").toBool())
     {
         emit RequestGameMode(true);
@@ -887,7 +888,11 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             {
                 ui->textIn->appendPlainText(s);
                 emit SignalGameResult(s);
-                emit RequestSaveGame();
+                if (!puzzleMode)
+                {
+                    // Puzzlemode is saved a little later
+                    emit RequestSaveGame();
+                }
                 break;
             }
         case FicsClient::BLKCMD_SHOWLIST:
@@ -935,10 +940,20 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     ui->listPuzzlebotMessages->scrollToBottom();
                     ui->tabWidget->setCurrentIndex(TabPuzzle);
                 }
-                if (s.contains("Timeout reached") || (s.contains("solved") && !s.contains("almost")))
+                if (s.contains("Timeout reached"))
                 {
-                    emit RequestAddTag(TagNameDate, PartialDate::today().asString());
                     emit SignalGameResult("*");
+                    emit RequestSaveGame();
+                    if (gameMode)
+                    {
+                        emit RequestGameMode(false);
+                    }
+
+                    puzzleMode = false;
+                    SlotSendUnexamine();
+                }
+                else if (s.contains("solved") && !s.contains("almost"))
+                {
                     emit RequestSaveGame();
                     if (gameMode)
                     {

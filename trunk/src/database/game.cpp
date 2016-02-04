@@ -1614,6 +1614,11 @@ int Game::variationCount(MoveId moveId) const
 
 bool Game::variationHasSiblings(MoveId variation) const
 {
+    variation = nodeValid(variation);
+    if(variation == NO_MOVE)
+    {
+        return false;
+    }
     if(isMainline(variation))
     {
         return false;
@@ -1622,7 +1627,7 @@ bool Game::variationHasSiblings(MoveId variation) const
     {
         variation = m_moveNodes[variation].previousNode;
     }
-    MoveId parent = m_moveNodes[m_currentNode].parentNode;
+    MoveId parent = m_moveNodes[variation].parentNode;
     return (variationCount(parent) > 1);
 }
 

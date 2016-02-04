@@ -888,8 +888,8 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
         if (url.isValid() && !url.isRelative() &&
             ((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp")))
         {
-            connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)));
-            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)));
+            connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)), Qt::QueuedConnection);
+            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)), Qt::QueuedConnection);
             downloadManager->doDownload(url);
         }
         else
@@ -1030,8 +1030,8 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     QString basefile = fi.completeBaseName();
 
     startOperation(tr("Opening %1...").arg(basefile));
-    connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
-    connect(db, SIGNAL(LoadFinished(DatabaseInfo*)), this, SLOT(slotDataBaseLoaded(DatabaseInfo*)));
+    connect(db->database(), SIGNAL(progress(int)), SLOT(slotOperationProgress(int)), Qt::QueuedConnection);
+    connect(db, SIGNAL(LoadFinished(DatabaseInfo*)), this, SLOT(slotDataBaseLoaded(DatabaseInfo*)), Qt::QueuedConnection);
     connect(db, SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
     connect(db, SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(db, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
@@ -1942,6 +1942,13 @@ void MainWindow::setGameMode(bool gameMode)
 {
     m_gameMode = gameMode;
     emit signalGameModeChanged(m_gameMode);
+
+    emit signalMoveHasNextMove(!gameMode && !game().atLineEnd());
+    emit signalMoveHasPreviousMove(!gameMode && !game().atGameStart());
+    emit signalMoveHasVariation(!gameMode && game().variationCount() > 0);
+    emit signalMoveHasParent(!gameMode && !game().isMainline());
+    emit signalVariationHasSibling(!gameMode && game().variationHasSiblings(CURRENT_MOVE));
+    emit signalGameAtLineStart(!gameMode && game().atLineStart());
 }
 
 void MainWindow::playSound(QString s)
