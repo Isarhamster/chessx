@@ -9,7 +9,6 @@
  ***************************************************************************/
 
 #include <QMap>
-#include <QThread>
 
 #include "board.h"
 #include "boardview.h"
