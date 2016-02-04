@@ -625,10 +625,13 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         {
             if(!game().atGameStart())
             {
-                game().addNag(NagSet::fromString(m_nagText));
+                if (game().addNag(NagSet::fromString(m_nagText)))
+                {
+                    m_nagText.clear();
+                    return;
+                }
+                // Could still be move
             }
-            m_nagText.clear();
-            return;
         }
         if (addVariation(m_nagText))
         {
@@ -638,13 +641,13 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
                 m_ficsConsole->SendMove(m.toAlgebraic());
             }
         }
-        m_nagText.clear();
+        m_nagText.clear(); // Not a move and not a nag
         return;
     }
     else
     {
         m_nagText.append(e->text());
-        if (!(m_nagText.length()==3 && m_nagText.contains("-")) && addVariation(m_nagText))
+        if (!(m_nagText.length()<=3 && m_nagText.contains("-")) && addVariation(m_nagText)) // Avoid 0-0 / Nullmove been sent too early
         {
             if (qobject_cast<FicsDatabase*>(database()))
             {
