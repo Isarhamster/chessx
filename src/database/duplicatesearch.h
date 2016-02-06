@@ -27,8 +27,8 @@ public:
     } DSMode;
 
     /** Standard constructor. */
-    DuplicateSearch(Database* db=0, DSMode mode=DS_Both);
-    DuplicateSearch(Filter *filter=0, DSMode mode=DS_Both_All);
+    DuplicateSearch(Database* db, DSMode mode=DS_Both);
+    DuplicateSearch(Filter* filter, DSMode mode=DS_Both_All);
     /** Return true if the game at index matches the search */
     virtual int matches(GameId index) const;
 
