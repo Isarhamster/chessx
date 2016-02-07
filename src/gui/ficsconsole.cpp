@@ -145,6 +145,11 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     ui->sayMessage->setCompleter(completer);
 
+    ui->seekTime->setValue(AppSettings->getValue("/FICS/minutes").toInt());
+    ui->seekIncrement->setValue(AppSettings->getValue("/FICS/increment").toInt());
+    ui->eloMin->setValue(AppSettings->getValue("/FICS/eloLow").toInt());
+    ui->eloMax->setValue(AppSettings->getValue("/FICS/eloHigh").toInt());
+
 #ifndef FICS_DEBUG
     ui->line->setVisible(false);
     ui->textOut->setEnabled(false);
@@ -1100,6 +1105,10 @@ void FicsConsole::saveConfig()
 {
     AppSettings->setValue("/FicsConsole/NoPlaySplit", ui->noPlaySplitter->saveState());
     AppSettings->setValue("/FicsConsole/SeekSplit", ui->seekSplitter->saveState());
+    AppSettings->setValue("/FICS/minutes", ui->seekTime->value());
+    AppSettings->setValue("/FICS/increment", ui->seekIncrement->value());
+    AppSettings->setValue("/FICS/eloLow", ui->eloMin->value());
+    AppSettings->setValue("/FICS/eloHigh", ui->eloMax->value());
 }
 
 void FicsConsole::slotReconfigure()

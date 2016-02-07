@@ -98,7 +98,7 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         bool enablePolyglot = bIsOpen && !bIsBook;
         menu.addAction(tr("Make a Polyglot book..."), this, SLOT(slotMakeBook()))->setEnabled(enablePolyglot);
 
-        QFileInfo fi(AppSettings->value("Tools/Path1").toString());
+        QFileInfo fi(AppSettings->getValue("Tools/Path1").toString());
         QString extTool1 = fi.baseName();
         if (!extTool1.isEmpty())
         {
