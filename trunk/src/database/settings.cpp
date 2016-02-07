@@ -327,7 +327,10 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/FICS/useTimeseal", true);
     map.insert("/FICS/guestLogin", false);
     map.insert("/FICS/userName", "guest");
-    map.insert("/FICS/passWord", "");
+    map.insert("/FICS/minutes", 1);
+    map.insert("/FICS/increment", 0);
+    map.insert("/FICS/eloLow", 0);
+    map.insert("/FICS/eloHigh", 9000);
 
     map.insert("/Board/showFrame", true);
     map.insert("/Board/showCoordinates", true);

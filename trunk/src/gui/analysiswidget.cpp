@@ -189,7 +189,7 @@ void AnalysisWidget::slotReconfigure()
     if(oldEngineName.isEmpty())
     {
         QString key = QString("/") + objectName() + "/Engine";
-        oldEngineName = AppSettings->value(key).toString();
+        oldEngineName = AppSettings->getValue(key).toString();
     }
 
     EngineList enginesList;

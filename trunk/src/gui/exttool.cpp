@@ -40,7 +40,7 @@ void ExtTool::RunExtTool1(QString pathIn)
 {
     errText.clear();
 
-    QString extTool1 = AppSettings->value("Tools/Path1").toString();
+    QString extTool1 = AppSettings->getValue("Tools/Path1").toString();
     QFileInfo fiExtTool(extTool1);
     QFileInfo fiPathIn(pathIn);
     m_extToolProcess = new QProcess(this);
@@ -52,7 +52,7 @@ void ExtTool::RunExtTool1(QString pathIn)
         QStringList options;
 
         options << fiExtTool.absoluteFilePath();
-        QString parameter = AppSettings->value("Tools/CommandLine1").toString();
+        QString parameter = AppSettings->getValue("Tools/CommandLine1").toString();
         parameter.replace("$(InputPath)",fiPathIn.absoluteFilePath());
         parameter.replace("$(InputFile)",fiPathIn.fileName());
         parameter.replace("$(InputDir)",fiPathIn.absolutePath());

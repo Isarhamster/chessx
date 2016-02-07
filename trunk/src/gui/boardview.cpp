@@ -1157,7 +1157,7 @@ void BoardView::renderImage(QImage &image, double scaling) const
     BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     QSize s = size()*scaling;
     boardView.setMinimumSize(s);
-    boardView.setEnabled(isEnabled() && AppSettings->value("/Board/colorCopy").toBool());
+    boardView.setEnabled(isEnabled() && AppSettings->getValue("/Board/colorCopy").toBool());
     boardView.setFlipped(isFlipped());
     boardView.configure();
     boardView.showMoveIndicator(showMoveIndicator());
