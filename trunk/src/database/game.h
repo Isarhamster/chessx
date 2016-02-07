@@ -85,11 +85,11 @@ public :
         PreviousMove
     };
 
-    static const QRegExp egt;
-    static const QRegExp clk;
-    static const QRegExp emt;
-    static const QRegExp csl;
-    static const QRegExp cal;
+    static const char* s_egt;
+    static const char* s_clk;
+    static const char* s_emt;
+    static const char* s_csl;
+    static const char* s_cal;
 
     Game();
     Game(const Game& game);
@@ -217,6 +217,7 @@ public :
     void moveToStart();
     /** Moves to the end of the game */
     void moveToEnd();
+    bool dbMoveToEnd();
     /** Moves by given ply, returns actual ply reached */
     int moveByPly(int diff);
     /** Moves to the position corresponding to the given move id */
@@ -226,6 +227,7 @@ public :
     int forward(int count = 1);
     /** Move back the given number of moves, returns actual number of moves undone */
     int backward(int count = 1);
+    int dbBackward(int count = 1);
     /** Moves forward if the next move matches (from,to,promotionPiece) */
     bool findNextMove(Square from, Square to, PieceType promotionPiece = None);
     bool findNextMove(Move m);
