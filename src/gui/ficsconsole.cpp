@@ -643,6 +643,7 @@ void FicsConsole::SetPlayerListItemsFromLine(QString s)
 void FicsConsole::Disconnected()
 {
     ui->textIn->appendPlainText(tr("Disconnected"));
+    ui->textIn->ensureCursorVisible();
     ui->tabWidget->setCurrentIndex(TabMessage);
     m_lastHistoryPlayer.clear();
     ui->listNoPlay->clear();
@@ -867,6 +868,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 emit RequestNewGame();
                 emit RequestGameMode(gameMode);
                 ui->textIn->appendPlainText(s);
+                ui->textIn->ensureCursorVisible();
                 ui->tabWidget->setCurrentIndex(TabMessage);
                 QStringList l = s.split(' ');
                 if (l.length() > 2)
@@ -884,6 +886,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 gameMode = false;
                 m_countDownTimer->stop();
                 ui->textIn->appendPlainText(s);
+                ui->textIn->ensureCursorVisible();
                 emit SignalGameResult(s);
                 emit RequestSaveGame();
                 emit RequestGameMode(gameMode);
@@ -892,6 +895,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_INTERNAL_GAME_END:
             {
                 ui->textIn->appendPlainText(s);
+                ui->textIn->ensureCursorVisible();
                 emit SignalGameResult(s);
                 if (!puzzleMode)
                 {
@@ -918,6 +922,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_INTERNAL_SESSION_STARTED:
             emit raiseRequest();
             ui->textIn->appendPlainText(s);
+            ui->textIn->ensureCursorVisible();
             if (m_ficsClient->loggedInAsGuest())
             {
                 ui->cbRated->setCurrentIndex(1);
@@ -930,6 +935,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             break;
         case FicsClient::BLKCMD_NULL:
             ui->textIn->appendPlainText(s);
+            ui->textIn->ensureCursorVisible();
             break;
         case FicsClient::BLKCMD_INTERNAL_PUZZLEBOT:
             if (s.contains("kibitzes"))
@@ -1001,6 +1007,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             if (!s.contains("goes"))
             {
                 ui->textIn->appendPlainText(s);
+                ui->textIn->ensureCursorVisible();
                 ui->tabWidget->setCurrentIndex(TabMessage);
             }
             break;
@@ -1016,6 +1023,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             break;
         default:
             ui->textIn->appendPlainText(s);
+            ui->textIn->ensureCursorVisible();
             ui->tabWidget->setCurrentIndex(TabMessage);
             break;
         }
