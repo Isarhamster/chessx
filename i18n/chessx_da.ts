@@ -83,7 +83,7 @@ Fri skakdatabase </translation>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="399"/>
         <source>FICS database</source>
-        <translation type="unfinished"></translation>
+        <translation>FICS-database</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="428"/>
@@ -124,7 +124,7 @@ Fri skakdatabase </translation>
     <message>
         <location filename="../src/database/analysis.cpp" line="189"/>
         <source>Resigns</source>
-        <translation type="unfinished"></translation>
+        <translation>Opgiver</translation>
     </message>
     <message>
         <location filename="../src/database/analysis.cpp" line="195"/>
@@ -160,17 +160,32 @@ Fri skakdatabase </translation>
         <translation>&amp;Linjer:</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.ui" line="63"/>
+        <location filename="../src/gui/analysiswidget.ui" line="53"/>
+        <source>Number of parallel lines</source>
+        <translation>Antal parallelle linjer</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/analysiswidget.ui" line="66"/>
         <source>Pin engine to current position</source>
         <translation>Lås motor til aktuelle stilling</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.ui" line="66"/>
+        <location filename="../src/gui/analysiswidget.ui" line="69"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.ui" line="99"/>
+        <location filename="../src/gui/analysiswidget.ui" line="89"/>
+        <source>Select an engine</source>
+        <translation>Vælg en motor</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/analysiswidget.ui" line="96"/>
+        <source>Select a GUI book</source>
+        <translation>Vælg en åbningsbog</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/analysiswidget.ui" line="109"/>
         <location filename="../src/gui/analysiswidget.cpp" line="147"/>
         <source>Analyze</source>
         <translation>Analysér</translation>
@@ -229,7 +244,7 @@ Fri skakdatabase </translation>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="493"/>
         <source>&lt;i&gt;Book:&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Åbningsbog:&lt;/i&gt;</translation>
     </message>
     <message>
         <source>&lt;a href=&quot;0&quot; title=&quot;Click to add move to game&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt; </source>
@@ -248,7 +263,7 @@ Fri skakdatabase </translation>
 <context>
     <name>BitBoard</name>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="2779"/>
+        <location filename="../src/database/bitboard.cpp" line="2807"/>
         <source>w%1
 b%2
 %3 to move.</source>
@@ -257,12 +272,12 @@ S: %2
 %3 i trækket.</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="2796"/>
+        <location filename="../src/database/bitboard.cpp" line="2824"/>
         <source>White</source>
         <translation>Hvid</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="2796"/>
+        <location filename="../src/database/bitboard.cpp" line="2824"/>
         <source>Black</source>
         <translation>Sort</translation>
     </message>
@@ -397,7 +412,7 @@ S: %2
     <message>
         <location filename="../src/gui/boardsetup.ui" line="211"/>
         <source>Castling</source>
-        <translation type="unfinished"></translation>
+        <translation>Rokade</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="238"/>
@@ -407,7 +422,7 @@ S: %2
     <message>
         <location filename="../src/gui/boardsetup.ui" line="246"/>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Avanceret</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="254"/>
@@ -422,17 +437,17 @@ S: %2
     <message>
         <location filename="../src/gui/boardsetup.ui" line="398"/>
         <source>Chess 960</source>
-        <translation type="unfinished"></translation>
+        <translation>Skak960</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="413"/>
         <source>-</source>
-        <translation type="unfinished"></translation>
+        <translation>-</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="429"/>
         <source>Random Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Tilfældig stilling</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="442"/>
@@ -455,7 +470,7 @@ S: %2
         <translation>Kopiér tekst</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="270"/>
+        <location filename="../src/gui/boardsetup.cpp" line="273"/>
         <source>Current position is not valid.
 
 %1.</source>
@@ -464,82 +479,82 @@ S: %2
 %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="397"/>
+        <location filename="../src/gui/boardsetup.cpp" line="400"/>
         <source>No white king</source>
         <translation>Ingen hvid konge</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="399"/>
+        <location filename="../src/gui/boardsetup.cpp" line="402"/>
         <source>No black king</source>
         <translation>Ingen sort konge</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="401"/>
+        <location filename="../src/gui/boardsetup.cpp" line="404"/>
         <source>Both kings are in check</source>
         <translation>Begge konger er i skak</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="403"/>
+        <location filename="../src/gui/boardsetup.cpp" line="406"/>
         <source>Side to move has opponent in check already</source>
         <translation>Spilleren i trækkets modstander er allerede i skak</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="405"/>
+        <location filename="../src/gui/boardsetup.cpp" line="408"/>
         <source>Black has too many pawns</source>
         <translation>Sort har for mange bønder</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="407"/>
+        <location filename="../src/gui/boardsetup.cpp" line="410"/>
         <source>White has too many pawns</source>
         <translation>Hvid har for mange bønder</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="409"/>
+        <location filename="../src/gui/boardsetup.cpp" line="412"/>
         <source>There are pawns on the first or eighth rank</source>
         <translation>Der er bønder på første eller ottende række</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="411"/>
+        <location filename="../src/gui/boardsetup.cpp" line="414"/>
         <source>Too many kings</source>
         <translation>For mange konger</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="413"/>
+        <location filename="../src/gui/boardsetup.cpp" line="416"/>
         <source>Too many black pieces</source>
         <translation>For mange sorte brikker</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="415"/>
+        <location filename="../src/gui/boardsetup.cpp" line="418"/>
         <source>Too many white pieces</source>
         <translation>For mange hvide brikker</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="417"/>
+        <location filename="../src/gui/boardsetup.cpp" line="420"/>
         <source>Bad castling rights</source>
         <translation>Umulige rokaderettigheder</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="419"/>
+        <location filename="../src/gui/boardsetup.cpp" line="422"/>
         <source>En passant square is not correct</source>
         <translation>En passant-felt er ikke korrekt</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="421"/>
+        <location filename="../src/gui/boardsetup.cpp" line="424"/>
         <source>Unknown reason</source>
         <translation>Ukendt årsag</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="438"/>
+        <location filename="../src/gui/boardsetup.cpp" line="441"/>
         <source>Illegal position: %1</source>
         <translation>Ulovlig stilling: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="476"/>
+        <location filename="../src/gui/boardsetup.cpp" line="479"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Teksten i udklipsholderen er ikke en gyldig FEN-kode:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="477"/>
+        <location filename="../src/gui/boardsetup.cpp" line="480"/>
         <source>There is no text in clipboard.</source>
         <translation>Der er ingen tekst i udklipsholderen.</translation>
     </message>
@@ -559,6 +574,7 @@ Tjek venligst din installation.</translation>
     <message>
         <location filename="../src/gui/boardviewex.ui" line="14"/>
         <source>Form</source>
+        <translatorcomment>Bruges ikke ifølge udvikler</translatorcomment>
         <translation type="unfinished">Form</translation>
     </message>
 </context>
@@ -781,17 +797,17 @@ Tjek venligst din installation.</translation>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="91"/>
         <source>Keep file</source>
-        <translation type="unfinished"></translation>
+        <translation>Gem fil</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="92"/>
         <source>Two star favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Tostjernet foretrukken</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="93"/>
         <source>Three star favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Trestjernet foretrukken</translation>
     </message>
     <message>
         <source>Add to favorites</source>
@@ -975,18 +991,18 @@ Tjek venligst din installation.</translation>
         <translation>Rating: &lt;b&gt;%1-%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="243"/>
+        <location filename="../src/database/ecoinfo.cpp" line="237"/>
         <source>White Player</source>
         <translation>Hvid spiller</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="243"/>
-        <location filename="../src/database/ecoinfo.cpp" line="256"/>
+        <location filename="../src/database/ecoinfo.cpp" line="237"/>
+        <location filename="../src/database/ecoinfo.cpp" line="250"/>
         <source>Score</source>
         <translation>Score</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="256"/>
+        <location filename="../src/database/ecoinfo.cpp" line="250"/>
         <source>Black Player</source>
         <translation>Sort spiller</translation>
     </message>
@@ -1149,7 +1165,7 @@ Tjek venligst din installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="160"/>
         <location filename="../src/gui/ficsconsole.ui" line="166"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1012"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1060"/>
         <source>History</source>
         <translation>Historik</translation>
     </message>
@@ -1176,13 +1192,13 @@ Tjek venligst din installation.</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="225"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="986"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1034"/>
         <source>Relay</source>
         <translation>Relæ</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="245"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="999"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1047"/>
         <source>Puzzle</source>
         <translation>Opgaver</translation>
     </message>
@@ -1212,17 +1228,17 @@ Tjek venligst din installation.</translation>
         <translation>Foreslå et parti</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="75"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="79"/>
         <source>Get Mate</source>
         <translation>Få mat-opgave</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="78"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="82"/>
         <source>Get Study</source>
         <translation>Få studie</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="81"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="85"/>
         <source>Get Tactics</source>
         <translation>Få taktik-opgave</translation>
     </message>
@@ -1308,63 +1324,63 @@ Tjek venligst din installation.</translation>
         <translation>Indtast kommando her</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="86"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1025"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="90"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1073"/>
         <source>Accept</source>
         <translation>Acceptér</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="92"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="96"/>
         <source>Draw</source>
         <translation>Remis</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="98"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="102"/>
         <source>Decline</source>
         <translation>Afvis</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="104"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="108"/>
         <source>Abort</source>
         <translation>Afbryd</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="110"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="114"/>
         <source>Resign</source>
         <translation>Opgiv</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="116"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="120"/>
         <source>Hint</source>
         <translation>Tip</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="122"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="126"/>
         <source>Cancel</source>
         <translation>Annuller</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="502"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="546"/>
         <source>Disconnect</source>
         <translation>Luk forbindelsen</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="595"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="639"/>
         <source>Disconnected</source>
         <translation>Forbindelsen er lukket</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="643"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="691"/>
         <source>Retrieving relayed games...</source>
         <translation>Henter viste partier ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="960"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1008"/>
         <source>Observe</source>
         <translation>Observér</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="973"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1021"/>
         <source>Examine</source>
         <translation>Undersøg</translation>
     </message>
@@ -1435,18 +1451,18 @@ Tjek venligst din installation.</translation>
 <context>
     <name>Game</name>
     <message>
-        <location filename="../src/database/game.cpp" line="160"/>
-        <location filename="../src/database/game.cpp" line="569"/>
+        <location filename="../src/database/game.cpp" line="152"/>
+        <location filename="../src/database/game.cpp" line="561"/>
         <source>Add move</source>
         <translation>Tilføj træk</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="422"/>
+        <location filename="../src/database/game.cpp" line="414"/>
         <source>Merge game</source>
         <translation>Flet partier</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="590"/>
+        <location filename="../src/database/game.cpp" line="582"/>
         <source>Replace move</source>
         <translation>Erstat træk</translation>
     </message>
@@ -1459,149 +1475,154 @@ Tjek venligst din installation.</translation>
         <translation type="vanished">Ophøj variant</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="129"/>
+        <location filename="../src/database/game.cpp" line="121"/>
         <source>Copy game</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiér parti</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="611"/>
-        <location filename="../src/database/game.cpp" line="622"/>
-        <location filename="../src/database/game.cpp" line="633"/>
+        <location filename="../src/database/game.cpp" line="603"/>
+        <location filename="../src/database/game.cpp" line="614"/>
+        <location filename="../src/database/game.cpp" line="625"/>
         <source>Add variation</source>
-        <translation type="unfinished"></translation>
+        <translation>Tilføj variant</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="731"/>
+        <location filename="../src/database/game.cpp" line="723"/>
         <source>Promote variation</source>
-        <translation type="unfinished"></translation>
+        <translation>Ophøj variant</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="751"/>
+        <location filename="../src/database/game.cpp" line="743"/>
         <source>Remove variation</source>
         <translation>Fjern variant</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="834"/>
+        <location filename="../src/database/game.cpp" line="826"/>
         <source>Truncate variation</source>
         <translation>Beskær variant</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="878"/>
+        <location filename="../src/database/game.cpp" line="870"/>
         <source>Remove variations</source>
         <translation>Fjern varianter</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="891"/>
+        <location filename="../src/database/game.cpp" line="883"/>
         <source>Remove comments</source>
         <translation>Fjern kommentarer</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1007"/>
+        <location filename="../src/database/game.cpp" line="999"/>
         <source>Set annotation</source>
         <translation>Sæt symboler</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1123"/>
+        <location filename="../src/database/game.cpp" line="1115"/>
         <source>Colorize square</source>
         <translation>Farvelæg felt</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1171"/>
+        <location filename="../src/database/game.cpp" line="1163"/>
         <source>Paint arrow</source>
         <translation>Lav en pil</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1314"/>
+        <location filename="../src/database/game.cpp" line="1306"/>
         <source>Add nag</source>
         <translation>Tilføj symbol</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1327"/>
+        <location filename="../src/database/game.cpp" line="1319"/>
         <source>Set nags</source>
         <translation>Sæt symboler</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1473"/>
-        <location filename="../src/database/game.cpp" line="1508"/>
+        <location filename="../src/database/game.cpp" line="1465"/>
+        <location filename="../src/database/game.cpp" line="1500"/>
         <source>Move variation</source>
         <translation>Flyt variant</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1534"/>
+        <location filename="../src/database/game.cpp" line="1526"/>
         <source>Enumerate variations</source>
         <translation>Nummerer variationer</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1892"/>
+        <location filename="../src/database/game.cpp" line="1884"/>
         <source>Set result</source>
         <translation>Sæt resultat</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1917"/>
+        <location filename="../src/database/game.cpp" line="1909"/>
         <source>Set variant</source>
-        <translation type="unfinished"></translation>
+        <translation>Sæt variant</translation>
     </message>
 </context>
 <context>
     <name>GameList</name>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="44"/>
-        <location filename="../src/gui/gamelist.cpp" line="241"/>
+        <location filename="../src/gui/gamelist.cpp" line="45"/>
+        <location filename="../src/gui/gamelist.cpp" line="242"/>
         <source>Game list</source>
         <translation>Partiliste</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="88"/>
+        <location filename="../src/gui/gamelist.cpp" line="89"/>
         <source>Find tag...</source>
         <translation>Find tag ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="90"/>
+        <location filename="../src/gui/gamelist.cpp" line="91"/>
         <source>Hide Column</source>
         <translation>Skjul kolonne</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="92"/>
+        <location filename="../src/gui/gamelist.cpp" line="93"/>
         <source>Resize visible Columns</source>
         <translation>Tilpas bredde på synlige kolonner</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="93"/>
+        <location filename="../src/gui/gamelist.cpp" line="94"/>
         <source>Show all Columns</source>
         <translation>Vis alle kolonner</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="242"/>
+        <location filename="../src/gui/gamelist.cpp" line="243"/>
         <source>Copy games...</source>
         <translation>Kopiér partier ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="243"/>
+        <location filename="../src/gui/gamelist.cpp" line="244"/>
+        <source>Filter twins</source>
+        <translation>Filtrér dubletter</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gamelist.cpp" line="245"/>
         <source>Merge into current game</source>
         <translation>Flet ind i aktuelt parti</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="244"/>
+        <location filename="../src/gui/gamelist.cpp" line="246"/>
         <source>All Games</source>
         <translation>Alle partier</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="245"/>
+        <location filename="../src/gui/gamelist.cpp" line="247"/>
         <source>Filter</source>
         <translation>Filter</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="246"/>
+        <location filename="../src/gui/gamelist.cpp" line="248"/>
         <source>Selected games</source>
         <translation>Valgte partier</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="248"/>
+        <location filename="../src/gui/gamelist.cpp" line="250"/>
         <source>Delete game</source>
         <translation>Slet parti</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="252"/>
+        <location filename="../src/gui/gamelist.cpp" line="254"/>
         <source>Hide game</source>
         <translation>Skjul parti</translation>
     </message>
@@ -1627,6 +1648,14 @@ Tjek venligst din installation.</translation>
         <location filename="../src/gui/gamewindow.ui" line="108"/>
         <source>Other</source>
         <translation>Andet</translation>
+    </message>
+</context>
+<context>
+    <name>HelpBrowserShell</name>
+    <message>
+        <location filename="../src/gui/helpbrowsershell.ui" line="14"/>
+        <source>MainWindow</source>
+        <translation>Hovedvindue</translation>
     </message>
 </context>
 <context>
@@ -1667,72 +1696,72 @@ Skal jeg downloade en database?</translation>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="177"/>
+        <location filename="../src/gui/mainwindow.cpp" line="178"/>
         <source>Game Text</source>
         <translation>Partitekst</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="184"/>
+        <location filename="../src/gui/mainwindow.cpp" line="185"/>
         <source>Game Time</source>
         <translation>Tid</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="125"/>
+        <location filename="../src/gui/mainwindow.cpp" line="126"/>
         <source>Game List</source>
         <translation>Partiliste</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="239"/>
+        <location filename="../src/gui/mainwindow.cpp" line="241"/>
         <source>Players</source>
         <translation>Spillere</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="256"/>
+        <location filename="../src/gui/mainwindow.cpp" line="258"/>
         <source>Events</source>
         <translation>Arrangementer</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="274"/>
+        <location filename="../src/gui/mainwindow.cpp" line="276"/>
         <source>ECO</source>
         <translation>ECO</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="291"/>
+        <location filename="../src/gui/mainwindow.cpp" line="293"/>
         <source>Databases</source>
         <translation>Databaser</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="329"/>
+        <location filename="../src/gui/mainwindow.cpp" line="331"/>
         <source>Opening Tree</source>
         <translation>Åbningstræ</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="348"/>
+        <location filename="../src/gui/mainwindow.cpp" line="350"/>
         <source>Analysis 1</source>
         <translation>Analyse 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="356"/>
+        <location filename="../src/gui/mainwindow.cpp" line="358"/>
         <source>Analysis 2</source>
         <translation>Analyse 2</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="417"/>
+        <location filename="../src/gui/mainwindow.cpp" line="420"/>
         <source>Move Interval:</source>
         <translation>Trækinterval:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="465"/>
+        <location filename="../src/gui/mainwindow.cpp" line="468"/>
         <source>Loading ECO file...</source>
         <translation>Indlæser ECO-fil ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="545"/>
+        <location filename="../src/gui/mainwindow.cpp" line="548"/>
         <source>ECO Loaded.</source>
         <translation>ECO indlæst.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="545"/>
+        <location filename="../src/gui/mainwindow.cpp" line="548"/>
         <source>ECO Load Error.</source>
         <translation>ECO-indlæsningsfejl.</translation>
     </message>
@@ -1741,77 +1770,77 @@ Skal jeg downloade en database?</translation>
         <translation type="vanished">[Udklipsholder]</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="992"/>
+        <location filename="../src/gui/mainwindow.cpp" line="995"/>
         <source>Database %1 cannot be accessed at the moment.</source>
         <translation>Database %1 kan ikke bruges i øjeblikket.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1028"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1031"/>
         <source>Opening %1...</source>
         <translation>Åbner %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1050"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1053"/>
         <source>Database %1 cannot be accessed at the moment (%2).</source>
         <translation>Database %1 kan ikke bruges i øjeblikket (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1062"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1065"/>
         <source>Cannot open file</source>
         <translation>Filen kan ikke åbnes</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1073"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1076"/>
         <source>%1 opened</source>
         <translation>%1 åbnet</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1113"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1116"/>
         <source>Export games</source>
         <translation>Eksportér partier</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1117"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1120"/>
         <source>PGN file (*.pgn)</source>
         <translation>PGN-fil (*.pgn)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1118"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1121"/>
         <source>HTML page (*.html)</source>
         <translation>HTML-side (*.html)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1119"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1122"/>
         <source>LaTeX document (*.tex)</source>
         <translation>LaTeX-dokument (*.tex)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1253"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1256"/>
         <source>&amp;File</source>
         <translation>&amp;Fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1254"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1257"/>
         <source>File</source>
         <translation>Fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1256"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1259"/>
         <source>&amp;New database...</source>
         <translation>&amp;Ny database ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1257"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1260"/>
         <source>&amp;Open...</source>
         <translation>&amp;Åbn ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1258"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1261"/>
         <source>Open in UTF8...</source>
         <translation>Åbn i UTF8 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1260"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1263"/>
         <source>Open &amp;recent...</source>
         <translation>Åbn n&amp;ylig ...</translation>
     </message>
@@ -1820,715 +1849,733 @@ Skal jeg downloade en database?</translation>
         <translation type="vanished">&amp;Gem</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1274"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1277"/>
         <source>Commit Database to disk</source>
         <translation>Skriv database til disk</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1279"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1282"/>
         <source>&amp;Export...</source>
         <translation>&amp;Eksportér ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1281"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1284"/>
         <source>Current Game</source>
         <translation>Aktuelt parti</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1282"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1285"/>
         <source>&amp;Games in filter</source>
         <translation>&amp;Partier i filter</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1283"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1286"/>
         <source>&amp;All games</source>
         <translation>&amp;Alle partier</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="701"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="703"/>
         <source>Export Image</source>
         <translation>Eksportér billede</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1287"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1290"/>
         <source>Mail PGN...</source>
         <translation>E-mail PGN ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1291"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1294"/>
         <source>&amp;Close</source>
         <translation>&amp;Luk</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1295"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1298"/>
         <source>&amp;Quit</source>
         <translation>&amp;Afslut</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1298"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1301"/>
         <source>&amp;Edit</source>
         <translation>&amp;Rediger</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1299"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1302"/>
         <source>Edit</source>
         <translation>Rediger</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1302"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1305"/>
         <source>Undo</source>
         <translation>Fortryd</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1303"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1306"/>
         <source>Redo</source>
         <translation>Gendan</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1317"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1320"/>
         <source>Comment</source>
         <translation>Kommentar</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1321"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1324"/>
         <source>Comment Before</source>
         <translation>Kommentar før</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1326"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1329"/>
         <source>Variation</source>
         <translation>Variant</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1328"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1331"/>
         <source>Promote</source>
         <translation>Ophøj</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1330"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1333"/>
         <source>Promote Variation</source>
         <translation>Ophøj variant</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1335"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1338"/>
         <source>Remove</source>
         <translation>Fjern</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1338"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1341"/>
         <source>Remove Variation</source>
         <translation>Fjern variant</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1343"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1346"/>
         <source>&amp;Remove</source>
         <translation>&amp;Fjern</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1344"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1347"/>
         <source>Moves from the beginning</source>
         <translation>Træk fra starten</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1346"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1349"/>
         <source>Moves to the end</source>
         <translation>Træk til enden</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1349"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1352"/>
         <source>Setup &amp;position...</source>
         <translation>Opsæt &amp;stilling ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1355"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1358"/>
         <source>Copy PGN</source>
         <translation>Kopiér PGN</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1356"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1359"/>
         <source>Copy FEN</source>
         <translation>Kopiér FEN</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1357"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1360"/>
         <source>Copy Position</source>
         <translation>Kopiér stilling</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1358"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1361"/>
         <source>Copy Image</source>
         <translation>Kopiér billede</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1414"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1417"/>
         <source>&amp;Save...</source>
         <translation>&amp;Gem ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1416"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1419"/>
         <source>Save</source>
         <translation>Gem</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1420"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1423"/>
         <source>Edit tags...</source>
         <translation>Rediger tags ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1432"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1435"/>
         <source>Match</source>
         <translation>Match</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1533"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1536"/>
         <source>Find tag...</source>
         <translation>Find tag ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1537"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1540"/>
         <source>Find position...</source>
         <translation>Find stilling ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1590"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1546"/>
+        <source>Filter duplicate games</source>
+        <translation>Filtrér dubletpartier</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1550"/>
+        <source>Filter duplicate headers</source>
+        <translation>Filtrér dublettags</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1556"/>
+        <source>Reset filter</source>
+        <translation>Nulstil filter</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1560"/>
+        <source>Reverse filter</source>
+        <translation>Omvend filter</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1603"/>
         <source>Load Sample Database</source>
         <translation>Indlæs eksempeldatabase</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1591"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1604"/>
         <source>Report a bug...</source>
         <translation>Meld en fejl ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1366"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1369"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Indstillinger ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1370"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1373"/>
         <source>&amp;View</source>
         <translation>&amp;Vis</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1372"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1375"/>
         <source>Toolbars</source>
         <translation>Værktøjslinjer</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1376"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1379"/>
         <source>Stay on Top</source>
         <translation>Forbliv øverst</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1385"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1388"/>
         <source>Close current board</source>
         <translation>Luk aktuelt bræt</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1390"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1393"/>
         <source>&amp;Game</source>
         <translation>&amp;Parti</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1391"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1394"/>
         <source>Game</source>
         <translation>Parti</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1393"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1396"/>
         <source>Database</source>
         <translation>Database</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1396"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1399"/>
         <source>&amp;New</source>
         <translation>&amp;Ny</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1401"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1404"/>
         <source>&amp;Load</source>
         <translation>&amp;Indlæs</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1406"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1409"/>
         <source>&amp;Next</source>
         <translation>&amp;Næste</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1404"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1407"/>
         <source>&amp;Previous</source>
         <translation>&amp;Forrige</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1412"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1415"/>
         <source>&amp;Go to game...</source>
         <translation>&amp;Gå til parti ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1413"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1416"/>
         <source>&amp;Random</source>
         <translation>&amp;Tilfældig</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1424"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1427"/>
         <source>&amp;Flip board</source>
         <translation>&amp;Vend bræt</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1441"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1444"/>
         <source>Training</source>
         <translation>Træning</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1446"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1449"/>
         <source>Auto Respond</source>
         <translation>Auto-svar</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1451"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1454"/>
         <source>Auto Player</source>
         <translation>Auto-spiller</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1457"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1643"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1460"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1665"/>
         <source>Auto Analysis</source>
         <translation>Auto-analyse</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1475"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1478"/>
         <source>&amp;Go to</source>
         <translation>&amp;Gå til</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1476"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1479"/>
         <source>&amp;Start</source>
         <translation>&amp;Start</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1478"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1481"/>
         <source>Go to first move</source>
         <translation>Gå til første træk</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1491"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1494"/>
         <source>&amp;End</source>
         <translation>S&amp;lut</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1493"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1496"/>
         <source>Go to last move</source>
         <translation>Gå til sidste træk</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1483"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1486"/>
         <source>&amp;Previous move</source>
         <translation>&amp;Forrige træk</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="155"/>
+        <location filename="../src/gui/mainwindow.cpp" line="156"/>
         <source>FICS Console</source>
         <translation>FICS-konsol</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1259"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1262"/>
         <source>Open FICS</source>
         <translation>Åbn FICS</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1272"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1275"/>
         <source>Save Database</source>
         <translation>Gem database</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1285"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1288"/>
         <source>Export Image...</source>
         <translation>Eksportér billede ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1361"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1364"/>
         <source>Paste into new game</source>
         <translation>Indsæt i aktuelt parti</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1363"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1366"/>
         <source>Paste</source>
         <translation>Indsæt</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1463"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1681"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1685"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1466"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1703"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1707"/>
         <source>Engine Match</source>
-        <translation type="unfinished"></translation>
+        <translation>Motormatch</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1487"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1490"/>
         <source>&amp;Next move</source>
         <translation>&amp;Næste træk</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1498"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1501"/>
         <source>5 moves &amp;forward</source>
         <translation>5 træk fre&amp;m</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1502"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1505"/>
         <source>5 moves &amp;backward</source>
         <translation>5 træk &amp;tilbage</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1506"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1509"/>
         <source>Enter Variation</source>
         <translation>Ind i variant</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1510"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1513"/>
         <source>Previous Variation</source>
         <translation>Forrige variant</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1514"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1517"/>
         <source>Next Variation</source>
         <translation>Næste variant</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1518"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1521"/>
         <source>Back to main line</source>
         <translation>Tilbage til hovedlinjen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1524"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1527"/>
         <source>Refactor</source>
         <translation>Omstrukturér</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1525"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1528"/>
         <source>Uncomment</source>
         <translation>Fjern kommentarer</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1526"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1529"/>
         <source>Remove Variations</source>
         <translation>Fjern varianter</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1529"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1532"/>
         <source>Fi&amp;nd</source>
         <translation>F&amp;ind</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1530"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1533"/>
         <source>Search</source>
         <translation>Søg</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1543"/>
         <source>&amp;Reset filter</source>
-        <translation>&amp;Nulstil filter</translation>
+        <translation type="vanished">&amp;Nulstil filter</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1547"/>
         <source>&amp;Reverse filter</source>
-        <translation>&amp;Omvend filter</translation>
+        <translation type="vanished">&amp;Omvend filter</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1552"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1565"/>
         <source>&amp;Database</source>
         <translation>&amp;Database</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1553"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1566"/>
         <source>&amp;Switch to</source>
         <translation>&amp;Skift til</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1554"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1567"/>
         <source>&amp;Copy games...</source>
         <translation>&amp;Kopiér partier ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1556"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1570"/>
         <source>Clear clipboard</source>
         <translation>Fjern Udklipsholder</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1559"/>
-        <location filename="../src/gui/mainwindow.cpp" line="1561"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1573"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1575"/>
         <source>Scratch Pad</source>
-        <translation type="unfinished"></translation>
+        <translation>Notesblok</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1573"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1587"/>
         <source>&amp;Help</source>
         <translation>&amp;Hjælp</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1576"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1590"/>
         <source>Help</source>
         <translation>Hjælp</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1588"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1601"/>
         <source>Customize Keyboard...</source>
         <translation>Tilpas tastatur ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1595"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1608"/>
         <source>&amp;About ChessX</source>
         <translation>&amp;Om ChessX</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1639"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1652"/>
         <source>Following databases are modified:</source>
         <translation>Følgende databaser er ændrede:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1640"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1653"/>
         <source>Save them?</source>
         <translation>Gen dem?</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1696"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1709"/>
         <source> (%1 s.)</source>
         <translation> (%1 s.)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1827"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1840"/>
         <source>Start loading database...</source>
         <translation>Starter indlæsning af database ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1854"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1867"/>
         <source>A new version is available at chessx.sourceforge.net</source>
         <translation>En ny version er tilgængelig på chessx.sourceforge.net</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="79"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="93"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="81"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="95"/>
         <source>New database</source>
         <translation>Ny database</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="81"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="83"/>
         <source>PGN database (*.pgn)</source>
         <translation>PGN-database (*.pgn)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="93"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="95"/>
         <source>Cannot create ChessX database.</source>
         <translation>Kan ikke lave ChessX-database.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="106"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="121"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="108"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="123"/>
         <source>Open database</source>
         <translation>Åbn database</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="108"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="110"/>
         <source>PGN databases (*.pgn);;Polyglot books (*.bin)</source>
         <translation>PGN-databaser (*.pgn);;Polyglot-åbningsbøger (*.bin)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="123"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="125"/>
         <source>PGN databases (*.pgn)</source>
         <translation>PGN-databaser (*.pgn)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="164"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="166"/>
         <source>The current database is modified!</source>
         <translation>Den aktuelle database er ændret!</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="165"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="167"/>
         <source>Save it?</source>
         <translation>Gem den?</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="147"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="149"/>
         <source>Saving %1...</source>
         <translation>Gemmer %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="151"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="153"/>
         <source>%1 saved</source>
         <translation>%1 er gemt</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="183"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="185"/>
         <source>&lt;html&gt;The database &lt;i&gt;%1&lt;/i&gt; is read-only and cannot be saved.&lt;/html&gt;</source>
         <translation>&lt;html&gt;Databasen &lt;i&gt;%1&lt;/i&gt; er skrivebeskyttet og kan ikke gemmes.&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="477"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="479"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Teksten i udklipsholderen er ikke en gyldig FEN-kode:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="478"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="480"/>
         <source>There is no text in clipboard.</source>
         <translation>Der er ingen tekst i udklipsholderen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="484"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="486"/>
         <source>The clipboard contains FEN, but with illegal position. You can only paste such positions in &lt;b&gt;Setup position&lt;/b&gt; dialog.</source>
         <translation>Udklipsholderen indeholder FEN-kode med en ulovlig stilling. Du kan kun indsætte sådanne stillinger i &lt;b&gt;Opsæt stilling&lt;/b&gt;-dialogen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="590"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="684"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="592"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="686"/>
         <source>Set starting board</source>
         <translation>Opsæt stilling</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="703"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="705"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp)</source>
         <translation>Billeder (*.png *.jpg *.jpeg *.bmp)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="913"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="927"/>
         <source>Red Square</source>
         <translation>Rødt felt</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="914"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="928"/>
         <source>Yellow Square</source>
         <translation>Gult felt</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="915"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="929"/>
         <source>Green Square</source>
         <translation>Grønt felt</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="917"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="931"/>
         <source>Remove Color</source>
         <translation>Fjern farve</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="921"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="935"/>
         <source>Red Arrow to here</source>
         <translation>Rød pil hertil</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="922"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="936"/>
         <source>Yellow Arrow to here</source>
         <translation>Gul pil hertil</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="923"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="937"/>
         <source>Green Arrow to here</source>
         <translation>Grøn pil hertil</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="925"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="939"/>
         <source>Remove Arrow to here</source>
         <translation>Fjern pil hertil</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1182"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1196"/>
         <source>Load Game</source>
         <translation>Indlæs parti</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1182"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1196"/>
         <source>Game number:</source>
         <translation>Partinummer:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1202"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1247"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1259"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1217"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1262"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1274"/>
         <source>This database is read only.</source>
         <translation>Databasen er skrivebeskyttet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1395"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1410"/>
         <source>Merge selected games</source>
         <translation>Flet valgte partier</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1596"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1609"/>
         <source>Automatic responses</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatiske svar</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1597"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1610"/>
         <source>Play both sides</source>
-        <translation type="unfinished"></translation>
+        <translation>Spil begge sider</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1643"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1681"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1665"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1703"/>
         <source>Analysis Pane 1 is not running an engine for automatic analysis.</source>
         <translation>Der kører ikke en motor med mulighed for automatisk analyse i analyserude 1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1685"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1707"/>
         <source>Analysis Pane 2 is not running an engine for automatic analysis.</source>
-        <translation type="unfinished">Der kører ikke en motor med mulighed for automatisk analyse i analyserude 1. {2 ?}</translation>
+        <translation>Der kører ikke en motor med mulighed for automatisk analyse i analyserude 2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2037"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2063"/>
         <source>Engine %1</source>
         <translation>Motor %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2072"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2100"/>
         <source>all</source>
         <translation>Alle</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2149"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2191"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2178"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2220"/>
         <source>Append game %1 to %2.</source>
         <translation>Tilføj parti %1 til %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2175"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2199"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2204"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2228"/>
         <source>Appended %1 games to %2.</source>
         <translation>Tilføjede %1 partier til %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2200"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2229"/>
         <source>Error appending games to %1</source>
         <translation>Fejl ved tilføjning af partier til %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2439"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2508"/>
         <source>Searching...</source>
-        <translation type="unfinished"></translation>
+        <translation>Søger ...</translation>
     </message>
     <message>
         <source>Clipboard</source>
         <translation type="vanished">Udklipsholder</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2222"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2237"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2251"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2266"/>
         <source>Append games from %1 to %2.</source>
         <translation>Tilføj partier fra %1 til %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2267"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2325"/>
         <source>You need at least two open databases to copy games</source>
         <translation>Der skal være mindst to åbne databaser før du kan kopiere partier</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2295"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2353"/>
         <source>%1. %2 (%3 games)</source>
         <translation>%1. %2 (%3 partier)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2380"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2751"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2448"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2818"/>
         <source>%1 - ChessX</source>
         <translation>%1 - ChessX</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2434"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2503"/>
         <source>Search ended</source>
         <translation>Søgningen er afsluttet</translation>
     </message>
@@ -2537,22 +2584,22 @@ Skal jeg downloade en database?</translation>
         <translation type="vanished">Opdaterer træ ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2817"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2884"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Nyt parti&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2902"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2970"/>
         <source>Infinite</source>
         <translation>Ubegrænset</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2952"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3021"/>
         <source>Could not build book</source>
         <translation>Kunne ikke bygge bog</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2952"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3021"/>
         <source>Polyglot Error</source>
         <translation>Polyglot-fejl</translation>
     </message>
@@ -2594,62 +2641,75 @@ Skal jeg downloade en database?</translation>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="14"/>
         <source>Match Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Matchparametre</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="20"/>
         <source>Match Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Matchtid</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="82"/>
         <source>Gong</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Træk udføres efter et fast tidsinterval (oprindeligt når gongongon lyder)</translatorcomment>
+        <translation>Tid pr. træk</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="87"/>
         <source>Sudden Death</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Tab hvis tiden udløber</translatorcomment>
+        <translation>Tid pr. parti</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="102"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="105"/>
+        <source>Book</source>
+        <translation>Åbningsbog</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="111"/>
         <source>Allow use of books</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillad brug af åbningsbøger</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="110"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="119"/>
         <source>Best move</source>
-        <translation type="unfinished"></translation>
+        <translation>Bedste træk</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="115"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="124"/>
         <source>Random selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Tilfældigt valg</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="120"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="129"/>
         <source>Weighted selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Vægtet valg</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="143"/>
+        <source>Engine starts</source>
+        <translation>Motor begynder</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="62"/>
         <source>Time</source>
-        <translation type="unfinished">Tid</translation>
+        <translation>Tid</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="45"/>
         <source>Increment</source>
-        <translation type="unfinished">Tillæg</translation>
+        <translation>Tillæg</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="28"/>
         <source>User Bonus</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Ekstra tid til brugere som spiller mod maskine</translatorcomment>
+        <translation>Brugerbonus</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="95"/>
         <source>Annotate elapsed game time</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommenter tidsforbruget</translation>
     </message>
 </context>
 <context>
@@ -3650,7 +3710,8 @@ Skal jeg downloade en database?</translation>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="163"/>
         <source>Colored copies</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Kopier af brættet i farver i modsætning til sort/hvid</translatorcomment>
+        <translation>Farvede kopier</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="180"/>
@@ -3660,7 +3721,7 @@ Skal jeg downloade en database?</translation>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="321"/>
         <source>No hints in training mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen tips i træningstilstand</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="341"/>
@@ -3702,9 +3763,9 @@ Skal jeg downloade en database?</translation>
         <location filename="../src/dialogs/preferences.ui" line="433"/>
         <location filename="../src/dialogs/preferences.ui" line="444"/>
         <location filename="../src/dialogs/preferences.ui" line="455"/>
-        <location filename="../src/dialogs/preferences.ui" line="933"/>
-        <location filename="../src/dialogs/preferences.ui" line="972"/>
-        <location filename="../src/dialogs/preferences.ui" line="1311"/>
+        <location filename="../src/dialogs/preferences.ui" line="940"/>
+        <location filename="../src/dialogs/preferences.ui" line="979"/>
+        <location filename="../src/dialogs/preferences.ui" line="1318"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -3734,72 +3795,72 @@ Skal jeg downloade en database?</translation>
         <translation>&amp;Motorer</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="609"/>
+        <location filename="../src/dialogs/preferences.ui" line="732"/>
         <source>Path to executable</source>
         <translation>Sti til den kørbare fil</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="622"/>
+        <location filename="../src/dialogs/preferences.ui" line="745"/>
         <source>Path where engine is started - usually place of books</source>
         <translation>Sti hvor motoren skal startes - ofte hvor åbningsbogen er</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="629"/>
+        <location filename="../src/dialogs/preferences.ui" line="693"/>
         <source>Directory:</source>
         <translation>Mappe:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="645"/>
+        <location filename="../src/dialogs/preferences.ui" line="758"/>
         <source>Protocol:</source>
         <translation>Protokol:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="652"/>
+        <location filename="../src/dialogs/preferences.ui" line="673"/>
         <source>Name:</source>
         <translation>Navn:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="662"/>
+        <location filename="../src/dialogs/preferences.ui" line="616"/>
         <source>Options:</source>
         <translation>Flag:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="685"/>
+        <location filename="../src/dialogs/preferences.ui" line="683"/>
         <source>Command:</source>
         <translation>Kommando:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="695"/>
+        <location filename="../src/dialogs/preferences.ui" line="646"/>
         <source>Command Line Options</source>
         <translation>Kommandolinjeflag</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="715"/>
+        <location filename="../src/dialogs/preferences.ui" line="659"/>
         <source>Options</source>
         <translation>Indstillinger</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="751"/>
+        <location filename="../src/dialogs/preferences.ui" line="626"/>
         <source>Arbitrary name to identify engine </source>
         <translation>Vilkårligt navn til at identificere motoren </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1067"/>
+        <location filename="../src/dialogs/preferences.ui" line="1074"/>
         <source>Additional PGN tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekstra PGN-tags i partiliste</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1076"/>
+        <location filename="../src/dialogs/preferences.ui" line="1083"/>
         <source>Additional tags, separate with blanks</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekstra tags, adskil med mellemrum</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1343"/>
+        <location filename="../src/dialogs/preferences.ui" line="1350"/>
         <source>Sound</source>
         <translation>Lyd</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1349"/>
+        <location filename="../src/dialogs/preferences.ui" line="1356"/>
         <source>Indicate opponent&apos;s move</source>
         <translation>Når modstander trækker</translation>
     </message>
@@ -3824,83 +3885,83 @@ Skal jeg downloade en database?</translation>
         <translation>Op</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="769"/>
+        <location filename="../src/dialogs/preferences.ui" line="776"/>
         <source>Database</source>
         <translation>Database</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="775"/>
+        <location filename="../src/dialogs/preferences.ui" line="782"/>
         <source>Automatic classification with ECO Codes</source>
         <translation>Automatisk klassifikation med ECO-koder</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="782"/>
+        <location filename="../src/dialogs/preferences.ui" line="789"/>
         <source>Build index file</source>
         <translation>Byg indeksfil</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="789"/>
+        <location filename="../src/dialogs/preferences.ui" line="796"/>
         <source>Commit Database after saving Game</source>
         <translation>Skriv databasen til disk efter gemning af parti</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="806"/>
+        <location filename="../src/dialogs/preferences.ui" line="813"/>
         <source>Default path for storing files</source>
         <translation>Standardsti til gemning af filer</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="828"/>
+        <location filename="../src/dialogs/preferences.ui" line="835"/>
         <source>Default Database Path:</source>
         <translation>Standard databasesti:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="848"/>
+        <location filename="../src/dialogs/preferences.ui" line="855"/>
         <source>Number of recent files:</source>
         <translation>Antal nylige filer:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="858"/>
+        <location filename="../src/dialogs/preferences.ui" line="865"/>
         <source>&amp;Edit PGN files smaller than:</source>
         <translation>&amp;Rediger PGN-filer mindre end:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="868"/>
+        <location filename="../src/dialogs/preferences.ui" line="875"/>
         <source> MB</source>
         <translation> MB</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="900"/>
+        <location filename="../src/dialogs/preferences.ui" line="907"/>
         <source>Appearance</source>
         <translation>Udseende</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="906"/>
+        <location filename="../src/dialogs/preferences.ui" line="913"/>
         <source>Fonts for notation</source>
         <translation>Skrifttyper til notation</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="914"/>
+        <location filename="../src/dialogs/preferences.ui" line="921"/>
         <source>Texts</source>
         <translation>Tekster</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="953"/>
+        <location filename="../src/dialogs/preferences.ui" line="960"/>
         <source>Moves</source>
         <translation>Træk</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="965"/>
+        <location filename="../src/dialogs/preferences.ui" line="972"/>
         <source>Font with Chess Symbols (Unicode)</source>
         <translation>Skrifttype med skaksymboler (Unicode)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="989"/>
-        <location filename="../src/dialogs/preferences.ui" line="1042"/>
+        <location filename="../src/dialogs/preferences.ui" line="996"/>
+        <location filename="../src/dialogs/preferences.ui" line="1049"/>
         <source>Font Size</source>
         <translation>Skriftstørrelse</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1017"/>
+        <location filename="../src/dialogs/preferences.ui" line="1024"/>
         <source>Application</source>
         <translation>Program</translation>
     </message>
@@ -3920,12 +3981,12 @@ Skal jeg downloade en database?</translation>
         <translation>Altid</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1122"/>
+        <location filename="../src/dialogs/preferences.ui" line="1129"/>
         <source>Log in as guest</source>
         <translation>Log ind som guest</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1135"/>
+        <location filename="../src/dialogs/preferences.ui" line="1142"/>
         <source>Login</source>
         <translation>Login</translation>
     </message>
@@ -3936,92 +3997,97 @@ Skal jeg downloade en database?</translation>
         <translation>Aldrig</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1023"/>
+        <location filename="../src/dialogs/preferences.ui" line="765"/>
+        <source>Log</source>
+        <translation>Log</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="1030"/>
         <source>Icons visible in menus</source>
         <translation>Ikoner er synlige i menuer</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1033"/>
+        <location filename="../src/dialogs/preferences.ui" line="1040"/>
         <source>Use vertical Tabs</source>
         <translation>Brug lodrette faneblade</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1142"/>
+        <location filename="../src/dialogs/preferences.ui" line="1149"/>
         <source>Password</source>
         <translation>Password</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1158"/>
+        <location filename="../src/dialogs/preferences.ui" line="1165"/>
         <source>Try to use Timeseal</source>
-        <translation>Prøv at bruge Timeseal</translation>
+        <translation>Forsøg at bruge Timeseal</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1166"/>
+        <location filename="../src/dialogs/preferences.ui" line="1173"/>
         <source>App</source>
         <translation>Program</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1172"/>
+        <location filename="../src/dialogs/preferences.ui" line="1179"/>
         <source>Internet</source>
         <translation>Internet</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1178"/>
+        <location filename="../src/dialogs/preferences.ui" line="1185"/>
         <source>Use online tablebase servers</source>
         <translation>Brug online servere for slutspilstabeller</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1185"/>
+        <location filename="../src/dialogs/preferences.ui" line="1192"/>
         <source>Check for updates (at startup) and language packs</source>
         <translation>Tjek for opdateringer (ved programstart) og sprogpakker</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1195"/>
+        <location filename="../src/dialogs/preferences.ui" line="1202"/>
         <source>Localization</source>
         <translation>Lokalisering</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1203"/>
+        <location filename="../src/dialogs/preferences.ui" line="1210"/>
         <source>Language</source>
         <translation>Sprog</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1231"/>
+        <location filename="../src/dialogs/preferences.ui" line="1238"/>
         <source>Changing the language requires restarting the application!</source>
         <translation>Ændring af sproget kræver genstart af programmet!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1240"/>
+        <location filename="../src/dialogs/preferences.ui" line="1247"/>
         <source>Load language file from Server:</source>
         <translation>Indlæs sprogfil fra server:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1250"/>
+        <location filename="../src/dialogs/preferences.ui" line="1257"/>
         <source>Load!</source>
         <translation>Indlæs!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1285"/>
+        <location filename="../src/dialogs/preferences.ui" line="1292"/>
         <source>External Tools</source>
         <translation>Eksterne værktøjer</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1291"/>
+        <location filename="../src/dialogs/preferences.ui" line="1298"/>
         <source>Parameters</source>
         <translation>Parametre</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1301"/>
+        <location filename="../src/dialogs/preferences.ui" line="1308"/>
         <source>Path</source>
         <translation>Sti</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1321"/>
+        <location filename="../src/dialogs/preferences.ui" line="1328"/>
         <source>Path and filename of external program</source>
         <translation>Sti og filnavn for eksternt program</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1328"/>
+        <location filename="../src/dialogs/preferences.ui" line="1335"/>
         <source>Command line, also $(InputPath), $(InputFile)</source>
         <translation>Kommandolinje, der kan bruges $(InputPath) og $(InputFile)</translation>
     </message>
@@ -4056,98 +4122,98 @@ Skal jeg downloade en database?</translation>
         <translation>Ny motor</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="284"/>
+        <location filename="../src/dialogs/preferences.cpp" line="286"/>
         <source>Select engine executable</source>
         <translation>Vælg kørbar programfil for motor</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="342"/>
+        <location filename="../src/dialogs/preferences.cpp" line="344"/>
         <source>Could not load server language file dictionary</source>
         <translation>Kunne ikke indlæse sprogfilmappe fra server</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="346"/>
+        <location filename="../src/dialogs/preferences.cpp" line="348"/>
         <source>Could not load or install language pack</source>
         <translation>Kunne ikke indlæse eller installere sprogpakke</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="357"/>
+        <location filename="../src/dialogs/preferences.cpp" line="359"/>
         <source>Translation file loaded - select added language above!</source>
         <translation>Oversættelsesfil er indlæst - vælg det tilføjede sprog herover!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="389"/>
+        <location filename="../src/dialogs/preferences.cpp" line="391"/>
         <source>No further translations online available!</source>
         <translation>Der er ikke yderligere oversættelser at hente online!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="414"/>
+        <location filename="../src/dialogs/preferences.cpp" line="416"/>
         <source>Clear all application settings?</source>
         <translation>Fjern alle programindstillinger?</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="414"/>
+        <location filename="../src/dialogs/preferences.cpp" line="416"/>
         <source>Warning</source>
         <translation>Advarsel</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="460"/>
+        <location filename="../src/dialogs/preferences.cpp" line="462"/>
         <source>Light squares</source>
         <translation>Hvide felter</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="461"/>
+        <location filename="../src/dialogs/preferences.cpp" line="463"/>
         <source>Dark squares</source>
         <translation>Sorte felter</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="462"/>
+        <location filename="../src/dialogs/preferences.cpp" line="464"/>
         <source>Highlighted squares</source>
         <translation>Fremhævede felter</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="140"/>
-        <location filename="../src/dialogs/preferences.cpp" line="463"/>
+        <location filename="../src/dialogs/preferences.cpp" line="465"/>
         <source>Frame</source>
         <translation>Ramme</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="464"/>
+        <location filename="../src/dialogs/preferences.cpp" line="466"/>
         <source>Current move</source>
         <translation>Aktuelt træk</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="465"/>
+        <location filename="../src/dialogs/preferences.cpp" line="467"/>
         <source>Stored move</source>
         <translation>Gemt træk</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="466"/>
+        <location filename="../src/dialogs/preferences.cpp" line="468"/>
         <source>Threat</source>
         <translation>Trussel</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="495"/>
+        <location filename="../src/dialogs/preferences.cpp" line="497"/>
         <source>[plain colors]</source>
         <translation>[ensfarvede felter]</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="519"/>
+        <location filename="../src/dialogs/preferences.cpp" line="521"/>
         <source>Main Line</source>
         <translation>Hovedlinje</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="520"/>
+        <location filename="../src/dialogs/preferences.cpp" line="522"/>
         <source>Variations</source>
         <translation>Varianter</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="521"/>
+        <location filename="../src/dialogs/preferences.cpp" line="523"/>
         <source>Comments</source>
         <translation>Kommentarer</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="522"/>
+        <location filename="../src/dialogs/preferences.cpp" line="524"/>
         <source>NAGs</source>
         <translation>Symboler</translation>
     </message>
@@ -4501,189 +4567,190 @@ Skal jeg downloade en database?</translation>
 <context>
     <name>TextEdit</name>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="145"/>
+        <location filename="../src/gui/textedit.cpp" line="150"/>
         <source>File Actions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/textedit.cpp" line="148"/>
-        <source>File</source>
-        <translation type="unfinished">Fil</translation>
+        <translation>Filhandlinger</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="153"/>
+        <source>File</source>
+        <translation>Fil</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/textedit.cpp" line="158"/>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Ny</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="160"/>
+        <location filename="../src/gui/textedit.cpp" line="165"/>
         <source>Open...</source>
-        <translation type="unfinished"></translation>
+        <translation>Åbn ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="168"/>
+        <location filename="../src/gui/textedit.cpp" line="173"/>
         <source>Save</source>
-        <translation type="unfinished">Gem</translation>
+        <translation>Gem</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="174"/>
+        <location filename="../src/gui/textedit.cpp" line="179"/>
         <source>Save As...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gem som ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="182"/>
+        <location filename="../src/gui/textedit.cpp" line="187"/>
         <source>Print...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/textedit.cpp" line="189"/>
-        <source>Print Preview...</source>
-        <translation type="unfinished"></translation>
+        <translation>Udskriv ...</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="194"/>
+        <source>Print Preview...</source>
+        <translation>Vis udskrift ...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/textedit.cpp" line="199"/>
         <source>Export PDF...</source>
-        <translation type="unfinished"></translation>
+        <translation>Eksportér PDF ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="209"/>
+        <location filename="../src/gui/textedit.cpp" line="214"/>
         <source>Edit Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigeringshandlinger</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="212"/>
+        <location filename="../src/gui/textedit.cpp" line="217"/>
         <source>Edit</source>
-        <translation type="unfinished">Rediger</translation>
+        <translation>Rediger</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="216"/>
+        <location filename="../src/gui/textedit.cpp" line="221"/>
         <source>Undo</source>
-        <translation type="unfinished">Fortryd</translation>
+        <translation>Fortryd</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="220"/>
+        <location filename="../src/gui/textedit.cpp" line="225"/>
         <source>Redo</source>
-        <translation type="unfinished">Gendan</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/textedit.cpp" line="226"/>
-        <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Gendan</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="231"/>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <source>Cut</source>
+        <translation>Klip</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="236"/>
+        <source>Copy</source>
+        <translation>Kopiér</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/textedit.cpp" line="241"/>
         <source>Paste</source>
-        <translation type="unfinished">Indsæt</translation>
+        <translation>Indsæt</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="247"/>
+        <location filename="../src/gui/textedit.cpp" line="252"/>
         <source>Pick board</source>
-        <translation type="unfinished"></translation>
+        <translation>Vælg bræt</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="257"/>
+        <location filename="../src/gui/textedit.cpp" line="262"/>
         <source>Format Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Formateringshandlinger</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="260"/>
+        <location filename="../src/gui/textedit.cpp" line="265"/>
         <source>Format</source>
-        <translation type="unfinished">Format</translation>
+        <translation>Formatér</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="263"/>
+        <location filename="../src/gui/textedit.cpp" line="268"/>
         <source>Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Fed</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="274"/>
+        <location filename="../src/gui/textedit.cpp" line="279"/>
         <source>Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>Kursiv</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="285"/>
+        <location filename="../src/gui/textedit.cpp" line="290"/>
         <source>Underline</source>
-        <translation type="unfinished"></translation>
+        <translation>Understreget</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="299"/>
+        <location filename="../src/gui/textedit.cpp" line="304"/>
         <source>Resize</source>
-        <translation type="unfinished"></translation>
+        <translation>Ret størrelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="321"/>
-        <location filename="../src/gui/textedit.cpp" line="334"/>
+        <location filename="../src/gui/textedit.cpp" line="326"/>
+        <location filename="../src/gui/textedit.cpp" line="339"/>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Venstre</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="323"/>
-        <location filename="../src/gui/textedit.cpp" line="332"/>
-        <source>Center</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/textedit.cpp" line="325"/>
-        <location filename="../src/gui/textedit.cpp" line="330"/>
-        <source>Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/gui/textedit.cpp" line="328"/>
         <location filename="../src/gui/textedit.cpp" line="337"/>
+        <source>Center</source>
+        <translation>Centreret</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/textedit.cpp" line="330"/>
+        <location filename="../src/gui/textedit.cpp" line="335"/>
+        <source>Right</source>
+        <translation>Højre</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/textedit.cpp" line="342"/>
         <source>Justify</source>
-        <translation type="unfinished"></translation>
+        <translation>Lige margener</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="355"/>
+        <location filename="../src/gui/textedit.cpp" line="360"/>
         <source>Color...</source>
-        <translation type="unfinished"></translation>
+        <translation>Farve ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="366"/>
+        <location filename="../src/gui/textedit.cpp" line="371"/>
         <source>Style Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Stilhandlinger</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="441"/>
+        <location filename="../src/gui/textedit.cpp" line="446"/>
         <source>Application</source>
-        <translation type="unfinished">Program</translation>
+        <translation>Program</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="442"/>
+        <location filename="../src/gui/textedit.cpp" line="447"/>
         <source>The scratchpad has been modified.
 Do you want to save your changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Notesblokken er blevet ændret.
+Vil du gemme dine ændringer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="463"/>
+        <location filename="../src/gui/textedit.cpp" line="468"/>
         <source>%1[*]</source>
-        <translation type="unfinished"></translation>
+        <translation>%1[*]</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="482"/>
+        <location filename="../src/gui/textedit.cpp" line="487"/>
         <source>Open File...</source>
-        <translation type="unfinished"></translation>
+        <translation>Åbn fil ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="483"/>
-        <location filename="../src/gui/textedit.cpp" line="515"/>
+        <location filename="../src/gui/textedit.cpp" line="488"/>
+        <location filename="../src/gui/textedit.cpp" line="520"/>
         <source>ODF files (*.odt);;HTML-Files (*.htm *.html);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>ODF-filer (*.odt);;HTML-filer (*.htm *.html);;Alle filer (*)</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="514"/>
+        <location filename="../src/gui/textedit.cpp" line="519"/>
         <source>Save as...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gem som ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/textedit.cpp" line="538"/>
+        <location filename="../src/gui/textedit.cpp" line="543"/>
         <source>Print Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Udskriv dokument</translation>
     </message>
 </context>
 </TS>
