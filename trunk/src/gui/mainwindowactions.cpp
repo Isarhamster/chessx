@@ -695,7 +695,7 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
 void MainWindow::slotEditCopyImage()
 {
     QImage image;
-    slotCreateBoardImage(image, 1.0);
+    slotCreateBoardImage(image, -1.0);
     QApplication::clipboard()->setImage(image);
 }
 
