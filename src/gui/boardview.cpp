@@ -1171,21 +1171,39 @@ QObject* BoardView::dbIndex() const
 void BoardView::renderImage(QImage &image, double scaling) const
 {
     BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
-    QSize s = size()*scaling;
+    QSize s;
+    if (scaling < 0)
+    {
+        if (AppSettings->getValue("/Board/fixedImageSize").toBool())
+        {
+            int n = AppSettings->getValue("/Board/copyImageSize").toInt();
+            s = QSize(n, n*height()/width());
+        }
+        else
+        {
+            scaling = -scaling;
+            s = size()*scaling;
+        }
+    }
+    else
+    {
+        s = size()*scaling;
+    }
+
     boardView.setMinimumSize(s);
     boardView.setEnabled(isEnabled() && AppSettings->getValue("/Board/colorCopy").toBool());
     boardView.setFlipped(isFlipped());
-    boardView.configure();
     boardView.showMoveIndicator(showMoveIndicator());
     boardView.showCoordinates(showCoordinates());
-    boardView.setBoard(board());
     boardView.resize(s);
+    boardView.configure();
+    boardView.setBoard(board());
 
     QPalette Pal(palette());
     Pal.setColor(QPalette::Background, Qt::transparent);
     boardView.setAutoFillBackground(true);
     boardView.setPalette(Pal);
-    QRect sourceRect = totalRect();
+    QRect sourceRect = boardView.totalRect();
     QPixmap pixmap(sourceRect.size());
     pixmap.fill();
 

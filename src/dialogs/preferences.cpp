@@ -443,6 +443,9 @@ void PreferencesDialog::restoreSettings()
     ui.boardFrameCheck->setChecked(AppSettings->getValue("showFrame").toBool());
     ui.boardShowCoordinates->setChecked(AppSettings->getValue("showCoordinates").toBool());
     ui.boardColorCopy->setChecked(AppSettings->getValue("colorCopy").toBool());
+    ui.fixedImageSize->setChecked(AppSettings->getValue("fixedImageSize").toBool());
+    ui.editImageSize->setValue(AppSettings->getValue("copyImageSize").toInt());
+    ui.editImageSize->setEnabled(AppSettings->getValue("fixedImageSize").toBool());
     ui.hilightCurrentMove->setCurrentIndex(AppSettings->getValue("showCurrentMove").toInt());
     ui.cbShowIndicator->setCurrentIndex(AppSettings->getValue("showMoveIndicator").toInt());
     ui.guessMoveCheck->setChecked(AppSettings->getValue("guessMove").toBool());
@@ -573,6 +576,8 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("showFrame", QVariant(ui.boardFrameCheck->isChecked()));
     AppSettings->setValue("showCoordinates", QVariant(ui.boardShowCoordinates->isChecked()));
     AppSettings->setValue("colorCopy", QVariant(ui.boardColorCopy->isChecked()));
+    AppSettings->setValue("fixedImageSize", QVariant(ui.fixedImageSize->isChecked()));
+    AppSettings->setValue("copyImageSize", QVariant(ui.editImageSize->value()));
     AppSettings->setValue("showCurrentMove", QVariant(ui.hilightCurrentMove->currentIndex()));
     AppSettings->setValue("showMoveIndicator", QVariant(ui.cbShowIndicator->currentIndex()));
     AppSettings->setValue("guessMove", QVariant(ui.guessMoveCheck->isChecked()));
