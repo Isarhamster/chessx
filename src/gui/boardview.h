@@ -84,6 +84,7 @@ public:
     virtual QSize sizeHint() const;
 
     void getStoredMove(Square &from, Square &to);
+    QRect totalRect() const;
 public slots:
 
     /** Flips/unflips board. */
@@ -139,12 +140,12 @@ private:
     /** Resizes pieces for new board size. */
     void resizeBoard(QSize size);
     /** Calculate size and position of square */
-    QRect squareRect(Square s);
-    QRect squareRectNoTranslate(Square s);
+    QRect squareRect(Square s) const;
+    QRect squareRectNoTranslate(Square s) const;
     /** Calculate size and position of a coordinate indicator in vertical direction */
-    QRect coordinateRectVertical(int n);
+    QRect coordinateRectVertical(int n) const;
     /** Calculate size and position of a coordinate indicator in horizontal direction */
-    QRect coordinateRectHorizontal(int n);
+    QRect coordinateRectHorizontal(int n) const;
     /** @return square at given position */
     Square squareAt(const QPoint& p) const;
     /** Selects given square. Previously selected square is unselected automatically. */

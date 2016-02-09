@@ -172,6 +172,22 @@ void BoardView::drawSquares(QPaintEvent* event)
     }
 }
 
+QRect BoardView::totalRect() const
+{
+    QRect rect1 = squareRect(isFlipped() ? h1 : a8);
+    QRect rect2;
+    if (m_coordinates)
+    {
+        rect2 = coordinateRectHorizontal(0);
+    }
+    else
+    {
+        rect2 = squareRect(isFlipped() ? a8 : h1);
+    }
+    QRect totalRect = QRect(0,rect1.top(), width(), rect2.bottom()-m_translate.y()+2);
+    return totalRect;
+}
+
 void BoardView::drawCoordinates(QPaintEvent* event)
 {
     if(m_coordinates)
@@ -811,7 +827,7 @@ void BoardView::unselectSquare()
     }
 }
 
-QRect BoardView::squareRect(Square square)
+QRect BoardView::squareRect(Square square) const
 {
     int coord =  m_coordinates ? CoordinateSize : 0;
     int x = isFlipped() ? 7 - square % 8 : square % 8;
@@ -821,12 +837,12 @@ QRect BoardView::squareRect(Square square)
                  m_theme.size());
 }
 
-QRect BoardView::squareRectNoTranslate(Square square)
+QRect BoardView::squareRectNoTranslate(Square square) const
 {
     return QRect(posFromSquare(square), m_theme.size());
 }
 
-QRect BoardView::coordinateRectVertical(int n)
+QRect BoardView::coordinateRectVertical(int n) const
 {
     Q_ASSERT(m_coordinates);
     int x = isFlipped() ? n % 8 : 7 - n % 8;
@@ -834,7 +850,7 @@ QRect BoardView::coordinateRectVertical(int n)
                  QSize(CoordinateSize, CoordinateSize));
 }
 
-QRect BoardView::coordinateRectHorizontal(int n)
+QRect BoardView::coordinateRectHorizontal(int n) const
 {
     Q_ASSERT(m_coordinates);
     int y = isFlipped() ? 7 - n % 8 : n % 8;
@@ -1169,9 +1185,11 @@ void BoardView::renderImage(QImage &image, double scaling) const
     Pal.setColor(QPalette::Background, Qt::transparent);
     boardView.setAutoFillBackground(true);
     boardView.setPalette(Pal);
-    QPixmap pixmap(s);
+    QRect sourceRect = totalRect();
+    QPixmap pixmap(sourceRect.size());
     pixmap.fill();
-    boardView.render(&pixmap);
+
+    boardView.render(&pixmap, QPoint(), sourceRect, QWidget::DrawChildren);
     image = pixmap.toImage();
 }
 
