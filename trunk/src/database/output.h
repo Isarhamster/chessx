@@ -53,6 +53,7 @@ public:
         MarkupVariationInline,
         MarkupVariationResume,
         MarkupVariationIndent,
+        MarkupVariationIndent1,
         MarkupNag,
         MarkupAnnotationInline,
         MarkupAnnotationIndent,

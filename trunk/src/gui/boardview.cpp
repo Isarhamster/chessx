@@ -368,7 +368,8 @@ void BoardView::drawPieces(QPaintEvent* event)
     QRect rect1 = squareRectNoTranslate(a8);
     QRect rect2 = squareRectNoTranslate(h1);
     p.setPen(m_theme.color(BoardTheme::Frame));
-    p.drawRect(QRect(rect1.topLeft(),rect2.bottomRight()));
+    p.drawRect(!isFlipped() ? QRect(rect1.topLeft(),rect2.bottomRight()) :
+                              QRect(rect2.topLeft(),rect1.bottomRight()));
 }
 
 void BoardView::paintEvent(QPaintEvent* event)

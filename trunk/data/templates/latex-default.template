@@ -45,6 +45,7 @@ MarkupMainLine=,
 MarkupVariationInline=\begin{variation},\end{variation}
 MarkupVariationResume=,
 MarkupVariationIndent=\begin{variation},\end{variation}
+MarkupVariationIndent1=\begin{variation},\end{variation}
 MarkupNag=,
 MarkupColumnStyleMove=,
 MarkupColumnStyleRow=,

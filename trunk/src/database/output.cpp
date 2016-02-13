@@ -200,6 +200,10 @@ void Output::readTemplateFile(const QString& path)
                 {
                     setMarkupTag(MarkupVariationIndent, tags[0], tags[1]);
                 }
+                else if(name == "MarkupVariationIndent1")
+                {
+                    setMarkupTag(MarkupVariationIndent1, tags[0], tags[1]);
+                }
                 else if(name == "MarkupNag")
                 {
                     setMarkupTag(MarkupNag, tags[0], tags[1]);
@@ -564,7 +568,7 @@ QString Output::writeVariation()
     bool willStartIndent = (m_currentVariationLevel+1 == m_options.getOptionAsInt("VariationIndentLevel"));
 
     if (indent) text += m_startTagMap[MarkupVariationResume];
-    text += m_startTagMap[indent ? MarkupVariationIndent : MarkupVariationInline];
+    text += m_startTagMap[indent ? (willStartIndent ? MarkupVariationIndent : MarkupVariationIndent1) : MarkupVariationInline];
     m_dirtyBlack = true;
 
     text += writeMove(PreviousMove);
@@ -600,7 +604,7 @@ QString Output::writeVariation()
         m_game.forward();
     }
 
-    text += m_endTagMap[indent ? MarkupVariationIndent : MarkupVariationInline];
+    text += m_endTagMap[indent ? (willStartIndent ? MarkupVariationIndent : MarkupVariationIndent1) : MarkupVariationInline];
     if (indent) text += m_endTagMap[MarkupVariationResume];
 
     m_currentVariationLevel--;
