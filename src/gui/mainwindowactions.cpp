@@ -509,6 +509,7 @@ void MainWindow::slotEditPasteFEN()
 bool MainWindow::slotEditPastePGN()
 {
     QString pgn = QApplication::clipboard()->text().trimmed();
+    pgn.replace(QChar(0x2013),QChar('-'));
     if(!pgn.isEmpty())
     {
         MemoryDatabase pgnDatabase;

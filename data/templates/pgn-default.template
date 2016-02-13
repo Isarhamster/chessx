@@ -12,6 +12,7 @@ MarkupMainLine=,
 MarkupVariationInline=( ,) 
 MarkupVariationResume=,
 MarkupVariationIndent=( ,) 
+MarkupVariationIndent1=( ,)
 MarkupNag=,
 MarkupAnnotationInline= { ,} 
 MarkupAnnotationIndent= { ,} 

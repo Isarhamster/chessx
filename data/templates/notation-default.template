@@ -63,6 +63,7 @@ MarkupMainLineMove=<a class="main" href="move:%1">,</a>
 MarkupVariationMove=<a class="var" href="move:%1">,</a>
 MarkupMainLine=,
 MarkupVariationInline=<span class="var">(,)</span>
+MarkupVariationIndent1=,\n
 MarkupVariationIndent=(,)\n
 MarkupVariationResume=<p class="var">,</p>\n
 MarkupNag=<a class="nag">,</a>
