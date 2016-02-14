@@ -228,7 +228,8 @@ HEADERS += src/database/board.h \
     src/database/datesearch.h \
     src/database/tagsearch.h \
     src/database/filtersearch.h \
-    src/database/numbersearch.h
+    src/database/numbersearch.h \
+    src/database/circularbuffer.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \

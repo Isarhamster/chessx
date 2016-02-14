@@ -119,6 +119,8 @@ protected:
     bool addVariation(const QString& s);
     /** Switch to clipboard database */
     void SwitchToClipboard();
+    /** Update the list of last open games insided the current database */
+    void updateLastGameList();
 public slots:
     /** Enter gaming mode */
     void slotToggleGameMode();
@@ -435,8 +437,8 @@ protected slots:
     void slotToggleEngineMatch();
     void slotUpdateOpeningBook(QString name);
     void slotRestartAnalysis();
-    void slotBoardStoredMove();
-
+    void slotBoardStoredMove();   
+    void slotLoadRecentGame();
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);
@@ -599,6 +601,7 @@ private:
     QLabel* m_gameTitle;
     /* Menus */
     QMenu* m_menuDatabases;
+    QMenu* m_recentGames;
     QMenu* m_menuView;
 
     /* Local variables */

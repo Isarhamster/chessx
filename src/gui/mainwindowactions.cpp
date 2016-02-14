@@ -1242,6 +1242,7 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
             m_gameList->updateFilter();
             slotFilterChanged();
             slotGameChanged(true);
+            updateLastGameList();
             UpdateBoardInformation();
 
             if(AppSettings->getValue("/General/autoCommitDB").toBool())
@@ -2148,11 +2149,11 @@ void MainWindow::slotDatabaseChange()
     QAction* action = qobject_cast<QAction*>(sender());
     if (action)
     {
-        int n = action->data().toInt();
-        if (m_currentDatabase != m_databases[n] && !m_databases[n]->IsBook())
+        DatabaseInfo* db = action->data().value<DatabaseInfo*>();
+        if (m_currentDatabase != db && !db->IsBook())
         {
             autoGroup->untrigger();
-            m_currentDatabase = action->data().value<DatabaseInfo*>();
+            m_currentDatabase = db;
             activateBoardViewForDbIndex(m_currentDatabase);
             m_databaseList->setFileCurrent(databaseInfo()->filePath());
             slotDatabaseChanged();
@@ -2455,11 +2456,36 @@ void MainWindow::slotDatabaseChanged()
     database()->index()->calculateCache();
     setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
     m_gameList->setFilter(databaseInfo()->filter());
+    updateLastGameList();
     slotFilterChanged();
     slotGameChanged(true);
     emit databaseChanged(databaseInfo());
     emit databaseModified();
     emit signalGameModified(databaseInfo()->modified());
+}
+
+void MainWindow::updateLastGameList()
+{
+    const CircularBuffer<int>& gameList = databaseInfo()->lastGames();
+    const Index* index = databaseInfo()->database()->index();
+    m_recentGames->clear();
+    if (index) foreach(int n, gameList)
+    {
+        QString white = index->tagValue(TagNameWhite,n);
+        QString black = index->tagValue(TagNameBlack,n);
+        QAction* action = m_recentGames->addAction(QString::number(n)+" : "+white+"-"+black, this, SLOT(slotLoadRecentGame()));
+        action->setData(n);
+    }
+}
+
+void MainWindow::slotLoadRecentGame()
+{
+    QAction* action = qobject_cast<QAction*>(sender());
+    if (action)
+    {
+        int n = action->data().toInt();
+        gameLoad(n);
+    }
 }
 
 void MainWindow::slotSearchTag()
@@ -2825,6 +2851,7 @@ void MainWindow::slotActivateBoardView(int n)
         slotGameChanged(true);
         m_databaseList->setFileCurrent(databaseInfo()->filePath());
         database()->index()->calculateCache();
+        updateLastGameList();
         setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
         m_gameList->setFilter(databaseInfo()->filter());
         slotFilterChanged();

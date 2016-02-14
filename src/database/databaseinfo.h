@@ -10,6 +10,7 @@
 #ifndef __DATABASEINFO_H__
 #define __DATABASEINFO_H__
 
+#include "circularbuffer.h"
 #include "game.h"
 
 #include <QString>
@@ -119,6 +120,8 @@ public:
 
     bool isClipboard() const;
 
+    const CircularBuffer<int>& lastGames() const { return m_lastGames; }
+
 protected:
     void doLoadFile(QString filename);
 
@@ -142,6 +145,7 @@ private:
     Game m_game;
     QString m_filename;
     int m_index;
+    CircularBuffer<int> m_lastGames;
     bool m_bLoaded;
     bool m_utf8;
 };
