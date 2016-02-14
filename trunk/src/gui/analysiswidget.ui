@@ -66,7 +66,7 @@
         <string>Pin engine to current position</string>
        </property>
        <property name="text">
-        <string>...</string>
+        <string notr="true"/>
        </property>
        <property name="icon">
         <iconset resource="../../resources.qrc">

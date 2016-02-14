@@ -765,6 +765,7 @@ void MainWindow::gameLoad(int index)
     {
         if(databaseInfo()->loadGame(index))
         {
+            updateLastGameList();
             m_gameList->selectGame(index);
             emit signalGameIsEmpty(true);
             UpdateBoardInformation();
@@ -1264,7 +1265,7 @@ void MainWindow::setupActions()
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
     file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics.png"));
-    QMenu* menuRecent = file->addMenu(tr("Open &recent..."));
+    QMenu* menuRecent = file->addMenu(tr("Open recent"));
 
     for(int i = 0; i < MaxRecentFiles; ++i)
     {
@@ -1406,6 +1407,7 @@ void MainWindow::setupActions()
     connect(this, SIGNAL(signalGameIsEmpty(bool)), newAction, SLOT(setDisabled(bool)));
 
     QMenu* loadMenu = gameMenu->addMenu(tr("&Load"));
+    m_recentGames = gameMenu->addMenu(tr("Load recent"));
 
     /* Game->Load submenu */
     QAction * prevAction = createAction(tr("&Previous"), SLOT(slotGameLoadPrevious()), Qt::Key_F3,
@@ -1569,7 +1571,6 @@ void MainWindow::setupActions()
     QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
     m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
     menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()), Qt::Key_F5));
-
     menuDatabase->addSeparator();
     menuDatabase->addAction(createAction(tr("Clear clipboard"), SLOT(slotDatabaseClearClipboard())));
 

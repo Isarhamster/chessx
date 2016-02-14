@@ -159,6 +159,7 @@ bool DatabaseInfo::loadGame(int index)
     {
         return false;
     }
+    m_lastGames.push_back(index);
     m_index = index;
     int n = m_filter ? m_filter->gamePosition(index) - 1 : 0;
     if(n < 0)
@@ -286,6 +287,7 @@ bool DatabaseInfo::saveGame()
             m_filter->resize(m_database->count(), 1);
         }
         m_index = m_database->count() - 1;
+        m_lastGames.push_back(m_index);
         if(!eco.isEmpty())
         {
             database()->index()->setTag(TagNameECO, eco, m_index);
