@@ -89,8 +89,7 @@ void DownloadManager::doDownloadToPath(const QUrl &url, const QString& filename)
     request.setRawHeader("User-Agent",userAgent);
     QNetworkReply *reply = manager.get(request);
 
-    connect(reply, SIGNAL(finished()),
-            SLOT(downloadFinished()));
+    connect(reply, SIGNAL(finished()), SLOT(downloadFinished()));
 
     destinationPaths.insert(url, filename);
     currentDownloads.append(reply);
@@ -155,15 +154,24 @@ void DownloadManager::downloadFinished()
         }
         else
         {
-            QString filename = destinationPaths.value(url);
-            if(saveToDisk(filename, reply))
+            QVariant v = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+            if (v.isValid() && v.toInt() >= 300)
             {
-                emit onDownloadFinished(url, filename);
+                qDebug() << "HTTP Error " << v.toInt();
+                emit downloadError(url);
             }
             else
             {
-                qDebug() << "Could not save file " << url.toString() << " to " << filename;
-                emit downloadError(url);
+                QString filename = destinationPaths.value(url);
+                if(saveToDisk(filename, reply))
+                {
+                    emit onDownloadFinished(url, filename);
+                }
+                else
+                {
+                    qDebug() << "Could not save file " << url.toString() << " to " << filename;
+                    emit downloadError(url);
+                }
             }
         }
         currentDownloads.removeAll(reply);

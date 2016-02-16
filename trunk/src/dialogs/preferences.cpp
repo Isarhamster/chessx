@@ -91,8 +91,8 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     {
         QUrl url = QUrl(QString("http://chessx.sourceforge.net/translations/dict.txt"));
         downloadManager = new DownloadManager(this);
-        connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadFileError(QUrl)));
-        connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(slotFileLoaded(QUrl, QString)));
+        connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadFileError(QUrl)), Qt::QueuedConnection);
+        connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(slotFileLoaded(QUrl, QString)), Qt::QueuedConnection);
         QString path = AppSettings->getTempPath();
         downloadManager->doDownloadToPath(url, path + QDir::separator() + "dict.txt");
     }
@@ -545,6 +545,11 @@ void PreferencesDialog::restoreSettings()
     ui.extToolParameters->setText(AppSettings->getValue("CommandLine1").toString());
     AppSettings->endGroup();
 
+    AppSettings->beginGroup("Web");
+    ui.webFavorite->setText(AppSettings->getValue("Favorite1").toString());
+    ui.autoNumber->setValue(AppSettings->getValue("AutoNumber1").toInt());
+    AppSettings->endGroup();
+
     AppSettings->beginGroup("FICS");
     ui.userName->setText(AppSettings->getValue("userName").toString());
     ui.passWord->setText(AppSettings->getValue("passWord").toString());
@@ -637,6 +642,11 @@ void PreferencesDialog::saveSettings()
     AppSettings->beginGroup("Tools");
     AppSettings->setValue("Path1", ui.extToolPath->text());
     AppSettings->setValue("CommandLine1", ui.extToolParameters->text());
+    AppSettings->endGroup();
+
+    AppSettings->beginGroup("Web");
+    AppSettings->setValue("Favorite1", ui.webFavorite->text());
+    AppSettings->setValue("AutoNumber1", ui.autoNumber->value());
     AppSettings->endGroup();
 
     AppSettings->beginGroup("FICS");

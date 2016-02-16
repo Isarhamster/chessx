@@ -892,8 +892,8 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
         if (url.isValid() && !url.isRelative() &&
             ((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp")))
         {
-            connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)), Qt::QueuedConnection);
-            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)), Qt::QueuedConnection);
+            connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
+            connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
             downloadManager->doDownload(url);
         }
         else
@@ -905,6 +905,19 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
     {
         ActivateDatabase("Clipboard");
     }
+}
+
+QString MainWindow::favoriteUrl() const
+{
+    QString url = AppSettings->getValue("Web/Favorite1").toString();
+    int n = AppSettings->getValue("Web/AutoNumber1").toInt();
+    url.replace("$1",QString::number(n));
+    return url;
+}
+
+void MainWindow::openWebFavorite()
+{
+    openDatabaseUrl(favoriteUrl(), false);
 }
 
 void MainWindow::openFICS()
@@ -1058,8 +1071,15 @@ void MainWindow::loadError(QUrl url)
     slotStatusMessage(tr("Database %1 cannot be accessed at the moment (%2).").arg(fi.fileName()).arg(url.errorString()));
 }
 
-void MainWindow::loadReady(QUrl /*url*/, QString fileName)
+void MainWindow::loadReady(QUrl url, QString fileName)
 {
+    QString fav = favoriteUrl();
+    if ((url == fav) && fav.contains("$1"))
+    {
+        int n = AppSettings->getValue("Web/AutoNumber1").toInt();
+        ++n;
+        AppSettings->setValue("Web/AutoNumber1",n);
+    }
     openDatabaseArchive(fileName, false);
 }
 
@@ -1265,6 +1285,8 @@ void MainWindow::setupActions()
     file->addAction(createAction(tr("&Open..."), SLOT(slotFileOpen()), QKeySequence::Open, fileToolBar, ":/images/folder_open.png"));
     file->addAction(createAction(tr("Open in UTF8..."), SLOT(slotFileOpenUtf8()), QKeySequence()));
     file->addAction(createAction(tr("Open FICS"), SLOT(openFICS()), QKeySequence(), fileToolBar, ":/images/fics.png"));
+    file->addAction(createAction(tr("Web Favorite"), SLOT(openWebFavorite()), QKeySequence(), fileToolBar, ":/images/folder_web.png"));
+
     QMenu* menuRecent = file->addMenu(tr("Open recent"));
 
     for(int i = 0; i < MaxRecentFiles; ++i)
