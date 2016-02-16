@@ -294,8 +294,8 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/General/autoCommitDB", false);
     map.insert("/General/language", "Default");
     map.insert("/General/BuiltinDbInstalled", false);
-    map.insert("/GameText/FontSize", DEFAULT_FONTSIZE);
 
+    map.insert("/GameText/FontSize", DEFAULT_FONTSIZE);
     map.insert("/GameText/ColumnStyle", false);
     map.insert("/GameText/SymbolicNag", true);
     map.insert("/GameText/TextWidth", 0);
@@ -373,6 +373,10 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
 
     map.insert("/Tools/Path1", "");
     map.insert("/Tools/CommandLine1", "");
+
+    map.insert("/Web/Favorite1", "");
+    map.insert("/Web/AutoNumber1", 1000);
+
     return map;
 }
 

@@ -433,6 +433,7 @@ protected slots:
     void FicsConnected();
     void HandleFicsRequestRemoveMove();
     void openFICS();
+    void openWebFavorite();
     void slotGameVarEnter(int index);
     void slotToggleEngineMatch();
     void slotUpdateOpeningBook(QString name);
@@ -471,6 +472,7 @@ protected:
     void setupAnalysisWidget(DockWidgetEx *analysisDock, AnalysisWidget *analysis);
     void playSound(QString s);
     void doBoardMove(Move m, unsigned int button, Square from, Square to);
+    QString favoriteUrl() const;
 signals:
     /** Re-read configuration. */
     void reconfigure();
