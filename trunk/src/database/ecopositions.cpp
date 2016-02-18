@@ -5,6 +5,7 @@
 #include "ecopositions.h"
 #include <QDataStream>
 #include <QFile>
+#include <QThread>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -73,7 +74,7 @@ void EcoPositions::terminateEco()
 
 bool EcoPositions::isEcoPosition(const Board& b, QString& eco)
 {
-    while (!m_ecoReady) sleep(1);
+    while (!m_ecoReady) QThread::sleep(1);
     if (!m_ecoPositions) return false;
 
     quint64 key = b.getHashValue();
