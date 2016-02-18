@@ -12,6 +12,7 @@
 #endif // _MSC_VER
 
 QMap<quint64, QString>* EcoPositions::m_ecoPositions = 0;
+volatile bool EcoPositions::m_ecoReady = false;
 
 bool EcoPositions::loadEcoFile(const QString& ecoFile)
 {
@@ -65,11 +66,16 @@ QString EcoPositions::findEcoName(QString eco)
 
 void EcoPositions::terminateEco()
 {
-  delete m_ecoPositions;
+    QMap<quint64, QString>* p = m_ecoPositions;
+    m_ecoPositions = 0;
+    delete p;
 }
 
 bool EcoPositions::isEcoPosition(const Board& b, QString& eco)
 {
+    while (!m_ecoReady) sleep(1);
+    if (!m_ecoPositions) return false;
+
     quint64 key = b.getHashValue();
     if(m_ecoPositions->contains(key))
     {

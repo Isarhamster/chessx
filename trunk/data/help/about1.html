@@ -40,6 +40,17 @@ the configured default path (see the Preferences-Advanced-Default Data Path entr
 the archive is stored at the Default Data Path and its content is extracted. Again, if there is something like PGN inside,
 the files are opened afterwards.</p>
 
+<h3><a name="Web"></a>Opening a periodic database from the web</h3>
+<p><img class="button" src=":/images/folder_web.png" width="42" align="left">For regularly loading a periodically updated
+database from the web, enter the target URL into the preference for Web Favorite, where $1 can
+be replaced by an incrementing counter. Let's say amonthincheckers.com
+hosts a monthly database update at "http://amonthincheckers.com/zips/amic123g.zip"
+where 123 is incremented every time an update is posted, enter
+"http://amonthincheckers.com/zips/amic$1g.zip" into the URL field and
+set the starting number at the right of the URL. Each time the
+database is successfully loaded, $1 is incremented by one so you are
+all set for the next update.</p>
+
 <h3><a name="Move"></a>Making moves</h3>
 <p>A move is done by grabbing a piece and dragging it to another square.</p>
 <p>Depending on your settings in the board preferences, you can either
@@ -66,7 +77,7 @@ pressing the Meta-Key while dragging the pawn to the eigth row.</p>
 on castling in Chess960.</p>
 
 <h3><a name="Replay"></a>Let ChessX replay the game</h3>
-<p><a href="button:replay"><img src=":/images/replay.png" width="42" align="left"></a>If you want ChessX to replay the game, select "Game->Auto Player".
+<p><img src=":/images/replay.png" width="42" align="left">If you want ChessX to replay the game, select "Game->Auto Player".
 You can change the move rate with the slider in the bottom right corner of the status bar.</p>
 
 <h3><a name="Enter"></a>Entering moves with the keyboard</h3>
@@ -97,8 +108,9 @@ lost upon closing ChessX! So you need to open at least one other database for wr
 into this database by either dragging the games to that database or using "Copy Games" from the Database menu.</p>
 
 <h3><a name="Switch"></a>Switching databases</h3>
-<p>Switching between open databases can be achieved by either the Database menu, pressing CTRL+Shift+Number 0 .. 9 or right-clicking
-into the database list. The currently selected database is highlighted there!</p>
+<p>Switching between open databases can be achieved by either the Database menu, pressing CTRL+Shift+Number 0 .. 9,
+right-clicking or double-clicking into the database list or clicking onto the board's tab
+associated with the database. The currently selected database is highlighted in the database list!</p>
 
 <h3><a name="Analyse"></a>Analysing games</h3>
 <p>There are two analysis windows where two different engines can be configured to analyse the current board position.</p>
@@ -240,7 +252,7 @@ each engine gets a fixed amount of time for the whole game. ChessX will supervis
 insufficient material or the 50 move rule.</p>
 
 <h3><a name="FICS"></a>Online Chess</h3>
-<p>ChessX supports online access to games played or stored on the free internet chess server.</p>
+<p><img src=":/images/fics.png" width="42" align="left">ChessX supports online access to games played or stored on the free internet chess server.</p>
 <p>If you have a FICS account, you can enter the credentials in the Preferences, otherwise, ChessX will login as guest.</p>
 <p>ChessX connects to FICS upon opening the virtual database FICS. A successful connection is indicated in the message pane of the FICS console.</p>
 <p>Selecting the tab "Games" will read in the list of games which are currently played on FICS. Double clicking a games will start monitoring this game.
