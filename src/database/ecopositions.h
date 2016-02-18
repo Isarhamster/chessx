@@ -15,6 +15,7 @@ struct EcoPositions
 {
 public:
     static QMap<quint64, QString>* m_ecoPositions;
+    static volatile bool m_ecoReady;
 
     /** Method that loads a file containing ECO classifications for use by the ecoClassify method. Returns true if successful */
     static bool loadEcoFile(const QString& ecoFile);

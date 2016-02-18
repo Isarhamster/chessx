@@ -24,6 +24,7 @@ public:
         bool ok = true;
         ok |= EcoPositions::loadEcoFile(":chessx.eco");
         ok |= Board::loadEcoFile(":chessx.gtm");
+        EcoPositions::m_ecoReady = true;
         emit loaded(this, ok);
     };
 
