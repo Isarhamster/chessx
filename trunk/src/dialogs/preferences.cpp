@@ -79,6 +79,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
     connect (ui.guestLogin, SIGNAL(toggled(bool)), ui.passWord, SLOT(setDisabled(bool)));
     connect (ui.guestLogin, SIGNAL(toggled(bool)), ui.userName, SLOT(setDisabled(bool)));
 
+    connect (ui.pieceEffect, SIGNAL(activated(int)), SLOT(SlotPieceEffectActivated(int)));
     restoreSettings();
 
     // Start off with no Engine selected
@@ -471,12 +472,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.boardColorsList, tr("Threat"), "threatColor");
     AppSettings->endGroup();
 
-    QStringList themes = AppSettings->getThemeList();
-    for(QStringList::Iterator it = themes.begin(); it != themes.end(); ++it)
-    {
-        (*it).truncate((*it).length() - 4);
-        ui.pieceThemeCombo->addItem(*it);
-    }
+    SlotPieceEffectActivated(ui.pieceEffect->currentIndex());
 
     QStringList translations = AppSettings->getTranslations();
     ui.cbLanguage->addItem("Default");
@@ -744,5 +740,25 @@ void PreferencesDialog::buttonClicked(QAbstractButton* button)
         break;
     default:
         break;
+    }
+}
+
+void PreferencesDialog::SlotPieceEffectActivated(int index)
+{
+    QStringList pathArray;
+    pathArray << "." << "outline" << "shadow";
+    QString path = pathArray.at(index);
+
+    QStringList themes = AppSettings->getThemeList(path);
+    QString currentTheme = ui.pieceThemeCombo->currentText();
+    ui.pieceThemeCombo->clear();
+    for(QStringList::Iterator it = themes.begin(); it != themes.end(); ++it)
+    {
+        (*it).truncate((*it).length() - 4);
+        ui.pieceThemeCombo->addItem(*it);
+    }
+    if (!currentTheme.isEmpty())
+    {
+        ui.pieceThemeCombo->setCurrentText(currentTheme);
     }
 }

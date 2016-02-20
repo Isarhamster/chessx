@@ -398,21 +398,29 @@ QVariant Settings::getValue(const QString &key) const
     return value(key);
 }
 
-QString Settings::getThemePath() const
+QString Settings::getThemePath(QString path) const
 {
     QString themeDir(AppSettings->dataPath() + QDir::separator() + "themes");
+    if (!path.isEmpty())
+    {
+        themeDir.append(QDir::separator() + path);
+    }
 
     if(!QFile::exists(themeDir))
     {
         themeDir = QString(":/themes");
+        if (!path.isEmpty())
+        {
+            themeDir.append(QDir::separator() + path);
+        }
     }
 
     return themeDir;
 }
 
-QStringList Settings::getThemeList() const
+QStringList Settings::getThemeList(QString path) const
 {
-    QStringList themes = QDir(getThemePath()).entryList(QStringList("*.png"));
+    QStringList themes = QDir(getThemePath(path)).entryList(QStringList("*.png"));
     return themes;
 }
 

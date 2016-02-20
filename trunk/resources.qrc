@@ -125,7 +125,7 @@
         <file alias="themes/boards/sandlewood.png">data/themes/boards/sandlewood.png</file>
         <file alias="themes/boards/slate.png">data/themes/boards/slate.png</file>
         <file alias="themes/boards/wood.png">data/themes/boards/wood.png</file>
-        <file alias="themes/fantasy.png">data/themes/fantasy.png</file>
+        <file alias="themes/shadow/fantasy.png">data/themes/shadow/fantasy.png</file>
         <file alias="themes/leipzig.png">data/themes/leipzig.png</file>
         <file alias="themes/merida.png">data/themes/merida.png</file>
         <file alias="themes/outline/alpha.png">data/themes/outline/alpha.png</file>
@@ -136,7 +136,7 @@
         <file alias="themes/shadow/berlin.png">data/themes/shadow/berlin.png</file>
         <file alias="themes/shadow/leipzig.png">data/themes/shadow/leipzig.png</file>
         <file alias="themes/shadow/merida.png">data/themes/shadow/merida.png</file>
-        <file alias="themes/spatial.png">data/themes/spatial.png</file>
+        <file alias="themes/shadow/spatial.png">data/themes/shadow/spatial.png</file>
         <file alias="textedit/editcopy.png">data/images/textedit/editcopy.png</file>
         <file alias="textedit/editcut.png">data/images/textedit/editcut.png</file>
         <file alias="textedit/editpaste.png">data/images/textedit/editpaste.png</file>
@@ -165,5 +165,6 @@
         <file alias="images/query_move.png">data/images/query_move.png</file>
         <file alias="images/list_add.png">data/images/list_add.png</file>
         <file alias="images/folder_web.png">data/images/folder_web.png</file>
+        <file alias="themes/shadow/fritzSWS.png">data/themes/shadow/fritzSWS.png</file>
     </qresource>
 </RCC>

@@ -62,7 +62,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -114,7 +114,7 @@
            </item>
            <item>
             <property name="text">
-             <string>outline+shadow</string>
+             <string>shadow</string>
             </property>
            </item>
           </widget>
