@@ -108,6 +108,7 @@ protected slots:
 private slots:
     void slotBtMoveFontClicked();
     void slotBtTextFontClicked();
+    void SlotPieceEffectActivated(int index);
 };
 
 

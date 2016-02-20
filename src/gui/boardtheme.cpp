@@ -81,7 +81,7 @@ bool BoardTheme::loadPieces(const QString& pieces, int effect)
     }
 
     QString themePath = pieces.startsWith(":") ? pieces :
-       QString("%1/%2/%3.png").arg(AppSettings->getThemePath()).arg(effectPath).arg(pieces);
+       QString("%1/%2/%3.png").arg(AppSettings->getThemePath(0)).arg(effectPath).arg(pieces);
 
     QPixmap big;
     if(!big.load(themePath) || big.width() < 160)
@@ -90,24 +90,45 @@ bool BoardTheme::loadPieces(const QString& pieces, int effect)
     }
 
     int realsize = big.height() / 2;
-    if(realsize != big.width() / 6)
+    if(realsize == big.width() / 6)
     {
-        return false;
+        /* Cut big theme bitmap into separate pieces */
+        m_originalPiece[WhiteRook] = big.copy(0 * realsize, 0, realsize, realsize);
+        m_originalPiece[WhiteKnight] = big.copy(1 * realsize, 0, realsize, realsize);
+        m_originalPiece[WhiteBishop] = big.copy(2 * realsize, 0, realsize, realsize);
+        m_originalPiece[WhiteQueen] = big.copy(3 * realsize, 0, realsize, realsize);
+        m_originalPiece[WhiteKing] = big.copy(4 * realsize, 0, realsize, realsize);
+        m_originalPiece[WhitePawn] = big.copy(5 * realsize, 0, realsize, realsize);
+        m_originalPiece[BlackRook] = big.copy(0 * realsize, realsize, realsize, realsize);
+        m_originalPiece[BlackKnight] = big.copy(1 * realsize, realsize, realsize, realsize);
+        m_originalPiece[BlackBishop] = big.copy(2 * realsize, realsize, realsize, realsize);
+        m_originalPiece[BlackQueen] = big.copy(3 * realsize, realsize, realsize, realsize);
+        m_originalPiece[BlackKing] = big.copy(4 * realsize, realsize, realsize, realsize);
+        m_originalPiece[BlackPawn] = big.copy(5 * realsize, realsize, realsize, realsize);
+    }
+    else
+    {
+        // Test SCID format
+        realsize = big.height();
+        if(realsize != big.width() / 12)
+        {
+            return false;
+        }
+        /* Cut big theme bitmap into separate pieces */
+        m_originalPiece[WhitePawn] = big.copy(0 * realsize, 0, realsize, realsize);
+        m_originalPiece[WhiteKnight] = big.copy(1 * realsize, 0, realsize, realsize);
+        m_originalPiece[WhiteBishop] = big.copy(2 * realsize, 0, realsize, realsize);
+        m_originalPiece[WhiteRook] = big.copy(3 * realsize, 0, realsize, realsize);
+        m_originalPiece[WhiteQueen] = big.copy(4 * realsize, 0, realsize, realsize);
+        m_originalPiece[WhiteKing] = big.copy(5 * realsize, 0, realsize, realsize);
+        m_originalPiece[BlackPawn] = big.copy(6 * realsize, 0, realsize, realsize);
+        m_originalPiece[BlackKnight] = big.copy(7 * realsize, 0, realsize, realsize);
+        m_originalPiece[BlackBishop] = big.copy(8 * realsize, 0, realsize, realsize);
+        m_originalPiece[BlackRook] = big.copy(9 * realsize, 0, realsize, realsize);
+        m_originalPiece[BlackQueen] = big.copy(10 * realsize, 0, realsize, realsize);
+        m_originalPiece[BlackKing] = big.copy(11 * realsize, 0, realsize, realsize);
     }
 
-    /* Cut big theme bitmap into separate pieces */
-    m_originalPiece[WhiteRook] = big.copy(0 * realsize, 0, realsize, realsize);
-    m_originalPiece[WhiteKnight] = big.copy(1 * realsize, 0, realsize, realsize);
-    m_originalPiece[WhiteBishop] = big.copy(2 * realsize, 0, realsize, realsize);
-    m_originalPiece[WhiteQueen] = big.copy(3 * realsize, 0, realsize, realsize);
-    m_originalPiece[WhiteKing] = big.copy(4 * realsize, 0, realsize, realsize);
-    m_originalPiece[WhitePawn] = big.copy(5 * realsize, 0, realsize, realsize);
-    m_originalPiece[BlackRook] = big.copy(0 * realsize, realsize, realsize, realsize);
-    m_originalPiece[BlackKnight] = big.copy(1 * realsize, realsize, realsize, realsize);
-    m_originalPiece[BlackBishop] = big.copy(2 * realsize, realsize, realsize, realsize);
-    m_originalPiece[BlackQueen] = big.copy(3 * realsize, realsize, realsize, realsize);
-    m_originalPiece[BlackKing] = big.copy(4 * realsize, realsize, realsize, realsize);
-    m_originalPiece[BlackPawn] = big.copy(5 * realsize, realsize, realsize, realsize);
     m_pieceFilename = themePath;
 
     if(size().isEmpty())

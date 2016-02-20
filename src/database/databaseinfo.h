@@ -75,7 +75,7 @@ public:
         return m_index;
     }
     /** Load game @p index */
-    bool loadGame(int index);
+    bool loadGame(GameId index);
     /** Starts new game, giving it @p index equal to the number of games in the database */
     void newGame();
     /** Saves game, replacing current one or adding new. If @ref currentIndex() is

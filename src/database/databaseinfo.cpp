@@ -140,7 +140,7 @@ Filter *DatabaseInfo::filter()
     return m_filter;
 }
 
-bool DatabaseInfo::loadGame(int index)
+bool DatabaseInfo::loadGame(GameId index)
 {
     if(!m_bLoaded)
     {
