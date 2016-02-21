@@ -166,5 +166,6 @@
         <file alias="images/list_add.png">data/images/list_add.png</file>
         <file alias="images/folder_web.png">data/images/folder_web.png</file>
         <file alias="themes/shadow/fritzSWS.png">data/themes/shadow/fritzSWS.png</file>
+        <file alias="images/pen.png">data/images/pen.png</file>
     </qresource>
 </RCC>

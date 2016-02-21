@@ -37,6 +37,7 @@ public:
     enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
     enum {Automatic = 0, Always = 1, Never = 2};
     enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4};
+    typedef enum {ActionStandard, ActionQuery, ActionReplace, ActionInsert, ActionAdd, ActionPen } BoardViewAction;
     /** Create board widget. */
     BoardView(QWidget* parent = 0, int flags = 0);
     /** Destroy widget. */
@@ -85,6 +86,8 @@ public:
 
     void getStoredMove(Square &from, Square &to);
     QRect totalRect() const;
+
+    BoardViewAction moveActionFromModifier(Qt::KeyboardModifiers modifiers);
 public slots:
 
     /** Flips/unflips board. */
@@ -113,7 +116,7 @@ signals:
     void wheelScrolled(int dir);
     /** Indicate that a piece was dropped to the board */
     void pieceDropped(Square to, Piece p);
-
+    void actionHint(const QString&);
 protected:
     /** Redraws whole board if necessary. */
     virtual void paintEvent(QPaintEvent*);
@@ -127,6 +130,10 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent* e);
     /** Handle mouse wheel events */
     virtual void wheelEvent(QWheelEvent* e);
+    virtual void keyPressEvent(QKeyEvent *);
+    virtual void keyReleaseEvent(QKeyEvent *);
+    virtual void enterEvent(QEvent *);
+    virtual void focusInEvent(QFocusEvent *);
 
 protected: //Drag'n'Drop Support
     void dragEnterEvent(QDragEnterEvent *event);
@@ -134,6 +141,7 @@ protected: //Drag'n'Drop Support
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
 
+    void checkCursor(Qt::KeyboardModifiers modifiers);
 protected slots:
     void showThreat(Guess::Result sm, Board b);
 private:
@@ -211,7 +219,6 @@ private:
     Piece m_dragged;
     QPoint m_dragStart;
     QPoint m_dragPoint;
-    int m_button;
     bool m_clickUsed;
     int m_wheelCurrentDelta;
     int m_minDeltaWheel;
