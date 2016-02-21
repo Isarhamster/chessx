@@ -51,6 +51,7 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     setSizePolicy(policy);
     setMouseTracking(true);
     installEventFilter(this);
+    setFocusPolicy( Qt::StrongFocus );
 
     connect(&m_threatGuess, SIGNAL(guessFoundForBoard(Guess::Result, Board)),
             this, SLOT(showThreat(Guess::Result,Board)), Qt::QueuedConnection);
@@ -77,6 +78,10 @@ bool BoardView::eventFilter(QObject *obj, QEvent *ev)
     if(ev->type() == QEvent::Leave || ev->type() == QEvent::WindowDeactivate)
     {
         removeGuess();
+    }
+    if(ev->type() == QEvent::KeyPress)
+    {
+        checkCursor(QApplication::queryKeyboardModifiers());
     }
     return QWidget::eventFilter(obj, ev);
 }
@@ -567,32 +572,96 @@ void BoardView::nextGuess(Square s)
     }
 }
 
-void BoardView::mouseMoveEvent(QMouseEvent *event)
+BoardView::BoardViewAction BoardView::moveActionFromModifier(Qt::KeyboardModifiers modifiers)
 {
-    m_button = event->button() + event->modifiers();
-    if (event->modifiers() & Qt::MetaModifier)
+    switch (modifiers & 0x7e000000)
     {
-        setCursor(QCursor(QPixmap(":/images/query_move.png")));
+    case ShiftModifier:
+        return ActionPen;
+    case ControlModifier:
+        return m_atLineEnd ? ActionStandard : ActionReplace;
+    case AltModifier:
+        return m_atLineEnd ? ActionStandard : ActionAdd;
+    case ControlModifier | AltModifier:
+        return m_atLineEnd ? ActionStandard : ActionInsert;
+    case MetaModifier:
+        return ActionQuery;
+    default:
+        return ActionStandard;
     }
-    else if(!m_atLineEnd && (event->modifiers() & Qt::ControlModifier))
+}
+
+void BoardView::checkCursor(Qt::KeyboardModifiers modifiers)
+{
+    const char* file = 0;
+    QString text;
+
+    switch (moveActionFromModifier(modifiers))
     {
-        if(event->modifiers() & Qt::AltModifier)
-        {
-            setCursor(QCursor(QPixmap(":/images/insert_move.png")));
-        }
-        else
-        {
-            setCursor(QCursor(QPixmap(":/images/replace_move.png")));
-        }
+    case ActionStandard:
+        break;
+    case ActionQuery:
+        file = ":/images/query_move.png";
+        text = tr("Query for piece in case of promotion");
+        break;
+    case ActionReplace:
+        file = ":/images/replace_move.png";
+        text = tr("Replace remainder of game with new move");
+        break;
+    case ActionInsert:
+        file = ":/images/insert_move.png";
+        text = tr("Insert new move and keep as much as possible of remaining moves");
+        break;
+    case ActionAdd:
+        file = ":/images/plus.png";
+        text = tr("Force adding a variation");
+        break;
+    case ActionPen:
+        file = ":/images/pen.png";
+        text = tr("Draw a square or arrow annotation");
+        break;
     }
-    else if(!m_atLineEnd && (event->modifiers() & Qt::AltModifier))
+
+    if(file)
     {
-        setCursor(QCursor(QPixmap(":/images/plus.png")));
+        setCursor(QCursor(QPixmap(file)));
     }
     else
     {
         setCursor(QCursor(Qt::ArrowCursor));
     }
+
+    emit actionHint(text);
+}
+
+void BoardView::keyPressEvent(QKeyEvent *event)
+{
+    checkCursor(QApplication::queryKeyboardModifiers());
+    QWidget::keyPressEvent(event);
+}
+
+void BoardView::keyReleaseEvent(QKeyEvent *event)
+{
+    checkCursor(QApplication::queryKeyboardModifiers());
+    QWidget::keyReleaseEvent(event);
+}
+
+void BoardView::enterEvent(QEvent *event)
+{
+    setFocus();
+    raise();
+    QWidget::enterEvent(event);
+}
+
+void BoardView::focusInEvent(QFocusEvent *event)
+{
+    checkCursor(QApplication::queryKeyboardModifiers());
+    QWidget::focusInEvent(event);
+}
+
+void BoardView::mouseMoveEvent(QMouseEvent *event)
+{
+    setFocus();
 
     if(!(event->buttons() & Qt::LeftButton))
     {
@@ -635,6 +704,8 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
     }
 
     startToDrag(event, s);
+
+    QWidget::mouseMoveEvent(event);
 }
 
 void BoardView::startToDrag(QMouseEvent *event, Square s)
@@ -650,7 +721,6 @@ void BoardView::startToDrag(QMouseEvent *event, Square s)
 
 void BoardView::mouseReleaseEvent(QMouseEvent* event)
 {
-    setCursor(QCursor(Qt::ArrowCursor));
     int button = event->button() + event->modifiers();
     Square s = squareAt(event->pos());
     m_clickUsed = false;
@@ -750,6 +820,7 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         }
     }
     m_dragged = Empty;
+    QWidget::mouseReleaseEvent(event);
 }
 
 void BoardView::wheelEvent(QWheelEvent* e)
@@ -761,6 +832,7 @@ void BoardView::wheelEvent(QWheelEvent* e)
         emit wheelScrolled(change + e->modifiers());
         m_wheelCurrentDelta = 0;
     }
+    QWidget::wheelEvent(e);
 }
 
 void BoardView::setFlipped(bool flipped)

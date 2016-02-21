@@ -535,7 +535,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                 if (obj == this || obj == m_boardView || obj == m_gameView || obj == m_mainAnalysis || obj == m_secondaryAnalysis)
                 {
                     keyPressEvent(keyEvent);
-                    return true;
+                    return (obj != m_boardView);
                 }
             }
         }
@@ -584,6 +584,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
 {
     evaluateSanNag(e);
     emit enterText(m_nagText);
+    QWidget::keyPressEvent(e);
 }
 
 void MainWindow::evaluateSanNag(QKeyEvent *e)
@@ -781,12 +782,7 @@ void MainWindow::gameLoad(int index)
 
 bool MainWindow::gameMoveBy(int change)
 {
-    if(!gameMode() && game().moveByPly(change))
-    {
-        m_gameView->setFocus();
-        return true;
-    }
-    return false;
+    return(!gameMode() && game().moveByPly(change));
 }
 
 void MainWindow::updateMenuRecent()

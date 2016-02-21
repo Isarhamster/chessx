@@ -1,12 +1,27 @@
 This will install version 1.3.4 of ChessX.
 
 August 2015: Version 1.3.4
+- New Feature: Filter duplicate games
 - New Feature: Chess960 / Fischerandom Support
 - New Feature: Game matches with sudden death timing
 - New Feature: Let two engines play out a game (engine match)
 - New Feature: #104 Display arbitrary tags in game list
 - New Feature: Scratchpad
 
+- New feature: Support SCID format piece sets
+- New feature: Favorite web source with auto-increment
+- New feature: List of recently used games
+- New feature: Store some more FICS preferences
+- New feature: Start threat with '--'<Enter>
+- New feature: Allow castling in normal game as in Chess960 with dragging King onto Rook
+- New feature: Parse mal-formed FEN with - - - - at end
+- New feature: Show folders on Linux desktops (similar to mac OS/Windows)
+- New feature: Engine logging to file
+- New feature: Helpbrowser with Index Combobox
+- New feature: Castling support for chess960
+- New feature: Completer for FICS say messages
+- New feature: Added checkbox so that engine starts game
+- New feature: Premove against engine
 - New feature: GUI provides book moves for engine games
 - New feature: Plock 10s before end of FICS game
 - New feature: Select Promotion Dialog with Meta-Modifier
@@ -18,8 +33,14 @@ August 2015: Version 1.3.4
 - New feature: No hints during training or puzzling
 - New feature: Drag/drop PGN-Files/Text to other applications
 - New feature: Make images flipped if mainboard is flipped
+- New feature: Copy images with fixed size
 - New feature: B/W images of board
 
+- Bugfix: Crash loading small file from command line
+- Bugfix: Eco Info formatting
+- Bugfix: Castling not possible sometimes
+- Bugfix: Moving pieces with keyboard in auto-responder mode
+- Bugfix: Frame around square where drag starts
 - Bugfix: Undo move in FICS puzzle mode
 - Bugfix: FICS timeout handling
 - Bugfix: Openingthread crashes at end of FICS game
@@ -45,6 +66,9 @@ August 2015: Version 1.3.4
 - Bugfix: Rendering board would occasionally draw offset twice
 - Bugfix: Qt4 compatibility
 
+- Changed: Skip empty parts when copying images
+- Changed: Always draw square around board
+- Changed: Training with Options
 - Changed: Force writing variations from Engine even if no move exists
 - Changed: Set Result at end of game against engine
 - Changed: Do not elide tab text of boards

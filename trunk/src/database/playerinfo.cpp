@@ -277,8 +277,8 @@ QString PlayerInfo::formattedRange() const
 QString PlayerInfo::listOfOpenings() const
 {
     QStringList openingsList;
-    openingsList.append(QString("<p><a href='player:%1#%2'>%3:</a></p>").arg(m_name).arg(TagNameWhite).arg(tr("White Openings")));
-    openingsList.append(QString("<p><a href='player:%1#%2'>%3:</a></p>").arg(m_name).arg(TagNameBlack).arg(tr("Black Openings")));
+    openingsList.append(QString("<a name='ListWhite'></a><p><a href='#ListBlack'>&#8681;</a>&nbsp;<a href='player:%1#%2'>%3:</a></p>").arg(m_name).arg(TagNameWhite).arg(tr("White Openings")));
+    openingsList.append(QString("<a name='ListBlack'></a><p><a href='#ListWhite'>&#8679;</a>&nbsp;<a href='player:%1#%2'>%3:</a></p>").arg(m_name).arg(TagNameBlack).arg(tr("Black Openings")));
     openingsList.append("");
 
     for(int i = 0; i < 2; ++i)

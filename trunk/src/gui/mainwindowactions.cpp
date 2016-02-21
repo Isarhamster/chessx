@@ -768,13 +768,14 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
 
 void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to)
 {
+    BoardView::BoardViewAction action = m_boardView->moveActionFromModifier((Qt::KeyboardModifiers) button);
     if(m.isLegal() || m.isNullMove())
     {
         PieceType promotionPiece = None;
         if(m.isPromotion() && !(button & 0x80000000))
         {
             int index = 0;
-            if ((button & Qt::MetaModifier) || !AppSettings->getValue("/Board/AutoPromoteToQueen").toBool())
+            if ((action == BoardView::ActionQuery) || !AppSettings->getValue("/Board/AutoPromoteToQueen").toBool())
             {
                 index = PromotionDialog(0,m.color()).getIndex();
                 if(index<0)
@@ -793,7 +794,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
         // Use an existing move with the correct promotion piece type if it already exists
         if(game().findNextMove(from, to, promotionPiece))
         {
-            if((button & Qt::AltModifier) && (!(button & Qt::ControlModifier)))
+            if (action == BoardView::ActionAdd)
             {
                 // The move exists but adding a variation was requested anyhow
                 // Take back the move and proceed as if the move does not yet exist
@@ -883,16 +884,13 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
             }
             else
             {
-                if(button & Qt::ControlModifier)
+                if(action == BoardView::ActionInsert)
                 {
-                    if(button & Qt::AltModifier)
-                    {
-                        game().insertMove(m);
-                    }
-                    else
-                    {
-                        game().replaceMove(m);
-                    }
+                    game().insertMove(m);
+                }
+                else if(action == BoardView::ActionReplace)
+                {
+                    game().replaceMove(m);
                 }
                 else
                 {
@@ -975,16 +973,20 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
             }
         }
     }
-    else if ((button & Qt::LeftButton) && (button & Qt::ShiftModifier))
+    else if (button & Qt::LeftButton)
     {
-        bool twoSquares = (s != from && from != InvalidSquare);
-        if (twoSquares)
+        BoardView::BoardViewAction action = m_boardView->moveActionFromModifier((Qt::KeyboardModifiers)button);
+        if (action == BoardView::ActionPen)
         {
-            game().appendArrowAnnotation(s, from, m_lastColor);
-        }
-        else
-        {
-            game().appendSquareAnnotation(s, m_lastColor);
+            bool twoSquares = (s != from && from != InvalidSquare);
+            if (twoSquares)
+            {
+                game().appendArrowAnnotation(s, from, m_lastColor);
+            }
+            else
+            {
+                game().appendSquareAnnotation(s, m_lastColor);
+            }
         }
     }
 }
@@ -2778,6 +2780,7 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
         connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
         connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
+        connect(boardView, SIGNAL(actionHint(QString)), SLOT(slotStatusMessage(QString)));
 
         m_tabWidget->addTab(boardView, databaseName());
         m_tabWidget->setCurrentWidget(boardView);

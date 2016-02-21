@@ -33,7 +33,9 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
     connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
             this, SLOT(selectionChangedSlot()));
 
-    ui->detailText->setOpenLinks(false);
+    ui->detailText->setOpenLinks(true);
+    ui->detailText->setOpenExternalLinks(false);
+
     connect(ui->detailText, SIGNAL(anchorClicked(QUrl)), SLOT(slotLinkClicked(QUrl)));
 
     slotReconfigure();
@@ -89,7 +91,7 @@ void PlayerListWidget::playerSelected(const QString& player)
         m_player.setName(player);
         ui->filterDatabase->setEnabled(true);
         ui->renameItem->setEnabled(true);
-        QString head = QString("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head><title>%1</title><meta name='qrichtext' content='1'><meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\"></head>").arg(player);
+        QString head = QString("<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'><html><head><title>%1</title><meta name='qrichtext' content='1'><meta http-equiv='Content-type' content='text/html;charset=UTF-8'></head>").arg(player);
         QString text = QString("%1<body><h1><a href='player:%2'>%3</a></h1>%4%5%6%7%8</body></html>")
                        .arg(head)
                        .arg(m_player.name())
@@ -100,6 +102,7 @@ void PlayerListWidget::playerSelected(const QString& player)
                        .arg(m_player.formattedScore())
                        .arg(m_player.listOfOpenings());
         ui->detailText->setHtml(text);
+        qDebug() << text << "\n";
     }
     else
     {
