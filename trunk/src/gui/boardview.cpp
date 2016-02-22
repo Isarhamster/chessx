@@ -582,7 +582,7 @@ BoardView::BoardViewAction BoardView::moveActionFromModifier(Qt::KeyboardModifie
         return m_atLineEnd ? ActionStandard : ActionReplace;
     case AltModifier:
         return m_atLineEnd ? ActionStandard : ActionAdd;
-    case ControlModifier | AltModifier:
+    case (unsigned int)ControlModifier | (unsigned int)AltModifier:
         return m_atLineEnd ? ActionStandard : ActionInsert;
     case MetaModifier:
         return ActionQuery;
