@@ -150,7 +150,7 @@ bool DatabaseInfo::loadGame(GameId index)
     {
         return false;
     }
-    if(!m_database || index < 0 || index >= (int)m_database->count())
+    if(!m_database || index >= m_database->count())
     {
         return false;
     }

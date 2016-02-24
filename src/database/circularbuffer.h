@@ -22,7 +22,7 @@ public:
     inline void push_back(const T &t)      { append(t); }
     inline void push_front(const T &t)     { prepend(t); }
 protected:
-    inline void deleteExcess() { while (QQueue<T>::count() > maxSize) QQueue<T>::pop_front();
+    inline void deleteExcess() { while (QQueue<T>::count() > (int) maxSize) QQueue<T>::pop_front();
                                  if (QQueue<T>::count())
                                  {
                                     T t = QQueue<T>::last();

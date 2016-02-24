@@ -104,17 +104,17 @@
            </property>
            <item>
             <property name="text">
-             <string>plain</string>
+             <string notr="true">plain</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>outline</string>
+             <string notr="true">outline</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>shadow</string>
+             <string notr="true">shadow</string>
             </property>
            </item>
           </widget>

@@ -104,7 +104,7 @@ protected:
     QString exportFileName(int& format);
     /** Load game @p index. If @p force is false, does nothing for incorrect @p index .
     With @p force set, creates empty game. */
-    void gameLoad(int index);
+    void gameLoad(GameId index);
     /** Make given number of moves in current game */
     bool gameMoveBy(int change);
     /** Update recent files menu */
