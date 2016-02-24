@@ -26,8 +26,8 @@ class QWidget;
 #define DEFAULT_LISTFONTSIZE 12
 #else
 #define MIN_WHEEL_COUNT 0
-#define DEFAULT_FONTSIZE 11
-#define DEFAULT_LISTFONTSIZE 11
+#define DEFAULT_FONTSIZE 10
+#define DEFAULT_LISTFONTSIZE 10
 #endif
 
 class Settings : public QSettings

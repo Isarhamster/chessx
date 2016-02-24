@@ -759,9 +759,8 @@ int MainWindow::gameIndex() const
     return databaseInfo()->currentIndex();
 }
 
-void MainWindow::gameLoad(int index)
+void MainWindow::gameLoad(GameId index)
 {
-    if (index < 0) return;
     if(QuerySaveGame())
     {
         if(databaseInfo()->loadGame(index))

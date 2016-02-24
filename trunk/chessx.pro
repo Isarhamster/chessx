@@ -445,12 +445,13 @@ RESOURCES = resources.qrc
 TRANSLATIONS = i18n/chessx_de.ts \
         i18n/chessx_da.ts \
         i18n/chessx_fr.ts \
-        i18n/chessx_it.ts \
-        i18n/chessx_nl.ts \
-        i18n/chessx_pl.ts \
-        i18n/chessx_pt_BR.ts \
-        i18n/chessx_ro.ts \
-        i18n/chessx_zh.ts
+        i18n/chessx_it.ts
+
+#        i18n/chessx_nl.ts \
+#        i18n/chessx_pl.ts \
+#        i18n/chessx_pt_BR.ts \
+#        i18n/chessx_ro.ts \
+#        i18n/chessx_zh.ts
 
 isEmpty(QMAKE_LRELEASE) {
      win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
