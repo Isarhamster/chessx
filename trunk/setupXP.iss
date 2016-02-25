@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ChessX"
-#define MyAppVersion "1.3.4"
+#define MyAppVersion "1.4.0"
 #define MyAppPublisher "chessx.sourceforge.net"
 #define MyAppURL "http://chessx.sourceforge.net"
 #define MyAppExeName "chessx.exe"
@@ -41,7 +41,7 @@ Source: "..\build-chessx-MinGW_32bit-Release\release\*.dll"; DestDir: "{app}"; F
 Source: "..\build-chessx-MinGW_32bit-Release\release\chessx.exe.local"; DestDir: "{app}"; Flags: ignoreversion 
 Source: ".\COPYING"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ChangeLog"; DestDir: "{app}"
-Source: ".\data\engines\stockfish-7-32bit.exe"; DestDir: "{app}\data\engines\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\data\engines\uci\stockfish-7-32bit.exe"; DestDir: "{app}\data\engines\uci\"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\data\timeseal\windows\*.exe"; DestDir: "{app}\data\timeseal\windows\"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]

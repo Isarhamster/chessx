@@ -157,7 +157,9 @@ MainWindow::MainWindow() : QMainWindow(),
     ficsConsoleDock->setObjectName("FicsCOnsoleDock");
     ficsConsoleDock->setMinimumSize(150, 100);
     ficsConsoleDock->setWidget(m_ficsConsole);
+    ficsConsoleDock->hide();
     addDockWidget(Qt::RightDockWidgetArea, ficsConsoleDock);
+    connect(m_ficsConsole, SIGNAL(raiseRequest()), ficsConsoleDock, SLOT(show()));
     connect(m_ficsConsole, SIGNAL(raiseRequest()), ficsConsoleDock, SLOT(raise()));
     connect(m_ficsConsole, SIGNAL(ReceivedBoard(int,QString)), this, SLOT(HandleFicsBoardRequest(int,QString)));
     connect(m_ficsConsole, SIGNAL(SignalGameResult(QString)), this, SLOT(HandleFicsResultRequest(QString)));
@@ -233,7 +235,6 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
     connect(this, SIGNAL(reconfigure()), m_gameList, SLOT(slotReconfigure()));
     gameListDock->setWidget(m_gameList);
-    addDockWidget(Qt::RightDockWidgetArea, gameListDock);
     m_menuView->addAction(gameListDock->toggleViewAction());
     gameListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_L);
     connect(m_gameList, SIGNAL(raiseRequest()), gameListDock, SLOT(raise()));
@@ -244,7 +245,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_playerList = new PlayerListWidget(this);
     m_playerList->setMinimumSize(150, 100);
     playerListDock->setWidget(m_playerList);
-    addDockWidget(Qt::RightDockWidgetArea, playerListDock);
+    // addDockWidget(Qt::RightDockWidgetArea, playerListDock);
     m_menuView->addAction(playerListDock->toggleViewAction());
     playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
     connect(m_playerList, SIGNAL(raiseRequest()), playerListDock, SLOT(raise()));
@@ -253,7 +254,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString, QString, QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString, QString)));
     connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_playerList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_playerList, SLOT(slotReconfigure()));
-    playerListDock->hide();
+    // playerListDock->hide();
 
     // Event List
     DockWidgetEx* eventListDock = new DockWidgetEx(tr("Events"), this);
@@ -261,7 +262,6 @@ MainWindow::MainWindow() : QMainWindow(),
     m_eventList = new EventListWidget(this);
     m_eventList->setMinimumSize(150, 100);
     eventListDock->setWidget(m_eventList);
-    addDockWidget(Qt::RightDockWidgetArea, eventListDock);
     m_menuView->addAction(eventListDock->toggleViewAction());
     eventListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
     connect(m_eventList, SIGNAL(raiseRequest()), eventListDock, SLOT(raise()));
@@ -279,7 +279,6 @@ MainWindow::MainWindow() : QMainWindow(),
     m_ecoList = new ECOListWidget(this);
     m_ecoList->setMinimumSize(150, 100);
     ecoListDock->setWidget(m_ecoList);
-    addDockWidget(Qt::RightDockWidgetArea, ecoListDock);
     m_menuView->addAction(ecoListDock->toggleViewAction());
     ecoListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
     connect(m_ecoList, SIGNAL(raiseRequest()), ecoListDock, SLOT(raise()));
@@ -296,7 +295,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_databaseList = new DatabaseList(this);
     m_databaseList->setMinimumSize(150, 100);
     dbListDock->setWidget(m_databaseList);
-    addDockWidget(Qt::RightDockWidgetArea, dbListDock);
+    // addDockWidget(Qt::RightDockWidgetArea, dbListDock);
     m_menuView->addAction(dbListDock->toggleViewAction());
     dbListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_D);
     connect(m_databaseList, SIGNAL(requestOpenDatabase(QString, bool)),
@@ -346,6 +345,16 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(this, SIGNAL(signalDatabaseOpenClose()), this, SLOT(slotUpdateOpeningTreeWidget()));
     connect(this, SIGNAL(signalGameModeChanged(bool)), m_openingTreeWidget, SLOT(setDisabled(bool)));
     connect(this, SIGNAL(signalUpdateDatabaseList(QStringList)), m_openingTreeWidget, SLOT(updateFilterIndex(QStringList)));
+
+    // Arrange Upper Rightside docks
+    tabifyDockWidget(ficsConsoleDock, eventListDock);
+    tabifyDockWidget(ficsConsoleDock, ecoListDock);
+    tabifyDockWidget(ficsConsoleDock, playerListDock);
+    tabifyDockWidget(ficsConsoleDock, openingDock);
+    tabifyDockWidget(ficsConsoleDock, dbListDock);
+
+    // Arrange Lower Rightside docks
+    tabifyDockWidget(gameTextDock, gameListDock);
 
     /* Analysis Dock */
     DockWidgetEx* analysisDock = new DockWidgetEx(tr("Analysis 1"), this);
@@ -476,7 +485,7 @@ MainWindow::MainWindow() : QMainWindow(),
 void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget* analysis)
 {
     analysisDock->setWidget(analysis);
-    addDockWidget(Qt::RightDockWidgetArea, analysisDock);
+    // addDockWidget(Qt::RightDockWidgetArea, analysisDock);
     connect(analysis, SIGNAL(addVariation(Analysis)),
             SLOT(slotGameAddVariation(Analysis)));
     connect(analysis, SIGNAL(addVariation(QString)),
@@ -1598,7 +1607,7 @@ void MainWindow::setupActions()
     textEditDock->setObjectName("ScratchpadDock");
     m_scratchPad = new TextEdit(textEditDock,menuScratchPad);
     textEditDock->setWidget(m_scratchPad);
-    addDockWidget(Qt::RightDockWidgetArea, textEditDock);
+    // addDockWidget(Qt::RightDockWidgetArea, textEditDock);
     m_menuView->addAction(textEditDock->toggleViewAction());
     textEditDock->hide();
     connect(m_scratchPad, SIGNAL(requestBoardImage(QImage&,double)), this, SLOT(slotCreateBoardImage(QImage&,double)));
@@ -1613,12 +1622,11 @@ void MainWindow::setupActions()
     pHelpDock->setObjectName("Help");
     HelpBrowserShell* pHelpBrowser = new HelpBrowserShell(this);
     pHelpDock->setWidget(pHelpBrowser);
-    addDockWidget(Qt::RightDockWidgetArea, pHelpDock);
+    addDockWidget(Qt::LeftDockWidgetArea, pHelpDock);
     QAction* helpAction = pHelpDock->toggleViewAction();
     helpAction->setIcon(QIcon(":/images/help.png"));
     helpAction->setShortcut(Qt::Key_F1);
     help->addAction(helpAction);
-    pHelpDock->hide();
 
     help->addAction(createAction(tr("Customize Keyboard..."), SLOT(slotEditActions())));
     help->addSeparator();
