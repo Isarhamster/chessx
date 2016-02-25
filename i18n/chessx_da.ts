@@ -573,27 +573,27 @@ Tjek venligst din installation.</translation>
     <message>
         <location filename="../src/gui/boardview.cpp" line="605"/>
         <source>Query for piece in case of promotion</source>
-        <translation type="unfinished"></translation>
+        <translation>Spørg om brik ved bondeforvandling</translation>
     </message>
     <message>
         <location filename="../src/gui/boardview.cpp" line="609"/>
         <source>Replace remainder of game with new move</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstat resten af partiet med nyt træk</translation>
     </message>
     <message>
         <location filename="../src/gui/boardview.cpp" line="613"/>
         <source>Insert new move and keep as much as possible of remaining moves</source>
-        <translation type="unfinished"></translation>
+        <translation>Indsæt nyt træk og bevar så meget som muligt af de resterende træk</translation>
     </message>
     <message>
         <location filename="../src/gui/boardview.cpp" line="617"/>
         <source>Force adding a variation</source>
-        <translation type="unfinished"></translation>
+        <translation>Tving tilføjelse af variant</translation>
     </message>
     <message>
         <location filename="../src/gui/boardview.cpp" line="621"/>
         <source>Draw a square or arrow annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Tegn en felt-. eller pilekommentar</translation>
     </message>
 </context>
 <context>
@@ -2217,7 +2217,7 @@ Skal jeg downloade en database?</translation>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1284"/>
         <source>Web Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Webfavorit</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1286"/>
@@ -3889,7 +3889,7 @@ Skal jeg downloade en database?</translation>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1212"/>
         <source>Additional tags, separate with blanks</source>
-        <translation>Ekstra tags, adskil med mellemrum</translation>
+        <translation>Ekstra tags adskilt med mellemrum</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1479"/>
@@ -4036,12 +4036,12 @@ Skal jeg downloade en database?</translation>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="350"/>
         <source>Copy Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Billedkopiering</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="386"/>
         <source>Fixed Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Fast størrelse</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="854"/>
@@ -4051,17 +4051,17 @@ Skal jeg downloade en database?</translation>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="982"/>
         <source>Web Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Webfavorit</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="995"/>
         <source>URL, use $1 for auto-incrementing number</source>
-        <translation type="unfinished"></translation>
+        <translation>URL, brug $1 for tal som automatisk tælles op</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="998"/>
         <source>Use $1 for auto-incrementing number</source>
-        <translation type="unfinished"></translation>
+        <translation>Brug $1 for tal som automatisk tælles op</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1159"/>
