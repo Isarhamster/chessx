@@ -3911,7 +3911,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="982"/>
         <source>Web Favorite</source>
-        <translation type="unfinished">Web Favorit</translation>
+        <translation>Web Favorit</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="995"/>
