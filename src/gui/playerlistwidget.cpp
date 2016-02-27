@@ -102,7 +102,6 @@ void PlayerListWidget::playerSelected(const QString& player)
                        .arg(m_player.formattedScore())
                        .arg(m_player.listOfOpenings());
         ui->detailText->setHtml(text);
-        qDebug() << text << "\n";
     }
     else
     {

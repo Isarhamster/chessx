@@ -15,6 +15,7 @@
 #include <QList>
 #include <QPair>
 #include <QObject>
+#include <QSet>
 
 #include "indexitem.h"
 #include "game.h"
@@ -98,6 +99,9 @@ public:
 
     /** Returns a bit array to indicate which games in index have a tag value which somewhat matches */
     QBitArray listPartialValue(const QString& tagName, const QString& value) const;
+
+    /** Returns a bit array to indicate which games in index have a tag value in @p set */
+    QBitArray listInSet(const QString& tagName, const QSet<QString>& set, bool partial) const;
 
     // Utility //
     //

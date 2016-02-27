@@ -342,7 +342,7 @@ void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString playe
 {
     m_model->filter()->setAll(1);
     Search* ts = new TagSearch(m_model->filter()->database(),  tag, player);
-    Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameECO,   eco);
+    Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameECO, eco);
     m_model->filter()->executeSearch(ts);
     m_model->filter()->executeSearch(ts3, Filter::And);
 }
