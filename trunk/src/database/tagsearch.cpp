@@ -14,72 +14,34 @@
  * ***************/
 TagSearch::TagSearch(Database* database, const QString& tag, const QString& value, bool partial):Search(database)
 {
-    m_tagName = tag;
-    m_value = value;
-    m_bPartial = partial;
-    initialize();
-}
-
-TagSearch::TagSearch(Database* database, const QString& tag, const QString& value, const QString& value2):Search(database)
-{
-    m_tagName = tag;
-    m_value = value;
-    m_value2 = value2;
-    m_bPartial = false;
-    m_matches = m_database->index()->listInRange(m_tagName, m_value, m_value2);
-}
-
-TagSearch::TagSearch(Database* database, const QString& tag, int value, int value2):Search(database)
-{
-    m_tagName = tag;
-    m_value = QString::number(value);
-    m_value2 = QString::number(value2);
-    m_bPartial = false;
-    m_matches = m_database->index()->listInRange(m_tagName, value, value2);
-}
-
-void TagSearch::initialize()
-{
-    if(m_bPartial)
+    if (value.contains('|'))
     {
-        m_matches = m_database->index()->listPartialValue(m_tagName, m_value);
+        QStringList l = value.split('|', QString::SkipEmptyParts);
+        QSet<QString> set;
+        foreach (QString s, l)
+        {
+            set.insert(s);
+        }
+        m_matches = database->index()->listInSet(tag, set, partial);
+    }
+    else if(partial)
+    {
+        m_matches = database->index()->listPartialValue(tag, value);
     }
     else
     {
-        m_matches = m_database->index()->listContainingValue(m_tagName, m_value);
+        m_matches = database->index()->listContainingValue(tag, value);
     }
 }
 
-QString TagSearch::tag() const
+TagSearch::TagSearch(Database* database, const QString& tag, const QString& minValue, const QString& maxValue):Search(database)
 {
-    return m_tagName;
+    m_matches = database->index()->listInRange(tag, minValue, maxValue);
 }
 
-QString TagSearch::value() const
+TagSearch::TagSearch(Database* database, const QString& tag, int minValue, int maxValue):Search(database)
 {
-    return m_value;
-}
-
-QString TagSearch::minValue() const
-{
-    return m_value;
-}
-
-QString TagSearch::maxValue() const
-{
-    return m_value2;
-}
-
-void TagSearch::setTag(const QString& tag)
-{
-    m_tagName = tag;
-    initialize();
-}
-
-void TagSearch::setValue(const QString& value)
-{
-    m_value = value;
-    initialize();
+    m_matches = database->index()->listInRange(tag, minValue, maxValue);
 }
 
 int TagSearch::matches(GameId index) const

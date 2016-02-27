@@ -34,6 +34,7 @@ typedef QPair<QString, EcoFrequencyInfo> EcoFrequencyItem;
 typedef QList<EcoFrequencyItem> EcoFrequency;
 typedef QPair<QString, int> OpeningCountItem;
 typedef QHash<QString, int> OpeningCountMap;
+typedef QHash<QString, QStringList> MapOpeningToECOCodes;
 typedef QList<OpeningCountItem> OpeningCountList;
 
 class PlayerInfo
@@ -82,6 +83,7 @@ private:
     EcoFrequency m_eco[2];
     PartialDate m_date[2];
     OpeningCountList m_opening[2];
+    MapOpeningToECOCodes m_MapOpeningToECOCodes[2];
 
 };
 

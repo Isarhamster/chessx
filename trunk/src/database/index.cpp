@@ -291,6 +291,39 @@ QBitArray Index::listContainingValue(const QString& tagName, const QString& valu
     return list;
 }
 
+QBitArray Index::listInSet(const QString& tagName, const QSet<QString>& set, bool partial) const
+{
+    TagIndex tagIndex = m_tagNameIndex.value(tagName);
+
+    QBitArray list(count(), false);
+    if (partial)
+    {
+        for(int i = 0; i < count(); ++i)
+        {
+            QString value = tagValue(tagIndex, i);
+            bool b = false;
+            foreach(QString s, set)
+            {
+                if (value.contains(s, Qt::CaseInsensitive))
+                {
+                    b = true;
+                    break;
+                }
+            }
+            list.setBit(i, b);
+        }
+    }
+    else
+    {
+        for(int i = 0; i < count(); ++i)
+        {
+            QString value = tagValue(tagIndex, i);
+            list.setBit(i, set.contains(value));
+        }
+    }
+    return list;
+}
+
 QBitArray Index::listInRange(const QString& tagName, const QString& minValue, const QString& maxValue) const
 {
     TagIndex tagIndex = m_tagNameIndex.value(tagName);

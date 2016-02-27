@@ -155,10 +155,12 @@ void PlayerInfo::update()
     for(int i = 0; i < 2; ++i)
     {
         OpeningCountMap openingMap;
-        foreach(QString s, openingsX[i].keys())
+        foreach(QString eco, openingsX[i].keys())
         {
-            QString opening = EcoPositions::findEcoName(s);
-            openingMap[opening] = openingMap.value(opening) + openingsX[i][s];
+            QString opening = EcoPositions::findEcoName(eco);
+            openingMap[opening] = openingMap.value(opening) + openingsX[i][eco];
+            QStringList& l = m_MapOpeningToECOCodes[i][opening];
+            l.append(eco);
         }
 
         QSet<int> valset = openingMap.values().toSet();
@@ -230,6 +232,7 @@ void PlayerInfo::reset()
         m_count[c] = 0;
         m_eco[c].clear();
         m_opening[c].clear();
+        m_MapOpeningToECOCodes[c].clear();
     }
     m_rating[0] = 99999;
     m_rating[1] = 0;
@@ -286,9 +289,15 @@ QString PlayerInfo::listOfOpenings() const
         QStringList l;
         for(OpeningCountList::const_iterator it = m_opening[i].begin(); it != m_opening[i].end(); ++it)
         {
+            QString opening = (*it).first;
+            QString codes = m_MapOpeningToECOCodes[i].value(opening).join('|');
             if (((*it).second)==1) break; // leave out things played only once
             if (((*it).second)*25<m_count[i]) break; // leave out things played rarely
-            l.append(QString("%1 (%2)").arg((*it).first).arg((*it).second));
+            l.append(QString("<a href='eco-%1:%2'>%3</a> (%4)")
+                     .arg(i == 0 ? "white" : "black")
+                     .arg(codes)
+                     .arg(opening)
+                     .arg((*it).second));
         }
         openingsList[i] += l.join(", ");
     }
