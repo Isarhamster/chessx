@@ -8,6 +8,7 @@ February 2016: Version 1.4.0
 - New Feature: #104 Display arbitrary tags in game list
 - New Feature: Scratchpad
 
+- New feature: Playerinfo filters complete openings
 - New feature: Support SCID format piece sets
 - New feature: Favorite web source with auto-increment
 - New feature: List of recently used games
