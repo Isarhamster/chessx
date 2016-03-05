@@ -921,7 +921,15 @@ QString MainWindow::favoriteUrl() const
 
 void MainWindow::openWebFavorite()
 {
-    openDatabaseUrl(favoriteUrl(), false);
+    QString url = favoriteUrl();
+    if (!url.isEmpty())
+    {
+        openDatabaseUrl(favoriteUrl(), false);
+    }
+    else
+    {
+        slotConfigure(3); // TODO: Horrible hack
+    }
 }
 
 void MainWindow::openFICS()
