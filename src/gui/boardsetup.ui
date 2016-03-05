@@ -68,7 +68,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabTools">
       <attribute name="title">
@@ -407,7 +407,7 @@
        <item>
         <widget class="QCheckBox" name="btCheck960">
          <property name="text">
-          <string notr="true">Chess 960</string>
+          <string>Chess 960</string>
          </property>
         </widget>
        </item>

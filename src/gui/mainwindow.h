@@ -171,7 +171,7 @@ public slots:
     /**  */
     void slotReconfigure();
     /**  */
-    void slotConfigure();
+    void slotConfigure(int page=-1);
     /** About ChessX */
     void slotHelpAbout();
     /** Display Tracker at ChessX SourceForge */
