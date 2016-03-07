@@ -160,6 +160,8 @@ public:
     bool canCastleLong(const unsigned int color) const;
     /** Get the castling rook to the given index into m_castlingRook */
     Square CastlingRook(int index) const;
+protected:
+    unsigned int countSetBits(quint64 n) const;
 private:
     /** Test if a king is on a certain row to test castling rights */
     bool isKingOnRow(Piece p, Square start, Square stop) const;
@@ -237,7 +239,6 @@ private:
     unsigned char m_pawnCount[2];          // Number of pawns for each side
     unsigned char m_pieceCount[2];         // Number of pieces INCLUDING pawns for each side
     unsigned char m_chess960;              // 0 = standard, 1 = Chess960
-
 };
 
 enum Char64Position
