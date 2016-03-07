@@ -1331,6 +1331,17 @@ bool BitBoard::hasAmbiguousCastlingRooks(char file000, char file00) const
     return false;
 }
 
+unsigned int BitBoard::countSetBits(quint64 n) const
+{
+    unsigned int count = 0;
+    while (n)
+    {
+      n &= (n-1);
+      count++;
+    }
+    return count;
+}
+
 void BitBoard::fromChess960pos(int i)
 {
     setChess960(true);
@@ -1381,16 +1392,30 @@ int BitBoard::chess960Pos() const
         return -1;
     }
 
+    if (countSetBits(m_bishops) != 4) return -1;
+    if (countSetBits(m_rooks) != 4) return -1;
+    if (countSetBits(m_knights) != 4) return -1;
+    if (countSetBits(m_queens) != 2) return -1;
+    if (countSetBits(m_kings) != 2) return -1;
+
     quint64 x = (m_bishops & (2+8+32+128));
-    ccPos += (getFirstBitAndClear64<Square>(x)-1)/2;
+    if (x==0)
+        return -1;
+    quint64 b1 = (getFirstBitAndClear64<Square>(x)-1)/2;
+    ccPos += b1;
     x = m_bishops & (1+4+16+64);
-    ccPos += getFirstBitAndClear64<Square>(x)*2;
+    if (x==0)
+        return -1;
+    quint64 b2 = getFirstBitAndClear64<Square>(x)*2;
+
+    ccPos += b2;
     int q = 0;
     bool qf = false;
     int n0 = 0;
     int n1 = 0;
     bool n0f = false;
     bool n1f = false;
+    int rf = 0;
     int n0s[] = { 0,4,7,9 };
     for (Square square=a1; square<=h1; ++square)
     {
@@ -1400,6 +1425,14 @@ int BitBoard::chess960Pos() const
         }
         else if ((pieceAt(square) == WhiteRook) || (pieceAt(square) == WhiteKing))
         {
+            if (pieceAt(square) == WhiteKing)
+            {
+                if (rf!=1) return -1;
+            }
+            else
+            {
+                ++rf;
+            }
             if (!qf) { ++q; };
             if (!n0f) { ++n0; } else { if (!n1f) ++n1; }
         }
