@@ -33,7 +33,7 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
 
     QUndoGroup* undoGroup = new QUndoGroup(this);
     m_UndoStack = new QUndoStack(undoGroup);
-    m_UndoStack->setUndoLimit(10);
+    m_UndoStack->setUndoLimit(100);
     undoGroup->addStack(m_UndoStack);
     undoGroup->setActiveStack(m_UndoStack);
 
