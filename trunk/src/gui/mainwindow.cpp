@@ -248,7 +248,6 @@ MainWindow::MainWindow() : QMainWindow(),
     // addDockWidget(Qt::RightDockWidgetArea, playerListDock);
     m_menuView->addAction(playerListDock->toggleViewAction());
     playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
-    connect(m_playerList, SIGNAL(raiseRequest()), playerListDock, SLOT(raise()));
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
     connect(m_playerList, SIGNAL(renameRequest(QString)), SLOT(slotRenamePlayer(QString)));
     connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString, QString, QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString, QString)));
@@ -264,7 +263,6 @@ MainWindow::MainWindow() : QMainWindow(),
     eventListDock->setWidget(m_eventList);
     m_menuView->addAction(eventListDock->toggleViewAction());
     eventListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
-    connect(m_eventList, SIGNAL(raiseRequest()), eventListDock, SLOT(raise()));
     connect(m_eventList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEvent(QString)));
     connect(m_eventList, SIGNAL(renameRequest(QString)), SLOT(slotRenameEvent(QString)));
     connect(m_eventList, SIGNAL(filterEventPlayerRequest(QString, QString)), m_gameList, SLOT(slotFilterListByEventPlayer(QString, QString)));
@@ -281,7 +279,6 @@ MainWindow::MainWindow() : QMainWindow(),
     ecoListDock->setWidget(m_ecoList);
     m_menuView->addAction(ecoListDock->toggleViewAction());
     ecoListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
-    connect(m_ecoList, SIGNAL(raiseRequest()), ecoListDock, SLOT(raise()));
     connect(m_ecoList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEco(QString)));
     connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString, QString, QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString, QString)));
     connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString, QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
