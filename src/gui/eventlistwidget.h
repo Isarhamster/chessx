@@ -29,7 +29,6 @@ signals:
     void filterRequest(QString ts);
     void renameRequest(QString ts);
     void filterEventPlayerRequest(QString player, QString event);
-    void raiseRequest();
 
 public slots:
     void selectEvent(const QString& player);

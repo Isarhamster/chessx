@@ -399,7 +399,6 @@ void GameList::updateFilter()
     if (m_model->filter()->database())
     {
         m_model->setFilter(m_model->filter());
-        emit raiseRequest();
     }
 }
 
