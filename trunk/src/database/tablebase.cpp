@@ -116,38 +116,59 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
             ret.replace("Draw", "0");
             ret.replace("Lose in ", "-");
 
-            QStringList fld(ret.left(ret.indexOf('\n')).split(' '));
-            if(fld.size() < 3)
+            QStringList moveList = ret.split('\n',QString::SkipEmptyParts);
+            if (moveList.size() >= 1)
             {
-                return;
-            }
-
-            Move move(Square(fld[0].toInt()), Square(fld[1].toInt()));
-            int score = fld[2].toInt();
-            if(fld.size() > 3)
-            {
-                switch(score)
+                QList<Move> bestMoves;
+                bool first = true;
+                int bestScore;
+                foreach(QString tbMove, moveList)
                 {
-                case 8:
-                    move.setPromoted(Queen);
-                    break;
-                case 9:
-                    move.setPromoted(Rook);
-                    break;
-                case 10:
-                    move.setPromoted(Bishop);
-                    break;
-                case 11:
-                    move.setPromoted(Knight);
-                    break;
-                default:
-                    return;
+                    QStringList fld = tbMove.split(' ',QString::SkipEmptyParts);
+                    if(fld.size() < 3)
+                    {
+                        break;
+                    }
+                    Move move(Square(fld[0].toInt()), Square(fld[1].toInt()));
+                    int score = fld[2].toInt();
+                    if(fld.size() > 3)
+                    {
+                        switch(score)
+                        {
+                        case 8:
+                            move.setPromoted(Queen);
+                            break;
+                        case 9:
+                            move.setPromoted(Rook);
+                            break;
+                        case 10:
+                            move.setPromoted(Bishop);
+                            break;
+                        case 11:
+                            move.setPromoted(Knight);
+                            break;
+                        default:
+                            return;
+                        }
+                        score = fld[3].toInt();
+                    }
+                    if (first) {
+                        bestScore = score;
+                        first = false;
+                    }
+                    if (score == bestScore)
+                    {
+                        bestMoves.append(move);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                score = fld[3].toInt();
-            }
-            if (s_allowEngineOutput)
-            {
-                emit bestMove(move, score);
+                if (s_allowEngineOutput)
+                {
+                    emit bestMove(bestMoves, bestScore);
+                }
             }
         }
     }
