@@ -25,7 +25,7 @@ namespace OOO {
     class Converter {
     public:
         Converter();
-        ~Converter();
+        virtual ~Converter();
 
         virtual QTextDocument *convert(const QString &fileName);
 
