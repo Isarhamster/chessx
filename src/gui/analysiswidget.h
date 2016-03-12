@@ -89,7 +89,7 @@ private slots:
     /** Number of visible lines was changed. */
     void slotMpvChanged(int mpv);
     /** Show tablebase move information. */
-    void showTablebaseMove(Move move, int score);
+    void showTablebaseMove(QList<Move> move, int score);
     /** The pin button was pressed or released */
     void slotPinChanged(bool);
 

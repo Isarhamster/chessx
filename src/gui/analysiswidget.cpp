@@ -46,7 +46,7 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
     ui.analyzeButton->setFixedHeight(ui.engineList->sizeHint().height());
 
     m_tablebase = new OnlineTablebase;
-    connect(m_tablebase, SIGNAL(bestMove(Move, int)), this, SLOT(showTablebaseMove(Move, int)));
+    connect(m_tablebase, SIGNAL(bestMove(QList<Move>, int)), this, SLOT(showTablebaseMove(QList<Move>, int)));
 }
 
 AnalysisWidget::~AnalysisWidget()
@@ -433,31 +433,53 @@ bool AnalysisWidget::isAnalysisEnabled() const
     return true;
 }
 
-void AnalysisWidget::showTablebaseMove(Move move, int score)
+void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
 {
     if (m_tbBoard == m_board)
     {
-        QString result;
-        if(score == 0)
+        bool first = true;
+        QStringList also;
+        foreach(Move move, bestMoves)
         {
-            result = tr("Draw");
-        }
-        else if((score < 0) == (m_board.toMove() == Black))
-        {
-            result = tr("White wins in %n moves", "", qAbs(score));
-        }
-        else
-        {
-            result = tr("Black wins in %n moves", "", qAbs(score));
-        }
+            if (first)
+            {
+                first = false;
+                QString result;
+                if(score == 0)
+                {
+                    result = tr("Draw");
+                }
+                else if((score < 0) == (m_board.toMove() == Black))
+                {
+                    result = tr("White wins in %n moves", "", qAbs(score));
+                }
+                else
+                {
+                    result = tr("Black wins in %n moves", "", qAbs(score));
+                }
 
-        Move move1 = m_board.prepareMove(move.from(), move.to());
-        if(move.isPromotion())
-        {
-            move1.setPromoted(pieceType(move.promotedPiece()));
+                Move move1 = m_board.prepareMove(move.from(), move.to());
+                if(move.isPromotion())
+                {
+                    move1.setPromoted(pieceType(move.promotedPiece()));
+                }
+                m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1)).arg(result);
+                m_lastDepthAdded = 0;
+            }
+            else
+            {
+                Move move1 = m_board.prepareMove(move.from(), move.to());
+                if(move.isPromotion())
+                {
+                    move1.setPromoted(pieceType(move.promotedPiece()));
+                }
+                also.append(m_board.moveToFullSan(move1));
+            }
         }
-        m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1)).arg(result);
-        m_lastDepthAdded = 0;
+        if (!also.isEmpty())
+        {
+            m_tablebaseEvaluation.append(QString(" === %1").arg(also.join(" ")));
+        }
         updateAnalysis();
     }
 }

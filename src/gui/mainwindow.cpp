@@ -1109,37 +1109,40 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
 
     finishOperation(tr("%1 opened").arg(basefile));
 
-    for(int i = 0; i < m_databases.count(); i++)
+    if (!db->IsBook())
     {
-        if(m_databases[i]->database()->filename() == fname)
+        for(int i = 0; i < m_databases.count(); i++)
         {
-            if (!m_databases[i]->IsBook())
+            if(m_databases[i]->database()->filename() == fname)
             {
-                autoGroup->untrigger();
-                m_currentDatabase = m_databases[i];
-                CreateBoardView();
+                if (!m_databases[i]->IsBook())
+                {
+                    autoGroup->untrigger();
+                    m_currentDatabase = m_databases[i];
+                    CreateBoardView();
+                }
+                break;
             }
-            break;
+        }
+        m_databaseList->setFileCurrent(fname);
+
+        int lastGameIndex = m_databaseList->getLastIndex(fname);
+        gameLoad(lastGameIndex);
+
+        slotDatabaseChanged();
+
+        if (qobject_cast<FicsDatabase*>(db->database()))
+        {
+            if (!m_ficsClient->sessionStarted())
+            {
+                m_ficsClient->startSession();
+            }
         }
     }
-    m_databaseList->setFileCurrent(fname);
-    m_recentFiles.append(fname);
 
+    m_recentFiles.append(fname);
     updateMenuRecent();
     emit signalDatabaseOpenClose();
-
-    int lastGameIndex = m_databaseList->getLastIndex(fname);
-    gameLoad(lastGameIndex);
-
-    slotDatabaseChanged();
-
-    if (qobject_cast<FicsDatabase*>(db->database()))
-    {
-        if (!m_ficsClient->sessionStarted())
-        {
-            m_ficsClient->startSession();
-        }
-    }
 }
 
 QString MainWindow::exportFileName(int& format)

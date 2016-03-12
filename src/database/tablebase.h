@@ -58,7 +58,7 @@ public:
     OnlineTablebase();
     ~OnlineTablebase();
 signals:
-    void bestMove(Move move, int score);
+    void bestMove(QList<Move> bestMoves, int score);
 public slots:
     void getBestMove(QString fen);
     void abortLookup();
