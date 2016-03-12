@@ -417,6 +417,7 @@ bool TextEdit::load(const QString &f)
 
         // Set Document
         textEdit->setDocument(doc);
+		delete doc_odt;
     }
     else
     {

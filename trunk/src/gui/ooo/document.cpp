@@ -34,11 +34,13 @@ bool Document::open() {
 
         if (!entries.contains("META-INF")) {
             setError("Invalid document structure (META-INF directory is missing)");
+			delete Kzip;
             return false;
         }
 
         if (!entries.contains("content.xml")) {
             setError("Invalid document structure (content.xml is missing)");
+			delete Kzip;
             return false;
         }
 
@@ -91,11 +93,15 @@ bool Document::open() {
         if (QByteArray("application/vnd.oasis.opendocument.text") != mMimetype)
         {
             setError(QString("Invalid MimeType found: %1!").arg(QString::fromUtf8(mMimetype)));
+			delete Kzip;
             return false;
         }
         
+		delete Kzip;
         return true;
     }
+	
+	delete Kzip;
     return false;
 }
 

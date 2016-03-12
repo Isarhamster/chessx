@@ -45,6 +45,7 @@ protected slots:
 private:
     void setLineEdit(QLineEdit* edit, Database* database, const QString& tagName);
     Ui::SaveDialog ui;
+    QButtonGroup* group;
 };
 
 
