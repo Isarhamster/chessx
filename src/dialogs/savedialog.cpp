@@ -34,7 +34,7 @@ SaveDialog::SaveDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
     ui.setupUi(this);
     restoreLayout();
-    QButtonGroup* group = new QButtonGroup(this);
+    group = new QButtonGroup(this);
     group->addButton(ui.result1Button);
     group->addButton(ui.result5Button);
     group->addButton(ui.result0Button);
@@ -48,7 +48,9 @@ void SaveDialog::restoreLayout()
 }
 
 SaveDialog::~SaveDialog()
-{}
+{
+    delete group;
+}
 
 
 QString formatTagValue(const QString& s)
