@@ -369,6 +369,8 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Match/BookMove", 0);
     map.insert("/Match/EngineStarts", false);
 
+    map.insert("/PlayerListWidget/FilterEditCompleter", QStringList());
+
     map.insert("/Sound/Move", true);
 
     map.insert("/Tools/Path1", "");
