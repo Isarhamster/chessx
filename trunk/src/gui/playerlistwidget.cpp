@@ -6,7 +6,11 @@
 #include "ui_tagdetailwidget.h"
 #include "database.h"
 #include "databaseinfo.h"
+#include "settings.h"
 #include "tags.h"
+
+#include <QCompleter>
+#include <QStringListModel>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -37,6 +41,10 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
     ui->detailText->setOpenExternalLinks(false);
 
     connect(ui->detailText, SIGNAL(anchorClicked(QUrl)), SLOT(slotLinkClicked(QUrl)));
+
+    QStringList words = AppSettings->getValue("PlayerListWidget/filterEditCompleter").toStringList();
+    QCompleter* completer = new QCompleter(words, this);
+    ui->filterEdit->setCompleter(completer);
 
     slotReconfigure();
 }
@@ -132,11 +140,29 @@ void PlayerListWidget::selectPlayer(const QString& player)
 
 void PlayerListWidget::filterSelectedPlayer()
 {
+    QStringListModel* model = qobject_cast<QStringListModel*>(ui->filterEdit->completer()->model());
+    QStringList words;
+    if (model)
+    {
+        words = model->stringList();
+    }
+
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
     if(selection.count())
     {
         QString ts = selection[0].data().toString();
         emit filterRequest(ts);
+        if (words.contains(ts))
+        {
+            words.removeOne(ts);
+        }
+        words.append(ts);
+    }
+    if (model)
+    {
+        while (words.count()>8) words.removeFirst();
+        model->setStringList(words);
+        AppSettings->setValue("/PlayerListWidget/FilterEditCompleter", words);
     }
 }
 
