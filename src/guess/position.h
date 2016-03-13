@@ -134,15 +134,15 @@ private:
 
     void  GenSliderMoves(MoveList * mlist, colorT c, squareT sq,
                          directionT dir, SquareSet * sqset,
-                         bool capturesOnly);
+                         bool capturesOnly) const;
     void  GenKnightMoves(MoveList * mlist, colorT c, squareT sq,
-                         SquareSet * sqset, bool capturesOnly);
+                         SquareSet * sqset, bool capturesOnly) const;
 
-    void  AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceC promotion = C_EMPTY, bool castle = false);
-    void  GenCastling(MoveList * mlist);
-    void  GenCastling960(MoveList * mlist);
+    void  AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceC promotion = C_EMPTY, bool castle = false) const;
+    void  GenCastling(MoveList * mlist) const;
+    void  GenCastling960(MoveList * mlist) const;
     void  GenKingMoves(MoveList * mlist, genMovesT genType, bool castling);
-    void  AddPromotions(MoveList * mlist, squareT from, squareT dest);
+    void  AddPromotions(MoveList * mlist, squareT from, squareT dest) const;
     bool  IsValidEnPassant(squareT from, squareT to);
     void  GenPawnMoves(MoveList * mlist, squareT from, directionT dir,
                        SquareSet * sqset, genMovesT genType);
@@ -316,19 +316,19 @@ public:
     {
         return List[ToMove][0];
     }
-    squareT     GetEnemyKingSquare()
+    squareT     GetEnemyKingSquare() const
     {
         return List[1 - ToMove][0];
     }
 
     // Castling flags
     inline void SetCastling(colorT c, castleDirT dir, bool flag);
-    bool        GetCastling(colorT c, castleDirT dir);
-    inline bool CastlingPossible()
+    bool        GetCastling(colorT c, castleDirT dir) const;
+    inline bool CastlingPossible() const
     {
         return (Castling ? true : false);
     }
-    unsigned char        GetCastlingFlags()
+    unsigned char GetCastlingFlags() const
     {
         return Castling;
     }
@@ -359,7 +359,7 @@ public:
     // Move generation and execution
     void        CalcPins();
     void        GenPieceMoves(MoveList * mlist, squareT sq,
-                              SquareSet * sqset, bool capturesOnly);
+                              SquareSet * sqset, bool capturesOnly) const;
 
     // Generate all legal moves:
     void  GenerateMoves(MoveList * mlist, pieceC mask, genMovesT genType, bool maybeInCheck);
@@ -399,21 +399,21 @@ public:
     {
         return CalcAttacks(1 - ToMove, kingSq, NULL);
     }
-    unsigned int        CalcNumChecks(squareT kingSq, SquareList * checkSquares)
+    unsigned int CalcNumChecks(squareT kingSq, SquareList * checkSquares) const
     {
         return CalcAttacks(1 - ToMove, kingSq, checkSquares);
     }
 
     unsigned int        Mobility(pieceC p, colorT color, squareT from);
     pieceC SmallestDefender(colorT color, squareT target) const;
-    bool        IsKingInCheck()
+    bool        IsKingInCheck() const
     {
         return (CalcNumChecks() > 0);
     }
-    bool        IsKingInCheckDir(directionT dir);
-    bool        IsKingInCheck(simpleMoveT * sm);
+    bool        IsKingInCheckDir(directionT dir) const;
+    bool        IsKingInCheck(simpleMoveT * sm) const;
     bool        IsKingInMate();
-    bool        IsLegal();
+    bool        IsLegal() const;
 
     bool        IsPromoMove(squareT from, squareT to);
 
@@ -471,7 +471,7 @@ Position::SetCastling(colorT c, castleDirT dir, bool flag)
 //      Get a castling flag.
 //
 inline bool
-Position::GetCastling(colorT c, castleDirT dir)
+Position::GetCastling(colorT c, castleDirT dir) const
 {
     unsigned char b = (c == WHITE ? 1 : 4);
     if(dir == KSIDE)

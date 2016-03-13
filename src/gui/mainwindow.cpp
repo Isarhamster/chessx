@@ -519,6 +519,9 @@ MainWindow::~MainWindow()
     delete m_progressBar;
     delete m_gameList;
 
+    delete autoGroup;
+    delete autoGroupTraining;
+
     EcoPositions::terminateEco();
 }
 
@@ -1470,7 +1473,7 @@ void MainWindow::setupActions()
     gameToolBar->addSeparator();
 
     autoGroup = new ExclusiveActionGroup(this);
-    ExclusiveActionGroup* autoGroupTraining = new ExclusiveActionGroup(this);
+    autoGroupTraining = new ExclusiveActionGroup(this);
 
     QAction* match = createAction(tr("Match"), SLOT(slotToggleGameMode()), Qt::CTRL + Qt::Key_M, gameToolBar, ":/images/black_chess.png");
     match->setCheckable(true);

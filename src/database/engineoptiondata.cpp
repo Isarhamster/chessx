@@ -9,7 +9,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-EngineOptionData::EngineOptionData()
+EngineOptionData::EngineOptionData() : m_type(OPT_TYPE_STRING)
 {
 }
 

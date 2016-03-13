@@ -25,9 +25,9 @@ public:
     /** Constructor */
     PartialDate(int y = 0, int m = 0, int d = 0);
     /** String constructor. Creates date from PGN date format (e.g. "1990.01.??"). */
-    PartialDate(const QString& s);
+    explicit PartialDate(const QString& s);
     /** QDate constructor. */
-    PartialDate(const QDate& d);
+    explicit PartialDate(const QDate& d);
     /** Converts date to QDate. Undefined parts will be replaced with 0 for year, 1 for month and day */
     QDate asDate() const;
     /** Converts date to string. Uses PGN date format (e.g. "1990.01.??"). */

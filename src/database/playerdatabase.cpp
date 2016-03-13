@@ -261,7 +261,7 @@ PlayerData PlayerDatabase::readPlayerData(const QString& playername)
     }
     if(deathDate.contains('.'))
     {
-        pd.setDateOfDeath(deathDate);
+        pd.setDateOfDeath(PartialDate(deathDate));
     }
 
     pd.setCountry(country);

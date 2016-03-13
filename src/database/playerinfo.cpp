@@ -20,13 +20,13 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-static bool sortEcoFrequencyLt(const EcoFrequencyItem& a1, const EcoFrequencyItem& a2)
+static bool sortEcoFrequencyLt(const EcoFrequencyItem& left, const EcoFrequencyItem& right)
 {
-    if(a1.second.count == a2.second.count)
+    if(left.second.count == right.second.count)
     {
-        return (a1.first < a2.first);
+        return (left.first < right.first);
     }
-    return a1.second.count > a2.second.count;
+    return left.second.count > right.second.count;
 }
 
 PlayerInfo::PlayerInfo()

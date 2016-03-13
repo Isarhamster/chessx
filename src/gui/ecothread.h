@@ -22,8 +22,14 @@ public:
     void run()
     {
         bool ok = true;
-        ok |= EcoPositions::loadEcoFile(":chessx.eco");
-        ok |= Board::loadEcoFile(":chessx.gtm");
+        if (!EcoPositions::loadEcoFile(":chessx.eco"))
+        {
+            ok = false;
+        }
+        if (!Board::loadEcoFile(":chessx.gtm"))
+        {
+            ok = false;
+        }
         EcoPositions::m_ecoReady = true;
         emit loaded(this, ok);
     };

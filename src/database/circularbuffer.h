@@ -7,7 +7,7 @@ template <class T>
 class CircularBuffer : public QQueue<T>
 {
 public:
-    inline CircularBuffer(unsigned int size = 10) : maxSize(size) {}
+    explicit inline CircularBuffer(unsigned int size = 10) : maxSize(size) {}
     inline ~CircularBuffer() {}
     // Interface
     inline void resize(unsigned int size) { maxSize = size; deleteExcess(); }
