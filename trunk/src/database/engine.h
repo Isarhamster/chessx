@@ -153,7 +153,6 @@ private:
     QTextStream* m_logStream;
     QFile m_logFile;
     QProcess* m_process;
-    QTextStream* m_processStream;
     bool m_active;
     bool m_analyzing;
 

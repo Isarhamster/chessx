@@ -168,7 +168,6 @@ private:
     bool m_uniform;
     quint32 m_minGame;
     int m_maxPly;
-    QMutex m_mutex;
 };
 
 #endif // POLYGLOTDATABASE_H

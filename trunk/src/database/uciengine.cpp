@@ -24,6 +24,7 @@ UCIEngine::UCIEngine(const QString& name,
 {
     m_quitAfterAnalysis = false;
     m_invertBlack = true;
+    m_chess960 = false;
 }
 
 bool UCIEngine::startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame)

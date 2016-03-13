@@ -55,8 +55,6 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
     data.remove(0x13);
     data.remove(0x07);
 
-    bool hasNetData = false;
-
     switch (m_state)
     {
         case 0:
@@ -117,7 +115,6 @@ void TelnetClient::DispatchReadData(QByteArray bytes)
             QStringList lines = data.split("\n", QString::SkipEmptyParts);
             if (lines.count() && !endsWithCR)
             {
-                hasNetData = true;
                 m_remainder = lines.back();
                 lines.pop_back();
             }

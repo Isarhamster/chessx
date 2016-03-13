@@ -332,7 +332,7 @@ Position::CalcPinsDir(directionT dir, pieceC attacker)
 //      Add a legal move to the move list.
 //
 inline void
-Position::AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceC promotion, bool castle)
+Position::AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceC promotion, bool castle) const
 {
     ASSERT(mlist != NULL);
     simpleMoveT sm;
@@ -362,7 +362,7 @@ Position::AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceC promot
 //      If sqset != NULL, moves must be to a square in sqset.
 inline void
 Position::GenSliderMoves(MoveList * mlist, colorT color, squareT fromSq,
-                         directionT dir, SquareSet * sqset, bool capturesOnly)
+                         directionT dir, SquareSet * sqset, bool capturesOnly) const
 {
     squareT dest = fromSq;
     squareT last = square_Last(fromSq, dir);
@@ -401,7 +401,7 @@ Position::GenSliderMoves(MoveList * mlist, colorT color, squareT fromSq,
 //      If sqset != NULL, moves must be to a square in sqset.
 inline void
 Position::GenKnightMoves(MoveList * mlist, colorT c, squareT fromSq,
-                         SquareSet * sqset, bool capturesOnly)
+                         SquareSet * sqset, bool capturesOnly) const
 {
     const squareT * destPtr = knightAttacks[fromSq];
     while(true)
@@ -434,7 +434,7 @@ Position::GenKnightMoves(MoveList * mlist, colorT c, squareT fromSq,
 //    should verify this first.
 //
 void
-Position::GenCastling(MoveList * mlist)
+Position::GenCastling(MoveList * mlist) const
 {
     if (Chess960Castling)
     {
@@ -578,7 +578,7 @@ bool Position::isFreeForCastling960(squareT from, squareT to, squareT rook_from,
 }
 
 void
-Position::GenCastling960(MoveList * mlist)
+Position::GenCastling960(MoveList * mlist) const
 {
     // todo - this method needs to be fixed!
     ASSERT(! IsKingInCheck());
@@ -696,7 +696,7 @@ Position::GenKingMoves(MoveList * mlist, genMovesT genType, bool castling)
 //      Called by GenPawnMoves() when a pawn can be promoted.
 //
 inline void
-Position::AddPromotions(MoveList * mlist, squareT from, squareT dest)
+Position::AddPromotions(MoveList * mlist, squareT from, squareT dest) const
 {
     ASSERT(piece_Type(Board[from]) == PAWN);
     ASSERT(square_Rank(dest) == RANK_1  ||  square_Rank(dest) == RANK_8);
@@ -1201,7 +1201,7 @@ Position::CalcPins(void)
 //      If sqset != NULL, moves must be to a square in sqset.<
 void
 Position::GenPieceMoves(MoveList * mlist, squareT fromSq,
-                        SquareSet * sqset, bool capturesOnly)
+                        SquareSet * sqset, bool capturesOnly) const
 {
     colorT c = ToMove;
     pieceT p = Board[fromSq];
@@ -2263,7 +2263,7 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares) con
 //   by an enemy sliding piece (Queen/Rook/Bishop) from the
 //   specified direction.
 bool
-Position::IsKingInCheckDir(directionT dir)
+Position::IsKingInCheckDir(directionT dir) const
 {
     ASSERT(dir != NULL_DIR);
     squareT kingSq = GetKingSquare(ToMove);
@@ -2347,7 +2347,7 @@ Position::IsKingInCheckDir(directionT dir)
 //   move could not have left the king in check.
 //
 bool
-Position::IsKingInCheck(simpleMoveT * sm)
+Position::IsKingInCheck(simpleMoveT * sm) const
 {
     if(sm == NULL)
     {
@@ -2593,7 +2593,7 @@ Position::IsKingInMate(void)
 //     - if there are any pawns on the 1st/8th rank;
 //     - if the side to move is already checking the enemy king.
 bool
-Position::IsLegal(void)
+Position::IsLegal(void) const
 {
     squareT stmKing = GetKingSquare();
     squareT enemyKing = GetEnemyKingSquare();

@@ -32,7 +32,7 @@ public:
     enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch, NumberSearch, DuplicateSearch};
 
     /** Standard constructor. */
-    Search(Database* db = 0);
+    explicit Search(Database* db = 0);
     /** Standard destructor. */
     virtual ~Search();
     virtual void Prepare(volatile bool&) {};

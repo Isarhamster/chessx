@@ -30,6 +30,8 @@ Filter::Filter(Database* database) : QThread()
     m_gamesSearched = 0;
     m_searchTime = 0;
     currentSearch = 0;
+    currentSearchOperator = NullOperator;
+    m_break = false;
 }
 
 Filter::~Filter()

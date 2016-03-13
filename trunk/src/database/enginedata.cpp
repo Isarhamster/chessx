@@ -14,7 +14,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-EngineData::EngineData(const QString& newName) : name(newName), protocol(UCI)
+EngineData::EngineData(const QString& newName) : name(newName), protocol(UCI), logging(false)
 {
 }
 

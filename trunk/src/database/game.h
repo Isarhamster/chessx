@@ -462,7 +462,7 @@ private:
 class SaveRestoreMove
 {
 public:
-    SaveRestoreMove(Game& game)
+    explicit SaveRestoreMove(Game& game)
     {
         m_saveGame = &game;
         m_saveMoveValue = game.currentMove();
@@ -479,7 +479,7 @@ private:
 class SaveRestoreMoveCompact
 {
 public:
-    SaveRestoreMoveCompact(Game& game)
+    explicit SaveRestoreMoveCompact(Game& game)
     {
         m_saveGame = &game;
         m_saveMoveValue = game.currentMove();

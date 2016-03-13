@@ -505,7 +505,7 @@ void BitBoard::removeAt(const Square s)
         return;
     }
 
-    Color _color = m_occupied_co[White] & bit ? White : Black;
+    Color _color = (m_occupied_co[White] & bit) ? White : Black;
     --m_pieceCount[_color];
     switch(m_piece[s])
     {
@@ -1401,14 +1401,14 @@ int BitBoard::chess960Pos() const
     quint64 x = (m_bishops & (2+8+32+128));
     if (x==0)
         return -1;
-    quint64 b1 = (getFirstBitAndClear64<Square>(x)-1)/2;
-    ccPos += b1;
+    quint64 bs1 = (getFirstBitAndClear64<Square>(x)-1)/2;
+    ccPos += bs1;
     x = m_bishops & (1+4+16+64);
     if (x==0)
         return -1;
-    quint64 b2 = getFirstBitAndClear64<Square>(x)*2;
+    quint64 bs2 = getFirstBitAndClear64<Square>(x)*2;
+    ccPos += bs2;
 
-    ccPos += b2;
     int q = 0;
     bool qf = false;
     int n0 = 0;
@@ -1771,7 +1771,6 @@ Move BitBoard::parseMove(const QString& algebraic) const
     Square toSquare = InvalidSquare;
     int fromFile = -1;
     int fromRank = -1;
-    PieceType promotePiece = None;
     Move move;
     unsigned int type;
 
@@ -1907,6 +1906,8 @@ Move BitBoard::parseMove(const QString& algebraic) const
 
     if(type == Pawn)
     {
+        PieceType promotePiece = None;
+
         // Promotion as in bxc8=Q or bxc8(Q)
         if(c == '=' || c == '(')
         {
@@ -2506,10 +2507,9 @@ Square BitBoard::CastlingRook(int index) const
 int BitBoard::CastlingRookIndex(Square rook) const
 {
     quint64 cr = m_castlingRooks;
-    Square x = InvalidSquare;
     for (int i=0; i<=3; ++i)
     {
-        x = getFirstBitAndClear64<Square>(cr);
+        Square x = getFirstBitAndClear64<Square>(cr);
         if (x == rook) return i;
     }
     return -1;

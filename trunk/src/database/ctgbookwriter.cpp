@@ -11,7 +11,8 @@
 
 CtgBookWriter::CtgBookWriter(QObject *parent) :
     QThread(parent),
-    m_source(0)
+    m_source(0),
+    m_break(false)
 {
 }
 

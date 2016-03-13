@@ -14,6 +14,15 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
+OpeningTreeThread::OpeningTreeThread()
+{
+    m_games = 0;
+    m_break = false;
+    m_updateFilter = false;
+    m_sourceIsDatabase = false;
+    m_bEnd = false;
+}
+
 void OpeningTreeThread::run()
 {
     QMap<Move, MoveData> moves;

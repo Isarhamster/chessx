@@ -202,14 +202,14 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
                 {
                     if(s.startsWith("--"))   //only death date(!) Baay is an example
                     {
-                        pdb.setDateOfDeath(s.mid(2, 10));
+                        pdb.setDateOfDeath(PartialDate(s.mid(2, 10)));
                     }
                     else
                     {
-                        pdb.setDateOfBirth(s.left(10));
+                        pdb.setDateOfBirth(PartialDate(s.left(10)));
                         if(s.length() >= 22)
                         {
-                            pdb.setDateOfDeath(s.mid(12, 10));
+                            pdb.setDateOfDeath(PartialDate(s.mid(12, 10)));
                         }
                     }
                 }

@@ -15,6 +15,7 @@ class OpeningTreeThread : public QThread
 {
     Q_OBJECT
 public:
+    OpeningTreeThread();
     void run();
     void cancel();
     bool updateFilter(Filter& f, const Board& b, int&, bool updateFilter, bool sourceIsDatabase, bool bEnd);
