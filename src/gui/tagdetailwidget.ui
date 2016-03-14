@@ -30,9 +30,12 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="labelFilter">
            <property name="text">
             <string>Filter:</string>
+           </property>
+           <property name="buddy">
+            <cstring>filterEdit</cstring>
            </property>
           </widget>
          </item>

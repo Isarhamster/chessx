@@ -11,6 +11,7 @@
 
 #include <QCompleter>
 #include <QStringListModel>
+#include <QToolTip>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -42,9 +43,10 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
 
     connect(ui->detailText, SIGNAL(anchorClicked(QUrl)), SLOT(slotLinkClicked(QUrl)));
 
-    QStringList words = AppSettings->getValue("PlayerListWidget/filterEditCompleter").toStringList();
+    QStringList words = AppSettings->getValue("/PlayerListWidget/FilterEditCompleter").toStringList();
     QCompleter* completer = new QCompleter(words, this);
     ui->filterEdit->setCompleter(completer);
+    ui->labelFilter->setToolTip(words.join("\n"));
 
     slotReconfigure();
 }
@@ -163,6 +165,7 @@ void PlayerListWidget::filterSelectedPlayer()
         while (words.count()>8) words.removeFirst();
         model->setStringList(words);
         AppSettings->setValue("/PlayerListWidget/FilterEditCompleter", words);
+        ui->labelFilter->setToolTip(words.join("\n"));
     }
 }
 
