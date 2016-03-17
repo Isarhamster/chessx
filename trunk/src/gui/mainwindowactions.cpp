@@ -216,7 +216,6 @@ void MainWindow::slotFileClose()
                 m_databaseList->setFileClose(aboutToClose->filePath(), aboutToClose->currentIndex());
 
                 m_databases.removeAt(m_databases.indexOf(m_currentDatabase));
-                m_currentDatabase = 0;
                 aboutToClose->close();
                 emit signalDatabaseOpenClose();
                 delete aboutToClose;
