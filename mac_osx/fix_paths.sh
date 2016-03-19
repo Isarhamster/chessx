@@ -11,7 +11,7 @@ do
     fi 
 done 
  
-QTDIR="/Users/ni/Qt-5-5-1/5.5/clang_64/"
+QTDIR="/Users/ni/Qt-5-6-0/5.6/clang_64/"
 for F in `find $QTDIR/lib $QTDIR/plugins $QTDIR/qml  -perm 755 -type f` 
 do 
     for P in `otool -L $F`
