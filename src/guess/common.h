@@ -324,12 +324,6 @@ piece_IsPawn(pieceT p)
 }
 
 inline bool
-piece_IsSlider(pieceT p)
-{
-    return PIECE_IS_SLIDER[piece_Type(p)];
-}
-
-inline bool
 piece_IsSlider(pieceC p)
 {
     return PIECE_IS_SLIDER[p];
