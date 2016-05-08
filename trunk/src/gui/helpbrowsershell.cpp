@@ -56,3 +56,29 @@ void HelpBrowserShell::SlotIndexItemSelected(int index)
         --m_bInUpdate;
     }
 }
+
+void HelpBrowserShell::on_btSearchText_clicked()
+{
+    searchText(ui->searchText->text());
+}
+
+void HelpBrowserShell::on_searchText_textChanged(const QString &arg1)
+{
+    Browser()->moveCursor(QTextCursor::Start);
+    searchText(arg1);
+}
+
+void HelpBrowserShell::searchText(QString s)
+{
+    Qt::KeyboardModifiers modifiers = QApplication::keyboardModifiers() & Qt::KeyboardModifierMask;
+    bool backward = ((modifiers & Qt::ShiftModifier) == Qt::ShiftModifier);
+
+    QTextDocument::FindFlags ff;
+    if (backward) ff |= QTextDocument::FindBackward;
+    bool found = Browser()->find(s, ff);
+    if (!found)
+    {
+        Browser()->moveCursor(backward ? QTextCursor::End : QTextCursor::Start);
+        Browser()->find(s, ff);
+    }
+}

@@ -21,9 +21,16 @@ public:
     QComboBox* Index();
     HelpBrowser* Browser();
 
+protected:
+    void searchText(QString s);
 protected slots:
     void SlotHelpLinkTargets(const QStringList& texts, const QStringList& links);
     void SlotIndexItemSelected(int index);
+private slots:
+    void on_btSearchText_clicked();
+
+    void on_searchText_textChanged(const QString &arg1);
+
 private:
     int m_bInUpdate;
     Ui::HelpBrowserShell *ui;
