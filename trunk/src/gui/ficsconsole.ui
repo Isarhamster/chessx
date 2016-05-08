@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>676</width>
+    <width>691</width>
     <height>424</height>
    </rect>
   </property>
@@ -563,11 +563,37 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QToolButton" name="btSeek">
-                  <property name="text">
-                   <string>Seek</string>
-                  </property>
-                 </widget>
+                 <layout class="QHBoxLayout" name="horizontalLayout_3">
+                  <item>
+                   <widget class="QToolButton" name="btSeek">
+                    <property name="text">
+                     <string>Seek</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="cbColor">
+                    <property name="currentIndex">
+                     <number>2</number>
+                    </property>
+                    <item>
+                     <property name="text">
+                      <string>White</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Black</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Don't care</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </widget>
