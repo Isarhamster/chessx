@@ -484,12 +484,22 @@ void FicsConsole::SlotSendSeek()
     int inc = ui->seekIncrement->value();
     int from = ui->eloMin->value();
     int to = ui->eloMax->value();
+    QString color;
+    if (ui->cbColor->currentIndex() == 0)
+    {
+        color = " w";
+    }
+    else if (ui->cbColor->currentIndex() == 1)
+    {
+        color = " b";
+    }
     if ((t || inc) && (from<=to))
     {
-        QString seek = QString("seek %1 %2 %3 %4-%5 ")
+        QString seek = QString("seek %1 %2 %3%4 %5-%6 ")
                 .arg(t)
                 .arg(inc)
                 .arg(ui->cbRated->currentIndex() ? "unrated" : "rated")
+                .arg(color)
                 .arg(from)
                 .arg(to);
         QListWidgetItem* item = new QListWidgetItem(seek);
