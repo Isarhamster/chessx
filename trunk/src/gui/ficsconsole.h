@@ -42,6 +42,8 @@ public:
     bool canUsePremove() const;
 
     void saveConfig();
+    Color playerColor() const;
+
 public slots:
     void Terminate();
     void SendMove(QString m);
@@ -81,6 +83,7 @@ protected slots:
     void SlotSendResign();
     void SlotSendHint();
     void SlotSendUnexamine();
+    void SlotSendRematch();
     void SlotSendSeek();
     void SlotSayMessage();
     void SlotAddNoPlay();
