@@ -580,6 +580,9 @@ private:
     /** Filter Duplicates in the current database */
     void filterDuplicates(int mode);
 
+    /** Determine Color the user is using depending upon different match scenarios */
+    Color UserColor();
+
     /* Dialogs  */
     GameList* m_gameList;
     PlayerListWidget* m_playerList;

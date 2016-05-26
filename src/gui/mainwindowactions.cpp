@@ -769,151 +769,176 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
     }
 }
 
+Color MainWindow::UserColor()
+{
+    if (m_autoRespond->isChecked())
+    {
+        if (m_machineHasToMove)
+        {
+            return oppositeColor(game().board().toMove());
+        }
+    }
+    else if (m_engineMatch->isChecked())
+    {
+        return NoColor;
+    }
+    else if (gameMode() && qobject_cast<const FicsDatabase*>(database()))
+    {
+        return m_ficsConsole->playerColor();
+    }
+    return game().board().toMove();
+}
+
 void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to)
 {
     BoardView::BoardViewAction action = m_boardView->moveActionFromModifier((Qt::KeyboardModifiers) button);
-    if(m.isLegal() || m.isNullMove())
+    if ((game().board().toMove() == UserColor()) && (UserColor() == game().board().colorAt(from)))
     {
-        PieceType promotionPiece = None;
-        if(m.isPromotion() && !(button & 0x80000000))
+        if (m.isLegal() || m.isNullMove())
         {
-            int index = 0;
-            if ((action == BoardView::ActionQuery) || !AppSettings->getValue("/Board/AutoPromoteToQueen").toBool())
+            PieceType promotionPiece = None;
+            if(m.isPromotion() && !(button & 0x80000000))
             {
-                index = PromotionDialog(0,m.color()).getIndex();
-                if(index<0)
+                int index = 0;
+                if ((action == BoardView::ActionQuery) || !AppSettings->getValue("/Board/AutoPromoteToQueen").toBool())
                 {
+                    index = PromotionDialog(0,m.color()).getIndex();
+                    if(index<0)
+                    {
+                        return;
+                    }
+                }
+                promotionPiece = PieceType(Queen + index);
+                m.setPromoted(promotionPiece);
+            }
+            else if (m.isPromotion())
+            {
+                promotionPiece = pieceType(m.promotedPiece());
+            }
+
+            // Use an existing move with the correct promotion piece type if it already exists
+            if(game().findNextMove(from, to, promotionPiece))
+            {
+                if (action == BoardView::ActionAdd)
+                {
+                    // The move exists but adding a variation was requested anyhow
+                    // Take back the move and proceed as if the move does not yet exist
+                    game().backward();
+                }
+                else
+                {
+                    if (autoRespondActive())
+                    {
+                        triggerBoardMove();
+                    }
+                    slotGameChanged(true);
                     return;
                 }
             }
-            promotionPiece = PieceType(Queen + index);
-            m.setPromoted(promotionPiece);
-        }
-        else if (m.isPromotion())
-        {
-            promotionPiece = pieceType(m.promotedPiece());
-        }
 
-        // Use an existing move with the correct promotion piece type if it already exists
-        if(game().findNextMove(from, to, promotionPiece))
-        {
-            if (action == BoardView::ActionAdd)
+            if(m_training->isChecked())
             {
-                // The move exists but adding a variation was requested anyhow
-                // Take back the move and proceed as if the move does not yet exist
-                game().backward();
+                if (game().atLineEnd())
+                {
+                    playSound(":/sounds/fanfare.wav");
+                    m_training->trigger();
+                }
             }
             else
             {
-                if (autoRespondActive())
+                if(game().atLineEnd())
                 {
-                    triggerBoardMove();
-                }
-                slotGameChanged(true);
-                return;
-            }
-        }
-
-        if(m_training->isChecked())
-        {
-            if (game().atLineEnd())
-            {
-                playSound(":/sounds/fanfare.wav");
-                m_training->trigger();
-            }
-        }
-        else
-        {
-            if(game().atLineEnd())
-            {
-                QString annot;
-                if (m_autoRespond->isChecked())
-                {
-                    int t = m_elapsedUserTimeValid ? m_elapsedUserTime.elapsed() : 0;
-                    t = t - m_matchParameter.ms_bonus;
-                    if (t<0) t = 0;
-                    t = t - m_matchParameter.ms_increment;
-                    m_matchTime[game().board().toMove()] += t;
-
-                    EngineParameter par = m_matchParameter;
-                    par.ms_white = m_matchParameter.ms_totalTime - m_matchTime[White];
-                    par.ms_black = m_matchParameter.ms_totalTime - m_matchTime[Black];
-
-                    m_mainAnalysis->unPin();
-                    m_mainAnalysis->setMoveTime(par);
-
-                    if (!m_elapsedUserTimeValid && !m_mainAnalysis->isEngineRunning())
-                    {
-                        m_mainAnalysis->startEngine();
-                    }
-
-                    if (par.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()] > (int) m_matchParameter.ms_totalTime)
-                    {
-                        playSound(":/sounds/fanfare.wav");
-                        // Game is drawn by repetition or 50 move rule
-                        m_autoRespond->trigger();
-                        if (game().isMainline())
-                        {
-                            setResultAgainstColorToMove();
-                        }
-                    }
-                    else if (par.annotateEgt && par.tm != EngineParameter::TIME_GONG)
-                    {
-                        QString clk = "[%clk %1]";
-                        QTime t(0,0);
-                        t = t.addMSecs(game().board().toMove()==White ? par.ms_white : par.ms_black);
-                        annot = clk.arg(t.toString("H:mm:ss"));
-                    }
-                }
-
-                game().addMove(m, annot);
-                if (qobject_cast<FicsDatabase*>(database()))
-                {
-                    m_ficsConsole->SendMove(m.toAlgebraic());
-                }
-                else
-                {
+                    QString annot;
                     if (m_autoRespond->isChecked())
                     {
-                        if (game().board().isStalemate() ||
-                            game().board().isCheckmate())
+                        int t = m_elapsedUserTimeValid ? m_elapsedUserTime.elapsed() : 0;
+                        t = t - m_matchParameter.ms_bonus;
+                        if (t<0) t = 0;
+                        t = t - m_matchParameter.ms_increment;
+                        m_matchTime[game().board().toMove()] += t;
+
+                        EngineParameter par = m_matchParameter;
+                        par.ms_white = m_matchParameter.ms_totalTime - m_matchTime[White];
+                        par.ms_black = m_matchParameter.ms_totalTime - m_matchTime[Black];
+
+                        m_mainAnalysis->unPin();
+                        m_mainAnalysis->setMoveTime(par);
+
+                        if (!m_elapsedUserTimeValid && !m_mainAnalysis->isEngineRunning())
+                        {
+                            m_mainAnalysis->startEngine();
+                        }
+
+                        if (par.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()] > (int) m_matchParameter.ms_totalTime)
                         {
                             playSound(":/sounds/fanfare.wav");
+                            // Game is drawn by repetition or 50 move rule
                             m_autoRespond->trigger();
-                            setResultForCurrentPosition();
+                            if (game().isMainline())
+                            {
+                                setResultAgainstColorToMove();
+                            }
+                        }
+                        else if (par.annotateEgt && par.tm != EngineParameter::TIME_GONG)
+                        {
+                            QString clk = "[%clk %1]";
+                            QTime t(0,0);
+                            t = t.addMSecs(game().board().toMove()==White ? par.ms_white : par.ms_black);
+                            annot = clk.arg(t.toString("H:mm:ss"));
+                        }
+                    }
+
+                    game().addMove(m, annot);
+                    if (qobject_cast<FicsDatabase*>(database()))
+                    {
+                        m_ficsConsole->SendMove(m.toAlgebraic());
+                    }
+                    else
+                    {
+                        if (m_autoRespond->isChecked())
+                        {
+                            if (game().board().isStalemate() ||
+                                game().board().isCheckmate())
+                            {
+                                playSound(":/sounds/fanfare.wav");
+                                m_autoRespond->trigger();
+                                setResultForCurrentPosition();
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                if(action == BoardView::ActionInsert)
-                {
-                    game().insertMove(m);
-                }
-                else if(action == BoardView::ActionReplace)
-                {
-                    game().replaceMove(m);
-                }
                 else
                 {
-                    game().addVariation(m);
+                    if(action == BoardView::ActionInsert)
+                    {
+                        game().insertMove(m);
+                    }
+                    else if(action == BoardView::ActionReplace)
+                    {
+                        game().replaceMove(m);
+                    }
+                    else
+                    {
+                        game().addVariation(m);
+                    }
+                    game().forward();
                 }
-                game().forward();
             }
-        }
 
-        if (m_autoRespond->isChecked() && !m_machineHasToMove)
-        {
-            m_machineHasToMove = true;
+            if (m_autoRespond->isChecked() && !m_machineHasToMove)
+            {
+                m_machineHasToMove = true;
+            }
         }
     }
     else
     {
-        // Move is not legal, but could become legal, so store as premove and try later
-        if (premoveAllowed())
+        if ((game().board().toMove() != UserColor()) && (UserColor() == game().board().colorAt(from)))
         {
-            m_boardView->setStoredMove(from,to);
+            if (premoveAllowed())
+            {
+                m_boardView->setStoredMove(from,to);
+            }
         }
     }
 }
@@ -1646,7 +1671,7 @@ void MainWindow::slotToggleAutoRespond()
 
         m_matchParameter.reset();
         m_mainAnalysis->setMoveTime(m_matchParameter);
-        m_machineHasToMove = true;
+        m_machineHasToMove = m_matchParameter.engineStarts;
         m_boardView->setFlags(m_boardView->flags() | BoardView::IgnoreSideToMove);
         if (m_matchParameter.engineStarts)
         {
