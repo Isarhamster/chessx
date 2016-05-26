@@ -180,8 +180,11 @@ private:
 
     QPoint posFromSquare(int square) const;
 
+    void drawColorRect(QPaintEvent* event, Square square, QColor color);
+
     void drawHiliting(QPaintEvent* event);
     void drawSquares(QPaintEvent* event);
+    void drawTargets(QPaintEvent* event);
     void drawPieces(QPaintEvent* event);
     void drawMoveIndicator(QPaintEvent* event);
     void drawDraggedPieces(QPaintEvent* event);
@@ -202,6 +205,7 @@ private:
     int m_showCurrentMove;
     bool m_guessMove;
     bool m_showThreat;
+    bool m_showTargets;
     Square m_selectedSquare;
     Square m_hoverSquare;
     Square m_hiFrom;
@@ -213,6 +217,7 @@ private:
     Square m_storedFrom;
     Square m_storedTo;
     Square m_dragStartSquare;
+    QList<Square> m_targets;
     bool m_atLineEnd;
     int m_flags;
     bool m_coordinates;

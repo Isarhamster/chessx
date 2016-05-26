@@ -2878,6 +2878,24 @@ bool BitBoard::insufficientMaterial() const
     return false;
 }
 
+Color BitBoard::colorAt(Square s) const
+{
+    Q_ASSERT(s < 64);
+    quint64 bit = SetBit(s);
+    if(m_occupied & bit)
+    {
+        if(m_occupied_co[White] & bit)
+        {
+            return White;
+        }
+        else
+        {
+            return Black;
+        }
+    }
+    return NoColor;
+}
+
 Piece BitBoard::pieceAt(Square s) const
 {
     Q_ASSERT(s < 64);

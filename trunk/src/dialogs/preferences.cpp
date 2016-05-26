@@ -456,6 +456,7 @@ void PreferencesDialog::restoreSettings()
     ui.cbBackwardAnalysis->setChecked(AppSettings->getValue("BackwardAnalysis").toBool());
     ui.cbPromoteToQueen->setChecked(AppSettings->getValue("AutoPromoteToQueen").toBool());
     ui.btShowThreat->setChecked(AppSettings->getValue("showThreat").toBool());
+    ui.btShowTargets->setChecked(AppSettings->getValue("showTargets").toBool());
     ui.btNoHints->setChecked(AppSettings->getValue("noHints").toBool());
 
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
@@ -470,6 +471,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.boardColorsList, tr("Current move"), "currentMoveColor");
     restoreColorItem(ui.boardColorsList, tr("Stored move"), "storedMoveColor");
     restoreColorItem(ui.boardColorsList, tr("Threat"), "threatColor");
+    restoreColorItem(ui.boardColorsList, tr("Targets"), "targetColor");
     AppSettings->endGroup();
 
     SlotPieceEffectActivated(ui.pieceEffect->currentIndex());
@@ -583,6 +585,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("showMoveIndicator", QVariant(ui.cbShowIndicator->currentIndex()));
     AppSettings->setValue("guessMove", QVariant(ui.guessMoveCheck->isChecked()));
     AppSettings->setValue("showThreat", QVariant(ui.btShowThreat->isChecked()));
+    AppSettings->setValue("showTargets", QVariant(ui.btShowTargets->isChecked()));
     AppSettings->setValue("noHints", QVariant(ui.btNoHints->isChecked()));
     AppSettings->setValue("nextGuess", QVariant(ui.guessNextMove->isChecked()));
     AppSettings->setValue("minWheelCount", ui.minWheelCount->value());
@@ -600,7 +603,8 @@ void PreferencesDialog::saveSettings()
         AppSettings->setValue("boardTheme", QString());
     }
     QStringList colorNames;
-    colorNames << "lightColor" << "darkColor" << "highlightColor" << "frameColor" << "currentMoveColor" << "storedMoveColor" << "threatColor";
+    colorNames << "lightColor" << "darkColor" << "highlightColor"
+               << "frameColor" << "currentMoveColor" << "storedMoveColor" << "threatColor" << "targetColor";
     saveColorList(ui.boardColorsList, colorNames);
     AppSettings->endGroup();
 
