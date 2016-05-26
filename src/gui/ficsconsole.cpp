@@ -117,6 +117,12 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     connect(button, SIGNAL(clicked()), this, SLOT(SlotSendResign()));
 
     button = new QToolButton(this);
+    button->setText(tr("Rematch"));
+    button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    ui->btBoxMessage->addButton(button, QDialogButtonBox::ActionRole);
+    connect(button, SIGNAL(clicked()), SLOT(SlotSendRematch()));
+
+    button = new QToolButton(this);
     button->setText(tr("Hint"));
     button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     ui->btBoxPuzzle->addButton(button, QDialogButtonBox::ActionRole);
@@ -478,6 +484,14 @@ void FicsConsole::SlotSendUnexamine()
     m_ficsClient->sendCommand("unexamine");
 }
 
+void FicsConsole::SlotSendRematch()
+{
+    if (!gameMode)
+    {
+        m_ficsClient->sendCommand("rematch");
+    }
+}
+
 void FicsConsole::SlotSendSeek()
 {
     int t = ui->seekTime->value();
@@ -529,6 +543,15 @@ void FicsConsole::UpdateSayCompleter(QString msg)
         model->setStringList(words);
         ui->sayMessage->setCompleter(completer);
     }
+}
+
+Color FicsConsole::playerColor() const
+{
+    if (gameMode)
+    {
+        return m_bPlayerIsBlack ? Black : White;
+    }
+    return NoColor;
 }
 
 void FicsConsole::SlotAddNoPlay()
