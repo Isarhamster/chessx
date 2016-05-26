@@ -27,7 +27,9 @@ enum Color {White, Black, NoColor};
 /** Return opposite color */
 inline Color oppositeColor(Color c)
 {
-    return c == White ? Black : White;
+    if (c == White) return Black;
+    else if (c == Black) return White;
+    return NoColor;
 }
 
 /** Return true if given piece is White */

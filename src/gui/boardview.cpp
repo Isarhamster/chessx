@@ -34,7 +34,7 @@ const int MoveIndicatorSize = 12;
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_flipped(false), m_showFrame(false), m_showCurrentMove(2),
-    m_guessMove(false), m_showThreat(false), m_selectedSquare(InvalidSquare),
+    m_guessMove(false), m_showThreat(false), m_showTargets(false), m_selectedSquare(InvalidSquare),
     m_hoverSquare(InvalidSquare),
     m_hiFrom(InvalidSquare), m_hiTo(InvalidSquare),
     m_threatFrom(InvalidSquare), m_threatTo(InvalidSquare),
@@ -104,6 +104,7 @@ void BoardView::setBoard(const Board& value, Square from, Square to, bool atLine
     m_currentTo = to;
     m_atLineEnd = atLineEnd;
     m_hiFrom = m_hiTo = InvalidSquare;
+    m_targets.clear();
     if(underMouse())
     {
         updateGuess(m_hoverSquare);
@@ -336,6 +337,17 @@ void BoardView::drawHiliting(QPaintEvent* event)
     }
 }
 
+void BoardView::drawTargets(QPaintEvent* event)
+{
+    for (Square square=a1; square<NumSquares; ++square)
+    {
+        if (m_targets.contains(square))
+        {
+            drawColorRect(event, square, m_theme.color(BoardTheme::Target));
+        }
+    }
+}
+
 void BoardView::drawPieces(QPaintEvent* event)
 {
     QPainter p(this);
@@ -382,6 +394,7 @@ void BoardView::paintEvent(QPaintEvent* event)
     drawSquares(event);
     drawCoordinates(event);
     drawSquareAnnotations(event);
+    drawTargets(event);
     drawPieces(event);
     drawHiliting(event);
     drawMoveIndicator(event);
@@ -467,7 +480,7 @@ bool BoardView::showGuess(Square s)
 {
     // Don't want to constantly recalculate guess, so remember which square
     // the mouse is hovering over, and only show new guess when it changes
-    if(m_guessMove && s != InvalidSquare && s != m_hoverSquare && !(m_flags & SuppressGuessMove))
+    if((m_guessMove || m_showTargets) && s != InvalidSquare && s != m_hoverSquare && !(m_flags & SuppressGuessMove))
     {
         removeGuess();
         m_hoverSquare = s;
@@ -477,10 +490,26 @@ bool BoardView::showGuess(Square s)
             Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), m_board.chess960(), m_board.castlingRooks(), (Guess::squareT)s, m_moveList);
             if(!sm.error)
             {
-                m_hiFrom = Square(sm.from);
-                m_hiTo = Square(sm.to);
-                update(squareRect(m_hiFrom));
-                update(squareRect(m_hiTo));
+                if (m_guessMove)
+                {
+                    m_hiFrom = Square(sm.from);
+                    m_hiTo = Square(sm.to);
+                    update(squareRect(m_hiFrom));
+                    update(squareRect(m_hiTo));
+                }
+
+                if (m_showTargets)
+                {
+                    foreach(Guess::simpleMoveT sm, m_moveList)
+                    {
+                        if (s == Square(sm.from))
+                        {
+                            Square target = Square(sm.visualTo());
+                            m_targets.append(target);
+                            update(squareRect(target));
+                        }
+                    }
+                }
             }
         }
         return true;
@@ -542,6 +571,11 @@ void BoardView::removeGuess()
     m_hoverSquare = InvalidSquare;
     m_moveListCurrent = 0;
     m_moveList.clear();
+    foreach(Square s, m_targets)
+    {
+        update(squareRect(s));
+    }
+    m_targets.clear();
 }
 
 void BoardView::nextGuess(Square s)
@@ -859,6 +893,7 @@ void BoardView::configure()
     m_coordinates = AppSettings->getValue("showCoordinates").toBool();
     m_showCurrentMove = AppSettings->getValue("showCurrentMove").toInt();
     m_guessMove = AppSettings->getValue("guessMove").toBool();
+    m_showTargets = AppSettings->getValue("showTargets").toBool();
     m_showThreat = AppSettings->getValue("showThreat").toBool();
     m_minDeltaWheel = AppSettings->getValue("minWheelCount").toInt();
     m_showMoveIndicatorMode = AppSettings->getValue("showMoveIndicator").toInt();
@@ -1021,10 +1056,37 @@ void BoardView::drawArrowAnnotations(QPaintEvent* event)
     }
 }
 
-void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
+void BoardView::drawColorRect(QPaintEvent* event, Square square, QColor color)
 {
     QPainter p(this);
     p.translate(m_translate);
+
+    QRect rect = squareRect(square);
+    if(!event->region().intersects(rect))
+    {
+        return;
+    }
+
+    int x = isFlipped() ? 7 - square % 8 : square % 8;
+    int y = isFlipped() ? square / 8 : 7 - square / 8;
+    QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
+
+    p.save();
+    QPen pen(color);
+    QBrush brush(color);
+    p.setPen(pen);
+    p.setBrush(brush);
+
+    p.setOpacity(.35);
+
+    int coord =  m_coordinates ? CoordinateSize : 0;
+    p.drawRect(coord + pos.x(), pos.y(), m_theme.size().width(), m_theme.size().height());
+
+    p.restore();
+}
+
+void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
+{
     QString trimmed = annotation.simplified();
     QChar colorChar = trimmed[0];
     QChar fileChar = trimmed[1];
@@ -1033,17 +1095,6 @@ void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
     QString ranks = "12345678";
     int file = files.indexOf(fileChar);
     int rank = ranks.indexOf(rankChar);
-    Square square = SquareFromRankAndFile(rank, file);
-
-    QRect rect = squareRect(square);
-    if(!event->region().intersects(rect))
-    {
-        return;
-    }
-    int x = isFlipped() ? 7 - square % 8 : square % 8;
-    int y = isFlipped() ? square / 8 : 7 - square / 8;
-    QPoint pos(x * m_theme.size().width(), y * m_theme.size().height());
-    //p.drawPixmap(pos, m_theme.square((x + y) % 2));
 
     QColor color = Qt::red;
     if(colorChar == 'Y')
@@ -1059,19 +1110,8 @@ void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
         color = Qt::blue;
     }
 
-    p.save();
-    QPen pen(color);
-    QBrush brush(color);
-    p.setPen(pen);
-    p.setBrush(brush);
-
-    p.setOpacity(.35);
-
-    int coord =  m_coordinates ? CoordinateSize : 0;
-    p.drawRect(coord + pos.x(), pos.y(), m_theme.size().width(), m_theme.size().height());
-
-    p.restore();
-
+    Square square = SquareFromRankAndFile(rank, file);
+    drawColorRect(event, square, color);
 }
 
 void BoardView::drawArrow(int square1, int square2, QColor color)

@@ -92,6 +92,8 @@ public:
     bool isMovable(const Square s) const;
     /** @return piece sitting at given square on the board */
     Piece pieceAt(Square s) const;
+    /* Get the color of a Piece at square @s */
+    Color colorAt(Square s) const;
     /** @return number of ply since a pawn move or capture */
     unsigned int halfMoveClock() const;
     /** Set number of ply since a pawn move or capture */

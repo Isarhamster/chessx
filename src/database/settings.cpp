@@ -341,6 +341,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/showMoveIndicator", 0);
     map.insert("/Board/guessMove", true);
     map.insert("/Board/showThreat", true);
+    map.insert("/Board/showTargets", false);
     map.insert("/Board/noHints", false);
     map.insert("/Board/nextGuess", false);
     map.insert("/Board/minWheelCount", MIN_WHEEL_COUNT);
@@ -354,6 +355,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/currentMoveColor", QColor(Qt::blue));
     map.insert("/Board/storedMoveColor", QColor(Qt::magenta));
     map.insert("/Board/threatColor", QColor(0xe0,0xe0,0xff,0x80));
+    map.insert("/Board/targetColor", QColor(Qt::darkGreen));
     map.insert("/Board/AutoPlayerInterval", 3000);
     map.insert("/Board/AutoSaveAndContinue", false);
     map.insert("/Board/BackwardAnalysis", false);
