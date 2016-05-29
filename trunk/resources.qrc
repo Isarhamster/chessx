@@ -168,5 +168,9 @@
         <file alias="themes/shadow/leipzig.png">data/themes/shadow/leipzig.png</file>
         <file alias="themes/shadow/merida.png">data/themes/shadow/merida.png</file>
         <file alias="themes/shadow/spatial.png">data/themes/shadow/spatial.png</file>
+        <file alias="images/brush_yellow.png">data/images/brush_yellow.png</file>
+        <file alias="images/brush_green.png">data/images/brush_green.png</file>
+        <file alias="images/brush_red.png">data/images/brush_red.png</file>
+        <file alias="images/brush_erase.png">data/images/brush_erase.png</file>
     </qresource>
 </RCC>

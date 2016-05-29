@@ -34,7 +34,7 @@ const int MoveIndicatorSize = 12;
 
 BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_flipped(false), m_showFrame(false), m_showCurrentMove(2),
-    m_guessMove(false), m_showThreat(false), m_showTargets(false), m_selectedSquare(InvalidSquare),
+    m_guessMove(false), m_showThreat(false), m_showTargets(false), m_brushMode(false), m_selectedSquare(InvalidSquare),
     m_hoverSquare(InvalidSquare),
     m_hiFrom(InvalidSquare), m_hiTo(InvalidSquare),
     m_threatFrom(InvalidSquare), m_threatTo(InvalidSquare),
@@ -745,12 +745,22 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
 void BoardView::startToDrag(QMouseEvent *event, Square s)
 {
     removeGuess();
-    m_dragged = m_board.pieceAt(s);
+    if (!m_brushMode) m_dragged = m_board.pieceAt(s);
     m_dragPoint = event->pos() - m_theme.pieceCenter();
     m_dragStartSquare = s;
     update(squareRect(s));
     update(QRect(m_dragPoint, m_theme.size()));
     unselectSquare();
+}
+
+bool BoardView::getBrushMode() const
+{
+    return m_brushMode;
+}
+
+void BoardView::setBrushMode(bool brushMode)
+{
+    m_brushMode = brushMode;
 }
 
 void BoardView::mouseReleaseEvent(QMouseEvent* event)
@@ -792,7 +802,16 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
         }
     }
 
-    if(m_dragged != Empty)
+    if(m_brushMode)
+    {
+        if(s != InvalidSquare)
+        {
+            Square from = squareAt(m_dragStart);
+            emit clicked(s, button, mapToGlobal(event->pos()), from);
+            m_dragged = Empty;
+        }
+    }
+    else if(m_dragged != Empty)
     {
         Square from = squareAt(m_dragStart);
         m_dragStartSquare = InvalidSquare;
