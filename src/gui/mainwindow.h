@@ -440,6 +440,7 @@ protected slots:
     void slotRestartAnalysis();
     void slotBoardStoredMove();   
     void slotLoadRecentGame();
+    void slotToggleBrush();
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);
@@ -637,6 +638,7 @@ private:
     QChar m_lastColor;
     ExclusiveActionGroup* autoGroup;
     ExclusiveActionGroup* autoGroupTraining;
+    ExclusiveActionGroup* brushGroup;
     QAction* m_training;
     QAction* m_autoRespond;
     QAction* m_autoPlay;

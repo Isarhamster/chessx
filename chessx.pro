@@ -440,7 +440,8 @@ macx {
  QMAKE_INFO_PLIST = mac_osx/Info.plist
 }
 
-RESOURCES = resources.qrc
+RESOURCES = \
+    resources.qrc
 
 TRANSLATIONS = i18n/chessx_de.ts \
         i18n/chessx_da.ts \

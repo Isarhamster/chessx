@@ -872,10 +872,10 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                         if (par.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()] > (int) m_matchParameter.ms_totalTime)
                         {
                             playSound(":/sounds/fanfare.wav");
-                            // Game is drawn by repetition or 50 move rule
                             m_autoRespond->trigger();
                             if (game().isMainline())
                             {
+                                game().dbSetAnnotation(tr("Time is over"));
                                 setResultAgainstColorToMove();
                             }
                         }
@@ -1003,17 +1003,33 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
     }
     else if (button & Qt::LeftButton)
     {
-        BoardView::BoardViewAction action = m_boardView->moveActionFromModifier((Qt::KeyboardModifiers)button);
-        if (action == BoardView::ActionPen)
+        const QAction* brushAction = brushGroup->checkedAction();
+        if (brushAction)
         {
             bool twoSquares = (s != from && from != InvalidSquare);
             if (twoSquares)
             {
-                game().appendArrowAnnotation(s, from, m_lastColor);
+                game().appendArrowAnnotation(s, from, brushAction->data().toChar());
             }
             else
             {
-                game().appendSquareAnnotation(s, m_lastColor);
+                game().appendSquareAnnotation(s, brushAction->data().toChar());
+            }
+        }
+        else
+        {
+            BoardView::BoardViewAction action = m_boardView->moveActionFromModifier((Qt::KeyboardModifiers)button);
+            if (action == BoardView::ActionPen)
+            {
+                bool twoSquares = (s != from && from != InvalidSquare);
+                if (twoSquares)
+                {
+                    game().appendArrowAnnotation(s, from, m_lastColor);
+                }
+                else
+                {
+                    game().appendSquareAnnotation(s, m_lastColor);
+                }
             }
         }
     }
@@ -1907,10 +1923,10 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 if (m_matchParameter.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()] > m_matchParameter.ms_totalTime)
                 {
                     playSound(":/sounds/fanfare.wav");
-                    // Game is terminated by end of time
                     m_autoRespond->trigger();
                     if (game().isMainline())
                     {
+                        game().dbSetAnnotation(tr("Time is over"));
                         setResultAgainstColorToMove();
                     }
                 }
@@ -1923,6 +1939,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                     m_autoRespond->trigger();
                     if (game().isMainline())
                     {
+                        game().dbSetAnnotation(tr("Game is drawn by insufficient material, repetition or 50 move rule"));
                         game().setResult(Draw);
                     }
                 }
@@ -1974,11 +1991,10 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             if (m_matchParameter.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()] > m_matchParameter.ms_totalTime)
             {
                 playSound(":/sounds/fanfare.wav");
-                // Game is terminated by end of time
-
                 m_engineMatch->trigger();
                 if (game().isMainline())
                 {
+                    game().dbSetAnnotation(tr("Time is over"));
                     setResultAgainstColorToMove();
                 }
             }
@@ -1987,10 +2003,10 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 game().board().halfMoveClock() > 99)
             {
                 playSound(":/sounds/fanfare.wav");
-                // Game is drawn by repetition or 50 move rule
                 m_engineMatch->trigger();
                 if (game().isMainline())
                 {
+                    game().dbSetAnnotation(tr("Game is drawn by insufficient material, repetition or 50 move rule"));
                     game().setResult(Draw);
                 }
             }
@@ -3138,5 +3154,18 @@ bool MainWindow::premoveAllowed() const
 {
     return ((gameMode() && m_ficsConsole->canUsePremove() && qobject_cast<const FicsDatabase*>(database()))
             || m_autoRespond->isChecked());
+}
+
+void MainWindow::slotToggleBrush()
+{
+    if (gameMode())
+    {
+        // Not allowed
+        brushGroup->untrigger();
+    }
+    else
+    {
+        m_boardView->setBrushMode(brushGroup->checkedAction());
+    }
 }
 

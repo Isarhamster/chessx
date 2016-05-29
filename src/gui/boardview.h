@@ -88,6 +88,9 @@ public:
     QRect totalRect() const;
 
     BoardViewAction moveActionFromModifier(Qt::KeyboardModifiers modifiers);
+    bool getBrushMode() const;
+    void setBrushMode(bool brushMode);
+
 public slots:
 
     /** Flips/unflips board. */
@@ -206,6 +209,7 @@ private:
     bool m_guessMove;
     bool m_showThreat;
     bool m_showTargets;
+    bool m_brushMode;
     Square m_selectedSquare;
     Square m_hoverSquare;
     Square m_hiFrom;

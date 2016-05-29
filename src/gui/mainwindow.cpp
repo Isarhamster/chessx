@@ -1408,6 +1408,30 @@ void MainWindow::setupActions()
     edit->addAction(createAction(tr("Paste"), SLOT(slotEditMergePGN()),
                                  Qt::CTRL + Qt::Key_V, editToolBar, ":/images/edit_paste.png"));
     edit->addSeparator();
+    brushGroup = new ExclusiveActionGroup(this);
+    QMenu* brush = edit->addMenu(tr("Brush"));
+    QAction* brushAction = createAction(tr("Green"), SLOT(slotToggleBrush()), Qt::META + Qt::Key_1, editToolBar, ":/images/brush_green.png");
+    brushAction->setCheckable(true);
+    brushAction->setData(QChar('G'));
+    brush->addAction(brushAction);
+    brushGroup->addAction(brushAction);
+    brushAction = createAction(tr("Yellow"), SLOT(slotToggleBrush()), Qt::META + Qt::Key_2, editToolBar, ":/images/brush_yellow.png");
+    brushAction->setCheckable(true);
+    brushAction->setData(QChar('Y'));
+    brush->addAction(brushAction);
+    brushGroup->addAction(brushAction);
+    brushAction = createAction(tr("Red"), SLOT(slotToggleBrush()), Qt::META + Qt::Key_3, editToolBar, ":/images/brush_red.png");
+    brushAction->setCheckable(true);
+    brushAction->setData(QChar('R'));
+    brush->addAction(brushAction);
+    brushGroup->addAction(brushAction);
+    brushAction = createAction(tr("Erase"), SLOT(slotToggleBrush()), Qt::META + Qt::Key_4, editToolBar, ":/images/brush_erase.png");
+    brushAction->setCheckable(true);
+    brushAction->setData(QChar(0));
+    brush->addAction(brushAction);
+    brushGroup->addAction(brushAction);
+    edit->addSeparator();
+
     edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(), 0,
                                  QString(), QString(), QAction::PreferencesRole));
 
