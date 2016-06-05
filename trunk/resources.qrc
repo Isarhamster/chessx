@@ -172,5 +172,7 @@
         <file alias="images/brush_green.png">data/images/brush_green.png</file>
         <file alias="images/brush_red.png">data/images/brush_red.png</file>
         <file alias="images/brush_erase.png">data/images/brush_erase.png</file>
+        <file alias="images/show_targets.png">data/images/show_targets.png</file>
+        <file alias="images/show_threat.png">data/images/show_threat.png</file>
     </qresource>
 </RCC>

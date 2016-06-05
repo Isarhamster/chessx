@@ -1455,6 +1455,22 @@ void MainWindow::setupActions()
                                        0, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
     m_menuView->addSeparator();
 
+    QToolBar* viewToolBar = addToolBar(tr("View"));
+    viewToolBar->setObjectName("ViewToolBarMain");
+    QAction* showTargets = createAction(tr("Show target fields"), SLOT(slotShowTargetFields()), 0,
+                                       viewToolBar, QIcon(":/images/show_targets.png"));
+    m_menuView->addAction(showTargets);
+    showTargets->setCheckable(true);
+    showTargets->setChecked(AppSettings->getValue("/Board/showTargets").toBool());
+
+    QAction* showThreat = createAction(tr("Show threat"), SLOT(slotShowThreat()), 0,
+                                       viewToolBar, QIcon(":/images/show_threat.png"));
+    m_menuView->addAction(showThreat);
+    showThreat->setCheckable(true);
+    showThreat->setChecked(AppSettings->getValue("/Board/showThreat").toBool());
+
+    m_menuView->addSeparator();
+
     /* Game menu */
     QMenu *gameMenu = menuBar()->addMenu(tr("&Game"));
     QToolBar* gameToolBar = addToolBar(tr("Game"));
@@ -1687,6 +1703,7 @@ void MainWindow::setupActions()
     toolbars->addAction(dbToolBar->toggleViewAction());
     toolbars->addAction(gameToolBar->toggleViewAction());
     toolbars->addAction(searchToolBar->toggleViewAction());
+    toolbars->addAction(viewToolBar->toggleViewAction());
 
     KbAction::restoreKeyboardLayoutForObject(this);
 }
