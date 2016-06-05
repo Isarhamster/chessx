@@ -3169,3 +3169,16 @@ void MainWindow::slotToggleBrush()
     }
 }
 
+void MainWindow::slotShowTargetFields()
+{
+    QAction* bt = qobject_cast<QAction*>(sender());
+    AppSettings->setValue("/Board/showTargets", bt->isChecked());
+    m_boardView->configure();
+}
+
+void MainWindow::slotShowThreat()
+{
+    QAction* bt = qobject_cast<QAction*>(sender());
+    AppSettings->setValue("/Board/showThreat", bt->isChecked());
+    m_boardView->configure();
+}

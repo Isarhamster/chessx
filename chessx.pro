@@ -1,7 +1,7 @@
 # Main application
 DEFINES +=
 CONFIG += uic warn_on
-QT += network svg
+QT += network svg sql
 
 greaterThan(QT_MAJOR_VERSION, 4) {
    QT += printsupport

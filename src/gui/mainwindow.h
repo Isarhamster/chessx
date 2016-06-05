@@ -441,6 +441,8 @@ protected slots:
     void slotBoardStoredMove();   
     void slotLoadRecentGame();
     void slotToggleBrush();
+    void slotShowTargetFields();
+    void slotShowThreat();
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);
