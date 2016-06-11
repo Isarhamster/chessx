@@ -156,6 +156,7 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     ui->eloMin->setValue(AppSettings->getValue("/FICS/eloLow").toInt());
     ui->eloMax->setValue(AppSettings->getValue("/FICS/eloHigh").toInt());
 
+    tockSound = new QSound(":/sounds/woodthunk.wav");
 #ifndef FICS_DEBUG
     ui->line->setVisible(false);
     ui->textOut->setEnabled(false);
@@ -165,6 +166,7 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
 
 FicsConsole::~FicsConsole()
 {
+    delete tockSound;
     delete ui;
 }
 
@@ -382,7 +384,7 @@ void FicsConsole::TestTimeWarning(SimpleLabel* label, bool playerToMove)
     label->setText(FormatTime(s));
     if (playerToMove)
     {
-        TestTockFor10s(s);
+        TestTocks(s);
     }
     if (TestColor(s,10))
     {
@@ -410,27 +412,25 @@ void FicsConsole::SlotCountDownGameTime()
     }
 }
 
-bool FicsConsole::TestTockFor10s(QString s)
+void FicsConsole::TestTocks(QString s)
 {
 #ifdef USE_SOUND
-    if (m_bTockDone)
+    if (m_tockToDo)
     {
-        return true;
-    }
-    QTime t = QTime::fromString(s,"h:m:ss");
-    if (t.msecsSinceStartOfDay()<10000)
-    {
-        if (!m_bFirstTime && AppSettings->getValue("/Sound/Move").toBool())
+        QTime tm = QTime::fromString(s,"h:m:ss");
+        if (tm.msecsSinceStartOfDay()<=m_tockToDo*10000)
         {
-            QSound::play(":/sounds/woodthunk.wav");
-            m_bTockDone = true;
+            if (!m_bFirstTestForTock)
+            {
+                //tockSound->setLoops(m_tockToDo);
+                tockSound->play();
+                --m_tockToDo;
+            }
         }
-        return m_bTockDone;
-    }
-    else
-    {
-        m_bFirstTime = false;
-        return false;
+        else
+        {
+            m_bFirstTestForTock = false;
+        }
     }
 #endif
 }
@@ -908,8 +908,8 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 {
                     QString w = l[2].remove('(');
                     m_bPlayerIsBlack = w != m_ficsClient->getGuestName();
-                    m_bFirstTime = true;
-                    m_bTockDone = false;
+                    m_bFirstTestForTock = true;
+                    m_tockToDo = AppSettings->getValue("/Sound/Move").toBool() ? 3 : 0;
                     emit SignalPlayerIsBlack(m_bPlayerIsBlack);
                 }
             }

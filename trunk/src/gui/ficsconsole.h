@@ -20,6 +20,7 @@ class QButtonGroup;
 class QTimer;
 class QTableWidgetItem;
 class SimpleLabel;
+class QSound;
 
 enum
 {
@@ -107,7 +108,7 @@ signals:
 protected:
     QString FormatTime(QString s) const;
     void SetPlayerListItemsFromLine(QString s);
-    bool TestTockFor10s(QString s);
+    void TestTocks(QString s);
     bool TestColor(QString s, int seconds) const;
     void TestTimeWarning(SimpleLabel *label, bool playerToMove);
     void UpdateSayCompleter(QString msg);
@@ -122,9 +123,10 @@ private:
     bool m_bWhiteToMove;
     Char64Relation m_lastRelation;
     bool m_bPlayerIsBlack;
-    bool m_bTockDone;
-    bool m_bFirstTime;
+    int m_tockToDo;
+    bool m_bFirstTestForTock;
     int m_prevTab;
+    QSound* tockSound;
 
 };
 
