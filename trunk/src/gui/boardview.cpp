@@ -104,6 +104,7 @@ void BoardView::setBoard(const Board& value, Square from, Square to, bool atLine
     m_currentTo = to;
     m_atLineEnd = atLineEnd;
     m_hiFrom = m_hiTo = InvalidSquare;
+    m_alertSquare = value.kingInCheck();
     m_targets.clear();
     if(underMouse())
     {
@@ -348,6 +349,19 @@ void BoardView::drawTargets(QPaintEvent* event)
     }
 }
 
+void BoardView::drawCheck(QPaintEvent* event)
+{
+    QPainter p(this);
+    p.translate(m_translate);
+
+
+    QRect rect = squareRect(m_alertSquare);
+    if(event->region().intersects(rect))
+    {
+        drawColorRect(event, m_alertSquare, m_theme.color(BoardTheme::Check));
+    }
+}
+
 void BoardView::drawPieces(QPaintEvent* event)
 {
     QPainter p(this);
@@ -395,6 +409,7 @@ void BoardView::paintEvent(QPaintEvent* event)
     drawCoordinates(event);
     drawSquareAnnotations(event);
     drawTargets(event);
+    drawCheck(event);
     drawPieces(event);
     drawHiliting(event);
     drawMoveIndicator(event);
