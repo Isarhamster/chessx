@@ -470,6 +470,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.boardColorsList, tr("Stored move"), "storedMoveColor");
     restoreColorItem(ui.boardColorsList, tr("Threat"), "threatColor");
     restoreColorItem(ui.boardColorsList, tr("Targets"), "targetColor");
+    restoreColorItem(ui.boardColorsList, tr("Check"), "checkColor");
     AppSettings->endGroup();
 
     SlotPieceEffectActivated(ui.pieceEffect->currentIndex());
@@ -600,7 +601,7 @@ void PreferencesDialog::saveSettings()
     }
     QStringList colorNames;
     colorNames << "lightColor" << "darkColor" << "highlightColor"
-               << "frameColor" << "currentMoveColor" << "storedMoveColor" << "threatColor" << "targetColor";
+               << "frameColor" << "currentMoveColor" << "storedMoveColor" << "threatColor" << "targetColor" << "checkColor";
     saveColorList(ui.boardColorsList, colorNames);
     AppSettings->endGroup();
 

@@ -189,6 +189,7 @@ private:
     void drawSquares(QPaintEvent* event);
     void drawTargets(QPaintEvent* event);
     void drawPieces(QPaintEvent* event);
+    void drawCheck(QPaintEvent* event);
     void drawMoveIndicator(QPaintEvent* event);
     void drawDraggedPieces(QPaintEvent* event);
     void drawCoordinates(QPaintEvent* event);
@@ -221,6 +222,7 @@ private:
     Square m_storedFrom;
     Square m_storedTo;
     Square m_dragStartSquare;
+    Square m_alertSquare;
     QList<Square> m_targets;
     bool m_atLineEnd;
     int m_flags;

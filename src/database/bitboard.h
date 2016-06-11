@@ -162,6 +162,8 @@ public:
     bool canCastleLong(const unsigned int color) const;
     /** Get the castling rook to the given index into m_castlingRook */
     Square CastlingRook(int index) const;
+    /** Return the square of the king if in check, InvalidSquare otherwise */
+    Square kingInCheck() const;
 protected:
     unsigned int countSetBits(quint64 n) const;
 private:
@@ -169,6 +171,7 @@ private:
     bool isKingOnRow(Piece p, Square start, Square stop) const;
     /** Return true if side to move is in check */
     bool isCheck() const;
+
     /** Test to see if given color has any castling rights remaining */
     bool canCastle(const unsigned int color) const;
 
@@ -450,6 +453,11 @@ inline bool BitBoard::canCastleLong(const unsigned int color)  const
 inline bool BitBoard::isCheck() const
 {
     return isAttackedBy(m_stm ^ 1, m_ksq[m_stm]);
+}
+
+inline Square BitBoard::kingInCheck() const
+{
+    return isCheck() ? m_ksq[m_stm] : InvalidSquare;
 }
 
 inline unsigned int BitBoard::halfMoveClock() const

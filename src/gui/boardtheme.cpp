@@ -182,6 +182,7 @@ void BoardTheme::configure()
     setColor(BoardTheme::StoredMove, AppSettings->getValue("storedMoveColor").value<QColor>());
     setColor(BoardTheme::Threat, AppSettings->getValue("threatColor").value<QColor>());
     setColor(BoardTheme::Target, AppSettings->getValue("targetColor").value<QColor>());
+    setColor(BoardTheme::Check, AppSettings->getValue("checkColor").value<QColor>());
 
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     int pieceEffect = AppSettings->getValue("pieceEffect").toInt();

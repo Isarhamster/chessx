@@ -157,10 +157,12 @@ bool BitBoard::isCheckmate() const
 {
     MoveList moves(generateMoves());
     for(int i = 0; i < moves.size(); ++i)
+    {
         if(!isIntoCheck(moves[i]))
         {
             return false;
         }
+    }
     return isCheck();
 }
 
@@ -168,10 +170,12 @@ bool BitBoard::isStalemate() const
 {
     MoveList moves(generateMoves());
     for(int i = 0; i < moves.size(); ++i)
+    {
         if(!isIntoCheck(moves[i]))
         {
             return false;
         }
+    }
     return !isCheck();
 }
 
