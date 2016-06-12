@@ -1110,11 +1110,16 @@ void BoardView::drawColorRect(QPaintEvent* event, Square square, QColor color)
     QBrush brush(color);
     p.setPen(pen);
     p.setBrush(brush);
-
     p.setOpacity(.35);
 
     int coord =  m_coordinates ? CoordinateSize : 0;
-    p.drawRect(coord + pos.x(), pos.y(), m_theme.size().width(), m_theme.size().height());
+
+    QRadialGradient radialGrad(QPointF(coord + pos.x()+m_theme.size().width()/2, pos.y()+m_theme.size().height()/2), m_theme.size().width());
+    radialGrad.setColorAt(0, color.lighter());
+    radialGrad.setColorAt(0.5, color);
+    radialGrad.setColorAt(1, color);
+
+    p.fillRect(coord + pos.x(), pos.y(), m_theme.size().width(), m_theme.size().height(), radialGrad);
 
     p.restore();
 }
