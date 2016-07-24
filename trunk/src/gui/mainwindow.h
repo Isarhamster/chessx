@@ -476,6 +476,7 @@ protected:
     void playSound(QString s);
     void doBoardMove(Move m, unsigned int button, Square from, Square to);
     QString favoriteUrl() const;
+    QString drawAnnotation() const;
 signals:
     /** Re-read configuration. */
     void reconfigure();

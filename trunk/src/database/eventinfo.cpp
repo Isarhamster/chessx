@@ -184,7 +184,6 @@ void EventInfo::reset()
     m_rating[1] = 0;
     m_date[0] = PDMaxDate;
     m_date[1] = PDMinDate;
-
 }
 
 QString EventInfo::formattedGameCount() const

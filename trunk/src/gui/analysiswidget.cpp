@@ -39,6 +39,7 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
     connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
     connect(ui.bookList, SIGNAL(activated(int)), SLOT(bookActivated(int)));
     connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(toggleAnalysis()));
+
     connect(ui.variationText, SIGNAL(anchorClicked(QUrl)),
             SLOT(slotLinkClicked(QUrl)));
     connect(ui.vpcount, SIGNAL(valueChanged(int)), SLOT(slotMpvChanged(int)));
