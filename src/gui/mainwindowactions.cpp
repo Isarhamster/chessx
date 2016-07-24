@@ -1890,6 +1890,17 @@ bool MainWindow::doEngineMove(Move m, EngineParameter e)
     return true;
 }
 
+QString MainWindow::drawAnnotation() const
+{
+    QString reason;
+
+    if (game().board().insufficientMaterial()) reason = tr("Game is drawn by insufficient material");
+    else if (game().positionRepetition3(game().board())) reason = tr("Game is drawn by repetition");
+    else if (game().board().halfMoveClock() > 99) reason = tr("Game is drawn by 50 move rule");
+
+    return reason;
+}
+
 void MainWindow::slotEngineTimeout(const Analysis& analysis)
 {
     if (m_boardView->dragged() == Empty || m_autoRespond->isChecked()) // Do not interfer with moving a piece, unless it might be a premove
@@ -1939,7 +1950,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                     m_autoRespond->trigger();
                     if (game().isMainline())
                     {
-                        game().dbSetAnnotation(tr("Game is drawn by insufficient material, repetition or 50 move rule"));
+                        game().dbSetAnnotation(drawAnnotation());
                         game().setResult(Draw);
                     }
                 }
@@ -2006,7 +2017,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 m_engineMatch->trigger();
                 if (game().isMainline())
                 {
-                    game().dbSetAnnotation(tr("Game is drawn by insufficient material, repetition or 50 move rule"));
+                    game().dbSetAnnotation(drawAnnotation());
                     game().setResult(Draw);
                 }
             }

@@ -3059,7 +3059,7 @@ QString BitBoard::toFen() const
 
 QString BitBoard::toHumanFen() const
 {
-    QString fenFormat = QCoreApplication::translate("BitBoard", "w%1\nb%2\n%3 to move.");
+    QString fenFormat = QCoreApplication::translate("BitBoard", "w%1\nb%2\n%3 to move");
     QMap<Piece, QStringList> charLists;
 
     //piece placement
@@ -3105,7 +3105,7 @@ QString BitBoard::toHumanFen() const
     }
 
     QString fen = fenFormat.arg(w).arg(b).arg(toMove);
-
+    fen.append(QString(" (%1+%2).").arg(m_pieceCount[White]).arg(m_pieceCount[Black]));
     return fen;
 }
 

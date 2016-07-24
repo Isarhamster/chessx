@@ -103,6 +103,7 @@ signals:
 protected slots:
     void bookActivated(int);
     void sendBookMoveTimeout();
+
 private:
     /** Should analysis be running. */
     bool isAnalysisEnabled() const;
