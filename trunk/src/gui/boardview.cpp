@@ -351,14 +351,16 @@ void BoardView::drawTargets(QPaintEvent* event)
 
 void BoardView::drawCheck(QPaintEvent* event)
 {
-    QPainter p(this);
-    p.translate(m_translate);
-
-
-    QRect rect = squareRect(m_alertSquare);
-    if(event->region().intersects(rect))
+    if (isEnabled())
     {
-        drawColorRect(event, m_alertSquare, m_theme.color(BoardTheme::Check));
+        QPainter p(this);
+        p.translate(m_translate);
+
+        QRect rect = squareRect(m_alertSquare);
+        if(event->region().intersects(rect))
+        {
+            drawColorRect(event, m_alertSquare, m_theme.color(BoardTheme::Check));
+        }
     }
 }
 
