@@ -120,6 +120,17 @@ void TableView::slotReconfigure()
     f.setPointSize(fontSize);
     setFont(f);
 
+    QFontMetrics fm(f);
+    int rowHeight = fm.height()+2;
+
+    QHeaderView *vh = verticalHeader();
+#if QT_VERSION < 0x050000
+    vh->setResizeMode(QHeaderView::Fixed);
+#else
+    vh->sectionResizeMode(QHeaderView::Fixed);
+#endif
+    vh->setDefaultSectionSize(rowHeight);
+
     horizontalHeader()->setSortIndicatorShown(sortIndicator);
     update();
 }

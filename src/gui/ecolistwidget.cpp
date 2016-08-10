@@ -49,6 +49,7 @@ ECOListWidget::~ECOListWidget()
 
 void ECOListWidget::slotReconfigure()
 {
+    ui->tagList->slotReconfigure();
 }
 
 void ECOListWidget::selectionChangedSlot()
