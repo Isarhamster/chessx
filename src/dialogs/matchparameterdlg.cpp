@@ -20,6 +20,8 @@ MatchParameterDlg::MatchParameterDlg(QWidget *parent) :
     QPoint pos = mapFromGlobal(QCursor::pos());
     pos.setX(pos.x() - size().width());
     pos.setY(pos.y() - size().height());
+    if (pos.x()<0) pos.setX(0);
+    if (pos.y()<0) pos.setY(0);
     move(pos);
 }
 
