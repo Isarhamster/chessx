@@ -57,6 +57,7 @@ PlayerListWidget::~PlayerListWidget()
 
 void PlayerListWidget::slotReconfigure()
 {
+    ui->tagList->slotReconfigure();
 }
 
 void PlayerListWidget::selectionChangedSlot()

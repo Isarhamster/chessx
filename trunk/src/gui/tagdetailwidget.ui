@@ -45,7 +45,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QListView" name="tagList">
+        <widget class="TableView" name="tagList">
          <property name="toolTip">
           <string/>
          </property>
@@ -55,6 +55,12 @@
          <property name="alternatingRowColors">
           <bool>true</bool>
          </property>
+         <attribute name="horizontalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
         </widget>
        </item>
        <item>
@@ -101,6 +107,11 @@
    <class>TextBrowserEx</class>
    <extends>QTextBrowser</extends>
    <header>textbrowserex.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TableView</class>
+   <extends>QTableView</extends>
+   <header>tableview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

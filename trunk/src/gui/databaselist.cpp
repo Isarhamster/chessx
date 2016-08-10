@@ -41,7 +41,6 @@ DatabaseList::DatabaseList(QWidget *parent) :
     connect(this, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(slotDoubleClicked(const QModelIndex&)));
     connect(this, SIGNAL(activated(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(slotContextMenu(const QPoint&)));
-    connect(m_filterModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)), SLOT(rowsChanged(const QModelIndex &, int, int)));
     connect(m_model, SIGNAL(OnSelectIndex(const QModelIndex &)), SLOT(slotCurrentIndexChanged(const QModelIndex &)));
 
     setAlternatingRowColors(true);
@@ -203,14 +202,6 @@ void DatabaseList::dbRemoveFromFavorites()
     Q_ASSERT(m_cell.isValid());
     QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
     setFileFavorite(ts, false, 0);
-}
-
-void DatabaseList::rowsChanged(const QModelIndex &, int start, int end)
-{
-    for(int i = start; i <= end; ++i)
-    {
-        setRowHeight(i, 24);
-    }
 }
 
 void DatabaseList::slotMakeBook()

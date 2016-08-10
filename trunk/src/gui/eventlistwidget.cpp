@@ -46,6 +46,7 @@ EventListWidget::~EventListWidget()
 
 void EventListWidget::slotReconfigure()
 {
+    ui->tagList->slotReconfigure();
 }
 
 void EventListWidget::selectionChangedSlot()
