@@ -474,13 +474,12 @@ int
 Recognizer::KBPK(Position * pos)
 {
     unsigned char * material = pos->GetMaterial();
-    squareT wk, bk;
+    squareT bk;
     fyleT wrongFile = A_FYLE;  // Wrong-color bishop rook-pawn file.
     // Set up piece squares so that White has the bishop and pawn(s),
     // and make sure all pawns are on the wrong rook-pawn file:
     if(material[WB] == 1)
     {
-        wk = pos->GetKingSquare(WHITE);
         bk = pos->GetKingSquare(BLACK);
         if(pos->SquareColorCount(WB, WHITE) == 1)
         {
@@ -494,7 +493,6 @@ Recognizer::KBPK(Position * pos)
     else
     {
         ASSERT(material[BB] == 1);
-        wk = square_FlipRank(pos->GetKingSquare(BLACK));
         bk = square_FlipRank(pos->GetKingSquare(WHITE));
         if(pos->SquareColorCount(BB, BLACK) == 1)
         {
@@ -1707,19 +1705,12 @@ Recognizer::KRPKR(Position * pos)
     }
 
     // Designate side-to-move king,rook as sk and sr, enemy as ek and er
-    squareT sk, sr, ek, er;
-    int skRank, srRank, ekRank, erRank;
-    int skFyle, srFyle, ekFyle, erFyle;
+    squareT ek;
+    int ekRank, erRank;
+    int ekFyle, erFyle;
     if(stm == WHITE)
     {
-        sk = wk;
-        sr = wr;
         ek = bk;
-        er = br;
-        skRank = wkRank;
-        skFyle = wkFyle;
-        srRank = wrRank;
-        srFyle = wrFyle;
         ekRank = bkRank;
         ekFyle = bkFyle;
         erRank = brRank;
@@ -1727,14 +1718,7 @@ Recognizer::KRPKR(Position * pos)
     }
     else
     {
-        sk = bk;
-        sr = br;
         ek = wk;
-        er = wr;
-        skRank = bkRank;
-        skFyle = bkFyle;
-        srRank = brRank;
-        srFyle = brFyle;
         ekRank = wkRank;
         ekFyle = wkFyle;
         erRank = wrRank;
