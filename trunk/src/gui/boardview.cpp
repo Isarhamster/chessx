@@ -44,7 +44,8 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_atLineEnd(true),
     m_flags(flags),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false), m_wheelCurrentDelta(0),
-    m_minDeltaWheel(0), m_moveListCurrent(0), m_showMoveIndicator(true), m_vAlignTop(false), m_DbIndex(0)
+    m_minDeltaWheel(0), m_moveListCurrent(0), m_showMoveIndicator(true), 
+    m_DbIndex(0)
 {
     QSizePolicy policy = sizePolicy();
     policy.setHeightForWidth(true);
@@ -163,7 +164,6 @@ bool BoardView::showCoordinates() const
 void BoardView::drawSquares(QPaintEvent* event)
 {
     QPainter p(this);
-    p.translate(m_translate);
     for (Square square=a1; square<NumSquares; ++square)
     {
         QRect rect = squareRect(square);
@@ -191,7 +191,7 @@ QRect BoardView::totalRect() const
     {
         rect2 = squareRect(isFlipped() ? a8 : h1);
     }
-    QRect totalRect = QRect(0,rect1.top(), width(), rect2.bottom()-m_translate.y()+2);
+    QRect totalRect = QRect(0,rect1.top(), width(), rect2.bottom()+2);
     return totalRect;
 }
 
@@ -246,14 +246,14 @@ void BoardView::drawMoveIndicator(QPaintEvent* event)
         if(square)
         {
             int posy = (white == m_flipped) ? 1 : 8 * m_theme.size().width() - square;
-            QRect rect(QPoint(8 * m_theme.size().width() + 2 + coord, posy) + m_translate,
+            QRect rect(QPoint(8 * m_theme.size().width() + 2 + coord, posy),
                        QSize(square, square));
             if(!event->region().intersects(rect))
             {
                 return;
             }
             QColor color = white ? Qt::white : Qt::black;
-            QColor border = white ? Qt::black : Qt::white;
+            QColor border = white ? Qt::black : Qt::gray;
             p.setPen(border);
             p.setBrush(QColor(color));
             p.drawRect(rect);
@@ -264,7 +264,6 @@ void BoardView::drawMoveIndicator(QPaintEvent* event)
 void BoardView::drawHiliteSquare(QPoint pos, BoardTheme::ColorRole role)
 {
     QPainter p(this);
-    p.translate(m_translate);
 
     QPen pen;
     pen.setColor(m_theme.color(role));
@@ -273,15 +272,6 @@ void BoardView::drawHiliteSquare(QPoint pos, BoardTheme::ColorRole role)
     p.setPen(pen);
     p.drawRect(pos.x() + 1 + m_showFrame, pos.y() + 1 + m_showFrame,
                m_theme.size().width() - 2 - m_showFrame, m_theme.size().height() - 2 - m_showFrame);
-}
-
-QPoint BoardView::posFromSquare(int square) const
-{
-    int coord =  m_coordinates ? CoordinateSize : 0;
-    int x = isFlipped() ? 7 - square % 8 : square % 8;
-    int y = isFlipped() ? square / 8 : 7 - square / 8;
-    QPoint pos(coord + x * m_theme.size().width(), y * m_theme.size().height());
-    return pos;
 }
 
 void BoardView::drawHiliting(QPaintEvent* event)
@@ -354,7 +344,6 @@ void BoardView::drawCheck(QPaintEvent* event)
     if (isEnabled())
     {
         QPainter p(this);
-        p.translate(m_translate);
 
         QRect rect = squareRect(m_alertSquare);
         if(event->region().intersects(rect))
@@ -367,7 +356,6 @@ void BoardView::drawCheck(QPaintEvent* event)
 void BoardView::drawPieces(QPaintEvent* event)
 {
     QPainter p(this);
-    p.translate(m_translate);
 
     for (Square square=a1; square<NumSquares; ++square)
     {
@@ -398,8 +386,8 @@ void BoardView::drawPieces(QPaintEvent* event)
     }
 
     // Always draw outer rectangle
-    QRect rect1 = squareRectNoTranslate(a8);
-    QRect rect2 = squareRectNoTranslate(h1);
+    QRect rect1 = squareRect(a8);
+    QRect rect2 = squareRect(h1);
     p.setPen(m_theme.color(BoardTheme::Frame));
     p.drawRect(!isFlipped() ? QRect(rect1.topLeft(),rect2.bottomRight()) :
                               QRect(rect2.topLeft(),rect1.bottomRight()));
@@ -434,13 +422,12 @@ void BoardView::resizeBoard(QSize sz)
 
     QSize widgetSize(size * 8 + 1 + coord + square, size * 8 + 1 + coord);
     QPoint widgetCenter(widgetSize.width() / 2, widgetSize.height() / 2);
-    m_translate = geometry().center() - widgetCenter - geometry().topLeft();
-    if (m_vAlignTop) m_translate.setY(0);
 }
 
 void BoardView::resizeEvent(QResizeEvent* e)
 {
     resizeBoard(e->size());
+    QWidget::resizeEvent(e);
 }
 
 QSize BoardView::sizeHint() const
@@ -473,8 +460,8 @@ int BoardView::moveIndicatorWidth(int width, int themeWidth) const
 
 Square BoardView::squareAt(const QPoint& p) const
 {
-    int x = p.x() - m_translate.x();
-    int y = p.y() - m_translate.y();
+    int x = p.x();
+    int y = p.y();
     int width = m_theme.size().width();
     int height = m_theme.size().height();
     x -= m_coordinates ? CoordinateSize : 0;
@@ -971,17 +958,16 @@ void BoardView::unselectSquare()
     }
 }
 
-QRect BoardView::squareRect(Square square) const
+QPoint BoardView::posFromSquare(int square) const
 {
     int coord =  m_coordinates ? CoordinateSize : 0;
     int x = isFlipped() ? 7 - square % 8 : square % 8;
     int y = isFlipped() ? square / 8 : 7 - square / 8;
-    return QRect(QPoint(x * m_theme.size().width() + coord,
-                        y * m_theme.size().height()) + m_translate,
-                 m_theme.size());
+    QPoint pos(coord + x * m_theme.size().width(), y * m_theme.size().height());
+    return pos;
 }
 
-QRect BoardView::squareRectNoTranslate(Square square) const
+QRect BoardView::squareRect(Square square) const
 {
     return QRect(posFromSquare(square), m_theme.size());
 }
@@ -990,7 +976,7 @@ QRect BoardView::coordinateRectVertical(int n) const
 {
     Q_ASSERT(m_coordinates);
     int x = isFlipped() ? n % 8 : 7 - n % 8;
-    return QRect(QPoint(0, x * m_theme.size().height() + (m_theme.size().height() - CoordinateSize) / 2) + m_translate,
+    return QRect(QPoint(0, x * m_theme.size().height() + (m_theme.size().height() - CoordinateSize) / 2),
                  QSize(CoordinateSize, CoordinateSize));
 }
 
@@ -999,7 +985,7 @@ QRect BoardView::coordinateRectHorizontal(int n) const
     Q_ASSERT(m_coordinates);
     int y = isFlipped() ? 7 - n % 8 : n % 8;
     return QRect(QPoint(CoordinateSize + (y * (m_theme.size().width())) + (m_theme.size().width() - CoordinateSize) / 2,
-                        8 * m_theme.size().height()) + m_translate,
+                        8 * m_theme.size().height()),
                  QSize(CoordinateSize, CoordinateSize));
 }
 
@@ -1095,7 +1081,6 @@ void BoardView::drawArrowAnnotations(QPaintEvent* event)
 void BoardView::drawColorRect(QPaintEvent* event, Square square, QColor color)
 {
     QPainter p(this);
-    p.translate(m_translate);
 
     QRect rect = squareRect(square);
     if(!event->region().intersects(rect))
@@ -1158,7 +1143,6 @@ void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
 void BoardView::drawArrow(int square1, int square2, QColor color)
 {
     QPainter p(this);
-    p.translate(m_translate);
 
     int x1 = isFlipped() ? 7 - square1 % 8 : square1 % 8;
     int y1 = isFlipped() ? square1 / 8 : 7 - square1 / 8;
@@ -1289,18 +1273,6 @@ void BoardView::setDragged(const Piece &dragged)
 {
     m_dragged = dragged;
 }
-
-
-bool BoardView::vAlignTop() const
-{
-    return m_vAlignTop;
-}
-
-void BoardView::setVAlignTop(bool vAlignTop)
-{
-    m_vAlignTop = vAlignTop;
-}
-
 
 void BoardView::setEnabled(bool enabled)
 {

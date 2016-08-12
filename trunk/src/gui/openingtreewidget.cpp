@@ -56,7 +56,6 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     m_openingBoardView->setObjectName("OpeningBoardView");
     m_openingBoardView->setMinimumSize(200, 200);
     ui->OpeningBoardWidget->addWidget(m_openingBoardView, 1);
-    m_openingBoardView->setVAlignTop(true);
     m_openingBoardView->configure();
     m_openingBoardView->setEnabled(false);
 }

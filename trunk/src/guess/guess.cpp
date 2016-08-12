@@ -39,11 +39,11 @@ Result guessMove(const char* fen, bool chess960, quint64 castlingRooks, squareT 
     {
         return r;
     }
-
-    if(mlist.size() > 1)
+    else if(mlist.size() > 1)
     {
         if (!s_guessAllowed)
         {
+            mlist.clear();
             return r;
         }
         Engine engine;

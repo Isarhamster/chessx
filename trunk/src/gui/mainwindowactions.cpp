@@ -13,8 +13,7 @@
 #include "boardsearchdialog.h"
 #include "boardsetup.h"
 #include "boardview.h"
-//#include "boardviewex.h"
-typedef BoardView BoardViewEx;
+#include "boardviewex.h"
 #include "copydialog.h"
 #include "chessbrowser.h"
 #include "compileeco.h"
@@ -614,6 +613,16 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
         return true;
     }
     return false;
+}
+
+void MainWindow::HandleFicsShowTimer(bool show)
+{
+    // todo
+}
+
+void MainWindow::HandleFicsShowTime(int color, QString t)
+{
+    // todo
 }
 
 void MainWindow::HandleFicsNewGameRequest()
@@ -2560,7 +2569,8 @@ void MainWindow::slotSearchBoard()
     {
         if(i != m_tabWidget->currentIndex())
         {
-            BoardView* boardView = qobject_cast<BoardView*>(m_tabWidget->widget(i));
+            BoardViewEx* boardViewEx = qobject_cast<BoardViewEx*>(m_tabWidget->widget(i));
+            BoardView* boardView = boardViewEx->boardView();
             const Board& b = boardView->board();
             if (b != Board::standardStartBoard)
             {
@@ -2825,8 +2835,6 @@ BoardView* MainWindow::CreateBoardView()
     {
         BoardViewEx* boardViewEx = new BoardViewEx(m_tabWidget);
         BoardView* boardView = boardViewEx->boardView();
-
-        boardView->setMinimumSize(200, 200);
         boardView->configure();
         boardView->setBoard(Board::standardStartBoard);
         boardView->setDbIndex(m_currentDatabase);
@@ -2837,13 +2845,13 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
         connect(boardView, SIGNAL(actionHint(QString)), SLOT(slotStatusMessage(QString)));
 
-        m_tabWidget->addTab(boardView, databaseName());
-        m_tabWidget->setCurrentWidget(boardView);
+        m_tabWidget->addTab(boardViewEx, databaseName());
+        m_tabWidget->setCurrentWidget(boardViewEx);
 //        m_tabWidget->setMouseTracking(true);
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        boardView->setSizePolicy(sizePolicy);
+//        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+//        sizePolicy.setHorizontalStretch(0);
+//        sizePolicy.setVerticalStretch(0);
+//        boardView->setSizePolicy(sizePolicy);
         UpdateBoardInformation();
 
         m_boardView = boardView;
@@ -2878,7 +2886,8 @@ int MainWindow::findBoardView(void* dbIndex) const
 {
     for(int i = 0; i < m_tabWidget->count(); ++i)
     {
-        BoardViewEx* boardView = qobject_cast<BoardViewEx*>(m_tabWidget->widget(i));
+        BoardViewEx* boardViewEx = qobject_cast<BoardViewEx*>(m_tabWidget->widget(i));
+        BoardView* boardView = boardViewEx->boardView();
         if(boardView->dbIndex() == dbIndex)
         {
             return i;
@@ -2889,8 +2898,9 @@ int MainWindow::findBoardView(void* dbIndex) const
 
 void MainWindow::activateBoardView(int n)
 {
-    BoardViewEx* boardView = qobject_cast<BoardViewEx*>(m_tabWidget->widget(n));
-    m_boardView = boardView->boardView();
+    QWidget *w = m_tabWidget->widget(n);
+    BoardViewEx* boardViewEx = qobject_cast<BoardViewEx*>(w);
+    m_boardView = boardViewEx->boardView();
     m_tabWidget->setCurrentIndex(n);
 }
 
@@ -2900,7 +2910,8 @@ void MainWindow::slotActivateBoardView(int n)
     {
         activateBoardView(n);
 
-        BoardViewEx* boardView = qobject_cast<BoardViewEx*>(m_tabWidget->widget(n));
+        BoardViewEx* boardViewEx = qobject_cast<BoardViewEx*>(m_tabWidget->widget(n));
+        BoardView* boardView = boardViewEx->boardView();
         m_currentDatabase = qobject_cast<DatabaseInfo*>(boardView->dbIndex());
 
         Q_ASSERT(!databaseInfo()->IsBook());
