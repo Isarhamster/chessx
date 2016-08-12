@@ -384,6 +384,10 @@ public slots:
     void HandleFicsAddTagRequest(QString tag,QString value);
     /** Close FICS upon request from the console */
     void HandleFicsCloseRequest();
+    /** Show a game timer and reset the time to be displayed */
+    void HandleFicsShowTimer(bool show);
+    /** Set the time to be displayed */
+    void HandleFicsShowTime(int color, QString t);
 protected slots:
     /** Update recent files menu */
     void updateMenuDatabases();

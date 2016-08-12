@@ -236,12 +236,13 @@ void FicsConsole::HandleBoard(int cmd, QString s)
     tw = tw.addSecs(timeWhite.toInt());
     QTime tb(0,0,0,0);
     tb = tb.addSecs(timeBlack.toInt());
+    emit FicsShowTime(White, tw.toString("h:mm:ss"));
+    emit FicsShowTime(Black, tb.toString("h:mm:ss"));
     ui->timeWhite->setText(tw.toString("h:mm:ss"));
     ui->timeBlack->setText(tb.toString("h:mm:ss"));
 }
 
 void FicsConsole::HandleExamineRequest(QListWidgetItem* item)
-
 {
     if (!m_ficsClient) return;
 
@@ -349,7 +350,7 @@ void FicsConsole::SlotSeekTimeChanged(int)
     m_ficsClient->sendCommand("sought");
 }
 
-QString FicsConsole::FormatTime(QString s) const
+QString FicsConsole::DecrementTime(QString s) const
 {
     QString result;
     QTime t = QTime::fromString(s,"h:m:ss");
@@ -381,14 +382,14 @@ QString FicsConsole::FormatTime(QString s) const
 void FicsConsole::TestTimeWarning(SimpleLabel* label, bool playerToMove)
 {
     QString s = label->text();
-    label->setText(FormatTime(s));
+    label->setText(DecrementTime(s));
     if (playerToMove)
     {
         TestTocks(s);
     }
     if (TestColor(s,10))
     {
-       label->setBackgroundColor(Qt::yellow);
+        label->setBackgroundColor(Qt::yellow);
     }
     else
     {
@@ -781,12 +782,14 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     {
                         QString w = wReg.cap(1).trimmed();
                         ui->timeWhite->setText(w);
+                        emit FicsShowTime(White, w);
                     }
                     QRegExp bReg("Black Clock :([^\\.]*)");
                     if (bReg.indexIn(s) >= 0)
                     {
                         QString b = bReg.cap(1).trimmed();
                         ui->timeBlack->setText(b);
+                        emit FicsShowTime(Black, b);
                     }
                     m_countDownTimer->start();
                 }
@@ -897,6 +900,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 m_lastRelation = C64_REL_ISOLATED; // Anything invalid in this context
                 ui->timeWhite->setText(QString());
                 ui->timeBlack->setText(QString());
+                emit FicsShowTimer(true);
                 m_bWhiteToMove = true;
                 emit RequestNewGame();
                 emit RequestGameMode(gameMode);
@@ -923,6 +927,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 emit SignalGameResult(s);
                 emit RequestSaveGame();
                 emit RequestGameMode(gameMode);
+                emit FicsShowTimer(false);
             }
             break;
         case FicsClient::BLKCMD_INTERNAL_GAME_END:
@@ -975,7 +980,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             {
                 ui->timeWhite->setText(QString());
                 ui->timeBlack->setText(QString());
-
+                emit FicsShowTimer(true);
                 s.remove(QRegExp("puzzlebot[^:]*kibitzes:"));
                 s = s.trimmed();
                 if (!s.contains("tell puzzlebot"))

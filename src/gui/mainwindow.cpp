@@ -164,6 +164,8 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_ficsConsole, SIGNAL(ReceivedBoard(int,QString)), this, SLOT(HandleFicsBoardRequest(int,QString)));
     connect(m_ficsConsole, SIGNAL(SignalGameResult(QString)), this, SLOT(HandleFicsResultRequest(QString)));
     connect(m_ficsConsole, SIGNAL(RequestNewGame()), this, SLOT(HandleFicsNewGameRequest()));
+    connect(m_ficsConsole, SIGNAL(FicsShowTimer(bool)), this, SLOT(HandleFicsShowTimer(bool)));
+    connect(m_ficsConsole, SIGNAL(FicsShowTime(int, QString)), this, SLOT(HandleFicsShowTime(int,QString)));
     connect(m_ficsConsole, SIGNAL(RequestSaveGame()), this, SLOT(HandleFicsSaveGameRequest()));
     connect(m_ficsConsole, SIGNAL(RequestCloseFICS()), this, SLOT(HandleFicsCloseRequest()));
     connect(m_ficsConsole, SIGNAL(RequestAddTag(QString,QString)), this, SLOT(HandleFicsAddTagRequest(QString,QString)));

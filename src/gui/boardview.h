@@ -152,7 +152,6 @@ private:
     void resizeBoard(QSize size);
     /** Calculate size and position of square */
     QRect squareRect(Square s) const;
-    QRect squareRectNoTranslate(Square s) const;
     /** Calculate size and position of a coordinate indicator in vertical direction */
     QRect coordinateRectVertical(int n) const;
     /** Calculate size and position of a coordinate indicator in horizontal direction */
@@ -203,7 +202,6 @@ private:
 
     Board m_board;
     BoardTheme m_theme;
-    QPoint m_translate;
     bool m_flipped;
     bool m_showFrame;
     int m_showCurrentMove;
@@ -236,7 +234,6 @@ private:
     Guess::MoveList m_moveList;
     unsigned int m_moveListCurrent;
     bool m_showMoveIndicator;
-    bool m_vAlignTop;
     int m_showMoveIndicatorMode;
     QPointer<QObject> m_DbIndex;
     ThreadedGuess m_threatGuess;

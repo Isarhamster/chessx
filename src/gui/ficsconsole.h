@@ -105,8 +105,10 @@ signals:
     void RequestCloseFICS();
     void RequestStoredMove();
 
+    void FicsShowTimer(bool);
+    void FicsShowTime(int, QString);
 protected:
-    QString FormatTime(QString s) const;
+    QString DecrementTime(QString s) const;
     void SetPlayerListItemsFromLine(QString s);
     void TestTocks(QString s);
     bool TestColor(QString s, int seconds) const;
