@@ -356,7 +356,7 @@ void BoardView::drawCheck(QPaintEvent* event)
 void BoardView::drawPieces(QPaintEvent* event)
 {
     QPainter p(this);
-
+    p.setRenderHint(QPainter::SmoothPixmapTransform);
     for (Square square=a1; square<NumSquares; ++square)
     {
         QRect rect = squareRect(square);
