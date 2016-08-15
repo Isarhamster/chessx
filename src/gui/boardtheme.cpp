@@ -89,6 +89,8 @@ bool BoardTheme::loadPieces(const QString& pieces, int effect)
         return false;
     }
 
+    big.setDevicePixelRatio(2.0);
+
     int realsize = big.height() / 2;
     if(realsize == big.width() / 6)
     {
@@ -222,7 +224,9 @@ void BoardTheme::setSize(const QSize& value)
     m_size = value;
     for(int i = 1; i < ConstPieceTypes; i++)
     {
-        m_piece[i] = m_originalPiece[i].scaled(m_size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        float r = m_originalPiece[i].devicePixelRatio();
+        m_piece[i] = m_originalPiece[i].scaled(m_size * r, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        m_piece[i].setDevicePixelRatio(r);
     }
     updateSquares();
 }

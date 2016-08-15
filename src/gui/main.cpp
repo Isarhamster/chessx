@@ -94,6 +94,7 @@ prevHook = _CrtSetReportHook(customReportHook);
 
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_DontShowIconsInMenus);  // Icons are *no longer shown* in menus
+    app.setAttribute(Qt::AA_UseHighDpiPixmaps); // HiDPI support
 
     QDir dir(QApplication::applicationDirPath());
 
