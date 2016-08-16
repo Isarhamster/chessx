@@ -38,6 +38,7 @@ public slots:
     virtual void ShowContextMenu(const QPoint&);
 protected:
     QStyleOptionViewItem viewOptions() const;
+    virtual int minRowHeight() const { return 0; }
 private:
     Qt::Alignment m_alignDecoration;
     QStyleOptionViewItem::Position m_posDecoration;

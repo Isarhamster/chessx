@@ -230,7 +230,8 @@ HEADERS += src/database/board.h \
     src/database/filtersearch.h \
     src/database/numbersearch.h \
     src/database/circularbuffer.h \
-    src/gui/digitalclock.h
+    src/gui/digitalclock.h \
+    src/gui/historylabel.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -375,7 +376,8 @@ SOURCES += src/database/board.cpp \
     src/database/tagsearch.cpp \
     src/database/filtersearch.cpp \
     src/database/numbersearch.cpp \
-    src/gui/digitalclock.cpp
+    src/gui/digitalclock.cpp \
+    src/gui/historylabel.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

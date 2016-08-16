@@ -31,6 +31,7 @@
 #include "game.h"
 #include "gamelist.h"
 #include "gamewindow.h"
+#include "historylabel.h"
 #include "mainwindow.h"
 #include "matchparameterdlg.h"
 #include "messagedialog.h"
@@ -2312,6 +2313,7 @@ void MainWindow::copyDatabase(QString target, QString src)
         Database* pSrcDB = getDatabaseByPath(src);
         Database* pDestDB = getDatabaseByPath(target);
         DatabaseInfo* pDestDBInfo = getDatabaseInfoByPath(target);
+        DatabaseInfo* pSrcDBInfo = getDatabaseInfoByPath(src);
 
         if(pDestDBInfo && pSrcDB && pDestDB && (pSrcDB != pDestDB))
         {
@@ -2328,7 +2330,7 @@ void MainWindow::copyDatabase(QString target, QString src)
 
             pDestDBInfo->filter()->resize(pDestDB->count(), true);
         }
-        else if(!pSrcDB && !pDestDB && (src != target))
+        else if((!pSrcDB || (pSrcDBInfo && !pSrcDBInfo->modified())) && !pDestDB && (src != target))
         {
             QFile fSrc(src);
             QFile fDest(target);
@@ -2340,7 +2342,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                 QFileInfo fiDest(fDest);
                 QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(fiDest.fileName());
                 slotStatusMessage(msg);
-
+                fDest.write("\n");
                 while(!fSrc.atEnd())
                 {
                     QByteArray line = fSrc.readLine();

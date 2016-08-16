@@ -43,6 +43,7 @@ signals:
 
 protected: //Drag'n'Drop Support
     void startToDrag(const QModelIndex&);
+    virtual int minRowHeight() const { return 24; }
 
 protected:
     void startDrag(Qt::DropActions supportedActions);

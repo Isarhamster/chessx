@@ -32,6 +32,7 @@
 #include "gamewindow.h"
 #include "helpbrowser.h"
 #include "helpbrowsershell.h"
+#include "historylabel.h"
 #include "kbaction.h"
 #include "loadquery.h"
 #include "mainwindow.h"
@@ -389,7 +390,7 @@ MainWindow::MainWindow() : QMainWindow(),
     statusBar()->addPermanentWidget(m_statusFilter,1);
     m_statusFilter->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
-    m_statusApp = new QLabel();
+    m_statusApp = new HistoryLabel();
     statusBar()->addPermanentWidget(m_statusApp,1);
     m_statusApp->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
@@ -898,6 +899,7 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
         if (url.isValid() && !url.isRelative() &&
             ((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp")))
         {
+            slotStatusMessage(tr("Start loading database..."));
             connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
             connect(downloadManager, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(loadReady(QUrl, QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
             downloadManager->doDownload(url);
@@ -1088,7 +1090,8 @@ void MainWindow::loadError(QUrl url)
 void MainWindow::loadReady(QUrl url, QString fileName)
 {
     QString fav = favoriteUrl();
-    if ((url == fav) && fav.contains("$1"))
+    QString favurl = AppSettings->getValue("Web/Favorite1").toString();
+    if ((url == fav) && favurl.contains("$1"))
     {
         int n = AppSettings->getValue("Web/AutoNumber1").toInt();
         ++n;
@@ -1921,7 +1924,6 @@ void MainWindow::QueryLoadDatabase()
     LoadQuery dlg(this);
     if(dlg.exec() == QDialog::Accepted)
     {
-        slotStatusMessage(tr("Start loading database..."));
         if(dlg.largeDB())
         {
             openDatabaseUrl("http://chessx.sourceforge.net/db/bundesliga2000.pgn.zip", false);
