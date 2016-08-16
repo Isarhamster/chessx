@@ -121,7 +121,7 @@ void TableView::slotReconfigure()
     setFont(f);
 
     QFontMetrics fm(f);
-    int rowHeight = fm.height()+2;
+    int rowHeight = std::max(minRowHeight(), fm.height()+2);
 
     QHeaderView *vh = verticalHeader();
 #if QT_VERSION < 0x050000

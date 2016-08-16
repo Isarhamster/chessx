@@ -39,6 +39,7 @@ class FicsConsole;
 class Game;
 class GameList;
 class GameWindow;
+class HistoryLabel;
 class OpeningTreeWidget;
 class PlayerListWidget;
 class QLabel;
@@ -610,7 +611,7 @@ private:
     QTabWidget* m_tabWidget;
     /* Status */
     QLabel* m_statusFilter;
-    QLabel* m_statusApp;
+    HistoryLabel* m_statusApp;
     QLabel* m_gameTitle;
     /* Menus */
     QMenu* m_menuDatabases;
