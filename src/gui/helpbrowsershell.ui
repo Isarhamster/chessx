@@ -31,7 +31,7 @@
          </property>
         </widget>
         <widget class="QWidget" name="horizontalLayoutWidget">
-         <layout class="QHBoxLayout" name="horizontalLayout">
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,1">
           <property name="leftMargin">
            <number>2</number>
           </property>

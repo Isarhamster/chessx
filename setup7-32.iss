@@ -21,12 +21,15 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
+DisableWelcomePage=no
 AllowNoIcons=yes
 LicenseFile=.\COPYING
+InfoAfterFile=.\ChangeLog.txt
 OutputBaseFilename=setup-chessx7-32
 SetupIconFile=.\src\chessx.ico
 Compression=lzma
 SolidCompression=yes
+ChangesAssociations = yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -52,3 +55,11 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+[Tasks]
+Name: pgnAssociation; Description: "Associate ""pgn"" extension"; GroupDescription: File extensions:
+
+[Registry]
+Root: HKCR; Subkey: ".pgn";                             ValueData: "{#MyAppName}";          Flags: uninsdeletevalue; ValueType: string;  ValueName: ""; Tasks: pgnAssociation
+Root: HKCR; Subkey: "{#MyAppName}";                     ValueData: "Program {#MyAppName}";  Flags: uninsdeletekey;   ValueType: string;  ValueName: ""; Tasks: pgnAssociation
+Root: HKCR; Subkey: "{#MyAppName}\DefaultIcon";         ValueData: "{app}\{#MyAppExeName},0";                        ValueType: string;  ValueName: ""; Tasks: pgnAssociation
+Root: HKCR; Subkey: "{#MyAppName}\shell\open\command";  ValueData: """{app}\{#MyAppExeName}"" ""%1""";               ValueType: string;  ValueName: ""; Tasks: pgnAssociation
