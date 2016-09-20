@@ -174,5 +174,6 @@
         <file alias="images/brush_erase.png">data/images/brush_erase.png</file>
         <file alias="images/show_targets.png">data/images/show_targets.png</file>
         <file alias="images/show_threat.png">data/images/show_threat.png</file>
+        <file>i18n/chessx_cz.qm</file>
     </qresource>
 </RCC>
