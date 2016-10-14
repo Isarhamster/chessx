@@ -45,14 +45,22 @@ bool Settings::layout(QWidget* w)
     if(valid)    // Enough values
     {
         int x = values[0];
-        x &= ~0xC0000000;
-        if (values[0] & 0x80000000)      w->setWindowState(Qt::WindowMaximized);
-        else if (values[0] & 0x40000000) w->setWindowState(Qt::WindowFullScreen);
+        int y = values[1];
+        int wx;
+        if (values.count()==5)
+        {
+            wx = x;
+            x &= ~0xC0000000;
+        }
         else
         {
-            w->resize(values[2], values[3]);
-            w->move(x, values[1]);
+            wx = values[5];
         }
+        w->resize(values[2], values[3]);
+        w->move(x, y);
+
+        if (wx & 0x80000000)      w->setWindowState(Qt::WindowMaximized);
+        else if (wx & 0x40000000) w->setWindowState(Qt::WindowFullScreen);
 
         QSplitter* s = qobject_cast<QSplitter*>(w);
         if (s)
@@ -105,10 +113,25 @@ void Settings::setLayout(const QWidget* w)
     }
     beginGroup("Geometry");
     QList<int> values;
+    int wx = 0;
     int x = w->x();
-    if (w->isFullScreen())     x |= 0x40000000;
-    else if (w->isMaximized()) x |= 0x80000000;
-    values << x << w->y() << w->width() << w->height() << w->isVisible();
+    int y = w->y();
+    int wn = w->width();
+    int hn = w->height();
+    if (w->isFullScreen())     wx |= 0x40000000;
+    else if (w->isMaximized()) wx |= 0x80000000;
+
+    if (wx)
+    {
+        QRect ng = w->normalGeometry();
+        QRect frame = w->frameGeometry();
+        ng.adjust(-frame.x(), -frame.y(), -frame.x(), -frame.y());
+        x = ng.x();
+        y = ng.y();
+        wn = ng.width();
+        hn = ng.height();
+    }
+    values << x << y << wn << hn << w->isVisible() << wx;
     setList(w->objectName(), values);
     const QMainWindow* m = qobject_cast<const QMainWindow*>(w);
     if (m)
@@ -239,7 +262,7 @@ void Settings::setList(const QString& key, QList<int> list)
 bool Settings::list(const QString &key, QList<int>& list, int items)
 {
     QList<QVariant> varlist = value(key).toList();
-    if(items >= 0 && varlist.count() + list.count() != items)
+    if(items >= 0 && varlist.count() + list.count() < items)
     {
         return false;
     }
