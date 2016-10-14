@@ -618,12 +618,14 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
 
 void MainWindow::HandleFicsShowTimer(bool show)
 {
-    // todo
+    BoardViewEx* frame = qobject_cast<BoardViewEx*>(m_boardView->parent());
+    if (frame) frame->showTime(show);
 }
 
 void MainWindow::HandleFicsShowTime(int color, QString t)
 {
-    // todo
+    BoardViewEx* frame = qobject_cast<BoardViewEx*>(m_boardView->parent());
+    if (frame) frame->setTime(color==White, t);
 }
 
 void MainWindow::HandleFicsNewGameRequest()
@@ -2849,11 +2851,6 @@ BoardView* MainWindow::CreateBoardView()
 
         m_tabWidget->addTab(boardViewEx, databaseName());
         m_tabWidget->setCurrentWidget(boardViewEx);
-//        m_tabWidget->setMouseTracking(true);
-//        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-//        sizePolicy.setHorizontalStretch(0);
-//        sizePolicy.setVerticalStretch(0);
-//        boardView->setSizePolicy(sizePolicy);
         UpdateBoardInformation();
 
         m_boardView = boardView;

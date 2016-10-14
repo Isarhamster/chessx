@@ -16,6 +16,7 @@ BoardViewEx::BoardViewEx(QWidget *parent) :
 {
     ui->setupUi(this);
     setMouseTracking(true);
+    showTime(false);
 }
 
 BoardViewEx::~BoardViewEx()
@@ -31,4 +32,18 @@ BoardView* BoardViewEx::boardView()
 QObject* BoardViewEx::dbIndex()
 {
     return ui->boardView->dbIndex();
+}
+
+void BoardViewEx::showTime(bool show)
+{
+    ui->timeBottom->setVisible(show);
+    ui->timeTop->setVisible(show);
+}
+
+void BoardViewEx::setTime(bool white, QString t)
+{
+    bool flipped = ui->boardView->isFlipped();
+    bool top = (white && flipped) || (!white && !flipped);
+    QLCDNumber* lcd = top ? ui->timeTop : ui->timeBottom;
+    lcd->display(t);
 }

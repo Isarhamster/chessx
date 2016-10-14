@@ -48,7 +48,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QLCDNumber" name="lcdNumber_2">
+      <widget class="QLCDNumber" name="timeTop">
        <property name="segmentStyle">
         <enum>QLCDNumber::Flat</enum>
        </property>
@@ -107,7 +107,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QLCDNumber" name="lcdNumber">
+      <widget class="QLCDNumber" name="timeBottom">
        <property name="segmentStyle">
         <enum>QLCDNumber::Flat</enum>
        </property>
