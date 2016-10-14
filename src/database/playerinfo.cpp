@@ -290,7 +290,7 @@ QString PlayerInfo::listOfOpenings() const
         for(OpeningCountList::const_iterator it = m_opening[i].begin(); it != m_opening[i].end(); ++it)
         {
             QString opening = (*it).first;
-            QString codes = m_MapOpeningToECOCodes[i].value(opening).join('|');
+            QString codes = m_MapOpeningToECOCodes[i].value(opening).join("|");
             if (((*it).second)==1) break; // leave out things played only once
             if (((*it).second)*25<m_count[i]) break; // leave out things played rarely
             l.append(QString("<a href='eco-%1:%2'>%3</a> (%4)")
