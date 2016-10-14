@@ -24,6 +24,9 @@ public:
     BoardView* boardView();
     QObject *dbIndex();
 
+    void showTime(bool show);
+    void setTime(bool white, QString t);
+
 private:
     Ui::BoardViewEx *ui;
 };
