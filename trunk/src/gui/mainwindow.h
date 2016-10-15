@@ -312,6 +312,9 @@ public slots:
     void slotSearchTreeMove(const QModelIndex& index);
     /** Made given move on the board */
     void slotBoardMove(Square from, Square to, int button=0);
+    /** Make a evalution with the current board and piece @p from placed at @p to */
+    void slotEvalRequest(Square from, Square to);
+    void slotResumeBoard();
     /** Board square was clicked */
     void slotBoardClick(Square square, int button, QPoint pos, Square from);
     /** Browse current game by mouse wheel */
@@ -666,6 +669,7 @@ private:
     bool m_elapsedUserTimeValid;
     EngineParameter m_matchParameter;
     bool m_bTrainigAutoRespond;
+    bool m_bEvalRequested;
 };
 
 #endif

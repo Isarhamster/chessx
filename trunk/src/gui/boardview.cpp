@@ -624,6 +624,8 @@ BoardView::BoardViewAction BoardView::moveActionFromModifier(Qt::KeyboardModifie
         return m_atLineEnd ? ActionStandard : ActionInsert;
     case MetaModifier:
         return ActionQuery;
+    case (unsigned int)ControlModifier | (unsigned int)ShiftModifier:
+        return ActionAskEngine;
     default:
         return ActionStandard;
     }
@@ -657,6 +659,10 @@ void BoardView::checkCursor(Qt::KeyboardModifiers modifiers)
     case ActionPen:
         file = ":/images/pen.png";
         text = tr("Draw a square or arrow annotation");
+        break;
+    case ActionAskEngine:
+        //file = ":/images/pen.png";
+        text = tr("Query the engine while hovering the piece");
         break;
     }
 
@@ -701,9 +707,11 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
 {
     setFocus();
 
+    Qt::KeyboardModifiers mdf = event->modifiers();
+
     if(!(event->buttons() & Qt::LeftButton))
     {
-        if(!(event->modifiers() & Qt::ShiftModifier))
+        if(!(mdf & Qt::ShiftModifier))
         {
             showGuess(squareAt(event->pos()));
         }
@@ -720,10 +728,14 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
         m_dragPoint = event->pos() - m_theme.pieceCenter();
         update(old);
         update(QRect(m_dragPoint, m_theme.size()));
+        if (moveActionFromModifier(mdf) == ActionAskEngine)
+        {
+            emit evalRequest(m_dragStartSquare, squareAt(event->pos()));
+        }
         return;
     }
 
-    if(event->modifiers() & Qt::ShiftModifier)
+    if(mdf & Qt::ShiftModifier && (moveActionFromModifier(mdf) != ActionAskEngine))
     {
         return;
     }
@@ -794,6 +806,17 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
     }
     else
     {
+        if (moveActionFromModifier(event->modifiers()) == ActionAskEngine)
+        {
+            Square from = squareAt(m_dragStart);
+            m_dragStartSquare = InvalidSquare;
+            QRect oldr = QRect(m_dragPoint, m_theme.size());
+            m_dragged = Empty;
+            update(squareRect(from));
+            update(oldr);
+            emit evalModeDone();
+            return;
+        }
         if(event->modifiers() & Qt::ShiftModifier)
         {
             if(s != InvalidSquare)
