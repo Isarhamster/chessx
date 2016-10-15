@@ -781,6 +781,32 @@ void MainWindow::slotBoardMove(Square from, Square to, int button)
     }
 }
 
+void MainWindow::slotEvalRequest(Square from, Square to)
+{
+    if (!m_mainAnalysis->isVisible())
+    {
+        return;
+    }
+    Board b = game().board();
+    Piece p = b.pieceAt(from);
+    b.removeFrom(from);
+    b.setAt(to, p);
+    if (b.validate() == Valid)
+    {
+        m_bEvalRequested = true;
+        m_mainAnalysis->setPosition(b);
+    }
+}
+
+void MainWindow::slotResumeBoard()
+{
+    if (m_bEvalRequested)
+    {
+        m_bEvalRequested = false;
+        m_mainAnalysis->setPosition(game().board());
+    }
+}
+
 Color MainWindow::UserColor()
 {
     if (m_autoRespond->isChecked())
@@ -2848,6 +2874,8 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
         connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
         connect(boardView, SIGNAL(actionHint(QString)), SLOT(slotStatusMessage(QString)));
+        connect(boardView, SIGNAL(evalRequest(Square, Square)), SLOT(slotEvalRequest(Square, Square)));
+        connect(boardView, SIGNAL(evalModeDone()), SLOT(slotResumeBoard()));
 
         m_tabWidget->addTab(boardViewEx, databaseName());
         m_tabWidget->setCurrentWidget(boardViewEx);

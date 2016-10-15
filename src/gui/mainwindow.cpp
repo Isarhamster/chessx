@@ -93,7 +93,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_lastColor('G'),
     m_machineHasToMove(false),
     m_gameMode(false),
-    m_scratchPad(0)
+    m_scratchPad(0),
+    m_bEvalRequested(false)
 {
     setObjectName("MainWindow");
 

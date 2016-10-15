@@ -37,7 +37,7 @@ public:
     enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
     enum {Automatic = 0, Always = 1, Never = 2};
     enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4};
-    typedef enum {ActionStandard, ActionQuery, ActionReplace, ActionInsert, ActionAdd, ActionPen } BoardViewAction;
+    typedef enum {ActionStandard, ActionQuery, ActionReplace, ActionInsert, ActionAdd, ActionPen, ActionAskEngine } BoardViewAction;
     /** Create board widget. */
     BoardView(QWidget* parent = 0, int flags = 0);
     /** Destroy widget. */
@@ -109,6 +109,9 @@ public slots:
 signals:
     /** User clicked source and destination squares */
     void moveMade(Square from, Square to, int button);
+    /** User requests an evaluation from the current position with the piece @p from replaced at @p to */
+    void evalRequest(Square from, Square to);
+    void evalModeDone();
     /** User dragged and dropped a piece holding Control */
     void copyPiece(Square from, Square to);
     /** User dragged and dropped a piece holding Control */
@@ -120,6 +123,7 @@ signals:
     /** Indicate that a piece was dropped to the board */
     void pieceDropped(Square to, Piece p);
     void actionHint(const QString&);
+
 protected:
     /** Redraws whole board if necessary. */
     virtual void paintEvent(QPaintEvent*);
