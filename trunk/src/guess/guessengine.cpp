@@ -241,7 +241,7 @@ Engine::PieceValue(pieceT piece) const
 };
 
 inline int
-Engine::PieceValue(pieceC piece) const
+Engine::PieceValueFromClass(pieceC piece) const
 {
     return pieceValues[piece];
 };
@@ -2487,7 +2487,7 @@ Engine::SEE(squareT from, squareT target)
     }
 
     // Find the estimated result assuming one recapture:
-    int fastResult = PieceValue(board[target]) - PieceValue(mover);
+    int fastResult = PieceValue(board[target]) - PieceValueFromClass(mover);
 
     // We can do quick estimation for a big gain, but have to be
     // careful since move ordering is very sensitive to positive SEE
@@ -2735,7 +2735,7 @@ Engine::SEE(squareT from, squareT target)
     int swaplist[32];
     unsigned int nswaps = 1;
     swaplist[0] = PieceValue(board[target]);
-    int attackedVal = PieceValue(mover);
+    int attackedVal = PieceValueFromClass(mover);
 
     // Adjust the swap value for a promotion:
     if(targetIsPromoSquare  &&  attackedVal == PawnValue)

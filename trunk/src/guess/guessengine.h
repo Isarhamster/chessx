@@ -159,7 +159,7 @@ private:
 
 private:
     int PieceValue(pieceT piece) const;
-    int PieceValue(pieceC piece) const;
+    int PieceValueFromClass(pieceC piece) const;
     int SearchRoot(int depth, int alpha, int beta, MoveList * mlist);
     int Search(int depth, int alpha, int beta, bool tryNullMove);
     int Quiesce(int alpha, int beta);
