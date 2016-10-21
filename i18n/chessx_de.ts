@@ -266,7 +266,9 @@ b%2
         <source>w%1
 b%2
 %3 to move</source>
-        <translation type="unfinished"></translation>
+        <translation>w%1
+s%2
+%3 am Zug</translation>
     </message>
     <message>
         <location filename="../src/database/bitboard.cpp" line="3079"/>
@@ -910,7 +912,7 @@ Bitte Installation prüfen.</translation>
     <message>
         <location filename="../src/gui/digitalclock.cpp" line="58"/>
         <source>Digital Clock</source>
-        <translation type="unfinished"></translation>
+        <translation>Uhr</translation>
     </message>
 </context>
 <context>
@@ -1336,7 +1338,7 @@ Bitte Installation prüfen.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="591"/>
         <source>Don&apos;t care</source>
-        <translation type="unfinished"></translation>
+        <translation>Egal</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="613"/>
@@ -1377,7 +1379,7 @@ Bitte Installation prüfen.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="120"/>
         <source>Rematch</source>
-        <translation type="unfinished"></translation>
+        <translation>Revanche</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="126"/>
@@ -1690,17 +1692,17 @@ Bitte Installation prüfen.</translation>
     <message>
         <location filename="../src/gui/helpbrowsershell.ui" line="53"/>
         <source>Search Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche Text</translation>
     </message>
     <message>
         <location filename="../src/gui/helpbrowsershell.ui" line="59"/>
         <source>Type in text to search for...</source>
-        <translation type="unfinished"></translation>
+        <translation>Suchtext eingeben</translation>
     </message>
     <message>
         <location filename="../src/gui/helpbrowsershell.ui" line="69"/>
         <source>Repeat search, press Shift to search backwards</source>
-        <translation type="unfinished"></translation>
+        <translation>Suche wiederholen, mit Shift Rückwärtssuche</translation>
     </message>
 </context>
 <context>
@@ -1836,7 +1838,7 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="1950"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="2018"/>
         <source>Time is over</source>
-        <translation type="unfinished"></translation>
+        <translation>Bedenkzeit abgelaufen</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="968"/>
@@ -1901,17 +1903,17 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1907"/>
         <source>Game is drawn by insufficient material</source>
-        <translation type="unfinished"></translation>
+        <translation>Remis weil ein Matt nicht mehr möglich ist</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1908"/>
         <source>Game is drawn by repetition</source>
-        <translation type="unfinished"></translation>
+        <translation>Remis durch Zugwiederholung</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1909"/>
         <source>Game is drawn by 50 move rule</source>
-        <translation type="unfinished"></translation>
+        <translation>Remis wegen 50-Züge Regel</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2139"/>
@@ -2514,27 +2516,27 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1417"/>
         <source>Brush</source>
-        <translation type="unfinished"></translation>
+        <translation>Pinsel</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1418"/>
         <source>Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Grün</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1423"/>
         <source>Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Gelb</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1428"/>
         <source>Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Rot</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1433"/>
         <source>Erase</source>
-        <translation type="unfinished"></translation>
+        <translation>Radiergummi</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1440"/>
@@ -2544,17 +2546,17 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1463"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation>Ansicht</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1465"/>
         <source>Show target fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Zielfelder</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1471"/>
         <source>Show threat</source>
-        <translation type="unfinished">Zeige Drohung</translation>
+        <translation>Zeige Drohung</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1492"/>
@@ -3756,12 +3758,12 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="472"/>
         <source>Targets</source>
-        <translation type="unfinished"></translation>
+        <translation>Zielfelder</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="473"/>
         <source>Check</source>
-        <translation type="unfinished"></translation>
+        <translation>Schach</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="497"/>
