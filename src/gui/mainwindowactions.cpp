@@ -969,6 +969,15 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
             }
         }
     }
+    else if ((game().board().toMove() == UserColor()) && (UserColor() != game().board().colorAt(from)))
+    {
+        if (UserColor() == game().board().colorAt(to))
+        {
+            const Board& board = game().board();
+            Move m(board.prepareMove(to, from));
+            doBoardMove(m, button, to, from);
+        }
+    }
     else
     {
         if ((game().board().toMove() != UserColor()) && (UserColor() == game().board().colorAt(from)))
@@ -976,6 +985,13 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
             if (premoveAllowed())
             {
                 m_boardView->setStoredMove(from,to);
+            }
+        }
+        else if ((game().board().toMove() != UserColor()) && (UserColor() == game().board().colorAt(to)))
+        {
+            if (premoveAllowed())
+            {
+                m_boardView->setStoredMove(to,from);
             }
         }
     }
