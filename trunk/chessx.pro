@@ -33,7 +33,7 @@ DEFINES += QT_NO_CAST_TO_ASCII
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 macx {
-  QMAKE_MAC_SDK = macosx10.11
+  QMAKE_MAC_SDK = macosx10.12
   QMAKE_CXXFLAGS += -fvisibility=hidden
   QMAKE_LFLAGS_RELEASE -= -O2
   QMAKE_LFLAGS_RELEASE += -m64 -O3
@@ -117,7 +117,6 @@ HEADERS += src/database/board.h \
 	src/guess/sqlist.h \
 	src/guess/sqmove.h \
 	src/guess/sqset.h \
-	src/guess/tokens.h \
 	src/gui/mainwindow.h \
 	src/gui/boardview.h \
 	src/gui/boardtheme.h \
