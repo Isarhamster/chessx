@@ -274,7 +274,9 @@ S: %2
         <source>w%1
 b%2
 %3 to move</source>
-        <translation type="unfinished"></translation>
+        <translation>H: %1
+S: %2
+%3 i trækket</translation>
     </message>
     <message>
         <location filename="../src/database/bitboard.cpp" line="3079"/>

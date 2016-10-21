@@ -268,7 +268,9 @@ b%2
         <source>w%1
 b%2
 %3 to move.</source>
-        <translation type="unfinished"></translation>
+        <translation>w%1
+b%2
+%3 na tahu</translation>
     </message>
     <message>
         <location filename="../src/database/bitboard.cpp" line="3057"/>

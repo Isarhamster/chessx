@@ -264,7 +264,7 @@ b%2
         <source>w%1
 b%2
 %3 to move</source>
-        <translation type="unfinished"></translation>
+        <translation>b%1\nn%2\n%3 à jouer</translation>
     </message>
     <message>
         <location filename="../src/database/bitboard.cpp" line="3079"/>
