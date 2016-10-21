@@ -942,7 +942,6 @@ Position::Init(void)
     Board [COLOR_SQUARE] = EMPTY;
     Board [NULL_SQUARE] = END_OF_BOARD;
     LegalMoves = NULL;
-    SANStrings = NULL;
 
     // Make sure all tables used for move generation, hashing,
     // square tests, etc have been computed:

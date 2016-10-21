@@ -20,7 +20,6 @@
 #include "movelist.h"
 #include "sqlist.h"
 #include "sqset.h"
-#include "tokens.h"
 
 #include <QtCore>
 
@@ -67,17 +66,6 @@ GEN_CAPTURES = 1,
 GEN_NON_CAPS = 2,
 GEN_ALL_MOVES = (GEN_CAPTURES | GEN_NON_CAPS);
 
-
-// SANList: list of legal move strings in SAN.
-//
-struct sanListT
-{
-    bool        current;
-    unsigned short      num;
-    sanStringT  list [256];
-};
-
-
 ///////////////////////////////////////////////////////////////////////////
 //  Position:  Class definition
 
@@ -119,8 +107,7 @@ private:
     unsigned int            PawnHash;       // Pawn structure hash value.
 
     MoveList      * LegalMoves;     // list of legal moves
-    sanListT      * SANStrings;     // SAN list of legal move strs
-
+ 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  Position:  Private Functions
 
@@ -162,13 +149,9 @@ public:
     }
     ~Position()
     {
-        if(LegalMoves != NULL)
+    	if(LegalMoves != NULL)
         {
             delete LegalMoves;
-        }
-        if(SANStrings != NULL)
-        {
-            delete SANStrings;
         }
     }
 
@@ -222,10 +205,6 @@ public:
     unsigned short      GetFullMoveCount() const
     {
         return PlyCounter / 2 + 1;
-    }
-    sanListT *  GetSANStrings() const
-    {
-        return SANStrings;
     }
     MoveList *  GetLegalMoves() const
     {
@@ -339,11 +318,9 @@ public:
 
     // Allocating memory  -- maybe these should be private??
     void        AllocLegalMoves();
-    void        AllocSANStrings();
-
+ 
     // Clearing data structures
     void        ClearLegalMoves();
-    void        ClearSANStrings();
 
     // Hashing
     inline unsigned int HashValue(void)
@@ -501,18 +478,6 @@ Position::AllocLegalMoves()
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Position::AllocSANStrings():
-//      Allocate the SAN strings list.
-//
-inline void
-Position::AllocSANStrings()
-{
-    ASSERT(SANStrings == NULL);
-    SANStrings = new sanListT;
-    SANStrings->current = false;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Position::ClearLegalMoves():
 //      Reset the legal moves list.
 //
@@ -526,22 +491,6 @@ Position::ClearLegalMoves()
     LegalMoves->clear();
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Position::ClearSANStrings():
-//      Reset the SAN moves list.
-//
-inline void
-Position::ClearSANStrings()
-{
-    if(SANStrings)
-    {
-        SANStrings->current = false;
-    }
-    else
-    {
-        AllocSANStrings();
-    }
-}
 
 } // End namespace Guess
 

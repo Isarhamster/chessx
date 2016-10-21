@@ -61,7 +61,7 @@ LESS_THAN = -1,   EQUAL_TO = 0,   GREATER_THAN = 1;
 enum PieceNames
 #ifdef USE_C11
 : unsigned char
-#endif
+#endif // USE_C11
 {
     END_OF_BOARD = 0,
     WK =  1, WQ =  2, WR =  3, WB =  4, WN =  5, WP =  6,
@@ -86,7 +86,7 @@ inline pieceT& operator++(pieceT& w)
 }
 #else
 typedef unsigned char pieceT;
-#endif
+#endif // USE_C11
 
 
 // PIECE TYPES (without color; same value as a white piece)
@@ -94,7 +94,7 @@ typedef unsigned char pieceT;
 enum PieceClass
 #ifdef USE_C11
 : unsigned char
-#endif
+#endif // USE_C11
 {
     KING = 1,
     QUEEN = 2,
@@ -109,7 +109,7 @@ enum PieceClass
 typedef enum PieceClass pieceC;
 #else
 typedef unsigned char pieceC;
-#endif
+#endif // USE_C11
 
 typedef unsigned char                    colorT;      // WHITE or BLACK
 typedef unsigned char                    directionT;  // e.g. UP_LEFT
@@ -348,7 +348,7 @@ piece_Value(pieceT p)
 enum SquareNames
 #ifdef USE_C11
 : unsigned char
-#endif
+#endif // USE_C11
 {
     A1, B1, C1, D1, E1, F1, G1, H1,
     A2, B2, C2, D2, E2, F2, G2, H2,
@@ -368,7 +368,7 @@ enum SquareNames
 typedef enum SquareNames squareT;
 #else
 typedef unsigned char squareT;
-#endif
+#endif // USE_C11
 
 #ifdef USE_C11
 
