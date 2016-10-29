@@ -2930,7 +2930,7 @@ inline QChar pieceToHumanChar(const Piece piece)
     return piece > BlackPawn ? '?' : " KQRBNPKQRBNP"[piece];
 };
 
-QString BitBoard::toFen() const
+QString BitBoard::toFen(bool forceExtendedFEN) const
 {
     QString fen = "";
     Piece piece;
@@ -2995,7 +2995,26 @@ QString BitBoard::toFen() const
         {
             s000 = 'a'+File(CastlingRook(2));
         }
-        if (!hasAmbiguousCastlingRooks(s000, s00))
+        if (forceExtendedFEN || hasAmbiguousCastlingRooks(s000, s00))
+        {
+            if(castlingRights() & WhiteQueenside)
+            {
+                fen += 'A'+File(CastlingRook(0));
+            }
+            if(castlingRights() & WhiteKingside)
+            {
+                fen += 'A'+File(CastlingRook(1));
+            }
+            if(castlingRights() & BlackQueenside)
+            {
+                fen += 'a'+File(CastlingRook(2));
+            }
+            if(castlingRights() & BlackKingside)
+            {
+                fen += 'a'+File(CastlingRook(3));
+            }
+        }
+        else
         {
             if(castlingRights() & WhiteKingside)
             {
@@ -3012,25 +3031,6 @@ QString BitBoard::toFen() const
             if(castlingRights() & BlackQueenside)
             {
                 fen += 'q';
-            }
-        }
-        else
-        {
-            if(castlingRights() & WhiteKingside)
-            {
-                fen += 'A'+File(CastlingRook(1));
-            }
-            if(castlingRights() & WhiteQueenside)
-            {
-                fen += 'A'+File(CastlingRook(0));
-            }
-            if(castlingRights() & BlackKingside)
-            {
-                fen += 'a'+File(CastlingRook(3));
-            }
-            if(castlingRights() & BlackQueenside)
-            {
-                fen += 'a'+File(CastlingRook(2));
             }
         }
         fen += ' ';

@@ -42,8 +42,8 @@ bool UCIEngine::startAnalysis(const Board& board, int nv, const EngineParameter 
     }
     m_board = board;
 
-    m_position = board.toFen();
     m_chess960 = board.chess960();
+    m_position = board.toFen(m_chess960);
 
     send("stop");
     if (bNewGame)
