@@ -457,7 +457,7 @@ inline bool BitBoard::isCheck() const
 
 inline Square BitBoard::kingInCheck() const
 {
-    return isCheck() ? m_ksq[m_stm] : InvalidSquare;
+    return isCheck() ? m_ksq[m_stm] : (Square) InvalidSquare;
 }
 
 inline unsigned int BitBoard::halfMoveClock() const

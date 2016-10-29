@@ -1217,10 +1217,10 @@ void BitBoard::fixCastlingRooks(bool onlyMissingSections, char file000, char fil
 
     Square filesForSection[4] =
     {
-        file000 ? SquareFromRankAndFile(0,file000-'a') : InvalidSquare,
-        file00 ? SquareFromRankAndFile(0,file00-'a') : InvalidSquare,
-        file000 ? SquareFromRankAndFile(7,file000-'a') : InvalidSquare,
-        file00 ? SquareFromRankAndFile(7,file00-'a') : InvalidSquare
+        file000 ? SquareFromRankAndFile(0,file000-'a') : Square(InvalidSquare),
+        file00 ? SquareFromRankAndFile(0,file00-'a') : Square(InvalidSquare),
+        file000 ? SquareFromRankAndFile(7,file000-'a') : Square(InvalidSquare),
+        file00 ? SquareFromRankAndFile(7,file00-'a') : Square(InvalidSquare)
     };
 
     for (int section=0; section<4; ++section)
@@ -1293,10 +1293,10 @@ bool BitBoard::hasAmbiguousCastlingRooks(char file000, char file00) const
 
     Square filesForSection[4] =
     {
-        file000 ? SquareFromRankAndFile(0,file000-'a') : InvalidSquare,
-        file00 ? SquareFromRankAndFile(0,file00-'a') : InvalidSquare,
-        file000 ? SquareFromRankAndFile(7,file000-'a') : InvalidSquare,
-        file00 ? SquareFromRankAndFile(7,file00-'a') : InvalidSquare
+        file000 ? SquareFromRankAndFile(0,file000-'a') : Square(InvalidSquare),
+        file00 ? SquareFromRankAndFile(0,file00-'a') : Square(InvalidSquare),
+        file000 ? SquareFromRankAndFile(7,file000-'a') : Square(InvalidSquare),
+        file00 ? SquareFromRankAndFile(7,file00-'a') : Square(InvalidSquare)
     };
 
     for (int section=0; section<4; ++section)
