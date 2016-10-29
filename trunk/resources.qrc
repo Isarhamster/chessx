@@ -15,6 +15,7 @@
         <file alias="i18n/chessx_de.qm">i18n/chessx_de.qm</file>
         <file alias="i18n/chessx_fr.qm">i18n/chessx_fr.qm</file>
         <file alias="i18n/chessx_it.qm">i18n/chessx_it.qm</file>
+        <file alias="i18n/chessx_cz.qm">i18n/chessx_cz.qm</file>
         <file alias="images/accept.png">data/images/accept.png</file>
         <file alias="images/annotate.png">data/images/annotate.png</file>
         <file alias="images/arrow_green.png">data/images/arrow_green.png</file>
@@ -109,6 +110,13 @@
         <file alias="images/time_clear.png">data/images/time_clear.png</file>
         <file alias="images/training.png">data/images/training.png</file>
         <file alias="images/undo.png">data/images/undo_yellow.png</file>
+        <file alias="images/brush_yellow.png">data/images/brush_yellow.png</file>
+        <file alias="images/brush_green.png">data/images/brush_green.png</file>
+        <file alias="images/brush_red.png">data/images/brush_red.png</file>
+        <file alias="images/brush_erase.png">data/images/brush_erase.png</file>
+        <file alias="images/show_targets.png">data/images/show_targets.png</file>
+        <file alias="images/show_threat.png">data/images/show_threat.png</file>
+        <file alias="images/engine.png">data/images/engine.png</file>
         <file alias="sounds/ding1.wav">data/sounds/ding1.wav</file>
         <file alias="sounds/fanfare.wav">data/sounds/fanfare_x.wav</file>
         <file alias="sounds/move.wav">data/sounds/move.wav</file>
@@ -168,12 +176,5 @@
         <file alias="themes/shadow/leipzig.png">data/themes/shadow/leipzig.png</file>
         <file alias="themes/shadow/merida.png">data/themes/shadow/merida.png</file>
         <file alias="themes/shadow/spatial.png">data/themes/shadow/spatial.png</file>
-        <file alias="images/brush_yellow.png">data/images/brush_yellow.png</file>
-        <file alias="images/brush_green.png">data/images/brush_green.png</file>
-        <file alias="images/brush_red.png">data/images/brush_red.png</file>
-        <file alias="images/brush_erase.png">data/images/brush_erase.png</file>
-        <file alias="images/show_targets.png">data/images/show_targets.png</file>
-        <file alias="images/show_threat.png">data/images/show_threat.png</file>
-        <file>i18n/chessx_cz.qm</file>
     </qresource>
 </RCC>

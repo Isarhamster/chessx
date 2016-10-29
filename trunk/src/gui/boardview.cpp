@@ -661,7 +661,7 @@ void BoardView::checkCursor(Qt::KeyboardModifiers modifiers)
         text = tr("Draw a square or arrow annotation");
         break;
     case ActionAskEngine:
-        //file = ":/images/pen.png";
+        file = ":/images/engine.png";
         text = tr("Query the engine while hovering the piece");
         break;
     }
