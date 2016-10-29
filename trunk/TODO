@@ -27,9 +27,8 @@ TODO - Refactoring needed
 * Mainwindow class
 
 TODO - Ideas/Suggestions. Non critical
-* Format for exercises, tactics/endgmae training etc.
+* Format for exercises, tactics/endgame training etc.
 * Faster PGN parser
-* Detecting duplicate games
 * Comment search
 * Crosstables
 * Rating graph
