@@ -112,7 +112,7 @@ public:
     // Query other formats
     //
     /** Return a FEN string based on current board position */
-    QString toFen() const;
+    QString toFen(bool forceExtendedFEN=false) const;
     /** Return a FEN string in human readable format based on current board position */
     QString toHumanFen() const;
     /** Return a SAN string representation of given move */
