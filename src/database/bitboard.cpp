@@ -244,7 +244,7 @@ QString BitBoard::moveToSan(const Move& move, bool translate) const
 
     if(move.isCastling())
     {
-        if(from < to)
+        if (File(to)==File(g1))
         {
             san = "O-O";
         }
