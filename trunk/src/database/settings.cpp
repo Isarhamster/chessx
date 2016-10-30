@@ -12,6 +12,7 @@
 
 #include <QtCore>
 #include <QDialog>
+#include <QDockWidget>
 #include <QtGui>
 #include <QWidget>
 #include <QMainWindow>
@@ -81,6 +82,19 @@ bool Settings::layout(QWidget* w)
                 {
                     m->restoreState(docks, 0);
                 }
+
+                QStringList floatingDocks = value("FloatingDocks").toStringList();
+                foreach(QString name, floatingDocks)
+                {
+                    QDockWidget* dw = m->findChild<QDockWidget*>(name);
+                    if (dw)
+                    {
+                        dw->setFloating(true);
+                        QRect rect = value(QString("FloatingDock/%1/geometry").arg(name)).toRect();
+                        dw->setGeometry(rect);
+                        dw->setVisible(value(QString("FloatingDock/%1/visible").arg(name)).toBool());
+                    }
+                }
             }
             else
             {
@@ -138,6 +152,23 @@ void Settings::setLayout(const QWidget* w)
     {
         QByteArray docks = m->saveState(0);
         setValue("Docks", docks);
+
+        QStringList floatingDocks;
+        QList<QDockWidget*> fdocks = m->findChildren<QDockWidget*>();
+        for(int i = 0; i < fdocks.size(); i++)
+        {
+            QDockWidget* dw = fdocks.at(i);
+            if (dw->isFloating())
+            {
+                QString name = dw->objectName();
+                floatingDocks << name;
+                QRect rect = dw->geometry();
+                setValue(QString("FloatingDock/%1/geometry").arg(name), rect);
+                setValue(QString("FloatingDock/%1/visible").arg(name), !dw->isHidden());
+            }
+        }
+
+        setValue("FloatingDocks", floatingDocks);
     }
     const QSplitter* s = qobject_cast<const QSplitter*>(w);
     if (s)
