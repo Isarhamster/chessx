@@ -47,13 +47,8 @@ void BoardViewEx::showTime(bool show)
 
 void BoardViewEx::configureTime(bool white, bool countDown)
 {
-    bool flipped = ui->boardView->isFlipped();
-    bool top = (white && flipped) || (!white && !flipped);
-    DigitalClock* userClock = top ? ui->timeTop : ui->timeBottom;
-    DigitalClock* otherClock = top ? ui->timeBottom : ui->timeTop;
-
-    userClock->ResetTock(countDown, countDown);
-    otherClock->ResetTock(false, countDown);
+    ui->timeBottom->ResetTock(countDown, countDown);
+    ui->timeTop->ResetTock(false, countDown);
 }
 
 void BoardViewEx::setTime(bool white, QString t)
