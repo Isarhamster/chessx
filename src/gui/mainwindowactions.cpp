@@ -2893,6 +2893,12 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardView, SIGNAL(evalRequest(Square, Square)), SLOT(slotEvalRequest(Square, Square)));
         connect(boardView, SIGNAL(evalModeDone()), SLOT(slotResumeBoard()));
 
+        if (databaseInfo()->IsFicsDB())
+        {
+            connect(m_ficsConsole, SIGNAL(SignalPlayerIsBlack(bool,bool)), boardViewEx, SLOT(configureTime(bool,bool)));
+            connect(m_ficsConsole, SIGNAL(SignalStartTime(bool)), boardViewEx, SLOT(startTime(bool)));
+        }
+
         m_tabWidget->addTab(boardViewEx, databaseName());
         m_tabWidget->setCurrentWidget(boardViewEx);
         UpdateBoardInformation();

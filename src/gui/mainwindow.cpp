@@ -173,7 +173,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_ficsConsole, SIGNAL(RequestAddTag(QString,QString)), this, SLOT(HandleFicsAddTagRequest(QString,QString)));
     connect(m_ficsConsole, SIGNAL(RequestGameMode(bool)), this, SLOT(enterGameMode(bool)));
     connect(m_ficsConsole, SIGNAL(RequestRemoveLastMove()), this, SLOT(HandleFicsRequestRemoveMove()));
-    connect(m_ficsConsole, SIGNAL(SignalPlayerIsBlack(bool)), this, SLOT(slotFlipView(bool)));
+    connect(m_ficsConsole, SIGNAL(SignalPlayerIsBlack(bool,bool)), this, SLOT(slotFlipView(bool)));
     connect(m_ficsClient, SIGNAL(disconnected()), SLOT(FicsDisconnected()), Qt::QueuedConnection);
     connect(m_ficsClient, SIGNAL(connected()), SLOT(FicsConnected()), Qt::QueuedConnection);
     connect(m_ficsConsole, SIGNAL(RequestStoredMove()), SLOT(slotBoardStoredMove()));
@@ -1515,7 +1515,7 @@ void MainWindow::setupActions()
 
     QAction* flip = createAction(tr("&Flip board"), SLOT(slotConfigureFlip()), Qt::CTRL + Qt::Key_B, gameToolBar, ":/images/flip_board.png");
     flip->setCheckable(true);
-    connect(m_ficsConsole, SIGNAL(SignalPlayerIsBlack(bool)), flip, SLOT(setChecked(bool)));
+    connect(m_ficsConsole, SIGNAL(SignalPlayerIsBlack(bool,bool)), flip, SLOT(setChecked(bool)));
     gameToolBar->addSeparator();
 
     autoGroup = new ExclusiveActionGroup(this);

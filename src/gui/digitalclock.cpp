@@ -1,69 +1,155 @@
-#include "digitalclock.h"
-
 /****************************************************************************
-**
-** Copyright (C) 2015 The Qt Company Ltd.
-** Contact: http://www.qt.io/licensing/
-**
-** This file is part of the examples of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:BSD$
-** You may use this file under the terms of the BSD license as follows:
-**
-** "Redistribution and use in source and binary forms, with or without
-** modification, are permitted provided that the following conditions are
-** met:
-**   * Redistributions of source code must retain the above copyright
-**     notice, this list of conditions and the following disclaimer.
-**   * Redistributions in binary form must reproduce the above copyright
-**     notice, this list of conditions and the following disclaimer in
-**     the documentation and/or other materials provided with the
-**     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
-**     contributors may be used to endorse or promote products derived
-**     from this software without specific prior written permission.
-**
-**
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-**
-** $QT_END_LICENSE$
-**
+*   Copyright (C) 2016 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
 #include <QtWidgets>
+#include <QTimer>
+#include <QSound>
 
 #include "digitalclock.h"
+#include "settings.h"
 
 DigitalClock::DigitalClock(QWidget *parent)
     : QLCDNumber(parent)
 {
     setSegmentStyle(Filled);
+    setDigitCount(7);
 
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(showTime()));
-    timer->start(1000);
+    timer = new QTimer(this);
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
 
-    showTime();
-
-    setWindowTitle(tr("Digital Clock"));
-    resize(150, 60);
+    tockSound = new QSound(":/sounds/woodthunk.wav");
+    m_useTock = false;
+    m_tockToDo = 0;
+    m_bFirstTestForTock = false;
+    m_countDown = true;
 }
 
-void DigitalClock::showTime()
+void DigitalClock::StartCountDown(bool start)
 {
-    QTime time = QTime::currentTime();
-    QString text = time.toString("hh:mm");
-    if ((time.second() % 2) == 0)
-        text[2] = ' ';
-    display(text);
+    if (start)
+    {
+        timer->start(1000);
+    }
+    else
+    {
+        StopCountDown();
+    }
+}
+
+void DigitalClock::StopCountDown(bool stop)
+{
+    if (stop)
+    {
+        timer->stop();
+    }
+    else
+    {
+        StartCountDown();
+    }
+}
+
+void DigitalClock::ResetTock(bool useTock, bool countDown)
+{
+    m_useTock = useTock;
+    m_countDown = countDown;
+    m_bFirstTestForTock = true;
+    m_tockToDo = AppSettings->getValue("/Sound/Move").toBool() ? 3 : 0;
+}
+
+void DigitalClock::updateTime()
+{
+    QString strTime = time();
+    strTime = DecrementTime(strTime);
+    setTime(strTime);
+
+    if (m_useTock)
+    {
+        TestTocks(strTime);
+    }
+
+    if (TestColor(strTime,10))
+    {
+        //setBackgroundColor(Qt::yellow);
+    }
+    else
+    {
+        //resetBackgroundColor();
+    }
+
+    StartCountDown();
+}
+
+void DigitalClock::TestTocks(QString s)
+{
+#ifdef USE_SOUND
+    if (m_tockToDo && m_countDown)
+    {
+        QTime tm = QTime::fromString(s,"h:m:ss");
+        if (tm.msecsSinceStartOfDay()<=m_tockToDo*10000)
+        {
+            if (!m_bFirstTestForTock)
+            {
+                tockSound->play();
+                --m_tockToDo;
+            }
+        }
+        else
+        {
+            m_bFirstTestForTock = false;
+        }
+    }
+#endif
+}
+
+QString DigitalClock::time() const
+{
+    return m_time;
+}
+
+void DigitalClock::setTime(const QString &time)
+{
+    m_time = time;
+    setDigitCount(m_time.length());
+    display(m_time);
+}
+
+bool DigitalClock::TestColor(QString s, int seconds) const
+{
+    QTime t = QTime::fromString(s,"h:m:ss");
+    if (t.msecsSinceStartOfDay()<seconds*1000)
+    {
+        return true;
+    }
+    return false;
+}
+
+QString DigitalClock::DecrementTime(QString s) const
+{
+    QString result;
+    QTime t = QTime::fromString(s,"h:m:ss");
+
+    if (t.isValid())
+    {
+        t = t.addSecs(m_countDown ? -1 : +1);
+        result = t.toString("h:mm:ss");
+    }
+    else
+    {
+        t = QTime::fromString(s,"m:ss");
+        if (t.isValid())
+        {
+            if (!m_countDown || abs(t.secsTo(QTime(0,0,0,0)))>1)
+            {
+                t = t.addSecs(m_countDown ? -1 : +1);
+            }
+            else
+            {
+                t = QTime(0,0,0,0);
+            }
+            result = t.toString("m:ss");
+        }
+    }
+    return result;
 }
