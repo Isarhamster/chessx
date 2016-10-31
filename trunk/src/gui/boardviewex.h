@@ -16,7 +16,6 @@ class BoardView;
 class BoardViewEx : public QWidget
 {
     Q_OBJECT
-
 public:
     explicit BoardViewEx(QWidget *parent = 0);
     ~BoardViewEx();
@@ -24,8 +23,11 @@ public:
     BoardView* boardView();
     QObject *dbIndex();
 
+public slots:
     void showTime(bool show);
     void setTime(bool white, QString t);
+    void startTime(bool white);
+    void configureTime(bool white, bool countDown);
 
 private:
     Ui::BoardViewEx *ui;

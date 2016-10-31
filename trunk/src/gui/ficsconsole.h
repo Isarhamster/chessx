@@ -75,8 +75,6 @@ protected slots:
     void SlotTabChanged(int tab);
     void SlotSeekTimeChanged(int);
 
-    void SlotCountDownGameTime();
-
     void SlotSendAccept();
     void SlotSendDraw();
     void SlotSendDecline();
@@ -101,7 +99,8 @@ signals:
     void RequestRemoveLastMove();
     void RequestAddTag(QString tag, QString value);
     void SignalGameResult(QString);
-    void SignalPlayerIsBlack(bool);
+    void SignalPlayerIsBlack(bool,bool);
+    void SignalStartTime(bool);
     void RequestCloseFICS();
     void RequestStoredMove();
 
@@ -112,7 +111,6 @@ protected:
     void SetPlayerListItemsFromLine(QString s);
     void TestTocks(QString s);
     bool TestColor(QString s, int seconds) const;
-    void TestTimeWarning(SimpleLabel *label, bool playerToMove);
     void UpdateSayCompleter(QString msg);
 private:
     Ui::FicsConsole *ui;
@@ -121,15 +119,10 @@ private:
     QButtonGroup* btgSeek;
     bool gameMode;
     bool puzzleMode;
-    QTimer* m_countDownTimer;
     bool m_bWhiteToMove;
     Char64Relation m_lastRelation;
     bool m_bPlayerIsBlack;
-    int m_tockToDo;
-    bool m_bFirstTestForTock;
     int m_prevTab;
-    QSound* tockSound;
-
 };
 
 #endif // FICSCONSOLE_H

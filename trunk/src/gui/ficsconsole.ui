@@ -82,73 +82,6 @@
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="Line" name="line_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="layout_message_121">
-             <item>
-              <widget class="QLabel" name="label_3">
-               <property name="text">
-                <string>White</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="SimpleLabel" name="timeWhite">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::Panel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Sunken</enum>
-               </property>
-               <property name="text">
-                <string notr="true"/>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="layout_message_122">
-             <item>
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Black</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="SimpleLabel" name="timeBlack">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::Panel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Sunken</enum>
-               </property>
-               <property name="text">
-                <string notr="true"/>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
           </layout>
          </item>
         </layout>
@@ -658,13 +591,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>SimpleLabel</class>
-   <extends>QLabel</extends>
-   <header>simplelabel.h</header>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../../resources.qrc"/>
  </resources>

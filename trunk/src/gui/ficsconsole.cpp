@@ -39,11 +39,6 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(TabMessage);
 
-    m_countDownTimer = new QTimer(this);
-    m_countDownTimer->setInterval(1000);
-    m_countDownTimer->setSingleShot(true);
-    connect(m_countDownTimer, SIGNAL(timeout()), SLOT(SlotCountDownGameTime()));
-
     ui->tabWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
     connect(ui->tabWidget, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(SlotContextMenu(const QPoint&)));
@@ -156,7 +151,6 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     ui->eloMin->setValue(AppSettings->getValue("/FICS/eloLow").toInt());
     ui->eloMax->setValue(AppSettings->getValue("/FICS/eloHigh").toInt());
 
-    tockSound = new QSound(":/sounds/woodthunk.wav");
 #ifndef FICS_DEBUG
     ui->line->setVisible(false);
     ui->textOut->setEnabled(false);
@@ -166,7 +160,6 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
 
 FicsConsole::~FicsConsole()
 {
-    delete tockSound;
     delete ui;
 }
 
@@ -230,16 +223,19 @@ void FicsConsole::HandleBoard(int cmd, QString s)
     {
         emit RequestStoredMove();
     }
-    QString timeWhite = l[C64_REMAINDER_TIME_WHITE];
-    QString timeBlack = l[C64_REMAINDER_TIME_BLACK];
-    QTime tw(0,0,0,0);
-    tw = tw.addSecs(timeWhite.toInt());
-    QTime tb(0,0,0,0);
-    tb = tb.addSecs(timeBlack.toInt());
-    emit FicsShowTime(White, tw.toString("h:mm:ss"));
-    emit FicsShowTime(Black, tb.toString("h:mm:ss"));
-    ui->timeWhite->setText(tw.toString("h:mm:ss"));
-    ui->timeBlack->setText(tb.toString("h:mm:ss"));
+
+    if (gameMode && !puzzleMode)
+    {
+        QString timeWhite = l[C64_REMAINDER_TIME_WHITE];
+        QString timeBlack = l[C64_REMAINDER_TIME_BLACK];
+        QTime tw(0,0,0,0);
+        tw = tw.addSecs(timeWhite.toInt());
+        QTime tb(0,0,0,0);
+        tb = tb.addSecs(timeBlack.toInt());
+        emit FicsShowTime(White, tw.toString("h:mm:ss"));
+        emit FicsShowTime(Black, tb.toString("h:mm:ss"));
+        emit SignalStartTime(m_bWhiteToMove);
+    }
 }
 
 void FicsConsole::HandleExamineRequest(QListWidgetItem* item)
@@ -377,73 +373,6 @@ QString FicsConsole::DecrementTime(QString s) const
         }
     }
     return result;
-}
-
-void FicsConsole::TestTimeWarning(SimpleLabel* label, bool playerToMove)
-{
-    QString s = label->text();
-    label->setText(DecrementTime(s));
-    if (playerToMove)
-    {
-        TestTocks(s);
-    }
-    if (TestColor(s,10))
-    {
-        label->setBackgroundColor(Qt::yellow);
-    }
-    else
-    {
-        label->resetBackgroundColor();
-    }
-}
-
-void FicsConsole::SlotCountDownGameTime()
-{
-    if (gameMode)
-    {
-        if (m_bWhiteToMove)
-        {
-            TestTimeWarning(ui->timeWhite, !m_bPlayerIsBlack);
-        }
-        else
-        {
-            TestTimeWarning(ui->timeBlack, m_bPlayerIsBlack);
-        }
-        m_countDownTimer->start();
-    }
-}
-
-void FicsConsole::TestTocks(QString s)
-{
-#ifdef USE_SOUND
-    if (m_tockToDo)
-    {
-        QTime tm = QTime::fromString(s,"h:m:ss");
-        if (tm.msecsSinceStartOfDay()<=m_tockToDo*10000)
-        {
-            if (!m_bFirstTestForTock)
-            {
-                //tockSound->setLoops(m_tockToDo);
-                tockSound->play();
-                --m_tockToDo;
-            }
-        }
-        else
-        {
-            m_bFirstTestForTock = false;
-        }
-    }
-#endif
-}
-
-bool FicsConsole::TestColor(QString s, int seconds) const
-{
-    QTime t = QTime::fromString(s,"h:m:ss");
-    if (t.msecsSinceStartOfDay()<seconds*1000)
-    {
-        return true;
-    }
-    return false;
 }
 
 void FicsConsole::SlotSendAccept()
@@ -689,6 +618,7 @@ void FicsConsole::Disconnected()
     {
         emit RequestGameMode(false);
     }
+    emit FicsShowTimer(false);
     gameMode = false;
     puzzleMode = false;
 }
@@ -776,22 +706,18 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 }
                 else
                 {
-                    m_countDownTimer->stop();
                     QRegExp wReg("White Clock :([^\\.]*)");
                     if (wReg.indexIn(s) >= 0)
                     {
                         QString w = wReg.cap(1).trimmed();
-                        ui->timeWhite->setText(w);
                         emit FicsShowTime(White, w);
                     }
                     QRegExp bReg("Black Clock :([^\\.]*)");
                     if (bReg.indexIn(s) >= 0)
                     {
                         QString b = bReg.cap(1).trimmed();
-                        ui->timeBlack->setText(b);
                         emit FicsShowTime(Black, b);
                     }
-                    m_countDownTimer->start();
                 }
                 break;
             }
@@ -898,8 +824,6 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 gameMode = true;
                 m_ficsClient->sendCommand("time");
                 m_lastRelation = C64_REL_ISOLATED; // Anything invalid in this context
-                ui->timeWhite->setText(QString());
-                ui->timeBlack->setText(QString());
                 emit FicsShowTimer(true);
                 m_bWhiteToMove = true;
                 emit RequestNewGame();
@@ -912,16 +836,13 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                 {
                     QString w = l[2].remove('(');
                     m_bPlayerIsBlack = w != m_ficsClient->getGuestName();
-                    m_bFirstTestForTock = true;
-                    m_tockToDo = AppSettings->getValue("/Sound/Move").toBool() ? 3 : 0;
-                    emit SignalPlayerIsBlack(m_bPlayerIsBlack);
+                    emit SignalPlayerIsBlack(m_bPlayerIsBlack, true);
                 }
             }
             break;
         case FicsClient::BLKCMD_INTERNAL_MATCH_END:
             {
                 gameMode = false;
-                m_countDownTimer->stop();
                 ui->textIn->appendPlainText(s);
                 ui->textIn->ensureCursorVisible();
                 emit SignalGameResult(s);
@@ -978,8 +899,6 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
         case FicsClient::BLKCMD_INTERNAL_PUZZLEBOT:
             if (s.contains("kibitzes"))
             {
-                ui->timeWhite->setText(QString());
-                ui->timeBlack->setText(QString());
                 emit FicsShowTimer(true);
                 s.remove(QRegExp("puzzlebot[^:]*kibitzes:"));
                 s = s.trimmed();
@@ -997,7 +916,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     {
                         emit RequestGameMode(false);
                     }
-
+                    emit FicsShowTimer(false);
                     puzzleMode = false;
                     SlotSendUnexamine();
                 }
@@ -1008,7 +927,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     {
                         emit RequestGameMode(false);
                     }
-
+                    emit FicsShowTimer(false);
                     puzzleMode = false;
                     SlotSendUnexamine();
                 }
@@ -1024,11 +943,17 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     }
                     else if (s.startsWith("Black moves"))
                     {
-                        emit SignalPlayerIsBlack(true);
+                        emit FicsShowTime(Black, "0:00");
+                        emit FicsShowTime(White, "0:00");
+                        emit SignalPlayerIsBlack(true,false);
+                        emit SignalStartTime(false);
                     }
                     else if (s.startsWith("White moves"))
                     {
-                        emit SignalPlayerIsBlack(false);
+                        emit FicsShowTime(Black, "0:00");
+                        emit FicsShowTime(White, "0:00");
+                        emit SignalPlayerIsBlack(false,false);
+                        emit SignalStartTime(true);
                     }
                 }
             }
