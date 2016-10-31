@@ -17,6 +17,7 @@
 #include <QObject>
 #include <QUndoCommand>
 #include <QPointer>
+#include <QMetaType>
 
 class Database;
 class Filter;
@@ -149,6 +150,8 @@ private:
     bool m_bLoaded;
     bool m_utf8;
 };
+
+Q_DECLARE_METATYPE(DatabaseInfo*)
 
 class GameUndoCommand : public QUndoCommand
 {
