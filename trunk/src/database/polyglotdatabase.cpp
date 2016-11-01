@@ -527,7 +527,7 @@ void PolyglotDatabase::book_save()
 // Book building - public interface
 // ---------------------------------------------------------
 
-bool PolyglotDatabase::openForWriting(const QString &filename, int maxPly, int minGame, bool uniform)
+bool PolyglotDatabase::openForWriting(const QString &filename, int maxPly, int minGame, bool uniform, int result, int filterResult)
 {
     if(m_file)
     {
@@ -539,6 +539,8 @@ bool PolyglotDatabase::openForWriting(const QString &filename, int maxPly, int m
     m_break = false;
     m_filename = filename;
     m_utf8 = false;
+    m_overwriteResult = result;
+    m_filterResult = filterResult;
     return openFile(filename, false);
 }
 
@@ -772,7 +774,11 @@ void PolyglotDatabase::add_database(Database& db)
         Game game;
         if(db.loadGame(i, game))
         {
-            add_game(game, game.resultAsInt());
+            int result = game.resultAsInt();
+            if ((m_filterResult==0) || (m_filterResult != result))
+            {
+                add_game(game, (m_overwriteResult == 0) ?  : m_overwriteResult);
+            }
         }
     }
 }
