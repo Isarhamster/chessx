@@ -174,20 +174,22 @@ the engine should play. Moves which did not succeed at all are usually not part 
 <p>You can create your own book by selecting a open PGN database (right click with the mouse) and select "Make polyglot book".</p>
 <p>ChessX will query the following parameters and pass them for creating a book:</p>
 <ul>
-<li>"max-ply"
-How many plies (half moves) to read for each game.  E.g. if set to
+<li>The number of plies (half moves) to read for each game. E.g. if set to
 "20", only the first 10 full moves of each game will be scanned.
-<li>"min-game"
-How many times must a move be played to be kept in the book.  In other
-words, moves that were played too rarely will be left out.  If you
+<li>The number of times a move must have been played to be kept in the book. In other
+words, moves that were played too rarely will be left out. If you
 scan full games "2" seems a minimum, but if you selected lines
 manually "1" will make sense.
-<li>"uniform"
-By default, a probability is calculated by PolyGlot for each move
+<li>You can overwrite the actual results of games by selecting the
+side for which you want to build a repertoire, assuming that all the games
+in a database contain lines that you want to play.
+<li>Before, you can filter out unwanted games.
+<li>By default, a probability is calculated by ChessX PolyGlot for each move
 depending on how popular it is (how often it was playing in the
-provided PGN file) and how much it "scored".  This option bypasses the
-default mechanism and affects equal probability to all moves.  This
+provided PGN file) and how much it "scored". This option bypasses the
+default mechanism and affects equal probability to all moves. This
 allows more variety of play.
+
 </ul>
 
 <h3><a name="Content"></a>Generating content</h3>
