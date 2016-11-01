@@ -3154,13 +3154,13 @@ void MainWindow::slotMakeBook(QString pathIn)
             if (dlg.exec() == QDialog::Accepted)
             {
                 QString out;
-                int maxPly, minGame;
+                int maxPly, minGame, result, filterResult;
                 bool uniform;
-                dlg.getBookParameters(out, maxPly, minGame, uniform);
+                dlg.getBookParameters(out, maxPly, minGame, uniform, result, filterResult);
                 PolyglotWriter* polyglotWriter = new PolyglotWriter();
                 connect(polyglotWriter, SIGNAL(bookBuildError(QString)), SLOT(slotBookBuildError(QString)));
                 connect(polyglotWriter, SIGNAL(bookBuildFinished(QString)), SLOT(slotShowInFinder(QString)));
-                polyglotWriter->writeBookForDatabase(m_databases[i]->database(), out, maxPly, minGame, uniform);
+                polyglotWriter->writeBookForDatabase(m_databases[i]->database(), out, maxPly, minGame, uniform, result, filterResult);
             }
             return;
         }

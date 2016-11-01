@@ -35,13 +35,13 @@ void PolyglotWriter::run()
 // Mainthread Interface
 // ---------------------------------------------------------
 
-void PolyglotWriter::writeBookForDatabase(Database *src, const QString &out, int maxPly, int minGame, bool uniform)
+void PolyglotWriter::writeBookForDatabase(Database *src, const QString &out, int maxPly, int minGame, bool uniform, int result, int filterResult)
 {
     m_break = false;
     m_out = out;
     m_source = src;
     m_destination = new PolyglotDatabase();
-    if (m_destination->openForWriting(out, maxPly, minGame, uniform))
+    if (m_destination->openForWriting(out, maxPly, minGame, uniform, result, filterResult))
     {
         start();
     }

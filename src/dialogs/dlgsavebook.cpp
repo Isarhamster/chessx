@@ -51,12 +51,24 @@ DlgSaveBook::~DlgSaveBook()
     delete ui;
 }
 
-void DlgSaveBook::getBookParameters(QString &out, int &maxPly, int &minGame, bool &uniform)
+void DlgSaveBook::getBookParameters(QString &out, int &maxPly, int &minGame, bool &uniform, int& result, int& filterResults)
 {
     out = ui->outputPath->text();
     maxPly = ui->maxPly->value();
     minGame = ui->minGame->value();
     uniform = ui->cbUniform->isChecked();
+    switch (ui->cbSide->currentIndex())
+    {
+    case 0: result = 0; break;
+    case 1: result = +1; break;
+    case 2: result = -1; break;
+    }
+    switch (ui->cbFilterSide->currentIndex())
+    {
+    case 0: filterResults = 0; break;
+    case 1: filterResults = +1; break;
+    case 2: filterResults = -1; break;
+    }
 }
 
 void DlgSaveBook::accept()

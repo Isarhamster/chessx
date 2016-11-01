@@ -19,7 +19,7 @@ public:
   explicit DlgSaveBook(QString path, QWidget *parent = 0);
   ~DlgSaveBook();
 
-  void getBookParameters(QString& out, int& maxPly, int& minGame, bool&  uniform);
+  void getBookParameters(QString& out, int& maxPly, int& minGame, bool&  uniform, int &result, int &filterResults);
 
 signals:
   void bookWritten(QString);

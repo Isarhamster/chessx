@@ -15,7 +15,7 @@ class PolyglotWriter : public QThread
 public:
     explicit PolyglotWriter(QObject *parent = 0);
     ~PolyglotWriter();
-    void writeBookForDatabase(Database* src, const QString &out, int maxPly, int minGame, bool uniform);
+    void writeBookForDatabase(Database* src, const QString &out, int maxPly, int minGame, bool uniform, int result, int filterResult);
 
 signals:
     void bookBuildFinished(QString);

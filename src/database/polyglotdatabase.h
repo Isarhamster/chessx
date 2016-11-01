@@ -107,7 +107,7 @@ public:
 
     /** Opens the given database */
     virtual bool open(const QString& filename, bool);
-    virtual bool openForWriting(const QString& filename, int maxPly, int minGame, bool uniform);
+    virtual bool openForWriting(const QString& filename, int maxPly, int minGame, bool uniform, int result, int filterResult);
     /** Parse the database */
     virtual bool parseFile();
     /** File-based database name */
@@ -166,6 +166,8 @@ private:
     Book m_book;
     BookMap m_bookDictionary;
     bool m_uniform;
+    int m_overwriteResult;
+    int m_filterResult;
     quint32 m_minGame;
     int m_maxPly;
 };
