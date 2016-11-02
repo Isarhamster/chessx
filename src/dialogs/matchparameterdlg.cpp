@@ -40,6 +40,11 @@ bool MatchParameterDlg::getParametersForEngineMatch(EngineParameter &par)
     return getParameters(par, true);
 }
 
+void MatchParameterDlg::SlotModeChanged(int index)
+{
+    ui->timeInc->setEnabled(index==1);
+}
+
 bool MatchParameterDlg::getParameters(EngineParameter& par, bool engineMatch)
 {
     MatchParameterDlg dlg;
@@ -56,6 +61,7 @@ bool MatchParameterDlg::getParameters(EngineParameter& par, bool engineMatch)
     dlg.ui->cbEngineStarts->setVisible(!engineMatch);
     dlg.ui->timeBonus->setVisible(!engineMatch);
     dlg.ui->labelBonus->setVisible(!engineMatch);
+    dlg.ui->timeInc->setEnabled(par.tm==1);
 
     if (dlg.exec())
     {

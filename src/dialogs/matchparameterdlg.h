@@ -23,6 +23,9 @@ public:
     static bool getParametersForEngineGame(EngineParameter &par);
     static bool getParametersForEngineMatch(EngineParameter &par);
 
+public slots:
+    void SlotModeChanged(int);
+
 private:
     static bool getParameters(EngineParameter &par, bool engineMatch);
     Ui::MatchParameterDlg *ui;
