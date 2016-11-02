@@ -2786,21 +2786,27 @@ void MainWindow::slotRenamePlayer(QString ts)
 
 void MainWindow::slotRenameRequest(QString tag, QString newValue, QString oldValue)
 {
-    if(database()->index()->replaceTagValue(tag, newValue, oldValue))
+    QStringList l;
+    l << tag;
+    if(tag == TagNameWhite)
+    {
+        l << TagNameBlack;
+    }
+
+    if(database()->index()->replaceTagValue(l, newValue, oldValue))
     {
         if(game().tag(tag) == oldValue)
         {
             game().setTag(tag, newValue);
         }
-        database()->setModified(true);
         if(tag == TagNameWhite)
         {
-            database()->index()->replaceTagValue(TagNameBlack, newValue, oldValue);
             if(game().tag(TagNameBlack) == oldValue)
             {
                 game().setTag(TagNameBlack, newValue);
             }
         }
+        database()->setModified(true);
         m_eventList->setDatabase(databaseInfo());
         m_playerList->setDatabase(databaseInfo());
         slotGameChanged(true);

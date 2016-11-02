@@ -53,7 +53,7 @@ public:
     void setTag(const QString& tagName, const QString &value, GameId gameId);
 
     /** Set the valid flag accordingly */
-    bool replaceTagValue(const QString& tagName, const QString& newValue, const QString& oldValue);
+    bool replaceTagValue(QStringList tags, const QString& newValue, const QString& oldValue);
 
     // Retrieving tags //
     //
