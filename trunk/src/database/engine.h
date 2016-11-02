@@ -112,6 +112,9 @@ protected:
     /** Processes messages from the chess engine */
     virtual void processMessage(const QString& message) = 0;
 
+    /** Log error message into the logging stream */
+    virtual void logError(QString errMsg);
+
     /** Sends a message to the chess engine */
     void send(const QString& message);
 

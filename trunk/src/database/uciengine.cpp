@@ -471,8 +471,12 @@ void UCIEngine::parseOptions(const QString& message)
             case OPT_TYPE_COMBO:
                 phase = EXPECT_VAR_TOKEN;
                 break;
-            case OPT_TYPE_CHECK:
             case OPT_TYPE_STRING:
+                if (defVal=="<empty>" || defVal=="\"\"")
+                {
+                    defVal = "";
+                }
+            case OPT_TYPE_CHECK:
             default:
                 done = true;
                 break;
@@ -530,11 +534,16 @@ void UCIEngine::parseOptions(const QString& message)
     }
     if(!error.isEmpty())
     {
-        qDebug() << "Cannot parse Option string: '"
+        QString s;
+        QTextStream out(&s);
+
+        out << "Cannot parse Option string: '"
                  << message
                  << "' looking at token '"
                  << error
                  << "'!";
+
+        logError(s);
         return;
     }
     if(done || (phase > EXPECT_DEFAULT_VALUE))
@@ -552,9 +561,14 @@ void UCIEngine::parseOptions(const QString& message)
     }
     else
     {
-        qDebug() << "Incomplete syntax parsing Option string: '"
-                 << message
-                 << "'!";
+        QString s;
+        QTextStream out(&s);
+
+        out << "Incomplete syntax parsing Option string: '"
+            << message
+            << "'!";
+
+        logError(s);
         return;
     }
 }
