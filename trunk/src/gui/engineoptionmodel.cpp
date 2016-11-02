@@ -134,6 +134,11 @@ QVariant EngineOptionModel::data(const QModelIndex &index, int role) const
                 }
             }
         }
+        else if (role == Qt::ToolTipRole)
+        {
+            QString s = pOptionData->m_varVals.join("-");
+            return s;
+        }
     }
 
     return QVariant();

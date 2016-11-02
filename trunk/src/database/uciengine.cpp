@@ -546,7 +546,14 @@ void UCIEngine::parseOptions(const QString& message)
         logError(s);
         return;
     }
-    if(done || (phase > EXPECT_DEFAULT_VALUE))
+
+    if (!done && (phase == EXPECT_DEFAULT_VALUE) && (optionType == OPT_TYPE_STRING))
+    {
+        // Workaround bug in Stockfish 8
+        done = true; // Indicate an empty default value
+    }
+
+    if (done || (phase > EXPECT_DEFAULT_VALUE))
     {
         QString name = nameVals.join(" ");
         EngineOptionData option;
