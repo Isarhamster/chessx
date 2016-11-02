@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>315</width>
-    <height>372</height>
+    <width>333</width>
+    <height>413</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,38 +21,18 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <widget class="QComboBox" name="cbMode">
         <item>
-         <widget class="QLabel" name="labelBonus">
-          <property name="text">
-           <string>User Bonus</string>
-          </property>
-          <property name="buddy">
-           <cstring>timeBonus</cstring>
-          </property>
-         </widget>
+         <property name="text">
+          <string>Gong</string>
+         </property>
         </item>
         <item>
-         <widget class="QSpinBox" name="timeBonus"/>
+         <property name="text">
+          <string>Sudden Death</string>
+         </property>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="labelInc">
-          <property name="text">
-           <string>Increment</string>
-          </property>
-          <property name="buddy">
-           <cstring>timeInc</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="timeInc"/>
-        </item>
-       </layout>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -76,17 +56,44 @@
        </layout>
       </item>
       <item>
-       <widget class="QComboBox" name="cbMode">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <property name="text">
-          <string>Gong</string>
-         </property>
+         <widget class="QLabel" name="labelInc">
+          <property name="text">
+           <string>Increment</string>
+          </property>
+          <property name="buddy">
+           <cstring>timeInc</cstring>
+          </property>
+         </widget>
         </item>
         <item>
-         <property name="text">
-          <string>Sudden Death</string>
-         </property>
+         <widget class="QSpinBox" name="timeInc"/>
         </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="labelBonus">
+          <property name="text">
+           <string>User Bonus</string>
+          </property>
+          <property name="buddy">
+           <cstring>timeBonus</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="timeBonus"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
        </widget>
       </item>
       <item>
@@ -213,5 +220,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cbMode</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MatchParameterDlg</receiver>
+   <slot>SlotModeChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>166</x>
+     <y>43</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>166</x>
+     <y>206</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>SlotModeChanged(int)</slot>
+ </slots>
 </ui>
