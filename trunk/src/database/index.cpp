@@ -109,20 +109,42 @@ void Index::setValidFlag(GameId gameId, bool value)
     }
 }
 
-bool Index::replaceTagValue(const QString& tagName, const QString& newValue, const QString& oldValue)
+bool Index::replaceTagValue(QStringList tags, const QString& newValue, const QString& oldValue)
 {
-    if(!m_tagNameIndex.contains(tagName))
+    bool ok = false;
+    foreach(QString t, tags)
     {
-        return false;
+        if(m_tagNameIndex.contains(t))
+        {
+            ok = true;
+            break;
+        }
     }
-    if(!m_tagValueIndex.contains(oldValue))
+    if(!ok || !m_tagValueIndex.contains(oldValue))
     {
         return false;
     }
 
     ValueIndex valueIndex = m_tagValueIndex[oldValue];
 
-    m_tagValues[valueIndex] = newValue;
+    if (m_tagValueIndex.contains(newValue))
+    {
+        ValueIndex newValueIndex = m_tagValueIndex[newValue];
+        QList<TagIndex> tl;
+        foreach (QString t, tags)
+        {
+            tl << getTagIndex(t);
+        }
+        foreach (IndexItem* i, m_indexItems)
+        {
+            i->replaceValue(tl, valueIndex, newValueIndex);
+        }
+        m_tagValues.remove(valueIndex);
+    }
+    else
+    {
+        m_tagValues[valueIndex] = newValue;
+    }
 
     clearCache();
     calculateCache();

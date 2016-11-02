@@ -61,6 +61,9 @@ public:
     /** Compare two tag index items */
     bool isEqual(const IndexItem& rhs) const;
 
+    /** Search and replace all values from @p valueIndex to @p newValueIndex */
+    void replaceValue(QList<TagIndex> tags, ValueIndex valueIndex, ValueIndex newValueIndex);
+
 private:
     MapTagToValue m_mapTagIndexToValueIndex;
 };
