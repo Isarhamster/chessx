@@ -266,6 +266,15 @@ void Engine::processError(QProcess::ProcessError errMsg)
     emit error(errMsg);
 }
 
+void Engine::logError(QString errMsg)
+{
+    if (s_allowEngineOutput && m_logStream)
+    {
+        *m_logStream << "### " << errMsg << endl;
+    }
+    qDebug() << errMsg;
+}
+
 void Engine::setAllowEngineOutput(bool allow)
 {
     s_allowEngineOutput = allow;
