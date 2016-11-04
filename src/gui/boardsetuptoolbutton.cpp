@@ -16,6 +16,39 @@
 BoardSetupToolButton::BoardSetupToolButton(QWidget *parent) :
     QLabel(parent)
 {
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    setMinimumSize(QSize(10, 10));
+    setAlignment(Qt::AlignCenter);
+    setScaledContents(false);
+    setFrameShape(QFrame::Box);
+    setFrameShadow(QFrame::Raised);
+}
+
+Piece BoardSetupToolButton::piece() const
+{
+    return m_piece;
+}
+
+void BoardSetupToolButton::setPiece(const Piece &piece)
+{
+    m_piece = piece;
+}
+
+QPixmap BoardSetupToolButton::BasePixmap() const
+{
+    return m_pixmap;
+}
+
+void BoardSetupToolButton::setBasePixmap(QPixmap pm)
+{
+    if (pm.isNull())
+    {
+        m_pixmap = style()->standardIcon(QStyle::SP_TrashIcon).pixmap(128, 128);
+    }
+    else
+    {
+        m_pixmap = pm;
+    }
 }
 
 void BoardSetupToolButton::mousePressEvent(QMouseEvent * e)
@@ -33,18 +66,16 @@ void BoardSetupToolButton::mouseReleaseEvent(QMouseEvent * e)
 
 void BoardSetupToolButton::resizeEvent(QResizeEvent * e)
 {
-    int w = e->size().width() - 4;
-    int h = e->size().height() - 4;
-    QPixmap p1;
-    if(m_pixmap.isNull())
+    int w = e->size().width()-4;
+    int h = e->size().height()-4;
+
+    float r = m_piece!=Empty ? m_pixmap.devicePixelRatio() : 1.0;
+    QPixmap p1 = m_pixmap.scaled(w*r, h*r, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+    if (!p1.isNull())
     {
-        p1 = (style()->standardIcon(QStyle::SP_TrashIcon)).pixmap(w, h);
+        setPixmap(p1);
     }
-    else
-    {
-        p1 = m_pixmap.scaled(w, h, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    }
-    setPixmap(p1);
 }
 
 void BoardSetupToolButton::slotClearBackground(Piece p)
@@ -62,4 +93,14 @@ void BoardSetupToolButton::slotClearBackground(Piece p)
 void BoardSetupToolButton::slotSetSelected()
 {
     setStyleSheet("QLabel { background-color: yellow }");
+}
+
+int BoardSetupToolButton::heightForWidth(int w) const
+{
+    return w;
+}
+
+bool BoardSetupToolButton::hasHeightForWidth() const
+{
+    return true;
 }

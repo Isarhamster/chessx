@@ -15,8 +15,11 @@ class BoardSetupToolButton : public QLabel
     Q_OBJECT
 public:
     explicit BoardSetupToolButton(QWidget *parent = 0);
-    QPixmap m_pixmap;
-    Piece m_piece;
+    void setBasePixmap(QPixmap pm);
+
+    Piece piece() const;
+    void setPiece(const Piece &piece);
+    QPixmap BasePixmap() const;
 
 signals:
     void signalDragStarted(QWidget*, QMouseEvent*);
@@ -27,6 +30,11 @@ public slots:
     void slotSetSelected();
 
 protected:
+    QPixmap m_pixmap;
+    Piece m_piece;
+
+    virtual int heightForWidth(int) const;
+    virtual bool hasHeightForWidth() const;
 
     virtual void mousePressEvent(QMouseEvent * e);
     virtual void mouseReleaseEvent(QMouseEvent * e);

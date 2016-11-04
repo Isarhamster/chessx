@@ -23,6 +23,7 @@ class Analysis;
 class AnalysisWidget;
 class Board;
 class BoardView;
+class BoardViewEx;
 class ChessBrowser;
 class Database;
 class DatabaseInfo;
@@ -485,6 +486,7 @@ protected:
     void doBoardMove(Move m, unsigned int button, Square from, Square to);
     QString favoriteUrl() const;
     QString drawAnnotation() const;
+    BoardViewEx *BoardViewFrame();
 signals:
     /** Re-read configuration. */
     void reconfigure();
