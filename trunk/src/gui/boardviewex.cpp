@@ -45,7 +45,7 @@ void BoardViewEx::showTime(bool show)
     ui->timeTop->setVisible(show);
 }
 
-void BoardViewEx::configureTime(bool white, bool countDown)
+void BoardViewEx::configureTime(bool /*white*/, bool countDown)
 {
     ui->timeBottom->ResetTock(countDown, countDown);
     ui->timeTop->ResetTock(false, countDown);

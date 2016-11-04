@@ -141,6 +141,11 @@ const BoardTheme& BoardView::theme() const
     return m_theme;
 }
 
+QSize BoardView::themeSize() const
+{
+    return m_theme.size();
+}
+
 void BoardView::showMoveIndicator(bool visible)
 {
     m_showMoveIndicator = visible;

@@ -91,6 +91,7 @@ public:
     bool getBrushMode() const;
     void setBrushMode(bool brushMode);
 
+    QSize themeSize() const;
 public slots:
 
     /** Flips/unflips board. */

@@ -51,17 +51,15 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     for(int piece = Empty; piece <= BlackPawn; piece++)
     {
         BoardSetupToolButton* button = new BoardSetupToolButton(this);
-        button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        button->setMinimumSize(QSize(10, 10));
-        button->m_piece = (Piece)piece;
+        button->setPiece((Piece)piece);
         if(piece == Empty)
         {
-            button->m_pixmap = QPixmap(0, 0);
+            button->setBasePixmap(QPixmap(0, 0));
             ui.buttonLayout->addWidget(button, 6, 0);
         }
         else
         {
-            button->m_pixmap = ui.boardView->theme().piece(Piece(piece));
+            button->setBasePixmap(ui.boardView->theme().piece(Piece(piece)));
             ui.buttonLayout->addWidget(button, (piece - 1) % 6, piece >= BlackKing);
         }
         connect(button, SIGNAL(signalDragStarted(QWidget*, QMouseEvent*)), this, SLOT(startDrag(QWidget*, QMouseEvent*)));
@@ -69,6 +67,8 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
         connect(this, SIGNAL(signalClearBackground(Piece)), button, SLOT(slotClearBackground(Piece)));
     }
 
+    ui.buttonLayout->setColumnStretch(0,1);
+    ui.buttonLayout->setColumnStretch(1,1);
     emit signalClearBackground(Empty);
 
     ui.buttonBoxTools->button(QDialogButtonBox::RestoreDefaults)->setText(tr("Clear"));
@@ -654,15 +654,18 @@ void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
     {
         return;
     }
-    Piece p = child->m_piece;
+    Piece p = child->piece();
 
     QPoint hotSpot = event->pos();
 
     BoardViewMimeData *mimeData = new BoardViewMimeData;
     mimeData->m_piece = p;
 
-    QPixmap pixmap = *child->pixmap();
+    QPixmap pixmap = child->BasePixmap();
+    QSize pieceSize = ui.boardView->themeSize();
+    float r = pixmap.devicePixelRatio();
 
+    pixmap = pixmap.scaled(pieceSize*r, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     QDrag* pDrag = new QDrag(this);
     pDrag->setMimeData(mimeData);
     pDrag->setPixmap(pixmap);
