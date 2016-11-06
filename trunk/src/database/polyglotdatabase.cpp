@@ -777,7 +777,7 @@ void PolyglotDatabase::add_database(Database& db)
             int result = game.resultAsInt();
             if ((m_filterResult==0) || (m_filterResult != result))
             {
-                add_game(game, (m_overwriteResult == 0) ?  : m_overwriteResult);
+                add_game(game, (m_overwriteResult == 0) ? result : m_overwriteResult);
             }
         }
     }
