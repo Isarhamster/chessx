@@ -1007,6 +1007,16 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
     }
 }
 
+void MainWindow::SQAction(QChar c, QAction* action)
+{
+    action->setIconVisibleInMenu(true);
+    if (m_lastColor == c)
+    {
+        action->setCheckable(true);
+        action->setChecked(true);
+    }
+}
+
 void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
 {
     if(button & Qt::RightButton)
@@ -1019,19 +1029,19 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
             bool twoSquares = (s != from && from != InvalidSquare);
             if (!twoSquares)
             {
-                menu->addAction(QIcon(":/images/square_red.png"),   tr("Red Square"),    this, SLOT(slotRedSquare()))->setIconVisibleInMenu(true);
-                menu->addAction(QIcon(":/images/square_yellow.png"), tr("Yellow Square"), this, SLOT(slotYellowSquare()))->setIconVisibleInMenu(true);
-                menu->addAction(QIcon(":/images/square_green.png"), tr("Green Square"),  this, SLOT(slotGreenSquare()))->setIconVisibleInMenu(true);
+                SQAction('R',menu->addAction(QIcon(":/images/square_red.png"),   tr("Red Square"),    this, SLOT(slotRedSquare())));
+                SQAction('Y',menu->addAction(QIcon(":/images/square_yellow.png"), tr("Yellow Square"), this, SLOT(slotYellowSquare())));
+                SQAction('G',menu->addAction(QIcon(":/images/square_green.png"), tr("Green Square"),  this, SLOT(slotGreenSquare())));
                 menu->addSeparator();
-                menu->addAction(QIcon(":/images/square_none.png"),  tr("Remove Color"),  this, SLOT(slotNoColorSquare()))->setIconVisibleInMenu(true);
+                SQAction(0,menu->addAction(QIcon(":/images/square_none.png"),  tr("Remove Color"),  this, SLOT(slotNoColorSquare())));
             }
             else
             {
-                menu->addAction(QIcon(":/images/arrow_red.png"),   tr("Red Arrow to here"),    this, SLOT(slotRedArrowHere()))->setIconVisibleInMenu(true);
-                menu->addAction(QIcon(":/images/arrow_yellow.png"), tr("Yellow Arrow to here"), this, SLOT(slotYellowArrowHere()))->setIconVisibleInMenu(true);
-                menu->addAction(QIcon(":/images/arrow_green.png"), tr("Green Arrow to here"),  this, SLOT(slotGreenArrowHere()))->setIconVisibleInMenu(true);
+                SQAction('R',menu->addAction(QIcon(":/images/arrow_red.png"),   tr("Red Arrow to here"),    this, SLOT(slotRedArrowHere())));
+                SQAction('Y',menu->addAction(QIcon(":/images/arrow_yellow.png"), tr("Yellow Arrow to here"), this, SLOT(slotYellowArrowHere())));
+                SQAction('G',menu->addAction(QIcon(":/images/arrow_green.png"), tr("Green Arrow to here"),  this, SLOT(slotGreenArrowHere())));
                 menu->addSeparator();
-                menu->addAction(QIcon(":/images/arrow_none.png"),  tr("Remove Arrow to here"), this, SLOT(slotNoArrowHere()))->setIconVisibleInMenu(true);
+                SQAction(0,menu->addAction(QIcon(":/images/arrow_none.png"),  tr("Remove Arrow to here"), this, SLOT(slotNoArrowHere())));
             }
             menu->exec(pos);
         }

@@ -1,4 +1,27 @@
-This will install version 1.4.0 of ChessX.
+This will install version 1.4.2 of ChessX.
+
+October 2016: Version 1.4.2
+- New feature: Dragging piece with CTRL+SHIFT asks main engine / tablebase for eval
+- New feature: FICS with Clock above / below board
+- New feature: cz language pack
+- New feature: Message History
+- New feature: Rendering for Retina displays
+- New feature: Indicate number of pieces in Board Setup
+- New feature: Indicate King in check
+- New feature: Paint Tools
+- New feature: Show possible targets for selected piece
+- New feature: FICS rematch
+- New feature: Search Help pages for texts
+- New feature: FICS requests with color
+- New feature: Show all good tablebase moves
+
+- Bugfix: Resizing the application would sometimes fail
+- Bugfix: Matchparameter Dialog misplaced
+- Bugfix: Premoving allowed moving opponent pieces
+
+- Changed: Square annotations
+- Changed: Tock at 30..20..10s before Timeout
+- Changed: Move some preferences onto toolbar
 
 February 2016: Version 1.4.0
 - New Feature: Filter duplicate games

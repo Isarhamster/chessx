@@ -362,7 +362,8 @@ bool Converter::convertTextNode(QTextCursor *cursor, const QDomText &element, co
     }
     else
     {
-        cursor->insertText(text, format);
+        if (!text.isEmpty())
+            cursor->insertText(text, format);
     }
 
     return true;
@@ -564,7 +565,8 @@ bool Converter::convertTable(const QDomElement &element)
                             // different parts of the cell having different block formatting
                             QTextCursor cellCursor = cell.lastCursorPosition();
                             QTextFrameFormat frameFormat;
-                            frameFormat.setMargin(1); // TODO: this shouldn't be hard coded
+                            //frameFormat.setMargin(1); // TODO: this shouldn't be hard coded
+                            //todo: too much is created here - why?
                             QTextFrame *frame = cellCursor.insertFrame(frameFormat);
                             QTextCursor frameCursor = frame->firstCursorPosition();
                             frameCursor.setBlockFormat(format);
@@ -630,6 +632,7 @@ bool Converter::convertFrame(const QDomElement &element)
             format.setWidth(4.0/3.0*StyleParser::convertUnit(element.attribute("width")));
             format.setHeight(4.0/3.0*StyleParser::convertUnit(element.attribute("height")));
             format.setName(href);
+            format.setBackground(Qt::white);
             m_Cursor->insertImage(format);
         }
 
@@ -668,9 +671,6 @@ bool Converter::convertLink(QTextCursor *cursor, const QDomElement &element, con
     int endPosition = cursor->position();
     USETODONEXT(endPosition);
     USETODONEXT(startPosition);
-    ////Okular::Action *action = new Okular::BrowseAction(element.attribute("href"));
-    //// emit addAction(action, startPosition, endPosition);
-
     return true;
 }
 
@@ -701,16 +701,6 @@ bool Converter::convertAnnotation(QTextCursor *cursor, const QDomElement &elemen
     }
 
     USETODONEXT(position);
-
-    /* 
-    Okular::TextAnnotation *annotation = new Okular::TextAnnotation;
-    annotation->setAuthor(creator);
-    annotation->setContents(contents.join("\n"));
-    annotation->setCreationDate(dateTime);
-    annotation->style().setColor(QColor("#ffff00"));
-    annotation->style().setOpacity(0.5);
-     * */
-
     return true;
 }
 

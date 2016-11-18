@@ -1,5 +1,6 @@
 #!/bin/sh
-/opt/subversion/bin/svn log | grep "New Feature" | sed -e 's/^/- /'
-/opt/subversion/bin/svn log | grep "New feature" | sed -e 's/^/- /'
-/opt/subversion/bin/svn log | grep "Bugfix"      | sed -e 's/^/- /'
-/opt/subversion/bin/svn log | grep "Changed"     | sed -e 's/^/- /'
+/opt/subversion/bin/svn log > /tmp/svn.log
+grep "New Feature" /tmp/svn.log | sed -e 's/^/- /'
+grep "New feature" /tmp/svn.log | sed -e 's/^/- /'
+grep "Bugfix"      /tmp/svn.log | sed -e 's/^/- /'
+grep "Changed"     /tmp/svn.log | sed -e 's/^/- /'

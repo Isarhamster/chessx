@@ -869,6 +869,15 @@ void PasteTextEdit::insertFromMimeData(const QMimeData *source)
     }
     else
     {
+        if (source->hasText())
+        {
+            QString s = source->text();
+            if (s.startsWith("<"))
+            {
+                QTextEdit::insertHtml(s);
+                return;
+            }
+        }
         QTextEdit::insertFromMimeData(source);
     }
 }
@@ -882,6 +891,7 @@ void PasteTextEdit::dropImage(const QUrl& url, const QImage& image)
         imageFormat.setWidth( image.width() );
         imageFormat.setHeight( image.height() );
         imageFormat.setName( url.toString() );
+        imageFormat.setBackground(Qt::white);
         textCursor().insertImage(imageFormat);
     }
 }
