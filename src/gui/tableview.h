@@ -29,6 +29,9 @@ public:
     QStyleOptionViewItem::Position posDecoration() const;
     void setPosDecoration(const QStyleOptionViewItem::Position &posDecoration);
 
+    QImage renderToImage() const;
+    QString renderToHTML() const;
+
 public slots:
     /** Store current configuration. */
     void saveConfig();
@@ -37,6 +40,9 @@ public slots:
     /** Show context menu on header view */
     virtual void ShowContextMenu(const QPoint&);
 protected:
+    QString renderHTMLitem(int row,int column) const;
+    QString renderHTMLrow(int row) const;
+    QString renderHeaderToHTML() const;
     QStyleOptionViewItem viewOptions() const;
     virtual int minRowHeight() const { return 0; }
 private:

@@ -487,6 +487,7 @@ protected:
     QString favoriteUrl() const;
     QString drawAnnotation() const;
     BoardViewEx *BoardViewFrame();
+    void SQAction(QChar c, QAction *action);
 signals:
     /** Re-read configuration. */
     void reconfigure();
