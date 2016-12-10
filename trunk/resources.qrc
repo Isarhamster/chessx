@@ -176,5 +176,6 @@
         <file alias="themes/shadow/leipzig.png">data/themes/shadow/leipzig.png</file>
         <file alias="themes/shadow/merida.png">data/themes/shadow/merida.png</file>
         <file alias="themes/shadow/spatial.png">data/themes/shadow/spatial.png</file>
+        <file>i18n/chessx_ru.qm</file>
     </qresource>
 </RCC>
