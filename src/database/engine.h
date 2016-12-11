@@ -149,6 +149,9 @@ public:
     QList<EngineOptionData> m_options;
     OptionValueList m_mapOptionValues;
 
+    bool hasOption(QString name) const;
+    bool getOption(QString name, EngineOptionData &result);
+
 private:
     QString m_name;
     QString	m_command;
@@ -161,7 +164,6 @@ private:
 
 public:
     static void setAllowEngineOutput(bool allow);
-
 protected:
     static bool s_allowEngineOutput;
 };

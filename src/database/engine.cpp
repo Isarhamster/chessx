@@ -266,6 +266,35 @@ void Engine::processError(QProcess::ProcessError errMsg)
     emit error(errMsg);
 }
 
+bool Engine::hasOption(QString name) const
+{
+    bool found = false;
+    foreach (EngineOptionData eod, m_options)
+    {
+        if (eod.m_name == name)
+        {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+
+bool Engine::getOption(QString name, EngineOptionData& result)
+{
+    bool found = false;
+    foreach (EngineOptionData eod, m_options)
+    {
+        if (eod.m_name == name)
+        {
+            found = true;
+            result = eod;
+            break;
+        }
+    }
+    return found;
+}
+
 void Engine::logError(QString errMsg)
 {
     if (s_allowEngineOutput && m_logStream)
