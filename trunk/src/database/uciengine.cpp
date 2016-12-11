@@ -77,7 +77,10 @@ void UCIEngine::setMpv(int mpv)
         if(isAnalyzing())
         {
             send("stop");
-            send(QString("setoption name MultiPV value %1").arg(m_mpv));
+            if (hasOption("MultiPV"))
+            {
+                send(QString("setoption name MultiPV value %1").arg(m_mpv));
+            }
             go();
         }
     }
@@ -113,7 +116,7 @@ void UCIEngine::go()
 {
     if (m_moveTime.tm == EngineParameter::TIME_GONG)
     {
-        if (m_mapOptionValues.contains("UCI_AnalyseMode"))
+        if (hasOption("UCI_AnalyseMode"))
         {
             send(QString("setoption name UCI_AnalyseMode value %1").arg(m_moveTime.ms_totalTime==0? "true":"false"));
         }
@@ -135,10 +138,18 @@ void UCIEngine::go()
 void UCIEngine::setPosition()
 {
     m_waitingOn = "";
-    send(QString("setoption name MultiPV value %1").arg(m_mpv));
-    if(m_mapOptionValues.contains("UCI_Chess960"))
+    if (hasOption("MultiPV"))
     {
-        send(QString("setoption name UCI_Chess960 value %1").arg(m_chess960 ? "true":"false"));
+        send(QString("setoption name MultiPV value %1").arg(m_mpv));
+    }
+    EngineOptionData chess960;
+    if(getOption("UCI_Chess960", chess960))
+    {
+        bool default960 = (chess960.m_defVal.compare("true", Qt::CaseInsensitive)==0);
+        if (default960 != m_chess960)
+        {
+            send(QString("setoption name UCI_Chess960 value %1").arg(m_chess960 ? "true":"false"));
+        }
     }
 
     send("position fen " + m_position);
@@ -171,23 +182,26 @@ void UCIEngine::processMessage(const QString& message)
                     QVariant value = i.value();
                     if(EngineOptionData* dataSpec = EngineOptionData::FindInList(key, m_options))
                     {
-                        switch(dataSpec->m_type)
+                        if ((dataSpec->m_name != "UCI_Chess960") && (dataSpec->m_name != "MultiPV") && (dataSpec->m_name != "UCI_AnalyseMode"))
                         {
-                        case OPT_TYPE_BUTTON:
-                            if(value.toBool())
+                            switch(dataSpec->m_type)
                             {
-                                send(QString("setoption name %1 value %2").arg(key));
+                            case OPT_TYPE_BUTTON:
+                                if(value.toBool())
+                                {
+                                    send(QString("setoption name %1 value %2").arg(key));
+                                }
+                                break;
+                            case OPT_TYPE_CHECK:
+                            case OPT_TYPE_SPIN:
+                            case OPT_TYPE_STRING:
+                            case OPT_TYPE_COMBO:
+                                if(dataSpec->m_defVal != value.toString() && !value.toString().isEmpty())
+                                {
+                                    send(QString("setoption name %1 value %2").arg(key).arg(value.toString()));
+                                }
+                                break;
                             }
-                            break;
-                        case OPT_TYPE_CHECK:
-                        case OPT_TYPE_SPIN:
-                        case OPT_TYPE_STRING:
-                        case OPT_TYPE_COMBO:
-                            if(dataSpec->m_defVal != value.toString() && !value.toString().isEmpty())
-                            {
-                                send(QString("setoption name %1 value %2").arg(key).arg(value.toString()));
-                            }
-                            break;
                         }
                     }
                     ++i;
@@ -212,7 +226,7 @@ void UCIEngine::processMessage(const QString& message)
     {
         parseBestMove(message);
     }
-    else if(command == "option" && !isAnalyzing())
+    else if(command == "option")
     {
         parseOptions(message);
     }
@@ -564,7 +578,10 @@ void UCIEngine::parseOptions(const QString& message)
         option.m_varVals = varVals;
         option.m_type = optionType;
 
-        m_options.append(option);
+        if (!hasOption(name))
+        {
+            m_options.append(option);
+        }
     }
     else
     {
