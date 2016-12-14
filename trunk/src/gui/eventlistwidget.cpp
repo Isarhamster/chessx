@@ -73,6 +73,10 @@ void EventListWidget::findEvent(const QString& s)
     {
         QStringList newList = m_list.filter(s, Qt::CaseInsensitive);
         m_filterModel->setStringList(newList);
+        if (newList.count()==1)
+        {
+            selectEvent(newList.at(0));
+        }
     }
 }
 
@@ -160,7 +164,7 @@ void EventListWidget::setDatabase(DatabaseInfo* dbInfo)
         m_list = db->index()->tagValues(TagNameEvent);
     }
     m_list.sort();
-    m_filterModel->setStringList(m_list);
+    findEvent(ui->filterEdit->text().simplified());
     m_filterModel->sort(0);
 }
 

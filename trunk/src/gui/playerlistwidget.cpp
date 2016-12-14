@@ -84,6 +84,10 @@ void PlayerListWidget::findPlayers(const QString& s)
     {
         QStringList newList = m_list.filter(s, Qt::CaseInsensitive);
         m_filterModel->setStringList(newList);
+        if (newList.count()==1)
+        {
+            selectPlayer(newList.at(0));
+        }
     }
 }
 
@@ -190,7 +194,7 @@ void PlayerListWidget::setDatabase(DatabaseInfo* dbInfo)
         m_list = db->index()->playerNames();
     }
     m_list.sort();
-    m_filterModel->setStringList(m_list);
+    findPlayers(ui->filterEdit->text().simplified());
     m_filterModel->sort(0);
 }
 

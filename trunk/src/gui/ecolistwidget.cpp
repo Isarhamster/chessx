@@ -76,6 +76,10 @@ void ECOListWidget::findECO(const QString& s)
     {
         QStringList newList = m_list.filter(QRegExp(s, Qt::CaseInsensitive));
         m_filterModel->setStringList(newList);
+        if (newList.count()==1)
+        {
+            selectECO(newList.at(0));
+        }
     }
 }
 
@@ -164,7 +168,7 @@ void ECOListWidget::setDatabase(DatabaseInfo* dbInfo)
         ++iter;
     }
 
-    m_filterModel->setStringList(m_list);
+    findECO(ui->filterEdit->text());
     m_filterModel->sort(0);
 }
 
