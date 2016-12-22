@@ -12,8 +12,8 @@
         <location filename="../src/dialogs/aboutdlg.ui" line="43"/>
         <source>&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
 Free Chess Database </source>
-        <translation>&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
-Database de Ajedrez Libre</translation>
+        <translation type="unfinished">&lt;b&gt;ChessX&lt;/b&gt;&lt;br&gt;
+Base de Datos de Ajedrez Libre</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="68"/>
@@ -33,12 +33,12 @@ Database de Ajedrez Libre</translation>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="128"/>
         <source>Maintainer</source>
-        <translation>Soportista Principal</translation>
+        <translation type="unfinished">Mantenedor</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="148"/>
         <source>Further Maintainers</source>
-        <translation>Otros Soportistas</translation>
+        <translation type="unfinished">Otros mantenedores</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="168"/>
@@ -93,7 +93,7 @@ Database de Ajedrez Libre</translation>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="371"/>
         <source>Mailing List</source>
-        <translation>Cuenta de Correo:</translation>
+        <translation type="unfinished">Lista de Correo:</translation>
     </message>
 </context>
 <context>
@@ -101,7 +101,7 @@ Database de Ajedrez Libre</translation>
     <message>
         <location filename="../src/dialogs/actiondialog.ui" line="14"/>
         <source>Customize Keyboard</source>
-        <translation>Personalización Teclado</translation>
+        <translation type="unfinished">Personalizar el Teclado</translation>
     </message>
     <message>
         <location filename="../src/dialogs/actiondialog.ui" line="36"/>
@@ -204,17 +204,17 @@ Database de Ajedrez Libre</translation>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="362"/>
         <source>Click to add move to game</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Click para agregar un movimiento al juego</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="362"/>
         <source>Tablebase</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tablebase</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="366"/>
         <source>Complexity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Complejidad</translation>
     </message>
     <message>
         <source>&lt;a href=&quot;0&quot; title=&quot;Click to add move to game&quot;&gt;[+]&lt;/a&gt; &lt;b&gt;Tablebase:&lt;/b&gt; </source>
@@ -237,9 +237,9 @@ Database de Ajedrez Libre</translation>
         <source>w%1
 b%2
 %3 to move.</source>
-        <translation>b%1
+        <translation type="unfinished">b%1
 n%2
-%3 para movimiento</translation>
+%3 para mover</translation>
     </message>
     <message>
         <location filename="../src/database/bitboard.cpp" line="2348"/>
@@ -262,17 +262,17 @@ n%2
     <message>
         <location filename="../src/dialogs/boardsearchdialog.cpp" line="22"/>
         <source>Find</source>
-        <translation>Buscar</translation>
+        <translation type="unfinished">Encontrar</translation>
     </message>
     <message>
         <location filename="../src/dialogs/boardsearchdialog.cpp" line="31"/>
         <source>Find in current filter</source>
-        <translation>Buscar en el filtro actual</translation>
+        <translation type="unfinished">Encontrar en el filtro actual</translation>
     </message>
     <message>
         <location filename="../src/dialogs/boardsearchdialog.cpp" line="32"/>
         <source>Search whole database</source>
-        <translation>Buscar en toda la Database</translation>
+        <translation type="unfinished">Buscar en toda la Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/dialogs/boardsearchdialog.cpp" line="33"/>
@@ -282,7 +282,7 @@ n%2
     <message>
         <location filename="../src/dialogs/boardsearchdialog.cpp" line="34"/>
         <source>Remove from current filter</source>
-        <translation>Eliminar de filtro actual</translation>
+        <translation type="unfinished">Eliminar del filtro actual</translation>
     </message>
 </context>
 <context>
@@ -315,7 +315,7 @@ n%2
     <message>
         <location filename="../src/gui/boardsetup.ui" line="144"/>
         <source>Flip board</source>
-        <translation>Girar el tablero</translation>
+        <translation type="unfinished">Girar el tablero</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="147"/>
@@ -353,7 +353,7 @@ n%2
     <message>
         <location filename="../src/gui/boardsetup.ui" line="238"/>
         <source>Castling rights</source>
-        <translation>Enroques derechos</translation>
+        <translation type="unfinished">Derechos de Enroque</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="244"/>
@@ -378,12 +378,12 @@ n%2
     <message>
         <location filename="../src/gui/boardsetup.ui" line="290"/>
         <source>En passant file:</source>
-        <translation>Al paso de fila</translation>
+        <translation type="unfinished">Archivo en passant</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="379"/>
         <source>Halfmove clock:</source>
-        <translation>Reloj propio:</translation>
+        <translation type="unfinished">Reloj de media movida:</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="437"/>
@@ -410,7 +410,7 @@ n%2
         <source>Current position is not valid.
 
 %1.</source>
-        <translation>Posición actual no es válida.
+        <translation type="unfinished">La posición actual no es válida.
 
 %1.</translation>
     </message>
@@ -432,17 +432,17 @@ n%2
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="375"/>
         <source>Side to move has opponent in check already</source>
-        <translation>Lado a mover pone en jaque al oponente</translation>
+        <translation type="unfinished">El lado a mover ya tiene en jaque al oponente</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="377"/>
         <source>Black has too many pawns</source>
-        <translation>Negro tiene demasiados peones</translation>
+        <translation type="unfinished">El Negro tiene demasiados peones</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="379"/>
         <source>White has too many pawns</source>
-        <translation>Blanco tiene demasiados peones</translation>
+        <translation type="unfinished">El Blanco tiene demasiados peones</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="381"/>
@@ -467,12 +467,12 @@ n%2
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="389"/>
         <source>Bad castling rights</source>
-        <translation>Enroque derecho malo</translation>
+        <translation type="unfinished">Derechos de enroque inadecuados</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="391"/>
         <source>En passant square is not correct</source>
-        <translation>Movimiento al paso no es correcto</translation>
+        <translation type="unfinished">El movimiento al paso no es correcto</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="393"/>
@@ -487,12 +487,12 @@ n%2
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="448"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Texto en el portapapeles no representa FEN válido:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
+        <translation type="unfinished">El texto en el portapapeles no representa FEN válido:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.cpp" line="449"/>
         <source>There is no text in clipboard.</source>
-        <translation>Ningún texto en el portapapeles</translation>
+        <translation type="unfinished">No hay ningún texto en el portapapeles</translation>
     </message>
 </context>
 <context>
@@ -501,8 +501,8 @@ n%2
         <location filename="../src/gui/boardtheme.cpp" line="172"/>
         <source>Cannot find piece data.
 Please check your installation.</source>
-        <translation>No se puede encontrar datos de piezas.
-        Compruebe la instalación.</translation>
+        <translation type="unfinished">No se puede encontrar datos de piezas.
+Compruebe la instalación.</translation>
     </message>
 </context>
 <context>
@@ -526,7 +526,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="105"/>
         <source>Add move symbol</source>
-        <translation>Añadir símbolo al movimiento</translation>
+        <translation type="unfinished">Añadir símbolo de movimiento</translation>
     </message>
     <message>
         <location filename="../src/gui/chessbrowser.cpp" line="113"/>
@@ -686,7 +686,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/dialogs/copydialog.ui" line="40"/>
         <source>Games in &amp;filter</source>
-        <translation>Juegos en &amp;filter</translation>
+        <translation type="unfinished">Juegos en &amp;filtro</translation>
     </message>
     <message>
         <location filename="../src/dialogs/copydialog.ui" line="50"/>
@@ -704,7 +704,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="27"/>
         <source>Databases</source>
-        <translation>Databases</translation>
+        <translation type="unfinished">Bases de Datos</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="87"/>
@@ -734,12 +734,12 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="95"/>
         <source>Show in Finder</source>
-        <translation>Mostrar en buscador</translation>
+        <translation type="unfinished">Mostrar en Buscador</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="98"/>
         <source>Make a Polyglot book...</source>
-        <translation>Obtener un libro Polyglot...</translation>
+        <translation type="unfinished">Hacer un libro Polyglot...</translation>
     </message>
     <message>
         <source>: File not found</source>
@@ -800,7 +800,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/dialogs/dlgsavebook.ui" line="14"/>
         <source>Build Polyglot Book</source>
-        <translation>Construir Libro Polyglot</translation>
+        <translation type="unfinished">Construir un Libro Polyglot</translation>
     </message>
     <message>
         <location filename="../src/dialogs/dlgsavebook.ui" line="20"/>
@@ -810,7 +810,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/dialogs/dlgsavebook.ui" line="42"/>
         <source>Polyglot Book Parameters</source>
-        <translation>Parámetros de Libro Polyglot</translation>
+        <translation type="unfinished">Parámetros del Libro Polyglot</translation>
     </message>
     <message>
         <location filename="../src/dialogs/dlgsavebook.ui" line="50"/>
@@ -967,7 +967,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="192"/>
         <source>Games in database %1: %2&lt;br&gt;</source>
-        <translation>Juegos en database %1: %2&lt;br&gt;</translation>
+        <translation type="unfinished">Juegos en Base de Datos %1: %2&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="204"/>
@@ -992,7 +992,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="230"/>
         <source>&lt;table&gt;&lt;tr&gt;&lt;th&gt;Participants&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</source>
-        <translation>&lt;mesa&gt;&lt;tr&gt;&lt;th&gt;Participantes&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</translation>
+        <translation type="unfinished">&lt;tabla&gt;&lt;tr&gt;&lt;th&gt;Participantes&lt;/th&gt;&lt;th&gt;Puntuación&lt;/th&gt;&lt;/tr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1017,7 +1017,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/database/ficsclient.cpp" line="65"/>
         <source>Connected to FICS as %1 using %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Conectado a FICS como %1 utilizando %2</translation>
     </message>
 </context>
 <context>
@@ -1030,12 +1030,12 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="27"/>
         <source>Messages</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mensajes</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="44"/>
         <source>Say to opponent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Decir al oponente</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="55"/>
@@ -1057,73 +1057,73 @@ Please check your installation.</source>
         <location filename="../src/gui/ficsconsole.ui" line="157"/>
         <location filename="../src/gui/ficsconsole.ui" line="163"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Historia</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="169"/>
         <source>Double click to examine game</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Doble click para examinar el juego</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="182"/>
         <source>Finger</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dedo</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="199"/>
         <source>Games</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Juegos</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="205"/>
         <location filename="../src/gui/ficsconsole.ui" line="222"/>
         <source>Double click to follow game</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Doble click para seguir el juego</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="216"/>
         <source>Relay</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pasar</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="233"/>
         <source>Puzzle</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enigma</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="241"/>
         <source>Double click to get a puzzle</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Doblre click para obtener un enigma</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="445"/>
         <source>Elo</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elo</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="483"/>
         <source>Propose a game</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Proponer un juego</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="67"/>
         <source>Get Mate</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obtener Mate</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="70"/>
         <source>Get Study</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obtener Estudio</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="73"/>
         <source>Get Tactics</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obtener Tácticas</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="275"/>
         <source>Messages from Puzzlebot</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mensajes del Enigma</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="288"/>
@@ -1133,18 +1133,18 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="319"/>
         <source>Rating</source>
-        <translation type="unfinished">ELO Avg.</translation>
+        <translation type="unfinished">Clasificación</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="324"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Usuario</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="333"/>
         <location filename="../src/gui/ficsconsole.ui" line="341"/>
         <source>Seeks</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Buscar</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="404"/>
@@ -1154,57 +1154,58 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="361"/>
         <source>Lightning</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Relámpago</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="377"/>
         <source>Blitz</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Blitz=Relámpago (en alemán)</translatorcomment>
+        <translation type="unfinished">Blitz</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="387"/>
         <source>Standard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Norma</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="412"/>
         <source>Minutes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Minutos</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="430"/>
         <source>Increment</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Incremento</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="490"/>
         <source>rated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">calificado</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="495"/>
         <source>unrated</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">sin calificar</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="503"/>
         <source>Seek</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Buscar</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="524"/>
         <source>No play list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ninguna lista de reproducción</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="567"/>
         <source>Enter command here</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ingresar un comando aquí</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="78"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aceptar</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="84"/>
@@ -1214,42 +1215,42 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="90"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Declinar</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="96"/>
         <source>Abort</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Abortar</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="102"/>
         <source>Resign</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rendirse</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="108"/>
         <source>Hint</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sugerencia</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="114"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="445"/>
         <source>Disconnect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Desconoectar</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="537"/>
         <source>Disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Desconectado</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="585"/>
         <source>Retrieving relayed games...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Recuperando juegos retransmitidos</translation>
     </message>
 </context>
 <context>
@@ -1353,7 +1354,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/database/game.cpp" line="750"/>
         <source>Truncate variation</source>
-        <translation>variante</translation>
+        <translation type="unfinished">Variante trunca</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="794"/>
@@ -1373,7 +1374,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/database/game.cpp" line="1039"/>
         <source>Colorize square</source>
-        <translation>Colorear cuadrado</translation>
+        <translation type="unfinished">Colorear casilla</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="1087"/>
@@ -1394,7 +1395,7 @@ Please check your installation.</source>
         <location filename="../src/database/game.cpp" line="1368"/>
         <location filename="../src/database/game.cpp" line="1403"/>
         <source>Move variation</source>
-        <translation>Mover variante</translation>
+        <translation type="unfinished">Variante de movimiento</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="1429"/>
@@ -1404,7 +1405,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/database/game.cpp" line="1770"/>
         <source>Set result</source>
-        <translation>Resultados</translation>
+        <translation type="unfinished">Establecer resultados</translation>
     </message>
 </context>
 <context>
@@ -1418,7 +1419,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="79"/>
         <source>Find tag...</source>
-        <translation>Buscar un valor por etiqueta...</translation>
+        <translation type="unfinished">Buscar etiqueta...</translation>
     </message>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="81"/>
@@ -1428,7 +1429,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="83"/>
         <source>Resize visible Columns</source>
-        <translation>Cambiar tamaño a columnas visibles</translation>
+        <translation type="unfinished">Cambiar tamaño de columnas visibles</translation>
     </message>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="84"/>
@@ -1468,7 +1469,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="235"/>
         <source>Hide game</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ocultar juego</translation>
     </message>
 </context>
 <context>
@@ -1476,7 +1477,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/loadquery.ui" line="14"/>
         <source>Load Database</source>
-        <translation>Cargar Database</translation>
+        <translation type="unfinished">Cargar Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/gui/loadquery.ui" line="20"/>
@@ -1488,12 +1489,12 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/loadquery.ui" line="28"/>
         <source>Large Database (9M)</source>
-        <translation>Database grande (9M)</translation>
+        <translation type="unfinished">Gran Base de Datos (9M)</translation>
     </message>
     <message>
         <location filename="../src/gui/loadquery.ui" line="38"/>
         <source>Small Database</source>
-        <translation>Database pequeña</translation>
+        <translation type="unfinished">Pequeña Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/gui/loadquery.cpp" line="21"/>
@@ -1503,7 +1504,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/loadquery.cpp" line="22"/>
         <source>Skip Loading</source>
-        <translation>Saltar Descarga</translation>
+        <translation type="unfinished">Omitir Descarga</translation>
     </message>
 </context>
 <context>
@@ -1541,7 +1542,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="299"/>
         <source>Databases</source>
-        <translation>Databases</translation>
+        <translation type="unfinished">Bases de Datos</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="336"/>
@@ -1585,7 +1586,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="975"/>
         <source>Database %1 cannot be accessed at the moment.</source>
-        <translation>Database %1 no puede ser accedida al momento.</translation>
+        <translation type="unfinished">La Base de Datos %1 no puede ser consultada en este momento.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1002"/>
@@ -1595,7 +1596,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1024"/>
         <source>Database %1 cannot be accessed at the moment (%2).</source>
-        <translation>Database %1 no puede ser accedida al momento (%2).</translation>
+        <translation type="unfinished">La Base de Datos %1 no puede ser consultada en este momento (%2).</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1036"/>
@@ -1605,7 +1606,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1047"/>
         <source>%1 opened</source>
-        <translation>%1 abierta</translation>
+        <translation type="unfinished">%1 abierto</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1077"/>
@@ -1640,7 +1641,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1220"/>
         <source>&amp;New database...</source>
-        <translation>&amp;Nueva Database...</translation>
+        <translation type="unfinished">&amp;Nueva Base de Datos...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1221"/>
@@ -1655,7 +1656,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1224"/>
         <source>Open &amp;recent...</source>
-        <translation>Abierto &amp;reciente...</translation>
+        <translation type="unfinished">Abierto &amp;reciente...</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -1664,7 +1665,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1238"/>
         <source>Commit Database to disk</source>
-        <translation>Guardar Database a disco</translation>
+        <translation type="unfinished">Guardar Base de Datos en disco</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1243"/>
@@ -1695,7 +1696,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1251"/>
         <source>Mail PGN...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PGN por Correo</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1255"/>
@@ -1770,7 +1771,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1308"/>
         <source>Moves from the beginning</source>
-        <translation>Movimientos hasta el inicio</translation>
+        <translation type="unfinished">Movimientos desde el inicio</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1310"/>
@@ -1830,7 +1831,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1340"/>
         <source>Stay on Top</source>
-        <translation>Mantener en Top</translation>
+        <translation type="unfinished">Mantener arriba</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1380"/>
@@ -1840,7 +1841,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1535"/>
         <source>Load Sample Database</source>
-        <translation>Cargar ejemplo de Database</translation>
+        <translation type="unfinished">Cargar Base de Datos de muestra</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1536"/>
@@ -1855,17 +1856,17 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="159"/>
         <source>FICS Console</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Consola FICS</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1223"/>
         <source>Open FICS</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Abrir FICS</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1236"/>
         <source>Save Database</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Guardar Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1354"/>
@@ -1880,7 +1881,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1357"/>
         <source>Database</source>
-        <translation>Database</translation>
+        <translation type="unfinished">Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1360"/>
@@ -1910,7 +1911,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1377"/>
         <source>&amp;Random</source>
-        <translation>&amp;Al Azar</translation>
+        <translation type="unfinished">&amp;Aleatorio</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1378"/>
@@ -1945,7 +1946,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1415"/>
         <source>Auto Player</source>
-        <translation>Auto Jugar</translation>
+        <translation type="unfinished">Auto Jugador</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1421"/>
@@ -2016,7 +2017,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1476"/>
         <source>Back to main line</source>
-        <translation>Regresar a línea principal</translation>
+        <translation type="unfinished">Regresar a la línea principal</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1482"/>
@@ -2036,7 +2037,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1487"/>
         <source>Fi&amp;nd</source>
-        <translation>&amp;Buscar</translation>
+        <translation type="unfinished">Bus&amp;car</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1488"/>
@@ -2056,17 +2057,17 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1501"/>
         <source>&amp;Reset filter</source>
-        <translation>&amp;Resetear filtro</translation>
+        <translation type="unfinished">&amp;Reajustar filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1505"/>
         <source>&amp;Reverse filter</source>
-        <translation>&amp;Reversar filtro</translation>
+        <translation type="unfinished">&amp;Invertir filtro</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1510"/>
         <source>&amp;Database</source>
-        <translation>&amp;Database</translation>
+        <translation type="unfinished">&amp;Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1511"/>
@@ -2106,7 +2107,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1579"/>
         <source>Following databases are modified:</source>
-        <translation>Siguientes Databases serán modificadas</translation>
+        <translation type="unfinished">Las siguientes Bases de Datos están modificadas</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1580"/>
@@ -2121,7 +2122,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1729"/>
         <source>Start loading database...</source>
-        <translation>Cargando Database...</translation>
+        <translation type="unfinished">Iniciar carga de BAse de Datos...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1756"/>
@@ -2132,43 +2133,43 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="74"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="88"/>
         <source>New database</source>
-        <translation>Nueva Database</translation>
+        <translation type="unfinished">Nueva Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="76"/>
         <source>PGN database (*.pgn)</source>
-        <translation>Database PGN (*.pgn)</translation>
+        <translation type="unfinished">Nase de Datos PGN (*.pgn)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="88"/>
         <source>Cannot create ChessX database.</source>
-        <translation>Chessx no puede crear Database</translation>
+        <translation type="unfinished">No se puede crear Base de Datos de ChessX</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="101"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="116"/>
         <source>Open database</source>
-        <translation>Abrir Database</translation>
+        <translation type="unfinished">Abrir Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="103"/>
         <source>PGN databases (*.pgn);;Polyglot books (*.bin)</source>
-        <translation>Databases PGN (*.pgn);;Libros Polyglot (*.bin)</translation>
+        <translation type="unfinished">Bases de Datos PGN (*.pgn);;Libros Polyglot (*.bin)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="118"/>
         <source>PGN databases (*.pgn)</source>
-        <translation>Databases PGN (*.pgn)</translation>
+        <translation type="unfinished">Bases de Datos PGN (*.pgn)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="156"/>
         <source>The current database is modified!</source>
-        <translation>La Database actual está modificada!</translation>
+        <translation type="unfinished">La Base de Datos actual está modificada!</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="157"/>
         <source>Save it?</source>
-        <translation>Salvarlo?</translation>
+        <translation type="unfinished">Guardarla?</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="160"/>
@@ -2185,12 +2186,12 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="178"/>
         <source>&lt;html&gt;The database &lt;i&gt;%1&lt;/i&gt; is read-only and cannot be saved.&lt;/html&gt;</source>
-        <translation>&lt;html&gt;La Basedata &lt;i&gt;%1&lt;/i&gt; es de &quot;sólo-lectura&quot; y no puede salvarse.&lt;/html&gt;</translation>
+        <translation type="unfinished">&lt;html&gt;La Base de Datos &lt;i&gt;%1&lt;/i&gt; es de &quot;sólo-lectura&quot; y no puede salvarse.&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="495"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Texto en portapapeles no presenta un válido FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
+        <translation type="unfinished">El texto en portapapeles no representa un FEN válido:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="496"/>
@@ -2200,13 +2201,13 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="502"/>
         <source>The clipboard contains FEN, but with illegal position. You can only paste such positions in &lt;b&gt;Setup position&lt;/b&gt; dialog.</source>
-        <translation>Portapapeles contiene un FEN, pero con posición ilegal. Sólo puede pegar esas posiciones en &lt;b&gt;Configurar posición&lt;/b&gt; diálogo.</translation>
+        <translation type="unfinished">El portapapeles contiene un FEN, pero con posición ilegal. Sólo puede pegar esas posiciones en &lt;b&gt;Configurar posición&lt;/b&gt; diálogo.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="597"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="697"/>
         <source>Set starting board</source>
-        <translation>Establecer tablero de inicio</translation>
+        <translation type="unfinished">Disponer el tablero de inicio</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="721"/>
@@ -2268,7 +2269,7 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="1177"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="1189"/>
         <source>This database is read only.</source>
-        <translation>Esta Database es de sólo lectura</translation>
+        <translation type="unfinished">Esta Base de Datos es de sólo lectura</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1325"/>
@@ -2278,7 +2279,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1520"/>
         <source>Analysis Pane 1 is not running an engine for automatic analysis.</source>
-        <translation>Análisis Pane 1 no se está ejecutando un motor para el análisis automático.</translation>
+        <translation type="unfinished">El Paner de Análisis 1 no está ejecutando un motor para el análisis automático.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1654"/>
@@ -2294,7 +2295,7 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="1764"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="1798"/>
         <source>Append game %1 to %2.</source>
-        <translation>Anexar juego %1 a %2.</translation>
+        <translation type="unfinished">Agregar juego %1 a %2.</translation>
     </message>
     <message>
         <source>Clipboard</source>
@@ -2304,12 +2305,12 @@ Shall I download a database?</source>
         <location filename="../src/gui/mainwindowactions.cpp" line="1824"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="1839"/>
         <source>Append games from %1 to %2.</source>
-        <translation>Anexar juegos %1 a %2.</translation>
+        <translation type="unfinished">Agregar juegos %1 a %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1863"/>
         <source>You need at least two open databases to copy games</source>
-        <translation>Usted necesita por lo menos dos Databases abiertas para copiar juegos</translation>
+        <translation type="unfinished">Usted necesita por lo menos dos Bases de Datos abiertas para copiar juegos</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1891"/>
@@ -2345,7 +2346,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2520"/>
         <source>Could not build book</source>
-        <translation>No pudo construir libro</translation>
+        <translation type="unfinished">No se pudo construir libro</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2520"/>
@@ -2354,7 +2355,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <source>Please configure your email preferences first.</source>
-        <translation type="vanished">S&apos;il vous plaît, paramétrez les EMail paramètre.</translation>
+        <translation type="vanished">Por favor configure los parámetros de su email.</translation>
     </message>
     <message>
         <source>Hello</source>
@@ -2362,27 +2363,27 @@ Shall I download a database?</source>
     </message>
     <message>
         <source>the attachment provides new game data.</source>
-        <translation type="vanished">the attachment provides new game data.</translation>
+        <translation type="vanished">el adjunto provee datos de un nuevo juego.</translation>
     </message>
     <message>
         <source>You can open the file with ChessX.</source>
-        <translation type="vanished">You can open the file with ChessX.</translation>
+        <translation type="vanished">Usted puede abrir el archivo con ChessX.</translation>
     </message>
     <message>
         <source>Edit game tags</source>
-        <translation type="vanished">Editar etiquetas juego</translation>
+        <translation type="vanished">Editar etiquetas del juego</translation>
     </message>
     <message>
         <source>EMail error</source>
-        <translation type="vanished">EMail erreur</translation>
+        <translation type="vanished">EMail error</translation>
     </message>
     <message>
         <source>EMail sent to</source>
-        <translation type="vanished">EMail transmettre à</translation>
+        <translation type="vanished">EMail enviado a </translation>
     </message>
     <message>
         <source>EMail sent</source>
-        <translation type="vanished">EMail transmettre</translation>
+        <translation type="vanished">EMail enviado</translation>
     </message>
 </context>
 <context>
@@ -2446,95 +2447,95 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/database/nag.cpp" line="295"/>
         <source>Good Move</source>
-        <translation>Bueno</translation>
+        <translation type="unfinished">Buen movimiento</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="296"/>
         <source>Poor Move</source>
-        <translation>Malo</translation>
+        <translation type="unfinished">Mal Movimiento</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="297"/>
         <source>Very good Move</source>
-        <translation>Excelente</translation>
+        <translation type="unfinished">Excelente Movimiento</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="298"/>
         <source>Blunder</source>
-        <translation>Malísimo</translation>
+        <translation type="unfinished">Un disparate</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="299"/>
         <source>Speculative Move</source>
-        <translation>Especulativo</translation>
+        <translation type="unfinished">Movimiento especulativo</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="300"/>
         <source>Dubious Move</source>
-        <translation>Dudoso</translation>
+        <translation type="unfinished">Movimiento dudoso</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="301"/>
         <location filename="../src/database/nag.cpp" line="302"/>
         <source>Only Move</source>
-        <translation>Unico</translation>
+        <translation type="unfinished">Único movimiento</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="303"/>
         <source>Worst Move</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">El peor movimiento</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="304"/>
         <location filename="../src/database/nag.cpp" line="305"/>
         <location filename="../src/database/nag.cpp" line="306"/>
         <source>Equal</source>
-        <translation>Igualdad</translation>
+        <translation type="unfinished">Igual</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="307"/>
         <source>Unclear</source>
-        <translation>Clara</translation>
+        <translation type="unfinished">Claro</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="308"/>
         <source>White has slight advantage</source>
-        <translation>Blanco tiene una ligera ventaja</translation>
+        <translation type="unfinished">El Blanco tiene una ligera ventaja</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="309"/>
         <source>Black has slight advantage</source>
-        <translation>Negro tiene una ligera ventaja</translation>
+        <translation type="unfinished">El Negro tiene una ligera ventaja</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="310"/>
         <source>White has moderate advantage</source>
-        <translation>Blanco tiene moderada ventaja</translation>
+        <translation type="unfinished">El Blanco tiene una moderada ventaja</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="311"/>
         <source>Black has moderate advantage</source>
-        <translation>Negro tiene moderada ventaja</translation>
+        <translation type="unfinished">El Negro tiene una moderada ventaja</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="312"/>
         <source>White has decisive advantage</source>
-        <translation>Blanco tiene una decisiva ventaja</translation>
+        <translation type="unfinished">El Blanco tiene una decisiva ventaja</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="313"/>
         <source>Black has decisive advantage</source>
-        <translation>Negro tiene una decisiva ventaja</translation>
+        <translation type="unfinished">El Negro tiene una decisiva ventaja</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="314"/>
         <source>White has crushing advantage</source>
-        <translation>Blanco tiene una aplastante ventaja</translation>
+        <translation type="unfinished">El Blanco tiene una aplastante ventaja</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="315"/>
         <source>Black has crushing advantage</source>
-        <translation>Negro tiene una aplastante ventaja</translation>
+        <translation type="unfinished">El Negro tiene una aplastante ventaja</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="316"/>
@@ -2612,61 +2613,61 @@ Shall I download a database?</source>
         <location filename="../src/database/nag.cpp" line="340"/>
         <location filename="../src/database/nag.cpp" line="341"/>
         <source>With more than adequate compensation for material deficit</source>
-        <translation>Con compensación adecuada por falta de material</translation>
+        <translation type="unfinished">Con compensación más que adecuada por falta de material</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="342"/>
         <location filename="../src/database/nag.cpp" line="343"/>
         <source>With slight center control advantage</source>
-        <translation>Con ligera ventaja por control central</translation>
+        <translation type="unfinished">Con ligera ventaja por control del centro</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="344"/>
         <location filename="../src/database/nag.cpp" line="345"/>
         <source>With moderate center control advantage</source>
-        <translation>Con moderada ventaja por control central</translation>
+        <translation type="unfinished">Con moderada ventaja por control del centro</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="346"/>
         <location filename="../src/database/nag.cpp" line="347"/>
         <source>With decisive center control advantage</source>
-        <translation>Con decisiva ventaja por control central</translation>
+        <translation type="unfinished">Con decisiva ventaja por control del centro</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="348"/>
         <location filename="../src/database/nag.cpp" line="349"/>
         <source>With slight kingside control advantage</source>
-        <translation>Con ligera ventaja por control del flanco de rey</translation>
+        <translation type="unfinished">Con ligera ventaja por control del flanco del rey</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="350"/>
         <location filename="../src/database/nag.cpp" line="351"/>
         <source>With moderate kingside control advantage</source>
-        <translation>Con moderada ventaja por control del flanco de rey</translation>
+        <translation type="unfinished">Con moderada ventaja por control del flanco del rey</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="352"/>
         <location filename="../src/database/nag.cpp" line="353"/>
         <source>With decisive kingside control advantage</source>
-        <translation>Con decisiva ventaja por control del flanco de rey</translation>
+        <translation type="unfinished">Con decisiva ventaja por control del flanco del rey</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="354"/>
         <location filename="../src/database/nag.cpp" line="355"/>
         <source>With slight queenside control advantage</source>
-        <translation>Con ligera ventaja por control del flanco de dama</translation>
+        <translation type="unfinished">Con ligera ventaja por control del flanco de la dama</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="356"/>
         <location filename="../src/database/nag.cpp" line="357"/>
         <source>With moderate queenside control advantage</source>
-        <translation>Con moderada ventaja por control del flanco de dama</translation>
+        <translation type="unfinished">Con moderada ventaja por control del flanco de la dama</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="358"/>
         <location filename="../src/database/nag.cpp" line="359"/>
         <source>With decisive queenside control advantage</source>
-        <translation>Con decisiva ventaja por control del flanco de dama</translation>
+        <translation type="unfinished">Con decisiva ventaja por control del flanco de la dama</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="360"/>
@@ -2726,19 +2727,19 @@ Shall I download a database?</source>
         <location filename="../src/database/nag.cpp" line="378"/>
         <location filename="../src/database/nag.cpp" line="379"/>
         <source>With very strong pawn structure</source>
-        <translation>Con mucha fuerza de estructura de peones</translation>
+        <translation type="unfinished">Con muy fuerte estructura de peones</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="380"/>
         <location filename="../src/database/nag.cpp" line="381"/>
         <source>With poor knight placement</source>
-        <translation>Con mala colocación del rey</translation>
+        <translation type="unfinished">Con mala colocación del caballo</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="382"/>
         <location filename="../src/database/nag.cpp" line="383"/>
         <source>With good knight placement</source>
-        <translation>Con buena colocación del rey</translation>
+        <translation type="unfinished">Con buena colocación del caballo</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="384"/>
@@ -2791,122 +2792,122 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/database/nag.cpp" line="400"/>
         <source>White played the opening very poorly</source>
-        <translation>Blanco jugó la apertura malísimo</translation>
+        <translation type="unfinished">El Blanco jugó la apertura muy pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="401"/>
         <source>Black played the opening very poorly</source>
-        <translation>Negro jugó la apertura malísimo</translation>
+        <translation type="unfinished">El Negro jugó la apertura muy pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="402"/>
         <source>White played the opening poorly</source>
-        <translation>Blanco jugó la apertura mal</translation>
+        <translation type="unfinished">El Blanco jugó la apertura pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="403"/>
         <source>Black played the opening poorly</source>
-        <translation>Negro jugó la apertura mal</translation>
+        <translation type="unfinished">El Negro jugó la apertura pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="404"/>
         <source>White played the opening well</source>
-        <translation>Blanco jugó la apertura bien</translation>
+        <translation type="unfinished">El Blanco jugó bien la apertura</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="405"/>
         <source>Black played the opening well</source>
-        <translation>Negro jugó la apertura bien</translation>
+        <translation type="unfinished">El Negro jugó bien la apertura</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="406"/>
         <source>White played the opening very well</source>
-        <translation>Blanco jugó la apertura excelente</translation>
+        <translation type="unfinished">El Blanco jugó la apertura muy bien</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="407"/>
         <source>Black played the opening very well</source>
-        <translation>Negro jugó la apertura excelente</translation>
+        <translation type="unfinished">El Negro jugó la apertura muy bien</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="408"/>
         <source>White played the middlegame very poorly</source>
-        <translation>Blanco jugó el medio juego malísimo</translation>
+        <translation type="unfinished">El Blanco jugó el medio juego muy pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="409"/>
         <source>Black played the middlegame very poorly</source>
-        <translation>Negro jugó el medio juego malísimo</translation>
+        <translation type="unfinished">El Negro jugó el medio juego muy pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="410"/>
         <source>White played the middlegame poorly</source>
-        <translation>Blanco jugó el medio juego mal</translation>
+        <translation type="unfinished">El Blanco jugó el medio juego pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="411"/>
         <source>Black played the middlegame poorly</source>
-        <translation>Negro jugó el medio juego mal</translation>
+        <translation type="unfinished">El Negro jugó el medio juego pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="412"/>
         <source>White played the middlegame well</source>
-        <translation>Blanco jugó el medio juego bien</translation>
+        <translation type="unfinished">El Blanco jugó el medio juego bien</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="413"/>
         <source>Black played the middlegame well</source>
-        <translation>Negro jugó el medio juego bien</translation>
+        <translation type="unfinished">El Negro jugó el medio juego bien</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="414"/>
         <source>White played the middlegame very well</source>
-        <translation>Blanco jugó el medio juego excelente</translation>
+        <translation type="unfinished">El Blanco jugó el medio juego muy bien</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="415"/>
         <source>Black played the middlegame very well</source>
-        <translation>Negro jugó el medio juego excelente</translation>
+        <translation type="unfinished">El Negro jugó el medio juego muy bien</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="416"/>
         <source>White played the ending very poorly</source>
-        <translation>Blanco jugó el final malísimo</translation>
+        <translation type="unfinished">El Blanco jugó el final muy pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="417"/>
         <source>Black played the ending very poorly</source>
-        <translation>Negro jugó el final malísimo</translation>
+        <translation type="unfinished">El Negro jugó el final muy pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="418"/>
         <source>White played the ending poorly</source>
-        <translation>Blanco jugó el final mal</translation>
+        <translation type="unfinished">El Blanco jugó el final pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="419"/>
         <source>Black played the ending poorly</source>
-        <translation>Negro jugó el final mal</translation>
+        <translation type="unfinished">El Negro jugó el final pobremente</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="420"/>
         <source>White played the ending well</source>
-        <translation>Blanco jugó el final bien</translation>
+        <translation type="unfinished">El Blanco jugó el final bien</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="421"/>
         <source>Black played the ending well</source>
-        <translation>Negro jugó el final bien</translation>
+        <translation type="unfinished">El Negro jugó el final bien</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="422"/>
         <source>White played the ending very well</source>
-        <translation>Blanco jugó el final excelente</translation>
+        <translation type="unfinished">El Blanco jugó el final muy bien</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="423"/>
         <source>Black played the ending very well</source>
-        <translation>Negro jugó el final excelente</translation>
+        <translation type="unfinished">El Negro jugó el final muy bien</translation>
     </message>
     <message>
         <location filename="../src/database/nag.cpp" line="424"/>
@@ -3012,7 +3013,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/database/openingtree.cpp" line="154"/>
         <source>Move</source>
-        <translation>Línea</translation>
+        <translation type="unfinished">Movida</translation>
     </message>
     <message>
         <location filename="../src/database/openingtree.cpp" line="154"/>
@@ -3027,12 +3028,12 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/database/openingtree.cpp" line="154"/>
         <source>Rating</source>
-        <translation>ELO Avg.</translation>
+        <translation type="unfinished">Clasificación</translation>
     </message>
     <message>
         <location filename="../src/database/openingtree.cpp" line="154"/>
         <source>Year</source>
-        <translation>Año</translation>
+        <translation type="unfinished">Año</translation>
     </message>
 </context>
 <context>
@@ -3050,7 +3051,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/openingtreewidget.ui" line="50"/>
         <source>Filter games</source>
-        <translation>Filtro de juegos</translation>
+        <translation type="unfinished">Filtrar juegos</translation>
     </message>
     <message>
         <location filename="../src/gui/openingtreewidget.ui" line="57"/>
@@ -3066,7 +3067,7 @@ Shall I download a database?</source>
         <location filename="../src/gui/openingtreewidget.ui" line="80"/>
         <location filename="../src/gui/openingtreewidget.cpp" line="161"/>
         <source>Database</source>
-        <translation>Database</translation>
+        <translation type="unfinished">Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/gui/openingtreewidget.ui" line="85"/>
@@ -3087,7 +3088,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/openingtreewidget.cpp" line="155"/>
         <source> (Book)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">(Libro)</translation>
     </message>
 </context>
 <context>
@@ -3208,17 +3209,17 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/database/playerinfo.cpp" line="241"/>
         <source>Games in database &lt;i&gt;%1&lt;/i&gt;: &lt;b&gt;%2&lt;/b&gt;&lt;br&gt;</source>
-        <translation>Juegos en Database &lt;i&gt;%1&lt;/i&gt;: &lt;b&gt;%2&lt;/b&gt;&lt;br&gt;</translation>
+        <translation type="unfinished">Juegos en Base de Datos &lt;i&gt;%1&lt;/i&gt;: &lt;b&gt;%2&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/playerinfo.cpp" line="253"/>
         <source>Rating: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</source>
-        <translation>Puntuación: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</translation>
+        <translation type="unfinished">Clasificación: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/playerinfo.cpp" line="256"/>
         <source>Rating: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</source>
-        <translation>Puntuación: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</translation>
+        <translation type="unfinished">Clasificación: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/playerinfo.cpp" line="264"/>
@@ -3233,12 +3234,12 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/database/playerinfo.cpp" line="279"/>
         <source>White Openings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aperturas de las Blancas</translation>
     </message>
     <message>
         <location filename="../src/database/playerinfo.cpp" line="280"/>
         <source>Black Openings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aperturas de las Negras</translation>
     </message>
     <message>
         <source>&lt;p&gt;White Openings:&lt;/p&gt;&lt;ul&gt;</source>
@@ -3313,7 +3314,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="242"/>
         <source>&amp;Draw frame between squares</source>
-        <translation>&amp;Dibujar contorno entre cuadros</translation>
+        <translation type="unfinished">&amp;Dibujar un marco entre cuadros</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="212"/>
@@ -3370,7 +3371,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="465"/>
         <source>Autoplayer</source>
-        <translation>Autojugar</translation>
+        <translation type="unfinished">Autojugador</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="471"/>
@@ -3385,7 +3386,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="288"/>
         <source>Show Diagrams</source>
-        <translation>Preferencias</translation>
+        <translation type="unfinished">Mostrar Diagramas</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="295"/>
@@ -3410,7 +3411,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="356"/>
         <source>Put the initials of the pieces here, mind the initial space.</source>
-        <translation>Poner piezas de inicio, recuerda espacio inicial</translation>
+        <translation type="unfinished">Poner piezas de inicio aquí, recuerda el espacio inicial</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="362"/>
@@ -3436,17 +3437,17 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="478"/>
         <source>Auto Analysis backwards</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Auto-Análisis retrógrado</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="488"/>
         <source>Automatic Promotion</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Promoción automática</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="494"/>
         <source>Always queen a pawn</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Siempre coronar peón como dama</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="505"/>
@@ -3526,7 +3527,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="716"/>
         <source>Database</source>
-        <translation>Database</translation>
+        <translation type="unfinished">Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="722"/>
@@ -3541,7 +3542,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="736"/>
         <source>Commit Database after saving Game</source>
-        <translation>Comprometerse Database después de salvar juego</translation>
+        <translation type="unfinished">Comprometer Base de Datos después de salvar juego</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="753"/>
@@ -3551,7 +3552,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="775"/>
         <source>Default Database Path:</source>
-        <translation>Ruta por defecto para Database</translation>
+        <translation type="unfinished">Ruta por defecto para Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="795"/>
@@ -3632,22 +3633,22 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1080"/>
         <source>Log in as guest</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inscríbase como invitado</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1093"/>
         <source>Login</source>
-        <translation>Login</translation>
+        <translation type="unfinished">Inscripción</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1100"/>
         <source>Password</source>
-        <translation>Password</translation>
+        <translation type="unfinished">Contraseña</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1116"/>
         <source>Try to use Timeseal</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Intente utilziar el sello de tiempo</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1124"/>
@@ -3667,7 +3668,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1143"/>
         <source>Check for updates (at startup) and language packs</source>
-        <translation>Chequear actualizaciones (al iniciar) y packs de lenguajes</translation>
+        <translation type="unfinished">Chequear actualizaciones (al iniciar) y paquetes de lenguaje</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1153"/>
@@ -3697,7 +3698,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1243"/>
         <source>External Tools</source>
-        <translation>Herramientas Externa</translation>
+        <translation type="unfinished">Herramientas Externas</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1249"/>
@@ -3722,12 +3723,12 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1301"/>
         <source>Sound</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sonido</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1307"/>
         <source>Indicate opponent&apos;s move</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Indicar el movimiento del oponente</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="49"/>
@@ -3737,7 +3738,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="101"/>
         <source>For updating translations online version checking needs to be enabled.</source>
-        <translation>Para actualizar la versión de traducción chequeada necesita ser habilitada</translation>
+        <translation type="unfinished">Para actualizar la versión de traducción en red necesita ser habilitada la comprobación.</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="125"/>
@@ -3752,7 +3753,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="146"/>
         <source>Select databases folder</source>
-        <translation>Seleccionar carpeta de Database</translation>
+        <translation type="unfinished">Seleccionar carpeta de Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="164"/>
@@ -3767,7 +3768,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="342"/>
         <source>Could not load server language file dictionary</source>
-        <translation>No pudo cargar del servidor el archivo diccionario de lenguaje</translation>
+        <translation type="unfinished">No pudo cargar del servidor el archivo de diccionario del lenguaje</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="346"/>
@@ -3817,7 +3818,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="462"/>
         <source>Stored move</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Movimiento guardado</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="491"/>
@@ -3891,7 +3892,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/quicksearch.ui" line="67"/>
         <source>Value or Range like 2000-2300</source>
-        <translation>Valor o rango deseado 2000-2500</translation>
+        <translation type="unfinished">Valor o rango como 2000-2500</translation>
     </message>
     <message>
         <location filename="../src/dialogs/quicksearch.ui" line="40"/>
@@ -3911,27 +3912,27 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/quicksearch.cpp" line="34"/>
         <source>Find in current filter</source>
-        <translation>Buscar en filtro actual</translation>
+        <translation type="unfinished">Hallar en filtro actual</translation>
     </message>
     <message>
         <location filename="../src/dialogs/quicksearch.cpp" line="35"/>
         <source>Search whole database</source>
-        <translation>Buscar en toda la Database</translation>
+        <translation type="unfinished">Buscar en toda la Base de Datos</translation>
     </message>
     <message>
         <location filename="../src/dialogs/quicksearch.cpp" line="36"/>
         <source>Add to current filter</source>
-        <translation>Añadir a filtro actual</translation>
+        <translation type="unfinished">Añadir al filtro actual</translation>
     </message>
     <message>
         <location filename="../src/dialogs/quicksearch.cpp" line="37"/>
         <source>Remove from current filter</source>
-        <translation>Eliminar de filtro actual</translation>
+        <translation type="unfinished">Eliminar del filtro actual</translation>
     </message>
     <message>
         <location filename="../src/dialogs/quicksearch.cpp" line="39"/>
         <source>Find</source>
-        <translation>Buscar</translation>
+        <translation type="unfinished">Hallar</translation>
     </message>
 </context>
 <context>
@@ -3939,17 +3940,17 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/recipientaddressdialog.ui" line="14"/>
         <source>Recipient Address</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dirección del Receptor</translation>
     </message>
     <message>
         <location filename="../src/dialogs/recipientaddressdialog.ui" line="20"/>
         <source>Mail</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Correo</translation>
     </message>
     <message>
         <location filename="../src/dialogs/recipientaddressdialog.cpp" line="57"/>
         <source>This is no valid email address.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esta no es una dirección de email válida</translation>
     </message>
 </context>
 <context>
@@ -3967,7 +3968,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/renametagdialog.ui" line="40"/>
         <source>from</source>
-        <translation>de</translation>
+        <translation type="unfinished">desde</translation>
     </message>
     <message>
         <location filename="../src/dialogs/renametagdialog.ui" line="57"/>
@@ -4038,7 +4039,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="157"/>
         <source>White Start Time</source>
-        <translation>Tiempo de inicio Blanco</translation>
+        <translation type="unfinished">Tiempo de inicio del Blanco</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="167"/>
@@ -4049,7 +4050,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="197"/>
         <source>Black Start Time</source>
-        <translation>Tiempo de inicio Negro</translation>
+        <translation type="unfinished">Tiempo de inicio del Negro</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="218"/>
@@ -4113,7 +4114,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/savedialog.cpp" line="202"/>
         <source>Invalid Data</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Datos inválidos</translation>
     </message>
 </context>
 <context>
@@ -4126,7 +4127,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/tableview.cpp" line="98"/>
         <source>Resize visible Columns</source>
-        <translation>Cambiar el tamaño de columnas a visibles</translation>
+        <translation type="unfinished">Cambiar el tamaño de columnas visibles</translation>
     </message>
     <message>
         <location filename="../src/gui/tableview.cpp" line="99"/>
@@ -4183,12 +4184,12 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/tagdialog.cpp" line="55"/>
         <source>Edit tag...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Editar etiqueta...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/tagdialog.cpp" line="59"/>
         <source>Enter value...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Entre un valor...</translation>
     </message>
 </context>
 </TS>
