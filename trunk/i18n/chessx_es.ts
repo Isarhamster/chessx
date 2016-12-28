@@ -353,7 +353,7 @@ n%2
     <message>
         <location filename="../src/gui/boardsetup.ui" line="238"/>
         <source>Castling rights</source>
-        <translation type="unfinished">Derechos de Enroque</translation>
+        <translation type="unfinished">Enroques posibles</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="244"/>
@@ -383,7 +383,7 @@ n%2
     <message>
         <location filename="../src/gui/boardsetup.ui" line="379"/>
         <source>Halfmove clock:</source>
-        <translation type="unfinished">Reloj de media movida:</translation>
+        <translation type="unfinished">Reloj de medio movimiento:</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="437"/>
@@ -410,7 +410,7 @@ n%2
         <source>Current position is not valid.
 
 %1.</source>
-        <translation type="unfinished">La posición actual no es válida.
+        <translation type="unfinished">La posición actual es inválida.
 
 %1.</translation>
     </message>
@@ -1083,12 +1083,12 @@ Compruebe la instalación.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="216"/>
         <source>Relay</source>
-        <translation type="unfinished">Pasar</translation>
+        <translation type="unfinished">Retransmisiones</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="233"/>
         <source>Puzzle</source>
-        <translation type="unfinished">Enigma</translation>
+        <translation type="unfinished">Problemas</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="241"/>
@@ -1240,7 +1240,7 @@ Compruebe la instalación.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="445"/>
         <source>Disconnect</source>
-        <translation type="unfinished">Desconoectar</translation>
+        <translation type="unfinished">Desconectar</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="537"/>
@@ -4039,7 +4039,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="157"/>
         <source>White Start Time</source>
-        <translation type="unfinished">Tiempo de inicio del Blanco</translation>
+        <translation type="unfinished">Tiempo inicial del Blanco</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="167"/>
@@ -4065,7 +4065,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="262"/>
         <source>E&amp;vent date:</source>
-        <translation>&amp;Fecha evento:</translation>
+        <translation>Fecha e&amp;vento:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.ui" line="282"/>
@@ -4104,12 +4104,12 @@ Shall I download a database?</source>
     <message>
         <source>Dates are not properly formatted!</source>
         <comment>Invalid Data</comment>
-        <translation type="vanished">Las fechas no están correctamente formateadas!</translation>
+        <translation type="vanished">¡Las fechas están mal formateadas!</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.cpp" line="202"/>
         <source>Dates are not properly formatted!</source>
-        <translation type="unfinished">Las fechas no están correctamente formateadas!</translation>
+        <translation type="unfinished">¡Las fechas están mal formateadas!</translation>
     </message>
     <message>
         <location filename="../src/dialogs/savedialog.cpp" line="202"/>
