@@ -28,6 +28,7 @@
 #include "game.h"
 #include "output.h"
 
+#include <qevent.h>
 #include <QDrag>
 #include <QHeaderView>
 #include <QMenu>
@@ -67,6 +68,7 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
     setSortingEnabled(true);
 
     setDragEnabled(true);
+    setAcceptDrops(true);
 }
 
 
@@ -517,4 +519,40 @@ void GameList::startDrag(Qt::DropActions /*supportedActions*/)
     pDrag->setPixmap(pixmap);
 
     pDrag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+}
+
+void GameList::dragEnterEvent(QDragEnterEvent *event)
+{
+    const QMimeData *mimeData = event->mimeData();
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+
+    if(dbMimeData || event->mimeData()->hasUrls())
+    {
+        event->acceptProposedAction();
+    }
+}
+
+void GameList::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->acceptProposedAction();
+}
+
+void GameList::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    event->accept();
+}
+
+void GameList::dropEvent(QDropEvent *event)
+{
+    const QMimeData *mimeData = event->mimeData();
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+
+    if(dbMimeData || mimeData->hasUrls())
+    {
+        emit signalDropEvent(event);
+    }
+    else
+    {
+        event->ignore();
+    }
 }

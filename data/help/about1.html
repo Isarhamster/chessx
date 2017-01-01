@@ -112,6 +112,13 @@ into this database by either dragging the games to that database or using "Copy 
 right-clicking or double-clicking into the database list or clicking onto the board's tab
 associated with the database. The currently selected database is highlighted in the database list!</p>
 
+<h3><a name="OpenGame"></a>Open or start a new game</h3>
+<p>Once you have opened or selected a database a described above, you can either start a new game by pressing CTRL+N or
+select a game from the list of games inside the database.</p>
+<p>If you want to start a game from a given position, enter CTRL-SHIFT-E to bring up the board editor. Within this editor,
+you can set up an arbitrary position or a Chess960 starting position. The editor checks the position for legality so you might
+need to adapt the castling rights or the side to move to make your position legal.</p>
+
 <h3><a name="Analyse"></a>Analysing games</h3>
 <p>There are two analysis windows where two different engines can be configured to analyse the current board position.</p>
 <p>Engines must be configured before in the Preferences Dialog. A default engine (Stockfish) comes with this installation
@@ -132,6 +139,7 @@ path + /log. What the program data path resolves to can be found in the About bo
 Whenever you make a move the engine in pane 1 will start to analyse the
 position for the time defined by the slider at the bottom right of the status bar. If the allotted time is over, the
 engine will make the best move found so far.</p>
+<p>If you start a game with Chess960 rules you will need an engine that supports this. The integrated Stockfish is ready for Chess960.</p>
 
 <h3><a name="Auto-Annotate"></a>Automatically annotating games</h3>
 <p><img src=":/images/annotate.png" width="42" align="left">Start an engine in the Analysis 1 window and select menu "Game->Auto Analysis". ChessX will start to move through the
@@ -189,7 +197,6 @@ depending on how popular it is (how often it was playing in the
 provided PGN file) and how much it "scored". This option bypasses the
 default mechanism and affects equal probability to all moves. This
 allows more variety of play.
-
 </ul>
 
 <h3><a name="Content"></a>Generating content</h3>
@@ -233,6 +240,13 @@ games that have a brother game, that is not included in the list and in addition
 brother has at least as many moves and comments as the games in the list.</p>
 <p>The context menu in the game list has a context menu entry "Filter twins" which for all selected
 games searches the whole database for exact duplicates. Both twins will appear in the filter list afterwards.</p>
+
+<h3><a name="Merge databases"></a>Merge complete databases</h3>
+<p>By dragging a database list item either onto a different database list item or by dragging it into the list of games,
+games are appended to the database where the item was dropped or into the currently active database in case the drop target
+is the list of games.</p>
+<p>You can also drag databases from the file system into the list of games to append all content into the current database.</p>
+<p>Dragging a database into the list of databases will open the database instead (i.e. it will not append to the database where it was dropped).</p>
 
 <h3><a name="Training"></a>Training Mode</h3>
 <p><img src=":/images/training.png" width="42" align="left">Selecting Game/Training starts the training mode. Moves starting from the current move are hidden on the game sheet. You can't modify a game

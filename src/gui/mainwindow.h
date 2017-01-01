@@ -393,6 +393,8 @@ public slots:
     void HandleFicsShowTimer(bool show);
     /** Set the time to be displayed */
     void HandleFicsShowTime(int color, QString t);
+    /** Accept Drop of database to a subordinate target */
+    void slotDatabaseDropped(QDropEvent*);
 protected slots:
     /** Update recent files menu */
     void updateMenuDatabases();

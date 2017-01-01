@@ -105,12 +105,18 @@ signals:
     void requestGameData(Game&);
     void signalFirstGameLoaded(bool);
     void signalLastGameLoaded(bool);
+    void signalDropEvent(QDropEvent*);
 
 protected: //Drag'n'Drop Support
     void startDrag(Qt::DropActions supportedActions);
     QModelIndex GetSourceIndex(const QModelIndex& index) const;
     QModelIndex NewSortIndex(int row) const;
     QModelIndex GetSortModelIndex(const QModelIndex& index) const;
+
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dragLeaveEvent(QDragLeaveEvent *event);
+    void dropEvent(QDropEvent *event);
 
 private:
     FilterModel* m_model;

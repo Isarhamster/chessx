@@ -48,9 +48,10 @@ public:
     /** Loads only moves into a game from the given position */
     void loadGameMoves(GameId gameId, Game& game);
 
-    // Open a PGN Data File from a string
+    /** Open a PGN Data File from a string */
     bool openString(const QString& content);
 
+    /** Get the number of games from a database */
     virtual quint64 count() const;
 
 protected:
@@ -95,7 +96,8 @@ protected:
     QIODevice* m_file;
     QString m_currentLine;
 
-private:
+    bool hasIndexFile() const;
+
     /** Resets/initialises important member variables. Called by constructor and close methods */
     void initialise();
 
@@ -107,6 +109,7 @@ private:
     /** Moves the file position to the start of the given game */
     void seekGame(GameId gameId);
 
+private:
 
     //file variables
     QString m_filename;

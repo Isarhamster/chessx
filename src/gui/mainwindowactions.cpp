@@ -31,6 +31,7 @@
 #include "game.h"
 #include "gamelist.h"
 #include "gamewindow.h"
+#include "GameMimeData.h"
 #include "historylabel.h"
 #include "mainwindow.h"
 #include "matchparameterdlg.h"
@@ -48,6 +49,7 @@
 #include "renametagdialog.h"
 #include "shellhelper.h"
 #include "settings.h"
+#include "streamdatabase.h"
 #include "tablebase.h"
 #include "tableview.h"
 #include "tagdialog.h"
@@ -2397,8 +2399,11 @@ void MainWindow::copyDatabase(QString target, QString src)
         DatabaseInfo* pDestDBInfo = getDatabaseInfoByPath(target);
         DatabaseInfo* pSrcDBInfo = getDatabaseInfoByPath(src);
 
+        bool done = false;
         if(pDestDBInfo && pSrcDB && pDestDB && (pSrcDB != pDestDB))
         {
+            // Both databases are open
+            done = true;
             for(int i = 0; i < (int)pSrcDB->count(); ++i)
             {
                 Game g;
@@ -2412,14 +2417,16 @@ void MainWindow::copyDatabase(QString target, QString src)
 
             pDestDBInfo->filter()->resize(pDestDB->count(), true);
         }
-        else if((!pSrcDB || (pSrcDBInfo && !pSrcDBInfo->modified())) && !pDestDB && (src != target))
+        else if((!pSrcDB || (pSrcDBInfo && !pSrcDBInfo->modified())) && !pDestDB)
         {
+            // Both databases are closed or the target is closed and the source unmodified (so that file can be used)
             QFile fSrc(src);
             QFile fDest(target);
 
             if(fSrc.open(QIODevice::ReadOnly) &&
                     fDest.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
             {
+                done = true;
                 QFileInfo fiSrc(fSrc);
                 QFileInfo fiDest(fDest);
                 QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(fiDest.fileName());
@@ -2432,14 +2439,74 @@ void MainWindow::copyDatabase(QString target, QString src)
                 }
             }
             fDest.close();
-            m_databaseList->update(target);
+            if (done)
+            {
+                m_databaseList->update(target);
+            }
+        }
+        else if (pSrcDB && pSrcDBInfo && pSrcDBInfo->modified() && !pDestDB)
+        {
+            // Src is open and modified, target is closed
+            QFile fDest(target);
+
+            if(fDest.isWritable())
+            {
+                done = true;
+                Output output(Output::Pgn);
+                output.append(target, *pSrcDB);
+
+                QFileInfo fiDest(target);
+                QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name()).arg(fiDest.fileName());
+                slotStatusMessage(msg);
+                m_databaseList->update(target);
+            }
+        }
+        else if (!pSrcDB && pDestDB)
+        {
+            // Source is closed, target is open
+            StreamDatabase streamDb;
+            if (streamDb.open(src, false))
+            {
+                Game g;
+                while (streamDb.loadNextGame(g))
+                {
+                    pDestDB->appendGame(g);
+                }
+                QFileInfo fiSrc(src);
+                QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(pDestDB->name());
+                slotStatusMessage(msg);
+                done = true;
+                pDestDBInfo->filter()->resize(pDestDB->count(), true);
+            }
         }
 
-        if(databaseInfo() == pDestDBInfo)
+        if(done && (databaseInfo() == pDestDBInfo))
         {
+            emit databaseChanged(databaseInfo());
             emit databaseModified();
         }
     }
+}
+
+
+void MainWindow::slotDatabaseDropped(QDropEvent *event)
+{
+    const QMimeData *mimeData = event->mimeData();
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+
+    if(dbMimeData && mimeData->hasUrls())
+    {
+        QString s = mimeData->urls().first().toString();
+        copyDatabase(databaseInfo()->filePath(), s);
+    }
+    else if(mimeData->hasUrls())
+    {
+        foreach (QUrl url, mimeData->urls())
+        {
+            copyDatabase(databaseInfo()->filePath(), url.path());
+        }
+    }
+    event->accept();
 }
 
 void MainWindow::slotDatabaseCopy(int preselect)
@@ -2575,10 +2642,11 @@ void MainWindow::slotDatabaseClearClipboard()
     }
 
     ((MemoryDatabase*)(m_databases[0]->database()))->clear();
+    m_databases[0]->clearLastGames();
     m_databases[0]->filter()->resize(0, false);
     m_databases[0]->newGame();
 
-    if (!m_currentDatabase->isClipboard())
+    if (m_currentDatabase->isClipboard())
     {
         emit databaseChanged(databaseInfo());
         emit databaseModified();

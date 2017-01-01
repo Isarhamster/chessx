@@ -125,6 +125,7 @@ void DatabaseInfo::close()
     delete m_database;
     delete m_filter;
 
+    clearLastGames();
     m_database = NULL;
     m_filter = NULL;
     disconnect(m_undoStack, SIGNAL(cleanChanged(bool)), this, SLOT(dbCleanChanged(bool)));
@@ -337,6 +338,11 @@ QString DatabaseInfo::ficsPath()
 bool DatabaseInfo::isClipboard() const
 {
     return database() && database()->IsClipboard();
+}
+
+void DatabaseInfo::clearLastGames()
+{
+    m_lastGames.clear();
 }
 
 bool DatabaseInfo::IsPGN() const

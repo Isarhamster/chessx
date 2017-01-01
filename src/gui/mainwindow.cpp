@@ -1499,6 +1499,7 @@ void MainWindow::setupActions()
                                         dbToolBar, ":/images/game_down.png");
     connect(m_gameList, SIGNAL(signalLastGameLoaded(bool)), nextAction, SLOT(setDisabled(bool)));
     connect(m_gameList, SIGNAL(signalFirstGameLoaded(bool)), prevAction, SLOT(setDisabled(bool)));
+    connect(m_gameList, SIGNAL(signalDropEvent(QDropEvent*)), this, SLOT(slotDatabaseDropped(QDropEvent*)));
     loadMenu->addAction(nextAction);
     loadMenu->addAction(prevAction);
     loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
@@ -1957,6 +1958,8 @@ void MainWindow::slotVersionFound(int major, int minor, int build)
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
+    m_pDragTabBar = 0;
+    m_tabDragIndex = -1;
     const QMimeData *mimeData = event->mimeData();
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
@@ -1984,7 +1987,7 @@ void MainWindow::dragMoveEvent(QDragMoveEvent *event)
         m_dragTimer->stop();
         m_tabDragIndex = tabIndex;
         m_pDragTabBar = pTabBar;
-        m_dragTimer->start(500);
+        m_dragTimer->start(200);
     }
     if (tabIndex == -1)
     {
@@ -1998,12 +2001,16 @@ void MainWindow::dragMoveEvent(QDragMoveEvent *event)
 
 void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
 {
+    m_pDragTabBar = 0;
+    m_tabDragIndex = -1;
     m_dragTimer->stop();
     event->accept();
 }
 
 void MainWindow::dropEvent(QDropEvent *event)
 {
+    m_pDragTabBar = 0;
+    m_tabDragIndex = -1;
     m_dragTimer->stop();
     event->ignore();
 }
