@@ -156,7 +156,10 @@ void MemoryDatabase::parseGame()
         game->dbSetStartingBoard(fen, chess960);
     }
     m_index.setValidFlag(m_count - 1, parseMoves(game));
-    m_index.setTag(TagNameLength, QString::number((game->plyCount() + 1) / 2), m_count - 1);
+
+    QString valLength = QString::number((game->plyCount() + 1) / 2);
+    m_index.setTag(TagNameLength, valLength, m_count - 1);
+    game->setTag(TagNameLength, valLength);
 
     QString eco = game->tag(TagNameECO).left(3);
     if(eco == "?")

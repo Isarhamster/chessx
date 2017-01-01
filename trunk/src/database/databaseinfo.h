@@ -122,6 +122,7 @@ public:
     bool isClipboard() const;
 
     const CircularBuffer<int>& lastGames() const { return m_lastGames; }
+    void clearLastGames();
 
 protected:
     void doLoadFile(QString filename);

@@ -52,6 +52,8 @@ public:
     virtual bool parseFile() = 0;
     /** File-based database name */
     virtual QString filename() const = 0;
+    /** Determine if index files are supported */
+    virtual bool hasIndexFile() const { return false; }
 
     /** Returns whether the database is read-only or not */
     virtual bool isReadOnly() const;

@@ -1021,6 +1021,23 @@ bool Output::append(const QString& filename, Game& game)
     return true;
 }
 
+void Output::append(const QString& filename, Database& database)
+{
+    QFile f(filename);
+    if(!f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+    {
+        return;
+    }
+    QTextStream out(&f);
+    if((m_outputType == Html) || (m_outputType == NotationWidget))
+    {
+        out.setCodec(QTextCodec::codecForName("utf8"));
+    }
+    out << endl;
+    output(out, database);
+    f.close();
+}
+
 void Output::setTemplateFile(QString filename)
 {
     if(filename.isEmpty())

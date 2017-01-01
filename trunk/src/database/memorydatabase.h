@@ -59,6 +59,7 @@ public:
 
 protected:
     virtual void parseGame();
+    virtual bool hasIndexFile() const { return false; }
 
 private:
     QVector <Game*> m_games;

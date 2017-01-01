@@ -125,6 +125,8 @@ public:
 
     /** Append output to a closed file */
     bool append(const QString& filename, Game& game);
+    /** Append a database to a closed file */
+    void append(const QString& filename, Database& database);
 
     /** User definable settings.
      * Sets the filename of the file that contains the template that will be used
