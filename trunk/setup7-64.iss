@@ -44,7 +44,7 @@ Source: "..\build-chessx-W7_amd64-Release\release\*.dll"; DestDir: "{app}"; Flag
 Source: "..\build-chessx-W7_amd64-Release\release\chessx.exe.local"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\COPYING"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ChangeLog"; DestDir: "{app}"
-Source: ".\data\engines\uci\stockfish-7-x64.exe"; DestDir: "{app}\data\engines\uci\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\data\engines\uci\stockfish_8_x64.exe"; DestDir: "{app}\data\engines\uci\"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\data\timeseal\windows\*.exe"; DestDir: "{app}\data\timeseal\windows\"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
