@@ -382,9 +382,12 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Restoring layouts */
     if(!AppSettings->layout(this))
     {
-        resize(800, 600);
+        resize(1400, 600);
     }
-    m_boardSplitter->restoreState(AppSettings->value("/MainWindow/BoardSplit").toByteArray());
+    else
+    {
+        m_boardSplitter->restoreState(AppSettings->value("/MainWindow/BoardSplit").toByteArray());
+    }
 
     /* Status */
     m_statusFilter = new QLabel();
@@ -402,15 +405,20 @@ MainWindow::MainWindow() : QMainWindow(),
 
     m_sliderSpeed = new TranslatingSlider(this);
     m_sliderSpeed->setMultiplier(1000);
+    m_sliderSpeed->setMultiplier2(10000);
     m_sliderSpeed->setOrientation(Qt::Horizontal);
-    m_sliderSpeed->setMinimum(0);
-    m_sliderSpeed->setMaximum(60);
+    m_sliderSpeed->setMinimum(0);  // O = Infinite
+    m_sliderSpeed->setStart2(30);  // Step 10s after 30s
+    m_sliderSpeed->setMaximum(87); // 10 Minutes
     m_sliderSpeed->setTranslatedValue(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
     m_sliderSpeed->setTickInterval(1);
     m_sliderSpeed->setTickPosition(QSlider::NoTicks);
-    m_sliderSpeed->setMaximumWidth(400);
-    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
+    m_sliderSpeed->setSingleStep(1);
+    m_sliderSpeed->setPageStep(1);
+    m_sliderSpeed->setMinimumWidth(100); // 87 + some pixel for overlapping slider
+    m_sliderSpeed->setMaximumWidth(400); // Arbitrary limit - not really needed
 
+    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));
     connect(m_mainAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
     connect(m_secondaryAnalysis, SIGNAL(receivedBestMove(const Analysis&)), this, SLOT(slotEngineTimeout(const Analysis&)));
 
@@ -435,8 +443,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_sliderText->setFixedWidth(m_sliderText->sizeHint().width());
 
     statusBar()->addPermanentWidget(m_sliderText);
-    connect(m_sliderSpeed, SIGNAL(valueChanged(int)), this, SLOT(slotSetSliderText(int)));
-    slotSetSliderText(m_sliderSpeed->value());
+    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), this, SLOT(slotSetSliderText(int)));
+    slotSetSliderText(m_sliderSpeed->translatedValue());
 
     statusBar()->setFixedHeight(statusBar()->height());
     statusBar()->setSizeGripEnabled(true);

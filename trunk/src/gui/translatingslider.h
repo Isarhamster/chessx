@@ -21,6 +21,9 @@ public:
 
     int translatedValue() const;
 
+    void setStart2(int start2);
+    void setMultiplier2(int multiplier2);
+
 signals:
     void translatedValueChanged(int);
 
@@ -33,6 +36,10 @@ protected slots:
 protected:
     int m_offset;
     int m_multiplier;
+    int m_start2;
+    int m_multiplier2;
+protected:
+    int translateValue(int v) const;
 };
 
 #endif // TRANSLATINGSLIDER_H

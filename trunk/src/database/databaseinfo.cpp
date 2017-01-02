@@ -155,11 +155,11 @@ bool DatabaseInfo::loadGame(GameId index)
     {
         return false;
     }
-
     if(!m_database->loadGame(index, m_game))
     {
         return false;
     }
+
     m_lastGames.push_back(index);
     m_index = index;
     int n = m_filter ? m_filter->gamePosition(index) - 1 : 0;
@@ -319,6 +319,11 @@ void DatabaseInfo::resetFilter()
     }
 }
 
+void DatabaseInfo::clearLastGames()
+{
+    m_lastGames.clear();
+}
+
 bool DatabaseInfo::IsLoaded() const
 {
     return m_bLoaded;
@@ -338,11 +343,6 @@ QString DatabaseInfo::ficsPath()
 bool DatabaseInfo::isClipboard() const
 {
     return database() && database()->IsClipboard();
-}
-
-void DatabaseInfo::clearLastGames()
-{
-    m_lastGames.clear();
 }
 
 bool DatabaseInfo::IsPGN() const
@@ -372,13 +372,13 @@ bool DatabaseInfo::IsBook() const
     return IsBook(m_filename);
 }
 
-bool DatabaseInfo::IsPolyglotBook(QString s)
+/* static */ bool DatabaseInfo::IsPolyglotBook(QString s)
 {
     QFileInfo fi(s);
     return (fi.suffix().toLower() == "bin");
 }
 
-bool DatabaseInfo::IsBook(QString s)
+/* static */ bool DatabaseInfo::IsBook(QString s)
 {
     // Add here if more book formats come in
     return IsPolyglotBook(s);

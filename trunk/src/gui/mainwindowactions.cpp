@@ -3240,7 +3240,8 @@ void MainWindow::slotSetSliderText(int interval)
     }
     else
     {
-        m_sliderText->setText(QString::number(interval)+"s");
+        QTime t = QTime::fromMSecsSinceStartOfDay(interval);
+        m_sliderText->setText(t.toString("mm:ss"));
     }
 }
 
