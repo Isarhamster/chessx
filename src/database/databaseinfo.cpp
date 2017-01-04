@@ -319,6 +319,11 @@ void DatabaseInfo::resetFilter()
     }
 }
 
+QString DatabaseInfo::dbPath() const
+{
+    return database()->filename();
+}
+
 void DatabaseInfo::clearLastGames()
 {
     m_lastGames.clear();
@@ -343,16 +348,6 @@ QString DatabaseInfo::ficsPath()
 bool DatabaseInfo::isClipboard() const
 {
     return database() && database()->IsClipboard();
-}
-
-bool DatabaseInfo::IsPGN() const
-{
-    if (m_filename.isEmpty())
-    {
-        return true;
-    }
-    QFileInfo fi(m_filename);
-    return (fi.suffix().toLower() == "pgn");
 }
 
 bool DatabaseInfo::IsFicsDB() const

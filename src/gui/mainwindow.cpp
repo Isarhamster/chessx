@@ -757,7 +757,7 @@ DatabaseInfo* MainWindow::getDatabaseInfoByPath(QString path)
 {
     for(int i = 0; i < m_databases.count(); ++i)
     {
-        if(m_databases[i]->filePath() == path)
+        if(m_databases[i]->displayName() == path)
         {
             return m_databases[i];
         }
@@ -1118,7 +1118,7 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
         delete db;
         return;
     }
-    QString fname = db->filePath();
+    QString fname = db->displayName();
     QFileInfo fi = QFileInfo(fname);
     QString basefile = fi.completeBaseName();
 
@@ -1971,7 +1971,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
     const QMimeData *mimeData = event->mimeData();
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
-    if(mimeData->hasUrls() || gameMimeData || dbMimeData)
+    if((mimeData && mimeData->hasUrls()) || gameMimeData || dbMimeData)
     {
         event->acceptProposedAction();
     }

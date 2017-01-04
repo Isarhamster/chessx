@@ -279,7 +279,7 @@ void DatabaseList::dragEnterEvent(QDragEnterEvent *event)
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
 
-    if(gameMimeData || dbMimeData || event->mimeData()->hasUrls())
+    if(gameMimeData || dbMimeData || (mimeData && mimeData->hasUrls()))
     {
         event->acceptProposedAction();
     }
@@ -312,7 +312,7 @@ void DatabaseList::dropEvent(QDropEvent *event)
         QString s = mimeData->urls().first().toString();
         appendDataBaseToDataBase(event->pos(), s);
     }
-    else if(mimeData->hasUrls())
+    else if(mimeData && mimeData->hasUrls())
     {
         QList<QUrl> urlList = mimeData->urls();
         foreach(QUrl url, urlList)

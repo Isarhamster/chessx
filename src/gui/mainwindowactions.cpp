@@ -16,6 +16,7 @@
 #include "boardviewex.h"
 #include "copydialog.h"
 #include "chessbrowser.h"
+#include "clipboarddatabase.h"
 #include "compileeco.h"
 #include "databaseinfo.h"
 #include "databaselist.h"
@@ -215,7 +216,7 @@ void MainWindow::slotFileClose()
 
                 DatabaseInfo* aboutToClose = databaseInfo();
                 m_openingTreeWidget->cancel();
-                m_databaseList->setFileClose(aboutToClose->filePath(), aboutToClose->currentIndex());
+                m_databaseList->setFileClose(aboutToClose->displayName(), aboutToClose->currentIndex());
 
                 m_databases.removeAt(m_databases.indexOf(m_currentDatabase));
                 aboutToClose->close();
@@ -253,7 +254,7 @@ void MainWindow::slotFileCloseIndex(int n)
 
             m_openingTreeWidget->cancel();
 
-            m_databaseList->setFileClose(m_databases[n]->filePath(), m_databases[n]->currentIndex());
+            m_databaseList->setFileClose(m_databases[n]->displayName(), m_databases[n]->currentIndex());
 
             m_databases[n]->close();
 
@@ -2306,7 +2307,7 @@ void MainWindow::slotDatabaseChange()
             autoGroup->untrigger();
             m_currentDatabase = db;
             activateBoardViewForDbIndex(m_currentDatabase);
-            m_databaseList->setFileCurrent(databaseInfo()->filePath());
+            m_databaseList->setFileCurrent(databaseInfo()->displayName());
             slotDatabaseChanged();
             if(database()->isReadOnly())
             {
@@ -2352,7 +2353,7 @@ void MainWindow::copyGames(QString fileName, QList<int> indexes)
 {
     for(int i = 0; i < m_databases.count(); ++i)
     {
-        if(m_databases[i]->filePath() == fileName)
+        if(m_databases[i]->displayName() == fileName)
         {
             if(m_databases[i]->isValid())
             {
@@ -2394,13 +2395,15 @@ void MainWindow::copyDatabase(QString target, QString src)
 {
     if(target != src)
     {
+        QFileInfo fiSrc(src);
+        QFileInfo fiDest(target);
         Database* pSrcDB = getDatabaseByPath(src);
         Database* pDestDB = getDatabaseByPath(target);
         DatabaseInfo* pDestDBInfo = getDatabaseInfoByPath(target);
         DatabaseInfo* pSrcDBInfo = getDatabaseInfoByPath(src);
 
         bool done = false;
-        if(pDestDBInfo && pSrcDB && pDestDB && (pSrcDB != pDestDB))
+        if(pDestDBInfo && pSrcDB && pDestDB && (pSrcDB != pDestDB) && !pDestDBInfo->IsBook() && !pSrcDBInfo->IsBook())
         {
             // Both databases are open
             done = true;
@@ -2417,18 +2420,18 @@ void MainWindow::copyDatabase(QString target, QString src)
 
             pDestDBInfo->filter()->resize(pDestDB->count(), true);
         }
-        else if((!pSrcDB || (pSrcDBInfo && !pSrcDBInfo->modified())) && !pDestDB)
+        else if((!pSrcDB || (pSrcDBInfo && !pSrcDBInfo->IsBook() && !pSrcDBInfo->modified())) && !pDestDB)
         {
             // Both databases are closed or the target is closed and the source unmodified (so that file can be used)
             QFile fSrc(src);
             QFile fDest(target);
 
-            if(fSrc.open(QIODevice::ReadOnly) &&
+            if(fiDest.exists() && fiDest.suffix()=="pgn"
+                    && fiSrc.exists() && fiSrc.suffix()=="pgn"
+                    && fSrc.open(QIODevice::ReadOnly) &&
                     fDest.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
             {
                 done = true;
-                QFileInfo fiSrc(fSrc);
-                QFileInfo fiDest(fDest);
                 QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(fiDest.fileName());
                 slotStatusMessage(msg);
                 fDest.write("\n");
@@ -2437,14 +2440,15 @@ void MainWindow::copyDatabase(QString target, QString src)
                     QByteArray line = fSrc.readLine();
                     fDest.write(line);
                 }
+                fSrc.close();
+                fDest.close();
             }
-            fDest.close();
             if (done)
             {
                 m_databaseList->update(target);
             }
         }
-        else if (pSrcDB && pSrcDBInfo && pSrcDBInfo->modified() && !pDestDB)
+        else if (pSrcDB && pSrcDBInfo && !pSrcDBInfo->IsBook() && pSrcDBInfo->modified() && !pDestDB && fiDest.exists() && fiDest.suffix()=="pgn")
         {
             // Src is open and modified, target is closed
             QFile fDest(target);
@@ -2455,13 +2459,12 @@ void MainWindow::copyDatabase(QString target, QString src)
                 Output output(Output::Pgn);
                 output.append(target, *pSrcDB);
 
-                QFileInfo fiDest(target);
                 QString msg = tr("Append games from %1 to %2.").arg(pSrcDB->name()).arg(fiDest.fileName());
                 slotStatusMessage(msg);
                 m_databaseList->update(target);
             }
         }
-        else if (!pSrcDB && pDestDB)
+        else if (!pSrcDB && fiSrc.exists() && fiSrc.suffix()=="pgn" && pDestDB)
         {
             // Source is closed, target is open
             StreamDatabase streamDb;
@@ -2472,7 +2475,6 @@ void MainWindow::copyDatabase(QString target, QString src)
                 {
                     pDestDB->appendGame(g);
                 }
-                QFileInfo fiSrc(src);
                 QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(pDestDB->name());
                 slotStatusMessage(msg);
                 done = true;
@@ -2497,13 +2499,13 @@ void MainWindow::slotDatabaseDropped(QDropEvent *event)
     if(dbMimeData && mimeData->hasUrls())
     {
         QString s = mimeData->urls().first().toString();
-        copyDatabase(databaseInfo()->filePath(), s);
+        copyDatabase(databaseInfo()->displayName(), s);
     }
-    else if(mimeData->hasUrls())
+    else if(mimeData && mimeData->hasUrls())
     {
         foreach (QUrl url, mimeData->urls())
         {
-            copyDatabase(databaseInfo()->filePath(), url.path());
+            copyDatabase(databaseInfo()->displayName(), url.path());
         }
     }
     event->accept();
@@ -3079,7 +3081,7 @@ void MainWindow::slotActivateBoardView(int n)
 
         emit signalGameModified(databaseInfo()->modified());
         slotGameChanged(true);
-        m_databaseList->setFileCurrent(databaseInfo()->filePath());
+        m_databaseList->setFileCurrent(databaseInfo()->displayName());
         database()->index()->calculateCache();
         updateLastGameList();
         setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
@@ -3250,7 +3252,7 @@ void MainWindow::slotUpdateOpeningTreeWidget()
     QStringList files; // List of all open files excluding ClipBoard
     for(int i = 1; i < m_databases.count(); i++)
     {
-        QString displayName = m_databases[i]->filePath();
+        QString displayName = m_databases[i]->displayName();
         files << displayName;
     }
     emit signalUpdateDatabaseList(files);

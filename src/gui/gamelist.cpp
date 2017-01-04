@@ -526,7 +526,7 @@ void GameList::dragEnterEvent(QDragEnterEvent *event)
     const QMimeData *mimeData = event->mimeData();
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
 
-    if(dbMimeData || event->mimeData()->hasUrls())
+    if(dbMimeData || (mimeData && mimeData->hasUrls()))
     {
         event->acceptProposedAction();
     }
@@ -547,7 +547,7 @@ void GameList::dropEvent(QDropEvent *event)
     const QMimeData *mimeData = event->mimeData();
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
 
-    if(dbMimeData || mimeData->hasUrls())
+    if(dbMimeData || (mimeData && mimeData->hasUrls()))
     {
         emit signalDropEvent(event);
     }

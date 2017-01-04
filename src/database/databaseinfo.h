@@ -90,16 +90,16 @@ public:
     /** Resizes the filter to the number of games in the database and puts
          *  all games in the filter.*/
     void resetFilter();
-    QString filePath() const
+    QString displayName() const
     {
         return m_filename;
     }
+    QString dbPath() const;
 
     bool IsLoaded() const;
     bool IsUtf8() const;
 
     bool IsFicsDB() const;
-    bool IsPGN() const;
     bool IsPolyglotBook() const;
     bool IsBook() const;
 

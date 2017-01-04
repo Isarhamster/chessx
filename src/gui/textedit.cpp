@@ -841,7 +841,7 @@ void PasteTextEdit::insertUsingMimeData(const QMimeData *source)
 
 bool PasteTextEdit::canInsertFromMimeData(const QMimeData *source) const
 {
-    return source->hasImage() || source->hasUrls() || QTextEdit::canInsertFromMimeData(source);
+    return source && (source->hasImage() || source->hasUrls() || QTextEdit::canInsertFromMimeData(source));
 }
 
 void PasteTextEdit::insertImage(const QImage& image)
@@ -852,6 +852,7 @@ void PasteTextEdit::insertImage(const QImage& image)
 
 void PasteTextEdit::insertFromMimeData(const QMimeData *source)
 {
+    if (!source) return;
     if (source->hasImage())
     {
         insertImage(qvariant_cast<QImage>(source->imageData()));
