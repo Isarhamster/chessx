@@ -166,8 +166,8 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_ficsConsole, SIGNAL(ReceivedBoard(int,QString)), this, SLOT(HandleFicsBoardRequest(int,QString)));
     connect(m_ficsConsole, SIGNAL(SignalGameResult(QString)), this, SLOT(HandleFicsResultRequest(QString)));
     connect(m_ficsConsole, SIGNAL(RequestNewGame()), this, SLOT(HandleFicsNewGameRequest()));
-    connect(m_ficsConsole, SIGNAL(FicsShowTimer(bool)), this, SLOT(HandleFicsShowTimer(bool)));
-    connect(m_ficsConsole, SIGNAL(FicsShowTime(int, QString)), this, SLOT(HandleFicsShowTime(int,QString)));
+    connect(m_ficsConsole, SIGNAL(FicsShowTimer(bool)), this, SLOT(SlotShowTimer(bool)));
+    connect(m_ficsConsole, SIGNAL(FicsShowTime(int, QString)), this, SLOT(SlotDisplayTime(int,QString)));
     connect(m_ficsConsole, SIGNAL(RequestSaveGame()), this, SLOT(HandleFicsSaveGameRequest()));
     connect(m_ficsConsole, SIGNAL(RequestCloseFICS()), this, SLOT(HandleFicsCloseRequest()));
     connect(m_ficsConsole, SIGNAL(RequestAddTag(QString,QString)), this, SLOT(HandleFicsAddTagRequest(QString,QString)));
@@ -1530,14 +1530,14 @@ void MainWindow::setupActions()
     autoGroup = new ExclusiveActionGroup(this);
     autoGroupTraining = new ExclusiveActionGroup(this);
 
-    QAction* match = createAction(tr("Match"), SLOT(slotToggleGameMode()), Qt::CTRL + Qt::Key_M, gameToolBar, ":/images/black_chess.png");
-    match->setCheckable(true);
+    m_match = createAction(tr("Match"), SLOT(slotToggleGameMode()), Qt::CTRL + Qt::Key_M, gameToolBar, ":/images/black_chess.png");
+    m_match->setCheckable(true);
 
-    autoGroupTraining->addAction(match);
-    autoGroup->addAction(match);
-    gameMenu->addAction(match);
+    autoGroupTraining->addAction(m_match);
+    autoGroup->addAction(m_match);
+    gameMenu->addAction(m_match);
     gameMenu->addSeparator();
-    connect(match, SIGNAL(changed()), SLOT(slotToggleGameMode()));
+    connect(m_match, SIGNAL(changed()), SLOT(slotToggleGameMode()));
 
     m_training = createAction(tr("Training"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::Key_R, gameToolBar, ":/images/training.png");
     m_training->setCheckable(true);

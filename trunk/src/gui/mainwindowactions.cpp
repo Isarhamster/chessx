@@ -625,13 +625,13 @@ BoardViewEx* MainWindow::BoardViewFrame()
     return frame;
 }
 
-void MainWindow::HandleFicsShowTimer(bool show)
+void MainWindow::SlotShowTimer(bool show)
 {
     BoardViewEx* frame = BoardViewFrame();
     if (frame) frame->showTime(show);
 }
 
-void MainWindow::HandleFicsShowTime(int color, QString t)
+void MainWindow::SlotDisplayTime(int color, QString t)
 {
     BoardViewEx* frame = BoardViewFrame();
     if (frame) frame->setTime(color==White, t);
@@ -896,46 +896,92 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                 if(game().atLineEnd())
                 {
                     QString annot;
-                    if (m_autoRespond->isChecked())
+                    if (m_autoRespond->isChecked() || m_match->isChecked())
                     {
                         int t = m_elapsedUserTimeValid ? m_elapsedUserTime.elapsed() : 0;
-                        t = t - m_matchParameter.ms_bonus;
-                        if (t<0) t = 0;
-                        t = t - m_matchParameter.ms_increment;
-                        m_matchTime[game().board().toMove()] += t;
+                        int increment = 0;
+                        if (m_autoRespond->isChecked())
+                        {
+                            increment += m_matchParameter.ms_bonus;
+                            increment = std::min(t, increment);
+                        }
+                        increment += m_matchParameter.ms_increment;
+                        Color currentColor = game().board().toMove();
+                        m_matchTime[currentColor] += t;
 
                         EngineParameter par = m_matchParameter;
                         par.ms_white = m_matchParameter.ms_totalTime - m_matchTime[White];
                         par.ms_black = m_matchParameter.ms_totalTime - m_matchTime[Black];
 
-                        m_mainAnalysis->unPin();
-                        m_mainAnalysis->setMoveTime(par);
-
-                        if (!m_elapsedUserTimeValid && !m_mainAnalysis->isEngineRunning())
+                        bool ok = true;
+                        if (par.tm != EngineParameter::TIME_GONG && m_matchTime[currentColor] > (int) m_matchParameter.ms_totalTime)
                         {
-                            m_mainAnalysis->startEngine();
-                        }
-
-                        QTime tm(0,0);
-                        tm = tm.addMSecs(game().board().toMove()==White ? par.ms_white : par.ms_black);
-                        QString sTime = tm.toString("H:mm:ss");
-                        HandleFicsShowTime(game().board().toMove(), sTime);
-                        BoardViewFrame()->startTime(game().board().toMove()==Black);
-
-                        if (par.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()] > (int) m_matchParameter.ms_totalTime)
-                        {
+                            ok = false;
                             playSound(":/sounds/fanfare.wav");
-                            m_autoRespond->trigger();
+                            if (m_autoRespond->isChecked())
+                            {
+                                m_autoRespond->trigger();
+                            }
+                            else
+                            {
+                                m_match->trigger();
+                            }
                             if (game().isMainline())
                             {
-                                game().dbSetAnnotation(tr("Time is over"));
+                                annot = tr("Time is over");
                                 setResultAgainstColorToMove();
                             }
                         }
-                        else if (par.annotateEgt && par.tm != EngineParameter::TIME_GONG)
+
+                        if (ok)
                         {
-                            QString clk = "[%clk %1]";
-                            annot = clk.arg(sTime);
+                            // Correct move time with increment if move was done in time
+                            m_matchTime[currentColor] -= increment;
+                            if (currentColor==White)
+                            {
+                                par.ms_white += increment;
+                            }
+                            else
+                            {
+                                par.ms_black += increment;
+                            }
+                        }
+
+                        QTime tm(0,0);
+                        tm = tm.addMSecs(currentColor==White ? par.ms_white : par.ms_black);
+                        QString sTime = tm.toString("H:mm:ss");
+                        SlotDisplayTime(currentColor, sTime);
+                        if (ok)
+                        {
+                            BoardViewFrame()->startTime(currentColor==Black);
+                        }
+                        else
+                        {
+                            BoardViewFrame()->stopTimes();
+                        }
+
+                        if (ok)
+                        {
+                            if (par.annotateEgt && par.tm != EngineParameter::TIME_GONG)
+                            {
+                                QString clk = "[%clk %1]";
+                                annot = clk.arg(sTime);
+                            }
+
+                            if (m_match->isChecked())
+                            {
+                                m_elapsedUserTimeValid = true;
+                                m_elapsedUserTime.start();
+                            }
+                            else if (m_autoRespond->isChecked())
+                            {
+                                m_mainAnalysis->unPin();
+                                m_mainAnalysis->setMoveTime(par);
+                                if (!m_elapsedUserTimeValid && !m_mainAnalysis->isEngineRunning())
+                                {
+                                    m_mainAnalysis->startEngine();
+                                }
+                            }
                         }
                     }
 
@@ -946,13 +992,20 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                     }
                     else
                     {
-                        if (m_autoRespond->isChecked())
+                        if (m_autoRespond->isChecked() || m_match->isChecked())
                         {
                             if (game().board().isStalemate() ||
                                 game().board().isCheckmate())
                             {
                                 playSound(":/sounds/fanfare.wav");
-                                m_autoRespond->trigger();
+                                if (m_autoRespond->isChecked())
+                                {
+                                    m_autoRespond->trigger();
+                                }
+                                else
+                                {
+                                    m_match->trigger();
+                                }
                                 setResultForCurrentPosition();
                             }
                         }
@@ -1762,22 +1815,35 @@ void MainWindow::slotToggleAutoRespond()
             return;
         }
 
-        HandleFicsShowTimer(true);
-
         m_matchParameter.reset();
+
+        QTime tmWhite(0,0);
+        tmWhite = tmWhite.addMSecs(m_matchParameter.ms_white);
+        SlotDisplayTime(White, tmWhite.toString("H:mm:ss"));
+
+        QTime tmBlack(0,0);
+        tmBlack = tmBlack.addMSecs(m_matchParameter.ms_black);
+        SlotDisplayTime(Black, tmBlack.toString("H:mm:ss"));
+
+        SlotShowTimer(true);
+
         m_mainAnalysis->setMoveTime(m_matchParameter);
         m_machineHasToMove = m_matchParameter.engineStarts;
         m_boardView->setFlags(m_boardView->flags() | BoardView::IgnoreSideToMove);
+        if (m_matchParameter.engineStarts)
         {
-            if (m_matchParameter.engineStarts)
             m_boardView->setFlipped(game().board().toMove() == White);
             triggerBoardMove();
             slotGameChanged(true);
         }
+        else
+        {
+            m_boardView->setFlipped(game().board().toMove() == Black);
+        }
     }
     else
     {
-        HandleFicsShowTimer(false);
+        SlotShowTimer(false);
         m_mainAnalysis->stopEngine();
         // Reset to value from slider
         m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
@@ -1833,9 +1899,6 @@ void MainWindow::slotToggleEngineMatch()
             return;
         }
 
-        HandleFicsShowTimer(true);
-
-        m_AutoInsertLastBoard.clear();
         if(!m_mainAnalysis->isEngineConfigured())
         {
             MessageDialog::information(tr("Analysis Pane 1 is not running an engine for automatic analysis."), tr("Engine Match"));
@@ -1847,6 +1910,18 @@ void MainWindow::slotToggleEngineMatch()
         else
         {
             m_matchParameter.reset();
+
+            QTime tmWhite(0,0);
+            tmWhite = tmWhite.addMSecs(m_matchParameter.ms_white);
+            SlotDisplayTime(White, tmWhite.toString("H:mm:ss"));
+
+            QTime tmBlack(0,0);
+            tmBlack = tmBlack.addMSecs(m_matchParameter.ms_black);
+            SlotDisplayTime(Black, tmBlack.toString("H:mm:ss"));
+
+            SlotShowTimer(true);
+
+            m_AutoInsertLastBoard.clear();
 
             m_mainAnalysis->unPin();
             m_mainAnalysis->setOnHold(true);
@@ -1881,7 +1956,7 @@ void MainWindow::slotToggleEngineMatch()
     }
     else
     {
-        HandleFicsShowTimer(false);
+        SlotShowTimer(false);
 
         if (!autoGroup->checkedAction())
         {
@@ -1953,7 +2028,7 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
     QTime tm(0,0);
     tm = tm.addMSecs(game().board().toMove()==White ? matchParameter.ms_white : matchParameter.ms_black);
     QString sTime = tm.toString("H:mm:ss");
-    HandleFicsShowTime(game().board().toMove(), sTime);
+    SlotDisplayTime(game().board().toMove(), sTime);
     BoardViewFrame()->startTime(game().board().toMove()==Black);
 
     QString annot;
@@ -1977,6 +2052,13 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
         playSound(":/sounds/move.wav");
     }
     return true;
+}
+
+bool MainWindow::gameIsDraw() const
+{
+    return (game().board().insufficientMaterial() ||
+           game().positionRepetition3(game().board()) ||
+           game().board().halfMoveClock() > 99);
 }
 
 QString MainWindow::drawAnnotation() const
@@ -2030,9 +2112,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         setResultAgainstColorToMove();
                     }
                 }
-                else if (game().board().insufficientMaterial() ||
-                    game().positionRepetition3(game().board()) ||
-                    game().board().halfMoveClock() > 99)
+                else if (gameIsDraw())
                 {
                     playSound(":/sounds/fanfare.wav");
                     // Game is drawn by repetition or 50 move rule
@@ -2091,7 +2171,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             QTime tm(0,0);
             tm = tm.addMSecs(game().board().toMove()==White ? m_matchParameter.ms_white : m_matchParameter.ms_black);
             QString sTime = tm.toString("H:mm:ss");
-            HandleFicsShowTime(game().board().toMove(), sTime);
+            SlotDisplayTime(game().board().toMove(), sTime);
             BoardViewFrame()->startTime(game().board().toMove()==Black);
 
             if (m_matchParameter.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()] > m_matchParameter.ms_totalTime)
@@ -2104,9 +2184,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                     setResultAgainstColorToMove();
                 }
             }
-            else if (game().board().insufficientMaterial() ||
-                game().positionRepetition3(game().board()) ||
-                game().board().halfMoveClock() > 99)
+            else if (gameIsDraw())
             {
                 playSound(":/sounds/fanfare.wav");
                 m_engineMatch->trigger();
@@ -3294,7 +3372,32 @@ void MainWindow::slotBookBuildError(QString /*path*/)
 
 void MainWindow::slotToggleGameMode()
 {
-    enterGameMode(qobject_cast<QAction*>(sender())->isChecked());
+    if (m_match->isChecked() != gameMode())
+    {
+        enterGameMode(m_match->isChecked());
+        if(m_match->isChecked())
+        {
+            if (!MatchParameterDlg::getParametersForMatch(m_matchParameter))
+            {
+                m_match->setChecked(false);
+                return;
+            }
+        }
+        m_matchParameter.reset();
+        m_matchTime[0] = 0;
+        m_matchTime[1] = 0;
+        m_elapsedUserTimeValid = false;
+
+        QTime tmWhite(0,0);
+        tmWhite = tmWhite.addMSecs(m_matchParameter.ms_white);
+        SlotDisplayTime(White, tmWhite.toString("H:mm:ss"));
+
+        QTime tmBlack(0,0);
+        tmBlack = tmBlack.addMSecs(m_matchParameter.ms_black);
+        SlotDisplayTime(Black, tmBlack.toString("H:mm:ss"));
+
+        SlotShowTimer(gameMode());
+    }
 }
 
 void MainWindow::slotFlipView(bool flip)

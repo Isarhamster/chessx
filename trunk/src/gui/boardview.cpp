@@ -922,14 +922,15 @@ void BoardView::wheelEvent(QWheelEvent* e)
 
 void BoardView::setFlipped(bool flipped)
 {
+    bool wasFlipped = m_flipped;
     m_flipped = flipped;
     update();
+    emit signalFlipped(wasFlipped, m_flipped);
 }
 
 void BoardView::flip()
 {
-    m_flipped = !m_flipped;
-    update();
+    setFlipped(!m_flipped);
 }
 
 bool BoardView::isFlipped() const

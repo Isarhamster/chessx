@@ -28,7 +28,10 @@ public slots:
     void setTime(bool white, QString t);
     void startTime(bool white);
     void configureTime(bool white, bool countDown);
+    void stopTimes();
 
+protected slots:
+    void boardIsFlipped(bool, bool);
 private:
     Ui::BoardViewEx *ui;
 };

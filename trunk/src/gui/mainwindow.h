@@ -390,9 +390,9 @@ public slots:
     /** Close FICS upon request from the console */
     void HandleFicsCloseRequest();
     /** Show a game timer and reset the time to be displayed */
-    void HandleFicsShowTimer(bool show);
+    void SlotShowTimer(bool show);
     /** Set the time to be displayed */
-    void HandleFicsShowTime(int color, QString t);
+    void SlotDisplayTime(int color, QString t);
     /** Accept Drop of database to a subordinate target */
     void slotDatabaseDropped(QDropEvent*);
 protected slots:
@@ -596,6 +596,8 @@ private:
     void triggerBoardMove();
     /** Filter Duplicates in the current database */
     void filterDuplicates(int mode);
+    /** Return true, if a game is drawn by rule */
+    bool gameIsDraw() const;
 
     /** Determine Color the user is using depending upon different match scenarios */
     Color UserColor();
@@ -660,6 +662,7 @@ private:
     QAction* m_autoPlay;
     QAction* m_autoAnalysis;
     QAction* m_engineMatch;
+    QAction* m_match;
     QUndoGroup m_undoGroup;
     QNetworkAccessManager* m_manager;
     DownloadManager* downloadManager;
