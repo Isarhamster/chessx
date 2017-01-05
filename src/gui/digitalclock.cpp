@@ -153,3 +153,8 @@ QString DigitalClock::DecrementTime(QString s) const
     }
     return result;
 }
+
+void DigitalClock::ToggleCountDown()
+{
+    StartCountDown(!timer->isActive());
+}

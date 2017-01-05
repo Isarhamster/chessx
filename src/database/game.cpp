@@ -135,13 +135,12 @@ MoveId Game::dbAddMove(const Move& move, const QString& annotation, NagSet nags)
     node.SetPly(ply() + 1);
     m_moveNodes.append(node);
     m_currentNode = m_moveNodes.size() - 1;
+    m_moveNodes[previousNode].nextNode = m_currentNode;
     if(!annotation.isEmpty())
     {
-        dbSetAnnotation(annotation);
+        dbSetAnnotation(annotation, m_currentNode);
     }
-    m_moveNodes[previousNode].nextNode = m_currentNode;
     m_currentBoard->doMove(move);
-
     return m_currentNode;
 }
 

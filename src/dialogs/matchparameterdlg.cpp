@@ -32,12 +32,17 @@ MatchParameterDlg::~MatchParameterDlg()
 
 bool MatchParameterDlg::getParametersForEngineGame(EngineParameter &par)
 {
-    return getParameters(par, false);
+    return getParameters(par, EngineGame);
 }
 
 bool MatchParameterDlg::getParametersForEngineMatch(EngineParameter &par)
 {
-    return getParameters(par, true);
+    return getParameters(par, EngineMatch);
+}
+
+bool MatchParameterDlg::getParametersForMatch(EngineParameter &par)
+{
+    return getParameters(par, Match);
 }
 
 void MatchParameterDlg::SlotModeChanged(int index)
@@ -45,24 +50,39 @@ void MatchParameterDlg::SlotModeChanged(int index)
     ui->timeInc->setEnabled(index==1);
 }
 
-bool MatchParameterDlg::getParameters(EngineParameter& par, bool engineMatch)
+bool MatchParameterDlg::getParameters(EngineParameter& par, Mode mode)
 {
     MatchParameterDlg dlg;
-    dlg.setObjectName(engineMatch ? "EngineMatchParameterDlg" : "EngineGameParameterDlg");
+    const char* dlgNames[] = { "EngineGameParameterDlg", "EngineMatchParameterDlg", "MatchParameterDlg" };
+    QString name = dlgNames[(int)mode];
+    dlg.setObjectName(name);
 
     dlg.ui->baseTime->setTime(QTime::fromMSecsSinceStartOfDay(par.ms_totalTime));
     dlg.ui->timeBonus->setValue(par.ms_bonus/1000);
     dlg.ui->timeInc->setValue(par.ms_increment/1000);
     dlg.ui->cbMode->setCurrentIndex(par.tm);
     dlg.ui->annotateEgt->setChecked(par.annotateEgt);
-    dlg.ui->cbAllowBook->setChecked(par.allowBook);
-    dlg.ui->cbBookMove->setCurrentIndex(par.bookMove);
-    dlg.ui->cbBookMove->setEnabled(par.allowBook);
-    dlg.ui->cbEngineStarts->setVisible(!engineMatch);
-    dlg.ui->timeBonus->setVisible(!engineMatch);
-    dlg.ui->labelBonus->setVisible(!engineMatch);
-    dlg.ui->timeInc->setEnabled(par.tm==1);
 
+    bool match = (mode == Match);
+
+    dlg.ui->groupBoxBook->setVisible(!match);
+    dlg.ui->cbAllowBook->setVisible(!match);
+    dlg.ui->cbBookMove->setVisible(!match);
+    dlg.ui->cbBookMove->setVisible(!match);
+
+    if (!match)
+    {
+        dlg.ui->cbAllowBook->setChecked(par.allowBook);
+        dlg.ui->cbBookMove->setCurrentIndex(par.bookMove);
+        dlg.ui->cbBookMove->setEnabled(par.allowBook);
+    }
+
+    bool engineGame = (mode == EngineGame);
+    dlg.ui->cbEngineStarts->setVisible(engineGame);
+    dlg.ui->timeBonus->setVisible(engineGame);
+    dlg.ui->labelBonus->setVisible(engineGame);
+
+    dlg.ui->timeInc->setEnabled(par.tm==1);
     if (dlg.exec())
     {
         par.ms_totalTime = -dlg.ui->baseTime->time().msecsTo(QTime(0,0));

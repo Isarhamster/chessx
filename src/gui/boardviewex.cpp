@@ -15,12 +15,15 @@ BoardViewEx::BoardViewEx(QWidget *parent) :
     ui(new Ui::BoardViewEx)
 {
     ui->setupUi(this);
+    connect(boardView(), SIGNAL(signalFlipped(bool,bool)), SLOT(boardIsFlipped(bool,bool)));
     setMouseTracking(true);
     showTime(false);
 }
 
 BoardViewEx::~BoardViewEx()
 {
+    ui->timeTop->StopCountDown();
+    ui->timeBottom->StopCountDown();
     delete ui;
 }
 
@@ -66,4 +69,23 @@ void BoardViewEx::startTime(bool white)
     bool top = (white && flipped) || (!white && !flipped);
     DigitalClock* lcd = top ? ui->timeTop : ui->timeBottom;
     lcd->StartCountDown();
+}
+
+void BoardViewEx::stopTimes()
+{
+    ui->timeTop->StopCountDown();
+    ui->timeBottom->StopCountDown();
+}
+
+void BoardViewEx::boardIsFlipped(bool oldState, bool newState)
+{
+    if (oldState != newState)
+    {
+        QString topTime = ui->timeTop->time();
+        QString bottomTime = ui->timeBottom->time();
+        ui->timeTop->setTime(bottomTime);
+        ui->timeBottom->setTime(topTime);
+        ui->timeTop->ToggleCountDown();
+        ui->timeBottom->ToggleCountDown();
+    }
 }

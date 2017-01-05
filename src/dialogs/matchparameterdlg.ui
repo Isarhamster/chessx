@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>333</width>
-    <height>413</height>
+    <width>350</width>
+    <height>387</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -107,7 +107,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBoxBook">
      <property name="title">
       <string>Book</string>
      </property>
@@ -148,13 +148,6 @@
      </property>
      <property name="text">
       <string>Engine starts</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>

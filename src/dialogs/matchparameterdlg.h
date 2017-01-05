@@ -22,12 +22,19 @@ public:
 
     static bool getParametersForEngineGame(EngineParameter &par);
     static bool getParametersForEngineMatch(EngineParameter &par);
+    static bool getParametersForMatch(EngineParameter &par);
+
+    typedef enum {
+        EngineGame,
+        EngineMatch,
+        Match
+    } Mode;
 
 public slots:
     void SlotModeChanged(int);
 
 private:
-    static bool getParameters(EngineParameter &par, bool engineMatch);
+    static bool getParameters(EngineParameter &par, Mode mode);
     Ui::MatchParameterDlg *ui;
 };
 

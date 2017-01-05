@@ -19,6 +19,7 @@ public:
 
     QString time() const;
     void setTime(const QString &time);
+    void ToggleCountDown();
 
 public slots:
     void StartCountDown(bool start = true);
@@ -28,6 +29,7 @@ public slots:
 protected:
     bool TestColor(QString s, int seconds) const;
     QString DecrementTime(QString s) const;
+
 private slots:
     void updateTime();
 

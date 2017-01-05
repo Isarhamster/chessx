@@ -124,6 +124,7 @@ signals:
     /** Indicate that a piece was dropped to the board */
     void pieceDropped(Square to, Piece p);
     void actionHint(const QString&);
+    void signalFlipped(bool oldState, bool newState);
 
 protected:
     /** Redraws whole board if necessary. */
