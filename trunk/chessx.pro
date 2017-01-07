@@ -390,8 +390,9 @@ INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
 
 win32 {
     # DEFINES += ZLIB_WINAPI
-    LIBS += -lz
+    # LIBS += -lz
     INCLUDEPATH += $$[QT_INSTALL_HEADERS]/QtZlib
+    win32-g++:LIBS += -lz
 }
 
 UI_DIR = src/generated

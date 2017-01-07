@@ -463,7 +463,7 @@ void PgnDatabase::readLine()
     }
 }
 
-inline void PgnDatabase::skipLine()
+void PgnDatabase::skipLine()
 {
     m_lineBuffer = m_file->readLine();
 }
