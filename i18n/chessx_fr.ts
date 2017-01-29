@@ -83,7 +83,7 @@ Gestionnaires de parties d&apos;échecs open source</translation>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="399"/>
         <source>FICS database</source>
-        <translation type="unfinished"></translation>
+        <translation>Base de données FICS</translation>
     </message>
     <message>
         <location filename="../src/dialogs/aboutdlg.ui" line="428"/>
@@ -124,7 +124,7 @@ Gestionnaires de parties d&apos;échecs open source</translation>
     <message>
         <location filename="../src/database/analysis.cpp" line="189"/>
         <source>Resigns</source>
-        <translation type="unfinished"></translation>
+        <translation>Abandon</translation>
     </message>
     <message>
         <location filename="../src/database/analysis.cpp" line="195"/>
@@ -162,7 +162,7 @@ Gestionnaires de parties d&apos;échecs open source</translation>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="53"/>
         <source>Number of parallel lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de lignes parallèles</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="66"/>
@@ -176,12 +176,12 @@ Gestionnaires de parties d&apos;échecs open source</translation>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="89"/>
         <source>Select an engine</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir un moteur</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="96"/>
         <source>Select a GUI book</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir un livre GUI</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="109"/>
@@ -248,7 +248,7 @@ Gestionnaires de parties d&apos;échecs open source</translation>
     <message>
         <location filename="../src/gui/analysiswidget.cpp" line="516"/>
         <source>&lt;i&gt;Book:&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Livre:&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
@@ -398,7 +398,7 @@ b%2
     <message>
         <location filename="../src/gui/boardsetup.ui" line="211"/>
         <source>Castling</source>
-        <translation type="unfinished"></translation>
+        <translation>Roque</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="231"/>
@@ -423,7 +423,7 @@ b%2
     <message>
         <location filename="../src/gui/boardsetup.ui" line="252"/>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Avancée</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="349"/>
@@ -435,17 +435,17 @@ b%2
         <location filename="../src/gui/boardsetup.ui" line="404"/>
         <location filename="../src/gui/boardsetup.ui" line="410"/>
         <source>Chess 960</source>
-        <translation type="unfinished"></translation>
+        <translation>Echecs 960</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="419"/>
         <source>-</source>
-        <translation type="unfinished"></translation>
+        <translation>-</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="435"/>
         <source>Random Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Position aléatoire</translation>
     </message>
     <message>
         <location filename="../src/gui/boardsetup.ui" line="448"/>
@@ -572,27 +572,27 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/boardview.cpp" line="643"/>
         <source>Query for piece in case of promotion</source>
-        <translation type="unfinished"></translation>
+        <translation>Demander quelle pièce en cas de promotion</translation>
     </message>
     <message>
         <location filename="../src/gui/boardview.cpp" line="647"/>
         <source>Replace remainder of game with new move</source>
-        <translation type="unfinished"></translation>
+        <translation>Remplacerle reste de la partie par un nouveau coup</translation>
     </message>
     <message>
         <location filename="../src/gui/boardview.cpp" line="651"/>
         <source>Insert new move and keep as much as possible of remaining moves</source>
-        <translation type="unfinished"></translation>
+        <translation>Insérer un nouveau coup et essayer de garder les coups restants</translation>
     </message>
     <message>
         <location filename="../src/gui/boardview.cpp" line="655"/>
         <source>Force adding a variation</source>
-        <translation type="unfinished"></translation>
+        <translation>Forcer l&apos;ajout d&apos;une variante</translation>
     </message>
     <message>
         <location filename="../src/gui/boardview.cpp" line="659"/>
         <source>Draw a square or arrow annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Annoter une flêche ou une case</translation>
     </message>
 </context>
 <context>
@@ -821,17 +821,17 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="90"/>
         <source>Keep file</source>
-        <translation type="unfinished"></translation>
+        <translation>Garder fichier</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="91"/>
         <source>Two star favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favori 2 étoiles</translation>
     </message>
     <message>
         <location filename="../src/gui/databaselist.cpp" line="92"/>
         <source>Three star favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favori trois étoiles</translation>
     </message>
     <message>
         <source>Add to favorites</source>
@@ -908,7 +908,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/digitalclock.cpp" line="58"/>
         <source>Digital Clock</source>
-        <translation type="unfinished"></translation>
+        <translation>Horloge digitale</translation>
     </message>
 </context>
 <context>
@@ -1229,12 +1229,12 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="420"/>
         <source>Rated only</source>
-        <translation type="unfinished"></translation>
+        <translation>Evaluées seulement</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="437"/>
         <source>Human only</source>
-        <translation type="unfinished"></translation>
+        <translation>Humain seulement</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="510"/>
@@ -1264,7 +1264,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="290"/>
         <source>Messages from Puzzlebot</source>
-        <translation>Messges du bot Puzzles</translation>
+        <translation>Messages du bot Puzzles</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="303"/>
@@ -1335,7 +1335,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="591"/>
         <source>Don&apos;t care</source>
-        <translation type="unfinished"></translation>
+        <translation>Sans importance</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="613"/>
@@ -1377,7 +1377,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="120"/>
         <source>Rematch</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejouer</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="126"/>
@@ -1507,19 +1507,19 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/database/game.cpp" line="122"/>
         <source>Copy game</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier partie</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="604"/>
         <location filename="../src/database/game.cpp" line="615"/>
         <location filename="../src/database/game.cpp" line="626"/>
         <source>Add variation</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter variante</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="724"/>
         <source>Promote variation</source>
-        <translation type="unfinished"></translation>
+        <translation>Promouvoir variante</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="744"/>
@@ -1585,7 +1585,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/database/game.cpp" line="1924"/>
         <source>Set variant</source>
-        <translation type="unfinished"></translation>
+        <translation>Définir variante</translation>
     </message>
 </context>
 <context>
@@ -1624,7 +1624,7 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="244"/>
         <source>Filter twins</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer doublons</translation>
     </message>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="245"/>
@@ -1685,22 +1685,22 @@ Merci de vérifier votre installation.</translation>
     <message>
         <location filename="../src/gui/helpbrowsershell.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished">MainWindow</translation>
+        <translation>FenêtrePrincipale</translation>
     </message>
     <message>
         <location filename="../src/gui/helpbrowsershell.ui" line="53"/>
         <source>Search Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Texte à chercher</translation>
     </message>
     <message>
         <location filename="../src/gui/helpbrowsershell.ui" line="59"/>
         <source>Type in text to search for...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tapez le texe à rechercher</translation>
     </message>
     <message>
         <location filename="../src/gui/helpbrowsershell.ui" line="69"/>
         <source>Repeat search, press Shift to search backwards</source>
-        <translation type="unfinished"></translation>
+        <translation>Chercher encore, appuyer sur Shit pour chercher en arrière</translation>
     </message>
 </context>
 <context>
@@ -1962,47 +1962,47 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1417"/>
         <source>Brush</source>
-        <translation type="unfinished"></translation>
+        <translation>Pinceau</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1418"/>
         <source>Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Vert</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1423"/>
         <source>Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaune</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1428"/>
         <source>Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Rouge</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1433"/>
         <source>Erase</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1463"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation>Vue</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1465"/>
         <source>Show target fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir zones cibles</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1471"/>
         <source>Show threat</source>
-        <translation type="unfinished">Montrer les menaces</translation>
+        <translation>Montrer les menaces</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1492"/>
         <source>Load recent</source>
-        <translation type="unfinished"></translation>
+        <translation>Charger récent</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1505"/>
@@ -2034,7 +2034,7 @@ Dois-je télécharger une base ?</translation>
         <location filename="../src/gui/mainwindowactions.cpp" line="1768"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="1772"/>
         <source>Engine Match</source>
-        <translation type="unfinished"></translation>
+        <translation>Match de moteurs</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1615"/>
@@ -2065,22 +2065,22 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1634"/>
         <source>Filter duplicate games</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer parties dupliquées</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1638"/>
         <source>Filter duplicate headers</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer entêtes dupliquées</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1644"/>
         <source>Reset filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer filtre</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1648"/>
         <source>Reverse filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Inverser filtre</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1657"/>
@@ -2091,7 +2091,7 @@ Dois-je télécharger une base ?</translation>
         <location filename="../src/gui/mainwindow.cpp" line="1660"/>
         <location filename="../src/gui/mainwindow.cpp" line="1662"/>
         <source>Scratch Pad</source>
-        <translation type="unfinished"></translation>
+        <translation>Mémoire tampon</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1689"/>
@@ -2241,12 +2241,12 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1308"/>
         <source>Web Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favori Web</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1310"/>
         <source>Open recent</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir récent</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1322"/>
@@ -2531,7 +2531,7 @@ Dois-je télécharger une base ?</translation>
         <location filename="../src/gui/mainwindowactions.cpp" line="1950"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="2018"/>
         <source>Time is over</source>
-        <translation type="unfinished"></translation>
+        <translation>Temps dépassé</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="968"/>
@@ -2598,12 +2598,12 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1674"/>
         <source>Automatic responses</source>
-        <translation type="unfinished"></translation>
+        <translation>Réponses automatiques</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1675"/>
         <source>Play both sides</source>
-        <translation type="unfinished"></translation>
+        <translation>Jouer les 2 camps</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1730"/>
@@ -2614,22 +2614,22 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1772"/>
         <source>Analysis Pane 2 is not running an engine for automatic analysis.</source>
-        <translation type="unfinished">Le panneau d&apos;analyse 1 n&apos;a pas de moteur d&apos;analyse actif. {2 ?}</translation>
+        <translation>Le panneau d&apos;analyse 1 n&apos;a pas de moteur d&apos;analyse actif. {2 ?}</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1907"/>
         <source>Game is drawn by insufficient material</source>
-        <translation type="unfinished"></translation>
+        <translation>La partie est nulle par manque de matériel</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1908"/>
         <source>Game is drawn by repetition</source>
-        <translation type="unfinished"></translation>
+        <translation>la partie est nulle par répétition</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="1909"/>
         <source>Game is drawn by 50 move rule</source>
-        <translation type="unfinished"></translation>
+        <translation>La partie est nulle (règle des 50 coups)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2139"/>
@@ -2651,7 +2651,7 @@ Dois-je télécharger une base ?</translation>
         <location filename="../src/gui/mainwindowactions.cpp" line="2280"/>
         <location filename="../src/gui/mainwindowactions.cpp" line="2304"/>
         <source>Appended %1 games to %2.</source>
-        <translation>Ajoutée %1 parties à %2</translation>
+        <translation>Ajouté %1 parties à %2</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2305"/>
@@ -2667,7 +2667,7 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2611"/>
         <source>Searching...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cherche...</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2995"/>
@@ -2720,72 +2720,72 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="14"/>
         <source>Match Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres du match</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="20"/>
         <source>Match Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Temp du match</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="82"/>
         <source>Gong</source>
-        <translation type="unfinished"></translation>
+        <translation>Gong</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="87"/>
         <source>Sudden Death</source>
-        <translation type="unfinished"></translation>
+        <translation>Mort subite</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="105"/>
         <source>Book</source>
-        <translation type="unfinished"></translation>
+        <translation>Livre</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="111"/>
         <source>Allow use of books</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoriser l&apos;usage des livres</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="119"/>
         <source>Best move</source>
-        <translation type="unfinished"></translation>
+        <translation>Meilleur coup</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="124"/>
         <source>Random selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélection aléatoire</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="129"/>
         <source>Weighted selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélection pondérée</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="143"/>
         <source>Engine starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Lancement du moteur</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="62"/>
         <source>Time</source>
-        <translation type="unfinished">Temps</translation>
+        <translation>Temps</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="45"/>
         <source>Increment</source>
-        <translation type="unfinished">Incrément</translation>
+        <translation>Incrément</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="28"/>
         <source>User Bonus</source>
-        <translation type="unfinished"></translation>
+        <translation>Bonus joueur</translation>
     </message>
     <message>
         <location filename="../src/dialogs/matchparameterdlg.ui" line="95"/>
         <source>Annotate elapsed game time</source>
-        <translation type="unfinished"></translation>
+        <translation>Annoter temps de jeu écoulé</translation>
     </message>
 </context>
 <context>
@@ -3720,7 +3720,7 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="355"/>
         <source>Colored copies</source>
-        <translation type="unfinished"></translation>
+        <translation>Copies couleur</translation>
     </message>
     <message>
         <source>Show threat</source>
@@ -3729,17 +3729,17 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="109"/>
         <source>No hints in training mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrainement sans aide</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="343"/>
         <source>Copy Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier images</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="379"/>
         <source>Fixed Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille fixe</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="423"/>
@@ -3800,32 +3800,32 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="847"/>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Log</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="975"/>
         <source>Web Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favori web</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="988"/>
         <source>URL, use $1 for auto-incrementing number</source>
-        <translation type="unfinished"></translation>
+        <translation>URL, utiliser $1 comme numéro d&apos;auto-increment</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="991"/>
         <source>Use $1 for auto-incrementing number</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser $1 pour l&apos;auto-increment</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1196"/>
         <source>Additional PGN tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Tags PGN supplémentaires</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1205"/>
         <source>Additional tags, separate with blanks</source>
-        <translation type="unfinished"></translation>
+        <translation>Tags supplémentaires, séparés par des espaces</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1251"/>
@@ -4307,12 +4307,12 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="472"/>
         <source>Targets</source>
-        <translation type="unfinished"></translation>
+        <translation>Cibles</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="473"/>
         <source>Check</source>
-        <translation type="unfinished"></translation>
+        <translation>Echec</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.cpp" line="497"/>
@@ -4654,187 +4654,188 @@ Dois-je télécharger une base ?</translation>
     <message>
         <location filename="../src/gui/textedit.cpp" line="150"/>
         <source>File Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Actions sur les fichiers</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="153"/>
         <source>File</source>
-        <translation type="unfinished">Fichier</translation>
+        <translation>Fichier</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="158"/>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="165"/>
         <source>Open...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir...</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="173"/>
         <source>Save</source>
-        <translation type="unfinished">Enregistrer</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="179"/>
         <source>Save As...</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer sous...</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="187"/>
         <source>Print...</source>
-        <translation type="unfinished"></translation>
+        <translation>Imprimer...</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="194"/>
         <source>Print Preview...</source>
-        <translation type="unfinished"></translation>
+        <translation>Aperçu avant impression...</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="199"/>
         <source>Export PDF...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter en PDF...</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="214"/>
         <source>Edit Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Actions Editer</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="217"/>
         <source>Edit</source>
-        <translation type="unfinished">Editer</translation>
+        <translation>Editer</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="221"/>
         <source>Undo</source>
-        <translation type="unfinished">Effacer</translation>
+        <translation>Effacer</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="225"/>
         <source>Redo</source>
-        <translation type="unfinished">Rétablir</translation>
+        <translation>Rétablir</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="231"/>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Couper</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="236"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="241"/>
         <source>Paste</source>
-        <translation type="unfinished">Coller</translation>
+        <translation>Coller</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="252"/>
         <source>Pick board</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner Echiquier</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="262"/>
         <source>Format Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Actions Format</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="265"/>
         <source>Format</source>
-        <translation type="unfinished">Format</translation>
+        <translation>Format</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="268"/>
         <source>Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Gras</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="279"/>
         <source>Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>Italique</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="290"/>
         <source>Underline</source>
-        <translation type="unfinished"></translation>
+        <translation>Souligné</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="304"/>
         <source>Resize</source>
-        <translation type="unfinished"></translation>
+        <translation>Redimensionner</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="326"/>
         <location filename="../src/gui/textedit.cpp" line="339"/>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Gauche</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="328"/>
         <location filename="../src/gui/textedit.cpp" line="337"/>
         <source>Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Centre</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="330"/>
         <location filename="../src/gui/textedit.cpp" line="335"/>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Droite</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="342"/>
         <source>Justify</source>
-        <translation type="unfinished"></translation>
+        <translation>Justifier</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="360"/>
         <source>Color...</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur...</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="371"/>
         <source>Style Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Actions Style</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="447"/>
         <source>Application</source>
-        <translation type="unfinished">Application</translation>
+        <translation>Application</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="448"/>
         <source>The scratchpad has been modified.
 Do you want to save your changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>La mémoire tampon a été modifiée.
+VOulez-vous sauvegarder les changements ?</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="469"/>
         <source>%1[*]</source>
-        <translation type="unfinished"></translation>
+        <translation>%1[*]</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="488"/>
         <source>Open File...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir fichier...</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="489"/>
         <location filename="../src/gui/textedit.cpp" line="521"/>
         <source>ODF files (*.odt);;HTML-Files (*.htm *.html);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>ODF (*.odt);;HTML(*.htm *.html);;Tous fichiers(*)</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="520"/>
         <source>Save as...</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver sous...</translation>
     </message>
     <message>
         <location filename="../src/gui/textedit.cpp" line="544"/>
         <source>Print Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Imprimer document</translation>
     </message>
 </context>
 </TS>
