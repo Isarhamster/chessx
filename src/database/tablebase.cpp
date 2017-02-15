@@ -165,7 +165,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                         break;
                     }
                 }
-                if (s_allowEngineOutput)
+                if (s_allowEngineOutput && !first)
                 {
                     emit bestMove(bestMoves, bestScore);
                 }
