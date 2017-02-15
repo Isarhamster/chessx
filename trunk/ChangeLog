@@ -1,4 +1,10 @@
-October 2016: Version 1.4.2
+January 2017: Version 1.4.4
+- New feature: Game time for 2-player mode
+- New Feature: Drag databases into list of games
+- New feature: Copy lists to IMG/HTML in Clipboard
+- New feature: Workaround UCI option issue in Stockfish 8
+- New feature: Extended polyglot book generation
+- New feature: Reverse moving with mouse
 - New feature: Dragging piece with CTRL+SHIFT asks main engine / tablebase for eval
 - New feature: FICS with Clock above / below board
 - New feature: cz language pack
@@ -13,10 +19,20 @@ October 2016: Version 1.4.2
 - New feature: FICS requests with color
 - New feature: Show all good tablebase moves
 
+- Bugfix: UCI_Chess960 occasionally not sent to Engine
+- Bugfix: Handling of UCI empty string tag
+- Bugfix: Renaming a player / event tag gave inconsistent index in case of existing target tag
+- Bugfix: Restoration of floating docks
+- Bugfix: Chess960 castling direction wrong
+- Bugfix: Chess960 with UCI engines
 - Bugfix: Resizing the application would sometimes fail
 - Bugfix: Matchparameter Dialog misplaced
 - Bugfix: Premoving allowed moving opponent pieces
 
+- Changed: Analysis time up to 10 minutes
+- Changed: Bundle Stockfish 8
+- Changed: Icons in context menus
+- Changed: Matchparameter Dialog
 - Changed: Square annotations
 - Changed: Tock at 30..20..10s before Timeout
 - Changed: Move some preferences onto toolbar
