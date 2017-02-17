@@ -1,6 +1,8 @@
 #!/bin/sh
-echo 'LOG: Start fix paths'
-BIN_FILE="./chessx.app/Contents/MacOS/chessx"
+QTDIR=$1
+BIN_FILE="./$2.app/Contents/MacOS/$2"
+echo 'LOG: Start fix paths for $BIN_FILE in $QTDIR'
+
 for P in `otool -L $BIN_FILE` 
 do 
     if [[ "$P" == *//* ]] 
@@ -9,9 +11,8 @@ do
         install_name_tool -change $P $PSLASH $BIN_FILE
         echo "LOG: install_name_tool -change $P $PSLASH $BIN_FILE"
     fi 
-done 
- 
-QTDIR="/Users/ni/Qt-5-6-0/5.6/clang_64/"
+done  
+
 for F in `find $QTDIR/lib $QTDIR/plugins $QTDIR/qml  -perm 755 -type f` 
 do 
     for P in `otool -L $F`

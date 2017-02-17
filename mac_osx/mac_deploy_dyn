@@ -1,18 +1,15 @@
 #!/bin/sh
-pwd
-cd /Users/ni/Documents/Projects/build-chessx-Kopie_von_Qt_5_4_0_Clang_x86_64bit-Release/release
-pwd
 rm -rf chessx.app.original
 rm -rf chessx.modified.app
 cp -r chessx.app chessx.app-original
-/Users/ni/Documents/Projects/chessx/mac_osx/fix_paths.sh
-/Users/ni/Qt-5-6-0/5.6/clang_64/bin/macdeployqt chessx.app -verbose=2
+/Users/ni/Documents/Projects/chessx/mac_osx/fix_paths.sh "/Users/ni/Qt-5-7-0/5.7/clang_64/" chessx
+/Users/ni/Qt-5-7-0/5.7/clang_64/bin/macdeployqt chessx.app -verbose=2
 rm -f chessx-installer.mpkg
 /usr/local/bin/packagesbuild -v /Users/ni/Documents/Projects/chessx/Packages/ChessX.pkgproj
 rm -rf dmg
 mkdir dmg    
 mv  /Users/ni/Documents/Projects/chessx/chessx-installer.mpkg dmg/
-rm -f chessx-1.4.0.dmg
-hdiutil create chessx-1.4.0.dmg -volname chessx -fs HFS+ -srcfolder dmg
+rm -f chessx-1.4.4.dmg
+hdiutil create chessx-1.4.4.dmg -volname chessx -fs HFS+ -srcfolder dmg
 mv chessx.app chessx.modified.app
 mv chessx.app-original chessx.app
