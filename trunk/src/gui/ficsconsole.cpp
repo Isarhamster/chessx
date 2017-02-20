@@ -943,17 +943,19 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
                     }
                     else if (s.startsWith("Black moves"))
                     {
+                        m_bPlayerIsBlack = true;
                         emit FicsShowTime(Black, "0:00");
                         emit FicsShowTime(White, "0:00");
-                        emit SignalPlayerIsBlack(true,false);
                         emit SignalStartTime(false);
+                        emit SignalPlayerIsBlack(true,false);
                     }
                     else if (s.startsWith("White moves"))
                     {
+                        m_bPlayerIsBlack = false;
                         emit FicsShowTime(Black, "0:00");
                         emit FicsShowTime(White, "0:00");
-                        emit SignalPlayerIsBlack(false,false);
                         emit SignalStartTime(true);
+                        emit SignalPlayerIsBlack(false,false);
                     }
                 }
             }

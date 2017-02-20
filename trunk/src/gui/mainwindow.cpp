@@ -2042,6 +2042,9 @@ bool MainWindow::gameMode() const
 void MainWindow::setGameMode(bool gameMode)
 {
     m_gameMode = gameMode;
+
+    if (gameMode) brushGroup->untrigger();
+
     emit signalGameModeChanged(m_gameMode);
 
     emit signalMoveHasNextMove(!gameMode && !game().atLineEnd());
