@@ -109,8 +109,6 @@ signals:
 protected:
     QString DecrementTime(QString s) const;
     void SetPlayerListItemsFromLine(QString s);
-    void TestTocks(QString s);
-    bool TestColor(QString s, int seconds) const;
     void UpdateSayCompleter(QString msg);
 private:
     Ui::FicsConsole *ui;
