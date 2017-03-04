@@ -20,6 +20,7 @@ public:
 signals:
     void bookBuildFinished(QString);
     void bookBuildError(QString);
+    void progress(int);
 
 public slots:
     void cancel();

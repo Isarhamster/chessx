@@ -547,12 +547,19 @@ bool PolyglotDatabase::openForWriting(const QString &filename, int maxPly, int m
 void PolyglotDatabase::book_make(Database &db, volatile bool& breakFlag)
 {
     QMutexLocker m(mutex());
+    qDebug() << "Add Database";
     if (!breakFlag) add_database(db);
+    qDebug() << "Spool map";
     if (!breakFlag) spool_map();
+    qDebug() << "Overflow correction";
     if (!breakFlag) overflow_correction();
+    qDebug() << "Filter Book";
     if (!breakFlag) book_filter();
+    qDebug() << "Sort Book";
     if (!breakFlag) book_sort();
+    qDebug() << "Save Book";
     if (!breakFlag) book_save();
+    qDebug() << "Close";
     close();
 }
 
@@ -634,7 +641,7 @@ void PolyglotDatabase::update_entry(book_entry& entry, int result)
 
     book_value b = m_bookDictionary.value(key);
 
-    b.n++;
+    ++b.n;
     b.sum += result + 1;
 
     m_bookDictionary[key] = b;
@@ -769,8 +776,11 @@ void PolyglotDatabase::add_game(Game& g, int result)
 
 void PolyglotDatabase::add_database(Database& db)
 {
+    int progressCount = 1 + db.count() / 100;
     for(int i = 0; i < (int)db.count(); ++i)
     {
+        if (i%progressCount==0) emit progress(i/progressCount);
+
         Game game;
         if(db.loadGame(i, game))
         {
