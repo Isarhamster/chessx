@@ -3350,14 +3350,22 @@ void MainWindow::slotMakeBook(QString pathIn)
                 int maxPly, minGame, result, filterResult;
                 bool uniform;
                 dlg.getBookParameters(out, maxPly, minGame, uniform, result, filterResult);
-                PolyglotWriter* polyglotWriter = new PolyglotWriter();
+                PolyglotWriter* polyglotWriter = new PolyglotWriter(this);
                 connect(polyglotWriter, SIGNAL(bookBuildError(QString)), SLOT(slotBookBuildError(QString)));
-                connect(polyglotWriter, SIGNAL(bookBuildFinished(QString)), SLOT(slotShowInFinder(QString)));
+                connect(polyglotWriter, SIGNAL(bookBuildFinished(QString)), SLOT(slotShowInFinder(QString)), Qt::QueuedConnection);
+                connect(polyglotWriter, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)), Qt::QueuedConnection);
+                startOperation("Build book");
                 polyglotWriter->writeBookForDatabase(m_databases[i]->database(), out, maxPly, minGame, uniform, result, filterResult);
             }
             return;
         }
     }
+}
+
+void MainWindow::slotBookDone(QString path)
+{
+    finishOperation("Book built");
+    slotShowInFinder(path);
 }
 
 void MainWindow::slotShowInFinder(QString path)
@@ -3368,6 +3376,7 @@ void MainWindow::slotShowInFinder(QString path)
 void MainWindow::slotBookBuildError(QString /*path*/)
 {
     MessageDialog::warning(tr("Could not build book"), tr("Polyglot Error"));
+    finishOperation("Book build finished with Error");
 }
 
 void MainWindow::slotToggleGameMode()

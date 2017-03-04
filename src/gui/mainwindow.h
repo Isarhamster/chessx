@@ -371,6 +371,8 @@ public slots:
     void slotMakeBook(QString s);
     /** Show a path in finder */
     void slotShowInFinder(QString path);
+    /** A book was finished with success */
+    void slotBookDone(QString path);
     /** Show a path in finder */
     void slotBookBuildError(QString path);
     /** Merge the clipboard into the current game */

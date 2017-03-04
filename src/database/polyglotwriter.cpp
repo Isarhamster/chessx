@@ -43,6 +43,7 @@ void PolyglotWriter::writeBookForDatabase(Database *src, const QString &out, int
     m_destination = new PolyglotDatabase();
     if (m_destination->openForWriting(out, maxPly, minGame, uniform, result, filterResult))
     {
+        connect(m_destination, SIGNAL(progress(int)), this, SIGNAL(progress(int)));
         start();
     }
     else

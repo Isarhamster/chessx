@@ -133,6 +133,7 @@ public:
     void book_make(Database& db, volatile bool& breakFlag);
 
 signals:
+    void progress(int);
 
 public slots:
 
