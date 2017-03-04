@@ -351,7 +351,7 @@ QString PgnDatabase::filename() const
 void PgnDatabase::close()
 {
     //close the file, and delete objects
-    QMutexLocker m(mutex());
+    QMutexLocker m(getAccessMutex());
 
     if(m_file)
     {

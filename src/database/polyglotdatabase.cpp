@@ -804,22 +804,17 @@ void PolyglotDatabase::add_database(Database& db)
     int maxThreads = QThread::idealThreadCount() - 1;
     int n = db.count();
     int junk = n/maxThreads;
-    if (maxThreads > 0)
+
+    QMutexLocker m(db.getAccessMutex());
+    qDebug()<<"Collect from database with" << maxThreads << "threads";
+    QFutureSynchronizer<void> synchronizer;
+    int start = 0;
+    for (int i=0; i<maxThreads; ++i)
     {
-        qDebug()<<"Collect from database with" << maxThreads << "threads";
-        QFutureSynchronizer<void> synchronizer;
-        int start = 0;
-        for (int i=0; i<maxThreads; ++i)
-        {
-            int end = std::max(start + junk, n);
-            QFuture<void> future = QtConcurrent::run(this, &PolyglotDatabase::add_database_junk, &db, start, end);
-            synchronizer.addFuture(future);
-            start += junk;
-        }
-        synchronizer.waitForFinished();
+        int end = std::min(start + junk, n);
+        QFuture<void> future = QtConcurrent::run(this, &PolyglotDatabase::add_database_junk, &db, start, end);
+        synchronizer.addFuture(future);
+        start += junk;
     }
-    else
-    {
-        add_database_junk(&db, 0, n);
-    }
+    synchronizer.waitForFinished();
 }

@@ -94,6 +94,8 @@ public:
     virtual bool deleted(GameId gameId) const;
 
     virtual bool IsClipboard() const { return false; }
+    virtual QMutex *getAccessMutex();
+
 signals:
     /** Signal emitted when some progress is done. */
     void progress(int);
@@ -103,6 +105,7 @@ protected:
     Index m_index;
     bool m_utf8;
     QMutex m_mutex;
+    QMutex m_accessMutex;
 };
 
 #endif
