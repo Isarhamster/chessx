@@ -3352,9 +3352,10 @@ void MainWindow::slotMakeBook(QString pathIn)
                 dlg.getBookParameters(out, maxPly, minGame, uniform, result, filterResult);
                 PolyglotWriter* polyglotWriter = new PolyglotWriter(this);
                 connect(polyglotWriter, SIGNAL(bookBuildError(QString)), SLOT(slotBookBuildError(QString)));
-                connect(polyglotWriter, SIGNAL(bookBuildFinished(QString)), SLOT(slotShowInFinder(QString)), Qt::QueuedConnection);
+                connect(polyglotWriter, SIGNAL(bookBuildFinished(QString)), SLOT(slotBookDone(QString)), Qt::QueuedConnection);
                 connect(polyglotWriter, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)), Qt::QueuedConnection);
                 startOperation("Build book");
+                m_polyglotWriters.append(polyglotWriter);
                 polyglotWriter->writeBookForDatabase(m_databases[i]->database(), out, maxPly, minGame, uniform, result, filterResult);
             }
             return;
@@ -3362,10 +3363,22 @@ void MainWindow::slotMakeBook(QString pathIn)
     }
 }
 
+void MainWindow::cancelPolyglotWriters()
+{
+    foreach (PolyglotWriter* writer, m_polyglotWriters)
+    {
+        writer->cancel();
+    }
+}
+
 void MainWindow::slotBookDone(QString path)
 {
     finishOperation("Book built");
     slotShowInFinder(path);
+    if (!m_polyglotWriters.removeOne(qobject_cast<PolyglotWriter*>(sender())))
+    {
+        qDebug() << "Missing writer";
+    }
 }
 
 void MainWindow::slotShowInFinder(QString path)
@@ -3377,6 +3390,10 @@ void MainWindow::slotBookBuildError(QString /*path*/)
 {
     MessageDialog::warning(tr("Could not build book"), tr("Polyglot Error"));
     finishOperation("Book build finished with Error");
+    if (!m_polyglotWriters.removeOne(qobject_cast<PolyglotWriter*>(sender())))
+    {
+        qDebug() << "Missing writer";
+    }
 }
 
 void MainWindow::slotToggleGameMode()

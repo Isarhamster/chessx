@@ -28,6 +28,10 @@ void PolyglotWriter::run()
     {
         emit bookBuildFinished(m_out);
     }
+    else
+    {
+        emit bookBuildError(m_out);
+    }
     deleteLater();
 }
 

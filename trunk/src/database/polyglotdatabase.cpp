@@ -3,6 +3,8 @@
 ****************************************************************************/
 
 #include <QtCore>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
 
 #include "polyglotdatabase.h"
 #include "board.h"
@@ -635,6 +637,7 @@ book_entry* PolyglotDatabase::find_entry(const book_entry& entry)
 
 void PolyglotDatabase::update_entry(book_entry& entry, int result)
 {
+    QMutexLocker m(&mutex2);
     book_key key;
     key.key = entry.key;
     key.move = entry.move;
@@ -774,15 +777,18 @@ void PolyglotDatabase::add_game(Game& g, int result)
     }
 }
 
-void PolyglotDatabase::add_database(Database& db)
+void PolyglotDatabase::add_database_junk(Database* db, int start, int end)
 {
-    int progressCount = 1 + db.count() / 100;
-    for(int i = 0; i < (int)db.count(); ++i)
+    int progressCount = 1 + end / 100;
+    for(int i = start; i < end; ++i)
     {
-        if (i%progressCount==0) emit progress(i/progressCount);
+        if (!start)
+        {
+            if ((i)%progressCount==0) emit progress((i)/progressCount);
+        }
 
         Game game;
-        if(db.loadGame(i, game))
+        if(db->loadGame(i, game))
         {
             int result = game.resultAsInt();
             if ((m_filterResult==0) || (m_filterResult != result))
@@ -790,5 +796,30 @@ void PolyglotDatabase::add_database(Database& db)
                 add_game(game, (m_overwriteResult == 0) ? result : m_overwriteResult);
             }
         }
+    }
+}
+
+void PolyglotDatabase::add_database(Database& db)
+{
+    int maxThreads = QThread::idealThreadCount() - 1;
+    int n = db.count();
+    int junk = n/maxThreads;
+    if (maxThreads > 0)
+    {
+        qDebug()<<"Collect from database with" << maxThreads << "threads";
+        QFutureSynchronizer<void> synchronizer;
+        int start = 0;
+        for (int i=0; i<maxThreads; ++i)
+        {
+            int end = std::max(start + junk, n);
+            QFuture<void> future = QtConcurrent::run(this, &PolyglotDatabase::add_database_junk, &db, start, end);
+            synchronizer.addFuture(future);
+            start += junk;
+        }
+        synchronizer.waitForFinished();
+    }
+    else
+    {
+        add_database_junk(&db, 0, n);
     }
 }

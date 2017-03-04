@@ -575,6 +575,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
 {
     if(confirmQuit())
     {
+        cancelPolyglotWriters();
         m_openingTreeWidget->cancel();
 
         m_recentFiles.save();
