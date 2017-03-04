@@ -155,6 +155,7 @@ protected:
     book_entry *find_entry(const book_entry &entry);
     void book_filter();
     void add_database(Database &db);
+    void add_database_junk(Database* db, int start, int end);
     void add_game(Game &g, int result);
     bool get_move_entry(Move m, book_entry &entry) const;
     int get_promotion(Move m) const;
@@ -171,6 +172,7 @@ private:
     int m_filterResult;
     quint32 m_minGame;
     int m_maxPly;
+    QMutex mutex2;
 };
 
 #endif // POLYGLOTDATABASE_H

@@ -56,6 +56,7 @@ class SaveDialog;
 class TableView;
 class ToolMainWindow;
 class TranslatingSlider;
+class PolyglotWriter;
 
 /**
 @defgroup GUI GUI - User interface components
@@ -456,6 +457,7 @@ protected slots:
     void slotToggleBrush();
     void slotShowTargetFields();
     void slotShowThreat();
+    void cancelPolyglotWriters();
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);
@@ -680,6 +682,7 @@ private:
     EngineParameter m_matchParameter;
     bool m_bTrainigAutoRespond;
     bool m_bEvalRequested;
+    QList<PolyglotWriter*> m_polyglotWriters;
 };
 
 #endif
