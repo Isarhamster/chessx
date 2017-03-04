@@ -67,6 +67,11 @@ bool Database::deleted(GameId gameId) const
     return m_index.deleted(gameId);
 }
 
+QMutex* Database::getAccessMutex()
+{
+    return &m_accessMutex;
+}
+
 QString Database::name() const
 {
     QFileInfo fi(filename());
