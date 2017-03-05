@@ -14,6 +14,7 @@
 #include "filter.h"
 #include "game.h"
 #include "index.h"
+#include "refcount.h"
 
 #include <QMutex>
 #include <QString>
@@ -30,7 +31,7 @@
 class Database : public QObject
 {
     Q_OBJECT
-
+    SUPPORTS_REFCOUNTING
 public:
     /** Standard constructor. */
     Database();
@@ -94,7 +95,6 @@ public:
     virtual bool deleted(GameId gameId) const;
 
     virtual bool IsClipboard() const { return false; }
-    virtual QMutex *getAccessMutex();
 
 signals:
     /** Signal emitted when some progress is done. */
@@ -105,7 +105,6 @@ protected:
     Index m_index;
     bool m_utf8;
     QMutex m_mutex;
-    QMutex m_accessMutex;
 };
 
 #endif

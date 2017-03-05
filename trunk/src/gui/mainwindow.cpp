@@ -575,9 +575,6 @@ void MainWindow::closeEvent(QCloseEvent* e)
 {
     if(confirmQuit())
     {
-        cancelPolyglotWriters();
-        m_openingTreeWidget->cancel();
-
         m_recentFiles.save();
         m_databaseList->save();
 
@@ -1765,6 +1762,9 @@ bool MainWindow::confirmQuit()
             SwitchToClipboard();
         }
     }
+
+    cancelPolyglotWriters();
+    m_openingTreeWidget->cancel();
 
     for(int i = m_databases.size() - 1; i; --i)
     {

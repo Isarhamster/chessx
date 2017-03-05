@@ -373,9 +373,9 @@ public slots:
     /** Show a path in finder */
     void slotShowInFinder(QString path);
     /** A book was finished with success */
-    void slotBookDone(QString path);
+    void slotBookDone(QString path, PolyglotWriter* writer);
     /** Show a path in finder */
-    void slotBookBuildError(QString path);
+    void slotBookBuildError(QString path, PolyglotWriter *writer);
     /** Merge the clipboard into the current game */
     void slotEditMergePGN();
     /** Create a QImage from the current Board position */

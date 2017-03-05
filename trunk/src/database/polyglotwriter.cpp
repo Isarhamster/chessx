@@ -26,11 +26,11 @@ void PolyglotWriter::run()
     m_destination->book_make(*m_source, m_break);
     if (!m_break)
     {
-        emit bookBuildFinished(m_out);
+        emit bookBuildFinished(m_out, this);
     }
     else
     {
-        emit bookBuildError(m_out);
+        emit bookBuildError(m_out, this);
     }
     deleteLater();
 }
@@ -52,7 +52,7 @@ void PolyglotWriter::writeBookForDatabase(Database *src, const QString &out, int
     }
     else
     {
-        emit bookBuildError(out);
+        emit bookBuildError(out, this);
         deleteLater();
     }
 }
