@@ -231,7 +231,8 @@ HEADERS += src/database/board.h \
     src/database/circularbuffer.h \
     src/gui/digitalclock.h \
     src/gui/historylabel.h \
-    src/database/streamdatabase.h
+    src/database/streamdatabase.h \
+    src/database/refcount.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -378,7 +379,8 @@ SOURCES += src/database/board.cpp \
     src/database/numbersearch.cpp \
     src/gui/digitalclock.cpp \
     src/gui/historylabel.cpp \
-    src/database/streamdatabase.cpp
+    src/database/streamdatabase.cpp \
+    src/database/refcount.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

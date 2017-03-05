@@ -18,8 +18,8 @@ public:
     void writeBookForDatabase(Database* src, const QString &out, int maxPly, int minGame, bool uniform, int result, int filterResult);
 
 signals:
-    void bookBuildFinished(QString);
-    void bookBuildError(QString);
+    void bookBuildFinished(QString, PolyglotWriter*);
+    void bookBuildError(QString, PolyglotWriter*);
     void progress(int);
 
 public slots:

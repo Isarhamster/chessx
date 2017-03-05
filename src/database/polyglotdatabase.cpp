@@ -550,7 +550,7 @@ void PolyglotDatabase::book_make(Database &db, volatile bool& breakFlag)
 {
     QMutexLocker m(mutex());
     qDebug() << "Add Database";
-    if (!breakFlag) add_database(db);
+    if (!breakFlag) add_database(db, breakFlag);
     qDebug() << "Spool map";
     if (!breakFlag) spool_map();
     qDebug() << "Overflow correction";
@@ -777,7 +777,7 @@ void PolyglotDatabase::add_game(Game& g, int result)
     }
 }
 
-void PolyglotDatabase::add_database_junk(Database* db, int start, int end)
+void PolyglotDatabase::add_database_chunk(Database* db, int start, int end, volatile bool* breakFlag)
 {
     int progressCount = 1 + end / 100;
     for(int i = start; i < end; ++i)
@@ -787,6 +787,7 @@ void PolyglotDatabase::add_database_junk(Database* db, int start, int end)
             if ((i)%progressCount==0) emit progress((i)/progressCount);
         }
 
+        if (*breakFlag) return;
         Game game;
         if(db->loadGame(i, game))
         {
@@ -799,20 +800,20 @@ void PolyglotDatabase::add_database_junk(Database* db, int start, int end)
     }
 }
 
-void PolyglotDatabase::add_database(Database& db)
+void PolyglotDatabase::add_database(Database& db, volatile bool& breakFlag)
 {
     int maxThreads = QThread::idealThreadCount() - 1;
     int n = db.count();
     int junk = n/maxThreads;
 
-    QMutexLocker m(db.getAccessMutex());
+    RefKeeper m(db.refCounter());
     qDebug()<<"Collect from database with" << maxThreads << "threads";
     QFutureSynchronizer<void> synchronizer;
     int start = 0;
     for (int i=0; i<maxThreads; ++i)
     {
         int end = std::min(start + junk, n);
-        QFuture<void> future = QtConcurrent::run(this, &PolyglotDatabase::add_database_junk, &db, start, end);
+        QFuture<void> future = QtConcurrent::run(this, &PolyglotDatabase::add_database_chunk, &db, start, end, &breakFlag);
         synchronizer.addFuture(future);
         start += junk;
     }

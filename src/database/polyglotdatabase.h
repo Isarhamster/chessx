@@ -154,8 +154,8 @@ protected:
     void update_entry(book_entry &entry, int result);
     book_entry *find_entry(const book_entry &entry);
     void book_filter();
-    void add_database(Database &db);
-    void add_database_junk(Database* db, int start, int end);
+    void add_database(Database &db, volatile bool &breakFlag);
+    void add_database_chunk(Database* db, int start, int end, volatile bool *breakFlag);
     void add_game(Game &g, int result);
     bool get_move_entry(Move m, book_entry &entry) const;
     int get_promotion(Move m) const;
