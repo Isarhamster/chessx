@@ -37,7 +37,7 @@ AnalysisWidget::AnalysisWidget(QWidget *parent)
 {
     ui.setupUi(this);
     connect(ui.engineList, SIGNAL(activated(int)), SLOT(toggleAnalysis()));
-    connect(ui.bookList, SIGNAL(activated(int)), SLOT(bookActivated(int)));
+    connect(ui.bookList, SIGNAL(currentIndexChanged(int)), SLOT(bookActivated(int)));
     connect(ui.analyzeButton, SIGNAL(clicked(bool)), SLOT(toggleAnalysis()));
 
     connect(ui.variationText, SIGNAL(anchorClicked(QUrl)),
@@ -162,7 +162,7 @@ void AnalysisWidget::toggleAnalysis()
 
 void AnalysisWidget::bookActivated(int index)
 {
-    emit signalSourceChanged(ui.bookList->itemData(index).toString());
+    emit signalSourceChanged(index>=0 ? ui.bookList->itemData(index).toString() : "");
     updateBookMoves();
 }
 
