@@ -16,6 +16,7 @@
 #include <QPair>
 #include <QObject>
 #include <QSet>
+#include <QReadWriteLock>
 
 #include "indexitem.h"
 #include "game.h"
@@ -118,12 +119,6 @@ public:
     /** Build the tag caches */
     void calculateCache(volatile bool* breakFlag = 0);
 
-    /** Calculate missing data from the index file import */
-    void calculateTagMap(volatile bool *breakFlag);
-
-    /** Calculate missing data from the index file import */
-    void calculateReverseMaps(volatile bool *breakFlag);
-
     /** Clears the index, and frees all associated memory */
     void clear();
 
@@ -146,6 +141,12 @@ signals:
     void progress(int);
 
 private:
+    /** Calculate missing data from the index file import */
+    void calculateTagMap(volatile bool *breakFlag);
+
+    /** Calculate missing data from the index file import */
+    void calculateReverseMaps(volatile bool *breakFlag);
+
     /** Contains information which games are marked for deletion */
     QSet<GameId> m_deletedGames;
 
@@ -193,6 +194,8 @@ private:
 
     /** @ret true if a game @p gameId has a given tag index */
     bool indexItemHasTag(TagIndex tagIndex, GameId gameId) const;
+private:
+    mutable QReadWriteLock m_mutex;
 };
 
 #endif   // __INDEX_H__

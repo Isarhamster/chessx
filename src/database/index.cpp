@@ -14,6 +14,8 @@
 #include <QDataStream>
 #include <QHash>
 #include <QMultiHash>
+#include <QWriteLocker>
+#include <QReadLocker>
 
 #include "index.h"
 #include "tags.h"
@@ -23,7 +25,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-Index::Index()
+Index::Index() : m_mutex(QReadWriteLock::Recursive)
 {
     // Dummy Values in case a index is miscalculated
     m_tagNames[0]  = "?";
@@ -42,6 +44,7 @@ Index::~Index()
 
 GameId Index::add()
 {
+    QWriteLocker m(&m_mutex);
     GameId gameId = m_indexItems.count();
     m_indexItems.append(new IndexItem);
     return gameId;
@@ -73,6 +76,8 @@ ValueIndex Index::AddTagValue(QString name)
 
 void Index::setTag(const QString& tagName, const QString& value, GameId gameId)
 {
+    QWriteLocker m(&m_mutex);
+
     TagIndex tagIndex = AddTagName(tagName);
     ValueIndex valueIndex = AddTagValue(value);
 
@@ -86,6 +91,7 @@ void Index::setTag(const QString& tagName, const QString& value, GameId gameId)
 
 void Index::removeTag(const QString& tagName, GameId gameId)
 {
+    QWriteLocker m(&m_mutex);
     if(m_tagNameIndex.contains(tagName))
     {
         TagIndex tagIndex = m_tagNameIndex.value(tagName);
@@ -99,6 +105,7 @@ void Index::removeTag(const QString& tagName, GameId gameId)
 
 void Index::setValidFlag(GameId gameId, bool value)
 {
+    QWriteLocker m(&m_mutex);
     if (!value)
     {
         m_validFlags.insert(gameId);
@@ -111,6 +118,8 @@ void Index::setValidFlag(GameId gameId, bool value)
 
 bool Index::replaceTagValue(QStringList tags, const QString& newValue, const QString& oldValue)
 {
+    QWriteLocker m(&m_mutex);
+
     bool ok = false;
     foreach(QString t, tags)
     {
@@ -153,11 +162,14 @@ bool Index::replaceTagValue(QStringList tags, const QString& newValue, const QSt
 
 bool Index::isValidFlag(GameId gameId) const
 {
+    QReadLocker m(&m_mutex);
     return !m_validFlags.contains(gameId);
 }
 
 bool Index::write(QDataStream &out) const
 {
+    QReadLocker m(&m_mutex);
+
     out << m_tagNames;
     out << m_tagValues;
     out << m_indexItems.count();
@@ -175,6 +187,8 @@ bool Index::write(QDataStream &out) const
 
 bool Index::read(QDataStream &in, volatile bool *breakFlag, short version)
 {
+    QWriteLocker m(&m_mutex);
+
     in >> m_tagNames;
     in >> m_tagValues;
     int itemCount;
@@ -221,6 +235,7 @@ bool Index::read(QDataStream &in, volatile bool *breakFlag, short version)
 
 void Index::clearCache()
 {
+    QWriteLocker m(&m_mutex);
     m_tagNameIndex.clear();
     m_tagValueIndex.clear();
     m_mapTagToIndexItems.clear();
@@ -228,6 +243,7 @@ void Index::clearCache()
 
 void Index::calculateCache(volatile bool* breakFlag)
 {
+    //QWriteLocker m(&m_mutex);
     calculateReverseMaps(breakFlag);
     calculateTagMap(breakFlag);
 }
@@ -270,7 +286,7 @@ void Index::calculateTagMap(volatile bool *breakFlag)
                 {
                     return;
                 }
-                if(indexItemHasTag(tagIndex, gameId))
+                if(m_indexItems[gameId]->hasTagIndex(tagIndex))
                 {
                     m_mapTagToIndexItems.insertMulti(tagIndex, gameId);
                 }
@@ -281,6 +297,7 @@ void Index::calculateTagMap(volatile bool *breakFlag)
 
 void Index::clear()
 {
+    QWriteLocker m(&m_mutex);
     for(int i = 0 ; i < m_indexItems.count() ; ++i)
     {
         delete m_indexItems[i];
@@ -297,11 +314,14 @@ void Index::clear()
 
 int Index::count() const
 {
+    QReadLocker m(&m_mutex);
     return m_indexItems.count();
 }
 
 QBitArray Index::listContainingValue(const QString& tagName, const QString& value) const
 {
+    QReadLocker m(&m_mutex);
+
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
     ValueIndex valueIndex = m_tagValueIndex.value(value);
 
@@ -315,6 +335,8 @@ QBitArray Index::listContainingValue(const QString& tagName, const QString& valu
 
 QBitArray Index::listInSet(const QString& tagName, const QSet<QString>& set, bool partial) const
 {
+    QReadLocker m(&m_mutex);
+
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
 
     QBitArray list(count(), false);
@@ -348,6 +370,8 @@ QBitArray Index::listInSet(const QString& tagName, const QSet<QString>& set, boo
 
 QBitArray Index::listInRange(const QString& tagName, const QString& minValue, const QString& maxValue) const
 {
+    QReadLocker m(&m_mutex);
+
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
 
     QBitArray list(count(), false);
@@ -361,6 +385,8 @@ QBitArray Index::listInRange(const QString& tagName, const QString& minValue, co
 
 QBitArray Index::listInRange(const QString &tagName, int minValue, int maxValue) const
 {
+    QReadLocker m(&m_mutex);
+
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
 
     QBitArray list(count(), false);
@@ -374,6 +400,8 @@ QBitArray Index::listInRange(const QString &tagName, int minValue, int maxValue)
 
 QBitArray Index::listPartialValue(const QString& tagName, const QString& value) const
 {
+    QReadLocker m(&m_mutex);
+
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
 
     QBitArray list(count(), false);
@@ -387,6 +415,8 @@ QBitArray Index::listPartialValue(const QString& tagName, const QString& value) 
 
 QString Index::tagValue(TagIndex tagIndex, GameId gameId) const
 {
+    QReadLocker m(&m_mutex);
+
     ValueIndex valueIndex = m_indexItems[gameId]->valueIndex(tagIndex);
 
     return m_tagValues.value(valueIndex);
@@ -394,38 +424,45 @@ QString Index::tagValue(TagIndex tagIndex, GameId gameId) const
 
 QString Index::tagName(TagIndex tagIndex) const
 {
+    QReadLocker m(&m_mutex);
     return m_tagNames.value(tagIndex);
 }
 
 QString Index::tagValueName(ValueIndex valueIndex) const
 {
+    QReadLocker m(&m_mutex);
     return m_tagValues.value(valueIndex);
 }
 
 QString Index::tagValue(const QString& tagName, GameId gameId) const
 {
+    QReadLocker m(&m_mutex);
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
     return tagValue(tagIndex, gameId);
 }
 
 ValueIndex Index::valueIndexFromTag(const QString& tagName, GameId gameId) const
 {
+    QReadLocker m(&m_mutex);
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
     return m_indexItems[gameId]->valueIndex(tagIndex);
 }
 
 bool Index::indexItemHasTag(TagIndex tagIndex, GameId gameId) const
 {
+    QReadLocker m(&m_mutex);
     return m_indexItems[gameId]->hasTagIndex(tagIndex);
 }
 
 inline ValueIndex Index::valueIndexFromIndex(TagIndex tagIndex, GameId gameId) const
 {
+    QReadLocker m(&m_mutex);
     return m_indexItems[gameId]->valueIndex(tagIndex);
 }
 
 TagIndex Index::getTagIndex(const QString& value) const
 {
+    QReadLocker m(&m_mutex);
     if(m_tagNameIndex.contains(value))
     {
         return m_tagNameIndex.value(value);
@@ -435,32 +472,39 @@ TagIndex Index::getTagIndex(const QString& value) const
 
 ValueIndex Index::getValueIndex(const QString& value) const
 {
+    QReadLocker m(&m_mutex);
     return m_tagValueIndex.value(value);
 }
 
 const IndexItem* Index::item(GameId gameId) const
 {
+    QReadLocker m(&m_mutex);
     return m_indexItems[gameId];
 }
 
 IndexItem* Index::item(GameId gameId)
 {
+    QReadLocker m(&m_mutex);
     return m_indexItems[gameId];
 }
 
 unsigned int Index::hashIndexItem(GameId gameId) const
 {
+    QReadLocker m(&m_mutex);
     // return m_indexItems[gameId]->hash();
     return valueIndexFromTag(TagNameWhite, gameId);
 }
 
 bool Index::isIndexItemEqual(GameId i, GameId j) const
 {
+    QReadLocker m(&m_mutex);
     return (item(i)->isEqual(*item(j)));
 }
 
 void Index::loadGameHeaders(GameId id, Game& game) const
 {
+    QReadLocker m(&m_mutex);
+
     game.clearTags();
     foreach(TagIndex tagIndex, m_indexItems[id]->getTagIndices())
     {
@@ -471,12 +515,16 @@ void Index::loadGameHeaders(GameId id, Game& game) const
 
 void Index::loadGameHeader(GameId id, Game& game, const QString &tag) const
 {
+    QReadLocker m(&m_mutex);
+
     TagIndex tagIndex = getTagIndex(tag);
     game.setTag(tagName(tagIndex), tagValue(tagIndex, id));
 }
 
 QStringList Index::playerNames() const
 {
+    QReadLocker m(&m_mutex);
+
     QStringList allPlayerNames;
     QSet<ValueIndex> playerNameIndex;
 
@@ -508,6 +556,8 @@ QStringList Index::playerNames() const
 
 QStringList Index::tagValues(const QString& tagName) const
 {
+    QReadLocker m(&m_mutex);
+
     QStringList allTagNames;
     QSet<ValueIndex> tagNameIndex;
     TagIndex tagIndex = getTagIndex(tagName);
@@ -530,11 +580,13 @@ QStringList Index::tagValues(const QString& tagName) const
 
 bool Index::deleted(GameId gameId) const
 {
+    QReadLocker m(&m_mutex);
     return m_deletedGames.contains(gameId);
 }
 
 void Index::setDeleted(GameId gameId, bool df)
 {
+    QWriteLocker m(&m_mutex);
     if (df)
     {
         m_deletedGames.insert(gameId);

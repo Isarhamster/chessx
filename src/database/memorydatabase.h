@@ -65,7 +65,7 @@ private:
     QVector <Game*> m_games;
     bool parseFile();
     bool m_isModified;
-    mutable QMutex m_mutex;
+    mutable QReadWriteLock m_mutex;
 };
 
 #endif	// __MEMORYDATABASE_H__
