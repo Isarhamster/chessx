@@ -63,7 +63,7 @@ protected:
     /** Parses a move token from the file */
     void parseDefaultToken(Game* game, QString token);
     /** Parses a token from the file */
-    void parseToken(Game* game, const QString& token);
+    void parseToken(Game* game, const QStringRef &token);
     /** Parses a comment from the file */
     void parseComment(Game* game);
     /** Skips past any data which is not valid tag or move data */
@@ -109,6 +109,8 @@ protected:
     /** Moves the file position to the start of the given game */
     void seekGame(GameId gameId);
 
+    void prepareNextLineForMoveParser();
+    void prepareNextLine();
 private:
 
     //file variables

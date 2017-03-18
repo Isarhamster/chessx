@@ -442,30 +442,7 @@ void PgnDatabase::readLine()
         return;
     }
     m_lineBuffer = m_file->readLine();
-    if(m_utf8)
-    {
-        QTextStream textStream(m_lineBuffer);
-        m_currentLine = textStream.readLine().simplified();
-    }
-    else
-    {
-        QTextStream textStream(m_lineBuffer);
-        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if(textCodec)
-        {
-            textStream.setCodec(textCodec);
-        }
-        m_currentLine = textStream.readLine().simplified();
-    }
-
-    if(m_inComment || !m_currentLine.startsWith("["))
-    {
-        m_currentLine.replace("(", " ( ");
-        m_currentLine.replace(")", " ) ");
-        m_currentLine.replace("{", " { ");
-        m_currentLine.replace("}", " } ");
-        m_currentLine.replace("$", " $");
-    }
+    prepareNextLineForMoveParser();
 }
 
 void PgnDatabase::skipLine()
@@ -581,27 +558,28 @@ bool PgnDatabase::parseMoves(Game* game)
 
 void PgnDatabase::parseLine(Game* game)
 {
-    QStringList list = m_currentLine.split(" ", QString::SkipEmptyParts);
+    QVector<QStringRef> list = m_currentLine.splitRef(" ", QString::SkipEmptyParts);
 
-    for(QStringList::Iterator it = list.begin(); it != list.end() && !m_inComment; ++it)
+    for(QVector<QStringRef>::Iterator it = list.begin(); it != list.end() && !m_inComment; ++it)
     {
-        if(*it != "")
+        parseToken(game, *it);
+        if(m_variation == -1)
         {
-            parseToken(game, *it);
-            if(m_variation == -1)
+            if(!(m_currentLine.startsWith("[")))
             {
-                if(!(m_currentLine.startsWith("[")))
-                {
-                    skipLine(); // illegal move in the buffer!
-                }
-                return;
+                skipLine(); // illegal move in the buffer!
             }
+            return;
         }
     }
 
     if(!m_inComment)
     {
         readLine();
+    }
+    else
+    {
+        m_currentLine = m_currentLine.mid(m_currentLine.indexOf("{") + 1); // Implicit assumption that there is no other '{' in the line
     }
 }
 
@@ -621,69 +599,72 @@ inline void PgnDatabase::parseDefaultToken(Game* game, QString token)
         token.clear();
     }
 
-    //look for nags
-    Nag nag = NullNag;
-    if(token.endsWith("!"))
-    {
-        if(token.endsWith("!!"))
-        {
-            nag = VeryGoodMove;
-        }
-        else if(token.endsWith("?!"))
-        {
-            nag = QuestionableMove;
-        }
-        else
-        {
-            nag = GoodMove;
-        }
-        token = token.section('!',	0, 0);
-    }
-    else if(token.endsWith("?"))
-    {
-        if(token.endsWith("??"))
-        {
-            nag = VeryPoorMove;
-        }
-        else if(token.endsWith("!?"))
-        {
-            nag = SpeculativeMove;
-        }
-        else
-        {
-            nag = PoorMove;
-        }
-        token = token.section('?',	0, 0);
-    }
-
     if(!token.isEmpty())
     {
-        if(m_newVariation)
+        //look for nags
+        Nag nag = NullNag;
+        if(token.endsWith("!"))
         {
-            game->backward();
-            m_variation = game->dbAddVariation(token, QString(), nag);
-            if(!m_precomment.isEmpty())
+            if(token.endsWith("!!"))
             {
-                game->dbSetAnnotation(m_precomment, m_variation, Game::BeforeMove);
-                m_precomment.clear();
-                m_inPreComment = false;
+                nag = VeryGoodMove;
             }
-            m_newVariation = false;
-        }
-        else  	// First move in the game
-        {
-            m_variation = game->dbAddMove(token, QString(), nag);
-            if(!m_precomment.isEmpty())
+            else if(token.endsWith("?!"))
             {
-                game->dbSetAnnotation(m_precomment, m_variation, Game::BeforeMove);
-                m_precomment.clear();
-                m_inPreComment = false;
+                nag = QuestionableMove;
+            }
+            else
+            {
+                nag = GoodMove;
+            }
+            token = token.section('!',	0, 0);
+        }
+        else if(token.endsWith("?"))
+        {
+            if(token.endsWith("??"))
+            {
+                nag = VeryPoorMove;
+            }
+            else if(token.endsWith("!?"))
+            {
+                nag = SpeculativeMove;
+            }
+            else
+            {
+                nag = PoorMove;
+            }
+            token = token.section('?',	0, 0);
+        }
+
+        if(!token.isEmpty())
+        {
+            if(m_newVariation)
+            {
+                game->backward();
+                m_variation = game->dbAddVariation(token, QString(), nag);
+                if(!m_precomment.isEmpty())
+                {
+                    game->dbSetAnnotation(m_precomment, m_variation, Game::BeforeMove);
+                    m_precomment.clear();
+                    m_inPreComment = false;
+                }
+                m_newVariation = false;
+            }
+            else  	// First move in the game
+            {
+                m_variation = game->dbAddMove(token, QString(), nag);
+                if(!m_precomment.isEmpty())
+                {
+                    game->dbSetAnnotation(m_precomment, m_variation, Game::BeforeMove);
+                    m_precomment.clear();
+                    m_inPreComment = false;
+                }
             }
         }
     }
 }
 
-void PgnDatabase::parseToken(Game* game, const QString& token)
+void PgnDatabase::parseToken(Game* game, const QStringRef& token)
 {
     // qDebug() << "Parsing Token:" << token << ":";
     switch(token.at(0).toLatin1())
@@ -700,7 +681,6 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
     case '{':
         m_comment.clear();
         m_inComment = true;
-        m_currentLine = m_currentLine.mid(m_currentLine.indexOf("{") + 1); // Implicit assumption that there is no other '{' in the line
         break;
     case '$':
         game->dbAddNag((Nag)token.mid(1).toInt());
@@ -789,12 +769,12 @@ void PgnDatabase::parseToken(Game* game, const QString& token)
         else if(token == "--")
         {
             // parse a null move!
-            parseDefaultToken(game, token);
+            parseDefaultToken(game, token.toString());
             break;
         }
 
     default:
-        parseDefaultToken(game, token);
+        parseDefaultToken(game, token.toString());
         break;
     }
 }
@@ -840,27 +820,8 @@ inline bool onlyWhite(const QByteArray& b)
     return true;
 }
 
-IndexBaseType PgnDatabase::skipJunk()
+void PgnDatabase::prepareNextLine()
 {
-    IndexBaseType fp = -2;
-    if(m_file->atEnd())
-    {
-        fp = -1;
-    }
-
-    while((!m_lineBuffer.length()
-            || (m_lineBuffer[0] != '[' && m_lineBuffer[0] != '1'))
-            && !m_file->atEnd())
-    {
-        fp = m_file->pos();
-        skipLine();
-    }
-
-    if(fp == -2)
-    {
-        fp = m_file->pos() - m_lineBuffer.size();
-    }
-
     if(m_utf8)
     {
         QTextStream textStream(m_lineBuffer);
@@ -876,6 +837,11 @@ IndexBaseType PgnDatabase::skipJunk()
         }
         m_currentLine = textStream.readLine().simplified();
     }
+}
+
+void PgnDatabase::prepareNextLineForMoveParser()
+{
+    prepareNextLine();
 
     if(m_inComment || !m_currentLine.startsWith("["))
     {
@@ -885,6 +851,30 @@ IndexBaseType PgnDatabase::skipJunk()
         m_currentLine.replace("}", " } ");
         m_currentLine.replace("$", " $");
     }
+}
+
+IndexBaseType PgnDatabase::skipJunk()
+{
+    IndexBaseType fp = -2;
+    if(m_file->atEnd())
+    {
+        fp = -1;
+    }
+
+    while((!m_lineBuffer.length()
+            || (m_lineBuffer[0] != '[' && !QChar::isNumber(m_lineBuffer[0])))
+            && !m_file->atEnd())
+    {
+        fp = m_file->pos();
+        skipLine();
+    }
+
+    if(fp == -2)
+    {
+        fp = m_file->pos() - m_lineBuffer.size();
+    }
+
+    prepareNextLineForMoveParser();
 
     return fp;
 }
@@ -902,30 +892,7 @@ void PgnDatabase::skipTags()
         skipLine();
     }
 
-    if(m_utf8)
-    {
-        QTextStream textStream(m_lineBuffer);
-        m_currentLine = textStream.readLine().simplified();
-    }
-    else
-    {
-        QTextStream textStream(m_lineBuffer);
-        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if(textCodec)
-        {
-            textStream.setCodec(textCodec);
-        }
-        m_currentLine = textStream.readLine().simplified();
-    }
-
-    if(m_inComment || !m_currentLine.startsWith("["))
-    {
-        m_currentLine.replace("(", " ( ");
-        m_currentLine.replace(")", " ) ");
-        m_currentLine.replace("{", " { ");
-        m_currentLine.replace("}", " } ");
-        m_currentLine.replace("$", " $");
-    }
+    prepareNextLineForMoveParser();
 }
 
 void PgnDatabase::skipMoves()
@@ -969,20 +936,6 @@ void PgnDatabase::skipMoves()
         skipLine();
     }
 
-    if(m_utf8)
-    {
-        QTextStream textStream(m_lineBuffer);
-        m_currentLine = textStream.readLine().simplified();
-    }
-    else
-    {
-        QTextStream textStream(m_lineBuffer);
-        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if(textCodec)
-        {
-            textStream.setCodec(textCodec);
-        }
-        m_currentLine = textStream.readLine().simplified();
-    }
+    prepareNextLine();
 }
 
