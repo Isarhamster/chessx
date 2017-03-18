@@ -1693,7 +1693,7 @@ Position::MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceC pro
     pieceT pawn;
     rankT toRank = square_Rank(to);
     fyleT toFyle = square_Fyle(to);
-    rankT promoteRank = (ToMove == WHITE ? RANK_8 : RANK_1);
+    rankT promoteRank;
 
     // from is the from square; backup is the alternative from square
     // for a pawn move two squares forward.
@@ -2556,7 +2556,7 @@ Position::SmallestDefender(colorT color, squareT target) const
     }
 
     // If we get here, it must be defended only by the king:
-    ASSERT(numDefenders == 1  &&  piece_Type(defenders[i]) == KING);
+    ASSERT(numDefenders == 1  &&  piece_Type(defenders[0]) == KING);
     return KING;
 }
 
