@@ -59,7 +59,7 @@ void MemoryDatabase::setModified(bool b)
 
 bool MemoryDatabase::appendGame(const Game& game)
 {
-    QMutexLocker m(&m_mutex);
+    QWriteLocker m(&m_mutex);
     // Add to index
     TagMap tags = game.tags();
     TagMap::const_iterator i = tags.constBegin();
@@ -82,23 +82,21 @@ bool MemoryDatabase::appendGame(const Game& game)
 
 bool MemoryDatabase::remove(GameId gameId)
 {
-    QMutexLocker m(&m_mutex);
-    setModified(true);
     m_index.setDeleted(gameId, true);
+    setModified(true);
     return true;
 }
 
 bool MemoryDatabase::undelete(GameId gameId)
 {
-    QMutexLocker m(&m_mutex);
-    setModified(true);
     m_index.setDeleted(gameId, false);
+    setModified(true);
     return true;
 }
 
 bool MemoryDatabase::replace(GameId gameId, Game& game)
 {
-    QMutexLocker m(&m_mutex);
+    QWriteLocker m(&m_mutex);
     if(gameId >= m_count)
     {
         return false;
@@ -121,7 +119,7 @@ bool MemoryDatabase::replace(GameId gameId, Game& game)
 
 void MemoryDatabase::loadGameMoves(GameId gameId, Game& game)
 {
-    QMutexLocker m(&m_mutex);
+    QReadLocker m(&m_mutex);
     if(gameId >= m_count)
     {
         return;
@@ -131,7 +129,7 @@ void MemoryDatabase::loadGameMoves(GameId gameId, Game& game)
 
 bool MemoryDatabase::loadGame(GameId gameId, Game& game)
 {
-    QMutexLocker m(&m_mutex);
+    QReadLocker m(&m_mutex);
     if(gameId >= m_count || m_index.deleted(gameId))
     {
         return false;
@@ -145,7 +143,7 @@ bool MemoryDatabase::loadGame(GameId gameId, Game& game)
 
 void MemoryDatabase::parseGame()
 {
-    QMutexLocker m(&m_mutex);
+    QWriteLocker m(&m_mutex);
     Game* game = new Game;
 
     QString fen = m_index.tagValue(TagNameFEN, m_count - 1);
