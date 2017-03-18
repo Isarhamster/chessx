@@ -992,7 +992,7 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
     {
         return false;
     }
-    c = fen[++i];
+    ++i;
 
     // Castling Rights
     c = fen[++i];
@@ -1119,7 +1119,7 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
         }
     }
     epFile2Square();
-    c = fen[++i];
+    ++i;
 
     // Half move clock
     c = fen[++i];
@@ -1130,7 +1130,7 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
     if (c=='-')
     {
         m_halfMoves = 0; // Workaround for some lazy generators
-        c = fen[++i]; // Eat ws
+        ++i; // Eat ws
     }
     else
     {
