@@ -66,7 +66,7 @@ DownloadManager::DownloadManager(QObject *parent) :
 void DownloadManager::doDownload(const QUrl &url)
 {
     QString filename = saveFileName(url);
-    if(QFile::exists(filename))
+    if(QFile::exists(filename) && QFileInfo(filename).isFile())
     {
         emit onDownloadFinished(url, filename);
         return;
@@ -104,12 +104,11 @@ QString DownloadManager::saveFileName(const QUrl &url)
 
     QString basename = QFileInfo(path).fileName();
 
-    if(basename.isEmpty())
+    if (basename.endsWith(".pgn") || basename.endsWith(".bin"))
     {
-        basename = "download.pgn";
+        return dir + QDir::separator() + basename;
     }
-
-    return dir + QDir::separator() + basename;
+    return dir; // Name will be determined after download
 }
 
 bool DownloadManager::saveToDisk(const QString &filename, QIODevice *data)
@@ -163,6 +162,33 @@ void DownloadManager::downloadFinished()
             else
             {
                 QString filename = destinationPaths.value(url);
+                if (filename.isEmpty() || !QFileInfo(filename).isFile())
+                {
+                    // Create a temporary file
+                    QString s = reply->rawHeader("Content-Disposition").constData();
+                    QRegExp re("filename=(.*)");
+                    if (s.contains(re))
+                    {
+                        s = re.cap(1);
+                        s.remove("'");
+                        s.remove("\"");
+                        s = s.trimmed();
+                    }
+                    if (s.isEmpty()) s = "download.pgn";
+
+                    if (filename.isEmpty())
+                    {
+                        filename = QDir::tempPath()+QDir::separator()+s;
+                    }
+                    else
+                    {
+                        filename = filename+QDir::separator()+s;
+                    }
+                    if (QFile::exists(filename) && QFileInfo(filename).isFile())
+                    {
+                        QFile::remove(filename);
+                    }
+                }
                 if(saveToDisk(filename, reply))
                 {
                     emit onDownloadFinished(url, filename);

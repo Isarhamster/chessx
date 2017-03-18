@@ -460,6 +460,9 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Display main window */
     show();
     downloadManager = new DownloadManager(this);
+    downloadManager2 = new DownloadManager(this);
+    connect(downloadManager2, SIGNAL(onDownloadFinished(QUrl, QString)), this, SLOT(slotDatabaseDroppedHandler(QUrl,QString)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
+    connect(downloadManager2, SIGNAL(downloadError(QUrl)), this, SLOT(slotDatabaseDroppedFailed(QUrl)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
 
     /* Load files from command line */
     QStringList args = qApp->arguments();
