@@ -21,6 +21,7 @@
 #include "databaseinfo.h"
 #include "databaselist.h"
 #include "dlgsavebook.h"
+#include "downloadmanager.h"
 #include "duplicatesearch.h"
 #include "ecolistwidget.h"
 #include "editaction.h"
@@ -195,74 +196,54 @@ void MainWindow::slotFileSave()
     }
 }
 
-void MainWindow::slotFileClose()
+bool MainWindow::closeDatabaseInfo(DatabaseInfo* aboutToClose)
 {
-    if(!m_currentDatabase->isClipboard())
+    // Don't remove Clipboard
+    if(!databaseInfo()->isClipboard() && databaseInfo()->IsLoaded())
     {
-        // Don't remove Clipboard
-        if(databaseInfo()->IsLoaded())
+        if(QuerySaveDatabase())
         {
-            if(QuerySaveDatabase())
-            {
-                autoGroup->untrigger();
+            autoGroup->untrigger();
 
-                bool ficsDB = (qobject_cast<FicsDatabase*>(database()));
-                if (ficsDB)
-                {
-                    m_ficsClient->exitSession();
-                }
-
-                closeBoardViewForDbIndex(databaseInfo());
-
-                DatabaseInfo* aboutToClose = databaseInfo();
-                m_openingTreeWidget->cancel();
-                m_databaseList->setFileClose(aboutToClose->displayName(), aboutToClose->currentIndex());
-
-                m_databases.removeAt(m_databases.indexOf(m_currentDatabase));
-                aboutToClose->close();
-                emit signalDatabaseOpenClose();
-                delete aboutToClose;
-
-                SwitchToClipboard();
-            }
-        }
-    }
-}
-
-void MainWindow::slotFileCloseIndex(int n)
-{
-    if(m_currentDatabase == m_databases[n])
-    {
-        slotFileClose();
-    }
-    else if(n)  // Don't remove Clipboard
-    {
-        if(m_databases[n]->IsLoaded())
-        {
-            if (!QuerySaveGame(m_databases[n]))
-            {
-                return;
-            }
-
-            bool ficsDB = (qobject_cast<FicsDatabase*>(m_databases[n]->database()));
+            bool ficsDB = (qobject_cast<FicsDatabase*>(database()));
             if (ficsDB)
             {
                 m_ficsClient->exitSession();
             }
 
-            closeBoardViewForDbIndex(m_databases[n]);
+            closeBoardViewForDbIndex(aboutToClose);
 
             m_openingTreeWidget->cancel();
+            m_databaseList->setFileClose(aboutToClose->displayName(), aboutToClose->currentIndex());
 
-            m_databaseList->setFileClose(m_databases[n]->displayName(), m_databases[n]->currentIndex());
-
-            m_databases[n]->close();
-
-            delete m_databases[n];
-            m_databases.removeAt(n);
-
+            m_databases.removeAt(m_databases.indexOf(aboutToClose));
+            aboutToClose->close();
             emit signalDatabaseOpenClose();
+            delete aboutToClose;
+            return true;
         }
+    }
+    return false;
+}
+
+void MainWindow::slotFileClose()
+{
+    if (closeDatabaseInfo(databaseInfo()))
+    {
+        SwitchToClipboard();
+    }
+}
+
+void MainWindow::slotFileCloseIndex(int n)
+{
+    DatabaseInfo* aboutToClose = m_databases[n];
+    if(m_currentDatabase == aboutToClose)
+    {
+        slotFileClose();
+    }
+    else
+    {
+        closeDatabaseInfo(aboutToClose);
     }
 }
 
@@ -2556,7 +2537,10 @@ void MainWindow::copyDatabase(QString target, QString src)
                 QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(pDestDB->name());
                 slotStatusMessage(msg);
                 done = true;
-                pDestDBInfo->filter()->resize(pDestDB->count(), true);
+                if (pDestDBInfo)
+                {
+                    pDestDBInfo->filter()->resize(pDestDB->count(), true);
+                }
             }
         }
 
@@ -2568,6 +2552,21 @@ void MainWindow::copyDatabase(QString target, QString src)
     }
 }
 
+void MainWindow::slotDatabaseDroppedFailed(QUrl url)
+{
+    m_mapDatabaseToDroppedUrl.remove(url);
+}
+
+void MainWindow::slotDatabaseDroppedHandler(QUrl url, QString filename)
+{
+    QString target = m_mapDatabaseToDroppedUrl[url];
+    m_mapDatabaseToDroppedUrl.remove(url);
+    copyDatabase(target, filename);
+    if (QFile::exists(filename))
+    {
+        QFile::remove(filename);
+    }
+}
 
 void MainWindow::slotDatabaseDropped(QDropEvent *event)
 {
@@ -2576,14 +2575,24 @@ void MainWindow::slotDatabaseDropped(QDropEvent *event)
 
     if(dbMimeData && mimeData->hasUrls())
     {
-        QString s = mimeData->urls().first().toString();
-        copyDatabase(databaseInfo()->displayName(), s);
+        foreach (QUrl url, mimeData->urls())
+        {
+            copyDatabase(databaseInfo()->displayName(), url.toString());
+        }
     }
     else if(mimeData && mimeData->hasUrls())
     {
         foreach (QUrl url, mimeData->urls())
         {
-            copyDatabase(databaseInfo()->displayName(), url.path());
+            if((url.scheme() == "http") || (url.scheme() == "ftp"))
+            {
+                m_mapDatabaseToDroppedUrl[url] = databaseInfo()->displayName();
+                downloadManager2->doDownloadToPath(url, "");
+            }
+            else
+            {
+                copyDatabase(databaseInfo()->displayName(), url.path());
+            }
         }
     }
     event->accept();

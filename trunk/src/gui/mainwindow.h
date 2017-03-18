@@ -398,6 +398,8 @@ public slots:
     void SlotDisplayTime(int color, QString t);
     /** Accept Drop of database to a subordinate target */
     void slotDatabaseDropped(QDropEvent*);
+    void slotDatabaseDroppedHandler(QUrl url, QString filename);
+    void slotDatabaseDroppedFailed(QUrl url);
 protected slots:
     /** Update recent files menu */
     void updateMenuDatabases();
@@ -494,6 +496,7 @@ protected:
     QString drawAnnotation() const;
     BoardViewEx *BoardViewFrame();
     void SQAction(QChar c, QAction *action);
+    bool closeDatabaseInfo(DatabaseInfo *aboutToClose);
 signals:
     /** Re-read configuration. */
     void reconfigure();
@@ -670,6 +673,7 @@ private:
     QUndoGroup m_undoGroup;
     QNetworkAccessManager* m_manager;
     DownloadManager* downloadManager;
+    DownloadManager* downloadManager2;
     bool m_machineHasToMove;
     bool m_gameMode;
     FicsClient* m_ficsClient;
@@ -683,6 +687,7 @@ private:
     bool m_bTrainigAutoRespond;
     bool m_bEvalRequested;
     QList<PolyglotWriter*> m_polyglotWriters;
+    QMap<QUrl, QString> m_mapDatabaseToDroppedUrl;
 };
 
 #endif
