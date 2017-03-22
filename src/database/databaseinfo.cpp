@@ -275,6 +275,11 @@ bool DatabaseInfo::saveGame()
     {
         if(m_database->replace(m_index, m_game))
         {
+            if (m_database->deleted(m_index))
+            {
+                // In case a deleted game is saved, assume that the use wants to keep content
+                m_database->index()->setDeleted(m_index, false);
+            }
             setModified(false, Game(), "");
             m_undoStack->setClean();
             return true;
