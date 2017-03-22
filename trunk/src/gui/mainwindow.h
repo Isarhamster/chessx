@@ -577,8 +577,10 @@ private:
     bool loadNextGame();
     /** Save Database without query or progress bar */
     void saveDatabase(DatabaseInfo *dbInfo);
-    /** Save Database with query */
+    /** Save current Database with query */
     bool QuerySaveDatabase();
+    /** Save Database with query */
+    bool QuerySaveDatabase(DatabaseInfo* dbInfo);
     /** Create a new unassociated boardview */
     BoardView* CreateBoardView();
     /** Update Board Information */

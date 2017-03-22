@@ -150,29 +150,29 @@ void MainWindow::saveDatabase(DatabaseInfo* dbInfo)
 {
     if(!dbInfo->database()->isReadOnly() && dbInfo->database()->isModified())
     {
-        QMutexLocker m(dbInfo->database()->mutex());
-        startOperation(tr("Saving %1...").arg(dbInfo->database()->name()));
+        Database* db = dbInfo->database();
+        QMutexLocker m(db->mutex());
+        startOperation(tr("Saving %1...").arg(db->name()));
         Output output(Output::Pgn);
         connect(&output, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)));
-        output.output(dbInfo->database()->filename(), *database());
-        finishOperation(tr("%1 saved").arg(dbInfo->database()->name()));
+        output.output(db->filename(), *db);
+        finishOperation(tr("%1 saved").arg(db->name()));
     }
 }
 
-
-bool MainWindow::QuerySaveDatabase()
+bool MainWindow::QuerySaveDatabase(DatabaseInfo* dbInfo)
 {
-    if(QuerySaveGame())
+    if(QuerySaveGame(dbInfo))
     {
-        if(!m_currentDatabase->isClipboard() && qobject_cast<MemoryDatabase*>(database()))
+        if(!dbInfo->isClipboard() && qobject_cast<MemoryDatabase*>(dbInfo->database()))
         {
-            if(databaseInfo()->isValid() && database()->isModified())
+            if(dbInfo->isValid() && dbInfo->database()->isModified())
             {
-                int result = MessageDialog::yesNoCancel(tr("The current database is modified!")
+                int result = MessageDialog::yesNoCancel(tr("The selected database is modified!")
                                                         + '\n' + tr("Save it?"));
                 if(MessageDialog::Yes == result)
                 {
-                    saveDatabase(databaseInfo());
+                    saveDatabase(dbInfo);
                     return true;
                 }
                 return result != MessageDialog::Cancel;
@@ -181,6 +181,11 @@ bool MainWindow::QuerySaveDatabase()
         return true;
     }
     return false;
+}
+
+bool MainWindow::QuerySaveDatabase()
+{
+    return QuerySaveDatabase(databaseInfo());
 }
 
 void MainWindow::slotFileSave()
@@ -199,9 +204,9 @@ void MainWindow::slotFileSave()
 bool MainWindow::closeDatabaseInfo(DatabaseInfo* aboutToClose)
 {
     // Don't remove Clipboard
-    if(!databaseInfo()->isClipboard() && databaseInfo()->IsLoaded())
+    if(!aboutToClose->isClipboard() && aboutToClose->IsLoaded())
     {
-        if(QuerySaveDatabase())
+        if(QuerySaveDatabase(aboutToClose))
         {
             autoGroup->untrigger();
 
@@ -1396,11 +1401,14 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
     {
         if (dbInfo->saveGame())
         {
-            m_gameList->updateFilter();
-            slotFilterChanged();
-            slotGameChanged(true);
-            updateLastGameList();
-            UpdateBoardInformation();
+            if (dbInfo == databaseInfo())
+            {
+                m_gameList->updateFilter();
+                slotFilterChanged();
+                slotGameChanged(true);
+                updateLastGameList();
+                UpdateBoardInformation();
+            }
 
             if(AppSettings->getValue("/General/autoCommitDB").toBool())
             {

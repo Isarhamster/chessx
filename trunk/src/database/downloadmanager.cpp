@@ -162,7 +162,7 @@ void DownloadManager::downloadFinished()
             else
             {
                 QString filename = destinationPaths.value(url);
-                if (filename.isEmpty() || !QFileInfo(filename).isFile())
+                if (filename.isEmpty() || QFileInfo(filename).isDir())
                 {
                     // Create a temporary file
                     QString s = reply->rawHeader("Content-Disposition").constData();
