@@ -598,6 +598,7 @@ MoveId Game::addVariation(const Move& move, const QString& annotation, NagSet na
 {
     Game state = *this;
     MoveId retVal = dbAddVariation(move, annotation, nags);
+    dbIndicateAnnotationsOnBoard(m_currentNode);
     if (retVal != NO_MOVE)
     {
         emit signalGameModified(true, state, tr("Add variation"));
@@ -609,6 +610,7 @@ MoveId Game::addVariation(const MoveList& moveList, const QString& annotation)
 {
     Game state = *this;
     MoveId retVal = dbAddVariation(moveList, annotation);
+    dbIndicateAnnotationsOnBoard(m_currentNode);
     if (retVal != NO_MOVE)
     {
         emit signalGameModified(true, state, tr("Add variation"));
@@ -620,6 +622,7 @@ MoveId Game::addVariation(const QString& sanMove, const QString& annotation, Nag
 {
     Game state = *this;
     MoveId retVal = dbAddVariation(sanMove, annotation, nags);
+    dbIndicateAnnotationsOnBoard(m_currentNode);
     if (retVal != NO_MOVE)
     {
         emit signalGameModified(true, state, tr("Add variation"));
