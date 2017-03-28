@@ -3380,3 +3380,14 @@ bool BitBoard::from64Char(const QString& qcharboard)
 
     return true;
 }
+
+int BitBoard::numAttackedBy(const unsigned int color, Square square) const
+{
+    int num = 0;
+    num += countSetBits(bb_PawnAttacks[color ^ 1][square] & m_pawns & m_occupied_co[color]);
+    num += countSetBits(knightAttacksFrom(square) & m_knights & m_occupied_co[color]);
+    num += countSetBits(bishopAttacksFrom(square) & (m_bishops | m_queens) & m_occupied_co[color]);
+    num += countSetBits(rookAttacksFrom(square) & (m_rooks | m_queens) & m_occupied_co[color]);
+    num += countSetBits(kingAttacksFrom(square) & m_kings & m_occupied_co[color]);
+    return num;
+};

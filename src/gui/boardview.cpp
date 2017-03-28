@@ -45,7 +45,9 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_flags(flags),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false), m_wheelCurrentDelta(0),
     m_minDeltaWheel(0), m_moveListCurrent(0), m_showMoveIndicator(true), 
-    m_DbIndex(0)
+    m_DbIndex(0),
+    m_showAttacks(NoColor),
+    m_showUnderProtection(NoColor)
 {
     QSizePolicy policy = sizePolicy();
     policy.setHeightForWidth(true);
@@ -349,14 +351,53 @@ void BoardView::drawCheck(QPaintEvent* event)
     if (isEnabled())
     {
         QPainter p(this);
+        drawColorRect(event, m_alertSquare, m_theme.color(BoardTheme::Check));
+    }
+}
 
-        QRect rect = squareRect(m_alertSquare);
-        if(event->region().intersects(rect))
+void BoardView::drawAttacks(QPaintEvent* event)
+{
+    if (isEnabled() && Guess::guessAllowed())
+    {
+        if (m_showAttacks != NoColor)
         {
-            drawColorRect(event, m_alertSquare, m_theme.color(BoardTheme::Check));
+            QPainter p(this);
+            for (Square square=a1; square<NumSquares; ++square)
+            {
+                if (m_board.isAttackedBy(m_showAttacks, square))
+                {
+                    drawColorRect(event, square, m_theme.color(BoardTheme::Wall), true);
+                }
+            }
         }
     }
 }
+
+void BoardView::drawUnderProtection(QPaintEvent* event)
+{
+    if (isEnabled() && Guess::guessAllowed())
+    {
+        if (m_showUnderProtection != NoColor)
+        {
+            QPainter p(this);
+            for (Square square=a1; square<NumSquares; ++square)
+            {
+                if (m_board.colorAt(square) == m_showUnderProtection)
+                {
+                    if (pieceType(m_board.pieceAt(square)) != King)
+                    {
+                        if (m_board.numAttackedBy(m_showUnderProtection, square) < m_board.numAttackedBy(oppositeColor(m_showUnderProtection), square))
+                        {
+                            drawColorRect(event, square, Qt::red, true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 
 void BoardView::drawPieces(QPaintEvent* event)
 {
@@ -402,9 +443,11 @@ void BoardView::paintEvent(QPaintEvent* event)
 {
     drawSquares(event);
     drawCoordinates(event);
+    drawAttacks(event);
     drawSquareAnnotations(event);
     drawTargets(event);
     drawCheck(event);
+    drawUnderProtection(event);
     drawPieces(event);
     drawHiliting(event);
     drawMoveIndicator(event);
@@ -774,6 +817,18 @@ void BoardView::startToDrag(QMouseEvent *event, Square s)
     unselectSquare();
 }
 
+void BoardView::setShowUnderProtection(const Color &showUnderProtection)
+{
+    m_showUnderProtection = showUnderProtection;
+    update();
+}
+
+void BoardView::setShowAttacks(const Color &showAttacks)
+{
+    m_showAttacks = showAttacks;
+    update();
+}
+
 bool BoardView::getBrushMode() const
 {
     return m_brushMode;
@@ -1107,7 +1162,7 @@ void BoardView::drawArrowAnnotations(QPaintEvent* event)
     }
 }
 
-void BoardView::drawColorRect(QPaintEvent* event, Square square, QColor color)
+void BoardView::drawColorRect(QPaintEvent* event, Square square, QColor color, bool plain)
 {
     QPainter p(this);
 
@@ -1126,16 +1181,23 @@ void BoardView::drawColorRect(QPaintEvent* event, Square square, QColor color)
     QBrush brush(color);
     p.setPen(pen);
     p.setBrush(brush);
-    p.setOpacity(.35);
+    p.setOpacity(plain ? 0.7 : 0.35);
 
     int coord =  m_coordinates ? CoordinateSize : 0;
 
-    QRadialGradient radialGrad(QPointF(coord + pos.x()+m_theme.size().width()/2, pos.y()+m_theme.size().height()/2), m_theme.size().width());
-    radialGrad.setColorAt(0, color.lighter());
-    radialGrad.setColorAt(0.5, color);
-    radialGrad.setColorAt(1, color);
+    if (plain)
+    {
+        p.fillRect(coord + pos.x(), pos.y(), m_theme.size().width(), m_theme.size().height(), color);
+    }
+    else
+    {
+        QRadialGradient radialGrad(QPointF(coord + pos.x()+m_theme.size().width()/2, pos.y()+m_theme.size().height()/2), m_theme.size().width());
+        radialGrad.setColorAt(0, color.lighter());
+        radialGrad.setColorAt(0.5, color);
+        radialGrad.setColorAt(1, color);
 
-    p.fillRect(coord + pos.x(), pos.y(), m_theme.size().width(), m_theme.size().height(), radialGrad);
+        p.fillRect(coord + pos.x(), pos.y(), m_theme.size().width(), m_theme.size().height(), radialGrad);
+    }
 
     p.restore();
 }

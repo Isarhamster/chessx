@@ -1483,6 +1483,22 @@ void MainWindow::setupActions()
     showThreat->setCheckable(true);
     showThreat->setChecked(AppSettings->getValue("/Board/showThreat").toBool());
 
+    QAction* showAttackW = createAction(tr("Show covered squares from White"), SLOT(slotShowWhiteAttacks()), 0,
+                                       viewToolBar, QIcon(":/images/white_wall.png"));
+    m_menuView->addAction(showAttackW);
+    showAttackW->setCheckable(true);
+    showAttackW->setChecked(false);
+
+    QAction* showAttackB = createAction(tr("Show covered squares from Black"), SLOT(slotShowBlackAttacks()), 0,
+                                       viewToolBar, QIcon(":/images/black_wall.png"));
+    m_menuView->addAction(showAttackB);
+    showAttackB->setCheckable(true);
+    showAttackB->setChecked(false);
+
+    attackGroup = new ExclusiveActionGroup(this);
+    attackGroup->addAction(showAttackW);
+    attackGroup->addAction(showAttackB);
+
     m_menuView->addSeparator();
 
     /* Game menu */

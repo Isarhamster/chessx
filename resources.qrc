@@ -176,6 +176,10 @@
         <file alias="themes/shadow/leipzig.png">data/themes/shadow/leipzig.png</file>
         <file alias="themes/shadow/merida.png">data/themes/shadow/merida.png</file>
         <file alias="themes/shadow/spatial.png">data/themes/shadow/spatial.png</file>
-        <file>i18n/chessx_ru.qm</file>
+        <file alias="i18n/chessx_ru.qm">i18n/chessx_ru.qm</file>
+        <file alias="images/threat_black.png">data/images/threat_black.png</file>
+        <file alias="images/threat_white.png">data/images/threat_white.png</file>
+        <file alias="images/black_wall.png">data/images/black_wall.png</file>
+        <file alias="images/white_wall.png">data/images/white_wall.png</file>
     </qresource>
 </RCC>
