@@ -243,7 +243,6 @@ void Index::clearCache()
 
 void Index::calculateCache(volatile bool* breakFlag)
 {
-    //QWriteLocker m(&m_mutex);
     calculateReverseMaps(breakFlag);
     calculateTagMap(breakFlag);
 }
@@ -415,8 +414,6 @@ QBitArray Index::listPartialValue(const QString& tagName, const QString& value) 
 
 QString Index::tagValue(TagIndex tagIndex, GameId gameId) const
 {
-    QReadLocker m(&m_mutex);
-
     ValueIndex valueIndex = m_indexItems[gameId]->valueIndex(tagIndex);
 
     return m_tagValues.value(valueIndex);
@@ -424,13 +421,11 @@ QString Index::tagValue(TagIndex tagIndex, GameId gameId) const
 
 QString Index::tagName(TagIndex tagIndex) const
 {
-    QReadLocker m(&m_mutex);
     return m_tagNames.value(tagIndex);
 }
 
 QString Index::tagValueName(ValueIndex valueIndex) const
 {
-    QReadLocker m(&m_mutex);
     return m_tagValues.value(valueIndex);
 }
 
@@ -445,24 +440,21 @@ ValueIndex Index::valueIndexFromTag(const QString& tagName, GameId gameId) const
 {
     QReadLocker m(&m_mutex);
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
-    return m_indexItems[gameId]->valueIndex(tagIndex);
+    return valueIndexFromIndex(tagIndex, gameId);
 }
 
 bool Index::indexItemHasTag(TagIndex tagIndex, GameId gameId) const
 {
-    QReadLocker m(&m_mutex);
     return m_indexItems[gameId]->hasTagIndex(tagIndex);
 }
 
 inline ValueIndex Index::valueIndexFromIndex(TagIndex tagIndex, GameId gameId) const
 {
-    QReadLocker m(&m_mutex);
     return m_indexItems[gameId]->valueIndex(tagIndex);
 }
 
 TagIndex Index::getTagIndex(const QString& value) const
 {
-    QReadLocker m(&m_mutex);
     if(m_tagNameIndex.contains(value))
     {
         return m_tagNameIndex.value(value);
@@ -478,13 +470,11 @@ ValueIndex Index::getValueIndex(const QString& value) const
 
 const IndexItem* Index::item(GameId gameId) const
 {
-    QReadLocker m(&m_mutex);
     return m_indexItems[gameId];
 }
 
 IndexItem* Index::item(GameId gameId)
 {
-    QReadLocker m(&m_mutex);
     return m_indexItems[gameId];
 }
 
