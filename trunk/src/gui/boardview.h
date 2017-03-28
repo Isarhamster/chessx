@@ -92,6 +92,9 @@ public:
     void setBrushMode(bool brushMode);
 
     QSize themeSize() const;
+    void setShowAttacks(const Color &showAttacks);
+    void setShowUnderProtection(const Color &showUnderProtection);
+
 public slots:
 
     /** Flips/unflips board. */
@@ -188,13 +191,15 @@ private:
 
     QPoint posFromSquare(int square) const;
 
-    void drawColorRect(QPaintEvent* event, Square square, QColor color);
+    void drawColorRect(QPaintEvent* event, Square square, QColor color, bool plain = false);
 
     void drawHiliting(QPaintEvent* event);
     void drawSquares(QPaintEvent* event);
     void drawTargets(QPaintEvent* event);
     void drawPieces(QPaintEvent* event);
     void drawCheck(QPaintEvent* event);
+    void drawAttacks(QPaintEvent *event);
+    void drawUnderProtection(QPaintEvent *event);
     void drawMoveIndicator(QPaintEvent* event);
     void drawDraggedPieces(QPaintEvent* event);
     void drawCoordinates(QPaintEvent* event);
@@ -243,6 +248,8 @@ private:
     int m_showMoveIndicatorMode;
     QPointer<QObject> m_DbIndex;
     ThreadedGuess m_threatGuess;
+    Color m_showAttacks;
+    Color m_showUnderProtection;
 };
 
 class BoardViewMimeData : public QMimeData

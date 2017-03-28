@@ -185,6 +185,7 @@ void BoardTheme::configure()
     setColor(BoardTheme::Threat, AppSettings->getValue("threatColor").value<QColor>());
     setColor(BoardTheme::Target, AppSettings->getValue("targetColor").value<QColor>());
     setColor(BoardTheme::Check, AppSettings->getValue("checkColor").value<QColor>());
+    setColor(BoardTheme::Wall, AppSettings->getValue("wallColor").value<QColor>());
 
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     int pieceEffect = AppSettings->getValue("pieceEffect").toInt();

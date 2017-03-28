@@ -459,6 +459,8 @@ protected slots:
     void slotToggleBrush();
     void slotShowTargetFields();
     void slotShowThreat();
+    void slotShowWhiteAttacks();
+    void slotShowBlackAttacks();
     void cancelPolyglotWriters();
 protected:
     void moveChanged();
@@ -666,6 +668,7 @@ private:
     ExclusiveActionGroup* autoGroup;
     ExclusiveActionGroup* autoGroupTraining;
     ExclusiveActionGroup* brushGroup;
+    ExclusiveActionGroup* attackGroup;
     QAction* m_training;
     QAction* m_autoRespond;
     QAction* m_autoPlay;

@@ -411,6 +411,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/threatColor", QColor(0xe0,0xe0,0xff,0x80));
     map.insert("/Board/targetColor", QColor(Qt::darkGreen));
     map.insert("/Board/checkColor", QColor(Qt::magenta));
+    map.insert("/Board/wallColor", QColor(Qt::darkGray));
     map.insert("/Board/AutoPlayerInterval", 3000);
     map.insert("/Board/AutoSaveAndContinue", false);
     map.insert("/Board/BackwardAnalysis", false);

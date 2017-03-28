@@ -3514,3 +3514,15 @@ void MainWindow::slotShowThreat()
     AppSettings->setValue("/Board/showThreat", bt->isChecked());
     m_boardView->configure();
 }
+
+void MainWindow::slotShowWhiteAttacks()
+{
+    QAction* bt = qobject_cast<QAction*>(sender());
+    m_boardView->setShowAttacks(bt->isChecked() ? White:NoColor);
+}
+
+void MainWindow::slotShowBlackAttacks()
+{
+    QAction* bt = qobject_cast<QAction*>(sender());
+    m_boardView->setShowAttacks(bt->isChecked() ? Black:NoColor);
+}

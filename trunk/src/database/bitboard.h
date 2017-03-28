@@ -164,6 +164,10 @@ public:
     Square CastlingRook(int index) const;
     /** Return the square of the king if in check, InvalidSquare otherwise */
     Square kingInCheck() const;
+    /** Return true if the given square is attacked by the given color */
+    bool isAttackedBy(const unsigned int color, Square square) const;
+    /** Return number of attacks onto a given square by the given color */
+    int numAttackedBy(const unsigned int color, Square square) const;
 protected:
     unsigned int countSetBits(quint64 n) const;
 private:
@@ -177,8 +181,7 @@ private:
 
     /** Return true if making move would put oneself into check */
     bool isIntoCheck(const Move& move) const;
-    /** Return true if the given square is attacked by the given color */
-    bool isAttackedBy(const unsigned int color, Square square) const;
+    /** Return true if the given squares are attacked by the given color */
     bool isAttackedBy(const unsigned int color, Square start, Square stop) const;
 
     /** Return all squares attacked by a knight on given square */
@@ -326,7 +329,7 @@ const unsigned int bb_ShiftL45[64] =
 
 inline bool BitBoard::isAttackedBy(const unsigned int color, Square square) const
 {
-    if(bb_PawnAttacks[color ^ 1][square] & (m_pawns | m_bishops) & m_occupied_co[color])
+    if(bb_PawnAttacks[color ^ 1][square] & m_pawns & m_occupied_co[color])
     {
         return 1;
     }
@@ -342,7 +345,7 @@ inline bool BitBoard::isAttackedBy(const unsigned int color, Square square) cons
     {
         return 1;
     }
-    if(kingAttacksFrom(square) & (m_kings | m_queens) & m_occupied_co[color])
+    if(kingAttacksFrom(square) & m_kings & m_occupied_co[color])
     {
         return 1;
     }
