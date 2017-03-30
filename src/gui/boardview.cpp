@@ -390,7 +390,7 @@ void BoardView::drawUnderProtection(QPaintEvent* event)
                         if ((m_showUnderProtection == White && numDefenders < 0) ||
                             (m_showUnderProtection == Black && numDefenders > 0))
                         {
-                            drawColorRect(event, square, Qt::red, true);
+                            drawColorRect(event, square, m_theme.color(BoardTheme::UnderProtected), true);
                         }
                     }
                 }
