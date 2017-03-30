@@ -461,6 +461,8 @@ protected slots:
     void slotShowThreat();
     void slotShowWhiteAttacks();
     void slotShowBlackAttacks();
+    void slotShowUnderprotectedWhite();
+    void slotShowUnderprotectedBlack();
     void cancelPolyglotWriters();
 protected:
     void moveChanged();
@@ -669,6 +671,7 @@ private:
     ExclusiveActionGroup* autoGroupTraining;
     ExclusiveActionGroup* brushGroup;
     ExclusiveActionGroup* attackGroup;
+    ExclusiveActionGroup* underprotectGroup;
     QAction* m_training;
     QAction* m_autoRespond;
     QAction* m_autoPlay;

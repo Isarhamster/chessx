@@ -64,9 +64,9 @@ scid_Init()
                               DOWN_LEFT, DOWN_RIGHT, NULL_DIR
                             };
     // First, set everything to NULL_DIR:
-    for(i = A1; i <= NS; i++)
+    for(i = A1; i <= NULL_SQUARE; i++)
     {
-        for(j = A1; j <= NS; j++)
+        for(j = A1; j <= NULL_SQUARE; j++)
         {
             sqDir[i][j] = NULL_DIR;
         }
@@ -78,7 +78,7 @@ scid_Init()
         while(*dirptr != NULL_DIR)
         {
             j = square_Move(i, *dirptr);
-            while(j != NS)
+            while(j != NULL_SQUARE)
             {
                 sqDir[i][j] = *dirptr;
                 j = square_Move(j, *dirptr);

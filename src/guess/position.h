@@ -184,7 +184,7 @@ public:
     }
     bool        GetEPFlag() const
     {
-        return (EPTarget != NS);
+        return (EPTarget != NULL_SQUARE);
     }
     void        SetToMove(colorT c)
     {
@@ -367,7 +367,7 @@ public:
     errorT      MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceC promote);
     errorT      MatchKingMove(MoveList * mlist, squareT target);
 
-    unsigned int        CalcAttacks(colorT toMove, squareT kingSq, SquareList * squares) const;
+    unsigned int CalcAttacks(colorT toMove, squareT kingSq, SquareList * squares = 0) const;
     unsigned int CalcNumChecks() const
     {
         return CalcAttacks(1 - ToMove, GetKingSquare(), NULL);

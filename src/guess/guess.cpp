@@ -21,6 +21,17 @@ int scorePosFromFen(const char *fen)
     return pos.ScoreMaterial();
 }
 
+int attackersOnSquare(const char *fen, int target)
+{
+    Position pos;
+    pos.ReadFromFEN(fen);
+
+    unsigned int whiteDefenders = pos.CalcAttacks(WHITE, (squareT) target);
+    unsigned int blackDefenders = pos.CalcAttacks(BLACK, (squareT) target);
+
+    return whiteDefenders-blackDefenders;
+}
+
 Result guessMove(const char* fen, bool chess960, quint64 castlingRooks, squareT square, MoveList& mlist, int thinkTime)
 {
     Result r;

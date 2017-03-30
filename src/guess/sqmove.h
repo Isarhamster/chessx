@@ -15,6 +15,8 @@
 #ifndef SCID_SQMOVE_H
 #define SCID_SQMOVE_H
 
+#include "common.h"
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sqMove
 //   Array indexed by square value and direction, giving the square

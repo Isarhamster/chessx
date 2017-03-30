@@ -314,6 +314,12 @@ int Board::ScoreMaterial() const
     return Guess::scorePosFromFen(fen.toLatin1());
 }
 
+int Board::DefendersOfSquare(Square target) const
+{
+    QString fen = toFen();
+    return Guess::attackersOnSquare(fen.toLatin1(), (int) target);
+}
+
 Board Board::getStandardStartBoard()
 {
     Board b;

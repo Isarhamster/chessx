@@ -386,7 +386,9 @@ void BoardView::drawUnderProtection(QPaintEvent* event)
                 {
                     if (pieceType(m_board.pieceAt(square)) != King)
                     {
-                        if (m_board.numAttackedBy(m_showUnderProtection, square) < m_board.numAttackedBy(oppositeColor(m_showUnderProtection), square))
+                        int numDefenders = m_board.DefendersOfSquare(square);
+                        if ((m_showUnderProtection == White && numDefenders < 0) ||
+                            (m_showUnderProtection == Black && numDefenders > 0))
                         {
                             drawColorRect(event, square, Qt::red, true);
                         }
