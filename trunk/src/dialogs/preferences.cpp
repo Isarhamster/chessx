@@ -472,6 +472,7 @@ void PreferencesDialog::restoreSettings()
     restoreColorItem(ui.boardColorsList, tr("Targets"), "targetColor");
     restoreColorItem(ui.boardColorsList, tr("Check"), "checkColor");
     restoreColorItem(ui.boardColorsList, tr("Wall"), "wallColor");
+    restoreColorItem(ui.boardColorsList, tr("Underprotected"), "underprotectedColor");
     AppSettings->endGroup();
 
     SlotPieceEffectActivated(ui.pieceEffect->currentIndex());
@@ -602,7 +603,8 @@ void PreferencesDialog::saveSettings()
     }
     QStringList colorNames;
     colorNames << "lightColor" << "darkColor" << "highlightColor"
-               << "frameColor" << "currentMoveColor" << "storedMoveColor" << "threatColor" << "targetColor" << "checkColor" << "wallColor";
+               << "frameColor" << "currentMoveColor" << "storedMoveColor" << "threatColor"
+               << "targetColor" << "checkColor" << "wallColor" << "underprotectedColor";
     saveColorList(ui.boardColorsList, colorNames);
     AppSettings->endGroup();
 

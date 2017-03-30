@@ -1,6 +1,6 @@
 1. Requirements
   
-To compile ChessX, you need Qt version 4.8, better is Qt 5.3 or above.
+To compile ChessX, you need Qt version 5.7 or above.
 Reported issue: FICS does not work properly with Qt4
 
 2. Compilation
