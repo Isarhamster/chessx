@@ -1698,7 +1698,7 @@ Position::MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceC pro
     // from is the from square; backup is the alternative from square
     // for a pawn move two squares forward.
 
-    squareT from, backup = NS;
+    squareT from, backup = NULL_SQUARE;
 
     if(ToMove == WHITE)
     {
@@ -1749,7 +1749,7 @@ Position::MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceC pro
     if(Board[from] != pawn)
     {
         // No match; but it could be a foward-two-squares move:
-        if(backup == NS || Board[from] != EMPTY || Board[backup] != pawn)
+        if(backup == NULL_SQUARE || Board[from] != EMPTY || Board[backup] != pawn)
         {
             // A forward-two-squares move is impossible.
             return ERROR_InvalidMove;
@@ -2085,13 +2085,19 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares) con
     squareT sq;
 
     // Bishop/Queen/Rook attacks: look at each of the 8 directions
-    pieceT queen, rook, bishop, knight;
+    pieceT queen, rook, bishop, knight, pawn;
+    directionT pawnDir1, pawnDir2;
+    rankT backRank;
     if(side == WHITE)
     {
         queen = WQ;
         rook = WR;
         bishop = WB;
         knight = WN;
+        pawn = WP;
+        pawnDir1 = DOWN_LEFT;
+        pawnDir2 = DOWN_RIGHT;
+        backRank = RANK_1;
     }
     else
     {
@@ -2099,6 +2105,10 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares) con
         rook = BR;
         bishop = BB;
         knight = BN;
+        pawn = BP;
+        pawnDir1 = UP_LEFT;
+        pawnDir2 = UP_RIGHT;
+        backRank = RANK_8;
     }
 
     unsigned int numQueensRooks = Material[queen] + Material[rook];
@@ -2136,11 +2146,11 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares) con
                 {
                     // empty square: keep searching
                 }
-                else if(p == queen  ||  p == rook)
+                else if(p == queen || p == rook)
                 {
                     // Found an attacking piece
                     fromSquares->Add(dest);
-                    break;
+                    //break; // only in case of direct defenders
                 }
                 else
                 {
@@ -2187,12 +2197,16 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares) con
                 {
                     // Found an attacking piece
                     fromSquares->Add(dest);
-                    break;
+                    //break; // only in case of direct defenders
                 }
                 else
                 {
-                    // Found a piece, but not an enemy queen or bishop
-                    break;
+                    if (p!=pawn) break;
+                    if ((dest != square_Move(target, pawnDir1)) &&
+                        (dest != square_Move(target, pawnDir2)))
+                    {
+                         break;
+                    }
                 }
             }
         }
@@ -2220,36 +2234,17 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares) con
     }
 
     // Now pawn attacks:
-    if(side == WHITE)
+    if(square_Rank(target) != backRank)     //if (Material[WP] > 0) {
     {
-        if(square_Rank(target) != RANK_1)     //if (Material[WP] > 0) {
+        sq = square_Move(target, pawnDir1);
+        if(Board[sq] == pawn)
         {
-            sq = square_Move(target, DOWN_LEFT);
-            if(Board[sq] == WP)
-            {
-                fromSquares->Add(sq);
-            }
-            sq = square_Move(target, DOWN_RIGHT);
-            if(Board[sq] == WP)
-            {
-                fromSquares->Add(sq);
-            }
+            fromSquares->Add(sq);
         }
-    }
-    else
-    {
-        if(square_Rank(target) != RANK_8)     //if (Material[BP] > 0) {
+        sq = square_Move(target, pawnDir2);
+        if(Board[sq] == pawn)
         {
-            sq = square_Move(target, UP_LEFT);
-            if(Board[sq] == BP)
-            {
-                fromSquares->Add(sq);
-            }
-            sq = square_Move(target, UP_RIGHT);
-            if(Board[sq] == BP)
-            {
-                fromSquares->Add(sq);
-            }
+            fromSquares->Add(sq);
         }
     }
 
@@ -3004,7 +2999,7 @@ errorT
 Position::RelocatePiece(squareT fromSq, squareT toSq)
 {
     // Must have on-board squares:
-    if(fromSq == NS ||  toSq == NS)
+    if(fromSq == NULL_SQUARE ||  toSq == NULL_SQUARE)
     {
         return ERROR_General;
     }
@@ -3554,7 +3549,7 @@ Position::ReadFromFEN(const char * str)
 void
 Position::CopyFrom(Position * src)
 {
-    for(squareT p = A1; p <= NS; ++p)
+    for(squareT p = A1; p <= NULL_SQUARE; ++p)
     {
         Board[p] = src->Board[p];
     };

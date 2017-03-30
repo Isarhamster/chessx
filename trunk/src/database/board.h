@@ -114,8 +114,8 @@ public:
     /** Gets the square annotation*/
     QString arrowAnnotation() const;
 
-    int ScoreMaterial() const;
-
+    int ScoreMaterial() const;   
+    int DefendersOfSquare(Square target) const;
 private:
     static Board getStandardStartBoard();
 

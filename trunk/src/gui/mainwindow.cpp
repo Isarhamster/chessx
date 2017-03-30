@@ -1499,6 +1499,22 @@ void MainWindow::setupActions()
     attackGroup->addAction(showAttackW);
     attackGroup->addAction(showAttackB);
 
+    QAction* showUnderprotectW = createAction(tr("Show underprotected white pieces"), SLOT(slotShowUnderprotectedWhite()), 0,
+                                       viewToolBar, QIcon(":/images/threat_white.png"));
+    m_menuView->addAction(showUnderprotectW);
+    showUnderprotectW->setCheckable(true);
+    showUnderprotectW->setChecked(false);
+
+    QAction* showUnderprotectB = createAction(tr("Show underprotected black pieces"), SLOT(slotShowUnderprotectedBlack()), 0,
+                                       viewToolBar, QIcon(":/images/threat_black.png"));
+    m_menuView->addAction(showUnderprotectB);
+    showUnderprotectB->setCheckable(true);
+    showUnderprotectB->setChecked(false);
+
+    underprotectGroup = new ExclusiveActionGroup(this);
+    underprotectGroup->addAction(showUnderprotectW);
+    underprotectGroup->addAction(showUnderprotectB);
+
     m_menuView->addSeparator();
 
     /* Game menu */
