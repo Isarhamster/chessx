@@ -1,3 +1,15 @@
+April 2017: Version 1.4.6
+- New feature: Indicate underprotected pieces
+- New feature: Indicate covered squares
+- New feature: Book building progress
+
+- Bugfix: Annotations remain visible after adding variation
+- Bugfix: Saving games on non-current database
+- Bugfix: Name of downloaded files
+- Bugfix: Crash engine accessing closed book
+
+- Changed: Use more threads for book building
+
 January 2017: Version 1.4.4
 - New feature: Game time for 2-player mode
 - New Feature: Drag databases into list of games
