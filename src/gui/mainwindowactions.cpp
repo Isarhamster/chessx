@@ -2592,7 +2592,7 @@ void MainWindow::slotDatabaseDropped(QDropEvent *event)
     {
         foreach (QUrl url, mimeData->urls())
         {
-            if((url.scheme() == "http") || (url.scheme() == "ftp"))
+            if ((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp") || (url.scheme() == "sftp"))
             {
                 m_mapDatabaseToDroppedUrl[url] = databaseInfo()->displayName();
                 downloadManager2->doDownloadToPath(url, "");

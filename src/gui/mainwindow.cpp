@@ -854,7 +854,7 @@ void MainWindow::updateMenuDatabases()
 void MainWindow::setFavoriteDatabase(QString fname)
 {
     QUrl url = QUrl::fromUserInput(fname);
-    if((url.scheme() == "http") || (url.scheme() == "ftp"))
+    if ((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp") || (url.scheme() == "sftp"))
     {
         m_databaseList->setFileFavorite(fname, true, 0);
     }
@@ -906,7 +906,7 @@ void MainWindow::openDatabaseUrl(QString fname, bool utf8)
     if (!fi.completeSuffix().isEmpty())
     {
         if (url.isValid() && !url.isRelative() &&
-            ((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp")))
+            ((url.scheme() == "http") || (url.scheme() == "https") || (url.scheme() == "ftp") || (url.scheme() == "sftp")))
         {
             slotStatusMessage(tr("Start loading database..."));
             connect(downloadManager, SIGNAL(downloadError(QUrl)), this, SLOT(loadError(QUrl)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
