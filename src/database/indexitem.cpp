@@ -38,11 +38,7 @@ void IndexItem::remove(TagIndex tagIndex)
 
 ValueIndex IndexItem::valueIndex(TagIndex tagIndex) const
 {
-    if(m_mapTagIndexToValueIndex.contains(tagIndex))
-    {
-        return m_mapTagIndexToValueIndex[tagIndex];
-    }
-    return 0;
+    return m_mapTagIndexToValueIndex.value(tagIndex,0);
 }
 
 bool IndexItem::hasTagIndex(TagIndex tagIndex) const
