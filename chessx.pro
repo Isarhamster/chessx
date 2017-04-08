@@ -521,6 +521,9 @@ DISTFILES += \
     License.txt \
     README.developers \
     unix/make_tarball \
-    mac_osx/svnlist
+    mac_osx/svnlist \
+    mac_osx/fix_paths.sh \
+    mac_osx/mac_deploy_dyn \
+    mac_osx/qt_menu.nib
 
 

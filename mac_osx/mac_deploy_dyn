@@ -9,7 +9,7 @@ rm -f chessx-installer.mpkg
 rm -rf dmg
 mkdir dmg    
 mv  /Users/ni/Documents/Projects/chessx/chessx-installer.mpkg dmg/
-rm -f chessx-1.4.4.dmg
-hdiutil create chessx-1.4.4.dmg -volname chessx -fs HFS+ -srcfolder dmg
+rm -f chessx-1.4.6.dmg
+hdiutil create chessx-1.4.6.dmg -volname chessx -fs HFS+ -srcfolder dmg
 mv chessx.app chessx.modified.app
 mv chessx.app-original chessx.app

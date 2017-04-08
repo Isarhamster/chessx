@@ -1,4 +1,4 @@
-CNAME=chessx-1.4.4
+CNAME=chessx-1.4.6
 __SCRIPTDIR="${0%/*}"
 
 if [ -d "$CNAME" ]; then
