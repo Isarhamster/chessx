@@ -3519,14 +3519,12 @@ void MainWindow::slotShowWhiteAttacks()
 {
     QAction* bt = qobject_cast<QAction*>(sender());
     m_boardView->setShowAttacks(bt->isChecked() ? White:NoColor);
-    m_boardView->setShowUnderProtection(bt->isChecked() ? White:NoColor);
-}
+ }
 
 void MainWindow::slotShowBlackAttacks()
 {
     QAction* bt = qobject_cast<QAction*>(sender());
     m_boardView->setShowAttacks(bt->isChecked() ? Black:NoColor);
-    m_boardView->setShowUnderProtection(bt->isChecked() ? Black:NoColor);
 }
 
 void MainWindow::slotShowUnderprotectedWhite()
