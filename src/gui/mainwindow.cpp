@@ -1058,7 +1058,7 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     fname = fi.canonicalFilePath();
     if (fname.isEmpty())
     {
-        cancelOperation("File not found.");
+        slotStatusMessage("File not found.");
         return;
     }
     if (ActivateDatabase(fname))
@@ -1821,7 +1821,7 @@ void MainWindow::SwitchToClipboard()
 
 void MainWindow::startOperation(const QString& msg)
 {
-    m_operationFlag++;
+    ++m_operationFlag;
     slotStatusMessage(msg);
     if (m_operationFlag==1)
     {
@@ -1835,25 +1835,31 @@ void MainWindow::startOperation(const QString& msg)
 
 void MainWindow::finishOperation(const QString& msg)
 {
-    m_operationFlag--;
-    if (m_operationFlag == 0)
+    if (m_operationFlag)
     {
-        slotStatusMessage(msg + tr(" (%1 s.)").arg(m_operationTime.elapsed() / 100 / 10.0));
-        statusBar()->removeWidget(m_progressBar);
-    }
-    else
-    {
-        slotStatusMessage(msg);
+        --m_operationFlag;
+        if (m_operationFlag == 0)
+        {
+            slotStatusMessage(msg + tr(" (%1 s.)").arg(m_operationTime.elapsed() / 100 / 10.0));
+            statusBar()->removeWidget(m_progressBar);
+        }
+        else
+        {
+            slotStatusMessage(msg);
+        }
     }
 }
 
 void MainWindow::cancelOperation(const QString& msg)
 {
-    m_operationFlag--;
-    slotStatusMessage(msg);
-    if (m_operationFlag == 0)
+    if (m_operationFlag)
     {
-        statusBar()->removeWidget(m_progressBar);
+        --m_operationFlag;
+        slotStatusMessage(msg);
+        if (m_operationFlag == 0)
+        {
+            statusBar()->removeWidget(m_progressBar);
+        }
     }
 }
 
