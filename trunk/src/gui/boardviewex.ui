@@ -45,20 +45,23 @@
     <layout class="QHBoxLayout" name="leftLayout"/>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="middleLayout" stretch="0,0,0,0,0">
+    <layout class="QVBoxLayout" name="middleLayout" stretch="0,0,0">
      <item>
       <layout class="QHBoxLayout" name="topLayout">
        <property name="sizeConstraint">
         <enum>QLayout::SetDefaultConstraint</enum>
        </property>
+       <item>
+        <widget class="QWidget" name="piecesTop" native="true"/>
+       </item>
+       <item>
+        <widget class="DigitalClock" name="timeTop">
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
       </layout>
-     </item>
-     <item>
-      <widget class="DigitalClock" name="timeTop">
-       <property name="segmentStyle">
-        <enum>QLCDNumber::Flat</enum>
-       </property>
-      </widget>
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
@@ -113,14 +116,18 @@
       </layout>
      </item>
      <item>
-      <widget class="DigitalClock" name="timeBottom">
-       <property name="segmentStyle">
-        <enum>QLCDNumber::Flat</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="bottomLayout"/>
+      <layout class="QHBoxLayout" name="bottomLayout">
+       <item>
+        <widget class="QWidget" name="piecesBottom" native="true"/>
+       </item>
+       <item>
+        <widget class="DigitalClock" name="timeBottom">
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

@@ -3371,7 +3371,7 @@ void MainWindow::slotMakeBook(QString pathIn)
                 connect(polyglotWriter, SIGNAL(bookBuildError(QString, PolyglotWriter*)), SLOT(slotBookBuildError(QString, PolyglotWriter*)));
                 connect(polyglotWriter, SIGNAL(bookBuildFinished(QString, PolyglotWriter*)), SLOT(slotBookDone(QString, PolyglotWriter*)), Qt::QueuedConnection);
                 connect(polyglotWriter, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)), Qt::QueuedConnection);
-                startOperation("Build book");
+                startOperation("Build book...s");
                 m_polyglotWriters.append(polyglotWriter);
                 polyglotWriter->writeBookForDatabase(m_databases[i]->database(), out, maxPly, minGame, uniform, result, filterResult);
             }
