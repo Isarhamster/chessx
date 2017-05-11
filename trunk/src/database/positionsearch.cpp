@@ -30,8 +30,6 @@ void PositionSearch::setPosition(const Board& position)
 
 int PositionSearch::matches(GameId index) const
 {
-    Game g;
-    m_database->loadGameMoves(index, g);
-    return (g.findPosition(m_position) != NO_MOVE);
+    return m_database->findPosition(index, m_position) != NO_MOVE;
 }
 

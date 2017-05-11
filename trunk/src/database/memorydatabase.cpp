@@ -127,6 +127,14 @@ void MemoryDatabase::loadGameMoves(GameId gameId, Game& game)
     game = *m_games[gameId];
 }
 
+int MemoryDatabase::findPosition(GameId index, const Board &position)
+{
+    Game g;
+    loadGameMoves(index, g);
+    return g.findPosition(position);
+}
+
+
 bool MemoryDatabase::loadGame(GameId gameId, Game& game)
 {
     QReadLocker m(&m_mutex);

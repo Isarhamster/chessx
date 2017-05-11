@@ -54,7 +54,7 @@ static int update_keys(unsigned long* pkeys, const unsigned long* pcrc_32_tab, i
     (*(pkeys + 1)) += (*(pkeys + 0)) & 0xff;
     (*(pkeys + 1)) = (*(pkeys + 1)) * 134775813L + 1;
     {
-        register int keyshift = (int)((*(pkeys + 1)) >> 24);
+        int keyshift = (int)((*(pkeys + 1)) >> 24);
         (*(pkeys + 2)) = CRC32((*(pkeys + 2)), keyshift);
     }
     return c;
@@ -91,13 +91,7 @@ static void init_keys(const char* passwd, unsigned long* pkeys, const unsigned l
 #    define ZCR_SEED2 3141592654UL     /* use PI as default pattern */
 #  endif
 
-static int crypthead(passwd, buf, bufSize, pkeys, pcrc_32_tab, crcForCrypting)
-const char *passwd;         /* password string */
-unsigned char *buf;         /* where to write header */
-int bufSize;
-unsigned long* pkeys;
-const unsigned long* pcrc_32_tab;
-unsigned long crcForCrypting;
+static int crypthead(const char * passwd, unsigned char * buf, int bufSize, unsigned long* pkeys, const unsigned long* pcrc_32_tab, unsigned long crcForCrypting)
 {
     int n;                       /* index in random header */
     int t;                       /* temporary */

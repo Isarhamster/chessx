@@ -69,6 +69,8 @@ public:
     virtual void loadGameHeader(GameId gameId, Game& game, const QString& tag) const;
     /** Loads only moves into a game from the given position */
     virtual void loadGameMoves(GameId index, Game& game) = 0;
+    /** Loads game moves and try to find a position */
+    virtual int findPosition(GameId index, const Board& position) = 0;
     /** Saves a game at the given position, returns true if successful */
     virtual bool replace(GameId, Game&);
     /** Adds a game to the database */

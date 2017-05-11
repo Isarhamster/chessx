@@ -68,6 +68,11 @@ void CtgDatabase::loadGameMoves(GameId, Game &)
 
 }
 
+int CtgDatabase::findPosition(GameId, const Board &)
+{
+    return NO_MOVE;
+}
+
 bool CtgDatabase::openFile(const QString &filename, bool readOnly)
 {
     //open file

@@ -724,7 +724,7 @@ Recognizer::KMKP(Position * pos)
         wk = square_FlipRank(bk);
         bk = square_FlipRank(t);
         t = wm;
-        wm = square_FlipRank(bp);
+        //wm = square_FlipRank(bp);
         bp = square_FlipRank(t);
         stm = color_Flip(stm);
     }
@@ -751,7 +751,7 @@ Recognizer::KQKP(Position * pos)
 {
     unsigned char * material = pos->GetMaterial();
     squareT wk, bk, wq, bp;
-    colorT stm = pos->GetToMove();
+    //colorT stm = pos->GetToMove();
 
     // Find piece squares with White having the queen:
     wk = pos->GetKingSquare(WHITE);
@@ -766,9 +766,9 @@ Recognizer::KQKP(Position * pos)
         wk = square_FlipRank(bk);
         bk = square_FlipRank(t);
         t = wq;
-        wq = square_FlipRank(bp);
+        //wq = square_FlipRank(bp);
         bp = square_FlipRank(t);
-        stm = color_Flip(stm);
+        //stm = color_Flip(stm);
     }
 
     // There are only recognizable draws with a pawn on its 7th rank,
@@ -782,7 +782,7 @@ Recognizer::KQKP(Position * pos)
     if(square_Fyle(bp) >= E_FYLE)
     {
         wk = square_FlipFyle(wk);
-        wq = square_FlipFyle(wq);
+        //wq = square_FlipFyle(wq);
         bk = square_FlipFyle(bk);
         bp = square_FlipFyle(bp);
     }
@@ -870,7 +870,7 @@ Recognizer::KRKP(Position * pos)
 {
     unsigned char * material = pos->GetMaterial();
     squareT wk, bk, wr, bp;
-    colorT stm = pos->GetToMove();
+    //colorT stm = pos->GetToMove();
 
     // Find piece squares with White having the rook:
     wk = pos->GetKingSquare(WHITE);
@@ -885,9 +885,9 @@ Recognizer::KRKP(Position * pos)
         wk = square_FlipRank(bk);
         bk = square_FlipRank(t);
         t = wr;
-        wr = square_FlipRank(bp);
+        //wr = square_FlipRank(bp);
         bp = square_FlipRank(t);
-        stm = color_Flip(stm);
+        //stm = color_Flip(stm);
     }
 
     // There are only recognized draws when the pawn is defended by its king:
@@ -900,7 +900,7 @@ Recognizer::KRKP(Position * pos)
     if(square_Fyle(bp) >= E_FYLE)
     {
         wk = square_FlipFyle(wk);
-        wr = square_FlipFyle(wr);
+        //wr = square_FlipFyle(wr);
         bk = square_FlipFyle(bk);
         bp = square_FlipFyle(bp);
     }

@@ -120,6 +120,7 @@ public:
 
     /** Loads only moves into a game from the given position */
     virtual void loadGameMoves(GameId index, Game& game);
+    virtual int findPosition(GameId, const Board &position);
     quint64 getHashFromBoard(Board b) const;
 
     /** Open a book data File */
