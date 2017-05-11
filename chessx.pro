@@ -309,8 +309,6 @@ SOURCES += src/database/board.cpp \
     src/quazip/quaadler32.cpp \
     src/quazip/qioapi.cpp \
     src/quazip/JlCompress.cpp \
-    src/quazip/zip.c \
-    src/quazip/unzip.c \
     src/gui/toolmainwindow.cpp \
     src/gui/playerlistwidget.cpp \
     src/gui/qled.cpp \
@@ -380,7 +378,9 @@ SOURCES += src/database/board.cpp \
     src/gui/digitalclock.cpp \
     src/gui/historylabel.cpp \
     src/database/streamdatabase.cpp \
-    src/database/refcount.cpp
+    src/database/refcount.cpp \
+    src/quazip/unzip.cpp \
+    src/quazip/zip.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

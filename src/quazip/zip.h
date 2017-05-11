@@ -238,8 +238,8 @@ extern int ZEXPORT zipClose OF((zipFile file,
 /*
    Added by Sergey A. Tachenov to tweak zipping behaviour.
    */
-extern int ZEXPORT zipSetFlags(zipFile file, unsigned flags);
-extern int ZEXPORT zipClearFlags(zipFile file, unsigned flags);
+extern int ZEXPORT zipSetFlags(zipFile file, unsigned int flags);
+extern int ZEXPORT zipClearFlags(zipFile file, unsigned int flags);
 
 #ifdef __cplusplus
 }

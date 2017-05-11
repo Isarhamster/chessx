@@ -95,6 +95,11 @@ void PolyglotDatabase::loadGameMoves(GameId, Game &)
 
 }
 
+int PolyglotDatabase::findPosition(GameId, const Board &)
+{
+    return NO_MOVE;
+}
+
 bool PolyglotDatabase::openFile(const QString &filename, bool readOnly)
 {
     //open file
@@ -361,7 +366,7 @@ int PolyglotDatabase::int_from_file(int l, quint64& r)
 int PolyglotDatabase::entry_from_file(entry_t *entry)
 {
     int ret;
-    quint64 r;
+    quint64 r=0;
     ret=int_from_file(8,r);
     if(ret) return 1;
     entry->key=r;

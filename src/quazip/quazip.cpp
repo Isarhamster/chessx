@@ -164,7 +164,7 @@ bool QuaZip::open(Mode mode, zlib_filefunc_def* ioApi)
         else
         {
             p->zipError = UNZ_OPENERROR;
-            if(!p->zipName.isEmpty())
+            if(!p->ioDevice)
             {
                 delete ioDevice;
             }
@@ -188,7 +188,7 @@ bool QuaZip::open(Mode mode, zlib_filefunc_def* ioApi)
         else
         {
             p->zipError = UNZ_OPENERROR;
-            if(!p->zipName.isEmpty())
+            if(!p->ioDevice)
             {
                 delete ioDevice;
             }
@@ -196,7 +196,7 @@ bool QuaZip::open(Mode mode, zlib_filefunc_def* ioApi)
         }
     default:
         qWarning("QuaZip::open(): unknown mode: %d", (int)mode);
-        if(!p->zipName.isEmpty())
+        if(!p->ioDevice)
         {
             delete ioDevice;
         }

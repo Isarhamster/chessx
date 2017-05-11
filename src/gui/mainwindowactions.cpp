@@ -2263,7 +2263,7 @@ void MainWindow::slotAutoPlayTimeout()
     }
     else
     {
-        done = false;
+        //done = false;
         if (m_autoAnalysis->isChecked() && AppSettings->getValue("/Board/BackwardAnalysis").toBool())
         {
             slotGameMovePrevious();

@@ -47,7 +47,7 @@ public:
     bool loadGame(GameId gameId, Game& game);
     /** Loads only moves into a game from the given position */
     void loadGameMoves(GameId gameId, Game& game);
-
+    virtual int findPosition(GameId index, const Board& position);
     /** Open a PGN Data File from a string */
     bool openString(const QString& content);
 

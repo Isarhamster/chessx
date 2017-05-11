@@ -389,6 +389,13 @@ void PgnDatabase::loadGameMoves(GameId gameId, Game& game)
     parseMoves(&game);
 }
 
+int PgnDatabase::findPosition(GameId index, const Board &position)
+{
+    Game g;
+    loadGameMoves(index, g);
+    return g.findPosition(position);
+}
+
 bool PgnDatabase::loadGame(GameId gameId, Game& game)
 {
     if(!m_file || gameId >= m_count)
