@@ -456,6 +456,7 @@ void PreferencesDialog::restoreSettings()
     ui.cbBackwardAnalysis->setChecked(AppSettings->getValue("BackwardAnalysis").toBool());
     ui.cbPromoteToQueen->setChecked(AppSettings->getValue("AutoPromoteToQueen").toBool());
     ui.btNoHints->setChecked(AppSettings->getValue("noHints").toBool());
+    ui.alwaysScale->setChecked(AppSettings->getValue("AlwaysScale").toBool());
 
     QString pieceTheme = AppSettings->getValue("pieceTheme").toString();
     ui.pieceEffect->setCurrentIndex(AppSettings->getValue("pieceEffect").toInt());
@@ -593,6 +594,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("AutoSaveAndContinue", QVariant(ui.cbSaveAndContinue->isChecked()));
     AppSettings->setValue("BackwardAnalysis", QVariant(ui.cbBackwardAnalysis->isChecked()));
     AppSettings->setValue("AutoPromoteToQueen", QVariant(ui.cbPromoteToQueen->isChecked()));
+    AppSettings->setValue("AlwaysScale", QVariant(ui.alwaysScale->isChecked()));
     if(ui.boardThemeCombo->currentIndex() != ui.boardThemeCombo->count() - 1)
     {
         AppSettings->setValue("boardTheme", ui.boardThemeCombo->currentText());

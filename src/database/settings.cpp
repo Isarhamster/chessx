@@ -417,6 +417,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/AutoSaveAndContinue", false);
     map.insert("/Board/BackwardAnalysis", false);
     map.insert("/Board/AutoPromoteToQueen", false);
+    map.insert("/Board/AlwaysScale", false);
 
     map.insert("/Match/Mode", 0);
     map.insert("/Match/TotalTime", 3000);
@@ -459,48 +460,86 @@ QVariant Settings::getValue(const QString &key) const
     return value(key);
 }
 
-QString Settings::getThemePath(QString path) const
+QString Settings::getThemePath(QString effect, QString pieces) const
 {
-    QString themeDir(AppSettings->dataPath() + QDir::separator() + "themes");
-    if (!path.isEmpty())
-    {
-        themeDir.append(QDir::separator() + path);
-    }
+    if (!effect.isEmpty()) effect.append(QDir::separator());
+    pieces.append(".png");
 
-    if(!QFile::exists(themeDir))
+    QString themeDir(AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + effect + pieces);
+    QString internalThemeDir = QString(":/themes/" + effect + pieces);
+    QStringList path;
+    path << themeDir;
+    path << internalThemeDir;
+
+    foreach (QString s, path)
     {
-        themeDir = QString(":/themes");
-        if (!path.isEmpty())
+        if (QFile::exists(s))
         {
-            themeDir.append(QDir::separator() + path);
+            return s;
         }
     }
 
-    return themeDir;
+    QString result = QDir(":/themes").entryList(QStringList("*.png")).first();
+    result.prepend(":/themes/");
+    return result;
+}
+
+QStringList Settings::getImageList(QString userPath, QString internalPath) const
+{
+    QStringList images = QDir(userPath).entryList(QStringList("*.png"));
+    QStringList internalImages = QDir(internalPath).entryList(QStringList("*.png"));
+    foreach(QString img, internalImages)
+    {
+        if (!images.contains(img))
+        {
+            images.append(img);
+        }
+    }
+
+    return images;
 }
 
 QStringList Settings::getThemeList(QString path) const
 {
-    QStringList themes = QDir(getThemePath(path)).entryList(QStringList("*.png"));
-    return themes;
-}
+    QString themeDir(AppSettings->dataPath() + QDir::separator() + "themes");
+    QString internalThemeDir = QString(":/themes");
 
-QString Settings::getBoardPath() const
-{
-    QString boardDir(AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + "boards");
-
-    if(!QFile::exists(boardDir))
+    if (!path.isEmpty())
     {
-        boardDir = QString(":/themes/boards");
+        path.prepend(QDir::separator());
+        themeDir.append(path);
+        internalThemeDir.append(path);
     }
 
-    return boardDir;
+    return getImageList(themeDir, internalThemeDir);
+}
+
+QString Settings::getBoardPath(QString theme) const
+{
+    QString boardDir(AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + "boards");
+    theme.append(".png");
+
+    QStringList test;
+    test << boardDir + QDir::separator() + theme;
+    test << QString(":/themes/boards") + QDir::separator() + theme;
+
+    foreach (QString s, test)
+    {
+        if (QFile::exists(s))
+        {
+            return s;
+        }
+    }
+
+    QString result = QDir(":/themes/boards").entryList(QStringList("*.png")).first();
+    result.prepend(":/themes/boards/");
+    return result;
 }
 
 QStringList Settings::getBoardList() const
 {
-    QStringList boards = QDir(getBoardPath()).entryList(QStringList("*.png"));
-    return boards;
+    QString boardDir(AppSettings->dataPath() + QDir::separator() + "themes" + QDir::separator() + "boards");
+    return getImageList(boardDir, ":/themes/boards");
 }
 
 QString Settings::getImagePath() const
