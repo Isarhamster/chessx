@@ -81,12 +81,12 @@ public:
 
     QString getTempPath() const;
 
-    QString getThemePath(QString path) const;
+    QString getThemePath(QString effect, QString pieces) const;
     QStringList getThemeList(QString path) const;
 
     QString getImagePath() const;
 
-    QString getBoardPath() const;
+    QString getBoardPath(QString) const;
     QStringList getBoardList() const;
 
     QString getBuiltinDbPath() const;
@@ -100,6 +100,8 @@ private:
 
     QMap<QString, QVariant> initDefaultValues() const;
     QString m_dataPath;
+
+    QStringList getImageList(QString userPath, QString internalPath) const;
 };
 
 extern Settings* AppSettings;

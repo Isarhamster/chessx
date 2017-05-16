@@ -80,8 +80,7 @@ bool BoardTheme::loadPieces(const QString& pieces, int effect)
         effectPath = "shadow";
     }
 
-    QString themePath = pieces.startsWith(":") ? pieces :
-       QString("%1/%2/%3.png").arg(AppSettings->getThemePath(0)).arg(effectPath).arg(pieces);
+    QString themePath = AppSettings->getThemePath(effectPath, pieces);
 
     QPixmap big;
     if(!big.load(themePath) || big.width() < 160)
@@ -152,7 +151,7 @@ bool BoardTheme::loadBoard(const QString& board)
         updateSquares();
         return true;
     }
-    QString themePath = QString("%1/%2.png").arg(AppSettings->getBoardPath()).arg(board);
+    QString themePath = AppSettings->getBoardPath(board);
 
     QPixmap big;
     if(!big.load(themePath))
@@ -193,13 +192,24 @@ void BoardTheme::configure()
     QString boardTheme = AppSettings->getValue("boardTheme").toString();
     AppSettings->endGroup();
 
-    if(!loadPieces(pieceTheme, pieceEffect) &&
-            !loadPieces(pieceTheme, Plain) &&
-            !loadPieces(":/themes/merida", Plain))
+    if(!loadPieces(pieceTheme, pieceEffect))
     {
-        MessageDialog::error(tr("Cannot find piece data.\nPlease check your installation."));
+        static bool errorShown = false;
+        if (!errorShown)
+        {
+            errorShown = true;
+            MessageDialog::error(tr("Cannot find piece data.\nPlease check your installation."));
+        }
     }
-    loadBoard(boardTheme);
+    if (!loadBoard(boardTheme))
+    {
+        static bool errorShown = false;
+        if (!errorShown)
+        {
+            errorShown = true;
+            MessageDialog::error(tr("Cannot find baord data.\nPlease check your installation."));
+        }
+    }
 }
 
 QSize BoardTheme::size() const
@@ -242,6 +252,10 @@ void BoardTheme::updateSquares()
     bool scale = m_size.width() > m_originalPiece[WhiteRook].width()
                  || m_size.height() > m_originalPiece[WhiteRook].height()
                  || m_size.width() < 30 || m_size.height() < 30;
+    if (AppSettings->getValue("/Board/AlwaysScale").toBool())
+    {
+        scale = true;
+    }
     if(isBoardPlain())
     {
         m_square[0] = QPixmap(m_size);
@@ -251,9 +265,10 @@ void BoardTheme::updateSquares()
     }
     else if(scale)
     {
-        m_square[0] =  m_originalSquare[0].scaled(size(), Qt::IgnoreAspectRatio,
+        QSize sz = size();
+        m_square[0] =  m_originalSquare[0].scaled(sz, Qt::IgnoreAspectRatio,
                        Qt::SmoothTransformation);
-        m_square[1] =  m_originalSquare[1].scaled(size(), Qt::IgnoreAspectRatio,
+        m_square[1] =  m_originalSquare[1].scaled(sz, Qt::IgnoreAspectRatio,
                        Qt::SmoothTransformation);
     }
     else
