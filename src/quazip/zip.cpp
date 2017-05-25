@@ -138,7 +138,7 @@ typedef struct
     int  encrypt;
 #ifndef NOCRYPT
     unsigned long keys[3];     /* keys defining the pseudo-random sequence */
-    const unsigned long* pcrc_32_tab;
+    const cx_crc_t* pcrc_32_tab;
     int crypt_header_size;
 #endif
 } curfile_info;

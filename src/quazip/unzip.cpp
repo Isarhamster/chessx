@@ -42,6 +42,7 @@ woven in by Terry Thorsen 1/2003.
 #include <string.h>
 #include "zlib.h"
 #include "unzip.h"
+#include "quazip_global.h"
 
 #ifdef STDC
 #  include <stddef.h>
@@ -85,7 +86,6 @@ woven in by Terry Thorsen 1/2003.
 
 #define SIZECENTRALDIRITEM (0x2e)
 #define SIZEZIPLOCALHEADER (0x1e)
-
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -152,7 +152,7 @@ typedef struct
     int encrypted;
 #    ifndef NOUNCRYPT
     unsigned long keys[3];     /* keys defining the pseudo-random sequence */
-    const unsigned long* pcrc_32_tab;
+    const cx_crc_t* pcrc_32_tab;
 #    endif
 } unz_s;
 
