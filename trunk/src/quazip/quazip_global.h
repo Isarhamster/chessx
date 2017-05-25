@@ -52,4 +52,12 @@ quazip/(un)zip.h files for details, basically it's zlib license.
 #define UNUSED
 #endif
 
+#ifndef cx_crc_t
+#if ZLIB_VERNUM >= 0x1270
+#define cx_crc_t z_crc_t
+#else
+#define cx_crc_t unsigned long
+#endif
+#endif
+
 #endif // QUAZIP_GLOBAL_H
