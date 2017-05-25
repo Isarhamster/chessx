@@ -47,7 +47,8 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_minDeltaWheel(0), m_moveListCurrent(0), m_showMoveIndicator(true), 
     m_DbIndex(0),
     m_showAttacks(NoColor),
-    m_showUnderProtection(NoColor)
+    m_showUnderProtection(NoColor),
+    lastMoveEvent(0)
 {
     QSizePolicy policy = sizePolicy();
     policy.setHeightForWidth(true);
@@ -660,7 +661,7 @@ void BoardView::nextGuess(Square s)
     }
 }
 
-BoardView::BoardViewAction BoardView::moveActionFromModifier(Qt::KeyboardModifiers modifiers)
+BoardView::BoardViewAction BoardView::moveActionFromModifier(Qt::KeyboardModifiers modifiers) const
 {
     switch (modifiers & 0x7e000000)
     {
@@ -676,6 +677,8 @@ BoardView::BoardViewAction BoardView::moveActionFromModifier(Qt::KeyboardModifie
         return ActionQuery;
     case (unsigned int)ControlModifier | (unsigned int)ShiftModifier:
         return ActionAskEngine;
+    case (unsigned int)ShiftModifier | (unsigned int)AltModifier:
+        return ActionEvalMove;
     default:
         return ActionStandard;
     }
@@ -712,7 +715,11 @@ void BoardView::checkCursor(Qt::KeyboardModifiers modifiers)
         break;
     case ActionAskEngine:
         file = ":/images/engine.png";
-        text = tr("Query the engine while hovering the piece");
+        text = tr("Query the engine as if piece was located at target");
+        break;
+    case ActionEvalMove:
+        file = ":/images/engine.png";
+        text = tr("Query the engine for the best reply");
         break;
     }
 
@@ -726,6 +733,12 @@ void BoardView::checkCursor(Qt::KeyboardModifiers modifiers)
     }
 
     emit actionHint(text);
+
+    if ((m_dragged != Empty) && (lastMoveEvent))
+    {
+        lastMoveEvent->setModifiers(modifiers);
+        handleMouseMoveEvent(lastMoveEvent);
+    }
 }
 
 void BoardView::keyPressEvent(QKeyEvent *event)
@@ -753,7 +766,7 @@ void BoardView::focusInEvent(QFocusEvent *event)
     QWidget::focusInEvent(event);
 }
 
-void BoardView::mouseMoveEvent(QMouseEvent *event)
+void BoardView::handleMouseMoveEvent(QMouseEvent *event)
 {
     setFocus();
 
@@ -782,10 +795,14 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
         {
             emit evalRequest(m_dragStartSquare, squareAt(event->pos()));
         }
+        else if (moveActionFromModifier(mdf) == ActionEvalMove)
+        {
+            emit evalMove(m_dragStartSquare, squareAt(event->pos()));
+        }
         return;
     }
 
-    if(mdf & Qt::ShiftModifier && (moveActionFromModifier(mdf) != ActionAskEngine))
+    if(mdf & Qt::ShiftModifier && (moveActionFromModifier(mdf) != ActionAskEngine) && (moveActionFromModifier(mdf) != ActionEvalMove))
     {
         return;
     }
@@ -798,13 +815,26 @@ void BoardView::mouseMoveEvent(QMouseEvent *event)
     }
 
     Square s = squareAt(m_dragStart);
-    if(!canDrag(s))
+    if(!canDrag(s, mdf))
     {
         return;
     }
 
     startToDrag(event, s);
+}
 
+void BoardView::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!lastMoveEvent)
+    {
+        lastMoveEvent = new QMouseEvent(*event);
+    }
+    else
+    {
+        *lastMoveEvent = *event;
+    }
+
+    handleMouseMoveEvent(event);
     QWidget::mouseMoveEvent(event);
 }
 
@@ -843,13 +873,31 @@ void BoardView::setBrushMode(bool brushMode)
 
 void BoardView::mouseReleaseEvent(QMouseEvent* event)
 {
+    delete lastMoveEvent;
+    lastMoveEvent = 0;
     int button = event->button() + event->modifiers();
     Square s = squareAt(event->pos());
     m_clickUsed = false;
+    Square from = squareAt(m_dragStart);
+
+    if (!canDrop(from))
+    {
+        if(m_dragged != Empty)
+        {
+            Square from = squareAt(m_dragStart);
+            m_dragStartSquare = InvalidSquare;
+            QRect oldr = QRect(m_dragPoint, m_theme.size());
+            m_dragged = Empty;
+            update(squareRect(from));
+            update(oldr);
+            emit evalModeDone();
+        }
+        return;
+    }
 
     if(!(event->button() & Qt::LeftButton))
     {
-        Square from = squareAt(m_dragStart);
+
         if(s == from)
         {
             from = InvalidSquare;
@@ -868,9 +916,8 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
     }
     else
     {
-        if (moveActionFromModifier(event->modifiers()) == ActionAskEngine)
+        if ((moveActionFromModifier(event->modifiers()) == ActionAskEngine) || (moveActionFromModifier(event->modifiers()) == ActionEvalMove))
         {
-            Square from = squareAt(m_dragStart);
             m_dragStartSquare = InvalidSquare;
             QRect oldr = QRect(m_dragPoint, m_theme.size());
             m_dragged = Empty;
@@ -1075,7 +1122,24 @@ QRect BoardView::coordinateRectHorizontal(int n) const
                  QSize(CoordinateSize, CoordinateSize));
 }
 
-bool BoardView::canDrag(Square s) const
+bool BoardView::canDrop(Square s) const
+{
+    if(m_dragged == Empty)  // already dragging
+    {
+        return false;
+    }
+    if(s == InvalidSquare)
+    {
+        return false;
+    }
+    if(!(m_flags & IgnoreSideToMove))
+    {
+        return m_board.isMovable(s);
+    }
+    return true;
+}
+
+bool BoardView::canDrag(Square s, Qt::KeyboardModifiers mdf) const
 {
     if(m_dragged != Empty)  // already dragging
     {
@@ -1085,7 +1149,9 @@ bool BoardView::canDrag(Square s) const
     {
         return false;
     }
-    else if(m_flags & IgnoreSideToMove)
+    else if( (m_flags & IgnoreSideToMove) ||
+             (moveActionFromModifier(mdf) == ActionAskEngine) ||
+             (moveActionFromModifier(mdf) == ActionEvalMove))
     {
         return m_board.pieceAt(s) != Empty;
     }

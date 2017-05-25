@@ -207,7 +207,7 @@ void BoardTheme::configure()
         if (!errorShown)
         {
             errorShown = true;
-            MessageDialog::error(tr("Cannot find baord data.\nPlease check your installation."));
+            MessageDialog::error(tr("Cannot find board data.\nPlease check your installation."));
         }
     }
 }
