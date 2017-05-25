@@ -23,6 +23,7 @@
 #include "threadedguess.h"
 
 #include <QWidget>
+#include <QPointer>
 
 class BoardTheme;
 
@@ -37,7 +38,7 @@ public:
     enum {WheelUp = Qt::LeftButton, WheelDown = Qt::RightButton};
     enum {Automatic = 0, Always = 1, Never = 2};
     enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4};
-    typedef enum {ActionStandard, ActionQuery, ActionReplace, ActionInsert, ActionAdd, ActionPen, ActionAskEngine } BoardViewAction;
+    typedef enum {ActionStandard, ActionQuery, ActionReplace, ActionInsert, ActionAdd, ActionPen, ActionAskEngine, ActionEvalMove } BoardViewAction;
     /** Create board widget. */
     BoardView(QWidget* parent = 0, int flags = 0);
     /** Destroy widget. */
@@ -87,7 +88,7 @@ public:
     void getStoredMove(Square &from, Square &to);
     QRect totalRect() const;
 
-    BoardViewAction moveActionFromModifier(Qt::KeyboardModifiers modifiers);
+    BoardViewAction moveActionFromModifier(Qt::KeyboardModifiers modifiers) const;
     bool getBrushMode() const;
     void setBrushMode(bool brushMode);
 
@@ -115,6 +116,7 @@ signals:
     void moveMade(Square from, Square to, int button);
     /** User requests an evaluation from the current position with the piece @p from replaced at @p to */
     void evalRequest(Square from, Square to);
+    void evalMove(Square from, Square to);
     void evalModeDone();
     /** User dragged and dropped a piece holding Control */
     void copyPiece(Square from, Square to);
@@ -146,6 +148,7 @@ protected:
     virtual void keyReleaseEvent(QKeyEvent *);
     virtual void enterEvent(QEvent *);
     virtual void focusInEvent(QFocusEvent *);
+    void handleMouseMoveEvent(QMouseEvent *event);
 
 protected: //Drag'n'Drop Support
     void dragEnterEvent(QDragEnterEvent *event);
@@ -172,7 +175,9 @@ private:
     /** Unselects given square. */
     void unselectSquare();
     /** Check if piece at square @p square can be dragged */
-    bool canDrag(Square s) const;
+    bool canDrag(Square s, Qt::KeyboardModifiers mdf) const;
+    /** Check if piece at square @p square can be dropped */
+    bool canDrop(Square s) const;
     /** Highlights the from and to squares of a guessed move. */
     bool showGuess(Square s);
     /** Highlights the from and to squares of a threat. */
@@ -250,6 +255,7 @@ private:
     ThreadedGuess m_threatGuess;
     Color m_showAttacks;
     Color m_showUnderProtection;
+    QMouseEvent* lastMoveEvent;
 };
 
 class BoardViewMimeData : public QMimeData

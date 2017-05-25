@@ -150,22 +150,22 @@ Volná verze šachové databáze</translation>
 <context>
     <name>AnalysisWidget</name>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="125"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="126"/>
         <source>Stop</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="138"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="139"/>
         <source>There was an error (%1) running engine &lt;b&gt;%2&lt;/b&gt;.</source>
         <translation>Nastala chyba (%1) při provádění programu &lt;b&gt;%2&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="450"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="451"/>
         <source>Draw</source>
         <translation>Remíza</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="454"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="455"/>
         <source>White wins in %n moves</source>
         <translation>
             <numerusform>Bílý vítězí v %n tahu.</numerusform>
@@ -174,7 +174,7 @@ Volná verze šachové databáze</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="458"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="459"/>
         <source>Black wins in %n moves</source>
         <translation>
             <numerusform>Černý vítězí v %n tahu</numerusform>
@@ -183,32 +183,32 @@ Volná verze šachové databáze</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="493"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="494"/>
         <source>Analysis pinned to move %1</source>
         <translation>Analýza v tahu %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="502"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="503"/>
         <source>Click to add move to game</source>
         <translation>Klikni pro přidání tahu do hry</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="502"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="503"/>
         <source>Tablebase</source>
         <translation>Základní tabulka</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="506"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="507"/>
         <source>Complexity</source>
         <translation>Obtížnost</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="510"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="511"/>
         <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1&lt;br&gt;</source>
         <translation>&lt;br&gt;&lt;b&gt;Obtížnot:&lt;/b&gt; %1&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="515"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="516"/>
         <source>&lt;i&gt;Book:&lt;/i&gt;</source>
         <translation>&lt;i&gt;Kniha zahájení:&lt;/i&gt;</translation>
     </message>
@@ -243,7 +243,7 @@ Volná verze šachové databáze</translation>
     </message>
     <message>
         <location filename="../src/gui/analysiswidget.ui" line="109"/>
-        <location filename="../src/gui/analysiswidget.cpp" line="147"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="148"/>
         <source>Analyze</source>
         <translation>Analyzovat</translation>
     </message>
@@ -264,21 +264,27 @@ b%2
 %3 na tahu.</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3040"/>
         <source>w%1
 b%2
 %3 to move.</source>
-        <translation>w%1
+        <translation type="vanished">w%1
 b%2
 %3 na tahu</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3057"/>
+        <location filename="../src/database/bitboard.cpp" line="3062"/>
+        <source>w%1
+b%2
+%3 to move</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/database/bitboard.cpp" line="3079"/>
         <source>White</source>
         <translation>Bílý</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3057"/>
+        <location filename="../src/database/bitboard.cpp" line="3079"/>
         <source>Black</source>
         <translation>Černý</translation>
     </message>
@@ -291,14 +297,14 @@ b%2
         <translation>Hledat šachovnici</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/boardsearchdialog.ui" line="29"/>
-        <location filename="../src/dialogs/boardsearchdialog.ui" line="32"/>
+        <location filename="../src/dialogs/boardsearchdialog.ui" line="40"/>
+        <location filename="../src/dialogs/boardsearchdialog.ui" line="43"/>
         <source>Previous</source>
         <translation>Předešlé</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/boardsearchdialog.ui" line="43"/>
-        <location filename="../src/dialogs/boardsearchdialog.ui" line="46"/>
+        <location filename="../src/dialogs/boardsearchdialog.ui" line="54"/>
+        <location filename="../src/dialogs/boardsearchdialog.ui" line="57"/>
         <source>Next</source>
         <translation>Následující</translation>
     </message>
@@ -564,40 +570,56 @@ b%2
 <context>
     <name>BoardTheme</name>
     <message>
-        <location filename="../src/gui/boardtheme.cpp" line="194"/>
+        <location filename="../src/gui/boardtheme.cpp" line="201"/>
         <source>Cannot find piece data.
 Please check your installation.</source>
         <translation>Chyba, nelze nalézt data figur.
 Prosím zkontrolujte instalaci.</translation>
     </message>
+    <message>
+        <location filename="../src/gui/boardtheme.cpp" line="210"/>
+        <source>Cannot find board data.
+Please check your installation.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BoardView</name>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="605"/>
+        <location filename="../src/gui/boardview.cpp" line="698"/>
         <source>Query for piece in case of promotion</source>
         <translation>Dotaz pro figuru v případ propagace</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="609"/>
+        <location filename="../src/gui/boardview.cpp" line="702"/>
         <source>Replace remainder of game with new move</source>
         <translation>Zbytek hry nahradit novým tahem</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="613"/>
+        <location filename="../src/gui/boardview.cpp" line="706"/>
         <source>Insert new move and keep as much as possible of remaining moves</source>
         <translatorcomment>Vložit nový tah a udržet co nejvíce zbývajících tahů</translatorcomment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="617"/>
+        <location filename="../src/gui/boardview.cpp" line="710"/>
         <source>Force adding a variation</source>
         <translation>Vynutit novou variantu</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="621"/>
+        <location filename="../src/gui/boardview.cpp" line="714"/>
         <source>Draw a square or arrow annotation</source>
         <translation>Nakreslení pole nebo šipka</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/boardview.cpp" line="718"/>
+        <source>Query the engine as if piece was located at target</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/boardview.cpp" line="722"/>
+        <source>Query the engine for the best reply</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -810,32 +832,32 @@ Prosím zkontrolujte instalaci.</translation>
         <translation>Databáze</translation>
     </message>
     <message>
-        <location filename="../src/gui/databaselist.cpp" line="87"/>
+        <location filename="../src/gui/databaselist.cpp" line="86"/>
         <source>Open</source>
         <translation>Otevřít</translation>
     </message>
     <message>
-        <location filename="../src/gui/databaselist.cpp" line="87"/>
+        <location filename="../src/gui/databaselist.cpp" line="86"/>
         <source>Activate</source>
         <translation>Aktivovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/databaselist.cpp" line="89"/>
+        <location filename="../src/gui/databaselist.cpp" line="88"/>
         <source>Close</source>
         <translation>Zavřít</translation>
     </message>
     <message>
-        <location filename="../src/gui/databaselist.cpp" line="91"/>
+        <location filename="../src/gui/databaselist.cpp" line="90"/>
         <source>Keep file</source>
         <translation>Ponechat soubor</translation>
     </message>
     <message>
-        <location filename="../src/gui/databaselist.cpp" line="92"/>
+        <location filename="../src/gui/databaselist.cpp" line="91"/>
         <source>Two star favorite</source>
         <translation>Uděleny dvě hvězdy</translation>
     </message>
     <message>
-        <location filename="../src/gui/databaselist.cpp" line="93"/>
+        <location filename="../src/gui/databaselist.cpp" line="92"/>
         <source>Three star favorite</source>
         <translation>Uděleny tři hvězdy</translation>
     </message>
@@ -844,17 +866,17 @@ Prosím zkontrolujte instalaci.</translation>
         <translation type="vanished">Přidat mezi oblíbené</translation>
     </message>
     <message>
-        <location filename="../src/gui/databaselist.cpp" line="94"/>
+        <location filename="../src/gui/databaselist.cpp" line="93"/>
         <source>Remove from Favorites</source>
         <translation>Odebrat z oblíbených</translation>
     </message>
     <message>
-        <location filename="../src/gui/databaselist.cpp" line="96"/>
+        <location filename="../src/gui/databaselist.cpp" line="95"/>
         <source>Show in Finder</source>
         <translation>Zobrazit ve vyhledávači</translation>
     </message>
     <message>
-        <location filename="../src/gui/databaselist.cpp" line="99"/>
+        <location filename="../src/gui/databaselist.cpp" line="98"/>
         <source>Make a Polyglot book...</source>
         <translation>Vytvořit polyglot knihu...</translation>
     </message>
@@ -927,32 +949,72 @@ Prosím zkontrolujte instalaci.</translation>
         <translation>Parametry knihy</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dlgsavebook.ui" line="50"/>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="60"/>
         <source>Max Ply</source>
         <translation>Počet pramenů</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dlgsavebook.ui" line="80"/>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="50"/>
         <source>Min Game</source>
         <translation>Minimální počet partií</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dlgsavebook.ui" line="111"/>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="90"/>
+        <source>Repertoire for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="98"/>
+        <source>Both sides</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="103"/>
+        <source>White</source>
+        <translation type="unfinished">Bílý</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="108"/>
+        <source>Black</source>
+        <translation type="unfinished">Černý</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="116"/>
+        <source>Filter out games</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="124"/>
+        <source>Use them all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="129"/>
+        <source>White victories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="134"/>
+        <source>Black victories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="163"/>
         <source>Enter the complete target path</source>
         <translation>Úplná cesta výstupního souboru</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dlgsavebook.ui" line="121"/>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="173"/>
         <source>...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dlgsavebook.ui" line="92"/>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="144"/>
         <source>Uniform Probabilities</source>
         <translation>Rovnoměrné pravděpodobnosti</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dlgsavebook.ui" line="102"/>
+        <location filename="../src/dialogs/dlgsavebook.ui" line="154"/>
         <source>Output Path</source>
         <translation>Výstupní soubor</translation>
     </message>
@@ -962,12 +1024,12 @@ Prosím zkontrolujte instalaci.</translation>
         <translation>Schránka</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dlgsavebook.cpp" line="76"/>
+        <location filename="../src/dialogs/dlgsavebook.cpp" line="88"/>
         <source>New book</source>
         <translation>Nová kniha</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dlgsavebook.cpp" line="78"/>
+        <location filename="../src/dialogs/dlgsavebook.cpp" line="90"/>
         <source>Polyglot Book (*.bin)</source>
         <translation>Polyglot kniha (*.bin)</translation>
     </message>
@@ -975,12 +1037,12 @@ Prosím zkontrolujte instalaci.</translation>
 <context>
     <name>ECOListWidget</name>
     <message>
-        <location filename="../src/gui/ecolistwidget.cpp" line="113"/>
+        <location filename="../src/gui/ecolistwidget.cpp" line="118"/>
         <source>&lt;html&gt;&lt;body&gt;&lt;i&gt;No ECO code chosen.&lt;/i&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;&lt;i&gt;Bez ECO kódu.&lt;/i&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/ecolistwidget.cpp" line="150"/>
+        <location filename="../src/gui/ecolistwidget.cpp" line="155"/>
         <source>&lt;html&gt;&lt;i&gt;No ECO code chosen.&lt;/i&gt;&lt;/html&gt;</source>
         <translation>Bez ECO kódu</translation>
     </message>
@@ -1086,32 +1148,32 @@ Prosím zkontrolujte instalaci.</translation>
         <translation>Celkem: %1</translation>
     </message>
     <message>
-        <location filename="../src/database/eventinfo.cpp" line="192"/>
+        <location filename="../src/database/eventinfo.cpp" line="191"/>
         <source>Games in database %1: %2&lt;br&gt;</source>
         <translation>Hry v databázi %1: %2&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/eventinfo.cpp" line="204"/>
+        <location filename="../src/database/eventinfo.cpp" line="203"/>
         <source>Rating: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</source>
         <translation>Hodnocení: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/eventinfo.cpp" line="207"/>
+        <location filename="../src/database/eventinfo.cpp" line="206"/>
         <source>Rating: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</source>
         <translation>Hodnocení: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/eventinfo.cpp" line="215"/>
+        <location filename="../src/database/eventinfo.cpp" line="214"/>
         <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
         <translation>Datum: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/eventinfo.cpp" line="223"/>
+        <location filename="../src/database/eventinfo.cpp" line="222"/>
         <source>Date: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</source>
         <translation>Datum: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/eventinfo.cpp" line="230"/>
+        <location filename="../src/database/eventinfo.cpp" line="229"/>
         <source>&lt;table&gt;&lt;tr&gt;&lt;th&gt;Participants&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;</source>
         <translation>&lt;table&gt;&lt;tr&gt;&lt;th&gt;Účastníci&lt;/th&gt;&lt;th&gt;Ergebnis&lt;/th&gt;&lt;/tr&gt;</translation>
     </message>
@@ -1119,8 +1181,8 @@ Prosím zkontrolujte instalaci.</translation>
 <context>
     <name>EventListWidget</name>
     <message>
-        <location filename="../src/gui/eventlistwidget.cpp" line="101"/>
-        <location filename="../src/gui/eventlistwidget.cpp" line="154"/>
+        <location filename="../src/gui/eventlistwidget.cpp" line="106"/>
+        <location filename="../src/gui/eventlistwidget.cpp" line="159"/>
         <source>&lt;html&gt;&lt;i&gt;No event chosen.&lt;/i&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;i&gt;Nebyla vybrána žádná událost.&lt;/i&gt;&lt;/html&gt;</translation>
     </message>
@@ -1160,241 +1222,251 @@ Prosím zkontrolujte instalaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="58"/>
-        <location filename="../src/gui/ficsconsole.ui" line="423"/>
-        <location filename="../src/gui/ficsconsole.ui" line="440"/>
-        <location filename="../src/gui/ficsconsole.ui" line="598"/>
+        <location filename="../src/gui/ficsconsole.ui" line="356"/>
+        <location filename="../src/gui/ficsconsole.ui" line="373"/>
+        <location filename="../src/gui/ficsconsole.ui" line="557"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="97"/>
+        <location filename="../src/gui/ficsconsole.ui" line="514"/>
         <source>White</source>
         <translation>Bílý</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="127"/>
+        <location filename="../src/gui/ficsconsole.ui" line="519"/>
         <source>Black</source>
         <translation>Černý</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="160"/>
-        <location filename="../src/gui/ficsconsole.ui" line="166"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1088"/>
+        <location filename="../src/gui/ficsconsole.ui" line="93"/>
+        <location filename="../src/gui/ficsconsole.ui" line="99"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1053"/>
         <source>History</source>
         <translation>Historie</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="175"/>
+        <location filename="../src/gui/ficsconsole.ui" line="108"/>
         <source>Double click to examine game</source>
         <translation>Dvojklik pro zkoumání hry</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="188"/>
+        <location filename="../src/gui/ficsconsole.ui" line="121"/>
         <source>Finger</source>
         <translation>Palec nahoru</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="205"/>
+        <location filename="../src/gui/ficsconsole.ui" line="138"/>
         <source>Games</source>
         <translation>Hry</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="214"/>
-        <location filename="../src/gui/ficsconsole.ui" line="234"/>
+        <location filename="../src/gui/ficsconsole.ui" line="147"/>
+        <location filename="../src/gui/ficsconsole.ui" line="167"/>
         <source>Double click to follow game</source>
         <translation>Dvojklik pro následování hry</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="225"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1062"/>
+        <location filename="../src/gui/ficsconsole.ui" line="158"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1027"/>
         <source>Relay</source>
         <translation>Živý přenos</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="245"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1075"/>
+        <location filename="../src/gui/ficsconsole.ui" line="178"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1040"/>
         <source>Puzzle</source>
         <translation>Puzzle</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="256"/>
+        <location filename="../src/gui/ficsconsole.ui" line="189"/>
         <source>Double click to get a puzzle</source>
         <translation>Dvojklik ke startu puzzle</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="420"/>
+        <location filename="../src/gui/ficsconsole.ui" line="353"/>
         <source>Rated only</source>
         <translation>Jen hodnocené partie</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="437"/>
+        <location filename="../src/gui/ficsconsole.ui" line="370"/>
         <source>Human only</source>
         <translation>Pouze s člověkem</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="510"/>
+        <location filename="../src/gui/ficsconsole.ui" line="443"/>
         <source>Elo</source>
         <translation>Elo</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="548"/>
+        <location filename="../src/gui/ficsconsole.ui" line="481"/>
         <source>Propose a game</source>
         <translation>Nabídka partie</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="79"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="74"/>
         <source>Get Mate</source>
         <translation>Získat mat</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="82"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="77"/>
         <source>Get Study</source>
         <translation>získat studii</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="85"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="80"/>
         <source>Get Tactics</source>
         <translation>Získat taktiku</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="290"/>
+        <location filename="../src/gui/ficsconsole.ui" line="223"/>
         <source>Messages from Puzzlebot</source>
         <translation>Zprávy z puzzlebot</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="303"/>
+        <location filename="../src/gui/ficsconsole.ui" line="236"/>
         <source>Players</source>
         <translation>Hráči</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="337"/>
+        <location filename="../src/gui/ficsconsole.ui" line="270"/>
         <source>Rating</source>
         <translation>Hodnoceni</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="342"/>
+        <location filename="../src/gui/ficsconsole.ui" line="275"/>
         <source>User</source>
         <translation>Uživatel</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="351"/>
-        <location filename="../src/gui/ficsconsole.ui" line="364"/>
+        <location filename="../src/gui/ficsconsole.ui" line="284"/>
+        <location filename="../src/gui/ficsconsole.ui" line="297"/>
         <source>Seeks</source>
         <translation>Hledání</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="469"/>
+        <location filename="../src/gui/ficsconsole.ui" line="402"/>
         <source>Time Control</source>
         <translation>Kontrola času</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="385"/>
+        <location filename="../src/gui/ficsconsole.ui" line="318"/>
         <source>Lightning</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="401"/>
+        <location filename="../src/gui/ficsconsole.ui" line="334"/>
         <source>Blitz</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="411"/>
+        <location filename="../src/gui/ficsconsole.ui" line="344"/>
         <source>Standard</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="477"/>
+        <location filename="../src/gui/ficsconsole.ui" line="410"/>
         <source>Minutes</source>
         <translation>Minuty</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="495"/>
+        <location filename="../src/gui/ficsconsole.ui" line="428"/>
         <source>Increment</source>
         <translation>Inkrementace</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="555"/>
+        <location filename="../src/gui/ficsconsole.ui" line="488"/>
         <source>rated</source>
         <translation>hodnocené</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="560"/>
+        <location filename="../src/gui/ficsconsole.ui" line="493"/>
         <source>unrated</source>
         <translation>nehodnocené</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="568"/>
+        <location filename="../src/gui/ficsconsole.ui" line="503"/>
         <source>Seek</source>
         <translation>Hledat</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="587"/>
+        <location filename="../src/gui/ficsconsole.ui" line="524"/>
+        <source>Don&apos;t care</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/ficsconsole.ui" line="546"/>
         <source>No play list</source>
         <translation>Žádný seznam hráčů</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.ui" line="629"/>
+        <location filename="../src/gui/ficsconsole.ui" line="588"/>
         <source>Enter command here</source>
         <translation>Vložit příkaz zde</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="90"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1101"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="85"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1066"/>
         <source>Accept</source>
         <translation>Přijmout</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="96"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="91"/>
         <source>Draw</source>
         <translation>Remíza</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="102"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="97"/>
         <source>Decline</source>
         <translation>Odmítnutí</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="108"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="103"/>
         <source>Abort</source>
         <translation>Zrušení</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="114"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="109"/>
         <source>Resign</source>
         <translation>Vzdát</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="120"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="115"/>
+        <source>Rematch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/ficsconsole.cpp" line="121"/>
         <source>Hint</source>
         <translation>Rada</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="126"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="127"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="552"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="515"/>
         <source>Disconnect</source>
         <translation>Odpojit</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="645"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="608"/>
         <source>Disconnected</source>
         <translation>Odpojeno</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="698"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="662"/>
         <source>Retrieving relayed games...</source>
         <translation>Načítání přenosu hry...</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="1036"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1001"/>
         <source>Observe</source>
         <translation>Sledovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="1049"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1014"/>
         <source>Examine</source>
         <translation>Zkoumání</translation>
     </message>
@@ -1465,18 +1537,18 @@ Prosím zkontrolujte instalaci.</translation>
 <context>
     <name>Game</name>
     <message>
-        <location filename="../src/database/game.cpp" line="153"/>
-        <location filename="../src/database/game.cpp" line="562"/>
+        <location filename="../src/database/game.cpp" line="152"/>
+        <location filename="../src/database/game.cpp" line="561"/>
         <source>Add move</source>
         <translation>Přidat tah</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="415"/>
+        <location filename="../src/database/game.cpp" line="414"/>
         <source>Merge game</source>
         <translation>Sloučit hru</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="583"/>
+        <location filename="../src/database/game.cpp" line="582"/>
         <source>Replace move</source>
         <translation>Nahradit tah</translation>
     </message>
@@ -1495,79 +1567,79 @@ Prosím zkontrolujte instalaci.</translation>
     </message>
     <message>
         <location filename="../src/database/game.cpp" line="604"/>
-        <location filename="../src/database/game.cpp" line="615"/>
-        <location filename="../src/database/game.cpp" line="626"/>
+        <location filename="../src/database/game.cpp" line="616"/>
+        <location filename="../src/database/game.cpp" line="628"/>
         <source>Add variation</source>
         <translation>Přidat variantu</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="724"/>
+        <location filename="../src/database/game.cpp" line="726"/>
         <source>Promote variation</source>
         <translation>Podpořit variantu</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="744"/>
+        <location filename="../src/database/game.cpp" line="746"/>
         <source>Remove variation</source>
         <translation>Odstranit variantu</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="827"/>
+        <location filename="../src/database/game.cpp" line="829"/>
         <source>Truncate variation</source>
         <translation>Zkrátit variantu</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="871"/>
+        <location filename="../src/database/game.cpp" line="873"/>
         <source>Remove variations</source>
         <translation>Odstranit varianty</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="884"/>
+        <location filename="../src/database/game.cpp" line="886"/>
         <source>Remove comments</source>
         <translation>Odstranit komentáře</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1000"/>
+        <location filename="../src/database/game.cpp" line="1002"/>
         <source>Set annotation</source>
         <translation>Nastavit komentář</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1116"/>
+        <location filename="../src/database/game.cpp" line="1118"/>
         <source>Colorize square</source>
         <translation>Obarvit pole</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1164"/>
+        <location filename="../src/database/game.cpp" line="1166"/>
         <source>Paint arrow</source>
         <translation>Nakreslit šipku</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1307"/>
+        <location filename="../src/database/game.cpp" line="1309"/>
         <source>Add nag</source>
         <translation>Přidat ocenění</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1320"/>
+        <location filename="../src/database/game.cpp" line="1322"/>
         <source>Set nags</source>
         <translation>Nastavit ocenění</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1466"/>
-        <location filename="../src/database/game.cpp" line="1501"/>
+        <location filename="../src/database/game.cpp" line="1468"/>
+        <location filename="../src/database/game.cpp" line="1503"/>
         <source>Move variation</source>
         <translation>Varianta tahu</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1527"/>
+        <location filename="../src/database/game.cpp" line="1529"/>
         <source>Enumerate variations</source>
         <translation>Výčet změn</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1899"/>
+        <location filename="../src/database/game.cpp" line="1901"/>
         <source>Set result</source>
         <translation>Nastavit výsledek</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1924"/>
+        <location filename="../src/database/game.cpp" line="1926"/>
         <source>Set variant</source>
         <translation>Nastavit variantu</translation>
     </message>
@@ -1575,68 +1647,68 @@ Prosím zkontrolujte instalaci.</translation>
 <context>
     <name>GameList</name>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="45"/>
-        <location filename="../src/gui/gamelist.cpp" line="242"/>
+        <location filename="../src/gui/gamelist.cpp" line="46"/>
+        <location filename="../src/gui/gamelist.cpp" line="244"/>
         <source>Game list</source>
         <translation>Seznam partií</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="89"/>
+        <location filename="../src/gui/gamelist.cpp" line="91"/>
         <source>Find tag...</source>
         <translation>Najít značku...</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="91"/>
+        <location filename="../src/gui/gamelist.cpp" line="93"/>
         <source>Hide Column</source>
         <translation>Skrýt sloupec</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="93"/>
+        <location filename="../src/gui/gamelist.cpp" line="95"/>
         <source>Resize visible Columns</source>
         <translation>Upravit viditelné sloupce</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="94"/>
+        <location filename="../src/gui/gamelist.cpp" line="96"/>
         <source>Show all Columns</source>
         <translation>Zobrazit všechny sloupce</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="243"/>
+        <location filename="../src/gui/gamelist.cpp" line="245"/>
         <source>Copy games...</source>
         <translation>Kopírovat partie...</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="244"/>
+        <location filename="../src/gui/gamelist.cpp" line="246"/>
         <source>Filter twins</source>
         <translation>Najít dulpicity</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="245"/>
+        <location filename="../src/gui/gamelist.cpp" line="247"/>
         <source>Merge into current game</source>
         <translation>Integrovat aktuální partii</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="246"/>
+        <location filename="../src/gui/gamelist.cpp" line="248"/>
         <source>All Games</source>
         <translation>Všechny partie</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="247"/>
+        <location filename="../src/gui/gamelist.cpp" line="249"/>
         <source>Filter</source>
         <translation>Filtr</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="248"/>
+        <location filename="../src/gui/gamelist.cpp" line="250"/>
         <source>Selected games</source>
         <translation>Označené partie</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="250"/>
+        <location filename="../src/gui/gamelist.cpp" line="252"/>
         <source>Delete game</source>
         <translation>Vymazat partii</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="254"/>
+        <location filename="../src/gui/gamelist.cpp" line="256"/>
         <source>Hide game</source>
         <translation>Skrýt partii</translation>
     </message>
@@ -1670,6 +1742,21 @@ Prosím zkontrolujte instalaci.</translation>
         <location filename="../src/gui/helpbrowsershell.ui" line="14"/>
         <source>MainWindow</source>
         <translation>Hlavní okno</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/helpbrowsershell.ui" line="53"/>
+        <source>Search Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/helpbrowsershell.ui" line="59"/>
+        <source>Type in text to search for...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/helpbrowsershell.ui" line="69"/>
+        <source>Repeat search, press Shift to search backwards</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1710,229 +1797,257 @@ Shall I download a database?</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="180"/>
+        <location filename="../src/gui/mainwindow.cpp" line="183"/>
         <source>Game Text</source>
         <translation>Notace</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="126"/>
+        <location filename="../src/gui/mainwindow.cpp" line="128"/>
         <source>Game List</source>
         <translation>Seznam partií</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="475"/>
+        <location filename="../src/gui/mainwindow.cpp" line="489"/>
         <source>Loading ECO file...</source>
         <translation>Načítání ECO souboru...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="558"/>
+        <location filename="../src/gui/mainwindow.cpp" line="572"/>
         <source>ECO Loaded.</source>
         <translation>ECO načteno.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="108"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="123"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="112"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="127"/>
         <source>Open database</source>
         <translation>Otevírání databáze</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="83"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="87"/>
         <source>PGN database (*.pgn)</source>
         <translation>PGN databáze (*.pgn)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="95"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="99"/>
         <source>Cannot create ChessX database.</source>
         <translation>Nelze vytvořit ChessX databázi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="125"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="129"/>
         <source>PGN databases (*.pgn)</source>
         <translation>PGN seznam databází (*.pgn)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="186"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="195"/>
         <source>&lt;html&gt;The database &lt;i&gt;%1&lt;/i&gt; is read-only and cannot be saved.&lt;/html&gt;</source>
         <translation>&lt;html&gt;Databáze &lt;i&gt;%1&lt;/i&gt; je pouze pro čtení a nelze uložit.&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="150"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="155"/>
         <source>Saving %1...</source>
         <translation>Ukládání %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="110"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="114"/>
         <source>PGN databases (*.pgn);;Polyglot books (*.bin)</source>
         <translation>PGN seznam databází (*.pgn);;Polyglot knihy (*.bin)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="167"/>
         <source>The current database is modified!</source>
-        <translation>Aktuálni databáze je změněna!</translation>
+        <translation type="vanished">Aktuálni databáze je změněna!</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="168"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="172"/>
         <source>Save it?</source>
         <translation>Uložit to?</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="154"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="159"/>
         <source>%1 saved</source>
         <translation>%1 uloženo</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="483"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="171"/>
+        <source>The selected database is modified!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindowactions.cpp" line="472"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Text ve schránce neobsahuje platný formát FEN: &lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="484"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="473"/>
         <source>There is no text in clipboard.</source>
         <translation>Zatím není žádný text ve schránce.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="597"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="691"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="586"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="698"/>
         <source>Set starting board</source>
         <translation>Zadejte herní pozice</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="710"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="717"/>
         <source>Images (*.png *.jpg *.jpeg *.bmp)</source>
         <translation>Obrázky (*.png *.jpg *.jpeg *.bmp)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="933"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="935"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2118"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2190"/>
+        <source>Time is over</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1092"/>
         <source>Red Square</source>
         <translation>Červené pole</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="934"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1093"/>
         <source>Yellow Square</source>
         <translation>Žluté pole</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="935"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1094"/>
         <source>Green Square</source>
         <translation>Zelené pole</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="937"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1096"/>
         <source>Remove Color</source>
         <translation>Odstranit barvu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="941"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1100"/>
         <source>Red Arrow to here</source>
         <translation>Červenou šipku zde</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="942"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1101"/>
         <source>Yellow Arrow to here</source>
         <translation>Žlutou šipku zde</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="943"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1102"/>
         <source>Green Arrow to here</source>
         <translation>Zelenou šipku zde</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="945"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1104"/>
         <source>Remove Arrow to here</source>
         <translation>Odstranit šipku zde</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1424"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1602"/>
         <source>Merge selected games</source>
         <translation>Sloučit vybrané části</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1623"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1801"/>
         <source>Automatic responses</source>
         <translation>Automatická odpověď</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1624"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1802"/>
         <source>Play both sides</source>
         <translation>Hrát na obou stranách</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1721"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1915"/>
         <source>Analysis Pane 2 is not running an engine for automatic analysis.</source>
         <translation>Analýza 2 nemá aktivní motor pro automatickou analýzu.</translation>
     </message>
     <message>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2075"/>
+        <source>Game is drawn by insufficient material</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2076"/>
+        <source>Game is drawn by repetition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2077"/>
+        <source>Game is drawn by 50 move rule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2309"/>
         <source>Engine %1</source>
         <translation>Motor %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2114"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2346"/>
         <source>all</source>
         <translation>vše</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2192"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2234"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2424"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2466"/>
         <source>Append game %1 to %2.</source>
         <translation>Připojení partie %1 do %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2218"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2242"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2450"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2474"/>
         <source>Appended %1 games to %2.</source>
         <translation>Přidat partie %1 do %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2243"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2475"/>
         <source>Error appending games to %1</source>
         <translation>Chyba připojení partií do %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2265"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2280"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2503"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2520"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2547"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2563"/>
         <source>Append games from %1 to %2.</source>
         <translation>Přidané partie od %1 do %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2547"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2876"/>
         <source>Searching...</source>
         <translation>Vyhledávání...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2930"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3270"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Nová partie&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3015"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3355"/>
         <source>Infinite</source>
         <translation>Nekonečná</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3065"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3427"/>
         <source>Could not build book</source>
         <translation>Nelze postavit knihu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3065"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3427"/>
         <source>Polyglot Error</source>
         <translation>Polyglot Error</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1679"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1717"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1873"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1911"/>
         <source>Analysis Pane 1 is not running an engine for automatic analysis.</source>
         <translation>Analýza 1 nemá aktivní motor pro automatickou analýzu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2462"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2861"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2790"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3201"/>
         <source>%1 - ChessX</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2542"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2871"/>
         <source>Search ended</source>
         <translation>Vyhledávání dokončeno</translation>
     </message>
@@ -1941,392 +2056,392 @@ Shall I download a database?</source>
         <translation type="vanished">Aktualizace stromu...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1209"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1384"/>
         <source>Load Game</source>
         <translation>Načíst partii</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1209"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1384"/>
         <source>Game number:</source>
         <translation>Číslo partie:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1230"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1276"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1288"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1405"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1454"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1466"/>
         <source>This database is read only.</source>
         <translation>Tato databáze je pouze pro čtení</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1296"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1310"/>
         <source>&amp;File</source>
         <translation>&amp;Soubor</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1300"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1314"/>
         <source>&amp;Open...</source>
         <translation>&amp;Otevřít...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1324"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1338"/>
         <source>&amp;Export...</source>
         <translation>&amp;Exportovat...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1327"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1341"/>
         <source>&amp;Games in filter</source>
         <translation>&amp;Partie ve filtru</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1328"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1342"/>
         <source>&amp;All games</source>
         <translation>&amp;Všechny hry</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1336"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1350"/>
         <source>&amp;Close</source>
         <translation>&amp;Zavřít</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1340"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1354"/>
         <source>&amp;Quit</source>
         <translation>&amp;Ukončit</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1343"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1357"/>
         <source>&amp;Edit</source>
         <translation>&amp;Editovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1362"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1376"/>
         <source>Comment</source>
         <translation>Komentář</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1371"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1385"/>
         <source>Variation</source>
         <translation>Varianta</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1373"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1387"/>
         <source>Promote</source>
         <translation>Podpora</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1380"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1394"/>
         <source>Remove</source>
         <translation>Odstranit</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1394"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1408"/>
         <source>Setup &amp;position...</source>
         <translation>Nastavení &amp;pozice...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="558"/>
+        <location filename="../src/gui/mainwindow.cpp" line="572"/>
         <source>ECO Load Error.</source>
         <translation>Chyba při načítání ECO.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="427"/>
+        <location filename="../src/gui/mainwindow.cpp" line="438"/>
         <source>Move Interval:</source>
         <translation>Interval tahu:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1083"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1096"/>
         <source>Database %1 cannot be accessed at the moment (%2).</source>
         <translation>Databáze %1 nemůže být v tento moment přístupná (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1297"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1311"/>
         <source>File</source>
         <translation>Soubor</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1301"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1315"/>
         <source>Open in UTF8...</source>
         <translation>Otevřít ve fromátu UTF8...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1319"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1333"/>
         <source>Commit Database to disk</source>
         <translation>Potvrzení databáze na disk</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1326"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1340"/>
         <source>Current Game</source>
         <translation>Aktuální partie</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="708"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="715"/>
         <source>Export Image</source>
         <translation>Export obrázku</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1344"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1358"/>
         <source>Edit</source>
         <translation>Úpravy</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1347"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1361"/>
         <source>Undo</source>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1348"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1362"/>
         <source>Redo</source>
         <translation>Opakovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1375"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1389"/>
         <source>Promote Variation</source>
         <translation>Upgrade varianty</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1383"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1397"/>
         <source>Remove Variation</source>
         <translation>Odstranit variantu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1417"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1455"/>
         <source>Toolbars</source>
         <translation>Panely nástrojů</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1421"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1459"/>
         <source>Stay on Top</source>
         <translation>Zůstat na vrcholu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1435"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1521"/>
         <source>&amp;Game</source>
         <translation>&amp;Partie</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1436"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1522"/>
         <source>Game</source>
         <translation>Partie</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1438"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1524"/>
         <source>Database</source>
         <translation>Databáze</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1446"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1532"/>
         <source>&amp;Load</source>
         <translation>&amp;Načíst</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1452"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1538"/>
         <source>&amp;Next</source>
         <translation>&amp;Další</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1450"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1536"/>
         <source>&amp;Previous</source>
         <translation>&amp;Předchozí</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1458"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1545"/>
         <source>&amp;Go to game...</source>
         <translation>&amp;Jít na hru...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1459"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1546"/>
         <source>&amp;Random</source>
         <translation>&amp;Náhodná</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1487"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1574"/>
         <source>Training</source>
         <translation>Trénování</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1492"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1579"/>
         <source>Auto Respond</source>
         <translation>Automaticky reagovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1497"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1584"/>
         <source>Auto Player</source>
         <translation>Automatický přehrávač</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1503"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1679"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1590"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1873"/>
         <source>Auto Analysis</source>
         <translation>Autoatická analýza</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1521"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1608"/>
         <source>&amp;Go to</source>
         <translation>&amp;Jdi na</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1522"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1609"/>
         <source>&amp;Start</source>
         <translation>&amp;Start</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1524"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1611"/>
         <source>Go to first move</source>
         <translation>Jdi na první tah</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1537"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1624"/>
         <source>&amp;End</source>
         <translation>&amp;Konec</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1539"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1626"/>
         <source>Go to last move</source>
         <translation>Jdi na poslední tah</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1533"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1620"/>
         <source>&amp;Next move</source>
         <translation>&amp;Další tah</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1881"/>
+        <location filename="../src/gui/mainwindow.cpp" line="911"/>
         <source>Start loading database...</source>
         <translation>Probíhá načítání databáze...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1908"/>
+        <location filename="../src/gui/mainwindow.cpp" line="2004"/>
         <source>A new version is available at chessx.sourceforge.net</source>
         <translation>Nová verze je dostupná na chessx.sourceforge.net</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1529"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1616"/>
         <source>&amp;Previous move</source>
         <translation>&amp;Předchozí tah</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1544"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1631"/>
         <source>5 moves &amp;forward</source>
         <translation>5 tahů &amp;dopředu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1548"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1635"/>
         <source>5 moves &amp;backward</source>
         <translation>5 tahů &amp;zpět</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1552"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1639"/>
         <source>Enter Variation</source>
         <translation>Zadání variant</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1564"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1651"/>
         <source>Back to main line</source>
         <translation>Zpět na hlavní variantu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="259"/>
+        <location filename="../src/gui/mainwindow.cpp" line="262"/>
         <source>Events</source>
         <translation>Události</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="156"/>
+        <location filename="../src/gui/mainwindow.cpp" line="158"/>
         <source>FICS Console</source>
         <translation>FICS Konzole</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="275"/>
+        <location filename="../src/gui/mainwindow.cpp" line="278"/>
         <source>ECO</source>
         <translation>ECO</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1302"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1316"/>
         <source>Open FICS</source>
         <translation>Otevřít FICS</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1317"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1331"/>
         <source>Save Database</source>
         <translation>Uložit databázi</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1330"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1344"/>
         <source>Export Image...</source>
         <translation>Exportovat obrázek...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1332"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1346"/>
         <source>Mail PGN...</source>
         <translation>Zaslání PGN...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1400"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1414"/>
         <source>Copy PGN</source>
         <translation>Kopírovat PGN</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1401"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1415"/>
         <source>Copy FEN</source>
         <translation>Kopírovat FEN</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1402"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1416"/>
         <source>Copy Position</source>
         <translation>Kopírovat pozici</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1403"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1417"/>
         <source>Copy Image</source>
         <translation>Kopírovat obrázek</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1430"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1468"/>
         <source>Close current board</source>
         <translation>Zavří aktuální radu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1460"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1547"/>
         <source>&amp;Save...</source>
         <translation>&amp;Uložit...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1462"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1549"/>
         <source>Save</source>
         <translation>Uložit</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1466"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1553"/>
         <source>Edit tags...</source>
         <translation>Upravit značky...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1478"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1565"/>
         <source>Match</source>
         <translation>Zápas</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1509"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1717"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1721"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1596"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1911"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1915"/>
         <source>Engine Match</source>
         <translation>Zápas motorů</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1570"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1657"/>
         <source>Refactor</source>
         <translation>Refaktorovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1571"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1658"/>
         <source>Uncomment</source>
         <translation>Odkomentovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1572"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1659"/>
         <source>Remove Variations</source>
         <translation>Odstanit varianty</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1575"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1662"/>
         <source>Fi&amp;nd</source>
         <translation>&amp;Najít</translation>
     </message>
@@ -2339,269 +2454,329 @@ Shall I download a database?</source>
         <translation type="vanished">&amp;Invertovat filtr</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1612"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1699"/>
         <source>Clear clipboard</source>
         <translation>Vymazat schránku</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1615"/>
-        <location filename="../src/gui/mainwindow.cpp" line="1617"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1702"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1704"/>
         <source>Scratch Pad</source>
         <translation>Poznámkový blok</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1632"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1719"/>
         <source>Help</source>
         <translation>Pomoc</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1642"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1729"/>
         <source>Customize Keyboard...</source>
         <translation>Nastavení klávesnice...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1644"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1731"/>
         <source>Load Sample Database</source>
         <translation>Načíst ukázkovou databázi</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1645"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1732"/>
         <source>Report a bug...</source>
         <translation>Nahlásit chybu...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1693"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1781"/>
         <source>Following databases are modified:</source>
         <translation>Následující databáze byly upraveny:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1694"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1782"/>
         <source>Save them?</source>
         <translation>Uložit všechny databáze?</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1750"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1843"/>
         <source> (%1 s.)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1415"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1453"/>
         <source>&amp;View</source>
         <translation>&amp;Pohled</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="187"/>
+        <location filename="../src/gui/mainwindow.cpp" line="190"/>
         <source>Game Time</source>
         <translation>Čas</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="243"/>
+        <location filename="../src/gui/mainwindow.cpp" line="246"/>
         <source>Players</source>
         <translation>Hráči</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="290"/>
+        <location filename="../src/gui/mainwindow.cpp" line="293"/>
         <source>Databases</source>
         <translation>Databáze</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="357"/>
+        <location filename="../src/gui/mainwindow.cpp" line="360"/>
         <source>Analysis 1</source>
         <translation>Analýza 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="365"/>
+        <location filename="../src/gui/mainwindow.cpp" line="368"/>
         <source>Analysis 2</source>
         <translation>Analýza 2</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1025"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1038"/>
         <source>Database %1 cannot be accessed at the moment.</source>
         <translation>Databáze %1 není v tomto momentu přístupná.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1061"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1074"/>
         <source>Opening %1...</source>
         <translation>Otevírání %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1102"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1116"/>
         <source>Cannot open file</source>
         <translation>Soubor nelze otevřít</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1113"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1127"/>
         <source>%1 opened</source>
         <translation>%1 otevřen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1303"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1317"/>
         <source>Web Favorite</source>
         <translation>Webový favorit</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1305"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1319"/>
         <source>Open recent</source>
         <translation>Otevřít nedávné</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1366"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1380"/>
         <source>Comment Before</source>
         <translation>Komentář pro variantu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1406"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1420"/>
         <source>Paste into new game</source>
         <translation>Vložit do nové hry</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1408"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1422"/>
         <source>Paste</source>
         <translation>Vložit</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1411"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1426"/>
+        <source>Brush</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1427"/>
+        <source>Green</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1432"/>
+        <source>Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1437"/>
+        <source>Red</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1442"/>
+        <source>Erase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1449"/>
         <source>&amp;Preferences...</source>
         <translation>&amp;Předvolby...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1447"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1472"/>
+        <source>View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1474"/>
+        <source>Show target fields</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1480"/>
+        <source>Show threat</source>
+        <translation type="unfinished">Zobraz hrozbu</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1486"/>
+        <source>Show covered squares from White</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1492"/>
+        <source>Show covered squares from Black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1502"/>
+        <source>Show underprotected white pieces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1508"/>
+        <source>Show underprotected black pieces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.cpp" line="1533"/>
         <source>Load recent</source>
         <translation>Načíst nedávné</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1556"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1643"/>
         <source>Previous Variation</source>
         <translation>Předchozí varianta</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1560"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1647"/>
         <source>Next Variation</source>
         <translation>Další varianta</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1576"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1663"/>
         <source>Search</source>
         <translation>Hledat</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1579"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1666"/>
         <source>Find tag...</source>
         <translation>Najít značku...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1589"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1676"/>
         <source>Filter duplicate games</source>
         <translation>Filtrovat duplicitní hry</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1593"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1680"/>
         <source>Filter duplicate headers</source>
         <translation>Filtrovat duplicitní záhlavy</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1599"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1686"/>
         <source>Reset filter</source>
         <translation>Resetovat filtr</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1603"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1690"/>
         <source>Reverse filter</source>
         <translation>Invertovat fitr</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1608"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1695"/>
         <source>&amp;Database</source>
         <translation>&amp;Databáze</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1470"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1557"/>
         <source>&amp;Flip board</source>
         <translation>&amp;Prohodit šachovnici</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1583"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1670"/>
         <source>Find position...</source>
         <translation>Najít pozici...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1629"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1716"/>
         <source>&amp;Help</source>
         <translation>&amp;Pomoc</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1649"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1736"/>
         <source>&amp;About ChessX</source>
         <translation>&amp;O programu ChessX</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1156"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1170"/>
         <source>Export games</source>
         <translation>Exportovat partie</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="328"/>
+        <location filename="../src/gui/mainwindow.cpp" line="331"/>
         <source>Opening Tree</source>
         <translation>Strom zahájení</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1388"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1402"/>
         <source>&amp;Remove</source>
         <translation>&amp;Odstranit</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1389"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1403"/>
         <source>Moves from the beginning</source>
         <translation>Tahy z počátku</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1391"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1405"/>
         <source>Moves to the end</source>
         <translation>Tahy z konce</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1441"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1527"/>
         <source>&amp;New</source>
         <translation>&amp;Nový</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1160"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1174"/>
         <source>PGN file (*.pgn)</source>
         <translation>PGN soubor (*.pgn)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1161"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1175"/>
         <source>HTML page (*.html)</source>
         <translation>HTML stránka (*.html)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1162"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1176"/>
         <source>LaTeX document (*.tex)</source>
         <translation>LaTeX dokument (*.tex)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="81"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="95"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="85"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="99"/>
         <source>New database</source>
         <translation>Nová databáze</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="490"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="479"/>
         <source>The clipboard contains FEN, but with illegal position. You can only paste such positions in &lt;b&gt;Setup position&lt;/b&gt; dialog.</source>
         <translation>Schránka obsahuje FEN, ale s chybnou pozicí. Lze vkládat jen takové pozice v dialogu &lt;b&gt;natavení pozice&lt;/b&gt; dialogu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2339"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2666"/>
         <source>You need at least two open databases to copy games</source>
         <translation>Potřebujete alespoň dvě otevřené databáze kopírování partií</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2367"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2694"/>
         <source>%1. %2 (%3 games)</source>
         <translation>%1. %2 (%3 hry)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1299"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1313"/>
         <source>&amp;New database...</source>
         <translation>&amp;Nová databáze...</translation>
     </message>
@@ -2610,12 +2785,12 @@ Shall I download a database?</source>
         <translation type="vanished">&amp;Otevřít nedávnou...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1609"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1696"/>
         <source>&amp;Switch to</source>
         <translation>&amp;Přepnout na</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="1610"/>
+        <location filename="../src/gui/mainwindow.cpp" line="1697"/>
         <source>&amp;Copy games...</source>
         <translation>&amp;Kopírování partií...</translation>
     </message>
@@ -2633,62 +2808,62 @@ Shall I download a database?</source>
         <translation>Čas</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="82"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="27"/>
         <source>Gong</source>
         <translation>Gong</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="87"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="32"/>
         <source>Sudden Death</source>
         <translation>Náhlá smrt</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="105"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="112"/>
         <source>Book</source>
         <translation>Kniha</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="111"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="118"/>
         <source>Allow use of books</source>
         <translation>Povolit použití knih</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="119"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="126"/>
         <source>Best move</source>
         <translation>Nejlepší tah</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="124"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="131"/>
         <source>Random selection</source>
         <translation>Náhodný výběr</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="129"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="136"/>
         <source>Weighted selection</source>
         <translation>Vážený výběr</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="143"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="150"/>
         <source>Engine starts</source>
         <translation>Motor naskočí</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="62"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="42"/>
         <source>Time</source>
         <translation>Čas</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="45"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="63"/>
         <source>Increment</source>
         <translation>Inkrement</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="28"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="80"/>
         <source>User Bonus</source>
         <translation>Uživatelský bonus</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/matchparameterdlg.ui" line="95"/>
+        <location filename="../src/dialogs/matchparameterdlg.ui" line="102"/>
         <source>Annotate elapsed game time</source>
         <translation>Opatřit uplynulý čas partie</translation>
     </message>
@@ -3382,13 +3557,13 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/openingtreewidget.ui" line="97"/>
-        <location filename="../src/gui/openingtreewidget.cpp" line="169"/>
+        <location filename="../src/gui/openingtreewidget.cpp" line="168"/>
         <source>Database</source>
         <translation>Databáze</translation>
     </message>
     <message>
         <location filename="../src/gui/openingtreewidget.ui" line="102"/>
-        <location filename="../src/gui/openingtreewidget.cpp" line="169"/>
+        <location filename="../src/gui/openingtreewidget.cpp" line="168"/>
         <source>Filter</source>
         <translation>Filtr</translation>
     </message>
@@ -3403,7 +3578,7 @@ Shall I download a database?</source>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../src/gui/openingtreewidget.cpp" line="163"/>
+        <location filename="../src/gui/openingtreewidget.cpp" line="162"/>
         <source> (Book)</source>
         <translation> (Kniha)</translation>
     </message>
@@ -3562,8 +3737,8 @@ Shall I download a database?</source>
 <context>
     <name>PlayerListWidget</name>
     <message>
-        <location filename="../src/gui/playerlistwidget.cpp" line="120"/>
-        <location filename="../src/gui/playerlistwidget.cpp" line="185"/>
+        <location filename="../src/gui/playerlistwidget.cpp" line="124"/>
+        <location filename="../src/gui/playerlistwidget.cpp" line="189"/>
         <source>&lt;html&gt;&lt;i&gt;No player chosen.&lt;/i&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;i&gt;Nebyl zvolen žádný hráč.&lt;/i&gt;&lt;/html&gt;</translation>
     </message>
@@ -3586,7 +3761,7 @@ Shall I download a database?</source>
         <translation>Zvýrazněné pole</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="179"/>
+        <location filename="../src/dialogs/preferences.ui" line="88"/>
         <location filename="../src/dialogs/preferences.cpp" line="469"/>
         <source>Frame</source>
         <translation>Rám</translation>
@@ -3662,32 +3837,52 @@ Shall I download a database?</source>
         <translation>Hrozba</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="496"/>
+        <location filename="../src/dialogs/preferences.cpp" line="473"/>
+        <source>Targets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.cpp" line="474"/>
+        <source>Check</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.cpp" line="475"/>
+        <source>Wall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.cpp" line="476"/>
+        <source>Underprotected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.cpp" line="500"/>
         <source>[plain colors]</source>
         <translation>[Obyčejné barvy]</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="520"/>
+        <location filename="../src/dialogs/preferences.cpp" line="524"/>
         <source>Main Line</source>
         <translation>Hlavní varianta</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="521"/>
+        <location filename="../src/dialogs/preferences.cpp" line="525"/>
         <source>Variations</source>
         <translation>Varianty</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="522"/>
+        <location filename="../src/dialogs/preferences.cpp" line="526"/>
         <source>Comments</source>
         <translation>Komentáře</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="523"/>
+        <location filename="../src/dialogs/preferences.cpp" line="527"/>
         <source>NAGs</source>
         <translation>Ocenění</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1314"/>
+        <location filename="../src/dialogs/preferences.ui" line="1318"/>
         <source>Use online tablebase servers</source>
         <translation>Použít online tablebase servery</translation>
     </message>
@@ -3697,74 +3892,74 @@ Shall I download a database?</source>
         <translation>&amp;Šachovnice</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="75"/>
+        <location filename="../src/dialogs/preferences.ui" line="236"/>
         <source>&amp;Colors:</source>
         <translation>&amp;Barvy:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="334"/>
+        <location filename="../src/dialogs/preferences.ui" line="223"/>
         <source>Board &amp;style:</source>
         <translation>&amp;Styl šachovnice:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="244"/>
+        <location filename="../src/dialogs/preferences.ui" line="136"/>
         <source>&amp;Guess move on left-click</source>
         <translation>&amp;Hádej dál levým tlačítkem myši</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="192"/>
+        <location filename="../src/dialogs/preferences.ui" line="75"/>
         <source>&amp;Draw frame between squares</source>
         <translation>&amp;Nakreslete rámeček mezi čtverci</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="209"/>
+        <location filename="../src/dialogs/preferences.ui" line="307"/>
         <source>&amp;Chess set:</source>
         <translation>&amp;Figurky:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="865"/>
+        <location filename="../src/dialogs/preferences.ui" line="869"/>
         <source>Database</source>
         <translation>Databáze</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="885"/>
+        <location filename="../src/dialogs/preferences.ui" line="889"/>
         <source>Commit Database after saving Game</source>
         <translatorcomment>&quot;Save game&quot; is not an appropriate term and was translated as &quot;Použít dávkové změny&quot;</translatorcomment>
         <translation>Potvrzení databáze po uložení hry</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="944"/>
+        <location filename="../src/dialogs/preferences.ui" line="948"/>
         <source>Number of recent files:</source>
         <translation>Počet naposledy použitých souborů:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="924"/>
+        <location filename="../src/dialogs/preferences.ui" line="928"/>
         <source>Default Database Path:</source>
         <translation>Standartní cesta k databázi:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="902"/>
+        <location filename="../src/dialogs/preferences.ui" line="906"/>
         <source>Default path for storing files</source>
         <translation>Výchozí cesta pro ukládání souborů</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1101"/>
+        <location filename="../src/dialogs/preferences.ui" line="1105"/>
         <source>Font with Chess Symbols (Unicode)</source>
         <translation>Font se šachovými symboly (Unicode)</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1125"/>
-        <location filename="../src/dialogs/preferences.ui" line="1178"/>
+        <location filename="../src/dialogs/preferences.ui" line="1129"/>
+        <location filename="../src/dialogs/preferences.ui" line="1182"/>
         <source>Font Size</source>
         <translation>Velikost fontu</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="573"/>
+        <location filename="../src/dialogs/preferences.ui" line="577"/>
         <source>Colors:</source>
         <translation>Barvy:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1321"/>
+        <location filename="../src/dialogs/preferences.ui" line="1325"/>
         <source>Check for updates (at startup) and language packs</source>
         <translation>Zkontrolovat aktualizace a jazykové balíčky</translation>
     </message>
@@ -3774,224 +3969,229 @@ Shall I download a database?</source>
         <translation>Předvolby</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1036"/>
+        <location filename="../src/dialogs/preferences.ui" line="1040"/>
         <source>Appearance</source>
         <translation>Vzhled</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1042"/>
+        <location filename="../src/dialogs/preferences.ui" line="1046"/>
         <source>Fonts for notation</source>
         <translation>Fonty pro notaci</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1050"/>
+        <location filename="../src/dialogs/preferences.ui" line="1054"/>
         <source>Texts</source>
         <translation>Texty</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1089"/>
+        <location filename="../src/dialogs/preferences.ui" line="1093"/>
         <source>Moves</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="424"/>
+        <location filename="../src/dialogs/preferences.ui" line="428"/>
         <source>Game Text</source>
         <translation>Notace</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="184"/>
+        <location filename="../src/dialogs/preferences.ui" line="93"/>
         <source>Arrow</source>
         <translation>Šipka</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="430"/>
+        <location filename="../src/dialogs/preferences.ui" line="434"/>
         <source>Show Diagrams</source>
         <translation>Zobraz diagramy</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="437"/>
+        <location filename="../src/dialogs/preferences.ui" line="441"/>
         <source>Column Style</source>
         <translation>Styl sloupce</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="446"/>
+        <location filename="../src/dialogs/preferences.ui" line="450"/>
         <source>Keep variations inline from level</source>
         <translation>Rozdíly v úrovni těla textu</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="467"/>
+        <location filename="../src/dialogs/preferences.ui" line="471"/>
         <source>Diagram Size</source>
         <translation>Velikost diagramu</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="485"/>
+        <location filename="../src/dialogs/preferences.ui" line="489"/>
         <source>Pieces</source>
         <translation>Figurky</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="498"/>
+        <location filename="../src/dialogs/preferences.ui" line="502"/>
         <source>Put the initials of the pieces here, mind the initial space.</source>
         <translation>Umístit iniciály figur zde, pozor na první místo.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="504"/>
+        <location filename="../src/dialogs/preferences.ui" line="508"/>
         <source> KQRBN - Mind the initial space!</source>
         <translation> KQRBN - Pozor na první místo!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="511"/>
-        <location filename="../src/dialogs/preferences.ui" line="522"/>
-        <location filename="../src/dialogs/preferences.ui" line="533"/>
-        <location filename="../src/dialogs/preferences.ui" line="544"/>
-        <location filename="../src/dialogs/preferences.ui" line="1069"/>
-        <location filename="../src/dialogs/preferences.ui" line="1108"/>
-        <location filename="../src/dialogs/preferences.ui" line="1447"/>
+        <location filename="../src/dialogs/preferences.ui" line="515"/>
+        <location filename="../src/dialogs/preferences.ui" line="526"/>
+        <location filename="../src/dialogs/preferences.ui" line="537"/>
+        <location filename="../src/dialogs/preferences.ui" line="548"/>
+        <location filename="../src/dialogs/preferences.ui" line="1073"/>
+        <location filename="../src/dialogs/preferences.ui" line="1112"/>
+        <location filename="../src/dialogs/preferences.ui" line="1451"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1153"/>
+        <location filename="../src/dialogs/preferences.ui" line="1157"/>
         <source>Application</source>
         <translation>Aplikace</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="146"/>
+        <location filename="../src/dialogs/preferences.ui" line="101"/>
         <source>Show move indicator</source>
         <translation>Zobrazit indikátor pohybu</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="128"/>
+        <location filename="../src/dialogs/preferences.ui" line="289"/>
         <source>Automatic</source>
         <translation>Automaticky</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="133"/>
+        <location filename="../src/dialogs/preferences.ui" line="294"/>
         <source>Always</source>
         <translation>Vždy</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="138"/>
-        <location filename="../src/dialogs/preferences.ui" line="174"/>
+        <location filename="../src/dialogs/preferences.ui" line="83"/>
+        <location filename="../src/dialogs/preferences.ui" line="299"/>
         <source>Never</source>
         <translation>Nikdy</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1159"/>
+        <location filename="../src/dialogs/preferences.ui" line="1163"/>
         <source>Icons visible in menus</source>
         <translation>Zobrazovat ikony v nabídkách</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1271"/>
+        <location filename="../src/dialogs/preferences.ui" line="1275"/>
         <source>Login</source>
         <translation>Přihlášní</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1331"/>
+        <location filename="../src/dialogs/preferences.ui" line="1335"/>
         <source>Localization</source>
         <translation>Lokalizace</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1376"/>
+        <location filename="../src/dialogs/preferences.ui" line="1380"/>
         <source>Load language file from Server:</source>
         <translation>Načíst jazykový soubor ze serveru:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1386"/>
+        <location filename="../src/dialogs/preferences.ui" line="1390"/>
         <source>Load!</source>
         <translation>Načíst!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1169"/>
+        <location filename="../src/dialogs/preferences.ui" line="1173"/>
         <source>Use vertical Tabs</source>
         <translation>Svislé zarovnání tabulátoru</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="350"/>
+        <location filename="../src/dialogs/preferences.ui" line="323"/>
         <source>Copy Images</source>
         <translation>Kpoírovat obrázky</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="386"/>
+        <location filename="../src/dialogs/preferences.ui" line="359"/>
         <source>Fixed Size</source>
         <translation>Pevná velikost</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="854"/>
+        <location filename="../src/dialogs/preferences.ui" line="412"/>
+        <source>Always Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="858"/>
         <source>Log</source>
         <translation>Log</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="982"/>
+        <location filename="../src/dialogs/preferences.ui" line="986"/>
         <source>Web Favorite</source>
         <translation>Webový favorit</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="995"/>
+        <location filename="../src/dialogs/preferences.ui" line="999"/>
         <source>URL, use $1 for auto-incrementing number</source>
         <translation>URL, $1 se nahrazuje číslem</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="998"/>
+        <location filename="../src/dialogs/preferences.ui" line="1002"/>
         <source>Use $1 for auto-incrementing number</source>
         <translation>Nahrazení $1 s automaticky se zvyšujícím číslem</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1258"/>
+        <location filename="../src/dialogs/preferences.ui" line="1262"/>
         <source>Log in as guest</source>
         <translation>Přihlásit se jako host</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1278"/>
+        <location filename="../src/dialogs/preferences.ui" line="1282"/>
         <source>Password</source>
         <translation>Heslo</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1294"/>
+        <location filename="../src/dialogs/preferences.ui" line="1298"/>
         <source>Try to use Timeseal</source>
         <translation>Zkusit použít Timeseal</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1302"/>
+        <location filename="../src/dialogs/preferences.ui" line="1306"/>
         <source>App</source>
         <translation>App</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1308"/>
+        <location filename="../src/dialogs/preferences.ui" line="1312"/>
         <source>Internet</source>
         <translation>Internet</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1339"/>
+        <location filename="../src/dialogs/preferences.ui" line="1343"/>
         <source>Language</source>
         <translation>Jazyk</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1367"/>
+        <location filename="../src/dialogs/preferences.ui" line="1371"/>
         <source>Changing the language requires restarting the application!</source>
         <translation>Změna jazyka vyžaduje restart programu!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1421"/>
+        <location filename="../src/dialogs/preferences.ui" line="1425"/>
         <source>External Tools</source>
         <translation>Externí nástroje</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1427"/>
+        <location filename="../src/dialogs/preferences.ui" line="1431"/>
         <source>Parameters</source>
         <translation>Parametry</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1437"/>
+        <location filename="../src/dialogs/preferences.ui" line="1441"/>
         <source>Path</source>
         <translation>Cesta</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1457"/>
+        <location filename="../src/dialogs/preferences.ui" line="1461"/>
         <source>Path and filename of external program</source>
         <translation>Cesta a název souboru externího programu</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1464"/>
+        <location filename="../src/dialogs/preferences.ui" line="1468"/>
         <source>Command line, also $(InputPath), $(InputFile)</source>
         <translation>Příkazový řádek, na př. s $(InputPath), $(InputFile)</translation>
     </message>
@@ -4014,157 +4214,156 @@ Shall I download a database?</source>
         <translation type="vanished">obrys</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="647"/>
+        <location filename="../src/dialogs/preferences.ui" line="651"/>
         <source>&amp;Engines</source>
         <translation>&amp;Motory</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="762"/>
+        <location filename="../src/dialogs/preferences.ui" line="766"/>
         <source>Name:</source>
         <translation>Jméno:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="772"/>
+        <location filename="../src/dialogs/preferences.ui" line="776"/>
         <source>Command:</source>
         <translation>Příkaz:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="705"/>
+        <location filename="../src/dialogs/preferences.ui" line="709"/>
         <source>Options:</source>
         <translation>Možnosti:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="199"/>
+        <location filename="../src/dialogs/preferences.ui" line="390"/>
         <source>Highlight current move:</source>
         <translation>Zvýraznit aktuální tah:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="232"/>
+        <location filename="../src/dialogs/preferences.ui" line="124"/>
         <source>Mouse Behaviour</source>
         <translation>CHování myši</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="251"/>
+        <location filename="../src/dialogs/preferences.ui" line="143"/>
         <source>Next guess on right click</source>
         <translation>Další návrh, když klepnete pravým tlačítkem myši</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="260"/>
+        <location filename="../src/dialogs/preferences.ui" line="152"/>
         <source>Wheel sensitivity</source>
         <translation>Rychlost kolečkem myši</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="280"/>
+        <location filename="../src/dialogs/preferences.ui" line="172"/>
         <source>Fast</source>
         <translation>Rychle</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="312"/>
+        <location filename="../src/dialogs/preferences.ui" line="204"/>
         <source>Slow</source>
         <translation>Pomalu</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="156"/>
+        <location filename="../src/dialogs/preferences.ui" line="111"/>
         <source>Draw Coordinates</source>
         <translation>Nakresli souřadnice šachovnice</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="219"/>
         <source>Show threat</source>
-        <translation>Zobraz hrozbu</translation>
+        <translation type="vanished">Zobraz hrozbu</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="362"/>
+        <location filename="../src/dialogs/preferences.ui" line="335"/>
         <source>Colored copies</source>
         <translation>Barevné kopie</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="327"/>
+        <location filename="../src/dialogs/preferences.ui" line="216"/>
         <source>No hints in training mode</source>
         <translation>Žádný důkaz ve vzdělávání</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="418"/>
+        <location filename="../src/dialogs/preferences.ui" line="422"/>
         <source>Game</source>
         <translation>Partie</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="607"/>
+        <location filename="../src/dialogs/preferences.ui" line="611"/>
         <source>Autoplayer</source>
         <translation>Konkurz</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="613"/>
+        <location filename="../src/dialogs/preferences.ui" line="617"/>
         <source>Automatically save game and continue with next</source>
         <translation>Automaticky uložit hru a pokračovat s další</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="620"/>
+        <location filename="../src/dialogs/preferences.ui" line="624"/>
         <source>Auto Analysis backwards</source>
         <translation>Zpětná automatická analýza</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="630"/>
+        <location filename="../src/dialogs/preferences.ui" line="634"/>
         <source>Automatic Promotion</source>
         <translation>Automatická propagace</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="636"/>
+        <location filename="../src/dialogs/preferences.ui" line="640"/>
         <source>Always queen a pawn</source>
         <translation>Vždy proměnit pěšce za dámu</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="821"/>
+        <location filename="../src/dialogs/preferences.ui" line="825"/>
         <source>Path to executable</source>
         <translation>Cesta ke spuštění</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="834"/>
+        <location filename="../src/dialogs/preferences.ui" line="838"/>
         <source>Path where engine is started - usually place of books</source>
         <translation>Cesta, kde je motor spuštěn - obvykle místo, kde se nachází kniha zahájení</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="782"/>
+        <location filename="../src/dialogs/preferences.ui" line="786"/>
         <source>Directory:</source>
         <translation>Adresář:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="847"/>
+        <location filename="../src/dialogs/preferences.ui" line="851"/>
         <source>Protocol:</source>
         <translation>Protokol:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="735"/>
+        <location filename="../src/dialogs/preferences.ui" line="739"/>
         <source>Command Line Options</source>
         <translation>Možnosti příkazového řádku</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="748"/>
+        <location filename="../src/dialogs/preferences.ui" line="752"/>
         <source>Options</source>
         <translation>Možnosti</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="715"/>
+        <location filename="../src/dialogs/preferences.ui" line="719"/>
         <source>Arbitrary name to identify engine </source>
         <translation>Libovolný název motoru </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1203"/>
+        <location filename="../src/dialogs/preferences.ui" line="1207"/>
         <source>Additional PGN tags</source>
         <translation>Další PGN značky</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1212"/>
+        <location filename="../src/dialogs/preferences.ui" line="1216"/>
         <source>Additional tags, separate with blanks</source>
         <translation>Další značky, oddělené mezerami</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1479"/>
+        <location filename="../src/dialogs/preferences.ui" line="1483"/>
         <source>Sound</source>
         <translation>Zvuk</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1485"/>
+        <location filename="../src/dialogs/preferences.ui" line="1489"/>
         <source>Indicate opponent&apos;s move</source>
         <translation>Poznámka na soupeřových tazích </translation>
     </message>
@@ -4184,22 +4383,22 @@ Shall I download a database?</source>
         <translation>Přidat...</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="871"/>
+        <location filename="../src/dialogs/preferences.ui" line="875"/>
         <source>Automatic classification with ECO Codes</source>
         <translation>Automatická klasifikace pomocí ECO kódů</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="878"/>
+        <location filename="../src/dialogs/preferences.ui" line="882"/>
         <source>Build index file</source>
         <translation>Postavit indexový soubor</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="954"/>
+        <location filename="../src/dialogs/preferences.ui" line="958"/>
         <source>&amp;Edit PGN files smaller than:</source>
         <translation>&amp;Pouze soubory PGN menší než:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="964"/>
+        <location filename="../src/dialogs/preferences.ui" line="968"/>
         <source> MB</source>
         <translation></translation>
     </message>
@@ -4474,19 +4673,29 @@ Shall I download a database?</source>
 <context>
     <name>TableView</name>
     <message>
-        <location filename="../src/gui/tableview.cpp" line="130"/>
+        <location filename="../src/gui/tableview.cpp" line="142"/>
         <source>Hide Column</source>
         <translation>Skrýt sloupec</translation>
     </message>
     <message>
-        <location filename="../src/gui/tableview.cpp" line="132"/>
+        <location filename="../src/gui/tableview.cpp" line="144"/>
         <source>Resize visible Columns</source>
         <translation>Změnit velikost viditelných sloupců</translation>
     </message>
     <message>
-        <location filename="../src/gui/tableview.cpp" line="133"/>
+        <location filename="../src/gui/tableview.cpp" line="145"/>
         <source>Show all Columns</source>
         <translation>Ukaž všechny sloupce</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tableview.cpp" line="147"/>
+        <source>Copy as HTML</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tableview.cpp" line="148"/>
+        <source>Copy as Image</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4497,17 +4706,17 @@ Shall I download a database?</source>
         <translation>Filtr:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdetailwidget.ui" line="63"/>
+        <location filename="../src/gui/tagdetailwidget.ui" line="69"/>
         <source>Selected Item</source>
         <translation>Označit položku</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdetailwidget.ui" line="69"/>
+        <location filename="../src/gui/tagdetailwidget.ui" line="75"/>
         <source>Filter</source>
         <translation>Filtr</translation>
     </message>
     <message>
-        <location filename="../src/gui/tagdetailwidget.ui" line="76"/>
+        <location filename="../src/gui/tagdetailwidget.ui" line="82"/>
         <source>Rename</source>
         <translation>Přejmenovat</translation>
     </message>

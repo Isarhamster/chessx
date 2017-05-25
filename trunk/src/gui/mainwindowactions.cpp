@@ -793,6 +793,24 @@ void MainWindow::slotEvalRequest(Square from, Square to)
     }
 }
 
+void MainWindow::slotEvalMove(Square from, Square to)
+{
+    if (!m_mainAnalysis->isVisible())
+    {
+        return;
+    }
+    Board b = game().board();
+    Piece p = b.pieceAt(from);
+    b.removeFrom(from);
+    b.setAt(to, p);
+    b.swapToMove();
+    if (b.validate() == Valid)
+    {
+        m_bEvalRequested = true;
+        m_mainAnalysis->setPosition(b);
+    }
+}
+
 void MainWindow::slotResumeBoard()
 {
     if (m_bEvalRequested)
@@ -3100,6 +3118,7 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
         connect(boardView, SIGNAL(actionHint(QString)), SLOT(slotStatusMessage(QString)));
         connect(boardView, SIGNAL(evalRequest(Square, Square)), SLOT(slotEvalRequest(Square, Square)));
+        connect(boardView, SIGNAL(evalMove(Square, Square)), SLOT(slotEvalMove(Square, Square)));
         connect(boardView, SIGNAL(evalModeDone()), SLOT(slotResumeBoard()));
 
         if (databaseInfo()->IsFicsDB())

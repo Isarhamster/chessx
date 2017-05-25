@@ -316,6 +316,9 @@ public slots:
     void slotBoardMove(Square from, Square to, int button=0);
     /** Make a evalution with the current board and piece @p from placed at @p to */
     void slotEvalRequest(Square from, Square to);
+    /** Make a evalution with the current board and piece @p from moved to @p to */
+    void slotEvalMove(Square from, Square to);
+    /** Resume the last position after an if-evaluation by slotEvalRequest / slotEvalMove */
     void slotResumeBoard();
     /** Board square was clicked */
     void slotBoardClick(Square square, int button, QPoint pos, Square from);
