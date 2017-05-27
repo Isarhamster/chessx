@@ -2631,12 +2631,12 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1502"/>
         <source>Show underprotected white pieces</source>
-        <translation>Zeige schlecht bedeckte weiße Figuren</translation>
+        <translation>Zeige schlecht gedeckte weiße Figuren</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1508"/>
         <source>Show underprotected black pieces</source>
-        <translation>Zeige schlecht bedeckte schwarze Figuren</translation>
+        <translation type="unfinished">Zeige schlecht gedeckte schwarze Figuren</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1533"/>

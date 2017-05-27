@@ -3155,7 +3155,9 @@ void MainWindow::closeBoardViewForDbIndex(void* dbIndex)
     int index = findBoardView(dbIndex);
     if (index >= 0)
     {
+        QWidget* w = m_tabWidget->widget(index);
         m_tabWidget->removeTab(index);
+        delete w;
     }
 }
 
@@ -3215,7 +3217,9 @@ void MainWindow::slotCloseTabWidget(int n)
 
     if(m_tabWidget->count() > 1)
     {
+        QWidget* w = m_tabWidget->widget(n);
         m_tabWidget->removeTab(n);
+        delete w;
     }
 
     slotActivateBoardView(m_tabWidget->currentIndex());
@@ -3492,7 +3496,7 @@ void MainWindow::enterGameMode(bool gameMode)
     int currentTab = m_tabWidget->currentIndex();
     for (int i=0; i<m_tabWidget->count();++i)
     {
-        if (i != currentTab)
+        if (i != currentTab || !gameMode)
         {
             m_tabWidget->setTabEnabled(i, !gameMode);
         }
