@@ -509,16 +509,13 @@ void FicsConsole::SlotContextMenu(const QPoint &pos)
 
     if (!v)
     {
-        if (!gameMode)
+        QMenu headerMenu;
+        QAction* closeFics = headerMenu.addAction(tr("Disconnect"));
+        closeFics->setDisabled(gameMode);
+        QAction* selectedItem = headerMenu.exec(mapToGlobal(pos));
+        if (!gameMode && (selectedItem == closeFics))
         {
-            QMenu headerMenu;
-            QAction* closeFics = headerMenu.addAction(tr("Disconnect"));
-
-            QAction* selectedItem = headerMenu.exec(mapToGlobal(pos));
-            if (selectedItem == closeFics)
-            {
-                emit RequestCloseFICS();
-            }
+            emit RequestCloseFICS();
         }
     }
 }
