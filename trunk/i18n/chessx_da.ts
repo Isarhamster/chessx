@@ -1256,7 +1256,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="93"/>
         <location filename="../src/gui/ficsconsole.ui" line="99"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1053"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1050"/>
         <source>History</source>
         <translation>Historik</translation>
     </message>
@@ -1283,13 +1283,13 @@ Please check your installation.</source>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="158"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1027"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1024"/>
         <source>Relay</source>
         <translation>Relæ</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="178"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1040"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1037"/>
         <source>Puzzle</source>
         <translation>Opgaver</translation>
     </message>
@@ -1421,7 +1421,7 @@ Please check your installation.</source>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="85"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1066"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1063"/>
         <source>Accept</source>
         <translation>Acceptér</translation>
     </message>
@@ -1461,27 +1461,27 @@ Please check your installation.</source>
         <translation>Annuller</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="515"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="513"/>
         <source>Disconnect</source>
         <translation>Luk forbindelsen</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="608"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="605"/>
         <source>Disconnected</source>
         <translation>Forbindelsen er lukket</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="662"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="659"/>
         <source>Retrieving relayed games...</source>
         <translation>Henter viste partier ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="1001"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="998"/>
         <source>Observe</source>
         <translation>Observér</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="1014"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1011"/>
         <source>Examine</source>
         <translation>Undersøg</translation>
     </message>
@@ -2788,7 +2788,7 @@ Skal jeg downloade en database?</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2790"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3201"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3203"/>
         <source>%1 - ChessX</source>
         <translation>%1 - ChessX</translation>
     </message>
@@ -2802,22 +2802,22 @@ Skal jeg downloade en database?</translation>
         <translation type="vanished">Opdaterer træ ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3270"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3274"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Nyt parti&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3355"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3359"/>
         <source>Infinite</source>
         <translation>Ubegrænset</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3427"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3431"/>
         <source>Could not build book</source>
         <translation>Kunne ikke bygge bog</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3427"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3431"/>
         <source>Polyglot Error</source>
         <translation>Polyglot-fejl</translation>
     </message>
