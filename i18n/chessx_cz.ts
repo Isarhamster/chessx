@@ -1241,7 +1241,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="93"/>
         <location filename="../src/gui/ficsconsole.ui" line="99"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1053"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1050"/>
         <source>History</source>
         <translation>Historie</translation>
     </message>
@@ -1268,13 +1268,13 @@ Please check your installation.</source>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="158"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1027"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1024"/>
         <source>Relay</source>
         <translation>Živý přenos</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="178"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1040"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1037"/>
         <source>Puzzle</source>
         <translation>Puzzle</translation>
     </message>
@@ -1406,7 +1406,7 @@ Please check your installation.</source>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="85"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1066"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1063"/>
         <source>Accept</source>
         <translation>Přijmout</translation>
     </message>
@@ -1446,27 +1446,27 @@ Please check your installation.</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="515"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="513"/>
         <source>Disconnect</source>
         <translation>Odpojit</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="608"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="605"/>
         <source>Disconnected</source>
         <translation>Odpojeno</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="662"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="659"/>
         <source>Retrieving relayed games...</source>
         <translation>Načítání přenosu hry...</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="1001"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="998"/>
         <source>Observe</source>
         <translation>Sledovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="1014"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1011"/>
         <source>Examine</source>
         <translation>Zkoumání</translation>
     </message>
@@ -2015,22 +2015,22 @@ Shall I download a database?</source>
         <translation>Vyhledávání...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3270"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3274"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Nová partie&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3355"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3359"/>
         <source>Infinite</source>
         <translation>Nekonečná</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3427"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3431"/>
         <source>Could not build book</source>
         <translation>Nelze postavit knihu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3427"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3431"/>
         <source>Polyglot Error</source>
         <translation>Polyglot Error</translation>
     </message>
@@ -2042,7 +2042,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2790"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3201"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3203"/>
         <source>%1 - ChessX</source>
         <translation></translation>
     </message>

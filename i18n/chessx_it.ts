@@ -1235,7 +1235,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="93"/>
         <location filename="../src/gui/ficsconsole.ui" line="99"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1053"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1050"/>
         <source>History</source>
         <translation>Cronologia</translation>
     </message>
@@ -1262,13 +1262,13 @@ Please check your installation.</source>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="158"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1027"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1024"/>
         <source>Relay</source>
         <translation>Trasmissione</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="178"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1040"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1037"/>
         <source>Puzzle</source>
         <translatorcomment>The word in English is sufficiently well known and used in Italian.</translatorcomment>
         <translation>Puzzle</translation>
@@ -1406,7 +1406,7 @@ Please check your installation.</source>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="85"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1066"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1063"/>
         <source>Accept</source>
         <translation>Accetta</translation>
     </message>
@@ -1446,27 +1446,27 @@ Please check your installation.</source>
         <translation>Cancella</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="515"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="513"/>
         <source>Disconnect</source>
         <translation>Disconnetti</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="608"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="605"/>
         <source>Disconnected</source>
         <translation>Disconnesso</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="662"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="659"/>
         <source>Retrieving relayed games...</source>
         <translation>Recupero partite trasmesse...</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="1001"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="998"/>
         <source>Observe</source>
         <translation>Osserva</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="1014"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1011"/>
         <source>Examine</source>
         <translation>Esamina</translation>
     </message>
@@ -2755,22 +2755,22 @@ Devo caricare un database?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3355"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3359"/>
         <source>Infinite</source>
         <translation>Infinito</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3427"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3431"/>
         <source>Could not build book</source>
         <translation>Impossibile creare libro</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3427"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3431"/>
         <source>Polyglot Error</source>
         <translation>Errore di Polyglot</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3270"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3274"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Nuova partita&lt;/b&gt;</translation>
     </message>
@@ -2786,7 +2786,7 @@ Devo caricare un database?</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="2790"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3201"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3203"/>
         <source>%1 - ChessX</source>
         <translation>%1 - ChessX</translation>
     </message>
