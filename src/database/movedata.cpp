@@ -72,6 +72,11 @@ bool operator<(const MoveData& m1, const MoveData& m2)
     return m1.count < m2.count || (m1.count == m2.count && m1.san < m2.san);
 }
 
+bool operator>(const MoveData& m1, const MoveData& m2)
+{
+    return m1.count > m2.count || (m1.count == m2.count && m1.san > m2.san);
+}
+
 bool compareMove(const MoveData& m1, const MoveData& m2)
 {
     return m1.san < m2.san;
