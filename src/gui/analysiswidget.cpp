@@ -638,33 +638,7 @@ void AnalysisWidget::updateBookMoves()
 
     if (m_pgdb && !m_gameMode)
     {
-        QMutexLocker m(m_pgdb->mutex());
-        quint64 key = m_pgdb->getHashFromBoard(m_board);
-        m_pgdb->reset();
-        bool bDone = false;
-        while(!bDone)
-        {
-            MoveData m;
-            if (m_pgdb->findMove(key,m,bDone))
-            {
-                if (m_board.pieceAt(e1)==WhiteKing)
-                {
-                    if (m.san=="e1a1") m.san = "e1c1";
-                    else if (m.san=="e1h1") m.san = "e1g1";
-                }
-                if (m_board.pieceAt(e8)==BlackKing)
-                {
-                    if (m.san=="e8a8") m.san = "e8c8";
-                    else if (m.san=="e8h8") m.san = "e8g8";
-                }
-
-                Move move = m_board.parseMove(m.san);
-                m.san = m_board.moveToSan(move);
-                m.move = move;
-                moves[move] = m;
-                games += m.count;
-            }
-        }
+        games = m_pgdb->getMoveMapForBoard(m_board, moves);
     }
 
     moveList.clear();

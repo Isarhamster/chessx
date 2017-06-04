@@ -31,41 +31,10 @@ void OpeningTreeThread::run()
     QList<MoveData> emptyMoveList;
     emit MoveUpdate(&m_board, emptyMoveList);
 
-    if (PolyglotDatabase* pgdb = qobject_cast<PolyglotDatabase*>(m_filter->database()))
+    if (PolyglotDatabase* pgdb = qobject_cast<PolyglotDatabase*>(m_filter ? m_filter->database() : 0))
     {
-        quint64 n = pgdb->positionCount();
-        quint64 progressCounter = n/10;
-        quint64 key = pgdb->getHashFromBoard(m_board);
-        QMutexLocker m(pgdb->mutex());
-        pgdb->reset();
-        bool bDone = false;
-        for (quint64 i=0; (i<n) && !bDone && !m_break; ++i)
-        {
-            MoveData m;
-            if (pgdb->findMove(key,m,bDone))
-            {
-                if (m_board.pieceAt(e1)==WhiteKing)
-                {
-                    if (m.san=="e1a1") m.san = "e1c1";
-                    else if (m.san=="e1h1") m.san = "e1g1";
-                }
-                if (m_board.pieceAt(e8)==BlackKing)
-                {
-                    if (m.san=="e8a8") m.san = "e8c8";
-                    else if (m.san=="e8h8") m.san = "e8g8";
-                }
-
-                Move move = m_board.parseMove(m.san);
-                m.san = m_board.moveToSan(move);
-                moves[move] = m;
-                games += m.count;
-            }
-            else if ((i%progressCounter) == 0)
-            {
-                ProgressUpdate(moves, games, i, n);
-            }
-        }
-        ProgressUpdate(moves, games, n, n);
+        games = pgdb->getMoveMapForBoard(m_board, moves);
+        ProgressUpdate(moves, games, 100, 100);
     }
     else
     {
