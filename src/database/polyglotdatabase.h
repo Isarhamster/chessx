@@ -128,7 +128,7 @@ public:
     /** Closes the database */
     void close();
     /** Find Information to a given key */
-    bool findMove(quint64 key, MoveData &move);
+    bool findMove(quint64 key, MoveData &move, bool &done);
     /** Start a search for a new key */
     void reset();
     void book_make(Database& db, volatile bool& breakFlag);
@@ -166,6 +166,8 @@ private:
     QString m_filename;
     QIODevice* m_file;
     quint64 m_count;
+    quint64 m_midKey;
+    quint64 m_midPos;
     Book m_book;
     BookMap m_bookDictionary;
     bool m_uniform;

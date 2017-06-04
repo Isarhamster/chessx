@@ -27,7 +27,7 @@ signals:
     void progress(int);
 
 protected:
-    void ProgressUpdate(QMap<Move, MoveData>& moves, QTime &updateTime, int games, int i, int n);
+    void ProgressUpdate(QMap<Move, MoveData>& moves, int games, int i, int n);
 private:
     int* m_games;
 

@@ -27,25 +27,23 @@ void OpeningTreeThread::run()
 {
     QMap<Move, MoveData> moves;
     int games = 0;
-    QTime updateTime = QTime::currentTime().addSecs(1);
     emit progress(0);
     QList<MoveData> emptyMoveList;
     emit MoveUpdate(&m_board, emptyMoveList);
-    int n = m_filter ? m_filter->size() : 0;
+
     if (PolyglotDatabase* pgdb = qobject_cast<PolyglotDatabase*>(m_filter->database()))
     {
-        n = pgdb->positionCount();
+        quint64 n = pgdb->positionCount();
+        quint64 progressCounter = n/10;
         quint64 key = pgdb->getHashFromBoard(m_board);
         QMutexLocker m(pgdb->mutex());
         pgdb->reset();
-        bool bFound = false;
         bool bDone = false;
-        for (int i=0; i<n; ++i)
+        for (quint64 i=0; (i<n) && !bDone && !m_break; ++i)
         {
             MoveData m;
-            if (pgdb->findMove(key,m))
+            if (pgdb->findMove(key,m,bDone))
             {
-                bFound = true;
                 if (m_board.pieceAt(e1)==WhiteKing)
                 {
                     if (m.san=="e1a1") m.san = "e1c1";
@@ -62,21 +60,17 @@ void OpeningTreeThread::run()
                 moves[move] = m;
                 games += m.count;
             }
-            else
+            else if ((i%progressCounter) == 0)
             {
-                bDone = bFound;
-            }
-
-            ProgressUpdate(moves, updateTime, games, bDone ? n : i, n);
-
-            if(m_break || bDone)
-            {
-                break;
+                ProgressUpdate(moves, games, i, n);
             }
         }
+        ProgressUpdate(moves, games, n, n);
     }
     else
     {
+        int n = m_filter ? m_filter->size() : 0;
+        int progressCounter = n/100;
         for(int i = 0; i < n; ++i)
         {
             if (m_sourceIsDatabase || m_filter->contains(i))
@@ -112,7 +106,10 @@ void OpeningTreeThread::run()
                 }
             }
 
-            ProgressUpdate(moves, updateTime, games, i, n);
+            if ((i==n) || (i%progressCounter) == 0)
+            {
+                ProgressUpdate(moves, games, i, n);
+            }
 
             if(m_break)
             {
@@ -156,21 +153,17 @@ bool OpeningTreeThread::updateFilter(Filter& f, const Board& b, int& g, bool upd
     return true;
 }
 
-void OpeningTreeThread::ProgressUpdate(QMap<Move, MoveData> &moves, QTime& updateTime, int games, int i, int n)
+void OpeningTreeThread::ProgressUpdate(QMap<Move, MoveData> &moves, int games, int i, int n)
 {
-    if (updateTime<=QTime::currentTime())
+    emit progress(i * 100 / n);
+    if(!m_break)
     {
-        updateTime = QTime::currentTime().addSecs(3);
-        emit progress(i * 100 / n);
-        if(!m_break)
+        *m_games = games;
+        QList<MoveData> moveList;
+        for(QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
         {
-            *m_games = games;
-            QList<MoveData> moveList;
-            for(QMap<Move, MoveData>::iterator it = moves.begin(); it != moves.end(); ++it)
-            {
-                moveList.append(it.value());
-            }
-            emit MoveUpdate(&m_board, moveList);
+            moveList.append(it.value());
         }
+        emit MoveUpdate(&m_board, moveList);
     }
 }

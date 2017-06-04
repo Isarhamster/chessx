@@ -639,17 +639,14 @@ void AnalysisWidget::updateBookMoves()
     if (m_pgdb && !m_gameMode)
     {
         QMutexLocker m(m_pgdb->mutex());
-        int n = m_pgdb->positionCount();
         quint64 key = m_pgdb->getHashFromBoard(m_board);
         m_pgdb->reset();
-        bool bFound = false;
         bool bDone = false;
-        for (int i=0; i<n; ++i)
+        while(!bDone)
         {
             MoveData m;
-            if (m_pgdb->findMove(key,m))
+            if (m_pgdb->findMove(key,m,bDone))
             {
-                bFound = true;
                 if (m_board.pieceAt(e1)==WhiteKing)
                 {
                     if (m.san=="e1a1") m.san = "e1c1";
@@ -666,15 +663,6 @@ void AnalysisWidget::updateBookMoves()
                 m.move = move;
                 moves[move] = m;
                 games += m.count;
-            }
-            else
-            {
-                bDone = bFound;
-            }
-
-            if(bDone)
-            {
-                break;
             }
         }
     }
