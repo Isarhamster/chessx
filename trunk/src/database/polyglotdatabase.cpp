@@ -65,6 +65,28 @@ bool PolyglotDatabase::open(const QString &filename, bool)
         m_utf8 = false;
         QFileInfo fi(m_filename);
         m_count = fi.size() / 16; // Polyglot entry size is 16
+        m_midKey = (quint64)-1;
+        m_midPos = 16*((m_count+1)/2);
+        if (m_count)
+        {
+            if (m_file->seek(m_midPos))
+            {
+                entry_t entry;
+                entry_t nextEntry;
+                if(!entry_from_file(&entry))
+                {
+                    while (!entry_from_file(&nextEntry))
+                    {
+                        if (entry.key != nextEntry.key)
+                        {
+                            m_midKey = nextEntry.key;
+                            m_midPos = m_file->pos() - sizeof(entry_t);
+                        }
+                    }
+                }
+            }
+            reset();
+        }
         return true;
     }
     return false;
@@ -467,20 +489,18 @@ QString PolyglotDatabase::move_to_string(quint16 move) const
 
 int PolyglotDatabase::find_key(quint64 key, entry_t *entry)
 {
-    entry_t test_entry;
-    while(!entry_from_file(&test_entry))
+    if(!entry_from_file(entry))
     {
-        if (key==test_entry.key)
+        if (key==entry->key)
         {
-            *entry=test_entry;
             return 0;
         }
-        else if (key<test_entry.key)
+        else if (key>entry->key)
         {
-            entry->key = key+1;
             return 1;
         }
     }
+
     return -1;
 }
 
@@ -488,10 +508,19 @@ int PolyglotDatabase::find_key(quint64 key, entry_t *entry)
 // Book parser - public interface
 // ---------------------------------------------------------
 
-bool PolyglotDatabase::findMove(quint64 key, MoveData& m)
+bool PolyglotDatabase::findMove(quint64 key, MoveData& m, bool& done)
 {
     entry_t entry;
-    if (!find_key(key, &entry))
+    done = false;
+    if (m_file->pos()==0)
+    {
+        if (key >= m_midKey)
+        {
+            m_file->seek(m_midPos);
+        }
+    }
+    int result = find_key(key, &entry);
+    if (result == 0)
     {
         QString s = move_to_string(entry.move);
         m.san = s;
@@ -499,6 +528,11 @@ bool PolyglotDatabase::findMove(quint64 key, MoveData& m)
         if (!m.count) m.count = 1; // Fix issue in advance!
         return true;
     }
+    else if (result < 0)
+    {
+        done = true;
+    }
+
     return false;
 }
 
@@ -657,7 +691,7 @@ void PolyglotDatabase::update_entry(book_entry& entry, int result)
 
 void PolyglotDatabase::book_sort()
 {
-    qSort(m_book.begin(),m_book.end(),key_compare());
+    std::sort(m_book.begin(),m_book.end(),key_compare());
 }
 
 void PolyglotDatabase::book_filter()
