@@ -49,6 +49,7 @@
 #include "style.h"
 #include "tableview.h"
 #include "tagdialog.h"
+#include "tags.h"
 #include "textedit.h"
 #include "toolmainwindow.h"
 #include "translatingslider.h"
@@ -795,6 +796,24 @@ void MainWindow::gameLoad(GameId index)
             if(m_training->isChecked())
             {
                 m_boardView->setFlipped((game().board().toMove() == Black));
+            }
+            else
+            {
+                QString name = AppSettings->getValue("/Board/PlayerTurnBoard").toString();
+                if (!name.isEmpty())
+                {
+                    QRegExp re(name);
+                    QString nameWhite = game().tag(TagNameWhite);
+                    QString nameBlack = game().tag(TagNameBlack);
+                    if (nameBlack.indexOf(re) >= 0)
+                    {
+                        m_boardView->setFlipped(true);
+                    }
+                    else if (nameWhite.indexOf(re) >= 0)
+                    {
+                        m_boardView->setFlipped(false);
+                    }
+                }
             }
         }
     }
