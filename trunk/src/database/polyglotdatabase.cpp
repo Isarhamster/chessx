@@ -413,7 +413,7 @@ void PolyglotDatabase::reset()
 // Book parser
 // ---------------------------------------------------------
 
-quint64 PolyglotDatabase::getHashFromBoard(Board b) const
+quint64 PolyglotDatabase::getHashFromBoard(const Board& board) const
 {
     quint64 key = 0;
 
@@ -424,7 +424,7 @@ quint64 PolyglotDatabase::getHashFromBoard(Board b) const
     {
         for(int col = 0; col < 8; ++col)
         {
-            Piece piece = b.pieceAt(SquareFromRankAndFile(row,col));
+            Piece piece = board.pieceAt(SquareFromRankAndFile(row,col));
             if(piece != Empty)
             {
                 key^=RandomPiece[64*pieceToPolyglot[piece]+8*row+col];
@@ -432,33 +432,33 @@ quint64 PolyglotDatabase::getHashFromBoard(Board b) const
         }
     }
 
-    if(b.canCastleShort(White))
+    if(board.canCastleShort(White))
     {
         key ^= RandomCastle[0];
     }
-    if(b.canCastleLong(White))
+    if(board.canCastleLong(White))
     {
         key ^= RandomCastle[1];
     }
-    if(b.canCastleShort(Black))
+    if(board.canCastleShort(Black))
     {
         key ^= RandomCastle[2];
     }
-    if(b.canCastleLong(Black))
+    if(board.canCastleLong(Black))
     {
         key ^= RandomCastle[3];
     }
 
-    if (b.canTakeEnPassant())
+    if (board.canTakeEnPassant())
     {
-        key ^= RandomEnPassant[b.enPassantSquare() & 7];
+        key ^= RandomEnPassant[board.enPassantSquare() & 7];
     }
 
-    if (b.toMove() == White)
+    if (board.toMove() == White)
     {
         key ^= RandomTurn;
     }
-    return  key;
+    return key;
 }
 
 QString PolyglotDatabase::move_to_string(quint16 move) const
@@ -534,6 +534,40 @@ bool PolyglotDatabase::findMove(quint64 key, MoveData& m, bool& done)
     }
 
     return false;
+}
+
+int PolyglotDatabase::getMoveMapForBoard(const Board &board, QMap<Move, MoveData>& moves)
+{
+    int games = 0;
+    moves.clear();
+    QMutexLocker m(mutex());
+    quint64 key = getHashFromBoard(board);
+    reset();
+    bool bDone = false;
+    while(!bDone)
+    {
+        MoveData m;
+        if (findMove(key,m,bDone))
+        {
+            if (board.pieceAt(e1)==WhiteKing)
+            {
+                if (m.san=="e1a1") m.san = "e1c1";
+                else if (m.san=="e1h1") m.san = "e1g1";
+            }
+            if (board.pieceAt(e8)==BlackKing)
+            {
+                if (m.san=="e8a8") m.san = "e8c8";
+                else if (m.san=="e8h8") m.san = "e8g8";
+            }
+
+            Move move = board.parseMove(m.san);
+            m.san = board.moveToSan(move);
+            m.move = move;
+            moves[move] = m;
+            games += m.count;
+        }
+    }
+    return games;
 }
 
 // ---------------------------------------------------------

@@ -120,8 +120,9 @@ public:
 
     /** Loads only moves into a game from the given position */
     virtual void loadGameMoves(GameId index, Game& game);
+    /** Loads game moves and try to find a position */
     virtual int findPosition(GameId, const Board &position);
-    quint64 getHashFromBoard(Board b) const;
+    quint64 getHashFromBoard(const Board &b) const;
 
     /** Open a book data File */
     bool openFile(const QString& filename, bool readOnly=false);
@@ -132,6 +133,9 @@ public:
     /** Start a search for a new key */
     void reset();
     void book_make(Database& db, volatile bool& breakFlag);
+
+    /** Get a map of MoveData from a given board position */
+    int getMoveMapForBoard(const Board& board, QMap<Move, MoveData> &moves);
 
 signals:
     void progress(int);
