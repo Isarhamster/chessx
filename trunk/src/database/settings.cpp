@@ -419,6 +419,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/BackwardAnalysis", false);
     map.insert("/Board/AutoPromoteToQueen", false);
     map.insert("/Board/AlwaysScale", false);
+    map.insert("/Board/PlayerTurnBoard", "");
 
     map.insert("/Match/Mode", 0);
     map.insert("/Match/TotalTime", 3000);
