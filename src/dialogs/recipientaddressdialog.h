@@ -35,6 +35,8 @@ public:
     ~RecipientAddressDialog();
     bool isEmailSet() const;
     const QString getEmail() const;
+    bool completeDatabase() const;
+    void enableCompleteDatabase(bool enable);
 
 protected slots:
     void reject();

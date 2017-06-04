@@ -376,6 +376,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/MainWindow/FilterFollowsGame", false);
     map.insert("/MainWindow/ShowMenuIcons", true);
 
+    map.insert("/Mail/LastRecipient", "");
     map.insert("/History/MaxEntries", 4);
 
     map.insert("/FICS/useTimeseal", true);

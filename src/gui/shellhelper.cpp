@@ -15,6 +15,38 @@ ShellHelper::ShellHelper()
 {
 }
 
+void ShellHelper::sendFileWithMail(QString path, QString recipient)
+{
+    QFileInfo fi(path);
+#ifdef Q_OS_MACX
+    // Mac OS can actually suck: the mailto URL does not support attachments as it once did in Leopard.
+    // Workaround uses osascript, but this is not expected if user is not using Mail as mail client
+    QString osaTemplate =
+    "tell application \"Mail\"\n"
+        "set newMessage to (a reference to (make new outgoing message))\n"
+        "tell newMessage\n"
+            "make new recipient at beginning of to recipients with properties {address:\"%1\"}\n"
+            "set the subject to \"Database %2\"\n"
+            "tell newMessage\n"
+                "make new attachment with properties {file name:\"%3\"}\n"
+            "end tell\n"
+            "set visible to true\n"
+        "end tell\n"
+        "activate\n"
+    "end tell\n";
+    QString mail = osaTemplate.arg(recipient).arg(fi.fileName()).arg(path);
+    QString osascript = "/usr/bin/osascript";
+    QStringList processArguments;
+    processArguments << QLatin1String("-e") << mail;
+    QProcess osa;
+    osa.startDetached(osascript, processArguments);
+#else
+    QString mailTo("mailto:%1?subject=Database %2&body=See attached file&attachment=%3");
+    QUrl url(mailTo.arg(recipient).arg(fi.fileName()).arg(path), QUrl::TolerantMode);
+    QDesktopServices::openUrl(url);
+#endif
+}
+
 void ShellHelper::showInFinder(QString path)
 {
     // Mac, Windows support folder or file.

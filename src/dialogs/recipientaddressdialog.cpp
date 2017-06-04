@@ -34,7 +34,7 @@ RecipientAddressDialog::RecipientAddressDialog(QWidget *parent) :
     ui(new Ui::RecipientAddressDialog)
 {
     ui->setupUi(this);
-
+    ui->recipientEMail->setText(AppSettings->value("/Mail/LastRecipient", "").toString());
     restoreLayout();
 }
 
@@ -59,6 +59,7 @@ void RecipientAddressDialog::accept()
         return;
     }
     emailSet = true;
+    AppSettings->setValue("/Mail/LastRecipient", email);
     AppSettings->setLayout(this);
     QDialog::accept();
 }
@@ -78,4 +79,14 @@ bool RecipientAddressDialog::isEmailSet() const
 const QString RecipientAddressDialog::getEmail() const
 {
     return ui->recipientEMail->text();
+}
+
+void RecipientAddressDialog::enableCompleteDatabase(bool enable)
+{
+    ui->completeDatabase->setEnabled(enable);
+}
+
+bool RecipientAddressDialog::completeDatabase() const
+{
+    return ui->completeDatabase->isChecked();
 }
