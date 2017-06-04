@@ -12,6 +12,7 @@ class ShellHelper
 public:
     ShellHelper();
 
+    static void sendFileWithMail(QString path, QString recipient);
     static void showInFinder(QString path);
 };
 

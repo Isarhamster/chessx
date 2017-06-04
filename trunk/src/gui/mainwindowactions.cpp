@@ -404,20 +404,33 @@ void MainWindow::slotEditCopyPGN()
 
 void MainWindow::slotSendMail()
 {
-    Game curgame = game();
-    Output output(Output::Pgn);
-    QString pgn = output.output(&curgame);
-
     RecipientAddressDialog recAdDialog(this);
+    if (databaseInfo()->isClipboard())
+    {
+        recAdDialog.enableCompleteDatabase(false);
+    }
     if (recAdDialog.exec() == QDialog::Accepted)
     {
-        const QString white = curgame.tag(TagNameWhite);
-        const QString black = curgame.tag(TagNameBlack);
-
         QString recipient = recAdDialog.getEmail();
-        QString mailTo("mailto:%1?subject=Game %2-%3&body=%4");
-        QUrl url = mailTo.arg(recipient).arg(white).arg(black).arg(pgn);
-        QDesktopServices::openUrl(url);
+
+        if (recAdDialog.completeDatabase())
+        {
+            QString path = database()->filename();
+            ShellHelper::sendFileWithMail(path, recipient);
+        }
+        else
+        {
+            Game curgame = game();
+            Output output(Output::Pgn);
+            QString pgn = output.output(&curgame);
+
+            const QString white = curgame.tag(TagNameWhite);
+            const QString black = curgame.tag(TagNameBlack);
+
+            QString mailTo("mailto:%1?subject=Game %2-%3&body=%4");
+            QUrl url(mailTo.arg(recipient).arg(white).arg(black).arg(pgn), QUrl::TolerantMode);
+            QDesktopServices::openUrl(url);
+        }
     }
 }
 

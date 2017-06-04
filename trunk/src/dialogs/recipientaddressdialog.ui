@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>488</width>
-    <height>200</height>
+    <width>350</width>
+    <height>209</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,6 +34,23 @@
     </widget>
    </item>
    <item>
+    <widget class="QRadioButton" name="currentGame">
+     <property name="text">
+      <string>Current Game</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="completeDatabase">
+     <property name="text">
+      <string>Complete Database</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -41,7 +58,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>10</height>
+       <height>1</height>
       </size>
      </property>
     </spacer>
