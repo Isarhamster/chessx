@@ -26,6 +26,7 @@ public:
     unsigned dated;
     Move move;
     friend bool operator<(const MoveData& m1, const MoveData& m2);
+    friend bool operator>(const MoveData& m1, const MoveData& m2);
     friend bool compareMove(const MoveData& m1, const MoveData& m2);
     friend bool compareScore(const MoveData& m1, const MoveData& m2);
     friend bool compareRating(const MoveData& m1, const MoveData& m2);
@@ -34,9 +35,24 @@ public:
 };
 
 bool operator<(const MoveData& m1, const MoveData& m2);
+bool operator>(const MoveData& m1, const MoveData& m2);
 bool compareMove(const MoveData& m1, const MoveData& m2);
 bool compareScore(const MoveData& m1, const MoveData& m2);
 bool compareRating(const MoveData& m1, const MoveData& m2);
 bool compareYear(const MoveData& m1, const MoveData& m2);
+
+struct {
+        bool operator()(const MoveData& a, const MoveData& b) const
+        {
+            return a < b;
+        }
+    } MoveDataLess;
+
+struct {
+        bool operator()(const MoveData& a, const MoveData& b) const
+        {
+            return a > b;
+        }
+    } MoveDataGreater;
 
 #endif // MOVEDATA_H

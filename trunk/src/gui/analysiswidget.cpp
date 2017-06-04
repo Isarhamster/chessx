@@ -20,6 +20,7 @@
 #include "polyglotdatabase.h"
 
 #include <QMutexLocker>
+#include <algorithm>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -684,11 +685,5 @@ void AnalysisWidget::updateBookMoves()
         moveList.append(it.value());
     }
 
-    qSort(moveList);
-
-    QList<MoveData>::iterator begin = moveList.begin();
-    QList<MoveData>::iterator end = moveList.end();
-    --end;
-    while (begin < end)
-        qSwap(*begin++, *end--);
+    std::sort(moveList.begin(), moveList.end(), MoveDataGreater);
 }
