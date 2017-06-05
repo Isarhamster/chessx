@@ -101,9 +101,11 @@ public:
 
     bool IsFicsDB() const;
     bool IsPolyglotBook() const;
+    bool IsArenaBook() const;
     bool IsBook() const;
 
     static bool IsPolyglotBook(QString name);
+    static bool IsArenaBook(QString name);
     static bool IsBook(QString name);
 
     bool modified() const;

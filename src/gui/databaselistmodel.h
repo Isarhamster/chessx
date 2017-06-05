@@ -38,6 +38,19 @@ public:
 
     bool isFavorite() const;
     void setIsFavorite(bool isFavorite);
+
+    QString classType() const
+    {
+        if (m_name.endsWith(".bin"))
+        {
+            return "Polyglot";
+        }
+        if (m_name.endsWith(".abk"))
+        {
+            return "Arena Book";
+        }
+        return m_utf8 ? "UTF8" : "ANSI";
+    }
 };
 
 inline bool operator==(DatabaseListEntry const& lhs, DatabaseListEntry const& rhs)

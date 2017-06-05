@@ -10,6 +10,7 @@
 #include <QFile>
 #include <QUndoStack>
 
+#include "arenabook.h"
 #include "databaseinfo.h"
 #include "ficsdatabase.h"
 #include "filter.h"
@@ -58,6 +59,10 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     else if (IsPolyglotBook())
     {
         m_database = new PolyglotDatabase;
+    }
+    else if (IsArenaBook())
+    {
+        m_database = new ArenaBook;
     }
     else if(file.size() < 1024 * 1024 * AppSettings->getValue("/General/EditLimit").toInt())
     {
@@ -367,6 +372,11 @@ bool DatabaseInfo::IsPolyglotBook() const
     return IsPolyglotBook(m_filename);
 }
 
+bool DatabaseInfo::IsArenaBook() const
+{
+    return IsArenaBook(m_filename);
+}
+
 bool DatabaseInfo::IsBook() const
 {
     return IsBook(m_filename);
@@ -376,6 +386,12 @@ bool DatabaseInfo::IsBook() const
 {
     QFileInfo fi(s);
     return (fi.suffix().toLower() == "bin");
+}
+
+/* static */ bool DatabaseInfo::IsArenaBook(QString s)
+{
+    QFileInfo fi(s);
+    return (fi.suffix().toLower() == "abk");
 }
 
 /* static */ bool DatabaseInfo::IsBook(QString s)
