@@ -20,10 +20,6 @@
 
 #define MAX_COUNT 16384
 
-entry_t entry_none = {
-    0, 0, 0, 0
-};
-
 struct key_compare : std::binary_function< const book_entry&, const book_entry&, bool >
 {
     bool operator()( const book_entry& a, const book_entry& b ) const
