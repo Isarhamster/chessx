@@ -2584,7 +2584,7 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="114"/>
         <source>PGN databases (*.pgn);;Polyglot books (*.bin);;Arena books (*.abk)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bases de Datos PGN (*.pgn);;Libros Polyglot (*.bin);;Libros Arena (*.abk)</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="159"/>
@@ -4196,12 +4196,12 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="421"/>
         <source>Turn board for player:</source>
-        <translation type="unfinished"></translation>
+        <translation>Girar tablero para Jugador:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="431"/>
         <source>Enter a name or expression like &quot;Me|You&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Entre un nombre o expresión tal como &quot;Mi|Tú&quot;</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="875"/>
@@ -4588,12 +4588,12 @@ Shall I download a database?</source>
     <message>
         <location filename="../src/dialogs/recipientaddressdialog.ui" line="39"/>
         <source>Current Game</source>
-        <translation type="unfinished">Juego actual</translation>
+        <translation>Juego actual</translation>
     </message>
     <message>
         <location filename="../src/dialogs/recipientaddressdialog.ui" line="49"/>
         <source>Complete Database</source>
-        <translation type="unfinished"></translation>
+        <translation>Base de Datos completa</translation>
     </message>
     <message>
         <location filename="../src/dialogs/recipientaddressdialog.cpp" line="57"/>
