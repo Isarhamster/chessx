@@ -39,7 +39,7 @@ void OpeningTreeThread::run()
     else
     {
         int n = m_filter ? m_filter->size() : 0;
-        int progressCounter = n/100;
+        int progressCounter = 10+n/100;
         for(int i = 0; i < n; ++i)
         {
             if (m_sourceIsDatabase || m_filter->contains(i))
