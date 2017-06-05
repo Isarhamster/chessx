@@ -232,7 +232,9 @@ HEADERS += src/database/board.h \
     src/gui/digitalclock.h \
     src/gui/historylabel.h \
     src/database/streamdatabase.h \
-    src/database/refcount.h
+    src/database/refcount.h \
+    src/database/arenabook.h \
+    src/database/abk.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -380,7 +382,8 @@ SOURCES += src/database/board.cpp \
     src/database/streamdatabase.cpp \
     src/database/refcount.cpp \
     src/quazip/unzip.cpp \
-    src/quazip/zip.cpp
+    src/quazip/zip.cpp \
+    src/database/arenabook.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

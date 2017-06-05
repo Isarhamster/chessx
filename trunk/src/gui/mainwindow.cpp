@@ -972,7 +972,7 @@ void MainWindow::openFICS()
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
 {
     QFileInfo fi = QFileInfo(fname);
-    if(fname.isEmpty() || fi.suffix().toLower() == "pgn" || fi.suffix().toLower() == "bin")
+    if(fname.isEmpty() || fi.suffix().toLower() == "pgn" || fi.suffix().toLower() == "bin" || fi.suffix().toLower() == "abk")
     {
         openDatabaseFile(fname, utf8);
     }
@@ -1818,12 +1818,15 @@ bool MainWindow::confirmQuit()
     }
 
     cancelPolyglotWriters();
-    m_openingTreeWidget->cancel();
+    m_openingTreeWidget->cancel(); // Make sure we are not grabbing into something that is closed now
 
     for(int i = m_databases.size() - 1; i; --i)
     {
         slotFileCloseIndex(i);
     }
+
+    m_openingTreeWidget->cancel(); // Make sure that Clipboard tree update is terminated again
+
     return true;
 }
 
