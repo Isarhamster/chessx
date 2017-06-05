@@ -21,9 +21,10 @@
 #include "indexitem.h"
 #include "game.h"
 
-#define VERSION_INDEX_1_2 1
-#define VERSION_INDEX_1_3 2
-#define VERSION_INDEX_CURRENT VERSION_INDEX_1_3
+#define VERSION_INDEX_1_2 0x0001
+#define VERSION_INDEX_1_3 0x0002
+#define VERSION_INDEX_1_4 0x0101
+#define VERSION_INDEX_CURRENT VERSION_INDEX_1_4
 
 #define INDEX_FILE_MAGIC 0xce55
 
@@ -41,6 +42,9 @@ class Index : public QObject
 public:
     Index();
     ~Index();
+
+    // Set up nearly-empty index
+    void init();
 
     /** Adds an empty indexitem */
     GameId add();
