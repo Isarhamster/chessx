@@ -1,4 +1,18 @@
-This will install version 1.4.6 of ChessX.
+This will install version 1.4.8 of ChessX.
+June 2017: Version 1.4.8
+- New Feature: Read Arena Books (.abk)
+- New Feature: Drag databases into list of games
+
+- New feature: Turn board for given player
+- New feature: Send database to Mail-Client
+- New feature: Show analysis of position with one piece moved
+- New feature: Merge internal and external themes, new option to scale board images
+
+- Bugfix: Performance reading Polyglot positions
+- Bugfix: Disconnecting a FICS session leaked some memory
+- Bugfix: Progress bar missing occasionally
+
+- Changed: Index file version
 
 April 2017: Version 1.4.6
 - New feature: Indicate underprotected pieces

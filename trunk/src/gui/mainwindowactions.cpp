@@ -9,6 +9,7 @@
 
 #include "actiondialog.h"
 #include "analysiswidget.h"
+#include "arenabook.h"
 #include "board.h"
 #include "boardsearchdialog.h"
 #include "boardsetup.h"
@@ -2501,7 +2502,7 @@ void MainWindow::copyDatabase(QString target, QString src)
         DatabaseInfo* pSrcDBInfo = getDatabaseInfoByPath(src);
 
         bool done = false;
-        if(pDestDBInfo && pSrcDB && pDestDB && (pSrcDB != pDestDB) && !pDestDBInfo->IsBook() && !pSrcDBInfo->IsBook())
+        if(pDestDBInfo && pSrcDB && pDestDB && !pDestDB->isReadOnly() && (pSrcDB != pDestDB) && !pDestDBInfo->IsBook() && !pSrcDBInfo->IsBook())
         {
             // Both databases are open
             done = true;
@@ -2580,6 +2581,30 @@ void MainWindow::copyDatabase(QString target, QString src)
                 {
                     pDestDBInfo->filter()->resize(pDestDB->count(), true);
                 }
+            }
+        }
+        else if (!pSrcDB && fiSrc.exists() && fiSrc.suffix()=="abk" && pDestDB)
+        {
+            // Source is closed, target is open
+            ArenaBook abk;
+            if (abk.open(src, false) && abk.parseFile())
+            {
+                QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(pDestDB->name());
+                slotStatusMessage(msg);
+
+                for (quint64 i=0; i<abk.count(); ++i)
+                {
+                    Game g;
+                    if (abk.loadGame(i,g))
+                    {
+                        pDestDB->appendGame(g);
+                    }
+                }
+                if (pDestDBInfo)
+                {
+                    pDestDBInfo->filter()->resize(pDestDB->count(), true);
+                }
+                done = true;
             }
         }
 
