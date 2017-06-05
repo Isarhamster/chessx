@@ -95,8 +95,12 @@ public:
     virtual bool getValidFlag(GameId gameId) const;
     /** Get the Valid Flag for a given game id from the index */
     virtual bool deleted(GameId gameId) const;
-
+    /** Returns true, if the database is a clipboard database, false otherwise */
     virtual bool IsClipboard() const { return false; }
+
+protected:
+    /** Copies all tags from @p game to the Index */
+    void setTagsToIndex(const Game& game, GameId id);
 
 signals:
     /** Signal emitted when some progress is done. */

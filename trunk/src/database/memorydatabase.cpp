@@ -61,14 +61,9 @@ bool MemoryDatabase::appendGame(const Game& game)
 {
     QWriteLocker m(&m_mutex);
     // Add to index
-    TagMap tags = game.tags();
-    TagMap::const_iterator i = tags.constBegin();
     m_count = m_index.add();
-    while(i != tags.constEnd())
-    {
-        m_index.setTag(i.key(), i.value(), m_count);
-        ++i;
-    }
+    setTagsToIndex(game, m_count);
+
     // Upate game array
     Game* newGame = new Game;
     *newGame = game;
@@ -102,13 +97,8 @@ bool MemoryDatabase::replace(GameId gameId, Game& game)
         return false;
     }
     // Update index
-    TagMap tags = game.tags();
-    TagMap::const_iterator i = tags.constBegin();
-    while(i != tags.constEnd())
-    {
-        m_index.setTag(i.key(), i.value(), gameId);
-        ++i;
-    }
+    setTagsToIndex(game, gameId);
+
     // Upate game array
     *m_games[gameId] = game;
     m_games[gameId]->clearTags();

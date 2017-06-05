@@ -118,3 +118,13 @@ bool Database::remove(GameId)
     return false;
 }
 
+void Database::setTagsToIndex(const Game& game, GameId id)
+{
+    const TagMap& tags = game.tags();
+    TagMap::const_iterator i = tags.constBegin();
+    while(i != tags.constEnd())
+    {
+        m_index.setTag(i.key(), i.value(), id);
+        ++i;
+    }
+}
