@@ -28,8 +28,7 @@
 Index::Index() : m_mutex(QReadWriteLock::Recursive)
 {
     // Dummy Values in case a index is miscalculated
-    m_tagNames[0]  = "?";
-    m_tagValues[0] = "?";
+    init();
 }
 
 Index::~Index()
@@ -228,6 +227,9 @@ bool Index::read(QDataStream &in, volatile bool *breakFlag, short version)
     bool extension;
     in >> extension;
 
+    m_tagNameIndex.clear();
+    m_tagValueIndex.clear();
+
     calculateCache(breakFlag);
 
     return !(*breakFlag);
@@ -292,6 +294,12 @@ void Index::calculateTagMap(volatile bool *breakFlag)
             }
         }
     }
+}
+
+void Index::init()
+{
+    AddTagName("?");
+    AddTagValue("?");
 }
 
 void Index::clear()
