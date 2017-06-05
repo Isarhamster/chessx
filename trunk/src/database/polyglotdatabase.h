@@ -10,6 +10,8 @@
 #include "database.h"
 #include "movedata.h"
 
+#undef EXTENDED_BOOK_FORMAT
+
 typedef struct _entry_t
 {
     quint64 key;
@@ -107,7 +109,8 @@ public:
 
     /** Opens the given database */
     virtual bool open(const QString& filename, bool);
-    virtual bool openForWriting(const QString& filename, int maxPly, int minGame, bool uniform, int result, int filterResult);
+    /** Open a new Polyglotbook and set the parameters for the writer thread */
+    bool openForWriting(const QString& filename, int maxPly, int minGame, bool uniform, int result, int filterResult);
     /** Parse the database */
     virtual bool parseFile();
     /** File-based database name */
