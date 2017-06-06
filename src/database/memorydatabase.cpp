@@ -183,6 +183,5 @@ void MemoryDatabase::parseGame()
 bool MemoryDatabase::parseFile()
 {
     bool ok = parseFileIntern();
-    setModified(false); // Undoes changes which stem from ECO parsing, is this expected or unexpected?
     return ok;
 }
