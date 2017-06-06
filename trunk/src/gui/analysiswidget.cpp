@@ -631,6 +631,14 @@ void AnalysisWidget::updateBookFile(PolyglotDatabase* pgdb)
     m_pgdb = pgdb;
 }
 
+struct
+{
+    bool operator()(const MoveData& a, const MoveData& b) const
+    {
+        return a > b;
+    }
+} MoveDataGreater;
+
 void AnalysisWidget::updateBookMoves()
 {
     QMap<Move, MoveData> moves;

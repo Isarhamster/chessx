@@ -48,7 +48,7 @@ bool ArenaBook::open(const QString &filename, bool)
     {
         m_utf8 = false;
         QFileInfo fi(m_filename);
-        m_posCount = fi.size() / sizeof(ABK_ENTRY); // TODO
+        m_posCount = fi.size() / sizeof(ABK_ENTRY);
         return true;
     }
     return false;
@@ -151,6 +151,7 @@ bool ArenaBook::parseFile()
     }
 
     close(); // no need to keep it open, everything is in memory
+    return true;
 }
 
 QString ArenaBook::filename() const
