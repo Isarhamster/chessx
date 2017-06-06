@@ -41,18 +41,4 @@ bool compareScore(const MoveData& m1, const MoveData& m2);
 bool compareRating(const MoveData& m1, const MoveData& m2);
 bool compareYear(const MoveData& m1, const MoveData& m2);
 
-struct {
-        bool operator()(const MoveData& a, const MoveData& b) const
-        {
-            return a < b;
-        }
-    } MoveDataLess;
-
-struct {
-        bool operator()(const MoveData& a, const MoveData& b) const
-        {
-            return a > b;
-        }
-    } MoveDataGreater;
-
 #endif // MOVEDATA_H
