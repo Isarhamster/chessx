@@ -84,7 +84,7 @@
 void MainWindow::slotFileNew()
 {
     QString file = QFileDialog::getSaveFileName(this, tr("New database"),
-                   AppSettings->value("/General/databasePath").toString(),
+                   AppSettings->value("/General/DefaultDataPath").toString(),
                    tr("PGN database (*.pgn)"));
     if(file.isEmpty())
     {
@@ -103,21 +103,18 @@ void MainWindow::slotFileNew()
     {
         pgnfile.close();
         openDatabase(file);
-        AppSettings->setValue("/General/databasePath",
-                              QFileInfo(file).absolutePath());
     }
 }
 
 void MainWindow::slotFileOpen()
 {
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Open database"),
-                        AppSettings->value("/General/databasePath").toString(),
+                        AppSettings->value("/General/DefaultDataPath").toString(),
                         tr("PGN databases (*.pgn);;Polyglot books (*.bin);;Arena books (*.abk)"));
     foreach(QString file, files)
     {
         if(!file.isEmpty())
         {
-            AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
             openDatabaseUrl(file, false);
         }
     }
@@ -126,13 +123,12 @@ void MainWindow::slotFileOpen()
 void MainWindow::slotFileOpenUtf8()
 {
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Open database"),
-                        AppSettings->value("/General/databasePath").toString(),
+                        AppSettings->value("/General/DefaultDataPath").toString(),
                         tr("PGN databases (*.pgn)"));
     foreach(QString file, files)
     {
         if(!file.isEmpty())
         {
-            AppSettings->setValue("/General/databasePath", QFileInfo(file).absolutePath());
             openDatabaseUrl(file, true);
         }
     }
@@ -727,7 +723,7 @@ void MainWindow::slotEditCopyImage()
 void MainWindow::slotExportImage()
 {
     QString file = QFileDialog::getSaveFileName(this, tr("Export Image"),
-                   AppSettings->value("/General/databasePath").toString(),
+                   AppSettings->value("/General/DefaultDataPath").toString(),
                    tr("Images (*.png *.jpg *.jpeg *.bmp)"));
     if(!file.isEmpty())
     {

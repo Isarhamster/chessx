@@ -86,7 +86,7 @@ void DlgSaveBook::reject()
 void DlgSaveBook::slotSelectTargetPath()
 {
     QString file = QFileDialog::getSaveFileName(this, tr("New book"),
-                   AppSettings->value("/General/databasePath").toString(),
+                   AppSettings->value("/General/DefaultDataPath").toString(),
                    tr("Polyglot Book (*.bin)"));
     if(file.isEmpty())
     {
