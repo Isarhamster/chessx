@@ -128,7 +128,7 @@ bool parseAsciiEcoData(const QString& ecoFile)
 
         //parse any moves on line
         tokenList = line.split(" ");
-        for(QStringList::Iterator iterator = tokenList.begin(); iterator != tokenList.end(); iterator++)
+        for(QStringList::ConstIterator iterator = tokenList.constBegin(); iterator != tokenList.constEnd(); iterator++)
         {
             token = *iterator;
             if(token == "*")
@@ -171,7 +171,6 @@ bool parseAsciiEcoData(const QString& ecoFile)
                 }
             }
         }
-
     }
 
     return true;

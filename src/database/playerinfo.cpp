@@ -287,7 +287,7 @@ QString PlayerInfo::listOfOpenings() const
     for(int i = 0; i < 2; ++i)
     {
         QStringList l;
-        for(OpeningCountList::const_iterator it = m_opening[i].begin(); it != m_opening[i].end(); ++it)
+        for(OpeningCountList::const_iterator it = m_opening[i].constBegin(); it != m_opening[i].constEnd(); ++it)
         {
             QString opening = (*it).first;
             QString codes = m_MapOpeningToECOCodes[i].value(opening).join("|");
@@ -305,7 +305,7 @@ QString PlayerInfo::listOfOpenings() const
     for(int i = 0; i < 2; ++i)
     {
         openingsList[i].append("<ul>");
-        for(EcoFrequency::const_iterator it = m_eco[i].begin(); it != m_eco[i].end(); ++it)
+        for(EcoFrequency::const_iterator it = m_eco[i].constBegin(); it != m_eco[i].constEnd(); ++it)
         {
             QString score;
             int count = (*it).second.count;
