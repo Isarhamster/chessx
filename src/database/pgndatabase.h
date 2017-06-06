@@ -90,9 +90,6 @@ protected:
 
     IndexBaseType m_count; // Should actually be a GameId - but cannot be changed due to serialization issues
 
-    /** Adds the current file position as a new offset */
-    void addOffset();
-
     QIODevice* m_file;
     QString m_currentLine;
 
@@ -113,6 +110,11 @@ protected:
     void prepareNextLine();
 private:
 
+    /** Adds the current file position as a new offset */
+    void addOffset();
+    void addOffset(IndexBaseType offset);
+    IndexBaseType offset(GameId gameId);
+
     //file variables
     QString m_filename;
     QString m_gameText;
@@ -128,59 +130,12 @@ private:
     int m_variation;
 
     //game index
-    static const int AllocationSize = 16384;
     IndexBaseType m_allocated;
     qint32* m_gameOffsets32;
     qint64* m_gameOffsets64;
     QByteArray m_lineBuffer;
 
     bool bUse64bit;
-
-    //offset methods
-    /** Returns the file offset for the given game */
-    inline IndexBaseType offset(GameId gameId)
-    {
-        if(bUse64bit)
-        {
-            return m_gameOffsets64[gameId];
-        }
-        else
-        {
-            return m_gameOffsets32[gameId];
-        }
-    }
-
-    /** Adds a new file offset */
-    inline void addOffset(IndexBaseType offset)
-    {
-        if(m_count == m_allocated)
-        {
-            //out of space reallocate memory
-            if(bUse64bit)
-            {
-                qint64* newAllocation = new qint64[m_allocated += AllocationSize];
-                memcpy(newAllocation, m_gameOffsets64, m_count * sizeof(qint64));
-                delete[] m_gameOffsets64;
-                m_gameOffsets64 = newAllocation;
-            }
-            else
-            {
-                qint32* newAllocation = new qint32[m_allocated += AllocationSize];
-                memcpy(newAllocation, m_gameOffsets32, m_count * sizeof(qint32));
-                delete[] m_gameOffsets32;
-                m_gameOffsets32 = newAllocation;
-            }
-        }
-
-        if(bUse64bit)
-        {
-            m_gameOffsets64[m_count++] = offset;
-        }
-        else
-        {
-            m_gameOffsets32[m_count++] = offset;
-        }
-    }
 };
 
 #endif
