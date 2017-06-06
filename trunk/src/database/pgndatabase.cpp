@@ -22,6 +22,8 @@
 #include "settings.h"
 #include "tags.h"
 
+static const int AllocationSize = 0x10000;
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -139,6 +141,14 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
 
     in >> m_allocated;
 
+    bool storageSize;
+    in >> storageSize;
+
+    if (storageSize != bUse64bit)
+    {
+        return false;
+    }
+
     emit progress(1);
 
     if(bUse64bit)
@@ -211,6 +221,7 @@ bool PgnDatabase::writeOffsetFile(const QString& filename) const
     out << fi.lastModified().toUTC();
 
     out << m_count;
+    out << bUse64bit;
 
     if(bUse64bit)
     {
@@ -945,5 +956,51 @@ void PgnDatabase::skipMoves()
     }
 
     prepareNextLine();
+}
+
+//offset methods
+/** Returns the file offset for the given game */
+IndexBaseType PgnDatabase::offset(GameId gameId)
+{
+    if(bUse64bit)
+    {
+        return m_gameOffsets64[gameId];
+    }
+    else
+    {
+        return m_gameOffsets32[gameId];
+    }
+}
+
+/** Adds a new file offset */
+void PgnDatabase::addOffset(IndexBaseType offset)
+{
+    if(m_count == m_allocated)
+    {
+        //out of space reallocate memory
+        if(bUse64bit)
+        {
+            qint64* newAllocation = new qint64[m_allocated += AllocationSize];
+            memcpy(newAllocation, m_gameOffsets64, m_count * sizeof(qint64));
+            delete[] m_gameOffsets64;
+            m_gameOffsets64 = newAllocation;
+        }
+        else
+        {
+            qint32* newAllocation = new qint32[m_allocated += AllocationSize];
+            memcpy(newAllocation, m_gameOffsets32, m_count * sizeof(qint32));
+            delete[] m_gameOffsets32;
+            m_gameOffsets32 = newAllocation;
+        }
+    }
+
+    if(bUse64bit)
+    {
+        m_gameOffsets64[m_count++] = offset;
+    }
+    else
+    {
+        m_gameOffsets32[m_count++] = offset;
+    }
 }
 
