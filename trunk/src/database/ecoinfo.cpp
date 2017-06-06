@@ -236,7 +236,7 @@ QString EcoInfo::listOfPlayers() const
 
     playersList.append(QString("<a name='ListWhite'></a><table><tr><th><a href=\"#ListBlack\">&#8681;</a>%1</th><th>%2</th></tr>").arg(tr("White Player")).arg(tr("Score")));
 
-    for(PlayerInfoList::const_iterator it = m_playersWhite.begin(); it != m_playersWhite.end(); ++it)
+    for(PlayerInfoList::const_iterator it = m_playersWhite.constBegin(); it != m_playersWhite.constEnd(); ++it)
     {
         playersList += QString("<tr><td><a href=\"player-white:%1\">%2</a></td><td>%3/%4</td></tr>")
                        .arg((*it).first)

@@ -122,8 +122,8 @@ bool Query::isValid()
     // Check if there are enough operands for the operators
     int operandCount = 0;
     Filter::Operator op;
-    ElementTypeList::iterator elementIter;
-    for(elementIter = m_elementType.begin(), i = 0; elementIter != m_elementType.end(); ++elementIter, ++i)
+    ElementTypeList::const_iterator elementIter;
+    for(elementIter = m_elementType.cbegin(), i = 0; elementIter != m_elementType.cend(); ++elementIter, ++i)
     {
         switch(*elementIter)
         {

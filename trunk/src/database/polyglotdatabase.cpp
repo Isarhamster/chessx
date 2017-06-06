@@ -584,7 +584,7 @@ void PolyglotDatabase::write_integer(int size, quint64 n)
 
 void PolyglotDatabase::book_save()
 {
-    for (Book::iterator i=m_book.begin(); i!=m_book.end();++i)
+    for (Book::const_iterator i=m_book.cbegin(); i!=m_book.cend();++i)
     {
         write_integer(8,(*i).key);
         write_integer(2,(*i).move);
@@ -784,13 +784,13 @@ int PolyglotDatabase::make_castling_move(Move m) const
 {
     int from;
     from = m.from();
-    int to = from;
+    int to;
 
     if (m.to() == g1) to = h1;
     else if (m.to() == c1) to = a1;
     else if (m.to() == g8) to = h8;
     else if (m.to() == c8) to = a8;
-    else Q_ASSERT(false);
+    else to = from;
 
     return (make_move(from,to));
 }

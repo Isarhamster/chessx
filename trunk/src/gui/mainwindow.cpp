@@ -1935,11 +1935,11 @@ void MainWindow::restoreRecentFiles()
     AppSettings->list("LastGameIndex", indexList);
     AppSettings->endGroup();
 
-    QStringList::const_iterator it = attributes.begin();
-    QList<int>::const_iterator it1 = indexList.begin();
+    QStringList::const_iterator it = attributes.cbegin();
+    QList<int>::const_iterator it1 = indexList.cbegin();
     foreach(QString s, list)
     {
-        QString attribute = it != attributes.end() ? *it++ : "";
+        QString attribute = it != attributes.cend() ? *it++ : "";
         m_databaseList->setFileFavorite(s, true, *it1++);
         bool bUtf8 = (attribute.contains("utf8"));
         m_databaseList->setFileUtf8(s, bUtf8);
