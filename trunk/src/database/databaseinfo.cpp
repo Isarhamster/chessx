@@ -15,6 +15,7 @@
 #include "ficsdatabase.h"
 #include "filter.h"
 #include "game.h"
+#include "gameundocommand.h"
 #include "memorydatabase.h"
 #include "pgndatabase.h"
 #include "polyglotdatabase.h"

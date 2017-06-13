@@ -152,7 +152,8 @@ public :
     bool dbSetAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Sets the comment associated with move at node @p moveId */
     bool setAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
-
+    /** Edits the comment associated with move at node @p moveId */
+    bool editAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Sets the squareAnnotation associated with move at node @p moveId */
     bool setSquareAnnotation(QString squareAnnotation, MoveId moveId = CURRENT_MOVE);
 

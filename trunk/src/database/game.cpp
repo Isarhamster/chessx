@@ -1005,6 +1005,18 @@ bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
     return false;
 }
 
+bool Game::editAnnotation(QString annotation, MoveId moveId, Position position)
+{
+    Game state = *this;
+    if (dbSetAnnotation(annotation, moveId, position))
+    {
+        dbIndicateAnnotationsOnBoard(currentMove());
+        emit signalGameModified(true, state, "Edit annotation");
+        return true;
+    }
+    return false;
+}
+
 bool Game::dbSetAnnotation(QString annotation, MoveId moveId, Position position)
 {
     MoveId node = nodeValid(moveId);
