@@ -960,7 +960,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             {
                 emit RequestRemoveLastMove();
             }
-            if (!s.contains("tell puzzlebot"))
+            else if (!s.contains("tell puzzlebot"))
             {
                 puzzleMode = true;
             }
