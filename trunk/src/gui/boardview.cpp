@@ -1124,7 +1124,11 @@ QRect BoardView::coordinateRectHorizontal(int n) const
 
 bool BoardView::canDrop(Square s) const
 {
-    if(m_dragged == Empty)  // already dragging
+    if (m_brushMode)
+    {
+        return true; // Hack
+    }
+    if(m_dragged == Empty)  // not dragging
     {
         return false;
     }
