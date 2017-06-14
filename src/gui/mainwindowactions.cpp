@@ -615,21 +615,26 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
     return false;
 }
 
-BoardViewEx* MainWindow::BoardViewFrame()
+BoardViewEx* MainWindow::BoardViewFrame(QWidget* widget)
 {
-    BoardViewEx* frame = qobject_cast<BoardViewEx*>(m_boardView->parent());
+    BoardViewEx* frame;
+    QObject* parentWidget = (QObject*)widget;
+    do {
+        if (parentWidget) parentWidget = parentWidget->parent();
+        frame = qobject_cast<BoardViewEx*>(parentWidget);
+    } while (!frame && parentWidget);
     return frame;
 }
 
 void MainWindow::SlotShowTimer(bool show)
 {
-    BoardViewEx* frame = BoardViewFrame();
+    BoardViewEx* frame = BoardViewFrame(m_boardView);
     if (frame) frame->showTime(show);
 }
 
 void MainWindow::SlotDisplayTime(int color, QString t)
 {
-    BoardViewEx* frame = BoardViewFrame();
+    BoardViewEx* frame = BoardViewFrame(m_boardView);
     if (frame) frame->setTime(color==White, t);
 }
 
@@ -965,13 +970,17 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                         tm = tm.addMSecs(currentColor==White ? par.ms_white : par.ms_black);
                         QString sTime = tm.toString("H:mm:ss");
                         SlotDisplayTime(currentColor, sTime);
-                        if (ok)
+                        BoardViewEx* frame = BoardViewFrame(m_boardView);
+                        if (frame)
                         {
-                            BoardViewFrame()->startTime(currentColor==Black);
-                        }
-                        else
-                        {
-                            BoardViewFrame()->stopTimes();
+                            if (ok)
+                            {
+                                frame->startTime(currentColor==Black);
+                            }
+                            else
+                            {
+                                frame->stopTimes();
+                            }
                         }
 
                         if (ok)
@@ -1195,6 +1204,14 @@ void MainWindow::moveChanged()
 
     // Set board first
     m_boardView->setBoard(g.board(), m_currentFrom, m_currentTo, game().atLineEnd());
+
+    QString annotation = game().annotation();
+    BoardViewEx* frame = BoardViewFrame(m_boardView);
+    if (frame)
+    {
+        frame->setComment(annotation);
+    }
+
     m_currentFrom = InvalidSquare;
     m_currentTo = InvalidSquare;
 
@@ -1207,12 +1224,7 @@ void MainWindow::moveChanged()
         m_gameView->slotDisplayPly(g.ply());
     }
 
-    QList<MoveId> listVariations = g.variations();
-    if (listVariations.size() && !game().atLineEnd())
-    {
-        listVariations.push_front(game().nextMove());
-    }
-    m_gameWindow->showVariations(listVariations);
+    displayVariations();
 
     slotSearchTree();
     emit boardChange(g.board());
@@ -1228,6 +1240,50 @@ void MainWindow::moveChanged()
     emit signalGameIsEmpty(false);
     emit signalGameAtLineStart(!gameMode() && game().atLineStart());
 }
+
+void MainWindow::displayVariations()
+{
+    QList<MoveId> listVariations = game().variations();
+    if (listVariations.size() && !game().atLineEnd())
+    {
+        listVariations.push_front(game().nextMove());
+    }
+
+    QStringList textVariations;
+    foreach(MoveId id, listVariations)
+    {
+        Move move = game().move(id);
+        textVariations << game().board().moveToSan(move, true, true);
+    }
+
+    if (textVariations.isEmpty())
+    {
+        QString placeHolder;
+        if (game().atLineEnd())
+        {
+            placeHolder = (game().isMainline() ? tr("End of game") : tr("End of variation "));
+        }
+        else
+        {
+            placeHolder = (game().isMainline() ? tr("Main line") : tr("Variation "));
+        }
+
+        MoveId start = game().variationStartMove();
+        if (start != NO_MOVE)
+        {
+            Game g(game());
+            g.dbMoveToId(start);
+            Move startMove = g.move();
+            g.backward();
+            QString startSan = g.board().moveToSan(startMove, true, true);
+            placeHolder += startSan;
+        }
+        textVariations << placeHolder;
+    }
+
+    BoardViewFrame(m_boardView)->showVariations(listVariations, textVariations);
+}
+
 
 void MainWindow::slotSearchTree()
 {
@@ -1279,7 +1335,10 @@ void MainWindow::slotGameVarEnter(int index)
     }
     else
     {
-        slotGameMoveNext();
+        if (!slotGameMoveNext())
+        {
+            game().moveToId(game().parentMove());
+        }
     }
 }
 
@@ -1792,6 +1851,15 @@ void MainWindow::slotGameRemoveVariations()
     game().removeVariations();
 }
 
+void MainWindow::slotGameSetComment(QString annotation)
+{
+    if (game().annotation() != annotation)
+    {
+        game().editAnnotation(annotation);
+        UpdateGameText();
+    }
+}
+
 bool MainWindow::autoRespondActive() const
 {
     return (m_autoRespond->isChecked() ||
@@ -2046,7 +2114,8 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
     tm = tm.addMSecs(game().board().toMove()==White ? matchParameter.ms_white : matchParameter.ms_black);
     QString sTime = tm.toString("H:mm:ss");
     SlotDisplayTime(game().board().toMove(), sTime);
-    BoardViewFrame()->startTime(game().board().toMove()==Black);
+    BoardViewEx* frame = BoardViewFrame(m_boardView);
+    if (frame) frame->startTime(game().board().toMove()==Black);
 
     QString annot;
     if (matchParameter.annotateEgt && matchParameter.tm != EngineParameter::TIME_GONG)
@@ -2189,7 +2258,8 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             tm = tm.addMSecs(game().board().toMove()==White ? m_matchParameter.ms_white : m_matchParameter.ms_black);
             QString sTime = tm.toString("H:mm:ss");
             SlotDisplayTime(game().board().toMove(), sTime);
-            BoardViewFrame()->startTime(game().board().toMove()==Black);
+            BoardViewEx* frame = BoardViewFrame(m_boardView);
+            if (frame) frame->startTime(game().board().toMove()==Black);
 
             if (m_matchParameter.tm != EngineParameter::TIME_GONG && m_matchTime[game().board().toMove()] > m_matchParameter.ms_totalTime)
             {
@@ -3154,6 +3224,10 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardView, SIGNAL(evalRequest(Square, Square)), SLOT(slotEvalRequest(Square, Square)));
         connect(boardView, SIGNAL(evalMove(Square, Square)), SLOT(slotEvalMove(Square, Square)));
         connect(boardView, SIGNAL(evalModeDone()), SLOT(slotResumeBoard()));
+        connect(boardViewEx, SIGNAL(signalNewAnnotation(QString)), SLOT(slotGameSetComment(QString)));
+        connect(boardViewEx, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
+        connect(this, SIGNAL(signalGameIsEmpty(bool)), boardViewEx, SLOT(setAnnotationPlaceholder(bool)));
+
 
         if (databaseInfo()->IsFicsDB())
         {
@@ -3166,6 +3240,8 @@ BoardView* MainWindow::CreateBoardView()
         UpdateBoardInformation();
 
         m_boardView = boardView;
+        boardViewEx->slotReconfigure();
+
         return boardView;
     }
     return 0;
@@ -3221,9 +3297,14 @@ void MainWindow::slotActivateBoardView(int n)
 {
     if (m_tabWidget->isTabEnabled(n))
     {
+        BoardViewEx* currentView = qobject_cast<BoardViewEx*>(m_tabWidget->currentWidget());
+        if (currentView) currentView->saveConfig();
+
         activateBoardView(n);
 
         BoardViewEx* boardViewEx = qobject_cast<BoardViewEx*>(m_tabWidget->widget(n));
+        boardViewEx->slotReconfigure();
+
         BoardView* boardView = boardViewEx->boardView();
         m_currentDatabase = qobject_cast<DatabaseInfo*>(boardView->dbIndex());
 
@@ -3253,6 +3334,8 @@ void MainWindow::slotCloseTabWidget(int n)
     {
         QWidget* w = m_tabWidget->widget(n);
         m_tabWidget->removeTab(n);
+        BoardViewEx* view = qobject_cast<BoardViewEx*>(w);
+        if (view) view->saveConfig();
         delete w;
     }
 

@@ -23,9 +23,6 @@ GameWindow::GameWindow(QWidget *parent) :
     setObjectName("GameWindow");
 
     setupToolBox();
-
-    connect(ui->listVariations, SIGNAL(clicked(QModelIndex)),
-            this, SLOT(variationClicked(QModelIndex)));
 }
 
 GameWindow::~GameWindow()
@@ -43,11 +40,6 @@ void GameWindow::slotReconfigure()
 {
     AppSettings->layout(this);
     AppSettings->layout(ui->browserSplitter);
-}
-
-void GameWindow::variationClicked(QModelIndex index)
-{
-    emit enterVariation(index.row());
 }
 
 void GameWindow::setupToolBox()
@@ -76,9 +68,6 @@ void GameWindow::setupToolBox()
 
     ui->browserSplitter->setStretchFactor(0,3);
     ui->browserSplitter->setStretchFactor(1,1);
-
-    ui->toolBoxSplitter->setStretchFactor(0,1);
-    ui->toolBoxSplitter->setStretchFactor(1,3);
 }
 
 void GameWindow::setupNagInToolBox(Nag nag, QAction* action)
@@ -110,16 +99,6 @@ void GameWindow::setupSpacers()
 ChessBrowser *GameWindow::browser()
 {
     return ui->chessBrowser;
-}
-
-void GameWindow::showVariations(QList<MoveId> list)
-{
-    QStringList variationTexts = browser()->getAnchors(list);
-    ui->listVariations->clear();
-    foreach(QString s, variationTexts)
-    {
-        ui->listVariations->addItem(s);
-    }
 }
 
 void GameWindow::addActionAtPage(int page, QAction* action)

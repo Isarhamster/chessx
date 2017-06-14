@@ -4,6 +4,7 @@
 
 #include "boardviewex.h"
 #include "ui_boardviewex.h"
+#include "settings.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -18,6 +19,9 @@ BoardViewEx::BoardViewEx(QWidget *parent) :
     connect(boardView(), SIGNAL(signalFlipped(bool,bool)), SLOT(boardIsFlipped(bool,bool)));
     setMouseTracking(true);
     showTime(false);
+
+    connect(ui->listVariations, SIGNAL(clicked(QModelIndex)),
+            this, SLOT(variationClicked(QModelIndex)));
 }
 
 BoardViewEx::~BoardViewEx()
@@ -25,6 +29,11 @@ BoardViewEx::~BoardViewEx()
     ui->timeTop->StopCountDown();
     ui->timeBottom->StopCountDown();
     delete ui;
+}
+
+void BoardViewEx::variationClicked(QModelIndex index)
+{
+    emit enterVariation(index.row());
 }
 
 BoardView* BoardViewEx::boardView()
@@ -89,4 +98,52 @@ void BoardViewEx::boardIsFlipped(bool oldState, bool newState)
         ui->timeTop->ToggleCountDown();
         ui->timeBottom->ToggleCountDown();
     }
+}
+
+QString BoardViewEx::getComment() const
+{
+    return ui->editComment->toPlainText();
+}
+
+void BoardViewEx::setComment(const QString &value)
+{
+    if (value != ui->editComment->toPlainText())
+    {
+        ui->editComment->setPlainText(value);
+    }
+}
+
+void BoardViewEx::slotReconfigure()
+{
+    AppSettings->layout(this);
+    AppSettings->layout(ui->annotationSplitter);
+}
+
+void BoardViewEx::saveConfig()
+{
+    AppSettings->setLayout(this);
+    AppSettings->setLayout(ui->annotationSplitter);
+}
+
+void BoardViewEx::on_editComment_textChanged()
+{
+    emit signalNewAnnotation(ui->editComment->toPlainText());
+}
+
+void BoardViewEx::setAnnotationPlaceholder(bool enable)
+{
+    if (enable)
+    {
+        ui->editComment->setPlaceholderText(tr("Enter comments and annotations here."));
+    }
+    else
+    {
+        ui->editComment->setPlaceholderText("");
+    }
+}
+
+void BoardViewEx::showVariations(QList<MoveId> /* listVariations */, QStringList textVariations)
+{
+    ui->listVariations->clear();
+    ui->listVariations->addItems(textVariations);
 }

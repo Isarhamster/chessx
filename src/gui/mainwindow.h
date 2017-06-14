@@ -253,6 +253,8 @@ public slots:
     void slotGameUncomment();
     /** Remove all variations */
     void slotGameRemoveVariations();
+    /** Set a annotation into the current game (w/o Undo) */
+    void slotGameSetComment(QString);
     /** Start / Stop AutoPlay feature */
     void slotToggleAutoPlayer();
     /** Auto Play Timeout - make next move! */
@@ -501,9 +503,10 @@ protected:
     void doBoardMove(Move m, unsigned int button, Square from, Square to);
     QString favoriteUrl() const;
     QString drawAnnotation() const;
-    BoardViewEx *BoardViewFrame();
+    BoardViewEx *BoardViewFrame(QWidget *widget);
     void SQAction(QChar c, QAction *action);
     bool closeDatabaseInfo(DatabaseInfo *aboutToClose);
+    void displayVariations();
 signals:
     /** Re-read configuration. */
     void reconfigure();

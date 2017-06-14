@@ -201,9 +201,11 @@ public :
     /** @return number of variations at the current position */
     int variationCount(MoveId moveId = CURRENT_MOVE) const;
     /** @return true if the referenced variation has siblings */
-    bool variationHasSiblings(MoveId variation) const;
+    bool variationHasSiblings(MoveId variation = CURRENT_MOVE) const;
     /** @return moveId of the top main line */
     MoveId mainLineMove() const;
+    /** Get the first move of a variation */
+    MoveId variationStartMove(MoveId variation = CURRENT_MOVE) const;
     /** @return moveId of the previous move */
     MoveId previousMove() const;
     /** @return moveId of the next move */

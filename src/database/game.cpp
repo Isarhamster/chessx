@@ -1064,6 +1064,8 @@ bool Game::dbSetAnnotation(QString annotation, MoveId moveId, Position position)
 
 bool Game::setSquareAnnotation(QString squareAnnotation, MoveId moveId)
 {
+    squareAnnotation = squareAnnotation.trimmed();
+
     MoveId node = nodeValid(moveId);
     if(node == NO_MOVE)
     {
@@ -1187,6 +1189,8 @@ QString Game::squareAnnotation(MoveId moveId) const
 
 bool Game::setArrowAnnotation(QString arrowAnnotation, MoveId moveId)
 {
+    arrowAnnotation = arrowAnnotation.trimmed();
+
     MoveId node = nodeValid(moveId);
     if(node == NO_MOVE)
     {
@@ -1246,6 +1250,7 @@ QString Game::timeAnnotation(MoveId moveId, Position position) const
     }
 
     QString s = specAnnotation(QRegExp(s_clk), moveId);
+    s = s.trimmed();
     if(s.isEmpty())
     {
         s = specAnnotation(QRegExp(s_egt), moveId);
@@ -1579,6 +1584,24 @@ MoveId Game::mainLineMove() const
         }
     }
     return node;
+}
+
+MoveId Game::variationStartMove(MoveId variation) const
+{
+    variation = nodeValid(variation);
+    if(variation == NO_MOVE)
+    {
+        return NO_MOVE;
+    }
+    if(isMainline(variation))
+    {
+        return NO_MOVE;
+    }
+    while(!atLineStart(variation))
+    {
+        variation = m_moveNodes[variation].previousNode;
+    }
+    return variation;
 }
 
 MoveId Game::previousMove() const

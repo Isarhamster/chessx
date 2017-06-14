@@ -229,16 +229,23 @@ inline QString sanPiece(int piece, bool translate = false)
     return " ";
 }
 
-QString BitBoard::moveToSan(const Move& move, bool translate) const
+QString BitBoard::moveToSan(const Move& move, bool translate, bool extend) const
 {
     QString san;
     Square from = move.from();
     Square to = move.to();
     bool isPawn = m_piece[from] == Pawn;
-
+    if (extend)
+    {
+        san = QString("%1.").arg(m_moveNumber);
+        if (toMove()==Black)
+        {
+            san += "..";
+        }
+    }
     if(move.isNullMove())
     {
-        san = "--";
+        san += "--";
         return san;
     }
 
@@ -246,18 +253,18 @@ QString BitBoard::moveToSan(const Move& move, bool translate) const
     {
         if (File(to)==File(g1))
         {
-            san = "O-O";
+            san += "O-O";
         }
         else
         {
-            san = "O-O-O";
+            san += "O-O-O";
         }
     }
     else
     {
         if(!isPawn)
         {
-            san = sanPiece(m_piece[from], translate);
+            san += sanPiece(m_piece[from], translate);
 
             // We may need disambiguation
             quint64 others = 0;
