@@ -891,8 +891,8 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
             update(squareRect(from));
             update(oldr);
             emit evalModeDone();
+            return;
         }
-        return;
     }
 
     if(!(event->button() & Qt::LeftButton))
@@ -1124,10 +1124,6 @@ QRect BoardView::coordinateRectHorizontal(int n) const
 
 bool BoardView::canDrop(Square s) const
 {
-    if (m_brushMode)
-    {
-        return true; // Hack
-    }
     if(m_dragged == Empty)  // not dragging
     {
         return false;
