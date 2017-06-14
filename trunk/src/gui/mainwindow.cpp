@@ -10,6 +10,7 @@
 #include "analysiswidget.h"
 #include "boardsetup.h"
 #include "boardview.h"
+#include "boardviewex.h"
 #include "chartwidget.h"
 #include "chessbrowser.h"
 #include "clipboarddatabase.h"
@@ -187,7 +188,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
     m_gameWindow = new GameWindow(gameTextDock);
     connect(this, SIGNAL(reconfigure()), m_gameWindow, SLOT(slotReconfigure()));
-    connect(m_gameWindow, SIGNAL(enterVariation(int)), this, SLOT(slotGameVarEnter(int)));
     m_gameToolBar = new QToolBar(tr("Game Time"), m_gameWindow);
     m_gameToolBar->setObjectName("GameToolBar");
     m_gameToolBar->setMovable(false);
@@ -457,6 +457,9 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Setup the dimensions of all widgets and the main board */
     slotReconfigure();
+    BoardViewEx* view = qobject_cast<BoardViewEx*>(m_tabWidget->currentWidget());
+    view->slotReconfigure();
+    view->saveConfig();
 
     /* Display main window */
     show();
