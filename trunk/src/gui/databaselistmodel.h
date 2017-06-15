@@ -45,6 +45,10 @@ public:
         {
             return "Polyglot";
         }
+        if (m_name.endsWith(".ctg"))
+        {
+            return "Chessbase Book";
+        }
         if (m_name.endsWith(".abk"))
         {
             return "Arena Book";
