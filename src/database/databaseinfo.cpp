@@ -373,6 +373,11 @@ bool DatabaseInfo::IsPolyglotBook() const
     return IsPolyglotBook(m_filename);
 }
 
+bool DatabaseInfo::IsChessbaseBook() const
+{
+    return IsChessbaseBook(m_filename);
+}
+
 bool DatabaseInfo::IsArenaBook() const
 {
     return IsArenaBook(m_filename);
@@ -387,6 +392,12 @@ bool DatabaseInfo::IsBook() const
 {
     QFileInfo fi(s);
     return (fi.suffix().toLower() == "bin");
+}
+
+/* static */ bool DatabaseInfo::IsChessbaseBook(QString s)
+{
+    QFileInfo fi(s);
+    return (fi.suffix().toLower() == "ctg");
 }
 
 /* static */ bool DatabaseInfo::IsArenaBook(QString s)

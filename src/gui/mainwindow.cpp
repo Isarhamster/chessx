@@ -975,7 +975,11 @@ void MainWindow::openFICS()
 void MainWindow::openDatabaseArchive(QString fname, bool utf8)
 {
     QFileInfo fi = QFileInfo(fname);
-    if(fname.isEmpty() || fi.suffix().toLower() == "pgn" || fi.suffix().toLower() == "bin" || fi.suffix().toLower() == "abk")
+    if(fname.isEmpty() ||
+            fi.suffix().toLower() == "pgn" ||
+            fi.suffix().toLower() == "ctg" ||
+            fi.suffix().toLower() == "bin" ||
+            fi.suffix().toLower() == "abk")
     {
         openDatabaseFile(fname, utf8);
     }

@@ -235,7 +235,8 @@ HEADERS += src/database/board.h \
     src/database/refcount.h \
     src/database/arenabook.h \
     src/database/abk.h \
-    src/database/gameundocommand.h
+    src/database/gameundocommand.h \
+    src/database/ctg.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \

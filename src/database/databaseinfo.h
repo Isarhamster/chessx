@@ -100,11 +100,13 @@ public:
     bool IsUtf8() const;
 
     bool IsFicsDB() const;
+    bool IsChessbaseBook() const;
     bool IsPolyglotBook() const;
     bool IsArenaBook() const;
     bool IsBook() const;
 
     static bool IsPolyglotBook(QString name);
+    static bool IsChessbaseBook(QString s);
     static bool IsArenaBook(QString name);
     static bool IsBook(QString name);
 
