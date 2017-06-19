@@ -15,6 +15,8 @@
 #include "game.h"
 #include "index.h"
 #include "refcount.h"
+#include "move.h"
+#include "movedata.h"
 
 #include <QMutex>
 #include <QString>
@@ -97,7 +99,8 @@ public:
     virtual bool deleted(GameId gameId) const;
     /** Returns true, if the database is a clipboard database, false otherwise */
     virtual bool IsClipboard() const { return false; }
-
+    /** Get a map of MoveData from a given board position */
+    virtual int getMoveMapForBoard(const Board& , QMap<Move, MoveData> &) { return 0; }
 protected:
     /** Copies all tags from @p game to the Index */
     void setTagsToIndex(const Game& game, GameId id);
