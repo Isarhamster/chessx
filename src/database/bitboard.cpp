@@ -238,7 +238,7 @@ QString BitBoard::moveToSan(const Move& move, bool translate, bool extend) const
     if (extend)
     {
         san = QString("%1.").arg(m_moveNumber);
-        if (toMove()==Black)
+        if (blackToMove())
         {
             san += "..";
         }
@@ -2889,6 +2889,11 @@ bool BitBoard::insufficientMaterial() const
     return false;
 }
 
+Square BitBoard::kingSquare(Color color) const
+{
+    return m_ksq[color];
+}
+
 Color BitBoard::colorAt(Square s) const
 {
     Q_ASSERT(s < 64);
@@ -3325,7 +3330,7 @@ BitBoard getStandardPosition()
 
 QString BitBoard::moveToFullSan(const Move &move) const
 {
-    QString dots = toMove() == White ? "." : "...";
+    QString dots = whiteToMove() ? "." : "...";
     return QString("%1%2%3").arg(m_moveNumber).arg(dots).arg(moveToSan(move));
 }
 
@@ -3398,3 +3403,40 @@ int BitBoard::numAttackedBy(const unsigned int color, Square square) const
     num += countSetBits(kingAttacksFrom(square) & m_kings & m_occupied_co[color]);
     return num;
 };
+
+void BitBoard::setMoveNumber(unsigned int moveNumber)
+{
+    m_moveNumber = moveNumber;
+}
+
+void BitBoard::setToMove(const Color &c)
+{
+    m_stm = c;
+}
+
+bool BitBoard::positionIsSame(const BitBoard &target) const
+{
+    if(m_occupied_co[White] != target.m_occupied_co[White] ||
+            m_occupied_co[Black] != target.m_occupied_co[Black] ||
+            m_pawns != target.m_pawns ||
+            m_knights != target.m_knights ||
+            m_bishops != target.m_bishops ||
+            m_rooks != target.m_rooks ||
+            m_queens != target.m_queens ||
+            m_kings != target.m_kings ||
+            m_stm != target.m_stm)
+    {
+        return false;
+    }
+    return true;
+}
+
+void BitBoard::swapToMove()
+{
+    m_stm ^= 1;
+}
+
+void BitBoard::setCastlingRights(CastlingRights cr)
+{
+    m_castle = cr;
+}

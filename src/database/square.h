@@ -35,6 +35,21 @@ typedef unsigned char Square;
 #define File(s)           ((s)&7)
 #define Rank(s)           ((s)>>3)
 
+enum FileNames
+#ifdef USE_C11
+: unsigned char
+#endif // USE_C11
+{
+    FILE_A,
+    FILE_B,
+    FILE_C,
+    FILE_D,
+    FILE_E,
+    FILE_F,
+    FILE_G,
+    FILE_H
+};
+
 inline Square SquareFromRankAndFile(unsigned char rank, unsigned char file)
 {
     return Square(rank*8+file);

@@ -102,12 +102,18 @@ public:
     unsigned int moveNumber() const;
     /** @return color of side next to move */
     Color toMove() const;
+    /** @return true if color of side next to move is black */
+    bool blackToMove() const;
+    /** @return true if color of side next to move is black */
+    bool whiteToMove() const;
     /** @return true if its possible for this position to follow target position */
     bool canBeReachedFrom(const BitBoard& target) const;
     /** @return true if position is same, but don't consider Move # in determination */
     bool positionIsSame(const BitBoard& target) const;
     /** @return true if neither side can win the game */
     bool insufficientMaterial() const;
+    /** @return the square at which the king of @p color is located */
+    Square kingSquare(Color color) const;
 
     // Query other formats
     //
@@ -483,6 +489,16 @@ inline Color BitBoard::toMove() const
     return Color(m_stm);
 }
 
+inline bool BitBoard::blackToMove() const
+{
+    return Color(m_stm) == Black;
+}
+
+inline bool BitBoard::whiteToMove() const
+{
+    return Color(m_stm) == White;
+}
+
 inline Square BitBoard::enPassantSquare() const
 {
     return Square(m_epSquare);
@@ -491,44 +507,6 @@ inline Square BitBoard::enPassantSquare() const
 inline CastlingRights BitBoard::castlingRights() const
 {
     return m_castle;
-}
-
-inline void BitBoard::setCastlingRights(CastlingRights cr)
-{
-    m_castle = cr;
-}
-
-/** Set the side to move to the given color */
-inline void BitBoard::setToMove(const Color& c)
-{
-    m_stm = c;
-}
-
-inline void BitBoard::swapToMove()
-{
-    m_stm ^= 1;
-}
-
-inline void BitBoard::setMoveNumber(unsigned int moveNumber)
-{
-    m_moveNumber = moveNumber;
-}
-
-inline bool BitBoard::positionIsSame(const BitBoard& target) const
-{
-    if(m_occupied_co[White] != target.m_occupied_co[White] ||
-            m_occupied_co[Black] != target.m_occupied_co[Black] ||
-            m_pawns != target.m_pawns ||
-            m_knights != target.m_knights ||
-            m_bishops != target.m_bishops ||
-            m_rooks != target.m_rooks ||
-            m_queens != target.m_queens ||
-            m_kings != target.m_kings ||
-            m_stm != target.m_stm)
-    {
-        return false;
-    }
-    return true;
 }
 
 #endif // __BITBOARD_H__
