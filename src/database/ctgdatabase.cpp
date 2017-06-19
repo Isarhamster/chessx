@@ -10,11 +10,17 @@
 
 #include "ctgdatabase.h"
 #include "ctg.h"
+#include "square.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
 #endif // _MSC_VER
+
+#define create_square(file,rank) SquareFromRankAndFile(rank,file)
+#define mirror_rank(square)         (Square((square) ^ 0x38))
+#define mirror_file(square)         (Square((square) ^ 0x07))
+#define flip_piece(p)               (flip_piece[p])
 
 // ---------------------------------------------------------
 // construction
@@ -93,12 +99,12 @@ bool CtgDatabase::openFile(const QString &filename, bool readOnly)
     //opens both required files
 
     QFileInfo fi(filename);
-    QString filename_cto = fi.path() + fi.completeBaseName() + ".cto";
-    QString filename_ctb = fi.path() + fi.completeBaseName() + ".ctb";
+    QString filename_cto = fi.path() + QDir::separator() + fi.completeBaseName() + ".cto";
+    QString filename_ctb = fi.path() + QDir::separator() + fi.completeBaseName() + ".ctb";
 
     QFile* file = new QFile(filename);
     QFile* file_cto = new QFile(filename_cto);
-    QFile* file_ctb = new QFile(filename_cto);
+    QFile* file_ctb = new QFile(filename_ctb);
 
     if(!readOnly || (file->exists() && file_cto->exists() && file_ctb->exists()))
     {
@@ -137,9 +143,8 @@ void CtgDatabase::close()
 }
 
 // ---------------------------------------------------------
-// CTG implementation
+// CTG implementation - CTG only code
 // ---------------------------------------------------------
-
 
 void CtgDatabase::append_bits_reverse(ctg_signature_t* sig,
         uint8_t bits,
@@ -201,17 +206,14 @@ bool CtgDatabase::ctg_get_page_index(int hash, int* page_index) const
         if (key >= (uint32_t)page_bounds.low)
         {
             cto_file->seek(16 + key*4);
-            cto_file->read((char*)page_index, 4);
-            *page_index = ntohl((uint32_t)*page_index);
+            int n;
+            cto_file->read((char*)&n, 4);
+            *page_index = ntohl((uint32_t)n);
             if (*page_index >= 0)
             {
                 return true;
             }
             qDebug() << "found invalid entry with key "<< key << endl;
-        }
-        else
-        {
-            qDebug() << "key out of range "<< key << endl;
         }
     }
     qDebug() << "didn't find entry for hash " << hash << endl;
@@ -287,7 +289,6 @@ bool CtgDatabase::ctg_lookup_entry(int page_index,
  */
 void CtgDatabase::dump_signature(ctg_signature_t* sig) const
 {
-    // Print as bits.
     qDebug() << "Signature length: " << sig->buf_len << endl;
 
     // Print as chars.
@@ -297,6 +298,368 @@ void CtgDatabase::dump_signature(ctg_signature_t* sig) const
     }
     qDebug() << endl;
 }
+
+// ---------------------------------------------------------
+// CTG implementation - Code which interfaces with Board
+// ---------------------------------------------------------
+
+/**
+ * Given source and destination squares for a move, produce the corresponding
+ * native format move.
+ */
+Move CtgDatabase::squares_to_move(const Board& position, Square from, Square to) const
+{
+    Board b(position);
+    Move m = b.prepareMove(from, to); // TODO: Check enumeration values
+
+    // Check the promotion piece and convert
+    if (m.isPromotion())
+    {
+        m.setPromoted(Queen); // CTG does not support underpromotion
+    }
+
+    return m;
+}
+
+// ---------------------------------------------------------
+
+Move CtgDatabase::byte_to_move(const Board& pos, uint8_t byte) const
+{
+    const char* piece_code =
+        "PNxQPQPxQBKxPBRNxxBKPBxxPxQBxBxxxRBQPxBPQQNxxPBQNQBxNxNQQQBQBxxx"
+        "xQQxKQxxxxPQNQxxRxRxBPxxxxxxPxxPxQPQxxBKxRBxxxRQxxBxQxxxxBRRPRQR"
+        "QRPxxNRRxxNPKxQQxxQxQxPKRRQPxQxBQxQPxRxxxRxQxRQxQPBxxRxQxBxPQQKx"
+        "xBBBRRQPPQBPBRxPxPNNxxxQRQNPxxPKNRxRxQPQRNxPPQQRQQxNRBxNQQQQxQQx";
+    const int piece_index[256]= {
+        5, 2, 9, 2, 2, 1, 4, 9, 2, 2, 1, 9, 1, 1, 2, 1,
+        9, 9, 1, 1, 8, 1, 9, 9, 7, 9, 2, 1, 9, 2, 9, 9,
+        9, 2, 2, 2, 8, 9, 1, 3, 1, 1, 2, 9, 9, 6, 1, 1,
+        2, 1, 2, 9, 1, 9, 1, 1, 2, 1, 1, 2, 1, 9, 9, 9,
+        9, 2, 1, 9, 1, 1, 9, 9, 9, 9, 8, 1, 2, 2, 9, 9,
+        1, 9, 1, 9, 2, 3, 9, 9, 9, 9, 9, 9, 7, 9, 9, 5,
+        9, 1, 2, 2, 9, 9, 1, 1, 9, 2, 1, 0, 9, 9, 1, 2,
+        9, 9, 2, 9, 1, 9, 9, 9, 9, 2, 1, 2, 3, 2, 1, 1,
+        1, 1, 6, 9, 9, 1, 1, 1, 9, 9, 1, 1, 1, 9, 2, 1,
+        9, 9, 2, 9, 1, 9, 2, 1, 1, 1, 1, 3, 9, 1, 9, 2,
+        2, 9, 1, 8, 9, 2, 9, 9, 9, 2, 9, 2, 9, 2, 2, 9,
+        2, 6, 1, 9, 9, 2, 9, 1, 9, 2, 9, 5, 2, 2, 1, 9,
+        9, 1, 2, 1, 2, 2, 2, 7, 7, 2, 2, 6, 2, 1, 9, 4,
+        9, 2, 2, 2, 9, 9, 9, 1, 2, 1, 1, 1, 9, 9, 5, 1,
+        2, 1, 9, 2, 9, 1, 4, 1, 1, 1, 9, 4, 1, 1, 2, 1,
+        2, 1, 9, 2, 2, 2, 0, 1, 2, 2, 2, 2, 9, 1, 2, 9
+    };
+    const int forward[256]= {
+        1,-1, 9, 0, 1, 1, 1, 9, 0, 6,-1, 9, 1, 3, 0,-1,
+        9, 9, 7, 1, 1, 5, 9, 9, 1, 9, 6, 1, 9, 7, 9, 9,
+        9, 0, 2, 6, 1, 9, 7, 1, 5, 0,-2, 9, 9, 1, 1, 0,
+       -2, 0, 5, 9, 2, 9, 1, 4, 4, 0, 6, 5, 5, 9, 9, 9,
+        9, 5, 7, 9,-1, 3, 9, 9, 9, 9, 2, 5, 2, 1, 9, 9,
+        6, 9, 0, 9, 1, 1, 9, 9, 9, 9, 9, 9, 1, 9, 9, 2,
+        9, 6, 2, 7, 9, 9, 3, 1, 9, 7, 4, 0, 9, 9, 0, 7,
+        9, 9, 7, 9, 0, 9, 9, 9, 9, 6, 3, 6, 1, 1, 3, 0,
+        6, 1, 1, 9, 9, 2, 0, 5, 9, 9,-2, 1,-1, 9, 2, 0,
+        9, 9, 1, 9, 3, 9, 1, 0, 0, 4, 6, 2, 9, 2, 9, 4,
+        3, 9, 2, 1, 9, 5, 9, 9, 9, 0, 9, 6, 9, 0, 3, 9,
+        4, 2, 6, 9, 9, 0, 9, 5, 9, 3, 9, 1, 0, 2, 0, 9,
+        9, 2, 2, 2, 0, 4, 5, 1, 2, 7, 3, 1, 5, 0, 9, 1,
+        9, 1, 1, 1, 9, 9, 9, 1, 0, 2,-2, 2, 9, 9, 1, 1,
+       -1, 7, 9, 3, 9, 0, 2, 4, 2,-1, 9, 1, 1, 7, 1, 0,
+        0, 1, 9, 2, 2, 1, 0, 1, 0, 6, 0, 2, 9, 7, 3, 9
+    };
+    const int left[256] = {
+       -1, 2, 9,-2, 0, 0, 1, 9,-4,-6, 0, 9, 1,-3,-3, 2,
+        9, 9,-7, 0,-1,-5, 9, 9, 0, 9, 0, 1, 9,-7, 9, 9,
+        9,-7, 2,-6, 1, 9, 7, 1,-5,-6,-1, 9, 9,-1,-1,-1,
+        1,-3,-5, 9,-1, 9,-2, 0, 4,-5,-6, 5, 5, 9, 9, 9,
+        9,-5, 7, 9,-1,-3, 9, 9, 9, 9, 0, 5,-1, 0, 9, 9,
+        0, 9,-6, 9, 1, 0, 9, 9, 9, 9, 9, 9,-1, 9, 9, 0,
+        9,-6, 0, 7, 9, 9, 3,-1, 9, 0,-4, 0, 9, 9,-5,-7,
+        9, 9, 7, 9,-2, 9, 9, 9, 9, 6, 0, 0,-1, 0, 3,-1,
+        6, 0, 1, 9, 9, 1,-7, 0, 9, 9,-1,-1, 1, 9, 2,-7,
+        9, 9,-1, 9, 0, 9,-1, 1,-3, 0, 0, 0, 9, 0, 9, 4,
+        0, 9,-2, 0, 9, 0, 9, 9, 9,-2, 9, 6, 9,-4,-3, 9,
+        0, 0, 6, 9, 9,-5, 9, 0, 9,-3, 9, 0,-5, 0,-1, 9,
+        9,-2,-2, 2,-1, 0, 0, 1, 0, 0, 3, 0, 5,-2, 9, 0,
+        9, 1,-2, 2, 9, 9, 9, 1,-6, 2, 1, 0, 9, 9, 1, 1,
+       -2, 0, 9, 0, 9,-4, 0,-4, 0,-2, 9,-1, 0,-7, 1,-4,
+       -7,-1, 9, 1, 0,-1, 0, 2,-1, 0,-3,-2, 9, 0, 3, 9
+    };
+
+    // Find the piece. Note: the board may be mirrored/flipped.
+    bool flip_board = pos.blackToMove();
+    Color white = pos.toMove();
+    bool mirror_board = (File(pos.kingSquare(white)) < FILE_E) &&
+        (pos.castlingRights() == 0); /* pieces.white.0 is the white king - determine if in left half of board */
+    int file_from = -1, file_to = -1, rank_from = -1, rank_to = -1;
+
+    // Handle castling.
+    if (byte == 107) {
+        file_from = 4;
+        file_to = 6;
+        rank_from = rank_to = flip_board ? 7 : 0;
+        return squares_to_move(pos,
+                create_square(file_from, rank_from),
+                create_square(file_to, rank_to));
+    }
+    if (byte == 246) {
+        file_from = 4;
+        file_to = 2;
+        rank_from = rank_to = flip_board ? 7 : 0;
+        return squares_to_move(pos,
+                create_square(file_from, rank_from),
+                create_square(file_to, rank_to));
+    }
+
+    // Look up piece type. Note: positions are always white to move.
+    Piece pc = Empty;
+    char glyph = piece_code[byte];
+    switch (glyph) {
+        case 'P': pc = WhitePawn; break;
+        case 'N': pc = WhiteKnight; break;
+        case 'B': pc = WhiteBishop; break;
+        case 'R': pc = WhiteRook; break;
+        case 'Q': pc = WhiteQueen; break;
+        case 'K': pc = WhiteKing; break;
+        default: break;
+    }
+
+    // Find the piece.
+    int nth_piece = piece_index[byte], piece_count = 0;
+    bool found = false;
+    for (int file=0; file<8 && !found; ++file) {
+        for (int rank=0; rank<8 && !found; ++rank) {
+            Square sq = create_square(file, rank);
+            if (flip_board) sq = mirror_rank(sq);
+            if (mirror_board) sq = mirror_file(sq);
+            Piece piece = pos.pieceAt(sq);
+            if (piece == pc) ++piece_count;
+            if (piece_count == nth_piece) {
+                file_from = file;
+                rank_from = rank;
+                found = true;
+            }
+        }
+    }
+
+    // Normalize rank and file values.
+    file_to = file_from - left[byte];
+    file_to = (file_to + 8) % 8;
+    rank_to = rank_from + forward[byte];
+    rank_to = (rank_to + 8) % 8;
+    if (flip_board) {
+        rank_from = 7-rank_from;
+        rank_to = 7-rank_to;
+    }
+    if (mirror_board) {
+        file_from = 7-file_from;
+        file_to = 7-file_to;
+    }
+    return squares_to_move(pos,
+            create_square(file_from, rank_from),
+            create_square(file_to, rank_to));
+}
+
+// ---------------------------------------------------------
+
+void CtgDatabase::position_to_ctg_signature(const Board& pos, ctg_signature_t* sig) const
+{
+    // Note: initial byte is reserved for length and flags info
+    memset(sig, 0, sizeof(ctg_signature_t));
+    int bit_position = 8;
+    uint8_t bits = 0, num_bits = 0;
+
+    // The board is flipped if it's black's turn, and mirrored if the king is
+    // on the queenside with no castling rights for either side.
+    bool flip_board = pos.blackToMove();
+    Color white = pos.toMove();
+    bool mirror_board = (File(pos.kingSquare(white)) < FILE_E) &&
+        (pos.castlingRights() == 0);
+
+
+    // For each board square, append the huffman bit sequence for its contents.
+    for (int file=0; file<8; ++file) {
+        for (int rank=0; rank<8; ++rank) {
+            Square sq = create_square(file, rank);
+            if (flip_board) sq = mirror_rank(sq);
+            if (mirror_board) sq = mirror_file(sq);
+            Piece piece = pos.pieceAt(sq);
+            switch (piece) {
+                case Empty: bits = 0x0; num_bits = 1; break;
+                case WhitePawn: bits = 0x3; num_bits = 3; break;
+                case BlackPawn: bits = 0x7; num_bits = 3; break;
+                case WhiteKnight: bits = 0x9; num_bits = 5; break;
+                case BlackKnight: bits = 0x19; num_bits = 5; break;
+                case WhiteBishop: bits = 0x5; num_bits = 5; break;
+                case BlackBishop: bits = 0x15; num_bits = 5; break;
+                case WhiteRook: bits = 0xD; num_bits = 5; break;
+                case BlackRook: bits = 0x1D; num_bits = 5; break;
+                case WhiteQueen: bits = 0x11; num_bits = 6; break;
+                case BlackQueen: bits = 0x31; num_bits = 6; break;
+                case WhiteKing: bits = 0x1; num_bits = 6; break;
+                case BlackKing: bits = 0x21; num_bits = 6; break;
+                default: break;
+            }
+            append_bits_reverse(sig, bits, bit_position, num_bits);
+            bit_position += num_bits;
+        }
+    }
+
+    // Encode castling and en passant rights. These must sit flush at the end
+    // of the final byte, so we also have to figure out how much to pad.
+    int ep = -1;
+    int flag_bit_length = 0;
+    if (pos.enPassantSquare() != InvalidSquare)
+    {
+        ep = File(pos.enPassantSquare());
+        if (mirror_board) ep = 7 - ep;
+        flag_bit_length = 3;
+    }
+    int castle = 0;
+    if (pos.canCastleShort(white)) castle += 4;
+    if (pos.canCastleLong(white)) castle += 8;
+    if (pos.canCastleShort(oppositeColor(white))) castle += 1;
+    if (pos.canCastleLong(oppositeColor(white))) castle += 2;
+    if (castle) flag_bit_length += 4;
+    uint8_t flag_bits = castle;
+    if (ep != -1) {
+        flag_bits <<= 3;
+        for (int i=0; i<3; ++i, ep>>=1) if (ep&1) flag_bits |= (1<<(2-i));
+    }
+
+    //printf("\nflag bits: %d\n", flag_bits);
+    //printf("bit_position: %d\n", bit_position%8);
+    //printf("flag_bit_length: %d\n", flag_bit_length);
+
+    // Insert padding so that flags fit at the end of the last byte.
+    int pad_bits = 0;
+    if (8-(bit_position % 8) < flag_bit_length) {
+        //printf("padding byte\n");
+        pad_bits = 8 - (bit_position % 8);
+        append_bits_reverse(sig, 0, bit_position, pad_bits);
+        bit_position += pad_bits;
+    }
+
+    pad_bits = 8 - (bit_position % 8) - flag_bit_length;
+    if (pad_bits < 0) pad_bits += 8;
+    //printf("padding %d bits\n", pad_bits);
+    append_bits_reverse(sig, 0, bit_position, pad_bits);
+    bit_position += pad_bits;
+    append_bits_reverse(sig, flag_bits, bit_position, flag_bit_length);
+    bit_position += flag_bit_length;
+    sig->buf_len = (bit_position + 7) / 8;
+
+    // Write header byte
+    sig->buf[0] = ((uint8_t)(sig->buf_len));
+    if (ep != -1) sig->buf[0] |= 1<<5;
+    if (castle) sig->buf[0] |= 1<<6;
+}
+
+// ---------------------------------------------------------
+
+int64_t CtgDatabase::move_weight(const Board& pos,
+        Move move,
+        uint8_t annotation,
+        bool* recommended,
+        uint64_t* count) const
+{
+    // Here, the game is needed
+
+    ((Board&)pos).doMove(move);
+    ctg_entry_t entry;
+    bool success = ctg_get_entry(pos, &entry);
+    ((Board&)pos).undoMove(move);
+    if (!success) return 0;
+
+    *recommended = false;
+    int64_t half_points = 2*entry.wins + entry.draws;
+    int64_t games = entry.wins + entry.draws + entry.losses;
+    int64_t weight = (games < 1) ? 0 : (half_points * 10000) / games;
+    if (entry.recommendation == 64) weight = 0;
+    if (entry.recommendation == 128) *recommended = true;
+
+    *count = entry.wins;
+
+    // Adjust weights based on move annotations. Note that moves can be both
+    // marked as recommended and annotated with a '?'. Since moves like this
+    // are not marked green in GUI tools, the recommendation is turned off in
+    // order to give results consistent with expectations.
+    switch (annotation) {
+        case 0x01: weight *=  8; break;                         //  !
+        case 0x02: weight  =  0; *recommended = false; break;   //  ?
+        case 0x03: weight *= 32; break;                         // !!
+        case 0x04: weight  =  0; *recommended = false; break;   // ??
+        case 0x05: weight /=  2; *recommended = false; break;   // !?
+        case 0x06: weight /=  8; *recommended = false; break;   // ?!
+        case 0x08: weight = INT32_MAX; break;                   // Only move
+        case 0x16: break;                                       // Zugzwang
+        default: break;
+    }
+    return weight;
+}
+
+// ---------------------------------------------------------
+
+bool CtgDatabase::ctg_pick_move(const Board& pos, ctg_entry_t* entry, Move* move) const
+{
+    Move moves[100];
+    int64_t weights[100] = { 0 };
+    bool recommended[100] = { 0 };
+    int64_t total_weight = 0;
+    uint64_t count[100] = { 0 };
+    bool have_recommendations = false;
+    for (int i=0; i<2*entry->num_moves; i += 2) {
+        uint8_t byte = entry->moves[i];
+        Move m = byte_to_move(pos, byte);
+        moves[i/2] = m;
+        weights[i/2] = move_weight(pos, m, entry->moves[i+1], &recommended[i/2], &count[i/2]);
+        if (recommended[i/2]) have_recommendations = true;
+        if (!m.isLegal()) break;
+    }
+
+    // Do a prefix sum on the weights to facilitate a random choice. If there are recommended
+    // moves, ensure that we don't pick a move that wasn't recommended.
+    for (int i=0; i<entry->num_moves; ++i) {
+        if (have_recommendations && !recommended[i]) weights[i] = 0;
+        total_weight += weights[i];
+        weights[i] = total_weight;
+    }
+    if (total_weight == 0) {
+        *move = Move();
+        return false;
+    }
+    uint64_t r = qrand();
+    r *= (0xFFFFFFFFFFFFFFFFull/RAND_MAX);
+    int64_t choice = ((int64_t)r) % total_weight;
+    int64_t i;
+    for (i=0; choice >= weights[i]; ++i) {}
+
+    *move = moves[i];
+    return true;
+}
+
+// ---------------------------------------------------------
+
+Move CtgDatabase::get_best_book_move(const Board &pos) const
+{
+    Move move;
+    ctg_entry_t entry;
+    if (!ctg_get_entry(pos, &entry)) return Move();
+    if (!ctg_pick_move(pos, &entry, &move)) return Move();
+    return move;
+}
+
+// ---------------------------------------------------------
+
+bool CtgDatabase::ctg_get_entry(const Board& pos, ctg_entry_t* entry) const
+{
+    ctg_signature_t sig;
+    position_to_ctg_signature(pos, &sig);
+    int page_index, hash = ctg_signature_to_hash(&sig);
+    if (!ctg_get_page_index(hash, &page_index)) return false;
+    if (!ctg_lookup_entry(page_index, &sig, entry)) return false;
+    return true;
+}
+
 // ---------------------------------------------------------
 // Book parser - public interface
 // ---------------------------------------------------------
@@ -307,9 +670,50 @@ bool CtgDatabase::findMove(quint64 /*key*/, MoveData& /*m*/)
     return false;
 }
 
-int CtgDatabase::getMoveMapForBoard(const Board &board, QMap<Move, MoveData>& moves)
+int CtgDatabase::getMoveMapForBoard(const Board &pos, QMap<Move, MoveData>& moveList)
 {
-    return 0;
+    ctg_entry_t entry;
+    if (!ctg_get_entry(pos, &entry)) return 0;
+    // Position is here, output the moves associated with it
+    QVector<Move> moves(100);
+    int64_t weights[100] = { 0 };
+    bool recommended[100] = { 0 };
+    uint64_t count[100] = { 0 };
+    int64_t total_weight = 0;
+    bool have_recommendations = false;
+    for (int i=0; i<2*entry.num_moves; i += 2)
+    {
+        uint8_t byte = entry.moves[i];
+        Move m = byte_to_move(pos, byte);
+        moves[i/2] = m;
+        weights[i/2] = move_weight(pos, m, entry.moves[i+1], &recommended[i/2], &count[i]);
+        if (recommended[i/2]) have_recommendations = true;
+        if (!m.isLegal()) break;
+    }
+
+    // Do a prefix sum on the weights to facilitate a random choice. If there are recommended
+    // moves, ensure that we don't pick a move that wasn't recommended.
+    for (int i=0; i<entry.num_moves; ++i)
+    {
+        if (have_recommendations && !recommended[i]) weights[i] = 0;
+        total_weight += weights[i];
+        weights[i] = total_weight;
+    }
+    if (total_weight == 0)
+    {
+        //return 0;
+    }
+
+    for (int i=0; i<entry.num_moves; ++i)
+    {
+        MoveData md;
+        md.count = count[i];
+        md.move = moves.at(i);
+        md.san = pos.moveToSan(md.move);
+        moveList.insert(md.move, md);
+    }
+
+    return moveList.count();
 }
 
 // ---------------------------------------------------------

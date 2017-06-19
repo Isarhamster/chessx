@@ -5,6 +5,7 @@
 #include <QMutex>
 #include <QMutexLocker>
 
+#include "ctgdatabase.h"
 #include "database.h"
 #include "openingtreethread.h"
 #include "polyglotdatabase.h"
@@ -32,6 +33,11 @@ void OpeningTreeThread::run()
     emit MoveUpdate(&m_board, emptyMoveList);
 
     if (PolyglotDatabase* pgdb = qobject_cast<PolyglotDatabase*>(m_filter ? m_filter->database() : 0))
+    {
+        games = pgdb->getMoveMapForBoard(m_board, moves);
+        ProgressUpdate(moves, games, 100, 100);
+    }
+    else if (CtgDatabase* pgdb = qobject_cast<CtgDatabase*>(m_filter ? m_filter->database() : 0))
     {
         games = pgdb->getMoveMapForBoard(m_board, moves);
         ProgressUpdate(moves, games, 100, 100);
