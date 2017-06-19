@@ -2,6 +2,7 @@
 *   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
+#include "databaseinfo.h"
 #include "databaselist.h"
 #include "databaselistmodel.h"
 #include "exttool.h"
@@ -82,11 +83,11 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         bool bIsFavorite = stars > 0;
         bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString().isEmpty();
         bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_OPEN), Qt::UserRole).toString() == "Open";
-        bool bIsBook = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString().endsWith("bin")
-                    || m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString().endsWith("abk")
-                    || m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString().endsWith("ctg");
-        menu.addAction(bIsOpen ? tr("Activate") : tr("Open"), this, SLOT(dbOpen()));
 
+        QString filename = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString();
+        bool bIsBook = DatabaseInfo::IsBook(filename);
+
+        menu.addAction(bIsOpen ? tr("Activate") : tr("Open"), this, SLOT(dbOpen()));
         menu.addAction(tr("Close"), this, SLOT(dbClose()))->setEnabled(bIsOpen && bHasPath);
         menu.addSeparator();
         menu.addAction(tr("Keep file"), this, SLOT(dbKeepFile()))->setEnabled(stars != 1);

@@ -22,7 +22,7 @@
 class Analysis;
 class Board;
 class Tablebase;
-class PolyglotDatabase;
+class Database;
 
 class AnalysisWidget : public QWidget
 {
@@ -48,7 +48,7 @@ public:
     void setOnHold(bool onHold);
 
     QString engineName() const;
-    void updateBookFile(PolyglotDatabase*);
+    void updateBookFile(Database*);
 
 public slots:
     /** Sets new position. If analysis is active, the current content will be cleared and
@@ -132,7 +132,7 @@ private:
     bool m_onHold;
 
     QTime m_lastEngineStart;
-    PolyglotDatabase* m_pgdb;
+    Database* m_pgdb;
     QList<MoveData> moveList;
     int games;
 

@@ -3074,8 +3074,14 @@ void MainWindow::slotUpdateOpeningBook(QString name)
     if (analysis)
     {
         DatabaseInfo* dbInfo = getDatabaseInfoByPath(name);
-        PolyglotDatabase* pgdb = dbInfo ? qobject_cast<PolyglotDatabase*>(dbInfo->database()) : 0;
-        analysis->updateBookFile(pgdb);
+        if (dbInfo && dbInfo->IsBook())
+        {
+            analysis->updateBookFile(dbInfo->database());
+        }
+        else
+        {
+            analysis->updateBookFile(0);
+        }
     }
 }
 
