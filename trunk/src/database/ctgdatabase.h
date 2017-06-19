@@ -51,11 +51,14 @@ public:
     /** Start a search for a new key */
     void reset();
     void book_make(Database& db, volatile bool& breakFlag);
+
+    /** Look up the best book moves given for @p pos */
+    Move get_best_book_move(const Board& pos) const;
 signals:
 
 public slots:
 
-protected:
+protected: // Methods which are CTG only
     /**
      * Push the given bits on to the end of @p sig. This is a helper function that
      * makes the huffman encoding of positions a little cleaner.
@@ -75,6 +78,38 @@ protected:
 
     void dump_signature(ctg_signature_t* sig) const;
 
+protected: // Methods which interface with ChessX
+    /** Generate a Move from a pair of squares */
+    Move squares_to_move(const Board& position, Square from, Square to) const;
+    /**
+     * Convert a ctg-format move to native format. The ctg move format seems
+     * really bizarre; maybe there's some simpler formulation. The ctg move
+     * indicates the piece type, the index of the piece to be moved (counting
+     * from A1 to H8 by ranks), and the delta x and delta y of the move.
+     * We just look these values up in big tables.
+     */
+    Move byte_to_move(const Board& pos, uint8_t byte) const;
+
+    /** Compute the ctg-huffman encoding of the given position */
+    void position_to_ctg_signature(const Board& pos, ctg_signature_t* sig) const;
+    /**
+     * Assign a weight to the given move, which indicates its relative
+     * probability of being selected.
+     * To do this, do the move on the board and look up the
+     * resulting position, which determines the actual weight of the
+     * move, corrected by some annotations.
+     */
+    int64_t move_weight(const Board& pos,
+            Move move,
+            uint8_t annotation,
+            bool* recommended, uint64_t *count) const;
+
+    /** Do the actual work of choosing amongst all book moves according to weight. */
+    bool ctg_pick_move(const Board& pos, ctg_entry_t* entry, Move* move) const;
+
+    /** Get the ctg entry associated with the given position. */
+    bool ctg_get_entry(const Board& pos, ctg_entry_t* entry) const;
+
 private:
     QString m_filename;
     QIODevice* ctg_file;
@@ -83,6 +118,7 @@ private:
     quint64 m_count;
 
     page_bounds_t page_bounds;
+    Piece flip_piece[16];
 
 };
 
