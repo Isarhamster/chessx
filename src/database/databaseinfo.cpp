@@ -11,6 +11,7 @@
 #include <QUndoStack>
 
 #include "arenabook.h"
+#include "ctgdatabase.h"
 #include "databaseinfo.h"
 #include "ficsdatabase.h"
 #include "filter.h"
@@ -64,6 +65,10 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filte
     else if (IsArenaBook())
     {
         m_database = new ArenaBook;
+    }
+    else if (IsChessbaseBook())
+    {
+        m_database = new CtgDatabase;
     }
     else if(file.size() < 1024 * 1024 * AppSettings->getValue("/General/EditLimit").toInt())
     {
@@ -409,5 +414,5 @@ bool DatabaseInfo::IsBook() const
 /* static */ bool DatabaseInfo::IsBook(QString s)
 {
     // Add here if more book formats come in
-    return IsPolyglotBook(s);
+    return IsPolyglotBook(s) || IsChessbaseBook(s);
 }
