@@ -163,6 +163,7 @@ void AnalysisWidget::toggleAnalysis()
 
 void AnalysisWidget::bookActivated(int index)
 {
+    m_pgdb = 0;
     emit signalSourceChanged(index>=0 ? ui.bookList->itemData(index).toString() : "");
     updateBookMoves();
 }
@@ -626,7 +627,7 @@ QString AnalysisWidget::engineName() const
     return ui.engineList->currentText();
 }
 
-void AnalysisWidget::updateBookFile(PolyglotDatabase* pgdb)
+void AnalysisWidget::updateBookFile(Database *pgdb)
 {
     m_pgdb = pgdb;
 }

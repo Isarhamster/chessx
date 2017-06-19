@@ -111,7 +111,14 @@
        <item>
         <layout class="QHBoxLayout" name="bottomLayout">
          <item>
-          <widget class="QWidget" name="piecesBottom" native="true"/>
+          <widget class="QWidget" name="piecesBottom" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="DigitalClock" name="timeBottom">
