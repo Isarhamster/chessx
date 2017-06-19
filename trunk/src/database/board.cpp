@@ -237,7 +237,7 @@ void Board::createHash()
     {
         hashPiece(square, pieceAt(square));
     }
-    if(toMove() == Black)
+    if(blackToMove())
     {
         hashToMove();
     }

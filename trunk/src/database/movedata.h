@@ -18,12 +18,12 @@ public:
     int averageRating() const;
     int averageYear() const;
     QString san;
-    unsigned count;
-    unsigned result[4];
+    unsigned int count;
+    unsigned int result[4];
     long rating;
-    unsigned rated;
+    unsigned int rated;
     long year;
-    unsigned dated;
+    unsigned int dated;
     Move move;
     friend bool operator<(const MoveData& m1, const MoveData& m2);
     friend bool operator>(const MoveData& m1, const MoveData& m2);
