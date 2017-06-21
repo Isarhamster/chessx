@@ -22,6 +22,13 @@
 #define mirror_file(square)         (Square((square) ^ 0x07))
 #define flip_piece(p)               (flip_piece[p])
 
+typedef struct _results_t
+{
+    uint32_t  wins = 0;
+    uint32_t losses = 0;
+    uint32_t draw = 0;
+} results_t;
+
 // ---------------------------------------------------------
 // construction
 // ---------------------------------------------------------
@@ -213,10 +220,8 @@ bool CtgDatabase::ctg_get_page_index(int hash, int* page_index) const
             {
                 return true;
             }
-            qDebug() << "found invalid entry with key "<< key << endl;
         }
     }
-    qDebug() << "didn't find entry for hash " << hash << endl;
     return false;
 }
 
@@ -231,8 +236,6 @@ bool CtgDatabase::ctg_lookup_entry(int page_index,
     ctg_file->seek(4096*(page_index + 1));
     if (!ctg_file->read((char*)buf, 4096)) return false;
     int num_positions = (buf[0]<<8) + buf[1];
-
-    qDebug() << "found positions " << num_positions << endl;
 
     // Just scan through the list until we find a matching signature.
     int pos = 4;
@@ -431,7 +434,7 @@ Move CtgDatabase::byte_to_move(const Board& pos, uint8_t byte) const
             Square sq = create_square(file, rank);
             if (flip_board) sq = mirror_rank(sq);
             if (mirror_board) sq = mirror_file(sq);
-            Piece piece = pos.pieceAt(sq);
+            Piece piece = flip_board ? flipPiece(pos.pieceAt(sq)) : pos.pieceAt(sq);
             if (piece == pc) ++piece_count;
             if (piece_count == nth_piece) {
                 file_from = file;
@@ -482,7 +485,7 @@ void CtgDatabase::position_to_ctg_signature(const Board& pos, ctg_signature_t* s
             Square sq = create_square(file, rank);
             if (flip_board) sq = mirror_rank(sq);
             if (mirror_board) sq = mirror_file(sq);
-            Piece piece = pos.pieceAt(sq);
+            Piece piece = flip_board ? flipPiece(pos.pieceAt(sq)) : pos.pieceAt(sq);
             switch (piece) {
                 case Empty: bits = 0x0; num_bits = 1; break;
                 case WhitePawn: bits = 0x3; num_bits = 3; break;
@@ -510,9 +513,23 @@ void CtgDatabase::position_to_ctg_signature(const Board& pos, ctg_signature_t* s
     int flag_bit_length = 0;
     if (pos.enPassantSquare() != InvalidSquare)
     {
-        ep = File(pos.enPassantSquare());
-        if (mirror_board) ep = 7 - ep;
-        flag_bit_length = 3;
+        bool epfound = false;
+        MoveList ml = pos.generateMoves();
+        foreach (Move mx, ml)
+        {
+            if (mx.isEnPassant())
+            {
+                epfound = true;
+                break;
+            }
+        }
+
+        if (epfound)
+        {
+            ep = File(pos.enPassantSquare());
+            if (mirror_board) ep = 7 - ep;
+            flag_bit_length = 3;
+        }
     }
     int castle = 0;
     if (pos.canCastleShort(white)) castle += 4;
@@ -558,94 +575,30 @@ void CtgDatabase::position_to_ctg_signature(const Board& pos, ctg_signature_t* s
 
 int64_t CtgDatabase::move_weight(const Board& pos,
         Move move,
-        uint8_t annotation,
-        bool* recommended,
-        uint64_t* count) const
+        MoveData& md) const
 {
     // Here, the game is needed
-
-    ((Board&)pos).doMove(move);
+    bool reversed = pos.blackToMove();
+    Board b(pos);
+    b.doMove(move);
     ctg_entry_t entry;
-    bool success = ctg_get_entry(pos, &entry);
-    ((Board&)pos).undoMove(move);
+    bool success = ctg_get_entry(b, &entry);
     if (!success) return 0;
 
-    *recommended = false;
-    int64_t half_points = 2*entry.wins + entry.draws;
+    md.result[ResultUnknown] = 0;
+    md.result[WhiteWin] = reversed ? entry.losses : entry.wins;
+    md.result[Draw] = entry.draws;
+    md.result[BlackWin] = reversed ? entry.wins : entry.losses;
+
     int64_t games = entry.wins + entry.draws + entry.losses;
-    int64_t weight = (games < 1) ? 0 : (half_points * 10000) / games;
-    if (entry.recommendation == 64) weight = 0;
-    if (entry.recommendation == 128) *recommended = true;
+    md.count = games;
 
-    *count = entry.wins;
+    md.rating = entry.avg_rating_score;
+    md.rated = entry.avg_rating_games;
+    md.move = move;
+    md.san = pos.moveToSan(move);
 
-    // Adjust weights based on move annotations. Note that moves can be both
-    // marked as recommended and annotated with a '?'. Since moves like this
-    // are not marked green in GUI tools, the recommendation is turned off in
-    // order to give results consistent with expectations.
-    switch (annotation) {
-        case 0x01: weight *=  8; break;                         //  !
-        case 0x02: weight  =  0; *recommended = false; break;   //  ?
-        case 0x03: weight *= 32; break;                         // !!
-        case 0x04: weight  =  0; *recommended = false; break;   // ??
-        case 0x05: weight /=  2; *recommended = false; break;   // !?
-        case 0x06: weight /=  8; *recommended = false; break;   // ?!
-        case 0x08: weight = INT32_MAX; break;                   // Only move
-        case 0x16: break;                                       // Zugzwang
-        default: break;
-    }
-    return weight;
-}
-
-// ---------------------------------------------------------
-
-bool CtgDatabase::ctg_pick_move(const Board& pos, ctg_entry_t* entry, Move* move) const
-{
-    Move moves[100];
-    int64_t weights[100] = { 0 };
-    bool recommended[100] = { 0 };
-    int64_t total_weight = 0;
-    uint64_t count[100] = { 0 };
-    bool have_recommendations = false;
-    for (int i=0; i<2*entry->num_moves; i += 2) {
-        uint8_t byte = entry->moves[i];
-        Move m = byte_to_move(pos, byte);
-        moves[i/2] = m;
-        weights[i/2] = move_weight(pos, m, entry->moves[i+1], &recommended[i/2], &count[i/2]);
-        if (recommended[i/2]) have_recommendations = true;
-        if (!m.isLegal()) break;
-    }
-
-    // Do a prefix sum on the weights to facilitate a random choice. If there are recommended
-    // moves, ensure that we don't pick a move that wasn't recommended.
-    for (int i=0; i<entry->num_moves; ++i) {
-        if (have_recommendations && !recommended[i]) weights[i] = 0;
-        total_weight += weights[i];
-        weights[i] = total_weight;
-    }
-    if (total_weight == 0) {
-        *move = Move();
-        return false;
-    }
-    uint64_t r = qrand();
-    r *= (0xFFFFFFFFFFFFFFFFull/RAND_MAX);
-    int64_t choice = ((int64_t)r) % total_weight;
-    int64_t i;
-    for (i=0; choice >= weights[i]; ++i) {}
-
-    *move = moves[i];
-    return true;
-}
-
-// ---------------------------------------------------------
-
-Move CtgDatabase::get_best_book_move(const Board &pos) const
-{
-    Move move;
-    ctg_entry_t entry;
-    if (!ctg_get_entry(pos, &entry)) return Move();
-    if (!ctg_pick_move(pos, &entry, &move)) return Move();
-    return move;
+    return games;
 }
 
 // ---------------------------------------------------------
@@ -674,46 +627,26 @@ int CtgDatabase::getMoveMapForBoard(const Board &pos, QMap<Move, MoveData>& move
 {
     ctg_entry_t entry;
     if (!ctg_get_entry(pos, &entry)) return 0;
+
     // Position is here, output the moves associated with it
-    QVector<Move> moves(100);
-    int64_t weights[100] = { 0 };
-    bool recommended[100] = { 0 };
-    uint64_t count[100] = { 0 };
-    int64_t total_weight = 0;
-    bool have_recommendations = false;
-    for (int i=0; i<2*entry.num_moves; i += 2)
+    int games = 0;
+    for (int i=0; i<entry.num_moves; ++i)
     {
         uint8_t byte = entry.moves[i];
         Move m = byte_to_move(pos, byte);
-        moves[i/2] = m;
-        weights[i/2] = move_weight(pos, m, entry.moves[i+1], &recommended[i/2], &count[i]);
-        if (recommended[i/2]) have_recommendations = true;
-        if (!m.isLegal()) break;
+        if (m.isLegal())
+        {
+            MoveData md;
+            int newGames = move_weight(pos, m, md);
+            if (newGames)
+            {
+                games += newGames;
+                moveList.insert(md.move, md);
+            }
+        }
     }
 
-    // Do a prefix sum on the weights to facilitate a random choice. If there are recommended
-    // moves, ensure that we don't pick a move that wasn't recommended.
-    for (int i=0; i<entry.num_moves; ++i)
-    {
-        if (have_recommendations && !recommended[i]) weights[i] = 0;
-        total_weight += weights[i];
-        weights[i] = total_weight;
-    }
-    if (total_weight == 0)
-    {
-        //return 0;
-    }
-
-    for (int i=0; i<entry.num_moves; ++i)
-    {
-        MoveData md;
-        md.count = count[i];
-        md.move = moves.at(i);
-        md.san = pos.moveToSan(md.move);
-        moveList.insert(md.move, md);
-    }
-
-    return moveList.count();
+    return games;
 }
 
 // ---------------------------------------------------------

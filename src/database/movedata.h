@@ -20,7 +20,7 @@ public:
     QString san;
     unsigned int count;
     unsigned int result[4];
-    long rating;
+    unsigned long long rating;
     unsigned int rated;
     long year;
     unsigned int dated;
