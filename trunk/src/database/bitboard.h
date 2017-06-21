@@ -174,6 +174,8 @@ public:
     bool isAttackedBy(const unsigned int color, Square square) const;
     /** Return number of attacks onto a given square by the given color */
     int numAttackedBy(const unsigned int color, Square square) const;
+    /** Generate all possible moves in a given position */
+    MoveList generateMoves() const;
 protected:
     unsigned int countSetBits(quint64 n) const;
 private:
@@ -211,8 +213,7 @@ private:
     bool prepareCastle960(Move &move) const;
     /** Test that nothing is inbetween the castling pieces */
     bool isFreeForCastling960(Square from, Square to, Square rook_from, Square rook_to) const;
-    /** Generate all possible moves in a given position */
-    MoveList generateMoves() const;
+
 
     /** Grant castling rights on the kingside to the given color */
     void setCastleShort(unsigned int color);

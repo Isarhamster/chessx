@@ -62,5 +62,29 @@ inline bool isValidPiece(Piece p)
     return isWhite(p) || isBlack(p);
 }
 
+inline Piece flipPiece(Piece p)
+{
+    switch (p)
+    {
+    case WhiteKing:
+    case WhiteQueen:
+    case WhiteRook:
+    case WhiteBishop:
+    case WhiteKnight:
+    case WhitePawn:
+        return Piece((int)p+6);
+    case BlackKing:
+    case BlackQueen:
+    case BlackRook:
+    case BlackBishop:
+    case BlackKnight:
+    case BlackPawn:
+        return Piece((int)p-6);
+    default:
+        break;
+    }
+    return p;
+}
+
 #endif // PIECE_H
 

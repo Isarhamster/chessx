@@ -10,6 +10,8 @@
 #include <stdint.h>
 #include "ctg.h"
 
+struct _results_t;
+
 class CtgDatabase : public Database
 {
     Q_OBJECT
@@ -52,8 +54,6 @@ public:
     void reset();
     void book_make(Database& db, volatile bool& breakFlag);
 
-    /** Look up the best book moves given for @p pos */
-    Move get_best_book_move(const Board& pos) const;
 signals:
 
 public slots:
@@ -92,6 +92,7 @@ protected: // Methods which interface with ChessX
 
     /** Compute the ctg-huffman encoding of the given position */
     void position_to_ctg_signature(const Board& pos, ctg_signature_t* sig) const;
+
     /**
      * Assign a weight to the given move, which indicates its relative
      * probability of being selected.
@@ -99,13 +100,7 @@ protected: // Methods which interface with ChessX
      * resulting position, which determines the actual weight of the
      * move, corrected by some annotations.
      */
-    int64_t move_weight(const Board& pos,
-            Move move,
-            uint8_t annotation,
-            bool* recommended, uint64_t *count) const;
-
-    /** Do the actual work of choosing amongst all book moves according to weight. */
-    bool ctg_pick_move(const Board& pos, ctg_entry_t* entry, Move* move) const;
+    int64_t move_weight(const Board& pos, Move move, MoveData& md) const;
 
     /** Get the ctg entry associated with the given position. */
     bool ctg_get_entry(const Board& pos, ctg_entry_t* entry) const;

@@ -44,7 +44,7 @@ MoveData::MoveData()
 double MoveData::percentage() const
 {
     unsigned c = result[ResultUnknown] + 2 * result[WhiteWin] + result[Draw];
-    return c * 500 / count / 10.0;
+    return count ? c * 500 / count / 10.0 : 0;
 }
 
 bool MoveData::hasPercent() const
@@ -59,7 +59,7 @@ bool MoveData::hasPercent() const
 
 int MoveData::averageRating() const
 {
-    return rated ? rating / rated : 0;
+    return rated ? (rating / (unsigned long long) rated) : 0;
 }
 
 int MoveData::averageYear() const
