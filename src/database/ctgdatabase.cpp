@@ -7,10 +7,14 @@
 * based on Stephan Vermeire's ctg code for Brutus.
 ****************************************************************************/
 
-
+#include <QtCore>
 #include "ctgdatabase.h"
 #include "ctg.h"
 #include "square.h"
+
+#ifndef ntohl
+#define ntohl(x) (x) // Hack for Linux which does not know ntohl
+#endif
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
