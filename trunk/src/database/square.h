@@ -50,9 +50,29 @@ enum FileNames
     FILE_H
 };
 
+enum RankNames
+#ifdef USE_C11
+: unsigned char
+#endif // USE_C11
+{
+    RANK_1,
+    RANK_2,
+    RANK_3,
+    RANK_4,
+    RANK_5,
+    RANK_6,
+    RANK_7,
+    RANK_8
+};
+
 inline Square SquareFromRankAndFile(unsigned char rank, unsigned char file)
 {
     return Square(rank*8+file);
+}
+
+inline Square SquareFromRankAndFile(unsigned char rank, char file)
+{
+    return SquareFromRankAndFile(rank,(unsigned char)((char)(tolower(file))-'a'));
 }
 
 #ifdef USE_C11

@@ -1032,7 +1032,7 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
                 {
                     if (c>='a' && c<='h')
                     {
-                        Square x = SquareFromRankAndFile(7,c-'a');
+                        Square x = SquareFromRankAndFile(7,c);
                         if (x<m_ksq[Black])
                         {
                             setChess960(true);
@@ -1048,7 +1048,7 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
                     }
                     else if (c>='A' && c<='H')
                     {
-                        Square x = SquareFromRankAndFile(0,c-'A');
+                        Square x = SquareFromRankAndFile(0,c);
                         if (x<m_ksq[White])
                         {
                             setChess960(true);
@@ -1224,10 +1224,10 @@ void BitBoard::fixCastlingRooks(bool onlyMissingSections, char file000, char fil
 
     Square filesForSection[4] =
     {
-        file000 ? SquareFromRankAndFile(0,file000-'a') : Square(InvalidSquare),
-        file00 ? SquareFromRankAndFile(0,file00-'a') : Square(InvalidSquare),
-        file000 ? SquareFromRankAndFile(7,file000-'a') : Square(InvalidSquare),
-        file00 ? SquareFromRankAndFile(7,file00-'a') : Square(InvalidSquare)
+        file000 ? SquareFromRankAndFile(0,file000) : Square(InvalidSquare),
+        file00 ? SquareFromRankAndFile(0,file00) : Square(InvalidSquare),
+        file000 ? SquareFromRankAndFile(7,file000) : Square(InvalidSquare),
+        file00 ? SquareFromRankAndFile(7,file00) : Square(InvalidSquare)
     };
 
     for (int section=0; section<4; ++section)
@@ -1300,10 +1300,10 @@ bool BitBoard::hasAmbiguousCastlingRooks(char file000, char file00) const
 
     Square filesForSection[4] =
     {
-        file000 ? SquareFromRankAndFile(0,file000-'a') : Square(InvalidSquare),
-        file00 ? SquareFromRankAndFile(0,file00-'a') : Square(InvalidSquare),
-        file000 ? SquareFromRankAndFile(7,file000-'a') : Square(InvalidSquare),
-        file00 ? SquareFromRankAndFile(7,file00-'a') : Square(InvalidSquare)
+        file000 ? SquareFromRankAndFile(0,file000) : Square(InvalidSquare),
+        file00 ? SquareFromRankAndFile(0,file00) : Square(InvalidSquare),
+        file000 ? SquareFromRankAndFile(7,file000) : Square(InvalidSquare),
+        file00 ? SquareFromRankAndFile(7,file00) : Square(InvalidSquare)
     };
 
     for (int section=0; section<4; ++section)
@@ -2951,7 +2951,7 @@ QString BitBoard::toFen(bool forceExtendedFEN) const
     //piece placement
     for(int row = 7; row >= 0; row--)
     {
-        for(int col = 0; col < 8; ++col)
+        for(unsigned char col = 0; col < 8; ++col)
         {
             piece = pieceAt(SquareFromRankAndFile(row,col));
             if(piece != Empty)
@@ -3077,7 +3077,7 @@ QString BitBoard::toHumanFen() const
     //piece placement
     for(int row = 7; row >= 0; row--)
     {
-        for(int col = 0; col < 8; ++col)
+        for(unsigned char col = 0; col < 8; ++col)
         {
             Piece piece = pieceAt(SquareFromRankAndFile(row,col));
             if(piece != Empty)
