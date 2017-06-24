@@ -1278,7 +1278,7 @@ void BoardView::drawSquareAnnotation(QPaintEvent* event, QString annotation)
     QChar rankChar = trimmed[2];
     QString files = "abcdefgh";
     QString ranks = "12345678";
-    int file = files.indexOf(fileChar);
+    unsigned char file = files.indexOf(fileChar);
     int rank = ranks.indexOf(rankChar);
 
     QColor color = Qt::red;
@@ -1386,9 +1386,9 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
     QChar rankChar1 = trimmed[2];
     QChar fileChar2 = trimmed[3];
     QChar rankChar2 = trimmed[4];
-    int file1 = letters.indexOf(fileChar1);
+    unsigned char file1 = letters.indexOf(fileChar1);
     int rank1 = numbers.indexOf(rankChar1);
-    int file2 = letters.indexOf(fileChar2);
+    unsigned char file2 = letters.indexOf(fileChar2);
     int rank2 = numbers.indexOf(rankChar2);
 
     if(file1 < 0 || file2 < 0 || rank1 < 0 || rank2 < 0)

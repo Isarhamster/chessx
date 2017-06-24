@@ -418,7 +418,7 @@ quint64 PolyglotDatabase::getHashFromBoard(const Board& board) const
     //piece placement
     for(int row = 7; row >= 0; row--)
     {
-        for(int col = 0; col < 8; ++col)
+        for(unsigned char col = 0; col < 8; ++col)
         {
             Piece piece = board.pieceAt(SquareFromRankAndFile(row,col));
             if(piece != Empty)

@@ -21,17 +21,9 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-#define create_square(file,rank) SquareFromRankAndFile(rank,file)
+#define create_square(file,rank)    SquareFromRankAndFile(rank,file)
 #define mirror_rank(square)         (Square((square) ^ 0x38))
 #define mirror_file(square)         (Square((square) ^ 0x07))
-#define flip_piece(p)               (flip_piece[p])
-
-typedef struct _results_t
-{
-    uint32_t  wins = 0;
-    uint32_t losses = 0;
-    uint32_t draw = 0;
-} results_t;
 
 // ---------------------------------------------------------
 // construction
@@ -397,7 +389,7 @@ Move CtgDatabase::byte_to_move(const Board& pos, uint8_t byte) const
     Color white = pos.toMove();
     bool mirror_board = (File(pos.kingSquare(white)) < FILE_E) &&
         (pos.castlingRights() == 0); /* pieces.white.0 is the white king - determine if in left half of board */
-    int file_from = -1, file_to = -1, rank_from = -1, rank_to = -1;
+    unsigned char file_from = -1, file_to = -1, rank_from = -1, rank_to = -1;
 
     // Handle castling.
     if (byte == 107) {
@@ -433,7 +425,7 @@ Move CtgDatabase::byte_to_move(const Board& pos, uint8_t byte) const
     // Find the piece.
     int nth_piece = piece_index[byte], piece_count = 0;
     bool found = false;
-    for (int file=0; file<8 && !found; ++file) {
+    for (unsigned char file=0; file<8 && !found; ++file) {
         for (int rank=0; rank<8 && !found; ++rank) {
             Square sq = create_square(file, rank);
             if (flip_board) sq = mirror_rank(sq);
@@ -484,7 +476,7 @@ void CtgDatabase::position_to_ctg_signature(const Board& pos, ctg_signature_t* s
 
 
     // For each board square, append the huffman bit sequence for its contents.
-    for (int file=0; file<8; ++file) {
+    for (unsigned char file=0; file<8; ++file) {
         for (int rank=0; rank<8; ++rank) {
             Square sq = create_square(file, rank);
             if (flip_board) sq = mirror_rank(sq);

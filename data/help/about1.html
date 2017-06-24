@@ -172,16 +172,20 @@ an algorithm, how the GUI shall select moves if several moves are available for 
 </p>
 
 <h3><a name="Books"></a>Using Books in ChessX</h3>
-<p>Polyglot is a book standard supported by ChessX. The orginal code was licensed under GNU GPL Version 2.0.</p>
+<p>ChessX supports three book formats: Polyglot (*.bin), Arena (*abk) and Chessbase (*.ctg/*.ctb/*.cto).</p>
+<p>The The orginating Polyglot code was licensed under GNU GPL Version 2.0, the ctg-support largely inspired by the Daydreamer engine code.</p>
 <p>ChessX displays books like any other database in the Opening Tree Browser. Drag a polyglot book (which must have the suffix ".bin")
-or an Arena Book (.abk) to the Database List or open the book via menu. Once it is open, it becomes available as any other open database
+an Arena Book (.abk) or a Chessbase book (*.ctg) to the Database List or open the book via menu. Once it is open, it becomes available as any other open database
 in the combo box "Source" beneath the opening tree.</p>
-<p>One note: Polyglot books can be difficult to interpret: they are made for engines, as they give a hint on moves,
+<p>One note on Chessbase books: Three files are required with externsion 'ctg', 'ctb' and 'cto'. They all need to have the same basename and reside
+within the same directory.</p>
+<p>One note on Polyglot: Books can be difficult to interpret: they are made for engines, as they give a hint on moves,
 the engine should play. Moves which did not succeed at all are usually not part of polyglot books.</p>
 <p>So do not learn openings from polyglot books - important moves might be missing!</p>
-
+<p>One note on Arena: Unlike Polyglot or Chessbasem, Arena books are a compressed set of games, so they are handled like read-only databases. You can drag games from Arena books
+like from any other database.<p>
 <h3><a name="Create-Book"></a>Creating your own book</h3>
-<p>You can create your own book by selecting a open PGN database (right click with the mouse) and select "Make polyglot book".</p>
+<p>You can create your own Polyglot book by selecting a open PGN or Arena database (right click with the mouse) and select "Make polyglot book".</p>
 <p>ChessX will query the following parameters and pass them for creating a book:</p>
 <ul>
 <li>The number of plies (half moves) to read for each game. E.g. if set to
