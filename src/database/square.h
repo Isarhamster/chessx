@@ -75,6 +75,16 @@ inline Square SquareFromRankAndFile(unsigned char rank, char file)
     return SquareFromRankAndFile(rank,(unsigned char)((char)(tolower(file))-'a'));
 }
 
+inline Square SquareMirrorRank(Square s)
+{
+    return (Square((s) ^ 0x38));
+}
+
+inline Square SquareMirrorFile(Square s)
+{
+    return (Square((s) ^ 0x07));
+}
+
 #ifdef USE_C11
 
 inline Square operator+(Square square, int offset)

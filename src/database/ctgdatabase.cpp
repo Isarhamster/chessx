@@ -22,8 +22,6 @@
 #endif // _MSC_VER
 
 #define create_square(file,rank)    SquareFromRankAndFile(rank,file)
-#define mirror_rank(square)         (Square((square) ^ 0x38))
-#define mirror_file(square)         (Square((square) ^ 0x07))
 
 // ---------------------------------------------------------
 // construction
@@ -428,8 +426,8 @@ Move CtgDatabase::byte_to_move(const Board& pos, uint8_t byte) const
     for (unsigned char file=0; file<8 && !found; ++file) {
         for (int rank=0; rank<8 && !found; ++rank) {
             Square sq = create_square(file, rank);
-            if (flip_board) sq = mirror_rank(sq);
-            if (mirror_board) sq = mirror_file(sq);
+            if (flip_board) sq = SquareMirrorRank(sq);
+            if (mirror_board) sq = SquareMirrorFile(sq);
             Piece piece = flip_board ? flipPiece(pos.pieceAt(sq)) : pos.pieceAt(sq);
             if (piece == pc) ++piece_count;
             if (piece_count == nth_piece) {
@@ -479,8 +477,8 @@ void CtgDatabase::position_to_ctg_signature(const Board& pos, ctg_signature_t* s
     for (unsigned char file=0; file<8; ++file) {
         for (int rank=0; rank<8; ++rank) {
             Square sq = create_square(file, rank);
-            if (flip_board) sq = mirror_rank(sq);
-            if (mirror_board) sq = mirror_file(sq);
+            if (flip_board) sq = SquareMirrorRank(sq);
+            if (mirror_board) sq = SquareMirrorFile(sq);
             Piece piece = flip_board ? flipPiece(pos.pieceAt(sq)) : pos.pieceAt(sq);
             switch (piece) {
                 case Empty: bits = 0x0; num_bits = 1; break;
