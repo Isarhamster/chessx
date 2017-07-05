@@ -478,6 +478,9 @@ MainWindow::MainWindow() : QMainWindow(),
         }
     }
 
+    // Load favorites
+    loadFileFavorites();
+
     qApp->installEventFilter(this);
     /* Activate clipboard */
     updateMenuDatabases();
@@ -1955,6 +1958,33 @@ void MainWindow::restoreRecentFiles()
         {
            QString d = regExp.cap(1);
            m_databaseList->setStars(s, d.toInt());
+        }
+    }
+}
+
+void MainWindow::loadFileFavorites()
+{
+    AppSettings->beginGroup("Favorites");
+    QStringList list = AppSettings->value("Files").toStringList();
+    QStringList attributes = AppSettings->value("Attributes").toStringList();
+    AppSettings->endGroup();
+
+    for (int stars=4;stars<6;++stars)
+    {
+        QStringList::const_iterator it = attributes.cbegin();
+        foreach(QString s, list)
+        {
+            QString attribute = it != attributes.cend() ? *it++ : "";
+            bool bUtf8 = (attribute.contains("utf8"));
+            QRegExp regExp("stars([0-9])");
+            if (regExp.indexIn(attribute) >= 0)
+            {
+               QString d = regExp.cap(1);
+               if (d.toInt() == stars)
+               {
+                   openDatabaseFile(s, bUtf8);
+               }
+            }
         }
     }
 }

@@ -576,6 +576,8 @@ private:
     void cancelOperation(const QString& msg);
     /** Restore the list of recent files */
     void restoreRecentFiles();
+    /** Load additional files at startup */
+    void loadFileFavorites();
     /** Query User and save game if game was modified
         @return true if the next action shall be performed */
     bool QuerySaveGame(DatabaseInfo* dbInfo = 0);

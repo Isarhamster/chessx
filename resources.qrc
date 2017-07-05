@@ -181,5 +181,7 @@
         <file alias="images/threat_white.png">data/images/threat_white.png</file>
         <file alias="images/black_wall.png">data/images/black_wall.png</file>
         <file alias="images/white_wall.png">data/images/white_wall.png</file>
+        <file alias="images/startup.png">data/images/startup.png</file>
+        <file alias="images/active.png">data/images/active.png</file>
     </qresource>
 </RCC>

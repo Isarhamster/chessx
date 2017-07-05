@@ -81,21 +81,23 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         QMenu menu("Database List",this);
         int stars = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_FAVORITE), Qt::UserRole).toString().toInt();
         bool bIsFavorite = stars > 0;
-        bool bHasPath = !m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString().isEmpty();
-        bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_OPEN), Qt::UserRole).toString() == "Open";
 
         QString filename = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH), Qt::UserRole).toString();
+        bool bHasSuffix = filename.contains(".");
+        bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_OPEN), Qt::UserRole).toString() == "Open";
         bool bIsBook = DatabaseInfo::IsBook(filename);
 
         menu.addAction(bIsOpen ? tr("Activate") : tr("Open"), this, SLOT(dbOpen()));
-        menu.addAction(tr("Close"), this, SLOT(dbClose()))->setEnabled(bIsOpen && bHasPath);
+        menu.addAction(tr("Close"), this, SLOT(dbClose()))->setEnabled(bIsOpen && bHasSuffix);
         menu.addSeparator();
-        menu.addAction(tr("Keep file"), this, SLOT(dbKeepFile()))->setEnabled(stars != 1);
-        menu.addAction(tr("Two star favorite"), this, SLOT(dbAddToFavorites2()))->setEnabled(stars != 2);
-        menu.addAction(tr("Three star favorite"), this, SLOT(dbAddToFavorites3()))->setEnabled(stars != 3);
-        menu.addAction(tr("Remove from Favorites"), this, SLOT(dbRemoveFromFavorites()))->setEnabled(bIsFavorite);
+        menu.addAction(tr("Keep file"), this, SLOT(dbKeepFile()))->setEnabled(bHasSuffix && stars != 1);
+        menu.addAction(tr("Two star favorite"), this, SLOT(dbAddToFavorites2()))->setEnabled(bHasSuffix && stars != 2);
+        menu.addAction(tr("Three star favorite"), this, SLOT(dbAddToFavorites3()))->setEnabled(bHasSuffix && stars != 3);
+        menu.addAction(tr("Open at startup"), this, SLOT(dbAddToOpenAtStartup()))->setEnabled(bHasSuffix && stars != 4);
+        menu.addAction(tr("Set active at startup"), this, SLOT(dbSetActiveAtStartup()))->setEnabled(bHasSuffix && stars != 5);
+        menu.addAction(tr("Remove from Favorites"), this, SLOT(dbRemoveFromFavorites()))->setEnabled(bHasSuffix && bIsFavorite);
         menu.addSeparator();
-        menu.addAction(tr("Show in Finder"), this, SLOT(slotShowInFinder()))->setEnabled(bHasPath);
+        menu.addAction(tr("Show in Finder"), this, SLOT(slotShowInFinder()))->setEnabled(bHasSuffix);
 
         bool enablePolyglot = bIsOpen && !bIsBook;
         menu.addAction(tr("Make a Polyglot book..."), this, SLOT(slotMakeBook()))->setEnabled(enablePolyglot);
@@ -104,7 +106,7 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         QString extTool1 = fi.baseName();
         if (!extTool1.isEmpty())
         {
-            menu.addAction(extTool1, this, SLOT(slotExtTool1()))->setEnabled(bHasPath && fi.exists());
+            menu.addAction(extTool1, this, SLOT(slotExtTool1()))->setEnabled(bHasSuffix && fi.exists());
         }
         menu.addSeparator();
         QAction* action = menu.addAction("UTF8", this, SLOT(dbToggleUTF8()));
@@ -112,6 +114,7 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_UTF8)).toString();
         bool bUtf8 = (utf8.compare("UTF8") == 0);
         action->setChecked(bUtf8);
+        action->setEnabled(bHasSuffix);
 
         menu.exec(mapToGlobal(pos));
     }
@@ -200,6 +203,23 @@ void DatabaseList::dbAddToFavorites3()
     setStars(ts,3);
 }
 
+void DatabaseList::dbAddToOpenAtStartup()
+{
+    Q_ASSERT(m_cell.isValid());
+    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
+    setFileFavorite(ts, true, 0);
+    setStars(ts,4);
+}
+
+void DatabaseList::dbSetActiveAtStartup()
+{
+    Q_ASSERT(m_cell.isValid());
+    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
+    limitStars(4);
+    setFileFavorite(ts, true, 0);
+    setStars(ts,5);
+}
+
 void DatabaseList::dbRemoveFromFavorites()
 {
     Q_ASSERT(m_cell.isValid());
@@ -233,6 +253,16 @@ void DatabaseList::slotShowInFinder()
 int DatabaseList::getLastIndex(const QString& s) const
 {
     return m_model->getLastIndex(s);
+}
+
+void DatabaseList::limitStars(int limit)
+{
+    m_model->limitStars(limit);
+}
+
+int DatabaseList::stars(const QString &s) const
+{
+    return m_model->stars(s);
 }
 
 void DatabaseList::addFileOpen(const QString& s, bool utf8)
