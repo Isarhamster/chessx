@@ -19,7 +19,9 @@ public:
     void save() const;
 
     int getLastIndex(const QString& s) const;
+    int stars(const QString& s) const;
 
+    void limitStars(int limit);
 public slots:
     void addFileOpen(const QString& s, bool utf8);
     void setFileFavorite(const QString& s, bool bFavorite, int index);
@@ -60,6 +62,8 @@ private slots:
     void slotContextMenu(const QPoint& pos);
     void dbAddToFavorites2();
     void dbAddToFavorites3();
+    void dbAddToOpenAtStartup();
+    void dbSetActiveAtStartup();
     void dbKeepFile();
     void dbRemoveFromFavorites();
     void slotShowInFinder();

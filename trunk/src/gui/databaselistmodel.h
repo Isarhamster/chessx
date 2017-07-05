@@ -85,6 +85,7 @@ public:
     explicit DatabaseListModel(QObject *parent = 0);
 
     int getLastIndex(const QString& s) const;
+    int stars(const QString& s) const;
 
 signals:
     void OnSelectIndex(const QModelIndex&);
@@ -115,6 +116,7 @@ public:
 public:
     virtual QVariant headerData(int section, Qt::Orientation orientation,
                                 int role = Qt::DisplayRole) const;
+    void limitStars(int limit);
 protected:
     void checkFileFavorite();
 

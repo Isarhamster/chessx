@@ -69,6 +69,8 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
                 case 1: return QPixmap(":/images/folder_favorite1.png");
                 case 2: return QPixmap(":/images/folder_favorite2.png");
                 case 3: return QPixmap(":/images/folder_favorite3.png");
+                case 4: return QPixmap(":/images/startup.png");
+                case 5: return QPixmap(":/images/active.png");
                 }
             }
             case DBLV_OPEN:
@@ -319,6 +321,36 @@ int DatabaseListModel::getLastIndex(const QString& s) const
     {
         const DatabaseListEntry& e = i.previous();
         return e.m_lastGameIndex;
+    }
+
+    return 0;
+}
+
+void DatabaseListModel::limitStars(int limit)
+{
+    QMutableListIterator<DatabaseListEntry> i(m_databases);
+    while (i.hasNext())
+    {
+        DatabaseListEntry& d = i.next();
+        if (d.m_stars > limit)
+        {
+            d.m_stars = limit;
+            QModelIndex m = createIndex(m_databases.indexOf(d), DBLV_FAVORITE, (void*) 0);
+            emit QAbstractItemModel::dataChanged(m, m);
+        }
+    }
+}
+
+int DatabaseListModel::stars(const QString &s) const
+{
+    QListIterator<DatabaseListEntry> i(m_databases);
+    DatabaseListEntry d;
+    d.m_path = s;
+
+    if(i.findNext(d))
+    {
+        const DatabaseListEntry& e = i.previous();
+        return e.m_stars;
     }
 
     return 0;
