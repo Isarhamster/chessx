@@ -218,6 +218,25 @@ void AnalysisWidget::slotReconfigure()
     ui.variationText->setFont(f);
 }
 
+void AnalysisWidget::saveConfig()
+{
+    AppSettings->beginGroup(objectName());
+    AppSettings->setValue("LastBook", ui.bookList->currentText());
+    AppSettings->endGroup();
+}
+
+void AnalysisWidget::restoreBook()
+{
+    AppSettings->beginGroup(objectName());
+    QString lastBook = AppSettings->value("LastBook", "").toString();
+    AppSettings->endGroup();
+    int index = ui.bookList->findText(lastBook);
+    if (index >= 0)
+    {
+        ui.bookList->setCurrentIndex(index);
+    }
+}
+
 void AnalysisWidget::slotUpdateBooks(QStringList files)
 {
     QString current = ui.bookList->currentText();
