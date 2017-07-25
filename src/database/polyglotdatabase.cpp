@@ -871,9 +871,9 @@ void PolyglotDatabase::add_database_chunk(Database* db, int start, int end, vola
 
 void PolyglotDatabase::add_database(Database& db, volatile bool& breakFlag)
 {
-    int maxThreads = QThread::idealThreadCount() - 1;
+    int maxThreads = QThread::idealThreadCount();
     int n = db.count();
-    int junk = n/maxThreads;
+    int chunk = n/maxThreads;
 
     RefKeeper m(db.refCounter());
     qDebug()<<"Collect from database with" << maxThreads << "threads";
@@ -881,10 +881,10 @@ void PolyglotDatabase::add_database(Database& db, volatile bool& breakFlag)
     int start = 0;
     for (int i=0; i<maxThreads; ++i)
     {
-        int end = std::min(start + junk, n);
+        int end = std::min(start + chunk, n);
         QFuture<void> future = QtConcurrent::run(this, &PolyglotDatabase::add_database_chunk, &db, start, end, &breakFlag);
         synchronizer.addFuture(future);
-        start += junk;
+        start += chunk;
     }
     synchronizer.waitForFinished();
 }
