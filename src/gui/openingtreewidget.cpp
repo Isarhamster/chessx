@@ -106,6 +106,9 @@ void OpeningTreeWidget::saveConfig()
 {
     AppSettings->setLayout(this);
     ui->OpeningTreeView->saveConfig();
+    AppSettings->beginGroup(objectName());
+    AppSettings->setValue("LastBook", ui->sourceSelector->currentText());
+    AppSettings->endGroup();
 }
 
 void OpeningTreeWidget::slotReconfigure()
@@ -177,6 +180,18 @@ void OpeningTreeWidget::updateFilterIndex(QStringList files)
         ui->sourceSelector->setCurrentIndex(0);
     }
     connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged(int)));
+}
+
+void OpeningTreeWidget::restoreBook()
+{
+    AppSettings->beginGroup(objectName());
+    QString lastBook = AppSettings->value("LastBook", "").toString();
+    AppSettings->endGroup();
+    int index = ui->sourceSelector->findText(lastBook);
+    if (index >= 0)
+    {
+        ui->sourceSelector->setCurrentIndex(index);
+    }
 }
 
 bool OpeningTreeWidget::shouldAddMove() const

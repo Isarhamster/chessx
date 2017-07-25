@@ -45,7 +45,8 @@ public slots:
     void slotReconfigure();
     /** Update the list of databases */
     void updateFilterIndex(QStringList);
-
+    /** Restore Book settings */
+    void restoreBook();
 protected slots:
     /** Indicate end of tree update */
     void slotTreeUpdate();

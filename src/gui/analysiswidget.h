@@ -56,6 +56,8 @@ public slots:
     void setPosition(const Board& board);
     /** Called when configuration was changed (either on startup or from Preferences dialog. */
     void slotReconfigure();
+    /** Store current configuration. */
+    void saveConfig();
     /** Start currently selected engine. */
     void startEngine();
     /** Stop any running  engine. */
@@ -72,7 +74,8 @@ public slots:
     void slotUpdateBooks(QStringList);
     /** Called upon entering or leaving game mode */
     void setGameMode(bool);
-
+    /** Restore Book settings */
+    void restoreBook();
 private slots:
     /** Stop if analysis is no longer visible. */
     void toggleAnalysis();
@@ -137,8 +140,7 @@ private:
     int games;
 
     bool m_gameMode;
-
-};
+ };
 
 #endif // __ANALYSIS_WIDGET_H__
 
