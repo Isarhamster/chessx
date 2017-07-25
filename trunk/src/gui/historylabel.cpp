@@ -78,10 +78,10 @@ void HistoryLabel::hideEvent(QHideEvent *)
     }
 }
 
-void HistoryLabel::setText(const QString &text)
+void HistoryLabel::setText(const QString &text, bool dontStore)
 {
     if (text == this->text()) return;
-    if (!text.isEmpty())
+    if (!text.isEmpty() && !dontStore)
     {
         m_history.prepend(text);
         if (m_history.size()>20)

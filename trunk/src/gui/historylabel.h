@@ -19,7 +19,7 @@ class HistoryLabel : public QLabel
 public:
    HistoryLabel(QWidget * parent = 0, Qt::WindowFlags f = 0);
    HistoryLabel(const QString & text, QWidget * parent = 0, Qt::WindowFlags f = 0);
-   Q_SLOT void setText(const QString & text);
+   Q_SLOT void setText(const QString & text, bool dontStore=false);
 
 protected:
    virtual void hideEvent(QHideEvent *);
