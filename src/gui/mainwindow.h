@@ -333,6 +333,8 @@ public slots:
     void slotGameMoveToPly(int ply);
     /** Show temporary message. */
     void slotStatusMessage(const QString& msg = QString());
+    /** Show temporary message for a KB hint */
+    void slotStatusMessageHint(const QString& msg = QString());
     /** Show progress bar for open file. */
     void slotOperationProgress(int progress);
     /** Change database. */
@@ -704,6 +706,7 @@ private:
     bool m_bEvalRequested;
     QList<PolyglotWriter*> m_polyglotWriters;
     QMap<QUrl, QString> m_mapDatabaseToDroppedUrl;
+    bool m_lastMessageWasHint;
 };
 
 #endif

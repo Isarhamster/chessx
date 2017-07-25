@@ -827,7 +827,8 @@ QString Output::outputGame(const Game* g, bool upToCurrentMove)
         text += m_startTagMap[MarkupColumnStyleMainline];
     }
 
-    text += writeGameComment(m_game.gameComment());
+    QString gameComment = (m_outputType == Pgn) ? m_game.annotation(0) : m_game.textAnnotation(0);
+    text += writeGameComment(gameComment);
 
     text += writeMainLine(mainId);
     if(m_options.getOptionAsBool("ColumnStyle"))
