@@ -90,6 +90,7 @@ public :
     static const char* s_emt;
     static const char* s_csl;
     static const char* s_cal;
+    static const QStringList s_specList;
 
     Game();
     Game(const Game& game);
@@ -142,8 +143,6 @@ public :
     QString moveToSan(MoveStringFlags flags = MoveOnly,
                       NextPreviousMove nextPrevious = NextMove, MoveId moveId = CURRENT_MOVE,
                       QString* annotations = 0, NagSet* nagSet = 0);
-    /** return comment associated with game */
-    QString gameComment() const;
     /** Query event info and date information for display in game browser etc. */
     QString eventInfo() const;
 
@@ -165,6 +164,9 @@ public :
 
     /** Sets the arrowAnnotation associated with move at node @p moveId */
     bool setArrowAnnotation(QString arrowAnnotation, MoveId moveId = CURRENT_MOVE);
+
+    /** Get a string with all special annotations including square brackets etc. */
+    QString specAnnotations(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
 
     /** Adds a nag to move at node @p moveId */
     bool dbAddNag(Nag nag, MoveId moveId = CURRENT_MOVE);
@@ -376,7 +378,6 @@ public :
 
     bool positionRepetition3(const Board &board) const;
     bool insufficientMaterial(const Board &b) const;
-
 
 protected:
     /** Find the point in the this game where @p otherGame fits in the next time.

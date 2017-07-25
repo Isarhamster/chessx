@@ -96,7 +96,8 @@ MainWindow::MainWindow() : QMainWindow(),
     m_machineHasToMove(false),
     m_gameMode(false),
     m_scratchPad(0),
-    m_bEvalRequested(false)
+    m_bEvalRequested(false),
+    m_lastMessageWasHint(false)
 {
     setObjectName("MainWindow");
 
@@ -595,6 +596,8 @@ void MainWindow::closeEvent(QCloseEvent* e)
         m_scratchPad->saveConfig();
         m_gameView->saveConfig();
         m_ficsConsole->saveConfig();
+        m_mainAnalysis->saveConfig();
+        m_secondaryAnalysis->saveConfig();
 
         AppSettings->setLayout(this);
         AppSettings->beginGroup("/MainWindow/");
@@ -1248,11 +1251,11 @@ bool MainWindow::gameEditComment(Output::CommentType type)
 
     if((type == Output::Precomment) || (moves <= 0))
     {
-        annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
+        annotation = game().textAnnotation(CURRENT_MOVE, Game::BeforeMove);
     }
     else
     {
-        annotation = game().annotation();
+        annotation = game().textAnnotation();
     }
     CommentDialog dlg(this);
     dlg.setText(annotation);
@@ -1265,22 +1268,25 @@ bool MainWindow::gameEditComment(Output::CommentType type)
     {
         if(moves > 0)
         {
-            game().setAnnotation(dlg.text(), CURRENT_MOVE, Game::BeforeMove);
+            QString spec = game().specAnnotations(CURRENT_MOVE, Game::BeforeMove);
+            game().setAnnotation(dlg.text()+spec, CURRENT_MOVE, Game::BeforeMove);
         }
         else
         {
-            game().setGameComment(dlg.text());
+            QString spec = game().specAnnotations();
+            game().setGameComment(dlg.text()+spec);
         }
     }
     else
     {
+        QString spec = game().specAnnotations();
         if (moves > 0)
         {
-            game().setAnnotation(dlg.text());
+            game().setAnnotation(dlg.text()+spec);
         }
         else
         {
-            game().setGameComment(dlg.text());
+            game().setGameComment(dlg.text()+spec);
         }
     }
     return true;

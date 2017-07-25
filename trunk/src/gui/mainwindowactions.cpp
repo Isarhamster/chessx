@@ -1205,7 +1205,7 @@ void MainWindow::moveChanged()
     // Set board first
     m_boardView->setBoard(g.board(), m_currentFrom, m_currentTo, game().atLineEnd());
 
-    QString annotation = game().annotation();
+    QString annotation = game().textAnnotation();
     BoardViewEx* frame = BoardViewFrame(m_boardView);
     if (frame)
     {
@@ -1261,11 +1261,11 @@ void MainWindow::displayVariations()
         QString placeHolder;
         if (game().atLineEnd())
         {
-            placeHolder = (game().isMainline() ? tr("End of game") : tr("End of variation "));
+            placeHolder = (game().isMainline() ? tr("End of game") : tr("End of line"));
         }
         else
         {
-            placeHolder = (game().isMainline() ? tr("Main line") : tr("Variation "));
+            placeHolder = (game().isMainline() ? tr("Main line") : tr("Line"));
         }
 
         MoveId start = game().variationStartMove();
@@ -1276,6 +1276,7 @@ void MainWindow::displayVariations()
             Move startMove = g.move();
             g.backward();
             QString startSan = g.board().moveToSan(startMove, true, true);
+            placeHolder += " ";
             placeHolder += startSan;
         }
         textVariations << placeHolder;
@@ -1853,7 +1854,7 @@ void MainWindow::slotGameRemoveVariations()
 
 void MainWindow::slotGameSetComment(QString annotation)
 {
-    if (game().annotation() != annotation)
+    if (game().textAnnotation() != annotation)
     {
         game().editAnnotation(annotation);
         UpdateGameText();
@@ -2436,8 +2437,23 @@ void MainWindow::slotFilterLoad(int index)
     }
 }
 
+void MainWindow::slotStatusMessageHint(const QString& msg)
+{
+    if (!msg.isEmpty() || m_lastMessageWasHint)
+    {
+        m_statusApp->setText(msg, true);
+        m_lastMessageWasHint = !msg.isEmpty();
+        if (!msg.isEmpty())
+        {
+            m_messageTimer->stop();
+            m_messageTimer->start();
+        }
+    }
+}
+
 void MainWindow::slotStatusMessage(const QString& msg)
 {
+    m_lastMessageWasHint = false;
     m_statusApp->setText(msg);
     if (!msg.isEmpty())
     {
@@ -3226,7 +3242,7 @@ BoardView* MainWindow::CreateBoardView()
         connect(boardView, SIGNAL(moveMade(Square, Square, int)), SLOT(slotBoardMove(Square, Square, int)));
         connect(boardView, SIGNAL(clicked(Square, int, QPoint, Square)), SLOT(slotBoardClick(Square, int, QPoint, Square)));
         connect(boardView, SIGNAL(wheelScrolled(int)), SLOT(slotBoardMoveWheel(int)));
-        connect(boardView, SIGNAL(actionHint(QString)), SLOT(slotStatusMessage(QString)));
+        connect(boardView, SIGNAL(actionHint(QString)), SLOT(slotStatusMessageHint(QString)));
         connect(boardView, SIGNAL(evalRequest(Square, Square)), SLOT(slotEvalRequest(Square, Square)));
         connect(boardView, SIGNAL(evalMove(Square, Square)), SLOT(slotEvalMove(Square, Square)));
         connect(boardView, SIGNAL(evalModeDone()), SLOT(slotResumeBoard()));

@@ -37,6 +37,7 @@ const char* Game::s_clk = "\\[%clk\\s*(\\d:\\d\\d?:\\d\\d)\\]";
 const char* Game::s_egt = "\\[%egt\\s*(\\d:\\d\\d?:\\d\\d)\\]";
 const char* Game::s_csl = "\\[%csl\\s*([^\\]]*)\\]";
 const char* Game::s_cal = "\\[%cal\\s*([^\\]]*)\\]";
+const QStringList Game::s_specList = QStringList() << s_emt << s_clk << s_egt << s_csl << s_cal;
 
 Game::Game() : QObject()
 {
@@ -849,11 +850,6 @@ QString Game::toHumanFen() const
     return m_currentBoard->toHumanFen();
 }
 
-QString Game::gameComment() const
-{
-    return m_annotations.value(0, QString(""));
-}
-
 void Game::setGameComment(const QString& gameComment)
 {
     setAnnotation(gameComment, 0);
@@ -1008,6 +1004,8 @@ bool Game::setAnnotation(QString annotation, MoveId moveId, Position position)
 bool Game::editAnnotation(QString annotation, MoveId moveId, Position position)
 {
     Game state = *this;
+    QString spec = specAnnotations(moveId);
+    annotation.append(spec);
     if (dbSetAnnotation(annotation, moveId, position))
     {
         dbIndicateAnnotationsOnBoard(currentMove());
@@ -1276,26 +1274,29 @@ QString Game::annotation(MoveId moveId, Position position) const
     }
 }
 
+QString Game::specAnnotations(MoveId moveId, Position position) const
+{
+    QString s = annotation(moveId, position);
+    QString retval;
+    foreach (QString sr, s_specList)
+    {
+        QRegExp r(sr);
+        int pos = r.indexIn(s);
+        if(pos >= 0)
+        {
+            retval += r.cap(0);
+        }
+    }
+    return retval;
+}
+
 QString Game::textAnnotation(MoveId moveId, Position position) const
 {
-    QString s;
-    MoveId node = nodeValid(moveId);
-
-    if ((position == AfterMove) || (node == 0))
+    QString s = annotation(moveId, position);
+    foreach (QString r, s_specList)
     {
-        s = m_annotations.value(node,QString(""));
+        s.remove(QRegExp(r));
     }
-    else
-    {
-        s = m_variationStartAnnotations.value(node,QString(""));
-    }
-
-    s.remove(QRegExp(s_emt));
-    s.remove(QRegExp(s_egt));
-    s.remove(QRegExp(s_clk));
-    s.remove(QRegExp(s_csl));
-    s.remove(QRegExp(s_cal));
-
     return s;
 }
 
