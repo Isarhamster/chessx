@@ -389,6 +389,7 @@ void PgnDatabase::loadGameMoves(GameId gameId, Game& game)
         return;
     }
     game.clear();
+    m_variationStack.clear();
     seekGame(gameId);
     skipTags();
     QString fen = m_index.tagValue(TagNameFEN, gameId);
@@ -417,6 +418,7 @@ bool PgnDatabase::loadGame(GameId gameId, Game& game)
     QMutexLocker m(&m_mutex);
     //parse the game
     game.clear();
+    m_variationStack.clear();
     loadGameHeaders(gameId, game);
     seekGame(gameId);
     skipTags();
@@ -690,9 +692,19 @@ void PgnDatabase::parseToken(Game* game, const QStringRef& token)
     {
     case '(':
         m_newVariation = true;
+        m_variationStack.push(game->currentMove());
         break;
     case ')':
-        game->dbMoveToId(game->parentMove());
+        MoveId move;
+        if (!m_variationStack.isEmpty())
+        {
+            move = m_variationStack.pop();
+        }
+        else
+        {
+            move = game->parentMove();
+        }
+        game->dbMoveToId(move);
         game->forward();
         m_newVariation = false;
         m_variation = 0;
