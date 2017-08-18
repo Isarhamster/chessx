@@ -31,15 +31,31 @@ ActionDialog::ActionDialog(QWidget *parent)
 
     connect(ui->buttonBox->button(QDialogButtonBox::Reset), SIGNAL(clicked()),
             this, SLOT(resetKeys()));
-    connect(ui->actionsTable, SIGNAL(cellActivated(int,int)),
+    connect(ui->actionsTable, SIGNAL(cellClicked(int,int)),
             this, SLOT(saveOldActionText(int, int)));
     connect(ui->actionsTable, SIGNAL(cellChanged(int, int)),
             this, SLOT(validateAction(int, int)));
+    connect(ui->keySequenceEdit, SIGNAL(editingFinished()),
+            this, SLOT(keySequenceFinished()));
+    connect(ui->clearShortcut, SIGNAL(clicked()),
+            this, SLOT(clearShortcutText()));
 }
 
 ActionDialog::~ActionDialog()
 {
     delete ui;
+}
+
+void ActionDialog::keySequenceFinished()
+{
+    int row = ui->actionsTable->currentRow();
+    QString newKey = ui->keySequenceEdit->keySequence().toString(QKeySequence::PortableText);
+    ui->actionsTable->item(row, 1)->setText(newKey);
+}
+
+void ActionDialog::clearShortcutText()
+{
+    ui->keySequenceEdit->clear();
 }
 
 void ActionDialog::resetList()
@@ -129,9 +145,10 @@ void ActionDialog::accept()
     QDialog::accept();
 }
 
-void ActionDialog::saveOldActionText(int row, int column)
+void ActionDialog::saveOldActionText(int row, int)
 {
-    oldAccelText = ui->actionsTable->item(row, column)->text();
+    oldAccelText = ui->actionsTable->item(row, 1)->text();
+    ui->keySequenceEdit->setKeySequence(QKeySequence(oldAccelText, QKeySequence::PortableText));
 }
 
 void ActionDialog::validateAction(int row, int column)
@@ -160,12 +177,12 @@ void ActionDialog::validateAction(int row, int column)
 void ActionDialog::resetKeys()
 {
     emit signalResetKey();
-    disconnect(ui->actionsTable, SIGNAL(cellActivated(int,int)),
+    disconnect(ui->actionsTable, SIGNAL(cellClicked(int,int)),
             this, SLOT(saveOldActionText(int, int)));
     disconnect(ui->actionsTable, SIGNAL(cellChanged(int, int)),
             this, SLOT(validateAction(int, int)));
     resetList();
-    connect(ui->actionsTable, SIGNAL(cellActivated(int,int)),
+    connect(ui->actionsTable, SIGNAL(cellClicked(int,int)),
             this, SLOT(saveOldActionText(int, int)));
     connect(ui->actionsTable, SIGNAL(cellChanged(int, int)),
             this, SLOT(validateAction(int, int)));

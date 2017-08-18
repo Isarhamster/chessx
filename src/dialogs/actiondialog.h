@@ -37,6 +37,8 @@ private slots:
     void saveOldActionText(int row, int column);
     void validateAction(int row, int column);
     void resetKeys();
+    void keySequenceFinished();
+    void clearShortcutText();
 
 protected:
     QString normalizedText(const QAction *action) const;
