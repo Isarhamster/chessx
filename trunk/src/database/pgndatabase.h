@@ -134,6 +134,7 @@ private:
     qint32* m_gameOffsets32;
     qint64* m_gameOffsets64;
     QByteArray m_lineBuffer;
+    QStack<MoveId> m_variationStack;
 
     bool bUse64bit;
 };
