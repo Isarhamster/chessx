@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>585</width>
-    <height>602</height>
+    <height>617</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,11 +62,11 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
-       <string>&amp;Board</string>
+       <string>Board</string>
       </attribute>
       <layout class="QGridLayout">
        <item row="9" column="2">
@@ -665,7 +665,7 @@
      </widget>
      <widget class="QWidget" name="tabEngines">
       <attribute name="title">
-       <string>&amp;Engines</string>
+       <string>Engines</string>
       </attribute>
       <layout class="QGridLayout">
        <item row="0" column="0">
@@ -1273,13 +1273,6 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="guestLogin">
-         <property name="text">
-          <string>Log in as guest</string>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="0">
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
@@ -1313,6 +1306,13 @@
         <widget class="QCheckBox" name="btUseTimeseal">
          <property name="text">
           <string>Try to use Timeseal</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="guestLogin">
+         <property name="text">
+          <string>Log in as guest</string>
          </property>
         </widget>
        </item>
