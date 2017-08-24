@@ -33,8 +33,7 @@ void HistoryLabel::init()
 void HistoryLabel::initView()
 {
     m_model = new QStringListModel(this);
-    m_view = new QListView(this);
-    m_view->setWindowFlags(Qt::Window);
+    m_view = new QHistoryListView(this);
     m_view->setModel(m_model);
     m_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_view->setSelectionMode(QAbstractItemView::NoSelection);

@@ -5,11 +5,29 @@
 #ifndef QHISTORYLABEL_H
 #define QHISTORYLABEL_H
 
+#include <QFocusEvent>
 #include <QLabel>
+#include <QListView>
 #include <QString>
+
 class QStringListModel;
-class QListView;
 class QHideEvent;
+
+class QHistoryListView : public QListView
+{
+    Q_OBJECT
+public:
+    explicit QHistoryListView(QWidget *parent = Q_NULLPTR) : QListView(parent)
+    {
+        setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+    }
+
+protected:
+    void focusOutEvent(QFocusEvent*)
+    {
+        close();
+    }
+};
 
 class HistoryLabel : public QLabel
 {
@@ -28,7 +46,7 @@ protected:
 protected:
    QStringList m_history;
    QStringListModel* m_model;
-   QListView* m_view;
+   QHistoryListView* m_view;
    void init();
    void initView();
    Q_SLOT void showHistory();
