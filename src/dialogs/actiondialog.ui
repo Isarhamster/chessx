@@ -54,7 +54,7 @@
      <item>
       <widget class="QToolButton" name="clearShortcut">
        <property name="text">
-        <string>...</string>
+        <string notr="true"/>
        </property>
        <property name="icon">
         <iconset resource="../../resources.qrc">
