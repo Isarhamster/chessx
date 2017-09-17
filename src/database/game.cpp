@@ -595,6 +595,18 @@ bool Game::insertMove(Move m)
     return replaceMove(m, annotation(), nags(), false);
 }
 
+MoveId Game::addLine(const MoveList& moveList, const QString& annotation)
+{
+    Game state = *this;
+    MoveId retVal = dbAddLine(moveList, annotation);
+    dbIndicateAnnotationsOnBoard(m_currentNode);
+    if (retVal != NO_MOVE)
+    {
+        emit signalGameModified(true, state, tr("Add line"));
+    }
+    return retVal;
+}
+
 MoveId Game::addVariation(const Move& move, const QString& annotation, NagSet nags)
 {
     Game state = *this;
@@ -643,6 +655,26 @@ MoveId Game::dbAddVariation(const Move& move, const QString& annotation, NagSet 
     return (m_moveNodes.size() - 1);
 }
 
+MoveId Game::dbAddLine(const MoveList& moveList, const QString& annotation)
+{
+    if(moveList.isEmpty())
+    {
+        return NO_MOVE;
+    }
+    MoveId currentPosition = currentMove();
+    for(int i = 0; i < moveList.count(); ++i)
+    {
+        dbAddMove(moveList[i]);
+        forward();
+    }
+    if(!annotation.isEmpty())
+    {
+        dbSetAnnotation(annotation);
+    }
+    dbMoveToId(currentPosition);
+    return currentPosition;
+}
+
 MoveId Game::dbAddVariation(const MoveList& moveList, const QString& annotation)
 {
     if(moveList.isEmpty())
@@ -652,7 +684,7 @@ MoveId Game::dbAddVariation(const MoveList& moveList, const QString& annotation)
     MoveId currentPosition = currentMove();
     MoveId varStart;
     int start = 1;
-    if(atLineEnd() && !!atGameStart())
+    if(atLineEnd() && atGameStart())
     {
         Move oldMove = move();
         backward();
@@ -1293,9 +1325,12 @@ QString Game::specAnnotations(MoveId moveId, Position position) const
 QString Game::textAnnotation(MoveId moveId, Position position) const
 {
     QString s = annotation(moveId, position);
-    foreach (QString r, s_specList)
+    if (!s.isEmpty())
     {
-        s.remove(QRegExp(r));
+        foreach (QString r, s_specList)
+        {
+            s.remove(QRegExp(r));
+        }
     }
     return s;
 }

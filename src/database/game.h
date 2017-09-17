@@ -261,6 +261,9 @@ public :
     bool replaceMove(const QString& sanMove);
     /** Insert the move after the current position */
     bool insertMove(Move m);
+    /** Append a line at the current position,
+     * returns the move id of the added move */
+    MoveId addLine(const MoveList& moveList, const QString& annotation = QString());
     /** Adds a move at the current position as a variation,
      * returns the move id of the added move */
     MoveId addVariation(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
@@ -270,6 +273,9 @@ public :
     /** Adds a move at the current position as a variation,
      * returns the move id of the added move */
     MoveId addVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+    /** Append a line at the current position,
+     * returns the move id of the added move */
+    MoveId dbAddLine(const MoveList& moveList, const QString& annotation);
     /** Adds a move at the current position as a variation,
      * returns the move id of the added move */
     MoveId dbAddVariation(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());

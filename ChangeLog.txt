@@ -1,17 +1,28 @@
 This will install version 1.4.8 of ChessX.
-June 2017: Version 1.4.8
+
+July 2017: Version 1.4.8
+- New Feature: Load favorite databases at startup
+- New Feature: Read Chessbase Books (ctg)
 - New Feature: Read Arena Books (.abk)
 - New Feature: Drag databases into list of games
 
+- New feature: Edit shortcuts by pressing key
+- New feature: Annotations beneath board view
 - New feature: Turn board for given player
 - New feature: Send database to Mail-Client
 - New feature: Show analysis of position with one piece moved
 - New feature: Merge internal and external themes, new option to scale board images
 
+- Bugfix: Invalid notation when inserting line from analysis
+- Bugfix: Puzzle mode not terminated properly
 - Bugfix: Performance reading Polyglot positions
 - Bugfix: Disconnecting a FICS session leaked some memory
 - Bugfix: Progress bar missing occasionally
 
+- Changed: Accept PGN with obscure RAVs
+- Changed: Index file format stores data size
+- Changed: If loading modifies db, mark db as changed
+- Changed: Always use DefaultDataPath (instead of last used folder) for Save Dialogs
 - Changed: Index file version
 
 April 2017: Version 1.4.6

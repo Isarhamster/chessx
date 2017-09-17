@@ -593,8 +593,10 @@ QString Output::writeVariation()
                 for(int i = 0; i < variations.size(); ++i)
                 {
                     // *** Enter variation i, and write the rest of the moves
-                    m_game.dbMoveToId(variations[i]);
-                    text += writeVariation();
+                    if (m_game.dbMoveToId(variations[i]))
+                    {
+                        text += writeVariation();
+                    }
                 }
                 mustAddStart = true;
             }
