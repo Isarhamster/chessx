@@ -1819,7 +1819,14 @@ void MainWindow::slotGameAddVariation(const Analysis& analysis)
     {
         score = QString::number(analysis.score() / 100.0, 'f', 2);
     }
-    game().addVariation(analysis.variation(), score);
+    if (game().atLineEnd())
+    {
+        game().addLine(analysis.variation(), score);
+    }
+    else
+    {
+        game().addVariation(analysis.variation(), score);
+    }
 }
 
 bool MainWindow::addVariation(const QString& s)
