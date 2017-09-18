@@ -798,7 +798,7 @@ void MainWindow::gameLoad(GameId index)
         {
             updateLastGameList();
             m_gameList->selectGame(index);
-            emit signalGameIsEmpty(true);
+            emit signalGameIsEmpty(false);
             UpdateBoardInformation();
             m_gameList->setFocus();
             emit signalGameLoaded();
