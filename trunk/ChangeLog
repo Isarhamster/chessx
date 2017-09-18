@@ -11,6 +11,7 @@ July 2017: Version 1.4.8
 - New feature: Show analysis of position with one piece moved
 - New feature: Merge internal and external themes, new option to scale board images
 
+- Bugfix: "New Game" disabled after loading game
 - Bugfix: Invalid notation when inserting line from analysis
 - Bugfix: Puzzle mode not terminated properly
 - Bugfix: Performance reading Polyglot positions
