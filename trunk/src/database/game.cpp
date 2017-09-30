@@ -377,8 +377,14 @@ void Game::dbMergeWithGame(const Game& g)
     QString white = otherGame.tag(TagNameWhite);
     QString black = otherGame.tag(TagNameBlack);
     QString event = otherGame.eventInfo();
-    QString shortDescription = QString("%1-%2 %3").arg(white).arg(black).arg(event);
-    otherGame.dbSetAnnotation(shortDescription);
+    QString shortDescription;
+    if (!(white.isEmpty() && black.isEmpty() && event.isEmpty()))
+    {
+        if (white.isEmpty()) white = "?";
+        if (black.isEmpty()) black = "?";
+        shortDescription = QString("%1-%2 %3").arg(white).arg(black).arg(event);
+        otherGame.dbSetAnnotation(shortDescription);
+    }
 
     MoveId otherMergeNode = findMergePoint(otherGame);
 
