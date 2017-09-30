@@ -317,6 +317,7 @@ void AnalysisWidget::setPosition(const Board& board)
         m_analyses.clear();
         m_tablebase->abortLookup();
         m_tablebaseEvaluation.clear();
+        m_tablebaseMove.clear();
 
         updateBookMoves();
 
@@ -400,7 +401,7 @@ void AnalysisWidget::slotLinkClicked(const QUrl& url)
     }
     else if(mpv == -1)
     {
-        emit addVariation(m_tablebaseEvaluation);
+        emit addVariation(m_tablebaseMove);
     }
     else
     {
@@ -485,7 +486,8 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                 {
                     move1.setPromoted(pieceType(move.promotedPiece()));
                 }
-                m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1)).arg(result);
+                m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1,true)).arg(result);
+                m_tablebaseMove = m_board.moveToFullSan(move1);
                 m_lastDepthAdded = 0;
             }
             else
@@ -495,7 +497,7 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                 {
                     move1.setPromoted(pieceType(move.promotedPiece()));
                 }
-                also.append(m_board.moveToFullSan(move1));
+                also.append(m_board.moveToFullSan(move1,true));
             }
         }
         if (!also.isEmpty())
@@ -538,7 +540,7 @@ void AnalysisWidget::updateAnalysis()
         foreach (MoveData move, moveList)
         {
             bookLine.append(" ");
-            bookLine.append(move.san);
+            bookLine.append(move.localsan);
         }
         text.append(bookLine);
     }

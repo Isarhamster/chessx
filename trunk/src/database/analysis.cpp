@@ -229,7 +229,7 @@ QString Analysis::toString(const Board& board) const
         {
             moveText += QString::number(moveNo++) + "... ";
         }
-        moveText += testBoard.moveToSan(move);
+        moveText += testBoard.moveToSan(move, true);
         moveText += " ";
         testBoard.doMove(move);
         white = !white;

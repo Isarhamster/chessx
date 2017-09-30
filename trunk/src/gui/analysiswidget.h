@@ -123,6 +123,7 @@ private:
     Board m_board;
     Board m_NextBoard;
     QString m_tablebaseEvaluation;
+    QString m_tablebaseMove;
     Tablebase* m_tablebase;
     Board m_tbBoard;
     EngineParameter m_moveTime;
