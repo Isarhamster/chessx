@@ -18,6 +18,7 @@ public:
     int averageRating() const;
     int averageYear() const;
     QString san;
+    QString localsan;
     unsigned int count;
     unsigned int result[4];
     unsigned long long rating;

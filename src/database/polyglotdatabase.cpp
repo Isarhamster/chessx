@@ -520,6 +520,7 @@ bool PolyglotDatabase::findMove(quint64 key, MoveData& m, bool& done)
     {
         QString s = move_to_string(entry.move);
         m.san = s;
+        m.localsan.clear(); // Don't care
         m.count = entry.weight;
         if (!m.count) m.count = 1; // Fix issue in advance!
         return true;
@@ -558,6 +559,7 @@ int PolyglotDatabase::getMoveMapForBoard(const Board &board, QMap<Move, MoveData
 
             Move move = board.parseMove(m.san);
             m.san = board.moveToSan(move);
+            m.localsan = board.moveToSan(move, true);
             m.move = move;
             moves[move] = m;
             games += m.count;

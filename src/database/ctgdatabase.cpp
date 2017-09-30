@@ -591,6 +591,7 @@ int64_t CtgDatabase::move_weight(const Board& pos,
     md.rated = entry.avg_rating_games;
     md.move = move;
     md.san = pos.moveToSan(move);
+    md.localsan = pos.moveToSan(move, true);
 
     return games;
 }
