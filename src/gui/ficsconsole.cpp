@@ -872,7 +872,7 @@ void FicsConsole::HandleMessage(int blockCmd,QString s)
             break;
         case FicsClient::BLKCMD_SAY:
             s.remove(QRegExp("[^:]*:"));
-            ui->textIn->appendHtml(QString("<b>%1<b>").arg(s));
+            ui->textIn->appendHtml(QString("<b>%1</b>").arg(s));
             ui->tabWidget->setCurrentIndex(TabMessage);
             break;
         case FicsClient::BLKCMD_INTERNAL_SESSION_STARTED:

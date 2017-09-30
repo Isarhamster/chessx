@@ -211,7 +211,7 @@ QString EventInfo::formattedRange() const
 {
     if(m_date[0].year() == 9999)	// No date
     {
-        return QCoreApplication::translate("EventInfo", "Date: <b>????.??.\?\?<b><br>");
+        return QCoreApplication::translate("EventInfo", "Date: <b>????.??.\?\?</b><br>");
     }
     else if(m_date[0].year() < 1000)
     {
