@@ -1185,8 +1185,12 @@ Bitte Installation prüfen.</translation>
     </message>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="214"/>
+        <source>Date: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</source>
+        <translation>Datum: &lt;b&gt;????.??.??&lt;/b&gt;&lt;br&gt;</translation>
+    </message>
+    <message>
         <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
-        <translation>Datum: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
+        <translation type="vanished">Datum: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/database/eventinfo.cpp" line="222"/>
@@ -1559,17 +1563,17 @@ Bitte Installation prüfen.</translation>
     <name>Game</name>
     <message>
         <location filename="../src/database/game.cpp" line="153"/>
-        <location filename="../src/database/game.cpp" line="562"/>
+        <location filename="../src/database/game.cpp" line="568"/>
         <source>Add move</source>
         <translation>Zug hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="415"/>
+        <location filename="../src/database/game.cpp" line="421"/>
         <source>Merge game</source>
         <translation>Partien verschmelzen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="583"/>
+        <location filename="../src/database/game.cpp" line="589"/>
         <source>Replace move</source>
         <translation>Zug ersetzen</translation>
     </message>
@@ -1587,80 +1591,85 @@ Bitte Installation prüfen.</translation>
         <translation>Partie kopieren</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="605"/>
-        <location filename="../src/database/game.cpp" line="617"/>
-        <location filename="../src/database/game.cpp" line="629"/>
+        <location filename="../src/database/game.cpp" line="611"/>
+        <source>Add line</source>
+        <translation>Zugfolge anfügen</translation>
+    </message>
+    <message>
+        <location filename="../src/database/game.cpp" line="623"/>
+        <location filename="../src/database/game.cpp" line="635"/>
+        <location filename="../src/database/game.cpp" line="647"/>
         <source>Add variation</source>
         <translation>Variante hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="727"/>
+        <location filename="../src/database/game.cpp" line="765"/>
         <source>Promote variation</source>
         <translation>Variante aufwerten</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="747"/>
+        <location filename="../src/database/game.cpp" line="785"/>
         <source>Remove variation</source>
         <translation>Variante löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="830"/>
+        <location filename="../src/database/game.cpp" line="868"/>
         <source>Truncate variation</source>
         <translation>Variante beschneiden</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="869"/>
+        <location filename="../src/database/game.cpp" line="907"/>
         <source>Remove variations</source>
         <translation>Varianten löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="882"/>
+        <location filename="../src/database/game.cpp" line="920"/>
         <source>Remove comments</source>
         <translation>Kommentare löschen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="998"/>
+        <location filename="../src/database/game.cpp" line="1036"/>
         <source>Set annotation</source>
         <translation>Kommentar ändern</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1130"/>
+        <location filename="../src/database/game.cpp" line="1168"/>
         <source>Colorize square</source>
         <translation>Felder einfärben</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1178"/>
+        <location filename="../src/database/game.cpp" line="1216"/>
         <source>Paint arrow</source>
         <translation>Pfeil einzeichnen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1327"/>
+        <location filename="../src/database/game.cpp" line="1368"/>
         <source>Add nag</source>
         <translation>Auszeichnung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1340"/>
+        <location filename="../src/database/game.cpp" line="1381"/>
         <source>Set nags</source>
         <translation>Auszeichnung setzen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1486"/>
-        <location filename="../src/database/game.cpp" line="1521"/>
+        <location filename="../src/database/game.cpp" line="1527"/>
+        <location filename="../src/database/game.cpp" line="1562"/>
         <source>Move variation</source>
         <translation>Variante verschieben</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1547"/>
+        <location filename="../src/database/game.cpp" line="1588"/>
         <source>Enumerate variations</source>
         <translation>Aufzählung in Varianten</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1937"/>
+        <location filename="../src/database/game.cpp" line="1978"/>
         <source>Set result</source>
         <translation>Ergebnis setzen</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1962"/>
+        <location filename="../src/database/game.cpp" line="2003"/>
         <source>Set variant</source>
         <translation>Setze Variante</translation>
     </message>
@@ -1724,14 +1733,39 @@ Bitte Installation prüfen.</translation>
         <translation>Ausgewählte Partien</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="252"/>
+        <location filename="../src/gui/gamelist.cpp" line="276"/>
+        <source>Toggle deletions</source>
+        <translation>Löschen umkehren</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gamelist.cpp" line="283"/>
+        <source>Undelete games</source>
+        <translation>Partien wiederherstellen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gamelist.cpp" line="283"/>
+        <source>Undelete game</source>
+        <translation>Partie wiederherstellen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gamelist.cpp" line="287"/>
         <source>Delete game</source>
         <translation>Partie löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="256"/>
+        <location filename="../src/gui/gamelist.cpp" line="287"/>
+        <source>Delete games</source>
+        <translation>Partien löschen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gamelist.cpp" line="294"/>
         <source>Hide game</source>
         <translation>Partie ausblenden</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/gamelist.cpp" line="294"/>
+        <source>Hide games</source>
+        <translation>Partie löschen</translation>
     </message>
 </context>
 <context>
@@ -1918,8 +1952,8 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="950"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2198"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2271"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2205"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2278"/>
         <source>Time is over</source>
         <translation>Bedenkzeit abgelaufen</translation>
     </message>
@@ -1987,110 +2021,110 @@ Shall I download a database?</source>
         <translation>Ausgewählte Partien verschmelzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1880"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1887"/>
         <source>Automatic responses</source>
         <translation>Automatische Antworten</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1881"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1888"/>
         <source>Play both sides</source>
         <translation>Beide Seiten spielen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1994"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2001"/>
         <source>Analysis Pane 2 is not running an engine for automatic analysis.</source>
         <translation>Analyse 2 ist nicht aktiv für Autoanalyse.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2155"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2162"/>
         <source>Game is drawn by insufficient material</source>
         <translation>Remis weil ein Matt nicht mehr möglich ist</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2156"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2163"/>
         <source>Game is drawn by repetition</source>
         <translation>Remis durch Zugwiederholung</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2157"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2164"/>
         <source>Game is drawn by 50 move rule</source>
         <translation>Remis wegen 50-Züge Regel</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2390"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2397"/>
         <source>Engine %1</source>
         <translation>Engine %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2427"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2434"/>
         <source>all</source>
         <translation>alle</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2520"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2562"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2527"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2569"/>
         <source>Append game %1 to %2.</source>
         <translation>Partie %1 an %2 anhängen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2546"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2570"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2553"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2577"/>
         <source>Appended %1 games to %2.</source>
         <translation>%1 Partien an %2 angehängt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2571"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2578"/>
         <source>Error appending games to %1</source>
         <translation>Fehler beim Hinzufügen von Partien an %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2599"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2616"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2643"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2659"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2674"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2606"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2623"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2650"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2666"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2681"/>
         <source>Append games from %1 to %2.</source>
         <translation>Partien aus %1 an %2 anhängen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2996"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3003"/>
         <source>Searching...</source>
         <translation>Suche...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3413"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3414"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Neue Partie&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3498"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3499"/>
         <source>Infinite</source>
         <translation>Unendlich</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3570"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3571"/>
         <source>Could not build book</source>
         <translation>Konnte kein Buch erstellen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3570"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3571"/>
         <source>Polyglot Error</source>
         <translation>Polyglot Fehler</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1952"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1990"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1959"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1997"/>
         <source>Analysis Pane 1 is not running an engine for automatic analysis.</source>
         <translation>Analyse 1 ist nicht aktiv für Autoanalyse.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2910"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3340"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2917"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3341"/>
         <source>%1 - ChessX</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2991"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2998"/>
         <source>Search ended</source>
         <translation>Suche beendet</translation>
     </message>
@@ -2312,7 +2346,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1625"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1952"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1959"/>
         <source>Auto Analysis</source>
         <translation>Autoanalyse</translation>
     </message>
@@ -2463,8 +2497,8 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1631"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1990"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1994"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1997"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2001"/>
         <source>Engine Match</source>
         <translation>Engine Match</translation>
     </message>
@@ -2819,12 +2853,12 @@ Shall I download a database?</source>
         <translation>Variante</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2786"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2793"/>
         <source>You need at least two open databases to copy games</source>
         <translation>Mindestens zwei offene Datenbanken benötigt um Partien zu kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2814"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2821"/>
         <source>%1. %2 (%3 games)</source>
         <translation>%1. %2 (%3 Partien)</translation>
     </message>
@@ -2972,7 +3006,8 @@ Shall I download a database?</source>
 <context>
     <name>MoveData</name>
     <message>
-        <location filename="../src/database/movedata.cpp" line="16"/>
+        <location filename="../src/database/movedata.cpp" line="17"/>
+        <location filename="../src/database/movedata.cpp" line="19"/>
         <source>[end]</source>
         <translation></translation>
     </message>
