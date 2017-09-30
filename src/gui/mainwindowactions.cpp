@@ -3168,12 +3168,6 @@ void MainWindow::slotRenameRequest(QString tag, QString newValue, QString oldVal
     }
 }
 
-void MainWindow::slotDatabaseDeleteFilter()
-{
-    database()->remove(*databaseInfo()->filter());
-    m_gameList->updateFilter();
-}
-
 void MainWindow::slotGetGameData(Game& g)
 {
     g = game();
