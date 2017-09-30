@@ -355,8 +355,6 @@ public slots:
     void slotDatabaseChanged();
     /** Delete current game. */
     void slotDatabaseDeleteGame(QList<int> gameIndexList);
-    /** Delete all game in filter. */
-    void slotDatabaseDeleteFilter();
     /** Slot that updates internal info upon loading a complete db */
     void slotDataBaseLoaded(DatabaseInfo* db);
     /** Restore game state from a undo or redo operation */
