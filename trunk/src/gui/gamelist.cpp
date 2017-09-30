@@ -249,15 +249,51 @@ void GameList::slotContextMenu(const QPoint& pos)
         mergeMenu->addAction(tr("Filter"), this, SLOT(slotMergeFilter()));
         mergeMenu->addAction(tr("Selected games"), this, SLOT(slotMergeGame()));
         menu.addSeparator();
-        QAction* deleteAction = menu.addAction(tr("Delete game"), this, SLOT(slotDeleteGame()));
-        deleteAction->setCheckable(true);
-        deleteAction->setEnabled(!m_model->filter()->database()->isReadOnly());
-        menu.addSeparator();
-        menu.addAction(tr("Hide game"), this, SLOT(slotHideGame()));
 
-        QModelIndex index = GetSourceIndex(cell);
-        int n = m_model->filter()->indexToGame(index.row());
-        deleteAction->setChecked(m_model->filter()->database()->deleted(n));
+        int deleted = 0;
+        int activated = 0;
+        foreach(QModelIndex index, selection)
+        {
+            QModelIndex source = GetSourceIndex(index);
+            int n = m_model->filter()->indexToGame(source.row());
+            if (m_model->filter()->database()->deleted(n))
+            {
+               ++deleted;
+            }
+            else
+            {
+                ++activated;
+            }
+            if (activated && deleted)
+            {
+                break;
+            }
+        }
+
+        QAction* deleteAction;
+        if (activated && deleted)
+        {
+            deleteAction = menu.addAction(tr("Toggle deletions"), this, SLOT(slotDeleteGame()));
+        }
+        else
+        {
+            QString deleteText;
+            if (deleted)
+            {
+                deleteText = selection.count()>1 ? tr("Undelete games") : tr("Undelete game");
+            }
+            else
+            {
+                deleteText = selection.count()>1 ? tr("Delete games") : tr("Delete game");
+            }
+            deleteAction = menu.addAction(deleteText, this, SLOT(slotDeleteGame()));
+        }
+        deleteAction->setEnabled(!m_model->filter()->database()->isReadOnly());
+
+        menu.addSeparator();
+        QString hideText = selection.count()>1 ? tr("Hide games") : tr("Hide game");
+        menu.addAction(hideText, this, SLOT(slotHideGame()));
+
         menu.exec(mapToGlobal(pos));
     }
 }
@@ -318,6 +354,7 @@ void GameList::simpleSearch(int tagid)
             m_model->filter()->executeSearch(ts, Filter::Operator(dlg.mode()));
         }
     }
+    emit raiseRequest();
 }
 
 void GameList::slotFilterListByPlayer(QString s)
@@ -338,6 +375,7 @@ void GameList::slotFilterListByPlayer(QString s)
         Search* ts = new TagSearch(m_model->filter()->database(),  fragment, url.path());
         m_model->filter()->executeSearch(ts);
     }
+    emit raiseRequest();
 }
 
 void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString player)
@@ -347,6 +385,7 @@ void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString playe
     Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameECO, eco);
     m_model->filter()->executeSearch(ts);
     m_model->filter()->executeSearch(ts3, Filter::And);
+    emit raiseRequest();
 }
 
 void GameList::slotFilterListByEvent(QString s)
@@ -354,6 +393,7 @@ void GameList::slotFilterListByEvent(QString s)
     m_model->filter()->setAll(1);
     Search* ts = new TagSearch(m_model->filter()->database(), TagNameEvent, s);
     m_model->filter()->executeSearch(ts);
+    emit raiseRequest();
 }
 
 void GameList::slotFilterListByEventPlayer(QString player, QString event)
@@ -365,6 +405,7 @@ void GameList::slotFilterListByEventPlayer(QString player, QString event)
     m_model->filter()->executeSearch(ts);
     m_model->filter()->executeSearch(ts2, Filter::Or);
     m_model->filter()->executeSearch(ts3, Filter::And);
+    emit raiseRequest();
 }
 
 void GameList::slotFilterListByEco(QString s)
@@ -372,6 +413,7 @@ void GameList::slotFilterListByEco(QString s)
     m_model->filter()->setAll(1);
     Search* ts = new TagSearch(m_model->filter()->database(), TagNameECO, s);
     m_model->filter()->executeSearch(ts);
+    emit raiseRequest();
 }
 
 void GameList::selectGame(int index)
@@ -401,6 +443,7 @@ void GameList::updateFilter()
     if (m_model->filter()->database())
     {
         m_model->setFilter(m_model->filter());
+        emit raiseRequest();
     }
 }
 
