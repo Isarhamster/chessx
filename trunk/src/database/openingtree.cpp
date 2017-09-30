@@ -191,7 +191,7 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
             switch(index.column())
             {
             case 0:
-                return QString("%1: %2").arg(index.row() + 1).arg(m_moves[index.row()].san);
+                return QString("%1: %2").arg(index.row() + 1).arg(m_moves[index.row()].localsan);
             case 1:
             {
                 if(m_games == 0)

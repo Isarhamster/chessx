@@ -12,8 +12,12 @@
 void MoveData::addGame(Game& g, Color c, MoveType movetype)
 {
     if(!count)
+    {
         san = (movetype == StandardMove) ? g.moveToSan(Game::MoveOnly, Game::PreviousMove)
                : qApp->translate("MoveData", "[end]");
+        localsan = (movetype == StandardMove) ? g.moveToSan(Game::TranslatePiece, Game::PreviousMove)
+               : qApp->translate("MoveData", "[end]");
+    }
     ++count;
     result[g.result()]++;
     unsigned elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
