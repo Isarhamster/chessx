@@ -3328,10 +3328,10 @@ BitBoard getStandardPosition()
     return b;
 }
 
-QString BitBoard::moveToFullSan(const Move &move) const
+QString BitBoard::moveToFullSan(const Move &move, bool translate) const
 {
     QString dots = whiteToMove() ? "." : "...";
-    return QString("%1%2%3").arg(m_moveNumber).arg(dots).arg(moveToSan(move));
+    return QString("%1%2%3").arg(m_moveNumber).arg(dots).arg(moveToSan(move,translate));
 }
 
 //a charboard is a 64 length board that looks something like this:
