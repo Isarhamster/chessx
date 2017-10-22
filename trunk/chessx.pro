@@ -236,7 +236,8 @@ HEADERS += src/database/board.h \
     src/database/arenabook.h \
     src/database/abk.h \
     src/database/gameundocommand.h \
-    src/database/ctg.h
+    src/database/ctg.h \
+    src/database/searchlist.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -385,7 +386,8 @@ SOURCES += src/database/board.cpp \
     src/database/refcount.cpp \
     src/quazip/unzip.cpp \
     src/quazip/zip.cpp \
-    src/database/arenabook.cpp
+    src/database/arenabook.cpp \
+    src/database/searchlist.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
