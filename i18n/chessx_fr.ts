@@ -204,12 +204,12 @@ Gestionnaires de parties d&apos;échecs open source</translation>
         <translation>Une erreur est survenue (%1)durant l&apos;execution du moteur &lt;b&gt;%2&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="472"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="473"/>
         <source>Draw</source>
         <translation>Nulle</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="476"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="477"/>
         <source>White wins in %n moves</source>
         <translation>
             <numerusform>Les blancs gagnent en %n coup</numerusform>
@@ -217,7 +217,7 @@ Gestionnaires de parties d&apos;échecs open source</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="480"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="481"/>
         <source>Black wins in %n moves</source>
         <translation>
             <numerusform>Les noirs gagnent en %n coup</numerusform>
@@ -225,32 +225,32 @@ Gestionnaires de parties d&apos;échecs open source</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="515"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="517"/>
         <source>Analysis pinned to move %1</source>
         <translation>Moteur analyse le coup %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="524"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="526"/>
         <source>Click to add move to game</source>
         <translation>Cliquez pour ajouter un coup</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="524"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="526"/>
         <source>Tablebase</source>
         <translation>Tablebase</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="528"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="530"/>
         <source>Complexity</source>
         <translation>Complexité </translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="532"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="534"/>
         <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1&lt;br&gt;</source>
         <translation>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="537"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="539"/>
         <source>&lt;i&gt;Book:&lt;/i&gt;</source>
         <translation>&lt;i&gt;Livre:&lt;/i&gt;</translation>
     </message>

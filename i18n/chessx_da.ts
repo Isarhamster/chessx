@@ -204,12 +204,12 @@ Fri skakdatabase </translation>
         <translation>Der opstod en fejl (%1) ved kørsel af motor &lt;b&gt;%2&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="472"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="473"/>
         <source>Draw</source>
         <translation>Remis</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="476"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="477"/>
         <source>White wins in %n moves</source>
         <translation>
             <numerusform>Hvid vinder i %n træk</numerusform>
@@ -217,7 +217,7 @@ Fri skakdatabase </translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="480"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="481"/>
         <source>Black wins in %n moves</source>
         <translation>
             <numerusform>Sort vinder i %n træk</numerusform>
@@ -225,27 +225,27 @@ Fri skakdatabase </translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="515"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="517"/>
         <source>Analysis pinned to move %1</source>
         <translation>Analyse låst til træk %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="524"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="526"/>
         <source>Click to add move to game</source>
         <translation>Klik for at tilføje trækket til partiet</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="524"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="526"/>
         <source>Tablebase</source>
         <translation>Slutspilsdatabase</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="528"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="530"/>
         <source>Complexity</source>
         <translation>Kompleksitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="537"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="539"/>
         <source>&lt;i&gt;Book:&lt;/i&gt;</source>
         <translation>&lt;i&gt;Åbningsbog:&lt;/i&gt;</translation>
     </message>
@@ -258,7 +258,7 @@ Fri skakdatabase </translation>
         <translation type="vanished">&lt;br&gt;&lt;b&gt;Kompleksitet:&lt;/b&gt; %1/%2&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="532"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="534"/>
         <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1&lt;br&gt;</source>
         <translation>&lt;br&gt;&lt;b&gt;Kompleksitet:&lt;/b&gt; %1&lt;br&gt;</translation>
     </message>

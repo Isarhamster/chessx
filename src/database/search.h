@@ -29,7 +29,7 @@ class Search : public QObject
     Q_OBJECT
 
 public:
-    enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch, NumberSearch, DuplicateSearch};
+    enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch, NumberSearch, DuplicateSearch, ListSearch};
 
     /** Standard constructor. */
     explicit Search(Database* db = 0);

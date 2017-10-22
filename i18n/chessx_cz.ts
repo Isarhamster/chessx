@@ -160,12 +160,12 @@ Volná verze šachové databáze</translation>
         <translation>Nastala chyba (%1) při provádění programu &lt;b&gt;%2&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="472"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="473"/>
         <source>Draw</source>
         <translation>Remíza</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="476"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="477"/>
         <source>White wins in %n moves</source>
         <translation>
             <numerusform>Bílý vítězí v %n tahu.</numerusform>
@@ -174,7 +174,7 @@ Volná verze šachové databáze</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="480"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="481"/>
         <source>Black wins in %n moves</source>
         <translation>
             <numerusform>Černý vítězí v %n tahu</numerusform>
@@ -183,32 +183,32 @@ Volná verze šachové databáze</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="515"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="517"/>
         <source>Analysis pinned to move %1</source>
         <translation>Analýza v tahu %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="524"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="526"/>
         <source>Click to add move to game</source>
         <translation>Klikni pro přidání tahu do hry</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="524"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="526"/>
         <source>Tablebase</source>
         <translation>Základní tabulka</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="528"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="530"/>
         <source>Complexity</source>
         <translation>Obtížnost</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="532"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="534"/>
         <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1&lt;br&gt;</source>
         <translation>&lt;br&gt;&lt;b&gt;Obtížnot:&lt;/b&gt; %1&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="537"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="539"/>
         <source>&lt;i&gt;Book:&lt;/i&gt;</source>
         <translation>&lt;i&gt;Kniha zahájení:&lt;/i&gt;</translation>
     </message>
