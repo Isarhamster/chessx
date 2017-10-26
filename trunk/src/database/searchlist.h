@@ -17,7 +17,7 @@ signals:
 public slots:
 
 private:
-    QList<Search> searchList;
+    QList<Search*> searchList;
 };
 
 #endif // SEARCHLIST_H
