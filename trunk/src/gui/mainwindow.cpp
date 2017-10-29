@@ -833,15 +833,20 @@ bool MainWindow::gameMoveBy(int change)
 
 void MainWindow::updateMenuRecent()
 {
-    for(int i = 0; (i < m_recentFiles.count()) && (i < MaxRecentFiles); ++i)
+    QMenu* menu = qobject_cast<QMenu*>(sender());
+    if (menu)
     {
-        m_recentFileActions[i]->setVisible(true);
-        m_recentFileActions[i]->setText(QString("&%1: %2").arg(i + 1).arg(m_recentFiles[i]));
-        m_recentFileActions[i]->setData(m_recentFiles[i]);
-    }
-    for(int i = m_recentFiles.count(); i < MaxRecentFiles; i++)
-    {
-        m_recentFileActions[i]->setVisible(false);
+        menu->clear();
+        int n = std::min(m_recentFiles.count(), static_cast<int>(MainWindow::MaxRecentFiles));
+        for(int i = 0; i < n; i++)
+        {
+            QAction* action = new QAction(menu);
+            action->setVisible(true);
+            action->setData(m_recentFiles[i]);
+            action->setText(QString("&%1: %2").arg(i + 1).arg(m_recentFiles[i]));
+            connect(action, SIGNAL(triggered()), SLOT(slotFileOpenRecent()));
+            menu->addAction(action);
+        }
     }
 }
 
@@ -1348,15 +1353,7 @@ void MainWindow::setupActions()
     file->addAction(createAction(tr("Web Favorite"), SLOT(openWebFavorite()), QKeySequence(), fileToolBar, ":/images/folder_web.png"));
 
     QMenu* menuRecent = file->addMenu(tr("Open recent"));
-
-    for(int i = 0; i < MaxRecentFiles; ++i)
-    {
-        QAction* action = new QAction(this);
-        action->setVisible(false);
-        connect(action, SIGNAL(triggered()), SLOT(slotFileOpenRecent()));
-        m_recentFileActions.append(action);
-        menuRecent->addAction(action);
-    }
+    connect(menuRecent, SIGNAL( aboutToShow()), this, SLOT(updateMenuRecent()));
     file->addSeparator();
 
     QAction* commitAction = createAction(tr("Save Database"), SLOT(slotFileSave()), Qt::CTRL + Qt::SHIFT + Qt::Key_S, fileToolBar, ":/images/save.png");

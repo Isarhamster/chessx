@@ -110,8 +110,6 @@ protected:
     void gameLoad(GameId index);
     /** Make given number of moves in current game */
     bool gameMoveBy(int change);
-    /** Update recent files menu */
-    void updateMenuRecent();
     /** Get current mode */
     bool gameMode() const;
     /** Is premoving available */
@@ -407,6 +405,8 @@ public slots:
     void slotDatabaseDroppedFailed(QUrl url);
 protected slots:
     /** Update recent files menu */
+    void updateMenuRecent();
+    /** Update recent files menu */
     void updateMenuDatabases();
     /** Receiver for a failed loading of a database */
     void loadError(QUrl url);
@@ -654,7 +654,6 @@ private:
     QStringList m_favoriteFiles;
     Output* m_output;
     QList<DatabaseInfo*> m_databases;
-    QList<QAction*> m_recentFileActions;
     QPointer<DatabaseInfo> m_currentDatabase;
     QString m_eco;
     QTime m_operationTime;
