@@ -655,7 +655,6 @@ private:
     Output* m_output;
     QList<DatabaseInfo*> m_databases;
     QList<QAction*> m_recentFileActions;
-    QList<QAction*> m_databaseActions;
     QPointer<DatabaseInfo> m_currentDatabase;
     QString m_eco;
     QTime m_operationTime;

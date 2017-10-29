@@ -332,10 +332,10 @@ void GameList::simpleSearch(int tagid)
     else
     {
         QStringList list = value.split("-", QString::SkipEmptyParts);
-        if ((list.size() > 1) && (dlg.tag() != 9))
+        if ((list.size() > 1) && (dlg.tag() != 9)) // Tag 9 is the Result
         {
             // Filter a range
-            Search* ts = (dlg.tag() == 11) ?
+            Search* ts = (dlg.tag() == 11) ? // Tag 11 is number of moves
                     new TagSearch(m_model->filter()->database(), tag, list.at(0).toInt(), list.at(1).toInt()) :
                     new TagSearch(m_model->filter()->database(), tag, list.at(0), list.at(1));
             if(dlg.mode())

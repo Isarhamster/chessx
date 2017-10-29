@@ -87,7 +87,7 @@ void DatabaseList::slotContextMenu(const QPoint& pos)
         bool bIsOpen = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_OPEN), Qt::UserRole).toString() == "Open";
         bool bIsBook = DatabaseInfo::IsBook(filename);
 
-        menu.addAction(bIsOpen ? tr("Activate") : tr("Open"), this, SLOT(dbOpen()));
+        menu.addAction(bIsOpen ? tr("Activate") : tr("Open"), this, SLOT(dbOpen()))->setEnabled(!bIsOpen || !bIsBook);
         menu.addAction(tr("Close"), this, SLOT(dbClose()))->setEnabled(bIsOpen && bHasSuffix);
         menu.addSeparator();
         menu.addAction(tr("Keep file"), this, SLOT(dbKeepFile()))->setEnabled(bHasSuffix && stars != 1);

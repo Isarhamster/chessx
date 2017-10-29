@@ -2921,7 +2921,6 @@ void MainWindow::slotDatabaseChanged()
     slotGameChanged(true);
     emit databaseChanged(databaseInfo());
     emit databaseModified();
-    emit signalGameModified(databaseInfo()->modified());
 }
 
 void MainWindow::updateLastGameList()
@@ -3333,16 +3332,8 @@ void MainWindow::slotActivateBoardView(int n)
 
         Q_ASSERT(!databaseInfo()->IsBook());
 
-        emit signalGameModified(databaseInfo()->modified());
-        slotGameChanged(true);
         m_databaseList->setFileCurrent(databaseInfo()->displayName());
-        database()->index()->calculateCache();
-        updateLastGameList();
-        setWindowTitle(tr("%1 - ChessX").arg(databaseName()));
-        m_gameList->setFilter(databaseInfo()->filter());
-        slotFilterChanged();
-        m_undoGroup.setActiveStack(databaseInfo()->undoStack());
-        emit databaseChanged(databaseInfo());
+        slotDatabaseChanged();
     }
 }
 

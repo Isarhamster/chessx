@@ -453,7 +453,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Very late as this will update other widgets */
     connect(this, SIGNAL(databaseModified()), SLOT(slotDatabaseModified()));
-    connect(this, SIGNAL(signalDatabaseOpenClose()), this, SLOT(updateMenuDatabases()));
     CreateBoardView();
 
     /* Setup the dimensions of all widgets and the main board */
@@ -484,7 +483,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
     qApp->installEventFilter(this);
     /* Activate clipboard */
-    updateMenuDatabases();
     slotDatabaseChanged();
     emit signalGameIsEmpty(true);
 
@@ -849,33 +847,31 @@ void MainWindow::updateMenuRecent()
 
 void MainWindow::updateMenuDatabases()
 {
-    while(m_databases.count() > m_databaseActions.count())
+    QMenu* menu = qobject_cast<QMenu*>(sender());
+    if (menu)
     {
-        QAction* action = new QAction(this);
-        connect(action, SIGNAL(triggered()), SLOT(slotDatabaseChange()));
-        m_databaseActions.append(action);
-        m_menuDatabases->addAction(action);
-    }
-    int n = 1;
-    for(int i = 0; i < m_databases.count(); i++)
-    {
-        if(m_databases[i]->isValid())
+        menu->clear();
+        int n=1;
+        for(int i = 0; i < m_databases.count(); i++)
         {
-            m_databaseActions[i]->setVisible(true);
-            m_databaseActions[i]->setData(QVariant::fromValue(m_databases[i]));
-            m_databaseActions[i]->setText(QString("&%1: %2").arg(i).arg(databaseName(i)));
-            if(n < 10)
+            if(m_databases[i]->isValid() && !m_databases[i]->IsBook())
             {
-                int key = Qt::CTRL + Qt::SHIFT + Qt::Key_1 + (n - 1);
-                m_databaseActions[i]->setShortcut(key);
-                ++n;
+                QAction* action = new QAction(menu);
+                action->setVisible(true);
+                action->setData(QVariant::fromValue(m_databases[i]));
+                action->setText(QString("&%1: %2").arg(n++).arg(databaseName(i)));
+                if (m_databases[i] == m_currentDatabase)
+                {
+                    action->setCheckable(true);
+                    action->setChecked(true);
+                }
+                else
+                {
+                    connect(action, SIGNAL(triggered()), SLOT(slotDatabaseChange()));
+                }
+                menu->addAction(action);
             }
         }
-    }
-    for(int i = m_databases.count(); i < m_databaseActions.count(); i++)
-    {
-        m_databaseActions[i]->setVisible(false);
-        m_databaseActions[i]->setShortcut(0);
     }
 }
 
@@ -1729,6 +1725,7 @@ void MainWindow::setupActions()
     /* Database menu */
     QMenu* menuDatabase = menuBar()->addMenu(tr("&Database"));
     m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
+    connect(m_menuDatabases, SIGNAL( aboutToShow()), this, SLOT(updateMenuDatabases()));
     menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()), Qt::Key_F5));
     menuDatabase->addSeparator();
     menuDatabase->addAction(createAction(tr("Clear clipboard"), SLOT(slotDatabaseClearClipboard())));
