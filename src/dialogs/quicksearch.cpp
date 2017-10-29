@@ -21,6 +21,7 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QMenu>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -38,6 +39,16 @@ QuickSearchDialog::QuickSearchDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Find"));
     connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));
+
+    QMenu *menu = new QMenu();
+    QAction *actionFront = new QAction(tr("Match tags from beginning"), menu);
+    actionFront->setCheckable(true);
+    QAction *actionTail = new QAction(tr("Match to end of tags"), menu);
+    actionTail->setCheckable(true);
+    menu->addAction(actionFront);
+    menu->addAction(actionTail);
+
+    ui.optionBox->setMenu(menu);
 
     AppSettings->layout(this);
 }
@@ -63,7 +74,20 @@ int QuickSearchDialog::tag() const
 
 QString QuickSearchDialog::value() const
 {
-    return ui.valueEdit->text();
+    QString s = ui.valueEdit->text();
+    if (!s.isEmpty() && tag()!=0 && tag()!=9 && tag()!=11)
+    {
+        QMenu* menu = ui.optionBox->menu();
+        if (menu->actions().at(0)->isChecked())
+        {
+            s.prepend("^");
+        }
+        if (menu->actions().at(1)->isChecked())
+        {
+            s.append("$");
+        }
+    }
+    return s;
 }
 
 int QuickSearchDialog::exec()

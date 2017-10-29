@@ -4546,34 +4546,44 @@ Shall I download a database?</source>
         <translation type="vanished">Partiedaten Suche</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="67"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="50"/>
         <source>Value or Range like 2000-2300</source>
         <translation>Hodnota nebo rozsah na př. 2000-2300</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="34"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="35"/>
         <source>Find in current filter</source>
         <translation>Najít v aktuálním filtru</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="35"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="36"/>
         <source>Search whole database</source>
         <translation>Vyhledat v celé databázi</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="36"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="37"/>
         <source>Add to current filter</source>
         <translation>Přidat do aktuálního filtru</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="37"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="38"/>
         <source>Remove from current filter</source>
         <translation>Odebrat z aktuálního filtru</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="39"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="40"/>
         <source>Find</source>
         <translation>Najít</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.cpp" line="44"/>
+        <source>Match tags from beginning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.cpp" line="46"/>
+        <source>Match to end of tags</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dialogs/quicksearch.ui" line="40"/>
@@ -4581,7 +4591,7 @@ Shall I download a database?</source>
         <translation>&amp;Hodnota:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="20"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="30"/>
         <source>&amp;Tag:</source>
         <translation>&amp;Značka:</translation>
     </message>
@@ -4591,9 +4601,14 @@ Shall I download a database?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="30"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="20"/>
         <source>&amp;Mode:</source>
         <translation>&amp;Mód:</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.ui" line="57"/>
+        <source>Options</source>
+        <translation type="unfinished">Možnosti</translation>
     </message>
 </context>
 <context>

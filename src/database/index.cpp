@@ -325,52 +325,26 @@ int Index::count() const
     return m_indexItems.count();
 }
 
-QBitArray Index::listContainingValue(const QString& tagName, const QString& value) const
+QBitArray Index::listInSet(const QString& tagName, const QSet<QString>& set) const
 {
     QReadLocker m(&m_mutex);
 
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
-    ValueIndex valueIndex = m_tagValueIndex.value(value);
 
     QBitArray list(count(), false);
     for(int i = 0; i < count(); ++i)
     {
-        list.setBit(i, m_indexItems[i]->valueIndex(tagIndex) == valueIndex);
-    }
-    return list;
-}
-
-QBitArray Index::listInSet(const QString& tagName, const QSet<QString>& set, bool partial) const
-{
-    QReadLocker m(&m_mutex);
-
-    TagIndex tagIndex = m_tagNameIndex.value(tagName);
-
-    QBitArray list(count(), false);
-    if (partial)
-    {
-        for(int i = 0; i < count(); ++i)
+        QString value = tagValue(tagIndex, i);
+        bool b = false;
+        foreach(QString s, set)
         {
-            QString value = tagValue(tagIndex, i);
-            bool b = false;
-            foreach(QString s, set)
+            if (value.contains(s, Qt::CaseInsensitive))
             {
-                if (value.contains(s, Qt::CaseInsensitive))
-                {
-                    b = true;
-                    break;
-                }
+                b = true;
+                break;
             }
-            list.setBit(i, b);
         }
-    }
-    else
-    {
-        for(int i = 0; i < count(); ++i)
-        {
-            QString value = tagValue(tagIndex, i);
-            list.setBit(i, set.contains(value));
-        }
+        list.setBit(i, b);
     }
     return list;
 }
@@ -405,17 +379,18 @@ QBitArray Index::listInRange(const QString &tagName, int minValue, int maxValue)
     return list;
 }
 
-QBitArray Index::listPartialValue(const QString& tagName, const QString& value) const
+QBitArray Index::listPartialValue(const QString& tagName, QString value) const
 {
     QReadLocker m(&m_mutex);
-
+    value.replace("-","\\-"); // Avoid - to become range
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
-
+    QRegExp re(value);
+    re.setCaseSensitivity(Qt::CaseInsensitive);
     QBitArray list(count(), false);
     for(int i = 0; i < count(); ++i)
     {
         QString gameValue = tagValue(tagIndex, i);
-        list.setBit(i, gameValue.contains(value, Qt::CaseInsensitive));
+        list.setBit(i, gameValue.contains(re));
     }
     return list;
 }

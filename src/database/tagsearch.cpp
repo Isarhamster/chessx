@@ -12,7 +12,7 @@
 
 /* TagSearch class
  * ***************/
-TagSearch::TagSearch(Database* database, const QString& tag, const QString& value, bool partial):Search(database)
+TagSearch::TagSearch(Database* database, const QString& tag, const QString& value):Search(database)
 {
     if (value.contains('|'))
     {
@@ -22,15 +22,11 @@ TagSearch::TagSearch(Database* database, const QString& tag, const QString& valu
         {
             set.insert(s);
         }
-        m_matches = database->index()->listInSet(tag, set, partial);
-    }
-    else if(partial)
-    {
-        m_matches = database->index()->listPartialValue(tag, value);
+        m_matches = database->index()->listInSet(tag, set);
     }
     else
     {
-        m_matches = database->index()->listContainingValue(tag, value);
+        m_matches = database->index()->listPartialValue(tag, value);
     }
 }
 

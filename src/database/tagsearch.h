@@ -17,7 +17,7 @@ class TagSearch : public Search
 
 public:
     /** Simple constructor */
-    TagSearch(Database* database, const QString& tag, const QString& value, bool partial = true);
+    TagSearch(Database* database, const QString& tag, const QString& value);
     /** Range constructor */
     TagSearch(Database* database, const QString& tag, const QString& value, const QString& maxValue);
     /** Range constructor */
