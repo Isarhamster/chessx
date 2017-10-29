@@ -4564,30 +4564,40 @@ Devo caricare un database?</translation>
 <context>
     <name>QuickSearchDialog</name>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="34"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="35"/>
         <source>Find in current filter</source>
         <translation>Trova nel filtro corrente</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="35"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="36"/>
         <source>Search whole database</source>
         <translation>Trova nell&apos;intero database</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="36"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="37"/>
         <source>Add to current filter</source>
         <translatorcomment>corrente o attuale?</translatorcomment>
         <translation>Aggiungi al filtro attuale</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="37"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="38"/>
         <source>Remove from current filter</source>
         <translation>Rimuovi dal filtro corrente</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="39"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="40"/>
         <source>Find</source>
         <translation>Trova</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.cpp" line="44"/>
+        <source>Match tags from beginning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.cpp" line="46"/>
+        <source>Match to end of tags</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dialogs/quicksearch.ui" line="14"/>
@@ -4595,9 +4605,14 @@ Devo caricare un database?</translation>
         <translation>Ricerca rapida Tag</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="67"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="50"/>
         <source>Value or Range like 2000-2300</source>
         <translation>Valore dell&apos;intervallo come 2000-2300</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.ui" line="57"/>
+        <source>Options</source>
+        <translation type="unfinished">Opzioni</translation>
     </message>
     <message>
         <location filename="../src/dialogs/quicksearch.ui" line="40"/>
@@ -4605,12 +4620,12 @@ Devo caricare un database?</translation>
         <translation>&amp;Valore:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="20"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="30"/>
         <source>&amp;Tag:</source>
         <translation>&amp;Etichetta:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="30"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="20"/>
         <source>&amp;Mode:</source>
         <translatorcomment>non sono sicuro</translatorcomment>
         <translation>&amp;Modalità:</translation>

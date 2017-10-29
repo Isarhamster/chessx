@@ -4554,34 +4554,49 @@ Shall I download a database?</source>
         <translation>Partiedaten Suche</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="67"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="50"/>
         <source>Value or Range like 2000-2300</source>
         <translation>Wert oder Wertebereich, wie z.B. 2000-2300</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="34"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="57"/>
+        <source>Options</source>
+        <translation>Optionen</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.cpp" line="35"/>
         <source>Find in current filter</source>
         <translation>In aktuellem Filter finden</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="35"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="36"/>
         <source>Search whole database</source>
         <translation>Durchsuche ganze Datenbank</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="36"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="37"/>
         <source>Add to current filter</source>
         <translation>Zu aktuellem Filter hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="37"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="38"/>
         <source>Remove from current filter</source>
         <translation>Aus aktuellem Filter löschen</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="39"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="40"/>
         <source>Find</source>
         <translation>Suchen</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.cpp" line="44"/>
+        <source>Match tags from beginning</source>
+        <translation>Vom Wortanfang vergleichen</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.cpp" line="46"/>
+        <source>Match to end of tags</source>
+        <translation>Wortende muss übereinstimmen</translation>
     </message>
     <message>
         <location filename="../src/dialogs/quicksearch.ui" line="40"/>
@@ -4589,12 +4604,12 @@ Shall I download a database?</source>
         <translation>&amp;Wert:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="20"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="30"/>
         <source>&amp;Tag:</source>
         <translation>&amp;Element:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="30"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="20"/>
         <source>&amp;Mode:</source>
         <translation>&amp;Modus:</translation>
     </message>

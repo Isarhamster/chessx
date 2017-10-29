@@ -4553,9 +4553,14 @@ Dois-je télécharger une base ?</translation>
         <translation>Recherche rapide de critères</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="67"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="50"/>
         <source>Value or Range like 2000-2300</source>
         <translation>Valeur ou Rang comme 2000-2300</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.ui" line="57"/>
+        <source>Options</source>
+        <translation type="unfinished">Options</translation>
     </message>
     <message>
         <location filename="../src/dialogs/quicksearch.ui" line="40"/>
@@ -4563,39 +4568,49 @@ Dois-je télécharger une base ?</translation>
         <translation>&amp;Valeur :</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="20"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="30"/>
         <source>&amp;Tag:</source>
         <translation>&amp;Critère :</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.ui" line="30"/>
+        <location filename="../src/dialogs/quicksearch.ui" line="20"/>
         <source>&amp;Mode:</source>
         <translation>&amp;Mode :</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="34"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="35"/>
         <source>Find in current filter</source>
         <translation>Rechercher dans le filtre en cours</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="35"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="36"/>
         <source>Search whole database</source>
         <translation>Rechercher dans toute la base de données</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="36"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="37"/>
         <source>Add to current filter</source>
         <translation>Ajouter au filtre en cours</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="37"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="38"/>
         <source>Remove from current filter</source>
         <translation>Retirer du filtre en cours</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/quicksearch.cpp" line="39"/>
+        <location filename="../src/dialogs/quicksearch.cpp" line="40"/>
         <source>Find</source>
         <translation>Rechercher</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.cpp" line="44"/>
+        <source>Match tags from beginning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/quicksearch.cpp" line="46"/>
+        <source>Match to end of tags</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

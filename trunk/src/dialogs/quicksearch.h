@@ -18,6 +18,7 @@
 #define QUICKSEARCH_H
 
 #include "ui_quicksearch.h"
+#include <QPointer>
 
 class QuickSearchDialog : public QDialog
 {
