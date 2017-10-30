@@ -327,7 +327,6 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Recent files */
     m_recentFiles.restore();
     m_recentFiles.removeMissingFiles();
-    updateMenuRecent();
 
     /* Opening Tree */
     DockWidgetEx* openingDock = new DockWidgetEx(tr("Opening Tree"), this);
@@ -1191,7 +1190,6 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
     }
 
     m_recentFiles.append(fname);
-    updateMenuRecent();
     emit signalDatabaseOpenClose();
 }
 
@@ -1821,18 +1819,15 @@ bool MainWindow::confirmQuit()
                     output.output(m_databases[i]->database()->filename(),
                                   *(m_databases[i]->database()));
         }
-        else
-        {
-            SwitchToClipboard();
-        }
     }
 
+    SwitchToClipboard();
     cancelPolyglotWriters();
     m_openingTreeWidget->cancel(); // Make sure we are not grabbing into something that is closed now
 
     for(int i = m_databases.size() - 1; i; --i)
     {
-        slotFileCloseIndex(i);
+        slotFileCloseIndex(i, true);
     }
 
     m_openingTreeWidget->cancel(); // Make sure that Clipboard tree update is terminated again

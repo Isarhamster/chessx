@@ -284,7 +284,7 @@ public slots:
     /** Close current database. Switches to next active (or clipboard if there is none). */
     void slotFileClose();
     /** Close selected database. */
-    void slotFileCloseIndex(int);
+    void slotFileCloseIndex(int, bool dontAsk=false);
     /** Close selected database. */
     void slotFileCloseName(QString fname);
     /** Quit ChessX. Ask for confirmation before */
@@ -505,7 +505,7 @@ protected:
     QString drawAnnotation() const;
     BoardViewEx *BoardViewFrame(QWidget *widget);
     void SQAction(QChar c, QAction *action);
-    bool closeDatabaseInfo(DatabaseInfo *aboutToClose);
+    bool closeDatabaseInfo(DatabaseInfo *aboutToClose, bool dontAsk=false);
     void displayVariations();
 signals:
     /** Re-read configuration. */

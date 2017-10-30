@@ -166,7 +166,7 @@ bool MainWindow::QuerySaveDatabase(DatabaseInfo* dbInfo)
             if(dbInfo->isValid() && dbInfo->database()->isModified())
             {
                 int result = MessageDialog::yesNoCancel(tr("The selected database is modified!")
-                                                        + '\n' + tr("Save it?"));
+                                                        + " (" + dbInfo->database()->name() + ")\n" + tr("Save it?"));
                 if(MessageDialog::Yes == result)
                 {
                     saveDatabase(dbInfo);
@@ -198,12 +198,12 @@ void MainWindow::slotFileSave()
     }
 }
 
-bool MainWindow::closeDatabaseInfo(DatabaseInfo* aboutToClose)
+bool MainWindow::closeDatabaseInfo(DatabaseInfo* aboutToClose, bool dontAsk)
 {
     // Don't remove Clipboard
     if(!aboutToClose->isClipboard() && aboutToClose->IsLoaded())
     {
-        if(QuerySaveDatabase(aboutToClose))
+        if(dontAsk || QuerySaveDatabase(aboutToClose))
         {
             autoGroup->untrigger();
 
@@ -236,16 +236,17 @@ void MainWindow::slotFileClose()
     }
 }
 
-void MainWindow::slotFileCloseIndex(int n)
+void MainWindow::slotFileCloseIndex(int n, bool dontAsk)
 {
     DatabaseInfo* aboutToClose = m_databases[n];
     if(m_currentDatabase == aboutToClose)
     {
-        slotFileClose();
+        closeDatabaseInfo(aboutToClose, dontAsk);
+        SwitchToClipboard();
     }
     else
     {
-        closeDatabaseInfo(aboutToClose);
+        closeDatabaseInfo(aboutToClose, dontAsk);
     }
 }
 
@@ -333,7 +334,6 @@ void MainWindow::slotReconfigure()
     }
 #endif
     m_recentFiles.restore();
-    updateMenuRecent();
     emit reconfigure(); 	// Re-emit for children
     delete m_output;
     m_output = new Output(Output::NotationWidget);
@@ -2812,35 +2812,46 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
     {
         return;
     }
+    QStringList db;
+    int n = 1;
+    QList<DatabaseInfo*> targets;
+    for(int i = 0; i < m_databases.count(); ++i)
+    {
+        if(m_databases[i] != m_currentDatabase && !m_databases[i]->IsBook())
+        {
+            db.append(tr("%1. %2 (%3 games)").arg(n++).arg(databaseName(i))
+                      .arg(m_databases[i]->database()->count()));
+            targets.append(m_databases[i]);
+        }
+    }
+    if (db.isEmpty())
+    {
+        MessageDialog::error(tr("You need at least two open databases to copy games"));
+        return;
+    }
     CopyDialog dlg(this);
     dlg.setCurrentGame(players);
     dlg.setMode((CopyDialog::SrcMode)preselect);
-    QStringList db;
-    for(int i = 0; i < m_databases.count(); ++i)
-        if(m_databases[i] != m_currentDatabase)
-            db.append(tr("%1. %2 (%3 games)").arg(i).arg(databaseName(i))
-                      .arg(m_databases[i]->database()->count()));
     dlg.setDatabases(db);
     if(dlg.exec() != QDialog::Accepted)
     {
         return;
     }
-    int target = dlg.getDatabase();
-    if(target >= m_databases.indexOf(m_currentDatabase))
-    {
-        ++target;
-    }
+    int targetIndex = dlg.getDatabase();
+    if (targetIndex<0) return;
+    DatabaseInfo* targetDb = targets.at(targetIndex);
+    if (!targetDb) return;
 
     switch(dlg.getMode())
     {
     case CopyDialog::SingleGame:
         if (index == -1)
         {
-            m_databases[target]->database()->appendGame(game());
+            targetDb->database()->appendGame(game());
         }
         else
         {
-            m_databases[target]->database()->appendGame(g);
+            targetDb->database()->appendGame(g);
         }
         break;
     case CopyDialog::Selection:
@@ -2848,7 +2859,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
         {
             if(database()->loadGame(i, g))
             {
-                m_databases[target]->database()->appendGame(g);
+                targetDb->database()->appendGame(g);
             }
         }
         break;
@@ -2857,7 +2868,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
         {
             if(databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
             {
-                m_databases[target]->database()->appendGame(g);
+                targetDb->database()->appendGame(g);
             }
         }
         break;
@@ -2866,14 +2877,16 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
         {
             if(database()->loadGame(i, g))
             {
-                m_databases[target]->database()->appendGame(g);
+                targetDb->database()->appendGame(g);
             }
         }
         break;
     default:
-        ;
+        break;
     }
-    m_databases[target]->filter()->resize(m_databases[target]->database()->count(), true);
+    targetDb->filter()->resize(targetDb->database()->count(), true);
+    QString msg = tr("Append games from %1 to %2.").arg(database()->name()).arg(targetDb->database()->name());
+    slotStatusMessage(msg);
 }
 
 void MainWindow::slotDatabaseClearClipboard()
