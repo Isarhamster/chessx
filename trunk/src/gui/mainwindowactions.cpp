@@ -1466,6 +1466,7 @@ void MainWindow::newGame()
     m_gameList->removeSelection();
     emit signalGameIsEmpty(true); // repair effect of slotGameChanged
     m_gameList->setFocus();
+    UpdateBoardInformation();
 }
 
 void MainWindow::slotGameNew()
@@ -2815,9 +2816,9 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
     QStringList db;
     int n = 1;
     QList<DatabaseInfo*> targets;
-    for(int i = 0; i < m_databases.count(); ++i)
+    for (int i = 0; i < m_databases.count(); ++i)
     {
-        if(m_databases[i] != m_currentDatabase && !m_databases[i]->IsBook())
+        if ((m_databases[i] != m_currentDatabase) && m_databases[i]->isNative())
         {
             db.append(tr("%1. %2 (%3 games)").arg(n++).arg(databaseName(i))
                       .arg(m_databases[i]->database()->count()));
@@ -3538,7 +3539,7 @@ void MainWindow::slotMakeBook(QString pathIn)
                 connect(polyglotWriter, SIGNAL(bookBuildError(QString, PolyglotWriter*)), SLOT(slotBookBuildError(QString, PolyglotWriter*)));
                 connect(polyglotWriter, SIGNAL(bookBuildFinished(QString, PolyglotWriter*)), SLOT(slotBookDone(QString, PolyglotWriter*)), Qt::QueuedConnection);
                 connect(polyglotWriter, SIGNAL(progress(int)), SLOT(slotOperationProgress(int)), Qt::QueuedConnection);
-                startOperation("Build book...s");
+                startOperation(tr("Build book"));
                 m_polyglotWriters.append(polyglotWriter);
                 polyglotWriter->writeBookForDatabase(m_databases[i]->database(), out, maxPly, minGame, uniform, result, filterResult);
             }
@@ -3557,7 +3558,7 @@ void MainWindow::cancelPolyglotWriters()
 
 void MainWindow::slotBookDone(QString path, PolyglotWriter* writer)
 {
-    finishOperation("Book built");
+    finishOperation(tr("Book built"));
     slotShowInFinder(path);
     if (!m_polyglotWriters.removeOne(writer))
     {
@@ -3573,7 +3574,7 @@ void MainWindow::slotShowInFinder(QString path)
 void MainWindow::slotBookBuildError(QString /*path*/, PolyglotWriter* writer)
 {
     MessageDialog::warning(tr("Could not build book"), tr("Polyglot Error"));
-    finishOperation("Book build finished with Error");
+    finishOperation(tr("Book build finished with Error"));
     if (!m_polyglotWriters.removeOne(writer))
     {
         qDebug() << "Missing writer";
