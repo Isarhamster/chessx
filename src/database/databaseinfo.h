@@ -124,6 +124,7 @@ public:
     static QString ficsPath();
 
     bool isClipboard() const;
+    bool isNative() const;
 
     const CircularBuffer<int>& lastGames() const { return m_lastGames; }
     void clearLastGames();

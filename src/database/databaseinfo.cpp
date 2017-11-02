@@ -361,6 +361,11 @@ QString DatabaseInfo::ficsPath()
     return (dir + QDir::separator() + "FICS.pgn");
 }
 
+bool DatabaseInfo::isNative() const
+{
+    return database() && (database()->inherits("PgnDatabase"));
+}
+
 bool DatabaseInfo::isClipboard() const
 {
     return database() && database()->IsClipboard();
