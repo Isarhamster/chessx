@@ -48,23 +48,47 @@ void CopyDialog::setMode(SrcMode mode)
     switch(mode)
     {
     case SingleGame:
-        ui.singleButton->setChecked(true);
-        break;
+        if (ui.singleButton->isEnabled())
+        {
+            ui.singleButton->setChecked(true);
+            break;
+        }
+        // fallthru
     case Selection:
-        ui.selectedButton->setChecked(true);
+        if (ui.selectedButton->isEnabled())
+        {
+            ui.selectedButton->setChecked(true);
+            break;
+        }
+        // fallthru
+    case AllGames:
+        ui.allButton->setChecked(true);
         break;
     case Filter:
         ui.filterButton->setChecked(true);
         break;
-    case AllGames:
-        ui.allButton->setChecked(true);
-        break;
     }
 }
 
-void CopyDialog::setCurrentGame(QString title)
+void CopyDialog::setCurrentGame(QString title, int selectedGames)
 {
-    ui.singleButton->setText(ui.singleButton->text()+" (" + title + ")");
+    if (title.isEmpty())
+    {
+        ui.singleButton->setEnabled(false);
+    }
+    else
+    {
+        ui.singleButton->setText(ui.singleButton->text()+" (" + title + ")");
+    }
+
+    if (!selectedGames)
+    {
+        ui.selectedButton->setEnabled(false);
+    }
+    else
+    {
+        ui.selectedButton->setText(ui.selectedButton->text()+" (" + QString::number(selectedGames) + ")");
+    }
 }
 
 int CopyDialog::getMode() const

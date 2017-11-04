@@ -2789,38 +2789,14 @@ void MainWindow::slotDatabaseFilterDuplicateTags()
 
 void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
 {
-    if(m_databases.count() < 2)
-    {
-        MessageDialog::error(tr("You need at least two open databases to copy games"));
-        return;
-    }
-    Game g;
-    QString players;
-    int index = -1;
-    if (gameIndexList.size())
-    {
-        index = gameIndexList.at(0);
-    }
-    if (index == -1)
-    {
-        players = game().tag(TagNameWhite)+"-"+game().tag(TagNameBlack);
-    }
-    else if(databaseInfo()->filter()->contains(index) && database()->loadGame(index, g))
-    {
-        players = g.tag(TagNameWhite)+"-"+g.tag(TagNameBlack);
-    }
-    else
-    {
-        return;
-    }
     QStringList db;
-    int n = 1;
+    int cc = 1;
     QList<DatabaseInfo*> targets;
     for (int i = 0; i < m_databases.count(); ++i)
     {
         if ((m_databases[i] != m_currentDatabase) && m_databases[i]->isNative())
         {
-            db.append(tr("%1. %2 (%3 games)").arg(n++).arg(databaseName(i))
+            db.append(tr("%1. %2 (%3 games)").arg(cc++).arg(databaseName(i))
                       .arg(m_databases[i]->database()->count()));
             targets.append(m_databases[i]);
         }
@@ -2830,8 +2806,11 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
         MessageDialog::error(tr("You need at least two open databases to copy games"));
         return;
     }
+
+    QString players = game().tag(TagNameWhite)+"-"+game().tag(TagNameBlack);
+
     CopyDialog dlg(this);
-    dlg.setCurrentGame(players);
+    dlg.setCurrentGame(players, gameIndexList.count());
     dlg.setMode((CopyDialog::SrcMode)preselect);
     dlg.setDatabases(db);
     if(dlg.exec() != QDialog::Accepted)
@@ -2843,23 +2822,20 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
     DatabaseInfo* targetDb = targets.at(targetIndex);
     if (!targetDb) return;
 
+    int n = 0;
     switch(dlg.getMode())
     {
     case CopyDialog::SingleGame:
-        if (index == -1)
-        {
-            targetDb->database()->appendGame(game());
-        }
-        else
-        {
-            targetDb->database()->appendGame(g);
-        }
+        targetDb->database()->appendGame(game());
+        n = 1;
         break;
     case CopyDialog::Selection:
         foreach (int i, gameIndexList)
         {
+            Game g;
             if(database()->loadGame(i, g))
             {
+                ++n;
                 targetDb->database()->appendGame(g);
             }
         }
@@ -2867,8 +2843,10 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
     case CopyDialog::Filter:
         for(int i = 0; i < (int)database()->count(); ++i)
         {
+            Game g;
             if(databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
             {
+                ++n;
                 targetDb->database()->appendGame(g);
             }
         }
@@ -2876,8 +2854,10 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
     case CopyDialog::AllGames:
         for(int i = 0; i < (int)database()->count(); ++i)
         {
+            Game g;
             if(database()->loadGame(i, g))
             {
+                ++n;
                 targetDb->database()->appendGame(g);
             }
         }
@@ -2886,7 +2866,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
         break;
     }
     targetDb->filter()->resize(targetDb->database()->count(), true);
-    QString msg = tr("Append games from %1 to %2.").arg(database()->name()).arg(targetDb->database()->name());
+    QString msg = tr("Append %1 games from %2 to %3.").arg(n).arg(database()->name()).arg(targetDb->database()->name());
     slotStatusMessage(msg);
 }
 
