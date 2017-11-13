@@ -93,6 +93,11 @@ void Database::loadGameHeader(GameId gameId, Game &game, const QString &tag) con
     m_index.loadGameHeader(gameId, game, tag);
 }
 
+QString Database::tagValue(GameId gameId, const QString &tag) const
+{
+    return m_index.tagValue(tag, gameId);
+}
+
 bool Database::replace(GameId, Game &)
 {
     return false;

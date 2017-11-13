@@ -12,7 +12,6 @@
 
 #include "database.h"
 #include "filter.h"
-#include "game.h"
 #include "settings.h"
 #include "tags.h"
 
@@ -24,19 +23,13 @@
 #endif // _MSC_VER
 
 FilterModel::FilterModel(Filter* filter, QObject* parent)
-    : QAbstractItemModel(parent), m_filter(filter), m_gameIndex(-1), m_gameIndex2(-1),m_lastGame(0)
+    : QAbstractItemModel(parent), m_filter(filter)
 {
     setupColumns();
-
-    m_game  = new Game;
-    m_game2 = new Game;
 }
 
 FilterModel::~FilterModel()
 {
-    delete m_game;
-    delete m_game2;
-    m_lastGame = 0;
 }
 
 int FilterModel::rowCount(const QModelIndex& index) const
@@ -113,60 +106,32 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
             {
                 return i + 1;
             }
+
+            QString tag = m_filter->database()->tagValue(i, m_columnTags.at(index.column()));
+            if(tag == "?")
+            {
+                tag.clear();
+            }
+            return tag;
         }
-        if(i != -1)
+        else if(role == Qt::FontRole)
         {
-            if ((i != m_gameIndex) && (i!=m_gameIndex2))
+            if(m_filter->database()->deleted(i))
             {
-                if (m_lastGame != m_game2)
-                {
-                    m_lastGame = m_game2;
-                    m_gameIndex2 = i;
-                }
-                else
-                {
-                    m_lastGame = m_game;
-                    m_gameIndex = i;
-                }
-                m_lastGame->clearTags();
+                QFont font;
+                font.setStrikeOut(true);
+                return font;
             }
-            else if (i == m_gameIndex)
+        }
+        else if(role == Qt::ForegroundRole)
+        {
+            if(!m_filter->database()->getValidFlag(i))
             {
-                m_lastGame = m_game;
-            }
-            else if (i == m_gameIndex2)
-            {
-                m_lastGame = m_game2;
-            }
-            if(role == Qt::DisplayRole)
-            {
-                m_filter->database()->loadGameHeader(i, *m_lastGame, m_columnTags.at(index.column()));
-                QString tag = m_lastGame->tag(m_columnTags.at(index.column()));
-                if(tag == "?")
-                {
-                    tag.clear();
-                }
-                return tag;
-            }
-            else if(role == Qt::FontRole)
-            {
-                if(m_filter->database()->deleted(i))
-                {
-                    QFont font;
-                    font.setStrikeOut(true);
-                    return font;
-                }
-            }
-            else if(role == Qt::ForegroundRole)
-            {
-                if(!m_filter->database()->getValidFlag(i))
-                {
-                    QVariant v = QColor(Qt::red);
-                    return v;
-                }
-                QVariant v = QColor(Qt::black);
+                QVariant v = QColor(Qt::red);
                 return v;
             }
+            QVariant v = QColor(Qt::black);
+            return v;
         }
     }
     return QVariant();
@@ -216,8 +181,6 @@ void FilterModel::setFilter(Filter* filter)
 {
     beginResetModel();
     m_filter = filter;
-    m_gameIndex = -1;
-    m_gameIndex2 = -1;
     endResetModel();
 }
 
