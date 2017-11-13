@@ -16,7 +16,6 @@
 #include <QPointer>
 
 class Filter;
-class Game;
 
 /** @ingroup Database
   The FilterModel class is an interface to Database used with Qt
@@ -75,14 +74,6 @@ private:
     QStringList m_columnNames;
     /** Map of columns and database tags */
     QStringList m_columnTags;
-    /** A pointer to a game object, to hold the retrieved information
-     * about the game */
-    Game* m_game;
-    Game* m_game2;
-    /** Current game index - used for caching */
-    mutable int m_gameIndex;
-    mutable int m_gameIndex2;
-    mutable Game* m_lastGame;
 };
 
 #endif	// __FilterModelBase_H__
