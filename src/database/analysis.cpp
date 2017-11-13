@@ -157,6 +157,7 @@ void Analysis::setEndOfGame(bool value)
 {
     m_endOfGame = value;
 }
+
 bool Analysis::getBookMove() const
 {
     return m_bookMove;
@@ -166,7 +167,6 @@ void Analysis::setBookMove(bool bookMove)
 {
     m_bookMove = bookMove;
 }
-
 
 int Analysis::movesToMate() const
 {

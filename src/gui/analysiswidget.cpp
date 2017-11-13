@@ -166,6 +166,7 @@ void AnalysisWidget::bookActivated(int index)
     m_pgdb = 0;
     emit signalSourceChanged(index>=0 ? ui.bookList->itemData(index).toString() : "");
     updateBookMoves();
+    updateAnalysis();
 }
 
 void AnalysisWidget::slotPinChanged(bool pinned)
