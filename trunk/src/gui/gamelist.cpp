@@ -210,7 +210,7 @@ void GameList::setFilter(Filter* filter)
     if (filter)
     {
         m_model = new FilterModel(filter);
-        if (filter->count() > 4096)
+        if (filter->count() > 32768)
         {
             setModel(m_model);
         }
