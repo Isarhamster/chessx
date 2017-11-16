@@ -62,6 +62,7 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
     horizontalHeader()->setSectionsClickable(true);
 #endif
 
+    updateFilter();
     slotReconfigure();
 
     horizontalHeader()->setSortIndicatorShown(true);
@@ -81,7 +82,10 @@ GameList::~GameList()
 
 void GameList::slotReconfigure()
 {
-    updateFilter();
+    if (m_model)
+    {
+        m_model->updateColumns();
+    }
     TableView::slotReconfigure();
 }
 
