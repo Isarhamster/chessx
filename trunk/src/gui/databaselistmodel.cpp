@@ -119,12 +119,12 @@ QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
             case DBLV_DATE:
             {
                 QFileInfo f(m_databases.at(index.row()).m_path);
-                return f.lastModified().date();
+                return f.lastModified().date().toString(Qt::ISODate);
             }
             case DBLV_DATE_READ:
             {
                 QFileInfo f(m_databases.at(index.row()).m_path);
-                return f.lastRead().date();
+                return f.lastRead().date().toString(Qt::ISODate);
             }
             case DBLV_OPEN:
                 return QVariant();
