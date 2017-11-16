@@ -2593,7 +2593,7 @@ Position::IsLegal(void) const
     squareT enemyKing = GetEnemyKingSquare();
     if (!(stmKing <= H8  && enemyKing <= H8))
     {
-        printf("Kings mssing\n");
+        printf("Kings missing\n");
         return false;
     }
     if(square_Adjacent(stmKing, enemyKing))
