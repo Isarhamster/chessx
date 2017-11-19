@@ -81,11 +81,16 @@ void FilterModel::addColumns(QStringList tags)
     m_columnTags << tags;
 }
 
-void FilterModel::setupColumns()
+QStringList FilterModel::additionalTags()
 {
     QString addTags = AppSettings->getValue("/GameList/AdditionalTags").toString();
     QStringList tags = addTags.split(QRegExp("[^a-zA-Z]"), QString::SkipEmptyParts);
-    addColumns(tags);
+    return tags;
+}
+
+void FilterModel::setupColumns()
+{
+    addColumns(additionalTags());
 }
 
 void FilterModel::updateColumns()

@@ -64,6 +64,9 @@ public:
     }
 
     void updateColumns();
+
+    static QStringList additionalTags();
+
 private:
     void addColumns(QStringList tags);
     void setupColumns();
