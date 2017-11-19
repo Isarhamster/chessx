@@ -15,6 +15,7 @@
  ***************************************************************************/
 
 #include "database.h"
+#include "filtermodel.h"
 #include "game.h"
 #include "messagedialog.h"
 #include "partialdate.h"
@@ -116,6 +117,29 @@ int SaveDialog::save(Database* database, Game& game)
     setLineEdit(ui.siteEdit,  database, TagNameSite);
     setLineEdit(ui.eventEdit, database, TagNameEvent);
 
+    QStringList tags = FilterModel::additionalTags();
+    tags.removeOne("FEN");
+
+    if (!tags.count())
+    {
+        ui.gb_additional->setVisible(false);
+    }
+    else
+    {
+        ui.gb_additional->setVisible(true);
+        ui.tableTags->setRowCount(tags.count());
+        int row = 0;
+        foreach (QString tag, tags) {
+            QTableWidgetItem* tagItem = new QTableWidgetItem(tag);
+            tagItem->setFlags(Qt::NoItemFlags);
+            ui.tableTags->setItem(row,0,tagItem);
+            QString value = game.tag(tag);
+            ui.tableTags->setItem(row,1,new QTableWidgetItem(value));
+            ++row;
+        }
+        ui.tableTags->setSortingEnabled(false);
+    }
+
     int result = QDialog::exec();
     if(result == Accepted)
     {
@@ -143,12 +167,20 @@ int SaveDialog::save(Database* database, Game& game)
         {
             game.setTag(TagNameTimeControl, t);
         }
+        else
+        {
+            game.removeTag(TagNameTimeControl);
+        }
 
         QTime tt = ui.whiteStartTime->time();
         if(tt.secsTo(QTime(0, 0)) > 0)
         {
             t = tt.toString(format);
             game.setTag(TagNameWhiteClock, t);
+        }
+        else
+        {
+            game.removeTag(TagNameWhiteClock);
         }
 
         tt = ui.blackStartTime->time();
@@ -157,17 +189,47 @@ int SaveDialog::save(Database* database, Game& game)
             t = tt.toString(format);
             game.setTag(TagNameBlackClock, t);
         }
+        else
+        {
+            game.removeTag(TagNameBlackClock);
+        }
 
         t = ui.whiteTeamEdit->text();
         if(!t.isEmpty())
         {
             game.setTag(TagNameWhiteTeam, t);
         }
+        else
+        {
+            game.removeTag(TagNameWhiteTeam);
+        }
 
         t = ui.blackTeamEdit->text();
         if(!t.isEmpty())
         {
             game.setTag(TagNameBlackTeam, t);
+        }
+        else
+        {
+            game.removeTag(TagNameBlackTeam);
+        }
+
+        if (tags.count())
+        {
+            int row = 0;
+            foreach (QString tag, tags)
+            {
+                QString value = ui.tableTags->item(row,1)->text();
+                if (value.isEmpty())
+                {
+                    game.removeTag(tag);
+                }
+                else
+                {
+                    game.setTag(tag, value);
+                }
+                ++row;
+            }
         }
     }
     return result;
