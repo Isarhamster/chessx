@@ -553,9 +553,10 @@ void MainWindow::slotEditMergePGN()
     QString pgn = QApplication::clipboard()->text().trimmed();
     if(!pgn.isEmpty())
     {
-        MemoryDatabase pgnDatabase;
+        pgn = pgn.trimmed();
         if (pgn.trimmed().startsWith("[")) // looks like something containing tags
         {
+            MemoryDatabase pgnDatabase;
             if(pgnDatabase.openString(pgn))
             {
                 Game g;
@@ -567,6 +568,11 @@ void MainWindow::slotEditMergePGN()
                     }
                 }
             }
+        }
+        else
+        {
+            // Perhaps some SAN moves
+            addVariationFromSan(pgn);
         }
     }
 }
@@ -1830,10 +1836,10 @@ void MainWindow::slotGameAddVariation(const Analysis& analysis)
     }
 }
 
-bool MainWindow::addVariation(const QString& s)
+bool MainWindow::addVariationFromSan(const QString& san)
 {
     bool added = false;
-    Move m = game().board().parseMove(s);
+    Move m = game().board().parseMove(san);
     if(m.isLegal() || (!gameMode() && m.isNullMove()))
     {
         added = true;
@@ -1847,7 +1853,7 @@ bool MainWindow::slotGameAddVariation(const QString& san)
     QString s = san;
     s = s.remove(QRegExp("-.*"));
     s = s.remove(QRegExp("[0-9]*\\."));   
-    return addVariation(s);
+    return addVariationFromSan(s);
 }
 
 void MainWindow::slotGameUncomment()
