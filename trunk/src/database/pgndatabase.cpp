@@ -284,19 +284,27 @@ bool PgnDatabase::parseFileIntern()
     qint64 nextDiff = countDiff;
     int percentDone = 0;
 
-    while(!m_file->atEnd())
+    while(!m_file->atEnd() || !m_currentLine.isEmpty())
     {
         if(m_break)
         {
             return false;
         }
-        IndexBaseType fp = skipJunk();
-        if(fp == oldFp)
+        IndexBaseType fp;
+        if (!m_file->atEnd())
         {
-            skipLine();
             fp = skipJunk();
+            if(fp == oldFp)
+            {
+                skipLine();
+                fp = skipJunk();
+            }
+            oldFp = fp;
         }
-        oldFp = fp;
+        else
+        {
+            fp = m_file->pos() - m_lineBuffer.size();
+        }
         if(fp != -1)
         {
             if(!m_currentLine.isEmpty())
@@ -481,54 +489,66 @@ void PgnDatabase::seekGame(GameId gameId)
     readLine();
 }
 
-void PgnDatabase::parseTagsIntoIndex()
+void PgnDatabase::parseTagIntoIndex(QString tagValue)
 {
-    m_index.setTag(TagNameLength, "0", m_count - 1);
-    m_index.setTag(TagNameResult, "*", m_count - 1);
-    while(m_currentLine.startsWith(QString("[")) && !m_file->atEnd())
+    QRegExp rx("([^ ]+)[ ]+\"([^\"]*)\"");
+    if (rx.indexIn(tagValue) != -1)
     {
-        int tagend = m_currentLine.indexOf(' ');
-        QString tag = m_currentLine.mid(1, tagend - 1);
-        int valuestart = m_currentLine.indexOf('\"', tagend + 1);
-        QString value = m_currentLine.mid(valuestart + 1);
-        bool hasNextTag = false;
+        QString tag = rx.cap(1);
+        QString value = rx.cap(2);
 
-        while(!value.endsWith("]") && !m_file->atEnd())
-        {
-            readLine();
-            if(m_currentLine.isEmpty() || m_currentLine.startsWith("["))
-            {
-                hasNextTag = true;
-                break;
-            }
-            value += ' ' + m_currentLine;
-        }
-        int valueend = value.lastIndexOf('\"');
-        if(valueend != -1)
-        {
-            value.truncate(valueend);
-        }
         if(value.contains("\\\""))
         {
             value.replace("\\\"", "\"");
         }
 
-        // quick fix for non-standard draw mark.
         if(tag == TagNameResult && value == "1/2")
         {
             value = "1/2-1/2";
         }
 
-        // update index
         m_index.setTag(tag, value, m_count - 1);
+    }
+}
 
-        if(!hasNextTag)
+void PgnDatabase::parseTagsIntoIndex()
+{
+    m_index.setTag(TagNameLength, "0", m_count - 1);
+    m_index.setTag(TagNameResult, "*", m_count - 1);
+    while(m_currentLine.startsWith(QString("[")))
+    {
+        QRegExp reTagValuePairs("\\[([^\\]]*)\\]");
+        int pos = 0;
+        int lastPos = 0;
+        while ((pos = reTagValuePairs.indexIn(m_currentLine, pos)) != -1)
         {
+            QString tag = reTagValuePairs.cap(1);
+            pos += reTagValuePairs.matchedLength();
+            parseTagIntoIndex(tag);
+            lastPos = pos;
+        }
+
+        m_currentLine = m_currentLine.mid(lastPos);
+
+        if (!m_currentLine.isEmpty())
+        {
+            pos = m_currentLine.indexOf("[");
+            if (pos != -1)
+            {
+                QString remainder = m_currentLine.mid(pos);
+                if (m_file->atEnd()) { m_currentLine = remainder; break; }
+                readLine(); // That is not a good idea as readline may destroy tags - readLineWithRemainder is needed here!
+                m_currentLine.prepend(remainder);
+            }
+        }
+        else
+        {
+            if (m_file->atEnd()) break;
             readLine();
         }
     }
 
-    // skip trailing whitespace
+    // skip empty lines
     while(m_currentLine.isEmpty() && !m_file->atEnd())
     {
         readLine();

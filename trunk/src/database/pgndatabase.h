@@ -74,6 +74,8 @@ protected:
     void skipMoves();
     /** Parses the tags, and adds the supported types to the index 'm_index' */
     void parseTagsIntoIndex();
+    /** Parse a single tag of format 'tag "value"' into the index */
+    void parseTagIntoIndex(QString tagValue);
 
     virtual bool parseFile();
     bool parseFileIntern();
