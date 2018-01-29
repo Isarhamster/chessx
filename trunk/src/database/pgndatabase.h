@@ -75,7 +75,7 @@ protected:
     /** Parses the tags, and adds the supported types to the index 'm_index' */
     void parseTagsIntoIndex();
     /** Parse a single tag of format 'tag "value"' into the index */
-    void parseTagIntoIndex(QString tagValue);
+    void parseTagIntoIndex(const QString &tag, QString value);
 
     virtual bool parseFile();
     bool parseFileIntern();
@@ -103,6 +103,8 @@ protected:
     //file methods
     /** Reads the next line of text from the PGN file */
     void readLine();
+    /** Read the next line if it is supposed to contain tags only */
+    void readTagLine();
     /** Skips the next line of text from the PGN file */
     void skipLine();
     /** Moves the file position to the start of the given game */
