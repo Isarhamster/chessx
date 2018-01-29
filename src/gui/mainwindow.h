@@ -117,7 +117,7 @@ protected:
     /** Set current Mode */
     void setGameMode(bool gameMode);
     /** Add a variation from keyboard */
-    bool addVariation(const QString& s);
+    bool addVariationFromSan(const QString& san);
     /** Switch to clipboard database */
     void SwitchToClipboard();
     /** Update the list of last open games insided the current database */

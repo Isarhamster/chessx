@@ -154,7 +154,7 @@ MoveId Game::addMove(const Move& move, const QString& annotation, NagSet nags)
     return m_currentNode;
 }
 
-MoveId Game::dbAddMove(const QString& sanMove, const QString& annotation, NagSet nags)
+MoveId Game::dbAddSanMove(const QString& sanMove, const QString& annotation, NagSet nags)
 {
     Move move = m_currentBoard->parseMove(sanMove);
     if(move.isLegal() || move.isNullMove())
@@ -234,8 +234,7 @@ bool Game::mergeNode(Game& otherGame)
     NagSet nags;
     otherGame.forward();
     QString san = otherGame.moveToSan(MoveOnly, PreviousMove, CURRENT_MOVE, &ann, &nags);
-
-    bool retVal = (NO_MOVE != dbAddMove(san, ann, nags));
+    bool retVal = (NO_MOVE != dbAddSanMove(san, ann, nags));
     return retVal;
 }
 
@@ -271,8 +270,7 @@ bool Game::mergeAsMainline(Game& otherGame)
     NagSet nags;
 
     QString san = otherGame.moveToSan(MoveOnly, PreviousMove, CURRENT_MOVE, &ann, &nags);
-
-    if(NO_MOVE != dbAddMove(san, ann, nags))
+    if(NO_MOVE != dbAddSanMove(san, ann, nags))
     {
         while(!otherGame.atLineEnd())
         {
@@ -300,8 +298,7 @@ bool Game::mergeAsVariation(Game& otherGame)
     NagSet nags;
 
     QString san = otherGame.moveToSan(MoveOnly, PreviousMove, CURRENT_MOVE, &ann, &nags);
-
-    if(NO_MOVE != dbAddVariation(san, ann, nags))
+    if(NO_MOVE != dbAddSanVariation(san, ann, nags))
     {
         while(!otherGame.atLineEnd())
         {
@@ -640,7 +637,7 @@ MoveId Game::addVariation(const MoveList& moveList, const QString& annotation)
 MoveId Game::addVariation(const QString& sanMove, const QString& annotation, NagSet nags)
 {
     Game state = *this;
-    MoveId retVal = dbAddVariation(sanMove, annotation, nags);
+    MoveId retVal = dbAddSanVariation(sanMove, annotation, nags);
     dbIndicateAnnotationsOnBoard(m_currentNode);
     if (retVal != NO_MOVE)
     {
@@ -716,11 +713,11 @@ MoveId Game::dbAddVariation(const MoveList& moveList, const QString& annotation)
     return varStart;
 }
 
-MoveId Game::dbAddVariation(const QString& sanMove, const QString& annotation, NagSet nags)
+MoveId Game::dbAddSanVariation(const QString& sanMove, const QString& annotation, NagSet nags)
 {
     MoveId previousNode = m_currentNode;
     MoveId saveNextNode = m_moveNodes[m_currentNode].nextNode;
-    MoveId node = dbAddMove(sanMove, annotation, nags);
+    MoveId node = dbAddSanMove(sanMove, annotation, nags);
     if(node == NO_MOVE)
     {
         return node;
@@ -798,8 +795,7 @@ void Game::truncateVariationAfterNextIllegalPosition()
     }
     QString san = moveToSan();
     Game g = *this;
-
-    if(NO_MOVE == g.dbAddMove(san))
+    if(NO_MOVE == g.dbAddSanMove(san, QString(), NagSet()))
     {
         MoveId node = m_moveNodes[m_currentNode].nextNode;
         removeNode(node);

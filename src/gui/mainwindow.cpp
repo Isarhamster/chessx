@@ -662,7 +662,7 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
                 // Could still be move
             }
         }
-        if (addVariation(m_nagText))
+        if (addVariationFromSan(m_nagText))
         {
             if (qobject_cast<FicsDatabase*>(database()))
             {
@@ -676,7 +676,7 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
     else
     {
         m_nagText.append(e->text());
-        if (!(m_nagText.length()<=3 && m_nagText.contains("-")) && addVariation(m_nagText)) // Avoid 0-0 / Nullmove been sent too early
+        if (!(m_nagText.length()<=3 && m_nagText.contains("-")) && addVariationFromSan(m_nagText)) // Avoid 0-0 / Nullmove been sent too early
         {
             if (qobject_cast<FicsDatabase*>(database()))
             {

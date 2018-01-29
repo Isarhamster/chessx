@@ -250,7 +250,7 @@ public :
     /** Adds a move at the current position, returns the move id of the added move */
     MoveId addMove(const Move& move, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Adds a move at the current position, returns the move id of the added move */
-    MoveId dbAddMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+    MoveId dbAddSanMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Adds a move at the current position, returns the move id of the added move */
     MoveId addMove(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Adds a move at the current position, returns the move id of the added move */
@@ -284,7 +284,7 @@ public :
     MoveId dbAddVariation(const MoveList& moveList, const QString& annotation = QString());
     /** Adds a move at the current position as a variation,
      * returns the move id of the added move */
-    MoveId dbAddVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+    MoveId dbAddSanVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Merge current node of @p otherGame into this game */
     bool mergeNode(Game &otherGame);
     /** Merge @p otherGame starting from otherGames current position into this game as a new mainline */
