@@ -1771,6 +1771,7 @@ Move BitBoard::nullMove() const
     return m;
 }
 
+
 Move BitBoard::parseMove(const QString& algebraic) const
 {
     const QByteArray& bs(algebraic.toLatin1());
@@ -1872,7 +1873,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
     }
 
     // Capture indicator (or dash in the case of a LAN move)
-    if(c == 'x' || c == '-')
+    if(c == 'x' || c == '-' || c == ':')
     {
         c = *(s++);
     }
@@ -1923,30 +1924,30 @@ Move BitBoard::parseMove(const QString& algebraic) const
         if(c == '=' || c == '(')
         {
             c = *(s++);
-        }
-        switch(toupper(c))
-        {
-        case 'Q':
-            promotePiece = Queen;
-            break;
-        case 'R':
-            promotePiece = Rook;
-            break;
-        case 'B':
-            promotePiece = Bishop;
-            break;
-        case 'N':
-            promotePiece = Knight;
-            break;
-        default:
+            switch(toupper(c))
             {
-                int lastRank = (m_stm == White ? 7 : 0);
-                if (lastRank == Rank(toSquare))
+            case 'Q':
+                promotePiece = Queen;
+                break;
+            case 'R':
+                promotePiece = Rook;
+                break;
+            case 'B':
+                promotePiece = Bishop;
+                break;
+            case 'N':
+                promotePiece = Knight;
+                break;
+            default:
                 {
-                    return move;
+                    int lastRank = (m_stm == White ? 7 : 0);
+                    if (lastRank == Rank(toSquare))
+                    {
+                        return move;
+                    }
                 }
+                break;
             }
-            break;
         }
         if(fromSquare == InvalidSquare)
         {
@@ -1975,6 +1976,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
         {
             move.setPromoted(promotePiece);
         }
+
         return move;
     }
 
@@ -2036,6 +2038,7 @@ Move BitBoard::parseMove(const QString& algebraic) const
     {
         return move;
     }
+
     return prepareMove(fromSquare, toSquare);
 }
 
