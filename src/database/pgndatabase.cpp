@@ -474,6 +474,12 @@ void PgnDatabase::readLine()
     prepareNextLineForMoveParser();
 }
 
+void PgnDatabase::readTagLine()
+{
+    m_lineBuffer = m_file->readLine();
+    prepareNextLine();
+}
+
 void PgnDatabase::skipLine()
 {
     m_lineBuffer = m_file->readLine();
@@ -489,26 +495,19 @@ void PgnDatabase::seekGame(GameId gameId)
     readLine();
 }
 
-void PgnDatabase::parseTagIntoIndex(QString tagValue)
+void PgnDatabase::parseTagIntoIndex(const QString& tag, QString value)
 {
-    QRegExp rx("([^ ]+)[ ]+\"([^\"]*)\"");
-    if (rx.indexIn(tagValue) != -1)
+    if(value.contains("\\\""))
     {
-        QString tag = rx.cap(1);
-        QString value = rx.cap(2);
-
-        if(value.contains("\\\""))
-        {
-            value.replace("\\\"", "\"");
-        }
-
-        if(tag == TagNameResult && value == "1/2")
-        {
-            value = "1/2-1/2";
-        }
-
-        m_index.setTag(tag, value, m_count - 1);
+        value.replace("\\\"", "\"");
     }
+
+    if(tag == TagNameResult && value == "1/2")
+    {
+        value = "1/2-1/2";
+    }
+
+    m_index.setTag(tag, value, m_count - 1);
 }
 
 void PgnDatabase::parseTagsIntoIndex()
@@ -517,14 +516,15 @@ void PgnDatabase::parseTagsIntoIndex()
     m_index.setTag(TagNameResult, "*", m_count - 1);
     while(m_currentLine.startsWith(QString("[")))
     {
-        QRegExp reTagValuePairs("\\[([^\\]]*)\\]");
+        QRegExp reTagValuePairs("\\[([^ ]+)[ ]+\"([^\"]*)\"\\]");
         int pos = 0;
         int lastPos = 0;
         while ((pos = reTagValuePairs.indexIn(m_currentLine, pos)) != -1)
         {
             QString tag = reTagValuePairs.cap(1);
+            QString value = reTagValuePairs.cap(2);
             pos += reTagValuePairs.matchedLength();
-            parseTagIntoIndex(tag);
+            parseTagIntoIndex(tag, value);
             lastPos = pos;
         }
 
@@ -537,17 +537,26 @@ void PgnDatabase::parseTagsIntoIndex()
             {
                 QString remainder = m_currentLine.mid(pos);
                 if (m_file->atEnd()) { m_currentLine = remainder; break; }
-                readLine(); // That is not a good idea as readline may destroy tags - readLineWithRemainder is needed here!
+                readTagLine();
                 m_currentLine.prepend(remainder);
             }
         }
         else
         {
             if (m_file->atEnd()) break;
-            readLine();
+            readTagLine();
         }
     }
 
+    if (!m_currentLine.isEmpty())
+    {
+        // Fix some things
+        m_currentLine.replace("(", " ( ");
+        m_currentLine.replace(")", " ) ");
+        m_currentLine.replace("{", " { ");
+        m_currentLine.replace("}", " } ");
+        m_currentLine.replace("$", " $");
+    }
     // skip empty lines
     while(m_currentLine.isEmpty() && !m_file->atEnd())
     {
