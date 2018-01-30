@@ -304,6 +304,12 @@ bool PgnDatabase::parseFileIntern()
         else
         {
             fp = m_file->pos() - m_lineBuffer.size();
+            if (fp == oldFp)
+            {
+                break;
+            }
+            oldFp = fp;
+            prepareNextLineForMoveParser();
         }
         if(fp != -1)
         {
@@ -516,16 +522,37 @@ void PgnDatabase::parseTagsIntoIndex()
     m_index.setTag(TagNameResult, "*", m_count - 1);
     while(m_currentLine.startsWith(QString("[")))
     {
-        QRegExp reTagValuePairs("\\[([^ ]+)[ ]+\"([^\"]*)\"\\]");
         int pos = 0;
-        int lastPos = 0;
-        while ((pos = reTagValuePairs.indexIn(m_currentLine, pos)) != -1)
+        int lastPos = -1;
+        while(pos != -1)
         {
-            QString tag = reTagValuePairs.cap(1);
-            QString value = reTagValuePairs.cap(2);
-            pos += reTagValuePairs.matchedLength();
-            parseTagIntoIndex(tag, value);
-            lastPos = pos;
+            int tagStart = m_currentLine.indexOf('[', pos);
+            if (tagStart != -1)
+            {
+                ++tagStart;
+                int tagEnd = m_currentLine.indexOf(' ', tagStart);
+                if (tagEnd != -1)
+                {
+                    int valueStart = m_currentLine.indexOf('\"', tagEnd + 1);
+                    if (valueStart != -1)
+                    {
+                        ++valueStart;
+                        int valueEnd = m_currentLine.indexOf('\"', valueStart);
+                        if (valueEnd != -1)
+                        {
+                            int tagValueEnd = m_currentLine.indexOf(']', valueEnd + 1);
+                            if (tagValueEnd != -1)
+                            {
+                                lastPos = tagValueEnd+1;
+                                pos = m_currentLine.indexOf('[', tagValueEnd);
+                                parseTagIntoIndex(m_currentLine.mid(tagStart, tagEnd-tagStart), m_currentLine.mid(valueStart, valueEnd-valueStart));
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+            break;
         }
 
         m_currentLine = m_currentLine.mid(lastPos);
