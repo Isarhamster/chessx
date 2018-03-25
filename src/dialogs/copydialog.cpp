@@ -70,7 +70,7 @@ void CopyDialog::setMode(SrcMode mode)
     }
 }
 
-void CopyDialog::setCurrentGame(QString title, int selectedGames)
+void CopyDialog::setCurrentGame(QString title, int selectedGames, int gamesInFilter, int gamesInDatabase)
 {
     if (title.isEmpty())
     {
@@ -89,6 +89,17 @@ void CopyDialog::setCurrentGame(QString title, int selectedGames)
     {
         ui.selectedButton->setText(ui.selectedButton->text()+" (" + QString::number(selectedGames) + ")");
     }
+
+    if (!selectedGames)
+    {
+        ui.filterButton->setEnabled(false);
+    }
+    else
+    {
+        ui.filterButton->setText(ui.filterButton->text()+" (" + QString::number(gamesInFilter) + ")");
+    }
+
+    ui.allButton->setText(ui.allButton->text()+" (" + QString::number(gamesInDatabase) + ")");
 }
 
 int CopyDialog::getMode() const

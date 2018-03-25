@@ -496,6 +496,11 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(ecothread, SIGNAL(loaded(QObject*, bool)), this, SLOT(ecoLoaded(QObject*, bool)));
     ecothread->start();
     StartCheckUpdate();
+
+    if (isMinimized())
+    {
+        showNormal();
+    }
 }
 
 void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget* analysis)

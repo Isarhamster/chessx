@@ -37,6 +37,8 @@ public:
     void setTime(int msec);
     /** Evaluation in centipawns. */
     int score() const;
+    /** Evaluation in pawns. */
+    double fscore() const;
     /** Set evaluation in centipawns. */
     void setScore(int score);
     /** Depth in plies. */

@@ -83,6 +83,11 @@ int Analysis::score() const
     return m_score;
 }
 
+double Analysis::fscore() const
+{
+    return (double)m_score / 100.0;
+}
+
 void Analysis::setScore(int score)
 {
     m_score = score;
