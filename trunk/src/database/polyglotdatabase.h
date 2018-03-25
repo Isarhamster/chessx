@@ -24,7 +24,6 @@ typedef struct _book_key
 {
     inline bool operator<(const _book_key& k2)const
     {
-        Q_ASSERT(this!=&k2);
         if (key > k2.key)
         {
             return false;
@@ -76,7 +75,6 @@ typedef struct _book_entry
    }
    inline bool operator<(const _book_entry& k2)const
    {
-       Q_ASSERT(this!=&k2);
        if (key > k2.key)
        {
            return false;

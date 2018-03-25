@@ -1824,7 +1824,7 @@ void MainWindow::slotGameAddVariation(const Analysis& analysis)
     QString score;
     if (!analysis.bestMove())
     {
-        score = QString::number(analysis.score() / 100.0, 'f', 2);
+        score = QString::number(analysis.fscore(), 'f', 2);
     }
     if (game().atLineEnd())
     {
@@ -2226,7 +2226,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 }
                 else if(analysis.getEndOfGame())
                 {
-                    if (analysis.score() == 0.0)
+                    if (analysis.score() == 0)
                     {
                         game().setResult(Draw);
                     }
@@ -2298,7 +2298,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             }
             else if(analysis.getEndOfGame())
             {
-                if (analysis.score() == 0.0)
+                if (analysis.score() == 0)
                 {
                     game().setResult(Draw);
                 }
@@ -2816,7 +2816,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
     QString players = game().tag(TagNameWhite)+"-"+game().tag(TagNameBlack);
 
     CopyDialog dlg(this);
-    dlg.setCurrentGame(players, gameIndexList.count());
+    dlg.setCurrentGame(players, gameIndexList.count(), m_currentDatabase->filter()->count(), m_currentDatabase->database()->count());
     dlg.setMode((CopyDialog::SrcMode)preselect);
     dlg.setDatabases(db);
     if(dlg.exec() != QDialog::Accepted)
