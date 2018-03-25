@@ -383,6 +383,8 @@ QBitArray Index::listPartialValue(const QString& tagName, QString value) const
 {
     QReadLocker m(&m_mutex);
     value.replace("-","\\-"); // Avoid - to become range
+    value.replace("(","\\("); // Avoid () to become regex
+    value.replace(")","\\)");
     TagIndex tagIndex = m_tagNameIndex.value(tagName);
     QRegExp re(value);
     re.setCaseSensitivity(Qt::CaseInsensitive);
