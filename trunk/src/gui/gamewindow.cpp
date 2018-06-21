@@ -8,6 +8,7 @@
 #include "nag.h"
 #include "settings.h"
 
+#include <QAction>
 #include <QToolButton>
 
 #if defined(_MSC_VER) && defined(_DEBUG)

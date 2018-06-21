@@ -21,17 +21,18 @@
 #include "engineoptiondialog.h"
 #include "downloadmanager.h"
 
+#include <QAction>
 #include <QCheckBox>
 #include <QColorDialog>
 #include <QComboBox>
+#include <QDesktopServices>
+#include <QDir>
+#include <QFileDialog>
 #include <QFontDialog>
 #include <QListWidget>
 #include <QPainter>
-#include <QDir>
 #include <QPushButton>
 #include <QSpinBox>
-#include <QFileDialog>
-#include <QDesktopServices>
 #include <QTextStream>
 
 #if defined(_MSC_VER) && defined(_DEBUG)

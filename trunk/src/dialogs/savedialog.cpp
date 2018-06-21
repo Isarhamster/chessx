@@ -23,8 +23,9 @@
 #include "settings.h"
 #include "tags.h"
 
-#include <QLineEdit>
+#include <QButtonGroup>
 #include <QCompleter>
+#include <QLineEdit>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )

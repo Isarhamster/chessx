@@ -127,7 +127,7 @@ void BoardViewEx::saveConfig()
 
 void BoardViewEx::on_editComment_textChanged()
 {
-    emit signalNewAnnotation(ui->editComment->toPlainText().toLatin1());
+    emit signalNewAnnotation(ui->editComment->toPlainText());
 }
 
 void BoardViewEx::setAnnotationPlaceholder(bool enable)
