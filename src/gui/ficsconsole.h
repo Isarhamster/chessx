@@ -20,7 +20,6 @@ class QButtonGroup;
 class QTimer;
 class QTableWidgetItem;
 class SimpleLabel;
-class QSound;
 
 enum
 {
