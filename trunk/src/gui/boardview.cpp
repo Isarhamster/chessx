@@ -542,7 +542,8 @@ bool BoardView::showGuess(Square s)
 
         if (s != InvalidSquare)
         {
-            Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), m_board.chess960(), m_board.castlingRooks(), (Guess::squareT)s, m_moveList);
+            Guess::Result sm = Guess::guessMove(qPrintable(m_board.toFen()), m_board.chess960(), m_board.castlingRooks(),
+                                                static_cast<Guess::squareT>(s), m_moveList);
             if(!sm.error)
             {
                 if (m_guessMove)

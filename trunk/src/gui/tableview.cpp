@@ -26,6 +26,7 @@ TableView::TableView(QWidget *parent)
     setShowGrid(false);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
+    setWordWrap(false);
     setTextElideMode(Qt::ElideRight);
     verticalHeader()->setDefaultSectionSize(fontMetrics().lineSpacing());
     verticalHeader()->hide();

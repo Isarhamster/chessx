@@ -198,7 +198,7 @@ void FicsConsole::HandleBoard(int cmd, QString s)
     bool handleBoard = true;
     if (gameMode && !puzzleMode)
     {
-        Char64Relation relation = (Char64Relation) l[C64_GAME_RELATION].toInt();
+        Char64Relation relation = static_cast<Char64Relation>(l[C64_GAME_RELATION].toInt());
         if (m_lastRelation == relation)
         {
             handleBoard = false;

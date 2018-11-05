@@ -52,7 +52,7 @@ void GameWindow::setupToolBox()
         EditAction& e = ui->chessBrowser->m_actions[action];
         if (e.type() == EditAction::AddNag)
         {
-            Nag nag = (Nag)e.data().toInt();
+            Nag nag = static_cast<Nag>(e.data().toInt());
             tbActions[nag] = action;
             items.push_back(nag);
         }
@@ -60,9 +60,9 @@ void GameWindow::setupToolBox()
 
     qSort(items);
 
-    foreach(int nag, items)
+    foreach(Nag nag, items)
     {
-        setupNagInToolBox((Nag)nag, tbActions[(Nag)nag]);
+        setupNagInToolBox(nag, tbActions[nag]);
     }
 
     setupSpacers();

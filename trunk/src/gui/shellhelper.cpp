@@ -47,7 +47,7 @@ void ShellHelper::sendFileWithMail(QString path, QString recipient)
 #endif
 }
 
-void ShellHelper::showInFinder(QString path)
+void ShellHelper::showInFinder(const QString& path)
 {
     // Mac, Windows support folder or file.
 #if defined(Q_OS_WIN)

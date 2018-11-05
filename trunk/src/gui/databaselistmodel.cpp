@@ -54,7 +54,7 @@ bool DatabaseListModel::hasChildren(const QModelIndex &parent) const
 
 QVariant DatabaseListModel::data(const QModelIndex &index, int role) const
 {
-    if(index.isValid())
+    if(index.isValid() && (index.row() < m_databases.size()))
     {
         if(role == Qt::DecorationRole)
         {
