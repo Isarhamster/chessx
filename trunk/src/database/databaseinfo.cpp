@@ -202,7 +202,7 @@ bool DatabaseInfo::modified() const
 
 bool DatabaseInfo::gameNeedsSaving() const
 {
-    return (isValid() && modified() && !m_database->isReadOnly());
+    return (isValid() && modified() && !m_database->isReadOnly() && !m_database->deleted(m_index));
 }
 
 void DatabaseInfo::setModified(bool modified, const Game& g, QString action)

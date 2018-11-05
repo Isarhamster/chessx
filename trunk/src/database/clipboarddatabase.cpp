@@ -15,7 +15,7 @@ ClipboardDatabase::ClipboardDatabase()
 
 QString ClipboardDatabase::name() const
 {
-    return tr("Clipboard");
+    return "Clipboard";
 }
 
 QString ClipboardDatabase::filename() const
