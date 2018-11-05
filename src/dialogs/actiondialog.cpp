@@ -32,9 +32,9 @@ ActionDialog::ActionDialog(QWidget *parent)
     connect(ui->buttonBox->button(QDialogButtonBox::Reset), SIGNAL(clicked()),
             this, SLOT(resetKeys()));
     connect(ui->actionsTable, SIGNAL(cellClicked(int,int)),
-            this, SLOT(saveOldActionText(int, int)));
-    connect(ui->actionsTable, SIGNAL(cellChanged(int, int)),
-            this, SLOT(validateAction(int, int)));
+            this, SLOT(saveOldActionText(int,int)));
+    connect(ui->actionsTable, SIGNAL(cellChanged(int,int)),
+            this, SLOT(validateAction(int,int)));
     connect(ui->keySequenceEdit, SIGNAL(editingFinished()),
             this, SLOT(keySequenceFinished()));
     connect(ui->clearShortcut, SIGNAL(clicked()),
