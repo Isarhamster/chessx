@@ -130,9 +130,12 @@ void EventInfo::update()
         }
     }
 
-    foreach(QString s, players.keys())
+    QHashIterator<QString,float> kviter(players);
+
+    while(kviter.hasNext())
     {
-        m_players.append(PlayerInfoListItem(s, players.value(s)));
+        kviter.next();
+        m_players.append(PlayerInfoListItem(kviter.key(), kviter.value()));
     }
     qSort(m_players.begin(), m_players.end(), sortPlayersLt);
 }

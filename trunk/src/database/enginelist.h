@@ -30,7 +30,7 @@ protected:
     /** Set the content of the default engine directories into the list of engines */
     void restoreEmpty();
     /** Set the content of the given directory into the list of engines */
-    void restoreEmptyFromPath(QString path, EngineData::EngineProtocol protocol);
+    void restoreEmptyFromPath(const QString &path, EngineData::EngineProtocol protocol);
 };
 
 #endif // ENGINELIST_H

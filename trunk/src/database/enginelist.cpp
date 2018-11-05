@@ -19,7 +19,7 @@ EngineList::EngineList()
 {
 }
 
-void EngineList::restoreEmptyFromPath(QString path, EngineData::EngineProtocol protocol)
+void EngineList::restoreEmptyFromPath(const QString& path, EngineData::EngineProtocol protocol)
 {
     if(path.isEmpty())
     {
@@ -30,7 +30,6 @@ void EngineList::restoreEmptyFromPath(QString path, EngineData::EngineProtocol p
 
     for(int i = 0; i < engines.size(); ++i)
     {
-        QString key = QString::number(i);
         QString name = engines[i];
         EngineData data(name);
         data.command = path + QDir::separator() + name;

@@ -125,10 +125,7 @@ Engine::~Engine()
     {
         m_process = 0;
     }
-    if (m_logStream)
-    {
-        delete m_logStream;
-    }
+    delete m_logStream;
 }
 
 void Engine::activate()
@@ -266,7 +263,7 @@ void Engine::processError(QProcess::ProcessError errMsg)
     emit error(errMsg);
 }
 
-bool Engine::hasOption(QString name) const
+bool Engine::hasOption(const QString& name) const
 {
     bool found = false;
     foreach (EngineOptionData eod, m_options)
@@ -280,7 +277,7 @@ bool Engine::hasOption(QString name) const
     return found;
 }
 
-bool Engine::getOption(QString name, EngineOptionData& result)
+bool Engine::getOption(const QString& name, EngineOptionData& result)
 {
     bool found = false;
     foreach (EngineOptionData eod, m_options)
@@ -295,7 +292,7 @@ bool Engine::getOption(QString name, EngineOptionData& result)
     return found;
 }
 
-void Engine::logError(QString errMsg)
+void Engine::logError(const QString& errMsg)
 {
     if (s_allowEngineOutput && m_logStream)
     {

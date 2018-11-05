@@ -113,7 +113,7 @@ protected:
     virtual void processMessage(const QString& message) = 0;
 
     /** Log error message into the logging stream */
-    virtual void logError(QString errMsg);
+    virtual void logError(const QString &errMsg);
 
     /** Sends a message to the chess engine */
     void send(const QString& message);
@@ -149,8 +149,8 @@ public:
     QList<EngineOptionData> m_options;
     OptionValueList m_mapOptionValues;
 
-    bool hasOption(QString name) const;
-    bool getOption(QString name, EngineOptionData &result);
+    bool hasOption(const QString &name) const;
+    bool getOption(const QString &name, EngineOptionData &result);
 
 private:
     QString m_name;
