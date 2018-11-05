@@ -22,7 +22,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), toolBar(0), m_gameMenu(NULL), m_currentMove(CURRENT_MOVE)
+ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), toolBar(0), m_gameMenu(0), m_currentMove(CURRENT_MOVE)
 {
     setObjectName("ChessBrowser");
     setContextMenuPolicy(Qt::CustomContextMenu);
