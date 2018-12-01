@@ -533,9 +533,9 @@ bool PolyglotDatabase::findMove(quint64 key, MoveData& m, bool& done)
     return false;
 }
 
-int PolyglotDatabase::getMoveMapForBoard(const Board &board, QMap<Move, MoveData>& moves)
+unsigned int PolyglotDatabase::getMoveMapForBoard(const Board &board, QMap<Move, MoveData>& moves)
 {
-    int games = 0;
+    unsigned int games = 0;
     moves.clear();
     QMutexLocker m(mutex());
     quint64 key = getHashFromBoard(board);

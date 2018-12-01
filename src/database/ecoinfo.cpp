@@ -150,13 +150,13 @@ void EcoInfo::update()
     {
         m_playersWhite.append(PlayerInfoListItem(s, playersWhite.value(s)));
     }
-    qSort(m_playersWhite.begin(), m_playersWhite.end(), sortPlayersLt);
+    std::sort(m_playersWhite.begin(), m_playersWhite.end(), sortPlayersLt);
 
     foreach(QString s, playersBlack.keys())
     {
         m_playersBlack.append(PlayerInfoListItem(s, playersBlack.value(s)));
     }
-    qSort(m_playersBlack.begin(), m_playersBlack.end(), sortPlayersLt);
+    std::sort(m_playersBlack.begin(), m_playersBlack.end(), sortPlayersLt);
 }
 
 

@@ -18,7 +18,7 @@ public:
     OpeningTreeThread();
     void run();
     void cancel();
-    bool updateFilter(Filter& f, const Board& b, int&, bool updateFilter, bool sourceIsDatabase, bool bEnd);
+    bool updateFilter(Filter& f, const Board& b, unsigned int&, bool updateFilter, bool sourceIsDatabase, bool bEnd);
 
 signals:
     void MoveUpdate(Board*, QList<MoveData>);
@@ -27,9 +27,9 @@ signals:
     void progress(int);
 
 protected:
-    void ProgressUpdate(QMap<Move, MoveData>& moves, int games, int i, int n);
+    void ProgressUpdate(QMap<Move, MoveData>& moves, unsigned int games, int i, int n);
 private:
-    int* m_games;
+    unsigned int* m_games;
 
     bool    m_break;
     Board   m_board;

@@ -20,13 +20,13 @@ void MoveData::addGame(Game& g, Color c, MoveType movetype)
     }
     ++count;
     result[g.result()]++;
-    unsigned elo = (c == White) ? g.tag("WhiteElo").toInt() : g.tag("BlackElo").toInt();
+    unsigned int elo = (c == White) ? g.tag("WhiteElo").toUInt() : g.tag("BlackElo").toUInt();
     if(elo >= 1000)
     {
         rating += elo;
         ++rated;
     }
-    unsigned y = g.tag("Date").section(".", 0, 0).toInt();
+    unsigned int y = g.tag("Date").section(".", 0, 0).toUInt();
     if(y > 1000)
     {
         year += y;

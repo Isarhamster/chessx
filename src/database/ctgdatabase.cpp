@@ -567,7 +567,7 @@ void CtgDatabase::position_to_ctg_signature(const Board& pos, ctg_signature_t* s
 
 // ---------------------------------------------------------
 
-int64_t CtgDatabase::move_weight(const Board& pos,
+uint64_t CtgDatabase::move_weight(const Board& pos,
         Move move,
         MoveData& md) const
 {
@@ -584,7 +584,7 @@ int64_t CtgDatabase::move_weight(const Board& pos,
     md.result[Draw] = entry.draws;
     md.result[BlackWin] = reversed ? entry.wins : entry.losses;
 
-    int64_t games = entry.wins + entry.draws + entry.losses;
+    uint64_t games = entry.wins + entry.draws + entry.losses;
     md.count = games;
 
     md.rating = entry.avg_rating_score;
@@ -618,7 +618,7 @@ bool CtgDatabase::findMove(quint64 /*key*/, MoveData& /*m*/)
     return false;
 }
 
-int CtgDatabase::getMoveMapForBoard(const Board &pos, QMap<Move, MoveData>& moveList)
+unsigned int CtgDatabase::getMoveMapForBoard(const Board &pos, QMap<Move, MoveData>& moveList)
 {
     ctg_entry_t entry;
     if (!ctg_get_entry(pos, &entry)) return 0;

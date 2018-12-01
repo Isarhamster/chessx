@@ -198,7 +198,7 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
                 {
                     return "";
                 }
-                int percentage = m_moves[index.row()].count * 1000 / m_games / 10.0;
+                unsigned int percentage = m_moves[index.row()].count * 1000u / m_games / 10u;
                 QString approx;
                 if(percentage == 0)
                 {
@@ -230,7 +230,7 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
         {
             if ((index.column() == 2) && m_moves[index.row()].hasPercent())
             {
-                return paintPercentage(m_moves[index.row()].percentage());
+                return paintPercentage(static_cast<int>(m_moves[index.row()].percentage()));
             }
             break;
         }
@@ -247,19 +247,19 @@ void OpeningTree::doSort(int column, Qt::SortOrder order)
     switch(column)
     {
     case 0:
-        qSort(m_moves.begin(), m_moves.end(), compareMove);
+        std::sort(m_moves.begin(), m_moves.end(), compareMove);
         break;
     case 1:
-        qSort(m_moves.begin(), m_moves.end());
+        std::sort(m_moves.begin(), m_moves.end());
         break;
     case 2:
-        qSort(m_moves.begin(), m_moves.end(), compareScore);
+        std::sort(m_moves.begin(), m_moves.end(), compareScore);
         break;
     case 3:
-        qSort(m_moves.begin(), m_moves.end(), compareRating);
+        std::sort(m_moves.begin(), m_moves.end(), compareRating);
         break;
     case 4:
-        qSort(m_moves.begin(), m_moves.end(), compareYear);
+        std::sort(m_moves.begin(), m_moves.end(), compareYear);
         break;
     };
 
