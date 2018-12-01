@@ -137,7 +137,7 @@ void EventInfo::update()
         kviter.next();
         m_players.append(PlayerInfoListItem(kviter.key(), kviter.value()));
     }
-    qSort(m_players.begin(), m_players.end(), sortPlayersLt);
+    std::sort(m_players.begin(), m_players.end(), sortPlayersLt);
 }
 
 

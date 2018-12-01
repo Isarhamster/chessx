@@ -71,7 +71,7 @@ protected:
 private:
     bool m_bRequestPending;
     QList<MoveData> m_moves;
-    int m_games;
+    unsigned int m_games;
     QStringList m_names;
     int m_sortcolumn;
     Qt::SortOrder m_order;

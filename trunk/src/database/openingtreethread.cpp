@@ -27,7 +27,7 @@ OpeningTreeThread::OpeningTreeThread()
 void OpeningTreeThread::run()
 {
     QMap<Move, MoveData> moves;
-    int games = 0;
+    unsigned int games = 0;
     emit progress(0);
     QList<MoveData> emptyMoveList;
     emit MoveUpdate(&m_board, emptyMoveList);
@@ -114,7 +114,7 @@ void OpeningTreeThread::cancel()
     m_break = true;
 }
 
-bool OpeningTreeThread::updateFilter(Filter& f, const Board& b, int& g, bool updateFilter, bool sourceIsDatabase, bool bEnd)
+bool OpeningTreeThread::updateFilter(Filter& f, const Board& b, unsigned int& g, bool updateFilter, bool sourceIsDatabase, bool bEnd)
 {
     m_break = false;
     m_filter = &f;
@@ -128,7 +128,7 @@ bool OpeningTreeThread::updateFilter(Filter& f, const Board& b, int& g, bool upd
     return true;
 }
 
-void OpeningTreeThread::ProgressUpdate(QMap<Move, MoveData> &moves, int games, int i, int n)
+void OpeningTreeThread::ProgressUpdate(QMap<Move, MoveData> &moves, unsigned int games, int i, int n)
 {
     emit progress(i * 100 / n);
     if(!m_break)

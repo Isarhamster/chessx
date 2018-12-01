@@ -49,9 +49,10 @@ public:
     /** Find Information to a given key */
     bool findMove(quint64 key, MoveData &move);
     /** Get a map of MoveData from a given board position */
-    int getMoveMapForBoard(const Board &board, QMap<Move, MoveData>& moves);
+    unsigned int getMoveMapForBoard(const Board &board, QMap<Move, MoveData>& moves);
     /** Start a search for a new key */
     void reset();
+    /** Compile a ctg book (to be done) */
     void book_make(Database& db, volatile bool& breakFlag);
 
 signals:
@@ -100,7 +101,7 @@ protected: // Methods which interface with ChessX
      * resulting position, which determines the actual weight of the
      * move, corrected by some annotations.
      */
-    int64_t move_weight(const Board& pos, Move move, MoveData& md) const;
+    uint64_t move_weight(const Board& pos, Move move, MoveData& md) const;
 
     /** Get the ctg entry associated with the given position. */
     bool ctg_get_entry(const Board& pos, ctg_entry_t* entry) const;

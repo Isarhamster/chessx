@@ -136,7 +136,7 @@ public:
     void book_make(Database& db, volatile bool& breakFlag);
 
     /** Get a map of MoveData from a given board position */
-    int getMoveMapForBoard(const Board& board, QMap<Move, MoveData> &moves);
+    unsigned int getMoveMapForBoard(const Board& board, QMap<Move, MoveData> &moves);
 
 signals:
     void progress(int);

@@ -149,7 +149,7 @@ void PlayerInfo::update()
         {
             m_eco[i].append(EcoFrequencyItem(s, openings[i].value(s)));
         }
-        qSort(m_eco[i].begin(), m_eco[i].end(), sortEcoFrequencyLt);
+        std::sort(m_eco[i].begin(), m_eco[i].end(), sortEcoFrequencyLt);
     }
 
     for(int i = 0; i < 2; ++i)

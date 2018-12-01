@@ -29,10 +29,10 @@ typedef struct _ctg_signature_t {
 typedef struct _ctg_entry_t{
     int num_moves;
     unsigned char moves[100];
-    int total;
-    int wins;
-    int losses;
-    int draws;
+    unsigned int total;
+    unsigned int wins;
+    unsigned int losses;
+    unsigned int draws;
     int unknown1;
     int avg_rating_games;
     int avg_rating_score;

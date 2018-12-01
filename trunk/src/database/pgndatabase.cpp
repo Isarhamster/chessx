@@ -387,7 +387,6 @@ void PgnDatabase::close()
         m_file->close();
     }
     delete m_file;
-    m_file = 0;
     delete[] m_gameOffsets64;
     delete[] m_gameOffsets32;
 
@@ -496,7 +495,7 @@ void PgnDatabase::seekGame(GameId gameId)
     IndexBaseType n = offset(gameId);
     if(!m_file->seek(n))
     {
-        qDebug() << "Seeking offset " << n << " failed!";
+        qDebug() << "Seeking offset " << QString::number(n) << " failed!";
     }
     readLine();
 }

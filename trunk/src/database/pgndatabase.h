@@ -92,7 +92,7 @@ protected:
 
     IndexBaseType m_count; // Should actually be a GameId - but cannot be changed due to serialization issues
 
-    QIODevice* m_file;
+    QPointer<QIODevice> m_file;
     QString m_currentLine;
 
     bool hasIndexFile() const;
