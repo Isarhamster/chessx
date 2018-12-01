@@ -220,12 +220,36 @@ QString Settings::uciPath()
 #ifdef Q_OS_WIN
     QString path(AppSettings->programDataPath());
     return (path + QDir::separator() + "engines" + QDir::separator() + "uci");
-#endif
-#ifdef Q_OS_MAC
+#elif defined Q_OS_MAC
     QString path(AppSettings->programDataPath());
     return (path + QDir::separator() + "engines-mac" + QDir::separator() + "uci");
-#endif
+#else
     return "";
+#endif
+}
+
+QString Settings::ecoPath() const
+{
+    QString eco(AppSettings->dataPath() + QDir::separator() + "chessx.eco");
+
+    if(!QFile::exists(eco))
+    {
+        eco = QString(":chessx.eco");
+    }
+
+    return eco;
+}
+
+QString Settings::gtmPath() const
+{
+    QString gtm(AppSettings->dataPath() + QDir::separator() + "chessx.gtm");
+
+    if(!QFile::exists(gtm))
+    {
+        gtm = QString(":chessx.gtm");
+    }
+
+    return gtm;
 }
 
 QString Settings::winboardPath()
@@ -233,12 +257,12 @@ QString Settings::winboardPath()
 #ifdef Q_OS_WIN
     QString path(AppSettings->programDataPath());
     return (path + QDir::separator() + "engines" + QDir::separator() + "winboard");
-#endif
-#ifdef Q_OS_MAC
+#elif defined Q_OS_MAC
     QString path(AppSettings->programDataPath());
     return (path + QDir::separator() + "engines-mac" + QDir::separator() + "winboard");
-#endif
+#else
     return "";
+#endif
 }
 
 QString Settings::timesealFilePath()
@@ -246,12 +270,12 @@ QString Settings::timesealFilePath()
 #ifdef Q_OS_WIN
     QString path(AppSettings->programDataPath());
     return (path + QDir::separator() + "timeseal" + QDir::separator() + "windows" + QDir::separator() + "timeseal.exe");
-#endif
-#ifdef Q_OS_MAC
+#elif defined Q_OS_MAC
     QString path(AppSettings->programDataPath());
     return (path + QDir::separator() + "timeseal" + QDir::separator() + "mac" + QDir::separator() + "timeseal");
-#endif
+#else
     return "";
+#endif
 }
 
 QString Settings::commonDataPath()

@@ -48,6 +48,10 @@ public:
     QString dataPath();
     /** @return directory where executable sub programs are stored. */
     QString programDataPath();
+    /** @return path where eco data are stored. */
+    QString ecoPath() const;
+    /** @return path where gtm data are stored. */
+    QString gtmPath() const;
     /** @return directory where preinstalled uci engines are stored. */
     QString uciPath();
     /** @return directory where preinstalled winboard engines are stored. */
