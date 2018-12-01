@@ -62,7 +62,7 @@ void PlayerListWidget::slotReconfigure()
 
 void PlayerListWidget::selectionChangedSlot()
 {
-    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
     if(selection.count())
     {
         QString ts = selection[0].data().toString();
@@ -153,7 +153,7 @@ void PlayerListWidget::filterSelectedPlayer()
         words = model->stringList();
     }
 
-    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
     if(selection.count())
     {
         QString ts = selection[0].data().toString();
@@ -175,7 +175,7 @@ void PlayerListWidget::filterSelectedPlayer()
 
 void PlayerListWidget::renameSelectedPlayer()
 {
-    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
     if(selection.count())
     {
         QString ts = selection[0].data().toString();

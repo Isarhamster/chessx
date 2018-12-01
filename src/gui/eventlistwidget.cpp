@@ -51,7 +51,7 @@ void EventListWidget::slotReconfigure()
 
 void EventListWidget::selectionChangedSlot()
 {
-    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
     if(selection.count())
     {
         QString ts = selection[0].data().toString();
@@ -135,7 +135,7 @@ void EventListWidget::selectEvent(const QString& event)
 
 void EventListWidget::filterSelectedEvent()
 {
-    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
     if(selection.count())
     {
         QString ts = selection[0].data().toString();
@@ -145,7 +145,7 @@ void EventListWidget::filterSelectedEvent()
 
 void EventListWidget::renameSelectedEvent()
 {
-    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
     if(selection.count())
     {
         QString ts = selection[0].data().toString();

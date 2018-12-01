@@ -44,7 +44,7 @@ signals:
     void requestMakeBook(QString s);
 
 protected: //Drag'n'Drop Support
-    void startToDrag(const QModelIndex&);
+    void startToDrag();
     virtual int minRowHeight() const { return 24; }
 
 protected:
@@ -72,6 +72,7 @@ private slots:
     void dbOpen();
     void dbToggleUTF8();
     void dbClose();
+    void dbSetStarsForSelection(int stars);
 
 private:
     DatabaseListModel* m_model;

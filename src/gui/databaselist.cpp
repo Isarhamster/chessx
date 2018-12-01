@@ -24,9 +24,10 @@
 DatabaseList::DatabaseList(QWidget *parent) :
     TableView(parent)
 {
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
     setObjectName("DatabaseList");
     setWindowTitle(tr("Databases"));
-     setPosDecoration(QStyleOptionViewItem::Top);
+    setPosDecoration(QStyleOptionViewItem::Top);
     m_model = new DatabaseListModel(this);
 
     m_filterModel = new QSortFilterProxyModel(this);
@@ -157,74 +158,82 @@ void DatabaseList::itemSelected(const QModelIndex& index)
 
 void DatabaseList::dbOpen()
 {
-    Q_ASSERT(m_cell.isValid());
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
-    QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_UTF8)).toString();
-    bool bUtf8 = (utf8.compare("UTF8") == 0);
-    emit requestOpenDatabase(ts, bUtf8);
+    QModelIndexList list = selectionModel()->selectedRows();
+    foreach(QModelIndex index, list)
+    {
+        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+        QString utf8 = m_filterModel->data(m_filterModel->index(index.row(), DBLV_UTF8)).toString();
+        bool bUtf8 = (utf8.compare("UTF8") == 0);
+        emit requestOpenDatabase(s, bUtf8);
+    }
 }
 
 void DatabaseList::dbToggleUTF8()
 {
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
-    QString utf8 = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_UTF8)).toString();
-    bool bUtf8 = (utf8.compare("UTF8") == 0);
-    setFileUtf8(ts, !bUtf8);
+    QModelIndexList list = selectionModel()->selectedRows();
+    foreach(QModelIndex index, list)
+    {
+        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+        QString utf8 = m_filterModel->data(m_filterModel->index(index.row(), DBLV_UTF8)).toString();
+        bool bUtf8 = (utf8.compare("UTF8") == 0);
+        setFileUtf8(s, !bUtf8);
+    }
 }
 
 void DatabaseList::dbClose()
 {
-    Q_ASSERT(m_cell.isValid());
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
-    emit requestCloseDatabase(ts);
+    QModelIndexList list = selectionModel()->selectedRows();
+    foreach(QModelIndex index, list)
+    {
+        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+        emit requestCloseDatabase(s);
+    }
+}
+
+void DatabaseList::dbSetStarsForSelection(int stars)
+{
+    QModelIndexList list = selectionModel()->selectedRows();
+    foreach(QModelIndex index, list)
+    {
+        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+        setFileFavorite(s, true, 0);
+        setStars(s,stars);
+    }
+}
+
+void DatabaseList::dbRemoveFromFavorites()
+{
+    dbSetStarsForSelection(0);
 }
 
 void DatabaseList::dbKeepFile()
 {
-    Q_ASSERT(m_cell.isValid());
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
-    setFileFavorite(ts, true, 0);
-    setStars(ts,1);
+    dbSetStarsForSelection(1);
 }
 
 void DatabaseList::dbAddToFavorites2()
 {
-    Q_ASSERT(m_cell.isValid());
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
-    setFileFavorite(ts, true, 0);
-    setStars(ts,2);
+    dbSetStarsForSelection(2);
 }
 
 void DatabaseList::dbAddToFavorites3()
 {
-    Q_ASSERT(m_cell.isValid());
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
-    setFileFavorite(ts, true, 0);
-    setStars(ts,3);
+    dbSetStarsForSelection(3);
 }
 
 void DatabaseList::dbAddToOpenAtStartup()
 {
-    Q_ASSERT(m_cell.isValid());
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
-    setFileFavorite(ts, true, 0);
-    setStars(ts,4);
+    dbSetStarsForSelection(4);
 }
 
 void DatabaseList::dbSetActiveAtStartup()
 {
+    // There can only be one such file, the previous file loses the active flag
     Q_ASSERT(m_cell.isValid());
     QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
     limitStars(4);
     setFileFavorite(ts, true, 0);
     setStars(ts,5);
-}
-
-void DatabaseList::dbRemoveFromFavorites()
-{
-    Q_ASSERT(m_cell.isValid());
-    QString ts = m_filterModel->data(m_filterModel->index(m_cell.row(), DBLV_PATH)).toString();
-    setFileFavorite(ts, false, 0);
 }
 
 void DatabaseList::slotMakeBook()
@@ -342,8 +351,12 @@ void DatabaseList::dropEvent(QDropEvent *event)
     }
     else if(dbMimeData && mimeData->hasUrls())
     {
-        QString s = mimeData->urls().first().toString();
-        appendDataBaseToDataBase(event->pos(), s);
+        QList<QUrl> urlList = mimeData->urls();
+        foreach(QUrl url, urlList)
+        {
+            QString s = url.toString();
+            appendDataBaseToDataBase(event->pos(), s);
+        }
     }
     else if(mimeData && mimeData->hasUrls())
     {
@@ -387,13 +400,16 @@ void DatabaseList::appendDataBaseToDataBase(QPoint pos, QString src)
     }
 }
 
-void DatabaseList::startToDrag(const QModelIndex& index)
+void DatabaseList::startToDrag()
 {
     DbMimeData *mimeData = new DbMimeData;
-
-    QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
     QList<QUrl> urlList;
-    urlList << QUrl(s);
+    QModelIndexList list = selectionModel()->selectedRows();
+    foreach(QModelIndex index, list)
+    {
+        QString s = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+        urlList << QUrl(s);
+    }
     mimeData->setUrls(urlList);
 
     QPixmap pixmap = style()->standardPixmap(QStyle::SP_FileIcon);
@@ -407,5 +423,5 @@ void DatabaseList::startToDrag(const QModelIndex& index)
 
 void DatabaseList::startDrag(Qt::DropActions /*supportedActions*/)
 {
-    startToDrag(currentIndex());
+    startToDrag();
 }
