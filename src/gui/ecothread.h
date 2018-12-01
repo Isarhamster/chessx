@@ -8,6 +8,7 @@
 #include <QThread>
 #include "ecopositions.h"
 #include "game.h"
+#include "settings.h"
 
 /** @ingroup GUI
 A small little class to handle loading of the ECO file for the
@@ -18,21 +19,23 @@ class EcoThread : public QThread
     Q_OBJECT
 
 public:
-    EcoThread() {};
+    EcoThread() {}
     void run()
     {
         bool ok = true;
-        if (!EcoPositions::loadEcoFile(":chessx.eco"))
+        QString eco = AppSettings->ecoPath();
+        if (!EcoPositions::loadEcoFile(eco))
         {
             ok = false;
         }
-        if (!Board::loadEcoFile(":chessx.gtm"))
+        QString gtm = AppSettings->gtmPath();
+        if (!Board::loadEcoFile(gtm))
         {
             ok = false;
         }
         EcoPositions::m_ecoReady = true;
         emit loaded(this, ok);
-    };
+    }
 
 signals:
     void loaded(QObject*, bool);
