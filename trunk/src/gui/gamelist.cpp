@@ -256,7 +256,8 @@ void GameList::slotContextMenu(const QPoint& pos)
 
         int deleted = 0;
         int activated = 0;
-        foreach(QModelIndex index, selection)
+        QModelIndexList list = selectionModel()->selectedRows();
+        foreach(QModelIndex index, list)
         {
             QModelIndex source = GetSourceIndex(index);
             int n = m_model->filter()->indexToGame(source.row());
@@ -486,40 +487,20 @@ void GameList::slotMergeFilter()
 
 void GameList::slotMergeGame()
 {
-    QList<int> gameIndexList;
-    foreach(QModelIndex index, selectionModel()->selectedRows())
-    {
-        QModelIndex m = GetSourceIndex(index);
-        gameIndexList.append(m_model->filter()->indexToGame(m.row()));
-    }
-
+    QList<int> gameIndexList = selectedGames();
     emit requestMergeGame(gameIndexList);
 }
 
 void GameList::slotDeleteGame()
 {
-    QList<int> gameIndexList;
-    foreach(QModelIndex index, selectionModel()->selectedRows())
-    {
-        QModelIndex m = GetSourceIndex(index);
-        gameIndexList.append(m_model->filter()->indexToGame(m.row()));
-    }
-
+    QList<int> gameIndexList = selectedGames();
     emit requestDeleteGame(gameIndexList);
 }
 
 void GameList::slotHideGame()
 {
-    QList<int> gameIndexList;
-    QList<int> games;
-    foreach(QModelIndex index, selectionModel()->selectedRows())
-    {
-        QModelIndex m = GetSourceIndex(index);
-        int game = m_model->filter()->indexToGame(m.row());
-        games.push_front(game);
-    }
-
-    foreach( int game, games )
+    QList<int> gameIndexList = selectedGames();
+    foreach( int game, gameIndexList )
     {
         m_model->filter()->set(game, 0);
     }

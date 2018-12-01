@@ -54,7 +54,7 @@ void ECOListWidget::slotReconfigure()
 
 void ECOListWidget::selectionChangedSlot()
 {
-    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
     if(selection.count())
     {
         QString ts = selection[0].data().toString().section(" ",0,0);
@@ -141,7 +141,7 @@ void ECOListWidget::selectECO(const QString& eco)
 
 void ECOListWidget::filterSelectedECO()
 {
-    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedIndexes();
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
     if(selection.count())
     {
         QString ts = selection[0].data().toString().section(" ",0,0);

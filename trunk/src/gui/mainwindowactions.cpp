@@ -2552,7 +2552,7 @@ void MainWindow::copyGames(QString fileName, QList<int> indexes)
         {
             if(m_databases[i]->isValid())
             {
-                m_databases[i]->filter()->resize(m_databases[i]->database()->count() + indexes.count(), true);
+                m_databases[i]->filter()->resize(m_databases[i]->database()->count() + static_cast<quint64>(indexes.count()), true);
                 foreach (int index, indexes)
                 {
                     copyGame(i, index);
@@ -2588,7 +2588,7 @@ void MainWindow::copyGames(QString fileName, QList<int> indexes)
 
 void MainWindow::copyDatabase(QString target, QString src)
 {
-    if(target != src)
+    if(QDir::cleanPath(target) != QDir::cleanPath(src))
     {
         QFileInfo fiSrc(src);
         QFileInfo fiDest(target);
