@@ -20,6 +20,7 @@
 #include "tableview.h"
 #include "game.h"
 
+#include <QPointer>
 #include <QSortFilterProxyModel>
 
 class Filter;
@@ -92,6 +93,10 @@ private slots:
     void slotHideGame();
     /** React to a change in selected item */
     void slotItemSelected(const QModelIndex&);
+    /** Request a filter operation */
+    void slotResetFilter();
+    /** Request a filter operation */
+    void slotReverseFilter();
 
 signals:
     void selected(int);
@@ -106,6 +111,8 @@ signals:
     void signalFirstGameLoaded(bool);
     void signalLastGameLoaded(bool);
     void signalDropEvent(QDropEvent*);
+    void requestResetFilter();
+    void requestRevertFilter();
 
 protected: //Drag'n'Drop Support
     void startDrag(Qt::DropActions supportedActions);
@@ -120,7 +127,7 @@ protected: //Drag'n'Drop Support
 
 private:
     FilterModel* m_model;
-    GameListSortModel* sortModel;
+    QPointer<GameListSortModel> sortModel;
 };
 
 #endif

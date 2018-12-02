@@ -236,8 +236,11 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameList, SIGNAL(requestMergeGame(QList<int>)), SLOT(slotMergeActiveGame(QList<int>)));
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
     connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
+    connect(m_gameList, SIGNAL(requestResetFilter()), SLOT(slotSearchReset()));
+    connect(m_gameList, SIGNAL(requestRevertFilter()), SLOT(slotSearchReverse()));
     connect(m_gameList, SIGNAL(requestDeleteGame(QList<int>)), SLOT(slotDatabaseDeleteGame(QList<int>)));
     connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
+
     connect(this, SIGNAL(reconfigure()), m_gameList, SLOT(slotReconfigure()));
     gameListDock->setWidget(m_gameList);
     m_menuView->addAction(gameListDock->toggleViewAction());
