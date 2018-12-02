@@ -137,6 +137,16 @@ void GameList::slotItemSelected(const QModelIndex& index)
     scrollTo(index, EnsureVisible);
 }
 
+void GameList::slotResetFilter()
+{
+    emit requestResetFilter();
+}
+
+void GameList::slotReverseFilter()
+{
+    emit requestRevertFilter();
+}
+
 QModelIndex GameList::NewSortIndex(int row) const
 {
     if (sortModel)
@@ -207,9 +217,7 @@ void GameList::setFilter(Filter* filter)
     setModel(0);
 
     delete m_model;
-
     delete sortModel;
-    sortModel = 0;
 
     if (filter)
     {
@@ -242,10 +250,10 @@ void GameList::slotContextMenu(const QPoint& pos)
 {
     QModelIndex cell = indexAt(pos);
     QModelIndexList selection = selectedIndexes();
-    // Make sure the right click occured on a cell!
+    QMenu menu(tr("Game list"), this);
     if(cell.isValid() && selection.contains(cell))
     {
-        QMenu menu(tr("Game list"), this);
+        // Right click occured on a cell!
         menu.addAction(tr("Copy games..."), this, SLOT(slotCopyGame()));
         menu.addAction(tr("Filter twins"), this, SLOT(slotFindDuplicate()));
         QMenu* mergeMenu = menu.addMenu(tr("Merge into current game"));
@@ -301,6 +309,13 @@ void GameList::slotContextMenu(const QPoint& pos)
 
         menu.exec(mapToGlobal(pos));
     }
+    else
+    {
+        // Right click occured on empty space
+        menu.addAction(tr("Reset filter"), this, SLOT(slotResetFilter()));
+        menu.addAction(tr("Reverse filter"), this, SLOT(slotReverseFilter()));
+    }
+    menu.exec(mapToGlobal(pos));
 }
 
 void GameList::simpleSearch(int tagid)
