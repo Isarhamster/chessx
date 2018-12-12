@@ -171,8 +171,12 @@ quint64 ArenaBook::positionCount() const
 
 bool ArenaBook::loadGame(GameId gameId, Game& game)
 {
-    loadGameMoves(gameId, game);
-    return true;
+    if (gameId < count())
+    {
+        loadGameMoves(gameId, game);
+        return true;
+    }
+    return false;
 }
 
 void ArenaBook::loadGameMoves(GameId gameId, Game & game)

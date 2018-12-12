@@ -32,7 +32,7 @@ public :
     Query();
     ~Query();
     /** @return the operator at index, or NullOperator otherwise */
-    Filter::Operator searchOperator(int index) const;
+    FilterOperator searchOperator(int index) const;
     /** @return the search at index, or NULL pointer otherwise. Do not delete the result. */
     Search* search(int index);
     /** @return the number of elements in the list */
@@ -51,11 +51,11 @@ public :
 
     /** query modification methods */
     /** Add a new operator to the list */
-    void append(Filter::Operator op);
+    void append(FilterOperator op);
     /** Add a new operand (search definition) to the list */
     void append(Search *search);
     /** Change element at index to operator op, return true if successful, false otherwise */
-    bool set(int index, Filter::Operator op);
+    bool set(int index, FilterOperator op);
     /** Change element at index to operand search, return true if successful, false otherwise */
     bool set(int index, Search *search);
     /** Remove element at index from list, return true if successful, false otherwise */
@@ -64,7 +64,7 @@ public :
     void clear();
 private :
     enum ElementType {SearchElement, OperatorElement};
-    typedef QList<Filter::Operator> OperatorList;
+    typedef QList<FilterOperator> OperatorList;
     typedef QList<Search*> SearchList;
     typedef QList<int> IntList;
     typedef QList<ElementType> ElementTypeList;

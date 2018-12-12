@@ -28,10 +28,10 @@ BoardSearchDialog::BoardSearchDialog(QWidget *parent) :
     ui->boardView->showMoveIndicator(false);
     ui->boardView->setEnabled(false);
 
-    ui->modeCombo->addItem(tr("Find in current filter"), Filter::And);
-    ui->modeCombo->addItem(tr("Search whole database"), Filter::NullOperator);
-    ui->modeCombo->addItem(tr("Add to current filter"), Filter::Or);
-    ui->modeCombo->addItem(tr("Remove from current filter"), Filter::Remove);
+    ui->modeCombo->addItem(tr("Find in current filter"), FilterOperator::And);
+    ui->modeCombo->addItem(tr("Search whole database"), FilterOperator::NullOperator);
+    ui->modeCombo->addItem(tr("Add to current filter"), FilterOperator::Or);
+    ui->modeCombo->addItem(tr("Remove from current filter"), FilterOperator::Remove);
 
     connect(ui->btLeft, SIGNAL(clicked()), SLOT(showPrevBoard()));
     connect(ui->btRight, SIGNAL(clicked()), SLOT(showNextBoard()));

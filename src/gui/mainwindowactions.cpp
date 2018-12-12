@@ -2431,6 +2431,7 @@ void MainWindow::AutoMoveAtEndOfGame()
 void MainWindow::slotFilterChanged(bool selectGame)
 {
     int n = gameIndex();
+    m_gameList->endSearch();
     if (selectGame) m_gameList->selectGame(n);
 
     if(n >= 0)
@@ -2479,7 +2480,6 @@ void MainWindow::slotStatusMessage(const QString& msg)
 void MainWindow::slotOperationProgress(int progress)
 {
     m_progressBar->setValue(progress);
-    m_progressBar->repaint();
 }
 
 void MainWindow::slotDbRestoreState(const Game& game)
@@ -2766,10 +2766,10 @@ void MainWindow::slotDatabaseCopy(int preselect)
 
 void MainWindow::filterDuplicates(int mode)
 {
-    Filter::Operator oper = Filter::NullOperator;
+    FilterOperator oper = FilterOperator::NullOperator;
     if (mode == DuplicateSearch::DS_Both_All)
     {
-        oper = Filter::Or;
+        oper = FilterOperator::Or;
     }
     if (mode == DuplicateSearch::DS_Tags && !databaseInfo()->filter()->database()->isReadOnly())
     {
@@ -2780,7 +2780,7 @@ void MainWindow::filterDuplicates(int mode)
             new DuplicateSearch (databaseInfo()->filter(), DuplicateSearch::DSMode(mode));
     m_openingTreeWidget->cancel();
     slotBoardSearchStarted();
-    databaseInfo()->filter()->executeSearch(ds, oper);
+    m_gameList->executeSearch(ds, oper);
 }
 
 void MainWindow::slotDatabaseFilterDuplicateGames()
@@ -2979,7 +2979,7 @@ void MainWindow::slotSearchBoard()
         Search* ps = new PositionSearch (databaseInfo()->filter()->database(), boardList.at(dlg.boardIndex()));
         m_openingTreeWidget->cancel();
         slotBoardSearchStarted();
-        databaseInfo()->filter()->executeSearch(ps, Filter::Operator(dlg.mode()));
+        m_gameList->executeSearch(ps, FilterOperator(dlg.mode()));
     }
 }
 
@@ -2988,7 +2988,6 @@ void MainWindow::slotBoardSearchUpdate(int progress)
     m_gameList->updateFilter();
     slotFilterChanged(false);
     slotOperationProgress(progress);
-    m_gameList->repaint(); // workaround issue with Qt
 }
 
 void MainWindow::slotBoardSearchFinished()
@@ -3004,15 +3003,13 @@ void MainWindow::slotBoardSearchStarted()
 
 void MainWindow::slotSearchReverse()
 {
-    databaseInfo()->filter()->reverse();
-    m_gameList->updateFilter();
+    m_gameList->filterInvert();
     slotFilterChanged();
 }
 
 void MainWindow::slotSearchReset()
 {
-    databaseInfo()->filter()->setAll(1);
-    m_gameList->updateFilter();
+    m_gameList->filterSetAll(1);
     slotFilterChanged();
 }
 
@@ -3030,7 +3027,7 @@ void MainWindow::slotTreeUpdate(bool dbIsFilterSource)
             Search* ps = new PositionSearch (databaseInfo()->filter()->database(), m_openingTreeWidget->board());
             m_openingTreeWidget->cancel();
             slotBoardSearchStarted();
-            databaseInfo()->filter()->executeSearch(ps);
+            m_gameList->executeSearch(ps);
         }
     }
 }

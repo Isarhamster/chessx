@@ -105,38 +105,45 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
     if(index.isValid() && index.row() < m_filter->count())
     {
         int i = m_filter->indexToGame(index.row());
-        if(role == Qt::DisplayRole)
+        if (i >= 0)
         {
-            if(index.column() == 0)
+            if (role == Qt::DisplayRole)
             {
-                return i + 1;
-            }
+                if(index.column() == 0)
+                {
+                    return i + 1;
+                }
 
-            QString tag = m_filter->database()->tagValue(i, m_columnTags.at(index.column()));
-            if(tag == "?")
-            {
-                tag.clear();
+                QString tag = m_filter->database()->tagValue(i, m_columnTags.at(index.column()));
+                if(tag == "?")
+                {
+                    tag.clear();
+                }
+                return tag;
             }
-            return tag;
-        }
-        else if(role == Qt::FontRole)
-        {
-            if(m_filter->database()->deleted(i))
+            else if(role == Qt::FontRole)
             {
-                QFont font;
-                font.setStrikeOut(true);
-                return font;
+                if(m_filter->database()->deleted(i))
+                {
+                    QFont font;
+                    font.setStrikeOut(true);
+                    return font;
+                }
             }
-        }
-        else if(role == Qt::ForegroundRole)
-        {
-            if(!m_filter->database()->getValidFlag(i))
+            else if(role == Qt::ForegroundRole)
             {
-                QVariant v = QColor(Qt::red);
+                if(!m_filter->database()->getValidFlag(i))
+                {
+                    QVariant v = QColor(Qt::red);
+                    return v;
+                }
+                QVariant v = QColor(Qt::black);
                 return v;
             }
-            QVariant v = QColor(Qt::black);
-            return v;
+        }
+        else
+        {
+            qDebug() << index.row();
         }
     }
     return QVariant();
@@ -182,14 +189,59 @@ QModelIndex FilterModel::index(int row, int column, const QModelIndex& parent) c
     return createIndex(row, column, (void*) 0);
 }
 
-void FilterModel::setFilter(Filter* filter)
-{
-    beginResetModel();
-    m_filter = filter;
-    endResetModel();
-}
-
 Filter* FilterModel::filter()
 {
     return m_filter;
 }
+
+void FilterModel::invert()
+{
+    beginResetModel();
+    m_filter->invert();
+    endResetModel();
+}
+
+void FilterModel::setAll(int value)
+{
+    beginResetModel();
+    m_filter->setAll(value);
+    endResetModel();
+}
+
+void FilterModel::executeSearch(Search* search, FilterOperator searchOperator, int preSelect)
+{
+    Filter* f;
+    if (searchOperator==FilterOperator::NullOperator)
+    {
+        m_filter->cancel();
+        f = new Filter(*m_filter);
+        f->setAll(preSelect);
+    }
+    else
+    {
+        m_filter->wait();
+        f = new Filter(*m_filter);
+    }
+
+    connect(f, SIGNAL(searchFinished()), SLOT(endSearch()), Qt::QueuedConnection);
+    connect(f, SIGNAL(searchProgress(int)), SIGNAL(searchProgress(int)), Qt::QueuedConnection);
+
+    m_filter->lock(f);
+    f->executeSearch(search, searchOperator);
+}
+
+void FilterModel::endSearch()
+{
+    beginResetModel();
+    Filter* f = qobject_cast<Filter*>(sender());
+    if (f && f!= m_filter)
+    {
+        *m_filter = *f;
+        m_filter->lock(0);
+        delete f;
+    }
+    endResetModel();
+    emit searchFinished();
+}
+
+

@@ -11,6 +11,7 @@
 
 #include "query.h"
 #include "search.h"
+#include "filteroperator.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -31,11 +32,11 @@ Query::~Query()
     clear();
 }
 
-Filter::Operator Query::searchOperator(int index) const
+FilterOperator Query::searchOperator(int index) const
 {
     if(!isValidIndex(index))
     {
-        return Filter::NullOperator;
+        return FilterOperator::NullOperator;
     }
     int i = m_operatorMap.indexOf(index);
     if(i >= 0)
@@ -44,7 +45,7 @@ Filter::Operator Query::searchOperator(int index) const
     }
     else
     {
-        return Filter::NullOperator;
+        return FilterOperator::NullOperator;
     }
 }
 
@@ -121,7 +122,7 @@ bool Query::isValid()
     }
     // Check if there are enough operands for the operators
     int operandCount = 0;
-    Filter::Operator op;
+    FilterOperator op;
     ElementTypeList::const_iterator elementIter;
     for(elementIter = m_elementType.cbegin(), i = 0; elementIter != m_elementType.cend(); ++elementIter, ++i)
     {
@@ -134,9 +135,9 @@ bool Query::isValid()
             op = searchOperator(i);
             switch(op)
             {
-            case Filter::And :
-            case Filter::Or :
-            case Filter::Remove :
+            case FilterOperator::And :
+            case FilterOperator::Or :
+            case FilterOperator::Remove :
                 // These operators need 2 operands, and leaves one answer on the stack
                 if(operandCount < 2)
                 {
@@ -144,14 +145,14 @@ bool Query::isValid()
                 }
                 --operandCount;
                 break;
-            case Filter::Not :
+            case FilterOperator::Not :
                 //Not needs one operand, and it leaves one answer on the stack
                 if(operandCount < 1)
                 {
                     return false;
                 }
                 break;
-            case Filter::NullOperator :
+            case FilterOperator::NullOperator :
                 // Not sure if this is valid or not
                 break;
             default :
@@ -172,7 +173,7 @@ bool Query::isValid()
     return true;
 }
 
-void Query::append(Filter::Operator op)
+void Query::append(FilterOperator op)
 {
     m_operator.append(op);
     m_operatorMap.append(m_elementType.count());
@@ -186,7 +187,7 @@ void Query::append(Search* search)
     m_elementType.append(SearchElement);
 }
 
-bool Query::set(int index, Filter::Operator op)
+bool Query::set(int index, FilterOperator op)
 {
     if(!isValidIndex(index))
     {

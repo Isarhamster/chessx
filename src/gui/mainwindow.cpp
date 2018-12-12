@@ -121,8 +121,6 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(pClipDB,SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(pClipDB,SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
-    connect(pClipDB,SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)), Qt::QueuedConnection);
-    connect(pClipDB,SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()), Qt::QueuedConnection);
     connect(pClipDB,SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
     m_databases.append(pClipDB);
     m_currentDatabase = pClipDB;
@@ -236,10 +234,10 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameList, SIGNAL(requestMergeGame(QList<int>)), SLOT(slotMergeActiveGame(QList<int>)));
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
     connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
-    connect(m_gameList, SIGNAL(requestResetFilter()), SLOT(slotSearchReset()));
-    connect(m_gameList, SIGNAL(requestRevertFilter()), SLOT(slotSearchReverse()));
     connect(m_gameList, SIGNAL(requestDeleteGame(QList<int>)), SLOT(slotDatabaseDeleteGame(QList<int>)));
     connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
+    connect(m_gameList, SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)));
+    connect(m_gameList, SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()));
 
     connect(this, SIGNAL(reconfigure()), m_gameList, SLOT(slotReconfigure()));
     gameListDock->setWidget(m_gameList);
@@ -1117,8 +1115,6 @@ void MainWindow::openDatabaseFile(QString fname, bool utf8)
     connect(db, SIGNAL(signalRestoreState(Game)), SLOT(slotDbRestoreState(Game)));
     connect(db, SIGNAL(signalGameModified(bool)), SLOT(slotGameChanged(bool)));
     connect(db, SIGNAL(signalMoveChanged()), SLOT(slotMoveChanged()));
-    connect(db, SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)), Qt::QueuedConnection);
-    connect(db, SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()), Qt::QueuedConnection);
     connect(db, SIGNAL(signalGameModified(bool)), SIGNAL(signalGameModified(bool)));
     if(!db->open(utf8))
     {
