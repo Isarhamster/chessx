@@ -41,7 +41,7 @@ TriStateTree::TriStateTree(const Query& query)
         {
             /* search == leaf node, add to stack & add to list of leaf nodes */
             m_nodes[element].m_state = Unknown;
-            m_nodes[element].m_operator = Filter::NullOperator;
+            m_nodes[element].m_operator = FilterOperator::NullOperator;
             m_nodes[element].m_parent = 0;
             m_nodes[element].m_leftChild = m_nodes[element].m_rightChild = 0;
             nodeStack[++stackTop] = &m_nodes[element];
@@ -53,7 +53,7 @@ TriStateTree::TriStateTree(const Query& query)
             m_nodes[element].m_state = Unknown;
             m_nodes[element].m_operator = query.searchOperator(element);
             m_nodes[element].m_parent = 0;
-            if(m_nodes[element].m_operator == Filter::Not)
+            if(m_nodes[element].m_operator == FilterOperator::Not)
             {
                 m_nodes[element].m_rightChild = 0;
             }
@@ -268,7 +268,7 @@ TriStateTree::State TriStateTree::update(Node* node)
     switch(node->m_operator)
     {
 
-    case Filter::Not:
+    case FilterOperator::Not:
         switch(leftState)
         {
         case Unknown:
@@ -283,7 +283,7 @@ TriStateTree::State TriStateTree::update(Node* node)
         }
         break;
 
-    case Filter::And:
+    case FilterOperator::And:
         if(leftState == False || rightState == False)
         {
             node->m_state = False;
@@ -298,7 +298,7 @@ TriStateTree::State TriStateTree::update(Node* node)
         }
         break;
 
-    case Filter::Or:
+    case FilterOperator::Or:
         if(leftState == True || rightState == True)
         {
             node->m_state = True;
@@ -313,7 +313,7 @@ TriStateTree::State TriStateTree::update(Node* node)
         }
         break;
 
-    case Filter::Remove:
+    case FilterOperator::Remove:
         if(leftState == False || rightState == True)
         {
             node->m_state = False;

@@ -22,9 +22,11 @@
 
 #include <QPointer>
 #include <QSortFilterProxyModel>
+#include "filteroperator.h"
 
 class Filter;
 class FilterModel;
+class Search;
 
 /** @ingroup GUI
 The GameList class displays list of the games in current filter. It allows
@@ -53,6 +55,8 @@ public slots:
     void updateFilter();
     /** Perform simple search */
     void simpleSearch(int tag);
+    void executeSearch(Search* search, FilterOperator searchOperator=FilterOperator::NullOperator);
+    void endSearch();
     /** Select and show current game in the list */
     void selectGame(int index);
     /** Select and show current game in the list */
@@ -72,6 +76,13 @@ public slots:
     /** Show the context menu */
     virtual void ShowContextMenu(const QPoint& pos);
     void slotReconfigure();
+
+public slots:
+    /** Request a filter operation to invert the visibility of all items */
+    void filterInvert();
+    /** Request a filter operation to show all items*/
+    void filterSetAll(int value=1);
+
 private slots:
     /** Re-emit the request to the receivers to perform some action */
     void itemSelected(const QModelIndex& index);
@@ -93,11 +104,6 @@ private slots:
     void slotHideGame();
     /** React to a change in selected item */
     void slotItemSelected(const QModelIndex&);
-    /** Request a filter operation */
-    void slotResetFilter();
-    /** Request a filter operation */
-    void slotReverseFilter();
-
 signals:
     void selected(int);
     void raiseRequest();
@@ -111,8 +117,8 @@ signals:
     void signalFirstGameLoaded(bool);
     void signalLastGameLoaded(bool);
     void signalDropEvent(QDropEvent*);
-    void requestResetFilter();
-    void requestRevertFilter();
+    void searchProgress(int);
+    void searchFinished();
 
 protected: //Drag'n'Drop Support
     void startDrag(Qt::DropActions supportedActions);

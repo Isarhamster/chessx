@@ -16,6 +16,8 @@
 #include <QPair>
 #include <QThread>
 
+#include "filteroperator.h"
+
 class Search;
 class Database;
 class Query;
@@ -31,17 +33,22 @@ class Filter : public QThread
     Q_OBJECT
 public:
     /** Operator for joining filters */
-    enum Operator {NullOperator, Not, And, Or, Remove };
 
     void run();
     void cancel();
 
     /** Construct filter of given size. Add all games to the filter. */
     Filter(Database* database);
+    Filter(Filter const& rhs);
     /** Destructor. */
     ~Filter();
+
+    Filter& operator= (Filter const& rhs);
+    void lock(Filter* locked);
+
     /** @return a pointer to the database on which the filter is. */
     Database* database();
+    const Database* database() const;
     /** Add or remove game @p game . Does nothing if the game is not in filter. */
     void set(int game, int value);
     /** Set all games in the filter to the same value. */
@@ -67,13 +74,10 @@ public:
     added game will be initialized to @p includeNew (by default - not in filter). */
     void resize(int newsize, bool includeNew = 0);
     /** Reverse the filter (complement set). */
-    void reverse();
-    /** Executes search 'search' on database m_database,
-       and sets this filter to contain the results. */
-    void executeSearch(Search *search);
+    void invert();
     /** Executes search 'search' on database m_database,
        and modifies this filter with the results. */
-    void executeSearch(Search *search, Filter::Operator searchOperator);
+    void executeSearch(Search *search, FilterOperator searchOperator=FilterOperator::NullOperator);
     /** Executes query 'query' on database m_database,
         and sets this filter to contain the results. */
     void executeQuery(Query *query);
@@ -101,8 +105,9 @@ protected:
     int m_searchTime;
 
     Search* currentSearch;
-    Operator currentSearchOperator;
+    FilterOperator currentSearchOperator;
     volatile bool m_break;
+    Filter* m_lock;
 
 };
 

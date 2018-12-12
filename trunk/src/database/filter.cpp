@@ -32,6 +32,7 @@ Filter::Filter(Database* database) : QThread()
     currentSearch = 0;
     currentSearchOperator = NullOperator;
     m_break = false;
+    m_lock = 0;
 }
 
 Filter::~Filter()
@@ -39,6 +40,36 @@ Filter::~Filter()
     cancel();
     delete currentSearch;
     delete m_vector;
+}
+
+Filter::Filter(Filter const& rhs) : QThread()
+{
+    *this = rhs;
+}
+
+Filter& Filter::operator= (Filter const& rhs)
+{
+    m_database = rhs.m_database;
+    m_count = rhs.m_count;
+    m_vector = new QVector<int>(*rhs.m_vector);
+    m_cache.first = m_cache.second = -1;
+    m_gamesSearched = 0;
+    m_searchTime = 0;
+    currentSearch = 0;
+    currentSearchOperator = NullOperator;
+    m_break = false;
+    m_lock = 0;
+    return *this;
+}
+
+const Database* Filter::database() const
+{
+    return m_database;
+}
+
+void Filter::lock(Filter* locked)
+{
+   m_lock = locked;
 }
 
 Database* Filter::database()
@@ -60,7 +91,11 @@ void Filter::set(int game, int value)
     {
         m_count--;
     }
-    (*m_vector)[game] = value;
+    if ((*m_vector)[game] != value)
+    {
+        m_cache.first = m_cache.second = -1;
+        (*m_vector)[game] = value;
+    }
 }
 
 void Filter::setAll(int value)
@@ -111,11 +146,11 @@ int Filter::gameToIndex(int index)
     else
     {
         int count = m_count - 1;
-        for(int i = size() - 1 ; i > index; i--)
+        for(int i = size() - 1 ; i > index; --i)
         {
             if(contains(i))
             {
-                count--;
+                --count;
             }
         }
         return count;
@@ -166,7 +201,7 @@ int Filter::previousGame(int current) const
     {
         return -1;
     }
-    for(int i = qBound(-1, current, size()) - 1; i >= 0; i--)
+    for(int i = qBound(-1, current, size()) - 1; i >= 0; --i)
     {
         if(contains(i))
         {
@@ -198,7 +233,7 @@ void Filter::resize(int newsize, bool includeNew)
     {
         if(contains(i))
         {
-            m_count--;
+            --m_count;
         }
     }
     int oldsize = size();
@@ -212,10 +247,12 @@ void Filter::resize(int newsize, bool includeNew)
     {
         m_count += newsize - oldsize;
     }
+    m_cache.first = m_cache.second = -1;
 }
 
-void Filter::reverse()
+void Filter::invert()
 {
+    cancel();
     m_count = size() - m_count;
     for(int i = 0; i < size(); ++i)
     {
@@ -228,7 +265,7 @@ void Filter::reverse()
             (*m_vector)[i] = 1;
         }
     }
-
+    m_cache.first = m_cache.second = -1;
 }
 
 QVector<int> Filter::intVector() const
@@ -242,7 +279,7 @@ void Filter::run()
     currentSearch->Prepare(m_break);
     switch (currentSearchOperator)
     {
-    case Filter::NullOperator:
+    case FilterOperator::NullOperator:
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
@@ -250,7 +287,7 @@ void Filter::run()
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
         break;
-    case Filter::And:
+    case FilterOperator::And:
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
@@ -261,7 +298,7 @@ void Filter::run()
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
         break;
-    case Filter::Or:
+    case FilterOperator::Or:
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
@@ -272,7 +309,7 @@ void Filter::run()
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
         break;
-    case Filter::Remove:
+    case FilterOperator::Remove:
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
@@ -299,27 +336,18 @@ void Filter::cancel()
         m_break = true;
         wait();
     }
-}
-
-void Filter::executeSearch(Search* search)
-{
-    cancel();
-    setAll(0);
-    m_break = false;
-    currentSearch = search;
-    currentSearchOperator = Filter::NullOperator;
-    start();
-}
-
-void Filter::executeSearch(Search* search, Filter::Operator searchOperator)
-{
-    if (searchOperator==Filter::NullOperator)
+    if (m_lock && m_lock->isRunning())
     {
-        executeSearch(search);
-        return;
+        m_lock->wait();
     }
+}
 
-    wait();
+void Filter::executeSearch(Search* search, FilterOperator searchOperator)
+{
+    if (searchOperator == FilterOperator::NullOperator)
+    {
+        setAll(0);
+    }
     m_break = false;
     currentSearch = search;
     currentSearchOperator = searchOperator;

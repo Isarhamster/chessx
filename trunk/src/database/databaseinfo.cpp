@@ -33,8 +33,6 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, Database *db)
     m_database = db;
     m_filename = db->name();
     m_filter = new Filter(m_database);
-    connect(m_filter, SIGNAL(searchProgress(int)), SIGNAL(searchProgress(int)));
-    connect(m_filter, SIGNAL(searchFinished()), SIGNAL(searchFinished()));
     m_bLoaded = true;
     m_utf8 = false;
     m_undoStack = new QUndoStack((QObject*)undoGroup);
@@ -95,8 +93,6 @@ void DatabaseInfo::doLoadFile(QString filename)
     m_database->parseFile();
     delete m_filter;
     m_filter = new Filter(m_database);
-    connect(m_filter, SIGNAL(searchProgress(int)), SIGNAL(searchProgress(int)));
-    connect(m_filter, SIGNAL(searchFinished()), SIGNAL(searchFinished()));
     m_bLoaded = true;
     emit LoadFinished(this);
 }
@@ -138,7 +134,6 @@ void DatabaseInfo::close()
 
     clearLastGames();
     m_database = NULL;
-    m_filter = NULL;
     disconnect(m_undoStack, SIGNAL(cleanChanged(bool)), this, SLOT(dbCleanChanged(bool)));
     m_undoStack->clear();
 }
@@ -323,16 +318,6 @@ void DatabaseInfo::replaceGame(const Game &game)
     m_game = game;
     updateMaterial();
     emit signalGameModified(!m_undoStack->isClean());
-}
-
-void DatabaseInfo::resetFilter()
-{
-    if(m_filter)
-    {
-        m_filter->cancel();
-        m_filter->resize(m_database->count());
-        m_filter->setAll(1);
-    }
 }
 
 QString DatabaseInfo::dbPath() const

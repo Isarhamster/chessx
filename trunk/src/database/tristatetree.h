@@ -12,7 +12,7 @@
 #define __TRISTATETREE_H__
 
 class Query;
-#include "filter.h"
+#include "filteroperator.h"
 
 /** @ingroup Search
    The TriStateTree class helps facilitate the efficient evaluation of queries.
@@ -61,7 +61,7 @@ private:
     typedef struct node
     {
         State m_state;
-        Filter::Operator m_operator;
+        FilterOperator m_operator;
         node* m_parent;
         node* m_leftChild;
         node* m_rightChild;

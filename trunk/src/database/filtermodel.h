@@ -15,7 +15,10 @@
 #include <QStringList>
 #include <QPointer>
 
+#include "filteroperator.h"
+
 class Filter;
+class Search;
 
 /** @ingroup Database
   The FilterModel class is an interface to Database used with Qt
@@ -26,6 +29,7 @@ class FilterModel: public QAbstractItemModel
     Q_OBJECT
 
 public:
+
     /** Constructs a FilterModel object using a pointer to a Filter */
     FilterModel(Filter* filter, QObject *parent = 0);
     ~FilterModel();
@@ -55,8 +59,6 @@ public:
     }
     /** Associated filter */
     virtual Filter* filter();
-    /** Changes current database. Resets any views. */
-    virtual void setFilter(Filter* filter);
     /** Get the column tags. */
     const QStringList GetColumnTags()
     {
@@ -66,6 +68,18 @@ public:
     void updateColumns();
 
     static QStringList additionalTags();
+
+    void invert();
+    void setAll(int value);
+    void executeSearch(Search* search, FilterOperator searchOperator = FilterOperator::NullOperator, int preSelect=1);
+
+signals:
+    void searchProgress(int);
+    void searchFinished();
+
+private slots:
+    /** End a search */
+    void endSearch();
 
 private:
     void addColumns(QStringList tags);

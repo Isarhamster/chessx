@@ -87,9 +87,6 @@ public:
 
     void updateMaterial();
 
-    /** Resizes the filter to the number of games in the database and puts
-         *  all games in the filter.*/
-    void resetFilter();
     QString displayName() const
     {
         return m_filename;
@@ -137,8 +134,6 @@ signals:
     void signalRestoreState(const Game &game);
     void signalGameModified(bool gameNeedsSaving);
     void signalMoveChanged();
-    void searchProgress(int);
-    void searchFinished();
 
 
 public slots:
