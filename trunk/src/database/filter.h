@@ -14,6 +14,7 @@
 
 #include <QBitArray>
 #include <QPair>
+#include <QPointer>
 #include <QThread>
 
 #include "filteroperator.h"
@@ -34,6 +35,7 @@ class Filter : public QThread
 public:
     /** Operator for joining filters */
 
+    void runSingleSearch(Search* s, FilterOperator op);
     void run();
     void cancel();
 
@@ -104,7 +106,7 @@ protected:
     int m_gamesSearched;
     int m_searchTime;
 
-    Search* currentSearch;
+    QPointer<Search> currentSearch;
     FilterOperator currentSearchOperator;
     volatile bool m_break;
     Filter* m_lock;

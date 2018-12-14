@@ -397,8 +397,8 @@ void GameList::slotFilterListByPlayer(QString s)
     {
         Search* ts = new TagSearch(m_model->filter()->database(),  TagNameWhite, url.path());
         Search* ts2 = new TagSearch(m_model->filter()->database(), TagNameBlack, url.path());
+        ts->AddSearch(ts2, FilterOperator::Or);
         m_model->executeSearch(ts);
-        m_model->executeSearch(ts2, FilterOperator::Or);
     }
     else
     {
@@ -413,8 +413,8 @@ void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString playe
     m_model->filter()->setAll(1);
     Search* ts = new TagSearch(m_model->filter()->database(),  tag, player);
     Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameECO, eco);
+    ts->AddSearch(ts3, FilterOperator::And);
     m_model->executeSearch(ts);
-    m_model->executeSearch(ts3, FilterOperator::And);
     emit raiseRequest();
 }
 
@@ -432,9 +432,9 @@ void GameList::slotFilterListByEventPlayer(QString player, QString event)
     Search* ts = new TagSearch(m_model->filter()->database(),  TagNameWhite, player);
     Search* ts2 = new TagSearch(m_model->filter()->database(), TagNameBlack, player);
     Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameEvent, event);
+    ts->AddSearch(ts2, FilterOperator::Or);
+    ts2->AddSearch(ts3, FilterOperator::And);
     m_model->executeSearch(ts);
-    m_model->executeSearch(ts2, FilterOperator::Or);
-    m_model->executeSearch(ts3, FilterOperator::And);
     emit raiseRequest();
 }
 

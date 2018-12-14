@@ -23,11 +23,30 @@
  * ********************************/
 Search::Search(Database *db) : m_database(db)
 {
+    m_nextSearch = 0;
+    m_searchOperator = FilterOperator::NullOperator;
 }
 
 Search::~Search()
 {
+    delete m_nextSearch;
     m_database = 0;
+}
+
+void Search::AddSearch(Search* search, FilterOperator op)
+{
+    m_nextSearch = search;
+    m_searchOperator = op;
+}
+
+FilterOperator Search::searchOperator() const
+{
+    return m_searchOperator;
+}
+
+Search *Search::nextSearch() const
+{
+    return m_nextSearch;
 }
 
 /* NullSearch Class

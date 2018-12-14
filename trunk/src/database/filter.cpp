@@ -29,7 +29,6 @@ Filter::Filter(Database* database) : QThread()
     m_cache.first = m_cache.second = -1;
     m_gamesSearched = 0;
     m_searchTime = 0;
-    currentSearch = 0;
     currentSearchOperator = NullOperator;
     m_break = false;
     m_lock = 0;
@@ -168,7 +167,16 @@ int Filter::indexToGame(int index)
     {
         if(index < m_count / 2)
         {
-            for(int i = 0; i < size(); ++i)
+            int start = 0;
+            if (m_cache.second>=0)
+            {
+                if (index>m_cache.first)
+                {
+                    start = m_cache.second;
+                    index -= m_cache.first;
+                }
+            }
+            for(int i = start; i < size(); ++i)
             {
                 index -= contains(i);
                 if(index < 0)
@@ -180,7 +188,16 @@ int Filter::indexToGame(int index)
         }
         else
         {
-            for(int i = size() - 1 ; i >= 0; i--)
+            int start = size() - 1;
+            if (m_cache.second>=0)
+            {
+                if (index>m_cache.first)
+                {
+                    start = m_cache.second;
+                    index += m_cache.first;
+                }
+            }
+            for(int i = start ; i >= 0; i--)
             {
                 index += contains(i);
                 if(index >= m_count)
@@ -273,17 +290,17 @@ QVector<int> Filter::intVector() const
     return *m_vector;
 }
 
-void Filter::run()
+void Filter::runSingleSearch(Search* s, FilterOperator op)
 {
-    connect(currentSearch, SIGNAL(prepareUpdate(int)), this, SIGNAL(searchProgress(int)));
-    currentSearch->Prepare(m_break);
-    switch (currentSearchOperator)
+    connect(s, SIGNAL(prepareUpdate(int)), this, SIGNAL(searchProgress(int)));
+    s->Prepare(m_break);
+    switch (op)
     {
     case FilterOperator::NullOperator:
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
-            set(searchIndex, currentSearch->matches(searchIndex));
+            set(searchIndex, s->matches(searchIndex));
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
         break;
@@ -293,7 +310,7 @@ void Filter::run()
             if (m_break) break;
             if (contains(searchIndex))
             {
-                set(searchIndex, currentSearch->matches(searchIndex));
+                set(searchIndex, s->matches(searchIndex));
             }
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
@@ -304,7 +321,7 @@ void Filter::run()
             if (m_break) break;
             if (!contains(searchIndex))
             {
-                set(searchIndex, currentSearch->matches(searchIndex));
+                set(searchIndex, s->matches(searchIndex));
             }
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
@@ -315,7 +332,7 @@ void Filter::run()
             if (m_break) break;
             if (contains(searchIndex))
             {
-                set(searchIndex, !currentSearch->matches(searchIndex));
+                set(searchIndex, !s->matches(searchIndex));
             }
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
@@ -323,11 +340,23 @@ void Filter::run()
     default:
         break;
     }
+}
+
+void Filter::run()
+{
+    Search* s = currentSearch;
+    FilterOperator op = currentSearchOperator;
+    while(s)
+    {
+        runSingleSearch(s, op);
+        op = s->searchOperator();
+        s = s->nextSearch();
+    }
     delete currentSearch;
-    currentSearch = 0;
     emit searchProgress(100);
     emit searchFinished();
 }
+
 
 void Filter::cancel()
 {

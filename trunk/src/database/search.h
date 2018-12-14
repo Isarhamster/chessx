@@ -14,7 +14,9 @@
 
 class Database;
 
+#include "filteroperator.h"
 #include "gameid.h"
+
 #include <QtCore>
 
 /**
@@ -37,10 +39,18 @@ public:
     virtual ~Search();
     virtual void Prepare(volatile bool&) {};
     virtual int matches(GameId index) const = 0;
+
+    void AddSearch(Search* search, FilterOperator op);
+
+    FilterOperator searchOperator() const;
+    Search *nextSearch() const;
+
 signals:
     void prepareUpdate(int);
 protected:
     Database *m_database;
+    Search* m_nextSearch;
+    FilterOperator m_searchOperator;
 };
 
 /** @ingroup Search
