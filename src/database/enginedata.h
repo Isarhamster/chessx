@@ -26,6 +26,7 @@ public:
     QString options;
     QString directory;
     bool    logging;
+    bool    sendHistory;
     EngineProtocol protocol;
     OptionValueList m_optionValues;
     static QString commandToName(const QString& command);

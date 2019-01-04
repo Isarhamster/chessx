@@ -36,6 +36,7 @@ void EngineList::restoreEmptyFromPath(const QString& path, EngineData::EnginePro
         data.directory = path;
         data.protocol = protocol;
         data.logging = false;
+        data.sendHistory = true;
         append(data);
     }
 }
@@ -63,6 +64,7 @@ void EngineList::restore()
             data.options = AppSettings->value(key + "/Options").toString();
             data.directory = AppSettings->value(key + "/Directory").toString();
             data.logging = AppSettings->value(key + "/Logging").toBool();
+            data.sendHistory = AppSettings->value(key + "/SendHistory").toBool();
             QString protocolName = AppSettings->value(key + "/Protocol").toString();
             if(protocolName == "WinBoard")
             {
@@ -98,6 +100,7 @@ void EngineList::save()
         AppSettings->setValue(key + "/Name", at(i).name);
         AppSettings->setValue(key + "/Command", at(i).command);
         AppSettings->setValue(key + "/Logging", at(i).logging);
+        AppSettings->setValue(key + "/SendHistory", at(i).sendHistory);
         if(!at(i).options.isEmpty())
         {
             AppSettings->setValue(key + "/Options", at(i).options);

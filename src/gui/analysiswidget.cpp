@@ -29,11 +29,9 @@
 
 AnalysisWidget::AnalysisWidget(QWidget *parent)
     : QWidget(parent),
-      m_engine(0),
       m_moveTime(0),
       m_bUciNewGame(true),
       m_onHold(false),
-      m_pgdb(0),
       m_gameMode(false)
 {
     ui.setupUi(this);
@@ -98,7 +96,7 @@ void AnalysisWidget::stopEngine()
     {
         m_engine->deactivate();
         m_engine->deleteLater();
-        m_engine = 0;
+        m_engine.clear();
     }
 }
 
@@ -129,7 +127,8 @@ void AnalysisWidget::engineActivated()
     updateBookMoves(); // Delay this to here so that engine process is up
     if (!sendBookMove())
     {
-        m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, true);
+        m_engine->setStartPos(m_startPos);
+        m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, true, m_line);
         m_lastEngineStart.start();
         m_bUciNewGame = false;
     }
@@ -163,7 +162,7 @@ void AnalysisWidget::toggleAnalysis()
 
 void AnalysisWidget::bookActivated(int index)
 {
-    m_pgdb = 0;
+    m_pBookDatabase.clear();
     emit signalSourceChanged(index>=0 ? ui.bookList->itemData(index).toString() : "");
     updateBookMoves();
     updateAnalysis();
@@ -175,7 +174,7 @@ void AnalysisWidget::slotPinChanged(bool pinned)
     {
         if (m_board != m_NextBoard)
         {
-            setPosition(m_NextBoard);
+            setPosition(m_NextBoard, m_NextLine);
         }
     }
     else
@@ -304,17 +303,20 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
     }
 }
 
-void AnalysisWidget::setPosition(const Board& board)
+void AnalysisWidget::setPosition(const Board& board, QString line)
 {
     if (ui.btPin->isChecked())
     {
         m_NextBoard = board;
+        m_NextLine = line;
         return;
     }
     if(m_board != board)
     {
         m_board = board;
         m_NextBoard = board;
+        m_NextLine = line;
+        m_line = line;
         m_analyses.clear();
         m_tablebase->abortLookup();
         m_tablebaseEvaluation.clear();
@@ -338,7 +340,11 @@ void AnalysisWidget::setPosition(const Board& board)
         updateAnalysis();
         if (m_engine && m_engine->isActive() && !onHold() && !sendBookMove())
         {
-            m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, m_bUciNewGame);
+            if (m_bUciNewGame)
+            {
+                m_engine->setStartPos(m_startPos);
+            }
+            m_engine->startAnalysis(m_board, ui.vpcount->value(), m_moveTime, m_bUciNewGame, line);
             m_lastEngineStart.start();
             m_bUciNewGame = false;
         }
@@ -514,7 +520,7 @@ void AnalysisWidget::updateAnalysis()
     QString text;
     if (ui.btPin->isChecked())
     {
-        int moveNr = m_board.moveNumber();
+        unsigned int moveNr = m_board.moveNumber();
         text = tr("Analysis pinned to move %1").arg(moveNr) + "<br>";
     }
     foreach(Analysis a, m_analyses)
@@ -625,9 +631,10 @@ void AnalysisWidget::unPin()
     }
 }
 
-void AnalysisWidget::slotUciNewGame()
+void AnalysisWidget::slotUciNewGame(const Board& b)
 {
     m_bUciNewGame = true;
+    m_startPos = b;
 }
 
 bool AnalysisWidget::onHold() const
@@ -651,7 +658,7 @@ QString AnalysisWidget::engineName() const
 
 void AnalysisWidget::updateBookFile(Database *pgdb)
 {
-    m_pgdb = pgdb;
+    m_pBookDatabase = pgdb;
 }
 
 struct
@@ -667,9 +674,9 @@ void AnalysisWidget::updateBookMoves()
     QMap<Move, MoveData> moves;
     games = 0;
 
-    if (m_pgdb && !m_gameMode)
+    if (m_pBookDatabase && !m_gameMode)
     {
-        games = m_pgdb->getMoveMapForBoard(m_board, moves);
+        games = m_pBookDatabase->getMoveMapForBoard(m_board, moves);
     }
 
     moveList.clear();

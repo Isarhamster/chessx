@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __ENGINE_H__
-#define __ENGINE_H__
+#ifndef ENGINE_H_DEFINED
+#define ENGINE_H_DEFINED
 
 #include <QObject>
 #include <QString>
@@ -45,7 +45,8 @@ public:
            const QString& command,
            bool  bTestMode,
            const QString& directory = QString(),
-           bool log=false);
+           bool log=false,
+           bool sendHistory=false);
 
     /** Virtual destructor */
     virtual ~Engine();
@@ -59,8 +60,11 @@ public:
     /** Returns whether the engine is active or not */
     bool isActive();
 
+    /** Set a starting position for a game */
+    virtual void setStartPos(const Board& startPos) = 0;
+
     /** Analyzes the given position */
-    virtual bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame) = 0;
+    virtual bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame, QString line) = 0;
 
     /** Stops any analysis */
     virtual void stopAnalysis() = 0;
@@ -131,6 +135,7 @@ protected:
     int m_mpv;
     EngineParameter m_moveTime;
     bool m_bTestMode;
+    bool m_sendHistory;
 
 private slots:
     /** Receives notification that there is process output to read */
@@ -164,8 +169,10 @@ private:
 
 public:
     static void setAllowEngineOutput(bool allow);
+    bool getSendHistory() const;
+
 protected:
     static bool s_allowEngineOutput;
 };
 
-#endif // __ENGINE_H__
+#endif // ENGINE_H_DEFINED

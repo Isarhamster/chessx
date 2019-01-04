@@ -14,6 +14,7 @@
 #include "movedata.h"
 #include "ui_analysiswidget.h"
 #include <QtGui>
+#include <QPointer>
 
 /** @ingroup GUI
 	The Analysis widget which shows engine output
@@ -53,7 +54,7 @@ public:
 public slots:
     /** Sets new position. If analysis is active, the current content will be cleared and
     new analysis will be performed. */
-    void setPosition(const Board& board);
+    void setPosition(const Board& board, QString line="");
     /** Called when configuration was changed (either on startup or from Preferences dialog. */
     void slotReconfigure();
     /** Store current configuration. */
@@ -69,7 +70,7 @@ public slots:
     /** Change the movetime of the engine */
     void setMoveTime(int);
     /** Must send ucinewgame next time */
-    void slotUciNewGame();
+    void slotUciNewGame(const Board& b);
     /** Called when the list of databases changes */
     void slotUpdateBooks(QStringList);
     /** Called upon entering or leaving game mode */
@@ -119,9 +120,12 @@ private:
 
     QList<Analysis> m_analyses;
     Ui::AnalysisWidget ui;
-    Engine* m_engine;
+    QPointer<Engine> m_engine;
     Board m_board;
+    QString m_line;
     Board m_NextBoard;
+    QString m_NextLine;
+    Board m_startPos;
     QString m_tablebaseEvaluation;
     QString m_tablebaseMove;
     Tablebase* m_tablebase;
@@ -136,7 +140,7 @@ private:
     bool m_onHold;
 
     QTime m_lastEngineStart;
-    Database* m_pgdb;
+    QPointer<Database> m_pBookDatabase;
     QList<MoveData> moveList;
     int games;
 

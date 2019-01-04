@@ -20,14 +20,20 @@ UCIEngine::UCIEngine(const QString& name,
                      const QString& command,
                      bool bTestMode,
                      const QString& directory,
-                     bool log) : Engine(name, command, bTestMode, directory, log)
+                     bool log,
+                     bool sendHistory) : Engine(name, command, bTestMode, directory, log, sendHistory)
 {
     m_quitAfterAnalysis = false;
     m_invertBlack = true;
     m_chess960 = false;
 }
 
-bool UCIEngine::startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame)
+void UCIEngine::setStartPos(const Board& startPos)
+{
+    m_startPos = startPos;
+}
+
+bool UCIEngine::startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame, QString line)
 {
     Engine::setMoveTime(mt);
     m_mpv = nv;
@@ -41,9 +47,22 @@ bool UCIEngine::startAnalysis(const Board& board, int nv, const EngineParameter 
         return true;
     }
     m_board = board;
+    if (!getSendHistory())
+    {
+        // Avoid sending history to engines
+        line = "";
+    }
+    m_line = line;
 
     m_chess960 = board.chess960();
-    m_position = board.toFen(m_chess960);
+    if (line.isEmpty())
+    {
+        m_position = board.toFen(m_chess960);
+    }
+    else
+    {
+        m_position = m_startPos.toFen(m_chess960);
+    }
 
     send("stop");
     if (bNewGame)
@@ -152,7 +171,14 @@ void UCIEngine::setPosition()
         }
     }
 
-    send("position fen " + m_position);
+    if (m_line.isEmpty())
+    {
+        send("position fen " + m_position);
+    }
+    else
+    {
+        send("position fen " + m_position + " moves " + m_line);
+    }
     go();
 }
 
