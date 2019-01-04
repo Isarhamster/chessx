@@ -238,6 +238,7 @@ void PreferencesDialog::updateEngineData(int index)
     engineList[index].options = ui.engineOptions->text();
     engineList[index].directory = ui.engineDirectory->text();
     engineList[index].logging = ui.logging->isChecked();
+    engineList[index].sendHistory = ui.sendHistory->isChecked();
     engineList[index].protocol = ui.engineProtocolWinBoard->isChecked() ?
                                  EngineData::WinBoard : EngineData::UCI;
 }
@@ -261,6 +262,7 @@ void PreferencesDialog::slotSelectEngine(QListWidgetItem* currentItem, QListWidg
         ui.engineOptions->setText(engineList[current].options);
         ui.engineDirectory->setText(engineList[current].directory);
         ui.logging->setChecked(engineList[current].logging);
+        ui.sendHistory->setChecked(engineList[current].sendHistory);
         ui.engineOptionMore->setEnabled(true);
         if(engineList[current].protocol == EngineData::WinBoard)
         {

@@ -29,11 +29,12 @@ Engine::Engine(const QString& name,
                const QString& command,
                bool bTestMode,
                const QString& directory,
-               bool log)
+               bool log, bool sendHistory)
 {
     m_name = name;
     m_command = command;
     m_bTestMode = bTestMode;
+    m_sendHistory = sendHistory;
     QTextStream* logStream = 0;
     if (log)
     {
@@ -64,6 +65,7 @@ Engine* Engine::newEngine(EngineList& engineList, int index, bool bTestMode)
     QString options   = engineList[index].options;
     QString directory = engineList[index].directory;
     bool logging      = engineList[index].logging;
+    bool sendHistory  = engineList[index].sendHistory;
     EngineData::EngineProtocol protocol = engineList[index].protocol;
 
     if(command.contains(' '))
@@ -74,11 +76,11 @@ Engine* Engine::newEngine(EngineList& engineList, int index, bool bTestMode)
 
     if(protocol == EngineData::WinBoard)
     {
-        engine = new WBEngine(name, exe, bTestMode, directory, logging);
+        engine = new WBEngine(name, exe, bTestMode, directory, logging, sendHistory);
     }
     else
     {
-        engine = new UCIEngine(name, exe, bTestMode, directory, logging);
+        engine = new UCIEngine(name, exe, bTestMode, directory, logging, sendHistory);
     }
 
     engine->m_mapOptionValues = engineList[index].m_optionValues;
@@ -97,6 +99,7 @@ Engine* Engine::newEngine(int index, bool bTestMode)
     QString directory = AppSettings->value(key + "/Directory").toString();
     QString protocol = AppSettings->value(key + "/Protocol").toString();
     bool log = AppSettings->value(key + "/Logging").toBool();
+    bool sendHistory = AppSettings->value(key + "/SendHistory", true).toBool();
 
     if(command.contains(' '))
     {
@@ -106,11 +109,11 @@ Engine* Engine::newEngine(int index, bool bTestMode)
 
     if(protocol == "WinBoard")
     {
-        engine = new WBEngine(name, exe, bTestMode, directory, log);
+        engine = new WBEngine(name, exe, bTestMode, directory, log, sendHistory);
     }
     else
     {
-        engine = new UCIEngine(name, exe, bTestMode, directory, log);
+        engine = new UCIEngine(name, exe, bTestMode, directory, log, sendHistory);
     }
 
     AppSettings->getMap(key + "/OptionValues", engine->m_mapOptionValues);
@@ -229,6 +232,11 @@ void Engine::sendAnalysis(const Analysis& analysis)
     {
         emit analysisUpdated(analysis);
     }
+}
+
+bool Engine::getSendHistory() const
+{
+    return m_sendHistory;
 }
 
 void Engine::setMpv(int mpv)

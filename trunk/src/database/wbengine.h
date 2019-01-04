@@ -31,10 +31,14 @@ public:
              const QString& command,
              bool bTestMode,
              const QString& directory,
-             bool log);
+             bool log,
+             bool sendHistory);
+
+    /** Set a starting position for a game */
+   void setStartPos(const Board& startPos);
 
     /** Analyses the the given position */
-    bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame);
+    bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame, QString line);
 
     /** Stops any analysis */
     void stopAnalysis();

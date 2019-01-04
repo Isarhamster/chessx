@@ -28,10 +28,14 @@ public:
               const QString& command,
               bool bTestMode,
               const QString& directory = QString(),
-              bool log=false);
+              bool log=false,
+              bool sendHistory=false);
+
+    /** Set a starting position for a game */
+    void setStartPos(const Board& startPos);
 
     /** Analyses the the given position */
-    bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame);
+    bool startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool bNewGame, QString line);
 
     /** Stops any analysis */
     void stopAnalysis();
@@ -44,8 +48,8 @@ public:
     {
         return true;
     }
-    void setPosition();
 protected:
+    void setPosition();
     /** Performs any initialisation required by the engine protocol */
     void protocolStart();
 
@@ -66,6 +70,8 @@ private:
     void go();
 
     Board m_board;
+    Board m_startPos;
+    QString m_line;
 
     QString m_position;
     bool m_chess960;

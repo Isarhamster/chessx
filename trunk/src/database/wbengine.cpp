@@ -19,7 +19,7 @@ WBEngine::WBEngine(const QString& name,
                    const QString& command,
                    bool bTestMode,
                    const QString& directory,
-                   bool log) : Engine(name, command, bTestMode, directory, log)
+                   bool log, bool sendHistory) : Engine(name, command, bTestMode, directory, log, sendHistory)
 {
     m_analyze = false;
     m_setboard = false;		// We do not support version 1 xboard protocol, so this _must_ be set true by feature discovery
@@ -54,7 +54,12 @@ void WBEngine::go()
     }
 }
 
-bool WBEngine::startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool /*bNewGame*/)
+void WBEngine::setStartPos(const Board&)
+{
+
+}
+
+bool WBEngine::startAnalysis(const Board& board, int nv, const EngineParameter &mt, bool /*bNewGame*/, QString /* line */)
 {
     Engine::setMoveTime(mt);
     m_mpv = nv;
