@@ -100,7 +100,7 @@ protected:
     Game& game();
     const Game& game() const;
     /** @return index of active game */
-    int gameIndex() const;
+    GameId gameIndex() const;
     /** Edit comment */
     bool gameEditComment(Output::CommentType type);
     /** Get export filename*/
@@ -215,8 +215,8 @@ public slots:
     /** Get a pointer or Null to the active game. */
     void slotGetActiveGame(const Game** game);
     /** Merge the game with index @p gameIndex into the active game. */
-    void slotMergeActiveGame(QList<int> gameIndexList);
-    void slotMergeActiveGame(int gameIndex);
+    void slotMergeActiveGame(QList<GameId> gameIndexList);
+    void slotMergeActiveGame(GameId gameIndex);
     /** Merge all games from the database into the active game. */
     void slotMergeAllGames();
     /** Merge all games from the filter into the active game. */
@@ -264,7 +264,7 @@ public slots:
     /** Filter was changed - update status bar information */
     void slotFilterChanged(bool selectGame=true);
     /** Load given game (triggered from Game List) */
-    void slotFilterLoad(int index);
+    void slotFilterLoad(GameId index);
     /** Creates an empty chessxdatabase*/
     void slotFileNew();
     /** Open File dialog, choose a database and open it */
@@ -346,13 +346,13 @@ public slots:
     /** Clear the clipboard database */
     void slotDatabaseClearClipboard();
     /** Copy games between databases. */
-    void slotDatabaseCopySingle(QList<int> listGames);
+    void slotDatabaseCopySingle(QList<GameId> listGames);
     /** Set the list into the filter and add all duplicates */
-    void slotDatabaseFindDuplicates(QList<int> listGames);
+    void slotDatabaseFindDuplicates(QList<GameId> listGames);
     /** Database was changed - change informations. */
     void slotDatabaseChanged();
     /** Delete current game. */
-    void slotDatabaseDeleteGame(QList<int> gameIndexList);
+    void slotDatabaseDeleteGame(QList<GameId> gameIndexList);
     /** Slot that updates internal info upon loading a complete db */
     void slotDataBaseLoaded(DatabaseInfo* db);
     /** Restore game state from a undo or redo operation */
@@ -360,7 +360,7 @@ public slots:
     /** Fill up the current game (drag request from game list) */
     void slotGetGameData(Game& g);
     /** Copy game from other database by drag'n'drop */
-    void copyGames(QString fileName, QList<int> indexes);
+    void copyGames(QString fileName, QList<GameId> indexes);
     /** Copy all games from other database by drag'n'drop */
     void copyDatabase(QString target, QString src);
     /** Request renaming a event in the current database */
@@ -472,11 +472,11 @@ protected slots:
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);
-    void copyGame(int target, int index);
+    void copyGame(int target, GameId index);
     Database* getDatabaseByPath(QString path);
     DatabaseInfo* getDatabaseInfoByPath(QString path);
     void updateOpeningTree(const Board& b, bool atEnd);
-    void copyFromDatabase(int preselect = 1, QList<int> gameIndexList = QList<int>());
+    void copyFromDatabase(int preselect = 1, QList<GameId> gameIndexList = QList<GameId>());
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
@@ -511,7 +511,7 @@ signals:
     /** Re-read configuration. */
     void reconfigure();
     /** Main game has been updated. */
-    void boardChange(const Board& board);
+    void boardChange(const Board& board, const QString& line);
     /** Current database changed. */
     void databaseChanged(DatabaseInfo* databaseInfo);
     /** Emitted upon finishing a file download */
@@ -535,7 +535,7 @@ signals:
     void signalCurrentDBcanBeClosed(bool);
     void signalCurrentDBhasGames(bool);
 
-    void signalGameLoaded();
+    void signalGameLoaded(const Board& startPos);
 
     void signalVersionFound(int, int, int);
 
@@ -619,6 +619,8 @@ private:
     void filterDuplicates(int mode);
     /** Return true, if a game is drawn by rule */
     bool gameIsDraw() const;
+    /** Get a list of moves from start to current position */
+    QString getUCIHistory() const;
 
     /** Determine Color the user is using depending upon different match scenarios */
     Color UserColor();

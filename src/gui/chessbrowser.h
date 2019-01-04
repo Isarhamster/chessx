@@ -59,7 +59,7 @@ public slots:
 signals:
     void actionRequested(const EditAction& action);
     void queryActiveGame(const Game** game);
-    void signalMergeGame(int gameIndex);
+    void signalMergeGame(GameId gameIndex);
 
 protected:
     virtual void selectAnchor(const QString& href);
@@ -75,7 +75,7 @@ protected: // Drag+Drop
     void dragMoveEvent(QDragMoveEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
-    void mergeGame(int gameIndex);
+    void mergeGame(GameId gameIndex);
 
     QStringList getAnchors(QStringList hrefs);
 private:

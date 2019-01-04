@@ -26,7 +26,8 @@ Filter::Filter(Database* database) : QThread()
     m_database = database;
     m_count = m_database->count();
     m_vector = new QVector<int>(m_count, 1);
-    m_cache.first = m_cache.second = -1;
+    m_cache.first = -1;
+    m_cache.second = InvalidGameId;
     m_gamesSearched = 0;
     m_searchTime = 0;
     currentSearchOperator = NullOperator;
@@ -51,7 +52,8 @@ Filter& Filter::operator= (Filter const& rhs)
     m_database = rhs.m_database;
     m_count = rhs.m_count;
     m_vector = new QVector<int>(*rhs.m_vector);
-    m_cache.first = m_cache.second = -1;
+    m_cache.first = -1;
+    m_cache.second = InvalidGameId;
     m_gamesSearched = 0;
     m_searchTime = 0;
     currentSearch = 0;
@@ -76,7 +78,7 @@ Database* Filter::database()
     return m_database;
 }
 
-void Filter::set(int game, int value)
+void Filter::set(GameId game, int value)
 {
     if((game >= size()) || (gamePosition(game) == value))
     {
@@ -102,10 +104,11 @@ void Filter::setAll(int value)
     cancel();
     m_vector->fill(value);
     m_count = value ? size() : 0;
-    m_cache.first = m_cache.second = -1;
+    m_cache.first = -1;
+    m_cache.second = InvalidGameId;
 }
 
-bool Filter::contains(int game) const
+bool Filter::contains(GameId game) const
 {
     if(game < m_vector->count())
     {
@@ -114,26 +117,26 @@ bool Filter::contains(int game) const
     return false;
 }
 
-int Filter::gamePosition(int game) const
+int Filter::gamePosition(GameId game) const
 {
-    return m_vector->at(game);
+    return m_vector->at(static_cast<int>(game));
 }
 
-int Filter::size() const
+unsigned int Filter::size() const
 {
-    return m_vector->size();
+    return static_cast<unsigned int>(m_vector->size());
 }
 
-int Filter::gameToIndex(int index)
+int Filter::gameToIndex(GameId index)
 {
-    if(index > size() || index < 0 || !contains(index))
+    if(!contains(index))
     {
         return -1;
     }
     if(index < size() / 2)
     {
         int count = 0;
-        for(int i = 0; i < index; ++i)
+        for(GameId i = 0; i < index; ++i)
         {
             if(contains(i))
             {
@@ -145,7 +148,7 @@ int Filter::gameToIndex(int index)
     else
     {
         int count = m_count - 1;
-        for(int i = size() - 1 ; i > index; --i)
+        for(GameId i = size() - 1 ; i > index; --i)
         {
             if(contains(i))
             {
@@ -156,7 +159,7 @@ int Filter::gameToIndex(int index)
     }
 }
 
-int Filter::indexToGame(int index)
+GameId Filter::indexToGame(int index)
 {
     if(m_cache.first == index)
     {
@@ -167,8 +170,8 @@ int Filter::indexToGame(int index)
     {
         if(index < m_count / 2)
         {
-            int start = 0;
-            if (m_cache.second>=0)
+            GameId start = 0;
+            if (VALID_INDEX(m_cache.second))
             {
                 if (index>m_cache.first)
                 {
@@ -176,7 +179,7 @@ int Filter::indexToGame(int index)
                     index -= m_cache.first;
                 }
             }
-            for(int i = start; i < size(); ++i)
+            for(GameId i = start; i < static_cast<GameId>(size()); ++i)
             {
                 index -= contains(i);
                 if(index < 0)
@@ -188,8 +191,8 @@ int Filter::indexToGame(int index)
         }
         else
         {
-            int start = size() - 1;
-            if (m_cache.second>=0)
+            GameId start = static_cast<GameId>(size()) - 1;
+            if (VALID_INDEX(m_cache.second))
             {
                 if (index>m_cache.first)
                 {
@@ -197,7 +200,7 @@ int Filter::indexToGame(int index)
                     index += m_cache.first;
                 }
             }
-            for(int i = start ; i >= 0; i--)
+            for(GameId i = start ; VALID_INDEX(i); --i)
             {
                 index += contains(i);
                 if(index >= m_count)
@@ -208,45 +211,43 @@ int Filter::indexToGame(int index)
             }
         }
     }
-    m_cache.second = -1;
-    return -1;
+    m_cache.second = InvalidGameId;
+    return InvalidGameId;
 }
 
-int Filter::previousGame(int current) const
+GameId Filter::previousGame(GameId current) const
 {
-    if(!m_count)
+    if(m_count)
     {
-        return -1;
-    }
-    for(int i = qBound(-1, current, size()) - 1; i >= 0; --i)
-    {
-        if(contains(i))
+        for(GameId i = qBound(InvalidGameId, current, size()) - 1; VALID_INDEX(i); --i)
         {
-            return i;
+            if(contains(i))
+            {
+                return i;
+            }
         }
     }
-    return -1;
+    return InvalidGameId;
 }
 
-int Filter::nextGame(int current) const
+GameId Filter::nextGame(GameId current) const
 {
-    if(!m_count)
+    if(m_count)
     {
-        return -1;
-    }
-    for(int i = qBound(-1, current, size()) + 1; i < size(); ++i)
-    {
-        if(contains(i))
+        for(GameId i = qBound(InvalidGameId, current, size()) + 1; i < size(); ++i)
         {
-            return i;
+            if(contains(i))
+            {
+                return i;
+            }
         }
     }
-    return -1;
+    return InvalidGameId;
 }
 
 void Filter::resize(int newsize, bool includeNew)
 {
-    for(int i = newsize; i < size(); ++i)   // Decrease count by number of removed games
+    for(GameId i = static_cast<GameId>(newsize); i < size(); ++i)   // Decrease count by number of removed games
     {
         if(contains(i))
         {
@@ -264,7 +265,8 @@ void Filter::resize(int newsize, bool includeNew)
     {
         m_count += newsize - oldsize;
     }
-    m_cache.first = m_cache.second = -1;
+    m_cache.first = -1;
+    m_cache.second = InvalidGameId;
 }
 
 void Filter::invert()
@@ -282,12 +284,8 @@ void Filter::invert()
             (*m_vector)[i] = 1;
         }
     }
-    m_cache.first = m_cache.second = -1;
-}
-
-QVector<int> Filter::intVector() const
-{
-    return *m_vector;
+    m_cache.first = -1;
+    m_cache.second = InvalidGameId;
 }
 
 void Filter::runSingleSearch(Search* s, FilterOperator op)

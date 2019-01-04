@@ -5,6 +5,7 @@
 #ifndef DATABASELIST_H
 #define DATABASELIST_H
 
+#include "gameid.h"
 #include "tableview.h"
 
 class QSortFilterProxyModel;
@@ -18,7 +19,7 @@ public:
     ~DatabaseList();
     void save() const;
 
-    int getLastIndex(const QString& s) const;
+    GameId getLastIndex(const QString& s) const;
     int stars(const QString& s) const;
 
     void limitStars(int limit);
@@ -27,7 +28,7 @@ public slots:
     void setFileFavorite(const QString& s, bool bFavorite, int index);
     void setStars(const QString& s, int stars);
     void setFileUtf8(const QString&, bool);
-    void setFileClose(const QString& s, int lastIndex);
+    void setFileClose(const QString& s, GameId lastIndex);
     void setFileCurrent(const QString& s);
     void update(const QString& s);
     void slotCurrentIndexChanged(const QModelIndex&);
@@ -39,7 +40,7 @@ signals:
     void requestOpenDatabase(QString s, bool utf8);
     void requestCloseDatabase(QString s);
     void requestLinkDatabase(QString s);
-    void requestAppendGames(QString path, QList<int> indexes);
+    void requestAppendGames(QString path, QList<GameId> indexes);
     void requestAppendDatabase(QString dest, QString src);
     void requestMakeBook(QString s);
 
@@ -54,7 +55,7 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
 
-    void appendGameToDataBase(QModelIndex index, QList<int> gameIndexList);
+    void appendGameToDataBase(QModelIndex index, QList<GameId> gameIndexList);
     void appendDataBaseToDataBase(QPoint pos, QString src);
 
 private slots:

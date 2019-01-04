@@ -379,7 +379,7 @@ void ChessBrowser::dropEvent(QDropEvent *event)
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
     if(gameMimeData)
     {
-        foreach(int index, gameMimeData->m_indexList)
+        foreach(GameId index, gameMimeData->m_indexList)
         {
             mergeGame(index);
         }
@@ -388,7 +388,7 @@ void ChessBrowser::dropEvent(QDropEvent *event)
     event->acceptProposedAction();
 }
 
-void ChessBrowser::mergeGame(int gameIndex)
+void ChessBrowser::mergeGame(GameId gameIndex)
 {
     emit signalMergeGame(gameIndex);
 }

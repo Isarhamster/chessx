@@ -226,7 +226,7 @@ public :
     /** Moves by given ply, returns actual ply reached */
     int moveByPly(int diff);
     /** Moves to the position corresponding to the given move id */
-    bool dbMoveToId(MoveId moveId);
+    bool dbMoveToId(MoveId moveId, QString* algebraicMoveList=0);
     void moveToId(MoveId moveId);
     /** Move forward the given number of moves, returns actual number of moves made */
     int forward(int count = 1);

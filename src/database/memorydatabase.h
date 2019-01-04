@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __MEMORYDATABASE_H__
-#define __MEMORYDATABASE_H__
+#ifndef MEMORYDATABASE_H__
+#define MEMORYDATABASE_H__
 
 #include <QMutex>
 #include <QVector>
@@ -69,5 +69,5 @@ private:
     mutable QReadWriteLock m_mutex;
 };
 
-#endif	// __MEMORYDATABASE_H__
+#endif	// MEMORYDATABASE_H__
 

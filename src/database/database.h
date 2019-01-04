@@ -82,6 +82,8 @@ public:
     virtual bool appendGame(const Game&);
     /** Removes a game from the database */
     virtual bool remove(GameId);
+    /** Remove all games from a database */
+    virtual void clear();
     /** Undelete a game from the database */
     virtual bool undelete(GameId);
     /** Removes multiple games from the database as specified by the filter */

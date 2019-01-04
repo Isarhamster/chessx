@@ -64,7 +64,6 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
     horizontalHeader()->setSectionsClickable(true);
 #endif
 
-    updateFilter();
     slotReconfigure();
 
     horizontalHeader()->setSortIndicatorShown(true);
@@ -184,8 +183,11 @@ void GameList::itemSelected(const QModelIndex& index)
     if (selectionModel()->selectedRows().size() == 1)
     {
         QModelIndex m = GetSourceIndex(index);
-        int n = m_model->filter()->indexToGame(m.row());
-        if (n>=0) emit selected(n);
+        GameId n = m_model->filter()->indexToGame(m.row());
+        if (VALID_INDEX(n))
+        {
+            emit gameSelected(n);
+        }
     }
 }
 
@@ -194,8 +196,11 @@ void GameList::selectPreviousGame()
     QModelIndex sortIndex = currentIndex();
     int row = std::max(0, sortIndex.row()-1);
     QModelIndex sourceIndex = GetSourceIndex(NewSortIndex(row));
-    int n = m_model->filter()->indexToGame(sourceIndex.row());
-    if (n>=0) emit selected(n);
+    GameId n = m_model->filter()->indexToGame(sourceIndex.row());
+    if (VALID_INDEX(n))
+    {
+        emit gameSelected(n);
+    }
 }
 
 bool GameList::selectNextGame()
@@ -205,8 +210,11 @@ bool GameList::selectNextGame()
     if ((row>=0) && (row + 1 < m_model->filter()->count()))
     {
         QModelIndex sourceIndex = GetSourceIndex(NewSortIndex(row+1));
-        int n = m_model->filter()->indexToGame(sourceIndex.row());
-        if (n>=0) emit selected(n);
+        GameId n = m_model->filter()->indexToGame(sourceIndex.row());
+        if (VALID_INDEX(n))
+        {
+            emit gameSelected(n);
+        }
         return true;
     }
     return false;
@@ -276,8 +284,8 @@ void GameList::slotContextMenu(const QPoint& pos)
         foreach(QModelIndex index, list)
         {
             QModelIndex source = GetSourceIndex(index);
-            int n = m_model->filter()->indexToGame(source.row());
-            if (n>=0)
+            GameId n = m_model->filter()->indexToGame(source.row());
+            if (VALID_INDEX(n))
             {
                 if (m_model->filter()->database()->deleted(n))
                 {
@@ -449,9 +457,9 @@ void GameList::endSearch()
     emit raiseRequest();
 }
 
-void GameList::selectGame(int index)
+void GameList::selectGame(GameId index)
 {
-    if (index >= 0)
+    if (VALID_INDEX(index))
     {
         int i = m_model->filter()->gameToIndex(index);
         if(i != -1)
@@ -471,23 +479,26 @@ void GameList::selectGame(int index)
     }
 }
 
-void GameList::updateFilter()
+void GameList::updateFilter(GameId index)
 {
-    if (m_model->filter()->database())
+    if (m_model->filter()->database()) // ?
     {
-// Unheil        m_model->setFilter(m_model->filter());
+        if (VALID_INDEX(index))
+        {
+            m_model->set(index, 1);
+        }
         emit raiseRequest();
     }
 }
 
-QList<int> GameList::selectedGames()
+QList<GameId> GameList::selectedGames()
 {
-    QList<int> gameIndexList;
+    QList<GameId> gameIndexList;
     foreach(QModelIndex index, selectionModel()->selectedRows())
     {
         QModelIndex m = GetSourceIndex(index);
-        int n = m_model->filter()->indexToGame(m.row());
-        if (n>=0)
+        GameId n = m_model->filter()->indexToGame(m.row());
+        if (VALID_INDEX(n))
         {
             gameIndexList.append(n);
         }
@@ -497,13 +508,13 @@ QList<int> GameList::selectedGames()
 
 void GameList::slotCopyGame()
 {
-    QList<int> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames();
     emit requestCopyGame(gameIndexList);
 }
 
 void GameList::slotFindDuplicate()
 {
-    QList<int> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames();
     emit requestFindDuplicates(gameIndexList);
 }
 
@@ -519,25 +530,23 @@ void GameList::slotMergeFilter()
 
 void GameList::slotMergeGame()
 {
-    QList<int> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames();
     emit requestMergeGame(gameIndexList);
 }
 
 void GameList::slotDeleteGame()
 {
-    QList<int> gameIndexList = selectedGames();
+    QList<GameId> gameIndexList = selectedGames();
     emit requestDeleteGame(gameIndexList);
 }
 
 void GameList::slotHideGame()
 {
-    QList<int> gameIndexList = selectedGames();
-    foreach( int game, gameIndexList )
+    QList<GameId> gameIndexList = selectedGames();
+    foreach(GameId game, gameIndexList)
     {
-        m_model->filter()->set(game, 0);
+        m_model->set(game, 0);
     }
-
-    updateFilter();
 }
 
 void GameList::startDrag(Qt::DropActions /*supportedActions*/)
@@ -547,8 +556,8 @@ void GameList::startDrag(Qt::DropActions /*supportedActions*/)
     {
         QModelIndex m = GetSourceIndex(index);
         int row = m.row();
-        int gameIndex = m_model->filter()->indexToGame(row);
-        if (gameIndex >= 0)
+        GameId gameIndex = m_model->filter()->indexToGame(row);
+        if (VALID_INDEX(gameIndex))
         {
             mimeData->m_indexList.append(gameIndex);
         }
@@ -557,8 +566,7 @@ void GameList::startDrag(Qt::DropActions /*supportedActions*/)
     if (mimeData->m_indexList.count() < 100) // Avoid excessive size of clipboard
     {
         QString text;
-
-        foreach(int gameIndex, mimeData->m_indexList)
+        foreach(GameId gameIndex, mimeData->m_indexList)
         {
             Game g;
             if(m_model->filter()->database()->loadGame(gameIndex, g))

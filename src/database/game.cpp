@@ -1741,7 +1741,7 @@ int Game::moveByPly(int diff)
     }
 }
 
-bool Game::dbMoveToId(MoveId moveId)
+bool Game::dbMoveToId(MoveId moveId, QString* algebraicMoveList)
 {
     moveId = nodeValid(moveId);
     if(moveId == NO_MOVE)
@@ -1765,7 +1765,13 @@ bool Game::dbMoveToId(MoveId moveId)
         *m_currentBoard = m_startingBoard;
         while(!moveStack.isEmpty())
         {
-            m_currentBoard->doMove(moveStack.pop());
+            Move m = moveStack.pop();
+            m_currentBoard->doMove(m);
+            if (algebraicMoveList)
+            {
+                algebraicMoveList->push_back(m.toAlgebraic());
+                algebraicMoveList->push_back(" ");
+            }
         }
     }
 

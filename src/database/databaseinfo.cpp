@@ -42,7 +42,7 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, Database *db)
     connect(&m_game, SIGNAL(signalMoveChanged()), SIGNAL(signalMoveChanged()));
 }
 
-DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filter(0), m_index(NewGame)
+DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filter(0), m_index(InvalidGameId)
 {
     m_filename = fname;
     m_bLoaded = false;
@@ -235,7 +235,7 @@ void DatabaseInfo::newGame()
     m_undoStack->clear();
     m_game.clearTags();
     m_game.clear();
-    m_index = NewGame;
+    m_index = InvalidGameId;
     setModified(false, Game(), "");
 }
 
@@ -257,7 +257,7 @@ bool DatabaseInfo::saveGame()
         if(!eco.isEmpty())
         {
             m_game.setTag(TagNameECO, eco);
-            if (m_index >= 0)
+            if (VALID_INDEX(m_index))
             {
                 database()->index()->setTag(TagNameECO, eco, m_index);
             }
@@ -270,14 +270,14 @@ bool DatabaseInfo::saveGame()
         if (!m_game.hasTag(tag))
         {
             m_game.setTag(tag,QString());
-            if (m_index >= 0)
+            if (VALID_INDEX(m_index))
             {
                 database()->index()->setTag(tag, QString(), m_index);
             }
         }
     }
 
-    if(m_index < (int)m_database->count() && m_index >= 0)
+    if(m_index < m_database->count())
     {
         if(m_database->replace(m_index, m_game))
         {
@@ -291,7 +291,7 @@ bool DatabaseInfo::saveGame()
             return true;
         }
     }
-    else if(m_index == NewGame && m_database->appendGame(m_game))
+    else if(m_index == InvalidGameId && m_database->appendGame(m_game))
     {
         if (m_filter)
         {
