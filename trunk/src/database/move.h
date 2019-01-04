@@ -122,16 +122,16 @@ private:
     static const quint64 PROMOTE = 38;
     static const quint64 ENPASSANT = 14;
 
-    static const quint64 CASTLINGBIT =  1 << 15;
-    static const quint64 TWOFORWARDBIT = 1 << 16;
-    static const quint64 PROMOTEBIT = 1 << 17;
-    static const quint64 ENPASSANTBIT = 1 << 21;
-    static const quint64 LEGALITYBIT =  1 << 31;
+    static const quint64 CASTLINGBIT =  1uL << 15;
+    static const quint64 TWOFORWARDBIT = 1uL << 16;
+    static const quint64 PROMOTEBIT = 1uL << 17;
+    static const quint64 ENPASSANTBIT = 1uL << 21;
+    static const quint64 LEGALITYBIT =  1uL << 31;
     static const quint64 SPECIALBITS = CASTLINGBIT | TWOFORWARDBIT | PROMOTEBIT | ENPASSANTBIT;
-    static const quint64 PTCLEAR = ~(7 << 12);
-    static const quint64 CAPCLEAR = ~(7 << 18);
-    static const quint64 PROCLEAR = ~((7 << 22) | PROMOTEBIT);
-    static const quint64 BLACKTM = 1 << 26;
+    static const quint64 PTCLEAR = ~(7uL << 12);
+    static const quint64 CAPCLEAR = ~(7uL << 18);
+    static const quint64 PROCLEAR = ~((7uL << 22) | PROMOTEBIT);
+    static const quint64 BLACKTM = 1uL << 26;
 
     /** Set Pawn move of one forward */
     void genOneForward(unsigned int from, unsigned int to);

@@ -259,7 +259,7 @@ void DatabaseList::slotShowInFinder()
     ShellHelper::showInFinder(pathIn);
 }
 
-int DatabaseList::getLastIndex(const QString& s) const
+GameId DatabaseList::getLastIndex(const QString& s) const
 {
     return m_model->getLastIndex(s);
 }
@@ -298,7 +298,7 @@ void DatabaseList::setFileUtf8(const QString& s, bool utf8)
     m_model->setFileUtf8(s, utf8);
 }
 
-void DatabaseList::setFileClose(const QString& s, int lastIndex)
+void DatabaseList::setFileClose(const QString& s, GameId lastIndex)
 {
     m_model->setFileClose(s, lastIndex);
 }
@@ -379,7 +379,7 @@ void DatabaseList::dropEvent(QDropEvent *event)
     event->acceptProposedAction();
 }
 
-void DatabaseList::appendGameToDataBase(QModelIndex index, QList<int> gameIndexList)
+void DatabaseList::appendGameToDataBase(QModelIndex index, QList<GameId> gameIndexList)
 {
     // Make sure the drop occured on a cell!
     if(index.isValid())

@@ -9,14 +9,15 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __FILTER_H__
-#define __FILTER_H__
+#ifndef FILTER_H__
+#define FILTER_H__
 
 #include <QBitArray>
 #include <QPair>
 #include <QPointer>
 #include <QThread>
 
+#include "gameid.h"
 #include "filteroperator.h"
 
 class Search;
@@ -52,26 +53,26 @@ public:
     Database* database();
     const Database* database() const;
     /** Add or remove game @p game . Does nothing if the game is not in filter. */
-    void set(int game, int value);
+    void set(GameId game, int value);
     /** Set all games in the filter to the same value. */
     void setAll(int value);
     /** @return true if the game is in the filter. */
-    bool contains(int game) const;
+    bool contains(GameId game) const;
     /** @return the ply at which the game in the filter is. Zero if game is not in filter */
-    int gamePosition(int game) const;
+    int gamePosition(GameId game) const;
     /** @return number of games in the filter. */
     inline int count() const { return m_count; }
     /** @return the size of the filter. */
-    int size() const;
+    unsigned int size() const;
     /** @return next game in the filter or @p -1 if there is none. */
-    int nextGame(int current) const;
+    GameId nextGame(GameId current) const;
     /** @return previous game in the filter or @p -1 if there is none. */
-    int previousGame(int current) const;
+    GameId previousGame(GameId current) const;
     /** @return @p index in filter of game with database index @p number. */
-    int gameToIndex(int number);
+    int gameToIndex(GameId number);
     /** @return database index of @p number game from filter or @p -1 if the game
     is not in filter. */
-    int indexToGame(int number);
+    GameId indexToGame(int number);
     /** Resize the filter to the specified size, keeping current content. If the filter is increased,
     added game will be initialized to @p includeNew (by default - not in filter). */
     void resize(int newsize, bool includeNew = 0);
@@ -95,11 +96,9 @@ signals:
 
 protected:
 
-    QVector<int> intVector() const;
-
     int m_count;
     QVector<int>* m_vector;
-    QPair<int, int> m_cache;
+    QPair<int, GameId> m_cache;
     Database* m_database;
 
     /* Search statistics variables */

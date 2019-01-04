@@ -47,18 +47,18 @@ public:
 
     void removeSelection();
     /** Set current database */
-    QList<int> selectedGames();
+    QList<GameId> selectedGames();
 public slots:
     /** Change current filter/database */
     void setFilter(Filter* filter);
     /** Update filter (called after changing filter outside) */
-    void updateFilter();
+    void updateFilter(GameId index = InvalidGameId);
     /** Perform simple search */
     void simpleSearch(int tag);
     void executeSearch(Search* search, FilterOperator searchOperator=FilterOperator::NullOperator);
     void endSearch();
     /** Select and show current game in the list */
-    void selectGame(int index);
+    void selectGame(GameId index);
     /** Select and show current game in the list */
     void slotFilterListByPlayer(QString ns);
     /** Select and show current event in the list */
@@ -105,14 +105,14 @@ private slots:
     /** React to a change in selected item */
     void slotItemSelected(const QModelIndex&);
 signals:
-    void selected(int);
+    void gameSelected(GameId);
     void raiseRequest();
-    void requestMergeGame(QList<int>);
+    void requestMergeGame(QList<GameId>);
     void requestMergeAllGames();
     void requestMergeFilter();
-    void requestCopyGame(QList<int>);
-    void requestFindDuplicates(QList<int>);
-    void requestDeleteGame(QList<int>);
+    void requestCopyGame(QList<GameId>);
+    void requestFindDuplicates(QList<GameId>);
+    void requestDeleteGame(QList<GameId>);
     void requestGameData(Game&);
     void signalFirstGameLoaded(bool);
     void signalLastGameLoaded(bool);

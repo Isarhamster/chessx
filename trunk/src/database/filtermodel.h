@@ -16,6 +16,7 @@
 #include <QPointer>
 
 #include "filteroperator.h"
+#include "gameid.h"
 
 class Filter;
 class Search;
@@ -66,7 +67,7 @@ public:
     }
 
     void updateColumns();
-
+    void set(GameId game, int value);
     static QStringList additionalTags();
 
     void invert();

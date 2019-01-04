@@ -14,7 +14,7 @@ class GameMimeData : public QMimeData
     Q_OBJECT
 
 public:
-    QList<int> m_indexList;
+    QList<GameId> m_indexList;
 };
 
 class DbMimeData : public QMimeData

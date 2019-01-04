@@ -7,11 +7,12 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __DATABASEINFO_H__
-#define __DATABASEINFO_H__
+#ifndef DATABASEINFO_H__
+#define DATABASEINFO_H__
 
 #include "circularbuffer.h"
 #include "game.h"
+#include "gameid.h"
 
 #include <QString>
 #include <QObject>
@@ -34,7 +35,6 @@ class DatabaseInfo: public QThread
     Q_OBJECT
 public:
     void run();
-    enum {NewGame = -1};
     /** Create information for clipboard database */
     DatabaseInfo(QUndoGroup *undoGroup, Database* db);
     /** Create information for file database */
@@ -71,7 +71,7 @@ public:
         return m_game;
     }
     /** @return index of current game  */
-    int currentIndex() const
+    GameId currentIndex() const
     {
         return m_index;
     }
@@ -123,7 +123,7 @@ public:
     bool isClipboard() const;
     bool isNative() const;
 
-    const CircularBuffer<int>& lastGames() const { return m_lastGames; }
+    const CircularBuffer<GameId>& lastGames() const { return m_lastGames; }
     void clearLastGames();
 
 protected:
@@ -146,8 +146,8 @@ private:
     QPointer<Filter> m_filter;
     Game m_game;
     QString m_filename;
-    int m_index;
-    CircularBuffer<int> m_lastGames;
+    GameId m_index;
+    CircularBuffer<GameId> m_lastGames;
     bool m_bLoaded;
     bool m_utf8;
 };

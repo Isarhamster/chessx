@@ -32,6 +32,7 @@
 #include "ficsconsole.h"
 #include "ficsdatabase.h"
 #include "game.h"
+#include "gameid.h"
 #include "gamelist.h"
 #include "gamewindow.h"
 #include "GameMimeData.h"
@@ -560,7 +561,7 @@ void MainWindow::slotEditMergePGN()
             if(pgnDatabase.openString(pgn))
             {
                 Game g;
-                for (quint64 i=0; i<pgnDatabase.count();++i) // pasted text might contain multiple games
+                for (GameId i=0; i<pgnDatabase.count();++i) // pasted text might contain multiple games
                 {
                     if(pgnDatabase.loadGame(i, g))
                     {
@@ -832,12 +833,22 @@ void MainWindow::slotEvalMove(Square from, Square to)
     }
 }
 
+QString MainWindow::getUCIHistory() const
+{
+    QString line;
+    Game gx = game();
+    gx.moveToStart();
+    gx.dbMoveToId(game().currentMove(), &line);
+    return line;
+}
+
 void MainWindow::slotResumeBoard()
 {
     if (m_bEvalRequested)
     {
         m_bEvalRequested = false;
-        m_mainAnalysis->setPosition(game().board());
+        QString line = getUCIHistory();
+        m_mainAnalysis->setPosition(game().board(), line);
     }
 }
 
@@ -1233,7 +1244,9 @@ void MainWindow::moveChanged()
     displayVariations();
 
     slotSearchTree();
-    emit boardChange(g.board());
+
+    QString line = getUCIHistory();
+    emit boardChange(g.board(), line);
 
     // Clear  entries
     m_nagText.clear();
@@ -1428,7 +1441,7 @@ void MainWindow::slotGameLoadFirst()
 
 void MainWindow::slotGameLoadLast()
 {
-    gameLoad(databaseInfo()->filter()->indexToGame(databaseInfo()->filter()->count() - 1));
+    gameLoad(databaseInfo()->filter()->indexToGame(databaseInfo()->filter()->count()-1));
 }
 
 void MainWindow::slotGameLoadPrevious()
@@ -1473,6 +1486,7 @@ void MainWindow::newGame()
     emit signalGameIsEmpty(true); // repair effect of slotGameChanged
     m_gameList->setFocus();
     UpdateBoardInformation();
+    emit signalGameLoaded(game().startingBoard());
 }
 
 void MainWindow::slotGameNew()
@@ -1498,7 +1512,7 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
         {
             if (dbInfo == databaseInfo())
             {
-                m_gameList->updateFilter();
+                m_gameList->updateFilter(dbInfo->currentIndex());
                 slotFilterChanged();
                 slotGameChanged(true);
                 updateLastGameList();
@@ -1660,12 +1674,12 @@ void MainWindow::slotGameModify(const EditAction& action)
     }
 }
 
-void MainWindow::slotMergeActiveGame(QList<int> gameIndexList)
+void MainWindow::slotMergeActiveGame(QList<GameId> gameIndexList)
 {
     if (gameIndexList.size())
     {
         Game state = game();
-        foreach(int gameIndex, gameIndexList)
+        foreach(GameId gameIndex, gameIndexList)
         {
             if(gameIndex != databaseInfo()->currentIndex())
             {
@@ -1680,7 +1694,7 @@ void MainWindow::slotMergeActiveGame(QList<int> gameIndexList)
     }
 }
 
-void MainWindow::slotMergeActiveGame(int gameIndex)
+void MainWindow::slotMergeActiveGame(GameId gameIndex)
 {
     Game g;
     if(gameIndex != databaseInfo()->currentIndex())
@@ -1695,7 +1709,7 @@ void MainWindow::slotMergeActiveGame(int gameIndex)
 void MainWindow::slotMergeAllGames()
 {
     Game g;
-    for(int i = 0; i < database()->index()->count(); ++i)
+    for(GameId i = 0; i < database()->index()->count(); ++i)
     {
         if(i != databaseInfo()->currentIndex())
         {
@@ -1710,7 +1724,7 @@ void MainWindow::slotMergeAllGames()
 void MainWindow::slotMergeFilter()
 {
     Game g;
-    for(int i = 0; i < (int)database()->count(); ++i)
+    for(GameId i = 0; i < database()->count(); ++i)
     {
         if(databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
         {
@@ -1974,8 +1988,9 @@ void MainWindow::slotToggleAutoAnalysis()
                     game().moveToEnd();
                 }
             }
+            QString line = getUCIHistory();
             m_mainAnalysis->unPin();
-            m_mainAnalysis->setPosition(game().board());
+            m_mainAnalysis->setPosition(game().board(), line);
             m_mainAnalysis->startEngine();
         }
     }
@@ -2023,14 +2038,16 @@ void MainWindow::slotToggleEngineMatch()
 
             m_AutoInsertLastBoard.clear();
 
+            QString line = getUCIHistory();
+
             m_mainAnalysis->unPin();
             m_mainAnalysis->setOnHold(true);
-            m_mainAnalysis->setPosition(game().board());
+            m_mainAnalysis->setPosition(game().board(), line);
             m_mainAnalysis->setMoveTime(m_matchParameter);
 
             m_secondaryAnalysis->unPin();
             m_secondaryAnalysis->setOnHold(true);
-            m_secondaryAnalysis->setPosition(game().board());
+            m_secondaryAnalysis->setPosition(game().board(), line);
             m_secondaryAnalysis->setMoveTime(m_matchParameter);
 
             if (game().tag(TagNameWhite).isEmpty() &&
@@ -2049,9 +2066,13 @@ void MainWindow::slotToggleEngineMatch()
             m_matchTime[1] = 0;
 
             if (game().board().toMove() == White)
+            {
                 m_mainAnalysis->startEngine();
+            }
             else
+            {
                 m_secondaryAnalysis->startEngine();
+            }
         }
     }
     else
@@ -2444,7 +2465,7 @@ void MainWindow::slotFilterChanged(bool selectGame)
                             .arg(f).arg(database()->count()));
 }
 
-void MainWindow::slotFilterLoad(int index)
+void MainWindow::slotFilterLoad(GameId index)
 {
     if(index != gameIndex())
     {
@@ -2521,7 +2542,7 @@ void MainWindow::slotDatabaseChange()
     }
 }
 
-void MainWindow::copyGame(int target, int index)
+void MainWindow::copyGame(int target, GameId index)
 {
     DatabaseInfo* pTargetDB = m_databases[target];
     if(pTargetDB->isValid())
@@ -2544,7 +2565,7 @@ void MainWindow::copyGame(int target, int index)
     }
 }
 
-void MainWindow::copyGames(QString fileName, QList<int> indexes)
+void MainWindow::copyGames(QString fileName, QList<GameId> indexes)
 {
     for(int i = 0; i < m_databases.count(); ++i)
     {
@@ -2553,7 +2574,7 @@ void MainWindow::copyGames(QString fileName, QList<int> indexes)
             if(m_databases[i]->isValid())
             {
                 m_databases[i]->filter()->resize(m_databases[i]->database()->count() + static_cast<quint64>(indexes.count()), true);
-                foreach (int index, indexes)
+                foreach (GameId index, indexes)
                 {
                     copyGame(i, index);
                 }
@@ -2760,7 +2781,7 @@ void MainWindow::slotDatabaseDropped(QDropEvent *event)
 
 void MainWindow::slotDatabaseCopy(int preselect)
 {
-    QList<int> gameIndexList = m_gameList->selectedGames();
+    QList<GameId> gameIndexList = m_gameList->selectedGames();
     copyFromDatabase(preselect, gameIndexList);
 }
 
@@ -2793,7 +2814,7 @@ void MainWindow::slotDatabaseFilterDuplicateTags()
     filterDuplicates(DuplicateSearch::DS_Tags);
 }
 
-void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
+void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
 {
     QStringList db;
     int cc = 1;
@@ -2836,7 +2857,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
         n = 1;
         break;
     case CopyDialog::Selection:
-        foreach (int i, gameIndexList)
+        foreach (GameId i, gameIndexList)
         {
             Game g;
             if(database()->loadGame(i, g))
@@ -2847,7 +2868,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
         }
         break;
     case CopyDialog::Filter:
-        for(int i = 0; i < (int)database()->count(); ++i)
+        for(GameId i = 0; i < (int)database()->count(); ++i)
         {
             Game g;
             if(databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
@@ -2858,7 +2879,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<int> gameIndexList)
         }
         break;
     case CopyDialog::AllGames:
-        for(int i = 0; i < (int)database()->count(); ++i)
+        for(GameId i = 0; i < (int)database()->count(); ++i)
         {
             Game g;
             if(database()->loadGame(i, g))
@@ -2883,7 +2904,7 @@ void MainWindow::slotDatabaseClearClipboard()
         autoGroup->untrigger();
     }
 
-    ((MemoryDatabase*)(m_databases[0]->database()))->clear();
+    m_databases[0]->database()->clear();
     m_databases[0]->clearLastGames();
     m_databases[0]->filter()->resize(0, false);
     m_databases[0]->newGame();
@@ -2895,15 +2916,15 @@ void MainWindow::slotDatabaseClearClipboard()
     }
 }
 
-void MainWindow::slotDatabaseCopySingle(QList<int> gameIndexList)
+void MainWindow::slotDatabaseCopySingle(QList<GameId> gameIndexList)
 {
     copyFromDatabase(0, gameIndexList);
 }
 
-void MainWindow::slotDatabaseFindDuplicates(QList<int> gameIndexList)
+void MainWindow::slotDatabaseFindDuplicates(QList<GameId> gameIndexList)
 {
     databaseInfo()->filter()->setAll(0);
-    foreach(int i, gameIndexList)
+    foreach(GameId i, gameIndexList)
     {
         databaseInfo()->filter()->set(i,1);
     }
@@ -2925,10 +2946,10 @@ void MainWindow::slotDatabaseChanged()
 
 void MainWindow::updateLastGameList()
 {
-    const CircularBuffer<int>& gameList = databaseInfo()->lastGames();
+    const CircularBuffer<GameId>& gameList = databaseInfo()->lastGames();
     const Index* index = databaseInfo()->database()->index();
     m_recentGames->clear();
-    if (index) foreach(int n, gameList)
+    if (index) foreach(GameId n, gameList)
     {
         QString white = index->tagValue(TagNameWhite,n);
         QString black = index->tagValue(TagNameBlack,n);
@@ -2942,7 +2963,7 @@ void MainWindow::slotLoadRecentGame()
     QAction* action = qobject_cast<QAction*>(sender());
     if (action)
     {
-        int n = action->data().toInt();
+        GameId n = static_cast<GameId>(action->data().toInt());
         gameLoad(n);
     }
 }
@@ -3104,9 +3125,9 @@ void MainWindow::slotUpdateOpeningBook(QString name)
     }
 }
 
-void MainWindow::slotDatabaseDeleteGame(QList<int> gameIndexList)
+void MainWindow::slotDatabaseDeleteGame(QList<GameId> gameIndexList)
 {
-    foreach(int n, gameIndexList)
+    foreach(GameId n, gameIndexList)
     {
         if(database()->deleted(n))
         {
@@ -3277,6 +3298,7 @@ void MainWindow::activateBoardViewForDbIndex(void* dbIndex)
     {
         CreateBoardView();
     }
+    emit signalGameLoaded(game().startingBoard());
 }
 
 void MainWindow::closeBoardViewForDbIndex(void* dbIndex)
@@ -3331,6 +3353,7 @@ void MainWindow::slotActivateBoardView(int n)
 
         m_databaseList->setFileCurrent(databaseInfo()->displayName());
         slotDatabaseChanged();
+        emit signalGameLoaded(game().startingBoard());
     }
 }
 

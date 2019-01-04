@@ -123,6 +123,10 @@ bool Database::remove(GameId)
     return false;
 }
 
+void Database::clear()
+{
+}
+
 void Database::setTagsToIndex(const Game& game, GameId id)
 {
     const TagMap& tags = game.tags();

@@ -216,8 +216,8 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
     connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
     connect(m_gameView, SIGNAL(queryActiveGame(const Game**)), this, SLOT(slotGetActiveGame(const Game**)));
-    connect(m_gameView, SIGNAL(signalMergeGame(int)), this, SLOT(slotMergeActiveGame(int)));
-    connect(this, SIGNAL(signalGameLoaded()), gameTextDock, SLOT(raise()));
+    connect(m_gameView, SIGNAL(signalMergeGame(GameId)), this, SLOT(slotMergeActiveGame(GameId)));
+    connect(this, SIGNAL(signalGameLoaded(const Board&)), gameTextDock, SLOT(raise()));
     connect(this, SIGNAL(displayTime(const QString&, Color, const QString&)), m_gameView, SLOT(slotDisplayTime(const QString&, Color, const QString&)));
     gameTextDock->setWidget(m_gameWindow);
     connect(this, SIGNAL(reconfigure()), m_gameView, SLOT(slotReconfigure()));
@@ -228,13 +228,13 @@ MainWindow::MainWindow() : QMainWindow(),
 
     /* Game List */
     m_gameList->setMinimumSize(150, 100);
-    connect(m_gameList, SIGNAL(selected(int)), SLOT(slotFilterLoad(int)));
-    connect(m_gameList, SIGNAL(requestCopyGame(QList<int>)), SLOT(slotDatabaseCopySingle(QList<int>)));
-    connect(m_gameList, SIGNAL(requestFindDuplicates(QList<int>)), SLOT(slotDatabaseFindDuplicates(QList<int>)));
-    connect(m_gameList, SIGNAL(requestMergeGame(QList<int>)), SLOT(slotMergeActiveGame(QList<int>)));
+    connect(m_gameList, SIGNAL(gameSelected(GameId)), SLOT(slotFilterLoad(GameId)));
+    connect(m_gameList, SIGNAL(requestCopyGame(QList<GameId>)), SLOT(slotDatabaseCopySingle(QList<GameId>)));
+    connect(m_gameList, SIGNAL(requestFindDuplicates(QList<GameId>)), SLOT(slotDatabaseFindDuplicates(QList<GameId>)));
+    connect(m_gameList, SIGNAL(requestMergeGame(QList<GameId>)), SLOT(slotMergeActiveGame(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestMergeAllGames()), SLOT(slotMergeAllGames()));
     connect(m_gameList, SIGNAL(requestMergeFilter()), SLOT(slotMergeFilter()));
-    connect(m_gameList, SIGNAL(requestDeleteGame(QList<int>)), SLOT(slotDatabaseDeleteGame(QList<int>)));
+    connect(m_gameList, SIGNAL(requestDeleteGame(QList<GameId>)), SLOT(slotDatabaseDeleteGame(QList<GameId>)));
     connect(m_gameList, SIGNAL(requestGameData(Game&)), SLOT(slotGetGameData(Game&)));
     connect(m_gameList, SIGNAL(searchProgress(int)), SLOT(slotBoardSearchUpdate(int)));
     connect(m_gameList, SIGNAL(searchFinished()), SLOT(slotBoardSearchFinished()));
@@ -307,8 +307,8 @@ MainWindow::MainWindow() : QMainWindow(),
             this, SLOT(slotFileCloseName(QString)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
-    connect(m_databaseList, SIGNAL(requestAppendGames(QString, QList<int>)),
-            this, SLOT(copyGames(QString, QList<int>)));
+    connect(m_databaseList, SIGNAL(requestAppendGames(QString, QList<GameId>)),
+            this, SLOT(copyGames(QString, QList<GameId>)));
     connect(m_databaseList, SIGNAL(requestAppendDatabase(QString, QString)),
             this, SLOT(copyDatabase(QString, QString)));
     connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));
@@ -485,6 +485,7 @@ MainWindow::MainWindow() : QMainWindow(),
     /* Activate clipboard */
     slotDatabaseChanged();
     emit signalGameIsEmpty(true);
+    emit signalGameLoaded(game().startingBoard());
 
     setAcceptDrops(true);
 
@@ -512,14 +513,14 @@ void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget*
             SLOT(slotGameAddVariation(Analysis)));
     connect(analysis, SIGNAL(addVariation(QString)),
             SLOT(slotGameAddVariation(QString)));
-    connect(this, SIGNAL(boardChange(const Board&)), analysis, SLOT(setPosition(const Board&)));
+    connect(this, SIGNAL(boardChange(const Board&, const QString&)), analysis, SLOT(setPosition(const Board&,QString)));
     connect(this, SIGNAL(reconfigure()), analysis, SLOT(slotReconfigure()));
     // Make sure engine is disabled if dock is hidden
     connect(analysisDock, SIGNAL(visibilityChanged(bool)),
             analysis, SLOT(slotVisibilityChanged(bool)));
     m_menuView->addAction(analysisDock->toggleViewAction());
     analysisDock->hide();
-    connect(this, SIGNAL(signalGameLoaded()), analysis, SLOT(slotUciNewGame()));
+    connect(this, SIGNAL(signalGameLoaded(const Board&)), analysis, SLOT(slotUciNewGame(const Board&)));
     connect(this, SIGNAL(signalGameModeChanged(bool)), analysis, SLOT(setDisabled(bool)));
     connect(this, SIGNAL(signalUpdateDatabaseList(QStringList)), analysis, SLOT(slotUpdateBooks(QStringList)));
     connect(analysis, SIGNAL(signalSourceChanged(QString)), this, SLOT(slotUpdateOpeningBook(QString)));
@@ -788,42 +789,44 @@ const Game& MainWindow::game() const
     return databaseInfo()->currentGame();
 }
 
-int MainWindow::gameIndex() const
+GameId MainWindow::gameIndex() const
 {
     return databaseInfo()->currentIndex();
 }
 
 void MainWindow::gameLoad(GameId index)
 {
-    if(QuerySaveGame())
+    if (VALID_INDEX(index))
     {
-        if(databaseInfo()->loadGame(index))
+        if(QuerySaveGame())
         {
-            updateLastGameList();
-            m_gameList->selectGame(index);
-            emit signalGameIsEmpty(false);
-            UpdateBoardInformation();
-            m_gameList->setFocus();
-            emit signalGameLoaded();
-            if(m_training->isChecked())
+            if(databaseInfo()->loadGame(index))
             {
-                m_boardView->setFlipped((game().board().toMove() == Black));
-            }
-            else
-            {
-                QString name = AppSettings->getValue("/Board/PlayerTurnBoard").toString();
-                if (!name.isEmpty())
+                updateLastGameList();
+                m_gameList->selectGame(index);
+                emit signalGameIsEmpty(false);
+                UpdateBoardInformation();
+                m_gameList->setFocus();
+                if(m_training->isChecked())
                 {
-                    QRegExp re(name);
-                    QString nameWhite = game().tag(TagNameWhite);
-                    QString nameBlack = game().tag(TagNameBlack);
-                    if (nameBlack.indexOf(re) >= 0)
+                    m_boardView->setFlipped((game().board().toMove() == Black));
+                }
+                else
+                {
+                    QString name = AppSettings->getValue("/Board/PlayerTurnBoard").toString();
+                    if (!name.isEmpty())
                     {
-                        m_boardView->setFlipped(true);
-                    }
-                    else if (nameWhite.indexOf(re) >= 0)
-                    {
-                        m_boardView->setFlipped(false);
+                        QRegExp re(name);
+                        QString nameWhite = game().tag(TagNameWhite);
+                        QString nameBlack = game().tag(TagNameBlack);
+                        if (nameBlack.indexOf(re) >= 0)
+                        {
+                            m_boardView->setFlipped(true);
+                        }
+                        else if (nameWhite.indexOf(re) >= 0)
+                        {
+                            m_boardView->setFlipped(false);
+                        }
                     }
                 }
             }
@@ -1179,8 +1182,9 @@ void MainWindow::slotDataBaseLoaded(DatabaseInfo* db)
         }
         m_databaseList->setFileCurrent(fname);
 
-        int lastGameIndex = m_databaseList->getLastIndex(fname);
+        GameId lastGameIndex = m_databaseList->getLastIndex(fname);
         gameLoad(lastGameIndex);
+        emit signalGameLoaded(game().startingBoard());
 
         slotDatabaseChanged();
 

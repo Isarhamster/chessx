@@ -100,12 +100,22 @@ void FilterModel::updateColumns()
     endResetModel();
 }
 
+void FilterModel::set(GameId game, int value)
+{
+    // TODO: This is not the proper way, but works in a lot of cases
+    // A refactoring is needed to do this properly, actually, here
+    // it is far to late to do what I'm doing
+    beginResetModel();
+    filter()->set(game, value);
+    endResetModel();
+}
+
 QVariant FilterModel::data(const QModelIndex &index, int role) const
 {
     if(index.isValid() && index.row() < m_filter->count())
     {
-        int i = m_filter->indexToGame(index.row());
-        if (i >= 0)
+        GameId i = m_filter->indexToGame(index.row());
+        if (VALID_INDEX(i))
         {
             if (role == Qt::DisplayRole)
             {
