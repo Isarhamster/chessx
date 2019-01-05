@@ -64,7 +64,7 @@ void EngineList::restore()
             data.options = AppSettings->value(key + "/Options").toString();
             data.directory = AppSettings->value(key + "/Directory").toString();
             data.logging = AppSettings->value(key + "/Logging").toBool();
-            data.sendHistory = AppSettings->value(key + "/SendHistory").toBool();
+            data.sendHistory = AppSettings->value(key + "/SendHistory", "true").toBool();
             QString protocolName = AppSettings->value(key + "/Protocol").toString();
             if(protocolName == "WinBoard")
             {
