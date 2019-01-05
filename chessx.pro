@@ -1,11 +1,13 @@
 # Main application
-DEFINES +=
+DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += uic warn_on
 QT += network svg
 
+TEMPLATE = app
+
 greaterThan(QT_MAJOR_VERSION, 4) {
    QT += printsupport
-   QT += widgets
+   QT += core gui widgets
    QT += xml
    QT -= multimediawidgets
    # Comment out sound for Ubuntu with Qt5 if multimedia is not available (default in Ubuntu)
@@ -33,12 +35,14 @@ DEFINES += QT_NO_CAST_TO_ASCII
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 macx {
-  QMAKE_MAC_SDK = macosx10.13
   QMAKE_CXXFLAGS += -fvisibility=hidden
   QMAKE_LFLAGS_RELEASE -= -O2
   QMAKE_LFLAGS_RELEASE += -m64 -Ofast
   QMAKE_CXXFLAGS_RELEASE -= -O2
   QMAKE_CXXFLAGS_RELEASE *= -m64 -Ofast
+
+  QMAKE_LFLAGS_DEBUG += -m64 -O0
+  QMAKE_CXXFLAGS_DEBUG *= -m64 -O0
 }
 
 FORMS += \
@@ -237,7 +241,8 @@ HEADERS += src/database/board.h \
     src/database/abk.h \
     src/database/gameundocommand.h \
     src/database/ctg.h \
-    src/database/searchlist.h
+    src/database/searchlist.h \
+    src/database/filteroperator.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \

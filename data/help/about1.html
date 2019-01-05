@@ -128,13 +128,15 @@ and will be configured as first engine, if no other entries exist.
 Stockfish is an open source engine (see <a href="http://stockfishchess.org">Homepage of Stockfish</a>.
 The source code for Stockfish is also located on the homepage. Note that Stockfish is licensed under <a href="about3.html">GPLv3</a></p>
 <p>You can fine-tune engines with the protocol options dialog (works for UCI only, Winboard is seldom used and due to the clumsy specification
-hard to implement for GUI developers.</p>
+hard to implement for GUI developers.)</p>
 <p>You can change the move rate with the slider in the bottom right corner of the status bar. Draw the slider to the very left for infinite analysis or
 to the right to make the engine analyse from 1 to 10 secondes per move.</p>
 <p>If the number of lines is set to at least 2, the Guid/Bratko complexity is also calculated - see the reference on details.</p>
 <p>A hint for engine developers: You can log the communication from/to the engine with the "Log" checkbox in the engine settings.
 Logging will be sent to a file 'name.log' where name is the "given" name in the engine settings. Logging directory is the Program data
 path + /log. What the program data path resolves to can be found in the About box.</p>
+<p>Some engines (e.g. lc0) have issues keeping a proper internal state across two position commands, therefore ChessX allows sending
+a complete game history instead of an updated position. This can be disabled via the "Send History" check box.</p>
 
 <h3><a name="Game"></a>Playing (out) games against an engine</h3>
 <p><img src=":/images/respond.png" width="42" align="left">You can play out a game after the final position by activating Auto Respond mode.
