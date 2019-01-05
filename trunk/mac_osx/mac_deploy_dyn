@@ -1,15 +1,24 @@
 #!/bin/sh
+[ $# -eq 0 ] && { echo "Usage: $0 QT_INSTALL_PREFIX VERSION"; exit 1; }
+DIR=${0%/*}
+RELEASEDIR=`pwd`
+BUILDDIR=$RELEASEDIR/..
+VERSION=`/usr/libexec/PlistBuddy -c "print CFBundleVersion" ${DIR}/info.plist`
+echo "Build image for chessx-${VERSION} in ${RELEASEDIR}"
+QTBASE=$1
+QTBIN=$1/bin
 rm -rf chessx.app.original
 rm -rf chessx.modified.app
 cp -r chessx.app chessx.app-original
-/Users/ni/Documents/Projects/chessx/mac_osx/fix_paths.sh "/Users/ni/Qt-5-7-0/5.7/clang_64/" chessx
-/Users/ni/Qt-5-7-0/5.7/clang_64/bin/macdeployqt chessx.app -verbose=2
+${DIR}/fix_paths.sh "${QTBASE}" chessx
+${QTBIN}/macdeployqt chessx.app -verbose=2
 rm -f chessx-installer.mpkg
-/usr/local/bin/packagesbuild -v /Users/ni/Documents/Projects/chessx/Packages/ChessX.pkgproj
-rm -rf dmg
-mkdir dmg    
-mv  /Users/ni/Documents/Projects/chessx/chessx-installer.mpkg dmg/
-rm -f chessx-1.4.6.dmg
-hdiutil create chessx-1.4.6.dmg -volname chessx -fs HFS+ -srcfolder dmg
+/usr/local/bin/packagesbuild -v -F ${RELEASEDIR} --package-version $VERSION ${DIR}/../Packages/ChessX.pkgproj
+rm -rf ${BUILDDIR}/dmg
+mkdir ${BUILDDIR}/dmg
+mv  ${BUILDDIR}/chessx-installer.mpkg ${BUILDDIR}/dmg/
+rm -f chessx-${VERSION}.dmg
+hdiutil create chessx-${VERSION}.dmg -volname chessx -fs HFS+ -srcfolder ${BUILDDIR}/dmg
 mv chessx.app chessx.modified.app
 mv chessx.app-original chessx.app
+mv -v ${RELEASEDIR}/chessx-${VERSION}.dmg ${DIR}/../Packages/
