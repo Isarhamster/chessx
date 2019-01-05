@@ -1,7 +1,7 @@
 #!/bin/sh
 QTDIR=$1
 BIN_FILE="./$2.app/Contents/MacOS/$2"
-echo 'LOG: Start fix paths for $BIN_FILE in $QTDIR'
+echo "LOG: Start fix paths for ${BIN_FILE} in ${QTDIR}"
 
 for P in `otool -L $BIN_FILE` 
 do 
