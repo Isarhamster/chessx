@@ -1,11 +1,16 @@
 This will install version 1.4.8 of ChessX.
 
 October 2017: Version 1.4.8
+- New Feature: Provide multi-selection for the database list view
 - New Feature: Load favorite databases at startup
 - New Feature: Read Chessbase Books (ctg)
 - New Feature: Read Arena Books (.abk)
 - New Feature: Drag databases into list of games
 
+- New feature: Filter operation from gamelist
+- New feature: Allow user-provided ECO files
+- New feature: Save dialog allows to store extra tags
+- New feature: Restrict search to start of word / end of word
 - New feature: Edit shortcuts by pressing key
 - New feature: Annotations beneath board view
 - New feature: Turn board for given player
@@ -13,6 +18,10 @@ October 2017: Version 1.4.8
 - New feature: Show analysis of position with one piece moved
 - New feature: Merge internal and external themes, new option to scale board images
 
+- Bugfix: Parse more than one tag in a line
+- Bugfix: Changing book in analysis should update moves immediately
+- Bugfix: Do not list read-only databases as copy targets
+- Bugfix: Update game list columns after leaving preferences
 - Bugfix: Console output and event info lacks termination of bold text
 - Bugfix: Avoid empty annotation when merging a game
 - Bugfix: "New Game" disabled after loading game
@@ -22,6 +31,11 @@ October 2017: Version 1.4.8
 - Bugfix: Disconnecting a FICS session leaked some memory
 - Bugfix: Progress bar missing occasionally
 
+- Changed: Support engines with state issues
+- Changed: time representation to ISO format
+- Changed: Do not ask to save deleted games
+- Changed: Copy current game instead of first selected game
+- Changed: Kick out hotkeys for database changes
 - Changed: Analysis and Endgametables display localised piece strings
 - Changed: Books support localized piece representation
 - Changed: Accept PGN with obscure RAVs
