@@ -21,6 +21,7 @@ public:
     bool updateFilter(Filter& f, const Board& b, unsigned int&, bool updateFilter, bool sourceIsDatabase, bool bEnd);
 
 signals:
+    void requestGameFilterUpdate(int index, int value);
     void MoveUpdate(Board*, QList<MoveData>);
     void UpdateFinished(Board*);
     void UpdateTerminated(Board*);

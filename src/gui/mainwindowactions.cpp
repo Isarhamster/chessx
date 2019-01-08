@@ -1304,6 +1304,10 @@ void MainWindow::displayVariations()
     BoardViewFrame(m_boardView)->showVariations(listVariations, textVariations);
 }
 
+void MainWindow::slotGameFilterUpdate(int index, int value)
+{
+    m_gameList->updateFilter(index,value);
+}
 
 void MainWindow::slotSearchTree()
 {
@@ -1512,7 +1516,7 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
         {
             if (dbInfo == databaseInfo())
             {
-                m_gameList->updateFilter(dbInfo->currentIndex());
+                m_gameList->updateFilter(dbInfo->currentIndex(), 1);
                 slotFilterChanged();
                 slotGameChanged(true);
                 updateLastGameList();
@@ -1530,7 +1534,6 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
 
 void MainWindow::slotDatabaseModified()
 {
-    m_gameList->updateFilter();
     slotFilterChanged();
     emit signalCurrentDBisReadWrite((!m_currentDatabase->isClipboard()) && !databaseInfo()->database()->isReadOnly() && databaseInfo()->database()->isModified());
     emit signalCurrentDBcanBeClosed(!m_currentDatabase->isClipboard());
@@ -3006,7 +3009,6 @@ void MainWindow::slotSearchBoard()
 
 void MainWindow::slotBoardSearchUpdate(int progress)
 {
-    m_gameList->updateFilter();
     slotFilterChanged(false);
     slotOperationProgress(progress);
 }
@@ -3040,7 +3042,6 @@ void MainWindow::slotTreeUpdate(bool dbIsFilterSource)
     {
         if (dbIsFilterSource)
         {
-            m_gameList->updateFilter();
             slotFilterChanged();
         }
         else
@@ -3138,7 +3139,6 @@ void MainWindow::slotDatabaseDeleteGame(QList<GameId> gameIndexList)
             database()->remove(n);
         }
     }
-    m_gameList->updateFilter();
 }
 
 void MainWindow::slotRenameEvent(QString ts)

@@ -50,6 +50,7 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     connect(m_openingTree, SIGNAL(progress(int)), this, SLOT(slotOperationProgress(int)));
     connect(m_openingTree, SIGNAL(openingTreeUpdated()), this, SLOT(slotTreeUpdate()));
     connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), this, SLOT(slotTreeUpdateStarted()));
+    connect(m_openingTree, SIGNAL(requestGameFilterUpdate(int,int)), SIGNAL(requestGameFilterUpdate(int,int)));
     connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged(int)));
 
     m_openingBoardView = new BoardView(this, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);

@@ -52,7 +52,7 @@ public slots:
     /** Change current filter/database */
     void setFilter(Filter* filter);
     /** Update filter (called after changing filter outside) */
-    void updateFilter(GameId index = InvalidGameId);
+    void updateFilter(GameId index, int value);
     /** Perform simple search */
     void simpleSearch(int tag);
     void executeSearch(Search* search, FilterOperator searchOperator=FilterOperator::NullOperator);

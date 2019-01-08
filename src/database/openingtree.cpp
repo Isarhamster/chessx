@@ -28,37 +28,29 @@ const unsigned MinAveRating = 5;
 
 bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsFilter, bool bEnd)
 {
+    if(&f == m_filter && b == m_board && m_bEnd == bEnd)
+    {
+        return true;
+    }
+    m_bEnd = bEnd;
+    m_board = b;
+    m_filter = &f;
+    m_updateFilter = updateFilter;
+    m_sourceIsDatabase = !sourceIsFilter;
+
     if(!oupd.isRunning())
     {
-        if(&f == m_filter && b == m_board && m_bEnd == bEnd)
-        {
-            return true;
-        }
-
-        m_bEnd = bEnd;
-        m_board = b;
-        m_filter = &f;
-        m_updateFilter = updateFilter;
-        m_sourceIsDatabase = !sourceIsFilter;
         emit openingTreeUpdateStarted();
         m_bRequestPending = false;
         connect(&oupd, SIGNAL(UpdateFinished(Board*)), this, SLOT(updateFinished(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>)), this, SLOT(moveUpdated(Board*,QList<MoveData>)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(requestGameFilterUpdate(int,int)), SIGNAL(requestGameFilterUpdate(int,int)), Qt::UniqueConnection);
         return oupd.updateFilter(f, b, m_games, m_updateFilter, m_sourceIsDatabase, m_bEnd);
     }
     else
     {
-        if(&f == m_filter && b == m_board && m_bEnd == bEnd)
-        {
-            return true;
-        }
-        m_bEnd = bEnd;
-        m_board = b;
-        m_filter = &f;
-        m_updateFilter = updateFilter;
-        m_sourceIsDatabase = !sourceIsFilter;
         m_bRequestPending = true;
         oupd.cancel();
         return false;
@@ -107,6 +99,7 @@ void OpeningTree::updateTerminated(Board*)
         connect(&oupd, SIGNAL(MoveUpdate(Board*,QList<MoveData>)), this, SLOT(moveUpdated(Board*,QList<MoveData>)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(UpdateTerminated(Board*)), this, SLOT(updateTerminated(Board*)), Qt::UniqueConnection);
         connect(&oupd, SIGNAL(progress(int)), SIGNAL(progress(int)), Qt::UniqueConnection);
+        connect(&oupd, SIGNAL(requestGameFilterUpdate(int,int)), SIGNAL(requestGameFilterUpdate(int,int)), Qt::UniqueConnection);
         oupd.updateFilter(*m_filter, m_board, m_games, m_updateFilter, m_sourceIsDatabase, m_bEnd);
     }
 }
@@ -170,11 +163,6 @@ QPixmap OpeningTree::paintPercentage(int percentage) const
 bool OpeningTree::bEnd() const
 {
     return m_bEnd;
-}
-
-Filter *OpeningTree::filter() const
-{
-    return m_filter;
 }
 
 QVariant OpeningTree::data(const QModelIndex& index, int role) const

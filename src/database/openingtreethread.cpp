@@ -57,7 +57,8 @@ void OpeningTreeThread::run()
                 {
                     if(m_updateFilter)
                     {
-                        m_filter->set(i, id + 1); // not zero means success, but id could be 0.
+                        emit requestGameFilterUpdate(i, id+1);
+                        //m_filter->set(i, id + 1); // not zero means success, but id could be 0.
                     }
                     m_filter->database()->loadGameHeaders(i, g);
                     g.dbMoveToId(id);
@@ -76,7 +77,8 @@ void OpeningTreeThread::run()
                 {
                     if(m_updateFilter)
                     {
-                        m_filter->set(i, 0);
+                        emit requestGameFilterUpdate(i, 0);
+                        //m_filter->set(i, 0);
                     }
                 }
             }
