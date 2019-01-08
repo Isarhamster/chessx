@@ -308,6 +308,8 @@ public slots:
     void slotSearchReverse();
     /** Make an Update of the game list after the opening tree was updated */
     void slotTreeUpdate(bool dbIsFilterSource);
+    /** Update the game list upon request from Opening Tree */
+    void slotGameFilterUpdate(int index, int value);
     /** Show opening tree */
     void slotSearchTree();
     /** Move @p index was selected in Opening Tree. */

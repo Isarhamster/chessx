@@ -340,6 +340,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(openingDock, SIGNAL(visibilityChanged(bool)), m_openingTreeWidget, SLOT(cancel()));
     connect(m_openingTreeWidget, SIGNAL(signalTreeUpdated(bool)), this, SLOT(slotTreeUpdate(bool)));
     connect(m_openingTreeWidget, SIGNAL(signalSourceChanged()), this, SLOT(slotSearchTree()));
+    connect(m_openingTreeWidget, SIGNAL(requestGameFilterUpdate(int,int)), this, SLOT(slotGameFilterUpdate(int,int)));
 
     connect(this, SIGNAL(reconfigure()), m_openingTreeWidget, SLOT(slotReconfigure()));
     openingDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::Key_T);

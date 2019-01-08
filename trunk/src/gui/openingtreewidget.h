@@ -60,6 +60,7 @@ protected slots:
 signals:
     void signalTreeUpdated(bool);
     void signalSourceChanged();
+    void requestGameFilterUpdate(int,int);
 
 protected:
     bool filterGames() const;

@@ -52,7 +52,6 @@ public:
     /** Current Board */
     Board board() const;
 
-    Filter *filter() const;
     bool bEnd() const;
 
 public slots:
@@ -64,6 +63,7 @@ protected slots:
     void moveUpdated(Board* b, QList<MoveData> moveList);
 signals:
     void progress(int);
+    void requestGameFilterUpdate(int,int);
     void openingTreeUpdated();
     void openingTreeUpdateStarted();
 protected:

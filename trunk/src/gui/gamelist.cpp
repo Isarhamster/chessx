@@ -479,15 +479,14 @@ void GameList::selectGame(GameId index)
     }
 }
 
-void GameList::updateFilter(GameId index)
+void GameList::updateFilter(GameId index, int value)
 {
     if (m_model->filter()->database()) // ?
     {
         if (VALID_INDEX(index))
         {
-            m_model->set(index, 1);
+            m_model->set(index, value);
         }
-        emit raiseRequest();
     }
 }
 
