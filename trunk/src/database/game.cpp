@@ -1769,8 +1769,17 @@ bool Game::dbMoveToId(MoveId moveId, QString* algebraicMoveList)
             m_currentBoard->doMove(m);
             if (algebraicMoveList)
             {
-                algebraicMoveList->push_back(m.toAlgebraic());
-                algebraicMoveList->push_back(" ");
+                if (m.isNullMove())
+                {
+                    // Avoid trouble with a null move - UCI does not specify this and Stockfish makes nonsense
+                    algebraicMoveList->clear();
+                    algebraicMoveList = 0;
+                }
+                else
+                {
+                    algebraicMoveList->push_back(m.toAlgebraic());
+                    algebraicMoveList->push_back(" ");
+                }
             }
         }
     }

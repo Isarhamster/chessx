@@ -281,6 +281,10 @@ inline QString Move::dumpAlgebraic() const
 
 inline QString Move::toAlgebraic() const
 {
+    if (isNullMove())
+    {
+        return QString("--");
+    }
     if(!isLegal())
     {
         return QString("?");
