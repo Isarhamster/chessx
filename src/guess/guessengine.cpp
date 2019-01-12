@@ -1913,10 +1913,6 @@ Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
         int score = -Search(depth - 1, -beta, -alpha, true);
 #endif
         UndoMove(sm);
-        if(OutOfTime())
-        {
-            break;
-        }
 
         // Set the move ordering score of this move to be the number of
         // nodes spent on it, so interesting moves of this iteration are
@@ -1938,6 +1934,10 @@ Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
                 mlist->MoveToFront(movenum);
                 EasyMove = false;
             }
+        }
+        if(OutOfTime())
+        {
+            break;
         }
     }
     return bestScore;

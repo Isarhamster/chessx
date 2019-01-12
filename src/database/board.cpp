@@ -317,7 +317,7 @@ int Board::ScoreMaterial() const
 int Board::DefendersOfSquare(Square target) const
 {
     QString fen = toFen();
-    return Guess::attackersOnSquare(fen.toLatin1(), (int) target);
+    return Guess::attackersOnSquare(fen.toLatin1(), target);
 }
 
 Board Board::getStandardStartBoard()

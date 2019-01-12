@@ -2069,7 +2069,7 @@ Position::GenCheckEvasions(MoveList * mlist, pieceC mask, genMovesT genType,
 //      Material[]) and detect whether they leave the king in check,
 //      without having to update other information.
 unsigned int
-Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares) const
+Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares, bool calcDiscoveredAttacks) const
 {
     // If squares is NULL, caller doesn't want a list of the squares of
     // attacking pieces. To avoid comparing fromSquares with NULL every time
@@ -2150,7 +2150,10 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares) con
                 {
                     // Found an attacking piece
                     fromSquares->Add(dest);
-                    //break; // only in case of direct defenders
+                    if (!calcDiscoveredAttacks)
+                    {
+                        break; // only in case of direct defenders
+                    }
                 }
                 else
                 {
@@ -2197,7 +2200,10 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares) con
                 {
                     // Found an attacking piece
                     fromSquares->Add(dest);
-                    //break; // only in case of direct defenders
+                    if (!calcDiscoveredAttacks)
+                    {
+                        break; // only in case of direct defenders
+                    }
                 }
                 else
                 {
