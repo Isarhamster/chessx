@@ -35,7 +35,7 @@ typedef QTime QElapsedTimer;
 namespace Guess
 {
 
-const unsigned int ENGINE_MAX_PLY =           40;  // Maximum search ply.
+const unsigned int ENGINE_MAX_PLY =           20;  // Maximum search ply.
 const int  ENGINE_MAX_HISTORY =   100000;  // Max accumulated history value.
 const int  ENGINE_HASH_SCORE = 100000000;  // To order hash moves first.
 const unsigned int ENGINE_HASH_KB =           32;  // Default hash table size in KB.

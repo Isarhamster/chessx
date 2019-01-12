@@ -14,6 +14,8 @@
 
 #include "movelist.h"
 
+#include <QDebug>
+
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -149,6 +151,17 @@ MoveList::Sort(void)
     qSort(begin(),end(), qGreater<simpleMoveT>());
 }
 
+void MoveList::dumpMoves() const
+{
+    QString s;
+    for(int i = 0; i < size(); ++i)
+    {
+        const Guess::simpleMoveT& sm = at(i);
+        s.push_back(sm.toString());
+        s.push_back(" ");
+    }
+    qDebug() << s << endl;
+}
 //////////////////////////////////////////////////////////////////////
 //  EOF: movelist.cpp
 //////////////////////////////////////////////////////////////////////

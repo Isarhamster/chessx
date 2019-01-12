@@ -18,6 +18,7 @@
 
 #include "common.h"
 #include <QList>
+#include <QString>
 
 namespace Guess
 {
@@ -28,8 +29,9 @@ namespace Guess
 // *** SimpleMove: less expensive to store than a full move as defined
 //      in game.h, but still fully undoable.
 //
-struct simpleMoveT
+class simpleMoveT
 {
+public:
     unsigned char     pieceNum;
     pieceT   movingPiece;
     squareT  from;
@@ -55,6 +57,21 @@ struct simpleMoveT
     bool operator < (const simpleMoveT& rhs) const
     {
         return score < rhs.score;
+    }
+
+    QString sqToString(squareT sq) const
+    {
+        char buffer[3];
+        square_Print(sq,buffer);
+        return QString(QLatin1String(buffer));
+    }
+
+    QString toString() const
+    {
+        return QString("%1-%2(%3)")
+                .arg(sqToString(from))
+                .arg(sqToString(to))
+                .arg(score);
     }
 };
 
@@ -83,6 +100,7 @@ public:
     void Sort(void);
     unsigned int SelectBySquare(squareT sq);
     unsigned int SelectBySquares(squareT f1, squareT t1, squareT f2, squareT t2);
+    void dumpMoves() const;
 };
 
 } // End namespace Guess
