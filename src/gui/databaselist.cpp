@@ -331,7 +331,49 @@ void DatabaseList::dragMoveEvent(QDragMoveEvent *event)
 {
     m_lastModifier = event->keyboardModifiers();
 
-    event->acceptProposedAction();
+    const QMimeData *mimeData = event->mimeData();
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+    bool accept = true;
+    if(gameMimeData)
+    {
+        QModelIndex index = indexAt(event->pos());
+        if(index.isValid())
+        {
+            QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+            if (path == gameMimeData->source)
+            {
+                accept = false;
+            }
+        }
+    }
+    else if(dbMimeData && mimeData->hasUrls())
+    {
+        QModelIndex index = indexAt(event->pos());
+        if(index.isValid())
+        {
+            QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
+            QList<QUrl> urlList = mimeData->urls();
+            foreach(QUrl url, urlList)
+            {
+                QString s = url.toString();
+                if (path == s)
+                {
+                    accept = false;
+                    break;
+                }
+            }
+        }
+    }
+
+    if (accept)
+    {
+        event->acceptProposedAction();
+    }
+    else
+    {
+        event->ignore();
+    }
 }
 
 void DatabaseList::dragLeaveEvent(QDragLeaveEvent *event)

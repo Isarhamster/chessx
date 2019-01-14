@@ -81,6 +81,22 @@ GameList::~GameList()
     delete m_model;
 }
 
+void GameList::startUpdate()
+{
+    if (m_model)
+    {
+        m_model->startUpdate();
+    }
+}
+
+void GameList::endUpdate()
+{
+    if (m_model)
+    {
+        m_model->endUpdate();
+    }
+}
+
 void GameList::slotReconfigure()
 {
     if (m_model)
@@ -551,6 +567,7 @@ void GameList::slotHideGame()
 void GameList::startDrag(Qt::DropActions /*supportedActions*/)
 {
     GameMimeData *mimeData = new GameMimeData;
+    mimeData->source = m_model->filter()->database()->filename();
     foreach(QModelIndex index, selectionModel()->selectedRows())
     {
         QModelIndex m = GetSourceIndex(index);
@@ -562,7 +579,7 @@ void GameList::startDrag(Qt::DropActions /*supportedActions*/)
         }
     }
 
-    if (mimeData->m_indexList.count() < 100) // Avoid excessive size of clipboard
+    if (mimeData->m_indexList.count() < 1000) // Avoid excessive size of clipboard
     {
         QString text;
         foreach(GameId gameIndex, mimeData->m_indexList)
@@ -619,7 +636,9 @@ void GameList::dropEvent(QDropEvent *event)
 
     if(dbMimeData || (mimeData && mimeData->hasUrls()))
     {
+        m_model->startUpdate();
         emit signalDropEvent(event);
+        m_model->endUpdate();
     }
     else
     {

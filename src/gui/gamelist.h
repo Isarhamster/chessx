@@ -48,6 +48,10 @@ public:
     void removeSelection();
     /** Set current database */
     QList<GameId> selectedGames();
+
+    void startUpdate(); // TODO Remove this hack
+    void endUpdate(); // TODO Remove this hack
+
 public slots:
     /** Change current filter/database */
     void setFilter(Filter* filter);
