@@ -100,6 +100,16 @@ void FilterModel::updateColumns()
     endResetModel();
 }
 
+void FilterModel::startUpdate()
+{
+    beginResetModel();
+}
+
+void FilterModel::endUpdate()
+{
+    endResetModel();
+}
+
 void FilterModel::set(GameId game, int value)
 {
     // TODO: This is not the proper way, but works in a lot of cases

@@ -2576,6 +2576,10 @@ void MainWindow::copyGames(QString fileName, QList<GameId> indexes)
         {
             if(m_databases[i]->isValid())
             {
+                if (m_databases[i]==m_currentDatabase)
+                {
+                    m_gameList->startUpdate();
+                }
                 m_databases[i]->filter()->resize(m_databases[i]->database()->count() + static_cast<quint64>(indexes.count()), true);
                 foreach (GameId index, indexes)
                 {
@@ -2583,6 +2587,10 @@ void MainWindow::copyGames(QString fileName, QList<GameId> indexes)
                 }
                 QString msg = tr("Appended %1 games to %2.").arg(indexes.count()).arg(fileName);
                 slotStatusMessage(msg);
+                if (m_databases[i]==m_currentDatabase)
+                {
+                    m_gameList->endUpdate();
+                }
             }
             return;
         }
@@ -2730,6 +2738,8 @@ void MainWindow::copyDatabase(QString target, QString src)
 
         if(done && (databaseInfo() == pDestDBInfo))
         {
+            m_gameList->startUpdate();
+            m_gameList->endUpdate();
             emit databaseChanged(databaseInfo());
             emit databaseModified();
         }

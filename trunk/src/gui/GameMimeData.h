@@ -15,6 +15,7 @@ class GameMimeData : public QMimeData
 
 public:
     QList<GameId> m_indexList;
+    QString source;
 };
 
 class DbMimeData : public QMimeData
