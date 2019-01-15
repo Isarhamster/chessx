@@ -109,7 +109,8 @@ protected:
     FilterOperator currentSearchOperator;
     volatile bool m_break;
     Filter* m_lock;
-
+private:
+    void resetCache();
 };
 
 #endif
