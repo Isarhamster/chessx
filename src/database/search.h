@@ -13,6 +13,7 @@
 #define SEARCH_H_INCLUDED
 
 class Database;
+class Filter;
 
 #include "filteroperator.h"
 #include "gameid.h"
@@ -45,11 +46,19 @@ public:
     FilterOperator searchOperator() const;
     Search *nextSearch() const;
 
+    Filter *getInputFilter() const;
+    void setInputFilter(Filter *value);
+
+    Filter *getOutputFilter() const;
+    void setOutputFilter(Filter *value);
+
 signals:
     void prepareUpdate(int);
 protected:
     Database *m_database;
     Search* m_nextSearch;
+    Filter* inputFilter;
+    Filter* outputFilter;
     FilterOperator m_searchOperator;
 };
 

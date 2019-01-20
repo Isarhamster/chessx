@@ -22,7 +22,6 @@
 
 class Search;
 class Database;
-class Query;
 
 /** @ingroup Database
    The Filter class represents a set of games. It is always associated with
