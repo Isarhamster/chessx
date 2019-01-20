@@ -2780,10 +2780,10 @@ void MainWindow::slotDatabaseDropped(QDropEvent *event)
     event->accept();
 }
 
-void MainWindow::slotDatabaseCopy(int preselect)
+void MainWindow::slotDatabaseCopy(QList<GameId> gameIndexList)
 {
-    QList<GameId> gameIndexList = m_gameList->selectedGames();
-    copyFromDatabase(preselect, gameIndexList);
+    if (gameIndexList.isEmpty()) gameIndexList = m_gameList->selectedGames();
+    copyFromDatabase(gameIndexList.count()>1?1:0, gameIndexList);
 }
 
 void MainWindow::filterDuplicates(int mode)
@@ -2907,7 +2907,15 @@ void MainWindow::slotDatabaseClearClipboard()
 
     m_databases[0]->database()->clear();
     m_databases[0]->clearLastGames();
+    if (m_currentDatabase->isClipboard())
+    {
+        m_gameList->startUpdate();
+    }
     m_databases[0]->filter()->resize(0, false);
+    if (m_currentDatabase->isClipboard())
+    {
+        m_gameList->endUpdate();
+    }
     m_databases[0]->newGame();
 
     if (m_currentDatabase->isClipboard())
@@ -2915,11 +2923,6 @@ void MainWindow::slotDatabaseClearClipboard()
         emit databaseChanged(databaseInfo());
         emit databaseModified();
     }
-}
-
-void MainWindow::slotDatabaseCopySingle(QList<GameId> gameIndexList)
-{
-    copyFromDatabase(0, gameIndexList);
 }
 
 void MainWindow::slotDatabaseFindDuplicates(QList<GameId> gameIndexList)
