@@ -7,8 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __ANALYSIS_WIDGET_H__
-#define __ANALYSIS_WIDGET_H__
+#ifndef ANALYSIS_WIDGET_H_INCLUDED
+#define ANALYSIS_WIDGET_H_INCLUDED
 
 #include "engine.h"
 #include "movedata.h"
@@ -147,5 +147,5 @@ private:
     bool m_gameMode;
  };
 
-#endif // __ANALYSIS_WIDGET_H__
+#endif // ANALYSIS_WIDGET_H_INCLUDED
 

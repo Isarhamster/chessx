@@ -9,8 +9,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __INDEXITEM_H__
-#define __INDEXITEM_H__
+#ifndef INDEXITEM_H_INCLUDED
+#define INDEXITEM_H_INCLUDED
 
 #include <QList>
 #include <QDataStream>
@@ -68,5 +68,5 @@ private:
     MapTagToValue m_mapTagIndexToValueIndex;
 };
 
-#endif	// __INDEXITEM_H__
+#endif	// INDEXITEM_H_INCLUDED
 

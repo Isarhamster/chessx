@@ -12,8 +12,8 @@
 The PlayerDatabase class is used to acces player data.
 */
 
-#ifndef __PLAYERDATABASE_H__
-#define __PLAYERDATABASE_H__
+#ifndef PLAYERDATABASE_H_INCLUDED
+#define PLAYERDATABASE_H_INCLUDED
 
 #include <QString>
 #include <QMap>

@@ -14,8 +14,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __BOARDVIEW_H__
-#define __BOARDVIEW_H__
+#ifndef BOARDVIEW_H_INCLUDED
+#define BOARDVIEW_H_INCLUDED
 
 #include "board.h"
 #include "boardtheme.h"

@@ -14,8 +14,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PREFERENCESDIALOG_H__
-#define __PREFERENCESDIALOG_H__
+#ifndef PREFERENCESDIALOG_H_INCLUDED
+#define PREFERENCESDIALOG_H_INCLUDED
 
 #include "ui_preferences.h"
 #include "enginelist.h"
@@ -111,7 +111,6 @@ private slots:
     void slotBtTextFontClicked();
     void SlotPieceEffectActivated(int index);
 };
-
 
 #endif
 

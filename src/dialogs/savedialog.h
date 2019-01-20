@@ -15,8 +15,8 @@
  ***************************************************************************/
 
 
-#ifndef __SAVEDIALOG_H__
-#define __SAVEDIALOG_H__
+#ifndef SAVEDIALOG_H_INCLUDED
+#define SAVEDIALOG_H_INCLUDED
 
 #include "ui_savedialog.h"
 
@@ -47,7 +47,6 @@ private:
     Ui::SaveDialog ui;
     QButtonGroup* group;
 };
-
 
 #endif
 

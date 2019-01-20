@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __TRISTATETREE_H__
-#define __TRISTATETREE_H__
+#ifndef TRISTATETREE_H_INCLUDED
+#define TRISTATETREE_H_INCLUDED
 
 class Query;
 #include "filteroperator.h"

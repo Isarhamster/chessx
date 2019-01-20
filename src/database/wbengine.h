@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __WBENGINE_H__
-#define __WBENGINE_H__
+#ifndef WBENGINE_H_INCLUDED
+#define WBENGINE_H_INCLUDED
 
 #include <QString>
 
@@ -80,4 +80,4 @@ private:
 
 };
 
-#endif // __WBENGINE_H__
+#endif // WBENGINE_H_INCLUDED

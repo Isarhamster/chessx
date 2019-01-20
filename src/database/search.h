@@ -9,8 +9,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __SEARCH_H__
-#define __SEARCH_H__
+#ifndef SEARCH_H_INCLUDED
+#define SEARCH_H_INCLUDED
 
 class Database;
 
@@ -65,4 +65,4 @@ public :
 };
 
 
-#endif // __SEARCH_H__
+#endif // SEARCH_H_INCLUDED

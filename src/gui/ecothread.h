@@ -2,8 +2,8 @@
 *   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
-#ifndef __ECOTHREAD_H__
-#define __ECOTHREAD_H__
+#ifndef ECOTHREAD_H_INCLUDED
+#define ECOTHREAD_H_INCLUDED
 
 #include <QThread>
 #include "ecopositions.h"
@@ -41,4 +41,4 @@ signals:
     void loaded(QObject*, bool);
 };
 
-#endif // __ECOTHREAD_H__
+#endif // ECOTHREAD_H_INCLUDED

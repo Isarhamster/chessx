@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __PLAYERDATA_H__
-#define __PLAYERDATA_H__
+#ifndef PLAYERDATA_H_INCLUDED
+#define PLAYERDATA_H_INCLUDED
 
 #include <QString>
 #include <QImage>

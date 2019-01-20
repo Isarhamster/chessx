@@ -10,8 +10,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __PGNDATABASE_H__
-#define __PGNDATABASE_H__
+#ifndef PGNDATABASE_H_INCLUDED
+#define PGNDATABASE_H_INCLUDED
 
 #include <QFile>
 #include <QByteArray>

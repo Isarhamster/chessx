@@ -7,8 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __OPENINGTREE_H__
-#define __OPENINGTREE_H__
+#ifndef OPENINGTREE_H_INCLUDED
+#define OPENINGTREE_H_INCLUDED
 
 #include "movedata.h"
 
