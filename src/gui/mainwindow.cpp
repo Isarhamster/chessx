@@ -83,6 +83,8 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
+error "This version is not suitable for publishing, as the search is not working, the search filter handling needs to be updated"
+
 MainWindow::MainWindow() : QMainWindow(),
     m_tabDragIndex(-1),
     m_pDragTabBar(0),
