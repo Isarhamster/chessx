@@ -15,8 +15,8 @@
  ***************************************************************************/
 
 
-#ifndef __CHESSBROWSER_H__
-#define __CHESSBROWSER_H__
+#ifndef CHESSBROWSER_H_INCLUDED
+#define CHESSBROWSER_H_INCLUDED
 
 #include <QtGui>
 #include <QTextBrowser>

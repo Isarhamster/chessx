@@ -7,8 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __HISTORYLIST_H__
-#define __HISTORYLIST_H__
+#ifndef HISTORYLIST_H_INCLUDED
+#define HISTORYLIST_H_INCLUDED
 
 #include <QStringList>
 

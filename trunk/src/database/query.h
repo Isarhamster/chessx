@@ -9,8 +9,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __QUERY_H__
-#define __QUERY_H__
+#ifndef QUERY_H_INCLUDED
+#define QUERY_H_INCLUDED
 
 #include "filter.h"
 #include <QList>
@@ -87,4 +87,4 @@ private :
 
 };
 
-#endif // __QUERY_H__
+#endif // QUERY_H_INCLUDED

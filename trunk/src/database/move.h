@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __MOVE_H__
-#define __MOVE_H__
+#ifndef MOVE_H_INCLUDED
+#define MOVE_H_INCLUDED
 
 #include "piece.h"
 #include "square.h"
@@ -559,4 +559,4 @@ inline bool Move::operator!=(const Piece& p) const
     return !(*this == p);
 }
 
-#endif // __MOVE_H__
+#endif // MOVE_H_INCLUDED

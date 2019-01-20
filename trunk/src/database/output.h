@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __OUTPUT_H__
-#define __OUTPUT_H__
+#ifndef OUTPUT_H_INCLUDED
+#define OUTPUT_H_INCLUDED
 
 #include "game.h"
 #include "outputoptions.h"

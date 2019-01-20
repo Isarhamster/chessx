@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __NAG_H__
-#define __NAG_H__
+#ifndef NAG_H_INCLUDED
+#define NAG_H_INCLUDED
 
 #include <QtCore>
 
@@ -221,5 +221,5 @@ private:
     void removeNagRange(Nag from, Nag to);
 };
 
-#endif	// __NAG_H__
+#endif	// NAG_H_INCLUDED
 

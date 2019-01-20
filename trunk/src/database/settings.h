@@ -7,8 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __SETTINGS_H__
-#define __SETTINGS_H__
+#ifndef SETTINGS_H_INCLUDED
+#define SETTINGS_H_INCLUDED
 
 #include <QSettings>
 #include "engineoptiondata.h"

@@ -9,8 +9,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __INDEX_H__
-#define __INDEX_H__
+#ifndef INDEX_H_INCLUDED
+#define INDEX_H_INCLUDED
 
 #include <QList>
 #include <QPair>
@@ -199,5 +199,5 @@ private:
     mutable QReadWriteLock m_mutex;
 };
 
-#endif   // __INDEX_H__
+#endif   // INDEX_H_INCLUDED
 

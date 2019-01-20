@@ -14,8 +14,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __BOARDSETUPDIALOG_H__
-#define __BOARDSETUPDIALOG_H__
+#ifndef BOARDSETUPDIALOG_H_INCLUDED
+#define BOARDSETUPDIALOG_H_INCLUDED
 
 #include "ui_boardsetup.h"
 #include "board.h"
@@ -124,6 +124,5 @@ private:
     Piece m_selectedPiece;
     bool inDrag;
 };
-
 
 #endif

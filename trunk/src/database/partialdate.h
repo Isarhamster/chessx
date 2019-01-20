@@ -7,8 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __PARTIALDATE_H__
-#define __PARTIALDATE_H__
+#ifndef PARTIALDATE_H_INCLUDED
+#define PARTIALDATE_H_INCLUDED
 
 #include <QString>
 #include <QDateTime>

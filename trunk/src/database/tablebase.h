@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __TABLEBASE_H__
-#define __TABLEBASE_H__
+#ifndef TABLEBASE_H_INCLUDED
+#define TABLEBASE_H_INCLUDED
 
 #include <QNetworkAccessManager>
 #include <QString>
@@ -71,4 +71,4 @@ private:
     QString m_fen;
 };
 
-#endif // __TABLEBASE_H__
+#endif // TABLEBASE_H_INCLUDED

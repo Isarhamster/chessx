@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __UCIENGINE_H__
-#define __UCIENGINE_H__
+#ifndef UCIENGINE_H_INCLUDED
+#define UCIENGINE_H_INCLUDED
 
 #include <QString>
 
@@ -79,4 +79,4 @@ private:
     bool m_quitAfterAnalysis;
 };
 
-#endif // __UCIENGINE_H__
+#endif // UCIENGINE_H_INCLUDED

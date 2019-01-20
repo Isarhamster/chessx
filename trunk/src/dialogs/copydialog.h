@@ -12,8 +12,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __COPYDIALOG_H__
-#define __COPYDIALOG_H__
+#ifndef COPYDIALOG_H_INCLUDED
+#define COPYDIALOG_H_INCLUDED
 
 #include "ui_copydialog.h"
 

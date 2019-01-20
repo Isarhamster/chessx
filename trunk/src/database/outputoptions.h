@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __OUTPUTOPTIONS_H__
-#define __OUTPUTOPTIONS_H__
+#ifndef OUTPUTOPTIONS_H_INCLUDED
+#define OUTPUTOPTIONS_H_INCLUDED
 
 #include <QtCore>
 #include <QMap>
@@ -64,5 +64,5 @@ private :
 
 };
 
-#endif	// __OUTPUTOPTIONS_H__
+#endif	// OUTPUTOPTIONS_H_INCLUDED
 

@@ -14,8 +14,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __BOARDTHEME_H__
-#define __BOARDTHEME_H__
+#ifndef BOARDTHEME_H_INCLUDED
+#define BOARDTHEME_H_INCLUDED
 
 #include <QtGui>
 
