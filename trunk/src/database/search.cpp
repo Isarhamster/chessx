@@ -49,6 +49,26 @@ Search *Search::nextSearch() const
     return m_nextSearch;
 }
 
+Filter *Search::getInputFilter() const
+{
+    return inputFilter;
+}
+
+void Search::setInputFilter(Filter *value)
+{
+    inputFilter = value;
+}
+
+Filter *Search::getOutputFilter() const
+{
+    return outputFilter;
+}
+
+void Search::setOutputFilter(Filter *value)
+{
+    outputFilter = value;
+}
+
 /* NullSearch Class
  * *********************/
 NullSearch::NullSearch():Search(0)

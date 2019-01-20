@@ -339,7 +339,7 @@ public :
     void setChess960(bool);
 
     // Searching
-    /** Search game to see if given position exists, if it does return move id */
+    /** Search game to see if given position exists and returns the move id, otherwise NO_MOVE */
     MoveId findPosition(const Board& position) const;
     /** @return true if the move @p from @p to is already main move or variation */
     bool currentNodeHasMove(Square from, Square to) const;

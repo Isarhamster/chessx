@@ -12,8 +12,6 @@
 #include "database.h"
 #include "filter.h"
 #include "filtersearch.h"
-#include "query.h"
-#include "tristatetree.h"
 #include <QtDebug>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -101,7 +99,7 @@ void Filter::setAll(int value)
 
 bool Filter::contains(GameId game) const
 {
-    if(game < m_vector->count())
+    if(static_cast<int>(game) < m_vector->count())
     {
         return (m_vector->at(game) != 0);
     }
@@ -197,7 +195,7 @@ void Filter::runSingleSearch(Search* s, FilterOperator op)
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
-            if (contains(searchIndex) && !s->matches(searchIndex))
+            if (contains(searchIndex) && s->matches(searchIndex))
             {
                 set(searchIndex, 0);
             }
