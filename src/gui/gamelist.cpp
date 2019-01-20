@@ -349,14 +349,8 @@ void GameList::simpleSearch(int tagid)
     }
 
     dlg.setTag(tagid);
-    if(m_model->filter()->count() <= 1)
-    {
-        dlg.setMode(1);
-    }
-    else
-    {
-        dlg.setMode(2);
-    }
+    dlg.setMode(1);
+
     if(dlg.exec() != QDialog::Accepted)
     {
         return;

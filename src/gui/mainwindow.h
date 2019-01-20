@@ -336,15 +336,13 @@ public slots:
     /** Change database. */
     void slotDatabaseChange();
     /** Copy games between databases. */
-    void slotDatabaseCopy(int preselect = 1);
+    void slotDatabaseCopy(QList<GameId> gameIndexList=QList<GameId>());
     /** Filter out duplicate games from a complete database. */
     void slotDatabaseFilterDuplicateGames();
     /** Filter out games with duoplicate headers from a complete database. */
     void slotDatabaseFilterDuplicateTags();
     /** Clear the clipboard database */
     void slotDatabaseClearClipboard();
-    /** Copy games between databases. */
-    void slotDatabaseCopySingle(QList<GameId> listGames);
     /** Set the list into the filter and add all duplicates */
     void slotDatabaseFindDuplicates(QList<GameId> listGames);
     /** Database was changed - change informations. */
