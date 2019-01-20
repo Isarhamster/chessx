@@ -9,8 +9,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef FILTER_H__
-#define FILTER_H__
+#ifndef FILTER_H_INCLUDED
+#define FILTER_H_INCLUDED
 
 #include <QBitArray>
 #include <QPair>
@@ -64,15 +64,6 @@ public:
     inline int count() const { return m_count; }
     /** @return the size of the filter. */
     unsigned int size() const;
-    /** @return next game in the filter or @p -1 if there is none. */
-    GameId nextGame(GameId current) const;
-    /** @return previous game in the filter or @p -1 if there is none. */
-    GameId previousGame(GameId current) const;
-    /** @return @p index in filter of game with database index @p number. */
-    int gameToIndex(GameId number);
-    /** @return database index of @p number game from filter or @p -1 if the game
-    is not in filter. */
-    GameId indexToGame(int number);
     /** Resize the filter to the specified size, keeping current content. If the filter is increased,
     added game will be initialized to @p includeNew (by default - not in filter). */
     void resize(int newsize, bool includeNew = 0);
@@ -81,14 +72,6 @@ public:
     /** Executes search 'search' on database m_database,
        and modifies this filter with the results. */
     void executeSearch(Search *search, FilterOperator searchOperator=FilterOperator::NullOperator);
-    /** Executes query 'query' on database m_database,
-        and sets this filter to contain the results. */
-    void executeQuery(Query *query);
-
-    /** Returns the number of games searched during the previous search */
-    int gamesSearched() const;
-    /** Returns the time taken for the previous search in milliseconds  */
-    int searchTime() const;
 
 signals:
     void searchProgress(int);
@@ -98,7 +81,6 @@ protected:
 
     int m_count;
     QVector<int>* m_vector;
-    QPair<int, GameId> m_cache;
     Database* m_database;
 
     /* Search statistics variables */
@@ -109,9 +91,7 @@ protected:
     FilterOperator currentSearchOperator;
     volatile bool m_break;
     Filter* m_lock;
-private:
-    void resetCache();
 };
 
-#endif
+#endif // FILTER_H_INCLUDED
 

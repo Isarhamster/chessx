@@ -38,7 +38,7 @@ int FilterModel::rowCount(const QModelIndex& index) const
     {
         return 0;
     }
-    return m_filter ? m_filter->count() : 0;
+    return m_filter ? m_filter->size() : 0;
 }
 
 int FilterModel::columnCount(const QModelIndex&) const
@@ -122,9 +122,9 @@ void FilterModel::set(GameId game, int value)
 
 QVariant FilterModel::data(const QModelIndex &index, int role) const
 {
-    if(index.isValid() && index.row() < m_filter->count())
+    if(index.isValid() && index.row() < m_filter->size())
     {
-        GameId i = m_filter->indexToGame(index.row());
+        GameId i = index.row();
         if (VALID_INDEX(i))
         {
             if (role == Qt::DisplayRole)
@@ -214,6 +214,13 @@ Filter* FilterModel::filter()
     return m_filter;
 }
 
+void FilterModel::setFilter(Filter* filter)
+{
+    beginResetModel();
+    m_filter = filter;
+    endResetModel();
+}
+
 void FilterModel::invert()
 {
     beginResetModel();
@@ -235,7 +242,7 @@ void FilterModel::executeSearch(Search* search, FilterOperator searchOperator, i
     {
         m_filter->cancel();
         f = new Filter(*m_filter);
-        f->setAll(preSelect);
+        f->setAll(preSelect); // ??
     }
     else
     {
