@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __GAME_H__
-#define __GAME_H__
+#ifndef GAME_H_INCLUDED
+#define GAME_H_INCLUDED
 
 #include <QObject>
 #include "board.h"
@@ -504,5 +504,5 @@ private:
     MoveId m_saveMoveValue;
 };
 
-#endif	// __GAME_H__
+#endif	// GAME_H_INCLUDED
 

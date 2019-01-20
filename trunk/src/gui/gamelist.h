@@ -14,8 +14,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __GAMELIST_H__
-#define __GAMELIST_H__
+#ifndef GAMELIST_H_INCLUDED
+#define GAMELIST_H_INCLUDED
 
 #include "tableview.h"
 #include "game.h"
@@ -26,17 +26,12 @@
 
 class Filter;
 class FilterModel;
+class GameListSortModel;
 class Search;
 
 /** @ingroup GUI
 The GameList class displays list of the games in current filter. It allows
 user to click on list header and perform simple tag searches. */
-
-class GameListSortModel : public QSortFilterProxyModel
-{
-public:
-    explicit GameListSortModel(QObject *parent = 0) : QSortFilterProxyModel(parent) {}
-};
 
 class GameList : public TableView
 {
@@ -73,9 +68,11 @@ public slots:
     void slotFilterListByEventPlayer(QString player, QString event);
     /** Select and show current player and ECO in the list */
     void slotFilterListByEcoPlayer(QString tag, QString eco, QString player);
-    /** Select the next game from the list */
+    /** Select the next visible game from the list */
     bool selectNextGame();
-    /** Select the previous game from the list */
+    /** Select a random but visible game from the list */
+    void selectRandomGame();
+    /** Select the previous visible game from the list */
     void selectPreviousGame();
     /** Show the context menu */
     virtual void ShowContextMenu(const QPoint& pos);
@@ -106,8 +103,11 @@ private slots:
     void slotDeleteGame();
     /** Remove a game from a filter */
     void slotHideGame();
+    /** Remove deleted games from a filter */
+    void slotHideDeletedGames();
     /** React to a change in selected item */
     void slotItemSelected(const QModelIndex&);
+    bool triggerGameSelection(int sortRow);
 signals:
     void gameSelected(GameId);
     void raiseRequest();

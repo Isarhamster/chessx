@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __FILTERMODEL_H__
-#define __FILTERMODEL_H__
+#ifndef FILTERMODEL_H_INCLUDED
+#define FILTERMODEL_H_INCLUDED
 
 #include <QAbstractItemModel>
 #include <QStringList>
@@ -62,7 +62,9 @@ public:
         return !parent.isValid();
     }
     /** Associated filter */
-    virtual Filter* filter();
+    Filter* filter();
+    void setFilter(Filter* filter);
+
     /** Get the column tags. */
     const QStringList GetColumnTags()
     {
@@ -97,5 +99,5 @@ private:
     QStringList m_columnTags;
 };
 
-#endif	// __FilterModelBase_H__
+#endif	// FILTERMODEL_H_INCLUDED
 

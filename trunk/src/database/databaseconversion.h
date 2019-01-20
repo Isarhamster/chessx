@@ -13,8 +13,8 @@ DatabaseConversion contains utility functions to convert from various formats
 into ChessX format.
 */
 
-#ifndef __DATABASECONVERSION_H__
-#define __DATABASECONVERSION_H__
+#ifndef DATABASECONVERSION_H_INCLUDED
+#define DATABASECONVERSION_H_INCLUDED
 
 #include "playerdatabase.h"
 

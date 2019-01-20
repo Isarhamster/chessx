@@ -18,6 +18,7 @@
 #include "filter.h"
 #include "filtermodel.h"
 #include "gamelist.h"
+#include "gamelistsortmodel.h"
 #include "GameMimeData.h"
 #include "numbersearch.h"
 #include "quicksearch.h"
@@ -49,8 +50,9 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
     connect(m_model, SIGNAL(searchFinished()), SIGNAL(searchFinished()));
 
     sortModel = new GameListSortModel(0);
+    sortModel->setFilter(filter);
     sortModel->setSourceModel(m_model);
-    sortModel->setDynamicSortFilter(false);
+    sortModel->setDynamicSortFilter(true);
     setModel(sortModel);
 
     connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(itemSelected(const QModelIndex&)));
@@ -145,8 +147,8 @@ void GameList::ShowContextMenu(const QPoint& pos)
 void GameList::removeSelection()
 {
     clearSelection();
-    emit signalFirstGameLoaded(m_model->filter()->count()>0);
-    emit signalLastGameLoaded(m_model->filter()->count()>0);
+    emit signalFirstGameLoaded(true);
+    emit signalLastGameLoaded(true);
 }
 
 void GameList::slotItemSelected(const QModelIndex& index)
@@ -166,32 +168,20 @@ void GameList::filterSetAll(int value)
 
 QModelIndex GameList::NewSortIndex(int row) const
 {
-    if (sortModel)
-    {
-        QModelIndex m = sortModel->index(row,0);
-        return m;
-    }
-    return m_model->index(row,0);
+    QModelIndex m = sortModel->index(row,0);
+    return m;
 }
 
 QModelIndex GameList::GetSourceIndex(const QModelIndex& index) const
 {
-    if (sortModel)
-    {
-        QModelIndex m = sortModel->mapToSource(index);
-        return m;
-    }
-    return index;
+    QModelIndex m = sortModel->mapToSource(index);
+    return m;
 }
 
 QModelIndex GameList::GetSortModelIndex(const QModelIndex& index) const
 {
-    if (sortModel)
-    {
-        QModelIndex m = sortModel->mapFromSource(index);
-        return m;
-    }
-    return index;
+    QModelIndex m = sortModel->mapFromSource(index);
+    return m;
 }
 
 void GameList::itemSelected(const QModelIndex& index)
@@ -199,7 +189,7 @@ void GameList::itemSelected(const QModelIndex& index)
     if (selectionModel()->selectedRows().size() == 1)
     {
         QModelIndex m = GetSourceIndex(index);
-        GameId n = m_model->filter()->indexToGame(m.row());
+        GameId n = m.row();
         if (VALID_INDEX(n))
         {
             emit gameSelected(n);
@@ -207,74 +197,70 @@ void GameList::itemSelected(const QModelIndex& index)
     }
 }
 
-void GameList::selectPreviousGame()
+bool GameList::triggerGameSelection(int sortRow)
 {
-    QModelIndex sortIndex = currentIndex();
-    int row = std::max(0, sortIndex.row()-1);
-    QModelIndex sourceIndex = GetSourceIndex(NewSortIndex(row));
-    GameId n = m_model->filter()->indexToGame(sourceIndex.row());
-    if (VALID_INDEX(n))
+    QModelIndex sortIndex = NewSortIndex(sortRow);
+    QModelIndex sourceIndex = GetSourceIndex(sortIndex);
+    GameId game = sourceIndex.row();
+    if (VALID_INDEX(game))
     {
-        emit gameSelected(n);
-    }
-}
-
-bool GameList::selectNextGame()
-{
-    QModelIndex sortIndex = currentIndex();
-    int row = sortIndex.row();
-    if ((row>=0) && (row + 1 < m_model->filter()->count()))
-    {
-        QModelIndex sourceIndex = GetSourceIndex(NewSortIndex(row+1));
-        GameId n = m_model->filter()->indexToGame(sourceIndex.row());
-        if (VALID_INDEX(n))
-        {
-            emit gameSelected(n);
-        }
+        emit gameSelected(sourceIndex.row());
         return true;
     }
     return false;
 }
 
+void GameList::selectPreviousGame()
+{
+    QModelIndex sortIndex = currentIndex();
+    int oldRow = sortIndex.row();
+    int row = std::max(0, sortIndex.row()-1);
+    triggerGameSelection(row);
+}
+
+bool GameList::selectNextGame()
+{
+    QModelIndex sortIndex = currentIndex();
+    int oldRow = sortIndex.row();
+    int row = std::min(m_model->filter()->count()-1, oldRow+1);
+    if (row != oldRow)
+    {
+        return triggerGameSelection(row);
+    }
+    return false;
+}
+
+void GameList::selectRandomGame()
+{
+    if(m_model->filter()->count()>1)
+    {
+        QModelIndex sortIndex = currentIndex();
+        int oldRow = sortIndex.row();
+        int randomSortRow = rand() % (m_model->filter()->count()-1); // The last game is represented by current game
+        if (oldRow == randomSortRow)
+        {
+            randomSortRow = m_model->filter()->count()-1;
+        }
+        QModelIndex sourceIndex = GetSourceIndex(NewSortIndex(randomSortRow));
+        GameId game = sourceIndex.row();
+        if (VALID_INDEX(game))
+        {
+            emit gameSelected(game);
+        }
+    }
+}
+
 void GameList::setFilter(Filter* filter)
 {
-    setSortingEnabled(false);
-    horizontalHeader()->setSortIndicatorShown(false);
-
     QByteArray state = horizontalHeader()->saveState();
-
-    setModel(0);
-
-    delete m_model;
-    delete sortModel;
 
     if (filter)
     {
-        m_model = new FilterModel(filter);
-        connect(m_model, SIGNAL(searchProgress(int)), SIGNAL(searchProgress(int)));
-        connect(m_model, SIGNAL(searchFinished()), SIGNAL(searchFinished()));
-
-        if (filter->count() > 32768)
-        {
-            setModel(m_model);
-        }
-        else
-        {
-            sortModel = new GameListSortModel(0);
-            sortModel->setSourceModel(m_model);
-            sortModel->setDynamicSortFilter(false);
-            setModel(sortModel);
-        }
+        sortModel->setFilter(filter);
+        m_model->setFilter(filter);
     }
 
     horizontalHeader()->restoreState(state);
-
-    if (filter)
-    {
-        horizontalHeader()->setSortIndicatorShown(!!sortModel);
-        setSortingEnabled(!!sortModel);
-    }
-
     emit raiseRequest();
 }
 
@@ -300,7 +286,7 @@ void GameList::slotContextMenu(const QPoint& pos)
         foreach(QModelIndex index, list)
         {
             QModelIndex source = GetSourceIndex(index);
-            GameId n = m_model->filter()->indexToGame(source.row());
+            GameId n = source.row();
             if (VALID_INDEX(n))
             {
                 if (m_model->filter()->database()->deleted(n))
@@ -341,6 +327,7 @@ void GameList::slotContextMenu(const QPoint& pos)
         menu.addSeparator();
         QString hideText = selection.count()>1 ? tr("Hide games") : tr("Hide game");
         menu.addAction(hideText, this, SLOT(slotHideGame()));
+        menu.addAction(tr("Hide deleted games"), this, SLOT(slotHideDeletedGames()));
     }
     menu.addAction(tr("Reset filter"), this, SLOT(filterSetAll()));
     menu.addAction(tr("Reverse filter"), this, SLOT(filterInvert()));
@@ -365,6 +352,10 @@ void GameList::simpleSearch(int tagid)
     if(m_model->filter()->count() <= 1)
     {
         dlg.setMode(1);
+    }
+    else
+    {
+        dlg.setMode(2);
     }
     if(dlg.exec() != QDialog::Accepted)
     {
@@ -434,7 +425,7 @@ void GameList::slotFilterListByPlayer(QString s)
 
 void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString player)
 {
-    m_model->filter()->setAll(1);
+    m_model->filter()->setAll(1); // ??
     Search* ts = new TagSearch(m_model->filter()->database(),  tag, player);
     Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameECO, eco);
     ts->AddSearch(ts3, FilterOperator::And);
@@ -477,16 +468,11 @@ void GameList::selectGame(GameId index)
 {
     if (VALID_INDEX(index))
     {
-        int i = m_model->filter()->gameToIndex(index);
-        if(i != -1)
-        {
-            QModelIndex filterModelIndex = m_model->index(i, 0);
-            QModelIndex sortModelIndex = GetSortModelIndex(filterModelIndex);
-            setCurrentIndex(sortModelIndex);
-            selectRow(sortModelIndex.row());
-            emit signalFirstGameLoaded(sortModelIndex.row()==0);
-            emit signalLastGameLoaded(sortModelIndex.row()+1 == m_model->filter()->count());
-        }
+        QModelIndex filterModelIndex = m_model->index(index, 0);
+        QModelIndex sortModelIndex = GetSortModelIndex(filterModelIndex);
+        setCurrentIndex(sortModelIndex);
+        emit signalFirstGameLoaded(sortModelIndex.row()==0);
+        emit signalLastGameLoaded(sortModelIndex.row()+1 >= m_model->filter()->count());
     }
     else
     {
@@ -512,7 +498,7 @@ QList<GameId> GameList::selectedGames()
     foreach(QModelIndex index, selectionModel()->selectedRows())
     {
         QModelIndex m = GetSourceIndex(index);
-        GameId n = m_model->filter()->indexToGame(m.row());
+        GameId n = m.row();
         if (VALID_INDEX(n))
         {
             gameIndexList.append(n);
@@ -564,6 +550,18 @@ void GameList::slotHideGame()
     }
 }
 
+void GameList::slotHideDeletedGames()
+{
+    QList<GameId> gameIndexList = selectedGames();
+    foreach(GameId game, gameIndexList)
+    {
+        if (m_model->filter()->database()->deleted(game))
+        {
+            m_model->set(game,0);
+        }
+    }
+}
+
 void GameList::startDrag(Qt::DropActions /*supportedActions*/)
 {
     GameMimeData *mimeData = new GameMimeData;
@@ -572,7 +570,7 @@ void GameList::startDrag(Qt::DropActions /*supportedActions*/)
     {
         QModelIndex m = GetSourceIndex(index);
         int row = m.row();
-        GameId gameIndex = m_model->filter()->indexToGame(row);
+        GameId gameIndex = row;
         if (VALID_INDEX(gameIndex))
         {
             mimeData->m_indexList.append(gameIndex);
@@ -594,6 +592,7 @@ void GameList::startDrag(Qt::DropActions /*supportedActions*/)
                     text.append("\n");
                 }
                 text.append(pgn);
+                text.append("\n");
             }
         }
         mimeData->setText(text);

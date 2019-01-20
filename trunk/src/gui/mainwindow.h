@@ -190,14 +190,10 @@ public slots:
     void slotGameMoveNextN();
     /** Go N moves backward in the game. For now fixed at @p 10 */
     void slotGameMovePreviousN();
-    /** Load first game */
-    void slotGameLoadFirst();
     /** Load next game */
     void slotGameLoadNext();
     /** Load previous game */
     void slotGameLoadPrevious();
-    /** Load last game */
-    void slotGameLoadLast();
     /** Load random game */
     void slotGameLoadRandom();
     /** Choose a game and load it */

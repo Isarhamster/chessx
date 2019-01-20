@@ -13,8 +13,8 @@
 #include "piece.h"
 #include "square.h"
 
-#ifndef __BITBOARD_H__
-#define __BITBOARD_H__
+#ifndef BITBOARD_H_INCLUDED
+#define BITBOARD_H_INCLUDED
 
 enum BoardStatus
 {
@@ -510,4 +510,4 @@ inline CastlingRights BitBoard::castlingRights() const
     return m_castle;
 }
 
-#endif // __BITBOARD_H__
+#endif // BITBOARD_H_INCLUDED

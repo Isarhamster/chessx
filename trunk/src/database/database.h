@@ -8,8 +8,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __DATABASE_H__
-#define __DATABASE_H__
+#ifndef DATABASE_H_INCLUDED
+#define DATABASE_H_INCLUDED
 
 #include "filter.h"
 #include "game.h"

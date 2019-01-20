@@ -1438,16 +1438,6 @@ void MainWindow::slotGameVarExit()
     }
 }
 
-void MainWindow::slotGameLoadFirst()
-{
-    gameLoad(databaseInfo()->filter()->indexToGame(0));
-}
-
-void MainWindow::slotGameLoadLast()
-{
-    gameLoad(databaseInfo()->filter()->indexToGame(databaseInfo()->filter()->count()-1));
-}
-
 void MainWindow::slotGameLoadPrevious()
 {
     m_gameList->selectPreviousGame();
@@ -1465,11 +1455,7 @@ void MainWindow::slotGameLoadNext()
 
 void MainWindow::slotGameLoadRandom()
 {
-    if(databaseInfo()->filter()->count())
-    {
-        int random = rand() % databaseInfo()->filter()->count();
-        gameLoad(databaseInfo()->filter()->indexToGame(random));
-    }
+    m_gameList->selectRandomGame();
 }
 
 void MainWindow::slotGameLoadChosen()
@@ -2454,11 +2440,13 @@ void MainWindow::AutoMoveAtEndOfGame()
 
 void MainWindow::slotFilterChanged(bool selectGame)
 {
-    int n = gameIndex();
+    GameId n = gameIndex();
     m_gameList->endSearch();
-    if (selectGame) m_gameList->selectGame(n);
-
-    if(n >= 0)
+    if (selectGame)
+    {
+        m_gameList->selectGame(n);
+    }
+    if(VALID_INDEX(n))
     {
         m_gameList->setFocus();
     }

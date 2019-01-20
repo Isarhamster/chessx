@@ -10,8 +10,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __BOARD_H__
-#define __BOARD_H__
+#ifndef BOARD_H_INCLUDED
+#define BOARD_H_INCLUDED
 
 #include "move.h"
 #include "movelist.h"
@@ -137,7 +137,6 @@ private:
     /** Adjust hash value based on the castling rights each side has */
     void hashCastlingRights(CastlingRights oldCastlingRights);
 };
-
 
 #endif
 

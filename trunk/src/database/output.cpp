@@ -884,7 +884,7 @@ void Output::output(QTextStream& out, Filter& filter)
 
     for(int i = 0; i < filter.count(); ++i)
     {
-        if(filter.database()->loadGame(filter.indexToGame(i), game))
+        if(filter.database()->loadGame(i, game))
         {
             QString tagText = outputTags(&game);
             out << tagText;
