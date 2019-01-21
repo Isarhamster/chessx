@@ -8,6 +8,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include <algorithm>
 #include <QMap>
 
 #include "board.h"
@@ -724,7 +725,7 @@ QString Output::writeAllTags() const
     }
 
     QList<QString> keys = tags.keys();
-    qSort(keys);
+    std::sort(keys.begin(), keys.end());
 
     // write other tags written in ascii order, as suggested by standard
     foreach(QString key,keys)

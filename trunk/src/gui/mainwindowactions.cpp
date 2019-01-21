@@ -269,7 +269,7 @@ void MainWindow::slotFileExportGame()
     QString filename = exportFileName(format);
     if(!filename.isEmpty())
     {
-        Output output((Output::OutputType)format);
+        Output output(static_cast<Output::OutputType>(format));
         output.output(filename, game());
     }
 }
@@ -280,7 +280,7 @@ void MainWindow::slotFileExportFilter()
     QString filename = exportFileName(format);
     if(!filename.isEmpty())
     {
-        Output output((Output::OutputType)format);
+        Output output(static_cast<Output::OutputType>(format));
         output.output(filename, *(databaseInfo()->filter()));
     }
 }
@@ -291,7 +291,7 @@ void MainWindow::slotFileExportAll()
     QString filename = exportFileName(format);
     if(!filename.isEmpty())
     {
-        Output output((Output::OutputType)format);
+        Output output(static_cast<Output::OutputType>(format));
         output.output(filename, *database());
     }
 }
@@ -951,7 +951,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                         par.ms_black = m_matchParameter.ms_totalTime - m_matchTime[Black];
 
                         bool ok = true;
-                        if (par.tm != EngineParameter::TIME_GONG && m_matchTime[currentColor] > (int) m_matchParameter.ms_totalTime)
+                        if (par.tm != EngineParameter::TIME_GONG && m_matchTime[currentColor] > m_matchParameter.ms_totalTime)
                         {
                             ok = false;
                             playSound(":/sounds/fanfare.wav");
@@ -1556,7 +1556,7 @@ void MainWindow::slotGameSaveOnly()
 void MainWindow::slotGameEditTags()
 {
     DatabaseInfo* dbInfo = databaseInfo();
-    if (dbInfo->currentIndex()>=0)
+    if (VALID_INDEX(dbInfo->currentIndex()))
     {
         TagDialog dlg(this);
         if (dlg.editTags(database()->index(), game(),dbInfo->currentIndex()))
@@ -2081,7 +2081,7 @@ void MainWindow::slotToggleEngineMatch()
 
 void MainWindow::slotToggleAutoPlayer()
 {
-    QAction* autoPlayAction = (QAction*) sender();
+    QAction* autoPlayAction = qobject_cast<QAction*>(sender());
     if(autoPlayAction)
     {
         if(autoPlayAction->isChecked())
@@ -2451,7 +2451,7 @@ void MainWindow::slotFilterChanged(bool selectGame)
     {
         m_gameList->setFocus();
     }
-    int count = databaseInfo()->filter() ? databaseInfo()->filter()->count() : 0;
+    quint64 count = databaseInfo()->filter() ? databaseInfo()->filter()->count() : 0;
     QString f = count == (int)database()->count() ? tr("all") : QString::number(count);
     m_statusFilter->setText(QString(" %1: %2/%3 ").arg(databaseName())
                             .arg(f).arg(database()->count()));
@@ -2841,7 +2841,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
 
     CopyDialog dlg(this);
     dlg.setCurrentGame(players, gameIndexList.count(), m_currentDatabase->filter()->count(), m_currentDatabase->database()->count());
-    dlg.setMode((CopyDialog::SrcMode)preselect);
+    dlg.setMode(static_cast<CopyDialog::SrcMode>(preselect));
     dlg.setDatabases(db);
     if(dlg.exec() != QDialog::Accepted)
     {
@@ -2871,7 +2871,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
         }
         break;
     case CopyDialog::Filter:
-        for(GameId i = 0; i < (int)database()->count(); ++i)
+        for(GameId i = 0; i < database()->count(); ++i)
         {
             Game g;
             if(databaseInfo()->filter()->contains(i) && database()->loadGame(i, g))
@@ -2882,7 +2882,7 @@ void MainWindow::copyFromDatabase(int preselect, QList<GameId> gameIndexList)
         }
         break;
     case CopyDialog::AllGames:
-        for(GameId i = 0; i < (int)database()->count(); ++i)
+        for(GameId i = 0; i < database()->count(); ++i)
         {
             Game g;
             if(database()->loadGame(i, g))

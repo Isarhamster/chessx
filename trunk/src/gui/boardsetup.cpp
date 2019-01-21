@@ -20,6 +20,7 @@
 #include "settings.h"
 #include "boardsetuptoolbutton.h"
 
+#include <algorithm>
 #include <QtGui>
 #include <QPixmap>
 #include <QPushButton>
@@ -51,7 +52,7 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     for(int piece = Empty; piece <= BlackPawn; piece++)
     {
         BoardSetupToolButton* button = new BoardSetupToolButton(this);
-        button->setPiece((Piece)piece);
+        button->setPiece(static_cast<Piece>(piece));
         if(piece == Empty)
         {
             button->setBasePixmap(QPixmap(0, 0));
@@ -144,12 +145,13 @@ void BoardSetupDialog::mirrorVertical()
     QString fen = board().toFen();
     QString fenRows = fen.left(fen.indexOf(" "));
     QStringList rows = fenRows.split("/");
-    QAlgorithmsPrivate::qReverse(rows.begin(), rows.end());
+    std::reverse(rows.begin(), rows.end());
     QString newFen = rows.join("/");
     Board b(newFen);
     b.setMoveNumber(board().moveNumber());
     b.setHalfMoveClock(board().halfMoveClock());
     setBoard(b);
+    repaint(); // Workaround Bug in Qt at least up to version 5.12
 }
 
 void BoardSetupDialog::mirrorHorizontal()
@@ -159,13 +161,14 @@ void BoardSetupDialog::mirrorHorizontal()
     QStringList rows = fenRows.split("/");
     for(QStringList::Iterator iter = rows.begin(); iter != rows.end(); ++iter)
     {
-        QAlgorithmsPrivate::qReverse((*iter).begin(), (*iter).end());
+        std::reverse((*iter).begin(), (*iter).end());
     }
     QString newFen = rows.join("/");
     Board b(newFen);
     b.setMoveNumber(board().moveNumber());
     b.setHalfMoveClock(board().halfMoveClock());
     setBoard(b);
+    repaint(); // Workaround Bug in Qt at least up to version 5.12
 }
 
 void BoardSetupDialog::swapColors()
@@ -193,6 +196,7 @@ void BoardSetupDialog::swapColors()
     b.setMoveNumber(board().moveNumber());
     b.setHalfMoveClock(board().halfMoveClock());
     setBoard(b);
+    repaint(); // Workaround Bug in Qt at least up to version 5.12
 }
 
 void BoardSetupDialog::setFlipped(bool flipped)
@@ -391,6 +395,7 @@ void BoardSetupDialog::slotToggleSide()
     Board b = ui.boardView->board();
     b.setToMove(m_toMove);
     setBoard(b);
+    repaint(); // Workaround Bug in Qt at least up to version 5.12
 }
 
 void BoardSetupDialog::slotChangePiece(int dir)
@@ -399,13 +404,13 @@ void BoardSetupDialog::slotChangePiece(int dir)
     i += (dir == BoardView::WheelUp) ? -1 : 1;
     if(i < 0)
     {
-        i = (int) BlackPawn;
+        i = static_cast<int>(BlackPawn);
     }
     else if(i > BlackPawn)
     {
-        i = (int) Empty;
+        i = static_cast<int>(Empty);
     }
-    m_selectedPiece = (Piece) i;
+    m_selectedPiece = static_cast<Piece>(i);
     emit signalClearBackground(m_selectedPiece);
 }
 

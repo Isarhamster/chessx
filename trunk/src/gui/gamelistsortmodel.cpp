@@ -10,7 +10,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-bool GameListSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool GameListSortModel::filterAcceptsRow(int source_row, const QModelIndex & /*source_parent*/) const
 {
     if (m_filter && m_filter->gamePosition(source_row))
     {

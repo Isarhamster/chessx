@@ -8,6 +8,7 @@
 #include "nag.h"
 #include "settings.h"
 
+#include <algorithm>
 #include <QAction>
 #include <QToolButton>
 
@@ -58,7 +59,7 @@ void GameWindow::setupToolBox()
         }
     }
 
-    qSort(items);
+    std::sort(items.begin(), items.end());
 
     foreach(Nag nag, items)
     {

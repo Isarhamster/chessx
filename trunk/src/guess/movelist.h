@@ -59,6 +59,11 @@ public:
         return score < rhs.score;
     }
 
+    bool operator > (const simpleMoveT& rhs) const
+    {
+        return score > rhs.score;
+    }
+
     QString sqToString(squareT sq) const
     {
         char buffer[3];

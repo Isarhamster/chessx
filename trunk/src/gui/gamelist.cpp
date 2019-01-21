@@ -215,7 +215,10 @@ void GameList::selectPreviousGame()
     QModelIndex sortIndex = currentIndex();
     int oldRow = sortIndex.row();
     int row = std::max(0, sortIndex.row()-1);
-    triggerGameSelection(row);
+    if (row != oldRow)
+    {
+        triggerGameSelection(row);
+    }
 }
 
 bool GameList::selectNextGame()
