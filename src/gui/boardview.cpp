@@ -1029,7 +1029,7 @@ void BoardView::setFlipped(bool flipped)
 {
     bool wasFlipped = m_flipped;
     m_flipped = flipped;
-    update();
+    repaint(); // Workaround Bug in Qt at least up to version 5.12
     emit signalFlipped(wasFlipped, m_flipped);
 }
 

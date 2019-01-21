@@ -6,7 +6,7 @@
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  ***************************************************************************/
-
+#include <algorithm>
 #include <QCoreApplication>
 #include <QHash>
 
@@ -165,12 +165,12 @@ void PlayerInfo::update()
 
         QSet<int> valset = openingMap.values().toSet();
         QList<int> vals = valset.toList();
-        qSort( vals.begin(), vals.end(), sortIntGt );
+        std::sort( vals.begin(), vals.end(), sortIntGt );
 
         foreach( int val, vals )
         {
             QList<QString> keys = openingMap.keys( val );
-            qSort( keys );
+            std::sort(keys.begin(), keys.end());
             foreach(QString key, keys)
             {
                 m_opening[i].append(OpeningCountItem(key,val));

@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "movelist.h"
-
+#include <algorithm>
 #include <QDebug>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -148,7 +148,7 @@ MoveList::FindBest(unsigned int index)
 void
 MoveList::Sort(void)
 {
-    qSort(begin(),end(), qGreater<simpleMoveT>());
+    std::sort(begin(),end(), std::greater<simpleMoveT>());
 }
 
 void MoveList::dumpMoves() const
