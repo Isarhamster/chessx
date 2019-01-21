@@ -1,6 +1,7 @@
 #ifndef GAMEUNDOCOMMAND_H
 #define GAMEUNDOCOMMAND_H
 
+#include "databaseinfo.h"
 #include "game.h"
 
 #include <QString>
@@ -17,7 +18,7 @@ class GameUndoCommand : public QUndoCommand
 public:
     GameUndoCommand(QObject* parent, const Game& from, const Game& to, QString action) :
         QUndoCommand(action),
-        m_dbInfo((DatabaseInfo*)parent),
+        m_dbInfo(static_cast<DatabaseInfo*>(parent)),
         m_fromGame(from),
         m_toGame(to),
         m_bInConstructor(true)
@@ -29,10 +30,10 @@ public:
     Game m_toGame;
     bool m_bInConstructor;
 
-    virtual void undo() { m_dbInfo->restoreState(m_fromGame); }
-    virtual void redo() { if (m_bInConstructor) m_bInConstructor=false; else m_dbInfo->restoreState(m_toGame); }
-    virtual int id() const  { return m_fromGame.currentMove(); }
-    virtual bool mergeWith(const QUndoCommand *other)
+    void undo() { m_dbInfo->restoreState(m_fromGame); }
+    void redo() { if (m_bInConstructor) m_bInConstructor=false; else m_dbInfo->restoreState(m_toGame); }
+    int id() const  { return m_fromGame.currentMove(); }
+    bool mergeWith(const QUndoCommand *other)
     {
         if (m_bInConstructor)
             return false;
@@ -42,7 +43,7 @@ public:
             return false;
         if (other->id() != id()) // make sure other applies to the same position
             return false;
-        m_toGame = ((GameUndoCommand*)(other))->m_toGame;
+        m_toGame = (static_cast<const GameUndoCommand*>(other))->m_toGame;
         return true;
     }
 };

@@ -83,12 +83,10 @@ HEADERS += src/database/board.h \
 	src/database/wbengine.h \
 	src/database/uciengine.h \
 	src/database/search.h \
-	src/database/query.h \
 	src/database/database.h \
 	src/database/pgndatabase.h \
 	src/database/memorydatabase.h \
 	src/database/filter.h \
-	src/database/tristatetree.h \
 	src/database/nag.h \
 	src/database/settings.h \
 	src/database/spellchecker.h \
@@ -242,7 +240,8 @@ HEADERS += src/database/board.h \
     src/database/gameundocommand.h \
     src/database/ctg.h \
     src/database/searchlist.h \
-    src/database/filteroperator.h
+    src/database/filteroperator.h \
+    src/gui/gamelistsortmodel.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -254,12 +253,10 @@ SOURCES += src/database/board.cpp \
 	src/database/wbengine.cpp \
 	src/database/uciengine.cpp \
 	src/database/search.cpp \
-	src/database/query.cpp \
 	src/database/database.cpp \
 	src/database/pgndatabase.cpp \
 	src/database/memorydatabase.cpp \
 	src/database/filter.cpp \
-	src/database/tristatetree.cpp \
 	src/database/nag.cpp \
 	src/database/settings.cpp \
 	src/database/spellchecker.cpp \
@@ -392,7 +389,8 @@ SOURCES += src/database/board.cpp \
     src/quazip/unzip.cpp \
     src/quazip/zip.cpp \
     src/database/arenabook.cpp \
-    src/database/searchlist.cpp
+    src/database/searchlist.cpp \
+    src/gui/gamelistsortmodel.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database

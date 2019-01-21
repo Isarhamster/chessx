@@ -601,6 +601,7 @@ void MainWindow::slotEditBoard()
     if(dlg.exec() == QDialog::Accepted)
     {
         game().setStartingBoard(dlg.board(),tr("Set starting board"),dlg.board().chess960());
+        emit signalGameLoaded(game().startingBoard());
     }
 }
 
@@ -2500,6 +2501,7 @@ void MainWindow::slotDbRestoreState(const Game& game)
     if (pDb)
     {
         pDb->replaceGame(game);
+        emit signalGameLoaded(game.startingBoard());
     }
 }
 
