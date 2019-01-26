@@ -415,7 +415,7 @@ void AnalysisWidget::slotLinkClicked(const QUrl& url)
         mpv = (-mpv) - 2;
         if(mpv < m_analyses.count())
         {
-            if (m_analyses[mpv].variation().size())
+            if (!m_analyses[mpv].variation().isEmpty())
             {
                 emit addVariation(m_analyses[mpv].variation().at(0).toAlgebraic());
             }
@@ -556,7 +556,7 @@ void AnalysisWidget::updateAnalysis()
 
 void AnalysisWidget::updateComplexity()
 {
-    if (m_analyses[0].variation().size())
+    if (!m_analyses[0].variation().isEmpty())
     {
         Move bestMove = m_analyses[0].variation().first();
         if (m_analyses[0].depth() == 2)

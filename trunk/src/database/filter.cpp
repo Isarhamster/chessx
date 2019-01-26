@@ -23,7 +23,7 @@ Filter::Filter(Database* database) : QThread()
 {
     m_database = database;
     m_count = m_database->count();
-    m_vector = new QVector<int>(m_count, 1);
+    m_vector = new QVector<Filter::value_type>(m_count, 1);
     m_gamesSearched = 0;
     m_searchTime = 0;
     currentSearchOperator = NullOperator;
@@ -47,7 +47,7 @@ Filter& Filter::operator= (Filter const& rhs)
 {
     m_database = rhs.m_database;
     m_count = rhs.m_count;
-    m_vector = new QVector<int>(*rhs.m_vector);
+    m_vector = new QVector<Filter::value_type>(*rhs.m_vector);
     m_gamesSearched = 0;
     m_searchTime = 0;
     currentSearch = 0;
@@ -72,7 +72,7 @@ Database* Filter::database()
     return m_database;
 }
 
-void Filter::set(GameId game, int value)
+void Filter::set(GameId game, Filter::value_type value)
 {
     if((game >= size()) || (gamePosition(game) == value))
     {
@@ -90,7 +90,7 @@ void Filter::set(GameId game, int value)
     (*m_vector)[game] = value;
 }
 
-void Filter::setAll(int value)
+void Filter::setAll(Filter::value_type value)
 {
     cancel();
     m_vector->fill(value);
@@ -106,7 +106,7 @@ bool Filter::contains(GameId game) const
     return false;
 }
 
-int Filter::gamePosition(GameId game) const
+Filter::value_type Filter::gamePosition(GameId game) const
 {
     return m_vector->at(static_cast<int>(game));
 }
@@ -116,7 +116,7 @@ unsigned int Filter::size() const
     return static_cast<unsigned int>(m_vector->size());
 }
 
-void Filter::resize(int newsize, bool includeNew)
+void Filter::resize(unsigned int newsize, bool includeNew)
 {
     for(GameId i = static_cast<GameId>(newsize); i < size(); ++i)   // Decrease count by number of removed games
     {
@@ -125,10 +125,10 @@ void Filter::resize(int newsize, bool includeNew)
             --m_count;
         }
     }
-    int oldsize = size();
+    unsigned int oldsize = size();
     m_vector->resize(newsize);
     // Set new (uninitialized games) to 'includeNew' value.
-    for(int i = oldsize; i < newsize; ++i)
+    for(unsigned int i = oldsize; i < newsize; ++i)
     {
         (*m_vector)[i] = includeNew;
     }

@@ -362,11 +362,11 @@ void BoardSetupDialog::slotSelected(Square square, int button)
     {
         if(piece >= BlackKing)
         {
-            piece = (Piece)(piece - (BlackKing - WhiteKing));
+            piece = static_cast<Piece>(piece - (BlackKing - WhiteKing));
         }
         else if(piece != Empty)
         {
-            piece = (Piece)(piece + (BlackKing - WhiteKing));
+            piece = static_cast<Piece>(piece + (BlackKing - WhiteKing));
         }
     }
     Board board = ui.boardView->board();
@@ -668,7 +668,7 @@ void BoardSetupDialog::startDrag(QWidget* w, QMouseEvent* event)
 
     QPixmap pixmap = child->BasePixmap();
     QSize pieceSize = ui.boardView->themeSize();
-    float r = pixmap.devicePixelRatio();
+    qreal r = pixmap.devicePixelRatio();
 
     pixmap = pixmap.scaled(pieceSize*r, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     QDrag* pDrag = new QDrag(this);

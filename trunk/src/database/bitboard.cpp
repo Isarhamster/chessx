@@ -1150,7 +1150,7 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
         {
             c = fen[++i];
         }
-        m_halfMoves = fen.mid(j, i - j).toInt();
+        m_halfMoves = fen.midRef(j, i - j).toInt();
     }
 
     // Move number
@@ -1169,7 +1169,7 @@ bool BitBoard::fromGoodFen(const QString& qfen, bool chess960)
         {
             return false;
         }
-        m_moveNumber = fen.mid(i).toInt();
+        m_moveNumber = fen.midRef(i).toInt();
         while(c >= '0' && c <= '9')
         {
             c = fen[++i];
@@ -1461,10 +1461,8 @@ int BitBoard::chess960Pos() const
         ccPos += krn*96;
         return ccPos;
     }
-    else
-    {
-        return -1;
-    }
+
+    return -1;
 }
 
 bool BitBoard::chess960() const

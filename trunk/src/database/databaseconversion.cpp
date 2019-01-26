@@ -194,7 +194,7 @@ bool DatabaseConversion::playerDatabaseFromScidRatings(const QString& inFileName
                     //std::cout << "rating= " << s;
                     if(s.endsWith("*"))
                     {
-                        pdb.setEstimatedElo(s.left(s.length() - 1).toInt());
+                        pdb.setEstimatedElo(s.leftRef(s.length() - 1).toInt());
                     }
                     // peak elo is dealt with by setElo()
                 }

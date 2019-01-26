@@ -46,7 +46,7 @@ int FilterModel::columnCount(const QModelIndex&) const
     return m_columnNames.count();
 }
 
-void FilterModel::addColumns(QStringList tags)
+void FilterModel::addColumns(const QStringList& tags)
 {
     m_columnNames.clear();
     m_columnTags.clear();

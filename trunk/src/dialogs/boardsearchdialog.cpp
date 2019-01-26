@@ -95,7 +95,7 @@ void BoardSearchDialog::setCurrentBoard()
     ui->boardView->setBoard(b);
 }
 
-void BoardSearchDialog::setBoardList(QList<Board> list)
+void BoardSearchDialog::setBoardList(const QList<Board>& list)
 {
     m_boardList = list;
     ui->boardView->setBoard(list.at(0));

@@ -30,6 +30,8 @@
 CtgDatabase::CtgDatabase() :
     Database(),
     ctg_file(0),
+    cto_file(0),
+    ctb_file(0),
     m_count(0)
 {
 }

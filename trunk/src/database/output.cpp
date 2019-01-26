@@ -589,7 +589,7 @@ QString Output::writeVariation()
         {
             if (indent && !willStartIndent) text += m_endTagMap[MarkupVariationResume];
             QList<MoveId> variations = m_game.variations();
-            if(variations.size())
+            if(!variations.empty())
             {
                 for(int i = 0; i < variations.size(); ++i)
                 {

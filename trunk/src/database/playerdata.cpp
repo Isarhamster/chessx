@@ -27,7 +27,7 @@ PartialDate PlayerData::dateOfBirth() const
 {
     return m_dateOfBirth;
 }
-void PlayerData::setDateOfBirth(const PartialDate d)
+void PlayerData::setDateOfBirth(const PartialDate& d)
 {
     m_dateOfBirth = d;
 }
@@ -35,7 +35,7 @@ PartialDate PlayerData::dateOfDeath() const
 {
     return m_dateOfDeath;
 }
-void PlayerData::setDateOfDeath(const PartialDate d)
+void PlayerData::setDateOfDeath(const PartialDate& d)
 {
     m_dateOfDeath = d;
 }
@@ -44,7 +44,7 @@ QString PlayerData::country() const
 {
     return m_country;
 }
-void PlayerData::setCountry(const QString s)
+void PlayerData::setCountry(const QString& s)
 {
     m_country = s;
 }
@@ -53,22 +53,19 @@ QString PlayerData::title() const
 {
     return m_title;
 }
-void PlayerData::setTitle(const QString s)
+void PlayerData::setTitle(const QString& s)
 {
     m_title = s;
 }
 
-int PlayerData::elo(const int eloListIndex) const
+int PlayerData::elo(int eloListIndex) const
 {
     if(m_elo.contains(eloListIndex))
     {
         QMap<int, int>::const_iterator it = m_elo.find(eloListIndex);
         return it.value();
     }
-    else
-    {
-        return 0;
-    }
+    return 0;
 }
 
 
@@ -76,7 +73,7 @@ int PlayerData::firstEloListIndex()
 {
     return m_firstEloListIndex;
 }
-void PlayerData::setFirstEloListIndex(const int ix)
+void PlayerData::setFirstEloListIndex(int ix)
 {
     m_firstEloListIndex = ix;
 }
@@ -84,12 +81,12 @@ int PlayerData::lastEloListIndex()
 {
     return m_lastEloListIndex;
 }
-void PlayerData::setLastEloListIndex(const int ix)
+void PlayerData::setLastEloListIndex(int ix)
 {
     m_lastEloListIndex = ix;
 }
 
-void PlayerData::setElo(const int eloListIndex, const int elo)
+void PlayerData::setElo(int eloListIndex, int elo)
 {
     m_elo.insert(eloListIndex, elo);
     if(eloListIndex < m_firstEloListIndex || m_firstEloListIndex == 0)
@@ -120,14 +117,14 @@ int PlayerData::estimatedElo() const
 {
     return m_estimatedElo;
 }
-void PlayerData::setEstimatedElo(const int elo)
+void PlayerData::setEstimatedElo(int elo)
 {
     m_estimatedElo = elo;
     m_estimatedEloCache.clear();
 }
 
 
-int PlayerData::estimatedElo(const int eloListIndex)
+int PlayerData::estimatedElo(int eloListIndex)
 {
     QMap<int, int>::const_iterator it;
     if(m_elo.contains(eloListIndex))
@@ -160,7 +157,7 @@ int PlayerData::estimatedElo(const int eloListIndex)
     }
 }
 
-int PlayerData::estimatedEloNoCache(const int eloListIndex) const
+int PlayerData::estimatedEloNoCache(int eloListIndex) const
 {
     QMap<int, int>::const_iterator it;
     if(m_elo.contains(eloListIndex))
@@ -205,11 +202,11 @@ QString PlayerData::biography() const
 {
     return m_biography;
 }
-void PlayerData::setBiography(const QString str)
+void PlayerData::setBiography(const QString& str)
 {
     m_biography = str;
 }
-void PlayerData::appendToBiography(const QString str)
+void PlayerData::appendToBiography(const QString& str)
 {
     m_biography += str;
 }
@@ -235,7 +232,7 @@ QList<qint32> PlayerData::eloListData() const
     return list;
 }
 
-void PlayerData::eloFromListData(QList<qint32> eloListData)
+void PlayerData::eloFromListData(const QList<qint32>& eloListData)
 {
     int listIx = 1;
     qint32 elem;

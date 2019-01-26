@@ -1461,11 +1461,11 @@ void MainWindow::slotGameLoadRandom()
 
 void MainWindow::slotGameLoadChosen()
 {
-    int index = QInputDialog::getInt(this, tr("Load Game"), tr("Game number:"), gameIndex() + 1,
+    int userNr = QInputDialog::getInt(this, tr("Load Game"), tr("Game number:"), gameIndex() + 1,
                                      1, database()->count());
-    if (index != gameIndex() + 1)
+    if (userNr != static_cast<int>(gameIndex() + 1))
     {
-        gameLoad(index - 1);
+        gameLoad(static_cast<GameId>(userNr - 1));
     }
 }
 
@@ -2590,7 +2590,7 @@ void MainWindow::copyGames(QString fileName, QList<GameId> indexes)
     Output writer(Output::Pgn);
     Game g;
     bool success = true;
-    foreach (int index, indexes)
+    foreach (GameId index, indexes)
     {
         if(database()->loadGame(index, g))
         {
@@ -2624,7 +2624,7 @@ void MainWindow::copyDatabase(QString target, QString src)
         {
             // Both databases are open
             done = true;
-            for(int i = 0; i < (int)pSrcDB->count(); ++i)
+            for(GameId i = 0; i < pSrcDB->count(); ++i)
             {
                 Game g;
                 if(pSrcDB->loadGame(i, g))

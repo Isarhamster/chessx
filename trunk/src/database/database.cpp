@@ -18,7 +18,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-Database::Database() : m_break(false)
+Database::Database() : m_break(false), m_utf8(false)
 {
     connect(&m_index, SIGNAL(progress(int)), this, SIGNAL(progress(int)));
 }
