@@ -49,6 +49,19 @@ TableView::~TableView()
 {
 }
 
+void TableView::wheelEvent(QWheelEvent* e)
+{
+    int button = e->modifiers() & Qt::KeyboardModifierMask;
+    if (button == (Qt::ControlModifier|Qt::AltModifier))
+    {
+        QFont f = font();
+        int n = e->delta()>0 ? 1 : -1;
+        int fontSize = f.pointSize() + n;
+        setFontSize(fontSize);
+    }
+    QWidget::wheelEvent(e);
+}
+
 QStyleOptionViewItem TableView::viewOptions() const
 {
     QStyleOptionViewItem option = QTableView::viewOptions();
@@ -91,6 +104,25 @@ void TableView::saveConfig()
     }
 }
 
+void TableView::setFontSize(int fontSize)
+{
+    fontSize = std::max(fontSize, 8);
+    QFont f = font();
+    f.setPointSize(fontSize);
+    setFont(f);
+
+    QFontMetrics fm(f);
+    int rowHeight = std::max(minRowHeight(), fm.height()+2);
+
+    QHeaderView *vh = verticalHeader();
+#if QT_VERSION < 0x050000
+    vh->setResizeMode(QHeaderView::Fixed);
+#else
+    vh->sectionResizeMode(QHeaderView::Fixed);
+#endif
+    vh->setDefaultSectionSize(rowHeight);
+}
+
 void TableView::slotReconfigure()
 {
     bool sortIndicator = horizontalHeader()->isSortIndicatorShown();
@@ -118,20 +150,7 @@ void TableView::slotReconfigure()
     AppSettings->endGroup();
 
     int fontSize = AppSettings->getValue("/General/ListFontSize").toInt();
-    QFont f = font();
-    f.setPointSize(fontSize);
-    setFont(f);
-
-    QFontMetrics fm(f);
-    int rowHeight = std::max(minRowHeight(), fm.height()+2);
-
-    QHeaderView *vh = verticalHeader();
-#if QT_VERSION < 0x050000
-    vh->setResizeMode(QHeaderView::Fixed);
-#else
-    vh->sectionResizeMode(QHeaderView::Fixed);
-#endif
-    vh->setDefaultSectionSize(rowHeight);
+    setFontSize(fontSize);
 
     horizontalHeader()->setSortIndicatorShown(sortIndicator);
     update();
