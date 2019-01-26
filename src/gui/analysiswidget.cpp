@@ -212,6 +212,7 @@ void AnalysisWidget::slotReconfigure()
     }
 
     int fontSize = AppSettings->getValue("/General/ListFontSize").toInt();
+    fontSize = std::max(fontSize, 8);
     QFont f = ui.variationText->font();
     f.setPointSize(fontSize);
     setFont(f);
