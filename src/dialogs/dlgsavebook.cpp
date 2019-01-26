@@ -19,31 +19,30 @@ DlgSaveBook::DlgSaveBook(QString path, QWidget *parent) :
   m_InputPath(path),
   ui(new Ui::DlgSaveBook)
 {
-  ui->setupUi(this);
-  restoreLayout();
+    ui->setupUi(this);
+    restoreLayout();
 
-  if (!path.isEmpty())
-  {
-      QFileInfo fi(m_InputPath);
-      QString in = fi.absoluteFilePath();
-      m_OutputPath = fi.absoluteDir().absolutePath() + QDir::separator() + fi.baseName()+".bin";
-      ui->inputFile->setText(fi.fileName());
-  }
-  else
-  {
-      ui->inputFile->setText(tr("Clipboard"));
-      QString dir = AppSettings->value("/General/DefaultDataPath").toString();
-      m_OutputPath = dir + QDir::separator() + "Clipboard.bin";
-  }
+    if (!path.isEmpty())
+    {
+        QFileInfo fi(m_InputPath);
+        m_OutputPath = fi.absoluteDir().absolutePath() + QDir::separator() + fi.baseName()+".bin";
+        ui->inputFile->setText(fi.fileName());
+    }
+    else
+    {
+        ui->inputFile->setText(tr("Clipboard"));
+        QString dir = AppSettings->value("/General/DefaultDataPath").toString();
+        m_OutputPath = dir + QDir::separator() + "Clipboard.bin";
+    }
 
-  ui->outputPath->setText(m_OutputPath);
+    ui->outputPath->setText(m_OutputPath);
 
-  connect(ui->btBrowseTarget, SIGNAL(clicked(bool)), SLOT(slotSelectTargetPath()));
+    connect(ui->btBrowseTarget, SIGNAL(clicked(bool)), SLOT(slotSelectTargetPath()));
 }
 
 void DlgSaveBook::restoreLayout()
 {
-  AppSettings->layout(this);
+    AppSettings->layout(this);
 }
 
 DlgSaveBook::~DlgSaveBook()

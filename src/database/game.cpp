@@ -242,7 +242,7 @@ bool Game::mergeVariations(Game& otherGame)
 {
     QList<MoveId> variationList = otherGame.variations();
     bool ok = true;
-    if(variationList.size())
+    if(!variationList.empty())
     {
         MoveId otherCurrent = otherGame.currentMove();
         for(QList<MoveId>::iterator iter = variationList.begin(); iter != variationList.end(); ++iter)
@@ -766,7 +766,7 @@ bool Game::promoteVariation(MoveId variation)
 bool Game::removeVariation(MoveId variation)
 {
     // don't remove whole game
-    if(!variation)
+    if(variation == ROOT_NODE)
     {
         return false;
     }
@@ -814,12 +814,9 @@ void Game::dbTruncateVariation(Position position)
     if(position == AfterMove)
     {
         MoveId node = m_moveNodes[m_currentNode].nextNode;
-        if (isMainline(node))
+        foreach(MoveId var, m_moveNodes[m_currentNode].variations)
         {
-            foreach(MoveId var, m_moveNodes[m_currentNode].variations)
-            {
-                removeNode(var);
-            }
+            removeNode(var);
         }
         removeNode(node);
     }
@@ -1572,7 +1569,7 @@ void Game::enumerateVariations(MoveId moveId, char a)
         Game state = *this;
         MoveId parentNode = m_moveNodes[node].parentNode;
         QList <MoveId>& v = m_moveNodes[parentNode].variations;
-        if (v.size())
+        if (!v.empty())
         {
             for(int i = 0; i < v.size(); ++i)
             {
@@ -1882,20 +1879,14 @@ void Game::removeNode(MoveId moveId)
         m_variationStartAnnotations.remove(node);
         m_annotations.remove(node);
 
-        if(variationCount(node))
+        for(int i = 0; i < m_moveNodes[node].variations.size(); ++i)
         {
-            for(int i = 0; i < m_moveNodes[node].variations.size(); ++i)
-            {
-                removeNode(m_moveNodes[node].variations[i]);
-            }
+            removeNode(m_moveNodes[node].variations[i]);
         }
         removeNode(m_moveNodes[node].nextNode);
         MoveId prevNode = m_moveNodes[node].previousNode;
 
-        if(!m_moveNodes[prevNode].variations.contains(node))
-        {
-            m_moveNodes[prevNode].nextNode = NO_MOVE;
-        }
+        m_moveNodes[prevNode].nextNode = NO_MOVE;
         m_moveNodes[node].remove();
     }
 }

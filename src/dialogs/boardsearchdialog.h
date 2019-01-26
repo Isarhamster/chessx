@@ -21,7 +21,7 @@ public:
     ~BoardSearchDialog();
 
     int mode() const;
-    void setBoardList(QList<Board>);
+    void setBoardList(const QList<Board> &);
     int boardIndex() const;
 protected slots:
     void reject();

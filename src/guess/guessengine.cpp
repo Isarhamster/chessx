@@ -234,14 +234,12 @@ pieceValues [8] =
     0   // Empty
 };
 
-inline int
-Engine::PieceValue(pieceT piece) const
+int Engine::PieceValue(pieceT piece) const
 {
     return pieceValues[piece_Type(piece)];
 };
 
-inline int
-Engine::PieceValueFromClass(pieceC piece) const
+int Engine::PieceValueFromClass(pieceC piece) const
 {
     return pieceValues[piece];
 };
@@ -250,8 +248,7 @@ Engine::PieceValueFromClass(pieceC piece) const
 // isOutpost
 //   Returns true if the square is on the 4th/5th/6th rank (3rd/4th/5th
 //   for Black) and cannot be attacked by an enemy pawn.
-static bool
-isOutpost(const pieceT * board, squareT sq, colorT color)
+static bool isOutpost(const pieceT * board, squareT sq, colorT color)
 {
     pieceT enemyPawn = piece_Make(color_Flip(color), PAWN);
     rankT rank = square_Rank(sq);
@@ -321,8 +318,7 @@ isOutpost(const pieceT * board, squareT sq, colorT color)
 // Engine::Score
 //   Returns a score in centipawns for the current engine position,
 //   from the perspective of the side to move.
-int
-Engine::Score(void)
+int Engine::Score()
 {
     // Look for a recognized ending with an exact score:
     int recog = Recognizer::Recognize(&Pos);
@@ -342,8 +338,7 @@ Engine::Score(void)
 //   simple material counting produces a score much lower than alpha
 //   or much greater than beta, the score is returned without
 //   slower square-based evaluation.
-int
-Engine::Score(int alpha, int beta)
+int Engine::Score(int alpha, int beta)
 {
     colorT toMove = Pos.GetToMove();
     const unsigned char * pieceCount = Pos.GetMaterial();
@@ -939,8 +934,7 @@ Engine::Score(int alpha, int beta)
 // Engine::ScorePawnStructure
 //   Fill in the provided pawnTableEntryT structure with pawn structure
 //   scoring information, using the pawn hash table wherever possible.
-void
-Engine::ScorePawnStructure(pawnTableEntryT * pawnEntry)
+void Engine::ScorePawnStructure(pawnTableEntryT * pawnEntry)
 {
     unsigned int pawnhash = Pos.PawnHashValue();
     // We only use 32-bit hash values, so without further safety checks
@@ -1166,8 +1160,7 @@ Engine::ScorePawnStructure(pawnTableEntryT * pawnEntry)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::IsMatingScore
 //   Returns true if the score indicates the side to move will checkmate.
-inline bool
-Engine::IsMatingScore(int score)
+bool Engine::IsMatingScore(int score)
 {
     return (score > (Infinity - (int)ENGINE_MAX_PLY));
 }
@@ -1175,8 +1168,7 @@ Engine::IsMatingScore(int score)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::IsGettingMatedScore
 //   Returns true if the score indicates the side to move will be checkmated.
-inline bool
-Engine::IsGettingMatedScore(int score)
+bool Engine::IsGettingMatedScore(int score)
 {
     return (score < (-Infinity + (int)ENGINE_MAX_PLY));
 }
@@ -1184,8 +1176,7 @@ Engine::IsGettingMatedScore(int score)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::DoMove
 //   Make the specified move in a search.
-inline void
-Engine::DoMove(simpleMoveT * sm)
+void Engine::DoMove(simpleMoveT * sm)
 {
     PushRepeat(&Pos);
     Pos.DoSimpleMove(sm);
@@ -1195,8 +1186,7 @@ Engine::DoMove(simpleMoveT * sm)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::UndoMove
 //    Take back the specified move in a search.
-inline void
-Engine::UndoMove(simpleMoveT * sm)
+void Engine::UndoMove(simpleMoveT * sm)
 {
     PopRepeat();
     Pos.UndoSimpleMove(sm);
@@ -1206,8 +1196,7 @@ Engine::UndoMove(simpleMoveT * sm)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::PushRepeat
 //    Remember the current position on the repetition stack.
-inline void
-Engine::PushRepeat(Position * pos)
+void Engine::PushRepeat(Position * pos)
 {
     repeatT * rep = &(RepStack[RepStackSize]);
     rep->hash = pos->HashValue();
@@ -1220,8 +1209,7 @@ Engine::PushRepeat(Position * pos)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::PopRepeat
 //   Pops the last entry off the repetition stack.
-inline void
-Engine::PopRepeat(void)
+void Engine::PopRepeat()
 {
     ASSERT(RepStackSize > 0);
     RepStackSize--;
@@ -1231,8 +1219,7 @@ Engine::PopRepeat(void)
 // Engine::NoMatingMaterial
 //   Returns true if the position is a certain draw through neither
 //   side having mating material.
-bool
-Engine::NoMatingMaterial(void)
+bool Engine::NoMatingMaterial()
 {
     unsigned int npieces = Pos.TotalMaterial();
 
@@ -1260,8 +1247,7 @@ Engine::NoMatingMaterial(void)
 // Engine::FiftyMoveDraw
 //   Returns  true if a draw has been reached through fifty full
 //   moves since the last capture or pawn move.
-bool
-Engine::FiftyMoveDraw(void)
+bool Engine::FiftyMoveDraw()
 {
     if(RepStackSize < 100)
     {
@@ -1287,11 +1273,7 @@ Engine::FiftyMoveDraw(void)
         }
         plycount++;
     }
-    if(plycount >= 100)
-    {
-        return true;
-    }
-    return false;
+    return (plycount >= 100);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1299,8 +1281,7 @@ Engine::FiftyMoveDraw(void)
 //   Returns the number if times the current position has been reached,
 //   with the same side to move, castling and en passant settings.
 //   The current occurrence is included in the returned count.
-unsigned int
-Engine::RepeatedPosition(void)
+unsigned int Engine::RepeatedPosition()
 {
     unsigned int hash = Pos.HashValue();
     unsigned int pawnhash = Pos.PawnHashValue();
@@ -1333,8 +1314,7 @@ Engine::RepeatedPosition(void)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::SetHashTableKilobytes
 //   Set the transposition table size in kilobytes.
-void
-Engine::SetHashTableKilobytes(unsigned int size)
+void Engine::SetHashTableKilobytes(unsigned int size)
 {
     // Compute the number of entries, which must be even:
     unsigned int bytes = size * 1024;
@@ -1354,8 +1334,7 @@ Engine::SetHashTableKilobytes(unsigned int size)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::SetPawnTableKilobytes
 //   Set the pawn structure hash table size in kilobytes.
-void
-Engine::SetPawnTableKilobytes(unsigned int size)
+void Engine::SetPawnTableKilobytes(unsigned int size)
 {
     // Compute the number of entries:
     unsigned int bytes = size * 1024;
@@ -1371,8 +1350,7 @@ Engine::SetPawnTableKilobytes(unsigned int size)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::ClearHashTable
 //   Clear the transposition table.
-void
-Engine::ClearHashTable(void)
+void Engine::ClearHashTable()
 {
     for(unsigned int i = 0; i < TranTableSize; i++)
     {
@@ -1384,8 +1362,7 @@ Engine::ClearHashTable(void)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::ClearPawnTable
 //   Clear the pawn structure hash table.
-void
-Engine::ClearPawnTable(void)
+void Engine::ClearPawnTable()
 {
     for(unsigned int i = 0; i < PawnTableSize; i++)
     {
@@ -1447,8 +1424,7 @@ inline void tte_GetBestMove(transTableEntryT * tte, simpleMoveT * bestMove)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::StoreHash
 //   Store the score for the current position in the transposition table.
-void
-Engine::StoreHash(int depth, scoreFlagT ttFlag, int score,
+void Engine::StoreHash(int depth, scoreFlagT ttFlag, int score,
                   simpleMoveT * bestMove, bool isOnlyMove)
 {
     if(TranTableSize == 0)
@@ -1574,8 +1550,7 @@ Engine::StoreHash(int depth, scoreFlagT ttFlag, int score,
 // Engine::ProbeHash
 //    Probe the transposition table for the current position.
 //
-scoreFlagT
-Engine::ProbeHash(int depth, int * score, simpleMoveT * bestMove, bool * isOnlyMove)
+scoreFlagT Engine::ProbeHash(int depth, int * score, simpleMoveT * bestMove, bool * isOnlyMove)
 {
     // Clear the best move:
     if(bestMove != NULL)
@@ -1669,8 +1644,7 @@ Engine::ProbeHash(int depth, int * score, simpleMoveT * bestMove, bool * isOnlyM
 // Engine::SetPosition
 //   Set the current position. If the new position parameter
 //   is NULL, the standard starting position is used.
-void
-Engine::SetPosition(Position * newpos)
+void Engine::SetPosition(Position * newpos)
 {
     // Delete old game moves:
     for(unsigned int i = 0; i < NumGameMoves; i++)
@@ -1712,8 +1686,7 @@ Engine::SetPosition(Position * newpos)
 //   Returns the score (in centipawns, for the side to move) and
 //   reorders the move list (if supplied) so the best move is at
 //   the start of the list.
-int
-Engine::Think(MoveList * mlist)
+int Engine::Think(MoveList * mlist)
 {
     Elapsed.restart();
     NodeCount = 0;
@@ -1860,8 +1833,7 @@ Engine::Think(MoveList * mlist)
     return bestScore;
 }
 
-int
-Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
+int Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
 {
     ASSERT(depth >= 1);
 
@@ -1947,8 +1919,7 @@ Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
 // Engine::Search
 //   Internal Search routine, used at every depth except
 //   the root position.
-int
-Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
+int Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
 {
     SetPVLength();
 
@@ -2329,8 +2300,7 @@ Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
 // Engine::Quiesce
 //   Search only captures until a stable position is reached
 //   that can be evaluated.
-int
-Engine::Quiesce(int alpha, int beta)
+int Engine::Quiesce(int alpha, int beta)
 {
     NodeCount++;
     QNodeCount++;
@@ -2466,8 +2436,7 @@ Engine::Quiesce(int alpha, int beta)
 //   Evaluates the approximate material result of moving the piece
 //   from the from square (which must not be empty) to the target
 //   square (which may be empty or may hold an enemy piece).
-int
-Engine::SEE(squareT from, squareT target)
+int Engine::SEE(squareT from, squareT target)
 {
     const pieceT * board = Pos.GetBoard();
     SquareList attackers[2];
@@ -2859,8 +2828,7 @@ Engine::SEE(squareT from, squareT target)
 //      (3) Other non-captures (by history heuristic, 0 <= score < EMH);
 //      (4) Losing captures (ordered by SEE value, score < 0).
 //   where EMH = ENGINE_MAX_HISTORY is the history value threshold.
-void
-Engine::ScoreMoves(MoveList * mlist)
+void Engine::ScoreMoves(MoveList * mlist)
 {
     for(unsigned int i = 0; (int) i < mlist->size(); i++)
     {
@@ -2893,8 +2861,7 @@ Engine::ScoreMoves(MoveList * mlist)
 // Engine::Output
 //    Prints a formatted string (as passed to printf) to standard output
 //    and the the log file if one is being used.
-void
-Engine::Output(const char * format, ...)
+void Engine::Output(const char * format, ...)
 {
     va_list ap;
     va_start(ap, format);
@@ -2909,8 +2876,7 @@ Engine::Output(const char * format, ...)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::PrintPV
 //   Print the current depth, score and principal variation.
-void
-Engine::PrintPV(unsigned int depth, int score, const char * note)
+void Engine::PrintPV(unsigned int depth, int score, const char * note)
 {
     if(! PostInfo)
     {
@@ -2978,8 +2944,7 @@ Engine::PrintPV(unsigned int depth, int score, const char * note)
 // Engine::OutOfTime
 //   Returns true if the search time limit has been reached.
 //   "Out Of Time" is also the name of a great R.E.M. album. :-)
-bool
-Engine::OutOfTime()
+bool Engine::OutOfTime()
 {
     if(IsOutOfTime)
     {
@@ -3019,8 +2984,7 @@ Engine::OutOfTime()
 // Engine::PerfTest
 //   Returns the number of leaf node moves when generating, making and
 //   unmaking every move to the specified depth from the current position.
-unsigned int
-Engine::PerfTest(unsigned int depth)
+unsigned int Engine::PerfTest(unsigned int depth)
 {
     if(depth <= 0)
     {
@@ -3039,6 +3003,11 @@ Engine::PerfTest(unsigned int depth)
     return nmoves;
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Engine::UpdatePV
+//   Updates the principal variation at the current Ply to
+//   include the specified move.
+
 void Engine::UpdatePV(simpleMoveT * sm)
 {
     if(Ply >= ENGINE_MAX_PLY - 1)
@@ -3056,5 +3025,133 @@ void Engine::UpdatePV(simpleMoveT * sm)
         PV[Ply].move[j] = PV[Ply + 1].move[j];
     }
     PV[Ply].length = PV[Ply + 1].length;
+}
+
+void Engine::SetPVLength()
+{
+    if(Ply < ENGINE_MAX_PLY - 1)
+    {
+        PV[Ply].length = Ply;
+    }
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// History table:
+//   This is a table of values indexed by moving piece and
+//   target square, indicating the historical success of each move
+//   as measured by the frequency of "good" (better than alpha)
+//   scores. It is used to order non-capture moves after killers.
+
+void Engine::HalveHistoryValues()
+{
+    // Output("# Halving history values\n");
+    for(pieceT p = WK; p <= BP; ++p)
+    {
+        for(squareT to = A1; to <= H8; ++to)
+        {
+            History[p][to] /= 2;
+        }
+    }
+}
+
+int Engine::GetHistoryValue(simpleMoveT *sm)
+{
+    pieceT p = sm->movingPiece;
+    squareT to = sm->to;
+    ASSERT(p <= BP  &&  to <= H8);
+    return History[p][to];
+}
+
+void Engine::IncHistoryValue(simpleMoveT *sm, int increment)
+{
+    if(sm->capturedPiece != EMPTY  &&  sm->score >= 0)
+    {
+        return;
+    }
+    if(sm->promote != C_EMPTY  &&  sm->score >= 0)
+    {
+        return;
+    }
+    pieceT p = sm->movingPiece;
+    squareT to = sm->to;
+    ASSERT(p <= BP  &&  to <= H8);
+    History[p][to] += increment;
+    // Halve all history values if this one gets too large, to avoid
+    // non-capture moves getting searched before captures:
+    if(History[p][to] >= ENGINE_MAX_HISTORY)
+    {
+        HalveHistoryValues();
+    }
+}
+
+void Engine::ClearHistoryValues()
+{
+    for(pieceT p = WK; p <= BP; ++p)
+    {
+        for(squareT to = A1; to <= H8; ++to)
+        {
+            History[p][to] = 0;
+        }
+    }
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Killer moves:
+//   We keep track of two "killer" moves at each ply, moves which
+//   are not captures or promotions (as they get ordered first) but
+//   were good enough to cause a beta cutoff. Killer moves get
+//   ordered after good captures but before non-killer noncaptures,
+//   which are ordered using the history table (see below).
+//
+//   Only noncaptures and non-promotion moves can be killer moves, but
+//   we make an exception for those that have a negative score (meaning
+//   they lose material according to the static exchange evaluator),
+//   since they would otherwise be searched last after all noncaptures.
+
+bool Engine::IsKillerMove(simpleMoveT *sm)
+{
+    simpleMoveT * killer0 = &(KillerMove[Ply][0]);
+    if(killer0->from == sm->from  &&  killer0->to == sm->to
+            &&  killer0->movingPiece == sm->movingPiece)
+    {
+        return true;
+    }
+    simpleMoveT * killer1 = &(KillerMove[Ply][1]);
+    if(killer1->from == sm->from  &&  killer1->to == sm->to
+            &&  killer1->movingPiece == sm->movingPiece)
+    {
+        return true;
+    }
+    return false;
+}
+
+void Engine::AddKillerMove(simpleMoveT *sm)
+{
+    if(sm->capturedPiece != EMPTY  &&  sm->score >= 0)
+    {
+        return;
+    }
+    if(sm->promote != C_EMPTY  &&  sm->score >= 0)
+    {
+        return;
+    }
+    simpleMoveT * killer0 = &(KillerMove[Ply][0]);
+    simpleMoveT * killer1 = &(KillerMove[Ply][1]);
+    if(killer0->from == sm->from  &&  killer0->to == sm->to
+            &&  killer0->movingPiece == sm->movingPiece)
+    {
+        return;
+    }
+    *killer1 = *killer0;
+    *killer0 = *sm;
+}
+
+void Engine::ClearKillerMoves()
+{
+    for(unsigned int i = 0; i < ENGINE_MAX_PLY; i++)
+    {
+        KillerMove[i][0].from = NULL_SQUARE;
+        KillerMove[i][1].from = NULL_SQUARE;
+    }
 }
 

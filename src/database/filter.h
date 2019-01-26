@@ -33,6 +33,7 @@ class Filter : public QThread
 {
     Q_OBJECT
 public:
+    typedef short value_type;
     /** Operator for joining filters */
 
     void runSingleSearch(Search* s, FilterOperator op);
@@ -52,20 +53,20 @@ public:
     Database* database();
     const Database* database() const;
     /** Add or remove game @p game . Does nothing if the game is not in filter. */
-    void set(GameId game, int value);
+    void set(GameId game, Filter::value_type value);
     /** Set all games in the filter to the same value. */
-    void setAll(int value);
+    void setAll(value_type value);
     /** @return true if the game is in the filter. */
     bool contains(GameId game) const;
     /** @return the ply at which the game in the filter is. Zero if game is not in filter */
-    int gamePosition(GameId game) const;
+    value_type gamePosition(GameId game) const;
     /** @return number of games in the filter. */
     inline int count() const { return m_count; }
     /** @return the size of the filter. */
     unsigned int size() const;
     /** Resize the filter to the specified size, keeping current content. If the filter is increased,
     added game will be initialized to @p includeNew (by default - not in filter). */
-    void resize(int newsize, bool includeNew = 0);
+    void resize(unsigned int newsize, bool includeNew = 0);
     /** Reverse the filter (complement set). */
     void invert();
     /** Executes search 'search' on database m_database,
@@ -79,7 +80,7 @@ signals:
 protected:
 
     int m_count;
-    QVector<int>* m_vector;
+    QVector<value_type>* m_vector;
     Database* m_database;
 
     /* Search statistics variables */

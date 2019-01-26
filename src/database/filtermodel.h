@@ -88,7 +88,7 @@ private slots:
     void endSearch();
 
 private:
-    void addColumns(QStringList tags);
+    void addColumns(const QStringList &tags);
     void setupColumns();
 
     /** A pointer to filter on which the model opperates */

@@ -14,7 +14,7 @@
 #endif // _MSC_VER
 
 BoardSetupToolButton::BoardSetupToolButton(QWidget *parent) :
-    QLabel(parent)
+    QLabel(parent), m_piece(Empty)
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     setMinimumSize(QSize(10, 10));
@@ -39,7 +39,7 @@ QPixmap BoardSetupToolButton::BasePixmap() const
     return m_pixmap;
 }
 
-void BoardSetupToolButton::setBasePixmap(QPixmap pm)
+void BoardSetupToolButton::setBasePixmap(const QPixmap& pm)
 {
     if (pm.isNull())
     {
@@ -69,8 +69,8 @@ void BoardSetupToolButton::resizeEvent(QResizeEvent * e)
     int w = e->size().width()-4;
     int h = e->size().height()-4;
 
-    float r = m_piece!=Empty ? m_pixmap.devicePixelRatio() : 1.0;
-    QPixmap p1 = m_pixmap.scaled(w*r, h*r, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    qreal r = m_piece!=Empty ? m_pixmap.devicePixelRatio() : 1.0;
+    QPixmap p1 = m_pixmap.scaled(r*w, r*h, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     if (!p1.isNull())
     {

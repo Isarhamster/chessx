@@ -146,7 +146,7 @@ void DownloadManager::execute(QStringList args)
 
 void DownloadManager::downloadFinished()
 {
-    QNetworkReply* reply = (QNetworkReply*) sender();
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 
     if(reply)
     {

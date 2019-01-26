@@ -28,22 +28,22 @@ public:
     Players date of birth, if it is known.
     */
     PartialDate dateOfBirth() const;
-    void setDateOfBirth(const PartialDate d);
+    void setDateOfBirth(const PartialDate &d);
     PartialDate dateOfDeath() const;
-    void setDateOfDeath(const PartialDate d);
+    void setDateOfDeath(const PartialDate &d);
     QString country() const;
-    void setCountry(const QString s);
+    void setCountry(const QString &s);
     QString title() const;
-    void setTitle(const QString s);
+    void setTitle(const QString &s);
     int firstEloListIndex();
-    void setFirstEloListIndex(const int ix);
+    void setFirstEloListIndex(int ix);
     int lastEloListIndex();
-    void setLastEloListIndex(const int ix);
+    void setLastEloListIndex(int ix);
     /**
     players elo from the given elo list.
     */
-    int elo(const int eloList) const;
-    void setElo(const int eloList, const int elo);
+    int elo(int eloList) const;
+    void setElo(const int eloList, int elo);
     /**
     the estimated elo for the player at the elo list
     with the given index: if the player is not in the list,
@@ -51,23 +51,23 @@ public:
     else the overall estimate is used.
     Non-const due to caching.
     */
-    int estimatedElo(const int eloListIndex);
+    int estimatedElo(int eloListIndex);
     /**
     Like estimatedElo(int), but no caching is used.
     */
-    int estimatedEloNoCache(const int eloListIndex) const;
+    int estimatedEloNoCache(int eloListIndex) const;
     int peakElo() const;
     void setPeakElo(const int elo);
     /**
     the overall estimated elo for the player
     */
     int estimatedElo() const;
-    void setEstimatedElo(const int elo);
+    void setEstimatedElo(int elo);
     QImage photo() const;
     void setPhoto(const QImage img);
     QString biography() const;
-    void setBiography(const QString str);
-    void appendToBiography(const QString str);
+    void setBiography(const QString &str);
+    void appendToBiography(const QString &str);
     /**
     returns the elo list data as a QList<qint32>.
     Useful for writing the data out to a QDataStream.
@@ -77,7 +77,7 @@ public:
     sets the elo list data from a QList<qint32>.
     Useful for reading in the data from a QDataStream.
     */
-    void eloFromListData(const QList<qint32> eloListData);
+    void eloFromListData(const QList<qint32> &eloListData);
 
 private:
     PartialDate m_dateOfBirth;

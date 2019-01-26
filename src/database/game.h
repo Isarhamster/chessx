@@ -415,11 +415,13 @@ private:
         void remove()
         {
             parentNode = previousNode = nextNode = NO_MOVE;
+            variations.clear();
             m_ply |= 0x8000;
         }
         MoveNode()
         {
             parentNode = nextNode = previousNode = NO_MOVE;
+            variations.clear();
             m_ply = 0;
         }
         void SetPly(short ply) { Q_ASSERT(m_ply<0x7FFF); m_ply = ply; }

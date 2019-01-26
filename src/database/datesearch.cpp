@@ -18,7 +18,7 @@ DateSearch::DateSearch()
     m_minDate = m_maxDate = PartialDate();
 }
 
-DateSearch::DateSearch(PartialDate minDate, PartialDate maxDate)
+DateSearch::DateSearch(const PartialDate& minDate, const PartialDate& maxDate)
 {
     Q_ASSERT(minDate < maxDate);
 
@@ -36,7 +36,7 @@ PartialDate DateSearch::maxDate() const
     return m_maxDate;
 }
 
-void DateSearch::setDateRange(PartialDate minDate, PartialDate maxDate)
+void DateSearch::setDateRange(const PartialDate& minDate, const PartialDate& maxDate)
 {
     Q_ASSERT(minDate < maxDate);
     m_minDate = minDate;

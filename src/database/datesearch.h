@@ -18,13 +18,13 @@ public:
     /** Standard constructor. */
     DateSearch();
     /** Constructor for searching games in given time period. */
-    DateSearch(PartialDate minDate, PartialDate maxDate);
+    DateSearch(const PartialDate &minDate, const PartialDate &maxDate);
     /** @return beginning of the acceptable period. */
     PartialDate minDate() const;
     /** @return end of the acceptable period. */
     PartialDate maxDate() const;
     /** Sets whole period. */
-    void setDateRange(PartialDate minDate, PartialDate maxDate);
+    void setDateRange(const PartialDate &minDate, const PartialDate &maxDate);
     /** Return true if the game at index matches the search */
     virtual int matches(GameId index) const;
 

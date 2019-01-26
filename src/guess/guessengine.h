@@ -165,37 +165,37 @@ private:
     int Quiesce(int alpha, int beta);
     int SEE(squareT from, squareT to);
     void ScoreMoves(MoveList * mlist);
-    inline void DoMove(simpleMoveT * sm);
-    inline void UndoMove(simpleMoveT * sm);
-    inline void SetPVLength(void);
-    inline void UpdatePV(simpleMoveT * sm);
+    void DoMove(simpleMoveT * sm);
+    void UndoMove(simpleMoveT * sm);
+    void SetPVLength();
+    void UpdatePV(simpleMoveT * sm);
     void Output(const char * format, ...);
     void PrintPV(unsigned int depth, int score)
     {
         PrintPV(depth, score, "");
     }
     void PrintPV(unsigned int depth, int score, const char * annotation);
-    inline void PushRepeat(Position * pos);
-    inline void PopRepeat(void);
+    void PushRepeat(Position * pos);
+    void PopRepeat();
     void StoreHash(int depth, scoreFlagT flag, int score,
                    simpleMoveT * bestmove, bool isOnlyMove);
     scoreFlagT ProbeHash(int depth, int * score, simpleMoveT * bestMove, bool * isOnlyMove);
 
-    inline void ClearKillerMoves(void);
-    inline void AddKillerMove(simpleMoveT * sm);
-    inline bool IsKillerMove(simpleMoveT * sm);
+    void ClearKillerMoves();
+    void AddKillerMove(simpleMoveT * sm);
+    bool IsKillerMove(simpleMoveT * sm);
 
-    inline void ClearHistoryValues(void);
-    inline void HalveHistoryValues(void);
-    inline void IncHistoryValue(simpleMoveT * sm, int increment);
-    inline int GetHistoryValue(simpleMoveT * sm);
+    void ClearHistoryValues();
+    void HalveHistoryValues();
+    void IncHistoryValue(simpleMoveT * sm, int increment);
+    int GetHistoryValue(simpleMoveT * sm);
 
     int Score(int alpha, int beta);
     void ScorePawnStructure(pawnTableEntryT * pawnEntry);
     bool IsMatingScore(int score);
     bool IsGettingMatedScore(int score);
 
-    bool OutOfTime(void);
+    bool OutOfTime();
     void AdjustTime(bool easyMove);
 
 public:
@@ -259,7 +259,7 @@ public:
     {
         PostInfo = b;
     }
-    bool InPostMode(void)
+    bool InPostMode()
     {
         return PostInfo;
     }
@@ -267,7 +267,7 @@ public:
     {
         XBoardMode = b;
     }
-    bool InXBoardMode(void)
+    bool InXBoardMode()
     {
         return XBoardMode;
     }
@@ -281,17 +281,17 @@ public:
     }
     void SetHashTableKilobytes(unsigned int sizeKB);
     void SetPawnTableKilobytes(unsigned int sizeKB);
-    unsigned int NumHashTableEntries(void)
+    unsigned int NumHashTableEntries()
     {
         return TranTableSize;
     }
-    unsigned int NumPawnTableEntries(void)
+    unsigned int NumPawnTableEntries()
     {
         return PawnTableSize;
     }
-    void ClearHashTable(void);
-    void ClearPawnTable(void);
-    void ClearHashTables(void)
+    void ClearHashTable();
+    void ClearPawnTable();
+    void ClearHashTables()
     {
         ClearHashTable();
         ClearPawnTable();
@@ -303,23 +303,23 @@ public:
         CallbackData = data;
     }
 
-    unsigned int GetNodeCount(void)
+    unsigned int GetNodeCount()
     {
         return NodeCount;
     }
 
-    bool NoMatingMaterial(void);
-    bool FiftyMoveDraw(void);
-    unsigned int RepeatedPosition(void);
+    bool NoMatingMaterial();
+    bool FiftyMoveDraw();
+    unsigned int RepeatedPosition();
 
     void SetPosition(Position * pos);
-    Position * GetPosition(void)
+    Position * GetPosition()
     {
         return &RootPos;
     }
 
-    int Score(void);
-    principalVarT * GetPV(void)
+    int Score();
+    principalVarT * GetPV()
     {
         return &(PV[0]);
     }
@@ -327,149 +327,6 @@ public:
 
     int Think(MoveList * mlist);
 };
-
-
-inline void
-Engine::SetPVLength(void)
-{
-    if(Ply < ENGINE_MAX_PLY - 1)
-    {
-        PV[Ply].length = Ply;
-    }
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Engine::UpdatePV
-//   Updates the principal variation at the current Ply to
-//   include the specified move.
-void UpdatePV(simpleMoveT * sm);
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Killer moves:
-//   We keep track of two "killer" moves at each ply, moves which
-//   are not captures or promotions (as they get ordered first) but
-//   were good enough to cause a beta cutoff. Killer moves get
-//   ordered after good captures but before non-killer noncaptures,
-//   which are ordered using the history table (see below).
-//
-//   Only noncaptures and non-promotion moves can be killer moves, but
-//   we make an exception for those that have a negative score (meaning
-//   they lose material according to the static exchange evaluator),
-//   since they would otherwise be searched last after all noncaptures.
-
-inline void
-Engine::ClearKillerMoves(void)
-{
-    for(unsigned int i = 0; i < ENGINE_MAX_PLY; i++)
-    {
-        KillerMove[i][0].from = NULL_SQUARE;
-        KillerMove[i][1].from = NULL_SQUARE;
-    }
-}
-
-inline void
-Engine::AddKillerMove(simpleMoveT * sm)
-{
-    if(sm->capturedPiece != EMPTY  &&  sm->score >= 0)
-    {
-        return;
-    }
-    if(sm->promote != C_EMPTY  &&  sm->score >= 0)
-    {
-        return;
-    }
-    simpleMoveT * killer0 = &(KillerMove[Ply][0]);
-    simpleMoveT * killer1 = &(KillerMove[Ply][1]);
-    if(killer0->from == sm->from  &&  killer0->to == sm->to
-            &&  killer0->movingPiece == sm->movingPiece)
-    {
-        return;
-    }
-    *killer1 = *killer0;
-    *killer0 = *sm;
-}
-
-inline bool
-Engine::IsKillerMove(simpleMoveT * sm)
-{
-    simpleMoveT * killer0 = &(KillerMove[Ply][0]);
-    if(killer0->from == sm->from  &&  killer0->to == sm->to
-            &&  killer0->movingPiece == sm->movingPiece)
-    {
-        return true;
-    }
-    simpleMoveT * killer1 = &(KillerMove[Ply][1]);
-    if(killer1->from == sm->from  &&  killer1->to == sm->to
-            &&  killer1->movingPiece == sm->movingPiece)
-    {
-        return true;
-    }
-    return false;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// History table:
-//   This is a table of values indexed by moving piece and
-//   target square, indicating the historical success of each move
-//   as measured by the frequency of "good" (better than alpha)
-//   scores. It is used to order non-capture moves after killers.
-
-inline void
-Engine::ClearHistoryValues(void)
-{
-    for(pieceT p = WK; p <= BP; ++p)
-    {
-        for(squareT to = A1; to <= H8; ++to)
-        {
-            History[p][to] = 0;
-        }
-    }
-}
-
-inline void
-Engine::HalveHistoryValues(void)
-{
-    // Output("# Halving history values\n");
-    for(pieceT p = WK; p <= BP; ++p)
-    {
-        for(squareT to = A1; to <= H8; ++to)
-        {
-            History[p][to] /= 2;
-        }
-    }
-}
-
-inline void
-Engine::IncHistoryValue(simpleMoveT * sm, int increment)
-{
-    if(sm->capturedPiece != EMPTY  &&  sm->score >= 0)
-    {
-        return;
-    }
-    if(sm->promote != C_EMPTY  &&  sm->score >= 0)
-    {
-        return;
-    }
-    pieceT p = sm->movingPiece;
-    squareT to = sm->to;
-    ASSERT(p <= BP  &&  to <= H8);
-    History[p][to] += increment;
-    // Halve all history values if this one gets too large, to avoid
-    // non-capture moves getting searched before captures:
-    if(History[p][to] >= ENGINE_MAX_HISTORY)
-    {
-        HalveHistoryValues();
-    }
-}
-
-inline int
-Engine::GetHistoryValue(simpleMoveT * sm)
-{
-    pieceT p = sm->movingPiece;
-    squareT to = sm->to;
-    ASSERT(p <= BP  &&  to <= H8);
-    return History[p][to];
-}
 
 } // End namespace Guess
 
