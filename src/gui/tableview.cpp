@@ -51,7 +51,7 @@ TableView::~TableView()
 
 void TableView::wheelEvent(QWheelEvent* e)
 {
-    int button = e->modifiers() & Qt::KeyboardModifierMask;
+    unsigned int button = e->modifiers() & Qt::KeyboardModifierMask;
     if (button == (Qt::ControlModifier|Qt::AltModifier))
     {
         QFont f = font();
@@ -59,7 +59,7 @@ void TableView::wheelEvent(QWheelEvent* e)
         int fontSize = f.pointSize() + n;
         setFontSize(fontSize);
     }
-    QWidget::wheelEvent(e);
+    QTableView::wheelEvent(e);
 }
 
 QStyleOptionViewItem TableView::viewOptions() const

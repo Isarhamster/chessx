@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>691</width>
-    <height>424</height>
+    <height>430</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="tabMessages">
       <attribute name="title">
@@ -100,7 +100,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_16">
           <item>
-           <widget class="QListWidget" name="listHistory">
+           <widget class="ListWidgetEx" name="listHistory">
             <property name="contextMenuPolicy">
              <enum>Qt::CustomContextMenu</enum>
             </property>
@@ -122,7 +122,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_15">
           <item>
-           <widget class="QListWidget" name="listFinger">
+           <widget class="ListWidgetEx" name="listFinger">
             <property name="selectionMode">
              <enum>QAbstractItemView::NoSelection</enum>
             </property>
@@ -139,7 +139,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QListWidget" name="listGames">
+        <widget class="ListWidgetEx" name="listGames">
          <property name="contextMenuPolicy">
           <enum>Qt::CustomContextMenu</enum>
          </property>
@@ -159,7 +159,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QListWidget" name="listRelay">
+        <widget class="ListWidgetEx" name="listRelay">
          <property name="contextMenuPolicy">
           <enum>Qt::CustomContextMenu</enum>
          </property>
@@ -181,7 +181,7 @@
        <item>
         <layout class="QHBoxLayout" name="layout_puzzle">
          <item>
-          <widget class="QListWidget" name="listPuzzle">
+          <widget class="ListWidgetEx" name="listPuzzle">
            <property name="contextMenuPolicy">
             <enum>Qt::CustomContextMenu</enum>
            </property>
@@ -224,7 +224,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_9">
           <item>
-           <widget class="QListWidget" name="listPuzzlebotMessages"/>
+           <widget class="ListWidgetEx" name="listPuzzlebotMessages"/>
           </item>
          </layout>
         </widget>
@@ -385,7 +385,7 @@
                  </item>
                 </layout>
                </widget>
-               <widget class="QListWidget" name="listSeeks">
+               <widget class="ListWidgetEx" name="listSeeks">
                 <property name="contextMenuPolicy">
                  <enum>Qt::CustomContextMenu</enum>
                 </property>
@@ -565,7 +565,7 @@
             </layout>
            </item>
            <item>
-            <widget class="QListWidget" name="listNoPlay"/>
+            <widget class="ListWidgetEx" name="listNoPlay"/>
            </item>
           </layout>
          </widget>
@@ -591,6 +591,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ListWidgetEx</class>
+   <extends>QListWidget</extends>
+   <header>listwidgetex.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../resources.qrc"/>
  </resources>

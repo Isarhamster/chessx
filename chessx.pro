@@ -241,7 +241,8 @@ HEADERS += src/database/board.h \
     src/database/ctg.h \
     src/database/searchlist.h \
     src/database/filteroperator.h \
-    src/gui/gamelistsortmodel.h
+    src/gui/gamelistsortmodel.h \
+    src/gui/listwidgetex.h
 
 SOURCES += src/database/board.cpp \
 	src/database/game.cpp \
@@ -390,7 +391,8 @@ SOURCES += src/database/board.cpp \
     src/quazip/zip.cpp \
     src/database/arenabook.cpp \
     src/database/searchlist.cpp \
-    src/gui/gamelistsortmodel.cpp
+    src/gui/gamelistsortmodel.cpp \
+    src/gui/listwidgetex.cpp
 
 TEMPLATE = app
 INCLUDEPATH += src/database
