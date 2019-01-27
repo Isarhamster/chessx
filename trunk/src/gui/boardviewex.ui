@@ -232,7 +232,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="listVariations">
+         <widget class="ListWidgetEx" name="listVariations">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -301,6 +301,11 @@
    <class>DigitalClock</class>
    <extends>QLCDNumber</extends>
    <header>digitalclock.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ListWidgetEx</class>
+   <extends>QListWidget</extends>
+   <header>listwidgetex.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
