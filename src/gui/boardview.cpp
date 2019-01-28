@@ -115,7 +115,7 @@ void BoardView::setBoard(const Board& value, Square from, Square to, bool atLine
         updateGuess(m_hoverSquare);
     }
     updateThreat();
-    update();
+    repaint();
 }
 
 void BoardView::setStoredMove(Square from, Square to)
