@@ -53,6 +53,7 @@ bool UCIEngine::startAnalysis(const Board& board, int nv, const EngineParameter 
         line = "";
     }
     m_line = line;
+    m_line.remove('=');
 
     m_chess960 = board.chess960();
     if (line.isEmpty())
