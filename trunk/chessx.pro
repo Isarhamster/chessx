@@ -536,6 +536,7 @@ DISTFILES += \
     mac_osx/svnlist \
     mac_osx/fix_paths.sh \
     mac_osx/mac_deploy_dyn \
-    mac_osx/qt_menu.nib
+    mac_osx/qt_menu.nib \
+    data/lang/readme-lang.txt
 
 
