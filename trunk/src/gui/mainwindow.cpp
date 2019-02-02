@@ -366,6 +366,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_mainAnalysis = new AnalysisWidget(this);
     m_mainAnalysis->setObjectName("Analysis");
     setupAnalysisWidget(analysisDock, m_mainAnalysis);
+    addDockWidget(Qt::LeftDockWidgetArea, analysisDock);
 
     /* Analysis Dock 2 */
     DockWidgetEx* analysisDock2 = new DockWidgetEx(tr("Analysis 2"), this);
@@ -374,6 +375,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_secondaryAnalysis = new AnalysisWidget(this);
     m_secondaryAnalysis->setObjectName("Analysis2");
     setupAnalysisWidget(analysisDock2, m_secondaryAnalysis);
+    addDockWidget(Qt::LeftDockWidgetArea, analysisDock2);
 
     /* Randomize */
     srand(time(0));
