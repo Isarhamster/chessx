@@ -71,6 +71,7 @@ void BoardViewEx::setTime(bool white, QString t)
     DigitalClock* lcd = top ? ui->timeTop : ui->timeBottom;
     lcd->StopCountDown();
     lcd->setTime(t);
+    lcd->repaint();
 }
 
 void BoardViewEx::startTime(bool white)
