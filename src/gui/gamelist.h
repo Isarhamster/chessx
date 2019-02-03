@@ -67,7 +67,7 @@ public slots:
     /** Select and show current event and player in the list */
     void slotFilterListByEventPlayer(QString player, QString event);
     /** Select and show current player and ECO in the list */
-    void slotFilterListByEcoPlayer(QString tag, QString eco, QString player);
+    void slotFilterListByEcoPlayer(QString tag, QString eco, QString player, QString result);
     /** Select the next visible game from the list */
     bool selectNextGame();
     /** Select a random but visible game from the list */

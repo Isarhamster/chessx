@@ -27,7 +27,7 @@ public:
 signals:
     void filterRequest(QString ts);
     void renameRequest(QString ts);
-    void filterEcoPlayerRequest(QString tag, QString eco, QString player);
+    void filterEcoPlayerRequest(QString tag, QString eco, QString player, QString result);
 
 public slots:
     void findPlayers(const QString& s);

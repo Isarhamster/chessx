@@ -181,6 +181,21 @@ void PlayerInfo::update()
     qSwap(m_result[Black][WhiteWin], m_result[Black][BlackWin]);
 }
 
+QString PlayerInfo::formattedScore() const
+{
+    int total[4];
+    for(int i = 0; i < 4; ++i)
+    {
+        total[i] = m_result[White][i] + m_result[Black][i];
+    }
+    int count = m_count[White] + m_count[Black];
+    QString ref1 = QString("<a href='result-white:%1#").arg(m_name);
+    QString ref2 = QString("<a href='result-black:%1#").arg(m_name);
+    return QCoreApplication::translate("PlayerInfo", "Total: %1<br>White: %2<br>Black: %3<br>")
+           .arg(formattedScore(total, count))
+           .arg(formattedScore(m_result[White], m_count[White], ref1, true))
+           .arg(formattedScore(m_result[Black], m_count[Black], ref2, false));
+}
 
 QString PlayerInfo::formattedScore(const int result[4], int count) const
 {
@@ -206,19 +221,31 @@ QString PlayerInfo::formattedScore(const int result[4], int count) const
     return score;
 }
 
-
-QString PlayerInfo::formattedScore() const
+QString PlayerInfo::formattedScore(const int result[4], int count, QString ref, bool mode) const
 {
-    int total[4];
-    for(int i = 0; i < 4; ++i)
+    if(!count)
     {
-        total[i] = m_result[White][i] + m_result[Black][i];
+        return QCoreApplication::translate("PlayerInfo", "<i>no games</i>");
     }
-    int count = m_count[White] + m_count[Black];
-    return QCoreApplication::translate("PlayerInfo", "Total: %1<br>White: %2<br>Black: %3<br>")
-           .arg(formattedScore(total, count))
-           .arg(formattedScore(m_result[White], m_count[White]))
-           .arg(formattedScore(m_result[Black], m_count[Black]));
+    QString score = "<b>";
+    QChar scoresign[4] = {'*', '+', '=', '-'};
+    QString format = "%1%2'>%3%4</a>";
+    QStringList modes;
+    score += format.arg(ref).arg(mode ? "1-0":"0-1").arg(scoresign[WhiteWin]).arg(result[WhiteWin]);
+    score += " &nbsp;";
+    score += format.arg(ref).arg("1/2-1/2").arg(scoresign[Draw]).arg(result[Draw]);
+    score += " &nbsp;";
+    score += format.arg(ref).arg(!mode ? "1-0":"0-1").arg(scoresign[BlackWin]).arg(result[BlackWin]);
+    if(result[ResultUnknown])
+    {
+        score += " &nbsp;";
+        score += format.arg(ref).arg("\\*").arg(scoresign[ResultUnknown]).arg(result[ResultUnknown]);
+    }
+    if(count - result[ResultUnknown])
+        score += QString(" &nbsp;(%1%)").
+                 arg((100.0 * result[WhiteWin] + 50.0 * result[Draw]) / (count - result[ResultUnknown]), 1, 'f', 1);
+    score += "</b>";
+    return score;
 }
 
 void PlayerInfo::reset()

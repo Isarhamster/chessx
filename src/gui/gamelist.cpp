@@ -420,12 +420,32 @@ void GameList::slotFilterListByPlayer(QString s)
     emit raiseRequest();
 }
 
-void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString player)
+void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString player, QString result)
 {
     m_model->filter()->setAll(1); // ??
-    Search* ts = new TagSearch(m_model->filter()->database(),  tag, player);
-    Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameECO, eco);
-    ts->AddSearch(ts3, FilterOperator::And);
+    Search* ts = 0;
+    if (!player.isEmpty())
+    {
+        ts = new TagSearch(m_model->filter()->database(),  tag, player);
+    }
+    Search* ts2 = ts;
+    if (!eco.isEmpty())
+    {
+        ts2 = new TagSearch(m_model->filter()->database(), TagNameECO, eco);
+        if (ts)
+        {
+            ts->AddSearch(ts2, FilterOperator::And);
+        }
+        else
+        {
+            ts = ts2;
+        }
+    }
+    if (!result.isEmpty())
+    {
+        Search* ts3 = new TagSearch(m_model->filter()->database(), TagNameResult, result);
+        ts2->AddSearch(ts3, FilterOperator::And);
+    }
     m_model->executeSearch(ts);
     emit raiseRequest();
 }

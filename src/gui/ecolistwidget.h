@@ -27,7 +27,7 @@ public:
 signals:
     void filterRequest(QString ts);
     void filterEcoPlayerRequest(QString tag, QString eco);
-    void filterEcoPlayerRequest(QString tag, QString eco, QString player);
+    void filterEcoPlayerRequest(QString tag, QString eco, QString player, QString result);
 
 public slots:
     void slotSelectECO(const QString& eco);
