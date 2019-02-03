@@ -256,7 +256,7 @@ MainWindow::MainWindow() : QMainWindow(),
     playerListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_P);
     connect(m_playerList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByPlayer(QString)));
     connect(m_playerList, SIGNAL(renameRequest(QString)), SLOT(slotRenamePlayer(QString)));
-    connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString, QString, QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString, QString)));
+    connect(m_playerList, SIGNAL(filterEcoPlayerRequest(QString, QString, QString, QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString, QString, QString)));
     connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_playerList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_playerList, SLOT(slotReconfigure()));
     // playerListDock->hide();
@@ -286,7 +286,7 @@ MainWindow::MainWindow() : QMainWindow(),
     m_menuView->addAction(ecoListDock->toggleViewAction());
     ecoListDock->toggleViewAction()->setShortcut(Qt::CTRL + Qt::ALT + Qt::Key_E);
     connect(m_ecoList, SIGNAL(filterRequest(QString)), m_gameList, SLOT(slotFilterListByEco(QString)));
-    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString, QString, QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString, QString)));
+    connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString, QString, QString, QString)), m_gameList, SLOT(slotFilterListByEcoPlayer(QString, QString, QString, QString)));
     connect(m_ecoList, SIGNAL(filterEcoPlayerRequest(QString, QString)), m_playerList, SLOT(slotSelectPlayer(QString)));
     connect(this, SIGNAL(databaseChanged(DatabaseInfo*)), m_ecoList, SLOT(setDatabase(DatabaseInfo*)));
     connect(this, SIGNAL(reconfigure()), m_ecoList, SLOT(slotReconfigure()));

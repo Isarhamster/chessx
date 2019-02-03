@@ -177,11 +177,15 @@ void ECOListWidget::slotLinkClicked(const QUrl& url)
     if(url.scheme().startsWith("player"))
     {
         QString tag = (url.scheme().contains("white")) ? TagNameWhite : TagNameBlack;
-        emit filterEcoPlayerRequest(tag, ui->detailText->documentTitle(), url.path());
+        emit filterEcoPlayerRequest(tag, ui->detailText->documentTitle(), url.path(), url.fragment());
         emit filterEcoPlayerRequest(url.path(), ui->detailText->documentTitle());
     }
     else if(url.scheme().startsWith("eco"))
     {
         emit filterRequest(url.path());
+    }
+    else if(url.scheme().startsWith("result"))
+    {
+        emit filterEcoPlayerRequest(TagNameECO, ui->detailText->documentTitle(), "", url.path());
     }
 }

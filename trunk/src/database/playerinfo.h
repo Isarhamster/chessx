@@ -72,7 +72,8 @@ private:
     /** Add statistics for game @p index when player has given color. */
     void addGameStats(int index, Color color);
     /** Format score statistics for single color. */
-    QString formattedScore(const int results[4], int count) const;
+    QString formattedScore(const int result[4], int count) const;
+    QString formattedScore(const int results[4], int count, QString ref, bool mode) const;
     int toResult(const QString& res) const;
 
     QString m_name;

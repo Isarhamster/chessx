@@ -203,10 +203,15 @@ void PlayerListWidget::slotLinkClicked(const QUrl& url)
     if(url.scheme().startsWith("eco"))
     {
         QString tag = (url.scheme().contains("white")) ? TagNameWhite : TagNameBlack;
-        emit filterEcoPlayerRequest(tag, url.path(), ui->detailText->documentTitle());
+        emit filterEcoPlayerRequest(tag, url.path(), ui->detailText->documentTitle(), url.fragment());
     }
     else if(url.scheme().startsWith("player"))
     {
         emit filterRequest(url.path()+"#"+url.fragment());
+    }
+    else if(url.scheme().startsWith("result"))
+    {
+        QString tag = (url.scheme().contains("white")) ? TagNameWhite : TagNameBlack;
+        emit filterEcoPlayerRequest(tag, "", ui->detailText->documentTitle(), url.fragment());
     }
 }

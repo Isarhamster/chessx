@@ -168,13 +168,15 @@ QString EcoInfo::formattedScore(const int result[4], int count) const
     }
     QString score = "<b>";
     QChar scoresign[4] = {'*', '+', '=', '-'};
-    for(int i = WhiteWin; i <= BlackWin; ++i)
+    QStringList results;
+    results << "\\*" << "1-0" << "1/2-1/2" << "0-1";
+    int order[] = { WhiteWin, Draw, BlackWin, ResultUnknown };
+    QString format = QString("<a href='result:%1'> &nbsp;%2%3</a>");
+
+    for(int j=0;j<4;j++)
     {
-        score += QString(" &nbsp;%1%2").arg(scoresign[i]).arg(result[i]);
-    }
-    if(result[ResultUnknown])
-    {
-        score += QString(" &nbsp;*%1").arg(result[ResultUnknown]);
+        int i = order[j];
+        score += format.arg(results[i]).arg(scoresign[i]).arg(result[i]);
     }
     int n = count - result[ResultUnknown];
     if(n)
