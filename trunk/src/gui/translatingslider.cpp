@@ -54,9 +54,25 @@ void TranslatingSlider::setStart2(int start2)
     m_start2 = start2;
 }
 
+void TranslatingSlider::setMultiplier3(int multiplier3)
+{
+    m_multiplier3 = multiplier3;
+}
+
+void TranslatingSlider::setStart3(int start3)
+{
+    m_start3 = start3;
+}
+
 void TranslatingSlider::setTranslatedValue(int value)
 {
-    if (value > m_offset + m_start2*m_multiplier)
+    if (value > (m_offset + m_start2*m_multiplier + (m_start3-m_start2)*m_multiplier2))
+    {
+        value -= m_offset;
+        int v = value - m_start2*m_multiplier -(m_start3-m_start2)*m_multiplier2;
+        setValue(m_start3 + v/m_multiplier3);
+    }
+    else if (value > m_offset + m_start2*m_multiplier)
     {
         value -= m_offset;
         int v = value - m_start2*m_multiplier;
@@ -79,8 +95,14 @@ int TranslatingSlider::translateValue(int v) const
     {
         return (v*m_multiplier + m_offset);
     }
-    else
+    else if (v<=m_start3)
     {
         return m_offset + m_start2*m_multiplier + ((v-m_start2)*m_multiplier2);
+    }
+    else
+    {
+        return m_offset + m_start2*m_multiplier
+                + ((m_start3-m_start2)*m_multiplier2)
+                + ((v-m_start3)*m_multiplier3);
     }
 }
