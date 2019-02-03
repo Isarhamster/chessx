@@ -410,16 +410,18 @@ MainWindow::MainWindow() : QMainWindow(),
     m_sliderSpeed = new TranslatingSlider(this);
     m_sliderSpeed->setMultiplier(1000);
     m_sliderSpeed->setMultiplier2(10000);
+    m_sliderSpeed->setMultiplier3(60000);
     m_sliderSpeed->setOrientation(Qt::Horizontal);
     m_sliderSpeed->setMinimum(0);  // O = Infinite
     m_sliderSpeed->setStart2(30);  // Step 10s after 30s
-    m_sliderSpeed->setMaximum(87); // 10 Minutes
+    m_sliderSpeed->setStart3(57);  // Step 60s after 5min
+    m_sliderSpeed->setMaximum(97); // 45 Minutes
     m_sliderSpeed->setTranslatedValue(AppSettings->getValue("/Board/AutoPlayerInterval").toInt());
     m_sliderSpeed->setTickInterval(1);
     m_sliderSpeed->setTickPosition(QSlider::NoTicks);
     m_sliderSpeed->setSingleStep(1);
     m_sliderSpeed->setPageStep(1);
-    m_sliderSpeed->setMinimumWidth(100); // 87 + some pixel for overlapping slider
+    m_sliderSpeed->setMinimumWidth(120); // 87 + some pixel for overlapping slider
     m_sliderSpeed->setMaximumWidth(400); // Arbitrary limit - not really needed
 
     connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), SLOT(slotMoveIntervalChanged(int)));

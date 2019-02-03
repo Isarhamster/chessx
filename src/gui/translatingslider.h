@@ -23,6 +23,8 @@ public:
 
     void setStart2(int start2);
     void setMultiplier2(int multiplier2);
+    void setStart3(int start3);
+    void setMultiplier3(int multiplier3);
 
 signals:
     void translatedValueChanged(int);
@@ -38,6 +40,8 @@ protected:
     int m_multiplier;
     int m_start2;
     int m_multiplier2;
+    int m_start3;
+    int m_multiplier3;
 protected:
     int translateValue(int v) const;
 };
