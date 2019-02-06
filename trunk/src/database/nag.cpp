@@ -289,8 +289,13 @@ static const QString g_nagStringList[NagCount] =
     "#"
 };
 
+static QMap<QString, Nag> s_ExtraNags;
+
 void NagSet::InitNagStringListLong()
 {
+    s_ExtraNags["+/-"] = Nag::WhiteHasAModerateAdvantage;
+    s_ExtraNags["-/+"] = Nag::BlackHasAModerateAdvantage;
+
     g_nagStringListLong <<
                         "" <<
                         tr("Good Move") <<
@@ -646,6 +651,10 @@ QString NagSet::nagToMenuString(Nag nag)
 
 Nag NagSet::fromString(const QString &nag)
 {
+    if (s_ExtraNags.contains(nag))
+    {
+        return s_ExtraNags.value(nag);
+    }
     for(int i = 1; i < NagCount; ++i)
     {
         if(g_nagStringList[i] == nag)
@@ -656,18 +665,20 @@ Nag NagSet::fromString(const QString &nag)
     return NullNag;
 }
 
-int NagSet::prefixCount(const QString &nag)
+bool NagSet::hasMatch(const QString &nag)
 {
-    QSet<QString> matches;
+    if (s_ExtraNags.contains(nag))
+    {
+        return true;
+    }
     for(int i = 1; i < NagCount; ++i)
     {
         if(g_nagStringList[i].startsWith(nag))
         {
-            matches.insert(g_nagStringList[i]);
+            return true;
         }
     }
-    return matches.count();
-
+    return false;
 }
 
 void NagSet::removeNagRange(Nag from, Nag to)
