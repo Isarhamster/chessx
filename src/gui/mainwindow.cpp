@@ -658,11 +658,10 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
 
     bool enterPressed = ((e->key() == Qt::Key_Enter) || (e->key() == Qt::Key_Return));
 
-    if(enterPressed)
+    if(enterPressed && !m_nagText.isEmpty())
     {
         // Try to figure out a SAN
-        int matches = NagSet::prefixCount(m_nagText);
-        if(matches >= 1) // enter forces the current nag
+        if(NagSet::hasMatch(m_nagText)) // enter forces the current nag
         {
             if(!game().atGameStart())
             {
@@ -711,8 +710,7 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         m_nagText = "N";
     }
 
-    int matches = NagSet::prefixCount(m_nagText);
-    if(matches == 1)
+    if(NagSet::hasMatch(m_nagText))
     {
         if(!game().atGameStart())
         {
