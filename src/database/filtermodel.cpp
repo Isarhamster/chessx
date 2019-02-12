@@ -23,7 +23,7 @@
 #endif // _MSC_VER
 
 FilterModel::FilterModel(Filter* filter, QObject* parent)
-    : QAbstractItemModel(parent), m_filter(filter)
+    : QAbstractItemModel(parent), m_filter(filter), m_modelUpdateStarted(0)
 {
     setupColumns();
 }
@@ -95,19 +95,24 @@ void FilterModel::setupColumns()
 
 void FilterModel::updateColumns()
 {
-    beginResetModel();
+    startUpdate();
     setupColumns();
-    endResetModel();
+    endUpdate();
 }
 
 void FilterModel::startUpdate()
 {
-    beginResetModel();
+    if (!m_modelUpdateStarted) beginResetModel();
+    ++m_modelUpdateStarted;
 }
 
 void FilterModel::endUpdate()
 {
-    endResetModel();
+    --m_modelUpdateStarted;
+    if (m_modelUpdateStarted==0)
+    {
+        endResetModel();
+    }
 }
 
 void FilterModel::set(GameId game, int value)
@@ -115,9 +120,9 @@ void FilterModel::set(GameId game, int value)
     // TODO: This is not the proper way, but works in a lot of cases
     // A refactoring is needed to do this properly, actually, here
     // it is far to late to do what I'm doing
-    beginResetModel();
+    startUpdate();
     filter()->set(game, value);
-    endResetModel();
+    endUpdate();
 }
 
 QVariant FilterModel::data(const QModelIndex &index, int role) const
@@ -216,23 +221,23 @@ Filter* FilterModel::filter()
 
 void FilterModel::setFilter(Filter* filter)
 {
-    beginResetModel();
+    startUpdate();
     m_filter = filter;
-    endResetModel();
+    endUpdate();
 }
 
 void FilterModel::invert()
 {
-    beginResetModel();
+    startUpdate();
     m_filter->invert();
-    endResetModel();
+    endUpdate();
 }
 
 void FilterModel::setAll(int value)
 {
-    beginResetModel();
+    startUpdate();
     m_filter->setAll(value);
-    endResetModel();
+    endUpdate();
 }
 
 void FilterModel::executeSearch(Search* search, FilterOperator searchOperator, int preSelect)
@@ -259,7 +264,7 @@ void FilterModel::executeSearch(Search* search, FilterOperator searchOperator, i
 
 void FilterModel::endSearch()
 {
-    beginResetModel();
+    startUpdate();
     Filter* f = qobject_cast<Filter*>(sender());
     if (f && f!= m_filter)
     {
@@ -267,7 +272,7 @@ void FilterModel::endSearch()
         m_filter->lock(0);
         delete f;
     }
-    endResetModel();
+    endUpdate();
     emit searchFinished();
 }
 

@@ -97,6 +97,7 @@ private:
     QStringList m_columnNames;
     /** Map of columns and database tags */
     QStringList m_columnTags;
+    int m_modelUpdateStarted;
 };
 
 #endif	// FILTERMODEL_H_INCLUDED

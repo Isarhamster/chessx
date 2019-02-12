@@ -2455,6 +2455,7 @@ void MainWindow::slotFilterChanged(bool selectGame)
     QString f = count == (int)database()->count() ? tr("all") : QString::number(count);
     m_statusFilter->setText(QString(" %1: %2/%3 ").arg(databaseName())
                             .arg(f).arg(database()->count()));
+    m_statusFilter->repaint(); // Workaround Bug in Qt 5.11 and 5.12
 }
 
 void MainWindow::slotFilterLoad(GameId index)
@@ -2983,7 +2984,6 @@ void MainWindow::slotSearchBoard()
 {
     BoardSearchDialog dlg(this);
     QList<Board> boardList;
-    boardList.append(game().board());
 
     for(int i = 0; i < m_tabWidget->count(); ++i)
     {
@@ -2997,6 +2997,16 @@ void MainWindow::slotSearchBoard()
                 boardList.append(b);
             }
         }
+    }
+
+    const Board& b = game().board();
+    if (b != Board::standardStartBoard)
+    {
+        boardList.prepend(b); // First in the list
+    }
+    else
+    {
+        boardList.append(b); // Just append the starting board for completeness
     }
 
     dlg.setBoardList(boardList);

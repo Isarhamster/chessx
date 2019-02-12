@@ -173,9 +173,13 @@ void Filter::runSingleSearch(Search* s, FilterOperator op)
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
-            if (contains(searchIndex) && !s->matches(searchIndex))
+            if (contains(searchIndex))
             {
-                set(searchIndex, 0);
+                int n = s->matches(searchIndex);
+                if (n!=1) // Better search result or and does not apply
+                {
+                    set(searchIndex, n);
+                }
             }
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
@@ -184,9 +188,13 @@ void Filter::runSingleSearch(Search* s, FilterOperator op)
         for(int searchIndex = 0; searchIndex < size(); ++searchIndex)
         {
             if (m_break) break;
-            if (!contains(searchIndex) && s->matches(searchIndex))
+            if (!contains(searchIndex))
             {
-                set(searchIndex, 1);
+                int n = s->matches(searchIndex);
+                if (n)
+                {
+                    set(searchIndex, n);
+                }
             }
             if (searchIndex % 1024 == 0) emit searchProgress(searchIndex*100/size());
         }
