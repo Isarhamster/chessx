@@ -631,7 +631,7 @@ Please check your installation.</source>
     </message>
     <message>
         <location filename="../src/gui/boardviewex.ui" line="230"/>
-        <location filename="../src/gui/boardviewex.cpp" line="137"/>
+        <location filename="../src/gui/boardviewex.cpp" line="138"/>
         <source>Enter comments and annotations here.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1071,38 +1071,38 @@ Please check your installation.</source>
         <translation>&lt;i&gt;нет партий&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="191"/>
+        <location filename="../src/database/ecoinfo.cpp" line="193"/>
         <source>Total: %1</source>
         <translation>Всего: %1</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="214"/>
+        <location filename="../src/database/ecoinfo.cpp" line="216"/>
         <source>Games in database %1: %2</source>
         <translation>Партий в базе данных %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="226"/>
+        <location filename="../src/database/ecoinfo.cpp" line="228"/>
         <source>Rating: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Рейтинг: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="229"/>
+        <location filename="../src/database/ecoinfo.cpp" line="231"/>
         <source>Rating: &lt;b&gt;%1-%2&lt;/b&gt;</source>
         <translation>Рейтинг: &lt;b&gt;%1-%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="237"/>
+        <location filename="../src/database/ecoinfo.cpp" line="239"/>
         <source>White Player</source>
         <translation>Игрок белыми</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="237"/>
-        <location filename="../src/database/ecoinfo.cpp" line="250"/>
+        <location filename="../src/database/ecoinfo.cpp" line="239"/>
+        <location filename="../src/database/ecoinfo.cpp" line="252"/>
         <source>Score</source>
         <translation>Результат</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="250"/>
+        <location filename="../src/database/ecoinfo.cpp" line="252"/>
         <source>Black Player</source>
         <translation>Игрок черными</translation>
     </message>
@@ -1763,17 +1763,17 @@ Please check your installation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="333"/>
+        <location filename="../src/gui/gamelist.cpp" line="334"/>
         <source>Hide deleted games</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="335"/>
+        <location filename="../src/gui/gamelist.cpp" line="337"/>
         <source>Reset filter</source>
         <translation type="unfinished">Сброс фильтра</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="336"/>
+        <location filename="../src/gui/gamelist.cpp" line="338"/>
         <source>Reverse filter</source>
         <translation type="unfinished">Реверс фильтра</translation>
     </message>
@@ -1871,12 +1871,12 @@ Shall I download a database?</source>
         <translation>Список</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="499"/>
+        <location filename="../src/gui/mainwindow.cpp" line="501"/>
         <source>Loading ECO file...</source>
         <translation>Загрузка ECO файла…</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="587"/>
+        <location filename="../src/gui/mainwindow.cpp" line="589"/>
         <source>ECO Loaded.</source>
         <translation>ECO загружен.</translation>
     </message>
@@ -2063,73 +2063,73 @@ Shall I download a database?</source>
         <translation>все</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2548"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2598"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2549"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2599"/>
         <source>Append game %1 to %2.</source>
         <translation>Партия %1 в %2 добавлена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2578"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2606"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2579"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2607"/>
         <source>Appended %1 games to %2.</source>
         <translation>%1 партия в %2 добавлена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2607"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2608"/>
         <source>Error appending games to %1</source>
         <translation>Ошибка добавления партии в %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2635"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2652"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2679"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2695"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2710"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2636"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2653"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2680"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2696"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2711"/>
         <source>Append games from %1 to %2.</source>
         <translation>Партия из %1 в %2 добавлена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2899"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2900"/>
         <source>Append %1 games from %2 to %3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3027"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3037"/>
         <source>Searching...</source>
         <translation>Поиск…</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3428"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3438"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Новая партия&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3513"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3523"/>
         <source>Infinite</source>
         <translation>Бесконечно</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3551"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3561"/>
         <source>Build book</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3570"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3580"/>
         <source>Book built</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3585"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3595"/>
         <source>Could not build book</source>
         <translation>Не могу создать книгу</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3585"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3595"/>
         <source>Polyglot Error</source>
         <translation>Polyglot ошибка</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3586"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3596"/>
         <source>Book build finished with Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2140,12 +2140,12 @@ Shall I download a database?</source>
         <translation>Анализ 1 не может запустить движок для автоанализа.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2944"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2945"/>
         <source>%1 - ChessX</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3022"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3032"/>
         <source>Search ended</source>
         <translation>Поиск завершен</translation>
     </message>
@@ -2236,12 +2236,12 @@ Shall I download a database?</source>
         <translation>Установка &amp;позиции…</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="587"/>
+        <location filename="../src/gui/mainwindow.cpp" line="589"/>
         <source>ECO Load Error.</source>
         <translation>Ошибка загрузки ECO-файла.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="443"/>
+        <location filename="../src/gui/mainwindow.cpp" line="445"/>
         <source>Move Interval:</source>
         <translation>Интервал хода:</translation>
     </message>
@@ -2874,12 +2874,12 @@ Shall I download a database?</source>
         <translation type="unfinished">Линия</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2836"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2837"/>
         <source>You need at least two open databases to copy games</source>
         <translation>Вам нужны две открытых базы данных, чтобы скопировать партии</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2829"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2830"/>
         <source>%1. %2 (%3 games)</source>
         <translation>%1. %2 (%3 партий)</translation>
     </message>
@@ -3036,565 +3036,565 @@ Shall I download a database?</source>
 <context>
     <name>NagSet</name>
     <message>
-        <location filename="../src/database/nag.cpp" line="296"/>
+        <location filename="../src/database/nag.cpp" line="301"/>
         <source>Good Move</source>
         <translation>Хороший ход</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="297"/>
+        <location filename="../src/database/nag.cpp" line="302"/>
         <source>Poor Move</source>
         <translation>Плохой ход</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="298"/>
+        <location filename="../src/database/nag.cpp" line="303"/>
         <source>Very good Move</source>
         <translation>Очень хороший ход</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="299"/>
+        <location filename="../src/database/nag.cpp" line="304"/>
         <source>Blunder</source>
         <translation>Зевок</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="300"/>
+        <location filename="../src/database/nag.cpp" line="305"/>
         <source>Speculative Move</source>
         <translation>Подозрительный ход</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="301"/>
+        <location filename="../src/database/nag.cpp" line="306"/>
         <source>Dubious Move</source>
         <translation>Сомнительный ход</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="302"/>
-        <location filename="../src/database/nag.cpp" line="303"/>
+        <location filename="../src/database/nag.cpp" line="307"/>
+        <location filename="../src/database/nag.cpp" line="308"/>
         <source>Only Move</source>
         <translation>Единственный ход</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="304"/>
+        <location filename="../src/database/nag.cpp" line="309"/>
         <source>Worst Move</source>
         <translation>Худший ход</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="305"/>
-        <location filename="../src/database/nag.cpp" line="306"/>
-        <location filename="../src/database/nag.cpp" line="307"/>
+        <location filename="../src/database/nag.cpp" line="310"/>
+        <location filename="../src/database/nag.cpp" line="311"/>
+        <location filename="../src/database/nag.cpp" line="312"/>
         <source>Equal</source>
         <translation>Еквивалентно</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="308"/>
+        <location filename="../src/database/nag.cpp" line="313"/>
         <source>Unclear</source>
         <translation>Неясно</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="309"/>
+        <location filename="../src/database/nag.cpp" line="314"/>
         <source>White has slight advantage</source>
         <translation>У белых небольшое приемущество</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="310"/>
+        <location filename="../src/database/nag.cpp" line="315"/>
         <source>Black has slight advantage</source>
         <translation>У черных небольшое приемущество</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="311"/>
+        <location filename="../src/database/nag.cpp" line="316"/>
         <source>White has moderate advantage</source>
         <translation>У белых есть перевес</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="312"/>
+        <location filename="../src/database/nag.cpp" line="317"/>
         <source>Black has moderate advantage</source>
         <translation>У черных есть перевес</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="313"/>
+        <location filename="../src/database/nag.cpp" line="318"/>
         <source>White has decisive advantage</source>
         <translation>У белых приемущество</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="314"/>
+        <location filename="../src/database/nag.cpp" line="319"/>
         <source>Black has decisive advantage</source>
         <translation>У черных приемущество</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="315"/>
+        <location filename="../src/database/nag.cpp" line="320"/>
         <source>White has crushing advantage</source>
         <translation>У белых явное приемущество</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="316"/>
+        <location filename="../src/database/nag.cpp" line="321"/>
         <source>Black has crushing advantage</source>
         <translation>У черных явное приемущество</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="317"/>
-        <location filename="../src/database/nag.cpp" line="318"/>
+        <location filename="../src/database/nag.cpp" line="322"/>
+        <location filename="../src/database/nag.cpp" line="323"/>
         <source>Zugzwang</source>
         <translation>Цугцванг</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="319"/>
-        <location filename="../src/database/nag.cpp" line="320"/>
+        <location filename="../src/database/nag.cpp" line="324"/>
+        <location filename="../src/database/nag.cpp" line="325"/>
         <source>With slight space advantage</source>
         <translation>С небольшим перевесом в пространстве</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="321"/>
-        <location filename="../src/database/nag.cpp" line="322"/>
+        <location filename="../src/database/nag.cpp" line="326"/>
+        <location filename="../src/database/nag.cpp" line="327"/>
         <source>With moderate space advantage</source>
         <translation>С хорошим перевесом в пространстве</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="323"/>
-        <location filename="../src/database/nag.cpp" line="324"/>
+        <location filename="../src/database/nag.cpp" line="328"/>
+        <location filename="../src/database/nag.cpp" line="329"/>
         <source>With decisive space advantage</source>
         <translation>С явным перевесом в пространстве</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="325"/>
-        <location filename="../src/database/nag.cpp" line="326"/>
+        <location filename="../src/database/nag.cpp" line="330"/>
+        <location filename="../src/database/nag.cpp" line="331"/>
         <source>With slight development advantage</source>
         <translation>С небольшим позиционным перевесом</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="327"/>
-        <location filename="../src/database/nag.cpp" line="328"/>
+        <location filename="../src/database/nag.cpp" line="332"/>
+        <location filename="../src/database/nag.cpp" line="333"/>
         <source>With moderate development advantage</source>
         <translation>С хорошим позиционным перевесом</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="329"/>
-        <location filename="../src/database/nag.cpp" line="330"/>
+        <location filename="../src/database/nag.cpp" line="334"/>
+        <location filename="../src/database/nag.cpp" line="335"/>
         <source>With decisive development advantage</source>
         <translation>С явным позиционным перевесом</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="331"/>
-        <location filename="../src/database/nag.cpp" line="332"/>
+        <location filename="../src/database/nag.cpp" line="336"/>
+        <location filename="../src/database/nag.cpp" line="337"/>
         <source>With initiative</source>
         <translation>С инициативой</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="333"/>
-        <location filename="../src/database/nag.cpp" line="334"/>
+        <location filename="../src/database/nag.cpp" line="338"/>
+        <location filename="../src/database/nag.cpp" line="339"/>
         <source>With lasting initiative</source>
         <translation>С длительной инициативой</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="335"/>
-        <location filename="../src/database/nag.cpp" line="336"/>
+        <location filename="../src/database/nag.cpp" line="340"/>
+        <location filename="../src/database/nag.cpp" line="341"/>
         <source>With attack</source>
         <translation>С атакой</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="337"/>
-        <location filename="../src/database/nag.cpp" line="338"/>
+        <location filename="../src/database/nag.cpp" line="342"/>
+        <location filename="../src/database/nag.cpp" line="343"/>
         <source>With insufficient compensation for material deficit</source>
         <translation>С компенсацией за материал</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="339"/>
-        <location filename="../src/database/nag.cpp" line="340"/>
+        <location filename="../src/database/nag.cpp" line="344"/>
+        <location filename="../src/database/nag.cpp" line="345"/>
         <source>With compensation</source>
         <translation>С компенсацией</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="341"/>
-        <location filename="../src/database/nag.cpp" line="342"/>
+        <location filename="../src/database/nag.cpp" line="346"/>
+        <location filename="../src/database/nag.cpp" line="347"/>
         <source>With more than adequate compensation for material deficit</source>
         <translation>С явной компенсацией за материал</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="343"/>
-        <location filename="../src/database/nag.cpp" line="344"/>
+        <location filename="../src/database/nag.cpp" line="348"/>
+        <location filename="../src/database/nag.cpp" line="349"/>
         <source>With slight center control advantage</source>
         <translation>С небольшим контролем центра</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="345"/>
-        <location filename="../src/database/nag.cpp" line="346"/>
+        <location filename="../src/database/nag.cpp" line="350"/>
+        <location filename="../src/database/nag.cpp" line="351"/>
         <source>With moderate center control advantage</source>
         <translation>С хорошим контролем центра</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="347"/>
-        <location filename="../src/database/nag.cpp" line="348"/>
+        <location filename="../src/database/nag.cpp" line="352"/>
+        <location filename="../src/database/nag.cpp" line="353"/>
         <source>With decisive center control advantage</source>
         <translation>С явным контролем центра</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="349"/>
-        <location filename="../src/database/nag.cpp" line="350"/>
+        <location filename="../src/database/nag.cpp" line="354"/>
+        <location filename="../src/database/nag.cpp" line="355"/>
         <source>With slight kingside control advantage</source>
         <translation>С небольшим перевесом на королевском фланге</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="351"/>
-        <location filename="../src/database/nag.cpp" line="352"/>
+        <location filename="../src/database/nag.cpp" line="356"/>
+        <location filename="../src/database/nag.cpp" line="357"/>
         <source>With moderate kingside control advantage</source>
         <translation>С хорошим перевесом на королевском фланге</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="353"/>
-        <location filename="../src/database/nag.cpp" line="354"/>
+        <location filename="../src/database/nag.cpp" line="358"/>
+        <location filename="../src/database/nag.cpp" line="359"/>
         <source>With decisive kingside control advantage</source>
         <translation>С явным перевесом на королевском фланге</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="355"/>
-        <location filename="../src/database/nag.cpp" line="356"/>
+        <location filename="../src/database/nag.cpp" line="360"/>
+        <location filename="../src/database/nag.cpp" line="361"/>
         <source>With slight queenside control advantage</source>
         <translation>С небольшим перевесом на ферзевом фланге</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="357"/>
-        <location filename="../src/database/nag.cpp" line="358"/>
+        <location filename="../src/database/nag.cpp" line="362"/>
+        <location filename="../src/database/nag.cpp" line="363"/>
         <source>With moderate queenside control advantage</source>
         <translation>С хорошим перевесом на ферзевом фланге</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="359"/>
-        <location filename="../src/database/nag.cpp" line="360"/>
+        <location filename="../src/database/nag.cpp" line="364"/>
+        <location filename="../src/database/nag.cpp" line="365"/>
         <source>With decisive queenside control advantage</source>
         <translation>С явным перевесом на ферзевом фланге</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="361"/>
-        <location filename="../src/database/nag.cpp" line="362"/>
+        <location filename="../src/database/nag.cpp" line="366"/>
+        <location filename="../src/database/nag.cpp" line="367"/>
         <source>With vulnerable first rank</source>
         <translation>Ослаблена первая горизонталь</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="363"/>
-        <location filename="../src/database/nag.cpp" line="364"/>
+        <location filename="../src/database/nag.cpp" line="368"/>
+        <location filename="../src/database/nag.cpp" line="369"/>
         <source>With well protected first rank</source>
         <translation>Защищенная первая горизонталь</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="365"/>
-        <location filename="../src/database/nag.cpp" line="366"/>
+        <location filename="../src/database/nag.cpp" line="370"/>
+        <location filename="../src/database/nag.cpp" line="371"/>
         <source>With poorly protected king</source>
         <translation>С плохо защищенным королем</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="367"/>
-        <location filename="../src/database/nag.cpp" line="368"/>
+        <location filename="../src/database/nag.cpp" line="372"/>
+        <location filename="../src/database/nag.cpp" line="373"/>
         <source>With well protected king</source>
         <translation>С хорошо защищенным королем</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="369"/>
-        <location filename="../src/database/nag.cpp" line="370"/>
+        <location filename="../src/database/nag.cpp" line="374"/>
+        <location filename="../src/database/nag.cpp" line="375"/>
         <source>With poorly placed king</source>
         <translation>С плохо расположенным королем</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="371"/>
-        <location filename="../src/database/nag.cpp" line="372"/>
+        <location filename="../src/database/nag.cpp" line="376"/>
+        <location filename="../src/database/nag.cpp" line="377"/>
         <source>With well placed king</source>
         <translation>С хорошо расположенным королем</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="373"/>
-        <location filename="../src/database/nag.cpp" line="374"/>
+        <location filename="../src/database/nag.cpp" line="378"/>
+        <location filename="../src/database/nag.cpp" line="379"/>
         <source>With very weak pawn structure</source>
         <translation>С слабой пешечной структурой</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="375"/>
-        <location filename="../src/database/nag.cpp" line="376"/>
+        <location filename="../src/database/nag.cpp" line="380"/>
+        <location filename="../src/database/nag.cpp" line="381"/>
         <source>With moderately weak pawn structure</source>
         <translation>С неплохой пешечной структурой</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="377"/>
-        <location filename="../src/database/nag.cpp" line="378"/>
+        <location filename="../src/database/nag.cpp" line="382"/>
+        <location filename="../src/database/nag.cpp" line="383"/>
         <source>With moderately strong pawn structure</source>
         <translation>С хорошей пешечной структурой</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="379"/>
-        <location filename="../src/database/nag.cpp" line="380"/>
+        <location filename="../src/database/nag.cpp" line="384"/>
+        <location filename="../src/database/nag.cpp" line="385"/>
         <source>With very strong pawn structure</source>
         <translation>С сильной пешечной структурой</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="381"/>
-        <location filename="../src/database/nag.cpp" line="382"/>
+        <location filename="../src/database/nag.cpp" line="386"/>
+        <location filename="../src/database/nag.cpp" line="387"/>
         <source>With poor knight placement</source>
         <translation>С плохо расположенным конем</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="383"/>
-        <location filename="../src/database/nag.cpp" line="384"/>
+        <location filename="../src/database/nag.cpp" line="388"/>
+        <location filename="../src/database/nag.cpp" line="389"/>
         <source>With good knight placement</source>
         <translation>С хорошо расположенным конем</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="385"/>
-        <location filename="../src/database/nag.cpp" line="386"/>
+        <location filename="../src/database/nag.cpp" line="390"/>
+        <location filename="../src/database/nag.cpp" line="391"/>
         <source>With poor bishop placement</source>
         <translation>С плохо расположенным слоном</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="387"/>
-        <location filename="../src/database/nag.cpp" line="388"/>
+        <location filename="../src/database/nag.cpp" line="392"/>
+        <location filename="../src/database/nag.cpp" line="393"/>
         <source>With good bishop placement</source>
         <translation>С хорошо расположенным слоном</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="389"/>
-        <location filename="../src/database/nag.cpp" line="390"/>
+        <location filename="../src/database/nag.cpp" line="394"/>
+        <location filename="../src/database/nag.cpp" line="395"/>
         <source>With poor rook placement</source>
         <translation>С плохо расположенной ладьей</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="391"/>
-        <location filename="../src/database/nag.cpp" line="392"/>
+        <location filename="../src/database/nag.cpp" line="396"/>
+        <location filename="../src/database/nag.cpp" line="397"/>
         <source>With good rook placement</source>
         <translation>С хорошо расположенной ладьей</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="393"/>
-        <location filename="../src/database/nag.cpp" line="394"/>
+        <location filename="../src/database/nag.cpp" line="398"/>
+        <location filename="../src/database/nag.cpp" line="399"/>
         <source>With poor queen placement</source>
         <translation>С плохо расположенным ферзем</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="395"/>
-        <location filename="../src/database/nag.cpp" line="396"/>
+        <location filename="../src/database/nag.cpp" line="400"/>
+        <location filename="../src/database/nag.cpp" line="401"/>
         <source>With good queen placement</source>
         <translation>С хорошо расположенным ферзем</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="397"/>
-        <location filename="../src/database/nag.cpp" line="398"/>
+        <location filename="../src/database/nag.cpp" line="402"/>
+        <location filename="../src/database/nag.cpp" line="403"/>
         <source>With poor piece coordination</source>
         <translation>С плохой координацией фигур</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="399"/>
-        <location filename="../src/database/nag.cpp" line="400"/>
+        <location filename="../src/database/nag.cpp" line="404"/>
+        <location filename="../src/database/nag.cpp" line="405"/>
         <source>With good piece coordination</source>
         <translation>С хорошей координацией фигур</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="401"/>
+        <location filename="../src/database/nag.cpp" line="406"/>
         <source>White played the opening very poorly</source>
         <translation>Белые разыграли дебют очень слабо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="402"/>
+        <location filename="../src/database/nag.cpp" line="407"/>
         <source>Black played the opening very poorly</source>
         <translation>Черные разыграли дебют очень слабо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="403"/>
+        <location filename="../src/database/nag.cpp" line="408"/>
         <source>White played the opening poorly</source>
         <translation>Белые разыграли дебют слабо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="404"/>
+        <location filename="../src/database/nag.cpp" line="409"/>
         <source>Black played the opening poorly</source>
         <translation>Черные разыграли дебют слабо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="405"/>
+        <location filename="../src/database/nag.cpp" line="410"/>
         <source>White played the opening well</source>
         <translation>Белые разыграли дебют хорошо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="406"/>
+        <location filename="../src/database/nag.cpp" line="411"/>
         <source>Black played the opening well</source>
         <translation>Черные разыграли дебют хорошо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="407"/>
+        <location filename="../src/database/nag.cpp" line="412"/>
         <source>White played the opening very well</source>
         <translation>Белые разыграли дебют очень хорошо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="408"/>
+        <location filename="../src/database/nag.cpp" line="413"/>
         <source>Black played the opening very well</source>
         <translation>Черные разыграли дебют очень хорошо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="409"/>
+        <location filename="../src/database/nag.cpp" line="414"/>
         <source>White played the middlegame very poorly</source>
         <translation>Белые сыграли в миттельшпиле очень плохо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="410"/>
+        <location filename="../src/database/nag.cpp" line="415"/>
         <source>Black played the middlegame very poorly</source>
         <translation>Черные сыграли в миттельшпиле очень плохо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="411"/>
+        <location filename="../src/database/nag.cpp" line="416"/>
         <source>White played the middlegame poorly</source>
         <translation>Белые сыграли в миттельшпиле плохо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="412"/>
+        <location filename="../src/database/nag.cpp" line="417"/>
         <source>Black played the middlegame poorly</source>
         <translation>Черные сыграли в миттельшпиле плохо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="413"/>
+        <location filename="../src/database/nag.cpp" line="418"/>
         <source>White played the middlegame well</source>
         <translation>Белые сыграли в миттельшпиле нормально</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="414"/>
+        <location filename="../src/database/nag.cpp" line="419"/>
         <source>Black played the middlegame well</source>
         <translation>Черные сыграли в миттельшпиле нормально</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="415"/>
+        <location filename="../src/database/nag.cpp" line="420"/>
         <source>White played the middlegame very well</source>
         <translation>Белые сыграли в миттельшпиле хорошо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="416"/>
+        <location filename="../src/database/nag.cpp" line="421"/>
         <source>Black played the middlegame very well</source>
         <translation>Черные сыграли в миттельшпиле хорошо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="417"/>
+        <location filename="../src/database/nag.cpp" line="422"/>
         <source>White played the ending very poorly</source>
         <translation>Белые сыграли в эндшпиле очень плохо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="418"/>
+        <location filename="../src/database/nag.cpp" line="423"/>
         <source>Black played the ending very poorly</source>
         <translation>Черные сыграли в эндшпиле очень плохо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="419"/>
+        <location filename="../src/database/nag.cpp" line="424"/>
         <source>White played the ending poorly</source>
         <translation>Белые сыграли в эндшпиле плохо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="420"/>
+        <location filename="../src/database/nag.cpp" line="425"/>
         <source>Black played the ending poorly</source>
         <translation>Черные сыграли в эндшпиле плохо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="421"/>
+        <location filename="../src/database/nag.cpp" line="426"/>
         <source>White played the ending well</source>
         <translation>Белые сыграли в эндшпиле нормально</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="422"/>
+        <location filename="../src/database/nag.cpp" line="427"/>
         <source>Black played the ending well</source>
         <translation>Черные сыграли в эндшпиле нормально</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="423"/>
+        <location filename="../src/database/nag.cpp" line="428"/>
         <source>White played the ending very well</source>
         <translation>Белые сыграли в эндшпиле хорошо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="424"/>
+        <location filename="../src/database/nag.cpp" line="429"/>
         <source>Black played the ending very well</source>
         <translation>Черные сыграли в эндшпиле хорошо</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="425"/>
-        <location filename="../src/database/nag.cpp" line="426"/>
-        <location filename="../src/database/nag.cpp" line="427"/>
-        <location filename="../src/database/nag.cpp" line="428"/>
-        <location filename="../src/database/nag.cpp" line="429"/>
         <location filename="../src/database/nag.cpp" line="430"/>
+        <location filename="../src/database/nag.cpp" line="431"/>
+        <location filename="../src/database/nag.cpp" line="432"/>
+        <location filename="../src/database/nag.cpp" line="433"/>
+        <location filename="../src/database/nag.cpp" line="434"/>
+        <location filename="../src/database/nag.cpp" line="435"/>
         <source>With counterplay</source>
         <translation>С контригрой</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="431"/>
-        <location filename="../src/database/nag.cpp" line="432"/>
+        <location filename="../src/database/nag.cpp" line="436"/>
+        <location filename="../src/database/nag.cpp" line="437"/>
         <source>Moderate time control pressure</source>
         <translation>Небольшой перевес по времени</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="433"/>
-        <location filename="../src/database/nag.cpp" line="434"/>
+        <location filename="../src/database/nag.cpp" line="438"/>
+        <location filename="../src/database/nag.cpp" line="439"/>
         <source>Severe time control pressure</source>
         <translation>Серьезный перевес по времени</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="435"/>
+        <location filename="../src/database/nag.cpp" line="440"/>
         <source>With the idea</source>
         <translation>С идеей</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="436"/>
+        <location filename="../src/database/nag.cpp" line="441"/>
         <source>Aimed against</source>
         <translation>Нацелено против</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="437"/>
+        <location filename="../src/database/nag.cpp" line="442"/>
         <source>Better was</source>
         <translation>Лучше было</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="438"/>
+        <location filename="../src/database/nag.cpp" line="443"/>
         <source>Worse was</source>
         <translation>Хуже было</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="439"/>
+        <location filename="../src/database/nag.cpp" line="444"/>
         <source>Equivalent was</source>
         <translation>Аналогично было</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="440"/>
+        <location filename="../src/database/nag.cpp" line="445"/>
         <source>RR</source>
         <translation>RR</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="441"/>
+        <location filename="../src/database/nag.cpp" line="446"/>
         <source>N</source>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="442"/>
+        <location filename="../src/database/nag.cpp" line="447"/>
         <source>Weak point</source>
         <translation>Слабый пункт</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="443"/>
+        <location filename="../src/database/nag.cpp" line="448"/>
         <source>Endgame</source>
         <translation>Эндшпиль</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="444"/>
+        <location filename="../src/database/nag.cpp" line="449"/>
         <source>Line</source>
         <translation>Линия</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="445"/>
+        <location filename="../src/database/nag.cpp" line="450"/>
         <source>Diagonal</source>
         <translation>Диагональ</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="446"/>
-        <location filename="../src/database/nag.cpp" line="447"/>
+        <location filename="../src/database/nag.cpp" line="451"/>
+        <location filename="../src/database/nag.cpp" line="452"/>
         <source>Pair of bishops</source>
         <translation>Запертый слон</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="448"/>
+        <location filename="../src/database/nag.cpp" line="453"/>
         <source>Bishops of opposite color</source>
         <translation>Разноцветные слоны</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="449"/>
+        <location filename="../src/database/nag.cpp" line="454"/>
         <source>Bishops of the same color</source>
         <translation>Одноцветные слоны</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="455"/>
+        <location filename="../src/database/nag.cpp" line="460"/>
         <source>Diagram</source>
         <translation>Диаграмма</translation>
     </message>
@@ -3798,47 +3798,48 @@ Shall I download a database?</source>
 <context>
     <name>PlayerInfo</name>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="189"/>
+        <location filename="../src/database/playerinfo.cpp" line="204"/>
+        <location filename="../src/database/playerinfo.cpp" line="228"/>
         <source>&lt;i&gt;no games&lt;/i&gt;</source>
         <translation>&lt;i&gt;нет партий&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="218"/>
+        <location filename="../src/database/playerinfo.cpp" line="194"/>
         <source>Total: %1&lt;br&gt;White: %2&lt;br&gt;Black: %3&lt;br&gt;</source>
         <translation>Всего: %1&lt;br&gt;Белые: %2&lt;br&gt;Черные: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="245"/>
+        <location filename="../src/database/playerinfo.cpp" line="272"/>
         <source>Games in database &lt;i&gt;%1&lt;/i&gt;: &lt;b&gt;%2&lt;/b&gt;&lt;br&gt;</source>
         <translation>Партий в базе &lt;i&gt;%1&lt;/i&gt;: &lt;b&gt;%2&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="257"/>
+        <location filename="../src/database/playerinfo.cpp" line="284"/>
         <source>Rating: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</source>
         <translation>Рейтинг: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="260"/>
+        <location filename="../src/database/playerinfo.cpp" line="287"/>
         <source>Rating: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</source>
         <translation>Рейтинг: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="268"/>
+        <location filename="../src/database/playerinfo.cpp" line="295"/>
         <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
         <translation>Дата: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="276"/>
+        <location filename="../src/database/playerinfo.cpp" line="303"/>
         <source>Date: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</source>
         <translation>Дата: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="283"/>
+        <location filename="../src/database/playerinfo.cpp" line="310"/>
         <source>White Openings</source>
         <translation>Дебюты за белых</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="284"/>
+        <location filename="../src/database/playerinfo.cpp" line="311"/>
         <source>Black Openings</source>
         <translation>Дебюты за черных</translation>
     </message>

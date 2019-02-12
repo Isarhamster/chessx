@@ -35,8 +35,10 @@ public:
     FilterModel(Filter* filter, QObject *parent = 0);
     ~FilterModel();
 
-    void startUpdate(); // TODO Remove this hack
-    void endUpdate(); // TODO Remove this hack
+    void startUpdate();
+    void endUpdate();
+    void disableUpdate();
+    void enableUpdate();
 
     /** Returns the number of rows in the model */
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
