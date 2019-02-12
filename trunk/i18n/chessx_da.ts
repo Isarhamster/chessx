@@ -639,7 +639,7 @@ Please check your installation.</source>
     </message>
     <message>
         <location filename="../src/gui/boardviewex.ui" line="230"/>
-        <location filename="../src/gui/boardviewex.cpp" line="137"/>
+        <location filename="../src/gui/boardviewex.cpp" line="138"/>
         <source>Enter comments and annotations here.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1086,38 +1086,38 @@ Please check your installation.</source>
         <translation>&lt;i&gt;ingen partier&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="191"/>
+        <location filename="../src/database/ecoinfo.cpp" line="193"/>
         <source>Total: %1</source>
         <translation>I alt: %1</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="214"/>
+        <location filename="../src/database/ecoinfo.cpp" line="216"/>
         <source>Games in database %1: %2</source>
         <translation>Partier i database %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="226"/>
+        <location filename="../src/database/ecoinfo.cpp" line="228"/>
         <source>Rating: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Rating: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="229"/>
+        <location filename="../src/database/ecoinfo.cpp" line="231"/>
         <source>Rating: &lt;b&gt;%1-%2&lt;/b&gt;</source>
         <translation>Rating: &lt;b&gt;%1-%2&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="237"/>
+        <location filename="../src/database/ecoinfo.cpp" line="239"/>
         <source>White Player</source>
         <translation>Hvid spiller</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="237"/>
-        <location filename="../src/database/ecoinfo.cpp" line="250"/>
+        <location filename="../src/database/ecoinfo.cpp" line="239"/>
+        <location filename="../src/database/ecoinfo.cpp" line="252"/>
         <source>Score</source>
         <translation>Score</translation>
     </message>
     <message>
-        <location filename="../src/database/ecoinfo.cpp" line="250"/>
+        <location filename="../src/database/ecoinfo.cpp" line="252"/>
         <source>Black Player</source>
         <translation>Sort spiller</translation>
     </message>
@@ -1786,17 +1786,17 @@ Please check your installation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="333"/>
+        <location filename="../src/gui/gamelist.cpp" line="334"/>
         <source>Hide deleted games</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="335"/>
+        <location filename="../src/gui/gamelist.cpp" line="337"/>
         <source>Reset filter</source>
         <translation type="unfinished">Nulstil filter</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="336"/>
+        <location filename="../src/gui/gamelist.cpp" line="338"/>
         <source>Reverse filter</source>
         <translation type="unfinished">Omvend filter</translation>
     </message>
@@ -1935,22 +1935,22 @@ Skal jeg downloade en database?</translation>
         <translation>Analyse 2</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="443"/>
+        <location filename="../src/gui/mainwindow.cpp" line="445"/>
         <source>Move Interval:</source>
         <translation>Trækinterval:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="499"/>
+        <location filename="../src/gui/mainwindow.cpp" line="501"/>
         <source>Loading ECO file...</source>
         <translation>Indlæser ECO-fil ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="587"/>
+        <location filename="../src/gui/mainwindow.cpp" line="589"/>
         <source>ECO Loaded.</source>
         <translation>ECO indlæst.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="587"/>
+        <location filename="../src/gui/mainwindow.cpp" line="589"/>
         <source>ECO Load Error.</source>
         <translation>ECO-indlæsningsfejl.</translation>
     </message>
@@ -2840,34 +2840,34 @@ Skal jeg downloade en database?</translation>
         <translation>Alle</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2548"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2598"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2549"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2599"/>
         <source>Append game %1 to %2.</source>
         <translation>Tilføj parti %1 til %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2578"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2606"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2579"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2607"/>
         <source>Appended %1 games to %2.</source>
         <translation>Tilføjede %1 partier til %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2607"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2608"/>
         <source>Error appending games to %1</source>
         <translation>Fejl ved tilføjning af partier til %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2899"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2900"/>
         <source>Append %1 games from %2 to %3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3027"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3037"/>
         <source>Searching...</source>
         <translation>Søger ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3586"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3596"/>
         <source>Book build finished with Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2876,31 +2876,31 @@ Skal jeg downloade en database?</translation>
         <translation type="vanished">Udklipsholder</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2635"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2652"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2679"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2695"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2710"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2636"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2653"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2680"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2696"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2711"/>
         <source>Append games from %1 to %2.</source>
         <translation>Tilføj partier fra %1 til %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2836"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2837"/>
         <source>You need at least two open databases to copy games</source>
         <translation>Der skal være mindst to åbne databaser før du kan kopiere partier</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2829"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2830"/>
         <source>%1. %2 (%3 games)</source>
         <translation>%1. %2 (%3 partier)</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2944"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2945"/>
         <source>%1 - ChessX</source>
         <translation>%1 - ChessX</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3022"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3032"/>
         <source>Search ended</source>
         <translation>Søgningen er afsluttet</translation>
     </message>
@@ -2909,32 +2909,32 @@ Skal jeg downloade en database?</translation>
         <translation type="vanished">Opdaterer træ ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3428"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3438"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Nyt parti&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3513"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3523"/>
         <source>Infinite</source>
         <translation>Ubegrænset</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3551"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3561"/>
         <source>Build book</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3570"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3580"/>
         <source>Book built</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3585"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3595"/>
         <source>Could not build book</source>
         <translation>Kunne ikke bygge bog</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3585"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3595"/>
         <source>Polyglot Error</source>
         <translation>Polyglot-fejl</translation>
     </message>
@@ -3107,565 +3107,565 @@ Skal jeg downloade en database?</translation>
 <context>
     <name>NagSet</name>
     <message>
-        <location filename="../src/database/nag.cpp" line="296"/>
+        <location filename="../src/database/nag.cpp" line="301"/>
         <source>Good Move</source>
         <translation>Godt træk</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="297"/>
+        <location filename="../src/database/nag.cpp" line="302"/>
         <source>Poor Move</source>
         <translation>Dårligt træk</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="298"/>
+        <location filename="../src/database/nag.cpp" line="303"/>
         <source>Very good Move</source>
         <translation>Meget godt træk</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="299"/>
+        <location filename="../src/database/nag.cpp" line="304"/>
         <source>Blunder</source>
         <translation>Meget dårligt træk</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="300"/>
+        <location filename="../src/database/nag.cpp" line="305"/>
         <source>Speculative Move</source>
         <translation>Spekulativt træk</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="301"/>
+        <location filename="../src/database/nag.cpp" line="306"/>
         <source>Dubious Move</source>
         <translation>Tvivlsomt træk</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="302"/>
-        <location filename="../src/database/nag.cpp" line="303"/>
+        <location filename="../src/database/nag.cpp" line="307"/>
+        <location filename="../src/database/nag.cpp" line="308"/>
         <source>Only Move</source>
         <translation>Eneste mulighed</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="304"/>
+        <location filename="../src/database/nag.cpp" line="309"/>
         <source>Worst Move</source>
         <translation>Værste træk</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="305"/>
-        <location filename="../src/database/nag.cpp" line="306"/>
-        <location filename="../src/database/nag.cpp" line="307"/>
+        <location filename="../src/database/nag.cpp" line="310"/>
+        <location filename="../src/database/nag.cpp" line="311"/>
+        <location filename="../src/database/nag.cpp" line="312"/>
         <source>Equal</source>
         <translation>Lige</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="308"/>
+        <location filename="../src/database/nag.cpp" line="313"/>
         <source>Unclear</source>
         <translation>Uklart</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="309"/>
+        <location filename="../src/database/nag.cpp" line="314"/>
         <source>White has slight advantage</source>
         <translation>Hvid har en lille fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="310"/>
+        <location filename="../src/database/nag.cpp" line="315"/>
         <source>Black has slight advantage</source>
         <translation>Sort har en lille fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="311"/>
+        <location filename="../src/database/nag.cpp" line="316"/>
         <source>White has moderate advantage</source>
         <translation>Hvid har moderat fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="312"/>
+        <location filename="../src/database/nag.cpp" line="317"/>
         <source>Black has moderate advantage</source>
         <translation>Sort har moderat fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="313"/>
+        <location filename="../src/database/nag.cpp" line="318"/>
         <source>White has decisive advantage</source>
         <translation>Hvid har afgørende fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="314"/>
+        <location filename="../src/database/nag.cpp" line="319"/>
         <source>Black has decisive advantage</source>
         <translation>Sort har afgørende fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="315"/>
+        <location filename="../src/database/nag.cpp" line="320"/>
         <source>White has crushing advantage</source>
         <translation>Hvid har overvældende fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="316"/>
+        <location filename="../src/database/nag.cpp" line="321"/>
         <source>Black has crushing advantage</source>
         <translation>Sort har overvældende fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="317"/>
-        <location filename="../src/database/nag.cpp" line="318"/>
+        <location filename="../src/database/nag.cpp" line="322"/>
+        <location filename="../src/database/nag.cpp" line="323"/>
         <source>Zugzwang</source>
         <translation>Træktvang</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="319"/>
-        <location filename="../src/database/nag.cpp" line="320"/>
+        <location filename="../src/database/nag.cpp" line="324"/>
+        <location filename="../src/database/nag.cpp" line="325"/>
         <source>With slight space advantage</source>
         <translation>Med lille pladsfordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="321"/>
-        <location filename="../src/database/nag.cpp" line="322"/>
+        <location filename="../src/database/nag.cpp" line="326"/>
+        <location filename="../src/database/nag.cpp" line="327"/>
         <source>With moderate space advantage</source>
         <translation>Med moderat pladsfordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="323"/>
-        <location filename="../src/database/nag.cpp" line="324"/>
+        <location filename="../src/database/nag.cpp" line="328"/>
+        <location filename="../src/database/nag.cpp" line="329"/>
         <source>With decisive space advantage</source>
         <translation>Med afgørende pladsfordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="325"/>
-        <location filename="../src/database/nag.cpp" line="326"/>
+        <location filename="../src/database/nag.cpp" line="330"/>
+        <location filename="../src/database/nag.cpp" line="331"/>
         <source>With slight development advantage</source>
         <translation>Med lille udviklingsfordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="327"/>
-        <location filename="../src/database/nag.cpp" line="328"/>
+        <location filename="../src/database/nag.cpp" line="332"/>
+        <location filename="../src/database/nag.cpp" line="333"/>
         <source>With moderate development advantage</source>
         <translation>Med moderat udviklingsfordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="329"/>
-        <location filename="../src/database/nag.cpp" line="330"/>
+        <location filename="../src/database/nag.cpp" line="334"/>
+        <location filename="../src/database/nag.cpp" line="335"/>
         <source>With decisive development advantage</source>
         <translation>Med afgørende udviklingsfordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="331"/>
-        <location filename="../src/database/nag.cpp" line="332"/>
+        <location filename="../src/database/nag.cpp" line="336"/>
+        <location filename="../src/database/nag.cpp" line="337"/>
         <source>With initiative</source>
         <translation>Med initiativ</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="333"/>
-        <location filename="../src/database/nag.cpp" line="334"/>
+        <location filename="../src/database/nag.cpp" line="338"/>
+        <location filename="../src/database/nag.cpp" line="339"/>
         <source>With lasting initiative</source>
         <translation>Med initiativ</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="335"/>
-        <location filename="../src/database/nag.cpp" line="336"/>
+        <location filename="../src/database/nag.cpp" line="340"/>
+        <location filename="../src/database/nag.cpp" line="341"/>
         <source>With attack</source>
         <translation>Med angreb</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="337"/>
-        <location filename="../src/database/nag.cpp" line="338"/>
+        <location filename="../src/database/nag.cpp" line="342"/>
+        <location filename="../src/database/nag.cpp" line="343"/>
         <source>With insufficient compensation for material deficit</source>
         <translation>Med utilstrækkelig kompensation for manglende materiale</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="339"/>
-        <location filename="../src/database/nag.cpp" line="340"/>
+        <location filename="../src/database/nag.cpp" line="344"/>
+        <location filename="../src/database/nag.cpp" line="345"/>
         <source>With compensation</source>
         <translation>Med kompensation</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="341"/>
-        <location filename="../src/database/nag.cpp" line="342"/>
+        <location filename="../src/database/nag.cpp" line="346"/>
+        <location filename="../src/database/nag.cpp" line="347"/>
         <source>With more than adequate compensation for material deficit</source>
         <translation>Med mere end tilstrækkelig kompensation for manglende materiale</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="343"/>
-        <location filename="../src/database/nag.cpp" line="344"/>
+        <location filename="../src/database/nag.cpp" line="348"/>
+        <location filename="../src/database/nag.cpp" line="349"/>
         <source>With slight center control advantage</source>
         <translation>Med lille centrumskontrol-fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="345"/>
-        <location filename="../src/database/nag.cpp" line="346"/>
+        <location filename="../src/database/nag.cpp" line="350"/>
+        <location filename="../src/database/nag.cpp" line="351"/>
         <source>With moderate center control advantage</source>
         <translation>Med moderat centrumskontrol-fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="347"/>
-        <location filename="../src/database/nag.cpp" line="348"/>
+        <location filename="../src/database/nag.cpp" line="352"/>
+        <location filename="../src/database/nag.cpp" line="353"/>
         <source>With decisive center control advantage</source>
         <translation>Med afgørende centrumskontrol-fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="349"/>
-        <location filename="../src/database/nag.cpp" line="350"/>
+        <location filename="../src/database/nag.cpp" line="354"/>
+        <location filename="../src/database/nag.cpp" line="355"/>
         <source>With slight kingside control advantage</source>
         <translation>Med lille kongefløjskontrol-fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="351"/>
-        <location filename="../src/database/nag.cpp" line="352"/>
+        <location filename="../src/database/nag.cpp" line="356"/>
+        <location filename="../src/database/nag.cpp" line="357"/>
         <source>With moderate kingside control advantage</source>
         <translation>Med moderat kongefløjskontrol-fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="353"/>
-        <location filename="../src/database/nag.cpp" line="354"/>
+        <location filename="../src/database/nag.cpp" line="358"/>
+        <location filename="../src/database/nag.cpp" line="359"/>
         <source>With decisive kingside control advantage</source>
         <translation>Med afgørende kongefløjskontrol-fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="355"/>
-        <location filename="../src/database/nag.cpp" line="356"/>
+        <location filename="../src/database/nag.cpp" line="360"/>
+        <location filename="../src/database/nag.cpp" line="361"/>
         <source>With slight queenside control advantage</source>
         <translation>Med lille dronningefløjskontrol-fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="357"/>
-        <location filename="../src/database/nag.cpp" line="358"/>
+        <location filename="../src/database/nag.cpp" line="362"/>
+        <location filename="../src/database/nag.cpp" line="363"/>
         <source>With moderate queenside control advantage</source>
         <translation>Med moderat dronningefløjskontrol-fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="359"/>
-        <location filename="../src/database/nag.cpp" line="360"/>
+        <location filename="../src/database/nag.cpp" line="364"/>
+        <location filename="../src/database/nag.cpp" line="365"/>
         <source>With decisive queenside control advantage</source>
         <translation>Med afgørende dronningefløjskontrol-fordel</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="361"/>
-        <location filename="../src/database/nag.cpp" line="362"/>
+        <location filename="../src/database/nag.cpp" line="366"/>
+        <location filename="../src/database/nag.cpp" line="367"/>
         <source>With vulnerable first rank</source>
         <translation>Med sårbar første række</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="363"/>
-        <location filename="../src/database/nag.cpp" line="364"/>
+        <location filename="../src/database/nag.cpp" line="368"/>
+        <location filename="../src/database/nag.cpp" line="369"/>
         <source>With well protected first rank</source>
         <translation>Med velbeskyttet første række</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="365"/>
-        <location filename="../src/database/nag.cpp" line="366"/>
+        <location filename="../src/database/nag.cpp" line="370"/>
+        <location filename="../src/database/nag.cpp" line="371"/>
         <source>With poorly protected king</source>
         <translation>Med dårligt beskyttet konge</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="367"/>
-        <location filename="../src/database/nag.cpp" line="368"/>
+        <location filename="../src/database/nag.cpp" line="372"/>
+        <location filename="../src/database/nag.cpp" line="373"/>
         <source>With well protected king</source>
         <translation>Med velbeskyttet konge</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="369"/>
-        <location filename="../src/database/nag.cpp" line="370"/>
+        <location filename="../src/database/nag.cpp" line="374"/>
+        <location filename="../src/database/nag.cpp" line="375"/>
         <source>With poorly placed king</source>
         <translation>Med dårlig placeret konge</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="371"/>
-        <location filename="../src/database/nag.cpp" line="372"/>
+        <location filename="../src/database/nag.cpp" line="376"/>
+        <location filename="../src/database/nag.cpp" line="377"/>
         <source>With well placed king</source>
         <translation>Med velplaceret konge</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="373"/>
-        <location filename="../src/database/nag.cpp" line="374"/>
+        <location filename="../src/database/nag.cpp" line="378"/>
+        <location filename="../src/database/nag.cpp" line="379"/>
         <source>With very weak pawn structure</source>
         <translation>Med meget svag bondestruktur</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="375"/>
-        <location filename="../src/database/nag.cpp" line="376"/>
+        <location filename="../src/database/nag.cpp" line="380"/>
+        <location filename="../src/database/nag.cpp" line="381"/>
         <source>With moderately weak pawn structure</source>
         <translation>Med svag bondestruktur</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="377"/>
-        <location filename="../src/database/nag.cpp" line="378"/>
+        <location filename="../src/database/nag.cpp" line="382"/>
+        <location filename="../src/database/nag.cpp" line="383"/>
         <source>With moderately strong pawn structure</source>
         <translation>Med stærk bondestruktur</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="379"/>
-        <location filename="../src/database/nag.cpp" line="380"/>
+        <location filename="../src/database/nag.cpp" line="384"/>
+        <location filename="../src/database/nag.cpp" line="385"/>
         <source>With very strong pawn structure</source>
         <translation>Med meget stærk bondestruktur</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="381"/>
-        <location filename="../src/database/nag.cpp" line="382"/>
+        <location filename="../src/database/nag.cpp" line="386"/>
+        <location filename="../src/database/nag.cpp" line="387"/>
         <source>With poor knight placement</source>
         <translation>Med dårlig placering af springer</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="383"/>
-        <location filename="../src/database/nag.cpp" line="384"/>
+        <location filename="../src/database/nag.cpp" line="388"/>
+        <location filename="../src/database/nag.cpp" line="389"/>
         <source>With good knight placement</source>
         <translation>Med god placering af springer</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="385"/>
-        <location filename="../src/database/nag.cpp" line="386"/>
+        <location filename="../src/database/nag.cpp" line="390"/>
+        <location filename="../src/database/nag.cpp" line="391"/>
         <source>With poor bishop placement</source>
         <translation>Med dårlig placering af løber</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="387"/>
-        <location filename="../src/database/nag.cpp" line="388"/>
+        <location filename="../src/database/nag.cpp" line="392"/>
+        <location filename="../src/database/nag.cpp" line="393"/>
         <source>With good bishop placement</source>
         <translation>Med god placering af løber</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="389"/>
-        <location filename="../src/database/nag.cpp" line="390"/>
+        <location filename="../src/database/nag.cpp" line="394"/>
+        <location filename="../src/database/nag.cpp" line="395"/>
         <source>With poor rook placement</source>
         <translation>Med dårlig placering af tårn</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="391"/>
-        <location filename="../src/database/nag.cpp" line="392"/>
+        <location filename="../src/database/nag.cpp" line="396"/>
+        <location filename="../src/database/nag.cpp" line="397"/>
         <source>With good rook placement</source>
         <translation>Med god placering af tårn</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="393"/>
-        <location filename="../src/database/nag.cpp" line="394"/>
+        <location filename="../src/database/nag.cpp" line="398"/>
+        <location filename="../src/database/nag.cpp" line="399"/>
         <source>With poor queen placement</source>
         <translation>Med dårlig placering af dronning</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="395"/>
-        <location filename="../src/database/nag.cpp" line="396"/>
+        <location filename="../src/database/nag.cpp" line="400"/>
+        <location filename="../src/database/nag.cpp" line="401"/>
         <source>With good queen placement</source>
         <translation>Med god placering af dronning</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="397"/>
-        <location filename="../src/database/nag.cpp" line="398"/>
+        <location filename="../src/database/nag.cpp" line="402"/>
+        <location filename="../src/database/nag.cpp" line="403"/>
         <source>With poor piece coordination</source>
         <translation>Med dårlig koordinering af brikker</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="399"/>
-        <location filename="../src/database/nag.cpp" line="400"/>
+        <location filename="../src/database/nag.cpp" line="404"/>
+        <location filename="../src/database/nag.cpp" line="405"/>
         <source>With good piece coordination</source>
         <translation>Med god koordinering af brikker</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="401"/>
+        <location filename="../src/database/nag.cpp" line="406"/>
         <source>White played the opening very poorly</source>
         <translation>Hvid spillede åbningen meget dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="402"/>
+        <location filename="../src/database/nag.cpp" line="407"/>
         <source>Black played the opening very poorly</source>
         <translation>Sort spillede åbningen meget dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="403"/>
+        <location filename="../src/database/nag.cpp" line="408"/>
         <source>White played the opening poorly</source>
         <translation>Hvid spillede åbningen dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="404"/>
+        <location filename="../src/database/nag.cpp" line="409"/>
         <source>Black played the opening poorly</source>
         <translation>Sort spillede åbningen dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="405"/>
+        <location filename="../src/database/nag.cpp" line="410"/>
         <source>White played the opening well</source>
         <translation>Hvid spillede åbningen godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="406"/>
+        <location filename="../src/database/nag.cpp" line="411"/>
         <source>Black played the opening well</source>
         <translation>Sort spillede åbningen godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="407"/>
+        <location filename="../src/database/nag.cpp" line="412"/>
         <source>White played the opening very well</source>
         <translation>Hvid spillede åbningen meget godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="408"/>
+        <location filename="../src/database/nag.cpp" line="413"/>
         <source>Black played the opening very well</source>
         <translation>Sort spillede åbningen meget godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="409"/>
+        <location filename="../src/database/nag.cpp" line="414"/>
         <source>White played the middlegame very poorly</source>
         <translation>Hvid spillede midtspillet meget dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="410"/>
+        <location filename="../src/database/nag.cpp" line="415"/>
         <source>Black played the middlegame very poorly</source>
         <translation>Sort spillede midtspillet meget dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="411"/>
+        <location filename="../src/database/nag.cpp" line="416"/>
         <source>White played the middlegame poorly</source>
         <translation>Hvid spillede midtspillet dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="412"/>
+        <location filename="../src/database/nag.cpp" line="417"/>
         <source>Black played the middlegame poorly</source>
         <translation>Sort spillede midtspillet dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="413"/>
+        <location filename="../src/database/nag.cpp" line="418"/>
         <source>White played the middlegame well</source>
         <translation>Hvid spillede midtspillet godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="414"/>
+        <location filename="../src/database/nag.cpp" line="419"/>
         <source>Black played the middlegame well</source>
         <translation>Sort spillede midtspillet godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="415"/>
+        <location filename="../src/database/nag.cpp" line="420"/>
         <source>White played the middlegame very well</source>
         <translation>Hvid spillede midtspillet meget godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="416"/>
+        <location filename="../src/database/nag.cpp" line="421"/>
         <source>Black played the middlegame very well</source>
         <translation>Sort spillede midtspillet meget godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="417"/>
+        <location filename="../src/database/nag.cpp" line="422"/>
         <source>White played the ending very poorly</source>
         <translation>Hvid spillede slutspillet meget dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="418"/>
+        <location filename="../src/database/nag.cpp" line="423"/>
         <source>Black played the ending very poorly</source>
         <translation>Sort spillede slutspillet meget dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="419"/>
+        <location filename="../src/database/nag.cpp" line="424"/>
         <source>White played the ending poorly</source>
         <translation>Hvid spillede slutspillet dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="420"/>
+        <location filename="../src/database/nag.cpp" line="425"/>
         <source>Black played the ending poorly</source>
         <translation>Sort spillede slutspillet dårligt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="421"/>
+        <location filename="../src/database/nag.cpp" line="426"/>
         <source>White played the ending well</source>
         <translation>Hvid spillede slutspillet godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="422"/>
+        <location filename="../src/database/nag.cpp" line="427"/>
         <source>Black played the ending well</source>
         <translation>Sort spillede slutspillet godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="423"/>
+        <location filename="../src/database/nag.cpp" line="428"/>
         <source>White played the ending very well</source>
         <translation>Hvid spillede slutspillet meget godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="424"/>
+        <location filename="../src/database/nag.cpp" line="429"/>
         <source>Black played the ending very well</source>
         <translation>Sort spillede slutspillet meget godt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="425"/>
-        <location filename="../src/database/nag.cpp" line="426"/>
-        <location filename="../src/database/nag.cpp" line="427"/>
-        <location filename="../src/database/nag.cpp" line="428"/>
-        <location filename="../src/database/nag.cpp" line="429"/>
         <location filename="../src/database/nag.cpp" line="430"/>
+        <location filename="../src/database/nag.cpp" line="431"/>
+        <location filename="../src/database/nag.cpp" line="432"/>
+        <location filename="../src/database/nag.cpp" line="433"/>
+        <location filename="../src/database/nag.cpp" line="434"/>
+        <location filename="../src/database/nag.cpp" line="435"/>
         <source>With counterplay</source>
         <translation>Med modspil</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="431"/>
-        <location filename="../src/database/nag.cpp" line="432"/>
+        <location filename="../src/database/nag.cpp" line="436"/>
+        <location filename="../src/database/nag.cpp" line="437"/>
         <source>Moderate time control pressure</source>
         <translation>I tidsnød</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="433"/>
-        <location filename="../src/database/nag.cpp" line="434"/>
+        <location filename="../src/database/nag.cpp" line="438"/>
+        <location filename="../src/database/nag.cpp" line="439"/>
         <source>Severe time control pressure</source>
         <translation>I stærk tidsnød</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="435"/>
+        <location filename="../src/database/nag.cpp" line="440"/>
         <source>With the idea</source>
         <translation>Med ideen</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="436"/>
+        <location filename="../src/database/nag.cpp" line="441"/>
         <source>Aimed against</source>
         <translation>Rettet imod</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="437"/>
+        <location filename="../src/database/nag.cpp" line="442"/>
         <source>Better was</source>
         <translation>Bedre var</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="438"/>
+        <location filename="../src/database/nag.cpp" line="443"/>
         <source>Worse was</source>
         <translation>Værre var</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="439"/>
+        <location filename="../src/database/nag.cpp" line="444"/>
         <source>Equivalent was</source>
         <translation>Lige så godt var</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="440"/>
+        <location filename="../src/database/nag.cpp" line="445"/>
         <source>RR</source>
         <translation>Redaktionel bemærkning</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="441"/>
+        <location filename="../src/database/nag.cpp" line="446"/>
         <source>N</source>
         <translation>Nyhed</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="442"/>
+        <location filename="../src/database/nag.cpp" line="447"/>
         <source>Weak point</source>
         <translation>Svagt punkt</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="443"/>
+        <location filename="../src/database/nag.cpp" line="448"/>
         <source>Endgame</source>
         <translation>Slutspil</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="444"/>
+        <location filename="../src/database/nag.cpp" line="449"/>
         <source>Line</source>
         <translation>Linje</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="445"/>
+        <location filename="../src/database/nag.cpp" line="450"/>
         <source>Diagonal</source>
         <translation>Diagonal</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="446"/>
-        <location filename="../src/database/nag.cpp" line="447"/>
+        <location filename="../src/database/nag.cpp" line="451"/>
+        <location filename="../src/database/nag.cpp" line="452"/>
         <source>Pair of bishops</source>
         <translation>Løberpar</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="448"/>
+        <location filename="../src/database/nag.cpp" line="453"/>
         <source>Bishops of opposite color</source>
         <translation>Ensfarvede løbere</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="449"/>
+        <location filename="../src/database/nag.cpp" line="454"/>
         <source>Bishops of the same color</source>
         <translation>Uligefarvede løbere</translation>
     </message>
     <message>
-        <location filename="../src/database/nag.cpp" line="455"/>
+        <location filename="../src/database/nag.cpp" line="460"/>
         <source>Diagram</source>
         <translation>Diagram</translation>
     </message>
@@ -3869,47 +3869,48 @@ Skal jeg downloade en database?</translation>
 <context>
     <name>PlayerInfo</name>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="189"/>
+        <location filename="../src/database/playerinfo.cpp" line="204"/>
+        <location filename="../src/database/playerinfo.cpp" line="228"/>
         <source>&lt;i&gt;no games&lt;/i&gt;</source>
         <translation>&lt;i&gt;ingen partier&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="218"/>
+        <location filename="../src/database/playerinfo.cpp" line="194"/>
         <source>Total: %1&lt;br&gt;White: %2&lt;br&gt;Black: %3&lt;br&gt;</source>
         <translation>I alt: %1&lt;br&gt;Hvid: %2&lt;br&gt;Sort: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="245"/>
+        <location filename="../src/database/playerinfo.cpp" line="272"/>
         <source>Games in database &lt;i&gt;%1&lt;/i&gt;: &lt;b&gt;%2&lt;/b&gt;&lt;br&gt;</source>
         <translation>Partier i database &lt;i&gt;%1&lt;/i&gt;: &lt;b&gt;%2&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="257"/>
+        <location filename="../src/database/playerinfo.cpp" line="284"/>
         <source>Rating: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</source>
         <translation>Rating: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="260"/>
+        <location filename="../src/database/playerinfo.cpp" line="287"/>
         <source>Rating: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</source>
         <translation>Rating: &lt;b&gt;%1-%2&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="268"/>
+        <location filename="../src/database/playerinfo.cpp" line="295"/>
         <source>Date: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</source>
         <translation>Dato: &lt;b&gt;????.??.??&lt;b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="276"/>
+        <location filename="../src/database/playerinfo.cpp" line="303"/>
         <source>Date: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</source>
         <translation>Dato: &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="283"/>
+        <location filename="../src/database/playerinfo.cpp" line="310"/>
         <source>White Openings</source>
         <translation>Hvide åbninger</translation>
     </message>
     <message>
-        <location filename="../src/database/playerinfo.cpp" line="284"/>
+        <location filename="../src/database/playerinfo.cpp" line="311"/>
         <source>Black Openings</source>
         <translation>Sorte åbninger</translation>
     </message>

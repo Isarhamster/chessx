@@ -100,6 +100,16 @@ void FilterModel::updateColumns()
     endUpdate();
 }
 
+void FilterModel::disableUpdate()
+{
+    ++m_modelUpdateStarted;
+}
+
+void FilterModel::enableUpdate()
+{
+    --m_modelUpdateStarted;
+}
+
 void FilterModel::startUpdate()
 {
     if (!m_modelUpdateStarted) beginResetModel();
@@ -117,12 +127,10 @@ void FilterModel::endUpdate()
 
 void FilterModel::set(GameId game, int value)
 {
-    // TODO: This is not the proper way, but works in a lot of cases
-    // A refactoring is needed to do this properly, actually, here
-    // it is far to late to do what I'm doing
-    startUpdate();
     filter()->set(game, value);
-    endUpdate();
+    QModelIndex start = createIndex(game, 0, (void*) 0);
+    QModelIndex end = createIndex(game, columnCount(), (void*) 0);
+    emit dataChanged(start, end);
 }
 
 QVariant FilterModel::data(const QModelIndex &index, int role) const
