@@ -7,6 +7,7 @@
 
 #include <QSlider>
 
+/** Slider with three segments of linear translation of visual values and its target value */
 class TranslatingSlider : public QSlider
 {
     Q_OBJECT

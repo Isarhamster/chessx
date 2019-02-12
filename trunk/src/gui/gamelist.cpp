@@ -330,7 +330,9 @@ void GameList::slotContextMenu(const QPoint& pos)
         menu.addSeparator();
         QString hideText = selection.count()>1 ? tr("Hide games") : tr("Hide game");
         menu.addAction(hideText, this, SLOT(slotHideGame()));
-        menu.addAction(tr("Hide deleted games"), this, SLOT(slotHideDeletedGames()));
+
+        deleteAction = menu.addAction(tr("Hide deleted games"), this, SLOT(slotHideDeletedGames()));
+        deleteAction->setEnabled(activated && deleted);
     }
     menu.addAction(tr("Reset filter"), this, SLOT(filterSetAll()));
     menu.addAction(tr("Reverse filter"), this, SLOT(filterInvert()));
@@ -570,12 +572,17 @@ void GameList::slotHideGame()
 void GameList::slotHideDeletedGames()
 {
     QList<GameId> gameIndexList = selectedGames();
-    foreach(GameId game, gameIndexList)
+    if (!gameIndexList.isEmpty())
     {
-        if (m_model->filter()->database()->deleted(game))
+        m_model->startUpdate();
+        foreach(GameId game, gameIndexList)
         {
-            m_model->set(game,0);
+            if (m_model->filter()->database()->deleted(game))
+            {
+                m_model->set(game,0);
+            }
         }
+        m_model->endUpdate();
     }
 }
 

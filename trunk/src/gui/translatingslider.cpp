@@ -14,7 +14,9 @@ TranslatingSlider::TranslatingSlider(QWidget *parent) :
     m_offset(0),
     m_multiplier(1),
     m_start2(INT_MAX),
-    m_multiplier2(1)
+    m_multiplier2(1),
+    m_start3(INT_MAX),
+    m_multiplier3(1)
 {
     connect(this, SIGNAL(valueChanged(int)), SLOT(slotValueChanged(int)));
 }
