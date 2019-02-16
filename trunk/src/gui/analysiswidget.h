@@ -69,6 +69,8 @@ public slots:
     void setMoveTime(EngineParameter mt);
     /** Change the movetime of the engine */
     void setMoveTime(int);
+    /** Change the search depth of the engine */
+    void setDepth(int n);
     /** Must send ucinewgame next time */
     void slotUciNewGame(const Board& b);
     /** Called when the list of databases changes */

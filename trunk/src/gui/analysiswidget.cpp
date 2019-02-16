@@ -438,6 +438,11 @@ void AnalysisWidget::setMoveTime(int n)
     setMoveTime((EngineParameter) n);
 }
 
+void AnalysisWidget::setDepth(int n)
+{
+    m_moveTime.searchDepth = n;
+    setMoveTime(m_moveTime);
+}
 
 void AnalysisWidget::slotMpvChanged(int mpv)
 {

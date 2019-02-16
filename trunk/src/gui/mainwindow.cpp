@@ -439,18 +439,23 @@ MainWindow::MainWindow() : QMainWindow(),
     m_matchParameter.engineStarts = AppSettings->getValue("/Match/EngineStarts").toBool();
 
     m_matchParameter.reset();
-    m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
-    m_secondaryAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
 
-    statusBar()->addPermanentWidget(new QLabel(tr("Move Interval:"), this));
+    m_comboEngine = new QComboBox(this);
+    m_comboEngine->addItem(tr("Move Interval:"));
+    m_comboEngine->addItem(tr("Search Depth:"));
+    statusBar()->addPermanentWidget(m_comboEngine);
     statusBar()->addPermanentWidget(m_sliderSpeed);
     m_sliderText = new QLabel(this);
     slotSetSliderText(0);
     m_sliderText->setFixedWidth(m_sliderText->sizeHint().width());
 
     statusBar()->addPermanentWidget(m_sliderText);
-    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), this, SLOT(slotSetSliderText(int)));
-    slotSetSliderText(m_sliderSpeed->translatedValue());
+    connect(m_sliderSpeed, SIGNAL(translatedValueChanged(int)), this, SLOT(slotSetSliderText()));
+    connect(m_comboEngine, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSetSliderText()));
+    connect(m_comboEngine, SIGNAL(currentIndexChanged(int)), SLOT(slotEngineModeChanged(int)));
+
+    slotSetSliderText();
+    setEngineMoveTime();
 
     statusBar()->setFixedHeight(statusBar()->height());
     statusBar()->setSizeGripEnabled(true);

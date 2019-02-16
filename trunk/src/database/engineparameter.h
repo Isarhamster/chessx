@@ -23,6 +23,7 @@ public:
         allowBook    = false;
         bookMove     = 0;
         engineStarts = false;
+        searchDepth        = -1;
     }
 
     EngineParameter(int mt=0)
@@ -38,6 +39,7 @@ public:
         allowBook    = false;
         bookMove     = 0;
         engineStarts = false;
+        searchDepth        = -1;
     }
 
     QString timeAsString() const
@@ -72,6 +74,7 @@ public:
     bool allowBook;
     int bookMove;
     bool engineStarts;
+    int searchDepth;
 };
 
 #endif // ENGINEPARAMETER_H

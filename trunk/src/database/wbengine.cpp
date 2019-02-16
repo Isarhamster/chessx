@@ -34,7 +34,10 @@ void WBEngine::go()
     {
         if (m_moveTime.ms_totalTime > 0)
         {
-            send (QString("st %1").arg(m_moveTime.ms_totalTime/1000));
+            if (m_moveTime.searchDepth<0)
+                send (QString("st %1").arg(m_moveTime.ms_totalTime/1000));
+            else
+                send (QString("sd %1").arg(m_moveTime.searchDepth));
             send ("go");
             m_bHasSentAnalyze = false;
         }
