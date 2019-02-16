@@ -496,6 +496,7 @@ bool MainWindow::pasteFen(QString& msg, QString fen, bool newGame)
         slotGameNew();
     }
     game().setStartingBoard(board,"Set starting board",board.chess960());
+    emit signalGameLoaded(game().startingBoard());
     return true;
 }
 
