@@ -141,9 +141,20 @@ void UCIEngine::go()
             send(QString("setoption name UCI_AnalyseMode value %1").arg(m_moveTime.ms_totalTime==0? "true":"false"));
         }
         if (!m_moveTime.ms_totalTime)
+        {
             send("go infinite");
+        }
         else
-            send(QString("go movetime %1").arg(m_moveTime.ms_totalTime));
+        {
+            if ( m_moveTime.searchDepth < 0 )
+            {
+                send(QString("go movetime %1").arg(m_moveTime.ms_totalTime));
+            }
+            else
+            {
+                send(QString("go depth %1").arg(m_moveTime.searchDepth));
+            }
+        }
     }
     else if (m_moveTime.tm == EngineParameter::TIME_SUDDEN_DEATH)
     {

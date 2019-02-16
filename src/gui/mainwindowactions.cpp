@@ -1950,7 +1950,7 @@ void MainWindow::slotToggleAutoRespond()
         SlotShowTimer(false);
         m_mainAnalysis->stopEngine();
         // Reset to value from slider
-        m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
+        setEngineMoveTime(m_mainAnalysis);
         m_boardView->setFlags(m_boardView->flags() & ~BoardView::IgnoreSideToMove);
     }
 
@@ -1963,7 +1963,7 @@ void MainWindow::slotToggleAutoAnalysis()
 {
     if(m_autoAnalysis->isChecked())
     {
-        m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
+        setEngineMoveTime(m_mainAnalysis);
         m_AutoInsertLastBoard.clear();
         if(!m_mainAnalysis->isEngineConfigured())
         {
@@ -2074,8 +2074,7 @@ void MainWindow::slotToggleEngineMatch()
             m_mainAnalysis->stopEngine();
             m_secondaryAnalysis->stopEngine();
         }
-        m_mainAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
-        m_secondaryAnalysis->setMoveTime(m_sliderSpeed->translatedValue());
+        setEngineMoveTime();
     }
 }
 
@@ -3511,22 +3510,65 @@ void MainWindow::slotMoveIntervalChanged(int interval)
 
     if (!m_autoRespond->isChecked() && !m_engineMatch->isChecked())
     {
-        m_mainAnalysis->setMoveTime(interval);
-        m_secondaryAnalysis->setMoveTime(interval);
+        setEngineMoveTime();
+    }
+}
+
+void MainWindow::slotEngineModeChanged(int)
+{
+    if (!m_autoRespond->isChecked() && !m_engineMatch->isChecked())
+    {
+        setEngineMoveTime();
     }
 }
 
 void MainWindow::slotSetSliderText(int interval)
 {
+    if (interval<0)
+    {
+        if (m_comboEngine->currentIndex()==0)
+        {
+            interval = m_sliderSpeed->translatedValue();
+        }
+        else
+        {
+            interval = m_sliderSpeed->value();
+        }
+    }
     if (!interval)
     {
         m_sliderText->setText(QString("0s/")+tr("Infinite"));
     }
     else
     {
-        QTime t = QTime::fromMSecsSinceStartOfDay(interval);
-        m_sliderText->setText(t.toString("mm:ss"));
+        if (m_comboEngine->currentIndex()==0)
+        {
+            QTime t = QTime::fromMSecsSinceStartOfDay(interval);
+            m_sliderText->setText(t.toString("mm:ss"));
+        }
+        else
+        {
+            m_sliderText->setText(QString::number(interval));
+        }
     }
+}
+
+void MainWindow::setEngineMoveTime(AnalysisWidget* w)
+{
+    if (m_comboEngine->currentIndex()==0)
+    {
+        w->setMoveTime(m_sliderSpeed->translatedValue());
+    }
+    else
+    {
+        w->setDepth(m_sliderSpeed->value());
+    }
+}
+
+void MainWindow::setEngineMoveTime()
+{
+    setEngineMoveTime(m_mainAnalysis);
+    setEngineMoveTime(m_secondaryAnalysis);
 }
 
 void MainWindow::slotUpdateOpeningTreeWidget()

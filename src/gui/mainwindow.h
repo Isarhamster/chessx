@@ -43,6 +43,7 @@ class GameWindow;
 class HistoryLabel;
 class OpeningTreeWidget;
 class PlayerListWidget;
+class QComboBox;
 class QLabel;
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -399,6 +400,8 @@ public slots:
     void slotDatabaseDropped(QDropEvent*);
     void slotDatabaseDroppedHandler(QUrl url, QString filename);
     void slotDatabaseDroppedFailed(QUrl url);
+    void slotEngineModeChanged(int mode);
+
 protected slots:
     /** Update recent files menu */
     void updateMenuRecent();
@@ -441,7 +444,7 @@ protected slots:
     /** Value for Move Interval is changed */
     void slotMoveIntervalChanged(int);
     /** Value for Move Interval Slider is changed */
-    void slotSetSliderText(int);
+    void slotSetSliderText(int value=-1);
     /** Query for a database to load */
     void QueryLoadDatabase();
     /** Handle a disconnection from fics */
@@ -617,8 +620,10 @@ private:
     bool gameIsDraw() const;
     /** Get a list of moves from start to current position */
     QString getUCIHistory() const;
-
-    /** Determine Color the user is using depending upon different match scenarios */
+    /** Extract move time or depth from slider and send it to engines */
+    void setEngineMoveTime();
+    void setEngineMoveTime(AnalysisWidget* w);
+     /** Determine Color the user is using depending upon different match scenarios */
     Color UserColor();
 
     /* Dialogs  */
@@ -635,6 +640,7 @@ private:
     QPointer<QProgressBar> m_progressBar;
     QPointer<TranslatingSlider> m_sliderSpeed;
     QLabel* m_sliderText;
+    QPointer<QComboBox> m_comboEngine;
     GameWindow* m_gameWindow;
     QToolBar* m_gameToolBar;
     QTabWidget* m_tabWidget;
