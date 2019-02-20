@@ -5,6 +5,7 @@ February 2018: Version 1.5.0
 - New Feature: Read Arena Books (.abk)
 - New Feature: Drag databases into list of games
 
+- New feature: Search depth for analysis
 - New feature: Filter operation from gamelist
 - New feature: Allow user-provided ECO files
 - New feature: Save dialog allows to store extra tags

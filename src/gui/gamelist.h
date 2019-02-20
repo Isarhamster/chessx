@@ -40,6 +40,7 @@ public:
     GameList(Filter* filter, QWidget* parent = 0);
     ~GameList();
 
+    void keyPressEvent(QKeyEvent* event);
     void removeSelection();
     /** Set current database */
     QList<GameId> selectedGames();

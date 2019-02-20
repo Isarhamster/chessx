@@ -138,6 +138,7 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
     if(index.isValid() && index.row() < m_filter->size())
     {
         GameId i = index.row();
+        QString medal = m_filter->database()->tagValue(i, "Medal");
         if (VALID_INDEX(i))
         {
             if (role == Qt::DisplayRole)
@@ -153,6 +154,15 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
                     tag.clear();
                 }
                 return tag;
+            }
+            else if(role == Qt::BackgroundRole)
+            {
+                QColor bg(medal);
+                if (bg.isValid())
+                {
+                    bg.setAlpha(80);
+                    return QBrush(bg);
+                }
             }
             else if(role == Qt::FontRole)
             {
