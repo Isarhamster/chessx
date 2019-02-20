@@ -267,6 +267,22 @@ void GameList::setFilter(Filter* filter)
     emit raiseRequest();
 }
 
+void GameList::keyPressEvent(QKeyEvent* event)
+{
+    if ((event->modifiers() & Qt::KeyboardModifierMask) == Qt::MetaModifier)
+    {
+        switch (event->key())
+        {
+            case Qt::Key_A: selectAll();      break;
+            case Qt::Key_C: slotCopyGame();   break;
+            case Qt::Key_X: slotDeleteGame(); break;
+            case Qt::Key_H: slotHideGame(); break;
+        }
+        update();
+    }
+    TableView::keyPressEvent(event);
+}
+
 void GameList::slotContextMenu(const QPoint& pos)
 {
     QModelIndex cell = indexAt(pos);

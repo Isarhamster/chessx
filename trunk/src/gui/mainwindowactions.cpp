@@ -3141,6 +3141,7 @@ void MainWindow::slotUpdateOpeningBook(QString name)
 
 void MainWindow::slotDatabaseDeleteGame(QList<GameId> gameIndexList)
 {
+    m_gameList->startUpdate();
     foreach(GameId n, gameIndexList)
     {
         if(database()->deleted(n))
@@ -3152,6 +3153,7 @@ void MainWindow::slotDatabaseDeleteGame(QList<GameId> gameIndexList)
             database()->remove(n);
         }
     }
+    m_gameList->endUpdate();
 }
 
 void MainWindow::slotRenameEvent(QString ts)
