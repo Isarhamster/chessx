@@ -3726,10 +3726,25 @@ void MainWindow::slotToggleBrush()
     {
         // Not allowed
         brushGroup->untrigger();
+        m_boardView->setBrushMode(false);
     }
     else
     {
-        m_boardView->setBrushMode(brushGroup->checkedAction());
+        if ((QApplication::queryKeyboardModifiers() & 0x7e000000 & Qt::ShiftModifier) == Qt::ShiftModifier)
+        {
+            const QAction* a = brushGroup->checkedAction();
+            if (a && (a->data().toChar() == QChar(0)))
+            {
+                game().setArrowAnnotation("");
+                game().setSquareAnnotation("");
+                brushGroup->untrigger();
+                m_boardView->setBrushMode(false);
+            }
+        }
+        else
+        {
+            m_boardView->setBrushMode(brushGroup->checkedAction());
+        }
     }
 }
 
