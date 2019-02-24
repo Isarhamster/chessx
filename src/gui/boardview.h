@@ -147,7 +147,7 @@ protected:
     virtual void keyPressEvent(QKeyEvent *);
     virtual void keyReleaseEvent(QKeyEvent *);
     virtual void enterEvent(QEvent *);
-    virtual void focusInEvent(QFocusEvent *);
+    virtual void leaveEvent(QEvent *event);
     void handleMouseMoveEvent(QMouseEvent *event);
 
 protected: //Drag'n'Drop Support
