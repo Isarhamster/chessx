@@ -898,7 +898,6 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
 
     if(!(event->button() & Qt::LeftButton))
     {
-
         if(s == from)
         {
             from = InvalidSquare;
@@ -934,7 +933,13 @@ void BoardView::mouseReleaseEvent(QMouseEvent* event)
                 Square from = squareAt(m_dragStart);
                 emit clicked(s, button, mapToGlobal(event->pos()), from);
             }
-            m_dragged = Empty;
+            if (m_dragged != Empty)
+            {
+                update(squareRect(from));
+                QRect oldr = QRect(m_dragPoint, m_theme.size());
+                update(oldr);
+                m_dragged = Empty;
+            }
             return;
         }
     }

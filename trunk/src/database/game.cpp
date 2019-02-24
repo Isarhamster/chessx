@@ -1109,6 +1109,7 @@ bool Game::setSquareAnnotation(QString squareAnnotation, MoveId moveId)
         s.append(QString("[%csl %1]").arg(squareAnnotation));
     }
     dbSetAnnotation(s, moveId);
+    indicateAnnotationsOnBoard(moveId);
     return true;
 }
 
@@ -1157,7 +1158,6 @@ bool Game::appendSquareAnnotation(Square s, QChar colorCode)
         }
     }
     setSquareAnnotation(newAnnot.trimmed());
-    dbIndicateAnnotationsOnBoard(currentMove());
     emit signalGameModified(true, state, tr("Colorize square"));
     return true;
 }
@@ -1205,7 +1205,6 @@ bool Game::appendArrowAnnotation(Square dest, Square src, QChar colorCode)
         }
     }
     setArrowAnnotation(newAnnot);
-    dbIndicateAnnotationsOnBoard(currentMove());
     emit signalGameModified(true, state, tr("Paint arrow"));
     return true;
 }
@@ -1234,6 +1233,7 @@ bool Game::setArrowAnnotation(QString arrowAnnotation, MoveId moveId)
         s.append(QString("[%cal %1]").arg(arrowAnnotation));
     }
     dbSetAnnotation(s, moveId);
+    indicateAnnotationsOnBoard(moveId);
     return true;
 }
 
