@@ -629,10 +629,10 @@ void GameList::startDrag(Qt::DropActions /*supportedActions*/)
                 QString pgn = textWriter.output(&g);
                 if (!text.isEmpty())
                 {
-                    text.append("\n");
+                    text.append("\r\n");
                 }
                 text.append(pgn);
-                text.append("\n");
+                text.append("\r\n");
             }
         }
         mimeData->setText(text);
