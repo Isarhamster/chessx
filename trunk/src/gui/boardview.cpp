@@ -83,10 +83,6 @@ bool BoardView::eventFilter(QObject *obj, QEvent *ev)
     {
         removeGuess();
     }
-    if(ev->type() == QEvent::KeyPress)
-    {
-        checkCursor(QApplication::queryKeyboardModifiers());
-    }
     return QWidget::eventFilter(obj, ev);
 }
 
@@ -690,38 +686,41 @@ void BoardView::checkCursor(Qt::KeyboardModifiers modifiers)
     const char* file = 0;
     QString text;
 
-    switch (moveActionFromModifier(modifiers))
+    if (underMouse())
     {
-    case ActionStandard:
-        break;
-    case ActionQuery:
-        file = ":/images/query_move.png";
-        text = tr("Query for piece in case of promotion");
-        break;
-    case ActionReplace:
-        file = ":/images/replace_move.png";
-        text = tr("Replace remainder of game with new move");
-        break;
-    case ActionInsert:
-        file = ":/images/insert_move.png";
-        text = tr("Insert new move and keep as much as possible of remaining moves");
-        break;
-    case ActionAdd:
-        file = ":/images/plus.png";
-        text = tr("Force adding a variation");
-        break;
-    case ActionPen:
-        file = ":/images/pen.png";
-        text = tr("Draw a square or arrow annotation");
-        break;
-    case ActionAskEngine:
-        file = ":/images/engine.png";
-        text = tr("Query the engine as if piece was located at target");
-        break;
-    case ActionEvalMove:
-        file = ":/images/engine.png";
-        text = tr("Query the engine for the best reply");
-        break;
+        switch (moveActionFromModifier(modifiers))
+        {
+        case ActionStandard:
+            break;
+        case ActionQuery:
+            file = ":/images/query_move.png";
+            text = tr("Query for piece in case of promotion");
+            break;
+        case ActionReplace:
+            file = ":/images/replace_move.png";
+            text = tr("Replace remainder of game with new move");
+            break;
+        case ActionInsert:
+            file = ":/images/insert_move.png";
+            text = tr("Insert new move and keep as much as possible of remaining moves");
+            break;
+        case ActionAdd:
+            file = ":/images/plus.png";
+            text = tr("Force adding a variation");
+            break;
+        case ActionPen:
+            file = ":/images/pen.png";
+            text = tr("Draw a square or arrow annotation");
+            break;
+        case ActionAskEngine:
+            file = ":/images/engine.png";
+            text = tr("Query the engine as if piece was located at target");
+            break;
+        case ActionEvalMove:
+            file = ":/images/engine.png";
+            text = tr("Query the engine for the best reply");
+            break;
+        }
     }
 
     if(file)
@@ -758,13 +757,14 @@ void BoardView::enterEvent(QEvent *event)
 {
     setFocus();
     raise();
+    checkCursor(QApplication::queryKeyboardModifiers());
     QWidget::enterEvent(event);
 }
 
-void BoardView::focusInEvent(QFocusEvent *event)
+void BoardView::leaveEvent(QEvent *event)
 {
-    checkCursor(QApplication::queryKeyboardModifiers());
-    QWidget::focusInEvent(event);
+    emit actionHint("");
+    QWidget::leaveEvent(event);
 }
 
 void BoardView::handleMouseMoveEvent(QMouseEvent *event)
