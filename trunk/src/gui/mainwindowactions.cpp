@@ -2652,7 +2652,7 @@ void MainWindow::copyDatabase(QString target, QString src)
                 done = true;
                 QString msg = tr("Append games from %1 to %2.").arg(fiSrc.fileName()).arg(fiDest.fileName());
                 slotStatusMessage(msg);
-                fDest.write("\n");
+                fDest.write("\r\n");
                 while(!fSrc.atEnd())
                 {
                     QByteArray line = fSrc.readLine();
