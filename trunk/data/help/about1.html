@@ -97,8 +97,8 @@ Return/Enter-Key or literally the small letter 'x'.</p>
 <p>You can make special annotations like drawing an arrow or coloring squares by pressing Shift+Right-Mouse-Clicking (either select a single square
 or make a drawing gesture for drawing an arrow).</p>
 <p><img src=":/images/brush_green.png" width="42" align="left">Pressing a green, red or yellow pen enters paint mode. You cannot enter moves,
-instead, you can paint squares and arrows without having to press Shift+Right-Mouse.</p>
-<p><img src=":/images/brush_erase.png" width="42" align="left">Pressing the grey pen selects the eraser.</p>
+instead, you can paint squares and arrows without having to press Shift+Right-Mouse.<br></p>
+<p><img src=":/images/brush_erase.png" width="42" align="left">Pressing the grey pen selects the eraser.<br>Pressing Shift+grey pen erases all markups at once.<br></p>
 <h3><a name="Save"></a>Saving games</h3>
 <p>Saving games is slightly confusing! A game needs to be saved into the database (Press CTRL+S, Menu Game/Save). From there,
 the whole database needs to be saved to disk by pressing CTRL+Shift+S / Menu File/Save. This is somewhat inconvenient but on the other hand prevents
@@ -184,7 +184,7 @@ within the same directory.</p>
 <p>One note on Polyglot: Books can be difficult to interpret: they are made for engines, as they give a hint on moves,
 the engine should play. Moves which did not succeed at all are usually not part of polyglot books.</p>
 <p>So do not learn openings from polyglot books - important moves might be missing!</p>
-<p>One note on Arena: Unlike Polyglot or Chessbasem, Arena books are a compressed set of games, so they are handled like read-only databases. You can drag games from Arena books
+<p>One note on Arena: Unlike Polyglot or Chessbase, Arena books are a compressed set of games, so they are handled like read-only databases. You can drag games from Arena books
 like from any other database.<p>
 <h3><a name="Create-Book"></a>Creating your own book</h3>
 <p>You can create your own Polyglot book by selecting a open PGN or Arena database (right click with the mouse) and select "Make polyglot book".</p>
@@ -226,9 +226,14 @@ If nothing is merged, no suitable point for merging was found. This can happen, 
 Several searches can be combined or inverted.
 Further occurrences of the current board position in the current database can be found via
 the Find / Find Position menu.</p>
-<p>Clicking on the header sorts the list. This feature is disabled for larger databases (>4K of games)
-as it will take far too long to sort the list.</p>
-
+<p>Clicking on the header sorts the list.</p>
+<p>Keyboard Shortcuts inside the game list:</p>
+<ul>
+<li>Meta+A: Select all games
+<li>Meta+C: Bring up the copy dialog for the selected games
+<li>Meta+H: Hide the selected games
+<li>Meta+X: Delete selected games
+</ul>
 <h3><a name="Filter"></a>Filter Databases into an opening tree</h3>
 <p>The opening tree takes the current board position and matches it with each game in the selected database.
 The moves found in the database are listed with the number of occurrences and the score that was achieved with
