@@ -1119,12 +1119,12 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
 {
     if(button & Qt::RightButton)
     {
+        bool twoSquares = (s != from && from != InvalidSquare);
         if(button & Qt::ShiftModifier)
         {
             QMenu* menu = new QMenu(this);
             m_annotationSquare = s;
             m_annotationSquareFrom = from;
-            bool twoSquares = (s != from && from != InvalidSquare);
             if (!twoSquares)
             {
                 SQAction('R',menu->addAction(QIcon(":/images/square_red.png"),   tr("Red Square"),    this, SLOT(slotRedSquare())));
@@ -1145,31 +1145,38 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
         }
         else
         {
-            bool nextGuess = AppSettings->getValue("/Board/nextGuess").toBool();
-            if(button & Qt::ControlModifier)
+            if (!twoSquares)
             {
-                nextGuess = !nextGuess;    // CTRL selects the other mapping
-            }
-            if(!nextGuess)
-            {
-                bool remove = game().atLineEnd();
-                int var = game().variationNumber();
-                gameMoveBy(-1);
-                if(remove)
+                bool nextGuess = AppSettings->getValue("/Board/nextGuess").toBool();
+                if(button & Qt::ControlModifier)
                 {
-                    if(var && game().isMainline())
+                    nextGuess = !nextGuess;    // CTRL selects the other mapping
+                }
+                if(!nextGuess)
+                {
+                    bool remove = game().atLineEnd();
+                    int var = game().variationNumber();
+                    gameMoveBy(-1);
+                    if(remove)
                     {
-                        game().removeVariation(var);
+                        if(var && game().isMainline())
+                        {
+                            game().removeVariation(var);
+                        }
+                        else
+                        {
+                            game().truncateVariation();
+                        }
                     }
-                    else
-                    {
-                        game().truncateVariation();
-                    }
+                }
+                else
+                {
+                    m_boardView->nextGuess(s);
                 }
             }
             else
             {
-                m_boardView->nextGuess(s);
+                game().appendArrowAnnotation(s, from, m_lastColor);
             }
         }
     }
