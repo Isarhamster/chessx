@@ -1397,7 +1397,7 @@ void BoardView::drawArrowAnnotation(QPaintEvent* event, QString annotation)
     unsigned char file2 = letters.indexOf(fileChar2);
     int rank2 = numbers.indexOf(rankChar2);
 
-    if(file1 < 0 || file2 < 0 || rank1 < 0 || rank2 < 0)
+    if(file1 > sizeof(letters) || file2 > sizeof(letters) || rank1 < 0 || rank2 < 0)
     {
         return;
     }
