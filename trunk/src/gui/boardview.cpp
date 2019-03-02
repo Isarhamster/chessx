@@ -65,6 +65,7 @@ BoardView::~BoardView()
 {
     removeEventFilter(this);
     m_threatGuess.cancel();
+    delete lastMoveEvent;
 }
 
 int BoardView::heightForWidth(int width) const
@@ -826,14 +827,8 @@ void BoardView::handleMouseMoveEvent(QMouseEvent *event)
 
 void BoardView::mouseMoveEvent(QMouseEvent *event)
 {
-    if (!lastMoveEvent)
-    {
-        lastMoveEvent = new QMouseEvent(*event);
-    }
-    else
-    {
-        *lastMoveEvent = *event;
-    }
+    delete lastMoveEvent;
+    lastMoveEvent = new QMouseEvent(*event);
 
     handleMouseMoveEvent(event);
     QWidget::mouseMoveEvent(event);

@@ -148,35 +148,18 @@ private:
     /** Calculate missing data from the index file import */
     void calculateReverseMaps(volatile bool *breakFlag);
 
-    /** Contains information which games are marked for deletion */
-    QSet<GameId> m_deletedGames;
-
     /** Return a pointer to the index item for the given game id */
     const IndexItem* item(GameId gameId) const;
     IndexItem* item(GameId gameId);
 
-    /** Map a tags index to a tagName */
-    QHash<TagIndex, QString> m_tagNames;
-    /** Map a tagName to an associated index */
-    QHash<QString, TagIndex> m_tagNameIndex;
     /** Add a tag name to the index */
     TagIndex AddTagName(QString);
 
-    /** Map an Index to a tagValue */
-    QHash<ValueIndex, QString> m_tagValues;
-    /** Map a Value to its associated index value */
-    QHash<QString, ValueIndex> m_tagValueIndex;
     /** Add a tag value to the index */
     ValueIndex AddTagValue(QString);
 
     /** Hold the list of index items (=holds all game header information) */
     QList<IndexItem*> m_indexItems;
-
-    /** Contains information which games are marked as valid */
-    QSet<GameId> m_validFlags;
-
-    /** Map tags to index items (which game has a specific header information) */
-    QMultiHash<TagIndex, int> m_mapTagToIndexItems;
 
     /** Query the value of a tag given the tags index for a specific game */
     QString tagValue(TagIndex tagIndex, GameId gameId) const;
@@ -195,7 +178,23 @@ private:
 
     /** @ret true if a game @p gameId has a given tag index */
     bool indexItemHasTag(TagIndex tagIndex, GameId gameId) const;
+
 private:
+    /** Contains information which games are marked for deletion */
+    QSet<GameId> m_deletedGames;
+    /** Map a tags index to a tagName */
+    QHash<TagIndex, QString> m_tagNames;
+    /** Map a tagName to an associated index */
+    QHash<QString, TagIndex> m_tagNameIndex;
+    /** Map an Index to a tagValue */
+    QHash<ValueIndex, QString> m_tagValues;
+    /** Map a Value to its associated index value */
+    QHash<QString, ValueIndex> m_tagValueIndex;
+    /** Contains information which games are marked as valid */
+    QSet<GameId> m_validFlags;
+    /** Map tags to index items (which game has a specific header information) */
+    QMultiHash<TagIndex, int> m_mapTagToIndexItems;
+
     mutable QReadWriteLock m_mutex;
 };
 

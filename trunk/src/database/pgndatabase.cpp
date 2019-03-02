@@ -22,7 +22,7 @@
 #include "settings.h"
 #include "tags.h"
 
-static const int AllocationSize = 0x10000;
+static const int AllocationSize = 0x100000;
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -315,9 +315,16 @@ bool PgnDatabase::parseFileIntern()
         {
             if(!m_currentLine.isEmpty())
             {
-                addOffset(fp);
-                parseTagsIntoIndex(); // This will parse the tags into memory
-                parseGame();
+                if (!addOffset(fp))
+                {
+                    m_file->seek(m_file->size());
+                }
+                else
+                {
+                    parseTagsIntoIndex(); // This will parse the tags into memory
+                    parseGame();
+                }
+
                 if(!m_file->atEnd())
                 {
                     if(fp > nextDiff)
@@ -459,12 +466,6 @@ void PgnDatabase::initialise()
     m_filename = QString();
     m_count = 0;
     m_allocated = 0;
-}
-
-void PgnDatabase::addOffset()
-{
-    IndexBaseType fp = m_file->pos();
-    addOffset(fp);
 }
 
 void PgnDatabase::readLine()
@@ -916,7 +917,7 @@ void PgnDatabase::prepareNextLine()
     else
     {
         QTextStream textStream(m_lineBuffer);
-        QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
+        static QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
         if(textCodec)
         {
             textStream.setCodec(textCodec);
@@ -1000,6 +1001,7 @@ void PgnDatabase::skipMoves()
     }
     else
     {
+        // PERF Costs about 5s in 157s for the ref database (3.1%)
         QRegExp gameNumber("\\s(\\d+)\\s*\\.");
 
         QString gameText = " ";
@@ -1040,7 +1042,7 @@ IndexBaseType PgnDatabase::offset(GameId gameId)
 }
 
 /** Adds a new file offset */
-void PgnDatabase::addOffset(IndexBaseType offset)
+bool PgnDatabase::addOffset(IndexBaseType offset)
 {
     if(m_count == m_allocated)
     {
@@ -1048,26 +1050,41 @@ void PgnDatabase::addOffset(IndexBaseType offset)
         if(bUse64bit)
         {
             qint64* newAllocation = new qint64[m_allocated += AllocationSize];
-            memcpy(newAllocation, m_gameOffsets64, m_count * sizeof(qint64));
-            delete[] m_gameOffsets64;
-            m_gameOffsets64 = newAllocation;
+            if (newAllocation)
+            {
+                memcpy(newAllocation, m_gameOffsets64, m_count * sizeof(qint64));
+                delete[] m_gameOffsets64;
+                m_gameOffsets64 = newAllocation;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
             qint32* newAllocation = new qint32[m_allocated += AllocationSize];
-            memcpy(newAllocation, m_gameOffsets32, m_count * sizeof(qint32));
-            delete[] m_gameOffsets32;
-            m_gameOffsets32 = newAllocation;
+            if (newAllocation)
+            {
+                memcpy(newAllocation, m_gameOffsets32, m_count * sizeof(qint32));
+                delete[] m_gameOffsets32;
+                m_gameOffsets32 = newAllocation;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
     if(bUse64bit)
     {
-        m_gameOffsets64[m_count++] = offset;
+        m_gameOffsets64[++m_count] = offset;
     }
     else
     {
-        m_gameOffsets32[m_count++] = offset;
+        m_gameOffsets32[++m_count] = offset;
     }
+    return true;
 }
 
