@@ -407,7 +407,13 @@ void DatabaseList::dropEvent(QDropEvent *event)
         {
             QString ts = url.toString();
 
-            if(m_lastModifier & Qt::MetaModifier)
+#ifdef Q_OS_WIN32
+#define LINK_MODIFIER Qt::AltModifier
+#else // MAC OS
+#define LINK_MODIFIER Qt::MetaModifier
+#endif
+
+            if(m_lastModifier & LINK_MODIFIER)
             {
                 emit requestLinkDatabase(ts);
             }

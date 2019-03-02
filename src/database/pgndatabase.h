@@ -115,8 +115,7 @@ protected:
 private:
 
     /** Adds the current file position as a new offset */
-    void addOffset();
-    void addOffset(IndexBaseType offset);
+    bool addOffset(IndexBaseType offset);
     IndexBaseType offset(GameId gameId);
 
     //file variables

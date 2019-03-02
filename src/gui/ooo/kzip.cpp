@@ -20,7 +20,6 @@
 #include <QFile>
 #include <QList>
 #include <QSharedData>
-#include <qplatformdefs.h>
 #include <zlib.h>
 
 #include <QtCore>
