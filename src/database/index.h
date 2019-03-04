@@ -56,6 +56,8 @@ public:
     //
     /** Store the tag value for the given game, tag is given by name */
     void setTag(const QString& tagName, const QString &value, GameId gameId);
+	/** Store the tag value for the given game, tag is given by name w/o locking*/
+	void setTag_nolock(const QString& tagName, const QString &value, GameId gameId);
 
     /** Set the valid flag accordingly */
     bool replaceTagValue(QStringList tags, const QString& newValue, const QString& oldValue);
@@ -150,7 +152,6 @@ private:
 
     /** Return a pointer to the index item for the given game id */
     const IndexItem* item(GameId gameId) const;
-    IndexItem* item(GameId gameId);
 
     /** Add a tag name to the index */
     TagIndex AddTagName(QString);
