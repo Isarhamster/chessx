@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   (C) 2005-2006 William Hoggarth <whoggarth@users.sourceforge.net>      *
  *   (C) 2006 Ejner Borgbjerg <ejner@users.sourceforge.net>                *
@@ -512,13 +513,12 @@ void PgnDatabase::parseTagIntoIndex(const QString& tag, QString value)
     {
         value = "1/2-1/2";
     }
-
-    m_index.setTag(tag, value, m_count - 1);
+	m_index.setTag_nolock(tag, value, m_count - 1); // PERF von 30s von 115s (26%)
 }
 
 void PgnDatabase::parseTagsIntoIndex()
 {
-    m_index.setTag(TagNameLength, "0", m_count - 1);
+	m_index.setTag(TagNameLength, "0", m_count - 1);
     m_index.setTag(TagNameResult, "*", m_count - 1);
     while(m_currentLine.startsWith(QString("[")))
     {
