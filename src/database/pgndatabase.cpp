@@ -551,6 +551,14 @@ void PgnDatabase::parseTagsIntoIndex()
                         }
                     }
                 }
+                else
+                {
+                    int tagValueEnd = m_currentLine.indexOf(']', tagStart);
+                    if (tagValueEnd != -1)
+                    {
+                        lastPos = tagValueEnd+1; // This line has no valid tag format
+                    }
+                }
             }
             break;
         }
