@@ -134,8 +134,8 @@ private:
 
     //game index
     IndexBaseType m_allocated;
-    qint32* m_gameOffsets32;
-    qint64* m_gameOffsets64;
+    quint32* m_gameOffsets32;
+    quint64* m_gameOffsets64;
     QByteArray m_lineBuffer;
     QStack<MoveId> m_variationStack;
 

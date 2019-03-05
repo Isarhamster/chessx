@@ -1,5 +1,5 @@
 #!/bin/sh
-[ $# -eq 0 ] && { echo "Usage: $0 QT_INSTALL_PREFIX VERSION"; exit 1; }
+[ $# -eq 0 ] && { echo "Usage: $0 QT_INSTALL_PREFIX // %{Qt:QT_INSTALL_PREFIX} in Creator"; exit 1; }
 DIR=${0%/*}
 RELEASEDIR=`pwd`
 BUILDDIR=$RELEASEDIR/..

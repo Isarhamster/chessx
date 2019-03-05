@@ -154,7 +154,7 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
 
     if(bUse64bit)
     {
-        m_gameOffsets64 = new qint64[m_allocated];
+        m_gameOffsets64 = new quint64[m_allocated];
         for(int i = 0; i < m_allocated; ++i)
         {
             in >> m_gameOffsets64[i];
@@ -162,7 +162,7 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     }
     else
     {
-        m_gameOffsets32 = new qint32[m_allocated];
+        m_gameOffsets32 = new quint32[m_allocated];
         for(int i = 0; i < m_allocated; ++i)
         {
             in >> m_gameOffsets32[i];
@@ -513,13 +513,13 @@ void PgnDatabase::parseTagIntoIndex(const QString& tag, QString value)
     {
         value = "1/2-1/2";
     }
-	m_index.setTag_nolock(tag, value, m_count - 1); // PERF von 30s von 115s (26%)
+    m_index.setTag_nolock(tag, value, m_count - 1); // PERF von 30s von 115s (26%)
 }
 
 void PgnDatabase::parseTagsIntoIndex()
 {
-	m_index.setTag(TagNameLength, "0", m_count - 1);
-    m_index.setTag(TagNameResult, "*", m_count - 1);
+    m_index.setTag_nolock(TagNameLength, "0", m_count - 1);
+    m_index.setTag_nolock(TagNameResult, "*", m_count - 1);
     while(m_currentLine.startsWith(QString("[")))
     {
         int pos = 0;
@@ -1005,7 +1005,7 @@ void PgnDatabase::skipMoves()
         }
 
         tag = QString::number((tag.toInt() + 1) / 2);
-        m_index.setTag(TagNameLength, tag, m_count - 1);
+        m_index.setTag_nolock(TagNameLength, tag, m_count - 1);
     }
     else
     {
@@ -1023,7 +1023,7 @@ void PgnDatabase::skipMoves()
         gameText = gameText.remove(QRegExp("\\([^\\(\\)]*\\)"));
 
         gameNumber.lastIndexIn(gameText);
-        m_index.setTag(TagNameLength, gameNumber.cap(1), m_count - 1);
+        m_index.setTag_nolock(TagNameLength, gameNumber.cap(1), m_count - 1);
     }
 
     //swallow trailing whitespace
@@ -1052,15 +1052,16 @@ IndexBaseType PgnDatabase::offset(GameId gameId)
 /** Adds a new file offset */
 bool PgnDatabase::addOffset(IndexBaseType offset)
 {
-    if(m_count == m_allocated)
+    if(m_count >= m_allocated)
     {
+        m_allocated += AllocationSize;
         //out of space reallocate memory
         if(bUse64bit)
         {
-            qint64* newAllocation = new qint64[m_allocated += AllocationSize];
+            quint64* newAllocation = new quint64[m_allocated];
             if (newAllocation)
             {
-                memcpy(newAllocation, m_gameOffsets64, m_count * sizeof(qint64));
+                memcpy(newAllocation, m_gameOffsets64, m_count * sizeof(quint64));
                 delete[] m_gameOffsets64;
                 m_gameOffsets64 = newAllocation;
             }
@@ -1071,10 +1072,10 @@ bool PgnDatabase::addOffset(IndexBaseType offset)
         }
         else
         {
-            qint32* newAllocation = new qint32[m_allocated += AllocationSize];
+            quint32* newAllocation = new quint32[m_allocated];
             if (newAllocation)
             {
-                memcpy(newAllocation, m_gameOffsets32, m_count * sizeof(qint32));
+                memcpy(newAllocation, m_gameOffsets32, m_count * sizeof(quint32));
                 delete[] m_gameOffsets32;
                 m_gameOffsets32 = newAllocation;
             }
@@ -1087,12 +1088,13 @@ bool PgnDatabase::addOffset(IndexBaseType offset)
 
     if(bUse64bit)
     {
-        m_gameOffsets64[++m_count] = offset;
+        m_gameOffsets64[m_count] = offset;
     }
     else
     {
-        m_gameOffsets32[++m_count] = offset;
+        m_gameOffsets32[m_count] = offset;
     }
+    ++m_count;
     return true;
 }
 

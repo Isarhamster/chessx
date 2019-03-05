@@ -159,9 +159,6 @@ private:
     /** Add a tag value to the index */
     ValueIndex AddTagValue(QString);
 
-    /** Hold the list of index items (=holds all game header information) */
-    QList<IndexItem*> m_indexItems;
-
     /** Query the value of a tag given the tags index for a specific game */
     QString tagValue(TagIndex tagIndex, GameId gameId) const;
 
@@ -195,6 +192,8 @@ private:
     QSet<GameId> m_validFlags;
     /** Map tags to index items (which game has a specific header information) */
     QMultiHash<TagIndex, int> m_mapTagToIndexItems;
+    /** Hold the list of index items (=holds all game header information) */
+    QList<IndexItem*> m_indexItems;
 
     mutable QReadWriteLock m_mutex;
 };
