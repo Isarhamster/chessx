@@ -33,7 +33,7 @@ void HistoryLabel::init()
 void HistoryLabel::initView()
 {
     m_model = new QStringListModel(this);
-    m_view = new QHistoryListView(0);
+    m_view = new QHistoryListView(this);
     m_view->setModel(m_model);
     m_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_view->setSelectionMode(QAbstractItemView::NoSelection);
@@ -63,7 +63,7 @@ void HistoryLabel::showHistory()
     int widthHint = m_view->sizeHint().width();
     if (bottomY < m_view->sizeHint().height())
     {
-        m_view->resize(widthHint, bottomY + 1);
+        m_view->resize(widthHint, bottomY + 2);
         m_view->move(mapToGlobal(QPoint(0, height()-bottomY)));
     }
     m_view->show();

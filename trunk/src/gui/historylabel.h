@@ -27,6 +27,13 @@ protected:
     {
         close();
     }
+    void mouseReleaseEvent(QMouseEvent* event)
+    {
+        if (!underMouse())
+        {
+            close();
+        }
+    }
 };
 
 class HistoryLabel : public QLabel
