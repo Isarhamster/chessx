@@ -40,7 +40,6 @@ public:
    Q_SLOT void setText(const QString & text, bool dontStore=false);
 
 protected:
-   virtual void hideEvent(QHideEvent *);
    virtual void mouseDoubleClickEvent(QMouseEvent *e);
 
 protected:
