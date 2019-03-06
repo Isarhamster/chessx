@@ -86,7 +86,7 @@ void Index::setTag_nolock(const QString& tagName, const QString& value, GameId g
 
 	if (m_indexItems.count() <= (int)gameId)
 	{
--		add();
+-		(void) add();
 	}
 	m_indexItems[gameId]->set(tagIndex, valueIndex);
 	m_mapTagToIndexItems.insertMulti(tagIndex, gameId);
