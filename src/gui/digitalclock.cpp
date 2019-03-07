@@ -9,6 +9,11 @@
 #include "digitalclock.h"
 #include "settings.h"
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+#define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+#define new DEBUG_NEW
+#endif // _MSC_VER
+
 DigitalClock::DigitalClock(QWidget *parent)
     : QLCDNumber(parent)
 {
@@ -24,6 +29,11 @@ DigitalClock::DigitalClock(QWidget *parent)
     m_tockToDo = 0;
     m_bFirstTestForTock = false;
     m_countDown = true;
+}
+
+DigitalClock::~DigitalClock()
+{
+	delete tockSound;
 }
 
 void DigitalClock::StartCountDown(bool start)

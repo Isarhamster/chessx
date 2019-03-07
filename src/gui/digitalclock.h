@@ -16,6 +16,7 @@ class DigitalClock : public QLCDNumber
 
 public:
     DigitalClock(QWidget *parent = 0);
+	~DigitalClock();
 
     QString time() const;
     void setTime(const QString &time);
