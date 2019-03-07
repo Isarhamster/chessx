@@ -19,6 +19,7 @@ class QHistoryListView : public QListView
 public:
     explicit QHistoryListView(QWidget *parent = Q_NULLPTR) : QListView(parent)
     {
+		installEventFilter(this);
         setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
     }
 
@@ -27,13 +28,31 @@ protected:
     {
         close();
     }
-    void mouseReleaseEvent(QMouseEvent* event)
-    {
-        if (!underMouse())
-        {
-            close();
-        }
-    }
+	bool eventFilter(QObject *obj, QEvent *event)
+	{
+		if (obj == this)
+		{
+			if (event->type() == QEvent::MouseButtonPress)
+			{
+				if (!underMouse())
+				{
+					close();
+				}
+			}
+			else
+			{
+				if (event->type() == QEvent::KeyPress)
+				{
+					QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+					if (keyEvent && (keyEvent->key() == Qt::Key_Escape))
+					{
+						close();
+					}
+				}
+			}
+		}
+		return QObject::eventFilter(obj, event);
+	}
 };
 
 class HistoryLabel : public QLabel

@@ -90,11 +90,6 @@ protected:
     // Open a PGN data File
     bool openFile(const QString& filename);
 
-    IndexBaseType m_count; // Should actually be a GameId - but cannot be changed due to serialization issues
-
-    QPointer<QIODevice> m_file;
-    QString m_currentLine;
-
     bool hasIndexFile() const;
 
     /** Resets/initialises important member variables. Called by constructor and close methods */
@@ -112,6 +107,12 @@ protected:
 
     void prepareNextLineForMoveParser();
     void prepareNextLine();
+
+protected:
+	IndexBaseType m_count; // Should actually be a GameId - but cannot be changed due to serialization issues
+	QPointer<QIODevice> m_file;
+	QString m_currentLine;
+
 private:
 
     /** Adds the current file position as a new offset */
