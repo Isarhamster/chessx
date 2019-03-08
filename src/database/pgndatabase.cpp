@@ -924,13 +924,7 @@ void PgnDatabase::prepareNextLine()
     }
     else
     {
-        QTextStream textStream(m_lineBuffer);
-        static QTextCodec* textCodec = QTextCodec::codecForName("ISO 8859-1");
-        if(textCodec)
-        {
-            textStream.setCodec(textCodec);
-        }
-        m_currentLine = textStream.readLine().simplified();
+		m_currentLine = QString::fromLatin1(m_lineBuffer).simplified();
     }
 }
 
