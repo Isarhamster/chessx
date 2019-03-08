@@ -295,6 +295,7 @@ bool DatabaseInfo::saveGame()
     {
         if (m_filter)
         {
+			// TODO: Das Filtermodel muss vorher verständigt werden
             m_filter->cancel();
             m_filter->resize(m_database->count(), 1);
         }

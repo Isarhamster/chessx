@@ -129,7 +129,7 @@ void FilterModel::set(GameId game, int value)
 {
     filter()->set(game, value);
     QModelIndex start = createIndex(game, 0, (void*) 0);
-    QModelIndex end = createIndex(game, columnCount(), (void*) 0);
+    QModelIndex end = createIndex(game, columnCount()-1, (void*) 0);
     emit dataChanged(start, end);
 }
 

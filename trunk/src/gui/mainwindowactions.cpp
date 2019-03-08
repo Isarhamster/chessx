@@ -1507,11 +1507,15 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
 {
     if(!dbInfo->database()->isReadOnly())
     {
+		// TODO: Das Filtermodel muss vorher verständigt werden
         if (dbInfo->saveGame())
         {
             if (dbInfo == databaseInfo())
             {
+				m_gameList->startUpdate(); // TODO: Hack - das geht auch besser
                 m_gameList->updateFilter(dbInfo->currentIndex(), 1);
+				m_gameList->endUpdate();   // TODO: Hack - das geht auch besser
+
                 slotFilterChanged();
                 slotGameChanged(true);
                 updateLastGameList();
@@ -2578,6 +2582,7 @@ void MainWindow::copyGames(QString fileName, QList<GameId> indexes)
                 {
                     m_gameList->startUpdate();
                 }
+				// TODO: Das Filtermodel muss vorher verständigt werden
                 m_databases[i]->filter()->resize(m_databases[i]->database()->count() + static_cast<quint64>(indexes.count()), true);
                 foreach (GameId index, indexes)
                 {
