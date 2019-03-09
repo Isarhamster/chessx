@@ -1885,8 +1885,12 @@ void Game::removeNode(MoveId moveId)
         }
         removeNode(m_moveNodes[node].nextNode);
         MoveId prevNode = m_moveNodes[node].previousNode;
-
-        m_moveNodes[prevNode].nextNode = NO_MOVE;
+        MoveId parentNode = m_moveNodes[node].parentNode;
+        if ((prevNode >= ROOT_NODE) && (parentNode != prevNode))
+        {
+            // Do not delete main variation above sub variation
+            m_moveNodes[prevNode].nextNode = NO_MOVE;
+        }
         m_moveNodes[node].remove();
     }
 }
