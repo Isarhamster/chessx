@@ -239,7 +239,6 @@ HEADERS += src/database/board.h \
     src/database/abk.h \
     src/database/gameundocommand.h \
     src/database/ctg.h \
-    src/database/searchlist.h \
     src/database/filteroperator.h \
     src/gui/gamelistsortmodel.h \
     src/gui/listwidgetex.h
@@ -390,7 +389,6 @@ SOURCES += src/database/board.cpp \
     src/quazip/unzip.cpp \
     src/quazip/zip.cpp \
     src/database/arenabook.cpp \
-    src/database/searchlist.cpp \
     src/gui/gamelistsortmodel.cpp \
     src/gui/listwidgetex.cpp
 
