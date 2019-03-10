@@ -61,6 +61,19 @@ void IndexItem::read(QDataStream& in)
     in >> m_mapTagIndexToValueIndex;
 }
 
+
+QDataStream & operator<<(QDataStream & stream, const IndexItem & obj)
+{
+	obj.write(stream);
+	return stream;
+}
+
+QDataStream & operator>>(QDataStream & stream, IndexItem & obj)
+{
+	obj.read(stream);
+	return stream;
+}
+
 bool IndexItem::isEqual(const IndexItem &rhs) const
 {
     return (m_mapTagIndexToValueIndex == rhs.m_mapTagIndexToValueIndex);

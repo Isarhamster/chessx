@@ -40,6 +40,7 @@ Filter::~Filter()
 
 Filter::Filter(Filter const& rhs) : QThread()
 {
+	m_vector = 0;
     *this = rhs;
 }
 
@@ -47,6 +48,7 @@ Filter& Filter::operator= (Filter const& rhs)
 {
     m_database = rhs.m_database;
     m_count = rhs.m_count;
+	delete m_vector;
     m_vector = new QVector<Filter::value_type>(*rhs.m_vector);
     m_gamesSearched = 0;
     m_searchTime = 0;

@@ -64,6 +64,9 @@ public:
     /** Search and replace all values from @p valueIndex to @p newValueIndex */
     void replaceValue(QList<TagIndex> tags, ValueIndex valueIndex, ValueIndex newValueIndex);
 
+	friend QDataStream &operator<<(QDataStream&, const IndexItem&);
+	friend QDataStream &operator>>(QDataStream&, IndexItem&);
+
 private:
     MapTagToValue m_mapTagIndexToValueIndex;
 };

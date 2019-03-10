@@ -82,6 +82,8 @@ public:
 
     /** Get the list of tagValues for a given @p tagName */
     QStringList tagValues(const QString& tagName) const;
+	
+	QSet<ValueIndex> tagValueSet(const QString& tagName) const;
 
     /** Get the list of players (optimized query, as it reads white and black names w/o duplicates) */
     QStringList playerNames() const;
@@ -145,14 +147,9 @@ signals:
     void progress(int);
 
 private:
-    /** Calculate missing data from the index file import */
-    void calculateTagMap(volatile bool *breakFlag);
 
     /** Calculate missing data from the index file import */
     void calculateReverseMaps(volatile bool *breakFlag);
-
-    /** Return a pointer to the index item for the given game id */
-    const IndexItem* item(GameId gameId) const;
 
     /** Add a tag name to the index */
     TagIndex AddTagName(QString);
@@ -191,10 +188,8 @@ private:
     QHash<QString, ValueIndex> m_tagValueIndex;
     /** Contains information which games are marked as valid */
     QSet<GameId> m_validFlags;
-    /** Map tags to index items (which game has a specific header information) */
-    QMultiHash<TagIndex, int> m_mapTagToIndexItems;
     /** Hold the list of index items (=holds all game header information) */
-    QList<IndexItem*> m_indexItems;
+    QHash<GameId, IndexItem> m_indexItems;
 
     mutable QReadWriteLock m_mutex;
 };
