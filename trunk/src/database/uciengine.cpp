@@ -528,7 +528,8 @@ void UCIEngine::parseOptions(const QString& message)
                 {
                     defVal = "";
                 }
-            case OPT_TYPE_CHECK:
+                done = true;
+                break;
             default:
                 done = true;
                 break;

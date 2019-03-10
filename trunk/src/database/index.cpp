@@ -394,9 +394,9 @@ unsigned int Index::hashIndexItem(GameId gameId) const
 bool Index::isIndexItemEqual(GameId i, GameId j) const
 {
     QReadLocker m(&m_mutex);
-	const IndexItem* iItem = &m_indexItems[i];
-	const IndexItem* jItem = &m_indexItems[j];
-    return (iItem->isEqual(*jItem));
+    const IndexItem& iItem = m_indexItems.value(i);
+    const IndexItem& jItem = m_indexItems.value(j);
+    return (iItem.isEqual(jItem));
 }
 
 void Index::loadGameHeaders(GameId id, Game& game) const
