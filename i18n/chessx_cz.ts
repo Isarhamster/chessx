@@ -586,38 +586,38 @@ Please check your installation.</source>
 <context>
     <name>BoardView</name>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="699"/>
+        <location filename="../src/gui/boardview.cpp" line="698"/>
         <source>Query for piece in case of promotion</source>
         <translation>Dotaz pro figuru v případ propagace</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="703"/>
+        <location filename="../src/gui/boardview.cpp" line="702"/>
         <source>Replace remainder of game with new move</source>
         <translation>Zbytek hry nahradit novým tahem</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="707"/>
+        <location filename="../src/gui/boardview.cpp" line="706"/>
         <source>Insert new move and keep as much as possible of remaining moves</source>
         <translatorcomment>Vložit nový tah a udržet co nejvíce zbývajících tahů</translatorcomment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="711"/>
+        <location filename="../src/gui/boardview.cpp" line="710"/>
         <source>Force adding a variation</source>
         <translation>Vynutit novou variantu</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="715"/>
+        <location filename="../src/gui/boardview.cpp" line="714"/>
         <source>Draw a square or arrow annotation</source>
         <translation>Nakreslení pole nebo šipka</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="719"/>
+        <location filename="../src/gui/boardview.cpp" line="718"/>
         <source>Query the engine as if piece was located at target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="723"/>
+        <location filename="../src/gui/boardview.cpp" line="722"/>
         <source>Query the engine for the best reply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1637,7 +1637,7 @@ Please check your installation.</source>
         <translation>Obarvit pole</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1209"/>
+        <location filename="../src/database/game.cpp" line="1208"/>
         <source>Paint arrow</source>
         <translation>Nakreslit šipku</translation>
     </message>
@@ -1663,12 +1663,12 @@ Please check your installation.</source>
         <translation>Výčet změn</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="1980"/>
+        <location filename="../src/database/game.cpp" line="1984"/>
         <source>Set result</source>
         <translation>Nastavit výsledek</translation>
     </message>
     <message>
-        <location filename="../src/database/game.cpp" line="2005"/>
+        <location filename="../src/database/game.cpp" line="2009"/>
         <source>Set variant</source>
         <translation>Nastavit variantu</translation>
     </message>
@@ -1967,8 +1967,8 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindowactions.cpp" line="969"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2223"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2296"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2234"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2307"/>
         <source>Time is over</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2013,144 +2013,144 @@ Shall I download a database?</source>
         <translation>Odstranit šipku zde</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1285"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1292"/>
         <source>End of game</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1289"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1296"/>
         <source>Main line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1684"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1695"/>
         <source>Merge selected games</source>
         <translation>Sloučit vybrané části</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1899"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1910"/>
         <source>Automatic responses</source>
         <translation>Automatická odpověď</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1900"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1911"/>
         <source>Play both sides</source>
         <translation>Hrát na obou stranách</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2014"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2025"/>
         <source>Analysis Pane 2 is not running an engine for automatic analysis.</source>
         <translation>Analýza 2 nemá aktivní motor pro automatickou analýzu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2180"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2191"/>
         <source>Game is drawn by insufficient material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2181"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2192"/>
         <source>Game is drawn by repetition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2182"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2193"/>
         <source>Game is drawn by 50 move rule</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2415"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2426"/>
         <source>Engine %1</source>
         <translation>Motor %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2455"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2466"/>
         <source>all</source>
         <translation>vše</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2549"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2599"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2560"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2611"/>
         <source>Append game %1 to %2.</source>
         <translation>Připojení partie %1 do %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2579"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2607"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2591"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2619"/>
         <source>Appended %1 games to %2.</source>
         <translation>Přidat partie %1 do %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2608"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2620"/>
         <source>Error appending games to %1</source>
         <translation>Chyba připojení partií do %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2636"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2653"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2680"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2696"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2711"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2648"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2665"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2692"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2708"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2723"/>
         <source>Append games from %1 to %2.</source>
         <translation>Přidané partie od %1 do %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2900"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2912"/>
         <source>Append %1 games from %2 to %3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3037"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3049"/>
         <source>Searching...</source>
         <translation>Vyhledávání...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3440"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3452"/>
         <source>&lt;b&gt;New game&lt;/b&gt;</source>
         <translation>&lt;b&gt;Nová partie&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3543"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3555"/>
         <source>Infinite</source>
         <translation>Nekonečná</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3606"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3618"/>
         <source>Build book</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3625"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3637"/>
         <source>Book built</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3640"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3652"/>
         <source>Could not build book</source>
         <translation>Nelze postavit knihu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3640"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3652"/>
         <source>Polyglot Error</source>
         <translation>Polyglot Error</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3641"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3653"/>
         <source>Book build finished with Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1971"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2010"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1982"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2021"/>
         <source>Analysis Pane 1 is not running an engine for automatic analysis.</source>
         <translation>Analýza 1 nemá aktivní motor pro automatickou analýzu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2945"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2957"/>
         <source>%1 - ChessX</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="3032"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="3044"/>
         <source>Search ended</source>
         <translation>Vyhledávání dokončeno</translation>
     </message>
@@ -2159,19 +2159,19 @@ Shall I download a database?</source>
         <translation type="vanished">Aktualizace stromu...</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1465"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1472"/>
         <source>Load Game</source>
         <translation>Načíst partii</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1465"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1472"/>
         <source>Game number:</source>
         <translation>Číslo partie:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1488"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1536"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1548"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1495"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1547"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1559"/>
         <source>This database is read only.</source>
         <translation>Tato databáze je pouze pro čtení</translation>
     </message>
@@ -2372,7 +2372,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1632"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1971"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1982"/>
         <source>Auto Analysis</source>
         <translation>Autoatická analýza</translation>
     </message>
@@ -2523,8 +2523,8 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="1638"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2010"/>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2014"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2021"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2025"/>
         <source>Engine Match</source>
         <translation>Zápas motorů</translation>
     </message>
@@ -2874,22 +2874,22 @@ Shall I download a database?</source>
         <translation>Schránka obsahuje FEN, ale s chybnou pozicí. Lze vkládat jen takové pozice v dialogu &lt;b&gt;natavení pozice&lt;/b&gt; dialogu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1285"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1292"/>
         <source>End of line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="1289"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="1296"/>
         <source>Line</source>
         <translation type="unfinished">Línie</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2837"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2849"/>
         <source>You need at least two open databases to copy games</source>
         <translation>Potřebujete alespoň dvě otevřené databáze kopírování partií</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindowactions.cpp" line="2830"/>
+        <location filename="../src/gui/mainwindowactions.cpp" line="2842"/>
         <source>%1. %2 (%3 games)</source>
         <translation>%1. %2 (%3 hry)</translation>
     </message>
@@ -4856,27 +4856,27 @@ Shall I download a database?</source>
 <context>
     <name>TableView</name>
     <message>
-        <location filename="../src/gui/tableview.cpp" line="162"/>
+        <location filename="../src/gui/tableview.cpp" line="163"/>
         <source>Hide Column</source>
         <translation>Skrýt sloupec</translation>
     </message>
     <message>
-        <location filename="../src/gui/tableview.cpp" line="164"/>
+        <location filename="../src/gui/tableview.cpp" line="165"/>
         <source>Resize visible Columns</source>
         <translation>Změnit velikost viditelných sloupců</translation>
     </message>
     <message>
-        <location filename="../src/gui/tableview.cpp" line="165"/>
+        <location filename="../src/gui/tableview.cpp" line="166"/>
         <source>Show all Columns</source>
         <translation>Ukaž všechny sloupce</translation>
     </message>
     <message>
-        <location filename="../src/gui/tableview.cpp" line="167"/>
+        <location filename="../src/gui/tableview.cpp" line="168"/>
         <source>Copy as HTML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/tableview.cpp" line="168"/>
+        <location filename="../src/gui/tableview.cpp" line="169"/>
         <source>Copy as Image</source>
         <translation type="unfinished"></translation>
     </message>
