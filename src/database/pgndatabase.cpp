@@ -23,8 +23,6 @@
 #include "settings.h"
 #include "tags.h"
 
-static const int AllocationSize = 0x100000;
-
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
 #define new DEBUG_NEW
@@ -93,9 +91,6 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
         return false;
     }
 
-    m_gameOffsets32 = 0;
-    m_gameOffsets64 = 0;
-
     QFile file(offsetFilename(filename));
     if(!file.open(QIODevice::ReadOnly))
     {
@@ -114,11 +109,8 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
     if (version > VERSION_INDEX_CURRENT) return false;
     if ((version&0xFF00) != (VERSION_INDEX_CURRENT&0xFF00)) return false;
 
-    int streamVersion = QDataStream::Qt_5_12;
-    if(version > 0)
-    {
-        in >> streamVersion;
-    }
+    int streamVersion;
+    in >> streamVersion;
 
     in.setVersion(streamVersion);
     QFileInfo fi = QFileInfo(filename);
@@ -152,39 +144,28 @@ bool PgnDatabase::readOffsetFile(const QString& filename, volatile bool *breakFl
 
     emit progress(1);
 
-    if(bUse64bit)
-    {
-        m_gameOffsets64 = new quint64[m_allocated];
-        for(int i = 0; i < m_allocated; ++i)
-        {
-            in >> m_gameOffsets64[i];
-        }
-    }
-    else
-    {
-        m_gameOffsets32 = new quint32[m_allocated];
-        for(int i = 0; i < m_allocated; ++i)
-        {
-            in >> m_gameOffsets32[i];
-        }
-    }
-
-    emit progress(2);
+    in >> m_gameOffsets64;
+    emit progress(5);
+    in >> m_gameOffsets32;
+    emit progress(10);
 
     in >> magic;
+    if (*breakFlag || (magic != INDEX_FILE_MAGIC)) return false;
+
+    emit progress(20);
 
     readIndexFile(in, breakFlag, version);
     bUpdate = (version < VERSION_INDEX_CURRENT);
+
+    emit progress(80);
 
     unsigned short finalMagic;
     in >> finalMagic;
     if(*breakFlag || (finalMagic != 0x55ec))
     {
-        delete[] m_gameOffsets32;
-        delete[] m_gameOffsets64;
         m_index.clear();
-        m_gameOffsets32 = 0;
-        m_gameOffsets64 = 0;
+        m_gameOffsets32.clear();
+        m_gameOffsets64.clear();
         m_allocated     = 0;
         return false;
     }
@@ -223,22 +204,8 @@ bool PgnDatabase::writeOffsetFile(const QString& filename) const
 
     out << m_count;
     out << bUse64bit;
-
-    if(bUse64bit)
-    {
-        for(int i = 0; i < m_count; ++i)
-        {
-            out << m_gameOffsets64[i];
-        }
-    }
-    else
-    {
-        for(int i = 0; i < m_count; ++i)
-        {
-            out << m_gameOffsets32[i];
-        }
-    }
-
+    out << m_gameOffsets64;
+    out << m_gameOffsets32;
     out << magic;
 
     writeIndexFile(out);
@@ -270,8 +237,10 @@ bool PgnDatabase::parseFile()
     }
 
     bool ok = parseFileIntern();
-
-    writeOffsetFile(m_filename);
+    if (ok)
+    {
+        writeOffsetFile(m_filename);
+    }
     return ok;
 }
 
@@ -283,7 +252,7 @@ bool PgnDatabase::parseFileIntern()
 
     qint64 countDiff = size / 100;
     qint64 nextDiff = countDiff;
-    int percentDone = 0;
+    percentDone = 0;
 
     while(!m_file->atEnd() || !m_currentLine.isEmpty())
     {
@@ -341,6 +310,8 @@ bool PgnDatabase::parseFileIntern()
             }
         }
     }
+    m_gameOffsets32.squeeze();
+    m_gameOffsets64.squeeze();
     return true;
 }
 
@@ -395,8 +366,6 @@ void PgnDatabase::close()
         m_file->close();
     }
     delete m_file;
-    delete[] m_gameOffsets64;
-    delete[] m_gameOffsets32;
 
     //reset member variables
     initialise();
@@ -460,8 +429,6 @@ bool PgnDatabase::loadGame(GameId gameId, Game& game)
 void PgnDatabase::initialise()
 {
     m_file = 0;
-    m_gameOffsets64 = 0;
-    m_gameOffsets32 = 0;
     m_inComment = false;
     m_inPreComment = false;
     m_filename = QString();
@@ -1031,62 +998,52 @@ void PgnDatabase::skipMoves()
 
 //offset methods
 /** Returns the file offset for the given game */
-IndexBaseType PgnDatabase::offset(GameId gameId)
+IndexBaseType PgnDatabase::offset(GameId gameId) const
 {
     if(bUse64bit)
     {
-        return m_gameOffsets64[gameId];
+        return m_gameOffsets64.at(gameId);
     }
     else
     {
-        return m_gameOffsets32[gameId];
+        return m_gameOffsets32.at(gameId);
     }
 }
 
+#define BASE_ALLOC_SIZE 0x10000
 /** Adds a new file offset */
 bool PgnDatabase::addOffset(IndexBaseType offset)
 {
     if(m_count >= m_allocated)
     {
-        m_allocated += AllocationSize;
-        //out of space reallocate memory
-        if(bUse64bit)
+        int AllocationSize;
+        if (percentDone)
         {
-            quint64* newAllocation = new quint64[m_allocated];
-            if (newAllocation)
-            {
-                memcpy(newAllocation, m_gameOffsets64, m_count * sizeof(quint64));
-                delete[] m_gameOffsets64;
-                m_gameOffsets64 = newAllocation;
-            }
-            else
-            {
-                return false;
-            }
+            AllocationSize = m_allocated * (100.0/percentDone) + BASE_ALLOC_SIZE;
         }
         else
         {
-            quint32* newAllocation = new quint32[m_allocated];
-            if (newAllocation)
-            {
-                memcpy(newAllocation, m_gameOffsets32, m_count * sizeof(quint32));
-                delete[] m_gameOffsets32;
-                m_gameOffsets32 = newAllocation;
-            }
-            else
-            {
-                return false;
-            }
+            AllocationSize = BASE_ALLOC_SIZE;
+        }
+        m_allocated = AllocationSize;
+        //out of space reallocate memory
+        if(bUse64bit)
+        {
+            m_gameOffsets64.resize(m_allocated);
+        }
+        else
+        {
+            m_gameOffsets32.resize(m_allocated);
         }
     }
 
     if(bUse64bit)
     {
-        m_gameOffsets64[m_count] = offset;
+        m_gameOffsets64 << offset;
     }
     else
     {
-        m_gameOffsets32[m_count] = offset;
+        m_gameOffsets32 << offset;
     }
     ++m_count;
     return true;

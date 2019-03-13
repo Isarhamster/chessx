@@ -15,6 +15,7 @@
 
 #include <QFile>
 #include <QByteArray>
+#include <QVector>
 
 #include "database.h"
 
@@ -117,7 +118,7 @@ private:
 
     /** Adds the current file position as a new offset */
     bool addOffset(IndexBaseType offset);
-    IndexBaseType offset(GameId gameId);
+    IndexBaseType offset(GameId gameId) const;
 
     //file variables
     QString m_filename;
@@ -135,10 +136,11 @@ private:
 
     //game index
     IndexBaseType m_allocated;
-    quint32* m_gameOffsets32;
-    quint64* m_gameOffsets64;
+    QVector<quint32> m_gameOffsets32;
+    QVector<quint64> m_gameOffsets64;
     QByteArray m_lineBuffer;
     QStack<MoveId> m_variationStack;
+    int percentDone;
 
     bool bUse64bit;
 };
