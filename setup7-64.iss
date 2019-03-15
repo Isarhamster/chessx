@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ChessX"
-#define MyAppVersion "1.4.8"
+#define MyAppVersion "1.4.9"
 #define MyAppPublisher "chessx.sourceforge.net"
 #define MyAppURL "http://chessx.sourceforge.net"
 #define MyAppExeName "chessx.exe"
@@ -11,7 +11,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{278EF322-A05B-4F81-B23B-F7D8050F6837}
+AppId={{5A160584-B25D-4581-BAB6-520D94C0295D}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -30,6 +30,8 @@ SetupIconFile=.\src\chessx.ico
 Compression=lzma
 SolidCompression=yes
 ChangesAssociations = yes
+ArchitecturesAllowed = x64 ia64
+ArchitecturesInstallIn64BitMode = x64 ia64
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -39,12 +41,12 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "..\build-chessx-W7_amd64-Release\release\chessx.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build-chessx-W7_amd64-Release\release\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\build-chessx-W7_amd64-Release\release\chessx.exe.local"; DestDir: "{app}"; Flags: ignoreversion
+Source: "chessx-win\x64\Release\chessx.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "chessx-win\x64\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "chessx-win\x64\Release\chessx.exe.local"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\COPYING"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\ChangeLog"; DestDir: "{app}"
-Source: ".\data\engines\uci\stockfish_8_x64.exe"; DestDir: "{app}\data\engines\uci\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\data\engines\uci\stockfish_10_x64.exe"; DestDir: "{app}\data\engines\uci\"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\data\timeseal\windows\*.exe"; DestDir: "{app}\data\timeseal\windows\"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
