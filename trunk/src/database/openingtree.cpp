@@ -28,7 +28,7 @@ const unsigned MinAveRating = 5;
 
 bool OpeningTree::updateFilter(Filter& f, const Board& b, bool updateFilter, bool sourceIsFilter, bool bEnd)
 {
-    if(&f == m_filter && b == m_board && m_bEnd == bEnd)
+    if(&f == m_filter && updateFilter == m_updateFilter && b == m_board && m_bEnd == bEnd)
     {
         return true;
     }
