@@ -75,7 +75,7 @@ public:
     QString tagValue(const QString& tagName, GameId gameId) const;
 
     /** @ret the value index number of a @p value  */
-    ValueIndex getValueIndex(const QString&) const;
+    ValueIndex getValueIndex(QString name) const;
 
     /** @ret the value index number of a tags name @p value for a given game */
     ValueIndex valueIndexFromTag(const QString& tagName, GameId gameId) const;
@@ -185,7 +185,7 @@ private:
     /** Map an Index to a tagValue */
     QHash<ValueIndex, QString> m_tagValues;
     /** Map a Value to its associated index value */
-    QHash<QString, ValueIndex> m_tagValueIndex;
+    // QHash<QString, ValueIndex> m_tagValueIndex;
     /** Contains information which games are marked as valid */
     QSet<GameId> m_validFlags;
     /** Hold the list of index items (=holds all game header information) */
