@@ -52,7 +52,7 @@ OpeningTreeWidget::OpeningTreeWidget(QWidget *parent) :
     connect(m_openingTree, SIGNAL(openingTreeUpdateStarted()), this, SLOT(slotTreeUpdateStarted()));
     connect(m_openingTree, SIGNAL(requestGameFilterUpdate(int,int)), SIGNAL(requestGameFilterUpdate(int,int)));
     connect(ui->sourceSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSourceChanged(int)));
-
+    connect(ui->filterGames, SIGNAL(clicked(bool)), this, SLOT(slotFilterClicked(bool)));
     m_openingBoardView = new BoardView(this, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     m_openingBoardView->setObjectName("OpeningBoardView");
     m_openingBoardView->setMinimumSize(200, 200);
@@ -198,6 +198,18 @@ void OpeningTreeWidget::restoreBook()
 bool OpeningTreeWidget::shouldAddMove() const
 {
     return ui->makeMove->isChecked();
+}
+
+void OpeningTreeWidget::slotFilterClicked(bool checked)
+{
+    if (checked)
+    {
+        emit signalSourceChanged();
+    }
+    else
+    {
+        m_openingTree->cancel();
+    }
 }
 
 void OpeningTreeWidget::slotSourceChanged(int index)

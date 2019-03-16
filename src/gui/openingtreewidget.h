@@ -56,6 +56,8 @@ protected slots:
     void slotTreeUpdateStarted();
     /** The source for the tree has changed */
     void slotSourceChanged(int);
+    /** Updating the filter is requested by clicking the filter checkbox */
+    void slotFilterClicked(bool checked);
 
 signals:
     void signalTreeUpdated(bool);
