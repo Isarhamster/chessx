@@ -1039,11 +1039,11 @@ bool PgnDatabase::addOffset(IndexBaseType offset)
 
     if(bUse64bit)
     {
-        m_gameOffsets64 << offset;
+        m_gameOffsets64[m_count] = offset;
     }
     else
     {
-        m_gameOffsets32 << offset;
+        m_gameOffsets32[m_count] = offset;
     }
     ++m_count;
     return true;

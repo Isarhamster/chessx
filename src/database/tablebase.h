@@ -22,9 +22,6 @@ class QNetworkReply;
  * Abstract base class for different types of tablebase access
  *
  * @todo
- * - Subclass to access lokasoft tablebases
- * - Method to return all tablebase info rather than just best move.
- * - Provide a configuration screen to enable and disable etc.
  * - Subclass to support local tablebases
  * - Add caching and/or prefetching of online queries to reduce lag
  */
