@@ -81,6 +81,15 @@ void FilterModel::addColumns(const QStringList& tags)
     m_columnTags << tags;
 }
 
+void FilterModel::cacheTags()
+{
+    m_columnTagIndex.clear();
+    foreach(QString tagName, m_columnTags)
+    {
+       m_columnTagIndex.append(m_filter->database()->index()->getTagIndex(tagName));
+    }
+}
+
 QStringList FilterModel::additionalTags()
 {
     QString addTags = AppSettings->getValue("/GameList/AdditionalTags").toString();
@@ -121,6 +130,7 @@ void FilterModel::endUpdate()
     --m_modelUpdateStarted;
     if (m_modelUpdateStarted==0)
     {
+        cacheTags();
         endResetModel();
     }
 }
@@ -147,7 +157,7 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
                     return i + 1;
                 }
 
-                QString tag = m_filter->database()->tagValue(i, m_columnTags.at(index.column()));
+                QString tag = m_filter->database()->tagValue(i, m_columnTagIndex[index.column()]);
                 if(tag == "?")
                 {
                     tag.clear();
@@ -183,10 +193,6 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
                 QVariant v = QColor(Qt::black);
                 return v;
             }
-        }
-        else
-        {
-            qDebug() << index.row();
         }
     }
     return QVariant();

@@ -85,6 +85,12 @@ public:
 	
 	QSet<ValueIndex> tagValueSet(const QString& tagName) const;
 
+    /** @ret the tag index number of a @p value  */
+    TagIndex getTagIndex(const QString& value) const;
+
+    /** Query the value of a tag given the tags index for a specific game */
+    QString tagValue_byIndex(TagIndex tagIndex, GameId gameId) const;
+
     /** Get the list of players (optimized query, as it reads white and black names w/o duplicates) */
     QStringList playerNames() const;
 
@@ -162,9 +168,6 @@ private:
 
     /** Query the value of a tag given the tags index */
     QString tagName(TagIndex tagIndex) const;
-
-    /** @ret the tag index number of a @p value  */
-    TagIndex getTagIndex(const QString& value) const;
 
     /** Get the name of a @p valueIndex */
     QString tagValueName(ValueIndex valueIndex) const;

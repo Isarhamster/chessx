@@ -328,6 +328,15 @@ QBitArray Index::listPartialValue(const QString& tagName, QString value) const
     return list;
 }
 
+QString Index::tagValue_byIndex(TagIndex tagIndex, GameId gameId) const
+{
+    QReadLocker m(&m_mutex);
+
+    ValueIndex valueIndex = m_indexItems[gameId].valueIndex(tagIndex);
+
+    return tagValueName(valueIndex);
+}
+
 QString Index::tagValue(TagIndex tagIndex, GameId gameId) const
 {
     ValueIndex valueIndex = m_indexItems[gameId].valueIndex(tagIndex);
