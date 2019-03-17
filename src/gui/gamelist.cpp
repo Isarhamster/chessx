@@ -255,16 +255,15 @@ void GameList::selectRandomGame()
 
 void GameList::setFilter(Filter* filter)
 {
-    QByteArray state = horizontalHeader()->saveState();
-
-    if (filter)
-    {
-        sortModel->setFilter(filter);
-        m_model->setFilter(filter);
-    }
-
-    horizontalHeader()->restoreState(state);
-    emit raiseRequest();
+	setUpdatesEnabled(false);
+	sortByColumn(0, Qt::AscendingOrder); // Hack to ensure fast opening after loading DB
+	if (filter)
+	{
+		sortModel->setFilter(filter);
+		m_model->setFilter(filter);
+	}
+	setUpdatesEnabled(true);
+	emit raiseRequest();
 }
 
 void GameList::keyPressEvent(QKeyEvent* event)
