@@ -34,7 +34,7 @@ FilterModel::~FilterModel()
 
 int FilterModel::rowCount(const QModelIndex& index) const
 {
-    if(index.isValid())
+    if(index.isValid() || m_modelUpdateStarted)
     {
         return 0;
     }
@@ -245,9 +245,7 @@ Filter* FilterModel::filter()
 
 void FilterModel::setFilter(Filter* filter)
 {
-    startUpdate();
     m_filter = filter;
-    endUpdate();
 }
 
 void FilterModel::invert()

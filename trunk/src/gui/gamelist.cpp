@@ -255,14 +255,14 @@ void GameList::selectRandomGame()
 
 void GameList::setFilter(Filter* filter)
 {
-	setUpdatesEnabled(false);
-	sortByColumn(0, Qt::AscendingOrder); // Hack to ensure fast opening after loading DB
 	if (filter)
 	{
-		sortModel->setFilter(filter);
+        m_model->startUpdate();
+        sortModel->setFilter(filter);
 		m_model->setFilter(filter);
-	}
-	setUpdatesEnabled(true);
+        sortByColumn(0, Qt::AscendingOrder); // Hack to ensure fast opening after loading DB
+        m_model->endUpdate();
+    }
 	emit raiseRequest();
 }
 
