@@ -17,6 +17,7 @@
 
 #include "filteroperator.h"
 #include "gameid.h"
+#include "indexitem.h"
 
 class Filter;
 class Search;
@@ -92,6 +93,7 @@ private slots:
 private:
     void addColumns(const QStringList &tags);
     void setupColumns();
+    void cacheTags();
 
     /** A pointer to filter on which the model opperates */
     QPointer<Filter> m_filter;
@@ -99,6 +101,7 @@ private:
     QStringList m_columnNames;
     /** Map of columns and database tags */
     QStringList m_columnTags;
+    QVector<TagIndex> m_columnTagIndex;
     int m_modelUpdateStarted;
 };
 

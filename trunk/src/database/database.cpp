@@ -98,6 +98,11 @@ QString Database::tagValue(GameId gameId, const QString &tag) const
     return m_index.tagValue(tag, gameId);
 }
 
+QString Database::tagValue(GameId gameId, TagIndex tag) const
+{
+    return m_index.tagValue_byIndex(tag, gameId);
+}
+
 bool Database::replace(GameId, Game &)
 {
     return false;

@@ -72,6 +72,7 @@ public:
     virtual void loadGameHeader(GameId gameId, Game& game, const QString& tag) const;
     /** Get the tag for a game */
     virtual QString tagValue(GameId gameId, const QString &tag) const;
+    virtual QString tagValue(GameId gameId, TagIndex tag) const;
     /** Loads only moves into a game from the given position */
     virtual void loadGameMoves(GameId index, Game& game) = 0;
     /** Loads game moves and try to find a position */
