@@ -25,6 +25,17 @@ class BitBoard;
    Such moves are considered "illegal", but can be convenient when dealing with move entry.
 */
 
+
+inline bool isFile(const char c)
+{
+    return c >= 'a' && c <= 'h';
+}
+
+inline bool isRank(const char c)
+{
+    return c >= '1' && c <= '8';
+}
+
 class Move
 {
 public:
@@ -40,6 +51,9 @@ public:
 
     /** Move entry constructor, untested (illegal) move with only from, and to squares set */
     Move(const Square from, const Square to);
+
+    /** Construct a untested (illegal) Move from a SAN like string */
+    inline Move fromUCI(const QByteArray& bs);
 
     /** Set type of piece (Queen, Rook, Bishop, Knight, Pawn) pawn promoted to */
     void setPromoted(PieceType p);
@@ -94,7 +108,6 @@ public:
     bool operator==(const Piece& p) const;
     /** Return true if this move was NOT made by given piece */
     bool operator!=(const Piece& p) const;
-
 
     Move& operator=(const Move& move)
     {
@@ -253,6 +266,68 @@ inline Move::Move()
 inline Move::Move(const Square from, const Square to)
     : m(from | (to << 6)), u(0)
 {}
+
+inline Move Move::fromUCI(const QByteArray& bs)
+{
+    const char *san = bs.constData();
+    const char* s = san;
+    char c = *(s++);
+
+    if(isFile(c))
+    {
+        // Check From
+        int fromFile = c - 'a';
+        c = *(s++);
+        if(isRank(c))
+        {
+            Square fromSquare = Square((c - '1') * 8 + fromFile);
+            fromFile = -1;
+            c = *(s++);
+            // Destination square
+            if(isFile(c))
+            {
+                int f = c - 'a';
+                c = *(s++);
+                if(isRank(c))
+                {
+                    Square toSquare = Square((c - '1') * 8 + f);
+                    Move m(fromSquare, toSquare);
+                    c = *(s++);
+                    if(c == '=' || c == '(' || QString("QRBN").indexOf(toupper(c))>=0)
+                    {
+                        if(c == '=' || c == '(')
+                        {
+                            c = *(s++);
+                        }
+                        PieceType promotePiece;
+                        switch(toupper(c))
+                        {
+                        case 'Q':
+                            promotePiece = Queen;
+                            break;
+                        case 'R':
+                            promotePiece = Rook;
+                            break;
+                        case 'B':
+                            promotePiece = Bishop;
+                            break;
+                        case 'N':
+                            promotePiece = Knight;
+                            break;
+                        default:
+                            promotePiece = None;
+                            break;
+                        }
+                        m.setPromoted(promotePiece);
+                    }
+                    return m;
+                }
+            }
+        }
+    }
+
+    return Move();
+}
 
 inline Square Move::castlingRookFrom() const
 {

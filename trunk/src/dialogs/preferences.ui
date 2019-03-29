@@ -62,7 +62,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -1335,15 +1335,29 @@
          <property name="title">
           <string>Internet</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_7">
-          <item>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0">
            <widget class="QCheckBox" name="tablebaseCheck">
             <property name="text">
              <string>Use online tablebase servers</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="tablebaseSelect">
+            <item>
+             <property name="text">
+              <string>Nalimov-6</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Syzygy-7</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
            <widget class="QCheckBox" name="versionCheck">
             <property name="text">
              <string>Check for updates (at startup) and language packs</string>
