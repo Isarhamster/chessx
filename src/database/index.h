@@ -17,6 +17,7 @@
 #include <QObject>
 #include <QSet>
 #include <QReadWriteLock>
+#include <QVector>
 
 #include "indexitem.h"
 #include "game.h"
@@ -149,6 +150,12 @@ public:
     /** Calculate hash for a game header */
     bool isIndexItemEqual(GameId i, GameId j) const;
 
+    /** Squeeze internal structures */
+    void squeeze();
+
+    /** Reserve space for @p estimation games */
+    void reserve(quint32 estimation);
+
 signals:
     void progress(int);
 
@@ -187,12 +194,10 @@ private:
     QHash<QString, TagIndex> m_tagNameIndex;
     /** Map an Index to a tagValue */
     QHash<ValueIndex, QString> m_tagValues;
-    /** Map a Value to its associated index value */
-    // QHash<QString, ValueIndex> m_tagValueIndex;
     /** Contains information which games are marked as valid */
     QSet<GameId> m_validFlags;
     /** Hold the list of index items (=holds all game header information) */
-    QHash<GameId, IndexItem> m_indexItems;
+    QVector<IndexItem> m_indexItems;
 
     mutable QReadWriteLock m_mutex;
 };

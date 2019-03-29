@@ -253,6 +253,7 @@ bool PgnDatabase::parseFileIntern()
     qint64 countDiff = size / 100;
     qint64 nextDiff = countDiff;
     percentDone = 0;
+    m_index.reserve(size/1000);
 
     while(!m_file->atEnd() || !m_currentLine.isEmpty())
     {
@@ -312,6 +313,7 @@ bool PgnDatabase::parseFileIntern()
     }
     m_gameOffsets32.squeeze();
     m_gameOffsets64.squeeze();
+    m_index.squeeze();
     return true;
 }
 

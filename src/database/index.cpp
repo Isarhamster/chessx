@@ -16,6 +16,7 @@
 #include <QMultiHash>
 #include <QWriteLocker>
 #include <QReadLocker>
+#include <QVector>
 
 #include "index.h"
 #include "tags.h"
@@ -158,10 +159,10 @@ bool Index::replaceTagValue(QStringList tags, const QString& newValue, const QSt
         tl << getTagIndex(t);
     }
 
-    QHash<GameId, IndexItem>::iterator i;
+    QVector<IndexItem>::iterator i;
     for (i = m_indexItems.begin(); i != m_indexItems.end(); ++i)
     {
-        i.value().replaceValue(tl, valueIndex, newIndex);
+        i->replaceValue(tl, valueIndex, newIndex);
     }
 
     m_tagValues.remove(valueIndex);
@@ -187,6 +188,19 @@ bool Index::write(QDataStream &out) const
     out << extension;
 
     return true;
+}
+
+void Index::reserve(quint32 estimation)
+{
+    m_tagValues.reserve(estimation+16);
+    qDebug() << "Index space " << m_tagValues.capacity();
+}
+
+void Index::squeeze()
+{
+    qDebug() << "Index space " << m_tagValues.capacity();
+    m_tagValues.squeeze();
+    qDebug() << "Index space " << m_tagValues.capacity();
 }
 
 bool Index::read(QDataStream &in, volatile bool *breakFlag, short version)
@@ -460,20 +474,20 @@ QStringList Index::playerNames() const
     TagIndex tagIndex = getTagIndex(TagNameWhite);
     if(tagIndex != TagNoIndex)
     {
-		QHash<GameId, IndexItem>::const_iterator i;
+        QVector<IndexItem>::const_iterator i;
 		for (i = m_indexItems.constBegin(); i != m_indexItems.constEnd(); ++i)
 		{
-			playerNameIndex.insert(i.value().valueIndex(tagIndex));
+            playerNameIndex.insert(i->valueIndex(tagIndex));
 		}
     }
 
     tagIndex = getTagIndex(TagNameBlack);
     if(tagIndex != TagNoIndex)
     {
-		QHash<GameId, IndexItem>::const_iterator i;
+        QVector<IndexItem>::const_iterator i;
 		for (i = m_indexItems.constBegin(); i != m_indexItems.constEnd(); ++i)
 		{
-			playerNameIndex.insert(i.value().valueIndex(tagIndex));
+            playerNameIndex.insert(i->valueIndex(tagIndex));
 		}
 	}
 
@@ -494,10 +508,10 @@ QSet<ValueIndex> Index::tagValueSet(const QString& tagName) const
 
 	if (tagIndex != TagNoIndex)
 	{
-		QHash<GameId, IndexItem>::const_iterator i;
+        QVector<IndexItem>::const_iterator i;
 		for (i = m_indexItems.constBegin(); i != m_indexItems.constEnd(); ++i)
 		{
-			tagNameIndex.insert(i.value().valueIndex(tagIndex));
+            tagNameIndex.insert(i->valueIndex(tagIndex));
 		}
 	}
 	return tagNameIndex;
