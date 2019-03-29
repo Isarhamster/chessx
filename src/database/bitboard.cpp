@@ -1743,15 +1743,6 @@ bool BitBoard::isIntoCheck(const Move& move) const
     return peek.isCheck();
 }
 
-inline bool isFile(const char c)
-{
-    return c >= 'a' && c <= 'h';
-}
-inline bool isRank(const char c)
-{
-    return c >= '1' && c <= '8';
-}
-
 // Create a null move (a2a2)
 // A Null Move is represented in pgn by a "--" although illegal
 // it is often used in ebooks to annotate ideas
@@ -1918,10 +1909,13 @@ Move BitBoard::parseMove(const QString& algebraic) const
     {
         PieceType promotePiece = None;
 
-        // Promotion as in bxc8=Q or bxc8(Q)
-        if(c == '=' || c == '(')
+        // Promotion as in bxc8=Q or bxc8(Q) or bxc8(Q)
+        if(c == '=' || c == '(' || QString("QRBN").indexOf(toupper(c))>=0)
         {
-            c = *(s++);
+            if(c == '=' || c == '(')
+            {
+                c = *(s++);
+            }
             switch(toupper(c))
             {
             case 'Q':

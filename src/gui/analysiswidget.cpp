@@ -327,7 +327,7 @@ void AnalysisWidget::setPosition(const Board& board, QString line)
 
         if(AppSettings->getValue("/General/onlineTablebases").toBool())
         {
-            if (!(m_board.isStalemate() || m_board.isCheckmate()))
+            if (!(m_board.isStalemate() || m_board.isCheckmate() || m_board.chess960()))
             {
                 if(objectName() == "Analysis")
                 {
@@ -481,19 +481,41 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
             {
                 first = false;
                 QString result;
+
+                bool dtz = false;
+                if (abs(score) & 0x800)
+                {
+                    dtz = true;
+                }
                 if(score == 0)
                 {
                     result = tr("Draw");
                 }
-                else if((score < 0) == (m_board.toMove() == Black))
-                {
-                    result = tr("White wins in %n moves", "", qAbs(score));
-                }
                 else
                 {
-                    result = tr("Black wins in %n moves", "", qAbs(score));
+                    if (!dtz)
+                    {
+                        if((score < 0) == (m_board.toMove() == Black))
+                        {
+                            result = tr("White wins in %n moves", "", qAbs(score));
+                        }
+                        else
+                        {
+                            result = tr("Black wins in %n moves", "", qAbs(score));
+                        }
+                    }
+                    else
+                    {
+                        if((score < 0) == (m_board.toMove() == Black))
+                        {
+                            result = tr("White wins");
+                        }
+                        else
+                        {
+                            result = tr("Black wins");
+                        }
+                    }
                 }
-
                 Move move1 = m_board.prepareMove(move.from(), move.to());
                 if(move.isPromotion())
                 {

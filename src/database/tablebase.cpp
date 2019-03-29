@@ -8,6 +8,7 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include "settings.h"
 #include "tablebase.h"
 #include "version.h"
 
@@ -21,6 +22,7 @@
 #include <QStringList>
 #include <QTimer>
 #include <QUrl>
+#include <QJsonDocument>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -61,21 +63,39 @@ void OnlineTablebase::getBestMove(QString fen)
 
 void OnlineTablebase::sendIt()
 {
-    QString prep(m_fen.simplified());
-    QString count(prep.left(prep.indexOf(" ")));
-    int white = count.count(QRegExp("[A-Z]"));
-    int black = count.count(QRegExp("[a-z]"));
-    if(white + black > 6 || black > 4 || white > 4 || black < 1 || white < 1)
+    QUrl url;
+    if (AppSettings->getValue("/General/tablebaseSource").toInt())
     {
-        return;
+        QString prep(m_fen.simplified());
+        QString count(prep.left(prep.indexOf(" ")));
+        int white = count.count(QRegExp("[A-Z]"));
+        int black = count.count(QRegExp("[a-z]"));
+        if(white + black > 7 || black < 1 || white < 1)
+        {
+            return;
+        }
+        QString requested = QString("/standard?fen=%1").arg(m_fen);
+        url = requested;
+        url.setScheme("http");
+        url.setHost("tablebase.lichess.ovh");
     }
-    QChar toMove = (prep[prep.indexOf(QString(" ")) + 1].toLower());
-    QString requested = QString("/online/playshredder/fetch.php?action=egtb&hook=%1&fen=%2")
-                        .arg(toMove).arg(m_fen);
-
-    QUrl url(requested);
-    url.setScheme("http");
-    url.setHost("www.shredderchess.com");
+    else
+    {
+        QString prep(m_fen.simplified());
+        QString count(prep.left(prep.indexOf(" ")));
+        int white = count.count(QRegExp("[A-Z]"));
+        int black = count.count(QRegExp("[a-z]"));
+        if(white + black > 6 || black > 4 || white > 4 || black < 1 || white < 1)
+        {
+            return;
+        }
+        QChar toMove = (prep[prep.indexOf(QString(" ")) + 1].toLower());
+        QString requested = QString("/online/playshredder/fetch.php?action=egtb&hook=%1&fen=%2")
+                            .arg(toMove).arg(m_fen);
+        url = requested;
+        url.setScheme("http");
+        url.setHost("www.shredderchess.com");
+    }
 
     m_requested = url.toString();
 
@@ -96,78 +116,143 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
             m_requested.clear();
 
             QString ret(reply->readAll());
-            if(ret.indexOf("Not found") >= 0)
+            if (AppSettings->getValue("/General/tablebaseSource").toInt())
             {
-                return;
-            }
-
-            if(ret[5] == 'w')
-            {
-                ret.remove(QRegExp("NEXTCOLOR.*\\n"));
-            }
-            else
-            {
-                ret.remove(QRegExp(".*NEXTCOLOR\\n"));
-            }
-            ret.remove(0, ret.indexOf("\n") + 1);
-            ret.remove(":");
-            ret.remove("Win in ");
-            ret.replace(QRegExp("[-x]"), " ");
-            ret.replace("Draw", "0");
-            ret.replace("Lose in ", "-");
-
-            QStringList moveList = ret.split('\n',QString::SkipEmptyParts);
-            if (moveList.size() >= 1)
-            {
-                QList<Move> bestMoves;
-                bool first = true;
-                int bestScore;
-                foreach(QString tbMove, moveList)
+                if(ret.indexOf("invalid fen") >= 0)
                 {
-                    QStringList fld = tbMove.split(' ',QString::SkipEmptyParts);
-                    if(fld.size() < 3)
+                    return;
+                }
+
+                QJsonDocument doc = QJsonDocument::fromJson(ret.toLatin1());
+                if (!doc.isNull())
+                {
+                    QList<Move> bestMoves;
+
+                    QJsonValue wdl = doc["wdl"];
+                    if (wdl.isNull())
                     {
-                        break;
+                        return;
                     }
-                    Move move(Square(fld[0].toInt()), Square(fld[1].toInt()));
-                    int score = fld[2].toInt();
-                    if(fld.size() > 3)
+
+                    int result = wdl.toInt();
+
+                    QJsonValue jdtm = doc["dtm"];
+                    int dtm = jdtm.toInt();
+                    QJsonValue jdtz = doc["dtz"];
+                    int bestScore;
+                    if (result)
                     {
-                        switch(score)
-                        {
-                        case 8:
-                            move.setPromoted(Queen);
-                            break;
-                        case 9:
-                            move.setPromoted(Rook);
-                            break;
-                        case 10:
-                            move.setPromoted(Bishop);
-                            break;
-                        case 11:
-                            move.setPromoted(Knight);
-                            break;
-                        default:
-                            return;
-                        }
-                        score = fld[3].toInt();
-                    }
-                    if (first) {
-                        bestScore = score;
-                        first = false;
-                    }
-                    if (score == bestScore)
-                    {
-                        bestMoves.append(move);
+                        bestScore = jdtm.isNull() ? 0 : dtm - ((dtm>0) ? 1:(-1));
                     }
                     else
                     {
-                        break;
+                        bestScore = jdtm.isNull() ? 0 : dtm;
+                    }
+
+                    QJsonArray moves = doc["moves"].toArray();
+                    for (QJsonArray::const_iterator it = moves.constBegin(); it != moves.constEnd(); ++it)
+                    {
+                        QJsonValue wdl = (*it)["wdl"];
+                        if (-wdl.toInt()!=result) break; // We are done with all moves leading to the best result
+
+                        QJsonValue xjdtm = (*it)["dtm"];
+                        int xdtm = xjdtm.toInt();
+
+                        if (bestScore)
+                        {
+                            if (xdtm != -bestScore) break;
+                        }
+                        QJsonValue m = (*it)["uci"];
+                        Move move = Move().fromUCI(m.toString().toLatin1());
+                        bestMoves.append(move);
+                    }
+                    if (s_allowEngineOutput && bestMoves.count())
+                    {
+                        if (jdtm.isNull())
+                        {
+                            dtm = 0;
+                            if (result > 0) dtm = 0x800;
+                            if (result < 0) dtm = -0x800;
+                        }
+                        emit bestMove(bestMoves, dtm);
                     }
                 }
-                if (s_allowEngineOutput && !first)
+            }
+            else
+            {
+                if(ret.indexOf("Not found") >= 0)
                 {
-                    emit bestMove(bestMoves, bestScore);
+                    return;
+                }
+
+                if(ret[5] == 'w')
+                {
+                    ret.remove(QRegExp("NEXTCOLOR.*\\n"));
+                }
+                else
+                {
+                    ret.remove(QRegExp(".*NEXTCOLOR\\n"));
+                }
+                ret.remove(0, ret.indexOf("\n") + 1);
+                ret.remove(":");
+                ret.remove("Win in ");
+                ret.replace(QRegExp("[-x]"), " ");
+                ret.replace("Draw", "0");
+                ret.replace("Lose in ", "-");
+
+                QStringList moveList = ret.split('\n',QString::SkipEmptyParts);
+                if (moveList.size() >= 1)
+                {
+                    QList<Move> bestMoves;
+                    bool first = true;
+                    int bestScore;
+                    foreach(QString tbMove, moveList)
+                    {
+                        QStringList fld = tbMove.split(' ',QString::SkipEmptyParts);
+                        if(fld.size() < 3)
+                        {
+                            break;
+                        }
+                        Move move(Square(fld[0].toInt()), Square(fld[1].toInt()));
+                        int score = fld[2].toInt();
+                        if(fld.size() > 3)
+                        {
+                            switch(score)
+                            {
+                            case 8:
+                                move.setPromoted(Queen);
+                                break;
+                            case 9:
+                                move.setPromoted(Rook);
+                                break;
+                            case 10:
+                                move.setPromoted(Bishop);
+                                break;
+                            case 11:
+                                move.setPromoted(Knight);
+                                break;
+                            default:
+                                return;
+                            }
+                            score = fld[3].toInt();
+                        }
+                        if (first) {
+                            bestScore = score;
+                            first = false;
+                        }
+                        if (score == bestScore)
+                        {
+                            bestMoves.append(move);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    if (s_allowEngineOutput && !first)
+                    {
+                        emit bestMove(bestMoves, bestScore);
+                    }
                 }
             }
         }

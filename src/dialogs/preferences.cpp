@@ -85,9 +85,11 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 
     // Start off with no Engine selected
     ui.engineEditWidget->setEnabled(false);
-    ui.tabWidget->setCurrentIndex(s_lastIndex);
     ui.btLoadLang->setEnabled(false);
     ui.cbLangServer->setEnabled(false);
+
+    connect(ui.tablebaseCheck, SIGNAL(toggled(bool)), ui.tablebaseSelect, SLOT(setEnabled(bool)));
+    ui.tablebaseSelect->setEnabled(ui.tablebaseCheck->isChecked());
 
     if(AppSettings->getValue("/General/onlineVersionCheck").toBool())
     {
@@ -108,6 +110,8 @@ PreferencesDialog::PreferencesDialog(QWidget* parent, Qt::WindowFlags f) : QDial
 void PreferencesDialog::restoreLayout()
 {
     AppSettings->layout(this);
+    ui.tabWidget->setCurrentIndex(s_lastIndex);
+
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -437,6 +441,7 @@ void PreferencesDialog::restoreSettings()
     // Read Board settings
     AppSettings->beginGroup("/General/");
     ui.tablebaseCheck->setChecked(AppSettings->getValue("onlineTablebases").toBool());
+    ui.tablebaseSelect->setCurrentIndex(AppSettings->getValue("tablebaseSource").toInt());
     ui.versionCheck->setChecked(AppSettings->getValue("onlineVersionCheck").toBool());
     ui.automaticECO->setChecked(AppSettings->getValue("automaticECO").toBool());
     ui.useIndexFile->setChecked(AppSettings->getValue("useIndexFile").toBool());
@@ -575,6 +580,7 @@ void PreferencesDialog::saveSettings()
 {
     AppSettings->beginGroup("/General/");
     AppSettings->setValue("onlineTablebases", QVariant(ui.tablebaseCheck->isChecked()));
+    AppSettings->setValue("tablebaseSource", QVariant(ui.tablebaseSelect->currentIndex()));
     AppSettings->setValue("onlineVersionCheck", QVariant(ui.versionCheck->isChecked()));
     AppSettings->setValue("automaticECO", QVariant(ui.automaticECO->isChecked()));
     AppSettings->setValue("useIndexFile", QVariant(ui.useIndexFile->isChecked()));

@@ -368,6 +368,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/General/useIndexFile", true);
     map.insert("/General/ListFontSize", DEFAULT_LISTFONTSIZE);
     map.insert("/General/onlineTablebases", true);
+    map.insert("/General/tablebaseSource", 0);
     map.insert("/General/onlineVersionCheck", true);
     map.insert("/General/autoCommitDB", false);
     map.insert("/General/language", "Default");
