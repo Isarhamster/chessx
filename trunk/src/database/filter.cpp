@@ -229,7 +229,10 @@ void Filter::run()
     }
     delete currentSearch;
     emit searchProgress(100);
-    emit searchFinished();
+    if (!m_break)
+    {
+        emit searchFinished();
+    }
 }
 
 
@@ -242,6 +245,7 @@ void Filter::cancel()
     }
     if (m_lock && m_lock->isRunning())
     {
+        m_lock->cancel();
         m_lock->wait();
     }
 }
