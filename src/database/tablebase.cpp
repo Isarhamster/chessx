@@ -64,39 +64,32 @@ void OnlineTablebase::getBestMove(QString fen)
 void OnlineTablebase::sendIt()
 {
     QUrl url;
-    if (AppSettings->getValue("/General/tablebaseSource").toInt())
+    QString prep(m_fen.simplified());
+    QString count(prep.left(prep.indexOf(" ")));
+    int white = count.count(QRegExp("[A-Z]"));
+    int black = count.count(QRegExp("[a-z]"));
+
+    if(white + black > 7 || black < 1 || white < 1)
     {
-        QString prep(m_fen.simplified());
-        QString count(prep.left(prep.indexOf(" ")));
-        int white = count.count(QRegExp("[A-Z]"));
-        int black = count.count(QRegExp("[a-z]"));
-        if(white + black > 7 || black < 1 || white < 1)
-        {
-            return;
-        }
+        return;
+    }
+
+    if (AppSettings->getValue("/General/tablebaseSource").toInt() || ((white + black) > 6) || black > 4 || white > 4)
+    {
         QString requested = QString("/standard?fen=%1").arg(m_fen);
         url = requested;
-        url.setScheme("http");
         url.setHost("tablebase.lichess.ovh");
     }
     else
     {
-        QString prep(m_fen.simplified());
-        QString count(prep.left(prep.indexOf(" ")));
-        int white = count.count(QRegExp("[A-Z]"));
-        int black = count.count(QRegExp("[a-z]"));
-        if(white + black > 6 || black > 4 || white > 4 || black < 1 || white < 1)
-        {
-            return;
-        }
         QChar toMove = (prep[prep.indexOf(QString(" ")) + 1].toLower());
         QString requested = QString("/online/playshredder/fetch.php?action=egtb&hook=%1&fen=%2")
                             .arg(toMove).arg(m_fen);
         url = requested;
-        url.setScheme("http");
         url.setHost("www.shredderchess.com");
     }
 
+    url.setScheme("http");
     m_requested = url.toString();
 
     QNetworkRequest request(url);
@@ -116,7 +109,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
             m_requested.clear();
 
             QString ret(reply->readAll());
-            if (AppSettings->getValue("/General/tablebaseSource").toInt())
+            if (url.host().contains("lichess"))
             {
                 if(ret.indexOf("invalid fen") >= 0)
                 {
