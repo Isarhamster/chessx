@@ -149,18 +149,13 @@ FicsConsole::FicsConsole(QWidget *parent, FicsClient* ficsClient) :
     ui->seekIncrement->setValue(AppSettings->getValue("/FICS/increment").toInt());
     ui->eloMin->setValue(AppSettings->getValue("/FICS/eloLow").toInt());
     ui->eloMax->setValue(AppSettings->getValue("/FICS/eloHigh").toInt());
-
-#ifndef FICS_DEBUG
-    ui->line->setVisible(false);
-    ui->textOut->setEnabled(false);
-    ui->textOut->setVisible(false);
-#endif
 }
 
 FicsConsole::~FicsConsole()
 {
     delete ui;
 }
+
 
 bool FicsConsole::canUsePremove() const
 {
@@ -1084,4 +1079,9 @@ void FicsConsole::slotReconfigure()
 {
     ui->noPlaySplitter->restoreState(AppSettings->value("/FicsConsole/NoPlaySplit").toByteArray());
     ui->seekSplitter->restoreState(AppSettings->value("/FicsConsole/SeekSplit").toByteArray());
+
+    bool on = AppSettings->getValue("/FICS/commandline").toBool();
+    ui->line->setVisible(on);
+    ui->textOut->setEnabled(on);
+    ui->textOut->setVisible(on);
 }
