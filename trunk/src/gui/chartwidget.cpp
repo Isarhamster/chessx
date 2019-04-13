@@ -69,7 +69,7 @@ void ChartWidget::paintEvent(QPaintEvent*)
     }
 
     QPen pen2(Qt::SolidLine);
-    pen2.setColor(palette().color(QPalette::Dark));
+    pen2.setColor(palette().color(QPalette::BrightText));
     painter.setPen(pen2);
 
     painter.drawEllipse(m_plyIndicator,height()/2-2,3,3);

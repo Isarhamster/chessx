@@ -187,10 +187,10 @@ QVariant FilterModel::data(const QModelIndex &index, int role) const
             {
                 if(!m_filter->database()->getValidFlag(i))
                 {
-                    QVariant v = QColor(Qt::red);
+                    QVariant v = qApp->palette().color(QPalette::BrightText);
                     return v;
                 }
-                QVariant v = QColor(Qt::black);
+                QVariant v = qApp->palette().color(QPalette::Text);
                 return v;
             }
         }
