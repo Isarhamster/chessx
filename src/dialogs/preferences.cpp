@@ -525,6 +525,7 @@ void PreferencesDialog::restoreSettings()
     ui.defaultDataBasePath->setText(dir);
     ui.spinBoxListFontSize->setValue(AppSettings->getValue("/General/ListFontSize").toInt());
     ui.verticalTabs->setChecked(AppSettings->getValue("/MainWindow/VerticalTabs").toBool());
+    ui.darkTheme->setChecked(AppSettings->getValue("/MainWindow/DarkTheme").toBool());
     ui.iconsVisible->setChecked(AppSettings->getValue("/MainWindow/ShowMenuIcons").toBool());
     // Read Game List settings
     AppSettings->beginGroup("GameText");
@@ -564,6 +565,7 @@ void PreferencesDialog::restoreSettings()
     ui.passWord->setText(AppSettings->getValue("passWord").toString());
     ui.guestLogin->setChecked(AppSettings->getValue("guestLogin").toBool());
     ui.btUseTimeseal->setChecked(AppSettings->getValue("useTimeseal").toBool());
+    ui.commandLine->setChecked(AppSettings->getValue("commandline").toBool());
     AppSettings->endGroup();
 
     AppSettings->beginGroup("Sound");
@@ -631,6 +633,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("/General/DefaultDataPath", ui.defaultDataBasePath->text());
     AppSettings->setValue("/General/ListFontSize", ui.spinBoxListFontSize->value());
     AppSettings->setValue("/MainWindow/VerticalTabs", ui.verticalTabs->isChecked());
+    AppSettings->setValue("/MainWindow/DarkTheme", ui.darkTheme->isChecked());
     AppSettings->setValue("/MainWindow/ShowMenuIcons", ui.iconsVisible->isChecked());
 
     AppSettings->beginGroup("GameText");
@@ -668,6 +671,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("passWord", ui.passWord->text());
     AppSettings->setValue("guestLogin", ui.guestLogin->isChecked());
     AppSettings->setValue("useTimeseal", ui.btUseTimeseal->isChecked());
+    AppSettings->setValue("commandline", ui.commandLine->isChecked());
     AppSettings->endGroup();
 
     AppSettings->beginGroup("Sound");
@@ -778,5 +782,15 @@ void PreferencesDialog::SlotPieceEffectActivated(int index)
     if (!currentTheme.isEmpty())
     {
         ui.pieceThemeCombo->setCurrentText(currentTheme);
+    }
+}
+
+void PreferencesDialog::on_savePreferences_clicked()
+{
+    QString settingsPath = AppSettings->fileName();
+    QString newPath = AppSettings->portableIniPath();
+    if (settingsPath != newPath)
+    {
+        QFile::copy(settingsPath, newPath);
     }
 }

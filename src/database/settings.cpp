@@ -10,6 +10,7 @@
 #include "boardtheme.h"
 #include "settings.h"
 
+#include <QApplication>
 #include <QtCore>
 #include <QDialog>
 #include <QDockWidget>
@@ -25,6 +26,9 @@
 #endif // _MSC_VER
 
 Settings::Settings() : QSettings(IniFormat, UserScope, "chessx", "chessx")
+{}
+
+Settings::Settings(const QString &fileName) : QSettings(fileName, IniFormat)
 {}
 
 Settings::~Settings()
@@ -397,6 +401,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
 
     map.insert("/MainWindow/GameToolBar", false);
     map.insert("/MainWindow/VerticalTabs", false);
+    map.insert("/MainWindow/DarkTheme", false);
     map.insert("/MainWindow/StayOnTop", false);
     map.insert("/MainWindow/FilterFollowsGame", false);
     map.insert("/MainWindow/ShowMenuIcons", true);
@@ -411,6 +416,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/FICS/increment", 0);
     map.insert("/FICS/eloLow", 0);
     map.insert("/FICS/eloHigh", 9000);
+    map.insert("/FICS/commandline", false);
 
     map.insert("/Board/showFrame", true);
     map.insert("/Board/showCoordinates", true);
@@ -619,12 +625,18 @@ QString Settings::getTempPath() const
     return path;
 }
 
+QString Settings::portableIniPath()
+{
+    QString portableIni = QApplication::applicationDirPath()+QDir::separator()+"chessx.ini";
+    return portableIni;
+}
+
 
 //////////////////////////////////////////////////////////////////////////////
 // The singleton instance pointer of our AppSettings
 //////////////////////////////////////////////////////////////////////////////
 
-Settings* AppSettings;
+Settings* AppSettings = 0;
 
 //////////////////////////////////////////////////////////////////////////////
 // EOF

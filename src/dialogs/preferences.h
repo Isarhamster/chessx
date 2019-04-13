@@ -110,6 +110,7 @@ private slots:
     void slotBtMoveFontClicked();
     void slotBtTextFontClicked();
     void SlotPieceEffectActivated(int index);
+    void on_savePreferences_clicked();
 };
 
 #endif

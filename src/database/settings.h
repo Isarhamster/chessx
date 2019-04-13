@@ -11,6 +11,7 @@
 #define SETTINGS_H_INCLUDED
 
 #include <QSettings>
+#include <QString>
 #include "engineoptiondata.h"
 
 class QWidget;
@@ -36,6 +37,7 @@ class Settings : public QSettings
 public:
     enum {Show = 1} LayoutFlags;
     Settings();
+    Settings(const QString &fileName);
     ~Settings();
 public slots:
     /** Restore widget's layout based on its name. Optionally show window if it is visible.
@@ -100,6 +102,8 @@ public:
     QStringList getTranslations() const;
     QString indexPath() const;
     QString shotsPath() const;
+
+    static QString portableIniPath();
 private:
 
     QMap<QString, QVariant> initDefaultValues() const;

@@ -153,72 +153,11 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="palette">
-           <palette>
-            <active>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>230</red>
-                <green>230</green>
-                <blue>230</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Highlight">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>216</red>
-                <green>216</green>
-                <blue>216</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </active>
-            <inactive>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>228</red>
-                <green>228</green>
-                <blue>228</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Highlight">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>212</red>
-                <green>212</green>
-                <blue>212</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </inactive>
-            <disabled>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>236</red>
-                <green>236</green>
-                <blue>236</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Highlight">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>212</red>
-                <green>212</green>
-                <blue>212</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </disabled>
-           </palette>
-          </property>
           <property name="toolTip">
            <string>Comments and annotations will be displayed here. You can modify them, too.</string>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
           </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
@@ -239,45 +178,11 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="palette">
-           <palette>
-            <active>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>238</red>
-                <green>238</green>
-                <blue>238</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </active>
-            <inactive>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </inactive>
-            <disabled>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>236</red>
-                <green>236</green>
-                <blue>236</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </disabled>
-           </palette>
+          <property name="autoFillBackground">
+           <bool>false</bool>
           </property>
           <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+           <enum>QFrame::Panel</enum>
           </property>
           <property name="alternatingRowColors">
            <bool>true</bool>
