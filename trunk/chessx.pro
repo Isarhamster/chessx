@@ -495,6 +495,7 @@ OTHER_FILES += \
     COPYING \
     ChangeLog.txt \
     data/help/about.css \
+    data/help/about-dark.css \
     data/help/about0.html \
     data/help/about1.html \
     data/help/about1a.html \

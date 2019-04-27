@@ -188,24 +188,28 @@ QString Analysis::toString(const Board& board) const
     Board testBoard = board;
     QString out;
 
+    bool whiteToMove = testBoard.toMove() == White;
+
+    QString cw = "00cc99";
+    QString cb = "ff3300";
+
     if (getEndOfGame())
     {
-        QString color = testBoard.toMove() == Black ? "000080" : "800000";
+        QString color = whiteToMove ? cw : cb;
         QString text = tr("Resigns");
         out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color).arg(text);
     }
     else if (isAlreadyMate())
     {
-        QString color = testBoard.toMove() == Black ? "000080" : "800000";
+        QString color = whiteToMove ? cw : cb;
         QString text = tr("Mate");
         out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color).arg(text);
     }
     else if(isMate())
     {
         int score = movesToMate();
-        bool whiteToMove = testBoard.toMove() == White;
 
-        QString color = ((whiteToMove && (score>0)) || (!whiteToMove && (score<0))) ? "000080" : "800000";
+        QString color = ((whiteToMove && (score>0)) || (!whiteToMove && (score<0))) ? cw : cb;
         QString text = QString(tr("Mate in %1").arg(abs(score)));
         out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(color).arg(text);
     }
@@ -213,20 +217,20 @@ QString Analysis::toString(const Board& board) const
     {
         if(score() > 0)
         {
-            out = QString("<font color=\"#000080\"><b>+%1</b></font> ").arg(score() / 100.0, 0, 'f', 2);
+            out = QString("<font color=\"#%1\"><b>+%2</b></font> ").arg(cw).arg(score() / 100.0, 0, 'f', 2);
         }
         else
         {
-            out = QString("<font color=\"#800000\"><b>%1</b></font> ").arg(score() / 100.0, 0, 'f', 2);
+            out = QString("<font color=\"#%1\"><b>%2</b></font> ").arg(cb).arg(score() / 100.0, 0, 'f', 2);
         }
     }
 
     int moveNo = testBoard.moveNumber();
-    bool white = testBoard.toMove() == White;
+
     QString moveText;
     foreach(Move move, variation())
     {
-        if(white)
+        if(whiteToMove)
         {
             moveText += QString::number(moveNo++) + ". ";
         }
@@ -237,7 +241,7 @@ QString Analysis::toString(const Board& board) const
         moveText += testBoard.moveToSan(move, true);
         moveText += " ";
         testBoard.doMove(move);
-        white = !white;
+        whiteToMove = !whiteToMove;
     }
     if (!moveText.isEmpty())
     {

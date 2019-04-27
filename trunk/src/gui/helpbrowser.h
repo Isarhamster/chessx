@@ -21,6 +21,9 @@ public slots:
 
 private slots:
     void slotSourceChanged(const QUrl &url);
+
+protected:
+    virtual QVariant loadResource(int type, const QUrl &name) override;
 };
 
 #endif // HELPBROWSER_H

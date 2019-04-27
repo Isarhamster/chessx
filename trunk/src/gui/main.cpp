@@ -16,6 +16,7 @@
 
 #include <QApplication>
 #include <QLocale>
+#include <QStyleFactory>
 #include <QTranslator>
 #include "mainwindow.h"
 #include "settings.h"
@@ -83,7 +84,7 @@ int customReportHook(int /* reportType */, char* message, int* /* returnValue */
 }
 
 #endif
-#include <QStyleFactory>
+
 int main(int argc, char** argv)
 {
 #if defined(_MSC_VER)
