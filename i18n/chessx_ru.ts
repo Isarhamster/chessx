@@ -126,27 +126,27 @@ Free Chess Database </source>
 <context>
     <name>Analysis</name>
     <message>
-        <location filename="../src/database/analysis.cpp" line="194"/>
+        <location filename="../src/database/analysis.cpp" line="199"/>
         <source>Resigns</source>
         <translation>Сдаюсь</translation>
     </message>
     <message>
-        <location filename="../src/database/analysis.cpp" line="200"/>
+        <location filename="../src/database/analysis.cpp" line="205"/>
         <source>Mate</source>
         <translation>Мат</translation>
     </message>
     <message>
-        <location filename="../src/database/analysis.cpp" line="209"/>
+        <location filename="../src/database/analysis.cpp" line="213"/>
         <source>Mate in %1</source>
         <translation>мат в %1</translation>
     </message>
     <message>
-        <location filename="../src/database/analysis.cpp" line="257"/>
+        <location filename="../src/database/analysis.cpp" line="261"/>
         <source> (depth %1, %2)</source>
         <translation> (глубина %1, %2)</translation>
     </message>
     <message>
-        <location filename="../src/database/analysis.cpp" line="263"/>
+        <location filename="../src/database/analysis.cpp" line="267"/>
         <source> (suggested move)</source>
         <translation>(Лучший ход)</translation>
     </message>
@@ -164,12 +164,12 @@ Free Chess Database </source>
         <translation>Обнаружена ошибка (%1) при запуске движка &lt;b&gt;%2&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="486"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="492"/>
         <source>Draw</source>
         <translation>Ничья</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="490"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="500"/>
         <source>White wins in %n moves</source>
         <translation>
             <numerusform>Победа белых в %n ход</numerusform>
@@ -178,7 +178,7 @@ Free Chess Database </source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/analysiswidget.cpp" line="494"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="504"/>
         <source>Black wins in %n moves</source>
         <translation>
             <numerusform>Победа черных в %n ход</numerusform>
@@ -187,32 +187,42 @@ Free Chess Database </source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="530"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="511"/>
+        <source>White wins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/analysiswidget.cpp" line="515"/>
+        <source>Black wins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/analysiswidget.cpp" line="552"/>
         <source>Analysis pinned to move %1</source>
         <translation>Анализ для хода %1 зафиксирован</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="539"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="561"/>
         <source>Click to add move to game</source>
         <translation>Кликните для добавления хода в партию</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="539"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="561"/>
         <source>Tablebase</source>
         <translation>Табличные базы</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="543"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="565"/>
         <source>Complexity</source>
         <translation>Сложность</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="547"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="569"/>
         <source>&lt;br&gt;&lt;b&gt;Complexity:&lt;/b&gt; %1&lt;br&gt;</source>
         <translation>&lt;br&gt;&lt;b&gt;Сложность:&lt;/b&gt; %1&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/analysiswidget.cpp" line="552"/>
+        <location filename="../src/gui/analysiswidget.cpp" line="574"/>
         <source>&lt;i&gt;Book:&lt;/i&gt;</source>
         <translation>&lt;i&gt;Дебютная книга:&lt;/i&gt;</translation>
     </message>
@@ -268,19 +278,19 @@ b%2
 %3 в ходе.</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3075"/>
+        <location filename="../src/database/bitboard.cpp" line="3069"/>
         <source>w%1
 b%2
 %3 to move</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3092"/>
+        <location filename="../src/database/bitboard.cpp" line="3086"/>
         <source>White</source>
         <translation>Белые</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3092"/>
+        <location filename="../src/database/bitboard.cpp" line="3086"/>
         <source>Black</source>
         <translation>Черные</translation>
     </message>
@@ -625,12 +635,12 @@ Please check your installation.</source>
         <translation type="obsolete">Форма</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardviewex.ui" line="221"/>
+        <location filename="../src/gui/boardviewex.ui" line="157"/>
         <source>Comments and annotations will be displayed here. You can modify them, too.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/boardviewex.ui" line="230"/>
+        <location filename="../src/gui/boardviewex.ui" line="169"/>
         <location filename="../src/gui/boardviewex.cpp" line="138"/>
         <source>Enter comments and annotations here.</source>
         <translation type="unfinished"></translation>
@@ -1261,7 +1271,7 @@ Please check your installation.</source>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="93"/>
         <location filename="../src/gui/ficsconsole.ui" line="99"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1049"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1044"/>
         <source>History</source>
         <translation>История</translation>
     </message>
@@ -1288,13 +1298,13 @@ Please check your installation.</source>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="158"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1023"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1018"/>
         <source>Relay</source>
         <translation>Live-передача</translation>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.ui" line="178"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1036"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1031"/>
         <source>Puzzle</source>
         <translation>Задача</translation>
     </message>
@@ -1426,7 +1436,7 @@ Please check your installation.</source>
     </message>
     <message>
         <location filename="../src/gui/ficsconsole.cpp" line="84"/>
-        <location filename="../src/gui/ficsconsole.cpp" line="1062"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1057"/>
         <source>Accept</source>
         <translation>Принять</translation>
     </message>
@@ -1466,27 +1476,27 @@ Please check your installation.</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="512"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="507"/>
         <source>Disconnect</source>
         <translation>Разрыв соединения</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="604"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="599"/>
         <source>Disconnected</source>
         <translation>Соединение разорвано</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="658"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="653"/>
         <source>Retrieving relayed games...</source>
         <translation>Восстановление переданных партий…</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="997"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="992"/>
         <source>Observe</source>
         <translation>Наблюдать</translation>
     </message>
     <message>
-        <location filename="../src/gui/ficsconsole.cpp" line="1010"/>
+        <location filename="../src/gui/ficsconsole.cpp" line="1005"/>
         <source>Examine</source>
         <translation>Проверять</translation>
     </message>
@@ -1673,7 +1683,7 @@ Please check your installation.</source>
     <name>GameList</name>
     <message>
         <location filename="../src/gui/gamelist.cpp" line="47"/>
-        <location filename="../src/gui/gamelist.cpp" line="290"/>
+        <location filename="../src/gui/gamelist.cpp" line="289"/>
         <source>Game list</source>
         <translation>Список партий</translation>
     </message>
@@ -1698,82 +1708,82 @@ Please check your installation.</source>
         <translation>Смотреть все колонки</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="294"/>
+        <location filename="../src/gui/gamelist.cpp" line="293"/>
         <source>Copy games...</source>
         <translation>Копировать партии…</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="295"/>
+        <location filename="../src/gui/gamelist.cpp" line="294"/>
         <source>Filter twins</source>
         <translation>Фильтр дублей</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="296"/>
+        <location filename="../src/gui/gamelist.cpp" line="295"/>
         <source>Merge into current game</source>
         <translation>Склеить с текущей партией</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="297"/>
+        <location filename="../src/gui/gamelist.cpp" line="296"/>
         <source>All Games</source>
         <translation>Все партии</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="298"/>
+        <location filename="../src/gui/gamelist.cpp" line="297"/>
         <source>Filter</source>
         <translation>Фильтр</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="299"/>
+        <location filename="../src/gui/gamelist.cpp" line="298"/>
         <source>Selected games</source>
         <translation>Выбранные партии</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="329"/>
+        <location filename="../src/gui/gamelist.cpp" line="328"/>
         <source>Toggle deletions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="336"/>
+        <location filename="../src/gui/gamelist.cpp" line="335"/>
         <source>Undelete games</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="336"/>
+        <location filename="../src/gui/gamelist.cpp" line="335"/>
         <source>Undelete game</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="340"/>
+        <location filename="../src/gui/gamelist.cpp" line="339"/>
         <source>Delete game</source>
         <translation>Удалить партию</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="340"/>
+        <location filename="../src/gui/gamelist.cpp" line="339"/>
         <source>Delete games</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="347"/>
+        <location filename="../src/gui/gamelist.cpp" line="346"/>
         <source>Hide game</source>
         <translation>Скрыть партию</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="347"/>
+        <location filename="../src/gui/gamelist.cpp" line="346"/>
         <source>Hide games</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="350"/>
+        <location filename="../src/gui/gamelist.cpp" line="349"/>
         <source>Hide deleted games</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="353"/>
+        <location filename="../src/gui/gamelist.cpp" line="352"/>
         <source>Reset filter</source>
         <translation type="unfinished">Сброс фильтра</translation>
     </message>
     <message>
-        <location filename="../src/gui/gamelist.cpp" line="354"/>
+        <location filename="../src/gui/gamelist.cpp" line="353"/>
         <source>Reverse filter</source>
         <translation type="unfinished">Реверс фильтра</translation>
     </message>
@@ -3861,143 +3871,143 @@ Shall I download a database?</source>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="470"/>
+        <location filename="../src/dialogs/preferences.cpp" line="475"/>
         <source>Light squares</source>
         <translation>Светлые поля</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="471"/>
+        <location filename="../src/dialogs/preferences.cpp" line="476"/>
         <source>Dark squares</source>
         <translation>Темные поля</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="472"/>
+        <location filename="../src/dialogs/preferences.cpp" line="477"/>
         <source>Highlighted squares</source>
         <translation>Выделенное поле</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="271"/>
-        <location filename="../src/dialogs/preferences.cpp" line="473"/>
+        <location filename="../src/dialogs/preferences.cpp" line="478"/>
         <source>Frame</source>
         <translation>Рамка</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="127"/>
+        <location filename="../src/dialogs/preferences.cpp" line="131"/>
         <source>Select engine directory</source>
         <translation>Выбор папки движка</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="103"/>
+        <location filename="../src/dialogs/preferences.cpp" line="105"/>
         <source>For updating translations online version checking needs to be enabled.</source>
         <translation>Для обновления локализации необходимо включить онлайн обновление.</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="148"/>
+        <location filename="../src/dialogs/preferences.cpp" line="152"/>
         <source>Select databases folder</source>
         <translation>Выбор папки базы данных</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="290"/>
+        <location filename="../src/dialogs/preferences.cpp" line="294"/>
         <source>Select engine executable</source>
         <translation>Выбор файла движка</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="348"/>
+        <location filename="../src/dialogs/preferences.cpp" line="352"/>
         <source>Could not load server language file dictionary</source>
         <translation>Не могу загрузить с сервера языковый файл</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="352"/>
+        <location filename="../src/dialogs/preferences.cpp" line="356"/>
         <source>Could not load or install language pack</source>
         <translation>Не могу загрузить или установить языковый файл</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="395"/>
+        <location filename="../src/dialogs/preferences.cpp" line="399"/>
         <source>No further translations online available!</source>
         <translation>Данной локализации нет в онлайне!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="363"/>
+        <location filename="../src/dialogs/preferences.cpp" line="367"/>
         <source>Translation file loaded - select added language above!</source>
         <translation>Локализация загружена - выберите добавленный файл!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="137"/>
+        <location filename="../src/dialogs/preferences.cpp" line="141"/>
         <source>Select external executable</source>
         <translation>Выбор внешнего файла</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="420"/>
+        <location filename="../src/dialogs/preferences.cpp" line="424"/>
         <source>Clear all application settings?</source>
         <translation>Сбросить все настройки программы?</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="420"/>
+        <location filename="../src/dialogs/preferences.cpp" line="424"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="474"/>
+        <location filename="../src/dialogs/preferences.cpp" line="479"/>
         <source>Current move</source>
         <translation>Текущий ход</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="475"/>
+        <location filename="../src/dialogs/preferences.cpp" line="480"/>
         <source>Stored move</source>
         <translation>Сохраненный ход</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="476"/>
+        <location filename="../src/dialogs/preferences.cpp" line="481"/>
         <source>Threat</source>
         <translation>Угроза</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="477"/>
+        <location filename="../src/dialogs/preferences.cpp" line="482"/>
         <source>Targets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="478"/>
+        <location filename="../src/dialogs/preferences.cpp" line="483"/>
         <source>Check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="479"/>
+        <location filename="../src/dialogs/preferences.cpp" line="484"/>
         <source>Wall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="480"/>
+        <location filename="../src/dialogs/preferences.cpp" line="485"/>
         <source>Underprotected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="504"/>
+        <location filename="../src/dialogs/preferences.cpp" line="509"/>
         <source>[plain colors]</source>
         <translation>[простые цвета]</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="528"/>
+        <location filename="../src/dialogs/preferences.cpp" line="534"/>
         <source>Main Line</source>
         <translation>Главная линия</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="529"/>
+        <location filename="../src/dialogs/preferences.cpp" line="535"/>
         <source>Variations</source>
         <translation>Варианты</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="530"/>
+        <location filename="../src/dialogs/preferences.cpp" line="536"/>
         <source>Comments</source>
         <translation>Комментарии</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="531"/>
+        <location filename="../src/dialogs/preferences.cpp" line="537"/>
         <source>NAGs</source>
         <translation>Награды</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1342"/>
+        <location filename="../src/dialogs/preferences.ui" line="1356"/>
         <source>Use online tablebase servers</source>
         <translation>Использовать онлайн эндшпильные базы</translation>
     </message>
@@ -4063,7 +4073,7 @@ Shall I download a database?</source>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1153"/>
-        <location filename="../src/dialogs/preferences.ui" line="1206"/>
+        <location filename="../src/dialogs/preferences.ui" line="1213"/>
         <source>Font Size</source>
         <translation>Размер шрифта</translation>
     </message>
@@ -4073,7 +4083,7 @@ Shall I download a database?</source>
         <translation>Цвет:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1349"/>
+        <location filename="../src/dialogs/preferences.ui" line="1380"/>
         <source>Check for updates (at startup) and language packs</source>
         <translation>Проверять обновления (при старте) и файл локализации</translation>
     </message>
@@ -4159,7 +4169,7 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="565"/>
         <location filename="../src/dialogs/preferences.ui" line="1097"/>
         <location filename="../src/dialogs/preferences.ui" line="1136"/>
-        <location filename="../src/dialogs/preferences.ui" line="1475"/>
+        <location filename="../src/dialogs/preferences.ui" line="1506"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -4177,6 +4187,16 @@ Shall I download a database?</source>
         <location filename="../src/dialogs/preferences.ui" line="1181"/>
         <source>Application</source>
         <translation>Приложение</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="1554"/>
+        <source>Portable Preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="1560"/>
+        <source>Save to application folder</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="305"/>
@@ -4205,22 +4225,22 @@ Shall I download a database?</source>
         <translation>Показывать в меню иконки</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1292"/>
+        <location filename="../src/dialogs/preferences.ui" line="1313"/>
         <source>Login</source>
         <translation>Логин</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1359"/>
+        <location filename="../src/dialogs/preferences.ui" line="1390"/>
         <source>Localization</source>
         <translation>Локализация</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1404"/>
+        <location filename="../src/dialogs/preferences.ui" line="1435"/>
         <source>Load language file from Server:</source>
         <translation>Загрузка языка с сервера:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1414"/>
+        <location filename="../src/dialogs/preferences.ui" line="1445"/>
         <source>Load!</source>
         <translation>Загружено!</translation>
     </message>
@@ -4275,62 +4295,82 @@ Shall I download a database?</source>
         <translation>Используйте $1 для автоинкремента номера</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1322"/>
+        <location filename="../src/dialogs/preferences.ui" line="1287"/>
         <source>Log in as guest</source>
         <translation>Войти как гость</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1299"/>
+        <location filename="../src/dialogs/preferences.ui" line="1320"/>
         <source>Password</source>
         <translation>Пароль</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1315"/>
+        <location filename="../src/dialogs/preferences.ui" line="1280"/>
         <source>Try to use Timeseal</source>
         <translation>Попробовать использовать задержку времени</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1330"/>
+        <location filename="../src/dialogs/preferences.ui" line="1204"/>
+        <source>Dark Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="1336"/>
+        <source>Show command line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="1344"/>
         <source>App</source>
         <translation>Прил</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1336"/>
+        <location filename="../src/dialogs/preferences.ui" line="1350"/>
         <source>Internet</source>
         <translation>Интернет</translation>
     </message>
     <message>
         <location filename="../src/dialogs/preferences.ui" line="1367"/>
+        <source>Nalimov-6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="1372"/>
+        <source>Syzygy-7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/preferences.ui" line="1398"/>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1395"/>
+        <location filename="../src/dialogs/preferences.ui" line="1426"/>
         <source>Changing the language requires restarting the application!</source>
         <translation>Для смены языка требуется перезагрузка программы!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1449"/>
+        <location filename="../src/dialogs/preferences.ui" line="1480"/>
         <source>External Tools</source>
         <translation>Внешние инструменты</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1455"/>
+        <location filename="../src/dialogs/preferences.ui" line="1486"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1465"/>
+        <location filename="../src/dialogs/preferences.ui" line="1496"/>
         <source>Path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1485"/>
+        <location filename="../src/dialogs/preferences.ui" line="1516"/>
         <source>Path and filename of external program</source>
         <translation>Путь и имя файла для внешней программы</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1492"/>
+        <location filename="../src/dialogs/preferences.ui" line="1523"/>
         <source>Command line, also $(InputPath), $(InputFile)</source>
         <translation>Командная строка, также  $(InputPath), $(InputFile)</translation>
     </message>
@@ -4340,7 +4380,7 @@ Shall I download a database?</source>
         <translation>XBoard</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.cpp" line="166"/>
+        <location filename="../src/dialogs/preferences.cpp" line="170"/>
         <source>New Engine</source>
         <translation>Новый движок</translation>
     </message>
@@ -4486,22 +4526,22 @@ Shall I download a database?</source>
         <translation>Произвольное имя движка </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1231"/>
+        <location filename="../src/dialogs/preferences.ui" line="1238"/>
         <source>Additional PGN tags</source>
         <translation>Дополнительные PGN тэги</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1240"/>
+        <location filename="../src/dialogs/preferences.ui" line="1247"/>
         <source>Additional tags, separate with blanks</source>
         <translation>Дополнительные тэги, отдельно от чистых</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1507"/>
+        <location filename="../src/dialogs/preferences.ui" line="1538"/>
         <source>Sound</source>
         <translation>Звук</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/preferences.ui" line="1513"/>
+        <location filename="../src/dialogs/preferences.ui" line="1544"/>
         <source>Indicate opponent&apos;s move</source>
         <translation>Озвучивать ход</translation>
     </message>

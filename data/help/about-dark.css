@@ -1,6 +1,6 @@
         body {
-                background-color: #FFF; /* Background color */
-                color: #222;            /* Foreground color used for text */
+                background-color: #353535; /* Background color */
+                color: white;            /* Foreground color used for text */
                 font-family: Helvetica;
                 font-size: medium;
                 margin: 0;              /* Amount of negative space around the outside of the body */
@@ -8,7 +8,7 @@
         }
 
         a:link, a:visited {
-                color: blue;
+                color: lightblue;
         }
 
         #header h1 {
@@ -16,9 +16,9 @@
                 padding: 0;
         }
         #header h1 a {
-                background-color: #ccc;
-                border-bottom: 1px solid #666;
-                color: #222;
+                background-color: #fff333;
+                border-bottom: 1px solid #fff999;
+                color: #FFFddd;
                 display: block;
                 font-size: large;
                 font-weight: bold;
@@ -32,9 +32,9 @@
                 padding: 0;
         }
         #header ul li a {
-                background-color: #FFFFFF;
-                border: 1px solid #999999;
-                color: #222222;
+                background-color: #000000;
+                border: 1px solid #666666;
+                color: #DDDDDD;
                 display: block;
                 font-size: medium;
                 font-weight: bold;
@@ -44,9 +44,9 @@
         }
 
         #header ul li b {
-                background-color: #CCCCCC;
-                border: 1px solid #999999;
-                color: #222222;
+                background-color: #333333;
+                border: 1px solid #666666;
+                color: #DDDDDD;
                 display: block;
                 font-size: medium;
                 font-weight: bold;
@@ -64,8 +64,8 @@
         }
 
         #header h1 a {
-                text-shadow: 0px 1px 0px #fff;
-                background-image: -webkit-radial-gradient(white, black);
+                text-shadow: 0px 1px 0px #fff000;
+                background-image: -webkit-radial-gradient(black, white);
         }
         #header ul li:first-child a {
                 -webkit-border-top-left-radius: 8px;
@@ -77,7 +77,7 @@
         }
         #header h1 b {
                 text-shadow: 0px 1px 0px #fff;
-                background-image: -webkit-radial-gradient(white, black);
+                background-image: -webkit-radial-gradient(black, white);
         }
         #header ul li:first-child b {
                 -webkit-border-top-left-radius: 8px;

@@ -3,6 +3,7 @@
 ****************************************************************************/
 
 #include "helpbrowser.h"
+#include "settings.h"
 #include <QUrl>
 #include <QFile>
 
@@ -16,13 +17,23 @@ HelpBrowser::HelpBrowser(QWidget *parent) :
 {
     setOpenLinks(true);
     setOpenExternalLinks(true);
-    loadResource(QTextDocument::StyleSheetResource, QUrl(":/help/about.css"));
     connect(this, SIGNAL(sourceChanged(QUrl)), SLOT(slotSourceChanged(QUrl)));
+}
+
+QVariant HelpBrowser::loadResource(int type, const QUrl &name)
+{
+    QString path = name.toString();
+    if (AppSettings->getValue("/MainWindow/DarkTheme").toBool())
+    {
+        path.replace("about.css","about-dark.css");
+    }
+    return QTextBrowser::loadResource(type,QUrl(path));
 }
 
 void HelpBrowser::SetStartPage()
 {
     setSource(QUrl("qrc:/help/about0.html"));
+    reload(); // Workaround bug in Qt
 }
 
 void HelpBrowser::slotSourceChanged(const QUrl& url)
