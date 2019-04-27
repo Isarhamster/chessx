@@ -5,6 +5,10 @@ February 2018: Version 1.5.0
 - New Feature: Read Arena Books (.abk)
 - New Feature: Drag databases into list of games
 
+- New feature: Dark Theme
+- New feature: FICS console with commandline
+- New feature: Syzygy 7 men online tablebase
+- New feature: Change font size via mouse wheel
 - New feature: Search depth for analysis
 - New feature: Filter operation from gamelist
 - New feature: Allow user-provided ECO files
@@ -17,6 +21,9 @@ February 2018: Version 1.5.0
 - New feature: Show analysis of position with one piece moved
 - New feature: Merge internal and external themes, new option to scale board images
 
+- Bugfix: Reduced Memory Footprint
+- Bugfix: Removing a sub-variation kept some invisble moves
+- Bugfix: Internal engine produced silly suggestions in case of a check
 - Bugfix: Parse more than one tag in a line
 - Bugfix: Changing book in analysis should update moves immediately
 - Bugfix: Do not list read-only databases as copy targets
@@ -30,6 +37,8 @@ February 2018: Version 1.5.0
 - Bugfix: Disconnecting a FICS session leaked some memory
 - Bugfix: Progress bar missing occasionally
 
+- Changed: Draw arrows with right mouse
+- Changed: Index file format updated
 - Changed: Support engines with state issues
 - Changed: time representation to ISO format
 - Changed: Do not ask to save deleted games
