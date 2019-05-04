@@ -689,14 +689,6 @@ void AnalysisWidget::updateBookFile(Database *pgdb)
     m_pBookDatabase = pgdb;
 }
 
-struct
-{
-    bool operator()(const MoveData& a, const MoveData& b) const
-    {
-        return a > b;
-    }
-} MoveDataGreater;
-
 void AnalysisWidget::updateBookMoves()
 {
     QMap<Move, MoveData> moves;
@@ -713,5 +705,5 @@ void AnalysisWidget::updateBookMoves()
         moveList.append(it.value());
     }
 
-    std::sort(moveList.begin(), moveList.end(), MoveDataGreater);
+    std::sort(moveList.begin(), moveList.end());
 }

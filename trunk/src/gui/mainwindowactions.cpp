@@ -3588,8 +3588,8 @@ void MainWindow::setEngineMoveTime()
 
 void MainWindow::slotUpdateOpeningTreeWidget()
 {
-    QStringList files; // List of all open files excluding ClipBoard
-    for(int i = 1; i < m_databases.count(); i++)
+    QStringList files;
+    for(int i = 0; i < m_databases.count(); i++)
     {
         QString displayName = m_databases[i]->displayName();
         files << displayName;
