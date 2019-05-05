@@ -121,7 +121,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                 {
                     QList<Move> bestMoves;
 
-                    QJsonValue wdl = doc["wdl"];
+                    QJsonValue wdl = doc.object().value("wdl");
                     if (wdl.isNull())
                     {
                         return;
@@ -129,9 +129,9 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
 
                     int result = wdl.toInt();
 
-                    QJsonValue jdtm = doc["dtm"];
+                    QJsonValue jdtm = doc.object().value("dtm");
                     int dtm = jdtm.toInt();
-                    QJsonValue jdtz = doc["dtz"];
+                    QJsonValue jdtz = doc.object().value("dtz");
                     int bestScore;
                     if (result)
                     {
@@ -142,7 +142,7 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                         bestScore = jdtm.isNull() ? 0 : dtm;
                     }
 
-                    QJsonArray moves = doc["moves"].toArray();
+                    QJsonArray moves = doc.object().value("moves").toArray();
                     for (QJsonArray::const_iterator it = moves.constBegin(); it != moves.constEnd(); ++it)
                     {
                         QJsonValue wdl = (*it)["wdl"];
