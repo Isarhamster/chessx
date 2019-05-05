@@ -145,17 +145,17 @@ void OnlineTablebase::httpDone(QNetworkReply *reply)
                     QJsonArray moves = doc.object().value("moves").toArray();
                     for (QJsonArray::const_iterator it = moves.constBegin(); it != moves.constEnd(); ++it)
                     {
-                        QJsonValue wdl = (*it)["wdl"];
+                        QJsonValue wdl = (*it).toObject().value("wdl");
                         if (-wdl.toInt()!=result) break; // We are done with all moves leading to the best result
 
-                        QJsonValue xjdtm = (*it)["dtm"];
+                        QJsonValue xjdtm = (*it).toObject().value("dtm");
                         int xdtm = xjdtm.toInt();
 
                         if (bestScore)
                         {
                             if (xdtm != -bestScore) break;
                         }
-                        QJsonValue m = (*it)["uci"];
+                        QJsonValue m = (*it).toObject().value("uci");
                         Move move = Move().fromUCI(m.toString().toLatin1());
                         bestMoves.append(move);
                     }
