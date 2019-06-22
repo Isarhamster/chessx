@@ -108,6 +108,8 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
     connect(ui.randomChess960, SIGNAL(clicked()), SLOT(chess960randomPos()));
 
     ui.tabWidget_2->setCurrentIndex(0);
+
+    restoreLayout();
 }
 
 void BoardSetupDialog::restoreLayout()
