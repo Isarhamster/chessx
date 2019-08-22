@@ -797,11 +797,12 @@ void PgnDatabase::parseToken(Game* game, const QStringRef& token)
             game->dbAddNag(BlackHasASlightAdvantage);
         }
         break;
+
     case '*':
         game->dbSetResult(ResultUnknown);
         m_gameOver = true;
         break;
-        // From here, cases may fall through into default!!
+
     case '1':
         if(token == "1-0")
         {
@@ -815,6 +816,8 @@ void PgnDatabase::parseToken(Game* game, const QStringRef& token)
             m_gameOver = true;
             break;
         }
+        parseDefaultToken(game, token.toString());
+        break;
 
     case '0':
         if(token == "0-1")
@@ -823,19 +826,18 @@ void PgnDatabase::parseToken(Game* game, const QStringRef& token)
             m_gameOver = true;
             break;
         }
+        parseDefaultToken(game, token.toString());
+        break;
 
+    case 'Z':
     case '-':
         if(token == "-/+")
         {
             game->dbAddNag(BlackHasAModerateAdvantage);
             break;
         }
-        else if(token == "--")
-        {
-            // parse a null move!
-            parseDefaultToken(game, token.toString());
-            break;
-        }
+        parseDefaultToken(game, token.toString());
+        break;
 
     default:
         parseDefaultToken(game, token.toString());

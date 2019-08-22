@@ -1810,6 +1810,13 @@ Move BitBoard::parseMove(const QString& algebraic) const
             return nullMove();
         }
     }
+    else if (c == 'Z')
+    {
+        if(strncmp(san, "Z0", 2) == 0)
+        {
+            return nullMove();
+        }
+    }
 
     // Piece
     switch(c)
