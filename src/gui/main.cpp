@@ -93,9 +93,12 @@ prevHook = _CrtSetReportHook(customReportHook);
 // _CrtSetBreakAlloc(157); // Use this line to break at the nth memory allocation
 #endif
 
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);     // HiDPI support
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);  // Windows Surface Book
+
     QApplication app(argc, argv);
+
     app.setAttribute(Qt::AA_DontShowIconsInMenus);  // Icons are *no longer shown* in menus
-    app.setAttribute(Qt::AA_UseHighDpiPixmaps); // HiDPI support
 
     QDir dir(QApplication::applicationDirPath());
 

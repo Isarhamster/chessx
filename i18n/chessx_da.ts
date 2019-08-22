@@ -284,7 +284,7 @@ S: %2
 %3 i trækket.</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3069"/>
+        <location filename="../src/database/bitboard.cpp" line="3076"/>
         <source>w%1
 b%2
 %3 to move</source>
@@ -293,12 +293,12 @@ S: %2
 %3 i trækket</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3086"/>
+        <location filename="../src/database/bitboard.cpp" line="3093"/>
         <source>White</source>
         <translation>Hvid</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3086"/>
+        <location filename="../src/database/bitboard.cpp" line="3093"/>
         <source>Black</source>
         <translation>Sort</translation>
     </message>
@@ -492,7 +492,7 @@ S: %2
         <translation>Kopiér tekst</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="339"/>
+        <location filename="../src/gui/boardsetup.cpp" line="341"/>
         <source>Current position is not valid.
 
 %1.</source>
@@ -501,82 +501,82 @@ S: %2
 %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="472"/>
+        <location filename="../src/gui/boardsetup.cpp" line="474"/>
         <source>No white king</source>
         <translation>Ingen hvid konge</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="474"/>
+        <location filename="../src/gui/boardsetup.cpp" line="476"/>
         <source>No black king</source>
         <translation>Ingen sort konge</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="476"/>
+        <location filename="../src/gui/boardsetup.cpp" line="478"/>
         <source>Both kings are in check</source>
         <translation>Begge konger er i skak</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="478"/>
+        <location filename="../src/gui/boardsetup.cpp" line="480"/>
         <source>Side to move has opponent in check already</source>
         <translation>Spilleren i trækkets modstander er allerede i skak</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="480"/>
+        <location filename="../src/gui/boardsetup.cpp" line="482"/>
         <source>Black has too many pawns</source>
         <translation>Sort har for mange bønder</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="482"/>
+        <location filename="../src/gui/boardsetup.cpp" line="484"/>
         <source>White has too many pawns</source>
         <translation>Hvid har for mange bønder</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="484"/>
+        <location filename="../src/gui/boardsetup.cpp" line="486"/>
         <source>There are pawns on the first or eighth rank</source>
         <translation>Der er bønder på første eller ottende række</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="486"/>
+        <location filename="../src/gui/boardsetup.cpp" line="488"/>
         <source>Too many kings</source>
         <translation>For mange konger</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="488"/>
+        <location filename="../src/gui/boardsetup.cpp" line="490"/>
         <source>Too many black pieces</source>
         <translation>For mange sorte brikker</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="490"/>
+        <location filename="../src/gui/boardsetup.cpp" line="492"/>
         <source>Too many white pieces</source>
         <translation>For mange hvide brikker</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="492"/>
+        <location filename="../src/gui/boardsetup.cpp" line="494"/>
         <source>Bad castling rights</source>
         <translation>Umulige rokaderettigheder</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="494"/>
+        <location filename="../src/gui/boardsetup.cpp" line="496"/>
         <source>En passant square is not correct</source>
         <translation>En passant-felt er ikke korrekt</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="496"/>
+        <location filename="../src/gui/boardsetup.cpp" line="498"/>
         <source>Unknown reason</source>
         <translation>Ukendt årsag</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="513"/>
+        <location filename="../src/gui/boardsetup.cpp" line="515"/>
         <source>Illegal position: %1</source>
         <translation>Ulovlig stilling: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="551"/>
+        <location filename="../src/gui/boardsetup.cpp" line="553"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Teksten i udklipsholderen er ikke en gyldig FEN-kode:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="552"/>
+        <location filename="../src/gui/boardsetup.cpp" line="554"/>
         <source>There is no text in clipboard.</source>
         <translation>Der er ingen tekst i udklipsholderen.</translation>
     </message>
@@ -600,37 +600,37 @@ Please check your installation.</source>
 <context>
     <name>BoardView</name>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="698"/>
+        <location filename="../src/gui/boardview.cpp" line="696"/>
         <source>Query for piece in case of promotion</source>
         <translation>Spørg om brik ved bondeforvandling</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="702"/>
+        <location filename="../src/gui/boardview.cpp" line="700"/>
         <source>Replace remainder of game with new move</source>
         <translation>Erstat resten af partiet med nyt træk</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="706"/>
+        <location filename="../src/gui/boardview.cpp" line="704"/>
         <source>Insert new move and keep as much as possible of remaining moves</source>
         <translation>Indsæt nyt træk og bevar så meget som muligt af de resterende træk</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="710"/>
+        <location filename="../src/gui/boardview.cpp" line="708"/>
         <source>Force adding a variation</source>
         <translation>Tving tilføjelse af variant</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="714"/>
+        <location filename="../src/gui/boardview.cpp" line="712"/>
         <source>Draw a square or arrow annotation</source>
         <translation>Tegn en felt-. eller pilekommentar</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="718"/>
+        <location filename="../src/gui/boardview.cpp" line="716"/>
         <source>Query the engine as if piece was located at target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="722"/>
+        <location filename="../src/gui/boardview.cpp" line="720"/>
         <source>Query the engine for the best reply</source>
         <translation type="unfinished"></translation>
     </message>

@@ -274,19 +274,19 @@ b%2
         <translation type="vanished">b%1\nn%2\n%3 à jouer.</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3069"/>
+        <location filename="../src/database/bitboard.cpp" line="3076"/>
         <source>w%1
 b%2
 %3 to move</source>
         <translation>b%1\nn%2\n%3 à jouer</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3086"/>
+        <location filename="../src/database/bitboard.cpp" line="3093"/>
         <source>White</source>
         <translation>Blancs</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3086"/>
+        <location filename="../src/database/bitboard.cpp" line="3093"/>
         <source>Black</source>
         <translation>Noirs</translation>
     </message>
@@ -482,7 +482,7 @@ b%2
         <translation>Copier au format texte</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="339"/>
+        <location filename="../src/gui/boardsetup.cpp" line="341"/>
         <source>Current position is not valid.
 
 %1.</source>
@@ -491,82 +491,82 @@ b%2
 %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="472"/>
+        <location filename="../src/gui/boardsetup.cpp" line="474"/>
         <source>No white king</source>
         <translation>Pas de roi blanc</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="474"/>
+        <location filename="../src/gui/boardsetup.cpp" line="476"/>
         <source>No black king</source>
         <translation>Pas de roi noir</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="476"/>
+        <location filename="../src/gui/boardsetup.cpp" line="478"/>
         <source>Both kings are in check</source>
         <translation>Les deux rois sont en échec</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="478"/>
+        <location filename="../src/gui/boardsetup.cpp" line="480"/>
         <source>Side to move has opponent in check already</source>
         <translation>Le camp qui a le trait est en échec</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="480"/>
+        <location filename="../src/gui/boardsetup.cpp" line="482"/>
         <source>Black has too many pawns</source>
         <translation>Les Noirs ont trop de pions</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="482"/>
+        <location filename="../src/gui/boardsetup.cpp" line="484"/>
         <source>White has too many pawns</source>
         <translation>Les Blancs ont trop de pions</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="484"/>
+        <location filename="../src/gui/boardsetup.cpp" line="486"/>
         <source>There are pawns on the first or eighth rank</source>
         <translation>Des pions se trouvent sur la première ou sur la huitième rangée</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="486"/>
+        <location filename="../src/gui/boardsetup.cpp" line="488"/>
         <source>Too many kings</source>
         <translation>Trop de rois</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="488"/>
+        <location filename="../src/gui/boardsetup.cpp" line="490"/>
         <source>Too many black pieces</source>
         <translation>Trop de pièces noires</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="490"/>
+        <location filename="../src/gui/boardsetup.cpp" line="492"/>
         <source>Too many white pieces</source>
         <translation>Trop de pièces blanches</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="492"/>
+        <location filename="../src/gui/boardsetup.cpp" line="494"/>
         <source>Bad castling rights</source>
         <translation>Roque non autorisé</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="494"/>
+        <location filename="../src/gui/boardsetup.cpp" line="496"/>
         <source>En passant square is not correct</source>
         <translation>La case en passant n&apos;est pas correcte</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="496"/>
+        <location filename="../src/gui/boardsetup.cpp" line="498"/>
         <source>Unknown reason</source>
         <translation>Raison inconnue</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="513"/>
+        <location filename="../src/gui/boardsetup.cpp" line="515"/>
         <source>Illegal position: %1</source>
         <translation>Position illégale : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="551"/>
+        <location filename="../src/gui/boardsetup.cpp" line="553"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Le texte dans le presse-papier n&apos;est pas au format FEN : &lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="552"/>
+        <location filename="../src/gui/boardsetup.cpp" line="554"/>
         <source>There is no text in clipboard.</source>
         <translation>Pas de texte dans le presse-papier.</translation>
     </message>
@@ -591,37 +591,37 @@ Merci de vérifier votre installation.</translation>
 <context>
     <name>BoardView</name>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="698"/>
+        <location filename="../src/gui/boardview.cpp" line="696"/>
         <source>Query for piece in case of promotion</source>
         <translation>Demander quelle pièce en cas de promotion</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="702"/>
+        <location filename="../src/gui/boardview.cpp" line="700"/>
         <source>Replace remainder of game with new move</source>
         <translation>Remplacer le reste de la partie par un nouveau coup</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="706"/>
+        <location filename="../src/gui/boardview.cpp" line="704"/>
         <source>Insert new move and keep as much as possible of remaining moves</source>
         <translation>Insérer un nouveau coup et essayer de garder les coups restants</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="710"/>
+        <location filename="../src/gui/boardview.cpp" line="708"/>
         <source>Force adding a variation</source>
         <translation>Forcer l&apos;ajout d’une variante</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="714"/>
+        <location filename="../src/gui/boardview.cpp" line="712"/>
         <source>Draw a square or arrow annotation</source>
         <translation>Dessiner une flèche ou colorier une case</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="718"/>
+        <location filename="../src/gui/boardview.cpp" line="716"/>
         <source>Query the engine as if piece was located at target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="722"/>
+        <location filename="../src/gui/boardview.cpp" line="720"/>
         <source>Query the engine for the best reply</source>
         <translation type="unfinished"></translation>
     </message>
