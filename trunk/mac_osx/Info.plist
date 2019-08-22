@@ -37,7 +37,9 @@
         <string>1.5.0</string>
 	<key>NSHumanReadableCopyright</key>
         <string>(C) 2005-2019 ChessX developers</string>
-  <key>NSPrincipalClass</key>
+        <key>NSPrincipalClass</key>
         <string>NSApplication</string>
+        <key>NSHighResolutionCapable</key>
+        <string>True</string>
 </dict>
 </plist>

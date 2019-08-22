@@ -282,19 +282,19 @@ b%2
 %3 na tahu</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3069"/>
+        <location filename="../src/database/bitboard.cpp" line="3076"/>
         <source>w%1
 b%2
 %3 to move</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3086"/>
+        <location filename="../src/database/bitboard.cpp" line="3093"/>
         <source>White</source>
         <translation>Bílý</translation>
     </message>
     <message>
-        <location filename="../src/database/bitboard.cpp" line="3086"/>
+        <location filename="../src/database/bitboard.cpp" line="3093"/>
         <source>Black</source>
         <translation>Černý</translation>
     </message>
@@ -347,17 +347,17 @@ b%2
 <context>
     <name>BoardSetupDialog</name>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="472"/>
+        <location filename="../src/gui/boardsetup.cpp" line="474"/>
         <source>No white king</source>
         <translation>Bez bílého krále</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="474"/>
+        <location filename="../src/gui/boardsetup.cpp" line="476"/>
         <source>No black king</source>
         <translation>Bez černého krále</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="476"/>
+        <location filename="../src/gui/boardsetup.cpp" line="478"/>
         <source>Both kings are in check</source>
         <translation>Oba králové v šachu</translation>
     </message>
@@ -408,57 +408,57 @@ b%2
         <translation>Kopírování textu</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="478"/>
+        <location filename="../src/gui/boardsetup.cpp" line="480"/>
         <source>Side to move has opponent in check already</source>
         <translation>Strana na tahu již šachuje soupeře</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="480"/>
+        <location filename="../src/gui/boardsetup.cpp" line="482"/>
         <source>Black has too many pawns</source>
         <translation>Černý má příliš mnoho pěšců</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="482"/>
+        <location filename="../src/gui/boardsetup.cpp" line="484"/>
         <source>White has too many pawns</source>
         <translation>Bílý má příliš mnoho pěšců</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="484"/>
+        <location filename="../src/gui/boardsetup.cpp" line="486"/>
         <source>There are pawns on the first or eighth rank</source>
         <translation>Pěšáci jsou na privním nebo osmém pořadí</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="486"/>
+        <location filename="../src/gui/boardsetup.cpp" line="488"/>
         <source>Too many kings</source>
         <translation>Příliš mnoho králů</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="488"/>
+        <location filename="../src/gui/boardsetup.cpp" line="490"/>
         <source>Too many black pieces</source>
         <translation>Příliš mnoho černých figur</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="490"/>
+        <location filename="../src/gui/boardsetup.cpp" line="492"/>
         <source>Too many white pieces</source>
         <translation>Příliš mnoho bílých figur</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="492"/>
+        <location filename="../src/gui/boardsetup.cpp" line="494"/>
         <source>Bad castling rights</source>
         <translation>Rošádu nelze provést</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="494"/>
+        <location filename="../src/gui/boardsetup.cpp" line="496"/>
         <source>En passant square is not correct</source>
         <translation>En passant pole není správné</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="496"/>
+        <location filename="../src/gui/boardsetup.cpp" line="498"/>
         <source>Unknown reason</source>
         <translation>Došlo k neznámé chybě</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="339"/>
+        <location filename="../src/gui/boardsetup.cpp" line="341"/>
         <source>Current position is not valid.
 
 %1.</source>
@@ -467,17 +467,17 @@ b%2
 %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="513"/>
+        <location filename="../src/gui/boardsetup.cpp" line="515"/>
         <source>Illegal position: %1</source>
         <translation>Nesprávná pozice: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="551"/>
+        <location filename="../src/gui/boardsetup.cpp" line="553"/>
         <source>Text in clipboard does not represent valid FEN:&lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Text ve schránce nereprezentuje správnou FEN pozici: &lt;br&gt;&lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardsetup.cpp" line="552"/>
+        <location filename="../src/gui/boardsetup.cpp" line="554"/>
         <source>There is no text in clipboard.</source>
         <translation>Žádný text ve schránce.</translation>
     </message>
@@ -596,38 +596,38 @@ Please check your installation.</source>
 <context>
     <name>BoardView</name>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="698"/>
+        <location filename="../src/gui/boardview.cpp" line="696"/>
         <source>Query for piece in case of promotion</source>
         <translation>Dotaz pro figuru v případ propagace</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="702"/>
+        <location filename="../src/gui/boardview.cpp" line="700"/>
         <source>Replace remainder of game with new move</source>
         <translation>Zbytek hry nahradit novým tahem</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="706"/>
+        <location filename="../src/gui/boardview.cpp" line="704"/>
         <source>Insert new move and keep as much as possible of remaining moves</source>
         <translatorcomment>Vložit nový tah a udržet co nejvíce zbývajících tahů</translatorcomment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="710"/>
+        <location filename="../src/gui/boardview.cpp" line="708"/>
         <source>Force adding a variation</source>
         <translation>Vynutit novou variantu</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="714"/>
+        <location filename="../src/gui/boardview.cpp" line="712"/>
         <source>Draw a square or arrow annotation</source>
         <translation>Nakreslení pole nebo šipka</translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="718"/>
+        <location filename="../src/gui/boardview.cpp" line="716"/>
         <source>Query the engine as if piece was located at target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/boardview.cpp" line="722"/>
+        <location filename="../src/gui/boardview.cpp" line="720"/>
         <source>Query the engine for the best reply</source>
         <translation type="unfinished"></translation>
     </message>

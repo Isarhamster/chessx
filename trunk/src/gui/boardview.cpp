@@ -666,13 +666,11 @@ BoardView::BoardViewAction BoardView::moveActionFromModifier(Qt::KeyboardModifie
     case ShiftModifier:
         return ActionPen;
     case ControlModifier:
-        return m_atLineEnd ? ActionStandard : ActionReplace;
+        return m_atLineEnd ? ActionQuery : ActionReplace;
     case AltModifier:
         return m_atLineEnd ? ActionStandard : ActionAdd;
     case (unsigned int)ControlModifier | (unsigned int)AltModifier:
         return m_atLineEnd ? ActionStandard : ActionInsert;
-    case MetaModifier:
-        return ActionQuery;
     case (unsigned int)ControlModifier | (unsigned int)ShiftModifier:
         return ActionAskEngine;
     case (unsigned int)ShiftModifier | (unsigned int)AltModifier:
@@ -773,8 +771,8 @@ void BoardView::handleMouseMoveEvent(QMouseEvent *event)
     setFocus();
 
     Qt::KeyboardModifiers mdf = event->modifiers();
-
-    if(!(event->buttons() & Qt::LeftButton))
+    auto b = event->buttons();
+    if(!(b & Qt::LeftButton))
     {
         if(!(mdf & Qt::ShiftModifier))
         {
