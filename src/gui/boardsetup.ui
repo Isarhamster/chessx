@@ -28,6 +28,9 @@
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="4,1">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
      <item>
       <widget class="BoardView" name="boardView" native="true">
        <property name="enabled">
@@ -53,7 +56,10 @@
      <item>
       <layout class="QGridLayout" name="buttonLayout">
        <property name="sizeConstraint">
-        <enum>QLayout::SetDefaultConstraint</enum>
+        <enum>QLayout::SetFixedSize</enum>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
        </property>
       </layout>
      </item>
@@ -499,7 +505,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout">
+    <layout class="QHBoxLayout" name="bottomLayout">
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="standardButtons">
