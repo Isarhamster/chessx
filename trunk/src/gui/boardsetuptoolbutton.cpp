@@ -66,8 +66,8 @@ void BoardSetupToolButton::mouseReleaseEvent(QMouseEvent * e)
 
 void BoardSetupToolButton::resizeEvent(QResizeEvent * e)
 {
-    int w = e->size().width()-4;
-    int h = e->size().height()-4;
+    qreal w = e->size().width()-4;
+    qreal h = e->size().height()-4;
 
     qreal r = m_piece!=Empty ? m_pixmap.devicePixelRatio() : 1.0;
     QPixmap p1 = m_pixmap.scaled(r*w, r*h, Qt::KeepAspectRatio, Qt::SmoothTransformation);

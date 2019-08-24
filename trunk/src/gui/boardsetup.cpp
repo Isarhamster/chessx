@@ -24,6 +24,8 @@
 #include <QtGui>
 #include <QPixmap>
 #include <QPushButton>
+#include <QSpacerItem>
+#include <QSizePolicy>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -67,6 +69,9 @@ BoardSetupDialog::BoardSetupDialog(QWidget* parent, Qt::WindowFlags f) : QDialog
         connect(button, SIGNAL(signalClicked(Piece)), this, SLOT(labelClicked(Piece)));
         connect(this, SIGNAL(signalClearBackground(Piece)), button, SLOT(slotClearBackground(Piece)));
     }
+
+    QSpacerItem* si = new QSpacerItem(0,20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    ui.buttonLayout->addItem(si,BlackPawn+1,0);
 
     ui.buttonLayout->setColumnStretch(0,1);
     ui.buttonLayout->setColumnStretch(1,1);
