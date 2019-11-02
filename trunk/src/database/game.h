@@ -85,11 +85,6 @@ public :
         PreviousMove
     };
 
-    static const char* s_egt;
-    static const char* s_clk;
-    static const char* s_emt;
-    static const char* s_csl;
-    static const char* s_cal;
     static const QStringList s_specList;
 
     Game();
@@ -120,7 +115,7 @@ public :
     Move move(MoveId moveId = CURRENT_MOVE) const;
     /** @return current move id. */
     MoveId currentMove() const;
-    /** @return comment at move at node @p moveId including visual hits for diagrams. */
+    /** @return comment at move at node @p moveId including visual hints for diagrams. */
     QString annotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
     /** @return comment at move at node @p moveId. */
     QString textAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
@@ -134,7 +129,6 @@ public :
     QString specAnnotation(const QRegExp &r, MoveId moveId = CURRENT_MOVE) const;
     /** @return time annotation (either egt or clock) at move at node @p moveId. */
     QString timeAnnotation(MoveId moveId = CURRENT_MOVE, Position position = AfterMove) const;
-
     /** @return @p true if a move can have annotation before the move. */
     bool canHaveStartAnnotation(MoveId moveId = CURRENT_MOVE) const;
     /** @return nags for move at node @p moveId */
@@ -314,9 +308,15 @@ public :
     void setGameComment(const QString& gameComment);
     /** Remove all variations */
     void removeVariations();
+    void removeVariationsDb();
     /** Remove all Comments */
     void removeComments();
-
+    /** Remove all time Comments */
+    void removeTimeComments();
+    /** Remove all Comments w/o noticiations */
+    void removeCommentsDb();
+    /** Remove all time Comments w/o noticiations */
+    void removeTimeCommentsDb();
     /* Manipulating and querying tags */
     /** Removes all tags */
     void clearTags();
@@ -466,6 +466,7 @@ private:
     MoveId nodeValid(MoveId moveId = CURRENT_MOVE) const;
     /** Change parent of each move of a variation. */
     void reparentVariation(MoveId variation, MoveId parent);
+    void removeTimeCommentsFromMap(AnnotationMap& map);
 
     friend class SaveRestoreMove;
     friend class SaveRestoreMoveCompact;

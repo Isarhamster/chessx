@@ -1266,11 +1266,11 @@ bool MainWindow::gameEditComment(Output::CommentType type)
 
     if((type == Output::Precomment) || (moves <= 0))
     {
-        annotation = game().textAnnotation(CURRENT_MOVE, Game::BeforeMove);
+        annotation = game().annotation(CURRENT_MOVE, Game::BeforeMove);
     }
     else
     {
-        annotation = game().textAnnotation();
+        annotation = game().annotation();
     }
     CommentDialog dlg(this);
     dlg.setText(annotation);
@@ -1698,6 +1698,7 @@ void MainWindow::setupActions()
 
     QMenu* refactorMenu = gameMenu->addMenu(tr("Refactor"));
     refactorMenu->addAction(createAction(refactorMenu, tr("Uncomment"), SLOT(slotGameUncomment())));
+    refactorMenu->addAction(createAction(refactorMenu, tr("Remove Time"), SLOT(slotGameRemoveTime())));
     refactorMenu->addAction(createAction(refactorMenu, tr("Remove Variations"), SLOT(slotGameRemoveVariations())));
 
     /* Search menu */
@@ -1738,6 +1739,10 @@ void MainWindow::setupActions()
     m_menuDatabases = menuDatabase->addMenu(tr("&Switch to"));
     connect(m_menuDatabases, SIGNAL( aboutToShow()), this, SLOT(updateMenuDatabases()));
     menuDatabase->addAction(createAction(tr("&Copy games..."), SLOT(slotDatabaseCopy()), Qt::Key_F5));
+    QMenu* refactorMenu2 = menuDatabase->addMenu(tr("Refactor"));
+    refactorMenu2->addAction(createAction(refactorMenu2, tr("Uncomment"), SLOT(slotDatabaseUncomment())));
+    refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Time"), SLOT(slotDatabaseRemoveTime())));
+    refactorMenu2->addAction(createAction(refactorMenu2, tr("Remove Variations"), SLOT(slotDatabaseRemoveVariations())));
     menuDatabase->addSeparator();
     menuDatabase->addAction(createAction(tr("Clear clipboard"), SLOT(slotDatabaseClearClipboard())));
 

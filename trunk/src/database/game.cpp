@@ -10,9 +10,10 @@
 
 #include <QtDebug>
 #include <QFile>
+#include "annotation.h"
+#include "ecopositions.h"
 #include "game.h"
 #include "tags.h"
-#include "ecopositions.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
 #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -32,11 +33,6 @@ static const char strSquareNames[64][3] =
     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"
 };
 
-const char* Game::s_emt = "\\[%emt\\s*(\\d:\\d\\d?:\\d\\d)\\]";
-const char* Game::s_clk = "\\[%clk\\s*(\\d:\\d\\d?:\\d\\d)\\]";
-const char* Game::s_egt = "\\[%egt\\s*(\\d:\\d\\d?:\\d\\d)\\]";
-const char* Game::s_csl = "\\[%csl\\s*([^\\]]*)\\]";
-const char* Game::s_cal = "\\[%cal\\s*([^\\]]*)\\]";
 const QStringList Game::s_specList = QStringList() << s_emt << s_clk << s_egt << s_csl << s_cal;
 
 Game::Game() : QObject()
@@ -886,9 +882,8 @@ void Game::setGameComment(const QString& gameComment)
     setAnnotation(gameComment, 0);
 }
 
-void Game::removeVariations()
+void Game::removeVariationsDb()
 {
-    Game state = *this;
     for(int i = 0; i < m_moveNodes.size(); ++i)
     {
         while (!m_moveNodes[i].variations.empty())
@@ -897,12 +892,17 @@ void Game::removeVariations()
         }
     }
     compact();
+}
+
+void Game::removeVariations()
+{
+    Game state = *this;
+    removeVariationsDb();
     emit signalGameModified(true, state, tr("Remove variations"));
 }
 
-void Game::removeComments()
+void Game::removeCommentsDb()
 {
-    Game state = *this;
     m_variationStartAnnotations.clear();
     m_annotations.clear();
     for(int i = 0; i < m_moveNodes.size(); ++i)
@@ -910,7 +910,37 @@ void Game::removeComments()
         m_moveNodes[i].nags.clear();
     }
     compact();
+}
+
+void Game::removeTimeCommentsFromMap(AnnotationMap& map)
+{
+    QRegExp tan("\\[%(egt|emt|clk)\\s*(\\d?\\d:\\d?\\d:\\d\\d)\\]");
+    AnnotationMap::iterator i;
+    for (i = map.begin(); i != map.end(); ++i)
+    {
+        QString text = i.value();
+        text = text.remove(tan);
+        map[i.key()] = text;
+    }
+}
+
+void Game::removeTimeCommentsDb()
+{
+    removeTimeCommentsFromMap(m_annotations);
+}
+
+void Game::removeComments()
+{
+    Game state = *this;
+    removeCommentsDb();
     emit signalGameModified(true, state, tr("Remove comments"));
+}
+
+void Game::removeTimeComments()
+{
+    Game state = *this;
+    removeTimeCommentsDb();
+    emit signalGameModified(true, state, tr("Remove time comments"));
 }
 
 bool Game::isMainline(MoveId moveId) const
@@ -1260,7 +1290,7 @@ QString Game::specAnnotation(const QRegExp& r, MoveId moveId) const
     int pos = r.indexIn(annotation);
     if(pos >= 0)
     {
-        return r.cap(1);
+        return r.cap(2);
     }
 
     return "";
@@ -1278,16 +1308,8 @@ QString Game::timeAnnotation(MoveId moveId, Position position) const
         else return "";
     }
 
-    QString s = specAnnotation(QRegExp(s_clk), moveId);
+    QString s = specAnnotation(QRegExp(s_tan), moveId);
     s = s.trimmed();
-    if(s.isEmpty())
-    {
-        s = specAnnotation(QRegExp(s_egt), moveId);
-    }
-    if (s.isEmpty())
-    {
-        s = specAnnotation(QRegExp(s_emt), moveId);
-    }
     return s;
 }
 
@@ -1326,10 +1348,8 @@ QString Game::textAnnotation(MoveId moveId, Position position) const
     QString s = annotation(moveId, position);
     if (!s.isEmpty())
     {
-        foreach (QString r, s_specList)
-        {
-            s.remove(QRegExp(r));
-        }
+        s.remove(QRegExp(s_tan));
+        s.remove(QRegExp(s_can));
     }
     return s;
 }
