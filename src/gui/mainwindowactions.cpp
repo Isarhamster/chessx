@@ -1507,7 +1507,7 @@ void MainWindow::saveGame(DatabaseInfo* dbInfo)
 {
     if(!dbInfo->database()->isReadOnly())
     {
-		// TODO: Das Filtermodel muss vorher verständigt werden
+        // TODO: Das Filtermodel muss vorher verstaendigt werden
         if (dbInfo->saveGame())
         {
             if (dbInfo == databaseInfo())
@@ -1877,9 +1877,80 @@ void MainWindow::slotGameUncomment()
     game().removeComments();
 }
 
+void MainWindow::slotGameRemoveTime()
+{
+    game().removeTimeComments();
+}
+
 void MainWindow::slotGameRemoveVariations()
 {
     game().removeVariations();
+}
+
+void MainWindow::slotDatabaseUncomment()
+{
+    if (MessageDialog::yesNo(tr("Delete all comments from all games?")))
+    {
+        game().removeCommentsDb();
+        slotGameChanged(true);
+        SimpleSaveGame();
+        Game g;
+        for (int i=0; i<database()->index()->count();++i)
+        {
+            if(i != databaseInfo()->currentIndex())
+            {
+                if(database()->loadGame(i, g))
+                {
+                    g.removeCommentsDb();
+                    database()->replace(i, g);
+                }
+            }
+        }
+    }
+}
+
+void MainWindow::slotDatabaseRemoveTime()
+{
+    if (MessageDialog::yesNo(tr("Delete all time annotations from all games?")))
+    {
+        game().removeTimeCommentsDb();
+        slotGameChanged(true);
+        SimpleSaveGame();
+        Game g;
+        for (int i=0; i<database()->index()->count();++i)
+        {
+            if(i != databaseInfo()->currentIndex())
+            {
+                if(database()->loadGame(i, g))
+                {
+                    g.removeTimeCommentsDb();
+                    database()->replace(i, g);
+                }
+            }
+        }
+    }
+}
+
+void MainWindow::slotDatabaseRemoveVariations()
+{
+    if (MessageDialog::yesNo(tr("Delete all comments from all games?")))
+    {
+        game().removeVariationsDb();
+        slotGameChanged(true);
+        SimpleSaveGame();
+        Game g;
+        for (int i=0; i<database()->index()->count();++i)
+        {
+            if(i != databaseInfo()->currentIndex())
+            {
+                if(database()->loadGame(i, g))
+                {
+                    g.removeVariationsDb();
+                    database()->replace(i, g);
+                }
+            }
+        }
+    }
 }
 
 void MainWindow::slotGameSetComment(QString annotation)

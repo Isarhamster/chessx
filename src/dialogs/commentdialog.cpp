@@ -3,6 +3,7 @@
 *   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
+#include "annotation.h"
 #include "commentdialog.h"
 
 #if defined(_MSC_VER) && defined(_DEBUG)
@@ -25,13 +26,13 @@ QString CommentDialog::text() const
     QString s;
     if(ui.timeEdit->time() != QTime(0, 0, 0))
     {
-        QString s2 = "[%emt %1]";
-        if (ui.egtTime->isChecked()) s2 = "[%egt %1]";
-        else if (ui.clkTime->isChecked()) s2 = "[%clk %1]";
+        QString format = "[%emt %1]";
+        if (ui.egtTime->isChecked()) format = "[%egt %1]";
+        else if (ui.clkTime->isChecked()) format = "[%clk %1]";
         QString t = ui.timeEdit->time().toString("H:mm:ss");
         if(!t.isEmpty())
         {
-            s = s2.arg(t);
+            s = format.arg(t);
             if (ui.egtTime->isChecked()) lastTimeMode = Egt;
             else if (ui.clkTime->isChecked()) lastTimeMode = Clk;
             else if (ui.emtTime->isChecked()) lastTimeMode = Emt;
@@ -48,52 +49,40 @@ QString CommentDialog::text() const
 
 void CommentDialog::setText(QString text)
 {
-    QRegExp egt("\\[%egt\\s*(\\d:\\d\\d:\\d\\d)\\]");
-    QRegExp clk("\\[%clk\\s*(\\d:\\d\\d:\\d\\d)\\]");
-    QRegExp emt("\\[%emt\\s*(\\d:\\d\\d:\\d\\d)\\]");
-    int pos = egt.indexIn(text);
+    text.remove(QRegExp(s_can));
+    QRegExp tan(s_tan);
+    int pos = tan.indexIn(text);
     if(pos >= 0)
     {
-        ui.egtTime->setChecked(true);
-        QString segt = egt.cap(1);
-        text = text.remove(egt);
-        ui.timeEdit->setTime(QTime::fromString(segt.trimmed(), "H:mm:ss"));
-        lastTimeMode = Egt;
+        QString w = tan.cap(1);
+        QString t = tan.cap(2);
+        text = text.remove(tan);
+        ui.timeEdit->setTime(QTime::fromString(t.trimmed(), "H:mm:ss"));
+        if (w=="egt")
+        {
+            ui.egtTime->setChecked(true);
+            lastTimeMode = Egt;
+        }
+        else if (w=="clk")
+        {
+            ui.clkTime->setChecked(true);
+            lastTimeMode = Clk;
+        }
+        else if (w=="emt")
+        {
+            ui.emtTime->setChecked(true);
+            lastTimeMode = Emt;
+        }
     }
     else
     {
-        pos = clk.indexIn(text);
-        if(pos >= 0)
+        switch(lastTimeMode)
         {
-            ui.clkTime->setChecked(true);
-            QString sclk = clk.cap(1);
-            text = text.remove(clk);
-            ui.timeEdit->setTime(QTime::fromString(sclk.trimmed(), "H:mm:ss"));
-            lastTimeMode = Clk;
-        }
-        else
-        {
-            pos = emt.indexIn(text);
-            if(pos >= 0)
-            {
-                ui.emtTime->setChecked(true);
-                QString semt = emt.cap(1);
-                text = text.remove(emt);
-                ui.timeEdit->setTime(QTime::fromString(semt.trimmed(), "H:mm:ss"));
-                lastTimeMode = Emt;
-            }
-            else
-            {
-                switch(lastTimeMode)
-                {
-                case Egt: ui.egtTime->setChecked(true); break;
-                case Clk: ui.clkTime->setChecked(true); break;
-                case Emt: ui.emtTime->setChecked(true); break;
-                }
-            }
+        case Egt: ui.egtTime->setChecked(true); break;
+        case Clk: ui.clkTime->setChecked(true); break;
+        case Emt: ui.emtTime->setChecked(true); break;
         }
     }
-
     ui.textEdit->setPlainText(text);
 }
 

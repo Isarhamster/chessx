@@ -246,8 +246,16 @@ public slots:
     bool slotGameAddVariation(const QString& san);
     /** Remove all comments. */
     void slotGameUncomment();
+    /** Remove all time annotations. */
+    void slotGameRemoveTime();
+    /** Remove all comments from all games. */
+    void slotDatabaseUncomment();
+    /** Remove all time annotations from all games. */
+    void slotDatabaseRemoveTime();
     /** Remove all variations */
     void slotGameRemoveVariations();
+    /** Remove all variations from all games. */
+    void slotDatabaseRemoveVariations();
     /** Set a annotation into the current game (w/o Undo) */
     void slotGameSetComment(QString);
     /** Start / Stop AutoPlay feature */
