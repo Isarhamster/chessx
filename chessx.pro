@@ -73,6 +73,7 @@ FORMS += \
 
 
 HEADERS += src/database/board.h \
+    src/database/annotation.h \
 	src/database/move.h \
 	src/database/game.h \
 	src/database/partialdate.h \
@@ -244,6 +245,7 @@ HEADERS += src/database/board.h \
     src/gui/listwidgetex.h
 
 SOURCES += src/database/board.cpp \
+    src/database/annotation.cpp \
 	src/database/game.cpp \
 	src/database/databaseconversion.cpp \
 	src/database/partialdate.cpp \
