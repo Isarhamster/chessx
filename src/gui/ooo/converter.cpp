@@ -57,9 +57,9 @@ QTextCharFormat Style::textFormat() const {
 }
 
 Converter::Converter() :
-    m_TextDocument(0),
-    m_Cursor(0),
-    m_StyleInformation(0)
+    m_TextDocument(nullptr),
+    m_Cursor(nullptr),
+    m_StyleInformation(nullptr)
 {
 }
 
@@ -73,7 +73,7 @@ QTextDocument* Converter::convert(const QString &fileName)
     Document oooDocument(fileName);
     if (!oooDocument.open())
     {
-        return 0;
+        return nullptr;
     }
     m_TextDocument = new QTextDocument;
     m_Cursor = new QTextCursor(m_TextDocument);
@@ -111,7 +111,7 @@ QTextDocument* Converter::convert(const QString &fileName)
     {
         setError("Unable to read style information", -1);
         delete m_Cursor;
-        return 0;
+        return nullptr;
     }
 
     /**
@@ -171,7 +171,7 @@ QTextDocument* Converter::convert(const QString &fileName)
             {
                 setError("Unable to convert document content", -1);
                 delete m_Cursor;
-                return 0;
+                return nullptr;
             }
         }
 
@@ -423,7 +423,7 @@ bool Converter::convertList(QTextCursor *cursor, const QDomElement &element)
 
     QTextListFormat format;
 
-    QTextList *list = 0;
+    QTextList *list = nullptr;
     if (cursor->currentList())
     {
         format = cursor->currentList()->format();

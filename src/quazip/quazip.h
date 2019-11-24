@@ -175,7 +175,7 @@ public:
      * In short: just forget about the \a ioApi argument and you'll be
      * fine.
      **/
-    bool open(Mode mode, zlib_filefunc_def *ioApi = NULL);
+    bool open(Mode mode, zlib_filefunc_def *ioApi = nullptr);
     /// Closes ZIP file.
     /** Call getZipError() to determine if the close was successful. The
      * underlying QIODevice is also closed, regardless of whether it was

@@ -114,8 +114,8 @@ static int inflate(Bytef *dest, ulong *destLen, const Bytef *source, ulong sourc
     if ((uLong) stream.avail_out != *destLen)
         return Z_BUF_ERROR;
 
-    stream.zalloc = (alloc_func) 0;
-    stream.zfree = (free_func) 0;
+    stream.zalloc = (alloc_func) nullptr;
+    stream.zfree = (free_func) nullptr;
 
     err = inflateInit2(&stream, -MAX_WBITS);
     if (err != Z_OK)

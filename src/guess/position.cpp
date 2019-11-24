@@ -334,7 +334,7 @@ Position::CalcPinsDir(directionT dir, pieceC attacker)
 inline void
 Position::AddLegalMove(MoveList * mlist, squareT from, squareT to, pieceC promotion, bool castle) const
 {
-    ASSERT(mlist != NULL);
+    ASSERT(mlist != nullptr);
     simpleMoveT sm;
 
     // We do NOT set the pre-move castling/ep flags, or the captured
@@ -376,7 +376,7 @@ Position::GenSliderMoves(MoveList * mlist, colorT color, squareT fromSq,
         {
             if(! capturesOnly)
             {
-                if(sqset == NULL  ||  sqset->Contains(dest))
+                if(sqset == nullptr  ||  sqset->Contains(dest))
                 {
                     AddLegalMove(mlist, fromSq, dest);
                 }
@@ -386,7 +386,7 @@ Position::GenSliderMoves(MoveList * mlist, colorT color, squareT fromSq,
         // We have reached a piece. Add the capture if it is an enemy.
         if(piece_Color_NotEmpty(p) != color)
         {
-            if(sqset == NULL  ||  sqset->Contains(dest))
+            if(sqset == nullptr  ||  sqset->Contains(dest))
             {
                 AddLegalMove(mlist, fromSq, dest);
             }
@@ -419,7 +419,7 @@ Position::GenKnightMoves(MoveList * mlist, colorT c, squareT fromSq,
         }
         if(piece_Color(p) != c)
         {
-            if(sqset == NULL  ||  sqset->Contains(dest))
+            if(sqset == nullptr  ||  sqset->Contains(dest))
             {
                 AddLegalMove(mlist, fromSq, dest);
             }
@@ -771,7 +771,7 @@ Position::GenPawnMoves(MoveList * mlist, squareT from,
             && (dir == NULL_DIR  ||  dir == forward  ||  oppdir == forward))
     {
         dest = square_Move(from, forward);
-        if(Board[dest] == EMPTY && (sqset == NULL || sqset->Contains(dest)))
+        if(Board[dest] == EMPTY && (sqset == nullptr || sqset->Contains(dest)))
         {
             if(square_Rank(dest) == promoRank)
             {
@@ -785,7 +785,7 @@ Position::GenPawnMoves(MoveList * mlist, squareT from,
         if(square_Rank(from) == secondRank  &&  Board[dest] == EMPTY)
         {
             dest = square_Move(dest, forward);
-            if(Board[dest] == EMPTY  && (sqset == NULL || sqset->Contains(dest)))
+            if(Board[dest] == EMPTY  && (sqset == nullptr || sqset->Contains(dest)))
             {
                 AddLegalMove(mlist, from, dest);
             }
@@ -803,7 +803,7 @@ Position::GenPawnMoves(MoveList * mlist, squareT from,
     if(dir == NULL_DIR  ||  dir == capdir  ||  oppdir == capdir)
     {
         dest = square_Move(from, capdir);
-        if(POSSIBLE_CAPTURE(dest)  && (sqset == NULL || sqset->Contains(dest)))
+        if(POSSIBLE_CAPTURE(dest)  && (sqset == nullptr || sqset->Contains(dest)))
         {
             if(square_Rank(dest) == promoRank)
             {
@@ -819,7 +819,7 @@ Position::GenPawnMoves(MoveList * mlist, squareT from,
     if(dir == NULL_DIR  ||  dir == capdir  ||  oppdir == capdir)
     {
         dest = square_Move(from, capdir);
-        if(POSSIBLE_CAPTURE(dest)  && (sqset == NULL || sqset->Contains(dest)))
+        if(POSSIBLE_CAPTURE(dest)  && (sqset == nullptr || sqset->Contains(dest)))
         {
             if(square_Rank(dest) == promoRank)
             {
@@ -941,7 +941,7 @@ Position::Init(void)
     // Setting up a valid board is left to StdStart() or Clear().
     Board [COLOR_SQUARE] = EMPTY;
     Board [NULL_SQUARE] = END_OF_BOARD;
-    LegalMoves = NULL;
+    LegalMoves = nullptr;
 
     // Make sure all tables used for move generation, hashing,
     // square tests, etc have been computed:
@@ -1251,7 +1251,7 @@ Position::GenerateMoves(MoveList * mlist, pieceC pieceType,
     }
 
     // Use the objects own move list if none was provided:
-    if(mlist == NULL)
+    if(mlist == nullptr)
     {
         ClearLegalMoves();
         mlist = LegalMoves;
@@ -1300,7 +1300,7 @@ Position::GenerateMoves(MoveList * mlist, pieceC pieceType,
         {
             if(ptype == PAWN)
             {
-                GenPawnMoves(mlist, sq, pinned, NULL, genType);
+                GenPawnMoves(mlist, sq, pinned, nullptr, genType);
             }
             else if(ptype == KNIGHT)
             {
@@ -1314,9 +1314,9 @@ Position::GenerateMoves(MoveList * mlist, pieceC pieceType,
                         || (ptype == ROOK && !direction_IsDiagonal(pinned))
                         || (ptype == BISHOP && direction_IsDiagonal(pinned)))
                 {
-                    GenSliderMoves(mlist, ToMove, sq, pinned, NULL, capturesOnly);
+                    GenSliderMoves(mlist, ToMove, sq, pinned, nullptr, capturesOnly);
                     GenSliderMoves(mlist, ToMove, sq, dirOpposite[pinned],
-                                   NULL, capturesOnly);
+                                   nullptr, capturesOnly);
                 }
             }
         }
@@ -1325,12 +1325,12 @@ Position::GenerateMoves(MoveList * mlist, pieceC pieceType,
             // This piece is free to move anywhere
             if(ptype == PAWN)
             {
-                GenPawnMoves(mlist, sq, NULL_DIR, NULL, genType);
+                GenPawnMoves(mlist, sq, NULL_DIR, nullptr, genType);
             }
             else
             {
                 // Knight/Queen/Bishop/Rook:
-                GenPieceMoves(mlist, sq, NULL, capturesOnly);
+                GenPieceMoves(mlist, sq, nullptr, capturesOnly);
             }
         }
     }
@@ -1518,7 +1518,7 @@ Position::IsLegalMove(simpleMoveT * sm)
     squareT kingSq = (cmover == KING) ? to : GetKingSquare(ToMove);
     colorT enemy = color_Flip(ToMove);
     DoSimpleMove(sm);
-    unsigned int nchecks = CalcAttacks(enemy, kingSq, NULL);
+    unsigned int nchecks = CalcAttacks(enemy, kingSq, nullptr);
     UndoSimpleMove(sm);
     return (nchecks == 0);
 }
@@ -1539,7 +1539,7 @@ Position::MatchLegalMove(MoveList * mlist, pieceC mask, squareT target)
     // This function isn't for Pawn or King moves!
     ASSERT(mask != PAWN  &&  mask != KING);
 
-    if(mlist == NULL)
+    if(mlist == nullptr)
     {
         ClearLegalMoves();
         mlist = LegalMoves;
@@ -2076,7 +2076,7 @@ Position::CalcAttacks(colorT side, squareT target, SquareList * fromSquares, boo
     // we find a check, we set up a local array to use instead if fromSquares
     // is NULL.
     SquareList fromSqs;
-    if(fromSquares == NULL)
+    if(fromSquares == nullptr)
     {
         fromSquares = &fromSqs;
     }
@@ -2349,7 +2349,7 @@ Position::IsKingInCheckDir(directionT dir) const
 bool
 Position::IsKingInCheck(simpleMoveT * sm) const
 {
-    if(sm == NULL)
+    if(sm == nullptr)
     {
         return IsKingInCheck();
     }
@@ -2623,7 +2623,7 @@ Position::IsLegal(void) const
     {
         return false;
     }
-    if(CalcAttacks(ToMove, enemyKing, NULL) > 0)
+    if(CalcAttacks(ToMove, enemyKing, nullptr) > 0)
     {
         return false;
     }
@@ -2673,7 +2673,7 @@ Position::IsPromoMove(squareT from, squareT to)
 void
 Position::DoSimpleMove(simpleMoveT * sm)
 {
-    ASSERT(sm != NULL);
+    ASSERT(sm != nullptr);
     squareT from = sm->from;
     squareT to = sm->to;
     pieceT p = Board[from];
@@ -2886,7 +2886,7 @@ Position::DoSimpleMove(simpleMoveT * sm)
 void
 Position::UndoSimpleMove(simpleMoveT * m)
 {
-    ASSERT(m != NULL);
+    ASSERT(m != nullptr);
     squareT from = m->from;
     squareT to = m->to;
     pieceT p = Board[to];
@@ -3104,7 +3104,7 @@ Position::MaterialValue(colorT c)
 void
 Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
 {
-    ASSERT(m != NULL  &&  s != NULL);
+    ASSERT(m != nullptr  &&  s != nullptr);
 
     // Make sure m->pieceNum is updated:
     m->pieceNum = ListPos[m->from];
@@ -3259,7 +3259,7 @@ Position::MakeSANString(simpleMoveT * m, char * s, sanFlagT flag)
 void
 Position::DumpBoard(FILE * fp)
 {
-    ASSERT(fp != NULL);
+    ASSERT(fp != nullptr);
     squareT s;
     for(int i = 7; i >= 0; i--)
     {
@@ -3281,7 +3281,7 @@ Position::DumpBoard(FILE * fp)
 void
 Position::DumpLists(FILE * fp)
 {
-    ASSERT(fp != NULL);
+    ASSERT(fp != nullptr);
     unsigned int i;
     for(colorT c = WHITE; c <= BLACK; ++c)
     {
@@ -3326,7 +3326,7 @@ Position::ReadFromFEN(const char * str)
     // Note the first Call to set up the static arrays only once:
     static int firstCall = 1;
 
-    ASSERT(str != NULL);
+    ASSERT(str != nullptr);
     const char * s = str;
     int count = 0;
 
