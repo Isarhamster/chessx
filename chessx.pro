@@ -12,8 +12,15 @@ greaterThan(QT_MAJOR_VERSION, 4) {
    QT -= multimediawidgets
    # Comment out sound for Ubuntu with Qt5 if multimedia is not available (default in Ubuntu)
    CONFIG += sound
+   # Comment out speech for Linux if libspeechdis not available
+   CONFIG += speech
    # Comment out c++11 for all non-C++11 compilers, Qt5 is required in addition
    CONFIG += c++11
+}
+
+speech {
+   DEFINES += USE_SPEECH
+   QT += texttospeech
 }
 
 sound {
