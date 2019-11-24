@@ -17,7 +17,7 @@ class BoardSearchDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit BoardSearchDialog(QWidget *parent = 0);
+    explicit BoardSearchDialog(QWidget *parent = nullptr);
     ~BoardSearchDialog();
 
     int mode() const;

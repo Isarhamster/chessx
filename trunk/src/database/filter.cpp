@@ -28,7 +28,6 @@ Filter::Filter(Database* database) : QThread()
     m_searchTime = 0;
     currentSearchOperator = NullOperator;
     m_break = false;
-    m_lock = 0;
 }
 
 Filter::~Filter()
@@ -40,7 +39,7 @@ Filter::~Filter()
 
 Filter::Filter(Filter const& rhs) : QThread()
 {
-	m_vector = 0;
+    m_vector = nullptr;
     *this = rhs;
 }
 
@@ -52,10 +51,10 @@ Filter& Filter::operator= (Filter const& rhs)
     m_vector = new QVector<Filter::value_type>(*rhs.m_vector);
     m_gamesSearched = 0;
     m_searchTime = 0;
-    currentSearch = 0;
+    currentSearch = nullptr;
     currentSearchOperator = NullOperator;
     m_break = false;
-    m_lock = 0;
+    m_lock = nullptr;
     return *this;
 }
 

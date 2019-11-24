@@ -15,7 +15,7 @@ class DatabaseList : public TableView
 {
     Q_OBJECT
 public:
-    explicit DatabaseList(QWidget *parent = 0);
+    explicit DatabaseList(QWidget *parent = nullptr);
     ~DatabaseList();
     void save() const;
 

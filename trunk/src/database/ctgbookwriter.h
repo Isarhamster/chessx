@@ -13,7 +13,7 @@ class CtgBookWriter : public QThread
 {
     Q_OBJECT
 public:
-    explicit CtgBookWriter(QObject *parent = 0);
+    explicit CtgBookWriter(QObject *parent = nullptr);
     ~CtgBookWriter();
     void writeBookForDatabase(Database* src, const QString &out, int maxPly, int minGame, bool uniform);
 

@@ -22,6 +22,8 @@ EngineOptionDialog::EngineOptionDialog(QWidget *parent,
     ui(new Ui::EngineOptionDialog)
 {
     ui->setupUi(this);
+    setObjectName("EngineOptionDialog");
+
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), SLOT(buttonClicked(QAbstractButton*)));
 
     QString t = windowTitle();

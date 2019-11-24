@@ -79,7 +79,7 @@ public:
     }
 
     /** Return a suggested move associated with given square based on ECO data */
-    bool ecoMove(const Square square, int* from = 0, int* to = 0) const;
+    bool ecoMove(const Square square, int* from = nullptr, int* to = nullptr) const;
 
     /** Load the guess-the-move ECO hash data which is used by ecoMove() method */
     static bool loadEcoFile(const QString& ecoFile);

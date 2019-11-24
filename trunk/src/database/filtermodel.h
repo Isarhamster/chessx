@@ -33,7 +33,7 @@ class FilterModel: public QAbstractItemModel
 public:
 
     /** Constructs a FilterModel object using a pointer to a Filter */
-    FilterModel(Filter* filter, QObject *parent = 0);
+    FilterModel(Filter* filter, QObject *parent = nullptr);
     ~FilterModel();
 
     void startUpdate();

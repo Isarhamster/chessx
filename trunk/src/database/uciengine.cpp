@@ -24,7 +24,6 @@ UCIEngine::UCIEngine(const QString& name,
                      bool sendHistory) : Engine(name, command, bTestMode, directory, log, sendHistory)
 {
     m_quitAfterAnalysis = false;
-    m_invertBlack = true;
     m_chess960 = false;
 }
 
@@ -360,7 +359,7 @@ void UCIEngine::parseAnalysis(const QString& message)
                 {
                     analysis.setMovesToMate(score);
                 }
-                else if(m_invertBlack && m_board.toMove() == Black)
+                else if(m_board.toMove() == Black)
                 {
                     analysis.setScore(-score);
                 }

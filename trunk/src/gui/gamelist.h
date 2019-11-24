@@ -37,7 +37,7 @@ class GameList : public TableView
 {
     Q_OBJECT
 public:
-    GameList(Filter* filter, QWidget* parent = 0);
+    GameList(Filter* filter, QWidget* parent = nullptr);
     ~GameList();
 
     void keyPressEvent(QKeyEvent* event);

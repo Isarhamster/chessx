@@ -16,13 +16,13 @@
 #endif // _MSC_VER
 
 HistoryLabel::HistoryLabel(QWidget *parent, Qt::WindowFlags f) :
-    QLabel(parent,f), m_model(0), m_view(0)
+    QLabel(parent,f), m_model(nullptr), m_view(nullptr)
 {
     init();
 }
 
 HistoryLabel::HistoryLabel(const QString &text, QWidget *parent, Qt::WindowFlags f) :
-    QLabel(text, parent, f), m_model(0), m_view(0)
+    QLabel(text, parent, f), m_model(nullptr), m_view(nullptr)
 {
     init();
 }

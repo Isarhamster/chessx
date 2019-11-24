@@ -12,7 +12,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-QMap<quint64, QString>* EcoPositions::m_ecoPositions = 0;
+QMap<quint64, QString>* EcoPositions::m_ecoPositions = nullptr;
 volatile bool EcoPositions::m_ecoReady = false;
 
 bool EcoPositions::loadEcoFile(const QString& ecoFile)
@@ -68,7 +68,7 @@ QString EcoPositions::findEcoName(QString eco)
 void EcoPositions::terminateEco()
 {
     QMap<quint64, QString>* p = m_ecoPositions;
-    m_ecoPositions = 0;
+    m_ecoPositions = nullptr;
     delete p;
 }
 

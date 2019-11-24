@@ -19,7 +19,7 @@ class TagDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit TagDialog(QWidget *parent = 0);
+    explicit TagDialog(QWidget *parent = nullptr);
     ~TagDialog();
 
     bool editTags(Index* index, Game &game, GameId id);

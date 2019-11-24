@@ -11,7 +11,7 @@
 
 PolyglotWriter::PolyglotWriter(QObject *parent) :
     QThread(parent),
-    m_source(0),
+    m_source(nullptr),
     m_break(false)
 {
 }

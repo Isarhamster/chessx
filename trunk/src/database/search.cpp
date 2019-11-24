@@ -23,14 +23,13 @@
  * ********************************/
 Search::Search(Database *db) : m_database(db)
 {
-    m_nextSearch = 0;
     m_searchOperator = FilterOperator::NullOperator;
 }
 
 Search::~Search()
 {
     delete m_nextSearch;
-    m_database = 0;
+    m_database = nullptr;
 }
 
 void Search::AddSearch(Search* search, FilterOperator op)
@@ -71,7 +70,7 @@ void Search::setOutputFilter(Filter *value)
 
 /* NullSearch Class
  * *********************/
-NullSearch::NullSearch():Search(0)
+NullSearch::NullSearch():Search(nullptr)
 {
 }
 

@@ -19,7 +19,7 @@
 
 HistoryList::HistoryList(int historySize) : m_unique(true)
 {
-    setSize(historySize);
+    m_size = historySize;
 }
 
 HistoryList::~HistoryList()

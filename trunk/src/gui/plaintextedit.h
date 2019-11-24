@@ -11,7 +11,7 @@
 class PlainTextEdit : public QPlainTextEdit
 {
 public:
-    PlainTextEdit(QWidget* parent = 0);
+    PlainTextEdit(QWidget* parent = nullptr);
 protected:
     virtual void keyPressEvent(QKeyEvent* event);
 };

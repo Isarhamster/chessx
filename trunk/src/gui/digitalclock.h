@@ -6,8 +6,12 @@
 #define DIGITALCLOCK_H
 
 #include <QLCDNumber>
+#include <QPointer>
 
+#ifdef USE_SOUND
 class QSound;
+#endif
+
 class QTimer;
 
 class DigitalClock : public QLCDNumber
@@ -15,7 +19,7 @@ class DigitalClock : public QLCDNumber
     Q_OBJECT
 
 public:
-    DigitalClock(QWidget *parent = 0);
+    DigitalClock(QWidget *parent = nullptr);
 	~DigitalClock();
 
     QString time() const;
@@ -36,7 +40,9 @@ private slots:
 
 private:
     QTimer* timer;
-    QSound* tockSound;
+#ifdef USE_SOUND
+    QPointer<QSound> tockSound;
+#endif
     bool m_useTock;
     int m_tockToDo;
     bool m_bFirstTestForTock;

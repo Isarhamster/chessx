@@ -16,7 +16,7 @@ class TelnetClient : public QObject
 {
     Q_OBJECT
 public:
-    explicit TelnetClient(QObject *parent = 0);
+    explicit TelnetClient(QObject *parent = nullptr);
     virtual ~TelnetClient();
 
     void connectHost(const QString& host, int port, QString name, QString passwd);

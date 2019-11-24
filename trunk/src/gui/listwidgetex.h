@@ -11,7 +11,7 @@ class ListWidgetEx : public QListWidget
 {
     Q_OBJECT
 public:
-    ListWidgetEx(QWidget *parent = 0);
+    ListWidgetEx(QWidget *parent = nullptr);
 
 protected:
     virtual bool eventFilter(QObject *obj, QEvent *event);

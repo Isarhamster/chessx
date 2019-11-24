@@ -31,7 +31,7 @@ class RecipientAddressDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit RecipientAddressDialog(QWidget *parent = 0);
+    explicit RecipientAddressDialog(QWidget *parent = nullptr);
     ~RecipientAddressDialog();
     bool isEmailSet() const;
     const QString getEmail() const;

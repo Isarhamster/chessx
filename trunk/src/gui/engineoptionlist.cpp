@@ -37,7 +37,7 @@ QWidget *EngineOptionListDelegate::createEditor(QWidget *parent,
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 void EngineOptionListDelegate::commitAndCloseEditor()
@@ -94,7 +94,7 @@ void EngineOptionListDelegate::setEditorData(QWidget *editor,
 
 EngineOptionList::EngineOptionList(QWidget *parent) :
     TableView(parent),
-    m_model(0)
+    m_model(nullptr)
 {
     setObjectName("EngineOptionList");
     setWindowTitle(tr("Engine Options"));

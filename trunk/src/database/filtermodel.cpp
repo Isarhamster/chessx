@@ -138,8 +138,8 @@ void FilterModel::endUpdate()
 void FilterModel::set(GameId game, int value)
 {
     filter()->set(game, value);
-    QModelIndex start = createIndex(game, 0, (void*) 0);
-    QModelIndex end = createIndex(game, columnCount()-1, (void*) 0);
+    QModelIndex start = createIndex(game, 0, (void*) nullptr);
+    QModelIndex end = createIndex(game, columnCount()-1, (void*) nullptr);
     emit dataChanged(start, end);
 }
 
@@ -235,7 +235,7 @@ QModelIndex FilterModel::index(int row, int column, const QModelIndex& parent) c
     {
         return QModelIndex();
     }
-    return createIndex(row, column, (void*) 0);
+    return createIndex(row, column, (void*) nullptr);
 }
 
 Filter* FilterModel::filter()
@@ -291,7 +291,7 @@ void FilterModel::endSearch()
     if (f && f!= m_filter)
     {
         *m_filter = *f;
-        m_filter->lock(0);
+        m_filter->lock(nullptr);
         delete f;
     }
     endUpdate();

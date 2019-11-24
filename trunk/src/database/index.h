@@ -130,7 +130,7 @@ public:
     void clearCache();
 
     /** Build the tag caches */
-    void calculateCache(volatile bool* breakFlag = 0);
+    void calculateCache(volatile bool* breakFlag = nullptr);
 
     /** Clears the index, and frees all associated memory */
     void clear();

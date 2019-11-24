@@ -19,6 +19,7 @@ class Filter;
 #include "gameid.h"
 
 #include <QtCore>
+#include <QPointer>
 
 /**
  * @defgroup Search Search - different ways to lookup games
@@ -35,7 +36,7 @@ public:
     enum Type { NullSearch, PositionSearch, EloSearch, DateSearch, TagSearch, FilterSearch, NumberSearch, DuplicateSearch, ListSearch};
 
     /** Standard constructor. */
-    explicit Search(Database* db = 0);
+    explicit Search(Database* db = nullptr);
     /** Standard destructor. */
     virtual ~Search();
     virtual void Prepare(volatile bool&) {};
@@ -55,10 +56,10 @@ public:
 signals:
     void prepareUpdate(int);
 protected:
-    Database *m_database;
-    Search* m_nextSearch;
-    Filter* inputFilter;
-    Filter* outputFilter;
+    QPointer<Database> m_database;
+    QPointer<Search> m_nextSearch;
+    QPointer<Filter> inputFilter;
+    QPointer<Filter> outputFilter;
     FilterOperator m_searchOperator;
 };
 

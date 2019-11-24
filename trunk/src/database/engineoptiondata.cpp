@@ -24,5 +24,5 @@ EngineOptionData* EngineOptionData::FindInList(QString name, QList<EngineOptionD
         }
         ++it;
     }
-    return 0;
+    return nullptr;
 }

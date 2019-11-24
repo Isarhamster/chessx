@@ -35,7 +35,7 @@ Engine::Engine(const QString& name,
     m_command = command;
     m_bTestMode = bTestMode;
     m_sendHistory = sendHistory;
-    QTextStream* logStream = 0;
+    QTextStream* logStream = nullptr;
     if (log)
     {
         m_logFile.setFileName(AppSettings->logPath()+name+".log");
@@ -45,7 +45,7 @@ Engine::Engine(const QString& name,
         }
     }
     m_logStream = logStream;
-    m_process = 0;
+    m_process = nullptr;
     m_active = false;
     m_analyzing = false;
     m_directory = directory;
@@ -58,7 +58,7 @@ Engine* Engine::newEngine(int index)
 
 Engine* Engine::newEngine(EngineList& engineList, int index, bool bTestMode)
 {
-    Engine *engine = 0;
+    Engine *engine = nullptr;
 
     QString name      = engineList[index].name;
     QString command   = engineList[index].command;
@@ -89,7 +89,7 @@ Engine* Engine::newEngine(EngineList& engineList, int index, bool bTestMode)
 
 Engine* Engine::newEngine(int index, bool bTestMode)
 {
-    Engine *engine = 0;
+    Engine *engine = nullptr;
 
     AppSettings->beginGroup("/Engines/");
     QString key(QString::number(index));
@@ -126,7 +126,7 @@ Engine::~Engine()
 {
     if(m_process)
     {
-        m_process = 0;
+        m_process = nullptr;
     }
     delete m_logStream;
 }
@@ -267,7 +267,7 @@ void Engine::pollProcess()
 void Engine::processError(QProcess::ProcessError errMsg)
 {
     setActive(false);
-    m_process = 0;
+    m_process = nullptr;
     emit error(errMsg);
 }
 
@@ -317,6 +317,6 @@ void Engine::setAllowEngineOutput(bool allow)
 void Engine::processExited()
 {
     setActive(false);
-    m_process = 0;
+    m_process = nullptr;
     emit deactivated();
 }

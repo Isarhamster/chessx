@@ -33,7 +33,7 @@ class QLed : public QWidget
     Q_PROPERTY(ledShape shape READ shape WRITE setShape)
 
 public:
-    QLed(QWidget *parent = 0);
+    QLed(QWidget *parent = nullptr);
     virtual ~QLed();
     bool value() const
     {

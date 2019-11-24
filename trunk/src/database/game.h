@@ -94,7 +94,6 @@ public :
 
     void mountBoard();
     void unmountBoard();
-    int mountRefCount;
 
     // **** Querying game information ****
     /** compare game moves and annotations */
@@ -136,7 +135,7 @@ public :
     /** @return next move in short algebraic notation, returns empty string if no such move */
     QString moveToSan(MoveStringFlags flags = MoveOnly,
                       NextPreviousMove nextPrevious = NextMove, MoveId moveId = CURRENT_MOVE,
-                      QString* annotations = 0, NagSet* nagSet = 0);
+                      QString* annotations = nullptr, NagSet* nagSet = nullptr);
     /** Query event info and date information for display in game browser etc. */
     QString eventInfo() const;
 
@@ -182,7 +181,7 @@ public :
     bool atLineEnd(MoveId moveId = CURRENT_MOVE) const;
     bool atGameEnd(MoveId moveId = CURRENT_MOVE) const;
     /** Counts the number of moves, comments and nags, in mainline, to the end of the game */
-    void moveCount(int* moves, int* comments, int* nags=0) const;
+    void moveCount(int* moves, int* comments, int* nags=nullptr) const;
     /** Determine if game contains something reasonable */
     bool isEmpty() const;
     /** @return number of half moves made since the beginning of the game */
@@ -220,7 +219,7 @@ public :
     /** Moves by given ply, returns actual ply reached */
     int moveByPly(int diff);
     /** Moves to the position corresponding to the given move id */
-    bool dbMoveToId(MoveId moveId, QString* algebraicMoveList=0);
+    bool dbMoveToId(MoveId moveId, QString* algebraicMoveList=nullptr);
     void moveToId(MoveId moveId);
     /** Move forward the given number of moves, returns actual number of moves made */
     int forward(int count = 1);
@@ -437,6 +436,8 @@ private:
     };
 #pragma pack(pop)
 
+    /** Reference Counter for this object */
+    int mountRefCount;
     /** List of nodes */
     QList <MoveNode> m_moveNodes;
     /** Keeps the current node in the game */

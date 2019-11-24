@@ -90,7 +90,7 @@ protected:
     QPointer<Search> currentSearch;
     FilterOperator currentSearchOperator;
     volatile bool m_break;
-    Filter* m_lock;
+    QPointer<Filter> m_lock;
 };
 
 #endif // FILTER_H_INCLUDED

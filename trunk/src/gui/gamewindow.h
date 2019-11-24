@@ -20,7 +20,7 @@ class GameWindow : public ToolMainWindow
     Q_OBJECT
 
 public:
-    explicit GameWindow(QWidget *parent = 0);
+    explicit GameWindow(QWidget *parent = nullptr);
     ~GameWindow();
 
     ChessBrowser* browser();

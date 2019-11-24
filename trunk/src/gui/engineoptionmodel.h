@@ -14,7 +14,7 @@ class EngineOptionModel : public QStandardItemModel
 {
     Q_OBJECT
 public:
-    explicit EngineOptionModel(QObject *parent = 0);
+    explicit EngineOptionModel(QObject *parent = nullptr);
 
 public:
     virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;

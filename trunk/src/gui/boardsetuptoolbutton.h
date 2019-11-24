@@ -14,7 +14,7 @@ class BoardSetupToolButton : public QLabel
 {
     Q_OBJECT
 public:
-    explicit BoardSetupToolButton(QWidget *parent = 0);
+    explicit BoardSetupToolButton(QWidget *parent = nullptr);
     void setBasePixmap(const QPixmap &pm);
 
     Piece piece() const;

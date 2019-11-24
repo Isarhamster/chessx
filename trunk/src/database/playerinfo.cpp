@@ -31,7 +31,7 @@ static bool sortEcoFrequencyLt(const EcoFrequencyItem& left, const EcoFrequencyI
 
 PlayerInfo::PlayerInfo()
 {
-    m_database = 0;
+    m_database = nullptr;
     reset();
 }
 

@@ -49,7 +49,7 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
     connect(m_model, SIGNAL(searchProgress(int)), SIGNAL(searchProgress(int)));
     connect(m_model, SIGNAL(searchFinished()), SIGNAL(searchFinished()));
 
-    sortModel = new GameListSortModel(0);
+    sortModel = new GameListSortModel(nullptr);
     sortModel->setFilter(filter);
     sortModel->setSourceModel(m_model);
     sortModel->setDynamicSortFilter(true);
@@ -78,7 +78,7 @@ GameList::GameList(Filter* filter, QWidget* parent) : TableView(parent)
 
 GameList::~GameList()
 {
-    setModel(0);
+    setModel(nullptr);
     delete sortModel;
     delete m_model;
 }
@@ -440,7 +440,7 @@ void GameList::slotFilterListByPlayer(QString s)
 void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString player, QString result)
 {
     m_model->filter()->setAll(1); // ??
-    Search* ts = 0;
+    Search* ts = nullptr;
     if (!player.isEmpty())
     {
         ts = new TagSearch(m_model->filter()->database(),  tag, player);

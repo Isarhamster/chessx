@@ -31,7 +31,7 @@ Board::Board()
 {
 }
 
-Board::Board(QString fen)
+Board::Board(QString fen) : m_hashValue(0)
 {
     if(!fromFen(fen))
     {

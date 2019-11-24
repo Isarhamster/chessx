@@ -14,7 +14,7 @@ class ExtTool : public QObject
 {
     Q_OBJECT
 public:
-    explicit ExtTool(QObject *parent = 0);
+    explicit ExtTool(QObject *parent = nullptr);
     ~ExtTool();
 
 signals:

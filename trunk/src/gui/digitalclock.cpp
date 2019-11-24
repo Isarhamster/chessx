@@ -4,7 +4,10 @@
 
 #include <QtWidgets>
 #include <QTimer>
+
+#ifdef USE_SOUND
 #include <QSound>
+#endif
 
 #include "digitalclock.h"
 #include "settings.h"
@@ -24,7 +27,10 @@ DigitalClock::DigitalClock(QWidget *parent)
     timer->setSingleShot(true);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
 
+#ifdef USE_SOUND
     tockSound = new QSound(":/sounds/woodthunk.wav");
+#endif
+
     m_useTock = false;
     m_tockToDo = 0;
     m_bFirstTestForTock = false;
@@ -33,7 +39,9 @@ DigitalClock::DigitalClock(QWidget *parent)
 
 DigitalClock::~DigitalClock()
 {
-	delete tockSound;
+#ifdef USE_SOUND
+    delete tockSound;
+#endif
 }
 
 void DigitalClock::StartCountDown(bool start)
@@ -65,7 +73,7 @@ void DigitalClock::ResetTock(bool useTock, bool countDown)
     m_useTock = useTock;
     m_countDown = countDown;
     m_bFirstTestForTock = true;
-    m_tockToDo = AppSettings->getValue("/Sound/Move").toBool() ? 3 : 0;
+    m_tockToDo = AppSettings->getValue("/Sound/Move").toInt() ? 3 : 0;
 }
 
 void DigitalClock::updateTime()

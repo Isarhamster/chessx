@@ -118,7 +118,7 @@ OpeningTree::OpeningTree(QObject* parent) :
     QAbstractTableModel(parent),
     m_sortcolumn(1),
     m_order(Qt::DescendingOrder),
-    m_filter(0),
+    m_filter(nullptr),
     oupd(*new OpeningTreeThread)
 {
     m_names << tr("Move") << tr("Count") << tr("Score") << tr("Rating") << tr("Year");
@@ -186,7 +186,7 @@ QVariant OpeningTree::data(const QModelIndex& index, int role) const
                 {
                     return "";
                 }
-                unsigned int percentage = m_moves[index.row()].count * 1000u / m_games / 10u;
+                unsigned int percentage = m_moves[index.row()].count * 1000U / m_games / 10U;
                 QString approx;
                 if(percentage == 0)
                 {

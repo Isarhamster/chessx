@@ -77,7 +77,7 @@ protected: // Drag+Drop
     void dropEvent(QDropEvent *event);
     void mergeGame(GameId gameIndex);
 
-    QStringList getAnchors(QStringList hrefs);
+    QStringList getAnchors(const QStringList &hrefs);
 private:
 
     QAction* m_copyHtml;

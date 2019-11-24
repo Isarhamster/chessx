@@ -38,7 +38,9 @@ const QStringList Game::s_specList = QStringList() << s_emt << s_clk << s_egt <<
 Game::Game() : QObject()
 {
     mountRefCount = 0;
-    m_currentBoard = 0;
+    m_currentNode = 0;
+    m_startPly = 0;
+    m_currentBoard = nullptr;
     mountBoard();
     clearTags();
     clear();
@@ -47,7 +49,9 @@ Game::Game() : QObject()
 Game::Game(const Game& game) : QObject()
 {
     mountRefCount = 0;
-    m_currentBoard = 0;
+    m_currentNode = 0;
+    m_startPly = 0;
+    m_currentBoard = nullptr;
     mountBoard();
     *this = game;
 }
@@ -87,7 +91,7 @@ Game::~Game()
     if (mountRefCount)
     {
         delete m_currentBoard;
-        m_currentBoard = 0;
+        m_currentBoard = nullptr;
     }
 }
 
@@ -108,7 +112,7 @@ void Game::unmountBoard()
         if (mountRefCount == 0)
         {
             delete m_currentBoard;
-            m_currentBoard = 0;
+            m_currentBoard = nullptr;
         }
     }
 }
@@ -1790,7 +1794,7 @@ bool Game::dbMoveToId(MoveId moveId, QString* algebraicMoveList)
                 {
                     // Avoid trouble with a null move - UCI does not specify this and Stockfish makes nonsense
                     algebraicMoveList->clear();
-                    algebraicMoveList = 0;
+                    algebraicMoveList = nullptr;
                 }
                 else
                 {
