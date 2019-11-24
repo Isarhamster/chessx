@@ -11,7 +11,7 @@ class Style : public QObject
 {
     Q_OBJECT
 public:
-    explicit Style(QObject *parent = 0);
+    explicit Style(QObject *parent = nullptr);
 
     static void setStyle(QWidget* w);
 signals:

@@ -22,7 +22,7 @@ QModelIndex EngineOptionModel::index(int row, int column, const QModelIndex &par
     {
         return QModelIndex();
     }
-    return createIndex(row, column, (void*) 0);
+    return createIndex(row, column, (void*) nullptr);
 }
 
 QModelIndex EngineOptionModel::parent(const QModelIndex &) const

@@ -34,7 +34,7 @@ struct key_compare : std::binary_function< const book_entry&, const book_entry&,
 
 PolyglotDatabase::PolyglotDatabase() :
     Database(),
-    m_file(0),
+    m_file(nullptr),
     m_count(0)
 {
 }
@@ -145,7 +145,7 @@ void PolyglotDatabase::close()
         m_file->close();
     }
     delete m_file;
-    m_file = 0;
+    m_file = nullptr;
 }
 
 // ---------------------------------------------------------
@@ -703,7 +703,7 @@ book_entry* PolyglotDatabase::find_entry(const book_entry& entry)
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 void PolyglotDatabase::update_entry(book_entry& entry, int result)

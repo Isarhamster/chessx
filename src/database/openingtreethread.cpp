@@ -17,7 +17,7 @@
 
 OpeningTreeThread::OpeningTreeThread()
 {
-    m_games = 0;
+    m_games = nullptr;
     m_break = false;
     m_updateFilter = false;
     m_sourceIsDatabase = false;
@@ -32,12 +32,12 @@ void OpeningTreeThread::run()
     QList<MoveData> emptyMoveList;
     emit MoveUpdate(&m_board, emptyMoveList);
 
-    if (PolyglotDatabase* pgdb = qobject_cast<PolyglotDatabase*>(m_filter ? m_filter->database() : 0))
+    if (PolyglotDatabase* pgdb = qobject_cast<PolyglotDatabase*>(m_filter ? m_filter->database() : nullptr))
     {
         games = pgdb->getMoveMapForBoard(m_board, moves);
         ProgressUpdate(moves, games, 100, 100);
     }
-    else if (CtgDatabase* pgdb = qobject_cast<CtgDatabase*>(m_filter ? m_filter->database() : 0))
+    else if (CtgDatabase* pgdb = qobject_cast<CtgDatabase*>(m_filter ? m_filter->database() : nullptr))
     {
         games = pgdb->getMoveMapForBoard(m_board, moves);
         ProgressUpdate(moves, games, 100, 100);

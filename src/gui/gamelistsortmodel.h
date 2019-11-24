@@ -12,9 +12,9 @@ class Filter;
 class GameListSortModel : public QSortFilterProxyModel
 {
 public:
-    explicit GameListSortModel(QObject *parent = 0) :
+    explicit GameListSortModel(QObject *parent = nullptr) :
         QSortFilterProxyModel(parent),
-        m_filter(0)
+        m_filter(nullptr)
     {}
     void setFilter(Filter* filter);
 protected:

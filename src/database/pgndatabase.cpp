@@ -430,7 +430,7 @@ bool PgnDatabase::loadGame(GameId gameId, Game& game)
 
 void PgnDatabase::initialise()
 {
-    m_file = 0;
+    m_file = nullptr;
     m_inComment = false;
     m_inPreComment = false;
     m_filename = QString();

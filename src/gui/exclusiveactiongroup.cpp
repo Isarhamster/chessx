@@ -46,7 +46,7 @@ const QAction* ExclusiveActionGroup::checkedAction() const
             return a;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void ExclusiveActionGroup::untrigger()

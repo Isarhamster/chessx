@@ -62,7 +62,7 @@ void ColorList::editItemColor(QListWidgetItem* item)
 void ColorList::mousePressEvent(QMouseEvent* event)
 {
     QListWidgetItem* item = itemAt(event->pos());
-    if(event->button() != Qt::LeftButton || item == 0)
+    if(event->button() != Qt::LeftButton || item == nullptr)
     {
         event->ignore();
     }

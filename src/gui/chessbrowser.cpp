@@ -22,7 +22,7 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), toolBar(0), m_gameMenu(0), m_currentMove(CURRENT_MOVE)
+ChessBrowser::ChessBrowser(QWidget *p) : QTextBrowser(p), toolBar(nullptr), m_gameMenu(nullptr), m_currentMove(CURRENT_MOVE)
 {
     setObjectName("ChessBrowser");
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -90,7 +90,7 @@ QStringList ChessBrowser::getAnchors(QList<MoveId> list)
     return getAnchors(hrefs);
 }
 
-QStringList ChessBrowser::getAnchors(QStringList hrefs)
+QStringList ChessBrowser::getAnchors(const QStringList& hrefs)
 {
     QStringList result;
     if (hrefs.isEmpty()) return result;
@@ -206,7 +206,7 @@ void ChessBrowser::setupMenu()
 
 void ChessBrowser::slotContextMenu(const QPoint& pos)
 {
-    const Game* game = 0;
+    const Game* game = nullptr;
     emit queryActiveGame(&game);
 
     // Handle non-game browser

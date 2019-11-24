@@ -61,6 +61,7 @@ int PartialDate::day() const
 
 PartialDate& PartialDate::fromString(const QString& s)
 {
+    m_bIsValid = false;
     QString test = s.trimmed();
     QRegExp regExp("^[\\?0-9]{4}([\\./]([\\?0-9]){1,2}){,2}$");
     if(regExp.exactMatch(test) || test.isEmpty())

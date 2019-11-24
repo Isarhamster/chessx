@@ -13,7 +13,7 @@ class LoadQuery : public QDialog
     Q_OBJECT
 
 public:
-    explicit LoadQuery(QWidget *parent = 0);
+    explicit LoadQuery(QWidget *parent = nullptr);
     ~LoadQuery();
 
     bool largeDB() const

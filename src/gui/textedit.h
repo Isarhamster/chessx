@@ -61,7 +61,7 @@ class PasteTextEdit : public QTextEdit
 {
     Q_OBJECT
 public:
-    explicit PasteTextEdit(QWidget *parent = 0);
+    explicit PasteTextEdit(QWidget *parent = nullptr);
     ~PasteTextEdit();
     bool canInsertUsingMimeData(const QMimeData *source) const;
     void insertUsingMimeData(const QMimeData *source);
@@ -83,7 +83,7 @@ class TextEdit : public ToolMainWindow
     Q_OBJECT
 
 public:
-    TextEdit(QWidget *parent = 0, QMenu* menu = 0);
+    TextEdit(QWidget *parent = nullptr, QMenu* menu = nullptr);
     bool saveDocument();
 
 protected:

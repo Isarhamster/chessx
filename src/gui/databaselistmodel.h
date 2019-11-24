@@ -82,7 +82,7 @@ class DatabaseListModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    explicit DatabaseListModel(QObject *parent = 0);
+    explicit DatabaseListModel(QObject *parent = nullptr);
 
     int getLastIndex(const QString& s) const;
     int stars(const QString& s) const;

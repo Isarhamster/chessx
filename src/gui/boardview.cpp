@@ -45,10 +45,10 @@ BoardView::BoardView(QWidget* parent, int flags) : QWidget(parent),
     m_flags(flags),
     m_coordinates(false), m_dragged(Empty), m_clickUsed(false), m_wheelCurrentDelta(0),
     m_minDeltaWheel(0), m_moveListCurrent(0), m_showMoveIndicator(true), m_showMoveIndicatorMode(0),
-    m_DbIndex(0),
+    m_DbIndex(nullptr),
     m_showAttacks(NoColor),
     m_showUnderProtection(NoColor),
-    lastMoveEvent(0)
+    lastMoveEvent(nullptr)
 {
     QSizePolicy policy = sizePolicy();
     policy.setHeightForWidth(true);
@@ -682,7 +682,7 @@ BoardView::BoardViewAction BoardView::moveActionFromModifier(Qt::KeyboardModifie
 
 void BoardView::checkCursor(Qt::KeyboardModifiers modifiers)
 {
-    const char* file = 0;
+    const char* file = nullptr;
     QString text;
 
     if (underMouse())
@@ -868,7 +868,7 @@ void BoardView::setBrushMode(bool brushMode)
 void BoardView::mouseReleaseEvent(QMouseEvent* event)
 {
     delete lastMoveEvent;
-    lastMoveEvent = 0;
+    lastMoveEvent = nullptr;
     int button = event->button() + event->modifiers();
     Square s = squareAt(event->pos());
     m_clickUsed = false;
@@ -1454,7 +1454,7 @@ QObject* BoardView::dbIndex() const
 
 void BoardView::renderImage(QImage &image, double scaling) const
 {
-    BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
+    BoardView boardView(nullptr, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     QSize s;
     if (scaling < 0)
     {
@@ -1497,7 +1497,7 @@ void BoardView::renderImage(QImage &image, double scaling) const
 
 void BoardView::renderImageForBoard(const Board &b, QImage &image, QSize size)
 {
-    BoardView boardView(0, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
+    BoardView boardView(nullptr, BoardView::IgnoreSideToMove | BoardView::SuppressGuessMove);
     boardView.setBoard(b);
     boardView.setMinimumSize(size);
     boardView.resize(size);

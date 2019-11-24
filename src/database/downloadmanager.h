@@ -59,7 +59,7 @@ class DownloadManager: public QObject
     QMap<QUrl, QString> destinationPaths;
 
 public:
-    explicit DownloadManager(QObject *parent = 0);
+    explicit DownloadManager(QObject *parent = nullptr);
     void doDownload(const QUrl &url);
     void doDownloadToPath(const QUrl &url, const QString& path);
     QString saveFileName(const QUrl &url);

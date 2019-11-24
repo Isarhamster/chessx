@@ -25,7 +25,7 @@ static bool sortPlayersLt(const PlayerInfoListItem& a1, const PlayerInfoListItem
 
 EcoInfo::EcoInfo()
 {
-    m_database = 0;
+    m_database = nullptr;
     reset();
 }
 

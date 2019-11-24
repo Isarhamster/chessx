@@ -13,7 +13,7 @@ class CommentDialog : public QDialog
 public:
     enum TimeMode { Egt, Emt, Clk};
 
-    CommentDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    CommentDialog(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
     void setText(QString text);
     QString text() const;
 

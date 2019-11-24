@@ -30,7 +30,7 @@ class BoardSetupDialog : public QDialog
     Q_OBJECT
 public:
     /** Create ChessX Preferences dialog */
-    BoardSetupDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    BoardSetupDialog(QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
     /** Destroy the dialog */
     virtual ~BoardSetupDialog();
     /** Set current board */

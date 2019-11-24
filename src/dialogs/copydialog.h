@@ -27,8 +27,8 @@ class CopyDialog : public QDialog
 public:
     enum SrcMode {SingleGame, Selection, Filter, AllGames};
     /** Create ChessX Preferences dialog */
-    CopyDialog(QWidget* parent = 0,
-               Qt::WindowFlags f = 0);
+    CopyDialog(QWidget* parent = nullptr,
+               Qt::WindowFlags f = nullptr);
     /** Destroy the dialog */
     virtual ~CopyDialog();
     /** Set current board */

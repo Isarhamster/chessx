@@ -19,7 +19,7 @@ class BoardViewEx : public QWidget
 {
     Q_OBJECT
 public:
-    explicit BoardViewEx(QWidget *parent = 0);
+    explicit BoardViewEx(QWidget *parent = nullptr);
     ~BoardViewEx();
 
     BoardView* boardView();

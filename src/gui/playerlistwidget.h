@@ -21,7 +21,7 @@ class PlayerListWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit PlayerListWidget(QWidget *parent = 0);
+    explicit PlayerListWidget(QWidget *parent = nullptr);
     ~PlayerListWidget();
 
 signals:

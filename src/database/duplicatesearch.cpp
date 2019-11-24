@@ -13,12 +13,12 @@
 
 /* DuplicateSearch class
  * **********************/
-DuplicateSearch::DuplicateSearch(Database *db, DSMode mode):Search(db),m_filter(0)
+DuplicateSearch::DuplicateSearch(Database *db, DSMode mode):Search(db),m_filter(nullptr)
 {
    m_mode = mode;
 }
 
-DuplicateSearch::DuplicateSearch(Filter *filter, DSMode mode):Search(filter ? filter->database():0)
+DuplicateSearch::DuplicateSearch(Filter *filter, DSMode mode):Search(filter ? filter->database():nullptr)
 {
    m_mode = mode;
    m_filter = filter;

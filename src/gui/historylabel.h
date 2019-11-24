@@ -61,8 +61,8 @@ class HistoryLabel : public QLabel
    Q_PROPERTY(QString text READ text WRITE setText)
 
 public:
-   HistoryLabel(QWidget * parent = 0, Qt::WindowFlags f = 0);
-   HistoryLabel(const QString & text, QWidget * parent = 0, Qt::WindowFlags f = 0);
+   HistoryLabel(QWidget * parent = nullptr, Qt::WindowFlags f = nullptr);
+   HistoryLabel(const QString & text, QWidget * parent = 0, Qt::WindowFlags f = nullptr);
    Q_SLOT void setText(const QString & text, bool dontStore=false);
 
 protected:

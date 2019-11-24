@@ -11,7 +11,7 @@ class ToolMainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit ToolMainWindow(QWidget *parent = 0);
+    explicit ToolMainWindow(QWidget *parent = nullptr);
 
 signals:
 

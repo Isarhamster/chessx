@@ -48,7 +48,7 @@ public:
     /** @return @p true if database is valid */
     bool isValid() const
     {
-        return m_bLoaded ? m_database != 0 : false;
+        return m_bLoaded ? m_database != nullptr : false;
     }
     /** @return Database object */
     Database* database()

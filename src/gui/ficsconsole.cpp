@@ -495,7 +495,7 @@ void FicsConsole::SlotNoPlayChanged(const QString& s)
 void FicsConsole::SlotContextMenu(const QPoint &pos)
 {
     QWidget* w = ui->tabWidget->childAt(pos);
-    QListView* v = 0;
+    QListView* v = nullptr;
     if (w)
     {
         v = qobject_cast<QListView*>(w->parentWidget());

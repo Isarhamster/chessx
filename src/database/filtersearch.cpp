@@ -12,7 +12,7 @@
 
 /* FilterSearch class
  * **********************/
-FilterSearch::FilterSearch() : m_filter(0)
+FilterSearch::FilterSearch() : m_filter(nullptr)
 {
 }
 

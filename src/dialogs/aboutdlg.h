@@ -17,7 +17,7 @@ class AboutDlg : public QDialog
     Q_OBJECT
 
 public:
-    explicit AboutDlg(QWidget *parent = 0);
+    explicit AboutDlg(QWidget *parent = nullptr);
     ~AboutDlg();
 
 protected slots:

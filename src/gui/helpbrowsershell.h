@@ -15,7 +15,7 @@ class HelpBrowserShell : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit HelpBrowserShell(QWidget *parent = 0);
+    explicit HelpBrowserShell(QWidget *parent = nullptr);
     ~HelpBrowserShell();
 
     QComboBox* Index();

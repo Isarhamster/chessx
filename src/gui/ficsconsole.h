@@ -37,7 +37,7 @@ class FicsConsole : public QWidget
     Q_OBJECT
 
 public:
-    explicit FicsConsole(QWidget *parent = 0, FicsClient *ficsClient=0);
+    explicit FicsConsole(QWidget *parent = nullptr, FicsClient *ficsClient=nullptr);
     ~FicsConsole();
     bool canUsePremove() const;
 

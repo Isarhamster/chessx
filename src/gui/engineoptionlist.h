@@ -17,7 +17,7 @@ class EngineOptionListDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    EngineOptionListDelegate(QWidget *parent = 0) : QStyledItemDelegate(parent), m_model(0) {}
+    EngineOptionListDelegate(QWidget *parent = nullptr) : QStyledItemDelegate(parent), m_model(nullptr) {}
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                           const QModelIndex &index) const;
@@ -38,7 +38,7 @@ class EngineOptionList : public TableView
 {
     Q_OBJECT
 public:
-    explicit EngineOptionList(QWidget *parent = 0);
+    explicit EngineOptionList(QWidget *parent = nullptr);
 
     void setDB(const QList<EngineOptionData>& options,
                OptionValueList& mapOptionValues);

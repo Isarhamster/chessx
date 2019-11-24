@@ -20,7 +20,7 @@
 
 ArenaBook::ArenaBook() :
     Database(),
-    m_file(0),
+    m_file(nullptr),
     m_posCount(0),
     m_count(0)
 {

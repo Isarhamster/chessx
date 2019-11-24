@@ -40,7 +40,7 @@ public:
     enum {IgnoreSideToMove = 1, SuppressGuessMove = 2, AllowCopyPiece = 4};
     typedef enum {ActionStandard, ActionQuery, ActionReplace, ActionInsert, ActionAdd, ActionPen, ActionAskEngine, ActionEvalMove } BoardViewAction;
     /** Create board widget. */
-    BoardView(QWidget* parent = 0, int flags = 0);
+    BoardView(QWidget* parent = nullptr, int flags = 0);
     /** Destroy widget. */
     ~BoardView();
     /** Set flags for board. Flags include:

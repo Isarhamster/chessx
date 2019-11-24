@@ -14,7 +14,7 @@
 #endif // _MSC_VER
 
 using namespace std;
-ofstream logfile;
+static ofstream logfile;
 
 static bool bDoLog = false;
 void

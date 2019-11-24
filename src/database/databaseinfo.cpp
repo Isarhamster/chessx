@@ -42,7 +42,7 @@ DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, Database *db)
     connect(&m_game, SIGNAL(signalMoveChanged()), SIGNAL(signalMoveChanged()));
 }
 
-DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filter(0), m_index(InvalidGameId)
+DatabaseInfo::DatabaseInfo(QUndoGroup* undoGroup, const QString& fname): m_filter(nullptr), m_index(InvalidGameId)
 {
     m_filename = fname;
     m_bLoaded = false;
@@ -133,7 +133,7 @@ void DatabaseInfo::close()
     delete m_filter;
 
     clearLastGames();
-    m_database = NULL;
+    m_database = nullptr;
     disconnect(m_undoStack, SIGNAL(cleanChanged(bool)), this, SLOT(dbCleanChanged(bool)));
     m_undoStack->clear();
 }

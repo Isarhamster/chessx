@@ -21,7 +21,7 @@ class ECOListWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ECOListWidget(QWidget *parent = 0);
+    explicit ECOListWidget(QWidget *parent = nullptr);
     ~ECOListWidget();
 
 signals:

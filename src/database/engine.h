@@ -131,7 +131,6 @@ protected:
     /** Sends an analysis signal */
     void sendAnalysis(const Analysis& analysis);
 
-    bool m_invertBlack;
     int m_mpv;
     EngineParameter m_moveTime;
     bool m_bTestMode;

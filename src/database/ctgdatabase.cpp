@@ -29,9 +29,9 @@
 
 CtgDatabase::CtgDatabase() :
     Database(),
-    ctg_file(0),
-    cto_file(0),
-    ctb_file(0),
+    ctg_file(nullptr),
+    cto_file(nullptr),
+    ctb_file(nullptr),
     m_count(0)
 {
 }
@@ -140,9 +140,9 @@ void CtgDatabase::close()
     delete cto_file;
     delete ctb_file;
 
-    ctg_file = 0;
-    cto_file = 0;
-    ctb_file = 0;
+    ctg_file = nullptr;
+    cto_file = nullptr;
+    ctb_file = nullptr;
 }
 
 // ---------------------------------------------------------

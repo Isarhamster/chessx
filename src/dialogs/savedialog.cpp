@@ -257,7 +257,7 @@ void SaveDialog::accept()
 {
     AppSettings->setLayout(this);
     if((PartialDate().fromString(ui.dateEdit->text()).isValid()) &&
-            (PartialDate().fromString(ui.eventDateEdit->text()).isValid()))
+       (PartialDate().fromString(ui.eventDateEdit->text()).isValid()))
     {
         //  dates are formatted properly
         QDialog::accept();

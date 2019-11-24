@@ -26,7 +26,7 @@ class OpeningTreeWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit OpeningTreeWidget(QWidget *parent = 0);
+    explicit OpeningTreeWidget(QWidget *parent = nullptr);
     ~OpeningTreeWidget();
     OpeningTree* m_openingTree;
 

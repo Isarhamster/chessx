@@ -114,8 +114,6 @@ private:
     quint64 m_count;
 
     page_bounds_t page_bounds;
-    Piece flip_piece[16];
-
 };
 
 #endif // CTGDATABASE_H

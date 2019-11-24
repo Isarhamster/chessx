@@ -17,7 +17,7 @@ class MatchParameterDlg : public QDialog
     Q_OBJECT
 
 public:
-    explicit MatchParameterDlg(QWidget *parent = 0);
+    explicit MatchParameterDlg(QWidget *parent = nullptr);
     ~MatchParameterDlg();
 
     static bool getParametersForEngineGame(EngineParameter &par);

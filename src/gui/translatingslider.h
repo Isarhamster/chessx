@@ -12,7 +12,7 @@ class TranslatingSlider : public QSlider
 {
     Q_OBJECT
 public:
-    explicit TranslatingSlider(QWidget *parent = 0);
+    explicit TranslatingSlider(QWidget *parent = nullptr);
 
     int multiplier() const;
     void setMultiplier(int multiplier);

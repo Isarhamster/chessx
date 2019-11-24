@@ -22,7 +22,7 @@ class EventListWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit EventListWidget(QWidget *parent = 0);
+    explicit EventListWidget(QWidget *parent = nullptr);
     ~EventListWidget();
 
 signals:

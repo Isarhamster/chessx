@@ -77,7 +77,7 @@ private:
     bool m_analyze;
     bool m_setboard;
     bool m_bHasSentAnalyze;
-
+    bool m_invertBlack;
 };
 
 #endif // WBENGINE_H_INCLUDED

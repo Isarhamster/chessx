@@ -13,7 +13,7 @@ class TextBrowserEx : public QTextBrowser
     Q_OBJECT
 
 public:
-    explicit TextBrowserEx(QWidget* parent = 0) : QTextBrowser(parent) {}
+    explicit TextBrowserEx(QWidget* parent = nullptr) : QTextBrowser(parent) {}
 
     void setSource(const QUrl& name)
     {

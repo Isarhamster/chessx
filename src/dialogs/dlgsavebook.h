@@ -16,7 +16,7 @@ class DlgSaveBook : public QDialog
   Q_OBJECT
 
 public:
-  explicit DlgSaveBook(QString path, QWidget *parent = 0);
+  explicit DlgSaveBook(QString path, QWidget *parent = nullptr);
   ~DlgSaveBook();
 
   void getBookParameters(QString& out, int& maxPly, int& minGame, bool&  uniform, int &result, int &filterResults);
