@@ -429,7 +429,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/showThreat", true);
     map.insert("/Board/showTargets", false);
     map.insert("/Board/noHints", false);
-    map.insert("/Board/nextGuess", false);
+    map.insert("/Board/nextGuess", 2);
     map.insert("/Board/minWheelCount", MIN_WHEEL_COUNT);
     map.insert("/Board/pieceTheme", "merida");
     map.insert("/Board/pieceEffect", BoardTheme::Shadow);
@@ -464,7 +464,8 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
 
     map.insert("/PlayerListWidget/FilterEditCompleter", QStringList());
 
-    map.insert("/Sound/Move", true);
+    map.insert("/Sound/Move", 1);
+    map.insert("/Sound/ScreenReader", true);
 
     map.insert("/Tools/Path1", "");
     map.insert("/Tools/CommandLine1", "");
@@ -636,7 +637,7 @@ QString Settings::portableIniPath()
 // The singleton instance pointer of our AppSettings
 //////////////////////////////////////////////////////////////////////////////
 
-Settings* AppSettings = 0;
+Settings* AppSettings = nullptr;
 
 //////////////////////////////////////////////////////////////////////////////
 // EOF

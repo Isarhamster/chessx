@@ -75,6 +75,9 @@
 #include <QSplitter>
 #include <QStatusBar>
 #include <QTabBar>
+#ifdef USE_SPEECH
+#include <QTextToSpeech>
+#endif
 #include <QTimer>
 #include <QToolBar>
 
@@ -85,17 +88,17 @@
 
 MainWindow::MainWindow() : QMainWindow(),
     m_tabDragIndex(-1),
-    m_pDragTabBar(0),
-    m_gameWindow(0),
+    m_pDragTabBar(nullptr),
+    m_gameWindow(nullptr),
     m_gameToolBar(0),
-    m_output(0),
+    m_output(nullptr),
     m_operationFlag(0),
     m_currentFrom(InvalidSquare),
     m_currentTo(InvalidSquare),
     m_lastColor('G'),
     m_machineHasToMove(false),
     m_gameMode(false),
-    m_scratchPad(0),
+    m_scratchPad(nullptr),
     m_bEvalRequested(false),
     m_lastMessageWasHint(false)
 {
@@ -378,7 +381,7 @@ MainWindow::MainWindow() : QMainWindow(),
     addDockWidget(Qt::LeftDockWidgetArea, analysisDock2);
 
     /* Randomize */
-    srand(time(0));
+    srand(time(nullptr));
 
     /* Append the FICS console to the view menu */
     m_menuView->addAction(ficsConsoleDock->toggleViewAction());
@@ -508,6 +511,10 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(ecothread, SIGNAL(loaded(QObject*, bool)), this, SLOT(ecoLoaded(QObject*, bool)));
     ecothread->start();
     StartCheckUpdate();
+#ifdef USE_SPEECH
+    speech = new QTextToSpeech(this);
+    speech->setLocale(QLocale::English);
+#endif
 
     if (isMinimized())
     {
@@ -772,7 +779,7 @@ Database* MainWindow::getDatabaseByPath(QString path)
             return dbInfo->database();
         }
     }
-    return 0;
+    return nullptr;
 }
 
 DatabaseInfo* MainWindow::getDatabaseInfoByPath(QString path)
@@ -784,7 +791,7 @@ DatabaseInfo* MainWindow::getDatabaseInfoByPath(QString path)
             return m_databases[i];
         }
     }
-    return 0;
+    return nullptr;
 }
 
 Game& MainWindow::game()
@@ -1393,7 +1400,7 @@ void MainWindow::setupActions()
     connect(this, SIGNAL(signalCurrentDBcanBeClosed(bool)), closeFileAction, SLOT(setEnabled(bool)));
     file->addAction(closeFileAction);
 
-    file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), QKeySequence(), 0, QString(), QString(), QAction::QuitRole));
+    file->addAction(createAction(tr("&Quit"), SLOT(slotFileQuit()), QKeySequence(), nullptr, QString(), QString(), QAction::QuitRole));
 
     /* Edit menu */
     QMenu* edit = menuBar()->addMenu(tr("&Edit"));
@@ -1488,7 +1495,7 @@ void MainWindow::setupActions()
     brushGroup->addAction(brushAction);
     edit->addSeparator();
 
-    edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(), 0,
+    edit->addAction(createAction(tr("&Preferences..."), SLOT(slotConfigure()), QKeySequence(), nullptr,
                                  QString(), QString(), QAction::PreferencesRole));
 
     /* View menu */
@@ -1508,7 +1515,7 @@ void MainWindow::setupActions()
 #endif
 
     m_menuView->addAction(createAction(tr("Close current board"), SLOT(slotCloseTabWidget()), Qt::CTRL + Qt::SHIFT + Qt::Key_W,
-                                       0, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
+                                       nullptr, style()->standardIcon(QStyle::SP_TitleBarCloseButton)));
     m_menuView->addSeparator();
 
     QToolBar* viewToolBar = addToolBar(tr("View"));
@@ -1781,7 +1788,7 @@ void MainWindow::setupActions()
     reportBugAction->setIcon(QIcon(":/images/bug.png"));
     help->addAction(reportBugAction);
     help->addSeparator();
-    help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), 0, QString(), QString(), QAction::AboutRole));
+    help->addAction(createAction(tr("&About ChessX"), SLOT(slotHelpAbout()), QString(), nullptr, QString(), QString(), QAction::AboutRole));
 
 #ifdef QT_DEBUG
     QMenu* debug = help->addMenu("Debug");
@@ -2082,7 +2089,7 @@ void MainWindow::slotVersionFound(int major, int minor, int build)
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
-    m_pDragTabBar = 0;
+    m_pDragTabBar = nullptr;
     m_tabDragIndex = -1;
     const QMimeData *mimeData = event->mimeData();
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
@@ -2096,7 +2103,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 void MainWindow::dragMoveEvent(QDragMoveEvent *event)
 {
     QTabBar* pTabBar = qobject_cast<QTabBar*>(childAt(event->pos()));
-    if (pTabBar == NULL || pTabBar->parent() != this)
+    if (pTabBar == nullptr || pTabBar->parent() != this)
     {
         event->ignore();
         return;
@@ -2125,7 +2132,7 @@ void MainWindow::dragMoveEvent(QDragMoveEvent *event)
 
 void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
 {
-    m_pDragTabBar = 0;
+    m_pDragTabBar = nullptr;
     m_tabDragIndex = -1;
     m_dragTimer->stop();
     event->accept();
@@ -2133,7 +2140,7 @@ void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
 
 void MainWindow::dropEvent(QDropEvent *event)
 {
-    m_pDragTabBar = 0;
+    m_pDragTabBar = nullptr;
     m_tabDragIndex = -1;
     m_dragTimer->stop();
     event->ignore();
@@ -2145,7 +2152,7 @@ void MainWindow::slotAutoSwitchTab()
     {
         m_dragTimer->stop();
         m_pDragTabBar->setCurrentIndex(m_tabDragIndex);
-        m_pDragTabBar = 0;
+        m_pDragTabBar = nullptr;
         m_tabDragIndex = -1;
     }
 }
@@ -2171,10 +2178,62 @@ void MainWindow::setGameMode(bool gameMode)
     emit signalGameAtLineStart(!gameMode && game().atLineStart());
 }
 
+QString MainWindow::PieceToSpeech(PieceType pt)
+{
+    QStringList pn;
+    pn << tr("None") << tr("King") << tr("Queen")
+       << tr("Rook") << tr("Bishop") << tr("Knight") << tr("Pawn");
+    return pn.at(pt);
+}
+
+QString MainWindow::MoveToSpeech(Move m)
+{
+    if (m.isNullMove())
+    {
+        return tr("idea");
+    }
+    if (m.isCastling())
+    {
+        return m.isCastlingShort() ? tr("castles short") : tr("castles long");
+    }
+    QString s = PieceToSpeech(pieceType(m.pieceMoved()));
+    s += " ";
+    s += m.fromSquareString();
+    s += " ";
+    s += tr("to");
+    s += " ";
+    s += m.toSquareString();
+    s += " ";
+    if (m.isPromotion())
+    {
+        s += " ";
+        s += tr("promotes to");
+        s += " ";
+        s = PieceToSpeech(pieceType(m.promotedPiece()));
+    }
+    return s;
+}
+
+bool MainWindow::announceMove(Move m)
+{
+#ifdef USE_SPEECH
+    if (AppSettings->getValue("/Sound/Move").toInt() == 2)
+    {
+        QString s = MoveToSpeech(m);
+        if (!s.isEmpty())
+        {
+            speech->say(s);
+            return true;
+        }
+    }
+#endif
+    return false;
+}
+
 void MainWindow::playSound(QString s)
 {
 #ifdef USE_SOUND
-    if (AppSettings->getValue("/Sound/Move").toBool())
+    if (AppSettings->getValue("/Sound/Move").toInt()==1)
     {
         QSound::play(s);
     }

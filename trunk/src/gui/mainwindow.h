@@ -55,6 +55,9 @@ class QTimer;
 class QToolBar;
 class SaveDialog;
 class TableView;
+#ifdef USE_SPEECH
+class QTextToSpeech;
+#endif
 class ToolMainWindow;
 class TranslatingSlider;
 class PolyglotWriter;
@@ -507,6 +510,9 @@ protected:
     bool ActivateFICSDatabase();
     void setupAnalysisWidget(DockWidgetEx *analysisDock, AnalysisWidget *analysis);
     void playSound(QString s);
+    QString PieceToSpeech(PieceType pt);
+    QString MoveToSpeech(Move m);
+    bool announceMove(Move m);
     void doBoardMove(Move m, unsigned int button, Square from, Square to);
     QString favoriteUrl() const;
     QString drawAnnotation() const;
@@ -564,13 +570,13 @@ private slots:
 private:
     /** Create single menu action. */
     QAction* createAction(QString name, const char* slot, const QKeySequence& key = QKeySequence(),
-                          QToolBar* pToolBar = 0, QString image = QString(), const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole, QObject *parent=0);
+                          QToolBar* pToolBar = nullptr, QString image = QString(), const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole, QObject *parent=nullptr);
     /** Create single menu action. */
     QAction* createAction(QObject *parent, QString name, const char* slot, const QKeySequence& key = QKeySequence(),
-                          QToolBar* pToolBar = 0, QString image = QString(), const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole);
+                          QToolBar* pToolBar = nullptr, QString image = QString(), const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole);
     /** Create single menu action. */
     QAction* createAction(QString name, const char* slot, const QKeySequence& key,
-                          QToolBar* pToolBar, QIcon icon = QIcon(), const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole, QObject *parent=0);
+                          QToolBar* pToolBar, QIcon icon = QIcon(), const QString& tip = QString(), QAction::MenuRole menuRole = QAction::NoRole, QObject *parent=nullptr);
     /** Create all the menus and actions */
     void setupActions();
     /** Confirm quitting and save modified databases. */
@@ -587,7 +593,7 @@ private:
     void loadFileFavorites();
     /** Query User and save game if game was modified
         @return true if the next action shall be performed */
-    bool QuerySaveGame(DatabaseInfo* dbInfo = 0);
+    bool QuerySaveGame(DatabaseInfo* dbInfo = nullptr);
     /** Save game without query into current database */
     void SimpleSaveGame();
     /** Save game without query */
@@ -715,6 +721,9 @@ private:
     QList<PolyglotWriter*> m_polyglotWriters;
     QMap<QUrl, QString> m_mapDatabaseToDroppedUrl;
     bool m_lastMessageWasHint;
+#ifdef USE_SPEECH
+    QPointer<QTextToSpeech> speech;
+#endif
 };
 
 #endif
