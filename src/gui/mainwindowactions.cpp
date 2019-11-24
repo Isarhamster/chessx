@@ -72,6 +72,9 @@
 #include <QPixmap>
 #include <QProgressBar>
 #include <QStatusBar>
+#ifdef USE_SPEECH
+#include <QTextToSpeech>
+#endif
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -617,7 +620,10 @@ bool MainWindow::addRemoteMoveFrom64Char(QString s)
             m_currentFrom = m.from();
             m_currentTo = m.to();
             moveChanged();
-            playSound(":/sounds/move.wav");
+            if (!announceMove(m))
+            {
+                playSound(":/sounds/move.wav");
+            }
         }
         return true;
     }
@@ -774,7 +780,10 @@ void MainWindow::triggerBoardMove()
         m_currentFrom = m.from();
         m_currentTo = m.to();
         moveChanged(); // The move's currents where set after forward(), thus repair effects
-        playSound(":/sounds/move.wav");
+        if (!announceMove(m))
+        {
+            playSound(":/sounds/move.wav");
+        }
     }
     else
     {
@@ -887,7 +896,7 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                 int index = 0;
                 if ((action == BoardView::ActionQuery) || !AppSettings->getValue("/Board/AutoPromoteToQueen").toBool())
                 {
-                    index = PromotionDialog(0,m.color()).getIndex();
+                    index = PromotionDialog(nullptr,m.color()).getIndex();
                     if(index<0)
                     {
                         return;
@@ -1147,12 +1156,8 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
         {
             if (!twoSquares)
             {
-                bool nextGuess = AppSettings->getValue("/Board/nextGuess").toBool();
-                if(button & Qt::ControlModifier)
-                {
-                    nextGuess = !nextGuess;    // CTRL selects the other mapping
-                }
-                if(!nextGuess)
+                int nextGuess = AppSettings->getValue("/Board/nextGuess").toInt();
+                if(nextGuess==0)
                 {
                     bool remove = game().atLineEnd();
                     int var = game().variationNumber();
@@ -1169,9 +1174,13 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
                         }
                     }
                 }
-                else
+                else if(nextGuess==1)
                 {
                     m_boardView->nextGuess(s);
+                }
+                else if(nextGuess==2)
+                {
+                    game().appendSquareAnnotation(s, m_lastColor);
                 }
             }
             else
@@ -2243,7 +2252,10 @@ bool MainWindow::doEngineMove(Move m, EngineParameter matchParameter)
     }
     else
     {
-        playSound(":/sounds/move.wav");
+        if (!announceMove(m))
+        {
+            playSound(":/sounds/move.wav");
+        }
     }
     return true;
 }
@@ -2653,7 +2665,7 @@ void MainWindow::copyGames(QString fileName, QList<GameId> indexes)
                 {
                     m_gameList->startUpdate();
                 }
-				// TODO: Das Filtermodel muss vorher verständigt werden
+				// TODO: Das Filtermodel muss vorher verstï¿½ndigt werden
                 m_databases[i]->filter()->resize(m_databases[i]->database()->count() + static_cast<quint64>(indexes.count()), true);
                 foreach (GameId index, indexes)
                 {
@@ -3217,7 +3229,7 @@ void MainWindow::slotUpdateOpeningBook(QString name)
         }
         else
         {
-            analysis->updateBookFile(0);
+            analysis->updateBookFile(nullptr);
         }
     }
 }
@@ -3291,6 +3303,13 @@ void MainWindow::slotGetGameData(Game& g)
 bool MainWindow::slotGameMoveNext()
 {
     Move m = game().move(game().nextMove());
+    if (AppSettings->getValue("/Sound/ScreenReader").toBool())
+    {
+        if (!announceMove(m))
+        {
+            playSound(":/sounds/move.wav");
+        }
+    }
     m_currentFrom = m.from();
     m_currentTo = m.to();
     return gameMoveBy(1);
@@ -3382,7 +3401,7 @@ BoardView* MainWindow::CreateBoardView()
 
         return boardView;
     }
-    return 0;
+    return nullptr;
 }
 
 void MainWindow::activateBoardViewForDbIndex(void* dbIndex)
@@ -3573,7 +3592,7 @@ void MainWindow::slotScreenShot()
 
 void MainWindow::slotCompileECO()
 {
-    QString filepath = QFileDialog::getOpenFileName(0, "Compile ECO", QDir::currentPath(), "ECO Text File (*.txt);;All Files(*.*)");
+    QString filepath = QFileDialog::getOpenFileName(nullptr, "Compile ECO", QDir::currentPath(), "ECO Text File (*.txt);;All Files(*.*)");
     if (!filepath.isEmpty())
     {
         (void) compileAsciiEcoFile(filepath, "chessx.eco", "chessx.gtm");

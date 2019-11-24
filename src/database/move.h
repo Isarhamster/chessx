@@ -70,6 +70,8 @@ public:
     /** return Square where rook was placed before castling */
     Square castlingRookFrom() const;
     /** Convert to algebraic notation (e2e4, g8f6 etc.) */
+    QString fromSquareString() const;
+    QString toSquareString() const;
     QString toAlgebraic() const;
     QString dumpAlgebraic() const;
     QString toAlgebraicDebug() const;
@@ -91,6 +93,8 @@ public:
     bool isPromotion() const;
     /** Check whether move is a castling */
     bool isCastling() const;
+    /** Determine if this castling is short (to the kingside) */
+    bool isCastlingShort() const;
     /** Check whether the move is a pawn double advance */
     bool isDoubleAdvance() const;
     /** Check whether move is an en passant */
@@ -339,6 +343,22 @@ inline Square Move::castlingRookTo() const
     return Square((from() + to()) / 2);
 }
 
+inline QString Move::fromSquareString() const
+{
+    QString alg;
+    alg += QChar('a' + from() % 8);
+    alg += QChar('1' + from() / 8);
+    return alg;
+}
+
+inline QString Move::toSquareString() const
+{
+    QString alg;
+    alg += QChar('a' + to() % 8);
+    alg += QChar('1' + to() / 8);
+    return alg;
+}
+
 inline QString Move::dumpAlgebraic() const
 {
     QString alg;
@@ -416,6 +436,14 @@ inline bool Move::isPromotion() const
 inline bool Move::isCastling() const
 {
     return m & CASTLINGBIT;
+}
+
+#define CW_00 (4 | (6 << 6) | (King << 12) | CASTLINGBIT)
+#define CB_00 (60 | (62 << 6) | (King << 12) | CASTLINGBIT)
+
+inline bool Move::isCastlingShort() const
+{
+    return (((m & CW_00) == CW_00) || ((m & CB_00) == CB_00));
 }
 
 inline bool Move::isDoubleAdvance() const

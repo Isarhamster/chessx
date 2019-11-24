@@ -458,7 +458,7 @@ void PreferencesDialog::restoreSettings()
     ui.hilightCurrentMove->setCurrentIndex(AppSettings->getValue("showCurrentMove").toInt());
     ui.cbShowIndicator->setCurrentIndex(AppSettings->getValue("showMoveIndicator").toInt());
     ui.guessMoveCheck->setChecked(AppSettings->getValue("guessMove").toBool());
-    ui.guessNextMove->setChecked(AppSettings->getValue("nextGuess").toBool());
+    ui.guessNextMove->setCurrentIndex(AppSettings->getValue("nextGuess").toInt());
     ui.minWheelCount->setValue(AppSettings->getValue("minWheelCount").toInt());
     ui.cbSaveAndContinue->setChecked(AppSettings->getValue("AutoSaveAndContinue").toBool());
     ui.cbBackwardAnalysis->setChecked(AppSettings->getValue("BackwardAnalysis").toBool());
@@ -569,12 +569,17 @@ void PreferencesDialog::restoreSettings()
     AppSettings->endGroup();
 
     AppSettings->beginGroup("Sound");
-#ifdef USE_SOUND
-    ui.cbSoundOn->setChecked(AppSettings->getValue("Move").toBool());
+
+#if defined(USE_SOUND) || defined(USE_SPEECH)
+    ui.cbSoundOn->setCurrentIndex(AppSettings->getValue("Move").toInt());
+    ui.cbScreenReader->setChecked(AppSettings->getValue("ScreenReader").toBool());
 #else
     ui.cbSoundOn->setChecked(false);
     ui.cbSoundOn->setEnabled(false);
+    ui.cbScreenReader->setChecked(false);
+    ui.cbScreenReader->setEnabled(false);
 #endif
+
     AppSettings->endGroup();
 }
 
@@ -599,7 +604,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("showMoveIndicator", QVariant(ui.cbShowIndicator->currentIndex()));
     AppSettings->setValue("guessMove", QVariant(ui.guessMoveCheck->isChecked()));
     AppSettings->setValue("noHints", QVariant(ui.btNoHints->isChecked()));
-    AppSettings->setValue("nextGuess", QVariant(ui.guessNextMove->isChecked()));
+    AppSettings->setValue("nextGuess", QVariant(ui.guessNextMove->currentIndex()));
     AppSettings->setValue("minWheelCount", ui.minWheelCount->value());
     AppSettings->setValue("pieceTheme", ui.pieceThemeCombo->currentText());
     AppSettings->setValue("pieceEffect", ui.pieceEffect->currentIndex());
@@ -675,7 +680,8 @@ void PreferencesDialog::saveSettings()
     AppSettings->endGroup();
 
     AppSettings->beginGroup("Sound");
-    AppSettings->setValue("Move", ui.cbSoundOn->isChecked());
+    AppSettings->setValue("Move", ui.cbSoundOn->currentIndex());
+    AppSettings->setValue("ScreenReader", ui.cbScreenReader->isChecked());
     AppSettings->endGroup();
 
     QDir().mkpath(ui.defaultDataBasePath->text());

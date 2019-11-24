@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>585</width>
-    <height>651</height>
+    <height>674</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,17 +62,41 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
        <string>Board</string>
       </attribute>
       <layout class="QGridLayout">
-       <item row="9" column="2">
-        <widget class="QCheckBox" name="boardFrameCheck">
+       <item row="1" column="2">
+        <layout class="QHBoxLayout" name="boardStyleLayout">
+         <item>
+          <widget class="QComboBox" name="boardThemeCombo">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="alwaysScale">
+           <property name="text">
+            <string>Always Scale</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_16">
          <property name="text">
-          <string>&amp;Draw frame between squares</string>
+          <string>Turn board for player:</string>
+         </property>
+         <property name="buddy">
+          <cstring>editPlayerTurnBoard</cstring>
          </property>
         </widget>
        </item>
@@ -84,120 +108,6 @@
          <property name="buddy">
           <cstring>hilightCurrentMove</cstring>
          </property>
-        </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="ColorList" name="boardColorsList"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>&amp;Colors:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-         </property>
-         <property name="buddy">
-          <cstring>boardColorsList</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="19" column="0" colspan="3">
-        <widget class="QGroupBox" name="groupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title">
-          <string>Mouse Behaviour</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetDefaultConstraint</enum>
-          </property>
-          <item>
-           <widget class="QCheckBox" name="guessMoveCheck">
-            <property name="text">
-             <string>&amp;Guess move on left-click</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="guessNextMove">
-            <property name="text">
-             <string>Next guess on right click</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QLabel" name="labelWheel">
-              <property name="text">
-               <string>Wheel sensitivity</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="labelFast">
-              <property name="text">
-               <string>Fast</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSlider" name="minWheelCount">
-              <property name="maximum">
-               <number>960</number>
-              </property>
-              <property name="singleStep">
-               <number>104</number>
-              </property>
-              <property name="pageStep">
-               <number>120</number>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="invertedAppearance">
-               <bool>false</bool>
-              </property>
-              <property name="tickPosition">
-               <enum>QSlider::TicksBothSides</enum>
-              </property>
-              <property name="tickInterval">
-               <number>120</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_10">
-              <property name="text">
-               <string>Slow</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
         </widget>
        </item>
        <item row="0" column="2">
@@ -249,6 +159,20 @@
          </property>
         </widget>
        </item>
+       <item row="9" column="0">
+        <widget class="QCheckBox" name="btNoHints">
+         <property name="text">
+          <string>No hints in training mode</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="2">
+        <widget class="QCheckBox" name="boardShowCoordinates">
+         <property name="text">
+          <string>Draw Coordinates</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="pieceThemeLabel">
          <property name="text">
@@ -259,65 +183,34 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="2">
-        <widget class="QComboBox" name="hilightCurrentMove">
+       <item row="9" column="2">
+        <widget class="QCheckBox" name="boardFrameCheck">
+         <property name="text">
+          <string>&amp;Draw frame between squares</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QComboBox" name="cbShowIndicator">
+         <item>
+          <property name="text">
+           <string>Automatic</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Always</string>
+          </property>
+         </item>
          <item>
           <property name="text">
            <string>Never</string>
           </property>
          </item>
-         <item>
-          <property name="text">
-           <string>Frame</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Arrow</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <layout class="QHBoxLayout" name="boardStyleLayout">
-         <item>
-          <widget class="QComboBox" name="boardThemeCombo">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="alwaysScale">
-           <property name="text">
-            <string>Always Scale</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="labelShowMoveIndicator">
-         <property name="text">
-          <string>Show move indicator</string>
-         </property>
-         <property name="buddy">
-          <cstring>cbShowIndicator</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="0">
-        <widget class="QCheckBox" name="btNoHints">
-         <property name="text">
-          <string>No hints in training mode</string>
-         </property>
         </widget>
        </item>
        <item row="16" column="0" colspan="3">
-        <widget class="QGroupBox" name="groupBox_10">
+        <widget class="QGroupBox" name="groupBoxCopyImage">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -389,47 +282,188 @@
          </layout>
         </widget>
        </item>
-       <item row="10" column="2">
-        <widget class="QCheckBox" name="boardShowCoordinates">
-         <property name="text">
-          <string>Draw Coordinates</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="2">
-        <widget class="QComboBox" name="cbShowIndicator">
-         <item>
-          <property name="text">
-           <string>Automatic</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Always</string>
-          </property>
-         </item>
+       <item row="7" column="2">
+        <widget class="QComboBox" name="hilightCurrentMove">
          <item>
           <property name="text">
            <string>Never</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>Frame</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Arrow</string>
+          </property>
+         </item>
         </widget>
        </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="label_16">
+       <item row="6" column="0">
+        <widget class="QLabel" name="labelShowMoveIndicator">
          <property name="text">
-          <string>Turn board for player:</string>
+          <string>Show move indicator</string>
          </property>
          <property name="buddy">
-          <cstring>editPlayerTurnBoard</cstring>
+          <cstring>cbShowIndicator</cstring>
          </property>
         </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>&amp;Colors:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="buddy">
+          <cstring>boardColorsList</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="ColorList" name="boardColorsList"/>
        </item>
        <item row="8" column="2">
         <widget class="QLineEdit" name="editPlayerTurnBoard">
          <property name="placeholderText">
           <string>Enter a name or expression like &quot;Me|You&quot;</string>
          </property>
+        </widget>
+       </item>
+       <item row="19" column="0" colspan="3">
+        <widget class="QGroupBox" name="groupBoxMouse">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Mouse Behaviour</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetDefaultConstraint</enum>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_22">
+            <item>
+             <widget class="QGroupBox" name="groupBoxMouseOver">
+              <property name="title">
+               <string>On mouse over</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_21">
+               <item>
+                <widget class="QCheckBox" name="guessMoveCheck">
+                 <property name="text">
+                  <string>Show guess</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBoxRightMouse">
+              <property name="title">
+               <string>Right mouse button</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_20">
+               <item>
+                <widget class="QComboBox" name="guessNextMove">
+                 <item>
+                  <property name="text">
+                   <string>Go back / remove one move</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Next guess</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Colorize square</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="labelWheel">
+              <property name="text">
+               <string>Wheel sensitivity</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelFast">
+              <property name="text">
+               <string>Fast</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="minWheelCount">
+              <property name="maximum">
+               <number>960</number>
+              </property>
+              <property name="singleStep">
+               <number>104</number>
+              </property>
+              <property name="pageStep">
+               <number>120</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="invertedAppearance">
+               <bool>false</bool>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::TicksBothSides</enum>
+              </property>
+              <property name="tickInterval">
+               <number>120</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Slow</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -1533,15 +1567,34 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_3">
+        <widget class="QGroupBox" name="groupBox_Sound">
          <property name="title">
           <string>Sound</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QCheckBox" name="cbSoundOn">
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="0">
+           <widget class="QComboBox" name="cbSoundOn">
+            <item>
+             <property name="text">
+              <string>No sounds</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Indication sounds</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Speak moves</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="cbScreenReader">
             <property name="text">
-             <string>Indicate opponent's move</string>
+             <string>Sound while moving through games</string>
             </property>
            </widget>
           </item>
