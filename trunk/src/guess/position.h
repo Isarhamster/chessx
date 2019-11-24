@@ -149,7 +149,7 @@ public:
     }
     ~Position()
     {
-    	if(LegalMoves != NULL)
+    	if(LegalMoves != nullptr)
         {
             delete LegalMoves;
         }
@@ -342,7 +342,7 @@ public:
     void  GenerateMoves(MoveList * mlist, pieceC mask, genMovesT genType, bool maybeInCheck);
     void  GenerateMoves()
     {
-        GenerateMoves(NULL, C_EMPTY, GEN_ALL_MOVES, true);
+        GenerateMoves(nullptr, C_EMPTY, GEN_ALL_MOVES, true);
     }
     void  GenerateMoves(MoveList * mlist)
     {
@@ -367,14 +367,14 @@ public:
     errorT      MatchPawnMove(MoveList * mlist, fyleT fromFyle, squareT to, pieceC promote);
     errorT      MatchKingMove(MoveList * mlist, squareT target);
 
-    unsigned int CalcAttacks(colorT toMove, squareT kingSq, SquareList * squares = 0, bool calcDiscoveredAttacks=0) const;
+    unsigned int CalcAttacks(colorT toMove, squareT kingSq, SquareList * squares = nullptr, bool calcDiscoveredAttacks=0) const;
     unsigned int CalcNumChecks() const
     {
-        return CalcAttacks(1 - ToMove, GetKingSquare(), NULL);
+        return CalcAttacks(1 - ToMove, GetKingSquare(), nullptr);
     }
     unsigned int CalcNumChecks(squareT kingSq) const
     {
-        return CalcAttacks(1 - ToMove, kingSq, NULL);
+        return CalcAttacks(1 - ToMove, kingSq, nullptr);
     }
     unsigned int CalcNumChecks(squareT kingSq, SquareList * checkSquares) const
     {
@@ -473,7 +473,7 @@ Position::GetCastling(colorT c, castleDirT dir) const
 inline void
 Position::AllocLegalMoves()
 {
-    ASSERT(LegalMoves == NULL);
+    ASSERT(LegalMoves == nullptr);
     LegalMoves = new MoveList();
 }
 
@@ -484,7 +484,7 @@ Position::AllocLegalMoves()
 inline void
 Position::ClearLegalMoves()
 {
-    if(LegalMoves == NULL)
+    if(LegalMoves == nullptr)
     {
         AllocLegalMoves();
     }

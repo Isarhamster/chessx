@@ -950,7 +950,7 @@ void Engine::ScorePawnStructure(pawnTableEntryT * pawnEntry)
 
     bool inPawnEndgame = (Pos.NumNonPawns(WHITE) == 1
                           &&  Pos.NumNonPawns(BLACK) == 1);
-    pawnTableEntryT * hashEntry = NULL;
+    pawnTableEntryT * hashEntry = nullptr;
 
     // Check for a pawn hash table hit, but not in pawn endings:
     if(!inPawnEndgame)
@@ -1323,7 +1323,7 @@ void Engine::SetHashTableKilobytes(unsigned int size)
     {
         TranTableSize--;
     }
-    if(TranTable != NULL)
+    if(TranTable != nullptr)
     {
         delete[] TranTable;
     }
@@ -1339,7 +1339,7 @@ void Engine::SetPawnTableKilobytes(unsigned int size)
     // Compute the number of entries:
     unsigned int bytes = size * 1024;
     PawnTableSize = bytes / sizeof(pawnTableEntryT);
-    if(PawnTable != NULL)
+    if(PawnTable != nullptr)
     {
         delete[] PawnTable;
     }
@@ -1501,7 +1501,7 @@ void Engine::StoreHash(int depth, scoreFlagT ttFlag, int score,
         {
             // Do not overwrite an existing better entry for the same
             // position; but if there was no move, add one:
-            if(ttEntry->bestMove == 0  &&  bestMove != NULL)
+            if(ttEntry->bestMove == 0  &&  bestMove != nullptr)
             {
                 tte_SetBestMove(ttEntry, bestMove);
             }
@@ -1536,7 +1536,7 @@ void Engine::StoreHash(int depth, scoreFlagT ttFlag, int score,
     tte_SetFlags(ttEntry, ttFlag, stm, Pos.GetCastlingFlags(), isOnlyMove);
     ttEntry->sequence = TranTableSequence;
     ttEntry->bestMove = 0;
-    if(bestMove != NULL)
+    if(bestMove != nullptr)
     {
         ASSERT(bestMove->movingPiece != EMPTY);
         ASSERT(piece_Color(bestMove->movingPiece) == stm);
@@ -1553,7 +1553,7 @@ void Engine::StoreHash(int depth, scoreFlagT ttFlag, int score,
 scoreFlagT Engine::ProbeHash(int depth, int * score, simpleMoveT * bestMove, bool * isOnlyMove)
 {
     // Clear the best move:
-    if(bestMove != NULL)
+    if(bestMove != nullptr)
     {
         bestMove->moveCastles = false;
         bestMove->promote = C_EMPTY;
@@ -1608,13 +1608,13 @@ scoreFlagT Engine::ProbeHash(int depth, int * score, simpleMoveT * bestMove, boo
 
     // If a hash move is stored, we return it even if the depth is not
     // sufficient, because it will be useful for move ordering anyway.
-    if(bestMove != NULL  &&  ttEntry->bestMove != 0)
+    if(bestMove != nullptr  &&  ttEntry->bestMove != 0)
     {
         tte_GetBestMove(ttEntry, bestMove);
         pieceT * board = Pos.GetBoard();
         bestMove->movingPiece = board[bestMove->from];
     }
-    if(isOnlyMove != NULL)
+    if(isOnlyMove != nullptr)
     {
         *isOnlyMove = tte_IsOnlyMove(ttEntry);
     }
@@ -1624,7 +1624,7 @@ scoreFlagT Engine::ProbeHash(int depth, int * score, simpleMoveT * bestMove, boo
     {
         return SCORE_NONE;
     }
-    if(score != NULL)
+    if(score != nullptr)
     {
         *score = ttEntry->score;
         // Convert mating scores to exclude the current Ply count:
@@ -1654,7 +1654,7 @@ void Engine::SetPosition(Position * newpos)
     NumGameMoves = 0;
 
     // Set the position:
-    if(newpos == NULL)
+    if(newpos == nullptr)
     {
         RootPos.StdStart();
         Pos.StdStart();
@@ -1702,7 +1702,7 @@ int Engine::Think(MoveList * mlist)
     ClearHistoryValues();
 
     // If no legal move list was specified, generate and search all moves:
-    if(mlist == NULL || !mlist->size())
+    if(mlist == nullptr || !mlist->size())
     {
         Pos.GenerateMoves();
         mlist = Pos.GetLegalMoves();
@@ -1838,7 +1838,7 @@ int Engine::SearchRoot(int depth, int alpha, int beta, MoveList * mlist)
     ASSERT(depth >= 1);
 
     // If no legal move list was specified, generate and search all moves:
-    if(mlist == NULL)
+    if(mlist == nullptr)
     {
         Pos.GenerateMoves();
         mlist = Pos.GetLegalMoves();
@@ -2279,7 +2279,7 @@ int Engine::Search(int depth, int alpha, int beta, bool tryNullMove)
     if(alpha == oldAlpha)
     {
         ASSERT(bestMoveIndex < 0);
-        StoreHash(depth, SCORE_UPPER, alpha, NULL, isOnlyMove);
+        StoreHash(depth, SCORE_UPPER, alpha, nullptr, isOnlyMove);
     }
     else
     {
@@ -2866,7 +2866,7 @@ void Engine::Output(const char * format, ...)
     va_list ap;
     va_start(ap, format);
     vprintf(format, ap);
-    if(LogFile != NULL)
+    if(LogFile != nullptr)
     {
         vfprintf(LogFile, format, ap);
     }
@@ -2972,7 +2972,7 @@ bool Engine::OutOfTime()
         IsOutOfTime = (ms > SearchTime);
     }
 
-    if(!IsOutOfTime  &&  CallbackFunction != NULL)
+    if(!IsOutOfTime  &&  CallbackFunction != nullptr)
     {
         IsOutOfTime = CallbackFunction(this, CallbackData);
     }

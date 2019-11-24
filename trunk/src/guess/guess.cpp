@@ -26,8 +26,8 @@ int attackersOnSquare(const char *fen, int target)
     Position pos;
     pos.ReadFromFEN(fen);
 
-    unsigned int whiteDefenders = pos.CalcAttacks(WHITE, (squareT) target, 0, 1);
-    unsigned int blackDefenders = pos.CalcAttacks(BLACK, (squareT) target, 0, 1);
+    unsigned int whiteDefenders = pos.CalcAttacks(WHITE, (squareT) target, nullptr, 1);
+    unsigned int blackDefenders = pos.CalcAttacks(BLACK, (squareT) target, nullptr, 1);
 
     return whiteDefenders-blackDefenders;
 }

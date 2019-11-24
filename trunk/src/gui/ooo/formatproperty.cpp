@@ -103,7 +103,7 @@ void ParagraphFormatProperty::setLeftMargin( const qreal margin )
 }
 
 TextFormatProperty::TextFormatProperty()
-    : m_StyleInformation( 0 ), m_HasFontSize( false ),
+    : m_StyleInformation( nullptr ), m_HasFontSize( false ),
       m_FontWeight( -1 ), m_FontStyle( -1 ), m_TextPosition( 0 ),
       m_Color(Qt::black), m_BackgroundColor(Qt::transparent), m_underline(false)
 {
@@ -199,7 +199,7 @@ void TextFormatProperty::setUnderline( bool underline )
 }
 
 StyleFormatProperty::StyleFormatProperty()
-    : m_StyleInformation( 0 ), m_DefaultStyle( false )
+    : m_StyleInformation( nullptr ), m_DefaultStyle( false )
 {
 }
 

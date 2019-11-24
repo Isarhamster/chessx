@@ -204,20 +204,20 @@ public:
         MaxDepth = ENGINE_MAX_PLY;      // A large default search depth
         SearchTime = 1000;  // Default search time: 1000 ms = one second.
         MinSearchTime = MaxSearchTime = SearchTime;
-        LogFile = NULL;
+        LogFile = nullptr;
         Debug = false;
         PostInfo = false;
         XBoardMode = false;
         Pruning = false;
         RepStackSize = 0;
-        TranTable = NULL;
+        TranTable = nullptr;
         TranTableSize = 0;
         TranTableSequence = 0;
-        PawnTable = NULL;
+        PawnTable = nullptr;
         PawnTableSize = 0;
         SetHashTableKilobytes(ENGINE_HASH_KB);
         SetPawnTableKilobytes(ENGINE_PAWN_KB);
-        CallbackFunction = NULL;
+        CallbackFunction = nullptr;
         NumGameMoves = 0;
         RootPos.StdStart();
         Pos.StdStart();
