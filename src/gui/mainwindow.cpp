@@ -670,8 +670,12 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
 
     bool enterPressed = ((e->key() == Qt::Key_Enter) || (e->key() == Qt::Key_Return));
 
-    if(enterPressed && !m_nagText.isEmpty())
+    if(enterPressed)
     {
+        if (m_nagText.isEmpty())
+        {
+            return;
+        }
         // Try to figure out a SAN
         if(NagSet::hasMatch(m_nagText)) // enter forces the current nag
         {
@@ -722,15 +726,9 @@ void MainWindow::evaluateSanNag(QKeyEvent *e)
         m_nagText = "N";
     }
 
-    if(NagSet::hasMatch(m_nagText))
+    if(Nag n = NagSet::uniqueMatch(m_nagText))
     {
-        if(!game().atGameStart())
-        {
-            if (!game().addNag(NagSet::fromString(m_nagText)))
-            {
-                return; // Could be start of NAG or a start of a move (R<->RR)
-            }
-        }
+        game().addNag(n);
         m_nagText.clear();
     }
 }
