@@ -681,6 +681,31 @@ bool NagSet::hasMatch(const QString &nag)
     return false;
 }
 
+Nag NagSet::uniqueMatch(const QString &nag)
+{
+    if (s_ExtraNags.contains(nag))
+    {
+        return s_ExtraNags[nag];
+    }
+    Nag n = Nag::NullNag;
+    for(int i = 1; i < NagCount; ++i)
+    {
+        if(g_nagStringList[i] == nag)
+        {
+            if (n == Nag::NullNag)
+            {
+                n = Nag(i);
+            }
+        }
+        else if (g_nagStringList[i].startsWith(nag))
+        {
+            n = Nag::NullNag;
+            break;
+        }
+    }
+    return n;
+}
+
 void NagSet::removeNagRange(Nag from, Nag to)
 {
     for(int i = count() - 1; i >= 0; i--)

@@ -886,7 +886,7 @@ Color MainWindow::UserColor()
 void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to)
 {
     BoardView::BoardViewAction action = m_boardView->moveActionFromModifier((Qt::KeyboardModifiers) button);
-    if ((game().board().toMove() == UserColor()) && (UserColor() == game().board().colorAt(from)))
+    if ((game().board().toMove() == UserColor()) && ((UserColor() == game().board().colorAt(from) || m.isNullMove())))
     {
         if (m.isLegal() || m.isNullMove())
         {

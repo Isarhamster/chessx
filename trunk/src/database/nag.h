@@ -213,6 +213,7 @@ public:
     static bool isOtherNag(Nag nag);
     static QString nagToMenuString(Nag nag);
     static bool hasMatch(const QString& nag);
+    static Nag uniqueMatch(const QString &nag);
     static Nag fromString(const QString& nag);
 private:
     static void InitNagStringListLong();
