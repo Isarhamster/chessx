@@ -30,7 +30,6 @@ public:
     EngineProtocol protocol;
     OptionValueList m_optionValues;
     static QString commandToName(const QString& command);
-
 };
 
 

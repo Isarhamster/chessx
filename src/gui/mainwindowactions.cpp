@@ -3569,9 +3569,9 @@ void MainWindow::UpdateBoardInformation()
         QString nameBlack = game().tag(TagNameBlack);
         if(!(nameWhite.isEmpty() && nameBlack.isEmpty()))
         {
-            name += "<p align='center'><font color='midnightblue'>" +
+            name += "<p align='center'>" +
                     nameWhite  + "-" +
-                    nameBlack + "</font></p>";
+                    nameBlack + "</p>";
         }
         name += "</div>";
         m_tabWidget->setTabToolTip(m_tabWidget->currentIndex(), name);
