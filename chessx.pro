@@ -455,9 +455,12 @@ macx {
  INSTALLATION_DATA.files = mac_osx/qt_menu.nib
  INSTALLATION_DATA.path = Contents/Resources/
  QMAKE_BUNDLE_DATA += INSTALLATION_DATA
- ENGINE_DATA.files = data/engines-mac/uci/stockfish-10-64
+ ENGINE_DATA.files = data/engines-mac/uci/stockfish-10-64 data/engines-mac/uci/lc0 data/engines-mac/uci/weights_run1_42125.pb
  ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
  QMAKE_BUNDLE_DATA += ENGINE_DATA
+ ENGINE_LIB.files = $$files(data/engines-mac/uci/lib/*)
+ ENGINE_LIB.path = Contents/MacOS/data/engines-mac/uci/lib
+ QMAKE_BUNDLE_DATA += ENGINE_LIB
  TIMESEAL_DATA.files = data/timeseal/mac/timeseal
  TIMESEAL_DATA.path = Contents/MacOS/data/timeseal/mac
  QMAKE_BUNDLE_DATA += TIMESEAL_DATA
