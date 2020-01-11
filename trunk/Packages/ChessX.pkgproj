@@ -25,8 +25,10 @@
 									<false/>
 									<key>BUNDLE_POSTINSTALL_PATH</key>
 									<dict>
+										<key>PATH</key>
+										<string>symlink_tuning.sh</string>
 										<key>PATH_TYPE</key>
-										<integer>0</integer>
+										<integer>1</integer>
 									</dict>
 									<key>BUNDLE_PREINSTALL_PATH</key>
 									<dict>
@@ -530,6 +532,8 @@
 				</dict>
 				<key>PAYLOAD_TYPE</key>
 				<integer>0</integer>
+				<key>PRESERVE_EXTENDED_ATTRIBUTES</key>
+				<false/>
 				<key>SHOW_INVISIBLE</key>
 				<false/>
 				<key>SPLIT_FORKS</key>
@@ -544,7 +548,7 @@
 				<key>POSTINSTALL_PATH</key>
 				<dict>
 					<key>PATH_TYPE</key>
-					<integer>0</integer>
+					<integer>1</integer>
 				</dict>
 				<key>PREINSTALL_PATH</key>
 				<dict>
@@ -579,7 +583,7 @@
 				<key>USE_HFS+_COMPRESSION</key>
 				<false/>
 				<key>VERSION</key>
-				<string>1.5.0</string>
+				<string>1.5.2</string>
 			</dict>
 			<key>TYPE</key>
 			<integer>0</integer>
