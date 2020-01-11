@@ -31,13 +31,16 @@ void EngineList::restoreEmptyFromPath(const QString& path, EngineData::EnginePro
     for(int i = 0; i < engines.size(); ++i)
     {
         QString name = engines[i];
-        EngineData data(name);
-        data.command = path + QDir::separator() + name;
-        data.directory = path;
-        data.protocol = protocol;
-        data.logging = false;
-        data.sendHistory = true;
-        append(data);
+        if (!name.startsWith("lib"))
+        {
+            EngineData data(name);
+            data.command = path + QDir::separator() + name;
+            data.directory = path;
+            data.protocol = protocol;
+            data.logging = false;
+            data.sendHistory = true;
+            append(data);
+        }
     }
 }
 

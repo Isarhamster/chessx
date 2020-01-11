@@ -202,6 +202,17 @@ void UCIEngine::processMessage(const QString& message)
         send("isready");
     }
 
+    if(message.startsWith("id"))
+    {
+        QStringList list = message.split(" " ,QString::SkipEmptyParts);
+        if (list.length()>2)
+        {
+            if (list[1] == "name")
+            {
+                m_name = list[2];
+            }
+        }
+    }
     if(message == "readyok")
     {
         if(m_waitingOn == "uciok")

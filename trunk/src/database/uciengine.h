@@ -72,6 +72,7 @@ private:
     Board m_board;
     Board m_startPos;
     QString m_line;
+    QString m_name;
 
     QString m_position;
     bool m_chess960;

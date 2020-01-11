@@ -5,6 +5,7 @@
 #include "aboutdlg.h"
 #include "databaseinfo.h"
 #include "settings.h"
+#include "shellhelper.h"
 #include "version.h"
 
 #include "ui_aboutdlg.h"
@@ -14,6 +15,11 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
+static QString pathify(QString s)
+{
+    return QString("<a href='%1'>%2</a>").arg(s).arg(s);
+}
+
 AboutDlg::AboutDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AboutDlg)
@@ -22,10 +28,10 @@ AboutDlg::AboutDlg(QWidget *parent) :
     restoreLayout();
 
     QString refPath = AppSettings->dataPath();
-    ui->labelDataPath->setText(refPath);
+    ui->labelDataPath->setText(pathify(refPath));
 
     refPath = AppSettings->getTempPath();
-    ui->labelTempPath->setText(refPath);
+    ui->labelTempPath->setText(pathify(refPath));
     ui->labelFicsPath->setText(DatabaseInfo::ficsPath());
 
     ui->labelCopyRightDate->setText(COPYRIGHT_DATE);
@@ -59,12 +65,12 @@ AboutDlg::AboutDlg(QWidget *parent) :
     ui->labelVersion->setText(version);
 
     QString settingsPath = AppSettings->fileName();
-    ui->labelSettingsPath->setText(settingsPath);
+    ui->labelSettingsPath->setText(pathify(settingsPath));
 
     ui->labelFicsPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-    ui->labelTempPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-    ui->labelDataPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-    ui->labelSettingsPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+    ui->labelTempPath->setTextInteractionFlags(Qt::TextBrowserInteraction | Qt::TextSelectableByKeyboard);
+    ui->labelDataPath->setTextInteractionFlags(Qt::TextBrowserInteraction | Qt::TextSelectableByKeyboard);
+    ui->labelSettingsPath->setTextInteractionFlags(Qt::TextBrowserInteraction | Qt::TextSelectableByKeyboard);
     ui->labelHomepage->setTextInteractionFlags(Qt::TextBrowserInteraction);
     ui->labelMailingList->setTextInteractionFlags(Qt::TextBrowserInteraction);
 }
@@ -89,4 +95,19 @@ void AboutDlg::reject()
 {
     AppSettings->setLayout(this);
     QDialog::reject();
+}
+
+void AboutDlg::on_labelTempPath_linkActivated(const QString &link)
+{
+    ShellHelper::showInFinder(link);
+}
+
+void AboutDlg::on_labelDataPath_linkActivated(const QString &link)
+{
+    ShellHelper::showInFinder(link);
+}
+
+void AboutDlg::on_labelSettingsPath_linkActivated(const QString &link)
+{
+    ShellHelper::showInFinder(link);
 }

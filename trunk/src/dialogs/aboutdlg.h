@@ -25,6 +25,13 @@ protected slots:
     void accept();
     void reject();
 
+private slots:
+    void on_labelTempPath_linkActivated(const QString &link);
+
+    void on_labelDataPath_linkActivated(const QString &link);
+
+    void on_labelSettingsPath_linkActivated(const QString &link);
+
 private:
     Ui::AboutDlg *ui;
 };
