@@ -34,6 +34,7 @@ public slots:
     void slotSelectPlayer(const QString& player);
     void setDatabase(DatabaseInfo* dbInfo);
     void filterSelectedPlayer();
+    void filterSelectedPlayerAdd();
     void renameSelectedPlayer();
     void slotReconfigure();
     void selectionChangedSlot();

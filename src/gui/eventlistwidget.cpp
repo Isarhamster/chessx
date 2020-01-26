@@ -25,6 +25,7 @@ EventListWidget::EventListWidget(QWidget *parent) :
     setObjectName("EventListWidget");
     connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findEvent(const QString&)));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedEvent()));
+    connect(ui->addFilter, SIGNAL(clicked()), SLOT(filterSelectedEventAdd()));
     connect(ui->renameItem, SIGNAL(clicked()), SLOT(renameSelectedEvent()));
     connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedEvent()));
 
@@ -139,6 +140,17 @@ void EventListWidget::filterSelectedEvent()
     if(selection.count())
     {
         QString ts = selection[0].data().toString();
+        emit filterRequest(ts);
+    }
+}
+
+void EventListWidget::filterSelectedEventAdd()
+{
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
+    if(selection.count())
+    {
+        QString ts = selection[0].data().toString();
+        ts.prepend("+");
         emit filterRequest(ts);
     }
 }
