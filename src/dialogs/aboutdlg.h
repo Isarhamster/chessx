@@ -32,6 +32,8 @@ private slots:
 
     void on_labelSettingsPath_linkActivated(const QString &link);
 
+    void on_labelDocPath_linkActivated(const QString &link);
+
 private:
     Ui::AboutDlg *ui;
 };

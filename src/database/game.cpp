@@ -1575,7 +1575,7 @@ void Game::moveVariationDown(MoveId moveId)
     if(i >= 0 && (i + 1) < v.count())
     {
         Game state = *this;
-        v.swap(i, i + 1);
+        v.swapItemsAt(i, i + 1);
         emit signalGameModified(true, state, tr("Move variation"));
     }
 }

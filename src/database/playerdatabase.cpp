@@ -84,7 +84,7 @@ bool PlayerDatabase::open(const QString& fname)
 
     if(map_magic != Magic)
     {
-        m_mapds.unsetDevice();
+        m_mapds.setDevice(nullptr);
         m_mapfile.close();
         return false;
     }
@@ -95,7 +95,7 @@ bool PlayerDatabase::open(const QString& fname)
     }
     else    //unknown version
     {
-        m_mapds.unsetDevice();
+        m_mapds.setDevice(nullptr);
         m_mapfile.close();
         return false;
     }
@@ -105,7 +105,7 @@ bool PlayerDatabase::open(const QString& fname)
     m_datafile.setFileName(fname + Datafile_suffix);
     if(!m_datafile.open(QIODevice::ReadWrite))
     {
-        m_mapds.unsetDevice();
+        m_mapds.setDevice(nullptr);
         m_mapfile.close();
         return false;
     }
@@ -115,9 +115,9 @@ bool PlayerDatabase::open(const QString& fname)
 
     if(data_magic != Magic)
     {
-        m_mapds.unsetDevice();
+        m_mapds.setDevice(nullptr);
         m_mapfile.close();
-        m_datads.unsetDevice();
+        m_datads.setDevice(nullptr);
         m_datafile.close();
         return false;
     }
@@ -128,18 +128,18 @@ bool PlayerDatabase::open(const QString& fname)
     }
     else    //unknown version
     {
-        m_mapds.unsetDevice();
+        m_mapds.setDevice(nullptr);
         m_mapfile.close();
-        m_datads.unsetDevice();
+        m_datads.setDevice(nullptr);
         m_datafile.close();
         return false;
     }
 
     if(map_version != data_version)
     {
-        m_mapds.unsetDevice();
+        m_mapds.setDevice(nullptr);
         m_mapfile.close();
-        m_datads.unsetDevice();
+        m_datads.setDevice(nullptr);
         m_datafile.close();
         return false;
     }
@@ -166,10 +166,10 @@ bool PlayerDatabase::removeDatabase(const QString& fname)
 void PlayerDatabase::close()
 {
     commit();
-    m_mapds.unsetDevice();
+    m_mapds.setDevice(nullptr);
     m_mapfile.flush();
     m_mapfile.close();
-    m_datads.unsetDevice();
+    m_datads.setDevice(nullptr);
     m_datafile.flush();
     m_datafile.close();
 }

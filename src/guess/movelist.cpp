@@ -137,7 +137,7 @@ MoveList::FindBest(unsigned int index)
     // Swap if necessary:
     if(index != bestIndex)
     {
-        swap(index,bestIndex);
+        swapItemsAt(index,bestIndex);
     }
 }
 
