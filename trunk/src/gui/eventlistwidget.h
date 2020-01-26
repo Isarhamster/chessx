@@ -38,6 +38,7 @@ public slots:
 protected slots:
     void findEvent(const QString& s);
     void filterSelectedEvent();
+    void filterSelectedEventAdd();
     void renameSelectedEvent();
     void slotReconfigure();
     void selectionChangedSlot();

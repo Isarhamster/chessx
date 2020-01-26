@@ -27,6 +27,7 @@ ECOListWidget::ECOListWidget(QWidget *parent) :
     setObjectName("ECOListWidget");
     connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findECO(const QString&)));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedECO()));
+    connect(ui->addFilter, SIGNAL(clicked()), SLOT(filterSelectedECOAdd()));
     connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedECO()));
 
     selectECO(QString());
@@ -145,6 +146,17 @@ void ECOListWidget::filterSelectedECO()
     if(selection.count())
     {
         QString ts = selection[0].data().toString().section(" ",0,0);
+        emit filterRequest(ts);
+    }
+}
+
+void ECOListWidget::filterSelectedECOAdd()
+{
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
+    if(selection.count())
+    {
+        QString ts = selection[0].data().toString().section(" ",0,0);
+        ts.prepend("+");
         emit filterRequest(ts);
     }
 }

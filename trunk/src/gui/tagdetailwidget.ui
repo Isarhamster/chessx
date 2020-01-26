@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>344</width>
+    <width>509</width>
     <height>302</height>
    </rect>
   </property>
@@ -42,6 +42,39 @@
          <item>
           <widget class="QLineEdit" name="filterEdit"/>
          </item>
+         <item>
+          <widget class="QToolButton" name="filterDatabase">
+           <property name="text">
+            <string>Filter</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../resources.qrc">
+             <normaloff>:/images/filter-list.png</normaloff>:/images/filter-list.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="addFilter">
+           <property name="text">
+            <string>Add to Filter</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../resources.qrc">
+             <normaloff>:/images/filter-plus.png</normaloff>:/images/filter-plus.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="renameItem">
+           <property name="text">
+            <string>Rename</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../resources.qrc">
+             <normaloff>:/images/rename.png</normaloff>:/images/rename.png</iconset>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -61,29 +94,6 @@
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
          </attribute>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Selected Item</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <item>
-           <widget class="QPushButton" name="filterDatabase">
-            <property name="text">
-             <string>Filter</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="renameItem">
-            <property name="text">
-             <string>Rename</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
         </widget>
        </item>
       </layout>
@@ -114,6 +124,8 @@
    <header>tableview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

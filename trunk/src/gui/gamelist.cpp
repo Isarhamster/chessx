@@ -418,6 +418,12 @@ void GameList::simpleSearch(int tagid)
 
 void GameList::slotFilterListByPlayer(QString s)
 {
+    FilterOperator op = FilterOperator::NullOperator;
+    if (s.startsWith("+"))
+    {
+        s.remove(0,1);
+        op = FilterOperator::Or;
+    }
     QUrl url(s);
     QString fragment = url.fragment();
     m_model->filter()->setAll(1);
@@ -427,12 +433,12 @@ void GameList::slotFilterListByPlayer(QString s)
         Search* ts = new TagSearch(m_model->filter()->database(),  TagNameWhite, url.path());
         Search* ts2 = new TagSearch(m_model->filter()->database(), TagNameBlack, url.path());
         ts->AddSearch(ts2, FilterOperator::Or);
-        m_model->executeSearch(ts);
+        m_model->executeSearch(ts, op);
     }
     else
     {
         Search* ts = new TagSearch(m_model->filter()->database(),  fragment, url.path());
-        m_model->executeSearch(ts);
+        m_model->executeSearch(ts, op);
     }
     emit raiseRequest();
 }
@@ -476,9 +482,15 @@ void GameList::slotFilterListByEcoPlayer(QString tag, QString eco, QString playe
 
 void GameList::slotFilterListByEvent(QString s)
 {
+    FilterOperator op = FilterOperator::NullOperator;
+    if (s.startsWith("+"))
+    {
+        s.remove(0,1);
+        op = FilterOperator::Or;
+    }
     m_model->filter()->setAll(1);
     Search* ts = new TagSearch(m_model->filter()->database(), TagNameEvent, s);
-    m_model->executeSearch(ts);
+    m_model->executeSearch(ts, op);
     emit raiseRequest();
 }
 
@@ -496,8 +508,14 @@ void GameList::slotFilterListByEventPlayer(QString player, QString event)
 
 void GameList::slotFilterListByEco(QString s)
 {
+    FilterOperator op = FilterOperator::NullOperator;
+    if (s.startsWith("+"))
+    {
+        s.remove(0,1);
+        op = FilterOperator::Or;
+    }
     Search* ts = new TagSearch(m_model->filter()->database(), TagNameECO, s);
-    m_model->executeSearch(ts, FilterOperator::NullOperator);
+    m_model->executeSearch(ts, op);
 }
 
 void GameList::endSearch()

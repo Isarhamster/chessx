@@ -37,6 +37,7 @@ protected slots:
     void findECO(const QString& s);
     void setDatabase(DatabaseInfo* dbInfo);
     void filterSelectedECO();
+    void filterSelectedECOAdd();
     void slotReconfigure();
     void selectionChangedSlot();
     void slotLinkClicked(const QUrl& url);

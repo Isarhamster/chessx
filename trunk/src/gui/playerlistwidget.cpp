@@ -29,6 +29,7 @@ PlayerListWidget::PlayerListWidget(QWidget *parent) :
     setObjectName("PlayerListWidget");
     connect(ui->filterEdit, SIGNAL(textChanged(const QString&)), SLOT(findPlayers(const QString&)));
     connect(ui->filterDatabase, SIGNAL(clicked()), SLOT(filterSelectedPlayer()));
+    connect(ui->addFilter, SIGNAL(clicked()), SLOT(filterSelectedPlayerAdd()));
     connect(ui->renameItem, SIGNAL(clicked()), SLOT(renameSelectedPlayer()));
     connect(ui->tagList, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(filterSelectedPlayer()));
 
@@ -173,6 +174,35 @@ void PlayerListWidget::filterSelectedPlayer()
     }
 }
 
+void PlayerListWidget::filterSelectedPlayerAdd()
+{
+    QStringListModel* model = qobject_cast<QStringListModel*>(ui->filterEdit->completer()->model());
+    QStringList words;
+    if (model)
+    {
+        words = model->stringList();
+    }
+
+    const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
+    if(selection.count())
+    {
+        QString ts = selection[0].data().toString();
+        emit filterRequest(QString("+")+ts);
+        if (words.contains(ts))
+        {
+            words.removeOne(ts);
+        }
+        words.append(ts);
+    }
+    if (model)
+    {
+        while (words.count()>8) words.removeFirst();
+        model->setStringList(words);
+        AppSettings->setValue("/PlayerListWidget/FilterEditCompleter", words);
+        ui->labelFilter->setToolTip(words.join("\n"));
+    }
+}
+
 void PlayerListWidget::renameSelectedPlayer()
 {
     const QModelIndexList& selection = ui->tagList->selectionModel()->selectedRows();
@@ -215,3 +245,4 @@ void PlayerListWidget::slotLinkClicked(const QUrl& url)
         emit filterEcoPlayerRequest(tag, "", ui->detailText->documentTitle(), url.fragment());
     }
 }
+
