@@ -71,6 +71,7 @@
 #include <QMenu>
 #include <QPixmap>
 #include <QProgressBar>
+#include <QScreen>
 #include <QStatusBar>
 #ifdef USE_SPEECH
 #include <QTextToSpeech>
@@ -3580,7 +3581,7 @@ void MainWindow::UpdateBoardInformation()
 
 void MainWindow::slotScreenShot()
 {
-    QPixmap pixmap = QPixmap::grabWindow(effectiveWinId());
+    QPixmap pixmap = QGuiApplication::primaryScreen()->grabWindow(winId());
 
     QString shotDir = AppSettings->shotsPath();
     QDir().mkpath(shotDir);

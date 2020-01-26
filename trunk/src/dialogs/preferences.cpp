@@ -130,7 +130,7 @@ void PreferencesDialog::slotSelectEngineDirectory()
     QString dir = QFileDialog::getExistingDirectory(this,
                   tr("Select engine directory"), ui.engineDirectory->text(),
                   QFileDialog::ShowDirsOnly);
-    if(QDir(dir).exists())
+    if(!dir.isEmpty() && QDir(dir).exists())
     {
         ui.engineDirectory->setText(dir);
     }
@@ -151,7 +151,7 @@ void PreferencesDialog::slotSelectDataBasePath()
     QString dir = QFileDialog::getExistingDirectory(this,
                   tr("Select databases folder"), ui.defaultDataBasePath->text(),
                   QFileDialog::ShowDirsOnly);
-    if(QDir(dir).exists())
+    if(!dir.isEmpty() && QDir(dir).exists())
     {
         ui.defaultDataBasePath->setText(dir);
     }
@@ -214,7 +214,7 @@ void PreferencesDialog::slotEngineUp()
     int index = ui.engineList->currentIndex().row();
     if(index > 0)
     {
-        engineList.swap(index, index - 1);
+        engineList.swapItemsAt(index, index - 1);
         QListWidgetItem* item = ui.engineList->takeItem(index - 1);
         ui.engineList->insertItem(index, item);
     }
@@ -225,7 +225,7 @@ void PreferencesDialog::slotEngineDown()
     int index = ui.engineList->currentIndex().row();
     if(index < ui.engineList->count() - 1)
     {
-        engineList.swap(index, index + 1);
+        engineList.swapItemsAt(index, index + 1);
         QListWidgetItem* item = ui.engineList->takeItem(index + 1);
         ui.engineList->insertItem(index, item);
     }

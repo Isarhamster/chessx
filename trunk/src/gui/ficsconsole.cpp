@@ -441,7 +441,7 @@ void FicsConsole::SlotSendSeek()
                 .arg(from)
                 .arg(to);
         QListWidgetItem* item = new QListWidgetItem(seek);
-        item->setTextColor(Qt::gray);
+        item->setForeground(QBrush(Qt::gray));
         ui->listSeeks->addItem(item);
         m_ficsClient->sendCommand(seek);
     }

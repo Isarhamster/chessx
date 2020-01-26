@@ -30,6 +30,9 @@ AboutDlg::AboutDlg(QWidget *parent) :
     QString refPath = AppSettings->dataPath();
     ui->labelDataPath->setText(pathify(refPath));
 
+    refPath = AppSettings->commonDataPath();
+    ui->labelDocPath->setText(pathify(refPath));
+
     refPath = AppSettings->getTempPath();
     ui->labelTempPath->setText(pathify(refPath));
     ui->labelFicsPath->setText(DatabaseInfo::ficsPath());
@@ -69,6 +72,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
     ui->labelFicsPath->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     ui->labelTempPath->setTextInteractionFlags(Qt::TextBrowserInteraction | Qt::TextSelectableByKeyboard);
+    ui->labelDocPath->setTextInteractionFlags(Qt::TextBrowserInteraction | Qt::TextSelectableByKeyboard);
     ui->labelDataPath->setTextInteractionFlags(Qt::TextBrowserInteraction | Qt::TextSelectableByKeyboard);
     ui->labelSettingsPath->setTextInteractionFlags(Qt::TextBrowserInteraction | Qt::TextSelectableByKeyboard);
     ui->labelHomepage->setTextInteractionFlags(Qt::TextBrowserInteraction);
@@ -108,6 +112,11 @@ void AboutDlg::on_labelDataPath_linkActivated(const QString &link)
 }
 
 void AboutDlg::on_labelSettingsPath_linkActivated(const QString &link)
+{
+    ShellHelper::showInFinder(link);
+}
+
+void AboutDlg::on_labelDocPath_linkActivated(const QString &link)
 {
     ShellHelper::showInFinder(link);
 }
