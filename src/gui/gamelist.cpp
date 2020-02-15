@@ -674,8 +674,9 @@ void GameList::dragEnterEvent(QDragEnterEvent *event)
 {
     const QMimeData *mimeData = event->mimeData();
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
 
-    if(dbMimeData || (mimeData && mimeData->hasUrls()))
+    if(dbMimeData || gameMimeData || (mimeData && mimeData->hasUrls()))
     {
         event->acceptProposedAction();
     }
@@ -683,7 +684,18 @@ void GameList::dragEnterEvent(QDragEnterEvent *event)
 
 void GameList::dragMoveEvent(QDragMoveEvent *event)
 {
-    event->acceptProposedAction();
+    const QMimeData *mimeData = event->mimeData();
+    const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
+
+    if(dbMimeData || gameMimeData || (mimeData && mimeData->hasUrls()))
+    {
+        event->acceptProposedAction();
+    }
+    else
+    {
+        event->ignore();
+    }
 }
 
 void GameList::dragLeaveEvent(QDragLeaveEvent *event)
@@ -695,12 +707,17 @@ void GameList::dropEvent(QDropEvent *event)
 {
     const QMimeData *mimeData = event->mimeData();
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
+    const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
 
     if(dbMimeData || (mimeData && mimeData->hasUrls()))
     {
         m_model->startUpdate();
         emit signalDropEvent(event);
         m_model->endUpdate();
+    }
+    else if (gameMimeData)
+    {
+        emit requestAppendGames(gameMimeData->source, gameMimeData->m_indexList);
     }
     else
     {

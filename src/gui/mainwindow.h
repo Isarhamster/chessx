@@ -367,8 +367,8 @@ public slots:
     void slotDbRestoreState(const Game&);
     /** Fill up the current game (drag request from game list) */
     void slotGetGameData(Game& g);
-    /** Copy game from other database by drag'n'drop */
-    void copyGames(QString fileName, QList<GameId> indexes);
+    /** Copy game from source to destination database by drag'n'drop */
+    void copyGames(QString destination, QList<GameId> indexes, QString source);
     /** Copy all games from other database by drag'n'drop */
     void copyDatabase(QString target, QString src);
     /** Request renaming a event in the current database */
@@ -482,7 +482,7 @@ protected slots:
 protected:
     void moveChanged();
     bool pasteFen(QString& errorText, QString fen, bool newGame=false);
-    void copyGame(int target, GameId index);
+    void copyGame(DatabaseInfo* pTargetDB, DatabaseInfo* pSourceDB, GameId index);
     Database* getDatabaseByPath(QString path);
     DatabaseInfo* getDatabaseInfoByPath(QString path);
     void updateOpeningTree(const Board& b, bool atEnd);
