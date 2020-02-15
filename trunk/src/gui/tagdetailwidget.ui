@@ -44,6 +44,9 @@
          </item>
          <item>
           <widget class="QToolButton" name="filterDatabase">
+           <property name="toolTip">
+            <string>Filter games according to selected line</string>
+           </property>
            <property name="text">
             <string>Filter</string>
            </property>
@@ -55,6 +58,9 @@
          </item>
          <item>
           <widget class="QToolButton" name="addFilter">
+           <property name="toolTip">
+            <string>Add games to the current filter</string>
+           </property>
            <property name="text">
             <string>Add to Filter</string>
            </property>
@@ -66,6 +72,9 @@
          </item>
          <item>
           <widget class="QToolButton" name="renameItem">
+           <property name="toolTip">
+            <string>Rename a tag in the complete database</string>
+           </property>
            <property name="text">
             <string>Rename</string>
            </property>

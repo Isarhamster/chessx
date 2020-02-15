@@ -426,7 +426,6 @@ void GameList::slotFilterListByPlayer(QString s)
     }
     QUrl url(s);
     QString fragment = url.fragment();
-    m_model->filter()->setAll(1);
 
     if (fragment.isEmpty())
     {
@@ -488,7 +487,7 @@ void GameList::slotFilterListByEvent(QString s)
         s.remove(0,1);
         op = FilterOperator::Or;
     }
-    m_model->filter()->setAll(1);
+
     Search* ts = new TagSearch(m_model->filter()->database(), TagNameEvent, s);
     m_model->executeSearch(ts, op);
     emit raiseRequest();
