@@ -124,7 +124,7 @@ signals:
     void signalDropEvent(QDropEvent*);
     void searchProgress(int);
     void searchFinished();
-    void requestAppendGames(QString path, QList<GameId> indexes);
+    void requestAppendGames(QString path, QList<GameId> indexes, QString source);
 
 protected: //Drag'n'Drop Support
     void startDrag(Qt::DropActions supportedActions);

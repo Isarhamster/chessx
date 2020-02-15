@@ -312,8 +312,8 @@ MainWindow::MainWindow() : QMainWindow(),
             this, SLOT(setFavoriteDatabase(QString)));
     connect(m_databaseList, SIGNAL(requestAppendGames(QString, QList<GameId>, QString)),
             this, SLOT(copyGames(QString, QList<GameId>, QString)));
-    connect(m_gameList, SIGNAL(requestAppendGames(QString, QList<GameId>)),
-            this, SLOT(copyGamesFrom(QString, QList<GameId>)));
+    connect(m_gameList, SIGNAL(requestAppendGames(QString, QList<GameId>, QString)),
+            this, SLOT(copyGames(QString, QList<GameId>, QString)));
     connect(m_databaseList, SIGNAL(requestAppendDatabase(QString, QString)),
             this, SLOT(copyDatabase(QString, QString)));
     connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));

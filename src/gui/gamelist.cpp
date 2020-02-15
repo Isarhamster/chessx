@@ -717,7 +717,7 @@ void GameList::dropEvent(QDropEvent *event)
     }
     else if (gameMimeData)
     {
-        emit requestAppendGames(gameMimeData->source, gameMimeData->m_indexList);
+        emit requestAppendGames(m_model->filter()->database()->filename(), gameMimeData->m_indexList, gameMimeData->source);
     }
     else
     {
