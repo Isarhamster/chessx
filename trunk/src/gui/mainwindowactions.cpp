@@ -2631,19 +2631,13 @@ void MainWindow::slotDatabaseChange()
     }
 }
 
-void MainWindow::copyGame(int target, GameId index)
+void MainWindow::copyGame(DatabaseInfo* pTargetDB, DatabaseInfo* pSourceDB, GameId index)
 {
-    DatabaseInfo* pTargetDB = m_databases[target];
     if(pTargetDB->isValid())
     {
         Game g;
-        if(database()->loadGame(index, g))
+        if(pSourceDB->database()->loadGame(index, g))
         {
-            QString fileName = pTargetDB->database()->name();
-            QString msg;
-            msg = tr("Append game %1 to %2.").arg(index + 1).arg(fileName);
-            slotStatusMessage(msg);
-
             // The database is open and accessible
             pTargetDB->database()->appendGame(g);
             if(pTargetDB == m_currentDatabase)
@@ -2654,54 +2648,46 @@ void MainWindow::copyGame(int target, GameId index)
     }
 }
 
-void MainWindow::copyGames(QString fileName, QList<GameId> indexes)
+void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString source)
 {
-    for(int i = 0; i < m_databases.count(); ++i)
+    DatabaseInfo* pSrcDBInfo = getDatabaseInfoByPath(source);
+    DatabaseInfo* pDestDBInfo = getDatabaseInfoByPath(destination);
+    if (pDestDBInfo && pDestDBInfo->isValid() && pSrcDBInfo && pSrcDBInfo->isValid() && (pDestDBInfo != pSrcDBInfo))
     {
-        if(m_databases[i]->displayName() == fileName)
+        if (pDestDBInfo==m_currentDatabase)
         {
-            if(m_databases[i]->isValid())
-            {
-                if (m_databases[i]==m_currentDatabase)
-                {
-                    m_gameList->startUpdate();
-                }
-				// TODO: Das Filtermodel muss vorher verst�ndigt werden
-                m_databases[i]->filter()->resize(m_databases[i]->database()->count() + static_cast<quint64>(indexes.count()), true);
-                foreach (GameId index, indexes)
-                {
-                    copyGame(i, index);
-                }
-                QString msg = tr("Appended %1 games to %2.").arg(indexes.count()).arg(fileName);
-                slotStatusMessage(msg);
-                if (m_databases[i]==m_currentDatabase)
-                {
-                    m_gameList->endUpdate();
-                }
-            }
-            return;
+            m_gameList->startUpdate();
         }
+        // TODO: Das Filtermodel muss vorher verst�ndigt werden
+        pDestDBInfo->filter()->resize(pDestDBInfo->database()->count() + static_cast<quint64>(indexes.count()), true);
+        foreach (GameId index, indexes)
+        {
+            copyGame(pDestDBInfo, pSrcDBInfo, index);
+        }
+        QString msg = tr("Appended %1 games from %2 to %3.").arg(indexes.count()).arg(source).arg(destination);
+        slotStatusMessage(msg);
+        if (pDestDBInfo==m_currentDatabase)
+        {
+            m_gameList->endUpdate();
+        }
+        return;
     }
 
-    // The database is closed
+    // The target database is closed
     Output writer(Output::Pgn);
     Game g;
     bool success = true;
     foreach (GameId index, indexes)
     {
-        if(database()->loadGame(index, g))
+        if(pSrcDBInfo->database()->loadGame(index, g))
         {
-            QString msg;
-            msg = tr("Append game %1 to %2.").arg(index + 1).arg(fileName);
-            slotStatusMessage(msg);
-
-            success = writer.append(fileName, g);
-            m_databaseList->update(fileName);
+            success = writer.append(destination, g);
+            m_databaseList->update(destination);
             if (!success) break;
         }
     }
-    QString msg = success ? tr("Appended %1 games to %2.").arg(indexes.count()).arg(fileName) :
-                            tr("Error appending games to %1").arg(fileName);
+    QString msg = success ? tr("Appended %1 games to %2.").arg(indexes.count()).arg(destination) :
+                            tr("Error appending games to %1").arg(destination);
     slotStatusMessage(msg);
 }
 
@@ -2756,9 +2742,6 @@ void MainWindow::copyDatabase(QString target, QString src)
                 }
                 fSrc.close();
                 fDest.close();
-            }
-            if (done)
-            {
                 m_databaseList->update(target);
             }
         }

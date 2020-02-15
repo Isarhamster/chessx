@@ -383,13 +383,14 @@ void DatabaseList::dragLeaveEvent(QDragLeaveEvent *event)
 
 void DatabaseList::dropEvent(QDropEvent *event)
 {
+    // TODO - test where the files come from in case of gameMimeData !!!!!!!!! -> crash
     const QMimeData *mimeData = event->mimeData();
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
     if(gameMimeData)
     {
         QModelIndex index = indexAt(event->pos());
-        appendGameToDataBase(index, gameMimeData->m_indexList);
+        appendGameToDataBase(index, gameMimeData->m_indexList, gameMimeData->source);
     }
     else if(dbMimeData && mimeData->hasUrls())
     {
@@ -427,13 +428,13 @@ void DatabaseList::dropEvent(QDropEvent *event)
     event->acceptProposedAction();
 }
 
-void DatabaseList::appendGameToDataBase(QModelIndex index, QList<GameId> gameIndexList)
+void DatabaseList::appendGameToDataBase(QModelIndex index, QList<GameId> gameIndexList, QString source)
 {
     // Make sure the drop occured on a cell!
     if(index.isValid())
     {
         QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
-        emit requestAppendGames(path, gameIndexList);
+        emit requestAppendGames(path, gameIndexList, source);
     }
 }
 

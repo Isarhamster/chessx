@@ -310,8 +310,10 @@ MainWindow::MainWindow() : QMainWindow(),
             this, SLOT(slotFileCloseName(QString)));
     connect(m_databaseList, SIGNAL(requestLinkDatabase(QString)),
             this, SLOT(setFavoriteDatabase(QString)));
-    connect(m_databaseList, SIGNAL(requestAppendGames(QString, QList<GameId>)),
-            this, SLOT(copyGames(QString, QList<GameId>)));
+    connect(m_databaseList, SIGNAL(requestAppendGames(QString, QList<GameId>, QString)),
+            this, SLOT(copyGames(QString, QList<GameId>, QString)));
+    connect(m_gameList, SIGNAL(requestAppendGames(QString, QList<GameId>)),
+            this, SLOT(copyGamesFrom(QString, QList<GameId>)));
     connect(m_databaseList, SIGNAL(requestAppendDatabase(QString, QString)),
             this, SLOT(copyDatabase(QString, QString)));
     connect(this, SIGNAL(reconfigure()), m_databaseList, SLOT(slotReconfigure()));
@@ -2101,31 +2103,38 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 void MainWindow::dragMoveEvent(QDragMoveEvent *event)
 {
     QTabBar* pTabBar = qobject_cast<QTabBar*>(childAt(event->pos()));
-    if (pTabBar == nullptr || pTabBar->parent() != this)
+
+    if (pTabBar != nullptr && pTabBar->parent() == this)
     {
+        QPoint globalPos = mapToGlobal(event->pos());
+        QPoint widgetPos = pTabBar->mapFromGlobal(globalPos);
+
+        int tabIndex = pTabBar->tabAt(widgetPos);
+        if (tabIndex != m_tabDragIndex && pTabBar != m_pDragTabBar)
+        {
+            m_dragTimer->stop();
+            m_tabDragIndex = tabIndex;
+            m_pDragTabBar = pTabBar;
+            m_dragTimer->start(200);
+        }
         event->ignore();
+        // TODO - figure out, if this tab really accepts the dragged type!
         return;
     }
-
-    QPoint globalPos = mapToGlobal(event->pos());
-    QPoint widgetPos = pTabBar->mapFromGlobal(globalPos);
-
-    int tabIndex = pTabBar->tabAt(widgetPos);
-    if (tabIndex != m_tabDragIndex && pTabBar != m_pDragTabBar)
+    else if ((pTabBar != nullptr) && (pTabBar->parent() == m_tabWidget))
     {
-        m_dragTimer->stop();
-        m_tabDragIndex = tabIndex;
+        QPoint globalPos = mapToGlobal(event->pos());
+        QPoint widgetPos = pTabBar->mapFromGlobal(globalPos);
+
+        int tabIndex = pTabBar->tabAt(widgetPos);
         m_pDragTabBar = pTabBar;
+        m_tabDragIndex = tabIndex;
+        m_dragTimer->stop();
         m_dragTimer->start(200);
     }
-    if (tabIndex == -1)
-    {
-        event->ignore();
-    }
-    else
-    {
-        event->acceptProposedAction();
-    }
+
+    event->ignore();
+    return;
 }
 
 void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
@@ -2148,8 +2157,16 @@ void MainWindow::slotAutoSwitchTab()
 {
     if (m_pDragTabBar && m_tabDragIndex != -1)
     {
+        if (m_pDragTabBar->parent() != m_tabWidget)
+        {
+            m_pDragTabBar->setCurrentIndex(m_tabDragIndex);
+        }
+        else
+        {
+            slotActivateBoardView(m_tabDragIndex);
+        }
+
         m_dragTimer->stop();
-        m_pDragTabBar->setCurrentIndex(m_tabDragIndex);
         m_pDragTabBar = nullptr;
         m_tabDragIndex = -1;
     }
