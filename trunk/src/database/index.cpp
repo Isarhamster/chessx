@@ -263,6 +263,7 @@ void Index::clear()
     m_tagValues.clear();
     m_deletedGames.clear();
     m_validFlags.clear();
+    init(); // Just to make sure that the index can be used after clearing
 }
 
 int Index::count() const
