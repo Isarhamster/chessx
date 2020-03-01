@@ -4,7 +4,6 @@
 
 #include "logstream.h"
 #include <QDebug>
-#include <fstream>
 #include <QTime>
 #include <QDir>
 
@@ -13,10 +12,8 @@
 #define new DEBUG_NEW
 #endif // _MSC_VER
 
-using namespace std;
-static ofstream logfile;
+QTextStream LogStream::s_logStream;
 
-static bool bDoLog = false;
 void
 #ifdef MSC_VER
 _cdecl
@@ -28,54 +25,62 @@ SimpleLoggingHandler(QtMsgType type, const QMessageLogContext &, const QString &
 #endif
 {
     QString msg = txt;
-    if(!bDoLog)
-    {
-        return;
-    }
 
+    LogStream::s_logStream << QTime::currentTime().toString().toLatin1().data();
     switch(type)
     {
     case QtDebugMsg:
-        logfile << QTime::currentTime().toString().toLatin1().data() << " : "         << msg.toLatin1().data() << endl;
+        LogStream::s_logStream << " : ";
         break;
     case QtCriticalMsg:
-        logfile << QTime::currentTime().toString().toLatin1().data() << " Critical: " << msg.toLatin1().data() << endl;
+        LogStream::s_logStream << " Critical: ";
         break;
     case QtWarningMsg:
-        logfile << QTime::currentTime().toString().toLatin1().data() << " Warning: "  << msg.toLatin1().data() << endl;
+        LogStream::s_logStream << " Warning: ";
         break;
 #if QT_VERSION > 0x050500
     case QtInfoMsg:
-        logfile << QTime::currentTime().toString().toLatin1().data() << " Information: " << msg.toLatin1().data() << endl;
+        LogStream::s_logStream << " Information: ";
         break;
 #endif
     case QtFatalMsg:
-        logfile << QTime::currentTime().toString().toLatin1().data() <<  " Fatal: "   << msg.toLatin1().data() << endl;
+         LogStream::s_logStream <<  " Fatal: ";
         break;
     }
+    LogStream::s_logStream << msg.toLatin1().data() << Qt::endl;
 }
 
-
-void startFileLog()
+LogStream::LogStream()
 {
 #ifdef _DEBUG
-    QString currentPath = QDir::currentPath() + QDir::separator() + "chessx.log";
-    logfile.open(currentPath.toLatin1().data(), ios::app);
-    bDoLog = true;
-#if QT_VERSION < 0x050000
-    qInstallMsgHandler(SimpleLoggingHandler);
-#else
-    qInstallMessageHandler(SimpleLoggingHandler);
-#endif
+    startFileLog();
 #endif
 }
 
-void stopFileLog()
+LogStream::~LogStream()
 {
-    if(bDoLog)
+#ifdef _DEBUG
+   stopFileLog();
+#endif
+}
+
+void LogStream::startFileLog()
+{
+    QString currentPath = QDir::currentPath() + QDir::separator() + "chessx.log";
+    m_logFile.setFileName(currentPath);
+    if (m_logFile.open(QIODevice::WriteOnly))
     {
-        bDoLog = false;
-        logfile.close();
+        s_logStream.setDevice(&m_logFile);
+#if QT_VERSION < 0x050000
+        qInstallMsgHandler(SimpleLoggingHandler);
+#else
+        qInstallMessageHandler(SimpleLoggingHandler);
+#endif
     }
+}
+
+void LogStream::stopFileLog()
+{
+    m_logFile.close();
 }
 

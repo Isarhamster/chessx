@@ -213,9 +213,8 @@ prevHook = _CrtSetReportHook(customReportHook);
     // Destroy main window and close application
     app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
 
-    startFileLog();
+    LogStream logStream;
     int result = app.exec();
-    stopFileLog();
 
     delete AppSettings;
 
