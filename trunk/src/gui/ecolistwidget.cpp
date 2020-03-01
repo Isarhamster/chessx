@@ -97,6 +97,7 @@ void ECOListWidget::ecoSelected(const QString& eco)
     {
         m_eco.setCode(eco);
         ui->filterDatabase->setEnabled(true);
+        ui->addFilter->setEnabled(true);
         ui->renameItem->setEnabled(true);
         QString opName = EcoPositions::findEcoNameDetailed(eco);
 
@@ -115,10 +116,10 @@ void ECOListWidget::ecoSelected(const QString& eco)
     else
     {
         ui->filterDatabase->setEnabled(false);
+        ui->addFilter->setEnabled(false);
         ui->renameItem->setEnabled(false);
         ui->detailText->setText(tr("<html><body><i>No ECO code chosen.</i></body></html>"));
     }
-
 }
 
 void ECOListWidget::selectECO(const QString& eco)

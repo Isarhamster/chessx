@@ -77,18 +77,17 @@ void PlayerListWidget::selectionChangedSlot()
 
 void PlayerListWidget::findPlayers(const QString& s)
 {
-    if(s.isEmpty())
+    QModelIndexList selection = ui->tagList->selectionModel()->selectedRows();
+    QStringList newList = s.isEmpty() ? m_list : m_list.filter(s, Qt::CaseInsensitive);
+
+    m_filterModel->setStringList(newList);
+    if (newList.count()==1)
     {
-        m_filterModel->setStringList(m_list);
+        selectPlayer(newList.at(0));
     }
     else
     {
-        QStringList newList = m_list.filter(s, Qt::CaseInsensitive);
-        m_filterModel->setStringList(newList);
-        if (newList.count()==1)
-        {
-            selectPlayer(newList.at(0));
-        }
+        selectPlayer(QString());
     }
 }
 
@@ -105,6 +104,7 @@ void PlayerListWidget::playerSelected(const QString& player)
     {
         m_player.setName(player);
         ui->filterDatabase->setEnabled(true);
+        ui->addFilter->setEnabled(true);
         ui->renameItem->setEnabled(true);
         QString head = QString("<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'><html><head><title>%1</title><meta name='qrichtext' content='1'><meta http-equiv='Content-type' content='text/html;charset=UTF-8'></head>").arg(player);
         QString text = QString("%1<body><h1><a href='player:%2'>%3</a></h1>%4%5%6%7%8</body></html>")
@@ -121,6 +121,7 @@ void PlayerListWidget::playerSelected(const QString& player)
     else
     {
         ui->filterDatabase->setEnabled(false);
+        ui->addFilter->setEnabled(false);
         ui->renameItem->setEnabled(false);
         ui->detailText->setText(tr("<html><i>No player chosen.</i></html>"));
     }
