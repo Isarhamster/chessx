@@ -63,6 +63,7 @@
 #include <QPrintPreviewDialog>
 #endif
 
+#include "GameMimeData.h"
 #include "settings.h"
 #include "textedit.h"
 #include "ooo/converter.h"
@@ -841,7 +842,8 @@ void PasteTextEdit::insertUsingMimeData(const QMimeData *source)
 
 bool PasteTextEdit::canInsertFromMimeData(const QMimeData *source) const
 {
-    return source && (source->hasImage() || source->hasUrls() || QTextEdit::canInsertFromMimeData(source));
+    const DbMimeData* m = qobject_cast<const DbMimeData*>(source);
+    return source && (source->hasImage() || (m && m->hasUrls()) || QTextEdit::canInsertFromMimeData(source));
 }
 
 void PasteTextEdit::insertImage(const QImage& image)

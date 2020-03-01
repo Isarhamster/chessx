@@ -347,13 +347,13 @@ void DatabaseList::dragMoveEvent(QDragMoveEvent *event)
             }
         }
     }
-    else if(dbMimeData && mimeData->hasUrls())
+    else if(dbMimeData && dbMimeData->hasUrls())
     {
         QModelIndex index = indexAt(event->pos());
         if(index.isValid())
         {
             QString path = m_filterModel->data(m_filterModel->index(index.row(), DBLV_PATH)).toString();
-            QList<QUrl> urlList = mimeData->urls();
+            QList<QUrl> urlList = dbMimeData->urls();
             foreach(QUrl url, urlList)
             {
                 QString s = url.toString();
@@ -392,9 +392,9 @@ void DatabaseList::dropEvent(QDropEvent *event)
         QModelIndex index = indexAt(event->pos());
         appendGameToDataBase(index, gameMimeData->m_indexList, gameMimeData->source);
     }
-    else if(dbMimeData && mimeData->hasUrls())
+    else if(dbMimeData && dbMimeData->hasUrls())
     {
-        QList<QUrl> urlList = mimeData->urls();
+        QList<QUrl> urlList = dbMimeData->urls();
         foreach(QUrl url, urlList)
         {
             QString s = url.toString();

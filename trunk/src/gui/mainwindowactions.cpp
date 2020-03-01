@@ -559,15 +559,15 @@ void MainWindow::slotEditMergePGN()
     QString pgn = QApplication::clipboard()->text().trimmed();
     if(!pgn.isEmpty())
     {
-        pgn = pgn.trimmed();
-        if (pgn.trimmed().startsWith("[")) // looks like something containing tags
+        pgn.append("\n*\n");
+        if (pgn.startsWith("[") || (pgn.indexOf(QRegExp("\\d+\\."),0)==0)) // looks like something containing tags or starting with 1.xxx
         {
             MemoryDatabase pgnDatabase;
             if(pgnDatabase.openString(pgn))
             {
-                Game g;
                 for (GameId i=0; i<pgnDatabase.count();++i) // pasted text might contain multiple games
                 {
+                    Game g;
                     if(pgnDatabase.loadGame(i, g))
                     {
                         game().mergeWithGame(g);
@@ -2837,9 +2837,9 @@ void MainWindow::slotDatabaseDropped(QDropEvent *event)
     const QMimeData *mimeData = event->mimeData();
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
 
-    if(dbMimeData && mimeData->hasUrls())
+    if(dbMimeData && dbMimeData->hasUrls())
     {
-        foreach (QUrl url, mimeData->urls())
+        foreach (QUrl url, dbMimeData->urls())
         {
             copyDatabase(databaseInfo()->displayName(), url.toString());
         }
