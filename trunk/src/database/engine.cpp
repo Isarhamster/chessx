@@ -180,7 +180,7 @@ void Engine::send(const QString& message)
 {
     if (s_allowEngineOutput && m_logStream)
     {
-        *m_logStream << "<-- " << message << endl;
+        *m_logStream << "<-- " << message << Qt::endl;
     }
 
     QString out(message);
@@ -258,7 +258,7 @@ void Engine::pollProcess()
         message = m_process->readLine().simplified();
         if (s_allowEngineOutput && m_logStream)
         {
-            *m_logStream << "--> " << message << endl;
+            *m_logStream << "--> " << message << Qt::endl;
         }
         processMessage(message);
     }
@@ -304,7 +304,7 @@ void Engine::logError(const QString& errMsg)
 {
     if (s_allowEngineOutput && m_logStream)
     {
-        *m_logStream << "### " << errMsg << endl;
+        *m_logStream << "### " << errMsg << Qt::endl;
     }
     qDebug() << errMsg;
 }

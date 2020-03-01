@@ -66,7 +66,7 @@ public:
     unsigned int size() const;
     /** Resize the filter to the specified size, keeping current content. If the filter is increased,
     added game will be initialized to @p includeNew (by default - not in filter). */
-    void resize(unsigned int newsize, bool includeNew = 0);
+    void resize(unsigned int newsize, bool includeNew = false);
     /** Reverse the filter (complement set). */
     void invert();
     /** Executes search 'search' on database m_database,

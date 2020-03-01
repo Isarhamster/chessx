@@ -297,7 +297,7 @@ bool DatabaseInfo::saveGame()
         {
             // TODO: Das Filtermodel muss vorher verstaendigt werden
             m_filter->cancel();
-            m_filter->resize(m_database->count(), 1);
+            m_filter->resize(m_database->count(), true);
         }
         m_index = m_database->count() - 1;
         m_lastGames.push_back(m_index);

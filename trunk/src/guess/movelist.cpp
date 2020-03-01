@@ -40,7 +40,7 @@ MoveList::MoveToFront(unsigned int index)
 void
 MoveList::SwapWithFirst(unsigned int index)
 {
-    swap(index,0);
+    swapItemsAt(index,0);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -160,7 +160,7 @@ void MoveList::dumpMoves() const
         s.push_back(sm.toString());
         s.push_back(" ");
     }
-    qDebug() << s << endl;
+    qDebug() << s << Qt::endl;
 }
 //////////////////////////////////////////////////////////////////////
 //  EOF: movelist.cpp
