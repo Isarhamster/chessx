@@ -355,6 +355,12 @@ QString PgnDatabase::filename() const
     return m_filename;
 }
 
+void PgnDatabase::clear()
+{
+    m_count = 0;
+    Database::clear();
+}
+
 void PgnDatabase::close()
 {
     //close the file, and delete objects
@@ -542,7 +548,7 @@ void PgnDatabase::parseTagsIntoIndex()
                 QString remainder = m_currentLine.mid(pos);
                 if (m_file->atEnd()) { m_currentLine = remainder; break; }
                 readTagLine();
-                m_currentLine.prepend(remainder);
+                m_currentLine.prepend(remainder); // TODO - Problem hier ist, dass der m_lineBuffer leer ist bei m_file->atEnd() und dann der remainder nicht richtig geparst wird
             }
         }
         else

@@ -26,6 +26,11 @@ MemoryDatabase::MemoryDatabase() : PgnDatabase(false), m_isModified(false)
 
 MemoryDatabase::~MemoryDatabase()
 {
+    clear();
+}
+
+void MemoryDatabase::clear()
+{
     for(int i = 0; i < m_games.count(); ++i)
     {
         delete m_games[i];
@@ -33,6 +38,8 @@ MemoryDatabase::~MemoryDatabase()
     m_games.clear();
     m_index.clear();
     m_isModified = false;
+
+    PgnDatabase::clear();
 }
 
 bool MemoryDatabase::isReadOnly() const
