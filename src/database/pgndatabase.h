@@ -42,6 +42,7 @@ public:
     virtual QString filename() const;
     /** Closes the database */
     void close();
+    virtual void clear();
 
     //game retrieval & storage
     /** Loads a game from the given position, returns true if successful */
