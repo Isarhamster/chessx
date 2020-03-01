@@ -5,7 +5,23 @@
 #ifndef LOGSTRAM_H
 #define LOGSTRAM_H
 
-void startFileLog();
-void stopFileLog();
+#include <QFile>
+#include <QTextStream>
+
+class LogStream
+{
+public:
+    LogStream();
+    ~LogStream();
+
+    static QTextStream s_logStream;
+
+private:
+    void startFileLog();
+    void stopFileLog();
+
+    QFile m_logFile;
+};
+
 
 #endif // LOGSTRAM_H
