@@ -219,7 +219,7 @@ MainWindow::MainWindow() : QMainWindow(),
     connect(m_gameView, SIGNAL(anchorClicked(const QUrl&)), SLOT(slotGameViewLink(const QUrl&)));
     connect(m_gameView, SIGNAL(actionRequested(EditAction)), SLOT(slotGameModify(EditAction)));
     connect(m_gameView, SIGNAL(queryActiveGame(const Game**)), this, SLOT(slotGetActiveGame(const Game**)));
-    connect(m_gameView, SIGNAL(signalMergeGame(GameId)), this, SLOT(slotMergeActiveGame(GameId)));
+    connect(m_gameView, SIGNAL(signalMergeGame(GameId,QString)), this, SLOT(slotMergeActiveGame(GameId,QString)));
     connect(this, SIGNAL(signalGameLoaded(const Board&)), gameTextDock, SLOT(raise()));
     connect(this, SIGNAL(displayTime(const QString&, Color, const QString&)), m_gameView, SLOT(slotDisplayTime(const QString&, Color, const QString&)));
     gameTextDock->setWidget(m_gameWindow);

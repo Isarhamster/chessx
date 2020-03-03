@@ -1706,12 +1706,22 @@ void MainWindow::slotMergeActiveGame(QList<GameId> gameIndexList)
     }
 }
 
-void MainWindow::slotMergeActiveGame(GameId gameIndex)
+void MainWindow::slotMergeActiveGame(GameId gameIndex, QString source)
 {
-    Game g;
-    if(gameIndex != databaseInfo()->currentIndex())
+    DatabaseInfo* sourceDb = source.isEmpty() ? databaseInfo() : getDatabaseInfoByPath(source);
+    if (sourceDb == databaseInfo())
     {
-        if(database()->loadGame(gameIndex, g))
+        if(gameIndex == databaseInfo()->currentIndex())
+        {
+            return; // Don't merge into myself
+        }
+    }
+
+    if (sourceDb->isValid())
+    {
+        Database* db = sourceDb->database();
+        Game g;
+        if(db->loadGame(gameIndex, g))
         {
             game().mergeWithGame(g);
         }
@@ -2652,7 +2662,10 @@ void MainWindow::copyGames(QString destination, QList<GameId> indexes, QString s
 {
     DatabaseInfo* pSrcDBInfo = getDatabaseInfoByPath(source);
     DatabaseInfo* pDestDBInfo = getDatabaseInfoByPath(destination);
-    if (pDestDBInfo && pDestDBInfo->isValid() && pSrcDBInfo && pSrcDBInfo->isValid() && (pDestDBInfo != pSrcDBInfo))
+
+    if (pDestDBInfo == pSrcDBInfo) return; // Do not create local copy
+
+    if (pDestDBInfo && pDestDBInfo->isValid() && pSrcDBInfo && pSrcDBInfo->isValid())
     {
         if (pDestDBInfo==m_currentDatabase)
         {

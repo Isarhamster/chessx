@@ -216,7 +216,7 @@ public slots:
     void slotGetActiveGame(const Game** game);
     /** Merge the game with index @p gameIndex into the active game. */
     void slotMergeActiveGame(QList<GameId> gameIndexList);
-    void slotMergeActiveGame(GameId gameIndex);
+    void slotMergeActiveGame(GameId gameIndex, QString source);
     /** Merge all games from the database into the active game. */
     void slotMergeAllGames();
     /** Merge all games from the filter into the active game. */
