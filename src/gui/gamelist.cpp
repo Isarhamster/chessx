@@ -295,7 +295,7 @@ void GameList::slotContextMenu(const QPoint& pos)
         QMenu* mergeMenu = menu.addMenu(tr("Merge into current game"));
         mergeMenu->addAction(tr("All Games"), this, SLOT(slotMergeAllGames()));
         mergeMenu->addAction(tr("Filter"), this, SLOT(slotMergeFilter()));
-        mergeMenu->addAction(tr("Selected games"), this, SLOT(slotMergeGame()));
+        mergeMenu->addAction(tr("Selected games"), this, SLOT(slotMergeSelectedGames()));
         menu.addSeparator();
 
         int deleted = 0;
@@ -587,7 +587,7 @@ void GameList::slotMergeFilter()
     emit requestMergeFilter();
 }
 
-void GameList::slotMergeGame()
+void GameList::slotMergeSelectedGames()
 {
     QList<GameId> gameIndexList = selectedGames();
     emit requestMergeGame(gameIndexList);
@@ -676,7 +676,11 @@ void GameList::dragEnterEvent(QDragEnterEvent *event)
     const DbMimeData* dbMimeData = qobject_cast<const DbMimeData*>(mimeData);
     const GameMimeData* gameMimeData = qobject_cast<const GameMimeData*>(mimeData);
 
-    if(dbMimeData || gameMimeData || (mimeData && mimeData->hasUrls()))
+    if (gameMimeData && (m_model->filter()->database()->filename() == gameMimeData->source))
+    {
+        event->ignore();
+    }
+    else if(dbMimeData || gameMimeData || (mimeData && mimeData->hasUrls()))
     {
         event->acceptProposedAction();
     }

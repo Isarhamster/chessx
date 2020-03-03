@@ -95,7 +95,7 @@ private slots:
     /** Request to merge the complete filter into the current game */
     void slotMergeFilter();
     /** Request to merge a game into the current game */
-    void slotMergeGame();
+    void slotMergeSelectedGames();
     /** Request a copy dialog for the games selected */
     void slotCopyGame();
     /** Request finding duplicates for the games selected */

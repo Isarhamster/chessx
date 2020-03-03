@@ -381,7 +381,7 @@ void ChessBrowser::dropEvent(QDropEvent *event)
     {
         foreach(GameId index, gameMimeData->m_indexList)
         {
-            mergeGame(index);
+            emit signalMergeGame(index, gameMimeData->source);
         }
     }
 
@@ -390,5 +390,5 @@ void ChessBrowser::dropEvent(QDropEvent *event)
 
 void ChessBrowser::mergeGame(GameId gameIndex)
 {
-    emit signalMergeGame(gameIndex);
+    emit signalMergeGame(gameIndex, QString());
 }
