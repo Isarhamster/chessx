@@ -462,6 +462,7 @@ void PreferencesDialog::restoreSettings()
     ui.minWheelCount->setValue(AppSettings->getValue("minWheelCount").toInt());
     ui.cbSaveAndContinue->setChecked(AppSettings->getValue("AutoSaveAndContinue").toBool());
     ui.cbBackwardAnalysis->setChecked(AppSettings->getValue("BackwardAnalysis").toBool());
+    ui.cbExtendGames->setChecked(AppSettings->getValue("ExtendGames").toBool());
     ui.cbPromoteToQueen->setChecked(AppSettings->getValue("AutoPromoteToQueen").toBool());
     ui.btNoHints->setChecked(AppSettings->getValue("noHints").toBool());
     ui.alwaysScale->setChecked(AppSettings->getValue("AlwaysScale").toBool());
@@ -610,6 +611,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("pieceEffect", ui.pieceEffect->currentIndex());
     AppSettings->setValue("AutoSaveAndContinue", QVariant(ui.cbSaveAndContinue->isChecked()));
     AppSettings->setValue("BackwardAnalysis", QVariant(ui.cbBackwardAnalysis->isChecked()));
+    AppSettings->setValue("ExtendGames", QVariant(ui.cbExtendGames->isChecked()));
     AppSettings->setValue("AutoPromoteToQueen", QVariant(ui.cbPromoteToQueen->isChecked()));
     AppSettings->setValue("AlwaysScale", QVariant(ui.alwaysScale->isChecked()));
     AppSettings->setValue("PlayerTurnBoard", ui.editPlayerTurnBoard->text());

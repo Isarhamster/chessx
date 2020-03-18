@@ -62,7 +62,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -673,6 +673,13 @@
            <widget class="QCheckBox" name="cbBackwardAnalysis">
             <property name="text">
              <string>Auto Analysis backwards</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="cbExtendGames">
+            <property name="text">
+             <string>Allow Play out of games</string>
             </property>
            </widget>
           </item>
