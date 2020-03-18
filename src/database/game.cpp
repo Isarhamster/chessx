@@ -1981,7 +1981,7 @@ void Game::setStartingBoard(const Board& startingBoard, QString text, bool chess
 void Game::dbSetStartingBoard(const QString& fen, bool chess960)
 {
     clear();
-    setChess960(chess960);
+    dbSetChess960(chess960);
     m_startingBoard.setChess960(chess960);
     m_startingBoard.fromFen(fen);
     if(m_startingBoard != Board::standardStartBoard)
