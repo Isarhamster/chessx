@@ -1410,7 +1410,7 @@ void MainWindow::setupActions()
     QAction *undoAction = m_undoGroup.createUndoAction(this, tr("Undo"));
     QAction *redoAction = m_undoGroup.createRedoAction(this, tr("Redo"));
     undoAction->setShortcut(Qt::CTRL + Qt::Key_Z);
-    redoAction->setShortcut(Qt::CTRL + Qt::Key_Y);
+    redoAction->setShortcuts({Qt::CTRL + Qt::Key_Y, Qt::CTRL + Qt::SHIFT + Qt::Key_Z});
     undoAction->setIcon(QIcon(":/images/undo.png"));
     redoAction->setIcon(QIcon(":/images/redo.png"));
 
