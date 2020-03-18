@@ -16,6 +16,8 @@ greaterThan(QT_MAJOR_VERSION, 4) {
    CONFIG += speech
    # Comment out c++11 for all non-C++11 compilers, Qt5 is required in addition
    CONFIG += c++11
+   # Add lc0 to package
+   CONFIG += lc0
 }
 
 speech {
@@ -42,6 +44,7 @@ DEFINES += QT_NO_CAST_TO_ASCII
 DEFINES *= QT_USE_QSTRINGBUILDER
 
 macx {
+  QMAKE_MAC_SDK = macosx10.14
   QMAKE_CXXFLAGS += -fvisibility=hidden
   QMAKE_LFLAGS_RELEASE -= -O2
   QMAKE_LFLAGS_RELEASE += -m64 -Ofast
@@ -423,6 +426,7 @@ RCC_DIR = src/generated
 CONFIG(debug, debug|release) {
     DESTDIR = "debug"
     OBJECTS_DIR = "obj_dbg"
+    DEFINES += _DEBUG
 }
 
 CONFIG(release, debug|release) {
@@ -455,16 +459,22 @@ macx {
  INSTALLATION_DATA.files = mac_osx/qt_menu.nib
  INSTALLATION_DATA.path = Contents/Resources/
  QMAKE_BUNDLE_DATA += INSTALLATION_DATA
- ENGINE_DATA.files = data/engines-mac/uci/stockfish-10-64 data/engines-mac/uci/lc0 data/engines-mac/uci/weights_run1_42125.pb
+ ENGINE_DATA.files = data/engines-mac/uci/stockfish-10-64
  ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
  QMAKE_BUNDLE_DATA += ENGINE_DATA
- ENGINE_LIB.files = $$files(data/engines-mac/uci/lib/*)
- ENGINE_LIB.path = Contents/MacOS/data/engines-mac/uci/lib
- QMAKE_BUNDLE_DATA += ENGINE_LIB
  TIMESEAL_DATA.files = data/timeseal/mac/timeseal
  TIMESEAL_DATA.path = Contents/MacOS/data/timeseal/mac
  QMAKE_BUNDLE_DATA += TIMESEAL_DATA
  QMAKE_INFO_PLIST = mac_osx/Info.plist
+}
+
+lc0 {
+ LC0_ENGINE_DATA.files = data/engines-mac/uci/lc0 data/engines-mac/uci/weights.pb
+ LC0_ENGINE_DATA.path = Contents/MacOS/data/engines-mac/uci
+ QMAKE_BUNDLE_DATA += LC0_ENGINE_DATA
+ LC0_ENGINE_LIB.files = $$files(data/engines-mac/uci/lib/*)
+ LC0_ENGINE_LIB.path = Contents/MacOS/data/engines-mac/uci/lib
+ QMAKE_BUNDLE_DATA += LC0_ENGINE_LIB
 }
 
 RESOURCES = \
