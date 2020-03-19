@@ -1,3 +1,13 @@
+March 2020: Version 1.5.2
+- New Feature: Support lc0 for Mac OS
+- New feature: blunder checking
+- New feature: Speak moves
+- New feature: Refactor complete database
+- Changed: Command-Key to force query for promotion dialog (instead of Meta)
+- Bugfix: Undo setting up board required two steps
+- Bugfix: Clearing database was broken
+- Bugfix: entering nags/null movees via keyboard
+
 February 2018: Version 1.5.0
 - New Feature: Provide multi-selection for the database list view
 - New Feature: Load favorite databases at startup
