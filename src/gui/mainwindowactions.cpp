@@ -2068,6 +2068,7 @@ void MainWindow::slotToggleAutoAnalysis()
     {
         setEngineMoveTime(m_mainAnalysis);
         m_AutoInsertLastBoard.clear();
+        lastScore = -999;
         if(!m_mainAnalysis->isEngineConfigured())
         {
             MessageDialog::information(tr("Analysis Pane 1 is not running an engine for automatic analysis."), tr("Auto Analysis"));
@@ -2296,20 +2297,28 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
         // todo - if premove, make it possible to change the board "underneath" the piece that is moved
         if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != game().board()))
         {
-            m_AutoInsertLastBoard = game().board();
-
-            Analysis a = m_mainAnalysis->getMainLine();
-            if(!a.variation().isEmpty())
+            if (!game().atLineEnd() || AppSettings->getValue("/Board/ExtendGames").toBool())
             {
-                Move m = a.variation().first();
-                if(!game().currentNodeHasMove(m.from(), m.to()))
+                m_AutoInsertLastBoard = game().board();
+                Analysis a = m_mainAnalysis->getMainLine();
+                if(!a.variation().isEmpty())
                 {
-                    if(!game().isEcoPosition())
+                    int threashHold = AppSettings->getValue("/Board/BackwardAnalysis").toBool() ? AppSettings->getValue("/Board/BlunderCheck").toInt() : 0;
+                    int score = a.score();
+                    if ((!threashHold || (abs(score-lastScore) > threashHold)))
                     {
-                        slotGameAddVariation(a);
+                        Move m = a.variation().first();
+                        if(!game().currentNodeHasMove(m.from(), m.to()))
+                        {
+                            if(!game().isEcoPosition())
+                            {
+                                slotGameAddVariation(a);
+                            }
+                        }
                     }
+                    lastScore = a.score();
                 }
-            }            
+            }
             slotAutoPlayTimeout();
         }
         else if (game().atLineEnd() && m_autoRespond->isChecked())

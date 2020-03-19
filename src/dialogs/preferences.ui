@@ -500,6 +500,9 @@
               <property name="text">
                <string>Keep variations inline from level</string>
               </property>
+              <property name="buddy">
+               <cstring>variationIndentLevel</cstring>
+              </property>
              </widget>
             </item>
             <item>
@@ -520,6 +523,9 @@
              <widget class="QLabel" name="label_21">
               <property name="text">
                <string>Diagram Size</string>
+              </property>
+              <property name="buddy">
+               <cstring>diagramSize</cstring>
               </property>
              </widget>
             </item>
@@ -656,36 +662,6 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="gbBoardOptions">
-         <property name="title">
-          <string>Autoplayer</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <widget class="QCheckBox" name="cbSaveAndContinue">
-            <property name="text">
-             <string>Automatically save game and continue with next</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="cbBackwardAnalysis">
-            <property name="text">
-             <string>Auto Analysis backwards</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="cbExtendGames">
-            <property name="text">
-             <string>Allow Play out of games</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="2" column="0">
         <widget class="QGroupBox" name="groupBox_8">
          <property name="title">
@@ -696,6 +672,53 @@
            <widget class="QCheckBox" name="cbPromoteToQueen">
             <property name="text">
              <string>Always queen a pawn</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="gbBoardOptions">
+         <property name="title">
+          <string>Autoplayer</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="cbSaveAndContinue">
+            <property name="text">
+             <string>Automatically save game and continue with next</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_17">
+            <property name="text">
+             <string>Blunder Check Limit (centi-pawn)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="cbExtendGames">
+            <property name="text">
+             <string>Allow Play out of games</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="editBlunderCheck">
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="cbBackwardAnalysis">
+            <property name="text">
+             <string>Auto Analysis backwards</string>
             </property>
            </widget>
           </item>
