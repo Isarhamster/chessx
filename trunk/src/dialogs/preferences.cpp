@@ -463,6 +463,10 @@ void PreferencesDialog::restoreSettings()
     ui.cbSaveAndContinue->setChecked(AppSettings->getValue("AutoSaveAndContinue").toBool());
     ui.cbBackwardAnalysis->setChecked(AppSettings->getValue("BackwardAnalysis").toBool());
     ui.cbExtendGames->setChecked(AppSettings->getValue("ExtendGames").toBool());
+
+    ui.editBlunderCheck->setValue(AppSettings->getValue("BlunderCheck").toInt());
+    ui.editBlunderCheck->setEnabled(AppSettings->getValue("BackwardAnalysis").toBool());
+
     ui.cbPromoteToQueen->setChecked(AppSettings->getValue("AutoPromoteToQueen").toBool());
     ui.btNoHints->setChecked(AppSettings->getValue("noHints").toBool());
     ui.alwaysScale->setChecked(AppSettings->getValue("AlwaysScale").toBool());
@@ -612,6 +616,7 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("AutoSaveAndContinue", QVariant(ui.cbSaveAndContinue->isChecked()));
     AppSettings->setValue("BackwardAnalysis", QVariant(ui.cbBackwardAnalysis->isChecked()));
     AppSettings->setValue("ExtendGames", QVariant(ui.cbExtendGames->isChecked()));
+    AppSettings->setValue("BlunderCheck", QVariant(ui.editBlunderCheck->value()));
     AppSettings->setValue("AutoPromoteToQueen", QVariant(ui.cbPromoteToQueen->isChecked()));
     AppSettings->setValue("AlwaysScale", QVariant(ui.alwaysScale->isChecked()));
     AppSettings->setValue("PlayerTurnBoard", ui.editPlayerTurnBoard->text());
@@ -801,4 +806,9 @@ void PreferencesDialog::on_savePreferences_clicked()
     {
         QFile::copy(settingsPath, newPath);
     }
+}
+
+void PreferencesDialog::on_cbBackwardAnalysis_stateChanged(int arg1)
+{
+    ui.editBlunderCheck->setEnabled(ui.cbBackwardAnalysis->isChecked());
 }

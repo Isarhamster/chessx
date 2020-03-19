@@ -449,6 +449,7 @@ QMap<QString, QVariant> Settings::initDefaultValues() const
     map.insert("/Board/AutoSaveAndContinue", false);
     map.insert("/Board/BackwardAnalysis", false);
     map.insert("/Board/ExtendGames", false);
+    map.insert("/Board/BlunderCheck", 0);
     map.insert("/Board/AutoPromoteToQueen", false);
     map.insert("/Board/AlwaysScale", false);
     map.insert("/Board/PlayerTurnBoard", "");

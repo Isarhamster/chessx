@@ -688,6 +688,7 @@ private:
     Move m_MoveForMatch;
     EngineParameter m_EngineParameterForMatch;
     Board m_AutoInsertLastBoard;
+    int lastScore;
     Square m_annotationSquare;
     Square m_annotationSquareFrom;
     QChar m_lastColor;
