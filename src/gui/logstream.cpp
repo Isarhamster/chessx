@@ -2,6 +2,7 @@
 *   Copyright (C) 2012 by Jens Nissen jens-chessx@gmx.net                   *
 ****************************************************************************/
 
+#include "settings.h"
 #include "logstream.h"
 #include <QDebug>
 #include <QTime>
@@ -66,7 +67,7 @@ LogStream::~LogStream()
 
 void LogStream::startFileLog()
 {
-    QString currentPath = QDir::currentPath() + QDir::separator() + "chessx.log";
+    QString currentPath = AppSettings->logPath() + "chessx.log";
     m_logFile.setFileName(currentPath);
     if (m_logFile.open(QIODevice::WriteOnly))
     {
