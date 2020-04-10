@@ -1586,14 +1586,20 @@ void MainWindow::setupActions()
                                         dbToolBar, ":/images/game_up.png");
     QAction * nextAction = createAction(tr("&Next"), SLOT(slotGameLoadNext()), Qt::Key_F4,
                                         dbToolBar, ":/images/game_down.png");
+    QAction * goAction = createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G);
+    QAction * rndAction = createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question,
+                                     dbToolBar, ":/images/rnd_game.png");
+    connect(this, SIGNAL(signalFilterEmpty(bool)), goAction, SLOT(setDisabled(bool)));
+    connect(this, SIGNAL(signalFilterEmpty(bool)), rndAction, SLOT(setDisabled(bool)));
     connect(m_gameList, SIGNAL(signalLastGameLoaded(bool)), nextAction, SLOT(setDisabled(bool)));
     connect(m_gameList, SIGNAL(signalFirstGameLoaded(bool)), prevAction, SLOT(setDisabled(bool)));
     connect(m_gameList, SIGNAL(signalDropEvent(QDropEvent*)), this, SLOT(slotDatabaseDropped(QDropEvent*)));
+    connect(m_gameList, SIGNAL(signalFilterSize(quint64)), this, SLOT(slotFilterSizeChanged(quint64)));
     loadMenu->addAction(nextAction);
     loadMenu->addAction(prevAction);
-    loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
-    loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question,
-                                     dbToolBar, ":/images/rnd_game.png"));
+    loadMenu->addAction(goAction);
+    loadMenu->addAction(rndAction);
+
     QAction* saveAction = createAction(tr("&Save..."), SLOT(slotGameSave()), QKeySequence::Save);
     gameMenu->addAction(saveAction);
     QAction* saveOnlyAction = createAction(tr("Save"), SLOT(slotGameSaveOnly()));
@@ -1814,6 +1820,11 @@ void MainWindow::setupActions()
     toolbars->addAction(viewToolBar->toggleViewAction());
 
     KbAction::restoreKeyboardLayoutForObject(this);
+}
+
+void MainWindow::slotFilterSizeChanged(quint64 newSize)
+{
+    emit signalFilterEmpty(newSize <= 1); // Not strictly empty, but there is no selection to be changed
 }
 
 bool MainWindow::confirmQuit()
