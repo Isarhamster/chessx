@@ -529,7 +529,7 @@ void MainWindow::setupAnalysisWidget(DockWidgetEx* analysisDock, AnalysisWidget*
     analysisDock->setWidget(analysis);
     // addDockWidget(Qt::RightDockWidgetArea, analysisDock);
     connect(analysis, SIGNAL(addVariation(Analysis)),
-            SLOT(slotGameAddVariation(Analysis)));
+            SLOT(slotGameAddVariation(Analysis, QString)));
     connect(analysis, SIGNAL(addVariation(QString)),
             SLOT(slotGameAddVariation(QString)));
     connect(this, SIGNAL(boardChange(const Board&, const QString&)), analysis, SLOT(setPosition(const Board&,QString)));
@@ -565,7 +565,6 @@ MainWindow::~MainWindow()
     delete m_gameList;
 
     delete autoGroup;
-    delete autoGroupTraining;
 
     EcoPositions::terminateEco();
 }
@@ -822,6 +821,7 @@ void MainWindow::gameLoad(GameId index)
                 emit signalGameIsEmpty(false);
                 UpdateBoardInformation();
                 m_gameList->setFocus();
+                emit signalGameLoaded(game().startingBoard());
                 if(m_training->isChecked())
                 {
                     m_boardView->setFlipped((game().board().toMove() == Black));
@@ -1592,7 +1592,8 @@ void MainWindow::setupActions()
     loadMenu->addAction(nextAction);
     loadMenu->addAction(prevAction);
     loadMenu->addAction(createAction(tr("&Go to game..."), SLOT(slotGameLoadChosen()), Qt::CTRL + Qt::Key_G));
-    loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question));
+    loadMenu->addAction(createAction(tr("&Random"), SLOT(slotGameLoadRandom()), Qt::CTRL + Qt::Key_Question,
+                                     dbToolBar, ":/images/rnd_game.png"));
     QAction* saveAction = createAction(tr("&Save..."), SLOT(slotGameSave()), QKeySequence::Save);
     gameMenu->addAction(saveAction);
     QAction* saveOnlyAction = createAction(tr("Save"), SLOT(slotGameSaveOnly()));
@@ -1609,12 +1610,10 @@ void MainWindow::setupActions()
     gameToolBar->addSeparator();
 
     autoGroup = new ExclusiveActionGroup(this);
-    autoGroupTraining = new ExclusiveActionGroup(this);
 
     m_match = createAction(tr("Match"), SLOT(slotToggleGameMode()), Qt::CTRL + Qt::Key_M, gameToolBar, ":/images/black_chess.png");
     m_match->setCheckable(true);
 
-    autoGroupTraining->addAction(m_match);
     autoGroup->addAction(m_match);
     gameMenu->addAction(m_match);
     gameMenu->addSeparator();
@@ -1622,30 +1621,37 @@ void MainWindow::setupActions()
 
     m_training = createAction(tr("Training"), SLOT(slotToggleTraining()), Qt::CTRL + Qt::Key_R, gameToolBar, ":/images/training.png");
     m_training->setCheckable(true);
-    autoGroupTraining->addAction(m_training);
+    autoGroup->addAction(m_training);
     gameMenu->addAction(m_training);
 
-    m_autoRespond = createAction(tr("Auto Respond"), SLOT(slotToggleAutoRespond()), Qt::META + Qt::SHIFT + Qt::Key_R, gameToolBar, ":/images/respond.png");
-    gameMenu->addAction(m_autoRespond);
-    autoGroup->addAction(m_autoRespond);
-    m_autoRespond->setCheckable(true);
+    m_training2 = createAction(tr("Train both sides"), SLOT(slotToggleTraining2()), Qt::CTRL + Qt::META + Qt::Key_R, gameToolBar, ":/images/training_both.png");
+    m_training2->setCheckable(true);
+    autoGroup->addAction(m_training2);
+    gameMenu->addAction(m_training2);
 
     m_autoPlay = createAction(tr("Auto Player"), SLOT(slotToggleAutoPlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_R, gameToolBar, ":/images/replay.png");
     gameMenu->addAction(m_autoPlay);
     autoGroup->addAction(m_autoPlay);
-    autoGroupTraining->addAction(m_autoPlay);
     m_autoPlay->setCheckable(true);
 
     m_autoAnalysis = createAction(tr("Auto Analysis"), SLOT(slotToggleAutoAnalysis()), Qt::CTRL + Qt::ALT + Qt::Key_R, gameToolBar, ":/images/annotate.png");
     gameMenu->addAction(m_autoAnalysis);
     autoGroup->addAction(m_autoAnalysis);
-    autoGroupTraining->addAction(m_autoAnalysis);
     m_autoAnalysis->setCheckable(true);
+
+    m_autoGame = createAction(tr("Play engine"), SLOT(slotToggleGamePlayer()), Qt::CTRL + Qt::SHIFT + Qt::Key_G, gameToolBar, ":/images/respond.png");
+    gameMenu->addAction(m_autoGame);
+    autoGroup->addAction(m_autoGame);
+    m_autoGame->setCheckable(true);
+
+    m_autoRespond = createAction(tr("Match against engine"), SLOT(slotToggleAutoRespond()), Qt::META + Qt::SHIFT + Qt::Key_G, gameToolBar, ":/images/game_engine.png");
+    gameMenu->addAction(m_autoRespond);
+    autoGroup->addAction(m_autoRespond);
+    m_autoRespond->setCheckable(true);
 
     m_engineMatch = createAction(tr("Engine Match"), SLOT(slotToggleEngineMatch()), Qt::CTRL + Qt::ALT + Qt::Key_M, gameToolBar, ":/images/chip.png");
     gameMenu->addAction(m_engineMatch);
     autoGroup->addAction(m_engineMatch);
-    autoGroupTraining->addAction(m_engineMatch);
     m_engineMatch->setCheckable(true);
 
     gameToolBar->addSeparator();
