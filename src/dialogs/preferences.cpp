@@ -462,10 +462,12 @@ void PreferencesDialog::restoreSettings()
     ui.minWheelCount->setValue(AppSettings->getValue("minWheelCount").toInt());
     ui.cbSaveAndContinue->setChecked(AppSettings->getValue("AutoSaveAndContinue").toBool());
     ui.cbBackwardAnalysis->setChecked(AppSettings->getValue("BackwardAnalysis").toBool());
-    ui.cbExtendGames->setChecked(AppSettings->getValue("ExtendGames").toBool());
-
+    ui.cbAnalyseOnlyMainline->setChecked(AppSettings->getValue("AnalyseOnlyMainline").toBool());
+    ui.editAddAnnotation->setText(AppSettings->getValue("AddAnnotation").toString());
     ui.editBlunderCheck->setValue(AppSettings->getValue("BlunderCheck").toInt());
+
     ui.editBlunderCheck->setEnabled(AppSettings->getValue("BackwardAnalysis").toBool());
+    ui.cbAnalyseOnlyMainline->setEnabled(AppSettings->getValue("BackwardAnalysis").toBool());
 
     ui.cbPromoteToQueen->setChecked(AppSettings->getValue("AutoPromoteToQueen").toBool());
     ui.btNoHints->setChecked(AppSettings->getValue("noHints").toBool());
@@ -615,7 +617,8 @@ void PreferencesDialog::saveSettings()
     AppSettings->setValue("pieceEffect", ui.pieceEffect->currentIndex());
     AppSettings->setValue("AutoSaveAndContinue", QVariant(ui.cbSaveAndContinue->isChecked()));
     AppSettings->setValue("BackwardAnalysis", QVariant(ui.cbBackwardAnalysis->isChecked()));
-    AppSettings->setValue("ExtendGames", QVariant(ui.cbExtendGames->isChecked()));
+    AppSettings->setValue("AnalyseOnlyMainline", QVariant(ui.cbAnalyseOnlyMainline->isChecked()));
+    AppSettings->setValue("AddAnnotation", QVariant(ui.editAddAnnotation->text()));
     AppSettings->setValue("BlunderCheck", QVariant(ui.editBlunderCheck->value()));
     AppSettings->setValue("AutoPromoteToQueen", QVariant(ui.cbPromoteToQueen->isChecked()));
     AppSettings->setValue("AlwaysScale", QVariant(ui.alwaysScale->isChecked()));
@@ -810,5 +813,7 @@ void PreferencesDialog::on_savePreferences_clicked()
 
 void PreferencesDialog::on_cbBackwardAnalysis_stateChanged(int arg1)
 {
-    ui.editBlunderCheck->setEnabled(ui.cbBackwardAnalysis->isChecked());
+    ui.editBlunderCheck->setEnabled(arg1);
+    ui.cbAnalyseOnlyMainline->setEnabled(arg1);
+
 }
