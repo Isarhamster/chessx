@@ -349,7 +349,7 @@ void MainWindow::UpdateGameText()
 {
     if(m_gameView)
     {
-        m_gameView->setText(m_output->output(&game(), m_training->isChecked()));
+        m_gameView->setText(m_output->output(&game(), (m_training->isChecked() || m_training2->isChecked())));
     }
 }
 
@@ -528,6 +528,7 @@ bool MainWindow::slotEditPastePGN()
             {
                 slotGameNew();
                 game().copyFromGame(g);
+                emit signalGameLoaded(game().startingBoard());
                 return true;
             }
         }
@@ -590,12 +591,12 @@ void MainWindow::slotCreateBoardImage(QImage &image, double scaling)
 
 void MainWindow::slotEditTruncateEnd()
 {
-    game().truncateVariation(Game::AfterMove);
+    truncateVariation(Game::AfterMove);
 }
 
 void MainWindow::slotEditTruncateStart()
 {
-    game().truncateVariation(Game::BeforeMove);
+    truncateVariation(Game::BeforeMove);
 }
 
 void MainWindow::slotEditBoard()
@@ -727,6 +728,7 @@ void MainWindow::HandleFicsBoardRequest(int cmd,QString s)
             if (game().board() != b)
             {
                 game().setStartingBoard(b,tr("Set starting board"),b.chess960());
+                emit signalGameLoaded(game().startingBoard());
                 playSound(":/sounds/ding1.wav");
             }
         }
@@ -866,7 +868,7 @@ void MainWindow::slotResumeBoard()
 
 Color MainWindow::UserColor()
 {
-    if (m_autoRespond->isChecked())
+    if (m_autoRespond->isChecked() || m_autoGame->isChecked())
     {
         if (m_machineHasToMove)
         {
@@ -931,12 +933,13 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
                 }
             }
 
-            if(m_training->isChecked())
+            if(m_training->isChecked() || m_training2->isChecked())
             {
                 if (game().atLineEnd())
                 {
                     playSound(":/sounds/fanfare.wav");
-                    m_training->trigger();
+                    if(m_training->isChecked()) m_training->trigger();
+                    if(m_training2->isChecked()) m_training2->trigger();
                 }
             }
             else
@@ -1085,6 +1088,10 @@ void MainWindow::doBoardMove(Move m, unsigned int button, Square from, Square to
             {
                 m_machineHasToMove = true;
             }
+            if (m_autoGame->isChecked())
+            {
+                triggerBoardMove();
+            }
         }
     }
     else if ((game().board().toMove() == UserColor()) && (UserColor() != game().board().colorAt(from)))
@@ -1171,7 +1178,7 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
                         }
                         else
                         {
-                            game().truncateVariation();
+                            truncateVariation();
                         }
                     }
                 }
@@ -1226,7 +1233,7 @@ void MainWindow::slotBoardClick(Square s, int button, QPoint pos, Square from)
 
 void MainWindow::slotMoveChanged()
 {
-    if(m_training->isChecked())
+    if (m_training->isChecked() || m_training2->isChecked())
     {
         UpdateGameText();
     }
@@ -1432,9 +1439,9 @@ void MainWindow::slotGameVarDown()
         }
         else
         {
-            if(!m_training->isChecked())
+            if(!m_training2->isChecked())
             {
-                // Do not show next move in training mode
+                // Do not show next move in training 2 mode
                 game().forward();
             }
         }
@@ -1598,6 +1605,12 @@ void MainWindow::slotGameMoveToPly(int ply)
     }
 }
 
+void MainWindow::truncateVariation(Game::Position position)
+{
+    game().truncateVariation(position);
+    emit signalGameLoaded(game().startingBoard());
+}
+
 void MainWindow::slotGameModify(const EditAction& action)
 {
     if((action.type() != EditAction::CopyHtml) &&
@@ -1608,10 +1621,10 @@ void MainWindow::slotGameModify(const EditAction& action)
     switch(action.type())
     {
     case EditAction::RemoveNextMoves:
-        game().truncateVariation();
+        truncateVariation();
         break;
     case EditAction::RemovePreviousMoves:
-        game().truncateVariation(Game::BeforeMove);
+        truncateVariation(Game::BeforeMove);
         break;
     case EditAction::RemoveVariation:
     {
@@ -1840,7 +1853,7 @@ void MainWindow::slotGameViewLink(const QString& url)
 
 void MainWindow::slotGameViewSource()
 {
-    QString text = m_output->output(&game(), m_training->isChecked());
+    QString text = m_output->output(&game(), (m_training->isChecked() || m_training2->isChecked()));
     QApplication::clipboard()->setText(text);
 }
 
@@ -1855,12 +1868,18 @@ void MainWindow::slotGameDumpBoard()
     qDebug() << "Board:" << game().board().toFen() << "//" << game().board().getHashValue();
 }
 
-void MainWindow::slotGameAddVariation(const Analysis& analysis)
+void MainWindow::slotGameAddVariation(const Analysis& analysis, QString annotation)
 {
-    QString score;
-    if (!analysis.bestMove())
+    QString score = annotation;
+    if (!score.isEmpty()) score += " ";
+    if (analysis.isMate())
     {
-        score = QString::number(analysis.fscore(), 'f', 2);
+        int n = analysis.movesToMate();
+        score += QString(tr("Mate in %1").arg(abs(n)));
+    }
+    else
+    {
+        score += QString::number(analysis.fscore(), 'f', 2);
     }
     if (game().atLineEnd())
     {
@@ -1984,8 +2003,7 @@ void MainWindow::slotGameSetComment(QString annotation)
 
 bool MainWindow::autoRespondActive() const
 {
-    return (m_autoRespond->isChecked() ||
-            (m_training->isChecked() && m_bTrainigAutoRespond));
+    return (m_autoRespond->isChecked() || m_training->isChecked());
 }
 
 void MainWindow::slotToggleTraining()
@@ -1995,14 +2013,15 @@ void MainWindow::slotToggleTraining()
     {    
         enterNoHintMode(action->isChecked());
     }
-    if (action->isChecked())
+    UpdateGameText();
+}
+
+void MainWindow::slotToggleTraining2()
+{
+    QAction* action = qobject_cast<QAction*>(sender());
+    if (AppSettings->getValue("/Board/noHints").toBool())
     {
-        QMenu* menu = new QMenu(this);
-        QAction *autoRespond = new QAction(tr("Automatic responses"), this);
-        QAction *noAutoRespond = new QAction(tr("Play both sides"), this);
-        menu->addAction(autoRespond);
-        menu->addAction(noAutoRespond);
-        m_bTrainigAutoRespond = (autoRespond == menu->exec(QCursor::pos()));
+        enterNoHintMode(action->isChecked());
     }
     UpdateGameText();
 }
@@ -2069,6 +2088,7 @@ void MainWindow::slotToggleAutoAnalysis()
         setEngineMoveTime(m_mainAnalysis);
         m_AutoInsertLastBoard.clear();
         lastScore = -999;
+        m_todoAutoAnalysis.clear();
         if(!m_mainAnalysis->isEngineConfigured())
         {
             MessageDialog::information(tr("Analysis Pane 1 is not running an engine for automatic analysis."), tr("Auto Analysis"));
@@ -2204,6 +2224,34 @@ void MainWindow::slotToggleAutoPlayer()
     }
 }
 
+void MainWindow::slotToggleGamePlayer()
+{
+    QAction* autoGameAction = qobject_cast<QAction*>(sender());
+    if(autoGameAction)
+    {
+        if(autoGameAction->isChecked())
+        {
+            if (game().atLineEnd())
+            {
+                m_elapsedUserTimeValid = false; // Emulate a valid user time, do not care in this mode
+                int interval = AppSettings->getValue("/Board/AutoPlayerInterval").toInt();
+                m_boardView->setFlags(m_boardView->flags() | BoardView::IgnoreSideToMove);
+                m_mainAnalysis->setMoveTime(interval);
+                triggerBoardMove();
+            }
+            else
+            {
+                autoGameAction->toggle();
+            }
+        }
+        else
+        {
+            m_mainAnalysis->stopEngine();
+            m_boardView->setFlags(m_boardView->flags() & ~BoardView::IgnoreSideToMove);
+        }
+    }
+}
+
 void MainWindow::setResultForCurrentPosition()
 {
     if (game().isMainline())
@@ -2290,33 +2338,80 @@ QString MainWindow::drawAnnotation() const
     return reason;
 }
 
+bool MainWindow::handleGameEnd(const Analysis& analysis, QAction* action)
+{
+    if (gameIsDraw())
+    {
+        playSound(":/sounds/fanfare.wav");
+        // Game is drawn by repetition or 50 move rule
+        action->trigger();
+        if (game().isMainline())
+        {
+            game().dbSetAnnotation(drawAnnotation());
+            game().setResult(Draw);
+        }
+        return true;
+    }
+    else if(analysis.getEndOfGame())
+    {
+        if (analysis.score() == 0)
+        {
+            game().setResult(Draw);
+        }
+        else
+        {
+            setResultAgainstColorToMove();
+        }
+        playSound(":/sounds/fanfare.wav");
+        // Game is terminated by engine
+        action->trigger();
+        return true;
+    }
+    return false;
+}
+
 void MainWindow::slotEngineTimeout(const Analysis& analysis)
 {
-    if (m_boardView->dragged() == Empty || m_autoRespond->isChecked()) // Do not interfer with moving a piece, unless it might be a premove
+    if (m_boardView->dragged() == Empty || m_autoRespond->isChecked() || m_autoGame->isChecked()) // Do not interfer with moving a piece, unless it might be a premove
     {
         // todo - if premove, make it possible to change the board "underneath" the piece that is moved
         if(m_autoAnalysis->isChecked() && (m_AutoInsertLastBoard != game().board()))
         {
-            if (!game().atLineEnd() || AppSettings->getValue("/Board/ExtendGames").toBool())
+            if (!AppSettings->getValue("/Board/AnalyseOnlyMainline").toBool())
+            {
+                m_todoAutoAnalysis.append(game().currentVariations());
+            }
+            if (!game().atLineEnd())
             {
                 m_AutoInsertLastBoard = game().board();
                 Analysis a = m_mainAnalysis->getMainLine();
-                if(!a.variation().isEmpty())
+                int threashHold = AppSettings->getValue("/Board/BackwardAnalysis").toBool() ? AppSettings->getValue("/Board/BlunderCheck").toInt() : 0;
+                if (!analysis.getTb().isNullMove())
                 {
-                    int threashHold = AppSettings->getValue("/Board/BackwardAnalysis").toBool() ? AppSettings->getValue("/Board/BlunderCheck").toInt() : 0;
+                    Move m = analysis.getTb();
+                    int score = analysis.getScoreTb();
+                    QString text = "TB " + QString::number(score/100);
+                    if ((!threashHold || (abs(score-lastScore) > threashHold)))
+                    {
+                        if(!game().currentNodeHasMove(m.from(), m.to()))
+                        {
+                            game().addVariation(m.toAlgebraic(), text);
+                        }
+                    }
+                    lastScore = score;
+                }
+                else if(!a.variation().isEmpty())
+                {
                     int score = a.score();
                     if ((!threashHold || (abs(score-lastScore) > threashHold)))
                     {
                         Move m = a.variation().first();
                         if(!game().currentNodeHasMove(m.from(), m.to()))
                         {
-                            if(!game().isEcoPosition())
-                            {
-                                slotGameAddVariation(a);
-                            }
+                            slotGameAddVariation(a, AppSettings->getValue("/Board/AddAnnotation").toString());
                         }
-                    }
-                    lastScore = a.score();
+                        lastScore = score;
+                    }                
                 }
             }
             slotAutoPlayTimeout();
@@ -2338,32 +2433,7 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         setResultAgainstColorToMove();
                     }
                 }
-                else if (gameIsDraw())
-                {
-                    playSound(":/sounds/fanfare.wav");
-                    // Game is drawn by repetition or 50 move rule
-                    m_autoRespond->trigger();
-                    if (game().isMainline())
-                    {
-                        game().dbSetAnnotation(drawAnnotation());
-                        game().setResult(Draw);
-                    }
-                }
-                else if(analysis.getEndOfGame())
-                {
-                    if (analysis.score() == 0)
-                    {
-                        game().setResult(Draw);
-                    }
-                    else
-                    {
-                        setResultAgainstColorToMove();
-                    }
-                    playSound(":/sounds/fanfare.wav");
-                    // Game is terminated by engine
-                    m_autoRespond->trigger();
-                }
-                else if(!analysis.variation().isEmpty() && analysis.bestMove())
+                else if(!handleGameEnd(analysis, m_autoRespond) && !analysis.variation().isEmpty() && analysis.bestMove())
                 {
                     Move m = analysis.variation().first();
                     if (m.isLegal())
@@ -2381,6 +2451,31 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                         {
                             m_elapsedUserTime.start();
                             m_elapsedUserTimeValid = true;
+                            slotBoardStoredMove();
+                        }
+                    }
+                }
+            }
+        }
+        else if (game().atLineEnd() && m_autoGame->isChecked())
+        {
+            if (m_machineHasToMove)
+            {
+                if(!handleGameEnd(analysis, m_autoGame) && !analysis.variation().isEmpty() && analysis.bestMove())
+                {
+                    Move m = analysis.getTb();
+                    if (m.isNullMove()) m = analysis.variation().first();
+
+                    if (m.isLegal())
+                    {
+                        m_machineHasToMove = false;
+                        m_mainAnalysis->setMoveTime(m_matchParameter);
+                        if (!doEngineMove(m, m_matchParameter))
+                        {
+                            m_autoGame->trigger();
+                        }
+                        else
+                        {
                             slotBoardStoredMove();
                         }
                     }
@@ -2470,6 +2565,12 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             // Engines did not make progress or user intervention
             m_autoRespond->trigger();
         }
+        else if (m_autoGame->isChecked())
+        {
+            playSound(":/sounds/fanfare.wav");
+            // Engines did not make progress or user intervention
+            m_autoGame->trigger();
+        }
     }
 }
 
@@ -2488,11 +2589,11 @@ void MainWindow::slotAutoPlayTimeout()
     bool done = false;
     if (m_autoAnalysis->isChecked() && AppSettings->getValue("/Board/BackwardAnalysis").toBool())
     {
-        done = game().atGameStart();
+        done = game().atLineStart();
     }
     else
     {
-        done = game().atGameEnd();
+        done = game().atLineEnd();
     }
 
     if(done)
@@ -2501,12 +2602,11 @@ void MainWindow::slotAutoPlayTimeout()
     }
     else
     {
-        //done = false;
         if (m_autoAnalysis->isChecked() && AppSettings->getValue("/Board/BackwardAnalysis").toBool())
         {
             slotGameMovePrevious();
         }
-        else
+        else if (!m_training2->isChecked())
         {
             slotGameMoveNext();
         }
@@ -2526,29 +2626,42 @@ void MainWindow::AutoMoveAtEndOfGame()
 {
     if(m_autoAnalysis->isChecked())
     {
-        QString engineAnnotation = tr("Engine %1").arg(m_mainAnalysis->displayName());
-        game().dbSetAnnotation(engineAnnotation, game().lastMove());
-
-        if (AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
+        if (m_todoAutoAnalysis.isEmpty())
         {
-            saveGame(databaseInfo());
-            if (loadNextGame())
+            QString engineAnnotation = tr("Engine %1").arg(m_mainAnalysis->displayName());
+            game().dbSetAnnotation(engineAnnotation, game().lastMove());
+
+            if (AppSettings->getValue("/Board/AutoSaveAndContinue").toBool())
             {
-                if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
+                saveGame(databaseInfo());
+                if (loadNextGame())
                 {
-                    game().moveToEnd();
+                    if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
+                    {         
+                        game().moveToEnd();
+                        lastScore = -999;
+                    }
+                }
+                else
+                {
+                    // All games finished
+                    m_autoAnalysis->setChecked(false);
                 }
             }
             else
             {
-                // All games finished
+                // Game finished
                 m_autoAnalysis->setChecked(false);
             }
         }
         else
         {
-            // Game finished
-            m_autoAnalysis->setChecked(false);
+            // Still need to analyse a variation
+            MoveId nextVariation = m_todoAutoAnalysis.takeLast();
+            lastScore = -999;
+            game().dbMoveToId(nextVariation);
+            game().dbMoveToLineEnd();
+            game().indicateAnnotationsOnBoard(game().currentMove());
         }
     }
 }
@@ -3825,7 +3938,7 @@ void MainWindow::enterGameMode(bool gameMode)
 bool MainWindow::premoveAllowed() const
 {
     return ((gameMode() && m_ficsConsole->canUsePremove() && qobject_cast<const FicsDatabase*>(database()))
-            || m_autoRespond->isChecked());
+            || m_autoRespond->isChecked() || m_autoGame->isChecked());
 }
 
 void MainWindow::slotToggleBrush()
