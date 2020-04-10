@@ -216,6 +216,8 @@ public :
     /** Moves to the end of the game */
     void moveToEnd();
     bool dbMoveToEnd();
+    void moveToLineEnd();
+    bool dbMoveToLineEnd();
     /** Moves by given ply, returns actual ply reached */
     int moveByPly(int diff);
     /** Moves to the position corresponding to the given move id */
@@ -344,6 +346,8 @@ public :
     bool currentNodeHasMove(Square from, Square to) const;
     /** @return true if the move @p from @p to is already in a variation */
     bool currentNodeHasVariation(Square from, Square to) const;
+    /** Return the list of variations of the current node */
+    const QList<MoveId>& currentVariations() const;
 
     /** Evaluate a list of scores for the complete game (mainline only) */
     void scoreMaterial(QList<double> &scores) const;

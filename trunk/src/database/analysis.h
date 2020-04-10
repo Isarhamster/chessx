@@ -78,6 +78,12 @@ public:
     bool getBookMove() const;
     void setBookMove(bool bookMove);
 
+    Move getTb() const;
+    void setTb(const Move &value);
+
+    int getScoreTb() const;
+    void setScoreTb(int value);
+
 private:
     int m_numpv;
     int m_msec;
@@ -90,6 +96,8 @@ private:
     quint64 m_nodes;
     MoveList m_variation;
     int m_elapsedTimeMS;
+    Move m_tb;
+    int m_scoreTb;
 };
 
 #endif // ANALYSIS_H

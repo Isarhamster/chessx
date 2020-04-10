@@ -34,6 +34,8 @@ Analysis& Analysis::operator=(const Analysis& rhs)
         m_endOfGame = rhs.m_endOfGame;
         m_variation = rhs.m_variation;
         m_bookMove  = rhs.m_bookMove;
+        m_tb        = rhs.m_tb;
+        m_scoreTb   = rhs.m_scoreTb;
         m_elapsedTimeMS = rhs.m_elapsedTimeMS;
     }
     return *this;
@@ -50,6 +52,8 @@ void Analysis::clear()
     m_bookMove = false;
     m_endOfGame = false;
     m_variation.clear();
+    m_tb.setNullMove();
+    m_scoreTb = 0;
 }
 
 
@@ -171,6 +175,26 @@ bool Analysis::getBookMove() const
 void Analysis::setBookMove(bool bookMove)
 {
     m_bookMove = bookMove;
+}
+
+Move Analysis::getTb() const
+{
+    return m_tb;
+}
+
+void Analysis::setTb(const Move &value)
+{
+    m_tb = value;
+}
+
+int Analysis::getScoreTb() const
+{
+    return m_scoreTb;
+}
+
+void Analysis::setScoreTb(int value)
+{
+    m_scoreTb = value;
 }
 
 int Analysis::movesToMate() const

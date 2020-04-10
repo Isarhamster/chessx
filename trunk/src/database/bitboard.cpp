@@ -2878,7 +2878,11 @@ bool BitBoard::insufficientMaterial() const
             }
             if (m_knights)
             {
-                return false;
+                return false; // Knights allow a mate always
+            }
+            if (!m_bishops)
+            {
+                return true; // bare kings
             }
             // Finally KB-KB
             quint64 n  = m_bishops;
