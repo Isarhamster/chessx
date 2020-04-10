@@ -121,6 +121,7 @@ signals:
     void requestGameData(Game&);
     void signalFirstGameLoaded(bool);
     void signalLastGameLoaded(bool);
+    void signalFilterSize(quint64);
     void signalDropEvent(QDropEvent*);
     void searchProgress(int);
     void searchFinished();

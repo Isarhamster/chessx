@@ -272,6 +272,8 @@ public slots:
     void slotEngineTimeout(const Analysis& analysis);
     /** Filter was changed - update status bar information */
     void slotFilterChanged(bool selectGame=true);
+    /** Evaluate number of filter entries to enable buttons properly */
+    void slotFilterSizeChanged(quint64 newSize);
     /** Load given game (triggered from Game List) */
     void slotFilterLoad(GameId index);
     /** Creates an empty chessxdatabase*/
@@ -541,6 +543,7 @@ signals:
     void signalMoveHasParent(bool);
     void signalGameIsEmpty(bool);
     void signalGameAtLineStart(bool);
+    void signalFilterEmpty(bool);
 
     void signalGameModeChanged(bool);
 
@@ -642,6 +645,7 @@ private:
      /** Determine Color the user is using depending upon different match scenarios */
     Color UserColor();
     void truncateVariation(Game::Position position = Game::AfterMove);
+    bool handleGameEnd(const Analysis& analysis, QAction* action);
 
     /* Dialogs  */
     GameList* m_gameList;

@@ -529,7 +529,7 @@ void GameList::selectGame(GameId index)
         QModelIndex filterModelIndex = m_model->index(index, 0);
         QModelIndex sortModelIndex = GetSortModelIndex(filterModelIndex);
         setCurrentIndex(sortModelIndex);
-        emit signalFirstGameLoaded(sortModelIndex.row()==0);
+        emit signalFirstGameLoaded(!m_model->filter()->count() || (sortModelIndex.row()==0));
         emit signalLastGameLoaded(sortModelIndex.row()+1 >= m_model->filter()->count());
     }
     else
@@ -537,6 +537,7 @@ void GameList::selectGame(GameId index)
         emit signalFirstGameLoaded(true);
         emit signalLastGameLoaded(true);
     }
+    emit signalFilterSize(m_model->filter()->count());
 }
 
 void GameList::updateFilter(GameId index, int value)
