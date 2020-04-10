@@ -130,6 +130,8 @@ private:
     Board m_startPos;
     QString m_tablebaseEvaluation;
     QString m_tablebaseMove;
+    Move m_tb;
+    int m_score_tb;
     Tablebase* m_tablebase;
     Board m_tbBoard;
     EngineParameter m_moveTime;

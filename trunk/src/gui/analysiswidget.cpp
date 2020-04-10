@@ -293,14 +293,33 @@ void AnalysisWidget::showAnalysis(Analysis analysis)
     }
     updateComplexity();
     updateAnalysis();
+    Analysis c = analysis;
+    if (bestMove && analysis.variation().count())
+    {
+        foreach (Analysis a, m_analyses)
+        {
+            if (a.variation().count())
+            {
+                if (a.variation().at(0)==analysis.variation().at(0))
+                {
+                    c = a;
+                    c.setBestMove(true);
+                    break;
+                }
+            }
+        }
+    }
+
+    c.setTb(m_tb);
+    c.setScoreTb(m_score_tb);
     if (bestMove)
     {
         analysis.setElapsedTimeMS(elapsed);
-        emit receivedBestMove(analysis);
+        emit receivedBestMove(c);
     }
-    else if (analysis.getEndOfGame())
+    else if (c.getEndOfGame())
     {
-        emit receivedBestMove(analysis);
+        emit receivedBestMove(c);
     }
 }
 
@@ -322,6 +341,8 @@ void AnalysisWidget::setPosition(const Board& board, QString line)
         m_tablebase->abortLookup();
         m_tablebaseEvaluation.clear();
         m_tablebaseMove.clear();
+        m_tb.setNullMove();
+        m_score_tb = 0;
 
         updateBookMoves();
 
@@ -392,6 +413,8 @@ void AnalysisWidget::sendBookMoveTimeout()
         analysis.setVariation(moves);
         analysis.setBestMove(true);
         analysis.setBookMove(true);
+        analysis.setTb(m_tb);
+        analysis.setScoreTb(m_score_tb);
         emit receivedBestMove(analysis);
     }
 }
@@ -487,6 +510,7 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                 {
                     dtz = true;
                 }
+                m_score_tb = 0;
                 if(score == 0)
                 {
                     result = tr("Draw");
@@ -498,10 +522,12 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                         if((score < 0) == (m_board.toMove() == Black))
                         {
                             result = tr("White wins in %n moves", "", qAbs(score));
+                            m_score_tb = 10000;
                         }
                         else
                         {
                             result = tr("Black wins in %n moves", "", qAbs(score));
+                            m_score_tb = -10000;
                         }
                     }
                     else
@@ -509,10 +535,12 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                         if((score < 0) == (m_board.toMove() == Black))
                         {
                             result = tr("White wins");
+                            m_score_tb = 10000;
                         }
                         else
                         {
                             result = tr("Black wins");
+                            m_score_tb = -10000;
                         }
                     }
                 }
@@ -523,6 +551,7 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                 }
                 m_tablebaseEvaluation = QString("%1 - %2").arg(m_board.moveToFullSan(move1,true)).arg(result);
                 m_tablebaseMove = m_board.moveToFullSan(move1);
+                m_tb = move1;
                 m_lastDepthAdded = 0;
             }
             else
