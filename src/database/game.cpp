@@ -479,9 +479,9 @@ bool Game::currentNodeHasVariation(Square from, Square to) const
         return false;
     }
 
-    QList<MoveId> vs = m_moveNodes[m_currentNode].variations;
-    QList<MoveId>::iterator i;
-    for(i = vs.begin(); i != vs.end(); ++i)
+    const QList<MoveId>& vs = currentVariations();
+    QList<MoveId>::const_iterator i;
+    for(i = vs.constBegin(); i != vs.constEnd(); ++i)
     {
         Move m = move(*i);
         if(m.from() == from && m.to() == to)
@@ -490,6 +490,11 @@ bool Game::currentNodeHasVariation(Square from, Square to) const
         }
     }
     return false;
+}
+
+const QList<MoveId>& Game::currentVariations() const
+{
+    return m_moveNodes[m_currentNode].variations;
 }
 
 bool Game::currentNodeHasMove(Square from, Square  to) const
@@ -1826,6 +1831,11 @@ Move Game::move(MoveId moveId) const
     return Move();
 }
 
+bool Game::dbMoveToLineEnd()
+{
+    return (!forward(999));
+}
+
 bool Game::dbMoveToEnd()
 {
     // Move out of variations to mainline
@@ -1834,10 +1844,18 @@ bool Game::dbMoveToEnd()
         dbMoveToId(m_moveNodes[m_currentNode].parentNode);
     }
     // Now move forward to the end of the game
-    return (!forward(999));
+    return dbMoveToLineEnd();
 }
 
 void Game::moveToEnd()
+{
+    if (!dbMoveToEnd())
+    {
+        indicateAnnotationsOnBoard(m_currentNode);
+    }
+}
+
+void Game::moveToLineEnd()
 {
     if (!dbMoveToEnd())
     {
