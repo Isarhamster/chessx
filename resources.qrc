@@ -71,8 +71,8 @@
         <file alias="images/folder.png">data/images/folder.png</file>
         <file alias="images/format_indent_less.png">data/images/format_indent_less.png</file>
         <file alias="images/forward.png">data/images/forward.png</file>
-        <file alias="images/game_down.png">data/images/go_down_black.png</file>
-        <file alias="images/game_up.png">data/images/go_up_black.png</file>
+        <file alias="images/game_down.png">data/images/game_down.png</file>
+        <file alias="images/game_up.png">data/images/game_up.png</file>
         <file alias="images/go_down.png">data/images/arrow_down_double.png</file>
         <file alias="images/go_in.png">data/images/go_jump.png</file>
         <file alias="images/go_out.png">data/images/edit_out.png</file>
@@ -86,7 +86,8 @@
         <file alias="images/list_add.png">data/images/list_add.png</file>
         <file alias="images/match.png">data/images/match.png</file>
         <file alias="images/new_board.png">data/images/new_board.png</file>
-        <file alias="images/new_game.png">data/images/new_game.png</file>
+        <file alias="images/new_game.png">data/images/game_new.png</file>
+        <file alias="images/rnd_game.png">data/images/game_random.png</file>
         <file alias="images/new.png">data/images/label_blue_new.png</file>
         <file alias="images/next.png">data/images/button_ffw.png</file>
         <file alias="images/pen.png">data/images/pen.png</file>
@@ -99,6 +100,7 @@
         <file alias="images/redo.png">data/images/redo_yellow.png</file>
         <file alias="images/replace_move.png">data/images/replace_move.png</file>
         <file alias="images/replay.png">data/images/replay.png</file>
+        <file alias="images/game_engine.png">data/images/game_engine.png</file>
         <file alias="images/respond.png">data/images/respond.png</file>
         <file alias="images/save.png">data/images/save.png</file>
         <file alias="images/setup_board.png">data/images/setup_board.png</file>
@@ -110,6 +112,7 @@
         <file alias="images/text_clear.png">data/images/text_clear.png</file>
         <file alias="images/time_clear.png">data/images/time_clear.png</file>
         <file alias="images/training.png">data/images/training.png</file>
+        <file alias="images/training_both.png">data/images/training_both.png</file>
         <file alias="images/undo.png">data/images/undo_yellow.png</file>
         <file alias="images/brush_yellow.png">data/images/brush_yellow.png</file>
         <file alias="images/brush_green.png">data/images/brush_green.png</file>
