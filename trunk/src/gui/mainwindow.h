@@ -244,7 +244,7 @@ public slots:
     /** Start a dialog which edits the games tags */
     void slotGameEditTags();
     /** Add variation to current position. */
-    void slotGameAddVariation(const Analysis& analysis);
+    void slotGameAddVariation(const Analysis& analysis, QString annotation = "");
     /** Add variation to current position. */
     bool slotGameAddVariation(const QString& san);
     /** Remove all comments. */
@@ -263,6 +263,7 @@ public slots:
     void slotGameSetComment(QString);
     /** Start / Stop AutoPlay feature */
     void slotToggleAutoPlayer();
+    void slotToggleGamePlayer();
     /** Auto Play Timeout - make next move! */
     void slotToggleAutoAnalysis();
     /** Auto Play Timeout - make next move! */
@@ -310,6 +311,7 @@ public slots:
     void slotSearchReset();
     /** Training mode */
     void slotToggleTraining();
+    void slotToggleTraining2();
     /** Training mode - auto responder */
     void slotToggleAutoRespond();
     /** Reverse current filter */
@@ -639,6 +641,7 @@ private:
     void setEngineMoveTime(AnalysisWidget* w);
      /** Determine Color the user is using depending upon different match scenarios */
     Color UserColor();
+    void truncateVariation(Game::Position position = Game::AfterMove);
 
     /* Dialogs  */
     GameList* m_gameList;
@@ -689,17 +692,19 @@ private:
     EngineParameter m_EngineParameterForMatch;
     Board m_AutoInsertLastBoard;
     int lastScore;
+    QList<MoveId> m_todoAutoAnalysis;
     Square m_annotationSquare;
     Square m_annotationSquareFrom;
     QChar m_lastColor;
     ExclusiveActionGroup* autoGroup;
-    ExclusiveActionGroup* autoGroupTraining;
     ExclusiveActionGroup* brushGroup;
     ExclusiveActionGroup* attackGroup;
     ExclusiveActionGroup* underprotectGroup;
     QAction* m_training;
+    QAction* m_training2;
     QAction* m_autoRespond;
     QAction* m_autoPlay;
+    QAction* m_autoGame;
     QAction* m_autoAnalysis;
     QAction* m_engineMatch;
     QAction* m_match;
@@ -707,6 +712,7 @@ private:
     QNetworkAccessManager* m_manager;
     DownloadManager* downloadManager;
     DownloadManager* downloadManager2;
+
     bool m_machineHasToMove;
     bool m_gameMode;
     FicsClient* m_ficsClient;
@@ -717,7 +723,6 @@ private:
     QTime m_elapsedUserTime;
     bool m_elapsedUserTimeValid;
     EngineParameter m_matchParameter;
-    bool m_bTrainigAutoRespond;
     bool m_bEvalRequested;
     QList<PolyglotWriter*> m_polyglotWriters;
     QMap<QUrl, QString> m_mapDatabaseToDroppedUrl;
