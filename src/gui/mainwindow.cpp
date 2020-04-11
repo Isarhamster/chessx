@@ -515,7 +515,7 @@ MainWindow::MainWindow() : QMainWindow(),
     StartCheckUpdate();
 #ifdef USE_SPEECH
     speech = new QTextToSpeech(this);
-    speech->setLocale(QLocale::English);
+    speech->setLocale(QLocale(AppSettings->getValue("/General/language").toString()));
 #endif
 
     if (isMinimized())
