@@ -111,7 +111,6 @@ private slots:
     void slotBtTextFontClicked();
     void SlotPieceEffectActivated(int index);
     void on_savePreferences_clicked();
-    void on_cbBackwardAnalysis_stateChanged(int arg1);
 };
 
 #endif
