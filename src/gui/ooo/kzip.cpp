@@ -22,7 +22,7 @@
 #include <QSharedData>
 #include <zlib.h>
 
-#include <QtCore>
+#include <QBuffer>
 #include <QDomDocument>
 #include <QTextDocument>
 #include <QTextObject>
