@@ -270,6 +270,7 @@ public slots:
     void slotAutoPlayTimeout();
     /** Auto Play Timeout - make next move! */
     void slotEngineTimeout(const Analysis& analysis);
+    void addAutoNag(Color toMove, int score, int lastScore, int threashold, MoveId node);
     /** Filter was changed - update status bar information */
     void slotFilterChanged(bool selectGame=true);
     /** Evaluate number of filter entries to enable buttons properly */
@@ -696,6 +697,7 @@ private:
     EngineParameter m_EngineParameterForMatch;
     Board m_AutoInsertLastBoard;
     int lastScore;
+    MoveId lastNode;
     QList<MoveId> m_todoAutoAnalysis;
     Square m_annotationSquare;
     Square m_annotationSquareFrom;
