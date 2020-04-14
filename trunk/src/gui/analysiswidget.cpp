@@ -458,12 +458,15 @@ void AnalysisWidget::setMoveTime(EngineParameter mt)
 
 void AnalysisWidget::setMoveTime(int n)
 {
-    setMoveTime((EngineParameter) n);
+    EngineParameter par(n);
+    par.analysisMode = true;
+    setMoveTime(par);
 }
 
 void AnalysisWidget::setDepth(int n)
 {
     m_moveTime.searchDepth = n;
+    m_moveTime.analysisMode = true;
     setMoveTime(m_moveTime);
 }
 
@@ -522,12 +525,12 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                         if((score < 0) == (m_board.toMove() == Black))
                         {
                             result = tr("White wins in %n moves", "", qAbs(score));
-                            m_score_tb = 10000;
+                            m_score_tb = 1;
                         }
                         else
                         {
                             result = tr("Black wins in %n moves", "", qAbs(score));
-                            m_score_tb = -10000;
+                            m_score_tb = -1;
                         }
                     }
                     else
@@ -535,12 +538,12 @@ void AnalysisWidget::showTablebaseMove(QList<Move> bestMoves, int score)
                         if((score < 0) == (m_board.toMove() == Black))
                         {
                             result = tr("White wins");
-                            m_score_tb = 10000;
+                            m_score_tb = 1;
                         }
                         else
                         {
                             result = tr("Black wins");
-                            m_score_tb = -10000;
+                            m_score_tb = -1;
                         }
                     }
                 }

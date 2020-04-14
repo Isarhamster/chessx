@@ -1928,7 +1928,7 @@ void MainWindow::slotGameRemoveVariations()
 
 void MainWindow::slotDatabaseUncomment()
 {
-    if (MessageDialog::yesNo(tr("Delete all comments from all games?")))
+    if (MessageDialog::yesNo(tr("Delete all comments from all games?"), databaseInfo()->database()->name()))
     {
         game().removeCommentsDb();
         slotGameChanged(true);
@@ -1950,7 +1950,7 @@ void MainWindow::slotDatabaseUncomment()
 
 void MainWindow::slotDatabaseRemoveTime()
 {
-    if (MessageDialog::yesNo(tr("Delete all time annotations from all games?")))
+    if (MessageDialog::yesNo(tr("Delete all time annotations from all games?"), databaseInfo()->database()->name()))
     {
         game().removeTimeCommentsDb();
         slotGameChanged(true);
@@ -1972,7 +1972,7 @@ void MainWindow::slotDatabaseRemoveTime()
 
 void MainWindow::slotDatabaseRemoveVariations()
 {
-    if (MessageDialog::yesNo(tr("Delete all comments from all games?")))
+    if (MessageDialog::yesNo(tr("Delete all variations from all games?"), databaseInfo()->database()->name()))
     {
         game().removeVariationsDb();
         slotGameChanged(true);
@@ -2088,6 +2088,7 @@ void MainWindow::slotToggleAutoAnalysis()
         setEngineMoveTime(m_mainAnalysis);
         m_AutoInsertLastBoard.clear();
         lastScore = -999;
+        lastNode = NO_MOVE;
         m_todoAutoAnalysis.clear();
         if(!m_mainAnalysis->isEngineConfigured())
         {
@@ -2110,10 +2111,7 @@ void MainWindow::slotToggleAutoAnalysis()
     }
     else
     {
-        if (!autoGroup->checkedAction())
-        {
-            m_mainAnalysis->stopEngine();
-        }
+        m_mainAnalysis->stopEngine();
     }
 }
 
@@ -2214,7 +2212,6 @@ void MainWindow::slotToggleAutoPlayer()
             {
                 m_autoPlayTimer->setInterval(interval);
             }
-            m_mainAnalysis->setMoveTime(interval);
             m_autoPlayTimer->start();
         }
         else
@@ -2231,7 +2228,12 @@ void MainWindow::slotToggleGamePlayer()
     {
         if(autoGameAction->isChecked())
         {
-            if (game().atLineEnd())
+            if(!m_mainAnalysis->isEngineConfigured())
+            {
+                MessageDialog::information(tr("Analysis Pane 1 is not running an engine for automatic analysis."), tr("Game play"));
+                autoGameAction->toggle();
+            }
+            else if (game().atLineEnd())
             {
                 m_elapsedUserTimeValid = false; // Emulate a valid user time, do not care in this mode
                 int interval = AppSettings->getValue("/Board/AutoPlayerInterval").toInt();
@@ -2370,6 +2372,22 @@ bool MainWindow::handleGameEnd(const Analysis& analysis, QAction* action)
     return false;
 }
 
+void MainWindow::addAutoNag(Color toMove, int score, int lastScore, int threashold, MoveId node)
+{
+    if (threashold && (node != NO_MOVE))
+    {
+        int diff = score-lastScore;
+        if (((score>lastScore) && (toMove == Black)) || ((score<lastScore) && (toMove == White)))
+        {
+            game().addNag((diff>3*threashold) ? VeryGoodMove : GoodMove, node);
+        }
+        else
+        {
+            game().addNag((diff>3*threashold) ? VeryPoorMove : PoorMove, node);
+        }
+    }
+}
+
 void MainWindow::slotEngineTimeout(const Analysis& analysis)
 {
     if (m_boardView->dragged() == Empty || m_autoRespond->isChecked() || m_autoGame->isChecked()) // Do not interfer with moving a piece, unless it might be a premove
@@ -2385,17 +2403,28 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
             {
                 m_AutoInsertLastBoard = game().board();
                 Analysis a = m_mainAnalysis->getMainLine();
-                int threashHold = AppSettings->getValue("/Board/BackwardAnalysis").toBool() ? AppSettings->getValue("/Board/BlunderCheck").toInt() : 0;
+                int threashold = AppSettings->getValue("/Board/BlunderCheck").toInt();
                 if (!analysis.getTb().isNullMove())
                 {
                     Move m = analysis.getTb();
-                    int score = analysis.getScoreTb();
-                    QString text = "TB " + QString::number(score/100);
-                    if ((!threashHold || (abs(score-lastScore) > threashHold)))
+                    int score = 10000*analysis.getScoreTb();
+                    lastNode = game().currentMove();
+                    QString text = AppSettings->getValue("/Board/AddAnnotation").toString() + "/TB " + ((score>0)?tr("White wins"):((score<0)?tr("Black wins"):tr("Draw")));
+                    if (!threashold || ((lastScore != -999) && (abs(score-lastScore) > threashold)))
                     {
-                        if(!game().currentNodeHasMove(m.from(), m.to()))
+                        if (!threashold || AppSettings->getValue("/Board/BackwardAnalysis").toBool())
                         {
-                            game().addVariation(m.toAlgebraic(), text);
+                            if(!game().currentNodeHasMove(m.from(), m.to()))
+                            {
+                                SaveRestoreMove saveCurrent(game());
+                                game().dbAddSanVariation(game().currentMove(), m.toAlgebraic(), text);
+                                UpdateGameText();
+                            }
+                        }
+                        else
+                        {
+                            game().dbPrependAnnotation(AppSettings->getValue("/Board/AddAnnotation").toString()+"/TB ", lastNode);
+                            addAutoNag(m.color(), score, lastScore, threashold, lastNode);
                         }
                     }
                     lastScore = score;
@@ -2403,15 +2432,29 @@ void MainWindow::slotEngineTimeout(const Analysis& analysis)
                 else if(!a.variation().isEmpty())
                 {
                     int score = a.score();
-                    if ((!threashHold || (abs(score-lastScore) > threashHold)))
+                    lastNode = game().currentMove();
+                    if (!threashold || ((lastScore != -999) && (abs(score-lastScore) > threashold)))
                     {
                         Move m = a.variation().first();
-                        if(!game().currentNodeHasMove(m.from(), m.to()))
+                        if (!threashold || AppSettings->getValue("/Board/BackwardAnalysis").toBool())
                         {
-                            slotGameAddVariation(a, AppSettings->getValue("/Board/AddAnnotation").toString());
+                            if(!game().currentNodeHasMove(m.from(), m.to()))
+                            {
+                                slotGameAddVariation(a, AppSettings->getValue("/Board/AddAnnotation").toString());
+                            }
                         }
-                        lastScore = score;
+                        else
+                        {
+                            game().dbPrependAnnotation(AppSettings->getValue("/Board/AddAnnotation").toString(), lastNode);
+                            addAutoNag(m.color(), score, lastScore, threashold, lastNode);
+                        }
                     }                
+                    lastScore = score;
+                }
+                else /* Should not happen */
+                {
+                    lastScore = -999;
+                    lastNode = NO_MOVE;
                 }
             }
             slotAutoPlayTimeout();
@@ -2640,18 +2683,19 @@ void MainWindow::AutoMoveAtEndOfGame()
                     {         
                         game().moveToEnd();
                         lastScore = -999;
+                        lastNode = NO_MOVE;
                     }
                 }
                 else
                 {
                     // All games finished
-                    m_autoAnalysis->setChecked(false);
+                    m_autoAnalysis->trigger();
                 }
             }
             else
             {
                 // Game finished
-                m_autoAnalysis->setChecked(false);
+                m_autoAnalysis->trigger();
             }
         }
         else
@@ -2659,8 +2703,12 @@ void MainWindow::AutoMoveAtEndOfGame()
             // Still need to analyse a variation
             MoveId nextVariation = m_todoAutoAnalysis.takeLast();
             lastScore = -999;
+            lastNode = NO_MOVE;
             game().dbMoveToId(nextVariation);
-            game().dbMoveToLineEnd();
+            if (AppSettings->getValue("/Board/BackwardAnalysis").toBool())
+            {
+                game().dbMoveToLineEnd();
+            }
             game().indicateAnnotationsOnBoard(game().currentMove());
         }
     }
