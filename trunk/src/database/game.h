@@ -142,6 +142,8 @@ public :
     // **** node modification methods ****
     /** Sets the comment associated with move at node @p moveId */
     bool dbSetAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
+    bool dbAppendAnnotation(QString a, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
+    bool dbPrependAnnotation(QString a, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Sets the comment associated with move at node @p moveId */
     bool setAnnotation(QString annotation, MoveId moveId = CURRENT_MOVE, Position position = AfterMove);
     /** Edits the comment associated with move at node @p moveId */
@@ -279,7 +281,7 @@ public :
     MoveId dbAddVariation(const MoveList& moveList, const QString& annotation = QString());
     /** Adds a move at the current position as a variation,
      * returns the move id of the added move */
-    MoveId dbAddSanVariation(const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
+    MoveId dbAddSanVariation(MoveId node, const QString& sanMove, const QString& annotation = QString(), NagSet nags = NagSet());
     /** Merge current node of @p otherGame into this game */
     bool mergeNode(Game &otherGame);
     /** Merge @p otherGame starting from otherGames current position into this game as a new mainline */
