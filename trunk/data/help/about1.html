@@ -146,8 +146,8 @@ engine will make the best move found so far.</p>
 <p>If you start a game with Chess960 rules you will need an engine that supports this. The integrated Stockfish is ready for Chess960.</p>
 
 <h3><a name="Auto-Annotate"></a>Automatically annotating games</h3>
-<p><img src=":/images/annotate.png" width="42" align="left">Start an engine in the Analysis 1 window and select menu "Game->Auto Analysis". ChessX will start to move through the
-current game, analysing each position for some time. After the alotted time is over, the best move will be inserted as variation into the game
+<p><img src=":/images/annotate.png" width="42" align="left">Activating menu "Game->Auto Analysis" will start to move through the
+current game, analysing each position for some time. After the alotted time is over, annotations will be inserted into the game
 text. Then ChessX will continue with the next move.</p>
 <p>There are a couple of options which have an influence on the behaviuor:</p>
 <ul>
@@ -156,7 +156,14 @@ text. Then ChessX will continue with the next move.</p>
 open the first game from the database and select move 1.
 <li>Preferences->Database->Commit Database after saving Game: Recommended, commits your results to the harddisk after each game, especially if you
 analyse a complete database, a loss of power will otherwise lose all results so far.
+<li>Preferences->Game->Blunder Check limit: Threshold in centipawns
+<li>Preferences->Game->Auto Analysis backwards: Backward analysis will enter variations only if the move's evaluation is above the limit described above
+Forward analysis will only add a NAG (?, ??, !, !!) instead.3
+<li>Preferences->Game->Add Annotation: The text given is added to inserted lines or NAGs so that the result of the analysis can be distinguished from already
+existing lines and comments.
+<li>Preferences->Game->Mainline Only: This will prevent ChessX from diving into existing variations.
 </ul>
+If no limit is set, all variations will be added to the game text.
 
 <h3><a name="Engine-Books"></a>Using Books in engines</h3>
 <p>UCI engines may support books. Just set the OwnBook option to true, set the name of the "Book File" option and restart the engine.

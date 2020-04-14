@@ -466,9 +466,6 @@ void PreferencesDialog::restoreSettings()
     ui.editAddAnnotation->setText(AppSettings->getValue("AddAnnotation").toString());
     ui.editBlunderCheck->setValue(AppSettings->getValue("BlunderCheck").toInt());
 
-    ui.editBlunderCheck->setEnabled(AppSettings->getValue("BackwardAnalysis").toBool());
-    ui.cbAnalyseOnlyMainline->setEnabled(AppSettings->getValue("BackwardAnalysis").toBool());
-
     ui.cbPromoteToQueen->setChecked(AppSettings->getValue("AutoPromoteToQueen").toBool());
     ui.btNoHints->setChecked(AppSettings->getValue("noHints").toBool());
     ui.alwaysScale->setChecked(AppSettings->getValue("AlwaysScale").toBool());
@@ -809,11 +806,4 @@ void PreferencesDialog::on_savePreferences_clicked()
     {
         QFile::copy(settingsPath, newPath);
     }
-}
-
-void PreferencesDialog::on_cbBackwardAnalysis_stateChanged(int arg1)
-{
-    ui.editBlunderCheck->setEnabled(arg1);
-    ui.cbAnalyseOnlyMainline->setEnabled(arg1);
-
 }
