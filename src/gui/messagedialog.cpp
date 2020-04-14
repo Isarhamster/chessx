@@ -37,7 +37,7 @@ bool MessageDialog::yesNo(const QString& text, const QString& title, const QStri
                           const QString& no)
 {
     QMessageBox mb(QApplication::activeWindow());
-    mb.setWindowTitle(title);
+    mb.QDialog::setWindowTitle(title);
     mb.setText(text);
     mb.setIcon(QMessageBox::Question);
     QPushButton* y = mb.addButton(yes, QMessageBox::YesRole);
@@ -51,7 +51,7 @@ bool MessageDialog::okCancel(const QString& text, const QString& title, const QS
                              const QString& cancel)
 {
     QMessageBox mb(QApplication::activeWindow());
-    mb.setWindowTitle(title);
+    mb.QDialog::setWindowTitle(title);
     mb.setText(text);
     mb.setIcon(QMessageBox::Question);
     QPushButton* o = mb.addButton(ok, QMessageBox::ActionRole);
@@ -66,7 +66,7 @@ int MessageDialog::yesNoCancel(const QString& text, const QString& title, const 
                                const QString& no, const QString& cancel)
 {
     QMessageBox mb(QApplication::activeWindow());
-    mb.setWindowTitle(title);
+    mb.QDialog::setWindowTitle(title);
     mb.setText(text);
     mb.setIcon(QMessageBox::Question);
     QPushButton* y = mb.addButton(yes, QMessageBox::ActionRole);
